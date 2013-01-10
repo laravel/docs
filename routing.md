@@ -45,7 +45,7 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 
 	Route::get('user/{id}', function($id)
 	{
-		reutrn 'User '.$id;
+		return 'User '.$id;
 	});
 
 **Optional Route Parameters**
