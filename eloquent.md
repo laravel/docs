@@ -530,7 +530,7 @@ Mutators are declared in a similar fashion:
 
 		public function setFirstName($value)
 		{
-			return strtolower($value);
+			$this->attributes['first_name'] = strtolower($value);
 		}
 
 	}
