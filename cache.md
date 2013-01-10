@@ -32,7 +32,7 @@ The cache configuration file also contains various other options, which are docu
 
 	Cache::forever('key', 'value');
 
-Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doens't exist. You may do this using the `Cache::remember` method:
+Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. You may do this using the `Cache::remember` method:
 
 	$value = Cache::remember('users', $minutes, function()
 	{

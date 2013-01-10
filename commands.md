@@ -39,7 +39,7 @@ When defining `arguments`, the array definition values represent the following:
 
 	array($name, $mode, $description, $defaultValue)
 
-The argument `mode` may be any of the following: `InputArgument::REQUIRED` or `InputArgumnet::OPTIONAL`.
+The argument `mode` may be any of the following: `InputArgument::REQUIRED` or `InputArgument::OPTIONAL`.
 
 When defining `options`, the array definition values represent the following:
 

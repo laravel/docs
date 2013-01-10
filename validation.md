@@ -159,7 +159,7 @@ The field under validation must be _yes_, _on_, or _1_. This is useful for valid
 <a name="rule-active-url"></a>
 #### active_url
 
-The field under validation must be a valid URL according to the `checkdnsr` PHP function.
+The field under validation must be a valid URL according to the `checkdnsrr` PHP function.
 
 <a name="rule-after"></a>
 #### after:_date_
