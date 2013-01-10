@@ -210,7 +210,7 @@ If you need to add further constraints to which posts are retrieved, you may cal
 
 	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
 
-Again, you may override the conventional foreign key by passing a second argumnet to the `hasMany` method:
+Again, you may override the conventional foreign key by passing a second argument to the `hasMany` method:
 
 	return $this->hasMany('Comment', 'custom_key');
 
@@ -258,7 +258,7 @@ You may also override the conventional associated keys:
 <a name="polymorphic-relations"></a>
 ### Polymorphic Relations
 
-Poymorphic relations allow a model to belongs to more than one other model, on a single association. For example, you might ahve a photo model that belongs to either a staff model or an order model. We would define this relation like so:
+Poymorphic relations allow a model to belongs to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
 
 	class Photo extends Eloquent {
 
@@ -308,7 +308,7 @@ However, the true "polymorphic" magic is when you access the staff or order from
 
 The `imageable` relation on the `Photo` model will return either a `Staff` or `Order` instance, depending on which type of model owns the photo.
 
-To help understand how this works, let's explore the databsae structure for a polymorphic relation:
+To help understand how this works, let's explore the database structure for a polymorphic relation:
 
 **Polymorphic Relation Table Structure**
 
