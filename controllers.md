@@ -39,7 +39,7 @@ You may also specify names on controller routes:
 
 	Route::get('foo', ['uses' => 'FooController@method', 'as' => 'name']);
 
-> **Note:** After creating a new class, make sure to run `composer dutmp-autoload` from the command line. This will allow the framework to automatically load your class.
+> **Note:** After creating a new class, make sure to run `composer dump-autoload` from the command line. This will allow the framework to automatically load your class.
 
 <a name="controller-filters"></a>
 ## Controller Filters
