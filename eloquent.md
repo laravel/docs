@@ -177,7 +177,7 @@ Take note that Eloquent assumes the foreign key of the relationship based on the
 
 To define the inverse of the relationship on the `Phone` model, we use the `belongsTo` method:
 
-***Defining The Inverse Of A Relation**
+**Defining The Inverse Of A Relation**
 
 	class Phone extends Eloquent {
 
@@ -216,7 +216,7 @@ Again, you may override the conventional foreign key by passing a second argumne
 
 To define the inverse of the relationship on the `Comment` model, we use the `belongsTo` method:
 
-***Defining The Inverse Of A Relation**
+**Defining The Inverse Of A Relation**
 
 	class Comment extends Eloquent {
 
@@ -289,7 +289,7 @@ Poymorphic relations allow a model to belongs to more than one other model, on a
 
 Now, we can retrieve the photos for either a staff member or an order:
 
-***Retrieving A Polymorphic Relation**
+**Retrieving A Polymorphic Relation**
 
 	$staff = Staff::find(1);
 
