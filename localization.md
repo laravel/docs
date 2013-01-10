@@ -46,7 +46,7 @@ You may also define place-holders in your language lines:
 
 	'welcome' => 'Welcome, :name',
 
-Then, pass a second argument of replacemnets to the `Lang::get` method:
+Then, pass a second argument of replacements to the `Lang::get` method:
 
 	echo Lang::get('messages.welcome', ['name' => 'Dayle']);
 
@@ -68,6 +68,6 @@ You may then use the `Lang::choice` method to retrieve the line:
 
 	echo Lang::choice('messages.apples', 10);
 
-Since the Laravel translator is powered by the Symfony Translation component, you may also create more explicit plurilization rules easily:
+Since the Laravel translator is powered by the Symfony Translation component, you may also create more explicit pluralization rules easily:
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',

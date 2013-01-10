@@ -25,7 +25,7 @@ This is the most basic error handler. However, you may specify more handlers if 
 		// Handle the exception...
 	});
 
-If an excpetion handler returns a response, that response will be sent to the browser and no other error handlers will be called:
+If an exception handler returns a response, that response will be sent to the browser and no other error handlers will be called:
 
 	App::error(function(InvalidUserException $exception)
 	{

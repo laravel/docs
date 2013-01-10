@@ -57,7 +57,7 @@ The IoC container is powerful enough to resolve classes without any configuratio
 
 	class FooBar {
 
-		public function __contruct(Baz $baz)
+		public function __construct(Baz $baz)
 		{
 			$this->baz = $baz;
 		}
@@ -112,7 +112,7 @@ Laravel provides several opportunities to use the IoC container to increase the 
 
 	}
 
-In this example, the `OrderRepository` class will automatically be injected into the controller. This means that when [unit testing](/docs/testing) a "mock" `OrderRepository` may be bound into the container and injected into the conroller, allowing for painless stubbing of database layer interaction.
+In this example, the `OrderRepository` class will automatically be injected into the controller. This means that when [unit testing](/docs/testing) a "mock" `OrderRepository` may be bound into the container and injected into the controller, allowing for painless stubbing of database layer interaction.
 
 [Filters](/docs/routing#route-filters), [composers](/docs/responses#view-composers), and [event handlers](/docs/events#using-classes-as-listeners) may also be resolved out of the IoC container. When registering them, simply give the name of the class that should be used:
 
@@ -122,7 +122,7 @@ In this example, the `OrderRepository` class will automatically be injected into
 
 	View::composer('foo', 'FooComposer');
 
-	Event::listne('foo', 'FooHandler');
+	Event::listen('foo', 'FooHandler');
 
 <a name="service-providers"></a>
 ## Service Providers
