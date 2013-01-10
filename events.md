@@ -74,7 +74,7 @@ If you do not wish to use the default `handle` method, you may specify the metho
 <a name="event-subscribers"></a>
 ## Event Subscribers
 
-Event subscribers are classes that may subscribe to multiple events from within the class itself. Subscribers should extend the `EventSubscriber` class and defined a `subscribes` method.
+Event subscribers are classes that may subscribe to multiple events from within the class itself. Subscribers should extend the `EventSubscriber` class and define a `subscribes` method.
 
 **Defining An Event Subscriber**
 
