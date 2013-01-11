@@ -23,7 +23,7 @@ To create a new command, you may use the `command:make` Artisan command, which w
 
 By default, generated commands will be stored in the `app/commands` directory; however, you may specify custom path or namespace:
 
-	php artisan command:make FooCommnad --path="app/classes" --namespace="Classes"
+	php artisan command:make FooCommand --path="app/classes" --namespace="Classes"
 
 ### Writing The Command
 
@@ -57,7 +57,7 @@ The `VALUE_NONE` option indicates that the option is simply used as a "switch":
 
 ### Retrieving Input
 
-While you commnad is executing, you will obviously need to access the values for the arguments and options accepted by your application. To do so, you may use the `argument` and `option` methods:
+While you command is executing, you will obviously need to access the values for the arguments and options accepted by your application. To do so, you may use the `argument` and `option` methods:
 
 **Retrieving The Value Of A Command Argument**
 
@@ -79,7 +79,7 @@ While you commnad is executing, you will obviously need to access the values for
 
 To send output to the console, you may use the `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
 
-**Sending Information To The Conosle**
+**Sending Information To The Console**
 
 	$this->info('Display this on the screen');
 
