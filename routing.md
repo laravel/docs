@@ -5,6 +5,7 @@
 - [Route Filters](#route-filters)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
+- [Sub-Domain Routing](#sub-domain-routing)
 - [Throwing 404 Errors](#throwing-404-errors)
 
 <a name="basic-routing"></a>
@@ -179,6 +180,23 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 			// Has Auth Filter
 		});
 	});
+
+<a name="sub-domain-routing"></a>
+## Sub-Domain Routing
+
+Laravel routes are also able to handle wildcard sub-domains, and pass you wildcard parameters from the domain:
+
+**Registering Sub-Domain Routes**
+
+	Route::group(array('domain' => '{account}.myapp.com', function()
+	{
+
+		Route::get('user/{id}', function($account, $id)
+		{
+			//
+		});
+
+	}));
 
 <a name="throwing-404-errors"></a>
 ## Throwing 404 Errors
