@@ -34,7 +34,7 @@ The Laravel `Hash` class provides secure Bcrypt hashing:
 
 To log a user into your application, you may use the `Auth::attempt` method.
 
-	if (Auth::attempt(['email' => $email, 'password' => $password]))
+	if (Auth::attempt(array('email' => $email, 'password' => $password)))
 	{
 		// The user's credentials are valid...
 	}
@@ -45,10 +45,10 @@ If you would like to provide "remember me" functionality in your application, yo
 
 **Authenticating A User And "Remembering" Them**
 
-	if (Auth::attempt(['email' => $email, 'password' => $password], true))
+	if (Auth::attempt(array('email' => $email, 'password' => $password), true))
 	{
 		// The user is being remembered...
-	}	
+	}
 
 **Note:** If the `attempt` method returns `true`, the user is considered logged into the application.
 
@@ -69,10 +69,10 @@ Route filters may be used to allow only authenticated users to access a given ro
 
 **Protecting A Route**
 
-	Route::get('profile', ['before' => 'auth', function()
+	Route::get('profile', array('before' => 'auth', function()
 	{
 		// Only authenticated users may enter...
-	}]);
+	}));
 
 <a name="encryption"></a>
 ## Encryption
