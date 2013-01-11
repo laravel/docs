@@ -129,7 +129,7 @@ The query above will produce the following SQL:
 
 The query above will produce the following SQL:
 
-	select * from users 
+	select * from users
 	where exists (
 		select 1 from orders where orders.user_id = users.id
 	)
@@ -170,14 +170,14 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 **Inserting Records Into A Table**
 
 	DB::table('users')->insert(
-		['email' => 'john@gmail.com', 'votes' => 0],
+		array('email' => 'john@example.com', 'votes' => 0),
 	);
 
 **Inserting Multiple Records Into A Table**
 
 	DB::table('users')->insert(
-		['email' => 'taylor@gmail.com', 'votes' => 0],
-		['email' => 'dayle@gmail.com', 'votes' => 0],
+		array('email' => 'taylor@example.com', 'votes' => 0),
+		array('email' => 'dayle@example.com', 'votes' => 0),
 	);
 
 <a name="updates"></a>
