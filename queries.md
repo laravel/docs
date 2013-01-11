@@ -71,7 +71,7 @@ The database query builder provides a convenient, fluent interface to creating a
 	                    ->having('count', '>', 100)
 	                    ->get();
 
-**Limit & Offset**
+**Offset & Limit**
 
 	$users = DB::table('users')->skip(10)->take(5)->get();
 
