@@ -69,9 +69,11 @@ Let's explore this structure further. The `src/Vendor/Package` directory is the 
 <a name="service-providers"></a>
 ## Service Providers
 
-Service providers are simply bootstrap classes for packages. By default, they contain a single method: `register`. Within this method you may do anything you like: include a routes file, register bindings in the IoC container, attach to events, or anything else you wish to do.
+Service providers are simply bootstrap classes for packages. By default, they contain two methods: `boot` and `register`. Within these methods you may do anything you like: include a routes file, register bindings in the IoC container, attach to events, or anything else you wish to do.
 
-When creating a package using the `workbench`, the `register` command will already contain one action:
+The `register` method is called immediately when the service provider is registered, while the `boot` command is only called right before a request is routed. So, if actions in your service provider rely on another service provider already being registered, or you are overriding services bound by another provider, you should use the `boot` method.
+
+When creating a package using the `workbench`, the `boot` command will already contain one action:
 
 	$this->package('vendor/package');
 
