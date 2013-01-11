@@ -17,7 +17,7 @@ To view a list of all available Artisan commands, you may use the `list` command
 
 	php artisan list
 
-Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, simply preceed the name of the command with `help`:
+Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, simply precede the name of the command with `help`:
 
 **Viewing The Help Screen For A Command**
 
