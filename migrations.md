@@ -65,7 +65,7 @@ The `--table` and `--create` options may also be used to indicate the name of th
 <a name="database-seeding"></a>
 ## Database Seeding
 
-Laravel also includes a simple way to seed your database with test data using seed files. All seed files are stored in `app/database/seeds`. Seed files should be named according to teh table they seed, and simply return an array of records.
+Laravel also includes a simple way to seed your database with test data using seed files. All seed files are stored in `app/database/seeds`. Seed files should be named according to the table they seed, and simply return an array of records.
 
 **Example Database Seed File**
 
