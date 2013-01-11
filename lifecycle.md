@@ -7,7 +7,7 @@
 <a name="overview"></a>
 ## Overview
 
-The Laravel request lifecycle is fairly simple. A request enter your application and is dispatched to the appropriate route or controller. Then response from that route is then sent back to the browser and displayed on the screen. Sometimes you may wish to do some processing before or after your routes are actually called. There are several opportunities to do this, two of which are "start" files and application events.
+The Laravel request lifecycle is fairly simple. A request enters your application and is dispatched to the appropriate route or controller. Then response from that route is then sent back to the browser and displayed on the screen. Sometimes you may wish to do some processing before or after your routes are actually called. There are several opportunities to do this, two of which are "start" files and application events.
 
 <a name="start-files"></a>
 ## Start Files
