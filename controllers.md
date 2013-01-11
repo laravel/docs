@@ -20,7 +20,7 @@ Here is an example of a basic controller class:
 		 */
 		public function showProfile($id)
 		{
-			$id = User::find($id);
+			$user = User::find($id);
 
 			return View::make('user.profile', ['user' => $user]);
 		}
