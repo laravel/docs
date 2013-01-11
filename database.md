@@ -7,7 +7,7 @@
 <a name="configuration"></a>
 ## Configuration
 
-Laravel makes connecting with databases and running queries extremely simple. The database configuration file is `app/config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the suported database systems are provided in this file.
+Laravel makes connecting with databases and running queries extremely simple. The database configuration file is `app/config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
 
 Currently Laravel supports four database systems: MySQL, Postgres, SQLite, and SQL Server.
 

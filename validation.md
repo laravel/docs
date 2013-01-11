@@ -184,7 +184,7 @@ The field under validation must be entirely alpha-numeric characters.
 <a name="rule-before"></a>
 #### before:_date_
 
-The field under validation must be a value preceeding the given date. The dates will be passed into the PHP `strtotime` function.
+The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -357,7 +357,7 @@ In some cases, you may wish to specify your custom messages in a language file i
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
 
-Laravel provides a variety of helpful validaton rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
+Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
 
 **Registering A Custom Validation Rule**
 
