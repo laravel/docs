@@ -20,7 +20,7 @@ The Laravel `Event` class provides a simple observer implementation, allowing yo
 
 **Firing An Event**
 
-	$event = Event::fire('user.login', ['user' => $user]);
+	$event = Event::fire('user.login', array('user' => $user));
 
 Note that the `Event::fire` method returns an `Event` object, allowing you to inspect the event payload after the listeners have been called.
 
@@ -103,13 +103,13 @@ Event subscribers are classes that may subscribe to multiple events from within 
 		 */
 		public static function subscribes()
 		{
-			return [
-				'user.login' => [
-					['onUserLogin', 10],
-				],
-				'user.logout' => [
-					['onUserLogout', 10],
-				],
+			return array(
+				'user.login' => array(
+					array('onUserLogin', 10),
+				),
+				'user.logout' => array(
+					array('onUserLogout', 10),
+				),
 			];
 		}
 
