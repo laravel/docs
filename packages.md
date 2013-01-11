@@ -104,7 +104,7 @@ Since your packages are in the `workbench` directory, you may be wondering how C
 <a name="package-routing"></a>
 ## Package Routing
 
-In prior version of Laravel, a `handles` clause was used to specify which URIs a package could respond to. However, in Laravel 4, a package may respond to any URI. To load a routes file for your package, simply `include` it from within your service provider's `register` method.
+In prior versions of Laravel, a `handles` clause was used to specify which URIs a package could respond to. However, in Laravel 4, a package may respond to any URI. To load a routes file for your package, simply `include` it from within your service provider's `register` method.
 
 **Including A Routes File From A Service Provider**
 
@@ -118,7 +118,7 @@ In prior version of Laravel, a `handles` clause was used to specify which URIs a
 <a name="package-configuration"></a>
 ## Package Configuration
 
-Packages sometimes may require configuration files. These files should be defined in the same way as typical application configuration files. And, when using the default `$this->package` method of registering resources in your service provider, may be accessed using the usual "double-colon" syntax:
+Some packages may require configuration files. These files should be defined in the same way as typical application configuration files. And, when using the default `$this->package` method of registering resources in your service provider, may be accessed using the usual "double-colon" syntax:
 
 **Accessing Package Configuration Files**
 
