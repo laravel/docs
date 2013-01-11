@@ -16,7 +16,7 @@ Laravel ships with a simple, convenient facility for validating data and retriev
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
-		array('name' => 'required|min:5')
+		array('name' => 'Required|Min:5')
 	);
 
 The first argument passed to the `make` method is the data under validation. The second argument are the validation rules that should be applied to the data.
@@ -27,7 +27,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
-		array('name' => array('required', 'min:5'))
+		array('name' => array('Required', 'Min:5'))
 	);
 
 Once the a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
