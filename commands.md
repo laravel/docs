@@ -104,7 +104,7 @@ You may also use the `ask` and `confirm` methods to prompt the user for input:
 
 You may also specify a default value to the `confirm` method, which should be `true` or `false`:
 
-	$this->confirm($question, true)
+	$this->confirm($question, true);
 
 <a name="registering-commands"></a>
 ## Registering Commands
@@ -128,4 +128,4 @@ Sometimes you may wish to call other commands from your command. You may do so u
 
 **Calling Another Command**
 
-	$this->call('command.name', array('argument' => 'foo', '--option' => 'bar'))
+	$this->call('command.name', array('argument' => 'foo', '--option' => 'bar'));
