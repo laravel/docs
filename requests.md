@@ -84,6 +84,10 @@ Since you often will want to flash input in association with a redirect to the p
 
 > **Note:** You may flash other data across requests using the [Session](/docs/session) class.
 
+**Retrieving Old Data**
+
+	Input::old('username');
+
 <a name="files"></a>
 ## Files
 
