@@ -57,7 +57,7 @@ You may also define place-holders in your language lines:
 
 Then, pass a second argument of replacements to the `Lang::get` method:
 
-	echo Lang::get('messages.welcome', ['name' => 'Dayle']);
+	echo Lang::get('messages.welcome', array('name' => 'Dayle'));
 
 **Determine If A Language File Contains A Line**
 
