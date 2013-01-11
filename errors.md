@@ -20,7 +20,7 @@ By default, the `app/start/global.php` file contains an error handler for all ex
 
 This is the most basic error handler. However, you may specify more handlers if needed. Handlers are called based on the type-hint of the Exception they handle. For example, you may create a handler that only handles `RuntimeException` instances:
 
-	App::error(funtion(RuntimeException $exception)
+	App::error(function(RuntimeException $exception)
 	{
 		// Handle the exception...
 	});
