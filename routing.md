@@ -35,10 +35,10 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 
 **Forcing A Route To Be Served Over HTTPS**
 
-	Route::get('foo', ['https', function()
+	Route::get('foo', array('https', function()
 	{
 		return 'Must be over HTTPS';
-	}]);
+	}));
 
 <a name="route-parameters"></a>
 ## Route Parameters
@@ -90,17 +90,17 @@ If a response is returned from a filter, that response will be considered the re
 
 **Attaching A Filter To A Route**
 
-	Route::get('user', ['before' => 'old', function()
+	Route::get('user', array('before' => 'old', function()
 	{
 		return 'You are over 200 years old!';
-	}]);
+	}));
 
 **Attaching Multiple Filters To A Route**
 
-	Route::get('user', ['before' => 'auth|old', function()
+	Route::get('user', array('before' => 'auth|old', function()
 	{
 		return 'You are authenticated and over 200 years old!';
-	}]);
+	}));
 
 **Specifying Filter Parameters**
 
@@ -109,10 +109,10 @@ If a response is returned from a filter, that response will be considered the re
 		//
 	});
 
-	Route::get('user', ['before' => 'age:200', function()
+	Route::get('user', array('before' => 'age:200', function()
 	{
 		return 'Hello World';
-	}]);
+	}));
 
 **Pattern Based Filters**
 
@@ -151,10 +151,10 @@ For advanced filtering, you may wish to use a class instead of a Closure. Since 
 
 Named routes make referring to routes when generating redirects or URLs more convenient. You may specify a name for a route like so:
 
-	Route::get('user/profile', ['as' => 'profile', function()
+	Route::get('user/profile', array('as' => 'profile', function()
 	{
 		//
-	}]);
+	}));
 
 Now, you may use the route's name when generating URLs or redirects:
 
@@ -167,7 +167,7 @@ Now, you may use the route's name when generating URLs or redirects:
 
 Sometimes you may need to apply filters to a group of routes. Instead of specifying the filter on each route, you may use a route group:
 
-	Route::group(['before' => 'auth'], function()
+	Route::group(array('before' => 'auth'), function()
 	{
 		Route::get('/', function()
 		{
