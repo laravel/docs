@@ -383,10 +383,16 @@ Sometimes you may wish to eager load a relationship, but also specify a conditio
 	$users = User::with(array('posts' => function($query)
 	{
 		$query->where('title', 'like', '%first%');
-
 	}))->get();
 
 In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
+
+### Lazy Eager Loading
+
+It is also possible to eagerly load related models directly from an already existing model collection. This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.
+
+	$books = Book::all();
+	$books->load('author', 'publisher');
 
 <a name="inserting-related-models"></a>
 ## Inserting Related Models
