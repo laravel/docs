@@ -16,7 +16,7 @@ The `Mail::send` method may be used to send an e-mail message:
 
 	Mail::send('emails.welcome', $data, function($m)
 	{
-		$m->to('foo@gmail.com', 'John Smith')->subject('Welcome!');
+		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
 The first argument passed to the `send` method is the name of the view that should be used as the e-mail body. The second is the `$data` that should be passed to the view, and the third is a Closure allowing you to specify various options on the e-mail message.
@@ -31,9 +31,9 @@ You may specify other options on the e-mail message such as any carbon copies or
 
 	Mail::send('emails.welcome', $data, function($m)
 	{
-		$m->from('us@gmail.com', 'Laravel');
+		$m->from('us@example.com', 'Laravel');
 
-		$m->to('foo@gmail.com')->cc('bar@gmail.com');
+		$m->to('foo@example.com')->cc('bar@example.com');
 
 		$m->attach($pathToFile);
 	});
