@@ -79,7 +79,7 @@ You may also use the `create` method to save a new model in a single line. The i
 
 **Using The Model Create Method**
 
-	$user = User::create(['name' => 'John']);
+	$user = User::create(array('name' => 'John'));
 
 To update a model, you may retrieve it, change an attribute, and use the `save` method:
 
@@ -93,7 +93,7 @@ To update a model, you may retrieve it, change an attribute, and use the `save` 
 
 You may also run updates as queries against a set of models:
 
-	$affectedRows = User::where('votes', '>', 100)->update(['status' => 2]);
+	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
 
 To delete a model, simply call the `delete` method on the instance:
 
@@ -395,7 +395,7 @@ You will often need to insert new related models. For example, you may wish to i
 
 **Attaching A Related Model**
 
-	$comment = new Comment(['message' => 'A new comment.']);
+	$comment = new Comment(array('message' => 'A new comment.'));
 
 	$post = Post::find(1);
 
@@ -415,23 +415,23 @@ You may also insert related models when working with many-to-many relations. Let
 
 You may also pass an array of attributes that should be stored on the pivot table for the relation:
 
-	$user->roles()->attach(1, ['expires' => $expires]);
+	$user->roles()->attach(1, array('expires' => $expires));
 
 You may also use the `sync` method to attach related models. The `sync` method accepts an array of IDs to place on the pivot table. After this operation is complete, only the IDs in the array will be on the intermediate table for the model:
 
 **Using Sync To Attach Many To Many Models**
 
-	$user->roles()->sync([1, 2, 3]);
+	$user->roles()->sync(array(1, 2, 3));
 
 Sometimes you may wish to create a new related model and attach it in a single command. For this operation, you may use the `save` method:
 
-	$role = new Role(['name' => 'Editor']);
+	$role = new Role(array('name' => 'Editor'));
 
 	User::find(1)->roles()->save($role);
 
 In this example, the new `Role` model will be saved and attached to the user model. You may also pass an array of attributes to place on the joining table for this operation:
 
-	User::find(1)->roles()->save($role, ['expires' => $expires]);
+	User::find(1)->roles()->save($role, array('expires' => $expires));
 
 <a name="working-with-pivot-tables"></a>
 ## Working With Pivot Tables
@@ -548,7 +548,7 @@ The `fillable` property specifies which attributes should be mass-assignable. Th
 
 	class User extends Eloquent {
 
-		protected $fillable = ['first_name', 'last_name', 'email'];
+		protected $fillable = array('first_name', 'last_name', 'email');
 
 	}
 
@@ -560,7 +560,7 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 	class User extends Eloquent {
 
-		protected $guarded = ['id', 'password'];
+		protected $guarded = array('id', 'password');
 
 	}
 
@@ -568,7 +568,7 @@ In the example above, the `id` and `password` attributes may **not** be mass ass
 
 **Blocking All Attributes From Mass Assignment**
 
-	protected $guarded = ['*'];
+	protected $guarded = array('*');
 
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON
@@ -606,6 +606,6 @@ Sometimes you may wish to limit the attributes that are included in your model's
 
 	class User extends Eloquent {
 
-		protected $hidden = ['password'];
+		protected $hidden = array('password');
 
 	}
