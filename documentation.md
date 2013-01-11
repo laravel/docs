@@ -21,6 +21,7 @@
     - [Queues](#)
     - [Security](/docs/security)
     - [Session](/docs/session)
+    - [Templates](/docs/templates)
     - [Unit Testing](/docs/testing)
     - [Validation](/docs/validation)
 - Database

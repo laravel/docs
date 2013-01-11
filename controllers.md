@@ -22,7 +22,7 @@ Here is an example of a basic controller class:
 		{
 			$user = User::find($id);
 
-			return View::make('user.profile', ['user' => $user]);
+			return View::make('user.profile', array('user' => $user));
 		}
 
 	}
@@ -37,7 +37,8 @@ If you choose to nest or organize your controller using PHP namespaces, simply u
 
 You may also specify names on controller routes:
 
-	Route::get('foo', ['uses' => 'FooController@method', 'as' => 'name']);
+	Route::get('foo', array('uses' => 'FooController@method',
+											'as' => 'name'));
 
 > **Note:** After creating a new class, make sure to run `composer dump-autoload` from the command line. This will allow the framework to automatically load your class.
 
@@ -46,7 +47,8 @@ You may also specify names on controller routes:
 
 [Filters](/docs/routing#route-filters) may be specified on controller routes similar to "regular" routes:
 
-	Route::get('profile', ['before' => 'auth', 'uses' => 'UserController@showProfile']);
+	Route::get('profile', array('before' => 'auth',
+				'uses' => 'UserController@showProfile'));
 
 However, you may also specify filters from within your controller:
 
@@ -59,9 +61,10 @@ However, you may also specify filters from within your controller:
 		{
 			$this->beforeFilter('auth');
 
-			$this->beforeFilter('csrf', ['on' => 'post']);
+			$this->beforeFilter('csrf', array('on' => 'post'));
 
-			$this->afterFilter('log', ['only' => ['fooAction', 'barAction']]);
+			$this->afterFilter('log', array('only' =>
+								array('fooAction', 'barAction')));
 		}
 
 	}
@@ -118,4 +121,5 @@ Sometimes you may only need to handle a subset of the resource actions:
 
 And, you may also specify a subset of actions to handle on the route:
 
-	Route::resource('photo', 'PhotoController', ['only' => ['index', 'show']]);
+	Route::resource('photo', 'PhotoController',
+					array('only' => array('index', 'show')));

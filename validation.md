@@ -100,7 +100,7 @@ Once you have performed validation, you will need an easy way to get the error m
 
 	Route::post('register', function()
 	{
-		$rules = [...];
+		$rules = array(...);
 
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -319,9 +319,9 @@ If needed, you may use custom error messages for validation instead of the defau
 
 **Passing Custom Messages Into Validator**
 
-	$messages = [
+	$messages = array(
 		'required' => 'The :attribute field is required.',
-	];
+	);
 
 	$validator = Validator::make($input, $rules, $messages);
 

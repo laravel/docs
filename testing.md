@@ -59,7 +59,7 @@ You may also call a controller from a test:
 
 	$response = $this->action('GET', 'HomeController@index');
 
-	$response = $this->action('GET', 'UserController@profile', ['user' => 1]);
+	$response = $this->action('GET', 'UserController@profile', array('user' => 1));
 
 The `getContent` method will return the evaluated string contents of the response. If your route returns a `View`, you may access it using the `original` property:
 
@@ -88,7 +88,7 @@ You may set the currently authenticated user using the `be` method:
 
 **Setting The Currently Authenticated User**
 
-	$user = new User(['name' => 'John']);
+	$user = new User(array('name' => 'John'));
 
 	$this->be($user);
 

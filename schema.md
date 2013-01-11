@@ -65,7 +65,7 @@ Command  | Description
 `$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
 `$table->text('description');`  |  TEXT equivalent to the table
 `$table->binary('data');`  |  BLOB equivalent to the table
-`$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent to the table
+`$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
 `->nullable()`  |  Designate that the column allows NULL values
 `->default($value)`  |  Declare a default value for a column
 `->unsigned()`  |  Set INTEGER to UNSIGNED
