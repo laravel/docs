@@ -15,8 +15,8 @@ Laravel ships with a simple, convenient facility for validating data and retriev
 **Basic Validation Example**
 
 	$validator = Validator::make(
-		['name' => 'Dayle'],
-		['name' => 'required|min:5']
+		array('name' => 'Dayle'),
+		array('name' => 'required|min:5')
 	);
 
 The first argument passed to the `make` method is the data under validation. The second argument are the validation rules that should be applied to the data.
@@ -26,8 +26,8 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 **Using Arrays To Specify Rules**
 
 	$validator = Validator::make(
-		['name' => 'Dayle'],
-		['name' => ['required', 'min:5']]
+		array('name' => 'Dayle'),
+		array('name' => array('required', 'min:5'))
 	);
 
 Once the a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
@@ -329,30 +329,30 @@ If needed, you may use custom error messages for validation instead of the defau
 
 **Other Validation Place-Holders**
 
-	$messages = [
+	$messages = array(
 		'same'    => 'The :attribute and :other must match.',
 		'size'    => 'The :attribute must be exactly :size.',
 		'between' => 'The :attribute must be between :min - :max.',
 		'in'      => 'The :attribute must be one of the following types: :values',
-	];
+	);
 
 Sometimes you may wish to specify a custom error messages only for a specific field:
 
 **Specifying A Custom Message For A Given Attribute**
 
-	$messages = [
+	$messages = array(
 		'email.required' => 'We need to know your e-mail address!',
-	];
+	);
 
 In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
 
 **Specifying Custom Messages In Language Files**
 
-	'custom' => [
-		'email' => [
+	'custom' => array(
+		'email' => array(
 			'required' => 'We need to know your e-mail address!',
-		],
-	],
+		),
+	),
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
