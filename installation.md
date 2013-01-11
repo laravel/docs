@@ -2,7 +2,7 @@
 
 - [Install Composer](#install-composer)
 - [Install Laravel](#install-laravel)
-- [Server Requirements](#framework-requirements)
+- [Server Requirements](#server-requirements)
 - [Configuration](#configuration)
 - [Pretty URLs](#pretty-urls)
 
