@@ -1,4 +1,4 @@
-# Templating
+# Templates
 
 - [Controller Layouts](#controller-layouts)
 - [Blade Templating](#blade-templating)
