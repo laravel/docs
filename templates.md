@@ -35,7 +35,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 **Defining A Blade Layout**
 
-	// Stored in app/views/layouts/master.blade.php
+	<!-- Stored in app/views/layouts/master.blade.php -->
 
 	<html>
 		<body>
