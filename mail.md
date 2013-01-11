@@ -25,7 +25,7 @@ The first argument passed to the `send` method is the name of the view that shou
 
 You may also specify a plain text view to use in addition to an HTML view:
 
-	Mail::send(['html.view', 'text.view'], $data, $callback);
+	Mail::send(array('html.view', 'text.view'), $data, $callback);
 
 You may specify other options on the e-mail message such as any carbon copies or attachments as well:
 
@@ -40,7 +40,7 @@ You may specify other options on the e-mail message such as any carbon copies or
 
 When attaching files to a message, you may also specify a MIME type and / or a display name:
 
-	$m->attach($pathToFile, ['as' => $display, 'mime' => $mime]);
+	$m->attach($pathToFile, array('as' => $display, 'mime' => $mime));
 
 > **Note:** The message instance passed to a `Mail::send` Closure extends the SwiftMailer message class, allowing you to call any method on that class to build your e-mail messages.
 
