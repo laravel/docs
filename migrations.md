@@ -71,13 +71,13 @@ Laravel also includes a simple way to seed your database with test data using se
 
 	<?php
 
-	return [
+	return array(
 
-		['email' => 'john@foo.com', 'votes' => 10],
+		array('email' => 'john@example.com', 'votes' => 10),
 
-		['email' => 'smith@foo.com', 'votes' => 20],
+		array('email' => 'smith@example.com', 'votes' => 20),
 
-	];
+	);
 
 To seed your database, you may use the `db:seed` command on the Artisan CLI:
 
