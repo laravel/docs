@@ -106,7 +106,7 @@ This single route declaration creates multiple routes to handle a variety of RES
 Verb      | Path                  | Action
 ----------|-----------------------|--------------
 GET       | /resource             | index
-GET       | /resource/new         | create
+GET       | /resource/create      | create
 POST      | /resource             | store
 GET       | /resource/{id}        | show
 GET       | /resource/{id}/edit   | edit
