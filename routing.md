@@ -84,7 +84,6 @@ Route filters provide a convenient way of limiting access to a given route, whic
 		{
 			return Redirect::to('home');
 		}
-	}
 	});
 
 If a response is returned from a filter, that response will be considered the response to the request and the route will not be executed.
