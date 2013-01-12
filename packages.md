@@ -36,7 +36,7 @@ This command will prompt you for several pieces of information, such as the vend
 
 The vendor name is a way to distinguish your package from other packages of the same name from different authors. For example, if I (Taylor Otwell) were to create a new package named "Zapper", the vendor name could be `Taylor` while the package name would be `Zapper`.
 
-Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. First, you should run a `composer install` command from the root directory of your workbench package, which will install any dependencies and generate the Composer autoload files for your package. You may instruct the `workbench` command to do this automatically when creating a package using the `--composer` directive:
+Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. First, you should run a `composer install` command **from the root directory of your workbench package**, which will install any dependencies and generate the Composer autoload files for your package. You may instruct the `workbench` command to do this automatically when creating a package using the `--composer` directive:
 
 **Creating A Workbench Package And Running Composer**
 
