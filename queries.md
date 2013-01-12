@@ -145,9 +145,9 @@ The query builder also provides a variety of aggregate methods, such as `count`,
 
 	$price = DB::table('orders')->max('price');
 
-	$price = DB::table('users')->min('price');
+	$price = DB::table('orders')->min('price');
 
-	$price = DB::table('users')->avg('price');
+	$price = DB::table('orders')->avg('price');
 
 	$total = DB::table('users')->sum('votes');
 
