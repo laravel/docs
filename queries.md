@@ -194,7 +194,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 
 **Deleting Records In A Table**
 
-	DB::table('users')->where('votes', < 100)->delete();
+	DB::table('users')->where('votes', '<', 100)->delete();
 
 **Deleting All Records From A Table**
 
