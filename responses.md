@@ -45,6 +45,10 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 
 **Returning A Redirect To A Named Route With Parameters**
 
+	return Redirect::route('profile', array(1));
+
+**Returning A Redirect To A Named Route Using Named Parameters**
+
 	return Redirect::route('profile', array('user' => 1));
 
 **Returning A Redirect To A Controller Action**
@@ -52,6 +56,10 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 	return Redirect::action('HomeController@index');
 
 **Returning A Redirect To A Controller Action With Parameters**
+
+	return Redirect::action('UserController@profile', array(1));
+
+**Returning A Redirect To A Controller Action Using Named Parameters**
 
 	return Redirect::action('UserController@profile', array('user' => 1));
 
