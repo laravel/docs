@@ -392,6 +392,7 @@ In this example, we're eager loading the user's posts, but only if the post's ti
 It is also possible to eagerly load related models directly from an already existing model collection. This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.
 
 	$books = Book::all();
+
 	$books->load('author', 'publisher');
 
 <a name="inserting-related-models"></a>
