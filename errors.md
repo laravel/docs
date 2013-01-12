@@ -7,7 +7,7 @@
 
 ## Error Detail
 
-By default, error detail is enabled for your application. This means that when an error occurs you will be showed an error page with a detailed stack trace and error message. You may turn off error details by setting the `debug` option in your `app/config/app.php` file to `false`. **It is strongly recommend you turn off error detail in a production environment.**
+By default, error detail is enabled for your application. This means that when an error occurs you will be showed an error page with a detailed stack trace and error message. You may turn off error details by setting the `debug` option in your `app/config/app.php` file to `false`. **It is strongly recommended you turn off error detail in a production environment.**
 
 ## Handling Errors
 
