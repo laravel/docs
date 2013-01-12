@@ -145,9 +145,9 @@ The query builder also provides a variety of aggregate methods, such as `count`,
 
 	$price = DB::table('orders')->max('price');
 
-	$price = DB::table('users')->min('price');
+	$price = DB::table('orders')->min('price');
 
-	$price = DB::table('users')->avg('price');
+	$price = DB::table('orders')->avg('price');
 
 	$total = DB::table('users')->sum('votes');
 
@@ -187,14 +187,14 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 
 	DB::table('users')
 	            ->where('id', 1)
-	            ->update(['votes' => 1]);
+	            ->update(array(votes' => 1));
 
 <a name="deletes"></a>
 ## Deletes
 
 **Deleting Records In A Table**
 
-	DB::table('users')->where('votes', < 100)->delete();
+	DB::table('users')->where('votes', '<', 100)->delete();
 
 **Deleting All Records From A Table**
 

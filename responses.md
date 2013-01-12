@@ -150,6 +150,10 @@ Note that there is no convention on where composer classes may be stored. You ar
 
 	return Response::json(array('name' => 'Steve', 'state' => 'CA'));
 
+**Creating A JSONP Response**
+
+	return Response::json(array('name' => 'Steve', 'state' => 'CA'))->setCallback(Input::get('callback'));
+
 **Creating a File Download Response**
 
 	return Response::download($pathToFile);

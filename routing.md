@@ -84,7 +84,6 @@ Route filters provide a convenient way of limiting access to a given route, whic
 		{
 			return Redirect::to('home');
 		}
-	}
 	});
 
 If a response is returned from a filter, that response will be considered the response to the request and the route will not be executed.
@@ -188,7 +187,7 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 
 **Registering Sub-Domain Routes**
 
-	Route::group(array('domain' => '{account}.myapp.com', function()
+	Route::group(array('domain' => '{account}.myapp.com'), function()
 	{
 
 		Route::get('user/{id}', function($account, $id)
@@ -196,7 +195,7 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 			//
 		});
 
-	}));
+	});
 
 <a name="throwing-404-errors"></a>
 ## Throwing 404 Errors

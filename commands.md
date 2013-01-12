@@ -57,7 +57,7 @@ The `VALUE_NONE` option indicates that the option is simply used as a "switch":
 
 ### Retrieving Input
 
-While you command is executing, you will obviously need to access the values for the arguments and options accepted by your application. To do so, you may use the `argument` and `option` methods:
+While your command is executing, you will obviously need to access the values for the arguments and options accepted by your application. To do so, you may use the `argument` and `option` methods:
 
 **Retrieving The Value Of A Command Argument**
 
