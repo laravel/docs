@@ -109,4 +109,4 @@ Command  | Description
 `$table->dropPrimary('users_id_primary');`  |  Dropping a primary key from the "users" table
 `$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
 `$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
-`$table->dropIndex('users_enterprise_id_foreign');`  |  Dropping a foreign key index from the "users" table
+`$table->dropForeign('users_enterprise_id_foreign');`  |  Dropping a foreign key index from the "users" table
