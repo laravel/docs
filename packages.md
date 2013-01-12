@@ -36,7 +36,7 @@ This command will prompt you for several pieces of information, such as the vend
 
 The vendor name is a way to distinguish your package from other packages of the same name from different authors. For example, if I (Taylor Otwell) were to create a new package named "Zapper", the vendor name could be `Taylor` while the package name would be `Zapper`.
 
-Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. First, you should run a `composer install` command from the root directory of your workbench package, which will install any dependencies and generate the Composer autoload files for your package. You may instruct the `workbench` command to do this automatically when creating a package using the `--composer` directive:
+Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. First, you should run a `composer install` command **from the root directory of your workbench package**, which will install any dependencies and generate the Composer autoload files for your package. You may instruct the `workbench` command to do this automatically when creating a package using the `--composer` directive:
 
 **Creating A Workbench Package And Running Composer**
 
@@ -69,9 +69,11 @@ Let's explore this structure further. The `src/Vendor/Package` directory is the 
 <a name="service-providers"></a>
 ## Service Providers
 
-Service providers are simply bootstrap classes for packages. By default, they contain a single method: `register`. Within this method you may do anything you like: include a routes file, register bindings in the IoC container, attach to events, or anything else you wish to do.
+Service providers are simply bootstrap classes for packages. By default, they contain two methods: `boot` and `register`. Within these methods you may do anything you like: include a routes file, register bindings in the IoC container, attach to events, or anything else you wish to do.
 
-When creating a package using the `workbench`, the `register` command will already contain one action:
+The `register` method is called immediately when the service provider is registered, while the `boot` command is only called right before a request is routed. So, if actions in your service provider rely on another service provider already being registered, or you are overriding services bound by another provider, you should use the `boot` method.
+
+When creating a package using the `workbench`, the `boot` command will already contain one action:
 
 	$this->package('vendor/package');
 
@@ -104,7 +106,7 @@ Since your packages are in the `workbench` directory, you may be wondering how C
 <a name="package-routing"></a>
 ## Package Routing
 
-In prior version of Laravel, a `handles` clause was used to specify which URIs a package could respond to. However, in Laravel 4, a package may respond to any URI. To load a routes file for your package, simply `include` it from within your service provider's `register` method.
+In prior versions of Laravel, a `handles` clause was used to specify which URIs a package could respond to. However, in Laravel 4, a package may respond to any URI. To load a routes file for your package, simply `include` it from within your service provider's `register` method.
 
 **Including A Routes File From A Service Provider**
 
@@ -118,7 +120,7 @@ In prior version of Laravel, a `handles` clause was used to specify which URIs a
 <a name="package-configuration"></a>
 ## Package Configuration
 
-Packages sometimes may require configuration files. These files should be defined in the same way as typical application configuration files. And, when using the default `$this->package` method of registering resources in your service provider, may be accessed using the usual "double-colon" syntax:
+Some packages may require configuration files. These files should be defined in the same way as typical application configuration files. And, when using the default `$this->package` method of registering resources in your service provider, may be accessed using the usual "double-colon" syntax:
 
 **Accessing Package Configuration Files**
 
@@ -179,7 +181,7 @@ This command will move the assets into the `public/packages` directory according
 <a name="publishing-packages"></a>
 ## Publishing Packages
 
-When your package is ready to pubish, you should submit the package to the [Packagist](http://packagist.org) repository. If the package is specific to Laravel, consider adding a `laravel` tag to your package's `composer.json` file.
+When your package is ready to publish, you should submit the package to the [Packagist](http://packagist.org) repository. If the package is specific to Laravel, consider adding a `laravel` tag to your package's `composer.json` file.
 
 Also, it is courteous and helpful to tag your releases so that developers can depend on stable versions when requesting your package in their `composer.json` files. If a stable version is not ready, consider using the `branch-alias` Composer directive.
 

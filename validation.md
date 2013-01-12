@@ -15,8 +15,8 @@ Laravel ships with a simple, convenient facility for validating data and retriev
 **Basic Validation Example**
 
 	$validator = Validator::make(
-		['name' => 'Dayle'],
-		['name' => 'required|min:5']
+		array('name' => 'Dayle'),
+		array('name' => 'required|min:5')
 	);
 
 The first argument passed to the `make` method is the data under validation. The second argument are the validation rules that should be applied to the data.
@@ -26,8 +26,8 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 **Using Arrays To Specify Rules**
 
 	$validator = Validator::make(
-		['name' => 'Dayle'],
-		['name' => ['required', 'min:5']]
+		array('name' => 'Dayle'),
+		array('name' => array('required', 'min:5'))
 	);
 
 Once the a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
@@ -100,7 +100,7 @@ Once you have performed validation, you will need an easy way to get the error m
 
 	Route::post('register', function()
 	{
-		$rules = [...];
+		$rules = array(...);
 
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -184,7 +184,7 @@ The field under validation must be entirely alpha-numeric characters.
 <a name="rule-before"></a>
 #### before:_date_
 
-The field under validation must be a value preceeding the given date. The dates will be passed into the PHP `strtotime` function.
+The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -319,9 +319,9 @@ If needed, you may use custom error messages for validation instead of the defau
 
 **Passing Custom Messages Into Validator**
 
-	$messages = [
+	$messages = array(
 		'required' => 'The :attribute field is required.',
-	];
+	);
 
 	$validator = Validator::make($input, $rules, $messages);
 
@@ -329,41 +329,41 @@ If needed, you may use custom error messages for validation instead of the defau
 
 **Other Validation Place-Holders**
 
-	$messages = [
+	$messages = array(
 		'same'    => 'The :attribute and :other must match.',
 		'size'    => 'The :attribute must be exactly :size.',
 		'between' => 'The :attribute must be between :min - :max.',
 		'in'      => 'The :attribute must be one of the following types: :values',
-	];
+	);
 
 Sometimes you may wish to specify a custom error messages only for a specific field:
 
 **Specifying A Custom Message For A Given Attribute**
 
-	$messages = [
+	$messages = array(
 		'email.required' => 'We need to know your e-mail address!',
-	];
+	);
 
 In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
 
 **Specifying Custom Messages In Language Files**
 
-	'custom' => [
-		'email' => [
+	'custom' => array(
+		'email' => array(
 			'required' => 'We need to know your e-mail address!',
-		],
-	],
+		),
+	),
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
 
-Laravel provides a variety of helpful validaton rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
+Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
 
 **Registering A Custom Validation Rule**
 
 	Validator::extend('foo', function($attribute, $value, $parameters)
 	{
-		return $value == 'foo'
+		return $value == 'foo';
 	});
 
 The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.

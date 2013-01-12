@@ -1,4 +1,4 @@
-# Templating
+# Templates
 
 - [Controller Layouts](#controller-layouts)
 - [Blade Templating](#blade-templating)
@@ -35,7 +35,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 **Defining A Blade Layout**
 
-	// Stored in app/views/layout/master.blade.php
+	<!-- Stored in app/views/layouts/master.blade.php -->
 
 	<html>
 		<body>
@@ -51,7 +51,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 **Using A Blade Layout**
 
-	@extends('layout.master')
+	@extends('layouts.master')
 
 	@section('sidebar')
 		@parent

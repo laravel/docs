@@ -79,7 +79,7 @@ You may also use the `create` method to save a new model in a single line. The i
 
 **Using The Model Create Method**
 
-	$user = User::create(['name' => 'John']);
+	$user = User::create(array('name' => 'John'));
 
 To update a model, you may retrieve it, change an attribute, and use the `save` method:
 
@@ -93,7 +93,7 @@ To update a model, you may retrieve it, change an attribute, and use the `save` 
 
 You may also run updates as queries against a set of models:
 
-	$affectedRows = User::where('votes', '>', 100)->update(['status' => 2]);
+	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
 
 To delete a model, simply call the `delete` method on the instance:
 
@@ -171,7 +171,7 @@ The SQL performed by this statement will be as follows:
 
 	select * from phones where user_id = 1
 
-Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `User` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
+Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
 
 	return $this->hasOne('Phone', 'custom_key');
 
@@ -258,7 +258,7 @@ You may also override the conventional associated keys:
 <a name="polymorphic-relations"></a>
 ### Polymorphic Relations
 
-Poymorphic relations allow a model to belongs to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
+Polymorphic relations allow a model to belongs to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
 
 	class Photo extends Eloquent {
 
@@ -383,10 +383,17 @@ Sometimes you may wish to eager load a relationship, but also specify a conditio
 	$users = User::with(array('posts' => function($query)
 	{
 		$query->where('title', 'like', '%first%');
-
 	}))->get();
 
 In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
+
+### Lazy Eager Loading
+
+It is also possible to eagerly load related models directly from an already existing model collection. This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.
+
+	$books = Book::all();
+
+	$books->load('author', 'publisher');
 
 <a name="inserting-related-models"></a>
 ## Inserting Related Models
@@ -395,7 +402,7 @@ You will often need to insert new related models. For example, you may wish to i
 
 **Attaching A Related Model**
 
-	$comment = new Comment(['message' => 'A new comment.']);
+	$comment = new Comment(array('message' => 'A new comment.'));
 
 	$post = Post::find(1);
 
@@ -415,23 +422,23 @@ You may also insert related models when working with many-to-many relations. Let
 
 You may also pass an array of attributes that should be stored on the pivot table for the relation:
 
-	$user->roles()->attach(1, ['expires' => $expires]);
+	$user->roles()->attach(1, array('expires' => $expires));
 
 You may also use the `sync` method to attach related models. The `sync` method accepts an array of IDs to place on the pivot table. After this operation is complete, only the IDs in the array will be on the intermediate table for the model:
 
 **Using Sync To Attach Many To Many Models**
 
-	$user->roles()->sync([1, 2, 3]);
+	$user->roles()->sync(array(1, 2, 3));
 
 Sometimes you may wish to create a new related model and attach it in a single command. For this operation, you may use the `save` method:
 
-	$role = new Role(['name' => 'Editor']);
+	$role = new Role(array('name' => 'Editor'));
 
 	User::find(1)->roles()->save($role);
 
 In this example, the new `Role` model will be saved and attached to the user model. You may also pass an array of attributes to place on the joining table for this operation:
 
-	User::find(1)->roles()->save($role, ['expires' => $expires]);
+	User::find(1)->roles()->save($role, array('expires' => $expires));
 
 <a name="working-with-pivot-tables"></a>
 ## Working With Pivot Tables
@@ -548,7 +555,7 @@ The `fillable` property specifies which attributes should be mass-assignable. Th
 
 	class User extends Eloquent {
 
-		protected $fillable = ['first_name', 'last_name', 'email'];
+		protected $fillable = array('first_name', 'last_name', 'email');
 
 	}
 
@@ -560,7 +567,7 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 	class User extends Eloquent {
 
-		protected $guarded = ['id', 'password'];
+		protected $guarded = array('id', 'password');
 
 	}
 
@@ -568,7 +575,7 @@ In the example above, the `id` and `password` attributes may **not** be mass ass
 
 **Blocking All Attributes From Mass Assignment**
 
-	protected $guarded = ['*'];
+	protected $guarded = array('*');
 
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON
@@ -606,6 +613,6 @@ Sometimes you may wish to limit the attributes that are included in your model's
 
 	class User extends Eloquent {
 
-		protected $hidden = ['password'];
+		protected $hidden = array('password');
 
 	}

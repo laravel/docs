@@ -13,15 +13,24 @@ The Laravel `Lang` class provides a convenient way to retrieving strings in vari
 <a name="language-files"></a>
 ## Language Files
 
-Language strings are stored in files within the `app/lang` directory. Within this directory this should be a directory for each language supported by the application. Language files simply return an array of keyed strings. For example:
+Language strings are stored in files within the `app/lang` directory. Within this directory this should be a directory for each language supported by the application.
+
+	/app
+		/lang
+			/en
+				messages.php
+			/es
+				messages.php
+
+Language files simply return an array of keyed strings. For example:
 
 **Example Language File**
 
 	<?php
 
-	return [
+	return array(
 		'welcome' => 'Welcome to our application'
-	];
+	);
 
 The default language for your application is stored in the `app/config/app.php` configuration file. You may change the active language at any time using the `App::locale` method:
 
@@ -48,7 +57,7 @@ You may also define place-holders in your language lines:
 
 Then, pass a second argument of replacements to the `Lang::get` method:
 
-	echo Lang::get('messages.welcome', ['name' => 'Dayle']);
+	echo Lang::get('messages.welcome', array('name' => 'Dayle'));
 
 **Determine If A Language File Contains A Line**
 

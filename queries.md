@@ -71,7 +71,7 @@ The database query builder provides a convenient, fluent interface to creating a
 	                    ->having('count', '>', 100)
 	                    ->get();
 
-**Limit & Offset**
+**Offset & Limit**
 
 	$users = DB::table('users')->skip(10)->take(5)->get();
 
@@ -129,7 +129,7 @@ The query above will produce the following SQL:
 
 The query above will produce the following SQL:
 
-	select * from users 
+	select * from users
 	where exists (
 		select 1 from orders where orders.user_id = users.id
 	)
@@ -145,9 +145,9 @@ The query builder also provides a variety of aggregate methods, such as `count`,
 
 	$price = DB::table('orders')->max('price');
 
-	$price = DB::table('users')->min('price');
+	$price = DB::table('orders')->min('price');
 
-	$price = DB::table('users')->avg('price');
+	$price = DB::table('orders')->avg('price');
 
 	$total = DB::table('users')->sum('votes');
 
@@ -170,14 +170,14 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 **Inserting Records Into A Table**
 
 	DB::table('users')->insert(
-		['email' => 'john@gmail.com', 'votes' => 0],
+		array('email' => 'john@example.com', 'votes' => 0),
 	);
 
 **Inserting Multiple Records Into A Table**
 
 	DB::table('users')->insert(
-		['email' => 'taylor@gmail.com', 'votes' => 0],
-		['email' => 'dayle@gmail.com', 'votes' => 0],
+		array('email' => 'taylor@example.com', 'votes' => 0),
+		array('email' => 'dayle@example.com', 'votes' => 0),
 	);
 
 <a name="updates"></a>
@@ -187,14 +187,14 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 
 	DB::table('users')
 	            ->where('id', 1)
-	            ->update(['votes' => 1]);
+	            ->update(array(votes' => 1));
 
 <a name="deletes"></a>
 ## Deletes
 
 **Deleting Records In A Table**
 
-	DB::table('users')->where('votes', < 100)->delete();
+	DB::table('users')->where('votes', '<', 100)->delete();
 
 **Deleting All Records From A Table**
 

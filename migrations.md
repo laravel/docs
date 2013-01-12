@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Migrations are a type of version control for your database. The allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/schema) to easily manage your application's scheam.
+Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/schema) to easily manage your application's scheme.
 
 <a name="creating-migrations"></a>
 ## Creating Migrations
@@ -65,19 +65,19 @@ The `--table` and `--create` options may also be used to indicate the name of th
 <a name="database-seeding"></a>
 ## Database Seeding
 
-Laravel also includes a simple way to seed your database with test data using seed files. All seed files are stored in `app/database/seeds`. Seed files should be named according to teh table they seed, and simply return an array of records.
+Laravel also includes a simple way to seed your database with test data using seed files. All seed files are stored in `app/database/seeds`. Seed files should be named according to the table they seed, and simply return an array of records.
 
 **Example Database Seed File**
 
 	<?php
 
-	return [
+	return array(
 
-		['email' => 'john@foo.com', 'votes' => 10],
+		array('email' => 'john@example.com', 'votes' => 10),
 
-		['email' => 'smith@foo.com', 'votes' => 20],
+		array('email' => 'smith@example.com', 'votes' => 20),
 
-	];
+	);
 
 To seed your database, you may use the `db:seed` command on the Artisan CLI:
 

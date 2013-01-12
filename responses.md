@@ -45,7 +45,11 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 
 **Returning A Redirect To A Named Route With Parameters**
 
-	return Redirect::route('profile', ['user' => 1]);
+	return Redirect::route('profile', array(1));
+
+**Returning A Redirect To A Named Route Using Named Parameters**
+
+	return Redirect::route('profile', array('user' => 1));
 
 **Returning A Redirect To A Controller Action**
 
@@ -53,7 +57,11 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 
 **Returning A Redirect To A Controller Action With Parameters**
 
-	return Redirect::action('UserController@profile', ['user' => 1]);
+	return Redirect::action('UserController@profile', array(1));
+
+**Returning A Redirect To A Controller Action Using Named Parameters**
+
+	return Redirect::action('UserController@profile', array('user' => 1));
 
 <a name="views"></a>
 ## Views
@@ -62,7 +70,7 @@ Views typically contain the HTML of your application and provide a convenient wa
 
 A simple view could look something like this:
 
-	// View stored in app/views/greeting.php
+	<!-- View stored in app/views/greeting.php -->
 
 	<html>
 		<body>
@@ -74,7 +82,7 @@ This view may be returned to the browser like so:
 
 	Route::get('/', function()
 	{
-		return View::make('greeting', ['name' => 'Taylor']);
+		return View::make('greeting', array('name' => 'Taylor'));
 	});
 
 The second argument passed to `View::make` is an array of data that should be made available to the view.
@@ -140,7 +148,11 @@ Note that there is no convention on where composer classes may be stored. You ar
 
 **Creating A JSON Response**
 
-	return Response::json(['name' => 'Steve', 'state' => 'CA']);
+	return Response::json(array('name' => 'Steve', 'state' => 'CA'));
+
+**Creating A JSONP Response**
+
+	return Response::json(array('name' => 'Steve', 'state' => 'CA'))->setCallback(Input::get('callback'));
 
 **Creating a File Download Response**
 

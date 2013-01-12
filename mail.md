@@ -16,7 +16,7 @@ The `Mail::send` method may be used to send an e-mail message:
 
 	Mail::send('emails.welcome', $data, function($m)
 	{
-		$m->to('foo@gmail.com', 'John Smith')->subject('Welcome!');
+		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
 The first argument passed to the `send` method is the name of the view that should be used as the e-mail body. The second is the `$data` that should be passed to the view, and the third is a Closure allowing you to specify various options on the e-mail message.
@@ -25,22 +25,22 @@ The first argument passed to the `send` method is the name of the view that shou
 
 You may also specify a plain text view to use in addition to an HTML view:
 
-	Mail::send(['html.view', 'text.view'], $data, $callback);
+	Mail::send(array('html.view', 'text.view'), $data, $callback);
 
 You may specify other options on the e-mail message such as any carbon copies or attachments as well:
 
 	Mail::send('emails.welcome', $data, function($m)
 	{
-		$m->from('us@gmail.com', 'Laravel');
+		$m->from('us@example.com', 'Laravel');
 
-		$m->to('foo@gmail.com')->cc('bar@gmail.com');
+		$m->to('foo@example.com')->cc('bar@example.com');
 
 		$m->attach($pathToFile);
 	});
 
 When attaching files to a message, you may also specify a MIME type and / or a display name:
 
-	$m->attach($pathToFile, ['as' => $display, 'mime' => $mime]);
+	$m->attach($pathToFile, array('as' => $display, 'mime' => $mime));
 
 > **Note:** The message instance passed to a `Mail::send` Closure extends the SwiftMailer message class, allowing you to call any method on that class to build your e-mail messages.
 

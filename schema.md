@@ -51,7 +51,7 @@ The table builder contains a variety of column types that you may use when build
 
 Command  | Description
 ------------- | -------------
-`$table->increments('id');`  |  Incrementing ID to the table
+`$table->increments('id');`  |  Incrementing ID to the table (primary key).
 `$table->string('email');`  |  VARCHAR equivalent column
 `$table->string('name', 100);`  |  VARCHAR equivalent with a length
 `$table->integer('votes');`  |  INTEGER equivalent to the table
@@ -65,7 +65,7 @@ Command  | Description
 `$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
 `$table->text('description');`  |  TEXT equivalent to the table
 `$table->binary('data');`  |  BLOB equivalent to the table
-`$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent to the table
+`$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
 `->nullable()`  |  Designate that the column allows NULL values
 `->default($value)`  |  Declare a default value for a column
 `->unsigned()`  |  Set INTEGER to UNSIGNED
@@ -97,7 +97,7 @@ Command  | Description
 `$table->primary(array('first', 'last'));`  |  Adding composite keys
 `$table->unique('email');`  |  Adding a unique index
 `$table->index('state');`  |  Adding a basic index
-`$table->foreign('enterprise_id')->references('id')->on('enterprises');`  |  Adding a foreign key index on the the table, on the field enterprise_id, referencing the field enterprises.id
+`$table->foreign('enterprise_id')->references('id')->on('enterprises');`  |  Adding a foreign key index on the the enterprise_id field of the table, referencing the field "enterprises.id"
 
 <a name="dropping-indexes"></a>
 ## Dropping Indexes
