@@ -363,7 +363,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 
 	Validator::extend('foo', function($attribute, $value, $parameters)
 	{
-		return $value == 'foo'
+		return $value == 'foo';
 	});
 
 The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
