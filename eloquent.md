@@ -258,7 +258,7 @@ You may also override the conventional associated keys:
 <a name="polymorphic-relations"></a>
 ### Polymorphic Relations
 
-Polymorphic relations allow a model to belongs to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
+Polymorphic relations allow a model to belong to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
 
 	class Photo extends Eloquent {
 
