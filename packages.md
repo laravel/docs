@@ -170,11 +170,11 @@ Some packages may have assets such as JavaScript, CSS, and images. However, we a
 
 **Moving Package Assets To Public**
 
-	php artisan asset:publish package/vendor
+	php artisan asset:publish vendor/package
 
 If the package is still in the `workbench`, use the `--bench` directive:
 
-	php artisan asset:publish --bench="package/vendor"
+	php artisan asset:publish --bench="vendor/package"
 
 This command will move the assets into the `public/packages` directory according to the vendor and package name. So, a package named `userscape/kudos` would have its assets moved to `public/packages/userscape/kudos`. Using this asset publishing convention allows you to safely code asset path in your package's views.
 
