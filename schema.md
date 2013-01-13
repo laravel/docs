@@ -114,6 +114,7 @@ Command  | Description
 ## Foreign Keys
 
 You can add foreign key constraints to your table using Schema's fluent interface. For example, let's assume you have a user_id on a posts table, which references the id column of the users table. Here's how to add a foreign key constraint for the column:
+
 	$table->foreign('user_id')->references('id')->on('users');
 
 You can also specify options for the "on delete" and "on update" actions of the foreign key:
