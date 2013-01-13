@@ -18,7 +18,6 @@
     - [Mail](/docs/mail)
     - [Package Development](/docs/packages)
     - [Pagination](/docs/pagination)
-    - [Queues](#)
     - [Security](/docs/security)
     - [Session](/docs/session)
     - [Templates](/docs/templates)
