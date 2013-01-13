@@ -6,8 +6,6 @@
 - [Configuration](#configuration)
 - [Pretty URLs](#pretty-urls)
 
-Testing documentation update script.
-
 <a name="install-composer"></a>
 ## Install Composer
 
