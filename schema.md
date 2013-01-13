@@ -97,6 +97,7 @@ Command  | Description
 `$table->primary(array('first', 'last'));`  |  Adding composite keys
 `$table->unique('email');`  |  Adding a unique index
 `$table->index('state');`  |  Adding a basic index
+`$table->foreign('enterprise_id')->references('id')->on('enterprises');`  |  Adding a foreign key index on the the enterprise_id field of the table, referencing the field "enterprises.id"
 
 <a name="dropping-indexes"></a>
 ## Dropping Indexes
@@ -108,3 +109,4 @@ Command  | Description
 `$table->dropPrimary('users_id_primary');`  |  Dropping a primary key from the "users" table
 `$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
 `$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
+`$table->dropForeign('users_enterprise_id_foreign');`  |  Dropping a foreign key index from the "users" table
