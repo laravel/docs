@@ -69,7 +69,13 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 	{
 		//
 	})
-	->where('name', 'A-Za-z');
+	->where('name', '[A-Za-z]+');
+
+	Route::get('user/{id}', function($id)
+	{
+		//
+	})
+	->where('id', '[0-9]+');
 
 <a name="route-filters"></a>
 ## Route Filters
