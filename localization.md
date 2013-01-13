@@ -36,7 +36,7 @@ The default language for your application is stored in the `app/config/app.php` 
 
 **Changing The Default Language At Runtime**
 
-	App::locale('es');
+	App::setLocale('es');
 
 <a name="basic-usage"></a>
 ## Basic Usage
