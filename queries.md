@@ -159,7 +159,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 **Using A Raw Expression**
 
 	$users = DB::table('users')
-	                     ->select(DB:raw('count(*) as user_count, status'))
+	                     ->select(DB::raw('count(*) as user_count, status'))
 	                     ->where('status', '<>', 1)
 	                     ->groupBy('status')
 	                     ->get();
