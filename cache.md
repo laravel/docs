@@ -41,7 +41,7 @@ Sometimes you may wish to retrieve an item from the cache, but also store a defa
 
 You may also combine the `remember` and `forever` methods:
 
-	$value = Cache::rememberForever('users', $minutes, function()
+	$value = Cache::rememberForever('users', function()
 	{
 		return DB::table('users')->get();
 	});
