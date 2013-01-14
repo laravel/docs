@@ -187,7 +187,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 
 	DB::table('users')
 	            ->where('id', 1)
-	            ->update(array(votes' => 1));
+	            ->update(array('votes' => 1));
 
 <a name="deletes"></a>
 ## Deletes
