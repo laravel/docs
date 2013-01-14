@@ -69,7 +69,7 @@ To create a new record in the database from a model, simply create a new model i
 
 **Saving A New Model**
 
-	$user = new User;
+	$user = new User();
 
 	$user->name = 'John';
 
