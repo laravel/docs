@@ -44,34 +44,34 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 <a name="route-parameters"></a>
 ## Route Parameters
 
-	Route::get('user/{id}', function($id)
+	Route::get('users/{id}', function($id)
 	{
 		return 'User '.$id;
 	});
 
 **Optional Route Parameters**
 
-	Route::get('user/{name?}', function($name)
+	Route::get('users/{name?}', function($name)
 	{
 		return $name;
 	});
 
 **Optional Route Parameters With Defaults**
 
-	Route::get('user/{name?}', function($name = 'John')
+	Route::get('users/{name?}', function($name = 'John')
 	{
 		return $name;
 	});
 
 **Regular Expression Route Constraints**
 
-	Route::get('user/{name}', function($name)
+	Route::get('users/{name}', function($name)
 	{
 		//
 	})
 	->where('name', '[A-Za-z]+');
 
-	Route::get('user/{id}', function($id)
+	Route::get('users/{id}', function($id)
 	{
 		//
 	})
@@ -96,14 +96,14 @@ If a response is returned from a filter, that response will be considered the re
 
 **Attaching A Filter To A Route**
 
-	Route::get('user', array('before' => 'old', function()
+	Route::get('users', array('before' => 'old', function()
 	{
 		return 'You are over 200 years old!';
 	}));
 
 **Attaching Multiple Filters To A Route**
 
-	Route::get('user', array('before' => 'auth|old', function()
+	Route::get('users', array('before' => 'auth|old', function()
 	{
 		return 'You are authenticated and over 200 years old!';
 	}));
@@ -115,7 +115,7 @@ If a response is returned from a filter, that response will be considered the re
 		//
 	});
 
-	Route::get('user', array('before' => 'age:200', function()
+	Route::get('users', array('before' => 'age:200', function()
 	{
 		return 'Hello World';
 	}));
@@ -157,7 +157,7 @@ For advanced filtering, you may wish to use a class instead of a Closure. Since 
 
 Named routes make referring to routes when generating redirects or URLs more convenient. You may specify a name for a route like so:
 
-	Route::get('user/profile', array('as' => 'profile', function()
+	Route::get('users/profile', array('as' => 'profile', function()
 	{
 		//
 	}));
@@ -180,7 +180,7 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 			// Has Auth Filter
 		});
 
-		Route::get('user/profile', function()
+		Route::get('users/profile', function()
 		{
 			// Has Auth Filter
 		});
@@ -196,7 +196,7 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 	Route::group(array('domain' => '{account}.myapp.com'), function()
 	{
 
-		Route::get('user/{id}', function($account, $id)
+		Route::get('users/{id}', function($account, $id)
 		{
 			//
 		});

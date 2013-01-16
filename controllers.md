@@ -13,7 +13,7 @@ Controllers are typically stored in the `app/controllers` directory, and this di
 
 Here is an example of a basic controller class:
 
-	class UserController extends BaseController {
+	class UsersController extends BaseController {
 
 		/**
 		 * Show the profile for the given user.
@@ -22,14 +22,14 @@ Here is an example of a basic controller class:
 		{
 			$user = User::find($id);
 
-			return View::make('user.profile', array('user' => $user));
+			return View::make('users.profile', array('user' => $user));
 		}
 
 	}
 
 All controllers should extend the `BaseController` class. The `BaseController` is also stored in the `app/controllers` directory, and may be used as a place to put shared controller logic. The `BaseController` extends the framework's `Controller` class. Now, We can route to this controller action like so:
 
-	Route::get('user/{id}', 'UserController@showProfile');
+	Route::get('users/{id}', 'UsersController@showProfile');
 
 If you choose to nest or organize your controller using PHP namespaces, simply use the fully qualified class name when defining the route:
 
@@ -48,14 +48,14 @@ You may also specify names on controller routes:
 [Filters](/docs/routing#route-filters) may be specified on controller routes similar to "regular" routes:
 
 	Route::get('profile', array('before' => 'auth',
-				'uses' => 'UserController@showProfile'));
+				'uses' => 'UsersController@showProfile'));
 
 However, you may also specify filters from within your controller:
 
-	class UserController extends BaseController {
+	class UsersController extends BaseController {
 
 		/**
-		 * Instantiate a new UserController instance.
+		 * Instantiate a new UsersController instance.
 		 */
 		public function __construct()
 		{
@@ -71,10 +71,10 @@ However, you may also specify filters from within your controller:
 
 You may also specify controller filters inline using a Closure:
 
-	class UserController extends BaseController {
+	class UsersController extends BaseController {
 
 		/**
-		 * Instantiate a new UserController instance.
+		 * Instantiate a new UsersController instance.
 		 */
 		public function __construct()
 		{
@@ -93,11 +93,14 @@ Resource controllers make it easier to build RESTful controllers around resource
 
 To create the controller via the command line, execute the following command:
 
-	php artisan controller:make PhotoController
+	php artisan controller:make PhotosController
+
+> **Note:** Please note that resources are normally plural ie. Users, Photos, Tasks etc.
+
 
 Now we can register a resourceful route to the controller:
 
-	Route::resource('photo', 'PhotoController');
+	Route::resource('photos', 'PhotosController');
 
 This single route declaration creates multiple routes to handle a variety of RESTful actions on the photo resource. Likewise, the generated controller will already have stubbed methods for each of these actions with notes informing you which URIs and verbs they handle.
 
@@ -113,13 +116,14 @@ GET       | /resource/{id}/edit   | edit
 PUT/PATCH | /resource/{id}        | update
 DELETE    | /resource/{id}        | destroy
 
+
 Sometimes you may only need to handle a subset of the resource actions:
 
-	php artisan controller:make PhotoController --only=index,show
+	php artisan controller:make PhotosController --only=index,show
 
-	php artisan controller:make PhotoController --except=index
+	php artisan controller:make PhotosController --except=index
 
 And, you may also specify a subset of actions to handle on the route:
 
-	Route::resource('photo', 'PhotoController',
+	Route::resource('photos', 'PhotosController',
 					array('only' => array('index', 'show')));
