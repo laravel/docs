@@ -138,7 +138,7 @@ When other developers install your package, they may wish to override some of th
 
 **Executing The Config Publish Command**
 
-	php artisan config:publish --package="vendor/package"
+	php artisan config:publish vendor/package
 
 When this command is executed, the configuration files for your application will be copied to `app/config/packages/vendor/package` where they can be safely modified by the developer!
 
