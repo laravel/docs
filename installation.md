@@ -33,8 +33,7 @@ Laravel needs almost no configuration out of the box. You are free to get starte
 
 <a name="permissions"></a>
 ### Permissions
-Laravel does require one set of permissions - folders within app/storage require write access by the server. Setting your permissions to 775 (if you're on a linux system) will usually suffice. If not, try setting
-the permission to 777.
+Laravel requires one set of permissions to be configured - folders within app/storage require write access by the web server.
 
 <a name="pretty-urls"></a>
 ## Pretty URLs
