@@ -110,7 +110,7 @@ Event subscribers are classes that may subscribe to multiple events from within 
 				'user.logout' => array(
 					array('onUserLogout', 10),
 				),
-			];
+			);
 		}
 
 	}
