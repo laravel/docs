@@ -32,7 +32,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 
 Once the a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
 
-	if ($validation->fails())
+	if ($validator->fails())
 	{
 		// The given data did not pass validation
 	}
