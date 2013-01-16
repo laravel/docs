@@ -31,6 +31,10 @@ Laravel needs almost no configuration out of the box. You are free to get starte
 
 > **Note:** One configuration option you should be sure to set is the `key` option within `app/config/app.php`. This value should be set to a 32 character, random string. This key is used when encrypting values, and encrypted values will not be safe until it is properly set. You can set this value quickly by using the following artisan command `php artisan key:generate`.
 
+<a name="permissions"></a>
+### Permissions
+Laravel requires one set of permissions to be configured - folders within app/storage require write access by the web server.
+
 <a name="pretty-urls"></a>
 ## Pretty URLs
 
