@@ -2,6 +2,7 @@
 
 - [Basic Routing](#basic-routing)
 - [Route Parameters](#route-parameters)
+- [Controller Routing](#controller-routing)
 - [Route Filters](#route-filters)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
@@ -77,6 +78,34 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 	})
 	->where('id', '[0-9]+');
 
+<a name="controller-routing"></a>
+## Controller Routing
+
+**Basic Controller Route**
+
+Controllers are another way to manage your application logic.  You can read more about them in the  [controllers](/docs/controllers) section.
+
+	Route::controller('FooController', 'foo');
+
+Using controller routing sends all requests with a starting segment of `foo` to the FooController. Laravel expects functions in your controller to be named following an actionMethod pattern -- a get request for foo/test will call a function named getTest(). To pass arguments to your controller methods, you're not required to add anything to the route -- just define the arguments in the function definition: getTest($bar).
+	
+**Routing Specific Actions**
+
+If you want more control over the routing of your controllers, you can route to individual actions.
+
+	Route::get('user/{id}', 'UserController@showProfile');
+
+If you choose to nest or organize your controller using PHP namespaces, simply use the fully qualified class name when defining the route:
+
+	Route::get('foo', 'Namespace\FooController@method');
+
+You may also specify names on controller routes:
+
+	Route::get('foo', array('uses' => 'FooController@method',
+											'as' => 'name'));
+
+
+	
 <a name="route-filters"></a>
 ## Route Filters
 

@@ -27,18 +27,9 @@ Here is an example of a basic controller class:
 
 	}
 
-All controllers should extend the `BaseController` class. The `BaseController` is also stored in the `app/controllers` directory, and may be used as a place to put shared controller logic. The `BaseController` extends the framework's `Controller` class. Now, We can route to this controller action like so:
+All controllers should extend the `BaseController` class. The `BaseController` is also stored in the `app/controllers` directory, and may be used as a place to put shared controller logic. The `BaseController` extends the framework's `Controller` class. 
 
-	Route::get('user/{id}', 'UserController@showProfile');
-
-If you choose to nest or organize your controller using PHP namespaces, simply use the fully qualified class name when defining the route:
-
-	Route::get('foo', 'Namespace\FooController@method');
-
-You may also specify names on controller routes:
-
-	Route::get('foo', array('uses' => 'FooController@method',
-											'as' => 'name'));
+All routes in Laravel have to be explicitly defined, including routes to controllers. Controller routing is discussed in the [Routing](/docs/routing#controller-routing) documentation.
 
 > **Note:** After creating a new class, make sure to run `composer dump-autoload` from the command line. This will allow the framework to automatically load your class.
 
