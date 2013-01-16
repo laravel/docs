@@ -118,7 +118,7 @@ By default, Eloquent will maintain the `created_at` and `updated_at` columns on 
 
 		protected $table = 'users';
 
-		protected $timestamps = false;
+		public $timestamps = false;
 
 	}
 
