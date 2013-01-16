@@ -1,7 +1,7 @@
 # Templates
 
 - [Controller Layouts](#controller-layouts)
-- [Blade Templating](#blade-templating)
+- [Blade Templating](#blade-templating-engine)
 - [Other Blade Control Structures](#other-blade-control-structures)
 
 <a name="controller-layouts"></a>
