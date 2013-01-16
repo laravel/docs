@@ -119,9 +119,9 @@ You can add foreign key constraints to your table using Schema's fluent interfac
 
 You can also specify options for the "on delete" and "on update" actions of the foreign key:
 
-	$table->foreign('user_id')->references('id')->on('users')->on_delete('restrict');
+	$table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
 
-	$table->foreign('user_id')->references('id')->on('users')->on_update('cascade');
+	$table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
 
 You may also easily drop a foreign key constraint. The default foreign key names follow the same convention as the other indexes created by the Schema builder. Here's an example:
 
