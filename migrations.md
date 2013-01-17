@@ -1,6 +1,7 @@
 ## Migrations & Seeding
 
 - [Introduction](#introduction)
+- [Installing Migrations](#installing-migrations)
 - [Creating Migrations](#creating-migrations)
 - [Running Migrations](#running-migrations)
 - [Rolling Back Migrations](#rolling-back-migrations)
@@ -10,6 +11,20 @@
 ## Introduction
 
 Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/schema) to easily manage your application's scheme.
+
+<a name="installing-migrations"></a>
+## Installing Migrations
+Laravel keeps track of migrations via a 'migrations' table within your database. This needs to be created first.
+
+**Creating the migrations table**
+
+	php artisan migrate:install --env=local
+
+**Environments**
+
+Laravel runs migrations in the production environment by default. We specified the above migration to run on the local environment by passing an optional flag.
+
+	--env=local
 
 <a name="creating-migrations"></a>
 ## Creating Migrations
