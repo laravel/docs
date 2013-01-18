@@ -21,7 +21,7 @@ Once Composer is installed, download the [latest version](https://github.com/lar
 
 The Laravel framework has a few system requirements:
 
-- PHP 5.3+
+- PHP >= 5.3.7
 - MCrypt PHP Extension
 
 <a name="configuration"></a>
