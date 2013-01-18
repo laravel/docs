@@ -142,7 +142,7 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 			$this->app->bind('foo', function()
 			{
 				return new Foo;
-			})
+			});
 		}
 
 	}
