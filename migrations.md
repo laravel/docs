@@ -45,6 +45,12 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
 	php artisan migrate --package=vendor/package
 
+**Environments**
+
+Laravel runs migrations in the production environment by default. When we want migrations to work with our local, development database we need to pass a flag specifying the environment.
+
+	php artisan migrate --env=local
+
 <a name="rolling-back-migrations"></a>
 ## Rolling Back Migrations
 
