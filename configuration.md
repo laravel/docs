@@ -43,7 +43,7 @@ A good example for local development is:
 
 	'local' => array('http://localhost*', '*.dev'),
 	
-This will set the current environment to 'local' if your app is served from localhost (and anything after that) or if you've configured a virtual host which ends in .dev. For example:
+This will set the current environment to 'local' if your app is served from localhost (and anything after that) or if you have configured a virtual host which ends in .dev. For example:
 
 	http://laravel4app.dev
 	
