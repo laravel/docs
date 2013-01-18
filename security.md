@@ -43,6 +43,10 @@ To log a user into your application, you may use the `Auth::attempt` method.
 
 Take note that `email` is not a required option, it is merely used for example. You should use whatever column name corresponds to a "username" in your database.
 
+You can also log a user into your application via their id.
+
+	Auth::loginUsingID($user->id); 
+
 If you would like to provide "remember me" functionality in your application, you may pass `true` as the second argument to the `attempt` method, which will keep the user authenticated indefinitely (or until they manually logout):
 
 **Authenticating A User And "Remembering" Them**
