@@ -35,7 +35,7 @@ Simply create a folder within the `config` directory that matches your environme
 
 	);
 
-**Note:**
+> **Note:**
 	Do not use 'testing' as an environment name. This is reserved for unit testing.
 	
 Notice that you do not have to specify _every_ option that is in the base configuration file, but only the options you wish to override. The environment configuration files will "cascade" over the base files.
