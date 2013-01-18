@@ -102,7 +102,7 @@ Command  | Description
 <a name="dropping-indexes"></a>
 ## Dropping Indexes
 
-To drop index you must specify the index's name. Laravel assigns a reasonable name to the indexes by default. Simply concatenate the table name, the names of the column in the index, and the index type. Here are some examples:
+To drop an index you must specify the index's name. Laravel assigns a reasonable name to the index by default. Simply concatenate the table name, the names of the column in the index, and the index type. Here are some examples:
 
 Command  | Description
 ------------- | -------------
@@ -113,9 +113,7 @@ Command  | Description
 <a name="foreign-keys"></a>
 ## Foreign Keys
 
-You may easily add foreign key constraints to your table using Schema's fluent interface.
-For example, let's assume you have a `user_id` on a `posts` table, which references the `id` column of the `users` table.
-Here's how to add a foreign key constraint for the column:
+You may easily add foreign key constraints to your table using Schema's fluent interface.  For example, let's assume you have a `user_id` on a `posts` table, which references the `id` column of the `users` table.  Here's how to add a foreign key constraint for the column:
 
 	$table->foreign('user_id')->references('id')->on('users');
 
@@ -125,15 +123,13 @@ You may also specify options for the "on delete" and "on update" actions of the 
 
 	$table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
 
-You may also easily drop a foreign key constraint.
-The default foreign key names follow the same convention as the other indexes created by the Schema builder.
-Here's an example:
+The actions themselves may be: `{'restrict' | 'cascade' | 'set null' | 'no action'}`
 
-	$table->drop_foreign('posts_user_id_foreign');
+You may also easily drop a foreign key constraint.  The default foreign key names follow the same convention as the other indexes created by the Schema builder.  Here's an example:
 
-> **Note:** The field referenced in the foreign key is very likely an auto increment and therefore automatically an unsigned integer.  Please make sure to create the foreign key field with `unsigned()` as both fields have to be the exact same type, the engine on both tables has to be set to `InnoDB`, and the referenced table must be created `before` the table with the foreign key.  
+	$table->dropForeign('posts_user_id_foreign');
+
+> **Note:** Both referenced fields must be the exact same type, the engine on both tables must be set to `InnoDB`, and the referenced table must be created `before` the table with the foreign key.  
 
 	$table->engine = 'InnoDB';
-
-	$table->integer('user_id')->unsigned();
 
