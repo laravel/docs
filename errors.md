@@ -1,6 +1,7 @@
 # Errors & Logging
 
 - [Error Detail](#error-detail)
+- [HTTP Exceptions](#http-exceptions)
 - [Handling Errors](#handling-errors)
 - [Handling 404 Errors](#handling-404-errors)
 - [Logging](#logging)
@@ -33,6 +34,21 @@ If an exception handler returns a response, that response will be sent to the br
 
 		return 'Sorry! Something is wrong with this account!';
 	});
+
+<a name="http-exceptions"></a>
+## HTTP Exceptions
+Exceptions in respect to HTTP, refer to errors that may occur during a client request. This may be a page
+not found error (404), an authorized error (401) or even a generated 500 error. In order to return such a response, use the following:
+
+	App::abort(404, 'Page not found');
+
+The first argument, is the HTTP status code, with the following being a custom message you'd like to show with the error.
+
+In order to raise a 401 Unauthorized exception, just do the following:
+
+	App::abort(401, 'You are not authorized.');
+
+These exceptions can be executed at any time during the request's lifecycle.
 
 <a name="handling-404-errors"></a>
 ## Handling 404 Errors
