@@ -7,6 +7,7 @@
 - [Route Groups](#route-groups)
 - [Sub-Domain Routing](#sub-domain-routing)
 - [Throwing 404 Errors](#throwing-404-errors)
+- [Resource Controllers](#resource-controllers)
 
 <a name="basic-routing"></a>
 ## Basic Routing
@@ -213,3 +214,10 @@ There are two ways to manually trigger a 404 error from a route. First, you may 
 Second, you may throw an instance of `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
 
 More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/errors#handling-404-errors) section of the documentation.
+
+<a name="resource-controllers"></a>
+## Resource Controllers
+
+Resource controllers make it easier to build RESTful controllers around resources. 
+
+See [Controllers](controllers#resource-controllers) documentation for more information.
