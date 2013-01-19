@@ -220,4 +220,4 @@ More information on handling 404 exceptions and using custom responses for these
 
 Resource controllers make it easier to build RESTful controllers around resources. 
 
-See [Controllers](controllers#resource-controllers) documentation for more information.
+See [Controllers](/docs/controllers#resource-controllers) documentation for more information.
