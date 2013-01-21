@@ -1,4 +1,4 @@
-## Schema Builder
+# Schema Builder
 
 - [Introduction](#introduction)
 - [Creating & Dropping Tables](#creating-and-dropping-tables)
