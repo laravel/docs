@@ -1,4 +1,4 @@
-## Migrations & Seeding
+# Migrations & Seeding
 
 - [Introduction](#introduction)
 - [Creating Migrations](#creating-migrations)
@@ -74,16 +74,16 @@ Laravel also includes a simple way to seed your database with test data using se
 	return array(
 
 		array(
-			'email' => 'john@example.com', 
-			'votes' => 10,  
-			'created_at' => new DateTime, 
+			'email' => 'john@example.com',
+			'votes' => 10,
+			'created_at' => new DateTime,
 			'updated_at' => new DateTime,
 		),
 
 		array(
-			'email' => 'smith@example.com', 
-			'votes' => 20,  
-			'created_at' => new DateTime, 
+			'email' => 'smith@example.com',
+			'votes' => 20,
+			'created_at' => new DateTime,
 			'updated_at' => new DateTime,
 		),
 
