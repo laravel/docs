@@ -1,4 +1,4 @@
-## Query Builder
+# Query Builder
 
 - [Introduction](#introduction)
 - [Selects](#selects)
