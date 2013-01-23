@@ -282,7 +282,7 @@ Polymorphic relations allow a model to belong to more than one other model, on a
 
 		public function photos()
 		{
-			return $this->hasMany('Photo', 'imageable');
+			return $this->morphMany('Photo', 'imageable');
 		}
 
 	}
