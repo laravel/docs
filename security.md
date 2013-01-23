@@ -54,6 +54,15 @@ If you would like to provide "remember me" functionality in your application, yo
 
 **Note:** If the `attempt` method returns `true`, the user is considered logged into the application.
 
+**Authenticating A User with extra conditions**
+
+You may add in extra conditions to ensure that the user is (for example) 'active', or 'not suspended':
+
+    if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1, 'suspended' => 0)))
+    {
+        // The user is active, not suspended, and exists.
+    }
+
 Once a user is authenticated, you may access the User model / record:
 
 **Accessing The Logged In User**
