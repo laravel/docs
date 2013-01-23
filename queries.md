@@ -63,6 +63,19 @@ The database query builder provides a convenient, fluent interface to creating a
 	$users = DB::table('users')
 	                    ->whereBetween('votes', array(1, 100))->get();
 
+**Using Where In With An Array**
+
+	$users = DB::table('users')
+	                    ->whereIn('id', array(1, 2, 3))->get();
+
+	$users = DB::table('users')
+	                    ->whereNotIn('id', array(1, 2, 3))->get();
+
+**Using Where Null To Find Records With Unset Values**
+
+	$users = DB::table('users')
+	                    ->whereNull('updated_at')->get();
+
 **Order By, Group By, And Having**
 
 	$users = DB::table('users')
@@ -188,7 +201,6 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 	);
 
 > **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
-
 
 **Inserting Multiple Records Into A Table**
 
