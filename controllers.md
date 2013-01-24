@@ -2,6 +2,7 @@
 
 - [Basic Controllers](#basic-controllers)
 - [Controller Filters](#controller-filters)
+- [RESTful Controllers]($restful-controllers)
 - [Resource Controllers](#resource-controllers)
 
 <a name="basic-controllers"></a>
@@ -85,6 +86,37 @@ You may also specify controller filters inline using a Closure:
 		}
 
 	}
+
+<a name="restful-controllers"></a>
+## RESTful Controllers
+
+Laravel allows you to easily define a single route to handle every action in a controller using simple, REST naming conventions. First, define the route using the `Route::controller` method:
+
+**Defining A RESTful Controller**
+
+	Route::controller('UserController', 'users');
+
+Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
+
+	class UserController extends BaseController {
+
+		public function getIndex()
+		{
+			//
+		}
+
+		public function postProfile()
+		{
+			//
+		}
+
+	}
+
+The `index` methods will respond to the root URI handled by the controller, which, in this case, is `users`.
+
+If your controller action contains multiple words, you may access the action using "dash" syntax in the URI. For example, the following controller action on our `UserController` would respond to the `users/admin-profile` URI:
+
+	public function getAdminProfile() {}
 
 <a name="resource-controllers"></a>
 ## Resource Controllers
