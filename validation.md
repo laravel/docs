@@ -222,7 +222,7 @@ The field under validation must exists on a given database table.
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpg, png, bmp, or gif)
+The file under validation must be an image (jpeg, png, bmp, or gif)
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
@@ -251,7 +251,7 @@ The file under validation must have a MIME type corresponding to one of the list
 
 **Basic Usage Of MIME Rule**
 
-	'photo' => 'mimes:jpg,bmp,png'
+	'photo' => 'mimes:jpeg,bmp,png'
 
 <a name="rule-min"></a>
 #### min:_value_
