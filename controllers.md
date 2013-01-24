@@ -96,7 +96,7 @@ Laravel allows you to easily define a single route to handle every action in a c
 
 	Route::controller('UserController', 'users');
 
-Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
+The `controller` method accepts two arguments. The first is the class name of the controller, while the second is the base URI the controller handles. Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
 
 	class UserController extends BaseController {
 
