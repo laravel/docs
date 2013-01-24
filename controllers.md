@@ -2,7 +2,7 @@
 
 - [Basic Controllers](#basic-controllers)
 - [Controller Filters](#controller-filters)
-- [RESTful Controllers]($restful-controllers)
+- [RESTful Controllers](#restful-controllers)
 - [Resource Controllers](#resource-controllers)
 
 <a name="basic-controllers"></a>
