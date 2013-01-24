@@ -126,6 +126,13 @@ View composers are callbacks or class methods that are called when a view is cre
 
 Now each time the `profile` view is created, the `count` data will be bound to the view.
 
+You may also attach a view composer to multiple views at once:
+
+    View::composer(array('profile','dashboard'), function($event)
+    {
+        $event->view->with('count', User::count());
+    });
+
 If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC container](/docs/ioc), you may do so:
 
 	View::composer('profile', 'ProfileComposer');
