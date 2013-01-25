@@ -27,11 +27,17 @@ To get started, create an Eloquent model. Models typically live in the `app/mode
 
 **Defining An Eloquent Model**
 
+	class User extends Eloquent {}
+
+Note that we did not tell Eloquent which table to use for our `User` model. The lower-case, plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
+
 	class User extends Eloquent {
 
-		protected $table = 'users';
+		protected $table = 'my_users';
 
 	}
+
+> **Note:** Eloquent will also assume that each table has a primary key column named `id`. You may define a `primaryKey` property to override this convention:
 
 Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
 
