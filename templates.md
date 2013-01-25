@@ -65,6 +65,8 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
 
+> **Note:** The `@extends` directive needs to be placed on the very first line of the template, with no whitespaces or newline characters before.
+
 **Including Sub-Views**
 
 	@include('user.friendlist')
