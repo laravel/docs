@@ -38,6 +38,17 @@ You may specify other options on the e-mail message such as any carbon copies or
 		$m->attach($pathToFile);
 	});
 
+To pass additional data to the send method, such as user data, you can do something like this:
+
+	$user = User::find(1);
+	
+	$data = ['user' => $user];
+	
+	Mail::send('emails.welcome', data, function($m) use ($user)
+	{
+	   $m->to($user->email)->subject("Welcome to Laravel");
+	});
+
 When attaching files to a message, you may also specify a MIME type and / or a display name:
 
 	$m->attach($pathToFile, array('as' => $display, 'mime' => $mime));
