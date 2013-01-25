@@ -45,6 +45,8 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
 	php artisan migrate --package=vendor/package
 
+> **Note:** If you receive a "class not found" error when running migrations, try running the `composer update` command.
+
 <a name="rolling-back-migrations"></a>
 ## Rolling Back Migrations
 
