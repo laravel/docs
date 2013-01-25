@@ -80,8 +80,10 @@ Note that views which `extend` a Blade layout simply override sections from the 
 
 **If Statements**
 
-	@if (count($records) > 0)
-		I have records!
+	@if (count($records) == 1)
+		I have one record!
+	@elseif (count($records) > 1)
+		I have multiple records!
 	@else
 		I don't have any records!
 	@endif
