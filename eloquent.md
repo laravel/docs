@@ -252,6 +252,17 @@ We can define a many-to-many relation using the `belongsToMany` method:
 Now, we can retrieve the roles through the `User` model:
 
 	$roles = User::find(1)->roles;
+	
+To retrieve the users associated with a specific role you have to set up your roles model like this:
+
+	class Role extends Eloquent {
+
+		public function users()
+		{
+			return $this->belongsToMany('User');
+		}
+
+	}
 
 If you would like to use an unconventional table name for your pivot table, you may pass it as the second argument to the `belongsToMany` method:
 
