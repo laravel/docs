@@ -71,7 +71,7 @@ Note that views which `extend` a Blade layout simply override sections from the 
 
 	@include('user.friendlist')
 
-The included view will automatically iherit the data availible to the current view.
+The included view will automatically inherit the data availible to the current view.
 
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
