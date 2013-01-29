@@ -6,6 +6,7 @@
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
 - [Sub-Domain Routing](#sub-domain-routing)
+- [Route Prefix](#route-prefix)
 - [Throwing 404 Errors](#throwing-404-errors)
 - [Resource Controllers](#resource-controllers)
 
@@ -198,6 +199,21 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 	{
 
 		Route::get('user/{id}', function($account, $id)
+		{
+			//
+		});
+
+	});
+<a name="route-prefix"></a>
+## Route Prefix
+Prefixing route option offers the advantage of segmenting the URL to a route or list of grouped routes. 
+
+**Prefixing Grouped Routes**
+
+	Route::group(array('prefix' => 'admin'), function()
+	{
+
+		Route::get('user', function()
 		{
 			//
 		});
