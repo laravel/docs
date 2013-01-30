@@ -30,3 +30,6 @@ Laravel follows the [PSR-0](https://github.com/php-fig/fig-standards/blob/master
 - Function and control structure opening `{` should be on a separate line.
 - Always use `and` and `or`. Never use `&&` or `||`.
 - Interface names are suffixed with `Interface` (`FooInterface`)
+
+---
+->[Previous](/docs/introduction "Introduction") | [Next](/docs/installation "Installation")<-
