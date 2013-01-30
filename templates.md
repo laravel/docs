@@ -42,6 +42,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 			@section('sidebar')
 				This is the master sidebar.
 			@stop
+			@yield('sidebar')
 
 			<div class="container">
 				@yield('content')
@@ -63,7 +64,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 		<p>This is my body content.</p>
 	@stop
 
-Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
+Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer. Also note that the section is not output until you call `@yield` to render its contents. 
 
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
