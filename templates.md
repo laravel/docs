@@ -41,7 +41,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 		<body>
 			@section('sidebar')
 				This is the master sidebar.
-			@stop
+			@show
 
 			<div class="container">
 				@yield('content')
@@ -72,6 +72,15 @@ Note that views which `extend` a Blade layout simply override sections from the 
 	@include('user.friendlist')
 
 The included view will automatically inherit the data availible to the current view.
+
+**Blade Keyword Reference**
+
+Keyword  | Description
+------------- | -------------
+`@section('content')`  |  Start section named 'content'
+`@stop`  |  End of the current section
+`@yield('content')`  |  Output the section named 'content'
+`@show`  |  End current section and output it
 
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
