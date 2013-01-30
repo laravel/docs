@@ -113,7 +113,7 @@ Command  | Description
 <a name="foreign-keys"></a>
 ## Adding Columns
 
-When building your database you're very likely have columns in one table referencing primary keys of another table, for instance when you're using [Eloquent's Relationships](eloquent#relationships) features. If you let your database engine know this you can leverage it's capacity for keeping this data consistent and working smothly.
+When building your database you're very likely have columns in one table referencing primary keys of another table, for instance when you're using [Eloquent's Relationships](/docs/eloquent#relationships) features. If you let your database engine know this you can leverage it's capacity for keeping this data consistent and working smothly.
 
 > **Note:** Both columns muse be of the same type. Primary keys are unsigned integers so referencing columns need to be `->unsigned()` aswell.
 
