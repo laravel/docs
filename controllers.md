@@ -2,6 +2,7 @@
 
 - [Basic Controllers](#basic-controllers)
 - [Controller Filters](#controller-filters)
+- [Controller Layouts](/docs/templates#controller-layouts)
 - [RESTful Controllers](#restful-controllers)
 - [Resource Controllers](#resource-controllers)
 
