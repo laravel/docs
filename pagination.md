@@ -42,3 +42,7 @@ Sometimes you may wish to create a pagination instance manually, passing it an a
 **Creating A Paginator Manually**
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);
+
+---
+->[Previous](/docs/packages "Package Development") | [Next](/docs/security "Security")<-
+<!--- [Next](# "Queues") -->

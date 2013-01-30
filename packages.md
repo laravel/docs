@@ -188,3 +188,6 @@ Also, it is courteous and helpful to tag your releases so that developers can de
 Once your package has been published, feel free to continue developing it within the application context created by `workbench`. This is a great way to continue to conveniently develop the package even after it has been published.
 
 Some organizations choose to host their own private repository of packages for their own developers. If you are interested in doing this, review the documentation for the [Satis](http://github.com/composer/satis) project provided by the Composer team.
+
+---
+->[Previous](/docs/mail "Mail") | [Next](/docs/pagination "Pagination")<-

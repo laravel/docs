@@ -101,3 +101,6 @@ You may re-seed your database from a test using the `seed` method:
 	$this->seed($connection);
 
 More information on creating seeds may be found in the [migrations and seeding](/docs/migrations#database-seeding) section of the documentation.
+
+---
+->[Previous](/docs/templates "Templates") | [Next](/docs/validation "Validation")<-

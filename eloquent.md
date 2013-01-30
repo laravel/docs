@@ -622,3 +622,6 @@ Sometimes you may wish to limit the attributes that are included in your model's
 		protected $hidden = array('password');
 
 	}
+
+---
+->[Previous](/docs/queries "Query Builder") | [Next](/docs/schema "Schema Builder")<-

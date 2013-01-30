@@ -34,3 +34,6 @@ You may also view the current version of your Laravel installation using the `--
 **Displaying Your Current Laravel Version**
 
 	php artisan --version
+
+---
+->[Previous](/docs/redis "Redis") | [Next](/docs/commands "Artisan Development")<-

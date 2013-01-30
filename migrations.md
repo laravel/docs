@@ -98,3 +98,6 @@ To seed your database, you may use the `db:seed` command on the Artisan CLI:
 You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations:
 
 	php artisan migrate:refresh --seed
+
+---
+->[Previous](/docs/schema "Schema Builder") | [Next](/docs/redis "Redis")<-

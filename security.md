@@ -114,3 +114,7 @@ Laravel provides facilities for strong AES-256 encryption via the mcrypt PHP ext
 **Decrypting A Value**
 
 	$decrypted = Crypt::decrypt($encryptedValue);
+
+---
+->[Previous](/docs/pagination "Pagination") | [Next](/docs/session "Session")<-
+<!--- [Previous](# "Queues") -->

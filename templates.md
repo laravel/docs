@@ -107,3 +107,6 @@ Note that views which `extend` a Blade layout simply override sections from the 
 **Comments**
 
 	{{-- This comment will not be in the rendered HTML --}}
+
+---
+->[Previous](/docs/session "Session") | [Next](/docs/testing "Unit Testing")<-

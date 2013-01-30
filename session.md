@@ -74,3 +74,6 @@ When using the `database` session driver, you will need to setup a table to cont
 		$t->text('payload');
 		$t->integer('last_activity');
 	});
+
+---
+->[Previous](/docs/security "Security") | [Next](/docs/templates "Templates")<-
