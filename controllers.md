@@ -113,7 +113,7 @@ The `controller` method accepts two arguments. The first is the base URI the con
 
 	}
 
-The `index` methods will respond to the root URI handled by the controller, which, in this case, is `users`.
+The `index` methods (`getIndex` etc) will respond to the root URI handled by the controller, which, in this case, is `users/`. Also take a look at the [Resource Controller actions](#resource-controller-actions) down below.
 
 If your controller action contains multiple words, you may access the action using "dash" syntax in the URI. For example, the following controller action on our `UserController` would respond to the `users/admin-profile` URI:
 
@@ -134,6 +134,7 @@ Now we can register a resourceful route to the controller:
 
 This single route declaration creates multiple routes to handle a variety of RESTful actions on the photo resource. Likewise, the generated controller will already have stubbed methods for each of these actions with notes informing you which URIs and verbs they handle.
 
+<a name="resource-controller-actions"></a>
 **Actions Handled By Resource Controller**
 
 Verb      | Path                  | Action
