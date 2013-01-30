@@ -148,3 +148,6 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 	}
 
 Note that in the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
+
+---
+->[Previous](/docs/events "Events") | [Next](/docs/localization "Localization")<-

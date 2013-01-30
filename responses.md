@@ -159,3 +159,6 @@ Note that there is no convention on where composer classes may be stored. You ar
 	return Response::download($pathToFile);
 
 	return Response::download($pathToFile, $status, $headers);
+
+---
+->[Previous](/docs/requests "Requests & Input") | [Next](/docs/controllers "Controllers")<-

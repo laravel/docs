@@ -127,3 +127,6 @@ Once the subscriber has been defined, it may be registered with the `Event` clas
 	Event::unsubscribe($subscriber);
 	
 The instance that was passed to the `subscribe()` method may also be passed to the `unsubscribe()` method to remove it.
+
+---
+->[Previous](/docs/cache "Cache") | [Next](/docs/ioc "IoC Container")<-

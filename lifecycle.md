@@ -36,3 +36,6 @@ You may also do pre and post request processing by registering `before` and `aft
 	});
 
 Listeners to these events will be run `before` and `after` each request to your application.
+
+---
+->[Previous](/docs/configuration "Configuration") | [Next](/docs/routing "Routing")<-

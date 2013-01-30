@@ -163,3 +163,6 @@ The `Request` class provides many methods for examining the HTTP request for you
 	{
 		//
 	}
+
+---
+->[Previous](/docs/routing "Routing") | [Next](/docs/responses "Views & Responses")<-

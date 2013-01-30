@@ -42,3 +42,6 @@ The `select` method will always return an `array` of results.
 When using multiple connections, you may access them via the `DB::connection` method:
 
 	$users = DB::connection('foo')->select(...);
+
+---
+->[Previous](/docs/validation "Validation") | [Next](/docs/queries "Query Builder")<-

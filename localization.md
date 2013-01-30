@@ -80,3 +80,6 @@ You may then use the `Lang::choice` method to retrieve the line:
 Since the Laravel translator is powered by the Symfony Translation component, you may also create more explicit pluralization rules easily:
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
+
+---
+->[Previous](/docs/ioc "IoC Container") | [Next](/docs/mail "Mail")<-

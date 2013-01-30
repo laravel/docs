@@ -228,3 +228,6 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 **Deleting All Records From A Table**
 
 	DB::table('users')->delete();
+
+---
+->[Previous](/docs/database "Basic Database Usage") | [Next](/docs/eloquent "Eloquent ORM")<-

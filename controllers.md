@@ -155,3 +155,6 @@ And, you may also specify a subset of actions to handle on the route:
 
 	Route::resource('photo', 'PhotoController',
 					array('only' => array('index', 'show')));
+
+---
+->[Previous](/docs/responses "Views & Responses") | [Next](/docs/errors "Errors & Logging")<-

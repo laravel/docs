@@ -400,3 +400,6 @@ When creating a custom validation rules, you may sometimes need to define custom
 	{
 		return str_replace(':foo', $parameters[0], $message);
 	}
+
+---
+->[Previous](/docs/testing "Unit Testing") | [Next](/docs/database "Basic Database Usage")<-

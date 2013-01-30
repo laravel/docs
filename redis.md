@@ -54,3 +54,6 @@ When you are simply executing commands against the default connection, just use 
 	$values = Redis::lrange('names', 5, 10);
 
 > **Note:** Redis [cache](/docs/cache) and [session](/docs/session) drivers are included with Laravel.
+
+---
+->[Previous](/docs/migrations "Migrations & Seeding") | [Next](/docs/artisan "Artisan Overview")<-

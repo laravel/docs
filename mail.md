@@ -66,3 +66,6 @@ Embedding inline images into your e-mails is typically cumbersome; however, Lara
 	</body>
 
 Note that the `$message` variable is always passed to e-mail views by the `Mail` class.
+
+---
+->[Previous](/docs/localization "Localization") | [Next](/docs/packages "Package Development")<-

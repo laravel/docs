@@ -49,3 +49,6 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 	RewriteCond %{REQUEST_FILENAME} !-d
 
 	RewriteRule . index.php [L]
+
+---
+->[Previous](/docs/contributing "Contributing") | [Next](/docs/configuration "Configuration")<-

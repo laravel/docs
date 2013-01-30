@@ -63,3 +63,6 @@ When using the `database` cache driver, you will need to setup a table to contai
 		$t->text('value');
 		$t->integer('expiration');
 	});
+
+---
+->[Previous](/docs/errors "Errors & Logging") | [Next](/docs/events "Events")<-
