@@ -520,13 +520,13 @@ Sometimes, you may wish to return a custom Collection object with your own added
 <a name="accessors-and-mutators"></a>
 ## Accessors & Mutators
 
-Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simplify define a `getFoo` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
+Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simplify define a `giveFoo` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
 
 **Defining An Accessor**
 
 	class User extends Eloquent {
 
-		public function getFirstName($value)
+		public function giveFirstName($value)
 		{
 			return ucfirst($value);
 		}
@@ -541,7 +541,7 @@ Mutators are declared in a similar fashion:
 
 	class User extends Eloquent {
 
-		public function setFirstName($value)
+		public function takeFirstName($value)
 		{
 			$this->attributes['first_name'] = strtolower($value);
 		}
