@@ -28,6 +28,8 @@ One method of using templates in Laravel is via controller layouts. By specifyin
 
 	}
 
+To find out more how to include your templates read the [Views & Responses](/docs/responses) documentation page
+
 <a name="blade-template-engine"></a>
 ## Blade Templating
 
