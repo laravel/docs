@@ -119,6 +119,18 @@ Keyword  | Description
 		<p>I'm looping forever.</p>
 	@endwhile
 
+The `@foreach` loop above could also be accomplished with `@each` together with a separate view.
+
+	@each('user.listing', $users, 'user')
+
+Together with this view
+
+	<!-- Stored in app/views/user/listing.blade.php -->
+
+	<p>This is user {{ $user->id }}</p>
+
+Using `@each` instead of `@foreach` doesn't make much sense in this simple example, but if you are creating a more complicated listing, `@each` might just be your new best friend.
+
 **Comments**
 
 	{{-- This comment will not be in the rendered HTML --}}
