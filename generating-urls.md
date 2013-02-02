@@ -3,23 +3,11 @@
 - [Introduction](#introduction)
 - [URLs To Routes](#urls-to-routes)
 - [URLs To Controller Actions](#urls-to-controller-actions)
+- [URLs To Assets](#urls-to-assets)
+- [Secure URLs](#secure-urls)
 
 <a name="introduction"></a>
 ## Introduction
-
-
-
-<a name="urls-to-routes"></a>
-## URLs To Controller Actions
-
-**Get the URL for a controller action:**
-**Basic GET Route**
-
-	$url = URL::action('UserController@getProfile');
-
-**Get the URL for a controller action with wildcard values:**
-
-	$url = URL::to_action('user@profile', [$username]);
 
 <a name="urls-to-controller-actions"></a>
 ## URLs To Routes
@@ -33,3 +21,30 @@ Sometimes you may need to generate a URL to a named route, but also need to spec
 **Get the URL for a named route with wildcard values:**
 
 	$url = URL::route('profile', [$username]);
+	
+<a name="urls-to-routes"></a>
+## URLs To Controller Actions
+
+**Get the URL for a controller action:**
+
+	$url = URL::action('UserController@getProfile');
+
+**Get the URL for a controller action with wildcard values:**
+
+	$url = URL::to_action('user@profile', [$username]);
+
+<a name="urls-to-assets"></a>
+## URLs To Assets
+
+**Get the URL for an asset:**
+
+	$url = URL::asset('js/jquery.js');
+	
+<a name="secure-urls"></a>
+## Secure URLs
+
+You can force action(), route() and asset() to return secure urls by setting the third paramater to TRUE.
+
+**Get the secure URL for a path**
+
+	$url = URL::secure('login');
