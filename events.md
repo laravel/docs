@@ -119,11 +119,12 @@ Once the subscriber has been defined, it may be registered with the `Event` clas
 
 **Registering An Event Subscriber**
 
-	$subscriber = new UserEventHandler();
+	$subscriber = new UserEventHandler;
+
 	Event::subscribe($subscriber);
 
 **Removing An Event Subscriber**
 
 	Event::unsubscribe($subscriber);
 	
-The instance that was passed to the `subscribe()` method may also be passed to the `unsubscribe()` method to remove it.
+The instance that was passed to the `subscribe` method may also be passed to the `unsubscribe` method to remove it.
