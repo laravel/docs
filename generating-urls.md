@@ -31,7 +31,7 @@ Sometimes you may need to generate a URL to a named route, but also need to spec
 
 **Get the URL for a controller action with wildcard values:**
 
-	$url = URL::to_action('user@profile', [$username]);
+	$url = URL::action('UserController@profile', [$username]);
 
 <a name="urls-to-assets"></a>
 ## URLs To Assets
