@@ -3,6 +3,7 @@
 - [Controller Layouts](#controller-layouts)
 - [Blade Templating](#blade-templating-engine)
 - [Other Blade Control Structures](#other-blade-control-structures)
+- [Quick Reference](#blade-keyword-reference)
 
 <a name="controller-layouts"></a>
 ## Controller Layouts
@@ -107,3 +108,21 @@ Note that views which `extend` a Blade layout simply override sections from the 
 **Comments**
 
 	{{-- This comment will not be in the rendered HTML --}}
+
+<a name="blade-keyword-reference"></a>
+## Quick Reference
+
+Keyword                                  |  Description
+---------------------------------------- | ------------------------------------
+`@extends('layout')`                     |  Use the template 'layout' as layout
+`@section('content')`                    |  Start section named 'content'
+`@stop`                                  |  End of the current section
+`@yield('content')`                      |  Output the section named 'content'
+`@parent`                                |  Called within a section, inserts parent layouts content for the section
+`@include('subtemplate')`                |  Renders the template 'subtemplate'
+`@each('part.template', $array, 'var')`  |  Loops through $array and renders 'part' template for each cell as $var
+`@if()` `@else` `@elseif` `@endif`       |  Basic if control strucure
+`@unless` `@endunless`                   |  Inverted if control structure
+`@for()` `@endfor`                       |  Basic for loop
+`@foreach()` `@endforeach`               |  Basic foreach loop
+`@while()` `@endwhile`                   |  Basic while loop
