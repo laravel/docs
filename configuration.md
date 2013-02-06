@@ -40,3 +40,9 @@ Simply create a folder within the `config` directory that matches your environme
 Notice that you do not have to specify _every_ option that is in the base configuration file, but only the options you wish to override. The environment configuration files will "cascade" over the base files.
 
 Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `start.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The array passed to this method is used to determine the current environment. You may add other environments and machine names to the array as needed.
+
+**Common pitfalls**
+
+Take care when adding a path related options to environment config files, such as `manifest` in `app.php`. Since the options relates to the current directory it requires an additional ../ for the environment directory.
+
+Another one to watch out for is options containing arrays. Make sure you keep the whole array in your overriding option - the cascading only goes one level into the options array.
