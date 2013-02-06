@@ -207,7 +207,7 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 	DB::table('users')->insert(
 		array(
 			array('email' => 'taylor@example.com', 'votes' => 0),
-			array('email' => 'dayle@example.com', 'votes' => 0),
+			array('email' => 'dayle@example.com', 'votes' => 0)
 		)
 	);
 
