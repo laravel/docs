@@ -1,7 +1,7 @@
 # Templates
 
 - [Controller Layouts](#controller-layouts)
-- [Blade Templating](#blade-templating-engine)
+- [Blade Templating](#blade-templating)
 - [Other Blade Control Structures](#other-blade-control-structures)
 
 <a name="controller-layouts"></a>
@@ -28,7 +28,7 @@ One method of using templates in Laravel is via controller layouts. By specifyin
 
 	}
 
-<a name="blade-template-engine"></a>
+<a name="blade-templating"></a>
 ## Blade Templating
 
 Blade is a simple, yet powerful templating engine provided with Laravel. Unlike controller layouts, Blade is driven by _template inheritance_ and _sections_. All Blade templates should use the `.blade.php` extension.

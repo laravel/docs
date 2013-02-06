@@ -189,7 +189,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 **Inserting Records Into A Table**
 
 	DB::table('users')->insert(
-		array('email' => 'john@example.com', 'votes' => 0),
+		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
 If the table has an auto-incrementing id, use `insertGetId` to insert a record and retrieve the id:
@@ -197,7 +197,7 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 **Inserting Records Into A Table With An Auto-Incrementing ID**
 
 	$id = DB::table('users')->insertGetId(
-		array('email' => 'john@example.com', 'votes' => 0),
+		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
 > **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
@@ -205,8 +205,10 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 **Inserting Multiple Records Into A Table**
 
 	DB::table('users')->insert(
-		array('email' => 'taylor@example.com', 'votes' => 0),
-		array('email' => 'dayle@example.com', 'votes' => 0),
+		array(
+			array('email' => 'taylor@example.com', 'votes' => 0),
+			array('email' => 'dayle@example.com', 'votes' => 0)
+		)
 	);
 
 <a name="updates"></a>
