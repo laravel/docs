@@ -67,7 +67,7 @@ You may add in extra conditions to ensure that the user is (for example) 'active
 
 Sometimes it's convenient to log in as a specific user without authenticating first.
 
-	$user = find(1);
+	$user = User::find(1);
 
 	Auth::login($user);
 
@@ -75,7 +75,7 @@ A shorter version, if you're just getting the `$user` via the `id` anyway
 
 	Auth::loginUsingId(1);
 
-> **Note:** Make sure you think about the security implications about logging users in without authenticating first!
+> **Note:** Make sure you think about the security implications when logging users in without authenticating first!
 
 Once a user is authenticated, you may access the User model / record:
 
