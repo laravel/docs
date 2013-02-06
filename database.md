@@ -36,6 +36,11 @@ The `select` method will always return an `array` of results.
 
 > **Note:** The `update` and `delete` statements return the number of rows affected by the operation.
 
+**Running A General Statement**
+
+	DB::statement('drop table users');
+
+
 <a name="accessing-connections"></a>
 ## Accessing Connections
 
