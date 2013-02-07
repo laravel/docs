@@ -116,9 +116,10 @@ Keyword                                  |  Description
 ---------------------------------------- | ------------------------------------
 `@extends('layout')`                     |  Use the template 'layout' as layout
 `@section('content')`                    |  Start section named 'content'
-`@stop`                                  |  End of the current section
-`@yield('content')`                      |  Output the section named 'content'
-`@parent`                                |  Called within a section, inserts parent layouts content for the section
+`@stop`                                  |  End the current section
+`@show`                                  |  End the current section and render it
+`@yield('content')`                      |  Render the section named 'content'
+`@parent`                                |  Called within a section, injects the parent layouts content for the section
 `@include('subtemplate')`                |  Renders the template 'subtemplate'
 `@each('part.template', $array, 'var')`  |  Loops through $array and renders 'part' template for each cell as $var
 `@if()` `@else` `@elseif` `@endif`       |  Basic if control strucure
