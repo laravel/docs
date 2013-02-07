@@ -7,22 +7,20 @@
 <a name="basic-usage"></a>
 ## Basic Usage
 
-The Laravel `Event` class provides a simple observer implementation, allowing you to subscribe and listen for events in your application. The Laravel event facilities extend the `Symfony\Component\EventDispatcher\EventDispatcher` class.
+The Laravel `Event` class provides a simple observer implementation, allowing you to subscribe and listen for events in your application.
 
 **Subscribing To An Event**
 
-	Event::listen('user.login', function($event)
+	Event::listen('user.login', function($user)
 	{
-		$event->user->last_login = new DateTime;
+		$user->last_login = new DateTime;
 
-		$event->user->save();
+		$user->save();
 	});
 
 **Firing An Event**
 
-	$event = Event::fire('user.login', array('user' => $user));
-
-Note that the `Event::fire` method returns an `Event` object, allowing you to inspect the event payload after the listeners have been called.
+	$event = Event::fire('user.login', array($user));
 
 You may also specify a priority when subscribing to events. Listeners with higher priority will be run first, while listeners that have the same priority will be run in order of subscription.
 
@@ -32,7 +30,7 @@ You may also specify a priority when subscribing to events. Listeners with highe
 
 	Event::listen('user.login', 'OtherHandler', 5);
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using the `$event->stop()` method.
+Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your listener:
 
 **Stopping The Propagation Of An Event**
 
@@ -40,7 +38,7 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 	{
 		// Handle the event...
 
-		$event->stop();
+		return false;
 	});
 
 <a name="using-classes-as-listeners"></a>
@@ -58,7 +56,7 @@ By default, the `handle` method on the `LoginHandler` class will be called:
 
 	class LoginHandler {
 
-		public function handle($event)
+		public function handle($data)
 		{
 			//
 		}
@@ -74,11 +72,11 @@ If you do not wish to use the default `handle` method, you may specify the metho
 <a name="event-subscribers"></a>
 ## Event Subscribers
 
-Event subscribers are classes that may subscribe to multiple events from within the class itself. Subscribers should extend the `EventSubscriber` class and define a `subscribes` method.
+Event subscribers are classes that may subscribe to multiple events from within the class itself. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance:
 
 **Defining An Event Subscriber**
 
-	class UserEventHandler extends EventSubscriber {
+	class UserEventHandler {
 
 		/**
 		 * Handle user login events.
@@ -99,18 +97,14 @@ Event subscribers are classes that may subscribe to multiple events from within 
 		/**
 		 * Register the listeners for the subscriber.
 		 *
+		 * @param  Illuminate\Events\Dispatcher  $events
 		 * @return array
 		 */
-		public static function subscribes()
+		public static function subscribe($events)
 		{
-			return array(
-				'user.login' => array(
-					array('onUserLogin', 10),
-				),
-				'user.logout' => array(
-					array('onUserLogout', 10),
-				),
-			);
+			$events->listen('user.login', 'UserEventHandler@onUserLogin');
+
+			$events->listen('user.logout', 'UserEventHandler@onUserLogout');
 		}
 
 	}
@@ -122,9 +116,3 @@ Once the subscriber has been defined, it may be registered with the `Event` clas
 	$subscriber = new UserEventHandler;
 
 	Event::subscribe($subscriber);
-
-**Removing An Event Subscriber**
-
-	Event::unsubscribe($subscriber);
-	
-The instance that was passed to the `subscribe` method may also be passed to the `unsubscribe` method to remove it.
