@@ -436,6 +436,10 @@ You may also pass an array of attributes that should be stored on the pivot tabl
 
 	$user->roles()->detach(1);
 
+The `detach` method also accepts an array of id's of models to detach
+
+	$user->roles()->detach(array(1, 2, 3));
+
 You may also use the `sync` method to attach and detatch related models. The `sync` method accepts an array of IDs to attach and detatches all other related models.
 
 **Using Sync To Attach Many To Many Models**
