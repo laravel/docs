@@ -156,7 +156,9 @@ To send a password reminder, we can use the `Password::remind` method:
 		return Password::remind($credentials);
 	});
 
-Note that the arguments passed to the `remind` method are similar to the `Auth::attempt` method. This method will retrieve the `User`, and send them a password reset link via e-mail. You may specify which view is used as the e-mail message by changing the `auth.reminder.email` configuration option. The view will be passed a `token` variable which may be used to construct the link to the password reset form. Of course, a default view is provided out of the box.
+Note that the arguments passed to the `remind` method are similar to the `Auth::attempt` method. This method will retrieve the `User` and send them a password reset link via e-mail. The e-mail view will be passed a `token` variable which may be used to construct the link to the password reset form.
+
+> **Note:** You may specify which view is used as the e-mail message by changing the `auth.reminder.email` configuration option. Of course, a default view is provided out of the box.
 
 You may modify the message instance that is sent to the user by passing a Closure as the second argument to the `remind` method:
 
@@ -165,7 +167,7 @@ You may modify the message instance that is sent to the user by passing a Closur
 		$m->subject('Your Password Reminder');
 	});
 
-You may also have noticed that we are returning the results of the `remind` method directly from a route. By default, the `remind` method will return a `Redirect` to the current URI. If an error occurred while attempting to reset the passowrd, the `error` variable will be flashed to the session, as well as a `reason`, which can be used to extract a language line from the `reminders` language file. So, your password reset form view could look something like this:
+You may also have noticed that we are returning the results of the `remind` method directly from a route. By default, the `remind` method will return a `Redirect` to the current URI. If an error occurred while attempting to reset the password, an `error` variable will be flashed to the session, as well as a `reason`, which can be used to extract a language line from the `reminders` language file. So, your password reset form view could look something like this:
 
 	@if (Session::has('error'))
 		{{ trans(Session::get('reason')) }}
@@ -211,6 +213,8 @@ Again, notice we are using the `Session` to display any errors that may be detec
 	});
 
 Note that if the password reset is successful, the `User` instance and the password will be passed to your Closure, allowing you to actually perform the save operation. Then, you may reutrn a `Redirect` or any other type of response from the Closure which will be returned by the `reset` method.
+
+Also, similarly to the `remind` method, if an error occurs while resetting the password, the `reset` method will return a `Redirect` to the current URI with an `error` and `reason`.
 
 <a name="encryption"></a>
 ## Encryption
