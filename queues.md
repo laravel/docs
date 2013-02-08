@@ -50,7 +50,7 @@ If you wish to release a job back onto the queue, you may do so via the `release
 
 **Releasing A Job Back Onto The Queue**
 
-	public funtion fire($job, $data)
+	public function fire($job, $data)
 	{
 		// Process the job...
 
