@@ -176,7 +176,7 @@ You may also have noticed that we are returning the results of the `remind` meth
 
 ### Resetting Passwords
 
-Once a user has clicked on the reset link, they should be directed to a form that includes a hidden `token` field, as well as a `password` and `password_confirmation` field. Below is an example route for the password reset form:
+Once a user has clicked on the reset link from the reminder e-mail, they should be directed to a form that includes a hidden `token` field, as well as a `password` and `password_confirmation` field. Below is an example route for the password reset form:
 
 	Route::get('password/reset/{token}', function($token)
 	{
