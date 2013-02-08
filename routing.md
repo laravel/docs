@@ -6,7 +6,8 @@
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
 - [Sub-Domain Routing](#sub-domain-routing)
-- [Route Prefix](#route-prefix)
+- [Route Prefixing](#route-prefixing)
+- [Route Model Binding](#route-model-binding)
 - [Throwing 404 Errors](#throwing-404-errors)
 - [Resource Controllers](#resource-controllers)
 
@@ -204,9 +205,10 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 		});
 
 	});
-<a name="route-prefix"></a>
-## Route Prefix
-Prefixing route option offers the advantage of segmenting the URL to a route or list of grouped routes. 
+<a name="route-prefixing"></a>
+## Route Prefixing
+
+A group of routes may be prefixed by using the `prefix` option in the attributes array of a group:
 
 **Prefixing Grouped Routes**
 
@@ -218,6 +220,33 @@ Prefixing route option offers the advantage of segmenting the URL to a route or 
 			//
 		});
 
+	});
+
+<a name="route-model-binding"></a>
+## Route Model Binding
+
+Model binding provides a convenient way to inject model instances into your routes. For example, instead of injecting a user's ID, you can inject the entire User model instance that matches the given ID. First, use the `Route::model` method to specify the model that should be used for a given parameter:
+
+**Binding A Parameter To A Model**
+
+	Route::model('user', 'User');
+
+Next, define a route that contains a `{user}` parameter:
+
+	Route::get('profile/{user}', function(User $user)
+	{
+		//
+	});
+
+Since we have bound the `{user}` parameter to the `User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance which has an ID of 1.
+
+> **Note:** If a matching model instance is not found in the database, a 404 error will be thrown.
+
+Sometimes you may wish to use your own resolver for route parameters. Simply use the `Route::bind` method:
+
+	Route::bind('user', function($value, $route)
+	{
+		return User::where('name', $value)->first();
 	});
 
 <a name="throwing-404-errors"></a>
