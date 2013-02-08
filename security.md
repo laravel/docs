@@ -4,6 +4,7 @@
 - [Storing Passwords](#storing-passwords)
 - [Authenticating Users](#authenticating-users)
 - [Protecting Routes](#protecting-routes)
+- [Password Reminders & Reset](#password-reminders-and-reset)
 - [Encryption](#encryption)
 
 <a name="configuration"></a>
@@ -117,6 +118,99 @@ Laravel provides an easy method of protecting your application from cross-site r
     {
         return 'You gave a valid CSRF token!';
     }));
+
+<a name="password-reminders-and-reset"></a>
+## Password Reminders & Reset
+
+### Sending Password Reminders
+
+Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets. To get started, verify that your `User` model implements the `Illuminate\Auth\RemindableInterface` contract. Of course, the `User` model included with the framework already implements this interface.
+
+**Implementing The RemindableInterface**
+
+	class User extends Eloquent implements RemindableInterface {
+
+		public function getReminderEmail()
+		{
+			return $this->email;
+		}
+
+	}
+
+Next, a table must be created to store the password reset tokens. To generate a migration for this table, simply execute the `auth:reminders` Artisan command:
+
+**Generating The Reminder Table Migration**
+
+	php artisan auth:reminders
+
+	php artisan migrate
+
+To send a password reminder, we can use the `Password::remind` method:
+
+**Sending A Password Reminder**
+
+	Route::post('password/remind', function()
+	{
+		$credentials = array('email' => Input::get('email'));
+
+		return Password::remind($credentials);
+	});
+
+Note that the arguments passed to the `remind` method are similar to the `Auth::attempt` method. This method will retrieve the `User`, and send them a password reset link via e-mail. You may specify which view is used as the e-mail message by changing the `auth.reminder.email` configuration option. The view will be passed a `token` variable which may be used to construct the link to the password reset form. Of course, a default view is provided out of the box.
+
+You may modify the message instance that is sent to the user by passing a Closure as the second argument to the `remind` method:
+
+	return Password::remind($credentials, function($m)
+	{
+		$m->subject('Your Password Reminder');
+	});
+
+You may also have noticed that we are returning the results of the `remind` method directly from a route. By default, the `remind` method will return a `Redirect` to the current URI. If an error occurred while attempting to reset the passowrd, the `error` variable will be flashed to the session, as well as a `reason`, which can be used to extract a language line from the `reminders` language file. So, your password reset form view could look something like this:
+
+	@if (Session::has('error'))
+		{{ trans(Session::get('reason')) }}
+	@endif
+
+	<input type="text" name="email">
+	<input type="submit" value="Send Reminder">
+
+### Resetting Passwords
+
+Once a user has clicked on the reset link, they should be directed to a form that includes a hidden `token` field, as well as a `password` and `password_confirmation` field. Below is an example route for the password reset form:
+
+	Route::get('password/reset/{token}', function($token)
+	{
+		return View::make('auth.reset')->with('token', $token);
+	});
+
+And, a password reset form might look like this:
+
+	@if (Session::has('error'))
+		{{ trans(Session::get('reason')) }}
+	@endif
+
+	<input type="hidden" name="token" value="{{ $token }}">
+	<input type="text" name="email">
+	<input type="password" name="password">
+	<input type="password" name="password_confirmation">
+
+Again, notice we are using the `Session` to display any errors that may be detected by the framework while resetting passwords. Next, we can define a `POST` route to handle the reset:
+
+	Route::post('password/reset', function()
+	{
+		$credentials = array('email' => Input::get('email'));
+
+		return Password::reset($credentials, function($user, $password)
+		{
+			$user->password = $password;
+
+			$user->save();
+
+			return Redirect::to('home');
+		});
+	});
+
+Note that if the password reset is successful, the `User` instance and the password will be passed to your Closure, allowing you to actually perform the save operation. Then, you may reutrn a `Redirect` or any other type of response from the Closure which will be returned by the `reset` method.
 
 <a name="encryption"></a>
 ## Encryption
