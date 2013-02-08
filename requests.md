@@ -142,6 +142,10 @@ The `Request` class provides many methods for examining the HTTP request for you
 
 	$url = Request::url();
 
+**Retrieve A Request URI Segment**
+
+	$segment = Request::segment(1);
+
 **Retrieving A Request Header**
 
 	$value = Request::header('Content-Type');

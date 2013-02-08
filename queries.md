@@ -228,3 +228,7 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 **Deleting All Records From A Table**
 
 	DB::table('users')->delete();
+
+**Truncating A Table**
+
+	DB::table('users')->truncate();

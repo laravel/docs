@@ -113,6 +113,12 @@ Of course, you may also run a delete query on a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->delete();
 
+If you wish to simply update the timestamps on a model, you may use the `touch` method:
+
+**Updating Only The Model's Timestamps**
+
+	$user->touch();
+
 <a name="timestamps"></a>
 ## Timestamps
 
@@ -503,6 +509,20 @@ Collections may also be converted to an array or JSON:
 If a collection is cast to a string, it will be returned as JSON:
 
 	$roles = (string) User::find(1)->roles;
+
+Eloquent collections also contain a few helpful methods for looping and filtering the items they contain:
+
+**Iterating & Filtering Collections**
+
+	$roles = $user->roles->each(function($role)
+	{
+
+	});
+
+	$roles = $user->roles->filter(function($role)
+	{
+
+	});
 
 Sometimes, you may wish to return a custom Collection object with your own added methods. You may specify this on your Eloquent model by overriding the `newCollection` method:
 

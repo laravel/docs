@@ -69,6 +69,24 @@ Once a user is authenticated, you may access the User model / record:
 
 	$email = Auth::user()->email;
 
+The `validate` method allows you to validate a user's crednetials without actually logging them into the application:
+
+**Validating User Credentials Without Login**
+
+	if (Auth::validate($credentials))
+	{
+		//
+	}
+
+You may also use the `stateless` method to log a user into the application for a single request. No sessions or cookies will be utilized.
+
+**Logging A User In For A Single Request**
+
+	if (Auth::stateless($credentials))
+	{
+		//
+	}
+
 **Logging A User Out Of The Application**
 
 	Auth::logout();
