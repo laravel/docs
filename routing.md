@@ -54,7 +54,7 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 
 **Optional Route Parameters**
 
-	Route::get('user/{name?}', function($name)
+	Route::get('user/{name?}', function($name = null)
 	{
 		return $name;
 	});
