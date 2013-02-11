@@ -115,9 +115,9 @@ Command  | Description
 
 When building your database you're very likely have columns in one table referencing primary keys of another table, for instance when you're using [Eloquent's Relationships](/docs/eloquent#relationships) features. If you let your database engine know this you can leverage it's capacity for keeping this data consistent and working smothly.
 
-> **Note:** Both columns muse be of the same type. Primary keys are unsigned integers so referencing columns need to be `->unsigned()` aswell.
+> **Note:** Both columns must be of the same type. Primary keys are unsigned integers so referencing columns need to be `->unsigned()` as well.
 
-> **Note:** The referenced table must created before the referencing table.
+> **Note:** The referenced table must be created before the referencing table.
 
 **Add A Foreign Key Constraint**
 
