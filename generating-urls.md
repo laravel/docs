@@ -5,6 +5,7 @@
 - [URLs To Controller Actions](#urls-to-controller-actions)
 - [URLs To Assets](#urls-to-assets)
 - [Secure URLs](#secure-urls)
+- [Helpers](#helpers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -48,3 +49,31 @@ You can force action(), route() and asset() to return secure urls by setting the
 **Get the secure URL for a path**
 
 	$url = URL::secure('login');
+	
+<a name="helpers"></a>	
+## Helpers
+There are several helper functions for generating URLs designed to make your life easier and your code cleaner:
+
+**Generating a URL relative to the base URL:**
+
+	$url = url('user/profile');
+	
+**Get the URL for an asset:**
+
+	$url = asset('js/jquery.js');
+	
+**Get the URL for a named route:**
+
+	$url = route('profile');
+	
+**Get the URL for a named route with wildcard values:**
+
+	$url = route('profile', [$username]);
+	
+**Get the URL for a controller action:**
+
+	$url = action('UserController@profile');
+	
+**Get the URL for a controller action with wildcard values:**
+
+	$url = action('UserController@profile', [$username]);
