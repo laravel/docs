@@ -17,7 +17,7 @@
   
 	$url = URL::route('profile');
 
-Sometimes you may need to generate a URL to a named route, but also need to specify the values that should be used instead of the route's URI wildcards. It's easy to replace the wildcards with proper values:
+Sometimes you may need to generate a URL to a named route, but also need to specify the values that should be used as the route's URI wildcards. It's easy to replace the wildcards with proper values:
 
 **Get the URL for a named route with wildcard values:**
 
@@ -25,14 +25,17 @@ Sometimes you may need to generate a URL to a named route, but also need to spec
 	
 <a name="urls-to-routes"></a>
 ## URLs To Controller Actions
-
 **Get the URL for a controller action:**
 
 	$url = URL::action('UserController@getProfile');
 
+Sometimes you may need to generate a URL to a controller action, but also need to specify the values that should be used for the controllers route's URI wildcards. It's easy to replace the wildcards with proper values:
+
 **Get the URL for a controller action with wildcard values:**
 
-	$url = URL::action('UserController@profile', [$username]);
+	$url = URL::action('UserController@getProfile', [$username]);
+	
+> **Note:** When referencing controller actions the notation is the full class name and the full action name separated by @. This means that normal, restful and resourceful controller actions all follow the same pattern.
 
 <a name="urls-to-assets"></a>
 ## URLs To Assets
