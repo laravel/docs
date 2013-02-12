@@ -67,29 +67,29 @@ The `--table` and `--create` options may also be used to indicate the name of th
 <a name="database-seeding"></a>
 ## Database Seeding
 
-Laravel also includes a simple way to seed your database with test data using seed files. All seed files are stored in `app/database/seeds`. Seed files should be named according to the table they seed, and simply return an array of records.
+Laravel also includes a simple way to seed your database with test data using seed classes. All seed classes are stored in `app/database/seeds`. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserTableSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
 
-**Example Database Seed File**
+**Example Database Seed Class**
 
-	<?php
+	class DatabaseSeeder extends Seeder {
 
-	return array(
+		public function run()
+		{
+			$this->call('UserTableSeeder');
+		}
 
-		array(
-			'email' => 'john@example.com',
-			'votes' => 10,
-			'created_at' => new DateTime,
-			'updated_at' => new DateTime,
-		),
+	}
 
-		array(
-			'email' => 'smith@example.com',
-			'votes' => 20,
-			'created_at' => new DateTime,
-			'updated_at' => new DateTime,
-		),
+	class UserTableSeeder extends Seeder {
 
-	);
+		public function run()
+		{
+			DB::table('users')->delete();
+
+			User::create(array('email' => 'foo@bar.com'));
+		}
+
+	}
 
 To seed your database, you may use the `db:seed` command on the Artisan CLI:
 

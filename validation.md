@@ -132,6 +132,8 @@ Below is a list of all available validation rules and their function:
 - [Before (Date)](#rule-before)
 - [Between](#rule-between)
 - [Confirmed](#rule-confirmed)
+- [Date](#rule-date)
+- [Date Format](#rule-date-format)
 - [Different](#rule-different)
 - [E-Mail](#rule-email)
 - [Exists (Database)](#rule-exists)
@@ -195,6 +197,16 @@ The field under validation must have a size between the given _min_ and _max_. S
 #### confirmed
 
 The field under validation must have a matching field of `foo_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
+
+<a name="rule-date"></a>
+#### date
+
+The field under validation must be a valid date according to the `strtotime` PHP function.
+
+<a name="rule-date-format"></a>
+#### date_format:_format_
+
+The field under validation must match the _format_ defined according to the `date_parse_from_format` PHP function.
 
 <a name="rule-different"></a>
 #### different:_field_

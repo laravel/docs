@@ -35,6 +35,13 @@ If an exception handler returns a response, that response will be sent to the br
 		return 'Sorry! Something is wrong with this account!';
 	});
 
+To listen for PHP fatal errors, you may use the `App::fatal` method:
+
+	App::fatal(function($exception)
+	{
+		//
+	});
+
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
 

@@ -74,3 +74,9 @@ When using the `database` session driver, you will need to setup a table to cont
 		$t->text('payload');
 		$t->integer('last_activity');
 	});
+
+Of course, you may use the `session:table` Artisan command to generate this migration for you!
+
+	php artisan session:table
+
+	php artisan migrate

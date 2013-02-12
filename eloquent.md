@@ -113,6 +113,12 @@ Of course, you may also run a delete query on a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->delete();
 
+If you wish to simply update the timestamps on a model, you may use the `touch` method:
+
+**Updating Only The Model's Timestamps**
+
+	$user->touch();
+
 <a name="timestamps"></a>
 ## Timestamps
 
@@ -288,7 +294,7 @@ Polymorphic relations allow a model to belong to more than one other model, on a
 
 		public function photos()
 		{
-			return $this->hasMany('Photo', 'imageable');
+			return $this->morphMany('Photo', 'imageable');
 		}
 
 	}
@@ -504,6 +510,20 @@ If a collection is cast to a string, it will be returned as JSON:
 
 	$roles = (string) User::find(1)->roles;
 
+Eloquent collections also contain a few helpful methods for looping and filtering the items they contain:
+
+**Iterating & Filtering Collections**
+
+	$roles = $user->roles->each(function($role)
+	{
+
+	});
+
+	$roles = $user->roles->filter(function($role)
+	{
+
+	});
+
 Sometimes, you may wish to return a custom Collection object with your own added methods. You may specify this on your Eloquent model by overriding the `newCollection` method:
 
 **Returning A Custom Collection Type**
@@ -517,16 +537,26 @@ Sometimes, you may wish to return a custom Collection object with your own added
 
 	}
 
+**Applying callback to the objects in a collection**
+
+	$roles = User::find(1)->roles;
+	
+	$roles->each(function($role)
+	{
+		//	
+	});
+	
+
 <a name="accessors-and-mutators"></a>
 ## Accessors & Mutators
 
-Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simplify define a `giveFoo` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
+Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simplify define a `getFooAttribute` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
 
 **Defining An Accessor**
 
 	class User extends Eloquent {
 
-		public function giveFirstName($value)
+		public function getFirstNameAttribute($value)
 		{
 			return ucfirst($value);
 		}
@@ -541,7 +571,7 @@ Mutators are declared in a similar fashion:
 
 	class User extends Eloquent {
 
-		public function takeFirstName($value)
+		public function setFirstNameAttribute($value)
 		{
 			$this->attributes['first_name'] = strtolower($value);
 		}
