@@ -70,12 +70,14 @@ Notice the empty array is needed if you don't want to supply a value.
 <a name="secure-urls"></a>
 ## Secure URLs
 
-You can generate secure (https) versions of the URLs by replacing route, action or asset with `secure`
+You can generate secure (https) versions of the URLs by replacing route or action with `secure` or sending `false` as the the second parameter `asset`.
 
 	$url = URL::secure('login');
 
 	$url = URL::secure('profile', [$username]);
 
-	$url = URL::secure('UserController@profile, [$username]');
+	$url = URL::secure('UserController@profile', [$username]);
+
+	$url = URL::asset('js/jquery.js', true);
 
 There is no helper for secure, so you always have to use the full `URL::secure()`
