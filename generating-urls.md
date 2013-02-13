@@ -18,7 +18,7 @@ For several of the URL generating methods described below there is a shorter hel
 <a name="urls-to-routes"></a>
 ## URLs To Routes
 
-**Get the URL for a named route:**
+**Get the URL for a named route**
   
 	$url = URL::route('profile');
 
@@ -26,7 +26,7 @@ For several of the URL generating methods described below there is a shorter hel
 
 Sometimes you may need to generate a URL to a named route, but also need to specify the values that should be used instead of the route's URI wildcards. It's easy to replace the wildcards with proper values:
 
-**Get the URL for a named route with wildcard values:**
+**Get the URL for a named route with wildcard values**
 
 	$url = URL::route('profile', [$username]);
 
@@ -37,13 +37,13 @@ The aliases are of course available outside of templates as well. Don't forget t
 <a name="urls-to-controller-actions"></a>
 ## URLs To Controller Actions
 
-**Get the URL for a controller action:**
+**Get the URL for a controller action**
 
 	$url = URL::action('UserController@getProfile');
 
 	{{ action('UserController@getProfile') }}
 
-**Get the URL for a controller action with wildcard values:**
+**Get the URL for a controller action with wildcard values**
 
 	$url = URL::action('UserController@profile', [$username]);
 
@@ -52,7 +52,7 @@ The aliases are of course available outside of templates as well. Don't forget t
 <a name="urls-to-assets"></a>
 ## URLs To Assets
 
-**Get the URL for an asset:**
+**Get the URL for an asset**
 
 	$url = URL::asset('js/jquery.js');
 
