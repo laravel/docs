@@ -40,16 +40,20 @@ Sometimes you may need to generate a URL to a named route, but also need to spec
 **Get the URL for an asset:**
 
 	$url = URL::asset('js/jquery.js');
-	
+
 <a name="secure-urls"></a>
 ## Secure URLs
 
-You can force action(), route() and asset() to return secure urls by setting the third paramater to TRUE.
-
-**Get the secure URL for a path**
+You can generate secure (https) versions of the URLs by replacing route, action or asset with `secure`
 
 	$url = URL::secure('login');
-	
+
+	$url = URL::secure('profile', [$username]);
+
+	$url = URL::secure('UserController@profile, [$username]');
+
+There is no helper for secure, so you always have to use the full `URL::secure()`
+
 <a name="helpers"></a>	
 ## Helpers
 There are several helper functions for generating URLs designed to make your life easier and your code cleaner:
