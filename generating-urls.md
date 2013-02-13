@@ -57,15 +57,6 @@ Getting URLs for [resource controllers](/docs/controllers#resource-controllers) 
 
 	$url = URL::action('PhotoController@show' [$photo_id]);
 
-<a name="urls-to-assets"></a>
-## URLs To Assets
-
-**Get the URL for an asset**
-
-	$url = URL::asset('js/jquery.js');
-
-	{{ asset('js/jquery.js') }}
-
 <a name="relative-vs-absolute"></a>
 ## Relative URLs
 
@@ -74,6 +65,15 @@ By default all generated URLs are absolute. If you would like to generate relati
 	$url = URL::action('PhotoController@index', [], false);
 
 Notice the empty array is needed if you don't want to supply a value.
+
+<a name="urls-to-assets"></a>
+## URLs To Assets
+
+**Get the URL for an asset**
+
+	$url = URL::asset('js/jquery.js');
+
+	{{ asset('js/jquery.js') }}
 
 <a name="secure-urls"></a>
 ## Secure URLs
