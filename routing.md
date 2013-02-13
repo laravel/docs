@@ -113,7 +113,7 @@ If a response is returned from a filter, that response will be considered the re
 
 **Specifying Filter Parameters**
 
-	Route::filter('age', function($value)
+	Route::filter('age', function($route, $request, $value)
 	{
 		//
 	});
