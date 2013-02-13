@@ -10,6 +10,7 @@
     - [Views & Responses](/docs/responses)
     - [Controllers](/docs/controllers)
     - [Errors & Logging](/docs/errors)
+    - [Generating URLs](/docs/generating-urls)
 - Learning More
     - [Cache](/docs/cache)
     - [Events](/docs/events)
