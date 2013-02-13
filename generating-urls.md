@@ -4,6 +4,7 @@
 - [URLs To Routes](#urls-to-routes)
 - [URLs To Controller Actions](#urls-to-controller-actions)
 - [URLs To Assets](#urls-to-assets)
+- [Relatvie URLs](#relative-vs-absolute)
 - [Secure URLs](#secure-urls)
 - [Helpers](#helpers)
 
@@ -40,6 +41,15 @@ Sometimes you may need to generate a URL to a named route, but also need to spec
 **Get the URL for an asset:**
 
 	$url = URL::asset('js/jquery.js');
+
+<a name="relative-vs-absolute"></a>
+## Relative URLs
+
+By default all generated URLs are absolute. If you would like to generate relative URLs instead, supply a third argument to the URL method with a `false` value.
+
+	$url = URL::action('UserController@index', [], false);
+
+Notice the empty array is needed if you don't want to supply a value.
 
 <a name="secure-urls"></a>
 ## Secure URLs
