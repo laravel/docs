@@ -10,7 +10,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-<a name="urls-to-controller-actions"></a>
+<a name="urls-to-routes"></a>
 ## URLs To Routes
 
 **Get the URL for a named route:**
@@ -23,7 +23,7 @@ Sometimes you may need to generate a URL to a named route, but also need to spec
 
 	$url = URL::route('profile', [$username]);
 	
-<a name="urls-to-routes"></a>
+<a name="urls-to-controller-actions"></a>
 ## URLs To Controller Actions
 
 **Get the URL for a controller action:**
