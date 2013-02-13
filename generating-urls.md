@@ -11,6 +11,10 @@
 <a name="introduction"></a>
 ## Introduction
 
+<a name="helpers"></a>
+## Helpers
+For several of the URL generating methods described below there is a shorter helper version. This is convenient to, for instance, make your templates look cleaner. The examples of helpers below will blade oriented, but the helpers are of course also available outside of the blade and template realm as well.
+
 <a name="urls-to-routes"></a>
 ## URLs To Routes
 
@@ -18,12 +22,18 @@
   
 	$url = URL::route('profile');
 
+	{{ route('profile') }}
+
 Sometimes you may need to generate a URL to a named route, but also need to specify the values that should be used instead of the route's URI wildcards. It's easy to replace the wildcards with proper values:
 
 **Get the URL for a named route with wildcard values:**
 
 	$url = URL::route('profile', [$username]);
-	
+
+	{{ route('profile', [$username]) }}
+
+The aliases are of course available outside of templates as well. Don't forget to use tripple curly brackets when you don't want the data to be escaped. (read more in the [Templates](/docs/templates#blade-templating-engine) section)
+
 <a name="urls-to-controller-actions"></a>
 ## URLs To Controller Actions
 
@@ -31,9 +41,13 @@ Sometimes you may need to generate a URL to a named route, but also need to spec
 
 	$url = URL::action('UserController@getProfile');
 
+	{{ action('UserController@getProfile') }}
+
 **Get the URL for a controller action with wildcard values:**
 
 	$url = URL::action('UserController@profile', [$username]);
+
+	{{ action('UserController@profile', [$username]) }}
 
 <a name="urls-to-assets"></a>
 ## URLs To Assets
@@ -41,6 +55,8 @@ Sometimes you may need to generate a URL to a named route, but also need to spec
 **Get the URL for an asset:**
 
 	$url = URL::asset('js/jquery.js');
+
+	{{ asset('js/jquery.js') }}
 
 <a name="relative-vs-absolute"></a>
 ## Relative URLs
@@ -63,31 +79,3 @@ You can generate secure (https) versions of the URLs by replacing route, action 
 	$url = URL::secure('UserController@profile, [$username]');
 
 There is no helper for secure, so you always have to use the full `URL::secure()`
-
-<a name="helpers"></a>	
-## Helpers
-There are several helper functions for generating URLs designed to make your life easier and your code cleaner:
-
-**Generating a URL relative to the base URL:**
-
-	$url = url('user/profile');
-	
-**Get the URL for an asset:**
-
-	$url = asset('js/jquery.js');
-	
-**Get the URL for a named route:**
-
-	$url = route('profile');
-	
-**Get the URL for a named route with wildcard values:**
-
-	$url = route('profile', [$username]);
-	
-**Get the URL for a controller action:**
-
-	$url = action('UserController@profile');
-	
-**Get the URL for a controller action with wildcard values:**
-
-	$url = action('UserController@profile', [$username]);
