@@ -49,6 +49,14 @@ The aliases are of course available outside of templates as well. Don't forget t
 
 	{{ action('UserController@profile', [$username]) }}
 
+**Get the url of a restful controller**
+
+Getting URLs for [resource controllers](/docs/controllers#resource-controllers) work just the same way as other controllers.
+
+	$url = URL::action('PhotoController@index');
+
+	$url = URL::action('PhotoController@show' [$photo_id]);
+
 <a name="urls-to-assets"></a>
 ## URLs To Assets
 
