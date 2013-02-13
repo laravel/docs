@@ -42,7 +42,16 @@ You may also specify names on controller routes:
 	Route::get('foo', array('uses' => 'FooController@method',
 											'as' => 'name'));
 
-> **Note:** After creating a new class, make sure to run `composer dump-autoload` from the command line. This will allow the framework to automatically load your class.
+You can also specify a controller for a route:
+
+	Route::controller('FooController', 'foo');
+
+Or specify an array of controllers for routes:
+
+	Route::controllers(array(
+		'FooController' => 'foo',
+		'BarController' => 'bar',
+	));
 
 <a name="controller-filters"></a>
 ## Controller Filters
