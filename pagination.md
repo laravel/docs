@@ -29,7 +29,7 @@ The argument passed to the `paginate` method is the number of items you wish to 
 
 	<div class="container">
 		<?php foreach ($users as $user): ?>
-			<?php echo $user->name;
+			<?php echo $user->name; ?>
 		<?php endforeach; ?>
 	</div>
 
