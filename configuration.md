@@ -47,6 +47,4 @@ Next, we need to instruct the framework how to determine which environment it is
 
         'local' => array('your-machine-name'),
 
-)   );
-
-    );
+    ));
