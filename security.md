@@ -70,7 +70,7 @@ Once a user is authenticated, you may access the User model / record:
 
 	$email = Auth::user()->email;
 
-The `validate` method allows you to validate a user's crednetials without actually logging them into the application:
+The `validate` method allows you to validate a user's credentials without actually logging them into the application:
 
 **Validating User Credentials Without Login**
 
