@@ -204,7 +204,7 @@ Again, notice we are using the `Session` to display any errors that may be detec
 
 		return Password::reset($credentials, function($user, $password)
 		{
-			$user->password = $password;
+			$user->password = Hash::make($password);
 
 			$user->save();
 
