@@ -117,6 +117,10 @@ When building your database you're very likely have columns in one table referen
 
 > **Note:** Both columns must be of the same type. Primary keys are unsigned integers so referencing columns need to be `->unsigned()` as well.
 
+**Creating The Referencing Column**
+
+	$table->integer("user_id")->unsigned()->index();;
+
 > **Note:** The referenced table must be created before the referencing table.
 
 **Add A Foreign Key Constraint**
