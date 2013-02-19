@@ -115,11 +115,12 @@ Command  | Description
 
 When building your database you're very likely have columns in one table referencing primary keys of another table, for instance when you're using [Eloquent's Relationships](/docs/eloquent#relationships) features. If you let your database engine know this you can leverage it's capacity for keeping this data consistent and working smothly.
 
-> **Note:** Both columns must be of the same type. Primary keys are unsigned integers so referencing columns need to be `->unsigned()` as well.
 
 **Creating The Referencing Column**
 
 	$table->integer("user_id")->unsigned()->index();;
+
+Make sure the new column matches the data type of referenced column. The column needs to be able to store any data the referenced column can store, otherwise you will probably run into trouble at some point.
 
 > **Note:** The referenced table must be created before the referencing table.
 
