@@ -131,13 +131,11 @@ You can also specify what you want the database engine to do when the referenced
 
 Option  |  Description
 ------------- | -------------
-`restrict`  |  Prevents deletion or update of the referenced row
-`cascade`  |  The action replicates - the column is updated to the new value, or the row is deleted along with the referenced row
+`restrict`  |  Prevents deletion of the referenced row or updates of the foreign key
+`cascade`  |  The action replicates - the new value is adopted, or the row is deleted along with the referenced row
 `set null`  |  The value is set to null when the foreign key is updated or deleted
-`no action`  |  Error is raised, but the action is performed
+`no action`  |  Error is raised, but the action is performed **This is the default option**
 `set default`  | The value is set to the default for the column when the foreign key is updated or deleted
-
-> **Note:** The default option is `no action`
 
 > **Note:** `set default` is not supported by MySQL InnoDB!
 
