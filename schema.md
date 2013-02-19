@@ -127,7 +127,7 @@ When building your database you're very likely have columns in one table referen
 
 	$table->foreign("user_id")->references('id')->on('users');
 
-You can also specify what you want the database engine to do when the referenced column is updated or deleted
+But to really leverage the database engine you'll probably want to specify what you want it to do when the referenced column is updated or deleted
 
 	$table->foreign("user_id")->references('id')->on('users')->onDelete('restrict');
 
