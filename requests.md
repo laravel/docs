@@ -168,9 +168,9 @@ The `Request` class provides many methods for examining the HTTP request for you
 		//
 	}
 	
-**Determining if The Request Is via Artisan CLI
+**Determining if The Request Is via Artisan CLI**
 	
         if (Request::cli())
-        {
-                // This request came from the CLI!
-         }
+	{
+		// This request came from the CLI!
+	}
