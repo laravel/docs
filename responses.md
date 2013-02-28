@@ -45,6 +45,10 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 
 **Returning A Redirect To A Named Route With Parameters**
 
+	return Redirect::route('profile', array(1));
+
+**Returning A Redirect To A Named Route Using Named Parameters**
+
 	return Redirect::route('profile', array('user' => 1));
 
 **Returning A Redirect To A Controller Action**
@@ -52,6 +56,10 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 	return Redirect::action('HomeController@index');
 
 **Returning A Redirect To A Controller Action With Parameters**
+
+	return Redirect::action('UserController@profile', array(1));
+
+**Returning A Redirect To A Controller Action Using Named Parameters**
 
 	return Redirect::action('UserController@profile', array('user' => 1));
 
@@ -111,12 +119,19 @@ View composers are callbacks or class methods that are called when a view is cre
 
 **Defining A View Composer**
 
-	View::composer('profile', function($event)
+	View::composer('profile', function($view)
 	{
-		$event->view->with('count', User::count());
+		$view->with('count', User::count());
 	});
 
 Now each time the `profile` view is created, the `count` data will be bound to the view.
+
+You may also attach a view composer to multiple views at once:
+
+    View::composer(array('profile','dashboard'), function($view)
+    {
+        $view->with('count', User::count());
+    });
 
 If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC container](/docs/ioc), you may do so:
 
@@ -126,9 +141,9 @@ A view composer class should be defined like so:
 
 	class ProfileComposer {
 
-		public function compose($event)
+		public function compose($view)
 		{
-			$event->view->with('count', User::count());
+			$view->with('count', User::count());
 		}
 
 	}
@@ -141,6 +156,10 @@ Note that there is no convention on where composer classes may be stored. You ar
 **Creating A JSON Response**
 
 	return Response::json(array('name' => 'Steve', 'state' => 'CA'));
+
+**Creating A JSONP Response**
+
+	return Response::json(array('name' => 'Steve', 'state' => 'CA'))->setCallback(Input::get('callback'));
 
 **Creating a File Download Response**
 

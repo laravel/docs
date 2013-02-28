@@ -32,7 +32,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 
 Once the a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
 
-	if ($validation->fails())
+	if ($validator->fails())
 	{
 		// The given data did not pass validation
 	}
@@ -132,6 +132,8 @@ Below is a list of all available validation rules and their function:
 - [Before (Date)](#rule-before)
 - [Between](#rule-between)
 - [Confirmed](#rule-confirmed)
+- [Date](#rule-date)
+- [Date Format](#rule-date-format)
 - [Different](#rule-different)
 - [E-Mail](#rule-email)
 - [Exists (Database)](#rule-exists)
@@ -196,6 +198,16 @@ The field under validation must have a size between the given _min_ and _max_. S
 
 The field under validation must have a matching field of `foo_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
 
+<a name="rule-date"></a>
+#### date
+
+The field under validation must be a valid date according to the `strtotime` PHP function.
+
+<a name="rule-date-format"></a>
+#### date_format:_format_
+
+The field under validation must match the _format_ defined according to the `date_parse_from_format` PHP function.
+
 <a name="rule-different"></a>
 #### different:_field_
 
@@ -222,7 +234,7 @@ The field under validation must exists on a given database table.
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpg, png, bmp, or gif)
+The file under validation must be an image (jpeg, png, bmp, or gif)
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
@@ -251,7 +263,7 @@ The file under validation must have a MIME type corresponding to one of the list
 
 **Basic Usage Of MIME Rule**
 
-	'photo' => 'mimes:jpg,bmp,png'
+	'photo' => 'mimes:jpeg,bmp,png'
 
 <a name="rule-min"></a>
 #### min:_value_
@@ -363,7 +375,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 
 	Validator::extend('foo', function($attribute, $value, $parameters)
 	{
-		return $value == 'foo'
+		return $value == 'foo';
 	});
 
 The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.

@@ -36,7 +36,7 @@ This command will prompt you for several pieces of information, such as the vend
 
 The vendor name is a way to distinguish your package from other packages of the same name from different authors. For example, if I (Taylor Otwell) were to create a new package named "Zapper", the vendor name could be `Taylor` while the package name would be `Zapper`.
 
-Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. First, you should run a `composer install` command from the root directory of your workbench package, which will install any dependencies and generate the Composer autoload files for your package. You may instruct the `workbench` command to do this automatically when creating a package using the `--composer` directive:
+Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. First, you should run a `composer install` command **from the root directory of your workbench package**, which will install any dependencies and generate the Composer autoload files for your package. You may instruct the `workbench` command to do this automatically when creating a package using the `--composer` directive:
 
 **Creating A Workbench Package And Running Composer**
 
@@ -138,7 +138,7 @@ When other developers install your package, they may wish to override some of th
 
 **Executing The Config Publish Command**
 
-	php artisan config:publish --package="vendor/package"
+	php artisan config:publish vendor/package
 
 When this command is executed, the configuration files for your application will be copied to `app/config/packages/vendor/package` where they can be safely modified by the developer!
 
@@ -170,11 +170,11 @@ Some packages may have assets such as JavaScript, CSS, and images. However, we a
 
 **Moving Package Assets To Public**
 
-	php artisan asset:publish package/vendor
+	php artisan asset:publish vendor/package
 
 If the package is still in the `workbench`, use the `--bench` directive:
 
-	php artisan asset:publish --bench="package/vendor"
+	php artisan asset:publish --bench="vendor/package"
 
 This command will move the assets into the `public/packages` directory according to the vendor and package name. So, a package named `userscape/kudos` would have its assets moved to `public/packages/userscape/kudos`. Using this asset publishing convention allows you to safely code asset path in your package's views.
 

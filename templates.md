@@ -1,7 +1,7 @@
 # Templates
 
 - [Controller Layouts](#controller-layouts)
-- [Blade Templating](#blade-templating)
+- [Blade Templating](#blade-templating-engine)
 - [Other Blade Control Structures](#other-blade-control-structures)
 
 <a name="controller-layouts"></a>
@@ -41,7 +41,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 		<body>
 			@section('sidebar')
 				This is the master sidebar.
-			@stop
+			@show
 
 			<div class="container">
 				@yield('content')
@@ -73,6 +73,10 @@ Note that views which `extend` a Blade layout simply override sections from the 
 	Hello, {{ $name }}.
 
 	The current UNIX timestamp is {{ time() }}.
+
+Blade will automatically escape data that it outputs. If you wish to output raw data without escaping, you may use the triple curly brace syntax:
+
+	Hello, {{{ $name }}}.
 
 **If Statements**
 

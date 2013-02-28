@@ -27,11 +27,17 @@ To get started, create an Eloquent model. Models typically live in the `app/mode
 
 **Defining An Eloquent Model**
 
+	class User extends Eloquent {}
+
+Note that we did not tell Eloquent which table to use for our `User` model. The lower-case, plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
+
 	class User extends Eloquent {
 
-		protected $table = 'users';
+		protected $table = 'my_users';
 
 	}
+
+> **Note:** Eloquent will also assume that each table has a primary key column named `id`. You may define a `primaryKey` property to override this convention:
 
 Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
 
@@ -107,6 +113,12 @@ Of course, you may also run a delete query on a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->delete();
 
+If you wish to simply update the timestamps on a model, you may use the `touch` method:
+
+**Updating Only The Model's Timestamps**
+
+	$user->touch();
+
 <a name="timestamps"></a>
 ## Timestamps
 
@@ -118,7 +130,7 @@ By default, Eloquent will maintain the `created_at` and `updated_at` columns on 
 
 		protected $table = 'users';
 
-		protected $timestamps = false;
+		public $timestamps = false;
 
 	}
 
@@ -171,7 +183,7 @@ The SQL performed by this statement will be as follows:
 
 	select * from phones where user_id = 1
 
-Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `User` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
+Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
 
 	return $this->hasOne('Phone', 'custom_key');
 
@@ -258,7 +270,7 @@ You may also override the conventional associated keys:
 <a name="polymorphic-relations"></a>
 ### Polymorphic Relations
 
-Polymorphic relations allow a model to belongs to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
+Polymorphic relations allow a model to belong to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
 
 	class Photo extends Eloquent {
 
@@ -282,7 +294,7 @@ Polymorphic relations allow a model to belongs to more than one other model, on 
 
 		public function photos()
 		{
-			return $this->hasMany('Photo', 'imageable');
+			return $this->morphMany('Photo', 'imageable');
 		}
 
 	}
@@ -383,10 +395,17 @@ Sometimes you may wish to eager load a relationship, but also specify a conditio
 	$users = User::with(array('posts' => function($query)
 	{
 		$query->where('title', 'like', '%first%');
-
 	}))->get();
 
 In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
+
+### Lazy Eager Loading
+
+It is also possible to eagerly load related models directly from an already existing model collection. This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.
+
+	$books = Book::all();
+
+	$books->load('author', 'publisher');
 
 <a name="inserting-related-models"></a>
 ## Inserting Related Models
@@ -491,6 +510,20 @@ If a collection is cast to a string, it will be returned as JSON:
 
 	$roles = (string) User::find(1)->roles;
 
+Eloquent collections also contain a few helpful methods for looping and filtering the items they contain:
+
+**Iterating & Filtering Collections**
+
+	$roles = $user->roles->each(function($role)
+	{
+
+	});
+
+	$roles = $user->roles->filter(function($role)
+	{
+
+	});
+
 Sometimes, you may wish to return a custom Collection object with your own added methods. You may specify this on your Eloquent model by overriding the `newCollection` method:
 
 **Returning A Custom Collection Type**
@@ -504,16 +537,26 @@ Sometimes, you may wish to return a custom Collection object with your own added
 
 	}
 
+**Applying callback to the objects in a collection**
+
+	$roles = User::find(1)->roles;
+	
+	$roles->each(function($role)
+	{
+		//	
+	});
+	
+
 <a name="accessors-and-mutators"></a>
 ## Accessors & Mutators
 
-Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simplify define a `getFoo` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
+Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simplify define a `getFooAttribute` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
 
 **Defining An Accessor**
 
 	class User extends Eloquent {
 
-		public function getFirstName($value)
+		public function getFirstNameAttribute($value)
 		{
 			return ucfirst($value);
 		}
@@ -528,7 +571,7 @@ Mutators are declared in a similar fashion:
 
 	class User extends Eloquent {
 
-		public function setFirstName($value)
+		public function setFirstNameAttribute($value)
 		{
 			$this->attributes['first_name'] = strtolower($value);
 		}

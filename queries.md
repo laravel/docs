@@ -1,4 +1,4 @@
-## Query Builder
+# Query Builder
 
 - [Introduction](#introduction)
 - [Selects](#selects)
@@ -62,6 +62,19 @@ The database query builder provides a convenient, fluent interface to creating a
 
 	$users = DB::table('users')
 	                    ->whereBetween('votes', array(1, 100))->get();
+
+**Using Where In With An Array**
+
+	$users = DB::table('users')
+	                    ->whereIn('id', array(1, 2, 3))->get();
+
+	$users = DB::table('users')
+	                    ->whereNotIn('id', array(1, 2, 3))->get();
+
+**Using Where Null To Find Records With Unset Values**
+
+	$users = DB::table('users')
+	                    ->whereNull('updated_at')->get();
 
 **Order By, Group By, And Having**
 
@@ -145,9 +158,9 @@ The query builder also provides a variety of aggregate methods, such as `count`,
 
 	$price = DB::table('orders')->max('price');
 
-	$price = DB::table('users')->min('price');
+	$price = DB::table('orders')->min('price');
 
-	$price = DB::table('users')->avg('price');
+	$price = DB::table('orders')->avg('price');
 
 	$total = DB::table('users')->sum('votes');
 
@@ -159,10 +172,16 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 **Using A Raw Expression**
 
 	$users = DB::table('users')
-	                     ->select(DB:raw('count(*) as user_count, status'))
+	                     ->select(DB::raw('count(*) as user_count, status'))
 	                     ->where('status', '<>', 1)
 	                     ->groupBy('status')
 	                     ->get();
+
+**Incrementing or decrementing a value of a column**
+
+	DB::table('users')->increment('votes');
+
+	DB::table('users')->decrement('votes');
 
 <a name="inserts"></a>
 ## Inserts
@@ -172,6 +191,16 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 	DB::table('users')->insert(
 		array('email' => 'john@example.com', 'votes' => 0),
 	);
+
+If the table has an auto-incrementing id, use `insertGetId` to insert a record and retrieve the id:
+
+**Inserting Records Into A Table With An Auto-Incrementing ID**
+
+	$id = DB::table('users')->insertGetId(
+		array('email' => 'john@example.com', 'votes' => 0),
+	);
+
+> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
 
 **Inserting Multiple Records Into A Table**
 
@@ -187,15 +216,19 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 
 	DB::table('users')
 	            ->where('id', 1)
-	            ->update(['votes' => 1]);
+	            ->update(array('votes' => 1));
 
 <a name="deletes"></a>
 ## Deletes
 
 **Deleting Records In A Table**
 
-	DB::table('users')->where('votes', < 100)->delete();
+	DB::table('users')->where('votes', '<', 100)->delete();
 
 **Deleting All Records From A Table**
 
 	DB::table('users')->delete();
+
+**Truncating A Table**
+
+	DB::table('users')->truncate();

@@ -2,7 +2,9 @@
 
 - [Basic Controllers](#basic-controllers)
 - [Controller Filters](#controller-filters)
+- [RESTful Controllers](#restful-controllers)
 - [Resource Controllers](#resource-controllers)
+- [Handling Missing Methods](#handling-missing-methods)
 
 <a name="basic-controllers"></a>
 ## Basic Controllers
@@ -86,6 +88,37 @@ You may also specify controller filters inline using a Closure:
 
 	}
 
+<a name="restful-controllers"></a>
+## RESTful Controllers
+
+Laravel allows you to easily define a single route to handle every action in a controller using simple, REST naming conventions. First, define the route using the `Route::controller` method:
+
+**Defining A RESTful Controller**
+
+	Route::controller('users', 'UserController');
+
+The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller. Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
+
+	class UserController extends BaseController {
+
+		public function getIndex()
+		{
+			//
+		}
+
+		public function postProfile()
+		{
+			//
+		}
+
+	}
+
+The `index` methods will respond to the root URI handled by the controller, which, in this case, is `users`.
+
+If your controller action contains multiple words, you may access the action using "dash" syntax in the URI. For example, the following controller action on our `UserController` would respond to the `users/admin-profile` URI:
+
+	public function getAdminProfile() {}
+
 <a name="resource-controllers"></a>
 ## Resource Controllers
 
@@ -106,7 +139,7 @@ This single route declaration creates multiple routes to handle a variety of RES
 Verb      | Path                  | Action
 ----------|-----------------------|--------------
 GET       | /resource             | index
-GET       | /resource/new         | create
+GET       | /resource/create      | create
 POST      | /resource             | store
 GET       | /resource/{id}        | show
 GET       | /resource/{id}/edit   | edit
@@ -137,3 +170,15 @@ And, you may also specify a subset of actions to handle on the route:
 
 	Route::resource('photo', 'PhotoController',
 					array('only' => array('index', 'show')));
+
+<a name="handling-missing-methods"></a>
+## Handling Missing Methods
+
+A catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the parameter array for the request as its only argument:
+
+**Defining A Catch-All Method**
+
+	public function missingMethod($parameters)
+	{
+		//
+	}

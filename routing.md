@@ -6,7 +6,10 @@
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
 - [Sub-Domain Routing](#sub-domain-routing)
+- [Route Prefixing](#route-prefixing)
+- [Route Model Binding](#route-model-binding)
 - [Throwing 404 Errors](#throwing-404-errors)
+- [Resource Controllers](#resource-controllers)
 
 <a name="basic-routing"></a>
 ## Basic Routing
@@ -51,7 +54,7 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 
 **Optional Route Parameters**
 
-	Route::get('user/{name?}', function($name)
+	Route::get('user/{name?}', function($name = null)
 	{
 		return $name;
 	});
@@ -69,7 +72,13 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 	{
 		//
 	})
-	->where('name', 'A-Za-z');
+	->where('name', '[A-Za-z]+');
+
+	Route::get('user/{id}', function($id)
+	{
+		//
+	})
+	->where('id', '[0-9]+');
 
 <a name="route-filters"></a>
 ## Route Filters
@@ -84,7 +93,6 @@ Route filters provide a convenient way of limiting access to a given route, whic
 		{
 			return Redirect::to('home');
 		}
-	}
 	});
 
 If a response is returned from a filter, that response will be considered the response to the request and the route will not be executed.
@@ -105,7 +113,7 @@ If a response is returned from a filter, that response will be considered the re
 
 **Specifying Filter Parameters**
 
-	Route::filter('age', function($value)
+	Route::filter('age', function($route, $request, $value)
 	{
 		//
 	});
@@ -188,7 +196,7 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 
 **Registering Sub-Domain Routes**
 
-	Route::group(array('domain' => '{account}.myapp.com', function()
+	Route::group(array('domain' => '{account}.myapp.com'), function()
 	{
 
 		Route::get('user/{id}', function($account, $id)
@@ -196,7 +204,50 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 			//
 		});
 
-	}));
+	});
+<a name="route-prefixing"></a>
+## Route Prefixing
+
+A group of routes may be prefixed by using the `prefix` option in the attributes array of a group:
+
+**Prefixing Grouped Routes**
+
+	Route::group(array('prefix' => 'admin'), function()
+	{
+
+		Route::get('user', function()
+		{
+			//
+		});
+
+	});
+
+<a name="route-model-binding"></a>
+## Route Model Binding
+
+Model binding provides a convenient way to inject model instances into your routes. For example, instead of injecting a user's ID, you can inject the entire User model instance that matches the given ID. First, use the `Route::model` method to specify the model that should be used for a given parameter:
+
+**Binding A Parameter To A Model**
+
+	Route::model('user', 'User');
+
+Next, define a route that contains a `{user}` parameter:
+
+	Route::get('profile/{user}', function(User $user)
+	{
+		//
+	});
+
+Since we have bound the `{user}` parameter to the `User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance which has an ID of 1.
+
+> **Note:** If a matching model instance is not found in the database, a 404 error will be thrown.
+
+Sometimes you may wish to use your own resolver for route parameters. Simply use the `Route::bind` method:
+
+	Route::bind('user', function($value, $route)
+	{
+		return User::where('name', $value)->first();
+	});
 
 <a name="throwing-404-errors"></a>
 ## Throwing 404 Errors
@@ -208,3 +259,10 @@ There are two ways to manually trigger a 404 error from a route. First, you may 
 Second, you may throw an instance of `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
 
 More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/errors#handling-404-errors) section of the documentation.
+
+<a name="resource-controllers"></a>
+## Resource Controllers
+
+Resource controllers make it easier to build RESTful controllers around resources. 
+
+See [Controllers](/docs/controllers#resource-controllers) documentation for more information.

@@ -27,6 +27,10 @@ You may also specify a plain text view to use in addition to an HTML view:
 
 	Mail::send(array('html.view', 'text.view'), $data, $callback);
 
+Or, you may specify only one type of view using the `html` or `text` keys:
+
+	Mail::send(array('text' => 'view'), $data, $callback);
+
 You may specify other options on the e-mail message such as any carbon copies or attachments as well:
 
 	Mail::send('emails.welcome', $data, function($m)
