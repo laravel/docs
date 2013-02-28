@@ -153,7 +153,7 @@ In order to route to the PUT/PATCH and DELETE verbs simply add a hidden input to
 		<input type='hidden' name='_method' value='put' />
 	</form>
 
-	OR 
+OR
 
 	<form action='/resource/{id}' method='post' >
 		// Normal form inputs
