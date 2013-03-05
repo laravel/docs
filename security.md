@@ -198,7 +198,7 @@ And, a password reset form might look like this:
 
 Again, notice we are using the `Session` to display any errors that may be detected by the framework while resetting passwords. Next, we can define a `POST` route to handle the reset:
 
-	Route::post('password/reset', function()
+	Route::post('password/reset/{token}', function()
 	{
 		$credentials = array('email' => Input::get('email'));
 
