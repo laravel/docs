@@ -1,6 +1,7 @@
 # Templates
 
 - [Controller Layouts](#controller-layouts)
+- [Sections](#sections)
 - [Blade Templating](#blade-templating-engine)
 - [Other Blade Control Structures](#other-blade-control-structures)
 
@@ -28,6 +29,33 @@ One method of using templates in Laravel is via controller layouts. By specifyin
 
 	}
 
+<a name="sections"></a>
+## Sections
+
+View sections provide a simple way to inject content into layouts from nested views. For example, perhaps you want to inject a nested view's needed JavaScript into the header of your layout. Let's dig in:
+
+**Creating a section within a view:**
+
+	<?php View::startSection('scripts'); ?>
+		<script src="jquery.js"></script>
+	<?php View::stopSection(); ?>
+	
+**Rendering the contents of a section:**
+
+	<head>
+		<?php echo View::yieldContent('scripts'); ?>
+	</head>
+	
+**Using Blade short-cuts to work with sections:**
+
+	@section('scripts')
+		<script src="jquery.js"></script>
+	@endsection
+	
+	<head>
+		@yield('scripts')
+	</head>
+	
 <a name="blade-template-engine"></a>
 ## Blade Templating
 
