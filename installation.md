@@ -9,13 +9,24 @@
 <a name="install-composer"></a>
 ## Install Composer
 
-Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. First, download a copy of the `composer.phar`. Once you have the PHAR archive, you can either keep it in your local project directory or move to `usr/local/bin` to use it globally on your system. On Windows, you can use the Composer [Windows installer](https://getcomposer.org/Composer-Setup.exe).
+Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. First, download a copy of the `composer.phar`. On Linux and family do:
+
+	curl -s https://getcomposer.org/installer | php
+
+Once you have the PHAR file, you can either keep it in your local project directory or move to `usr/local/bin` to use it globally on your system. On Windows, you can use the Composer [Windows installer](https://getcomposer.org/Composer-Setup.exe).
 
 <a name="install-laravel"></a>
 ## Install Laravel
 
-Once Composer is installed, download the [latest version](https://github.com/laravel/laravel/archive/develop.zip) of the Laravel framework and extract its contents into a directory on your server. Next, in the root of your Laravel application, run the `php composer.phar install` command to install all of the framework's dependencies. This process requires Git to be installed on the server to successfully complete the installation.
+Once Composer is installed, download the [latest develop version](https://github.com/laravel/laravel/archive/develop.zip) of the Laravel framework as a zip archive and extract the contents into a directory on your server.
 
+Alternatively, you can install using git directly:
+
+	git clone git://github.com/laravel/laravel.git target-folder
+	cd target-folder
+	git checkout develop
+
+Next, in the root of your Laravel application, run the `php composer.phar install` command to install all of the framework's dependencies.
 
 <a name="server-requirements"></a>
 ## Server Requirements
