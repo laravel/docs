@@ -132,7 +132,7 @@ The query above will produce the following SQL:
 **Exists Statements**
 
 	DB::table('users')
-	            ->whereExist(function($query)
+	            ->whereExists(function($query)
 	            {
 	            	$query->select(DB::raw(1))
 	            	      ->from('orders')
