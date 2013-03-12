@@ -117,8 +117,6 @@ You may also specify other join types:
 	        ->where('contacts.user_id')
 	        ->get();	  
 
-This above query will return all user records with no associated contacts.
-
 <a name="advanced-wheres"></a>
 ## Advanced Wheres
 
@@ -182,7 +180,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 **Using A Raw Expression**
 
 	$users = DB::table('users')
-	                     ->select(DB::raw('count(*) as user_count, status'))
+	                     ->select(DB::raw('count(*) as user_count'), 'status')
 	                     ->where('status', '<>', 1)
 	                     ->groupBy('status')
 	                     ->get();
