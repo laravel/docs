@@ -35,6 +35,8 @@ You may also view the current version of your Laravel installation using the `--
 
 	php artisan --version
 
+**Creating a Custom Artisan Command**
+
 To create, and then register, a command-line Artisan command:
 
 ** Create the command in the app/commands folder, extending the Command class. **
