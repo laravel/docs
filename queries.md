@@ -109,6 +109,14 @@ You may also specify more advanced join clauses:
 	        })
 	        ->get();
 
+
+You may also specify other join types:
+
+	DB::table('users')
+	        ->join('contacts', 'users.id', '=', 'contacts.user_id', 'left')
+	        ->where('contacts.user_id')
+	        ->get();	        
+
 <a name="advanced-wheres"></a>
 ## Advanced Wheres
 
@@ -172,7 +180,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 **Using A Raw Expression**
 
 	$users = DB::table('users')
-	                     ->select(DB::raw('count(*) as user_count, status'))
+	                     ->select(DB::raw('count(*) as user_count'), 'status')
 	                     ->where('status', '<>', 1)
 	                     ->groupBy('status')
 	                     ->get();
