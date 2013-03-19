@@ -204,10 +204,10 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 
 **Inserting Multiple Records Into A Table**
 
-	DB::table('users')->insert(
+	DB::table('users')->insert(array(
 		array('email' => 'taylor@example.com', 'votes' => 0),
 		array('email' => 'dayle@example.com', 'votes' => 0),
-	);
+	));
 
 <a name="updates"></a>
 ## Updates
