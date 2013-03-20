@@ -28,19 +28,17 @@ All Laravel packages are distributed via [Packagist](http://packagist.org) and [
 
 The easiest way to create a new package for use with Laravel is the `workbench` Artisan command.
 
+Before you create your package, you will need to choose a vendor name and a package name. The vendor name is a way to distinguish your package from other packages of the same name from different authors. For example, if I (Taylor Otwell) were to create a new package named "Zapper", the vendor name could be `Taylor` while the package name would be `Zapper`.
+
+You will also need to update the workbench configuration file (`app/config/workbench.php`). In this file, you'll set your name and email address as you want them to appear in the `composer.json` file for your package.
+
 **Issuing The Workbench Artisan Command**
 
-	php artisan workbench
+	php artisan workbench vendor-name/package-name
 
-This command will prompt you for several pieces of information, such as the vendor and name of the package, as well as your name and e-mail address. These pieces of information are used to create the namespace and `composer.json` of your package.
+Your vendor name and package name are used to create the namespace and `composer.json` of your package.
 
-The vendor name is a way to distinguish your package from other packages of the same name from different authors. For example, if I (Taylor Otwell) were to create a new package named "Zapper", the vendor name could be `Taylor` while the package name would be `Zapper`.
-
-Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. First, you should run a `composer install` command **from the root directory of your workbench package**, which will install any dependencies and generate the Composer autoload files for your package. You may instruct the `workbench` command to do this automatically when creating a package using the `--composer` directive:
-
-**Creating A Workbench Package And Running Composer**
-
-	php artisan workbench --composer
+Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. First, you should run a `composer install` command **from the root directory of your workbench package**, which will install any dependencies and generate the Composer autoload files for your package. 
 
 Next, you should register the `ServiceProvider` that was created for your package. You may register the provider by adding it to the `providers` array in the `app/config/app.php` file. This will instruct Laravel to load your package when your application starts. Service providers use a `[Package]ServiceProvider` naming convention. So, using the example above, you would add `Taylor\Zapper\ZapperServiceProvider` to the `providers` array.
 
