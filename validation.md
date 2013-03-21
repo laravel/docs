@@ -272,7 +272,7 @@ The file under validation must have a MIME type corresponding to one of the list
 The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
 
 <a name="rule-not-in"></a>
-#### not_in:_foo_,_bar_,...
+#### notin:_foo_,_bar_,...
 
 The field under validation must not be included in the given list of values.
 
