@@ -714,7 +714,7 @@ You can also subscribe to these events using a subscriber class. Event names are
 	    {
 	        $events->listen('eloquent.creating: User', 'UserHandlerSubscriber@onCreating');
 
-    	    $events->listen('eloquent.created: User', 'UserHandlerSubscriber@onCreated');
+    	    	$events->listen('eloquent.created: User', 'UserHandlerSubscriber@onCreated');
 
         	$events->listen('eloquent.updating: User', 'UserHandlerSubscriber@onUpdating');
 
@@ -727,6 +727,6 @@ Once the subscriber has been defined, it may be registered with the `Event` clas
 
 **Registering An Eloquent Event Subscriber**
 
-	$subscriber = new PostEventHandler;
+	$subscriber = new UserEventHandler;
 
 	Event::subscribe($subscriber);
