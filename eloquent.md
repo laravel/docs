@@ -12,6 +12,7 @@
 - [Accessors & Mutators](#accessors-and-mutators)
 - [Mass Assignment](#mass-assignment)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -540,12 +541,12 @@ Sometimes, you may wish to return a custom Collection object with your own added
 **Applying callback to the objects in a collection**
 
 	$roles = User::find(1)->roles;
-	
+
 	$roles->each(function($role)
 	{
-		//	
+		//
 	});
-	
+
 
 <a name="accessors-and-mutators"></a>
 ## Accessors & Mutators
@@ -652,3 +653,80 @@ Sometimes you may wish to limit the attributes that are included in your model's
 		protected $hidden = array('password');
 
 	}
+
+<a name="events"></a>
+## Events
+
+Eloquent models emit a variety of events that you can listen to:
+
+* A `creating` event is emit before an instance is created.
+* A `created` event is emit after an instance is created.
+* An `updating` event is emit before an instance is updated.
+* An `updated` event is emit after an instance is updated.
+
+The simplest way to listen to these events is using a closure.
+
+**Listening to Eloquent Events**
+
+	User::creating(function() {
+	    //
+	});
+
+	User::created(function() {
+	    //
+	});
+
+	User::updating(function() {
+	    //
+	});
+
+	User::updated(function() {
+		//
+	});
+
+You can also subscribe to these events using a subscriber class. Event names are in the form `eloquent.{event}: {class}`, where `{event}` is one of the available Eloquent events (`creating`, `created`, `updating`, `updated`) and `{class}` is the name of the Eloquent model class.
+
+**Defining an Eloquent Event Subscriber**
+
+	class UserEventHandler {
+
+	    public function onCreating()
+	    {
+			//
+	    }
+
+	    public function onCreated()
+	    {
+	        //
+	    }
+
+	    public function onUpdating()
+	    {
+	        //
+	    }
+
+	    public function onUpdated()
+	    {
+	        //
+	    }
+
+	    public static function subscribe($events)
+	    {
+	        $events->listen('eloquent.creating: User', 'UserHandlerSubscriber@onCreating');
+
+    	    $events->listen('eloquent.created: User', 'UserHandlerSubscriber@onCreated');
+
+        	$events->listen('eloquent.updating: User', 'UserHandlerSubscriber@onUpdating');
+
+	        $events->listen('eloquent.updated: User', 'UserHandlerSubscriber@onUpdated');
+	    }
+
+	}
+
+Once the subscriber has been defined, it may be registered with the `Event` class like any other subscriber.
+
+**Registering An Eloquent Event Subscriber**
+
+	$subscriber = new PostEventHandler;
+
+	Event::subscribe($subscriber);
