@@ -712,13 +712,13 @@ You can also subscribe to these events using a subscriber class. Event names are
 
 	    public static function subscribe($events)
 	    {
-	        $events->listen('eloquent.creating: User', 'UserHandlerSubscriber@onCreating');
+	        $events->listen('eloquent.creating: User', 'UserEventHandler@onCreating');
 
-    	    $events->listen('eloquent.created: User', 'UserHandlerSubscriber@onCreated');
+    	    $events->listen('eloquent.created: User', 'UserEventHandler@onCreated');
 
-        	$events->listen('eloquent.updating: User', 'UserHandlerSubscriber@onUpdating');
+        	$events->listen('eloquent.updating: User', 'UserEventHandler@onUpdating');
 
-	        $events->listen('eloquent.updated: User', 'UserHandlerSubscriber@onUpdated');
+	        $events->listen('eloquent.updated: User', 'UserEventHandler@onUpdated');
 	    }
 
 	}
