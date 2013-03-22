@@ -684,7 +684,7 @@ The simplest way to listen to these events is using a closure.
 		//
 	});
 
-You can also subscribe to these events using a subscriber class. Event names are in the form `eloquent.{event}: {class}`, where `{event}` is one of the available Eloquent events (`creating`, `created`, `updating`, `updated`) and `{class}` is the name of the Eloquent model class.
+You can also subscribe to these events using a subscriber class. Event names are in the form `eloquent.{event}: {class}`, where `{event}` is one of the available Eloquent events (see above) and `{class}` is the name of the Eloquent model class.
 
 **Defining an Eloquent Event Subscriber**
 
