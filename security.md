@@ -110,7 +110,7 @@ Laravel provides an easy method of protecting your application from cross-site r
 
 **Insert the CSRF token into your form ** using `csrf_token()` or `Session::getToken()`
 
-    <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
 **Validate the submitted CSRF token**
 
