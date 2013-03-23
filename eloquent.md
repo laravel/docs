@@ -218,7 +218,7 @@ Now we can access the post's comments through the dynamic property:
 
 	$comments = Post::find(1)->comments;
 
-If you need to add further constraints to which posts are retrieved, you may call the `comments` method and continue chaining conditions:
+If you need to add further constraints to which comments are retrieved, you may call the `comments` method and continue chaining conditions:
 
 	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
 
