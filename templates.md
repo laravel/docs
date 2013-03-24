@@ -74,7 +74,7 @@ Note that views which `extend` a Blade layout simply override sections from the 
 
 	The current UNIX timestamp is {{ time() }}.
 
-If you wish to escape data that it outputs, you may use the triple curly brace syntax:
+To escape the output, you may use the triple curly brace syntax:
 
 	Hello, {{{ $name }}}.
 
