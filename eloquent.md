@@ -472,7 +472,7 @@ By default, only the keys will be present on the `pivot` object. If your pivot t
 
 Now the `foo` and `bar` attributes will be accessible on our `pivot` object for the `Role` model.
 
-If your want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
+If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
 
 	return $this->belongsToMany('Role')->withTimestamps();
 
