@@ -659,10 +659,10 @@ Sometimes you may wish to limit the attributes that are included in your model's
 
 Eloquent models emit a variety of events that you can listen to:
 
-* A `creating` event is emit before an instance is created.
-* A `created` event is emit after an instance is created.
-* An `updating` event is emit before an instance is updated.
-* An `updated` event is emit after an instance is updated.
+* A `creating` event is emitted before an instance is created.
+* A `created` event is emitted after an instance is created.
+* An `updating` event is emitted before an instance is updated.
+* An `updated` event is emitted after an instance is updated.
 
 The simplest way to listen to these events is using a closure.
 
