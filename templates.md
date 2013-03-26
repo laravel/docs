@@ -65,6 +65,14 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
 
+**Injecting From An Action/Filter**
+
+	public function action()
+	{
+		View::inject('title', 'Page Title');
+		return View::make('page');
+	}
+
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
 
