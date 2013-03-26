@@ -663,6 +663,8 @@ Eloquent models emit a variety of events that you can listen to:
 * A `created` event is emitted after an instance is created.
 * An `updating` event is emitted before an instance is updated.
 * An `updated` event is emitted after an instance is updated.
+* A `deleting` event is emitted before an instance is deleted.
+* A `deleted` event is emitted after an instance is deleted.
 
 The simplest way to listen to these events is using a closure.
 
@@ -681,6 +683,14 @@ The simplest way to listen to these events is using a closure.
 	});
 
 	User::updated(function() {
+		//
+	});
+
+	User::deleting(function() {
+	    //
+	});
+
+	User::deleted(function() {
 		//
 	});
 
@@ -709,6 +719,16 @@ You can also subscribe to these events using a subscriber class. Event names are
 	    {
 	        //
 	    }
+	    
+	    public function onDeleting()
+	    {
+	        //
+	    }
+
+	    public function onDeleted()
+	    {
+	        //
+	    }	    
 
 	    public static function subscribe($events)
 	    {
@@ -719,6 +739,10 @@ You can also subscribe to these events using a subscriber class. Event names are
         	$events->listen('eloquent.updating: User', 'UserEventHandler@onUpdating');
 
 	        $events->listen('eloquent.updated: User', 'UserEventHandler@onUpdated');
+	        
+	        $events->listen('eloquent.deleting: User', 'UserEventHandler@onDeleting');
+	        
+	        $events->listen('eloquent.deleted: User', 'UserEventHandler@onDeleted');
 	    }
 
 	}
