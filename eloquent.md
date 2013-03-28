@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Basic Usage](#basic-usage)
+- [Mass Assignment](#mass-assignment)
 - [Insert, Update, Delete](#insert-update-delete)
 - [Timestamps](#timestamps)
 - [Query Scopes](#query-scopes)
@@ -11,7 +12,6 @@
 - [Working With Pivot Tables](#working-with-pivot-tables)
 - [Collections](#collections)
 - [Accessors & Mutators](#accessors-and-mutators)
-- [Mass Assignment](#mass-assignment)
 - [Model Events](#model-events)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
 
@@ -85,6 +85,41 @@ Of course, you may also use the query builder aggregate functions.
 
 	$count = User::where('votes', '>', 100)->count();
 
+<a name="mass-assignment"></a>
+## Mass Assignment
+
+When creating a new model, you pass an array of attributes to the model constructor. These attributes are then assigned to the model via mass-assignment. This is convenient; however, can be a **serious** security concern when blindly passing user input into a model. If user input is blindly passed into a model, the user is free to modify **any** and **all** of the model's attributes. For this reason, all Eloquent models protect against mass-assignment by default.
+
+To get started, set the `fillable` or `guarded` properties on your model.
+
+The `fillable` property specifies which attributes should be mass-assignable. This can be set at the class or instance level.
+
+**Defining Fillable Attributes On A Model**
+
+	class User extends Eloquent {
+
+		protected $fillable = array('first_name', 'last_name', 'email');
+
+	}
+
+In this example, only the three listed attributes will be mass-assignable.
+
+The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of a "white-list":
+
+**Defining Guarded Attributes On A Model**
+
+	class User extends Eloquent {
+
+		protected $guarded = array('id', 'password');
+
+	}
+
+In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard method:
+
+**Blocking All Attributes From Mass Assignment**
+
+	protected $guarded = array('*');
+
 <a name="insert-update-delete"></a>
 ## Insert, Update, Delete
 
@@ -98,7 +133,15 @@ To create a new record in the database from a model, simply create a new model i
 
 	$user->save();
 
-You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method:
+You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method. However, before doing so, you will need to specify either a `fillable` or `guarded` attribute on the model, as all Eloquent models protect against mass-assignment.
+
+**Setting The Guarded Attributes On The Model**
+
+	class User extends Eloquent {
+
+		protected $guarded = array('id', 'account_id');
+
+	}
 
 **Using The Model Create Method**
 
@@ -614,41 +657,6 @@ Mutators are declared in a similar fashion:
 		}
 
 	}
-
-<a name="mass-assignment"></a>
-## Mass Assignment
-
-When creating a new model, you pass an array of attributes to the model constructor. These attributes are then assigned to the model via mass-assignment. This is convenient; however, can be a **serious** security concern when blindly passing user input into a model. If user input is blindly passed into a model, the user is free to modify **any** and **all** of the model's attributes.
-
-A more secure approach to assigning attributes is either to manually assign them, or to set the `fillable` or `guarded` properties on your model.
-
-The `fillable` property specifies which attributes should be mass-assignable. This can be set at the class or instance level.
-
-**Defining Fillable Attributes On A Model**
-
-	class User extends Eloquent {
-
-		protected $fillable = array('first_name', 'last_name', 'email');
-
-	}
-
-In this example, only the three listed attributes will be mass-assignable.
-
-The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of a "white-list":
-
-**Defining Guarded Attributes On A Model**
-
-	class User extends Eloquent {
-
-		protected $guarded = array('id', 'password');
-
-	}
-
-In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard method:
-
-**Blocking All Attributes From Mass Assignment**
-
-	protected $guarded = array('*');
 
 <a name="model-events"></a>
 ## Model Events
