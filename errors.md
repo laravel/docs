@@ -83,3 +83,12 @@ The logger provides the seven logging levels defined in [RFC 5424](http://tools.
 Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
 
 	$monolog = Log::getMonolog();
+
+You may also register an event to catch all messages passed to the log:
+
+**Registering A Log Listener**
+
+	Log::listen(function($level, $message, $context)
+	{
+		//
+	});

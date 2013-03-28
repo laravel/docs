@@ -626,6 +626,21 @@ Eloquent models fire several events, allowing you to hook into various points in
 		if ( ! $user->isValid()) return false;
 	});
 
+Eloquent models also contain a static `boot` method, which may provide a convenient place to register your event bindings.
+
+**Setting A Model Boot Method**
+
+	class User extends Eloquent {
+
+		public static function boot()
+		{
+			parent::boot();
+
+			// Setup event bindings...
+		}
+
+	}
+
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON
 
