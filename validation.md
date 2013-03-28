@@ -401,9 +401,9 @@ Next, you need to register your custom Validator extension:
 
 **Registering A Custom Validator Resolver**
 
-	Validator::resolver(function()
+	Validator::resolver(function($translator, $data, $rules, $messages)
 	{
-		return new CustomValidator;
+		return new CustomValidator($translator, $data, $rules, $messages);
 	});
 
 When creating a custom validation rules, you may sometimes need to define custom place-holder replacements for error messages. You may do so by creating a custom Validator as described above, and adding a `replaceXXX` function to the validator.
