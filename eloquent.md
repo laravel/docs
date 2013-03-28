@@ -4,6 +4,7 @@
 - [Basic Usage](#basic-usage)
 - [Insert, Update, Delete](#insert-update-delete)
 - [Timestamps](#timestamps)
+- [Query Scopes](#query-scopes)
 - [Relationships](#relationships)
 - [Eager Loading](#eager-loading)
 - [Inserting Related Models](#inserting-related-models)
@@ -147,6 +148,26 @@ If you wish to customize the format of your timestamps, you may override the `fr
 		}
 
 	}
+
+<a name="query-scopes"></a>
+## Query Scopes
+
+Scopes allow you to easily re-use query logic in your models. To define a scope, simply prefix a model method with `scope`:
+
+**Defining A Query Scope**
+
+	class User extends Eloquent {
+
+		public function scopePopular($query)
+		{
+			return $query->where('votes', '>', 100);
+		}
+
+	}
+
+**Utilizing A Query Scope**
+
+	$users = User::popular()->orderBy('created_at')->get();
 
 <a name="relationships"></a>
 ## Relationships

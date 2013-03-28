@@ -170,6 +170,8 @@ Some packages may have assets such as JavaScript, CSS, and images. However, we a
 
 **Moving Package Assets To Public**
 
+	php artisan asset:publish
+
 	php artisan asset:publish vendor/package
 
 If the package is still in the `workbench`, use the `--bench` directive:

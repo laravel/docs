@@ -5,6 +5,7 @@
 - [Test Environment](#test-environment)
 - [Calling Routes From Tests](#calling-routes-from-tests)
 - [Mocking Facades](#mocking-facades)
+- [Framework Assertions](#framework-assertions)
 - [Helper Methods](#helper-methods)
 
 <a name="introduction"></a>
@@ -104,6 +105,48 @@ We can mock the call to the `Event` class by using the `shouldReceive` method on
 	}
 
 > **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the `call` method when running your test.
+
+<a name="framework-assertions"></a>
+## Framework Assertions
+
+Laravel ships with several `assert` methods to make testing a little easier:
+
+**Asserting Responses Are OK**
+
+	public function testMethod()
+	{
+		$this->call('GET', '/');
+
+		$this->assertRepsonseIsOk();
+	}
+
+**Asserting Responses Are Redirects**
+
+	$this->assertRedirectedTo('foo');
+
+	$this->assertRedirectedToRoute('route.name');
+
+	$this->assertRedirectedToAction('Controller@method');
+
+**Asserting A View Has Some Data**
+
+	public function testMethod()
+	{
+		$this->call('GET', '/');
+
+		$this->assertViewHas('name');
+		$this->assertViewHas('age', $value);
+	}
+
+**Asserting The Session Has Some Data**
+
+	public function testMethod()
+	{
+		$this->call('GET', '/');
+
+		$this->assertSessionHas('name');
+		$this->assertSessionHas('age', $value);
+	}
 
 <a name="helper-methods"></a>
 ## Helper Methods

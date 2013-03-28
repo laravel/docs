@@ -21,7 +21,7 @@ Of course, if you have other environments in addition to `local`, you may create
 <a name="application-events"></a>
 ## Application Events
 
-You may also do pre and post request processing by registering `before` and `after` application events:
+You may also do pre and post request processing by registering `before`, `after`, `close`, `finish`, and `shutdown` application events:
 
 **Registering Application Events**
 
@@ -30,7 +30,7 @@ You may also do pre and post request processing by registering `before` and `aft
 		//
 	});
 
-	App::after(function()
+	App::after(function($request, $response)
 	{
 		//
 	});

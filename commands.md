@@ -95,6 +95,10 @@ You may also use the `ask` and `confirm` methods to prompt the user for input:
 
 	$name = $this->ask('What is your name?');
 
+**Asking The User For Secret Input**
+
+	$password = $this->secret('What is the password?');
+
 **Asking The User For Confirmation**
 
 	if ($this->confirm('Do you wish to continue? [yes|no]'))

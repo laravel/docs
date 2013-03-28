@@ -9,7 +9,7 @@
 
 The Laravel Queue component provides a unified API across a variety of different queue services. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time, thus drastically speeding up the web requests to your application.
 
-The queue configuration file is stored in `app/config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a [Beanstalkd](http://kr.github.com/beanstalkd) and synchronous (for local use) driver.
+The queue configuration file is stored in `app/config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), and synchronous (for local use) driver.
 
 <a name="basic-usage"></a>
 ## Basic Usage
@@ -85,7 +85,13 @@ You may also specify which queue connection the listener should utilize:
 
 Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
 
-To process the only the first job on the queue, you may use the `queue:work` command:
+You may also set the length of time (in seconds) each job should be allowed run:
+
+**Specifying The Job Timeout Parameter**
+
+	php artisan queue:listen --timeout=60
+
+To process only the first job on the queue, you may use the `queue:work` command:
 
 **Processing The First Job On The Queue**
 

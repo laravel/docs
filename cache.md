@@ -2,6 +2,7 @@
 
 - [Configuration](#configuration)
 - [Cache Usage](#cache-usage)
+- [Increments & Decrements](#increments-and-decrements)
 - [Database Cache](#database-cache)
 
 <a name="configuration"></a>
@@ -17,6 +18,10 @@ The cache configuration file also contains various other options, which are docu
 **Storing An Item In The Cache**
 
 	Cache::put('key', 'value', $minutes);
+
+**Storing An Item In The Cache If It Doesn't Exist**
+
+	Cache::add('key', 'value', $minutes);
 
 **Retrieving An Item From The Cache**
 
@@ -51,6 +56,22 @@ Note that all items stored in the cache are serialized, so you are free to store
 **Removing An Item From The Cache**
 
 	Cache::forget('key');
+
+<a name="increments-and-decrements"></a>
+
+All drivers except `file` and `database` support the `increment` and `decrement` operations:
+
+**Incrementing A Value**
+
+	Cache::increment('key');
+
+	Cache::increment('key', $amount);
+
+**Decrementing A Value**
+
+	Cache::decrement('key');
+
+	Cache::decrement('key', $amount);
 
 <a name="database-cache"></a>
 ## Database Cache
