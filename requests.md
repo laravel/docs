@@ -36,11 +36,7 @@ You may access all user input with a few simple methods. You do not need to worr
 
 	$input = Input::except('credit_card');
 
-Some JavaScript libraries such as Backbone may send input to the application as JSON.
-
-**Retrieving JSON Input**
-
-	$input = Input::json();
+Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
 
 <a name="cookies"></a>
 ## Cookies

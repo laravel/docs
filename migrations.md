@@ -76,6 +76,8 @@ Laravel also includes a simple way to seed your database with test data using se
 		public function run()
 		{
 			$this->call('UserTableSeeder');
+
+			$this->command->info('User table seeded!');
 		}
 
 	}

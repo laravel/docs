@@ -55,6 +55,21 @@ Once a model is defined, you are ready to start retrieving and creating records 
 
 > **Note:** All methods available on the [query builder](/docs/queries) are also available when querying Eloquent models.
 
+**Retrieving A Model By Primary Key Or Throw An Exception**
+
+Sometimes you may wish to throw an exception if a model is not found, allowing you to catch the exceptions using an `App::error` handler and display a 404 page.
+
+	$model = User::findOrFail(1);
+
+To register the error handler, listen for the `ModelNotFoundException`
+
+	use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+	App::error(function(ModelNotFoundException $e)
+	{
+		return Response::make('Not Found', 404);
+	});
+
 **Querying Using Eloquent Models**
 
 	$users = User::where('votes', '>', 100)->take(10)->get();

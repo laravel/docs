@@ -69,6 +69,10 @@ The `getContent` method will return the evaluated string contents of the respons
 
 	$this->assertEquals('John', $view['name']);
 
+To call a HTTPS route, you may use the `callSecure` method:
+
+	$response = $this->callSecure('GET', 'foo/bar');
+
 ### DOM Crawler
 
 You may also call a route and receive a DOM Crawler instance that you may use to inspect the content:

@@ -95,7 +95,7 @@ Route filters provide a convenient way of limiting access to a given route, whic
 		}
 	});
 
-If a response is returned from a filter, that response will be considered the response to the request and the route will not be executed.
+If a response is returned from a filter, that response will be considered the response to the request and the route will not be executed, and any `after` filters on the route will also be cancelled.
 
 **Attaching A Filter To A Route**
 
@@ -170,6 +170,10 @@ Now, you may use the route's name when generating URLs or redirects:
 	$url = URL::route('profile');
 
 	$redirect = Redirect::route('profile');
+
+You may access the name of a route that is running via the `currentRouteName` method:
+
+	$name = Route::currentRouteName();
 
 <a name="route-groups"></a>
 ## Route Groups

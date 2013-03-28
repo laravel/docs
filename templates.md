@@ -108,6 +108,12 @@ To escape the output, you may use the triple curly brace syntax:
 
 	@include('view.name')
 
+**Displaying Language Lines**
+
+	@lang('language.line')
+
+	@choice('language.line', 1);
+
 **Comments**
 
 	{{-- This comment will not be in the rendered HTML --}}

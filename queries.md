@@ -47,6 +47,12 @@ The database query builder provides a convenient, fluent interface to creating a
 
 	$users = DB::table('users')->select('name as user_name')->get();
 
+**Adding A Select Clause To An Existing Query**
+
+	$query = DB::table('users')->select('name');
+
+	$users = $query->addSelect('age')->get();
+
 **Using Where Operators**
 
 	$users = DB::table('users')->where('votes', '>', 100)->get();
