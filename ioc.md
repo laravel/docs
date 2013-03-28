@@ -5,6 +5,7 @@
 - [Automatic Resolution](#automatic-resolution)
 - [Practical Usage](#practical-usage)
 - [Service Providers](#service-providers)
+- [Container Events](#container-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -148,3 +149,17 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 	}
 
 Note that in the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
+
+<a name="container-events"></a>
+## Container Events
+
+The container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
+
+**Registering A Resolving Listener**
+
+	App::resolving(function($object)
+	{
+		//
+	});
+
+Note that the object that was resolved will be passed to the callback.

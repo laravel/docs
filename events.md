@@ -2,6 +2,7 @@
 
 - [Basic Usage](#basic-usage)
 - [Using Classes As Listeners](#using-classes-as-listeners)
+- [Queued Events](#queued-events)
 - [Event Subscribers](#event-subscribers)
 
 <a name="basic-usage"></a>
@@ -68,6 +69,26 @@ If you do not wish to use the default `handle` method, you may specify the metho
 **Specifying Which Method To Subscribe**
 
 	Event::listen('user.login', 'LoginHandler@onLogin');
+
+<a name="queued-events"></a>
+## Queued Events
+
+Using the `queue` and `flush` methods, you may "queue" an event for firing, but not fire it immediately:
+
+**Registering A Queued Event**
+
+	Event::queue('foo', array($user));
+
+**Registering An Event Flusher**
+
+	Event::flusher('foo', function($user)
+	{
+		//
+	});
+
+Finally, you may run the "flusher" and flush all queued events using the `flush` method:
+
+	Event::flush('foo');
 
 <a name="event-subscribers"></a>
 ## Event Subscribers

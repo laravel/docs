@@ -48,3 +48,9 @@ Next, we need to instruct the framework how to determine which environment it is
         'local' => array('your-machine-name'),
 
     ));
+
+You may access the current application environment via the `environment` method:
+
+**Accessing The Current Application Environment**
+
+	$environment = App::environment();

@@ -4,6 +4,7 @@
 - [Defining & Running Tests](#defining-and-running-tests)
 - [Test Environment](#test-environment)
 - [Calling Routes From Tests](#calling-routes-from-tests)
+- [Mocking Facades](#mocking-facades)
 - [Helper Methods](#helper-methods)
 
 <a name="introduction"></a>
@@ -78,6 +79,31 @@ You may also call a route and receive a DOM Crawler instance that you may use to
 	$this->assertCount(1, $crawler->filter('h1:contains("Hello World!")'));
 
 For more information on how to use the crawler, refer to its [official documentation](http://symfony.com/doc/master/components/dom_crawler.html).
+
+<a name="mocking-facades"></a>
+## Mocking Facades
+
+When testing, you may often want to mock a call to a Laravel static facade. For example, consider the following controller action:
+
+	public function getIndex()
+	{
+		Event::fire('foo', array('name' => 'Dayle'));
+
+		return 'All done!';
+	}
+
+We can mock the call to the `Event` class by using the `shouldReceive` method on the facade, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock.
+
+**Mocking A Facade**
+
+	public function testGetIndex()
+	{
+		Event::shouldReceive('fire')->once()->with(array('name' => 'Dayle'));
+
+		$this->call('GET', '/');
+	}
+
+> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the `call` method when running your test.
 
 <a name="helper-methods"></a>
 ## Helper Methods

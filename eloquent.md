@@ -11,6 +11,7 @@
 - [Collections](#collections)
 - [Accessors & Mutators](#accessors-and-mutators)
 - [Mass Assignment](#mass-assignment)
+- [Model Events](#model-events)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
@@ -612,6 +613,18 @@ In the example above, the `id` and `password` attributes may **not** be mass ass
 **Blocking All Attributes From Mass Assignment**
 
 	protected $guarded = array('*');
+
+<a name="model-events"></a>
+## Model Events
+
+Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`. If `false` is returned form the `creating`, `updating`, or `saving` events, the action will be cancelled:
+
+**Cancelling Save Operations Via Events**
+
+	User::creating(function($user)
+	{
+		if ( ! $user->isValid()) return false;
+	});
 
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON
