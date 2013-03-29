@@ -44,6 +44,10 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 		return 'Must be over HTTPS';
 	}));
 
+Often, you will need to generate URLs to your routes, you may do so using the `URL::to` method:
+
+	$url = URL::to('foo');
+
 <a name="route-parameters"></a>
 ## Route Parameters
 
