@@ -150,6 +150,20 @@ GET       | /resource/{id}/edit   | edit
 PUT/PATCH | /resource/{id}        | update
 DELETE    | /resource/{id}        | destroy
 
+In order to route to the PUT/PATCH and DELETE verbs simply add a hidden input to your form:
+
+	<form action='/resource/{id}' method='post' >
+		// Normal form inputs
+		<input type='hidden' name='_method' value='put' />
+	</form>
+
+OR
+
+	<form action='/resource/{id}' method='post' >
+		// Normal form inputs
+		<input type='hidden' name='_method' value='delete' />
+	</form>
+
 Sometimes you may only need to handle a subset of the resource actions:
 
 	php artisan controller:make PhotoController --only=index,show
