@@ -9,6 +9,7 @@
 - [Relationships](#relationships)
 - [Eager Loading](#eager-loading)
 - [Inserting Related Models](#inserting-related-models)
+- [Touching Parent Timestamps](#touching-parent-timestamps)
 - [Working With Pivot Tables](#working-with-pivot-tables)
 - [Collections](#collections)
 - [Accessors & Mutators](#accessors-and-mutators)
@@ -550,6 +551,30 @@ Sometimes you may wish to create a new related model and attach it in a single c
 In this example, the new `Role` model will be saved and attached to the user model. You may also pass an array of attributes to place on the joining table for this operation:
 
 	User::find(1)->roles()->save($role, array('expires' => $expires));
+
+<a name="touching-parent-timestamps"></a>
+## Touching Parent Timestamps
+
+When a model `belongsTo` another model, such as a `Comment` which belongs to a `Post`, if is often helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically touch the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
+
+	class Comment extends Eloquent {
+
+		protected $touches = array('post');
+
+		public function post()
+		{
+			return $this->belongsTo('Post');
+		}
+
+	}
+
+Now, when you update a `Comment`, the owning `Post` will have its `updated_at` column updated:
+
+	$comment = Comment::find(1);
+
+	$comment->text = 'Edit to this comment!';
+
+	$comment->save();
 
 <a name="working-with-pivot-tables"></a>
 ## Working With Pivot Tables
