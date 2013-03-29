@@ -67,6 +67,10 @@ Now, when you generate a form element, like a text input, the model's value matc
 	2. Explicitly Passed Value
 	3. Model Attribute Data
 
+This allows you to quickly build forms that not only bind to model values, but easily re-populate if there is a validation error on the server!
+
+> **Note:** When using `Form::model`, be sure to close your form with `Form::close`!
+
 <a name="labels"></a>
 ## Labels
 
