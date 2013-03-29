@@ -163,3 +163,10 @@ The `Request` class provides many methods for examining the HTTP request for you
 	{
 		//
 	}
+	
+**Determining if The Request Is Being Handled by the CLI**
+	
+	if (Request::cli())
+	{
+		// This request came from the CLI!
+	}
