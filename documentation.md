@@ -22,6 +22,7 @@
     - [Security](/docs/security)
     - [Session](/docs/session)
     - [Templates](/docs/templates)
+    - [Forms & HTML](/docs/html)
     - [Unit Testing](/docs/testing)
     - [Validation](/docs/validation)
 - Database
