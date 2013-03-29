@@ -95,6 +95,10 @@ The second argument passed to `View::make` is an array of data that should be ma
 
 In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
 
+You may also share a piece of data across all views:
+
+	View::share('name', 'Steve');
+
 **Passing A Sub-View To A View**
 
 Sometimes you may wish to pass a view into another view. For example, given a sub-view stored at `app/views/child/view.php`, we could pass it to another view like so:
