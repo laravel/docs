@@ -144,6 +144,7 @@ Below is a list of all available validation rules and their function:
 - [Max](#rule-max)
 - [MIME Types](#rule-mimes)
 - [Min](#rule-min)
+- [Not In](#rule-not-in)
 - [Numeric](#rule-numeric)
 - [Regular Expression](#rule-regex)
 - [Required](#rule-required)
@@ -270,6 +271,11 @@ The file under validation must have a MIME type corresponding to one of the list
 
 The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
 
+<a name="rule-not-in"></a>
+#### not_in:_foo_,_bar_,...
+
+The field under validation must not be included in the given list of values.
+
 <a name="rule-numeric"></a>
 #### numeric
 
@@ -377,6 +383,8 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 	{
 		return $value == 'foo';
 	});
+
+> **Note:** The name of the rule passed to the `extend` method must be "snake cased".
 
 The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
 

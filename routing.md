@@ -44,6 +44,10 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 		return 'Must be over HTTPS';
 	}));
 
+Often, you will need to generate URLs to your routes, you may do so using the `URL::to` method:
+
+	$url = URL::to('foo');
+
 <a name="route-parameters"></a>
 ## Route Parameters
 
@@ -164,6 +168,10 @@ Named routes make referring to routes when generating redirects or URLs more con
 	{
 		//
 	}));
+
+You may also specify route names for controller actions:
+
+	Route::get('user/profile', array('as' => 'profile', 'uses' => 'UserController@showProfile'));
 
 Now, you may use the route's name when generating URLs or redirects:
 

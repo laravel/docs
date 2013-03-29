@@ -64,7 +64,7 @@ You may register an error handler that handles all "404 Not Found" errors in you
 
 	App::missing(function($exception)
 	{
-		return View::make('errors.missing');
+		return Response::view('errors.missing', array(), 404);
 	});
 
 <a name="logging"></a>

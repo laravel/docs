@@ -55,7 +55,7 @@ If you would like to provide "remember me" functionality in your application, yo
 
 **Note:** If the `attempt` method returns `true`, the user is considered logged into the application.
 
-**Authenticating A User with extra conditions**
+**Authenticating A User With Conditions**
 
 You may add in extra conditions to ensure that the user is (for example) 'active', or 'not suspended':
 
@@ -69,6 +69,10 @@ Once a user is authenticated, you may access the User model / record:
 **Accessing The Logged In User**
 
 	$email = Auth::user()->email;
+
+To simply log a user into the application by their ID, use the `loginUsingId` method:
+
+	Auth::loginUsingId(1);
 
 The `validate` method allows you to validate a user's credentials without actually logging them into the application:
 
@@ -204,7 +208,7 @@ Again, notice we are using the `Session` to display any errors that may be detec
 
 		return Password::reset($credentials, function($user, $password)
 		{
-			$user->password = $password;
+			$user->password = Hash::make($password);
 
 			$user->save();
 

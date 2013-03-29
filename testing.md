@@ -121,7 +121,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
 	{
 		$this->call('GET', '/');
 
-		$this->assertRepsonseIsOk();
+		$this->assertResponseOk();
 	}
 
 **Asserting Responses Are Redirects**

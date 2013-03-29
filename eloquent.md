@@ -39,6 +39,8 @@ Note that we did not tell Eloquent which table to use for our `User` model. The 
 
 	}
 
+Eloquent will also assume each table has a primary key column named `id`. You may define a `primaryKey` property to override this convention. Likewise, you may define a `connection` property to override the name of the database connection that should be used when utilizing the model.
+
 > **Note:** Eloquent will also assume that each table has a primary key column named `id`. You may define a `primaryKey` property to override this convention:
 
 Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
@@ -132,6 +134,8 @@ To create a new record in the database from a model, simply create a new model i
 	$user->name = 'John';
 
 	$user->save();
+
+> **Note:** Typically, your Eloquent models will have auto-incrementing keys. However, if you wish to specify your own keys, set the `incrementing` property on your model to `false`.
 
 You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method. However, before doing so, you will need to specify either a `fillable` or `guarded` attribute on the model, as all Eloquent models protect against mass-assignment.
 
@@ -298,7 +302,7 @@ Now we can access the post's comments through the dynamic property:
 
 	$comments = Post::find(1)->comments;
 
-If you need to add further constraints to which posts are retrieved, you may call the `comments` method and continue chaining conditions:
+If you need to add further constraints to which comments are retrieved, you may call the `comments` method and continue chaining conditions:
 
 	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
 
@@ -346,6 +350,17 @@ If you would like to use an unconventional table name for your pivot table, you 
 You may also override the conventional associated keys:
 
 	return $this->belongsToMany('Role', 'user_roles', 'user_id', 'foo_id');
+
+Of course, you may also define the inverse of the relationship on the `Role` model:
+
+	class Role extends Eloquent {
+
+		public function users()
+		{
+			return $this->belongsToMany('User');
+		}
+
+	}
 
 <a name="polymorphic-relations"></a>
 ### Polymorphic Relations
@@ -516,6 +531,10 @@ You may also pass an array of attributes that should be stored on the pivot tabl
 
 	$user->roles()->attach(1, array('expires' => $expires));
 
+Of course, the opposite of `attach` is `detach`:
+
+	$user->roles()->detach(1);
+
 You may also use the `sync` method to attach related models. The `sync` method accepts an array of IDs to place on the pivot table. After this operation is complete, only the IDs in the array will be on the intermediate table for the model:
 
 **Using Sync To Attach Many To Many Models**
@@ -552,7 +571,7 @@ By default, only the keys will be present on the `pivot` object. If your pivot t
 
 Now the `foo` and `bar` attributes will be accessible on our `pivot` object for the `Role` model.
 
-If your want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
+If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
 
 	return $this->belongsToMany('Role')->withTimestamps();
 
