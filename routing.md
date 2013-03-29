@@ -10,6 +10,7 @@
 - [Route Model Binding](#route-model-binding)
 - [Throwing 404 Errors](#throwing-404-errors)
 - [Resource Controllers](#resource-controllers)
+- [Locale Routing](#locale-routing)
 
 <a name="basic-routing"></a>
 ## Basic Routing
@@ -278,3 +279,14 @@ More information on handling 404 exceptions and using custom responses for these
 Resource controllers make it easier to build RESTful controllers around resources. 
 
 See [Controllers](/docs/controllers#resource-controllers) documentation for more information.
+
+<a name="locale-routing"></a>
+## Locale Routing
+
+When building applications that support multiple languages, you may wish to include the language in the URI, like so: `http://yourapp.com/en/foo/bar`. Laravel makes it simple. To get started, list the languages you want to support in the `locales` option of your `app/config/app.php` configuration file. These languages should correspond to languages in your `app/lang` directory.
+
+**Adding Languages To Configuration**
+
+	'locales' => array('en', 'sp', 'fr');
+
+That's it! You may now access your application routes with any of these languages prefixed to the URI. When you do so, the default language for the `Lang` class will be set automatically, and all URLs generated via the `URL` class will be prefixed with the current language.
