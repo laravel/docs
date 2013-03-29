@@ -34,3 +34,7 @@ You may also view the current version of your Laravel installation using the `--
 **Displaying Your Current Laravel Version**
 
 	php artisan --version
+
+**Executing Commands from within Application**
+
+	Artisan::call('migrate');
