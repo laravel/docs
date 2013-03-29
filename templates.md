@@ -28,6 +28,8 @@ One method of using templates in Laravel is via controller layouts. By specifyin
 
 	}
 
+To find out more how to include your templates read the [Views & Responses](/docs/responses) documentation page
+
 <a name="blade-template-engine"></a>
 ## Blade Templating
 
@@ -65,6 +67,14 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
 
+> **Note:** The `@extends` directive needs to be placed on the very first line of the template, with no whitespaces or newline characters before.
+
+**Including Sub-Views**
+
+	@include('user.friendlist')
+
+The included view will automatically inherit the data availible to the current view.
+
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
 
@@ -80,8 +90,10 @@ To escape the output, you may use the triple curly brace syntax:
 
 **If Statements**
 
-	@if (count($records) > 0)
-		I have records!
+	@if (count($records) == 1)
+		I have one record!
+	@elseif (count($records) > 1)
+		I have multiple records!
 	@else
 		I don't have any records!
 	@endif
@@ -104,9 +116,17 @@ To escape the output, you may use the triple curly brace syntax:
 		<p>I'm looping forever.</p>
 	@endwhile
 
-**Including Sub-Views**
+The `@foreach` loop above could also be accomplished with `@each` together with a separate view.
 
-	@include('view.name')
+	@each('user.listing', $users, 'user')
+
+Together with this view
+
+	<!-- Stored in app/views/user/listing.blade.php -->
+
+	<p>This is user {{ $user->id }}</p>
+
+Using `@each` instead of `@foreach` doesn't make much sense in this simple example, but if you are creating a more complicated listing, `@each` might just be your new best friend.
 
 **Displaying Language Lines**
 
