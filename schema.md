@@ -107,7 +107,7 @@ Command  | Description
 <a name="dropping-indexes"></a>
 ## Dropping Indexes
 
-To drop index you must specify the index's name. Laravel assigns a reasonable name to the indexes by default. Simply concatenate the table name, the names of the column in the index, and the index type. Here are some examples:
+To drop an index you must specify the index's name. Laravel assigns a reasonable name to the indexes by default. Simply concatenate the table name, the names of the column in the index, and the index type. Here are some examples:
 
 Command  | Description
 ------------- | -------------
