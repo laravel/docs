@@ -351,6 +351,17 @@ You may also override the conventional associated keys:
 
 	return $this->belongsToMany('Role', 'user_roles', 'user_id', 'foo_id');
 
+Of course, you may also define the inverse of the relationship on the `Role` model:
+
+	class Role extends Eloquent {
+
+		public function users()
+		{
+			return $this->belongsToMany('User');
+		}
+
+	}
+
 <a name="polymorphic-relations"></a>
 ### Polymorphic Relations
 
