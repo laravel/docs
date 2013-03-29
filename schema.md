@@ -6,6 +6,7 @@
 - [Dropping Columns](#dropping-columns)
 - [Adding Indexes](#adding-indexes)
 - [Dropping Indexes](#dropping-indexes)
+- [Foreign Keys](#foreign-keys)
 
 <a name="introduction"></a>
 ## Introduction
@@ -121,3 +122,12 @@ Command  | Description
 `$table->dropPrimary('users_id_primary');`  |  Dropping a primary key from the "users" table
 `$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
 `$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
+
+<a name="foreign-keys"></a>
+## Foreign Keys
+
+You may easily add foreign key constraints to your table using Schema's fluent interface. For example, let's assume you have a user_id on a posts table, which references the id column of the users table. Here's how to add a foreign key constraint for the column:
+
+	$table->foreign('user_id')->references('id')->on('users');
+	
+
