@@ -19,7 +19,7 @@ Laravel ships with a simple, convenient facility for validating data and retriev
 		array('name' => 'required|min:5')
 	);
 
-The first argument passed to the `make` method is the data under validation. The second argument are the validation rules that should be applied to the data.
+The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
 
 Multiple rules may be delimited using either a "pipe" character, or as separate elements of an array.
 
@@ -30,7 +30,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 		array('name' => array('required', 'min:5'))
 	);
 
-Once the a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
+Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
 
 	if ($validator->fails())
 	{
@@ -157,7 +157,7 @@ Below is a list of all available validation rules and their function:
 <a name="rule-accepted"></a>
 #### accepted
 
-The field under validation must be _yes_, _on_, or _1_. This is useful for validation "Terms of Service" acceptance.
+The field under validation must be _yes_, _on_, or _1_. This is useful for validating "Terms of Service" acceptance.
 
 <a name="rule-active-url"></a>
 #### active_url
@@ -414,7 +414,7 @@ Next, you need to register your custom Validator extension:
 		return new CustomValidator($translator, $data, $rules, $messages);
 	});
 
-When creating a custom validation rules, you may sometimes need to define custom place-holder replacements for error messages. You may do so by creating a custom Validator as described above, and adding a `replaceXXX` function to the validator.
+When creating a custom validation rule, you may sometimes need to define custom place-holder replacements for error messages. You may do so by creating a custom Validator as described above, and adding a `replaceXXX` function to the validator.
 
 	protected function replaceFoo($message, $attribute, $rule, $parameters)
 	{
