@@ -520,6 +520,10 @@ You may also pass an array of attributes that should be stored on the pivot tabl
 
 	$user->roles()->attach(1, array('expires' => $expires));
 
+Of course, the opposite of `attach` is `detach`:
+
+	$user->roles()->detach(1);
+
 You may also use the `sync` method to attach related models. The `sync` method accepts an array of IDs to place on the pivot table. After this operation is complete, only the IDs in the array will be on the intermediate table for the model:
 
 **Using Sync To Attach Many To Many Models**
