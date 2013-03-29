@@ -39,7 +39,11 @@ Note that we did not tell Eloquent which table to use for our `User` model. The 
 
 	}
 
-> **Note:** Eloquent will also assume that each table has a primary key column named `id`. You may define a `primaryKey` property to override this convention:
+Eloquent will also assume several other properties about your model:
+
+* The default database connection is used. You may define a `$connection` protected property to use a different connection.
+* The primary key column is named `id`. You may define a `$primaryKey` protected property to use a different column.
+* The primary key auto-increments. If not, then you should define `public $incrementing = false` in your model.
 
 Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
 
