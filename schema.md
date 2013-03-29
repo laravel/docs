@@ -86,6 +86,13 @@ If you are using the MySQL database, you may use the `after` method to specify t
 		$table->dropColumn('votes');
 	});
 
+**Dropping Multiple Columns From A Database Table**
+
+	Schema::table('users', function($table)
+	{
+		$table->dropColumns('votes', 'avatar', 'location');
+	});
+
 <a name="adding-indexes"></a>
 ## Adding Indexes
 
