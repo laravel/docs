@@ -42,6 +42,10 @@ You may also specify names on controller routes:
 	Route::get('foo', array('uses' => 'FooController@method',
 											'as' => 'name'));
 
+To generate a URL to a controller action, you may use the `URL::action` method:
+
+	$url = URL::action('FooController@method');
+
 You may access the name of the controller action being run using the `currentRouteAction` method:
 
 	$action = Route::currentRouteAction();
