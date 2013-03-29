@@ -290,3 +290,7 @@ When building applications that support multiple languages, you may wish to incl
 	'locales' => array('en', 'sp', 'fr');
 
 That's it! You may now access your application routes with any of these languages prefixed to the URI. When you do so, the default language for the `Lang` class will be set automatically, and all URLs generated via the `URL` class will be prefixed with the current language.
+
+To access the current locale, you may use the `Lang::locale` method:
+
+	$locale = Lang::locale();
