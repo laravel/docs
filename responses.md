@@ -112,6 +112,14 @@ The sub-view can then be rendered from the parent view:
 		</body>
 	</html>
 
+**Sharing data among multiple views**
+
+In some cases, you may need to make data available to your views, but not necessarily a particular view.
+
+	View::share('friends',array('Sam','Max'));
+	
+The above allows access to the variable `$friends` from any view.
+
 <a name="view-composers"></a>
 ## View Composers
 
