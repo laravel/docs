@@ -39,6 +39,14 @@ The database query builder provides a convenient, fluent interface to creating a
 
 	$name = DB::table('users')->where('name', 'John')->pluck('name');
 
+**Retrieving A List Of Column Values**
+
+	$roles = DB::table('roles')->lists('title');
+
+This method will return an array of role titles, keyed by the role ID. You may also specify a custom key:
+
+	$roles = DB::table('roles')->lists('title', 'name');
+
 **Specifying A Select Clause**
 
 	$users = DB::table('users')->select('name', 'email')->get();
