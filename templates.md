@@ -23,7 +23,7 @@ One method of using templates in Laravel is via controller layouts. By specifyin
 		 */
 		public function showProfile()
 		{
-			$this->layout->content = View::make('user.profile');
+			View::inject('content', View::make('user.profile'));
 		}
 
 	}
