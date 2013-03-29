@@ -13,6 +13,7 @@
 - Learning More
     - [Cache](/docs/cache)
     - [Events](/docs/events)
+    - [Forms & HTML](/docs/html)
     - [IoC Container](/docs/ioc)
     - [Localization](/docs/localization)
     - [Mail](/docs/mail)
@@ -22,7 +23,6 @@
     - [Security](/docs/security)
     - [Session](/docs/session)
     - [Templates](/docs/templates)
-    - [Forms & HTML](/docs/html)
     - [Unit Testing](/docs/testing)
     - [Validation](/docs/validation)
 - Database
