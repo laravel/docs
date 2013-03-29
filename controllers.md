@@ -50,8 +50,6 @@ You may access the name of the controller action being run using the `currentRou
 
 	$action = Route::currentRouteAction();
 
-> **Note:** After creating a new class, make sure to run `composer dump-autoload` from the command line. This will allow the framework to automatically load your class.
-
 <a name="controller-filters"></a>
 ## Controller Filters
 
