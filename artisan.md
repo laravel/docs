@@ -34,3 +34,11 @@ You may also view the current version of your Laravel installation using the `--
 **Displaying Your Current Laravel Version**
 
 	php artisan --version
+	
+**Example to use migrate**
+
+	Create new table model 		: php artisan migrate:make model_name
+	Create restfull controller	: php artisan controller:make ControllerName
+
+  	
+
