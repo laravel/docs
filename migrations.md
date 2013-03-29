@@ -93,6 +93,61 @@ Laravel also includes a simple way to seed your database with test data using se
 
 	}
 
+If your database seeds must be run in a particular order because of foreign key constraints, you can prefix the seed file names with a numeric identifier to sort the files in the proper runtime order (e.g., `001_owners.php`, `002_companies.php`, etc.) and then also add a `table` key to each array returned by your seed files. This `table` key should include the name of the table to seed with the data from that array.
+
+**Example Ordered Database Seed Files**
+
+File: `001_owners.php`
+
+	<?php
+
+	return array(
+
+		'table' => 'owners',
+
+		array(
+			'id'         => 1,
+			'name'       => 'John Doe',
+			'created_at' => new DateTime,
+			'updated_at' => new DateTime,
+		),
+
+		array(
+			'id'         => 2,
+			'name'       => 'Jane Doe',
+			'created_at' => new DateTime,
+			'updated_at' => new DateTime,
+		),
+
+	);
+
+File: `002_companies.php`
+
+	<?php
+
+	return array(
+
+		'table' => 'companies',
+
+		array(
+			'id'         => 1,
+			'name'       => 'ABC, Inc.',
+			'owner_id'   => 2,
+			'created_at' => new DateTime,
+			'updated_at' => new DateTime,
+		),
+
+		array(
+			'id'         => 2,
+			'name'       => 'XYZ Widgets',
+			'owner_id'   => 1,
+			'created_at' => new DateTime,
+			'updated_at' => new DateTime,
+		),
+
+	);
+
+
 To seed your database, you may use the `db:seed` command on the Artisan CLI:
 
 	php artisan db:seed
