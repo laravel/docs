@@ -35,5 +35,3 @@
 - Artisan CLI
     - [Overview](/docs/artisan)
     - [Development](/docs/commands)
-- Advanced Topics
-    - [Architecture](#)
