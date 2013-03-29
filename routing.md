@@ -165,7 +165,7 @@ Named routes make referring to routes when generating redirects or URLs more con
 		//
 	}));
 
-You may also specify a name for controller action:
+You may also specify route names for controller actions:
 
 	Route::get('user/profile', array('as' => 'profile', 'uses' => 'UserController@showProfile'));
 
