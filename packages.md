@@ -26,7 +26,7 @@ All Laravel packages are distributed via [Packagist](http://packagist.org) and [
 <a name="creating-a-package"></a>
 ## Creating A Package
 
-The easiest way to create a new package for use with Laravel is the `workbench` Artisan command. But first, you will need to set a few options in the `app/config/workbench.php` file. In that file, you will find a `name` and `email` option. These values will be used to generate a `composer.json` file for your new package. Once you have supplied those values, you are ready to build a workbench package!
+The easiest way to create a new package for use with Laravel is the `workbench` Artisan command. First, you will need to set a few options in the `app/config/workbench.php` file. In that file, you will find a `name` and `email` option. These values will be used to generate a `composer.json` file for your new package. Once you have supplied those values, you are ready to build a workbench package!
 
 **Issuing The Workbench Artisan Command**
 
