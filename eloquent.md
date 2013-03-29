@@ -555,7 +555,7 @@ In this example, the new `Role` model will be saved and attached to the user mod
 <a name="touching-parent-timestamps"></a>
 ## Touching Parent Timestamps
 
-When a model `belongsTo` another model, such as a `Comment` which belongs to a `Post`, if is often helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically touch the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
+When a model `belongsTo` another model, such as a `Comment` which belongs to a `Post`, it is often helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically touch the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
 
 	class Comment extends Eloquent {
 
