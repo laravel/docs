@@ -34,3 +34,32 @@ You may also view the current version of your Laravel installation using the `--
 **Displaying Your Current Laravel Version**
 
 	php artisan --version
+
+**Creating a Custom Artisan Command**
+
+To create, and then register, a command-line Artisan command:
+
+** Create the command in the app/commands folder, extending the Command class. **
+
+	php artisan command:make MyNewCommand
+
+You will now have a php skeleton file named MyNewCommand.php. Add your command code. The protected $name property determines how the command appears in Artisan's registered commands list.
+
+	protected $name = 'mycommand:doit';
+
+** Register the command in Artisan (so it appears in the command list, and can be executed):
+
+First, have composer generate your autoloading classes (this add your new class to the array map of loaded libraries in vendor/composer/autoload_classmap.php)
+
+	composer.phar dump-autoload
+
+And then add an instance of the command object to the artisan start script, by editing app/start/artisan.php.
+
+	Artisan::add(new MyNewCommand);
+
+Your new command will now appear in the artisan list.
+
+** Execute your custom command:
+
+	php artisan mycommand:doit
+
