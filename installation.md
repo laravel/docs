@@ -36,6 +36,10 @@ Laravel needs almost no configuration out of the box. You are free to get starte
 ### Permissions
 Laravel requires one set of permissions to be configured - folders within app/storage require write access by the web server.
 
+<a name="paths"></a>
+### Paths
+Laravel allows you to edit the `public` and `app` paths for your installation. Visit `bootstrap/paths.php` to make these changes accordingly. You may need to adjust your autoload logic in `composer.json` if you adjust the `app` path as well as run `php composer.phar dump-autoload` before running your app again.
+
 <a name="pretty-urls"></a>
 ## Pretty URLs
 
