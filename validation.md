@@ -118,6 +118,10 @@ So, after redirection, you may utilize the automatically bound `$errors` variabl
 
 	<?php echo $errors->first('email'); ?>
 
+Or if you're using blade templates
+
+	{{{ $errors->first('email') }}}
+
 <a name="available-validation-rules"></a>
 ## Available Validation Rules
 
