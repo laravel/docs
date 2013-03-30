@@ -174,6 +174,12 @@ To delete a model, simply call the `delete` method on the instance:
 
 	$user->delete();
 
+**Deleting An Existing Model By Key**
+
+	User::destroy(1);
+
+	User::destroy(1, 2, 3);
+
 Of course, you may also run a delete query on a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->delete();
