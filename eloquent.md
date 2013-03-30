@@ -604,7 +604,7 @@ To delete all records on the pivot table for a model, you may use the `delete` m
 
 **Deleting Records On A Pivot Table**
 
-	User::find(1)->roles()->delete();
+	User::find(1)->roles()->detach();
 
 Note that this operation does not delete records from the `roles` table, but only from the pivot table.
 
