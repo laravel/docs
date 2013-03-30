@@ -711,7 +711,7 @@ Mutators are declared in a similar fashion:
 <a name="model-events"></a>
 ## Model Events
 
-Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`. If `false` is returned form the `creating`, `updating`, or `saving` events, the action will be cancelled:
+Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`. If `false` is returned from the `creating`, `updating`, or `saving` events, the action will be cancelled:
 
 **Cancelling Save Operations Via Events**
 
