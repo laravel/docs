@@ -1,6 +1,7 @@
 # Basic Database Usage
 
 - [Configuration](#configuration)
+- [Multiple Databases](#multiple)
 - [Running Queries](#running-queries)
 - [Accessing Connections](#accessing-connections)
 
@@ -11,6 +12,51 @@ Laravel makes connecting with databases and running queries extremely simple. Th
 
 Currently Laravel supports four database systems: MySQL, Postgres, SQLite, and SQL Server.
 
+<a name="multiple"></a>
+## Multiple Databases
+
+You can specify different connections in app/config/database.php.  The keys for the connections array can be anything, they do not need to be "sqlite", "mysql", etc.
+
+	// application/config/database.php
+	'default' => 'fred',
+	'connections' => array(
+	    'fred' => array(
+	        'driver'   => 'mysql',
+	        'host'     => 'localhost',
+	        'database' => 'database1',
+	        'username' => 'root',
+	        'password' => '',
+	        'charset'  => 'utf8',
+	        'prefix'   => '',
+	    ),
+	
+	    'wilma' => array(
+	        'driver'   => 'mysql',
+	        'host'     => 'localhost',
+	        'database' => 'database2',
+	        'username' => 'root',
+	        'password' => '',
+	        'charset'  => 'utf8',
+	        'prefix'   => '',
+	    ),
+	
+	    'barney' => array(
+	        'driver'   => 'mysql',
+	        'host'     => 'localhost',
+	        'database' => 'database3',
+	        'username' => 'root',
+	        'password' => '',
+	        'charset'  => 'utf8',
+	        'prefix'   => '',
+	    ),
+	),
+
+Now you can specify the connection on the model:
+
+	class Dino extends Eloquent {
+	    protected $connection = 'barney';
+	}
+ 
 <a name="running-queries"></a>
 ## Running Queries
 
