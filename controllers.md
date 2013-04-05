@@ -142,15 +142,15 @@ This single route declaration creates multiple routes to handle a variety of RES
 
 **Actions Handled By Resource Controller**
 
-Verb      | Path                  | Action
-----------|-----------------------|--------------
-GET       | /resource             | index
-GET       | /resource/create      | create
-POST      | /resource             | store
-GET       | /resource/{id}        | show
-GET       | /resource/{id}/edit   | edit
-PUT/PATCH | /resource/{id}        | update
-DELETE    | /resource/{id}        | destroy
+Verb      | Path                  | Action       | Route Name
+----------|-----------------------|--------------|---------------------
+GET       | /resource             | index        | resource.index
+GET       | /resource/create      | create       | resource.create
+POST      | /resource             | store        | resource.store
+GET       | /resource/{id}        | show         | resource.show
+GET       | /resource/{id}/edit   | edit         | resource.edit
+PUT/PATCH | /resource/{id}        | update       | resource.update
+DELETE    | /resource/{id}        | destroy      | resource.destroy
 
 Sometimes you may only need to handle a subset of the resource actions:
 
