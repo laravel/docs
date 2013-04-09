@@ -66,6 +66,14 @@ You may add in extra conditions to ensure that the user is (for example) 'active
 
 Once a user is authenticated, you may access the User model / record:
 
+**Check if the user is logged in**
+To determine if the user of your application is logged in, call the check method:
+
+    if (Auth::check())
+    {
+        return "You're logged in!";
+    }
+
 **Accessing The Logged In User**
 
 	$email = Auth::user()->email;
