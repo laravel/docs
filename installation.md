@@ -48,9 +48,10 @@ The framework ships with a `public/.htaccess` file that is used to allow URLs wi
 If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
 
 	Options +FollowSymLinks
-	RewriteEngine on
+	RewriteEngine On
+
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.+)/$ http://%{HTTP_HOST}/$1 [R=301,L]
 
 	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-
-	RewriteRule . index.php [L]
+	RewriteRule ^ index.php [L]
