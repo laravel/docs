@@ -126,6 +126,13 @@ If a response is returned from a filter, that response will be considered the re
 	{
 		return 'Hello World';
 	}));
+	
+In case of an `after` filter you receive a `$response` as the third parameter. So your filter would look like this:
+
+	Route::filter('age', function($route, $request, $response, $value)
+	{
+		//
+	});
 
 **Pattern Based Filters**
 
