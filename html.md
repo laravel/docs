@@ -106,18 +106,14 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 **Generating A Checkbox Or Radio Input**
 
-	// Checkbox
 	echo Form::checkbox('name', 'value');
 	
-	// Radio
 	echo Form::radio('name', 'value');
 
 **Generating A Checkbox Or Radio Input That Is Checked**
 
-	// Checkbox
 	echo Form::checkbox('name', 'value', true);
 	
-	// Radio
 	echo Form::radio('name', 'value', true);
 
 <a name="file-input"></a>
