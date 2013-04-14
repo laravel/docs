@@ -4,6 +4,7 @@
 - [Creating & Dropping Tables](#creating-and-dropping-tables)
 - [Adding Columns](#adding-columns)
 - [Dropping Columns](#dropping-columns)
+- [Renaming Columns](#renaming-columns)
 - [Adding Indexes](#adding-indexes)
 - [Dropping Indexes](#dropping-indexes)
 
@@ -91,6 +92,16 @@ If you are using the MySQL database, you may use the `after` method to specify t
 	Schema::table('users', function($table)
 	{
 		$table->dropColumns('votes', 'avatar', 'location');
+	});
+
+<a name="renaming-columns"></a>
+## Renaming Columns
+
+You can rename a database table column with the `renameColumn()` function. First target the column which you'd like to rename and then add the new name for the column.
+
+	Schema::table('addresses', function($table)
+	{
+		$table->renameColumn('city', 'location');
 	});
 
 <a name="adding-indexes"></a>
