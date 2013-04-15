@@ -87,7 +87,7 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 <a name="route-filters"></a>
 ## Route Filters
 
-Route filters provide a convenient way of limiting access to a given route, which is useful for creating areas of your site which require authentication. There are several filters included in the Laravel framework, including an `auth` filter, a `guest` filter, and a `csrf`filter. These are located in the `app/filters.php` file.
+Route filters provide a convenient way of limiting access to a given route, which is useful for creating areas of your site which require authentication. There are several filters included in the Laravel framework, including an `auth` filter, an `auth.basic` filter, a `guest` filter, and a `csrf`filter. These are located in the `app/filters.php` file.
 
 **Defining A Route Filter**
 
