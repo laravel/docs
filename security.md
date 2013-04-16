@@ -32,6 +32,14 @@ The Laravel `Hash` class provides secure Bcrypt hashing:
 		// The passwords match...
 	}
 
+**Migrating password hashes**
+
+	if (Hash::needsRehash($hashedPassword))
+	{
+		$hashedPassword = Hash::make('secret');
+		// Save $hashedPassword to database...
+	}
+
 <a name="authenticating-users"></a>
 ## Authenticating Users
 
