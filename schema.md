@@ -121,3 +121,16 @@ Command  | Description
 `$table->dropPrimary('users_id_primary');`  |  Dropping a primary key from the "users" table
 `$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
 `$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
+
+<a name="storage-engine"></a>
+## Setting Table Storage Engine
+
+To set the storage engine for the table, use the `engine` property during `Schema::create`:
+
+    Schema::create('users', function(Blueprint $table)
+    {
+        $table->engine = 'InnoDB';
+        $table->increments('id');
+
+        $table->timestamps();
+    });
