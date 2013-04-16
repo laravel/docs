@@ -6,6 +6,7 @@
 - [Dropping Columns](#dropping-columns)
 - [Adding Indexes](#adding-indexes)
 - [Dropping Indexes](#dropping-indexes)
+- [Setting Table Storage Engine](#storage-engine)
 
 <a name="introduction"></a>
 ## Introduction
