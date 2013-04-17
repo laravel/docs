@@ -79,6 +79,12 @@ Since you often will want to flash input in association with a redirect to the p
 	return Redirect::to('form')->withInput(Input::except('password'));
 
 > **Note:** You may flash other data across requests using the [Session](/docs/session) class.
+	
+If you are intending to send the user to where they came from, you may use the `Redirect::back` method. Passing a url as the first argument will act as an optional fallback should the referer data be missing.
+	
+	return Redirect::back()->withInput();
+	
+	return Redirect::back('form')->withInput();
 
 **Retrieving Old Data**
 
