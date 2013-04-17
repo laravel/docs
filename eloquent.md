@@ -309,6 +309,10 @@ Now we can access the post's comments through the dynamic property:
 
 	$comments = Post::find(1)->comments;
 
+Every Eloquent model caches relations when they are accessed like this. To force a query to be executed use:
+	
+	$comments = Post::find(1)->comments->get();
+
 If you need to add further constraints to which comments are retrieved, you may call the `comments` method and continue chaining conditions:
 
 	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
