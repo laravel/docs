@@ -114,9 +114,9 @@ If you are using the MySQL database, you may use the `after` method to specify t
 
 You can rename a database table column with the `renameColumn()` function. First target the column which you'd like to rename and then add the new name for the column.
 
-	Schema::table('addresses', function($table)
+	Schema::table('users', function($table)
 	{
-		$table->renameColumn('city', 'location');
+		$table->renameColumn('name', 'last_name');
 	});
 
 <a name="adding-indexes"></a>
