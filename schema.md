@@ -90,7 +90,7 @@ If you are using the MySQL database, you may use the `after` method to specify t
 
 	Schema::table('users', function($table)
 	{
-		$table->dropColumns('votes', 'avatar', 'location');
+		$table->dropColumn('votes', 'avatar', 'location');
 	});
 
 <a name="adding-indexes"></a>
