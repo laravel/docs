@@ -416,7 +416,7 @@ However, the true "polymorphic" magic is when you access the staff or order from
 
 **Retrieving The Owner Of A Polymorphic Relation**
 
-	Photo::find(1);
+	$photo = Photo::find(1);
 
 	$imageable = $photo->imageable;
 
