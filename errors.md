@@ -1,15 +1,17 @@
 # Errors & Logging
 
 - [Error Detail](#error-detail)
-- [HTTP Exceptions](#http-exceptions)
 - [Handling Errors](#handling-errors)
+- [HTTP Exceptions](#http-exceptions)
 - [Handling 404 Errors](#handling-404-errors)
 - [Logging](#logging)
 
+<a name="error-detail"></a>
 ## Error Detail
 
 By default, error detail is enabled for your application. This means that when an error occurs you will be showed an error page with a detailed stack trace and error message. You may turn off error details by setting the `debug` option in your `app/config/app.php` file to `false`. **It is strongly recommended that you turn off error detail in a production environment.**
 
+<a name="handling-errors"></a>
 ## Handling Errors
 
 By default, the `app/start/global.php` file contains an error handler for all exceptions:
