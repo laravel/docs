@@ -11,6 +11,12 @@ The Laravel Queue component provides a unified API across a variety of different
 
 The queue configuration file is stored in `app/config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), and synchronous (for local use) driver.
 
+The following dependencies are needed for the listed queue drivers:
+
+- Beanstalkd: `pda/pheanstalk`
+- Amazon SQS: `aws/aws-sdk-php`
+- IronMQ: `iron-io/iron_mq`
+
 <a name="basic-usage"></a>
 ## Basic Usage
 
