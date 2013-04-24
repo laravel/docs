@@ -26,7 +26,7 @@ To push a new job onto the queue, use the `Queue::push` method:
 
 	Queue::push('SendEmail', array('message' => $message));
 
-The first argument given to the `push` method is the name of the class that should be used to process the job. The second argument is array of data that should be passed to the handler. A job handler should be defined like so:
+The first argument given to the `push` method is the name of the class that should be used to process the job. The second argument is an array of data that should be passed to the handler. A job handler should be defined like so:
 
 **Defining A Job Handler**
 
@@ -91,7 +91,7 @@ You may also specify which queue connection the listener should utilize:
 
 Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
 
-You may also set the length of time (in seconds) each job should be allowed run:
+You may also set the length of time (in seconds) each job should be allowed to run:
 
 **Specifying The Job Timeout Parameter**
 
