@@ -139,7 +139,7 @@ You may also easily drop a foreign key constraint. The default foreign key names
 
 	$table->dropForeign('posts_user_id_foreign');
 
-`Note: The field referenced in the foreign key is very likely an auto increment and therefore automatically an unsigned integer. Please make sure to create the foreign key field with unsigned() as both fields have to be the exact same type, the engine on both tables has to be set to InnoDB, and the referenced table must be created before the table with the foreign key.`
+`Note:` The field referenced in the foreign key is very likely an auto increment and therefore automatically an unsigned integer. Please make sure to create the foreign key field with unsigned() as both fields have to be the exact same type, the engine on both tables has to be set to InnoDB, and the referenced table must be created before the table with the foreign key.
 
 	$table->engine = 'InnoDB';
 	$table->integer('user_id')->unsigned();
