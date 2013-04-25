@@ -2,8 +2,10 @@
 
 - [Introduction](#introduction)
 - [Creating & Dropping Tables](#creating-and-dropping-tables)
+- [Renaming Tables](#renaming-tables)
 - [Adding Columns](#adding-columns)
 - [Dropping Columns](#dropping-columns)
+- [Renaming Columns](#renaming-columns)
 - [Adding Indexes](#adding-indexes)
 - [Dropping Indexes](#dropping-indexes)
 
@@ -36,6 +38,13 @@ To drop a table, you may use the `Schema::drop` method:
 	Schema::drop('users');
 
 	Schema::dropIfExists('users');
+
+<a name="renaming-tables"></a>
+
+To rename a table, you must use the `Schema::rename` method:
+## Renaming Tables
+	Schema::rename('users', accounts);
+The first argument passed to `rename` method is the name of the old table, and the second is the name of the new table.
 
 <a name="adding-columns"></a>
 ## Adding Columns
@@ -91,6 +100,16 @@ If you are using the MySQL database, you may use the `after` method to specify t
 	Schema::table('users', function($table)
 	{
 		$table->dropColumns('votes', 'avatar', 'location');
+	});
+	
+<a name="renaming-columns"></a>
+## Renaming Columns
+
+**Renaming A Column From A Database Table**
+
+	Schema::table('users', function($table)
+	{
+		$table->renameColumn('username', 'nickname');
 	});
 
 <a name="adding-indexes"></a>
