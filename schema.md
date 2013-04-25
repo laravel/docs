@@ -135,9 +135,9 @@ You may also specify options for `ON DELETE` and `ON UPDATE` actions:
 	$table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
 	$table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
 
-Foreign key constraints are named by Laravel using a similar convention to index naming: table name, name of column, and the index type ("foreign"). Use the `drop_foreign()` method to drop constraints.
+Foreign key constraints are named by Laravel using a similar convention to index naming: table name, name of column, and the index type ("foreign"). Use the `dropForeign()` method to drop constraints.
 
-	$table->drop_foreign('posts_user_id_foreign');
+	$table->dropForeign('posts_user_id_foreign');
 
 > **Note:** Laravel creates `auto_increment` columns as unsigned integers, so columns referencing them must *also* be unsigned integers. Also, with MySQL, you must use the **InnoDB** table type for foreign key support.
 
