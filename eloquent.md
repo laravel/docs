@@ -305,7 +305,7 @@ An example of a one-to-many relation is a blog post that "has many" comments. We
 
 	}
 
-Now we can access the post's comments through the [dynamic property](#dynamic-properties):
+Now we can access the post's comments as a [collection](#collections) through the [dynamic property](#dynamic-properties):
 
 	$comments = Post::find(1)->comments;
 
@@ -348,7 +348,7 @@ We can define a many-to-many relation using the `belongsToMany` method:
 
 	}
 
-Now, we can retrieve the roles through the `User` model:
+Now, we can retrieve the roles as a [collection](#collections) through the `User` model:
 
 	$roles = User::find(1)->roles;
 
@@ -447,7 +447,7 @@ The key fields to notice here are the `imageable_id` and `imageable_type` on the
 <a name="dynamic-properties"></a>
 ### Dynamic Properties
 
-Eloquent allows you to access your relations via dynamic properties. Eloquent will automatically load the relationship for you, and is even smart enough to know whether to call the get (for one-to-many relationships) or first (for one-to-one relationships) method.  It'll then be accessible via a dynamic property by the same name as the relation.  For example, with the following model:
+Eloquent allows you to access your relations via dynamic properties. Eloquent will automatically load the relationship for you, and is even smart enough to know whether to call the get (for one-to-many relationships) or first (for one-to-one relationships) method.  It'll then be accessible via a dynamic property by the same name as the relation.  For example, with the following model `$phone`:
 
 	class Phone extends Eloquent {
 
@@ -457,13 +457,15 @@ Eloquent allows you to access your relations via dynamic properties. Eloquent wi
      	}
 	}
 	
+	$phone = Phone::find(1);
+	
 Instead of echoing the user's email like this:
 
-	echo Phone::find(1)->user()->first()->email;
+	echo $phone->user()->first()->email;
 
 It may be shortened to simply use
 
-	echo Phone::find(1)->user->email;
+	echo $phone->user->email;
 
 
 <a name="eager-loading"></a>
