@@ -453,7 +453,7 @@ Eloquent allows you to access your relations via dynamic properties. Eloquent wi
 
     	public function user()
     	{
-        	return $this->belongs_to('User');
+        	return $this->belongsTo('User');
      	}
 	}
 	
