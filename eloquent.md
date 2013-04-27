@@ -264,7 +264,7 @@ A one-to-one relationship is a very basic relation. For example, a `User` model 
 
 	}
 
-The first argument passed to the `hasOne` method is the name of the related model. Once the relationship is defined, we may retrieve it using Eloquent's dynamic properties:
+The first argument passed to the `hasOne` method is the name of the related model. Once the relationship is defined, we may retrieve it using Eloquent's [dynamic properties](#dynamic-properties):
 
 	$phone = User::find(1)->phone;
 
@@ -305,13 +305,15 @@ An example of a one-to-many relation is a blog post that "has many" comments. We
 
 	}
 
-Now we can access the post's comments through the dynamic property:
+Now we can access the post's comments as a [collection](#collections) through the [dynamic property](#dynamic-properties):
 
 	$comments = Post::find(1)->comments;
 
 If you need to add further constraints to which comments are retrieved, you may call the `comments` method and continue chaining conditions:
 
 	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
+	
+	$comments = Post::find(1)->comments()->where('title', '!=', 'foo')->get();
 
 Again, you may override the conventional foreign key by passing a second argument to the `hasMany` method:
 
@@ -346,7 +348,7 @@ We can define a many-to-many relation using the `belongsToMany` method:
 
 	}
 
-Now, we can retrieve the roles through the `User` model:
+Now, we can retrieve the roles as a [collection](#collections) through the `User` model:
 
 	$roles = User::find(1)->roles;
 
@@ -441,6 +443,30 @@ To help understand how this works, let's explore the database structure for a po
 		imageable_type - string
 
 The key fields to notice here are the `imageable_id` and `imageable_type` on the `photos` table. The ID will contain the ID value of, in this example, the owning staff or order, while the type will contain the class name of the owning model. This is what allows the ORM to determine which type of owning model to return when accessing the `imageable` relation.
+
+<a name="dynamic-properties"></a>
+### Dynamic Properties
+
+Eloquent allows you to access your relations via dynamic properties. Eloquent will automatically load the relationship for you, and is even smart enough to know whether to call the get (for one-to-many relationships) or first (for one-to-one relationships) method.  It'll then be accessible via a dynamic property by the same name as the relation.  For example, with the following model `$phone`:
+
+	class Phone extends Eloquent {
+
+    	public function user()
+    	{
+        	return $this->belongsTo('User');
+     	}
+	}
+	
+	$phone = Phone::find(1);
+	
+Instead of echoing the user's email like this:
+
+	echo $phone->user()->first()->email;
+
+It may be shortened to simply use
+
+	echo $phone->user->email;
+
 
 <a name="eager-loading"></a>
 ## Eager Loading
