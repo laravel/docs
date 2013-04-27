@@ -131,6 +131,14 @@ This allows you to quickly build forms that not only bind to model values, but e
 **Generating A Drop-Down List With Selected Default**
 
 	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S');
+	
+**Generating A Drop-Down List With Option Grouping**
+
+	$options = array(
+		'Cats' => array('leopard' => 'Leopard', 'tiger' => 'Tiger'),
+		'Dogs' => array('coyote' => 'Coyote', 'red_fox' => 'Red Fox')
+	);
+	echo Form::select('animal', $options);
 
 <a name="buttons"></a>
 ## Buttons
