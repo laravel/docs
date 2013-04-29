@@ -83,11 +83,11 @@ The `validate` method allows you to validate a user's credentials without actual
 		//
 	}
 
-You may also use the `stateless` method to log a user into the application for a single request. No sessions or cookies will be utilized.
+You may also use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized.
 
 **Logging A User In For A Single Request**
 
-	if (Auth::stateless($credentials))
+	if (Auth::once($credentials))
 	{
 		//
 	}
