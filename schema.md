@@ -6,6 +6,7 @@
 - [Dropping Columns](#dropping-columns)
 - [Adding Indexes](#adding-indexes)
 - [Dropping Indexes](#dropping-indexes)
+- [Using Foreign Keys](#foreign-keys)
 
 <a name="introduction"></a>
 ## Introduction
@@ -121,3 +122,24 @@ Command  | Description
 `$table->dropPrimary('users_id_primary');`  |  Dropping a primary key from the "users" table
 `$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
 `$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
+
+<a name="foreign-keys"></a>
+## Using Foreign Keys
+
+Laravel's schema builder allows you to add foreign key constraints to your database columns as well. Let's assume you have a **user_id** column on a **posts** table, which references the **id** column of the **users** table:
+
+	$table->foreign('user_id')->references('id')->on('users');
+
+You may also specify options for `ON DELETE` and `ON UPDATE` actions:
+
+	$table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+	$table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
+
+Foreign key constraints are named by Laravel using a similar convention to index naming: table name, name of column, and the index type ("foreign"). Use the `dropForeign()` method to drop constraints.
+
+	$table->dropForeign('posts_user_id_foreign');
+
+> **Note:** Laravel creates `auto_increment` columns as unsigned integers, so columns referencing them must *also* be unsigned integers. Also, with MySQL, you must use the **InnoDB** table type for foreign key support.
+
+	$table->engine = 'InnoDB';
+	$table->integer('user_id')->unsigned();
