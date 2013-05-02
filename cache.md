@@ -58,6 +58,7 @@ Note that all items stored in the cache are serialized, so you are free to store
 	Cache::forget('key');
 
 <a name="increments-and-decrements"></a>
+## Increments & Decrements
 
 All drivers except `file` and `database` support the `increment` and `decrement` operations:
 
