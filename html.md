@@ -104,15 +104,17 @@ This allows you to quickly build forms that not only bind to model values, but e
 <a name="checkboxes-and-radio-buttons"></a>
 ## Checkboxes and Radio Buttons
 
-**Generating A Checkbox Input**
+**Generating A Checkbox Or Radio Input**
 
 	echo Form::checkbox('name', 'value');
+	
+	echo Form::radio('name', 'value');
 
-**Generating A Checkbox That Is Checked**
+**Generating A Checkbox Or Radio Input That Is Checked**
 
 	echo Form::checkbox('name', 'value', true);
-
-> **Note:** The *radio* method has the same signature as the *checkbox* method.
+	
+	echo Form::radio('name', 'value', true);
 
 <a name="file-input"></a>
 ## File Input
