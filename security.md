@@ -256,3 +256,11 @@ Laravel provides facilities for strong AES-256 encryption via the mcrypt PHP ext
 **Decrypting A Value**
 
 	$decrypted = Crypt::decrypt($encryptedValue);
+
+You may also set the cipher and mode used by the encrypter:
+
+**Setting The Cipher & Mode**
+
+	Crypt::setMode('crt');
+
+	Crypt::setCipher($cipher);
