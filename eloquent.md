@@ -7,6 +7,7 @@
 - [Timestamps](#timestamps)
 - [Query Scopes](#query-scopes)
 - [Relationships](#relationships)
+- [Querying Relations](#querying-relations)
 - [Eager Loading](#eager-loading)
 - [Inserting Related Models](#inserting-related-models)
 - [Touching Parent Timestamps](#touching-parent-timestamps)
@@ -441,6 +442,21 @@ To help understand how this works, let's explore the database structure for a po
 		imageable_type - string
 
 The key fields to notice here are the `imageable_id` and `imageable_type` on the `photos` table. The ID will contain the ID value of, in this example, the owning staff or order, while the type will contain the class name of the owning model. This is what allows the ORM to determine which type of owning model to return when accessing the `imageable` relation.
+
+<a name="querying-relations"></a>
+## Querying Relations
+
+When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, you wish to pull all blog posts that have at least one comment. To do so, you may use the `has` method:
+
+**Checking Relations When Selecting**
+
+	$posts = Post::has('comments')->get();
+
+You may also specify an operator and a count:
+
+	$posts = Post::has('comments', '>=', 3)->get();
+
+You may also specify 
 
 <a name="eager-loading"></a>
 ## Eager Loading
