@@ -4,6 +4,7 @@
 - [Storing Passwords](#storing-passwords)
 - [Authenticating Users](#authenticating-users)
 - [Protecting Routes](#protecting-routes)
+- [HTTP Basic Authentication](#http-basic-authentication)
 - [Password Reminders & Reset](#password-reminders-and-reset)
 - [Encryption](#encryption)
 
@@ -122,6 +123,18 @@ Laravel provides an easy method of protecting your application from cross-site r
     {
         return 'You gave a valid CSRF token!';
     }));
+
+<a name="http-basic-authentication"></a>
+## HTTP Basic Authentication
+
+HTTP Basic Authentication provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` filter to your route:
+
+**Protecting A Route With HTTP Basic**
+
+	Route::get('profile', array('before' => 'auth.basic', function()
+	{
+		// Only authenticated users may enter...
+	}));
 
 <a name="password-reminders-and-reset"></a>
 ## Password Reminders & Reset

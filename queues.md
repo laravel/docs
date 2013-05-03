@@ -41,6 +41,12 @@ The first argument given to the `push` method is the name of the class that shou
 
 Notice the only method that is required is `fire`, which receives a `Job` instance as well as the array of `data` that was pushed onto the queue.
 
+If you want the job to use a method other than `fire`, you may specify the method when you push the job:
+
+**Specifying A Custom Handler Method**
+
+	Queue::push('SendEmail@send', array('message' => $message));
+
 Once you have processed a job, it must be deleted from the queue, which can be done via the `delete` method on the `Job` instance:
 
 **Deleting A Processed Job**
