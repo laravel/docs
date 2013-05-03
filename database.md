@@ -49,6 +49,20 @@ You may listen for query events using the `DB::listen` method:
 		//
 	});
 
+**Make A Transaction**
+
+	DB::transaction(function()
+	{
+		//
+	});
+
+If you are using MySQL, make sure your engine for your table(s) is InnoDB. If you use a schema builder, just set 
+
+	Schema::create("your_table_name", function($table) 
+	{
+		$table->engine = "InnoDB";
+	});
+
 <a name="accessing-connections"></a>
 ## Accessing Connections
 
