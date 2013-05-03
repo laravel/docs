@@ -98,15 +98,15 @@ Since your packages are in the `workbench` directory, you may be wondering how C
 <a name="package-routing"></a>
 ## Package Routing
 
-In prior versions of Laravel, a `handles` clause was used to specify which URIs a package could respond to. However, in Laravel 4, a package may respond to any URI. To load a routes file for your package, simply `include` it from within your service provider's `register` method.
+In prior versions of Laravel, a `handles` clause was used to specify which URIs a package could respond to. However, in Laravel 4, a package may respond to any URI. To load a routes file for your package, simply `include` it from within your service provider's `boot` method.
 
 **Including A Routes File From A Service Provider**
 
-	public function register()
+	public function boot()
 	{
 		$this->package('vendor/package');
 
-		include __DIR__.'/routes.php';
+		include __DIR__.'/../../routes.php';
 	}
 
 <a name="package-configuration"></a>
