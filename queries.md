@@ -9,6 +9,7 @@
 - [Inserts](#inserts)
 - [Updates](#updates)
 - [Deletes](#deletes)
+- [Unions](#unions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -246,3 +247,16 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 **Truncating A Table**
 
 	DB::table('users')->truncate();
+
+<a name="unions"></a>
+## Unions
+
+The query builder also provides a quick way to "union" two queries together:
+
+**Performing A Query Union**
+
+	$first = DB::table('users')->whereNull('first_name');
+
+	$users = DB::table('users')->whereNull('last_name')->union($first)->get();
+
+The `unionAll` method is also available, and has the same method signature as `union`.

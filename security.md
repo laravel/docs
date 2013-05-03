@@ -182,7 +182,7 @@ To send a password reminder, we can use the `Password::remind` method:
 		return Password::remind($credentials);
 	});
 
-Note that the arguments passed to the `remind` method are similar to the `Auth::attempt` method. This method will retrieve the `User` and send them a password reset link via e-mail. The e-mail view will be passed a `token` variable which may be used to construct the link to the password reset form.
+Note that the arguments passed to the `remind` method are similar to the `Auth::attempt` method. This method will retrieve the `User` and send them a password reset link via e-mail. The e-mail view will be passed a `token` variable which may be used to construct the link to the password reset form. The `user` object will also be passed to the view.
 
 > **Note:** You may specify which view is used as the e-mail message by changing the `auth.reminder.email` configuration option. Of course, a default view is provided out of the box.
 
