@@ -233,6 +233,10 @@ The field under validation must exists on a given database table.
 
 	'state' => 'exists:states,abbreviation'
 
+You may also specify more conditions that will be added as "where" clauses to the query:
+
+	'email' => 'exists:staff,email,account_id,1'
+
 <a name="rule-image"></a>
 #### image
 
@@ -295,9 +299,9 @@ The field under validation must match the given regular expression.
 The field under validation must be present in the input data.
 
 <a name="rule-required-if"></a>
-#### required_if:_foo_,_bar_
+#### required_if:_field_,_value_
 
-The field under validation must be present if the _foo_ field is equal to _bar_.
+The field under validation must be present if the _field_ field is equal to _value_.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
