@@ -4,6 +4,7 @@
 - [Basic Usage](#basic-usage)
 - [Mass Assignment](#mass-assignment)
 - [Insert, Update, Delete](#insert-update-delete)
+- [Soft Deleting](#soft-deleting)
 - [Timestamps](#timestamps)
 - [Query Scopes](#query-scopes)
 - [Relationships](#relationships)
@@ -218,6 +219,43 @@ If you wish to customize the format of your timestamps, you may override the `fr
 		}
 
 	}
+
+<a name="soft-deleting"></a>
+## Soft Deleting
+
+When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, specify the `softDelete` property on the model:
+
+	class User extends Eloquent {
+
+		protected $softDelete = true;
+
+	}
+
+Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current timestamp. When querying a model that uses soft deletes, the "deleted" models will not be included in query results. To force soft deleted models to appear in a result set, use the `withDeleted` method on the query:
+
+**Forcing Soft Deleted Models Into Results**
+
+	$users = User::withDeleted()->where('account_id', 1)->get();
+
+To restore a soft deleted model into an active state, use the `restore` method:
+
+	$user->restore();
+
+You may also use the `restore` method on a query:
+
+	User::withDeleted()->where('account_id', 1)->restore();
+
+The `restore` method may also be used on relationships:
+
+	$user->posts()->restore();
+
+If you wish to truly remove a model from the database, you may use the `forceDelete` method:
+
+	$user->forceDelete();
+
+The `forceDelete` method also works on relationships:
+
+	$user->posts()->forceDelete();
 
 <a name="query-scopes"></a>
 ## Query Scopes
