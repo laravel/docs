@@ -2,6 +2,7 @@
 
 - [Configuration](#configuration)
 - [Usage](#usage)
+- [Appending To Pagination Links](#appending-to-pagination-links)
 
 <a name="configuration"></a>
 ## Configuration
@@ -49,3 +50,14 @@ Sometimes you may wish to create a pagination instance manually, passing it an a
 **Creating A Paginator Manually**
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);
+
+<a name="appending-to-pagination-links"></a>
+## Appending To Pagination Links
+
+You can add to the query string of pagination links using the `appends` method on the Paginator:
+
+	<?php echo $users->appends(array('sort' => 'votes'))->links(); ?>
+
+This will generate URLs that look something like this:
+
+	http://example.com/something?page=2&sort=votes
