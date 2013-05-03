@@ -48,6 +48,12 @@ This method will return an array of role titles, keyed by the role ID. You may a
 
 	$roles = DB::table('roles')->lists('title', 'name');
 
+**Using table aliases**
+
+You can have table alias in the table() and join() functions:
+
+	$user = DB::table('users as u')->where('u.name', 'John')->first();
+
 **Specifying A Select Clause**
 
 	$users = DB::table('users')->select('name', 'email')->get();
