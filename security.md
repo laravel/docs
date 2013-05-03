@@ -136,6 +136,15 @@ HTTP Basic Authentication provides a quick way to authenticate users of your app
 		// Only authenticated users may enter...
 	}));
 
+You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, define a filter that returns the `onceBasic` method:
+
+**Setting Up A Stateless HTTP Basic Filter**
+
+	Route::filter('basic.once', function()
+	{
+		return Auth::onceBasic();
+	});
+
 <a name="password-reminders-and-reset"></a>
 ## Password Reminders & Reset
 
