@@ -103,7 +103,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder:
 
 	Schema::table('users', function($table)
 	{
-		$table->dropColumns('votes', 'avatar', 'location');
+		$table->dropColumn('votes', 'avatar', 'location');
 	});
 
 <a name="adding-indexes"></a>
