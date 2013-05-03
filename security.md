@@ -52,6 +52,15 @@ To log a user into your application, you may use the `Auth::attempt` method.
 
 Take note that `email` is not a required option, it is merely used for example. You should use whatever column name corresponds to a "username" in your database. The `Redirect::intended` function will redirect the user to the URL they were trying to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
 
+To determine if the user is already logged into your application, you may use the `check` method:
+
+**Determining If A User Is Authenticated**
+
+	if (Auth::check())
+	{
+		// The user is logged in...
+	}
+
 If you would like to provide "remember me" functionality in your application, you may pass `true` as the second argument to the `attempt` method, which will keep the user authenticated indefinitely (or until they manually logout):
 
 **Authenticating A User And "Remembering" Them**
