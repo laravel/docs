@@ -654,6 +654,22 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 
 	});
 
+**Applying A Callback To Each Collection Object**
+
+	$roles = User::find(1)->roles;
+	
+	$roles->each(function($role)
+	{
+		//	
+	});
+
+**Sorting A Collection By A Value**
+
+	$roles = $roles->sortBy(function($role)
+	{
+		return $role->created_at;
+	});
+
 Sometimes, you may wish to return a custom Collection object with your own added methods. You may specify this on your Eloquent model by overriding the `newCollection` method:
 
 **Returning A Custom Collection Type**
@@ -666,16 +682,6 @@ Sometimes, you may wish to return a custom Collection object with your own added
 		}
 
 	}
-
-**Applying callback to the objects in a collection**
-
-	$roles = User::find(1)->roles;
-	
-	$roles->each(function($role)
-	{
-		//	
-	});
-	
 
 <a name="accessors-and-mutators"></a>
 ## Accessors & Mutators
