@@ -132,6 +132,13 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S');
 
+**Generating A Grouped List**
+
+	echo Form::select('animal', array(
+		'Cats' => array('leopard' => 'Leopard'),
+		'Dogs' => array('spaniel' => 'Spaniel'),
+	));
+
 <a name="buttons"></a>
 ## Buttons
 
