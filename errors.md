@@ -45,7 +45,7 @@ To listen for PHP fatal errors, you may use the `App::fatal` method:
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
 
-Exceptions in respect to HTTP, refer to errors that may occur during a client request. This may be a page not found error (404), an authorized error (401) or even a generated 500 error. In order to return such a response, use the following:
+Exceptions in respect to HTTP, refer to errors that may occur during a client request. This may be a page not found error (404), an unauthorized error (401) or even a generated 500 error. In order to return such a response, use the following:
 
 	App::abort(404, 'Page not found');
 

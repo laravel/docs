@@ -8,12 +8,12 @@
 <a name="introduction"></a>
 ## Introduction
 
-The Laravel `Lang` class provides a convenient way to retrieving strings in various languages, allowing you to easily support multiple languages within your application.
+The Laravel `Lang` class provides a convenient way of retrieving strings in various languages, allowing you to easily support multiple languages within your application.
 
 <a name="language-files"></a>
 ## Language Files
 
-Language strings are stored in files within the `app/lang` directory. Within this directory this should be a directory for each language supported by the application.
+Language strings are stored in files within the `app/lang` directory. Within this directory there should be a subdirectory for each language supported by the application.
 
 	/app
 		/lang
