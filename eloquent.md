@@ -570,6 +570,28 @@ You may even eager load nested relationships:
 
 In the example above, the `author` relationship will be eager loaded, and the author's `contacts` relation will also be loaded.
 
+
+If you find yourself eager loading the same models often, you may want to use $with in the model like so:
+
+    class Book extends Eloquent {
+
+        public $with = array('author');
+
+        public function author()
+        {
+            return $this->belongsTo('Author');
+        }
+    }
+
+The following is now eagerly loaded:
+
+    foreach (Book::all() as $book)
+    {
+        echo $book->author->name;
+    }
+
+> **Note:** Using with() elsewhere override a models $with.
+
 ### Eager Load Constraints
 
 Sometimes you may wish to eager load a relationship, but also specify a condition for the eager load. Here's an example:
