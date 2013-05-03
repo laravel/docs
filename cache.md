@@ -3,6 +3,7 @@
 - [Configuration](#configuration)
 - [Cache Usage](#cache-usage)
 - [Increments & Decrements](#increments-and-decrements)
+- [Cache Sections](#cache-sections)
 - [Database Cache](#database-cache)
 
 <a name="configuration"></a>
@@ -73,6 +74,27 @@ All drivers except `file` and `database` support the `increment` and `decrement`
 	Cache::decrement('key');
 
 	Cache::decrement('key', $amount);
+
+<a name="cache-sections"></a>
+## Cache Sections
+
+Cache sections allow you to group related items in the cache, and then flush the entire section. To access a section, use the `section` method:
+
+**Accessing A Cache Section**
+
+	Cache::section('people')->put('John', $john);
+
+	Cache::section('people')->put('Anne', $anne);
+
+You may also access cached items from the section, as well as use the other cache methods such as `increment` and `decrement`:
+
+**Accessing Items In A Cache Section**
+
+	$anne = Cache::section('people')->get('Anne');
+
+Then you may flush all items in the section:
+
+	Cache::section('people')->flush();
 
 <a name="database-cache"></a>
 ## Database Cache
