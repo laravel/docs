@@ -231,11 +231,15 @@ When soft deleting a model, it is not actually removed from your database. Inste
 
 	}
 
-Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current timestamp. When querying a model that uses soft deletes, the "deleted" models will not be included in query results. To force soft deleted models to appear in a result set, use the `withDeleted` method on the query:
+Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current timestamp. When querying a model that uses soft deletes, the "deleted" models will not be included in query results. To force soft deleted models to appear in a result set, use the `withTrashed` method on the query:
 
 **Forcing Soft Deleted Models Into Results**
 
-	$users = User::withDeleted()->where('account_id', 1)->get();
+	$users = User::withTrashed()->where('account_id', 1)->get();
+
+If you wish to **only** receive soft deleted models in your results, you may use the `trashed` method:
+
+	$users = User::trashed()->where('account_id', 1)->get();
 
 To restore a soft deleted model into an active state, use the `restore` method:
 
@@ -243,7 +247,7 @@ To restore a soft deleted model into an active state, use the `restore` method:
 
 You may also use the `restore` method on a query:
 
-	User::withDeleted()->where('account_id', 1)->restore();
+	User::withTrashed()->where('account_id', 1)->restore();
 
 The `restore` method may also be used on relationships:
 
