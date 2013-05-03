@@ -49,3 +49,15 @@ Sometimes you may wish to create a pagination instance manually, passing it an a
 **Creating A Paginator Manually**
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);
+
+## Appending To Pagination Links
+
+You may need to add more items to the pagination links' query strings, such as the column you're sorting by.
+
+Appending to the query string of pagination links:
+
+	<?php echo $users->appends(array('sort' => 'votes'))->links(); ?>
+
+This will generate URLs that look something like this:
+
+	http://example.com/something?page=2&sort=votes
