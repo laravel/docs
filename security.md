@@ -83,6 +83,14 @@ You also may add extra conditions to the authenticating query:
 
 Once a user is authenticated, you may access the User model / record:
 
+**Check if the user is logged in**
+To determine if the user of your application is logged in, call the check method:
+
+    if (Auth::check())
+    {
+        return "You're logged in!";
+    }
+
 **Accessing The Logged In User**
 
 	$email = Auth::user()->email;
