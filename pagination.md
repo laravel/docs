@@ -35,6 +35,8 @@ The argument passed to the `paginate` method is the number of items you wish to 
 
 	<?php echo $users->links(); ?>
 
+You also have access to additional pagination details from your view, including `getLastPage`, `getCurrentPage`, `getPerPage`, and `getTotal`. All use the same syntax as the sample above `$users->getTotal()`
+
 This is all it takes to create a pagination system! Note that we did not have to inform the framework of the current page. Laravel will determine this for you automatically.
 
 Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
