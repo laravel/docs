@@ -113,11 +113,11 @@ Route filters may be used to allow only authenticated users to access a given ro
 
 Laravel provides an easy method of protecting your application from cross-site request forgeries.
 
-**Insert the CSRF token into your form ** using `csrf_token()` or `Session::getToken()`
+**Inserting CSRF Token Into Form**
 
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-**Validate the submitted CSRF token**
+**Validate The Submitted CSRF Token**
 
     Route::post('register', array('before' => 'csrf', function()
     {
