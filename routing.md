@@ -127,6 +127,13 @@ If a response is returned from a filter, that response will be considered the re
 		return 'Hello World';
 	}));
 
+After filters receive a `$response` as the third argument passed to the filter:
+
+	Route::filter('log', function($route, $request, $response, $value)
+	{
+		//
+	});
+
 **Pattern Based Filters**
 
 You may also specify that a filter applies to an entire set of routes based on their URI.
