@@ -78,6 +78,8 @@ All drivers except `file` and `database` support the `increment` and `decrement`
 <a name="cache-sections"></a>
 ## Cache Sections
 
+> **Note:** Cache sections are not supported when using the `file` or `database` cache drivers.
+
 Cache sections allow you to group related items in the cache, and then flush the entire section. To access a section, use the `section` method:
 
 **Accessing A Cache Section**
