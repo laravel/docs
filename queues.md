@@ -3,6 +3,7 @@
 - [Configuration](#configuration)
 - [Basic Usage](#basic-usage)
 - [Running The Queue Listener](#running-the-queue-listener)
+- [Push Queues](#push-queues)
 
 <a name="configuration"></a>
 ## Configuration
@@ -46,6 +47,17 @@ If you want the job to use a method other than `fire`, you may specify the metho
 **Specifying A Custom Handler Method**
 
 	Queue::push('SendEmail@send', array('message' => $message));
+
+You may also push a Closure onto the queue. This is very convenient for quick, simply tasks that need to be queued:
+
+**Pushing A Closure Onto The Queue**
+
+	Queue::push(function() use ($id)
+	{
+		Account::delete($id);
+	});
+
+> **Note:** When pushing Closures onto the queue, the `__DIR__` and `__FILE__` constants should not be used.
 
 Once you have processed a job, it must be deleted from the queue, which can be done via the `delete` method on the `Job` instance:
 
@@ -108,3 +120,23 @@ To process only the first job on the queue, you may use the `queue:work` command
 **Processing The First Job On The Queue**
 
 	php artisan queue:work
+
+<a name="push-queues"></a>
+## Push Queues
+
+Push queues allow you to utilize the powerful Laravel 4 queue facilities without running any daemons or background listeners. Currently, push queues are only supported by the [Iron.io](http://iron.io) driver. Before getting started, create an Iron.io account, and add your Iron credentials to the `app/config/queue.php` configuration file.
+
+Next, you may use the `queue:subscribe` Artisan command to register a URL end-point that will receive newly pushed queue jobs:
+
+**Registering A Push Queue Subscriber**
+
+	php artisan queue:subscribe queue_name http://foo.com/queue/receive
+
+Now, when you login to your Iron dashboard, you will see your new push queue, as well as the subscribed URL. You may subscribe as many URLs as you wish to a given queue. Next, create a route for your `queue/receive` end-point and return the response from the `Queue::marshal` method:
+
+	Route::get('queue/receive', function()
+	{
+		return Queue::marshal();
+	});
+
+The `marshal` method will take care of firing the correct job handler class. To fire jobs onto the push queue, just use the same `Queue::push` method used for conventional queues!
