@@ -254,6 +254,13 @@ Since we have bound the `{user}` parameter to the `User` model, a `User` instanc
 
 > **Note:** If a matching model instance is not found in the database, a 404 error will be thrown.
 
+If you wish to specify your own "not found" behavior, you may pass a Closure as the third argument to the `model` method:
+
+	Route::model('user', 'User', function()
+	{
+		throw new NotFoundException;
+	});
+
 Sometimes you may wish to use your own resolver for route parameters. Simply use the `Route::bind` method:
 
 	Route::bind('user', function($value, $route)
