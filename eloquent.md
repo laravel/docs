@@ -307,7 +307,7 @@ A one-to-one relationship is a very basic relation. For example, a `User` model 
 
 	}
 
-The first argument passed to the `hasOne` method is the name of the related model. Once the relationship is defined, we may retrieve it using Eloquent's dynamic properties:
+The first argument passed to the `hasOne` method is the name of the related model. Once the relationship is defined, we may retrieve it using Eloquent's [dynamic properties](#dynamic-properties):
 
 	$phone = User::find(1)->phone;
 
@@ -348,7 +348,7 @@ An example of a one-to-many relation is a blog post that "has many" comments. We
 
 	}
 
-Now we can access the post's comments through the dynamic property:
+Now we can access the post's comments through the [dynamic property](#dynamic-properties):
 
 	$comments = Post::find(1)->comments;
 
@@ -498,7 +498,29 @@ You may also specify an operator and a count:
 
 	$posts = Post::has('comments', '>=', 3)->get();
 
-You may also specify 
+<a name="dynamic-properties"></a>
+### Dynamic Properties
+
+Eloquent allows you to access your relations via dynamic properties. Eloquent will automatically load the relationship for you, and is even smart enough to know whether to call the `get` (for one-to-many relationships) or `first` (for one-to-one relationships) method.  It will then be accessible via a dynamic property by the same name as the relation. For example, with the following model `$phone`:
+
+	class Phone extends Eloquent {
+
+		public function user()
+		{
+			return $this->belongsTo('User');
+		}
+
+	}
+
+	$phone = Phone::find(1);
+	
+Instead of echoing the user's email like this:
+
+	echo $phone->user()->first()->email;
+
+It may be shortened to simply:
+
+	echo $phone->user->email;
 
 <a name="eager-loading"></a>
 ## Eager Loading
