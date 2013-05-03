@@ -2,6 +2,7 @@
 
 - [Configuration](#configuration)
 - [Running Queries](#running-queries)
+- [Database Transactions](#database-transactions)
 - [Accessing Connections](#accessing-connections)
 
 <a name="configuration"></a>
@@ -47,6 +48,18 @@ You may listen for query events using the `DB::listen` method:
 	DB::listen(function($sql, $bindings, $time)
 	{
 		//
+	});
+
+<a name="database-transactions"></a>
+## Database Transactions
+
+To run a set of operations within a database transaction, you may use the `transaction` method:
+
+	DB::transaction(function()
+	{
+		DB::table('users')->update(array('votes' => 1));
+
+		DB::table('posts')->delete();
 	});
 
 <a name="accessing-connections"></a>
