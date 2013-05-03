@@ -686,7 +686,7 @@ If you want your pivot table to have automatically maintained `created_at` and `
 
 	return $this->belongsToMany('Role')->withTimestamps();
 
-To delete all records on the pivot table for a model, you may use the `delete` method:
+To delete all records on the pivot table for a model, you may use the `detach` method:
 
 **Deleting Records On A Pivot Table**
 
