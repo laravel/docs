@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Creating & Dropping Tables](#creating-and-dropping-tables)
 - [Adding Columns](#adding-columns)
+- [Renaming Columns](#renaming-columns)
 - [Dropping Columns](#dropping-columns)
 - [Adding Indexes](#adding-indexes)
 - [Dropping Indexes](#dropping-indexes)
@@ -75,6 +76,18 @@ If you are using the MySQL database, you may use the `after` method to specify t
 **Using After On MySQL**
 
 	$table->string('name')->after('email');
+
+<a name="renaming-columns"></a>
+## Renaming Columns
+
+To rename a column, you may use the `renameColumn` method on the Schema builder:
+
+**Renaming A Column**
+
+	Schema::table('users', function($t)
+	{
+		$t->renameColumn('from', 'to');
+	});
 
 <a name="dropping-columns"></a>
 ## Dropping Columns
