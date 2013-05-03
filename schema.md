@@ -86,9 +86,9 @@ To rename a column, you may use the `renameColumn` method on the Schema builder:
 
 **Renaming A Column**
 
-	Schema::table('users', function($t)
+	Schema::table('users', function($table)
 	{
-		$t->renameColumn('from', 'to');
+		$table->renameColumn('from', 'to');
 	});
 
 <a name="dropping-columns"></a>
