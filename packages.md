@@ -118,12 +118,6 @@ Some packages may require configuration files. These files should be defined in 
 
 	Config::get('package::file.option');
 
-However, if your package contains a single configuration file, you may simply name the file `config.php`. When this is done, you may access the options directly, without specifying the file name:
-
-**Accessing Single File Package Configuration**
-
-	Config::get('package::option');
-
 ### Cascading Configuration Files
 
 When other developers install your package, they may wish to override some of the configuration options. However, if they change the values in your package source code, they will be overwritten the next time Composer updates the package. Instead, the `config:publish` artisan command should be used:
