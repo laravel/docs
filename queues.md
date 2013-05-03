@@ -139,4 +139,4 @@ Now, when you login to your Iron dashboard, you will see your new push queue, as
 		return Queue::marshal();
 	});
 
-The `marshal` method will take care of firing the correct job handler class. To fire jobs onto the push queue, just use the same `Queue::push` method used for conventional queues!
+The `marshal` method will take care of firing the correct job handler class. To fire jobs onto the push queue, just use the same `Queue::push` method used for conventional queues.
