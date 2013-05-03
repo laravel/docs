@@ -1,6 +1,7 @@
 # Events
 
 - [Basic Usage](#basic-usage)
+- [Wildcard Listeners](#wildcard-listeners)
 - [Using Classes As Listeners](#using-classes-as-listeners)
 - [Queued Events](#queued-events)
 - [Event Subscribers](#event-subscribers)
@@ -41,6 +42,20 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 
 		return false;
 	});
+
+<a name="wildcard-listeners"></a>
+## Wildcard Listeners
+
+When registering an event listener, you may use asterisks to specify wildcard listeners:
+
+**Registering Wildcard Event Listeners**
+
+	Event::listen('foo.*', function($param, $event)
+	{
+		// Handle the event...
+	});
+
+This listener will handle all events that begin with "foo.". Note that the full event name is passed as the last argument to the handler.
 
 <a name="using-classes-as-listeners"></a>
 ## Using Classes As Listeners

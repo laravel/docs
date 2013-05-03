@@ -148,6 +148,7 @@ Below is a list of all available validation rules and their function:
 - [Numeric](#rule-numeric)
 - [Regular Expression](#rule-regex)
 - [Required](#rule-required)
+- [Required If](#rule-required-if)
 - [Required With](#rule-required-with)
 - [Same](#rule-same)
 - [Size](#rule-size)
@@ -293,6 +294,11 @@ The field under validation must match the given regular expression.
 
 The field under validation must be present in the input data.
 
+<a name="rule-required-if"></a>
+#### required_if:_foo_,_bar_
+
+The field under validation must be present if the _foo_ field is equal to _bar_.
+
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
 
@@ -387,6 +393,10 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 > **Note:** The name of the rule passed to the `extend` method must be "snake cased".
 
 The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
+
+You may also pass a class and method to the `extend` method instead of a Closure:
+
+	Validator::extend('foo', 'FooValidator@validate');
 
 Note that you will also need to define an error message for your custom rules. You can do so either using an inline custom message array or by adding an entry in the validation language file.
 

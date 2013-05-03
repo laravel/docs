@@ -5,6 +5,7 @@
 - [Adding Columns](#adding-columns)
 - [Renaming Columns](#renaming-columns)
 - [Dropping Columns](#dropping-columns)
+- [Checking Existence](#checking-existence)
 - [Adding Indexes](#adding-indexes)
 - [Dropping Indexes](#dropping-indexes)
 
@@ -105,6 +106,25 @@ To rename a column, you may use the `renameColumn` method on the Schema builder:
 	{
 		$table->dropColumn('votes', 'avatar', 'location');
 	});
+
+<a name="checking-existence"></a>
+## Checking Existence
+
+You may easily check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
+
+**Checking For Existence Of Table**
+
+	if (Schema::hasTable('users'))
+	{
+		//
+	}
+
+**Checking For Existence Of Columns**
+
+	if (Schema::hasColumn('users', 'email'))
+	{
+		//
+	}
 
 <a name="adding-indexes"></a>
 ## Adding Indexes

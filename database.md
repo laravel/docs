@@ -55,3 +55,7 @@ You may listen for query events using the `DB::listen` method:
 When using multiple connections, you may access them via the `DB::connection` method:
 
 	$users = DB::connection('foo')->select(...);
+
+Sometimes you may need to reconnect to a given database:
+
+	DB::reconnect('foo');

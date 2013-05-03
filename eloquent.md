@@ -796,3 +796,7 @@ Sometimes you may wish to limit the attributes that are included in your model's
 		protected $hidden = array('password');
 
 	}
+
+Alternatively, you may use the `visible` property to define a white-list:
+
+	protected $visible = array('first_name', 'last_name');
