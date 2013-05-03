@@ -3,6 +3,7 @@
 - [Configuration](#configuration)
 - [Basic Usage](#basic-usage)
 - [Embedding Inline Attachments](#embedding-inline-attachments)
+- [Queueing Mail](#queueing-mail)
 
 <a name="configuration"></a>
 ## Configuration
@@ -70,3 +71,29 @@ Embedding inline images into your e-mails is typically cumbersome; however, Lara
 	</body>
 
 Note that the `$message` variable is always passed to e-mail views by the `Mail` class.
+
+<a name="queueing-mail"></a>
+## Queueing Mail
+
+Since sending e-mail messages can drastically lengthen the repsonse time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/queue). To queue a mail message, simply use the `queue` method on the `Mail` class:
+
+**Queueing A Mail Message**
+
+	Mail::queue('emails.welcome', $data, function($m)
+	{
+		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+	});
+
+You may also specify the number of seconds you wish to delay the sending of the mail message using the `later` method:
+
+	Mail::later(5, 'emails.welcome', $data, function($m)
+	{
+		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+	});
+
+If you wish to specify a sepcific queue or "tube" on which to push the message, you may do so using the `queueOn` and `laterOn` methods:
+
+	Mail::queueOn('queue-name', 'emails.welcome', $data, function($m)
+	{
+		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+	});
