@@ -75,7 +75,7 @@ Note that the `$message` variable is always passed to e-mail views by the `Mail`
 <a name="queueing-mail"></a>
 ## Queueing Mail
 
-Since sending e-mail messages can drastically lengthen the repsonse time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/queue). To queue a mail message, simply use the `queue` method on the `Mail` class:
+Since sending e-mail messages can drastically lengthen the response time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/queue). To queue a mail message, simply use the `queue` method on the `Mail` class:
 
 **Queueing A Mail Message**
 
@@ -91,7 +91,7 @@ You may also specify the number of seconds you wish to delay the sending of the 
 		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
-If you wish to specify a sepcific queue or "tube" on which to push the message, you may do so using the `queueOn` and `laterOn` methods:
+If you wish to specify a specific queue or "tube" on which to push the message, you may do so using the `queueOn` and `laterOn` methods:
 
 	Mail::queueOn('queue-name', 'emails.welcome', $data, function($m)
 	{
