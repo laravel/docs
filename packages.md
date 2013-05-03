@@ -56,7 +56,7 @@ When using the `workbench` command, your package will be setup with conventions 
 	/tests
 	/public
 
-Let's explore this structure further. The `src/Vendor/Package` directory is the home of all of your package's classes, including the `ServiceProvider`. The `config`, `lang`, `migrations`, and `views` directories, as you might guess, contain the corresponding resource for your package. Packages may have any of these resources, just like "regular" applications.
+Let's explore this structure further. The `src/Vendor/Package` directory is the home of all of your package's classes, including the `ServiceProvider`. The `config`, `lang`, `migrations`, and `views` directories, as you might guess, contain the corresponding resources for your package. Packages may have any of these resources, just like "regular" applications.
 
 <a name="service-providers"></a>
 ## Service Providers
@@ -170,7 +170,7 @@ If the package is still in the `workbench`, use the `--bench` directive:
 
 	php artisan asset:publish --bench="vendor/package"
 
-This command will move the assets into the `public/packages` directory according to the vendor and package name. So, a package named `userscape/kudos` would have its assets moved to `public/packages/userscape/kudos`. Using this asset publishing convention allows you to safely code asset path in your package's views.
+This command will move the assets into the `public/packages` directory according to the vendor and package name. So, a package named `userscape/kudos` would have its assets moved to `public/packages/userscape/kudos`. Using this asset publishing convention allows you to safely code asset paths in your package's views.
 
 <a name="publishing-packages"></a>
 ## Publishing Packages
