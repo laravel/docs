@@ -8,7 +8,7 @@
 - [Checking Existence](#checking-existence)
 - [Adding Indexes](#adding-indexes)
 - [Dropping Indexes](#dropping-indexes)
-- [Setting Table Storage Engine](#storage-engine)
+- [Storage Engines](#storage-engines)
 
 <a name="introduction"></a>
 ## Introduction
@@ -156,15 +156,14 @@ Command  | Description
 `$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
 `$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
 
-<a name="storage-engine"></a>
-## Setting Table Storage Engine
+<a name="storage-engines"></a>
+## Storage Engines
 
-To set the storage engine for the table, use the `engine` property during `Schema::create`:
+To set the storage engine for a table, set the `engine` property on the schema builder:
 
-    Schema::create('users', function(Blueprint $table)
+    Schema::create('users', function($table)
     {
         $table->engine = 'InnoDB';
-        $table->increments('id');
 
-        $table->timestamps();
+        $table->string('email');
     });
