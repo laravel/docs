@@ -40,10 +40,10 @@ To log a user into your application, you may use the `Auth::attempt` method.
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password)))
 	{
-		// The user's credentials are valid...
+		return Redirect::intended('dashboard');
 	}
 
-Take note that `email` is not a required option, it is merely used for example. You should use whatever column name corresponds to a "username" in your database.
+Take note that `email` is not a required option, it is merely used for example. You should use whatever column name corresponds to a "username" in your database. The `Redirect::intended` function will redirect the user to the URL they were trying to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
 
 If you would like to provide "remember me" functionality in your application, you may pass `true` as the second argument to the `attempt` method, which will keep the user authenticated indefinitely (or until they manually logout):
 
@@ -56,11 +56,11 @@ If you would like to provide "remember me" functionality in your application, yo
 
 **Note:** If the `attempt` method returns `true`, the user is considered logged into the application.
 
+You also may add extra conditions to the authenticating query:
+
 **Authenticating A User With Conditions**
 
-You may add in extra conditions to ensure that the user is (for example) 'active', or 'not suspended':
-
-    if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1, 'suspended' => 0)))
+    if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1))
     {
         // The user is active, not suspended, and exists.
     }
