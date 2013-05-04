@@ -136,7 +136,7 @@ Event subscribers are classes that may subscribe to multiple events from within 
 		 * @param  Illuminate\Events\Dispatcher  $events
 		 * @return array
 		 */
-		public static function subscribe($events)
+		public function subscribe($events)
 		{
 			$events->listen('user.login', 'UserEventHandler@onUserLogin');
 
