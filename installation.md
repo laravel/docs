@@ -16,6 +16,11 @@ Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. 
 
 Once Composer is installed, download the [latest version](https://github.com/laravel/laravel/archive/develop.zip) of the Laravel framework and extract its contents into a directory on your server. Next, in the root of your Laravel application, run the `php composer.phar install` command to install all of the framework's dependencies. This process requires Git to be installed on the server to successfully complete the installation.
 
+<a name="update-laravel"></a>
+## Update Laravel
+
+To update the laravel framework simply run the `php composer.phar update` command.
+
 <a name="server-requirements"></a>
 ## Server Requirements
 
