@@ -20,6 +20,10 @@ The cache configuration file also contains various other options, which are docu
 
 	Cache::put('key', 'value', $minutes);
 
+**Checking If An Item Exists In The Cache**
+
+	Cache::has('key');
+
 **Storing An Item In The Cache If It Doesn't Exist**
 
 	Cache::add('key', 'value', $minutes);
