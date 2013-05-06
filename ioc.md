@@ -90,6 +90,25 @@ Now consider the following controller:
 
 Since we have bound the `UserRepositoryInterface` to a concrete type, the `DbUserRepository` will automatically be injected into this controller when it is created.
 
+**Binding An Interface To An Implementation with Namespaces**
+
+	App::bind('MyApp\Repositories\UserRepositoryInterface', 'MyApp\Repositories\DbUserRepository');
+
+Note that when namespaces are contained with a string you'll need to ignore the initial backslash. Contrast the binding example above with the implementation example below.
+
+	namespace Controllers;
+
+	class UserController extends BaseController {
+
+		public function __construct(\MyApp\Repositories\UserRepositoryInterface $users)
+		{
+			$this->users = $users;
+		}
+
+	}
+
+Here it's necessary to include the initial backslash when namespacing to \MyApp\Repositories\UserRepositoryInterface because we are operating from within the Controllers namespace. Without adding the preceding backslash, the IoC container will attempt to inject an instance of the class bound to \Controllers\MyApp\Repositories\UserRepositoryInterface, which isn't bound at all.
+
 <a name="practical-usage"></a>
 ## Practical Usage
 
