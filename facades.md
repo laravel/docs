@@ -32,8 +32,6 @@ Let's take a look at the Cache class.
 
 	}
 
-As you can see, there is no static method get(). What's really happening?
-
 The Cache class extends Laravel's Facade class and defines a method called getFacadeAccessor(). This method's job is to return the name of an IoC binding.
 
 When a user references any static method on the Cache class, Laravel resolves that IoC binding from the [IoC container](/docs/ioc) and runs the requested method against that object.
@@ -47,13 +45,13 @@ It only appears that the static method get() exists in the Cache class. In reali
 <a name="creating-facades"></a>
 ## Creating Facades
 
-Creating a facade for your own application is simple.
+Creating a facade for your own application or package is simple. You only need 3 things.
 
-- First, decide to which IoC binding you want the facade class to be tied.
-- Then, create your facade class extending Laravel's Facade class.
-- Finally, make sure that your facade class can be accessed anywhere. The easiest way to do this is by adding an alias to you config/app.php file with the rest of the facades.
+- an IoC binding
+- a facade class
+- updated configurations
 
-Let's look at an example. In this example we have a class called \PaymentGateway\Payment.
+Let's look at an example. Here we have a class that can be referenced as \PaymentGateway\Payment.
 
 	namespace PaymentGateway;
 
@@ -66,7 +64,7 @@ Let's look at an example. In this example we have a class called \PaymentGateway
 
 	}
 
-We want to access the process() method with Payment::process(). So, let's create a facade class. Be sure to provide a static method getFacadeAccessor() which returns a string with the name of the IoC binding.
+Here we have the facade class.
 
 	use Illuminate\Support\Facades\Facade;
 
@@ -76,7 +74,9 @@ We want to access the process() method with Payment::process(). So, let's create
 
 	}
 
-Finally, we can add our IoC binding.
+Remember, you must provide a static method getFacadeAccessor(). Its job is to return a string with the name of the IoC binding that the facade will utilize.
+
+Here we have add our IoC binding.
 
 	$this->app->bind('payment', function() {
 
@@ -84,7 +84,11 @@ Finally, we can add our IoC binding.
 
 	});
 
-A great place to register this IoC binding would be to create a new [Service Provider](/docs/ioc#service-providers) named PaymentServiceProvider and adding the binding to the register() method. Don't forget to reference the facade class and the service provider in your config/app.php!
+A great place to register this binding would be to create a new [Service Provider](/docs/ioc#service-providers) named PaymentServiceProvider. The binding would be added to to the register() method. You can configure Laravel to load your service provider from the config/app.php configuration file.
+
+Finally, we edit config/app.php and make sure that our facade class is listed under 'aliases' with the rest of the facade classes. Now, we can call the process() method on an instance of the payment class with:
+
+	Payment::process();
 
 <a name="mocking-facades"></a>
 ## Mocking Facades
