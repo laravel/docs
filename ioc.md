@@ -21,10 +21,12 @@ There are two ways the IoC container can resolve dependencies: via Closure callb
 
 **Binding A Type Into The Container**
 
-	App::bind('foo', function()
+	App::bind('foo', function($app)
 	{
 		return new FooBar;
 	});
+
+Note that an instance of the application object is injected into the binding closure.
 
 **Resolving A Type From The Container**
 
