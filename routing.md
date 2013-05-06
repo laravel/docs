@@ -289,6 +289,6 @@ More information on handling 404 exceptions and using custom responses for these
 <a name="routing-to-controllers"></a>
 ## Routing to Controllers
 
-There are many things that you can do with controller classes including routing to controller actions and creating "resource controllers" which make it easier to build RESTful controllers around resources.
+There are many things that you can do with controller classes including routing to controller actions and creating "resource controllers", which make it easier to build RESTful controllers around resources.
 
 See the documentation on [Controllers](/docs/controllers) for more information.
