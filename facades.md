@@ -134,8 +134,6 @@ Creating a facade for your own application is simple.
 - Then, create your facade class extending Laravel's Facade class.
 - Finally, make sure that your facade class can be accessed anywhere. The easiest way to do this is by adding an alias to you config/app.php file with the rest of the facades.
 
-Be sure to provide a static method getFacadeAccessor() which returns a string with the name of the IoC binding. Also, make sure that your facade class
-
 Let's look at an example. In this example we have a class called \PaymentGateway\Payment.
 
 	namespace PaymentGateway;
@@ -149,7 +147,7 @@ Let's look at an example. In this example we have a class called \PaymentGateway
 
 	}
 
-We want to access the process() method with Payment::process(). So, let's create a facade class.
+We want to access the process() method with Payment::process(). So, let's create a facade class. Be sure to provide a static method getFacadeAccessor() which returns a string with the name of the IoC binding.
 
 	use Illuminate\Support\Facades\Facade;
 
