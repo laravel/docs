@@ -231,6 +231,15 @@ When soft deleting a model, it is not actually removed from your database. Inste
 
 	}
 
+Next, add a `deleted_at` timestamp field that is nullable because `deleted_at` need to be set as `NULL` for undeleted items.
+You can add this field by creating a new migration:
+
+	public function up() {
+		Schema::table('users', function($table){
+			$table->timestamp('deleted_at')->nullable();
+		});
+	}
+
 Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current timestamp. When querying a model that uses soft deletes, the "deleted" models will not be included in query results. To force soft deleted models to appear in a result set, use the `withTrashed` method on the query:
 
 **Forcing Soft Deleted Models Into Results**
