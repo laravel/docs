@@ -170,10 +170,10 @@ You may prefer to not register your IoC bindings until the code attempts to reso
 			});
 		}
 
-	    public function provides()
-	    {
-	        return array('foo');
-	    }
+		public function provides()
+		{
+			return array('foo');
+		}
 
 	}
 
