@@ -151,7 +151,7 @@ We want to access the process() method with Payment::process(). So, let's create
 
 	use Illuminate\Support\Facades\Facade;
 
-	class MyFacade extends Facade {
+	class Payment extends Facade {
 
 	    protected static function getFacadeAccessor(){ return 'payment'; }
 
