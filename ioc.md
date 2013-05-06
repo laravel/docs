@@ -98,9 +98,11 @@ Note that when namespaces are contained with a string you'll need to ignore the 
 
 	namespace Controllers;
 
+	use \MyApp\Repositories\UserRepositoryInterface;
+
 	class UserController extends BaseController {
 
-		public function __construct(\MyApp\Repositories\UserRepositoryInterface $users)
+		public function __construct(UserRepositoryInterface $users)
 		{
 			$this->users = $users;
 		}
