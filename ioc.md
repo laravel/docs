@@ -128,7 +128,7 @@ In this example, the `OrderRepository` class will automatically be injected into
 <a name="service-providers"></a>
 ## Service Providers
 
-Think of Service Providers as a way to bootstrap components in your application. Within a service provider you might register your custom commands with Artisan, custom auth drivers or as a convenient place to group IoC registrations. You can create a service provider class to bootstrap a third-party library and make it easily used from within your application.
+Think of Service Providers as a way to bootstrap components in your application. Within a service provider you might register your custom commands with Artisan, register custom auth drivers or as a convenient place to group IoC registrations. You can create a service provider class to bootstrap a third-party library and make it easily used from within your application.
 
 In fact, most of the core Laravel components include service providers. All of the registered service providers for your application are listed in the `providers` array of the `app/config/app.php` configuration file.
 
@@ -142,7 +142,7 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 
 		public function register()
 		{
-			$this->app->bind('foo', function()
+			$this->app->bind('foo', function($app)
 			{
 				return new Foo;
 			});
@@ -151,6 +151,8 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 	}
 
 Note that in the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
+
+Additionally, an instance of the application object is injected into the binding closure.
 
 **Deferring Registration**
 
@@ -164,7 +166,7 @@ You may prefer to not register your IoC bindings until the code attempts to reso
 
 		public function register()
 		{
-			$this->app->bind('foo', function()
+			$this->app->bind('foo', function($app)
 			{
 				return new Foo;
 			});
