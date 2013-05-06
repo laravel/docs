@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Examples](#examples)
+- [Creating Facades](#creating-facades)
 - [Mocking a Facade](#mocking-a-facade)
 
 <a name="introduction"></a>
