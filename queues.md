@@ -134,7 +134,7 @@ Next, you may use the `queue:subscribe` Artisan command to register a URL end-po
 
 Now, when you login to your Iron dashboard, you will see your new push queue, as well as the subscribed URL. You may subscribe as many URLs as you wish to a given queue. Next, create a route for your `queue/receive` end-point and return the response from the `Queue::marshal` method:
 
-	Route::get('queue/receive', function()
+	Route::post('queue/receive', function()
 	{
 		return Queue::marshal();
 	});
