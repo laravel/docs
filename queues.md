@@ -87,7 +87,7 @@ If an exception occurs while the job is being processed, it will automatically b
 <a name="queueing-closures"></a>
 ## Queueing Clousures
 
-You may also push a Closure onto the queue. This is very convenient for quick, simply tasks that need to be queued:
+You may also push a Closure onto the queue. This is very convenient for quick, simple tasks that need to be queued:
 
 **Pushing A Closure Onto The Queue**
 
