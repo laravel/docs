@@ -2,6 +2,7 @@
 
 - [Configuration](#configuration)
 - [Basic Usage](#basic-usage)
+- [Queueing Closures](#queueing-closures)
 - [Running The Queue Listener](#running-the-queue-listener)
 - [Push Queues](#push-queues)
 
@@ -48,17 +49,6 @@ If you want the job to use a method other than `fire`, you may specify the metho
 
 	Queue::push('SendEmail@send', array('message' => $message));
 
-You may also push a Closure onto the queue. This is very convenient for quick, simply tasks that need to be queued:
-
-**Pushing A Closure Onto The Queue**
-
-	Queue::push(function() use ($id)
-	{
-		Account::delete($id);
-	});
-
-> **Note:** When pushing Closures onto the queue, the `__DIR__` and `__FILE__` constants should not be used.
-
 Once you have processed a job, it must be deleted from the queue, which can be done via the `delete` method on the `Job` instance:
 
 **Deleting A Processed Job**
@@ -93,6 +83,22 @@ If an exception occurs while the job is being processed, it will automatically b
 	{
 		//
 	}
+
+<a name="queueing-closures"></a>
+## Queueing Clousures
+
+You may also push a Closure onto the queue. This is very convenient for quick, simply tasks that need to be queued:
+
+**Pushing A Closure Onto The Queue**
+
+	Queue::push(function() use ($id)
+	{
+		Account::delete($id);
+	});
+
+> **Note:** When pushing Closures onto the queue, the `__DIR__` and `__FILE__` constants should not be used.
+
+When using Iron.io [push queues](#push-queues), you should take extra precaution queueing Closures. The end-point that receives your queue messages should check for a token to verify that the request is actually from Iron.io. For example, your push queue end-point should be something like: `https://yourapp.com/queue/receive?token=SecretToken`. You may then check the value of the secret token in your application before marshaling the queue request.
 
 <a name="running-the-queue-listener"></a>
 ## Running The Queue Listener
