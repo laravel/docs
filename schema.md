@@ -66,6 +66,7 @@ Command  | Description
 `$table->time('sunrise');`  |  TIME equivalent to the table
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent to the table
 `$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
+`$table->softDeletes();`  |  Adds **deleted\_at** column
 `$table->text('description');`  |  TEXT equivalent to the table
 `$table->binary('data');`  |  BLOB equivalent to the table
 `$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
