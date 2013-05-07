@@ -236,7 +236,7 @@ You can add this field by creating a new migration:
 
 	public function up() {
 		Schema::table('users', function($table){
-			$table->timestamp('deleted_at')->nullable();
+			$table->softDeletes();
 		});
 	}
 
