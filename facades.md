@@ -76,7 +76,7 @@ Here we have the facade class.
 
 Remember, you must provide a static method getFacadeAccessor(). Its job is to return a string with the name of the IoC binding that the facade will utilize.
 
-Here we have add our IoC binding.
+Next, we add our IoC binding which tells Laravel which object to operate upon when using our facade.
 
 	$this->app->bind('payment', function() {
 
