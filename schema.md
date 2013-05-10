@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Creating & Dropping Tables](#creating-and-dropping-tables)
+- [Renaming Tables](#renaming-tables)
 - [Adding Columns](#adding-columns)
 - [Renaming Columns](#renaming-columns)
 - [Dropping Columns](#dropping-columns)
@@ -39,6 +40,13 @@ To drop a table, you may use the `Schema::drop` method:
 	Schema::drop('users');
 
 	Schema::dropIfExists('users');
+
+<a name="renaming-tables"></a>
+## Renaming Tables
+
+To rename a database table, the `Schema::rename` method is used:
+
+	Schema::rename('from', 'to');
 
 <a name="adding-columns"></a>
 ## Adding Columns
