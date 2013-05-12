@@ -69,6 +69,14 @@ Now, when you generate a form element, like a text input, the model's value matc
 
 This allows you to quickly build forms that not only bind to model values, but easily re-populate if there is a validation error on the server!
 
+**Related Models**
+
+It is also possible to pass a related model to the `Form::model`
+
+    echo Form::model($user->permission, array('route' => 'user.update))
+
+If you generate a form element, like a checkbox, you can use the name of the attribute from the related model. So a checkbox named `admin` would match the attribute `admin` from the related model.
+
 > **Note:** When using `Form::model`, be sure to close your form with `Form::close`!
 
 <a name="labels"></a>
