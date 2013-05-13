@@ -60,7 +60,7 @@ This listener will handle all events that begin with "foo.". Note that the full 
 <a name="using-classes-as-listeners"></a>
 ## Using Classes As Listeners
 
-In some case, you may wish to use a class to handle an event rather than a Closure. Class event listeners will be resolved out of the [Laravel IoC container](/docs/ioc), providing you the full power of dependency injection on your listeners.
+In some cases, you may wish to use a class to handle an event rather than a Closure. Class event listeners will be resolved out of the [Laravel IoC container](/docs/ioc), providing you the full power of dependency injection on your listeners.
 
 **Registering A Class Listener**
 
