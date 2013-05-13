@@ -8,6 +8,7 @@
 - [Checking Existence](#checking-existence)
 - [Adding Indexes](#adding-indexes)
 - [Dropping Indexes](#dropping-indexes)
+- [Foreign Keys](#foreign-keys)
 - [Storage Engines](#storage-engines)
 
 <a name="introduction"></a>
@@ -157,6 +158,25 @@ Command  | Description
 `$table->dropPrimary('users_id_primary');`  |  Dropping a primary key from the "users" table
 `$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
 `$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
+
+<a name="foreign-keys"></a>
+## Foreign Keys
+
+You may easily add foreign key constraints to your table using Schema's fluent interface. For example, let's assume you have a user_id on a posts table, which references the id column of the users table. Here's how to add a foreign key constraint for the column:
+
+	$table->foreign('user_id')->references('id')->on('users');
+
+You may also specify options for the "on delete" and "on update" actions of the foreign key:
+
+	$table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+
+	$table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
+
+You may also easily drop a foreign key constraint. The default foreign key names follow the [same convention](#dropping-indexes) as the other indexes created by the Schema builder. Here's an example:
+
+	$table->dropForeign('posts_user_id_foreign');
+
+> **Note:** The field referenced in the foreign key is very likely an auto increment and therefore automatically an unsigned integer. Please make sure to create the foreign key field with **unsigned()** as both fields have to be the exact same type, the engine on both tables has to be set to **InnoDB**, and the referenced table must be created **before** the table with the foreign key.
 
 <a name="storage-engines"></a>
 ## Storage Engines
