@@ -26,7 +26,7 @@ By default, a `POST` method will be assumed; however, you are free to specify an
 
 > **Note:** Since HTML forms only support `POST`, `PUT` and `DELETE` methods will be spoofed by automatically adding a `_method` hidden field to your form.
 
-You may also open forms to that point to named routes or controller actions:
+You may also open forms that point to named routes or controller actions:
 
 	echo Form::open(array('route' => 'route.name'))
 
