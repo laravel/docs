@@ -697,7 +697,7 @@ Note that this operation does not delete records from the `roles` table, but onl
 <a name="collections"></a>
 ## Collections
 
-All multi-result sets returned by Eloquent either via the `get` method or a relationship return an Eloquent `Collection` object. This objects implements the `IteratorAggregate` PHP interface so it can be iterated over like an array. However, this object also has a variety of other helpful methods for working with result sets.
+All multi-result sets returned by Eloquent either via the `get` method or a relationship return an Eloquent `Collection` object. This object implements the `IteratorAggregate` PHP interface so it can be iterated over like an array. However, this object also has a variety of other helpful methods for working with result sets.
 
 For example, we may determine if a result set contains a given primary key using the `contains` method:
 
@@ -766,7 +766,7 @@ Sometimes, you may wish to return a custom Collection object with your own added
 <a name="accessors-and-mutators"></a>
 ## Accessors & Mutators
 
-Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simplify define a `getFooAttribute` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
+Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simply define a `getFooAttribute` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
 
 **Defining An Accessor**
 
