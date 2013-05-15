@@ -47,7 +47,7 @@ The default language for your application is stored in the `app/config/app.php` 
 
 The first segment of the string passed to the `get` method is the name of the language file, and the second is the name of the line that should be retrieved.
 
-> **Note*: If a language line does not exist, the key will be returned by the `get` method.
+> **Note**: If a language line does not exist, the key will be returned by the `get` method.
 
 **Making Replacements In Lines**
 
