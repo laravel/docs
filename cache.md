@@ -103,9 +103,9 @@ Then you may flush all items in the section:
 
 When using the `database` cache driver, you will need to setup a table to contain the cache items. Below is an example `Schema` declaration for the table:
 
-	Schema::create('cache', function($t)
+	Schema::create('cache', function($table)
 	{
-		$t->string('key')->unique();
-		$t->text('value');
-		$t->integer('expiration');
+		$table->string('key')->unique();
+		$table->text('value');
+		$table->integer('expiration');
 	});
