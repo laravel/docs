@@ -209,10 +209,12 @@ You may modify the message instance that is sent to the user by passing a Closur
 		$m->subject('Your Password Reminder');
 	});
 
-You may also have noticed that we are returning the results of the `remind` method directly from a route. By default, the `remind` method will return a `Redirect` to the current URI. If an error occurred while attempting to reset the password, an `error` variable will be flashed to the session, as well as a `reason`, which can be used to extract a language line from the `reminders` language file. So, your password reset form view could look something like this:
+You may also have noticed that we are returning the results of the `remind` method directly from a route. By default, the `remind` method will return a `Redirect` to the current URI. If an error occurred while attempting to reset the password, an `error` variable will be flashed to the session, as well as a `reason`, which can be used to extract a language line from the `reminders` language file. If the password reset was successful, a `success` variable will be flashed to the session. So, your password reset form view could look something like this:
 
 	@if (Session::has('error'))
 		{{ trans(Session::get('reason')) }}
+	@elseif (Session::has('success'))
+		An e-mail with the password reset has been send.
 	@endif
 
 	<input type="text" name="email">
