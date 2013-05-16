@@ -214,7 +214,7 @@ You may also have noticed that we are returning the results of the `remind` meth
 	@if (Session::has('error'))
 		{{ trans(Session::get('reason')) }}
 	@elseif (Session::has('success'))
-		An e-mail with the password reset has been send.
+		An e-mail with the password reset has been sent.
 	@endif
 
 	<input type="text" name="email">
