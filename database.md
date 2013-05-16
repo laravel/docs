@@ -69,6 +69,12 @@ When using multiple connections, you may access them via the `DB::connection` me
 
 	$users = DB::connection('foo')->select(...);
 
+> **Note:** If no connection name is specified, the default connection will be returned.
+
 Sometimes you may need to reconnect to a given database:
 
 	DB::reconnect('foo');
+
+You can also access the raw PDO connection:
+
+	$pdo = DB::connection()->getPdo();
