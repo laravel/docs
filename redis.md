@@ -4,6 +4,7 @@
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Pipelining](#pipelining)
+- [Troubleshooting](#troubleshooting)
 
 <a name="introduction"></a>
 ## Introduction
@@ -74,3 +75,16 @@ Pipelining should be used when you need to send many commands to the server in o
 			$pipe->set("key:$i", $i);
 		}
 	});
+
+<a name="troubleshooting"></a>
+## Troubleshooting
+
+If you use the [Redis PHP extension from PECL](http://pecl.php.net/package/redis) for interfacing with Redis. You should rename the **Redis** alias to **RedisLaravel** for instance in **app/config/app.php**:
+
+	'aliases' => array(
+    	// ...
+    	'RedisLaravel' => 'Illuminate\Support\Facades\Redis'
+    	// ...
+	);
+
+**RedisLaravel** is now the facade alias for Redis.
