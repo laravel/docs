@@ -44,7 +44,7 @@ The database query builder provides a convenient, fluent interface to creating a
 
 	$roles = DB::table('roles')->lists('title');
 
-This method will return an array of role titles, keyed by the role ID. You may also specify a custom key:
+This method will return an array of role titles. You may also specify a custom key column for the returned array:
 
 	$roles = DB::table('roles')->lists('title', 'name');
 
