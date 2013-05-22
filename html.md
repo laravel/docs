@@ -73,7 +73,7 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 It is also possible to pass a related model to the `Form::model`
 
-    echo Form::model($user->permission, array('route' => 'user.update))
+    echo Form::model($user->permission, array('route' => 'user.update'))
 
 If you generate a form element, like a checkbox, you can use the name of the attribute from the related model. So a checkbox named `admin` would match the attribute `admin` from the related model.
 
