@@ -632,7 +632,7 @@ The `sync` method can also accept an array of ids with an array of attributes th
 
 **Using Sync With Pivot Data**
 
-	$user->roles()->sync(array(1 => array('qty' => 20), 2 => array('qty' => 5)));
+	$user->roles()->sync(array(1 => array('expires' => true), 2 => array('expires' => false)));
 
 Sometimes you may wish to create a new related model and attach it in a single command. For this operation, you may use the `save` method:
 
