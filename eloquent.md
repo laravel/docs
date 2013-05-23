@@ -237,9 +237,9 @@ Now, when you call the `delete` method on the model, the `deleted_at` column wil
 
 	$users = User::withTrashed()->where('account_id', 1)->get();
 
-If you wish to **only** receive soft deleted models in your results, you may use the `trashed` method:
+If you wish to **only** receive soft deleted models in your results, you may use the `onlyTrashed` method:
 
-	$users = User::trashed()->where('account_id', 1)->get();
+	$users = User::onlyTrashed()->where('account_id', 1)->get();
 
 To restore a soft deleted model into an active state, use the `restore` method:
 
