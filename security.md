@@ -152,6 +152,10 @@ HTTP Basic Authentication provides a quick way to authenticate users of your app
 		// Only authenticated users may enter...
 	}));
 
+By default, the `basic` filter will use the `email` column on the user record when authenticating. If you wish to use another column you may pass the column name as the first parameter to the `basic` method:
+
+	return Auth::basic('username');
+
 You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, define a filter that returns the `onceBasic` method:
 
 **Setting Up A Stateless HTTP Basic Filter**
