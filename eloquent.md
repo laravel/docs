@@ -522,6 +522,12 @@ It may be shortened to simply:
 
 	echo $phone->user->email;
 
+The difference between the two syntaxes is that the dynamic property returns a [Collection object](#collections) object containing the the related models, whereas the relationship methods return a query builder object that can be further queried:
+
+	$phoneList = $user->phones()
+		->orderBy('manufacturer', 'asc')
+		->paginate(10);
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
