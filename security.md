@@ -52,6 +52,8 @@ To log a user into your application, you may use the `Auth::attempt` method.
 
 Take note that `email` is not a required option, it is merely used for example. You should use whatever column name corresponds to a "username" in your database. The `Redirect::intended` function will redirect the user to the URL they were trying to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
 
+When the `attempt` method is called, the `auth.attempt` [event](/docs/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
+
 To determine if the user is already logged into your application, you may use the `check` method:
 
 **Determining If A User Is Authenticated**
