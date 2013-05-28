@@ -15,6 +15,7 @@
 - [Working With Pivot Tables](#working-with-pivot-tables)
 - [Collections](#collections)
 - [Accessors & Mutators](#accessors-and-mutators)
+- [Date Mutators](#date-mutators)
 - [Model Events](#model-events)
 - [Model Observers](#model-observers)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
@@ -801,6 +802,18 @@ Mutators are declared in a similar fashion:
 			$this->attributes['first_name'] = strtolower($value);
 		}
 
+	}
+
+<a name="date-mutators"></a>
+## Date Mutators
+
+By default, Eloquent will convert the `created_at`, `updated_at`, and `deleted_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
+
+You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `getDates` method of the model:
+
+	public function getDates()
+	{
+		return array('created_at');
 	}
 
 <a name="model-events"></a>
