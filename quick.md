@@ -17,7 +17,7 @@ After installing the framework, take a glance around the project to familiarize 
 <a name="routing"></a>
 ## Routing
 
-To get started, let's create our first route. In Laravel, the simplest route is a route to a Closure. Pop open the `app/routes.php` file and add the following route to the botom of the file:
+To get started, let's create our first route. In Laravel, the simplest route is a route to a Closure. Pop open the `app/routes.php` file and add the following route to the bottom of the file:
 
 	Route::get('users', function()
 	{
@@ -104,7 +104,7 @@ If you wish to rollback a migration, you may issue the `migrate:rollback` comman
 <a name="eloquent-orm"></a>
 ## Eloquent ORM
 
-Laravel ships with a superb ORM, Eloquent. If you have used the Ruby on Rails framework, you will find Eloquent familiar, as it follows the ActiveRecord ORM style of database interaction.
+Laravel ships with a superb ORM: Eloquent. If you have used the Ruby on Rails framework, you will find Eloquent familiar, as it follows the ActiveRecord ORM style of database interaction.
 
 First, let's define a model. An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Don't worry, it will all make sense soon! Models are typically stored in the `app/models` directory. Let's define a `User.php` model in that directory like so:
 
