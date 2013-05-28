@@ -9,7 +9,7 @@
 - [Route Prefixing](#route-prefixing)
 - [Route Model Binding](#route-model-binding)
 - [Throwing 404 Errors](#throwing-404-errors)
-- [Resource Controllers](#resource-controllers)
+- [Routing to Controllers](#routing-to-controllers)
 
 <a name="basic-routing"></a>
 ## Basic Routing
@@ -286,9 +286,9 @@ Second, you may throw an instance of `Symfony\Component\HttpKernel\Exception\Not
 
 More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/errors#handling-404-errors) section of the documentation.
 
-<a name="resource-controllers"></a>
-## Resource Controllers
+<a name="routing-to-controllers"></a>
+## Routing to Controllers
 
-Resource controllers make it easier to build RESTful controllers around resources. 
+There are many things that you can do with controller classes including routing to controller actions and creating "resource controllers", which make it easier to build RESTful controllers around resources.
 
-See [Controllers](/docs/controllers#resource-controllers) documentation for more information.
+See the documentation on [Controllers](/docs/controllers) for more information.
