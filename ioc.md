@@ -21,10 +21,12 @@ There are two ways the IoC container can resolve dependencies: via Closure callb
 
 **Binding A Type Into The Container**
 
-	App::bind('foo', function()
+	App::bind('foo', function($app)
 	{
 		return new FooBar;
 	});
+
+Note that an instance of the application object is injected into the binding closure.
 
 **Resolving A Type From The Container**
 
@@ -128,7 +130,9 @@ In this example, the `OrderRepository` class will automatically be injected into
 <a name="service-providers"></a>
 ## Service Providers
 
-Service providers are a great way to group related IoC registrations in a single location. In fact, most of the core Laravel components include service providers. All of the registered service providers for your application are listed in the `providers` array of the `app/config/app.php` configuration file.
+Think of Service Providers as a way to bootstrap components in your application. Within a service provider you might register your custom commands with Artisan, register custom auth drivers or as a convenient place to group IoC registrations. You can create a service provider class to bootstrap a third-party library and make it easily used from within your application.
+
+In fact, most of the core Laravel components include service providers. All of the registered service providers for your application are listed in the `providers` array of the `app/config/app.php` configuration file.
 
 To create a service provider, simply extend the `Illuminate\Support\ServiceProvider` class and define a `register` method:
 
@@ -140,7 +144,7 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 
 		public function register()
 		{
-			$this->app->bind('foo', function()
+			$this->app->bind('foo', function($app)
 			{
 				return new Foo;
 			});
@@ -149,6 +153,37 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 	}
 
 Note that in the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
+
+Additionally, an instance of the application object is injected into the binding closure.
+
+**Deferring Registration**
+
+You may prefer to not register your IoC bindings until the code attempts to resolve them. To accomodate this you can configure your service provider to defer registration.
+
+	use Illuminate\Support\ServiceProvider;
+
+	class FooServiceProvider extends ServiceProvider {
+
+		protected $defer = true;
+
+		public function register()
+		{
+			$this->app->bind('foo', function($app)
+			{
+				return new Foo;
+			});
+		}
+
+		public function provides()
+		{
+			return array('foo');
+		}
+
+	}
+
+Here you can see that the protected field $defer was set to true. This tells the service provider not to run the registration until one of the bindings that it provides is requested.
+
+You can tell Laravel which bindings this service provider class provides by returning an array of binding names from the provides() method.
 
 <a name="container-events"></a>
 ## Container Events
