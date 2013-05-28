@@ -9,7 +9,7 @@
 - [Route Prefixing](#route-prefixing)
 - [Route Model Binding](#route-model-binding)
 - [Throwing 404 Errors](#throwing-404-errors)
-- [Routing to Controllers](#routing-to-controllers)
+- [Routing To Controllers](#routing-to-controllers)
 
 <a name="basic-routing"></a>
 ## Basic Routing
@@ -287,8 +287,8 @@ Second, you may throw an instance of `Symfony\Component\HttpKernel\Exception\Not
 More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/errors#handling-404-errors) section of the documentation.
 
 <a name="routing-to-controllers"></a>
-## Routing to Controllers
+## Routing To Controllers
 
-There are many things that you can do with controller classes including routing to controller actions and creating "resource controllers", which make it easier to build RESTful controllers around resources.
+Laravel allows you to not only route to Closures, but also to controller classes, and even allows the creation of [resource controllers](/docs/controllers#resource-controllers).
 
-See the documentation on [Controllers](/docs/controllers) for more information.
+See the documentation on [Controllers](/docs/controllers) for more details.
