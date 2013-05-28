@@ -10,6 +10,7 @@
 - [Updates](#updates)
 - [Deletes](#deletes)
 - [Unions](#unions)
+- [Caching Queries](#caching-queries)
 
 <a name="introduction"></a>
 ## Introduction
@@ -260,3 +261,14 @@ The query builder also provides a quick way to "union" two queries together:
 	$users = DB::table('users')->whereNull('last_name')->union($first)->get();
 
 The `unionAll` method is also available, and has the same method signature as `union`.
+
+<a name="caching-queries"></a>
+## Caching Queries
+
+You may easily cache the results of a query using the `remember` method:
+
+**Caching A Query Result**
+
+	$users = DB::table('users')->remember(10)->get();
+
+In this example, the results of the query will be cached for ten minutes. While the results are cached, the query will not be run against the database, and the results will be loaded from the default cache driver specified for your application.
