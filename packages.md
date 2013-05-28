@@ -109,6 +109,8 @@ In prior versions of Laravel, a `handles` clause was used to specify which URIs 
 		include __DIR__.'/../../routes.php';
 	}
 
+> **Note:** If your package is using controllers, you will need to make sure they are properly configured in your `composer.json` file's auto-load section.
+
 <a name="package-configuration"></a>
 ## Package Configuration
 
