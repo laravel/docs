@@ -15,6 +15,10 @@ Sometimes you may need to access configuration values at run-time. You may do so
 
 	Config::get('app.timezone');
 
+You may also specify a default value to return if the configuration option does not exist:
+
+	$timezone = Config::get('app.timezone', 'UTC');
+
 Notice that "dot" style syntax may be used to access values in the various files. You may also set configuration values at run-time:
 
 **Setting A Configuration Value**
