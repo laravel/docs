@@ -10,6 +10,7 @@
 - [Updates](#updates)
 - [Deletes](#deletes)
 - [Unions](#unions)
+- [Logs](#logs)
 
 <a name="introduction"></a>
 ## Introduction
@@ -260,3 +261,13 @@ The query builder also provides a quick way to "union" two queries together:
 	$users = DB::table('users')->whereNull('last_name')->union($first)->get();
 
 The `unionAll` method is also available, and has the same method signature as `union`.
+
+<a name="logs"></a>
+## Logs
+By default, Laravel save a log of all the query that are executed. To avoid this:
+
+**Disable Querly logging**
+
+	DB::disableQueryLog();
+
+This way the query you execute are no longer saved. This can be useful if you run a lot of queries.
