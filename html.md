@@ -39,7 +39,7 @@ If your form is going to accept file uploads, add a `files` option to your array
 <a name="csrf-protection"></a>
 ## CSRF Protection
 
-Laravel provides an easy method of protecting your application from cross-site request forgeries. First, a random token is placed in your user's session. Don't sweat it, this is done automatically. Next, use the token method to generate a hidden form input field containing the random token on your form:
+Laravel provides an easy method of protecting your application from cross-site request forgeries. First, a random token is placed in your user's session. Don't sweat it, this is done automatically. The CSRF token will be added to your forms as a hidden field automatically. However, if you wish to generate the HTML for the hidden field, you may use the `token` method:
 
 **Adding The CSRF Token To A Form**
 
