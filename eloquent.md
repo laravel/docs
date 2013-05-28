@@ -164,6 +164,12 @@ To update a model, you may retrieve it, change an attribute, and use the `save` 
 
 	$user->save();
 
+Sometimes you may wish to save not only a model, but also all of its relationships. To do so, you may use the `push` method:
+
+**Saving A Model And Relationships**
+
+	$user->push();
+
 You may also run updates as queries against a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
