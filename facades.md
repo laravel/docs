@@ -54,7 +54,7 @@ So, our `Cache::get` call could be re-written like so:
 Creating a Facade for your own application or package is simple. You only need 3 things:
 
 - An IoC Binding.
-- A Facade Class
+- A Facade Class.
 - A Facade Alias Configuration.
 
 Let's look at an example. Here, we have a class that can be referenced as `PaymentGateway\Payment`.
