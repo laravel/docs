@@ -169,4 +169,4 @@ Note that there is no convention on where composer classes may be stored. You ar
 
 	return Response::download($pathToFile);
 
-	return Response::download($pathToFile, $status, $headers);
+	return Response::download($pathToFile, $name, $headers);
