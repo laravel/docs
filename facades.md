@@ -1,25 +1,33 @@
 # Facades
 
 - [Introduction](#introduction)
-- [Example](#example)
+- [Explanation](#explanation)
+- [Practical Usage](#practical-usage)
 - [Creating Facades](#creating-facades)
 - [Mocking Facades](#mocking-facades)
 
 <a name="introduction"></a>
 ## Introduction
 
-Facades are special classes that are designed to simplify your code.
+Facades are special classes that are designed to simplify your code. Laravel comes with many Facades, and you have probably been using them without even knowing. When developing your application or package, you may wish to use Facades to shorten up some syntax. Here, we will cover the concept, development, and usage of Facade classes.
 
-Laravel comes with many facades, and you've probably been using them without knowing. While it's not necessary to understand how they work, you may find that you'd like to create your own for use within your applications and packages.
+> **Note:** Before digging into Facades, it is strongly recommended you are very familiar with the Laravel [IoC container](/docs/ioc).
 
-<a name="example"></a>
-## Example
+<a name="explanation"></a>
+## Explanation
 
-Here is a simple example of requesting data from Laravel's cache system. The data identified by the key "key" will be returned and stored in the variable $value. In this example, it appears that the static method `Cache::get()` is being called on the Cache class.
+Facades typicall only contain two methods, a `getFacadeAccessor` method and a `__callStatic` method. The `getFacadeAccessor` method simply returns a string key that can be used to resolve a class out of the [IoC container](/docs/ioc). This class resolved using this key will be called via the `__callStatic` method when methods are called on the Facade.
+
+So, Facades are nothing more than a way to provide shorter syntax to calling classes that available in the application container.
+
+<a name="practical-usage"></a>
+## Practical Usage
+
+In the examle below, a call is made to the Laravel cache system. In this case, it appears that the static method `get` is being called on the `Cache` class.
 
 	$value = Cache::get('key');
 
-Let's take a look at the Cache class.
+However, if we look at that `Illuminate\Support\Facades\Cache` class, 
 
 	class Cache extends Facade {
 
@@ -32,26 +40,24 @@ Let's take a look at the Cache class.
 
 	}
 
-The Cache class extends Laravel's Facade class and defines a method called `getFacadeAccessor()`. This method's job is to return the name of an IoC binding.
+Note that the `Cache` Facade extends the base Facade class, and defines a method `getFacadeAccessor()`. Remember, this method's job is to return the name of an IoC binding.
 
-When a user references any static method on the Cache class, Laravel resolves that IoC binding from the [IoC container](/docs/ioc) and runs the requested method against that object.
+When a user references any static method on the `Cache` Facade, Laravel resolves that IoC binding from the container and runs the requested method (in this case, `get`) against that object.
 
-Here's what our example is really doing:
+So, our `Cache::get` call could be re-written like so:
 
 	$value = $app->make('cache')->get('key');
-
-> **Note:** It only appears that the static method `get()` exists in the Cache class. In reality, the Facade is resolving an instance from the IoC container and calling the `get()` method on that instance.
 
 <a name="creating-facades"></a>
 ## Creating Facades
 
-Creating a facade for your own application or package is simple. You only need 3 things.
+Creating a Facade for your own application or package is simple. You only need 3 things:
 
-- an IoC binding
-- a facade class
-- updated configurations
+- An IoC Binding.
+- A Facade Class
+- A Facade Alias Configuration.
 
-Let's look at an example. Here we have a class that can be referenced as `\PaymentGateway\Payment`.
+Let's look at an example. Here, we have a class that can be referenced as `PaymentGateway\Payment`.
 
 	namespace PaymentGateway;
 
@@ -59,12 +65,12 @@ Let's look at an example. Here we have a class that can be referenced as `\Payme
 
 		public function process()
 		{
-			// process payment here
+			//
 		}
 
 	}
 
-Here we have the facade class.
+A Facade for this class would look like the following:
 
 	use Illuminate\Support\Facades\Facade;
 
@@ -74,23 +80,20 @@ Here we have the facade class.
 
 	}
 
-> **Note:** You must provide a static method `getFacadeAccessor()`. Its job is to return a string with the name of the IoC binding that the facade will utilize.
+Finally, we add our IoC binding, which tells Laravel which object to operate upon when using our Facade.
 
-Next, we add our IoC binding which tells Laravel which object to operate upon when using our facade.
-
-	$this->app->bind('payment', function() {
-
+	App::bind('payment', function()
+	{
 		return new \PaymentGateway\Payment;
-
 	});
 
-A great place to register this binding would be to create a new [Service Provider](/docs/ioc#service-providers) named `PaymentServiceProvider`. The binding would be added to to the `register()` method. You can configure Laravel to load your service provider from the `config/app.php` configuration file.
+A great place to register this binding would be to create a new [service provider](/docs/ioc#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `app/config/app.php` configuration file.
 
-Finally, we edit `config/app.php` and make sure that our facade class is listed under 'aliases' with the rest of the facade classes. Now, we can call the `process()` method on an instance of the payment class with:
+Next, if we wish, we can add an alias for our Facade to the `aliases` array in the `app/config/app.php` configuration file. Now, we can call the `process` method on an instance of the `Payment` class with:
 
 	Payment::process();
 
 <a name="mocking-facades"></a>
 ## Mocking Facades
 
-Unit-testing testing is an important aspect of why facades work the way that they do. Check the [Mocking Facades](/docs/testing#mocking-facades) section of the documentation for more information.
+Unit testing is an important aspect of why facades work the way that they do. In fact, testability is the primary reason for Facades to even exist. For more information, check out the [mocking facades](/docs/testing#mocking-facades) section of the documentation.
