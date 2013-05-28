@@ -51,7 +51,7 @@ Next, we'll create our `users.blade.php` view:
 
 	@section('content')
 		Users!
-	@endsection
+	@stop
 
 Some of this syntax probably looks quite strange to you. That's because we're using Laravel's templating system: Blade. Blade is very fast, because it is simple a handful of regular expressions that are run against your templates to compile them to pure PHP. Blade provides powerful funtionality like template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
 
@@ -138,7 +138,7 @@ Now that we have made the `users` available to our view. We can display them lik
 		@foreach($users as $user)
 			<p>{{ $user->name }}</p>
 		@endforeach
-	@endsection
+	@stop
 
 You may be wondering where to find our `echo` statements. When using Blade, you may echo data by surrounding it with double curly braces. It's a cinch. Now, you should be able to hit the `/users` route and see the names of your users displayed in the response.
 
