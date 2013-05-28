@@ -124,6 +124,10 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertResponseOk();
 	}
 
+**Asserting Response Statuses**
+
+	$this->assertResponseStatus(403);
+
 **Asserting Responses Are Redirects**
 
 	$this->assertRedirectedTo('foo');
