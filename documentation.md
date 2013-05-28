@@ -13,6 +13,7 @@
 - Learning More
     - [Cache](/docs/cache)
     - [Events](/docs/events)
+    - [Facades](/docs/facades)
     - [Forms & HTML](/docs/html)
     - [IoC Container](/docs/ioc)
     - [Localization](/docs/localization)
