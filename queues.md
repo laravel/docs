@@ -91,9 +91,11 @@ You may also push a Closure onto the queue. This is very convenient for quick, s
 
 **Pushing A Closure Onto The Queue**
 
-	Queue::push(function() use ($id)
+	Queue::push(function($job) use ($id)
 	{
 		Account::delete($id);
+
+		$job->delete();
 	});
 
 > **Note:** When pushing Closures onto the queue, the `__DIR__` and `__FILE__` constants should not be used.
