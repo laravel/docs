@@ -59,7 +59,7 @@ Often, you will want to populate a form based on the contents of a model. To do 
 
 **Opening A Model Form**
 
-	echo Form::model($user, array('route' => 'user.update'))
+	echo Form::model($user, array('route' => array('user.update', $user->id)))
 
 Now, when you generate a form element, like a text input, the model's value matching the field's name will automatically be set as the field value. So, for example, for a text input named `email`, the user model's `email` attribute would be set as the value. However, there's more! If there is an item in the Session flash data matching the input name, that will take precedence over the model's value. So, the priority looks like this:
 
