@@ -16,6 +16,7 @@
 - [Collections](#collections)
 - [Accessors & Mutators](#accessors-and-mutators)
 - [Model Events](#model-events)
+- [Model Observers](#model-observers)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
@@ -828,6 +829,31 @@ Eloquent models also contain a static `boot` method, which may provide a conveni
 		}
 
 	}
+
+<a name="model-observers"></a>
+## Model Observers
+
+To consolidate the handling of model events, you may register a model observer. An observer class may have methods that correspond to the various model events. For example, `creating`, `updating`, `saving` methods may be on an observer, in addition to any other model event name.
+
+So, for example, a model observer might look like this:
+
+	class UserObserver {
+
+		public function saving($model)
+		{
+			//
+		}
+
+		public function saved($model)
+		{
+			//
+		}
+
+	}
+
+You may register an observer instance using the `observe` method:
+
+	User::observe(new UserObserver);
 
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON
