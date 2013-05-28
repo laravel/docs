@@ -24,6 +24,13 @@ The cache configuration file also contains various other options, which are docu
 
 	Cache::add('key', 'value', $minutes);
 
+**Checking For Existence In Cache**
+
+	if (Cache::has('key'))
+	{
+		//
+	}
+
 **Retrieving An Item From The Cache**
 
 	$value = Cache::get('key');
