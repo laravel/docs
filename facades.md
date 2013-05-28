@@ -76,7 +76,7 @@ A Facade for this class would look like the following:
 
 	class Payment extends Facade {
 
-	    protected static function getFacadeAccessor(){ return 'payment'; }
+	    protected static function getFacadeAccessor() { return 'payment'; }
 
 	}
 
