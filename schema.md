@@ -7,6 +7,7 @@
 - [Dropping Columns](#dropping-columns)
 - [Checking Existence](#checking-existence)
 - [Adding Indexes](#adding-indexes)
+- [Foreign Keys](#foreign-keys)
 - [Dropping Indexes](#dropping-indexes)
 - [Storage Engines](#storage-engines)
 
@@ -151,6 +152,27 @@ Command  | Description
 `$table->primary(array('first', 'last'));`  |  Adding composite keys
 `$table->unique('email');`  |  Adding a unique index
 `$table->index('state');`  |  Adding a basic index
+
+<a name="foreign-keys"></a>
+## Foreign Keys
+
+Laravel also provides support for adding foreign key constraints to your tables:
+
+**Adding A Foreign Key To A Table**
+
+	$table->foreign('user_id')->references('id')->on('users');
+
+In this example, we are stating that the `user_id` column references the `id` column on the `users` table.
+
+You may also specify options for the "on delete" and "on update" actions of the constraint:
+
+	$table->foreign('user_id')
+          ->references('id')->on('users')
+          ->onDelete('cascade');
+
+To drop a foreign key, you may use the `dropForeign` method. A similar naming convention is used for foreign keys as is used for other indexes:
+
+	$table->dropForeign('posts_user_id_foreign');
 
 <a name="dropping-indexes"></a>
 ## Dropping Indexes
