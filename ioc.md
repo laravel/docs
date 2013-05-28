@@ -21,7 +21,7 @@ There are two ways the IoC container can resolve dependencies: via Closure callb
 
 **Binding A Type Into The Container**
 
-	App::bind('foo', function()
+	App::bind('foo', function($app)
 	{
 		return new FooBar;
 	});
@@ -128,7 +128,9 @@ In this example, the `OrderRepository` class will automatically be injected into
 <a name="service-providers"></a>
 ## Service Providers
 
-Service providers are a great way to group related IoC registrations in a single location. In fact, most of the core Laravel components include service providers. All of the registered service providers for your application are listed in the `providers` array of the `app/config/app.php` configuration file.
+Service providers are a great way to group related IoC registrations in a single location. Think of them as a way to bootstrap components in your application. Within a service provider, you might register a custom authentication driver, register your application's repository classes with the IoC container, or even setup a custom Artisan command.
+
+In fact, most of the core Laravel components include service providers. All of the registered service providers for your application are listed in the `providers` array of the `app/config/app.php` configuration file.
 
 To create a service provider, simply extend the `Illuminate\Support\ServiceProvider` class and define a `register` method:
 
