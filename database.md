@@ -4,6 +4,7 @@
 - [Running Queries](#running-queries)
 - [Database Transactions](#database-transactions)
 - [Accessing Connections](#accessing-connections)
+- [Query Logging](#query-logging)
 
 <a name="configuration"></a>
 ## Configuration
@@ -76,3 +77,10 @@ You may also access the raw, underlying PDO instance:
 Sometimes you may need to reconnect to a given database:
 
 	DB::reconnect('foo');
+
+<a name="query-logging"></a>
+## Query Logging
+
+By default, Laravel keeps a log in memory of all queries that have been run for the current request. However, in some cases, such as when inserting a large number of rows, this can cause the application to use excess memory. To disable the log, you may use the `disableQueryLog` method:
+
+	DB::connection()->disableQueryLog();
