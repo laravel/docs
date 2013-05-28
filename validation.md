@@ -41,6 +41,10 @@ If validation has failed, you may retrieve the error messages from the validator
 
 	$messages = $validator->messages();
 
+You may also access an array of the failed validation rules, without messages. To do so, use the `failed` method:
+
+	$failed = $validator->failed();
+
 **Validating Files**
 
 The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
