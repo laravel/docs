@@ -68,11 +68,11 @@ Sometimes you may wish to store items in the session only for the next request. 
 
 When using the `database` session driver, you will need to setup a table to contain the session items. Below is an example `Schema` declaration for the table:
 
-	Schema::create('sessions', function($t)
+	Schema::create('sessions', function($table)
 	{
-		$t->string('id')->unique();
-		$t->text('payload');
-		$t->integer('last_activity');
+		$table->string('id')->unique();
+		$table->text('payload');
+		$table->integer('last_activity');
 	});
 
 Of course, you may use the `session:table` Artisan command to generate this migration for you!

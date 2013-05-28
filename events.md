@@ -55,7 +55,7 @@ When registering an event listener, you may use asterisks to specify wildcard li
 		// Handle the event...
 	});
 
-This listener will handle all events that begin with "foo.". Note that the full event name is passed as the last argument to the handler.
+This listener will handle all events that begin with `foo.`. Note that the full event name is passed as the last argument to the handler.
 
 <a name="using-classes-as-listeners"></a>
 ## Using Classes As Listeners
