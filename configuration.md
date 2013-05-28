@@ -15,7 +15,12 @@ Sometimes you may need to access configuration values at run-time. You may do so
 
 	Config::get('app.timezone');
 
-Notice that "dot" style syntax may be used to access values in the various files. You may also set configuration values at run-time:
+Notice that "dot" style syntax may be used to access values in the various files.
+Also you can specify a default value for a configuration value in case it is not defined:
+
+	Config::get('myfile.rows_per_page',25)
+
+You may also set configuration values at run-time:
 
 **Setting A Configuration Value**
 
