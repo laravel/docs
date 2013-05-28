@@ -147,6 +147,10 @@ You may also specify that a filter applies to an entire set of routes based on t
 
 In the example above, the `admin` filter would be applied to all routes beginning with `admin/`. The asterisk is used as a wildcard, and will match any combination of characters.
 
+You may also constrain pattern filters by HTTP verbs:
+
+	Route::when('admin/*', 'admin', array('post'));
+
 **Filter Classes**
 
 For advanced filtering, you may wish to use a class instead of a Closure. Since filter classes are resolved out of the application [IoC container](/docs/ioc), you will be able to utilize dependency injection in these filters for greater testability.
