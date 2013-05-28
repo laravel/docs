@@ -67,7 +67,11 @@ Wonderful! Now you have setup a simple view that extends a layout. Next, let's s
 <a name="creating-a-migration"></a>
 ## Creating A Migration
 
-To create a table to hold our data, we'll use the Laravel migration system. Migrations let you expressively define modifications to your database, and easily share them with the rest of your team. To create a migration, we'll use the [Artisan CLI](/docs/artisan). From the root of your project, run the following from your terminal:
+To create a table to hold our data, we'll use the Laravel migration system. Migrations let you expressively define modifications to your database, and easily share them with the rest of your team.
+
+First, let's configure a database connection. You may configure all of your database connections from the `app/config/database.php` file. By default, Laravel is configured to use SQLite, and an SQLite database is included in the `app/database` directory. If you wish, you may change the `driver` option to `mysql` and configure the `mysql` connection credentials within the database configuration file.
+
+Next, to create the migration, we'll use the [Artisan CLI](/docs/artisan). From the root of your project, run the following from your terminal:
 
 	php artisan migrate:make create_users_table
 
