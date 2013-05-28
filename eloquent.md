@@ -231,6 +231,10 @@ When soft deleting a model, it is not actually removed from your database. Inste
 
 	}
 
+To add a `deleted_at` column to your table, you may use the `softDeletes` method from a migration:
+
+	$table->softDeletes();
+
 Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current timestamp. When querying a model that uses soft deletes, the "deleted" models will not be included in query results. To force soft deleted models to appear in a result set, use the `withTrashed` method on the query:
 
 **Forcing Soft Deleted Models Into Results**
