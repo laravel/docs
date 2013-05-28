@@ -84,6 +84,12 @@ If an exception occurs while the job is being processed, it will automatically b
 		//
 	}
 
+You may also access the job identifier:
+
+**Accessing The Job ID**
+
+	$job->getJobId();
+
 <a name="queueing-closures"></a>
 ## Queueing Closures
 
