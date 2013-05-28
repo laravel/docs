@@ -16,8 +16,7 @@ Laravel aims to make the development process a pleasing one for the developer wi
 
 One of the best ways to learn Laravel is to read through the entirety of its documentation. This guide details all aspects of the framework and how to apply them to your application.
 
-<<<<<<< HEAD
-In addition to this guide, you may wish to check out some of the Laravel books that are available on the [books page](http://laravel.com/books). These books serve as a good supplemental resource for learning the framework.
+In addition to this guide, you may wish to check out some [Laravel books](http://laravel.com/books). These community written books serve as a good supplemental resource for learning about the framework.
 
 <a name="development-team"></a>
 ## Development Team
