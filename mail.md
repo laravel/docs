@@ -15,9 +15,9 @@ Laravel provides a clean, simple API over the popular [SwiftMailer](http://swift
 
 The `Mail::send` method may be used to send an e-mail message:
 
-	Mail::send('emails.welcome', $data, function($m)
+	Mail::send('emails.welcome', $data, function($message)
 	{
-		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
 The first argument passed to the `send` method is the name of the view that should be used as the e-mail body. The second is the `$data` that should be passed to the view, and the third is a Closure allowing you to specify various options on the e-mail message.
@@ -34,18 +34,18 @@ Or, you may specify only one type of view using the `html` or `text` keys:
 
 You may specify other options on the e-mail message such as any carbon copies or attachments as well:
 
-	Mail::send('emails.welcome', $data, function($m)
+	Mail::send('emails.welcome', $data, function($message)
 	{
-		$m->from('us@example.com', 'Laravel');
+		$message->from('us@example.com', 'Laravel');
 
-		$m->to('foo@example.com')->cc('bar@example.com');
+		$message->to('foo@example.com')->cc('bar@example.com');
 
-		$m->attach($pathToFile);
+		$message->attach($pathToFile);
 	});
 
 When attaching files to a message, you may also specify a MIME type and / or a display name:
 
-	$m->attach($pathToFile, array('as' => $display, 'mime' => $mime));
+	$message->attach($pathToFile, array('as' => $display, 'mime' => $mime));
 
 > **Note:** The message instance passed to a `Mail::send` Closure extends the SwiftMailer message class, allowing you to call any method on that class to build your e-mail messages.
 
@@ -79,21 +79,21 @@ Since sending e-mail messages can drastically lengthen the response time of your
 
 **Queueing A Mail Message**
 
-	Mail::queue('emails.welcome', $data, function($m)
+	Mail::queue('emails.welcome', $data, function($message)
 	{
-		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
 You may also specify the number of seconds you wish to delay the sending of the mail message using the `later` method:
 
-	Mail::later(5, 'emails.welcome', $data, function($m)
+	Mail::later(5, 'emails.welcome', $data, function($message)
 	{
-		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
 If you wish to specify a specific queue or "tube" on which to push the message, you may do so using the `queueOn` and `laterOn` methods:
 
-	Mail::queueOn('queue-name', 'emails.welcome', $data, function($m)
+	Mail::queueOn('queue-name', 'emails.welcome', $data, function($message)
 	{
-		$m->to('foo@example.com', 'John Smith')->subject('Welcome!');
+		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
