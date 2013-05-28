@@ -208,9 +208,9 @@ Note that the arguments passed to the `remind` method are similar to the `Auth::
 
 You may modify the message instance that is sent to the user by passing a Closure as the second argument to the `remind` method:
 
-	return Password::remind($credentials, function($m)
+	return Password::remind($credentials, function($message, $user)
 	{
-		$m->subject('Your Password Reminder');
+		$message->subject('Your Password Reminder');
 	});
 
 You may also have noticed that we are returning the results of the `remind` method directly from a route. By default, the `remind` method will return a `Redirect` to the current URI. If an error occurred while attempting to reset the password, an `error` variable will be flashed to the session, as well as a `reason`, which can be used to extract a language line from the `reminders` language file. So, your password reset form view could look something like this:
