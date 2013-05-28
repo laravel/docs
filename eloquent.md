@@ -265,6 +265,13 @@ The `forceDelete` method also works on relationships:
 
 	$user->posts()->forceDelete();
 
+To determine if a given model instance has been soft deleted, you may use the `trashed` method:
+
+	if ($user->trashed())
+	{
+		//
+	}
+
 <a name="query-scopes"></a>
 ## Query Scopes
 
