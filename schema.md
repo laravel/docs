@@ -63,6 +63,8 @@ Command  | Description
 `$table->string('email');`  |  VARCHAR equivalent column
 `$table->string('name', 100);`  |  VARCHAR equivalent with a length
 `$table->integer('votes');`  |  INTEGER equivalent to the table
+`$table->bigInteger('votes');`  |  BIGINT equivalent to the table
+`$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
 `$table->float('amount');`  |  FLOAT equivalent to the table
 `$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
 `$table->boolean('confirmed');`  |  BOOLEAN equivalent to the table
