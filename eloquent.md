@@ -632,6 +632,12 @@ You may also use the `sync` method to attach related models. The `sync` method a
 
 	$user->roles()->sync(array(1, 2, 3));
 
+You may also associate other pivot table values with the given IDs:
+
+**Adding Pivot Data When Syncing**
+
+	$user->roles()->sync(array(1 => array('expires' => true)));
+
 Sometimes you may wish to create a new related model and attach it in a single command. For this operation, you may use the `save` method:
 
 	$role = new Role(array('name' => 'Editor'));
