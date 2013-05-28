@@ -1,6 +1,6 @@
 - Preface
     - [Introduction](/docs/introduction)
-    - [Quickstart](/doc/quick)
+    - [Quickstart](/docs/quick)
     - [Contributing](/docs/contributing)
 - Getting Started
     - [Installation](/docs/installation)
