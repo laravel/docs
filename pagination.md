@@ -44,6 +44,8 @@ You may also access additional pagination information via the following methods:
 - `getLastPage`
 - `getPerPage`
 - `getTotal`
+- `getFrom`
+- `getTo`
 
 Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
 
