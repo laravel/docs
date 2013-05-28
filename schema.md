@@ -27,6 +27,10 @@ To create a new database table, the `Schema::create` method is used:
 
 The first argument passed to the `create` method is the name of the table, and the second is a `Closure` which will receive a `Blueprint` object which may be used to define the new table.
 
+To rename an existing database table, the `rename` method may be used:
+
+	Schema::rename($from, $to);
+
 To specify which connection the schema operation should take place on, use the `Schema::connection` method:
 
 	Schema::connection('foo')->create('users', function($table)
