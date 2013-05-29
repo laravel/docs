@@ -137,7 +137,7 @@ You may also attach a view composer to multiple views at once:
         $view->with('count', User::count());
     });
 
-If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC container](/docs/ioc), you may do so:
+If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC Container](/docs/ioc), you may do so:
 
 	View::composer('profile', 'ProfileComposer');
 
