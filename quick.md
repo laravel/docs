@@ -17,7 +17,7 @@ After installing the framework, take a glance around the project to familiarize 
 <a name="routing"></a>
 ## Routing
 
-To get started, let's create our first route. In Laravel, the simplest route is a route to a Closure. Pop open the `app/routes.php` file and add the following route to the botom of the file:
+To get started, let's create our first route. In Laravel, the simplest route is a route to a Closure. Pop open the `app/routes.php` file and add the following route to the bottom of the file:
 
 	Route::get('users', function()
 	{
@@ -30,7 +30,7 @@ Routes can also be attached to controller classes. For example:
 
 	Route::get('users', 'UserController@getIndex');
 
-This route informs the framework that requests to the `/user` route should call the `getIndex` method on the `UserController` class. For more information on controller routing, check out the [controller documentation](/docs/controllers).
+This route informs the framework that requests to the `/users` route should call the `getIndex` method on the `UserController` class. For more information on controller routing, check out the [controller documentation](/docs/controllers).
 
 <a name="creating-a-view"></a>
 ## Creating A View
@@ -53,7 +53,7 @@ Next, we'll create our `users.blade.php` view:
 		Users!
 	@endsection
 
-Some of this syntax probably looks quite strange to you. That's because we're using Laravel's templating system: Blade. Blade is very fast, because it is simple a handful of regular expressions that are run against your templates to compile them to pure PHP. Blade provides powerful funtionality like template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
+Some of this syntax probably looks quite strange to you. That's because we're using Laravel's templating system: Blade. Blade is very fast, because it is simple a handful of regular expressions that are run against your templates to compile them to pure PHP. Blade provides powerful functionality like template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
 
 Now that we have our views, let's return it from our `/users` route. Instead of returning `Users!` from the route, return the view instead:
 
