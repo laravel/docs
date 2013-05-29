@@ -18,7 +18,7 @@ Laravel is accessible, yet powerful, providing powerful tools needed for large, 
 
 One of the best ways to learn Laravel is to read through the entirety of its documentation. This guide details all aspects of the framework and how to apply them to your application.
 
-In addition to this guide, you may wish to check out some [Laravel books](http://laravel.com/books). These community written books serve as a good supplemental resource for learning about the framework:
+In addition to this guide, you may wish to check out some [Laravel books](http://wiki.laravel.io/Books). These community written books serve as a good supplemental resource for learning about the framework:
 
 - [Code Bright](https://leanpub.com/codebright) by Dayle Rees
 - [Laravel Testing Decoded](https://leanpub.com/laravel-testing-decoded) by Jeffrey Way
