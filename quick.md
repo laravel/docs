@@ -2,7 +2,7 @@
 
 - [Installation](#installation)
 - [Routing](#routing)
-- [Creating A View](#view)
+- [Creating A View](#creating-a-view)
 - [Creating A Migration](#creating-a-migration)
 - [Eloquent ORM](#eloquent-orm)
 - [Displaying Data](#displaying-data)
