@@ -78,7 +78,7 @@ You also may add extra conditions to the authenticating query:
 
 **Authenticating A User With Conditions**
 
-    if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1))
+    if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1)))
     {
         // The user is active, not suspended, and exists.
     }
