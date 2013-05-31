@@ -29,5 +29,5 @@ Laravel是易于理解并且强大的，它提供了强大的工具用以开发�
 Laravel was created by [Taylor Otwell](https://github.com/taylorotwell), who continues to lead development of the framework. Other prominent community members and contributors include [Dayle Rees](https://github.com/daylerees), [Shawn McCool](https://github.com/ShawnMcCool), [Jeffrey Way](https://github.com/JeffreyWay), [Jason Lewis](https://github.com/jasonlewis), [Ben Corlett](https://github.com/bencorlett), [Franz Liedke](https://github.com/franzliedke), [Dries Vints](https://github.com/driesvints), [Mior Muhammed Zaki](https://github.com/crynobone), and [Phil Sturgeon](https://github.com/philsturgeon).
 
 ```
-译者：王赛 （http://www.bootcss.com）
+译者：王赛 （[Bootstrap中文网](http://www.bootcss.com)）
 ```
