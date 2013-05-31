@@ -23,6 +23,7 @@ Of course, if you have other environments in addition to `local`, you may create
 
 You may also do pre and post request processing by registering `before`, `after`, `close`, `finish`, and `shutdown` application events:
 
+<a name="registering-application-events"></a>
 **Registering Application Events**
 
 	App::before(function()

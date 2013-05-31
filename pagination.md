@@ -16,12 +16,14 @@ The `pagination::slider` view will show an intelligent "range" of links based on
 
 There are several ways to paginate items. The simplest is by using the `paginate` method on the query builder or an Eloquent model.
 
+<a name="paginating-database-results"></a>
 **Paginating Database Results**
 
 	$users = DB::table('users')->paginate(15);
 
 You may also paginate [Eloquent](/docs/eloquent) models:
 
+<a name="paginating-an-eloquent-model"></a>
 **Paginating An Eloquent Model**
 
 	$users = User::where('votes', '>', 100)->paginate(15);
@@ -49,6 +51,7 @@ You may also access additional pagination information via the following methods:
 
 Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
 
+<a name="creating-a-paginator-manually"></a>
 **Creating A Paginator Manually**
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);

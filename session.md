@@ -15,20 +15,24 @@ The session configuration is stored in `app/config/session.php`. Be sure to revi
 <a name="session-usage"></a>
 ## Session Usage
 
+<a name="storing-an-item-in-the-session"></a>
 **Storing An Item In The Session**
 
 	Session::put('key', 'value');
 
+<a name="retrieving-an-item-from-the-session"></a>
 **Retrieving An Item From The Session**
 
 	$value = Session::get('key');
 
+<a name="retrieving-an-item-or-returning-a-default-value"></a>
 **Retrieving An Item Or Returning A Default Value**
 
 	$value = Session::get('key', 'default');
 
 	$value = Session::get('key', function() { return 'default'; });
 
+<a name="determining-if-an-item-exists-in-the-session"></a>
 **Determining If An Item Exists In The Session**
 
 	if (Session::has('users'))
@@ -36,14 +40,17 @@ The session configuration is stored in `app/config/session.php`. Be sure to revi
 		//
 	}
 
+<a name="removing-an-item-from-the-session"></a>
 **Removing An Item From The Session**
 
 	Session::forget('key');
 
+<a name="removing-all-items-from-the-session"></a>
 **Removing All Items From The Session**
 
 	Session::flush();
 
+<a name="regenerating-the-session-id"></a>
 **Regenerating The Session ID**
 
 	Session::regenerate();
@@ -55,10 +62,12 @@ Sometimes you may wish to store items in the session only for the next request. 
 
 	Session::flash('key', 'value');
 
+<a name="reflashing-the-current-flash-data-for-another-request"></a>
 **Reflashing The Current Flash Data For Another Request**
 
 	Session::reflash();
 
+<a name="reflashing-only-a-subset-of-flash-data"></a>
 **Reflashing Only A Subset Of Flash Data**
 
 	Session::keep(array('username', 'email'));

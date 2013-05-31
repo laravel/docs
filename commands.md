@@ -17,6 +17,7 @@ In addition to the commands provided with Artisan, you may also build your own c
 
 To create a new command, you may use the `command:make` Artisan command, which will generate a command stub to help you get started:
 
+<a name="generate-a-new-command-class"></a>
 **Generate A New Command Class**
 
 	php artisan command:make FooCommand
@@ -59,18 +60,22 @@ The `VALUE_NONE` option indicates that the option is simply used as a "switch":
 
 While your command is executing, you will obviously need to access the values for the arguments and options accepted by your application. To do so, you may use the `argument` and `option` methods:
 
+<a name="retrieving-the-value-of-a-command-argument"></a>
 **Retrieving The Value Of A Command Argument**
 
 	$value = $this->argument('name');
 
+<a name="retrieving-all-arguments"></a>
 **Retrieving All Arguments**
 
 	$arguments = $this->argument();
 
+<a name="retrieving-the-value-of-a-command-option"></a>
 **Retrieving The Value Of A Command Option**
 
 	$value = $this->option('name');
 
+<a name="retrieving-all-options"></a>
 **Retrieving All Options**
 
 	$options = $this->option();
@@ -79,10 +84,12 @@ While your command is executing, you will obviously need to access the values fo
 
 To send output to the console, you may use the `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
 
+<a name="sending-information-to-the-console"></a>
 **Sending Information To The Console**
 
 	$this->info('Display this on the screen');
 
+<a name="sending-an-error-message-to-the-console"></a>
 **Sending An Error Message To The Console**
 
 	$this->error('Something went wrong!');
@@ -91,14 +98,17 @@ To send output to the console, you may use the `info`, `comment`, `question` and
 
 You may also use the `ask` and `confirm` methods to prompt the user for input:
 
+<a name="asking-the-user-for-input"></a>
 **Asking The User For Input**
 
 	$name = $this->ask('What is your name?');
 
+<a name="asking-the-user-for-secret-input"></a>
 **Asking The User For Secret Input**
 
 	$password = $this->secret('What is the password?');
 
+<a name="asking-the-user-for-confirmation"></a>
 **Asking The User For Confirmation**
 
 	if ($this->confirm('Do you wish to continue? [yes|no]'))
@@ -115,12 +125,14 @@ You may also specify a default value to the `confirm` method, which should be `t
 
 Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/start/artisan.php` file. Within this file, you may use the `Artisan::add` method to register the command:
 
+<a name="registering-an-artisan-command"></a>
 **Registering An Artisan Command**
 
 	Artisan::add(new CustomCommand);
 
 If your command is registered in the application [IoC container](/docs/ioc), you may use the `Artisan::resolve` method to make it available to Artisan:
 
+<a name="registering-a-command-that-is-in-the-ioc-container"></a>
 **Registering A Command That Is In The IoC Container**
 
 	Artisan::resolve('binding.name');
@@ -130,6 +142,7 @@ If your command is registered in the application [IoC container](/docs/ioc), you
 
 Sometimes you may wish to call other commands from your command. You may do so using the `call` method:
 
+<a name="calling-another-command"></a>
 **Calling Another Command**
 
 	$this->call('command.name', array('argument' => 'foo', '--option' => 'bar'));

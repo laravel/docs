@@ -18,32 +18,38 @@ Currently Laravel supports four database systems: MySQL, Postgres, SQLite, and S
 
 Once you have configured your database connection, you may run queries using the `DB` class.
 
+<a name="running-a-select-query"></a>
 **Running A Select Query**
 
 	$results = DB::select('select * from users where id = ?', array(1));
 
 The `select` method will always return an `array` of results.
 
+<a name="running-an-insert-statement"></a>
 **Running An Insert Statement**
 
 	DB::insert('insert into users (id, name) values (?, ?)', array(1, 'Dayle'));
 
+<a name="running-an-update-statement"></a>
 **Running An Update Statement**
 
 	DB::update('update users set votes = 100 where name = ?', array('John'));
 
+<a name="running-a-delete-statement"></a>
 **Running A Delete Statement**
 
 	DB::delete('delete from users');
 
 > **Note:** The `update` and `delete` statements return the number of rows affected by the operation.
 
+<a name="running-a-general-statement"></a>
 **Running A General Statement**
 
 	DB::statement('drop table users');
 
 You may listen for query events using the `DB::listen` method:
 
+<a name="listening-for-query-events"></a>
 **Listening For Query Events**
 
 	DB::listen(function($sql, $bindings, $time)
