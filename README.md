@@ -14,3 +14,11 @@ Laravel 4终于在2013年5月29号发布了正式版，很多Laravel粉丝也将
 徐小花
   * html.md
 
+
+##版权协议##
+
+所有中文文档遵循 [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/) 协议。对于任何形式的使用，请保留译者的署名、网址、联系方式等信息。
+
+原始英文文档请参照[Laravel Docs](https://github.com/laravel/docs)。
+
+
