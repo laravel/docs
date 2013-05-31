@@ -22,6 +22,7 @@ The database query builder provides a convenient, fluent interface to creating a
 <a name="selects"></a>
 ## Selects
 
+<a name="retrieving-all-rows-from-a-table"></a>
 **Retrieving All Rows From A Table**
 
 	$users = DB::table('users')->get();
@@ -31,16 +32,19 @@ The database query builder provides a convenient, fluent interface to creating a
 		var_dump($user->name);
 	}
 
+<a name="retrieving-a-single-row-from-a-table"></a>
 **Retrieving A Single Row From A Table**
 
 	$user = DB::table('users')->where('name', 'John')->first();
 
 	var_dump($user->name);
 
+<a name="retrieving-a-single-column-from-a-row"></a>
 **Retrieving A Single Column From A Row**
 
 	$name = DB::table('users')->where('name', 'John')->pluck('name');
 
+<a name="retrieving-a-list-of-column-values"></a>
 **Retrieving A List Of Column Values**
 
 	$roles = DB::table('roles')->lists('title');
@@ -49,6 +53,7 @@ This method will return an array of role titles. You may also specify a custom k
 
 	$roles = DB::table('roles')->lists('title', 'name');
 
+<a name="specifying-a-select-clause"></a>
 **Specifying A Select Clause**
 
 	$users = DB::table('users')->select('name', 'email')->get();
@@ -57,16 +62,19 @@ This method will return an array of role titles. You may also specify a custom k
 
 	$users = DB::table('users')->select('name as user_name')->get();
 
+<a name="adding-a-select-clause-to-an-existing-query"></a>
 **Adding A Select Clause To An Existing Query**
 
 	$query = DB::table('users')->select('name');
 
 	$users = $query->addSelect('age')->get();
 
+<a name="using-where-operators"></a>
 **Using Where Operators**
 
 	$users = DB::table('users')->where('votes', '>', 100)->get();
 
+<a name="or-statements"></a>
 **Or Statements**
 
 	$users = DB::table('users')
@@ -74,11 +82,13 @@ This method will return an array of role titles. You may also specify a custom k
 	                    ->orWhere('name', 'John')
 	                    ->get();
 
+<a name="using-where-between"></a>
 **Using Where Between**
 
 	$users = DB::table('users')
 	                    ->whereBetween('votes', array(1, 100))->get();
 
+<a name="using-where-in-with-an-array"></a>
 **Using Where In With An Array**
 
 	$users = DB::table('users')
@@ -87,11 +97,13 @@ This method will return an array of role titles. You may also specify a custom k
 	$users = DB::table('users')
 	                    ->whereNotIn('id', array(1, 2, 3))->get();
 
+<a name="using-where-null-to-find-records-with-unset-values"></a>
 **Using Where Null To Find Records With Unset Values**
 
 	$users = DB::table('users')
 	                    ->whereNull('updated_at')->get();
 
+<a name="order-by,-group-by,-and-having"></a>
 **Order By, Group By, And Having**
 
 	$users = DB::table('users')
@@ -100,6 +112,7 @@ This method will return an array of role titles. You may also specify a custom k
 	                    ->having('count', '>', 100)
 	                    ->get();
 
+<a name="offset-&-limit"></a>
 **Offset & Limit**
 
 	$users = DB::table('users')->skip(10)->take(5)->get();
@@ -109,6 +122,7 @@ This method will return an array of role titles. You may also specify a custom k
 
 The query builder may also be used to write join statements. Take a look at the following examples:
 
+<a name="basic-join-statement"></a>
 **Basic Join Statement**
 
 	DB::table('users')
@@ -130,6 +144,7 @@ You may also specify more advanced join clauses:
 
 Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well:
 
+<a name="parameter-grouping"></a>
 **Parameter Grouping**
 
 	DB::table('users')
@@ -145,6 +160,7 @@ The query above will produce the following SQL:
 
 	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
+<a name="exists-statements"></a>
 **Exists Statements**
 
 	DB::table('users')
@@ -168,6 +184,7 @@ The query above will produce the following SQL:
 
 The query builder also provides a variety of aggregate methods, such as `count`, `max`, `min`, `avg`, and `sum`.
 
+<a name="using-aggregate-methods"></a>
 **Using Aggregate Methods**
 
 	$users = DB::table('users')->count();
@@ -185,6 +202,7 @@ The query builder also provides a variety of aggregate methods, such as `count`,
 
 Sometimes you may need to use a raw expression in a query. These expressions will be injected into the query as strings, so be careful not to create any SQL injection points! To create a raw expression, you may use the `DB::raw` method:
 
+<a name="using-a-raw-expression"></a>
 **Using A Raw Expression**
 
 	$users = DB::table('users')
@@ -193,6 +211,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 	                     ->groupBy('status')
 	                     ->get();
 
+<a name="incrementing-or-decrementing-a-value-of-a-column"></a>
 **Incrementing or decrementing a value of a column**
 
 	DB::table('users')->increment('votes');
@@ -202,6 +221,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 <a name="inserts"></a>
 ## Inserts
 
+<a name="inserting-records-into-a-table"></a>
 **Inserting Records Into A Table**
 
 	DB::table('users')->insert(
@@ -210,6 +230,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 
 If the table has an auto-incrementing id, use `insertGetId` to insert a record and retrieve the id:
 
+<a name="inserting-records-into-a-table-with-an-auto-incrementing-id"></a>
 **Inserting Records Into A Table With An Auto-Incrementing ID**
 
 	$id = DB::table('users')->insertGetId(
@@ -218,6 +239,7 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 
 > **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
 
+<a name="inserting-multiple-records-into-a-table"></a>
 **Inserting Multiple Records Into A Table**
 
 	DB::table('users')->insert(array(
@@ -228,6 +250,7 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 <a name="updates"></a>
 ## Updates
 
+<a name="updating-records-in-a-table"></a>
 **Updating Records In A Table**
 
 	DB::table('users')
@@ -237,14 +260,17 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 <a name="deletes"></a>
 ## Deletes
 
+<a name="deleting-records-in-a-table"></a>
 **Deleting Records In A Table**
 
 	DB::table('users')->where('votes', '<', 100)->delete();
 
+<a name="deleting-all-records-from-a-table"></a>
 **Deleting All Records From A Table**
 
 	DB::table('users')->delete();
 
+<a name="truncating-a-table"></a>
 **Truncating A Table**
 
 	DB::table('users')->truncate();
@@ -254,6 +280,7 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 
 The query builder also provides a quick way to "union" two queries together:
 
+<a name="performing-a-query-union"></a>
 **Performing A Query Union**
 
 	$first = DB::table('users')->whereNull('first_name');
@@ -267,6 +294,7 @@ The `unionAll` method is also available, and has the same method signature as `u
 
 You may easily cache the results of a query using the `remember` method:
 
+<a name="caching-a-query-result"></a>
 **Caching A Query Result**
 
 	$users = DB::table('users')->remember(10)->get();

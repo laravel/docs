@@ -16,6 +16,7 @@
 
 Most of the routes for your application will be defined in the `app/routes.php` file. The simplest Laravel routes consist of a URI and a Closure callback.
 
+<a name="basic-get-route"></a>
 **Basic GET Route**
 
 	Route::get('/', function()
@@ -23,6 +24,7 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 		return 'Hello World';
 	});
 
+<a name="basic-post-route"></a>
 **Basic POST Route**
 
 	Route::post('foo/bar', function()
@@ -30,6 +32,7 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 		return 'Hello World';
 	});
 
+<a name="registering-a-route-responding-to-any-http-verb"></a>
 **Registering A Route Responding To Any HTTP Verb**
 
 	Route::any('foo', function()
@@ -37,6 +40,7 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 		return 'Hello World';
 	});
 
+<a name="forcing-a-route-to-be-served-over-https"></a>
 **Forcing A Route To Be Served Over HTTPS**
 
 	Route::get('foo', array('https', function()
@@ -56,6 +60,7 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 		return 'User '.$id;
 	});
 
+<a name="optional-route-parameters"></a>
 **Optional Route Parameters**
 
 	Route::get('user/{name?}', function($name = null)
@@ -63,6 +68,7 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 		return $name;
 	});
 
+<a name="optional-route-parameters-with-defaults"></a>
 **Optional Route Parameters With Defaults**
 
 	Route::get('user/{name?}', function($name = 'John')
@@ -70,6 +76,7 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 		return $name;
 	});
 
+<a name="regular-expression-route-constraints"></a>
 **Regular Expression Route Constraints**
 
 	Route::get('user/{name}', function($name)
@@ -89,6 +96,7 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 
 Route filters provide a convenient way of limiting access to a given route, which is useful for creating areas of your site which require authentication. There are several filters included in the Laravel framework, including an `auth` filter, an `auth.basic` filter, a `guest` filter, and a `csrf`filter. These are located in the `app/filters.php` file.
 
+<a name="defining-a-route-filter"></a>
 **Defining A Route Filter**
 
 	Route::filter('old', function()
@@ -101,6 +109,7 @@ Route filters provide a convenient way of limiting access to a given route, whic
 
 If a response is returned from a filter, that response will be considered the response to the request and the route will not be executed, and any `after` filters on the route will also be cancelled.
 
+<a name="attaching-a-filter-to-a-route"></a>
 **Attaching A Filter To A Route**
 
 	Route::get('user', array('before' => 'old', function()
@@ -108,6 +117,7 @@ If a response is returned from a filter, that response will be considered the re
 		return 'You are over 200 years old!';
 	}));
 
+<a name="attaching-multiple-filters-to-a-route"></a>
 **Attaching Multiple Filters To A Route**
 
 	Route::get('user', array('before' => 'auth|old', function()
@@ -115,6 +125,7 @@ If a response is returned from a filter, that response will be considered the re
 		return 'You are authenticated and over 200 years old!';
 	}));
 
+<a name="specifying-filter-parameters"></a>
 **Specifying Filter Parameters**
 
 	Route::filter('age', function($route, $request, $value)
@@ -134,6 +145,7 @@ After filters receive a `$response` as the third argument passed to the filter:
 		//
 	});
 
+<a name="pattern-based-filters"></a>
 **Pattern Based Filters**
 
 You may also specify that a filter applies to an entire set of routes based on their URI.
@@ -151,10 +163,12 @@ You may also constrain pattern filters by HTTP verbs:
 
 	Route::when('admin/*', 'admin', array('post'));
 
+<a name="filter-classes"></a>
 **Filter Classes**
 
 For advanced filtering, you may wish to use a class instead of a Closure. Since filter classes are resolved out of the application [IoC Container](/docs/ioc), you will be able to utilize dependency injection in these filters for greater testability.
 
+<a name="defining-a-filter-class"></a>
 **Defining A Filter Class**
 
 	class FooFilter {
@@ -166,6 +180,7 @@ For advanced filtering, you may wish to use a class instead of a Closure. Since 
 
 	}
 
+<a name="registering-a-class-based-filter"></a>
 **Registering A Class Based Filter**
 
 	Route::filter('foo', 'FooFilter');
@@ -217,6 +232,7 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 
 Laravel routes are also able to handle wildcard sub-domains, and pass you wildcard parameters from the domain:
 
+<a name="registering-sub-domain-routes"></a>
 **Registering Sub-Domain Routes**
 
 	Route::group(array('domain' => '{account}.myapp.com'), function()
@@ -233,6 +249,7 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 
 A group of routes may be prefixed by using the `prefix` option in the attributes array of a group:
 
+<a name="prefixing-grouped-routes"></a>
 **Prefixing Grouped Routes**
 
 	Route::group(array('prefix' => 'admin'), function()
@@ -250,6 +267,7 @@ A group of routes may be prefixed by using the `prefix` option in the attributes
 
 Model binding provides a convenient way to inject model instances into your routes. For example, instead of injecting a user's ID, you can inject the entire User model instance that matches the given ID. First, use the `Route::model` method to specify the model that should be used for a given parameter:
 
+<a name="binding-a-parameter-to-a-model"></a>
 **Binding A Parameter To A Model**
 
 	Route::model('user', 'User');

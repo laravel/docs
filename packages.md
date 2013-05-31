@@ -28,6 +28,7 @@ All Laravel packages are distributed via [Packagist](http://packagist.org) and [
 
 The easiest way to create a new package for use with Laravel is the `workbench` Artisan command. First, you will need to set a few options in the `app/config/workbench.php` file. In that file, you will find a `name` and `email` option. These values will be used to generate a `composer.json` file for your new package. Once you have supplied those values, you are ready to build a workbench package!
 
+<a name="issuing-the-workbench-artisan-command"></a>
 **Issuing The Workbench Artisan Command**
 
 	php artisan workbench vendor/package --resources
@@ -43,6 +44,7 @@ Once the provider has been registered, you are ready to start developing your pa
 
 When using the `workbench` command, your package will be setup with conventions that allow the package to integrate well with other parts of the Laravel framework:
 
+<a name="basic-package-directory-structure"></a>
 **Basic Package Directory Structure**
 
 	/src
@@ -76,10 +78,12 @@ This method allows Laravel to know how to properly load the views, configuration
 
 When utilizing resources from a package, such as configuration items or views, a double-colon syntax will generally be used:
 
+<a name="loading-a-view-from-a-package"></a>
 **Loading A View From A Package**
 
 	return View::make('package::view.name');
 
+<a name="retrieving-a-package-configuration-item"></a>
 **Retrieving A Package Configuration Item**
 
 	return Config::get('package::group.option');
@@ -100,6 +104,7 @@ Since your packages are in the `workbench` directory, you may be wondering how C
 
 In prior versions of Laravel, a `handles` clause was used to specify which URIs a package could respond to. However, in Laravel 4, a package may respond to any URI. To load a routes file for your package, simply `include` it from within your service provider's `boot` method.
 
+<a name="including-a-routes-file-from-a-service-provider"></a>
 **Including A Routes File From A Service Provider**
 
 	public function boot()
@@ -116,12 +121,14 @@ In prior versions of Laravel, a `handles` clause was used to specify which URIs 
 
 Some packages may require configuration files. These files should be defined in the same way as typical application configuration files. And, when using the default `$this->package` method of registering resources in your service provider, may be accessed using the usual "double-colon" syntax:
 
+<a name="accessing-package-configuration-files"></a>
 **Accessing Package Configuration Files**
 
 	Config::get('package::file.option');
 
 However, if your package contains a single configuration file, you may simply name the file `config.php`. When this is done, you may access the options directly, without specifying the file name:
 
+<a name="accessing-single-file-package-configuration"></a>
 **Accessing Single File Package Configuration**
 
 	Config::get('package::option');
@@ -130,6 +137,7 @@ However, if your package contains a single configuration file, you may simply na
 
 When other developers install your package, they may wish to override some of the configuration options. However, if they change the values in your package source code, they will be overwritten the next time Composer updates the package. Instead, the `config:publish` artisan command should be used:
 
+<a name="executing-the-config-publish-command"></a>
 **Executing The Config Publish Command**
 
 	php artisan config:publish vendor/package
@@ -143,16 +151,19 @@ When this command is executed, the configuration files for your application will
 
 You may easily create and run migrations for any of your packages. To create a migration for a package in the workbench, use the `--bench` option:
 
+<a name="creating-migrations-for-workbench-packages"></a>
 **Creating Migrations For Workbench Packages**
 
 	php artisan migrate:make create_users_table --bench="vendor/package"
 
+<a name="running-migrations-for-workbench-packages"></a>
 **Running Migrations For Workbench Packages**
 
 	php artisan migrate --bench="vendor/package"
 
 To run migrations for a finished package that was installed via Composer into the `vendor` directory, you may use the `--package` directive:
 
+<a name="running-migrations-for-an-installed-package"></a>
 **Running Migrations For An Installed Package**
 
 	php artisan migrate --package="vendor/package"
@@ -162,6 +173,7 @@ To run migrations for a finished package that was installed via Composer into th
 
 Some packages may have assets such as JavaScript, CSS, and images. However, we are unable to link to assets in the `vendor` or `workbench` directories, so we need a way to move these assets into the `public` directory of our application. The `asset:publish` command will take care of this for you:
 
+<a name="moving-package-assets-to-public"></a>
 **Moving Package Assets To Public**
 
 	php artisan asset:publish

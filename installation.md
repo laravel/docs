@@ -42,7 +42,7 @@ Laravel requires one set of permissions to be configured - folders within app/st
 
 Several of the framework directory paths are configurable. To change the location of these directories, check out the `bootstrap/paths.php` file.
 
-> **Note:** Laravel is designed to protect your application code, and local storage by placing only files that are necessarily public in the public folder.  It is recommended that you either set the public folder as your site's documentRoot (also known as a web root) or to place the contents of public into your site's root directory and place all of Laravel's other files outside the web root. 
+> **Note:** Laravel is designed to protect your application code, and local storage by placing only files that are necessarily public in the public folder.  It is recommended that you either set the public folder as your site's documentRoot (also known as a web root) or to place the contents of public into your site's root directory and place all of Laravel's other files outside the web root.
 
 <a name="pretty-urls"></a>
 ## Pretty URLs

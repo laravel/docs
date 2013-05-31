@@ -83,6 +83,7 @@ Command  | Description
 
 If you are using the MySQL database, you may use the `after` method to specify the order of columns:
 
+<a name="using-after-on-mysql"></a>
 **Using After On MySQL**
 
 	$table->string('name')->after('email');
@@ -92,6 +93,7 @@ If you are using the MySQL database, you may use the `after` method to specify t
 
 To rename a column, you may use the `renameColumn` method on the Schema builder:
 
+<a name="renaming-a-column"></a>
 **Renaming A Column**
 
 	Schema::table('users', function($table)
@@ -104,6 +106,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder:
 <a name="dropping-columns"></a>
 ## Dropping Columns
 
+<a name="dropping-a-column-from-a-database-table"></a>
 **Dropping A Column From A Database Table**
 
 	Schema::table('users', function($table)
@@ -111,6 +114,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder:
 		$table->dropColumn('votes');
 	});
 
+<a name="dropping-multiple-columns-from-a-database-table"></a>
 **Dropping Multiple Columns From A Database Table**
 
 	Schema::table('users', function($table)
@@ -123,6 +127,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder:
 
 You may easily check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
 
+<a name="checking-for-existence-of-table"></a>
 **Checking For Existence Of Table**
 
 	if (Schema::hasTable('users'))
@@ -130,6 +135,7 @@ You may easily check for the existence of a table or column using the `hasTable`
 		//
 	}
 
+<a name="checking-for-existence-of-columns"></a>
 **Checking For Existence Of Columns**
 
 	if (Schema::hasColumn('users', 'email'))
@@ -142,6 +148,7 @@ You may easily check for the existence of a table or column using the `hasTable`
 
 The schema builder supports several types of indexes. There are two ways to add them. First, you may fluently define them on a column definition, or you may add them separately:
 
+<a name="fluently-creating-a-column-and-index"></a>
 **Fluently Creating A Column And Index**
 
 	$table->string('email')->unique();
@@ -160,6 +167,7 @@ Command  | Description
 
 Laravel also provides support for adding foreign key constraints to your tables:
 
+<a name="adding-a-foreign-key-to-a-table"></a>
 **Adding A Foreign Key To A Table**
 
 	$table->foreign('user_id')->references('id')->on('users');

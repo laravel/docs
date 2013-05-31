@@ -16,6 +16,7 @@ Migrations are a type of version control for your database. They allow a team to
 
 To create a migration, you may use the `migrate:make` command on the Artisan CLI:
 
+<a name="creating-a-migration"></a>
 **Creating A Migration**
 
 	php artisan migrate:make create_users_table
@@ -33,14 +34,17 @@ The `--table` and `--create` options may also be used to indicate the name of th
 <a name="running-migrations"></a>
 ## Running Migrations
 
+<a name="running-all-outstanding-migrations"></a>
 **Running All Outstanding Migrations**
 
 	php artisan migrate
 
+<a name="running-all-outstanding-migrations-for-a-path"></a>
 **Running All Outstanding Migrations For A Path**
 
 	php artisan migrate --path=app/foo/migrations
 
+<a name="running-all-outstanding-migrations-for-a-package"></a>
 **Running All Outstanding Migrations For A Package**
 
 	php artisan migrate --package=vendor/package
@@ -50,14 +54,17 @@ The `--table` and `--create` options may also be used to indicate the name of th
 <a name="rolling-back-migrations"></a>
 ## Rolling Back Migrations
 
+<a name="rollback-the-last-migration-operation"></a>
 **Rollback The Last Migration Operation**
 
 	php artisan migrate:rollback
 
+<a name="rollback-all-migrations"></a>
 **Rollback all migrations**
 
 	php artisan migrate:reset
 
+<a name="rollback-all-migrations-and-run-them-all-again"></a>
 **Rollback all migrations and run them all again**
 
 	php artisan migrate:refresh
@@ -69,6 +76,7 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
 Laravel also includes a simple way to seed your database with test data using seed classes. All seed classes are stored in `app/database/seeds`. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserTableSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
 
+<a name="example-database-seed-class"></a>
 **Example Database Seed Class**
 
 	class DatabaseSeeder extends Seeder {

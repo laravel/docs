@@ -9,6 +9,7 @@
 <a name="basic-responses"></a>
 ## Basic Responses
 
+<a name="returning-strings-from-routes"></a>
 **Returning Strings From Routes**
 
 	Route::get('/', function()
@@ -16,6 +17,7 @@
 		return 'Hello World';
 	});
 
+<a name="creating-custom-responses"></a>
 **Creating Custom Responses**
 
 A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses.
@@ -26,6 +28,7 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 
 	return $response;
 
+<a name="attaching-cookies-to-responses"></a>
 **Attaching Cookies To Responses**
 
 	$cookie = Cookie::make('name', 'value');
@@ -35,30 +38,37 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 <a name="redirects"></a>
 ## Redirects
 
+<a name="returning-a-redirect"></a>
 **Returning A Redirect**
 
 	return Redirect::to('user/login');
 
+<a name="returning-a-redirect-to-a-named-route"></a>
 **Returning A Redirect To A Named Route**
 
 	return Redirect::route('login');
 
+<a name="returning-a-redirect-to-a-named-route-with-parameters"></a>
 **Returning A Redirect To A Named Route With Parameters**
 
 	return Redirect::route('profile', array(1));
 
+<a name="returning-a-redirect-to-a-named-route-using-named-parameters"></a>
 **Returning A Redirect To A Named Route Using Named Parameters**
 
 	return Redirect::route('profile', array('user' => 1));
 
+<a name="returning-a-redirect-to-a-controller-action"></a>
 **Returning A Redirect To A Controller Action**
 
 	return Redirect::action('HomeController@index');
 
+<a name="returning-a-redirect-to-a-controller-action-with-parameters"></a>
 **Returning A Redirect To A Controller Action With Parameters**
 
 	return Redirect::action('UserController@profile', array(1));
 
+<a name="returning-a-redirect-to-a-controller-action-using-named-parameters"></a>
 **Returning A Redirect To A Controller Action Using Named Parameters**
 
 	return Redirect::action('UserController@profile', array('user' => 1));
@@ -87,6 +97,7 @@ This view may be returned to the browser like so:
 
 The second argument passed to `View::make` is an array of data that should be made available to the view.
 
+<a name="passing-data-to-views"></a>
 **Passing Data To Views**
 
 	$view = View::make('greeting', $data);
@@ -99,6 +110,7 @@ You may also share a piece of data across all views:
 
 	View::share('name', 'Steve');
 
+<a name="passing-a-sub-view-to-a-view"></a>
 **Passing A Sub-View To A View**
 
 Sometimes you may wish to pass a view into another view. For example, given a sub-view stored at `app/views/child/view.php`, we could pass it to another view like so:
@@ -121,6 +133,7 @@ The sub-view can then be rendered from the parent view:
 
 View composers are callbacks or class methods that are called when a view is created. If you have data that you want bound to a given view each time that view is created throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
 
+<a name="defining-a-view-composer"></a>
 **Defining A View Composer**
 
 	View::composer('profile', function($view)
@@ -157,14 +170,17 @@ Note that there is no convention on where composer classes may be stored. You ar
 <a name="special-responses"></a>
 ## Special Responses
 
+<a name="creating-a-json-response"></a>
 **Creating A JSON Response**
 
 	return Response::json(array('name' => 'Steve', 'state' => 'CA'));
 
+<a name="creating-a-jsonp-response"></a>
 **Creating A JSONP Response**
 
 	return Response::json(array('name' => 'Steve', 'state' => 'CA'))->setCallback(Input::get('callback'));
 
+<a name="creating-a-file-download-response"></a>
 **Creating A File Download Response**
 
 	return Response::download($pathToFile);

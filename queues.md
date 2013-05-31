@@ -24,12 +24,14 @@ The following dependencies are needed for the listed queue drivers:
 
 To push a new job onto the queue, use the `Queue::push` method:
 
+<a name="pushing-a-job-onto-the-queue"></a>
 **Pushing A Job Onto The Queue**
 
 	Queue::push('SendEmail', array('message' => $message));
 
 The first argument given to the `push` method is the name of the class that should be used to process the job. The second argument is an array of data that should be passed to the handler. A job handler should be defined like so:
 
+<a name="defining-a-job-handler"></a>
 **Defining A Job Handler**
 
 	class SendEmail {
@@ -45,12 +47,14 @@ Notice the only method that is required is `fire`, which receives a `Job` instan
 
 If you want the job to use a method other than `fire`, you may specify the method when you push the job:
 
+<a name="specifying-a-custom-handler-method"></a>
 **Specifying A Custom Handler Method**
 
 	Queue::push('SendEmail@send', array('message' => $message));
 
 Once you have processed a job, it must be deleted from the queue, which can be done via the `delete` method on the `Job` instance:
 
+<a name="deleting-a-processed-job"></a>
 **Deleting A Processed Job**
 
 	public function fire($job, $data)
@@ -62,6 +66,7 @@ Once you have processed a job, it must be deleted from the queue, which can be d
 
 If you wish to release a job back onto the queue, you may do so via the `release` method:
 
+<a name="releasing-a-job-back-onto-the-queue"></a>
 **Releasing A Job Back Onto The Queue**
 
 	public function fire($job, $data)
@@ -77,6 +82,7 @@ You may also specify the number of seconds to wait before the job is released:
 
 If an exception occurs while the job is being processed, it will automatically be released back onto the queue. You may check the number of attempts that have been made to run the job using the `attempts` method:
 
+<a name="checking-the-number-of-run-attempts"></a>
 **Checking The Number Of Run Attempts**
 
 	if ($job->attempts() > 3)
@@ -86,6 +92,7 @@ If an exception occurs while the job is being processed, it will automatically b
 
 You may also access the job identifier:
 
+<a name="accessing-the-job-id"></a>
 **Accessing The Job ID**
 
 	$job->getJobId();
@@ -95,6 +102,7 @@ You may also access the job identifier:
 
 You may also push a Closure onto the queue. This is very convenient for quick, simple tasks that need to be queued:
 
+<a name="pushing-a-closure-onto-the-queue"></a>
 **Pushing A Closure Onto The Queue**
 
 	Queue::push(function($job) use ($id)
@@ -113,6 +121,7 @@ When using Iron.io [push queues](#push-queues), you should take extra precaution
 
 Laravel includes an Artisan task that will run new jobs as they are pushed onto the queue. You may run this task using the `queue:listen` command:
 
+<a name="starting-the-queue-listener"></a>
 **Starting The Queue Listener**
 
 	php artisan queue:listen
@@ -125,12 +134,14 @@ Note that once this task has started, it will continue to run until it is manual
 
 You may also set the length of time (in seconds) each job should be allowed to run:
 
+<a name="specifying-the-job-timeout-parameter"></a>
 **Specifying The Job Timeout Parameter**
 
 	php artisan queue:listen --timeout=60
 
 To process only the first job on the queue, you may use the `queue:work` command:
 
+<a name="processing-the-first-job-on-the-queue"></a>
 **Processing The First Job On The Queue**
 
 	php artisan queue:work
@@ -142,6 +153,7 @@ Push queues allow you to utilize the powerful Laravel 4 queue facilities without
 
 Next, you may use the `queue:subscribe` Artisan command to register a URL end-point that will receive newly pushed queue jobs:
 
+<a name="registering-a-push-queue-subscriber"></a>
 **Registering A Push Queue Subscriber**
 
 	php artisan queue:subscribe queue_name http://foo.com/queue/receive
