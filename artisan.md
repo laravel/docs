@@ -31,6 +31,6 @@ Bir komut kullanırken kullanılacak olan Ortam Ayarları'nı `--env` komutuyla 
 
 Ayrıca şuan kullanmakta olduğunuz Laravel'in versiyonunu da `--version` komutunu kullanarak Artisan üzerinden görebilirsiniz:
 
-**Laravel'in Versiyonunu Görmek*
+**Laravel\'in Versiyonunu Görmek*
 
 	php artisan --version
