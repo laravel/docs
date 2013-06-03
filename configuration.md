@@ -85,4 +85,4 @@ To show a custom view when your application is in maintenance mode, you may add 
 	App::down(function()
 	{
 		return Response::view('maintenance', array(), 503);
-	})
+	});
