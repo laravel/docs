@@ -27,12 +27,12 @@ You may also do pre and post request processing by registering `before`, `after`
 
 	App::before(function()
 	{
-		//
+		//İstek öncesi olayları
 	});
 
 	App::after(function($request, $response)
 	{
-		//
+		//İstek sonrası olayları
 	});
 
-Listeners to these events will be run `before` and `after` each request to your application.
+Bu olayların dinleyicileri, aplikasyonunuza yapılan her istek öncesinde `(before)` ve sonrasında `(after)` çalışacaktır.
