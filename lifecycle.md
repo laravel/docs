@@ -1,13 +1,13 @@
-# Request Lifecycle
+# İstek Yaşam Döngüsü
 
-- [Overview](#overview)
+- [Genel Bakış](#genel-bakis)
 - [Start Files](#start-files)
 - [Application Events](#application-events)
 
-<a name="overview"></a>
-## Overview
+<a name="genel-bakis"></a>
+## Genel Bakış
 
-The Laravel request lifecycle is fairly simple. A request enters your application and is dispatched to the appropriate route or controller. The response from that route is then sent back to the browser and displayed on the screen. Sometimes you may wish to do some processing before or after your routes are actually called. There are several opportunities to do this, two of which are "start" files and application events.
+Laravel'de İstek Yaşam Döngüsü (Request Lifecycle) gerçekten çok basit bir yapıdadır. Bir istek application'a (?) girdikten sonra belirtilen bir route veya controller'a yönlendirilir. Daha sonra Route'un döndürdüğü cevap tarayıcıya yönlendirilir ve ekranda görünür. Bazen Route'lar çağırılmadan önce veya sonra bazı işlemleri yapmak isteyebilirsiniz. Laravel'de bunu yapmanın birkaç yolu vardır. Bunlardan yollardan ikisi "start" dosyaları ve application olaylarıdır. (events)
 
 <a name="start-files"></a>
 ## Start Files
