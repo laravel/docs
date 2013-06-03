@@ -20,6 +20,7 @@ An example test file is provided in the `app/tests` directory. After installing 
 
 To create a test case, simply create a new test file in the `app/tests` directory. The test class should extend `TestCase`. You may then define test methods as you normally would when using PHPUnit.
 
+<a name="an-example-test-class"></a>
 **An Example Test Class**
 
 	class FooTest extends TestCase {
@@ -45,6 +46,7 @@ When running unit tests, Laravel will automatically set the configuration enviro
 
 You may easily call one of your routes for a test using the `call` method:
 
+<a name="calling-a-route-from-a-test"></a>
 **Calling A Route From A Test**
 
 	$response = $this->call('GET', 'user/profile');
@@ -57,6 +59,7 @@ You may then inspect the `Illuminate\Http\Response` object:
 
 You may also call a controller from a test:
 
+<a name="calling-a-controller-from-a-test"></a>
 **Calling A Controller From A Test**
 
 	$response = $this->action('GET', 'HomeController@index');
@@ -99,6 +102,7 @@ When testing, you may often want to mock a call to a Laravel static facade. For 
 
 We can mock the call to the `Event` class by using the `shouldReceive` method on the facade, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock.
 
+<a name="mocking-a-facade"></a>
 **Mocking A Facade**
 
 	public function testGetIndex()
@@ -115,6 +119,7 @@ We can mock the call to the `Event` class by using the `shouldReceive` method on
 
 Laravel ships with several `assert` methods to make testing a little easier:
 
+<a name="asserting-responses-are-ok"></a>
 **Asserting Responses Are OK**
 
 	public function testMethod()
@@ -124,10 +129,12 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertResponseOk();
 	}
 
+<a name="asserting-response-statuses"></a>
 **Asserting Response Statuses**
 
 	$this->assertResponseStatus(403);
 
+<a name="asserting-responses-are-redirects"></a>
 **Asserting Responses Are Redirects**
 
 	$this->assertRedirectedTo('foo');
@@ -136,6 +143,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
 
 	$this->assertRedirectedToAction('Controller@method');
 
+<a name="asserting-a-view-has-some-data"></a>
 **Asserting A View Has Some Data**
 
 	public function testMethod()
@@ -146,6 +154,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertViewHas('age', $value);
 	}
 
+<a name="asserting-the-session-has-some-data"></a>
 **Asserting The Session Has Some Data**
 
 	public function testMethod()
@@ -163,6 +172,7 @@ The `TestCase` class contains several helper methods to make testing your applic
 
 You may set the currently authenticated user using the `be` method:
 
+<a name="setting-the-currently-authenticated-user"></a>
 **Setting The Currently Authenticated User**
 
 	$user = new User(array('name' => 'John'));
@@ -171,6 +181,7 @@ You may set the currently authenticated user using the `be` method:
 
 You may re-seed your database from a test using the `seed` method:
 
+<a name="re-seeding-database-from-tests"></a>
 **Re-Seeding Database From Tests**
 
 	$this->seed();

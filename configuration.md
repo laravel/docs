@@ -11,6 +11,7 @@ All of the configuration files for the Laravel framework are stored in the `app/
 
 Sometimes you may need to access configuration values at run-time. You may do so using the `Config` class:
 
+<a name="accessing-a-configuration-value"></a>
 **Accessing A Configuration Value**
 
 	Config::get('app.timezone');
@@ -21,6 +22,7 @@ You may also specify a default value to return if the configuration option does 
 
 Notice that "dot" style syntax may be used to access values in the various files. You may also set configuration values at run-time:
 
+<a name="setting-a-configuration-value"></a>
 **Setting A Configuration Value**
 
 	Config::set('database.default', 'sqlite');
@@ -63,6 +65,7 @@ You may also pass a `Closure` to the `detectEnvironment` method, allowing you to
 
 You may access the current application environment via the `environment` method:
 
+<a name="accessing-the-current-application-environment"></a>
 **Accessing The Current Application Environment**
 
 	$environment = App::environment();

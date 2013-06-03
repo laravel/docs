@@ -22,10 +22,12 @@ If your application is not using Eloquent, you may use the `database` authentica
 
 The Laravel `Hash` class provides secure Bcrypt hashing:
 
+<a name="hashing-a-password-using-bcrypt"></a>
 **Hashing A Password Using Bcrypt**
 
 	$password = Hash::make('secret');
 
+<a name="verifying-a-password-against-a-hash"></a>
 **Verifying A Password Against A Hash**
 
 	if (Hash::check('secret', $hashedPassword))
@@ -33,6 +35,7 @@ The Laravel `Hash` class provides secure Bcrypt hashing:
 		// The passwords match...
 	}
 
+<a name="checking-if-a-password-needs-to-be-rehashed"></a>
 **Checking If A Password Needs To Be Rehashed**
 
 	if (Hash::needsRehash($hashed))
@@ -56,6 +59,7 @@ When the `attempt` method is called, the `auth.attempt` [event](/docs/events) wi
 
 To determine if the user is already logged into your application, you may use the `check` method:
 
+<a name="determining-if-a-user-is-authenticated"></a>
 **Determining If A User Is Authenticated**
 
 	if (Auth::check())
@@ -65,6 +69,7 @@ To determine if the user is already logged into your application, you may use th
 
 If you would like to provide "remember me" functionality in your application, you may pass `true` as the second argument to the `attempt` method, which will keep the user authenticated indefinitely (or until they manually logout):
 
+<a name="authenticating-a-user-and-"remembering"-them"></a>
 **Authenticating A User And "Remembering" Them**
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password), true))
@@ -76,6 +81,7 @@ If you would like to provide "remember me" functionality in your application, yo
 
 You also may add extra conditions to the authenticating query:
 
+<a name="authenticating-a-user-with-conditions"></a>
 **Authenticating A User With Conditions**
 
     if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1))
@@ -85,6 +91,7 @@ You also may add extra conditions to the authenticating query:
 
 Once a user is authenticated, you may access the User model / record:
 
+<a name="accessing-the-logged-in-user"></a>
 **Accessing The Logged In User**
 
 	$email = Auth::user()->email;
@@ -95,6 +102,7 @@ To simply log a user into the application by their ID, use the `loginUsingId` me
 
 The `validate` method allows you to validate a user's credentials without actually logging them into the application:
 
+<a name="validating-user-credentials-without-login"></a>
 **Validating User Credentials Without Login**
 
 	if (Auth::validate($credentials))
@@ -104,6 +112,7 @@ The `validate` method allows you to validate a user's credentials without actual
 
 You may also use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized.
 
+<a name="logging-a-user-in-for-a-single-request"></a>
 **Logging A User In For A Single Request**
 
 	if (Auth::once($credentials))
@@ -111,6 +120,7 @@ You may also use the `once` method to log a user into the application for a sing
 		//
 	}
 
+<a name="logging-a-user-out-of-the-application"></a>
 **Logging A User Out Of The Application**
 
 	Auth::logout();
@@ -120,6 +130,7 @@ You may also use the `once` method to log a user into the application for a sing
 
 Route filters may be used to allow only authenticated users to access a given route. Laravel provides the `auth` filter by default, and it is defined in `app/filters.php`.
 
+<a name="protecting-a-route"></a>
 **Protecting A Route**
 
 	Route::get('profile', array('before' => 'auth', function()
@@ -131,10 +142,12 @@ Route filters may be used to allow only authenticated users to access a given ro
 
 Laravel provides an easy method of protecting your application from cross-site request forgeries.
 
+<a name="inserting-csrf-token-into-form"></a>
 **Inserting CSRF Token Into Form**
 
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
+<a name="validate-the-submitted-csrf-token"></a>
 **Validate The Submitted CSRF Token**
 
     Route::post('register', array('before' => 'csrf', function()
@@ -147,6 +160,7 @@ Laravel provides an easy method of protecting your application from cross-site r
 
 HTTP Basic Authentication provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` filter to your route:
 
+<a name="protecting-a-route-with-http-basic"></a>
 **Protecting A Route With HTTP Basic**
 
 	Route::get('profile', array('before' => 'auth.basic', function()
@@ -160,6 +174,7 @@ By default, the `basic` filter will use the `email` column on the user record wh
 
 You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, define a filter that returns the `onceBasic` method:
 
+<a name="setting-up-a-stateless-http-basic-filter"></a>
 **Setting Up A Stateless HTTP Basic Filter**
 
 	Route::filter('basic.once', function()
@@ -174,6 +189,7 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 
 Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets. To get started, verify that your `User` model implements the `Illuminate\Auth\Reminders\RemindableInterface` contract. Of course, the `User` model included with the framework already implements this interface.
 
+<a name="implementing-the-remindableinterface"></a>
 **Implementing The RemindableInterface**
 
 	class User extends Eloquent implements RemindableInterface {
@@ -187,6 +203,7 @@ Most web applications provide a way for users to reset their forgotten passwords
 
 Next, a table must be created to store the password reset tokens. To generate a migration for this table, simply execute the `auth:reminders` Artisan command:
 
+<a name="generating-the-reminder-table-migration"></a>
 **Generating The Reminder Table Migration**
 
 	php artisan auth:reminders
@@ -195,6 +212,7 @@ Next, a table must be created to store the password reset tokens. To generate a 
 
 To send a password reminder, we can use the `Password::remind` method:
 
+<a name="sending-a-password-reminder"></a>
 **Sending A Password Reminder**
 
 	Route::post('password/remind', function()
@@ -271,18 +289,21 @@ Also, similarly to the `remind` method, if an error occurs while resetting the p
 
 Laravel provides facilities for strong AES-256 encryption via the mcrypt PHP extension:
 
+<a name="encrypting-a-value"></a>
 **Encrypting A Value**
 
 	$encrypted = Crypt::encrypt('secret');
 
 > **Note:** Be sure to set a 32 character, random string in the `key` option of the `app/config/app.php` file. Otherwise, encrypted values will not be secure.
 
+<a name="decrypting-a-value"></a>
 **Decrypting A Value**
 
 	$decrypted = Crypt::decrypt($encryptedValue);
 
 You may also set the cipher and mode used by the encrypter:
 
+<a name="setting-the-cipher-&-mode"></a>
 **Setting The Cipher & Mode**
 
 	Crypt::setMode('crt');

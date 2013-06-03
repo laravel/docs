@@ -19,6 +19,7 @@ Understanding the Laravel IoC container is essential to building a powerful, lar
 
 There are two ways the IoC container can resolve dependencies: via Closure callbacks or automatic resolution. First, we'll explore Closure callbacks. First, a "type" may be bound into the container:
 
+<a name="binding-a-type-into-the-container"></a>
 **Binding A Type Into The Container**
 
 	App::bind('foo', function($app)
@@ -26,6 +27,7 @@ There are two ways the IoC container can resolve dependencies: via Closure callb
 		return new FooBar;
 	});
 
+<a name="resolving-a-type-from-the-container"></a>
 **Resolving A Type From The Container**
 
 	$value = App::make('foo');
@@ -34,6 +36,7 @@ When the `App::make` method is called, the Closure callback is executed and the 
 
 Sometimes, you may wish to bind something into the container that should only be resolved once, and the same instance should be returned on subsequent calls into the container:
 
+<a name="binding-a-"shared"-type-into-the-container"></a>
 **Binding A "Shared" Type Into The Container**
 
 	App::singleton('foo', function()
@@ -43,6 +46,7 @@ Sometimes, you may wish to bind something into the container that should only be
 
 You may also bind an existing object instance into the container using the `instance` method:
 
+<a name="binding-an-existing-instance-into-the-container"></a>
 **Binding An Existing Instance Into The Container**
 
 	$foo = new Foo;
@@ -54,6 +58,7 @@ You may also bind an existing object instance into the container using the `inst
 
 The IoC container is powerful enough to resolve classes without any configuration at all in many scenarios. For example:
 
+<a name="resolving-a-class"></a>
 **Resolving A Class**
 
 	class FooBar {
@@ -73,6 +78,7 @@ When a type is not bound in the container, it will use PHP's Reflection faciliti
 
 However, in some cases, a class may depend on an interface implementation, not a "concrete type". When this is the case, the `App::bind` method must be used to inform the container which interface implementation to inject:
 
+<a name="binding-an-interface-to-an-implementation"></a>
 **Binding An Interface To An Implementation**
 
 	App::bind('UserRepositoryInterface', 'DbUserRepository');
@@ -95,6 +101,7 @@ Since we have bound the `UserRepositoryInterface` to a concrete type, the `DbUse
 
 Laravel provides several opportunities to use the IoC container to increase the flexibility and testability of your application. One primary example is when resolving controllers. All controllers are resolved through the IoC container, meaning you can type-hint dependencies in a controller constructor, and they will automatically be injected.
 
+<a name="type-hinting-controller-dependencies"></a>
 **Type-Hinting Controller Dependencies**
 
 	class OrderController extends BaseController {
@@ -117,6 +124,7 @@ In this example, the `OrderRepository` class will automatically be injected into
 
 [Filters](/docs/routing#route-filters), [composers](/docs/responses#view-composers), and [event handlers](/docs/events#using-classes-as-listeners) may also be resolved out of the IoC container. When registering them, simply give the name of the class that should be used:
 
+<a name="other-examples-of-ioc-usage"></a>
 **Other Examples Of IoC Usage**
 
 	Route::filter('foo', 'FooFilter');
@@ -134,6 +142,7 @@ In fact, most of the core Laravel components include service providers. All of t
 
 To create a service provider, simply extend the `Illuminate\Support\ServiceProvider` class and define a `register` method:
 
+<a name="defining-a-service-provider"></a>
 **Defining A Service Provider**
 
 	use Illuminate\Support\ServiceProvider;
@@ -163,6 +172,7 @@ You may also register a service provider at run-time using the `App::register` m
 
 The container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
 
+<a name="registering-a-resolving-listener"></a>
 **Registering A Resolving Listener**
 
 	App::resolving(function($object)

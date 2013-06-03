@@ -67,6 +67,7 @@ When you are simply executing commands against the default connection, just use 
 
 Pipelining should be used when you need to send many commands to the server in one operation. To get started, use the `pipeline` command:
 
+<a name="piping-many-commands-to-your-servers"></a>
 **Piping Many Commands To Your Servers**
 
 	Redis::pipeline(function($pipe)

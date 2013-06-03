@@ -9,6 +9,7 @@
 
 One method of using templates in Laravel is via controller layouts. By specifying the `layout` property on the controller, the view specified will be created for you and will be the assumed response that should be returned from actions.
 
+<a name="defining-a-layout-on-a-controller"></a>
 **Defining A Layout On A Controller**
 
 	class UserController extends BaseController {
@@ -33,6 +34,7 @@ One method of using templates in Laravel is via controller layouts. By specifyin
 
 Blade is a simple, yet powerful templating engine provided with Laravel. Unlike controller layouts, Blade is driven by _template inheritance_ and _sections_. All Blade templates should use the `.blade.php` extension.
 
+<a name="defining-a-blade-layout"></a>
 **Defining A Blade Layout**
 
 	<!-- Stored in app/views/layouts/master.blade.php -->
@@ -49,6 +51,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 		</body>
 	</html>
 
+<a name="using-a-blade-layout"></a>
 **Using A Blade Layout**
 
 	@extends('layouts.master')
@@ -68,6 +71,7 @@ Note that views which `extend` a Blade layout simply override sections from the 
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
 
+<a name="echoing-data"></a>
 **Echoing Data**
 
 	Hello, {{ $name }}.
@@ -78,6 +82,7 @@ To escape the output, you may use the triple curly brace syntax:
 
 	Hello, {{{ $name }}}.
 
+<a name="if-statements"></a>
 **If Statements**
 
 	@if (count($records) === 1)
@@ -92,6 +97,7 @@ To escape the output, you may use the triple curly brace syntax:
 		You are not signed in.
 	@endunless
 
+<a name="loops"></a>
 **Loops**
 
 	@for ($i = 0; $i < 10; $i++)
@@ -106,16 +112,19 @@ To escape the output, you may use the triple curly brace syntax:
 		<p>I'm looping forever.</p>
 	@endwhile
 
+<a name="including-sub-views"></a>
 **Including Sub-Views**
 
 	@include('view.name')
 
+<a name="displaying-language-lines"></a>
 **Displaying Language Lines**
 
 	@lang('language.line')
 
 	@choice('language.line', 1);
 
+<a name="comments"></a>
 **Comments**
 
 	{{-- This comment will not be in the rendered HTML --}}

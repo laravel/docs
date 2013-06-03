@@ -54,6 +54,7 @@ When attaching files to a message, you may also specify a MIME type and / or a d
 
 Embedding inline images into your e-mails is typically cumbersome; however, Laravel provides a convenient way to attach images to your e-mails and retrieving the appropriate CID.
 
+<a name="embedding-an-image-in-an-e-mail-view"></a>
 **Embedding An Image In An E-Mail View**
 
 	<body>
@@ -62,6 +63,7 @@ Embedding inline images into your e-mails is typically cumbersome; however, Lara
 		<img src="<?php echo $message->embed($pathToFile); ?>">
 	</body>
 
+<a name="embedding-raw-data-in-an-e-mail-view"></a>
 **Embedding Raw Data In An E-Mail View**
 
 	<body>
@@ -77,6 +79,7 @@ Note that the `$message` variable is always passed to e-mail views by the `Mail`
 
 Since sending e-mail messages can drastically lengthen the response time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/queues). To queue a mail message, simply use the `queue` method on the `Mail` class:
 
+<a name="queueing-a-mail-message"></a>
 **Queueing A Mail Message**
 
 	Mail::queue('emails.welcome', $data, function($message)
