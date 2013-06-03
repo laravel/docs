@@ -198,34 +198,6 @@ If you wish to simply update the timestamps on a model, you may use the `touch` 
 
 	$user->touch();
 
-<a name="timestamps"></a>
-## Timestamps
-
-By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `datetime` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
-
-**Disabling Auto Timestamps**
-
-	class User extends Eloquent {
-
-		protected $table = 'users';
-
-		public $timestamps = false;
-
-	}
-
-If you wish to customize the format of your timestamps, you may override the `freshTimestamp` method in your model:
-
-**Providing A Custom Timestamp Format**
-
-	class User extends Eloquent {
-
-		public function freshTimestamp()
-		{
-			return time();
-		}
-
-	}
-
 <a name="soft-deleting"></a>
 ## Soft Deleting
 
@@ -276,6 +248,34 @@ To determine if a given model instance has been soft deleted, you may use the `t
 	if ($user->trashed())
 	{
 		//
+	}
+
+<a name="timestamps"></a>
+## Timestamps
+
+By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `datetime` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
+
+**Disabling Auto Timestamps**
+
+	class User extends Eloquent {
+
+		protected $table = 'users';
+
+		public $timestamps = false;
+
+	}
+
+If you wish to customize the format of your timestamps, you may override the `freshTimestamp` method in your model:
+
+**Providing A Custom Timestamp Format**
+
+	class User extends Eloquent {
+
+		public function freshTimestamp()
+		{
+			return time();
+		}
+
 	}
 
 <a name="query-scopes"></a>
