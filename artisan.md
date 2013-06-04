@@ -6,7 +6,7 @@
 <a name="giris"></a>
 ## Giriş
 
-Artisan, Laravel içerisinde gelen CLI'ın (Command-line Interface) adıdır. Artisan size aplikasyonunuzu geliştirirken birçok yardımcı komut sağlar. Artisan güçlü Symfony Console component üzerinden geliştirilmiştir.
+Artisan, Laravel içerisinde gelen CLI'ın (Command-line Interface) adıdır. Artisan size uygulamanızı geliştirirken birçok yardımcı komut sağlar. Artisan güçlü Symfony Console component üzerinden geliştirilmiştir.
 
 <a name="kullanim"></a>
 ## Kullanım
