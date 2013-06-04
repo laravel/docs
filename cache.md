@@ -9,39 +9,39 @@
 <a name="configuration"></a>
 ## Configuration
 
-Laravel provides a unified API for various caching systems. The cache configuration is located at `app/config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](http://memcached.org) and [Redis](http://redis.io) out of the box.
+Laravel, çeşitli kaşeleme sistemleri için tümleşik bir API sağlar. Kaşe konfigürasyonu `app/config/cache.php`'de bulunmaktadır. Bu dosyada uygulamanızda varsayılan olarak hangi kaşe sürücüsünü kullanmak istediğinizi belirtebilirsiniz. Laravel, [Memcached](http://memcached.org) ve [Redis](http://redis.io) gibi popüler kaşeleme paketlerini barındırır.
 
-The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC.
+Kaşe konfigürasyon dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel, sıralanarak kaşelenmiş nesneleri dosya sisteminde depolayan `file` (dosya) kaşe sürücüsünü kullanmak üzere konfigüre edilmiştir. Daha büyük uygulamalar için, Memcached ve APC gibi bir kaşe kullanmanız önerilir.
 
 <a name="cache-usage"></a>
-## Cache Usage
+## Kaşe Kullanımı
 
-**Storing An Item In The Cache**
+**Bir Nesneyi Kaşeye Koymak**
 
 	Cache::put('key', 'value', $minutes);
 
-**Storing An Item In The Cache If It Doesn't Exist**
+**Bir Nesneyi Yoksa Kaşeye Koymak**
 
 	Cache::add('key', 'value', $minutes);
 
-**Checking For Existence In Cache**
+**Nesnenin Kaşede Var Olup Olmadığını Kontrol Etmek**
 
 	if (Cache::has('key'))
 	{
 		//
 	}
 
-**Retrieving An Item From The Cache**
+**Kaşeden Bir Nesneyi Almak**
 
 	$value = Cache::get('key');
 
-**Retrieving An Item Or Returning A Default Value**
+**Bir Nesneyi Almak Veya Varsayılan Bir Değer Dönmek**
 
 	$value = Cache::get('key', 'default');
 
 	$value = Cache::get('key', function() { return 'default'; });
 
-**Storing An Item In The Cache Permanently**
+**Bir Nesneyi Kalıcı Olarak Kaşeye Koymak**
 
 	Cache::forever('key', 'value');
 
