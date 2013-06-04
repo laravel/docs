@@ -1,71 +1,72 @@
-# Laravel Quickstart
+# Laravel Hızlı Başlangıç
 
-- [Installation](#installation)
-- [Routing](#routing)
-- [Creating A View](#creating-a-view)
-- [Creating A Migration](#creating-a-migration)
+- [Kurulum](#kurulum)
+- [Routing (Yönlendirme)](#routing)
+- [Bir View Oluşturma](#bir-view-olusturma)
+- [Bir Migration Oluşturma](#bir-migration-olusturma)
 - [Eloquent ORM](#eloquent-orm)
-- [Displaying Data](#displaying-data)
+- [Veri Gösterme](#veri-gosterme)
 
-<a name="installation"></a>
-## Installation
+<a name="kurulum"></a>
+## Kurulum
 
-To install the Laravel framework, download a copy of the [repository from Github](https://github.com/laravel/laravel/archive/master.zip). Next, after [installing Composer](http://getcomposer.org), run the `composer install` command in the root of your project directory. This command will download and install the framework's dependencies.
+Laravel'i kurmak için [Github Kaynağı'nı](https://github.com/laravel/laravel/archive/master.zip) indirmelisiniz. Daha sonra [Composer'i kurup](http://getcomposer.org), `composer install` komutunu projenizin root (ana) klasöründe çalıştırmalısınız. Bu komutu çalıştırmak, Laravel'i ve Laravel'in gereksinimlerini (dependencies) indirip kuracaktır.
 
-After installing the framework, take a glance around the project to familiarize yourself with the directory structure. The `app` directory contains folders such as `views`, `controllers`, and `models`. Most of your application's code will reside somewhere in this directory. You may also wish to explore the `app/config` directory and the configuration options that are available to you.
+Laravel kurulduktan sonra klasör yapısına göz gezdirin ve Laravel'in nasıl bir yapısı olduğuna bakın. `app` klasörü içerisinde `views`, `controllers`, ve `models` gibi klasörler bulunmaktadır. Projenizi geliştirirken yazacağınız kodların çok büyük bir kısmı bu klasörler içine yazılacaktır. Ayrıca `app/config` klasörü içerisine bakıp size ne tür konfigürasyon ayarları tanımlandığını görebilirsiniz.
 
 <a name="routing"></a>
-## Routing
+## Routing (Yönlendirme)
 
-To get started, let's create our first route. In Laravel, the simplest route is a route to a Closure. Pop open the `app/routes.php` file and add the following route to the bottom of the file:
+Başlangıç olarak Laravel'de ilk Route'umuzu yazalım. Laravel'de Route oluşturmak için en basit yol bir closure (anonim fonksiyon) kullanmaktır. `app/routes.php` dosyasını açın ve aşağıdaki kod parçacığını sayfanın en altına yapıştırın:
 
-	Route::get('users', function()
+	Route::get('kullanicilar', function()
 	{
-		return 'Users!';
+		return 'Kullanıcılar!';
 	});
 
-Now, if you hit the `/users` route in your web browser, you should see `Users!` displayed as the response. Great! You've just created your first route.
+Şimdi, eğer web tarayıcınızda `/kullanicilar` adresine girerseniz, ekranda `Kullanıcılar!` yazısını görmüş olmanız gerekir. Eğer gördüyseniz çok iyi! İlk Route'unuzu başarıyla oluşturdunuz.
 
-Routes can also be attached to controller classes. For example:
+Route'lar ayrıca controller sınıflarına da bağlanabilir. Örneğin:
 
-	Route::get('users', 'UserController@getIndex');
+	Route::get('kullanicilar', 'KullaniciController@getIndex');
 
-This route informs the framework that requests to the `/users` route should call the `getIndex` method on the `UserController` class. For more information on controller routing, check out the [controller documentation](/docs/controllers).
+Bu Route Laravel'e şunu belirtiyor: `/kullanicilar` adresine bir istek geldiği zaman, Laravel `UserController` kontroller sınıfının `getIndex` methodunu çağırmalı. Controller Routing hakkında daha fazla bilgi almak için [Controller Dökümantasyonu'na](/docs/controllers) bir göz atın.
 
-<a name="creating-a-view"></a>
-## Creating A View
+<a name="bir-view-olusturma"></a>
+## Bir View Oluşturma
 
-Next, we'll create a simple view to display our user data. Views live in the `app/views` directory and contain the HTML of your application. We're going to place two new views in this directory: `layout.blade.php` and `users.blade.php`. First, let's create our `layout.blade.php` file:
+Şimdi basit bir view dosyası oluşturup, kullanıcı bilgilerini ekrana view üzerinden yazdıracağız. View dosyaları `app/views` klasörü içerisinde bulunmakta olup projenizin HTML dosyalarını barındırır. Şimdi bu klasör içerisine 2 tane dosya oluşturacağız: `layout.blade.php` ve `kullanicilar.blade.php`. Önce `layout.blade.php` dosyamızı oluşturalım:
 
 	<html>
 		<body>
-			<h1>Laravel Quickstart</h1>
+			<h1>Laravel Hızlı Başlangıç</h1>
 
 			@yield('content')
 		</body>
 	</html>
 
-Next, we'll create our `users.blade.php` view:
+Şimdiki adımda ise `kullanicilar.blade.php` view dosyasını oluşturalım:
 
 	@extends('layout')
 
 	@section('content')
-		Users!
+		Kullanıcılar!
 	@stop
 
-Some of this syntax probably looks quite strange to you. That's because we're using Laravel's templating system: Blade. Blade is very fast, because it is simply a handful of regular expressions that are run against your templates to compile them to pure PHP. Blade provides powerful functionality like template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
+Bu syntax size ilk etapta biraz yabancı gelebilir. 
+Bunun sebebi Laravel'in güçlü templating sisteminin (Blade) kullanılmasıdır. Blade son derece hızlı çalışır çünkü sadece birkaç tane regex kodları kullanıp Blade syntaxını PHP scriptlerine dönüştürür. Blade kullanıcılarına çok büyük fonksiyonellik sağlar. Tema kalıtımı (Template inheritance) ve PHP'nin `if` ve `for` gibi temel kontrol yapılarını Blade üzerinden kullanabilirsiniz. Daha fazla bilgi için [Blade Dökümantasyonu'na](/docs/templates) bakınız.
 
-Now that we have our views, let's return it from our `/users` route. Instead of returning `Users!` from the route, return the view instead:
+Şimdi gerekli view dosyalarımızı oluşturduğumuza göre, oluşturduğumuz viewi `/kullanicilar` isteğine bir cevap olarak döndürelim. `Kullanıcılar!` stringini döndürmek yerine, bu kez oluşturduğumuz view dosyalarını döndüreceğiz:
 
-	Route::get('users', function()
+	Route::get('kullanicilar', function()
 	{
-		return View::make('users');
+		return View::make('kullanicilar');
 	});
 
-Wonderful! Now you have setup a simple view that extends a layout. Next, let's start working on our database layer.
+Harika! Bir layoutu genişleten bir view oluşturdunuz. Birdahaki bölümümümüzde Veritabanı Katmanı (Database Layer) üzerinde duracağız.
 
-<a name="creating-a-migration"></a>
-## Creating A Migration
+<a name="bir-migration-olusturma"></a>
+## Bir Migration Oluşturma
 
 To create a table to hold our data, we'll use the Laravel migration system. Migrations let you expressively define modifications to your database, and easily share them with the rest of your team.
 
