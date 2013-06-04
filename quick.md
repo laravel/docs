@@ -35,37 +35,38 @@ Bu Route Laravel'e şunu belirtiyor: `/kullanicilar` adresine bir istek geldiği
 <a name="bir-view-olusturma"></a>
 ## Bir View Oluşturma
 
-Next, we'll create a simple view to display our user data. Views live in the `app/views` directory and contain the HTML of your application. We're going to place two new views in this directory: `layout.blade.php` and `users.blade.php`. First, let's create our `layout.blade.php` file:
+Şimdi basit bir view dosyası oluşturup, kullanıcı bilgilerini ekrana view üzerinden yazdıracağız. View dosyaları `app/views` klasörü içerisinde bulunmakta olup projenizin HTML dosyalarını barındırır. Şimdi bu klasör içerisine 2 tane dosya oluşturacağız: `layout.blade.php` ve `kullanicilar.blade.php`. Önce `layout.blade.php` dosyamızı oluşturalım:
 
 	<html>
 		<body>
-			<h1>Laravel Quickstart</h1>
+			<h1>Laravel Hızlı Başlangıç</h1>
 
 			@yield('content')
 		</body>
 	</html>
 
-Next, we'll create our `users.blade.php` view:
+Şimdiki adımda ise `kullanicilar.blade.php` view dosyasını oluşturalım:
 
 	@extends('layout')
 
 	@section('content')
-		Users!
+		Kullanıcılar!
 	@stop
 
-Some of this syntax probably looks quite strange to you. That's because we're using Laravel's templating system: Blade. Blade is very fast, because it is simply a handful of regular expressions that are run against your templates to compile them to pure PHP. Blade provides powerful functionality like template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
+Bu syntax size ilk etapta biraz yabancı gelebilir. 
+Bunun sebebi Laravel'in güçlü templating sisteminin (Blade) kullanılmasıdır. Blade son derece hızlı çalışır çünkü sadece birkaç tane regex kodları kullanıp Blade syntaxını PHP scriptlerine dönüştürür. Blade kullanıcılarına çok büyük fonksiyonellik sağlar. Tema kalıtımı (Template inheritance) ve PHP'nin `if` ve `for` gibi temel kontrol yapılarını Blade üzerinden kullanabilirsiniz. Daha fazla bilgi için [Blade Dökümantasyonu'na](/docs/templates) bakınız.
 
-Now that we have our views, let's return it from our `/users` route. Instead of returning `Users!` from the route, return the view instead:
+Şimdi gerekli view dosyalarımızı oluşturduğumuza göre, oluşturduğumuz viewi `/kullanicilar` isteğine bir cevap olarak döndürelim. `Kullanıcılar!` stringini döndürmek yerine, bu kez oluşturduğumuz view dosyalarını döndüreceğiz:
 
-	Route::get('users', function()
+	Route::get('kullanicilar', function()
 	{
-		return View::make('users');
+		return View::make('kullanicilar');
 	});
 
-Wonderful! Now you have setup a simple view that extends a layout. Next, let's start working on our database layer.
+Harika! Bir layoutu genişleten bir view oluşturdunuz. Birdahaki bölümümümüzde Veritabanı Katmanı (Database Layer) üzerinde duracağız.
 
-<a name="creating-a-migration"></a>
-## Creating A Migration
+<a name="bir-migration-olusturma"></a>
+## Bir Migration Oluşturma
 
 To create a table to hold our data, we'll use the Laravel migration system. Migrations let you expressively define modifications to your database, and easily share them with the rest of your team.
 
