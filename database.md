@@ -1,4 +1,4 @@
-# Basic Database Usage
+# Temel Veritabanı Kullanımı
 
 - [Yapılandırma](#yapilandirma)
 - [Sorugları Çalıştırma](#sorgulari-calistirma)
