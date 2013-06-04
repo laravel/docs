@@ -45,38 +45,38 @@ Kaşe konfigürasyon dosyası ayrıca dosyanın içinde açıklanmış çeşitli
 
 	Cache::forever('key', 'value');
 
-Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. You may do this using the `Cache::remember` method:
+Bazen, kaşeden bir nesneyi almak isteyebilir ve ayrıca talep edilen nesne yoksa kaşede varsayılan bir değer saklayabilirsiniz. Bunu, `Cache::remember` metodunu kullanarak yapabilirsiniz:
 
 	$value = Cache::remember('users', $minutes, function()
 	{
 		return DB::table('users')->get();
 	});
 
-You may also combine the `remember` and `forever` methods:
+Ayrıca, `remember` ve `forever` metotlarını birlikte kullanabilirsiniz.
 
 	$value = Cache::rememberForever('users', function()
 	{
 		return DB::table('users')->get();
 	});
 
-Note that all items stored in the cache are serialized, so you are free to store any type of data.
+Kaşede bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, yani ger türlü veriyi saklayabilirsiniz.
 
-**Removing An Item From The Cache**
+*Kaşeden Bir Nesneyi Kaldırmak**
 
 	Cache::forget('key');
 
 <a name="increments-and-decrements"></a>
-## Increments & Decrements
+## Arttırma & Azaltma
 
-All drivers except `file` and `database` support the `increment` and `decrement` operations:
+`file` ve `database` hariç tüm sürücüler `increment` (artma) ve `decrement` (azalma) işlemlerini destekler:
 
-**Incrementing A Value**
+**Bir Değeri Arttırmak**
 
 	Cache::increment('key');
 
 	Cache::increment('key', $amount);
 
-**Decrementing A Value**
+**Bir Değeri Azaltmak**
 
 	Cache::decrement('key');
 
