@@ -1,4 +1,4 @@
-# Cache
+# Kaşe (Cache)
 
 - [Configuration](#configuration)
 - [Cache Usage](#cache-usage)
@@ -7,7 +7,7 @@
 - [Database Cache](#database-cache)
 
 <a name="configuration"></a>
-## Configuration
+## Ayarlamalar
 
 Laravel, çeşitli kaşeleme sistemleri için tümleşik bir API sağlar. Kaşe konfigürasyonu `app/config/cache.php`'de bulunmaktadır. Bu dosyada uygulamanızda varsayılan olarak hangi kaşe sürücüsünü kullanmak istediğinizi belirtebilirsiniz. Laravel, [Memcached](http://memcached.org) ve [Redis](http://redis.io) gibi popüler kaşeleme paketlerini barındırır.
 
@@ -59,7 +59,7 @@ Ayrıca, `remember` ve `forever` metotlarını birlikte kullanabilirsiniz.
 		return DB::table('users')->get();
 	});
 
-Kaşede bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, yani ger türlü veriyi saklayabilirsiniz.
+Kaşede bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, yani her türlü veriyi saklayabilirsiniz.
 
 *Kaşeden Bir Nesneyi Kaldırmak**
 
@@ -83,32 +83,33 @@ Kaşede bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, y
 	Cache::decrement('key', $amount);
 
 <a name="cache-sections"></a>
-## Cache Sections
+## Kaşe Bölümleri
 
-> **Note:** Cache sections are not supported when using the `file` or `database` cache drivers.
+> **Not:** Kaşe bölümleri `dosya` ve `veritabanı` kaşe sürücüleri kullanılırken desteklenmemektedir.
 
-Cache sections allow you to group related items in the cache, and then flush the entire section. To access a section, use the `section` method:
+Kaşe bölümleri, kaşedeki ilişkili nesneleri gruplamanıza ve tüm bölümü temizlemenize olanak sağlar.
+Bölüme erişim için `section` metodu kullanılır:
 
-**Accessing A Cache Section**
+**Bir kaşe Bölümününe Erişim**
 
 	Cache::section('people')->put('John', $john);
 
 	Cache::section('people')->put('Anne', $anne);
 
-You may also access cached items from the section, as well as use the other cache methods such as `increment` and `decrement`:
+Ayrıca bölümlerde kaşelenmiş nesnelere, diğer kaşe metodlarında olduğu gibi `increment` ve `decrement` ile de erişebilirsiniz.
 
-**Accessing Items In A Cache Section**
+**Kaşe Bölümündeki Nesnelere Erişmek**
 
 	$anne = Cache::section('people')->get('Anne');
 
-Then you may flush all items in the section:
+Kaşe bölümünü bu şekilde temizleyebilirsiniz:
 
 	Cache::section('people')->flush();
 
 <a name="database-cache"></a>
-## Database Cache
+## Veritabanı kaşesi
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. Below is an example `Schema` declaration for the table:
+Veritabanı kaşesi kullanabilmek için, kaşe nesnelerini içerecek `database` kaşesi kurulmalıdır. Aşağıda, gerekli tablonun tanımlanması için kullanabileceğiniz Şema (`Schema`) mevcuttur:
 
 	Schema::create('cache', function($table)
 	{
