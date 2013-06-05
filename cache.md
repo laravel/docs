@@ -1,19 +1,19 @@
 # Kaşe (Cache)
 
-- [Ayarlamalar](#configuration)
-- [Kaşe Kullanımı](#cache-usage)
-- [Arttırma & Azaltma](#increments-and-decrements)
-- [Kaşe Bölümleri](#cache-sections)
-- [Veritabanı Kaşesi](#database-cache)
+- [Ayarlamalar](#ayarlamalar)
+- [Kaşe Kullanımı](#kase-kullanimi)
+- [Arttırma & Azaltma](#arttirma-ve-azaltma)
+- [Kaşe Bölümleri](#kase-bolumleri)
+- [Veritabanı Kaşesi](#veritabani-kasesi)
 
-<a name="configuration"></a>
+<a name="ayarlamalar"></a>
 ## Ayarlamalar
 
 Laravel, çeşitli kaşeleme sistemleri için tümleşik bir API sağlar. Kaşe konfigürasyonu `app/config/cache.php`'de bulunmaktadır. Bu dosyada uygulamanızda varsayılan olarak hangi kaşe sürücüsünü kullanmak istediğinizi belirtebilirsiniz. Laravel, [Memcached](http://memcached.org) ve [Redis](http://redis.io) gibi popüler kaşeleme paketlerini barındırır.
 
 Kaşe konfigürasyon dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel, sıralanarak kaşelenmiş nesneleri dosya sisteminde depolayan `file` (dosya) kaşe sürücüsünü kullanmak üzere konfigüre edilmiştir. Daha büyük uygulamalar için, Memcached ve APC gibi bir kaşe kullanmanız önerilir.
 
-<a name="cache-usage"></a>
+<a name="kase-kullanimi"></a>
 ## Kaşe Kullanımı
 
 **Bir Nesneyi Kaşeye Koymak**
@@ -65,7 +65,7 @@ Kaşede bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, y
 
 	Cache::forget('key');
 
-<a name="increments-and-decrements"></a>
+<a name="arttirma-ve-azaltma"></a>
 ## Arttırma & Azaltma
 
 `file` ve `database` hariç tüm sürücüler `increment` (artma) ve `decrement` (azalma) işlemlerini destekler:
@@ -82,7 +82,7 @@ Kaşede bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, y
 
 	Cache::decrement('key', $amount);
 
-<a name="cache-sections"></a>
+<a name="kase-bolumleri"></a>
 ## Kaşe Bölümleri
 
 > **Not:** Kaşe bölümleri `dosya` ve `veritabanı` kaşe sürücüleri kullanılırken desteklenmemektedir.
@@ -106,7 +106,7 @@ Kaşe bölümünü bu şekilde temizleyebilirsiniz:
 
 	Cache::section('people')->flush();
 
-<a name="database-cache"></a>
+<a name="veritabani-kasesi"></a>
 ## Veritabanı Kaşesi
 
 Veritabanı kaşesi kullanabilmek için, kaşe nesnelerini içerecek `database` kaşesi kurulmalıdır. Aşağıda, gerekli tablonun tanımlanması için kullanabileceğiniz Şema (`Schema`) mevcuttur:
