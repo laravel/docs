@@ -1,10 +1,10 @@
 # Kaşe (Cache)
 
-- [Configuration](#configuration)
-- [Cache Usage](#cache-usage)
-- [Increments & Decrements](#increments-and-decrements)
-- [Cache Sections](#cache-sections)
-- [Database Cache](#database-cache)
+- [Ayarlamalar](#configuration)
+- [Kaşe Kullanımı](#cache-usage)
+- [Arttırma & Azaltma](#increments-and-decrements)
+- [Kaşe Bölümleri](#cache-sections)
+- [Veritabanı Kaşesi](#database-cache)
 
 <a name="configuration"></a>
 ## Ayarlamalar
@@ -107,7 +107,7 @@ Kaşe bölümünü bu şekilde temizleyebilirsiniz:
 	Cache::section('people')->flush();
 
 <a name="database-cache"></a>
-## Veritabanı kaşesi
+## Veritabanı Kaşesi
 
 Veritabanı kaşesi kullanabilmek için, kaşe nesnelerini içerecek `database` kaşesi kurulmalıdır. Aşağıda, gerekli tablonun tanımlanması için kullanabileceğiniz Şema (`Schema`) mevcuttur:
 
