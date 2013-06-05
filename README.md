@@ -8,6 +8,7 @@ Laravel 4终于在2013年5月29号发布了正式版，很多Laravel粉丝也将
 - 王赛
     - introduction.md
     - redis.md
+    - routing.md
 - /;!痛在远方
     - eloquent.md
 - 徐小花
