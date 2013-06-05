@@ -621,6 +621,16 @@ You will often need to insert new related models. For example, you may wish to i
 
 In this example, the `post_id` field will automatically be set on the inserted comment.
 
+### Associating Models (Belongs To)
+
+When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
+
+	$account = Account::find(10);
+
+	$user->associate($account);
+
+	$user->save();
+
 ### Inserting Related Models (Many To Many)
 
 You may also insert related models when working with many-to-many relations. Let's continue using our `User` and `Role` models as examples. We can easily attach new roles to a user using the `attach` method:
