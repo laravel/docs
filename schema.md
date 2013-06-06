@@ -176,6 +176,8 @@ To drop a foreign key, you may use the `dropForeign` method. A similar naming co
 
 	$table->dropForeign('posts_user_id_foreign');
 
+> **Note:** When creating a foreign key that references an incrementing integer, remember to always make the foreign key column `unsigned`.
+
 <a name="dropping-indexes"></a>
 ## Dropping Indexes
 
