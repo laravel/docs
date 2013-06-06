@@ -172,6 +172,8 @@ You may also specify options for the "on delete" and "on update" actions of the 
           ->references('id')->on('users')
           ->onDelete('cascade');
 
+> **Note:** When referring to a increment with `$table->increments('incr');` you'll need to use `$table->integer('refer_to_incr')->unsigned();`
+
 To drop a foreign key, you may use the `dropForeign` method. A similar naming convention is used for foreign keys as is used for other indexes:
 
 	$table->dropForeign('posts_user_id_foreign');
