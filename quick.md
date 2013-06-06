@@ -105,28 +105,32 @@ If you wish to rollback a migration, you may issue the `migrate:rollback` comman
 <a name="eloquent-orm"></a>
 ## Eloquent ORM
 
-Laravel ships with a superb ORM: Eloquent. If you have used the Ruby on Rails framework, you will find Eloquent familiar, as it follows the ActiveRecord ORM style of database interaction.
+Laravel mükemmel bir ORM aracıyla beraber gelmektedir: Eloquent. 
+Eğer daha önce Ruby on Rails frameworkü üzerinde çalıştıysanız Eloquent size çok tanıdık gelecektir, çünkü veritabanı işlemleri için ActiveRecord stilini kullanır.
 
-First, let's define a model. An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Don't worry, it will all make sense soon! Models are typically stored in the `app/models` directory. Let's define a `User.php` model in that directory like so:
+Öncelikle, modeli tanımlayalım. Bir Eloquent modeli belirtilen bir veritabanı tablosunu sorgulamak ve o tablodaki verileri tutmak için kullanılır.
+Merak etmenize gerek yok, örnekleri görünce ne kadar kolay olduğunu anlayacaksınız! Model dosyaları `app/models` klasöründe bulunmaktadır. Şimdi o klasörde bir `User.php` modeli oluşturalım:
 
 	class User extends Eloquent {}
 
-Note that we do not have to tell Eloquent which table to use. Eloquent has a variety of conventions, one of which is to use the plural form of the model name as the model's database table. Convenient!
+Lütfen dikkat edin, herhangi bir veritabanı tablosu belirtmedik.
 
-Using your preferred database administration tool, insert a few rows into your `users` table, and we'll use Eloquent to retrieve them and pass them to our view.
+Eloquent'in içerisinde birçok hüküm vardır, bunlardan birisi model adının çoğul yapısını veritabanı tablosu olarak kullandırmaktır. Kullanışlı, değil mi?
 
-Now let's modify our `/users` route to look like this:
+İstediğiniz veritabanı yönetim aracını kullanarak `users` tablosunu oluşturun. Şimdi Eloquent'i kullanarak o tablodan bazı verileri çekip view dosyamıza göndereceğiz.
+
+Şimdi `/users` routemizi editleyelim, ve şuna benzer bir hale getirelim:
 
 	Route::get('users', function()
 	{
-		$users = User::all();
+		$users = User::all(); //Users tablosundaki tüm verileri $users değişkenine atar
 
 		return View::make('users')->with('users', $users);
 	});
 
-Let's walk through this route. First, the `all` method on the `User` model will retrieve all of the rows in the `users` table. Next, we're passing these records to the view via the `with` method. The `with` method accepts a key and a value, and is used to make a piece of data available to a view.
+Şimdi bu scripti biraz inceleyelim. Öncelikle, `User` modelindeki `all` methodu `users` tablosundaki tüm verileri çekecektir. Daha sonra bu veriler `with` methodu kullanılarak view dosyasına gönderilir. `with` methodu bir anahtar ve bir değer almaktadır, böylece gönderilen veriyi view dosyası tanıyabilir.
 
-Awesome. Now we're ready to display the users in our view!
+Harika. Artık kullanıcıları view dosyamızda göstermeye hazırız!
 
 <a name="displaying-data"></a>
 ## Displaying Data
