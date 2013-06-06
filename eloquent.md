@@ -66,6 +66,8 @@ Sometimes you may wish to throw an exception if a model is not found, allowing y
 
 	$model = User::findOrFail(1);
 
+	$model = User::where('votes', '>', 100)->firstOrFail();
+
 To register the error handler, listen for the `ModelNotFoundException`
 
 	use Illuminate\Database\Eloquent\ModelNotFoundException;
