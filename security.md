@@ -3,6 +3,7 @@
 - [Configuration](#configuration)
 - [Storing Passwords](#storing-passwords)
 - [Authenticating Users](#authenticating-users)
+- [Manually Logging In Users](#manually)
 - [Protecting Routes](#protecting-routes)
 - [HTTP Basic Authentication](#http-basic-authentication)
 - [Password Reminders & Reset](#password-reminders-and-reset)
@@ -114,6 +115,17 @@ You may also use the `once` method to log a user into the application for a sing
 **Logging A User Out Of The Application**
 
 	Auth::logout();
+
+<a name="manually"></a>
+## Manually Logging In Users
+
+If you need to log an existing user instance into your application, you may simply call the `login` method with the instance:
+
+	$user = User::find(1);
+
+	Auth::login($user);
+
+This is equivalent to logging in a user via credentials using the `attempt` method.
 
 <a name="protecting-routes"></a>
 ## Protecting Routes
