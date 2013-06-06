@@ -57,5 +57,5 @@ A full list of `Str` functions can be found here: http://laravel.com/api/classes
 
 You can also register your own macro by calling:
 
-    Str::macro($name, $macro);s
+    Str::macro($name, $macro);
 
