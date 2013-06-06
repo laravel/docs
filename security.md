@@ -82,6 +82,11 @@ You also may add extra conditions to the authenticating query:
     {
         // The user is active, not suspended, and exists.
     }
+    
+**Manually Authenticating A User**
+
+    $user = new Illuminate\Auth\GenericUser(array('id' => $id, 'email' => $email));
+    Auth::login($user);
 
 Once a user is authenticated, you may access the User model / record:
 
