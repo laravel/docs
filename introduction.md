@@ -34,9 +34,9 @@ Laravel was created by [Taylor Otwell](https://github.com/taylorotwell), who con
 
 The following organizations have made financial contributions to the development of the Laravel framework:
 
-	- [UserScape](http://userscape.com)
-	- [Cartalyst](http://cartalyst.com)
-	- [Elli Davis - Toronto Realtor](http://ellidavis.com)
-	- [Jay Banks - Vancouver Lofts & Condos](http://jaybanks.ca/vancouver-lofts-condos)
-	- [Julie Kinnear - Toronto MLS](http://juliekinnear.com/toronoto-mls-listings)
-	- [Jamie Sarner - Toronto Real Estate](http://jamiesarner.com)
+- [UserScape](http://userscape.com)
+- [Cartalyst](http://cartalyst.com)
+- [Elli Davis - Toronto Realtor](http://ellidavis.com)
+- [Jay Banks - Vancouver Lofts & Condos](http://jaybanks.ca/vancouver-lofts-condos)
+- [Julie Kinnear - Toronto MLS](http://juliekinnear.com/toronoto-mls-listings)
+- [Jamie Sarner - Toronto Real Estate](http://jamiesarner.com)
