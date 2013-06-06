@@ -79,20 +79,17 @@ When utilizing resources from a package, such as configuration items or views, a
 **Loading A View From A Package**
 
 	return View::make('package::view.name');
-	
-To enable views being loaded from packages, you will need to add the below to your service provider:
-
-   	$this->app['view']->addNamespace('package', 'path/to/views');
 
 **Retrieving A Package Configuration Item**
 
 	return Config::get('package::group.option');
-	
-To enable config to be loaded from packages, you will need to add the below to your service provider:
-
-   	$this->app['config']->package('vendor/package', 'path/to/config');
 
 > **Note:** If your package contains migrations, consider prefixing the migration name with your package name to avoid potential class name conflicts with other packages.
+
+> **If your service provider is not in it's default location:** you will need to add these to your service provider to register your config and views locations.
+
+	$this->app['view']->addNamespace('package', 'path/to/views');
+	$this->app['config']->package('vendor/package', 'path/to/config');
 
 <a name="development-workflow"></a>
 ## Development Workflow
