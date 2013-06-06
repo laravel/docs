@@ -627,7 +627,7 @@ When updating a `belongsTo` relationship, you may use the `associate` method. Th
 
 	$account = Account::find(10);
 
-	$user->associate($account);
+	$user->account()->associate($account);
 
 	$user->save();
 
