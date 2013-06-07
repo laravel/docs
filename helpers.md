@@ -164,7 +164,7 @@ Get the fully qualified path to the `application/storage` directory.
 
 Convert the given string to `camelCase`.
 
-	$camel = camsel_case('foo_bar');
+	$camel = camel_case('foo_bar');
 
 	// fooBar
 
