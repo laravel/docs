@@ -116,7 +116,7 @@ The `array_pull` method will return a given key / value pair from the array, as 
 
 	$array = array('name' => 'Taylor', 'age' => 27);
 
-	$name = array_pluck($array, 'name');
+	$name = array_pull($array, 'name');
 
 ### array_set
 
