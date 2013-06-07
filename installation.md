@@ -20,8 +20,8 @@ Composer kuruldu ise, Laravel framework'ün [son sürümü](https://github.com/l
 
 Laravel kurulumu tamamlandıysa `php composer.phar update` komutu ile framework güncellemesi yapabilirsiniz.
 
-Composer kurulumu için Türkçe kaynak: [Composer’ı Evrensel Olarak Kuralım](http://www.sinaneldem.com.tr/composeri-evrensel-olarak-kuralim/)
-Laravel kurulumu için Türkçe kaynak: [Laravel Framework Kurulumu](http://www.sinaneldem.com.tr/laravel-framework-kurulumu/)
+- Composer kurulumu için Türkçe kaynak: [Composer’ı Evrensel Olarak Kuralım](http://www.sinaneldem.com.tr/composeri-evrensel-olarak-kuralim/)
+- Laravel kurulumu için Türkçe kaynak: [Laravel Framework Kurulumu](http://www.sinaneldem.com.tr/laravel-framework-kurulumu/)
 
 <a name="sunucu-gereksinimleri"></a>
 ## Sunucu Gereksinimleri
@@ -40,21 +40,21 @@ Laravel'in çalışabilmesi için neredeyse hiç ayar gerekmez. Geliştirmeye ba
 
 <a name="izinler"></a>
 ### İzinler
-Laravel app/storage dizin içeriğinin wen sunucu tarafından yazılabilir olmasını gerektirmektedir.
+Laravel app/storage dizin içeriğinin web sunucu tarafından yazılabilir olmasını gerektirmektedir.
 
 <a name="yollar"></a>
 ### Yollar
 
 Framework dizin yollarının birkaçı yapılandırılabilirdir. Bu dizin yollarını değiştirebilmek için `bootstrap/paths.php` dosyasını gözden geçiriniz.
 
-> **Note:** Laravel is designed to protect your application code, and local storage by placing only files that are necessarily public in the public folder.  It is recommended that you either set the public folder as your site's documentRoot (also known as a web root) or to place the contents of public into your site's root directory and place all of Laravel's other files outside the web root.
+> **Not:** Laravel kodlarınızı koruyacak biçimde tasarlanmıştır bu sebeple yerel dosyalarınız uygulamanızdan farklı olarak public dizini içinde yer alır. Önerilen, public dizinizi documentRoot (sunucu temel dizini / root) içine yerleştirmeniz veya public dizin içeriğini ana dizininize kopyalayıp Laravel'in tüm dosyalarını ana dizin dışına yerleştirmenizdir.
 
 <a name="sevimli-urller"></a>
 ## Sevimli URLler
 
-The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, be sure to enable the `mod_rewrite` module.
+Framework ile beraber gelen `public/.htaccess` dosyası URLlerin `index.php` olmadan kullanımına olanak sağlamaktadır. Laravel uygulamanızın sunumu için Apache kullanıyorsanız `mod_rewrite` modülünün etkin olduğundan emin olunuz.
 
-If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
+Eğer Laravel ile birlikte gelen `.htaccess` dosyası Apache kurulumunuz ile işlev göstermezse, bunu deneyiniz:
 
 	Options +FollowSymLinks
 	RewriteEngine On
