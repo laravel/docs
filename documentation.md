@@ -29,7 +29,7 @@
     - [Unit Test](/docs/testing)
     - [Doğrulama](/docs/validation)
 - Veritabanı
-    - [Basit Kullanıö](/docs/database)
+    - [Basit Kullanım](/docs/database)
     - [Sorgu Kurucu](/docs/queries)
     - [Eloquent ORM](/docs/eloquent)
     - [Şema Kurucu](/docs/schema)
