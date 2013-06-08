@@ -3,6 +3,7 @@
 - [Laravel哲学](#laravel-philosophy)
 - [学习Laravel](#learning-laravel)
 - [研发小组](#development-team)
+- [赞助商](#framework-sponsors)
 
 <a name="laravel-philosophy"></a>
 ## Laravel哲学
@@ -27,5 +28,17 @@ Laravel是易于理解并且强大的，它提供了强大的工具用以开发�
 ## 研发小组
 
 Laravel was created by [Taylor Otwell](https://github.com/taylorotwell), who continues to lead development of the framework. Other prominent community members and contributors include [Dayle Rees](https://github.com/daylerees), [Shawn McCool](https://github.com/ShawnMcCool), [Jeffrey Way](https://github.com/JeffreyWay), [Jason Lewis](https://github.com/jasonlewis), [Ben Corlett](https://github.com/bencorlett), [Franz Liedke](https://github.com/franzliedke), [Dries Vints](https://github.com/driesvints), [Mior Muhammed Zaki](https://github.com/crynobone), and [Phil Sturgeon](https://github.com/philsturgeon).
+
+<a name="framework-sponsors"></a>
+## 赞助商
+
+下面列出的是为Laravel框架的开发贡献过资金的机构：
+
+- [UserScape](http://userscape.com)
+- [Cartalyst](http://cartalyst.com)
+- [Elli Davis - Toronto Realtor](http://ellidavis.com)
+- [Jay Banks - Vancouver Lofts & Condos](http://jaybanks.ca/vancouver-lofts-condos)
+- [Julie Kinnear - Toronto MLS](http://juliekinnear.com/toronoto-mls-listings)
+- [Jamie Sarner - Toronto Real Estate](http://jamiesarner.com)
 
 译者：王赛  [（Bootstrap中文网）](http://www.bootcss.com)
