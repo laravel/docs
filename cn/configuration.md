@@ -86,3 +86,5 @@
 	{
 		return Response::view('maintenance', array(), 503);
 	});
+
+译者：王赛  [（Bootstrap中文网）](http://www.bootcss.com)

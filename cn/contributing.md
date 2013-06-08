@@ -29,3 +29,5 @@ Laravel 遵循 [PSR-0](https://github.com/php-fig/fig-standards/blob/master/acce
 - 类定义开始的 `{` 应当和类名在同一行。
 - 函数和控制结构开始的 `{` 应该放在单独一行。
 - 接口（interface）命名应该添加 `Interface` 做为后缀 (`FooInterface`)
+
+译者：王赛  [（Bootstrap中文网）](http://www.bootcss.com)
