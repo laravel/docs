@@ -66,6 +66,8 @@ Sometimes you may wish to throw an exception if a model is not found, allowing y
 
 	$model = User::findOrFail(1);
 
+	$model = User::where('votes', '>', 100)->firstOrFail();
+
 To register the error handler, listen for the `ModelNotFoundException`
 
 	use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -198,34 +200,6 @@ If you wish to simply update the timestamps on a model, you may use the `touch` 
 
 	$user->touch();
 
-<a name="timestamps"></a>
-## Timestamps
-
-By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `datetime` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
-
-**Disabling Auto Timestamps**
-
-	class User extends Eloquent {
-
-		protected $table = 'users';
-
-		public $timestamps = false;
-
-	}
-
-If you wish to customize the format of your timestamps, you may override the `freshTimestamp` method in your model:
-
-**Providing A Custom Timestamp Format**
-
-	class User extends Eloquent {
-
-		public function freshTimestamp()
-		{
-			return time();
-		}
-
-	}
-
 <a name="soft-deleting"></a>
 ## Soft Deleting
 
@@ -276,6 +250,34 @@ To determine if a given model instance has been soft deleted, you may use the `t
 	if ($user->trashed())
 	{
 		//
+	}
+
+<a name="timestamps"></a>
+## Timestamps
+
+By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `datetime` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
+
+**Disabling Auto Timestamps**
+
+	class User extends Eloquent {
+
+		protected $table = 'users';
+
+		public $timestamps = false;
+
+	}
+
+If you wish to customize the format of your timestamps, you may override the `freshTimestamp` method in your model:
+
+**Providing A Custom Timestamp Format**
+
+	class User extends Eloquent {
+
+		public function freshTimestamp()
+		{
+			return time();
+		}
+
 	}
 
 <a name="query-scopes"></a>
@@ -621,6 +623,16 @@ You will often need to insert new related models. For example, you may wish to i
 
 In this example, the `post_id` field will automatically be set on the inserted comment.
 
+### Associating Models (Belongs To)
+
+When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
+
+	$account = Account::find(10);
+
+	$user->account()->associate($account);
+
+	$user->save();
+
 ### Inserting Related Models (Many To Many)
 
 You may also insert related models when working with many-to-many relations. Let's continue using our `User` and `Role` models as examples. We can easily attach new roles to a user using the `attach` method:
@@ -830,6 +842,13 @@ You may customize which fields are automatically mutated, and even completely di
 	}
 
 When a column is considered a date, you may set its value to a UNIX timetamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
+
+To totally disable date mutations, simply return an empty array from the `getDates` method:
+
+	public function getDates()
+	{
+		return array();
+	}
 
 <a name="model-events"></a>
 ## Model Events

@@ -16,6 +16,7 @@
     - [Events](/docs/events)
     - [Facades](/docs/facades)
     - [Forms & HTML](/docs/html)
+    - [Helpers](/docs/helpers)
     - [IoC Container](/docs/ioc)
     - [Localization](/docs/localization)
     - [Mail](/docs/mail)
