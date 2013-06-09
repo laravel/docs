@@ -1,51 +1,51 @@
 # Forms & HTML
 
-- [Opening A Form](#opening-a-form)
-- [CSRF Protection](#csrf-protection)
-- [Form Model Binding](#form-model-binding)
+- [Form Açmak](#opening-a-form)
+- [CSRF Koruması](#csrf-protection)
+- [Form Model Bağlaması](#form-model-binding)
 - [Labels](#labels)
 - [Text, Text Area, Password & Hidden Fields](#text)
 - [Checkboxes and Radio Buttons](#checkboxes-and-radio-buttons)
 - [File Input](#file-input)
 - [Drop-Down Lists](#drop-down-lists)
-- [Buttons](#buttons)
+- [Buttonlar](#buttons)
 - [Custom Macros](#custom-macros)
 
 <a name="opening-a-form"></a>
-## Opening A Form
+## Form Açmak
 
-**Opening A Form**
+**Form Açmak**
 
 	{{ Form::open(array('url' => 'foo/bar')) }}
 		//
 	{{ Form::close() }}
 
-By default, a `POST` method will be assumed; however, you are free to specify another method:
+Varsayılan olarak, `POST` metodu kullanılır; ama, istediğiniz bir metodu da belirtebilirsiniz:
 
 	echo Form::open(array('url' => 'foo/bar', 'method' => 'put'))
 
-> **Note:** Since HTML forms only support `POST`, `PUT` and `DELETE` methods will be spoofed by automatically adding a `_method` hidden field to your form.
+> **Not:** HTML formları, sadece `POST` metotlarını desteklediği için,  `PUT` ve `DELETE` metotları otomatik olarak `_method` gizli alanıyla taklit edilir.
 
-You may also open forms that point to named routes or controller actions:
+Ayrıca, isimlendirilmiş rotalar veya denetçi aksiyonlarına yönlendirilen formlar da açabilirsiniz:
 
 	echo Form::open(array('route' => 'route.name'))
 
 	echo Form::open(array('action' => 'Controller@method'))
 
-If your form is going to accept file uploads, add a `files` option to your array:
+Formunuz dosya yüklemelerini kabul edecekse, dizginize `files` seçeneğini ekleyin:
 
 	echo Form::open(array('url' => 'foo/bar', 'files' => true))
 
 <a name="csrf-protection"></a>
-## CSRF Protection
+## CSRF Koruması
 
-Laravel provides an easy method of protecting your application from cross-site request forgeries. First, a random token is placed in your user's session. Don't sweat it, this is done automatically. The CSRF token will be added to your forms as a hidden field automatically. However, if you wish to generate the HTML for the hidden field, you may use the `token` method:
+Laravel, uygulamanızı CSRF saldırılarından korumak için kolay bir metot sunar. Öncelikle, rastgele bir değer kullanıcının oturumuna yerleştirilir. Merak etmeyin, bu otomatik olarak yapılır. CSRF değeri, formalrınıza gizli bir alan olarak otomatik olarak yerleştirilir. Yine de, gizli alan için HTML kodunu oluşturmak isterseniz, `token` metodunu kullanabilirsiniz:
 
-**Adding The CSRF Token To A Form**
+**Bir Forma CSRF Değeri Eklemek**
 
 	echo Form::token();
 
-**Attaching The CSRF Filter To A Route**
+**Bir Rotaya CSRF Filtresi Eklemek**
 
 	Route::post('profile', array('before' => 'csrf', function()
 	{
@@ -53,19 +53,19 @@ Laravel provides an easy method of protecting your application from cross-site r
 	}));
 
 <a name="form-model-binding"></a>
-## Form Model Binding
+## Form Model Bağlaması
 
-Often, you will want to populate a form based on the contents of a model. To do so, use the `Form::model` method:
+Sıklıkla, bir modelin içeriğine bağlı olarak bir form oluşturmak isteyebilirsiniz. Bunu yapmak için, `Form::model` metodunu kullanın:
 
-**Opening A Model Form**
+**Model Formu Açmak**
 
 	echo Form::model($user, array('route' => array('user.update', $user->id)))
 
-Now, when you generate a form element, like a text input, the model's value matching the field's name will automatically be set as the field value. So, for example, for a text input named `email`, the user model's `email` attribute would be set as the value. However, there's more! If there is an item in the Session flash data matching the input name, that will take precedence over the model's value. So, the priority looks like this:
+Şimdi, bir form elementi oluşturduğunuzda, mesela bir text input, elementin ismiyle eşleşen modelin değeri, otomatik olarak alanın değeri olarak belirlenir. Yani, örneğin, `email` ismine sahip bir text alanı için, kullanıcı modelinin `email` değişkeni değer olarak atanır. Bununla birlikte, dahası da var! Session flash data'da alan adıyla eşleşen bir değer mevcutsa, bu değer, model'in değerine nazaran önceliği alacaktır. Yani, öncelik şu şekildedir:
 
 1. Session Flash Data (Old Input)
-2. Explicitly Passed Value
-3. Model Attribute Data
+2. Doğrudan Atanmış Değer
+3. Model Değişken Değeri
 
 This allows you to quickly build forms that not only bind to model values, but easily re-populate if there is a validation error on the server!
 
