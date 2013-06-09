@@ -132,10 +132,10 @@ Eloquent'in içerisinde birçok hüküm vardır, bunlardan birisi model adının
 
 Harika. Artık kullanıcıları view dosyamızda göstermeye hazırız!
 
-<a name="displaying-data"></a>
-## Displaying Data
+<a name="veri-gosterme"></a>
+## Veri Gösterme
 
-Now that we have made the `users` available to our view. We can display them like so:
+Artık `users` objesini view dosyamıza yönlendirdiğimiz için ekrana bastırabiliriz:
 
 	@extends('layout')
 
@@ -145,6 +145,6 @@ Now that we have made the `users` available to our view. We can display them lik
 		@endforeach
 	@stop
 
-You may be wondering where to find our `echo` statements. When using Blade, you may echo data by surrounding it with double curly braces. It's a cinch. Now, you should be able to hit the `/users` route and see the names of your users displayed in the response.
+`echo` ifadesinin nerede olduğunu merak ediyor olabilirsiniz. Blade kullanırken, çift köşeli parantezler arasına yazılan değişkenler aynı `echo` ifadesindeki gibi ekrana bastırılır. Şimdi `users` adresine girip veritabanınızda kayıtlı olan tüm kullanıcıların listesinin ekrana bastırıldığını görebilirsiniz.
 
-This is just the beginning. In this tutorial, you've seen the very basics of Laravel, but there are so many more exciting things to learn. Keep reading through the documentation and dig deeper into the powerful features available to you in [Eloquent](/docs/eloquent) and [Blade](/docs/templates). Or, maybe you're more interested in [Queues](/docs/queues) and [Unit Testing](/docs/testing). Then again, maybe you want to flex your architecture muscles with the [IoC Container](/docs/ioc). The choice is yours!
+Bu sadece bir başlangıç. Bu derste Laravel'in en basit konularını gördünüz, ancak daha göreceğiniz birçok heyecan verici özellikler var! Dökümantasyonu okumaya devam edin ve Laravel içerisinde gelen birçok farklı özellik hakkında daha fazla bilgiye sahip olun. Örneğin [Eloquent](/docs/eloquent) ve [Blade](/docs/templates). Belkide sizin ilginizi [Queues](/docs/queues) ve [Unit Testing](/docs/testing) çekiyordur?. Yada [IoC Container](/docs/ioc) kullanarak uygulamanızın mimarisini güçlendirmek istiyorsunuzdur? Seçim sizin!
