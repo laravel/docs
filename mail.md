@@ -4,6 +4,7 @@
 - [Basic Usage](#basic-usage)
 - [Embedding Inline Attachments](#embedding-inline-attachments)
 - [Queueing Mail](#queueing-mail)
+- [Mail & Local Development](#mail-and-local-development)
 
 <a name="configuration"></a>
 ## Configuration
@@ -97,3 +98,12 @@ If you wish to specify a specific queue or "tube" on which to push the message, 
 	{
 		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
+
+<a name="mail-and-local-development"></a>
+## Mail & Local Development
+
+When developing an application that sends e-mail, it's usually desirable to disable the sending of messages from your local or development environment. To do so, you may either call the `Mail::pretend` method, or set the `pretend` option in the `app/config/mail.php` configuration file to `true`. When the mailer is in `pretend` mode, messages will be written to your application's log files instead of being sent to the recipient.
+
+**Enabling Pretend Mail Mode**
+
+	Mail::pretend();
