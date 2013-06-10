@@ -61,7 +61,7 @@ Ayrıca, `remember` ve `forever` metotlarını birlikte kullanabilirsiniz.
 
 Kaşede bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, yani her türlü veriyi saklayabilirsiniz.
 
-*Kaşeden Bir Nesneyi Kaldırmak**
+**Kaşeden Bir Nesneyi Kaldırmak**
 
 	Cache::forget('key');
 
