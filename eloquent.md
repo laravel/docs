@@ -155,6 +155,8 @@ You may also use the `create` method to save a new model in a single line. The i
 **Using The Model Create Method**
 
 	$user = User::create(array('name' => 'John'));
+	
+	$user->save();
 
 To update a model, you may retrieve it, change an attribute, and use the `save` method:
 
