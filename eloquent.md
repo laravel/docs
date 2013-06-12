@@ -514,10 +514,10 @@ To limit your query based on a relation, for example finding all comments that b
 		->select('comments.*')
 		->get();
 
+<a name="checking-relations"></a>
+### Checking Relations When Selecting
 
 When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, you wish to pull all blog posts that have at least one comment. To do so, you may use the `has` method:
-
-**Checking Relations When Selecting**
 
 	$posts = Post::has('comments')->get();
 
