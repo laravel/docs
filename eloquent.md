@@ -507,6 +507,14 @@ The key fields to notice here are the `imageable_id` and `imageable_type` on the
 <a name="querying-relations"></a>
 ## Querying Relations
 
+To limit your query based on a relation, for example finding all comments that belong to blog posts with a title starting with "Laracon"
+
+	$comments = Comment::with('post')
+		->where('post.title', 'LIKE', 'Laracon%')
+		->select('comments.*')
+		->get();
+
+
 When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, you wish to pull all blog posts that have at least one comment. To do so, you may use the `has` method:
 
 **Checking Relations When Selecting**
