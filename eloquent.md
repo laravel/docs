@@ -511,7 +511,7 @@ To limit your query based on a relation, for example finding all comments that b
 
 	$comments = Comment::with('post')
 		->where('post.title', 'LIKE', 'Laracon%')
-		->select('comments.*')
+		->select(Comment::getTable().'.*')
 		->get();
 
 <a name="checking-relations"></a>
