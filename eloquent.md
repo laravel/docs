@@ -509,8 +509,8 @@ The key fields to notice here are the `imageable_id` and `imageable_type` on the
 
 To limit your query based on a relation, for example finding all comments that belong to blog posts with a title starting with "Laracon"
 
-	$comments = Comment::where('post.title', 'LIKE', 'Laracon%')
-		->join('posts', 'comments.post_id', '=', 'posts.id')
+	$comments = Comment::join('posts', 'comments.post_id', '=', 'posts.id')
+		->where('post.title', 'LIKE', 'Laracon%')
 		->select('comments.*')
 		->get();
 
