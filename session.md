@@ -1,6 +1,7 @@
 # Session
 
 - [Configuration](#configuration)
+- [Supported Back-ends](#back-ends)
 - [Session Usage](#session-usage)
 - [Flash Data](#flash-data)
 - [Database Sessions](#database-sessions)
@@ -10,7 +11,15 @@
 
 Since HTTP driven applications are stateless, sessions provide a way to store information about the user across requests. Laravel ships with a variety of session back-ends available for use through a clean, unified API. Support for popular back-ends such as [Memcached](http://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
 
-The session configuration is stored in `app/config/session.php`. Be sure to review the well documented options available to you in this file. By default, Laravel is configured to use the `native` session driver, which will work well for the majority of applications.
+<a name="back-ends">
+## Supported Back-ends
+
+Out of the box Laravel ships with support of the following back-ends:
+- native - session will be handled by internal PHP rutines
+- cookie - session will be stored in cookies
+- database - session will be stored in database (see [Database Sessions](#database-sessions))
+- memcached/redis - use one of these daemons as a session storage
+- array - session will be stored in a plain array (it's handled by [MockArraySessionStorage](https://github.com/symfony/symfony/blob/master/src/Symfony/Component/HttpFoundation/Session/Storage/MockArraySessionStorage.php))
 
 <a name="session-usage"></a>
 ## Session Usage
