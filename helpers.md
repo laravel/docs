@@ -126,6 +126,20 @@ The `array_set` method will set a value within a deeply nested array using "dot"
 
 	array_set($array, 'names.editor', 'Taylor');
 
+### array_sort
+
+The `array_sort` method sorts the array by the results of the given Closure.
+
+	$array = array(
+		array('name' => 'Jill'),
+		array('name' => 'Barry'),
+	);
+
+	$array = array_values(array_sort($array, function($value)
+	{
+		return $value['name'];
+	}));
+
 ### head
 
 Return the first element in the array. Useful for method chaining in PHP 5.3.x.
