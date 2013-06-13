@@ -38,7 +38,7 @@ Laravel was created by [Taylor Otwell](https://github.com/taylorotwell), who con
 - [Cartalyst](http://cartalyst.com)
 - [Elli Davis - Toronto Realtor](http://ellidavis.com)
 - [Jay Banks - Vancouver Lofts & Condos](http://jaybanks.ca/vancouver-lofts-condos)
-- [Julie Kinnear - Toronto MLS](http://juliekinnear.com/toronoto-mls-listings)
+- [Julie Kinnear - Toronto MLS](http://juliekinnear.com/toronto-mls-listings)
 - [Jamie Sarner - Toronto Real Estate](http://jamiesarner.com)
 
 译者：王赛  [（Bootstrap中文网）](http://www.bootcss.com)
