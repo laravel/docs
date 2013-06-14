@@ -1,17 +1,17 @@
-- Preface
+- 序言
     - [简介](/docs/introduction)
     - [快速入门](/docs/quick)
     - [为Laravel做贡献](/docs/contributing)
-- Getting Started
+- 快速入门
     - [安装](/docs/installation)
     - [配置](/docs/configuration)
-    - [Request Lifecycle](/docs/lifecycle)
+    - [Request的生命周期](/docs/lifecycle)
     - [路由](/docs/routing)
     - [Requests & Input](/docs/requests)
     - [Views & Responses](/docs/responses)
     - [控制器](/docs/controllers)
     - [错误 & 日志](/docs/errors)
-- Learning More
+- 深度历险
     - [缓存](/docs/cache)
     - [事件](/docs/events)
     - [Facades](/docs/facades)
@@ -28,7 +28,7 @@
     - [模版](/docs/templates)
     - [单元测试](/docs/testing)
     - [Validation](/docs/validation)
-- Database
+- 数据库
     - [基本用法](/docs/database)
     - [Query Builder](/docs/queries)
     - [Eloquent ORM](/docs/eloquent)
