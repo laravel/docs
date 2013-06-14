@@ -60,6 +60,6 @@ Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模
 
 	<?php echo $users->appends(array('sort' => 'votes'))->links(); ?>
 
-最后生产的url如下:
+最后产生的url如下:
 
 	http://example.com/something?page=2&sort=votes
