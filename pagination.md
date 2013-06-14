@@ -16,7 +16,7 @@
 
 Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模型查询中使用 `paginate` 方法.
 
-**从数据库直接查询中分页**
+**从数据库查询中分页**
 
 	$users = DB::table('users')->paginate(15);
 
