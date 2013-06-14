@@ -47,7 +47,7 @@ Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模
 - `getFrom`
 - `getTo`
 
-有时你可能希望自定义分页, 只需使用 `Paginator::make` 方法,并把参数放在数组里:
+有时你可能希望自定义分页, 只需使用 `Paginator::make` 方法,并把 当前页(int), 总记录数(int), 每页记录数(int) 参数放在数组里:
 
 **自定义分页**
 
