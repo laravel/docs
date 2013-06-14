@@ -83,6 +83,17 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 		//
 	})
 	->where('id', '[0-9]+');
+	
+**Regular Expression Route Constraints with Multiple Parameters**
+
+If your route has multiple parameters, you can submit an array of name/expression pairs to set
+constraints for each part of the route.
+
+        Route::get('user/{name}/{id}', function($name,$id)
+        {
+        	// 
+        })
+	->where(array('name' => '[a-z]+', 'id' => '[0-9]+'));
 
 <a name="route-filters"></a>
 ## Route Filters
