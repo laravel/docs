@@ -2,7 +2,7 @@
 
 - [配置](#configuration)
 - [基本用法](#usage)
-- [给分页链接添加额外信息](#appending-to-pagination-links)
+- [给分页链接添加自定义信息](#appending-to-pagination-links)
 
 <a name="configuration"></a>
 ## 配置
@@ -47,19 +47,19 @@ Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模
 - `getFrom`
 - `getTo`
 
-Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
+有时你可能希望自定义分页, 只需使用 `Paginator::make` 方法,并把参数放在数组里:
 
-**Creating A Paginator Manually**
+**自定义分页**
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);
 
 <a name="appending-to-pagination-links"></a>
-## Appending To Pagination Links
+## 给分页链接添加自定义信息
 
-You can add to the query string of pagination links using the `appends` method on the Paginator:
+可以通过分页器的 `appends` 方法为分页链接添加上自定查询字符串:
 
 	<?php echo $users->appends(array('sort' => 'votes'))->links(); ?>
 
-This will generate URLs that look something like this:
+最后生产的url如下:
 
 	http://example.com/something?page=2&sort=votes
