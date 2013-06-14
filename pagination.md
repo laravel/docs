@@ -26,7 +26,7 @@ Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模
 
 	$users = User::where('votes', '>', 100)->paginate(15);
 
-你只需要吧每页查询的记录数传给`paginate`方法即可. 在获得包含分页的查询结果集之后, 就可以在视图中展示了, 在视图中分页使用 `links` 方法:
+你只需要吧每页查询的记录数传给`paginate`方法即可. 在获得包含分页的查询结果集之后, 就可以在视图中展示了, 在视图中输出分页链接使用 `links` 方法:
 
 	<div class="container">
 		<?php foreach ($users as $user): ?>
