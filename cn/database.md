@@ -1,50 +1,50 @@
-# Basic Database Usage
+# 数据库使用基础
 
-- [Configuration](#configuration)
-- [Running Queries](#running-queries)
-- [Database Transactions](#database-transactions)
-- [Accessing Connections](#accessing-connections)
-- [Query Logging](#query-logging)
+- [配置](#configuration)
+- [执行查询语句](#running-queries)
+- [事务](#database-transactions)
+- [使用多个数据库](#accessing-connections)
+- [查询日志](#query-logging)
 
 <a name="configuration"></a>
-## Configuration
+## 配置
 
-Laravel makes connecting with databases and running queries extremely simple. The database configuration file is `app/config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
+在Laravel中连接和使用数据库非常简单。 数据库配置在 `app/config/database.php` 文件中. 所有受支持的数据库系统都列在了配置文件中，在配置文件中可以同时配置多个数据库系统的连接信息, 并指定默认使用哪个数据库连接。
 
-Currently Laravel supports four database systems: MySQL, Postgres, SQLite, and SQL Server.
+Laravel 目前支持四种数据库系统,分别是: MySQL， Postgres， SQLite， 和 SQL Server。
 
 <a name="running-queries"></a>
-## Running Queries
+## 执行crud语句
 
-Once you have configured your database connection, you may run queries using the `DB` class.
+完成数据库配置后， 就可以直接使用DB类执行sql语句了.
 
-**Running A Select Query**
+**执行 select 语句**
 
   $results = DB::select('select * from users where id = ?', array(1));
 
-The `select` method will always return an `array` of results.
+`select` 方法总是返回一个包含查询结果的 `array`。
 
-**Running An Insert Statement**
+**执行 Insert 语句**
 
 	DB::insert('insert into users (id, name) values (?, ?)', array(1, 'Dayle'));
 
-**Running An Update Statement**
+**执行 Update 语句**
 
 	DB::update('update users set votes = 100 where name = ?', array('John'));
 
-**Running A Delete Statement**
+**执行 Delete 语句**
 
 	DB::delete('delete from users');
 
-> **Note:** The `update` and `delete` statements return the number of rows affected by the operation.
+> **注意:** `update` 和 `delete` 语句返回操作所影响的数据的行数(int)。
 
-**Running A General Statement**
+**执行非crud语句**also
 
 	DB::statement('drop table users');
 
-You may listen for query events using the `DB::listen` method:
+可以使用 `DB::listen` 方法监听数据库操作:
 
-**Listening For Query Events**
+**监听数据库操作事件**
 
 	DB::listen(function($sql, $bindings, $time)
 	{
@@ -52,9 +52,9 @@ You may listen for query events using the `DB::listen` method:
 	});
 
 <a name="database-transactions"></a>
-## Database Transactions
+## 事务
 
-To run a set of operations within a database transaction, you may use the `transaction` method:
+将需要在事务模式下执行的查询放入 `transaction` 方法即可:
 
 	DB::transaction(function()
 	{
@@ -64,13 +64,13 @@ To run a set of operations within a database transaction, you may use the `trans
 	});
 
 <a name="accessing-connections"></a>
-## Accessing Connections
+## 使用多个数据库
 
-When using multiple connections, you may access them via the `DB::connection` method:
+有时可能需要使用多个数据库, 通过DB类的 `DB::connection` 方法来切换:
 
 	$users = DB::connection('foo')->select(...);
 
-You may also access the raw, underlying PDO instance:
+你可能需要在数据库系统的层面上操作数据库，使用PDO实例即可:
 
 	$pdo = DB::connection()->getPdo();
 
