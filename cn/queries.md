@@ -13,16 +13,16 @@
 - [缓存查询结果](#caching-queries)
 
 <a name="introduction"></a>
-## Introduction
+## 简介
 
-The database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application, and works on all supported database systems.
+查询生成器 为操作数据库提供了一个方便，顺畅的的接口，它支持所有Laravel支持的数据库系统，并能够完成绝大部分查询任务。
 
-> **Note:** The Laravel query builder uses PDO parameter binding throughout to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
+> **注意:** 查询生成器 使用了PDO参数绑定传递的方式，从而避免sql注入攻击，也就是在使用参数时不需要进行保证安全性的过滤操作。
 
 <a name="selects"></a>
-## Selects
+## 获取数据
 
-**Retrieving All Rows From A Table**
+**获取一张表里的所有数据**
 
   $users = DB::table('users')->get();
 
@@ -31,25 +31,25 @@ The database query builder provides a convenient, fluent interface to creating a
 		var_dump($user->name);
 	}
 
-**Retrieving A Single Row From A Table**
+**获取一张表里的一条数据**
 
 	$user = DB::table('users')->where('name', 'John')->first();
 
 	var_dump($user->name);
 
-**Retrieving A Single Column From A Row**
+**获取一张表里的满足where条件的第一行数据的指定字段的值**
 
 	$name = DB::table('users')->where('name', 'John')->pluck('name');
 
-**Retrieving A List Of Column Values**
+**以列表形势获取一张表里一个字段的值**
 
 	$roles = DB::table('roles')->lists('title');
 
-This method will return an array of role titles. You may also specify a custom key column for the returned array:
+lists方法返回一个包含所有roles表的title字段的值的数组. 可以通过lists的第二个参数为返回的数组自定义键名：
 
 	$roles = DB::table('roles')->lists('title', 'name');
 
-**Specifying A Select Clause**
+**筛选查询结果**
 
 	$users = DB::table('users')->select('name', 'email')->get();
 
@@ -57,29 +57,29 @@ This method will return an array of role titles. You may also specify a custom k
 
 	$users = DB::table('users')->select('name as user_name')->get();
 
-**Adding A Select Clause To An Existing Query**
+**为已经建立的查询添加筛选**
 
 	$query = DB::table('users')->select('name');
 
 	$users = $query->addSelect('age')->get();
 
-**Using Where Operators**
+**使用where条件语句**
 
 	$users = DB::table('users')->where('votes', '>', 100)->get();
 
-**Or Statements**
+**使用or语句**
 
 	$users = DB::table('users')
 	                    ->where('votes', '>', 100)
 	                    ->orWhere('name', 'John')
 	                    ->get();
 
-**Using Where Between**
+**在Where语句中使用Between子句**
 
 	$users = DB::table('users')
 	                    ->whereBetween('votes', array(1, 100))->get();
 
-**Using Where In With An Array**
+**在Where语句中使用In子句，In的内容通过数组传递**
 
 	$users = DB::table('users')
 	                    ->whereIn('id', array(1, 2, 3))->get();
@@ -87,12 +87,12 @@ This method will return an array of role titles. You may also specify a custom k
 	$users = DB::table('users')
 	                    ->whereNotIn('id', array(1, 2, 3))->get();
 
-**Using Where Null To Find Records With Unset Values**
+**使用whereNull方法获取未被清除或未被初始化的记录(字段如果没有指定默认值将会是null)**
 
 	$users = DB::table('users')
 	                    ->whereNull('updated_at')->get();
 
-**Order By, Group By, And Having**
+**Order By语句, Group By语句, 和 Having 语句筛选**
 
 	$users = DB::table('users')
 	                    ->orderBy('name', 'desc')
@@ -100,7 +100,7 @@ This method will return an array of role titles. You may also specify a custom k
 	                    ->having('count', '>', 100)
 	                    ->get();
 
-**Offset & Limit**
+**Offset 和 Limit语句**
 
 	$users = DB::table('users')->skip(10)->take(5)->get();
 
