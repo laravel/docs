@@ -1,32 +1,32 @@
-# 分页
+# Pagination
 
-- [配置](#configuration)
-- [基本用法](#usage)
-- [给分页链接添加自定义信息](#appending-to-pagination-links)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Appending To Pagination Links](#appending-to-pagination-links)
 
 <a name="configuration"></a>
-## 配置
+## Configuration
 
-在其它的框架中，分页有时很痛苦. 但是Laravel让分页简单到不可思议. 默认Laravel包含了两个分页视图, 在`app/config/view.php` 文件中的pagination选项中指定分页链接具体使用哪一个视图.
+In other frameworks, pagination can be very painful. Laravel makes it a breeze. There is a single configuration option in the `app/config/view.php` file. The `pagination` option specifies which view should be used to create pagination links. By default, Laravel includes two views.
 
-`pagination::slider`视图 基于当前所在页数给出一个浮动的页数范围,`pagination::simple` 视图只是简单的给出 '上一页' '下一页' 两个链接. **两个视图都能完美的和bootstrap框架结合**
+The `pagination::slider` view will show an intelligent "range" of links based on the current page, while the `pagination::simple` view will simply show "previous" and "next" buttons. **Both views are compatible with Twitter Bootstrap out of the box.**
 
 <a name="usage"></a>
-## 基本用法
+## Usage
 
-Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模型查询中使用 `paginate` 方法.
+There are several ways to paginate items. The simplest is by using the `paginate` method on the query builder or an Eloquent model.
 
-**从数据库查询中分页**
+**Paginating Database Results**
 
 	$users = DB::table('users')->paginate(15);
 
-也可以从 [Eloquent](/docs/eloquent) 模型中分页:
+You may also paginate [Eloquent](/docs/eloquent) models:
 
-**从一个 Eloquent 模型中分页**
+**Paginating An Eloquent Model**
 
 	$users = User::where('votes', '>', 100)->paginate(15);
 
-你只需要吧每页查询的记录数传给`paginate`方法即可. 在获得包含分页的查询结果集之后, 就可以在视图中展示了, 在视图中输出分页链接使用 `links` 方法:
+The argument passed to the `paginate` method is the number of items you wish to display per page. Once you have retrieved the results, you may display them on your view, and create the pagination links using the `links` method:
 
 	<div class="container">
 		<?php foreach ($users as $user): ?>
@@ -36,9 +36,9 @@ Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模
 
 	<?php echo $users->links(); ?>
 
-以上就是创建一个分页链接的所需的所有信息了! 我们还没有提到Laravel做了什么. Laravel会自己把其它的事情做完.
+This is all it takes to create a pagination system! Note that we did not have to inform the framework of the current page. Laravel will determine this for you automatically.
 
-你也可以通过下面的方法获取关于分页更加详尽的信息:
+You may also access additional pagination information via the following methods:
 
 - `getCurrentPage`
 - `getLastPage`
@@ -47,19 +47,19 @@ Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模
 - `getFrom`
 - `getTo`
 
-有时你可能希望自定义分页, 只需使用 `Paginator::make` 方法,并把 记录集合(当前页需要展示的数据集), 总记录数(int), 每页记录数(int) 作为参数:
+Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
 
-**自定义分页**
+**Creating A Paginator Manually**
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);
 
 <a name="appending-to-pagination-links"></a>
-## 给分页链接添加自定义信息
+## Appending To Pagination Links
 
-可以通过分页器的 `appends` 方法为分页链接添加上自定查询字符串:
+You can add to the query string of pagination links using the `appends` method on the Paginator:
 
 	<?php echo $users->appends(array('sort' => 'votes'))->links(); ?>
 
-最后产生的url如下:
+This will generate URLs that look something like this:
 
 	http://example.com/something?page=2&sort=votes
