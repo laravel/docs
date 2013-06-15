@@ -110,3 +110,5 @@ Laravel的邮件功能构建于流行的[SwiftMailer](http://swiftmailer.org)库
 **启用Pretend模式**
 
 	Mail::pretend();
+
+译者：王赛  [（Bootstrap中文网）](http://www.bootcss.com)
