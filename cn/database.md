@@ -3,7 +3,7 @@
 - [配置](#configuration)
 - [执行查询语句](#running-queries)
 - [事务](#database-transactions)
-- [使用多个数据库](#accessing-connections)
+- [同时使用多个数据库系统](#accessing-connections)
 - [查询日志](#query-logging)
 
 <a name="configuration"></a>
@@ -64,9 +64,9 @@ Laravel 目前支持四种数据库系统,分别是: MySQL， Postgres， SQLite
 	});
 
 <a name="accessing-connections"></a>
-## 使用多个数据库
+## 同时使用多个数据库系统
 
-有时可能需要使用多个数据库, 通过DB类的 `DB::connection` 方法来切换:
+有时可能需要同时使用多个数据库系统(MySQL，Postgres，SQLite，SQL Server), 通过DB类的 `DB::connection` 方法来切换:
 
 	$users = DB::connection('foo')->select(...);
 
@@ -74,7 +74,7 @@ Laravel 目前支持四种数据库系统,分别是: MySQL， Postgres， SQLite
 
 	$pdo = DB::connection()->getPdo();
 
-使用reconnect方法重新连接一个指定的数据库：
+使用reconnect方法重新连接一个指定的数据库系统：
 	DB::reconnect('foo');
 
 <a name="query-logging"></a>
