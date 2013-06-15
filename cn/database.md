@@ -38,7 +38,7 @@ Laravel 目前支持四种数据库系统,分别是: MySQL， Postgres， SQLite
 
 > **注意:** `update` 和 `delete` 语句返回操作所影响的数据的行数(int)。
 
-**执行非crud语句**also
+**执行非crud语句**
 
 	DB::statement('drop table users');
 
@@ -54,7 +54,7 @@ Laravel 目前支持四种数据库系统,分别是: MySQL， Postgres， SQLite
 <a name="database-transactions"></a>
 ## 事务
 
-将需要在事务模式下执行的查询放入 `transaction` 方法即可:
+将需要在事务模式下执行的查询放入 `transaction` 方法内即可:
 
 	DB::transaction(function()
 	{
@@ -74,13 +74,12 @@ Laravel 目前支持四种数据库系统,分别是: MySQL， Postgres， SQLite
 
 	$pdo = DB::connection()->getPdo();
 
-Sometimes you may need to reconnect to a given database:
-
+使用reconnect方法重新连接一个指定的数据库：
 	DB::reconnect('foo');
 
 <a name="query-logging"></a>
-## Query Logging
+## 查询日志
 
-By default, Laravel keeps a log in memory of all queries that have been run for the current request. However, in some cases, such as when inserting a large number of rows, this can cause the application to use excess memory. To disable the log, you may use the `disableQueryLog` method:
+Laravel默认会为当前请求执行的的所有查询生成日志并保存在内存中。 因此， 在某些特殊的情况下， 比如一次性向数据库中插入大量数据， 就可能导致内存不足。 在这种情况下，你可以通过 `disableQueryLog` 方法来关闭查询日志：
 
 	DB::connection()->disableQueryLog();
