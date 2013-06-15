@@ -128,7 +128,7 @@ lists方法返回一个包含所有roles表的title字段的值的数组. 可以
 <a name="advanced-wheres"></a>
 ## 高级查询条件
 
-有时你可能需要创建更高级的where查询，比如 "where exists"子查询筛选 或者给where条件分组. 查询生成器 都能够很好的处理：
+有时你可能需要创建更高级的where查询，比如 "where exists"筛选 或者给where条件分组. 查询生成器 都能够很好的处理：
 
 **where条件分组**
 
