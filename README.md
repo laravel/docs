@@ -16,6 +16,7 @@ Laravel 4终于在2013年5月29号发布了正式版，很多Laravel粉丝也将
     - cache.md
     - artisan.md
     - documentation.md
+    - mail.md
 - /;!痛在远方
     - eloquent.md
 - 徐小花
@@ -23,7 +24,6 @@ Laravel 4终于在2013年5月29号发布了正式版，很多Laravel粉丝也将
     - templates.md
     - installation.md
     - controllers.md
-
 - Mking
     - pagination.md
     - database.md
