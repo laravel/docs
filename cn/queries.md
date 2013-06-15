@@ -1,16 +1,16 @@
-# Query Builder
+# 查询生成器
 
-- [Introduction](#introduction)
-- [Selects](#selects)
-- [Joins](#joins)
-- [Advanced Wheres](#advanced-wheres)
-- [Aggregates](#aggregates)
-- [Raw Expressions](#raw-expressions)
-- [Inserts](#inserts)
-- [Updates](#updates)
-- [Deletes](#deletes)
-- [Unions](#unions)
-- [Caching Queries](#caching-queries)
+- [简介](#introduction)
+- [获取数据](#selects)
+- [连接](#joins)
+- [高级查询条件](#advanced-wheres)
+- [聚合查询结果](#aggregates)
+- [原始查询表达式](#raw-expressions)
+- [创建数据](#inserts)
+- [更新数据](#updates)
+- [删除数据](#deletes)
+- [union合并查询结果](#unions)
+- [缓存查询结果](#caching-queries)
 
 <a name="introduction"></a>
 ## Introduction
