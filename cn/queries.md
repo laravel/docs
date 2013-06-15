@@ -105,18 +105,18 @@ lists方法返回一个包含所有roles表的title字段的值的数组. 可以
 	$users = DB::table('users')->skip(10)->take(5)->get();
 
 <a name="joins"></a>
-## Joins
+## 连接
 
-The query builder may also be used to write join statements. Take a look at the following examples:
+查询生成器 也可以用来建立数据连接操作，我们看看下面的例子:
 
-**Basic Join Statement**
+**简单连接语句**
 
 	DB::table('users')
 	            ->join('contacts', 'users.id', '=', 'contacts.user_id')
 	            ->join('orders', 'users.id', '=', 'orders.user_id')
 	            ->select('users.id', 'contacts.phone', 'orders.price');
 
-You may also specify more advanced join clauses:
+指定更多的连接条件:
 
 	DB::table('users')
 	        ->join('contacts', function($join)
@@ -126,11 +126,11 @@ You may also specify more advanced join clauses:
 	        ->get();
 
 <a name="advanced-wheres"></a>
-## Advanced Wheres
+## 高级查询条件
 
-Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well:
+有时你可能需要创建更高级的where查询，比如 "where exists"子查询筛选 或者给where条件分组. 查询生成器 都能够很好的处理：
 
-**Parameter Grouping**
+**where条件分组**
 
 	DB::table('users')
 	            ->where('name', '=', 'John')
@@ -141,11 +141,11 @@ Sometimes you may need to create more advanced where clauses such as "where exis
 	            })
 	            ->get();
 
-The query above will produce the following SQL:
+上面的查询将产生如下的 SQL：
 
 	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
-**Exists Statements**
+**where中的Exists语句**
 
 	DB::table('users')
 	            ->whereExists(function($query)
@@ -156,7 +156,7 @@ The query above will produce the following SQL:
 	            })
 	            ->get();
 
-The query above will produce the following SQL:
+上面的查询将产生如下的 SQL：
 
 	select * from users
 	where exists (
@@ -164,11 +164,11 @@ The query above will produce the following SQL:
 	)
 
 <a name="aggregates"></a>
-## Aggregates
+## 聚合查询结果
 
-The query builder also provides a variety of aggregate methods, such as `count`, `max`, `min`, `avg`, and `sum`.
+查询生成器 提供了多个聚合方法, 比如 `count`, `max`, `min`, `avg`,和 `sum`.
 
-**Using Aggregate Methods**
+**使用聚合方法**
 
 	$users = DB::table('users')->count();
 
@@ -181,11 +181,11 @@ The query builder also provides a variety of aggregate methods, such as `count`,
 	$total = DB::table('users')->sum('votes');
 
 <a name="raw-expressions"></a>
-## Raw Expressions
+## 原始查询表达式
 
-Sometimes you may need to use a raw expression in a query. These expressions will be injected into the query as strings, so be careful not to create any SQL injection points! To create a raw expression, you may use the `DB::raw` method:
+有时，你可能需要使用原始的查询表达式， 这种表达式需要直接插入最终的sql语句中, 所以，请特别注意防范sql注入! 使用 `DB::raw` 方法实现原始查询表达式：
 
-**Using A Raw Expression**
+**使用原始查询表达式**
 
 	$users = DB::table('users')
 	                     ->select(DB::raw('count(*) as user_count, status'))
@@ -193,32 +193,32 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 	                     ->groupBy('status')
 	                     ->get();
 
-**Incrementing or decrementing a value of a column**
+**将数据表中的某个字段+1或-1**
 
 	DB::table('users')->increment('votes');
 
 	DB::table('users')->decrement('votes');
 
 <a name="inserts"></a>
-## Inserts
+## 创建数据
 
-**Inserting Records Into A Table**
+**插入一条数据**
 
 	DB::table('users')->insert(
 		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
-If the table has an auto-incrementing id, use `insertGetId` to insert a record and retrieve the id:
+如果数据表已经有主键了, 使用 `insertGetId` 方法插入数据，不需要主键字段信息:
 
-**Inserting Records Into A Table With An Auto-Incrementing ID**
+**同时插入多条数据，同时让主键自增**
 
 	$id = DB::table('users')->insertGetId(
 		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
-> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
+> **注意:** 当使用 PostgreSQL 数据库系统时， insertGetId 方法要求主键字段名为 id
 
-**Inserting Multiple Records Into A Table**
+**一次插入多条数据**
 
 	DB::table('users')->insert(array(
 		array('email' => 'taylor@example.com', 'votes' => 0),
@@ -226,49 +226,49 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 	));
 
 <a name="updates"></a>
-## Updates
+## 更新数据
 
-**Updating Records In A Table**
+**更新数据**
 
 	DB::table('users')
 	            ->where('id', 1)
 	            ->update(array('votes' => 1));
 
 <a name="deletes"></a>
-## Deletes
+## 删除数据
 
-**Deleting Records In A Table**
+**普通删除方式**
 
 	DB::table('users')->where('votes', '<', 100)->delete();
 
-**Deleting All Records From A Table**
+**删除一张表的所有数据**
 
 	DB::table('users')->delete();
 
-**Truncating A Table**
+**清空一张表**
 
 	DB::table('users')->truncate();
 
 <a name="unions"></a>
-## Unions
+## union合并查询结果
 
-The query builder also provides a quick way to "union" two queries together:
+查询生成器提供了一个快速的方式来 "union" 两个查询:
 
-**Performing A Query Union**
+**使用Union合并两次查询**
 
 	$first = DB::table('users')->whereNull('first_name');
 
 	$users = DB::table('users')->whereNull('last_name')->union($first)->get();
 
-The `unionAll` method is also available, and has the same method signature as `union`.
+`unionAll` 也是可用的, 它和 `union` 方法一样.
 
 <a name="caching-queries"></a>
-## Caching Queries
+## 缓存查询结果
 
-You may easily cache the results of a query using the `remember` method:
+使用 `remember` 方法可以很容易的缓存查询结果:
 
-**Caching A Query Result**
+**缓存一次查询的查询结果**
 
 	$users = DB::table('users')->remember(10)->get();
 
-In this example, the results of the query will be cached for ten minutes. While the results are cached, the query will not be run against the database, and the results will be loaded from the default cache driver specified for your application.
+在上面的例子中， 查询结果将被缓存10分钟， 当某个查询的结果正在被缓存时， 该查询实际不会执行， 查询结果将直接从缓存系统中读取。
