@@ -20,7 +20,7 @@ Laravel 目前支持四种数据库系统,分别是: MySQL， Postgres， SQLite
 
 **执行 select 语句**
 
-  $results = DB::select('select * from users where id = ?', array(1));
+  $results = DB::select('select * from users where id = ?', array(1))；
 
 `select` 方法总是返回一个包含查询结果的 `array`。
 
