@@ -95,6 +95,12 @@ After the `workbench` command has created your package. You may `git init` from 
 
 Since your packages are in the `workbench` directory, you may be wondering how Composer knows to autoload your package's files. When the `workbench` directory exists, Laravel will intelligently scan it for packages, loading their Composer autoload files when the application starts!
 
+If you need to regenerate your package's autoload files, you may use the `php artisan dump-autoload` command. This command will regenerate the autoload files for your root project, as well as any workbenches you have created.
+
+**Running The Artisan Autoload Command**
+
+	php artisan dump-autoload
+
 <a name="package-routing"></a>
 ## Package Routing
 
