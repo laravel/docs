@@ -30,98 +30,98 @@ Laravel使用一种简单的方式来访问用户提交的信息。 你可以用
 
 	$input = Input::all();
 
-**Getting Only Some Of The Request Input**
+**获取指定的信息，或者获取排除指定几个提交项之外的所有提交信息**
 
 	$input = Input::only('username', 'password');
 
 	$input = Input::except('credit_card');
 
-Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
+有一些javascript库，比如 Backbone 会以json格式提交信息。 你只需通过 `Input::get` 来获取信息。
 
 <a name="cookies"></a>
 ## Cookies
 
-All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client.
+Laravel会加密所有已创建的cookie信息，并附加上授权码，当客户端擅自修改cookie信息时，该cookie将被废弃，从而保证安全性。
 
-**Retrieving A Cookie Value**
+**获取一个指定的cookie值**
 
 	$value = Cookie::get('name');
 
-**Attaching A New Cookie To A Response**
+**添加一个新的cookie键值对**
 
 	$response = Response::make('Hello World');
 
 	$response->withCookie(Cookie::make('name', 'value', $minutes));
 
-**Creating A Cookie That Lasts Forever**
+**创建一个永不过期的cookie键值对**
 
 	$cookie = Cookie::forever('name', 'value');
 
 <a name="old-input"></a>
-## Old Input
+## 用户提交信息持久化
 
-You may need to keep input from one request until the next request. For example, you may need to re-populate a form after checking it for validation errors.
+有时可能需要在多个用户请求之间持久化用户提交的信息。 比如，当用户提交的信息验证失败重新返回提交信息页面时还原用户的输入。
 
-**Flashing Input To The Session**
+**将用户提交的信息存入Session**
 
 	Input::flash();
 
-**Flashing Only Some Input To The Session**
+**把指定的用户提交的信息存入Session**
 
 	Input::flashOnly('username', 'email');
 
 	Input::flashExcept('password');
 
-Since you often will want to flash input in association with a redirect to the previous page, you may easily chain input flashing onto a redirect.
+如果你需要关联持久用户提交的信息的操作和重定向操作，可以使用如下的链式调用的方法：
 
 	return Redirect::to('form')->withInput();
 
 	return Redirect::to('form')->withInput(Input::except('password'));
 
-> **Note:** You may flash other data across requests using the [Session](/docs/session) class.
+> **注意：** 如果你想持久化其它的信息，请参考 [Session](/docs/session) 类.
 
-**Retrieving Old Data**
+**获取已持久化的用户提交的信息**
 
 	Input::old('username');
 
 <a name="files"></a>
-## Files
+## 文件上传
 
-**Retrieving An Uploaded File**
+**获取用户上传的文件**
 
 	$file = Input::file('photo');
 
-**Determining If A File Was Uploaded**
+**判断指定文件是否已经被上传**
 
 	if (Input::hasFile('photo'))
 	{
 		//
 	}
 
-The object returned by the `file` method is an instance of the `Symfony\Component\HttpFoundation\File\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file.
+`file` 方法返回了一个 `Symfony\Component\HttpFoundation\File\UploadedFile` 类的实例, 该类继承自PHP的 `SplFileInfo` 类，并提供了大量操作该用户上传的文件的方法。
 
-**Moving An Uploaded File**
+**移动一个已上传的文件**
 
 	Input::file('photo')->move($destinationPath);
 
 	Input::file('photo')->move($destinationPath, $fileName);
 
-**Retrieving The Path To An Uploaded File**
+**获取一个已上传的文件在服务器的真实路径**
 
 	$path = Input::file('photo')->getRealPath();
 
-**Retrieving The Size Of An Uploaded File**
+**获取一个已上传的文件的大小**
 
 	$size = Input::file('photo')->getSize();
 
-**Retrieving The MIME Type Of An Uploaded File**
+**获取一个已上传的文件的 MIME 类型**
 
 	$mime = Input::file('photo')->getMimeType();
 
 <a name="request-information"></a>
 ## 用户请求的详细信息
 
-The `Request` class provides many methods for examining the HTTP request for your application and extends the `Symfony\Component\HttpFoundation\Request` class. Here are some of the highlights.
+`Request` 类提供了许多 方法 用于获取关于请求的详细信息，该类继承自 `Symfony\Component\HttpFoundation\Request` 类。 下面提供了几个具有代表性的方法：
 
 **获取请求URI**
 
