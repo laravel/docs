@@ -32,6 +32,12 @@ You may also open forms that point to named routes or controller actions:
 
 	echo Form::open(array('action' => 'Controller@method'))
 
+You may pass in route parameters as well:
+
+	echo Form::open(array('route' => array('route.name', $user->id)))
+
+	echo Form::open(array('action' => array('Controller@method', $user->id)))
+
 If your form is going to accept file uploads, add a `files` option to your array:
 
 	echo Form::open(array('url' => 'foo/bar', 'files' => true))
