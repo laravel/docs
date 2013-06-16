@@ -27,7 +27,7 @@
 
 ### array_dot
 
-`array_dot` 函数将多维数组转为一维数组，所有的键用'.'分割。
+`array_dot` 函数将多维数组转为一维数组，该数组不需要规则的结构。所有的键用'.'分割。
 
 	$array = array('foo' => array('bar' => 'baz'));
 
@@ -43,7 +43,7 @@
 
 ### array_fetch
 
-The `array_fetch` method returns a flattened array containing the selected nested element.
+`array_fetch` 获取多维数组的最终值，参数为 第一维的键.第二维的键.第三维的键.... 的形式，指定的维数 数组的形式需一致，否则Laravel将抛出'Undefined index'。
 
 	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
 
@@ -53,7 +53,7 @@ The `array_fetch` method returns a flattened array containing the selected neste
 
 ### array_first
 
-The `array_first` method returns the first element of an array passing a given truth test.
+`array_first` 方法返回第一个 满足匿名函数（该匿名函数作为参数传入） 返回true的元素的值。
 
 	$array = array(100, 200, 300);
 
@@ -62,13 +62,13 @@ The `array_first` method returns the first element of an array passing a given t
 		return $value >= 150;
 	});
 
-A default value may also be passed as the third parameter:
+array_first的第三个参数为该操作指定默认返回值，若匿名函数永远不可能返回true将返回默认值。
 
 	$value = array_first($array, $callback, $default);
 
 ### array_flatten
 
-The `array_flatten` method will flatten a multi-dimensional array into a single level.
+`array_flatten` 获取多维数组的最终值，该数组不需要规则的结构。并丢掉键。
 
 	$array = array('name' => 'Joe', 'languages' => array('PHP', 'Ruby'));
 
@@ -78,7 +78,7 @@ The `array_flatten` method will flatten a multi-dimensional array into a single 
 
 ### array_forget
 
-The `array_forget` method will remove a given key / value pair from a deeply nested array using "dot" notation.
+`array_forget` 方法移除数组内指定的元素，通过 键.键.键 的形式来寻找指定要移除的元素
 
 	$array = array('names' => array('joe' => array('programmer')));
 
@@ -86,7 +86,7 @@ The `array_forget` method will remove a given key / value pair from a deeply nes
 
 ### array_get
 
-The `array_get` method will retrieve a given value from a deeply nested array using "dot" notation.
+`array_get` 方法获取数组内指定的元素，通过 键.键.键 的形式来寻找指定的元素
 
 	$array = array('names' => array('joe' => array('programmer')));
 
@@ -94,7 +94,7 @@ The `array_get` method will retrieve a given value from a deeply nested array us
 
 ### array_only
 
-The `array_only` method will return only the specified key / value pairs from the array.
+`array_only` 方法返回数组内指定键(仅限第一维的键)的的元素，参数为将获取的数组元素键的数组。
 
 	$array = array('name' => 'Joe', 'age' => 27, 'votes' => 1);
 
@@ -102,7 +102,7 @@ The `array_only` method will return only the specified key / value pairs from th
 
 ### array_pluck
 
-The `array_pluck` method will pluck a list of the given key / value pairs from the array.
+`array_pluck` 返回数组内指定键的值，并丢掉键，只能指定一个键。
 
 	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
 
@@ -112,7 +112,7 @@ The `array_pluck` method will pluck a list of the given key / value pairs from t
 
 ### array_pull
 
-The `array_pull` method will return a given key / value pair from the array, as well as remove it.
+`array_pull` 从原数组中删除指定键的元素，并返回被删除的元素的值。
 
 	$array = array('name' => 'Taylor', 'age' => 27);
 
@@ -120,7 +120,7 @@ The `array_pull` method will return a given key / value pair from the array, as 
 
 ### array_set
 
-The `array_set` method will set a value within a deeply nested array using "dot" notation.
+`array_set` 为一个指定键的元素设置值，通过 键.键.键 的形式来寻找将被设置或重新赋值的元素。
 
 	$array = array('names' => array('programmer' => 'Joe'));
 
@@ -128,7 +128,7 @@ The `array_set` method will set a value within a deeply nested array using "dot"
 
 ### array_sort
 
-The `array_sort` method sorts the array by the results of the given Closure.
+`array_sort` 函数对数组里的第一维元素进行自定义排序，并保持第一维数组键。
 
 	$array = array(
 		array('name' => 'Jill'),
