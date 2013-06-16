@@ -2,7 +2,7 @@
 
 - [数组助手](#arrays)
 - [应用路径](#paths)
-- [字符串](#strings)
+- [字符串助手](#strings)
 - [URLs路径](#urls)
 - [Miscellaneous](#miscellaneous)
 
@@ -157,26 +157,26 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 
 ### app_path
 
-Get the fully qualified path to the `application` directory.
+获取 `application` (/app[laravel4]) 目录的绝对路径。
 
 ### base_path
 
-Get the fully qualified path to the root of the application install.
+获取laravel应用所在的绝对路径。
 
 ### public_path
 
-Get the fully qualified path to the `public` directory.
+获取 `public` 目录的绝对路径。
 
 ### storage_path
 
-Get the fully qualified path to the `application/storage` directory.
+获取 `application/storage` 目录的绝对路径.
 
 <a name="strings"></a>
-## Strings
+## 字符串助手
 
 ### camel_case
 
-Convert the given string to `camelCase`.
+将字符串转为 `驼峰命名法` 的格式.
 
 	$camel = camel_case('foo_bar');
 
@@ -184,7 +184,7 @@ Convert the given string to `camelCase`.
 
 ### class_basename
 
-Get the class name of the given class, without any namespace names.
+获取不带命名空间的类名。
 
 	$class = class_basename('Foo\Bar\Baz');
 
