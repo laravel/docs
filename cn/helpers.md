@@ -224,7 +224,7 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 
 ### str_finish
 
-Add a single instance of the given needle to the haystack. Remove any extra instances.
+以指定字符结束字符串，且保证字符串结尾有且只有一个指定的字符。
 
 	$string = str_finish('this/string', '/');
 
@@ -232,13 +232,13 @@ Add a single instance of the given needle to the haystack. Remove any extra inst
 
 ### str_is
 
-Determine if a given string matches a given pattern. Asterisks may be used to indicate wildcards.
+判断字符串是否符合指定的格式。 下面的星号是作为通配符使用。
 
 	$value = str_is('foo*', 'foobar');
 
 ### str_plural
 
-Convert a string to its plural form (English only).
+将字符串转为复数形式（只适合英语）。
 
 	$plural = str_plural('car');
 
@@ -250,13 +250,13 @@ Convert a string to its plural form (English only).
 
 ### str_singular
 
-Convert a string to its singular form (English only).
+将字符串转为单数形式（只适合英语）。
 
 	$singular = str_singular('cars');
 
 ### studly_case
 
-Convert the given string to `StudlyCase`.
+将字符串转为 `StudlyCase` 格式。
 
 	$value = studly_case('foo_bar');
 
