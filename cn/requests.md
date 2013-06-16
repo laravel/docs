@@ -127,7 +127,7 @@ The `Request` class provides many methods for examining the HTTP request for you
 
 	$uri = Request::path();
 
-**判断请求路径是否符合某个模式**
+**判断请求路径是否符合指定模式**
 
 	if (Request::is('admin/*'))
 	{
