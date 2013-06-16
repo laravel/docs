@@ -92,6 +92,13 @@ Of course, you may also use the query builder aggregate functions.
 
 	$count = User::where('votes', '>', 100)->count();
 
+If you need to generate complex `where` clauses, you can use `whereRaw` and write your own SQL
+
+**Querying Using Eloquent Models With whereRaw**
+
+	//Obtain users which are male, at least 18 years old and have 10 or less votes
+	$users = User::whereRaw('gender = \'male\' and age >= 18 and votes <= 10');
+
 <a name="mass-assignment"></a>
 ## Mass Assignment
 
@@ -532,7 +539,7 @@ Eloquent allows you to access your relations via dynamic properties. Eloquent wi
 	}
 
 	$phone = Phone::find(1);
-	
+
 Instead of echoing the user's email like this:
 
 	echo $phone->user()->first()->email;
@@ -772,10 +779,10 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 **Applying A Callback To Each Collection Object**
 
 	$roles = User::find(1)->roles;
-	
+
 	$roles->each(function($role)
 	{
-		//	
+		//
 	});
 
 **Sorting A Collection By A Value**
