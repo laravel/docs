@@ -192,13 +192,13 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 
 ### e
 
-Run `htmlentites` over the given string, with UTF-8 support.
+`htmlentites` 的简写，以utf8格式转换字符串。
 
 	$entities = e('<html>foo</html>');
 
 ### ends_with
 
-Determine if the given haystack ends with a given needle.
+判断字符串是否以另一个指定的字符串结束。
 
 	$value = ends_with('This is my name', 'name');
 
@@ -212,13 +212,13 @@ Convert the given string to `snake_case`.
 
 ### starts_with
 
-Determine if the given haystack begins with the given needle.
+判断字符串是否以另一个指定的字符串开始。
 
 	$value = starts_with('This is my name', 'This');
 
 ### str_contains
 
-Determine if the given haystack contains the given needle.
+判断字符串是否包含另一个指定的字符串。
 
 	$value = str_contains('This is my name', 'my');
 
