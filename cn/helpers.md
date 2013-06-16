@@ -4,7 +4,7 @@
 - [应用路径](#paths)
 - [字符串助手](#strings)
 - [URLs路径](#urls)
-- [Miscellaneous](#miscellaneous)
+- [杂项](#miscellaneous)
 
 <a name="arrays"></a>
 ## 数组助手
@@ -204,7 +204,7 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 
 ### snake_case
 
-Convert the given string to `snake_case`.
+将字符串转换为下划线命名方式。
 
 	$snake = snake_case('fooBar');
 
@@ -244,7 +244,7 @@ Convert a string to its plural form (English only).
 
 ### str_random
 
-Generate a random string of the given length.
+生成一个指定长度的字符串。
 
 	$string = str_random(40);
 
@@ -332,11 +332,11 @@ Generate a fully qualified URL to the given path.
 	echo url('foo/bar', $parameters = array(), $secure = null);
 
 <a name="miscellaneous"></a>
-## Miscellaneous
+## 杂项
 
 ### csrf_token
 
-Get the value of the current CSRF token.
+获取当前 CSRF 标记。
 
 	$token = csrf_token();
 
@@ -348,12 +348,12 @@ Get the value of the current CSRF token.
 
 ### value
 
-If the given value is a `Closure`, return the value returned by the `Closure`. Otherwise, return the value.
+如果参数为 `Closure`，value函数将返回 `Closure` 的返回值。 否则，返回参数本。
 
 	$value = value(function() { return 'bar'; });
 
 ### with
 
-Return the given object. Useful for method chaining constructors in PHP 5.3.x.
+参数为对象，直接返回该对象，在PHP 5.3.x中进行链式调用很有用。
 
 	$value = with(new Foo)->doWork();
