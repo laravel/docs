@@ -199,6 +199,18 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 
 	DB::table('users')->decrement('votes');
 
+**Incrementing or decrementing a column with a specified amount**
+
+	DB::table('users')->increment('votes',5);
+	
+	DB::table('users')->decrement('votes',5);
+
+**Updating additional columns when incrementing or decrementing a column**
+
+	DB::table('users')->increment('votes', 5, array('updated_at'=>new DateTime()));
+	
+	DB::table('users')->decrement('votes', 5, array('updated_at'=>new DateTime()));
+	
 <a name="inserts"></a>
 ## Inserts
 
