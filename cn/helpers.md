@@ -342,7 +342,7 @@ Get the value of the current CSRF token.
 
 ### dd
 
-Dump the given variable and end execution of the script.
+格式化输出指定的变量，并结束脚本执行。
 
 	dd($value);
 
