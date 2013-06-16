@@ -1,32 +1,32 @@
-# Requests & Input
+# 用户请求 与 用户提交的信息
 
-- [Basic Input](#basic-input)
+- [操作用户提交信息基础](#basic-input)
 - [Cookies](#cookies)
-- [Old Input](#old-input)
-- [Files](#files)
-- [Request Information](#request-information)
+- [用户提交信息持久化](#old-input)
+- [文件上传](#files)
+- [用户请求的详细信息](#request-information)
 
 <a name="basic-input"></a>
-## Basic Input
+## 操作用户提交信息基础
 
-You may access all user input with a few simple methods. You do not need to worry about the HTTP verb used for the request, as input is accessed in the same way for all verbs.
+Laravel使用一种简单的方式来访问用户提交的信息。 你可以用统一的方式来访问用户提交的信息，而不用为用户提交信息的方式操心。
 
-**Retrieving An Input Value**
+**获取一个用户提交的值**
 
   $name = Input::get('name');
 
-**Retrieving A Default Value If The Input Value Is Absent**
+**为用户提交信息指定一个的默认返回值(如果用户未提交)**
 
 	$name = Input::get('name', 'Sally');
 
-**Determining If An Input Value Is Present**
+**判断指定的提交信息是否存在**
 
 	if (Input::has('name'))
 	{
 		//
 	}
 
-**Getting All Input For The Request**
+**获取所有用户提交的信息**
 
 	$input = Input::all();
 
@@ -119,45 +119,45 @@ The object returned by the `file` method is an instance of the `Symfony\Componen
 	$mime = Input::file('photo')->getMimeType();
 
 <a name="request-information"></a>
-## Request Information
+## 用户请求的详细信息
 
 The `Request` class provides many methods for examining the HTTP request for your application and extends the `Symfony\Component\HttpFoundation\Request` class. Here are some of the highlights.
 
-**Retrieving The Request URI**
+**获取请求URI**
 
 	$uri = Request::path();
 
-**Determining If The Request Path Matches A Pattern**
+**判断请求路径是否符合某个模式**
 
 	if (Request::is('admin/*'))
 	{
 		//
 	}
 
-**Get The Request URL**
+**获取请求URL**
 
 	$url = Request::url();
 
-**Retrieve A Request URI Segment**
+**获取请求URI信息**
 
 	$segment = Request::segment(1);
 
-**Retrieving A Request Header**
+**获取请求头里的Content-Type信息**
 
 	$value = Request::header('Content-Type');
 
-**Retrieving Values From $_SERVER**
+**获取 $_SERVER 数组里指定的值**
 
 	$value = Request::server('PATH_INFO');
 
-**Determine If The Request Is Using AJAX**
+**判断是否是使用ajax请求**
 
 	if (Request::ajax())
 	{
 		//
 	}
 
-**Determining If The Request Is Over HTTPS**
+**判断请求是否使用https连接**
 
 	if (Request::secure())
 	{
