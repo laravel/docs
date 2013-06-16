@@ -197,7 +197,15 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 
 	DB::table('users')->increment('votes');
 
+	DB::table('users')->increment('votes', 5);
+
 	DB::table('users')->decrement('votes');
+
+	DB::table('users')->decrement('votes', 5);
+
+You may also specify additional columns to update:
+
+	DB::table('users')->increment('votes', 1, array('name' => 'John'));
 
 <a name="inserts"></a>
 ## Inserts
