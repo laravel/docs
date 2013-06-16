@@ -92,6 +92,10 @@ Of course, you may also use the query builder aggregate functions.
 
 	$count = User::where('votes', '>', 100)->count();
 
+If you are unable to generate the query you need via the fluent interface, feel free to use `whereRaw`:
+
+	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
+
 <a name="mass-assignment"></a>
 ## Mass Assignment
 
