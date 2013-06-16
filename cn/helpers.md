@@ -153,7 +153,7 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 	$last = last($this->returnsArray('foo'));
 
 <a name="paths"></a>
-## Paths
+## 应用路径
 
 ### app_path
 
@@ -279,55 +279,55 @@ Tranlate a given language line with inflection. Alias of `Lang::choice`.
 
 ### action
 
-Generate a URL for a given controller action.
+从指定的控制器的方法生成url。
 
 	$url = action('HomeController@getIndex', $params);
 
 ### asset
 
-Generate a URL for an asset.
+生成一个指向样式文件的url。
 
 	$url = asset('img/photo.jpg');
 
 ### link_to
 
-Generate a HTML link to the given URL.
+生成一个a标签的html代码，并能为该a标签指定详细信息。
 
 	echo link_to('foo/bar', $title, $attributes = array(), $secure = null);
 
 ### link_to_asset
 
-Generate a HTML link to the given asset.
+生成一个指向样式文件的a标签。
 
 	echo link_to_asset('foo/bar.zip', $title, $attributes = array(), $secure = null);
 
 ### link_to_route
 
-Generate a HTML link to the given route.
+生成一个指向特定路由的a标签。
 
 	echo link_to_route('route.name', $title, $parameters = array(), $attributes = array());
 
 ### link_to_action
 
-Generate a HTML link to the given controller action.
+生成一个指向特定控制器方法的a标签。
 
 	echo link_to_action('HomeController@getIndex', $title, $parameters = array(), $attributes = array());
 
 ### secure_asset
 
-Generate a HTML link to the given asset using HTTPS.
+生成一个指向样式文件的a标签并使用使用 HTTPS 安全链接。
 
 	echo secure_asset('foo/bar.zip', $title, $attributes = array());
 
 ### secure_url
 
-Generate a fully qualified URL to a given path using HTTPS.
+生成一个完全自定义的a标签并使用 HTTPS 安全链接。
 
 	echo secure_url('foo/bar', $parameters = array());
 
 ### url
 
-Generate a fully qualified URL to the given path.
+生成一个完全自定义的a标签。
 
 	echo url('foo/bar', $parameters = array(), $secure = null);
 
