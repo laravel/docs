@@ -11,7 +11,7 @@
 
 ### array_add
 
-The `array_add` function adds a given key / value pair to the array if the given key doesn't already exist in the array.
+`array_add` 函数将一个指定键的元素添加进数组，如果数组中已有该键，则不添加。
 
   $array = array('foo' => 'bar');
 
@@ -19,7 +19,7 @@ The `array_add` function adds a given key / value pair to the array if the given
 
 ### array_divide
 
-The `array_divide` function returns two arrays, one containing the keys, and the other containing the values of the original array.
+`array_divide` 返回两个数组，第一个包含数组里的所有键，第二个包含数组里的所有值。
 
 	$array = array('foo' => 'bar');
 
@@ -27,7 +27,7 @@ The `array_divide` function returns two arrays, one containing the keys, and the
 
 ### array_dot
 
-The `array_dot` function flattens a multi-dimensional array into a single level array that uses "dot" notation to indicate depth.
+`array_dot` 函数将多维数组转为一维数组，所有的键用'.'分割。
 
 	$array = array('foo' => array('bar' => 'baz'));
 
@@ -37,7 +37,7 @@ The `array_dot` function flattens a multi-dimensional array into a single level 
 
 ### array_except
 
-The `array_except` method removes the given key / value pairs from the array.
+`array_except` 函数移除指定键的元素（数组的第一维），第二个参数包含所有要移除键的数组，并返回新数组。
 
 	$array = array_except($array, array('keys', 'to', 'remove'));
 
