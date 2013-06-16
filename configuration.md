@@ -25,6 +25,8 @@ Notice that "dot" style syntax may be used to access values in the various files
 
 	Config::set('database.default', 'sqlite');
 
+Configuration values that are set at run-time are only set for the current request, and will not be carried over to subsequent requests.
+
 <a name="environment-configuration"></a>
 ## Environment Configuration
 
