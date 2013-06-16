@@ -36,7 +36,7 @@ Laravel使用一种简单的方式来访问用户提交的信息。 你可以用
 
 	$input = Input::except('credit_card');
 
-有一些javascript库，比如 Backbone 会以json格式提交信息。 你只需通过 `Input::get` 来获取信息。
+有一些javascript库，比如 Backbone 会以json格式提交信息。 通过 `Input::get` 来获取信息，使用上无差别。
 
 <a name="cookies"></a>
 ## Cookies
