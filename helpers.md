@@ -340,12 +340,6 @@ Get the value of the current CSRF token.
 
 	$token = csrf_token();
 
-### dd
-
-Dump the given variable and end execution of the script.
-
-	dd($value);
-
 ### value
 
 If the given value is a `Closure`, return the value returned by the `Closure`. Otherwise, return the value.
