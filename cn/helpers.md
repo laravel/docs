@@ -142,13 +142,13 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 
 ### head
 
-Return the first element in the array. Useful for method chaining in PHP 5.3.x.
+返回数组的第一个元素，内部实际调用reset方法。经常在链式调用时使用。
 
 	$first = head($this->returnsArray('foo'));
 
 ### last
 
-Return the last element in the array. Useful for method chaining.
+返回数组的最后一个元素，内部实际调用end方法。经常在链式调用时使用。
 
 	$last = last($this->returnsArray('foo'));
 
