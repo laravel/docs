@@ -1,13 +1,13 @@
-# Helper Functions
+# 助手函数
 
-- [Arrays](#arrays)
-- [Paths](#paths)
-- [Strings](#strings)
-- [URLs](#urls)
+- [数组助手](#arrays)
+- [应用路径](#paths)
+- [字符串](#strings)
+- [URLs路径](#urls)
 - [Miscellaneous](#miscellaneous)
 
 <a name="arrays"></a>
-## Arrays
+## 数组助手
 
 ### array_add
 
