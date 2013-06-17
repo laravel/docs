@@ -1,17 +1,62 @@
 # Cache
 
+- [The Basics](#basics)
 - [Configuration](#configuration)
+- [Cache Drivers](#cache-drivers)
 - [Cache Usage](#cache-usage)
 - [Increments & Decrements](#increments-and-decrements)
 - [Cache Sections](#cache-sections)
 - [Database Cache](#database-cache)
 
+<a name="basics"></a>
+## The Basics
+
+Imagine your application displays the ten most popular songs as voted on by your users. Do you really need to look up these ten songs every time someone visits your site? What if you could store them for 10 minutes, or even an hour, allowing you to dramatically speed up your application? Laravel's caching makes it simple.
+
+Laravel provides a unified API for various caching systems:
+
+* File System
+* Database
+* [Memcached](http://memcached.org)
+* [Redis](http://redis.io)
+* [APC](http://php.net/manual/en/book.apc.php)
+* Arrays(memory).
+
 <a name="configuration"></a>
 ## Configuration
 
-Laravel provides a unified API for various caching systems. The cache configuration is located at `app/config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](http://memcached.org) and [Redis](http://redis.io) out of the box.
+The cache configuration is located at `app/config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application.
 
-The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC.
+The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options.
+
+By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC. If you're satisfied with this driver, no other configuration is required. You're ready to start using it.
+
+<a name="cache-drivers"></a>
+## Cache Drivers
+
+### File
+
+Stores the serialized, cached objects in the filesystem.
+
+### Database
+
+The database cache driver uses a given [database table](#database-cache) as a simple key-value store.
+
+### APC
+
+Alternative PHP Cache (APC) is a free, open source (PHP license) framework that heavily optimizes and tunes the output of the PHP bytecode compiler and stores the final, compiled result in shared memory. It also provides the ability to store and retrieve keyed data in a global "data store", thereby allowing you to cache and significantly speed up access to very commonly used data without having to constantly go to disk or SQL backends.
+
+### Memcached
+
+Memcached is an ultra-fast, open-source distributed memory object caching system used by sites such as Wikipedia and Facebook. Before using Laravel's Memcached driver, you will need to install and configure Memcached and the PHP Memcache extension on your server. Before using the Memcached cache driver, you must set your servers in `memcached` at `app/config/cache.php`.
+
+### Redis
+
+Redis is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain strings, hashes, lists, sets, and sorted sets.
+
+### Array (in-memory)
+
+The "memory" cache driver does not actually cache anything to disk. It simply maintains an internal array of the cache data for the current request. This makes it perfect for unit testing your application in isolation from any storage mechanism. It should never be used as a "real" cache driver.
 
 <a name="cache-usage"></a>
 ## Cache Usage
