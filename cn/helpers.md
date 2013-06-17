@@ -153,7 +153,7 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 	$last = last($this->returnsArray('foo'));
 
 <a name="paths"></a>
-## Paths
+## 应用路径
 
 ### app_path
 
@@ -224,7 +224,7 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 
 ### str_finish
 
-Add a single instance of the given needle to the haystack. Remove any extra instances.
+以指定字符结束字符串，且保证字符串结尾有且只有一个指定的字符。
 
 	$string = str_finish('this/string', '/');
 
@@ -232,13 +232,13 @@ Add a single instance of the given needle to the haystack. Remove any extra inst
 
 ### str_is
 
-Determine if a given string matches a given pattern. Asterisks may be used to indicate wildcards.
+判断字符串是否符合指定的格式。 下面的星号是作为通配符使用。
 
 	$value = str_is('foo*', 'foobar');
 
 ### str_plural
 
-Convert a string to its plural form (English only).
+将字符串转为复数形式（只适合英语）。
 
 	$plural = str_plural('car');
 
@@ -250,13 +250,13 @@ Convert a string to its plural form (English only).
 
 ### str_singular
 
-Convert a string to its singular form (English only).
+将字符串转为单数形式（只适合英语）。
 
 	$singular = str_singular('cars');
 
 ### studly_case
 
-Convert the given string to `StudlyCase`.
+将字符串转为 `StudlyCase` 格式。
 
 	$value = studly_case('foo_bar');
 
@@ -264,13 +264,13 @@ Convert the given string to `StudlyCase`.
 
 ### trans
 
-Translate a given language line. Alias of `Lang::get`.
+翻译一行指定的语言， `Lang::get` 方法的别名。
 
 	$value = trans('validation.required'):
 
 ### trans_choice
 
-Tranlate a given language line with inflection. Alias of `Lang::choice`.
+Tranlate a given language line with inflection. `Lang::choice` 方法的别名。
 
 	$value = trans_choice('foo.bar', $count);
 
@@ -279,55 +279,55 @@ Tranlate a given language line with inflection. Alias of `Lang::choice`.
 
 ### action
 
-Generate a URL for a given controller action.
+从指定的控制器的方法生成url。
 
 	$url = action('HomeController@getIndex', $params);
 
 ### asset
 
-Generate a URL for an asset.
+生成一个指向样式文件的url。
 
 	$url = asset('img/photo.jpg');
 
 ### link_to
 
-Generate a HTML link to the given URL.
+生成一个a标签的html代码，并能为该a标签指定详细信息。
 
 	echo link_to('foo/bar', $title, $attributes = array(), $secure = null);
 
 ### link_to_asset
 
-Generate a HTML link to the given asset.
+生成一个指向样式文件的a标签。
 
 	echo link_to_asset('foo/bar.zip', $title, $attributes = array(), $secure = null);
 
 ### link_to_route
 
-Generate a HTML link to the given route.
+生成一个指向特定路由的a标签。
 
 	echo link_to_route('route.name', $title, $parameters = array(), $attributes = array());
 
 ### link_to_action
 
-Generate a HTML link to the given controller action.
+生成一个指向特定控制器方法的a标签。
 
 	echo link_to_action('HomeController@getIndex', $title, $parameters = array(), $attributes = array());
 
 ### secure_asset
 
-Generate a HTML link to the given asset using HTTPS.
+生成一个指向样式文件的a标签并使用使用 HTTPS 安全链接。
 
 	echo secure_asset('foo/bar.zip', $title, $attributes = array());
 
 ### secure_url
 
-Generate a fully qualified URL to a given path using HTTPS.
+生成一个完全自定义的a标签并使用 HTTPS 安全链接。
 
 	echo secure_url('foo/bar', $parameters = array());
 
 ### url
 
-Generate a fully qualified URL to the given path.
+生成一个完全自定义的a标签。
 
 	echo url('foo/bar', $parameters = array(), $secure = null);
 
