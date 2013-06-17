@@ -17,6 +17,7 @@ Laravel 4终于在2013年5月29号发布了正式版，很多Laravel粉丝也将
     - artisan.md
     - documentation.md
     - mail.md
+    - events.md
 - /;!痛在远方
     - eloquent.md
 - 徐小花
