@@ -94,3 +94,16 @@ You may also register an event to catch all messages passed to the log:
 	{
 		//
 	});
+
+**Changing Log Levels for the application**
+
+The Log level of the application can be changed on ```app/start/global.php``` by adding additional parameters on the function ```Log::useDailyFiles()``` which takes 3 parameters.
+ - Storage Path
+ - Total Number of Days to Log [Default: 0 Days]
+ - Log Level [Default: ```debug```]
+
+```
+Log::useDailyFiles(storage_path() . '/logs/' . $logFile, 0, 'error');
+```
+
+The log levels that can be used are mentioned above on the section [Logging](#logging)
