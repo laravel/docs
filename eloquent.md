@@ -259,7 +259,7 @@ To determine if a given model instance has been soft deleted, you may use the `t
 <a name="timestamps"></a>
 ## Timestamps
 
-By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `datetime` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
+By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `timestamp` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
 
 **Disabling Auto Timestamps**
 
@@ -536,7 +536,7 @@ Eloquent allows you to access your relations via dynamic properties. Eloquent wi
 	}
 
 	$phone = Phone::find(1);
-	
+
 Instead of echoing the user's email like this:
 
 	echo $phone->user()->first()->email;
@@ -776,10 +776,10 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 **Applying A Callback To Each Collection Object**
 
 	$roles = User::find(1)->roles;
-	
+
 	$roles->each(function($role)
 	{
-		//	
+		//
 	});
 
 **Sorting A Collection By A Value**
