@@ -107,15 +107,9 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 	echo Form::password('password');
 	
-**Generating Other Inputs**
+**Generating Email Input*
 
-	echo Form::date($name, $value = null, $attributes = array());
 	echo Form::email($name, $value = null, $attributes = array());
-	echo Form::file($name, $attributes = array());
-	echo Form::number($name, $value = null, $attributes = array());
-	echo Form::search($name, $value = null, $attributes = array());
-	echo Form::telephone($name, $value = null, $attributes = array());
-	echo Form::url($name, $value = null, $attributes = array());
 	
 <a name="checkboxes-and-radio-buttons"></a>
 ## Checkboxes and Radio Buttons
