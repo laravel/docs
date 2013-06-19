@@ -278,6 +278,8 @@ If the password reset is successful, the `User` instance and the password will b
 
 Also, similarly to the `remind` method, if an error occurs while resetting the password, the `reset` method will return a `Redirect` to the current URI with an `error` and `reason`.
 
+> **Note:** Password reset tokens expire after 3600 seconds. You can change this in the `reminder.expiry` option of the `app/config/auth.php` file.
+
 <a name="encryption"></a>
 ## Encryption
 
