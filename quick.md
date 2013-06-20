@@ -68,17 +68,17 @@ Harika! Bir layoutu genişleten bir view oluşturdunuz. Birdahaki bölümümüm�
 <a name="bir-migration-olusturma"></a>
 ## Bir Migration Oluşturma
 
-To create a table to hold our data, we'll use the Laravel migration system. Migrations let you expressively define modifications to your database, and easily share them with the rest of your team.
+Bir veritabanı tablosu oluşturmak için Laravel'in migration özelliğini kullanacağız. Migrationlar çok kolay bir şekilde veritabanında değişiklikler yapmayı ve bunları takım arkadaşlarınızla paylaşmanızı sağlar.
 
-First, let's configure a database connection. You may configure all of your database connections from the `app/config/database.php` file. By default, Laravel is configured to use SQLite, and an SQLite database is included in the `app/database` directory. If you wish, you may change the `driver` option to `mysql` and configure the `mysql` connection credentials within the database configuration file.
+Öncelikle bir veritabanı konfigürasyonu ayarlayalım. Tüm veritabanı konfigürasyonlarınızı `app/config/database.php` dosyası içerisinde değiştirebilirsiniz. Öntanımlı olarak Laravel SQLite kullanmaya ayarlanmıştır ve SQLite veritabanı `app/database` klasöründe bulunmaktadır. Dilerseniz `driver` değerini `mysql` yapıp, `mysql` bağlantı bilgilerini girebilirsiniz.
 
-Next, to create the migration, we'll use the [Artisan CLI](/docs/artisan). From the root of your project, run the following from your terminal:
+Sonra, bir migration oluşturmak için [Artisan CLI](/docs/artisan) kullanacağız. Projenizin ana klasörüne gelerek, aşağıdaki kodu terminal üzerinde yazın:
 
 	php artisan migrate:make create_users_table
 
-Next, find the generated migration file in the `app/database/migrations` folder. This file contains a class with two methods: `up` and `down`. In the `up` method, you should make the desired changes to your database tables, and in the `down` method you simply reverse them.
+Şimdi, oluşturulan migration dosyasını `app/database/migrations` klasöründe bulun. Bu dosya 2 methoddan oluşmaktadır: `up` ve `down`. `up` methodunda, tablonuzdaki değişiklikleri yapmalısınız. `down` methodunda ise yaptığınız değişiklikleri geri almalısınız.
 
-Let's define a migration that looks like this:
+Şuna benzeyen bir migration oluşturalım:
 
 	public function up()
 	{
@@ -96,11 +96,11 @@ Let's define a migration that looks like this:
 		Schema::drop('users');
 	}
 
-Next, we can run our migrations from our terminal using the `migrate` command. Simply execute this command from the root of your project:
+Şimdi bu migrationu Artisan CLI üzerinde `migrate` komutu kullanarak çalıştıralım. Projenizin ana klasörüne gelip aşağıdaki kodu çalıştırın:
 
 	php artisan migrate
 
-If you wish to rollback a migration, you may issue the `migrate:rollback` command. Now that we have a database table, let's start pulling some data!
+Eğer bir migrationu geri almak isterseniz `migrate:rollback` komutunu çalıştırmanız yeterli olacaktır. Şimdi bir veritabanı tablosu oluşturduğumza göre, tablomuzdan veri çekmeyi öğrenerek devam edelim!
 
 <a name="eloquent-orm"></a>
 ## Eloquent ORM
