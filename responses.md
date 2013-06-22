@@ -93,7 +93,7 @@ The second argument passed to `View::make` is an array of data that should be ma
 
 **Passing Data To Views**
 
-Arrays can be passed as arguments to a views and the associative keys will be extracted into variables accessible by the view. In the example below the variable `$name` would be accessible from the view, and would contain `Steve`.
+Arrays can be passed as arguments to a view and the associative keys will be extracted into variables. In the example below the variable `$name` would be accessible from the view, and would contain `Steve`.
 
 	$view = View::make('greeting', array('name' => 'Steve'));
 
