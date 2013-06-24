@@ -1,3 +1,5 @@
+# 此Repository不再接受Pull request，请提交至 [golaravel/laravel4docs](https://github.com/golaravel/laravel4docs)
+
 Laravel 4 中文文档
 ====
 
