@@ -1,33 +1,33 @@
-# Validation
+# Doğrulama
 
-- [Basic Usage](#basic-usage)
-- [Working With Error Messages](#working-with-error-messages)
-- [Error Messages & Views](#error-messages-and-views)
-- [Available Validation Rules](#available-validation-rules)
-- [Custom Error Messages](#custom-error-messages)
-- [Custom Validation Rules](#custom-validation-rules)
+- [Basit Kullanım](#basit-kullanim)
+- [Hata Mesajlarıyla Çalışmak](#hata-mesajlariyla-calismak)
+- [Hata Mesajları ve Viewlar](#hata-mesajlari-ve-viewlar)
+- [Mevcut Doğrulama Kuralları](#mevcut-dogrulama-kurallari)
+- [Özel Hata Mesajları](#ozel-hata-mesajlari)
+- [Özel Doğrulama Kuralları](#ozel-dogrulama-kurallari)
 
-<a name="basic-usage"></a>
-## Basic Usage
+<a name="basit-kullanim"></a>
+## Basit Kullanım
 
 Laravel ships with a simple, convenient facility for validating data and retrieving validation error messages via the `Validation` class.
 
-**Basic Validation Example**
+**Basit Doğrulama Örneği**
 
 	$validator = Validator::make(
-		array('name' => 'Dayle'),
-		array('name' => 'required|min:5')
+		array('isim' => 'Mehmet'),
+		array('isim' => 'required|min:5')
 	);
 
 The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
 
 Multiple rules may be delimited using either a "pipe" character, or as separate elements of an array.
 
-**Using Arrays To Specify Rules**
+**Kural Tanımlamak İçin Array Kullanmak**
 
 	$validator = Validator::make(
-		array('name' => 'Dayle'),
-		array('name' => array('required', 'min:5'))
+		array('isim' => 'Mehmet'),
+		array('isim' => array('required', 'min:5'))
 	);
 
 Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
@@ -45,55 +45,55 @@ You may also access an array of the failed validation rules, without messages. T
 
 	$failed = $validator->failed();
 
-**Validating Files**
+**Dosyaları Doğrulamak**
 
 The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
 
-<a name="working-with-error-messages"></a>
-## Working With Error Messages
+<a name="hata-mesajlariyla-calismak"></a>
+## Hata Mesajlarıyla Çalışmak
 
 After calling the `messages` method on a `Validator` instance, you will receive a `MessageBag` instance, which has a variety of convenient methods for working with error messages.
 
-**Retrieving The First Error Message For A Field**
+**Bir Alan İçin Oluşan İlk Hata Mesajını Almak**
 
-	echo $messages->first('email');
+	echo $mesaj->first('email');
 
-**Retrieving All Error Messages For A Field**
+**Bir Alan İçin Oluşan Tüm Hata Mesajlarını Almak**
 
-	foreach ($messages->get('email') as $message)
+	foreach ($mesajlar->get('email') as $mesaj)
 	{
 		//
 	}
 
-**Retrieving All Error Messages For All Fields**
+**Tüm Alanlar İçin Oluşan Tüm Hata Mesajlarını Almak**
 
-	foreach ($messages->all() as $message)
+	foreach ($mesajlar->all() as $mesaj)
 	{
 		//
 	}
 
-**Determining If Messages Exist For A Field**
+**Belirtilen Alan İçin Hata Mesajı Olup Olmadığını Anlamak**
 
-	if ($messages->has('email'))
+	if ($mesajlar->has('email'))
 	{
 		//
 	}
 
-**Retrieving An Error Message With A Format**
+**Hata Mesajını Düzenleyerek Almak**
 
-	echo $messages->first('email', '<p>:message</p>');
+	echo $mesajlar->first('email', '<p>:mesaj</p>');
 
-> **Note:** By default, messages are formatted using Bootstrap compatible syntax.
+> **Not:** Varsayılan olarak, mesajlar Bootstrap'a (CSS Framework) uygun olarak şekillendirilmektedir.
 
-**Retrieving All Error Messages With A Format**
+**Tüm Hata Mesajlarını Düzenleyerek Almak**
 
-	foreach ($messages->all('<li>:message</li>') as $message)
+	foreach ($mesajlar->all('<li>:mesaj</li>') as $mesaj)
 	{
 		//
 	}
 
-<a name="error-messages-and-views"></a>
-## Error Messages & Views
+<a name="hata-mesajlari-ve-viewlar"></a>
+## Hata Mesajları ve Viewlar
 
 Once you have performed validation, you will need an easy way to get the error messages back to your views. This is conveniently handled by Laravel. Consider the following routes as an example:
 
@@ -122,8 +122,8 @@ So, after redirection, you may utilize the automatically bound `$errors` variabl
 
 	<?php echo $errors->first('email'); ?>
 
-<a name="available-validation-rules"></a>
-## Available Validation Rules
+<a name="mevcut-dogrulama-kurallari"></a>
+## Mevcut Doğrulama Kuralları
 
 Below is a list of all available validation rules and their function:
 
@@ -344,8 +344,8 @@ The field under validation must be unique on a given database table. If the `col
 
 The field under validation must be formatted as an URL.
 
-<a name="custom-error-messages"></a>
-## Custom Error Messages
+<a name="ozel-hata-mesajlari"></a>
+## Özel Hata Mesajları
 
 If needed, you may use custom error messages for validation instead of the defaults. There are several ways to specify custom messages.
 
@@ -386,8 +386,8 @@ In some cases, you may wish to specify your custom messages in a language file i
 		),
 	),
 
-<a name="custom-validation-rules"></a>
-## Custom Validation Rules
+<a name="ozel-dogrulama-kurallari"></a>
+## Özel Doğrulama Kuralları
 
 Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
 
