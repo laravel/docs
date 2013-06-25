@@ -1,67 +1,67 @@
-# Kaşe (Cache)
+# Önbellekleme (Cache)
 
 - [Ayarlamalar](#ayarlamalar)
-- [Kaşe Kullanımı](#kase-kullanimi)
+- [Önbellekleme Kullanımı](#onbellekleme-kullanimi)
 - [Arttırma & Azaltma](#arttirma-ve-azaltma)
-- [Kaşe Bölümleri](#kase-bolumleri)
-- [Veritabanı Kaşesi](#veritabani-kasesi)
+- [Önbellek Bölümleri](#onbellek-bolumleri)
+- [Veritabanı Önbelleği](#veritabani-onbellegi)
 
 <a name="ayarlamalar"></a>
 ## Ayarlamalar
 
-Laravel, çeşitli kaşeleme sistemleri için tümleşik bir API sağlar. Kaşe konfigürasyonu `app/config/cache.php`'de bulunmaktadır. Bu dosyada uygulamanızda varsayılan olarak hangi kaşe sürücüsünü kullanmak istediğinizi belirtebilirsiniz. Laravel, [Memcached](http://memcached.org) ve [Redis](http://redis.io) gibi popüler kaşeleme paketlerini barındırır.
+Laravel, çeşitli önbellekleme sistemleri için tümleşik bir API sağlar. Önbellekleme konfigürasyonu `app/config/cache.php`'de bulunmaktadır. Bu dosyada uygulamanızda varsayılan olarak hangi önbellekleme sürücüsünü kullanmak istediğinizi belirtebilirsiniz. Laravel, [Memcached](http://memcached.org) ve [Redis](http://redis.io) gibi popüler önbellekleme paketlerini barındırır.
 
-Kaşe konfigürasyon dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel, sıralanarak kaşelenmiş nesneleri dosya sisteminde depolayan `file` (dosya) kaşe sürücüsünü kullanmak üzere konfigüre edilmiştir. Daha büyük uygulamalar için, Memcached ve APC gibi bir kaşe kullanmanız önerilir.
+Önbellekleme konfigürasyon dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel, sıralanarak önbelleklenmiş nesneleri dosya sisteminde depolayan `file` (dosya) önbellekleme sürücüsünü kullanmak üzere ayarlanmıştır. Daha büyük uygulamalar için, Memcached ve APC gibi bir önbellekleme uygulaması kullanmanız önerilir.
 
-<a name="kase-kullanimi"></a>
-## Kaşe Kullanımı
+<a name="onbellekleme-kullanimi"></a>
+## Önbellekleme Kullanımı
 
-**Bir Nesneyi Kaşeye Koymak**
+**Bir Nesneyi Önbelleğe Koymak**
 
 	Cache::put('key', 'value', $minutes);
 
-**Bir Nesneyi Yoksa Kaşeye Koymak**
+**Olmayan Bir Nesneyi Önbelleğe Koymak**
 
 	Cache::add('key', 'value', $minutes);
 
-**Nesnenin Kaşede Var Olup Olmadığını Kontrol Etmek**
+**Nesnenin Önbellekte Var Olup Olmadığını Kontrol Etmek**
 
 	if (Cache::has('key'))
 	{
 		//
 	}
 
-**Kaşeden Bir Nesneyi Almak**
+**Önbellekten Bir Nesneyi Almak**
 
 	$value = Cache::get('key');
 
-**Bir Nesneyi Almak Veya Varsayılan Bir Değer Dönmek**
+**Bir Önbellek Değeri Almak Veya Varsayılan Bir Değer Döndürmek**
 
-	$value = Cache::get('key', 'default');
+	$value = Cache::get('key', 'varsayılanDeğer');
 
-	$value = Cache::get('key', function() { return 'default'; });
+	$value = Cache::get('key', function() { return 'varsayılanDeğer'; });
 
-**Bir Nesneyi Kalıcı Olarak Kaşeye Koymak**
+**Bir Nesneyi Kalıcı Olarak Önbelleğe Koymak**
 
 	Cache::forever('key', 'value');
 
-Bazen, kaşeden bir nesneyi almak isteyebilir ve ayrıca talep edilen nesne yoksa kaşede varsayılan bir değer saklayabilirsiniz. Bunu, `Cache::remember` metodunu kullanarak yapabilirsiniz:
+Bazen, önbellekten bir nesneyi almak isteyebilir ve ayrıca talep edilen nesne yoksa önbellekte varsayılan bir değer saklayabilirsiniz. Bunu, `Cache::remember` metodunu kullanarak yapabilirsiniz:
 
-	$value = Cache::remember('users', $minutes, function()
+	$value = Cache::remember('kullanicilar', $minutes, function()
 	{
-		return DB::table('users')->get();
+		return DB::table('kullanicilar')->get();
 	});
 
-Ayrıca, `remember` ve `forever` metotlarını birlikte kullanabilirsiniz.
+Ayrıca, `remember` ve `forever` methodlarını birlikte kullanabilirsiniz.
 
-	$value = Cache::rememberForever('users', function()
+	$value = Cache::rememberForever('kullanicilar', function()
 	{
-		return DB::table('users')->get();
+		return DB::table('kullanicilar')->get();
 	});
 
-Kaşede bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, yani her türlü veriyi saklayabilirsiniz.
+Önbellekte bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, yani her türlü veriyi saklayabilirsiniz.
 
-**Kaşeden Bir Nesneyi Kaldırmak**
+**Önbellekten Bir Nesneyi Silmek**
 
 	Cache::forget('key');
 
@@ -74,42 +74,42 @@ Kaşede bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, y
 
 	Cache::increment('key');
 
-	Cache::increment('key', $amount);
+	Cache::increment('key', $miktar);
 
 **Bir Değeri Azaltmak**
 
 	Cache::decrement('key');
 
-	Cache::decrement('key', $amount);
+	Cache::decrement('key', $miktar);
 
-<a name="kase-bolumleri"></a>
-## Kaşe Bölümleri
+<a name="onbellek-bolumleri"></a>
+## Önbellek Bölümleri
 
-> **Not:** Kaşe bölümleri `dosya` ve `veritabanı` kaşe sürücüleri kullanılırken desteklenmemektedir.
+> **Not:** Önbellek bölümleri `dosya` ve `veritabanı` önbellekleme sürücüleri kullanılırken desteklenmemektedir.
 
-Kaşe bölümleri, kaşedeki ilişkili nesneleri gruplamanıza ve tüm bölümü temizlemenize olanak sağlar.
+Önbellek bölümleri, önbellekteki ilişkili nesneleri gruplamanıza ve tüm bölümü temizlemenize olanak sağlar.
 Bölüme erişim için `section` metodu kullanılır:
 
-**Bir kaşe Bölümününe Erişim**
+**Bir Önbellek Bölümününe Erişim**
 
-	Cache::section('people')->put('John', $john);
+	Cache::section('insanlar')->put('Mehmet', $mehmet);
 
-	Cache::section('people')->put('Anne', $anne);
+	Cache::section('insanlar')->put('Ayşe', $ayse);
 
-Ayrıca bölümlerde kaşelenmiş nesnelere, diğer kaşe metodlarında olduğu gibi `increment` ve `decrement` ile de erişebilirsiniz.
+Ayrıca bölümlerde önbelleklenmiş nesnelere, diğer önbellek metodlarında olduğu gibi `increment` ve `decrement` ile de erişebilirsiniz.
 
-**Kaşe Bölümündeki Nesnelere Erişmek**
+**Önbellek Bölümündeki Nesnelere Erişmek**
 
-	$anne = Cache::section('people')->get('Anne');
+	$anne = Cache::section('insanlar')->get('Mehmet');
 
-Kaşe bölümünü bu şekilde temizleyebilirsiniz:
+Önbellek bölümünü bu şekilde temizleyebilirsiniz:
 
-	Cache::section('people')->flush();
+	Cache::section('insanlar')->flush();
 
-<a name="veritabani-kasesi"></a>
-## Veritabanı Kaşesi
+<a name="veritabani-onbellegi"></a>
+## Veritabanı Önbelleği
 
-Veritabanı kaşesi kullanabilmek için, kaşe nesnelerini içerecek `database` kaşesi kurulmalıdır. Aşağıda, gerekli tablonun tanımlanması için kullanabileceğiniz Şema (`Schema`) mevcuttur:
+Veritabanı önbelleği kullanabilmek için, önbellek nesnelerini içerecek `database` önbelleği kurulmalıdır. Aşağıda, gerekli tablonun tanımlanması için kullanabileceğiniz Şema (`Schema`) mevcuttur:
 
 	Schema::create('cache', function($table)
 	{
