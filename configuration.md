@@ -1,36 +1,36 @@
-# Configuration
+# Konfigürasyon
 
-- [Introduction](#introduction)
-- [Environment Configuration](#environment-configuration)
-- [Maintenance Mode](#maintenance-mode)
+- [Giriş](#giris)
+- [Ortam Konfigürasyonu](#ortam-konfigurasyonu)
+- [Bakım Modu](#bakim-modu)
 
-<a name="introduction"></a>
-## Introduction
+<a name="giris"></a>
+## Giriş
 
-All of the configuration files for the Laravel framework are stored in the `app/config` directory. Each option in every file is documented, so feel free to look through the files and get familiar with the options available to you.
+Laravel'in tüm konfigürasyon dosyaları `app/config` klasörü içindedir. Dosyalardaki konfigürasyonlar son derece iyi bir şekilde dökümante edilmiştir, dosyalara göz gezdirip size sunulan opsiyonlara bir bakabilirsiniz.
 
-Sometimes you may need to access configuration values at run-time. You may do so using the `Config` class:
+Bazen konfigürasyon ayarlarına run-time esnasında erişmeniz gerekir. Bunu `Config` sınıfını kullanarak yapabilirsiniz:
 
-**Accessing A Configuration Value**
+**Bir Konfigürasyon Değerine Erişmek**
 
 	Config::get('app.timezone');
 
-You may also specify a default value to return if the configuration option does not exist:
+Eğer konfigürasyon değeri bulunamazsa dönecek değeri ise ikinci bir parametreyle belirleyebilirsiniz:
 
 	$timezone = Config::get('app.timezone', 'UTC');
 
-Notice that "dot" style syntax may be used to access values in the various files. You may also set configuration values at run-time:
+Lütfen dikkat edin, "nokta" şeklindeki kullanım stili tüm konfigürasyon dosyalarına erişmenizi sağlar. Dilerseniz konfigürasyon değerlerini run-time esnasında da ekleyebilirsiniz:
 
-**Setting A Configuration Value**
+**Bir Konfigürasyon Değeri Eklemek**
 
 	Config::set('database.default', 'sqlite');
 
-<a name="environment-configuration"></a>
-## Environment Configuration
+<a name="ortam-konfigurasyonu"></a>
+## Ortam Konfigürasyonu
 
-It is often helpful to have different configuration values based on the environment the application is running in. For example, you may wish to use a different cache driver on your local development machine than on the production server. It is easy to accomplish this using environment based configuration.
+Uygulamanın çalışma ortamına göre konfigürasyonlar ayarlamak çoğu zaman iyidir. Örneğin, kişisel bilgisayarınızda, sunucudan farklı bir önbellekleme uygulaması kullanmak isteyebilirsiniz. Bunu ortam tabanlı konfigürasyonlar oluşturarak sağlayabilirsiniz.
 
-Simply create a folder within the `config` directory that matches your environment name, such as `local`. Next, create the configuration files you wish to override and specify the options for that environment. For example, to override the cache driver for the local environment, you would create a `cache.php` file in `app/config/local` with the following content:
+Bunu yapmak çok basit!  `config` klasörü içerisinde, ortam isminizi kullandığınız (örneğin  `local`)  bir klasör daha oluşturun. Şimdi, belirttiğiniz ortam için üzerine yazmak istediğiniz konfigürasyon dosyalarınızı ve ayarlarınızı geçirin. Örneğin, önbellekleme konfigürasyonunun üzerine yazmak için, `app/config/local` klasörü içerisinde  `cache.php` dosyası oluşturmanız gerekir. Oluşturduğunuz dosyanın içerisine şunları yazın:
 
 	<?php
 
@@ -40,11 +40,11 @@ Simply create a folder within the `config` directory that matches your environme
 
 	);
 
-> **Note:** Do not use 'testing' as an environment name. This is reserved for unit testing.
+> **Not:** 'testing' adını ortam ismi olarak kullanmayın. Bu isim Unit Testing amacıyla rezerve edilmiştir.
 
-Notice that you do not have to specify _every_ option that is in the base configuration file, but only the options you wish to override. The environment configuration files will "cascade" over the base files.
+Dikkat ederseniz, bu dosyada _bütün_ ayarları yazmanıza gerek yok. Sadece üzerine yazmak istediklerinizi eklemeniz yeterli. Geri kalan değerler, öntanımlı konfigürasyon ayarlarından alınacaktır.
 
-Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `bootstrap/start.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The array passed to this method is used to determine the current environment. You may add other environments and machine names to the array as needed.
+Şimdi yapmamız gereken Laravel'e hangi ortamda çalıştığını belirtmek. Öntanımlı ortam daima `production` ortamıdır. Ancak ana klasördeki `bootstrap/start.php` dosya içerisine eklemeler yaparak farklı ortamlar oluşturmak mümkündür. Bu dosya içerisinde `$app->detectEnvironment` adında bir çağrı bulacaksınız. Bu methoda eklenen bir parametre ile Laravel'e hangi ortamda çalıştığını belirtebilirsiniz. Hatta ihtiyacınız olursa, diğer ortam ve makine isimlerini de dizi olarak ekleyebilirsiniz:
 
     <?php
 
@@ -54,35 +54,35 @@ Next, we need to instruct the framework how to determine which environment it is
 
     ));
 
-You may also pass a `Closure` to the `detectEnvironment` method, allowing you to implement your own environment detection:
+Dilerseniz, `detectEnvironment` methoduna `Closure` ekleyip ortam algılama özelliğini kendiniz de yazabilirsiniz:
 
 	$env = $app->detectEnvironment(function()
 	{
 		return $_SERVER['MY_LARAVEL_ENV'];
 	});
 
-You may access the current application environment via the `environment` method:
+Şuanki uygulama ortamına `environment` methoduyla erişebilirsiniz:
 
-**Accessing The Current Application Environment**
+**Şuanki Uygulama Ortamına Erişmek**
 
 	$environment = App::environment();
 
-<a name="maintenance-mode"></a>
-## Maintenance Mode
+<a name="bakim-modu"></a>
+## Bakım Modu
 
-When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating. A call to the `App::down` method is already present in your `app/start/global.php` file. The response from this method will be sent to users when your application is in maintenance mode.
+Uygulamanız bakım modundayken, her istek için standart bir view gösterilir. Böylece uygulamanız güncellenirken, bir süreliğine uygulamayı "çalışmaz hale" getirebilirsiniz. Halihazırda `App::down` methoduna yapılan bir istek `app/start/global.php` dosyasında bulunmaktadır. Bu methoddan dönen yanıt ise tüm kullanıcılara gösterilmektedir.
 
-To enable maintenance mode, simply execute the `down` Artisan command:
+Bakım modunu açmak için `down` komutunu Artisan üzerinde çalıştırın:
 
 	php artisan down
 
-To disable maintenance mode, use the `up` command:
+Bakım modunu kapatmak içinse, `up` komutunu çalıştırabilirsiniz:
 
 	php artisan up
 
-To show a custom view when your application is in maintenance mode, you may add something like the following to your application's `app/start/global.php` file:
+Uygulamanız bakım modundayken kullanıcılara özel bir view göstermek için `app/start/global.php` dosyası içerisindeki `down` methodunu dilediğiniz gibi değiştirebilirsiniz:
 
 	App::down(function()
 	{
-		return Response::view('maintenance', array(), 503);
+		return Response::view('bakim_sayfasi', array(), 503);
 	})
