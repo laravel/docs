@@ -1,10 +1,10 @@
 # Temel Veritabanı Kullanımı
 
 - [Yapılandırma](#yapilandirma)
-- [Sorugları Çalıştırma](#sorgulari-calistirma)
-- [Database Transactions](#veritabani-islemleri)
+- [Sorguları Çalıştırma](#sorgulari-calistirma)
+- [Veritabanı İşlemleri](#veritabani-islemleri)
 - [Bağlantılara Erişme](#baglantilara-erisme)
-- [Sorgu Dökümü](#sorgu-dukumu)
+- [Sorgu Dökümü](#sorgu-dokumu)
 
 <a name="yapilandirma"></a>
 ## Yapılandırma
@@ -78,9 +78,9 @@ Bazen veritabanına tekrar bağlanmaya ihtiyacınız olabilir.
 
 	DB::reconnect('foo');
 
-<a name="sorgu-dukumu"></a>
+<a name="sorgu-dokumu"></a>
 ## Sorgu Dökümü
 
-Varsayılan olarak, Laravel çalıştırılan tüm surguların kayıdını hafızada tutar. Ama bazı durumlarda, -çok sayıda satır ekleme gibi- belleğin aşırı kullanılmasına yol açabilir. Sorgu dökümünü kapatmak için `disableQueryLog` metodunu kullanabilirsiniz.
+Varsayılan olarak, Laravel çalıştırılan tüm sorguların kayıdını hafızada tutar. Ama bazı durumlarda, -çok sayıda satır ekleme gibi- belleğin aşırı kullanılmasına yol açabilir. Sorgu dökümünü kapatmak için `disableQueryLog` metodunu kullanabilirsiniz.
 
 	DB::connection()->disableQueryLog();
