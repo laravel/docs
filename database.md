@@ -66,11 +66,11 @@ Bir veritabanı işleminde, birden fazla işlemi birden gerçekleştirmek için,
 <a name="baglantilara-erisme"></a>
 ## Bağlantılara Erişme
 
-Birden fazla bağlantı kullandığınız durumlarda, bu bağlantılara `DB::connection` metodu aracılığı ile ulabilirsiniz.
+Birden fazla bağlantı kullandığınız durumlarda, bu bağlantılara `DB::connection` metodu aracılığı ile ulaşabilirsiniz.
 
 	$uyeler = DB::connection('foo')->select(...);
 
-Ayrıca temel PDO örneğinede ulabilirsiniz:
+Ayrıca temel PDO örneğine de ulaşabilirsiniz:
 
 	$pdo = DB::connection()->getPdo();
 
