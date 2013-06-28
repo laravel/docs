@@ -2,7 +2,7 @@
 
 - [Yapılandırma](#yapilandirma)
 - [Sorugları Çalıştırma](#sorgulari-calistirma)
-- [Database Transactions](#database-transactions)
+- [Database Transactions](#veritabani-islemleri)
 - [Bağlantılara Erişme](#baglantilara-erisme)
 - [Sorgu Dökümü](#sorgu-dukumu)
 
