@@ -1,16 +1,16 @@
 # Artisan'ın Geliştirilmesi
 
 - [Giriş](#giris)
-- [Komut Oluşturulması](#building-a-command)
-- [Komutların Kayıt Ettirilmesi](#registering-commands)
-- [Diğer Komutların Çağırılması](#calling-other-commands)
+- [Komut Oluşturulması](#komut-olusturulmasi)
+- [Komutların Kayıt Ettirilmesi](#komutlarin-kayit-ettirilmesi)
+- [Diğer Komutların Çağırılması](#diger-komutlarin-cagirilmasi)
 
 <a name="giris"></a>
 ## Giriş
 
 Artisan'da mevcut olan komutlara ilaveten,  uygulamanız ile çalışacak olan kendi özel komutlarınızı inşa edebilirsiniz. Bu özel komutlarınızı  `app/commands` dizininde depolayabilirsiniz. Komutlarınızı kendi istediğiniz başka bir dizinde de depolayabilirsiniz. Bunun için, bu komutlarınızın `composer.json` ayarlarınız bazında "autoload" edilebiliyor olması gerekmektedir.
 
-<a name="building-a-command"></a>
+<a name="komut-olusturulmasi"></a>
 ## Komut Oluşturulması
 
 ### Sınıfının Yaratılması
@@ -110,7 +110,7 @@ Kullanıcıdan bir girdi talep etmek için, `ask` (sor) ve `confirm` (onayla) y�
 
 	$this->confirm($soru, true);
 
-<a name="registering-commands"></a>
+<a name="komutlarin-kayit-ettirilmesi"></a>
 ## Komutların Kayıt Ettirilmesi
 
 Komutunuzun inşa edilmesi tamamlandığında, kullanılmaya hazır olabilmesi için, Artisan'da kayıt ettirmeniz gerekir. Bu, genelde `app/start/artisan.php` dosyası içerisinde yapılır. Bu dosya içerisinde, kayıt ettirmek için `Artisan::add` (Artisan::ekle) yöntemini kullanabilirsiniz.
@@ -125,7 +125,7 @@ Eğer komutunuz [IoC container](/docs/ioc) uygulamasında kayıtlı ise, Artisan
 
 	Artisan::resolve('binding.ismi');
 
-<a name="calling-other-commands"></a>
+<a name="diger-komutlarin-cagirilmasi"></a>
 ## Diğer Komutların Çağırılması
 
 Bazı durumlarda, komtunuzun içerisinden diğer başka bir komutu çağırmak isteyebilirsiniz. Bunu, `call` (çağır) yöntemini kullanarak yapabilirsiniz:
