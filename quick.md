@@ -10,7 +10,11 @@
 <a name="kurulum"></a>
 ## Kurulum
 
-Laravel'i kurmak için [Github Kaynağı'nı](https://github.com/laravel/laravel/archive/master.zip) indirmelisiniz. Daha sonra [Composer'i kurup](http://getcomposer.org), `composer install` komutunu projenizin root (ana) klasöründe çalıştırmalısınız. Bu komutu çalıştırmak, Laravel'i ve Laravel'in gereksinimlerini (dependencies) indirip kuracaktır.
+Laravel Framework'ü kurmak için aşağıdaki komutu, komut işleyici uygulamanızdan çalıştırabilirsiniz:
+
+	composer create-project laravel/laravel your-project-name
+
+veya Laravel Framework'ü kurmak için [Github Kaynağı'nı](https://github.com/laravel/laravel/archive/master.zip) indirmelisiniz. Daha sonra [Composer'i kurup](http://getcomposer.org), `composer install` komutunu projenizin root (ana) klasöründe çalıştırmalısınız. Bu komutu çalıştırmak, Laravel'i ve Laravel'in gereksinimlerini (dependencies) indirip kuracaktır.
 
 Laravel kurulduktan sonra klasör yapısına göz gezdirin ve Laravel'in nasıl bir yapısı olduğuna bakın. `app` klasörü içerisinde `views`, `controllers`, ve `models` gibi klasörler bulunmaktadır. Projenizi geliştirirken yazacağınız kodların çok büyük bir kısmı bu klasörler içine yazılacaktır. Ayrıca `app/config` klasörü içerisine bakıp size ne tür konfigürasyon ayarları tanımlandığını görebilirsiniz.
 
