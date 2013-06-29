@@ -1,135 +1,135 @@
-# Artisan Development
+# Artisan'ın Geliştirilmesi
 
-- [Introduction](#introduction)
-- [Building A Command](#building-a-command)
-- [Registering Commands](#registering-commands)
-- [Calling Other Commands](#calling-other-commands)
+- [Giriş](#giris)
+- [Komut Oluşturulması](#building-a-command)
+- [Komutların Kayıt Ettirilmesi](#registering-commands)
+- [Diğer Komutların Çağırılması](#calling-other-commands)
 
-<a name="introduction"></a>
-## Introduction
+<a name="giris"></a>
+## Giriş
 
-In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
+Artisan'da mevcut olan komutlara ilaveten,  uygulamanız ile çalışacak olan kendi özel komutlarınızı inşa edebilirsiniz. Bu özel komutlarınızı  `app/commands` dizininde depolayabilirsiniz. Komutlarınızı kendi istediğiniz başka bir dizinde de depolayabilirsiniz. Bunun için, bu komutlarınızın `composer.json` ayarlarınız bazında "autoload" edilebiliyor olması gerekmektedir.
 
 <a name="building-a-command"></a>
-## Building A Command
+## Komut Oluşturulması
 
-### Generating The Class
+### Sınıfının Yaratılması
 
-To create a new command, you may use the `command:make` Artisan command, which will generate a command stub to help you get started:
+Yeni bir komut oluşturmak için, `command:make` Artisan komutunu kullanabilirsiniz. Bu komut, başlamanızda size yardımcı olmak için yeni bir komut taslağı oluşturacaktır.
 
-**Generate A New Command Class**
+**Yeni bir Komut Sınıfının Oluşturulması**
 
-	php artisan command:make FooCommand
+	php artisan command:make FalancaKomut
 
-By default, generated commands will be stored in the `app/commands` directory; however, you may specify custom path or namespace:
+Yaratılacak olan yeni komutlar, varsayılan ön değer olarak `app/commands` dizininde depolanırlar. Fakat, siz başka bir dizin veya bir 'namespace' de belirleyebilirsiniz.
 
-	php artisan command:make FooCommand --path="app/classes" --namespace="Classes"
+	php artisan command:make FalancaKomut --path="app/classes" --namespace="Siniflar"
 
-### Writing The Command
+### Komutun Yazılışı
 
-Once your command is generated, you should fill out the `name` and `description` properties of the class, which will be used when displaying your command on the `list` screen.
+Komut oluşturulduktan sonra, komutu `list` ekranında görüntülerken kullanılacak olan, sınıf ismi `name` ve tanımı `description` özellikleri doldurulmalıdır.
 
-The `fire` method will be called when your command is executed. You may place any command logic in this method.
+Komut çalıştırıldığında `fire` (ateşle) yöntemi çağırılmaktadır. Bu yönteme, istenecek herhangi bir komut mantığı yerleştirebilinir.
 
-### Arguments & Options
+### Argümanlar & Seçenekler
 
-The `getArguments` and `getOptions` methods are where you may define any arguments or options your command receives. Both of these methods return an array of commands, which are described by a list of array options.
+Komutunuzun Argümanlarını ve Seçeneklerini, `getArguments` ve `getOptions` metodları ile belirleyebilirsiniz. Bu metodların her ikisi de birer komut dizisi verirler. Bu komut dizileri, bir 'dizi seçenekleri listesi' ile tarif edilirler.
 
-When defining `arguments`, the array definition values represent the following:
+Argümanları `arguments` belirlerlerken, dizi tanımı değerleri şunları belirler: (ismi, modu, tanımı, ön değeri)
 
 	array($name, $mode, $description, $defaultValue)
 
-The argument `mode` may be any of the following: `InputArgument::REQUIRED` or `InputArgument::OPTIONAL`.
+Modu argümanı `mode` şunlardan herhangi biri olabilir: `InputArgument::REQUIRED` (mecburi) veya `InputArgument::OPTIONAL` (isteğe bağlı).
 
-When defining `options`, the array definition values represent the following:
+Seçenekleri `options` belirlerken, dizi tanımı değerleri şunları belirler: (ismi, kısayolu, modu, tanımı, ön değeri)
 
 	array($name, $shortcut, $mode, $description, $defaultValue)
 
-For options, the argument `mode` may be: `InputOption::VALUE_REQUIRED`, `InputOption::VALUE_OPTIONAL`, `InputOption::VALUE_IS_ARRAY`, `InputOption::VALUE_NONE`.
+Seçenekler için, modu argümanı `mode` şunlardan biri olabilir: `InputOption::VALUE_REQUIRED` (Girdi Seçeneği: mecburi), `InputOption::VALUE_OPTIONAL` (isteğe bağlı), `InputOption::VALUE_IS_ARRAY` (dizi), `InputOption::VALUE_NONE` (yok).
 
-The `VALUE_IS_ARRAY` mode indicates that the switch may be used multiple times when calling the command:
+`VALUE_IS_ARRAY` (Girdi Seçeneği: dizi) modu, komut çağırılırken, anahtarın birden çok kez kullanılabilir oldugunu belirtir:
 
-	php artisan foo --option=bar --option=baz
+	php artisan falan --option=filan --option=fesmekan
 
-The `VALUE_NONE` option indicates that the option is simply used as a "switch":
+`VALUE_NONE` (Girdi Seçeneği: yok) modu, seçeneğin sadece bir "anahtar" olarak kullanıldığını belirtir. 
 
-	php artisan foo --option
+	php artisan falan --option
 
-### Retrieving Input
+### Girdilerin Çağırılması
 
-While your command is executing, you will obviously need to access the values for the arguments and options accepted by your application. To do so, you may use the `argument` and `option` methods:
+Komutunuz çalışırken, uygulamanızın kabul edeceği argüman ve seçenek değerlerine ulaşabilmeniz gerekecektir. Bunu yapabilmek için argüman `argument` ve seçenek `option` yöntemlerini kullanabilirsiniz:
 
-**Retrieving The Value Of A Command Argument**
+**Bir Komut Argüman Değerinin Çağırılması**
 
-	$value = $this->argument('name');
+	$value = $this->argument('ismi');
 
-**Retrieving All Arguments**
+**Tüm Argümanların Birden Çağırılması**
 
 	$arguments = $this->argument();
 
-**Retrieving The Value Of A Command Option**
+**Bir Komut Seçeneği Değerinin Çağırılması**
 
-	$value = $this->option('name');
+	$value = $this->option('ismi');
 
-**Retrieving All Options**
+**Tüm Seçeneklerin Birden Çağırılması**
 
 	$options = $this->option();
 
-### Writing Output
+### Çıktı Yazılışı
 
-To send output to the console, you may use the `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
+Çıktının konsola gönderilmesi için, `info` (bilgi), `comment` (not), `question` (soru) ve `error` (hata) yöntemlerini kullanabilirsiniz. Bu yöntemlerin her biri, kendi amaçlarına uygun olan ANSI renklerini kullanacaktır.
 
-**Sending Information To The Console**
+**Konsola Bilgi Gönderilmesi**
 
-	$this->info('Display this on the screen');
+	$this->info('Bunu ekranda göster');
 
-**Sending An Error Message To The Console**
+**Konsola Bir Hata Mesajı Gönderilmesi**
 
-	$this->error('Something went wrong!');
+	$this->error('Bir hata oluştu!');
 
-### Asking Questions
+### Soruların Soruluşu
 
-You may also use the `ask` and `confirm` methods to prompt the user for input:
+Kullanıcıdan bir girdi talep etmek için, `ask` (sor) ve `confirm` (onayla) yöntemlerini kullanabilirsiniz.
 
-**Asking The User For Input**
+**Kullanıcıya Girdi Bilgisinin Soruluşu**
 
-	$name = $this->ask('What is your name?');
+	$name = $this->ask('İsminiz nedir?');
 
-**Asking The User For Secret Input**
+**Kullanıcıya Gizli Şifre Bilgisinin Soruluşu**
 
-	$password = $this->secret('What is the password?');
+	$password = $this->secret('Lütfen şifrenizi giriniz!');
 
-**Asking The User For Confirmation**
+**Kullanıcıya Onayının Soruluşu**
 
-	if ($this->confirm('Do you wish to continue? [yes|no]'))
+	if ($this->confirm('Devam etmek istiyor musunuz? [evet|hayır]'))
 	{
 		//
 	}
 
-You may also specify a default value to the `confirm` method, which should be `true` or `false`:
+İsterseniz `confirm` (onayla) yöntemine, `true` (evet) ve `false` (hayır) seçeneklerinden birini varsayılan ön değer olarak belirleyebilirsiniz :
 
-	$this->confirm($question, true);
+	$this->confirm($soru, true);
 
 <a name="registering-commands"></a>
-## Registering Commands
+## Komutların Kayıt Ettirilmesi
 
-Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/start/artisan.php` file. Within this file, you may use the `Artisan::add` method to register the command:
+Komutunuzun inşa edilmesi tamamlandığında, kullanılmaya hazır olabilmesi için, Artisan'da kayıt ettirmeniz gerekir. Bu, genelde `app/start/artisan.php` dosyası içerisinde yapılır. Bu dosya içerisinde, kayıt ettirmek için `Artisan::add` (Artisan::ekle) yöntemini kullanabilirsiniz.
 
-**Registering An Artisan Command**
+**Bir Artisan Komutunun Kayıt Ettirilişi**
 
-	Artisan::add(new CustomCommand);
+	Artisan::add(new FalancaKomut);
 
-If your command is registered in the application [IoC container](/docs/ioc), you may use the `Artisan::resolve` method to make it available to Artisan:
+Eğer komutunuz [IoC container](/docs/ioc) uygulamasında kayıtlı ise, Artisan'da da kullanılabilir olması için `Artisan::resolve` yöntemini kullanabilirsiniz.
 
-**Registering A Command That Is In The IoC Container**
+**IoC Container'da Olan Bir Komutun Kayıt Ettirilişi**
 
-	Artisan::resolve('binding.name');
+	Artisan::resolve('binding.ismi');
 
 <a name="calling-other-commands"></a>
-## Calling Other Commands
+## Diğer Komutların Çağırılması
 
-Sometimes you may wish to call other commands from your command. You may do so using the `call` method:
+Bazı durumlarda, komtunuzun içerisinden diğer başka bir komutu çağırmak isteyebilirsiniz. Bunu, `call` (çağır) yöntemini kullanarak yapabilirsiniz:
 
-**Calling Another Command**
+**Başka Bir Komutun Çağırılışı**
 
-	$this->call('command.name', array('argument' => 'foo', '--option' => 'bar'));
+	$this->call('command.ismi', array('argument' => 'falan', '--option' => 'filan'));
