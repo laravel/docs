@@ -1,163 +1,163 @@
-# Requests & Input
+# İstekler (Requests) ve Girdi (Input)
 
-- [Basic Input](#basic-input)
-- [Cookies](#cookies)
-- [Old Input](#old-input)
-- [Files](#files)
-- [Request Information](#request-information)
+- [Basit Girdi](#basic-input)
+- [Çerezler (Cookies)](#cookies)
+- [Eski Girdi](#old-input)
+- [Dosyalar](#files)
+- [İstek Bilgileri](#request-information)
 
 <a name="basic-input"></a>
-## Basic Input
+## Basit Girdi
 
-You may access all user input with a few simple methods. You do not need to worry about the HTTP verb used for the request, as input is accessed in the same way for all verbs.
+Tüm kullanıcı girdisine birkaç basit yöntemle erişebilirsiniz. İstek için kullanılmış olan HTTP eylemi için endişe etmenize gerek yoktur, bütün eylemler için girdi bilgisine erişim aynıdır.
 
-**Retrieving An Input Value**
+**Bir Girdi Değerinin Çağırılması**
 
-	$name = Input::get('name');
+	$ismi = Input::get('ismi');
 
-**Retrieving A Default Value If The Input Value Is Absent**
+**Bir Girdi Değerinin (Eksik Olması Durumunda Varsayılacak Olan Bir "Ön Değer" Belirtilerek) Çağırılması**
 
-	$name = Input::get('name', 'Sally');
+	$ismi = Input::get('ismi', 'Saliha');
 
-**Determining If An Input Value Is Present**
+**Bir Girdi Değerinin Mevcut Olduğunun Test Edilmesi**
 
-	if (Input::has('name'))
+	if (Input::has('ismi'))
 	{
 		//
 	}
 
-**Getting All Input For The Request**
+**İstekteki Tüm Girdi Değerlerinin Birden Çağırılması**
 
-	$input = Input::all();
+	$girdi = Input::all();
 
-**Getting Only Some Of The Request Input**
+**İstek Girdisinin Sadece Bazı Değerlerinin Çağırılması**
 
-	$input = Input::only('username', 'password');
+	$girdi = Input::only('kullaniciadi', 'sifre'); 	//sadece belirtilenler
 
-	$input = Input::except('credit_card');
+	$girdi = Input::except('kredi_karti');	//belirtilenler hariç
 
-Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
+Bazı JavaScript kütüphaneleri, örneğin Backbone, girdi bilgisini uygulamaya JSON olarak gönderir. Bu girdi verisine de yine normal şekilde `Input::get` ile erişebilirsiniz.
 
 <a name="cookies"></a>
-## Cookies
+## Çerezler (Cookies)
 
-All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client.
+Laravel çerçevesi tarafından oluşturulan tüm çerezler, bir kimlik doğrulama kodu ile şifrelenir ve imzalanır. Kullanıcı tarafından değiştirilmiş halinde geçersiz kabul edilecektir.
 
-**Retrieving A Cookie Value**
+**Bir Çerez Değerinin Çağırılması**
 
-	$value = Cookie::get('name');
+	$deger = Cookie::get('ismi');
 
-**Attaching A New Cookie To A Response**
+**Yanıta(Response) Yeni Bir Çerez İliştirilmesi**
 
-	$response = Response::make('Hello World');
+	$yanıt= Response::make('Merhaba Dünya');
 
-	$response->withCookie(Cookie::make('name', 'value', $minutes));
+	$yanıt->withCookie(Cookie::make('ismi', 'degeri', $dakikaOlarakSüresi));
 
-**Creating A Cookie That Lasts Forever**
+**Süresiz Bir Çerez Oluşturulması**
 
-	$cookie = Cookie::forever('name', 'value');
+	$cerez = Cookie::forever('ismi', 'degeri');
 
 <a name="old-input"></a>
-## Old Input
+## Eski Girdi
 
-You may need to keep input from one request until the next request. For example, you may need to re-populate a form after checking it for validation errors.
+Bazı durumlarda bir isteğin girdisini bir sonraki isteğe kadar tutmanız gerekebilir. Örneğin, doğrulama hataları için kontrol ettikten sonra bir formu yeniden bu eski girdi bilgisi ile doldurmak gerekebilir.
 
-**Flashing Input To The Session**
+**Girdinin Oturuma(Session) Geçici Olarak Yansıtılması (flash)**
 
 	Input::flash();
 
-**Flashing Only Some Input To The Session**
+**Girdinin Sadece Bazı Değerlerinin Oturuma Geçici Olarak Yansıtılması**
 
-	Input::flashOnly('username', 'email');
+	Input::flashOnly('kullaniciadi', 'email');	//sadece belirtilenler
 
-	Input::flashExcept('password');
+	Input::flashExcept('sifre');	//belirtilenler hariç
 
-Since you often will want to flash input in association with a redirect to the previous page, you may easily chain input flashing onto a redirect.
+Girdinin geçici olarak oturuma yansıtılmasını, sık şekilde bir önceki sayfaya tekrar-yönlendirme (redirect) ile birlikte yapacağınız için, bu yansıtmayı (redirect)'e zincir ek yapabilirsiniz.
 
-	return Redirect::to('form')->withInput();
+	return Redirect::to('form')->withInput();	//tüm girdi değerleri ile beraber
 
-	return Redirect::to('form')->withInput(Input::except('password'));
+	return Redirect::to('form')->withInput(Input::except('sifre'));	//belirtilenler hariç
 
-> **Note:** You may flash other data across requests using the [Session](/docs/session) class.
+> **Not:** Diğer verilerin istekler arasında geçici yansıtmasını (flash), Oturum [Session](/docs/session) sınıfını kullanarak  yapabilirsiniz.
 
-**Retrieving Old Data**
+**Eski Girdi Verisinin Çağırılması**
 
-	Input::old('username');
+	Input::old('kullaniciadi');
 
 <a name="files"></a>
-## Files
+## Dosyalar
 
-**Retrieving An Uploaded File**
+**Yüklenmiş Olan Bir Dosyanın Çağırılması**
 
-	$file = Input::file('photo');
+	$dosya = Input::file('foto');
 
-**Determining If A File Was Uploaded**
+**Bir Dosyanın Yüklenmiş Olduğunun Test Edilmesi**
 
-	if (Input::hasFile('photo'))
+	if (Input::hasFile('foto'))
 	{
 		//
 	}
 
-The object returned by the `file` method is an instance of the `Symfony\Component\HttpFoundation\File\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file.
+Dosya `file` yöntemi tarafından gönderilen nesne(object), PHP `SplFileInfo` sınıfının bir uzantısı olan `Symfony\Component\HttpFoundation\File\UploadedFile` sınıfının bir "üyesidir", ve bu sayede dosya ile etkileşim için çeşitli yöntemler sağlar.
 
-**Moving An Uploaded File**
+**Yüklenmiş Olan Bir Dosyanın Taşınması**
 
-	Input::file('photo')->move($destinationPath);
+	Input::file('foto')->move($hedefDizinPatikasi);
 
-	Input::file('photo')->move($destinationPath, $fileName);
+	Input::file('foto')->move($hedefDizinPatikasi, $dosyaAdi);
 
-**Retrieving The Path To An Uploaded File**
+**Yüklenmiş Olan Bir Dosyanın Patikasının Çağırılması**
 
-	$path = Input::file('photo')->getRealPath();
+	$patika = Input::file('foto')->getRealPath();
 
-**Retrieving The Size Of An Uploaded File**
+**Yüklenmiş Olan Bir Dosyanın Büyüklük Değerinin Çağırılması**
 
-	$size = Input::file('photo')->getSize();
+	$buyukluk = Input::file('foto')->getSize();
 
-**Retrieving The MIME Type Of An Uploaded File**
+**Yüklenmiş Olan Bir Dosyanın MIME Cinsi Değerinin Çağırılması**
 
-	$mime = Input::file('photo')->getMimeType();
+	$mime = Input::file('foto')->getMimeType();
 
 <a name="request-information"></a>
-## Request Information
+## İstek Bilgileri
 
-The `Request` class provides many methods for examining the HTTP request for your application and extends the `Symfony\Component\HttpFoundation\Request` class. Here are some of the highlights.
+İstek `Request` sınıfı, uygulamanıza gelecek olan HTTP isteğini incelemeniz için birçok yöntem sunar ve `Symfony\Component\HttpFoundation\Request` sınıfının bir uzantısıdır. Bunlardan bazıları şöyledir.
 
-**Retrieving The Request URI**
+**İstek URI'nın Çağırılması**
 
 	$uri = Request::path();
 
-**Determining If The Request Path Matches A Pattern**
+**İstek Patikasının Bir Şablona Uygunluğunun Test Edilmesi**
 
 	if (Request::is('admin/*'))
 	{
 		//
 	}
 
-**Get The Request URL**
+**İstek URL'nin Çağırılması**
 
 	$url = Request::url();
 
-**Retrieve A Request URI Segment**
+**İstek URI'nın Herhangi Bir Bölümünün Çağırılması**
 
 	$segment = Request::segment(1);
 
-**Retrieving A Request Header**
+**Bir İstek Başlığı(Header) Değerinin Çağırılması**
 
-	$value = Request::header('Content-Type');
+	$deger = Request::header('Content-Type');
 
-**Retrieving Values From $_SERVER**
+**Sunucu bilgileri için $_SERVER Değerlerinin Çağırılması**
 
-	$value = Request::server('PATH_INFO');
+	$deger = Request::server('PATH_INFO');
 
-**Determine If The Request Is Using AJAX**
+**İsteğin AJAX Kullandığının Test Edilmesi**
 
 	if (Request::ajax())
 	{
 		//
 	}
 
-**Determining If The Request Is Over HTTPS**
+**İsteğin HTTPS Üzerinden Olduğunun Test Edilmesi**
 
 	if (Request::secure())
 	{
