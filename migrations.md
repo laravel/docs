@@ -1,102 +1,102 @@
-# Migrations & Seeding
+# Yerleşimler (Migrations) ve Filizlendirme (Seeding)
 
-- [Introduction](#introduction)
-- [Creating Migrations](#creating-migrations)
-- [Running Migrations](#running-migrations)
-- [Rolling Back Migrations](#rolling-back-migrations)
-- [Database Seeding](#database-seeding)
+- [Giriş](#introduction)
+- [Yerleşimlerin Oluşturulması](#creating-migrations)
+- [Yerleşimlerin Çalıştırılması](#running-migrations)
+- [Yerleşimlerin Geriye Döndürülmesi](#rolling-back-migrations)
+- [Veritabanı Filizlendirmesi](#database-seeding)
 
 <a name="introduction"></a>
-## Introduction
+## Giriş
 
-Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/schema) to easily manage your application's scheme.
+Yerleşimler, veritabanınız için bir çeşit sürüm yöneticisidir (Version Control). Beraber çalışan bir ekibe, veritabanı şemasında değişiklikler yapma ve en son şema durumunu güncelleme imkanı sağlar. Yerleşimler, uygulamanızın şemasını kolayca yönetmeniz için, genellikle Şema Kurucusu [Schema Builder](/docs/schema) ile birlikte kullanılır.
 
 <a name="creating-migrations"></a>
-## Creating Migrations
+## Yerleşimlerin Oluşturulması
 
-To create a migration, you may use the `migrate:make` command on the Artisan CLI:
+Bir yerleşim oluşturmak için, Artisan KSA 'da (Artisan Komut Satırı Arayüzü) `migrate:make` komutunu kullanabilirsiniz:
 
-**Creating A Migration**
+**Bir Yerleşim Oluşturulması**
 
-	php artisan migrate:make create_users_table
+	php artisan migrate:make kullanicilar_tablosunu_olustur
 
-The migration will be placed in your `app/database/migrations` folder, and will contain a timestamp which allows the framework to determine the order of the migrations.
+Yerleşim `app/database/migrations` dizininize konumlandırılır ve bir 'zaman kayıtı' (timestamp) bulundurur. Zaman Kayıtı, uygulamanıza yerleşimlerinizin sırasını belirleme olanağını sağlar.
 
-You may also specify a `--path` option when creating the migration. The path should be relative to the root directory of your installation:
+Yerleşimi oluştururken bir patika `--path` seçeneği de belirtebilirsiniz. Patika, kurulum kök dizinine ilişkin olmalıdır:
 
-	php artisan migrate:make foo --path=app/migrations
+	php artisan migrate:make falancaYerlesim --path=app/migrations
 
-The `--table` and `--create` options may also be used to indicate the name of the table, and whether the migration will be creating a new table:
+Tablo ismini ve yeni bir tablonun oluşturulacagını da, tablo `--table` ve oluştur `--create` seçeneklerini kullanarak belirtebilirsiniz: 
 
-	php artisan migrate:make create_users_table --table=users --create
+	php artisan migrate:make kullanicilar_tablosunu_olustur --table=kullanicilar --create
 
 <a name="running-migrations"></a>
-## Running Migrations
+## Yerleşimlerin Çalıştırılması
 
-**Running All Outstanding Migrations**
+**Bekleyen Yerleşimlerin Hepsinin Birden Çalıştırılması**
 
 	php artisan migrate
 
-**Running All Outstanding Migrations For A Path**
+**Bir Patikadaki Yerleşimlerin Çalıştırılması**
 
-	php artisan migrate --path=app/foo/migrations
+	php artisan migrate --path=app/falancaDizin/migrations
 
-**Running All Outstanding Migrations For A Package**
+**Bir Paketin Tüm Bekleyen Yerleşimlerinin Çalıştırılması**
 
 	php artisan migrate --package=vendor/package
 
-> **Note:** If you receive a "class not found" error when running migrations, try running the `composer update` command.
+> **Not:** Yerleşimleri çalıştırırken, "class not found" (sınıf bulunamadı) hatası veririse, `composer update` (composer güncelle) komutunu çalıştırarak deneyiniz.
 
 <a name="rolling-back-migrations"></a>
-## Rolling Back Migrations
+## Yerleşimlerin Geriye Döndürülmesi
 
-**Rollback The Last Migration Operation**
+**Son Yerleşim İşleminin Geriye Döndürülmesi**
 
 	php artisan migrate:rollback
 
-**Rollback all migrations**
+**Tüm Yerleşim İşlemlerinin Geriye Döndürülmesi**
 
 	php artisan migrate:reset
 
-**Rollback all migrations and run them all again**
+**Tüm Yerleşim İşlemlerinin Geriye Döndürülmesi ve Hepsinin Tekrardan Çalıştırılması**
 
-	php artisan migrate:refresh
+	php artisan migrate:refresh		//filizlendirmeler dahil edilmeden
 
-	php artisan migrate:refresh --seed
+	php artisan migrate:refresh --seed	//filizlendirmeler dahil edilerek
 
 <a name="database-seeding"></a>
-## Database Seeding
+## Veritabanı Filizlendirmesi
 
-Laravel also includes a simple way to seed your database with test data using seed classes. All seed classes are stored in `app/database/seeds`. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserTableSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
+Filizlendirme (seeding), yerleşim ile oluşturulacak veritabanı tablosunda gerekli olacak ilk veri kayıtlarının (seed data) oluşturulması işlemidir(:çevirenin notu). Laravel, veritabanınızın deneme verisi ile filizlendirilmesi için kolaylık sağlayacak olan filizlendirme (seed) sınıflarını bulundurur. Bütün filizlendirme sınıfları `app/database/seeds` dizininde konumlandırılır. Filizlendirme sınıflarına istediğiniz isimleri verebilirsiniz. Fakat isimlendirirken anlaşılacak belli bir düzene (convention) uyulması lehinizedir, örneğin `KullanicilarTablosuFilizlendiricisi`, vb. Başlangıçta, kullanacağınız sınıf olarak `DatabaseSeeder` (Veritabanı Filizlendiricisi) sınıfı belirlenmiştir. Filizlendirme sırasını denetlemenize imkan verecek olan, bu sınıfın 'çagır' `call` yöntemini kullanarak diğer filizlendirme sınıflarınızı çalıştırabilirsiniz. 
 
-**Example Database Seed Class**
+**Veritabanı Filizlendirme Sınıfı Örneği**
 
 	class DatabaseSeeder extends Seeder {
 
 		public function run()
 		{
-			$this->call('UserTableSeeder');
+			$this->call('KullanicilarTablosuFilizlendiricisi');
 
-			$this->command->info('User table seeded!');
+			$this->command->info('Kullanıcı tablosu filizlendirildi!');
 		}
 
 	}
 
-	class UserTableSeeder extends Seeder {
+	class KullanicilarTablosuFilizlendiricisi extends Seeder {
 
 		public function run()
 		{
-			DB::table('users')->delete();
+			DB::table('kullanicilar')->delete();
 
-			User::create(array('email' => 'foo@bar.com'));
+			User::create(array('email' => 'falanca@filanca.com'));
 		}
 
 	}
 
-To seed your database, you may use the `db:seed` command on the Artisan CLI:
+Veritabanınızı filizlendirmek için, Artisan KSA'da `db:seed` (filizlendir) komutunu kullanabilirsiniz:
 
 	php artisan db:seed
 
-You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations:
+Veritabanınızı `migrate:refresh` (yenile) komutunu kullanarak da filizlendirebilirsiniz, bu komut aynı zamanda bütün yerleşimleri geriye döndürüp, hepsini tekrardan çalıştıracaktır:
 
 	php artisan migrate:refresh --seed
