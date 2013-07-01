@@ -1,31 +1,31 @@
-# Contributing To Laravel
+# Laravel'e Katkıda Bulunulması
 
-- [Introduction](#introduction)
-- [Pull Requests](#pull-requests)
-- [Coding Guidelines](#coding-guidelines)
+- [Giriş](#introduction)
+- [Alınsın Talepleri (Pull Requests)](#pull-requests)
+- [Kodlama İlkeleri](#coding-guidelines)
 
 <a name="introduction"></a>
-## Introduction
+## Giriş
 
-Laravel is free, open-source software, meaning anyone can contribute to its development and progress. Laravel source code is currently hosted on [Github](http://github.com), which provides an easy method for forking the project and merging your contributions.
+Laravel ücretsiz ve açık kaynak bir yazılım olup, geliştirilmesine ve ilerletilmesine katkıda bulunabilinir. Laravel kaynak kodu [Github](http://github.com) da bulunmakta olup, oradan projeye kolayca bir çatal açılarak (forking), katkılarınız birleştirilebilir (merging).
 
 <a name="pull-requests"></a>
-## Pull Requests
+## Alınsın Talepleri
 
-The pull request process differs for new features and bugs. Before sending a pull request for a new feature, you should first create an issue with `[Proposal]` in the title. The proposal should describe the new feature, as well as implementation ideas. The proposal will then be reviewed and either approved or denied. Once a proposal is approved, a pull request may be created implementing the new feature. Pull requests which do not follow this guideline will be closed immediately.
+Alınsın talebinin işleyişi, yeni özellikler için veya yazılım hataları için olmasına bağlı olarak farklılık gösterir. Yeni bir özellik için yapılacak bir alınsın talebi göndermeden önce, başlığında bir teklif `[Proposal]` konusu oluşturmanız gerekir. Teklifin, yeni özelliği ve uygulama fikirlerini tarif eder şekilde olması gerekir. Bu ilkeye uyulmamış olan alınsın talepleri hemen kapatılacaktır.
 
-Pull requests for bugs may be sent without creating any proposal issue. If you believe that you know of a solution for a bug that has been filed on Github, please leave a comment detailing your proposed fix.
+Yazılım hataları için gönderilecek olan alınsın talepleri, bir teklif oluşturulmadan gönderilebilinir. Eğer Github'da dosyalanmış olan bir yazılım hatası çözümünü bildiğinizi düşünüyorsanız, o durumda lütfen önerilen düzeltmenin detaylarını belirten bir not giriniz.
 
-### Feature Requests
+### Özellik Talepleri
 
-If you have an idea for a new feature you would like to see added to Laravel, you may create an issue on Github with `[Request]` in the title. The feature request will then be reviewed by a core contributor.
+Eğer Laravel'e ilave edildiğini görmek isteyeceğiniz bir 'yeni özellik' fikriniz varsa, Github'da başlığında 'Talep' `[Request]` olacak bir konu oluşturabilirsiniz. Özellik talebi, bir ana katılımcı tarafından gözden geçirilecektir.
 
 <a name="coding-guidelines"></a>
-## Coding Guidelines
+## Kodlama İlkeleri
 
-Laravel follows the [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) and [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) coding standards. In addition to these standards, below is a list of other coding standards that should be followed:
+Laravel, [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) ve [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) kodlama standartlarını takip eder. Bunlara ilave olarak, takip edilmesi gereken diğer standartların listesi şöyledir:
 
-- Namespace declarations should be on the same line as `<?php`.
-- Class opening `{` should be on the same line as the class name.
-- Function and control structure opening `{` should be on a separate line.
-- Interface names are suffixed with `Interface` (`FooInterface`)
+- 'Namespace' deklarasyonlarının `<?php` ile aynı satırda olması gerekir.
+- Sınıf (Class) açılışlarının `{` , sınıf ismi ile aynı satırda olması gerekir.
+- Fonksiyon (Function) ve kontrol bloğu (control structure) açılışlarının `{`, farklı satırlarda olması gerekir.
+- Arayüz (Interface) isimleri `Interface` son ekini alırlar, örneğin (`FalancaInterface`).
