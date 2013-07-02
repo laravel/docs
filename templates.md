@@ -131,7 +131,7 @@ Operator  | Description
 `{{{ }}}` | HTML Escaped `<?php echo`
 `{{-- --}}` | Blade Template Comment - Not rendered to HTML
 `@extend` | Defines layout to use
-`@yeild` | Define customizable `section` for child views
+`@yield` | Define customizable `section` for child views
 `@section()` | Opens `section` definition
 `@stop` | Ends `section` definition
 `@show` | Ends `section` within parent view to allow for modifications
