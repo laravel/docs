@@ -133,8 +133,9 @@ Operator  | Description
 `@extend` | Defines layout to use
 `@yield` | Define customizable `section` for child views
 `@section()` | Opens `section` definition
-`@stop` | Ends `section` definition
-`@show` | Ends `section` within parent view to allow for modifications
+`@overwrite` | Closes `section` definition and only includes contents of current section definition
+`@stop` | Closes `section` definition and includes contents of parent section definitions
+`@show` | Closes `section` within parent view to allow for modifications
 `@parent` | Renders `section` definition from parent
 `@if()` | Opens `if` block
 `@elseif()` | Opens `elseif` block
