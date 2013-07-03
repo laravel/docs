@@ -94,3 +94,32 @@ You may also register an event to catch all messages passed to the log:
 	{
 		//
 	});
+
+**Changing Log Levels for the application**
+
+The Log level of the application can be changed on ```app/start/global.php``` by adding additional parameters on the function ```Log::useDailyFiles()``` which takes 3 parameters.
+ - Storage Path
+ - Total Number of Days to Log [Default: 0 Days]
+ - Log Level [Default: ```debug```]
+
+```
+Log::useDailyFiles(storage_path() . '/logs/' . $logFile, 0, 'error');
+```
+
+The log levels that can be used are mentioned above on the section [Logging](#logging)
+
+**Adding more information to the Log Data**
+
+The Logging methods provides a second parameter to help add more information as a context to the Log file.
+
+```
+Log::info('Log Message', array('context'=>'Log Context for additional information'));
+Log::warning('Log Message', array('context'=>'Log Context for additional information'));
+Log::error('Log Message', array('context'=>'Log Context for additional information'));
+Log::notice('Log Message', array('context'=>'Log Context for additional information'));
+Log::debug('Log Message', array('context'=>'Log Context for additional information'));
+Log::alert('Log Message', array('context'=>'Log Context for additional information'));
+Log::critical('Log Message', array('context'=>'Log Context for additional information'));
+```
+
+This second parameter is applicable for the other Logging methods as well.
