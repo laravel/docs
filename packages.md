@@ -93,7 +93,7 @@ When developing a package, it is useful to be able to develop within the context
 
 After the `workbench` command has created your package. You may `git init` from the `workbench/[vendor]/[package]` directory and `git push` your package straight from the workbench! This will allow you to conveniently develop the package in an application context without being bogged down by constant `composer update` commands.
 
-Since your packages are in the `workbench` directory, you may be wondering how Composer knows to autoload your package's files. When the `workbench` directory exists, Laravel will intelligently scan it for packages, loading their Composer autoload files when the application starts!
+Since your packages are in the `workbench` directory, you may be wondering how Composer knows to autoload your package's files. When the `workbench` directory exists, Laravel will intelligently scan it for packages, loading their Composer autoload files when the application starts! However, it's important to note that Laravel does this by searching for a workbench package's `autoload.php` file within a `vendor` subdirectory. This means that you will need to run `composer install` from the same directory as your workbench package's `composer.json` file to install the package dependencies and make it create an autoload file.
 
 If you need to regenerate your package's autoload files, you may use the `php artisan dump-autoload` command. This command will regenerate the autoload files for your root project, as well as any workbenches you have created.
 
