@@ -3,6 +3,7 @@
 - [Controller Layouts](#controller-layouts)
 - [Blade Templating](#blade-templating)
 - [Other Blade Control Structures](#other-blade-control-structures)
+- [Blade Operators](#blade-operators)
 
 <a name="controller-layouts"></a>
 ## Controller Layouts
@@ -74,7 +75,7 @@ Note that views which `extend` a Blade layout simply override sections from the 
 
 	The current UNIX timestamp is {{ time() }}.
 
-To escape the output, you may use the triple curly brace syntax:
+To escape the output (to prevent malicious markup from being injected), you may use the triple curly brace syntax:
 
 	Hello, {{{ $name }}}.
 
@@ -119,3 +120,35 @@ To escape the output, you may use the triple curly brace syntax:
 **Comments**
 
 	{{-- This comment will not be in the rendered HTML --}}
+
+
+<a name="blade-operators"></a>
+## Blade Operators
+
+Operator  | Description
+------------- | -------------
+`{{ }}` | Nonescaped `<?php echo`
+`{{{ }}}` | HTML Escaped `<?php echo`
+`{{-- --}}` | Blade Template Comment - Not rendered to HTML
+`@extend` | Defines layout to use
+`@yield` | Define customizable `section` for child views
+`@section()` | Opens `section` definition
+`@overwrite` | Closes `section` definition and only includes contents of current section definition
+`@stop` | Closes `section` definition and includes contents of parent section definitions
+`@show` | Closes `section` within parent view to allow for modifications
+`@parent` | Renders `section` definition from parent
+`@if()` | Opens `if` block
+`@elseif()` | Opens `elseif` block
+`@else` | Opens `else` block
+`@endif | Closes `if` block
+`@unless()` | Opens an `if(! )` block
+`@endunless` | Closes @unless block
+`@for()` | Opens `for` block
+`@endfor` | Closes `for block
+`@foreach()` | Opens `foreach` block
+`@endforeach` | Closes `foreach` block
+`@while()` | Opens `while` block
+`@endwhile` | Closes `while` block
+`@include()` | Renders another view's contents
+`@lang()` | Renders `Lang::get()`
+`@choice()` | Renders `Lang::choice()`
