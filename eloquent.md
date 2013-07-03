@@ -357,7 +357,7 @@ To define the inverse of the relationship on the `Phone` model, we use the `belo
 
 	}
 
-In the above example, Eloquent will look for a `user_id` column on the `phones` table. If you would like to define a different foreign key column, you can pass it in as the second argument:
+In the example above, Eloquent will look for a `user_id` column on the `phones` table. If you would like to define a different foreign key column, you may pass it as the second argument to the `belongsTo` method:
 
 	class Phone extends Eloquent {
 
