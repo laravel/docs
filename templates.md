@@ -78,6 +78,8 @@ Of course, all user supplied data should be escaped or purified. To escape the o
 
 	Hello, {{{ $name }}}.
 
+> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the triple curly brace syntax to escape any HTML entities in the content.
+
 **If Statements**
 
 	@if (count($records) === 1)
