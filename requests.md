@@ -110,6 +110,10 @@ The object returned by the `file` method is an instance of the `Symfony\Componen
 
 	$path = Input::file('photo')->getRealPath();
 
+**Retrieving The Original Name Of An Uploaded File**
+
+	$name = Input::file('photo')->getClientOriginalName();
+
 **Retrieving The Size Of An Uploaded File**
 
 	$size = Input::file('photo')->getSize();
