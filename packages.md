@@ -132,6 +132,18 @@ However, if your package contains a single configuration file, you may simply na
 
 	Config::get('package::option');
 
+Sometimes, you may wish to register package resources such as views outside of the typical `$this->package` method. Typically, this would only be done if the resources were not in a conventional location. To register the resources manually, you may use the `addNamespace` method of the `View`, `Lang`, and `Config` classes:
+
+**Registering A Resource Namespace Manually**
+
+	View::addNamespace('package', __DIR__.'/path/to/views');
+
+Once the namespace has been registered, you may use the namespace name and the "double colon" syntax to access the resources:
+
+	return View::make('package::view.name');
+
+The method signature for `addNamespace` is identical on the `View`, `Lang`, and `Config` classes.
+
 ### Cascading Configuration Files
 
 When other developers install your package, they may wish to override some of the configuration options. However, if they change the values in your package source code, they will be overwritten the next time Composer updates the package. Instead, the `config:publish` artisan command should be used:
