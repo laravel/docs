@@ -86,6 +86,11 @@ When utilizing resources from a package, such as configuration items or views, a
 
 > **Note:** If your package contains migrations, consider prefixing the migration name with your package name to avoid potential class name conflicts with other packages.
 
+> **If your service provider is not in it's default location:** you will need to add these to your service provider to register your config and views locations.
+
+	$this->app['view']->addNamespace('package', 'path/to/views');
+	$this->app['config']->package('vendor/package', 'path/to/config');
+
 <a name="development-workflow"></a>
 ## Development Workflow
 
