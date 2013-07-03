@@ -259,7 +259,7 @@ To determine if a given model instance has been soft deleted, you may use the `t
 <a name="timestamps"></a>
 ## Timestamps
 
-By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `datetime` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
+By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `timestamp` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
 
 **Disabling Auto Timestamps**
 
