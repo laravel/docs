@@ -82,6 +82,10 @@ The Laravel logging facilities provide a simple layer on top of the powerful [Mo
 
 The logger provides the seven logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, and **alert**.
 
+An array of contextual data may also be passed to the log methods:
+
+	Log::info('Log message', array('context' => 'Other helpful information'));
+
 Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
 
 	$monolog = Log::getMonolog();
