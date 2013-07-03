@@ -357,6 +357,17 @@ To define the inverse of the relationship on the `Phone` model, we use the `belo
 
 	}
 
+In the above example, Eloquent will look for a `user_id` column on the `phones` table. If you would like to define a different foreign key column, you can pass it in as the second argument:
+
+	class Phone extends Eloquent {
+
+		public function user()
+		{
+			return $this->belongsTo('User', 'custom_key');
+		}
+
+	}
+
 <a name="one-to-many"></a>
 ### One To Many
 
@@ -536,7 +547,7 @@ Eloquent allows you to access your relations via dynamic properties. Eloquent wi
 	}
 
 	$phone = Phone::find(1);
-	
+
 Instead of echoing the user's email like this:
 
 	echo $phone->user()->first()->email;
@@ -776,10 +787,10 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 **Applying A Callback To Each Collection Object**
 
 	$roles = User::find(1)->roles;
-	
+
 	$roles->each(function($role)
 	{
-		//	
+		//
 	});
 
 **Sorting A Collection By A Value**
