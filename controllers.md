@@ -15,12 +15,12 @@ Denetçiler genelde `app/controllers` dizininde konumlandırılır ve `composer.
 
 Basit bir denetçi (controller) sınıfı örneği şöyledir:
 
-	class KullaniciDenetcisi extends BaseController {
+	class KullaniciController extends BaseController {
 
 		/**
 		 * Verilen kullanıcının profilini göster.
 		 */
-		public function profilGoster($id)
+		public function showProfile($id)
 		{
 			$kullanici = Kullanici::find($id);
 
@@ -31,7 +31,7 @@ Basit bir denetçi (controller) sınıfı örneği şöyledir:
 
 Bütün denetçilerin `BaseController` sınıfının uzantısı olması gerekir.  `BaseController` ın kendisi de `app/controllers` dizininde bulunur ve bütün denetçiler için geçerli olacak ortak mantığın içine yerleştirilmesinde kullanılabilir. `BaseController` sınıfı, çerçevenin `Controller` sınıfının uzantısıdır. Bu durumda, oluşturmuş olduğumuz denetçi fonksiyonuna rotalandırmayı şu şekilde yapabiliriz:
 
-	Route::get('kullanici/{id}', 'KullaniciDenetcisi@profilGoster');
+	Route::get('kullanici/{id}', 'KullaniciController@showProfile');
 
 Eğer bir denetçinizi, dizin içerisinde yuvalandırarak (nest) veya PHP isim-alanları (namespaces) kullanarak organize etmek isterseniz, bu durumda rotayı tanımlarken, tam nitelendirilmiş (fully qualified) sınıf adını kullanınız:
 
@@ -56,14 +56,14 @@ Herhangi bir denetçi eylemine ait bir URL üretmek için, `URL::action` yöntem
 Denetçi rotalarına, diğer rotalarda olduğuna benzer şekilde, filitreler [Filters](/docs/routing#route-filters) belirlenebilir:
 
 	Route::get('profile', array('before' => 'auth',
-				'uses' => 'KullaniciDenetcisi@profilGoster'));
+				'uses' => 'KullaniciController@showProfile'));
 
 Filitreleri, denetçinizin içerisinden de belirtebilirsiniz:
 
-	class KullaniciDenetcisi extends BaseController {
+	class KullaniciController extends BaseController {
 
 		/**
-		 * Yeni bir KullaniciDenetcisi sureti (instance) oluştur. (new KullaniciDenetcisi)
+		 * Yeni bir KullaniciController sureti (instance) oluştur. (new KullaniciController)
 		 */
 		public function __construct()
 		{
@@ -79,10 +79,10 @@ Filitreleri, denetçinizin içerisinden de belirtebilirsiniz:
 
 Filitre fonksiyonun tanımlamasını denetçinin içerisinde ve bir bloklama {  } kullanarak yapabilirsiniz:
 
-	class KullaniciDenetcisi extends BaseController {
+	class KullaniciController extends BaseController {
 
 		/**
-		 * Yeni bir KullaniciDenetcisi sureti (instance) oluştur. (new KullaniciDenetcisi)
+		 * Yeni bir KullaniciController sureti (instance) oluştur. (new KullaniciController)
 		 */
 		public function __construct()
 		{
@@ -101,18 +101,18 @@ Laravel size, basit TEDA (REST) isimlendirme tüzüklerini (naming conventions) 
 
 **TEDA-uyumlu Bir Denetçi Oluşturulması**
 
-	Route::controller('kullanicilar', 'KullanıcıDenetçisi');
+	Route::controller('kullanicilar', 'KullaniciController');
 
 `controller` (denetçi) yöntemi iki argüman alır. Birincisi denetçinin yöneteceği baz URI olup, ikincisi denetçinin sınıf ismidir. Akabinde sadece, isimlerine HTTP eyleminin ön ek olarak ekleneceği ve bunlara cevap verecek olan yöntemlerinizi denetçinize ilave ediniz:
 
-	class KullaniciDenetcisi extends BaseController {
+	class KullaniciController extends BaseController {
 
 		public function getIndex()
 		{
 			//
 		}
 
-		public function postProfil()
+		public function postProfile()
 		{
 			//
 		}
@@ -132,11 +132,11 @@ Kaynak denetçileri, kaynaklar etrafında TEDA-uyumlu denetçiler oluşturulmas�
 
 Denetçiyi komut satırını kullanarak oluşturmak için şu komutu kullanınız:
 
-	php artisan controller:make FotoDenetcisi
+	php artisan controller:make FotoController
 
 Bu denetçinin TEDA-uyumlu rotasını (routes.php) dosyasında kayıt ettiriniz:
 
-	Route::resource('foto', 'FotoDenetcisi');
+	Route::resource('foto', 'FotoController');
 
 Bu tek bir rota deklarasyonu, foto kaynağınız üzerinde çalıştıracağınız çeşitli TEDA-uyumlu eylem yöntemlerine erişeceğiniz rotalar oluşturur. Aynı zamanda, oluşturulmuş olan denetçide, bu eylemlerin her biri için yöntemleri hazır olarak oluşturulmuş ve hangi URI'ı ve eylemi yönettikleri yanlarına not olarak yazılmış olacaktır.
 
@@ -144,23 +144,23 @@ Bu tek bir rota deklarasyonu, foto kaynağınız üzerinde çalıştıracağın�
 
 HTTP Fiili | Patika                | Eylem           | Rota İsmi
 -----------|-----------------------|-----------------|---------------------
-GET        | /kaynak               | index           | resource.index
-GET        | /kaynak/create        | create(oluştur) | resource.create
-POST       | /kaynak               | store(kaydet)   | resource.store
-GET        | /kaynak/{id}          | show(göster)    | resource.show
-GET        | /kaynak/{id}/edit     | edit(düzenle)   | resource.edit
-PUT/PATCH  | /kaynak/{id}          | update(güncelle)| resource.update
-DELETE     | /kaynak/{id}          | destroy(imha et)| resource.destroy
+GET        | /kaynak               | index           | kaynak.index
+GET        | /kaynak/create        | create(oluştur) | kaynak.create
+POST       | /kaynak               | store(kaydet)   | kaynak.store
+GET        | /kaynak/{id}          | show(göster)    | kaynak.show
+GET        | /kaynak/{id}/edit     | edit(düzenle)   | kaynak.edit
+PUT/PATCH  | /kaynak/{id}          | update(güncelle)| kaynak.update
+DELETE     | /kaynak/{id}          | destroy(imha et)| kaynak.destroy
 
 Bazen bu eylemlerin sadece bazılarına ihtiyaç duyabilirsiniz:
 
-	php artisan controller:make FotoDenetcisi --only=index,show   //sadece belirtilenleri
+	php artisan controller:make FotoController --only=index,show   //sadece belirtilenleri
 
-	php artisan controller:make FotoDenetcisi --except=index     //belirtilenler hariç
+	php artisan controller:make FotoController --except=index     //belirtilenler hariç
 
 Ve, rotasında da eylemlerin sadece bazılarını yönetmesini belirleyebilirsiniz:
 
-	Route::resource('foto', 'FotoDenetcisi',
+	Route::resource('foto', 'FotoController',
 					array('only' => array('index', 'show')));
 
 <a name="handling-missing-methods"></a>
