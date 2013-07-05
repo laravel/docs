@@ -1,69 +1,69 @@
-# Controllers
+# Denetçiler (Controllers)
 
-- [Basic Controllers](#basic-controllers)
-- [Controller Filters](#controller-filters)
-- [RESTful Controllers](#restful-controllers)
-- [Resource Controllers](#resource-controllers)
-- [Handling Missing Methods](#handling-missing-methods)
+- [Temel Denetçiler](#basic-controllers)
+- [Denetçi Filitreleri](#controller-filters)
+- [TEDA-uyumlu (TEmsili Durum Aktarma Uyumlu, RESTful) Denetçiler](#restful-controllers)
+- [Kaynak (Resource) Denetçileri](#resource-controllers)
+- [Eksik Olan Eylemlerin Yönetilmesi](#handling-missing-methods)
 
 <a name="basic-controllers"></a>
-## Basic Controllers
+## Temel Denetçiler
 
-Instead of defining all of your route-level logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related route logic into a class, as well as take advantage of more advanced framework features such as automatic [dependency injection](/docs/ioc).
+Bütün rotalandırma mantığını, tek bir rotalar `routes.php` dosyasında tanımlamak yerine, bu davranışlarını Denetçiler (Controlles) sınıflarını kullanarak organize edebilirsiniz. Denetçiler, ilişkin oldukları rotaların mantığını bir sınıfta gruplar. Aynı zamanda, daha ileri çerçeve (framework) özelliklerini kullanma avantajına sahipdirler, örneğin otomatik [dependency injection](/docs/ioc) (veri enjeksiyonu) gibi.
 
-Controllers are typically stored in the `app/controllers` directory, and this directory is registered in the `classmap` option of your `composer.json` file by default.
+Denetçiler genelde `app/controllers` dizininde konumlandırılır ve `composer.json` dosyanızın sınıf haritası `classmap` seçeneğinde, varsayılan olarak bu dizin belirlenmiştir.
 
-Here is an example of a basic controller class:
+Basit bir denetçi (controller) sınıfı örneği şöyledir:
 
-	class UserController extends BaseController {
+	class KullaniciController extends BaseController {
 
 		/**
-		 * Show the profile for the given user.
+		 * Verilen kullanıcının profilini göster.
 		 */
 		public function showProfile($id)
 		{
-			$user = User::find($id);
+			$kullanici = Kullanici::find($id);
 
-			return View::make('user.profile', array('user' => $user));
+			return View::make('kullanici.profil', array('kullanici' => $kullanici));
 		}
 
 	}
 
-All controllers should extend the `BaseController` class. The `BaseController` is also stored in the `app/controllers` directory, and may be used as a place to put shared controller logic. The `BaseController` extends the framework's `Controller` class. Now, We can route to this controller action like so:
+Bütün denetçilerin `BaseController` sınıfının uzantısı olması gerekir.  `BaseController` ın kendisi de `app/controllers` dizininde bulunur ve bütün denetçiler için geçerli olacak ortak mantığın içine yerleştirilmesinde kullanılabilir. `BaseController` sınıfı, çerçevenin `Controller` sınıfının uzantısıdır. Bu durumda, oluşturmuş olduğumuz denetçi fonksiyonuna rotalandırmayı şu şekilde yapabiliriz:
 
-	Route::get('user/{id}', 'UserController@showProfile');
+	Route::get('kullanici/{id}', 'KullaniciController@showProfile');
 
-If you choose to nest or organize your controller using PHP namespaces, simply use the fully qualified class name when defining the route:
+Eğer bir denetçinizi, dizin içerisinde yuvalandırarak (nest) veya PHP isim-alanları (namespaces) kullanarak organize etmek isterseniz, bu durumda rotayı tanımlarken, tam nitelendirilmiş (fully qualified) sınıf adını kullanınız:
 
-	Route::get('foo', 'Namespace\FooController@method');
+	Route::get('falanca', 'isim-alani\FalancaDenetcisi@yontemAdi');
 
-You may also specify names on controller routes:
+Denetçi rotalarına isimler de verebilirsiniz:
 
-	Route::get('foo', array('uses' => 'FooController@method',
-											'as' => 'name'));
+	Route::get('falanca', array('uses' => 'FalancaDenetcisi@yontemAdi',
+											'as' => 'rotaAdi'));
 
-To generate a URL to a controller action, you may use the `URL::action` method:
+Herhangi bir denetçi eylemine ait bir URL üretmek için, `URL::action` yöntemini kullanabilirsiniz:
 
-	$url = URL::action('FooController@method');
+	$url = URL::action('FalancaDenetcisi@yontemAdi');
 
-You may access the name of the controller action being run using the `currentRouteAction` method:
+Çalıştırılmakta olan bir denetçi eyleminin ismine `currentRouteAction` yöntemi ile erişebilirsiniz:
 
 	$action = Route::currentRouteAction();
 
 <a name="controller-filters"></a>
-## Controller Filters
+## Denetçi Filitreleri
 
-[Filters](/docs/routing#route-filters) may be specified on controller routes similar to "regular" routes:
+Denetçi rotalarına, diğer rotalarda olduğuna benzer şekilde, filitreler [Filters](/docs/routing#route-filters) belirlenebilir:
 
 	Route::get('profile', array('before' => 'auth',
-				'uses' => 'UserController@showProfile'));
+				'uses' => 'KullaniciController@showProfile'));
 
-However, you may also specify filters from within your controller:
+Filitreleri, denetçinizin içerisinden de belirtebilirsiniz:
 
-	class UserController extends BaseController {
+	class KullaniciController extends BaseController {
 
 		/**
-		 * Instantiate a new UserController instance.
+		 * Yeni bir KullaniciController sureti (instance) oluştur. (new KullaniciController)
 		 */
 		public function __construct()
 		{
@@ -72,17 +72,17 @@ However, you may also specify filters from within your controller:
 			$this->beforeFilter('csrf', array('on' => 'post'));
 
 			$this->afterFilter('log', array('only' =>
-								array('fooAction', 'barAction')));
+								array('falancaYontem', 'filancaYontem')));
 		}
 
 	}
 
-You may also specify controller filters inline using a Closure:
+Filitre fonksiyonun tanımlamasını denetçinin içerisinde ve bir bloklama {  } kullanarak yapabilirsiniz:
 
-	class UserController extends BaseController {
+	class KullaniciController extends BaseController {
 
 		/**
-		 * Instantiate a new UserController instance.
+		 * Yeni bir KullaniciController sureti (instance) oluştur. (new KullaniciController)
 		 */
 		public function __construct()
 		{
@@ -95,17 +95,17 @@ You may also specify controller filters inline using a Closure:
 	}
 
 <a name="restful-controllers"></a>
-## RESTful Controllers
+## TEDA-uyumlu (TEmsili Durum Aktarma uyumlu, RESTful) Denetçiler
 
-Laravel allows you to easily define a single route to handle every action in a controller using simple, REST naming conventions. First, define the route using the `Route::controller` method:
+Laravel size, basit TEDA (REST) isimlendirme tüzüklerini (naming conventions) kullanarak, belirleyeceğiniz tek bir rota ile, denetçilerinizin içindeki her eylemi kullanabilme imkanını tanır. İlk olarak, (rota : denetçi) `Route::controller` yöntemi ile bu rotayı tanımlayınız:
 
-**Defining A RESTful Controller**
+**TEDA-uyumlu Bir Denetçi Oluşturulması**
 
-	Route::controller('users', 'UserController');
+	Route::controller('kullanicilar', 'KullaniciController');
 
-The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller. Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
+`controller` (denetçi) yöntemi iki argüman alır. Birincisi denetçinin yöneteceği baz URI olup, ikincisi denetçinin sınıf ismidir. Akabinde sadece, isimlerine HTTP eyleminin ön ek olarak ekleneceği ve bunlara cevap verecek olan yöntemlerinizi denetçinize ilave ediniz:
 
-	class UserController extends BaseController {
+	class KullaniciController extends BaseController {
 
 		public function getIndex()
 		{
@@ -119,56 +119,56 @@ The `controller` method accepts two arguments. The first is the base URI the con
 
 	}
 
-The `index` methods will respond to the root URI handled by the controller, which, in this case, is `users`.
+`index` (fihrist) yöntemleri, denetçi tarafından yönetilmekte olan kök URI 'a cevap verir. Örneğimizde bu, `kullanicilar` dır.
 
-If your controller action contains multiple words, you may access the action using "dash" syntax in the URI. For example, the following controller action on our `UserController` would respond to the `users/admin-profile` URI:
+Denetçinizdeki bir eylem yönteminin ismi birden fazla kelimeden oluşuyorsa, bu eylem yöntemine, URI da kelime aralarına tire işareti "-" eklenmiş şekilde yazarak erişebilirsiniz. Örneğin, 'KullaniciDenetçisi' denetçimizdeki aşağıdaki şekilde isimlendirilmiş olan yöntem, `kullanicilar/yonetici-profili` URI 'na cevap verecektir.
 
-	public function getAdminProfile() {}
+	public function getYoneticiProfili() {}
 
 <a name="resource-controllers"></a>
-## Resource Controllers
+## Kaynak (Resource) Denetçileri
 
-Resource controllers make it easier to build RESTful controllers around resources. For example, you may wish to create a controller that manages "photos" stored by your application. Using the `controller:make` command via the Artisan CLI and the `Route::resource` method, we can quickly create such a controller.
+Kaynak denetçileri, kaynaklar etrafında TEDA-uyumlu denetçiler oluşturulmasını kolaylaştırır. Artisan KSA'daki (Artisan Komut Satırı Arayüzü) `controller:make` komutunu ve de `Route::resource` yöntemini kullanmak sureti ile böyle bir denetçiyi çabucak oluşturabiliriz.
 
-To create the controller via the command line, execute the following command:
+Denetçiyi komut satırını kullanarak oluşturmak için şu komutu kullanınız:
 
-	php artisan controller:make PhotoController
+	php artisan controller:make FotoController
 
-Now we can register a resourceful route to the controller:
+Bu denetçinin TEDA-uyumlu rotasını (routes.php) dosyasında kayıt ettiriniz:
 
-	Route::resource('photo', 'PhotoController');
+	Route::resource('foto', 'FotoController');
 
-This single route declaration creates multiple routes to handle a variety of RESTful actions on the photo resource. Likewise, the generated controller will already have stubbed methods for each of these actions with notes informing you which URIs and verbs they handle.
+Bu tek bir rota deklarasyonu, foto kaynağınız üzerinde çalıştıracağınız çeşitli TEDA-uyumlu eylem yöntemlerine erişeceğiniz rotalar oluşturur. Aynı zamanda, oluşturulmuş olan denetçide, bu eylemlerin her biri için yöntemleri hazır olarak oluşturulmuş ve hangi URI'ı ve eylemi yönettikleri yanlarına not olarak yazılmış olacaktır.
 
-**Actions Handled By Resource Controller**
+**Kaynak Denetçisinin Yöneteceği Eylemler**
 
-Verb      | Path                  | Action       | Route Name
-----------|-----------------------|--------------|---------------------
-GET       | /resource             | index        | resource.index
-GET       | /resource/create      | create       | resource.create
-POST      | /resource             | store        | resource.store
-GET       | /resource/{id}        | show         | resource.show
-GET       | /resource/{id}/edit   | edit         | resource.edit
-PUT/PATCH | /resource/{id}        | update       | resource.update
-DELETE    | /resource/{id}        | destroy      | resource.destroy
+HTTP Fiili | Patika                | Eylem           | Rota İsmi
+-----------|-----------------------|-----------------|---------------------
+GET        | /kaynak               | index           | kaynak.index
+GET        | /kaynak/create        | create(oluştur) | kaynak.create
+POST       | /kaynak               | store(kaydet)   | kaynak.store
+GET        | /kaynak/{id}          | show(göster)    | kaynak.show
+GET        | /kaynak/{id}/edit     | edit(düzenle)   | kaynak.edit
+PUT/PATCH  | /kaynak/{id}          | update(güncelle)| kaynak.update
+DELETE     | /kaynak/{id}          | destroy(imha et)| kaynak.destroy
 
-Sometimes you may only need to handle a subset of the resource actions:
+Bazen bu eylemlerin sadece bazılarına ihtiyaç duyabilirsiniz:
 
-	php artisan controller:make PhotoController --only=index,show
+	php artisan controller:make FotoController --only=index,show   //sadece belirtilenleri
 
-	php artisan controller:make PhotoController --except=index
+	php artisan controller:make FotoController --except=index     //belirtilenler hariç
 
-And, you may also specify a subset of actions to handle on the route:
+Ve, rotasında da eylemlerin sadece bazılarını yönetmesini belirleyebilirsiniz:
 
-	Route::resource('photo', 'PhotoController',
+	Route::resource('foto', 'FotoController',
 					array('only' => array('index', 'show')));
 
 <a name="handling-missing-methods"></a>
-## Handling Missing Methods
+## Eksik Olan Yöntemlerin Yönetilmesi
 
-A catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the parameter array for the request as its only argument:
+Denetçide tanımlanmamış olan yöntemlere gelecek olan çağrıları yönetmek için bir "hepsini-yakala" yöntemi tanımlanabilir. Bu yöntemin isminin `missingMethod` (eksik yöntem) olması gerekir ve tek argümanı olarak gelen isteğin (request) parametrelerini  alır:
 
-**Defining A Catch-All Method**
+**Bir Hepsini-Yakala Yönteminin Tanımlanması**
 
 	public function missingMethod($parameters)
 	{
