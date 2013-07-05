@@ -9,10 +9,10 @@
     - [Rotalar](/docs/routing)
     - [İstekler & Girdiler](/docs/requests)
     - [Görünümler & Yanıtlar](/docs/responses)
-    - [Denetçiler](/docs/controllers)
+    - [Denetçiler (Controllers)](/docs/controllers)
     - [Hatalar & Günlükleme](/docs/errors)
 - Detaylı Öğrenim
-    - [Kaşe](/docs/cache)
+    - [Önbellekleme (Cache)](/docs/cache)
     - [Olaylar](/docs/events)
     - [Cepheler (Facades)](/docs/facades)
     - [Formlar & HTML](/docs/html)
@@ -32,8 +32,8 @@
     - [Basit Kullanım](/docs/database)
     - [Sorgu Kurucu](/docs/queries)
     - [Eloquent ORM](/docs/eloquent)
-    - [Şema Kurucu](/docs/schema)
-    - [Göçler & Besleme](/docs/migrations)
+    - [Şema (Schema) Kurucu](/docs/schema)
+    - [Yerleşimler (Migrations) ve Filizlendirme (Seeding)](/docs/migrations)
     - [Redis](/docs/redis)
 - Artisan Komut Satırı Arayüzü
     - [Genel Bakış](/docs/artisan)
