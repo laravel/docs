@@ -1,7 +1,7 @@
 # Denetçiler (Controllers)
 
 - [Temel Denetçiler](#basic-controllers)
-- [Denetçi Filitreleri](#controller-filters)
+- [Denetçi Filtreleri](#controller-filters)
 - [TEDA-uyumlu (TEmsili Durum Aktarma Uyumlu, RESTful) Denetçiler](#restful-controllers)
 - [Kaynak (Resource) Denetçileri](#resource-controllers)
 - [Eksik Olan Eylemlerin Yönetilmesi](#handling-missing-methods)
@@ -9,7 +9,7 @@
 <a name="basic-controllers"></a>
 ## Temel Denetçiler
 
-Bütün rotalandırma mantığını, tek bir rotalar `routes.php` dosyasında tanımlamak yerine, bu davranışlarını Denetçiler (Controlles) sınıflarını kullanarak organize edebilirsiniz. Denetçiler, ilişkin oldukları rotaların mantığını bir sınıfta gruplar. Aynı zamanda, daha ileri çerçeve (framework) özelliklerini kullanma avantajına sahipdirler, örneğin otomatik [dependency injection](/docs/ioc) (veri enjeksiyonu) gibi.
+Bütün rotalandırma mantığını, tek bir rotalar `routes.php` dosyasında tanımlamak yerine, bu davranışlarını Denetçiler (Controllers) sınıflarını kullanarak organize edebilirsiniz. Denetçiler, ilişkin oldukları rotaların mantığını bir sınıfta gruplar. Aynı zamanda, daha ileri çerçeve (framework) özelliklerini kullanma avantajına sahiptirler, örneğin otomatik [dependency injection](/docs/ioc) (veri enjeksiyonu) gibi.
 
 Denetçiler genelde `app/controllers` dizininde konumlandırılır ve `composer.json` dosyanızın sınıf haritası `classmap` seçeneğinde, varsayılan olarak bu dizin belirlenmiştir.
 
@@ -35,30 +35,30 @@ Bütün denetçilerin `BaseController` sınıfının uzantısı olması gerekir.
 
 Eğer bir denetçinizi, dizin içerisinde yuvalandırarak (nest) veya PHP isim-alanları (namespaces) kullanarak organize etmek isterseniz, bu durumda rotayı tanımlarken, tam nitelendirilmiş (fully qualified) sınıf adını kullanınız:
 
-	Route::get('falanca', 'isim-alani\FalancaDenetcisi@yontemAdi');
+	Route::get('falanca', 'Namespace\FalancaController@yontemAdi');
 
 Denetçi rotalarına isimler de verebilirsiniz:
 
-	Route::get('falanca', array('uses' => 'FalancaDenetcisi@yontemAdi',
+	Route::get('falanca', array('uses' => 'FalancaController@yontemAdi',
 											'as' => 'rotaAdi'));
 
 Herhangi bir denetçi eylemine ait bir URL üretmek için, `URL::action` yöntemini kullanabilirsiniz:
 
-	$url = URL::action('FalancaDenetcisi@yontemAdi');
+	$url = URL::action('FalancaController@yontemAdi');
 
 Çalıştırılmakta olan bir denetçi eyleminin ismine `currentRouteAction` yöntemi ile erişebilirsiniz:
 
 	$action = Route::currentRouteAction();
 
 <a name="controller-filters"></a>
-## Denetçi Filitreleri
+## Denetçi Filtreleri
 
-Denetçi rotalarına, diğer rotalarda olduğuna benzer şekilde, filitreler [Filters](/docs/routing#route-filters) belirlenebilir:
+Denetçi rotalarına, diğer rotalarda olduğuna benzer şekilde, filtreler [Filters](/docs/routing#route-filters) belirlenebilir:
 
 	Route::get('profile', array('before' => 'auth',
 				'uses' => 'KullaniciController@showProfile'));
 
-Filitreleri, denetçinizin içerisinden de belirtebilirsiniz:
+Filtreleri, denetçinizin içerisinden de belirtebilirsiniz:
 
 	class KullaniciController extends BaseController {
 
@@ -77,7 +77,7 @@ Filitreleri, denetçinizin içerisinden de belirtebilirsiniz:
 
 	}
 
-Filitre fonksiyonun tanımlamasını denetçinin içerisinde ve bir bloklama {  } kullanarak yapabilirsiniz:
+Filtre fonksiyonun tanımlamasını denetçinin içerisinde ve bir bloklama {  } kullanarak yapabilirsiniz:
 
 	class KullaniciController extends BaseController {
 
@@ -142,15 +142,15 @@ Bu tek bir rota deklarasyonu, foto kaynağınız üzerinde çalıştıracağın�
 
 **Kaynak Denetçisinin Yöneteceği Eylemler**
 
-HTTP Fiili | Patika                | Eylem           | Rota İsmi
------------|-----------------------|-----------------|---------------------
-GET        | /kaynak               | index           | kaynak.index
-GET        | /kaynak/create        | create(oluştur) | kaynak.create
-POST       | /kaynak               | store(kaydet)   | kaynak.store
-GET        | /kaynak/{id}          | show(göster)    | kaynak.show
-GET        | /kaynak/{id}/edit     | edit(düzenle)   | kaynak.edit
-PUT/PATCH  | /kaynak/{id}          | update(güncelle)| kaynak.update
-DELETE     | /kaynak/{id}          | destroy(imha et)| kaynak.destroy
+HTTP Fiili | Patika                | Eylem            | Rota İsmi
+-----------|-----------------------|------------------|---------------------
+GET        | /kaynak               | index            | kaynak.index
+GET        | /kaynak/create        | create (oluştur) | kaynak.create
+POST       | /kaynak               | store (kaydet)   | kaynak.store
+GET        | /kaynak/{id}          | show (göster)    | kaynak.show
+GET        | /kaynak/{id}/edit     | edit (düzenle)   | kaynak.edit
+PUT/PATCH  | /kaynak/{id}          | update (güncelle)| kaynak.update
+DELETE     | /kaynak/{id}          | destroy (imha et)| kaynak.destroy
 
 Bazen bu eylemlerin sadece bazılarına ihtiyaç duyabilirsiniz:
 
