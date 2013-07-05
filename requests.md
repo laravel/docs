@@ -113,6 +113,10 @@ The object returned by the `file` method is an instance of the `Symfony\Componen
 **Retrieving The Original Name Of An Uploaded File**
 
 	$name = Input::file('photo')->getClientOriginalName();
+	
+**Retrieving The Extension Of An Uploaded File**
+
+	$name = Input::file('photo')->getClientOriginalExtension();
 
 **Retrieving The Size Of An Uploaded File**
 
