@@ -146,6 +146,7 @@ Below is a list of all available validation rules and their function:
 - [Integer](#rule-integer)
 - [IP Address](#rule-ip)
 - [Max](#rule-max)
+- [Extension](#rule-extension)
 - [MIME Types](#rule-mimes)
 - [Min](#rule-min)
 - [Not In](#rule-not-in)
@@ -267,14 +268,23 @@ The field under validation must be formatted as an IP address.
 
 The field under validation must be less than a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
 
+<a name="rule-extension"></a>
+#### extension:_foo_,_bar_,...
+
+The file under validation must have an extension corresponding to one of the listed extensions.
+
+**Basic Usage Of Extension Rule**
+
+	'photo' => 'extension:jpeg,bmp,png'
+    
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
 
-The file under validation must have a MIME type corresponding to one of the listed extensions.
+The file under validation must have a MIME type corresponding to one of the listed mimes.
 
 **Basic Usage Of MIME Rule**
 
-	'photo' => 'mimes:jpeg,bmp,png'
+	'photo' => 'mimes:image/jpeg,image/gif,image/png'
 
 <a name="rule-min"></a>
 #### min:_value_
