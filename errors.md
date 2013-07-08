@@ -1,10 +1,10 @@
 # Hatalar ve Günlüğe Ekleme
 
-- [Error Detail](#error-detail)
-- [Handling Errors](#handling-errors)
-- [HTTP Exceptions](#http-exceptions)
-- [Handling 404 Errors](#handling-404-errors)
-- [Logging](#logging)
+- [Hata Ayrıntısı](#error-detail)
+- [Hataların İşlenmesi](#handling-errors)
+- [HTTP İstisnaları](#http-exceptions)
+- [404 Hatalarının İşlenmesi](#handling-404-errors)
+- [Günlüğe Ekleme](#logging)
 
 <a name="error-detail"></a>
 ## Hata Ayrıntısı
@@ -60,9 +60,9 @@ Buradaki ilk parametre HTTP durum kodu, ikinci parametre ise bu hata durumunda g
 Bu istisnalar, isteğin yaşam döngüsü boyunca her an çalışabilecektir.
 
 <a name="handling-404-errors"></a>
-## Handling 404 Errors
+## 404 Hatalarının İşlenmesi
 
-You may register an error handler that handles all "404 Not Found" errors in your application, allowing you to return custom 404 error pages:
+Uygulamanızdaki tüm "404 Not Found" hatalarını işleyerek özel 404 hata hata sayfaları döndürmenize imkan veren bir hata işleyici kaydı yapabilirsiniz:
 
 	App::missing(function($exception)
 	{
@@ -70,25 +70,25 @@ You may register an error handler that handles all "404 Not Found" errors in you
 	});
 
 <a name="logging"></a>
-## Logging
+## Günlüğe Ekleme
 
-The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog). By default, Laravel is configured to create daily log files for your application, and these files are stored in `app/storage/logs`. You may write information to these logs like so:
+Laravel'in günlüğe ekleme imkanlanları güçlü [Monolog](http://github.com/seldaek/monolog) üstünde basit  bir katman sağlar. Laravel, ön tanımlı olarak uygulamanız için günlük dosyaları oluşturacak şekilde yapılandırılmıştır ve bu dosyalar `app/storage/logs` içinde tutulmaktadır. Bu dosyalara aşağıdakilere benzer şekilde bilgi yazabilirsiniz:
 
-	Log::info('This is some useful information.');
+	Log::info('İşte bu yararlı bir bilgidir.');
 
-	Log::warning('Something could be going wrong.');
+	Log::warning('Yanlış giden bir şeyler olabilir.');
 
-	Log::error('Something is really going wrong.');
+	Log::error('Gerçekten yanlış giden bir şey var.');
 
-The logger provides the seven logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, and **alert**.
+Günlük tutucu, [RFC 5424](http://tools.ietf.org/html/rfc5424)'de tanımlanmış yedi günlük ekleme düzeyi sağlamaktadır: **debug**, **info**, **notice**, **warning**, **error**, **critical** ve **alert**.
 
-Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
+Monolog, günlüğe ekleme için kullanabileceğiniz bir takım başka işleyicilere de sahiptir. Gerektiğinde, Laravel tarafından kullanılan Monolog olgusuna şu şekilde ulaşabilirsiniz:
 
 	$monolog = Log::getMonolog();
 
-You may also register an event to catch all messages passed to the log:
+Ayrıca, günlüğe geçirilen tüm mesajları yakalamak için bir olay kaydı da yapabilirsiniz:
 
-**Registering A Log Listener**
+**Bir günlük izleyici kaydı yapılması**
 
 	Log::listen(function($level, $message, $context)
 	{
