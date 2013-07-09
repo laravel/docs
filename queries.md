@@ -271,4 +271,4 @@ Bir sorgunun sonuçları `remember` metodu kullanılarak bellekte saklanabilir:
 
 	$uyeler = DB::table('uyeler')->remember(10)->get();
 
-Bu örnekte, sorgunun sonuçları on dakişka süreyle bellekte saklanacaktır. Sonuçlar bellekte tutulduğu süre boyunca bu sorgu artık veritabanında çalıştırılmayacak, onun yerine sonuçlar uygulamanız için belirlediğiniz ön tanımlı bellekleme sürücüsü tarafından yüklenecektir.
+Bu örnekte, sorgunun sonuçları on dakika süreyle bellekte saklanacaktır. Sonuçlar bellekte tutulduğu süre boyunca bu sorgu artık veritabanında çalıştırılmayacak, onun yerine sonuçlar uygulamanız için belirlediğiniz ön tanımlı bellekleme sürücüsü tarafından yüklenecektir.
