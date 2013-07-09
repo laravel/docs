@@ -267,19 +267,19 @@ Tranlate a given language line with inflection. Alias of `Lang::choice`.
 
 ### action
 
-Girilen denetçinin URL'ini yaratır.
+Girilen denetçinin URL'ini oluşturur.
 
 	$url = action('HomeController@getIndex', $params);
 
 ### asset
 
-Girilen elemanın URL'ini yaratır.
+Girilen elemanın URL'ini oluşturur.
 
 	$url = asset('img/photo.jpg');
 
 ### link_to
 
-Verilen URL'e gerekli HTML linkini oluşturur.
+Girilen URL'e gerekli HTML linkini oluşturur.
 
 	echo link_to('foo/bar', $title, $attributes = array(), $secure = null);
 
@@ -291,31 +291,31 @@ Girilen eleman için gerekli HTML linkini oluşturur.
 
 ### link_to_route
 
-Generate a HTML link to the given route.
+Girilen rota için gerekli HTML linkini oluşturur.
 
 	echo link_to_route('route.name', $title, $parameters = array(), $attributes = array());
 
 ### link_to_action
 
-Generate a HTML link to the given controller action.
+Girilen denetçi fonksiyonu için gerekli HTML linkini oluşturur.
 
 	echo link_to_action('HomeController@getIndex', $title, $parameters = array(), $attributes = array());
 
 ### secure_asset
 
-Generate a HTML link to the given asset using HTTPS.
+Girilen eleman için gerekli HTML linkini HTTPS kullanarak oluşturur.
 
 	echo secure_asset('foo/bar.zip', $title, $attributes = array());
 
 ### secure_url
 
-Generate a fully qualified URL to a given path using HTTPS.
+Girilen URL'e gerekli HTML linkini HTTPS kullanarak oluşturur.
 
 	echo secure_url('foo/bar', $parameters = array());
 
 ### url
 
-Generate a fully qualified URL to the given path.
+Girilen URL'e gerekli HTML linkini oluşturur.
 
 	echo url('foo/bar', $parameters = array(), $secure = null);
 
@@ -324,24 +324,24 @@ Generate a fully qualified URL to the given path.
 
 ### csrf_token
 
-Get the value of the current CSRF token.
+CSRF token'inin güncel değerini döndürür.
 
 	$token = csrf_token();
 
 ### dd
 
-Dump the given variable and end execution of the script.
+Girilen veriyi ekrana basar ve uygulamayı durdurur.
 
 	dd($value);
 
 ### value
 
-If the given value is a `Closure`, return the value returned by the `Closure`. Otherwise, return the value.
+Eğer girilen değer anonim bir fonksiyonsa, değer olarak anonim fonksiyonun döndürdüğü değer döndürür. Eğer değilse direk değeri döndürür.
 
 	$value = value(function() { return 'bar'; });
 
 ### with
 
-Return the given object. Useful for method chaining constructors in PHP 5.3.x.
+Girilen objeyi döndürür. PHP 5.3.x kullanımında metod zincirleme işlemi için çok yararlı.
 
 	$value = with(new Foo)->doWork();
