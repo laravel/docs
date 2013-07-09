@@ -1,13 +1,13 @@
-# Helper Functions
+# Yardımcı (Helper) Fonksiyonları
 
-- [Arrayler](#arrays)
+- [Arrayler (Diziler)](#arrays)
 - [Dizinler](#paths)
 - [Yazı İşlemleri](#strings)
 - [URL İşlemleri](#urls)
 - [Diğer](#miscellaneous)
 
 <a name="arrays"></a>
-## Arrayler
+## Arrayler (Diziler)
 
 ### array_add
 
