@@ -10,7 +10,7 @@
 - [Güncellemeler](#updates)
 - [Silmeler](#deletes)
 - [Birleştirmeler](#unions)
-- [Sorguların Önbelleklenmesi](#caching-queries)
+- [Sorguların Bellekte Saklanması](#caching-queries)
 
 <a name="introduction"></a>
 ## Giriş
