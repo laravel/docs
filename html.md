@@ -164,17 +164,18 @@ This allows you to quickly build forms that not only bind to model values, but e
 <a name="custom-macros"></a>
 ## Custom Macros
 
-It's easy to define your own custom Form class helpers called "macros". Here's how it works. First, simply register the macro with a given name and a Closure:
+It's easy to define your own custom Form class helpers called "macros". Here's how it works.
+First, simply register the macro with a given name and a Closure (and find a suitable place to define it, e.g. in bottom of global.php):
 
 **Registering A Form Macro**
 
-	Form::macro('myField', function()
+	Form::macro('myField', function($one='ninja', $two='poof')
 	{
-		return '<input type="awesome">';
+		return '<input type="awesome" name="'.$one.'" placeholder="'.$two.'">';
 	});
 
 Now you can call your macro using its name:
 
 **Calling A Custom Form Macro**
 
-	echo Form::myField();
+	echo Form::myField('ninja_power', 'insert coin here');
