@@ -15,6 +15,8 @@ Laravel büyük, kapsamlı uygulamalar için gereken araçları içeren erişile
 
 **Çeviri Ekibi**
 
+Katılım Sırasına Göre
+
 * [sineld](https://github.com/sineld)
 * [Pirovla](https://github.com/Pirovla)
 * [mecit](https://github.com/mecit)
@@ -22,7 +24,7 @@ Laravel büyük, kapsamlı uygulamalar için gereken araçları içeren erişile
 * [Aristona](https://github.com/Aristy)
 * [KenMilabel](https://github.com/KenMilabel)
 * [usirin](https://github.com/usirin)
-
+* [serginari](https://github.com/serginari)
 
 Çeviriye katkıda bulunmak isterseniz bu repo'yu fork edip, değişiklikleri yaptıktan sonra pull-request edebilirsiniz.
 
