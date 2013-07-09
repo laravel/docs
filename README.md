@@ -18,8 +18,8 @@ Laravel büyük, kapsamlı uygulamalar için gereken araçları içeren erişile
 * [sineld](https://github.com/sineld)
 * [Pirovla](https://github.com/Pirovla)
 * [mecit](https://github.com/mecit)
-* smh
-* Aristona
+* [smh](https://github.com/smhayhan)
+* [Aristona](https://github.com/Aristy)
 * [KenMilabel](https://github.com/KenMilabel)
 * [usirin](https://github.com/usirin)
 
