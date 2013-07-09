@@ -1,17 +1,17 @@
 # Helper Functions
 
-- [Arrays](#arrays)
-- [Paths](#paths)
-- [Strings](#strings)
-- [URLs](#urls)
-- [Miscellaneous](#miscellaneous)
+- [Arrayler](#arrays)
+- [Dizinler](#paths)
+- [Yazı İşlemleri](#strings)
+- [URL İşlemleri](#urls)
+- [Diğer](#miscellaneous)
 
 <a name="arrays"></a>
-## Arrays
+## Arrayler
 
 ### array_add
 
-The `array_add` function adds a given key / value pair to the array if the given key doesn't already exist in the array.
+`array_add` fonksiyonu, verilen anahtar / değer çiftini, eğer daha önce eklenmemişse array'e eklemeye yarar.
 
 	$array = array('foo' => 'bar');
 
@@ -19,15 +19,14 @@ The `array_add` function adds a given key / value pair to the array if the given
 
 ### array_divide
 
-The `array_divide` function returns two arrays, one containing the keys, and the other containing the values of the original array.
+`array_divide` fonksiyonu, birincisi anahtarlar, ikincisi değerler olacak şekilde iki farklı array döndürür.
 
 	$array = array('foo' => 'bar');
 
 	list($keys, $values) = array_divide($array);
 
 ### array_dot
-
-The `array_dot` function flattens a multi-dimensional array into a single level array that uses "dot" notation to indicate depth.
+`array_dot` fonksiyonu, çok boyutlu bir array'i derinlikleri 'nokta (dot)' notasyonunu sağlayacak şekilde 1 boyutlu array'e çevirir.
 
 	$array = array('foo' => array('bar' => 'baz'));
 
@@ -37,13 +36,13 @@ The `array_dot` function flattens a multi-dimensional array into a single level 
 
 ### array_except
 
-The `array_except` method removes the given key / value pairs from the array.
+`array_except` fonksiyonu, verilen anahtar / değer çiftini array'den siler.
 
 	$array = array_except($array, array('keys', 'to', 'remove'));
 
 ### array_fetch
 
-The `array_fetch` method returns a flattened array containing the selected nested element.
+`array_fetch` fonksiyonu, seçilen anahtar'a göre yeni bir sıkıştırılmış array yaratır.
 
 	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
 
@@ -53,7 +52,7 @@ The `array_fetch` method returns a flattened array containing the selected neste
 
 ### array_first
 
-The `array_first` method returns the first element of an array passing a given truth test.
+`array_first` fonksiyonu, verilen doğruluk testine uyan ilk array elemanını döndürür.
 
 	$array = array(100, 200, 300);
 
@@ -62,13 +61,13 @@ The `array_first` method returns the first element of an array passing a given t
 		return $value >= 150;
 	});
 
-A default value may also be passed as the third parameter:
+Ayrıca varsayılan bir değer, üçüncü eleman olarak verilebilir.
 
 	$value = array_first($array, $callback, $default);
 
 ### array_flatten
 
-The `array_flatten` method will flatten a multi-dimensional array into a single level.
+`array_flatten` fonksiyonu, çok boyutlu bir array'i tek boyutlu olacak hale getirir.
 
 	$array = array('name' => 'Joe', 'languages' => array('PHP', 'Ruby'));
 
@@ -78,7 +77,7 @@ The `array_flatten` method will flatten a multi-dimensional array into a single 
 
 ### array_forget
 
-The `array_forget` method will remove a given key / value pair from a deeply nested array using "dot" notation.
+`array_forget` fonksiyonu, verilen array'den 'nokta (dot)' notasyonuna göre girilmiş elemanı siler.
 
 	$array = array('names' => array('joe' => array('programmer')));
 
@@ -86,7 +85,7 @@ The `array_forget` method will remove a given key / value pair from a deeply nes
 
 ### array_get
 
-The `array_get` method will retrieve a given value from a deeply nested array using "dot" notation.
+`array_get` fonksiyonu, verilen array'den 'nokta (dot)' notasyonuna göre girilmiş elemanı döndürür.
 
 	$array = array('names' => array('joe' => array('programmer')));
 
@@ -94,7 +93,7 @@ The `array_get` method will retrieve a given value from a deeply nested array us
 
 ### array_only
 
-The `array_only` method will return only the specified key / value pairs from the array.
+`array_only` fonksiyonu, array'den sadece verilen anahtar / değer çiftlerini döndürür.
 
 	$array = array('name' => 'Joe', 'age' => 27, 'votes' => 1);
 
@@ -102,7 +101,7 @@ The `array_only` method will return only the specified key / value pairs from th
 
 ### array_pluck
 
-The `array_pluck` method will pluck a list of the given key / value pairs from the array.
+`array_pluck` fonksiyonu, girilen anahtara göre, yeni bir array döndürür.
 
 	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
 
@@ -112,7 +111,7 @@ The `array_pluck` method will pluck a list of the given key / value pairs from t
 
 ### array_pull
 
-The `array_pull` method will return a given key / value pair from the array, as well as remove it.
+`array_pull` fonksiyonu, girilen anahtara göre yeni bir array döndürür, aynı zamanda döndürdüğü elemanları siler.
 
 	$array = array('name' => 'Taylor', 'age' => 27);
 
@@ -120,7 +119,7 @@ The `array_pull` method will return a given key / value pair from the array, as 
 
 ### array_set
 
-The `array_set` method will set a value within a deeply nested array using "dot" notation.
+`array_set` fonksiyonu, 'nokta (dot)' notasyonunu kullanarak çok boyutlu array'lerin elemanlarına değer atamaya yarar.
 
 	$array = array('names' => array('programmer' => 'Joe'));
 
@@ -128,41 +127,43 @@ The `array_set` method will set a value within a deeply nested array using "dot"
 
 ### head
 
-Return the first element in the array. Useful for method chaining in PHP 5.3.x.
+Array'in son elemanını döndürür. Metod zincirleme işlemi için çok yararlı.
 
 	$first = head($this->returnsArray('foo'));
 
 ### last
 
+Array'in son elemanını döndürür. Metod zincirleme işlemi için çok yararlı.
 Return the last element in the array. Useful for method chaining.
 
 	$last = last($this->returnsArray('foo'));
 
 <a name="paths"></a>
-## Paths
+## Dizinler
 
 ### app_path
 
-Get the fully qualified path to the `application` directory.
+`app` klasörünün sisteme göre tam dizin adresini döndürür.
 
 ### base_path
 
-Get the fully qualified path to the root of the application install.
+Uygulamanın ana klasörünün sisteme göre tam dizin adresini döndürür.
 
 ### public_path
 
-Get the fully qualified path to the `public` directory.
+`public` klasörünün sisteme göre tam dizin adresini döndürür.
 
 ### storage_path
 
+`app/storage` klasörünün sisteme göre tam dizin adresini döndürür.
 Get the fully qualified path to the `application/storage` directory.
 
 <a name="strings"></a>
-## Strings
+## Yazı İşlemleri
 
 ### camel_case
 
-Convert the given string to `camelCase`.
+Yazıyı `camelCase` olacak şekilde düzenler.
 
 	$camel = camsel_case('foo_bar');
 
@@ -170,7 +171,7 @@ Convert the given string to `camelCase`.
 
 ### class_basename
 
-Get the class name of the given class, without any namespace names.
+Girilen class'ın namespace'ler olmadan sadece adını dondürür.
 
 	$class = class_basename('Foo\Bar\Baz');
 
@@ -178,19 +179,19 @@ Get the class name of the given class, without any namespace names.
 
 ### e
 
-Run `htmlentites` over the given string, with UTF-8 support.
+Girilen yazıya UTF-8 desteğiyle `htmlentites` fonksiyonunu uygular.
 
 	$entities = e('<html>foo</html>');
 
 ### ends_with
 
-Determine if the given haystack ends with a given needle.
+Girilen yazının verilen değerle bitip bitmediğine karar verir.
 
 	$value = ends_with('This is my name', 'name');
 
 ### snake_case
 
-Convert the given string to `snake_case`.
+Yazıyı `snake_case` olacak şekilde düzenler.
 
 	$snake = snake_case('fooBar');
 
@@ -198,19 +199,19 @@ Convert the given string to `snake_case`.
 
 ### starts_with
 
-Determine if the given haystack begins with the given needle.
+Girilen yazının verilen değerle başlayıp başlamadığına karar verir.
 
 	$value = starts_with('This is my name', 'This');
 
 ### str_contains
 
-Determine if the given haystack contains the given needle.
+Girilen yazının içinde verilen değerin olup olmadığına karar verir.
 
 	$value = str_contains('This is my name', 'my');
 
 ### str_finish
 
-Add a single instance of the given needle to the haystack. Remove any extra instances.
+Girilen yazının sonuna verilen değeri ekler. Verilen değerden oluşan ekstraları yok eder.
 
 	$string = str_finish('this/string', '/');
 
@@ -218,31 +219,31 @@ Add a single instance of the given needle to the haystack. Remove any extra inst
 
 ### str_is
 
-Determine if a given string matches a given pattern. Asterisks may be used to indicate wildcards.
+Girilen yazıyla verilen değerin eşleşip eşleşmediğine karar verir. Yıldız işareti (*) genel arama karakteri olarak kullanılabilir.
 
 	$value = str_is('foo*', 'foobar');
 
 ### str_plural
 
-Convert a string to its plural form (English only).
+Girilen kelimeyi çoğul hale getirir (Sadece ingilizce için geçerli).
 
 	$plural = str_plural('car');
 
 ### str_random
 
-Generate a random string of the given length.
+Girilen değer kadar uzunlukta rastgele karakterlerden oluşan bir yazı üretir.
 
 	$string = str_random(40);
 
 ### str_singular
 
-Convert a string to its singular form (English only).
+Girilen kelimeyi tekil hale getirir (Sadece ingilizce için geçerli).
 
 	$singular = str_singular('cars');
 
 ### studly_case
 
-Convert the given string to `StudlyCase`.
+Girilen yazıyı `StudlyCase` olacak şekilde düzenler.
 
 	$value = studly_case('foo_bar');
 
@@ -250,70 +251,71 @@ Convert the given string to `StudlyCase`.
 
 ### trans
 
-Translate a given language line. Alias of `Lang::get`.
+Girilen dil satırını çevirir. `Lang::get` fonksiyonunun kısayolu.
 
 	$value = trans('validation.required'):
 
 ### trans_choice
+
 
 Tranlate a given language line with inflection. Alias of `Lang::choice`.
 
 	$value = trans_choice('foo.bar', $count);
 
 <a name="urls"></a>
-## URLs
+## URL İşlemleri
 
 ### action
 
-Generate a URL for a given controller action.
+Girilen denetçinin URL'ini oluşturur.
 
 	$url = action('HomeController@getIndex', $params);
 
 ### asset
 
-Generate a URL for an asset.
+Girilen elemanın URL'ini oluşturur.
 
 	$url = asset('img/photo.jpg');
 
 ### link_to
 
-Generate a HTML link to the given URL.
+Girilen URL'e gerekli HTML linkini oluşturur.
 
 	echo link_to('foo/bar', $title, $attributes = array(), $secure = null);
 
 ### link_to_asset
 
-Generate a HTML link to the given asset.
+Girilen eleman için gerekli HTML linkini oluşturur.
 
 	echo link_to_asset('foo/bar.zip', $title, $attributes = array(), $secure = null);
 
 ### link_to_route
 
-Generate a HTML link to the given route.
+Girilen rota için gerekli HTML linkini oluşturur.
 
 	echo link_to_route('route.name', $title, $parameters = array(), $attributes = array());
 
 ### link_to_action
 
-Generate a HTML link to the given controller action.
+Girilen denetçi fonksiyonu için gerekli HTML linkini oluşturur.
 
 	echo link_to_action('HomeController@getIndex', $title, $parameters = array(), $attributes = array());
 
 ### secure_asset
 
-Generate a HTML link to the given asset using HTTPS.
+Girilen eleman için gerekli HTML linkini HTTPS kullanarak oluşturur.
 
 	echo secure_asset('foo/bar.zip', $title, $attributes = array());
 
 ### secure_url
 
-Generate a fully qualified URL to a given path using HTTPS.
+Girilen URL'e gerekli HTML linkini HTTPS kullanarak oluşturur.
 
 	echo secure_url('foo/bar', $parameters = array());
 
 ### url
 
-Generate a fully qualified URL to the given path.
+Girilen URL'e gerekli HTML linkini oluşturur.
 
 	echo url('foo/bar', $parameters = array(), $secure = null);
 
@@ -322,24 +324,24 @@ Generate a fully qualified URL to the given path.
 
 ### csrf_token
 
-Get the value of the current CSRF token.
+CSRF token'inin güncel değerini döndürür.
 
 	$token = csrf_token();
 
 ### dd
 
-Dump the given variable and end execution of the script.
+Girilen veriyi ekrana basar ve uygulamayı durdurur.
 
 	dd($value);
 
 ### value
 
-If the given value is a `Closure`, return the value returned by the `Closure`. Otherwise, return the value.
+Eğer girilen değer anonim bir fonksiyonsa, değer olarak anonim fonksiyonun döndürdüğü değer döndürür. Eğer değilse direk değeri döndürür.
 
 	$value = value(function() { return 'bar'; });
 
 ### with
 
-Return the given object. Useful for method chaining constructors in PHP 5.3.x.
+Girilen objeyi döndürür. PHP 5.3.x kullanımında metod zincirleme işlemi için çok yararlı.
 
 	$value = with(new Foo)->doWork();

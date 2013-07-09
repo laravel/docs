@@ -15,13 +15,13 @@ Laravel büyük, kapsamlı uygulamalar için gereken araçları içeren erişile
 
 **Çeviri Ekibi**
 
-* sineld
-* Pirovla
-* mecit
+* [sineld](https://github.com/sineld)
+* [Pirovla](https://github.com/Pirovla)
+* [mecit](https://github.com/mecit)
 * smh
 * Aristona
-* KenMilabel
-* usirin
+* [KenMilabel](https://github.com/KenMilabel)
+* [usirin](https://github.com/usirin)
 
 
 Çeviriye katkıda bulunmak isterseniz bu repo'yu fork edip, değişiklikleri yaptıktan sonra pull-request edebilirsiniz.
