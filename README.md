@@ -21,6 +21,7 @@ Laravel büyük, kapsamlı uygulamalar için gereken araçları içeren erişile
 * smh
 * Aristona
 * KenMilabel
+* usirin
 
 
 Çeviriye katkıda bulunmak isterseniz bu repo'yu fork edip, değişiklikleri yaptıktan sonra pull-request edebilirsiniz.
