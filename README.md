@@ -18,7 +18,6 @@ Laravel büyük, kapsamlı uygulamalar için gereken araçları içeren erişile
 Katılım Sırasına Göre
 
 * [sineld](https://github.com/sineld)
-* [Pirovla](https://github.com/Pirovla)
 * [mecit](https://github.com/mecit)
 * [smh](https://github.com/smhayhan)
 * [Aristona](https://github.com/Aristy)
