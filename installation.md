@@ -6,7 +6,7 @@
 - [Ayarlamalar](#ayarlamalar)
 - [İzinler](#izinler)
 - [Yollar](#yollar)
-- [Zarif URL'ler](#sevimli-urller)
+- [Zarif URL'ler](#zarif-urller)
 
 <a name="composer-kurulumu"></a>
 ## Composer Kurulumu
