@@ -95,7 +95,7 @@ Filtre fonksiyonun tanımlamasını denetçinin içerisinde ve bir bloklama {  }
 	}
 
 <a name="restful-controllers"></a>
-## TEDA-uyumlu (TEmsili Durum Aktarma uyumlu, RESTful) Denetçiler
+## TEDA-uyumlu (Temsili Durum Aktarma uyumlu, RESTful) Denetçiler
 
 Laravel size, basit TEDA (REST) isimlendirme tüzüklerini (naming conventions) kullanarak, belirleyeceğiniz tek bir rota ile, denetçilerinizin içindeki her eylemi kullanabilme imkanını tanır. İlk olarak, (rota : denetçi) `Route::controller` yöntemi ile bu rotayı tanımlayınız:
 

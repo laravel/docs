@@ -14,9 +14,9 @@ Laravel Framework'ü kurmak için aşağıdaki komutu, komut işleyici uygulaman
 
 	composer create-project laravel/laravel your-project-name --prefer-dist
 
-veya Laravel Framework'ü kurmak için [Github Kaynağı'nı](https://github.com/laravel/laravel/archive/master.zip) indirmelisiniz. Daha sonra [Composer'i kurup](http://getcomposer.org), `composer install` komutunu projenizin root (ana) klasöründe çalıştırmalısınız. Bu komutu çalıştırmak, Laravel'i ve Laravel'in gereksinimlerini (dependencies) indirip kuracaktır.
+veya Laravel Framework'ü kurmak için [Github Kaynağı'nı](https://github.com/laravel/laravel/archive/master.zip) indirmelisiniz. Daha sonra [Composer'i kurup](http://getcomposer.org), `composer install` komutunu projenizin root (ana) dizininde çalıştırmalısınız. Bu komutu çalıştırmak, Laravel'i ve Laravel'in gereksinimlerini (dependencies) indirip kuracaktır.
 
-Laravel kurulduktan sonra klasör yapısına göz gezdirin ve Laravel'in nasıl bir yapısı olduğuna bakın. `app` klasörü içerisinde `views`, `controllers`, ve `models` gibi klasörler bulunmaktadır. Projenizi geliştirirken yazacağınız kodların çok büyük bir kısmı bu klasörler içine yazılacaktır. Ayrıca `app/config` klasörü içerisine bakıp size ne tür konfigürasyon ayarları tanımlandığını görebilirsiniz.
+Laravel kurulduktan sonra dizin yapısına göz gezdirin ve Laravel'in nasıl bir yapısı olduğuna bakın. `app` dizini içerisinde `views`, `controllers`, ve `models` gibi dizinler bulunmaktadır. Projenizi geliştirirken yazacağınız kodların çok büyük bir kısmı bu dizinlerin içine yazılacaktır. Ayrıca `app/config` dizini içerisine bakıp size ne tür ayar değerleri tanımlandığını görebilirsiniz.
 
 <a name="routing"></a>
 ## Routing (Yönlendirme)
@@ -39,7 +39,7 @@ Bu Route Laravel'e şunu belirtiyor: `/kullanicilar` adresine bir istek geldiği
 <a name="bir-view-olusturma"></a>
 ## Bir View Oluşturma
 
-Şimdi basit bir view dosyası oluşturup, kullanıcı bilgilerini ekrana view üzerinden yazdıracağız. View dosyaları `app/views` klasörü içerisinde bulunmakta olup projenizin HTML dosyalarını barındırır. Şimdi bu klasör içerisine 2 tane dosya oluşturacağız: `layout.blade.php` ve `kullanicilar.blade.php`. Önce `layout.blade.php` dosyamızı oluşturalım:
+Şimdi basit bir view dosyası oluşturup, kullanıcı bilgilerini ekrana view üzerinden yazdıracağız. View dosyaları `app/views` dizini içerisinde bulunmakta olup projenizin HTML dosyalarını barındırır. Şimdi bu dizin içerisine 2 tane dosya oluşturacağız: `layout.blade.php` ve `kullanicilar.blade.php`. Önce `layout.blade.php` dosyamızı oluşturalım:
 
 	<html>
 		<body>
@@ -74,13 +74,13 @@ Harika! Bir layoutu genişleten bir view oluşturdunuz. Birdahaki bölümümüm�
 
 Bir veritabanı tablosu oluşturmak için Laravel'in migration özelliğini kullanacağız. Migrationlar çok kolay bir şekilde veritabanında değişiklikler yapmayı ve bunları takım arkadaşlarınızla paylaşmanızı sağlar.
 
-Öncelikle bir veritabanı konfigürasyonu ayarlayalım. Tüm veritabanı konfigürasyonlarınızı `app/config/database.php` dosyası içerisinde değiştirebilirsiniz. Öntanımlı olarak Laravel SQLite kullanmaya ayarlanmıştır ve SQLite veritabanı `app/database` klasöründe bulunmaktadır. Dilerseniz `driver` değerini `mysql` yapıp, `mysql` bağlantı bilgilerini girebilirsiniz.
+Öncelikle bir veritabanı konfigürasyonu ayarlayalım. Tüm veritabanı konfigürasyonlarınızı `app/config/database.php` dosyası içerisinde değiştirebilirsiniz. Öntanımlı olarak Laravel SQLite kullanmaya ayarlanmıştır ve SQLite veritabanı `app/database` dizininde bulunmaktadır. Dilerseniz `driver` değerini `mysql` yapıp, `mysql` bağlantı bilgilerini girebilirsiniz.
 
-Sonra, bir migration oluşturmak için [Artisan CLI](/docs/artisan) kullanacağız. Projenizin ana klasörüne gelerek, aşağıdaki kodu terminal üzerinde yazın:
+Sonra, bir migration oluşturmak için [Artisan CLI](/docs/artisan) kullanacağız. Projenizin ana dizinine gelerek, aşağıdaki kodu terminal üzerinde yazın:
 
 	php artisan migrate:make create_users_table
 
-Şimdi, oluşturulan migration dosyasını `app/database/migrations` klasöründe bulun. Bu dosya 2 methoddan oluşmaktadır: `up` ve `down`. `up` methodunda, tablonuzdaki değişiklikleri yapmalısınız. `down` methodunda ise yaptığınız değişiklikleri geri almalısınız.
+Şimdi, oluşturulan migration dosyasını `app/database/migrations` dizininde bulun. Bu dosya 2 methoddan oluşmaktadır: `up` ve `down`. `up` methodunda, tablonuzdaki değişiklikleri yapmalısınız. `down` methodunda ise yaptığınız değişiklikleri geri almalısınız.
 
 Şuna benzeyen bir migration oluşturalım:
 
@@ -100,7 +100,7 @@ Sonra, bir migration oluşturmak için [Artisan CLI](/docs/artisan) kullanacağ�
 		Schema::drop('users');
 	}
 
-Şimdi bu migrationu Artisan CLI üzerinde `migrate` komutu kullanarak çalıştıralım. Projenizin ana klasörüne gelip aşağıdaki kodu çalıştırın:
+Şimdi bu migrationu Artisan CLI üzerinde `migrate` komutu kullanarak çalıştıralım. Projenizin ana dizinine gelip aşağıdaki kodu çalıştırın:
 
 	php artisan migrate
 
@@ -113,7 +113,7 @@ Laravel mükemmel bir ORM aracıyla beraber gelmektedir: Eloquent.
 Eğer daha önce Ruby on Rails frameworkü üzerinde çalıştıysanız Eloquent size çok tanıdık gelecektir, çünkü veritabanı işlemleri için ActiveRecord stilini kullanır.
 
 Öncelikle, modeli tanımlayalım. Bir Eloquent modeli belirtilen bir veritabanı tablosunu sorgulamak ve o tablodaki verileri tutmak için kullanılır.
-Merak etmenize gerek yok, örnekleri görünce ne kadar kolay olduğunu anlayacaksınız! Model dosyaları `app/models` klasöründe bulunmaktadır. Şimdi o klasörde bir `User.php` modeli oluşturalım:
+Merak etmenize gerek yok, örnekleri görünce ne kadar kolay olduğunu anlayacaksınız! Model dosyaları `app/models` dizininde bulunmaktadır. Şimdi o dizinde bir `User.php` modeli oluşturalım:
 
 	class User extends Eloquent {}
 

@@ -6,7 +6,7 @@
 <a name="giris"></a>
 ## Giriş
 
-Artisan, Laravel içerisinde gelen CLI'ın (Command-line Interface) adıdır. Artisan size uygulamanızı geliştirirken birçok yardımcı komut sağlar. Artisan güçlü Symfony Console component üzerinden geliştirilmiştir.
+Artisan, Laravel içerisinde gelen CLI'ın (Command-line Interface) adıdır. Artisan size uygulamanızı geliştirirken birçok yardımcı komut sağlar. Artisan, güçlü Symfony Console bileşeni üzerinden geliştirilmiştir.
 
 <a name="kullanim"></a>
 ## Kullanım
@@ -29,8 +29,8 @@ Bir komut kullanırken kullanılacak olan Ortam Ayarları'nı `--env` komutuyla 
 
 	php artisan migrate --env=local
 
-Ayrıca şuan kullanmakta olduğunuz Laravel'in versiyonunu da `--version` komutunu kullanarak Artisan üzerinden görebilirsiniz:
+Ayrıca şu an kullanmakta olduğunuz Laravel'in sürümünü de `--version` komutunu kullanarak Artisan üzerinden görebilirsiniz:
 
-**Laravel'in Versiyonunu Görmek**
+**Laravel'in Sürümünü Görmek**
 
 	php artisan --version

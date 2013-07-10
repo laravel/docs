@@ -9,7 +9,7 @@
 <a name="error-detail"></a>
 ## Hata Ayrıntısı
 
-Ön tanımlı olarak hata ayrıntısı uygulamanızda etkindir. Yani bir hata oluştuğu zaman ayrıntılı bir sorun listesi ve hata iletisi gösterebileceksiniz. `app/config/app.php` dosyanızdaki `debug` seçeneğini `false` ayarlayarak hata ayrıntılarını devre dışı bırakabilirsiniz. **Bir üretim ortamında hata ayrıntılarını devre dışı bırakmanız kuvvetle önerilir.**
+Ön tanımlı olarak hata ayrıntısı uygulamanızda etkindir. Yani bir hata oluştuğu zaman ayrıntılı bir sorun listesi ve hata iletisi gösterebileceksiniz. `app/config/app.php` dosyanızdaki `debug` seçeneğini `false` ayarlayarak hata ayrıntılarını devre dışı bırakabilirsiniz. **Bir üretim ortamında hata ayrıntılarını devre dışı bırakmanız şiddetle önerilir.**
 
 <a name="handling-errors"></a>
 ## Hataların İşlenmesi
@@ -21,7 +21,7 @@
 		Log::error($exception);
 	});
 
-En temel hata işleyici budur. Ama siz gerektiği kadar işleyici belirleyebilirsiniz. İşleyicilere işledikleri İstisnaların tipine işaret eden isimler verilir. Örneğin, sadece `RuntimeException` olgularını işleyen bir işleyici oluşturabilirsiniz:
+En temel hata işleyici budur. Ancak siz gerektiği kadar işleyici belirleyebilirsiniz. İşleyicilere işledikleri İstisnaların tipine işaret eden isimler verilir. Örneğin, sadece `RuntimeException` olgularını işleyen bir işleyici oluşturabilirsiniz:
 
 	App::error(function(RuntimeException $exception)
 	{
@@ -37,7 +37,7 @@ Bir istisna işleyicisinin bir cevap döndürmesi halinde, bu cevap tarayıcıya
 		return 'Maalesef bu hesapla ilgili yanlış bir şeyler var!';
 	});
 
-PHP'nin fatal hatalarını izlemek için, `App::fatal` metodunu kullanabilirsiniz:
+PHP'nin önemli hatalarını (fatal error) izlemek için, `App::fatal` metodunu kullanabilirsiniz:
 
 	App::fatal(function($exception)
 	{
@@ -47,7 +47,7 @@ PHP'nin fatal hatalarını izlemek için, `App::fatal` metodunu kullanabilirsini
 <a name="http-exceptions"></a>
 ## HTTP İstisnaları
 
-HTTP istisnaları bir istemci isteği sırasında oluşabilecek hatalar demektir. Bu bir sayfa bulunamadı hatası (404), bir yetkisizlik hatası (401) hatta genel 500 hatası olabilir. Böyle bir cevap döndürmek için aşağıdaki biçimi kullanın:
+HTTP istisnaları bir istemci isteği sırasında oluşabilecek hatalar demektir. Bu bir sayfa bulunamadı hatası (404), bir yetkisizlik hatası (401), hatta genel 500 hatası olabilir. Böyle bir cevap döndürmek için aşağıdaki biçimi kullanın:
 
 	App::abort(404, 'Sayfa bulunamadı');
 
@@ -72,7 +72,7 @@ Uygulamanızdaki tüm "404 Not Found" hatalarını işleyerek özel 404 hata hat
 <a name="logging"></a>
 ## Günlüğe Ekleme
 
-Laravel'in günlüğe ekleme imkanlanları güçlü [Monolog](http://github.com/seldaek/monolog) üstünde basit  bir katman sağlar. Laravel, ön tanımlı olarak uygulamanız için günlük dosyaları oluşturacak şekilde yapılandırılmıştır ve bu dosyalar `app/storage/logs` içinde tutulmaktadır. Bu dosyalara aşağıdakilere benzer şekilde bilgi yazabilirsiniz:
+Laravel'in günlüğe ekleme imkanlanları güçlü [Monolog](http://github.com/seldaek/monolog) üstünde basit bir katman sağlar. Laravel, ön tanımlı olarak uygulamanız için günlük dosyaları oluşturacak şekilde yapılandırılmıştır ve bu dosyalar `app/storage/logs` klasörü içinde tutulmaktadır. Bu dosyalara aşağıdakilere benzer şekilde bilgi yazabilirsiniz:
 
 	Log::info('İşte bu yararlı bir bilgidir.');
 
