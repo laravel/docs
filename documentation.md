@@ -4,7 +4,7 @@
     - [Katkıda Bulunun](/docs/contributing)
 - Başlangıç
     - [Kurulum](/docs/installation)
-    - [Ayarlamalar](/docs/configuration)
+    - [Yapılandırma](/docs/configuration)
     - [İstek Yaşam Döngüsü](/docs/lifecycle)
     - [Rotalar](/docs/routing)
     - [İstekler & Girdiler](/docs/requests)

@@ -1,36 +1,36 @@
-# Konfigürasyon
+# Yapılandırma
 
 - [Giriş](#giris)
-- [Ortam Konfigürasyonu](#ortam-konfigurasyonu)
+- [Ortam Yapılandırması](#ortam-yapilandirilmasi)
 - [Bakım Modu](#bakim-modu)
 
 <a name="giris"></a>
 ## Giriş
 
-Laravel'in tüm konfigürasyon dosyaları `app/config` klasörü içindedir. Dosyalardaki konfigürasyonlar son derece iyi bir şekilde dökümante edilmiştir, dosyalara göz gezdirip size sunulan opsiyonlara bir bakabilirsiniz.
+Laravel'in tüm yapılandırma dosyaları `app/config` dizini içindedir. Tüm dosyalardaki yapılandırma seçenekleri açıklanmıştır, dosyalara göz gezdirip size sunulan seçeneklere göz atabilirsiniz.
 
-Bazen konfigürasyon ayarlarına run-time esnasında erişmeniz gerekir. Bunu `Config` sınıfını kullanarak yapabilirsiniz:
+Bazen yapılandırma değerlerine run-time (çalışma anı) esnasında erişmeniz gerekir. Bunu `Config` sınıfını kullanarak yapabilirsiniz:
 
-**Bir Konfigürasyon Değerine Erişmek**
+**Bir Yapılandırma Değerine Erişmek**
 
 	Config::get('app.timezone');
 
-Eğer konfigürasyon değeri bulunamazsa dönecek değeri ise ikinci bir parametreyle belirleyebilirsiniz:
+Eğer yapılandırma değeri bulunamazsa dönecek değeri ise ikinci bir parametreyle belirleyebilirsiniz:
 
 	$timezone = Config::get('app.timezone', 'UTC');
 
-Lütfen dikkat edin, "nokta" şeklindeki kullanım stili tüm konfigürasyon dosyalarına erişmenizi sağlar. Dilerseniz konfigürasyon değerlerini run-time esnasında da ekleyebilirsiniz:
+Lütfen dikkat edin, "nokta" şeklindeki kullanım biçimi tüm yapılandırma dosyalarına erişmenizi sağlar. Dilerseniz yapılandırma değerlerini run-time (çalışma anı) esnasında da ekleyebilirsiniz:
 
-**Bir Konfigürasyon Değeri Eklemek**
+**Bir Yapılandırma Değeri Eklemek**
 
 	Config::set('database.default', 'sqlite');
 
-<a name="ortam-konfigurasyonu"></a>
-## Ortam Konfigürasyonu
+<a name="ortam-yapilandirilmasi"></a>
+## Ortam Yapılandırması
 
-Uygulamanın çalışma ortamına göre konfigürasyonlar ayarlamak çoğu zaman iyidir. Örneğin, kişisel bilgisayarınızda, sunucudan farklı bir önbellekleme uygulaması kullanmak isteyebilirsiniz. Bunu ortam tabanlı konfigürasyonlar oluşturarak sağlayabilirsiniz.
+Uygulamanın çalışma ortamına göre farklı yapılandırma değerlerine sahip olmak çoğu zaman iyidir. Örneğin, kişisel bilgisayarınızda, sunucudan farklı bir önbellekleme uygulaması kullanmak isteyebilirsiniz. Bunu ortam tabanlı yapılandırmalar oluşturarak sağlayabilirsiniz.
 
-Bunu yapmak çok basit!  `config` klasörü içerisinde, ortam isminizi kullandığınız (örneğin  `local`)  bir klasör daha oluşturun. Şimdi, belirttiğiniz ortam için üzerine yazmak istediğiniz konfigürasyon dosyalarınızı ve ayarlarınızı geçirin. Örneğin, önbellekleme konfigürasyonunun üzerine yazmak için, `app/config/local` klasörü içerisinde  `cache.php` dosyası oluşturmanız gerekir. Oluşturduğunuz dosyanın içerisine şunları yazın:
+Bunu yapmak çok basit! `config` dizini içerisinde, ortam isminizi kullandığınız (örneğin `local`) bir dizin daha oluşturun. Şimdi, belirttiğiniz ortam için üzerine yazmak istediğiniz yapılandırma dosyalarınızı ve seçeneklerinizi geçirin. Örneğin, önbellekleme yapılandırmasının üzerine yazmak için, `app/config/local` dizini içerisinde `cache.php` dosyası oluşturmanız gerekir. Oluşturduğunuz dosyanın içerisine şunları yazın:
 
 	<?php
 
@@ -42,9 +42,9 @@ Bunu yapmak çok basit!  `config` klasörü içerisinde, ortam isminizi kulland�
 
 > **Not:** 'testing' adını ortam ismi olarak kullanmayın. Bu isim Unit Testing amacıyla rezerve edilmiştir.
 
-Dikkat ederseniz, bu dosyada _bütün_ ayarları yazmanıza gerek yok. Sadece üzerine yazmak istediklerinizi eklemeniz yeterli. Geri kalan değerler, öntanımlı konfigürasyon ayarlarından alınacaktır.
+Dikkat ederseniz, bu dosyada _bütün_ değerleri yazmanıza gerek yok. Sadece üzerine yazmak istediklerinizi eklemeniz yeterli. Geri kalan değerler, öntanımlı yapılandırma değerlerinden alınacaktır.
 
-Şimdi yapmamız gereken Laravel'e hangi ortamda çalıştığını belirtmek. Öntanımlı ortam daima `production` ortamıdır. Ancak ana klasördeki `bootstrap/start.php` dosya içerisine eklemeler yaparak farklı ortamlar oluşturmak mümkündür. Bu dosya içerisinde `$app->detectEnvironment` adında bir çağrı bulacaksınız. Bu methoda eklenen bir parametre ile Laravel'e hangi ortamda çalıştığını belirtebilirsiniz. Hatta ihtiyacınız olursa, diğer ortam ve makine isimlerini de dizi olarak ekleyebilirsiniz:
+Şimdi yapmamız gereken Laravel'e hangi ortamda çalıştığını belirtmek. Öntanımlı ortam daima `production` ortamıdır. Ancak ana dizindeki `bootstrap/start.php` dosya içerisine eklemeler yaparak farklı ortamlar oluşturmak mümkündür. Bu dosya içerisinde `$app->detectEnvironment` adında bir tanım bulacaksınız. Bu methoda eklenen bir parametre ile Laravel'e hangi ortamda çalıştığını belirtebilirsiniz. Hatta ihtiyacınız olursa, diğer ortam ve makine isimlerini de dizi olarak ekleyebilirsiniz:
 
     <?php
 

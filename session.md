@@ -1,19 +1,19 @@
-# Session
+# Oturum
 
-- [Configuration](#configuration)
-- [Session Usage](#session-usage)
+- [Yapılandırma](#configuration)
+- [Oturum Kullanımı](#session-usage)
 - [Flash Data](#flash-data)
-- [Database Sessions](#database-sessions)
+- [Veritabanı Oturumları](#database-sessions)
 
 <a name="configuration"></a>
-## Configuration
+## Yapılandırma
 
 Since HTTP driven applications are stateless, sessions provide a way to store information about the user across requests. Laravel ships with a variety of session back-ends available for use through a clean, unified API. Support for popular back-ends such as [Memcached](http://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
 
 The session configuration is stored in `app/config/session.php`. Be sure to review the well documented options available to you in this file. By default, Laravel is configured to use the `native` session driver, which will work well for the majority of applications.
 
 <a name="session-usage"></a>
-## Session Usage
+## Oturum Kullanımı
 
 **Storing An Item In The Session**
 
@@ -64,7 +64,7 @@ Sometimes you may wish to store items in the session only for the next request. 
 	Session::keep(array('username', 'email'));
 
 <a name="database-sessions"></a>
-## Database Sessions
+## Veritabanı Oturumları
 
 When using the `database` session driver, you will need to setup a table to contain the session items. Below is an example `Schema` declaration for the table:
 

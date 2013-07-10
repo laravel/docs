@@ -10,7 +10,7 @@
 Laravel ücretsiz ve açık kaynak bir yazılım olup, geliştirilmesine ve ilerletilmesine katkıda bulunabilinir. Laravel kaynak kodu [Github](http://github.com) da bulunmakta olup, oradan projeye kolayca bir çatal açılarak (forking), katkılarınız birleştirilebilir (merging).
 
 <a name="pull-requests"></a>
-## Alınsın Talepleri
+## Alınsın Talepleri (Pull Requests)
 
 Alınsın talebinin işleyişi, yeni özellikler için veya yazılım hataları için olmasına bağlı olarak farklılık gösterir. Yeni bir özellik için yapılacak bir alınsın talebi göndermeden önce, başlığında bir teklif `[Proposal]` konusu oluşturmanız gerekir. Teklifin, yeni özelliği ve uygulama fikirlerini tarif eder şekilde olması gerekir. Bu ilkeye uyulmamış olan alınsın talepleri hemen kapatılacaktır.
 

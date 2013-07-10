@@ -20,11 +20,11 @@
 		//
 	{{ Form::close() }}
 
-Varsayılan olarak, `POST` metodu kullanılır; ama, istediğiniz bir metodu da belirtebilirsiniz:
+Varsayılan olarak, `POST` metodu kullanılır; ancak, istediğiniz bir metodu da belirtebilirsiniz:
 
 	echo Form::open(array('url' => 'foo/bar', 'method' => 'put'))
 
-> **Not:** HTML formları, sadece `POST` metotlarını desteklediği için,  `PUT` ve `DELETE` metotları otomatik olarak `_method` gizli alanıyla taklit edilir.
+> **Not:** HTML formları, sadece `POST` metotlarını desteklediği için, `PUT` ve `DELETE` metotları otomatik olarak `_method` gizli alanıyla taklit edilir.
 
 Ayrıca, isimlendirilmiş rotalar veya denetçi aksiyonlarına yönlendirilen formlar da açabilirsiniz:
 
@@ -39,7 +39,7 @@ Formunuz dosya yüklemelerini kabul edecekse, dizginize `files` seçeneğini ekl
 <a name="csrf-protection"></a>
 ## CSRF Koruması
 
-Laravel, uygulamanızı CSRF saldırılarından korumak için kolay bir metot sunar. Öncelikle, rastgele bir değer kullanıcının oturumuna yerleştirilir. Merak etmeyin, bu otomatik olarak yapılır. CSRF değeri, formalrınıza gizli bir alan olarak otomatik olarak yerleştirilir. Yine de, gizli alan için HTML kodunu oluşturmak isterseniz, `token` metodunu kullanabilirsiniz:
+Laravel, uygulamanızı CSRF saldırılarından korumak için kolay bir metot sunar. Öncelikle, rastgele bir değer kullanıcının oturumuna yerleştirilir. Merak etmeyin, bu otomatik olarak yapılır. CSRF değeri, formlarınıza gizli bir alan olarak otomatik olarak yerleştirilir. Yine de, gizli alan için HTML kodunu oluşturmak isterseniz, `token` metodunu kullanabilirsiniz:
 
 **Bir Forma CSRF Değeri Eklemek**
 

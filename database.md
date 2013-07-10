@@ -9,9 +9,9 @@
 <a name="yapilandirma"></a>
 ## Yapılandırma
 
-Laravel, veritabanı bağlantısını ve sorguları çalıştırmayı fazlasıyla kolay kılar. Veritabanı yapılandırma ayarlarını `app/config/database.php` dosyasında bulabilirsiniz. Bı dosyada hem tüm veritabanı bağlantılarını tanımlayabilir, hem de hangi bağlantının varsayılan olarak kullanılacağını seçebilirsiniz. Örnek olarak desteklenen tüm veritabanı sistemleri bu dosya altında sunulmuştur.
+Laravel, veritabanı bağlantısını ve sorguları çalıştırmayı fazlasıyla kolay kılar. Veritabanı yapılandırma ayarlarını `app/config/database.php` dosyasında bulabilirsiniz. Bu dosyada hem tüm veritabanı bağlantılarını tanımlayabilir, hem de hangi bağlantının varsayılan olarak kullanılacağını seçebilirsiniz. Örnek olarak desteklenen tüm veritabanı sistemleri bu dosya altında sunulmuştur.
 
-Laravel tarafından desteklenen veritabanı sistemleri: MySQL, Postgres, SQLite, and SQL Server.
+Laravel tarafından desteklenen veritabanı sistemleri: MySQL, Postgres, SQLite, ve SQL Server.
 
 <a name="sorgulari-calistirma"></a>
 ## Sorguları Çalıştırma
@@ -22,7 +22,7 @@ Veritabanı bağlantılarını bir kere yapılandırdıktan sonra `DB` sınıfı
 
 	$sonuclar = DB::select('select * from uyeler where id = ?', array(1));
 
-`select` metodu sonuçları her zaman `dizi` () tipinde döndürür.
+`select` metodu sonuçları her zaman `dizi` tipinde döndürür.
 
 **Yeni Kayıt Ekleme (Insert)**
 

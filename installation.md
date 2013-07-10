@@ -6,12 +6,12 @@
 - [Ayarlamalar](#ayarlamalar)
 - [İzinler](#izinler)
 - [Yollar](#yollar)
-- [Sevimli URLler](#sevimli-urller)
+- [Zarif URL'ler](#sevimli-urller)
 
 <a name="composer-kurulumu"></a>
 ## Composer Kurulumu
 
-Laravel gereksinimlerini düzenlemek için [Composer](http://getcomposer.org) kullanır. Öncelikle `composer.phar` dosyasını indiriniz. PHAR arşivini yerel proje dosyanızda tutabileceğiniz gibi `usr/local/bin` içerisine taşıyarak sisteminizde evrensel olarak da kullanabilirsiniz. Windows'ta Composer [Windows kurulumu](https://getcomposer.org/Composer-Setup.exe)nu kullanabilirsiniz.
+Laravel bağımlılıklarını yönetmek için [Composer](http://getcomposer.org) kullanır. Öncelikle `composer.phar` dosyasını indiriniz. PHAR arşivini yerel proje dosyanızda tutabileceğiniz gibi `usr/local/bin` içerisine taşıyarak sisteminizde evrensel olarak da kullanabilirsiniz. Windows'ta Composer [Windows kurulumu](https://getcomposer.org/Composer-Setup.exe)nu kullanabilirsiniz.
 
 <a name="laravel-yukleme"></a>
 ## Laravel Yükleme
@@ -34,13 +34,13 @@ Laravel framework'un birkaç sistem gereksinimi bulunmaktadır:
 <a name="ayarlamalar"></a>
 ## Ayarlamalar
 
-Laravel'in çalışabilmesi için neredeyse hiç ayar gerekmez. Geliştirmeye başlamak için serbestsiniz! Ancak `app/config/app.php` dosyasını ve dokümantasyonunu gözden geçirebilirsiniz. Buradaki `Saat Dilimi` ve `lisan` gibi seçenekleri uygulamanızın ihtiyaçlarına göre düzenleyebilirsiniz.
+Laravel'in çalışabilmesi için neredeyse hiç ayar gerekmez. Geliştirmeye başlamak için serbestsiniz! Ancak `app/config/app.php` dosyasını ve dokümantasyonunu gözden geçirebilirsiniz. Buradaki `timezone` (saat dilimi) ve `locale` (lisan) gibi seçenekleri uygulamanızın ihtiyaçlarına göre düzenleyebilirsiniz.
 
-> **Not:** Mutlaka ayarlamanız gereken bir seçenek olan `anahtar` `app/config/app.php` içerisindedir. Bu değer rastgele seçilmiş 32 karakterden oluşmalıdır. Bu anahtar şifreleme değerlerinde kullanılmaktadır ve eğer doğru ayarlanmazsa güvenli olmayacaktır. `php artisan key:generate` artisan komutu ile bu değeri kolayca sağlayabilirsiniz.
+> **Not:** Mutlaka ayarlamanız gereken bir seçenek olan `anahtar` `app/config/app.php` dosyası içerisindedir. Bu değer rastgele seçilmiş 32 karakterden oluşmalıdır. Bu anahtar şifreleme değerlerinde kullanılmaktadır ve eğer doğru ayarlanmazsa güvenli olmayacaktır. `php artisan key:generate` artisan komutu ile bu değeri kolayca sağlayabilirsiniz.
 
 <a name="izinler"></a>
 ### İzinler
-Laravel app/storage dizin içeriğinin web sunucu tarafından yazılabilir olmasını gerektirmektedir.
+Laravel `app/storage` dizin içeriğinin web sunucu tarafından yazılabilir olmasını gerektirmektedir.
 
 <a name="yollar"></a>
 ### Yollar
@@ -49,10 +49,10 @@ Framework dizin yollarının birkaçı yapılandırılabilirdir. Bu dizin yollar
 
 > **Not:** Laravel kodlarınızı koruyacak biçimde tasarlanmıştır bu sebeple yerel dosyalarınız uygulamanızdan farklı olarak public dizini içinde yer alır. Önerilen, public dizinizi documentRoot (sunucu temel dizini / root) içine yerleştirmeniz veya public dizin içeriğini ana dizininize kopyalayıp Laravel'in tüm dosyalarını ana dizin dışına yerleştirmenizdir.
 
-<a name="sevimli-urller"></a>
-## Sevimli URLler
+<a name="zarif-urller"></a>
+## Zarif URL'ler
 
-Framework ile beraber gelen `public/.htaccess` dosyası URLlerin `index.php` olmadan kullanımına olanak sağlamaktadır. Laravel uygulamanızın sunumu için Apache kullanıyorsanız `mod_rewrite` modülünün etkin olduğundan emin olunuz.
+Framework ile beraber gelen `public/.htaccess` dosyası URL'lerin `index.php` olmadan kullanımına olanak sağlamaktadır. Laravel uygulamanızın sunumu için Apache kullanıyorsanız `mod_rewrite` modülünün etkin olduğundan emin olunuz.
 
 Eğer Laravel ile birlikte gelen `.htaccess` dosyası Apache kurulumunuz ile işlev göstermezse, bunu deneyiniz:
 

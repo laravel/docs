@@ -9,7 +9,7 @@
 <a name="ayarlamalar"></a>
 ## Ayarlamalar
 
-Laravel, çeşitli önbellekleme sistemleri için tümleşik bir API sağlar. Önbellekleme konfigürasyonu `app/config/cache.php`'de bulunmaktadır. Bu dosyada uygulamanızda varsayılan olarak hangi önbellekleme sürücüsünü kullanmak istediğinizi belirtebilirsiniz. Laravel, [Memcached](http://memcached.org) ve [Redis](http://redis.io) gibi popüler önbellekleme paketlerini barındırır.
+Laravel, çeşitli önbellekleme sistemleri için tümleşik bir API sağlar. Önbellekleme ayarları `app/config/cache.php` dosyasında bulunmaktadır. Bu dosyada uygulamanızda varsayılan olarak hangi önbellekleme sürücüsünü kullanmak istediğinizi belirtebilirsiniz. Laravel, [Memcached](http://memcached.org) ve [Redis](http://redis.io) gibi popüler önbellekleme sürücülerini barındırır.
 
 Önbellekleme konfigürasyon dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel, sıralanarak önbelleklenmiş nesneleri dosya sisteminde depolayan `file` (dosya) önbellekleme sürücüsünü kullanmak üzere ayarlanmıştır. Daha büyük uygulamalar için, Memcached ve APC gibi bir önbellekleme uygulaması kullanmanız önerilir.
 
@@ -20,7 +20,7 @@ Laravel, çeşitli önbellekleme sistemleri için tümleşik bir API sağlar. Ö
 
 	Cache::put('key', 'value', $minutes);
 
-**Olmayan Bir Nesneyi Önbelleğe Koymak**
+**Eğer Nesne Önbellekte Yoksa, Nesneyi Önbelleğe Koymak**
 
 	Cache::add('key', 'value', $minutes);
 

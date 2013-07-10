@@ -7,7 +7,7 @@
 <a name="laravel-felsefesi"></a>
 ## Laravel Felsefesi
 
-Laravel etkileyici ve zarif sözdizimine sahip bir web uygulama çatısıdır (framework'tür). Geliştiriciliğin gerçekte eğlenceli, üretken deneyimlere dayanarak yerine getirilmesi gerektiğine inanıyoruz. Laravel birçok web uygulamasında kullanılan yetkilendirme, rotalama, oturum yönetimi ve kaşeleme gibi ortak görevleri kolaylaştırarak geliştiriciliğin zorluklarını ortadan kaldırmak amacını gütmektedir.
+Laravel etkileyici ve zarif sözdizimine sahip bir web uygulama çatısıdır (framework). Geliştiriciliğin gerçekte eğlenceli, üretken deneyimlere dayanarak yerine getirilmesi gerektiğine inanıyoruz. Laravel birçok web uygulamasında kullanılan yetkilendirme, rotalama, oturum yönetimi ve ön bellekleme gibi ortak görevleri kolaylaştırarak geliştiriciliğin zorluklarını ortadan kaldırmak amacını gütmektedir.
 
 Laravel, geliştiriciler için, uygulama işlevselliğinden ödün vermeden geliştirme aşamasını memnuniyet verici hale getirmeyi amaç edinmiştir. En iyi kodu mutlu geliştiriciler yazar. Bu hedef için Ruby on Rails, ASP.NET MVC, ve Sinatra dilleri de dahil olmak üzere, diğer çatılardaki güzel özellikler bir araya getirilmeye çalışılmıştır.
 
