@@ -12,7 +12,7 @@
 
 Laravel Framework'ü kurmak için aşağıdaki komutu, komut işleyici uygulamanızdan çalıştırabilirsiniz:
 
-	composer create-project laravel/laravel your-project-name
+	composer create-project laravel/laravel your-project-name --prefer-dist
 
 veya Laravel Framework'ü kurmak için [Github Kaynağı'nı](https://github.com/laravel/laravel/archive/master.zip) indirmelisiniz. Daha sonra [Composer'i kurup](http://getcomposer.org), `composer install` komutunu projenizin root (ana) klasöründe çalıştırmalısınız. Bu komutu çalıştırmak, Laravel'i ve Laravel'in gereksinimlerini (dependencies) indirip kuracaktır.
 
