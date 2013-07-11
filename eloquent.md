@@ -1,11 +1,11 @@
 # Eloquent ORM
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
-- [Mass Assignment](#mass-assignment)
-- [Insert, Update, Delete](#insert-update-delete)
+- [Giriş](#introduction)
+- [Temel Kullanım](#basic-usage)
+- [Toplu Atama](#mass-assignment)
+- [Ekle, Güncelle, Sil](#insert-update-delete)
 - [Soft Deleting](#soft-deleting)
-- [Timestamps](#timestamps)
+- [Zaman Damgaları](#timestamps)
 - [Query Scopes](#query-scopes)
 - [Relationships](#relationships)
 - [Querying Relations](#querying-relations)
@@ -21,185 +21,185 @@
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
-## Introduction
+## Giriş
 
-The Eloquent ORM included with Laravel provides a beautiful, simple ActiveRecord implementation for working with your database. Each database table has a corresponding "Model" which is used to interact with that table.
+Laravelle gelen "Eloquent ORM", veritabanınızla çalışırken kullanacağınız güzel ve sade bir ActiveRecord uygulaması sağlamaktadır. Her veritabanı tablosu, bu tabloyla etkilişim için kullanıcak kendine has bir  "Model" sahibidir.
 
-Before getting started, be sure to configure a database connection in `app/config/database.php`.
+Başlamadan önce, `app/config/database.php`'de bir veritabanı bağlantısı yapılandırmış olun.
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Temel Kullanım
 
-To get started, create an Eloquent model. Models typically live in the `app/models` directory, but you are free to place them anywhere that can be auto-loaded according to your `composer.json` file.
+Başlamadan önce, bir Eloquent modeli oluşturunuz. Modeller tipik olarak `app/models` klasöründe yer alır, fakat siz modellerinizi `composer.json` dosyanıza göre otomatik yükleme yapabileceğiniz başka bir yere de koyabilirsiniz.
 
-**Defining An Eloquent Model**
+**Bir Eloquent Modelinin Tanımlanması**
 
-	class User extends Eloquent {}
+	class Uye extends Eloquent {}
 
-Note that we did not tell Eloquent which table to use for our `User` model. The lower-case, plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
+Dikkat ederseniz Eloquent'e `Uye` modelimiz için hangi tabloyu kullanacağımızı söylemedik. Eğer açıkça başka bir isim belirtilmezse tablo isimi olarak sınıf adının ingilizde çoğulunun küçük harf hali kullanılacaktır. Dolayısıyla bizim örneğimizde Eloquent, `Uye` modelinin  `uyes` tablosundaki kayıtları tutacağını varsayacaktır. Tablo ismini açıkça belirtmek için modelinizde bir `table` özelliği tanımlayınız:
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
-		protected $table = 'my_users';
+		protected $table = 'uyeler';
 
 	}
 
-> **Note:** Eloquent will also assume that each table has a primary key column named `id`. You may define a `primaryKey` property to override this convention. Likewise, you may define a `connection` property to override the name of the database connection that should be used when utilizing the model.
+> **Not:** Eloquent'in başka bir ön kabulü de her tablonun `id` adında bir primer key sütunu olduğudur. Bu kuralı aşmak için de bir `primaryKey` özelliği tanımlamanız gerekecek. Benzer şekilde, modeliniz kullanılacağı zaman kullanılacak veritabanı bağlantısının adını değiştirmek için bir `connection` özelliği tanımlayabilirsiniz.
 
-Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
+Bir model tanımladıktan sonra artık tablonuzda kayıt oluşturmaya ve ondan kayıt getirmeye başlayabilirsiniz. Tablolarınıza ön tanımlı olarak `updated_at` ve `created_at` sütunları koymanız gerektiğine dikkat ediniz. Şayet bu sütunların otomatik olarak tutulmasını istemiyorsanız, modelinizdeki `$timestamps` özelliğini `false` olarak ayarlayınız.
 
-**Retrieving All Models**
+**Tüm Modellerin Alınması**
 
-	$users = User::all();
+	$uyeler = Uye::all();
 
-**Retrieving A Record By Primary Key**
+**Birincil Alana Göre Bir Kaydın Alınması**
 
-	$user = User::find(1);
+	$uye = Uye::find(1);
 
-	var_dump($user->name);
+	var_dump($uye->isim);
 
-> **Note:** All methods available on the [query builder](/docs/queries) are also available when querying Eloquent models.
+> **Not:** [Sorgu Oluşturucusu](/docs/queries)'nda bulunan tüm metodlar Eloquent modellerini sorgularken de kullanılabilir.
 
-**Retrieving A Model By Primary Key Or Throw An Exception**
+**Birincil Alana Göre Bir Model Alınması ya da Ortaya Bir İstisna Çıkartılması**
 
-Sometimes you may wish to throw an exception if a model is not found, allowing you to catch the exceptions using an `App::error` handler and display a 404 page.
+Bazı durumlarda bir model bulunamadığında bir istisna çıkartmak, böylece bir `App::error` işleyicisi kullanarak istisnayı yakalayabilmek ve bir 404 sayfası göstermek isteyebilirsiniz.
 
-	$model = User::findOrFail(1);
+	$model = Uye::findOrFail(1);
 
-To register the error handler, listen for the `ModelNotFoundException`
+Bu hata işleyicinin kaydını yapmak için `ModelNotFoundException`'i dinlemek lazım.
 
 	use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 	App::error(function(ModelNotFoundException $e)
 	{
-		return Response::make('Not Found', 404);
+		return Response::make('Bulunamadı', 404);
 	});
 
-**Querying Using Eloquent Models**
+**Eloquent Modelleri Kullanarak Sorgu Yapma**
 
-	$users = User::where('votes', '>', 100)->take(10)->get();
+	$uyeler = Uye::where('puan', '>', 100)->take(10)->get();
 
-	foreach ($users as $user)
+	foreach ($uyeler as $uye)
 	{
-		var_dump($user->name);
+		var_dump($uye->isim);
 	}
 
-Of course, you may also use the query builder aggregate functions.
+Tabi ki, sorgu oluşturucusunun kümeleme fonksiyonlarını da kullanabilirsiniz.
 
-**Eloquent Aggregates**
+**Eloquent Küme Metodları**
 
-	$count = User::where('votes', '>', 100)->count();
+	$adet = Uye::where('puan', '>', 100)->count();
 
 <a name="mass-assignment"></a>
-## Mass Assignment
+## Toplu Atama
 
-When creating a new model, you pass an array of attributes to the model constructor. These attributes are then assigned to the model via mass-assignment. This is convenient; however, can be a **serious** security concern when blindly passing user input into a model. If user input is blindly passed into a model, the user is free to modify **any** and **all** of the model's attributes. For this reason, all Eloquent models protect against mass-assignment by default.
+Yeni bir model oluşturulurken model oluşturucuya niteliklerden oluşan bir dizi geçersiniz. Bu nitelikler bu durumda modele "toplu atama" aracılığıyla atanır. Bu gayet uygun bir yaklaşımdır, fakat bir kullanıcı girdisi bir modele körleme geçirildiği takdirde **ciddi (serious)** bir güvenlik sorunu olabilecektir. Kullanıcı girdisi bir modele körlemesine geçirilirse, bu kullanıcı modelin niteliklerinin **birisini (any)** ve **hepsini (all)** değiştirebilecektir. Bu sebepler yüzünden, tüm Eloquent modelleri ön tanımlı olarak toplu atamaya karşı koyar.
 
-To get started, set the `fillable` or `guarded` properties on your model.
+Başlamak için modelinizde `fillable` veya `guarded` özelliğini ayarlayınız.
 
-The `fillable` property specifies which attributes should be mass-assignable. This can be set at the class or instance level.
+Bunlardan `fillable` özelliği hangi niteliklerin toplu atanacaklarını belirler. Bu işlem sınıf ya da olgu düzeyinde ayarlanabilir.
 
-**Defining Fillable Attributes On A Model**
+**Bir Modelde Fillable Niteliklerin Tanımlanması**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
-		protected $fillable = array('first_name', 'last_name', 'email');
-
-	}
-
-In this example, only the three listed attributes will be mass-assignable.
-
-The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of a "white-list":
-
-**Defining Guarded Attributes On A Model**
-
-	class User extends Eloquent {
-
-		protected $guarded = array('id', 'password');
+		protected $fillable = array('ismi', 'soy_ismi', 'email');
 
 	}
 
-In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard method:
+Bu örnekte, sadece belirttiğimiz üç nitelik toplu atanabilecektir.
 
-**Blocking All Attributes From Mass Assignment**
+`fillable`'in tersi `guarded`'dir ve bir "beyaz-liste" yerine bir "kara-liste" olarak iş görür:
+
+**Bir Modelde Guarded Niteliklerin Tanımlanması**
+
+	class Uye extends Eloquent {
+
+		protected $guarded = array('id', 'parola');
+
+	}
+
+Yukardaki örneğe göre `id` ve `parola` nitelikleri toplu atana**mayacaktır**. Diğer tüm nitelikle toplu atanabilecektir. Toplu atamayı niteliklerin **hepsi (all)** için bloke etmeyi de seçebilirsiniz:
+
+**Toplu Atamanın Tüm Niteliklerin İçin Engellenmesi**
 
 	protected $guarded = array('*');
 
 <a name="insert-update-delete"></a>
-## Insert, Update, Delete
+## Ekle, Güncelle, Sil
 
-To create a new record in the database from a model, simply create a new model instance and call the `save` method.
+Veritabanında bir modelden yeni bir kayıt oluşturmak için, yeni bir model olgusu oluşturun ve `save` metodunu çağırın.
 
-**Saving A New Model**
+**Yeni Bir Modelin Kaydedilmesi**
 
-	$user = new User;
+	$uye = new Uye;
 
-	$user->name = 'John';
+	$uye->isim = 'Can';
 
-	$user->save();
+	$uye->save();
 
-> **Note:** Typically, your Eloquent models will have auto-incrementing keys. However, if you wish to specify your own keys, set the `incrementing` property on your model to `false`.
+> **Not:** Tipik olarak, Eloquent modellerinizde otomatik artan anahtarlar olacaktır. Ama siz kendi keylerinizi belirlemek isterseniz, modelinizdeeki `incrementing` özelliğini `false` olarak ayarlayın.
 
-You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method. However, before doing so, you will need to specify either a `fillable` or `guarded` attribute on the model, as all Eloquent models protect against mass-assignment.
+Yeni bir modeli tek satırda kaydetmek için `create` metodunu kullanabilirsiniz. Eklenen model olgusu bu metoddan döndürülecektir. Ancak, tüm Elequent modelleri toplu atamaya karşı korunumlu oldukları için, bunu yapmadan önce modelinizde bir `fillable` veya `guarded` özelliği belirlemeniz gerekecektir.
 
-**Setting The Guarded Attributes On The Model**
+**Modeldeki Korunumlu Niteliklerin Ayarlanması**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
-		protected $guarded = array('id', 'account_id');
+		protected $guarded = array('id', 'hesap_no');
 
 	}
 
-**Using The Model Create Method**
+**Model Create Metodunun Kullanımı**
 
-	$user = User::create(array('name' => 'John'));
+	$uye = Uye::create(array('isim' => 'Can'));
 
-To update a model, you may retrieve it, change an attribute, and use the `save` method:
+Bir modeli güncellemek için onu getirir, bir niteliğini değiştirir, sonra da `save` metodunu kullanabilirsiniz:
 
-**Updating A Retrieved Model**
+**Getirilen Bir Modelin Güncellenmesi**
 
-	$user = User::find(1);
+	$uye = Uye::find(1);
 
-	$user->email = 'john@foo.com';
+	$uye->email = 'can@filan.com';
 
-	$user->save();
+	$uye->save();
 
-Sometimes you may wish to save not only a model, but also all of its relationships. To do so, you may use the `push` method:
+Bazen sadece bir modeli değil, onun bütün ilişkilerini de kaydetmek isteyebilirsiniz. Bunu yapmak için `push` metodunu kullanın:
 
-**Saving A Model And Relationships**
+**Bir Model ve İlişkilerinin Kaydedilmesi**
 
-	$user->push();
+	$uye->push();
 
-You may also run updates as queries against a set of models:
+Ayrıca, bir modeller kümesinde güncelleme sorguları da çalıştırabilirsiniz:
 
-	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
+	$satirSayisi = Uye::where('puan', '>', 100)->update(array('durum' => 2));
 
-To delete a model, simply call the `delete` method on the instance:
+Bir modeli silmek için olgu üzerinde `delete` metodunu çağırın:
 
-**Deleting An Existing Model**
+**Mevcut Bir Modelin Silinmesi**
 
-	$user = User::find(1);
+	$uye = Uye::find(1);
 
-	$user->delete();
+	$uye->delete();
 
-**Deleting An Existing Model By Key**
+**Mevcut Bir Modelin Key Aracılığıyla Silinmesi**
 
-	User::destroy(1);
+	Uye::destroy(1);
 
-	User::destroy(1, 2, 3);
+	Uye::destroy(1, 2, 3);
 
-Of course, you may also run a delete query on a set of models:
+Gayet tabii, bir modeller kümesinde bir silme sorgusu da çalıştırabilirsiniz:
 
-	$affectedRows = User::where('votes', '>', 100)->delete();
+	$satirSayisi = Uye::where('puan', '>', 100)->delete();
 
-If you wish to simply update the timestamps on a model, you may use the `touch` method:
+Eğer bir modelde sadece zaman damgalarını güncellemek istiyorsanız, `touch` metodunu kullanabilirsiniz:
 
-**Updating Only The Model's Timestamps**
+**Bir Modelin Sadece Zaman Damgalarının Güncellenmesi**
 
-	$user->touch();
+	$uye->touch();
 
 <a name="timestamps"></a>
-## Timestamps
+## Zaman Damgaları
 
 By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `datetime` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
 
