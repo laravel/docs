@@ -1,7 +1,7 @@
 # Redis
 
 - [Introduction](#introduction)
-- [Yapılandırma](#configuration)
+- [Yapılandırma](#yapilandirma)
 - [Usage](#usage)
 - [Pipelining](#pipelining)
 
