@@ -1,55 +1,55 @@
 # Oturum
 
-- [Yapılandırma](#configuration)
-- [Oturum Kullanımı](#session-usage)
-- [Flash Data](#flash-data)
-- [Veritabanı Oturumları](#database-sessions)
+- [Yapılandırma](#yapilandirma)
+- [Oturum Kullanımı](#oturum-kullanimi)
+- [Flaş Verisi](#flas-verisi)
+- [Veritabanı Oturumları](#veritabani-oturumlari)
 
-<a name="configuration"></a>
+<a name="yapilandirma"></a>
 ## Yapılandırma
 
-Since HTTP driven applications are stateless, sessions provide a way to store information about the user across requests. Laravel ships with a variety of session back-ends available for use through a clean, unified API. Support for popular back-ends such as [Memcached](http://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
+HTTP odaklı uygulamalar izolasyonsuz olduğu için, oturumlar istekler arasında kullanıcı hakkında bilgi saklamak için bir yol sağlar. Laravel ships with a variety of session back-ends available for use through a clean, unified API. Support for popular back-ends such as [Memcached](http://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
 
-The session configuration is stored in `app/config/session.php`. Be sure to review the well documented options available to you in this file. By default, Laravel is configured to use the `native` session driver, which will work well for the majority of applications.
+Oturum yapılandırma ayarları `app/config/session.php` dosyasında bulunmaktadır. Yapılandırma dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel `native` oturum sürücünü kullanmak üzere yapılandırılmıştır, bu yapılandırma uygulamaların çoğunda çalışacaktır.
 
-<a name="session-usage"></a>
+<a name="oturum-kullanimi"></a>
 ## Oturum Kullanımı
 
-**Storing An Item In The Session**
+**Bir Nesneyi Oturuma Koymak**
 
 	Session::put('key', 'value');
 
-**Retrieving An Item From The Session**
+**Oturumdan Bir Nesneyi Almak**
 
 	$value = Session::get('key');
 
-**Retrieving An Item Or Returning A Default Value**
+**Bir Oturum Değeri Almak Veya Varsayılan Bir Değer Döndürmek**
 
 	$value = Session::get('key', 'default');
 
 	$value = Session::get('key', function() { return 'default'; });
 
-**Determining If An Item Exists In The Session**
+**Nesnenin Oturumda Var Olup Olmadığını Kontrol Etmek**
 
 	if (Session::has('users'))
 	{
 		//
 	}
 
-**Removing An Item From The Session**
+**Oturumdan Bir Nesneyi Silmek**
 
 	Session::forget('key');
 
-**Removing All Items From The Session**
+**Oturumdanki Tüm Nesneleri Silmek**
 
 	Session::flush();
 
-**Regenerating The Session ID**
+**Oturum ID Numarasını Tekrar Oluşturmak**
 
 	Session::regenerate();
 
-<a name="flash-data"></a>
-## Flash Data
+<a name="flas-verisi"></a>
+## Flaş Verisi
 
 Sometimes you may wish to store items in the session only for the next request. You may do so using the `Session::flash` method:
 
@@ -63,7 +63,7 @@ Sometimes you may wish to store items in the session only for the next request. 
 
 	Session::keep(array('username', 'email'));
 
-<a name="database-sessions"></a>
+<a name="veritabani-oturumlari"></a>
 ## Veritabanı Oturumları
 
 When using the `database` session driver, you will need to setup a table to contain the session items. Below is an example `Schema` declaration for the table:
