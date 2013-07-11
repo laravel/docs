@@ -1,6 +1,6 @@
 # Security
 
-- [Configuration](#configuration)
+- [Yapılandırma](#yapilandirma)
 - [Storing Passwords](#storing-passwords)
 - [Authenticating Users](#authenticating-users)
 - [Manually Logging In Users](#manually)
@@ -9,8 +9,8 @@
 - [Password Reminders & Reset](#password-reminders-and-reset)
 - [Encryption](#encryption)
 
-<a name="configuration"></a>
-## Configuration
+<a name="yapilandirma"></a>
+## Yapılandırma
 
 Laravel aims to make implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `app/config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication facilities.
 

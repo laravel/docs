@@ -3,7 +3,7 @@
 - [Composer Kurulumu](#composer-kurulumu)
 - [Laravel Yükleme](#laravel-yukleme)
 - [Sunucu Gereksinimleri](#sunucu-gereksinimleri)
-- [Ayarlamalar](#ayarlamalar)
+- [Yapılandırma](#yapilandirma)
 - [İzinler](#izinler)
 - [Yollar](#yollar)
 - [Zarif URL'ler](#zarif-urller)
@@ -31,10 +31,10 @@ Laravel framework'un birkaç sistem gereksinimi bulunmaktadır:
 - PHP >= 5.3.7
 - MCrypt PHP Eklentisi
 
-<a name="ayarlamalar"></a>
-## Ayarlamalar
+<a name="yapilandirma"></a>
+## Yapılandırma
 
-Laravel'in çalışabilmesi için neredeyse hiç ayar gerekmez. Geliştirmeye başlamak için serbestsiniz! Ancak `app/config/app.php` dosyasını ve dokümantasyonunu gözden geçirebilirsiniz. Buradaki `timezone` (saat dilimi) ve `locale` (lisan) gibi seçenekleri uygulamanızın ihtiyaçlarına göre düzenleyebilirsiniz.
+Laravel'in çalışabilmesi için neredeyse hiç yapilandırma ayarı gerekmez. Geliştirmeye başlamak için serbestsiniz! Ancak `app/config/app.php` dosyasını ve dokümantasyonunu gözden geçirebilirsiniz. Buradaki `timezone` (saat dilimi) ve `locale` (lisan) gibi değerleri uygulamanızın ihtiyaçlarına göre düzenleyebilirsiniz.
 
 > **Not:** Mutlaka ayarlamanız gereken bir seçenek olan `anahtar` `app/config/app.php` dosyası içerisindedir. Bu değer rastgele seçilmiş 32 karakterden oluşmalıdır. Bu anahtar şifreleme değerlerinde kullanılmaktadır ve eğer doğru ayarlanmazsa güvenli olmayacaktır. `php artisan key:generate` artisan komutu ile bu değeri kolayca sağlayabilirsiniz.
 
