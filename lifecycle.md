@@ -12,7 +12,7 @@ Laravel'de İstek Yaşam Döngüsü (Request Lifecycle) gerçekten çok basit bi
 <a name="start-dosyalari"></a>
 ## Start Dosyaları
 
-Aplikasyonunuzun start dosyaları `app/start` dizininde bulunmaktadır. Varsayılan olarak bunlardan üçü aplikasyonunuzun içine dahil edilmiştir. Bunlar `global.php`, `local.php`, ve `artisan.php`'dir. `artisan.php` hakkında daha fazla bilgiye sahip olmak için [Artisan command line](/docs/commands#registering-commands) dökümanlarına bakınız.
+Uygulamanızın start dosyaları `app/start` dizininde bulunmaktadır. Varsayılan olarak bunlardan üçü uygulamanızın içine dahil edilmiştir. Bunlar `global.php`, `local.php`, ve `artisan.php`'dir. `artisan.php` hakkında daha fazla bilgiye sahip olmak için [Artisan command line](/docs/commands#registering-commands) dökümanlarına bakınız.
 
 The `global.php` start file contains a few basic items by default, such as the registration of the [Logger](/docs/errors) and the inclusion of your `app/filters.php` file. However, you are free to add anything to this file that you wish. It will be automatically included on _every_ request to your application, regardless of environment. The `local.php` file, on the other hand, is only called when the application is executing in the `local` environment. For more information on environments, check out the [configuration](/docs/configuration) documentation.
 
@@ -35,4 +35,4 @@ You may also do pre and post request processing by registering `before`, `after`
 		//İstek sonrası olayları
 	});
 
-Bu olayların dinleyicileri, aplikasyonunuza yapılan her istek öncesinde `(before)` ve sonrasında `(after)` çalışacaktır.
+Bu olayların dinleyicileri, uygulamanıza yapılan her istek öncesinde `(before)` ve sonrasında `(after)` çalışacaktır.
