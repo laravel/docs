@@ -1,13 +1,13 @@
 # Queues
 
-- [Configuration](#configuration)
+- [Yapılandırma](#yapilandirma)
 - [Basic Usage](#basic-usage)
 - [Queueing Closures](#queueing-closures)
 - [Running The Queue Listener](#running-the-queue-listener)
 - [Push Queues](#push-queues)
 
-<a name="configuration"></a>
-## Configuration
+<a name="yapilandirma"></a>
+## Yapılandırma
 
 The Laravel Queue component provides a unified API across a variety of different queue services. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time, thus drastically speeding up the web requests to your application.
 

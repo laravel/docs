@@ -1,11 +1,11 @@
 # Pagination
 
-- [Configuration](#configuration)
+- [Yapılandırma](#yapilandirma)
 - [Usage](#usage)
 - [Appending To Pagination Links](#appending-to-pagination-links)
 
-<a name="configuration"></a>
-## Configuration
+<a name="yapilandirma"></a>
+## Yapılandırma
 
 In other frameworks, pagination can be very painful. Laravel makes it a breeze. There is a single configuration option in the `app/config/view.php` file. The `pagination` option specifies which view should be used to create pagination links. By default, Laravel includes two views.
 

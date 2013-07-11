@@ -1,7 +1,7 @@
 # Redis
 
 - [Introduction](#introduction)
-- [Configuration](#configuration)
+- [Yapılandırma](#configuration)
 - [Usage](#usage)
 - [Pipelining](#pipelining)
 
@@ -12,8 +12,8 @@
 
 > **Note:** If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `app/config/app.php` file.
 
-<a name="configuration"></a>
-## Configuration
+<a name="yapilandirma"></a>
+## Yapılandırma
 
 The Redis configuration for your application is stored in the **app/config/database.php** file. Within this file, you will see a **redis** array containing the Redis servers used by your application:
 

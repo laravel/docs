@@ -1,17 +1,17 @@
 # Önbellekleme (Cache)
 
-- [Ayarlamalar](#ayarlamalar)
+- [Yapılandırma](#yapilandirma)
 - [Önbellekleme Kullanımı](#onbellekleme-kullanimi)
 - [Arttırma & Azaltma](#arttirma-ve-azaltma)
 - [Önbellek Bölümleri](#onbellek-bolumleri)
 - [Veritabanı Önbelleği](#veritabani-onbellegi)
 
-<a name="ayarlamalar"></a>
-## Ayarlamalar
+<a name="yapilandirma"></a>
+## Yapılandırma
 
 Laravel, çeşitli önbellekleme sistemleri için tümleşik bir API sağlar. Önbellekleme ayarları `app/config/cache.php` dosyasında bulunmaktadır. Bu dosyada uygulamanızda varsayılan olarak hangi önbellekleme sürücüsünü kullanmak istediğinizi belirtebilirsiniz. Laravel, [Memcached](http://memcached.org) ve [Redis](http://redis.io) gibi popüler önbellekleme sürücülerini barındırır.
 
-Önbellekleme konfigürasyon dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel, sıralanarak önbelleklenmiş nesneleri dosya sisteminde depolayan `file` (dosya) önbellekleme sürücüsünü kullanmak üzere ayarlanmıştır. Daha büyük uygulamalar için, Memcached ve APC gibi bir önbellekleme uygulaması kullanmanız önerilir.
+Önbellekleme yapılandırma dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel, sıralanarak önbelleklenmiş nesneleri dosya sisteminde depolayan `file` (dosya) önbellekleme sürücüsünü kullanmak üzere ayarlanmıştır. Daha büyük uygulamalar için, Memcached ve APC gibi bir önbellekleme uygulaması kullanmanız önerilir.
 
 <a name="onbellekleme-kullanimi"></a>
 ## Önbellekleme Kullanımı
