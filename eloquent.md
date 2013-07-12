@@ -3,11 +3,11 @@
 - [Giriş](#introduction)
 - [Temel Kullanım](#basic-usage)
 - [Toplu Atama](#mass-assignment)
-- [Ekle, Güncelle, Sil](#insert-update-delete)
-- [Soft Deleting](#soft-deleting)
+- [Ekleme, Güncelleme, Silme](#insert-update-delete)
+- [Belirsiz Silme](#soft-deleting)
 - [Zaman Damgaları](#timestamps)
-- [Query Scopes](#query-scopes)
-- [Relationships](#relationships)
+- [Sorgu Kapsamları](#query-scopes)
+- [İlişkiler](#relationships)
 - [Querying Relations](#querying-relations)
 - [Eager Loading](#eager-loading)
 - [Inserting Related Models](#inserting-related-models)
@@ -119,14 +119,14 @@ Bu örnekte, sadece belirttiğimiz üç nitelik toplu atanabilecektir.
 
 	}
 
-Yukardaki örneğe göre `id` ve `parola` nitelikleri toplu atana**mayacaktır**. Diğer tüm nitelikle toplu atanabilecektir. Toplu atamayı niteliklerin **hepsi (all)** için bloke etmeyi de seçebilirsiniz:
+Yukardaki örneğe göre `id` ve `parola` nitelikleri toplu atana **mayacaktır**. Diğer tüm nitelikler toplu atanabilecektir. Toplu atamayı niteliklerin **hepsi (all)** için bloke etmeyi de seçebilirsiniz:
 
-**Toplu Atamanın Tüm Niteliklerin İçin Engellenmesi**
+**Toplu Atamanın Tüm Nitelikler İçin Engellenmesi**
 
 	protected $guarded = array('*');
 
 <a name="insert-update-delete"></a>
-## Ekle, Güncelle, Sil
+## Ekleme, Güncelleme, Silme
 
 Veritabanında bir modelden yeni bir kayıt oluşturmak için, yeni bir model olgusu oluşturun ve `save` metodunu çağırın.
 
@@ -201,23 +201,23 @@ Eğer bir modelde sadece zaman damgalarını güncellemek istiyorsanız, `touch`
 <a name="timestamps"></a>
 ## Zaman Damgaları
 
-By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `datetime` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
+Ön tanımlı olarak, veritabanı tablonuzdaki `created_at` ve `updated_at` sütunlarının idamesini otomatik olarak Eloquent yapacaktır. Size tek düşen `datetime` tipindeki bu iki alanı tablonuza eklemektir, geri kalan işleri Eloquent üstlenecektir. Şayet siz bu sütunların idamesini Eloquent'in yapmasını istemiyorsanız, modelinize şu özelliği eklemeniz gerekir:
 
-**Disabling Auto Timestamps**
+**Otomatik Zaman Damgalarının Devre Dışı Bırakılması**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
-		protected $table = 'users';
+		protected $table = 'uyeler';
 
 		public $timestamps = false;
 
 	}
 
-If you wish to customize the format of your timestamps, you may override the `freshTimestamp` method in your model:
+Zaman damgalarınızın biçimini özelleştirmek isterseniz, modelinizdeki `freshTimestamp` metodunu ezebilirsiniz(override):
 
-**Providing A Custom Timestamp Format**
+**Özel Bir Zaman Damgası Biçiminin Şart Koşulması**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
 		public function freshTimestamp()
 		{
@@ -227,89 +227,89 @@ If you wish to customize the format of your timestamps, you may override the `fr
 	}
 
 <a name="soft-deleting"></a>
-## Soft Deleting
+## Belirsiz Silme
 
-When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, specify the `softDelete` property on the model:
+Bir model belirsiz silindiğinde, aslında veritabanınızdan çıkartılmaz. Onun yerinde kayıttaki bir `deleted_at` zaman damgası ayarlanır. Bir modeli için belirsiz silmeler yapılabilmesi için modelinizde `softDelete` özelliğine atama yapmanız gerekir:
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
 		protected $softDelete = true;
 
 	}
 
-To add a `deleted_at` column to your table, you may use the `softDeletes` method from a migration:
+Tablonuza bir `deleted_at` sütunu eklemek için ise, bir migrasyondan `softDeletes` metodunu kullanabilirsiniz:
 
 	$table->softDeletes();
 
-Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current timestamp. When querying a model that uses soft deletes, the "deleted" models will not be included in query results. To force soft deleted models to appear in a result set, use the `withTrashed` method on the query:
+Şimdi, artık modelinizde `delete` metodunu çağırdığınız zaman, bu `deleted_at` sütunu güncel zaman damgasına ayarlanacaktır. Belirsiz silme kullanılan bir model sorgulandığında, "silinmiş olan" modeller sorgu sonuçlarına dahil edilmeyecektir. Bir sonuç kümesinde belirsiz silinmiş modellerin gözükmesini zorlamak için sorgunuzda `withTrashed` metodunu kullanınız:
 
-**Forcing Soft Deleted Models Into Results**
+**Belirsiz Silinmiş Modelleri Sonuçlara Girmeye Zorlama**
 
-	$users = User::withTrashed()->where('account_id', 1)->get();
+	$uyeler = Uye::withTrashed()->where('hesap_no', 1)->get();
 
-If you wish to **only** receive soft deleted models in your results, you may use the `onlyTrashed` method:
+Sonuç kümenizde **sadece** belirsiz silinmiş modellerin olmasını istiyorsanız, `onlyTrashed` metodunu kullanabilirsiniz:
 
-	$users = User::onlyTrashed()->where('account_id', 1)->get();
+	$uyeler = Uye::onlyTrashed()->where('hesap_no', 1)->get();
 
-To restore a soft deleted model into an active state, use the `restore` method:
+Belirsiz silinmiş bir modeli tekrar etkin hale getirmek için, `restore` metodunu kullanın:
 
-	$user->restore();
+	$uye->restore();
 
-You may also use the `restore` method on a query:
+`restore` metodunu bir sorguda da kullanabilirsiniz:
 
-	User::withTrashed()->where('account_id', 1)->restore();
+	Uye::withTrashed()->where('hesap_no', 1)->restore();
 
-The `restore` method may also be used on relationships:
+`restore` metodu ilişkilerde de kullanılabilir:
 
-	$user->posts()->restore();
+	$uye->postalar()->restore();
 
-If you wish to truly remove a model from the database, you may use the `forceDelete` method:
+Bir modeli veritabanından gerçekten çıkartmak istediğinizde, `forceDelete` metodunu kullanabilirsiniz:
 
-	$user->forceDelete();
+	$uye->forceDelete();
 
-The `forceDelete` method also works on relationships:
+`forceDelete` metodu ilişkilerde de çalışır:
 
-	$user->posts()->forceDelete();
+	$uye->postalar()->forceDelete();
 
-To determine if a given model instance has been soft deleted, you may use the `trashed` method:
+Belli bir model olgusunun belirsiz silme özelliğine sahip olup olmadığını öğrenmek için, `trashed` metodunu kullanabilirsiniz:
 
-	if ($user->trashed())
+	if ($uye->trashed())
 	{
 		//
 	}
 
 <a name="query-scopes"></a>
-## Query Scopes
+## Sorgu Kapsamları
 
-Scopes allow you to easily re-use query logic in your models. To define a scope, simply prefix a model method with `scope`:
+Kapsamlar size sorgu mantığınızı modellerinizde tekrar tekrar kullanma imkanı verir. Bir kapsam tanımlamak için bir model metodunun başına `scope` getirmeniz yeterlidir:
 
-**Defining A Query Scope**
+**Bir Sorgu Kapsamının Tanımlanması**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
 		public function scopePopular($query)
 		{
-			return $query->where('votes', '>', 100);
+			return $query->where('puan', '>', 100);
 		}
 
 	}
 
-**Utilizing A Query Scope**
+**Bir Sorgu Kapsamının Kullanılması**
 
-	$users = User::popular()->orderBy('created_at')->get();
+	$uyeler = Uye::popular()->orderBy('created_at')->get();
 
 <a name="relationships"></a>
-## Relationships
+## İlişkiler
 
-Of course, your database tables are probably related to one another. For example, a blog post may have many comments, or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy. Laravel supports four types of relationships:
+Pek tabii, veritabanı tablolarınız büyük ihtimalle bir diğeriyle ilişkilidir. Örneğin bir blog yazısında çok sayıda yorum olabilir veya bir sipariş onu ısmarlayan kullanıcı ile ilişkili olacaktır. Eloquent bu ilişkileri kolayca yönetmenizi ve rahat çalışmanızı sağlar. Laravel dört tip ilişkiyi desteklemektedir:
 
-- [One To One](#one-to-one)
-- [One To Many](#one-to-many)
-- [Many To Many](#many-to-many)
-- [Polymorphic Relations](#polymorphic-relations)
+- [Birden Bire](#one-to-one)
+- [Birden Birçoğa](#one-to-many)
+- [Birçoktan Birçoğa](#many-to-many)
+- [Çokbiçimli İlişkiler](#polymorphic-relations)
 
 <a name="one-to-one"></a>
-### One To One
+### Birden Bire
 
 A one-to-one relationship is a very basic relation. For example, a `User` model might have one `Phone`. We can define this relation in Eloquent:
 
@@ -352,7 +352,7 @@ To define the inverse of the relationship on the `Phone` model, we use the `belo
 	}
 
 <a name="one-to-many"></a>
-### One To Many
+### Birden Birçoğa
 
 An example of a one-to-many relation is a blog post that "has many" comments. We can model this relation like so:
 
@@ -391,7 +391,7 @@ To define the inverse of the relationship on the `Comment` model, we use the `be
 	}
 
 <a name="many-to-many"></a>
-### Many To Many
+### Birçoktan Birçoğa
 
 Many-to-many relations are a more complicated relationship type. An example of such a relationship is a user with many roles, where the roles are also shared by other users. For example, many users may have the role of "Admin". Three database tables are needed for this relationship: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names, and should have `user_id` and `role_id` columns.
 
@@ -430,9 +430,9 @@ Of course, you may also define the inverse of the relationship on the `Role` mod
 	}
 
 <a name="polymorphic-relations"></a>
-### Polymorphic Relations
+### Çokbiçimli İlişkiler
 
-Polymorphic relations allow a model to belong to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
+Çokbiçimli (Polimorfik) İlişkiler allow a model to belong to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
 
 	class Photo extends Eloquent {
 
