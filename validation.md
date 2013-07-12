@@ -91,6 +91,14 @@ After calling the `messages` method on a `Validator` instance, you will receive 
 	{
 		//
 	}
+	
+**Adding error messages**
+
+If for some reason you wish to add your own error messages you can do so like so
+
+	$validator->messages()->add('field', 'Your custom error message');
+
+> **Note:** If you add a message before calling fails() or passes() the validator will return false
 
 <a name="error-messages-and-views"></a>
 ## Error Messages & Views
