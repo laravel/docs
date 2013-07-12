@@ -311,42 +311,42 @@ Pek tabii, veritabanı tablolarınız büyük ihtimalle bir diğeriyle ilişkili
 <a name="one-to-one"></a>
 ### Birden Bire
 
-A one-to-one relationship is a very basic relation. For example, a `User` model might have one `Phone`. We can define this relation in Eloquent:
+Birden bire şeklindeki bir ilişki çok basit bir ilişikidir. Örneğin, bir `Uye` modelinin bir `Telefon`'u olabilir. Eloquent'de bu ilişkiiyi şöyle tanımlayabiliriz:
 
-**Defining A One To One Relation**
+**Birden Bire Tarzı İlişki Tanımlama**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
-		public function phone()
+		public function tel()
 		{
-			return $this->hasOne('Phone');
+			return $this->hasOne('Telefon');
 		}
 
 	}
 
-The first argument passed to the `hasOne` method is the name of the related model. Once the relationship is defined, we may retrieve it using Eloquent's [dynamic properties](#dynamic-properties):
+`hasOne` metoduna geçirilen ilk parametre ilişkili modelin adıdır. İlişki tanımlandıktan sonra onu Eloquent'in [dinamik özellikler](#dynamic-properties)'ini kullanarak elde edebiliriz:
 
-	$phone = User::find(1)->phone;
+	$tel = Uye::find(1)->tel;
 
-The SQL performed by this statement will be as follows:
+Bu cümlenin gerçekleştirdiği SQL şunlardır (tablo isimleri model tanımında özel olarak belirtilmedi ise tablo ismi olarak model isminin küçük harfli çoğul halinin kullanıldığını hatırlayınız):
 
-	select * from users where id = 1
+	select * from uyes where id = 1
 
-	select * from phones where user_id = 1
+	select * from telefons where uye_id = 1
 
-Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
+Eloquent'in ilişkideki yabancı key'in ne olduğuna model adına göre karar verdiğine dikkat ediniz. Şimdiki örnekte `Telefon` modelinin `uye_id` adlı bir yabancı key kullandığı varsayılmaktadır. Siz nu ön kuralı değiştirmek istiyorsanız `hasOne` metoduna ikinci bir parametre geçebilirsiniz:
 
-	return $this->hasOne('Phone', 'custom_key');
+	return $this->hasOne('Telefon', 'mahsus_key');
 
-To define the inverse of the relationship on the `Phone` model, we use the `belongsTo` method:
+`Telefon` modeli üzerinde ilişkinin tersini tanımlamak için, `belongsTo` metodunu kullanınız:
 
-**Defining The Inverse Of A Relation**
+**Bir İlişkinin Tersinin Tanımlanması**
 
-	class Phone extends Eloquent {
+	class Telefon extends Eloquent {
 
-		public function user()
+		public function uye()
 		{
-			return $this->belongsTo('User');
+			return $this->belongsTo('Uye');
 		}
 
 	}
@@ -354,38 +354,38 @@ To define the inverse of the relationship on the `Phone` model, we use the `belo
 <a name="one-to-many"></a>
 ### Birden Birçoğa
 
-An example of a one-to-many relation is a blog post that "has many" comments. We can model this relation like so:
+Birde birçoğa ilişki örneği olarak birçok yorum yapılmış bir blog yazısı verilebilir. Bu ilişkiyi de şöyle modelleyebiliriz:
 
-	class Post extends Eloquent {
+	class Makale extends Eloquent {
 
-		public function comments()
+		public function yorumlar()
 		{
-			return $this->hasMany('Comment');
+			return $this->hasMany('Yorum');
 		}
 
 	}
 
-Now we can access the post's comments through the [dynamic property](#dynamic-properties):
+Şimdi artık bir makalenin yorumlarına [dinamik özellik](#dynamic-properties) aracılığıyla ulaşabiliriz:
 
-	$comments = Post::find(1)->comments;
+	$yorumlar = Makale::find(1)->yorumlar;
 
-If you need to add further constraints to which comments are retrieved, you may call the `comments` method and continue chaining conditions:
+Hangi yorumların alınacağını daha da kısıtlamak için `yorumlar` metodunu çağırabilir ve şartlar koşmayı sürdürebilirsiniz:
 
-	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
+	$yorumlar = Makale::find(1)->yorumlar()->where('baslik', '=', 'bu')->first();
 
-Again, you may override the conventional foreign key by passing a second argument to the `hasMany` method:
+Tıpkı hasOne'de olduğu gibi konvansiyonel yabancı key varsayımını `hasMany` metoduna ikinci bir parametre geçerek değiştirebilirsiniz:
 
-	return $this->hasMany('Comment', 'custom_key');
+	return $this->hasMany('Yorum', 'mahsus_key');
 
-To define the inverse of the relationship on the `Comment` model, we use the `belongsTo` method:
+İlişkinin tersini `Yorum` modelinde tanımlamak için, `belongsTo` metodu kullanılmaktadır:
 
-**Defining The Inverse Of A Relation**
+**Bir İlişkinin Tersinin Tanımlanması**
 
-	class Comment extends Eloquent {
+	class Yorum extends Eloquent {
 
-		public function post()
+		public function makale()
 		{
-			return $this->belongsTo('Post');
+			return $this->belongsTo('Makale');
 		}
 
 	}
@@ -393,38 +393,38 @@ To define the inverse of the relationship on the `Comment` model, we use the `be
 <a name="many-to-many"></a>
 ### Birçoktan Birçoğa
 
-Many-to-many relations are a more complicated relationship type. An example of such a relationship is a user with many roles, where the roles are also shared by other users. For example, many users may have the role of "Admin". Three database tables are needed for this relationship: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names, and should have `user_id` and `role_id` columns.
+Birçoktan birçoğa ilişkiler daha karmaşık bir ilişki tipidir. Bu tarz bir ilişki örneği bir üyenin birçok rolü olması, aynı zamanda bu rollerin başka kullanıcılar tarafından da paylaşılmasıdır. Örneğin birçok üye "Müdür" rolünde olabilir. Bu ilişki için üç veritabanı tablosu gereklidir: `uyeler`, `roller` ve `rol_uye`. Bu `rol_uye` tablosu ilişkili model isimlerinin alfabetik sıralamasına göre adlandırılır ve `uye_id` ve `rol_id` sütunlarına sahip olmalıdır (model isimlerine alttire ve id eklenmiş iki alan).
 
-We can define a many-to-many relation using the `belongsToMany` method:
+Birçoktan birçoğa ilişikileri `belongsToMany` metodunu kullanarak tanımlayabiliyoruz:
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
-		public function roles()
+		public function roller()
 		{
-			return $this->belongsToMany('Role');
+			return $this->belongsToMany('Rol');
 		}
 
 	}
 
-Now, we can retrieve the roles through the `User` model:
+Artık rolleri `Uye` modeli aracılığıyla getirebiliriz:
 
-	$roles = User::find(1)->roles;
+	$roller = Uye::find(1)->roller;
 
-If you would like to use an unconventional table name for your pivot table, you may pass it as the second argument to the `belongsToMany` method:
+Pivot tablo ismi olarak ön kabullü tablo ismi yerine başka bir isim kullanmak isterseniz, bunu `belongsToMany` metoduna ikinci bir parametre geçerek gerçekleştirebilirsiniz:
 
-	return $this->belongsToMany('Role', 'user_roles');
+	return $this->belongsToMany('Rol', 'uye_rollleri');
 
-You may also override the conventional associated keys:
+İlişkili key için konvansiyonel yaklaşımı da değiştirebilirsiniz:
 
-	return $this->belongsToMany('Role', 'user_roles', 'user_id', 'foo_id');
+        return $this->belongsToMany('Rol', 'uye_rollleri', 'user_id', 'foo_id');
 
-Of course, you may also define the inverse of the relationship on the `Role` model:
+Ve tabii ki ilişkinin tersini `Rol` modelinde de tanımlayabilirsiniz:
 
-	class Role extends Eloquent {
+	class Rol extends Eloquent {
 
-		public function users()
+		public function uyeler()
 		{
-			return $this->belongsToMany('User');
+			return $this->belongsToMany('Uye');
 		}
 
 	}
