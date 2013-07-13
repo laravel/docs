@@ -35,6 +35,10 @@ The session configuration is stored in `app/config/session.php`. Be sure to revi
 	{
 		//
 	}
+	
+**Retrieve All Items From The Session**
+
+	$array = Session::all();
 
 **Removing An Item From The Session**
 
