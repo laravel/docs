@@ -123,7 +123,7 @@ The sub-view can then be rendered from the parent view:
 <a name="view-composers"></a>
 ## View Composers
 
-View composers are callbacks or class methods that are called when a view is created. If you have data that you want bound to a given view each time that view is created throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
+View composers are callbacks or class methods that are called when a view is rendered (this happens internally whenever you return a view from a controller method or a route callback or when you invoke the view's `render()` method). If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
 
 **Defining A View Composer**
 
@@ -132,7 +132,7 @@ View composers are callbacks or class methods that are called when a view is cre
 		$view->with('count', User::count());
 	});
 
-Now each time the `profile` view is created, the `count` data will be bound to the view.
+Now each time the `profile` view is rendered, the `count` data will be bound to the view.
 
 You may also attach a view composer to multiple views at once:
 
@@ -155,6 +155,11 @@ A view composer class should be defined like so:
 		}
 
 	}
+
+Should you want to condense the composer code for multiple views into one composer class, you can register composers and reference specific methods as you would when routing routes to controller methods:
+
+	View::composer('profile', 'ViewComposers@composeProfile');
+	View::composer('user', 'ViewComposers@composeUser');
 
 Note that there is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
 
