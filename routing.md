@@ -239,7 +239,7 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 <a name="route-prefixing"></a>
 ## Route Prefixing
 
-A group of routes may be prefixed by using the `prefix` option in the attributes array of a group:
+If you find that you are creating a lot of routes with the same prefix ('admin', 'admin/user', 'admin/user/save', etc.), you may want to prefix a group of routes. You can prefix a route group by using the `prefix` option in the attributes array of a group:
 
 **Prefixing Grouped Routes**
 
@@ -248,10 +248,12 @@ A group of routes may be prefixed by using the `prefix` option in the attributes
 
 		Route::get('user', function()
 		{
-			//
+			//this will run when you visit admin/user
 		});
 
 	});
+
+
 
 <a name="route-model-binding"></a>
 ## Route Model Binding
