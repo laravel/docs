@@ -8,10 +8,10 @@
 - [Zaman Damgaları](#timestamps)
 - [Sorgu Kapsamları](#query-scopes)
 - [İlişkiler](#relationships)
-- [Querying Relations](#querying-relations)
-- [Eager Loading](#eager-loading)
-- [Inserting Related Models](#inserting-related-models)
-- [Touching Parent Timestamps](#touching-parent-timestamps)
+- [İlişkilerin Sorgulanması](#querying-relations)
+- [Ateşli Yükleme](#eager-loading)
+- [İlişkili Modelleri Ekleme](#inserting-related-models)
+- [Ebeveyn Zaman Damgalarına Dokunma](#touching-parent-timestamps)
 - [Working With Pivot Tables](#working-with-pivot-tables)
 - [Collections](#collections)
 - [Accessors & Mutators](#accessors-and-mutators)
@@ -432,237 +432,237 @@ Ve tabii ki ilişkinin tersini `Rol` modelinde de tanımlayabilirsiniz:
 <a name="polymorphic-relations"></a>
 ### Çokbiçimli İlişkiler
 
-Çokbiçimli (Polimorfik) İlişkiler allow a model to belong to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
+Çokbiçimli (Polimorfik) İlişkiler bir modelin tek bir ilişkilendirme ile birden çok modele ait olmasına imkan verir. Örneğin, kendisi ya bir personel modeline ya da bir siparis modeline ait olan bir foto modeliniz olduğunu düşünün. Bu ilişkiyi şu şekilde tanımlayacağız:
 
-	class Photo extends Eloquent {
+	class Foto extends Eloquent {
 
-		public function imageable()
+		public function resim()
 		{
 			return $this->morphTo();
 		}
 
 	}
 
-	class Staff extends Eloquent {
+	class Personel extends Eloquent {
 
-		public function photos()
+		public function fotolar()
 		{
-			return $this->morphMany('Photo', 'imageable');
+			return $this->morphMany('Foto', 'resim');
 		}
 
 	}
 
-	class Order extends Eloquent {
+	class Siparis extends Eloquent {
 
-		public function photos()
+		public function fotolar()
 		{
-			return $this->morphMany('Photo', 'imageable');
+			return $this->morphMany('Foto', 'resim');
 		}
 
 	}
 
-Now, we can retrieve the photos for either a staff member or an order:
+Artık bir personel ya da siparişe ait fotoları elde edebiliriz:
 
-**Retrieving A Polymorphic Relation**
+**Çokbiçimli Bir İlişkinin Getirilmesi**
 
-	$staff = Staff::find(1);
+	$personel = Personel::find(1);
 
-	foreach ($staff->photos as $photo)
+	foreach ($personel->fotolar as $foto)
 	{
 		//
 	}
 
-However, the true "polymorphic" magic is when you access the staff or order from the `Photo` model:
+Ancak, "çokbiçimli" ilişkinin gerçek farkını bir personel veya siparişe `Foto` modelinden erişebilmekle görürsünüz:
 
-**Retrieving The Owner Of A Polymorphic Relation**
+**Çokbiçimli Bir İlişkinin Sahibinin Getirilmesi**
 
-	$photo = Photo::find(1);
+	$foto = Foto::find(1);
 
-	$imageable = $photo->imageable;
+	$resim = $foto->resim;
 
-The `imageable` relation on the `Photo` model will return either a `Staff` or `Order` instance, depending on which type of model owns the photo.
+`Foto` modelindeki `resim` ilişkisi, fotonun sahibi olan modele bağlı olarak ya bir `Personel` ya da bir `Siparis` olgusu döndürecektir.
 
-To help understand how this works, let's explore the database structure for a polymorphic relation:
+Bunun nasıl çalıştığını anlamanıza yardımcı olmak için veritabanı yapımızı polimorfik bir ilişkiye açalım:
 
 **Polymorphic Relation Table Structure**
 
-	staff
+	personel
 		id - integer
-		name - string
+		isim - string
 
-	orders
+	siparisler
 		id - integer
-		price - integer
+		fiyat - integer
 
-	photos
+	fotolar
 		id - integer
-		path - string
-		imageable_id - integer
-		imageable_type - string
+		dosyayolu - string
+		resim_id - integer
+		resim_type - string
 
-The key fields to notice here are the `imageable_id` and `imageable_type` on the `photos` table. The ID will contain the ID value of, in this example, the owning staff or order, while the type will contain the class name of the owning model. This is what allows the ORM to determine which type of owning model to return when accessing the `imageable` relation.
+Buradaki anahtar alanların The key fields to notice here are the on the `fotolar` tablosundaki `resim_id` and `resim_type` olduğuna dikkat ediniz. Buradaki ID, fotonun sahibi olan personel veya siparişin ID'ini, TYPE ise sahip olan modelin sınıf adını tutacaktır. Böylece ORM, `resim` ilişkisiyle erişildiğinde döndürülecek sahip modelin hangisi olduğunu tespit edebilecektir.
 
 <a name="querying-relations"></a>
-## Querying Relations
+## İlişkilerin Sorgulanması
 
-When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, you wish to pull all blog posts that have at least one comment. To do so, you may use the `has` method:
+Bir modelin kayıtlarına erişirken, sonuçları bir ilişki varlığına göre sınırlamak isteyebilirsiniz. Diyelim ki, en az bir yorum yapılmış tüm blog makalelerini çekmek istediniz. Bunu yapmak için `has` metodunu kullanabilirsiniz:
 
-**Checking Relations When Selecting**
+**Seçerken İlişkilerin Yoklanması**
 
-	$posts = Post::has('comments')->get();
+	$makaleler = Makale::has('yorumlar')->get();
 
-You may also specify an operator and a count:
+Ayrıca, bir işlemci ve bir sayı da belirleyebilirsiniz, örneğin üç ve daha çok yorum almış makaleleri getirmek için:
 
-	$posts = Post::has('comments', '>=', 3)->get();
+	$makaleler = Makale::has('yorumlar', '>=', 3)->get();
 
 <a name="dynamic-properties"></a>
-### Dynamic Properties
+### Dinamik Özellikler
 
-Eloquent allows you to access your relations via dynamic properties. Eloquent will automatically load the relationship for you, and is even smart enough to know whether to call the `get` (for one-to-many relationships) or `first` (for one-to-one relationships) method.  It will then be accessible via a dynamic property by the same name as the relation. For example, with the following model `$phone`:
+Eloquent, ilişkilerinize dinamik özellikle yoluyla erişme imkanı verir. Eloquent ilişkiyi sizin için otomatik olarak yükleyecektir. Hatta, `get` (birden birçoğa ilişkiler için) metodunun mu yoksa `first` (birden bire ilişkiler için) metodunun mu çağırılacağını bilecek kadar akılllıdır. İlişkiyle aynı isimli dinamik bir özellik aracılığı ile erişileblir olacaktır. Örneğin, şu `$telefon` modelinde:
 
-	class Phone extends Eloquent {
+	class Telefon extends Eloquent {
 
-		public function user()
+		public function uye()
 		{
-			return $this->belongsTo('User');
+			return $this->belongsTo('Uye');
 		}
 
 	}
 
-	$phone = Phone::find(1);
+	$telefon= Telefon::find(1);
 	
-Instead of echoing the user's email like this:
+Bu kullanının email'ini şu şekilde göstermek yerine:
 
-	echo $phone->user()->first()->email;
+	echo $telefon->uye()->first()->email;
 
-It may be shortened to simply:
+Buradaki gibi basit bir hale kısaltılabilir:
 
-	echo $phone->user->email;
+	echo $telefon->uye->email;
 
 <a name="eager-loading"></a>
-## Eager Loading
+## Ateşli Yüklemeler
 
-Eager loading exists to alleviate the N + 1 query problem. For example, consider a `Book` model that is related to `Author`. The relationship is defined like so:
+Ateşli yükleme N + 1 sorgu problemini gidermek içindir. Örnek olarak, `Yazar` ile ilişkilendirilmiş bir `Kitap` modelini düşünün. İlişki de şöyle tanımlanmış olsun:
 
-	class Book extends Eloquent {
+	class Kitap extends Eloquent {
 
-		public function author()
+		public function yazar()
 		{
-			return $this->belongsTo('Author');
+			return $this->belongsTo('Yazar');
 		}
 
 	}
 
-Now, consider the following code:
+Şimdi, şu kodu ele alalım:
 
-	foreach (Book::all() as $book)
+	foreach (Kitap::all() as $kitap)
 	{
-		echo $book->author->name;
+		echo $kitap->yazar->isim;
 	}
 
-This loop will execute 1 query to retrieve all of the books on the table, then another query for each book to retrieve the author. So, if we have 25 books, this loop would run 26 queries.
+Bu döngü tablodaki kitapların hepsini almak için 1 sorgu çalıştıracak, sonra da yazarını elde etmek için her bir kitabı sorgulayacaktır. Yani, eğer 25 kitabımız varsa bu döngü 26 sorgu çalıştıracaktır.
 
-Thankfully, we can use eager loading to drastically reduce the number of queries. The relationships that should be eager loaded may be specified via the `with` method:
+Neyseki, sorgu sayısını büyük ölçüde azaltan ateşli yükleme kullanabiliriz. Ateşli yüklenecek ilişkiler `with` metodu aracılığıyla belirlenebilmektedir:
 
-	foreach (Book::with('author')->get() as $book)
+	foreach (Kitap::with('yazar')->get() as $kitap)
 	{
-		echo $book->author->name;
+		echo $kitap->yazar->isim;
 	}
 
-In the loop above, only two queries will be executed:
+Yukardaki döngüde sadece iki sorgu çalıştırılacaktır (model tanımında tablo isimleri açıkça belirtilmediyse ingilizce küçük harf çoğul kabulünü hatorlayınız):
 
-	select * from books
+	select * from kitaps
 
-	select * from authors where id in (1, 2, 3, 4, 5, ...)
+	select * from yazars where id in (1, 2, 3, 4, 5, ...)
 
-Wise use of eager loading can drastically increase the performance of your application.
+Ateşli yüklemenin akıllıca kullanımı uygulamanızın performansını önemli ölçüde artırabilir.
 
-Of course, you may eager load multiple relationships at one time:
+Tabii ki, bir defada birden çok ilişkiyi ateşli yükleyebilirsiniz:
 
-	$books = Book::with('author', 'publisher')->get();
+	$kitaplar = Kitap::with('yazar', 'kitabevi')->get();
 
-You may even eager load nested relationships:
+Hatta içi içe ilişkileri de ateşleyebilirsiniz:
 
-	$books = Book::with('author.contacts')->get();
+	$kitaplar = Kitap::with('yazar.kisiler')->get();
 
-In the example above, the `author` relationship will be eager loaded, and the author's `contacts` relation will also be loaded.
+Yukarıdaki örnekte `yazar` ilişkisi ateşli yüklenecektir ve yazarın `kisiler` ilişkisi de ateşli yüklenecektir.
 
-### Eager Load Constraints
+### Ateşli Yükleme Sınırlamaları
 
-Sometimes you may wish to eager load a relationship, but also specify a condition for the eager load. Here's an example:
+Bazen bir ilişkiyi ateşli yüklemek, ama ateşli yükleme için de bir şart belirlemek isteyebiliriz. İşte bir örnek:
 
-	$users = User::with(array('posts' => function($query)
+	$uyeler = Uye::with(array('makaleler' => function($query)
 	{
-		$query->where('title', 'like', '%first%');
+		$query->where('baslik', 'like', '%birinci%');
 	}))->get();
 
-In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
+Bu örnekte üyenin makalelerinden sadece baslik alaninda "birinci" kelimesi geçen makalelerini ateşli yüklüyoruz.
 
-### Lazy Eager Loading
+### Tembel Ateşli Yükleme
 
-It is also possible to eagerly load related models directly from an already existing model collection. This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.
+İlişkili modelleri, direkt olarak önceden mevcut model koleksiyonundan ateşli yüklemek de mümkündür. Bu özellikle ilişkili modeli önbellekleme ile birlikte yükleyip yüklememeye dinamik karar vereceğiniz zaman işe yarayabilir.
 
-	$books = Book::all();
+	$kitaplar= Kitap::all();
 
-	$books->load('author', 'publisher');
+	$kitaplar->load('yazar', 'kitabevi');
 
 <a name="inserting-related-models"></a>
-## Inserting Related Models
+## İlişkili Modelleri Ekleme
 
-You will often need to insert new related models. For example, you may wish to insert a new comment for a post. Instead of manually setting the `post_id` foreign key on the model, you may insert the new comment from its parent `Post` model directly:
+Yeni ilişkili model ekleme ihtiyacınız çok olacaktır. Örneğin, bir makale için yeni bir yorum eklemek isteyebilirsiniz. Model üzerinde `makale_id` yabancı key alanını elle ayarlamak yerine, doğrudan ebeveyn `Makale` modelinden yeni yorum ekleyebilirsiniz:
 
-**Attaching A Related Model**
+**İlişkili Bir Modelin Eklenmesi**
 
-	$comment = new Comment(array('message' => 'A new comment.'));
+	$yorum = new Yorum(array('mesaj' => 'Yeni bir yorum.'));
 
-	$post = Post::find(1);
+	$makale = Makale::find(1);
 
-	$comment = $post->comments()->save($comment);
+	$yorum = $makale->yorumlar()->save($yorum);
 
-In this example, the `post_id` field will automatically be set on the inserted comment.
+Bu örnekte eklenen yorumdaki `makale_id` alanı otomatik olarak ayarlanmaktadır.
 
-### Inserting Related Models (Many To Many)
+### İlişkili Model Ekleme (Birçoktan Birçoğa)
 
-You may also insert related models when working with many-to-many relations. Let's continue using our `User` and `Role` models as examples. We can easily attach new roles to a user using the `attach` method:
+Birçoktan birçoğa ilişkilerle çalışırken de ilişkili model ekleyebilirsiniz. Daha önceki örneğimiz `Uye` ve `Rol` modellerini kullanamaya devam edelim. Bir uyeye yeni roller eklemeyi `attach` metodu ile yapabiliriz:
 
-**Attaching Many To Many Models**
+**Birçoktan Birçoğa Modellerinin Eklenmesi**
 
-	$user = User::find(1);
+	$uye = Uye::find(1);
 
-	$user->roles()->attach(1);
+	$uye->roller()->attach(1);
 
-You may also pass an array of attributes that should be stored on the pivot table for the relation:
+İlişkiler için pivot tabloda tutulan nitelelikleri bir diz olarak da geçebilirsiniz:
 
-	$user->roles()->attach(1, array('expires' => $expires));
+	$uye->roller()->attach(1, array('sonaerme' => $sonaerme));
 
-Of course, the opposite of `attach` is `detach`:
+Tabii, `attach`'in ters işlemi `detach`'tir:
 
-	$user->roles()->detach(1);
+	$uye->roller()->detach(1);
 
-You may also use the `sync` method to attach related models. The `sync` method accepts an array of IDs to place on the pivot table. After this operation is complete, only the IDs in the array will be on the intermediate table for the model:
+İlişkili modelleri bağlamak için `sync` metodunu da kullanabilirsiniz. Bu `sync` metodu parametre olarak pivot tablodaki yerlerin id'lerinden oluşan bir dizi geçirilmesini ister. Bu işlem tamamlandıktan sonra, model için kullanıcak ara tabloda sadece bu id'ler olacaktır:
 
-**Using Sync To Attach Many To Many Models**
+**Birçoktan Birçoğa Model Bağlamak İçin Sync Kullanımı**
 
-	$user->roles()->sync(array(1, 2, 3));
+	$uye->roller()->sync(array(1, 2, 3));
 
-You may also associate other pivot table values with the given IDs:
+Belli id değerleri olan başka pivot tabloyu da ilişkilendirebilirsiniz:
 
-**Adding Pivot Data When Syncing**
+**Sync Yaparken Pivot Veri Eklenmesi**
 
-	$user->roles()->sync(array(1 => array('expires' => true)));
+	$uye->roller()->sync(array(1 => array('sonaerme' => true)));
 
-Sometimes you may wish to create a new related model and attach it in a single command. For this operation, you may use the `save` method:
+Bazen yeni bir ilişkili model oluşturmak ve tek bir komutla bunu eklemek isteyebilirsiniz. Bu işlem için, `save` metodunu kullanabilirsiniz:
 
-	$role = new Role(array('name' => 'Editor'));
+	$rol = new Rol(array('isim' => 'Editor'));
 
-	User::find(1)->roles()->save($role);
+	Uye::find(1)->roller()->save($rol);
 
-In this example, the new `Role` model will be saved and attached to the user model. You may also pass an array of attributes to place on the joining table for this operation:
+Bu örnekte, yeni bir `Rol` modeli kaydedilecek ve uye modeline eklenecektir. Bu işlem için bağlı tablolardaki niteliklerden oluşan bir dizi de geçebilirsiniz:
 
-	User::find(1)->roles()->save($role, array('expires' => $expires));
+	Uye::find(1)->roller()->save($rol, array('sonaerme' => $sonaerme));
 
 <a name="touching-parent-timestamps"></a>
-## Touching Parent Timestamps
+## Ebeveyn Zaman Damgalarına Dokunma
 
 When a model `belongsTo` another model, such as a `Comment` which belongs to a `Post`, it is often helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically touch the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
 
