@@ -1,20 +1,20 @@
 # Şablonlar
 
-- [Denetçi Yerleşimleri(Controller Layouts)](#controller-layouts)
+- [Denetçi Yerleşimleri (Controller Layouts)](#controller-layouts)
 - [Blade Şablonlama](#blade-templating)
 - [Diğer Blade Kontrol Yapıları](#other-blade-control-structures)
 
 <a name="controller-layouts"></a>
-## Denetçi Yerleşimleri(Controller Layouts)
+## Denetçi Yerleşimleri (Controller Layouts)
 
-Şablonları kullanmanın bir metodu da Laravel aracılığıyla sağlanan denetçi yerleşimleridir(controller layouts). Denetleyicide(controllerda) `layout` özelliğini belirtirken , tanımlanan görünüm(view) sizin için oluşturulacak ve kabul edilecek olan bu yanıt(response) eylemlerden(actions) döndürülecektir.
+Şablonları kullanmanın bir metodu da Laravel aracılığıyla sağlanan denetçi yerleşimleridir (controller layouts). Denetleyicide (controller'da) `layout` özelliğini belirtirken, tanımlanan görünüm (view) sizin için oluşturulacak ve kabul edilecek olan bu yanıt (response) eylemlerden (actions) döndürülecektir.
 
-**Denetçide Yerleşim(Layout) Tanımlama**
+**Denetçide Yerleşim (Layout) Tanımlama**
 
 	class UserController extends BaseController {
 
 		/**
-		 * Yerleşim(Layout) yanıtlar(responses) için kullanılmalıdır.
+		 * Yerleşim (Layout) yanıtlar (responses) için kullanılmalıdır.
 		 */
 		protected $layout = 'layouts.master';
 
@@ -31,9 +31,9 @@
 <a name="blade-templating"></a>
 ## Blade Şablonlama
 
-Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon(template) motorudur. Unlike controller layouts, Blade is driven by _template inheritance_ and _sections_. Tüm Blade şablonları `.blade.php` uzantısına sahip olmalıdır.
+Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon (template) motorudur. Denetçi yerleşimlerinden farklı olarak Blade, tema kalıtımlıdır ve bölümlerden ve bölümlerden oluşmaktadır. Tüm Blade şablonları `.blade.php` uzantısına sahip olmalıdır.
 
-**Blade Yerleşim(Layout) Tanımlamak**
+**Blade Yerleşim (Layout) Tanımlamak**
 
 	<!-- app/views/layouts/master.blade.php içinde depolanır. -->
 
@@ -49,7 +49,7 @@ Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon(tem
 		</body>
 	</html>
 
-**Blade Yerleşim(Layout) Kullanmak**
+**Blade Yerleşim (Layout) Kullanmak**
 
 	@extends('layouts.master')
 
@@ -63,7 +63,7 @@ Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon(tem
 		<p>Bu benim body içeriğimdir.</p>
 	@stop
 
-Görünümlerdeki `extend` bir Blade yerleşimi(layout) sadece yerleşimdeki bölümleri geçersiz kıldığını unutmayın.Yerleşimin(Layout) içeriği `@parent` kullanılarak çocuk(child) görünüme dahil edilebilir,sidebar veya foooter gibi içeriklerin yerleşim(layout) bölümüne eklemenizi sağlar.
+Görünümlerdeki `extend` bir Blade yerleşimi (layout) sadece yerleşimdeki bölümleri geçersiz kıldığını unutmayın.Yerleşimin (Layout) içeriği `@parent` kullanılarak çocuk (child) görünüme dahil edilebilir, sidebar veya foooter gibi içeriklerin yerleşim (layout) bölümüne eklemenizi sağlar.
 
 <a name="other-blade-control-structures"></a>
 ## Diğer Blade Kontrol Yapıları
@@ -74,11 +74,11 @@ Görünümlerdeki `extend` bir Blade yerleşimi(layout) sadece yerleşimdeki bö
 
 	Geçerli UNIX zamanı {{ time() }}.
 
-Tabiikide,tüm kullanıcılara sağlanan veri temizlenmeli ve kurtulmalıdır.Çıktıyı kurtarmak için üçlü küme ayracı sözdizimini kullanabilirsiniz:
+Elbette, tüm kullanıcılara sağlanan veri temizlenmeli ve kurtulmalıdır. Çıktıyı kurtarmak için üçlü küme ayracı sözdizimini kullanabilirsiniz:
 
 	Merhaba, {{{ $name }}}.
 
-> **Not:** Uygulamanızda kullanıcılara sağlanan içeriğine çok dikkat edin.Her zaman ve herhangi bir HTML içerik için üçlü küme ayracı sözdizimini kullanın.
+> **Not:** Uygulamanızda kullanıcılara sağlanan içeriğine çok dikkat edin. Her zaman ve herhangi bir HTML içerik için üçlü küme ayracı sözdizimini kullanın.
 
 **If Demeçleri**
 
@@ -108,7 +108,7 @@ Tabiikide,tüm kullanıcılara sağlanan veri temizlenmeli ve kurtulmalıdır.Ç
 		<p>Sonsuza kadar döngüdeyim.</p>
 	@endwhile
 
-**Alt-Görünümleri(Sub-Views) Dahil Etmek**
+**Alt-Görünümleri (Sub-Views) Dahil Etmek**
 
 	@include('view.name')
 
