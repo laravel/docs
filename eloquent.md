@@ -911,7 +911,7 @@ Bir Modeli JSON'a çevirmek için, `toJson` metodunu kullanabilirsiniz:
 
 	return Uye::find(1)->toJson();
 
-Bir model veya koleksiyon bir string kalıbına sokulduğu takdirde, JSON'a çevrileceğine dikkat ediniz. Yani Elequent nesnelerini diretk olarak uygulamanızın rotalarından döndürebilirsiniz!
+Bir model veya koleksiyon bir string kalıbına sokulduğu takdirde, JSON'a çevrileceğine dikkat ediniz. Yani Elequent nesnelerini direkt olarak uygulamanızın rotalarından döndürebilirsiniz!
 
 **Bir Modelin Bir Rotadan Döndürülmesi**
 
@@ -922,7 +922,7 @@ Bir model veya koleksiyon bir string kalıbına sokulduğu takdirde, JSON'a çev
 
 Bazen bazı nitelikleri (örneğin şifreleri) modelinizin dizi veya JSON biçimlerinden hariç tutmak isteyebilirsiniz. Bunu yapmak için modelinize bir `hidden` özelliği ekleyiniz:
 
-**Niteliklerin Dizi veya JSON Çevriminden Saklanması**
+**Niteliklerin Dizi veya JSON'a Çevrilmekten Saklanması**
 
 	class Uye extends Eloquent {
 
