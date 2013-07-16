@@ -25,6 +25,7 @@ Katılım Sırasına Göre
 * [usirin](https://github.com/usirin)
 * [serginari](https://github.com/serginari)
 * [candelibas](https://github.com/candelibas)
+* [ersinkandemir](https://github.com/ersinkandemir)
 
 Çeviriye katkıda bulunmak isterseniz bu repo'yu fork edip, değişiklikleri yaptıktan sonra pull-request edebilirsiniz.
 
