@@ -30,7 +30,7 @@ Başlamadan önce, `app/config/database.php`'de bir veritabanı bağlantısı ya
 <a name="basic-usage"></a>
 ## Temel Kullanım
 
-Başlamadan önce, bir Eloquent modeli oluşturunuz. Modeller tipik olarak `app/models` klasöründe yer alır, fakat siz modellerinizi `composer.json` dosyanıza göre otomatik yükleme yapabileceğiniz başka bir yere de koyabilirsiniz.
+Öncelikle bir Eloquent modeli oluşturunuz. Modeller tipik olarak `app/models` klasöründe yer alır, fakat siz modellerinizi `composer.json` dosyanıza göre otomatik yükleme yapabileceğiniz başka bir yere de koyabilirsiniz.
 
 **Bir Eloquent Modelinin Tanımlanması**
 
