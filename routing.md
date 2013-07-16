@@ -5,7 +5,7 @@
 - [Rota Filtreleri](#route-filters)
 - [İsimli Rotalar](#named-routes)
 - [Rota Grupları](#route-groups)
-- [Alt Alanadı(Subdomain) Rotalandırması](#sub-domain-routing)
+- [Alt Alanadı (Subdomain) Rotalandırması](#sub-domain-routing)
 - [Rotalarda Ön-ek](#route-prefixing)
 - [Rotalara Model Ataması](#route-model-binding)
 - [404 Hatası Fırlatma](#throwing-404-errors)
@@ -30,7 +30,7 @@ Uygulamanızdaki rotaların çoğu `app/routes.php` dosyasında tanımlanır. En
 		return 'Merhaba Laravel!';
 	});
 
-**Tüm HTTP Metodları(GET, POST gibi) İçin Rota Yazımı**
+**Tüm HTTP Metodları (GET, POST gibi) İçin Rota Yazımı**
 
 	Route::any('birsey', function()
 	{
@@ -96,6 +96,7 @@ Tabii ki kuralları bir dizi hâlinde tanımlayabilirsiniz:
 ## Rota Filtreleri
 
 Rota filtreleri, sitenizin yetkilendirme gereken alanlarına erişimi kısıtlamak için uygun bir yoldur. Laravel'de `auth`, `auth.basic`, `guest`, `csrf` gibi `app/filters.php` dosyasında tanımlı filtreler vardır.
+
 **Rota Filtresi Tanımlama**
 
 	Route::filter('yas', function()
@@ -106,7 +107,7 @@ Rota filtreleri, sitenizin yetkilendirme gereken alanlarına erişimi kısıtlam
 		}
 	});
 
-Eğer filtreden bir yanıt(`Redirect::to` gibi) döndürülürse, bu cevap olarak kabul edilecek. Bu yüzden rotadaki ve varsa `after` filtresindeki işlemler yapılmayacaktır.
+Eğer filtreden bir yanıt (`Redirect::to` gibi) döndürülürse, bu cevap olarak kabul edilecek. Bu yüzden rotadaki ve varsa `after` filtresindeki işlemler yapılmayacaktır.
 
 **Rotaya Filtre Ekleme**
 
@@ -155,7 +156,7 @@ URL desenine göre de rotalara filtre ataması yapabilirsiniz.
 
 Yukarıdaki örnekte, `admin` filtresi `admin/` ile başlayan tüm rotalara uygulanacaktır. `*` karakteri tüm karakterleri yakalamak için kullanılır.
 
-Filtreleri HTTP metodlarına(GET, POST gibi) göre uygulayabilirsiniz.
+Filtreleri HTTP metodlarına (GET, POST gibi) göre uygulayabilirsiniz.
 
 	Route::when('admin/*', 'admin', array('post'));
 
@@ -221,7 +222,7 @@ Bazen bir grup rotaya filtre atamanız gerekebilir. Her birine ayrı filtre atam
 	});
 
 <a name="sub-domain-routing"></a>
-## Alt Alanadı(Subdomain) Rotalandırması
+## Alt Alanadı (Subdomain) Rotalandırması
 
 Laravel rotaları ile alt-alanadlarını yakalayabilir ve parametre olarak kullanabilirsiniz.
 
@@ -269,17 +270,20 @@ Daha sonra, `{kullanici}` parametresini içeren bir rota belirleyin:
 		//
 	});
 
-`{kullaniic}` parametresi ile `Kullanici` modelini eşleştirdiğimizden, bir `Kullanici` nesnesi rotaya aktarılacaktır. Yani, `profil/1` şeklindeki istek, ID'si 1 olan `Kullanici` nesnesini aktaracaktır. 
+`{kullanici}` parametresi ile `Kullanici` modelini eşleştirdiğimizden, bir `Kullanici` nesnesi rotaya aktarılacaktır. Yani, `profil/1` şeklindeki istek, ID'si 1 olan `Kullanici` nesnesini aktaracaktır. 
 
 > **Not:** Eğer model için veritabanında eşleşme yapılamazsa, 404 hatası fırlatılır.
 
+
 Eğer eşleşmeme durumunda yapılacak işlemi kendiniz belirlemek istiyorsanız, `model` metoduna 3. argüman olarak bir geriçağrım fonksiyonu ekleyebilirsiniz:
+
 	Route::model('kullanici', 'Kullanici', function()
 	{
 		throw new NotFoundException;
 	});
 
 Modeller yerine kendi tanımlayıcınızı kullanmak isteyebilirsiniz. Bunun için `Route::bind` metodu kullanılır:
+	
 	Route::bind('kullanici', function($deger, $rota)
 	{
 		return Kullanici::where('isim', $deger)->first();
