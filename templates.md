@@ -31,7 +31,7 @@
 <a name="blade-templating"></a>
 ## Blade Şablonlama
 
-Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon (template) motorudur. Denetçi yerleşimlerinden farklı olarak Blade, tema kalıtımlıdır ve bölümlerden ve bölümlerden oluşmaktadır. Tüm Blade şablonları `.blade.php` uzantısına sahip olmalıdır.
+Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon (template) motorudur. Denetçi yerleşimlerinden farklı olarak Blade, tema kalıtımlıdır ve bölümlerden oluşmaktadır. Tüm Blade şablonları `.blade.php` uzantısına sahip olmalıdır.
 
 **Blade Yerleşim (Layout) Tanımlamak**
 
