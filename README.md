@@ -24,6 +24,7 @@ Katılım Sırasına Göre
 * [KenMilabel](https://github.com/KenMilabel)
 * [usirin](https://github.com/usirin)
 * [serginari](https://github.com/serginari)
+* [candelibas](https://github.com/candelibas)
 
 Çeviriye katkıda bulunmak isterseniz bu repo'yu fork edip, değişiklikleri yaptıktan sonra pull-request edebilirsiniz.
 
