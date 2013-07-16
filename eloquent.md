@@ -12,18 +12,18 @@
 - [Ateşli Yükleme](#eager-loading)
 - [İlişkili Modelleri Ekleme](#inserting-related-models)
 - [Ebeveyn Zaman Damgalarına Dokunma](#touching-parent-timestamps)
-- [Working With Pivot Tables](#working-with-pivot-tables)
-- [Collections](#collections)
-- [Accessors & Mutators](#accessors-and-mutators)
-- [Date Mutators](#date-mutators)
-- [Model Events](#model-events)
-- [Model Observers](#model-observers)
-- [Converting To Arrays / JSON](#converting-to-arrays-or-json)
+- [Pivot Tablolarla Çalışmak](#working-with-pivot-tables)
+- [Koleksiyonlar](#collections)
+- [Erişimciler & Değiştiriciler (Accessors & Mutators)](#accessors-and-mutators)
+- [Tarih Değiştiricileri](#date-mutators)
+- [Model Olayları](#model-events)
+- [Model Gözlemcileri](#model-observers)
+- [Diziye / JSON'a Çevirme](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
 ## Giriş
 
-Laravelle gelen "Eloquent ORM", veritabanınızla çalışırken kullanacağınız güzel ve sade bir ActiveRecord uygulaması sağlamaktadır. Her veritabanı tablosu, bu tabloyla etkilişim için kullanıcak kendine has bir  "Model" sahibidir.
+Laravelle gelen "Eloquent ORM", veritabanınızla çalışırken kullanacağınız güzel ve sade bir ActiveRecord uygulaması sağlamaktadır. Her veritabanı tablosu, bu tabloyla etkilişim için kullanıcak kendine has bir "Model" sahibidir.
 
 Başlamadan önce, `app/config/database.php`'de bir veritabanı bağlantısı yapılandırmış olun.
 
@@ -664,120 +664,120 @@ Bu örnekte, yeni bir `Rol` modeli kaydedilecek ve uye modeline eklenecektir. Bu
 <a name="touching-parent-timestamps"></a>
 ## Ebeveyn Zaman Damgalarına Dokunma
 
-When a model `belongsTo` another model, such as a `Comment` which belongs to a `Post`, it is often helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically touch the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
+Bir `Yorum`'un bir `Makale`'ye ait olması örneğimizdeki gibi, bir model başka bir modele ait (`belongsTo`) olduğu takdirde, çocuk modeli güncellediğiniz zaman ebeveyn zaman damgasını da güncellemek iyidir. Örneğin, bir `Yorum` güncellendiğinde, bunun sahibi olan `Makale`'nin `updated_at` zaman damgasını otomatikman güncellemek isteyebilirsiniz. Bunu gerçekleştirmek için tek yapacağınız şey, çocuk modele ilişkilerin isimlerini içeren bir `touches` özelliği   eklemektir:
 
-	class Comment extends Eloquent {
+	class Yorum extends Eloquent {
 
-		protected $touches = array('post');
+		protected $touches = array('makale');
 
-		public function post()
+		public function makale()
 		{
-			return $this->belongsTo('Post');
+			return $this->belongsTo('Makale');
 		}
 
 	}
 
-Now, when you update a `Comment`, the owning `Post` will have its `updated_at` column updated:
+Bunu yaptıktan sonra artık bir `Yorum` güncellediğinizde, sahibi olan `Makale` de güncellenmiş bir `updated_at` sütununa sahip olacaktır:
 
-	$comment = Comment::find(1);
+	$yorum = Yorum::find(1);
 
-	$comment->text = 'Edit to this comment!';
+	$yorum->text = 'Bu yorumu düzelt!';
 
-	$comment->save();
+	$yorum->save();
 
 <a name="working-with-pivot-tables"></a>
-## Working With Pivot Tables
+## Pivot Tablolarla Çalışmak
 
-As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` object has many `Role` objects that it is related to. After accessing this relationship, we may access the `pivot` table on the models:
+Daha önce öğrendiğiniz gibi, birçoktan birçoğa ilişkilerle çalışmak bir ara tablonun olmasını gerektirir. Eloquent işte bu tablo ile etkileşim için çok yararlı bazı yollar sağlamaktadır. Örneğin bizim bir `Uye` nesnemiz, bir de onun bağlı olduğu birçok `Rol` nesnelerimiz olsun. Bu ilişkiye eriştikten sonra, `pivot` tabloya modellerimiz üzerinden erişebiliriz:
 
-	$user = User::find(1);
+	$uye = Uye::find(1);
 
-	foreach ($user->roles as $role)
+	foreach ($uye->roller as $rol)
 	{
-		echo $role->pivot->created_at;
+		echo $rol->pivot->created_at;
 	}
 
-Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table, and may be used as any other Eloquent model.
+Dikkat ederseniz, elde ettiğimiz her bir `Rol` modeline otomatikman bir `pivot` niteliği atanmıştır. Bu nitelik, ara tabloyu temsil eden bir modeli taşır ve herhangi bir Eloquent modeli gibi kullanılabilir.
 
-By default, only the keys will be present on the `pivot` object. If your pivot table contains extra attributes, you must specify them when defining the relationship:
+Ön tanımlı olarak, `pivot` nesnesinde sadece keyler olacaktır. Şayet pivot tablonuzda bunlardan başka nitelikler varsa, bunları ilişki tanımlama sırasında belirtmelisiniz:
 
-	return $this->belongsToMany('Role')->withPivot('foo', 'bar');
+	return $this->belongsToMany('Rol')->withPivot('falan', 'filan');
 
-Now the `foo` and `bar` attributes will be accessible on our `pivot` object for the `Role` model.
+Şimdi `Rol` modelinin `pivot` nesnesinde `falan` ve `filan` nitelikleri erişilebilir olacaktır.
 
-If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
+Eğer pivot tablonuzun `created_at` ve `updated_at` zaman damgalarını otomatik olarak halletmesini istiyorsanız, ilişki tanımlamasında `withTimestamps` metodunu kullanın:
 
-	return $this->belongsToMany('Role')->withTimestamps();
+	return $this->belongsToMany('Rol')->withTimestamps();
 
-To delete all records on the pivot table for a model, you may use the `detach` method:
+Bir modelin pivot tablosundaki tüm kayıtları silmek için, `detach` metodunu kullanabilirsiniz:
 
-**Deleting Records On A Pivot Table**
+**Bir Pivot Tablodaki Tüm Kayıtların Silinmesi**
 
-	User::find(1)->roles()->detach();
+	Uye::find(1)->roller()->detach();
 
-Note that this operation does not delete records from the `roles` table, but only from the pivot table.
+Bu operasyonun `roller` tablosundan kayıt silmediğine, sadece pivot tablodan sildiğine dikkat ediniz.
 
 <a name="collections"></a>
-## Collections
+## Koleksiyonlar
 
-All multi-result sets returned by Eloquent either via the `get` method or a relationship return an Eloquent `Collection` object. This object implements the `IteratorAggregate` PHP interface so it can be iterated over like an array. However, this object also has a variety of other helpful methods for working with result sets.
+Eloquent tarafından döndürülen tüm çoklu sonuç kümeleri ya `get` metodu aracılığıyla döndürülür veya bir ilişki bir Eloquent `Collection` nesnesi döndürür. Bu nesne PHP'nin `IteratorAggregate` arayüzünün bir uygulama biçimidir ve tıpkı bir dizide dolaşır gibi dolaşılabilinmektedir. Bunun yanında, bu nesne sonuç kümeleriyle çalışırken işe yarayan başka bir takım metodlara da sahiptir.
 
-For example, we may determine if a result set contains a given primary key using the `contains` method:
+Örneğin biz `contains` metodunu kullanarak bir sonuç kümesinin belli bir primer key içerip içermediğini tespit edebiliriz:
 
-**Checking If A Collection Contains A Key**
+**Bir Koleksiyonun Bir Key Taşıyıp Taşımadığının Yoklanması**
 
-	$roles = User::find(1)->roles;
+	$roller = Uye::find(1)->roller;
 
-	if ($roles->contains(2))
+	if ($roller->contains(2))
 	{
 		//
 	}
 
-Collections may also be converted to an array or JSON:
+Koleksiyonlar aynı zamanda bir dizi ya da JSON'a dünüştürülebilmektedir:
 
-	$roles = User::find(1)->roles->toArray();
+	$roller = Uye::find(1)->roller->toArray();
 
-	$roles = User::find(1)->roles->toJson();
+	$roller = Uye::find(1)->roller->toJson();
 
-If a collection is cast to a string, it will be returned as JSON:
+Eğer bir koleksiyon bir string kalıbına çevrilirse JSON olarak döndürülecektir:
 
-	$roles = (string) User::find(1)->roles;
+	$roller = (string) Uye::find(1)->roller;
 
-Eloquent collections also contain a few helpful methods for looping and filtering the items they contain:
+Eloquent koleksiyonları içerdikleri elemanları dolaşmak ve filtre etmekle ilgili bazı metodlara da sahiptir:
 
-**Iterating & Filtering Collections**
+**Koleksiyonlarda Tekrarlı İşlemler ve Süzmeler**
 
-	$roles = $user->roles->each(function($role)
+	$roller = $uye->roller->each(function($rol)
 	{
 
 	});
 
-	$roles = $user->roles->filter(function($role)
+	$roller = $uye->roller->filter(function($rol)
 	{
 
 	});
 
-**Applying A Callback To Each Collection Object**
+**Her Bir Koleksiyon Nesnesine Bir Dönüş (Callback) Yapmak**
 
-	$roles = User::find(1)->roles;
+	$roller = Uye::find(1)->roller;
 	
-	$roles->each(function($role)
+	$roller->each(function($rol)
 	{
 		//	
 	});
 
-**Sorting A Collection By A Value**
+**Bir Koleksiyonu Bir Değere Göre Sıralama**
 
-	$roles = $roles->sortBy(function($role)
+	$roller = $roller->sortBy(function($rol)
 	{
-		return $role->created_at;
+		return $rol->created_at;
 	});
 
-Sometimes, you may wish to return a custom Collection object with your own added methods. You may specify this on your Eloquent model by overriding the `newCollection` method:
+Bazen de, kendi eklediğiniz metodları olan özel bir koleksiyon nesnesi döndürmek isteyebilirsiniz. Bunu, Eloquent modeliniz üzerinde `newCollection` metodunu ezerek yapabilirsiniz:
 
-**Returning A Custom Collection Type**
+**Özel Bir Koleksiyon Tipinin Döndürülmesi**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
 		public function newCollection(array $models = array())
 		{
@@ -787,85 +787,92 @@ Sometimes, you may wish to return a custom Collection object with your own added
 	}
 
 <a name="accessors-and-mutators"></a>
-## Accessors & Mutators
+## Erişimciler & Değiştiriciler (Accessors & Mutators)
 
-Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simply define a `getFooAttribute` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
+Eloquent model niteliklerini alıp getirirken veya onları ayarlarken dönüşüm yapmak için uygun bir yol sağlar. Bir erişimci beyan etmek için modeliniz üzerinde sadece bir `getFilanAttribute` metodu tanımlamak yeterlidir. Yalnız unutmamanız gereken şey, veritabanı sütunlarınızın isimleri yılan tarzı (küçük harfli kelimelerin boşluk olmaksızın alt tire ile birbirine bağlanması) olsa dahi, metodlarınızın deve tarzı (birinci kelimenin tümü küçük harf olmak ve sonraki kelimelerin ilk harfi büyük diğer hafleri küçük olmak üzere boşluk olmaksızın kelimelerin yanyana dizilmesi) olması gerektiğidir:
 
-**Defining An Accessor**
+**Bir Erişimci Tanımlanması**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
-		public function getFirstNameAttribute($value)
+		public function getSoyAdiAttribute($value)
 		{
 			return ucfirst($value);
 		}
 
 	}
 
-In the example above, the `first_name` column has an accessor. Note that the value of the attribute is passed to the accessor.
+Yukarıdaki örnekte `soy_adi` sütununun bir erişimcisi vardır. Niteliğin değerinin erişimciye geçildiğine dikkat ediniz.
 
-Mutators are declared in a similar fashion:
+Değiştiriciler de benzer şekilde deklare edilir:
 
-**Defining A Mutator**
+**Bir Değiştirici Tanımlanması**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
-		public function setFirstNameAttribute($value)
+		public function setSoyAdiAttribute($value)
 		{
-			$this->attributes['first_name'] = strtolower($value);
+			$this->attributes['soy_adi'] = strtolower($value);
 		}
 
 	}
 
 <a name="date-mutators"></a>
-## Date Mutators
+## Tarih Değiştiricileri
 
-By default, Eloquent will convert the `created_at`, `updated_at`, and `deleted_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
+Ön tanımlı olarak, Eloquent will convert the `created_at`, `updated_at`, and `deleted_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), olgularına çevirecektir. Carbon çeşitli yardımcı metodlar sağlar ve PHP'nin `DateTime` sınıfını genişletir.
 
-You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `getDates` method of the model:
+Siz hangi alanların otomatik olarak değiştirileceğini isteğinize göre ayarlayabilirsiniz, hatta modeldeki `getDates` metodunu ezmek suretiyle bu motasyonu tamamen devre dışı bırakabilirsiniz:
 
 	public function getDates()
 	{
 		return array('created_at');
 	}
 
-When a column is considered a date, you may set its value to a UNIX timetamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
+Bir sütun bir tarih olarak kabul edildiğinde, bunun değerini bir UNIX timetamp, date string (`Y-m-d`), date-time string ve tabii ki bir `DateTime` / `Carbon` olgusuna ayarlayabilirsiniz.
+
+Tarih değiştiricilerini tümden devre dışı bırakmak için `getDates` metodunda boş bir dizi döndürünüz:
+
+	public function getDates()
+	{
+		return array();
+	}
 
 <a name="model-events"></a>
-## Model Events
+## Model Olayları
 
-Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`. If `false` is returned from the `creating`, `updating`, or `saving` events, the action will be cancelled:
+Eloquent modelleri bazı olayları tetikleyerek, modelin yaşam döngüsündeki çeşitli noktalarda müdahale etmenize imkan verir. Bu amaçla şu metodlar kullanılmaktadır: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`. Eğer `creating`, `updating` veya `saving` olaylarından `false` döndürülürse, eylem iptal edilecektir:
 
-**Cancelling Save Operations Via Events**
+**Saklama Operasyonlarının Olaylar Aracığıyla İptal Edilmesi**
 
-	User::creating(function($user)
+	Uye::creating(function($uye)
 	{
-		if ( ! $user->isValid()) return false;
+		if ( ! $uye->isValid()) return false;
 	});
 
-Eloquent models also contain a static `boot` method, which may provide a convenient place to register your event bindings.
+Eloquent modelleri bunun dışında static bir `boot` metodu içermekte olup, olay bağlamanızı kayıt etmeniz için uygun bir yerdir.
 
-**Setting A Model Boot Method**
+**Bir Model Boot Metodunun Ayarlanması**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
 		public static function boot()
 		{
 			parent::boot();
 
-			// Setup event bindings...
+			// Olay bağlamayı ayarla...
 		}
 
 	}
 
 <a name="model-observers"></a>
-## Model Observers
+## Model Gözlemcileri
 
-To consolidate the handling of model events, you may register a model observer. An observer class may have methods that correspond to the various model events. For example, `creating`, `updating`, `saving` methods may be on an observer, in addition to any other model event name.
+Model olaylarının işlenmesini pekiştirmek için, bir model gözlemcisi kaydı yapabilirsiniz. Bir gözlemci sınıfında çeşitli model olaylarına tekabül eden metodlar bulunabilir. Örneğin bir gözlemcide, diğer model olay isimlerine ek olarak `creating`, `updating`, `saving` metodları olabilir.
 
-So, for example, a model observer might look like this:
+Yani, bir model gözlemcisi şöyle olabilir:
 
-	class UserObserver {
+	class UyeGozlemcisi {
 
 		public function saving($model)
 		{
@@ -879,50 +886,50 @@ So, for example, a model observer might look like this:
 
 	}
 
-You may register an observer instance using the `observe` method:
+Modelinizde `observe` metodunu kullanarak bir gözlemci olgusu kaydı yapabilirsiniz:
 
-	User::observe(new UserObserver);
+	Uye::observe(new UyeGozlemcisi);
 
 <a name="converting-to-arrays-or-json"></a>
-## Converting To Arrays / JSON
+## Diziye / JSON'a Çevirme
 
-When building JSON APIs, you may often need to convert your models and relationships to arrays or JSON. So, Eloquent includes methods for doing so. To convert a model and its loaded relationship to an array, you may use the `toArray` method:
+JSON APIler oluşturulurken, çoğu defa modellerinizi ve ilişkilerini dizilere veya JSON'a çevirmeniz gerekecektir. Bu yüzden Eloquent bunları yapacak metodlar içermektedir. Bir modeli ve onun yüklenen ilişkilerini bir diziye çevirmek için `toArray` metodunu kullanabilirsiniz:
 
-**Converting A Model To An Array**
+**Bir Modelin Bir Diziye Çevrilmesi**
 
-	$user = User::with('roles')->first();
+	$uye = Uye::with('roller')->first();
 
-	return $user->toArray();
+	return $uye->toArray();
 
-Note that entire collections of models may also be converted to arrays:
+Modellerin koleksiyonlarının da bütün olarak dizilere dönüştürülebildiğini unutmayın:
 
-	return User::all()->toArray();
+	return Uye::all()->toArray();
 
-To convert a model to JSON, you may use the `toJson` method:
+Bir Modeli JSON'a çevirmek için, `toJson` metodunu kullanabilirsiniz:
 
-**Converting A Model To JSON**
+**Bir Modelin JSON'a Çevrilmesi**
 
-	return User::find(1)->toJson();
+	return Uye::find(1)->toJson();
 
-Note that when a model or collection is cast to a string, it will be converted to JSON, meaning you can return Eloquent objects directly from your application's routes!
+Bir model veya koleksiyon bir string kalıbına sokulduğu takdirde, JSON'a çevrileceğine dikkat ediniz. Yani Elequent nesnelerini diretk olarak uygulamanızın rotalarından döndürebilirsiniz!
 
-**Returning A Model From A Route**
+**Bir Modelin Bir Rotadan Döndürülmesi**
 
-	Route::get('users', function()
+	Route::get('uyeler', function()
 	{
-		return User::all();
+		return Uye:all();
 	});
 
-Sometimes you may wish to limit the attributes that are included in your model's array or JSON form, such as passwords. To do so, add a `hidden` property definition to your model:
+Bazen bazı nitelikleri (örneğin şifreleri) modelinizin dizi veya JSON biçimlerinden hariç tutmak isteyebilirsiniz. Bunu yapmak için modelinize bir `hidden` özelliği ekleyiniz:
 
-**Hiding Attributes From Array Or JSON Conversion**
+**Niteliklerin Dizi veya JSON Çevriminden Saklanması**
 
-	class User extends Eloquent {
+	class Uye extends Eloquent {
 
-		protected $hidden = array('password');
+		protected $hidden = array('parola');
 
 	}
 
-Alternatively, you may use the `visible` property to define a white-list:
+Alternatif olarak, beyaz bir liste tanımlamak için `visible` özelliğini kullanabilirsiniz:
 
-	protected $visible = array('first_name', 'last_name');
+	protected $visible = array('adi', 'soy_adi');
