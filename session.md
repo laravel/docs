@@ -94,4 +94,4 @@ The Session Driver defines where session data will be stored.
 - `memcached/redis` - use one of this daemons as a session storage
 - `array` - session will be stored in a plain array (it's handled by [MockArraySessionStorage](https://github.com/symfony/symfony/blob/master/src/Symfony/Component/HttpFoundation/Session/Storage/MockArraySessionStorage.php))
 
-The array driver means that session is only per request (stored during PHP runtime), and after that it disappears
+The array driver means that session is only per request (stored during PHP runtime), and after that it disappears. The array driver is typically used for running [Unit Tests](/docs/testing) meaning no session or cache data will be persisted while testing.
