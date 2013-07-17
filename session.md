@@ -88,10 +88,10 @@ Of course, you may use the `session:table` Artisan command to generate this migr
 ## Session Drivers
 The Session Driver defines where session data will be stored.
 
-- `native` - session will be handled by internal PHP rutines
+- `native` - session will be handled by internal PHP runtimes
 - `cookie` - session will be stored in cookies
 - `database` - session will be stored in database (by default in table sessions)
-- `memcached/redis` - use one of this daemons as a session storage
+- `memcached/redis` - session will use one of these daemons
 - `array` - session will be stored in a plain array (it's handled by `Symfony\HttpFoundation\Session\Storage\MockArraySessionStorage`)
 
-The array driver means that session is only per request (stored during PHP runtime), and after that it disappears. The array driver is typically used for running [Unit Tests](/docs/testing) meaning no session or cache data will be persisted while testing.
+The array driver is typically used for running [Unit Tests](/docs/testing) meaning no session or cache data will be persisted while testing. This means that the session is only per request as it is stored during PHP runtime. 
