@@ -1,21 +1,21 @@
 # Unit Testing
 
-- [Giriş](#introduction)
-- [Testleri Tanımlamak ve Çalıştırmak](#defining-and-running-tests)
-- [Test Ortamı](#test-environment)
-- [Testlerin İçerisinde Rotaları Çağırmak](#calling-routes-from-tests)
+- [Giriş](#giris)
+- [Testleri Tanımlamak ve Çalıştırmak](#testleri-tanimlamak-ve-calistirmak)
+- [Test Ortamı](#test-ortami)
+- [Testlerin İçerisinde Rotaları Çağırmak](#testlerin-icerisinde-rotalari-cagirmak)
 - [Facade'ları Taklit Etmek](#mocking-facades)
-- [Laravel'e Özel `Assert` Metodları](#framework-assertions)
-- [Yardımcı Metodlar](#helper-methods)
+- [Laravel'e Özel `Assert` Metodları](#laravele-ozel-assert-metodlari)
+- [Yardımcı Metodlar](#yardimci-metodlar)
 
-<a name="introduction"></a>
+<a name="giris"></a>
 ## Giriş
 
 Laravel hazırlanırken birim testler ile hazırlandı. Açıkçası, PHPUnit ile test desteği halihazırda var ve uygulamanız için hazırlanmış `phpunit.xml` dosyası da Laravel ile birlikte geliyor. PHPUnit'in haricinde, Laravel ayrıca Symfony HttpKernel, DomCrawler ve BrowserKit bileşenlerinden de yararlanıyor ki, kullanıcılar testler sırasında görünümleri inceleyebilsin ve müdahale edebilsin. Bu bileşenler ile temsili bir tarayıcıya sahip oluyorsunuz.
 
 Örnek bir test dosyası `app/tests` dizininde bulunmaktadır. Yeni bir Laravel uygulaması kurulumundan sonra, komut satırında `phpunit` komutuyla testlerinizi çalıştırabilirsiniz.
 
-<a name="defining-and-running-tests"></a>
+<a name="testleri-tanimlamak-ve-calistirmak"></a>
 ## Testleri Tanımlamak ve Çalıştırmak
 
 Yeni bir test durumu oluşturmak için, `app/test` dizini içerisinde yeni bir test dosyası oluşturmanız yeterli. Test sınıflarınız `TestCase` sınıfını extend ediyor olmalıdır. Bu şekilde normalde PHPUnit ile hazırladığınız test metodlarını aynı şekilde oluşturabilirsiniz.
@@ -35,12 +35,12 @@ Daha sonra komut satırında `phpunit` ile uygulamanızın tüm testlerini çal�
 
 > **Not:** Eğer kendi `setUp` methodunuzu tanımlarsanız, `parent::setUp` kodunu çalıştırdığınızdan emin olun.
 
-<a name="test-environment"></a>
+<a name="test-ortami"></a>
 ## Test Ortamı
 
 Testleri çalıştırıken, Laravel otomatik olarak ortam yapılandırmasını `testint`'a alacaktır. Ayrıca, Laravel'de test ortamında `kaşe` ve `oturum` için özel ayar dosyaları bulunmaktadır. İki sürücü de bir `dizi` olacak şekilde ayarlanmış olup, test yaparkenki oturum ve kaşe verilerinin kalıcı olmaması sağlanmıştır. Test ortamı için gerektiğinde başka ayarlar yapmakta özgürsünüz.
 
-<a name="calling-routes-from-tests"></a>
+<a name="testlerin-icerisinde-rotalari-cagirmak"></a>
 ## Testlerin İçerisinde Rotaları Çağırmak
 
 Testleriniz içerisinde `call` metodu ile rahatlıkla rotaları çağırabilirsiniz:
@@ -97,9 +97,9 @@ Test yaparken, sabit Laravel facadelarını taklit etmeniz gerekecektir. Örneğ
 		return 'All done!';
 	}
 
-We can mock the call to the `Event` class by using the `shouldReceive` method on the facade, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock.
+`Event` sınıfına yapılan çağrıyı taklit edebilmek için Facade üzerinde `shouldReceive` metodunu kullanabilirsiniz, bu metod bir [Mockery](https://github.com/padraic/mockery) örneği döndürecek.
 
-**Mocking A Facade**
+**Bir Facade'ı Taklit Etmek**
 
 	public function testGetIndex()
 	{
@@ -108,14 +108,14 @@ We can mock the call to the `Event` class by using the `shouldReceive` method on
 		$this->call('GET', '/');
 	}
 
-> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the `call` method when running your test.
+> **Note:** `Request` metodunu taklit etmemelisiniz. Bunun yerine, testlerinizi çalıştırırken istediğiniz girdileri `call` metodunda belirtin.
 
-<a name="framework-assertions"></a>
+<a name="laravele-ozel-assert-metodlari"></a>
 ## Laravel'e Özel `Assert` Metodları
 
-Laravel ships with several `assert` methods to make testing a little easier:
+Laravel test yapımını kolaylaştırmak için halihazırda bazı `assert` meodlarıyla gelir:
 
-**Asserting Responses Are OK**
+**Yanıtın Başarıyla Geldiği İspatlamak**
 
 	public function testMethod()
 	{
@@ -124,11 +124,11 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertResponseOk();
 	}
 
-**Asserting Response Statuses**
+**Yanıt Kodlarını İspatlamak**
 
 	$this->assertResponseStatus(403);
 
-**Asserting Responses Are Redirects**
+**Yanıtın Bir Yönlendirme Olduğunu İspatlamak**
 
 	$this->assertRedirectedTo('foo');
 
@@ -136,7 +136,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
 
 	$this->assertRedirectedToAction('Controller@method');
 
-**Asserting A View Has Some Data**
+**Görünüme Bir Verinin Gitmediğini İspatlamak**
 
 	public function testMethod()
 	{
@@ -146,7 +146,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertViewHas('age', $value);
 	}
 
-**Asserting The Session Has Some Data**
+**Oturumda Bir Verinin Kayıtlı Olduğunu İspatlamak**
 
 	public function testMethod()
 	{
@@ -156,25 +156,25 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertSessionHas('age', $value);
 	}
 
-<a name="helper-methods"></a>
+<a name="yardimci-metodlar"></a>
 ## Yardımcı Metodlar
 
-The `TestCase` class contains several helper methods to make testing your application easier.
+Test yapımını kolaylaştırmak için `TestCase` sınıfı bazı yardımcı metodlarla birlikte gelir.
 
-You may set the currently authenticated user using the `be` method:
+Mevcut oturum açmış kullanıcıyı `be` metodu ile belirleyebilirsiniz.
 
-**Setting The Currently Authenticated User**
+**Oturum Açmış Kullanıcıyı Belirleme**
 
 	$user = new User(array('name' => 'John'));
 
 	$this->be($user);
 
-You may re-seed your database from a test using the `seed` method:
+Bir test içerisinden `seed` metoduyla veritabanınızı yeniden filizlendirebilirsiniz:
 
-**Re-Seeding Database From Tests**
+**Test İçerisinden Veritabanını Yeniden Filizlendirmek**
 
 	$this->seed();
 
 	$this->seed($connection);
 
-More information on creating seeds may be found in the [migrations and seeding](/docs/migrations#database-seeding) section of the documentation.
+Filizlendirmeyle ilgili daha fazla bilgiyi dökümantasyonun [migrations and seeding](/docs/migrations#database-seeding) bölümünde bulabilirsiniz.
