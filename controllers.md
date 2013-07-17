@@ -9,7 +9,7 @@
 <a name="basic-controllers"></a>
 ## Temel Denetçiler
 
-Bütün rotalandırma mantığını, tek bir rotalar `routes.php` dosyasında tanımlamak yerine, bu davranışlarını Denetçiler (Controllers) sınıflarını kullanarak organize edebilirsiniz. Denetçiler, ilişkin oldukları rotaların mantığını bir sınıfta gruplar. Aynı zamanda, daha ileri çerçeve (framework) özelliklerini kullanma avantajına sahiptirler, örneğin otomatik [dependency injection](/docs/ioc) (veri enjeksiyonu) gibi.
+Bütün rotalandırma mantığını, tüm rotaları tek tek `routes.php` dosyasında tanımlamak yerine, bu davranışlarını Denetçiler (Controllers) sınıflarını kullanarak organize edebilirsiniz. Denetçiler, ilişkin oldukları rotaların mantığını bir sınıfta gruplar. Aynı zamanda, daha ileri çerçeve (framework) özelliklerini kullanma avantajına sahiptirler, örneğin otomatik [dependency injection](/docs/ioc) (veri enjeksiyonu) gibi.
 
 Denetçiler genelde `app/controllers` dizininde konumlandırılır ve `composer.json` dosyanızın sınıf haritası `classmap` seçeneğinde, varsayılan olarak bu dizin belirlenmiştir.
 
@@ -29,7 +29,7 @@ Basit bir denetçi (controller) sınıfı örneği şöyledir:
 
 	}
 
-Bütün denetçilerin `BaseController` sınıfının uzantısı olması gerekir.  `BaseController` ın kendisi de `app/controllers` dizininde bulunur ve bütün denetçiler için geçerli olacak ortak mantığın içine yerleştirilmesinde kullanılabilir. `BaseController` sınıfı, çerçevenin `Controller` sınıfının uzantısıdır. Bu durumda, oluşturmuş olduğumuz denetçi fonksiyonuna rotalandırmayı şu şekilde yapabiliriz:
+Bütün denetçilerin `BaseController` sınıfından türetilmiş olması gerekir.  `BaseController` ın kendisi de `app/controllers` dizininde bulunur ve bütün denetçiler için geçerli olacak ortak mantığın içine yerleştirilmesinde kullanılabilir. `BaseController` sınıfı, çerçevenin `Controller` sınıfının uzantısıdır. Bu durumda, oluşturmuş olduğumuz denetçi fonksiyonuna rotalandırmayı şu şekilde yapabiliriz:
 
 	Route::get('kullanici/{id}', 'KullaniciController@showProfile');
 
@@ -121,7 +121,7 @@ Laravel size, basit TEDA (REST) isimlendirme tüzüklerini (naming conventions) 
 
 `index` (fihrist) yöntemleri, denetçi tarafından yönetilmekte olan kök URI 'a cevap verir. Örneğimizde bu, `kullanicilar` dır.
 
-Denetçinizdeki bir eylem yönteminin ismi birden fazla kelimeden oluşuyorsa, bu eylem yöntemine, URI da kelime aralarına tire işareti "-" eklenmiş şekilde yazarak erişebilirsiniz. Örneğin, 'KullaniciDenetçisi' denetçimizdeki aşağıdaki şekilde isimlendirilmiş olan yöntem, `kullanicilar/yonetici-profili` URI 'na cevap verecektir.
+Denetçinizdeki bir eylem yönteminin ismi birden fazla kelimeden oluşuyorsa, bu eylem yöntemine, URI da kelime aralarına tire işareti "-" eklenmiş şekilde yazarak erişebilirsiniz. Örneğin, 'KullaniciController' denetçimizdeki aşağıdaki şekilde isimlendirilmiş olan yöntem, `kullanici/yonetici-profili` URI 'na cevap verecektir.
 
 	public function getYoneticiProfili() {}
 
