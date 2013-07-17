@@ -1,82 +1,82 @@
-# Localization
+# Yerelleştirme
 
-- [Introduction](#introduction)
-- [Language Files](#language-files)
-- [Basic Usage](#basic-usage)
-- [Pluralization](#pluralization)
+- [Giriş](#giris)
+- [Dil Dosyaları](#dil-dosyalari)
+- [Temel Kullanım](#temel-kullanim)
+- [Çoğullaştırma](#cogullastirma)
 
-<a name="introduction"></a>
-## Introduction
+<a name="giris"></a>
+## Giriş
 
-The Laravel `Lang` class provides a convenient way of retrieving strings in various languages, allowing you to easily support multiple languages within your application.
+Laravel'in `Lang` sınıfı farklı dillerdeki yazılara ulaşabileceğiniz bir hizmet verir, bu sayede uygulamanızda rahatlıkla çoklu dil desteği verebilirsiniz.
 
-<a name="language-files"></a>
-## Language Files
+<a name="dil-dosyalari"></a>
+## Dil Dosyaları
 
-Language strings are stored in files within the `app/lang` directory. Within this directory there should be a subdirectory for each language supported by the application.
+Diller için kayıtlar `app/lang` dizininin içerisindeki dosyalarda tutulur. Bu dizin içerisinde desteklenen her dil için bir klasör oluşturulmalıdır.
 
 	/app
 		/lang
 			/en
-				messages.php
-			/es
-				messages.php
+				mesajlar.php
+			/tr
+				mesajlar.php
 
-Language files simply return an array of keyed strings. For example:
+Dil dosyaları basitçe anahtarlı bir şekilde kayıtları barındıran bir dizi döndürür. Örneğin:
 
-**Example Language File**
+**Örnek Dil Dosyası**
 
 	<?php
 
 	return array(
-		'welcome' => 'Welcome to our application'
+		'hosgeldiniz' => 'Uygulamamıza hoş geldiniz!'
 	);
 
-The default language for your application is stored in the `app/config/app.php` configuration file. You may change the active language at any time using the `App::setLocale` method:
+Uygulamanız için varsayılan dil `app/config/app.php` ayar dosyasında tutulmaktadır. Bunun dışında, aktif dili `App::setLocale` metoduyla çalışma esnasında da değiştirebilirsiniz.
 
-**Changing The Default Language At Runtime**
+**Varsayılan Dili Çalışma Esnasında Değiştirmek**
 
-	App::setLocale('es');
+	App::setLocale('tr');
 
-<a name="basic-usage"></a>
-## Basic Usage
+<a name="temel-kullanim"></a>
+## Temel Kullanım
 
-**Retrieving Lines From A Language File**
+**Bir Dil Dosyasından Satırları Almak**
 
-	echo Lang::get('messages.welcome');
+	echo Lang::get('mesajlar.hosgeldin');
 
-The first segment of the string passed to the `get` method is the name of the language file, and the second is the name of the line that should be retrieved.
+`get` metoduna verilen parametrenin ilk kısmı dil dosyasının adını, ikinci kısım ise alınmak istenen satırın anahtarını içerir.
 
-> **Note**: If a language line does not exist, the key will be returned by the `get` method.
+> **Not**: Eğer istenen dil satırı bulunmuyorsa, `get` metodu anahtarı döndürecektir.
 
-**Making Replacements In Lines**
+**Satırlarda Değişiklik Yapmak**
 
-You may also define place-holders in your language lines:
+Ayrıca dil satırlarınızda yertutucular tanımlayabilirsiniz:
 
-	'welcome' => 'Welcome, :name',
+	'hosgeldin' => 'Hoşgeldin, :isim',
 
-Then, pass a second argument of replacements to the `Lang::get` method:
+Daha sonra, `Lang::get` metoduna ikinci bir parametreyle yapılacak değişiklikleri belirtin:
 
-	echo Lang::get('messages.welcome', array('name' => 'Dayle'));
+	echo Lang::get('mesajlar.hosgeldin', array('isim' => 'Ekrem'));
 
-**Determine If A Language File Contains A Line**
+**Bir Dil Dosyasının İstenen Satıra Sahip Olup Olmadığını Kontrol Etmek**
 
-	if (Lang::has('messages.welcome'))
+	if (Lang::has('mesajlar.hosgeldin'))
 	{
 		//
 	}
 
-<a name="pluralization"></a>
-## Pluralization
+<a name="cogullastirma"></a>
+## Çoğullaştırma
 
-Pluralization is a complex problem, as different languages have a variety of complex rules for pluralization. You may easily manage this in your language files. By using a "pipe" character, you may separate the singular and plural forms of a string:
+Çoğullaştırma karmaşık bir problemdir, çünkü her dilin farklı ve karmaşık çoğullaştırma kuralları vardır. Dil dosyalarınızda bunu kolaylıkla yönetebilirsiniz. `dik çubuk` karakteri ile, bir çevirinin tekil ve çoğul hallerini birbirinden ayırabilirsiniz:
 
-	'apples' => 'There is one apple|There are many apples',
+	'elmalar' => 'Bir elma var|Bir sürü elma var',
 
-You may then use the `Lang::choice` method to retrieve the line:
+Daha sonra `Lang::choise` metoduyla satırı alabilirsiniz:
 
-	echo Lang::choice('messages.apples', 10);
+	echo Lang::choice('mesajlar.elmalar', 10);
 
-Since the Laravel translator is powered by the Symfony Translation component, you may also create more explicit pluralization rules easily:
+Laravel'in tercüme sınıfı gücünü Symfony'nin tercüme bileşeninden aldığı için, daha belirgin çoğullaştırma kuralları da belirleyebilirsiniz:
 
-	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
+	'elmalar' => '{0} Hiç elma yok|[1,19] Bir kaç elma var|[20,Inf] Çok fazla elma var',
