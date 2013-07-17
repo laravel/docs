@@ -33,12 +33,12 @@ Yeni bir test durumu oluşturmak için, `app/test` dizini içerisinde yeni bir t
 
 Daha sonra komut satırında `phpunit` ile uygulamanızın tüm testlerini çalıştırabilirsiniz.
 
-> **Not:** Eğer kendi `setUp` methodunuzu tanımlarsanız, `parent::setUp` kodunu çalıştırdığınızdan emin olun.
+> **Not:** Eğer kendi `setUp` methodunuzu tanımlarsanız, `parent::setUp` kodunu çalıştırdığınızdan emin olun.
 
 <a name="test-ortami"></a>
 ## Test Ortamı
 
-Testleri çalıştırıken, Laravel otomatik olarak ortam yapılandırmasını `testing`'e alacaktır. Ayrıca, Laravel'de test ortamında `önbellekleme` ve `oturum` için özel ayar dosyaları bulunmaktadır. İki sürücü de bir `dizi` olacak şekilde ayarlanmış olup, test yaparkenki oturum ve kaşe verilerinin kalıcı olmaması sağlanmıştır. Test ortamı için gerektiğinde başka ayarlar yapmakta özgürsünüz.
+Testleri çalıştırıken, Laravel otomatik olarak ortam yapılandırmasını `testing`'e alacaktır. Ayrıca, Laravel'de test ortamında `önbellekleme` ve `oturum` için özel ayar dosyaları bulunmaktadır. İki sürücü de bir `dizi` olacak şekilde ayarlanmış olup, test yaparkenki oturum ve önbellek verilerinin kalıcı olmaması sağlanmıştır. Test ortamı için gerektiğinde başka ayarlar yapmakta özgürsünüz.
 
 <a name="testlerin-icerisinde-rotalari-cagirmak"></a>
 ## Testlerin İçerisinde Rotaları Çağırmak
@@ -97,7 +97,7 @@ Test yaparken, sabit Laravel facadelarını taklit etmeniz gerekecektir. Örneğ
 		return 'All done!';
 	}
 
-`Event` sınıfına yapılan çağrıyı taklit edebilmek için Facade üzerinde `shouldReceive` metodunu kullanabilirsiniz, bu metod bir [Mockery](https://github.com/padraic/mockery) örneği döndürecek.
+`Event` sınıfına yapılan çağrıyı taklit edebilmek için Facade üzerinde `shouldReceive` metodunu kullanabilirsiniz, bu metod bir [Mockery](https://github.com/padraic/mockery) örneği döndürecek.
 
 **Bir Facade'ı Taklit Etmek**
 
@@ -108,7 +108,7 @@ Test yaparken, sabit Laravel facadelarını taklit etmeniz gerekecektir. Örneğ
 		$this->call('GET', '/');
 	}
 
-> **Note:** `Request` metodunu taklit etmemelisiniz. Bunun yerine, testlerinizi çalıştırırken istediğiniz girdileri `call` metodunda belirtin.
+> **Note:** `Request` metodunu taklit etmemelisiniz. Bunun yerine, testlerinizi çalıştırırken istediğiniz girdileri `call` metodunda belirtin.
 
 <a name="laravele-ozel-assert-metodlari"></a>
 ## Laravel'e Özel `Assert` Metodları
@@ -177,4 +177,4 @@ Bir test içerisinden `seed` metoduyla veritabanınızı yeniden filizlendirebil
 
 	$this->seed($connection);
 
-Filizlendirmeyle ilgili daha fazla bilgiyi dökümantasyonun [migrations and seeding](/docs/migrations#database-seeding) bölümünde bulabilirsiniz.
+Filizlendirmeyle ilgili daha fazla bilgiyi dökümantasyonun [yerleşimler ve filizlendirme](/docs/migrations#database-seeding) bölümünde bulabilirsiniz.
