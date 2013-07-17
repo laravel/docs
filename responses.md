@@ -1,6 +1,6 @@
-# Views & Responses
+# Görünümler ve Cevaplar (Views & Responses)
 
-- [Basic Responses](#basic-responses)
+- [Basit Cevaplar](#basic-responses)
 - [Redirects](#redirects)
 - [Views](#views)
 - [View Composers](#view-composers)
