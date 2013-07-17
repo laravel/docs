@@ -88,7 +88,7 @@ Of course, you may use the `session:table` Artisan command to generate this migr
 ## Session Drivers
 The Session Driver defines where session data will be stored.
 
-- `native` - session will be handled by internal PHP runtimes
+- `native` - session will be handled by internal PHP routines
 - `cookie` - session will be stored in cookies
 - `database` - session will be stored in database (by default in table `sessions`)
 - `memcached` / `redis` - session will use one of these daemons
