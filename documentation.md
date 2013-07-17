@@ -7,7 +7,7 @@
     - [Yapılandırma](/docs/configuration)
     - [İstek Yaşam Döngüsü](/docs/lifecycle)
     - [Rotalar](/docs/routing)
-    - [İstekler & Girdiler](/docs/requests)
+    - [İstekler (Requests) ve Girdi (Input)](/docs/requests)
     - [Görünümler ve Cevaplar (Views & Responses)](/docs/responses)
     - [Denetçiler (Controllers)](/docs/controllers)
     - [Hatalar ve Günlüğe Ekleme](/docs/errors)
