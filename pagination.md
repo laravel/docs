@@ -1,44 +1,44 @@
-# Pagination
+# Sayfalandırma
 
 - [Yapılandırma](#yapilandirma)
-- [Usage](#usage)
-- [Appending To Pagination Links](#appending-to-pagination-links)
+- [Kullanım](#usage)
+- [Sayfalandırma Linkleri Ekleme](#appending-to-pagination-links)
 
 <a name="yapilandirma"></a>
 ## Yapılandırma
 
-In other frameworks, pagination can be very painful. Laravel makes it a breeze. There is a single configuration option in the `app/config/view.php` file. The `pagination` option specifies which view should be used to create pagination links. By default, Laravel includes two views.
+Diğer çatılarda(frameworkler'de), sayfalandırma oldukça sıkıntılı olabilir. Laravel bu işi çocuk oyuncağı gibi yapar. `app/config/view.php` dosyasında bir tek ayar dosyası vardır. `pagination` seçeneği sayfalandırma bağlantıları(links) oluşturmak için kullanılması gereken görünümü(view) belirtir. Varsayılan olarak, Laravel iki görünüm(view) içerir.
 
-The `pagination::slider` view will show an intelligent "range" of links based on the current page, while the `pagination::simple` view will simply show "previous" and "next" buttons. **Both views are compatible with Twitter Bootstrap out of the box.**
+Mevcut sayfada `pagination::slider` görünümde(view'de) akıllı "dizi(range)" bağlantılarını göstermekte olurken, `pagination::simple` görünümü(view'ı) sadece "önceki" ve "sonraki" butonlarını gösterecektir. **Her iki görünümde(view) Twitter Bootstrap ile uyumludur**
 
 <a name="usage"></a>
-## Usage
+## Kullanım
 
-There are several ways to paginate items. The simplest is by using the `paginate` method on the query builder or an Eloquent model.
+Birkaç sayfalandırma yolu bulunmaktadır. En kolayı ise `paginate` metodunu veya Eloquent model kullanarak.
 
-**Paginating Database Results**
+**Sayfalandırma Veritaban Sonuçları**
 
-	$users = DB::table('users')->paginate(15);
+	$uyeler = DB::table('uyeler')->paginate(15);
 
-You may also paginate [Eloquent](/docs/eloquent) models:
+Ayrıca [Eloquent](/docs/eloquent) modeller ile sayfalandırma yapabilirsiniz:
 
-**Paginating An Eloquent Model**
+**Eloquent Model Sayfalandırma**
 
-	$users = User::where('votes', '>', 100)->paginate(15);
+	$uyeler = User::where('oylar', '>', 100)->paginate(15);
 
-The argument passed to the `paginate` method is the number of items you wish to display per page. Once you have retrieved the results, you may display them on your view, and create the pagination links using the `links` method:
+`paginate` metodundan geçen argüman sayfa başı görüntülemek istediğiniz öğelerin sayısıdır.Bir kez sonuçları aldıktan sonra görünümde(view'da) görüntüleyebilir ve `links` metodunu kullanarak sayfalandırma bağlantıları(links) oluşturabilirsiniz:
 
 	<div class="container">
-		<?php foreach ($users as $user): ?>
-			<?php echo $user->name; ?>
+		<?php foreach ($uyeler as $uye): ?>
+			<?php echo $uye->isim; ?>
 		<?php endforeach; ?>
 	</div>
 
-	<?php echo $users->links(); ?>
+	<?php echo $uyeler->links(); ?>
 
-This is all it takes to create a pagination system! Note that we did not have to inform the framework of the current page. Laravel will determine this for you automatically.
+Sayfalandırma sistemi oluşturmak işte bu kadar! Unutmayın,mevcut sayfa için çatıya(framework'e) bilgi vermedik. Laravel bunu sizin için otomatik olarak belirledi.
 
-You may also access additional pagination information via the following methods:
+Ayrıca aşağıdaki metodlarla ek olarak sayfalandırma bilgisine erişebilirsiniz:
 
 - `getCurrentPage`
 - `getLastPage`
@@ -47,19 +47,19 @@ You may also access additional pagination information via the following methods:
 - `getFrom`
 - `getTo`
 
-Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
+Bazen geçen(passing) dizi öğelerini, elle sayfalandırma oluşturmayı dileyebilirsiniz. Bunu yapmak için `Paginator::make` methodunu kullanınız:
 
-**Creating A Paginator Manually**
+**Elle Sayfalandırıcı Oluşturmak**
 
-	$paginator = Paginator::make($items, $totalItems, $perPage);
+	$sayfalandirici = Paginator::make($ogeler, $toplamOgeler, $sayfaBasi);
 
 <a name="appending-to-pagination-links"></a>
-## Appending To Pagination Links
+## Sayfalandırma Linkleri Ekleme
 
 You can add to the query string of pagination links using the `appends` method on the Paginator:
 
-	<?php echo $users->appends(array('sort' => 'votes'))->links(); ?>
+	<?php echo $uyeler->appends(array('sira' => 'oylar'))->links(); ?>
 
-This will generate URLs that look something like this:
+Buna benzer URL'ler üretecektir:
 
-	http://example.com/something?page=2&sort=votes
+	http://ornek.com/birsey?sayfa=2&sira=oylar
