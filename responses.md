@@ -1,176 +1,176 @@
-# Views & Responses
+# Görünümler ve Cevaplar (Views & Responses)
 
-- [Basic Responses](#basic-responses)
-- [Redirects](#redirects)
-- [Views](#views)
-- [View Composers](#view-composers)
-- [Special Responses](#special-responses)
+- [Basit Cevaplar](#basic-responses)
+- [Yön Değiştirtmeler (Redirects)](#redirects)
+- [Görünümler (Views)](#views)
+- [Görünüm Kompozitörleri](#view-composers)
+- [Özel Cevaplar](#special-responses)
 
 <a name="basic-responses"></a>
-## Basic Responses
+## Basit Cevaplar
 
-**Returning Strings From Routes**
+**Rotalardan String Döndürme**
 
 	Route::get('/', function()
 	{
-		return 'Hello World';
+		return 'Merhaba Millet';
 	});
 
-**Creating Custom Responses**
+**Özel Cevaplar Oluşturma**
 
-A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses.
+Bir cevap (`Response`) olgusu `Symfony\Component\HttpFoundation\Response` sınıfından türer ve HTTP cevapları oluşturmak için çeşitli metodlar sağlar.
 
-	$response = Response::make($contents, $statusCode);
+	$cevap = Response::make($contents, $statusCode);
 
-	$response->header('Content-Type', $value);
+	$cevap->header('Content-Type', $deger);
 
-	return $response;
+	return $cevap;
 
-**Attaching Cookies To Responses**
+**Cevaplara Çerez Bağlanması**
 
-	$cookie = Cookie::make('name', 'value');
+	$cerez = Cookie::make('isim', 'deger');
 
-	return Response::make($content)->withCookie($cookie);
+	return Response::make($content)->withCookie($cerez);
 
 <a name="redirects"></a>
-## Redirects
+## Yön Değiştirtmeler (Redirects)
 
-**Returning A Redirect**
+**Bir Yön Değiştirtme Döndürme**
 
-	return Redirect::to('user/login');
+	return Redirect::to('uye/login');
 
-**Returning A Redirect With Flash Data**
+**Flaş Veri Eşliğinde Bir Yön Değiştirtme Döndürme**
 	
-	return Redirect::to('user/login')->with('message', 'Login Failed');
+	return Redirect::to('uye/login')->with('message', 'Giriş Başarısız!');
 
-**Returning A Redirect To A Named Route**
+**İsimli Bir Rotaya Yön Değiştirme Döndürme**
 
 	return Redirect::route('login');
 
-**Returning A Redirect To A Named Route With Parameters**
+**Parametre Geçerek İsimli Bir Rotaya Yön Değiştirme Döndürme**
 
-	return Redirect::route('profile', array(1));
+	return Redirect::route('profil', array(1));
 
-**Returning A Redirect To A Named Route Using Named Parameters**
+**İsimli Parametre Kullanarak İsimli Bir Rotaya Yön Değiştirme Döndürme**
 
-	return Redirect::route('profile', array('user' => 1));
+	return Redirect::route('profil', array('uye' => 1));
 
-**Returning A Redirect To A Controller Action**
+**Bir Kontrolör Eylemine Yön Değiştirme Döndürme**
 
 	return Redirect::action('HomeController@index');
 
-**Returning A Redirect To A Controller Action With Parameters**
+**Parametre Geçerek Bir Kontrolör Eylemine Yön Değiştirme Döndürme**
 
-	return Redirect::action('UserController@profile', array(1));
+	return Redirect::action('UserController@profil', array(1));
 
-**Returning A Redirect To A Controller Action Using Named Parameters**
+**İsimli Parametre Kullanarak Bir Kontrolör Eylemine Yön Değiştirme Döndürme**
 
-	return Redirect::action('UserController@profile', array('user' => 1));
+	return Redirect::action('UserController@profil', array('uye' => 1));
 
 <a name="views"></a>
-## Views
+## Görünümler (Views)
 
-Views typically contain the HTML of your application and provide a convenient way of separating your controller and domain logic from your presentation logic. Views are stored in the `app/views` directory.
+Görünümler tipik olarak uygulamanızın HTML'sini içerirler ve kontrolörünüzün ve etki alanı mantığınızın gösterim mantığınızdan ayrı tutulmasının uygun bir yoludur. Görünümler `app/views` dizininde saklanmaktadır.
 
-A simple view could look something like this:
+Basit bir görünüm şuna benzer:
 
-	<!-- View stored in app/views/greeting.php -->
+	<!-- Görünüm app/views/selamlama.php dosyasında bulunsun-->
 
 	<html>
 		<body>
-			<h1>Hello, <?php echo $name; ?></h1>
+			<h1>Merhaba <?php echo $isim; ?></h1>
 		</body>
 	</html>
 
-This view may be returned to the browser like so:
+Bu görünüm web tarayıcısına şu şekilde döndürülebilir:
 
 	Route::get('/', function()
 	{
-		return View::make('greeting', array('name' => 'Taylor'));
+		return View::make('selamlama', array('isim' => 'Taylor'));
 	});
 
-The second argument passed to `View::make` is an array of data that should be made available to the view.
+`View::make` metodundaki ikinci parametre görünümde kullanılması gereken bir veri dizisidir.
 
-**Passing Data To Views**
+**Görünümlere Veri Geçilmesi**
 
-	$view = View::make('greeting', $data);
+	$view = View::make('selamlama', $veri);
 
-	$view = View::make('greeting')->with('name', 'Steve');
+	$view = View::make('selamlama')->with('isim', 'Sinan');
 
-In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
+Yukarıdaki örnekte `$isim` değişkeni görünümden erişilebilir olacak ve `Sinan` bilgisini taşıyacaktır.
 
-You may also share a piece of data across all views:
+Bir parça veriyi tüm görünümler arasında paylaşmanız da mümkündür:
 
-	View::share('name', 'Steve');
+	View::share('isim', 'Sinan');
 
-**Passing A Sub-View To A View**
+**Bir Görünüme Bir Alt Görünüm Geçirilmesi**
 
-Sometimes you may wish to pass a view into another view. For example, given a sub-view stored at `app/views/child/view.php`, we could pass it to another view like so:
+Bazen bir görünümü başka bir görünümün içine geçirmek isteyebilirsiniz. Örneğin, `app/views/evlat/view.php`'de saklanan belli bir görünüm olsun ve biz bunu şu şekilde başka bir görünüme geçirebiliriz:
 
-	$view = View::make('greeting')->nest('child', 'child.view');
+	$view = View::make('selamlama')->nest('evlat', 'evlat.view');
 
-	$view = View::make('greeting')->nest('child', 'child.view', $data);
+	$view = View::make('selamlama')->nest('evlat', 'evlat.view', $veri);
 
-The sub-view can then be rendered from the parent view:
+Bundan sonra bu alt görünüm ebeveyn görünümde gösterilebilir:
 
 	<html>
 		<body>
-			<h1>Hello!</h1>
-			<?php echo $child; ?>
+			<h1>Merhaba!</h1>
+			<?php echo $evlat; ?>
 		</body>
 	</html>
 
 <a name="view-composers"></a>
-## View Composers
+## Görünüm Kompozitörleri
 
-View composers are callbacks or class methods that are called when a view is created. If you have data that you want bound to a given view each time that view is created throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
+Görünüm kompozitörleri görünüm oluşturulduğu zaman çağrılan bitirme fonksiyonları veya sınıf metodlarıdır. Eğer belli bir görünüm, uygulamanız boyunca her oluşturulduğunda bu görünüme bağlamak istediğiniz bir veri varsa, bir görünüm kompozitörü kodun tek bir yere koyulabilmesi imkanı verebilir. Bu nedenle, görünüm kompozitörleri "görünüm modelleri" veya "sunum yapıcı" gibi iş görürler.
 
-**Defining A View Composer**
+**Bir Görünüm Kompozitörü Tanımlanması**
 
-	View::composer('profile', function($view)
+	View::composer('profil', function($view)
 	{
-		$view->with('count', User::count());
+		$view->with('adet', Uye::count());
 	});
 
-Now each time the `profile` view is created, the `count` data will be bound to the view.
+Şimdi `profil` görünümü her oluşturulduğunda, `adet` verisi bu görünüme bağlanacaktır.
 
-You may also attach a view composer to multiple views at once:
+Bir görünüm kompozitörüne bir defada birden çok görünüm bağlamanız da mümkündür:
 
-    View::composer(array('profile','dashboard'), function($view)
+    View::composer(array('profil','pano'), function($view)
     {
-        $view->with('count', User::count());
+        $view->with('adet', Uye::count());
     });
 
-If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC Container](/docs/ioc), you may do so:
+Bunun yerine sınıf tabanlı bir kompozitör kullanmak isterseniz, ki uygulama [IoC Konteyneri](/docs/ioc) ile çözümlenebilme yararı sağlar, şöyle yapabilirsiniz:
 
-	View::composer('profile', 'ProfileComposer');
+	View::composer('profil', 'ProfileComposer');
 
-A view composer class should be defined like so:
+Bir görünüm kompozitörü sınıfı şöyle tanımlanmalıdır:
 
 	class ProfileComposer {
 
 		public function compose($view)
 		{
-			$view->with('count', User::count());
+			$view->with('adet', Uye::count());
 		}
 
 	}
 
-Note that there is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
+Kompozitör sınıfının nerede saklanacağı konusunda bir adet olmadığına dikkat edin. `composer.json` dosyanızdaki yönergeleri kullanarak otomatik yüklenebildikleri sürece, bunları istediğiniz yerde depolayabilirsiniz.
 
 <a name="special-responses"></a>
-## Special Responses
+## Özel Cevaplar
 
-**Creating A JSON Response**
+**Bir JSON Cevabı Oluşturma**
 
-	return Response::json(array('name' => 'Steve', 'state' => 'CA'));
+	return Response::json(array('isim' => 'Sinan', 'il' => 'Bursa'));
 
-**Creating A JSONP Response**
+**Bir JSONP Cevabı Oluşturma**
 
-	return Response::json(array('name' => 'Steve', 'state' => 'CA'))->setCallback(Input::get('callback'));
+	return Response::json(array('isim' => 'Sinan', 'il' => 'Bursa'))->setCallback(Input::get('callback'));
 
-**Creating A File Download Response**
+**Bir Dosya İndirme Cevabı Oluşturma**
 
-	return Response::download($pathToFile);
+	return Response::download($indirilecekDosyaYolu);
 
-	return Response::download($pathToFile, $name, $headers);
+	return Response::download($indirilecekDosyaYolu, $isim, $basliklar);
