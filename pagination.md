@@ -7,9 +7,9 @@
 <a name="yapilandirma"></a>
 ## Yapılandırma
 
-Diğer çatılarda(frameworkler'de), sayfalandırma oldukça sıkıntılı olabilir. Laravel bu işi çocuk oyuncağı gibi yapar. `app/config/view.php` dosyasında bir tek ayar dosyası vardır. `pagination` seçeneği sayfalandırma bağlantıları(links) oluşturmak için kullanılması gereken görünümü(view) belirtir. Varsayılan olarak, Laravel iki görünüm(view) içerir.
+Diğer çatılarda (frameworkler'de), sayfalandırma oldukça sıkıntılı olabilir. Laravel bu işi çocuk oyuncağı gibi yapar. `app/config/view.php` dosyasında bir tek ayar dosyası vardır. `pagination` seçeneği sayfalandırma bağlantıları (links) oluşturmak için kullanılması gereken görünümü (view) belirtir. Varsayılan olarak, Laravel iki görünüm içerir.
 
-Mevcut sayfada `pagination::slider` görünümde(view'de) akıllı "dizi(range)" bağlantılarını göstermekte olurken, `pagination::simple` görünümü(view'ı) sadece "önceki" ve "sonraki" butonlarını gösterecektir. **Her iki görünümde(view) Twitter Bootstrap ile uyumludur**
+Mevcut sayfada `pagination::slider` görünümde akıllı "dizi (range)" bağlantılarını göstermekte olurken, `pagination::simple` görünümü sadece "önceki" ve "sonraki" butonlarını gösterecektir. **Her iki görünümde Twitter Bootstrap ile uyumludur**
 
 <a name="usage"></a>
 ## Kullanım
@@ -26,7 +26,7 @@ Ayrıca [Eloquent](/docs/eloquent) modeller ile sayfalandırma yapabilirsiniz:
 
 	$uyeler = User::where('oylar', '>', 100)->paginate(15);
 
-`paginate` metodundan geçen argüman sayfa başı görüntülemek istediğiniz öğelerin sayısıdır.Bir kez sonuçları aldıktan sonra görünümde(view'da) görüntüleyebilir ve `links` metodunu kullanarak sayfalandırma bağlantıları(links) oluşturabilirsiniz:
+`paginate` metodundan geçen argüman sayfa başı görüntülemek istediğiniz öğelerin sayısıdır. Bir kez sonuçları aldıktan sonra görünümde görüntüleyebilir ve `links` metodunu kullanarak sayfalandırma bağlantıları oluşturabilirsiniz:
 
 	<div class="container">
 		<?php foreach ($uyeler as $uye): ?>
@@ -36,7 +36,7 @@ Ayrıca [Eloquent](/docs/eloquent) modeller ile sayfalandırma yapabilirsiniz:
 
 	<?php echo $uyeler->links(); ?>
 
-Sayfalandırma sistemi oluşturmak işte bu kadar! Unutmayın,mevcut sayfa için çatıya(framework'e) bilgi vermedik. Laravel bunu sizin için otomatik olarak belirledi.
+Sayfalandırma sistemi oluşturmak işte bu kadar! Unutmayın, mevcut sayfa için çatıya bilgi vermedik. Laravel bunu sizin için otomatik olarak belirledi.
 
 Ayrıca aşağıdaki metodlarla ek olarak sayfalandırma bilgisine erişebilirsiniz:
 
@@ -47,7 +47,7 @@ Ayrıca aşağıdaki metodlarla ek olarak sayfalandırma bilgisine erişebilirsi
 - `getFrom`
 - `getTo`
 
-Bazen geçen(passing) dizi öğelerini, elle sayfalandırma oluşturmayı dileyebilirsiniz. Bunu yapmak için `Paginator::make` methodunu kullanınız:
+Bazen geçen (passing) dizi öğelerini, elle sayfalandırma oluşturmayı dileyebilirsiniz. Bunu yapmak için `Paginator::make` methodunu kullanınız:
 
 **Elle Sayfalandırıcı Oluşturmak**
 
