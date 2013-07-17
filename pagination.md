@@ -9,7 +9,7 @@
 
 Diğer çatılarda (frameworkler'de), sayfalandırma oldukça sıkıntılı olabilir. Laravel bu işi çocuk oyuncağı gibi yapar. `app/config/view.php` dosyasında bir tek ayar dosyası vardır. `pagination` seçeneği sayfalandırma bağlantıları (links) oluşturmak için kullanılması gereken görünümü (view) belirtir. Varsayılan olarak, Laravel iki görünüm içerir.
 
-Mevcut sayfada `pagination::slider` görünümde akıllı "dizi (range)" bağlantılarını göstermekte olurken, `pagination::simple` görünümü sadece "önceki" ve "sonraki" butonlarını gösterecektir. **Her iki görünümde Twitter Bootstrap ile uyumludur**
+Mevcut sayfada `pagination::slider` görünümde akıllı "dizi (range)" bağlantılarını göstermekte olurken, `pagination::simple` görünümü sadece "önceki" ve "sonraki" butonlarını gösterecektir. **Her iki görünüm de Twitter Bootstrap ile uyumludur**
 
 <a name="usage"></a>
 ## Kullanım
