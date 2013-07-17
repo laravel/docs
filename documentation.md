@@ -8,7 +8,7 @@
     - [İstek Yaşam Döngüsü](/docs/lifecycle)
     - [Rotalar](/docs/routing)
     - [İstekler & Girdiler](/docs/requests)
-    - [Görünümler & Yanıtlar](/docs/responses)
+    - [Görünümler ve Cevaplar (Views & Responses)](/docs/responses)
     - [Denetçiler (Controllers)](/docs/controllers)
     - [Hatalar ve Günlüğe Ekleme](/docs/errors)
 - Detaylı Öğrenim
@@ -19,7 +19,7 @@
     - [Yardımcılar (Helpers)](/docs/helpers)
     - [IoC Konteyner](/docs/ioc)
     - [Yerelleştirme](/docs/localization)
-    - [E-posta](/docs/mail)
+    - [Posta](/docs/mail)
     - [Paket Yönetimi](/docs/packages)
     - [Sayfalandırma](/docs/pagination)
     - [Kuyruklar](/docs/queues)
