@@ -38,7 +38,7 @@ Daha sonra komut satırında `phpunit` ile uygulamanızın tüm testlerini çal�
 <a name="test-ortami"></a>
 ## Test Ortamı
 
-Testleri çalıştırıken, Laravel otomatik olarak ortam yapılandırmasını `testing`'e alacaktır. Ayrıca, Laravel'de test ortamında `önbellekleme` ve `oturum` için özel ayar dosyaları bulunmaktadır. İki sürücü de bir `dizi` olacak şekilde ayarlanmış olup, test yaparkenki oturum ve önbellek verilerinin kalıcı olmaması sağlanmıştır. Test ortamı için gerektiğinde başka ayarlar yapmakta özgürsünüz.
+Testleri çalıştırıken, Laravel otomatik olarak ortam yapılandırmasını `testing`'e alacaktır. Ayrıca, Laravel'de test ortamında `kaşe` ve `oturum` için özel ayar dosyaları bulunmaktadır. İki sürücü de bir `dizi` olacak şekilde ayarlanmış olup, test yaparkenki oturum ve önbellek verilerinin kalıcı olmaması sağlanmıştır. Test ortamı için gerektiğinde başka ayarlar yapmakta özgürsünüz.
 
 <a name="testlerin-icerisinde-rotalari-cagirmak"></a>
 ## Testlerin İçerisinde Rotaları Çağırmak
@@ -177,4 +177,4 @@ Bir test içerisinden `seed` metoduyla veritabanınızı yeniden filizlendirebil
 
 	$this->seed($connection);
 
-Filizlendirmeyle ilgili daha fazla bilgiyi dökümantasyonun [yerleşimler ve filizlendirme](/docs/migrations#database-seeding) bölümünde bulabilirsiniz.
+Filizlendirmeyle ilgili daha fazla bilgiyi dökümantasyonun [migrations and seeding](/docs/migrations#database-seeding) bölümünde bulabilirsiniz.
