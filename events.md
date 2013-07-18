@@ -1,76 +1,76 @@
-# Events
+# Olaylar (Events)
 
-- [Basic Usage](#basic-usage)
-- [Wildcard Listeners](#wildcard-listeners)
-- [Using Classes As Listeners](#using-classes-as-listeners)
-- [Queued Events](#queued-events)
-- [Event Subscribers](#event-subscribers)
+- [Basit Kullanım](#basic-usage)
+- [Joker Dinleyiciler](#wildcard-listeners)
+- [Dinleyici Olarak Sınıfları Kullanmak](#using-classes-as-listeners)
+- [Olayları Sıraya Sokma](#queued-events)
+- [Olay Aboneleri](#event-subscribers)
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Basit Kullanım
 
-The Laravel `Event` class provides a simple observer implementation, allowing you to subscribe and listen for events in your application.
+Laravel'in `Event` sınıfı, uygulamanızdaki olaylara abone olmanıza ve dinlemenize imkan veren basit bir gözlemci aracıdır.
 
-**Subscribing To An Event**
+**Bir Olaya Abone Olma**
 
-	Event::listen('user.login', function($user)
+	Event::listen('uye.login', function($uye)
 	{
-		$user->last_login = new DateTime;
+		$uye->last_login = new DateTime;
 
-		$user->save();
+		$uye->save();
 	});
 
-**Firing An Event**
+**Bir Olayı Ateşleme**
 
-	$event = Event::fire('user.login', array($user));
+	$olay = Event::fire('uye.login', array($uye));
 
-You may also specify a priority when subscribing to events. Listeners with higher priority will be run first, while listeners that have the same priority will be run in order of subscription.
+Olaylara abone olurken bir öncelik de belirtebilirsiniz. Daha yüksek önceliği olan dinleyiciler daha önce çalışacak, aynı önceliğe sahip dinleyiciler ise abonelik sırasına göre çalışacaklardır.
 
-**Subscribing To Events With Priority**
+**Bir Olaya Abone Olurken Öncelik Belirtme**
 
-	Event::listen('user.login', 'LoginHandler', 10);
+	Event::listen('uye.login', 'LoginHandler', 10);
 
-	Event::listen('user.login', 'OtherHandler', 5);
+	Event::listen('uye.login', 'DigerHandler', 5);
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your listener:
+Bazen bir olayın diğer dinleyicilere yayılmasını durdurmak isteyebilirsiniz. Dinleyicinizden `false` döndürerek bunu gerçekleştirebilirsiniz:
 
-**Stopping The Propagation Of An Event**
+**Bir Olayın Yayılımının Durdurulması**
 
-	Event::listen('user.login', function($event)
+	Event::listen('uye.login', function($event)
 	{
-		// Handle the event...
+		// Olayı işle...
 
 		return false;
 	});
 
 <a name="wildcard-listeners"></a>
-## Wildcard Listeners
+## Joker Dinleyiciler
 
-When registering an event listener, you may use asterisks to specify wildcard listeners:
+Bir olay dinleyiciyi kayda geçirirken, joker dinleyicileri belirtmek üzere yıldız işareti kullanabilirsiniz:
 
-**Registering Wildcard Event Listeners**
+**Joker Olay Dinleyicilerin Kayda Geçirilmesi**
 
-	Event::listen('foo.*', function($param, $event)
+	Event::listen('falan.*', function($param, $event)
 	{
-		// Handle the event...
+		// Olayı işle...
 	});
 
-This listener will handle all events that begin with `foo.`. Note that the full event name is passed as the last argument to the handler.
+Bu dinleyici `falan.` ile başlayan tüm olayları işleyecektir. Tam olay adının işleyiciye son parametre olarak geçildiğine dikkat ediniz.
 
 <a name="using-classes-as-listeners"></a>
-## Using Classes As Listeners
+## Dinleyici Olarak Sınıfları Kullanma
 
-In some cases, you may wish to use a class to handle an event rather than a Closure. Class event listeners will be resolved out of the [Laravel IoC container](/docs/ioc), providing you the full power of dependency injection on your listeners.
+Bazı durumlarda, bir olayı işlemek için bir bitirme fonksiyonu yerine bir sınıf kullanmak isteyebilirsiniz. Sınıf olay dinleyileri [Laravel'in IoC konteyneri](/docs/ioc) ile çözümlenecek, böylece size dinleyicileriniz üzerinde tam bir koloni enjeksiyonu gücü verecektir.
 
-**Registering A Class Listener**
+**Bir Sınıf Dinleyicinin Kayda Geçirilmesi**
 
-	Event::listen('user.login', 'LoginHandler');
+	Event::listen('uye.login', 'LoginIsleyici');
 
-By default, the `handle` method on the `LoginHandler` class will be called:
+Ön tanımlı olarak, `LoginHandler` sınıfındaki `handle` metodu çağrılacaktır:
 
-**Defining An Event Listener Class**
+**Bir Olay Dinleyici Sınıfının Tanımlanması**
 
-	class LoginHandler {
+	class LoginIsleyici {
 
 		public function handle($data)
 		{
@@ -79,76 +79,76 @@ By default, the `handle` method on the `LoginHandler` class will be called:
 
 	}
 
-If you do not wish to use the default `handle` method, you may specify the method that should be subscribed:
+Eğer ön tanımlı `handle` metodunu kullanmak istemiyorsanız, abone olunacak metodu belirleyebilirsiniz:
 
-**Specifying Which Method To Subscribe**
+**Hangi Metoda Abone Olunduğunun Tanımlanması**
 
-	Event::listen('user.login', 'LoginHandler@onLogin');
+	Event::listen('uye.login', 'LoginIsleyici@onLogin');
 
 <a name="queued-events"></a>
-## Queued Events
+## Olayları Sıraya Sokma
 
-Using the `queue` and `flush` methods, you may "queue" an event for firing, but not fire it immediately:
+`queue` ve `flush` metodlarını kullanarak, bir olayı hemen ateşlemeyip, ateşlenmek üzere "sıraya" sokabilirsiniz:
 
-**Registering A Queued Event**
+**Sıralı Bir Olayın Kayda Geçirilmesi**
 
-	Event::queue('foo', array($user));
+	Event::queue('falan', array($uye));
 
-**Registering An Event Flusher**
+**Bir Olay Flusher'ın Kayda Geçirilmesi**
 
-	Event::flusher('foo', function($user)
+	Event::flusher('falan', function($uye)
 	{
 		//
 	});
 
-Finally, you may run the "flusher" and flush all queued events using the `flush` method:
+Son olarak, ilgili "flusher"ı çalıştırabilir ve `flush` metodunu kullanarak sıradaki tüm olayları harekete geçirebilirsiniz:
 
-	Event::flush('foo');
+	Event::flush('falan');
 
 <a name="event-subscribers"></a>
-## Event Subscribers
+## Olay Aboneleri
 
-Event subscribers are classes that may subscribe to multiple events from within the class itself. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance:
+Olay aboneleri, sınıfın kendi içinden birden çok olaya abone olabilen sınıflardır. Aboneler bir `subscribe` metodu ile tanımlanırlar ve bu metoda parametre olarak bir olay sevkiyatçısı olgusu geçilecektir:
 
-**Defining An Event Subscriber**
+**Bir Olay Abonesi Tanımlanması**
 
-	class UserEventHandler {
+	class UyeOlayIsleyici {
 
 		/**
-		 * Handle user login events.
+		 * Uye login olaylarını işle.
 		 */
-		public function onUserLogin($event)
+		public function onUyeLogin($event)
 		{
 			//
 		}
 
 		/**
-		 * Handle user logout events.
+		 * Uye logout olaylarını hallet.
 		 */
-		public function onUserLogout($event)
+		public function onUyeLogout($event)
 		{
 			//
 		}
 
 		/**
-		 * Register the listeners for the subscriber.
+		 * Abone dinleyicilerini kayda geçir.
 		 *
 		 * @param  Illuminate\Events\Dispatcher  $events
 		 * @return array
 		 */
 		public function subscribe($events)
 		{
-			$events->listen('user.login', 'UserEventHandler@onUserLogin');
+			$events->listen('uye.login', 'UyeOlayIsleyici@onUyeLogin');
 
-			$events->listen('user.logout', 'UserEventHandler@onUserLogout');
+			$events->listen('uye.logout', 'UyeOlayIsleyici@onUyeLogout');
 		}
 
 	}
 
-Once the subscriber has been defined, it may be registered with the `Event` class.
+Abone tanımlandıktan sonra, `Event` sınıfı kullanılarak kayda geçirilebilir.
 
-**Registering An Event Subscriber**
+**Bir Olay Abonesinin Kayda Geçirilmesi**
 
-	$subscriber = new UserEventHandler;
+	$abone = new UyeOlayIsleyici;
 
-	Event::subscribe($subscriber);
+	Event::subscribe($abone);
