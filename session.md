@@ -8,74 +8,74 @@
 <a name="yapilandirma"></a>
 ## Yapılandırma
 
-HTTP odaklı uygulamalar izolasyonsuz olduğu için, oturumlar istekler arasında kullanıcı hakkında bilgi saklamak için bir yol sağlar. Laravel ships with a variety of session back-ends available for use through a clean, unified API. Support for popular back-ends such as [Memcached](http://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
+HTTP odaklı uygulamalar durum bilgisi taşımadıkları için, oturumlar istekler arasında kullanıcı hakkında bilgi saklamak için bir yol sağlar. Laravel temiz, tek bir API aracılığıyla kullanılabilen çeşitli oturum back-endleri ile birlikte gelir. İçerisinde [Memcached](http://memcached.org), [Redis](http://redis.io) ve veritabanları gibi popüler back-end desteği yer almaktadır.
 
-Oturum yapılandırma ayarları `app/config/session.php` dosyasında bulunmaktadır. Yapılandırma dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel `native` oturum sürücünü kullanmak üzere yapılandırılmıştır, bu yapılandırma uygulamaların çoğunda çalışacaktır.
+Oturum yapılandırma ayarları `app/config/session.php` dosyasında bulunmaktadır. Bu belgede size sunulan iyi belgelenmiş seçenekleri gözden geçirmeyi unutmayın. Ön tanımlı olarak, Laravel `native` oturum sürücüsünü kullanmak üzere yapılandırılmıştır ve bu yapılandırma uygulamaların çoğunda iyi çalışacaktır.
 
 <a name="oturum-kullanimi"></a>
 ## Oturum Kullanımı
 
-**Bir Nesneyi Oturuma Koymak**
+**Oturumda Bir Öğe Saklamak**
 
-	Session::put('key', 'value');
+	Session::put('anahtar', 'deger');
 
-**Oturumdan Bir Nesneyi Almak**
+**Oturumdaki Bir Öğeyi Öğrenmek**
 
-	$value = Session::get('key');
+	$deger = Session::get('anahtar');
 
-**Bir Oturum Değeri Almak Veya Varsayılan Bir Değer Döndürmek**
+**Bir Öğe Almak Veya Varsayılan Bir Değer Döndürmek**
 
-	$value = Session::get('key', 'default');
+	$deger = Session::get('anahtar', 'default');
 
-	$value = Session::get('key', function() { return 'default'; });
+	$deger = Session::get('anahtar', function() { return 'default'; });
 
-**Nesnenin Oturumda Var Olup Olmadığını Kontrol Etmek**
+**Oturumda Bir Öğenin Olup Olmadığını Tespit Etmek**
 
-	if (Session::has('users'))
+	if (Session::has('uyeler'))
 	{
 		//
 	}
 
-**Oturumdan Bir Nesneyi Silmek**
+**Oturumdan Bir Öğeyi Çıkartmak**
 
-	Session::forget('key');
+	Session::forget('anahtar');
 
-**Oturumdanki Tüm Nesneleri Silmek**
+**Oturumdaki Tüm Öğeleri Çıkartmak**
 
 	Session::flush();
 
-**Oturum ID Numarasını Tekrar Oluşturmak**
+**Tekrar Oturum ID Üretmek**
 
 	Session::regenerate();
 
 <a name="flas-verisi"></a>
 ## Flaş Verisi
 
-Sometimes you may wish to store items in the session only for the next request. You may do so using the `Session::flash` method:
+Bazen oturumda sadece sonraki istek için öğeler saklamak isteyebilirsiniz. Bunu `Session::flash` metodunu kullanarak gerçekleştirebilirsiniz:
 
-	Session::flash('key', 'value');
+	Session::flash('anahtar', 'deger');
 
-**Reflashing The Current Flash Data For Another Request**
+**Mevcut Flaş Verinin Bir Başka İstek İçin Yeniden Flaşlanması**
 
 	Session::reflash();
 
-**Reflashing Only A Subset Of Flash Data**
+**Flaş Verinin Sadece Bir Alt Kümesinin Yeniden Flaşlanması**
 
-	Session::keep(array('username', 'email'));
+	Session::keep(array('uyeadi', 'email'));
 
 <a name="veritabani-oturumlari"></a>
 ## Veritabanı Oturumları
 
-When using the `database` session driver, you will need to setup a table to contain the session items. Below is an example `Schema` declaration for the table:
+`database` oturum sürücüsü kullanıyorken, oturum öğelerini taşıyan bir tablo kurulumu gerekecek. Aşağıda, bu tablo için örnek bir `Şema` deklarasyonu gösterilmektedir:
 
 	Schema::create('sessions', function($table)
 	{
 		$table->string('id')->unique();
-		$table->text('payload');
-		$table->integer('last_activity');
+		$table->text('fayda');
+		$table->integer('son_etkinlik');
 	});
 
-Of course, you may use the `session:table` Artisan command to generate this migration for you!
+Tabii ki, bu migrasyonu üretmek için `session:table` Artisan komutunu kullanabilirsiniz!
 
 	php artisan session:table
 
