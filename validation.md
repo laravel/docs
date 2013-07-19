@@ -171,7 +171,7 @@ Geçerlilik bakılan alan _yes_, _on_ veya _1_ olmalıdır. Bu, "Hizmet Şartlar
 Geçerlilik bakılan alan `checkdnsrr` PHP fonksiyonuna göre geçerli bir URL olmalıdır.
 
 <a name="rule-after"></a>
-#### after:_tarih_
+#### after: _tarih_
 
 Geçerlilik bakılan alan verilen bir tarihten sonraki bir değer olmalıdır. Tarihler PHP `strtotime` fonksiyonuna geçirilecektir.
 
@@ -191,12 +191,12 @@ Geçerlilik bakılan alan alfa-numerik karakterler yanında tire ve alt tire de 
 Geçerlilik bakılan alan tamamen alfa-numerik karakterler olmalıdır.
 
 <a name="rule-before"></a>
-#### before:_tarih_
+#### before: _tarih_
 
 Geçerlilik bakılan alan verilen bir tarihten önceki bir değer olmalıdır. Tarihler PHP `strtotime` fonksiyonuna geçirilecektir.
 
 <a name="rule-between"></a>
-#### between:_min_,_max_
+#### between: _min_, _max_
 
 Geçerlilik bakılan alan verilen _min_ ile _max_ arasında bir büyüklükte olmalıdır. Stringler, sayılar ve dosyalar `size` kuralıyla aynı tarzda değerlendirilir.
 
@@ -211,12 +211,12 @@ Geçerlilik bakılan alana uyan eden bir `falan_confirmation` alanı olmalıdır
 Geçerlilik bakılan alan `strtotime` PHP fonksiyonua göre uygun bir tarih olmalıdır.
 
 <a name="rule-date-format"></a>
-#### date_format:_format_
+#### date_format: _format_
 
 Geçerlilik bakılan alan `date_parse_from_format` PHP fonksiyona göre tanımlanmış bir _format_'a uygun olmalıdır.
 
 <a name="rule-different"></a>
-#### different:_alan_
+#### different: _alan_
 
 Verilen _alan_, geçerlilik bakılan alandan farklı olmalıdır.
 
@@ -226,7 +226,7 @@ Verilen _alan_, geçerlilik bakılan alandan farklı olmalıdır.
 Geçerlilik bakılan alan bir e-mail adresi şeklinde biçimlendirilmiş olmalıdır.
 
 <a name="rule-exists"></a>
-#### exists:_tablo_,_sütun_
+#### exists: _tablo_, _sütun_
 
 Geçerlilik bakılan alan verilen bir veritabanı tablosunda mevcut olmalıdır.
 
@@ -248,7 +248,7 @@ Sorguya "where" cümleciği olarak eklenecek daha fazla şart da belirtebilirsin
 Geçerlilik bakılan alan bir imaj (jpeg, png, bmp veya gif) olmalıdır.
 
 <a name="rule-in"></a>
-#### in:_falan_,_filan_,...
+#### in: _falan_, _filan_,...
 
 Geçerlilik bakılan alan verilen bir değerler listesinde olmalıdır.
 
@@ -263,12 +263,12 @@ Geçerlilik bakılan alan bir tamsayı olmalıdır.
 Geçerlilik bakılan alan bir IP adresi olarak biçimlendirilmiş olmalıdır.
 
 <a name="rule-max"></a>
-#### max:_deger_
+#### max: _deger_
 
 Geçerlilik bakılan alan bir maksimum _deger_'den az olmalıdır. Stringler, sayılar ve dosyalar `size` kuralıyla aynı tarzda değerlendirilir.
 
 <a name="rule-mimes"></a>
-#### mimes:_falan_,_filan_,...
+#### mimes: _falan_, _filan_,...
 
 Geçerlilik bakılan alan listelenen uzantılardan birine tekabül eden bir MIME tipinde olmalıdır.
 
@@ -277,12 +277,12 @@ Geçerlilik bakılan alan listelenen uzantılardan birine tekabül eden bir MIME
 	'foto' => 'mimes:jpeg,bmp,png'
 
 <a name="rule-min"></a>
-#### min:_deger_
+#### min: _deger_
 
 Geçerlilik bakılan alan bir asgari _deger_'den büyük olmalıdır. Stringler, sayılar ve dosyalar `size` kuralıyla aynı tarzda değerlendirilir.
 
 <a name="rule-not-in"></a>
-#### not_in:_falan_,_filan_,...
+#### not_in: _falan_,_filan_,...
 
 Geçerlilik bakılan alan verilen değerler listesinde yer almamalıdır.
 
@@ -292,7 +292,7 @@ Geçerlilik bakılan alan verilen değerler listesinde yer almamalıdır.
 Geçerlilik bakılan alan sayısal bir değer olmalıdır.
 
 <a name="rule-regex"></a>
-#### regex:_desen_
+#### regex: _desen_
 
 Geçerlilik bakılan alan verilen düzenli ifadeye uygun olmalıdır.
 
@@ -304,32 +304,32 @@ Geçerlilik bakılan alan verilen düzenli ifadeye uygun olmalıdır.
 Geçerlilik bakılan alan input verisinde bulunmak zorundadır.
 
 <a name="rule-required-if"></a>
-#### required_if:_alan_,_deger_
+#### required_if: _alan_, _deger_
 
 Şayet _alan_ alanı _deger_'e eşit ise, geçerlilik bakılan alan girilmek zorundadır.
 
 <a name="rule-required-with"></a>
-#### required_with:_falan_,_filan_,...
+#### required_with: _falan_, _filan_,...
 
 Geçerlilik bakılan alan, sadece belirtilen alanların bulunması durumunda bulunmak zorundadır.
 
 <a name="rule-required-without"></a>
-#### required_without:_foo_,_bar_,...
+#### required_without: _falan_, _filan_,...
 
 Geçerlilik bakılan alan, sadece diğer belirtilen alanlar olmadığı takdirde bulunmak zorundadır.
 
 <a name="rule-same"></a>
-#### same:_alan_
+#### same: _alan_
 
 Verilen _alan_ geçerlilik bakılan alanla aynı olmalıdır. 
 
 <a name="rule-size"></a>
-#### size:_deger_
+#### size: _deger_
 
 Geçerlilik bakılan alan verilen _deger_'le aynı büyüklükte olmalıdır. String veriler için, _deger_ harf sayısı anlamına gelir. Numerik veriler için, _deger_ verilen bir tamsayı değeridir. Dosyalar için, _size_ kilobayt cinsinden dosya boyutuna karşılık gelir.
 
 <a name="rule-unique"></a>
-#### unique:_tablo_,_sütun_,_haric_,_idSütunu_
+#### unique: _tablo_, _sütun_, _haric_, _idSütunu_
 
 Geçerlilik bakılan alan verilen bir veritabanı tablosunda benzersiz olmalıdır. Eğer `sütun` seçeneği belirtilmemişse, geçerlilik bakılan alan aynı zamanda sütun adı olarak kabul edilecektir.
 
