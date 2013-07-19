@@ -18,6 +18,7 @@
 - [Date Mutators](#date-mutators)
 - [Model Events](#model-events)
 - [Model Observers](#model-observers)
+- [Connections](#connections)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
@@ -916,6 +917,13 @@ So, for example, a model observer might look like this:
 You may register an observer instance using the `observe` method:
 
 	User::observe(new UserObserver);
+
+<a name="connections"></a>
+## Connections
+
+Sometimes you may want to query against records from a different connection:
+
+	User::on('foo')->find(1);
 
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON
