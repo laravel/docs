@@ -4,7 +4,7 @@
 - [Basit Kullanım Şekli](#basic-usage)
 - [Kuyruğa Closure Fonksiyonu Sokma](#queueing-closures)
 - [Kuyruk Dinleyicileri Çalıştırma](#running-the-queue-listener)
-- [Push Queues](#push-queues)
+- [Push Kuyrukları](#push-queues)
 
 <a name="yapilandirma"></a>
 ## Yapılandırma
@@ -28,7 +28,7 @@ Kuyruğa yeni bir iş itmek için `Queue::push` metodunu kullanın:
 
 	Queue::push('SendEmail', array('message' => $message));
 
-The first argument given to the `push` metoduna gerilen ilk parametre işi yapmak için kullanılacak sınıfın adıdır. İkinci parametre işleyiciye geçirilecek veri dizisidir. Bir iş işleyicisi şu şekilde tanımlanmalıdır:
+`push` metoduna gerilen ilk parametre işi yapmak için kullanılacak sınıfın adıdır. İkinci parametre işleyiciye geçirilecek veri dizisidir. Bir iş işleyicisi şu şekilde tanımlanmalıdır:
 
 **Bir İş İşleyicisinin Tanımlanması**
 
@@ -75,7 +75,7 @@ Bir işi tekrar kuyruğa devretmek isterseniz, bunu `release` metodu aracılığ
 
 	$is->release(5);
 
-İş işlenirken bir istisna oluşursa, otomatik olarak kuyguğa tekrar salınacaktır. `attempts` metodunu kullanarak, işi çalıştırmak için yapılmış olan girişim sayısını da yoklayabilirsiniz:
+İş işlenirken bir istisna oluşursa, otomatik olarak kuyruğa tekrar salınacaktır. `attempts` metodunu kullanarak, işi çalıştırmak için yapılmış olan girişim sayısını da yoklayabilirsiniz:
 
 **Çalıştırma Girişimlerinin Sayısını Yoklama**
 
@@ -106,7 +106,7 @@ Kuyruğa bir Closure de push edebilirsiniz. Bu, kuyruğa sokulması gerekecek h�
 
 > **Not:** Kuyruğa bir Closure sokarken `__DIR__` ve `__FILE__` sabitleri kullanılmamalıdır.
 
-Iron.io [push queues](#push-queues) kullanılıyorken, Closure'ların kuyruğa sokulmasında daha fazla önlem almalısınız. Kuyruk mesajlarızı alan son nokta, isteğin gerçekten Iron.io'den mi geldiğini doğrulayacak bir jeton yoklaması yapmalıdır. Örneğin, sizin push kuyruk son noktanız şuna benzer bir şey olmalıdır: `https://yourapp.com/queue/receive?token=SecretToken`. Böylece, kuyruk istek sıralamasından önce uygulamanızdaki gizli jetonun değerini kontrol edebilirsiniz.
+Iron.io [push kuyrukları](#push-queues) kullanılıyorken, Closure'ların kuyruğa sokulmasında daha fazla önlem almalısınız. Kuyruk mesajlarızı alan son nokta, isteğin gerçekten Iron.io'den mi geldiğini doğrulayacak bir jeton yoklaması yapmalıdır. Örneğin, sizin push kuyruk son noktanız şuna benzer bir şey olmalıdır: `https://uygulamaniz.com/queue/receive?token=SecretToken`. Böylece, kuyruk istek sıralamasından önce uygulamanızdaki gizli jetonun değerini kontrol edebilirsiniz.
 
 <a name="running-the-queue-listener"></a>
 ## Kuyruk Dinleyicileri Çalıştırma
@@ -125,32 +125,32 @@ Unutmamanız gereken şey, bu görev başlatıldıktan sonra elle durdurulana ka
 
 Ayrıca her işin çalışmasına izin verilecek zaman süresini (saniye cinsinden) de ayarlayabilirsiniz:
 
-**Specifying The Job Timeout Parameter**
+**İş Zaman Aşımı Parametresi Belirleme**
 
 	php artisan queue:listen --timeout=60
 
-To process only the first job on the queue, you may use the `queue:work` command:
+Kuyruktaki sadece ilk sıradiki işi yürütmek için `queue:work` komutunu kullanabilirsiniz:
 
-**Processing The First Job On The Queue**
+**Kuyruktaki İlk İşin İşleme Geçirilmesi**
 
 	php artisan queue:work
 
 <a name="push-queues"></a>
-## Push Queues
+## Push Kuyrukları
 
-Push queues allow you to utilize the powerful Laravel 4 queue facilities without running any daemons or background listeners. Currently, push queues are only supported by the [Iron.io](http://iron.io) driver. Before getting started, create an Iron.io account, and add your Iron credentials to the `app/config/queue.php` configuration file.
+Push kuyrukları size herhangi bir art alan veya arka plan dinleyici çalıştırmaksızın güçlü Laravel 4 kuyruk araçlarını kullanmanıza imkan verir. Push kuyrukları şu anda sadece [Iron.io](http://iron.io) sürücüsü tarafından desteklenmektedir. Başlamak için önce bir Iron.io hesabı oluşturun ve Iron kimlik bilgilerinizi `app/config/queue.php` yapılandırma dosyasına ekleyin.
 
-Next, you may use the `queue:subscribe` Artisan command to register a URL end-point that will receive newly pushed queue jobs:
+Daha sonra, yeni push edilmiş kuyruk işlerini alacak bir URL son noktasını kayda geçirmek için `queue:subscribe` Artisan komutunu kullanabilirsiniz:
 
-**Registering A Push Queue Subscriber**
+**Bir Push Kuyruk Aboneliğinin Kayda Geçirilmesi**
 
-	php artisan queue:subscribe queue_name http://foo.com/queue/receive
+	php artisan queue:subscribe queue_name http://falan.com/queue/receive
 
-Now, when you login to your Iron dashboard, you will see your new push queue, as well as the subscribed URL. You may subscribe as many URLs as you wish to a given queue. Next, create a route for your `queue/receive` end-point and return the response from the `Queue::marshal` method:
+Şimdi, sizin Iron panonuza giriş yaptığınız zaman, yeni push kuyruğunuzu ve abone olunan URL'yi göreceksiniz. Verilen bir kuyruk için istediğiniz kadar çok URL kaydedebilirsiniz. Sonra da, `queue/receive` son noktanız için bir rota oluşturun ve `Queue::marshal` metodundan cevap döndürün:
 
 	Route::post('queue/receive', function()
 	{
 		return Queue::marshal();
 	});
 
-The `marshal` method will take care of firing the correct job handler class. To fire jobs onto the push queue, just use the same `Queue::push` method used for conventional queues.
+Doğru iş işleyici sınıfının ateşlenmesiyle `marshal` metodu ilgilenecektir. Push kuyruğundaki işleri ateşlemek için, konvansiyonal kuyruklar için kullanılan aynı `Queue::push` metodunu kullanmanız yeterlidir.
