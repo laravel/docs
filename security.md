@@ -1,178 +1,178 @@
-# Security
+# Güvenlik
 
 - [Yapılandırma](#yapilandirma)
-- [Storing Passwords](#storing-passwords)
-- [Authenticating Users](#authenticating-users)
-- [Manually Logging In Users](#manually)
-- [Protecting Routes](#protecting-routes)
-- [HTTP Basic Authentication](#http-basic-authentication)
-- [Password Reminders & Reset](#password-reminders-and-reset)
-- [Encryption](#encryption)
+- [Şifrelerin Saklanması](#storing-passwords)
+- [Kullanıcı Kimliklerinin Doğrulanması](#authenticating-users)
+- [Elle Kullanıcı Girişi](#manually)
+- [Rotaların Korunması](#protecting-routes)
+- [HTTP Basit Kimlik Doğrulaması](#http-basic-authentication)
+- [Şifre Hatırlatıcıları & Sıfırlama](#password-reminders-and-reset)
+- [Kriptolama](#encryption)
 
 <a name="yapilandirma"></a>
 ## Yapılandırma
 
-Laravel aims to make implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `app/config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication facilities.
+Laravel, kimlik doğrulanması işlerini çok basit hale getirmeyi amaçlamaktadır. Aslında, hemen her şey hazır yapılandırılmış durumdadır. Kimlik doğrulaması yapılandırma dosyası `app/config/auth.php` yerleşiminde bulunmaktadır ve kimlik doğrulama araçlarının davranışlarına nasıl ince ayarlar yapılacağı üzerine iyi belgelenmiş çeşitli seçenekler barındırır.
 
-By default, Laravel includes a `User` model in your `app/models` directory which may be used with the default Eloquent authentication driver. Please remember when building the Schema for this Model to ensure that the password field is a minimum of 60 characters.
+Ön tanımlı olarak, Laravel `app/models` dizininde bir `User` modeli içermektedir ve bu model ön tanımlı Eloquent kimlik doğrulama sürücüsü ile kullanıma hazırdır. Bu modelin şemasını oluştururken şifre alanının en az 60 karakter olmasını temin etmeniz gerektiğini unutmayın.
 
-If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
+Şayet sizin uygulamanız Eloquent kullanmıyorsa, Laravel sorgu oluşturucusunu kullanan `database` kimlik doğrulama sürücüsünü kullanabilirsiniz.
 
 <a name="storing-passwords"></a>
-## Storing Passwords
+## Şifrelerin Saklanması
 
-The Laravel `Hash` class provides secure Bcrypt hashing:
+Laravel'deki `Hash` sınıfı güvenli Bcrypt karıştırması (hashing) sağlar:
 
-**Hashing A Password Using Bcrypt**
+**Bcrypt Kullanılarak Bir Şifrenin Karıştırılması**
 
-	$password = Hash::make('secret');
+	$parola = Hash::make('secret');
 
-**Verifying A Password Against A Hash**
+**Bir Şifrenin Karıştırılmışa Göre Doğrulanması**
 
-	if (Hash::check('secret', $hashedPassword))
+	if (Hash::check('secret', $karistirilmisParola))
 	{
-		// The passwords match...
+		// Parola doğrulanmıştır...
 	}
 
-**Checking If A Password Needs To Be Rehashed**
+**Bir Şifrenin Yeniden Karıştırılması Gerekip Gerekmediğinin Yoklanması**
 
-	if (Hash::needsRehash($hashed))
+	if (Hash::needsRehash($karistirilmis))
 	{
-		$hashed = Hash::make('secret');
+		$karistirilmis = Hash::make('secret');
 	}
 
 <a name="authenticating-users"></a>
-## Authenticating Users
+## Kullanıcı Kimliklerinin Doğrulanması
 
-To log a user into your application, you may use the `Auth::attempt` method.
+Bir kullanıcının uygulamanıza girişi için `Auth::attempt` metodunu kullnabilirsiniz.
 
-	if (Auth::attempt(array('email' => $email, 'password' => $password)))
+	if (Auth::attempt(array('email' => $email, 'password' => $parola)))
 	{
-		return Redirect::intended('dashboard');
+		return Redirect::intended('pano');
 	}
 
-Take note that `email` is not a required option, it is merely used for example. You should use whatever column name corresponds to a "username" in your database. The `Redirect::intended` function will redirect the user to the URL they were trying to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
+Buradaki `email`'in gerekli bir seçenek değil, sadece örnek olsun diye kullanılmış olduğunu bilin. Veritabanınızda bir "kullanıcı adı"na ("username"e) karşılık gelen sütunu kullanmanız gerekiyor. `Redirect::intended` fonksiyonu, kullanıcıları kimlik doğrulama filtresi tarafından yakalanmadan önce erişmeye çalıştıkları URL'ye yönlendirecektir. Kullanıcının önceden girmeye çalıştığı bir url olmayan durumlarda kullanılabilsin diye bu metoda bir dönüş URI parametresi verilebilir.
 
-When the `attempt` method is called, the `auth.attempt` [event](/docs/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
+`attempt` metodu çağrıldığında, `auth.attempt` [olayı](/docs/events) ateşlenecektir. Şayet kimlik doğrulama girişimi başarılı olur ve kullanıcı giriş yapmış olursa, `auth.login` olayı da ateşlenecektir.
 
-To determine if the user is already logged into your application, you may use the `check` method:
+Bir kullanıcının uygulamanıza zaten giriş yapmış olduğunu tayin etmek için `check` metodunu kullanabilirsiniz:
 
-**Determining If A User Is Authenticated**
+**Bir Kullanıcının Doğrulanmış Olup Olmadığının Tayin Edilmesi**
 
 	if (Auth::check())
 	{
-		// The user is logged in...
+		// Kullanıcı giriş yapmıştır...
 	}
 
-If you would like to provide "remember me" functionality in your application, you may pass `true` as the second argument to the `attempt` method, which will keep the user authenticated indefinitely (or until they manually logout):
+Şayet uygulamanıza "beni hatırla" işlevselliği vermek istiyorsanız, `attempt` metoduna ikinci parametre olarak `true` geçebilirsiniz, böylece bu kullanıcı süresiz olarak "doğrulanmış" tutulacaktır (yada manuel olarak çıkış işlemi yapıncaya kadar):
 
-**Authenticating A User And "Remembering" Them**
+**Bir Kullanıcının Kimliğinin Doğrulanması ve "Hatırlanması"**
 
-	if (Auth::attempt(array('email' => $email, 'password' => $password), true))
+	if (Auth::attempt(array('email' => $email, 'password' => $parola), true))
 	{
-		// The user is being remembered...
+		// Bu kullanıcı hatırlanacak...
 	}
 
-**Note:** If the `attempt` method returns `true`, the user is considered logged into the application.
+**Not:** `attempt` metodu `true` döndürürse, kullanıcı uygulamanıza girmiş kabul edilir.
 
-You also may add extra conditions to the authenticating query:
+Kimlik doğrulama sorgusuna ekstra şartlar da ekleyebilirsiniz:
 
-**Authenticating A User With Conditions**
+**Bir Kullanıcının Ek Şartlara Göre Doğrulanması**
 
-    if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1)))
+    if (Auth::attempt(array('email' => $email, 'password' => $parola, 'aktif' => 1)))
     {
-        // The user is active, not suspended, and exists.
+        // Bu kullanıcı aktiftir, üyeliği askıya alınmış değildir ve mevcuttur.  
     }
 
-Once a user is authenticated, you may access the User model / record:
+Bir kullanıcının kimliği doğrulandıktan sonra, bu kullanıcının model / kaydına ulaşabilirsiniz:
 
-**Accessing The Logged In User**
+**Login Yapmış Kullanıcıya Erişme**
 
 	$email = Auth::user()->email;
 
-To simply log a user into the application by their ID, use the `loginUsingId` method:
+Bir kullanıcıyı sadece ID'i ile uygulamanıza giriş yaptırtmak için `loginUsingId` metodunu kullanın:
 
 	Auth::loginUsingId(1);
 
-The `validate` method allows you to validate a user's credentials without actually logging them into the application:
+`validate` metodu gerçekte uygulamaya giriş yapılmaksızın bir kullanıcının kimlik bilgilerinin geçerlilik denetiminden geçirilmesine imkan verir:
 
-**Validating User Credentials Without Login**
+**Login Olmaksızın Kullanıcı Bilgilerinin Geçerlilik Denetimi**
 
-	if (Auth::validate($credentials))
+	if (Auth::validate($kimlikbilgileri))
 	{
 		//
 	}
 
-You may also use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized.
+Bir kullanıcıyı uygulamanıza tek bir istek için giriş yapmak için de `once` metodunu kullanabilirsiniz. Bu durumda oturum veya çerezler kullanılmayacaktır.
 
-**Logging A User In For A Single Request**
+**Bir Kullanıca Tek Bir İstek İçin Giriş Yapma**
 
-	if (Auth::once($credentials))
+	if (Auth::once($kimlikbilgileri))
 	{
 		//
 	}
 
-**Logging A User Out Of The Application**
+**Bir Kullanıcıya Uygulamadan Çıkış Yapma**
 
 	Auth::logout();
 
 <a name="manually"></a>
-## Manually Logging In Users
+## Elle Kullanıcı Girişi
 
-If you need to log an existing user instance into your application, you may simply call the `login` method with the instance:
+Şayet, mevcut bir kullanıcı olgusunu uygulamanıza giriş yaptırmak istiyorsanız, bu olguda `login` metodunu çağırmanız yeterlidir:
 
-	$user = User::find(1);
+	$uye = Uye::find(1);
 
-	Auth::login($user);
+	Auth::login($uye);
 
-This is equivalent to logging in a user via credentials using the `attempt` method.
+Bu yöntem, bir kullanıcıyı `attempt` metodu kullanarak kimlik bilgileri ile giriş yaptırmaya eşdeğerdir.
 
 <a name="protecting-routes"></a>
-## Protecting Routes
+## Rotaların Korunması
 
-Route filters may be used to allow only authenticated users to access a given route. Laravel provides the `auth` filter by default, and it is defined in `app/filters.php`.
+Belli bir rotaya sadece kimliği doğrulanmış kullanıcıların erişebilmesini sağlamak amacıyla rota filtreleri kullanılabilir. Laravel ön tanımlı olarak `auth` filtresi sağlamıştır ve `app/filters.php` içinde tanımlanmıştır.
 
-**Protecting A Route**
+**Bir Rotanın Korunması**
 
-	Route::get('profile', array('before' => 'auth', function()
+	Route::get('profil', array('before' => 'auth', function()
 	{
-		// Only authenticated users may enter...
+		// Sadece kimliği doğrulanmış üyeler girebilir...
 	}));
 
-### CSRF Protection
+### CSRF Koruması
 
-Laravel provides an easy method of protecting your application from cross-site request forgeries.
+Laravel, uygulamanızı siteler arası istek sahtekarlıklarından (cross-site request forgeries [CSRF]) korumak için kolay bir metod sağlamaktadır.
 
-**Inserting CSRF Token Into Form**
+**Forma CSRF Jetonunun Eklenmesi**
 
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-**Validate The Submitted CSRF Token**
+**Gönderilmiş CSRF Jetonunun Geçerlilik Yoklaması**
 
     Route::post('register', array('before' => 'csrf', function()
     {
-        return 'You gave a valid CSRF token!';
+        return 'Geçerli bir CSRF jetonu verdiniz!';
     }));
 
 <a name="http-basic-authentication"></a>
-## HTTP Basic Authentication
+## HTTP Basit Kimlik Doğrulaması
 
-HTTP Basic Authentication provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` filter to your route:
+HTTP Basit Kimlik Doğrulaması, kullanıcıları özel bir "giriş" sayfası açmadan uygulamanıza giriş yapabilmeleri için hızlı bir yoldur. Bunun için, rotanıza `auth.basic` filtresi tutturun:
 
-**Protecting A Route With HTTP Basic**
+**HTTP Basit İle Bir Rotanın Korunması**
 
-	Route::get('profile', array('before' => 'auth.basic', function()
+	Route::get('profil', array('before' => 'auth.basic', function()
 	{
-		// Only authenticated users may enter...
+		// Sadece kimliği doğrulanmış üyeler girebilir...
 	}));
 
-By default, the `basic` filter will use the `email` column on the user record when authenticating. If you wish to use another column you may pass the column name as the first parameter to the `basic` method:
+Ön tanımlı olarak, bu `basic` filtresi kimlik doğrulaması yaparken kullanıcı kaydındaki `email` sütununu kullanacaktır. Siz başka bir sütunu kullanmak istiyorsanız, `basic` metoduna birinci parametre olarak bu sütunun adını geçirin:
 
-	return Auth::basic('username');
+	return Auth::basic('uyeismi');
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, define a filter that returns the `onceBasic` method:
+HTTP Basit Kimlik Doğrulamasını oturumda kullanıcı tanıtıcı bir çerez ayarlamadan da kullanabilirsiniz, bu daha çok API kimlik doğrulamalarında işe yarayacaktır. Bunu yapmak için, `onceBasic` metodu döndüren bir filtre tanımlayın:
 
-**Setting Up A Stateless HTTP Basic Filter**
+**Durum Bilgisi Olmaksızın Bir HTTP Basit Filtresi Ayarlanması**
 
 	Route::filter('basic.once', function()
 	{
@@ -180,13 +180,13 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 	});
 
 <a name="password-reminders-and-reset"></a>
-## Password Reminders & Reset
+## Şifre Hatırlatıcıları & Sıfırlama
 
-### Sending Password Reminders
+### Şifre Hatırlatıcı Göndermek
 
-Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets. To get started, verify that your `User` model implements the `Illuminate\Auth\Reminders\RemindableInterface` contract. Of course, the `User` model included with the framework already implements this interface.
+Çoğu web uygulaması, kullanıcılarına unutulmuş şifrelerini sıfırlayacak bir yol verir. Her uygulamada bunu tekrar tekrar  yapmaya zorlamak yerine Laravel size şifre hatırlatıcı mektup gönderme ve şifre sıfırlaması yapılması için pratik metodlar sağlar. Başlamak için sizin `User` modelinizin `Illuminate\Auth\Reminders\RemindableInterface` sözleşmesini yerine getirdiğini doğrulayın. Tabii ki, Laravel'le gelen `User` modeli bu arayüz kontratını zaten yerine getirmektedir.
 
-**Implementing The RemindableInterface**
+**RemindableInterface Yürütme İşlemi**
 
 	class User extends Eloquent implements RemindableInterface {
 
@@ -197,57 +197,57 @@ Most web applications provide a way for users to reset their forgotten passwords
 
 	}
 
-Next, a table must be created to store the password reset tokens. To generate a migration for this table, simply execute the `auth:reminders` Artisan command:
+Daha sonra, şifre sıfırlama jetonlarının saklanacağı bir tablo oluşturulmalıdır. Bu tablo için bir migrasyon üretmek için yapacağınız tek şey `auth:reminders` Artisan komutunu çalıştırmaktır:
 
-**Generating The Reminder Table Migration**
+**Hatırlatıcı Tablo Migrasyonunun Üretilmesi**
 
 	php artisan auth:reminders
 
 	php artisan migrate
 
-To send a password reminder, we can use the `Password::remind` method:
+Bir şifre hatırlatıcı göndermek için, `Password::remind` metodunu kullanabiliriz:
 
-**Sending A Password Reminder**
+**Bir Şifre Hatırlatıcı Gönderme**
 
 	Route::post('password/remind', function()
 	{
-		$credentials = array('email' => Input::get('email'));
+		$kimlikbilgileri = array('email' => Input::get('email'));
 
-		return Password::remind($credentials);
+		return Password::remind($kimlikbilgileri);
 	});
 
-Note that the arguments passed to the `remind` method are similar to the `Auth::attempt` method. This method will retrieve the `User` and send them a password reset link via e-mail. The e-mail view will be passed a `token` variable which may be used to construct the link to the password reset form. The `user` object will also be passed to the view.
+`Password::remind` metoduna geçirilen parametrelerin `Auth::attempt` metoduna geçirilenle aynı olduğuna dikkat edin. Bu metod `User`'ı getirecek ve e-mail aracılığı ile ona bir şifre sıfırlama linki gönderecektir. Bu e-mail görünümüne, şifre sıfırlama formuna link oluşturmakta kullanılabilcek bir `token` değişkeni geçilecektir. Bu görünüme `user` nesnesi de geçilecektir.
 
-> **Note:** You may specify which view is used as the e-mail message by changing the `auth.reminder.email` configuration option. Of course, a default view is provided out of the box.
+> **Not:** `auth.reminder.email` yapılandırma seçeneğini değiştirmek suretiyle e-mail mesajı olarak hangi görünümün kullanılacağını belirleyebilirsiniz. Tabii ki, ön tanımlı bir görünüm mevcuttur.
 
-You may modify the message instance that is sent to the user by passing a Closure as the second argument to the `remind` method:
+`remind` metoduna ikinci bir parametre olarak bir bitirme fonksiyonu (Closure) geçerek, kullanıcıya gönderilecek mesaj olgusunu değiştirebilirsiniz:
 
-	return Password::remind($credentials, function($message, $user)
+	return Password::remind($kimlikbilgileri, function($mesaj, $uye)
 	{
-		$message->subject('Your Password Reminder');
+		$mesaj->subject('Şifre Hatırlatıcınız');
 	});
 
-You may also have noticed that we are returning the results of the `remind` method directly from a route. By default, the `remind` method will return a `Redirect` to the current URI. If an error occurred while attempting to reset the password, an `error` variable will be flashed to the session, as well as a `reason`, which can be used to extract a language line from the `reminders` language file. If the password reset was successful, a `success` variable will be flashed to the session. So, your password reset form view could look something like this:
+Ayrıca, `remind` metodunun sonuçlarını doğrudan bir rotadan döndürdüğümüze dikkat ediniz. Ön tanımlı olarak, `remind` metodu mevcut URI'ye bir `Redirect` döndürecektir. Şifre sıfırlamaya çalışılırken eğer bir hata oluşursa, oturuma bir `error` değişkeni, bir de `reminders` dil dosyasından bir dil satırı çekmekte kullanılabilecek bir `reason` değişkeni flaş tarzında gönderilir. Şifre sıfırlama başarılı olursa bu sefer oturuma bir `success` değişkeni gönderilecektir. Bu durumda şifre sıfırlama form görünümünüz şöyle bir şey olacaktır:
 
 	@if (Session::has('error'))
 		{{ trans(Session::get('reason')) }}
 	@elseif (Session::has('success'))
-		An e-mail with the password reset has been sent.
+		Şifre sıfırlaması olan bir e-mail gönderildi.
 	@endif
 
 	<input type="text" name="email">
-	<input type="submit" value="Send Reminder">
+	<input type="submit" value="Hatırlatıcı Gönder">
 
-### Resetting Passwords
+### Şifrelerin Sıfırlanması
 
-Once a user has clicked on the reset link from the reminder e-mail, they should be directed to a form that includes a hidden `token` field, as well as a `password` and `password_confirmation` field. Below is an example route for the password reset form:
+Bir kullanıcı hatırlatma e-mailindeki sıfırlama linkini tıkladıktan sonra, bir `password` ve `password_confirmation` alanı yanında gizli bir `token` alanı da olan bir forma yönlendirilmelidir. Aşağıda şifre sıfırlama formu için bir rota örneği görülüyor:
 
 	Route::get('password/reset/{token}', function($token)
 	{
 		return View::make('auth.reset')->with('token', $token);
 	});
 
-And, a password reset form might look like this:
+Ve, bir şifre sıfırlama formu görünümü de şuna benzeyebilir:
 
 	@if (Session::has('error'))
 		{{ trans(Session::get('reason')) }}
@@ -258,44 +258,44 @@ And, a password reset form might look like this:
 	<input type="password" name="password">
 	<input type="password" name="password_confirmation">
 
-Again, notice we are using the `Session` to display any errors that may be detected by the framework while resetting passwords. Next, we can define a `POST` route to handle the reset:
+Tekrar hatırlatmakta yarar var, şifre sıfırlaması sırasında Laravel tarafından saptanabilen herhangi bir hatayı göstermek için `Session`'u kullanıyoruz. Artık sıfırlama işini yapacak bir `POST` rotası tanımlayabiliriz:
 
 	Route::post('password/reset/{token}', function()
 	{
-		$credentials = array('email' => Input::get('email'));
+		$kimlikbilgileri = array('email' => Input::get('email'));
 
-		return Password::reset($credentials, function($user, $password)
+		return Password::reset($kimlikbilgileri, function($uye, $password)
 		{
-			$user->password = Hash::make($password);
+			$uye->password = Hash::make($password);
 
-			$user->save();
+			$uye->save();
 
 			return Redirect::to('home');
 		});
 	});
 
-If the password reset is successful, the `User` instance and the password will be passed to your Closure, allowing you to actually perform the save operation. Then, you may return a `Redirect` or any other type of response from the Closure which will be returned by the `reset` method. Note that the `reset` method automatically checks for a valid `token` in the request, valid credentials, and matching passwords.
+Şifre sıfırlama başarılı olursa `User` (üye) olgunuz ve şifre sizin bitirme fonksiyonunuza geçilecek, böylece burada gerçek save oparasyonu yapabileceksiniz. Daha sonra, `reset` metodu tarafından döndürülecek olan bitirme fonksiyonundan ya bir `Redirect` döndürebilirsiniz veya başka bir tipte cevap döndürebilirsiniz. Bu `reset` metodunun istekte geçerli bir `token`, geçerli kimlik bilgileri ve birbirine uyan şifreler olup olmadığını otomatik olarak kontrol ettiğini unutmayın.
 
-Also, similarly to the `remind` method, if an error occurs while resetting the password, the `reset` method will return a `Redirect` to the current URI with an `error` and `reason`.
+Ayrıca, `remind` metoduna benzer şeklilde, şifre resetlemesi sırasında bir hata oluşması durumunda `reset` metodu da bir `error` ve bir `reason` eşliğinde mevcut URI'ye bir `Redirect` döndürecektir.
 
 <a name="encryption"></a>
-## Encryption
+## Kriptolama
 
-Laravel provides facilities for strong AES-256 encryption via the mcrypt PHP extension:
+Laravel, mcrypt PHP uzantısı aracılığıyla güçlü AES-256 kriptolama imkanı sağlamaktadır:
 
-**Encrypting A Value**
+**Bir Değerin Kriptolanması**
 
-	$encrypted = Crypt::encrypt('secret');
+	$kriptolu = Crypt::encrypt('secret');
 
-> **Note:** Be sure to set a 32 character, random string in the `key` option of the `app/config/app.php` file. Otherwise, encrypted values will not be secure.
+> **Not:** `app/config/app.php` dosyasının `key` seçeneğinde 32 karakterli rasgele string ayarladığınızdan emin olun. Aksi Takdirde kriptolanmış değerler güvenli olmayacaktır.
 
-**Decrypting A Value**
+**Kriptolu Bir Değerin Çözülmesi**
 
-	$decrypted = Crypt::decrypt($encryptedValue);
+	$cozuk = Crypt::decrypt($kriptoluDeger);
 
-You may also set the cipher and mode used by the encrypter:
+Ayrıca, kriptocu tarafından kullanılan cipher ve mod da ayarlayabilirsiniz
 
-**Setting The Cipher & Mode**
+**Cipher ve Mod Ayarlanması**
 
 	Crypt::setMode('crt');
 
