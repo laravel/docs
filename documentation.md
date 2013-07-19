@@ -27,7 +27,7 @@
     - [Oturum](/docs/session)
     - [Şablonlar](/docs/templates)
     - [Unit Test](/docs/testing)
-    - [Geçerlilik Denetimi (validation)](/docs/validation)
+    - [Geçerlilik Denetimi (Validation)](/docs/validation)
 - Veritabanı
     - [Basit Kullanım](/docs/database)
     - [Sorgu Oluşturucusu](/docs/queries)
