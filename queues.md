@@ -1,26 +1,26 @@
-# Queues
+# Kuyruklar
 
 - [Yapılandırma](#yapilandirma)
-- [Basic Usage](#basic-usage)
-- [Queueing Closures](#queueing-closures)
-- [Running The Queue Listener](#running-the-queue-listener)
+- [Basit Kullanım Şekli](#basic-usage)
+- [Kuyruğa Sokma Bitirme Fonksiyonları](#queueing-closures)
+- [Kuyruk Dinleyicileri Çalıştırma](#running-the-queue-listener)
 - [Push Queues](#push-queues)
 
 <a name="yapilandirma"></a>
 ## Yapılandırma
 
-The Laravel Queue component provides a unified API across a variety of different queue services. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time, thus drastically speeding up the web requests to your application.
+Laravel'in Queue (kuyruk) bileşeni bir takım farklı kuyruk servisleri için tek bir API sağlamaktadır. Kuyruklar e-mail göndermek gibi zaman harcayan görevleri ileri bir zamana kadar ertelemenize imkan verir ve böylece uygulamanıza yapılan web istekleri büyük ölçüde hızlanır.
 
-The queue configuration file is stored in `app/config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), and synchronous (for local use) driver.
+Kuyruk yapılandırma dosyası `app/config/queue.php` olarak saklanır. Bu dosyada frameworke dahil edilmiş kuyruk sürücülerinin her birisi için bağlantı yapılandırmaları bulacaksınız. Laravel'deki kuyruk sürücüleri arasında [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs) ve senkronize (lokal kullanım için) sürücü yer almaktadır.
 
-The following dependencies are needed for the listed queue drivers:
+Listelenen bu kuyruk sürücüleri için aşağıdaki bağımlılıklar gereklidir:
 
 - Beanstalkd: `pda/pheanstalk`
 - Amazon SQS: `aws/aws-sdk-php`
 - IronMQ: `iron-io/iron_mq`
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Basit Kullanım Şekli
 
 To push a new job onto the queue, use the `Queue::push` method:
 
