@@ -10,7 +10,8 @@
 <a name="basic-usage"></a>
 ## Basit Kullanım
 
-Laravel, `Validation` sınıfı aracı Messages Into Vlığıyla verilerin geçerlilik denetimi ve geçerlilik hata mesajlarının gösterilmesi için basit, kullanışlı bir araçla birlikte gelmektedir.
+Laravel, `Validation` sınıfı aracığıyla verilerin geçerlilik denetimi ve geçerlilik hata mesajlarının gösterilmesi için basit, kullanışlı bir araçla birlikte gelmektedir.
+
 **Basit Geçerlilik Denetimi Örneği**
 
 	$geçerlilikyoklayici = Validator::make(
@@ -46,7 +47,7 @@ Ayrıca, başarısız olan geçerlilik kurallarına bir dizi olarak da erişebil
 
 **Dosyalar İçin Geçerlilik Denetimi**
 
-`Validator` sınıfı dosyaların geçerliliği konusunda `size`, `mimes` ve benzeri kurallar sağlar. Dosyaları geçerlilikten geçirirken, tıpkı diğer verilerde gibi bunları da geçerlilik denetçisine parametre olarak geçersiniz.
+`Validator` sınıfı dosyaların geçerliliği konusunda `size`, `mimes` ve benzeri kurallar sağlar. Dosyaları geçerlilikten geçirirken, tıpkı diğer verilerde olduğu gibi bunları da geçerlilik denetçisine parametre olarak geçersiniz.
 
 <a name="working-with-error-messages"></a>
 ## Hata Mesajlarıyla Çalışmak
@@ -78,13 +79,13 @@ Bir `Validator` olgusunda `messages` metodunu çağırdıktan sonra, bir `Messag
 		//
 	}
 
-**Bir Hata Mesajının Biçimlendilmiş Olarak Alınması**
+**Bir Hata Mesajının Biçimlendirilmiş Olarak Alınması**
 
 	echo $mesajlar->first('email', '<p>:mesaj</p>');
 
 > **Not:** Ön tanımlı olarak, mesajlar Bootstrap'a uyumlu bir söz dizimiyle biçimlendirilir.
 
-**Tüm Hata Mesajlarının Biçimlendilmiş Olarak Alınması**
+**Tüm Hata Mesajlarının Biçimlendirilmiş Olarak Alınması**
 
 	foreach ($mesajlar->all('<li>:mesaj</li>') as $mesaj)
 	{
@@ -128,19 +129,19 @@ Mevcut tüm geçerlilik kuralları ve bunların işlevleri aşağıda verilmişt
 
 - [Accepted](#rule-accepted)
 - [Active URL](#rule-active-url)
-- [After (Date)](#rule-after)
+- [After (Tarih)](#rule-after)
 - [Alpha](#rule-alpha)
 - [Alpha Dash](#rule-alpha-dash)
 - [Alpha Numeric](#rule-alpha-num)
-- [Before (Date)](#rule-before)
+- [Before (Tarih)](#rule-before)
 - [Between](#rule-between)
 - [Confirmed](#rule-confirmed)
 - [Date](#rule-date)
 - [Date Format](#rule-date-format)
 - [Different](#rule-different)
 - [E-Mail](#rule-email)
-- [Exists (Database)](#rule-exists)
-- [Image (File)](#rule-image)
+- [Exists (Veritabanı)](#rule-exists)
+- [Image (Dosya)](#rule-image)
 - [In](#rule-in)
 - [Integer](#rule-integer)
 - [IP Address](#rule-ip)
@@ -156,13 +157,13 @@ Mevcut tüm geçerlilik kuralları ve bunların işlevleri aşağıda verilmişt
 - [Required Without](#rule-required-without)
 - [Same](#rule-same)
 - [Size](#rule-size)
-- [Unique (Database)](#rule-unique)
+- [Unique (Veritabanı)](#rule-unique)
 - [URL](#rule-url)
 
 <a name="rule-accepted"></a>
 #### accepted
 
-Geçerlilik bakılan alan _yes_, _on_, or _1_ olmalıdır. Bu, "Hizmet Şartlarının" kabul edildiğinin doğrulanmasında işe yarar.
+Geçerlilik bakılan alan _yes_, _on_ veya _1_ olmalıdır. Bu, "Hizmet Şartlarının" kabul edildiğinin doğrulanmasında işe yarar.
 
 <a name="rule-active-url"></a>
 #### active_url
@@ -192,7 +193,7 @@ Geçerlilik bakılan alan tamamen alfa-numerik karakterler olmalıdır.
 <a name="rule-before"></a>
 #### before:_tarih_
 
-Geçerlilik bakılan alan must verilen bir tarihten önceki bir değer olmalıdır. Tarihler PHP `strtotime` fonksiyonuna geçirilecektir.
+Geçerlilik bakılan alan verilen bir tarihten önceki bir değer olmalıdır. Tarihler PHP `strtotime` fonksiyonuna geçirilecektir.
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -202,7 +203,7 @@ Geçerlilik bakılan alan verilen _min_ ile _max_ arasında bir büyüklükte ol
 <a name="rule-confirmed"></a>
 #### confirmed
 
-Geçerlilik bakılan alanına uyan eden bir `falan_confirmation` alanı olmalıdır. Örneğin, geçerlilik bakılan alan `parola` ise, inputta uyan bir `parola_confirmation` alanı olmalıdır.
+Geçerlilik bakılan alana uyan eden bir `falan_confirmation` alanı olmalıdır. Örneğin, geçerlilik bakılan alan `parola` ise, inputta karşılık gelen bir `parola_confirmation` alanı olmalıdır.
 
 <a name="rule-date"></a>
 #### date
@@ -222,7 +223,7 @@ Verilen _alan_, geçerlilik bakılan alandan farklı olmalıdır.
 <a name="rule-email"></a>
 #### email
 
-Geçerlilik bakılan alan bir e-mail adresi şeklinde biçimlenmiş olmalıdır.
+Geçerlilik bakılan alan bir e-mail adresi şeklinde biçimlendirilmiş olmalıdır.
 
 <a name="rule-exists"></a>
 #### exists:_tablo_,_sütun_
