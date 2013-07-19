@@ -71,8 +71,8 @@ Bazen oturumda sadece sonraki istek için öğeler saklamak isteyebilirsiniz. Bu
 	Schema::create('sessions', function($table)
 	{
 		$table->string('id')->unique();
-		$table->text('fayda');
-		$table->integer('son_etkinlik');
+		$table->text('payload');
+		$table->integer('last_activity');
 	});
 
 Tabii ki, bu migrasyonu üretmek için `session:table` Artisan komutunu kullanabilirsiniz!
