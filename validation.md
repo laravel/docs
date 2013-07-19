@@ -1,147 +1,147 @@
-# Validation
+# Geçerlilik Denetimi
 
-- [Basic Usage](#basic-usage)
-- [Working With Error Messages](#working-with-error-messages)
-- [Error Messages & Views](#error-messages-and-views)
-- [Available Validation Rules](#available-validation-rules)
-- [Custom Error Messages](#custom-error-messages)
-- [Custom Validation Rules](#custom-validation-rules)
+- [Basit Kullanım](#basic-usage)
+- [Hata Mesajlarıyla Çalışmak](#working-with-error-messages)
+- [Hata Mesajları & Görünümler](#error-messages-and-views)
+- [Mevcut Geçerlilik Kuralları](#available-validation-rules)
+- [Özel Hata Mesajları](#custom-error-messages)
+- [Özel Geçerlilik Kuralları](#custom-validation-rules)
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Basit Kullanım
 
-Laravel ships with a simple, convenient facility for validating data and retrieving validation error messages via the `Validation` class.
+Laravel, `Validation` sınıfı aracığıyla verilerin geçerlilik denetimi ve geçerlilik hata mesajlarının gösterilmesi için basit, kullanışlı bir araçla birlikte gelmektedir.
 
-**Basic Validation Example**
+**Basit Geçerlilik Denetimi Örneği**
 
-	$validator = Validator::make(
-		array('name' => 'Dayle'),
-		array('name' => 'required|min:5')
+	$geçerlilikyoklayici = Validator::make(
+		array('isim' => 'Dayle'),
+		array('isim' => 'required|min:5')
 	);
 
-The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
+Buradaki `make` metoduna geçilen ilk parametre, geçerli olup olmadığına bakılacak veridir. İkinci parametre ise, bu veriye tatbik edilecek geçerlilik kurallarıdır.
 
-Multiple rules may be delimited using either a "pipe" character, or as separate elements of an array.
+Birden çok kural ya bir "pipe" karakteri (|) ile ayrılır, ya da ayrı dizi elemanları olarak verilebilir.
 
-**Using Arrays To Specify Rules**
+**Kuralları Belirtmek İçin Dizi Kullanımı**
 
-	$validator = Validator::make(
-		array('name' => 'Dayle'),
-		array('name' => array('required', 'min:5'))
+	$geçerlilikyoklayici = Validator::make(
+		array('isim' => 'Dayle'),
+		array('isim' => array('required', 'min:5'))
 	);
 
-Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
+Bir `Validator` olgusu oluşturulduktan sonra, geçerlilik denetimi yapmak için `fails` (veya `passes`) metodu kullanılabilir.
 
-	if ($validator->fails())
+	if ($geçerlilikyoklayici->fails())
 	{
-		// The given data did not pass validation
+		// İlgili veri geçerlik denetimini geçememiştir
 	}
 
-If validation has failed, you may retrieve the error messages from the validator.
+Şayet geçerlilik denetimi başarısız olursa, geçerlik yoklayıcısından hata mesajları alabilirsiniz.
 
-	$messages = $validator->messages();
+	$mesajlar = $geçerlilikyoklayici->messages();
 
-You may also access an array of the failed validation rules, without messages. To do so, use the `failed` method:
+Ayrıca, başarısız olan geçerlilik kurallarına bir dizi olarak da erişebilirsiniz. Bunu yapmak için `failed` metodunu kullanın:
 
-	$failed = $validator->failed();
+	$kalanlar = $geçerlilikyoklayici->failed();
 
-**Validating Files**
+**Dosyalar İçin Geçerlilik Denetimi**
 
-The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
+`Validator` sınıfı dosyaların geçerliliği konusunda `size`, `mimes` ve benzeri kurallar sağlar. Dosyaları geçerlilikten geçirirken, tıpkı diğer verilerde olduğu gibi bunları da geçerlilik denetçisine parametre olarak geçersiniz.
 
 <a name="working-with-error-messages"></a>
-## Working With Error Messages
+## Hata Mesajlarıyla Çalışmak
 
-After calling the `messages` method on a `Validator` instance, you will receive a `MessageBag` instance, which has a variety of convenient methods for working with error messages.
+Bir `Validator` olgusunda `messages` metodunu çağırdıktan sonra, bir `MessageBag` olgusu alacaksınız. MessageBag sınıfında hata mesajlarıyla çalışmak için bir takım yararlı metodlar vardır.
 
-**Retrieving The First Error Message For A Field**
+**Bir Alan İçin İlk Hata Mesajının Elde Edilmesi**
 
-	echo $messages->first('email');
+	echo $mesajlar->first('email');
 
-**Retrieving All Error Messages For A Field**
+**Bir Alan İçin Tüm Hata Mesajlarının Elde Edilmesi**
 
-	foreach ($messages->get('email') as $message)
+	foreach ($mesajlar->get('email') as $mesaj)
 	{
 		//
 	}
 
-**Retrieving All Error Messages For All Fields**
+**Tüm Alanlar İçin Tüm Hata Mesajlarının Elde Edilmesi**
 
-	foreach ($messages->all() as $message)
+	foreach ($mesajlar->all() as $mesaj)
 	{
 		//
 	}
 
-**Determining If Messages Exist For A Field**
+**Bir Alan İçin Hata Mevcut Olup Olmadığının Tespiti**
 
-	if ($messages->has('email'))
+	if ($mesajlar->has('email'))
 	{
 		//
 	}
 
-**Retrieving An Error Message With A Format**
+**Bir Hata Mesajının Biçimlendirilmiş Olarak Alınması**
 
-	echo $messages->first('email', '<p>:message</p>');
+	echo $mesajlar->first('email', '<p>:mesaj</p>');
 
-> **Note:** By default, messages are formatted using Bootstrap compatible syntax.
+> **Not:** Ön tanımlı olarak, mesajlar Bootstrap'a uyumlu bir söz dizimiyle biçimlendirilir.
 
-**Retrieving All Error Messages With A Format**
+**Tüm Hata Mesajlarının Biçimlendirilmiş Olarak Alınması**
 
-	foreach ($messages->all('<li>:message</li>') as $message)
+	foreach ($mesajlar->all('<li>:mesaj</li>') as $mesaj)
 	{
 		//
 	}
 
 <a name="error-messages-and-views"></a>
-## Error Messages & Views
+## Hata Mesajları & Görünümler
 
-Once you have performed validation, you will need an easy way to get the error messages back to your views. This is conveniently handled by Laravel. Consider the following routes as an example:
+Geçerlilik denetimi yaptıktan sonra, aldığınız hata mesajlarını görünümlerinize gönderecek kolay bir yola ihtiyacınız olacak. Bu iş Laravel tarafından pratik bir şekilde halledilmektedir. Bir örnek olarak şu rotaları ele alalım:
 
 	Route::get('register', function()
 	{
-		return View::make('user.register');
+		return View::make('uye.register');
 	});
 
 	Route::post('register', function()
 	{
-		$rules = array(...);
+		$kurallar = array(...);
 
-		$validator = Validator::make(Input::all(), $rules);
+		$geçerlilikyoklayici = Validator::make(Input::all(), $kurallar);
 
-		if ($validator->fails())
+		if ($geçerlilikyoklayici->fails())
 		{
-			return Redirect::to('register')->withErrors($validator);
+			return Redirect::to('register')->withErrors($geçerlilikyoklayici);
 		}
 	});
 
-Note that when validation fails, we pass the `Validator` instance to the Redirect using the `withErrors` method. This method will flash the error messages to the session so that they are available on the next request.
+Dikkat ederseniz, geçerlilik başarısız olduğunda, `Validator` olgusunu `withErrors` metodunu kullanarak Redirect'e geçiriyoruz. Bu metod, hata mesajlarını oturuma flaş tipinde aktaracak, yani bir sonraki isteğe kadar kullanılabilir olacaktır.
 
-However, notice that we do not have to explicitly bind the error messages to the view in our GET route. This is because Laravel will always check for errors in the session data, and automatically bind them to the view if they are available. **So, it is important to note that an `$errors` variable will always be available in all of your views, on every request**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `MessageBag`.
+Buna karşın, yine dikkat ederseniz GET rotamızda hata mesajlarını görünüme açık olarak bağlamak zorunda değiliz. Bunun nedeni, Laravel'in oturum verisinde hatalar olup olmadığını her zaman yoklaması ve olduğunu tespit etmesi halinde bunları otomatik olarak görünüme bağlamasıdır. **Bu itibarla, her istekte tüm görünümleriniz için bir `$errors` değişkeni mevcut olacağını unutmayın**, dolayısıyla siz `$errors` değişkeninin her zaman tanımlanmış olduğunu iç rahatı ile varsayıp, güvenle kullanabilirsiniz. Bu `$errors` değişkeni `MessageBag` sınıfından bir olgu olacaktır.
 
-So, after redirection, you may utilize the automatically bound `$errors` variable in your view:
+Bu durumda, yeniden yön verme sonrasında, otomatikman bağlanan `$errors` değişkenini görünümlerinizde kullanabilirsiniz:
 
 	<?php echo $errors->first('email'); ?>
 
 <a name="available-validation-rules"></a>
-## Available Validation Rules
+## Mevcut Geçerlilik Kuralları
 
-Below is a list of all available validation rules and their function:
+Mevcut tüm geçerlilik kuralları ve bunların işlevleri aşağıda verilmiştir:
 
 - [Accepted](#rule-accepted)
 - [Active URL](#rule-active-url)
-- [After (Date)](#rule-after)
+- [After (Tarih)](#rule-after)
 - [Alpha](#rule-alpha)
 - [Alpha Dash](#rule-alpha-dash)
 - [Alpha Numeric](#rule-alpha-num)
-- [Before (Date)](#rule-before)
+- [Before (Tarih)](#rule-before)
 - [Between](#rule-between)
 - [Confirmed](#rule-confirmed)
 - [Date](#rule-date)
 - [Date Format](#rule-date-format)
 - [Different](#rule-different)
 - [E-Mail](#rule-email)
-- [Exists (Database)](#rule-exists)
-- [Image (File)](#rule-image)
+- [Exists (Veritabanı)](#rule-exists)
+- [Image (Dosya)](#rule-image)
 - [In](#rule-in)
 - [Integer](#rule-integer)
 - [IP Address](#rule-ip)
@@ -157,290 +157,290 @@ Below is a list of all available validation rules and their function:
 - [Required Without](#rule-required-without)
 - [Same](#rule-same)
 - [Size](#rule-size)
-- [Unique (Database)](#rule-unique)
+- [Unique (Veritabanı)](#rule-unique)
 - [URL](#rule-url)
 
 <a name="rule-accepted"></a>
 #### accepted
 
-The field under validation must be _yes_, _on_, or _1_. This is useful for validating "Terms of Service" acceptance.
+Geçerlilik bakılan alan _yes_, _on_ veya _1_ olmalıdır. Bu, "Hizmet Şartlarının" kabul edildiğinin doğrulanmasında işe yarar.
 
 <a name="rule-active-url"></a>
 #### active_url
 
-The field under validation must be a valid URL according to the `checkdnsrr` PHP function.
+Geçerlilik bakılan alan `checkdnsrr` PHP fonksiyonuna göre geçerli bir URL olmalıdır.
 
 <a name="rule-after"></a>
-#### after:_date_
+#### after: _tarih_
 
-The field under validation must be a value after a given date. The dates will be passed into the PHP `strtotime` function.
+Geçerlilik bakılan alan verilen bir tarihten sonraki bir değer olmalıdır. Tarihler PHP `strtotime` fonksiyonuna geçirilecektir.
 
 <a name="rule-alpha"></a>
 #### alpha
 
-The field under validation must be entirely alphabetic characters.
+Geçerlilik bakılan alan tamamen alfabe harfleri olmalıdır.
 
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
-The field under validation may have alpha-numeric characters, as well as dashes and underscores.
+Geçerlilik bakılan alan alfa-numerik karakterler yanında tire ve alt tire de olabilir.
 
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
-The field under validation must be entirely alpha-numeric characters.
+Geçerlilik bakılan alan tamamen alfa-numerik karakterler olmalıdır.
 
 <a name="rule-before"></a>
-#### before:_date_
+#### before: _tarih_
 
-The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
+Geçerlilik bakılan alan verilen bir tarihten önceki bir değer olmalıdır. Tarihler PHP `strtotime` fonksiyonuna geçirilecektir.
 
 <a name="rule-between"></a>
-#### between:_min_,_max_
+#### between: _min_, _max_
 
-The field under validation must have a size between the given _min_ and _max_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+Geçerlilik bakılan alan verilen _min_ ile _max_ arasında bir büyüklükte olmalıdır. Stringler, sayılar ve dosyalar `size` kuralıyla aynı tarzda değerlendirilir.
 
 <a name="rule-confirmed"></a>
 #### confirmed
 
-The field under validation must have a matching field of `foo_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
+Geçerlilik bakılan alana uyan eden bir `falan_confirmation` alanı olmalıdır. Örneğin, geçerlilik bakılan alan `parola` ise, inputta karşılık gelen bir `parola_confirmation` alanı olmalıdır.
 
 <a name="rule-date"></a>
 #### date
 
-The field under validation must be a valid date according to the `strtotime` PHP function.
+Geçerlilik bakılan alan `strtotime` PHP fonksiyonua göre uygun bir tarih olmalıdır.
 
 <a name="rule-date-format"></a>
-#### date_format:_format_
+#### date_format: _format_
 
-The field under validation must match the _format_ defined according to the `date_parse_from_format` PHP function.
+Geçerlilik bakılan alan `date_parse_from_format` PHP fonksiyona göre tanımlanmış bir _format_'a uygun olmalıdır.
 
 <a name="rule-different"></a>
-#### different:_field_
+#### different: _alan_
 
-The given _field_ must be different than the field under validation.
+Verilen _alan_, geçerlilik bakılan alandan farklı olmalıdır.
 
 <a name="rule-email"></a>
 #### email
 
-The field under validation must be formatted as an e-mail address.
+Geçerlilik bakılan alan bir e-mail adresi şeklinde biçimlendirilmiş olmalıdır.
 
 <a name="rule-exists"></a>
-#### exists:_table_,_column_
+#### exists: _tablo_, _sütun_
 
-The field under validation must exists on a given database table.
+Geçerlilik bakılan alan verilen bir veritabanı tablosunda mevcut olmalıdır.
 
-**Basic Usage Of Exists Rule**
+**Exists Kuralının Basit Kulllanım Şekli**
 
-	'state' => 'exists:states'
+	'il' => 'exists:iller'
 
-**Specifying A Custom Column Name**
+**Özel Bir Sütun İsminin Belirtilmesi**
 
-	'state' => 'exists:states,abbreviation'
+	'il' => 'exists:iller,kisa_hali'
 
-You may also specify more conditions that will be added as "where" clauses to the query:
+Sorguya "where" cümleciği olarak eklenecek daha fazla şart da belirtebilirsiniz:
 
-	'email' => 'exists:staff,email,account_id,1'
+	'email' => 'exists:personel,email,hesap_id,1'
 
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpeg, png, bmp, or gif)
+Geçerlilik bakılan alan bir imaj (jpeg, png, bmp veya gif) olmalıdır.
 
 <a name="rule-in"></a>
-#### in:_foo_,_bar_,...
+#### in: _falan_, _filan_,...
 
-The field under validation must be included in the given list of values.
+Geçerlilik bakılan alan verilen bir değerler listesinde olmalıdır.
 
 <a name="rule-integer"></a>
 #### integer
 
-The field under validation must have an integer value.
+Geçerlilik bakılan alan bir tamsayı olmalıdır.
 
 <a name="rule-ip"></a>
 #### ip
 
-The field under validation must be formatted as an IP address.
+Geçerlilik bakılan alan bir IP adresi olarak biçimlendirilmiş olmalıdır.
 
 <a name="rule-max"></a>
-#### max:_value_
+#### max: _deger_
 
-The field under validation must be less than a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+Geçerlilik bakılan alan bir maksimum _deger_'den az olmalıdır. Stringler, sayılar ve dosyalar `size` kuralıyla aynı tarzda değerlendirilir.
 
 <a name="rule-mimes"></a>
-#### mimes:_foo_,_bar_,...
+#### mimes: _falan_, _filan_,...
 
-The file under validation must have a MIME type corresponding to one of the listed extensions.
+Geçerlilik bakılan alan listelenen uzantılardan birine tekabül eden bir MIME tipinde olmalıdır.
 
-**Basic Usage Of MIME Rule**
+**MIME Kuralının Basit Kullanım Şekli**
 
-	'photo' => 'mimes:jpeg,bmp,png'
+	'foto' => 'mimes:jpeg,bmp,png'
 
 <a name="rule-min"></a>
-#### min:_value_
+#### min: _deger_
 
-The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+Geçerlilik bakılan alan bir asgari _deger_'den büyük olmalıdır. Stringler, sayılar ve dosyalar `size` kuralıyla aynı tarzda değerlendirilir.
 
 <a name="rule-not-in"></a>
-#### not_in:_foo_,_bar_,...
+#### not_in: _falan_,_filan_,...
 
-The field under validation must not be included in the given list of values.
+Geçerlilik bakılan alan verilen değerler listesinde yer almamalıdır.
 
 <a name="rule-numeric"></a>
 #### numeric
 
-The field under validation must have a numeric value.
+Geçerlilik bakılan alan sayısal bir değer olmalıdır.
 
 <a name="rule-regex"></a>
-#### regex:_pattern_
+#### regex: _desen_
 
-The field under validation must match the given regular expression.
+Geçerlilik bakılan alan verilen düzenli ifadeye uygun olmalıdır.
 
-**Note:** When using the `regex` pattern, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+**Not:** `regex` deseni kullanırken, özellikle düzenli ifade bir pipe karakteri (|) içeriyorsa, kuralları belirtmek için pipe ayıracı kullanmak yerine bir dizide belirtmek gerekli olabilir.
 
 <a name="rule-required"></a>
 #### required
 
-The field under validation must be present in the input data.
+Geçerlilik bakılan alan input verisinde bulunmak zorundadır.
 
 <a name="rule-required-if"></a>
-#### required_if:_field_,_value_
+#### required_if: _alan_, _deger_
 
-The field under validation must be present if the _field_ field is equal to _value_.
+Şayet _alan_ alanı _deger_'e eşit ise, geçerlilik bakılan alan girilmek zorundadır.
 
 <a name="rule-required-with"></a>
-#### required_with:_foo_,_bar_,...
+#### required_with: _falan_, _filan_,...
 
-The field under validation must be present _only if_ the other specified fields are present.
+Geçerlilik bakılan alan, sadece belirtilen alanların bulunması durumunda bulunmak zorundadır.
 
 <a name="rule-required-without"></a>
-#### required_without:_foo_,_bar_,...
+#### required_without: _falan_, _filan_,...
 
-The field under validation must be present _only when_ the other specified fields are not present.
+Geçerlilik bakılan alan, sadece diğer belirtilen alanlar olmadığı takdirde bulunmak zorundadır.
 
 <a name="rule-same"></a>
-#### same:_field_
+#### same: _alan_
 
-The given _field_ must match the field under validation.
+Verilen _alan_ geçerlilik bakılan alanla aynı olmalıdır. 
 
 <a name="rule-size"></a>
-#### size:_value_
+#### size: _deger_
 
-The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For files, _size_ corresponds to the file size in kilobytes.
+Geçerlilik bakılan alan verilen _deger_'le aynı büyüklükte olmalıdır. String veriler için, _deger_ harf sayısı anlamına gelir. Numerik veriler için, _deger_ verilen bir tamsayı değeridir. Dosyalar için, _size_ kilobayt cinsinden dosya boyutuna karşılık gelir.
 
 <a name="rule-unique"></a>
-#### unique:_table_,_column_,_except_,_idColumn_
+#### unique: _tablo_, _sütun_, _haric_, _idSütunu_
 
-The field under validation must be unique on a given database table. If the `column` option is not specified, the field name will be used.
+Geçerlilik bakılan alan verilen bir veritabanı tablosunda benzersiz olmalıdır. Eğer `sütun` seçeneği belirtilmemişse, geçerlilik bakılan alan aynı zamanda sütun adı olarak kabul edilecektir.
 
-**Basic Usage Of Unique Rule**
+**Unique Kuralının Basit Kullanım Şekli**
 
-	'email' => 'unique:users'
+	'email' => 'unique:uyeler'
 
-**Specifying A Custom Column Name**
+**Özel Bir Sütun Adının Belirtilmesi**
 
-	'email' => 'unique:users,email_address'
+	'email' => 'unique:uyeler,email_adresi'
 
-**Forcing A Unique Rule To Ignore A Given ID**
+**Verilen Bir ID İçin Unique Kuralının Göz Ardı Edilmesi**
 
-	'email' => 'unique:users,email_address,10'
+	'email' => 'unique:uyeler,email_adresi,10'
 
 <a name="rule-url"></a>
 #### url
 
-The field under validation must be formatted as an URL.
+Geçerlilik bakılan alan bir URL şeklinde biçimlendirilmiş olmalıdır.
 
 <a name="custom-error-messages"></a>
-## Custom Error Messages
+## Özel Hata Mesajları
 
-If needed, you may use custom error messages for validation instead of the defaults. There are several ways to specify custom messages.
+Gerek duyduğunuzda, geçerlilik için ön tanımlı hata mesajları yerine özel hata mesajları kullanabilirsiniz. Özel mesaj belirtmek için birkaç yol var.
 
-**Passing Custom Messages Into Validator**
+**Validator'e Özel Mesaj Geçilmesi**
 
-	$messages = array(
-		'required' => 'The :attribute field is required.',
+	$mesajlar = array(
+		'required' => ':attribute alanı gereklidir.',
 	);
 
-	$validator = Validator::make($input, $rules, $messages);
+	$geçerlilikyoklayici = Validator::make($input, $kurallar, $mesajlar);
 
-*Note:* The `:attribute` place-holder will be replaced by the actual name of the field under validation. You may also utilize other place-holders in validation messages.
+*Not:* Buradaki `:attribute` yer tutucusu geçerlilik bakılan alanın gerçek adıyla değiştirilecektir. Geçerlilik mesajlarınızda diğer yer tutucuları da kullanabilirsiniz.
 
-**Other Validation Place-Holders**
+**Diğer Geçerlilik Yer Tutucuları**
 
-	$messages = array(
-		'same'    => 'The :attribute and :other must match.',
-		'size'    => 'The :attribute must be exactly :size.',
-		'between' => 'The :attribute must be between :min - :max.',
-		'in'      => 'The :attribute must be one of the following types: :values',
+	$mesajlar = array(
+		'same'    => ':attribute ve :other aynı olmalıdır.',
+		'size'    => ':attribute tam olarak :size olmalıdır.',
+		'between' => ':attribute :min ile :max arasında olmalıdır.',
+		'in'      => ':attribute şu tiplerden birisi olmalıdır: :values',
 	);
 
-Sometimes you may wish to specify a custom error messages only for a specific field:
+Bazen sadece belirli bir alan için özel hata mesajları belirlemek isteyebilirsiniz:
 
-**Specifying A Custom Message For A Given Attribute**
+**Belli Bir Attribute İçin Özel Mesaj Belirlenmesi**
 
-	$messages = array(
-		'email.required' => 'We need to know your e-mail address!',
+	$mesajlar = array(
+		'email.required' => 'e-mail adresinizi bilmemiz gerekiyor!',
 	);
 
-In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
+Bazı durumlarda, özel hata mesajlarınızı doğrudan `Validator`'e geçirmek yerine bir dil dosyasında belirtmek isteyebilirsiniz. Bunu yapmak için, mesajlarınızı `app/lang/xx/validation.php` dil dosyasındaki `custom` dizisine ekleyiniz.
 
-**Specifying Custom Messages In Language Files**
+**Özel Mesajların Dil Dosyalarında Belirtilmesi**
 
 	'custom' => array(
 		'email' => array(
-			'required' => 'We need to know your e-mail address!',
+			'required' => 'e-mail adresinizi bilmemiz gerekiyor!',
 		),
 	),
 
 <a name="custom-validation-rules"></a>
-## Custom Validation Rules
+## Özel Geçerlilik Kuralları
 
-Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
+Laravel'de her biri yararlı çok sayıda geçerlilik kuralı bulunmaktadır; bununla birlikte siz kendiniz de bazı kurallar belirlemek isteyebilirsiniz. Özel geçerlilik kuralı kayda geçirmenin bir yolu `Validator::extend` metodunu kullanmaktır:
 
-**Registering A Custom Validation Rule**
+**Özel Bir Geçerlilik Kuralını Kayda Geçirme**
 
-	Validator::extend('foo', function($attribute, $value, $parameters)
+	Validator::extend('falan', function($attribute, $value, $parameters)
 	{
-		return $value == 'foo';
+		return $value == 'falan';
 	});
 
-> **Note:** The name of the rule passed to the `extend` method must be "snake cased".
+> **Not:** `extend` metoduna geçilen kuralın adı "yılan tipi" (kelimeler boşluk olmaksızın, küçük harfli ve alt tire ile birleştirilmiş) olmalıdır.
 
-The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
+Özel bir geçerlilik bitirme fonksiyonu (Closure) üç parametre alır: geçerlilik bakılacak `$attribute`'ın adı, bu niteliğin `$value`'i ve kurala geçilecek bir `$parameters` dizisi.
 
-You may also pass a class and method to the `extend` method instead of a Closure:
+Bu `extend` metoduna bir bitirme fonksiyonu yerine bir sınıf ve metod da geçebilirsiniz:
 
-	Validator::extend('foo', 'FooValidator@validate');
+	Validator::extend('falan', 'FalanValidator@validate');
 
-Note that you will also need to define an error message for your custom rules. You can do so either using an inline custom message array or by adding an entry in the validation language file.
+Özel kurallarınız için aynı zamanda bir hata mesajı da tanımlamanız gerekeceğini unutmayın. Bunu, ya aynı satırda özel hata mesaj dizisi kullanarak ya da geçerlilik dil dosyasına bir giriş eklemek suretiyle yapabilirsiniz.
 
-Instead of using Closure callbacks to extend the Validator, you may also extend the Validator class itself. To do so, write a Validator class that extends `Illuminate\Validation\Validator`. You may add validation methods to the class by prefixing them with `validate`:
+Validator'ü genişletmek için bir bitirme fonksiyonu çağrısı kullanmak yerine, Validator sınıfının kendisini de genişletebilirsiniz. Bunu yapmak için, `Illuminate\Validation\Validator`'ü genişleten bir Validator sınıfı yazın. Validation metodlarınızı, başına `validate` getirerek bu sınıfa ekleyebilirsiniz:
 
-**Extending The Validator Class**
+**Validator Sınıfının Genişletilmesi**
 
 	<?php
 
-	class CustomValidator extends Illuminate\Validation\Validator {
+	class OzelValidator extends Illuminate\Validation\Validator {
 
-		public function validateFoo($attribute, $value, $parameters)
+		public function validateFalan($attribute, $value, $parameters)
 		{
-			return $value == 'foo';
+			return $value == 'falan';
 		}
 
 	}
 
-Next, you need to register your custom Validator extension:
+Daha sonra, özel Validator uzantınızı kayda geçirmeniz gerekiyor:
 
-**Registering A Custom Validator Resolver**
+**Özel Bir Validator Çözümleyicisinin Kayda Geçirilmesi**
 
 	Validator::resolver(function($translator, $data, $rules, $messages)
 	{
-		return new CustomValidator($translator, $data, $rules, $messages);
+		return new OzelValidator($translator, $data, $rules, $messages);
 	});
 
-When creating a custom validation rule, you may sometimes need to define custom place-holder replacements for error messages. You may do so by creating a custom Validator as described above, and adding a `replaceXXX` function to the validator.
+Özel bir geçerlilik kuralı oluştururken, bazı durumlarda, hata mesajlarıyla değiştirilecek özel yer tutucular tanımlamanız gerekebilir. Bunu, aynen yukarıda tarif edildiği gibi özel bir Validator oluşturup, bu validatore bir `replaceXXX` fonksiyonu ekleyerek gerçekleştirebilirsiniz.
 
-	protected function replaceFoo($message, $attribute, $rule, $parameters)
+	protected function replaceFalan($message, $attribute, $rule, $parameters)
 	{
-		return str_replace(':foo', $parameters[0], $message);
+		return str_replace(':falan', $parameters[0], $message);
 	}
