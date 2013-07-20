@@ -20,7 +20,7 @@
     - [IoC Konteyner](/docs/ioc)
     - [Yerelleştirme](/docs/localization)
     - [Posta](/docs/mail)
-    - [Paket Yönetimi](/docs/packages)
+    - [Paket Geliştirme](/docs/packages)
     - [Sayfalandırma](/docs/pagination)
     - [Kuyruklar](/docs/queues)
     - [Güvenlik](/docs/security)
