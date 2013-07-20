@@ -1,62 +1,62 @@
-# IoC Container
+# IoC Konteyneri
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
-- [Automatic Resolution](#automatic-resolution)
-- [Practical Usage](#practical-usage)
-- [Service Providers](#service-providers)
-- [Container Events](#container-events)
+- [Giriş](#introduction)
+- [Basit Kullanım](#basic-usage)
+- [Otomatik Çözümleme](#automatic-resolution)
+- [Pratik Kullanım](#practical-usage)
+- [Hizmet Sağlayıcıları](#service-providers)
+- [Konteyner Olayları](#container-events)
 
 <a name="introduction"></a>
-## Introduction
+## Giriş
 
-The Laravel inversion of control container is a powerful tool for managing class dependencies. Dependency injection is a method of removing hard-coded class dependencies. Instead, the dependencies are injected at run-time, allowing for greater flexibility as dependency implementations may be swapped easily.
+Laravel'in "inversion of control" konteyneri, sınıf bağımlılıklarının yönetiminde güçlü bir araçtır. Bağımlılık enjeksiyonu ağır kodlanmış sınıf bağımlılıklarının kaldırılması için bir yöntemdir. Bunun yerine, bağımlılıklar çalışma zamanında enjekte edilmekte, bağımlılık işlemleri kolayca takas edilebildiği için daha büyük esneklik sağlamaktadır.
 
-Understanding the Laravel IoC container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
+Laravel IoC konteyner'inin anlaşılması hem güçlü, büyük bir uygulama oluşturmak için hem de Laravel'in kendi çekirdeğine katkıda bulunmak için esastır.
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Basit Kullanım
 
-There are two ways the IoC container can resolve dependencies: via Closure callbacks or automatic resolution. First, we'll explore Closure callbacks. First, a "type" may be bound into the container:
+IoC konteyneri bağımlılıkları iki yolla çözebilmektedir: ya Closure geri çağrıları yoluyla ya da otomatik çözülüm yoluyla. Önce Closure geri çağrılarını ele alalım. Birincisi, bir "tip", konteynere bağlanabilir:
 
-**Binding A Type Into The Container**
+**Bir Tipin Konteynere Bağlanması**
 
-	App::bind('foo', function($app)
+	App::bind('falan', function($app)
 	{
-		return new FooBar;
+		return new FalanFilan;
 	});
 
-**Resolving A Type From The Container**
+**Bir Tipin Konteynerden Dönüştürülmesi**
 
-	$value = App::make('foo');
+	$deger = App::make('falan');
 
-When the `App::make` method is called, the Closure callback is executed and the result is returned.
+`App::make` metodu çağrıldığı zaman, ilgili Closure callback'i çalıştırılacak ve sonuç döndürülecektir.
 
-Sometimes, you may wish to bind something into the container that should only be resolved once, and the same instance should be returned on subsequent calls into the container:
+Bazen, konteyner içine sadece bir kez çözümlenmesi ve aynı olgunun konteynere sonraki çağrılarda döndürülmesi gereken bir şeyler bağlamak isteyebilirsiniz:
 
-**Binding A "Shared" Type Into The Container**
+**Konteynere "Paylaşılan" Bir Tip Bağlama**
 
-	App::singleton('foo', function()
+	App::singleton('falan', function()
 	{
-		return new FooBar;
+		return new FalanFilan;
 	});
 
-You may also bind an existing object instance into the container using the `instance` method:
+`instance` metodunu kullanarak, konteynere mevcut bir nesne olgusunu da bağlayabilirsiniz:
 
-**Binding An Existing Instance Into The Container**
+**Mevcut Bir Olgunun Konteynere Bağlanması**
 
-	$foo = new Foo;
+	$falan = new Falan;
 
-	App::instance('foo', $foo);
+	App::instance('falan', $falan);
 
 <a name="automatic-resolution"></a>
-## Automatic Resolution
+## Otomatik Çözümleme
 
-The IoC container is powerful enough to resolve classes without any configuration at all in many scenarios. For example:
+IoC konteyneri birçok durumda hiçbir yapılandırmaya gerek kalmadan sınıfları çözümleyecek kadar güçlüdür. Örneğin:
 
-**Resolving A Class**
+**Bir Sınıfın Çözümlenmesi**
 
-	class FooBar {
+	class FalanFilan {
 
 		public function __construct(Baz $baz)
 		{
@@ -65,109 +65,109 @@ The IoC container is powerful enough to resolve classes without any configuratio
 
 	}
 
-	$fooBar = App::make('FooBar');
+	$falanFilan = App::make('FalanFilan');
 
-Note that even though we did not register the FooBar class in the container, the container will still be able to resolve the class, even injecting the `Baz` dependency automatically!
+Dikkat ederseniz, FalanFilan sınıfını konteynerde kayıt etmemiş olsak bile konteyner bu sınıfı hala çözümleyecek, hatta `Baz` bağımlılığını otomatik olarak enjekte edebilecektir!
 
-When a type is not bound in the container, it will use PHP's Reflection facilities to inspect the class and read the constructor's type-hints. Using this information, the container can automatically build an instance of the class.
+Bir tipin konteynerde bağlı olmadığı durumlarda, sınıfı görmek ve sınıf yapıcısının tip ipuçlarını okumak için PHP'nin Reflection araçlarını kullanacaktır. Konteyner bu bilgiyi kullanmak suretiyle sınıfın bir olgusunu otomatik olarak inşa edecektir.
 
-However, in some cases, a class may depend on an interface implementation, not a "concrete type". When this is the case, the `App::bind` method must be used to inform the container which interface implementation to inject:
+Buna karşın, bazı durumlarda, bir sınıf "somut tipte" olmayıp, arayüz tatbikatına (implementasyonuna) bağımlı olabilir. Böyle olduğu takdirde, hangi arayüz tatbikatının enjekte edileceği konusunda konteyneri bilgilendirmek için `App::bind` metodu kullanılmalıdır:
 
-**Binding An Interface To An Implementation**
+**Bir Implementasyona Bir Interface Bağlanması**
 
-	App::bind('UserRepositoryInterface', 'DbUserRepository');
+	App::bind('UyeRepositoryInterface', 'DbUyeRepository');
 
-Now consider the following controller:
+Şimdi şu denetçiyi ele alalım:
 
-	class UserController extends BaseController {
+	class UyeController extends BaseController {
 
-		public function __construct(UserRepositoryInterface $users)
+		public function __construct(UyeRepositoryInterface $uyeler)
 		{
-			$this->users = $users;
+			$this->uyeler = $uyeler;
 		}
 
 	}
 
-Since we have bound the `UserRepositoryInterface` to a concrete type, the `DbUserRepository` will automatically be injected into this controller when it is created.
+Biz `UyeRepositoryInterface`'i somut bir tipe bağladığımız için, `DbUserRepository` oluşturulduğu zaman otomatik olarak bu denetçiye enjekte edilecektir.
 
 <a name="practical-usage"></a>
-## Practical Usage
+## Pratik Kullanım
 
-Laravel provides several opportunities to use the IoC container to increase the flexibility and testability of your application. One primary example is when resolving controllers. All controllers are resolved through the IoC container, meaning you can type-hint dependencies in a controller constructor, and they will automatically be injected.
+Laravel uygulamanızın esneklik ve test edilebilirliğini artırmak amacıyla IoC konteyneri kullanmak için çeşitli fırsatlar sağlar. En başta gelen örnek, denetçilerin çözümlenmesidir. Bütün denetçiler IoC kenteyneri tarafından bir kontroller sınıf yapıcısındaki tip ipuçları bağımlılığı ile çözümlenir ve bunlar otomatik olarak enjekte edilecektir.
 
-**Type-Hinting Controller Dependencies**
+**Tipe Özgü İpucu Denetçi Bağımlılıkları**
 
-	class OrderController extends BaseController {
+	class SiparisController extends BaseController {
 
-		public function __construct(OrderRepository $orders)
+		public function __construct(SiparisRepository $siparisler)
 		{
-			$this->orders = $orders;
+			$this->siparisler = $siparisler;
 		}
 
 		public function getIndex()
 		{
-			$all = $this->orders->all();
+			$all = $this->siparisler->all();
 
-			return View::make('orders', compact('all'));
+			return View::make('siparisler', compact('all'));
 		}
 
 	}
 
-In this example, the `OrderRepository` class will automatically be injected into the controller. This means that when [unit testing](/docs/testing) a "mock" `OrderRepository` may be bound into the container and injected into the controller, allowing for painless stubbing of database layer interaction.
+Bu örnekteki `SiparisRepository` sınıfı otomatik olarak kontroller'e enjekte edilecektir. Bu şu anlama gelir: [unit testi](/docs/testing) sırasında "hayali" bir `SiparisRepository` konteynere bağlanabilir ve denetçiye enjekte edilebilir, böylece sorunsuz bir veritabanı katmanı etkileşimi mümkün olur.
 
-[Filters](/docs/routing#route-filters), [composers](/docs/responses#view-composers), and [event handlers](/docs/events#using-classes-as-listeners) may also be resolved out of the IoC container. When registering them, simply give the name of the class that should be used:
+[Filtreler](/docs/routing#route-filters), [kompozitörler](/docs/responses#view-composers) ve [olay işleyicileri](/docs/events#using-classes-as-listeners) de IoC konteynerinde çözülebilirler . Bunları kayda geçirdiğiniz zaman, sadece kullanılması gereken sınıfın adını vermeniz yeterlidir:
 
-**Other Examples Of IoC Usage**
+**Diğer IoC Kullanım Örnekleri**
 
-	Route::filter('foo', 'FooFilter');
+	Route::filter('falan', 'FalanFilter');
 
-	View::composer('foo', 'FooComposer');
+	View::composer('falan', 'FalanComposer');
 
-	Event::listen('foo', 'FooHandler');
+	Event::listen('falan', 'FalanHandler');
 
 <a name="service-providers"></a>
-## Service Providers
+## Hizmet Sağlayıcıları
 
-Service providers are a great way to group related IoC registrations in a single location. Think of them as a way to bootstrap components in your application. Within a service provider, you might register a custom authentication driver, register your application's repository classes with the IoC container, or even setup a custom Artisan command.
+Hizmet Sağlayıcıları birbinine yakın IoC kayıtlarını tek bir yerleşimde gruplamak için harika bir yoldur. Bunları uygulamanızdaki bileşenleri önceden yüklemenin bir yolu olarak düşünün. Bir hizmet sağlayıcısının içinde özel kimlik doğrulama sürücünüzü kayda geçirebilir, uygulamanızın ambar sınıflarını IoC konteyneri ile kayda geçirebilir, hatta özel bir Artisan komutu dahi kurabilirsiniz.
 
-In fact, most of the core Laravel components include service providers. All of the registered service providers for your application are listed in the `providers` array of the `app/config/app.php` configuration file.
+Aslında, çekirdek Laravel bileşenlerinin pek çoğu hizmet sağlayıcıları içermektedir. Uygulamanızdaki kayıtlı hizmet sağlayıcılarının hepsi, `app/config/app.php` yapılandırma dosyasının `providers` dizisinde listelenmektedir.
 
-To create a service provider, simply extend the `Illuminate\Support\ServiceProvider` class and define a `register` method:
+Bir hizmet sağlayıcı oluşturmak için, sadece `Illuminate\Support\ServiceProvider` sınıfını genişletin ve bir `register` metodu tanımlayın:
 
-**Defining A Service Provider**
+**Bir Hizmet Sağlayıcı Tanımlanması**
 
 	use Illuminate\Support\ServiceProvider;
 
-	class FooServiceProvider extends ServiceProvider {
+	class FalanServiceProvider extends ServiceProvider {
 
 		public function register()
 		{
-			$this->app->bind('foo', function()
+			$this->app->bind('falan', function()
 			{
-				return new Foo;
+				return new Falan;
 			});
 		}
 
 	}
 
-Note that in the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
+Bu `register` metodunda, uygulama IoC konteynerinin `$this->app` özelliği aracılığıyla kullanılabildiğini unutmayın. Bir sağlayıcı oluşturdunuz ve uygulamanızla kayda geçirmeye hazırsanız, yapmanız gereken şey onu `app` yapılandırma dosyanızdaki `providers` dizisine eklemektir.
 
-You may also register a service provider at run-time using the `App::register` method:
+Bir hizmet sağlayıcıyı `App::register` metodunu kullanarak çalışma zamanında da kayda geçirebilirsiniz:
 
-**Registering A Service Provider At Run-Time**
+**Bir Hizmet Sağlayıcının Çalışma Zamanında Kayda Geçirilmesi**
 
-	App::register('FooServiceProvider');
+	App::register('FalanServiceProvider');
 
 <a name="container-events"></a>
-## Container Events
+## Konteyner Olayları
 
-The container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
+Konteyner ne zaman bir nesne çüzümlese bir olay ateşler. `resolving` metodunu kullanarak bu olayı dinleyebilirsiniz:
 
-**Registering A Resolving Listener**
+**Bir Resolving Dinleyicisinin Kayda Geçirilmesi**
 
-	App::resolving(function($object)
+	App::resolving(function($nesne)
 	{
 		//
 	});
 
-Note that the object that was resolved will be passed to the callback.
+Çözülen nesnenin geri çağrıya geçirileceğini unutmayın.
