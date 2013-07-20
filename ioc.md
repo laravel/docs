@@ -10,9 +10,9 @@
 <a name="introduction"></a>
 ## Giriş
 
-Laravel inversion of control konteyneri sınıf bağımlılıklarının yönetiminde güçlü bir araçtır. Bağımlılık enjeksiyonu ağır kodlanmış sınıf bağımlılıklarının kaldırılması için bir yöntemdir. Bunun yerine, bağımlılıklar çalışma zamanında enjekte edilmekte, bağımlılık işlemleri kolayca takas edilebildiği için daha büyük esneklik sağlamaktadır.
+Laravel'in "inversion of control" konteyneri, sınıf bağımlılıklarının yönetiminde güçlü bir araçtır. Bağımlılık enjeksiyonu ağır kodlanmış sınıf bağımlılıklarının kaldırılması için bir yöntemdir. Bunun yerine, bağımlılıklar çalışma zamanında enjekte edilmekte, bağımlılık işlemleri kolayca takas edilebildiği için daha büyük esneklik sağlamaktadır.
 
-Laravel IoC konteyner'inin anlaşılması güçlü, büyük bir uygulama oluşturmak yanında Laravel'in kendi çekirdeğine katkıda bulunmak için de esastır.
+Laravel IoC konteyner'inin anlaşılması hem güçlü, büyük bir uygulama oluşturmak için hem de Laravel'in kendi çekirdeğine katkıda bulunmak için esastır.
 
 <a name="basic-usage"></a>
 ## Basit Kullanım
