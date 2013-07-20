@@ -1,54 +1,54 @@
-# Package Development
+# Paket Geliştirme
 
-- [Introduction](#introduction)
-- [Creating A Package](#creating-a-package)
-- [Package Structure](#package-structure)
-- [Service Providers](#service-providers)
-- [Package Conventions](#package-conventions)
-- [Development Workflow](#development-workflow)
-- [Package Routing](#package-routing)
-- [Package Configuration](#package-configuration)
-- [Package Migrations](#package-migrations)
-- [Package Assets](#package-assets)
-- [Publishing Packages](#publishing-packages)
+- [Giriş](#introduction)
+- [Bir Paket Oluşturma](#creating-a-package)
+- [Paket Yapısı](#package-structure)
+- [Hizmet Sağlayıcıları](#service-providers)
+- [Paket Gelenekleri](#package-conventions)
+- [Geliştirme İş Akışı](#development-workflow)
+- [Paket Yönlendirme (Routing)](#package-routing)
+- [Paket Yapılandırması](#package-configuration)
+- [Paket Migrasyonları](#package-migrations)
+- [Paket Varlıkları](#package-assets)
+- [Paketlerin Yayımlanması](#publishing-packages)
 
 <a name="introduction"></a>
-## Introduction
+## Giriş
 
-Packages are the primary way of adding functionality to Laravel. Packages might be anything from a great way to work with dates like [Carbon](https://github.com/briannesbitt/Carbon), or an entire BDD testing framework like [Behat](https://github.com/Behat/Behat).
+Paketler Laravel'e işlevsellik eklemenin esas yollarıdır. Paketler tarihlerle çalışmanın harika bir yolu olan [Carbon](https://github.com/briannesbitt/Carbon) gibi bir şey ya da [Behat](https://github.com/Behat/Behat) gibi tam bir BDD test framework'ı olabilir.
 
-Of course, there are different types of packages. Some packages are stand-alone, meaning they work with any framework, not just Laravel. Both Carbon and Behat are examples of stand-alone packages. Any of these packages may be used with Laravel by simply requesting them in your `composer.json` file.
+Farklı paket türleri bulunmaktadır. Bazı paketler kendi başınadır, yani sadece Laravel değil herhangi bir framework ile çalışırlar: Carbon ve Behat her ikisi de bu tür stand-alone paket örnekleridir. Bu paketler sadece `composer.json` dosyasında istek yapılmak suretiyle Laravel'le kullanılabilmektedir.
 
-On the other hand, other packages are specifically intended for use with Laravel. In previous versions of Laravel, these types of packages were called "bundles". These packages may have routes, controllers, views, configuration, and migrations specifically intended to enhance a Laravel application. As no special process is needed to develop stand-alone packages, this guide primarily covers the development of those that are Laravel specific.
+Öte yandan, diğer bazı paketler özellikle Laravel ile kullanım için tasarlanmıştır. Önceki Laravel sürümlerinde, bu tip paketlere "bundle" deniyordu. Bu paketlerde özellikle bir Laravel uygulamasını güçlendirmeyi amaçlamış rotalar, denetçiler (controllers), görünümler, yapılandırmalar ve migrasyonlar olabilir. Kendi başına türde bir paket geliştirmek için gerekli özel bir süreç olmadığı için, bu kılavuz esas itibarıyla Laravel'e özgü olanların geliştirilmesini kapsamaktadır.
 
-All Laravel packages are distributed via [Packagist](http://packagist.org) and [Composer](http://getcomposer.org), so learning about these wonderful PHP package distribution tools is essential.
+Tüm Laravel paketleri [Packagist](http://packagist.org) ve [Composer](http://getcomposer.org) aracılığıyla dağıtılır, bu yüzden bu harika PHP paket dağıtım araçlarını öğrenmek esastır.
 
 <a name="creating-a-package"></a>
-## Creating A Package
+## Bir Paket Oluşturma
 
-The easiest way to create a new package for use with Laravel is the `workbench` Artisan command. First, you will need to set a few options in the `app/config/workbench.php` file. In that file, you will find a `name` and `email` option. These values will be used to generate a `composer.json` file for your new package. Once you have supplied those values, you are ready to build a workbench package!
+Laravel'le kullanmak üzere yeni bir paket oluşturmanın en kolay yolu `workbench` Artisan komutudur. Öncelikle, `app/config/workbench.php` dosyasında birkaç seçeneği ayarlamanız gerekiyor. Bu dosyada, bir `name` ve `email` seçeneği bulacaksınız. Bu değerler sizin yeni paketiniz için bir `composer.json` dosyası üretmekte kullanılacaktır. Bu değerleri girdikten sonra, bir tezgah (workbench) paketi oluşturmaya hazırsınız!
 
-**Issuing The Workbench Artisan Command**
+**Workbench Artisan Komutunun Verilmesi**
 
-	php artisan workbench vendor/package --resources
+	php artisan workbench satıcıadı/paketadı --resources
 
-The vendor name is a way to distinguish your package from other packages of the same name from different authors. For example, if I (Taylor Otwell) were to create a new package named "Zapper", the vendor name could be `Taylor` while the package name would be `Zapper`. By default, the workbench will create framework agnostic packages; however, the `resources` command tells the workbench to generate the package with Laravel specific directories such as `migrations`, `views`, `config`, etc.
+Satıcıadı sizin paketinizi farklı yazarlardan gelen aynı isimli diğer paketlerden ayırt etmenin bir yoludur. Örneğin ben (Taylor Otwell) "Zapper" adında yeni bir paket oluşturacaksam, satıcıadı `Taylor`, paketadı ise `Zapper` olacaktır. Ön tanımlı olarak, bu workbench komutu framework bilinemez paketler oluşturur; ancak, `resources` komutu workbench'e `migrations`, `views`, `config` ve bunlar gibi Laravel'e özgü dizinleri olan paketler üretmesini söyler.
 
-Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. Next, you should register the `ServiceProvider` that was created for your package. You may register the provider by adding it to the `providers` array in the `app/config/app.php` file. This will instruct Laravel to load your package when your application starts. Service providers use a `[Package]ServiceProvider` naming convention. So, using the example above, you would add `Taylor\Zapper\ZapperServiceProvider` to the `providers` array.
+`workbench` komutu çalıştırıldıktan sonra sizin paketiniz Laravel kurulumunuzun `workbench` dizini içerisinde hazırlanmış olacaktır. Daha sonra, paketiniz için oluşturulmuş olan `ServiceProvider`'i kayda geçireceksiniz. Bu hizmet sağlayıcının adını `app/config/app.php` dosyasındaki `providers` dizisine ekleyerek kayda geçirebilirsiniz. Bu, Laravel'e uygulamanız başladığı zaman sizin paketinizi yüklemesi talimatı verecektir. Hizmet sağlayıcıları `[Paket]ServiceProvider` şeklinde bir isimlendirme geleneği kullanırlar. Öyleyse, yukarıdaki örnek için `providers` dizisine `Taylor\Zapper\ZapperServiceProvider` ekleyeceğiz.
 
-Once the provider has been registered, you are ready to start developing your package! However, before diving in, you may wish to review the sections below to get more familiar with the package structure and development workflow.
+Sağlayıcıyı kayda geçirdikten sonra artık paketinizi geliştirmeye başlayabilirsiniz! Bununla birlikte, bu konuya geçmeden önce, paket yapısı ve geliştirme iş akışını daha yakından tanımak için aşağıdaki kesimleri gözden geçirmenizde yarar var.
 
 <a name="package-structure"></a>
-## Package Structure
+## Paket Yapısı
 
-When using the `workbench` command, your package will be setup with conventions that allow the package to integrate well with other parts of the Laravel framework:
+`workbench` komutu kullanılırken, paketiniz, paketinizin Laravel frameworkün diğer kısımlarıyla iyi bütünleşmesine imkan veren geleneklerle kurulur:
 
-**Basic Package Directory Structure**
+**Temel Paket Dizin Yapısı**
 
 	/src
-		/Vendor
-			/Package
-				PackageServiceProvider.php
+		/Satici
+			/Paket
+				PaketServiceProvider.php
 		/config
 		/lang
 		/migrations
@@ -56,149 +56,149 @@ When using the `workbench` command, your package will be setup with conventions 
 	/tests
 	/public
 
-Let's explore this structure further. The `src/Vendor/Package` directory is the home of all of your package's classes, including the `ServiceProvider`. The `config`, `lang`, `migrations`, and `views` directories, as you might guess, contain the corresponding resources for your package. Packages may have any of these resources, just like "regular" applications.
+Bu yapıyı biraz daha açalım. Buradaki `src/Satici/Paket` dizini sizin paketinizin `ServiceProvider` de dahil olmak üzere tüm sınıflarının evidir. `config`, `lang`, `migrations` ve `views` dizinleri ise, tahmin edebileceğiniz gibi paketinizdeki kaynakların kendilerine tekabül edenlerini içermektedir. Paketlerde, tıpkı "normal" uygulamalarda olduğu gibi bu kaynaklardan birileri olabilir.
 
 <a name="service-providers"></a>
-## Service Providers
+## Hizmet Sağlayıcıları
 
-Service providers are simply bootstrap classes for packages. By default, they contain two methods: `boot` and `register`. Within these methods you may do anything you like: include a routes file, register bindings in the IoC container, attach to events, or anything else you wish to do.
+Hizmet sağlayıcıları paketleriniz için tamamen önceden yükleme (bootstrap) sınıflarıdır. Ön tanımlı olarak bunlar iki metod taşırlar: `boot` ve `register`. Bu metodların içerisinde, istediğiniz her şeyi yapabilirsiniz: bir rota dosyası dahil etmek, IoC konteynerinde bağlayıcı kayda geçirmek, olaylara tutturmak veya istediğiniz daha başka bir şey.
 
-The `register` method is called immediately when the service provider is registered, while the `boot` command is only called right before a request is routed. So, if actions in your service provider rely on another service provider already being registered, or you are overriding services bound by another provider, you should use the `boot` method.
+Bunlardan `register` metodu, hizmet sağlayıcı kayıt edilir edilmez çağrılır, `boot` komutu ise sadece bir istek yönlendirilmeden önce çağrılır. Bu nedenle, eğer sizin hizmet sağlayıcınızdaki eylemler, zaten kaydı yapılmış başka bir hizmet sağlayıcısına dayanıyorsa veya başka bir sağlayıcı tarafından bağlanan hizmetleri geçersiz bırakıyorsanız, `boot` metodunu kullanmalısınız.
 
-When creating a package using the `workbench`, the `boot` command will already contain one action:
+`workbench` kullanarak bir paket oluşturulurken, `boot` komutu zaten bir eylem içerir:
 
-	$this->package('vendor/package');
+	$this->package('satici/paket');
 
-This method allows Laravel to know how to properly load the views, configuration, and other resources for your application. In general, there should be no need for you to change this line of code, as it will setup the package using the workbench conventions.
+Bu metod Laravel'in uygulamanız için görünüm, konfigürasyon ve diğer kaynakları nasıl düzgünce yükleyeceğini bilmesine imkan verir. Genelde, paket kurulumunu workbench gelenekleri kullanarak yapacağı için bu kod satırını değiştirmenin bir gereği yoktur.
 
 <a name="package-conventions"></a>
-## Package Conventions
+## Paket Gelenekleri
 
-When utilizing resources from a package, such as configuration items or views, a double-colon syntax will generally be used:
+Bir paketten gelen kaynaklar kullanılırken, örneğin yapılandırma öğeleri veya görünümler için genelde çift iki nokta üst üste söz dizimi kullanılır:
 
-**Loading A View From A Package**
+**Bir Paketteki Bir Görünümü Yükleme**
 
-	return View::make('package::view.name');
+	return View::make('package::gorunum.isim');
 
-**Retrieving A Package Configuration Item**
+**Bir Paket Yapılandırma Öğesinin Öğrenilmesi**
 
-	return Config::get('package::group.option');
+	return Config::get('package::grup.secenek');
 
-> **Note:** If your package contains migrations, consider prefixing the migration name with your package name to avoid potential class name conflicts with other packages.
+> **Not:** Eğer paketinizde migrasyonlar varsa, sınıf adının başka paketlerle olası sınıf adı çatışmalarını önlemek amacıyla migrasyon isimlerine paketinizin adını ön ek vermeyi düşünün.
 
 <a name="development-workflow"></a>
-## Development Workflow
+## Geliştirme İş Akışı
 
-When developing a package, it is useful to be able to develop within the context of an application, allowing you to easily view and experiment with your templates, etc. So, to get started, install a fresh copy of the Laravel framework, then use the `workbench` command to create your package structure.
+Bir paket geliştirirken bir uygulama kapsamı içerisinde geliştiriyor olabilmek yararlı olur ve size kolaylıkla görmek ve şablonlarınızla denemek ve benzeri imkanlar verir. Bu nedenle, bu işe başlarken Laravel'in yeni bir kopyasını yükleyin, sonra da paket yapınızı oluşturmak için `workbench` komutunu kullanın.
 
-After the `workbench` command has created your package. You may `git init` from the `workbench/[vendor]/[package]` directory and `git push` your package straight from the workbench! This will allow you to conveniently develop the package in an application context without being bogged down by constant `composer update` commands.
+`workbench` komutunun paketinizi oluşturmasından sonra, `workbench/[satici]/[paket]` dizininden `git init` yapabilir ve paketinizi doğrudan workbench'tan `git push` yapabilirsiniz! Bu size sürekli `composer update` komutlarıyla batağa saplanmaksızın bir uygulama bağlamında uygun bir şekilde paket geliştirmenize imkan verecektir.
 
-Since your packages are in the `workbench` directory, you may be wondering how Composer knows to autoload your package's files. When the `workbench` directory exists, Laravel will intelligently scan it for packages, loading their Composer autoload files when the application starts!
+Sizin paketleriniz `workbench` dizininde olduğundan, Composer'in sizin paketinizin dosyalarını otomatik yüklemeyi nereden bileceğini merak ediyor olabilirsiniz. Bu `workbench` dizini mevcut olduğu zaman, Laravel akıllı bir şekilde paket var mı diye bu dizini tarayacak, uygulama başladığında bunların Composer autoload dosyalarını yükleyecektir!
 
-If you need to regenerate your package's autoload files, you may use the `php artisan dump-autoload` command. This command will regenerate the autoload files for your root project, as well as any workbenches you have created.
+Eğer paketinizin autoload dosyalarını tekrar üretmeniz gerekirse, `php artisan dump-autoload` komutunu kullanabilirsiniz. Bu komut, sizin kök projenizdekiler yanında, oluşturmuş olduğunuz workbench'lerdeki autoload dosyalarını da tekrardan üretecektir.
 
-**Running The Artisan Autoload Command**
+**Artisan Autoload Komutunun Çalıştırılması**
 
 	php artisan dump-autoload
 
 <a name="package-routing"></a>
-## Package Routing
+## Paket Yönlendirme (Routing)
 
-In prior versions of Laravel, a `handles` clause was used to specify which URIs a package could respond to. However, in Laravel 4, a package may respond to any URI. To load a routes file for your package, simply `include` it from within your service provider's `boot` method.
+Laravel'in önceki sürümlerinde, bir paketin hangi URI'lere cevap vereceğini belirtmek için `handles` cümleciği kullanılırdı. Ancak, Laravel 4'te, bir paket her URI'ye cevap verebilir. Paketiniz için bir rota dosyasını yüklemek için, hizmet sağlayıcınızın `boot` metodu içerisinde onu `include` etmeniz yeterlidir.
 
-**Including A Routes File From A Service Provider**
+**Bir Hizmet Sağlayıcısından Bir Rota Dosyasının Dahil Edilmesi**
 
 	public function boot()
 	{
-		$this->package('vendor/package');
+		$this->package('satici/paket');
 
 		include __DIR__.'/../../routes.php';
 	}
 
-> **Note:** If your package is using controllers, you will need to make sure they are properly configured in your `composer.json` file's auto-load section.
+> **Not:** Şayet paketiniz denetçiler (controllers) kullanıyorsa, bunların sizin `composer.json` dosyanızın auto-load kesiminde düzgün bir şekilde yapılandırılmış olduğundan emin olun.
 
 <a name="package-configuration"></a>
-## Package Configuration
+## Paket Yapılandırması
 
-Some packages may require configuration files. These files should be defined in the same way as typical application configuration files. And, when using the default `$this->package` method of registering resources in your service provider, may be accessed using the usual "double-colon" syntax:
+Bazı paketler yapılandırma dosyaları gerektirebilir. Bu dosyalar tipik uygulama yapılandırma dosyalarıyla aynı şekilde tanımlanmalıdır. Ve, hizmet sağlayıcınızda kaynakları kayda geçirmede ön tanımlı `$this->package` metodunu kullanıyorken, olağan "çift iki nokta üst üste" söz dizimini kullanarak erişebilirsiniz:
 
-**Accessing Package Configuration Files**
+**Paket Yapılandırma Dosyalarına Erişme**
 
-	Config::get('package::file.option');
+	Config::get('paket::dosya.secenek');
 
-However, if your package contains a single configuration file, you may simply name the file `config.php`. When this is done, you may access the options directly, without specifying the file name:
+Ancak eğer paketiniz tek bir yapılandırma dosyası içeriyorsa, adına sadece `config.php` diyebilirsiniz. Böyle yapmışsanız, dosya adını belirtmenize gerek kalmadan seçeneklere doğrudan erişebilirsiniz:
 
-**Accessing Single File Package Configuration**
+**Tek Dosyalı Paket Yapılandırmasına Erişme**
 
-	Config::get('package::option');
+	Config::get('paket::secenek');
 
-Sometimes, you may wish to register package resources such as views outside of the typical `$this->package` method. Typically, this would only be done if the resources were not in a conventional location. To register the resources manually, you may use the `addNamespace` method of the `View`, `Lang`, and `Config` classes:
+Bazen, görünümler gibi paket kaynaklarınızı tipik `$this->package` metodundan başka türlü kayda geçirmek isteyebilirsiniz. Tipik olarak bu sadece kaynaklar konvansiyonel bir yerleşimde olmadıkları takdirde yapılacaktır. Bu kaynakları elle kayda geçirmek için `View`, `Lang` ve `Config` sınıflarının `addNamespace` metodunu kullanabilirsiniz:
 
-**Registering A Resource Namespace Manually**
+**Bir Kaynak Aduzayının Elle Kayda Geçirilmesi**
 
-	View::addNamespace('package', __DIR__.'/path/to/views');
+	View::addNamespace('paket', __DIR__.'/path/to/views');
 
-Once the namespace has been registered, you may use the namespace name and the "double colon" syntax to access the resources:
+Aduzayı kayda geçirildikten sonra, kaynağa erişmek için aduzayının adını ve "çift iki nokta üst üste" söz dizimini kullanabilirsiniz:
 
-	return View::make('package::view.name');
+	return View::make('paket::view.isim');
 
-The method signature for `addNamespace` is identical on the `View`, `Lang`, and `Config` classes.
+`View`, `Lang` ve `Config` sınıflarında `addNamespace` için metod biçimi aynıdır.
 
-### Cascading Configuration Files
+### Basamaklı Yapılandırma Dosyaları
 
-When other developers install your package, they may wish to override some of the configuration options. However, if they change the values in your package source code, they will be overwritten the next time Composer updates the package. Instead, the `config:publish` artisan command should be used:
+Diğer geliştiriciler sizin paketlerinizi yükledikleri zaman yapılandırma seçeneklerinden bir kısmını geçersiz kılmak ve değiştirmek isteyebilirler. Ancak, eğer sizin paket kaynak kodunuzdaki değerleri değiştirirlerse, Composer'in daha sonraki paket güncellemesinde bunun üzerine yazılacaktır, tekrar sizin yazdığınız hale gelecektir. O yüzden, bunun yerine `config:publish` artisan komutu kullanılmalıdır:
 
-**Executing The Config Publish Command**
+**Config Publish Komutunun Çalıştırılması**
 
-	php artisan config:publish vendor/package
+	php artisan config:publish satici/paket
 
-When this command is executed, the configuration files for your application will be copied to `app/config/packages/vendor/package` where they can be safely modified by the developer!
+Bu komut çalıştırıldığında, sizin uygulamanız için olan konfigürasyon dosyaları `app/config/packages/satici/paket` dizinine kopyalanacak, burada geliştiriciler tarafından güvenle değiştirilebilecektir!
 
-> **Note:** The developer may also create environment specific configuration files for your package by placing them in `app/config/packages/vendor/package/environment`.
+> **Not:** Geliştiriciler ayrıca onları `app/config/packages/satici/paket/environment`'e koyarak sizin paketiniz için ortama özgü yapılandırma dosyaları da oluşturabilirler.
 
 <a name="package-migrations"></a>
-## Package Migrations
+## Paket Migrasyonları
 
-You may easily create and run migrations for any of your packages. To create a migration for a package in the workbench, use the `--bench` option:
+Paketleriniz için kolayca migrasyon oluşturabilir ve çalıştırabilirsiniz. workbench'de bir paket için bir migrasyon oluşturmak için `--bench` seçeneğini kullanın:
 
-**Creating Migrations For Workbench Packages**
+**Workbench Paketleri İçin Migrasyon Oluşturulması**
 
-	php artisan migrate:make create_users_table --bench="vendor/package"
+	php artisan migrate:make create_users_table --bench="satici/paket"
 
-**Running Migrations For Workbench Packages**
+**Workbench Paketleri İçin Migrasyonların Çalıştırılması**
 
-	php artisan migrate --bench="vendor/package"
+	php artisan migrate --bench="satici/paket"
 
-To run migrations for a finished package that was installed via Composer into the `vendor` directory, you may use the `--package` directive:
+`vendor` dizinine Composer tarafından yüklenmiş bitmiş bir paket için migrasyonlar çalıştırmak için `--package` yönergesini kullanabilirsiniz:
 
-**Running Migrations For An Installed Package**
+**Yüklenmiş Bir Paket İçin Migrasyonların Çalıştırılması**
 
-	php artisan migrate --package="vendor/package"
+	php artisan migrate --package="satici/paket"
 
 <a name="package-assets"></a>
-## Package Assets
+## Paket Varlıkları
 
-Some packages may have assets such as JavaScript, CSS, and images. However, we are unable to link to assets in the `vendor` or `workbench` directories, so we need a way to move these assets into the `public` directory of our application. The `asset:publish` command will take care of this for you:
+Bazı paketlerde JavaScript, CSS ve resimler gibi varlıklar olabilir. Ancak biz `satici` veya `workbench` dizinlerinde varlıklara bağlanamayız, öyleyse bu varlıkları uygulamamızın `public` dizinine taşıyacak bir yola ihtiyacımız var. Sizin için bununla `asset:publish` komutu ilgilenecektir:
 
-**Moving Package Assets To Public**
+**Paket Varlıklarının Public Dizinine Taşınması**
 
 	php artisan asset:publish
 
-	php artisan asset:publish vendor/package
+	php artisan asset:publish satici/paket
 
-If the package is still in the `workbench`, use the `--bench` directive:
+Eğer paket hala `workbench`'de ise, `--bench` yönergesini kullanın:
 
-	php artisan asset:publish --bench="vendor/package"
+	php artisan asset:publish --bench="satici/paket"
 
-This command will move the assets into the `public/packages` directory according to the vendor and package name. So, a package named `userscape/kudos` would have its assets moved to `public/packages/userscape/kudos`. Using this asset publishing convention allows you to safely code asset paths in your package's views.
+Bu komut varlıkları satıcı ve paket ismine göre `public/packages` dizinine taşıyacaktır. Yani, `userscape/kudos` adındaki bir paket kendi varlıklarını `public/packages/userscape/kudos` dizinine taşıyacaktır. Bu varlık yayımlama geleneğinin kullanılması, kendi paketlerinizin görünümlerinde varlık path'lerini güvenle kodlamanıza imkan verir.
 
 <a name="publishing-packages"></a>
-## Publishing Packages
+## Paketlerin Yayımlanması
 
-When your package is ready to publish, you should submit the package to the [Packagist](http://packagist.org) repository. If the package is specific to Laravel, consider adding a `laravel` tag to your package's `composer.json` file.
+Paketiniz yayımlanmaya hazır olduğunda, paketi [Packagist](http://packagist.org) ambarına yollayacaksınız. Eğer paketiniz Laravel'e özgü ise, paketinizin `composer.json` dosyasına bir `laravel` etiketi eklemeyi düşünün.
 
-Also, it is courteous and helpful to tag your releases so that developers can depend on stable versions when requesting your package in their `composer.json` files. If a stable version is not ready, consider using the `branch-alias` Composer directive.
+Ayrıca, geliştiriciler kendi `composer.json` dosyalarında sizin paketinize istek yaptıklarında stabil sürümlere bağlı olabilmeleri için sürümlerinizi de etiketlemeniz hoş ve yardımcı olacaktır. Şayet stabil bir sürüm hazır değilse, `branch-alias` Composer direktifini kullanmayı düşünün.
 
-Once your package has been published, feel free to continue developing it within the application context created by `workbench`. This is a great way to continue to conveniently develop the package even after it has been published.
+Paketinizi yayımladıktan sonra, `workbench` tarafından oluşturulan uygulama bağlamı içinde onu geliştirmeye devam etmekte özgürsünüz. Bu, paketinizi yayımladıktan sonra bile rahat bir şekilde geliştirmek için muazzam bir yoldur.
 
-Some organizations choose to host their own private repository of packages for their own developers. If you are interested in doing this, review the documentation for the [Satis](http://github.com/composer/satis) project provided by the Composer team.
+Bazı kuruluşlar kendi geliştiricileri için paketlerini kendi özel ambarlarında barındırmayı tercih ediyorlar. Siz de böyle yapmayı düşünürseniz, Composer ekibi tarafından sağlanan [Satis](http://github.com/composer/satis) belgelerini inceleyin.
