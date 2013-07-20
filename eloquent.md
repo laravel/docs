@@ -271,15 +271,15 @@ By default, Eloquent will maintain the `created_at` and `updated_at` columns on 
 
 	}
 
-If you wish to customize the format of your timestamps, you may override the `freshTimestamp` method in your model:
+If you wish to customize the format of your timestamps, you may override the `getDateFormat` method in your model:
 
 **Providing A Custom Timestamp Format**
 
 	class User extends Eloquent {
 
-		public function freshTimestamp()
+		protected function getDateFormat()
 		{
-			return time();
+			return 'U';
 		}
 
 	}
