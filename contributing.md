@@ -12,7 +12,7 @@ Laravel ücretsiz ve açık kaynak bir yazılım olup, geliştirilmesine ve iler
 <a name="pull-requests"></a>
 ## Alınsın Talepleri (Pull Requests)
 
-Alınsın talebinin işleyişi, yeni özellikler için veya yazılım hataları için olmasına bağlı olarak farklılık gösterir. Yeni bir özellik için yapılacak bir alınsın talebi göndermeden önce, başlığında bir teklif `[Proposal]` konusu oluşturmanız gerekir. Teklifin, yeni özelliği ve uygulama fikirlerini tarif eder şekilde olması gerekir. Bu ilkeye uyulmamış olan alınsın talepleri hemen kapatılacaktır.
+Alınsın talebinin işleyişi, yeni özellikler için veya yazılım hataları için olmasına bağlı olarak farklılık gösterir. Yeni bir özellik için yapılacak bir alınsın talebi göndermeden önce, başlığında bir teklif `[Proposal]` konusu oluşturmanız gerekir. Teklif, yeni özellik yanında uygulama fikirlerini de açıklamalıdır. Bu teklif daha sonra gözden geçirilecek ve ya kabul ya da red edilecektir. Bir teklif onaylandıktan sonra, bu yeni özelliği uygulamaya koyan bir alınsın talebi oluşturulabilir. Bu ilkeye uyulmamış olan alınsın talepleri hemen kapatılacaktır.
 
 Yazılım hataları için gönderilecek olan alınsın talepleri, bir teklif oluşturulmadan gönderilebilinir. Eğer Github'da dosyalanmış olan bir yazılım hatası çözümünü bildiğinizi düşünüyorsanız, o durumda lütfen önerilen düzeltmenin detaylarını belirten bir not giriniz.
 
