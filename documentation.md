@@ -13,7 +13,7 @@
     - [Hatalar ve Günlüğe Ekleme](/docs/errors)
 - Detaylı Öğrenim
     - [Önbellekleme (Cache)](/docs/cache)
-    - [Olaylar](/docs/events)
+    - [Olaylar (Events)](/docs/events)
     - [Cepheler (Facades)](/docs/facades)
     - [Formlar & HTML](/docs/html)
     - [Yardımcılar (Helpers)](/docs/helpers)
