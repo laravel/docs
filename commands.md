@@ -89,7 +89,7 @@ To send output to the console, you may use the `info`, `comment`, `question` and
 
 ### Asking Questions
 
-You may also use the `ask` and `confirm` methods to prompt the user for input:
+You may also use the `ask`, `confirm` and `secret` methods to prompt the user for input:
 
 **Asking The User For Input**
 
@@ -105,10 +105,19 @@ You may also use the `ask` and `confirm` methods to prompt the user for input:
 	{
 		//
 	}
+	
 
 You may also specify a default value to the `confirm` method, which should be `true` or `false`:
 
 	$this->confirm($question, true);
+	
+**Asking The User For A Secret**
+
+	$password = $this->secret('Please enter a password');
+
+Nothing is displayed in the console window as the user types. This is useful for sensitive information like passwords.
+
+
 
 <a name="registering-commands"></a>
 ## Registering Commands
