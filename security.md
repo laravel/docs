@@ -21,7 +21,8 @@ If your application is not using Eloquent, you may use the `database` authentica
 <a name="storing-passwords"></a>
 ## Storing Passwords
 
-The Laravel `Hash` class provides secure Bcrypt hashing:
+The Laravel `Hash` class provides secure Bcrypt hashing. This method outputs a 60 character hash. 
+Please ensure your database field is long enough or your password will be truncated.
 
 **Hashing A Password Using Bcrypt**
 
