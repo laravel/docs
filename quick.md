@@ -34,7 +34,7 @@ Route'lar ayrıca controller sınıflarına da bağlanabilir. Örneğin:
 
 	Route::get('kullanicilar', 'KullaniciController@getIndex');
 
-Bu Route Laravel'e şunu belirtiyor: `/kullanicilar` adresine bir istek geldiği zaman, Laravel `UserController` kontroller sınıfının `getIndex` methodunu çağırmalı. Controller Routing hakkında daha fazla bilgi almak için [Controller Dökümantasyonu'na](/docs/controllers) bir göz atın.
+Bu Route Laravel'e şunu belirtiyor: `/kullanicilar`  rotasına yapılan bir istek `KullaniciController` sınıfındaki `getIndex` metodunu çağırmalıdır. Controller Routing hakkında daha fazla bilgi almak için [Controller Dökümantasyonu'na](/docs/controllers) bir göz atın.
 
 <a name="bir-view-olusturma"></a>
 ## Bir View Oluşturma
@@ -58,7 +58,7 @@ Bu Route Laravel'e şunu belirtiyor: `/kullanicilar` adresine bir istek geldiği
 	@stop
 
 Bu syntax size ilk etapta biraz yabancı gelebilir. 
-Bunun sebebi Laravel'in güçlü templating sisteminin (Blade) kullanılmasıdır. Blade son derece hızlı çalışır çünkü sadece birkaç tane regex kodları kullanıp Blade syntaxını PHP scriptlerine dönüştürür. Blade kullanıcılarına çok büyük fonksiyonellik sağlar. Tema kalıtımı (Template inheritance) ve PHP'nin `if` ve `for` gibi temel kontrol yapılarını Blade üzerinden kullanabilirsiniz. Daha fazla bilgi için [Blade Dökümantasyonu'na](/docs/templates) bakınız.
+Bunun sebebi Laravel'in güçlü templating sisteminin (Blade) kullanılmasıdır. Blade son derece hızlı çalışır çünkü sadece birkaç tane regex kodları kullanıp Blade syntaxını PHP scriptlerine dönüştürür. Blade kullanıcılarına çok büyük fonksiyonellik sağlar. Şablon kalıtımı (Template inheritance) ve PHP'nin `if` ve `for` gibi temel kontrol yapılarını Blade üzerinden kullanabilirsiniz. Daha fazla bilgi için [Blade Dökümantasyonu'na](/docs/templates) bakınız.
 
 Şimdi gerekli view dosyalarımızı oluşturduğumuza göre, oluşturduğumuz viewi `/kullanicilar` isteğine bir cevap olarak döndürelim. `Kullanıcılar!` stringini döndürmek yerine, bu kez oluşturduğumuz view dosyalarını döndüreceğiz:
 
@@ -112,7 +112,7 @@ Eğer bir migrationu geri almak isterseniz `migrate:rollback` komutunu çalışt
 Laravel mükemmel bir ORM aracıyla beraber gelmektedir: Eloquent. 
 Eğer daha önce Ruby on Rails frameworkü üzerinde çalıştıysanız Eloquent size çok tanıdık gelecektir, çünkü veritabanı işlemleri için ActiveRecord stilini kullanır.
 
-Öncelikle, modeli tanımlayalım. Bir Eloquent modeli belirtilen bir veritabanı tablosunu sorgulamak ve o tablodaki verileri tutmak için kullanılır.
+Öncelikle, modeli tanımlayalım. Bir Eloquent modeli ilgili veritabanı tablosunu sorgulamak için kullanılabilir, aynı zamanda bu tablo içindeki belirli bir satırı temsil eder..
 Merak etmenize gerek yok, örnekleri görünce ne kadar kolay olduğunu anlayacaksınız! Model dosyaları `app/models` dizininde bulunmaktadır. Şimdi o dizinde bir `User.php` modeli oluşturalım:
 
 	class User extends Eloquent {}
@@ -121,7 +121,7 @@ Lütfen dikkat edin, herhangi bir veritabanı tablosu belirtmedik.
 
 Eloquent'in içerisinde birçok hüküm vardır, bunlardan birisi model adının çoğul yapısını veritabanı tablosu olarak kullandırmaktır. Kullanışlı, değil mi?
 
-İstediğiniz veritabanı yönetim aracını kullanarak `users` tablosunu oluşturun. Şimdi Eloquent'i kullanarak o tablodan bazı verileri çekip view dosyamıza göndereceğiz.
+Tercih ettiğiniz veritabanı yönetim aracını kullanarak, `users` tablosuna birkaç satır ekleyin. Ondan sonra Eloquent'i kullanarak o tablodan bazı verileri çekip view dosyamıza göndereceğiz.
 
 Şimdi `/users` routemizi editleyelim, ve şuna benzer bir hale getirelim:
 
@@ -149,6 +149,6 @@ Artık `users` objesini view dosyamıza yönlendirdiğimiz için ekrana bastıra
 		@endforeach
 	@stop
 
-`echo` ifadesinin nerede olduğunu merak ediyor olabilirsiniz. Blade kullanırken, çift köşeli parantezler arasına yazılan değişkenler aynı `echo` ifadesindeki gibi ekrana bastırılır. Şimdi `users` adresine girip veritabanınızda kayıtlı olan tüm kullanıcıların listesinin ekrana bastırıldığını görebilirsiniz.
+`echo` ifadesinin nerede olduğunu merak ediyor olabilirsiniz. Blade kullanırken, çift köşeli parantezler arasına yazılan değişkenler aynı `echo` ifadesindeki gibi ekrana bastırılır. Şimdi `/users` adresine girip veritabanınızda kayıtlı olan tüm kullanıcıların listesinin ekrana bastırıldığını görebilirsiniz.
 
-Bu sadece bir başlangıç. Bu derste Laravel'in en basit konularını gördünüz, ancak daha göreceğiniz birçok heyecan verici özellikler var! Dökümantasyonu okumaya devam edin ve Laravel içerisinde gelen birçok farklı özellik hakkında daha fazla bilgiye sahip olun. Örneğin [Eloquent](/docs/eloquent) ve [Blade](/docs/templates). Belkide sizin ilginizi [Queues](/docs/queues) ve [Unit Testing](/docs/testing) çekiyordur?. Yada [IoC Container](/docs/ioc) kullanarak uygulamanızın mimarisini güçlendirmek istiyorsunuzdur? Seçim sizin!
+Bu sadece bir başlangıç. Bu derste Laravel'in en temel konularını gördünüz, ancak daha göreceğiniz birçok heyecan verici özellikler var! Dökümantasyonu okumaya devam edin ve Laravel içerisinde gelen birçok farklı özellik hakkında daha fazla bilgiye sahip olun. Örneğin [Eloquent](/docs/eloquent) ve [Blade](/docs/templates). Belkide sizin ilginizi [Queues](/docs/queues) ve [Unit Testing](/docs/testing) çekiyordur?. Yada [IoC Container](/docs/ioc) kullanarak uygulamanızın mimarisini güçlendirmek istiyorsunuzdur? Seçim sizin!
