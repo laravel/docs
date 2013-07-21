@@ -22,6 +22,7 @@ Bu kılavuza ek olarak [Laravel kitapları](http://wiki.laravel.io/Books)'na gö
 
 - [Code Bright](https://leanpub.com/codebright), yazar: Dayle Rees
 - [Laravel Testing Decoded](https://leanpub.com/laravel-testing-decoded), yazar: Jeffrey Way
+- [Laravel: From Apprentice To Artisan](https://leanpub.com/laravel), yazar: Taylor Otwell
 
 <a name="gelistirici-ekibi"></a>
 ## Geliştirme Ekibi
