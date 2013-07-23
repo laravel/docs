@@ -5,7 +5,7 @@
 - [Sunucu Gereksinimleri](#sunucu-gereksinimleri)
 - [Yapılandırma](#yapilandirma)
 - [İzinler](#izinler)
-- [Yollar](#yollar)
+- [Dosya Yolları](#yollar)
 - [Zarif URL'ler](#zarif-urller)
 
 <a name="composer-kurulumu"></a>
