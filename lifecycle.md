@@ -7,7 +7,7 @@
 <a name="genel-bakis"></a>
 ## Genel Bakış
 
-Laravel'de İstek Yaşam Döngüsü (Request Lifecycle) gerçekten çok basit bir yapıdadır. Bir istek application'a (?) girdikten sonra belirtilen bir route veya controller'a yönlendirilir. Daha sonra Route'un döndürdüğü cevap tarayıcıya yönlendirilir ve ekranda görünür. Bazen Route'lar çağırılmadan önce veya sonra bazı işlemleri yapmak isteyebilirsiniz. Laravel'de bunu yapmanın birkaç yolu vardır. Bu yollardan ikisi "start" dosyaları ve application olaylarıdır. (events)
+Laravel'de İstek Yaşam Döngüsü (Request Lifecycle) gerçekten çok basit bir yapıdadır. Bir istek uygulamanıza girer ve uygun rota veya kontrolöre gönderilir. Bu rotadan gelen cevap daha sonra tarayıcıya geri gönderilir ve ekranda görüntülenir. Bazen, rotalarınız gerçekten çağrıladan önce ya da sonra bazı işlemler yapmak isteyebilirsiniz. Laravel'de bunu yapmanın birkaç yolu vardır. Bu yollardan ikisi "start" dosyaları ve application olaylarıdır. (events)
 
 <a name="start-dosyalari"></a>
 ## Start Dosyaları
