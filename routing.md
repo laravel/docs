@@ -44,7 +44,7 @@ Uygulamanızdaki rotaların çoğu `app/routes.php` dosyasında tanımlanır. En
 		return 'HTTPS üzerinde olmalı!';
 	}));
 
-Sık sık, rotalara link oluşturmanız gerekecek. Bunu `URL::to` metoduyla yapabilirsiniz:
+Çoğu zaman, rotalarınız için URL'ler üretmeniz gerekecek. Bunu `URL::to` metoduyla yapabilirsiniz:
 
 	$url = URL::to('birsey');
 
@@ -107,7 +107,7 @@ Rota filtreleri, sitenizin yetkilendirme gereken alanlarına erişimi kısıtlam
 		}
 	});
 
-Eğer filtreden bir yanıt (`Redirect::to` gibi) döndürülürse, bu cevap olarak kabul edilecek. Bu yüzden rotadaki ve varsa `after` filtresindeki işlemler yapılmayacaktır.
+Eğer filtreden bir yanıt (`Redirect::to` gibi) döndürülürse, bu cevap olarak kabul edilecek ve rota çalıştırılmayacaktır, rotada olabilecek `after` filtreleri de iptal edilecektir.
 
 **Rotaya Filtre Ekleme**
 
@@ -135,7 +135,7 @@ Eğer filtreden bir yanıt (`Redirect::to` gibi) döndürülürse, bu cevap olar
 		return 'Merhaba Laravel!';
 	}));
 
-'After' filtreleri 3. parametre olarak `$yanit` değerini alırlar. 
+'After' filtreleri filtreye 3. parametre olarak geçilen bir `$yanit` parametresi alırlar. 
 
 	Route::filter('log', function($rota, $istek, $yanit, $deger)
 	{
@@ -162,7 +162,7 @@ Filtreleri HTTP metodlarına (GET, POST gibi) göre uygulayabilirsiniz.
 
 **Filtre Sınıfları**
 
-Daha gelişmiş filtreler için geriçağrım fonksiyonları yerine sınıfları kullanmak isteyebilirsiniz. Since filter classes are resolved out of the application [IoC Container](/docs/ioc), you will be able to utilize dependency injection in these filters for greater testability.
+Daha gelişmiş filtreler için geriçağrım fonksiyonları yerine sınıfları kullanmak isteyebilirsiniz. Filtre sınıfları uygulama [IoC Konteyneri](/docs/ioc)nde çözümlendikleri için, daha fazla test edilebilirlik için bu filtrelerde bağımlılık enjeksiyonu kullanmanız mümkün olabilecektir.
 
 **Filtre Sınıfı Oluşturma**
 
@@ -290,7 +290,7 @@ Modeller yerine kendi tanımlayıcınızı kullanmak isteyebilirsiniz. Bunun iç
 	});
 
 <a name="throwing-404-errors"></a>
-## 404 Hatalası Fırlatma
+## 404 Hatası Fırlatma
 
 404 hatasını tetiklemenin iki yolu vardır. İlki, `App::abort` metodu.
 
@@ -301,6 +301,6 @@ Modeller yerine kendi tanımlayıcınızı kullanmak isteyebilirsiniz. Bunun iç
 <a name="routing-to-controllers"></a>
 ## Denetçilere Rotalama
 
-Laravel sadece geriçağrım fonksiyonlarına rotalama sağlamaz. Aynı zamanda denetçi sınıflarına hatta [kaynak denetçilerine](/docs/controllers#resource-controllers) rotalandırma yapılabilir.
+Laravel sadece geriçağrım fonksiyonlarına değil, aynı zamanda denetçi sınıflarına rotalamaya da imkan verir ve hatta [kaynak denetçileri](/docs/controllers#resource-controllers) oluşturulması da mümkündür.
 
 Daha fazla bilgi için [Denetçiler](/docs/controllers) konusunu inceleyin.
