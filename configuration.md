@@ -19,11 +19,13 @@ Eğer yapılandırma değeri bulunamazsa dönecek değeri ise ikinci bir paramet
 
 	$timezone = Config::get('app.timezone', 'UTC');
 
-Lütfen dikkat edin, "nokta" şeklindeki kullanım biçimi tüm yapılandırma dosyalarına erişmenizi sağlar. Dilerseniz yapılandırma değerlerini run-time (çalışma anı) esnasında da ekleyebilirsiniz:
+Lütfen dikkat edin, "nokta" şeklindeki kullanım biçimi tüm yapılandırma dosyalarına erişmenizi sağlar. Dilerseniz yapılandırma değerlerini run-time (çalışma anı) esnasında da ayarlayabilirsiniz:
 
-**Bir Yapılandırma Değeri Eklemek**
+**Bir Yapılandırma Değeri Ayarlamak**
 
 	Config::set('database.default', 'sqlite');
+
+Çalışma zamanında ayarlanan yapılandırma değerleri sadece güncel istek süresince ayarlanırlar ve sonraki isteklere aktarılmayacaklardır.
 
 <a name="ortam-yapilandirilmasi"></a>
 ## Ortam Yapılandırması
@@ -70,7 +72,7 @@ Dilerseniz, `detectEnvironment` methoduna `Closure` ekleyip ortam algılama öze
 <a name="bakim-modu"></a>
 ## Bakım Modu
 
-Uygulamanız bakım modundayken, her istek için standart bir view gösterilir. Böylece uygulamanız güncellenirken, bir süreliğine uygulamayı "çalışmaz hale" getirebilirsiniz. Halihazırda `App::down` methoduna yapılan bir istek `app/start/global.php` dosyasında bulunmaktadır. Bu methoddan dönen yanıt ise tüm kullanıcılara gösterilmektedir.
+Uygulamanız bakım modundayken, her istek için standart bir view gösterilir. Böylece uygulamanız güncellenirken, bir süreliğine uygulamayı "çalışmaz hale" getirebilirsiniz. Halihazırda `App::down` methoduna yapılan bir istek `app/start/global.php` dosyasında bulunmaktadır. Uygulamanız bakım modunda olduğunda, kullanıcılara bu yöntemden dönen yanıt gönderilecektir.
 
 Bakım modunu açmak için `down` komutunu Artisan üzerinde çalıştırın:
 
