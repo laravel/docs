@@ -16,9 +16,17 @@ Laravel bağımlılıklarını yönetmek için [Composer](http://getcomposer.org
 <a name="laravel-yukleme"></a>
 ## Laravel Yükleme
 
-Composer kuruldu ise, Laravel framework'ün [son sürümü](https://github.com/laravel/laravel/archive/master.zip)nü indirip, içeriğini sunucunuzdaki bir dizine çıkarınız. Ardından, Laravel uygulamanızın ana dizininde, Laravel gereksinimlerini yüklemek için, `php composer.phar install` (veya `composer install`) komutunu çalıştırınız. Bu işlemin başarıyla tamamlanabilmesi için sunucunuzda [Git](http://git-scm.com/downloads) yüklü olması gerekmektedir.
+### Composer Create-Project Komutuyla
 
-Laravel kurulumu tamamlandıysa `php composer.phar update` komutu ile framework güncellemesi yapabilirsiniz.
+Terminalinizde Composer create-project komutunu yayınlayarak Laravel'i yükleyebilirsiniz:
+
+`composer create-project laravel/laravel`
+
+### Download Ederek
+
+Composer yüklendikten sonra, Laravel framework'ün [son sürümü](https://github.com/laravel/laravel/archive/master.zip)nü indirip, içeriğini sunucunuzdaki bir dizine çıkarınız. Ardından, Laravel uygulamanızın ana dizininde, Laravel gereksinimlerini yüklemek için, `php composer.phar install` (veya `composer install`) komutunu çalıştırınız. Bu işlemin başarıyla tamamlanabilmesi için sunucunuzda [Git](http://git-scm.com/downloads) yüklü olması gerekmektedir.
+
+Laravel'i güncellemek isterseniz `php composer.phar update` komutunu yayınlayabilirsiniz.
 
 - Composer kurulumu için Türkçe kaynak: [Composer’ı Evrensel Olarak Kuralım](http://www.sinaneldem.com.tr/composeri-evrensel-olarak-kuralim/)
 - Laravel kurulumu için Türkçe kaynak: [Laravel Framework Kurulumu](http://www.sinaneldem.com.tr/laravel-framework-kurulumu/)
@@ -36,14 +44,14 @@ Laravel framework'un birkaç sistem gereksinimi bulunmaktadır:
 
 Laravel'in çalışabilmesi için neredeyse hiç yapilandırma ayarı gerekmez. Geliştirmeye başlamak için serbestsiniz! Ancak `app/config/app.php` dosyasını ve dokümantasyonunu gözden geçirebilirsiniz. Buradaki `timezone` (saat dilimi) ve `locale` (lisan) gibi değerleri uygulamanızın ihtiyaçlarına göre düzenleyebilirsiniz.
 
-> **Not:** Mutlaka ayarlamanız gereken bir seçenek olan `anahtar` `app/config/app.php` dosyası içerisindedir. Bu değer rastgele seçilmiş 32 karakterden oluşmalıdır. Bu anahtar şifreleme değerlerinde kullanılmaktadır ve eğer doğru ayarlanmazsa güvenli olmayacaktır. `php artisan key:generate` artisan komutu ile bu değeri kolayca sağlayabilirsiniz.
+> **Not:** Mutlaka ayarlamanız gereken bir yapılandırma seçeneneği `app/config/app.php` dosyasındaki `key` seçeneğidir. Bu değer rastgele seçilmiş 32 karakterden oluşmalıdır. Bu anahtar, değerler kriptolanacağı zaman kullanılmaktadır ve eğer doğru ayarlanmazsa kriptolanmış değerler güvenli olmayacaktır. `php artisan key:generate` artisan komutu ile bu değeri kolayca ayarlayabilirsiniz.
 
 <a name="izinler"></a>
 ### İzinler
 Laravel `app/storage` dizin içeriğinin web sunucu tarafından yazılabilir olmasını gerektirmektedir.
 
 <a name="yollar"></a>
-### Yollar
+### Dosya Yolları
 
 Framework dizin yollarının birkaçı yapılandırılabilirdir. Bu dizin yollarını değiştirebilmek için `bootstrap/paths.php` dosyasını gözden geçiriniz.
 
@@ -60,7 +68,5 @@ Eğer Laravel ile birlikte gelen `.htaccess` dosyası Apache kurulumunuz ile iş
 	RewriteEngine On
 
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(.+)/$ http://%{HTTP_HOST}/$1 [R=301,L]
-
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]
