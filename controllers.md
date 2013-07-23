@@ -42,11 +42,11 @@ Denetçi rotalarına isimler de verebilirsiniz:
 	Route::get('falanca', array('uses' => 'FalancaController@yontemAdi',
 											'as' => 'rotaAdi'));
 
-Herhangi bir denetçi eylemine ait bir URL üretmek için, `URL::action` yöntemini kullanabilirsiniz:
+Herhangi bir denetçi eylemine ait bir URL üretmek için, `URL::action` metodunu kullanabilirsiniz:
 
 	$url = URL::action('FalancaController@yontemAdi');
 
-Çalıştırılmakta olan bir denetçi eyleminin ismine `currentRouteAction` yöntemi ile erişebilirsiniz:
+Çalıştırılmakta olan bir denetçi eyleminin ismine `currentRouteAction` metodu ile erişebilirsiniz:
 
 	$action = Route::currentRouteAction();
 
@@ -97,13 +97,13 @@ Filtre fonksiyonun tanımlamasını denetçinin içerisinde ve bir bloklama {  }
 <a name="restful-controllers"></a>
 ## TEDA-uyumlu (Temsili Durum Aktarma uyumlu, RESTful) Denetçiler
 
-Laravel size, basit TEDA (REST) isimlendirme tüzüklerini (naming conventions) kullanarak, belirleyeceğiniz tek bir rota ile, denetçilerinizin içindeki her eylemi kullanabilme imkanını tanır. İlk olarak, (rota : denetçi) `Route::controller` yöntemi ile bu rotayı tanımlayınız:
+Laravel size, basit TEDA (REST) isimlendirme tüzüklerini (naming conventions) kullanarak, belirleyeceğiniz tek bir rota ile, denetçilerinizin içindeki her eylemi kullanabilme imkanını tanır. İlk olarak, (rota : denetçi) `Route::controller` metodu ile bu rotayı tanımlayınız:
 
 **TEDA-uyumlu Bir Denetçi Oluşturulması**
 
 	Route::controller('kullanicilar', 'KullaniciController');
 
-`controller` (denetçi) yöntemi iki argüman alır. Birincisi denetçinin yöneteceği baz URI olup, ikincisi denetçinin sınıf ismidir. Akabinde sadece, isimlerine HTTP eyleminin ön ek olarak ekleneceği ve bunlara cevap verecek olan yöntemlerinizi denetçinize ilave ediniz:
+`controller` (denetçi) metodu iki argüman alır. Birincisi denetçinin yöneteceği baz URI olup, ikincisi denetçinin sınıf ismidir. Akabinde sadece, isimlerine HTTP eyleminin ön ek olarak ekleneceği ve bunlara cevap verecek olan metodlarınızı denetçinize ilave ediniz:
 
 	class KullaniciController extends BaseController {
 
@@ -119,16 +119,16 @@ Laravel size, basit TEDA (REST) isimlendirme tüzüklerini (naming conventions) 
 
 	}
 
-`index` (fihrist) yöntemleri, denetçi tarafından yönetilmekte olan kök URI 'a cevap verir. Örneğimizde bu, `kullanicilar` dır.
+`index` (fihrist) metodları, denetçi tarafından yönetilmekte olan kök URI 'a cevap verir. Örneğimizde bu, `kullanicilar` dır.
 
-Denetçinizdeki bir eylem yönteminin ismi birden fazla kelimeden oluşuyorsa, bu eylem yöntemine, URI da kelime aralarına tire işareti "-" eklenmiş şekilde yazarak erişebilirsiniz. Örneğin, 'KullaniciController' denetçimizdeki aşağıdaki şekilde isimlendirilmiş olan yöntem, `kullanici/yonetici-profili` URI 'na cevap verecektir.
+Denetçinizdeki bir eylem metodunun ismi birden fazla kelimeden oluşuyorsa, bu eylem metoduna, URI da kelime aralarına tire işareti "-" eklenmiş şekilde yazarak erişebilirsiniz. Örneğin, 'KullaniciController' denetçimizdeki aşağıdaki şekilde isimlendirilmiş olan metod, `kullanici/yonetici-profili` URI 'na cevap verecektir.
 
 	public function getYoneticiProfili() {}
 
 <a name="resource-controllers"></a>
 ## Kaynak (Resource) Denetçileri
 
-Kaynak denetçileri, kaynaklar etrafında TEDA-uyumlu denetçiler oluşturulmasını kolaylaştırır. Artisan KSA'daki (Artisan Komut Satırı Arayüzü) `controller:make` komutunu ve de `Route::resource` yöntemini kullanmak sureti ile böyle bir denetçiyi çabucak oluşturabiliriz.
+Kaynak denetçileri, kaynaklar etrafında TEDA-uyumlu denetçiler oluşturulmasını kolaylaştırır. Artisan KSA'daki (Artisan Komut Satırı Arayüzü) `controller:make` komutunu ve de `Route::resource` metodunu kullanmak sureti ile böyle bir denetçiyi çabucak oluşturabiliriz.
 
 Denetçiyi komut satırını kullanarak oluşturmak için şu komutu kullanınız:
 
@@ -138,7 +138,7 @@ Bu denetçinin TEDA-uyumlu rotasını (routes.php) dosyasında kayıt ettiriniz:
 
 	Route::resource('foto', 'FotoController');
 
-Bu tek bir rota deklarasyonu, foto kaynağınız üzerinde çalıştıracağınız çeşitli TEDA-uyumlu eylem yöntemlerine erişeceğiniz rotalar oluşturur. Aynı zamanda, oluşturulmuş olan denetçide, bu eylemlerin her biri için yöntemleri hazır olarak oluşturulmuş ve hangi URI'ı ve eylemi yönettikleri yanlarına not olarak yazılmış olacaktır.
+Bu tek bir rota deklarasyonu, foto kaynağınız üzerinde çalıştıracağınız çeşitli TEDA-uyumlu eylem metodlarına erişeceğiniz rotalar oluşturur. Aynı zamanda, oluşturulmuş olan denetçide, bu eylemlerin her biri için metodları hazır olarak oluşturulmuş ve hangi URI'ı ve eylemi yönettikleri yanlarına not olarak yazılmış olacaktır.
 
 **Kaynak Denetçisinin Yöneteceği Eylemler**
 
@@ -164,11 +164,11 @@ Ve, rotasında da eylemlerin sadece bazılarını yönetmesini belirleyebilirsin
 					array('only' => array('index', 'show')));
 
 <a name="handling-missing-methods"></a>
-## Eksik Olan Yöntemlerin Yönetilmesi
+## Eksik Olan Metodların Yönetilmesi
 
-Denetçide tanımlanmamış olan yöntemlere gelecek olan çağrıları yönetmek için bir "hepsini-yakala" yöntemi tanımlanabilir. Bu yöntemin isminin `missingMethod` (eksik yöntem) olması gerekir ve tek argümanı olarak gelen isteğin (request) parametrelerini  alır:
+Denetçide tanımlanmamış olan metodlara gelecek olan çağrıları yönetmek için bir "hepsini-yakala" metodu tanımlanabilir. Bu metodun isminin `missingMethod` (eksik metod) olması gerekir ve tek argümanı olarak gelen isteğin (request) parametrelerini  alır:
 
-**Bir Hepsini-Yakala Yönteminin Tanımlanması**
+**Bir Hepsini-Yakala Metodunun Tanımlanması**
 
 	public function missingMethod($parameters)
 	{
