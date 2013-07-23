@@ -4,7 +4,7 @@
 - [Denetçi Filtreleri](#controller-filters)
 - [TEDA-uyumlu (TEmsili Durum Aktarma Uyumlu, RESTful) Denetçiler](#restful-controllers)
 - [Kaynak (Resource) Denetçileri](#resource-controllers)
-- [Eksik Olan Eylemlerin Yönetilmesi](#handling-missing-methods)
+- [Eksik Olan Metodların Yönetilmesi](#handling-missing-methods)
 
 <a name="basic-controllers"></a>
 ## Temel Denetçiler
