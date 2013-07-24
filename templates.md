@@ -63,7 +63,7 @@ Blade Laravel'le gelen basit ama güçlü bir şablon motorudur. Denetçi düzen
 		<p>Burası kendi content bölümümdür.</p>
 	@stop
 
-Bir Blade düzenini genişleten (`extend`) görünümlerin, düzenden gelen kesimleri değiştirmekten başka bir şey yapmadığını unutmayın. İlgili düzenin içeriği bir kesimde `@parent` direktifi kullanılarak çocuk görünüme katılabilir, böylece bir kenar çobuğu veya altbilgi gibi bir düzen kesimine eklemeler yapabilirsiniz.
+Bir Blade düzenini genişleten (`extend`) görünümlerin, düzenden gelen kesimleri değiştirmekten başka bir şey yapmadığını unutmayın. İlgili düzenin içeriği bir kesimde `@parent` direktifi kullanılarak çocuk görünüme katılabilir, böylece bir kenar çubuğu veya altbilgi gibi bir düzen kesimine eklemeler yapabilirsiniz.
 
 <a name="other-blade-control-structures"></a>
 ## Diğer Blade Kontrol Yapıları
