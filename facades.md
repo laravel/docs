@@ -79,7 +79,7 @@ Bu sınıfı IoC konteynerinden çözebiliyor olmamız lazım. Öyleyse, bir ba�
 		return new \OdemeGecidi\Odeme;
 	});
 
-Bu bağlayıcıyı kayda geçirmek için harika bir yer `PaymentServiceProvider` adında yeni bir [hizmet sağlayıcı](/docs/ioc#service-providers) oluşturmak ve bu bağlayıcıyı `register` metoduna eklemek olacaktır. Daha sonra Laravel'i sizin hizmet sağlayıcınızı `app/config/app.php` yapılandırma dosyasından yükleyecek şekilde yapılandırın.
+Bu bağlayıcıyı kayda geçirmek için harika bir yer `OdemeServiceProvider` adında yeni bir [hizmet sağlayıcı](/docs/ioc#service-providers) oluşturmak ve bu bağlayıcıyı `register` metoduna eklemek olacaktır. Daha sonra Laravel'i sizin hizmet sağlayıcınızı `app/config/app.php` yapılandırma dosyasından yükleyecek şekilde yapılandırın.
 
 Daha sonra, kendi cephe sınıfımızı oluşturabiliriz:
 
