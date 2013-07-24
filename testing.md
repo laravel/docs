@@ -63,7 +63,7 @@ Ayrıca bir test dosyasından denetçileri de çağırabilirsiniz:
 
 	$response = $this->action('GET', 'UserController@profile', array('user' => 1));
 
-`getContent` metodu, hazırlanmış döngünün içeriğini döndürecektir. Eğer rotanız bir `Görünüm` döndürüyorsa, `original` özelliği ile buna ulaşabilirsiniz: 
+`getContent` metodu cevap olarak değerlendirilmiş string içeriğini döndürecektir. Eğer rotanız bir `Görünüm` döndürüyorsa, `original` özelliği ile buna ulaşabilirsiniz: 
 
 	$view = $response->original;
 
@@ -113,7 +113,7 @@ Test yaparken, sabit Laravel facadelarını taklit etmeniz gerekecektir. Örneğ
 <a name="laravele-ozel-assert-metodlari"></a>
 ## Laravel'e Özel `Assert` Metodları
 
-Laravel test yapımını kolaylaştırmak için halihazırda bazı `assert` meodlarıyla gelir:
+Laravel test yapımını kolaylaştırmak için halihazırda bazı `assert` metodlarıyla gelir:
 
 **Yanıtın Başarıyla Geldiği İspatlamak**
 
@@ -136,7 +136,7 @@ Laravel test yapımını kolaylaştırmak için halihazırda bazı `assert` meod
 
 	$this->assertRedirectedToAction('Controller@method');
 
-**Görünüme Bir Verinin Gitmediğini İspatlamak**
+**Bir Görünümde Veri Olduğunu İspatlamak**
 
 	public function testMethod()
 	{
