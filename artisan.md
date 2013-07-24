@@ -17,7 +17,7 @@ Tüm Artisan komutlarını görmek için `list` komutunu kullanabilirsiniz:
 
 	php artisan list
 
-Tüm komutların özel bir "yardım" ekranı vardır ve komut hakkındaki argüman sırası ile ayarlar gibi bilgilerin açıklanmasını sağlar. Yardım ekranını görmek için komutu yazmadan önce `help` kullanın:
+Tüm komutların özel bir "yardım" ekranı vardır ve komut hakkındaki argüman sırası ile ayarlar gibi bilgilerin açıklanmasını sağlar. Bir yardım ekranını görüntülemek için komut adından önce `help` yazın:
 
 **Bir Komut için Yardım Ekranını Görmek**
 
@@ -29,7 +29,7 @@ Bir komut kullanırken kullanılacak olan Ortam Ayarları'nı `--env` komutuyla 
 
 	php artisan migrate --env=local
 
-Ayrıca şu an kullanmakta olduğunuz Laravel'in sürümünü de `--version` komutunu kullanarak Artisan üzerinden görebilirsiniz:
+Ayrıca şu an kullanmakta olduğunuz Laravel'in sürümünü de `--version` seçeneğini kullanarak Artisan üzerinden görebilirsiniz:
 
 **Laravel'in Sürümünü Görmek**
 
