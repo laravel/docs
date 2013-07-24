@@ -1,25 +1,25 @@
-# Şablonlar
+# Templates
 
-- [Denetçi Yerleşimleri (Controller Layouts)](#controller-layouts)
-- [Blade Şablonlama](#blade-templating)
-- [Diğer Blade Kontrol Yapıları](#other-blade-control-structures)
+- [Controller Layouts](#controller-layouts)
+- [Blade Templating](#blade-templating)
+- [Other Blade Control Structures](#other-blade-control-structures)
 
 <a name="controller-layouts"></a>
-## Denetçi Yerleşimleri (Controller Layouts)
+## Controller Layouts
 
-Şablonları kullanmanın bir metodu da Laravel aracılığıyla sağlanan denetçi yerleşimleridir (controller layouts). Denetleyicide (controller'da) `layout` özelliğini belirtirken, tanımlanan görünüm (view) sizin için oluşturulacak ve kabul edilecek olan bu yanıt (response) eylemlerden (actions) döndürülecektir.
+One method of using templates in Laravel is via controller layouts. By specifying the `layout` property on the controller, the view specified will be created for you and will be the assumed response that should be returned from actions.
 
-**Denetçide Yerleşim (Layout) Tanımlama**
+**Defining A Layout On A Controller**
 
 	class UserController extends BaseController {
 
 		/**
-		 * Yerleşim (Layout) yanıtlar (responses) için kullanılmalıdır.
+		 * The layout that should be used for responses.
 		 */
 		protected $layout = 'layouts.master';
 
 		/**
-		 * Kullanıcı profilini göster.
+		 * Show the user profile.
 		 */
 		public function showProfile()
 		{
@@ -29,18 +29,18 @@
 	}
 
 <a name="blade-templating"></a>
-## Blade Şablonlama
+## Blade Templating
 
-Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon (template) motorudur. Denetçi yerleşimlerinden farklı olarak Blade, tema kalıtımlıdır ve bölümlerden oluşmaktadır. Tüm Blade şablonları `.blade.php` uzantısına sahip olmalıdır.
+Blade is a simple, yet powerful templating engine provided with Laravel. Unlike controller layouts, Blade is driven by _template inheritance_ and _sections_. All Blade templates should use the `.blade.php` extension.
 
-**Blade Yerleşim (Layout) Tanımlamak**
+**Defining A Blade Layout**
 
-	<!-- app/views/layouts/master.blade.php içinde depolanır. -->
+	<!-- Stored in app/views/layouts/master.blade.php -->
 
 	<html>
 		<body>
 			@section('sidebar')
-				Burası ana sidebar'dır.
+				This is the master sidebar.
 			@show
 
 			<div class="container">
@@ -49,75 +49,75 @@ Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon (te
 		</body>
 	</html>
 
-**Blade Yerleşim (Layout) Kullanmak**
+**Using A Blade Layout**
 
 	@extends('layouts.master')
 
 	@section('sidebar')
 		@parent
 
-		<p>Burası ana sidebar'a eklendi.</p>
+		<p>This is appended to the master sidebar.</p>
 	@stop
 
 	@section('content')
-		<p>Bu benim body içeriğimdir.</p>
+		<p>This is my body content.</p>
 	@stop
 
-Görünümlerdeki `extend` bir Blade yerleşimi (layout) sadece yerleşimdeki bölümleri geçersiz kıldığını unutmayın.Yerleşimin (Layout) içeriği `@parent` kullanılarak çocuk (child) görünüme dahil edilebilir, sidebar veya foooter gibi içeriklerin yerleşim (layout) bölümüne eklemenizi sağlar.
+Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
 
 <a name="other-blade-control-structures"></a>
-## Diğer Blade Kontrol Yapıları
+## Other Blade Control Structures
 
-**Veriyi Yazdırma**
+**Echoing Data**
 
-	Merhaba, {{ $name }}.
+	Hello, {{ $name }}.
 
-	Geçerli UNIX zamanı {{ time() }}.
+	The current UNIX timestamp is {{ time() }}.
 
-Elbette, tüm kullanıcılara sağlanan veri temizlenmeli ve kurtulmalıdır. Çıktıyı kurtarmak için üçlü küme ayracı sözdizimini kullanabilirsiniz:
+Of course, all user supplied data should be escaped or purified. To escape the output, you may use the triple curly brace syntax:
 
-	Merhaba, {{{ $name }}}.
+	Hello, {{{ $name }}}.
 
-> **Not:** Uygulamanızda kullanıcılara sağlanan içeriğine çok dikkat edin. Her zaman ve herhangi bir HTML içerik için üçlü küme ayracı sözdizimini kullanın.
+> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the triple curly brace syntax to escape any HTML entities in the content.
 
-**If Demeçleri**
+**If Statements**
 
-	@if (count($kayitlar) === 1)
-		Bir kaydım var!
-	@elseif (count($kayitlar) > 1)
-		Birden fazla kaydım var!
+	@if (count($records) === 1)
+		I have one record!
+	@elseif (count($records) > 1)
+		I have multiple records!
 	@else
-		Herhangi bir kaydım yok!
+		I don't have any records!
 	@endif
 
 	@unless (Auth::check())
-		Giriş yapmadınız.
+		You are not signed in.
 	@endunless
 
-**Döngüler**
+**Loops**
 
 	@for ($i = 0; $i < 10; $i++)
-		Varolan değer {{ $i }}
+		The current value is {{ $i }}
 	@endfor
 
 	@foreach ($users as $user)
-		<p>Kullanıcı {{ $user->id }}</p>
+		<p>This is user {{ $user->id }}</p>
 	@endforeach
 
 	@while (true)
-		<p>Sonsuza kadar döngüdeyim.</p>
+		<p>I'm looping forever.</p>
 	@endwhile
 
-**Alt-Görünümleri (Sub-Views) Dahil Etmek**
+**Including Sub-Views**
 
 	@include('view.name')
 
-**Dil Satırlarını Gösterme**
+**Displaying Language Lines**
 
 	@lang('language.line')
 
 	@choice('language.line', 1);
 
-**Yorumlar**
+**Comments**
 
-	{{-- Bu yorum HTML olarak yorumlanmayacaktır --}}
+	{{-- This comment will not be in the rendered HTML --}}
