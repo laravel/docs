@@ -1,41 +1,41 @@
-# Templates
+# Şablonlar
 
-- [Controller Layouts](#controller-layouts)
-- [Blade Templating](#blade-templating)
-- [Other Blade Control Structures](#other-blade-control-structures)
+- [Denetçi Düzenleri](#controller-layouts)
+- [Blade Şablonları](#blade-templating)
+- [Diğer Blade Kontrol Yapıları](#other-blade-control-structures)
 
 <a name="controller-layouts"></a>
-## Controller Layouts
+## Denetçi Düzenleri
 
-One method of using templates in Laravel is via controller layouts. By specifying the `layout` property on the controller, the view specified will be created for you and will be the assumed response that should be returned from actions.
+Laravel'de şablon kullanma yöntemlerinden birisi denetçi düzenleri üzerinden gerçekleştirilir. İlgili denetçideki `layout` özelliğinin belirlenmesiyle, belirlemiş olduğunuz görünüm oluşturulacak ve eylemlerden dönmüş cevap olarak kabul edilecektir.
 
-**Defining A Layout On A Controller**
+**Bir Denetçide Bir Düzen Tanımlanması**
 
-	class UserController extends BaseController {
+	class UyeController extends BaseController {
 
 		/**
-		 * The layout that should be used for responses.
+		 * Cevaplar için kullanılacak olan düzen.
 		 */
 		protected $layout = 'layouts.master';
 
 		/**
-		 * Show the user profile.
+		 * Uye profilini göster.
 		 */
-		public function showProfile()
+		public function showProfil()
 		{
-			$this->layout->content = View::make('user.profile');
+			$this->layout->content = View::make('uye.profil');
 		}
 
 	}
 
 <a name="blade-templating"></a>
-## Blade Templating
+## Blade Şablonları
 
-Blade is a simple, yet powerful templating engine provided with Laravel. Unlike controller layouts, Blade is driven by _template inheritance_ and _sections_. All Blade templates should use the `.blade.php` extension.
+Blade Laravel'le gelen basit ama güçlü bir şablon motorudur. Denetçi düzenlerinden farklı olarak, Blade _şablon kalıtımı_ ve _kesimler_ (sections) ile yürütülür. Tüm Blade şablonlarının uzantısı `.blade.php` olmalıdır.
 
-**Defining A Blade Layout**
+**Bir Blade Düzeninin Tanımlanması**
 
-	<!-- Stored in app/views/layouts/master.blade.php -->
+	<!-- app/views/layouts/master.blade.php 'de bulunmaktadır-->
 
 	<html>
 		<body>
@@ -49,75 +49,75 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 		</body>
 	</html>
 
-**Using A Blade Layout**
+**Bir Blade Düzeninin Kullanılması**
 
 	@extends('layouts.master')
 
 	@section('sidebar')
 		@parent
 
-		<p>This is appended to the master sidebar.</p>
+		<p>Burası master sidebar'a eklenmiştir.</p>
 	@stop
 
 	@section('content')
-		<p>This is my body content.</p>
+		<p>Burası kendi content bölümümdür.</p>
 	@stop
 
-Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
+Bir Blade düzenini genişleten (`extend`) görünümlerin, düzenden gelen kesimleri değiştirmekten başka bir şey yapmadığını unutmayın. İlgili düzenin içeriği bir kesimde `@parent` direktifi kullanılarak çocuk görünüme katılabilir, böylece bir kenar çubuğu veya altbilgi gibi bir düzen kesimine eklemeler yapabilirsiniz.
 
 <a name="other-blade-control-structures"></a>
-## Other Blade Control Structures
+## Diğer Blade Kontrol Yapıları
 
-**Echoing Data**
+**Veri Yazdırılması**
 
-	Hello, {{ $name }}.
+	Merhaba {{ $isim }}.
 
-	The current UNIX timestamp is {{ time() }}.
+	Şu anki UNIX zaman damgası {{ time() }}'dır.
 
-Of course, all user supplied data should be escaped or purified. To escape the output, you may use the triple curly brace syntax:
+Tabii ki, kullanıcılardan gelen tüm veriler escape edilmeli ya da arındırılmalıdır. Çıktıyı escape etmek için, üçlü küme parantezi sözdizimini kullanabilirsiniz:
 
-	Hello, {{{ $name }}}.
+	Merhaba {{{ $isim }}}.
 
-> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the triple curly brace syntax to escape any HTML entities in the content.
+> **Not:** Uygulamanızın kullanıcılarından gelen verileri yazdıracağınız zaman çok dikkatli olun. İçerikte olabilecek HTML antitelerini escape etmek amacıyla her zaman için üçlü küme parantezi sözdizimi kullanın.
 
-**If Statements**
+**If Cümleleri**
 
 	@if (count($records) === 1)
-		I have one record!
+		Tek kayıt var!
 	@elseif (count($records) > 1)
-		I have multiple records!
+		Birden çok kayıt var!
 	@else
-		I don't have any records!
+		Hiç kayıt yok!
 	@endif
 
 	@unless (Auth::check())
-		You are not signed in.
+		Giriş yapmadınız.
 	@endunless
 
-**Loops**
+**Döngüler**
 
 	@for ($i = 0; $i < 10; $i++)
-		The current value is {{ $i }}
+		Şu anki değer {{ $i }}'dir.
 	@endfor
 
-	@foreach ($users as $user)
-		<p>This is user {{ $user->id }}</p>
+	@foreach ($uyeler as $uye)
+		<p>Bu, üye {{ $uye->id }}'dir.</p>
 	@endforeach
 
 	@while (true)
-		<p>I'm looping forever.</p>
+		<p>Sonsuz döngüdeyim.</p>
 	@endwhile
 
-**Including Sub-Views**
+**Alt Görünümlerin Dahil Edilmesi**
 
-	@include('view.name')
+	@include('view.ismi')
 
-**Displaying Language Lines**
+**Dil Satırlarının Gösterilmesi**
 
 	@lang('language.line')
 
 	@choice('language.line', 1);
 
-**Comments**
+**Yorumlar**
 
-	{{-- This comment will not be in the rendered HTML --}}
+	{{-- Bu yorum, gösterilen HTML içerisinde olmayacaktır --}}
