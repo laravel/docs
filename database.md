@@ -4,12 +4,12 @@
 - [Sorguları Çalıştırma](#sorgulari-calistirma)
 - [Veritabanı İşlemleri](#veritabani-islemleri)
 - [Bağlantılara Erişme](#baglantilara-erisme)
-- [Sorgu Dökümü](#sorgu-dokumu)
+- [Sorgu Günlükleri](#sorgu-dokumu)
 
 <a name="yapilandirma"></a>
 ## Yapılandırma
 
-Laravel, veritabanı bağlantısını ve sorguları çalıştırmayı fazlasıyla kolay kılar. Veritabanı yapılandırma ayarları `app/config/database.php` dosyasında bulunmaktadır. Bu dosyada hem tüm veritabanı bağlantılarını tanımlayabilir, hem de hangi bağlantının varsayılan olarak kullanılacağını seçebilirsiniz. Örnek olarak desteklenen tüm veritabanı sistemleri bu dosya altında sunulmuştur.
+Laravel, veritabanı bağlantısını ve sorguları çalıştırmayı fazlasıyla kolay kılar. Veritabanı yapılandırma ayarları `app/config/database.php` dosyasında bulunmaktadır. Bu dosyada hem tüm veritabanı bağlantılarını tanımlayabilir, hem de hangi bağlantının varsayılan olarak kullanılacağını seçebilirsiniz. Bu dosyada, desteklenen veritabanı sistemlerinin tümü için örnekler verilmiştir.
 
 Laravel tarafından desteklenen veritabanı sistemleri: MySQL, Postgres, SQLite, ve SQL Server.
 
@@ -79,8 +79,8 @@ Bazen veritabanına tekrar bağlanmaya ihtiyacınız olabilir.
 	DB::reconnect('foo');
 
 <a name="sorgu-dokumu"></a>
-## Sorgu Dökümü
+## Sorgu Günlükleri
 
-Varsayılan olarak, Laravel çalıştırılan tüm sorguların kayıdını hafızada tutar. Ama bazı durumlarda, -çok sayıda satır ekleme gibi- belleğin aşırı kullanılmasına yol açabilir. Sorgu dökümünü kapatmak için `disableQueryLog` metodunu kullanabilirsiniz.
+Varsayılan olarak, Laravel güncel istek için çalıştırılabilecek tüm sorgular için bellekte bir günlük tutar. Bununla birlikte, bu bazı durumlarda, örneğin çok sayıda satır eklerken, uygulamanın aşırı bellek kullanmasına neden olabilir. Günlüğü devre dışı bırakmak için `disableQueryLog` metodunu kullanabilirsiniz.
 
 	DB::connection()->disableQueryLog();
