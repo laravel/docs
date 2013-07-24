@@ -13,7 +13,7 @@ Artisan'da mevcut olan komutlara ilaveten,  uygulamanız ile çalışacak olan k
 <a name="komut-olusturulmasi"></a>
 ## Komut Oluşturulması
 
-### Sınıfının Yaratılması
+### Sınıfının Oluşturulmması
 
 Yeni bir komut oluşturmak için, `command:make` Artisan komutunu kullanabilirsiniz. Bu komut, başlamanızda size yardımcı olmak için yeni bir komut taslağı oluşturacaktır.
 
@@ -21,7 +21,7 @@ Yeni bir komut oluşturmak için, `command:make` Artisan komutunu kullanabilirsi
 
 	php artisan command:make FalancaKomut
 
-Yaratılacak olan yeni komutlar, varsayılan ön değer olarak `app/commands` dizininde depolanırlar. Fakat, siz başka bir dizin veya bir 'namespace' de belirleyebilirsiniz.
+Ön tanımlı olarak, oluşturulan komutlar `app/commands` dizininde depolanırlar. Fakat, siz başka bir dizin veya bir 'namespace' de belirleyebilirsiniz.
 
 	php artisan command:make FalancaKomut --path="app/classes" --namespace="Siniflar"
 
@@ -33,7 +33,7 @@ Komut çalıştırıldığında `fire` (ateşle) yöntemi çağırılmaktadır. 
 
 ### Argümanlar & Seçenekler
 
-Komutunuzun Argümanlarını ve Seçeneklerini, `getArguments` ve `getOptions` metodları ile belirleyebilirsiniz. Bu metodların her ikisi de birer komut dizisi verirler. Bu komut dizileri, bir 'dizi seçenekleri listesi' ile tarif edilirler.
+Komutunuzun alacağı argüman veya seçenekleri tanımlayabileceğiniz yerler `getArguments` ve `getOptions` metodlarıdır. Bu metodların her ikisi de birer komut dizisi verirler. Bu komut dizileri, bir 'dizi seçenekleri listesi' ile tarif edilirler.
 
 Argümanları `arguments` belirlerlerken, dizi tanımı değerleri şunları belirler: (ismi, modu, tanımı, ön değeri)
 
