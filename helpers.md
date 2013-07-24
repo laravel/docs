@@ -1,7 +1,7 @@
 # Yardımcı (Helper) Fonksiyonları
 
 - [Arrayler (Diziler)](#arrays)
-- [Dizinler](#paths)
+- [Dosya Yolları](#paths)
 - [Yazı İşlemleri](#strings)
 - [URL İşlemleri](#urls)
 - [Diğer](#miscellaneous)
@@ -42,7 +42,7 @@
 
 ### array_fetch
 
-`array_fetch` fonksiyonu, seçilen anahtar'a göre yeni bir sıkıştırılmış array yaratır.
+`array_fetch` metodu seçilen bir iç elemanı içeren düz bir dizi döndürür.
 
 	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
 
@@ -67,7 +67,7 @@ Ayrıca varsayılan bir değer, üçüncü eleman olarak verilebilir.
 
 ### array_flatten
 
-`array_flatten` fonksiyonu, çok boyutlu bir array'i tek boyutlu olacak hale getirir.
+`array_flatten` metodu çok boyutlu bir diziyi tek düzey halinde düzleştirir.
 
 	$array = array('name' => 'Joe', 'languages' => array('PHP', 'Ruby'));
 
@@ -77,7 +77,7 @@ Ayrıca varsayılan bir değer, üçüncü eleman olarak verilebilir.
 
 ### array_forget
 
-`array_forget` fonksiyonu, verilen array'den 'nokta (dot)' notasyonuna göre girilmiş elemanı siler.
+`array_forget` metodu "dot" notasyonu kullanarak, derin bir iç içe diziden belirli bir anahtar / değer çiftini kaldıracaktır.
 
 	$array = array('names' => array('joe' => array('programmer')));
 
@@ -85,7 +85,7 @@ Ayrıca varsayılan bir değer, üçüncü eleman olarak verilebilir.
 
 ### array_get
 
-`array_get` fonksiyonu, verilen array'den 'nokta (dot)' notasyonuna göre girilmiş elemanı döndürür.
+`array_get` metodu nokta notasyonu kullanarak derin bir iç içe diziden belirli bir değeri döndürür.
 
 	$array = array('names' => array('joe' => array('programmer')));
 
@@ -101,7 +101,7 @@ Ayrıca varsayılan bir değer, üçüncü eleman olarak verilebilir.
 
 ### array_pluck
 
-`array_pluck` fonksiyonu, girilen anahtara göre, yeni bir array döndürür.
+`array_pluck` metodu verilen bir anahtar / değer çiftleri listesini diziden koparacaktır.
 
 	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
 
@@ -111,15 +111,15 @@ Ayrıca varsayılan bir değer, üçüncü eleman olarak verilebilir.
 
 ### array_pull
 
-`array_pull` fonksiyonu, girilen anahtara göre yeni bir array döndürür, aynı zamanda döndürdüğü elemanları siler.
+`array_pull` metodu diziden belirli bir anahtar / değer çifti döndürecek, aynı zamanda bu çifti diziden çıkartacaktır.
 
 	$array = array('name' => 'Taylor', 'age' => 27);
 
-	$name = array_pluck($array, 'name');
+	$name = array_pull($array, 'name');
 
 ### array_set
 
-`array_set` fonksiyonu, 'nokta (dot)' notasyonunu kullanarak çok boyutlu array'lerin elemanlarına değer atamaya yarar.
+`array_set` metodu nokta notasyonu kullanarak, derin bir iç içe dizide bir değer ayarlar.
 
 	$array = array('names' => array('programmer' => 'Joe'));
 
@@ -127,36 +127,34 @@ Ayrıca varsayılan bir değer, üçüncü eleman olarak verilebilir.
 
 ### head
 
-Array'in son elemanını döndürür. Metod zincirleme işlemi için çok yararlı.
+Dizideki ilk elemanı döndürür. PHP 5.3.x'deki metod zincirleme işine yarar.
 
 	$first = head($this->returnsArray('foo'));
 
 ### last
 
-Array'in son elemanını döndürür. Metod zincirleme işlemi için çok yararlı.
-Return the last element in the array. Useful for method chaining.
+Dizideki son elemanı döndürür. Metod zincirlemesinde işe yarar.
 
 	$last = last($this->returnsArray('foo'));
 
 <a name="paths"></a>
-## Dizinler
+## Dosya Yolları
 
 ### app_path
 
-`app` klasörünün sisteme göre tam dizin adresini döndürür.
+`app` dizininin tam dosya yolunu getirir.
 
 ### base_path
 
-Uygulamanın ana klasörünün sisteme göre tam dizin adresini döndürür.
+Uygulamanın ana dizininin tam dosya yolunu getirir.
 
 ### public_path
 
-`public` klasörünün sisteme göre tam dizin adresini döndürür.
+`public` dizininin tam dosya yolunu getirir.
 
 ### storage_path
 
-`app/storage` klasörünün sisteme göre tam dizin adresini döndürür.
-Get the fully qualified path to the `application/storage` directory.
+`app/storage` dizininin tam dosya yolunu getirir.
 
 <a name="strings"></a>
 ## Yazı İşlemleri
@@ -267,13 +265,13 @@ Girilen dil satırını çekimli çevirir. `Lang::choice` fonksiyonunun kısayol
 
 ### action
 
-Girilen denetçinin URL'ini oluşturur.
+Belirli bir denetçi eylemi için bir URL üretir.
 
 	$url = action('HomeController@getIndex', $params);
 
 ### asset
 
-Girilen elemanın URL'ini oluşturur.
+Bir varlık için bir URL üretir.
 
 	$url = asset('img/photo.jpg');
 
@@ -285,7 +283,7 @@ Girilen URL'e gerekli HTML linkini oluşturur.
 
 ### link_to_asset
 
-Girilen eleman için gerekli HTML linkini oluşturur.
+Verilen varlık için bir HTML bağlantısı üretir.
 
 	echo link_to_asset('foo/bar.zip', $title, $attributes = array(), $secure = null);
 
@@ -297,7 +295,7 @@ Girilen rota için gerekli HTML linkini oluşturur.
 
 ### link_to_action
 
-Girilen denetçi fonksiyonu için gerekli HTML linkini oluşturur.
+Verilen bir denetçi eylemi için bir HTML linki oluşturur.
 
 	echo link_to_action('HomeController@getIndex', $title, $parameters = array(), $attributes = array());
 
@@ -315,12 +313,12 @@ Girilen URL'e gerekli HTML linkini HTTPS kullanarak oluşturur.
 
 ### url
 
-Girilen URL'e gerekli HTML linkini oluşturur.
+Verilen bir dosya yolu için tam kalifiye bir URL üretir.
 
 	echo url('foo/bar', $parameters = array(), $secure = null);
 
 <a name="miscellaneous"></a>
-## Miscellaneous
+## Diğer
 
 ### csrf_token
 
