@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## Giriş
 
-Yerleşimler, veritabanınız için bir çeşit sürüm yöneticisidir (Version Control). Beraber çalışan bir ekibe, veritabanı şemasında değişiklikler yapma ve en son şema durumunu güncelleme imkanı sağlar. Yerleşimler, uygulamanızın şemasını kolayca yönetmeniz için, genellikle Şema Kurucusu [Schema Builder](/docs/schema) ile birlikte kullanılır.
+Yerleşimler veritabanı için bir sürüm kontrol türüdür. Bir ekibin veritabanı şemasını değiştirmesine ve son şema durumuna güncel kalmalarına imkan verir. Yerleşimler, uygulama şemasını kolayca yönetmek amacıyla tipik olarak [Şema (Schema) Kurucu](/docs/schema) ile eşleştirilirler.
 
 <a name="creating-migrations"></a>
 ## Yerleşimlerin Oluşturulması
@@ -20,9 +20,9 @@ Bir yerleşim oluşturmak için, Artisan KSA 'da (Artisan Komut Satırı Arayüz
 
 	php artisan migrate:make kullanicilar_tablosunu_olustur
 
-Yerleşim `app/database/migrations` dizininize konumlandırılır ve bir 'zaman kayıtı' (timestamp) bulundurur. Zaman Kayıtı, uygulamanıza yerleşimlerinizin sırasını belirleme olanağını sağlar.
+Yerleşim `app/database/migrations` dizininize konumlandırılır ve Laravel'in yerleşimlerin sırasını belirlemesine imkan veren bir zaman damgası içerir.
 
-Yerleşimi oluştururken bir patika `--path` seçeneği de belirtebilirsiniz. Patika, kurulum kök dizinine ilişkin olmalıdır:
+Yerleşimi oluştururken bir patika `--path` seçeneği de belirtebilirsiniz. Patika, kurulum kök dizinine göreceli olmalıdır:
 
 	php artisan migrate:make falancaYerlesim --path=app/migrations
 
@@ -67,7 +67,7 @@ Tablo ismini ve yeni bir tablonun oluşturulacagını da, tablo `--table` ve olu
 <a name="database-seeding"></a>
 ## Veritabanı Filizlendirmesi
 
-Filizlendirme (seeding), yerleşim ile oluşturulacak veritabanı tablosunda gerekli olacak ilk veri kayıtlarının (seed data) oluşturulması işlemidir(:çevirenin notu). Laravel, veritabanınızın deneme verisi ile filizlendirilmesi için kolaylık sağlayacak olan filizlendirme (seed) sınıflarını bulundurur. Bütün filizlendirme sınıfları `app/database/seeds` dizininde konumlandırılır. Filizlendirme sınıflarına istediğiniz isimleri verebilirsiniz. Fakat isimlendirirken anlaşılacak belli bir düzene (convention) uyulması lehinizedir, örneğin `KullanicilarTablosuFilizlendiricisi`, vb. Başlangıçta, kullanacağınız sınıf olarak `DatabaseSeeder` (Veritabanı Filizlendiricisi) sınıfı belirlenmiştir. Filizlendirme sırasını denetlemenize imkan verecek olan, bu sınıfın 'çagır' `call` yöntemini kullanarak diğer filizlendirme sınıflarınızı çalıştırabilirsiniz. 
+Filizlendirme (seeding), yerleşim ile oluşturulacak veritabanı tablosunda gerekli olacak ilk veri kayıtlarının (seed data) oluşturulması işlemidir(:çevirenin notu). Laravel, veritabanınızın deneme verisi ile filizlendirilmesi için kolaylık sağlayacak olan filizlendirme (seed) sınıflarını bulundurur. Bütün filizlendirme sınıfları `app/database/seeds` dizininde konumlandırılır. Filizlendirme sınıflarına istediğiniz isimleri verebilirsiniz. Fakat isimlendirirken anlaşılacak belli bir düzene (convention) uyulması lehinizedir, örneğin `KullanicilarTablosuFilizlendiricisi`, vb. Ön tanımlı olarak, sizin için bir DatabaseSeeder sınıfı tanımlanmıştır. Filizlendirme sırasını denetlemenize imkan verecek olan, bu sınıfın 'çağır' `call` yöntemini kullanarak diğer filizlendirme sınıflarınızı çalıştırabilirsiniz. 
 
 **Veritabanı Filizlendirme Sınıfı Örneği**
 
