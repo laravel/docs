@@ -7,22 +7,22 @@
 <a name="yapilandirma"></a>
 ## Yapılandırma
 
-Diğer çatılarda (frameworkler'de), sayfalandırma oldukça sıkıntılı olabilir. Laravel bu işi çocuk oyuncağı gibi yapar. `app/config/view.php` dosyasında bir tek ayar dosyası vardır. `pagination` seçeneği sayfalandırma bağlantıları (links) oluşturmak için kullanılması gereken görünümü (view) belirtir. Varsayılan olarak, Laravel iki görünüm içerir.
+Diğer çatılarda (frameworkler'de), sayfalandırma oldukça sıkıntılı olabilir. Laravel bu işi çocuk oyuncağı gibi yapar. `app/config/view.php` dosyasında bir tek yapılandırma seçeneği bulunmaktadır. `pagination` seçeneği sayfalandırma bağlantıları (links) oluşturmak için kullanılması gereken görünümü (view) belirtir. Varsayılan olarak, Laravel iki görünüm içerir.
 
-Mevcut sayfada `pagination::slider` görünümde akıllı "dizi (range)" bağlantılarını göstermekte olurken, `pagination::simple` görünümü sadece "önceki" ve "sonraki" butonlarını gösterecektir. **Her iki görünüm de Twitter Bootstrap ile uyumludur**
+`pagination::slider` görünümü mevcut sayfaya dayalı olarak akıllı bir bağlantı aralığı gösterirken, `pagination::simple` görünümü sadece "önceki" ve "sonraki" butonlarını gösterecektir. **Her iki görünüm de Twitter Bootstrap ile uyumludur**
 
 <a name="usage"></a>
 ## Kullanım
 
-Birkaç sayfalandırma yolu bulunmaktadır. En kolayı ise `paginate` metodunu veya Eloquent model kullanarak.
+Öğeleri sayfalandırmak için çeşitli yollar vardır. En basiti sorgu oluşturucusunda veya bir Eloquent modelinde `paginate` metodunu kullanmaktır.
 
-**Sayfalandırma Veritaban Sonuçları**
+**Veritabanı Sonuçlarının Sayfalandırılması**
 
 	$uyeler = DB::table('uyeler')->paginate(15);
 
-Ayrıca [Eloquent](/docs/eloquent) modeller ile sayfalandırma yapabilirsiniz:
+[Eloquent](/docs/eloquent) modellerini de sayfalandırabilirsiniz:
 
-**Eloquent Model Sayfalandırma**
+**Bir Eloquent Modelinin Sayfalandırılması**
 
 	$uyeler = User::where('oylar', '>', 100)->paginate(15);
 
@@ -47,19 +47,19 @@ Ayrıca aşağıdaki metodlarla ek olarak sayfalandırma bilgisine erişebilirsi
 - `getFrom`
 - `getTo`
 
-Bazen geçen (passing) dizi öğelerini, elle sayfalandırma oluşturmayı dileyebilirsiniz. Bunu yapmak için `Paginator::make` methodunu kullanınız:
+Bazen bir sayfalandırma olgusunu kendiniz bir öğeler dizisi geçerek oluşturmak isteyebilirsiniz. Bunu yapmak için `Paginator::make` methodunu kullanınız:
 
 **Elle Sayfalandırıcı Oluşturmak**
 
 	$sayfalandirici = Paginator::make($ogeler, $toplamOgeler, $sayfaBasi);
 
 <a name="appending-to-pagination-links"></a>
-## Sayfalandırma Linkleri Ekleme
+## Sayfalandırma Linklerine Ekleme Yapmak
 
-You can add to the query string of pagination links using the `appends` method on the Paginator:
+Sayfalandırıcı üzerinde `appends` methodunu kullanarak sayfalandırma linklerinize sorgu katarı (query string) ekleyebilirsiniz:
 
 	<?php echo $uyeler->appends(array('sira' => 'oylar'))->links(); ?>
 
-Buna benzer URL'ler üretecektir:
+Bu kod, sayfalandırma linkine "&sira=oylar" ekleyecek ve şöyle bir URL üretecektir:
 
 	http://ornek.com/birsey?sayfa=2&sira=oylar
