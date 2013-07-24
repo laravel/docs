@@ -1,46 +1,46 @@
 # Şablonlar
 
-- [Denetçi Yerleşimleri (Controller Layouts)](#controller-layouts)
-- [Blade Şablonlama](#blade-templating)
+- [Denetçi Düzenleri](#controller-layouts)
+- [Blade Şablonları](#blade-templating)
 - [Diğer Blade Kontrol Yapıları](#other-blade-control-structures)
 
 <a name="controller-layouts"></a>
-## Denetçi Yerleşimleri (Controller Layouts)
+## Denetçi Düzenleri
 
-Şablonları kullanmanın bir metodu da Laravel aracılığıyla sağlanan denetçi yerleşimleridir (controller layouts). Denetleyicide (controller'da) `layout` özelliğini belirtirken, tanımlanan görünüm (view) sizin için oluşturulacak ve kabul edilecek olan bu yanıt (response) eylemlerden (actions) döndürülecektir.
+Laravel'de şablon kullanma yöntemlerinden birisi denetçi düzenleri üzerinden gerçekleştirilir. İlgili denetçideki `layout` özelliğinin belirlenmesiyle, belirlemiş olduğunuz görünüm oluşturulacak ve eylemlerden dönmüş cevap olarak kabul edilecektir.
 
-**Denetçide Yerleşim (Layout) Tanımlama**
+**Bir Denetçide Bir Düzen Tanımlanması**
 
-	class UserController extends BaseController {
+	class UyeController extends BaseController {
 
 		/**
-		 * Yerleşim (Layout) yanıtlar (responses) için kullanılmalıdır.
+		 * Cevaplar için kullanılacak olan düzen.
 		 */
 		protected $layout = 'layouts.master';
 
 		/**
-		 * Kullanıcı profilini göster.
+		 * Uye profilini göster.
 		 */
-		public function showProfile()
+		public function showProfil()
 		{
-			$this->layout->content = View::make('user.profile');
+			$this->layout->content = View::make('uye.profil');
 		}
 
 	}
 
 <a name="blade-templating"></a>
-## Blade Şablonlama
+## Blade Şablonları
 
-Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon (template) motorudur. Denetçi yerleşimlerinden farklı olarak Blade, tema kalıtımlıdır ve bölümlerden oluşmaktadır. Tüm Blade şablonları `.blade.php` uzantısına sahip olmalıdır.
+Blade Laravel'le gelen basit ama güçlü bir şablon motorudur. Denetçi düzenlerinden farklı olarak, Blade _şablon kalıtımı_ ve _kesimler_ (sections) ile yürütülür. Tüm Blade şablonlarının uzantısı `.blade.php` olmalıdır.
 
-**Blade Yerleşim (Layout) Tanımlamak**
+**Bir Blade Düzeninin Tanımlanması**
 
-	<!-- app/views/layouts/master.blade.php içinde depolanır. -->
+	<!-- app/views/layouts/master.blade.php 'de bulunmaktadır-->
 
 	<html>
 		<body>
 			@section('sidebar')
-				Burası ana sidebar'dır.
+				This is the master sidebar.
 			@show
 
 			<div class="container">
@@ -49,45 +49,45 @@ Blade basit ve yeterli güce sahip Laravel tarafından sağlanan bir şablon (te
 		</body>
 	</html>
 
-**Blade Yerleşim (Layout) Kullanmak**
+**Bir Blade Düzeninin Kullanılması**
 
 	@extends('layouts.master')
 
 	@section('sidebar')
 		@parent
 
-		<p>Burası ana sidebar'a eklendi.</p>
+		<p>Burası master sidebar'a eklenmiştir.</p>
 	@stop
 
 	@section('content')
-		<p>Bu benim body içeriğimdir.</p>
+		<p>Burası kendi content bölümümdür.</p>
 	@stop
 
-Görünümlerdeki `extend` bir Blade yerleşimi (layout) sadece yerleşimdeki bölümleri geçersiz kıldığını unutmayın.Yerleşimin (Layout) içeriği `@parent` kullanılarak çocuk (child) görünüme dahil edilebilir, sidebar veya foooter gibi içeriklerin yerleşim (layout) bölümüne eklemenizi sağlar.
+Bir Blade düzenini genişleten (`extend`) görünümlerin, düzenden gelen kesimleri değiştirmekten başka bir şey yapmadığını unutmayın. İlgili düzenin içeriği bir kesimde `@parent` direktifi kullanılarak çocuk görünüme katılabilir, böylece bir kenar çobuğu veya altbilgi gibi bir düzen kesimine eklemeler yapabilirsiniz.
 
 <a name="other-blade-control-structures"></a>
 ## Diğer Blade Kontrol Yapıları
 
-**Veriyi Yazdırma**
+**Veri Yazdırılması**
 
-	Merhaba, {{ $name }}.
+	Merhaba {{ $isim }}.
 
-	Geçerli UNIX zamanı {{ time() }}.
+	Şu anki UNIX zaman damgası {{ time() }}'dır.
 
-Elbette, tüm kullanıcılara sağlanan veri temizlenmeli ve kurtulmalıdır. Çıktıyı kurtarmak için üçlü küme ayracı sözdizimini kullanabilirsiniz:
+Tabii ki, kullanıcılardan gelen tüm veriler escape edilmeli ya da arındırılmalıdır. Çıktıyı escape etmek için, üçlü küme parantezi sözdizimini kullanabilirsiniz:
 
-	Merhaba, {{{ $name }}}.
+	Merhaba {{{ $isim }}}.
 
-> **Not:** Uygulamanızda kullanıcılara sağlanan içeriğine çok dikkat edin. Her zaman ve herhangi bir HTML içerik için üçlü küme ayracı sözdizimini kullanın.
+> **Not:** Uygulamanızın kullanıcılarından gelen verileri yazdıracağınız zaman çok dikkatli olun. İçerikte olabilecek HTML antitelerini escape etmek amacıyla her zaman için üçlü küme parantezi sözdizimi kullanın.
 
-**If Demeçleri**
+**If Cümleleri**
 
-	@if (count($kayitlar) === 1)
-		Bir kaydım var!
-	@elseif (count($kayitlar) > 1)
-		Birden fazla kaydım var!
+	@if (count($records) === 1)
+		Tek kayıt var!
+	@elseif (count($records) > 1)
+		Birden çok kayıt var!
 	@else
-		Herhangi bir kaydım yok!
+		Hiç kayıt yok!
 	@endif
 
 	@unless (Auth::check())
@@ -97,22 +97,22 @@ Elbette, tüm kullanıcılara sağlanan veri temizlenmeli ve kurtulmalıdır. Ç
 **Döngüler**
 
 	@for ($i = 0; $i < 10; $i++)
-		Varolan değer {{ $i }}
+		Şu anki değer {{ $i }}'dir.
 	@endfor
 
-	@foreach ($users as $user)
-		<p>Kullanıcı {{ $user->id }}</p>
+	@foreach ($uyeler as $uye)
+		<p>Bu, üye {{ $uye->id }}'dir.</p>
 	@endforeach
 
 	@while (true)
-		<p>Sonsuza kadar döngüdeyim.</p>
+		<p>Sonsuz döngüdeyim.</p>
 	@endwhile
 
-**Alt-Görünümleri (Sub-Views) Dahil Etmek**
+**Alt Görünümlerin Dahil Edilmesi**
 
-	@include('view.name')
+	@include('view.ismi')
 
-**Dil Satırlarını Gösterme**
+**Dil Satırlarının Gösterilmesi**
 
 	@lang('language.line')
 
@@ -120,4 +120,4 @@ Elbette, tüm kullanıcılara sağlanan veri temizlenmeli ve kurtulmalıdır. Ç
 
 **Yorumlar**
 
-	{{-- Bu yorum HTML olarak yorumlanmayacaktır --}}
+	{{-- Bu yorum, gösterilen HTML içerisinde olmayacaktır --}}
