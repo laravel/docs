@@ -11,27 +11,27 @@
 
 Laravel, çeşitli önbellekleme sistemleri için tümleşik bir API sağlar. Önbellekleme yapılandırma ayarları `app/config/cache.php` dosyasında bulunmaktadır. Bu dosyada uygulamanızda varsayılan olarak hangi önbellekleme sürücüsünü kullanmak istediğinizi belirtebilirsiniz. Laravel, [Memcached](http://memcached.org) ve [Redis](http://redis.io) gibi popüler önbellekleme sürücülerini barındırır.
 
-Önbellekleme yapılandırma dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel, sıralanarak önbelleklenmiş nesneleri dosya sisteminde depolayan `file` (dosya) önbellekleme sürücüsünü kullanmak üzere ayarlanmıştır. Daha büyük uygulamalar için, Memcached ve APC gibi bir önbellekleme uygulaması kullanmanız önerilir.
+Önbellekleme yapılandırma dosyası ayrıca dosyanın içinde açıklanmış çeşitli seçenekleri de içerir, bu yüzden o seçenekleri de okuduğunuzdan emin olun. Varsayılan olarak, Laravel, sıralanarak önbelleklenmiş öğeleri dosya sisteminde depolayan `file` (dosya) önbellekleme sürücüsünü kullanmak üzere ayarlanmıştır. Daha büyük uygulamalar için, Memcached ve APC gibi bir önbellekleme uygulaması kullanmanız önerilir.
 
 <a name="onbellekleme-kullanimi"></a>
 ## Önbellekleme Kullanımı
 
-**Bir Nesneyi Önbelleğe Koymak**
+**Bir Öğeyi Önbelleğe Koymak**
 
 	Cache::put('key', 'value', $minutes);
 
-**Eğer Nesne Önbellekte Yoksa, Nesneyi Önbelleğe Koymak**
+**Eğer Öğe Önbellekte Yoksa, Öğeyi Önbelleğe Koymak**
 
 	Cache::add('key', 'value', $minutes);
 
-**Nesnenin Önbellekte Var Olup Olmadığını Kontrol Etmek**
+**Öğenin Önbellekte Var Olup Olmadığını Kontrol Etmek**
 
 	if (Cache::has('key'))
 	{
 		//
 	}
 
-**Önbellekten Bir Nesneyi Almak**
+**Önbellekten Bir Öğeyi Almak**
 
 	$value = Cache::get('key');
 
@@ -41,11 +41,11 @@ Laravel, çeşitli önbellekleme sistemleri için tümleşik bir API sağlar. Ö
 
 	$value = Cache::get('key', function() { return 'varsayılanDeğer'; });
 
-**Bir Nesneyi Kalıcı Olarak Önbelleğe Koymak**
+**Bir Öğeyi Kalıcı Olarak Önbelleğe Koymak**
 
 	Cache::forever('key', 'value');
 
-Bazen, önbellekten bir nesneyi almak isteyebilir ve ayrıca talep edilen nesne yoksa önbellekte varsayılan bir değer saklayabilirsiniz. Bunu, `Cache::remember` metodunu kullanarak yapabilirsiniz:
+Bazen, önbellekten bir öğeyi almak isteyebilir ve ayrıca talep edilen öğe yoksa önbellekte varsayılan bir değer saklayabilirsiniz. Bunu, `Cache::remember` metodunu kullanarak yapabilirsiniz:
 
 	$value = Cache::remember('kullanicilar', $minutes, function()
 	{
@@ -59,9 +59,9 @@ Ayrıca, `remember` ve `forever` methodlarını birlikte kullanabilirsiniz.
 		return DB::table('kullanicilar')->get();
 	});
 
-Önbellekte bütün nesnelerin sıralanmış şekilde saklandığını unutmayın, yani her türlü veriyi saklayabilirsiniz.
+Önbellekte bütün öğelerin sıralanmış şekilde saklandığını unutmayın, yani her türlü veriyi saklayabilirsiniz.
 
-**Önbellekten Bir Nesneyi Silmek**
+**Önbellekten Bir Öğeyi Silmek**
 
 	Cache::forget('key');
 
@@ -87,7 +87,7 @@ Ayrıca, `remember` ve `forever` methodlarını birlikte kullanabilirsiniz.
 
 > **Not:** Önbellek bölümleri `dosya` ve `veritabanı` önbellekleme sürücüleri kullanılırken desteklenmemektedir.
 
-Önbellek bölümleri, önbellekteki ilişkili nesneleri gruplamanıza ve tüm bölümü temizlemenize olanak sağlar.
+Önbellek bölümleri, önbellekteki ilişkili öğeleri gruplamanıza ve tüm bölümü temizlemenize olanak sağlar.
 Bölüme erişim için `section` metodu kullanılır:
 
 **Bir Önbellek Bölümününe Erişim**
@@ -96,9 +96,9 @@ Bölüme erişim için `section` metodu kullanılır:
 
 	Cache::section('insanlar')->put('Ayşe', $ayse);
 
-Ayrıca bölümlerde önbelleklenmiş nesnelere, diğer önbellek metodlarında olduğu gibi `increment` ve `decrement` ile de erişebilirsiniz.
+Ayrıca bölümlerde önbelleklenmiş öğelere, diğer önbellek metodlarında olduğu gibi `increment` ve `decrement` ile de erişebilirsiniz.
 
-**Önbellek Bölümündeki Nesnelere Erişmek**
+**Önbellek Bölümündeki Öğelere Erişmek**
 
 	$anne = Cache::section('insanlar')->get('Mehmet');
 
@@ -109,7 +109,7 @@ Ayrıca bölümlerde önbelleklenmiş nesnelere, diğer önbellek metodlarında 
 <a name="veritabani-onbellegi"></a>
 ## Veritabanı Önbelleği
 
-Veritabanı önbelleği kullanabilmek için, önbellek nesnelerini içerecek `database` önbelleği kurulmalıdır. Aşağıda, gerekli tablonun tanımlanması için kullanabileceğiniz Şema (`Schema`) mevcuttur:
+Veritabanı önbellek sürücüsü kullanırken, önbellek öğelerini içeren bir tablo kurulumu gerekir. Bu tablo için örnek bir şema aşağıda gösterilmiştir:
 
 	Schema::create('cache', function($table)
 	{
