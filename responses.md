@@ -4,6 +4,7 @@
 - [Redirects](#redirects)
 - [Views](#views)
 - [View Composers](#view-composers)
+- [View Creators](#view-creators)
 - [Special Responses](#special-responses)
 
 <a name="basic-responses"></a>
@@ -162,6 +163,49 @@ Should you want to condense the composer code for multiple views into one compos
 	View::composer('user', 'ViewComposers@composeUser');
 
 Note that there is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
+
+<a name="view-creators"></a>
+## View Creators
+
+View creators are callbacks or class methods (similar to view composers) that are invoked when a view is first initialized (either via `View::make()` or when a controller's layout is prepared). This allows you to keep your code DRY by instantiating view data such as arrays once in a view creator callback or class method, instead of each time you create the view.
+
+**Defining A View Creator**
+
+    View::creator('home', function($view)
+    {
+	    $view->with('scripts', array('/js/jquery.js', '/js/slideshow.js'));
+    });
+
+Now whenever you `View::make('home')`, it will already have the `scripts` data pre-defined.
+
+You may also attach a view creator to multiple views at once.
+
+    View::creator(array('home', 'contact'), function($view)
+    {
+	    $view->with('scripts', array('/js/jquery.js', '/js/slideshow.js'));
+    });
+
+You can use a class as a creator if you want the added benefits of resolution through the application [IoC Container](/docs/ioc) and abstraction into separate files.
+
+    View::creator('master', 'MasterViewCreator');
+
+The `MasterViewCreator` needs to have one method `create()`, which accepts one parameter, the view object being created:
+
+    class MasterViewCreator {
+	    
+	    public function create($view)
+	    {
+		    $view->with('breadcrumbs', array());
+	    }
+	
+    }
+
+To condense creator code into one class, you can register specific methods of a class as creators just as you can with [view composers](#view-composers).
+
+    View::creator('master', 'ViewCreator@createMaster');
+    View::creator('home', 'ViewCreator@createHome');
+
+Note that there is no convention on where creator classes should be stored. Feel free to chose any location within your `/app` directory as long as it is added to your `composer.json` so the classes can be autoloaded. 
 
 <a name="special-responses"></a>
 ## Special Responses
