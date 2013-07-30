@@ -111,6 +111,20 @@ Of course, all user supplied data should be escaped or purified. To escape the o
 **Including Sub-Views**
 
 	@include('view.name')
+	
+You can also pass data in the sub-view
+	
+	@include('view.name', array('some'=>'data'))
+	
+**Extending Sub-Views with other Sub-Views**
+
+Nested sub-views can extend other sub-views. For example, you list some different items, but all of them use the same container. To do so, use **@overwrite** statement
+	
+	@extends('list.item.container')
+	
+	@section('list.item.content')
+		<p>This is an item of type {{ $item->type }}</p>
+	@overwrite
 
 **Displaying Language Lines**
 
