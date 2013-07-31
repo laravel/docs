@@ -282,6 +282,11 @@ If you wish to customize the format of your timestamps, you may override the `fr
 			return time();
 		}
 
+		protected function getDateFormat()
+		{
+			return 'U';
+		}
+
 	}
 
 <a name="query-scopes"></a>
