@@ -96,6 +96,12 @@ If you are unable to generate the query you need via the fluent interface, feel 
 
 	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
 
+**Specifying The Query Connection**
+
+You may also specify which database connection should be used when running an Eloquent query. Simple use the `on` method:
+
+	$user = User::on('connection-name')->find(1);
+
 <a name="mass-assignment"></a>
 ## Mass Assignment
 
