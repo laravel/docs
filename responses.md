@@ -4,6 +4,7 @@
 - [Redirects](#redirects)
 - [Views](#views)
 - [View Composers](#view-composers)
+- [View Creators](#view-creators)
 - [Special Responses](#special-responses)
 
 <a name="basic-responses"></a>
@@ -123,7 +124,7 @@ The sub-view can then be rendered from the parent view:
 <a name="view-composers"></a>
 ## View Composers
 
-View composers are callbacks or class methods that are called when a view is created. If you have data that you want bound to a given view each time that view is created throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
+View composers are callbacks or class methods that are called when a view is rendered (this happens internally whenever you return a view from a controller method or route callback, or when you invoke the view's `render()` method). If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
 
 **Defining A View Composer**
 
@@ -132,7 +133,7 @@ View composers are callbacks or class methods that are called when a view is cre
 		$view->with('count', User::count());
 	});
 
-Now each time the `profile` view is created, the `count` data will be bound to the view.
+Now each time the `profile` view is rendered, the `count` data will be bound to the view.
 
 You may also attach a view composer to multiple views at once:
 
@@ -156,7 +157,55 @@ A view composer class should be defined like so:
 
 	}
 
+Should you want to condense the composer code for multiple views into one composer class, you can register composers and reference specific methods as you would when routing routes to controller methods:
+
+	View::composer('profile', 'ViewComposers@composeProfile');
+	View::composer('user', 'ViewComposers@composeUser');
+
 Note that there is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
+
+<a name="view-creators"></a>
+## View Creators
+
+View creators are callbacks or class methods (similar to view composers) that are invoked when a view is first initialized (either via `View::make()` or when a controller's layout is prepared). This allows you to keep your code DRY by instantiating view data such as arrays once in a view creator callback or class method, instead of each time you create the view.
+
+**Defining A View Creator**
+
+    View::creator('home', function($view)
+    {
+	    $view->with('scripts', array('/js/jquery.js', '/js/slideshow.js'));
+    });
+
+Now whenever you `View::make('home')`, it will already have the `scripts` data pre-defined.
+
+You may also attach a view creator to multiple views at once.
+
+    View::creator(array('home', 'contact'), function($view)
+    {
+	    $view->with('scripts', array('/js/jquery.js', '/js/slideshow.js'));
+    });
+
+You can use a class as a creator if you want the added benefits of resolution through the application [IoC Container](/docs/ioc) and abstraction into separate files.
+
+    View::creator('master', 'MasterViewCreator');
+
+The `MasterViewCreator` needs to have one method `create()`, which accepts one parameter, the view object being created:
+
+    class MasterViewCreator {
+	    
+	    public function create($view)
+	    {
+		    $view->with('breadcrumbs', array());
+	    }
+	
+    }
+
+To condense creator code into one class, you can register specific methods of a class as creators just as you can with [view composers](#view-composers).
+
+    View::creator('master', 'ViewCreator@createMaster');
+    View::creator('home', 'ViewCreator@createHome');
+
+Note that there is no convention on where creator classes should be stored. Feel free to chose any location within your `/app` directory as long as it is added to your `composer.json` so the classes can be autoloaded. 
 
 <a name="special-responses"></a>
 ## Special Responses
