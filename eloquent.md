@@ -887,7 +887,7 @@ To totally disable date mutations, simply return an empty array from the `getDat
 
 Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`.
 
-Whenever a new item is saved for the first time, the `creating` and `created` events will fire. If an item is not new and the `save()` method is called, the `updating`/`updated` events will fire. In either case, the `saving`/`saved` events will fire.
+Whenever a new item is saved for the first time, the `creating` and `created` events will fire. If an item is not new and the `save` method is called, the `updating` / `updated` events will fire. In both cases, the `saving` / `saved` events will fire.
 
 If `false` is returned from the `creating`, `updating`, `saving`, or `deleting` events, the action will be cancelled:
 
