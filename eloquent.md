@@ -98,7 +98,7 @@ If you are unable to generate the query you need via the fluent interface, feel 
 
 **Specifying The Query Connection**
 
-You may also specify which database connection should be used when running an Eloquent query. Simple use the `on` method:
+You may also specify which database connection should be used when running an Eloquent query. Simply use the `on` method:
 
 	$user = User::on('connection-name')->find(1);
 
