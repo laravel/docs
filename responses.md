@@ -93,11 +93,13 @@ The second argument passed to `View::make` is an array of data that should be ma
 
 **Passing Data To Views**
 
-	$view = View::make('greeting', $data);
-
 	$view = View::make('greeting')->with('name', 'Steve');
 
 In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
+
+If you wish, you may pass an array of data as the second parameter given to the `make` method:
+
+	$view = View::make('greetings', $data);
 
 You may also share a piece of data across all views:
 
