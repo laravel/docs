@@ -63,3 +63,14 @@ You can add to the query string of pagination links using the `appends` method o
 This will generate URLs that look something like this:
 
 	http://example.com/something?page=2&sort=votes
+	
+<a name="custom-url"></a>
+## Setting a custom url
+
+If you want the pagination links to point to a url other than the current one you can use setBaseUrl()
+
+	$users->setBaseUrl('my/custom/url');
+
+This will generate URLs that look like this, no matter what the current page is
+
+	http://example.com/my/custom/url?page=2
