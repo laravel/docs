@@ -11,6 +11,8 @@ Artisan is the name of the command-line interface included with Laravel. It prov
 <a name="usage"></a>
 ## Usage
 
+> **Note:** To use Artisan, first make sure your CLI's current working directoy is in the root Laravel directory (where your `app`, `public`, and other folders reside), or you provide the full path to the Artisan shell script.
+
 To view a list of all available Artisan commands, you may use the `list` command:
 
 **Listing All Available Commands**
