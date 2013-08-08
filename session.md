@@ -86,12 +86,13 @@ Of course, you may use the `session:table` Artisan command to generate this migr
 	
 <a name="session-drivers"></a>
 ## Session Drivers
-The Session Driver defines where session data will be stored.
 
-- `native` - session will be handled by internal PHP routines
-- `cookie` - session will be stored in cookies
-- `database` - session will be stored in database (by default in table `sessions`)
-- `memcached` / `redis` - session will use one of these daemons
-- `array` - session will be stored in a plain array (it's handled by `Symfony\HttpFoundation\Session\Storage\MockArraySessionStorage`)
+The session "driver" defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:
 
-The array driver is typically used for running [Unit Tests](/docs/testing) meaning no session or cache data will be persisted while testing. This means that the session is only per request as it is stored during PHP runtime. 
+- `native` - sessions will be handled by internal PHP session facilities.
+- `cookie` - sessions will be stored in secure, encrypted cookies.
+- `database` - sessions will be stored in a database used by your application.
+- `memcached` / `redis` - sessions will be stored in one of these fast, cached based stores.
+- `array` - sessions will be stored in a simple PHP array and will not be persisted across requests.
+
+> **Note:** The array driver is typically used for running [unit tests](/docs/testing), so no session data will be persisted.
