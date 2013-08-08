@@ -311,7 +311,7 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 
 **Dynamic Scopes**
 
-You may want to use a scope that takes parameters. Simply add your parameters to the scopeFoo() function.
+Sometimes You may wish to define a scope that accepts parameters. Just add your parameters to your scope function:
 
 	class User extends Eloquent {
 
@@ -322,7 +322,7 @@ You may want to use a scope that takes parameters. Simply add your parameters to
 
 	}
 
-Then pass the parameter into the scope call.
+Then pass the parameter into the scope call:
 
 	$users = User::ofType('member')->get();
 
