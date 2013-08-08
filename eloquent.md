@@ -282,11 +282,6 @@ If you wish to customize the format of your timestamps, you may override the `ge
 			return 'U';
 		}
 
-		protected function getDateFormat()
-		{
-			return 'U';
-		}
-
 	}
 
 <a name="query-scopes"></a>
