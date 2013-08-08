@@ -30,6 +30,10 @@ The session configuration is stored in `app/config/session.php`. Be sure to revi
 
 	$value = Session::get('key', function() { return 'default'; });
 
+**Retrieving All Data From The Session**
+
+	$data = Session::all();
+
 **Determining If An Item Exists In The Session**
 
 	if (Session::has('users'))
