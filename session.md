@@ -4,6 +4,7 @@
 - [Session Usage](#session-usage)
 - [Flash Data](#flash-data)
 - [Database Sessions](#database-sessions)
+- [Session Drivers](#session-drivers)
 
 <a name="configuration"></a>
 ## Configuration
@@ -82,3 +83,15 @@ Of course, you may use the `session:table` Artisan command to generate this migr
 	composer dump-autoload
 
 	php artisan migrate
+	
+<a name="session-drivers"></a>
+## Session Drivers
+The Session Driver defines where session data will be stored.
+
+- `native` - session will be handled by internal PHP routines
+- `cookie` - session will be stored in cookies
+- `database` - session will be stored in database (by default in table `sessions`)
+- `memcached` / `redis` - session will use one of these daemons
+- `array` - session will be stored in a plain array (it's handled by `Symfony\HttpFoundation\Session\Storage\MockArraySessionStorage`)
+
+The array driver is typically used for running [Unit Tests](/docs/testing) meaning no session or cache data will be persisted while testing. This means that the session is only per request as it is stored during PHP runtime. 
