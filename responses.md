@@ -93,11 +93,13 @@ The second argument passed to `View::make` is an array of data that should be ma
 
 **Passing Data To Views**
 
-	$view = View::make('greeting', $data);
+Arrays can be passed as arguments to a view and the associative keys will be extracted into variables. In the example below the variable `$name` would be accessible from the view, and would contain `Steve`.
+
+	$view = View::make('greeting', array('name' => 'Steve'));
+
+Alternatively, you can also use the with() method to bind data to views:
 
 	$view = View::make('greeting')->with('name', 'Steve');
-
-In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
 
 You may also share a piece of data across all views:
 
