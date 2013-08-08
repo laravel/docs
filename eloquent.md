@@ -694,12 +694,19 @@ You may also use the `sync` method to attach related models. The `sync` method a
 **Using Sync To Attach Many To Many Models**
 
 	$user->roles()->sync(array(1, 2, 3));
+	
+**Using Sync To Only Attach New IDs**
+
+By default the sync method will drop existing records on the intermediate table which you haven't specified in the array. If you only want to attach new IDs but keep the existing records on the intermediate table you can disable this behavior by setting the second parameter to false.
+
+	$user->roles()->sync(array(3, 4, 5), false);
 
 You may also associate other pivot table values with the given IDs:
 
 **Adding Pivot Data When Syncing**
 
 	$user->roles()->sync(array(1 => array('expires' => true)));
+	
 
 Sometimes you may wish to create a new related model and attach it in a single command. For this operation, you may use the `save` method:
 
