@@ -309,6 +309,23 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 
 	$users = User::popular()->orderBy('created_at')->get();
 
+**Dynamic Scopes**
+
+You may want to use a scope that takes parameters. Simply add your parameters to the scopeFoo() function.
+
+	class User extends Eloquent {
+
+		public function scopeOfType($query, $type)
+		{
+			return $query->whereType($type);
+		}
+
+	}
+
+Then pass the parameter into the scope call.
+
+	$users = User::ofType('member')->get();
+
 <a name="relationships"></a>
 ## Relationships
 
