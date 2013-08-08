@@ -112,16 +112,16 @@ Of course, all user supplied data should be escaped or purified. To escape the o
 
 	@include('view.name')
 	
-You can also pass data in the sub-view
+You may also pass an array of data to the included view:
 	
 	@include('view.name', array('some'=>'data'))
 	
-**Extending Sub-Views with other Sub-Views**
+**Overwriting Sections**
 
-Nested sub-views can extend other sub-views. For example, you list some different items, but all of them use the same container. To do so, use **@overwrite** statement
+By default, sections are appended to any previous content that exists in the session. To overwrite a section entirely, you may use the `overwrite` statement:
 	
 	@extends('list.item.container')
-	
+
 	@section('list.item.content')
 		<p>This is an item of type {{ $item->type }}</p>
 	@overwrite
