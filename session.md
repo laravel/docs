@@ -20,6 +20,10 @@ The session configuration is stored in `app/config/session.php`. Be sure to revi
 
 	Session::put('key', 'value');
 
+**Push A Value Onto An Array Session Value**
+
+	Session::push('user.teams', 'developers');
+
 **Retrieving An Item From The Session**
 
 	$value = Session::get('key');
