@@ -757,16 +757,23 @@ If a collection is cast to a string, it will be returned as JSON:
 
 Eloquent collections also contain a few helpful methods for looping and filtering the items they contain:
 
-**Iterating & Filtering Collections**
+**Iterating Collections**
 
 	$roles = $user->roles->each(function($role)
 	{
 
 	});
 
-	$roles = $user->roles->filter(function($role)
-	{
+**Filtering Collections**
 
+<p>The callback provided will be used as callback for <a href="http://php.net/manual/en/function.array-filter.php">array_filter()</a></p>
+
+	$users = $user->filter(function($users)
+	{
+		if($user->isAdmin())
+		{
+			return $user;
+		}
 	});
 
 **Applying A Callback To Each Collection Object**

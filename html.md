@@ -10,6 +10,7 @@
 - [Drop-Down Lists](#drop-down-lists)
 - [Buttons](#buttons)
 - [Custom Macros](#custom-macros)
+- [Generating URL's](#generating-urls)
 
 <a name="opening-a-form"></a>
 ## Opening A Form
@@ -167,3 +168,10 @@ Now you can call your macro using its name:
 **Calling A Custom Form Macro**
 
 	echo Form::myField();
+
+
+<p><a name="generating-urls"></a></p>
+
+<h2>Generating URL's</h2>
+
+<p>For more information on generating URL's, visit the <a href="/docs/helpers#urls">Helpers</a> documentation.</p>
