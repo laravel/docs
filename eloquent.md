@@ -770,7 +770,7 @@ Note that this operation does not delete records from the `roles` table, but onl
 <a name="collections"></a>
 ## Collections
 
-All multi-result sets returned by Eloquent either via the `get` method or a relationship return an Eloquent `Collection` object. This object implements the `IteratorAggregate` PHP interface so it can be iterated over like an array. However, this object also has a variety of other helpful methods for working with result sets.
+All multi-result sets returned by Eloquent, either via the `get` method or a `relationship`, will return a collection object. This object implements the `IteratorAggregate` PHP interface so it can be iterated over like an array. However, this object also has a variety of other helpful methods for working with result sets.
 
 For example, we may determine if a result set contains a given primary key using the `contains` method:
 
