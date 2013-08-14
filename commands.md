@@ -23,7 +23,7 @@ To create a new command, you may use the `command:make` Artisan command, which w
 
 By default, generated commands will be stored in the `app/commands` directory; however, you may specify custom path or namespace:
 
-	php artisan command:make FooCommand --path="app/classes" --namespace="Classes"
+	php artisan command:make FooCommand --path=app/classes --namespace=Classes
 
 ### Writing The Command
 
