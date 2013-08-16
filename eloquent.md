@@ -987,3 +987,17 @@ Sometimes you may wish to limit the attributes that are included in your model's
 Alternatively, you may use the `visible` property to define a white-list:
 
 	protected $visible = array('first_name', 'last_name');
+
+<a name="array-appends"></a>
+Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, simply define an accessor for the value:
+
+	public function getIsAdminAttribute()
+	{
+		return $this->attributes['admin'] == 'yes';
+	}
+
+Once you have created the accessor, just add the value to the `appends` property on the model:
+
+	protected $appends = array('is_admin');
+
+Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms.
