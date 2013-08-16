@@ -345,7 +345,7 @@ The field under validation must be unique on a given database table. If the `col
 
 	'email' => 'unique:users,email_address,10'
 
-**Adding Additional WHERE Clauses**
+**Adding Additional Where Clauses**
 
 You may also specify more conditions that will be added as "where" clauses to the query:
 
