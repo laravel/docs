@@ -96,6 +96,12 @@ If you are unable to generate the query you need via the fluent interface, feel 
 
 	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
 
+**Specifying The Query Connection**
+
+You may also specify which database connection should be used when running an Eloquent query. Simple use the `on` method:
+
+	$user = User::on('connection-name')->find(1);
+
 <a name="mass-assignment"></a>
 ## Mass Assignment
 
@@ -271,15 +277,15 @@ By default, Eloquent will maintain the `created_at` and `updated_at` columns on 
 
 	}
 
-If you wish to customize the format of your timestamps, you may override the `freshTimestamp` method in your model:
+If you wish to customize the format of your timestamps, you may override the `getDateFormat` method in your model:
 
 **Providing A Custom Timestamp Format**
 
 	class User extends Eloquent {
 
-		public function freshTimestamp()
+		protected function getDateFormat()
 		{
-			return time();
+			return 'U';
 		}
 
 	}
@@ -303,6 +309,23 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 **Utilizing A Query Scope**
 
 	$users = User::popular()->orderBy('created_at')->get();
+
+**Dynamic Scopes**
+
+Sometimes You may wish to define a scope that accepts parameters. Just add your parameters to your scope function:
+
+	class User extends Eloquent {
+
+		public function scopeOfType($query, $type)
+		{
+			return $query->whereType($type);
+		}
+
+	}
+
+Then pass the parameter into the scope call:
+
+	$users = User::ofType('member')->get();
 
 <a name="relationships"></a>
 ## Relationships
@@ -868,7 +891,11 @@ To totally disable date mutations, simply return an empty array from the `getDat
 <a name="model-events"></a>
 ## Model Events
 
-Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`. If `false` is returned from the `creating`, `updating`, or `saving` events, the action will be cancelled:
+Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`.
+
+Whenever a new item is saved for the first time, the `creating` and `created` events will fire. If an item is not new and the `save` method is called, the `updating` / `updated` events will fire. In both cases, the `saving` / `saved` events will fire.
+
+If `false` is returned from the `creating`, `updating`, `saving`, or `deleting` events, the action will be cancelled:
 
 **Cancelling Save Operations Via Events**
 
@@ -960,3 +987,17 @@ Sometimes you may wish to limit the attributes that are included in your model's
 Alternatively, you may use the `visible` property to define a white-list:
 
 	protected $visible = array('first_name', 'last_name');
+
+<a name="array-appends"></a>
+Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, simply define an accessor for the value:
+
+	public function getIsAdminAttribute()
+	{
+		return $this->attributes['admin'] == 'yes';
+	}
+
+Once you have created the accessor, just add the value to the `appends` property on the model:
+
+	protected $appends = array('is_admin');
+
+Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms.

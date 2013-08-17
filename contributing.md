@@ -7,7 +7,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel is free, open-source software, meaning anyone can contribute to its development and progress. Laravel source code is currently hosted on [Github](http://github.com), which provides an easy method for forking the project and merging your contributions.
+Laravel is free, open-source software, meaning anyone can contribute to its development and progress. Laravel source code is currently hosted on [Github](https://github.com/laravel), which provides an easy method for forking the project and merging your contributions.
 
 <a name="pull-requests"></a>
 ## Pull Requests

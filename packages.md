@@ -38,6 +38,8 @@ Once the `workbench` command has been executed, your package will be available w
 
 Once the provider has been registered, you are ready to start developing your package! However, before diving in, you may wish to review the sections below to get more familiar with the package structure and development workflow.
 
+> **Note:** If your service provider cannot be found, run the `php artisan dump-autoload` command from your application's root directory
+
 <a name="package-structure"></a>
 ## Package Structure
 

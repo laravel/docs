@@ -53,6 +53,16 @@ Sometimes you may wish to create a pagination instance manually, passing it an a
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);
 
+**Customizing The Paginator URI**
+
+You may also customize the URI used by the paginator via the `setBaseUrl` method:
+
+	$users = User::paginate();
+
+	$users->setBaseUrl('custom/url');
+
+The example above will create URLs like the following: http://example.com/custom/url?page=2
+
 <a name="appending-to-pagination-links"></a>
 ## Appending To Pagination Links
 

@@ -192,7 +192,7 @@ Get the class name of the given class, without any namespace names.
 
 ### e
 
-Run `htmlentites` over the given string, with UTF-8 support.
+Run `htmlentities` over the given string, with UTF-8 support.
 
 	$entities = e('<html>foo</html>');
 

@@ -60,6 +60,7 @@ The table builder contains a variety of column types that you may use when build
 Command  | Description
 ------------- | -------------
 `$table->increments('id');`  |  Incrementing ID to the table (primary key).
+`$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent.
 `$table->string('email');`  |  VARCHAR equivalent column
 `$table->string('name', 100);`  |  VARCHAR equivalent with a length
 `$table->integer('votes');`  |  INTEGER equivalent to the table

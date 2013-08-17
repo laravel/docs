@@ -297,6 +297,6 @@ You may also set the cipher and mode used by the encrypter:
 
 **Setting The Cipher & Mode**
 
-	Crypt::setMode('crt');
+	Crypt::setMode('ctr');
 
 	Crypt::setCipher($cipher);

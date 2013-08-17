@@ -95,6 +95,10 @@ Finally, if we wish, we can add an alias for our facade to the `aliases` array i
 
 	Payment::process();
 
+### A Note On Auto-Loading Aliases
+
+Classes in the `aliases` array are not available in some instances because [PHP will not attempt to autoload undefined type-hinted classes](https://bugs.php.net/bug.php?id=39003). If `\ServiceWrapper\ApiTimeoutException` is aliased to `ApiTimeoutException`, a `catch(ApiTimeoutException $e)` outside of the namespace `\ServiceWrapper` will never catch the exception, even if one is thrown. A similar problem is found in Models which have type hints to aliased classes. The only workaround is to forego aliasing and `use` the classes you wish to type hint at the top of each file which requires them.
+
 <a name="mocking-facades"></a>
 ## Mocking Facades
 

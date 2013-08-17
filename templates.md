@@ -111,6 +111,20 @@ Of course, all user supplied data should be escaped or purified. To escape the o
 **Including Sub-Views**
 
 	@include('view.name')
+	
+You may also pass an array of data to the included view:
+	
+	@include('view.name', array('some'=>'data'))
+	
+**Overwriting Sections**
+
+By default, sections are appended to any previous content that exists in the session. To overwrite a section entirely, you may use the `overwrite` statement:
+	
+	@extends('list.item.container')
+
+	@section('list.item.content')
+		<p>This is an item of type {{ $item->type }}</p>
+	@overwrite
 
 **Displaying Language Lines**
 

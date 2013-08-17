@@ -93,11 +93,13 @@ The second argument passed to `View::make` is an array of data that should be ma
 
 **Passing Data To Views**
 
-	$view = View::make('greeting', $data);
-
 	$view = View::make('greeting')->with('name', 'Steve');
 
 In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
+
+If you wish, you may pass an array of data as the second parameter given to the `make` method:
+
+	$view = View::make('greetings', $data);
 
 You may also share a piece of data across all views:
 
@@ -123,7 +125,7 @@ The sub-view can then be rendered from the parent view:
 <a name="view-composers"></a>
 ## View Composers
 
-View composers are callbacks or class methods that are called when a view is created. If you have data that you want bound to a given view each time that view is created throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
+View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
 
 **Defining A View Composer**
 
@@ -132,7 +134,7 @@ View composers are callbacks or class methods that are called when a view is cre
 		$view->with('count', User::count());
 	});
 
-Now each time the `profile` view is created, the `count` data will be bound to the view.
+Now each time the `profile` view is rendered, the `count` data will be bound to the view.
 
 You may also attach a view composer to multiple views at once:
 
@@ -157,6 +159,15 @@ A view composer class should be defined like so:
 	}
 
 Note that there is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
+
+### View Creators
+
+View **creators* work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, simple use the `creator` method:
+
+	View::creator('profile', function($view)
+	{
+		$view->with('count', User::count());
+	});
 
 <a name="special-responses"></a>
 ## Special Responses
