@@ -16,6 +16,8 @@ The pull request process differs for new features and bugs. Before sending a pul
 
 Pull requests for bugs may be sent without creating any proposal issue. If you believe that you know of a solution for a bug that has been filed on Github, please leave a comment detailing your proposed fix.
 
+Bug reports and changes for the documentation can also be contributed through Github in the [documentation repository](https://github.com/laravel/docs).
+
 ### Feature Requests
 
 If you have an idea for a new feature you would like to see added to Laravel, you may create an issue on Github with `[Request]` in the title. The feature request will then be reviewed by a core contributor.
