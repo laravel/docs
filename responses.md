@@ -143,7 +143,7 @@ You may also attach a view composer to multiple views at once:
         $view->with('count', User::count());
     });
     
-> **Note:** If all views are using the same layout, instead of giving all pages as an array, you can also give the `layout` they are extending.
+> **Note:** If all the views in array are extending the same layout, you can pass the `layout` they are extending instead of passing all the child views.
 
 If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC Container](/docs/ioc), you may do so:
 
