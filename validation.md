@@ -353,8 +353,6 @@ You may also specify more conditions that will be added as "where" clauses to th
 
 In the rule above, only rows with an `account_id` of `1` would be included in the unique check.
 
-**Adding Additional 
-
 <a name="rule-url"></a>
 #### url
 
