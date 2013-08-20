@@ -173,7 +173,7 @@ You may also specify options for the "on delete" and "on update" actions of the 
           ->references('id')->on('users')
           ->onDelete('cascade');
 
-To drop a foreign key, you may use the `dropForeign` method. A similar naming convention is used for foreign keys as is used for other indexes:
+To drop a foreign key, you may use the `dropForeign` method. A similar naming convention is used for foreign keys as is used for other indexes. Assuming we are working on the `posts` table and want to drop the foreign key on the `user_id` table:
 
 	$table->dropForeign('posts_user_id_foreign');
 
