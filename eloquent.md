@@ -198,6 +198,8 @@ To delete a model, simply call the `delete` method on the instance:
 
 	User::destroy(1);
 
+	User::destroy(array(1, 2, 3));
+
 	User::destroy(1, 2, 3);
 
 Of course, you may also run a delete query on a set of models:
