@@ -44,7 +44,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 			@show
 
 			<div class="container">
-				@yield('content')
+				@yield('content', 'Some default content')
 			</div>
 		</body>
 	</html>
