@@ -49,7 +49,7 @@ The first segment of the string passed to the `get` method is the name of the la
 
 > **Note**: If a language line does not exist, the key will be returned by the `get` method.
 
-You can also use the `trans()` helper function, which is shorthand for `Lang::get()` and accepts the same arguments:
+You may also use the `trans` helper function, which is an alias for the `Lang::get` method.
 
 	echo trans('messages.welcome');
 
