@@ -43,7 +43,7 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 	
 	return Redirect::to('user/login')->with('message', 'Login Failed');
 
-Since the `with()` method flashes the data to the session, you can retrieve it using `Session::get('message')`.
+> **Note:** Since the `with` method flashes data to the session, you may retrieve the data using the typical `Session::get` method.
 
 **Returning A Redirect To A Named Route**
 
