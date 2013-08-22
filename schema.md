@@ -36,7 +36,7 @@ To specify which connection the schema operation should take place on, use the `
 
 	Schema::connection('foo')->create('users', function($table)
 	{
-		$table->increments('id'):
+		$table->increments('id');
 	});
 
 To drop a table, you may use the `Schema::drop` method:
