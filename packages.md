@@ -73,6 +73,15 @@ When creating a package using the `workbench`, the `boot` command will already c
 
 This method allows Laravel to know how to properly load the views, configuration, and other resources for your application. In general, there should be no need for you to change this line of code, as it will setup the package using the workbench conventions.
 
+If you feel like your package's name might conflict with an identically-named package from a different vendor, you can namespace your package by passing in a second parameter to the `package()` method:
+
+	$this->package('vendor/package', 'Vendor\Package');
+	
+By doing this, you can reference your package in your calls to your views, configuration, and other resources by using the namespace:
+
+	Config::get('Vendor\Package::config.option');
+	View::make('Vendor\Package::index');
+
 <a name="package-conventions"></a>
 ## Package Conventions
 
