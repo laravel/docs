@@ -90,7 +90,21 @@ Of course, you may pass an array of constraints when necessary:
 	{
 		//
 	})
-	->where(array('id' => '[0-9]+', 'name' => '[a-z]+'))
+	->where(array('id' => '[0-9]+', 'name' => '[a-z]+'));
+
+If you find that you're reusing the same constraint among many routes, you can register it once as a pattern and it'll automatically be applied to all of your routes:
+
+	Route::pattern('id', '[0-9]+');
+
+	Route::get('user/{id}', function($id)
+	{
+		// will only match a numeric id
+	});
+
+	Route::get('post/{id}', function($id)
+	{
+		// will only match a numeric id
+	});
 
 <a name="route-filters"></a>
 ## Route Filters
