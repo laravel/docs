@@ -158,7 +158,9 @@ When this command is executed, the configuration files for your application will
 
 **Executing The Config Publish Command For Workbench Packages**
 
-  php artisan config:publish vendor/package --path="workbench/"
+  php artisan config:publish vendor/package --path="workbench/vendor/package/src/config/"
+
+Remember to change `vendor/package` within the `--path` rule to point at your actual vendor and package directories.
 
 > **Note:** The developer may also create environment specific configuration files for your package by placing them in `app/config/packages/vendor/package/environment`.
 
