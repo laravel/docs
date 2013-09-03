@@ -156,6 +156,10 @@ When other developers install your package, they may wish to override some of th
 
 When this command is executed, the configuration files for your application will be copied to `app/config/packages/vendor/package` where they can be safely modified by the developer!
 
+**Executing The Config Publish Command For Workbench Packages**
+
+  php artisan config:publish vendor/package --path="workbench/"
+
 > **Note:** The developer may also create environment specific configuration files for your package by placing them in `app/config/packages/vendor/package/environment`.
 
 <a name="package-migrations"></a>
