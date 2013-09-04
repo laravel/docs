@@ -1,180 +1,125 @@
-# Forms & HTML
+# HTML
 
-- [Opening A Form](#opening-a-form)
-- [CSRF Protection](#csrf-protection)
-- [Form Model Binding](#form-model-binding)
-- [Labels](#labels)
-- [Text, Text Area, Password & Hidden Fields](#text)
-- [Checkboxes and Radio Buttons](#checkboxes-and-radio-buttons)
-- [File Input](#file-input)
-- [Drop-Down Lists](#drop-down-lists)
-- [Buttons](#buttons)
+- [Entities](#entities)
+- [Scripts and Style Sheets](#scripts-and-style-sheets)
+- [Links](#links)
+- [Links to Named Routes](#links-to-named-routes)
+- [Links to Controller Actions](#links-to-controller-actions)
+- [Mail-To Links](#mail-to-links)
+- [Lists](#lists)
 - [Custom Macros](#custom-macros)
 
-<a name="opening-a-form"></a>
-## Opening A Form
+<a name="entities"></a>
+## Entities
 
-**Opening A Form**
+When displaying user input in your Views, it is important to convert all characters which have significance in HTML to their "entity" representation.
 
-	{{ Form::open(array('url' => 'foo/bar')) }}
-		//
-	{{ Form::close() }}
+For example, the < symbol should be converted to its entity representation. Converting HTML characters to their entity representation helps protect your application from cross-site scripting:
 
-By default, a `POST` method will be assumed; however, you are free to specify another method:
+Converting a string to its entity representation:
 
-	echo Form::open(array('url' => 'foo/bar', 'method' => 'put'))
+	echo HTML::entities('<h4>Taylor & Friends</h4>');
 
-> **Note:** Since HTML forms only support `POST` and `GET`, `PUT` and `DELETE` methods will be spoofed by automatically adding a `_method` hidden field to your form.
+Using the "e" function global helper:
 
-You may also open forms that point to named routes or controller actions:
+	echo e('<h4>Taylor & Friends</h4>');
 
-	echo Form::open(array('route' => 'route.name'))
+You can also decode an entity string:
 
-	echo Form::open(array('action' => 'Controller@method'))
+	echo decode('&lt;h4&gt;Taylor &amp; Friends&lt;/h4&gt;');
 
-You may pass in route parameters as well:
+<a name="scripts-and-style-sheets"></a>
+## Scripts and Style Sheets
 
-	echo Form::open(array('route' => array('route.name', $user->id)))
+Generating a reference to a JavaScript file:
 
-	echo Form::open(array('action' => array('Controller@method', $user->id)))
+	echo HTML::script('js/scrollTo.js');
 
-If your form is going to accept file uploads, add a `files` option to your array:
+Generating a reference to a CSS file:
 
-	echo Form::open(array('url' => 'foo/bar', 'files' => true))
+	echo HTML::style('css/main.css');
 
-<a name="csrf-protection"></a>
-## CSRF Protection
+Generating a reference to a CSS file using a given media type:
 
-Laravel provides an easy method of protecting your application from cross-site request forgeries. First, a random token is placed in your user's session. Don't sweat it, this is done automatically. The CSRF token will be added to your forms as a hidden field automatically. However, if you wish to generate the HTML for the hidden field, you may use the `token` method:
+	echo HTML::style('css/common.css', array('media' => 'print'));
 
-**Adding The CSRF Token To A Form**
+> **Note** The following attribute defaults are set for you: 'media'='all', 'type'='text/css', 'rel'='stylesheet'. The above simply overrides these defaults.
 
-	echo Form::token();
+<a name="links"></a>
+**Links**
 
-**Attaching The CSRF Filter To A Route**
+Generating a link from a URI:
 
-	Route::post('profile', array('before' => 'csrf', function()
-	{
-		//
-	}));
+	echo HTML::link('user/profile', 'User Profile');
 
-<a name="form-model-binding"></a>
-## Form Model Binding
+Generating a link from a URI using HTTPS:
 
-Often, you will want to populate a form based on the contents of a model. To do so, use the `Form::model` method:
+	echo HTML::secureLink('user/profile', 'Secure User Profile');
 
-**Opening A Model Form**
+Generating a link and specifiying extra HTML attributes:
 
-	echo Form::model($user, array('route' => array('user.update', $user->id)))
+	echo HTML::link('user/profile', 'User Profile', array('id' => 'profile_link'));
 
-Now, when you generate a form element, like a text input, the model's value matching the field's name will automatically be set as the field value. So, for example, for a text input named `email`, the user model's `email` attribute would be set as the value. However, there's more! If there is an item in the Session flash data matching the input name, that will take precedence over the model's value. So, the priority looks like this:
+Generating links directly to assets:
 
-1. Session Flash Data (Old Input)
-2. Explicitly Passed Value
-3. Model Attribute Data
+	echo HTML::linkAsset('css/main.css', 'Check out our style!');
 
-This allows you to quickly build forms that not only bind to model values, but easily re-populate if there is a validation error on the server!
+	echo HTML::linkSecureAsset('js/scrollTo.js');
 
-> **Note:** When using `Form::model`, be sure to close your form with `Form::close`!
+> **Note** Many of these have global [helper function](/docs/helpers#urls) equivalents similar to the "e" function.
 
-<a name="labels"></a>
-## Labels
+<a name="links-to-named-routes"></a>
+**Links to Named Routes**
 
-**Generating A Label Element**
+Generating a link to a named route:
 
-	echo Form::label('email', 'E-Mail Address');
+	echo HTML::linkRoute('profile', 'User Profile', array($username));
 
-**Specifying Extra HTML Attributes**
+> **Note** You should check out the [Route Parameters](/docs/routing#route-parameters) section of the docs for more info.
 
-	echo Form::label('email', 'E-Mail Address', array('class' => 'awesome'));
+<a name="links-to-controller-actions"></a>
+**Links to Controller Actions**
 
-> **Note:** After creating a label, any form element you create with a name matching the label name will automatically receive an ID matching the label name as well.
+Generating a link to a controller action:
 
-<a name="text"></a>
-## Text, Text Area, Password & Hidden Fields
+	echo HTML::linkAction('home@index', 'Home');
 
-**Generating A Text Input**
+Generating a link to a controller action with wildcard values:
 
-	echo Form::text('username');
+	echo HTML::linkAction('user@profile', 'User Profile', array($username));
 
-**Specifying A Default Value**
+<a name="mail-to-links"></a>
+**Mail-To Links**
 
-	echo Form::text('email', 'example@gmail.com');
+The "mailto" method on the HTML class obfuscates the given e-mail address so it is not sniffed by bots.
 
-> **Note:** The *hidden* and *textarea* methods have the same signature as the *text* method.
+Creating a mail-to link:
 
-**Generating A Password Input**
+	echo HTML::mailto('support@company.com');
 
-	echo Form::password('password');
-	
-**Generating Other Inputs**
+Creating a mail-to links with a specified title:
 
-	echo Form::email($name, $value = null, $attributes = array());
-	echo Form::file($name, $attributes = array());
-	
-<a name="checkboxes-and-radio-buttons"></a>
-## Checkboxes and Radio Buttons
+	echo HTML::mailto('support@company.com', 'Get in touch');
 
-**Generating A Checkbox Or Radio Input**
+<a name="lists"></a>
+**Lists**
 
-	echo Form::checkbox('name', 'value');
-	
-	echo Form::radio('name', 'value');
+Creating lists from an array of items:
 
-**Generating A Checkbox Or Radio Input That Is Checked**
+	echo HTML::ol(array('Fill out TPS reports', 'Meeting with the Bobs', 'Lunch'));
 
-	echo Form::checkbox('name', 'value', true);
-	
-	echo Form::radio('name', 'value', true);
-
-<a name="file-input"></a>
-## File Input
-
-**Generating A File Input**
-
-	echo Form::file('image');
-
-<a name="drop-down-lists"></a>
-## Drop-Down Lists
-
-**Generating A Drop-Down List**
-
-	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'));
-
-**Generating A Drop-Down List With Selected Default**
-
-	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S');
-
-**Generating A Grouped List**
-
-	echo Form::select('animal', array(
-		'Cats' => array('leopard' => 'Leopard'),
-		'Dogs' => array('spaniel' => 'Spaniel'),
-	));
-
-<a name="buttons"></a>
-## Buttons
-
-**Generating A Submit Button**
-
-	echo Form::submit('Click Me!');
-
-> **Note:** Need to create a button element? Try the *button* method. It has the same signature as *submit*.
+	echo HTML::ul(array('Reduce', 'Reuse', 'Recycle'));
 
 <a name="custom-macros"></a>
-## Custom Macros
+**Custom Macros**
 
-It's easy to define your own custom Form class helpers called "macros". Here's how it works. First, simply register the macro with a given name and a Closure:
+It's easy to define your own custom HTML class helpers called "macros". Here's how it works. First, simply register the macro with a given name and a Closure:
 
-**Registering A Form Macro**
-
-	Form::macro('myField', function()
+	HTML::macro('myElement', function($content)
 	{
-		return '<input type="awesome">';
+		return '<span class="product">' . $content . '</span>';
 	});
 
 Now you can call your macro using its name:
 
-**Calling A Custom Form Macro**
-
-	echo Form::myField();
+	HTML::myElement('Is awesome.');
