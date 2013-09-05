@@ -799,7 +799,7 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 
 **Iterating & Filtering Collections**
 
-	$roles = $user->roles->each(function($role)
+	$roles = $user->roles->map(function($role)
 	{
 
 	});
