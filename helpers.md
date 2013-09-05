@@ -45,9 +45,12 @@ The `array_except` method removes the given key / value pairs from the array.
 
 The `array_fetch` method returns a flattened array containing the selected nested element.
 
-	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
+	$array = array(
+		array('developer' => array('name' => 'Taylor')),
+		array('developer' => array('name' => 'Dayle')),
+	);
 
-	var_dump(array_fetch($array, 'name'));
+	$array = array_fetch($array, 'developer.name');
 
 	// array('Taylor', 'Dayle');
 
