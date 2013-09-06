@@ -283,6 +283,12 @@ Generate a URL for a given controller action.
 
 	$url = action('HomeController@getIndex', $params);
 
+### route
+
+Generate a URL for a given named route.
+
+	$url = route('routeName', $params);
+
 ### asset
 
 Generate a URL for an asset.
