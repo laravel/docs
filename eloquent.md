@@ -305,12 +305,17 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 		{
 			return $query->where('votes', '>', 100);
 		}
+		
+		public function scopeWomen($query)
+		{
+			return $query->whereGender('W');
+		}
 
 	}
 
 **Utilizing A Query Scope**
 
-	$users = User::popular()->orderBy('created_at')->get();
+	$users = User::popular()->women()->orderBy('created_at')->get();
 
 **Dynamic Scopes**
 
