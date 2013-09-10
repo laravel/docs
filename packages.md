@@ -73,6 +73,8 @@ When creating a package using the `workbench`, the `boot` command will already c
 
 This method allows Laravel to know how to properly load the views, configuration, and other resources for your application. In general, there should be no need for you to change this line of code, as it will setup the package using the workbench conventions.
 
+There is not a "default location" for service provider classes. You may put them anywhere you like, perhaps organizing them in a `Providers` namespace within your `app` directory. The file may be placed anywhere, as long as Composer's [auto-loading facilities](http://getcomposer.org/doc/01-basic-usage.md#autoloading) know how to load the class.
+
 <a name="package-conventions"></a>
 ## Package Conventions
 
