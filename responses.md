@@ -22,7 +22,7 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 
 	$response = Response::make($contents, $statusCode);
 
-	$response->header('Content-Type', $value);
+	$response->headers->set('Content-Type', $value);
 
 	return $response;
 
