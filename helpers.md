@@ -157,7 +157,7 @@ Return the last element in the array. Useful for method chaining.
 
 ### app_path
 
-Get the fully qualified path to the `application` directory.
+Get the fully qualified path to the `app` directory.
 
 ### base_path
 
@@ -169,7 +169,7 @@ Get the fully qualified path to the `public` directory.
 
 ### storage_path
 
-Get the fully qualified path to the `application/storage` directory.
+Get the fully qualified path to the `app/storage` directory.
 
 <a name="strings"></a>
 ## Strings
