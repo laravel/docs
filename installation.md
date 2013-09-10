@@ -20,6 +20,8 @@ You may install Laravel by issuing the Composer `create-project` command in your
 
 	composer create-project laravel/laravel --prefer-dist
 
+This will install laravel into the 'laravel' directory in your current working directory.
+
 ### Via Download
 
 Once Composer is installed, download the [latest version](https://github.com/laravel/laravel/archive/master.zip) of the Laravel framework and extract its contents into a directory on your server. Next, in the root of your Laravel application, run the `php composer.phar install` (or `composer install`) command to install all of the framework's dependencies. This process requires Git to be installed on the server to successfully complete the installation.
@@ -53,7 +55,7 @@ Several of the framework directory paths are configurable. To change the locatio
 <a name="pretty-urls"></a>
 ## Pretty URLs
 
-The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, be sure to enable the `mod_rewrite` module.
+The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, make sure that the `mod_rewrite` module is enabled, and make sure that your Apache config has AllowOverride set to "all" for your project's directory.
 
 If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
 
