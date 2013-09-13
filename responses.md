@@ -164,7 +164,7 @@ Note that there is no convention on where composer classes may be stored. You ar
 
 ### View Creators
 
-View **creators* work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, simple use the `creator` method:
+View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, simple use the `creator` method:
 
 	View::creator('profile', function($view)
 	{
