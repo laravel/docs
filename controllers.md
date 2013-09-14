@@ -164,7 +164,7 @@ And, you may also specify a subset of actions to handle on the route:
 					array('only' => array('index', 'show')));
 
 	Route::resource('photo', 'PhotoController',
-					array('except' => array('create', 'store', 'update', delete')));
+					array('except' => array('create', 'store', 'update', 'delete')));
 
 <a name="handling-missing-methods"></a>
 ## Handling Missing Methods
