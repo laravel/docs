@@ -228,7 +228,7 @@ The field under validation must be formatted as an e-mail address.
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
 
-The field under validation must exists on a given database table.
+The field under validation must exist on a given database table.
 
 **Basic Usage Of Exists Rule**
 
