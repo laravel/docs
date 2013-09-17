@@ -6,7 +6,7 @@
 - [Session](#session)
 - [Authentication](#authentication)
 - [IoC Based Extension](#ioc-based-extension)
-- [Request Extnesion](#request-extension)
+- [Request Extension](#request-extension)
 
 <a name="introduction"></a>
 ## Introduction
