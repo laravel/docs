@@ -14,6 +14,7 @@
 - Learning More
     - [Cache](/docs/cache)
     - [Events](/docs/events)
+    - [Extending The Framework](/docs/extending)
     - [Facades](/docs/facades)
     - [Forms & HTML](/docs/html)
     - [Helpers](/docs/helpers)
