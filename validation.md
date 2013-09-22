@@ -349,7 +349,7 @@ The field under validation must be unique on a given database table. If the `col
 
 You may also specify more conditions that will be added as "where" clauses to the query:
 
-	'email' => 'unique:users,email_address,NULL,id,account_id,1
+	'email' => 'unique:users,email_address,NULL,id,account_id,1'
 
 In the rule above, only rows with an `account_id` of `1` would be included in the unique check.
 
