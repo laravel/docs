@@ -280,3 +280,15 @@ You may easily cache the results of a query using the `remember` method:
 	$users = DB::table('users')->remember(10)->get();
 
 In this example, the results of the query will be cached for ten minutes. While the results are cached, the query will not be run against the database, and the results will be loaded from the default cache driver specified for your application.
+
+**Caching An Eager Load**
+
+	$users = User::with(
+		array(
+			'roles' => function($query) {
+				$query->remember(10);
+			}
+		)
+	)->remember(10)->get();
+
+When using Eloquent and eager/lazy loading, it is also possible to load/store a cached result of any relationships a Model might possess.
