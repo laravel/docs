@@ -24,6 +24,8 @@ In addition to this guide, you may wish to check out some [Laravel books](http:/
 - [Code Bright](https://leanpub.com/codebright) by Dayle Rees
 - [Laravel Testing Decoded](https://leanpub.com/laravel-testing-decoded) by Jeffrey Way
 - [Laravel: From Apprentice To Artisan](https://leanpub.com/laravel) by Taylor Otwell
+- [Implementing Laravel](https://leanpub.com/implementinglaravel) by Chris Fidao
+- [Getting Stuff Done With Laravel 4](https://leanpub.com/gettingstuffdonelaravel) by Chuck Heintzelman
 
 <a name="development-team"></a>
 ## Development Team
