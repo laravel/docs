@@ -91,9 +91,9 @@ Cache sections allow you to group related items in the cache, and then flush the
 
 **Accessing A Cache Section**
 
-	Cache::section('people')->put('John', $john);
+	Cache::section('people')->put('John', $john, $minutes);
 
-	Cache::section('people')->put('Anne', $anne);
+	Cache::section('people')->put('Anne', $anne, $minutes);
 
 You may also access cached items from the section, as well as use the other cache methods such as `increment` and `decrement`:
 
