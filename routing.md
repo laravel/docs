@@ -69,6 +69,31 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 	{
 		return $name;
 	});
+	
+**Route Parameters In Route Group Prefixes**
+
+	Route::group(array('prefix' => 'user/{id}'), function()
+	{
+		Route::get('/', function($id)
+		{
+			return 'Showing User '.$id;
+		});
+		
+		Route::group(array('prefix' => 'edit'), function()
+		{
+			Route::get('/', function($id)
+			{
+				return 'Editing User '.$id;
+			});
+			
+			Route::get('password', function($id)
+			{
+				return 'Editing Password of User '.$id;
+			});
+		});
+	});
+	
+When specifying a parameter in a route group prefix the variable is passed to every route in that group including sub groups but not to the routes.
 
 **Regular Expression Route Constraints**
 
