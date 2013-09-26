@@ -31,18 +31,18 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 	);
 	
 **Validating multiple fields at once**
-        $validator = Validator::make(
-        	array(
-        		'name' => 'Dayle',
-        		'password' => 'lamepassword',
-        		'email' => 'email@example.com'
-        	),
-        	array(
-        		'name' => 'required',
-        		'password' => 'required|min:8',
-        		'email' => 'required|email|unique'
-        	)
-        );
+    $validator = Validator::make(
+        array(
+        	'name' => 'Dayle',
+        	'password' => 'lamepassword',
+        	'email' => 'email@example.com'
+        ),
+        array(
+        	'name' => 'required',
+        	'password' => 'required|min:8',
+        	'email' => 'required|email|unique'
+        )
+    );
 
 Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
 
