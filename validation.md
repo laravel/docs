@@ -31,6 +31,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 	);
 	
 **Validating multiple fields at once**
+
     $validator = Validator::make(
         array(
             'name' => 'Dayle',
