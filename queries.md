@@ -116,6 +116,12 @@ The query builder may also be used to write join statements. Take a look at the 
 	            ->join('orders', 'users.id', '=', 'orders.user_id')
 	            ->select('users.id', 'contacts.phone', 'orders.price');
 
+**Left Join Statement**
+
+	DB::table('users')
+		    ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+		    ->get();
+
 You may also specify more advanced join clauses:
 
 	DB::table('users')
