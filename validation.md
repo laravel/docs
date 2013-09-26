@@ -33,14 +33,14 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 **Validating multiple fields at once**
     $validator = Validator::make(
         array(
-        	'name' => 'Dayle',
-        	'password' => 'lamepassword',
-        	'email' => 'email@example.com'
+            'name' => 'Dayle',
+            'password' => 'lamepassword',
+            'email' => 'email@example.com'
         ),
         array(
-        	'name' => 'required',
-        	'password' => 'required|min:8',
-        	'email' => 'required|email|unique'
+            'name' => 'required',
+            'password' => 'required|min:8',
+            'email' => 'required|email|unique'
         )
     );
 
