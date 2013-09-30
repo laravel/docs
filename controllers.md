@@ -67,7 +67,7 @@ However, you may also specify filters from within your controller:
 		 */
 		public function __construct()
 		{
-			$this->beforeFilter('auth');
+			$this->beforeFilter('auth', array('except' => array('getLogin')));
 
 			$this->beforeFilter('csrf', array('on' => 'post'));
 
