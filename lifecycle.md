@@ -25,7 +25,7 @@ You may also do pre and post request processing by registering `before`, `after`
 
 **Registering Application Events**
 
-	App::before(function()
+	App::before(function($request)
 	{
 		//
 	});
