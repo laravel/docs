@@ -23,6 +23,7 @@ There are several ways to paginate items. The simplest is by using the `paginate
 You may also paginate [Eloquent](/docs/eloquent) models:
 
 **Paginating An Eloquent Model**
+        $allUsers = User::paginate(15);
 
 	$users = User::where('votes', '>', 100)->paginate(15);
 
