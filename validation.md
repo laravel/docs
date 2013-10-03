@@ -4,6 +4,7 @@
 - [Working With Error Messages](#working-with-error-messages)
 - [Error Messages & Views](#error-messages-and-views)
 - [Available Validation Rules](#available-validation-rules)
+- [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Custom Error Messages](#custom-error-messages)
 - [Custom Validation Rules](#custom-validation-rules)
 
@@ -372,6 +373,30 @@ In the rule above, only rows with an `account_id` of `1` would be included in th
 #### url
 
 The field under validation must be formatted as an URL.
+
+<a name="conditionally-adding-rules"></a>
+## Conditionally Adding Rules
+
+Sometimes you may wish to require a given field only if another field has a greater value than 100. Or you may need two fields to have a given value only when another field is present. Adding these validation rules doens't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
+
+	$v = Validator::make($data, array(
+		'email' => 'required|email',
+		'games' => 'required|numeric',
+	));
+
+Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game re-sell shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
+
+	$v->sometimes('reason', 'required|max:500', function($input)
+	{
+		return $input->games && $input->games >= 100;
+	});
+
+The first arugment passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
+
+	$v->sometimes(array('reason', 'cost'), 'required', function($input)
+	{
+		return $input->games && $input->games >= 100;
+	});
 
 <a name="custom-error-messages"></a>
 ## Custom Error Messages
