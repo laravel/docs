@@ -398,6 +398,8 @@ The first arugment passed to the `sometimes` method is the name of the field we 
 		return $input->games && $input->games >= 100;
 	});
 
+> **Note:** The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and can be used as an object to access your input and files.
+
 <a name="custom-error-messages"></a>
 ## Custom Error Messages
 
