@@ -97,13 +97,23 @@ You may also specify controller filters inline using a Closure:
 <a name="restful-controllers"></a>
 ## RESTful Controllers
 
-Laravel allows you to easily define a single route to handle every action in a controller using simple, REST naming conventions. First, define the route using the `Route::controller` method:
+Laravel allows you to easily define a single route to handle every action in a controller using simple, REST naming conventions. First, define the route using the `Route::controller` method. The `controller` method accepts three arguments. The first is the base URI the controller handles, the second is the class name of the controller, and the third is configuration for named routes.
 
 **Defining A RESTful Controller**
 
 	Route::controller('users', 'UserController');
 
-The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller. Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
+And using named routes:
+
+	Route::controller(
+		'users',
+		'UserController',
+		array(
+			'getProfile' => 'user_profile',
+		)
+	);
+
+Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
 
 	class UserController extends BaseController {
 
