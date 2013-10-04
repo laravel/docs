@@ -67,7 +67,7 @@ However, you may also specify filters from within your controller:
 		 */
 		public function __construct()
 		{
-			$this->beforeFilter('auth');
+			$this->beforeFilter('auth', array('except' => 'getLogin'));
 
 			$this->beforeFilter('csrf', array('on' => 'post'));
 
@@ -142,15 +142,15 @@ This single route declaration creates multiple routes to handle a variety of RES
 
 **Actions Handled By Resource Controller**
 
-Verb      | Path                  | Action       | Route Name
-----------|-----------------------|--------------|---------------------
-GET       | /resource             | index        | resource.index
-GET       | /resource/create      | create       | resource.create
-POST      | /resource             | store        | resource.store
-GET       | /resource/{id}        | show         | resource.show
-GET       | /resource/{id}/edit   | edit         | resource.edit
-PUT/PATCH | /resource/{id}        | update       | resource.update
-DELETE    | /resource/{id}        | destroy      | resource.destroy
+Verb      | Path                        | Action       | Route Name
+----------|-----------------------------|--------------|---------------------
+GET       | /resource                   | index        | resource.index
+GET       | /resource/create            | create       | resource.create
+POST      | /resource                   | store        | resource.store
+GET       | /resource/{resource}        | show         | resource.show
+GET       | /resource/{resource}/edit   | edit         | resource.edit
+PUT/PATCH | /resource/{resource}        | update       | resource.update
+DELETE    | /resource/{resource}        | destroy      | resource.destroy
 
 Sometimes you may only need to handle a subset of the resource actions:
 
