@@ -90,4 +90,4 @@ Since the Laravel translator is powered by the Symfony Translation component, yo
 <a name="validation"></a>
 ## Validation
 
-For localization for validation errors and messages, take a look at the <a href="/docs/validation#language-validation">Validation</a> documentation.
+For localization for validation errors and messages, take a look at the <a href="/docs/validation#localization">documentation on Validation</a>.

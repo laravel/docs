@@ -10,7 +10,7 @@
 - [Drop-Down Lists](#drop-down-lists)
 - [Buttons](#buttons)
 - [Custom Macros](#custom-macros)
-- [Generating URL's](#generating-urls)
+- [Generating URLs](#generating-urls)
 
 <a name="opening-a-form"></a>
 ## Opening A Form
@@ -183,6 +183,6 @@ Now you can call your macro using its name:
 
 <p><a name="generating-urls"></a></p>
 
-<h2>Generating URL's</h2>
+<h2>Generating URLs</h2>
 
-<p>For more information on generating URL's, visit the <a href="/docs/helpers#urls">Helpers</a> documentation.</p>
+<p>For more information on generating URL's, check out the documentation on <a href="/docs/helpers#urls">helpers</a>.</p>

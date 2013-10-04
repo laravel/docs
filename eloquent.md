@@ -806,7 +806,7 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 
 	$roles = $user->roles->each(function($role)
 	{
-
+		//
 	});
 
 **Filtering Collections**
