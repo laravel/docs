@@ -434,6 +434,7 @@ Sometimes you may wish to specify a custom error messages only for a specific fi
 
 In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
 
+<a name="language-validation"></a>
 **Specifying Custom Messages In Language Files**
 
 	'custom' => array(
