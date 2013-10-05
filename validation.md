@@ -41,7 +41,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
         array(
             'name' => 'required',
             'password' => 'required|min:8',
-            'email' => 'required|email|unique'
+            'email' => 'required|email|unique:users'
         )
     );
 
