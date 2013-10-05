@@ -15,6 +15,8 @@ Laravel is built with unit testing in mind. In fact, support for testing with PH
 
 An example test file is provided in the `app/tests` directory. After installing a new Laravel application, simply run `phpunit` on the command line to run your tests.
 
+> **Note:** Tests inside of `app/tests` are PSR-0 autoloaded. The test file paths must match the namespace they use in your app.
+
 <a name="defining-and-running-tests"></a>
 ## Defining & Running Tests
 
