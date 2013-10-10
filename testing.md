@@ -105,7 +105,7 @@ We can mock the call to the `Event` class by using the `shouldReceive` method on
 
 	public function testGetIndex()
 	{
-		Event::shouldReceive('fire')->once()->with(array('name' => 'Dayle'));
+		Event::shouldReceive('fire')->once()->with('foo', array('name' => 'Dayle'));
 
 		$this->call('GET', '/');
 	}
