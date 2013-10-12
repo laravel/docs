@@ -129,6 +129,10 @@ You may also set the length of time (in seconds) each job should be allowed to r
 
 	php artisan queue:listen --timeout=60
 
+In addition, you may specify the number of seconds to wait before polling for new jobs:
+
+	php artisan queue:listen --sleep=5
+
 To process only the first job on the queue, you may use the `queue:work` command:
 
 **Processing The First Job On The Queue**
