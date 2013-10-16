@@ -78,6 +78,12 @@ Sometimes, such as when you are not sure if a section has been defined, you may 
 
 	The current UNIX timestamp is {{ time() }}.
 
+If you need to display a string that is wrapped in curly braces, you may escape the Blade behavior by prefixing your text with an `@` symbol:
+
+**Displaying Raw Text With Curly Braces**
+
+	@{{ This will not be processed by Blade }}
+
 Of course, all user supplied data should be escaped or purified. To escape the output, you may use the triple curly brace syntax:
 
 	Hello, {{{ $name }}}.
