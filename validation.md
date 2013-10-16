@@ -455,8 +455,6 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 		return $value == 'foo';
 	});
 
-> **Note:** The name of the rule passed to the `extend` method must be "snake cased".
-
 The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
 
 You may also pass a class and method to the `extend` method instead of a Closure:
