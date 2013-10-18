@@ -54,10 +54,10 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 	$response->withCookie(Cookie::make('name', 'value', $minutes));
 
 **Queueing A Cookie For The Next Response**
-Sometimes you want to set a cookie before a response has been created.  Using `Cookie::queue()` will attach your cookie to the next response.
 
-	$cookie = Cookie::make($name, $value, $minutes);
-	Cookie::queue($cookie);
+If you would like to set a cookie before a response has been created, use the `Cookie::queue()` method. The cookie will automatically be attached to the final response from your application.
+
+	Cookie::queue($name, $value, $minutes);
 
 **Creating A Cookie That Lasts Forever**
 
