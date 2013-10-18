@@ -33,8 +33,7 @@ The Laravel framework has a few system requirements:
 
 - PHP >= 5.3.7
 - MCrypt PHP Extension
-
-> **Note:** Some Linux distributions now separate json functions from the primary PHP package. Such as in Ubuntu 13.10 you may need to install a json extension.
+- JSON PHP Extension
 
 <a name="configuration"></a>
 ## Configuration
