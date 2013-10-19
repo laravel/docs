@@ -821,7 +821,7 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 		}
 	});
 
-> **Note:** If converting the Collection to JSON,using the `filter` function may cause the your JSON to return incorrectly.  Using the `values` function afterwards will reset the array keys will fix this problem.
+> **Note:** Using the `filter` function may cause JSON to return incorrectly if the collection is converted JSON.  Using the `values` function after `filter` will reset the array keys and fix this problem.
 
 **Applying A Callback To Each Collection Object**
 
