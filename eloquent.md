@@ -154,7 +154,9 @@ To create a new record in the database from a model, simply create a new model i
 
 You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method. However, before doing so, you will need to specify either a `fillable` or `guarded` attribute on the model, as all Eloquent models protect against mass-assignment.
 
-After saving or creating a new model, you can access its inserted ID simply by getting the object's `id` attribute - in the example above, `$user->id`.
+After saving or creating a new model that uses auto-incrementing IDs, you may retrieve the ID by accessing the object's `id` attribute:
+
+	$insertedId = $user->id;
 
 **Setting The Guarded Attributes On The Model**
 
