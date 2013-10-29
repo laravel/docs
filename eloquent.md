@@ -821,6 +821,8 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 		}
 	});
 
+> **Note:** Using the `filter` function may cause JSON to return incorrectly if the collection is converted to JSON.  Call the `values` function after `filter` and the the array keys will reset and fix this problem.
+
 **Applying A Callback To Each Collection Object**
 
 	$roles = User::find(1)->roles;
