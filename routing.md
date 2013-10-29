@@ -240,6 +240,7 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 		});
 
 	});
+
 <a name="route-prefixing"></a>
 ## Route Prefixing
 

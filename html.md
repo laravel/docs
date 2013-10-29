@@ -181,8 +181,7 @@ Now you can call your macro using its name:
 	echo Form::myField();
 
 
-<p><a name="generating-urls"></a></p>
+<a name="generating-urls"></a>
+##Generating URLs
 
-<h2>Generating URLs</h2>
-
-<p>For more information on generating URL's, check out the documentation on <a href="/docs/helpers#urls">helpers</a>.</p>
+For more information on generating URL's, check out the documentation on [helpers](/docs/helpers#urls).
