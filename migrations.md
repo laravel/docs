@@ -97,9 +97,9 @@ To seed your database, you may use the `db:seed` command on the Artisan CLI:
 
 	php artisan db:seed
 
-By default, the `php artisan db:seed` command fires a class named `DatabaseSeeder,` which as mentioned, is usually used to run calls to all seed classes as needed. In this example, `UserTableSeeder` is passed which can be used to seed one specific table:
+By default, the `db:seed` command runs the `DatabaseSeeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
 
-	php artisan db:seed --class="UserTableSeeder"
+	php artisan db:seed --class=UserTableSeeder
 
 You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations:
 
