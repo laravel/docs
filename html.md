@@ -153,6 +153,18 @@ This allows you to quickly build forms that not only bind to model values, but e
 		'Dogs' => array('spaniel' => 'Spaniel'),
 	));
 
+**Generating A Drop-Down List With A Range**
+
+    echo Form::selectRange('number', 10, 20);
+
+** Generating A Drop-Down With A Year Range**
+
+    echo Form::selectYear('year', 1900, 2000);
+
+** Generating A List With Month Names**
+
+    echo Form::selectMonth('month');
+
 <a name="buttons"></a>
 ## Buttons
 
