@@ -83,6 +83,8 @@ Command  | Description
 `->default($value)`  |  Declare a default value for a column
 `->unsigned()`  |  Set INTEGER to UNSIGNED
 
+> **Note:** The schema builder does not support every type of column. If you wish to add something the schema builder does not support, you will need to use a raw query in your up method.
+
 If you are using the MySQL database, you may use the `after` method to specify the order of columns:
 
 **Using After On MySQL**
