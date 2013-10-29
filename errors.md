@@ -44,6 +44,8 @@ To listen for PHP fatal errors, you may use the `App::fatal` method:
 		//
 	});
 
+Note that if you have more than one type of exception handler, the less specific/catch-all ones should be defined first, while the ones targeting specific exception types should be defined last.
+
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
 
