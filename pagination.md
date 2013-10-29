@@ -23,9 +23,10 @@ There are several ways to paginate items. The simplest is by using the `paginate
 You may also paginate [Eloquent](/docs/eloquent) models:
 
 **Paginating An Eloquent Model**
-        
+
 	$allUsers = User::paginate(15);
-	$users = User::where('votes', '>', 100)->paginate(15);
+
+	$someUsers = User::where('votes', '>', 100)->paginate(15);
 
 The argument passed to the `paginate` method is the number of items you wish to display per page. Once you have retrieved the results, you may display them on your view, and create the pagination links using the `links` method:
 
