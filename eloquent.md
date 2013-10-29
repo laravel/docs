@@ -305,7 +305,7 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 		{
 			return $query->where('votes', '>', 100);
 		}
-		
+
 		public function scopeWomen($query)
 		{
 			return $query->whereGender('W');
@@ -811,7 +811,7 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 
 **Filtering Collections**
 
-<p>The callback provided will be used as callback for <a href="http://php.net/manual/en/function.array-filter.php">array_filter()</a></p>
+When filtering collections, the callback provided will be used as callback for [array_filter](http://php.net/manual/en/function.array-filter.php).
 
 	$users = $user->filter(function($users)
 	{
@@ -820,6 +820,8 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 			return $user;
 		}
 	});
+
+> **Note:** When filtering a collection and converting it to JSON, try calling the `values` function first to reset the array's keys.
 
 **Applying A Callback To Each Collection Object**
 
