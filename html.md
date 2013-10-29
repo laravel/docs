@@ -107,25 +107,25 @@ This allows you to quickly build forms that not only bind to model values, but e
 **Generating A Password Input**
 
 	echo Form::password('password');
-	
+
 **Generating Other Inputs**
 
 	echo Form::email($name, $value = null, $attributes = array());
 	echo Form::file($name, $attributes = array());
-	
+
 <a name="checkboxes-and-radio-buttons"></a>
 ## Checkboxes and Radio Buttons
 
 **Generating A Checkbox Or Radio Input**
 
 	echo Form::checkbox('name', 'value');
-	
+
 	echo Form::radio('name', 'value');
 
 **Generating A Checkbox Or Radio Input That Is Checked**
 
 	echo Form::checkbox('name', 'value', true);
-	
+
 	echo Form::radio('name', 'value', true);
 
 <a name="file-input"></a>
@@ -157,11 +157,7 @@ This allows you to quickly build forms that not only bind to model values, but e
 
     echo Form::selectRange('number', 10, 20);
 
-** Generating A Drop-Down With A Year Range**
-
-    echo Form::selectYear('year', 1900, 2000);
-
-** Generating A List With Month Names**
+**Generating A List With Month Names**
 
     echo Form::selectMonth('month');
 
