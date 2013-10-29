@@ -116,6 +116,10 @@ If a response is returned from a filter, that response will be considered the re
 		return 'You are over 200 years old!';
 	}));
 
+**Attaching A Filter To A Controller Action**
+
+	Route::get('user', array('before' => 'old', 'uses' => 'UserController@showProfile'));
+
 **Attaching Multiple Filters To A Route**
 
 	Route::get('user', array('before' => 'auth|old', function()
