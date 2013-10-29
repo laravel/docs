@@ -265,7 +265,8 @@ Again, notice we are using the `Session` to display any errors that may be detec
 		$credentials = array(
 		    'email' => Input::get('email'),
 		    'password' => Input::get('password'),
-		    'password_confirmation' => Input::get('password_confirmation'));
+		    'password_confirmation' => Input::get('password_confirmation')
+		);
 
 		return Password::reset($credentials, function($user, $password)
 		{
