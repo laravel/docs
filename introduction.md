@@ -26,7 +26,7 @@ In addition to this guide, you may wish to check out some [Laravel books](http:/
 - [Laravel: From Apprentice To Artisan](https://leanpub.com/laravel) by Taylor Otwell
 - [Implementing Laravel](https://leanpub.com/implementinglaravel) by Chris Fidao
 - [Getting Stuff Done With Laravel 4](https://leanpub.com/gettingstuffdonelaravel) by Chuck Heintzelman
-- [Laravel 4 Cookbook](https://leanpub.com/laravel4cookbook) by Christopher Pitt and Taylor Otwell
+- [Laravel 4 Cookbook](https://leanpub.com/laravel4cookbook) by Christopher Pitt
 
 <a name="development-team"></a>
 ## Development Team
