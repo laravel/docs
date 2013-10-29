@@ -10,11 +10,15 @@
 <a name="installation"></a>
 ## Installation
 
-To install the Laravel framework, you may issue the following command from your terminal:
+The Laravel framework utilizes [Composer](http://getcomposer.org) for installation and dependency management. If you haven't already, start by [installing Composer](http://getcomposer.org/doc/00-intro.md).
+
+Now you can install Laraval by issuing the following command from your terminal:
 
 	composer create-project laravel/laravel your-project-name --prefer-dist
 
-Or, you may also download a copy of the [repository from Github](https://github.com/laravel/laravel/archive/master.zip). Next, after [installing Composer](http://getcomposer.org), run the `composer install` command in the root of your project directory. This command will download and install the framework's dependencies.
+This will automatically create a folder named after `your-project-name` in the current directoy, download and install Laravel and all its depencies there.
+
+If you prefer, you can alternatively download a copy of the [Laravel repository from Github](https://github.com/laravel/laravel/archive/master.zip) manually. Next run the `composer install` command in the root of your manually created project directory. This command will download and install the framework's dependencies.
 
 After installing the framework, take a glance around the project to familiarize yourself with the directory structure. The `app` directory contains folders such as `views`, `controllers`, and `models`. Most of your application's code will reside somewhere in this directory. You may also wish to explore the `app/config` directory and the configuration options that are available to you.
 
