@@ -590,6 +590,8 @@ It may be shortened to simply:
 
 	echo $phone->user->email;
 
+> **Note:** Relationships that return many results will return an instance of the `Illuminate\Database\Eloquent\Collection` class.
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
