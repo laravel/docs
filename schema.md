@@ -139,6 +139,8 @@ You may easily check for the existence of a table or column using the `hasTable`
 		//
 	}
 
+You can't use hasColumn on a table that has enums in an alter migration because enums are not fully supported by Doctrine.
+
 <a name="adding-indexes"></a>
 ## Adding Indexes
 
