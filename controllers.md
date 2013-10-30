@@ -94,6 +94,29 @@ You may also specify controller filters inline using a Closure:
 
 	}
 
+As of Laravel 4.1, you may also use an instance method within your controller as a filter. Simply pass the name of the method prefixed with the `@` symbol:
+
+	class PostsController extends BaseController {
+
+		/**
+		 * Instantiate a new PostsController instance.
+		 */
+		public function __construct()
+		{
+		    $this->beforeFilter('@hasPermission');
+		}
+
+		protected function hasPermission($route)
+		{   
+		    $id = $route->getParameter('id');
+
+		    if (! Auth::user()->ownsPost($id)) {
+		        return Response::make('You are not authorized', 401);
+		    }
+		}
+
+	}
+
 <a name="restful-controllers"></a>
 ## RESTful Controllers
 
