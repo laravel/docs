@@ -159,11 +159,6 @@ Laravel provides an easy method of protecting your application from cross-site r
 
 HTTP Basic Authentication provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` filter to your route:
 
-> **Note:** php-cgi under Apache does not pass HTTP Basic user/pass to PHP by default, for this workaround to work, add these lines to your .htaccess file:
-
-	RewriteCond %{HTTP:Authorization} ^(.+)$
-	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
 **Protecting A Route With HTTP Basic**
 
 	Route::get('profile', array('before' => 'auth.basic', function()
@@ -183,6 +178,11 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 	{
 		return Auth::onceBasic();
 	});
+
+If you are using PHP FastCGI, HTTP Basic authentication will not work correctly by default. The following lines should be added to your `.htaccess` file:
+
+	RewriteCond %{HTTP:Authorization} ^(.+)$
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 <a name="password-reminders-and-reset"></a>
 ## Password Reminders & Reset
