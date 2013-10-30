@@ -42,6 +42,14 @@ When working on forms with "array" inputs, you may use dot notation to access th
 
 > **Note:** Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
 
+**Working with sub form data**
+
+When working with sub form inputs such as "products[0][name]", "products[1][name]", etc. You can use the dot "." notation to retrieve sub elements.
+
+	$productNames[] = Input::get('products.0.name'); //Returns a scalar value
+	
+	$productDetails[] = Input::get('products.1'); //Return an array of all values under products.1
+
 <a name="cookies"></a>
 ## Cookies
 
