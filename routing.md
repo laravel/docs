@@ -92,6 +92,15 @@ Of course, you may pass an array of constraints when necessary:
 	})
 	->where(array('id' => '[0-9]+', 'name' => '[a-z]+'))
 
+If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method:
+
+	Route::pattern('id', '[0-9]+');
+
+	Route::get('user/{id}', function($id)
+	{
+		// Only called if {id} is numeric.
+	});
+
 <a name="route-filters"></a>
 ## Route Filters
 
