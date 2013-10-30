@@ -36,7 +36,11 @@ You may access all user input with a few simple methods. You do not need to worr
 
 	$input = Input::except('credit_card');
 
-Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
+When working on forms with "array" inputs, you may use dot notation to access the arrays:
+
+	$input = Input::get('products.0.name');
+
+> **Note:** Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
 
 <a name="cookies"></a>
 ## Cookies
@@ -119,7 +123,7 @@ The object returned by the `file` method is an instance of the `Symfony\Componen
 **Retrieving The Original Name Of An Uploaded File**
 
 	$name = Input::file('photo')->getClientOriginalName();
-	
+
 **Retrieving The Extension Of An Uploaded File**
 
 	$extension = Input::file('photo')->getClientOriginalExtension();
