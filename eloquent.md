@@ -1006,6 +1006,20 @@ Sometimes you may wish to limit the attributes that are included in your model's
 
 	}
 
+To hide relationships, add the method name of the relationship accessor to the `hidden` property, rather than the accessor name.
+
+	class Comment extends Eloquent {
+
+		// Hide both the foreign key field and the relationship
+		protected $hidden = array('authored_by_id', 'authoredBy');
+
+		public function authoredBy()
+		{
+			return $this->belongsTo('User');
+		}
+
+	}
+
 Alternatively, you may use the `visible` property to define a white-list:
 
 	protected $visible = array('first_name', 'last_name');
