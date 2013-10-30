@@ -1006,6 +1006,8 @@ Sometimes you may wish to limit the attributes that are included in your model's
 
 	}
 
+> **Note:** When hiding relationships, use the relationship's **method** name, not the dynamic accessor name.
+
 Alternatively, you may use the `visible` property to define a white-list:
 
 	protected $visible = array('first_name', 'last_name');
