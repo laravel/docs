@@ -48,6 +48,7 @@ You may also access additional pagination information via the following methods:
 - `getTotal`
 - `getFrom`
 - `getTo`
+- `count` (gets the number of recoreds on the current page)
 
 Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
 
