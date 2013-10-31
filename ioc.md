@@ -165,7 +165,12 @@ The container fires an event each time it resolves an object. You may listen to 
 
 **Registering A Resolving Listener**
 
-	App::resolving(function($object)
+	App::resolvingAny(function($object)
+	{
+		//
+	});
+
+	App::resolving('foo', function($foo)
 	{
 		//
 	});
