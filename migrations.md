@@ -97,7 +97,7 @@ To seed your database, you may use the `db:seed` command on the Artisan CLI:
 
 	php artisan db:seed
 
-By default, the `db:seed` command runs the `DatabaseSeeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
+By default, the `db:seed` command runs the `DatabaseSeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
 
 	php artisan db:seed --class=UserTableSeeder
 
