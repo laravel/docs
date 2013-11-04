@@ -61,6 +61,7 @@ Command  | Description
 ------------- | -------------
 `$table->increments('id');`  |  Incrementing ID to the table (primary key).
 `$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent.
+`$table->morphs('imageable');`  |  Adds the proper columns for a polymorphic table.
 `$table->string('email');`  |  VARCHAR equivalent column
 `$table->string('name', 100);`  |  VARCHAR equivalent with a length
 `$table->integer('votes');`  |  INTEGER equivalent to the table
