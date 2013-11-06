@@ -819,7 +819,7 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 
 When filtering collections, the callback provided will be used as callback for [array_filter](http://php.net/manual/en/function.array-filter.php).
 
-	$users = $user->filter(function($user)
+	$users = $users->filter(function($user)
 	{
 		if($user->isAdmin())
 		{
