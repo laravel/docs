@@ -112,6 +112,8 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 	echo Form::email($name, $value = null, $attributes = array());
 	echo Form::file($name, $attributes = array());
+	echo Form::input('tel', 'phone', $value = null, $attributes = array());
+	echo Form::input('search', 'searchstring', $value = null, $attributes = array());
 
 <a name="checkboxes-and-radio-buttons"></a>
 ## Checkboxes and Radio Buttons
