@@ -3,7 +3,6 @@
 - [Laravel Philosophy](#laravel-philosophy)
 - [Learning Laravel](#learning-laravel)
 - [Development Team](#development-team)
-- [Framework Sponsors](#framework-sponsors)
 
 <a name="laravel-philosophy"></a>
 ## Laravel Philosophy
@@ -32,15 +31,3 @@ In addition to this guide, you may wish to check out some [Laravel books](http:/
 ## Development Team
 
 Laravel was created by [Taylor Otwell](https://github.com/taylorotwell), who continues to lead development of the framework. Other prominent community members and contributors include [Dayle Rees](https://github.com/daylerees), [Shawn McCool](https://github.com/ShawnMcCool), [Jeffrey Way](https://github.com/JeffreyWay), [Jason Lewis](https://github.com/jasonlewis), [Ben Corlett](https://github.com/bencorlett), [Franz Liedke](https://github.com/franzliedke), [Dries Vints](https://github.com/driesvints), [Mior Muhammad Zaki](https://github.com/crynobone), and [Phil Sturgeon](https://github.com/philsturgeon).
-
-<a name="framework-sponsors"></a>
-## Framework Sponsors
-
-The following organizations have made financial contributions to the development of the Laravel framework:
-
-- [UserScape](http://userscape.com)
-- [Cartalyst](http://cartalyst.com)
-- [Elli Davis - Toronto Realtor](http://ellidavis.com)
-- [Jay Banks - Vancouver Lofts & Condos](http://jaybanks.ca/vancouver-lofts-condos)
-- [Julie Kinnear - Toronto MLS](http://juliekinnear.com/toronto-mls-listings)
-- [Jamie Sarner - Toronto Real Estate](http://jamiesarner.com)
