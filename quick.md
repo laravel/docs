@@ -12,7 +12,7 @@
 
 The Laravel framework utilizes [Composer](http://getcomposer.org) for installation and dependency management. If you haven't already, start by [installing Composer](http://getcomposer.org/doc/00-intro.md).
 
-Now you can install Laraval by issuing the following command from your terminal:
+Now you can install Laravel by issuing the following command from your terminal:
 
 	composer create-project laravel/laravel your-project-name --prefer-dist
 
