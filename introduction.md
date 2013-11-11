@@ -26,6 +26,7 @@ In addition to this guide, you may wish to check out some [Laravel books](http:/
 - [Implementing Laravel](https://leanpub.com/implementinglaravel) by Chris Fidao
 - [Getting Stuff Done With Laravel 4](https://leanpub.com/gettingstuffdonelaravel) by Chuck Heintzelman
 - [Laravel 4 Cookbook](https://leanpub.com/laravel4cookbook) by Christopher Pitt
+- [Laravel in Action](http://www.manning.com/surguy/) by Maks Surguy
 
 <a name="development-team"></a>
 ## Development Team
