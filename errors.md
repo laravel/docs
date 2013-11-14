@@ -28,7 +28,7 @@ This is the most basic error handler. However, you may specify more handlers if 
 		// Handle the exception...
 	});
 
-If an exception handler returns a response, that response will be sent to the browser and no other error handlers will be called:
+If an exception handler returns a response, that response will be sent to the browser and no additional error handlers will be called:
 
 	App::error(function(InvalidUserException $exception)
 	{
@@ -44,7 +44,9 @@ To listen for PHP fatal errors, you may use the `App::fatal` method:
 		//
 	});
 
-If you have several exception handlers, they should be defined from most generic to most specific. So, for example, a handler that handles all exceptions of type `Exception` should be defined before a custom exception type such as `Illuminate\Encryption\DecryptException`.
+If you have several exception handlers, they should be defined from most specific to most generic. So, for example, a handler that handles a specific exception such as `Illuminate\Encryption\DecryptException` should be defined before a generic exception type such as `Exception`.
+
+If you'd rather define your error handlers from most generic to most specific, use `App::pushError()` instead of `App::error()`.
 
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
