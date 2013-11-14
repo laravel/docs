@@ -169,11 +169,11 @@ And, you may also specify a subset of actions to handle on the route:
 <a name="handling-missing-methods"></a>
 ## Handling Missing Methods
 
-A catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the parameter array for the request as its only argument:
+A catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the name of the method called and the parameter array for the request as its arguments:
 
 **Defining A Catch-All Method**
 
-	public function missingMethod($parameters)
+	public function missingMethod($method, $parameters)
 	{
 		//
 	}
