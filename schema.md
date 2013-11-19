@@ -66,6 +66,8 @@ Command  | Description
 `$table->integer('votes');`  |  INTEGER equivalent to the table
 `$table->bigInteger('votes');`  |  BIGINT equivalent to the table
 `$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
+`$table->unsignedInteger('votes');`  |  UNSIGNED INTEGER equivalent to the table
+`$table->unsignedBigInteger('votes');`  |  UNSIGNED BIGINT equivalent to the table
 `$table->float('amount');`  |  FLOAT equivalent to the table
 `$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision
 `$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
@@ -75,10 +77,12 @@ Command  | Description
 `$table->time('sunrise');`  |  TIME equivalent to the table
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent to the table
 `$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
+`$table->nullableTimestamps();`  |  Adds NULLABLE **created\_at** and **updated\_at** columns
 `$table->softDeletes();`  |  Adds **deleted\_at** column for soft deletes
 `$table->text('description');`  |  TEXT equivalent to the table
 `$table->binary('data');`  |  BLOB equivalent to the table
 `$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
+`$table->morphs('imageable');` | Adds the proper colums **imageable_id** and **imageable_type** for a [polymorphic relation](http://laravel.com/docs/eloquent#polymorphic-relations) to the table
 `->nullable()`  |  Designate that the column allows NULL values
 `->default($value)`  |  Declare a default value for a column
 `->unsigned()`  |  Set INTEGER to UNSIGNED
