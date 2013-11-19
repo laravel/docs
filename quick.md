@@ -20,6 +20,12 @@ This command will download and install a fresh copy of Laravel in a new `your-pr
 
 If you prefer, you can alternatively download a copy of the [Laravel repository from Github](https://github.com/laravel/laravel/archive/master.zip) manually. Next run the `composer install` command in the root of your manually created project directory. This command will download and install the framework's dependencies.
 
+<a name="permissions"></a>
+### Permissions
+Laravel requires one set of permissions to be configured - folders within app/storage require write access by the web server. See the [Installation](/docs/artisan) documentation for more details on configuration.
+
+<a name="directories"></name>
+### Directory Structure
 After installing the framework, take a glance around the project to familiarize yourself with the directory structure. The `app` directory contains folders such as `views`, `controllers`, and `models`. Most of your application's code will reside somewhere in this directory. You may also wish to explore the `app/config` directory and the configuration options that are available to you.
 
 <a name="routing"></a>
