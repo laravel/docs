@@ -155,6 +155,8 @@ Below is a list of all available validation rules and their function:
 - [Date](#rule-date)
 - [Date Format](#rule-date-format)
 - [Different](#rule-different)
+- [Digits](#rule-digits)
+- [Digits Between](#rule-digitsbetween)
 - [E-Mail](#rule-email)
 - [Exists (Database)](#rule-exists)
 - [Image (File)](#rule-image)
@@ -235,6 +237,16 @@ The field under validation must match the _format_ defined according to the `dat
 #### different:_field_
 
 The given _field_ must be different than the field under validation.
+
+<a name="rule-digits"></a>
+#### digits:_value_
+
+The field under validation must be _numeric_ and must have an exact length of _value_.
+
+<a name="rule-digitsbetween"></a>
+#### digitsbetween:_min_,_max_
+
+The field under validation must have a length between the given _min_ and _max_.
 
 <a name="rule-email"></a>
 #### email
