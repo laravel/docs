@@ -554,6 +554,50 @@ To help understand how this works, let's explore the database structure for a po
 The key fields to notice here are the `imageable_id` and `imageable_type` on the `photos` table. The ID will contain the ID value of, in this example, the owning staff or order, while the type will contain the class name of the owning model. This is what allows the ORM to determine which type of owning model to return when accessing the `imageable` relation.
 
 <a name="querying-relations"></a>
+
+### Through Relationships
+Through relationships allow a model to relate to another model "through" a intermediate model.  For example, you might have a `Topic` model that has a `has-many` relationship with `Post`, and the `Post` model has a `has-many` relationship with `Photo`, and you want to find all the photos in a topic.  We can define the models as such:
+
+	class Topic extends Eloquent {
+
+		public function posts()
+		{
+			return $this->hasMany('Post');
+		}
+		
+		public function photos()
+		{
+			return $this->hasManyThrough('Photo', 'Post');
+		}
+	}
+
+	class Post extends Eloquent {
+
+		public function topic()
+		{
+			return $this->belongsTo('Topic');
+		}
+		
+		public function photos()
+		{
+			return $this->hasMany('Photo');
+		}
+
+	}
+
+	class Photo extends Eloquent {
+
+		public function posts()
+		{
+			return $this->belongsTo('Post');
+		}
+
+	}
+**Retrieving Through Relationship**
+You can now retrieve the records with the relationship method:  
+
+	$links = Topic::find(1)->photos();
+
 ## Querying Relations
 
 When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, you wish to pull all blog posts that have at least one comment. To do so, you may use the `has` method:
