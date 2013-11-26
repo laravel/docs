@@ -77,6 +77,7 @@ Command  | Description
 `$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
 `$table->softDeletes();`  |  Adds **deleted\_at** column for soft deletes
 `$table->text('description');`  |  TEXT equivalent to the table
+`$table->longtext('description');`  |  LONGTEXT equivalent to the table
 `$table->binary('data');`  |  BLOB equivalent to the table
 `$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
 `->nullable()`  |  Designate that the column allows NULL values
