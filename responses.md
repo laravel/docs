@@ -103,6 +103,10 @@ If you wish, you may pass an array of data as the second parameter given to the 
 
 	$view = View::make('greetings', $data);
 
+You can achieve the same functionality using dynamic view assignments:
+
+	View::make('greeting')->withName('Steve');
+
 You may also share a piece of data across all views:
 
 	View::share('name', 'Steve');
