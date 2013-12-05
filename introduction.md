@@ -8,7 +8,7 @@
 <a name="where-to-start"></a>
 ## Where To Start
 
-Learning a new framework can be daunting, but it's also exciting. To smooth your transition, we've attempted to create very clear, concise documentation for Laravel. To help you get started as quickly as possible, here are some recommendations for what to read first:
+Learning a new framework can be daunting, but it's also exciting. To smooth your transition, we've attempted to create very clear, concise documentation for Laravel. Here are some recommendations for what to read first:
 
 - [Installation](/docs/installation) and [configuration](/docs/configuration).
 - [Routing](/docs/routing)
