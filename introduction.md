@@ -1,8 +1,22 @@
 # Introduction
 
+- [Where To Start](#where-to-start)
 - [Laravel Philosophy](#laravel-philosophy)
-- [Learning Laravel](#learning-laravel)
+- [Additional Resources](#additional-resources)
 - [Development Team](#development-team)
+
+<a name="where-to-start"></a>
+## Where To Start
+
+Learning a new framework can be daunting, but it's also exciting. To smooth your transition, we've attempted to create very clear, concise documentation for Laravel. To help you get started as quickly as possible, here are some recommendations for what to read first:
+
+- [Installation](/docs/installation) and [configuration](/docs/configuration).
+- [Routing](/docs/routing)
+- [Requests & Input](/docs/requests)
+- [Views & Responses](/docs/responses)
+- [Controllers](/docs/controllers)
+
+After reading through these documents, you should have a good grasp on basic request / response handling in Laravel. Next, you may wish to read about [configuring your database](/docs/database), the [fluent query builder](/docs/queries), and the [Eloquent ORM](/docs/eloquent). Or, you may wish to read about [authentication and security](/docs/security) so you can start signing people into your application.
 
 <a name="laravel-philosophy"></a>
 ## Laravel Philosophy
@@ -13,8 +27,8 @@ Laravel aims to make the development process a pleasing one for the developer wi
 
 Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
 
-<a name="learning-laravel"></a>
-## Learning Laravel
+<a name="additional-resources"></a>
+## Additional Resources
 
 One of the best ways to learn Laravel is to read through the entirety of its documentation. This guide details all aspects of the framework and how to apply them to your application.
 
