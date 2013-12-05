@@ -31,29 +31,29 @@ Once you have haccess to the connection, you can execute a command by using the 
 You can also execute multiple commands by passing an array to the `run()` method:
 
     $client->run(array(
-      'cd /var/www',
-      'php artisan cache:clear',
-      'php artisan migrate'
+        'cd /var/www',
+        'php artisan cache:clear',
+        'php artisan migrate'
     ));
     
 To access the output of the executed commands, you can pass a callback closure as the second parameter of the `run()` method:
 
     $client->run('which php', function($line)
     {
-      Log::info($line);
+        Log::info($line);
     });
       
 Lastly, you can string the `SSH` facade along with the `run()` method to make your code more readable:
 
     SSH::into('production')
-      ->run(array(
-        'cd /var/www',
-        'ls -la',
-        'php artisan cache:clear'
-      ), function($line)
-      {
-        Log::info($line);
-      });
+       ->run(array(
+           'cd /var/www',
+            'ls -la',
+            'php artisan cache:clear'
+        ), function($line)
+        {
+            Log::info($line);
+        });
       
 <a name="tasks"></a>
 ## Tasks
@@ -61,15 +61,15 @@ Lastly, you can string the `SSH` facade along with the `run()` method to make yo
 You can easily group a set of commands into a task for future reference and easy access. To define a task on a connection, use the `SSH` facade and the `define()` method:
 
     SSH::into('production')->define('composer:install', array(
-      'cd /var/www',
-      'php composer.phar install --no-dev'
+        'cd /var/www',
+        'php composer.phar install --no-dev'
     ));
     
 To execute a particular task, use the `task()` method.
 
     SSH::into('production')->task('composer:install', function($line)
     {
-      Log::info($line);
+        Log::info($line);
     });
     
 <a name="files"></a>
@@ -89,22 +89,22 @@ When combining the Remote Component with [Artisan Commands](/docs/commands), the
 
     public function fire()
     {
-      $me = $this;
-      $remote = $this->argument('remote');
+        $me = $this;
+        $remote = $this->argument('remote');
       
-      SSH::into($remote)->run(array(
-        'cd /var/www',
-        'git checkout',
-        'git pull',
-        'php artisan cache:clear',
-        'php artisan migrate',
-        'php composer.phar install --no-dev'
-      ), function($line) use ($me)
-      {
-        $me->info($line);
-      });
+        SSH::into($remote)->run(array(
+            'cd /var/www',
+            'git checkout',
+            'git pull',
+            'php artisan cache:clear',
+            'php artisan migrate',
+            'php composer.phar install --no-dev'
+        ), function($line) use ($me)
+        {
+            $me->info($line);
+        });
       
-      $this->info('All done!');
+        $this->info('All done!');
     }
     
 > Please note that this is simply a suggested workflow, and should not be used in production as is.
