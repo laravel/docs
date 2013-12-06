@@ -63,3 +63,9 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]
+	
+If you are using nginx to serve your Laravel application, the following is required inside a `server` block for pretty URLs:
+
+	location / {
+		try_files $uri /index.php;
+	}
