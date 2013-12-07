@@ -58,7 +58,7 @@ Next, we need to instruct the framework how to determine which environment it is
 
 In this example, 'local' is the name of the environment and 'your-machine-name' is the hostname of your server. On Linux and Mac, you may determine your hostname using the `hostname` terminal command.
 
-You may also pass a `Closure` to the `detectEnvironment` method, allowing you to implement your own environment detection:
+If you need more flexible environment detection, you may pass a `Closure` to the `detectEnvironment` method, allowing you to implement environment detection however you wish:
 
 	$env = $app->detectEnvironment(function()
 	{
@@ -71,10 +71,22 @@ You may access the current application environment via the `environment` method:
 
 	$environment = App::environment();
 
+You may also pass arguments to the `enviornment` method to check if the environment matches a given value:
+
+	if (App::environment('local'))
+	{
+		// The environment is local
+	}
+
+	if (App::environment('local', 'staging'))
+	{
+		// The environment is either local OR staging...
+	}
+
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
-When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating. A call to the `App::down` method is already present in your `app/start/global.php` file. The response from this method will be sent to users when your application is in maintenance mode.
+When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A call to the `App::down` method is already present in your `app/start/global.php` file. The response from this method will be sent to users when your application is in maintenance mode.
 
 To enable maintenance mode, simply execute the `down` Artisan command:
 
@@ -90,3 +102,7 @@ To show a custom view when your application is in maintenance mode, you may add 
 	{
 		return Response::view('maintenance', array(), 503);
 	});
+
+### Maintenance Mode & Queues
+
+While your application is in maintenance mode, no [queue jobs](/docs/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.

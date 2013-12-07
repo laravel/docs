@@ -26,6 +26,10 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 
 	return $response;
 
+If you need access to the `Response` class methods, but want to return a view as the response content, you may use the `Response::view` method for convenience:
+
+	return Response::view('hello')->header('Content-Type', $type);
+
 **Attaching Cookies To Responses**
 
 	$cookie = Cookie::make('name', 'value');
@@ -40,7 +44,7 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 	return Redirect::to('user/login');
 
 **Returning A Redirect With Flash Data**
-	
+
 	return Redirect::to('user/login')->with('message', 'Login Failed');
 
 > **Note:** Since the `with` method flashes data to the session, you may retrieve the data using the typical `Session::get` method.
@@ -187,3 +191,5 @@ View **creators** work almost exactly like view composers; however, they are fir
 	return Response::download($pathToFile);
 
 	return Response::download($pathToFile, $name, $headers);
+
+> **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
