@@ -32,6 +32,8 @@ Once Composer is installed, download the [latest version](https://github.com/lar
 
 If you want to update the Laravel framework, you may issue the `php composer.phar update` command.
 
+> **Note:** Additional methods of installing Laravel can be found online, they includ community created bootstraps and with web generators such as yeoman.
+
 <a name="server-requirements"></a>
 ## Server Requirements
 
