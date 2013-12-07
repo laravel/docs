@@ -22,6 +22,8 @@ In the context of a Laravel application, a facade is a class that provides acces
 
 Your facade class only needs to implement a single method: `getFacadeAccessor`. It's the `getFacadeAccessor` method's job to define what to resolve from the container. The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to the resolved object.
 
+So, when you make a facade call like `Cache::get`, Laravel resolves the Cache manager class out of the IoC container and calls the `get` method on the class. In technical terms, Laravel Facades are a convenient syntax for using the Laravel IoC container as a service locator.
+
 <a name="practical-usage"></a>
 ## Practical Usage
 
@@ -71,6 +73,8 @@ Let's look at an example. Here, we have a class defined as `PaymentGateway\Payme
 		}
 
 	}
+
+This class might live in your `app/models` directory, or any other directory that Composer knows how to auto-load.
 
 We need to be able to resolve this class from the IoC container. So, let's add a binding:
 
