@@ -12,6 +12,7 @@
     - [Controllers](/docs/controllers)
     - [Errors & Logging](/docs/errors)
 - Learning More
+    - [Authentication](/docs/security)
     - [Cache](/docs/cache)
     - [Core Extension](/docs/extending)
     - [Events](/docs/events)
