@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Managers & Factories](#managers-and-factories)
+- [Where To Extend](#where-to-extend)
 - [Cache](#cache)
 - [Session](#session)
 - [Authentication](#authentication)
@@ -25,6 +26,11 @@ Laravel has several `Manager` classes that manage the creation of driver-based c
 Each of these managers includes an `extend` method which may be used to easily inject new driver resolution functionality into the manager. We'll cover each of these managers below, with examples of how to inject custom driver support into each of them.
 
 > **Note:** Take a moment to explore the various `Manager` classes that ship with Laravel, such as the `CacheManager` and `SessionManager`. Reading through these classes will give you a more thorough understanding of how Laravel works under the hood. All manager classes extend the `Illuminate\Support\Manager` base class, which provides some helpful, common functionality for each manager.
+
+<a name="where-to-extend"></a>
+## Where To Extend
+
+This documentation covers how to extend a variety of Laravel's components, but you may be wondering where to place your extension code. Like most other bootstrapping code, you are free to place some extensions in your `start` files. Cache and Auth extensions are good candidates for this approach. Other extensions, like `Session`, must be placed in the `register` mehtod of a service provider since they are needed very early in the request life-cycle.
 
 <a name="cache"></a>
 ## Cache
@@ -77,6 +83,12 @@ Extending Laravel with a custom session driver is just as easy as extending the 
 		// Return implementation of SessionHandlerInterface
 	});
 
+### Where To Extend The Session
+
+Session extensions need to be registered differently than other extensions like Cache and Auth. Since sessions are started very early in the request-lifecycle, registering the extensions in a `start` file will happen be too late. Instead, a [service provider](/docs/ioc#service-providers) will be needed. You should place your session extension code in the `register` method of your service provider, and the provider should be placed **below** the default `Illuminate\Session\SessionServiceProvider` in the `providers` configuration array.
+
+### Writing The Session Extension
+
 Note that our custom cache driver should implement the `SessionHandlerInterface`. This interface is included in the PHP 5.4+ core. If you are using PHP 5.3, the interface will be defined for you by Laravel so you have forward-compatibility. This interface contains just a few simple methods we need to implement. A stubbed MongoDB implementation would look something like this:
 
 	class MongoHandler implements SessionHandlerInterface {
@@ -88,7 +100,7 @@ Note that our custom cache driver should implement the `SessionHandlerInterface`
 		public function destroy($sessionId) {}
 		public function gc($lifetime) {}
 
-	}	
+	}
 
 Since these methods are not as readily understandable as the cache `StoreInterface`, let's quickly cover what each of the methods do:
 
