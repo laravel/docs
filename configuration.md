@@ -71,7 +71,7 @@ You may access the current application environment via the `environment` method:
 
 	$environment = App::environment();
 
-You may also pass arguments to the `enviornment` method to check if the environment matches a given value:
+You may also pass arguments to the `environment` method to check if the environment matches a given value:
 
 	if (App::environment('local'))
 	{
