@@ -14,9 +14,11 @@ Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. 
 <a name="install-laravel"></a>
 ## Install Laravel
 
+This documentation will cover three different methods of installing Laravel. Choose the method that works best for your workflow.
+
 ### Via Laravel Installer
 
-First, download the [Laravel installer PHAR archive](http://laravel.com/laravel.phar). For convenience, rename the file to `laravel` and move it to `/usr/local/bin`. Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer.
+First, download the [Laravel installer PHAR archive](http://laravel.com/laravel.phar). For convenience, rename the file to `laravel`, move it to `/usr/local/bin` and make it executable `chmod +x /usr/local/bin/laravel`. Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer.
 
 ### Via Composer Create-Project
 
