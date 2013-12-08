@@ -18,6 +18,8 @@ Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. 
 
 First, download the [Laravel installer PHAR archive](http://laravel.com/laravel.phar). For convenience, rename the file to `laravel` and move it to `/usr/local/bin`. Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer.
 
+If a `Permission Denied` error is occurred, edit the file's permissions using the command: `sudo chmod 755 /usr/local/lib/laravel`.
+
 ### Via Composer Create-Project
 
 You may also install Laravel by issuing the Composer `create-project` command in your terminal:
