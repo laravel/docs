@@ -59,27 +59,28 @@ The table builder contains a variety of column types that you may use when build
 
 Command  | Description
 ------------- | -------------
-`$table->increments('id');`  |  Incrementing ID to the table (primary key).
 `$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent.
-`$table->string('email');`  |  VARCHAR equivalent column
-`$table->string('name', 100);`  |  VARCHAR equivalent with a length
-`$table->integer('votes');`  |  INTEGER equivalent to the table
 `$table->bigInteger('votes');`  |  BIGINT equivalent to the table
-`$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
-`$table->float('amount');`  |  FLOAT equivalent to the table
-`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision
-`$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
+`$table->binary('data');`  |  BLOB equivalent to the table
 `$table->boolean('confirmed');`  |  BOOLEAN equivalent to the table
 `$table->date('created_at');`  |  DATE equivalent to the table
 `$table->dateTime('created_at');`  |  DATETIME equivalent to the table
+`$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
+`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision
+`$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
+`$table->float('amount');`  |  FLOAT equivalent to the table
+`$table->increments('id');`  |  Incrementing ID to the table (primary key).
+`$table->integer('votes');`  |  INTEGER equivalent to the table
+`$table->longtext('description');`  |  LONGTEXT equivalent to the table
+`$table->morphs('taggable');`  |  Adds INTEGER `taggable_id` and STRING `taggable_type`
+`$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
+`$table->softDeletes();`  |  Adds **deleted\_at** column for soft deletes
+`$table->string('email');`  |  VARCHAR equivalent column
+`$table->string('name', 100);`  |  VARCHAR equivalent with a length
+`$table->text('description');`  |  TEXT equivalent to the table
 `$table->time('sunrise');`  |  TIME equivalent to the table
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent to the table
 `$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
-`$table->softDeletes();`  |  Adds **deleted\_at** column for soft deletes
-`$table->text('description');`  |  TEXT equivalent to the table
-`$table->longtext('description');`  |  LONGTEXT equivalent to the table
-`$table->binary('data');`  |  BLOB equivalent to the table
-`$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
 `->nullable()`  |  Designate that the column allows NULL values
 `->default($value)`  |  Declare a default value for a column
 `->unsigned()`  |  Set INTEGER to UNSIGNED
