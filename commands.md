@@ -25,6 +25,10 @@ By default, generated commands will be stored in the `app/commands` directory; h
 
 	php artisan command:make FooCommand --path=app/classes --namespace=Classes
 
+When creating the command, the `--command` option may be used to assign the terminal command name:
+
+	php artisan command:make AssignUsers --command=users:assign
+
 ### Writing The Command
 
 Once your command is generated, you should fill out the `name` and `description` properties of the class, which will be used when displaying your command on the `list` screen.
