@@ -5,6 +5,7 @@
 - [Views](#views)
 - [View Composers](#view-composers)
 - [Special Responses](#special-responses)
+- [Response Macros](#response-macros)
 
 <a name="basic-responses"></a>
 ## Basic Responses
@@ -193,3 +194,19 @@ View **creators** work almost exactly like view composers; however, they are fir
 	return Response::download($pathToFile, $name, $headers);
 
 > **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
+
+<a name="response-macros"></a>
+## Response Macros
+
+If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `Response::macro` method:
+
+	Response::macro('caps', function($value)
+	{
+		return Response::make(strtoupper($value));
+	});
+
+The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name on the `Response` class:
+
+	return Response::caps('foo');
+
+You may define your macros in one of your `app/start` files. Alternatively, you may organize your macros into a separate file which is included from one of your `start` files.
