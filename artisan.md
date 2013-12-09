@@ -6,7 +6,7 @@
 <a name="introduction"></a>
 ## แนะนำ
 
-Artisan is the name of the command-line interface included with Laravel. It provides a number of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component.
+Artisan เป็นชื่อของคลาสที่ใช้จัดการคำสั่งที่ทำงานบน cmd  ของ Laravel. It provides a number of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component.
 
 <a name="usage"></a>
 ## Usage
