@@ -181,3 +181,12 @@ The `Request` class provides many methods for examining the HTTP request for you
 	{
 		//
 	}
+
+**Checking The Requested Response Format**
+
+The `Request::format` method will return the requested response format based on the HTTP Accept header:
+
+	if (Request::format() == 'json')
+	{
+		//
+	}
