@@ -4,7 +4,7 @@
 - [Usage](#usage)
 
 <a name="introduction"></a>
-## Introduction
+## แนะนำ
 
 Artisan is the name of the command-line interface included with Laravel. It provides a number of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component.
 
