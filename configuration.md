@@ -103,6 +103,8 @@ To show a custom view when your application is in maintenance mode, you may add 
 		return Response::view('maintenance', array(), 503);
 	});
 
+If the Closure passed to the `down` method returns `NULL`, maintenace mode will be ignored for that request.
+
 ### Maintenance Mode & Queues
 
 While your application is in maintenance mode, no [queue jobs](/docs/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
