@@ -30,7 +30,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 		array('name' => 'Dayle'),
 		array('name' => array('required', 'min:5'))
 	);
-	
+
 **Validating Multiple Fields**
 
     $validator = Validator::make(
@@ -269,6 +269,10 @@ The field under validation must exist on a given database table.
 You may also specify more conditions that will be added as "where" clauses to the query:
 
 	'email' => 'exists:staff,email,account_id,1'
+
+Passing `NULL` as a "where" clause value will add a check for a `NULL` database value:
+
+	'email' => 'exists:staff,email,deleted_at,NULL'
 
 <a name="rule-image"></a>
 #### image
