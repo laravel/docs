@@ -49,6 +49,16 @@ If you want the job to use a method other than `fire`, you may specify the metho
 
 	Queue::push('SendEmail@send', array('message' => $message));
 
+Sometimes you may wish to delay the execute of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
+
+**Delaying The Execution Of A Job**
+
+	$date = Carbon::now()->addMinutes(15);
+
+	Queue::later($date, 'SendEmail@send', array('message' => $message));
+
+In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
+
 Once you have processed a job, it must be deleted from the queue, which can be done via the `delete` method on the `Job` instance:
 
 **Deleting A Processed Job**
