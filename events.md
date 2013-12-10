@@ -58,12 +58,22 @@ When registering an event listener, you may use asterisks to specify wildcard li
 
 **Registering Wildcard Event Listeners**
 
-	Event::listen('foo.*', function($param, $event)
+	Event::listen('foo.*', function($param)
 	{
 		// Handle the event...
 	});
 
-This listener will handle all events that begin with `foo.`. Note that the full event name is passed as the last argument to the handler.
+This listener will handle all events that begin with `foo.`.
+
+You may use the `Event::fired` method to determine exactly which event was fired:
+
+	Event::listen('foo.*', function($param)
+	{
+		if (Event::firing() == 'foo.bar')
+		{
+			//
+		}
+	});
 
 <a name="using-classes-as-listeners"></a>
 ## Using Classes As Listeners
