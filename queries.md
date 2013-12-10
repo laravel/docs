@@ -79,6 +79,11 @@ This method will return an array of role titles. You may also specify a custom k
 	$users = DB::table('users')
 	                    ->whereBetween('votes', array(1, 100))->get();
 
+**Using Where Not Between**
+
+	$users = DB::table('users')
+	                    ->whereNotBetween('votes', array(1, 100))->get();
+
 **Using Where In With An Array**
 
 	$users = DB::table('users')
