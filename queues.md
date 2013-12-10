@@ -49,6 +49,12 @@ If you want the job to use a method other than `fire`, you may specify the metho
 
 	Queue::push('SendEmail@send', array('message' => $message));
 
+If you need to pass the same data to several queue jobs, you may use the `Queue::bulk` method:
+
+**Passing The Same Payload To Multiple Jobs**
+
+	Queue::bulk(array('SendEmail', 'NotifyUser'), $payload);
+
 Sometimes you may wish to delay the execute of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
 
 **Delaying The Execution Of A Job**
@@ -139,13 +145,17 @@ You may also set the length of time (in seconds) each job should be allowed to r
 
 	php artisan queue:listen --timeout=60
 
+**Specifying Queue Sleep Duration**
+
 In addition, you may specify the number of seconds to wait before polling for new jobs:
 
 	php artisan queue:listen --sleep=5
 
-To process only the first job on the queue, you may use the `queue:work` command:
+Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
 
 **Processing The First Job On The Queue**
+
+To process only the first job on the queue, you may use the `queue:work` command:
 
 	php artisan queue:work
 

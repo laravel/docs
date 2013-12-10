@@ -27,6 +27,7 @@
     - [Queues](/docs/queues)
     - [Security](/docs/security)
     - [Session](/docs/session)
+    - [SSH](/docs/ssh)
     - [Templates](/docs/templates)
     - [Unit Testing](/docs/testing)
     - [Validation](/docs/validation)

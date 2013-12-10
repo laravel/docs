@@ -158,6 +158,15 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertSessionHas('age', $value);
 	}
 
+**Asserting Old Input Has Some Data**
+
+	public function testMethod()
+	{
+		$this->call('GET', '/');
+
+		$this->assertHasOldInput();
+	}
+
 <a name="helper-methods"></a>
 ## Helper Methods
 

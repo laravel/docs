@@ -100,7 +100,11 @@ The second argument passed to `View::make` is an array of data that should be ma
 
 **Passing Data To Views**
 
+	// Using conventional approach
 	$view = View::make('greeting')->with('name', 'Steve');
+
+	// Using Magic Methods
+	$view = View::make('greeting')->withName('steve');
 
 In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
 

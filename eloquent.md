@@ -96,6 +96,20 @@ If you are unable to generate the query you need via the fluent interface, feel 
 
 	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
 
+**Chunking Results**
+
+If you need to process a lot (thousands) of Eloquent records, using the `chunk` command will allow you to do without eating all of your RAM:
+
+	User::chunk(200, function($users)
+	{
+		foreach ($users as $user)
+		{
+			//
+		}
+	});
+
+The first argument passed to the method is the number of records you wish to receive per "chunk". The Closure passed as the second argument will be called for each chunk that is pulled from the database.
+
 **Specifying The Query Connection**
 
 You may also specify which database connection should be used when running an Eloquent query. Simply use the `on` method:
@@ -168,7 +182,14 @@ After saving or creating a new model that uses auto-incrementing IDs, you may re
 
 **Using The Model Create Method**
 
+	// Create a new user in the database...
 	$user = User::create(array('name' => 'John'));
+
+	// Retrieve the user by the attributes, or create it if it doesn't exist...
+	$user = User::firstOrCreate(array('name' => 'John'));
+
+	// Retrieve the user by the attributes, or instantiate a new instance...
+	$user = User::firstOrNew(array('name' => 'John'));
 
 To update a model, you may retrieve it, change an attribute, and use the `save` method:
 
@@ -779,6 +800,15 @@ To delete all records on the pivot table for a model, you may use the `detach` m
 	User::find(1)->roles()->detach();
 
 Note that this operation does not delete records from the `roles` table, but only from the pivot table.
+
+**Defining A Custom Pivot Model**
+
+Laravel also allows you to define a custom Pivot model. To define a custom model, first create your own "Base" model class that extends `Eloquent`. In your other Eloquent models, extend this custom base model instead of the default `Eloquent` base. In your base model, add the following function that returns an instance of your custom Pivot model:
+
+	public function newPivot(Model $parent, array $attributes, $table, $exists)
+	{
+		return new YourCustomPivot($parent, $attributes, $table, $exists);
+	}
 
 <a name="collections"></a>
 ## Collections
