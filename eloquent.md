@@ -423,6 +423,17 @@ In the example above, Eloquent will look for a `user_id` column on the `phones` 
 
 	}
 
+Additionally, you pass a third parameter which specifies the name of the associated column on the parent table:
+
+	class Phone extends Eloquent {
+
+		public function user()
+		{
+			return $this->belongsTo('User', 'custom_key', 'parent_key');
+		}
+
+	}
+
 <a name="one-to-many"></a>
 ### One To Many
 
