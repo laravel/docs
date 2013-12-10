@@ -84,6 +84,8 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 	})
 	->where('id', '[0-9]+');
 
+**Passing An Array Of Wheres**
+
 Of course, you may pass an array of constraints when necessary:
 
 	Route::get('user/{id}/{name}', function($id, $name)
@@ -92,6 +94,8 @@ Of course, you may pass an array of constraints when necessary:
 	})
 	->where(array('id' => '[0-9]+', 'name' => '[a-z]+'))
 
+**Defining Global Patterns**
+
 If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method:
 
 	Route::pattern('id', '[0-9]+');
@@ -99,6 +103,18 @@ If you would like a route parameter to always be constrained by a given regular 
 	Route::get('user/{id}', function($id)
 	{
 		// Only called if {id} is numeric.
+	});
+
+**Accessing A Route Parameter Value**
+
+If you need to access a route parameter value outside of a route, you may use the `Route::input` method:
+
+	Route::filter('foo', function()
+	{
+		if (Route::input('id') == 1)
+		{
+			//
+		}
 	});
 
 <a name="route-filters"></a>
