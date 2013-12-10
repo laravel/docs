@@ -395,9 +395,11 @@ The SQL performed by this statement will be as follows:
 
 	select * from phones where user_id = 1
 
-Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
+Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method. Furthermore, you may pass a third argument to the method to specify which local column that should be used for the association:
 
-	return $this->hasOne('Phone', 'custom_key');
+	return $this->hasOne('Phone', 'foreign_key');
+
+	return $this->hasOne('Phone', 'foreign_key', 'local_key');
 
 To define the inverse of the relationship on the `Phone` model, we use the `belongsTo` method:
 
@@ -456,9 +458,11 @@ If you need to add further constraints to which comments are retrieved, you may 
 
 	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
 
-Again, you may override the conventional foreign key by passing a second argument to the `hasMany` method:
+Again, you may override the conventional foreign key by passing a second argument to the `hasMany` method. And, like the `hasOne` relation, the local column may also be specified:
 
-	return $this->hasMany('Comment', 'custom_key');
+	return $this->hasMany('Comment', 'foreign_key');
+
+	return $this->hasMany('Comment', 'foreign_key', 'local_key');
 
 To define the inverse of the relationship on the `Comment` model, we use the `belongsTo` method:
 
