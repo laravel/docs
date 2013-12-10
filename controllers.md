@@ -98,6 +98,28 @@ You may also specify controller filters inline using a Closure:
 
 	}
 
+If you would like to use another method on the controller as a filter, you may use `@` syntax to define the filter:
+
+	class UserController extends BaseController {
+
+		/**
+		 * Instantiate a new UserController instance.
+		 */
+		public function __construct()
+		{
+			$this->beforeFilter('@filterRequests');
+		}
+
+		/**
+		 * Filter the incoming requests.
+		 */
+		public function filterRequests($route, $request)
+		{
+			//
+		}
+
+	}
+
 <a name="restful-controllers"></a>
 ## RESTful Controllers
 
