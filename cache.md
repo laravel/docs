@@ -20,6 +20,12 @@ The cache configuration file also contains various other options, which are docu
 
 	Cache::put('key', 'value', $minutes);
 
+**Using Carbon Objects To Set Expire Time**
+
+	$expiresAt = Carbon::now()->addMinutes(10);
+
+	Cache::put('key', 'value', $expiresAt);
+
 **Storing An Item In The Cache If It Doesn't Exist**
 
 	Cache::add('key', 'value', $minutes);
