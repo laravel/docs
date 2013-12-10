@@ -85,9 +85,7 @@ All drivers except `file` and `database` support the `increment` and `decrement`
 <a name="cache-tags"></a>
 ## Cache Tags
 
-> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. When using multiple tags with caches stored forever, performance will be best with a driver such as `memcached`, which automatically purges least-recently-used records, vs a driver such as `redis`.
-
-> **Note:** Cache sections have been superseded by Cache tags. The section() method has been deprecated, but will remain an alias for tags, and work as before.
+> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
 
 Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method:
 
@@ -96,6 +94,7 @@ Cache tags allow you to tag related items in the cache, and then flush all cache
 You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names.
 
 	Cache::tags('people', 'authors')->put('John', $john, $minutes);
+
 	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
 
 You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`:
@@ -105,22 +104,21 @@ You may use any cache storage method in combination with tags, including `rememb
 To access a tagged cache, pass the same ordered list of tags used to save it.
 
 	$anne = Cache::tags('people', 'artists')->get('Anne');
-	$john = $cache::tags(array('people', 'authors')->get('John);
 
-You may flush all items tagged with a name or list of names. This
+	$john = Cache::tags(array('people', 'authors')->get('John);
+
+You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
 
 	Cache::tags('people', 'authors')->flush();
 
-would remove all caches tagged with either 'people', 'authors', or both, so both Ann and John would be removed.
+In contrast, this statement would remove only caches tagged with 'author', so "John" would be removed, but not "Anne".
 
 	Cache::tags('authors')->flush();
-
-would remove only caches tagged with 'author', so John would be removed, but not Anne.
 
 <a name="database-cache"></a>
 ## Database Cache
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. Below is an example `Schema` declaration for the table:
+When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
 
 	Schema::create('cache', function($table)
 	{
