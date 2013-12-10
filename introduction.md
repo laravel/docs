@@ -10,7 +10,7 @@
 
 Learning a new framework can be daunting, but it's also exciting. To smooth your transition, we've attempted to create very clear, concise documentation for Laravel. Here are some recommendations for what to read first:
 
-- [Installation](/docs/installation) and [configuration](/docs/configuration).
+- [Installation](/docs/installation) and [Configuration](/docs/configuration)
 - [Routing](/docs/routing)
 - [Requests & Input](/docs/requests)
 - [Views & Responses](/docs/responses)

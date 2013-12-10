@@ -420,7 +420,7 @@ In the example above, Eloquent will look for a `user_id` column on the `phones` 
 
 		public function user()
 		{
-			return $this->belongsTo('User', 'custom_key');
+			return $this->belongsTo('User', 'local_key');
 		}
 
 	}
@@ -431,7 +431,7 @@ Additionally, you pass a third parameter which specifies the name of the associa
 
 		public function user()
 		{
-			return $this->belongsTo('User', 'custom_key', 'parent_key');
+			return $this->belongsTo('User', 'local_key', 'parent_key');
 		}
 
 	}
