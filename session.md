@@ -11,7 +11,7 @@
 
 Since HTTP driven applications are stateless, sessions provide a way to store information about the user across requests. Laravel ships with a variety of session back-ends available for use through a clean, unified API. Support for popular back-ends such as [Memcached](http://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
 
-The session configuration is stored in `app/config/session.php`. Be sure to review the well documented options available to you in this file. By default, Laravel is configured to use the `native` session driver, which will work well for the majority of applications.
+The session configuration is stored in `app/config/session.php`. Be sure to review the well documented options available to you in this file. By default, Laravel is configured to use the `file` session driver, which will work well for the majority of applications.
 
 <a name="session-usage"></a>
 ## Session Usage
@@ -91,13 +91,13 @@ Of course, you may use the `session:table` Artisan command to generate this migr
 	composer dump-autoload
 
 	php artisan migrate
-	
+
 <a name="session-drivers"></a>
 ## Session Drivers
 
 The session "driver" defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:
 
-- `native` - sessions will be handled by internal PHP session facilities.
+- `file` - sessions will be stored in `app/storage/sessions`.
 - `cookie` - sessions will be stored in secure, encrypted cookies.
 - `database` - sessions will be stored in a database used by your application.
 - `memcached` / `redis` - sessions will be stored in one of these fast, cached based stores.
