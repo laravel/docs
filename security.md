@@ -75,6 +75,14 @@ If you would like to provide "remember me" functionality in your application, yo
 
 **Note:** If the `attempt` method returns `true`, the user is considered logged into the application.
 
+**Determining If User Authed Via Remember**
+If you are "remembering" user logins, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
+
+	if (Auth::viaRemember())
+	{
+		//
+	}
+
 You also may add extra conditions to the authenticating query:
 
 **Authenticating A User With Conditions**
