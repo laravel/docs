@@ -139,9 +139,15 @@ You may also specify which queue connection the listener should utilize:
 
 Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
 
-You may also set the length of time (in seconds) each job should be allowed to run:
+You may pass a comma-delimited list of queue connections to the `listen` command to set queue priorities:
+
+	php artisan queue:listen high-connection,low-connection
+
+In this example, jobs on the `high-connection` will always be processed before moving onto jobs from the `low-connection`.
 
 **Specifying The Job Timeout Parameter**
+
+You may also set the length of time (in seconds) each job should be allowed to run:
 
 	php artisan queue:listen --timeout=60
 
