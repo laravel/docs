@@ -78,9 +78,19 @@ Sometimes, such as when you are not sure if a section has been defined, you may 
 
 	The current UNIX timestamp is {{ time() }}.
 
-If you need to display a string that is wrapped in curly braces, you may escape the Blade behavior by prefixing your text with an `@` symbol:
+**Echoing Data After Checking For Existence**
+
+Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. Basically, you want to do this:
+
+	{{ isset($name) ? $name : 'Default' }}
+
+However, instead of writing a ternary statement, Blade allows you to use the following convenient short-cut:
+
+	{{ $name or 'Default' }}
 
 **Displaying Raw Text With Curly Braces**
+
+If you need to display a string that is wrapped in curly braces, you may escape the Blade behavior by prefixing your text with an `@` symbol:
 
 	@{{ This will not be processed by Blade }}
 
@@ -121,15 +131,15 @@ Of course, all user supplied data should be escaped or purified. To escape the o
 **Including Sub-Views**
 
 	@include('view.name')
-	
+
 You may also pass an array of data to the included view:
-	
+
 	@include('view.name', array('some'=>'data'))
-	
+
 **Overwriting Sections**
 
 By default, sections are appended to any previous content that exists in the section. To overwrite a section entirely, you may use the `overwrite` statement:
-	
+
 	@extends('list.item.container')
 
 	@section('list.item.content')
