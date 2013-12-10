@@ -41,6 +41,10 @@ The argument passed to the `paginate` method is the number of items you wish to 
 
 This is all it takes to create a pagination system! Note that we did not have to inform the framework of the current page. Laravel will determine this for you automatically.
 
+If you would like to specify a custom view to use for pagination, you may pass a view to the `links` method:
+
+	<?php echo $users->links('view.name'); ?>
+
 You may also access additional pagination information via the following methods:
 
 - `getCurrentPage`
