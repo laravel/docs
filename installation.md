@@ -22,7 +22,7 @@ First, download the [Laravel installer PHAR archive](http://laravel.com/laravel.
 
 You may also install Laravel by issuing the Composer `create-project` command in your terminal:
 
-	composer create-project laravel/laravel --prefer-dist
+	composer create-project laravel/laravel:dev-develop --prefer-dist
 
 ### Via Download
 
