@@ -4,6 +4,7 @@
 - [Basic Usage](#basic-usage)
 - [Tasks](#tasks)
 - [SFTP Uploads](#sftp-uploads)
+- [Tailing Remote Logs](#tailing-remote-logs)
 
 <a name="configuration"></a>
 ## Configuration
@@ -68,3 +69,12 @@ The `SSH` class also includes a simple way to upload files, or even strings, to 
 	SSH::into('staging')->put($localFile, $remotePath);
 
 	SSH::into('staging')->putString('Foo', $remotePath);
+
+<a name="tailing-remote-logs"></a>
+## Tailing Remote Logs
+
+Laravel includes a helpful command for tailing the `laravel.log` files on any of your remote connections. Simple use the `tail` Artisan command and specify the name of the remote connection you would like to tail:
+
+	php artisan tail staging
+
+	php artisan tail staging --path=/path/to/log.file
