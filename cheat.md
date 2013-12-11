@@ -491,6 +491,7 @@ Laravel community member Jesse O'Brien created a terrific cheat sheet for the fr
 	Request::secure();
 
 <a name="responses"></a>
+## Responses
 
 	return Response::make($contents);
 	return Response::make($contents, 200);
