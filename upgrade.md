@@ -56,6 +56,10 @@ For security reasons, URL domains may no longer be used to detect your applicati
 
 In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailingSlash()`. This method is no longer needed as this functionality is now handled by the `.htaccess` file included with the framework.
 
+### Current Route Access
+
+The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
+
 ### Composer Update
 
 Once you have completed the changes above, you can run the `composer update` function to update your core application files!
