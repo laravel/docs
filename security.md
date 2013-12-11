@@ -92,6 +92,8 @@ You also may add extra conditions to the authenticating query:
         // The user is active, not suspended, and exists.
     }
 
+> **Note:** For added protection against session fixation, the user's session ID will automatically be regenerated after authenticating.
+
 Once a user is authenticated, you may access the User model / record:
 
 **Accessing The Logged In User**
