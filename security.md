@@ -220,84 +220,40 @@ Next, a table must be created to store the password reset tokens. To generate a 
 
 	php artisan migrate
 
-To send a password reminder, we can use the `Password::remind` method:
-
 **Sending A Password Reminder**
 
-	Route::post('password/remind', function()
-	{
-		$credentials = array('email' => Input::get('email'));
+Now we're ready to generate the password reminder controller. To automatically generate a controller, you may use the `auth:reminders-controller` Artisan command, which will create a `RemindersController.php` file in your `app/controllers` directory.
 
-		return Password::remind($credentials);
-	});
+	php artisan auth:reminders-controller
 
-Note that the arguments passed to the `remind` method are similar to the `Auth::attempt` method. This method will retrieve the `User` and send them a password reset link via e-mail. The e-mail view will be passed a `token` variable which may be used to construct the link to the password reset form. The `user` object will also be passed to the view.
+The generated controller will already have a `getRemind` method that handles showing your password reminder form. All you need to do is create a `password.remind` [view](/docs/responses#views). This view should have a basic form with an `email` field. The form should POST to the `RemindersController@postRemind` action.
 
-> **Note:** You may specify which view is used as the e-mail message by changing the `auth.reminder.email` configuration option. Of course, a default view is provided out of the box.
+A simple form on the `password.remind` view might look like this:
 
-You may modify the message instance that is sent to the user by passing a Closure as the second argument to the `remind` method:
+	<form action="{{ action('RemindersController@postReset') }}" method="POST">
+		<input type="email" name="email">
+		<input type="submit" value="Send Reminder">
+	</form>
 
-	return Password::remind($credentials, function($message, $user)
-	{
-		$message->subject('Your Password Reminder');
-	});
+In addition to `getRemind`, the generated controller will already have a `postRemind` method that handles sending the password reminder e-mails to your users. This method expects the `email` field to be present in the `POST` variables. If the reminder e-mail is successfully sent to the user, a `status` message will be flashed to the session. If the reminder fails, an `error` message will be flashed instead.
 
-You may also have noticed that we are returning the results of the `remind` method directly from a route. By default, the `remind` method will return a `Redirect` to the current URI. If an error occurred while attempting to reset the password, an `error` variable will be flashed to the session, as well as a `reason`, which can be used to extract a language line from the `reminders` language file. If the password reset was successful, a `success` variable will be flashed to the session. So, your password reset form view could look something like this:
+Your user will receive an e-mail with a link that points to the `getReset` method of the controller. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method. The action is already configured to return a `password.reset` view which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
 
-	@if (Session::has('error'))
-		{{ trans(Session::get('reason')) }}
-	@elseif (Session::has('success'))
-		An e-mail with the password reset has been sent.
-	@endif
+A simple form on the `password.reset` view might look like this:
 
-	<input type="text" name="email">
-	<input type="submit" value="Send Reminder">
+	<form action="{{ action('RemindersController@postReset') }}" method="POST">
+		<input type="hidden" name="token" value="{{ $token }}">
+		<input type="email" name="email">
+		<input type="password" name="password">
+		<input type="password" name="password_confirmation">
+		<input type="submit" value="Reset Password">
+	</form>
 
-### Resetting Passwords
+Finally, the `postReset` method is responsible for actually changing the password in storage. In this controller action, the Closure passed to the `Password::reset` method sets the `password` attribute on the `User` and calls the `save` method. Of course, this Closure is assuming your `User` model is an [Eloquent model](/docs/eloquent); however, you are free to change this Closure as needed to be compatible with your application's database storage system.
 
-Once a user has clicked on the reset link from the reminder e-mail, they should be directed to a form that includes a hidden `token` field, as well as a `password` and `password_confirmation` field. Below is an example route for the password reset form:
+If the password is successfully reset, the user will be redirected to the root of your application. Again, you are free to change this redirect URL. If the password reset fails, the user will be redirect back to the reset form, and an `error` message will be flashed to the session.
 
-	Route::get('password/reset/{token}', function($token)
-	{
-		return View::make('auth.reset')->with('token', $token);
-	});
-
-And, a password reset form might look like this:
-
-	@if (Session::has('error'))
-		{{ trans(Session::get('reason')) }}
-	@endif
-
-	<input type="hidden" name="token" value="{{ $token }}">
-	<input type="text" name="email">
-	<input type="password" name="password">
-	<input type="password" name="password_confirmation">
-
-Again, notice we are using the `Session` to display any errors that may be detected by the framework while resetting passwords. Next, we can define a `POST` route to handle the reset:
-
-	Route::post('password/reset/{token}', function()
-	{
-		$credentials = array(
-		    'email' => Input::get('email'),
-		    'password' => Input::get('password'),
-		    'password_confirmation' => Input::get('password_confirmation')
-		);
-
-		return Password::reset($credentials, function($user, $password)
-		{
-			$user->password = Hash::make($password);
-
-			$user->save();
-
-			return Redirect::to('home');
-		});
-	});
-
-If the password reset is successful, the `User` instance and the password will be passed to your Closure, allowing you to actually perform the save operation. Then, you may return a `Redirect` or any other type of response from the Closure which will be returned by the `reset` method. Note that the `reset` method automatically checks for a valid `token` in the request, valid credentials, and matching passwords.
-
-By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `app/config/auth.php` file.
-
-Also, similarly to the `remind` method, if an error occurs while resetting the password, the `reset` method will return a `Redirect` to the current URI with an `error` and `reason`.
+> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `app/config/auth.php` file.
 
 <a name="encryption"></a>
 ## Encryption
