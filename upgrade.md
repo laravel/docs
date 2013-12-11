@@ -52,6 +52,10 @@ Update your `app/lang/en/reminders.php` language file to match [this updated fil
 
 For security reasons, URL domains may no longer be used to detect your application environment. These values are easily spoofable and allow attackers to modify the environment for a request. You should convert your environment detection to use machine host names (`hostname` command on Mac & Ubuntu).
 
+### Simpler Log Files
+
+Laravel now generates a single log file: `app/storage/logs/laravel.log`. However, you may still configure this behavior in your `app/start/global.php` file.
+
 ### Removing Redirect Trailing Slash
 
 In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailingSlash()`. This method is no longer needed as this functionality is now handled by the `.htaccess` file included with the framework.
