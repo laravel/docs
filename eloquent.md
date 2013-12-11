@@ -594,13 +594,21 @@ The key fields to notice here are the `imageable_id` and `imageable_type` on the
 
 When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, you wish to pull all blog posts that have at least one comment. To do so, you may use the `has` method:
 
-**Checking Relations When Selecting**
+**Querying Relations When Selecting**
 
 	$posts = Post::has('comments')->get();
 
 You may also specify an operator and a count:
 
 	$posts = Post::has('comments', '>=', 3)->get();
+
+If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries:
+
+	$posts = Post::whereHas('comments', function($q)
+	{
+		$q->where('content', 'like', 'foo%');
+
+	})->get();
 
 <a name="dynamic-properties"></a>
 ### Dynamic Properties
