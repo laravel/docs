@@ -251,6 +251,15 @@ Finally, the `postReset` method is responsible for actually changing the passwor
 
 If the password is successfully reset, the user will be redirected to the root of your application. Again, you are free to change this redirect URL. If the password reset fails, the user will be redirect back to the reset form, and an `error` message will be flashed to the session.
 
+### Password Validation
+
+By default, the `Password::reset` method will verify that the passwords match and are >= six characters. You may customize these rules using the `Password::validator` method, which accepts a Closure:
+
+	Password::validator(function($credentials)
+	{
+		return strlen($credentials['password']) >= 8;
+	});
+
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `app/config/auth.php` file.
 
 <a name="encryption"></a>
