@@ -137,6 +137,16 @@ You may also specify more advanced join clauses:
 	        })
 	        ->get();
 
+If you would like to use a "where" style clause on your joins, you may use the `where` and `orWhere` methods on a join. Instead of comparing two columns, these methods will compare the column against a value:
+
+	DB::table('users')
+	        ->join('contacts', function($join)
+	        {
+	        	$join->on('users.id', '=', 'contacts.user_id')
+	        	     ->where('contacts.user_id', '>', 5);
+	        })
+	        ->get();
+
 <a name="advanced-wheres"></a>
 ## Advanced Wheres
 
