@@ -197,8 +197,6 @@ If you are using PHP FastCGI, HTTP Basic authentication will not work correctly 
 <a name="password-reminders-and-reset"></a>
 ## Password Reminders & Reset
 
-### Sending Password Reminders
-
 Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets. To get started, verify that your `User` model implements the `Illuminate\Auth\Reminders\RemindableInterface` contract. Of course, the `User` model included with the framework already implements this interface.
 
 **Implementing The RemindableInterface**
