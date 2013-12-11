@@ -60,10 +60,6 @@ Laravel now generates a single log file: `app/storage/logs/laravel.log`. However
 
 In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailingSlash()`. This method is no longer needed as this functionality is now handled by the `.htaccess` file included with the framework.
 
-### Route URL Generation
-
-When generating a URL to a named route or controller action, you should always pass the wildcards in the order they are declared in the route. Any extra parameters will be added to the URL as a query string.
-
 ### Current Route Access
 
 The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
