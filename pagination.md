@@ -82,6 +82,14 @@ This will generate URLs that look something like this:
 
 	http://example.com/something?page=2&sort=votes
 
+If you wish to append a "hash fragment" to the paginator's URLs, you may use the `fragment` method:
+
+	<?php echo $users->fragment('foo')->links(); ?>
+
+This method call will generate URLs that look something like this:
+
+	http://example.com/something?page=2#foo
+
 <a name="converting-to-json"></a>
 ## Converting To JSON
 

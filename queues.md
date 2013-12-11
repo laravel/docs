@@ -5,6 +5,7 @@
 - [Queueing Closures](#queueing-closures)
 - [Running The Queue Listener](#running-the-queue-listener)
 - [Push Queues](#push-queues)
+- [Failed Jobs](#failed-jobs)
 
 <a name="configuration"></a>
 ## Configuration
@@ -184,3 +185,39 @@ Now, when you login to your Iron dashboard, you will see your new push queue, as
 	});
 
 The `marshal` method will take care of firing the correct job handler class. To fire jobs onto the push queue, just use the same `Queue::push` method used for conventional queues.
+
+<a name="failed-jobs"></a>
+## Failed Jobs
+
+Since things don't always go as planned, sometimes your queued jobs will fail. Don't worry, it happens to the best of us! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into a `failed_jobs` table. The failed jobs table name can be configured via the `app/config/queue.php` configuration file.
+
+To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
+
+	php artisan queue:failed-table
+
+You can specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:listen` command:
+
+	php artisan queue:listen connection-name --tries=3
+
+If you would like to register an event that will be called when a queue job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via e-mail or [HipChat](https://www.hipchat.com).
+
+	Queue::failing(function($job, $data)
+	{
+		//
+	});
+
+To view all of your failed jobs, you may use the `queue:failed` Artisan command:
+
+	php artisan queue:failed
+
+The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of 5, the following command should be issued:
+
+	php artisan queue:retry 5
+
+If you would like to delete a failed job, you may use the `queue:forget` command:
+
+	php artisan queue:forget 5
+
+To delete all of your failed jobs, you may use the `queue:flush` command:
+
+	php artisan queue:flush

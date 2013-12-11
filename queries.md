@@ -10,6 +10,7 @@
 - [Updates](#updates)
 - [Deletes](#deletes)
 - [Unions](#unions)
+- [Pessimistic Locking](#pessimistic-locking)
 - [Caching Queries](#caching-queries)
 
 <a name="introduction"></a>
@@ -280,6 +281,19 @@ The query builder also provides a quick way to "union" two queries together:
 	$users = DB::table('users')->whereNull('last_name')->union($first)->get();
 
 The `unionAll` method is also available, and has the same method signature as `union`.
+
+<a name="pessimistic-locking"></a>
+## Pessimistic Locking
+
+The query builder includes a few functions to help you do "pessimistic locking" on your SELECT statements.
+
+To run the SELECT statement with a "shared lock", you may use the `sharedLock` method on a query:
+
+	DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
+
+To "lock for update" on a SELECT statement, you may use the `lockForUpdate` method on a query:
+
+	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
 
 <a name="caching-queries"></a>
 ## Caching Queries

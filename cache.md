@@ -30,6 +30,8 @@ The cache configuration file also contains various other options, which are docu
 
 	Cache::add('key', 'value', $minutes);
 
+The `add` method will return `true` if the item is actually **added** to the cache. Otherwise, the method will return `false`.
+
 **Checking For Existence In Cache**
 
 	if (Cache::has('key'))
