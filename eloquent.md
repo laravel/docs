@@ -367,6 +367,7 @@ Of course, your database tables are probably related to one another. For example
 - [One To One](#one-to-one)
 - [One To Many](#one-to-many)
 - [Many To Many](#many-to-many)
+- [Has Many Through](#has-many-through)
 - [Polymorphic Relations](#polymorphic-relations)
 
 <a name="one-to-one"></a>
@@ -512,6 +513,47 @@ Of course, you may also define the inverse of the relationship on the `Role` mod
 		public function users()
 		{
 			return $this->belongsToMany('User');
+		}
+
+	}
+
+<a name="has-many-through"></a>
+### Has Many Through
+
+The "has many through" relation provides a convenient short-cut for accessing distant relations via an intermediate relation. For example, a `Country` model might have many `Posts` through a `Users` model. The tables for this relationship would look like this:
+
+	countries
+		id - integer
+		name - string
+
+	users
+		id - integer
+		country_id - integer
+		name - string
+
+	posts
+		id - integer
+		user_id - integer
+		title - string
+
+Even though the `posts` table does not contain a `country_id` column, the `hasManyThrough` relation will allow us to access a country's posts via `$country->posts`. Let's define the relationship:
+
+	class Country extends Eloquent {
+
+		public function posts()
+		{
+			return $this->hasManyThrough('Post', 'User');
+		}
+
+	}
+
+If you would like to manually specify the keys of the relationship, you may pass them as the third and fourth arguments to the method:
+
+	class Country extends Eloquent {
+
+		public function posts()
+		{
+			return $this->hasManyThrough('Post', 'User', 'country_id', 'user_id');
 		}
 
 	}
