@@ -12,7 +12,6 @@
     - [Views & Responses](/docs/responses)
     - [Controllers](/docs/controllers)
     - [Errors & Logging](/docs/errors)
-    - [Cheat Sheet](/docs/cheat)
 - Learning More
     - [Authentication](/docs/security)
     - [Cache](/docs/cache)
