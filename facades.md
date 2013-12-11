@@ -112,6 +112,8 @@ Unit testing is an important aspect of why facades work the way that they do. In
 <a name="facade-class-reference"></a>
 ## Facade Class Reference
 
+Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [IoC binding](/docs/ioc) key is also included where applicable.
+
 Facade  |  Class  |  IoC Binding
 ------------- | ------------- | -------------
 App  |  [Illuminate\Foundation\Application](http://laravel.com/api/4.1/Illuminate/Foundation/Application.html)  | `app`
