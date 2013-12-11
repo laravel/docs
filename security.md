@@ -253,7 +253,7 @@ If the password is successfully reset, the user will be redirected to the root o
 
 ### Password Validation
 
-By default, the `Password::reset` method will verify that the passwords match and are >= six characters. You may customize these rules using the `Password::validator` method, which accepts a Closure:
+By default, the `Password::reset` method will verify that the passwords match and are >= six characters. You may customize these rules using the `Password::validator` method, which accepts a Closure. Within this Closure, you may do any password validation you wish. Note that you are not required to verify that the passwords match, as this will be done automatically by the framework.
 
 	Password::validator(function($credentials)
 	{
