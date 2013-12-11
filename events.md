@@ -1,7 +1,6 @@
 # Events
 
 - [Basic Usage](#basic-usage)
-- [Where To Register Events](#where-to-register)
 - [Wildcard Listeners](#wildcard-listeners)
 - [Using Classes As Listeners](#using-classes-as-listeners)
 - [Queued Events](#queued-events)
@@ -44,8 +43,7 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 		return false;
 	});
 
-<a name="where-to-register"></a>
-## Where To Register Events
+### Where To Register Events
 
 So, you know how to register events, but you may be wondering _where_ to register them. Don't worry, this is a common question. Unfortunately, it's a hard question to answer because you can register an event almost anywhere! But, here are some tips. Again, like most other bootstrapping code, you may register events in one of your `start` files such as `app/start/global.php`.
 
