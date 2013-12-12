@@ -197,6 +197,8 @@ If you are using PHP FastCGI, HTTP Basic authentication will not work correctly 
 <a name="password-reminders-and-reset"></a>
 ## Password Reminders & Reset
 
+### Model & Table
+
 Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets. To get started, verify that your `User` model implements the `Illuminate\Auth\Reminders\RemindableInterface` contract. Of course, the `User` model included with the framework already implements this interface.
 
 **Implementing The RemindableInterface**
@@ -218,7 +220,7 @@ Next, a table must be created to store the password reset tokens. To generate a 
 
 	php artisan migrate
 
-**Sending A Password Reminder**
+### Password Reminder Controller
 
 Now we're ready to generate the password reminder controller. To automatically generate a controller, you may use the `auth:reminders-controller` Artisan command, which will create a `RemindersController.php` file in your `app/controllers` directory.
 
