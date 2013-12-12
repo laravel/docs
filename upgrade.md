@@ -19,7 +19,7 @@ Replace your `artisan` file with [this fresh copy from the repository](https://g
 
 Update your `aliases` and `providers` arrays in your `app/config/app.php` configuration file. The updated values for these arrays can be found [in this file](https://github.com/laravel/laravel/blob/master/app/config/app.php). Be sure to add your custom and package service providers / aliases back to the arrays.
 
-Add the new `config/remote.php` file [from the repository](https://github.com/laravel/laravel/blob/master/app/config/remote.php).
+Add the new `app/config/remote.php` file [from the repository](https://github.com/laravel/laravel/blob/master/app/config/remote.php).
 
 Add the new `expire_on_close` configuration option to your `app/config/session.php` file. The default value should be `false`.
 
