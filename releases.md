@@ -47,4 +47,4 @@ Laravel 4.1 features a totally re-written routing layer. The API is the same; ho
 
 ### Improved Session Engine
 
-With this release, we're also introducting an entirely new session engine. Similar to the routing improvements, the new session layer is leaner and faster. We are no longer using Symfony's (and therefore PHP's) session handling facilites, and using a custom solution that is simpler and easier to maintain.
+With this release, we're also introducting an entirely new session engine. Similar to the routing improvements, the new session layer is leaner and faster. We are no longer using Symfony's (and therefore PHP's) session handling facilites, and are using a custom solution that is simpler and easier to maintain.
