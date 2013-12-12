@@ -48,3 +48,7 @@ Laravel 4.1 features a totally re-written routing layer. The API is the same; ho
 ### Improved Session Engine
 
 With this release, we're also introducting an entirely new session engine. Similar to the routing improvements, the new session layer is leaner and faster. We are no longer using Symfony's (and therefore PHP's) session handling facilites, and are using a custom solution that is simpler and easier to maintain.
+
+### Doctrine DBAL
+
+If you are using the `renameColumn` function in your migrations, you will need to add the `doctrine/dbal` dependency to your `composer.json` file. This package is no longer included in Laravel by default.
