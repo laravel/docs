@@ -113,7 +113,7 @@ To access a tagged cache, pass the same ordered list of tags used to save it.
 
 	$anne = Cache::tags('people', 'artists')->get('Anne');
 
-	$john = Cache::tags(array('people', 'authors')->get('John);
+	$john = Cache::tags(array('people', 'authors')->get('John');
 
 You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
 
