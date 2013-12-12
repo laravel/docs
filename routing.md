@@ -229,7 +229,7 @@ Now, you may use the route's name when generating URLs or redirects:
 
 You may access the name of a route that is running via the `currentRouteName` method:
 
-	$name = Route::currentRouteName();
+	$name = Route::current()->getName();
 
 <a name="route-groups"></a>
 ## Route Groups
