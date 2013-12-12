@@ -2,6 +2,7 @@
     - [Introduction](/docs/introduction)
     - [Quickstart](/docs/quick)
     - [Contributing](/docs/contributing)
+    - [Release Notes](/docs/releases)
     - [Upgrade Guide](/docs/upgrade)
 - Getting Started
     - [Installation](/docs/installation)
