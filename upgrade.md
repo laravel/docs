@@ -64,6 +64,10 @@ In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailing
 
 The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
 
+### Doctrine DBAL
+
+If you are using the `renameColumn` function in your migrations, you will need to add the `doctrine/dbal` dependency to your `composer.json` file. This package is no longer included in Laravel by default.
+
 ### Composer Update
 
 Once you have completed the changes above, you can run the `composer update` function to update your core application files!
