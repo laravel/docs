@@ -104,6 +104,10 @@ Sometimes you may need to reconnect to a given database:
 
 	DB::reconnect('foo');
 
+Other times you may need to disconnect from the given database due to exceeding the underyling PDO instance's `max_connections` limit:
+
+	DB::disconnect('foo');
+
 <a name="query-logging"></a>
 ## Query Logging
 
