@@ -28,7 +28,9 @@ You may also specify a `--path` option when creating the migration. The path sho
 
 The `--table` and `--create` options may also be used to indicate the name of the table, and whether the migration will be creating a new table:
 
-	php artisan migrate:make create_users_table --table=users --create
+	php artisan migrate:make add_votes_to_user_table --table=users
+
+	php artisan migrate:make create_users_table --create=users
 
 <a name="running-migrations"></a>
 ## Running Migrations
