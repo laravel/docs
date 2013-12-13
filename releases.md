@@ -43,7 +43,7 @@ The password reminder engine has been changed to provide greater developer flexi
 
 ### Improved Routing Engine
 
-Laravel 4.1 features a totally re-written routing layer. The API is the same; however, registering routes is a full 100% faster compared to 4.0. The entire engine has been greatly simplified, and the dependency on Symfony Routing has been removed.
+Laravel 4.1 features a totally re-written routing layer. The API is the same; however, registering routes is a full 100% faster compared to 4.0. The entire engine has been greatly simplified, and the dependency on Symfony Routing has been minimized to the compiling of route expressions.
 
 ### Improved Session Engine
 
