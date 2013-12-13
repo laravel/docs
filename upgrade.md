@@ -64,6 +64,10 @@ In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailing
 
 The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
 
+### Route methods
+
+Many methods on the Route class have changed names. The most common ones are `getParameter` which is now `parameter`, `getParameters` is `parameters` and `getPath` is `uri`. For a full overview of the new Route class, check out the [API documentation](http://laravel.com/api/4.1/Illuminate/Routing/Route.html) or [source](https://github.com/laravel/framework/blob/4.1/src/Illuminate/Routing/Route.php).
+
 ### Composer Update
 
 Once you have completed the changes above, you can run the `composer update` function to update your core application files!
