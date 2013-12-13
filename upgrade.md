@@ -60,6 +60,8 @@ Laravel now generates a single log file: `app/storage/logs/laravel.log`. However
 
 In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailingSlash()`. This method is no longer needed as this functionality is now handled by the `.htaccess` file included with the framework.
 
+Next, replace your Apache `.htaccess` file with [this new one](https://github.com/laravel/laravel/blob/master/public/.htaccess) that handles trailing slashes.
+
 ### Current Route Access
 
 The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
