@@ -30,7 +30,7 @@ Each of these managers includes an `extend` method which may be used to easily i
 <a name="where-to-extend"></a>
 ## Where To Extend
 
-This documentation covers how to extend a variety of Laravel's components, but you may be wondering where to place your extension code. Like most other bootstrapping code, you are free to place some extensions in your `start` files. Cache and Auth extensions are good candidates for this approach. Other extensions, like `Session`, must be placed in the `register` mehtod of a service provider since they are needed very early in the request life-cycle.
+This documentation covers how to extend a variety of Laravel's components, but you may be wondering where to place your extension code. Like most other bootstrapping code, you are free to place some extensions in your `start` files. Cache and Auth extensions are good candidates for this approach. Other extensions, like `Session`, must be placed in the `register` method of a service provider since they are needed very early in the request life-cycle.
 
 <a name="cache"></a>
 ## Cache
