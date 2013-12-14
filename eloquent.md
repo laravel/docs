@@ -631,6 +631,81 @@ To help understand how this works, let's explore the database structure for a po
 
 The key fields to notice here are the `imageable_id` and `imageable_type` on the `photos` table. The ID will contain the ID value of, in this example, the owning staff or order, while the type will contain the class name of the owning model. This is what allows the ORM to determine which type of owning model to return when accessing the `imageable` relation.
 
+#### Many To Many Polymorphic Relations
+
+Many to many polymorphic relations allow for a model to have many relationships to other models, for example a `Tag` model may have a many to many relationship with a `Post` model and also a `Video` model.
+
+The model relationships can be defined like so:
+
+	class Tag extends Eloquent {
+
+		public function posts()
+		{
+			return $this->morphedByMany('Post', 'tagable');
+		}
+
+		public function videos()
+		{
+			return $this->morphedByMany('Video', 'tagable');
+		}
+
+	}
+
+	class Post extends Eloquent {
+
+		public function tags()
+		{
+			return $this->morphToMany('Tag', 'tagable');
+		}
+
+	}
+
+	class Video extends Eloquent {
+
+		public function tags()
+		{
+			return $this->morphToMany('Tag', 'tagable');
+		}
+
+	}
+
+The `morphToMany` and `morphedByMany` methods also allow you to specify the table, foreign key and other key as in the example below.
+
+	return $this->morphToMany('Model', 'name', 'table', 'foreign_key', 'other_key');
+	
+Unlike the One to One or One to Many polymorphic relations, a function on the morphable model is used to define each polymorphic relation.
+
+You can retrieve all related `Tags` to a `Post` by doing:
+
+	$post = Post::with('tags')->find(1);
+	
+Or you could retrieve all related `Posts` to a `Tag`:
+
+	$tag = Tag::with('posts')->find(1);
+	
+	
+**Many to Many Polymorphic Relation Table Structure**
+
+	tags
+		id - integer
+		name - string
+
+	posts
+		id - integer
+		title - string
+		body - text
+
+	videos
+		id - integer
+		title - string
+		file - string
+
+	tagables
+		id - integer
+		tag_id - integer
+		tagable_id - integer
+		tagable_type - string
+
 <a name="querying-relations"></a>
 ## Querying Relations
 
