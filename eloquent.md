@@ -631,6 +631,59 @@ To help understand how this works, let's explore the database structure for a po
 
 The key fields to notice here are the `imageable_id` and `imageable_type` on the `photos` table. The ID will contain the ID value of, in this example, the owning staff or order, while the type will contain the class name of the owning model. This is what allows the ORM to determine which type of owning model to return when accessing the `imageable` relation.
 
+<a name="polymorphic-many-to-many-relations"></a>
+### Polymorphic Many To Many Relations
+
+New in version 4.1 are polymorphic many-to-many relations. These work similar to polymorphic relations, but allow you to attach a single related model to many different models of different types.
+
+Let's say you have multiple models (NewsPost and BlogPost, for example) that can have many Tag models attached to them - but these Tags can be associated with any number of NewsPosts and BlogPosts.
+
+	class BlogPost extends Eloquent {
+		public function tags()
+		{
+			return $this->morphToMany('Tag', 'post', 'post_tag');
+		}
+	}
+
+	class Tag extends Eloquent {}
+
+The database could look something like this:
+
+	blog_posts
+		id - integer
+		content - string
+
+	post_tag
+		post_type - string
+		post_id - integer
+		tag_id - integer
+
+	tags
+		id - integer
+		name - string
+
+In this example, an eventual NewsPost model and database table could be identical to the BlogPost one.
+
+	$post = BlogPost::first();
+
+	foreach ($post->tags as $tag)
+	{
+		//
+	}
+
+	$tag = Tag::where('name', 'laravel')->first();
+
+	$post->tags()->attach($tag);
+
+The inverse of this relationship is possible, but limited. You could get all BlogPosts a Tag is attached to, but not all posts of every type that the Tag is attached to.
+
+	class Tag extends Eloquent {
+		public function blogs()
+		{
+			return $this->morphedByMany('BlogPost', 'post', 'post_tag');
+		}
+	}
+
 <a name="querying-relations"></a>
 ## Querying Relations
 
