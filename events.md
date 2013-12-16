@@ -63,7 +63,7 @@ When registering an event listener, you may use asterisks to specify wildcard li
 
 This listener will handle all events that begin with `foo.`.
 
-You may use the `Event::fired` method to determine exactly which event was fired:
+You may use the `Event::firing` method to determine exactly which event was fired:
 
 	Event::listen('foo.*', function($param)
 	{
