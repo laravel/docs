@@ -66,6 +66,17 @@ Next, replace your Apache `.htaccess` file with [this new one](https://github.co
 
 The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
 
+### Custom Route filters
+
+When writing custom filter methods like so:
+	
+	Route::filter('old', function($route, $request, $value)
+	{
+		//
+	});
+
+With this, you get access to the Illuminate\Routing\Route object. Some methods have changed there. For example: the method `$route->getParameter('name');` has now changed to `$route->parameter('name');`. Check out the [source file](https://github.com/laravel/framework/blob/master/src/Illuminate/Routing/Route.php) for more changes.
+
 ### Composer Update
 
 Once you have completed the changes above, you can run the `composer update` function to update your core application files!
