@@ -230,7 +230,7 @@ The generated controller will already have a `getRemind` method that handles sho
 
 A simple form on the `password.remind` view might look like this:
 
-	<form action="{{ action('RemindersController@postReset') }}" method="POST">
+	<form action="{{ action('RemindersController@postRemind') }}" method="POST">
 		<input type="email" name="email">
 		<input type="submit" value="Send Reminder">
 	</form>
