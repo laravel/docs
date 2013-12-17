@@ -176,7 +176,7 @@ HTTP Basic Authentication provides a quick way to authenticate users of your app
 		// Only authenticated users may enter...
 	}));
 
-By default, the `basic` filter will use the `email` column on the user record when authenticating. If you wish to use another column you may pass the column name as the first parameter to the `basic` method:
+By default, the `basic` filter will use the `email` column on the user record when authenticating. If you wish to use another column you may pass the column name as the first parameter to the `basic` method in `app/filters.php`:
 
 	return Auth::basic('username');
 
