@@ -86,7 +86,7 @@ The Laravel logging facilities provide a simple layer on top of the powerful [Mo
 
 	Log::error('Something is really going wrong.');
 
-The logger provides the seven logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, and **alert**.
+The logger provides the eight logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, **alert**, and **emergency**.
 
 An array of contextual data may also be passed to the log methods:
 
