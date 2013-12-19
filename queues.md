@@ -50,9 +50,15 @@ If you want the job to use a method other than `fire`, you may specify the metho
 
 	Queue::push('SendEmail@send', array('message' => $message));
 
-If you need to pass the same data to several queue jobs, you may use the `Queue::bulk` method:
+**Specifying The Queue / Tube For A Job**
+
+You may also specify the queue / tube a job should be sent to:
+
+	Queue::push('SendEmail@send', array('message' => $message), 'emails');
 
 **Passing The Same Payload To Multiple Jobs**
+
+If you need to pass the same data to several queue jobs, you may use the `Queue::bulk` method:
 
 	Queue::bulk(array('SendEmail', 'NotifyUser'), $payload);
 
