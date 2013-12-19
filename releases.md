@@ -25,6 +25,10 @@ A new `hasManyThrough` relationship has been added to Eloquent. To learn how to 
 
 A new `whereHas` method has also been introduced to allow [retrieving models based on relationship constraints](/docs/eloquent#querying-relations).
 
+### Database Read / Write Connections
+
+Automatic handling of separate read / write connections is now available throughout the database layer, including the query builder and Eloquent. For more information, consult [the documentation](/docs/database#read-write-connections).
+
 ### Queue Priority
 
 Queue priorities are now supported by passing a comma-delimited list to the `queue:listen` command.
