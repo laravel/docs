@@ -204,7 +204,7 @@ A catch-all method may be defined which will be called when no other matching me
 
 **Defining A Catch-All Method**
 
-	public function missingMethod($method, $parameters)
+	public function missingMethod($parameters = array())
 	{
 		//
 	}

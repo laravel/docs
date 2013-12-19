@@ -35,13 +35,6 @@ Add the new `failed` configuration section to your `app/config/queue.php` file. 
 
 If `app/controllers/BaseController.php` has a `use` statement at the top, change `use Illuminate\Routing\Controllers\Controller;` to `use Illuminate\Routing\Controller;`.
 
-If you are overriding the `missingMethod` function on any of your controllers, add the `$method` parameter to the function as the first argument:
-
-	public function missingMethod($method, $parameters = array())
-	{
-		//
-	}
-
 ### Password Reminders Updates
 
 Password reminders have been overhauled for greater flexibility. You may examine the new stub controller by running the `php artisan auth:reminders-controller` Artisan command. You may also browse the [updated documentation](/docs/security#password-reminders-and-reset) and update your application accordingly.
