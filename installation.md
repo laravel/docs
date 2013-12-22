@@ -67,5 +67,5 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 If you are using nginx to serve your Laravel application, the following is required inside a `server` block for pretty URLs:
 
 	location / {
-		try_files $uri /index.php;
+		try_files $uri /index.php?$query_string;
 	}
