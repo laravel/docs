@@ -40,7 +40,7 @@ The Laravel `Hash` class provides secure Bcrypt hashing:
 	{
 		$hashed = Hash::make('secret');
 	}
-
+RemindersController@postReset
 <a name="authenticating-users"></a>
 ## Authenticating Users
 
@@ -230,7 +230,7 @@ The generated controller will already have a `getRemind` method that handles sho
 
 A simple form on the `password.remind` view might look like this:
 
-	<form action="{{ action('RemindersController@postReset') }}" method="POST">
+	<form action="{{ action('RemindersController@postRemind') }}" method="POST">
 		<input type="email" name="email">
 		<input type="submit" value="Send Reminder">
 	</form>
