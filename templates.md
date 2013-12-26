@@ -11,7 +11,7 @@ One method of using templates in Laravel is via controller layouts. By specifyin
 
 **Defining A Layout On A Controller**
 
-	class UserController extends BaseController {
+    class UserController extends BaseController {
 
 		/**
 		 * The layout that should be used for responses.
@@ -135,6 +135,17 @@ Of course, all user supplied data should be escaped or purified. To escape the o
 You may also pass an array of data to the included view:
 
 	@include('view.name', array('some'=>'data'))
+    
+** Rendering a Sub-View for records in a Collection **
+
+If you want to render a view partial for each item in your collection you are able to do this.
+So for each $users as 'user', we're rendering view.blade.php
+
+    @each('view', $users, 'user')
+    
+You can optionally provide a fourth parameter to show when the collection is empty
+
+    @each('view', $users, 'user', 'show if $users empty')
 
 **Overwriting Sections**
 
