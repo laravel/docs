@@ -252,7 +252,7 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 <a name="sub-domain-routing"></a>
 ## Sub-Domain Routing
 
-Laravel routes are also able to handle wildcard sub-domains, and pass you wildcard parameters from the domain:
+Laravel routes are also able to handle wildcard sub-domains. Pass your wildcard parameters from the domain:
 
 **Registering Sub-Domain Routes**
 
