@@ -108,6 +108,8 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 	echo Form::password('password');
 
+> **Note:** The *password* method does not accept a value parameter, instead the second argument is an array of attributes.
+
 **Generating Other Inputs**
 
 	echo Form::email($name, $value = null, $attributes = array());
