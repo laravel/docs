@@ -89,6 +89,20 @@ To run a set of operations within a database transaction, you may use the `trans
 		DB::table('posts')->delete();
 	});
 
+> **Note:** Any exception thrown within the `transaction` closure will cause the transaction to be rolled back automatically.
+
+Sometimes you may need to begin a transaction yourself:
+
+	DB::beginTransaction();
+
+You can rollback a transaction via the `rollback` method:
+
+	DB::rollback();
+
+Lastly, you can commit a transaction via the `commit` method:
+
+	DB::commit();
+
 <a name="accessing-connections"></a>
 ## Accessing Connections
 
