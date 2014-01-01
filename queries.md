@@ -32,6 +32,8 @@ The database query builder provides a convenient, fluent interface to creating a
 		var_dump($user->name);
 	}
 
+If you replace the `get()` method by `toSql()` the method will return the SQL string.
+
 **Retrieving A Single Row From A Table**
 
 	$user = DB::table('users')->where('name', 'John')->first();
