@@ -119,7 +119,7 @@ You may flush all items tagged with a name or list of names. For example, this s
 
 	Cache::tags('people', 'authors')->flush();
 
-In contrast, this statement would remove only caches tagged with 'author', so "John" would be removed, but not "Anne".
+In contrast, this statement would remove only caches tagged with `authors`, so "John" would be removed, but not "Anne".
 
 	Cache::tags('authors')->flush();
 
