@@ -83,6 +83,8 @@ By default, after registering a package, its resources will be available using t
 
 There is not a "default location" for service provider classes. You may put them anywhere you like, perhaps organizing them in a `Providers` namespace within your `app` directory. The file may be placed anywhere, as long as Composer's [auto-loading facilities](http://getcomposer.org/doc/01-basic-usage.md#autoloading) know how to load the class.
 
+Service providers come with a `$defer` property which can be set to true (false is the default). If `$defer` is true, the service provider will not be loaded until one of the keys returned by the provider's `provide` method are accessed. For example, a deferred service provider with a `provide()` that returns `array('foo')` will never be loaded until `'foo'` is accessed in the IoC container (via `App::make` or dependency injection, for example).
+
 <a name="package-conventions"></a>
 ## Package Conventions
 
