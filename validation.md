@@ -149,6 +149,7 @@ Below is a list of all available validation rules and their function:
 - [Alpha](#rule-alpha)
 - [Alpha Dash](#rule-alpha-dash)
 - [Alpha Numeric](#rule-alpha-num)
+- [Array](#rule-array)
 - [Before (Date)](#rule-before)
 - [Between](#rule-between)
 - [Confirmed](#rule-confirmed)
@@ -208,6 +209,11 @@ The field under validation may have alpha-numeric characters, as well as dashes 
 #### alpha_num
 
 The field under validation must be entirely alpha-numeric characters.
+
+<a name="rule-array"></a>
+#### array
+
+The field under validation must be of type array.
 
 <a name="rule-before"></a>
 #### before:_date_
