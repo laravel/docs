@@ -186,7 +186,7 @@ To drop a foreign key, you may use the `dropForeign` method. A similar naming co
 <a name="dropping-indexes"></a>
 ## Dropping Indexes
 
-To drop an index you must specify the index's name. Laravel assigns a reasonable name to the indexes by default. Simply concatenate the table name, the names of the column in the index, and the index type. Here are some examples:
+To drop an index you must specify the index's name. Laravel assigns a reasonable name to the indexes by default. Simply concatenate the table name, the names of the column in the index, and the index type. Index names are in small caps, occurrences of `-` and `.` in the table name are replaced by the `_` character, and the table names and column names are joined with the `_` character. Here are some examples:
 
 Command  | Description
 ------------- | -------------
