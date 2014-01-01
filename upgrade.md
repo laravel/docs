@@ -62,3 +62,5 @@ The current route is now accessed via `Route::current()` instead of `Route::getC
 ### Composer Update
 
 Once you have completed the changes above, you can run the `composer update` function to update your core application files!
+
+If you are running into a *ConsoleSupportServiceProvider not found* error while trying to update the packages you should run `composer update --no-scripts` once.
