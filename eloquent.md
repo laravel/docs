@@ -764,11 +764,13 @@ In this example, the `post_id` field will automatically be set on the inserted c
 
 When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
 
-	$account = Account::find(10);
+	$user = User::find(10);
 
-	$user->account()->associate($account);
+	$phone->user()->associate($user);
 
-	$user->save();
+	$phone->save();
+	
+In this example, the user_id foreign key field in the phones table will be set to the id of the retrieved $user object. 
 
 ### Inserting Related Models (Many To Many)
 
