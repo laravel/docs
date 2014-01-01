@@ -59,6 +59,10 @@ Next, replace your Apache `.htaccess` file with [this new one](https://github.co
 
 The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
 
+### Cookie
+
+The `has()` method was removed. Instead of `Cookie::has('foo')` use `Cookie::get('foo')`.
+
 ### Composer Update
 
 Once you have completed the changes above, you can run the `composer update` function to update your core application files! If you receive class load errors, try running the `update` command with the `--no-scripts` option enabled like so: `composer update --no-scripts`.
