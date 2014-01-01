@@ -40,7 +40,7 @@ The Laravel `Hash` class provides secure Bcrypt hashing:
 	{
 		$hashed = Hash::make('secret');
 	}
-
+RemindersController@postReset
 <a name="authenticating-users"></a>
 ## Authenticating Users
 
