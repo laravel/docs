@@ -149,6 +149,7 @@ Below is a list of all available validation rules and their function:
 - [Alpha](#rule-alpha)
 - [Alpha Dash](#rule-alpha-dash)
 - [Alpha Numeric](#rule-alpha-num)
+- [Array](#rule-array)
 - [Before (Date)](#rule-before)
 - [Between](#rule-between)
 - [Confirmed](#rule-confirmed)
@@ -209,6 +210,11 @@ The field under validation may have alpha-numeric characters, as well as dashes 
 
 The field under validation must be entirely alpha-numeric characters.
 
+<a name="rule-array"></a>
+#### array
+
+The field under validation must be an array.
+
 <a name="rule-before"></a>
 #### before:_date_
 
@@ -217,7 +223,7 @@ The field under validation must be a value preceding the given date. The dates w
 <a name="rule-between"></a>
 #### between:_min_,_max_
 
-The field under validation must have a size between the given _min_ and _max_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+The field under validation must have a size between the given _min_ and _max_. Strings, numerics, arrays, and files are evaluated in the same fashion as the `size` rule.
 
 <a name="rule-confirmed"></a>
 #### confirmed
@@ -298,7 +304,7 @@ The field under validation must be formatted as an IP address.
 <a name="rule-max"></a>
 #### max:_value_
 
-The field under validation must be less than a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+The field under validation must be less than a maximum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the `size` rule.
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
@@ -312,7 +318,7 @@ The file under validation must have a MIME type corresponding to one of the list
 <a name="rule-min"></a>
 #### min:_value_
 
-The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the `size` rule.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
@@ -364,7 +370,7 @@ The given _field_ must match the field under validation.
 <a name="rule-size"></a>
 #### size:_value_
 
-The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For files, _size_ corresponds to the file size in kilobytes.
+The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For arrays, _size_ corresponds to the number of elements. For files, _size_ corresponds to the file size in kilobytes. 
 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
