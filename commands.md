@@ -140,4 +140,4 @@ Sometimes you may wish to call other commands from your command. You may do so u
 
 **Calling Another Command**
 
-	$this->call('command.name', array('argument' => 'foo', '--option' => 'bar'));
+	$this->call('command:name', array('argument' => 'foo', '--option' => 'bar'));
