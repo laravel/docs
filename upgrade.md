@@ -49,6 +49,8 @@ For security reasons, URL domains may no longer be used to detect your applicati
 
 Laravel now generates a single log file: `app/storage/logs/laravel.log`. However, you may still configure this behavior in your `app/start/global.php` file.
 
+	Log::useFiles(storage_path().'/logs/laravel.log');
+
 ### Removing Redirect Trailing Slash
 
 In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailingSlash()`. This method is no longer needed as this functionality is now handled by the `.htaccess` file included with the framework.
