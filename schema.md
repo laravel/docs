@@ -193,6 +193,7 @@ Command  | Description
 `$table->dropPrimary('users_id_primary');`  |  Dropping a primary key from the "users" table
 `$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
 `$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
+`$table->dropForeign('employees_department_id_foreign');`  |  Dropping a foreign key from the "employees" table
 
 <a name="storage-engines"></a>
 ## Storage Engines
