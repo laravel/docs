@@ -23,7 +23,7 @@ If you prefer, you can alternatively download a copy of the [Laravel repository 
 <a name="permissions"></a>
 ### Permissions
 
-After installing Laravel, you may need to grant the web server write permissions to the `app/storage` directories. See the [Installation](/docs/artisan) documentation for more details on configuration.
+After installing Laravel, you may need to grant the web server write permissions to the `app/storage` directories. See the [Installation](/docs/installation) documentation for more details on configuration.
 
 <a name="directories"></a>
 ### Directory Structure
