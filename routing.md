@@ -16,28 +16,28 @@
 
 Most of the routes for your application will be defined in the `app/routes.php` file. The simplest Laravel routes consist of a URI and a Closure callback.
 
-**Basic GET Route**
+#### Basic GET Route
 
 	Route::get('/', function()
 	{
 		return 'Hello World';
 	});
 
-**Basic POST Route**
+#### Basic POST Route
 
 	Route::post('foo/bar', function()
 	{
 		return 'Hello World';
 	});
 
-**Registering A Route Responding To Any HTTP Verb**
+#### Registering A Route Responding To Any HTTP Verb
 
 	Route::any('foo', function()
 	{
 		return 'Hello World';
 	});
 
-**Forcing A Route To Be Served Over HTTPS**
+#### Forcing A Route To Be Served Over HTTPS
 
 	Route::get('foo', array('https', function()
 	{
@@ -56,21 +56,21 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 		return 'User '.$id;
 	});
 
-**Optional Route Parameters**
+#### Optional Route Parameters
 
 	Route::get('user/{name?}', function($name = null)
 	{
 		return $name;
 	});
 
-**Optional Route Parameters With Defaults**
+#### Optional Route Parameters With Defaults
 
 	Route::get('user/{name?}', function($name = 'John')
 	{
 		return $name;
 	});
 
-**Regular Expression Route Constraints**
+#### Regular Expression Route Constraints
 
 	Route::get('user/{name}', function($name)
 	{
@@ -84,7 +84,7 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 	})
 	->where('id', '[0-9]+');
 
-**Passing An Array Of Wheres**
+#### Passing An Array Of Wheres
 
 Of course, you may pass an array of constraints when necessary:
 
@@ -94,7 +94,7 @@ Of course, you may pass an array of constraints when necessary:
 	})
 	->where(array('id' => '[0-9]+', 'name' => '[a-z]+'))
 
-**Defining Global Patterns**
+#### Defining Global Patterns
 
 If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method:
 
@@ -105,7 +105,7 @@ If you would like a route parameter to always be constrained by a given regular 
 		// Only called if {id} is numeric.
 	});
 
-**Accessing A Route Parameter Value**
+#### Accessing A Route Parameter Value
 
 If you need to access a route parameter value outside of a route, you may use the `Route::input` method:
 
@@ -122,7 +122,7 @@ If you need to access a route parameter value outside of a route, you may use th
 
 Route filters provide a convenient way of limiting access to a given route, which is useful for creating areas of your site which require authentication. There are several filters included in the Laravel framework, including an `auth` filter, an `auth.basic` filter, a `guest` filter, and a `csrf`filter. These are located in the `app/filters.php` file.
 
-**Defining A Route Filter**
+#### Defining A Route Filter
 
 	Route::filter('old', function()
 	{
@@ -134,25 +134,25 @@ Route filters provide a convenient way of limiting access to a given route, whic
 
 If a response is returned from a filter, that response will be considered the response to the request and the route will not be executed, and any `after` filters on the route will also be cancelled.
 
-**Attaching A Filter To A Route**
+#### Attaching A Filter To A Route
 
 	Route::get('user', array('before' => 'old', function()
 	{
 		return 'You are over 200 years old!';
 	}));
 
-**Attaching A Filter To A Controller Action**
+#### Attaching A Filter To A Controller Action
 
 	Route::get('user', array('before' => 'old', 'uses' => 'UserController@showProfile'));
 
-**Attaching Multiple Filters To A Route**
+#### Attaching Multiple Filters To A Route
 
 	Route::get('user', array('before' => 'auth|old', function()
 	{
 		return 'You are authenticated and over 200 years old!';
 	}));
 
-**Specifying Filter Parameters**
+#### Specifying Filter Parameters
 
 	Route::filter('age', function($route, $request, $value)
 	{
@@ -171,7 +171,7 @@ After filters receive a `$response` as the third argument passed to the filter:
 		//
 	});
 
-**Pattern Based Filters**
+#### Pattern Based Filters
 
 You may also specify that a filter applies to an entire set of routes based on their URI.
 
@@ -188,11 +188,11 @@ You may also constrain pattern filters by HTTP verbs:
 
 	Route::when('admin/*', 'admin', array('post'));
 
-**Filter Classes**
+#### Filter Classes
 
 For advanced filtering, you may wish to use a class instead of a Closure. Since filter classes are resolved out of the application [IoC Container](/docs/ioc), you will be able to utilize dependency injection in these filters for greater testability.
 
-**Defining A Filter Class**
+#### Defining A Filter Class
 
 	class FooFilter {
 
@@ -203,7 +203,7 @@ For advanced filtering, you may wish to use a class instead of a Closure. Since 
 
 	}
 
-**Registering A Class Based Filter**
+#### Registering A Class Based Filter
 
 	Route::filter('foo', 'FooFilter');
 
@@ -254,7 +254,7 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 
 Laravel routes are also able to handle wildcard sub-domains, and pass you wildcard parameters from the domain:
 
-**Registering Sub-Domain Routes**
+#### Registering Sub-Domain Routes
 
 	Route::group(array('domain' => '{account}.myapp.com'), function()
 	{
@@ -271,7 +271,7 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 
 A group of routes may be prefixed by using the `prefix` option in the attributes array of a group:
 
-**Prefixing Grouped Routes**
+#### Prefixing Grouped Routes
 
 	Route::group(array('prefix' => 'admin'), function()
 	{
@@ -288,7 +288,7 @@ A group of routes may be prefixed by using the `prefix` option in the attributes
 
 Model binding provides a convenient way to inject model instances into your routes. For example, instead of injecting a user's ID, you can inject the entire User model instance that matches the given ID. First, use the `Route::model` method to specify the model that should be used for a given parameter:
 
-**Binding A Parameter To A Model**
+#### Binding A Parameter To A Model
 
 	Route::model('user', 'User');
 

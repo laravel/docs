@@ -16,40 +16,40 @@ The cache configuration file also contains various other options, which are docu
 <a name="cache-usage"></a>
 ## Cache Usage
 
-**Storing An Item In The Cache**
+#### Storing An Item In The Cache
 
 	Cache::put('key', 'value', $minutes);
 
-**Using Carbon Objects To Set Expire Time**
+#### Using Carbon Objects To Set Expire Time
 
 	$expiresAt = Carbon::now()->addMinutes(10);
 
 	Cache::put('key', 'value', $expiresAt);
 
-**Storing An Item In The Cache If It Doesn't Exist**
+#### Storing An Item In The Cache If It Doesn't Exist
 
 	Cache::add('key', 'value', $minutes);
 
 The `add` method will return `true` if the item is actually **added** to the cache. Otherwise, the method will return `false`.
 
-**Checking For Existence In Cache**
+#### Checking For Existence In Cache
 
 	if (Cache::has('key'))
 	{
 		//
 	}
 
-**Retrieving An Item From The Cache**
+#### Retrieving An Item From The Cache
 
 	$value = Cache::get('key');
 
-**Retrieving An Item Or Returning A Default Value**
+#### Retrieving An Item Or Returning A Default Value
 
 	$value = Cache::get('key', 'default');
 
 	$value = Cache::get('key', function() { return 'default'; });
 
-**Storing An Item In The Cache Permanently**
+#### Storing An Item In The Cache Permanently
 
 	Cache::forever('key', 'value');
 
@@ -69,7 +69,7 @@ You may also combine the `remember` and `forever` methods:
 
 Note that all items stored in the cache are serialized, so you are free to store any type of data.
 
-**Removing An Item From The Cache**
+#### Removing An Item From The Cache
 
 	Cache::forget('key');
 
@@ -78,13 +78,13 @@ Note that all items stored in the cache are serialized, so you are free to store
 
 All drivers except `file` and `database` support the `increment` and `decrement` operations:
 
-**Incrementing A Value**
+#### Incrementing A Value
 
 	Cache::increment('key');
 
 	Cache::increment('key', $amount);
 
-**Decrementing A Value**
+#### Decrementing A Value
 
 	Cache::decrement('key');
 
@@ -97,7 +97,7 @@ All drivers except `file` and `database` support the `increment` and `decrement`
 
 Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method:
 
-**Accessing A Tagged Cache**
+#### Accessing A Tagged Cache
 
 You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names.
 
@@ -107,7 +107,7 @@ You may store a tagged cache by passing in an ordered list of tag names as argum
 
 You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`:
 
-**Accessing Items In A Tagged Cache**
+#### Accessing Items In A Tagged Cache
 
 To access a tagged cache, pass the same ordered list of tags used to save it.
 

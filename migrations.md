@@ -16,7 +16,7 @@ Migrations are a type of version control for your database. They allow a team to
 
 To create a migration, you may use the `migrate:make` command on the Artisan CLI:
 
-**Creating A Migration**
+#### Creating A Migration
 
 	php artisan migrate:make create_users_table
 
@@ -35,15 +35,15 @@ The `--table` and `--create` options may also be used to indicate the name of th
 <a name="running-migrations"></a>
 ## Running Migrations
 
-**Running All Outstanding Migrations**
+#### Running All Outstanding Migrations
 
 	php artisan migrate
 
-**Running All Outstanding Migrations For A Path**
+#### Running All Outstanding Migrations For A Path
 
 	php artisan migrate --path=app/foo/migrations
 
-**Running All Outstanding Migrations For A Package**
+#### Running All Outstanding Migrations For A Package
 
 	php artisan migrate --package=vendor/package
 
@@ -52,15 +52,15 @@ The `--table` and `--create` options may also be used to indicate the name of th
 <a name="rolling-back-migrations"></a>
 ## Rolling Back Migrations
 
-**Rollback The Last Migration Operation**
+#### Rollback The Last Migration Operation
 
 	php artisan migrate:rollback
 
-**Rollback all migrations**
+#### Rollback all migrations
 
 	php artisan migrate:reset
 
-**Rollback all migrations and run them all again**
+#### Rollback all migrations and run them all again
 
 	php artisan migrate:refresh
 
@@ -71,7 +71,7 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
 Laravel also includes a simple way to seed your database with test data using seed classes. All seed classes are stored in `app/database/seeds`. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserTableSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
 
-**Example Database Seed Class**
+#### Example Database Seed Class
 
 	class DatabaseSeeder extends Seeder {
 

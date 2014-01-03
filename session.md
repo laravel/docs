@@ -16,44 +16,44 @@ The session configuration is stored in `app/config/session.php`. Be sure to revi
 <a name="session-usage"></a>
 ## Session Usage
 
-**Storing An Item In The Session**
+#### Storing An Item In The Session
 
 	Session::put('key', 'value');
 
-**Push A Value Onto An Array Session Value**
+#### Push A Value Onto An Array Session Value
 
 	Session::push('user.teams', 'developers');
 
-**Retrieving An Item From The Session**
+#### Retrieving An Item From The Session
 
 	$value = Session::get('key');
 
-**Retrieving An Item Or Returning A Default Value**
+#### Retrieving An Item Or Returning A Default Value
 
 	$value = Session::get('key', 'default');
 
 	$value = Session::get('key', function() { return 'default'; });
 
-**Retrieving All Data From The Session**
+#### Retrieving All Data From The Session
 
 	$data = Session::all();
 
-**Determining If An Item Exists In The Session**
+#### Determining If An Item Exists In The Session
 
 	if (Session::has('users'))
 	{
 		//
 	}
 
-**Removing An Item From The Session**
+#### Removing An Item From The Session
 
 	Session::forget('key');
 
-**Removing All Items From The Session**
+#### Removing All Items From The Session
 
 	Session::flush();
 
-**Regenerating The Session ID**
+#### Regenerating The Session ID
 
 	Session::regenerate();
 
@@ -64,11 +64,11 @@ Sometimes you may wish to store items in the session only for the next request. 
 
 	Session::flash('key', 'value');
 
-**Reflashing The Current Flash Data For Another Request**
+#### Reflashing The Current Flash Data For Another Request
 
 	Session::reflash();
 
-**Reflashing Only A Subset Of Flash Data**
+#### Reflashing Only A Subset Of Flash Data
 
 	Session::keep(array('username', 'email'));
 

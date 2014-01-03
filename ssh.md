@@ -16,7 +16,7 @@ The configuration file is located at `app/config/remote.php`, and contains all o
 <a name="basic-usage"></a>
 ## Basic Usage
 
-**Running Commands On The Default Server**
+#### Running Commands On The Default Server
 
 To run commands on your `default` remote connection, use the `SSH::run` method:
 
@@ -25,7 +25,7 @@ To run commands on your `default` remote connection, use the `SSH::run` method:
 		'git pull origin master',
 	));
 
-**Running Commands On A Specific Connection**
+#### Running Commands On A Specific Connection
 
 Alternatively, you may run commands on a specific connection using the `into` method:
 
@@ -34,7 +34,7 @@ Alternatively, you may run commands on a specific connection using the `into` me
 		'git pull origin master',
 	));
 
-**Catching Output From Commands**
+#### Catching Output From Commands
 
 You may catch the "live" output of your remote commands by passing a Closure into the `run` method:
 

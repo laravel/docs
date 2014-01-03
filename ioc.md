@@ -20,14 +20,14 @@ Understanding the Laravel IoC container is essential to building a powerful, lar
 
 There are two ways the IoC container can resolve dependencies: via Closure callbacks or automatic resolution. First, we'll explore Closure callbacks. First, a "type" may be bound into the container:
 
-**Binding A Type Into The Container**
+#### Binding A Type Into The Container
 
 	App::bind('foo', function($app)
 	{
 		return new FooBar;
 	});
 
-**Resolving A Type From The Container**
+#### Resolving A Type From The Container
 
 	$value = App::make('foo');
 
@@ -35,7 +35,7 @@ When the `App::make` method is called, the Closure callback is executed and the 
 
 Sometimes, you may wish to bind something into the container that should only be resolved once, and the same instance should be returned on subsequent calls into the container:
 
-**Binding A "Shared" Type Into The Container**
+#### Binding A "Shared" Type Into The Container
 
 	App::singleton('foo', function()
 	{
@@ -44,7 +44,7 @@ Sometimes, you may wish to bind something into the container that should only be
 
 You may also bind an existing object instance into the container using the `instance` method:
 
-**Binding An Existing Instance Into The Container**
+#### Binding An Existing Instance Into The Container
 
 	$foo = new Foo;
 
@@ -62,7 +62,7 @@ If your application has a very large number of IoC bindings, or you simply wish 
 
 The IoC container is powerful enough to resolve classes without any configuration at all in many scenarios. For example:
 
-**Resolving A Class**
+#### Resolving A Class
 
 	class FooBar {
 
@@ -81,7 +81,7 @@ When a type is not bound in the container, it will use PHP's Reflection faciliti
 
 However, in some cases, a class may depend on an interface implementation, not a "concrete type". When this is the case, the `App::bind` method must be used to inform the container which interface implementation to inject:
 
-**Binding An Interface To An Implementation**
+#### Binding An Interface To An Implementation
 
 	App::bind('UserRepositoryInterface', 'DbUserRepository');
 
@@ -103,7 +103,7 @@ Since we have bound the `UserRepositoryInterface` to a concrete type, the `DbUse
 
 Laravel provides several opportunities to use the IoC container to increase the flexibility and testability of your application. One primary example is when resolving controllers. All controllers are resolved through the IoC container, meaning you can type-hint dependencies in a controller constructor, and they will automatically be injected.
 
-**Type-Hinting Controller Dependencies**
+#### Type-Hinting Controller Dependencies
 
 	class OrderController extends BaseController {
 
@@ -125,7 +125,7 @@ In this example, the `OrderRepository` class will automatically be injected into
 
 [Filters](/docs/routing#route-filters), [composers](/docs/responses#view-composers), and [event handlers](/docs/events#using-classes-as-listeners) may also be resolved out of the IoC container. When registering them, simply give the name of the class that should be used:
 
-**Other Examples Of IoC Usage**
+#### Other Examples Of IoC Usage
 
 	Route::filter('foo', 'FooFilter');
 
@@ -142,7 +142,7 @@ In fact, most of the core Laravel components include service providers. All of t
 
 To create a service provider, simply extend the `Illuminate\Support\ServiceProvider` class and define a `register` method:
 
-**Defining A Service Provider**
+#### Defining A Service Provider
 
 	use Illuminate\Support\ServiceProvider;
 
@@ -162,7 +162,7 @@ Note that in the `register` method, the application IoC container is available t
 
 You may also register a service provider at run-time using the `App::register` method:
 
-**Registering A Service Provider At Run-Time**
+#### Registering A Service Provider At Run-Time
 
 	App::register('FooServiceProvider');
 
@@ -171,7 +171,7 @@ You may also register a service provider at run-time using the `App::register` m
 
 The container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
 
-**Registering A Resolving Listener**
+#### Registering A Resolving Listener
 
 	App::resolvingAny(function($object)
 	{

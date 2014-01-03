@@ -44,33 +44,33 @@ Note that two keys have been added to the configuration array: `read` and `write
 
 Once you have configured your database connection, you may run queries using the `DB` class.
 
-**Running A Select Query**
+#### Running A Select Query
 
 	$results = DB::select('select * from users where id = ?', array(1));
 
 The `select` method will always return an `array` of results.
 
-**Running An Insert Statement**
+#### Running An Insert Statement
 
 	DB::insert('insert into users (id, name) values (?, ?)', array(1, 'Dayle'));
 
-**Running An Update Statement**
+#### Running An Update Statement
 
 	DB::update('update users set votes = 100 where name = ?', array('John'));
 
-**Running A Delete Statement**
+#### Running A Delete Statement
 
 	DB::delete('delete from users');
 
 > **Note:** The `update` and `delete` statements return the number of rows affected by the operation.
 
-**Running A General Statement**
+#### Running A General Statement
 
 	DB::statement('drop table users');
 
 You may listen for query events using the `DB::listen` method:
 
-**Listening For Query Events**
+#### Listening For Query Events
 
 	DB::listen(function($sql, $bindings, $time)
 	{

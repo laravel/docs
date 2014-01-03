@@ -10,14 +10,14 @@
 <a name="basic-responses"></a>
 ## Basic Responses
 
-**Returning Strings From Routes**
+#### Returning Strings From Routes
 
 	Route::get('/', function()
 	{
 		return 'Hello World';
 	});
 
-**Creating Custom Responses**
+#### Creating Custom Responses
 
 A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses.
 
@@ -31,7 +31,7 @@ If you need access to the `Response` class methods, but want to return a view as
 
 	return Response::view('hello')->header('Content-Type', $type);
 
-**Attaching Cookies To Responses**
+#### Attaching Cookies To Responses
 
 	$cookie = Cookie::make('name', 'value');
 
@@ -40,37 +40,37 @@ If you need access to the `Response` class methods, but want to return a view as
 <a name="redirects"></a>
 ## Redirects
 
-**Returning A Redirect**
+#### Returning A Redirect
 
 	return Redirect::to('user/login');
 
-**Returning A Redirect With Flash Data**
+#### Returning A Redirect With Flash Data
 
 	return Redirect::to('user/login')->with('message', 'Login Failed');
 
 > **Note:** Since the `with` method flashes data to the session, you may retrieve the data using the typical `Session::get` method.
 
-**Returning A Redirect To A Named Route**
+#### Returning A Redirect To A Named Route
 
 	return Redirect::route('login');
 
-**Returning A Redirect To A Named Route With Parameters**
+#### Returning A Redirect To A Named Route With Parameters
 
 	return Redirect::route('profile', array(1));
 
-**Returning A Redirect To A Named Route Using Named Parameters**
+#### Returning A Redirect To A Named Route Using Named Parameters
 
 	return Redirect::route('profile', array('user' => 1));
 
-**Returning A Redirect To A Controller Action**
+#### Returning A Redirect To A Controller Action
 
 	return Redirect::action('HomeController@index');
 
-**Returning A Redirect To A Controller Action With Parameters**
+#### Returning A Redirect To A Controller Action With Parameters
 
 	return Redirect::action('UserController@profile', array(1));
 
-**Returning A Redirect To A Controller Action Using Named Parameters**
+#### Returning A Redirect To A Controller Action Using Named Parameters
 
 	return Redirect::action('UserController@profile', array('user' => 1));
 
@@ -98,7 +98,7 @@ This view may be returned to the browser like so:
 
 The second argument passed to `View::make` is an array of data that should be made available to the view.
 
-**Passing Data To Views**
+#### Passing Data To Views
 
 	// Using conventional approach
 	$view = View::make('greeting')->with('name', 'Steve');
@@ -116,7 +116,7 @@ You may also share a piece of data across all views:
 
 	View::share('name', 'Steve');
 
-**Passing A Sub-View To A View**
+#### Passing A Sub-View To A View
 
 Sometimes you may wish to pass a view into another view. For example, given a sub-view stored at `app/views/child/view.php`, we could pass it to another view like so:
 
@@ -138,7 +138,7 @@ The sub-view can then be rendered from the parent view:
 
 View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
 
-**Defining A View Composer**
+#### Defining A View Composer
 
 	View::composer('profile', function($view)
 	{
@@ -183,15 +183,15 @@ View **creators** work almost exactly like view composers; however, they are fir
 <a name="special-responses"></a>
 ## Special Responses
 
-**Creating A JSON Response**
+#### Creating A JSON Response
 
 	return Response::json(array('name' => 'Steve', 'state' => 'CA'));
 
-**Creating A JSONP Response**
+#### Creating A JSONP Response
 
 	return Response::json(array('name' => 'Steve', 'state' => 'CA'))->setCallback(Input::get('callback'));
 
-**Creating A File Download Response**
+#### Creating A File Download Response
 
 	return Response::download($pathToFile);
 

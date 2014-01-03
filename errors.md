@@ -98,7 +98,7 @@ Monolog has a variety of additional handlers you may use for logging. If needed,
 
 You may also register an event to catch all messages passed to the log:
 
-**Registering A Log Listener**
+#### Registering A Log Listener
 
 	Log::listen(function($level, $message, $context)
 	{

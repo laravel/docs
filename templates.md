@@ -9,7 +9,7 @@
 
 One method of using templates in Laravel is via controller layouts. By specifying the `layout` property on the controller, the view specified will be created for you and will be the assumed response that should be returned from actions.
 
-**Defining A Layout On A Controller**
+#### Defining A Layout On A Controller
 
 	class UserController extends BaseController {
 
@@ -33,7 +33,7 @@ One method of using templates in Laravel is via controller layouts. By specifyin
 
 Blade is a simple, yet powerful templating engine provided with Laravel. Unlike controller layouts, Blade is driven by _template inheritance_ and _sections_. All Blade templates should use the `.blade.php` extension.
 
-**Defining A Blade Layout**
+#### Defining A Blade Layout
 
 	<!-- Stored in app/views/layouts/master.blade.php -->
 
@@ -49,7 +49,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 		</body>
 	</html>
 
-**Using A Blade Layout**
+#### Using A Blade Layout
 
 	@extends('layouts.master')
 
@@ -72,13 +72,13 @@ Sometimes, such as when you are not sure if a section has been defined, you may 
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
 
-**Echoing Data**
+#### Echoing Data
 
 	Hello, {{ $name }}.
 
 	The current UNIX timestamp is {{ time() }}.
 
-**Echoing Data After Checking For Existence**
+#### Echoing Data After Checking For Existence
 
 Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. Basically, you want to do this:
 
@@ -88,7 +88,7 @@ However, instead of writing a ternary statement, Blade allows you to use the fol
 
 	{{ $name or 'Default' }}
 
-**Displaying Raw Text With Curly Braces**
+#### Displaying Raw Text With Curly Braces
 
 If you need to display a string that is wrapped in curly braces, you may escape the Blade behavior by prefixing your text with an `@` symbol:
 
@@ -100,7 +100,7 @@ Of course, all user supplied data should be escaped or purified. To escape the o
 
 > **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the triple curly brace syntax to escape any HTML entities in the content.
 
-**If Statements**
+#### If Statements
 
 	@if (count($records) === 1)
 		I have one record!
@@ -114,7 +114,7 @@ Of course, all user supplied data should be escaped or purified. To escape the o
 		You are not signed in.
 	@endunless
 
-**Loops**
+#### Loops
 
 	@for ($i = 0; $i < 10; $i++)
 		The current value is {{ $i }}
@@ -128,7 +128,7 @@ Of course, all user supplied data should be escaped or purified. To escape the o
 		<p>I'm looping forever.</p>
 	@endwhile
 
-**Including Sub-Views**
+#### Including Sub-Views
 
 	@include('view.name')
 
@@ -136,7 +136,7 @@ You may also pass an array of data to the included view:
 
 	@include('view.name', array('some'=>'data'))
 
-**Overwriting Sections**
+#### Overwriting Sections
 
 By default, sections are appended to any previous content that exists in the section. To overwrite a section entirely, you may use the `overwrite` statement:
 
@@ -146,12 +146,12 @@ By default, sections are appended to any previous content that exists in the sec
 		<p>This is an item of type {{ $item->type }}</p>
 	@overwrite
 
-**Displaying Language Lines**
+#### Displaying Language Lines
 
 	@lang('language.line')
 
 	@choice('language.line', 1);
 
-**Comments**
+#### Comments
 
 	{{-- This comment will not be in the rendered HTML --}}

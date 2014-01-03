@@ -15,7 +15,7 @@
 <a name="opening-a-form"></a>
 ## Opening A Form
 
-**Opening A Form**
+#### Opening A Form
 
 	{{ Form::open(array('url' => 'foo/bar')) }}
 		//
@@ -48,11 +48,11 @@ If your form is going to accept file uploads, add a `files` option to your array
 
 Laravel provides an easy method of protecting your application from cross-site request forgeries. First, a random token is placed in your user's session. Don't sweat it, this is done automatically. The CSRF token will be added to your forms as a hidden field automatically. However, if you wish to generate the HTML for the hidden field, you may use the `token` method:
 
-**Adding The CSRF Token To A Form**
+#### Adding The CSRF Token To A Form
 
 	echo Form::token();
 
-**Attaching The CSRF Filter To A Route**
+#### Attaching The CSRF Filter To A Route
 
 	Route::post('profile', array('before' => 'csrf', function()
 	{
@@ -64,7 +64,7 @@ Laravel provides an easy method of protecting your application from cross-site r
 
 Often, you will want to populate a form based on the contents of a model. To do so, use the `Form::model` method:
 
-**Opening A Model Form**
+#### Opening A Model Form
 
 	echo Form::model($user, array('route' => array('user.update', $user->id)))
 
@@ -81,11 +81,11 @@ This allows you to quickly build forms that not only bind to model values, but e
 <a name="labels"></a>
 ## Labels
 
-**Generating A Label Element**
+#### Generating A Label Element
 
 	echo Form::label('email', 'E-Mail Address');
 
-**Specifying Extra HTML Attributes**
+#### Specifying Extra HTML Attributes
 
 	echo Form::label('email', 'E-Mail Address', array('class' => 'awesome'));
 
@@ -94,21 +94,21 @@ This allows you to quickly build forms that not only bind to model values, but e
 <a name="text"></a>
 ## Text, Text Area, Password & Hidden Fields
 
-**Generating A Text Input**
+#### Generating A Text Input
 
 	echo Form::text('username');
 
-**Specifying A Default Value**
+#### Specifying A Default Value
 
 	echo Form::text('email', 'example@gmail.com');
 
 > **Note:** The *hidden* and *textarea* methods have the same signature as the *text* method.
 
-**Generating A Password Input**
+#### Generating A Password Input
 
 	echo Form::password('password');
 
-**Generating Other Inputs**
+#### Generating Other Inputs
 
 	echo Form::email($name, $value = null, $attributes = array());
 	echo Form::file($name, $attributes = array());
@@ -116,13 +116,13 @@ This allows you to quickly build forms that not only bind to model values, but e
 <a name="checkboxes-and-radio-buttons"></a>
 ## Checkboxes and Radio Buttons
 
-**Generating A Checkbox Or Radio Input**
+#### Generating A Checkbox Or Radio Input
 
 	echo Form::checkbox('name', 'value');
 
 	echo Form::radio('name', 'value');
 
-**Generating A Checkbox Or Radio Input That Is Checked**
+#### Generating A Checkbox Or Radio Input That Is Checked
 
 	echo Form::checkbox('name', 'value', true);
 
@@ -131,40 +131,40 @@ This allows you to quickly build forms that not only bind to model values, but e
 <a name="file-input"></a>
 ## File Input
 
-**Generating A File Input**
+#### Generating A File Input
 
 	echo Form::file('image');
 
 <a name="drop-down-lists"></a>
 ## Drop-Down Lists
 
-**Generating A Drop-Down List**
+#### Generating A Drop-Down List
 
 	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'));
 
-**Generating A Drop-Down List With Selected Default**
+#### Generating A Drop-Down List With Selected Default
 
 	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S');
 
-**Generating A Grouped List**
+#### Generating A Grouped List
 
 	echo Form::select('animal', array(
 		'Cats' => array('leopard' => 'Leopard'),
 		'Dogs' => array('spaniel' => 'Spaniel'),
 	));
 
-**Generating A Drop-Down List With A Range**
+#### Generating A Drop-Down List With A Range
 
     echo Form::selectRange('number', 10, 20);
 
-**Generating A List With Month Names**
+#### Generating A List With Month Names
 
     echo Form::selectMonth('month');
 
 <a name="buttons"></a>
 ## Buttons
 
-**Generating A Submit Button**
+#### Generating A Submit Button
 
 	echo Form::submit('Click Me!');
 
@@ -175,7 +175,7 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 It's easy to define your own custom Form class helpers called "macros". Here's how it works. First, simply register the macro with a given name and a Closure:
 
-**Registering A Form Macro**
+#### Registering A Form Macro
 
 	Form::macro('myField', function()
 	{
@@ -184,7 +184,7 @@ It's easy to define your own custom Form class helpers called "macros". Here's h
 
 Now you can call your macro using its name:
 
-**Calling A Custom Form Macro**
+#### Calling A Custom Form Macro
 
 	echo Form::myField();
 

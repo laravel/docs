@@ -26,7 +26,7 @@ Language strings are stored in files within the `app/lang` directory. Within thi
 
 Language files simply return an array of keyed strings. For example:
 
-**Example Language File**
+#### Example Language File
 
 	<?php
 
@@ -36,14 +36,14 @@ Language files simply return an array of keyed strings. For example:
 
 The default language for your application is stored in the `app/config/app.php` configuration file. You may change the active language at any time using the `App::setLocale` method:
 
-**Changing The Default Language At Runtime**
+#### Changing The Default Language At Runtime
 
 	App::setLocale('es');
 
 <a name="basic-usage"></a>
 ## Basic Usage
 
-**Retrieving Lines From A Language File**
+#### Retrieving Lines From A Language File
 
 	echo Lang::get('messages.welcome');
 
@@ -55,7 +55,7 @@ You may also use the `trans` helper function, which is an alias for the `Lang::g
 
 	echo trans('messages.welcome');
 
-**Making Replacements In Lines**
+#### Making Replacements In Lines
 
 You may also define place-holders in your language lines:
 
@@ -65,7 +65,7 @@ Then, pass a second argument of replacements to the `Lang::get` method:
 
 	echo Lang::get('messages.welcome', array('name' => 'Dayle'));
 
-**Determine If A Language File Contains A Line**
+#### Determine If A Language File Contains A Line
 
 	if (Lang::has('messages.welcome'))
 	{

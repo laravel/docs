@@ -125,7 +125,7 @@ If you would like to use another method on the controller as a filter, you may u
 
 Laravel allows you to easily define a single route to handle every action in a controller using simple, REST naming conventions. First, define the route using the `Route::controller` method:
 
-**Defining A RESTful Controller**
+#### Defining A RESTful Controller
 
 	Route::controller('users', 'UserController');
 
@@ -166,7 +166,7 @@ Now we can register a resourceful route to the controller:
 
 This single route declaration creates multiple routes to handle a variety of RESTful actions on the photo resource. Likewise, the generated controller will already have stubbed methods for each of these actions with notes informing you which URIs and verbs they handle.
 
-**Actions Handled By Resource Controller**
+#### Actions Handled By Resource Controller
 
 Verb      | Path                        | Action       | Route Name
 ----------|-----------------------------|--------------|---------------------
@@ -202,7 +202,7 @@ By default, all resource controller actions have a route name; however, you can 
 
 A catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the method and parameter array for the request:
 
-**Defining A Catch-All Method**
+#### Defining A Catch-All Method
 
 	public function missingMethod($parameters = array())
 	{

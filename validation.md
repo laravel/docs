@@ -13,7 +13,7 @@
 
 Laravel ships with a simple, convenient facility for validating data and retrieving validation error messages via the `Validation` class.
 
-**Basic Validation Example**
+#### Basic Validation Example
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
@@ -24,14 +24,14 @@ The first argument passed to the `make` method is the data under validation. The
 
 Multiple rules may be delimited using either a "pipe" character, or as separate elements of an array.
 
-**Using Arrays To Specify Rules**
+#### Using Arrays To Specify Rules
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
 		array('name' => array('required', 'min:5'))
 	);
 
-**Validating Multiple Fields**
+#### Validating Multiple Fields
 
     $validator = Validator::make(
         array(
@@ -61,7 +61,7 @@ You may also access an array of the failed validation rules, without messages. T
 
 	$failed = $validator->failed();
 
-**Validating Files**
+#### Validating Files
 
 The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
 
@@ -70,38 +70,38 @@ The `Validator` class provides several rules for validating files, such as `size
 
 After calling the `messages` method on a `Validator` instance, you will receive a `MessageBag` instance, which has a variety of convenient methods for working with error messages.
 
-**Retrieving The First Error Message For A Field**
+#### Retrieving The First Error Message For A Field
 
 	echo $messages->first('email');
 
-**Retrieving All Error Messages For A Field**
+#### Retrieving All Error Messages For A Field
 
 	foreach ($messages->get('email') as $message)
 	{
 		//
 	}
 
-**Retrieving All Error Messages For All Fields**
+#### Retrieving All Error Messages For All Fields
 
 	foreach ($messages->all() as $message)
 	{
 		//
 	}
 
-**Determining If Messages Exist For A Field**
+#### Determining If Messages Exist For A Field
 
 	if ($messages->has('email'))
 	{
 		//
 	}
 
-**Retrieving An Error Message With A Format**
+#### Retrieving An Error Message With A Format
 
 	echo $messages->first('email', '<p>:message</p>');
 
 > **Note:** By default, messages are formatted using Bootstrap compatible syntax.
 
-**Retrieving All Error Messages With A Format**
+#### Retrieving All Error Messages With A Format
 
 	foreach ($messages->all('<li>:message</li>') as $message)
 	{
@@ -259,11 +259,11 @@ The field under validation must be formatted as an e-mail address.
 
 The field under validation must exist on a given database table.
 
-**Basic Usage Of Exists Rule**
+#### Basic Usage Of Exists Rule
 
 	'state' => 'exists:states'
 
-**Specifying A Custom Column Name**
+#### Specifying A Custom Column Name
 
 	'state' => 'exists:states,abbreviation'
 
@@ -305,7 +305,7 @@ The field under validation must be less than a maximum _value_. Strings, numeric
 
 The file under validation must have a MIME type corresponding to one of the listed extensions.
 
-**Basic Usage Of MIME Rule**
+#### Basic Usage Of MIME Rule
 
 	'photo' => 'mimes:jpeg,bmp,png'
 
@@ -371,19 +371,19 @@ The field under validation must have a size matching the given _value_. For stri
 
 The field under validation must be unique on a given database table. If the `column` option is not specified, the field name will be used.
 
-**Basic Usage Of Unique Rule**
+#### Basic Usage Of Unique Rule
 
 	'email' => 'unique:users'
 
-**Specifying A Custom Column Name**
+#### Specifying A Custom Column Name
 
 	'email' => 'unique:users,email_address'
 
-**Forcing A Unique Rule To Ignore A Given ID**
+#### Forcing A Unique Rule To Ignore A Given ID
 
 	'email' => 'unique:users,email_address,10'
 
-**Adding Additional Where Clauses**
+#### Adding Additional Where Clauses
 
 You may also specify more conditions that will be added as "where" clauses to the query:
 
@@ -427,7 +427,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
 
 If needed, you may use custom error messages for validation instead of the defaults. There are several ways to specify custom messages.
 
-**Passing Custom Messages Into Validator**
+#### Passing Custom Messages Into Validator
 
 	$messages = array(
 		'required' => 'The :attribute field is required.',
@@ -437,7 +437,7 @@ If needed, you may use custom error messages for validation instead of the defau
 
 *Note:* The `:attribute` place-holder will be replaced by the actual name of the field under validation. You may also utilize other place-holders in validation messages.
 
-**Other Validation Place-Holders**
+#### Other Validation Place-Holders
 
 	$messages = array(
 		'same'    => 'The :attribute and :other must match.',
@@ -448,7 +448,7 @@ If needed, you may use custom error messages for validation instead of the defau
 
 Sometimes you may wish to specify a custom error messages only for a specific field:
 
-**Specifying A Custom Message For A Given Attribute**
+#### Specifying A Custom Message For A Given Attribute
 
 	$messages = array(
 		'email.required' => 'We need to know your e-mail address!',
@@ -457,7 +457,7 @@ Sometimes you may wish to specify a custom error messages only for a specific fi
 In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
 
 <a name="localization"></a>
-**Specifying Custom Messages In Language Files**
+#### Specifying Custom Messages In Language Files
 
 	'custom' => array(
 		'email' => array(
@@ -470,7 +470,7 @@ In some cases, you may wish to specify your custom messages in a language file i
 
 Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
 
-**Registering A Custom Validation Rule**
+#### Registering A Custom Validation Rule
 
 	Validator::extend('foo', function($attribute, $value, $parameters)
 	{
@@ -487,7 +487,7 @@ Note that you will also need to define an error message for your custom rules. Y
 
 Instead of using Closure callbacks to extend the Validator, you may also extend the Validator class itself. To do so, write a Validator class that extends `Illuminate\Validation\Validator`. You may add validation methods to the class by prefixing them with `validate`:
 
-**Extending The Validator Class**
+#### Extending The Validator Class
 
 	<?php
 
@@ -502,7 +502,7 @@ Instead of using Closure callbacks to extend the Validator, you may also extend 
 
 Next, you need to register your custom Validator extension:
 
-**Registering A Custom Validator Resolver**
+#### Registering A Custom Validator Resolver
 
 	Validator::resolver(function($translator, $data, $rules, $messages)
 	{

@@ -55,7 +55,7 @@ Start files serve as a simple place to place any "bootstrapping" code. For examp
 
 You may also do pre and post request processing by registering `before`, `after`, `finish`, and `shutdown` application events:
 
-**Registering Application Events**
+#### Registering Application Events
 
 	App::before(function($request)
 	{
