@@ -601,9 +601,9 @@ Now, we can retrieve the photos for either a staff member or an order:
 		//
 	}
 
-However, the true "polymorphic" magic is when you access the staff or order from the `Photo` model:
-
 #### Retrieving The Owner Of A Polymorphic Relation
+
+However, the true "polymorphic" magic is when you access the staff or order from the `Photo` model:
 
 	$photo = Photo::find(1);
 
