@@ -402,9 +402,9 @@ Take note that Eloquent assumes the foreign key of the relationship based on the
 
 	return $this->hasOne('Phone', 'foreign_key', 'local_key');
 
-To define the inverse of the relationship on the `Phone` model, we use the `belongsTo` method:
-
 #### Defining The Inverse Of A Relation
+
+To define the inverse of the relationship on the `Phone` model, we use the `belongsTo` method:
 
 	class Phone extends Eloquent {
 
