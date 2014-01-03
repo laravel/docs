@@ -95,6 +95,8 @@ If you are using the MySQL database, you may use the `after` method to specify t
 <a name="renaming-columns"></a>
 ## Renaming Columns
 
+> **Note:** Renaming columns requires `doctrine/dbal`
+
 To rename a column, you may use the `renameColumn` method on the Schema builder:
 
 #### Renaming A Column
