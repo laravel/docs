@@ -158,13 +158,6 @@ If a response is returned from a filter, that response will be considered the re
 	{
 		return 'You are authenticated and over 200 years old!';
 	}));
-	
-Or short array syntax `[]` (for PHP `5.4` or greater):
-
-	Route::get('user', array('before' => ['auth', 'old'], function()
-	{
-		return 'You are authenticated and over 200 years old!';
-	}));
 
 #### Specifying Filter Parameters
 
