@@ -28,7 +28,7 @@ All Laravel packages are distributed via [Packagist](http://packagist.org) and [
 
 The easiest way to create a new package for use with Laravel is the `workbench` Artisan command. First, you will need to set a few options in the `app/config/workbench.php` file. In that file, you will find a `name` and `email` option. These values will be used to generate a `composer.json` file for your new package. Once you have supplied those values, you are ready to build a workbench package!
 
-#### Issuing The Workbench Artisan Command
+**Issuing The Workbench Artisan Command**
 
 	php artisan workbench vendor/package --resources
 
@@ -45,7 +45,7 @@ Once the provider has been registered, you are ready to start developing your pa
 
 When using the `workbench` command, your package will be setup with conventions that allow the package to integrate well with other parts of the Laravel framework:
 
-#### Basic Package Directory Structure
+**Basic Package Directory Structure**
 
 	/src
 		/Vendor
@@ -59,6 +59,28 @@ When using the `workbench` command, your package will be setup with conventions 
 	/public
 
 Let's explore this structure further. The `src/Vendor/Package` directory is the home of all of your package's classes, including the `ServiceProvider`. The `config`, `lang`, `migrations`, and `views` directories, as you might guess, contain the corresponding resources for your package. Packages may have any of these resources, just like "regular" applications.
+
+
+**Custom Package Directory Structure**
+
+Suppose you re-organize your Class paths to reflect your namespacing. That is, `Vendor/Laravel/Package` path to match `\Vendor\Laravel\Package` namespacing. You now have three folder levels to traverse to get back to the main source folder. 
+
+	/src
+		/Vendor
+			/Laravel
+				/Package
+					PackageServiceProvider.php
+		/config
+		/lang
+		/migrations
+		/views
+	/tests
+	/public
+
+Notice the `Laravel` folder in there? Laravel makes an assumption that package folders are two levels up `/../..` from the ServiceProvider class. If you have changed how files are organized, then you can pass a third argument to the `package` method.
+
+	// Passing custom namespace and path to package resources
+	$this->package('vendor/package', 'custom-namespace', '../../..');
 
 <a name="service-providers"></a>
 ## Service Providers
@@ -88,11 +110,11 @@ There is not a "default location" for service provider classes. You may put them
 
 When utilizing resources from a package, such as configuration items or views, a double-colon syntax will generally be used:
 
-#### Loading A View From A Package
+**Loading A View From A Package**
 
 	return View::make('package::view.name');
 
-#### Retrieving A Package Configuration Item
+**Retrieving A Package Configuration Item**
 
 	return Config::get('package::group.option');
 
@@ -109,7 +131,7 @@ Since your packages are in the `workbench` directory, you may be wondering how C
 
 If you need to regenerate your package's autoload files, you may use the `php artisan dump-autoload` command. This command will regenerate the autoload files for your root project, as well as any workbenches you have created.
 
-#### Running The Artisan Autoload Command
+**Running The Artisan Autoload Command**
 
 	php artisan dump-autoload
 
@@ -118,7 +140,7 @@ If you need to regenerate your package's autoload files, you may use the `php ar
 
 In prior versions of Laravel, a `handles` clause was used to specify which URIs a package could respond to. However, in Laravel 4, a package may respond to any URI. To load a routes file for your package, simply `include` it from within your service provider's `boot` method.
 
-#### Including A Routes File From A Service Provider
+**Including A Routes File From A Service Provider**
 
 	public function boot()
 	{
@@ -134,19 +156,19 @@ In prior versions of Laravel, a `handles` clause was used to specify which URIs 
 
 Some packages may require configuration files. These files should be defined in the same way as typical application configuration files. And, when using the default `$this->package` method of registering resources in your service provider, may be accessed using the usual "double-colon" syntax:
 
-#### Accessing Package Configuration Files
+**Accessing Package Configuration Files**
 
 	Config::get('package::file.option');
 
 However, if your package contains a single configuration file, you may simply name the file `config.php`. When this is done, you may access the options directly, without specifying the file name:
 
-#### Accessing Single File Package Configuration
+**Accessing Single File Package Configuration**
 
 	Config::get('package::option');
 
 Sometimes, you may wish to register package resources such as views outside of the typical `$this->package` method. Typically, this would only be done if the resources were not in a conventional location. To register the resources manually, you may use the `addNamespace` method of the `View`, `Lang`, and `Config` classes:
 
-#### Registering A Resource Namespace Manually
+**Registering A Resource Namespace Manually**
 
 	View::addNamespace('package', __DIR__.'/path/to/views');
 
@@ -160,11 +182,15 @@ The method signature for `addNamespace` is identical on the `View`, `Lang`, and 
 
 When other developers install your package, they may wish to override some of the configuration options. However, if they change the values in your package source code, they will be overwritten the next time Composer updates the package. Instead, the `config:publish` artisan command should be used:
 
-#### Executing The Config Publish Command
+**Executing The Config Publish Command**
 
 	php artisan config:publish vendor/package
 
 When this command is executed, the configuration files for your application will be copied to `app/config/packages/vendor/package` where they can be safely modified by the developer!
+
+If you are developing a package using workbench, then you will have to use the `--path` option. 
+
+	php artisan config:publish --path workbench/vendor/package/src/config/ vendor/package
 
 > **Note:** The developer may also create environment specific configuration files for your package by placing them in `app/config/packages/vendor/package/environment`.
 
@@ -173,17 +199,17 @@ When this command is executed, the configuration files for your application will
 
 You may easily create and run migrations for any of your packages. To create a migration for a package in the workbench, use the `--bench` option:
 
-#### Creating Migrations For Workbench Packages
+**Creating Migrations For Workbench Packages**
 
 	php artisan migrate:make create_users_table --bench="vendor/package"
 
-#### Running Migrations For Workbench Packages
+**Running Migrations For Workbench Packages**
 
 	php artisan migrate --bench="vendor/package"
 
 To run migrations for a finished package that was installed via Composer into the `vendor` directory, you may use the `--package` directive:
 
-#### Running Migrations For An Installed Package
+**Running Migrations For An Installed Package**
 
 	php artisan migrate --package="vendor/package"
 
@@ -192,7 +218,7 @@ To run migrations for a finished package that was installed via Composer into th
 
 Some packages may have assets such as JavaScript, CSS, and images. However, we are unable to link to assets in the `vendor` or `workbench` directories, so we need a way to move these assets into the `public` directory of our application. The `asset:publish` command will take care of this for you:
 
-#### Moving Package Assets To Public
+**Moving Package Assets To Public**
 
 	php artisan asset:publish
 
