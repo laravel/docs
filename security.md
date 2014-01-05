@@ -216,7 +216,7 @@ Next, a table must be created to store the password reset tokens. To generate a 
 
 #### Generating The Reminder Table Migration
 
-	php artisan auth:reminders
+	php artisan auth:reminders-table
 
 	php artisan migrate
 
