@@ -96,4 +96,7 @@ For localization for validation errors and messages, take a look at the <a href=
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
 
-Many packages ship with their own language lines. Instead of hacking the package's core files to tweak these lines, you may override them by placing files in the `app/lang/packages/{locale}` directory. So, for example, if you need to override the English language lines for a package named `skyrim/hearthfire`, you would place a language file at: `app/lang/packages/en/hearthfire.php`. In this file you would define only the language lines you wish to override. Any language lines you don't override will still be loaded from the package's language files.
+Many packages ship with their own language files. Instead of editing the package's core files to tweak these lines, you may override them by creating a file `app/lang/packages/{locale}/{namespace}/{file}.php`.
+
+So for example if you have a package called `skyrim/hearthfire` and inside it has a translation file called `books.php`. You could override the translations in that file by creating a new language file in `app/lang/packages/en/hearthfire/books.php`. In this file you would define only the language lines you wish to override. Any language lines you don't override will still be loaded from the package's language files.
+
