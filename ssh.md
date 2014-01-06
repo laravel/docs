@@ -68,7 +68,7 @@ The `SSH` class also includes a simple way to upload files, or even strings, to 
 
 	SSH::into('staging')->put($localFile, $remotePath);
 
-	SSH::into('staging')->putString('Foo', $remotePath);
+	SSH::into('staging')->putString($remotePath, 'Foo');
 
 <a name="tailing-remote-logs"></a>
 ## Tailing Remote Logs
