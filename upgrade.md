@@ -11,15 +11,15 @@ To upgrade your application to Laravel 4.1, change your `laravel/framework` vers
 
 ### Replacing Files
 
-Replace your `public/index.php` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/master/public/index.php).
+Replace your `public/index.php` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/master/public/index.php) ([raw](https://raw.github.com/laravel/laravel/master/public/index.php)).
 
-Replace your `artisan` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/master/artisan).
+Replace your `artisan` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/master/artisan) ([raw](https://raw.github.com/laravel/laravel/master/artisan)).
 
 ### Adding Configuration Files & Options
 
 Update your `aliases` and `providers` arrays in your `app/config/app.php` configuration file. The updated values for these arrays can be found [in this file](https://github.com/laravel/laravel/blob/master/app/config/app.php). Be sure to add your custom and package service providers / aliases back to the arrays.
 
-Add the new `app/config/remote.php` file [from the repository](https://github.com/laravel/laravel/blob/master/app/config/remote.php).
+Add the new `app/config/remote.php` file [from the repository](https://github.com/laravel/laravel/blob/master/app/config/remote.php) ([raw](https://raw.github.com/laravel/laravel/master/app/config/remote.php)).
 
 Add the new `expire_on_close` configuration option to your `app/config/session.php` file. The default value should be `false`.
 
