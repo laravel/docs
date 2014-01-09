@@ -190,3 +190,12 @@ The `Request::format` method will return the requested response format based on 
 	{
 		//
 	}
+
+**Checking The Request Method**
+
+Sometimes, you may find yourself in a situation where you want to check if a request is of a particular method or not. Instead of using something like `Request::getMethod() == 'POST'`, you can do:
+
+	if (Request::isMethod('POST'))
+	{
+		//
+	}
