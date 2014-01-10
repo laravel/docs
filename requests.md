@@ -168,6 +168,13 @@ The `Request` class provides many methods for examining the HTTP request for you
 
 	$value = Request::server('PATH_INFO');
 
+#### Determining If The Request Is Over HTTPS
+
+	if (Request::secure())
+	{
+		//
+	}
+
 #### Determine If The Request Is Using AJAX
 
 	if (Request::ajax())
@@ -175,9 +182,9 @@ The `Request` class provides many methods for examining the HTTP request for you
 		//
 	}
 
-#### Determining If The Request Is Over HTTPS
+#### Detect any type of JSON request
 
-	if (Request::secure())
+	if (Request::ajax() or Request::isJson() or Request::wantsJson())
 	{
 		//
 	}
