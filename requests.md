@@ -182,9 +182,16 @@ The `Request` class provides many methods for examining the HTTP request for you
 		//
 	}
 
-#### Detect any type of JSON request
+#### Determine If The Request Has JSON Content Type
 
-	if (Request::ajax() or Request::isJson() or Request::wantsJson())
+	if (Request::isJson())
+	{
+		//
+	}
+
+#### Determine If The Request Is Asking For JSON
+
+	if (Request::wantsJson())
 	{
 		//
 	}
