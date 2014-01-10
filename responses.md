@@ -169,7 +169,16 @@ A view composer class should be defined like so:
 
 	}
 
-Note that there is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
+#### Defining Multiple Composers
+
+You may use the `composers` method to register an group of composers at the same time:
+
+	View::composers(array(
+		'AdminComposer' => array('admin.index', 'admin.profile'),
+		'UserComposer' => 'user',
+	));
+
+> **Note:** There is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
 
 ### View Creators
 
