@@ -273,7 +273,7 @@ Translate a given language line. Alias of `Lang::get`.
 
 ### trans_choice
 
-Tranlate a given language line with inflection. Alias of `Lang::choice`.
+Translate a given language line with inflection. Alias of `Lang::choice`.
 
 	$value = trans_choice('foo.bar', $count);
 
