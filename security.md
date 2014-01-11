@@ -212,7 +212,7 @@ Most web applications provide a way for users to reset their forgotten passwords
 
 	}
 
-Next, a table must be created to store the password reset tokens. To generate a migration for this table, simply execute the `auth:reminders` Artisan command:
+Next, a table must be created to store the password reset tokens. To generate a migration for this table, simply execute the `auth:reminders-table` Artisan command:
 
 #### Generating The Reminder Table Migration
 
