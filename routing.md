@@ -256,7 +256,7 @@ If you use namespaces for your controllers then you may want to consider using t
         Route::group(array('prefix' => 'admin', 'namespace' => 'App\\Controllers\\Admin', function()
         {
         	Route::get('/', 'Dashboard@index');
-        	Route::get('/', 'Products@index');
+        	Route::get('products', 'Products@index');
         });
 
 <a name="sub-domain-routing"></a>
