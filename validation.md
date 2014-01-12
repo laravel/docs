@@ -399,6 +399,16 @@ The field under validation must be formatted as an URL.
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules
 
+In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
+
+	$v = Validator::make($data, array(
+		'email' => 'sometimes|required|email',
+	));
+
+In the example above, the `email` field will only be validated if it is present in the `$data` array.
+
+#### Complex Conditional Validation
+
 Sometimes you may wish to require a given field only if another field has a greater value than 100. Or you may need two fields to have a given value only when another field is present. Adding these validation rules doens't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
 
 	$v = Validator::make($data, array(
