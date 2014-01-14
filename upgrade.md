@@ -6,11 +6,11 @@
 <a name="upgrade-4.2"></a>
 ## Upgrading To 4.2 From 4.1
 
-#### PHP 5.4+
+### PHP 5.4+
 
 Laravel 4.2 requires PHP 5.4.0 or greater.
 
-#### View / Pagination Environment Renamed
+### View / Pagination Environment Renamed
 
 If you are directly referencing the `Illuminate\View\Environment` class or `Illuminate\Pagination\Environment` class, update your code to reference `Illuminate\View\Factory` and `Illuminate\Pagination\Factory` instead. These two classes have been renamed to better reflect their function.
 
