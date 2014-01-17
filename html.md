@@ -156,6 +156,15 @@ This allows you to quickly build forms that not only bind to model values, but e
 #### Generating A Drop-Down List With A Range
 
     echo Form::selectRange('number', 10, 20);
+    
+#### Populating A Drop-Down list with model data
+
+Use the Eloquent lists() method to grab your data
+
+    $states = States::lists('name', 'abbreviation);
+    
+    echo Form::select('states', $states);
+    
 
 #### Generating A List With Month Names
 
