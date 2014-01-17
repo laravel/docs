@@ -34,3 +34,10 @@ You may also view the current version of your Laravel installation using the `--
 #### Displaying Your Current Laravel Version
 
 	php artisan --version
+
+#### Common Issues
+
+If you happen to be having issues such as Class not Found (regarding Controller or Models), the problem may be your autoloader not being up to date. 
+
+	php artisan dump-autoload
+	
