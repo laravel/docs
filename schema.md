@@ -75,6 +75,7 @@ Command  | Description
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent to the table
 `$table->morphs('taggable');`  |  Adds INTEGER `taggable_id` and STRING `taggable_type`
 `$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
+`$table->tinyInteger('votes');`  |  TINYINT equivalent to the table
 `$table->softDeletes();`  |  Adds **deleted\_at** column for soft deletes
 `$table->string('email');`  |  VARCHAR equivalent column
 `$table->string('name', 100);`  |  VARCHAR equivalent with a length
