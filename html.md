@@ -157,11 +157,11 @@ This allows you to quickly build forms that not only bind to model values, but e
 
     echo Form::selectRange('number', 10, 20);
     
-#### Populating A Drop-Down list with model data
+#### Populating A Drop-Down List With Model Data
 
 Use the Eloquent lists() method to grab your data
 
-    $states = States::lists('name', 'abbreviation);
+    $states = States::lists('name', 'abbreviation');
     
     echo Form::select('states', $states);
     
