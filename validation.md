@@ -390,6 +390,7 @@ You may also specify more conditions that will be added as "where" clauses to th
 	'email' => 'unique:users,email_address,NULL,id,account_id,1'
 
 In the rule above, only rows with an `account_id` of `1` would be included in the unique check.
+Note: the `NULL,id` here is for the above ignore a given ID. We aren't ignoring any so pass in `NULL`.
 
 <a name="rule-url"></a>
 #### url
