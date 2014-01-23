@@ -8,6 +8,7 @@
 - [Development Workflow](#development-workflow)
 - [Package Routing](#package-routing)
 - [Package Configuration](#package-configuration)
+- [Package Views](#package-views)
 - [Package Migrations](#package-migrations)
 - [Package Assets](#package-assets)
 - [Publishing Packages](#publishing-packages)
@@ -167,6 +168,15 @@ When other developers install your package, they may wish to override some of th
 When this command is executed, the configuration files for your application will be copied to `app/config/packages/vendor/package` where they can be safely modified by the developer!
 
 > **Note:** The developer may also create environment specific configuration files for your package by placing them in `app/config/packages/vendor/package/environment`.
+
+<a name="package-views"></a>
+## Package Views
+
+If you are using a package in your application, you may occasionally wish to customize the package's views. You can easily export the package views to your own `app/views` directory using the `view:publish` Artisan command:
+
+	php artisan view:publish vendor/package
+
+This command will move the package's views into the `app/views/packages` directory. If this directory doesn't already exist, it will be created when you run the command. Once the views have been published, you may tweak them to your liking! The exported views will automatically take precendence over the package's own view files.
 
 <a name="package-migrations"></a>
 ## Package Migrations
