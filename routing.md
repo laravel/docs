@@ -30,6 +30,13 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 		return 'Hello World';
 	});
 
+#### Registering A Route For Multiple Verbs
+
+	Route::match(array('GET', 'POST'), '/', function()
+	{
+		return 'Hello World';
+	});
+
 #### Registering A Route Responding To Any HTTP Verb
 
 	Route::any('foo', function()
