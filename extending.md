@@ -104,7 +104,7 @@ Note that our custom cache driver should implement the `SessionHandlerInterface`
 
 Since these methods are not as readily understandable as the cache `StoreInterface`, let's quickly cover what each of the methods do:
 
-- The `open` method would typically be used in file based session store systems. Since Laravel ships with a `native` session driver that uses PHP's native file storage for sessions, you will almost never need to put anything in this method. You can leave it as an empty stub. It is simply a fact of poor interface design (which we'll discuss later) that PHP requires us to implement this method.
+- The `open` method would typically be used in file based session store systems. Since Laravel ships with a `file` session driver that uses PHP's native file storage for sessions, you will almost never need to put anything in this method. You can leave it as an empty stub. It is simply a fact of poor interface design (which we'll discuss later) that PHP requires us to implement this method.
 - The `close` method, like the `open` method, can also usually be disregarded. For most drivers, it is not needed.
 - The `read` method should return the string version of the session data associated with the given `$sessionId`. There is no need to do any serialization or other encoding when retrieving or storing session data in your driver, as Laravel will perform the serialization for you.
 - The `write` method should write the given `$data` string associated with the `$sessionId` to some persistent storage system, such as MongoDB, Dynamo, etc.
