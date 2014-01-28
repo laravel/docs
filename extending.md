@@ -185,23 +185,27 @@ For example, the `PaginationServiceProvider` binds a `paginator` key into the Io
 
 	}
 
-Once you have created your class extension, you may create a new `SnappyPaginationProvider` service provider class which overrides the paginator in its `boot` method:
+Once you have created your class extension, you may create a new `SnappyPaginationProvider` service provider class where you copy the contents of the existing `register` method:
 
 	class SnappyPaginationProvider extends PaginationServiceProvider {
 
-		public function boot()
+		$this->app->bindShared('paginator', function($app)
 		{
-			App::bind('paginator', function()
-			{
-				return new Snappy\Extensions\Pagination\Environment;
-			});
+			$paginator = new Snappy\Extensions\Pagination\Environment(
+				$app['request'], $app['view'], $app['translator']);
 
-			parent::boot();
-		}
+			$paginator->setViewName($app['config']['view.pagination']);
+
+			$app->refresh('request', $paginator, 'setRequest');
+
+			return $paginator;
+		});
 
 	}
 
 Note that this class extends the `PaginationServiceProvider`, not the default `ServiceProvider` base class. Once you have extended the service provider, swap out the `PaginationServiceProvider` in your `app/config/app.php` configuration file with the name of your extended provider.
+
+The `PaginationServiceProvider` only binds one class to the IoC container. Other service providers that bind more than one class to the container will be split into several sub-methods, so you don't always have to copy all of the existing code when wanting to replace a class.
 
 This is the general method of extending any core class that is bound in the container. Essentially every core class is bound in the container in this fashion, and can be overridden. Again, reading through the included framework service providers will familiarize you with where various classes are bound into the container, and what keys they are bound by. This is a great way to learn more about how Laravel is put together.
 
