@@ -230,7 +230,7 @@ You may also specify route names for controller actions:
 
 When using RESTful controllers, you can also specify route names by providing an array of method names that correspond to route names as the third parameter:
 
-    Route::controller('user/profile', 'UserController', array('showProfile' => 'profile'));
+    Route::controller('user/profile', 'UserController', array('getProfile' => 'profile'));
 
 Now, you may use the route's name when generating URLs or redirects:
 
