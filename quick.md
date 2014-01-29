@@ -1,6 +1,7 @@
 # Laravel Quickstart
 
 - [Installation](#installation)
+- [Run Your App](#run-your-app)
 - [Routing](#routing)
 - [Creating A View](#creating-a-view)
 - [Creating A Migration](#creating-a-migration)
@@ -28,6 +29,15 @@ After installing Laravel, you may need to grant the web server write permissions
 ### Directory Structure
 
 After installing the framework, take a glance around the project to familiarize yourself with the directory structure. The `app` directory contains folders such as `views`, `controllers`, and `models`. Most of your application's code will reside somewhere in this directory. You may also wish to explore the `app/config` directory and the configuration options that are available to you.
+
+<a name="run-your-app"></a>
+## Run Your App
+
+After installing Laravel and creating your app, you can start your development environment server by running
+
+`php artisan serve`
+
+from the project root directory. This will start up the built in PHP web server with Artisan, running your app on `http://localhost:8000`. Open your browser, hit that URL and you should see the "You have arrived" message, telling you that you have installed Laravel correctly.
 
 <a name="routing"></a>
 ## Routing
