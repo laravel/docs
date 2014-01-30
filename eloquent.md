@@ -145,7 +145,7 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 	}
 
-In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard method:
+In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard property:
 
 #### Blocking All Attributes From Mass Assignment
 
