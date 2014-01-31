@@ -172,6 +172,7 @@ Below is a list of all available validation rules and their function:
 - [Required](#rule-required)
 - [Required If](#rule-required-if)
 - [Required With](#rule-required-with)
+- [Required With All](#rule-required-with-all)
 - [Required Without](#rule-required-without)
 - [Required Without All](#rule-required-without-all)
 - [Same](#rule-same)
@@ -344,7 +345,12 @@ The field under validation must be present if the _field_ field is equal to _val
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
 
-The field under validation must be present _only if_ the other specified fields are present.
+The field under validation must be present _only if_ any of the other specified fields are present.
+
+<a name="rule-required-with-all"></a>
+#### required_with_all:_foo_,_bar_,...
+
+The field under validation must be present _only if_ all of the other specified fields are present.
 
 <a name="rule-required-without"></a>
 #### required_without:_foo_,_bar_,...
