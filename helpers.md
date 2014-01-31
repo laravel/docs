@@ -158,6 +158,8 @@ Return the last element in the array. Useful for method chaining.
 <a name="paths"></a>
 ## Paths
 
+These are functions that return the relevant value, For example `$app_path = app_path();`.
+
 ### app_path
 
 Get the fully qualified path to the `app` directory.
