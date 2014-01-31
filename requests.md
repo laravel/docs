@@ -145,6 +145,15 @@ The `Request` class provides many methods for examining the HTTP request for you
 
 	$uri = Request::path();
 
+#### Retrieving The Request Method
+
+	$method = Request::method();
+
+	if (Request::isMethod('post'))
+	{
+		//
+	}
+
 #### Determining If The Request Path Matches A Pattern
 
 	if (Request::is('admin/*'))
