@@ -411,7 +411,7 @@ In the example above, the `email` field will only be validated if it is present 
 
 #### Complex Conditional Validation
 
-Sometimes you may wish to require a given field only if another field has a greater value than 100. Or you may need two fields to have a given value only when another field is present. Adding these validation rules doens't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
+Sometimes you may wish to require a given field only if another field has a greater value than 100. Or you may need two fields to have a given value only when another field is present. Adding these validation rules doesn't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
 
 	$v = Validator::make($data, array(
 		'email' => 'required|email',
