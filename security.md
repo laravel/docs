@@ -237,6 +237,23 @@ A simple form on the `password.remind` view might look like this:
 
 In addition to `getRemind`, the generated controller will already have a `postRemind` method that handles sending the password reminder e-mails to your users. This method expects the `email` field to be present in the `POST` variables. If the reminder e-mail is successfully sent to the user, a `status` message will be flashed to the session. If the reminder fails, an `error` message will be flashed instead.
 
+You may modify the message instance that is sent to the user by passing a Closure as the second argument to the remind method:
+
+    public function postRemind()
+    	{
+    		switch ($response = Password::remind(Input::only('email'), function($message){
+                $message->subject('Password Reminder');
+            }))
+    		{
+    			case Password::INVALID_USER:
+    				return Redirect::to('login')->with('error', 'error message');
+
+    			case Password::REMINDER_SENT:
+                    return Redirect::to('login')
+                        ->with('success', 'success message');
+    		}
+    	}
+
 Your user will receive an e-mail with a link that points to the `getReset` method of the controller. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method. The action is already configured to return a `password.reset` view which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
 
 A simple form on the `password.reset` view might look like this:
