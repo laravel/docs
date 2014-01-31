@@ -162,6 +162,8 @@ Return the last element in the array. Useful for method chaining.
 
 Get the fully qualified path to the `app` directory.
 
+	$path = app_path();
+
 ### base_path
 
 Get the fully qualified path to the root of the application install.
