@@ -175,25 +175,15 @@ After you have registered the driver with the `extend` method, you switch to the
 
 Almost every service provider included with the Laravel framework binds objects into the IoC container. You can find a list of your application's service providers in the `app/config/app.php` configuration file. As you have time, you should skim through each of these provider's source code. By doing so, you will gain a much better understanding of what each provider adds to the framework, as well as what keys are used to bind various services into the IoC container.
 
-For example, the `PaginationServiceProvider` binds a `paginator` key into the IoC container, which resolves into a `Illuminate\Pagination\Environment` instance. You can easily extend and override this class within your own application by overriding this IoC binding. For example, you could create a class that extend the base `Environment`:
+For example, the `HashServiceProvider` binds a `hash` key into the IoC container, which resolves into a `Illuminate\Hashing\BcryptHasher` instance. You can easily extend and override this class within your own application by overriding this IoC binding. For example:
 
-	namespace Snappy\Extensions\Pagination;
-
-	class Environment extends \Illuminate\Pagination\Environment {
-
-		//
-
-	}
-
-Once you have created your class extension, you may create a new `SnappyPaginationProvider` service provider class which overrides the paginator in its `boot` method:
-
-	class SnappyPaginationProvider extends PaginationServiceProvider {
+	class SnappyPaginationProvider extends Illuminate\Hashing\HashServiceProvider {
 
 		public function boot()
 		{
-			App::bind('paginator', function()
+			App::bindShared('hash', function()
 			{
-				return new Snappy\Extensions\Pagination\Environment;
+				return new Snappy\Hashing\ScryptHasher;
 			});
 
 			parent::boot();
@@ -201,7 +191,7 @@ Once you have created your class extension, you may create a new `SnappyPaginati
 
 	}
 
-Note that this class extends the `PaginationServiceProvider`, not the default `ServiceProvider` base class. Once you have extended the service provider, swap out the `PaginationServiceProvider` in your `app/config/app.php` configuration file with the name of your extended provider.
+Note that this class extends the `HashServiceProvider`, not the default `ServiceProvider` base class. Once you have extended the service provider, swap out the `HashServiceProvider` in your `app/config/app.php` configuration file with the name of your extended provider.
 
 This is the general method of extending any core class that is bound in the container. Essentially every core class is bound in the container in this fashion, and can be overridden. Again, reading through the included framework service providers will familiarize you with where various classes are bound into the container, and what keys they are bound by. This is a great way to learn more about how Laravel is put together.
 
