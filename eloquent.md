@@ -992,6 +992,10 @@ When filtering collections, the callback provided will be used as callback for [
 		return $role->created_at;
 	});
 
+#### Sorting A Collection By A Value
+
+	$roles = $roles->sortBy('created_at');
+
 Sometimes, you may wish to return a custom Collection object with your own added methods. You may specify this on your Eloquent model by overriding the `newCollection` method:
 
 #### Returning A Custom Collection Type
