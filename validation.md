@@ -533,3 +533,10 @@ When creating a custom validation rule, you may sometimes need to define custom 
 	{
 		return str_replace(':foo', $parameters[0], $message);
 	}
+
+If you would like to add a custom message "replacer" without extending the `Validator` class, you may use the `Validator::replacer` method:
+
+	Validator::replacer('rule', function($message, $attribute, $rule, $parameters)
+	{
+		//
+	});
