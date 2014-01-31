@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Environment Configuration](#environment-configuration)
+- [Provider Configuration](#provider-configuration)
 - [Protecting Sensitive Configuration](#protecting-sensitive-configuration)
 - [Maintenance Mode](#maintenance-mode)
 
@@ -83,6 +84,15 @@ You may also pass arguments to the `environment` method to check if the environm
 	{
 		// The environment is either local OR staging...
 	}
+
+<a name="provider-configuration"></a>
+### Provider Configuration
+
+When using environment configuration, you may want to "append" environment [service providers](/docs/ioc#service-providers) to your primary `app` configuration file. However, if you try this, you will notice the environment `app providers are overriding the providers in your primary `app` configuration file. To force the providers to be appended, use the `append_config` helper method in your environment `app` configuration file:
+
+	'providers' => append_config(array(
+		'LocalOnlyServiceProvider',
+	))
 
 <a name="protecting-sensitive-configuration"></a>
 ## Protecting Sensitive Configuration
