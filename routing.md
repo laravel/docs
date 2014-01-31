@@ -256,6 +256,13 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 		});
 	});
 
+You may also use the `namespace` parameter within your `group` array to specify all controllers within that group as being in a given namespace:
+
+	Route::group(array('namespace' => 'Admin'), function()
+	{
+		//
+	});
+
 <a name="sub-domain-routing"></a>
 ## Sub-Domain Routing
 
