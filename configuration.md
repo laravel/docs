@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Environment Configuration](#environment-configuration)
+- [Protecting Sensitive Configuration](#protecting-sensitive-configuration)
 - [Maintenance Mode](#maintenance-mode)
 
 <a name="introduction"></a>
@@ -82,6 +83,29 @@ You may also pass arguments to the `environment` method to check if the environm
 	{
 		// The environment is either local OR staging...
 	}
+
+<a name="protecting-sensitive-configuration"></a>
+## Protecting Sensitive Configuration
+
+For "real" applications, it is advisable to keep all of your sensitive configuration out of your configuration files. Things such database passwords, Stripe API keys, and encryption keys should be kept out of your configuration files whenever possible. So, where should we place them? Thankfully, Laravel provides a very simple solution to protecting these types of configuration items using "dot" files.
+
+First, [configure your application](/docs/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env.local.php` file within the root of your project. The root of your project is typically where your `composer.json` file lives. The `.env.local.php` should return an array of key-value pairs, much like a typical Laravel configuration file:
+
+	<?php
+
+	return array(
+
+		'STRIPE_KEY' => 'super-secret-sauce',
+
+	);
+
+All of the key-value pairs returned by this file will automatically be available via the `$_ENV` and `$_SERVER` PHP "superglobals". You may now reference these globals from within your configuration files:
+
+	'key' => $_ENV['TEST_STRIPE_KEY']
+
+On your production server, create a `.env.php` file in your project root that contains the corresponding values for your production environment.
+
+> **Note:** You may create a file for each environment supported by your application. For example, the `development` environment will load the `.env.development.php` file if it exists.
 
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
