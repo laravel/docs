@@ -158,8 +158,8 @@ If a response is returned from a filter, that response will be considered the re
 	{
 		return 'You are authenticated and over 200 years old!';
 	}));
-	
-#### Attaching Multiple Filters To A Route Using Array
+
+#### Attaching Multiple Filters Via Array
 
 	Route::get('user', array('before' => array('auth', 'old'), function()
 	{
