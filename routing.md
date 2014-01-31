@@ -256,6 +256,16 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 		});
 	});
 
+### Namespaces
+
+If you use namespaces for your controllers then you may want to consider using the namespace parameter for a group. This will cut down on the amount of repition in your delcarations.
+
+        Route::group(array('prefix' => 'admin', 'namespace' => 'App\\Controllers\\Admin', function()
+        {
+        	Route::get('/', 'Dashboard@index');
+        	Route::get('products', 'Products@index');
+        });
+
 <a name="sub-domain-routing"></a>
 ## Sub-Domain Routing
 
