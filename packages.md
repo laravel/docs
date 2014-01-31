@@ -84,6 +84,10 @@ By default, after registering a package, its resources will be available using t
 
 There is not a "default location" for service provider classes. You may put them anywhere you like, perhaps organizing them in a `Providers` namespace within your `app` directory. The file may be placed anywhere, as long as Composer's [auto-loading facilities](http://getcomposer.org/doc/01-basic-usage.md#autoloading) know how to load the class.
 
+If you have changed the location of your package's resources, such as configuration files or views, you should pass a third argument to the `package` method which specifies the location of your resources:
+
+	$this->package('vendor/package', null, '/path/to/resources');
+
 <a name="package-conventions"></a>
 ## Package Conventions
 
