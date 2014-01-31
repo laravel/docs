@@ -24,6 +24,12 @@ If you prefer, you can alternatively download a copy of the [Laravel repository 
 
 After installing Laravel, you may need to grant the web server write permissions to the `app/storage` directories. See the [Installation](/docs/installation) documentation for more details on configuration.
 
+### Serving Laravel
+
+Typically, you may use a web server such as Apache or Nginx to serve your Laravel applications. If you are on PHP 5.4+ and would like to use PHP's built-in development server, you may use the `serve` Artisan command:
+
+	php artisan serve
+
 <a name="directories"></a>
 ### Directory Structure
 
