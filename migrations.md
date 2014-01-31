@@ -30,7 +30,7 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
 	php artisan migrate:make add_votes_to_user_table --table=users
 
-	php artisan migrate:make create_users_table --create=users
+	php artisan migrate:make create_users_table --table=users --create
 
 <a name="running-migrations"></a>
 ## Running Migrations
