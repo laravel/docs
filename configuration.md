@@ -105,7 +105,7 @@ First, [configure your application](/docs/configuration#environment-configuratio
 
 	return array(
 
-		'STRIPE_KEY' => 'super-secret-sauce',
+		'TEST_STRIPE_KEY' => 'super-secret-sauce',
 
 	);
 
