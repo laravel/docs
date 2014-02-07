@@ -57,6 +57,8 @@ Several of the framework directory paths are configurable. To change the locatio
 <a name="pretty-urls"></a>
 ## Pretty URLs
 
+### Apache
+
 The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, be sure to enable the `mod_rewrite` module.
 
 If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
@@ -67,3 +69,11 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]
+
+### Nginx
+
+On Nginx, the following directive in your site configuration will allow "pretty" URLs:
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }

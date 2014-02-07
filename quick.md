@@ -10,6 +10,12 @@
 <a name="installation"></a>
 ## Installation
 
+### Via Laravel Installer
+
+First, download the [Laravel installer PHAR archive](http://laravel.com/laravel.phar). For convenience, rename the file to `laravel` and move it to `/usr/local/bin`. Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer.
+
+### Via Composer
+
 The Laravel framework utilizes [Composer](http://getcomposer.org) for installation and dependency management. If you haven't already, start by [installing Composer](http://getcomposer.org/doc/00-intro.md).
 
 Now you can install Laravel by issuing the following command from your terminal:
@@ -23,6 +29,12 @@ If you prefer, you can alternatively download a copy of the [Laravel repository 
 ### Permissions
 
 After installing Laravel, you may need to grant the web server write permissions to the `app/storage` directories. See the [Installation](/docs/installation) documentation for more details on configuration.
+
+### Serving Laravel
+
+Typically, you may use a web server such as Apache or Nginx to serve your Laravel applications. If you are on PHP 5.4+ and would like to use PHP's built-in development server, you may use the `serve` Artisan command:
+
+	php artisan serve
 
 <a name="directories"></a>
 ### Directory Structure

@@ -68,6 +68,23 @@ The `array_first` method returns the first element of an array passing a given t
 A default value may also be passed as the third parameter:
 
 	$value = array_first($array, $callback, $default);
+	
+### array_last
+	
+The `array_last` method returns the last element of an array passing a given truth test.
+
+	$array = array(350, 400, 500, 300, 200, 100);
+
+	$value = array_last($array, function($key, $value)
+	{
+		return $value > 350;
+	});
+	
+	// 500
+
+A default value may also be passed as the third parameter:
+
+	$value = array_last($array, $callback, $default);
 
 ### array_flatten
 
@@ -94,6 +111,8 @@ The `array_get` method will retrieve a given value from a deeply nested array us
 	$array = array('names' => array('joe' => array('programmer')));
 
 	$value = array_get($array, 'names.joe');
+
+> **Note:** Want something like `array_get` but for objects instead? Use `object_get`.
 
 ### array_only
 
@@ -142,6 +161,19 @@ The `array_sort` method sorts the array by the results of the given Closure.
 	{
 		return $value['name'];
 	}));
+	
+### array_where
+
+Filter the array using the given Closure.
+
+	$array = array(100, '200', 300, '400', 500);
+
+	$array = array_where($array, function($key, $value)
+	{
+		return is_string($value);
+	});
+	
+	// Array ( [1] => 200 [3] => 400 )
 
 ### head
 
@@ -161,6 +193,8 @@ Return the last element in the array. Useful for method chaining.
 ### app_path
 
 Get the fully qualified path to the `app` directory.
+
+	$path = app_path();
 
 ### base_path
 
@@ -212,6 +246,18 @@ Convert the given string to `snake_case`.
 	$snake = snake_case('fooBar');
 
 	// foo_bar
+	
+### str_limit
+
+Limit the number of characters in a string.
+
+	str_limit($value, $limit = 100, $end = '...')
+	
+Example:
+
+	$value = str_limit('The PHP framework for web artisans.', 7);
+
+	// The PHP...
 
 ### starts_with
 

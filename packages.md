@@ -4,6 +4,7 @@
 - [Creating A Package](#creating-a-package)
 - [Package Structure](#package-structure)
 - [Service Providers](#service-providers)
+- [Deferred Providers](#deferred-providers)
 - [Package Conventions](#package-conventions)
 - [Development Workflow](#development-workflow)
 - [Package Routing](#package-routing)
@@ -83,6 +84,26 @@ By default, after registering a package, its resources will be available using t
 	$view = View::make('custom-namespace::foo');
 
 There is not a "default location" for service provider classes. You may put them anywhere you like, perhaps organizing them in a `Providers` namespace within your `app` directory. The file may be placed anywhere, as long as Composer's [auto-loading facilities](http://getcomposer.org/doc/01-basic-usage.md#autoloading) know how to load the class.
+
+If you have changed the location of your package's resources, such as configuration files or views, you should pass a third argument to the `package` method which specifies the location of your resources:
+
+	$this->package('vendor/package', null, '/path/to/resources');
+
+<a name="deferred-providers"></a>
+Deferred Providers
+
+If you are writing a service provider that does not register any resources such as configuration or views, you may choose to make your provider "deferred". A deferred service provider is only loaded and registered when one of the services it provides is actually needed by the application IoC container. If none of the provider's services are needed for a given request cycle, the provider is never loaded.
+
+To defer the execution of your service provider, set the `defer` property on the provider to `true`:
+
+	protected $defer = true;
+
+Next you should override the `provides` method from the base `Illuminate\Support\ServiceProvider` class and return an array of all of the bindings that your provider adds to the IoC container. For example, if your provider registers `package.service` and `package.another-service` in the IoC container, your `provides` method should look like this:
+
+	public function provides()
+	{
+		return array('package.service', 'package.another-service');
+	}
 
 <a name="package-conventions"></a>
 ## Package Conventions

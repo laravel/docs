@@ -172,6 +172,7 @@ Below is a list of all available validation rules and their function:
 - [Required](#rule-required)
 - [Required If](#rule-required-if)
 - [Required With](#rule-required-with)
+- [Required With All](#rule-required-with-all)
 - [Required Without](#rule-required-without)
 - [Required Without All](#rule-required-without-all)
 - [Same](#rule-same)
@@ -344,7 +345,12 @@ The field under validation must be present if the _field_ field is equal to _val
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
 
-The field under validation must be present _only if_ the other specified fields are present.
+The field under validation must be present _only if_ any of the other specified fields are present.
+
+<a name="rule-required-with-all"></a>
+#### required_with_all:_foo_,_bar_,...
+
+The field under validation must be present _only if_ all of the other specified fields are present.
 
 <a name="rule-required-without"></a>
 #### required_without:_foo_,_bar_,...
@@ -411,7 +417,7 @@ In the example above, the `email` field will only be validated if it is present 
 
 #### Complex Conditional Validation
 
-Sometimes you may wish to require a given field only if another field has a greater value than 100. Or you may need two fields to have a given value only when another field is present. Adding these validation rules doens't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
+Sometimes you may wish to require a given field only if another field has a greater value than 100. Or you may need two fields to have a given value only when another field is present. Adding these validation rules doesn't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
 
 	$v = Validator::make($data, array(
 		'email' => 'required|email',
@@ -527,3 +533,10 @@ When creating a custom validation rule, you may sometimes need to define custom 
 	{
 		return str_replace(':foo', $parameters[0], $message);
 	}
+
+If you would like to add a custom message "replacer" without extending the `Validator` class, you may use the `Validator::replacer` method:
+
+	Validator::replacer('rule', function($message, $attribute, $rule, $parameters)
+	{
+		//
+	});
