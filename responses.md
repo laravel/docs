@@ -171,7 +171,7 @@ A view composer class should be defined like so:
 
 #### Defining Multiple Composers
 
-You may use the `composers` method to register an group of composers at the same time:
+You may use the `composers` method to register a group of composers at the same time:
 
 	View::composers(array(
 		'AdminComposer' => array('admin.index', 'admin.profile'),
