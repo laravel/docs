@@ -166,11 +166,11 @@ By default, sections are appended to any previous content that exists in the sec
 
 Blade allows you to define your own custom control structures. When a Blade file is compiled, each extension is ran over the view contents, allowing you to do anything from regular `str_replace` to more complex regex.
 
-The Blade compiler comes with the methods `createMatcher` and `createSimpleMatcher` which generates the regex you need to generate your own custom control structures.
+The Blade compiler comes with the methods `createMatcher` and `createPlainMatcher` which generates the regex you need to generate your own custom control structures.
 
-`createSimpleMatcher` is used for control structures with no arguments (like `@endif`, `@stop`) while `createMatcher` is used for controls with arguments.
+`createPlainMatcher` is used for control structures with no arguments (like `@endif`, `@stop`) while `createMatcher` is used for controls with arguments.
 
-This example creates an `@datetime($var)` control structure which just calls `->format()` on `$var`.
+This example creates an `@datetime($var)` control structure which just calls `->format()` on `$var`, assuming it is a DateTime or Carbon object.
 
 	Blade::extend(function($view, $compiler) {
 		$pattern = $compiler->createMatcher('datetime');
