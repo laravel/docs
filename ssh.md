@@ -134,6 +134,8 @@ If needed, you may pass variables into the Envoy file using command line switche
 
 You may use the options via the Blade syntax you are used to:
 
+	@servers(['web' => '192.168.1.1'])
+
 	@task('deploy', ['on' => 'web'])
 		cd site
 		git pull origin {{ $branch }}
@@ -144,6 +146,8 @@ You may use the options via the Blade syntax you are used to:
 ### Multiple Servers
 
 You may easily run a task across multiple servers. Simply list the servers in the task declaration:
+
+	@servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
 	@task('deploy', ['on' => ['web-1', 'web-2']])
 		cd site
@@ -158,6 +162,8 @@ By default, the task will be executed on each server serially. Meaning, the task
 
 If you would like to run a task across multiple servers in parallel, simply add the `parallel` option to your task declaration:
 
+	@servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
+
 	@task('deploy', ['on' => ['web-1', 'web-2'], 'parallel' => true])
 		cd site
 		git pull origin {{ $branch }}
@@ -168,6 +174,8 @@ If you would like to run a task across multiple servers in parallel, simply add 
 ### Task Macros
 
 Macros allow you to define a set of tasks to be run in sequence using a single command. For instance:
+
+	@servers(['web' => '192.168.1.1'])
 
 	@macro('deploy')
 		foo
