@@ -101,6 +101,7 @@ Laravel includes a helpful command for tailing the `laravel.log` files on any of
 - [Parallel Execution](#envoy-parallel-execution)
 - [Task Macros](#envoy-task-macros)
 - [HipChat Notifications](#envoy-hipchat-notifications)
+- [Updating Envoy](#envoy-updating-envoy)
 
 Laravel Envoy provides a clean, minimal syntax for defining common tasks you run on your remote servers. Using a [Blade](/docs/templates#blade-templating) style syntax, you can easily setup tasks for deployment, Artisan commands, and more.
 
@@ -210,3 +211,14 @@ After running a task, you may send a notification to your team's HipChat room us
 	@endafter
 
 This is an amazingly simple way to keep your team notified of the tasks being run on the server.
+
+<a name="envoy-updating-envoy"></a>
+### Updating Envoy
+
+To update Envoy, simply run the `self-update` command:
+
+	envoy self-update
+
+If your Envoy installation is in `/usr/local/bin`, you may need to use `sudo`:
+
+	sudo envoy self-update
