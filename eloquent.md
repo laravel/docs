@@ -656,7 +656,7 @@ In addition to traditional polymorphic relations, you may also specify many-to-m
 		taggable_id - integer
 		taggable_type - string
 
-Next, we're ready to setup the relationships on the model. The `Post` and `Video` model will both have a `morphToMany` relatinoship via a `tags` method:
+Next, we're ready to setup the relationships on the model. The `Post` and `Video` model will both have a `morphToMany` relationship via a `tags` method:
 
 	class Post extends Eloquent {
 
