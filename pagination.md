@@ -4,6 +4,7 @@
 - [Usage](#usage)
 - [Appending To Pagination Links](#appending-to-pagination-links)
 - [Converting To JSON](#converting-to-json)
+- [Custom Presenters](#custom-presenters)
 
 <a name="configuration"></a>
 ## Configuration
@@ -94,3 +95,42 @@ This method call will generate URLs that look something like this:
 ## Converting To JSON
 
 The `Paginator` class implements the `Illuminate\Support\Contracts\JsonableInterface` contract and exposes the `toJson` method. You can may also convert a `Paginator` instance to JSON by returning it from a route. The JSON'd form of the instance will include some "meta" information such as `total`, `current_page`, `last_page`, `from`, and `to`. The instance's data will be available via the `data` key in the JSON array.
+
+<a name="custom-presenters"></a>
+## Custom Presenters
+
+Default pagination presenter is Twitter Bootstrap compatible out of the box. However, you may customize this default HTML view.
+
+### Extending the presenter
+
+All you need to do is to extend `Illuminate\Pagination\Presenter` class and implement the abstract methods. An example presenter for Zurb Foundation;
+
+    class ZurbPresenter extends Illuminate\Pagination\Presenter {
+
+        public function getActivePageWrapper($text)
+        {
+            return '<li class="current">' . $text . '</li>';
+        }
+
+        public function getDisabledTextWrapper($text)
+        {
+            return '<li class="unavailable">' . $text . '</li>';
+        }
+
+        public function getPageLinkWrapper($url, $page)
+        {
+            return '<li><a href="' . $url . '">' . $page . '</a></li>';
+        }
+
+    }
+
+### Using the custom presenter
+
+You need to create a view under `views` folder that will be your custom presenter. Then, replace `pagination` option value in `app/config/view.php` file with your view name, and use the custom presenter in this file like this:
+
+    <?php
+    $presenter = new ZurbPresenter($paginator);
+    ?>
+    <ul class="pagination">
+    <?php echo $presenter->render(); ?>
+    </ul>
