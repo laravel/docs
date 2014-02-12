@@ -199,6 +199,12 @@ For more information on generating URL's, check out the documentation on [helper
 <a name="attributes"></a>
 ##Setting Attributes
 
-You can set attributes to every element just by using an array
+You can set attributes to every element just by using an array in wich each key represents the name of the attribute.
 
-	echo Form::text('name', 'value', array('class'=>'my-class'));
+	echo Form::text('name', 'value', 
+		array(
+			'class'=>'my-class', 
+			'id' => 'my-awesome-text-field',
+			'placeholder'=>'Your name goes here'
+		)
+	);
