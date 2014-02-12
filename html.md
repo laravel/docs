@@ -11,6 +11,7 @@
 - [Buttons](#buttons)
 - [Custom Macros](#custom-macros)
 - [Generating URLs](#generating-urls)
+- [Setting Attributes](#attributes)
 
 <a name="opening-a-form"></a>
 ## Opening A Form
@@ -193,3 +194,11 @@ Now you can call your macro using its name:
 ##Generating URLs
 
 For more information on generating URL's, check out the documentation on [helpers](/docs/helpers#urls).
+
+
+<a name="attributes"></a>
+##Setting Attributes
+
+You can set attributes to every element just by using an array
+
+	echo Form::text('name', 'value', array('class'=>'my-class'));
