@@ -100,7 +100,7 @@ Laravel includes a helpful command for tailing the `laravel.log` files on any of
 - [Multiple Servers](#envoy-multiple-servers)
 - [Parallel Execution](#envoy-parallel-execution)
 - [Task Macros](#envoy-task-macros)
-- [HipChat Notifications](#envoy-hipchat-notifications)
+- [Notifications](#envoy-notifications)
 - [Updating Envoy](#envoy-updating-envoy)
 
 Laravel Envoy provides a clean, minimal syntax for defining common tasks you run on your remote servers. Using a [Blade](/docs/templates#blade-templating) style syntax, you can easily setup tasks for deployment, Artisan commands, and more.
@@ -195,8 +195,11 @@ The `deploy` macro can now be run via a single, simple command:
 
 	envoy run deploy
 
+<a name="envoy-notifications"></a>
 <a name="envoy-hipchat-notifications"></a>
-### HipChat Notifications
+### Notifications
+
+#### HipChat
 
 After running a task, you may send a notification to your team's HipChat room using the simple `@hipchat` directive:
 
@@ -211,6 +214,14 @@ After running a task, you may send a notification to your team's HipChat room us
 	@endafter
 
 This is an amazingly simple way to keep your team notified of the tasks being run on the server.
+
+#### Slack
+
+The following syntax may be used to send a notification to [Slack](https://slack.com):
+
+	@after
+		@slack('team', 'token', 'channel')
+	@endafter
 
 <a name="envoy-updating-envoy"></a>
 ### Updating Envoy
