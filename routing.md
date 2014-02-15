@@ -30,6 +30,13 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 		return 'Hello World';
 	});
 
+#### Registering A Route For Multiple Verbs
+
+	Route::match(array('GET', 'POST'), '/', function()
+	{
+		return 'Hello World';
+	});
+
 #### Registering A Route Responding To Any HTTP Verb
 
 	Route::any('foo', function()
@@ -152,6 +159,13 @@ If a response is returned from a filter, that response will be considered the re
 		return 'You are authenticated and over 200 years old!';
 	}));
 
+#### Attaching Multiple Filters Via Array
+
+	Route::get('user', array('before' => array('auth', 'old'), function()
+	{
+		return 'You are authenticated and over 200 years old!';
+	}));
+
 #### Specifying Filter Parameters
 
 	Route::filter('age', function($route, $request, $value)
@@ -247,6 +261,13 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 		{
 			// Has Auth Filter
 		});
+	});
+
+You may also use the `namespace` parameter within your `group` array to specify all controllers within that group as being in a given namespace:
+
+	Route::group(array('namespace' => 'Admin'), function()
+	{
+		//
 	});
 
 <a name="sub-domain-routing"></a>

@@ -29,10 +29,6 @@ When creating the command, the `--command` option may be used to assign the term
 
 	php artisan command:make AssignUsers --command=users:assign
 
-If you need to create a command for a [workbench package](/docs/packages), use the `--bench` switch:
-
-	php artisan command:make AssignUsers --bench="vendor/package"
-
 ### Writing The Command
 
 Once your command is generated, you should fill out the `name` and `description` properties of the class, which will be used when displaying your command on the `list` screen.

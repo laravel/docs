@@ -145,7 +145,7 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 	}
 
-In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard method:
+In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard property:
 
 #### Blocking All Attributes From Mass Assignment
 
@@ -369,6 +369,7 @@ Of course, your database tables are probably related to one another. For example
 - [Many To Many](#many-to-many)
 - [Has Many Through](#has-many-through)
 - [Polymorphic Relations](#polymorphic-relations)
+- [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
 
 <a name="one-to-one"></a>
 ### One To One
@@ -630,6 +631,57 @@ To help understand how this works, let's explore the database structure for a po
 		imageable_type - string
 
 The key fields to notice here are the `imageable_id` and `imageable_type` on the `photos` table. The ID will contain the ID value of, in this example, the owning staff or order, while the type will contain the class name of the owning model. This is what allows the ORM to determine which type of owning model to return when accessing the `imageable` relation.
+
+<a name="many-to-many-polymorphic-relations"></a>
+### Many To Many Polymorphic Relations
+
+In addition to traditional polymorphic relations, you may also specify many-to-many polymorphic relations. For example, a blog `Post` and `Video` model could share a polymorphic relation to a `Tag` model. First, let's examine the table structure:
+
+#### Polymorphic Many To Many Relation Table Structure
+
+	posts
+		id - integer
+		name - string
+
+	videos
+		id - integer
+		name - string
+
+	tags
+		id - integer
+		name - string
+
+	taggables
+		tag_id - integer
+		taggable_id - integer
+		taggable_type - string
+
+Next, we're ready to setup the relationships on the model. The `Post` and `Video` model will both have a `morphToMany` relationship via a `tags` method:
+
+	class Post extends Eloquent {
+
+		public function tags()
+		{
+			return $this->morphToMany('Tag', 'taggable');
+		}
+
+	}
+
+The `Tag` model may define a method for each of its relationships:
+
+	class Tag extends Eloquent {
+
+		public function posts()
+		{
+			return $this->morphedByMany('Post', 'taggable');
+		}
+
+		public function videos()
+		{
+			return $this->morphedByMany('Video', 'taggable');
+		}
+
+	}
 
 <a name="querying-relations"></a>
 ## Querying Relations
@@ -939,6 +991,10 @@ When filtering collections, the callback provided will be used as callback for [
 	{
 		return $role->created_at;
 	});
+
+#### Sorting A Collection By A Value
+
+	$roles = $roles->sortBy('created_at');
 
 Sometimes, you may wish to return a custom Collection object with your own added methods. You may specify this on your Eloquent model by overriding the `newCollection` method:
 
