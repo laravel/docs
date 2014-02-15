@@ -167,7 +167,7 @@ The `Request` class provides many methods for examining the HTTP request for you
 **Retrieving Values From $_SERVER**
 
 	$value = Request::server('PATH_INFO');
-	
+
 **Determining If The Request Is Over HTTPS**
 
 	if (Request::secure())

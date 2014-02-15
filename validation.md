@@ -30,7 +30,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 		array('name' => 'Dayle'),
 		array('name' => array('required', 'min:5'))
 	);
-	
+
 **Validating Multiple Fields**
 
     $validator = Validator::make(

@@ -91,7 +91,7 @@ Of course, you may use the `session:table` Artisan command to generate this migr
 	composer dump-autoload
 
 	php artisan migrate
-	
+
 <a name="session-drivers"></a>
 ## Session Drivers
 
