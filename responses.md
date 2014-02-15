@@ -40,7 +40,7 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 	return Redirect::to('user/login');
 
 **Returning A Redirect With Flash Data**
-	
+
 	return Redirect::to('user/login')->with('message', 'Login Failed');
 
 > **Note:** Since the `with` method flashes data to the session, you may retrieve the data using the typical `Session::get` method.

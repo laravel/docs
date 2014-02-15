@@ -88,7 +88,7 @@ Note that our custom cache driver should implement the `SessionHandlerInterface`
 		public function destroy($sessionId) {}
 		public function gc($lifetime) {}
 
-	}	
+	}
 
 Since these methods are not as readily understandable as the cache `StoreInterface`, let's quickly cover what each of the methods do:
 
