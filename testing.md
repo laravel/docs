@@ -113,6 +113,41 @@ We can mock the call to the `Event` class by using the `shouldReceive` method on
 
 > **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the `call` method when running your test.
 
+#### The Method To Mock Returns An Object Itself
+
+	public function getHelp()
+	{
+		Helpers::foo()->bar();
+
+		return 'All done!';
+	}
+
+Lets assume we have a custom Helpers facade and use it the way shown above. How could we test this code?
+
+	public function testGetHelp()
+	{
+		Helpers::shouldReceive('foo')->once();
+		
+		$this->call('GET', '/help');
+	}
+
+Go ahead, try it! You'll get a nice `PHP Fatal error:  Call to a member function bar() on a non-object`, so what's the solution to this problem?
+
+	public function testGetHelp()
+	{
+		$bar_mock = Mockery::mock(array('bar' => null));
+	
+		Helpers::shouldReceive('foo')->once()->andReturn($bar_mock);
+		
+		$this->call('GET', '/help');
+	}
+
+We can create an anonymous mock `$bar_mock` and state that the Helpers method `foo()` should return it.
+
+	Mockery::mock(array('bar' => null));
+
+The above code creates an object, containing the `bar()` method that returns `null`.
+
 <a name="framework-assertions"></a>
 ## Framework Assertions
 
