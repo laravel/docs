@@ -148,7 +148,7 @@ Note that once this task has started, it will continue to run until it is manual
 
 You may pass a comma-delimited list of queue connections to the `listen` command to set queue priorities:
 
-	php artisan queue:listen high-connection,low-connection
+	php artisan queue:listen --queue=high,low
 
 In this example, jobs on the `high-connection` will always be processed before moving onto jobs from the `low-connection`.
 
