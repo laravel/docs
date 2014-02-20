@@ -83,7 +83,7 @@ You may then use the `Lang::choice` method to retrieve the line:
 
 	echo Lang::choice('messages.apples', 10);
 
-You can optionally suppy an locale argument. Example for Russian (`ru`) would be:
+You can optionally suppy a locale argument to specify the language. Example for Russian (`ru`) would be:
 
         echo Lang::choice('нет товаров|:count товар|:count товара|:count товаров', $n, [], 'ru');
 
