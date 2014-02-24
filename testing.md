@@ -76,6 +76,8 @@ To call a HTTPS route, you may use the `callSecure` method:
 
 > **Note:** Route filters are disabled when in the testing environment. To enable them, add `Route::enableFilters()` to your test.
 
+If you want to put data into the session before the controller is called, you have to call `Session::start()` at the start of your test.
+
 ### DOM Crawler
 
 You may also call a route and receive a DOM Crawler instance that you may use to inspect the content:
