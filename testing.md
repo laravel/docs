@@ -191,6 +191,12 @@ You may re-seed your database from a test using the `seed` method:
 
 More information on creating seeds may be found in the [migrations and seeding](/docs/migrations#database-seeding) section of the documentation.
 
+#### Setting And Flushing Sessions From Tests
+
+	$this->session(['foo' => 'bar']);
+	
+	$this->flushSession();
+
 <a name="refreshing-the-application"></a>
 ## Refreshing The Application
 
