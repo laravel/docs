@@ -977,10 +977,7 @@ When filtering collections, the callback provided will be used as callback for [
 
 	$users = $users->filter(function($user)
 	{
-		if($user->isAdmin())
-		{
-			return $user;
-		}
+		return $user->isAdmin();
 	});
 
 > **Note:** When filtering a collection and converting it to JSON, try calling the `values` function first to reset the array's keys.
