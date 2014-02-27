@@ -785,9 +785,18 @@ Sometimes you may wish to eager load a relationship, but also specify a conditio
 	$users = User::with(array('posts' => function($query)
 	{
 		$query->where('title', 'like', '%first%');
+
 	}))->get();
 
 In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
+
+Of course, eager loading Closures aren't limited to "constraints". You may also apply orders:
+
+	$users = User::with(array('posts' => function($query)
+	{
+		$query->orderBy('created_at', 'desc')
+
+	}))->get();
 
 ### Lazy Eager Loading
 
