@@ -173,9 +173,15 @@ Laravel ships with several `assert` methods to make testing a little easier:
 
 The `TestCase` class contains several helper methods to make testing your application easier.
 
-You may set the currently authenticated user using the `be` method:
+#### Setting And Flushing Sessions From Tests
+
+	$this->session(['foo' => 'bar']);
+
+	$this->flushSession();
 
 #### Setting The Currently Authenticated User
+
+You may set the currently authenticated user using the `be` method:
 
 	$user = new User(array('name' => 'John'));
 
