@@ -789,6 +789,13 @@ Sometimes you may wish to eager load a relationship, but also specify a conditio
 
 In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
 
+Another case would be to sort the eagerly loaded models. Here, we get the user's latests posts first:
+
+	$users = User::with(array('posts' => function($query)
+	{
+		$query->orderBy('created_at', 'desc');
+	}))->get();
+
 ### Lazy Eager Loading
 
 It is also possible to eagerly load related models directly from an already existing model collection. This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.
