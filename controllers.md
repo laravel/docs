@@ -5,6 +5,7 @@
 - [RESTful Controllers](#restful-controllers)
 - [Resource Controllers](#resource-controllers)
 - [Handling Missing Methods](#handling-missing-methods)
+- [Subfolders](#subfolders-controllers)
 
 <a name="basic-controllers"></a>
 ## Basic Controllers
@@ -208,3 +209,14 @@ A catch-all method may be defined which will be called when no other matching me
 	{
 		//
 	}
+    
+<a name="subfolders-controllers"></a>
+## Subfolders
+
+Controllers in subfolders, e.g. `app/controllers/service/UserController.php`, will be automatically loaded. The route is the same no matter which folder in `app/controller` you put it in:
+
+    Route::get('foo', 'UserController@showProfile');
+    
+If you get an error, use
+
+    composer dump-autoload
