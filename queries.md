@@ -154,6 +154,8 @@ Sometimes you may need to create more advanced where clauses such as "where exis
 
 #### Parameter Grouping
 
+You can pass a function to all type of where statements. In this function you have the query as a parameter and every statement added to the query will be in one group and will be placed between parentheses in the produced SQL.
+
 	DB::table('users')
 	            ->where('name', '=', 'John')
 	            ->orWhere(function($query)
@@ -166,6 +168,22 @@ Sometimes you may need to create more advanced where clauses such as "where exis
 The query above will produce the following SQL:
 
 	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
+
+#### Passing Variables
+
+You can't access variables defined outside of the closure's namespace, but with the use keyword you can acces the passed variables. You can also use loops inside the closure for bigger or dynamic sized where statements.
+
+	$teams = array('Members', 'Subscribers');
+	DB::table('users')
+	            ->where('role', '=', 'Leader')
+	            ->where(function ($query) use ($teams)
+	            {
+	            	foreach ($teams as $team)
+	            	{
+	            		$query->orWhere('team', '=', $team);
+	            	}
+	            })
+	            ->get();
 
 #### Exists Statements
 
