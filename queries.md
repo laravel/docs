@@ -315,3 +315,7 @@ You may easily cache the results of a query using the `remember` method:
 	$users = DB::table('users')->remember(10)->get();
 
 In this example, the results of the query will be cached for ten minutes. While the results are cached, the query will not be run against the database, and the results will be loaded from the default cache driver specified for your application.
+
+If you are using a [supported cache driver](/docs/cache#cache-tags), you can also add tags to the caches.
+
+	$users = DB::table('users')->cacheTags(array('people', 'authors'))->remember(10)->get();
