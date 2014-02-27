@@ -362,7 +362,7 @@ Then pass the parameter into the scope call:
 <a name="relationships"></a>
 ## Relationships
 
-Of course, your database tables are probably related to one another. For example, a blog post may have many comments, or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy. Laravel supports four types of relationships:
+Of course, your database tables are probably related to one another. For example, a blog post may have many comments, or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy. Laravel supports six types of relationships:
 
 - [One To One](#one-to-one)
 - [One To Many](#one-to-many)
