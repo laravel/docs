@@ -83,6 +83,10 @@ You may then use the `Lang::choice` method to retrieve the line:
 
 	echo Lang::choice('messages.apples', 10);
 
+You can optionally suppy a locale argument to specify the language. Example for Russian (`ru`) would be:
+
+        echo Lang::choice('нет товаров|:count товар|:count товара|:count товаров', $n, [], 'ru');
+
 Since the Laravel translator is powered by the Symfony Translation component, you may also create more explicit pluralization rules easily:
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
