@@ -99,38 +99,35 @@ The `Paginator` class implements the `Illuminate\Support\Contracts\JsonableInter
 <a name="custom-presenters"></a>
 ## Custom Presenters
 
-Default pagination presenter is Twitter Bootstrap compatible out of the box. However, you may customize this default HTML view.
+The default pagination presenter is Bootstrap compatible out of the box; however, you may customize this with a presenter of your choice.
 
-### Extending the presenter
+### Extending The Abstract Presenter
 
-All you need to do is to extend `Illuminate\Pagination\Presenter` class and implement the abstract methods. An example presenter for Zurb Foundation;
+Extend the `Illuminate\Pagination\Presenter` class and implement its abstract methods. An example presenter for Zurb Foundation might look like this:
 
     class ZurbPresenter extends Illuminate\Pagination\Presenter {
 
         public function getActivePageWrapper($text)
         {
-            return '<li class="current">' . $text . '</li>';
+            return '<li class="current">'.$text.'</li>';
         }
 
         public function getDisabledTextWrapper($text)
         {
-            return '<li class="unavailable">' . $text . '</li>';
+            return '<li class="unavailable">'.$text.'</li>';
         }
 
         public function getPageLinkWrapper($url, $page)
         {
-            return '<li><a href="' . $url . '">' . $page . '</a></li>';
+            return '<li><a href="'.$url.'">'.$page.'</a></li>';
         }
 
     }
 
-### Using the custom presenter
+### Using The Custom Presenter
 
-You need to create a view under `views` folder that will be your custom presenter. Then, replace `pagination` option value in `app/config/view.php` file with your view name, and use the custom presenter in this file like this:
+First, create a view in your `app/views` directory that will server as your custom presenter. Then, replace `pagination` option in the `app/config/view.php` configuration file with the new view's name. Finally, the following code would be placed in your custom presenter view:
 
-    <?php
-    $presenter = new ZurbPresenter($paginator);
-    ?>
     <ul class="pagination">
-    <?php echo $presenter->render(); ?>
+        <?php echo with(new ZurbPrensenter($paginator))->render(); ?>
     </ul>
