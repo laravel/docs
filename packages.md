@@ -90,7 +90,7 @@ If you have changed the location of your package's resources, such as configurat
 	$this->package('vendor/package', null, '/path/to/resources');
 
 <a name="deferred-providers"></a>
-Deferred Providers
+## Deferred Providers
 
 If you are writing a service provider that does not register any resources such as configuration or views, you may choose to make your provider "deferred". A deferred service provider is only loaded and registered when one of the services it provides is actually needed by the application IoC container. If none of the provider's services are needed for a given request cycle, the provider is never loaded.
 
