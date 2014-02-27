@@ -3,6 +3,7 @@
 - [Controller Layouts](#controller-layouts)
 - [Blade Templating](#blade-templating)
 - [Other Blade Control Structures](#other-blade-control-structures)
+- [Extending Blade](#extending-blade)
 
 <a name="controller-layouts"></a>
 ## Controller Layouts
@@ -159,3 +160,19 @@ By default, sections are appended to any previous content that exists in the sec
 #### Comments
 
 	{{-- This comment will not be in the rendered HTML --}}
+
+<a name="extending-blade"></a>
+## Extending Blade
+
+Blade allows you to define your own custom control structures. When a Blade file is compiled, each extension is ran over the view contents, allowing you to do anything from regular `str_replace` to more complex regex.
+
+The Blade compiler comes with the methods `createMatcher` and `createPlainMatcher` which generates the regex you need to generate your own custom control structures.
+
+`createPlainMatcher` is used for control structures with no arguments (like `@endif`, `@stop`) while `createMatcher` is used for controls with arguments.
+
+This example creates an `@datetime($var)` control structure which just calls `->format()` on `$var`, assuming it is a DateTime or Carbon object.
+
+	Blade::extend(function($view, $compiler) {
+		$pattern = $compiler->createMatcher('datetime');
+		return preg_replace($pattern, '$1<?php echo $2->format('m/d/Y H:i'); ?>', $view);
+	});
