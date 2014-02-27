@@ -212,8 +212,6 @@ For advanced filtering, you may wish to use a class instead of a Closure. Since 
 
 By default, the `filter` method on the `FooFilter` class will be called:
 
-#### Defining A Filter Class
-
 	class FooFilter {
 
 		public function filter()
@@ -223,9 +221,7 @@ By default, the `filter` method on the `FooFilter` class will be called:
 
 	}
 
-If you do not wish to use the default `filter` method, you may specify the method that should be used to filter:
-
-#### Specifying Which Method To Use
+If you do not wish to use the `filter` method, just specify another method:
 
 	Route::filter('foo', 'FooFilter@foo');
 
