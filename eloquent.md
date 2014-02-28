@@ -262,6 +262,10 @@ Now, when you call the `delete` method on the model, the `deleted_at` column wil
 
 	$users = User::withTrashed()->where('account_id', 1)->get();
 
+The `withTrashed` method may be used on a defined relationship:
+	
+	$user->posts()->withTrashed()->get();
+
 If you wish to **only** receive soft deleted models in your results, you may use the `onlyTrashed` method:
 
 	$users = User::onlyTrashed()->where('account_id', 1)->get();
@@ -274,7 +278,7 @@ You may also use the `restore` method on a query:
 
 	User::withTrashed()->where('account_id', 1)->restore();
 
-The `restore` method may also be used on relationships:
+Like with `withTrashed`, the `restore` method may also be used on relationships:
 
 	$user->posts()->restore();
 
@@ -366,7 +370,7 @@ Then pass the parameter into the scope call:
 <a name="relationships"></a>
 ## Relationships
 
-Of course, your database tables are probably related to one another. For example, a blog post may have many comments, or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy. Laravel supports four types of relationships:
+Of course, your database tables are probably related to one another. For example, a blog post may have many comments, or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy. Laravel supports many types of relationships:
 
 - [One To One](#one-to-one)
 - [One To Many](#one-to-many)
@@ -789,9 +793,18 @@ Sometimes you may wish to eager load a relationship, but also specify a conditio
 	$users = User::with(array('posts' => function($query)
 	{
 		$query->where('title', 'like', '%first%');
+
 	}))->get();
 
 In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
+
+Of course, eager loading Closures aren't limited to "constraints". You may also apply orders:
+
+	$users = User::with(array('posts' => function($query)
+	{
+		$query->orderBy('created_at', 'desc')
+
+	}))->get();
 
 ### Lazy Eager Loading
 
@@ -972,10 +985,7 @@ When filtering collections, the callback provided will be used as callback for [
 
 	$users = $users->filter(function($user)
 	{
-		if($user->isAdmin())
-		{
-			return $user;
-		}
+		return $user->isAdmin();
 	});
 
 > **Note:** When filtering a collection and converting it to JSON, try calling the `values` function first to reset the array's keys.

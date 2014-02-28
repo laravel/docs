@@ -206,7 +206,11 @@ You may also constrain pattern filters by HTTP verbs:
 
 For advanced filtering, you may wish to use a class instead of a Closure. Since filter classes are resolved out of the application [IoC Container](/docs/ioc), you will be able to utilize dependency injection in these filters for greater testability.
 
-#### Defining A Filter Class
+#### Registering A Class Based Filter
+
+	Route::filter('foo', 'FooFilter');
+
+By default, the `filter` method on the `FooFilter` class will be called:
 
 	class FooFilter {
 
@@ -217,9 +221,9 @@ For advanced filtering, you may wish to use a class instead of a Closure. Since 
 
 	}
 
-#### Registering A Class Based Filter
+If you do not wish to use the `filter` method, just specify another method:
 
-	Route::filter('foo', 'FooFilter');
+	Route::filter('foo', 'FooFilter@foo');
 
 <a name="named-routes"></a>
 ## Named Routes

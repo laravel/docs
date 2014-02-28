@@ -13,7 +13,7 @@ The Laravel `Event` class provides a simple observer implementation, allowing yo
 
 #### Subscribing To An Event
 
-	Event::listen('user.login', function($user)
+	Event::listen('auth.login', function($user)
 	{
 		$user->last_login = new DateTime;
 
@@ -22,21 +22,21 @@ The Laravel `Event` class provides a simple observer implementation, allowing yo
 
 #### Firing An Event
 
-	$event = Event::fire('user.login', array($user));
+	$event = Event::fire('auth.login', array($user));
 
 You may also specify a priority when subscribing to events. Listeners with higher priority will be run first, while listeners that have the same priority will be run in order of subscription.
 
 #### Subscribing To Events With Priority
 
-	Event::listen('user.login', 'LoginHandler', 10);
+	Event::listen('auth.login', 'LoginHandler', 10);
 
-	Event::listen('user.login', 'OtherHandler', 5);
+	Event::listen('auth.login', 'OtherHandler', 5);
 
 Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your listener:
 
 #### Stopping The Propagation Of An Event
 
-	Event::listen('user.login', function($event)
+	Event::listen('auth.login', function($event)
 	{
 		// Handle the event...
 
@@ -80,7 +80,7 @@ In some cases, you may wish to use a class to handle an event rather than a Clos
 
 #### Registering A Class Listener
 
-	Event::listen('user.login', 'LoginHandler');
+	Event::listen('auth.login', 'LoginHandler');
 
 By default, the `handle` method on the `LoginHandler` class will be called:
 
@@ -99,7 +99,7 @@ If you do not wish to use the default `handle` method, you may specify the metho
 
 #### Specifying Which Method To Subscribe
 
-	Event::listen('user.login', 'LoginHandler@onLogin');
+	Event::listen('auth.login', 'LoginHandler@onLogin');
 
 <a name="queued-events"></a>
 ## Queued Events
@@ -154,9 +154,9 @@ Event subscribers are classes that may subscribe to multiple events from within 
 		 */
 		public function subscribe($events)
 		{
-			$events->listen('user.login', 'UserEventHandler@onUserLogin');
+			$events->listen('auth.login', 'UserEventHandler@onUserLogin');
 
-			$events->listen('user.logout', 'UserEventHandler@onUserLogout');
+			$events->listen('auth.logout', 'UserEventHandler@onUserLogout');
 		}
 
 	}

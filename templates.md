@@ -3,6 +3,7 @@
 - [Controller Layouts](#controller-layouts)
 - [Blade Templating](#blade-templating)
 - [Other Blade Control Structures](#other-blade-control-structures)
+- [Extending Blade](#extending-blade)
 
 <a name="controller-layouts"></a>
 ## Controller Layouts
@@ -159,3 +160,21 @@ By default, sections are appended to any previous content that exists in the sec
 #### Comments
 
 	{{-- This comment will not be in the rendered HTML --}}
+
+<a name="extending-blade"></a>
+## Extending Blade
+
+Blade even allows you to define your own custom control structures. When a Blade file is compiled, each custom extension is called with the view contents, allowing you to do anything from simple `str_replace` manipulations to more complex regular expressions.
+
+The Blade compiler comes with the helper methods `createMatcher` and `createPlainMatcher`, which generate the expression you need to build your own custom directives.
+
+The `createPlainMatcher` method is used for directives with no arguments like `@endif` and `@stop`, while `createMatcher` is used for directives with arguments.
+
+The following example creates a `@datetime($var)` directive which simply calls `->format()` on `$var`:
+
+	Blade::extend(function($view, $compiler)
+	{
+		$pattern = $compiler->createMatcher('datetime');
+
+		return preg_replace($pattern, '$1<?php echo $2->format('m/d/Y H:i'); ?>', $view);
+	});
