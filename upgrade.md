@@ -20,6 +20,14 @@ If you are using soft deleting models, the `softDeletes` property has been remov
 		use SoftDeletingTrait;
 	}
 
+You should also manually add the `deleted_at` column to your `dates` property:
+
+	class User extends Eloquent {
+		use SoftDeletingTrait;
+
+		protected $dates = ['deleted_at'];
+	}
+
 The API for all soft delete operations remains the same.
 
 ### View / Pagination Environment Renamed
