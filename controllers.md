@@ -190,7 +190,7 @@ And, you may also specify a subset of actions to handle on the route:
 					array('only' => array('index', 'show')));
 
 	Route::resource('photo', 'PhotoController',
-					array('except' => array('create', 'store', 'update', 'delete')));
+					array('except' => array('create', 'store', 'update', 'destroy')));
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
