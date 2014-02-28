@@ -65,7 +65,7 @@ Once the task has been defined, you may use the `task` method to run it:
 		echo $line.PHP_EOL;
 	});
 
-<a name="sftp-downlaods"></a>
+<a name="sftp-downloads"></a>
 ## SFTP Downloads
 
 The `SSH` class includes a simple way to download files using the `get` and `getString` methods:
