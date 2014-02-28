@@ -240,11 +240,15 @@ If you wish to simply update the timestamps on a model, you may use the `touch` 
 <a name="soft-deleting"></a>
 ## Soft Deleting
 
-When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, specify the `softDelete` property on the model:
+When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, apply the `SoftDeletingTrait` to the model:
+
+	use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 	class User extends Eloquent {
 
-		protected $softDelete = true;
+		use SoftDeletingTrait;
+
+		protected $dates = ['deleted_at'];
 
 	}
 
