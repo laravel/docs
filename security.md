@@ -87,10 +87,10 @@ You also may add extra conditions to the authenticating query:
 
 #### Authenticating A User With Conditions
 
-    if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1)))
-    {
-        // The user is active, not suspended, and exists.
-    }
+	if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1)))
+	{
+		// The user is active, not suspended, and exists.
+	}
 
 > **Note:** For added protection against session fixation, the user's session ID will automatically be regenerated after authenticating.
 
@@ -155,14 +155,14 @@ Laravel provides an easy method of protecting your application from cross-site r
 
 #### Inserting CSRF Token Into Form
 
-    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
 #### Validate The Submitted CSRF Token
 
-    Route::post('register', array('before' => 'csrf', function()
-    {
-        return 'You gave a valid CSRF token!';
-    }));
+	Route::post('register', array('before' => 'csrf', function()
+	{
+		return 'You gave a valid CSRF token!';
+	}));
 
 <a name="http-basic-authentication"></a>
 ## HTTP Basic Authentication

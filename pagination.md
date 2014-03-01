@@ -105,29 +105,29 @@ The default pagination presenter is Bootstrap compatible out of the box; however
 
 Extend the `Illuminate\Pagination\Presenter` class and implement its abstract methods. An example presenter for Zurb Foundation might look like this:
 
-    class ZurbPresenter extends Illuminate\Pagination\Presenter {
+	class ZurbPresenter extends Illuminate\Pagination\Presenter {
 
-        public function getActivePageWrapper($text)
-        {
-            return '<li class="current">'.$text.'</li>';
-        }
+		public function getActivePageWrapper($text)
+		{
+			return '<li class="current">'.$text.'</li>';
+		}
 
-        public function getDisabledTextWrapper($text)
-        {
-            return '<li class="unavailable">'.$text.'</li>';
-        }
+		public function getDisabledTextWrapper($text)
+		{
+			return '<li class="unavailable">'.$text.'</li>';
+		}
 
-        public function getPageLinkWrapper($url, $page)
-        {
-            return '<li><a href="'.$url.'">'.$page.'</a></li>';
-        }
+		public function getPageLinkWrapper($url, $page)
+		{
+			return '<li><a href="'.$url.'">'.$page.'</a></li>';
+		}
 
-    }
+	}
 
 ### Using The Custom Presenter
 
 First, create a view in your `app/views` directory that will server as your custom presenter. Then, replace `pagination` option in the `app/config/view.php` configuration file with the new view's name. Finally, the following code would be placed in your custom presenter view:
 
-    <ul class="pagination">
-        <?php echo with(new ZurbPrensenter($paginator))->render(); ?>
-    </ul>
+	<ul class="pagination">
+		<?php echo with(new ZurbPrensenter($paginator))->render(); ?>
+	</ul>

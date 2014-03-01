@@ -131,4 +131,4 @@ By default, Laravel keeps a log in memory of all queries that have been run for 
 
 To get an array of the executed queries, you may use the `getQueryLog` method:
 
-       $queries = DB::getQueryLog();
+	$queries = DB::getQueryLog();
