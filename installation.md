@@ -48,6 +48,8 @@ Laravel needs almost no configuration out of the box. You are free to get starte
 <a name="permissions"></a>
 ### Permissions
 Laravel may require one set of permissions to be configured: folders within app/storage require write access by the web server.
+You can do this with chmod:
+	chmod -R 775 storage/
 
 <a name="paths"></a>
 ### Paths
