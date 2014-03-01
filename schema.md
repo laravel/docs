@@ -175,8 +175,8 @@ In this example, we are stating that the `user_id` column references the `id` co
 You may also specify options for the "on delete" and "on update" actions of the constraint:
 
 	$table->foreign('user_id')
-          ->references('id')->on('users')
-          ->onDelete('cascade');
+		->references('id')->on('users')
+		->onDelete('cascade');
 
 To drop a foreign key, you may use the `dropForeign` method. A similar naming convention is used for foreign keys as is used for other indexes:
 
@@ -200,9 +200,9 @@ Command  | Description
 
 To set the storage engine for a table, set the `engine` property on the schema builder:
 
-    Schema::create('users', function($table)
-    {
-        $table->engine = 'InnoDB';
+	Schema::create('users', function($table)
+	{
+		$table->engine = 'InnoDB';
 
-        $table->string('email');
-    });
+		$table->string('email');
+	});

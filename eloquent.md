@@ -259,7 +259,7 @@ Now, when you call the `delete` method on the model, the `deleted_at` column wil
 	$users = User::withTrashed()->where('account_id', 1)->get();
 
 The `withTrashed` method may be used on a defined relationship:
-	
+
 	$user->posts()->withTrashed()->get();
 
 If you wish to **only** receive soft deleted models in your results, you may use the `onlyTrashed` method:

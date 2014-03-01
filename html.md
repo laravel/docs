@@ -155,11 +155,11 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 #### Generating A Drop-Down List With A Range
 
-    echo Form::selectRange('number', 10, 20);
+	echo Form::selectRange('number', 10, 20);
 
 #### Generating A List With Month Names
 
-    echo Form::selectMonth('month');
+	echo Form::selectMonth('month');
 
 <a name="buttons"></a>
 ## Buttons

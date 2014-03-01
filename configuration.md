@@ -50,13 +50,13 @@ Notice that you do not have to specify _every_ option that is in the base config
 
 Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `bootstrap/start.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The array passed to this method is used to determine the current environment. You may add other environments and machine names to the array as needed.
 
-    <?php
+	<?php
 
-    $env = $app->detectEnvironment(array(
+	$env = $app->detectEnvironment(array(
 
-        'local' => array('your-machine-name'),
+		'local' => array('your-machine-name'),
 
-    ));
+	));
 
 In this example, 'local' is the name of the environment and 'your-machine-name' is the hostname of your server. On Linux and Mac, you may determine your hostname using the `hostname` terminal command.
 

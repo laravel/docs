@@ -71,40 +71,40 @@ This method will return an array of role titles. You may also specify a custom k
 #### Or Statements
 
 	$users = DB::table('users')
-	                    ->where('votes', '>', 100)
-	                    ->orWhere('name', 'John')
-	                    ->get();
+		->where('votes', '>', 100)
+		->orWhere('name', 'John')
+		->get();
 
 #### Using Where Between
 
 	$users = DB::table('users')
-	                    ->whereBetween('votes', array(1, 100))->get();
+		->whereBetween('votes', array(1, 100))->get();
 
 #### Using Where Not Between
 
 	$users = DB::table('users')
-	                    ->whereNotBetween('votes', array(1, 100))->get();
+		->whereNotBetween('votes', array(1, 100))->get();
 
 #### Using Where In With An Array
 
 	$users = DB::table('users')
-	                    ->whereIn('id', array(1, 2, 3))->get();
+		->whereIn('id', array(1, 2, 3))->get();
 
 	$users = DB::table('users')
-	                    ->whereNotIn('id', array(1, 2, 3))->get();
+		->whereNotIn('id', array(1, 2, 3))->get();
 
 #### Using Where Null To Find Records With Unset Values
 
 	$users = DB::table('users')
-	                    ->whereNull('updated_at')->get();
+		->whereNull('updated_at')->get();
 
 #### Order By, Group By, And Having
 
 	$users = DB::table('users')
-	                    ->orderBy('name', 'desc')
-	                    ->groupBy('count')
-	                    ->having('count', '>', 100)
-	                    ->get();
+		->orderBy('name', 'desc')
+		->groupBy('count')
+		->having('count', '>', 100)
+		->get();
 
 #### Offset & Limit
 
@@ -118,34 +118,34 @@ The query builder may also be used to write join statements. Take a look at the 
 #### Basic Join Statement
 
 	DB::table('users')
-	            ->join('contacts', 'users.id', '=', 'contacts.user_id')
-	            ->join('orders', 'users.id', '=', 'orders.user_id')
-	            ->select('users.id', 'contacts.phone', 'orders.price');
+		->join('contacts', 'users.id', '=', 'contacts.user_id')
+		->join('orders', 'users.id', '=', 'orders.user_id')
+		->select('users.id', 'contacts.phone', 'orders.price');
 
 #### Left Join Statement
 
 	DB::table('users')
-		    ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
-		    ->get();
+		->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+		->get();
 
 You may also specify more advanced join clauses:
 
 	DB::table('users')
-	        ->join('contacts', function($join)
-	        {
-	        	$join->on('users.id', '=', 'contacts.user_id')->orOn(...);
-	        })
-	        ->get();
+		->join('contacts', function($join)
+		{
+			$join->on('users.id', '=', 'contacts.user_id')->orOn(...);
+		})
+		->get();
 
 If you would like to use a "where" style clause on your joins, you may use the `where` and `orWhere` methods on a join. Instead of comparing two columns, these methods will compare the column against a value:
 
 	DB::table('users')
-	        ->join('contacts', function($join)
-	        {
-	        	$join->on('users.id', '=', 'contacts.user_id')
-	        	     ->where('contacts.user_id', '>', 5);
-	        })
-	        ->get();
+		->join('contacts', function($join)
+		{
+			$join->on('users.id', '=', 'contacts.user_id')
+				 ->where('contacts.user_id', '>', 5);
+		})
+		->get();
 
 <a name="advanced-wheres"></a>
 ## Advanced Wheres
@@ -155,13 +155,13 @@ Sometimes you may need to create more advanced where clauses such as "where exis
 #### Parameter Grouping
 
 	DB::table('users')
-	            ->where('name', '=', 'John')
-	            ->orWhere(function($query)
-	            {
-	            	$query->where('votes', '>', 100)
-	            	      ->where('title', '<>', 'Admin');
-	            })
-	            ->get();
+		->where('name', '=', 'John')
+		->orWhere(function($query)
+		{
+			$query->where('votes', '>', 100)
+				  ->where('title', '<>', 'Admin');
+		})
+		->get();
 
 The query above will produce the following SQL:
 
@@ -170,13 +170,13 @@ The query above will produce the following SQL:
 #### Exists Statements
 
 	DB::table('users')
-	            ->whereExists(function($query)
-	            {
-	            	$query->select(DB::raw(1))
-	            	      ->from('orders')
-	            	      ->whereRaw('orders.user_id = users.id');
-	            })
-	            ->get();
+		->whereExists(function($query)
+		{
+			$query->select(DB::raw(1))
+				  ->from('orders')
+				  ->whereRaw('orders.user_id = users.id');
+		})
+		->get();
 
 The query above will produce the following SQL:
 
@@ -210,10 +210,10 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 #### Using A Raw Expression
 
 	$users = DB::table('users')
-	                     ->select(DB::raw('count(*) as user_count, status'))
-	                     ->where('status', '<>', 1)
-	                     ->groupBy('status')
-	                     ->get();
+		->select(DB::raw('count(*) as user_count, status'))
+		->where('status', '<>', 1)
+		->groupBy('status')
+		->get();
 
 #### Incrementing or decrementing a value of a column
 
@@ -261,8 +261,8 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 #### Updating Records In A Table
 
 	DB::table('users')
-	            ->where('id', 1)
-	            ->update(array('votes' => 1));
+		->where('id', 1)
+		->update(array('votes' => 1));
 
 <a name="deletes"></a>
 ## Deletes

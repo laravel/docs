@@ -68,9 +68,9 @@ The `array_first` method returns the first element of an array passing a given t
 A default value may also be passed as the third parameter:
 
 	$value = array_first($array, $callback, $default);
-	
+
 ### array_last
-	
+
 The `array_last` method returns the last element of an array passing a given truth test.
 
 	$array = array(350, 400, 500, 300, 200, 100);
@@ -79,7 +79,7 @@ The `array_last` method returns the last element of an array passing a given tru
 	{
 		return $value > 350;
 	});
-	
+
 	// 500
 
 A default value may also be passed as the third parameter:
@@ -161,7 +161,7 @@ The `array_sort` method sorts the array by the results of the given Closure.
 	{
 		return $value['name'];
 	}));
-	
+
 ### array_where
 
 Filter the array using the given Closure.
@@ -172,7 +172,7 @@ Filter the array using the given Closure.
 	{
 		return is_string($value);
 	});
-	
+
 	// Array ( [1] => 200 [3] => 400 )
 
 ### head
@@ -246,13 +246,13 @@ Convert the given string to `snake_case`.
 	$snake = snake_case('fooBar');
 
 	// foo_bar
-	
+
 ### str_limit
 
 Limit the number of characters in a string.
 
 	str_limit($value, $limit = 100, $end = '...')
-	
+
 Example:
 
 	$value = str_limit('The PHP framework for web artisans.', 7);
