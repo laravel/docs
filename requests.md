@@ -147,7 +147,7 @@ The `Request` class provides many methods for examining the HTTP request for you
 
 #### Retrieving The Request Method
 
-	$method = Request::method();
+	$method = Request::getMethod();
 
 	if (Request::isMethod('post'))
 	{
