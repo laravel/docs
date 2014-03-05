@@ -104,3 +104,11 @@ You may also register an event to catch all messages passed to the log:
 	{
 		//
 	});
+
+#### Daily Rotating Log Files
+
+If you want to use daily rotating log files instead of a single one, this can be easily configured in `start/global.php` (Application Error Logger):
+
+    $logFile = 'laravel.log';
+
+    Log::useDailyFiles(storage_path().'/logs/'.$logFile);
