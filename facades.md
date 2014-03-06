@@ -25,6 +25,12 @@ Your facade class only needs to implement a single method: `getFacadeAccessor`. 
 
 So, when you make a facade call like `Cache::get`, Laravel resolves the Cache manager class out of the IoC container and calls the `get` method on the class. In technical terms, Laravel Facades are a convenient syntax for using the Laravel IoC container as a service locator.
 
+### Note on naming
+
+Laravel facades are not proper [Facades](http://en.wikipedia.org/wiki/Facade_pattern), but rather a static proxy (via `__callStatic()`) that calls methods on object instances fetched via a global service locator.
+
+Since the naming `Facade` is already enstabilished in Laravel 4.x, it will be maintained until a change is justified.
+
 <a name="practical-usage"></a>
 ## Practical Usage
 
