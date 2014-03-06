@@ -1,4 +1,4 @@
-# Facades
+# Proxies To Service Locators
 
 - [Introduction](#introduction)
 - [Explanation](#explanation)
