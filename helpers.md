@@ -1,6 +1,7 @@
 # Helper Functions
 
 - [Arrays](#arrays)
+- [HTML Elements](#html-elements)
 - [Paths](#paths)
 - [Strings](#strings)
 - [URLs](#urls)
@@ -68,9 +69,9 @@ The `array_first` method returns the first element of an array passing a given t
 A default value may also be passed as the third parameter:
 
 	$value = array_first($array, $callback, $default);
-	
+
 ### array_last
-	
+
 The `array_last` method returns the last element of an array passing a given truth test.
 
 	$array = array(350, 400, 500, 300, 200, 100);
@@ -79,7 +80,7 @@ The `array_last` method returns the last element of an array passing a given tru
 	{
 		return $value > 350;
 	});
-	
+
 	// 500
 
 A default value may also be passed as the third parameter:
@@ -161,7 +162,7 @@ The `array_sort` method sorts the array by the results of the given Closure.
 	{
 		return $value['name'];
 	}));
-	
+
 ### array_where
 
 Filter the array using the given Closure.
@@ -172,7 +173,7 @@ Filter the array using the given Closure.
 	{
 		return is_string($value);
 	});
-	
+
 	// Array ( [1] => 200 [3] => 400 )
 
 ### head
@@ -186,6 +187,97 @@ Return the first element in the array. Useful for method chaining in PHP 5.3.x.
 Return the last element in the array. Useful for method chaining.
 
 	$last = last($this->returnsArray('foo'));
+
+<a name="html-elements"></a>
+## HTML Elements
+
+#### Entities
+
+Convert an HTML string to entities.
+
+	{{ HTML::entities("<strong>my string</strong>") }}
+	// Will generate
+	&lt;strong&gt;my string&lt;/strong&gt;
+
+#### Decode
+
+Convert entities to HTML characters.
+
+	{{ HTML::decode("&lt;strong&gt;my string&lt;/strong&gt;") }}
+	// Will generate
+	<strong>my string</strong>
+
+#### JavaScript script tag
+
+Generate a link to a JavaScript file.
+
+  {{ HTML::script('foo/bar.js') }}
+  // Will generate
+  <script src="http://application-url/foo/bar.js"></script>
+
+#### Stylesheet link
+
+Generate a link to a CSS file.
+
+  {{ HTML::style('foo/bar.css') }}
+  // Will generate
+  <link media="all" type="text/css" rel="stylesheet" href="http://application-url/foo/bar.css">
+
+#### Image tag
+
+Generate an HTML image element.
+
+  {{ HTML::image('foo/bar.jpg', "alt", array('attributes')) }}
+  // Will generate
+  <img src="http://application-url/foo/bar.jpg" alt="alt" />
+
+#### Mailto
+
+Generate a HTML link to an email address.
+
+  {{ HTML::mailto("email@email.com", "title", array $attributes = array()) }}
+  // Will generate
+  <a href="mailto:email@email.com">title</a>
+
+#### Email
+
+Obfuscate an e-mail address to prevent spam-bots from sniffing it.
+
+	{{ HTML::email('myemail@email.com') }}
+	// Will generate
+	&#x6d;&#x79;&#x65;&#109;&#97;&#105;&#108;&#64;e&#109;ail&#x2e;&#99;om
+
+#### Ordered List
+
+Generate an ordered list of items.
+
+	{{ HTML::ol(array('item1', 'item2', 'item3'), $attributes = array()) }}
+	// Will generate
+	<ol>
+		<li>item1</li>
+		<li>item2</li>
+		<li>item3</li>
+	</ol>
+
+#### Unordered List
+
+Build an HTML attribute string from an array.
+
+	{{ HTML::ul(array('item1', 'item2', 'item3'), $attributes = array()) }}
+	// Will Generate
+	<ul>
+		<li>item1</li>
+		<li>item2</li>
+		<li>item3</li>
+	</ul>
+
+#### Obfuscate
+
+Obfuscate a string to prevent spam-bots from sniffing it.
+
+	{{ HTML::obfuscate('mystring') }}
+	// Will generate
+	&#109;yst&#x72;&#x69;&#110;&#x67;
 
 <a name="paths"></a>
 ## Paths
@@ -246,13 +338,13 @@ Convert the given string to `snake_case`.
 	$snake = snake_case('fooBar');
 
 	// foo_bar
-	
+
 ### str_limit
 
 Limit the number of characters in a string.
 
 	str_limit($value, $limit = 100, $end = '...')
-	
+
 Example:
 
 	$value = str_limit('The PHP framework for web artisans.', 7);
