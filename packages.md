@@ -198,7 +198,7 @@ You will need to add the config variable to your service providers boot function
 	
 If you have multipe config files files you will want to use double dot notation in order to specify the file. For example a file located in your vendor/package/src/config/special_config.php would be accessed as such.
 
-	$confic = $this->app['config']->get('vendor/package::special_config');
+	$config = $this->app['config']->get('vendor/package::special_config');
 
 > **Note:** The developer may also create environment specific configuration files for your package by placing them in `app/config/packages/vendor/package/environment`.
 
