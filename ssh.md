@@ -100,8 +100,6 @@ Laravel includes a helpful command for tailing the `laravel.log` files on any of
 - [Multiple Servers](#envoy-multiple-servers)
 - [Parallel Execution](#envoy-parallel-execution)
 - [Task Macros](#envoy-task-macros)
-- [Setup](#envoy-setup)
-- [Includes](#envoy-include)
 - [Notifications](#envoy-notifications)
 - [Updating Envoy](#envoy-updating-envoy)
 
@@ -148,6 +146,20 @@ You may use the options via the Blade syntax you are used to:
 		git pull origin {{ $branch }}
 		php artisan migrate
 	@endtask
+
+#### Bootstrapping
+
+You may use the ```@setup``` directive to declare variables and do general PHP work inside the Envoy file:
+
+	@setup
+		$now = new DateTime();
+
+		$environment = isset($env) ? $env : "testing";
+	@endsetup
+
+You may also use ```@include``` to include any PHP files:
+
+	@include('vendor/autoload.php');
 
 <a name="envoy-multiple-servers"></a>
 ### Multiple Servers
@@ -200,27 +212,6 @@ Macros allow you to define a set of tasks to be run in sequence using a single c
 The `deploy` macro can now be run via a single, simple command:
 
 	envoy run deploy
-
-<a name="envoy-setup"></a>
-### Setup
-
-You can use the ```@setup``` section to declare variables and do general PHP actions inside the Envoy file:
-
-	@setup
-		$now = new DateTime();
-		
-		// Check an --env switch to make sure the
-		// default is "testing" if it's not set
-		$environment = isset($env) ? $env : "testing"; 
-	@endsetup
-	
-<a name="envoy-include"></a>
-### Includes
-
-You can use ```@include``` to include any files you might want to bootstrap in.
-
-	@include('../vendor/autoload.php');
-	
 
 <a name="envoy-notifications"></a>
 <a name="envoy-hipchat-notifications"></a>
