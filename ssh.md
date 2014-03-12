@@ -100,6 +100,8 @@ Laravel includes a helpful command for tailing the `laravel.log` files on any of
 - [Multiple Servers](#envoy-multiple-servers)
 - [Parallel Execution](#envoy-parallel-execution)
 - [Task Macros](#envoy-task-macros)
+- [Setup](#envoy-setup)
+- [Includes](#envoy-include)
 - [Notifications](#envoy-notifications)
 - [Updating Envoy](#envoy-updating-envoy)
 
@@ -199,6 +201,27 @@ The `deploy` macro can now be run via a single, simple command:
 
 	envoy run deploy
 
+<a name="envoy-setup"></a>
+### Setup
+
+You can use the ```@setup``` section to declare variables and do general PHP actions inside the Envoy file:
+
+	@setup
+		$now = new DateTime();
+		
+		// Check an --env switch to make sure the
+		// default is "testing" if it's not set
+		$environment = isset($env) ? $env : "testing"; 
+	@endsetup
+	
+<a name="envoy-include"></a>
+### Includes
+
+You can use ```@include``` to include any files you might want to bootstrap in.
+
+	@include('../vendor/autoload.php');
+	
+
 <a name="envoy-notifications"></a>
 <a name="envoy-hipchat-notifications"></a>
 ### Notifications
@@ -215,6 +238,12 @@ After running a task, you may send a notification to your team's HipChat room us
 
 	@after
 		@hipchat('token', 'room', 'Envoy')
+	@endafter
+
+You can also specify a custom message to the hipchat room. Any variables declared in ```@setup``` or included with ```@include``` will be available for use in the message:
+
+	@after
+		@hipchat('token', 'room', 'Envoy', "$task ran on [$environment]")
 	@endafter
 
 This is an amazingly simple way to keep your team notified of the tasks being run on the server.
