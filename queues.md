@@ -127,7 +127,7 @@ You may also push a Closure onto the queue. This is very convenient for quick, s
 		$job->delete();
 	});
 
-> **Note:** When pushing Closures onto the queue, the `__DIR__` and `__FILE__` constants should not be used.
+> **Note:** When pushing Closures onto the queue, the `__FILE__` constant should not be used.
 
 When using Iron.io [push queues](#push-queues), you should take extra precaution queueing Closures. The end-point that receives your queue messages should check for a token to verify that the request is actually from Iron.io. For example, your push queue end-point should be something like: `https://yourapp.com/queue/receive?token=SecretToken`. You may then check the value of the secret token in your application before marshaling the queue request.
 
