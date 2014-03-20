@@ -349,6 +349,8 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 #### Utilizing A Query Scope
 
 	$users = User::popular()->women()->orderBy('created_at')->get();
+	
+Note: Scopes should always be added first in the query chain.  
 
 #### Dynamic Scopes
 
