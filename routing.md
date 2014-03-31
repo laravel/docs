@@ -180,7 +180,7 @@ If the filter returns a response, that response is considered the response to th
 
 After filters receive a `$response` as the third argument passed to the filter:
 
-	Route::filter('log', function($route, $request, $response, $value)
+	Route::filter('log', function($route, $request, $value)
 	{
 		//
 	});
