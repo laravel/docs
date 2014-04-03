@@ -3,6 +3,7 @@
 - [Where To Start](#where-to-start)
 - [Laravel Philosophy](#laravel-philosophy)
 - [Additional Resources](#additional-resources)
+- [Resource in other langauge] (#resources-in-other-lang)
 - [Development Team](#development-team)
 
 <a name="where-to-start"></a>
@@ -41,6 +42,12 @@ In addition to this guide, you may wish to check out some [Laravel books](http:/
 - [Getting Stuff Done With Laravel 4](https://leanpub.com/gettingstuffdonelaravel) by Chuck Heintzelman
 - [Laravel 4 Cookbook](https://leanpub.com/laravel4cookbook) by Christopher Pitt
 - [Laravel in Action](http://www.manning.com/surguy/) by Maks Surguy
+
+<a name="resources-in-other-lang"></a>
+## Resource in other langauge
+
+### Thai 
+- [ Laravetut ](http://laraveltut.com) by Krissanawat
 
 <a name="development-team"></a>
 ## Development Team
