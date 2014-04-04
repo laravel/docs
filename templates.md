@@ -141,14 +141,36 @@ You may also pass an array of data to the included view:
 
 	@include('view.name', array('some'=>'data'))
 
-#### Overwriting Sections
+#### Appending or Overwriting Sections
 
-By default, sections are appended to any previous content that exists in the section. To overwrite a section entirely, you may use the `overwrite` statement:
+By default, sections can only be defined once. Any attempts to redefine a section will be ignored:
 
-	@extends('list.item.container')
+	@section('content')
+		<p>This will show up in my rendered HTML.</p>
+	@stop
 
-	@section('list.item.content')
-		<p>This is an item of type {{ $item->type }}</p>
+	@section('content')
+		<p>This will NOT show up in your rendered HTML.</p>
+	@stop
+
+If you wish to append to a section, you can append sections to one another using the `append` statement:
+
+	@section('content')
+		<p>This is some content</p>
+	@stop
+
+	@section('content')
+		<p>This is some more content!</p>
+	@append
+
+If you wish to completely overwrite a section, use the `overwrite` statement:
+
+	@section('content')
+		<p>This content is going to be overwritten.</p>
+	@stop
+
+	@section('content')
+		<p>This section will overwrite the previous section</p>
 	@overwrite
 
 #### Displaying Language Lines
@@ -159,7 +181,13 @@ By default, sections are appended to any previous content that exists in the sec
 
 #### Comments
 
-	{{-- This comment will not be in the rendered HTML --}}
+	{{-- This line comment will not be in the rendered HTML --}}
+
+	{{--
+		This block comment
+		will not be in
+		the rendered HTML
+	--}}
 
 <a name="extending-blade"></a>
 ## Extending Blade
