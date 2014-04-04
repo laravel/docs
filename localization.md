@@ -40,6 +40,11 @@ The default language for your application is stored in the `app/config/app.php` 
 
 	App::setLocale('es');
 
+#### Setting A Fallback Language
+In case your active language misses a requested string, you can define a fallback language to try to load the string from. You can set your fallback language in `app/config/app.php`.
+
+	'fallback_locale' => 'en',
+
 <a name="basic-usage"></a>
 ## Basic Usage
 
