@@ -114,7 +114,7 @@ _Beanstalkd_ can temporarily set a job aside for you to review and take action. 
 	if ($job->attempts() > 3)
 	{
 		Log::info('Buried job: ' . $job->getJobId());
-		job->bury();
+		$job->bury();
 	}
 
 
