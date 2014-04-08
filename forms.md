@@ -1,4 +1,4 @@
-# Forms & HTML
+# Forms and Form Helpers
 
 - [Opening A Form](#opening-a-form)
 - [CSRF Protection](#csrf-protection)
