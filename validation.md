@@ -46,6 +46,21 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
         )
     );
 
+#### Validating Nested Arrays
+
+    $validator = Validator::make(
+        array(
+            'user[name]' => 'Jrek',
+            'user[password]' => 'anotherlamepass',
+            'user[email]' => 'email@example.com'
+        ),
+        array(
+            'user.name' => 'required',
+            'user.password' => 'required|min:1',
+            'user.email' => 'required|email|unique:users'
+        )
+    );
+
 Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
 
 	if ($validator->fails())
