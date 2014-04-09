@@ -207,7 +207,7 @@ You can specify the maximum number of times a job should be attempted using the 
 
 If you would like to register an event that will be called when a queue job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via e-mail or [HipChat](https://www.hipchat.com).
 
-	Queue::failing(function($job, $data)
+	Queue::failing(function($connection, $job, $data)
 	{
 		//
 	});

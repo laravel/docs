@@ -85,7 +85,7 @@ You may then use the `Lang::choice` method to retrieve the line:
 
 You may also supply a locale argument to specify the language. For example, if you want to use the Russian (ru) language:
 
-	echo Lang::choice('{0} нет товаров|{1} товар', 1, array(), 'ru');
+	echo Lang::choice('товар|товара|товаров', $count, array(), 'ru');
 
 Since the Laravel translator is powered by the Symfony Translation component, you may also create more explicit pluralization rules easily:
 

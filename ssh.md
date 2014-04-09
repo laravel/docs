@@ -122,6 +122,10 @@ Next, create an `Envoy.blade.php` file in the root of your project. Here's an ex
 
 As you can see, an array of `@servers` is defined at the top of the file. You can reference these servers in the `on` option of your task declarations. Within your `@task` declarations you should place the Bash code that will be run on your server when the task is executed.
 
+The `init` command may be used to easily create a stub Envoy file:
+
+	envoy init user@192.168.1.1
+
 <a name="envoy-running-tasks"></a>
 ### Running Tasks
 
@@ -142,6 +146,20 @@ You may use the options via the Blade syntax you are used to:
 		git pull origin {{ $branch }}
 		php artisan migrate
 	@endtask
+
+#### Bootstrapping
+
+You may use the ```@setup``` directive to declare variables and do general PHP work inside the Envoy file:
+
+	@setup
+		$now = new DateTime();
+
+		$environment = isset($env) ? $env : "testing";
+	@endsetup
+
+You may also use ```@include``` to include any PHP files:
+
+	@include('vendor/autoload.php');
 
 <a name="envoy-multiple-servers"></a>
 ### Multiple Servers
@@ -211,6 +229,12 @@ After running a task, you may send a notification to your team's HipChat room us
 
 	@after
 		@hipchat('token', 'room', 'Envoy')
+	@endafter
+
+You can also specify a custom message to the hipchat room. Any variables declared in ```@setup``` or included with ```@include``` will be available for use in the message:
+
+	@after
+		@hipchat('token', 'room', 'Envoy', "$task ran on [$environment]")
 	@endafter
 
 This is an amazingly simple way to keep your team notified of the tasks being run on the server.
