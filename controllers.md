@@ -195,7 +195,7 @@ And, you may also specify a subset of actions to handle on the route:
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
 	Route::resource('photo', 'PhotoController',
-					array('names' => array('create' => 'photo.build'));
+					array('names' => array('create' => 'photo.build')));
 
 <a name="handling-missing-methods"></a>
 ## Handling Missing Methods
