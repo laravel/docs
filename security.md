@@ -277,13 +277,13 @@ By default, the `Password::reset` method will verify that the passwords match an
 <a name="encryption"></a>
 ## Encryption
 
-Laravel provides facilities for strong AES-256 encryption via the mcrypt PHP extension:
+Laravel provides facilities for strong AES encryption via the mcrypt PHP extension:
 
 #### Encrypting A Value
 
 	$encrypted = Crypt::encrypt('secret');
 
-> **Note:** Be sure to set a 32 character, random string in the `key` option of the `app/config/app.php` file. Otherwise, encrypted values will not be secure.
+> **Note:** Be sure to set a 16, 24, or 32 character random string in the `key` option of the `app/config/app.php` file. Otherwise, encrypted values will not be secure.
 
 #### Decrypting A Value
 
