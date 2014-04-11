@@ -213,9 +213,9 @@ You may also run updates as queries against a set of models:
 
 > **Note:** No model events are fired when updating a set of models via the Eloquent query builder.
 
-To delete a model, simply call the `delete` method on the instance:
-
 #### Deleting An Existing Model
+
+To delete a model, simply call the `delete` method on the instance:
 
 	$user = User::find(1);
 
@@ -233,9 +233,9 @@ Of course, you may also run a delete query on a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->delete();
 
-If you wish to simply update the timestamps on a model, you may use the `touch` method:
-
 #### Updating Only The Model's Timestamps
+
+If you wish to simply update the timestamps on a model, you may use the `touch` method:
 
 	$user->touch();
 
