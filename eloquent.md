@@ -694,11 +694,11 @@ When accessing the records for a model, you may wish to limit your results based
 
 #### Querying Relations When Selecting
 
-	$posts = Post::has('comments')->get();
+	$posts = Post::has('comments');
 
 You may also specify an operator and a count:
 
-	$posts = Post::has('comments', '>=', 3)->get();
+	$posts = Post::has('comments', '>=', 3);
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries:
 
@@ -706,7 +706,7 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 	{
 		$q->where('content', 'like', 'foo%');
 
-	})->get();
+	});
 
 <a name="dynamic-properties"></a>
 ### Dynamic Properties
