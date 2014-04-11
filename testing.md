@@ -166,7 +166,11 @@ Laravel ships with several `assert` methods to make testing a little easier:
         $this->call('GET', '/');
 
         $this->assertSessionHasErrors();
+
+        // Asserting the session has errors for a given key...
         $this->assertSessionHasErrors('name');
+
+        // Asserting the session has errors for several keys...
         $this->assertSessionHasErrors(array('name', 'age'));
     }
 
