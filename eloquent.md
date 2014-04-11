@@ -211,7 +211,7 @@ You may also run updates as queries against a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
 
-> **Note:** When updating a set of models, Eloquent does not fire the `updating`/`updated` events.
+> **Note:** No model events are fired when updating a set of models via the Eloquent query builder.
 
 To delete a model, simply call the `delete` method on the instance:
 
