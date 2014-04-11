@@ -1,10 +1,22 @@
 # Errors & Logging
 
+- [Configuration](#configuration)
 - [Error Detail](#error-detail)
 - [Handling Errors](#handling-errors)
 - [HTTP Exceptions](#http-exceptions)
 - [Handling 404 Errors](#handling-404-errors)
 - [Logging](#logging)
+
+<a name="configuration"></a>
+## Configuration
+
+The logging handler for your application is registered in the `app/start/global.php` [start file](/docs/lifecycle#start-files). By default, the logger is configured to use a single log file; however, you may customize this behavior as needed. Since Laravel uses the popular [Monolog](https://github.com/Seldaek/monolog) logging library, you can take advantage of the variety of handlers that Monolog offers.
+
+For example, if you wish to use daily log files instead of a single, large file, you can make the following change to your start file:
+
+	$logFile = 'laravel.log';
+
+	Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 
 <a name="error-detail"></a>
 ## Error Detail
