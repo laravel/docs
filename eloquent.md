@@ -802,7 +802,7 @@ Of course, eager loading Closures aren't limited to "constraints". You may also 
 
 	$users = User::with(array('posts' => function($query)
 	{
-		$query->orderBy('created_at', 'desc')
+		$query->orderBy('created_at', 'desc');
 
 	}))->get();
 
