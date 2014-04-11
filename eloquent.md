@@ -211,6 +211,8 @@ You may also run updates as queries against a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
 
+> **Note:** When updating a set of models, Eloquent does not fire the `updating`/`updated` events.
+
 To delete a model, simply call the `delete` method on the instance:
 
 #### Deleting An Existing Model
@@ -259,7 +261,7 @@ Now, when you call the `delete` method on the model, the `deleted_at` column wil
 	$users = User::withTrashed()->where('account_id', 1)->get();
 
 The `withTrashed` method may be used on a defined relationship:
-	
+
 	$user->posts()->withTrashed()->get();
 
 If you wish to **only** receive soft deleted models in your results, you may use the `onlyTrashed` method:
