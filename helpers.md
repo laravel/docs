@@ -102,7 +102,9 @@ The `array_forget` method will remove a given key / value pair from a deeply nes
 
 	$array = array('names' => array('joe' => array('programmer')));
 
-	$array = array_forget($array, 'names.joe');
+	array_forget($array, 'names.joe');
+
+	// array('names' => array())
 
 ### array_get
 
