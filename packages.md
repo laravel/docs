@@ -188,6 +188,18 @@ When other developers install your package, they may wish to override some of th
 
 When this command is executed, the configuration files for your application will be copied to `app/config/packages/vendor/package` where they can be safely modified by the developer!
 
+You will need to add the config variable to your service providers boot function in order for packages to cascade. It should look as follows.
+
+	public function boot()
+	{
+		$this->package('vendor/package');
+		$config = $this->app['config']->get('vendor/package');
+	}
+	
+If you have multipe config files files you will want to use double dot notation in order to specify the file. For example a file located in your vendor/package/src/config/special_config.php would be accessed as such.
+
+	$config = $this->app['config']->get('vendor/package::special_config');
+
 > **Note:** The developer may also create environment specific configuration files for your package by placing them in `app/config/packages/vendor/package/environment`.
 
 <a name="package-views"></a>
