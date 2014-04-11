@@ -211,9 +211,11 @@ You may also run updates as queries against a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
 
-To delete a model, simply call the `delete` method on the instance:
+> **Note:** No model events are fired when updating a set of models via the Eloquent query builder.
 
 #### Deleting An Existing Model
+
+To delete a model, simply call the `delete` method on the instance:
 
 	$user = User::find(1);
 
@@ -231,9 +233,9 @@ Of course, you may also run a delete query on a set of models:
 
 	$affectedRows = User::where('votes', '>', 100)->delete();
 
-If you wish to simply update the timestamps on a model, you may use the `touch` method:
-
 #### Updating Only The Model's Timestamps
+
+If you wish to simply update the timestamps on a model, you may use the `touch` method:
 
 	$user->touch();
 
@@ -263,7 +265,7 @@ Now, when you call the `delete` method on the model, the `deleted_at` column wil
 	$users = User::withTrashed()->where('account_id', 1)->get();
 
 The `withTrashed` method may be used on a defined relationship:
-	
+
 	$user->posts()->withTrashed()->get();
 
 If you wish to **only** receive soft deleted models in your results, you may use the `onlyTrashed` method:
@@ -802,7 +804,7 @@ Of course, eager loading Closures aren't limited to "constraints". You may also 
 
 	$users = User::with(array('posts' => function($query)
 	{
-		$query->orderBy('created_at', 'desc')
+		$query->orderBy('created_at', 'desc');
 
 	}))->get();
 

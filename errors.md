@@ -1,13 +1,23 @@
 # Errors & Logging
 
-- [Error Detail](#error-detail)
+- [Configuration](#configuration)
 - [Handling Errors](#handling-errors)
 - [HTTP Exceptions](#http-exceptions)
 - [Handling 404 Errors](#handling-404-errors)
 - [Logging](#logging)
 
-<a name="error-detail"></a>
-## Error Detail
+<a name="configuration"></a>
+## Configuration
+
+The logging handler for your application is registered in the `app/start/global.php` [start file](/docs/lifecycle#start-files). By default, the logger is configured to use a single log file; however, you may customize this behavior as needed. Since Laravel uses the popular [Monolog](https://github.com/Seldaek/monolog) logging library, you can take advantage of the variety of handlers that Monolog offers.
+
+For example, if you wish to use daily log files instead of a single, large file, you can make the following change to your start file:
+
+	$logFile = 'laravel.log';
+
+	Log::useDailyFiles(storage_path().'/logs/'.$logFile);
+
+### Error Detail
 
 By default, error detail is enabled for your application. This means that when an error occurs you will be shown an error page with a detailed stack trace and error message. You may turn off error details by setting the `debug` option in your `app/config/app.php` file to `false`.
 
@@ -78,7 +88,7 @@ You may register an error handler that handles all "404 Not Found" errors in you
 <a name="logging"></a>
 ## Logging
 
-The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create a single log file for your application, and this file is stored in `app/storage/laravel.log`. You may write information to the log like so:
+The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create a single log file for your application, and this file is stored in `app/storage/logs/laravel.log`. You may write information to the log like so:
 
 	Log::info('This is some useful information.');
 

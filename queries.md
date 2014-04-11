@@ -120,7 +120,8 @@ The query builder may also be used to write join statements. Take a look at the 
 	DB::table('users')
 	            ->join('contacts', 'users.id', '=', 'contacts.user_id')
 	            ->join('orders', 'users.id', '=', 'orders.user_id')
-	            ->select('users.id', 'contacts.phone', 'orders.price');
+	            ->select('users.id', 'contacts.phone', 'orders.price')
+	            ->get();
 
 #### Left Join Statement
 
