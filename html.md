@@ -132,6 +132,7 @@ This allows you to quickly build forms that not only bind to model values, but e
 ## File Input
 
 #### Generating A File Input
+##### Make sure you have (files => true) set in your form open see [Opening A Form](#opening-a-form)
 
 	echo Form::file('image');
 
