@@ -301,4 +301,4 @@ You may also set the cipher and mode used by the encrypter:
 <a name="authentication-drivers"></a>
 ## Authentication Drivers
 
-Laravel offers the `database` and `eloquent` authentication drivers out of the box. For more information about adding additional authentication drivers, visit the [Authentication](/docs/extending#authentication) section under [Extending the Framework](/docs/extending).
+Laravel offers the `database` and `eloquent` authentication drivers out of the box. For more information about adding additional authentication drivers, check out the [Authentication extension documentation](/docs/extending#authentication).
