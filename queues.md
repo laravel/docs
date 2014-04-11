@@ -107,6 +107,17 @@ If an exception occurs while the job is being processed, it will automatically b
 		//
 	}
 
+#### Bury a Job [Beanstalkd driver only]
+_Beanstalkd_ can temporarily set a job aside for you to review and take action. This is useful in case a pushed job throws an exception or have any error.
+
+
+	if ($job->attempts() > 3)
+	{
+		Log::info('Buried job: ' . $job->getJobId());
+		$job->bury();
+	}
+
+
 You may also access the job identifier:
 
 #### Accessing The Job ID
