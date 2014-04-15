@@ -1,6 +1,37 @@
 # Upgrade Guide
 
+- [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-4.1.26"></a>
+## Upgrading To 4.1.26 From <= 4.1.25
+
+Laravel 4.1.26 introduces security improvements for "remember me" cookies. Before this update, if a remember cookie was hijacked by another malicious user, the cookie would remain valid for a long period of time, even after the true owner of the account reset their password, logged out, etc.
+
+This change requires the addition of a new `remember_token` column to your `users` (or equivalent) database table. After this change, a fresh token will be assigned to the user each time they login to your application. The token will also be refreshed the user logs out of the application. The implications of this change are: if a "remember me" cookie is hijacked, simply logging out of the application will invalidate the cookie.
+
+### Upgrade Path
+
+First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent.
+
+Next, if you are using the Eloquent authentication driver, update your `User` class with the following three methods:
+
+	public function getRememberToken()
+	{
+		return $this->remember_token;
+	}
+
+	public function setRememberToken($value)
+	{
+		$this->remember_token = $value;
+	}
+
+	public function getRememberTokenName()
+	{
+		return 'remember_token';
+	}
+
+All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
 
 <a name="upgrade-4.1"></a>
 ## Upgrading To 4.1 From 4.0
