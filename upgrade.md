@@ -12,7 +12,7 @@ This change requires the addition of a new `remember_token` column to your `user
 
 ### Upgrade Path
 
-First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent.
+First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent to your `users` table.
 
 Next, if you are using the Eloquent authentication driver, update your `User` class with the following three methods:
 
