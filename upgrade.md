@@ -33,6 +33,14 @@ Next, if you are using the Eloquent authentication driver, update your `User` cl
 
 All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
 
+### Package Maintainers
+
+One new method was added to the `Illuminate\Auth\UserProviderInterface` interface. Sample implementations may be found in the default drivers:
+
+	public function retrieveByToken($identifier, $token);
+
+The `Illuminate\Auth\UserInterface` also received the three new methods described in the "Upgrade Path".
+
 <a name="upgrade-4.1"></a>
 ## Upgrading To 4.1 From 4.0
 
