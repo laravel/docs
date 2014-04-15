@@ -31,7 +31,7 @@ Next, if you are using the Eloquent authentication driver, update your `User` cl
 		return 'remember_token';
 	}
 
-All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
+> **Note:** All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
 
 ### Package Maintainers
 
