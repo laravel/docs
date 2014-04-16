@@ -139,7 +139,7 @@ To show a custom view when your application is in maintenance mode, you may add 
 		return Response::view('maintenance', array(), 503);
 	});
 
-If the Closure passed to the `down` method returns `NULL`, maintenace mode will be ignored for that request.
+If the Closure passed to the `down` method returns `NULL`, maintenance mode will be ignored for that request.
 
 ### Maintenance Mode & Queues
 
