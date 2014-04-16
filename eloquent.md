@@ -1064,7 +1064,7 @@ You may customize which fields are automatically mutated, and even completely di
 		return array('created_at');
 	}
 
-When a column is considered a date, you may set its value to a UNIX timetamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
+When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
 
 To totally disable date mutations, simply return an empty array from the `getDates` method:
 

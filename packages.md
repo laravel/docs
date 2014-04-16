@@ -197,7 +197,7 @@ If you are using a package in your application, you may occasionally wish to cus
 
 	php artisan view:publish vendor/package
 
-This command will move the package's views into the `app/views/packages` directory. If this directory doesn't already exist, it will be created when you run the command. Once the views have been published, you may tweak them to your liking! The exported views will automatically take precendence over the package's own view files.
+This command will move the package's views into the `app/views/packages` directory. If this directory doesn't already exist, it will be created when you run the command. Once the views have been published, you may tweak them to your liking! The exported views will automatically take precedence over the package's own view files.
 
 <a name="package-migrations"></a>
 ## Package Migrations
