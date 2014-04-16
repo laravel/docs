@@ -35,9 +35,11 @@ Next, if you are using the Eloquent authentication driver, update your `User` cl
 
 ### Package Maintainers
 
-One new method was added to the `Illuminate\Auth\UserProviderInterface` interface. Sample implementations may be found in the default drivers:
+Two new methods were added to the `Illuminate\Auth\UserProviderInterface` interface. Sample implementations may be found in the default drivers:
 
 	public function retrieveByToken($identifier, $token);
+
+	public function updateRememberToken(UserInterface $user, $token);
 
 The `Illuminate\Auth\UserInterface` also received the three new methods described in the "Upgrade Path".
 
