@@ -1,6 +1,7 @@
 # Upgrade Guide
 
 - [Upgrading To 4.2 From 4.1](#upgrade-4.2)
+- [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
 
 <a name="upgrade-4.2"></a>
@@ -33,6 +34,46 @@ The API for all soft delete operations remains the same.
 ### View / Pagination Environment Renamed
 
 If you are directly referencing the `Illuminate\View\Environment` class or `Illuminate\Pagination\Environment` class, update your code to reference `Illuminate\View\Factory` and `Illuminate\Pagination\Factory` instead. These two classes have been renamed to better reflect their function.
+
+<a name="upgrade-4.1.26"></a>
+## Upgrading To 4.1.26 From <= 4.1.25
+
+Laravel 4.1.26 introduces security improvements for "remember me" cookies. Before this update, if a remember cookie was hijacked by another malicious user, the cookie would remain valid for a long period of time, even after the true owner of the account reset their password, logged out, etc.
+
+This change requires the addition of a new `remember_token` column to your `users` (or equivalent) database table. After this change, a fresh token will be assigned to the user each time they login to your application. The token will also be refreshed when the user logs out of the application. The implications of this change are: if a "remember me" cookie is hijacked, simply logging out of the application will invalidate the cookie.
+
+### Upgrade Path
+
+First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent to your `users` table.
+
+Next, if you are using the Eloquent authentication driver, update your `User` class with the following three methods:
+
+	public function getRememberToken()
+	{
+		return $this->remember_token;
+	}
+
+	public function setRememberToken($value)
+	{
+		$this->remember_token = $value;
+	}
+
+	public function getRememberTokenName()
+	{
+		return 'remember_token';
+	}
+
+> **Note:** All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
+
+### Package Maintainers
+
+Two new methods were added to the `Illuminate\Auth\UserProviderInterface` interface. Sample implementations may be found in the default drivers:
+
+	public function retrieveByToken($identifier, $token);
+
+	public function updateRememberToken(UserInterface $user, $token);
+
+The `Illuminate\Auth\UserInterface` also received the three new methods described in the "Upgrade Path".
 
 <a name="upgrade-4.1"></a>
 ## Upgrading To 4.1 From 4.0

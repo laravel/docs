@@ -19,6 +19,8 @@ By default, Laravel includes a `User` model in your `app/models` directory which
 
 If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
+> **Note:** Before getting started, make sure that your `users` (or equivalent) table contains a string `remember_token` column. This column will be used to store a token for "remember me" sessions being maintained by your application.
+
 <a name="storing-passwords"></a>
 ## Storing Passwords
 
@@ -65,9 +67,9 @@ To determine if the user is already logged into your application, you may use th
 		// The user is logged in...
 	}
 
-If you would like to provide "remember me" functionality in your application, you may pass `true` as the second argument to the `attempt` method, which will keep the user authenticated indefinitely (or until they manually logout):
-
 #### Authenticating A User And "Remembering" Them
+
+If you would like to provide "remember me" functionality in your application, you may pass `true` as the second argument to the `attempt` method, which will keep the user authenticated indefinitely (or until they manually logout). Of course, your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password), true))
 	{
