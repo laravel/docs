@@ -272,7 +272,7 @@ By default, the `Password::reset` method will verify that the passwords match an
 
 	Password::validator(function($credentials)
 	{
-		return strlen($credentials['password']) >= 8;
+		return strlen($credentials['password']) >= 6;
 	});
 
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `app/config/auth.php` file.
