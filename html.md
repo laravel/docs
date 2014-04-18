@@ -135,7 +135,7 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 	echo Form::file('image');
 
-> **Note:** The form must have been opened with the `file` option set to `true`.
+> **Note:** The form must have been opened with the `files` option set to `true`.
 
 <a name="drop-down-lists"></a>
 ## Drop-Down Lists

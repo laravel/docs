@@ -177,7 +177,7 @@ Almost every service provider included with the Laravel framework binds objects 
 
 For example, the `HashServiceProvider` binds a `hash` key into the IoC container, which resolves into a `Illuminate\Hashing\BcryptHasher` instance. You can easily extend and override this class within your own application by overriding this IoC binding. For example:
 
-	class SnappyPaginationProvider extends Illuminate\Hashing\HashServiceProvider {
+	class SnappyHashProvider extends Illuminate\Hashing\HashServiceProvider {
 
 		public function boot()
 		{
