@@ -35,6 +35,14 @@ The API for all soft delete operations remains the same.
 
 If you are directly referencing the `Illuminate\View\Environment` class or `Illuminate\Pagination\Environment` class, update your code to reference `Illuminate\View\Factory` and `Illuminate\Pagination\Factory` instead. These two classes have been renamed to better reflect their function.
 
+### Additional Parameter On Pagination Presenter
+
+On the `Illuminate\Pagination\Presenter` class, the abstract method `getPageLinkWrapper` signature has changed to add the `rel` argument:
+
+```
+abstract public function getPageLinkWrapper($url, $page, $rel = null);
+```
+
 <a name="upgrade-4.1.26"></a>
 ## Upgrading To 4.1.26 From <= 4.1.25
 
