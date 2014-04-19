@@ -34,7 +34,8 @@ The session configuration is stored in `app/config/session.php`. Be sure to revi
 
 	$value = Session::get('key', function() { return 'default'; });
 
-#### Retrieving An Item and Forgetting It
+#### Retrieving An Item And Forgetting It
+
 	$value = Session::pull('key', 'default');
 
 #### Retrieving All Data From The Session
