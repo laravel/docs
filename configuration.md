@@ -58,7 +58,7 @@ Next, we need to instruct the framework how to determine which environment it is
 
     ));
 
-In this example, 'local' is the name of the environment and 'your-machine-name' is the hostname of your server. On Linux and Mac, you may determine your hostname using the `hostname` terminal command.
+In this example, 'local' is the name of the environment and 'your-machine-name' is the hostname of your server. On Linux, Mac and Windows you may determine your hostname using the `hostname` terminal command.
 
 If you need more flexible environment detection, you may pass a `Closure` to the `detectEnvironment` method, allowing you to implement environment detection however you wish:
 
