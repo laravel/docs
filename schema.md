@@ -72,6 +72,7 @@ Command  | Description
 `$table->increments('id');`  |  Incrementing ID to the table (primary key).
 `$table->integer('votes');`  |  INTEGER equivalent to the table
 `$table->longText('description');`  |  LONGTEXT equivalent to the table
+`$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent to the table
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent to the table
 `$table->morphs('taggable');`  |  Adds INTEGER `taggable_id` and STRING `taggable_type`
 `$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
