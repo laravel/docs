@@ -197,6 +197,18 @@ By default, all resource controller actions have a route name; however, you can 
 	Route::resource('photo', 'PhotoController',
 					array('names' => array('create' => 'photo.build')));
 
+Sometimes, you may want to specify additional routes within the same URI path as a resource route. For example, you might want to create a route at `photo/{id}/comment` to display comments associated with a particular photo. Any such additional routes must be declared *before* the `Route::resource` call:
+
+	// This must come first:
+	Route::get('photo/{id}/comment', function($id)
+	{
+		//
+	});
+	
+	// This must come second:
+	Route::resource('photo', 'PhotoController');
+	
+
 <a name="handling-missing-methods"></a>
 ## Handling Missing Methods
 
