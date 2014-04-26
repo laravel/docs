@@ -9,6 +9,7 @@
 - [Adding Indexes](#adding-indexes)
 - [Foreign Keys](#foreign-keys)
 - [Dropping Indexes](#dropping-indexes)
+- [Dropping Timestamps & SoftDeletes](#dropping-timestamps)
 - [Storage Engines](#storage-engines)
 
 <a name="introduction"></a>
@@ -196,6 +197,16 @@ Command  | Description
 `$table->dropPrimary('users_id_primary');`  |  Dropping a primary key from the "users" table
 `$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
 `$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
+
+<a name="dropping-timestamps"></a>
+## Dropping Timestamps & SoftDeletes
+
+To drop the `timestamps`, `nullableTimestamps` or `SoftDeletes` column types you can use these  methods:
+
+Command  | Description
+------------- | -------------
+`$table->dropTimestamps();`  |  Dropping the **created\_at** and **updated\_at** columns from the table
+`$table->dropSoftDeletes();`  |  Dropping **deleted\_at** column form the table
 
 <a name="storage-engines"></a>
 ## Storage Engines
