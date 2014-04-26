@@ -75,6 +75,7 @@ Command  | Description
 `$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent to the table
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent to the table
 `$table->morphs('taggable');`  |  Adds INTEGER `taggable_id` and STRING `taggable_type`
+`$table->nullableTimestamps();`  |  Same as `timestamps()`, except it allows NULL values
 `$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
 `$table->tinyInteger('numbers');`  |  TINYINT equivalent to the table
 `$table->softDeletes();`  |  Adds **deleted\_at** column for soft deletes
