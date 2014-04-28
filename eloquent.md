@@ -939,6 +939,14 @@ To delete all records on the pivot table for a model, you may use the `detach` m
 
 Note that this operation does not delete records from the `roles` table, but only from the pivot table.
 
+#### Updating A Record On A Pivot Table
+
+Sometimes you want to update your pivot table, but you cannot detach it. If you wish to update your pivot table you may use `updateExistingPivot` method, like this:
+
+	User::find(1)->roles()->updateExistingPivot($roleId, mixed array, bool $touch);
+
+With `updateExistingPivot` you can select which pivot you want to update (in this case is the pivot with `$roleId` ID), passing all the inputs (with the mixed array), and you can also change the `update_at` field, if any, of your pivot table with `$touch`.
+
 #### Defining A Custom Pivot Model
 
 Laravel also allows you to define a custom Pivot model. To define a custom model, first create your own "Base" model class that extends `Eloquent`. In your other Eloquent models, extend this custom base model instead of the default `Eloquent` base. In your base model, add the following function that returns an instance of your custom Pivot model:
