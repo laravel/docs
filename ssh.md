@@ -110,7 +110,11 @@ Laravel Envoy provides a clean, minimal syntax for defining common tasks you run
 <a name="envoy-installation"></a>
 ### Installation
 
-First, download the Envoy [Phar archive](https://github.com/laravel/envoy/raw/master/envoy.phar) and place it in `/usr/local/bin` as `envoy` for easy access. Before running tasks, you may need to grant execute permissions to the `envoy` file.
+First, install Envoy using the Composer `global` command:
+
+	composer global require "laravel/envoy=~1.0"
+
+Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `envoy` executable is found when you run the `envoy` command in your terminal.
 
 Next, create an `Envoy.blade.php` file in the root of your project. Here's an example to get you started:
 
