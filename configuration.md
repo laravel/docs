@@ -115,7 +115,7 @@ All of the key-value pairs returned by this file will automatically be available
 
 Be sure to add the `.env.local.php` file to your `.gitignore` file. This will allow other developers on your team to create their own local environment configuration, as well as hide your sensitive configuration items from source control.
 
-Now, On your production server, create a `.env.php` file in your project root that contains the corresponding values for your production environment. Like the `.env.local.php` file, the production `.env.php` file should never be included in source control.
+Now, On your production server, create a `.env.php` file in your project root that contains the corresponding values for your production environment. Like the `.env.production.php` file, the production `.env.php` file should never be included in source control.
 
 > **Note:** You may create a file for each environment supported by your application. For example, the `development` environment will load the `.env.development.php` file if it exists.
 
