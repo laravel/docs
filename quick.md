@@ -157,7 +157,7 @@ Awesome. Now we're ready to display the users in our view!
 <a name="displaying-data"></a>
 ## Displaying Data
 
-Now that we have made the `users` available to our view. We can display them like so:
+Now that we have made the `users` available to our view, we can display them like so:
 
 	@extends('layout')
 
