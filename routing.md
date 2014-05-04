@@ -332,7 +332,7 @@ If you wish to specify your own "not found" behavior, you may pass a Closure as 
 
 	Route::model('user', 'User', function()
 	{
-		throw new NotFoundException;
+		throw new NotFoundHttpException;
 	});
 
 Sometimes you may wish to use your own resolver for route parameters. Simply use the `Route::bind` method:
