@@ -818,6 +818,15 @@ It is also possible to eagerly load related models directly from an already exis
 
 	$books->load('author', 'publisher');
 
+### Always Eager Load
+
+If you are always eager loading related models, you may add a `$with` variable to your model.
+
+        class Books extends Eloquent 
+        {
+        	protected $with = array('author', 'publisher');
+        }
+
 <a name="inserting-related-models"></a>
 ## Inserting Related Models
 
