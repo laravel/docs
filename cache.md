@@ -69,6 +69,10 @@ You may also combine the `remember` and `forever` methods:
 
 Note that all items stored in the cache are serialized, so you are free to store any type of data.
 
+#### Pulling An Item From The Cache
+
+	$value = Cache::pull('key');
+
 #### Removing An Item From The Cache
 
 	Cache::forget('key');
