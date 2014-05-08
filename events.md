@@ -168,3 +168,7 @@ Once the subscriber has been defined, it may be registered with the `Event` clas
 	$subscriber = new UserEventHandler;
 
 	Event::subscribe($subscriber);
+
+If you want to use dependency injection within your subscriber it will need to be resolved out of the [Laravel IoC container](/docs/ioc). To do this pass the class name as a string.
+
+	Event::subscribe('UserEventHandler');
