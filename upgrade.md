@@ -37,11 +37,9 @@ If you are directly referencing the `Illuminate\View\Environment` class or `Illu
 
 ### Additional Parameter On Pagination Presenter
 
-On the `Illuminate\Pagination\Presenter` class, the abstract method `getPageLinkWrapper` signature has changed to add the `rel` argument:
+If you are extending the `Illuminate\Pagination\Presenter` class, the abstract method `getPageLinkWrapper` signature has changed to add the `rel` argument:
 
-```
-abstract public function getPageLinkWrapper($url, $page, $rel = null);
-```
+	abstract public function getPageLinkWrapper($url, $page, $rel = null);
 
 <a name="upgrade-4.1.26"></a>
 ## Upgrading To 4.1.26 From <= 4.1.25
