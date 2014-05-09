@@ -117,15 +117,15 @@ You may also specify a default value to the `confirm` method, which should be `t
 <a name="registering-commands"></a>
 ## Registering Commands
 
-Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/start/artisan.php` file. Within this file, you may use the `Artisan::add` method to register the command:
-
 #### Registering An Artisan Command
+
+Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/start/artisan.php` file. Within this file, you may use the `Artisan::add` method to register the command:
 
 	Artisan::add(new CustomCommand);
 
-If your command is registered in the application [IoC container](/docs/ioc), you may use the `Artisan::resolve` method to make it available to Artisan:
-
 #### Registering A Command That Is In The IoC Container
+
+If your command is registered in the application [IoC container](/docs/ioc), you may use the `Artisan::resolve` method to make it available to Artisan:
 
 	Artisan::resolve('binding.name');
 
@@ -133,7 +133,5 @@ If your command is registered in the application [IoC container](/docs/ioc), you
 ## Calling Other Commands
 
 Sometimes you may wish to call other commands from your command. You may do so using the `call` method:
-
-#### Calling Another Command
 
 	$this->call('command:name', array('argument' => 'foo', '--option' => 'bar'));

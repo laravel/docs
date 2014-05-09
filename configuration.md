@@ -21,9 +21,9 @@ You may also specify a default value to return if the configuration option does 
 
 	$timezone = Config::get('app.timezone', 'UTC');
 
-Notice that "dot" style syntax may be used to access values in the various files. You may also set configuration values at run-time:
-
 #### Setting A Configuration Value
+
+Notice that "dot" style syntax may be used to access values in the various files. You may also set configuration values at run-time:
 
 	Config::set('database.default', 'sqlite');
 
@@ -67,9 +67,9 @@ If you need more flexible environment detection, you may pass a `Closure` to the
 		return $_SERVER['MY_LARAVEL_ENV'];
 	});
 
-You may access the current application environment via the `environment` method:
-
 #### Accessing The Current Application Environment
+
+You may access the current application environment via the `environment` method:
 
 	$environment = App::environment();
 

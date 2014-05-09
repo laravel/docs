@@ -87,9 +87,9 @@ Command  | Description
 `->default($value)`  |  Declare a default value for a column
 `->unsigned()`  |  Set INTEGER to UNSIGNED
 
-If you are using the MySQL database, you may use the `after` method to specify the order of columns:
-
 #### Using After On MySQL
+
+If you are using the MySQL database, you may use the `after` method to specify the order of columns:
 
 	$table->string('name')->after('email');
 
@@ -97,8 +97,6 @@ If you are using the MySQL database, you may use the `after` method to specify t
 ## Renaming Columns
 
 To rename a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
-
-#### Renaming A Column
 
 	Schema::table('users', function($table)
 	{
@@ -127,9 +125,9 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
 <a name="checking-existence"></a>
 ## Checking Existence
 
-You may easily check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
-
 #### Checking For Existence Of Table
+
+You may easily check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
 
 	if (Schema::hasTable('users'))
 	{
@@ -148,8 +146,6 @@ You may easily check for the existence of a table or column using the `hasTable`
 
 The schema builder supports several types of indexes. There are two ways to add them. First, you may fluently define them on a column definition, or you may add them separately:
 
-#### Fluently Creating A Column And Index
-
 	$table->string('email')->unique();
 
 Or, you may choose to add the indexes on separate lines. Below is a list of all available index types:
@@ -165,8 +161,6 @@ Command  | Description
 ## Foreign Keys
 
 Laravel also provides support for adding foreign key constraints to your tables:
-
-#### Adding A Foreign Key To A Table
 
 	$table->foreign('user_id')->references('id')->on('users');
 

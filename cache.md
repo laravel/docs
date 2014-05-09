@@ -95,17 +95,17 @@ All drivers except `file` and `database` support the `increment` and `decrement`
 
 > **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
 
-Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method:
-
 #### Accessing A Tagged Cache
 
-You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names.
+Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method.
+
+You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names:
 
 	Cache::tags('people', 'authors')->put('John', $john, $minutes);
 
 	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
 
-You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`:
+You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`.
 
 #### Accessing Items In A Tagged Cache
 

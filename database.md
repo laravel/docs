@@ -68,9 +68,9 @@ The `select` method will always return an `array` of results.
 
 	DB::statement('drop table users');
 
-You may listen for query events using the `DB::listen` method:
-
 #### Listening For Query Events
+
+You may listen for query events using the `DB::listen` method:
 
 	DB::listen(function($sql, $bindings, $time)
 	{

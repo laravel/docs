@@ -154,21 +154,21 @@ In prior versions of Laravel, a `handles` clause was used to specify which URIs 
 <a name="package-configuration"></a>
 ## Package Configuration
 
-Some packages may require configuration files. These files should be defined in the same way as typical application configuration files. And, when using the default `$this->package` method of registering resources in your service provider, may be accessed using the usual "double-colon" syntax:
-
 #### Accessing Package Configuration Files
+
+Some packages may require configuration files. These files should be defined in the same way as typical application configuration files. And, when using the default `$this->package` method of registering resources in your service provider, may be accessed using the usual "double-colon" syntax:
 
 	Config::get('package::file.option');
 
-However, if your package contains a single configuration file, you may simply name the file `config.php`. When this is done, you may access the options directly, without specifying the file name:
-
 #### Accessing Single File Package Configuration
+
+However, if your package contains a single configuration file, you may simply name the file `config.php`. When this is done, you may access the options directly, without specifying the file name:
 
 	Config::get('package::option');
 
-Sometimes, you may wish to register package resources such as views outside of the typical `$this->package` method. Typically, this would only be done if the resources were not in a conventional location. To register the resources manually, you may use the `addNamespace` method of the `View`, `Lang`, and `Config` classes:
-
 #### Registering A Resource Namespace Manually
+
+Sometimes, you may wish to register package resources such as views outside of the typical `$this->package` method. Typically, this would only be done if the resources were not in a conventional location. To register the resources manually, you may use the `addNamespace` method of the `View`, `Lang`, and `Config` classes:
 
 	View::addNamespace('package', __DIR__.'/path/to/views');
 
@@ -181,8 +181,6 @@ The method signature for `addNamespace` is identical on the `View`, `Lang`, and 
 ### Cascading Configuration Files
 
 When other developers install your package, they may wish to override some of the configuration options. However, if they change the values in your package source code, they will be overwritten the next time Composer updates the package. Instead, the `config:publish` artisan command should be used:
-
-#### Executing The Config Publish Command
 
 	php artisan config:publish vendor/package
 
@@ -202,9 +200,9 @@ This command will move the package's views into the `app/views/packages` directo
 <a name="package-migrations"></a>
 ## Package Migrations
 
-You may easily create and run migrations for any of your packages. To create a migration for a package in the workbench, use the `--bench` option:
-
 #### Creating Migrations For Workbench Packages
+
+You may easily create and run migrations for any of your packages. To create a migration for a package in the workbench, use the `--bench` option:
 
 	php artisan migrate:make create_users_table --bench="vendor/package"
 
@@ -212,18 +210,18 @@ You may easily create and run migrations for any of your packages. To create a m
 
 	php artisan migrate --bench="vendor/package"
 
-To run migrations for a finished package that was installed via Composer into the `vendor` directory, you may use the `--package` directive:
-
 #### Running Migrations For An Installed Package
+
+To run migrations for a finished package that was installed via Composer into the `vendor` directory, you may use the `--package` directive:
 
 	php artisan migrate --package="vendor/package"
 
 <a name="package-assets"></a>
 ## Package Assets
 
-Some packages may have assets such as JavaScript, CSS, and images. However, we are unable to link to assets in the `vendor` or `workbench` directories, so we need a way to move these assets into the `public` directory of our application. The `asset:publish` command will take care of this for you:
-
 #### Moving Package Assets To Public
+
+Some packages may have assets such as JavaScript, CSS, and images. However, we are unable to link to assets in the `vendor` or `workbench` directories, so we need a way to move these assets into the `public` directory of our application. The `asset:publish` command will take care of this for you:
 
 	php artisan asset:publish
 

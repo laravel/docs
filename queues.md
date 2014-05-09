@@ -23,15 +23,15 @@ The following dependencies are needed for the listed queue drivers:
 <a name="basic-usage"></a>
 ## Basic Usage
 
-To push a new job onto the queue, use the `Queue::push` method:
-
 #### Pushing A Job Onto The Queue
+
+To push a new job onto the queue, use the `Queue::push` method:
 
 	Queue::push('SendEmail', array('message' => $message));
 
-The first argument given to the `push` method is the name of the class that should be used to process the job. The second argument is an array of data that should be passed to the handler. A job handler should be defined like so:
-
 #### Defining A Job Handler
+
+The first argument given to the `push` method is the name of the class that should be used to process the job. The second argument is an array of data that should be passed to the handler. A job handler should be defined like so:
 
 	class SendEmail {
 
@@ -44,9 +44,9 @@ The first argument given to the `push` method is the name of the class that shou
 
 Notice the only method that is required is `fire`, which receives a `Job` instance as well as the array of `data` that was pushed onto the queue.
 
-If you want the job to use a method other than `fire`, you may specify the method when you push the job:
-
 #### Specifying A Custom Handler Method
+
+If you want the job to use a method other than `fire`, you may specify the method when you push the job:
 
 	Queue::push('SendEmail@send', array('message' => $message));
 
@@ -62,9 +62,9 @@ If you need to pass the same data to several queue jobs, you may use the `Queue:
 
 	Queue::bulk(array('SendEmail', 'NotifyUser'), $payload);
 
-Sometimes you may wish to delay the execute of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
-
 #### Delaying The Execution Of A Job
+
+Sometimes you may wish to delay the execute of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
 
 	$date = Carbon::now()->addMinutes(15);
 
@@ -72,9 +72,9 @@ Sometimes you may wish to delay the execute of a queued job. For instance, you m
 
 In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
 
-Once you have processed a job, it must be deleted from the queue, which can be done via the `delete` method on the `Job` instance:
-
 #### Deleting A Processed Job
+
+Once you have processed a job, it must be deleted from the queue, which can be done via the `delete` method on the `Job` instance:
 
 	public function fire($job, $data)
 	{
@@ -83,9 +83,9 @@ Once you have processed a job, it must be deleted from the queue, which can be d
 		$job->delete();
 	}
 
-If you wish to release a job back onto the queue, you may do so via the `release` method:
-
 #### Releasing A Job Back Onto The Queue
+
+If you wish to release a job back onto the queue, you may do so via the `release` method:
 
 	public function fire($job, $data)
 	{
@@ -98,18 +98,18 @@ You may also specify the number of seconds to wait before the job is released:
 
 	$job->release(5);
 
-If an exception occurs while the job is being processed, it will automatically be released back onto the queue. You may check the number of attempts that have been made to run the job using the `attempts` method:
-
 #### Checking The Number Of Run Attempts
+
+If an exception occurs while the job is being processed, it will automatically be released back onto the queue. You may check the number of attempts that have been made to run the job using the `attempts` method:
 
 	if ($job->attempts() > 3)
 	{
 		//
 	}
 
-You may also access the job identifier:
-
 #### Accessing The Job ID
+
+You may also access the job identifier:
 
 	$job->getJobId();
 
@@ -175,9 +175,9 @@ To process only the first job on the queue, you may use the `queue:work` command
 
 Push queues allow you to utilize the powerful Laravel 4 queue facilities without running any daemons or background listeners. Currently, push queues are only supported by the [Iron.io](http://iron.io) driver. Before getting started, create an Iron.io account, and add your Iron credentials to the `app/config/queue.php` configuration file.
 
-Next, you may use the `queue:subscribe` Artisan command to register a URL end-point that will receive newly pushed queue jobs:
-
 #### Registering A Push Queue Subscriber
+
+Next, you may use the `queue:subscribe` Artisan command to register a URL end-point that will receive newly pushed queue jobs:
 
 	php artisan queue:subscribe queue_name http://foo.com/queue/receive
 

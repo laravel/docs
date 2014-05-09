@@ -24,9 +24,9 @@ Language strings are stored in files within the `app/lang` directory. Within thi
 			/es
 				messages.php
 
-Language files simply return an array of keyed strings. For example:
-
 #### Example Language File
+
+Language files simply return an array of keyed strings. For example:
 
 	<?php
 
@@ -34,9 +34,9 @@ Language files simply return an array of keyed strings. For example:
 		'welcome' => 'Welcome to our application'
 	);
 
-The default language for your application is stored in the `app/config/app.php` configuration file. You may change the active language at any time using the `App::setLocale` method:
-
 #### Changing The Default Language At Runtime
+
+The default language for your application is stored in the `app/config/app.php` configuration file. You may change the active language at any time using the `App::setLocale` method:
 
 	App::setLocale('es');
 

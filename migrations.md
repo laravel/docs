@@ -16,8 +16,6 @@ Migrations are a type of version control for your database. They allow a team to
 
 To create a migration, you may use the `migrate:make` command on the Artisan CLI:
 
-#### Creating A Migration
-
 	php artisan migrate:make create_users_table
 
 The migration will be placed in your `app/database/migrations` folder, and will contain a timestamp which allows the framework to determine the order of the migrations.

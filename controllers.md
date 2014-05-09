@@ -125,8 +125,6 @@ If you would like to use another method on the controller as a filter, you may u
 
 Laravel allows you to easily define a single route to handle every action in a controller using simple, REST naming conventions. First, define the route using the `Route::controller` method:
 
-#### Defining A RESTful Controller
-
 	Route::controller('users', 'UserController');
 
 The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller. Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
