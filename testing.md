@@ -44,9 +44,9 @@ When running unit tests, Laravel will automatically set the configuration enviro
 <a name="calling-routes-from-tests"></a>
 ## Calling Routes From Tests
 
-You may easily call one of your routes for a test using the `call` method:
-
 #### Calling A Route From A Test
+
+You may easily call one of your routes for a test using the `call` method:
 
 	$response = $this->call('GET', 'user/profile');
 
@@ -56,9 +56,9 @@ You may then inspect the `Illuminate\Http\Response` object:
 
 	$this->assertEquals('Hello World', $response->getContent());
 
-You may also call a controller from a test:
-
 #### Calling A Controller From A Test
+
+You may also call a controller from a test:
 
 	$response = $this->action('GET', 'HomeController@index');
 

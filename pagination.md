@@ -22,9 +22,9 @@ There are several ways to paginate items. The simplest is by using the `paginate
 
 	$users = DB::table('users')->paginate(15);
 
-You may also paginate [Eloquent](/docs/eloquent) models:
-
 #### Paginating An Eloquent Model
+
+You may also paginate [Eloquent](/docs/eloquent) models:
 
 	$allUsers = User::paginate(15);
 
@@ -56,9 +56,9 @@ You may also access additional pagination information via the following methods:
 - `getTo`
 - `count`
 
-Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
-
 #### Creating A Paginator Manually
+
+Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);
 

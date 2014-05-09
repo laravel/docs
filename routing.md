@@ -296,8 +296,6 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 
 A group of routes may be prefixed by using the `prefix` option in the attributes array of a group:
 
-#### Prefixing Grouped Routes
-
 	Route::group(array('prefix' => 'admin'), function()
 	{
 

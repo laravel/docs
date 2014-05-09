@@ -22,9 +22,9 @@ Laravel ships with a simple, convenient facility for validating data and retriev
 
 The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
 
-Multiple rules may be delimited using either a "pipe" character, or as separate elements of an array.
-
 #### Using Arrays To Specify Rules
+
+Multiple rules may be delimited using either a "pipe" character, or as separate elements of an array.
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
@@ -459,7 +459,7 @@ If needed, you may use custom error messages for validation instead of the defau
 
 	$validator = Validator::make($input, $rules, $messages);
 
-*Note:* The `:attribute` place-holder will be replaced by the actual name of the field under validation. You may also utilize other place-holders in validation messages.
+> *Note:* The `:attribute` place-holder will be replaced by the actual name of the field under validation. You may also utilize other place-holders in validation messages.
 
 #### Other Validation Place-Holders
 
@@ -470,18 +470,18 @@ If needed, you may use custom error messages for validation instead of the defau
 		'in'      => 'The :attribute must be one of the following types: :values',
 	);
 
-Sometimes you may wish to specify a custom error messages only for a specific field:
-
 #### Specifying A Custom Message For A Given Attribute
+
+Sometimes you may wish to specify a custom error messages only for a specific field:
 
 	$messages = array(
 		'email.required' => 'We need to know your e-mail address!',
 	);
 
-In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
-
 <a name="localization"></a>
 #### Specifying Custom Messages In Language Files
+
+In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
 
 	'custom' => array(
 		'email' => array(
@@ -492,9 +492,9 @@ In some cases, you may wish to specify your custom messages in a language file i
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
 
-Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
-
 #### Registering A Custom Validation Rule
+
+Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
 
 	Validator::extend('foo', function($attribute, $value, $parameters)
 	{
@@ -509,9 +509,9 @@ You may also pass a class and method to the `extend` method instead of a Closure
 
 Note that you will also need to define an error message for your custom rules. You can do so either using an inline custom message array or by adding an entry in the validation language file.
 
-Instead of using Closure callbacks to extend the Validator, you may also extend the Validator class itself. To do so, write a Validator class that extends `Illuminate\Validation\Validator`. You may add validation methods to the class by prefixing them with `validate`:
-
 #### Extending The Validator Class
+
+Instead of using Closure callbacks to extend the Validator, you may also extend the Validator class itself. To do so, write a Validator class that extends `Illuminate\Validation\Validator`. You may add validation methods to the class by prefixing them with `validate`:
 
 	<?php
 
@@ -524,9 +524,9 @@ Instead of using Closure callbacks to extend the Validator, you may also extend 
 
 	}
 
-Next, you need to register your custom Validator extension:
-
 #### Registering A Custom Validator Resolver
+
+Next, you need to register your custom Validator extension:
 
 	Validator::resolver(function($translator, $data, $rules, $messages)
 	{

@@ -58,9 +58,9 @@ Take note that `email` is not a required option, it is merely used for example. 
 
 When the `attempt` method is called, the `auth.attempt` [event](/docs/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
 
-To determine if the user is already logged into your application, you may use the `check` method:
-
 #### Determining If A User Is Authenticated
+
+To determine if the user is already logged into your application, you may use the `check` method:
 
 	if (Auth::check())
 	{
@@ -86,9 +86,9 @@ If you are "remembering" user logins, you may use the `viaRemember` method to de
 		//
 	}
 
-You also may add extra conditions to the authenticating query:
-
 #### Authenticating A User With Conditions
+
+You also may add extra conditions to the authenticating query:
 
     if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1)))
     {
@@ -97,9 +97,9 @@ You also may add extra conditions to the authenticating query:
 
 > **Note:** For added protection against session fixation, the user's session ID will automatically be regenerated after authenticating.
 
-Once a user is authenticated, you may access the User model / record:
-
 #### Accessing The Logged In User
+
+Once a user is authenticated, you may access the User model / record:
 
 	$email = Auth::user()->email;
 
@@ -107,18 +107,18 @@ To simply log a user into the application by their ID, use the `loginUsingId` me
 
 	Auth::loginUsingId(1);
 
-The `validate` method allows you to validate a user's credentials without actually logging them into the application:
-
 #### Validating User Credentials Without Login
+
+The `validate` method allows you to validate a user's credentials without actually logging them into the application:
 
 	if (Auth::validate($credentials))
 	{
 		//
 	}
 
-You may also use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized.
-
 #### Logging A User In For A Single Request
+
+You may also use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized.
 
 	if (Auth::once($credentials))
 	{
@@ -186,9 +186,9 @@ By default, the `basic` filter will use the `email` column on the user record wh
 		return Auth::basic('username');
 	});
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, define a filter that returns the `onceBasic` method:
-
 #### Setting Up A Stateless HTTP Basic Filter
+
+You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, define a filter that returns the `onceBasic` method:
 
 	Route::filter('basic.once', function()
 	{
@@ -218,9 +218,9 @@ Most web applications provide a way for users to reset their forgotten passwords
 
 	}
 
-Next, a table must be created to store the password reset tokens. To generate a migration for this table, simply execute the `auth:reminders-table` Artisan command:
-
 #### Generating The Reminder Table Migration
+
+Next, a table must be created to store the password reset tokens. To generate a migration for this table, simply execute the `auth:reminders-table` Artisan command:
 
 	php artisan auth:reminders-table
 
@@ -292,9 +292,9 @@ Laravel provides facilities for strong AES encryption via the mcrypt PHP extensi
 
 	$decrypted = Crypt::decrypt($encryptedValue);
 
-You may also set the cipher and mode used by the encrypter:
-
 #### Setting The Cipher & Mode
+
+You may also set the cipher and mode used by the encrypter:
 
 	Crypt::setMode('ctr');
 

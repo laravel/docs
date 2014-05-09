@@ -46,9 +46,9 @@ If your form is going to accept file uploads, add a `files` option to your array
 <a name="csrf-protection"></a>
 ## CSRF Protection
 
-Laravel provides an easy method of protecting your application from cross-site request forgeries. First, a random token is placed in your user's session. Don't sweat it, this is done automatically. The CSRF token will be added to your forms as a hidden field automatically. However, if you wish to generate the HTML for the hidden field, you may use the `token` method:
-
 #### Adding The CSRF Token To A Form
+
+Laravel provides an easy method of protecting your application from cross-site request forgeries. First, a random token is placed in your user's session. Don't sweat it, this is done automatically. The CSRF token will be added to your forms as a hidden field automatically. However, if you wish to generate the HTML for the hidden field, you may use the `token` method:
 
 	echo Form::token();
 
@@ -62,9 +62,9 @@ Laravel provides an easy method of protecting your application from cross-site r
 <a name="form-model-binding"></a>
 ## Form Model Binding
 
-Often, you will want to populate a form based on the contents of a model. To do so, use the `Form::model` method:
-
 #### Opening A Model Form
+
+Often, you will want to populate a form based on the contents of a model. To do so, use the `Form::model` method:
 
 	echo Form::model($user, array('route' => array('user.update', $user->id)))
 
@@ -175,9 +175,9 @@ This allows you to quickly build forms that not only bind to model values, but e
 <a name="custom-macros"></a>
 ## Custom Macros
 
-It's easy to define your own custom Form class helpers called "macros". Here's how it works. First, simply register the macro with a given name and a Closure:
-
 #### Registering A Form Macro
+
+It's easy to define your own custom Form class helpers called "macros". Here's how it works. First, simply register the macro with a given name and a Closure:
 
 	Form::macro('myField', function()
 	{
