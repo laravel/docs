@@ -64,7 +64,7 @@ If you need to pass the same data to several queue jobs, you may use the `Queue:
 
 #### Delaying The Execution Of A Job
 
-Sometimes you may wish to delay the execute of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
+Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
 
 	$date = Carbon::now()->addMinutes(15);
 
