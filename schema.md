@@ -64,6 +64,7 @@ Command  | Description
 `$table->bigInteger('votes');`  |  BIGINT equivalent to the table
 `$table->binary('data');`  |  BLOB equivalent to the table
 `$table->boolean('confirmed');`  |  BOOLEAN equivalent to the table
+`$table->char('name', 4);`  |  CHAR equivalent with a length
 `$table->date('created_at');`  |  DATE equivalent to the table
 `$table->dateTime('created_at');`  |  DATETIME equivalent to the table
 `$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
