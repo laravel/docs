@@ -110,6 +110,13 @@ Since you often will want to flash input in association with a redirect to the p
 
 The object returned by the `file` method is an instance of the `Symfony\Component\HttpFoundation\File\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file.
 
+#### Determining If An Uploaded File Is Valid
+
+	if (Input::file('photo')->isValid())
+	{
+		//
+	}
+
 #### Moving An Uploaded File
 
 	Input::file('photo')->move($destinationPath);
