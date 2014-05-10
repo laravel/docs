@@ -109,7 +109,7 @@ Extend the `Illuminate\Pagination\Presenter` class and implement its abstract me
 
         public function getActivePageWrapper($text)
         {
-            return '<li class="current">'.$text.'</li>';
+            return '<li class="current"><a href="">'.$text.'</a></li>';
         }
 
         public function getDisabledTextWrapper($text)
