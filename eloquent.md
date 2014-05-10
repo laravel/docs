@@ -941,11 +941,9 @@ Note that this operation does not delete records from the `roles` table, but onl
 
 #### Updating A Record On A Pivot Table
 
-Sometimes you want to update your pivot table, but you cannot detach it. If you wish to update your pivot table you may use `updateExistingPivot` method, like this:
+Sometimes you may need to update your pivot table, but not detach it. If you wish to update your pivot table in place you may use `updateExistingPivot` method like so:
 
-	User::find(1)->roles()->updateExistingPivot($roleId, mixed array, bool $touch);
-
-With `updateExistingPivot` you can select which pivot you want to update (in this case is the pivot with `$roleId` ID), passing all the inputs (with the mixed array), and you can also change the `update_at` field, if any, of your pivot table with `$touch`.
+	User::find(1)->roles()->updateExistingPivot($roleId, $attributes);
 
 #### Defining A Custom Pivot Model
 
