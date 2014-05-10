@@ -19,7 +19,7 @@ By default, Laravel includes a `User` model in your `app/models` directory which
 
 If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
-> **Note:** Before getting started, make sure that your `users` (or equivalent) table contains a string `remember_token` column. This column will be used to store a token for "remember me" sessions being maintained by your application.
+> **Note:** Before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application.
 
 <a name="storing-passwords"></a>
 ## Storing Passwords
