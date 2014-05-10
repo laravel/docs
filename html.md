@@ -148,6 +148,10 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S');
 
+#### Generating A Drop-Down List With Extra Attributes
+
+	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S', array('class' => 'required'));
+
 #### Generating A Grouped List
 
 	echo Form::select('animal', array(
