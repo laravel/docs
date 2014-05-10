@@ -9,7 +9,7 @@
 - [Adding Indexes](#adding-indexes)
 - [Foreign Keys](#foreign-keys)
 - [Dropping Indexes](#dropping-indexes)
-- [Dropping Timestamps & SoftDeletes](#dropping-timestamps)
+- [Dropping Timestamps & Soft Deletes](#dropping-timestamps)
 - [Storage Engines](#storage-engines)
 
 <a name="introduction"></a>
@@ -76,7 +76,7 @@ Command  | Description
 `$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent to the table
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent to the table
 `$table->morphs('taggable');`  |  Adds INTEGER `taggable_id` and STRING `taggable_type`
-`$table->nullableTimestamps();`  |  Same as `timestamps()`, except it allows NULL values
+`$table->nullableTimestamps();`  |  Same as `timestamps()`, except allows NULLs
 `$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
 `$table->tinyInteger('numbers');`  |  TINYINT equivalent to the table
 `$table->softDeletes();`  |  Adds **deleted\_at** column for soft deletes
@@ -195,12 +195,12 @@ Command  | Description
 <a name="dropping-timestamps"></a>
 ## Dropping Timestamps & SoftDeletes
 
-To drop the `timestamps`, `nullableTimestamps` or `SoftDeletes` column types you can use these  methods:
+To drop the `timestamps`, `nullableTimestamps` or `softDeletes` column types, you may use the following methods:
 
 Command  | Description
 ------------- | -------------
 `$table->dropTimestamps();`  |  Dropping the **created\_at** and **updated\_at** columns from the table
-`$table->dropSoftDeletes();`  |  Dropping **deleted\_at** column form the table
+`$table->dropSoftDeletes();`  |  Dropping **deleted\_at** column from the table
 
 <a name="storage-engines"></a>
 ## Storage Engines
