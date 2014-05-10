@@ -68,6 +68,8 @@ Sometimes you may wish to store items in the session only for the next request. 
 
 	Session::flash('key', 'value');
 
+> **Note:** You must avoid to use `flash` as key name because is used internally
+
 #### Reflashing The Current Flash Data For Another Request
 
 	Session::reflash();
