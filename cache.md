@@ -71,6 +71,8 @@ Note that all items stored in the cache are serialized, so you are free to store
 
 #### Pulling An Item From The Cache
 
+If you need to retrieve an item from the cache and then delete it, you may use the `pull` method:
+
 	$value = Cache::pull('key');
 
 #### Removing An Item From The Cache
