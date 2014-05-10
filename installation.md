@@ -47,6 +47,8 @@ Laravel needs almost no configuration out of the box. You are free to get starte
 
 Once Laravel is installed, you should also [configure your local environment](/docs/configuration#environment-configuration). This will allow you to receive detailed error messages when developing on your local machine. By default, detailed error reporting is disabled in your production configuration file.
 
+> **Note:** You should never have `app.debug` set to `true` for a production application. Never, ever do it.
+
 <a name="permissions"></a>
 ### Permissions
 Laravel may require one set of permissions to be configured: folders within app/storage require write access by the web server.
