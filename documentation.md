@@ -6,6 +6,7 @@
 - Getting Started
     - [Installation](/docs/installation)
     - [Configuration](/docs/configuration)
+    - [Homestead](/docs/homestead)
     - [Request Lifecycle](/docs/lifecycle)
     - [Routing](/docs/routing)
     - [Requests & Input](/docs/requests)
@@ -14,6 +15,7 @@
     - [Errors & Logging](/docs/errors)
 - Learning More
     - [Authentication](/docs/security)
+    - [Billing](/docs/billing)
     - [Cache](/docs/cache)
     - [Core Extension](/docs/extending)
     - [Events](/docs/events)
