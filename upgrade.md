@@ -84,7 +84,7 @@ Update your `app/lang/en/reminders.php` language file to match [this updated fil
 
 ### Environment Detection Updates
 
-For security reasons, URL domains may no longer be used to detect your application environment. These values are easily spoofable and allow attackers to modify the environment for a request. You should convert your environment detection to use machine host names (`hostname` command on Mac, Linux and Windows).
+For security reasons, URL domains may no longer be used to detect your application environment. These values are easily spoofable and allow attackers to modify the environment for a request. You should convert your environment detection to use machine host names (`hostname` command on Mac, Linux, and Windows).
 
 ### Simpler Log Files
 
