@@ -117,6 +117,8 @@ Be sure to add the `.env.local.php` file to your `.gitignore` file. This will al
 
 Now, on your production server, create a `.env.php` file in your project root that contains the corresponding values for your production environment. Like the `.env.local.php` file, the production `.env.php` file should never be included in source control.
 
+> **Important:** When using these environment variables for sensitive information, it is very important to set the app.debug config to false for project online. If not the variables will be visible when an exception is thrown. 
+
 > **Note:** You may create a file for each environment supported by your application. For example, the `development` environment will load the `.env.development.php` file if it exists.
 
 <a name="maintenance-mode"></a>
