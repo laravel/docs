@@ -86,6 +86,8 @@ If you want even more convenience, it can be helpful to add the following alias 
 
 ### Connecting To Your Databases
 
+A `homestead` database is configured for both MySQL and Postgres out of the box. For even more convenience, Laravel's `local` database configuration is set to use this database by default.
+
 To connect to your MySQL or Postgres database from your main machine via Navicat or Sequel Pro, you should connect to `127.0.0.1` and port 33060 (MySQL) or 54320 (Postgres). The username and password for both databases is `vagrant` / `secret`.
 
 > **Note:** You should only use these non-standard ports when connecting to the databases from your main machine. You will use the default 3306 and 5432 ports in your Laravel database configuration file since Laravel is running _within_ the Virtual Machine.
@@ -99,6 +101,10 @@ Alternatively, you may use the `serve` script that is available on your Homestea
 	serve domain.app /home/vagrant/Code/path/to/public/directory
 
 > **Note:** After running the `serve` command, do not forget to add the new site to the `hosts` file on your main machine!
+
+### Bash Aliases
+
+To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the Homestead directory.
 
 <a name="ports"></a>
 ## Ports
