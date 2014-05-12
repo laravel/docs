@@ -49,7 +49,7 @@ Once the box has been added to your Vagrant installation, you should clone or do
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
-### Edit The Homestead.yaml File
+### Set Your SSH Key
 
 Next, you should edit the `Homestead.yaml` file included in the repository. In this file, you can configure the path to your public SSH key, as well as the folders you wish to be shared between your main machine and the Homestead virtual machine.
 
@@ -61,17 +61,29 @@ On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` sh
 
 Once you have created a SSH key, specify the key's path in the `authorize` property of your `Homestead.yaml` file.
 
+### Configure Your Shared Folders
+
+The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary!
+
+### Configure Your Nginx Sites
+
+Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environemnt as necessary.Homestead can serve as a convenient, virtualized environemnt for every Laravel project you are working on!
+
+### Bash Aliases
+
+To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the Homestead directory.
+
 ### Launch The Vagrant Box
 
 Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from the Homestead directory in your terminal. Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically!
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
-	127.0.0.1  domain.app
+	127.0.0.1  homestead.app
 
 Once you have added the domain to your `hosts` file, you can access the site via your web browser on port 8000!
 
-	http://domain.app:8000
+	http://homestead.app:8000
 
 To learn how to connect to your databases, read on!
 
@@ -103,10 +115,6 @@ Alternatively, you may use the `serve` script that is available on your Homestea
 	serve domain.app /home/vagrant/Code/path/to/public/directory
 
 > **Note:** After running the `serve` command, do not forget to add the new site to the `hosts` file on your main machine!
-
-### Bash Aliases
-
-To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the Homestead directory.
 
 <a name="ports"></a>
 ## Ports
