@@ -59,6 +59,8 @@ Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pai
 
 On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` shell included with Git to issue the command above. Alternatively, you may use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
 
+Once you have created a SSH key, specify the key's path in the `authorize` property of your `Homestead.yaml` file.
+
 ### Launch The Vagrant Box
 
 Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from the Homestead directory in your terminal. Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically!
