@@ -103,6 +103,10 @@ Once a user is authenticated, you may access the User model / record:
 
 	$email = Auth::user()->email;
 
+To retrieve the authenticated user's ID, you may use the `id` method:
+
+	$id = Auth::id();
+
 To simply log a user into the application by their ID, use the `loginUsingId` method:
 
 	Auth::loginUsingId(1);
@@ -205,16 +209,16 @@ If you are using PHP FastCGI, HTTP Basic authentication will not work correctly 
 
 ### Model & Table
 
-Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets. To get started, verify that your `User` model implements the `Illuminate\Auth\Reminders\RemindableInterface` contract. Of course, the `User` model included with the framework already implements this interface.
+Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets. To get started, verify that your `User` model implements the `Illuminate\Auth\Reminders\RemindableInterface` contract. Of course, the `User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Reminders\RemindableTrait` to include the methods needed to implement the interface.
 
 #### Implementing The RemindableInterface
 
+	use Illuminate\Auth\Reminders\RemindableTrait;
+	use Illuminate\Auth\Reminders\RemindableInterface;
+
 	class User extends Eloquent implements RemindableInterface {
 
-		public function getReminderEmail()
-		{
-			return $this->email;
-		}
+		use RemindableTrait;
 
 	}
 

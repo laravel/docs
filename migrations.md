@@ -47,6 +47,12 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
 > **Note:** If you receive a "class not found" error when running migrations, try running the `composer dump-autoload` command.
 
+### Forcing Migrations In Production
+
+Some migration operations are destructive, meaning they may cause you to lose data. In order to protect you from running these commands against your production database, you will prompted for confirmation before these commands are executed. To force thse commands to run without a prompt, use the `--force` flag:
+
+	php artisan migrate --force
+
 <a name="rolling-back-migrations"></a>
 ## Rolling Back Migrations
 

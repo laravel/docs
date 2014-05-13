@@ -34,6 +34,24 @@ The official documentation has also been updated to include [Homestead documenta
 
 Laravel Cashier is a simple, expressive library for managing subscription billing with Stripe. With the introduction of Laravel 4.2, we are including Cashier documentation along with the main Laravel documentation, though installation of the component itself is still optional. This release of Cashier brings numerous bug fixes, multi-currency support, and compatibility with the latest Stripe API.
 
+### Daemon Queue Workers
+
+The Artisan `queue:work` command now supports a `--daemon` option to start a worker in "deamon mode", meaning the worker will continue to process jobs without ever re-booting the framework. This results in a significant reduction in CPU usage at the cost of a slightly more complex application deployment process.
+
+More information about daemon queue workers can be found in the [queue documentation](/docs/queue#daemon-queue-workers).
+
+### Convenient Auth & Remindable Traits
+
+The default Laravel 4.2 installation now uses simple traits for including the needed properties for the authentication and password reminder user interfaces. This provides a much cleaner default `User` model file out of the box.
+
+### "Simple Paginate"
+
+A new `simplePaginate` method was added to the query and Eloquent builder which allows for more efficient queries when using simple "Next" and "Previous" links in your pagination view.
+
+### Migration Confirmation
+
+In production, destructive migration operations will now ask for confirmation. Commands may be forced to run without any prompts using the `--force` command.
+
 <a name="laravel-4.1"></a>
 ## Laravel 4.1
 
