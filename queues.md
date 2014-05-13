@@ -4,6 +4,7 @@
 - [Basic Usage](#basic-usage)
 - [Queueing Closures](#queueing-closures)
 - [Running The Queue Listener](#running-the-queue-listener)
+- [Daemon Queue Worker](#daemon-queue-worker)
 - [Push Queues](#push-queues)
 - [Failed Jobs](#failed-jobs)
 
@@ -169,6 +170,33 @@ Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are 
 To process only the first job on the queue, you may use the `queue:work` command:
 
 	php artisan queue:work
+
+<a name="daemon-queue-workers"></a>
+## Daemon Queue Workers
+
+The `queue:work` also includes a `--daemon` option for forcing the queue worker to continue processing jobs without ever re-booting the framework. This results in a significant reduction of CPU usage when compared to the `queue:listen` command, but at the added complexity of needing to drain the queues of currently executing jobs during your deployments.
+
+To start a queue worker in daemon mode, use the `--daemon` flag:
+
+	php artisan queue:work connection --daemon
+
+	php artisan queue:work connection --daemon --sleep=3
+
+	php artisan queue:work connection --daemon --sleep=3 --tries=3
+
+As you can see, the `queue:work` command supports most of the same options available to `queue:listen`. You may use the `php artisan help queue:work` command to view all of the available options.
+
+### Deploying With Daemon Queue Workers
+
+The simplest way to deploy an application using daemon queue workers is to put the application in maintenance mode at the beginning of your deploymnet. This can be done using the `php artisan down` command. Once the application is in maintenance mode, Laravel will now accept any new jobs off of the queue, but will continue to process existing jobs. Once enough time has passed for all of your existing jobs to execute (usually no longer than 30-60 seconds), you may stop the worker and continue your deployment process.
+
+If you are using Supervisor or Laravel Forge, which utilizes Supervisor, you may typically stop a worker with a command like the following:
+
+	supervisorctl stop worker-1
+
+Once the queues have been drained and your fresh code has been deployed to your server, you should restart the daemon queue work. If you are using Supervisor, this can typically be done with a command like this:
+
+	supervisorctl start worker-1
 
 <a name="push-queues"></a>
 ## Push Queues

@@ -11,6 +11,33 @@
 
 Laravel provides a clean, simple API over the popular [SwiftMailer](http://swiftmailer.org) library. The mail configuration file is `app/config/mail.php`, and contains options allowing you to change your SMTP host, port, and credentials, as well as set a global `from` address for all messages delivered by the library. You may use any SMTP server you wish. If you wish to use the PHP `mail` function to send mail, you may change the `driver` to `mail` in the configuration file. A `sendmail` driver is also available.
 
+### API Drivers
+
+Laravel also includes drivers for the Mailgun and Mandrill HTTP APIs. These APIs are often simpler and quicker than the SMTP servers. Both of these drivers require that the Guzzle 4 HTTP library be installed into your application. You can add Guzzle 4 to your project by adding the following line to your `composer.json` file:
+
+	"guzzlehttp/guzzle": "~4.0"
+
+#### Mailgun Driver
+
+To use the Mailgun driver, set the `driver` option to `mailgun` in your `app/config/mail.php` configuration file. Next, create an `app/config/services.php` configuration file if one does not already exist for your project. Verify that it contains the following options:
+
+	'mailgun' => array(
+		'domain' => 'your-mailgun-domain',
+		'secret' => 'your-mailgun-key',
+	),
+
+#### Mandrill Driver
+
+To use the Mailgun driver, set the `driver` option to `mandrill` in your `app/config/mail.php` configuration file. Next, create an `app/config/services.php` configuration file if one does not already exist for your project. Verify that it contains the following options:
+
+	'mandrill' => array(
+		'secret' => 'your-mandrill-key',
+	),
+
+### Log Driver
+
+If the `driver` option of your `app/config/mail.php` configuration file is set to `log`, all e-mails will be written to your log files, and will not actually be sent to any of the recipients. This is primarily useful for quick, local debugging and content verification.
+
 <a name="basic-usage"></a>
 ## Basic Usage
 
