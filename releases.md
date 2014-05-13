@@ -40,6 +40,16 @@ The Artisan `queue:work` command now supports a `--daemon` option to start a wor
 
 More information about daemon queue workers can be found in the [queue documentation](/docs/queue#daemon-queue-workers).
 
+### Mail API Drivers
+
+Laravel 4.2 introduces new Mailgun and Mandrill API drivers for the `Mail` functions. For many applications, this provides a faster and more reliable method of sending e-mails than the SMTP options. The new drivers utilize the Guzzle 4 HTTP library.
+
+### Soft Deleting Traits
+
+A much cleaner architecture for "soft deletes" and other "global scopes" has been introduced via PHP 5.4 traits. This new architecture allows for the easier construction of similar global traits, and a cleaner separation of concerns within the framework itself.
+
+More information on the new `SoftDeletingTrait` may be found in the [Eloquent documentation](/docs/eloquent#soft-deleting).
+
 ### Convenient Auth & Remindable Traits
 
 The default Laravel 4.2 installation now uses simple traits for including the needed properties for the authentication and password reminder user interfaces. This provides a much cleaner default `User` model file out of the box.
