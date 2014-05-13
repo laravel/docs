@@ -138,6 +138,16 @@ So, after redirection, you may utilize the automatically bound `$errors` variabl
 
 	<?php echo $errors->first('email'); ?>
 
+### Named Error Bags
+
+If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors. This will allow you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
+
+	return Redirect::to('register')->withErrors($validator, 'login');
+
+You may then access the named `MessageBag` instance from the `$errors` variable:
+
+	<?php echo $errors->login->first('email'); ?>
+
 <a name="available-validation-rules"></a>
 ## Available Validation Rules
 
