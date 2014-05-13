@@ -56,6 +56,13 @@ You may also access additional pagination information via the following methods:
 - `getTo`
 - `count`
 
+
+#### "Simple Pagination"
+
+If you are only showing "Next" and "Previous" links in your pagination view, you have the option of using the `simplePaginate` method to perform a more efficient query. This is useful for larger datasets when you do not require the display of exact page numbers on your view:
+
+	$someUsers = User::where('votes', '>', 100)->simplePaginate(15);
+
 #### Creating A Paginator Manually
 
 Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
