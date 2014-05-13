@@ -1,7 +1,45 @@
 # Upgrade Guide
 
+- [Upgrading To 4.2 From 4.1](#upgrade-4.2)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-4.2"></a>
+## Upgrading To 4.2 From 4.1
+
+### PHP 5.4+
+
+Laravel 4.2 requires PHP 5.4.0 or greater.
+
+### Soft Deleting Models Now Use Traits
+
+If you are using soft deleting models, the `softDeletes` property has been removed. You should now use the `SoftDeletingTrait` like so:
+
+	use Illuminate\Database\Eloquent\SoftDeletingTrait;
+
+	class User extends Eloquent {
+		use SoftDeletingTrait;
+	}
+
+You should also manually add the `deleted_at` column to your `dates` property:
+
+	class User extends Eloquent {
+		use SoftDeletingTrait;
+
+		protected $dates = ['deleted_at'];
+	}
+
+The API for all soft delete operations remains the same.
+
+### View / Pagination Environment Renamed
+
+If you are directly referencing the `Illuminate\View\Environment` class or `Illuminate\Pagination\Environment` class, update your code to reference `Illuminate\View\Factory` and `Illuminate\Pagination\Factory` instead. These two classes have been renamed to better reflect their function.
+
+### Additional Parameter On Pagination Presenter
+
+If you are extending the `Illuminate\Pagination\Presenter` class, the abstract method `getPageLinkWrapper` signature has changed to add the `rel` argument:
+
+	abstract public function getPageLinkWrapper($url, $page, $rel = null);
 
 <a name="upgrade-4.1.26"></a>
 ## Upgrading To 4.1.26 From <= 4.1.25

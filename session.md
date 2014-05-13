@@ -38,6 +38,10 @@ The Laravel framework uses the `flash` session key internally, so you should not
 
 	$value = Session::get('key', function() { return 'default'; });
 
+#### Retrieving An Item And Forgetting It
+
+	$value = Session::pull('key', 'default');
+
 #### Retrieving All Data From The Session
 
 	$data = Session::all();

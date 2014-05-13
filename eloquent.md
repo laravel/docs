@@ -48,7 +48,7 @@ Note that we did not tell Eloquent which table to use for our `User` model. The 
 
 Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
 
-#### Retrieving All Models
+#### Retrieving All records
 
 	$users = User::all();
 
@@ -242,11 +242,15 @@ If you wish to simply update the timestamps on a model, you may use the `touch` 
 <a name="soft-deleting"></a>
 ## Soft Deleting
 
-When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, specify the `softDelete` property on the model:
+When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, apply the `SoftDeletingTrait` to the model:
+
+	use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 	class User extends Eloquent {
 
-		protected $softDelete = true;
+		use SoftDeletingTrait;
+
+		protected $dates = ['deleted_at'];
 
 	}
 
@@ -934,6 +938,12 @@ To delete all records on the pivot table for a model, you may use the `detach` m
 	User::find(1)->roles()->detach();
 
 Note that this operation does not delete records from the `roles` table, but only from the pivot table.
+
+#### Updating A Record On A Pivot Table
+
+Sometimes you may need to update your pivot table, but not detach it. If you wish to update your pivot table in place you may use `updateExistingPivot` method like so:
+
+	User::find(1)->roles()->updateExistingPivot($roleId, $attributes);
 
 #### Defining A Custom Pivot Model
 
