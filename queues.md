@@ -171,8 +171,8 @@ To process only the first job on the queue, you may use the `queue:work` command
 
 	php artisan queue:work
 
-<a name="daemon-queue-workers"></a>
-## Daemon Queue Workers
+<a name="daemon-queue-worker"></a>
+## Daemon Queue Worker
 
 The `queue:work` also includes a `--daemon` option for forcing the queue worker to continue processing jobs without ever re-booting the framework. This results in a significant reduction of CPU usage when compared to the `queue:listen` command, but at the added complexity of needing to drain the queues of currently executing jobs during your deployments.
 
