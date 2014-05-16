@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Included Software](#included-software)
 - [Installation & Setup](#installation-and-setup)
-- [Daily Usage](#general-usage)
+- [Daily Usage](#daily-usage)
 - [Ports](#ports)
 
 <a name="introduction"></a>
