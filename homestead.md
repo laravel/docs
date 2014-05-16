@@ -125,3 +125,7 @@ The following ports are forwarded to your Homestead environment:
 - **HTTP:** 8000 -> Forwards To 80
 - **MySQL:** 33060 -> Forwards To 3306
 - **Postgres:** 54320 -> Forwards To 5432
+
+If you decide that you do not want to use port forwarding, edit the `homestead.rb` and comment out the Port Forwarding section.
+
+> **Note:** If you disable port forwarding, you will need to specify the IP address of your Homestead box in your `hosts` file.  By default, this IP address is 192.168.33.10
