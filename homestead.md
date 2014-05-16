@@ -67,7 +67,7 @@ The `folders` property of the `Homestead.yaml` file lists all of the folders you
 
 ### Configure Your Nginx Sites
 
-Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environemnt as necessary.Homestead can serve as a convenient, virtualized environemnt for every Laravel project you are working on!
+Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary.Homestead can serve as a convenient, virtualized environemnt for every Laravel project you are working on!
 
 ### Bash Aliases
 
