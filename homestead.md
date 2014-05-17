@@ -42,6 +42,8 @@ Before launching your Homestead environment, you must install [VirtualBox](https
 Once VirtualBox and Vagrant have been installed, you should add the `laravel/homestead` box to your Vagrant installation using the following command in your terminal. It will take a few minutes to download the box, depending on your Internet connection speed:
 
 	vagrant box add laravel/homestead
+	
+If you a receiving an error saying the command was not invoked properly, it most likely means that you need to install the latest version of Vagrant.
 
 ### Clone The Homestead Repository
 
