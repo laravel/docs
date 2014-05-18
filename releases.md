@@ -12,7 +12,7 @@ The full change list for this release by running the `php artisan changes` comma
 
 ### PHP 5.4 Requirement
 
-Laravel 4.2 requires PHP 5.4 or greater. This PHP upgrade requirements allows us to use new PHP features such as traits to provide a more expressive interfaces for tools like [Laravel Cashier](/docs/billing). PHP 5.4 also brings significant speed and performance improvements over PHP 5.3.
+Laravel 4.2 requires PHP 5.4 or greater. This upgraded PHP requirement allows us to use new PHP features such as traits to provide more expressive interfaces for tools like [Laravel Cashier](/docs/billing). PHP 5.4 also brings significant speed and performance improvements over PHP 5.3.
 
 ### Laravel Forge
 
