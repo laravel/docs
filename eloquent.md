@@ -145,6 +145,8 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 	}
 
+> **Note:** When using `guarded`, you should still never pass `Input::get()` or any raw array of user controlled input into a `save` or `update` method, as any column that is not guarded may be updated.
+
 #### Blocking All Attributes From Mass Assignment
 
 In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard property:
