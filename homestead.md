@@ -125,3 +125,12 @@ The following ports are forwarded to your Homestead environment:
 - **HTTP:** 8000 -> Forwards To 80
 - **MySQL:** 33060 -> Forwards To 3306
 - **Postgres:** 54320 -> Forwards To 5432
+
+
+## Troubleshooting
+
+### Connection timeout
+
+If you are running Windows based OS, and receive multiple `Warning: Connection timeout. Retrying...` errors during `Vagrant Up` - you may required hardware virtualisation (VT-x) enabled on your processor to install a 64bit Virtualbox.
+
+Use this tool from Microsoft to see if VT-x is enabled - http://www.microsoft.com/en-za/download/details.aspx?id=592.
