@@ -58,6 +58,19 @@ Take note that `email` is not a required option, it is merely used for example. 
 
 When the `attempt` method is called, the `auth.attempt` [event](/docs/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
 
+Example of using a column other than `email`. In the app/filters.php file you can pass the column for auth.basic to use.
+
+	Route::filter('auth.basic', function()
+	{
+		return Auth::basic('user_account');
+	});
+
+You can see the default `email` being used in Gaurd.php
+
+	//vendor/laravel/framework/src/Illuminate/Auth/Guard.php
+	public function basic($field = 'email', Request $request = null)
+	
+
 #### Determining If A User Is Authenticated
 
 To determine if the user is already logged into your application, you may use the `check` method:
