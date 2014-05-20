@@ -28,7 +28,7 @@ To use the Mailgun driver, set the `driver` option to `mailgun` in your `app/con
 
 #### Mandrill Driver
 
-To use the Mailgun driver, set the `driver` option to `mandrill` in your `app/config/mail.php` configuration file. Next, create an `app/config/services.php` configuration file if one does not already exist for your project. Verify that it contains the following options:
+To use the Mandrill driver, set the `driver` option to `mandrill` in your `app/config/mail.php` configuration file. Next, create an `app/config/services.php` configuration file if one does not already exist for your project. Verify that it contains the following options:
 
 	'mandrill' => array(
 		'secret' => 'your-mandrill-key',
