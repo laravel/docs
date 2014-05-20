@@ -13,11 +13,11 @@ Laravel 4.2 requires PHP 5.4.0 or greater.
 
 ### Encryption Defaults
 
-Add a new `cipher` option in your `app/config/app.php` configuration file. The value of this option shuold be `MCRYPT_RIJNDAEL_256`.
+Add a new `cipher` option in your `app/config/app.php` configuration file. The value of this option should be `MCRYPT_RIJNDAEL_256`.
 
 	'cipher' => MCRYPT_RIJNDAEL_256
 
-This seting may be used to control the default cipher used by the Laravel envryption facilities.
+This setting may be used to control the default cipher used by the Laravel encryption facilities.
 
 ### Soft Deleting Models Now Use Traits
 
