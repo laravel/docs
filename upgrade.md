@@ -1,7 +1,15 @@
 # Upgrade Guide
 
+- [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-4.1.29"></a>
+## Upgrading To 4.1.29 From <= 4.1.x
+
+Laravel 4.1.29 improves the column quoting for all database drivers. This protects your application from mass assignment vulnerabilities when **not** using the `fillable` property on models. If you are using the `fillable` property on your models to protect against mass assignemnt, your application is not vulerable. However, if you are using `guarded` and are passing a user controlled array into an "update" or "save" type function, you should upgrade to `4.1.29` immediately as your application may be at risk of mass assignment.
+
+To upgrade to Laravel 4.1.29, simply `composer update`. No breaking changes are introduced in this release.
 
 <a name="upgrade-4.1.26"></a>
 ## Upgrading To 4.1.26 From <= 4.1.25
