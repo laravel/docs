@@ -131,7 +131,7 @@ If your command is registered in the application [IoC container](/docs/ioc), you
 
 #### Registering A Command In Your Service Provider
 
-If you are going to register your command inside your Service Provider, `Artisan::add` will not work. Instead invoke `$this->commands('mycommand1', 'mycommand2')` inside provider's `register` or `boot` functions, where `mycommand1` and `mycommand2` are IoC bindings for your Command classes.
+If you are going to register a command inside your Service Provider, `Artisan::add` will not work. Instead invoke `$this->commands('mycommand1', 'mycommand2')` inside provider's `register` or `boot` functions, where `mycommand1` and `mycommand2` are [IoC](/docs/ioc) bindings for your Command classes.
 
 <a name="calling-other-commands"></a>
 ## Calling Other Commands
