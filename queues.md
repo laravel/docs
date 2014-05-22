@@ -128,7 +128,7 @@ You may also push a Closure onto the queue. This is very convenient for quick, s
 		$job->delete();
 	});
 
-When using Iron.io [push queues](#push-queues), you should take extra precaution queueing Closures. The end-point that receives your queue messages should check for a token to verify that the request is actually from Iron.io. For example, your push queue end-point should be something like: `https://yourapp.com/queue/receive?token=SecretToken`. You may then check the value of the secret token in your application before marshaling the queue request.
+When using Iron.io [push queues](#push-queues), you should take extra precaution queueing Closures. The end-point that receives your queue messages should check for a token to verify that the request is actually from Iron.io. For example, your push queue end-point should be something like: `https://yourapp.com/queue/receive?token=SecretToken`. You may then check the value of the secret token in your application before marshalling the queue request.
 
 <a name="running-the-queue-listener"></a>
 ## Running The Queue Listener
@@ -188,7 +188,7 @@ As you can see, the `queue:work` command supports most of the same options avail
 
 ### Deploying With Daemon Queue Workers
 
-The simplest way to deploy an application using daemon queue workers is to put the application in maintenance mode at the beginning of your deploymnet. This can be done using the `php artisan down` command. Once the application is in maintenance mode, Laravel will now accept any new jobs off of the queue, but will continue to process existing jobs. Once enough time has passed for all of your existing jobs to execute (usually no longer than 30-60 seconds), you may stop the worker and continue your deployment process.
+The simplest way to deploy an application using daemon queue workers is to put the application in maintenance mode at the beginning of your deployment. This can be done using the `php artisan down` command. Once the application is in maintenance mode, Laravel will now accept any new jobs off of the queue, but will continue to process existing jobs. Once enough time has passed for all of your existing jobs to execute (usually no longer than 30-60 seconds), you may stop the worker and continue your deployment process.
 
 If you are using Supervisor or Laravel Forge, which utilizes Supervisor, you may typically stop a worker with a command like the following:
 
