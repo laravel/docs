@@ -100,6 +100,13 @@ If you want even more convenience, it can be helpful to add the following alias 
 
 	alias vm='ssh vagrant@127.0.0.1 -p 2222'
 
+Alternatively, you can add the following configuration to your SSH config at `~/.ssh/config` to just use `ssh homestead`:
+
+	Host homestead
+	  HostName 127.0.0.1
+	  User vagrant
+	  Port 2222
+
 ### Connecting To Your Databases
 
 A `homestead` database is configured for both MySQL and Postgres out of the box. For even more convenience, Laravel's `local` database configuration is set to use this database by default.
