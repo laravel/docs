@@ -129,6 +129,15 @@ If your command is registered in the application [IoC container](/docs/ioc), you
 
 	Artisan::resolve('binding.name');
 
+#### Registering Commands In A Service Provider
+
+If you need to register commands from within a service provider, you should call the `commands` method from the provider's `boot` method, passing the [IoC container](/docs/ioc) binding for the command:
+
+	public function boot()
+	{
+		$this->commands('command.binding');
+	}
+
 <a name="calling-other-commands"></a>
 ## Calling Other Commands
 
