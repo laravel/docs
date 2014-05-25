@@ -15,7 +15,7 @@ Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a
 
 Homestead runs on any Windows, Mac, and Linux, and includes the Nginx web server, PHP 5.5, MySQL, Postgres, Redis, Memcached and all of the other goodies you need to develop amazing Laravel applications.
 
-Homestead if currently built and tested using Vagrant 1.6.
+Homestead is currently built and tested using Vagrant 1.6.
 
 <a name="included-software"></a>
 ## Included Software
@@ -110,7 +110,7 @@ To connect to your MySQL or Postgres database from your main machine via Navicat
 
 ### Adding Additional Sites
 
-Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installation as you wish on a single Homestead environment. There are two ways to do this. First, you may simply add the sites to your `Homestead.yaml` file, `vagrant destroy` the box, and then `vagrant up` again.
+Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. There are two ways to do this: First, you may simply add the sites to your `Homestead.yaml` file, `vagrant destroy` the box, and then `vagrant up` again.
 
 Alternatively, you may use the `serve` script that is available on your Homestead environment. To use the `serve` script, SSH into your Homestead environment and run the following command:
 
