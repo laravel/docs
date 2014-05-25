@@ -18,7 +18,7 @@ Add a new `cipher` option in your `app/config/app.php` configuration file. The v
 
 	'cipher' => MCRYPT_RIJNDAEL_256
 
-This seting may be used to control the default cipher used by the Laravel envryption facilities.
+This seting may be used to control the default cipher used by the Laravel encryption facilities.
 
 ### Soft Deleting Models Now Use Traits
 
