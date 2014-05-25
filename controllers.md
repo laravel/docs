@@ -140,6 +140,11 @@ The `controller` method accepts two arguments. The first is the base URI the con
 		{
 			//
 		}
+		
+		public function anyLogin()
+		{
+			//
+		}
 
 	}
 
