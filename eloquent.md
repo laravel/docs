@@ -941,7 +941,7 @@ Note that this operation does not delete records from the `roles` table, but onl
 
 Laravel also allows you to define a custom Pivot model. To define a custom model, first create your own "Base" model class that extends `Eloquent`. In your other Eloquent models, extend this custom base model instead of the default `Eloquent` base. In your base model, add the following function that returns an instance of your custom Pivot model:
 
-	public function newPivot(Model $parent, array $attributes, $table, $exists)
+	public function newPivot(Eloquent $parent, array $attributes, $table, $exists)
 	{
 		return new YourCustomPivot($parent, $attributes, $table, $exists);
 	}
