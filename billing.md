@@ -70,9 +70,9 @@ If you would like to apply a coupon when creating the subscription, you may use 
 	     ->withCoupon('code')
 	     ->create($creditCardToken);
 
-The `subscription` method will automatically create the Stripe subscription, as well as update your database with Stripe customer ID and other relevant billing information.
+The `subscription` method will automatically create the Stripe subscription, as well as update your database with Stripe customer ID and other relevant billing information. If your plan has a trial configured in Stripe, the trial end date will also automatically be set on the user record.
 
-If your plan has a trial period, make sure to set the trial end date on your model after subscribing:
+If your plan has a trial period that is **not** configured in Stripe, you must set the trial end date manually after subscribing:
 
 	$user->trial_ends_at = Carbon::now()->addDays(14);
 
