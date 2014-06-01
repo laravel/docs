@@ -13,7 +13,6 @@
     - [Views & Responses](/docs/responses)
     - [Controllers](/docs/controllers)
     - [Errors & Logging](/docs/errors)
-    - [Forge](/docs/forge)
 - Learning More
     - [Authentication](/docs/security)
     - [Billing](/docs/billing)
