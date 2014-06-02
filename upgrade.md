@@ -50,6 +50,12 @@ If you are extending the `Illuminate\Pagination\Presenter` class, the abstract m
 
 	abstract public function getPageLinkWrapper($url, $page, $rel = null);
 
+### Additional Key For Iron Queue Config
+
+If you are using the Iron queue system, then you will need to add a new encrypt key to the config.
+
+    'encrypt' => true,
+
 <a name="upgrade-4.1.29"></a>
 ## Upgrading To 4.1.29 From <= 4.1.x
 
