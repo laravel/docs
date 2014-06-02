@@ -47,8 +47,8 @@ You may catch the "live" output of your remote commands by passing a Closure int
 		echo $line.PHP_EOL;
 	});
 
-## Tasks
 <a name="tasks"></a>
+## Tasks
 
 If you need to define a group of commands that should always be run together, you may use the `define` method to define a `task`:
 
@@ -213,14 +213,15 @@ Macros allow you to define a set of tasks to be run in sequence using a single c
 		echo "WORLD"
 	@endtask
 
+
 The `deploy` macro can now be run via a single, simple command:
 
 	envoy run deploy
 
 <a name="envoy-notifications"></a>
-<a name="envoy-hipchat-notifications"></a>
 ### Notifications
 
+<a name="envoy-hipchat-notifications"></a>
 #### HipChat
 
 After running a task, you may send a notification to your team's HipChat room using the simple `@hipchat` directive:
@@ -230,7 +231,6 @@ After running a task, you may send a notification to your team's HipChat room us
 	@task('foo', ['on' => 'web'])
 		ls -la
 	@endtask
-
 	@after
 		@hipchat('token', 'room', 'Envoy')
 	@endafter
