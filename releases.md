@@ -38,7 +38,7 @@ Laravel Cashier is a simple, expressive library for managing subscription billin
 
 The Artisan `queue:work` command now supports a `--daemon` option to start a worker in "daemon mode", meaning the worker will continue to process jobs without ever re-booting the framework. This results in a significant reduction in CPU usage at the cost of a slightly more complex application deployment process.
 
-More information about daemon queue workers can be found in the [queue documentation](/docs/queues#daemon-queue-workers).
+More information about daemon queue workers can be found in the [queue documentation](/docs/queues#daemon-queue-worker).
 
 ### Mail API Drivers
 
