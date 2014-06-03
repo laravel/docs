@@ -40,6 +40,8 @@ You should also manually add the `deleted_at` column to your `dates` property:
 
 The API for all soft delete operations remains the same.
 
+> **Note:** The `SoftDeletingTrait` can not be applied on a base model. It must be used on an actual model class.
+
 ### View / Pagination Environment Renamed
 
 If you are directly referencing the `Illuminate\View\Environment` class or `Illuminate\Pagination\Environment` class, update your code to reference `Illuminate\View\Factory` and `Illuminate\Pagination\Factory` instead. These two classes have been renamed to better reflect their function.
