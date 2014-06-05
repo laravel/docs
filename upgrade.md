@@ -20,6 +20,12 @@ Add a new `cipher` option in your `app/config/app.php` configuration file. The v
 
 This setting may be used to control the default cipher used by the Laravel encryption facilities.
 
+### Queue Configuration
+
+#### Iron.io
+
+Add a new `encrypt` option into the `iron` array in your `app/config/queue.php` configuration file. The value of this option is a `boolean` and in new laravel installations it defaults to `true`.
+
 ### Soft Deleting Models Now Use Traits
 
 If you are using soft deleting models, the `softDeletes` property has been removed. You should now use the `SoftDeletingTrait` like so:
