@@ -162,6 +162,7 @@ Below is a list of all available validation rules and their function:
 - [Array](#rule-array)
 - [Before (Date)](#rule-before)
 - [Between](#rule-between)
+- [Boolean](#rule-boolean)
 - [Confirmed](#rule-confirmed)
 - [Date](#rule-date)
 - [Date Format](#rule-date-format)
@@ -235,6 +236,11 @@ The field under validation must be a value preceding the given date. The dates w
 #### between:_min_,_max_
 
 The field under validation must have a size between the given _min_ and _max_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+
+<a name="rule-boolean"></a>
+#### boolean
+
+The field under validation must be able to be cast as a Boolean. Accepted input are `true`, `false`, `1`, `0`, `"1"` and `"0"`.
 
 <a name="rule-confirmed"></a>
 #### confirmed
