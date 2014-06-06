@@ -22,7 +22,7 @@ This setting may be used to control the default cipher used by the Laravel encry
 
 ### Soft Deleting Models Now Use Traits
 
-If you are using soft deleting models, the `softDeletes` property has been removed. You should now use the `SoftDeletingTrait` like so:
+If you are using soft deleting models, the `softDeletes` property has been removed. You must now use the `SoftDeletingTrait` like so:
 
 	use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
@@ -30,7 +30,7 @@ If you are using soft deleting models, the `softDeletes` property has been remov
 		use SoftDeletingTrait;
 	}
 
-You should also manually add the `deleted_at` column to your `dates` property:
+You must also manually add the `deleted_at` column to your `dates` property:
 
 	class User extends Eloquent {
 		use SoftDeletingTrait;
