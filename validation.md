@@ -162,6 +162,7 @@ Below is a list of all available validation rules and their function:
 - [Array](#rule-array)
 - [Before (Date)](#rule-before)
 - [Between](#rule-between)
+- [Boolean](#rule-boolean)
 - [Confirmed](#rule-confirmed)
 - [Date](#rule-date)
 - [Date Format](#rule-date-format)
@@ -265,6 +266,11 @@ The field under validation must be _numeric_ and must have an exact length of _v
 #### digits_between:_min_,_max_
 
 The field under validation must have a length between the given _min_ and _max_.
+
+<a name="rule-boolean"></a>
+#### boolean
+
+The field under validation must be able to be cast as a boolean. Accepted input are `true`, `false`, `1`, `0`, `"1"` and `"0"`.
 
 <a name="rule-email"></a>
 #### email
