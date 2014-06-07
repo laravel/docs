@@ -51,7 +51,7 @@ Once Laravel is installed, you should also [configure your local environment](/d
 
 <a name="permissions"></a>
 ### Permissions
-Laravel may require one set of permissions to be configured: folders within app/storage require write access by the web server.
+Laravel may require one set of permissions to be configured: folders within `app/storage` require write access by the web server.
 
 <a name="paths"></a>
 ### Paths
