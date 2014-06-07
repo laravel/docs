@@ -88,6 +88,7 @@ Command  | Description
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent to the table
 `$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
 `->nullable()`  |  Designate that the column allows NULL values
+`$table->remember_token()` | VARCHAR(100) nullable `remember_token` column for users tables
 `->default($value)`  |  Declare a default value for a column
 `->unsigned()`  |  Set INTEGER to UNSIGNED
 
