@@ -20,6 +20,8 @@ Add a new `cipher` option in your `app/config/app.php` configuration file. The v
 
 This setting may be used to control the default cipher used by the Laravel encryption facilities.
 
+> **Note:** In Laravel 4.2, the default cipher is `MCRYPT_RIJNDAEL_128` (AES), which is considered to be the most secure cipher. Changing the cipher back to `MCRYPT_RIJNDAEL_256` is required to decrypt cookies/values that were encrypted in Laravel <= 4.1
+
 ### Soft Deleting Models Now Use Traits
 
 If you are using soft deleting models, the `softDeletes` property has been removed. You must now use the `SoftDeletingTrait` like so:
