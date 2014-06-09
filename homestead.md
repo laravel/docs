@@ -100,6 +100,10 @@ If you want even more convenience, it can be helpful to add the following alias 
 
 	alias vm='ssh vagrant@127.0.0.1 -p 2222'
 
+Furthermore, if you are using LiveReload and wish to monitor changes within your code directory, you can modify the alias as follows (assuming you are using the default port `35729`):
+
+	alias vm='ssh -L 35729:127.0.0.1:35729 vagrant@127.0.0.1 -p 2222'
+
 ### Connecting To Your Databases
 
 A `homestead` database is configured for both MySQL and Postgres out of the box. For even more convenience, Laravel's `local` database configuration is set to use this database by default.
