@@ -123,7 +123,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
 
 	Schema::table('users', function($table)
 	{
-		$table->dropColumn('votes', 'avatar', 'location');
+		$table->dropColumn(array('votes', 'avatar', 'location'));
 	});
 
 <a name="checking-existence"></a>
