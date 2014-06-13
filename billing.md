@@ -192,16 +192,13 @@ What if a customer's credit card expires? No worries - Cashier includes a Webhoo
 
 That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription after three failed payment attempts. The `stripe/webhook` URI in this example is just for example. You will need to configure the URI in your Stripe settings.
 
-If you have additional Stripe webhook events you would like to handle, simply extend the Webhook controller:
+If you have additional Stripe webhook events you would like to handle, simply extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the name of the Stripe webhook you wish to handle. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you should add a `handleInvoicePaymentSucceeded` method to the controller.
 
 	class WebhookController extends Laravel\Cashier\WebhookController {
 
-		public function handleWebhook()
+		public function handleInvoicePaymentSucceeded($payload)
 		{
-			// Handle other events...
-
-			// Fallback to failed payment check...
-			return parent::handleWebhook();
+			// Handle The Event
 		}
 
 	}
