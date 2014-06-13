@@ -1069,7 +1069,7 @@ Mutators are declared in a similar fashion:
 <a name="date-mutators"></a>
 ## Date Mutators
 
-By default, Eloquent will convert the `created_at`, `updated_at`, and `deleted_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
+By default, Eloquent will convert the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
 
 You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `getDates` method of the model:
 
