@@ -32,7 +32,7 @@ Next, register the `Laravel\Cashier\CashierServiceProvider` in your `app` config
 
 #### Migration
 
-Before using Cashier, we'll need to add several columns to your database. Don't worry, you can use the `cashier:table` Artisan command to create a migration to add the necessary column. Once the migration has been created, simply run the `migrate` command.
+Before using Cashier, we'll need to add several columns to your database. Don't worry, you can use the `cashier:table` Artisan command to create a migration to add the necessary column. For example, to add the column to the users table use `php artisan cashier:table users`. Once the migration has been created, simply run the `migrate` command.
 
 #### Model Setup
 
@@ -179,6 +179,13 @@ You may also determine if a user has cancelled their subscription, but are still
 The `everSubscribed` method may be used to determine if the user has ever subscribed to a plan in your application:
 
 	if ($user->everSubscribed())
+	{
+		//
+	}
+
+The `onPlan` method may be used to determine if the user is subscribed to a given plan based on its ID:
+
+	if ($user->onPlan('monthly'))
 	{
 		//
 	}
