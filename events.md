@@ -110,14 +110,7 @@ Using the `queue` and `flush` methods, you may "queue" an event for firing, but 
 
 	Event::queue('foo', array($user));
 
-#### Registering An Event Flusher
-
-	Event::flusher('foo', function($user)
-	{
-		//
-	});
-
-Finally, you may run the "flusher" and flush all queued events using the `flush` method:
+You may run the "flusher" and flush all queued events using the `flush` method:
 
 	Event::flush('foo');
 
