@@ -78,6 +78,8 @@ If your plan has a trial period that is **not** configured in Stripe, you must s
 
 	$user->save();
 
+### Specifying Additional User Details
+
 If you would like to specify additional customer details, you may do so by passing them as second argument to the `create` method:
 
 	$user->subscription('monthly')->create($creditCardToken, [
