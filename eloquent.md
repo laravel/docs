@@ -835,6 +835,18 @@ You will often need to insert new related models. For example, you may wish to i
 
 In this example, the `post_id` field will automatically be set on the inserted comment.
 
+If you need to save multiple related models:
+
+	$comments = array(
+		new Comment(array('message' => 'A new comment.')),
+		new Comment(array('message' => 'Another comment.')),
+		new Comment(array('message' => 'The latest comment.'))
+	);
+
+	$post = Post::find(1);
+
+	$post->comments()->saveMany($comments);
+
 ### Associating Models (Belongs To)
 
 When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
