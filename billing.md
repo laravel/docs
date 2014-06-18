@@ -78,6 +78,12 @@ If your plan has a trial period that is **not** configured in Stripe, you must s
 
 	$user->save();
 
+If you want to pass additional customer details supported by Stripe, you can do so by passing them as second argument to `create` method:
+
+	$user->subscription('monthly')->create($creditCardToken, ['email' => Auth::user()->email, 'description' => 'Great customer']);
+
+Refer to "Create Customer" section of the Stripe API to see which fields are supported: https://stripe.com/docs/api#create_customer
+
 <a name="no-card-up-front"></a>
 ## No Card Up Front
 
