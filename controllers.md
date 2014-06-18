@@ -202,11 +202,11 @@ By default, all resource controller actions have a route name; however, you can 
 
 #### Handling Nested Resource Controllers
 
-If you need to handle a hierarchical structure inside your resource controllers, you can use the dot syntax in your route name:
+To "nest" resource controllers, use "dot" notation in your route declaration:
 
 	Route::resource('photos.comments', 'PhotoCommentController');
 
-Which allows you, for example, to declare an action to respond to the `photos/{photoResource}/comments/{commentResource}` URI:
+This route will register a "nested" resource that may be accessed with URLs like the following: `photos/{photoResource}/comments/{commentResource}`.
 
 	class PhotoCommentController extends BaseController {
 
