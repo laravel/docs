@@ -200,6 +200,23 @@ By default, all resource controller actions have a route name; however, you can 
 	Route::resource('photo', 'PhotoController',
 					array('names' => array('create' => 'photo.build')));
 
+#### Handling Nested Resource Controllers
+
+If you need to handle a hierarchical structure inside your resource controllers, you can use the dot syntax in your route name:
+
+	Route::resource('photos.comments', 'PhotoCommentController');
+
+Which allows you, for example, to declare an action to respond to the `photos/{photoResource}/comments/{commentResource}` URI:
+
+	class PhotoCommentController extends BaseController {
+
+		public function show($photoId, $commentId)
+		{
+			//
+		}
+
+	}
+
 #### Adding Additional Routes To Resource Controllers
 
 If it becomes necessary for you to add additional routes to a resource controller beyond the default resource routes, you should define those routes before your call to `Route::resource`:
