@@ -58,7 +58,7 @@ So, our `Cache::get` call could be re-written like so:
 
 Creating a facade for your own application or package is simple. You only need 3 things:
 
-- An IoC binding
+- An IoC binding.
 - A facade class.
 - A facade alias configuration.
 
