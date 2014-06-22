@@ -441,7 +441,7 @@ In some situations, you may wish to run validation checks against a field **only
 		'email' => 'sometimes|email',
 	));
 
-In the example above, the `email` field will only be validated if it is present in the `$data` array. Note - it is not possible to use the `sometimes` and `required` rules together.
+In the example above, the `email` field will only be validated if it is present in the `$data` array. Note - it is not advisable to use the `sometimes` and `required` rules together.
 
 #### Complex Conditional Validation
 
@@ -454,7 +454,7 @@ Sometimes you may wish to require a given field only if another field has a grea
 
 Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game re-sell shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
 
-	$v->sometimes('reason', 'required|max:500', function($input)
+	$v->sometimes('reason', 'max:500', function($input)
 	{
 		return $input->games >= 100;
 	});
