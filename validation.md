@@ -438,10 +438,10 @@ The field under validation must be formatted as an URL.
 In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
 
 	$v = Validator::make($data, array(
-		'email' => 'sometimes|required|email',
+		'email' => 'sometimes|email',
 	));
 
-In the example above, the `email` field will only be validated if it is present in the `$data` array.
+In the example above, the `email` field will only be validated if it is present in the `$data` array. Note - it is not possible to use the `sometimes` and `required` rules together.
 
 #### Complex Conditional Validation
 
