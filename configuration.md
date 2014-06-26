@@ -120,27 +120,27 @@
 > **附註:** 你可以為每個有支援的環境創建所屬的設定檔案。例如，`development` 環境下，如果 `.env.development.php` 檔案若存在將會自動讀取進來。
 
 <a name="maintenance-mode"></a>
-## Maintenance Mode
+## 維護模式
 
-When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A call to the `App::down` method is already present in your `app/start/global.php` file. The response from this method will be sent to users when your application is in maintenance mode.
+當你的應用程式處於維護模式時，所有的路由都會指向一個自定的視圖。當你要更新或進行維護作業時，“關閉”整個網站是很簡單的。`App::down` 函式已經定義在你的 `app/start/global.php` 檔案中。他將會在你的應用程式處於維護模式時將執行該函式，展現在用戶前。
 
-To enable maintenance mode, simply execute the `down` Artisan command:
+啟用維護模式，只要執行 Artisan 指令 'down'：
 
 	php artisan down
 
-To disable maintenance mode, use the `up` command:
+關閉維護模式，只要執行 Artisan 指令 'up'：
 
 	php artisan up
 
-To show a custom view when your application is in maintenance mode, you may add something like the following to your application's `app/start/global.php` file:
+如果你想要客製化維護模式的視圖，你只需要增加下面內容至應用程式裡的 `app/start/global.php` 檔案中：
 
 	App::down(function()
 	{
 		return Response::view('maintenance', array(), 503);
 	});
 
-If the Closure passed to the `down` method returns `NULL`, maintenance mode will be ignored for that request.
+如果傳給 `down` 函式的閉包回傳 'NULL' 值，該此請求將會略過維護模式。
 
-### Maintenance Mode & Queues
+### 維護模式與隊列
 
-While your application is in maintenance mode, no [queue jobs](/docs/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+當應用程式處於維護模式中，將不會處理任何[隊列工作](/docs/queues)。所有的隊列工作將會在應用程式離開維護模式後繼續被進行。
