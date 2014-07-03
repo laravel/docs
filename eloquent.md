@@ -399,6 +399,12 @@ If an Eloquent model uses a trait that has a method matching the `bootNameOfTrai
 
 The `apply` method receives an `Illuminate\Database\Eloquent\Builder` query builder object, and is responsible for adding any additional `where` clauses that the scope wishes to add. The `remove` method also receives a `Builder` object and is responsible for reversing the action taken by `apply`. In other words, `remove` should remove the `where` clause (or any other clause) that was added. So, for our `SoftDeletingScope`, the methods look something like this:
 
+	/**
+	 * Apply the scope to a given Eloquent query builder.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @return void
+	 */
 	public function apply(Builder $builder)
 	{
 		$model = $builder->getModel();
@@ -406,6 +412,12 @@ The `apply` method receives an `Illuminate\Database\Eloquent\Builder` query buil
 		$builder->whereNull($model->getQualifiedDeletedAtColumn());
 	}
 
+	/**
+	 * Remove the scope from the given Eloquent query builder.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @return void
+	 */
 	public function remove(Builder $builder)
 	{
 		$column = $builder->getModel()->getQualifiedDeletedAtColumn();
