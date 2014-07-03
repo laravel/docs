@@ -7,6 +7,7 @@
 - [Soft Deleting](#soft-deleting)
 - [Timestamps](#timestamps)
 - [Query Scopes](#query-scopes)
+- [Global Scopes](#global-scopes)
 - [Relationships](#relationships)
 - [Querying Relations](#querying-relations)
 - [Eager Loading](#eager-loading)
@@ -372,6 +373,58 @@ Sometimes You may wish to define a scope that accepts parameters. Just add your 
 Then pass the parameter into the scope call:
 
 	$users = User::ofType('member')->get();
+
+<a name="global-scopes"></a>
+## Global Scopes
+
+Sometimes you may wish to define a scope that applies to all queries performed on a model. In essence, this is how Eloquent's own "soft delete" feature works. Global scopes are defined using a combination of PHP traits and an implementation of `Illuminate\Database\Eloquent\ScopeInterface`.
+
+First, let's define a trait. For this example, we'll use the `SoftDeletingTrait` that ships with Laravel:
+
+	trait SoftDeletingTrait {
+
+		/**
+		 * Boot the soft deleting trait for a model.
+		 *
+		 * @return void
+		 */
+		public static function bootSoftDeletingTrait()
+		{
+			static::addGlobalScope(new SoftDeletingScope);
+		}
+
+	}
+
+If an Eloquent model uses a trait that has a method matching the `bootNameOfTrait` naming convention, that trait method will be called when the Eloquent model is booted, giving you an opportunity to register a global scope, or do anything else you want. A scope must implement `ScopeInterface`, which specifies two methods: `apply` and `remove`.
+
+The `apply` method receives an `Illuminate\Database\Eloquent\Builder` query builder object, and is responsible for adding any additional `where` clauses that the scope wishes to add. The `remove` method also receives a `Builder` object and is responsible for reversing the action taken by `apply`. In other words, `remove` should remove the `where` clause (or any other clause) that was added. So, for our `SoftDeletingScope`, the methods look something like this:
+
+	public function apply(Builder $builder)
+	{
+		$model = $builder->getModel();
+
+		$builder->whereNull($model->getQualifiedDeletedAtColumn());
+	}
+
+	public function remove(Builder $builder)
+	{
+		$column = $builder->getModel()->getQualifiedDeletedAtColumn();
+
+		$query = $builder->getQuery();
+
+		foreach ((array) $query->wheres as $key => $where)
+		{
+			// If the where clause is a soft delete date constraint, we will remove it from
+			// the query and reset the keys on the wheres. This allows this developer to
+			// include deleted model in a relationship result set that is lazy loaded.
+			if ($this->isSoftDeleteConstraint($where, $column))
+			{
+				unset($query->wheres[$key]);
+
+				$query->wheres = array_values($query->wheres);
+			}
+		}
+	}
 
 <a name="relationships"></a>
 ## Relationships
