@@ -193,3 +193,7 @@ This is just the beginning. In this tutorial, you've seen the very basics of Lar
 One of Laravel's goals is to make PHP application development enjoyable from download to deploy, and [Laravel Forge](https://forge.laravel.com) provides a simple way to deploy your Laravel applications onto blazing fast servers. Forge can configure and provision servers on DigitalOcean, Linode, Rackspace, and Amazon EC2. Like Homestead, all of the latest goodes are included: Nginx, PHP 5.5, MySQL, Postgres, Redis, Memcached, and more. Forge "Quick Deploy" can even deploy your code for you each time you push changes out to Github or Bitbucket!
 
 On top of that, Forge can help you configure queue workers, SSL, Cron jobs, sub-domains, and more. For more information, visit the [Forge website](https://forge.laravel.com).
+
+## ...what next?
+
+[![Everything is awesome](http://img.youtube.com/vi/T-D1KVIuvjA/0.jpg)](https://www.youtube.com/watch?v=7R1nRxcICeE)
