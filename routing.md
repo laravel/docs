@@ -51,6 +51,10 @@ Most of the routes for your application will be defined in the `app/routes.php` 
 		return 'Must be over HTTPS';
 	}));
 
+When using `Route::match` and `Route::any` you can get the current HTTP verb with the `Request::getMethod` method:
+
+	$verb = Request::getMethod();
+	
 Often, you will need to generate URLs to your routes, you may do so using the `URL::to` method:
 
 	$url = URL::to('foo');
