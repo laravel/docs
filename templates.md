@@ -128,6 +128,12 @@ If you don't want the data to be escaped, you may use double curly-braces:
 	@foreach ($users as $user)
 		<p>This is user {{ $user->id }}</p>
 	@endforeach
+	
+	@foreach($users as $user)
+	  	<li>{{ $user->name }}</li>
+	@forelse
+	  	<p>No users</p>
+	@endforelse
 
 	@while (true)
 		<p>I'm looping forever.</p>
