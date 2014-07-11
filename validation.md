@@ -145,20 +145,20 @@ Laravel 透過`Validation`類別讓你可以簡單，方便的驗證資料正確
 
 	<?php echo $errors->first('email'); ?>
 
-### Named Error Bags
+### 命名錯誤清單
 
-If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors. This will allow you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
+假如你在一個頁面中有許多的表單, 你可能希望為錯誤命名一個`MessageBag`. 這將允許你針對特定表單查看錯誤訊息, 我們只要簡單的在`withErrors`的第二個參數設定將可達到這個功能：
 
 	return Redirect::to('register')->withErrors($validator, 'login');
 
-You may then access the named `MessageBag` instance from the `$errors` variable:
+你也可以接著從一個`$errors`變數中命名一個`MessageBag`實例
 
 	<?php echo $errors->login->first('email'); ?>
 
 <a name="available-validation-rules"></a>
-## Available Validation Rules
+## 有效的驗證規則
 
-Below is a list of all available validation rules and their function:
+以下是一個有效的驗證規則清單與他們的函式
 
 - [Accepted](#rule-accepted)
 - [Active URL](#rule-active-url)
@@ -201,49 +201,57 @@ Below is a list of all available validation rules and their function:
 - [URL](#rule-url)
 
 <a name="rule-accepted"></a>
-#### accepted
+#### 同意accepted
 
-The field under validation must be _yes_, _on_, or _1_. This is useful for validating "Terms of Service" acceptance.
+這個欄位必需是_yes_, _on_, 或 _1_時驗證才會成立. 這將會在"使用者條款"的驗證中很有用
 
 <a name="rule-active-url"></a>
-#### active_url
+#### 有效的網址active_url
 
 The field under validation must be a valid URL according to the `checkdnsrr` PHP function.
+這個欄位必需是一個有效的網址並通過`checkdnsrr`這個php函式的驗證
 
 <a name="rule-after"></a>
 #### after:_date_
 
 The field under validation must be a value after a given date. The dates will be passed into the PHP `strtotime` function.
+這個欄位必需是在給允的日期後，而這個日期將會帶入`strtotime`函式進行驗證
 
 <a name="rule-alpha"></a>
 #### alpha
 
 The field under validation must be entirely alphabetic characters.
+這個欄位只能允許是字母
 
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
 The field under validation may have alpha-numeric characters, as well as dashes and underscores.
+這個欄位只能允許字母、數字以及-及_
 
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
 The field under validation must be entirely alpha-numeric characters.
+這個欄位只允許字母及數字
 
 <a name="rule-array"></a>
 #### array
 
 The field under validation must be of type array.
+這個欄位只允許陣列
 
 <a name="rule-before"></a>
 #### before:_date_
 
 The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
+這個欄位必需是在給允的日期早，而這個日期將會帶入`strtotime`函式進行驗證
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
 
 The field under validation must have a size between the given _min_ and _max_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+這個欄位的大小必需介於 _min_ 及 _max_. 
 
 <a name="rule-confirmed"></a>
 #### confirmed
