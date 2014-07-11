@@ -1,37 +1,38 @@
-# Validation
+# 驗證
 
-- [Basic Usage](#basic-usage)
-- [Working With Error Messages](#working-with-error-messages)
-- [Error Messages & Views](#error-messages-and-views)
-- [Available Validation Rules](#available-validation-rules)
-- [Conditionally Adding Rules](#conditionally-adding-rules)
-- [Custom Error Messages](#custom-error-messages)
-- [Custom Validation Rules](#custom-validation-rules)
+- [基本用法](#basic-usage)
+- [使用錯誤訊息](#working-with-error-messages)
+- [錯誤訊息 & 視圖](#error-messages-and-views)
+- [使用驗證規則](#available-validation-rules)
+- [有條件新增規則](#conditionally-adding-rules)
+- [自訂錯誤訊息](#custom-error-messages)
+- [自訂驗證規則](#custom-validation-rules)
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-Laravel ships with a simple, convenient facility for validating data and retrieving validation error messages via the `Validation` class.
+Laravel 透過`Validation`類別讓你可以簡單，方便的驗證資料正確性及查看驗證的錯誤訊息
 
-#### Basic Validation Example
+#### 基本驗證範例
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
 		array('name' => 'required|min:5')
 	);
 
-The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
 
-#### Using Arrays To Specify Rules
+我們透過`make`這個方法來的第一個參數設定該被驗證資料名稱，然後第二個參數我們定義該資料可被接受的規則
 
-Multiple rules may be delimited using either a "pipe" character, or as separate elements of an array.
+#### 使用陣列來定義規則
+
+我們可以同時定義多個規則並且使用,(逗號)分隔或是多宣告一個陣列
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
 		array('name' => array('required', 'min:5'))
 	);
 
-#### Validating Multiple Fields
+#### 驗證多個欄位
 
     $validator = Validator::make(
         array(
@@ -46,62 +47,65 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
         )
     );
 
-Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
+
+當一個 `Validator` 實例被建立，`fails`或`passes`這二個方法就可以在驗證時使用，如下
 
 	if ($validator->fails())
 	{
 		// The given data did not pass validation
 	}
 
-If validation has failed, you may retrieve the error messages from the validator.
+
+假如驗證失敗，你可能需要從驗證變數$validator查看錯誤驗證可使用下列方式
 
 	$messages = $validator->messages();
 
-You may also access an array of the failed validation rules, without messages. To do so, use the `failed` method:
 
+你也有可能需要透過一個陣列來了解是哪些驗證規則無法通過驗證，這個時後你可以使用`failed`這個方法：
 	$failed = $validator->failed();
 
-#### Validating Files
+#### 驗證欄位
 
-The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
+`Validator`類別提供了許多規則讓你驗證檔案，例如`size`, `mimes`,以及其他參數. 當驗證檔案時你可以簡單的透過這些參數加入你的驗證器來驗證你其他的資料.
 
 <a name="working-with-error-messages"></a>
-## Working With Error Messages
+## 使用錯誤訊息
 
-After calling the `messages` method on a `Validator` instance, you will receive a `MessageBag` instance, which has a variety of convenient methods for working with error messages.
 
-#### Retrieving The First Error Message For A Field
+當你呼叫一個`Validator`實例的`messages`方法後，你會得到一個`MessageBag`的變數，裡面有許多方便的方法讓你取得錯誤訊息
+
+#### 查看一個欄位的第一個錯誤訊息
 
 	echo $messages->first('email');
 
-#### Retrieving All Error Messages For A Field
+#### 查看一個欄位的所有錯誤訊息
 
 	foreach ($messages->get('email') as $message)
 	{
 		//
 	}
 
-#### Retrieving All Error Messages For All Fields
+#### 查看所有欄位的所有錯誤訊息
 
 	foreach ($messages->all() as $message)
 	{
 		//
 	}
 
-#### Determining If Messages Exist For A Field
+#### 隔分一個欄位是否有錯誤訊息
 
 	if ($messages->has('email'))
 	{
 		//
 	}
 
-#### Retrieving An Error Message With A Format
+#### 定義錯誤訊息格式
 
 	echo $messages->first('email', '<p>:message</p>');
 
-> **Note:** By default, messages are formatted using Bootstrap compatible syntax.
+> **注意:** 預設錯誤訊息使用Bootstrap語法.
 
-#### Retrieving All Error Messages With A Format
+#### 查看所有錯誤訊息並使用特定格式
 
 	foreach ($messages->all('<li>:message</li>') as $message)
 	{
@@ -109,9 +113,10 @@ After calling the `messages` method on a `Validator` instance, you will receive 
 	}
 
 <a name="error-messages-and-views"></a>
-## Error Messages & Views
+## 錯誤訊息 & 視圖
 
-Once you have performed validation, you will need an easy way to get the error messages back to your views. This is conveniently handled by Laravel. Consider the following routes as an example:
+當你開始執行驗證，你將會需要一個簡單的方法去取的錯誤訊息並回傳到你的視圖，在Laravel你可以很方便的處理這些事，你可以透過下面的路由例子來了解：
+
 
 	Route::get('register', function()
 	{
@@ -130,11 +135,13 @@ Once you have performed validation, you will need an easy way to get the error m
 		}
 	});
 
-Note that when validation fails, we pass the `Validator` instance to the Redirect using the `withErrors` method. This method will flash the error messages to the session so that they are available on the next request.
+記住當驗證失敗時，我們透過`Validator`的實例中`withErrors`的方法去重新導向頁面，這個方法將會存取錯誤訊息在session中，所以他們將會在下個頁面可以被使用.
 
-However, notice that we do not have to explicitly bind the error messages to the view in our GET route. This is because Laravel will always check for errors in the session data, and automatically bind them to the view if they are available. **So, it is important to note that an `$errors` variable will always be available in all of your views, on every request**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `MessageBag`.
+僅管如此,  注意我們不需要特別去使用GET route在視圖中綁定錯誤訊息. 因為Laravel 將會一直確認seesion中的錯誤訊息並自動綁定他們在視圖當中當那些錯誤訊息是有效的時後. 
 
-So, after redirection, you may utilize the automatically bound `$errors` variable in your view:
+**所以這相當重要去了解，一個`$errors`變數將會永遠有效的存在你的所有的視圖中，在每個允許的頁面請求你都很直接的假設並且安全的使用`$errors`變數.這個變數將會是一個`MessageBag`的實例.
+
+所以，當我們重新做頁面導向，你可以自然的在視圖中使用`$errors`變數
 
 	<?php echo $errors->first('email'); ?>
 
