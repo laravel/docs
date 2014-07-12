@@ -124,7 +124,7 @@ Extend the `Illuminate\Pagination\Presenter` class and implement its abstract me
             return '<li class="unavailable">'.$text.'</li>';
         }
 
-        public function getPageLinkWrapper($url, $page)
+        public function getPageLinkWrapper($url, $page, $rel = null)
         {
             return '<li><a href="'.$url.'">'.$page.'</a></li>';
         }
