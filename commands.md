@@ -15,7 +15,7 @@
 
 ### 生成類
 
-要創建一個新的指令，您可以使用 command:make 這個 Artisan 指令，這將產生一個指令存根幫助您開始：
+要創建一個新的指令，您可以使用 command:make 這個 Artisan 指令，這將產生一個指令存根協助您開始：
 
 #### 產生一個新的指令類
 
@@ -33,7 +33,7 @@
 
 當自訂指令生成後，您需在填寫指令的 `名稱` 與 `描述`，這部份將會顯示在指令列表清單的畫面上。
 
-當您的自訂指令被執行時，將會呼叫`fire`方法，您可以在此加入任何的邏輯判斷。
+當您的自訂指令被執行時，將會呼叫 `fire` 方法，您可以在此加入任何的邏輯判斷。
 
 ### 參數與選項
 
@@ -43,7 +43,7 @@
 
 	array($name, $mode, $description, $defaultValue)
 
-參數 `mode` 可以是下列其中一項： `InputArgument::REQUIRED` or `InputArgument::OPTIONAL`.
+參數 `mode` 可以是下列其中一項： `InputArgument::REQUIRED` 或 `InputArgument::OPTIONAL`.
 
 當定義 `options` 時，該陣列對應的值表示如下：
 
@@ -55,13 +55,14 @@
 
 	php artisan foo --option=bar --option=baz
 
-該 `VALUE_NONE` 模式表示將選項當作是開關
+該 `VALUE_NONE` 模式表示將選項當作是"開關"
 
 	php artisan foo --option
 
 ### 取得輸入
 
-當您的指令執行時，明顯的您需要讓您的應用程式接收這些參數和選項的值，要做到這一點，您可以使用 `argument` 和 `option` 方法：
+當您的指令執行時，您需要讓您的應用程式可以存取到這些參數和選項的值，
+要做到這一點，您可以使用 `argument` 和 `option` 方法：
 
 #### 取得自訂指令的輸入參數
 
@@ -81,13 +82,13 @@
 
 ### 產生輸出
 
-輸出資訊到控制台，您可以使用 `info`, `comment`, `question` 和`error`方法，每一種方法將會對應到一個 ANSI 顏色。
+顯示資訊到終端上，您可以使用 `info`, `comment`, `question` 和`error`方法，每一種方法將會對應到一個 ANSI 顏色。
 
-#### 發送訊息到控制台
+#### 顯示訊息到終端
 
 	$this->info('Display this on the screen');
 
-#### 發送錯誤訊息到控制台
+#### 顯示錯誤訊息到終端
 
 	$this->error('Something went wrong!');
 

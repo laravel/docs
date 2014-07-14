@@ -18,7 +18,7 @@ Artisan 是 Laravel 內建的命令列工具，它提供了一些有用的指令
 
 #### 查看指令的使用指南
 
-每一個指令都包含一個 "使用指南" ，它顯示並描述這個指令能夠接受哪些參數和選項。要進入使用指南只需要在 指令名稱前面加上 `help`即可:
+每一個指令都包含一個 "使用指南" ，它顯示並描述這個指令能夠接受哪些參數和選項。要進入使用指南只需要在指令名稱前面加上 `help`即可:
 
 
 	php artisan help migrate
@@ -29,8 +29,8 @@ Artisan 是 Laravel 內建的命令列工具，它提供了一些有用的指令
 
 	php artisan migrate --env=local
 
-#### 檢視目前的 Larave 版本
+#### 檢視目前的 Laravel 版本
 
-使用 `--version` 選項，您可以檢視目前所使用的 Larave 版本:
+使用 `--version` 選項，您可以檢視目前所使用的 Laravel 版本:
 
 	php artisan --version
