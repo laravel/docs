@@ -201,12 +201,12 @@ Laravel 透過`Validation`類別讓你可以簡單，方便的驗證資料正確
 - [URL](#rule-url)
 
 <a name="rule-accepted"></a>
-#### 同意accepted
+#### accepted
 
 這個欄位必需是_yes_, _on_, 或 _1_時驗證才會成立. 這將會在"使用者條款"的驗證中很有用
 
 <a name="rule-active-url"></a>
-#### 有效的網址active_url
+#### active_url
 
 The field under validation must be a valid URL according to the `checkdnsrr` PHP function.
 這個欄位必需是一個有效的網址並通過`checkdnsrr`這個php函式的驗證
@@ -251,100 +251,120 @@ The field under validation must be a value preceding the given date. The dates w
 #### between:_min_,_max_
 
 The field under validation must have a size between the given _min_ and _max_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
-這個欄位的大小必需介於 _min_ 及 _max_. 
+這個欄位的大小必需介於 _min_ 及 _max_. 字串、數字、檔案的大小都是同樣依據`size`這個欄位
 
 <a name="rule-confirmed"></a>
 #### confirmed
 
 The field under validation must have a matching field of `foo_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
 
+這個欄位必需與`foo_confirmation`欄位相同，舉例來說，假如驗證欄位是`password`，`password_confirmation`這個輸入欄位的值一樣
+
 <a name="rule-date"></a>
 #### date
 
 The field under validation must be a valid date according to the `strtotime` PHP function.
 
+這個欄位必需是合法的時間並且通過`strtotime`這個PHP函式
+
 <a name="rule-date-format"></a>
 #### date_format:_format_
 
 The field under validation must match the _format_ defined according to the `date_parse_from_format` PHP function.
+這個欄位的驗證必需與_format_定義的時間格式相同並且通過`date_parse_from_format`這個PHP函式
 
 <a name="rule-different"></a>
 #### different:_field_
 
 The given _field_ must be different than the field under validation.
+這個驗證必需與給予的欄位_field_不同
 
 <a name="rule-digits"></a>
 #### digits:_value_
 
 The field under validation must be _numeric_ and must have an exact length of _value_.
+這個欄位必需是數字而且長度要符合_value_
 
 <a name="rule-digits-between"></a>
 #### digits_between:_min_,_max_
 
 The field under validation must have a length between the given _min_ and _max_.
+這個欄位的長度必需介於_min_ 與 _max_
 
 <a name="rule-boolean"></a>
 #### boolean
 
 The field under validation must be able to be cast as a boolean. Accepted input are `true`, `false`, `1`, `0`, `"1"` and `"0"`.
 
+這個欄位必需可以轉換成boolean(布林值true or false)，允許的值有`true`, `false`, `1`, `0`, `"1"` 及 `"0"`.
+
 <a name="rule-email"></a>
 #### email
 
 The field under validation must be formatted as an e-mail address.
+這個欄位必需符合email格式(xxxx@xxx.xxx)
 
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
 
 The field under validation must exist on a given database table.
+這個欄位必需存在於資料庫的table中的欄位
 
-#### Basic Usage Of Exists Rule
+#### Exists 規則的基本使用方法
 
 	'state' => 'exists:states'
 
-#### Specifying A Custom Column Name
+#### 指定一個自定的欄位名稱 Specifying A Custom Column Name
 
 	'state' => 'exists:states,abbreviation'
 
 You may also specify more conditions that will be added as "where" clauses to the query:
+你也可以指定更多條件且那些條件將會新增至"where"查詢中
 
 	'email' => 'exists:staff,email,account_id,1'
+	(這個驗證規則的意思是 email必需符合staff這個表中email欄位且account_id=1)
 
 Passing `NULL` as a "where" clause value will add a check for a `NULL` database value:
-
+透過`NULL`搭配"where"的縮寫寫法去檢查資料庫的是否為`NULL`
 	'email' => 'exists:staff,email,deleted_at,NULL'
 
 <a name="rule-image"></a>
 #### image
 
 The file under validation must be an image (jpeg, png, bmp, or gif)
+驗證檔案必需是個圖片(jpeg, png, bmp, or gif)
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
 
 The field under validation must be included in the given list of values.
+這個欄位必需符合事先給予的清單的其中一個值
 
 <a name="rule-integer"></a>
 #### integer
 
 The field under validation must have an integer value.
+這個欄位必需是一個整數值
 
 <a name="rule-ip"></a>
 #### ip
 
 The field under validation must be formatted as an IP address.
+這個欄位必需符合IP位置的格式([1~255].[1~255].[1~255].[1~255])
 
 <a name="rule-max"></a>
 #### max:_value_
 
 The field under validation must be less than or equal to a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+這個欄位必需小於_value_，而字串，數字和檔案則是判斷`size`大小
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
 
 The file under validation must have a MIME type corresponding to one of the listed extensions.
+這個檔案必需要有一個 MIME且必需對應清單中其中一個值
 
-#### Basic Usage Of MIME Rule
+#### MIME規則基本用法
 
 	'photo' => 'mimes:jpeg,bmp,png'
 
@@ -352,33 +372,41 @@ The file under validation must have a MIME type corresponding to one of the list
 #### min:_value_
 
 The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+這個欄位必需大於_value_，而字串，數字和檔案則是判斷`size`大小
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
 
 The field under validation must not be included in the given list of values.
+這個欄位的值必需不存在清單之中
 
 <a name="rule-numeric"></a>
 #### numeric
 
 The field under validation must have a numeric value.
+這個欄位必需是個數字(interger是指整數)
 
 <a name="rule-regex"></a>
 #### regex:_pattern_
 
 The field under validation must match the given regular expression.
+這個欄位必需符合你定義的正規表示法
 
 **Note:** When using the `regex` pattern, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+
+**注意:** 當使用`regex`模式時，你必需在陣列中指定一個正規表示法規則
 
 <a name="rule-required"></a>
 #### required
 
 The field under validation must be present in the input data.
+這個欄位必需要有值
 
 <a name="rule-required-if"></a>
 #### required\_if:_field_,_value_
 
 The field under validation must be present if the _field_ field is equal to _value_.
+這個欄位必需符合_field_等於_value_的條件
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
@@ -404,6 +432,7 @@ The field under validation must be present _only when_ the all of the other spec
 #### same:_field_
 
 The given _field_ must match the field under validation.
+
 
 <a name="rule-size"></a>
 #### size:_value_
