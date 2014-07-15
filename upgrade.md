@@ -9,7 +9,7 @@
 <a name="upgrade-4.3"></a>
 ## Upgrading To 4.3 From 4.2
 
-## Beanstalk Queuing
+### Beanstalk Queuing
 
 Laravel 4.3 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"` that Laravel 4.2 required.
 
