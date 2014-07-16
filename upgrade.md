@@ -1,9 +1,17 @@
 # 升級導引
 
+- [從 4.2 升級到 4.3](#upgrade-4.3)
 - [從 4.1 升級到 4.2](#upgrade-4.2)
 - [從 4.1.x 升級到 4.1.29](#upgrade-4.1.29)
 - [從 4.1.25 升級到 4.1.26](#upgrade-4.1.26)
 - [從 4.0 升級至 4.1](#upgrade-4.1)
+
+<a name="upgrade-4.3"></a>
+## 從 4.2 升級到 4.3
+
+### Beanstalk Queuing
+
+Laravel 4.3 開始預設載入 `"pda/pheanstalk": "~3.0"` 取代 Laravel 4.2 `"pda/pheanstalk": "~2.1"`。
 
 <a name="upgrade-4.2"></a>
 ## 從 4.1 升級到 4.2
