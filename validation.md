@@ -1,37 +1,38 @@
-# Validation
+# 驗證
 
-- [Basic Usage](#basic-usage)
-- [Working With Error Messages](#working-with-error-messages)
-- [Error Messages & Views](#error-messages-and-views)
-- [Available Validation Rules](#available-validation-rules)
-- [Conditionally Adding Rules](#conditionally-adding-rules)
-- [Custom Error Messages](#custom-error-messages)
-- [Custom Validation Rules](#custom-validation-rules)
+- [基本用法](#basic-usage)
+- [使用錯誤訊息](#working-with-error-messages)
+- [錯誤訊息 & 視圖](#error-messages-and-views)
+- [使用驗證規則](#available-validation-rules)
+- [有條件新增規則](#conditionally-adding-rules)
+- [自訂錯誤訊息](#custom-error-messages)
+- [自訂驗證規則](#custom-validation-rules)
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-Laravel ships with a simple, convenient facility for validating data and retrieving validation error messages via the `Validation` class.
+Laravel 透過`Validation`類別讓你可以簡單，方便的驗證資料正確性及查看驗證的錯誤訊息
 
-#### Basic Validation Example
+#### 基本驗證範例
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
 		array('name' => 'required|min:5')
 	);
 
-The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
 
-#### Using Arrays To Specify Rules
+我們透過`make`這個方法來的第一個參數設定該被驗證資料名稱，然後第二個參數我們定義該資料可被接受的規則
 
-Multiple rules may be delimited using either a "pipe" character, or as separate elements of an array.
+#### 使用陣列來定義規則
+
+我們可以同時定義多個規則並且使用,(逗號)分隔或是多宣告一個陣列
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
 		array('name' => array('required', 'min:5'))
 	);
 
-#### Validating Multiple Fields
+#### 驗證多個欄位
 
     $validator = Validator::make(
         array(
@@ -46,62 +47,65 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
         )
     );
 
-Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
+
+當一個 `Validator` 實例被建立，`fails`或`passes`這二個方法就可以在驗證時使用，如下
 
 	if ($validator->fails())
 	{
 		// The given data did not pass validation
 	}
 
-If validation has failed, you may retrieve the error messages from the validator.
+
+假如驗證失敗，你可能需要從驗證變數$validator查看錯誤驗證可使用下列方式
 
 	$messages = $validator->messages();
 
-You may also access an array of the failed validation rules, without messages. To do so, use the `failed` method:
 
+你也有可能需要透過一個陣列來了解是哪些驗證規則無法通過驗證，這個時後你可以使用`failed`這個方法：
 	$failed = $validator->failed();
 
-#### Validating Files
+#### 驗證欄位
 
-The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
+`Validator`類別提供了許多規則讓你驗證檔案，例如`size`, `mimes`,以及其他參數. 當驗證檔案時你可以簡單的透過這些參數加入你的驗證器來驗證你其他的資料.
 
 <a name="working-with-error-messages"></a>
-## Working With Error Messages
+## 使用錯誤訊息
 
-After calling the `messages` method on a `Validator` instance, you will receive a `MessageBag` instance, which has a variety of convenient methods for working with error messages.
 
-#### Retrieving The First Error Message For A Field
+當你呼叫一個`Validator`實例的`messages`方法後，你會得到一個`MessageBag`的變數，裡面有許多方便的方法讓你取得錯誤訊息
+
+#### 查看一個欄位的第一個錯誤訊息
 
 	echo $messages->first('email');
 
-#### Retrieving All Error Messages For A Field
+#### 查看一個欄位的所有錯誤訊息
 
 	foreach ($messages->get('email') as $message)
 	{
 		//
 	}
 
-#### Retrieving All Error Messages For All Fields
+#### 查看所有欄位的所有錯誤訊息
 
 	foreach ($messages->all() as $message)
 	{
 		//
 	}
 
-#### Determining If Messages Exist For A Field
+#### 隔分一個欄位是否有錯誤訊息
 
 	if ($messages->has('email'))
 	{
 		//
 	}
 
-#### Retrieving An Error Message With A Format
+#### 定義錯誤訊息格式
 
 	echo $messages->first('email', '<p>:message</p>');
 
-> **Note:** By default, messages are formatted using Bootstrap compatible syntax.
+> **注意:** 預設錯誤訊息使用Bootstrap語法.
 
-#### Retrieving All Error Messages With A Format
+#### 查看所有錯誤訊息並使用特定格式
 
 	foreach ($messages->all('<li>:message</li>') as $message)
 	{
@@ -109,9 +113,10 @@ After calling the `messages` method on a `Validator` instance, you will receive 
 	}
 
 <a name="error-messages-and-views"></a>
-## Error Messages & Views
+## 錯誤訊息 & 視圖
 
-Once you have performed validation, you will need an easy way to get the error messages back to your views. This is conveniently handled by Laravel. Consider the following routes as an example:
+當你開始執行驗證，你將會需要一個簡單的方法去取的錯誤訊息並回傳到你的視圖，在Laravel你可以很方便的處理這些事，你可以透過下面的路由例子來了解：
+
 
 	Route::get('register', function()
 	{
@@ -130,28 +135,30 @@ Once you have performed validation, you will need an easy way to get the error m
 		}
 	});
 
-Note that when validation fails, we pass the `Validator` instance to the Redirect using the `withErrors` method. This method will flash the error messages to the session so that they are available on the next request.
+記住當驗證失敗時，我們透過`Validator`的實例中`withErrors`的方法去重新導向頁面，這個方法將會存取錯誤訊息在session中，所以他們將會在下個頁面可以被使用.
 
-However, notice that we do not have to explicitly bind the error messages to the view in our GET route. This is because Laravel will always check for errors in the session data, and automatically bind them to the view if they are available. **So, it is important to note that an `$errors` variable will always be available in all of your views, on every request**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `MessageBag`.
+僅管如此,  注意我們不需要特別去使用GET route在視圖中綁定錯誤訊息. 因為Laravel 將會一直確認seesion中的錯誤訊息並自動綁定他們在視圖當中當那些錯誤訊息是有效的時後. 
 
-So, after redirection, you may utilize the automatically bound `$errors` variable in your view:
+**所以這相當重要去了解，一個`$errors`變數將會永遠有效的存在你的所有的視圖中，在每個允許的頁面請求你都很直接的假設並且安全的使用`$errors`變數.這個變數將會是一個`MessageBag`的實例.
+
+所以，當我們重新做頁面導向，你可以自然的在視圖中使用`$errors`變數
 
 	<?php echo $errors->first('email'); ?>
 
-### Named Error Bags
+### 命名錯誤清單
 
-If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors. This will allow you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
+假如你在一個頁面中有許多的表單, 你可能希望為錯誤命名一個`MessageBag`. 這將允許你針對特定表單查看錯誤訊息, 我們只要簡單的在`withErrors`的第二個參數設定將可達到這個功能：
 
 	return Redirect::to('register')->withErrors($validator, 'login');
 
-You may then access the named `MessageBag` instance from the `$errors` variable:
+你也可以接著從一個`$errors`變數中命名一個`MessageBag`實例
 
 	<?php echo $errors->login->first('email'); ?>
 
 <a name="available-validation-rules"></a>
-## Available Validation Rules
+## 有效的驗證規則
 
-Below is a list of all available validation rules and their function:
+以下是一個有效的驗證規則清單與他們的函式
 
 - [Accepted](#rule-accepted)
 - [Active URL](#rule-active-url)
@@ -196,140 +203,168 @@ Below is a list of all available validation rules and their function:
 <a name="rule-accepted"></a>
 #### accepted
 
-The field under validation must be _yes_, _on_, or _1_. This is useful for validating "Terms of Service" acceptance.
+這個欄位必需是_yes_, _on_, 或 _1_時驗證才會成立. 這將會在"使用者條款"的驗證中很有用
 
 <a name="rule-active-url"></a>
 #### active_url
 
 The field under validation must be a valid URL according to the `checkdnsrr` PHP function.
+這個欄位必需是一個有效的網址並通過`checkdnsrr`這個php函式的驗證
 
 <a name="rule-after"></a>
 #### after:_date_
 
 The field under validation must be a value after a given date. The dates will be passed into the PHP `strtotime` function.
+這個欄位必需是在給允的日期後，而這個日期將會帶入`strtotime`函式進行驗證
 
 <a name="rule-alpha"></a>
 #### alpha
 
 The field under validation must be entirely alphabetic characters.
+這個欄位只能允許是字母
 
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
 The field under validation may have alpha-numeric characters, as well as dashes and underscores.
+這個欄位只能允許字母、數字以及-及_
 
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
 The field under validation must be entirely alpha-numeric characters.
+這個欄位只允許字母及數字
 
 <a name="rule-array"></a>
 #### array
 
 The field under validation must be of type array.
+這個欄位只允許陣列
 
 <a name="rule-before"></a>
 #### before:_date_
 
 The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
+這個欄位必需是在給允的日期早，而這個日期將會帶入`strtotime`函式進行驗證
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
 
 The field under validation must have a size between the given _min_ and _max_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+這個欄位的大小必需介於 _min_ 及 _max_. 字串、數字、檔案的大小都是同樣依據`size`這個欄位
 
 <a name="rule-confirmed"></a>
 #### confirmed
 
 The field under validation must have a matching field of `foo_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
 
+這個欄位必需與`foo_confirmation`欄位相同，舉例來說，假如驗證欄位是`password`，`password_confirmation`這個輸入欄位的值一樣
+
 <a name="rule-date"></a>
 #### date
 
 The field under validation must be a valid date according to the `strtotime` PHP function.
 
+這個欄位必需是合法的時間並且通過`strtotime`這個PHP函式
+
 <a name="rule-date-format"></a>
 #### date_format:_format_
 
 The field under validation must match the _format_ defined according to the `date_parse_from_format` PHP function.
+這個欄位的驗證必需與_format_定義的時間格式相同並且通過`date_parse_from_format`這個PHP函式
 
 <a name="rule-different"></a>
 #### different:_field_
 
 The given _field_ must be different than the field under validation.
+這個驗證必需與給予的欄位_field_不同
 
 <a name="rule-digits"></a>
 #### digits:_value_
 
 The field under validation must be _numeric_ and must have an exact length of _value_.
+這個欄位必需是數字而且長度要符合_value_
 
 <a name="rule-digits-between"></a>
 #### digits_between:_min_,_max_
 
 The field under validation must have a length between the given _min_ and _max_.
+這個欄位的長度必需介於_min_ 與 _max_
 
 <a name="rule-boolean"></a>
 #### boolean
 
 The field under validation must be able to be cast as a boolean. Accepted input are `true`, `false`, `1`, `0`, `"1"` and `"0"`.
 
+這個欄位必需可以轉換成boolean(布林值true or false)，允許的值有`true`, `false`, `1`, `0`, `"1"` 及 `"0"`.
+
 <a name="rule-email"></a>
 #### email
 
 The field under validation must be formatted as an e-mail address.
+這個欄位必需符合email格式(xxxx@xxx.xxx)
 
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
 
 The field under validation must exist on a given database table.
+這個欄位必需存在於資料庫的table中的欄位
 
-#### Basic Usage Of Exists Rule
+#### Exists 規則的基本使用方法
 
 	'state' => 'exists:states'
 
-#### Specifying A Custom Column Name
+#### 指定一個自定的欄位名稱 Specifying A Custom Column Name
 
 	'state' => 'exists:states,abbreviation'
 
 You may also specify more conditions that will be added as "where" clauses to the query:
+你也可以指定更多條件且那些條件將會新增至"where"查詢中
 
 	'email' => 'exists:staff,email,account_id,1'
+	(這個驗證規則的意思是 email必需符合staff這個表中email欄位且account_id=1)
 
 Passing `NULL` as a "where" clause value will add a check for a `NULL` database value:
-
+透過`NULL`搭配"where"的縮寫寫法去檢查資料庫的是否為`NULL`
 	'email' => 'exists:staff,email,deleted_at,NULL'
 
 <a name="rule-image"></a>
 #### image
 
 The file under validation must be an image (jpeg, png, bmp, or gif)
+驗證檔案必需是個圖片(jpeg, png, bmp, or gif)
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
 
 The field under validation must be included in the given list of values.
+這個欄位必需符合事先給予的清單的其中一個值
 
 <a name="rule-integer"></a>
 #### integer
 
 The field under validation must have an integer value.
+這個欄位必需是一個整數值
 
 <a name="rule-ip"></a>
 #### ip
 
 The field under validation must be formatted as an IP address.
+這個欄位必需符合IP位置的格式([1~255].[1~255].[1~255].[1~255])
 
 <a name="rule-max"></a>
 #### max:_value_
 
 The field under validation must be less than or equal to a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+這個欄位必需小於_value_，而字串，數字和檔案則是判斷`size`大小
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
 
 The file under validation must have a MIME type corresponding to one of the listed extensions.
+這個檔案必需要有一個 MIME且必需對應清單中其中一個值
 
-#### Basic Usage Of MIME Rule
+#### MIME規則基本用法
 
 	'photo' => 'mimes:jpeg,bmp,png'
 
@@ -337,33 +372,41 @@ The file under validation must have a MIME type corresponding to one of the list
 #### min:_value_
 
 The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+這個欄位必需大於_value_，而字串，數字和檔案則是判斷`size`大小
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
 
 The field under validation must not be included in the given list of values.
+這個欄位的值必需不存在清單之中
 
 <a name="rule-numeric"></a>
 #### numeric
 
 The field under validation must have a numeric value.
+這個欄位必需是個數字(interger是指整數)
 
 <a name="rule-regex"></a>
 #### regex:_pattern_
 
 The field under validation must match the given regular expression.
+這個欄位必需符合你定義的正規表示法
 
 **Note:** When using the `regex` pattern, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+
+**注意:** 當使用`regex`模式時，你必需在陣列中指定一個正規表示法規則
 
 <a name="rule-required"></a>
 #### required
 
 The field under validation must be present in the input data.
+這個欄位必需要有值
 
 <a name="rule-required-if"></a>
 #### required\_if:_field_,_value_
 
 The field under validation must be present if the _field_ field is equal to _value_.
+這個欄位必需符合_field_等於_value_的條件
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
@@ -389,6 +432,7 @@ The field under validation must be present _only when_ the all of the other spec
 #### same:_field_
 
 The given _field_ must match the field under validation.
+
 
 <a name="rule-size"></a>
 #### size:_value_
