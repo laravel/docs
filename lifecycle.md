@@ -1,61 +1,61 @@
-# Request Lifecycle
+# Request 生命週期
 
-- [Overview](#overview)
-- [Request Lifecycle](#request-lifecycle)
-- [Start Files](#start-files)
-- [Application Events](#application-events)
+- [概覽](#overview)
+- [Request 生命週期](#request-lifecycle)
+- [啟動文件](#start-files)
+- [應用程式事件](#application-events)
 
 <a name="overview"></a>
-## Overview
+## 概覽
 
-When using any tool in the "real world", you feel more confidence if you understand how that tool works. Application development is no different. When you understand how your development tools function, you feel more comfortable and confident using them. The goal of this document is to give you a good, high-level overview of how the Laravel framework "works". By getting to know the overall framework better, everything feels less "magical" and you will be more confident building your applications. In addition to a high-level overview of the request lifecycle, we'll cover "start" files and application events.
+在“真實世界”裡使用任何工具，只要你了解該工具的運作原理，你將會很順手。應用程式開發上也是相同的。當你了解開發工具的功能，你使用上會更得心應手。而這份文件的目的就是要給予你一個優良、高層次的Laravel 框架運作概覽。隨著了解整個框架越多，你就不會覺得很"奇妙"且更容易去建構你的應用程式。除了關於 request 生命週期的高層次概覽外，我們也會介紹”啟動“檔案和應用程式事件。
 
-If you don't understand all of the terms right away, don't lose heart! Just try to get a basic grasp of what is going on, and your knowledge will grow as you explore other sections of the documentation.
+如果你對許多東西不明白，不用擔心。只要了解個基本的原理，隨著探索其他文件，你將會得到更多的知識。
 
 <a name="request-lifecycle"></a>
-## Request Lifecycle
+## 請求的生命週期
 
-All requests into your application are directed through the `public/index.php` script. When using Apache, the `.htaccess` file that ships with Laravel handles the passing of all requests to `index.php`. From here, Laravel begins the process of handling the requests and returning a response to the client. Getting a general idea for the Laravel bootstrap process will be useful, so we'll cover that now!
+對你的應用程式的所有請求，都會被導到 `public/index.php` 程式去。如果使用 Apache，Laravel 的 `.htaccess` 會將所有的請求都讓 `index.php` 來做處理。從這裡開始，Laravel 就會進行處理請求跟回應給客戶端的流程。了解 Laravel 引導過程的總體思路是有幫助的。
 
-By far, the most important concept to grasp when learning about Laravel's bootstrap process is **Service Providers**. You can find a list of service providers by opening your `app/config/app.php` configuration file and finding the `providers` array. These providers serve as the primary bootstrapping mechanism for Laravel. But, before we dig into service providers, let's go back to `index.php`. After a request enters your `index.php` file, the `bootstrap/start.php` file will be loaded. This file creates the new Laravel `Application` object, which also serves as an [IoC container](/docs/ioc).
+至此，了解 Laravel 的引導過程一個要把握的最重要概念就是**服務提供商**。你可以在你的 `app/config/app.php` 設定中找到 `providers` 的陣列，條列出所有的服務提供商。這些提供商作為 Laravel 的主要引導機制。但在深入探討服務提供商之前，我們先回到 `index.php`。在一個請求進入到你的 `index.php` 後，`bootstrap/start.php` 檔案將接著被載入。這檔案創建一個新的 Laravel `Application` 物件，並也作為一個[IoC 容器](/docs/ioc)。
 
-After creating the `Application` object, a few project paths will be set and [environment detection](/docs/configuration#environment-configuration) will be performed. Then, an internal Laravel bootstrap script will be called. This file lives deep within the Laravel source, and sets a few more settings based on your configuration files, such as timezone, error reporting, etc. But, in addition to setting these rather trivial configuration options, it also does something very important: registers all of the service providers configured for your application.
+在創建 `Application` 物件之後，少部分的物件路徑將被設定且進行[偵測運行環境](/docs/configuration#environment-configuration)。然後，一個內部的 Laravel 引導腳本將會被呼叫。這個檔案深藏在 Laravel 的程式碼中，並且依據你的設定檔做一些相關設定，如：時區、錯誤回報等等。但除了這些設定與瑣碎的配置選項外，他也做一些比較重要的事情：註冊所有你應用程式中設定的服務提供商。
 
-Simple service providers only have one method: `register`. This `register` method is called when the service provider is registered with the application object via the application's own `register` method. Within this method, service providers register things with the [IoC container](/docs/ioc). Essentially, each service provider binds one or more [closures](http://us3.php.net/manual/en/functions.anonymous.php) into the container, which allows you to access those bound services within your application. So, for example, the `QueueServiceProvider` registers closures that resolve the various [Queue](/docs/queues) related classes. Of course, service providers may be used for any bootstrapping task, not just registering things with the IoC container. A service provider may register event listeners, view composers, Artisan commands, and more.
+比較簡單的服務提供商僅含有一個方法：`register`。此方法用於應用程式物件註冊服務提供商時，應用程式會透過所屬的 `register` 方法來呼叫服務提供商的 `register` 方法。此方法中，服務提供商註冊[IoC 容器](/docs/ioc)。本質上來說，每個服務提供商會綁定一個以上容器中的[封包](http://us3.php.net/manual/en/functions.anonymous.php)，讓你可以在應用程式中存取這些綁定服務。所以例如，`QueueServiceProvider` 註冊封包來處理多個[對列](/docs/queues)相關類別。當然，服務提供商註冊可以被使用在任何引導任務上，不只是註冊在容器中的事情。服務提供商亦可以註冊事件監聽器，view composers, artisan 命令等等。
 
-After all of the service providers have been registered, your `app/start` files will be loaded. Lastly, your `app/routes.php` file will be loaded. Once your `routes.php` file has been loaded, the Request object is sent to the application so that it may be dispatched to a route.
+在所有的事件提供者都被註冊後，你的 `app/start` 檔案將會被載入。最後，你的 `app/routes.php` 檔案才會被載入。一旦你的 `routes.php` 檔案被載入後，請求物件將會被送至應用程式中，如此他才能被指派至其中一個路由。
 
-So, let's summarize:
+好，讓我們來總結一下：
 
-1. Request enters `public/index.php` file.
-2. `bootstrap/start.php` file creates Application and detects environment.
-3. Internal `framework/start.php` file configures settings and loads service providers.
-4. Application `app/start` files are loaded.
-5. Application `app/routes.php` file is loaded.
-6. Request object sent to Application, which returns Response object.
-7. Response object sent back to client.
+1. 請求進入 `public/index.php` 檔案中。
+2. `bootstrap/start.php` 檔案創建應用程式和偵測運行環境。
+3. 內部 `framework/start.php` 檔案配置設定和載入服務提供商。
+4. 應用程式 `app/start` 檔案被載入。
+5. 應用程式 `app/routes.php` 檔案被載入。
+6. 請求物件傳入應用程式中，回傳回應物件。
+7. 回應物件回傳客戶端。
 
-Now that you have a good idea of how a request to a Laravel application is handled, let's take a closer look at "start" files!
+現在你對於 Laravel 如何處理一個請求有個比較好的了解，讓我們更近些了解 "起始檔案"！
 
 <a name="start-files"></a>
-## Start Files
+## 起始檔案
 
-Your application's start files are stored at `app/start`. By default, three are included with your application: `global.php`, `local.php`, and `artisan.php`. For more information about `artisan.php`, refer to the documentation on the [Artisan command line](/docs/commands#registering-commands).
+你的應用程式的起始檔案被儲存在 `app/start` 目錄下。預設下，三個檔案被包含在你的應用程式中：`global.php`, `local.php` 和 `artisan.php`。關於 `artisan.php` 更多的資訊可以參考 [Artisan 命令列](/docs/commands#registering-commands)文件。
 
-The `global.php` start file contains a few basic items by default, such as the registration of the [Logger](/docs/errors) and the inclusion of your `app/filters.php` file. However, you are free to add anything to this file that you wish. It will be automatically included on _every_ request to your application, regardless of environment. The `local.php` file, on the other hand, is only called when the application is executing in the `local` environment. For more information on environments, check out the [configuration](/docs/configuration) documentation.
+`global.php` 起始檔預設包含了一些基本項目，如 [日誌](/docs/errors)的註冊和包含你的 `app/filters.php` 檔案。然而，你可以自由添加任何你想添加的東西至此。不管何種運行環境，他都會自動被包含進去在每個_請求_裡。另一方面，`local.php` 檔僅會在 `local` 環境下才會被執行。更多關於運行環境的資訊，請參照 [設定](/docs/configuration)文件。
 
-Of course, if you have other environments in addition to `local`, you may create start files for those environments as well. They will be automatically included when your application is running in that environment. So, for example, if you have a `development` environment configured in your `bootstrap/start.php` file, you may create a `app/start/development.php` file, which will be included when any requests enter the application in that environment.
+當然，除了 `local` 外你還有其他的運行環境，你一樣可以為這些運行環境創建起始檔案。當應用程式運行在該運行環境時將會自動載入對應檔案。所以例如，如果你在 `bootstrap/environment.php` 中設定了一個 `development` 運行環境，你可以創建 `app/start/development.php` 檔案，當應用程式在該運行環境中接收請求時會自動載入該檔案。
 
-### What To Place In Start Files
+### 起始檔案中要放什麼
 
-Start files serve as a simple place to place any "bootstrapping" code. For example, you could register a View composer, configure your logging preferences, set some PHP settings, etc. It's totally up to you. Of course, throwing all of your bootstrapping code into your start files can get messy. For large applications, or if you feel your start files are getting messy, consider moving some bootstrapping code into [service providers](/docs/ioc#service-providers).
+起始檔案作為一個簡單的地方來放置任何“引導程序”。例如，你可以註冊一個 View composer，配置你的日誌喜好或是一些 PHP 設置等等。完全取決與你。當然，把你的所有的引導程式碼都丟在起始檔中也會造成混亂，建議將一些引導程式碼放置到[服務提供商](/docs/ioc#service-providers)中。
 
 <a name="application-events"></a>
-## Application Events
+## 應用程式事件
 
-#### Registering Application Events
+#### 註冊應用程式事件
 
-You may also do pre and post request processing by registering `before`, `after`, `finish`, and `shutdown` application events:
+你可以註冊 `before`, `after`, `finish` 和 `shutdown` 應用程式事件，來對請求前或請求後做處理：
 
 	App::before(function($request)
 	{
@@ -67,13 +67,13 @@ You may also do pre and post request processing by registering `before`, `after`
 		//
 	});
 
-Listeners to these events will be run `before` and `after` each request to your application. These events can be helpful for global filtering or global modification of responses. You may register them in one of your `start` files or in a [service provider](/docs/ioc#service-providers).
+監聽器將會對你的應用程式在每次請求執行 `before` 和 `after` 函式。這些事件對於全域篩選或是全域修改回應上很有幫助。你可以將他們註冊在你的其中一個“起始檔”中或者是[服務提供商](/docs/ioc#service-providers)中。
 
-You may also register a listener on the `matched` event, which is fired when an incoming request has been matched to a route but that route has not yet been executed:
+你也可以註冊一個監聽器在"匹配"的事件上，當傳入的請求以備匹配到一個路由，但該路由尚未被執行的情況下，該事件將會被觸發：
 
 	Route::matched(function($route, $request)
 	{
 		//
 	});
 
-The `finish` event is called after the response from your application has been sent back to the client. This is a good place to do any last minute processing your application requires. The `shutdown` event is called immediately after all of the `finish` event handlers finish processing, and is the last opportunity to do any work before the script terminates. Most likely, you will not have a need to use either of these events.
+`finish` 事件在你的應用程式回應給客戶端之後會被呼叫。這是非常好的一個地方去放置你應用程最後要做的事項。`shutdown` 是在所有 `finish` 事件處理器都結束之後立即被呼叫，他也是最後一個在程式終結前最後可以做些什麼的機會。最有可能狀況下，你可以能不需要用到任何一個事件。
