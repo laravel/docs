@@ -1,6 +1,7 @@
 # Configuration
 
 - [Introduction](#introduction)
+- [Accessing Values at Run-Time](#run-time)
 - [Environment Configuration](#environment-configuration)
 - [Provider Configuration](#provider-configuration)
 - [Protecting Sensitive Configuration](#protecting-sensitive-configuration)
@@ -9,9 +10,21 @@
 <a name="introduction"></a>
 ## Introduction
 
-All of the configuration files for the Laravel framework are stored in the `app/config` directory. Each option in every file is documented, so feel free to look through the files and get familiar with the options available to you.
+Configuration files are stored in the `app/config` directory and are well-commented.
 
-Sometimes you may need to access configuration values at run-time. You may do so using the `Config` class:
+To use environments, enable evironmental detection by entering your machine hostnames in `bootstrap/start.php` under `$app->detectEnvironment`. Run `hostname` in terminal to find your machine's hostname.
+
+    <?php
+
+    $env = $app->detectEnvironment(array(
+
+        'local' => array('your-machine-name'),
+
+    ));
+
+<a name="run-time"></a>
+
+You can access the configuration values at run-time using the `Config` class:
 
 #### Accessing A Configuration Value
 
@@ -48,7 +61,7 @@ Simply create a folder within the `config` directory that matches your environme
 
 Notice that you do not have to specify _every_ option that is in the base configuration file, but only the options you wish to override. The environment configuration files will "cascade" over the base files.
 
-Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `bootstrap/environment.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The array passed to this method is used to determine the current environment. You may add other environments and machine names to the array as needed.
+Next, tell Laravel how to determine which environment it is running in. The default is always `production`. However, you may setup other environments within the `bootstrap/start.php` file, under `$app->detectEnvirontment`. You may add environments as needed.
 
     <?php
 
