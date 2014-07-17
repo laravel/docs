@@ -315,32 +315,27 @@ Laravel 透過 `Validation` 類別讓你可以簡單、方便的驗證資料正�
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
 
-The field under validation must be included in the given list of values.
-這個欄位必需符合事先給予的清單的其中一個值
+欄位值需符合事先給予的清單的其中一個值
 
 <a name="rule-integer"></a>
 #### integer
 
-The field under validation must have an integer value.
-這個欄位必需是一個整數值
+欄位值需為一個整數值
 
 <a name="rule-ip"></a>
 #### ip
 
-The field under validation must be formatted as an IP address.
-這個欄位必需符合IP位置的格式([1~255].[1~255].[1~255].[1~255])
+欄位值需符合 IP 位址格式。
 
 <a name="rule-max"></a>
 #### max:_value_
 
-The field under validation must be less than or equal to a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
-這個欄位必需小於_value_，而字串，數字和檔案則是判斷`size`大小
+欄位值需小於等於 _value_。字串、數字和檔案則是判斷 `size` 大小。
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
 
-The file under validation must have a MIME type corresponding to one of the listed extensions.
-這個檔案必需要有一個 MIME且必需對應清單中其中一個值
+檔案的 MIME 類別需在給定清單中的列表中才能通過驗證。
 
 #### MIME規則基本用法
 
@@ -349,153 +344,144 @@ The file under validation must have a MIME type corresponding to one of the list
 <a name="rule-min"></a>
 #### min:_value_
 
-The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
-這個欄位必需大於_value_，而字串，數字和檔案則是判斷`size`大小
+欄位值需大於等於 _value_。字串、數字和檔案則是判斷 `size` 大小。
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
 
-The field under validation must not be included in the given list of values.
-這個欄位的值必需不存在清單之中
+欄位值不得為給定清單中其一。
 
 <a name="rule-numeric"></a>
 #### numeric
 
-The field under validation must have a numeric value.
-這個欄位必需是個數字(interger是指整數)
+欄位值需為數字。
 
 <a name="rule-regex"></a>
 #### regex:_pattern_
 
-The field under validation must match the given regular expression.
-這個欄位必需符合你定義的正規表示法
+欄位值需符合給定的正規表示式。
 
-**Note:** When using the `regex` pattern, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
-
-**注意:** 當使用`regex`模式時，你必需在陣列中指定一個正規表示法規則
+**注意:** 當使用`regex`模式時，你必須使用陣列來取代"|"作為分隔，尤其是當正規表示式中含有"|"字元。
 
 <a name="rule-required"></a>
 #### required
 
-The field under validation must be present in the input data.
-這個欄位必需要有值
+欄位值為必填。
 
 <a name="rule-required-if"></a>
 #### required\_if:_field_,_value_
 
-The field under validation must be present if the _field_ field is equal to _value_.
-這個欄位必需符合_field_等於_value_的條件
+欄位值在 _field_ 欄位值為 _value_ 時為必填。
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
 
-The field under validation must be present _only if_ any of the other specified fields are present.
+欄位值 _僅在_ 任一指定欄位有值情況下為必填。
 
 <a name="rule-required-with-all"></a>
 #### required_with_all:_foo_,_bar_,...
 
-The field under validation must be present _only if_ all of the other specified fields are present.
+欄位值 _僅在_ 所有指定欄位皆有值情況下為必填。
 
 <a name="rule-required-without"></a>
 #### required_without:_foo_,_bar_,...
 
-The field under validation must be present _only when_ any of the other specified fields are not present.
+欄位值 _僅在_ 任一指定欄位沒有值情況下為必填。
 
 <a name="rule-required-without-all"></a>
 #### required_without_all:_foo_,_bar_,...
 
-The field under validation must be present _only when_ the all of the other specified fields are not present.
+欄位值 _僅在_ 所有指定欄位皆沒有值情況下為必填。
 
 <a name="rule-same"></a>
 #### same:_field_
 
-The given _field_ must match the field under validation.
-
+欄位值需與指定欄位 _field_ 等值。
 
 <a name="rule-size"></a>
 #### size:_value_
 
-The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For files, _size_ corresponds to the file size in kilobytes.
+欄位值的尺寸需符合給定 _value_ 值。對於字串來說，_value_ 為需符合的字元長度。對於數字來說，_value_ 為需符合的整數值。對於檔案來說，_value_ 為需符合的檔案大小（單位 kb)。
 
 <a name="rule-timezone"></a>
 #### timezone
 
-The field under validation must be a valid timezone identifier according to the `timezone_identifiers_list` PHP function.
+欄位值透過 PHP `timezone_identifiers_list` 函式來驗證是否為有效的時區。
 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
-The field under validation must be unique on a given database table. If the `column` option is not specified, the field name will be used.
+欄位值在給定的資料庫中需為唯一值。如果 `column（欄位）` 選項沒有指定，將會使用欄位名稱。
 
-#### Basic Usage Of Unique Rule
+#### 唯一(Unique)規則的基本用法
 
 	'email' => 'unique:users'
 
-#### Specifying A Custom Column Name
+#### 指定一個自訂的欄位名稱
 
 	'email' => 'unique:users,email_address'
 
-#### Forcing A Unique Rule To Ignore A Given ID
+#### 強制唯一規則忽略指定的 ID
 
 	'email' => 'unique:users,email_address,10'
 
-#### Adding Additional Where Clauses
+#### 增加額外的 Where 條件
 
-You may also specify more conditions that will be added as "where" clauses to the query:
+你也可以指定更多的條件式到 "where" 查詢語句中：
 
 	'email' => 'unique:users,email_address,NULL,id,account_id,1'
 
-In the rule above, only rows with an `account_id` of `1` would be included in the unique check.
+上述規則為只有 `account_id` 為 `1` 的資料列會做唯一規則的驗證。
 
 <a name="rule-url"></a>
 #### url
 
-The field under validation must be formatted as an URL.
+欄位值需符合 URL 的格式。
 
-> **Note:** This function uses PHP's `filter_var` method.
+> **注意:** 此函式會使用 PHP `filter_var` 方法驗證。
 
 <a name="conditionally-adding-rules"></a>
-## Conditionally Adding Rules
+## 有條件新增規則
 
-In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
+某些情況下，你可能 **只想** 當欄位有值時，才進行驗證。只要增加 `sometimes` 條件進條件列表中，就可以快速達成：
 
 	$v = Validator::make($data, array(
 		'email' => 'sometimes|required|email',
 	));
 
-In the example above, the `email` field will only be validated if it is present in the `$data` array.
+在上述範例中，`email` 欄位只會在當其在 `$data` 陣列中有值的情況下才會被驗證。
 
-#### Complex Conditional Validation
+#### 複雜的條件式驗證
 
-Sometimes you may wish to require a given field only if another field has a greater value than 100. Or you may need two fields to have a given value only when another field is present. Adding these validation rules doesn't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
+有時，你可以希望給定欄位在其他欄位有超過 100 時為必填。或者你希望兩個欄位，當其一欄位有值時，另一欄位將會有一個給定的值。增加這樣的驗證條件並不痛苦。首先，利用你尚未更動的 _靜態規則_ 創建一個 `Validator` 實例：
 
 	$v = Validator::make($data, array(
 		'email' => 'required|email',
 		'games' => 'required|numeric',
 	));
 
-Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game re-sell shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
+假設我們的網頁應用程式是專為遊戲收藏家所設計。如果遊戲收藏家收藏超過一百款遊戲，我們希望他們說明為什麼他們擁有這麼多遊戲。像是，可能他們經營一家二手遊戲商店，或是他們可能只是享受收集的樂趣。有條件的加入此需求，我們可以在 `Validator` 實例中使用 `sometimes` 方法。
 
 	$v->sometimes('reason', 'required|max:500', function($input)
 	{
 		return $input->games >= 100;
 	});
 
-The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
+傳遞至 `sometimes` 方法的第一個參數是我們要條件式認證的欄位名稱。第二個參數是我們想加入驗證規則。 `閉包（Closure）` 作為第三個參數傳入，如果回傳值為 `true` 那該規則就會被加入。這個方法可以輕而易舉的建立複雜的條件式驗證。你也可以一次對多個欄位增加條件式驗證：
 
 	$v->sometimes(array('reason', 'cost'), 'required', function($input)
 	{
 		return $input->games >= 100;
 	});
 
-> **Note:** The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used as an object to access your input and files.
+> **注意:** 傳遞至你的 `Closure` 的 `$input` 參數為 `Illuminate\Support\Fluent` 的實例且用來作為存取你的輸入及檔案的物件。
 
 <a name="custom-error-messages"></a>
-## Custom Error Messages
+## 自訂錯誤訊息
 
-If needed, you may use custom error messages for validation instead of the defaults. There are several ways to specify custom messages.
+如果需要，你可以為驗證自訂錯誤訊息取代預設錯誤訊息。這裏有幾個方式可以設定客制訊息。
 
-#### Passing Custom Messages Into Validator
+#### 傳遞客制訊息進驗證器
 
 	$messages = array(
 		'required' => 'The :attribute field is required.',
@@ -503,9 +489,9 @@ If needed, you may use custom error messages for validation instead of the defau
 
 	$validator = Validator::make($input, $rules, $messages);
 
-> *Note:* The `:attribute` place-holder will be replaced by the actual name of the field under validation. You may also utilize other place-holders in validation messages.
+> **注意:** 在驗證中，`:attribute` 佔位符會被欄位的實際名稱給取代。你也可以在驗證訊息中使用其他的佔位符。
 
-#### Other Validation Place-Holders
+#### 其他的驗證佔位符
 
 	$messages = array(
 		'same'    => 'The :attribute and :other must match.',
@@ -514,18 +500,18 @@ If needed, you may use custom error messages for validation instead of the defau
 		'in'      => 'The :attribute must be one of the following types: :values',
 	);
 
-#### Specifying A Custom Message For A Given Attribute
+#### 為特定屬性給予一個客制化訊息
 
-Sometimes you may wish to specify a custom error messages only for a specific field:
+有時你只想為一個特定欄位指定一個客制錯誤訊息：
 
 	$messages = array(
 		'email.required' => 'We need to know your e-mail address!',
 	);
 
 <a name="localization"></a>
-#### Specifying Custom Messages In Language Files
+#### 在語言檔中指定客制訊息
 
-In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
+某些狀況下，你可能希望在語言檔中設定你的客制訊息，而非直接將他們傳遞給 `Validator`。要達到目的，將你的訊息增加至 `app/lang/xx/validation.php` 檔案的 `custom` 陣列中。
 
 	'custom' => array(
 		'email' => array(
@@ -534,28 +520,29 @@ In some cases, you may wish to specify your custom messages in a language file i
 	),
 
 <a name="custom-validation-rules"></a>
-## Custom Validation Rules
+## 自訂驗證規則
 
-#### Registering A Custom Validation Rule
+#### 註冊自訂驗證規則
 
-Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
+Laravel 提供了各種有用的驗證規則，但是，你可能希望可以設定一些自己專用的。註冊自訂的驗證規則的方法之一就是使用 `Validator::extend` 方法：
 
 	Validator::extend('foo', function($attribute, $value, $parameters)
 	{
 		return $value == 'foo';
 	});
 
-The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
+客制驗證器閉包接收三個參數：要被驗證的 `$attribute(屬性)` 的名稱，屬性的值 `$value`，傳遞至驗證規則的 `$parameters` 陣列。
 
-You may also pass a class and method to the `extend` method instead of a Closure:
+你同樣可以傳遞一個類別和方法到 `extend` 方法中，取代原本的閉包：
 
 	Validator::extend('foo', 'FooValidator@validate');
 
-Note that you will also need to define an error message for your custom rules. You can do so either using an inline custom message array or by adding an entry in the validation language file.
+注意,你同時需要為你的自訂規則訂立一個錯誤訊息。你可以使用行內自訂訊息陣列或是在認證語言檔裡新增。
 
-#### Extending The Validator Class
+#### 擴展 Validator 類別
 
-Instead of using Closure callbacks to extend the Validator, you may also extend the Validator class itself. To do so, write a Validator class that extends `Illuminate\Validation\Validator`. You may add validation methods to the class by prefixing them with `validate`:
+除了使用閉包回呼(Closure callbacks)來擴展 Validator 外，你一樣可以直接擴展 Validator 類別。你可以寫一個擴展自 `Illuminate\Validation\Validator` 的驗證器類別。你也可以增加驗證方法到以 `validate` 為開頭的類別中：
+
 
 	<?php
 
@@ -570,21 +557,21 @@ Instead of using Closure callbacks to extend the Validator, you may also extend 
 
 #### Registering A Custom Validator Resolver
 
-Next, you need to register your custom Validator extension:
+接下來，你需要註冊你自訂驗證器擴展：
 
 	Validator::resolver(function($translator, $data, $rules, $messages)
 	{
 		return new CustomValidator($translator, $data, $rules, $messages);
 	});
 
-When creating a custom validation rule, you may sometimes need to define custom place-holder replacements for error messages. You may do so by creating a custom Validator as described above, and adding a `replaceXXX` function to the validator.
+當創建自訂驗證規則時，你可能有時需要為錯誤訊息定義客制化的佔位符。你可以如上所述創建一個自訂的驗證器，然後增加 `replaceXXX` 函式進驗證器中。
 
 	protected function replaceFoo($message, $attribute, $rule, $parameters)
 	{
 		return str_replace(':foo', $parameters[0], $message);
 	}
 
-If you would like to add a custom message "replacer" without extending the `Validator` class, you may use the `Validator::replacer` method:
+如果你想要增加一個自訂訊息 "replacer" 但不擴展 `Validator` 類別，你可以使用 `Validator::replacer` 方法：
 
 	Validator::replacer('rule', function($message, $attribute, $rule, $parameters)
 	{
