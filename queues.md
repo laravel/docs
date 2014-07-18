@@ -200,6 +200,10 @@ Once the queues have been drained and your fresh code has been deployed to your 
 
 	supervisorctl start worker-1
 
+However, the easiest way to restart your workers is to include the following command in your deployment script:
+
+	php artisan queue:restart
+
 <a name="push-queues"></a>
 ## Push Queues
 
