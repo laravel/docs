@@ -227,11 +227,17 @@ If it becomes necessary for you to add additional routes to a resource controlle
 <a name="handling-missing-methods"></a>
 ## Handling Missing Methods
 
-A catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the method and parameter array for the request:
+A catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod` or `__call` (depending upon the type of controller), and receives the method and parameter array for the request:
 
-#### Defining A Catch-All Method
+#### Defining A Catch-All Method For Basic Controllers
 
 	public function missingMethod($parameters = array())
+	{
+		//
+	}
+	
+#### Defining A Catch-All Method for resource controllers
+	public function __call($method, $parameters)
 	{
 		//
 	}
