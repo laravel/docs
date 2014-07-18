@@ -17,6 +17,8 @@ The `array_add` function adds a given key / value pair to the array if the given
 
 	$array = array_add($array, 'key', 'value');
 
+	// array('foo' => 'bar', 'key' => 'value');
+
 ### array_divide
 
 The `array_divide` function returns two arrays, one containing the keys, and the other containing the values of the original array.
@@ -24,6 +26,9 @@ The `array_divide` function returns two arrays, one containing the keys, and the
 	$array = array('foo' => 'bar');
 
 	list($keys, $values) = array_divide($array);
+
+	// $keys === array('foo')
+	// $values === array('bar')
 
 ### array_dot
 
@@ -65,6 +70,8 @@ The `array_first` method returns the first element of an array passing a given t
 		return $value >= 150;
 	});
 
+	// 200
+
 A default value may also be passed as the third parameter:
 
 	$value = array_first($array, $callback, $default);
@@ -100,9 +107,11 @@ The `array_flatten` method will flatten a multi-dimensional array into a single 
 
 The `array_forget` method will remove a given key / value pair from a deeply nested array using "dot" notation.
 
-	$array = array('names' => array('joe' => array('programmer')));
+	$array = array('names' => array('joe' => array('programmer'), 'taylor' => array('editor')));
 
 	array_forget($array, 'names.joe');
+
+	// array('names' => array('taylor' => array('editor')));
 
 ### array_get
 
@@ -111,6 +120,8 @@ The `array_get` method will retrieve a given value from a deeply nested array us
 	$array = array('names' => array('joe' => array('programmer')));
 
 	$value = array_get($array, 'names.joe');
+
+	// array('programmer')
 
 > **Note:** Want something like `array_get` but for objects instead? Use `object_get`.
 
@@ -121,6 +132,8 @@ The `array_only` method will return only the specified key / value pairs from th
 	$array = array('name' => 'Joe', 'age' => 27, 'votes' => 1);
 
 	$array = array_only($array, array('name', 'votes'));
+
+	// array('name' => 'Joe', 'votes' => 1);
 
 ### array_pluck
 
@@ -140,6 +153,9 @@ The `array_pull` method will return a given key / value pair from the array, as 
 
 	$name = array_pull($array, 'name');
 
+	// $array === array('age' => 27);
+	// $name === 'Taylor';
+
 ### array_set
 
 The `array_set` method will set a value within a deeply nested array using "dot" notation.
@@ -147,6 +163,8 @@ The `array_set` method will set a value within a deeply nested array using "dot"
 	$array = array('names' => array('programmer' => 'Joe'));
 
 	array_set($array, 'names.editor', 'Taylor');
+
+	// array('names' => array('programmer' => 'Joe', 'editor' => 'Taylor'));
 
 ### array_sort
 
@@ -162,6 +180,8 @@ The `array_sort` method sorts the array by the results of the given Closure.
 		return $value['name'];
 	}));
 
+	// array(array('name' => 'Barry'), array('name' => 'Jill'));
+
 ### array_where
 
 Filter the array using the given Closure.
@@ -173,7 +193,7 @@ Filter the array using the given Closure.
 		return is_string($value);
 	});
 
-	// Array ( [1] => 200 [3] => 400 )
+	// array(1 => 200, 3 => 400)
 
 ### head
 
@@ -406,6 +426,8 @@ Dump the given variable and end execution of the script.
 If the given value is a `Closure`, return the value returned by the `Closure`. Otherwise, return the value.
 
 	$value = value(function() { return 'bar'; });
+
+	// bar
 
 ### with
 
