@@ -199,6 +199,14 @@ If you are using Supervisor or Laravel Forge, which utilizes Supervisor, you may
 Once the queues have been drained and your fresh code has been deployed to your server, you should restart the daemon queue work. If you are using Supervisor, this can typically be done with a command like this:
 
 	supervisorctl start worker-1
+	
+### Coding For Daemon Queue Workers
+
+As daemon queue workers do not boot the framework each time a job is run, and are long-running, there are some considerations to make when coding your jobs.
+
+You should ensure you clean up heavy resources before your job finishes to avoid memory leaks. For example, if you are doing a lot of image manipulation with the GD library, you should free the memory after you're finished with the [imagedestroy](http://php.net/manual/en/function.imagedestroy.php) function.
+
+You should also be careful when interacting with a database or other networked resources in your jobs. The initial connection to the database when Laravel boots can time out, so you should ensure you have a fresh connection using `DB::reconnect()` as it could be a long time between jobs.
 
 <a name="push-queues"></a>
 ## Push Queues
