@@ -86,7 +86,7 @@ If `app/controllers/BaseController.php` has a `use` statement at the top, change
 
 ### Password Reminders Updates
 
-Password reminders have been overhauled for greater flexibility. You may examine the new stub controller by running the `php artisan auth:reminders-controller` Artisan command. You may also browse the [updated documentation](/docs/security#password-reminders-and-reset) and update your application accordingly.
+Password reminders have been overhauled for greater flexibility. You may examine the new stub controller by running the `php artisan auth:reminders-controller` Artisan command (only run it after completing the changes below). You may also browse the [updated documentation](/docs/security#password-reminders-and-reset) and update your application accordingly.
 
 Update your `app/lang/en/reminders.php` language file to match [this updated file](https://github.com/laravel/laravel/blob/master/app/lang/en/reminders.php).
 
@@ -110,7 +110,7 @@ The current route is now accessed via `Route::current()` instead of `Route::getC
 
 ### Composer Update
 
-Once you have completed the changes above, you can run the `composer update` function to update your core application files! If you receive class load errors, try running the `update` command with the `--no-scripts` option enabled like so: `composer update --no-scripts`.
+Once you have completed the changes above, you can run the `composer update` function to update your core application files! If you receive class load errors, try running the `update` command with the `--no-scripts` option enabled like so: `composer update --no-scripts` (On Linux, you may have to run `sudo composer update` if you are getting Permission Denied errors).
 
 ### Wildcard Event Listeners
 
