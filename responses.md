@@ -133,14 +133,13 @@ The sub-view can then be rendered from the parent view:
 		</body>
 	</html>
 
-#### Checking if a view exists
+#### Determining If A View Exists
 
-Eventually you will need to check if a view exists in order to render it. To do it, simply use the `View::exists` method:
+If you need to check if a view exists, use the `View::exists` method:
 
-	$view = 'emails.customer';
-
-	if (View::exists($view)) {
-		// render
+	if (View::exists('emails.customer'))
+	{
+		//
 	}
 
 <a name="view-composers"></a>
