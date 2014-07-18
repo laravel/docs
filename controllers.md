@@ -236,7 +236,7 @@ A catch-all method may be defined which will be called when no other matching me
 		//
 	}
 	
-#### Defining A Catch-All Method for resource controllers
+#### Defining A Catch-All Method For Resource Controllers
 	public function __call($method, $parameters)
 	{
 		//
