@@ -2,6 +2,10 @@
 
 The `Form` object includes methods related to creating HTML forms. It's useful for makig sign-in or data entry forms on your pages.
 
+Most methods have one or two required arguments, and allow a third optional argument as an array. The array can contain attributes like `class` or `lang` for extra customization. Here is a blade example:
+
+    {{ Class::method('argument1', 'argument2', array('attribute1' => 'value1', 'attribute2' => 'value2')) }}
+
 ___
 
 ### Form::open()
@@ -40,3 +44,29 @@ This method creates a form label, which is text next to another form element.
 
     {{ Form::label('name', 'Name') }}
 
+___
+
+### Auth::select()
+
+This method creates a drop-down selector form element.
+
+#### Usage
+	
+	<?php $ITEMS = array('1' => 'ITEM1', '2' => 'ITEM2') ?>
+	{{ Form::select('NAME', $ITEMS, 'NULL', array('ATTRIBUTE' => 'VALUE')) }}
+
+`NAME` should be the name of the form element. It's required.
+
+`$ITEMS` should be an array with the options as the key and the plain text the form displays as the value. It is required.
+
+`NULL` ???
+
+`ATRIBUTE` and `VALUE` can be any additionaly HTML attributes added to this page element. They are not required.
+
+#### Blade Example
+
+	<?php $outList = array('0' => 'Fine', '1' => 'Iffy', '2' => 'Doomed'); ?>
+	{{ Form::label('outlook', 'Outlook') }}
+	{{ Form::select('outlook', $outList, 'NULL', array('class' => 'form-control')) }}
+
+___

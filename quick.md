@@ -7,6 +7,7 @@
 - [Creating A Migration](#creating-a-migration)
 - [Eloquent ORM](#eloquent-orm)
 - [Displaying Data](#displaying-data)
+- [Next Steps](#next-steps)
 - [Deploying Your Application](#deploying-your-application)
 
 <a name="installation"></a>
@@ -41,12 +42,14 @@ Typically, you may use a web server such as Apache or Nginx to serve your Larave
 <a name="directories"></a>
 ### Directory Structure
 
-After installing the framework, take a glance around the project to familiarize yourself with the directory structure. The `app` directory contains folders such as `views`, `controllers`, and `models`. Most of your application's code will reside somewhere in this directory. You may also wish to explore the `app/config` directory and the configuration options that are available to you.
+After instalatoin, take a look around to familiarize yourself with the directory structure. 
+
+The `app` directory will contain most of your project and contains folders such as `views`, `controllers`, and `models`. You may also wish to explore the `app/config` directory and the [configuration](/docs/configuration) options.
 
 <a name="local-development-environment"></a>
 ## Local Development Environment
 
-In the past, configuring a local PHP development environment on your machine was a headache. Installing the proper version of PHP, required extensions, and other needed components is time consuming and confusing. Instead, consider using [Laravel Homestead](/docs/homestead). Homestead is a simple virtual machine designed for Laravel and [Vagrant](http://vagrantup.com). Since the Homestead Vagrant box is pre-packaged with all of the software you need to build robust PHP applications, you can create a virtualized, isolated development environment in seconds. Here is a list of some of the goodies included with Homestead:
+Laravel provides the optional [Laravel Homestead](/docs/homestead) virtual machine, designed to take frustration out of managing servers and dependencies. Homestead uses [Vagrant](http://vagrantup.com) and is pre-packaged with all required software, taking seconds to deploy. It includes:
 
 - Nginx
 - PHP 5.5
@@ -55,7 +58,7 @@ In the past, configuring a local PHP development environment on your machine was
 - Memcached
 - Beanstalk
 
-Don't worry, even though "virtualized" sounds complicated, it's painless. VirtualBox and Vagrant, which are Homestead's two dependencies, both include simple, graphical installers for all popular operating systems. Check out the [Homestead documentation](/docs/homestead) to get started.
+Both Homestead's dependencies, VirtualBox and Vagrant, include simple, graphical installers for all popular operating systems. Check out the [Homestead documentation](/docs/homestead) to get started.
 
 <a name="routing"></a>
 ## Routing
@@ -147,17 +150,17 @@ If you wish to rollback a migration, you may issue the `migrate:rollback` comman
 <a name="eloquent-orm"></a>
 ## Eloquent ORM
 
-Laravel ships with a superb ORM: Eloquent. If you have used the Ruby on Rails framework, you will find Eloquent familiar, as it follows the ActiveRecord ORM style of database interaction.
+Laravel comes with a superb ORM: Eloquent, which is similar to the Ruby on Rails ORM, ActiveRecord.
 
-First, let's define a model. An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Don't worry, it will all make sense soon! Models are typically stored in the `app/models` directory. Let's define a `User.php` model in that directory like so:
+An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Models are typically stored in the `app/models` directory. You define a `User.php` model like so:
 
 	class User extends Eloquent {}
 
-Note that we do not have to tell Eloquent which table to use. Eloquent has a variety of conventions, one of which is to use the plural form of the model name as the model's database table. Convenient!
+We do not have to tell Eloquent which table to use. Eloquent will automaiclay use the plural form of the model name as the table. 
 
-Using your preferred database administration tool, insert a few rows into your `users` table, and we'll use Eloquent to retrieve them and pass them to our view.
+Using your preferred database administration tool, insert a few rows into your `users` table, and use Eloquent to retrieve them and pass them to our view.
 
-Now let's modify our `/users` route to look like this:
+Now modify your `/users` route to look like this:
 
 	Route::get('users', function()
 	{
@@ -166,14 +169,12 @@ Now let's modify our `/users` route to look like this:
 		return View::make('users')->with('users', $users);
 	});
 
-Let's walk through this route. First, the `all` method on the `User` model will retrieve all of the rows in the `users` table. Next, we're passing these records to the view via the `with` method. The `with` method accepts a key and a value, and is used to make a piece of data available to a view.
-
-Awesome. Now we're ready to display the users in our view!
+Here, the `all` method on the `User` model will retrieve all of the rows in the `users` table. Next, it passes these records to the view via the `with` method, which accepts a key and value. The next section tells how to use the data in a view. 
 
 <a name="displaying-data"></a>
 ## Displaying Data
 
-Now that we have made the `users` available to our view, we can display them like so:
+Now that `users` are available to our view, we can display them:
 
 	@extends('layout')
 
@@ -183,13 +184,22 @@ Now that we have made the `users` available to our view, we can display them lik
 		@endforeach
 	@stop
 
-You may be wondering where to find our `echo` statements. When using Blade, you may echo data by surrounding it with double curly braces. It's a cinch. Now, you should be able to hit the `/users` route and see the names of your users displayed in the response.
+There are no `echo` statements. With Blade, you may echo data by putting it in double curly braces. Navigate to the `/users` route in your web browser and see the names of your users displayed.
 
-This is just the beginning. In this tutorial, you've seen the very basics of Laravel, but there are so many more exciting things to learn. Keep reading through the documentation and dig deeper into the powerful features available to you in [Eloquent](/docs/eloquent) and [Blade](/docs/templates). Or, maybe you're more interested in [Queues](/docs/queues) and [Unit Testing](/docs/testing). Then again, maybe you want to flex your architecture muscles with the [IoC Container](/docs/ioc). The choice is yours!
+<a name="next-steps"></a>
+
+This tutorial showed the basics of Laveral, but there's much more.
+
+See [Configuration](/docs/configuration) for important information on settgin up Laravel.
+
+
+Keep reading the documentation to dig deeper into [Eloquent](/docs/eloquent) and [Blade](/docs/templates). There's also [Queues](/docs/queues), [Unit Testing](/docs/testing) and [IoC Containers](/docs/ioc).
+
+
 
 <a name="deploying-your-application"></a>
 ## Deploying Your Application
 
-One of Laravel's goals is to make PHP application development enjoyable from download to deploy, and [Laravel Forge](https://forge.laravel.com) provides a simple way to deploy your Laravel applications onto blazing fast servers. Forge can configure and provision servers on DigitalOcean, Linode, Rackspace, and Amazon EC2. Like Homestead, all of the latest goodes are included: Nginx, PHP 5.5, MySQL, Postgres, Redis, Memcached, and more. Forge "Quick Deploy" can even deploy your code for you each time you push changes out to Github or Bitbucket!
+[Laravel Forge](https://forge.laravel.com) provides a simple way to deploy your Laravel applications onto blazing fast servers. Forge can configure and provision servers on DigitalOcean, Linode, Rackspace, and Amazon EC2. Like Homestead, all of the latest are included: Nginx, PHP 5.5, MySQL, Postgres, Redis, Memcached, and more. Forge "Quick Deploy" can even deploy your code for you each time you push changes out to Github or Bitbucket!
 
 On top of that, Forge can help you configure queue workers, SSL, Cron jobs, sub-domains, and more. For more information, visit the [Forge website](https://forge.laravel.com).
