@@ -13,21 +13,35 @@
 <a name="installation"></a>
 ## Installation
 
+There's more than one way to install Laravel. Via installer, Composer or download.
+
 ### Via Laravel Installer
 
-First, download the [Laravel installer PHAR archive](http://laravel.com/laravel.phar). For convenience, rename the file to `laravel` and move it to `/usr/local/bin`. Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer.
+The Laravel Installer is a simple command-line tool used to build the Laravel environment on your system. It's helpful for creating multiple Laravel projects without heving to go to the web for files each time, and is faster than Composer. To use it on **Mac and Linux**,
 
-### Via Composer
+1. Download the [Laravel installer](http://laravel.com/laravel.phar). 
 
-The Laravel framework utilizes [Composer](http://getcomposer.org) for installation and dependency management. If you haven't already, start by [installing Composer](http://getcomposer.org/doc/00-intro.md).
+2. Rename the file to `laravel` and move it to `/usr/local/bin`. 
 
-Now you can install Laravel by issuing the following command from your terminal:
+3. Open Terminal and enter `laravel new`, followed by a directory, create a fresh Laravel installation. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed.
 
-	composer create-project laravel/laravel your-project-name --prefer-dist
+### Via Composer Create-Project
 
-This command will download and install a fresh copy of Laravel in a new `your-project-name` folder within your current directory.
+You may also install Laravel by issuing the Composer `create-project` command in your terminal:
 
-If you prefer, you can alternatively download a copy of the [Laravel repository from Github](https://github.com/laravel/laravel/archive/master.zip) manually. Next run the `composer install` command in the root of your manually created project directory. This command will download and install the framework's dependencies.
+	composer create-project laravel/laravel --prefer-dist
+
+### Via Download
+
+Laravel files can be downloaded manually, but you must still use Composer to get the dependencies (or manually get them yourself). This method also requires Git.
+
+1. Make sure Composer is installed (see Install Composer above).
+
+2. Download the [latest version](https://github.com/laravel/laravel/archive/master.zip) of Laravel and extract it to your project folder. 
+
+3. In the root of your Laravel project, run `php composer install` (or `composer install`) to install all of the framework's dependencies.
+
+4. If you want to update the Laravel framework, run `php composer update`
 
 ### Permissions
 
@@ -63,14 +77,16 @@ Both Homestead's dependencies, VirtualBox and Vagrant, include simple, graphical
 <a name="routing"></a>
 ## Routing
 
-To get started, let's create our first route. In Laravel, the simplest route is a route to a Closure. Pop open the `app/routes.php` file and add the following route to the bottom of the file:
+Routing lets you define what happens when users visit a certain URL. In Laravel, the simplest route is a route to a Closure. Open the `app/routes.php` file and add the following route to the bottom of the file:
 
 	Route::get('users', function()
 	{
 		return 'Users!';
 	});
 
-Now, if you hit the `/users` route in your web browser, you should see `Users!` displayed as the response. Great! You've just created your first route.
+Visit `http://your-project.tld/users` in your web browser, replacing `your-project.tld` with your actual website/local URL, and you should see `Users!` displayed as the response.
+
+In this document, we'll abbreviate routes like this to just `/users`.
 
 Routes can also be attached to controller classes. For example:
 
@@ -81,7 +97,7 @@ This route informs the framework that requests to the `/users` route should call
 <a name="creating-a-view"></a>
 ## Creating A View
 
-Next, we'll create a simple view to display our user data. Views live in the `app/views` directory and contain the HTML of your application. We're going to place two new views in this directory: `layout.blade.php` and `users.blade.php`. First, let's create our `layout.blade.php` file:
+A view is an output of data and where you'll put most of your "front-end" code, mostly HTML. We're going to create two new views in the `app/views` directory: `layout.blade.php` and `users.blade.php`. First, in your `layout` view, enter:
 
 	<html>
 		<body>
@@ -91,7 +107,7 @@ Next, we'll create a simple view to display our user data. Views live in the `ap
 		</body>
 	</html>
 
-Next, we'll create our `users.blade.php` view:
+Next, in your `users` view:
 
 	@extends('layout')
 
@@ -99,16 +115,16 @@ Next, we'll create our `users.blade.php` view:
 		Users!
 	@stop
 
-Some of this syntax probably looks quite strange to you. That's because we're using Laravel's templating system: Blade. Blade is very fast, because it is simply a handful of regular expressions that are run against your templates to compile them to pure PHP. Blade provides powerful functionality like template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
+This uses Laravel's templating system: Blade. Blade provides template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
 
-Now that we have our views, let's return it from our `/users` route. Instead of returning `Users!` from the route, return the view instead:
+Now let's return it from our `/users` route. Instead of returning `Users!` from the route, return the view instead:
 
 	Route::get('users', function()
 	{
 		return View::make('users');
 	});
 
-Wonderful! Now you have setup a simple view that extends a layout. Next, let's start working on our database layer.
+Now you have setup a simple view that extends a layout. Next, let's start working on our database layer.
 
 <a name="creating-a-migration"></a>
 ## Creating A Migration
