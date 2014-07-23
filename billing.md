@@ -120,12 +120,12 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
 	$user->subscription()->increment();
 
 	// Add five to the subscription's current quantity...
-	$user->subscription()->increment(5)
+	$user->subscription()->increment(5);
 
 	$user->subscription->decrement();
 
 	// Subtract five to the subscription's current quantity...
-	$user->subscription()->decrement(5)
+	$user->subscription()->decrement(5);
 
 <a name="cancelling-a-subscription"></a>
 ## Cancelling A Subscription
