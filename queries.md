@@ -191,7 +191,6 @@ Query產生器也可以寫join語法，看看下面的範例：
 ## Aggregates
 
 Query產生器也提供各式各樣的aggregate方法，像是count、max、min、avg、及sum
-The query builder also provides a variety of aggregate methods, such as `count`, `max`, `min`, `avg`, and `sum`.
 
 #### 使用 Aggregate 方法
 
@@ -241,17 +240,18 @@ The query builder also provides a variety of aggregate methods, such as `count`,
 		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
-#### Inserting Records Into A Table With An Auto-Incrementing ID
+#### 新增自動增加(Auto-Incrementing) ID的資料至資料表
 
-If the table has an auto-incrementing id, use `insertGetId` to insert a record and retrieve the id:
+如果資料表有自動增加的ID，可以使用"insertGetId"新贓資料並回傳該ID：
 
 	$id = DB::table('users')->insertGetId(
 		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
-> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
+> **注意:** 當使用PostgreSQL時，insertGetId方法期望自動增加的欄位是以"id"為命名。
+When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
 
-#### Inserting Multiple Records Into A Table
+#### 新增多筆資料進資料表
 
 	DB::table('users')->insert(array(
 		array('email' => 'taylor@example.com', 'votes' => 0),
