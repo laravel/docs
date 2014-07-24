@@ -167,9 +167,10 @@ Command  | Description
 
 Laravel also provides support for adding foreign key constraints to your tables:
 
+	$table->integer('user_id')->unsigned();
 	$table->foreign('user_id')->references('id')->on('users');
 
-In this example, we are stating that the `user_id` column references the `id` column on the `users` table.
+In this example, we are stating that the `user_id` column references the `id` column on the `users` table. Make sure to create the foreign key column first.
 
 You may also specify options for the "on delete" and "on update" actions of the constraint:
 
