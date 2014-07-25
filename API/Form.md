@@ -6,7 +6,14 @@ Most methods have one or two required arguments, and allow a third optional argu
 
     {{ Class::method('argument1', 'argument2', array('attribute1' => 'value1', 'attribute2' => 'value2')) }}
 
+- [Open](#open)
+- [Label](#lable)
+- [Select](#select)
+- [Close](#close)
+
 ___
+
+<a name="open"></a>
 
 ### Form::open()
 
@@ -28,6 +35,8 @@ This method begins the form. It needs to be placed before the other elemnts, and
 
 ___
 
+<a name="label"></a>
+
 ### Auth::label()
 
 This method creates a form label, which is text next to another form element.
@@ -45,6 +54,8 @@ This method creates a form label, which is text next to another form element.
     {{ Form::label('name', 'Name') }}
 
 ___
+
+<a name="select"></a>
 
 ### Auth::select()
 
@@ -70,3 +81,19 @@ This method creates a drop-down selector form element.
 	{{ Form::select('outlook', $outList, 'NULL', array('class' => 'form-control')) }}
 
 ___
+
+<a name="close"></a>
+
+### Form::close()
+
+This method ends the form. It needs to be placed after all the other elemnts, and needs to follow a `Form::open()` as the first `Form` item.
+
+#### Usage
+
+    Form::close();
+
+This method needs no arguments.
+
+#### Blade examples
+
+    {{ Form::close() }}

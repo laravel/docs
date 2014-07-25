@@ -2,7 +2,13 @@
 
 The HTML object includes methods to create links, include scripts or define styles. They are shorthand ways to return common HTML elements.
 
+- [Style](#style)
+- [Script](#script)
+- [Link](#link)
+
 ___
+
+<a name="style"></a>
 
 ### HTML::style()
 
@@ -18,6 +24,8 @@ This method sets the styesheet of a page. It returns the HTML element `link href
 
 ___
 
+<a name="script"></a>
+
 ### HTML::script()
 
 This method loads a script. It returns the HTML element `<script>` and sets the type. It's useful for initiating javascript in the `head` or elsewhere.
@@ -31,6 +39,8 @@ This method loads a script. It returns the HTML element `<script>` and sets the 
     {{ HTML::script('../js/bootstrap.min.js') }}
 
 ___
+
+<a name="link"></a>
 
 ### HTML::link()
 

@@ -4,9 +4,20 @@ This object contains methods to interact with the database.
 
 Set up your database information in the `config/database.php` file, or `config/local/database.php`, or whichever envionment you are using or plan to use. Also set up environment detection in `bootstrap/start.php`. See [Configuration](/doc/configuration.php) for more details.
 
+- [Select](#select)
+- [Insert](#insert)
+- [Update](#update)
+- [Delete](#delete)
+
+- [Complete, auto-generated docs](/api/4.2/Illuminate/Database/Connection.html)
+
 ___
 
+<a name="select"></a>
+
 ### DB::select()
+
+This method selects and returns all results for a query. To return one result, see [selectOne](#selectOne).
 
 #### Usage
 
@@ -16,12 +27,31 @@ ___
 
 ___
 
+<a name="selectOne"></a>
+
+### DB::selectOne()
+
+This method selects and returns one result for a query. To return all results, see [select](#select).
+
+#### Usage
+
+
+
+#### Examples
+
+___
+
+<a name="insert"></a>
 
 ### DB::insert()
 
 This method inserts a new row into a table with the provided values.
 
-#### Usage
+#### Query Builder Usage
+
+	DB::table('TABLE_NAME')->insert();
+
+#### SQL Usage
 
 	DB::insert('INSERT_QUERY', PARAMETERS)
 
@@ -36,6 +66,7 @@ This method inserts a new row into a table with the provided values.
 
 ___
 
+<a name="update"></a>
 
 ### DB::update()
 
@@ -48,12 +79,17 @@ ___
 
 ___
 
+<a name="delete"></a>
 
 ### DB::delete()
 
-#### Usage
+#### Query Builder Usage
 
+	DB::table()->where(COLUMN, VALUE)->delete();
 
+`COLUMN` should be the tables column that you want to search in.
+
+`VALUE` should be the number or string you want to find, then delete the row of. 
 
 #### Examples
 

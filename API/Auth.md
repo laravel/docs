@@ -2,7 +2,12 @@
 
 The Auth object includes methods related to user authentication (sign-in, logout). 
 
+
+- [User](#user)
+- [Logout](#logout)
 ___
+
+<a name="user"></a>
 
 ### Auth::user()
 
@@ -28,6 +33,8 @@ Echoes the username of the signed in user.
     {{ Auth::user()->username }}
 
 ___
+
+<a name="logout"></a>
 
 ### Auth::logout()
 
