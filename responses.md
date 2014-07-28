@@ -133,6 +133,15 @@ The sub-view can then be rendered from the parent view:
 		</body>
 	</html>
 
+#### Determining If A View Exists
+
+If you need to check if a view exists, use the `View::exists` method:
+
+	if (View::exists('emails.customer'))
+	{
+		//
+	}
+
 <a name="view-composers"></a>
 ## View Composers
 
@@ -149,10 +158,10 @@ Now each time the `profile` view is rendered, the `count` data will be bound to 
 
 You may also attach a view composer to multiple views at once:
 
-    View::composer(array('profile','dashboard'), function($view)
-    {
-        $view->with('count', User::count());
-    });
+	View::composer(array('profile','dashboard'), function($view)
+	{
+		$view->with('count', User::count());
+	});
 
 If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC Container](/docs/ioc), you may do so:
 
