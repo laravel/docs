@@ -4,12 +4,29 @@ This object contains methods to interact with the database.
 
 Set up your database information in the `config/database.php` file, or `config/local/database.php`, or whichever envionment you are using or plan to use. Also set up environment detection in `bootstrap/start.php`. See [Configuration](/doc/configuration.php) for more details.
 
+- [Table](#table)
 - [Select](#select)
+- [First](#first)
 - [Insert](#insert)
 - [Update](#update)
 - [Delete](#delete)
+- [Update](#update)
 
 - [Complete, auto-generated docs](/api/4.2/Illuminate/Database/Connection.html)
+
+___
+
+<a name="table"></a>
+
+### DB::table()
+
+This method specifies which table to perform the database actions in. It's usually used before [Where](#where)or other methods when using Query Builder.
+
+#### Usage
+
+	
+
+#### Examples
 
 ___
 
@@ -22,6 +39,20 @@ This method selects and returns all results for a query. To return one result, s
 #### Usage
 
 
+
+#### Examples
+
+___
+
+<a name="first"></a>
+
+### DB::first()
+
+This method executes a query and returns just the first result.
+
+#### Usage
+
+	
 
 #### Examples
 
@@ -70,12 +101,18 @@ ___
 
 ### DB::update()
 
-#### Usage
+This method updates an existin database row.
+
+#### Query Builder Usage
+	
 
 
+#### Quer Builder Examples
 
-#### Examples
+Gets input, finds specified row by `id`, updates row `visible` to `1`.
 
+	$input = Input::all();
+	DB::table('products')->where('id', '=', $input['approve'])->update(array('visible' => '1'));
 
 ___
 

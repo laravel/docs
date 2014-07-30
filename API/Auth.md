@@ -5,6 +5,7 @@ The Auth object includes methods related to user authentication (sign-in, logout
 
 - [User](#user)
 - [Logout](#logout)
+- [Attempt](#attempt)
 ___
 
 <a name="user"></a>
@@ -48,4 +49,28 @@ There are no arguments needed.
 
     Auth::logout();
     return Redirect::to('/');
+
+___
+
+<a name="attempt"></a>
+
+### Auth::attempt()
+
+This method attempts to log a user in using their credentials. 
+
+#### Usage
+
+	Auth::attempt(CREDENTIALS_ARRAY);
+
+`CREDENTIALS_ARRAY` should be an associative array with the user's username/email and password.
+
+#### Examples
+	
+Gets a user's inputs, creates an array, and processes the sign-in.
+
+	$inputs = Inputs::all();
+    $credentials = array('email' => $input['email'], 'password' => $input['password']);
+	Auth::attempt($credentials)
+
+
 
