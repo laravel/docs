@@ -101,38 +101,38 @@ Laravel 為各種不同的快取系統提供一致的 API。 快取設定檔位�
 
 > **注意:** `檔案` 或 `資料庫` 這類快取系統均不支援快取標籤. 此外, 使用帶有 "forever" 的快取標籤時, 挑選 `memcached` 這類快取系統將獲得最好的效能, 它會自動清除過期的紀錄。
 
-#### Accessing A Tagged Cache
+#### 存取快取標籤
 
-Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method.
+快取標籤允許您標記快取內的相關項目，然後使用特定名稱刷新所有快取標籤。要存取快取標籤可以使用 `tags` 方法。
 
-You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names:
+您可以儲存快取標籤，藉由將有序列表當作參數傳入，或者作為標籤名稱的有序陣列:
 
 	Cache::tags('people', 'authors')->put('John', $john, $minutes);
 
 	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
 
-You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`.
+您可以結合使用各種快取儲存方法與標籤，包含 `remember`, `forever` 和 `rememberForever`。您也可以從已標記的快取中存取項目 ，以及使用其他快取方法像是 `increment` 和 `decrement`。
 
-#### Accessing Items In A Tagged Cache
+#### 從已標記的快取中存取項目
 
-To access a tagged cache, pass the same ordered list of tags used to save it.
+要存取已標記的快取，可傳入相同的有序標籤列表。
 
 	$anne = Cache::tags('people', 'artists')->get('Anne');
 
 	$john = Cache::tags(array('people', 'authors'))->get('John');
 
-You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
+您可以刷新所有已標記的項目，使用指定名稱或名稱列表。例如，以下演示將會移除帶有 `people` 或 `authors` 或者兩者皆有的所有快取標籤，所以 "Anne" 和 "John" 皆會從快取中被移除:
 
 	Cache::tags('people', 'authors')->flush();
 
-In contrast, this statement would remove only caches tagged with `authors`, so "John" would be removed, but not "Anne".
+對照來看，以下演示將只會移除帶有 `authors` 的標籤，所以 "John" 會被移除，但是 "Anne" 不會。
 
 	Cache::tags('authors')->flush();
 
 <a name="database-cache"></a>
-## Database Cache
+## 資料庫快取
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+當使用 `資料庫` 快取系統時，您必須設定一張資料表來儲存快取項目。資料表的 `Schema` 宣告範例如下:
 
 	Schema::create('cache', function($table)
 	{
