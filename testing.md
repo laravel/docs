@@ -1,4 +1,4 @@
-# Unit Testing
+# Testing
 
 - [Introduction](#introduction)
 - [Defining & Running Tests](#defining-and-running-tests)
