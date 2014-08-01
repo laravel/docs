@@ -10,7 +10,7 @@ ___
 
 ### Route::get()
 
-
+This method defines a route that's triggered by a GET request on a url.
 
 #### Usage
 
