@@ -29,7 +29,7 @@ VALIDATION_RULES should be an associative array with the validaiton rules.
 Gets the input, sets the rules, validates and attempts `Auth` if successful. Returns "please try again" if not successful.
 
 	$input = Input::all();
-	$rules = array($email => 'required', $pass = 'required');
+	$rules = array('email' => 'required', 'password' => 'required');
 	$val = Validate::make($rules, );
 	if(val->fails())
 		return "Please try again";
