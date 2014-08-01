@@ -29,6 +29,30 @@ If you copied the `ClassLoader` call to the `AppServiceProvider` from your `star
 
 If you copied the `App::down` call from your `start/global.php` file into your new `AppServiceProvider`, you should remove this call from the provider. Instead, you may add an `if` statement to your `App::before` global filter which checks for `App::isDownForMaintenance()`. If this method return `true`, you may return any maintenance response you wish.
 
+### Compile Configuration File
+
+The `app/config/compile.php` configuration file should now follow the following format:
+
+	<?php
+
+	return [
+
+		'files' => [
+			//
+		],
+
+		'providers' => [
+			//
+		],
+
+	];
+
+The new `providers` option allows you to list service providers which return arrays of files from their `compiles` method.
+
+### Beanstalk Queuing
+
+Laravel 4.3 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"` that Laravel 4.2 required.
+
 <a name="upgrade-4.2"></a>
 ## Upgrading To 4.2 From 4.1
 

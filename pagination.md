@@ -22,6 +22,8 @@ There are several ways to paginate items. The simplest is by using the `paginate
 
 	$users = DB::table('users')->paginate(15);
 
+> **Note:** Currently, pagination operations that use a `groupBy` statement cannot be executed efficiently by Laravel. If you need to use a `groupBy` with a paginated result set, it is recommended that you query the database manually and use `Paginator::make`.
+
 #### Paginating An Eloquent Model
 
 You may also paginate [Eloquent](/docs/eloquent) models:
