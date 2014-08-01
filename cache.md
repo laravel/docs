@@ -9,7 +9,7 @@
 <a name="configuration"></a>
 ## 設定
 
-Laravel 為各種不同的快取系統提供一致的 API。 快取設定檔位在 `app/config/cache.php`。 您可以在此為應用程式指定使用哪一種快取系統，Laravel 支援各種常見的後端快取系統，像是 [Memcached](http://memcached.org) 和 [Redis](http://redis.io) .
+Laravel 為各種不同的快取系統提供一致的 API。 快取設定檔位在 `app/config/cache.php`。 您可以在此為應用程式指定使用哪一種快取系統，Laravel 支援各種常見的後端快取系統，像是 [Memcached](http://memcached.org) 和 [Redis](http://redis.io)。
 
 快取設定檔也包含多個其他選項，在檔案裡都有說明，所以請務必先閱讀過。Laravel 預設使用 `檔案` 快取系統，該系統會儲存序列化、快取物件在檔案系統中。在大型應用程式上，建議使用儲存在記憶體內的快取系統，像是 Memcached 或 APC。
 
@@ -30,9 +30,9 @@ Laravel 為各種不同的快取系統提供一致的 API。 快取設定檔位�
 
 	Cache::add('key', 'value', $minutes);
 
-	當項目確實被 **加入** 快取時，使用 `add` 方法將會回傳 `true` 否則會回傳 `false`。
+當項目確實被 **加入** 快取時，使用 `add` 方法將會回傳 `true` 否則會回傳 `false`。
 
-### 檢查快取是否存在
+#### 項目確實被  檢查快取是否存在
 
 	if (Cache::has('key'))
 	{
