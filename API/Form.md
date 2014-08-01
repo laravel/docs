@@ -11,6 +11,7 @@ Most methods have one or two required arguments, and allow a third optional argu
 - [Text](#text)
 - [Password](#password)
 - [Select](#select)
+- [Submit](#submit)
 - [Close](#close)
 
 ___
@@ -135,6 +136,30 @@ This method creates a drop-down selector form element.
 	<?php $outList = array('0' => 'Fine', '1' => 'Iffy', '2' => 'Doomed'); ?>
 	{{ Form::label('outlook', 'Outlook') }}
 	{{ Form::select('outlook', $outList, 'NULL', array('class' => 'form-control')) }}
+
+___
+
+<a name="submit"></a>
+
+### Form::submit()
+
+This method ends the form. It needs to be placed after all the other elemnts, and needs to follow a `Form::open()` as the first `Form` item.
+
+#### Usage
+
+    Form::submit(BUTTON_TEXT, array(ATTRIBUTE => VALUE));
+
+BUTTON_TEXT should be the text that will appear on the button.
+
+ATTRIBUTE should be any HTML attribute you want to add, such as `class`.
+
+VALUE should be the value of the attribute.
+
+#### Blade examples
+
+Creates a button with the label `Login` and the Bootstrap 3 classes of `btn`, `btn-primary` and `form-control`.
+
+    {{ Form::submit('Login', array('class' => 'btn btn-primary form-control')) }}
 
 ___
 
