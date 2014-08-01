@@ -30,7 +30,7 @@ Each of these managers includes an `extend` method which may be used to easily i
 <a name="where-to-extend"></a>
 ## Where To Extend
 
-This documentation covers how to extend a variety of Laravel's components, but you may be wondering where to place your extension code. Like most other bootstrapping code, you are free to place some extensions in your `start` files. Cache and Auth extensions are good candidates for this approach. Other extensions, like `Session`, must be placed in the `register` method of a service provider since they are needed very early in the request life-cycle.
+This documentation covers how to extend a variety of Laravel's components, but you may be wondering where to place your extension code. Like most other bootstrapping code, you are free to place some extensions in your service provider files. Some extensions, like `Session`, **must** be placed in the `register` method of a service provider since they are needed very early in the request life-cycle.
 
 <a name="cache"></a>
 ## Cache
@@ -85,7 +85,7 @@ Extending Laravel with a custom session driver is just as easy as extending the 
 
 ### Where To Extend The Session
 
-Session extensions need to be registered differently than other extensions like Cache and Auth. Since sessions are started very early in the request-lifecycle, registering the extensions in a `start` file will happen too late. Instead, a [service provider](/docs/ioc#service-providers) will be needed. You should place your session extension code in the `register` method of your service provider, and the provider should be placed **below** the default `Illuminate\Session\SessionServiceProvider` in the `providers` configuration array.
+Since sessions are started very early in the request-lifecycle, session extensions need to be registered differently than other extensions like Cache and Auth. Instead, a [service provider](/docs/ioc#service-providers) **must** be used. You should place your session extension code in the `register` method of your service provider, and the provider should be placed **below** the default `Illuminate\Session\SessionServiceProvider` in the `providers` configuration array.
 
 ### Writing The Session Extension
 

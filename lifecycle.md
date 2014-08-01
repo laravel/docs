@@ -67,7 +67,7 @@ You may also do pre and post request processing by registering `before`, `after`
 		//
 	});
 
-Listeners to these events will be run `before` and `after` each request to your application. These events can be helpful for global filtering or global modification of responses. You may register them in one of your `start` files or in a [service provider](/docs/ioc#service-providers).
+Listeners to these events will be run `before` and `after` each request to your application. These events can be helpful for global filtering or global modification of responses. You may register them in one of your [service providers](/docs/ioc#service-providers).
 
 You may also register a listener on the `matched` event, which is fired when an incoming request has been matched to a route but that route has not yet been executed:
 

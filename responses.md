@@ -222,4 +222,4 @@ The `macro` function accepts a name as its first argument, and a Closure as its 
 
 	return Response::caps('foo');
 
-You may define your macros in one of your `app/start` files. Alternatively, you may organize your macros into a separate file which is included from one of your `start` files.
+You may define your macros in one of your [service providers](/docs/ioc#service-providers).
