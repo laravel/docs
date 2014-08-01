@@ -8,6 +8,8 @@ Most methods have one or two required arguments, and allow a third optional argu
 
 - [Open](#open)
 - [Label](#label)
+- [Text](#text)
+- [Password](#password)
 - [Select](#select)
 - [Close](#close)
 
@@ -80,6 +82,31 @@ NOTE: Default text is different thank placeholder text, becuase placeholder text
 Asks the user for their email and assigns the Bootstrap 3 class for `form-control`.
 	
 	{{ Form::text('email', '' array('class' => 'form-control')) }}
+
+
+___
+
+<a name="password"></a>
+
+### Form::password()
+
+This method creates a password form, usually used for login.
+
+#### Usage
+
+	{{ Form::password(FORM_NAME, array(ATTRIBUTE => VALUE)) }}
+
+FORM_NAME should be the name of the form.
+
+ATTRIBUTE should be any HTML attribute you want to add.
+
+VALUE should be the value of that attribute.
+
+#### Examples
+
+Creates a password form named 'password' and gives it the Bootstrap 3 class of `form-control`.
+
+	{{ Form::password('password', array('class' => 'form-control')) }}
 
 
 ___
