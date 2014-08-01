@@ -1,25 +1,25 @@
-# Basic Database Usage
+# 資料庫基本用法
 
-- [Configuration](#configuration)
-- [Read / Write Connections](#read-write-connections)
+- [設定](#configuration)
+- [讀取 / 寫入 連線](#read-write-connections)
 - [Running Queries](#running-queries)
 - [Database Transactions](#database-transactions)
 - [Accessing Connections](#accessing-connections)
 - [Query Logging](#query-logging)
 
 <a name="configuration"></a>
-## Configuration
+## 設定
 
-Laravel makes connecting with databases and running queries extremely simple. The database configuration file is `app/config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
+Laravel 讓資料庫連線與執行查詢語句變得相當簡單。資料庫設定檔位在 `app/config/database.php`。 您可以在此定義所需的資料庫連線，也可以指定哪一個連線是預設的。所有支援的資料庫類型與範例皆在檔案內說明。
 
-Currently Laravel supports four database systems: MySQL, Postgres, SQLite, and SQL Server.
+目前為止 Laravel 支援 4 種資料庫系統: MySQL, Postgres, SQLite 和 SQL Server。
 
 <a name="read-write-connections"></a>
-## Read / Write Connections
+## 讀取 / 寫入 連線
 
-Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
+有時候您會需要使用一個資料庫進行 SELECT 操作，另一個資料庫負責 INSERT, UPDATE 和 DELETE 操作。Laravel 使這件事變得輕而易舉,且會自行使用適當的連線，不論您是使用 raw 查詢、query builder 或是 Eloquent ORM。
 
-To see how read / write connections should be configured, let's look at this example:
+要了解如何設定 讀取 / 寫入 連線, 請看以下範例:
 
 	'mysql' => array(
 		'read' => array(
@@ -37,7 +37,7 @@ To see how read / write connections should be configured, let's look at this exa
 		'prefix'    => '',
 	),
 
-Note that two keys have been added to the configuration array: `read` and `write`. Both of these keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array. So, we only need to place items in the `read` and `write` arrays if we wish to override the values in the main array. So, in this case, `192.168.1.1` will be used as the "read" connection, while `192.168.1.2` will be used as the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
+注意到有兩個鍵值 `read` 和 `write` 已經被加到設定陣列中。這兩個鍵值都包含一個關鍵數值組 `host`。 而資料庫 `read` 和 `write`的其他選項將會併入 `mysql` 的主要陣列值內。所以,我們只需要取代 `read` 和 `write` 陣列，如果我們想要複寫主要陣列的值。因此，以這個範例來看 `192.168.1.1` 將會被當作 `讀取` 連線，`192.168.1.2` 將會被當作 `寫入` 連線。該資料庫的憑證、前綴詞、字元集和所有其他在 `mysql` 陣列內的選項將會被兩個連線內共享。
 
 <a name="running-queries"></a>
 ## Running Queries
