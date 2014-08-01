@@ -7,7 +7,7 @@ Most methods have one or two required arguments, and allow a third optional argu
     {{ Class::method('argument1', 'argument2', array('attribute1' => 'value1', 'attribute2' => 'value2')) }}
 
 - [Open](#open)
-- [Label](#lable)
+- [Label](#label)
 - [Select](#select)
 - [Close](#close)
 
@@ -55,9 +55,38 @@ This method creates a form label, which is text next to another form element.
 
 ___
 
+<a name="text"></a>
+
+### Form::text()
+
+This method defines a route that's tri
+
+#### Usage
+
+	{{ Form::text(FORM_NAME, DEFAULT_TEXT array(ATTRIBUTE => VALUE)) }}
+
+FORM_NAME should be the form's name in single quotes.
+
+DEFAULT_TEXT should be the text in the form by default in single quotes, or just empty single quotes `''` for blank.
+
+ATTRIBUTE should be any other HTML attributes for your text form, such as `class` or `placeholder`.
+
+VALUE should be the value of the attribute.
+
+NOTE: Default text is different thank placeholder text, becuase placeholder text usually disappears when a user begins typing in a form, while default text stays.
+
+#### Examples
+
+Asks the user for their email and assigns the Bootstrap 3 class for `form-control`.
+	
+	{{ Form::text('email', '' array('class' => 'form-control')) }}
+
+
+___
+
 <a name="select"></a>
 
-### Auth::select()
+### Form::select()
 
 This method creates a drop-down selector form element.
 
