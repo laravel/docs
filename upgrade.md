@@ -15,7 +15,7 @@ Within your `app` directory, you should create a `routing` directory. Move your 
 
 ### Move Start Files Into Service Providers
 
-All of the `app/start` file contents have been transitioned to [service providers](/docs/ioc#service-providers). This provides a better starting point for most applications, as well as gives newcomers to the framework a gentle introduction to service providers. To migrate your `start` files to the new service provider architecture, you can simply copy the files from the Laravel Github repository and paste them into a new `app/src/Providers` directory within your application. You should add this directory to your `composer.json` file so that the service providers can be loaded. You should also add the providers to your `providers` array in the `app/config/app.php` configuration file.
+All of the `app/start` file contents have been transitioned to [service providers](/docs/ioc#service-providers). This provides a better starting point for most applications, as well as gives newcomers to the framework a gentle introduction to service providers. To migrate your `start` files to the new service provider architecture, you can simply copy the files from the [Laravel Github repository](https://github.com/laravel/laravel) and paste them into a new `app/src/Providers` directory within your application. You should add this directory to your `composer.json` file so that the service providers can be loaded. You should also add the providers to your `providers` array in the `app/config/app.php` configuration file.
 
 If you have added custom code to your start files, in most cases, you can simply copy and paste the code you have added into the `boot` method of the `AppServiceProvider` class.
 
@@ -24,6 +24,12 @@ If you have added custom code to your start files, in most cases, you can simply
 The `ClassLoader` class has been removed in favor of using Composer for all auto-loading. In most cases, this will not require changes to your application. However, you should be aware that if you are using the `classmap` option for your controllers or other files, you will need to run `composer dump-autoload` when adding new classes to your application.
 
 If you copied the `ClassLoader` call to the `AppServiceProvider` from your `start/global.php` start file, you should this call from the service provider. You should also remove the `ClassLoader` call from the `bootstrap/autoload.php` file.
+
+### Move Artisan Command Registration
+
+Artisan commands should now be registered in `app/src/Providers/ArtisanServiceProvider.php`. Make sure to register this service provider in the `providers` array of your `app/config/app.php` configuration file. You can view a sample of this provider in the `Laravel Github repository](https://github.com/laravel/laravel). You should register your custom Artisan commands in the [IoC container](/docs/ioc) and use the service provider's `commands` method to instruct Laravel to make them available to the Artisan CLI.
+
+For more information on registering Artisan commands, see the [Artisan documentation](/docs/commands#registering-commands).
 
 ### Maintenance Mode In Before Filter
 
