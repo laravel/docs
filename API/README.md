@@ -12,6 +12,6 @@ This documentation is meant to replace the automatically-generated docs. The doc
 
 ## Contributing
 
-Since we're not currently part of the official docs, fork this (https://github.com/OKNoah/docs). Discuss in the issues section on Github or message me on IRC at OKNoah on Freenode.
+Since we're not currently part of the official docs, fork this: https://github.com/OKNoah/docs. Discuss in the issues section on Github or message me on IRC at OKNoah on Freenode.
 
 See the pull request here: https://github.com/laravel/docs/pull/844
