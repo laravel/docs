@@ -1,138 +1,138 @@
-# Cache
+# 快取
 
-- [Configuration](#configuration)
-- [Cache Usage](#cache-usage)
-- [Increments & Decrements](#increments-and-decrements)
-- [Cache Tags](#cache-tags)
-- [Database Cache](#database-cache)
+- [設定](#configuration)
+- [快取用法](#cache-usage)
+- [遞增與遞減](#increments-and-decrements)
+- [快取標籤](#cache-tags)
+- [資料庫快取](#database-cache)
 
 <a name="configuration"></a>
-## Configuration
+## 設定
 
-Laravel provides a unified API for various caching systems. The cache configuration is located at `app/config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](http://memcached.org) and [Redis](http://redis.io) out of the box.
+Laravel 為各種不同的快取系統提供一致的 API。 快取設定檔位在 `app/config/cache.php`。 您可以在此為應用程式指定使用哪一種快取系統，Laravel 支援各種常見的後端快取系統，像是 [Memcached](http://memcached.org) 和 [Redis](http://redis.io)。
 
-The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC.
+快取設定檔也包含多個其他選項，在檔案裡都有說明，所以請務必先閱讀過。Laravel 預設使用 `檔案` 快取系統，該系統會儲存序列化、快取物件在檔案系統中。在大型應用程式上，建議使用儲存在記憶體內的快取系統，像是 Memcached 或 APC。
 
 <a name="cache-usage"></a>
-## Cache Usage
+## 快取用法
 
-#### Storing An Item In The Cache
+#### 儲存項目到快取中
 
 	Cache::put('key', 'value', $minutes);
 
-#### Using Carbon Objects To Set Expire Time
+#### 使用 Carbon 物件設定快取過期時間
 
 	$expiresAt = Carbon::now()->addMinutes(10);
 
 	Cache::put('key', 'value', $expiresAt);
 
-#### Storing An Item In The Cache If It Doesn't Exist
+#### 若是項目不存在，則將其存入快取中
 
 	Cache::add('key', 'value', $minutes);
 
-The `add` method will return `true` if the item is actually **added** to the cache. Otherwise, the method will return `false`.
+當項目確實被 **加入** 快取時，使用 `add` 方法將會回傳 `true` 否則會回傳 `false`。
 
-#### Checking For Existence In Cache
+#### 項目確實被  檢查快取是否存在
 
 	if (Cache::has('key'))
 	{
 		//
 	}
 
-#### Retrieving An Item From The Cache
+#### 從快取中取得項目
 
 	$value = Cache::get('key');
 
-#### Retrieving An Item Or Returning A Default Value
+#### 取得項目或是回傳預設值
 
 	$value = Cache::get('key', 'default');
 
 	$value = Cache::get('key', function() { return 'default'; });
 
-#### Storing An Item In The Cache Permanently
+#### 永久儲存項目到快取中
 
 	Cache::forever('key', 'value');
 
-Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. You may do this using the `Cache::remember` method:
+有時候您會希望從快取中取得項目，而當此項目不存在時會儲存一筆預設值，您可以使用 `Cache::remember` 方法:
 
 	$value = Cache::remember('users', $minutes, function()
 	{
 		return DB::table('users')->get();
 	});
 
-You may also combine the `remember` and `forever` methods:
+您也可以結合 `remember` 和 `forever` 方法:
 
 	$value = Cache::rememberForever('users', function()
 	{
 		return DB::table('users')->get();
 	});
 
-Note that all items stored in the cache are serialized, so you are free to store any type of data.
+請注意所有儲存在快取中的項目皆會被序列化，所以您可以任意儲存各種型別的資料。
 
-#### Pulling An Item From The Cache
+#### 從快取拉出項目
 
-If you need to retrieve an item from the cache and then delete it, you may use the `pull` method:
+如果您需要從快取中取得項目後將它刪除，您可以使用 `pull` 方法:
 
 	$value = Cache::pull('key');
 
-#### Removing An Item From The Cache
+#### 從快取中刪除項目
 
 	Cache::forget('key');
 
 <a name="increments-and-decrements"></a>
-## Increments & Decrements
+## 遞增與遞減
 
-All drivers except `file` and `database` support the `increment` and `decrement` operations:
+除了 `檔案` 與 `資料庫` 以外的快取系統都支援 `遞增` 和 `遞減` 操作:
 
-#### Incrementing A Value
+#### 遞增值
 
 	Cache::increment('key');
 
 	Cache::increment('key', $amount);
 
-#### Decrementing A Value
+#### 遞減值
 
 	Cache::decrement('key');
 
 	Cache::decrement('key', $amount);
 
 <a name="cache-tags"></a>
-## Cache Tags
+## 快取標籤
 
-> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+> **注意:** `檔案` 或 `資料庫` 這類快取系統均不支援快取標籤. 此外, 使用帶有 "forever" 的快取標籤時, 挑選 `memcached` 這類快取系統將獲得最好的效能, 它會自動清除過期的紀錄。
 
-#### Accessing A Tagged Cache
+#### 存取快取標籤
 
-Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method.
+快取標籤允許您標記快取內的相關項目，然後使用特定名稱刷新所有快取標籤。要存取快取標籤可以使用 `tags` 方法。
 
-You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names:
+您可以儲存快取標籤，藉由將有序列表當作參數傳入，或者作為標籤名稱的有序陣列:
 
 	Cache::tags('people', 'authors')->put('John', $john, $minutes);
 
 	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
 
-You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`.
+您可以結合使用各種快取儲存方法與標籤，包含 `remember`, `forever` 和 `rememberForever`。您也可以從已標記的快取中存取項目 ，以及使用其他快取方法像是 `increment` 和 `decrement`。
 
-#### Accessing Items In A Tagged Cache
+#### 從已標記的快取中存取項目
 
-To access a tagged cache, pass the same ordered list of tags used to save it.
+要存取已標記的快取，可傳入相同的有序標籤列表。
 
 	$anne = Cache::tags('people', 'artists')->get('Anne');
 
 	$john = Cache::tags(array('people', 'authors'))->get('John');
 
-You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
+您可以刷新所有已標記的項目，使用指定名稱或名稱列表。例如，以下演示將會移除帶有 `people` 或 `authors` 或者兩者皆有的所有快取標籤，所以 "Anne" 和 "John" 皆會從快取中被移除:
 
 	Cache::tags('people', 'authors')->flush();
 
-In contrast, this statement would remove only caches tagged with `authors`, so "John" would be removed, but not "Anne".
+對照來看，以下演示將只會移除帶有 `authors` 的標籤，所以 "John" 會被移除，但是 "Anne" 不會。
 
 	Cache::tags('authors')->flush();
 
 <a name="database-cache"></a>
-## Database Cache
+## 資料庫快取
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+當使用 `資料庫` 快取系統時，您必須設定一張資料表來儲存快取項目。資料表的 `Schema` 宣告範例如下:
 
 	Schema::create('cache', function($table)
 	{
