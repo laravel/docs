@@ -3,7 +3,7 @@
 - [介紹](#introduction)
 - [定義並執行測試](#defining-and-running-tests)
 - [測試環境](#test-environment)
-- [從測試呼叫 Routes](#calling-routes-from-tests)
+- [從測試呼叫路由](#calling-routes-from-tests)
 - [模擬 Facades](#mocking-facades)
 - [框架 Assertions](#framework-assertions)
 - [輔助方法](#helper-methods)
@@ -12,14 +12,14 @@
 <a name="introduction"></a>
 ## 介紹
 
-Laravel 在建立時就有考慮到單元測試。事實上，它支援立即使用被引入的 PHPUnit 做測試，而且已經為你的應用程式建立了 `phpunit.xml` 檔案。 除了 PHPUnit 以外，Laravel 也利用 Symfony HttpKernel、 DomCrawler 和 BrowserKit 元件讓你在測試的時候，檢查和操作你的 views、模擬網頁瀏覽器。
+Laravel 在建立時就有考慮到單元測試。事實上，它支援立即使用被引入的 PHPUnit 做測試，而且已經為你的應用程式建立了 `phpunit.xml` 檔案。 除了 PHPUnit 以外，Laravel 也利用 Symfony HttpKernel、 DomCrawler 和 BrowserKit 元件讓你在測試的時候模擬為一個網頁瀏覽器，來檢查和處理你的視圖。
 
-在 `app/tests` 資料夾有提供一個測試範例。 在安裝新 Laravel 應用程式之後，簡單地在 command line 上執行 `phpunit` 執行你的測試。
+在 `app/tests` 資料夾有提供一個測試範例。在安裝新 Laravel 應用程式之後，只要在命令列上執行 `phpunit` 來進行測試流程。
 
 <a name="defining-and-running-tests"></a>
 ## 定義並執行測試
 
-要建立一個測試案例，只要簡單地建立新的測試檔案在 `app/tests` 資料夾。 測試類別必須繼承 `TestCase`，接著你可以像你通常使用 PHPUnit 一般去定義測試方法。
+要建立一個測試案例，只要在 `app/tests` 資料夾建立新的測試檔案。測試類別必須繼承自 `TestCase`，接著你可以如你平常使用 PHPUnit 一般去定義測試方法。
 
 #### 測試類別範例
 
@@ -34,51 +34,51 @@ Laravel 在建立時就有考慮到單元測試。事實上，它支援立即使
 
 你可以從終端機執行 `phpunit` 命令來執行應用程式的所有測試。
 
-> **Note:** 如果你定義自己的 `setUp` 方法， 請確定呼叫了 `parent::setUp`.
+> **注意:** 如果你定義自己的 `setUp` 方法， 請記得呼叫 `parent::setUp`。
 
 <a name="test-environment"></a>
 ## 測試環境
 
-當執行單元測試的時候，Laravel 會自動地設定 configuration 環境 為 `testing`。另外, Laravel 會在測試環境匯入 `session` 和 `cache` 的 configuration 檔案。當在測試環境裡這兩個 drivers 會被設定為 `array` (空陣列)，意思是當測試的時候沒有 session 或 cache 資料將會被保留。 有需要你可以自由的建立其他測試環境 configurations。
+當執行單元測試的時候，Laravel 會自動將環境設置在 `testing`。另外, Laravel 會在測試環境匯入 `session` 和 `cache` 的設定檔案。當在測試環境裡這兩個驅動會被設定為 `array` (空陣列)，代表在測試的時候沒有 session 或 cache 資料將會被保留。視情況你可以任意的建立你需要的測試環境設定。
 
 <a name="calling-routes-from-tests"></a>
-## 從測試呼叫 Routes
+## 從測試呼叫路由
 
-#### 從測試呼叫 Route
+#### 從單一測試中呼叫路由
 
-你可以使用 `call` 方法，簡單地呼叫你的其中一個 route 來測試 :
+你可以使用 `call` 方法，輕易地呼叫你的其中一個路由來測試:
 
 	$response = $this->call('GET', 'user/profile');
 
 	$response = $this->call($method, $uri, $parameters, $files, $server, $content);
 
-接著你可以檢查 `Illuminate\Http\Response` 物件 :
+接著你可以檢查 `Illuminate\Http\Response` 物件:
 
 	$this->assertEquals('Hello World', $response->getContent());
 
-#### 從測試呼叫 Controller
+#### 從測試呼叫控制器
 
-你也可以從測試呼叫 controller :
+你也可以從測試呼叫控制器 :
 
 	$response = $this->action('GET', 'HomeController@index');
 
 	$response = $this->action('GET', 'UserController@profile', array('user' => 1));
 
-`getContent` 方法會回傳求值後的字串內容回應. 如果你的 route 回傳一個 `View`, 你可以使用 `original` 屬性獲取它 :
+`getContent` 方法會回傳求值後的字串內容回應. 如果你的路由回傳一個 `View`, 你可以透過 `original` 屬性存取它:
 
 	$view = $response->original;
 
 	$this->assertEquals('John', $view['name']);
 
-你可以使用 `callSecure` 方法去呼叫 HTTPS route:
+你可以使用 `callSecure` 方法去呼叫 HTTPS 路由:
 
 	$response = $this->callSecure('GET', 'foo/bar');
 
-> **Note:** 在測試環境中， Route filters 是被禁用的。 如果要啟用它們，必須加 `Route::enableFilters()` 到你的測試.
+> **注意:** 在測試環境中， 路由篩選器是被禁用的。如果要啟用它們，必須增加 `Route::enableFilters()` 到你的測試。
 
-### DOM Crawler
+### DOM 撈取器
 
-你也可以呼叫 route 並接受 DOM Crawler 物件實體來檢查內容  :
+你也可以透過呼叫路由來取得 DOM 撈取器實例來檢查內容：
 
 	$crawler = $this->client->request('GET', '/');
 
@@ -86,12 +86,12 @@ Laravel 在建立時就有考慮到單元測試。事實上，它支援立即使
 
 	$this->assertCount(1, $crawler->filter('h1:contains("Hello World!")'));
 
-如果需要更多如何使用 crawler 的資訊，請參考它的 [官方文件](http://symfony.com/doc/master/components/dom_crawler.html).
+如果需要更多如何使用撈取器的資訊，請參考它的[官方文件](http://symfony.com/doc/master/components/dom_crawler.html).
 
 <a name="mocking-facades"></a>
 ## 模擬 Facades
 
-當測試的時候，你或許會時常想要模擬呼叫 Laravel 靜態 facade。 舉個例子，思考下面的 controller action :
+當測試的時候，你或許常會想要模擬呼叫 Laravel 靜態 facade。舉個例子，思考下面的控制器行為:
 
 	public function getIndex()
 	{
@@ -100,7 +100,7 @@ Laravel 在建立時就有考慮到單元測試。事實上，它支援立即使
 		return 'All done!';
 	}
 
-我們可以在 facade 上使用 `shouldReceive` 方法，模擬呼叫 `Event` 類別， 它將會回傳一個 [Mockery](https://github.com/padraic/mockery) mock 物件實體.
+我們可以在 facade 上使用 `shouldReceive` 方法，模擬呼叫 `Event` 類別，它將會回傳一個 [Mockery](https://github.com/padraic/mockery) mock 物件實例。
 
 #### 模擬 Facade
 
@@ -111,7 +111,7 @@ Laravel 在建立時就有考慮到單元測試。事實上，它支援立即使
 		$this->call('GET', '/');
 	}
 
-> **Note:** 你不應該模擬 `Request` facade。 取而代之，當執行你的測試，傳想要的輸入進去 `call` 方法 .
+> **注意:** 你不應該模擬 `Request` facade。取而代之，當執行你的測試，傳遞想要的輸入資料進去 `call` 方法。
 
 <a name="framework-assertions"></a>
 ## 框架 Assertions
@@ -139,7 +139,7 @@ Laravel 附帶幾個 `assert` 方法，讓測試更簡單一點:
 
 	$this->assertRedirectedToAction('Controller@method');
 
-#### Assert 回應 View 有一些資料
+#### Assert 回應帶資料的視圖
 
 	public function testMethod()
 	{
@@ -149,7 +149,7 @@ Laravel 附帶幾個 `assert` 方法，讓測試更簡單一點:
 		$this->assertViewHas('age', $value);
 	}
 
-#### Assert 回應 Session 有一些資料
+#### Assert 回應帶資料的 Session
 
 	public function testMethod()
 	{
@@ -159,7 +159,7 @@ Laravel 附帶幾個 `assert` 方法，讓測試更簡單一點:
 		$this->assertSessionHas('age', $value);
 	}
 
-#### Assert 回應 Session 有錯誤
+#### Assert 回應帶錯誤資訊的 Session
 
     public function testMethod()
     {
@@ -174,7 +174,7 @@ Laravel 附帶幾個 `assert` 方法，讓測試更簡單一點:
         $this->assertSessionHasErrors(array('name', 'age'));
     }
 
-#### Assert 舊輸入有一些資料
+#### Assert 回應帶資料的舊輸入內容
 
 	public function testMethod()
 	{
@@ -186,9 +186,9 @@ Laravel 附帶幾個 `assert` 方法，讓測試更簡單一點:
 <a name="helper-methods"></a>
 ## 輔助方法
 
-`TestCase` 類別包含幾個輔助方法讓你的應用程式更簡單測試。
+`TestCase` 類別包含幾個輔助方法讓應用程式的測試更為簡單。
 
-#### 從測試設定和刷新 Sessions
+#### 從測試裏設定和刷新 Sessions
 
 	$this->session(['foo' => 'bar']);
 
@@ -202,17 +202,17 @@ Laravel 附帶幾個 `assert` 方法，讓測試更簡單一點:
 
 	$this->be($user);
 
-你可以從測試使用 `seed` 方法 re-seed 你的資料庫:
+你可以從測試中使用 `seed` 方法重新填充你的資料庫:
 
-#### 從測試 Re-Seeding 資料庫
+#### 從測試中重新填充資料庫
 
 	$this->seed();
 
 	$this->seed($connection);
 
-更多建立 seeds 的資訊可以在文件的 [migrations and seeding](/docs/migrations#database-seeding) 部分找到.
+更多建立填充資料的資訊可以在文件的 [遷移與資料填充](/docs/migrations#database-seeding) 部分找到。
 
 <a name="refreshing-the-application"></a>
 ## 重置應用程式
 
-你可能已經知道，你可以借由 `$this->app` 從任何測試方法獲取你的 Laravel `Application` / IoC 容器. 這個應用程式物件實體會在每個測試類別被重置。 如果你希望在給定的方法手動強制應用程式重置，你可以從你的測試方法使用 `refreshApplication` 方法。 這將會重置任何額外的綁定， 例如那些從測試案例執行開始被放倒 IoC 容器的 mocks。
+你可能已經知道，你可以透過 `$this->app` 在任何測試方法中存取你的 Laravel `應用程式本體` / IoC 容器。這個應用程式物件實例會在每個測試類別被重置。如果你希望在給定的方法手動強制重置應用程式，你可以從你的測試方法使用 `refreshApplication` 方法。 這將會重置任何額外的綁定， 例如那些從測試案例執行開始被放到 IoC 容器的 mocks。
