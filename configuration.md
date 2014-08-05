@@ -1,7 +1,6 @@
 # Configuration
 
 - [Introduction](#introduction)
-- [Accessing Values at Run-Time](#run-time)
 - [Environment Configuration](#environment-configuration)
 - [Provider Configuration](#provider-configuration)
 - [Protecting Sensitive Configuration](#protecting-sensitive-configuration)
@@ -10,22 +9,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-Configuration files are stored in the `app/config` directory and are well-commented.
+All of the configuration files for the Laravel framework are stored in the `app/config` directory. Each option in every file is documented, so feel free to look through the files and get familiar with the options available to you.
 
-To use environments, enable evironmental detection by entering your machine hostnames in `bootstrap/start.php` under `$app->detectEnvironment`. Run `hostname` in terminal to find your machine's hostname.
-
-    <?php
-
-    $env = $app->detectEnvironment(array(
-
-        'local' => array('your-machine-name'),
-
-    ));
-
-<a name="run-time"></a>
-## Acessing Values at Run-Time
-
-You can access the configuration values at run-time using the `Config` class:
+Sometimes you may need to access configuration values at run-time. You may do so using the `Config` class:
 
 #### Accessing A Configuration Value
 
@@ -46,11 +32,9 @@ Configuration values that are set at run-time are only set for the current reque
 <a name="environment-configuration"></a>
 ## Environment Configuration
 
-It's useful to have different settings in each environment. For example, to use a different cache driver for local development than on the production server. To do this,
+It is often helpful to have different configuration values based on the environment the application is running in. For example, you may wish to use a different cache driver on your local development machine than on the production server. It is easy to accomplish this using environment based configuration.
 
-1. Create a folder in the `config` directory that matches your environment name, such as `local`. 
-
-2. Create the configuration files you wish to override and specify the options for that environment. For example, to override the cache driver for the local environment, you would create a `cache.php` file in `app/config/local` with the following content:
+Simply create a folder within the `config` directory that matches your environment name, such as `local`. Next, create the configuration files you wish to override and specify the options for that environment. For example, to override the cache driver for the local environment, you would create a `cache.php` file in `app/config/local` with the following content:
 
 	<?php
 
@@ -62,9 +46,9 @@ It's useful to have different settings in each environment. For example, to use 
 
 > **Note:** Do not use 'testing' as an environment name. This is reserved for unit testing.
 
-You do not have to specify _every_ option, only the options you wish to override from the default. The environment configuration files will "cascade" over the base files.
+Notice that you do not have to specify _every_ option that is in the base configuration file, but only the options you wish to override. The environment configuration files will "cascade" over the base files.
 
-3. Tell Laravel how to determine which environment it is running in. The default is always `production`. However, you may setup other environments within the `bootstrap/start.php` file, under `$app->detectEnvirontment`. You may add environments as needed.
+Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `bootstrap/environment.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The array passed to this method is used to determine the current environment. You may add other environments and machine names to the array as needed.
 
     <?php
 
@@ -74,7 +58,7 @@ You do not have to specify _every_ option, only the options you wish to override
 
     ));
 
-In this example, 'local' is the name of the environment and 'your-machine-name' is the hostname of your server. On Linux and Mac, you may find your hostname by running `hostname`.
+In this example, 'local' is the name of the environment and 'your-machine-name' is the hostname of your server. On Linux and Mac, you may determine your hostname using the `hostname` terminal command.
 
 If you need more flexible environment detection, you may pass a `Closure` to the `detectEnvironment` method, allowing you to implement environment detection however you wish:
 
@@ -85,11 +69,11 @@ If you need more flexible environment detection, you may pass a `Closure` to the
 
 #### Accessing The Current Application Environment
 
-Use `environment` to access the current environtment:
+You may access the current application environment via the `environment` method:
 
 	$environment = App::environment();
 
-To see if the environment has certian conditions, you can pass arguments to the `environment` method:
+You may also pass arguments to the `environment` method to check if the environment matches a given value:
 
 	if (App::environment('local'))
 	{
@@ -104,7 +88,7 @@ To see if the environment has certian conditions, you can pass arguments to the 
 <a name="provider-configuration"></a>
 ### Provider Configuration
 
-You may "append" environment [service providers](/docs/ioc#service-providers) to your primary `app` configuration file. However, the environment `app` providers may override the providers in your primary `app` configuration. To force the providers to be appended, use the `append_config` helper method in your configuration:
+When using environment configuration, you may want to "append" environment [service providers](/docs/ioc#service-providers) to your primary `app` configuration file. However, if you try this, you will notice the environment `app` providers are overriding the providers in your primary `app` configuration file. To force the providers to be appended, use the `append_config` helper method in your environment `app` configuration file:
 
 	'providers' => append_config(array(
 		'LocalOnlyServiceProvider',
