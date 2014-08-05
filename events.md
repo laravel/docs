@@ -1,17 +1,17 @@
 # Events
 
-- [Basic Usage](#basic-usage)
-- [Wildcard Listeners](#wildcard-listeners)
-- [Using Classes As Listeners](#using-classes-as-listeners)
-- [Queued Events](#queued-events)
-- [Event Subscribers](#event-subscribers)
+- [基本用法](#basic-usage)
+- [萬用字元監聽者](#wildcard-listeners)
+- [使用類別作為監聽者](#using-classes-as-listeners)
+- [事件隊列](#queued-events)
+- [事件訂閱者](#event-subscribers)
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-The Laravel `Event` class provides a simple observer implementation, allowing you to subscribe and listen for events in your application.
+Laravel 的 `Event` 類別提供一個簡單的觀察者實作，允許你在應用程式裡訂閱與監聽事件。
 
-#### Subscribing To An Event
+#### 訂閱事件
 
 	Event::listen('auth.login', function($user)
 	{
@@ -20,21 +20,21 @@ The Laravel `Event` class provides a simple observer implementation, allowing yo
 		$user->save();
 	});
 
-#### Firing An Event
+#### 觸發事件
 
 	$event = Event::fire('auth.login', array($user));
 
-#### Subscribing To Events With Priority
+#### 訂閱有優先順序的事件
 
-You may also specify a priority when subscribing to events. Listeners with higher priority will be run first, while listeners that have the same priority will be run in order of subscription.
+你也可以在訂閱事件的時候指定一個優先順序。 有較高優先權的監聽者會先被執行，當監聽者有一樣的優先權時將會依照訂閱的順序執行.
 
 	Event::listen('auth.login', 'LoginHandler', 10);
 
 	Event::listen('auth.login', 'OtherHandler', 5);
 
-#### Stopping The Propagation Of An Event
+#### 停止繼續傳遞事件
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your listener:
+你有時候會希望停止繼續傳遞事件到其他監聽者。 你可以藉由從監聽者回傳 `false` 來做到這件事：
 
 	Event::listen('auth.login', function($event)
 	{
@@ -43,27 +43,27 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 		return false;
 	});
 
-### Where To Register Events
+### 在哪裡註冊事件
 
-So, you know how to register events, but you may be wondering _where_ to register them. Don't worry, this is a common question. Unfortunately, it's a hard question to answer because you can register an event almost anywhere! But, here are some tips. Again, like most other bootstrapping code, you may register events in one of your `start` files such as `app/start/global.php`.
+現在你知道怎麼註冊事件了，但是你或許會想知道要在 _哪裡_ 註冊它們。 不要擔心，這是一個常見的問題。 不幸地，這是一個很難回答的問題，因為你幾乎可以在任何地方註冊事件！ 但是，這裡有一些提示。 一樣的，你可以在你的其中一個 `start` 檔案註冊事件，就像其他大部份的啟動程式碼，例如： `app/start/global.php`。
 
-If your `start` files are getting too crowded, you could create a separate `app/events.php` file that is included from a `start` file. This is a simple solution that keeps your event registration cleanly separated from the rest of your bootstrapping. If you prefer a class based approach, you may register your events in a [service provider](/docs/ioc#service-providers). Since none of these approaches is inherently "correct", choose an approach you feel comfortable with based on the size of your application.
+如果你的 `start` 檔案變得越來越擁擠，你可以建立一個分離的 `app/events.php` 檔案，並從 `start` 檔案引入它。 這是個簡單的解決方案，它保持你的事件註冊與剩餘的啟動程式碼乾淨地分離。 如果你喜歡基於類別的方法，你可以在 [服務提供者](/docs/ioc#service-providers) 註冊你的事件。 因為這些方法中沒有一個是絕對正確的方案，基於你的應用程式大小選擇一個讓你感到舒服的方法。
 
 <a name="wildcard-listeners"></a>
-## Wildcard Listeners
+## 萬用字元監聽者
 
-#### Registering Wildcard Event Listeners
+#### 註冊萬用字元事件監聽者
 
-When registering an event listener, you may use asterisks to specify wildcard listeners:
+當註冊事件監聽者，你可以使用星號(*) 指定萬用字元監聽者：
 
 	Event::listen('foo.*', function($param)
 	{
 		// Handle the event...
 	});
 
-This listener will handle all events that begin with `foo.`.
+這個監聽者將會處理所有 `foo.` 開頭的事件。
 
-You may use the `Event::firing` method to determine exactly which event was fired:
+你可以使用 `Event::firing` 方法準確的判定是什麼事件被觸發：
 
 	Event::listen('foo.*', function($param)
 	{
@@ -74,17 +74,17 @@ You may use the `Event::firing` method to determine exactly which event was fire
 	});
 
 <a name="using-classes-as-listeners"></a>
-## Using Classes As Listeners
+## 使用類別作為監聽者
 
-In some cases, you may wish to use a class to handle an event rather than a Closure. Class event listeners will be resolved out of the [Laravel IoC container](/docs/ioc), providing you the full power of dependency injection on your listeners.
+在一些案例中，你或許會希望使用類別取代閉包來處理事件。 類別事件監聽者將會被 [Laravel IoC container](/docs/ioc) 處理，提供依賴注入的全部功能給你的監聽者。
 
-#### Registering A Class Listener
+#### 註冊類別監聽者
 
 	Event::listen('auth.login', 'LoginHandler');
 
-#### Defining An Event Listener Class
+#### 定義事件監聽者類別
 
-By default, the `handle` method on the `LoginHandler` class will be called:
+`LoginHandler` 類別預設將會呼叫 `handle` 方法：
 
 	class LoginHandler {
 
@@ -95,31 +95,31 @@ By default, the `handle` method on the `LoginHandler` class will be called:
 
 	}
 
-#### Specifying Which Method To Subscribe
+#### Specifying 哪個方法 To Subscribe
 
-If you do not wish to use the default `handle` method, you may specify the method that should be subscribed:
+如果你不希望使用預設的 `handle` 方法, 你可以指定應該被訂閱的方法：
 
 	Event::listen('auth.login', 'LoginHandler@onLogin');
 
 <a name="queued-events"></a>
-## Queued Events
+## 事件隊列
 
-#### Registering A Queued Event
+#### 註冊事件隊列
 
-Using the `queue` and `flush` methods, you may "queue" an event for firing, but not fire it immediately:
+使用 `queue` 和 `flush` 方法， 你可以把事件加到隊列等待觸發，但是不立即觸發它：
 
 	Event::queue('foo', array($user));
 
-You may run the "flusher" and flush all queued events using the `flush` method:
+你可以執行 "flusher" 並觸發全部的事件隊列，使用 `flush` 方法：
 
 	Event::flush('foo');
 
 <a name="event-subscribers"></a>
-## Event Subscribers
+## 事件訂閱者
 
-#### Defining An Event Subscriber
+#### 定義事件訂閱者
 
-Event subscribers are classes that may subscribe to multiple events from within the class itself. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance:
+事件訂閱者是個可以從類別自身裡面訂閱多個事件的類別。 訂閱者應該定義 `subscribe` 方法，它將會被傳遞到事件配送器實體：
 
 	class UserEventHandler {
 
@@ -154,15 +154,15 @@ Event subscribers are classes that may subscribe to multiple events from within 
 
 	}
 
-#### Registering An Event Subscriber
+#### 註冊事件訂閱者
 
-Once the subscriber has been defined, it may be registered with the `Event` class.
+當訂閱者被定義時，它或許會使用 `Event` 類別註冊。
 
 	$subscriber = new UserEventHandler;
 
 	Event::subscribe($subscriber);
 
-You may also use the [Laravel IoC container](/docs/ioc) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
+你也可以使用 [Laravel IoC container](/docs/ioc) 去處理你的訂閱者。 簡單地傳遞訂閱者的名字給 `subscribe` 方法就可以做到：
 
 	Event::subscribe('UserEventHandler');
 
