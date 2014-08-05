@@ -1,5 +1,15 @@
 # Blade
 
+Blade is Laravel's templating language.
+
+- [Yield](#yield)
+- [If, else, endif](#if-else)
+- [Sections](#sections)
+
+___
+
+<a name="yield"></a>
+
 ### @yield
 
 The `yield` keyword word means yield, or make way, for the content specified. It tells Laravel where to put the desired content. It works like `include` in straight PHP.
@@ -10,6 +20,9 @@ The `yield` keyword word means yield, or make way, for the content specified. It
 
     @yield('content')
 
+___
+
+<a name="if-else"></a>
 
 ### @if @else @endif
 
@@ -34,6 +47,9 @@ The extends keyword tells Laravel what other content a page will inherit, such a
 
 	@extends('master')
 
+___
+
+<a name="sections"></a>
 
 ### @section and @stop
 

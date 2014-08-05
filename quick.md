@@ -7,26 +7,41 @@
 - [Creating A Migration](#creating-a-migration)
 - [Eloquent ORM](#eloquent-orm)
 - [Displaying Data](#displaying-data)
+- [Next Steps](#next-steps)
 - [Deploying Your Application](#deploying-your-application)
 
 <a name="installation"></a>
 ## Installation
 
+There's more than one way to install Laravel. Via installer, Composer or download.
+
 ### Via Laravel Installer
 
-First, download the [Laravel installer PHAR archive](http://laravel.com/laravel.phar). For convenience, rename the file to `laravel` and move it to `/usr/local/bin`. Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer.
+The Laravel Installer is a simple command-line tool used to build the Laravel environment on your system. It's helpful for creating multiple Laravel projects without heving to go to the web for files each time, and is faster than Composer. To use it on **Mac and Linux**,
 
-### Via Composer
+1. Download the [Laravel installer](http://laravel.com/laravel.phar). 
 
-The Laravel framework utilizes [Composer](http://getcomposer.org) for installation and dependency management. If you haven't already, start by [installing Composer](http://getcomposer.org/doc/00-intro.md).
+2. Rename the file to `laravel` and move it to `/usr/local/bin`. 
 
-Now you can install Laravel by issuing the following command from your terminal:
+3. Open Terminal and enter `laravel new`, followed by a directory, create a fresh Laravel installation. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed.
 
-	composer create-project laravel/laravel your-project-name --prefer-dist
+### Via Composer Create-Project
 
-This command will download and install a fresh copy of Laravel in a new `your-project-name` folder within your current directory.
+You may also install Laravel by issuing the Composer `create-project` command in your terminal:
 
-If you prefer, you can alternatively download a copy of the [Laravel repository from Github](https://github.com/laravel/laravel/archive/master.zip) manually. Next run the `composer install` command in the root of your manually created project directory. This command will download and install the framework's dependencies.
+	composer create-project laravel/laravel --prefer-dist
+
+### Via Download
+
+Laravel files can be downloaded manually, but you must still use Composer to get the dependencies (or manually get them yourself). This method also requires Git.
+
+1. Make sure Composer is installed (see Install Composer above).
+
+2. Download the [latest version](https://github.com/laravel/laravel/archive/master.zip) of Laravel and extract it to your project folder. 
+
+3. In the root of your Laravel project, run `php composer install` (or `composer install`) to install all of the framework's dependencies.
+
+4. If you want to update the Laravel framework, run `php composer update`
 
 ### Permissions
 
@@ -41,12 +56,14 @@ Typically, you may use a web server such as Apache or Nginx to serve your Larave
 <a name="directories"></a>
 ### Directory Structure
 
-After installing the framework, take a glance around the project to familiarize yourself with the directory structure. The `app` directory contains folders such as `views`, `controllers`, and `models`. Most of your application's code will reside somewhere in this directory. You may also wish to explore the `app/config` directory and the configuration options that are available to you.
+After instalatoin, take a look around to familiarize yourself with the directory structure. 
+
+The `app` directory will contain most of your project and contains folders such as `views`, `controllers`, and `models`. You may also wish to explore the `app/config` directory and the [configuration](/docs/configuration) options.
 
 <a name="local-development-environment"></a>
 ## Local Development Environment
 
-In the past, configuring a local PHP development environment on your machine was a headache. Installing the proper version of PHP, required extensions, and other needed components is time consuming and confusing. Instead, consider using [Laravel Homestead](/docs/homestead). Homestead is a simple virtual machine designed for Laravel and [Vagrant](http://vagrantup.com). Since the Homestead Vagrant box is pre-packaged with all of the software you need to build robust PHP applications, you can create a virtualized, isolated development environment in seconds. Here is a list of some of the goodies included with Homestead:
+Laravel provides the optional [Laravel Homestead](/docs/homestead) virtual machine, designed to take frustration out of managing servers and dependencies. Homestead uses [Vagrant](http://vagrantup.com) and is pre-packaged with all required software, taking seconds to deploy. It includes:
 
 - Nginx
 - PHP 5.5
@@ -55,19 +72,21 @@ In the past, configuring a local PHP development environment on your machine was
 - Memcached
 - Beanstalk
 
-Don't worry, even though "virtualized" sounds complicated, it's painless. VirtualBox and Vagrant, which are Homestead's two dependencies, both include simple, graphical installers for all popular operating systems. Check out the [Homestead documentation](/docs/homestead) to get started.
+Both Homestead's dependencies, VirtualBox and Vagrant, include simple, graphical installers for all popular operating systems. Check out the [Homestead documentation](/docs/homestead) to get started.
 
 <a name="routing"></a>
 ## Routing
 
-To get started, let's create our first route. In Laravel, the simplest route is a route to a Closure. Pop open the `app/routes.php` file and add the following route to the bottom of the file:
+Routing lets you define what happens when users visit a certain URL. In Laravel, the simplest route is a route to a Closure. Open the `app/routes.php` file and add the following route to the bottom of the file:
 
 	Route::get('users', function()
 	{
 		return 'Users!';
 	});
 
-Now, if you hit the `/users` route in your web browser, you should see `Users!` displayed as the response. Great! You've just created your first route.
+Visit `http://your-project.tld/users` in your web browser, replacing `your-project.tld` with your actual website/local URL, and you should see `Users!` displayed as the response.
+
+In this document, we'll abbreviate routes like this to just `/users`.
 
 Routes can also be attached to controller classes. For example:
 
@@ -78,7 +97,7 @@ This route informs the framework that requests to the `/users` route should call
 <a name="creating-a-view"></a>
 ## Creating A View
 
-Next, we'll create a simple view to display our user data. Views live in the `app/views` directory and contain the HTML of your application. We're going to place two new views in this directory: `layout.blade.php` and `users.blade.php`. First, let's create our `layout.blade.php` file:
+A view is an output of data and where you'll put most of your "front-end" code, mostly HTML. We're going to create two new views in the `app/views` directory: `layout.blade.php` and `users.blade.php`. First, in your `layout` view, enter:
 
 	<html>
 		<body>
@@ -88,7 +107,7 @@ Next, we'll create a simple view to display our user data. Views live in the `ap
 		</body>
 	</html>
 
-Next, we'll create our `users.blade.php` view:
+Next, in your `users` view:
 
 	@extends('layout')
 
@@ -96,16 +115,16 @@ Next, we'll create our `users.blade.php` view:
 		Users!
 	@stop
 
-Some of this syntax probably looks quite strange to you. That's because we're using Laravel's templating system: Blade. Blade is very fast, because it is simply a handful of regular expressions that are run against your templates to compile them to pure PHP. Blade provides powerful functionality like template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
+This uses Laravel's templating system: Blade. Blade provides template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
 
-Now that we have our views, let's return it from our `/users` route. Instead of returning `Users!` from the route, return the view instead:
+Now let's return it from our `/users` route. Instead of returning `Users!` from the route, return the view instead:
 
 	Route::get('users', function()
 	{
 		return View::make('users');
 	});
 
-Wonderful! Now you have setup a simple view that extends a layout. Next, let's start working on our database layer.
+Now you have setup a simple view that extends a layout. Next, let's start working on our database layer.
 
 <a name="creating-a-migration"></a>
 ## Creating A Migration
@@ -147,17 +166,17 @@ If you wish to rollback a migration, you may issue the `migrate:rollback` comman
 <a name="eloquent-orm"></a>
 ## Eloquent ORM
 
-Laravel ships with a superb ORM: Eloquent. If you have used the Ruby on Rails framework, you will find Eloquent familiar, as it follows the ActiveRecord ORM style of database interaction.
+Laravel comes with a superb ORM: Eloquent, which is similar to the Ruby on Rails ORM, ActiveRecord.
 
-First, let's define a model. An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Don't worry, it will all make sense soon! Models are typically stored in the `app/models` directory. Let's define a `User.php` model in that directory like so:
+An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Models are typically stored in the `app/models` directory. You define a `User.php` model like so:
 
 	class User extends Eloquent {}
 
-Note that we do not have to tell Eloquent which table to use. Eloquent has a variety of conventions, one of which is to use the plural form of the model name as the model's database table. Convenient!
+We do not have to tell Eloquent which table to use. Eloquent will automaiclay use the plural form of the model name as the table. 
 
-Using your preferred database administration tool, insert a few rows into your `users` table, and we'll use Eloquent to retrieve them and pass them to our view.
+Using your preferred database administration tool, insert a few rows into your `users` table, and use Eloquent to retrieve them and pass them to our view.
 
-Now let's modify our `/users` route to look like this:
+Now modify your `/users` route to look like this:
 
 	Route::get('users', function()
 	{
@@ -166,14 +185,12 @@ Now let's modify our `/users` route to look like this:
 		return View::make('users')->with('users', $users);
 	});
 
-Let's walk through this route. First, the `all` method on the `User` model will retrieve all of the rows in the `users` table. Next, we're passing these records to the view via the `with` method. The `with` method accepts a key and a value, and is used to make a piece of data available to a view.
-
-Awesome. Now we're ready to display the users in our view!
+Here, the `all` method on the `User` model will retrieve all of the rows in the `users` table. Next, it passes these records to the view via the `with` method, which accepts a key and value. The next section tells how to use the data in a view. 
 
 <a name="displaying-data"></a>
 ## Displaying Data
 
-Now that we have made the `users` available to our view, we can display them like so:
+Now that `users` are available to our view, we can display them:
 
 	@extends('layout')
 
@@ -183,13 +200,22 @@ Now that we have made the `users` available to our view, we can display them lik
 		@endforeach
 	@stop
 
-You may be wondering where to find our `echo` statements. When using Blade, you may echo data by surrounding it with double curly braces. It's a cinch. Now, you should be able to hit the `/users` route and see the names of your users displayed in the response.
+There are no `echo` statements. With Blade, you may echo data by putting it in double curly braces. Navigate to the `/users` route in your web browser and see the names of your users displayed.
 
-This is just the beginning. In this tutorial, you've seen the very basics of Laravel, but there are so many more exciting things to learn. Keep reading through the documentation and dig deeper into the powerful features available to you in [Eloquent](/docs/eloquent) and [Blade](/docs/templates). Or, maybe you're more interested in [Queues](/docs/queues) and [Unit Testing](/docs/testing). Then again, maybe you want to flex your architecture muscles with the [IoC Container](/docs/ioc). The choice is yours!
+<a name="next-steps"></a>
+
+This tutorial showed the basics of Laveral, but there's much more.
+
+See [Configuration](/docs/configuration) for important information on settgin up Laravel.
+
+
+Keep reading the documentation to dig deeper into [Eloquent](/docs/eloquent) and [Blade](/docs/templates). There's also [Queues](/docs/queues), [Unit Testing](/docs/testing) and [IoC Containers](/docs/ioc).
+
+
 
 <a name="deploying-your-application"></a>
 ## Deploying Your Application
 
-One of Laravel's goals is to make PHP application development enjoyable from download to deploy, and [Laravel Forge](https://forge.laravel.com) provides a simple way to deploy your Laravel applications onto blazing fast servers. Forge can configure and provision servers on DigitalOcean, Linode, Rackspace, and Amazon EC2. Like Homestead, all of the latest goodes are included: Nginx, PHP 5.5, MySQL, Postgres, Redis, Memcached, and more. Forge "Quick Deploy" can even deploy your code for you each time you push changes out to Github or Bitbucket!
+[Laravel Forge](https://forge.laravel.com) provides a simple way to deploy your Laravel applications onto blazing fast servers. Forge can configure and provision servers on DigitalOcean, Linode, Rackspace, and Amazon EC2. Like Homestead, all of the latest are included: Nginx, PHP 5.5, MySQL, Postgres, Redis, Memcached, and more. Forge "Quick Deploy" can even deploy your code for you each time you push changes out to Github or Bitbucket!
 
 On top of that, Forge can help you configure queue workers, SSL, Cron jobs, sub-domains, and more. For more information, visit the [Forge website](https://forge.laravel.com).
