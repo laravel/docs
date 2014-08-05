@@ -54,9 +54,10 @@ IoC 容器有兩種解析依賴的方式：經由閉合函數或自動解析。�
 <a name="where-to-register"></a>
 ## 何處註冊綁定
 
-IoC 綁定跟「註冊事件處理」或是「註冊 router 」一樣，通常稱為「起始碼」。換句話說，IoC 綁定後等待請求，在 router 或 controller 呼叫時才實際執行。像其他的「起始碼」一樣，`start` 檔案總是註冊 IoC 綁定的一個選擇。或者，你可以建立一個 `app/ioc.php` 檔案（檔名不重要），並且從 `start` 檔案引入。
+IoC 綁定跟「註冊事件處理」或是「註冊路由」一樣，通常稱為「起始碼」。換句話說，IoC 綁定後等待請求，在路由或控制器呼叫時才實際執行。像其他的「起始碼」一樣，`start` 檔案總是註冊 IoC 綁定的一個選擇。或者，你可以建立一個 `app/ioc.php` 檔案（檔名不重要），並且從 `start` 檔案引入。
 
-如果你的應用程式有很多 IoC 綁定，或是想要分門別類，在不同檔案組織綁定，你可以註冊綁定在 [service provider](#service-providers)。
+如果你的應用程式有很多 IoC 綁定，或是想要分門別類，在不同檔案組織綁定，你可以註冊綁定在[
+服務提供者](#service-providers)。
 
 <a name="automatic-resolution"></a>
 ## 自動解析
@@ -84,7 +85,7 @@ IoC 綁定跟「註冊事件處理」或是「註冊 router 」一樣，通常�
 
 	App::bind('UserRepositoryInterface', 'DbUserRepository');
 
-考慮以下的 controller：
+考慮以下的控制器：
 
 	class UserController extends BaseController {
 
@@ -95,14 +96,14 @@ IoC 綁定跟「註冊事件處理」或是「註冊 router 」一樣，通常�
 
 	}
 
-既然我們已經綁定 `UserRepositoryInterface` 到一個具體型別，`DbUserRepository` 會在 controller 建立時自動注入。
+既然我們已經綁定 `UserRepositoryInterface` 到一個具體型別，`DbUserRepository` 會在控制器建立時自動注入。
 
 <a name="practical-usage"></a>
 ## 應用
 
-在 Laravel 裡，很多時候使用 IoC 容器，可以增加應用程式的彈性與可測試性。一個基本的範例是用在解析 controller。所有的 controller 都會經由 IoC 容器解析，意味著你可以在 controller 建構子注入型別提示依賴，然後依賴就會自動被注入。
+在 Laravel 裡，很多時候使用 IoC 容器，可以增加應用程式的彈性與可測試性。一個基本的範例是用在解析控制器。所有的控制器都會經由 IoC 容器解析，意味著你可以在控制器的建構子注入型別提示依賴，之後依賴就會自動被注入。
 
-#### 注入型別提示 ( Type-Hinting ) 依賴到 Controller
+#### 注入型別提示 ( Type-Hinting ) 依賴到控制器
 
 	class OrderController extends BaseController {
 
@@ -120,7 +121,7 @@ IoC 綁定跟「註冊事件處理」或是「註冊 router 」一樣，通常�
 
 	}
 
-在這個範例裡， `OrderRepository` 類別會自動被注入到 controller。意味著在[單元測試](/docs/testing)時，可以綁定一個 "mock" 的 `OrderRepository` 到容器裡，之後被注入到  controller，讓你不用在測試時一定要和資料庫層互動。
+在這個範例裡， `OrderRepository` 類別會自動被注入到控制器。意味著在[單元測試](/docs/testing)時，可以綁定一個 "mock" 的 `OrderRepository` 到容器裡，之後被注入到 控制器，讓你不用在測試時一定要和資料庫層互動。
 
 #### 其他 Ioc 應用範例
 
