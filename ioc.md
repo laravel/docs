@@ -5,11 +5,11 @@
 - [何處註冊綁定](#where-to-register)
 - [自動解析](#automatic-resolution)
 - [應用](#practical-usage)
-- [Service Providers](#service-providers)
+- [服務提供者](#service-providers)
 - [容器事件](#container-events)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
 Laravel 的依賴反轉 ( IoC, inversion of control ) 容器是管理類別依賴的強力工具。 依賴注入 ( Dependency injection ) 是一種移除 hard-coded 類別依賴的方式。相較之下，在執行的時候才注入依賴，
 可以擁有更好的彈性，在替換依賴實體時相當容易。
@@ -36,16 +36,16 @@ IoC 容器有兩種解析依賴的方式：經由閉合函數或自動解析。�
 
 #### 綁定「共享」的型別到容器 
 
-有時候，你可能希望綁定到容器的型別只會被解析一次，之後的呼叫都返回相同的實體：
+有時候，你可能希望綁定到容器的型別只會被解析一次，之後的呼叫都返回相同的實例：
 
 	App::singleton('foo', function()
 	{
 		return new FooBar;
 	});
 
-#### 綁定已存在的實體到容器
+#### 綁定已存在的實例到容器
 
-你也可以使用 `instance` 方法，綁定一個已經存在的實體到容器：
+你也可以使用 `instance` 方法，綁定一個已經存在的實例到容器：
 
 	$foo = new Foo;
 
@@ -76,11 +76,11 @@ IoC 綁定跟「註冊事件處理」或是「註冊 router 」一樣，通常�
 
 雖然我們沒有註冊 FooBar 類別綁定到容器，它還是可以解析類別，甚至自動注入 `Baz` ！
 
-如果容器裡沒有找到對應的型別綁定，容器會利用 PHP 的 Reflection 檢查類別，並且解讀傳入建構子的型別提示。利用這些資訊，讓容器可以自動建立類別實體。
+如果容器裡沒有找到對應的型別綁定，容器會利用 PHP 的 Reflection 檢查類別，並且解讀傳入建構子的型別提示。利用這些資訊，讓容器可以自動建立類別實例。
 
-#### 綁定實體的介面
+#### 綁定實例的介面
 
-然而，有些時候，一個類別可能需要依賴介面，而不是一個「具體的型別」。這些情況下，`App::bind` 方法用來通知容器要注入哪個介面實體：
+然而，有些時候，一個類別可能需要依賴介面，而不是一個「具體的型別」。這些情況下，`App::bind` 方法用來通知容器要注入哪個介面實例：
 
 	App::bind('UserRepositoryInterface', 'DbUserRepository');
 
@@ -133,15 +133,15 @@ IoC 綁定跟「註冊事件處理」或是「註冊 router 」一樣，通常�
 	Event::listen('foo', 'FooHandler');
 
 <a name="service-providers"></a>
-## Service Providers
+## 服務提供者（ Service Provider ）
 
-Service providers 是一個很好的方式，可以把相關的 IoC 註冊放到到一個地方。可以將 service provider 想像成是一個在應用程式裡啟動元件的方式。你可以在裡面註冊自定的會員認證，綁定應用程式的 repository 類別到 IoC 容器，或甚至設定自定的 Artisan 指令。
+使用服務提供者是一個很好的方式，可以把相關的 IoC 註冊放到到同一個地方。可以將服務提供者 想像成是一個在應用程式裡啟動元件的方式。你可以在裡面註冊自定的會員認證，綁定應用程式的 儲存庫類別到 IoC 容器，或甚至設定自定的 Artisan 指令。
 
-事實上，大部份的 Laravel 核心元件都有 service provider，所有被註冊的 service providers 都列在 `app/config/app.php` 設定檔的 `providers` 陣列裡。
+事實上，大部份的 Laravel 核心元件都有服務提供者，所有被註冊的服務提供者都列在 `app/config/app.php` 設定檔的 `providers` 陣列裡。
 
-#### 定義一個 Service Provider
+#### 定義一個服務提供者
 
-要建立一個 service provider，只要繼承 `Illuminate\Support\ServiceProvider` 類別，然後在裡面定義一個 `register` 方法：
+要建立一個服務提供者，只要繼承 `Illuminate\Support\ServiceProvider` 類別，然後在裡面定義一個 `register` 方法：
 
 	use Illuminate\Support\ServiceProvider;
 
@@ -157,11 +157,11 @@ Service providers 是一個很好的方式，可以把相關的 IoC 註冊放到
 
 	}
 
-注意，在 `register` 方法裡，經由 `$this->app` 使用 IoC 容器。當你建立了一個 provider 而且準備要註冊到你的應用程式裡時，只要把它加到你的 `app` 設定檔的 `providers` 陣列裡即可。
+注意，在 `register` 方法裡，經由 `$this->app` 使用 IoC 容器。當你建立了一個服務 而且準備要註冊到你的應用程式裡時，只要把它加到你的 `app` 設定檔的 `providers` 陣列裡即可。
 
-#### 在執行期間註冊 Service Provider
+#### 在執行期間註冊服務提供者
 
-你也可以使用 `App::register` 在執行期間註冊 service provider ：
+你也可以使用 `App::register` 在執行期間註冊服務提供者 ：
 
 	App::register('FooServiceProvider');
 
