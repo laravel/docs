@@ -10,6 +10,7 @@
 - [Resuming A Subscription](#resuming-a-subscription)
 - [Checking Subscription Status](#checking-subscription-status)
 - [Handling Failed Payments](#handling-failed-payments)
+- [Handling Other Stripe Webhooks](#handling-other-stripe-webhooks)
 - [Invoices](#invoices)
 
 <a name="introduction"></a>
@@ -120,12 +121,12 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
 	$user->subscription()->increment();
 
 	// Add five to the subscription's current quantity...
-	$user->subscription()->increment(5)
+	$user->subscription()->increment(5);
 
 	$user->subscription->decrement();
 
 	// Subtract five to the subscription's current quantity...
-	$user->subscription()->decrement(5)
+	$user->subscription()->decrement(5);
 
 <a name="cancelling-a-subscription"></a>
 ## Cancelling A Subscription
@@ -208,6 +209,9 @@ What if a customer's credit card expires? No worries - Cashier includes a Webhoo
 	Route::post('stripe/webhook', 'Laravel\Cashier\WebhookController@handleWebhook');
 
 That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription after three failed payment attempts. The `stripe/webhook` URI in this example is just for example. You will need to configure the URI in your Stripe settings.
+
+<a name="handling-other-stripe-webhooks"></a>
+## Handling Other Stripe Webhooks
 
 If you have additional Stripe webhook events you would like to handle, simply extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the name of the Stripe webhook you wish to handle. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you should add a `handleInvoicePaymentSucceeded` method to the controller.
 
