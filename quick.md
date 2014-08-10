@@ -159,6 +159,7 @@ Laravel 提供了很棒的 ORM：Eloquent。如果你曾經使用過 Ruby on Rai
 使用你喜歡的資料庫管理工具，插入幾筆資料到 `users` 資料表，我們將使用 Eloquent 來取得這些資料並且傳遞到視圖當中。
 
 現在我們修改我們的 `/users` 路由，如下：
+
 	Route::get('users', function()
 	{
 		$users = User::all();
