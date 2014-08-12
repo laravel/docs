@@ -113,7 +113,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
 <a name="dropping-columns"></a>
 ## Dropping Columns
 
-To rename a column, you may use the `dropColumn` method on the Schema builder. Before dropping a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
+To drop a column, you may use the `dropColumn` method on the Schema builder. Before dropping a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
 
 #### Dropping A Column From A Database Table
 
