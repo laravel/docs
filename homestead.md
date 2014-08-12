@@ -119,6 +119,15 @@ Alternatively, you may use the `serve` script that is available on your Homestea
 > **Note:** After running the `serve` command, do not forget to add the new site to the `hosts` file on your main machine!
 
 <a name="ports"></a>
+
+### Starting, Stopping Or Reloading
+
+While working with Homestead, it's likely that your working directory will be different to the one that Homestead is stored in, which means that `vagrant up` etc will fail. Adding the following aliases to your `~/.bash_aliases` or `~/.bash_profile` will allow you to start/stop/restart Homestead without having to change directories manually:
+
+	alias "vm-up"="cd '/path/to/Homestead' && vagrant up && cd - 1> /dev/null" 
+	alias "vm-reload"="cd '/path/to/Homestead' && vagrant reload && cd - 1> /dev/null" 
+	alias "vm-down"="cd '/path/to/Homestead' && vagrant halt && cd - 1> /dev/null"
+
 ## Ports
 
 The following ports are forwarded to your Homestead environment:
