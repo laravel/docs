@@ -1,9 +1,17 @@
 # Upgrade Guide
 
+- [Upgrading To 4.3 From 4.2](#upgrade-4.3)
 - [Upgrading To 4.2 From 4.1](#upgrade-4.2)
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-4.3"></a>
+## Upgrading To 4.3 From 4.2
+
+## Beanstalk Queuing
+
+Laravel 4.3 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"` that Laravel 4.2 required.
 
 <a name="upgrade-4.2"></a>
 ## Upgrading To 4.2 From 4.1
@@ -76,7 +84,9 @@ This change requires the addition of a new `remember_token` column to your `user
 
 ### Upgrade Path
 
-First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent to your `users` table.
+First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent to your `users` table:
+
+	ALTER TABLE `users` ADD `remember_token` VARCHAR(100) NOT NULL ;
 
 Next, if you are using the Eloquent authentication driver, update your `User` class with the following three methods:
 
