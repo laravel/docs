@@ -119,6 +119,8 @@ Now, on your production server, create a `.env.php` file in your project root th
 
 > **Note:** You may create a file for each environment supported by your application. For example, the `development` environment will load the `.env.development.php` file if it exists.
 
+> **Note:** Values that are associative arrays will be flatten into a single level array that uses ["dot" notation](helpers.md#array_dot) to indicate depth.
+
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
