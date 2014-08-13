@@ -1,68 +1,68 @@
-# IoC Container
+# IoC 容器
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
-- [Where To Register Bindings](#where-to-register)
-- [Automatic Resolution](#automatic-resolution)
-- [Practical Usage](#practical-usage)
-- [Service Providers](#service-providers)
-- [Container Events](#container-events)
+- [介紹](#introduction)
+- [基本用法](#basic-usage)
+- [何處註冊綁定](#where-to-register)
+- [自動解析](#automatic-resolution)
+- [應用](#practical-usage)
+- [服務提供者](#service-providers)
+- [容器事件](#container-events)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-The Laravel inversion of control container is a powerful tool for managing class dependencies. Dependency injection is a method of removing hard-coded class dependencies. Instead, the dependencies are injected at run-time, allowing for greater flexibility as dependency implementations may be swapped easily.
+Laravel 的依賴反轉 ( IoC, inversion of control ) 容器是管理類別依賴的強力工具。 依賴注入 ( Dependency injection ) 是一種移除 hard-coded 類別依賴的方式。相較之下，在執行的時候才注入依賴，
+可以擁有更好的彈性，在替換依賴實體時相當容易。
 
-Understanding the Laravel IoC container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
+理解 Laravel IoC 容器對於建立強力且大型的應用程式，以及改進 Laravel 核心是很重要的。
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-#### Binding A Type Into The Container
+#### 綁定型別到容器
 
-There are two ways the IoC container can resolve dependencies: via Closure callbacks or automatic resolution. First, we'll explore Closure callbacks. First, a "type" may be bound into the container:
+IoC 容器有兩種解析依賴的方式：經由閉合函數或自動解析。我們將先探索閉合函數的用法。首先，綁定一個「型別」到容器：
 
 	App::bind('foo', function($app)
 	{
 		return new FooBar;
 	});
 
-#### Resolving A Type From The Container
+#### 從容器解析型別
 
 	$value = App::make('foo');
 
-When the `App::make` method is called, the Closure callback is executed and the result is returned.
+當 `App::make` 方法被呼叫，綁定的閉合函數會被呼叫並返回結果。
 
-#### Binding A "Shared" Type Into The Container
+#### 綁定「共享」的型別到容器 
 
-Sometimes, you may wish to bind something into the container that should only be resolved once, and the same instance should be returned on subsequent calls into the container:
+有時候，你可能希望綁定到容器的型別只會被解析一次，之後的呼叫都返回相同的實例：
 
 	App::singleton('foo', function()
 	{
 		return new FooBar;
 	});
 
-#### Binding An Existing Instance Into The Container
+#### 綁定已存在的實例到容器
 
-You may also bind an existing object instance into the container using the `instance` method:
+你也可以使用 `instance` 方法，綁定一個已經存在的實例到容器：
 
 	$foo = new Foo;
 
 	App::instance('foo', $foo);
 
 <a name="where-to-register"></a>
-## Where To Register Bindings
+## 何處註冊綁定
 
-IoC bindings, like event handlers or route filters, generally fall under the title of "bootstrap code". In other words, they prepare your application to actually handle requests, and usually need to be executed before a route or controller is actually called. Like most other bootstrap code, the `start` files are always an option for registering IoC bindings. Alternatively, you could create an `app/ioc.php` (filename does not matter) file and require that file from your `start` file.
+IoC 綁定跟「註冊事件處理」或是「註冊路由」一樣，通常稱為「起始碼」。換句話說，IoC 綁定後等待請求，在路由或控制器呼叫時才實際執行。像其他的「起始碼」一樣，`start` 檔案總是註冊 IoC 綁定的一個選擇。或者，你可以建立一個 `app/ioc.php` 檔案（檔名不重要），並且從 `start` 檔案引入。
 
-If your application has a very large number of IoC bindings, or you simply wish to organize your IoC bindings in separate files by category, you may register your bindings in a [service provider](#service-providers).
+如果你的應用程式有很多 IoC 綁定，或是想要分門別類，在不同檔案組織綁定，你可以註冊綁定在[
+服務提供者](#service-providers)。
 
 <a name="automatic-resolution"></a>
-## Automatic Resolution
+## 自動解析
 
-#### Resolving A Class
-
-The IoC container is powerful enough to resolve classes without any configuration at all in many scenarios. For example:
+在很多情境下，IoC 容器不需要額外設定就有能力自動解析類別。例如：
 
 	class FooBar {
 
@@ -75,17 +75,17 @@ The IoC container is powerful enough to resolve classes without any configuratio
 
 	$fooBar = App::make('FooBar');
 
-Note that even though we did not register the FooBar class in the container, the container will still be able to resolve the class, even injecting the `Baz` dependency automatically!
+雖然我們沒有註冊 FooBar 類別綁定到容器，它還是可以解析類別，甚至自動注入 `Baz` ！
 
-When a type is not bound in the container, it will use PHP's Reflection facilities to inspect the class and read the constructor's type-hints. Using this information, the container can automatically build an instance of the class.
+如果容器裡沒有找到對應的型別綁定，容器會利用 PHP 的 Reflection 檢查類別，並且解讀傳入建構子的型別提示。利用這些資訊，讓容器可以自動建立類別實例。
 
-#### Binding An Interface To An Implementation
+#### 綁定實例的介面
 
-However, in some cases, a class may depend on an interface implementation, not a "concrete type". When this is the case, the `App::bind` method must be used to inform the container which interface implementation to inject:
+然而，有些時候，一個類別可能需要依賴介面，而不是一個「具體的型別」。這些情況下，`App::bind` 方法用來通知容器要注入哪個介面實例：
 
 	App::bind('UserRepositoryInterface', 'DbUserRepository');
 
-Now consider the following controller:
+考慮以下的控制器：
 
 	class UserController extends BaseController {
 
@@ -96,14 +96,14 @@ Now consider the following controller:
 
 	}
 
-Since we have bound the `UserRepositoryInterface` to a concrete type, the `DbUserRepository` will automatically be injected into this controller when it is created.
+既然我們已經綁定 `UserRepositoryInterface` 到一個具體型別，`DbUserRepository` 會在控制器建立時自動注入。
 
 <a name="practical-usage"></a>
-## Practical Usage
+## 應用
 
-Laravel provides several opportunities to use the IoC container to increase the flexibility and testability of your application. One primary example is when resolving controllers. All controllers are resolved through the IoC container, meaning you can type-hint dependencies in a controller constructor, and they will automatically be injected.
+在 Laravel 裡，很多時候使用 IoC 容器，可以增加應用程式的彈性與可測試性。一個基本的範例是用在解析控制器。所有的控制器都會經由 IoC 容器解析，意味著你可以在控制器的建構子注入型別提示依賴，之後依賴就會自動被注入。
 
-#### Type-Hinting Controller Dependencies
+#### 注入型別提示 ( Type-Hinting ) 依賴到控制器
 
 	class OrderController extends BaseController {
 
@@ -121,11 +121,11 @@ Laravel provides several opportunities to use the IoC container to increase the 
 
 	}
 
-In this example, the `OrderRepository` class will automatically be injected into the controller. This means that when [unit testing](/docs/testing) a "mock" `OrderRepository` may be bound into the container and injected into the controller, allowing for painless stubbing of database layer interaction.
+在這個範例裡， `OrderRepository` 類別會自動被注入到控制器。意味著在[單元測試](/docs/testing)時，可以綁定一個 "mock" 的 `OrderRepository` 到容器裡，之後被注入到 控制器，讓你不用在測試時一定要和資料庫層互動。
 
-#### Other Examples Of IoC Usage
+#### 其他 Ioc 應用範例
 
-[Filters](/docs/routing#route-filters), [composers](/docs/responses#view-composers), and [event handlers](/docs/events#using-classes-as-listeners) may also be resolved out of the IoC container. When registering them, simply give the name of the class that should be used:
+[Filters](/docs/routing#route-filters)，[composers](/docs/responses#view-composers)，和[事件處理](/docs/events#using-classes-as-listeners)也可以使用 IoC 容器解析。只要在註冊的時候設定要使用的類別名稱：
 
 	Route::filter('foo', 'FooFilter');
 
@@ -134,15 +134,15 @@ In this example, the `OrderRepository` class will automatically be injected into
 	Event::listen('foo', 'FooHandler');
 
 <a name="service-providers"></a>
-## Service Providers
+## 服務提供者（ Service Provider ）
 
-Service providers are a great way to group related IoC registrations in a single location. Think of them as a way to bootstrap components in your application. Within a service provider, you might register a custom authentication driver, register your application's repository classes with the IoC container, or even setup a custom Artisan command.
+使用服務提供者是一個很好的方式，可以把相關的 IoC 註冊放到到同一個地方。可以將服務提供者 想像成是一個在應用程式裡啟動元件的方式。你可以在裡面註冊自定的會員認證，綁定應用程式的 儲存庫類別到 IoC 容器，或甚至設定自定的 Artisan 指令。
 
-In fact, most of the core Laravel components include service providers. All of the registered service providers for your application are listed in the `providers` array of the `app/config/app.php` configuration file.
+事實上，大部份的 Laravel 核心元件都有服務提供者，所有被註冊的服務提供者都列在 `app/config/app.php` 設定檔的 `providers` 陣列裡。
 
-#### Defining A Service Provider
+#### 定義一個服務提供者
 
-To create a service provider, simply extend the `Illuminate\Support\ServiceProvider` class and define a `register` method:
+要建立一個服務提供者，只要繼承 `Illuminate\Support\ServiceProvider` 類別，然後在裡面定義一個 `register` 方法：
 
 	use Illuminate\Support\ServiceProvider;
 
@@ -158,20 +158,20 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 
 	}
 
-Note that in the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
+注意，在 `register` 方法裡，經由 `$this->app` 使用 IoC 容器。當你建立了一個服務 而且準備要註冊到你的應用程式裡時，只要把它加到你的 `app` 設定檔的 `providers` 陣列裡即可。
 
-#### Registering A Service Provider At Run-Time
+#### 在執行期間註冊服務提供者
 
-You may also register a service provider at run-time using the `App::register` method:
+你也可以使用 `App::register` 在執行期間註冊服務提供者 ：
 
 	App::register('FooServiceProvider');
 
 <a name="container-events"></a>
-## Container Events
+## 容器事件
 
-#### Registering A Resolving Listener
+#### 註冊解析事件的監聽
 
-The container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
+每當容器解析一個物件時就會觸發事件，你可以使用 `resolving` 方法監聽這個事件：
 
 	App::resolvingAny(function($object)
 	{
@@ -183,4 +183,4 @@ The container fires an event each time it resolves an object. You may listen to 
 		//
 	});
 
-Note that the object that was resolved will be passed to the callback.
+注意，被解析的物件會被傳到閉合函式。
