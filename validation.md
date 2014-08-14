@@ -531,6 +531,7 @@ You may also pass a class and method to the `extend` method instead of a Closure
 
 Note that you will also need to define an error message for your custom rules. You can do so either using an inline custom message array or by adding an entry in the validation language file.
 
+
 #### Extending The Validator Class
 
 Instead of using Closure callbacks to extend the Validator, you may also extend the Validator class itself. To do so, write a Validator class that extends `Illuminate\Validation\Validator`. You may add validation methods to the class by prefixing them with `validate`:
@@ -568,3 +569,21 @@ If you would like to add a custom message "replacer" without extending the `Vali
 	{
 		//
 	});
+
+### Where To Register Custom Validation Rules
+
+You may be wondering _where_ to register your custom validation rules. You can do it almost anywhere, but it is common to register the rules in one of your `start` files such as `app/start/global.php`.
+
+If your `start` files are getting too crowded, you could create a separate `app/validations.php` file that is included from a `start` file. 
+
+    require app_path().'/validations.php';
+
+Alternatively, you can include the file by editing your `composer.json` autoload and then running `composer dump-autoload`:
+
+    "autoload": {
+		"files": [
+            "app/validations.php"
+        ]
+	}
+
+These are a simple solutions that keeps your validation registration cleanly separated from the rest of your bootstrapping. If you prefer a class based approach, you may register your events in a [service provider](/docs/ioc#service-providers). Choose an approach you feel comfortable with.

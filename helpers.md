@@ -5,6 +5,7 @@
 - [Strings](#strings)
 - [URLs](#urls)
 - [Miscellaneous](#miscellaneous)
+- [Custom] (#custom)
 
 <a name="arrays"></a>
 ## Arrays
@@ -412,3 +413,18 @@ If the given value is a `Closure`, return the value returned by the `Closure`. O
 Return the given object. Useful for method chaining constructors in PHP 5.3.x.
 
 	$value = with(new Foo)->doWork();
+
+<a name="custom"></a>
+## Custom
+
+You can define your own custom helper functions almost anywhere, but one common approach is to add your helper functions to your own `app/helpers.php` file and include it in one of your `start` files such as `app/start/global.php`.
+
+    require app_path().'/helpers.php';
+
+Alternatively, you can include the file by editing your `composer.json` autoload and then running `composer dump-autoload`:
+
+    "autoload": {
+		"files": [
+            "app/helpers.php"
+        ]
+	}
