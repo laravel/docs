@@ -586,4 +586,4 @@ Alternatively, you can include the file by editing your `composer.json` autoload
         ]
 	}
 
-These are a simple solutions that keeps your validation registration cleanly separated from the rest of your bootstrapping. If you prefer a class based approach, you may register your events in a [service provider](/docs/ioc#service-providers). Choose an approach you feel comfortable with.
+These solutions keep your validation registration cleanly separated from the rest of your bootstrapping. If you prefer a class based approach, you may register your events in a [service provider](/docs/ioc#service-providers). Choose an approach you feel comfortable with.
