@@ -1117,7 +1117,7 @@ Sometimes, you may wish to return a custom Collection object with your own added
 
 #### Defining An Accessor
 
-Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simply define a `getFooAttribute` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
+Eloquent provides a convenient way to transform your model attributes when getting or setting them. To declare an accessor, define a method on your model that follows the naming pattern `get`+attribute+`Attribute`, e.g. `getFooAttribute`. 
 
 	class User extends Eloquent {
 
@@ -1128,7 +1128,19 @@ Eloquent provides a convenient way to transform your model attributes when getti
 
 	}
 
-In the example above, the `first_name` column has an accessor. Note that the value of the attribute is passed to the accessor.
+In the example above, the `first_name` column has an accessor. Note that the raw value of the attribute is passed to the accessor.
+
+Keep in mind that the method names should follow studly-case (like camel-case, but the first word is capitalized), even though your database columns are snake-case.  This means that accessing properties `first_name` or `firstname` will both be routed through the `getFirstNameAttribute` accessor.
+
+Sometimes accessors can prevent you from accessing raw values, so consider defining an accessor for a virtual column.  For example, if your database column stores `salary` as a decimal, then define an accessor for the `salary_formatted` property.
+
+	public function getSalaryFormattedAttribute($value)
+	{
+		return '$'. number_format($value,2);
+	}
+
+That way you can access both the raw and modified values.
+
 
 #### Defining A Mutator
 
@@ -1140,8 +1152,27 @@ Mutators are declared in a similar fashion:
 		{
 			$this->attributes['first_name'] = strtolower($value);
 		}
-
+		
 	}
+
+As with accessors, sometimes you may wish to preserve the raw version of the value you are mutating.  In such cases, consider storing a copy of the raw value in a class variable, for example:
+
+	class Product extends Eloquent {
+        
+        public $lbs;
+        
+        /**
+         * Store weight in kgs
+         * @param decimal weight in lbs
+         */
+		public function setWeightAttribute($value)
+		{
+            $this->lbs = $value; // raw value
+            $this->attributes['weight'] = round($value * 0.453592, 2);
+		}
+		
+	}
+
 
 <a name="date-mutators"></a>
 ## Date Mutators
