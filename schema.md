@@ -1,6 +1,6 @@
-# Schema Builder
+# 結構生成器
 
-- [Introduction](#introduction)
+- [介紹](#introduction)
 - [Creating & Dropping Tables](#creating-and-dropping-tables)
 - [Adding Columns](#adding-columns)
 - [Renaming Columns](#renaming-columns)
