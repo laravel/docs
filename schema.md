@@ -100,7 +100,7 @@ If you are using the MySQL database, you may use the `after` method to specify t
 <a name="renaming-columns"></a>
 ## Renaming Columns
 
-To rename a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
+To drop a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
 
 	Schema::table('users', function($table)
 	{
