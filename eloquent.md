@@ -1130,7 +1130,7 @@ Eloquent provides a convenient way to transform your model attributes when getti
 
 In the example above, the `first_name` column has an accessor. Note that the raw value of the attribute is passed to the accessor.
 
-Keep in mind that the method names should follow studly-case (like camel-case, but the first word is capitalized), even though your database columns are snake-case.  This means that accessing properties `first_name` or `firstname` will both be routed through the `getFirstNameAttribute` accessor.
+Keep in mind that the method names should follow be camel-case, even though your database columns are snake-case.  This means that accessing properties `first_name` or `firstname` will both be routed through the `getFirstNameAttribute` accessor.
 
 Sometimes accessors can prevent you from accessing raw values, so consider defining an accessor for a virtual column.  For example, if your database column stores `salary` as a decimal, then define an accessor for the `salary_formatted` property.
 
@@ -1139,7 +1139,7 @@ Sometimes accessors can prevent you from accessing raw values, so consider defin
 		return '$'. number_format($value,2);
 	}
 
-That way you can access both the raw and modified values.
+That way you can access both the raw and modified values.  See [appending attributes](#array-appends).
 
 
 #### Defining A Mutator
