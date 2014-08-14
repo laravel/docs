@@ -87,6 +87,7 @@ Command  | Description
 `$table->time('sunrise');`  |  TIME equivalent to the table
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent to the table
 `$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
+`$table->rememberToken();`  |  Adds `remember_token` as VARCHAR(100) NULL
 `->nullable()`  |  Designate that the column allows NULL values
 `->default($value)`  |  Declare a default value for a column
 `->unsigned()`  |  Set INTEGER to UNSIGNED
@@ -100,7 +101,7 @@ If you are using the MySQL database, you may use the `after` method to specify t
 <a name="renaming-columns"></a>
 ## Renaming Columns
 
-To drop a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
+To rename a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
 
 	Schema::table('users', function($table)
 	{
@@ -111,6 +112,8 @@ To drop a column, you may use the `renameColumn` method on the Schema builder. B
 
 <a name="dropping-columns"></a>
 ## Dropping Columns
+
+To drop a column, you may use the `dropColumn` method on the Schema builder. Before dropping a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
 
 #### Dropping A Column From A Database Table
 
