@@ -39,7 +39,7 @@ Laravel 在建立時就有考慮到單元測試。事實上，它支援立即使
 <a name="test-environment"></a>
 ## 測試環境
 
-當執行單元測試的時候，Laravel 會自動將環境設置在 `testing`。另外, Laravel 會在測試環境匯入 `session` 和 `cache` 的設定檔案。當在測試環境裡這兩個驅動會被設定為 `array` (空陣列)，代表在測試的時候沒有 session 或 cache 資料將會被保留。視情況你可以任意的建立你需要的測試環境設定。
+當執行單元測試的時候，Laravel 會自動將環境設置在 `testing`。另外 Laravel 會在測試環境匯入 `session` 和 `cache` 的設定檔案。當在測試環境裡這兩個驅動會被設定為 `array` (空陣列)，代表在測試的時候沒有 session 或 cache 資料將會被保留。視情況你可以任意的建立你需要的測試環境設定。
 
 <a name="calling-routes-from-tests"></a>
 ## 從測試呼叫路由
