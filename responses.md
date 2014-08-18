@@ -1,25 +1,25 @@
-# Views & Responses
+# 視圖（ View ）與回應（ Response ）
 
-- [Basic Responses](#basic-responses)
-- [Redirects](#redirects)
-- [Views](#views)
-- [View Composers](#view-composers)
-- [Special Responses](#special-responses)
-- [Response Macros](#response-macros)
+- [基本回應](#basic-responses)
+- [重導](#redirects)
+- [視圖](#views)
+- [視圖組件](#view-composers)
+- [特殊回應](#special-responses)
+- [回應巨集](#response-macros)
 
 <a name="basic-responses"></a>
-## Basic Responses
+## 基本回應
 
-#### Returning Strings From Routes
+#### 從路由回傳字串
 
 	Route::get('/', function()
 	{
 		return 'Hello World';
 	});
 
-#### Creating Custom Responses
+#### 建立自定回應
 
-A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses.
+`Response` 實例繼承了 `Symfony\Component\HttpFoundation\Response` 類別，其提供了很多方法建立 HTTP 回應。
 
 	$response = Response::make($contents, $statusCode);
 
@@ -27,59 +27,59 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 
 	return $response;
 
-If you need access to the `Response` class methods, but want to return a view as the response content, you may use the `Response::view` method for convenience:
+如果想要使用 `Response` 類別的方法，但最終回傳視圖給使用者，你可以使用簡便的 `Response::view` 方法：
 
 	return Response::view('hello')->header('Content-Type', $type);
 
-#### Attaching Cookies To Responses
+#### 附加 Cookies 到回應
 
 	$cookie = Cookie::make('name', 'value');
 
 	return Response::make($content)->withCookie($cookie);
 
 <a name="redirects"></a>
-## Redirects
+## 重導
 
-#### Returning A Redirect
+#### 回傳重導
 
 	return Redirect::to('user/login');
 
-#### Returning A Redirect With Flash Data
+#### 回傳重導並且加上快閃資料（ Flash Data ）
 
 	return Redirect::to('user/login')->with('message', 'Login Failed');
 
-> **Note:** Since the `with` method flashes data to the session, you may retrieve the data using the typical `Session::get` method.
+> **提示：** `with` 方法會設定快閃資料到 session，所以可以使用 `Session::get` 取得資料。
 
-#### Returning A Redirect To A Named Route
+#### 回傳根據路由名稱的重導
 
 	return Redirect::route('login');
 
-#### Returning A Redirect To A Named Route With Parameters
+#### 回傳根據路由名稱的重導，並給予路由參數賦值
 
 	return Redirect::route('profile', array(1));
 
-#### Returning A Redirect To A Named Route Using Named Parameters
+#### 回傳根據路由名稱的重導，並給予特定名稱路由參數賦值
 
 	return Redirect::route('profile', array('user' => 1));
 
-#### Returning A Redirect To A Controller Action
+#### 回傳根據控制器動作的重導
 
 	return Redirect::action('HomeController@index');
 
-#### Returning A Redirect To A Controller Action With Parameters
+#### 回傳根據控制器動作的重導，並給予參數賦值
 
 	return Redirect::action('UserController@profile', array(1));
 
-#### Returning A Redirect To A Controller Action Using Named Parameters
+#### 回傳根據控制器動作的重導，並給予特定名稱參數賦值
 
 	return Redirect::action('UserController@profile', array('user' => 1));
 
 <a name="views"></a>
 ## Views
 
-Views typically contain the HTML of your application and provide a convenient way of separating your controller and domain logic from your presentation logic. Views are stored in the `app/views` directory.
+視圖通常包含 HTML，並且提供便利的方式分開控制器和表現層的領域邏輯。視圖儲存在 `app/views` 目錄下。
 
-A simple view could look something like this:
+一個簡單的視圖可能看起來如下：
 
 	<!-- View stored in app/views/greeting.php -->
 
@@ -89,42 +89,42 @@ A simple view could look something like this:
 		</body>
 	</html>
 
-This view may be returned to the browser like so:
+視圖可以像這樣回傳到使用者瀏覽器：
 
 	Route::get('/', function()
 	{
 		return View::make('greeting', array('name' => 'Taylor'));
 	});
 
-The second argument passed to `View::make` is an array of data that should be made available to the view.
+`View::make` 方法傳入的第二個參數是可以在視圖裡使用的陣列資料。
 
-#### Passing Data To Views
+#### 傳遞資料到視圖
 
-	// Using conventional approach
+	// 使用通用方式
 	$view = View::make('greeting')->with('name', 'Steve');
 
-	// Using Magic Methods
+	// 使用魔術方法
 	$view = View::make('greeting')->withName('steve');
 
-In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
+上面的範例裡，將可以在視圖裡使用變數 `$name` ，其值為 `Steve` 。
 
-If you wish, you may pass an array of data as the second parameter given to the `make` method:
+如果你想，可以傳入資料陣列作為 `make` 方法第二個參數：
 
 	$view = View::make('greetings', $data);
 
-You may also share a piece of data across all views:
+你也可以設定所有視圖共用資料：
 
 	View::share('name', 'Steve');
 
-#### Passing A Sub-View To A View
+#### 傳遞子視圖到視圖
 
-Sometimes you may wish to pass a view into another view. For example, given a sub-view stored at `app/views/child/view.php`, we could pass it to another view like so:
+有時候你可能想要傳遞子視圖到另一個視圖。例如，有一個子視圖存在 `app/views/child/view.php`，可以像這樣將它傳遞到另一個視圖：
 
 	$view = View::make('greeting')->nest('child', 'child.view');
 
 	$view = View::make('greeting')->nest('child', 'child.view', $data);
 
-The sub-view can then be rendered from the parent view:
+如此可以在視圖裡渲染子視圖：
 
 	<html>
 		<body>
@@ -133,9 +133,9 @@ The sub-view can then be rendered from the parent view:
 		</body>
 	</html>
 
-#### Determining If A View Exists
+#### 確認視圖是否存在
 
-If you need to check if a view exists, use the `View::exists` method:
+如果你需要確認視圖是否存在，使用 `View::exists` 方法：
 
 	if (View::exists('emails.customer'))
 	{
@@ -143,31 +143,31 @@ If you need to check if a view exists, use the `View::exists` method:
 	}
 
 <a name="view-composers"></a>
-## View Composers
+## 視圖組件
 
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
+視圖組件是當渲染視圖時呼叫的回呼函數或類別方法。如果你想在每次渲染某些視圖時綁定資料，視圖組件可以把這樣的邏輯組織在同一個地方。因此，視圖組件的作用可能像是 "view models" 或是 "presenters"。
 
-#### Defining A View Composer
+#### 定義一個組件
 
 	View::composer('profile', function($view)
 	{
 		$view->with('count', User::count());
 	});
 
-Now each time the `profile` view is rendered, the `count` data will be bound to the view.
+之後每當 `profile` 視圖被渲染時， `count` 變數就會被綁定到視圖。
 
-You may also attach a view composer to multiple views at once:
+你也可以把一個組件同時附加到很多視圖。
 
 	View::composer(array('profile','dashboard'), function($view)
 	{
 		$view->with('count', User::count());
 	});
 
-If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC Container](/docs/ioc), you may do so:
+如使用類別作為組件，提供了可以從 [IoC 容器](/docs/ioc)自動解析組件的好處，你可以像這樣做：
 
 	View::composer('profile', 'ProfileComposer');
 
-A view composer class should be defined like so:
+一個視圖組件類別應該像這樣定義：
 
 	class ProfileComposer {
 
@@ -178,20 +178,20 @@ A view composer class should be defined like so:
 
 	}
 
-#### Defining Multiple Composers
+#### 定義很多組件
 
-You may use the `composers` method to register a group of composers at the same time:
+你可以使用 `composers` 方法群組視圖組件：
 
 	View::composers(array(
 		'AdminComposer' => array('admin.index', 'admin.profile'),
 		'UserComposer' => 'user',
 	));
 
-> **Note:** There is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
+> **提示：** 組件類別沒有一定要放在什麼地方，你可以將它們放在任何地方，只要可以使用 `composer.json` 自動載入即可。
 
-### View Creators
+### 視圖創建者
 
-View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, simply use the `creator` method:
+視圖 **創建者** 幾乎和組件運作方式一樣；只是他們會在視圖初始化時就立刻建立起來。要註冊一個創建者，只要使用 `creator` 方法：
 
 	View::creator('profile', function($view)
 	{
@@ -199,36 +199,36 @@ View **creators** work almost exactly like view composers; however, they are fir
 	});
 
 <a name="special-responses"></a>
-## Special Responses
+## 特殊回應
 
-#### Creating A JSON Response
+#### 建立 JSON 回應
 
 	return Response::json(array('name' => 'Steve', 'state' => 'CA'));
 
-#### Creating A JSONP Response
+#### 建立 JSONP 回應
 
 	return Response::json(array('name' => 'Steve', 'state' => 'CA'))->setCallback(Input::get('callback'));
 
-#### Creating A File Download Response
+#### 建立下載檔案回應
 
 	return Response::download($pathToFile);
 
 	return Response::download($pathToFile, $name, $headers);
 
-> **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
+> **提醒：** 管理檔案下載的套件，Symfony HttpFoundation，要求下載檔名必須為 ASCII 。
 
 <a name="response-macros"></a>
-## Response Macros
+## 回應巨集
 
-If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `Response::macro` method:
+如果你想要自定可以在很多路由和控制器重複使用的回應，可以使用 `Response::macro` 方法：
 
 	Response::macro('caps', function($value)
 	{
 		return Response::make(strtoupper($value));
 	});
 
-The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name on the `Response` class:
+`macro` 方法第一個參數為巨集名稱，第二個參數為閉合函數。閉合函數會在 `Response` 呼叫巨集名稱的時候被執行：
 
 	return Response::caps('foo');
 
-You may define your macros in one of your `app/start` files. Alternatively, you may organize your macros into a separate file which is included from one of your `start` files.
+你可以把定義自己的巨集放在 `app/start` 裡面的文件。又或者，你可以將巨集組織成獨立的文件，並且從其中一個 `start` 文件裡引入。
