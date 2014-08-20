@@ -1,43 +1,43 @@
-# Security
+# 認證與安全性
 
-- [Configuration](#configuration)
-- [Storing Passwords](#storing-passwords)
-- [Authenticating Users](#authenticating-users)
-- [Manually Logging In Users](#manually)
-- [Protecting Routes](#protecting-routes)
-- [HTTP Basic Authentication](#http-basic-authentication)
-- [Password Reminders & Reset](#password-reminders-and-reset)
-- [Encryption](#encryption)
-- [Authentication Drivers](#authentication-drivers)
+- [設定](#configuration)
+- [儲存密碼](#storing-passwords)
+- [使用者認證](#authenticating-users)
+- [手動登入使用者](#manually)
+- [保護路由](#protecting-routes)
+- [HTTP 簡易認證](#http-basic-authentication)
+- [忘記密碼與密碼重設](#password-reminders-and-reset)
+- [加密](#encryption)
+- [認證驅動](#authentication-drivers)
 
 <a name="configuration"></a>
-## Configuration
+## 設定
 
-Laravel aims to make implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `app/config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication facilities.
+Laravel 的目標就是要讓實作認證機制變得簡單。事實上，幾乎所有的設定預設就已經完成了。有關認證的設定檔都放在 `app/config/auth.php` 裡，而在這些檔案裡也都包含了良好的註解說明每一個選項的所對應的認證行為及動作。
 
-By default, Laravel includes a `User` model in your `app/models` directory which may be used with the default Eloquent authentication driver. Please remember when building the Schema for this Model to ensure that the password field is a minimum of 60 characters.
+Laravel 預設在 `app/models` 資料夾內就包含了一個使用 Eloquent 認證驅動的`User` 模型。請記得在建立模型結構時，密碼欄位至少要有 60 個字元寬度。
 
-If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
+假如您的應用程式並不是使用 Eloquent ，你也可以使用 Laravel 的查尋產生器做  `database` 認證驅動。
 
-> **Note:** Before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application.
+> **注意：** 在開始之前，請先確認您的 `users` (或其他同義) 資料表包含一個名為 `remember_token` 的欄位，欄寬 100 字元、字串型態、可接受 null。這個欄位將會被用來儲存「記住我」的 session token。
 
 <a name="storing-passwords"></a>
-## Storing Passwords
+## 儲存密碼
 
-The Laravel `Hash` class provides secure Bcrypt hashing:
+Laravel 的 `Hash` 類別提供了安全的 Bcrypt 雜湊演算法：
 
-#### Hashing A Password Using Bcrypt
+#### 對密碼加密
 
 	$password = Hash::make('secret');
 
-#### Verifying A Password Against A Hash
+#### 驗證密碼
 
 	if (Hash::check('secret', $hashedPassword))
 	{
 		// The passwords match...
 	}
 
-#### Checking If A Password Needs To Be Rehashed
+#### 確認密碼是否需要重新加密
 
 	if (Hash::needsRehash($hashed))
 	{
@@ -45,126 +45,126 @@ The Laravel `Hash` class provides secure Bcrypt hashing:
 	}
 
 <a name="authenticating-users"></a>
-## Authenticating Users
+## 使用者認證
 
-To log a user into your application, you may use the `Auth::attempt` method.
+要讓使用者登入，你可以使用 `Auth::attempt` 方法：
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password)))
 	{
 		return Redirect::intended('dashboard');
 	}
 
-Take note that `email` is not a required option, it is merely used for example. You should use whatever column name corresponds to a "username" in your database. The `Redirect::intended` function will redirect the user to the URL they were trying to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
+需提醒的是 `email`並不是一個必要的欄位，在這裡僅用於示範。你可以使用資料庫裡任何類似於「使用者名稱」的欄位做為帳號值。若使用者尚未登入的話，認證篩選器會使用 `Redirect::intended` 方法重導使用者至指定的 URL。我們可指定一個備用 URI ，假如預定的位置不存在時使用。
 
-When the `attempt` method is called, the `auth.attempt` [event](/docs/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
+當 `attempt` 方法被呼叫時，`auth.attempt` [事件](/docs/events) 將會被觸發。假如認證成功的話，則 `auth.login` 事件會接著被觸發。
 
-#### Determining If A User Is Authenticated
+#### 判定使用者是否已登入
 
-To determine if the user is already logged into your application, you may use the `check` method:
+判定一個使用者是否已經登入您的應用程式，您可以使用 `check` 這個方法：
 
 	if (Auth::check())
 	{
 		// The user is logged in...
 	}
 
-#### Authenticating A User And "Remembering" Them
+#### 認證一個使用者並且「記住」他
 
-If you would like to provide "remember me" functionality in your application, you may pass `true` as the second argument to the `attempt` method, which will keep the user authenticated indefinitely (or until they manually logout). Of course, your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
+假如您想要在您的應用程式內提供「記住我」的選項，您可以在 `attempt` 方法的第二個參數給 `true` 值，這樣就可以保留使用者的認證身份 (或直到他手動登出為止)。當然，您的 `users` 資料表必需包括一個字串型態的 `remember_token` 欄位來儲存「記住我」的標記。
 
 	if (Auth::attempt(array('email' => $email, 'password' => $password), true))
 	{
 		// The user is being remembered...
 	}
 
-**Note:** If the `attempt` method returns `true`, the user is considered logged into the application.
+**注意：** 假如 `attempt` 方法回傳 `true` ，則表示使用者已經登入您的應用程式。
 
-#### Determining If User Authed Via Remember
-If you are "remembering" user logins, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
+#### 透過記住我來認證使用者
+假如您讓使用者透過「記住我」的方式來登入，則您可以使用 `viaRemember` 方法來判定使用者是否擁有「記住我」cookie 來認證使用者登入：
 
 	if (Auth::viaRemember())
 	{
 		//
 	}
 
-#### Authenticating A User With Conditions
+#### 條件認證使用者
 
-You also may add extra conditions to the authenticating query:
+在認證過程中，您可能會想要增加額外的認證條件：
 
     if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1)))
     {
         // The user is active, not suspended, and exists.
     }
 
-> **Note:** For added protection against session fixation, the user's session ID will automatically be regenerated after authenticating.
+> **注意：** 為了增加對 session 的保護，使用者的 session ID 將會在使用者認證完成後自動重新產生。
 
-#### Accessing The Logged In User
+#### 取得已登入的使用者資訊
 
-Once a user is authenticated, you may access the User model / record:
+當使用者完成認證後，你就可以透過模型來取得相關的資料：
 
 	$email = Auth::user()->email;
 
-To retrieve the authenticated user's ID, you may use the `id` method:
+取得登入使用者的 ID，你可以使用 `id` 方法：
 
 	$id = Auth::id();
 
-To simply log a user into the application by their ID, use the `loginUsingId` method:
+若想要透過使用者的 ID 來登入應用程式，可直接使用 `loginUsingId` 方法：
 
 	Auth::loginUsingId(1);
 
-#### Validating User Credentials Without Login
+#### 驗證使用者資訊而不要登入
 
-The `validate` method allows you to validate a user's credentials without actually logging them into the application:
+`validate` 方法可以讓您驗證使用者資訊而不真的登入應用程式：
 
 	if (Auth::validate($credentials))
 	{
 		//
 	}
 
-#### Logging A User In For A Single Request
+#### 在單一請求內登入使用者
 
-You may also use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized.
+您也可以使用 `once` 方法來讓使用者在單一請求內登入。不會有任何 session 或 cookie 被產生：
 
 	if (Auth::once($credentials))
 	{
 		//
 	}
 
-#### Logging A User Out Of The Application
+#### 將使用者登出
 
 	Auth::logout();
 
 <a name="manually"></a>
-## Manually Logging In Users
+## 手動登入使用者
 
-If you need to log an existing user instance into your application, you may simply call the `login` method with the instance:
+假如您需要將一個已存在的使用者實體登入您的應用程式，您可以用該實體很簡單的呼叫 `login` 方法：
 
 	$user = User::find(1);
 
 	Auth::login($user);
 
-This is equivalent to logging in a user via credentials using the `attempt` method.
+這個方式和用使用者帳號密碼來 `attempt` 的功能是一樣的。
 
 <a name="protecting-routes"></a>
-## Protecting Routes
+## 保護路由
 
-Route filters may be used to allow only authenticated users to access a given route. Laravel provides the `auth` filter by default, and it is defined in `app/filters.php`.
+路由過濾器可讓特定的路由僅能讓已認證的使用者連結。Laravel 預設提供 `auth` 過濾器，其被定義在 `app/filters.php` 檔案內。
 
-#### Protecting A Route
+#### 保護特定路由
 
 	Route::get('profile', array('before' => 'auth', function()
 	{
 		// Only authenticated users may enter...
 	}));
 
-### CSRF Protection
+### CSRF 保護
 
-Laravel provides an easy method of protecting your application from cross-site request forgeries.
+Laravel 提供一個簡易的方式來保護您的應用程式免於跨站攻擊。
 
-#### Inserting CSRF Token Into Form
+#### 在表單內引入 CSRF 標記
 
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-#### Validate The Submitted CSRF Token
+#### 驗證表單的 CSRF 標記
 
     Route::post('register', array('before' => 'csrf', function()
     {
@@ -172,46 +172,46 @@ Laravel provides an easy method of protecting your application from cross-site r
     }));
 
 <a name="http-basic-authentication"></a>
-## HTTP Basic Authentication
+## HTTP 簡易認證
 
-HTTP Basic Authentication provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` filter to your route:
+HTTP 簡易認證提供了一個快速的方式來認證使用者而不用特定設置一個「登入」頁。在您的路由內設定 `auth.basic` 過濾器則可啟動這個功能：
 
-#### Protecting A Route With HTTP Basic
+#### 用 HTTP 簡易認證保護您的路由
 
 	Route::get('profile', array('before' => 'auth.basic', function()
 	{
 		// Only authenticated users may enter...
 	}));
 
-By default, the `basic` filter will use the `email` column on the user record when authenticating. If you wish to use another column you may pass the column name as the first parameter to the `basic` method in your `app/filters.php` file:
+`basic` 過濾器預設將會使用 `email` 欄位來做使用者認證，假如您想要使用其他欄位來做認證的話，可在您的 `app/filters.php` 檔案內將想要拿來做認證的欄位當成第一個參數傳給 `basic` 方法：
 
 	Route::filter('auth.basic', function()
 	{
 		return Auth::basic('username');
 	});
 
-#### Setting Up A Stateless HTTP Basic Filter
+#### 設定無狀態的 HTTP 簡易過濾器
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, define a filter that returns the `onceBasic` method:
+一般在實作 API 認證時，往往會想要使用 HTTP 簡易認證而不要產生任何 session 或 cookie。我們可以透過定義一個過濾器並回傳 `onceBasic` 方法來達成：
 
 	Route::filter('basic.once', function()
 	{
 		return Auth::onceBasic();
 	});
 
-If you are using PHP FastCGI, HTTP Basic authentication will not work correctly by default. The following lines should be added to your `.htaccess` file:
+假如您是使用 PHP FastCGI，HTTP 簡易認證預設是無法正常運作的。請在你的 `.htaccess` 檔案內新增以下程式碼來啟動這個功能：
 
 	RewriteCond %{HTTP:Authorization} ^(.+)$
 	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 <a name="password-reminders-and-reset"></a>
-## Password Reminders & Reset
+## 忘記密碼與重設
 
-### Model & Table
+### 模型與資料表
 
-Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets. To get started, verify that your `User` model implements the `Illuminate\Auth\Reminders\RemindableInterface` contract. Of course, the `User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Reminders\RemindableTrait` to include the methods needed to implement the interface.
+大多數的網路應用程式都會提供使用者忘記密碼的功能。為了不讓開發者重複實作這個功能，Laravel 提供了方便的方法來寄送忘記密碼通知及密碼重設的功能。在開始之前，請先確認您的 `User` 模型有實作 `Illuminate\Auth\Reminders\RemindableInterface` 。當然，預設 Laravel 的 `User` 模型本身就已實作，並且引入`Illuminate\Auth\Reminders\RemindableTrait` 來包括所有需要實作的介面方法。
 
-#### Implementing The RemindableInterface
+#### 實作 RemindableInterface
 
 	use Illuminate\Auth\Reminders\RemindableTrait;
 	use Illuminate\Auth\Reminders\RemindableInterface;
@@ -222,41 +222,41 @@ Most web applications provide a way for users to reset their forgotten passwords
 
 	}
 
-#### Generating The Reminder Table Migration
+#### 產生 Reminder 資料表遷移
 
-Next, a table must be created to store the password reset tokens. To generate a migration for this table, simply execute the `auth:reminders-table` Artisan command:
+接下來，我們需要產生一個資料表來儲存重設密碼標記。為了產生這個資料表的遷移檔，需要執行 `auth:reminders-table` artisan 指令：
 
 	php artisan auth:reminders-table
 
 	php artisan migrate
 
-### Password Reminder Controller
+### 密碼重設控制器
 
-Now we're ready to generate the password reminder controller. To automatically generate a controller, you may use the `auth:reminders-controller` Artisan command, which will create a `RemindersController.php` file in your `app/controllers` directory.
+然後我們已經準備好產生密碼重設控制器，您可以使用 `auth:reminders-controller` artisan 指令來自動產生這個控制器，它會產生出一個 `RemindersController.php` 檔案在您的 `app/controllers` 資料夾內。
 
 	php artisan auth:reminders-controller
 
-The generated controller will already have a `getRemind` method that handles showing your password reminder form. All you need to do is create a `password.remind` [view](/docs/responses#views). This view should have a basic form with an `email` field. The form should POST to the `RemindersController@postRemind` action.
+產生出來的控制器已經具備 `getRemind` 方法來顯示您的忘記密碼表單。您所需要做就是建立一個 `password.remind` [視圖](/docs/responses#views)。這個視圖需要具備一個 `email` 欄位的表單，且這個表單應該要 POST 到 `RemindersController@postRemind` 動作。
 
-A simple form on the `password.remind` view might look like this:
+一個簡單的 `password.remind` 表單視圖應該看起來像這樣：
 
 	<form action="{{ action('RemindersController@postRemind') }}" method="POST">
 		<input type="email" name="email">
 		<input type="submit" value="Send Reminder">
 	</form>
 
-In addition to `getRemind`, the generated controller will already have a `postRemind` method that handles sending the password reminder e-mails to your users. This method expects the `email` field to be present in the `POST` variables. If the reminder e-mail is successfully sent to the user, a `status` message will be flashed to the session. If the reminder fails, an `error` message will be flashed instead.
+除了 `getRemind` 外，控制器還包括了一個 `postRemind` 方法來處理寄送忘記密碼通知信給您的使用者。這個方法會預期在 `POST` 參數內會有 `email` 欄位。假如忘記密碼通知信成功的寄發給使用者，則會有一個 `status` 訊息被暫存在 session 內；假如寄發失敗的話，則取而代之的會有一個 `error` 訊息被暫存。
 
-Within the `postRemind` controller method you may modify the message instance before it is sent to the user:
+在 `postRemind` 方法內，你可以在發送出去前修改訊息的內容：
 
 	Password::remind(Input::only('email'), function($message)
 	{
 		$message->subject('Password Reminder');
 	});
 
-Your user will receive an e-mail with a link that points to the `getReset` method of the controller. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method. The action is already configured to return a `password.reset` view which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
+您的使用者將會收到一封電子郵件內有一個重設密碼的連結指向 `getReset` 控制器方法。忘記密碼標記是用來驗證密碼重設程序是否正確，也會傳遞給對應的控制器方法。這個動作已經設定會回傳一個 `password.reset` 視圖。這個 `token` 會被傳遞給視圖，而您需要將這個 `token` 放在一個隱形的表單欄位內。另外，您的重設密碼表單應該包括 `email`、`password` 和 `password_confirmation` 欄位。這個表單應該 POST 到 `RemindersController@postReset` 方法。
 
-A simple form on the `password.reset` view might look like this:
+一個 `password.reset` 視圖表單應該看起來像這樣：
 
 	<form action="{{ action('RemindersController@postReset') }}" method="POST">
 		<input type="hidden" name="token" value="{{ $token }}">
@@ -266,45 +266,45 @@ A simple form on the `password.reset` view might look like this:
 		<input type="submit" value="Reset Password">
 	</form>
 
-Finally, the `postReset` method is responsible for actually changing the password in storage. In this controller action, the Closure passed to the `Password::reset` method sets the `password` attribute on the `User` and calls the `save` method. Of course, this Closure is assuming your `User` model is an [Eloquent model](/docs/eloquent); however, you are free to change this Closure as needed to be compatible with your application's database storage system.
+最後，`postReset` 方法則是專職處理重設過後的密碼。在這個控制器方法裡，Closure 傳遞 `Password::reset` 方法並且設定 `User` 內的 `password` 屬性後呼叫 `save` 方法。當然，這個 Closure 會假定您的 `User` 模型是一個 [Eloquent 模型](/docs/eloquent) 。當然，您可以自由地修改這個 Closure 內容來符合您的應用程式資料庫儲存方式。
 
-If the password is successfully reset, the user will be redirected to the root of your application. Again, you are free to change this redirect URL. If the password reset fails, the user will be redirect back to the reset form, and an `error` message will be flashed to the session.
+假如密碼成功的重設，則使用者會被重導至您的應用程式根目錄。同樣的，您可以自由的更改重導的 URL；假如密碼重設失敗的話，使用者會被重導至重設密碼表單頁，而且會有 `error` 訊息被暫存在 session 內。
 
-### Password Validation
+### 密碼驗證
 
-By default, the `Password::reset` method will verify that the passwords match and are >= six characters. You may customize these rules using the `Password::validator` method, which accepts a Closure. Within this Closure, you may do any password validation you wish. Note that you are not required to verify that the passwords match, as this will be done automatically by the framework.
+預設 `Password::reset` 方法會驗證密碼符合且大於等於六個字元。您可以用 `Password::validator` 方法 (接受 Closure) 來調整這些預設值。透過這個 Closure，您可以用任何方式來做密碼驗證。需提醒的是，你不一定要驗證密碼是否符合，因為框架自動會幫您完成這項工作。
 
 	Password::validator(function($credentials)
 	{
 		return strlen($credentials['password']) >= 6;
 	});
 
-> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `app/config/auth.php` file.
+> **注意：** 密碼重設標記預設會在一個小時後過期。您可以透過 `app/config/auth.php` 案內的 `reminder.expire` 選項來調整這個設定。
 
 <a name="encryption"></a>
-## Encryption
+## 加密
 
-Laravel provides facilities for strong AES encryption via the mcrypt PHP extension:
+Laravel 透過 mcrypt PHP 外掛來提供 AES 強度的加密演算：
 
-#### Encrypting A Value
+#### 加密一個值
 
 	$encrypted = Crypt::encrypt('secret');
 
-> **Note:** Be sure to set a 16, 24, or 32 character random string in the `key` option of the `app/config/app.php` file. Otherwise, encrypted values will not be secure.
+> **注意：** 記得在 `app/config/app.php` 檔案裡設定一個 16, 24 或 32 字元的隨機字做 `key` ，否則這個加密演算結果將不夠安全。
 
-#### Decrypting A Value
+#### 解密一個值
 
 	$decrypted = Crypt::decrypt($encryptedValue);
 
-#### Setting The Cipher & Mode
+#### 設定暗號及模式
 
-You may also set the cipher and mode used by the encrypter:
+您可以設定加密器的暗號及模式：
 
 	Crypt::setMode('ctr');
 
 	Crypt::setCipher($cipher);
 
 <a name="authentication-drivers"></a>
-## Authentication Drivers
+## 認證驅動
 
-Laravel offers the `database` and `eloquent` authentication drivers out of the box. For more information about adding additional authentication drivers, check out the [Authentication extension documentation](/docs/extending#authentication).
+Laravel 預設提供 `database` 及 `eloquent` 兩種認證驅動。假如您需要更多有關增加額外認證驅動的詳細資訊，請參考 [認證擴充文件](/docs/extending#authentication)
