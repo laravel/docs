@@ -148,7 +148,7 @@ This command will place a new `OldFilter` class within your `app/Http/Filters` d
 		{
 			return Redirect::to('home');
 		}
-	});
+	};
 
 If the filter returns a response, that response is considered the response to the request and the route will not execute. Any `after` filters on the route are also cancelled.
 
