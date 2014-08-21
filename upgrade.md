@@ -9,31 +9,30 @@
 <a name="upgrade-4.3"></a>
 ## Upgrading To 4.3 From 4.2
 
-### Move Routes File To Routing Directory
+### Quick Upgrade Using LegacyServiceProvider
 
-Within your `app` directory, you should create a `routing` directory. Move your `routes.php` and `filters.php` files into this directory. You should also `require` your `filters.php` file from the top of your `routes.php` file.
+Laravel 4.3 introduces a robust new folder structure. However, if you wish to upgrade your application to Laravel 4.3 while maintaining the Laravel 4.2 folder structure, you may use the `Illuminate\Foundation\Providers\FourTwoStructureServiceProvider`. To upgrade to Laravel 4.3 using this provider, you should do the following:
 
-### Move Start Files Into Service Providers
+**1.** Update your `composer.json` dependency on `laravel/framework` to `4.3.*`.
 
-All of the `app/start` file contents have been transitioned to [service providers](/docs/ioc#service-providers). This provides a better starting point for most applications, as well as gives newcomers to the framework a gentle introduction to service providers. To migrate your `start` files to the new service provider architecture, you can simply copy the files from the [Laravel Github repository](https://github.com/laravel/laravel) and paste them into a new `app/src/Providers` directory within your application. You should add this directory to your `composer.json` file so that the service providers can be loaded. You should also add the providers to your `providers` array in the `app/config/app.php` configuration file.
+**2.** Run `composer update --no-scripts`.
 
-If you have added custom code to your start files, in most cases, you can simply copy and paste the code you have added into the `boot` method of the `AppServiceProvider` class.
+**3.** Add the `Illuminate\Foundation\Providers\FourTwoStructureServiceProvider` to your `providers` array in `app/config/app.php` file.
 
-### Class Loader Removed - Use Composer
+**4.** Remove the `Illuminate\Session\CommandsServiceProvider`, `Illuminate\Routing\ControllerServiceProvider`, and `Illuminate\Workbench\WorkbenchServiceProvider` entires from your `providers` array in the `app/config/app.php` file.
 
-The `ClassLoader` class has been removed in favor of using Composer for all auto-loading. In most cases, this will not require changes to your application. However, you should be aware that if you are using the `classmap` option for your controllers or other files, you will need to run `composer dump-autoload` when adding new classes to your application.
+**5.** Add the following set of paths to the bottom of your `bootstrap/paths.php` file:
 
-If you copied the `ClassLoader` call to the `AppServiceProvider` from your `start/global.php` start file, you should this call from the service provider. You should also remove the `ClassLoader` call from the `bootstrap/autoload.php` file.
+	'commands' => __DIR__.'/../app/commands',
+	'config' => __DIR__.'/../app/config',
+	'controllers' => __DIR__.'/../app/controllers',
+	'database' => __DIR__.'/../app/database',
+	'filters' => __DIR__.'/../app/filters',
+	'lang' => __DIR__.'/../app/lang',
+	'providers' => __DIR__.'/../app/providers',
+	'requests' => __DIR__.'/../app/requests',
 
-### Move Artisan Command Registration
-
-Artisan commands should now be registered in `app/src/Providers/ArtisanServiceProvider.php`. Make sure to register this service provider in the `providers` array of your `app/config/app.php` configuration file. You can view a sample of this provider in the `Laravel Github repository](https://github.com/laravel/laravel). You should register your custom Artisan commands in the [IoC container](/docs/ioc) and use the service provider's `commands` method to instruct Laravel to make them available to the Artisan CLI.
-
-For more information on registering Artisan commands, see the [Artisan documentation](/docs/commands#registering-commands).
-
-### Maintenance Mode In Before Filter
-
-If you copied the `App::down` call from your `start/global.php` file into your new `AppServiceProvider`, you should remove this call from the provider. Instead, you may add an `if` statement to your `App::before` global filter which checks for `App::isDownForMaintenance()`. If this method return `true`, you may return any maintenance response you wish.
+Once these changes have been made, you should be able to run your Laravel application like normal. However, you should continue reviewing the following upgrade notices to fully complete the upgrade process.
 
 ### Compile Configuration File
 
