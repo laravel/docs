@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-All of the configuration files for the Laravel framework are stored in the `app/config` directory. Each option in every file is documented, so feel free to look through the files and get familiar with the options available to you.
+All of the configuration files for the Laravel framework are stored in the `config` directory. Each option in every file is documented, so feel free to look through the files and get familiar with the options available to you.
 
 Sometimes you may need to access configuration values at run-time. You may do so using the `Config` class:
 
@@ -34,7 +34,7 @@ Configuration values that are set at run-time are only set for the current reque
 
 It is often helpful to have different configuration values based on the environment the application is running in. For example, you may wish to use a different cache driver on your local development machine than on the production server. It is easy to accomplish this using environment based configuration.
 
-Simply create a folder within the `config` directory that matches your environment name, such as `local`. Next, create the configuration files you wish to override and specify the options for that environment. For example, to override the cache driver for the local environment, you would create a `cache.php` file in `app/config/local` with the following content:
+Simply create a folder within the `config` directory that matches your environment name, such as `local`. Next, create the configuration files you wish to override and specify the options for that environment. For example, to override the cache driver for the local environment, you would create a `cache.php` file in `config/local` with the following content:
 
 	<?php
 
@@ -122,7 +122,7 @@ Now, on your production server, create a `.env.php` file in your project root th
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
-When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenamce mode check is included in the default `App::before` filter in `app/routing/filters.php`. The response from this check will be sent to users when your application is in maintenance mode.
+When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenamce mode check is included in the default `App::before` filter in `app/Http/Filters/MaintenanceFilter.php`. The response from this check will be sent to users when your application is in maintenance mode.
 
 To enable maintenance mode, simply execute the `down` Artisan command:
 

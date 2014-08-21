@@ -9,7 +9,7 @@
 <a name="configuration"></a>
 ## Configuration
 
-The logging handler for your application is registered in the `app/start/global.php` [start file](/docs/lifecycle#start-files). By default, the logger is configured to use a single log file; however, you may customize this behavior as needed. Since Laravel uses the popular [Monolog](https://github.com/Seldaek/monolog) logging library, you can take advantage of the variety of handlers that Monolog offers.
+The logging handler for your application is registered in the `App\Providers\ErrorServiceProvider` [service provider](/docs/ioc#service-providers). By default, the logger is configured to use a single log file; however, you may customize this behavior as needed. Since Laravel uses the popular [Monolog](https://github.com/Seldaek/monolog) logging library, you can take advantage of the variety of handlers that Monolog offers.
 
 For example, if you wish to use daily log files instead of a single, large file, you can make the following change to your start file:
 
@@ -19,14 +19,14 @@ For example, if you wish to use daily log files instead of a single, large file,
 
 ### Error Detail
 
-By default, error detail is enabled for your application. This means that when an error occurs you will be shown an error page with a detailed stack trace and error message. You may turn off error details by setting the `debug` option in your `app/config/app.php` file to `false`.
+By default, error detail is enabled for your application. This means that when an error occurs you will be shown an error page with a detailed stack trace and error message. You may turn off error details by setting the `debug` option in your `config/app.php` file to `false`.
 
 > **Note:** It is strongly recommended that you turn off error detail in a production environment.
 
 <a name="handling-errors"></a>
 ## Handling Errors
 
-By default, the `app/start/global.php` file contains an error handler for all exceptions:
+By default, the `ErrorServiceProvider` class contains an error handler for all exceptions:
 
 	App::error(function(Exception $exception)
 	{
@@ -58,10 +58,6 @@ To listen for PHP fatal errors, you may use the `App::fatal` method:
 
 If you have several exception handlers, they should be defined from most generic to most specific. So, for example, a handler that handles all exceptions of type `Exception` should be defined before a custom exception type such as `Illuminate\Encryption\DecryptException`.
 
-### Where To Place Error Handlers
-
-There is no default "home" for error handler registrations. Laravel offers you freedom in this area. One option is to define the handlers in your `app/src/Providers/ErrorServiceProvider.php` file. In general, this is a convenient location to place any "bootstrapping" error handling code.
-
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
 
@@ -88,7 +84,7 @@ You may register an error handler that handles all "404 Not Found" errors in you
 <a name="logging"></a>
 ## Logging
 
-The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create a single log file for your application, and this file is stored in `app/storage/logs/laravel.log`. You may write information to the log like so:
+The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create a single log file for your application, and this file is stored in `storage/logs/laravel.log`. You may write information to the log like so:
 
 	Log::info('This is some useful information.');
 
