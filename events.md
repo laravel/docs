@@ -45,9 +45,9 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 
 ### Where To Register Events
 
-So, you know how to register events, but you may be wondering _where_ to register them. Don't worry, this is a common question. Unfortunately, it's a hard question to answer because you can register an event almost anywhere! But, here are some tips. Again, like most other bootstrapping code, you may register events in one of your service providers such as `app/src/Providers/AppServiceProvider.php`.
+So, you know how to register events, but you may be wondering _where_ to register them. Don't worry, this is a common question. Unfortunately, it's a hard question to answer because you can register an event almost anywhere! But, here are some tips. Again, like most other bootstrapping code, you may register events in one of your service providers such as `app/Providers/AppServiceProvider.php`.
 
-If your `AppServiceProvider` is getting too crowded, you could create a separate service provider strictly for events.
+If your `AppServiceProvider` is getting too crowded, you could create a separate service provider strictly for events. The `provider:make` Artisan command will allow you to quickly generate new service provider classes.
 
 <a name="wildcard-listeners"></a>
 ## Wildcard Listeners
@@ -80,11 +80,13 @@ In some cases, you may wish to use a class to handle an event rather than a Clos
 
 #### Registering A Class Listener
 
-	Event::listen('auth.login', 'LoginHandler');
+	Event::listen('event.name', 'App\LoginHandler');
 
 #### Defining An Event Listener Class
 
 By default, the `handle` method on the `LoginHandler` class will be called:
+
+	<?php namespace App;
 
 	class LoginHandler {
 
@@ -95,11 +97,13 @@ By default, the `handle` method on the `LoginHandler` class will be called:
 
 	}
 
+Of course, you may place your event handler classes anywhere you wish within your application. For instance, you may wish to create an `App\Events` namespace for all of your event handlers.
+
 #### Specifying Which Method To Subscribe
 
 If you do not wish to use the default `handle` method, you may specify the method that should be subscribed:
 
-	Event::listen('auth.login', 'LoginHandler@onLogin');
+	Event::listen('auth.login', 'App\LoginHandler@onLogin');
 
 <a name="queued-events"></a>
 ## Queued Events

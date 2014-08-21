@@ -156,15 +156,15 @@ To verify that a user is subscribed to your application, use the `subscribed` co
 		//
 	}
 
-The `subscribed` method makes a great candidate for a route filter:
+The `subscribed` method makes a great candidate for a [route filter](/docs/routing#route-filters):
 
-	Route::filter('subscribed', function()
+	public function filter()
 	{
 		if (Auth::user() && ! Auth::user()->subscribed())
 		{
 			return Redirect::to('billing');
 		}
-	});
+	}
 
 You may also determine if the user is still within their trial period (if applicable) using the `onTrial` method:
 

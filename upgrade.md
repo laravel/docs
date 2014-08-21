@@ -19,7 +19,7 @@ Laravel 4.3 introduces a robust new folder structure. However, if you wish to up
 
 **3.** Add the `Illuminate\Foundation\Providers\LegacyStructureServiceProvider` to your `providers` array in `app/config/app.php` file.
 
-**4.** Remove the `Illuminate\Session\CommandsServiceProvider`, `Illuminate\Routing\ControllerServiceProvider`, and `Illuminate\Workbench\WorkbenchServiceProvider` entires from your `providers` array in the `app/config/app.php` file.
+**4.** Remove the `Illuminate\Session\CommandsServiceProvider`, `Illuminate\Routing\ControllerServiceProvider`, and `Illuminate\Workbench\WorkbenchServiceProvider` entries from your `providers` array in the `app/config/app.php` file.
 
 **5.** Add the following set of paths to the bottom of your `bootstrap/paths.php` file:
 
@@ -32,7 +32,7 @@ Laravel 4.3 introduces a robust new folder structure. However, if you wish to up
 	'providers' => __DIR__.'/../app/providers',
 	'requests' => __DIR__.'/../app/requests',
 
-Once these changes have been made, you should be able to run your Laravel application like normal. However, you should continue reviewing the following upgrade notices to fully complete the upgrade process.
+Once these changes have been made, you should be able to run your Laravel application like normal. However, you should continue reviewing the following upgrade notices.
 
 ### Compile Configuration File
 

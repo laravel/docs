@@ -12,7 +12,7 @@ One method of using templates in Laravel is via controller layouts. By specifyin
 
 #### Defining A Layout On A Controller
 
-	class UserController extends BaseController {
+	class UserController extends Controller {
 
 		/**
 		 * The layout that should be used for responses.
@@ -36,7 +36,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 #### Defining A Blade Layout
 
-	<!-- Stored in app/views/layouts/master.blade.php -->
+	<!-- Stored in resources/views/layouts/master.blade.php -->
 
 	<html>
 		<body>
