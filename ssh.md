@@ -260,4 +260,4 @@ To update Envoy, simply run the `self-update` command:
 
 If your Envoy installation is in `/usr/local/bin`, you may need to use `sudo`:
 
-	sudo envoy self-update
+	composer global update
