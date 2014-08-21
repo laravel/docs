@@ -11,13 +11,13 @@
 
 ### Quick Upgrade Using LegacyServiceProvider
 
-Laravel 4.3 introduces a robust new folder structure. However, if you wish to upgrade your application to Laravel 4.3 while maintaining the Laravel 4.2 folder structure, you may use the `Illuminate\Foundation\Providers\FourTwoStructureServiceProvider`. To upgrade to Laravel 4.3 using this provider, you should do the following:
+Laravel 4.3 introduces a robust new folder structure. However, if you wish to upgrade your application to Laravel 4.3 while maintaining the Laravel 4.2 folder structure, you may use the `Illuminate\Foundation\Providers\LegacyStructureServiceProvider`. To upgrade to Laravel 4.3 using this provider, you should do the following:
 
 **1.** Update your `composer.json` dependency on `laravel/framework` to `4.3.*`.
 
 **2.** Run `composer update --no-scripts`.
 
-**3.** Add the `Illuminate\Foundation\Providers\FourTwoStructureServiceProvider` to your `providers` array in `app/config/app.php` file.
+**3.** Add the `Illuminate\Foundation\Providers\LegacyStructureServiceProvider` to your `providers` array in `app/config/app.php` file.
 
 **4.** Remove the `Illuminate\Session\CommandsServiceProvider`, `Illuminate\Routing\ControllerServiceProvider`, and `Illuminate\Workbench\WorkbenchServiceProvider` entires from your `providers` array in the `app/config/app.php` file.
 
