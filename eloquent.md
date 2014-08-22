@@ -1117,7 +1117,7 @@ Sometimes, you may wish to return a custom Collection object with your own added
 
 #### Defining An Accessor
 
-Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simply define a `getFooAttribute` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
+Eloquent provides a convenient way to transform your model attributes when getting or setting them. To declare an accessor, define a method on your model that follows the naming pattern `get`+attribute+`Attribute`, e.g. `getFooAttribute`. 
 
 	class User extends Eloquent {
 
@@ -1128,7 +1128,22 @@ Eloquent provides a convenient way to transform your model attributes when getti
 
 	}
 
-In the example above, the `first_name` column has an accessor. Note that the value of the attribute is passed to the accessor.
+In the example above, the `first_name` column has an accessor. Note that the raw value of the attribute is passed to the accessor.
+
+Laravel's convention is that method names should be camel-case, even though your database columns are snake-case.  This means that accessing properties `first_name` or `firstname` will both be routed through the same accessor.  
+
+> **Note:** PHP-method names are _case-insensitive_, so the distinction between `getFirstNameAttribute` and `getFirstnameAttribute` is ultimately ignored. 
+
+
+Sometimes accessors can prevent you from accessing raw values, so consider defining an accessor for a virtual column.  For example, if your database column stores `salary` as a decimal, then define an accessor for the `salary_formatted` property.
+
+	public function getSalaryFormattedAttribute($value)
+	{
+		return '$'. number_format($value,2);
+	}
+
+That way you can access both the raw and modified values.  See [appending attributes](#array-appends).
+
 
 #### Defining A Mutator
 
@@ -1140,8 +1155,27 @@ Mutators are declared in a similar fashion:
 		{
 			$this->attributes['first_name'] = strtolower($value);
 		}
-
+		
 	}
+
+As with accessors, sometimes you may wish to preserve the raw version of the value you are mutating.  In such cases, consider storing a copy of the raw value in a class variable, for example:
+
+	class Product extends Eloquent {
+        
+        public $lbs;
+        
+        /**
+         * Store weight in kgs
+         * @param decimal weight in lbs
+         */
+		public function setWeightAttribute($value)
+		{
+            $this->lbs = $value; // raw value
+            $this->attributes['weight'] = round($value * 0.453592, 2);
+		}
+		
+	}
+
 
 <a name="date-mutators"></a>
 ## Date Mutators
@@ -1157,7 +1191,7 @@ You may customize which fields are automatically mutated, and even completely di
 
 When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
 
-To totally disable date mutations, simply return an empty array from the `getDates` method:
+To totally disable date mutations, return an empty array from the `getDates` method:
 
 	public function getDates()
 	{
@@ -1267,14 +1301,14 @@ Alternatively, you may use the `visible` property to define a white-list:
 	protected $visible = array('first_name', 'last_name');
 
 <a name="array-appends"></a>
-Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, simply define an accessor for the value:
+Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To create a "virtual" or "calculated" attribute, define an accessor method corresponding to the value name.  Laravel will look for a camel-cased method name, even though the value name itself may be snake-cased.  E.g. the `getIsAdminAttribute` corresponds to a value named `is_admin`:
 
 	public function getIsAdminAttribute()
 	{
 		return $this->attributes['admin'] == 'yes';
 	}
 
-Once you have created the accessor, just add the value to the `appends` property on the model:
+Once you have created the accessor method, add the value to the `appends` property on the model:
 
 	protected $appends = array('is_admin');
 

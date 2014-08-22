@@ -53,9 +53,7 @@ You may also bind an existing object instance into the container using the `inst
 <a name="where-to-register"></a>
 ## Where To Register Bindings
 
-IoC bindings, like event handlers or route filters, generally fall under the title of "bootstrap code". In other words, they prepare your application to actually handle requests, and usually need to be executed before a route or controller is actually called. Like most other bootstrap code, the `start` files are always an option for registering IoC bindings. Alternatively, you could create an `app/ioc.php` (filename does not matter) file and require that file from your `start` file.
-
-If your application has a very large number of IoC bindings, or you simply wish to organize your IoC bindings in separate files by category, you may register your bindings in a [service provider](#service-providers).
+IoC bindings, like event handlers or route filters, generally fall under the title of "bootstrap code". In other words, they prepare your application to actually handle requests, and usually need to be executed before a route or controller is actually called. Like most other bootstrap code, your service provider classes are always an option for registering IoC bindings. You may create as many service providers as necessary for your application.
 
 <a name="automatic-resolution"></a>
 ## Automatic Resolution

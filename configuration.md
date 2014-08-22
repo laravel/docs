@@ -48,7 +48,7 @@ Simply create a folder within the `config` directory that matches your environme
 
 Notice that you do not have to specify _every_ option that is in the base configuration file, but only the options you wish to override. The environment configuration files will "cascade" over the base files.
 
-Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `bootstrap/start.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The array passed to this method is used to determine the current environment. You may add other environments and machine names to the array as needed.
+Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `bootstrap/environment.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The array passed to this method is used to determine the current environment. You may add other environments and machine names to the array as needed.
 
     <?php
 
@@ -122,7 +122,7 @@ Now, on your production server, create a `.env.php` file in your project root th
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
-When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A call to the `App::down` method is already present in your `app/start/global.php` file. The response from this method will be sent to users when your application is in maintenance mode.
+When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenamce mode check is included in the default `App::before` filter in `app/routing/filters.php`. The response from this check will be sent to users when your application is in maintenance mode.
 
 To enable maintenance mode, simply execute the `down` Artisan command:
 
@@ -131,15 +131,6 @@ To enable maintenance mode, simply execute the `down` Artisan command:
 To disable maintenance mode, use the `up` command:
 
 	php artisan up
-
-To show a custom view when your application is in maintenance mode, you may add something like the following to your application's `app/start/global.php` file:
-
-	App::down(function()
-	{
-		return Response::view('maintenance', array(), 503);
-	});
-
-If the Closure passed to the `down` method returns `NULL`, maintenance mode will be ignored for that request.
 
 ### Maintenance Mode & Queues
 

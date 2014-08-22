@@ -119,24 +119,16 @@ You may also specify a default value to the `confirm` method, which should be `t
 
 #### Registering An Artisan Command
 
-Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/start/artisan.php` file. Within this file, you may use the `Artisan::add` method to register the command:
+Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/src/Providers/ArtisanServiceProvider.php` file. Within this file, you may bind the commands in the [IoC container](/docs/ioc) and use the `commands` method to register them with Artisan. By default, a sample command registration is included in the service provider. For example:
 
-	Artisan::add(new CustomCommand);
-
-#### Registering A Command That Is In The IoC Container
-
-If your command is registered in the application [IoC container](/docs/ioc), you may use the `Artisan::resolve` method to make it available to Artisan:
-
-	Artisan::resolve('binding.name');
-
-#### Registering Commands In A Service Provider
-
-If you need to register commands from within a service provider, you should call the `commands` method from the provider's `boot` method, passing the [IoC container](/docs/ioc) binding for the command:
-
-	public function boot()
+	$this->app->bindShared('commands.inspire', function()
 	{
-		$this->commands('command.binding');
-	}
+		return new InspireCommand;
+	});
+
+Once the command has been bound in the IoC container, you may use the `commands` method in your service provider to instruct the framework to make the command available to Artisan. You should pass the name of the IoC binding you used when registering the command with the container:
+
+	$this->commands('commands.inspire');
 
 <a name="calling-other-commands"></a>
 ## Calling Other Commands
