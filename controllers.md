@@ -18,6 +18,7 @@ Here is an example of a basic controller class:
 	namespace App\Http\Controllers;
 
 	use View, App\User;
+	use Illuminate\Routing\Controller;
 
 	class UserController extends Controller {
 
@@ -33,7 +34,7 @@ Here is an example of a basic controller class:
 
 	}
 
-All controllers should extend the `Illuminate\Routing\Controller` class, which is aliased to `App\Http\Controllers\Controller` for convenience. Now, we can route to this controller action like so:
+All controllers should extend the `Illuminate\Routing\Controller` class. Now, we can route to this controller action like so:
 
 	Route::get('user/{id}', 'UserController@showProfile');
 
