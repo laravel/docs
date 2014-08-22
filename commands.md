@@ -15,17 +15,17 @@ In addition to the commands provided with Artisan, you may also build your own c
 
 ### Generating The Class
 
-To create a new command, you may use the `command:make` Artisan command, which will generate a command stub to help you get started:
+To create a new command, you may use the `console:make` Artisan command, which will generate a command stub to help you get started:
 
 #### Generate A New Command Class
 
-	php artisan command:make FooCommand
+	php artisan console:make FooCommand
 
 The command above would generate a class at `app/Console/FooCommand.php`.
 
 When creating the command, the `--command` option may be used to assign the terminal command name:
 
-	php artisan command:make AssignUsers --command=users:assign
+	php artisan console:make AssignUsers --command=users:assign
 
 ### Writing The Command
 
