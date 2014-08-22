@@ -1130,7 +1130,10 @@ Eloquent provides a convenient way to transform your model attributes when getti
 
 In the example above, the `first_name` column has an accessor. Note that the raw value of the attribute is passed to the accessor.
 
-Keep in mind that the method names should follow be camel-case, even though your database columns are snake-case.  This means that accessing properties `first_name` or `firstname` will both be routed through the `getFirstNameAttribute` accessor.
+Laravel's convention is that method names should be camel-case, even though your database columns are snake-case.  This means that accessing properties `first_name` or `firstname` will both be routed through the same accessor.  
+
+> **Note:** PHP-method names are _case-insensitive_, so the distinction between `getFirstNameAttribute` and `getFirstnameAttribute` is ultimately ignored. 
+
 
 Sometimes accessors can prevent you from accessing raw values, so consider defining an accessor for a virtual column.  For example, if your database column stores `salary` as a decimal, then define an accessor for the `salary_formatted` property.
 
@@ -1188,7 +1191,7 @@ You may customize which fields are automatically mutated, and even completely di
 
 When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
 
-To totally disable date mutations, simply return an empty array from the `getDates` method:
+To totally disable date mutations, return an empty array from the `getDates` method:
 
 	public function getDates()
 	{
@@ -1298,14 +1301,14 @@ Alternatively, you may use the `visible` property to define a white-list:
 	protected $visible = array('first_name', 'last_name');
 
 <a name="array-appends"></a>
-Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, simply define an accessor for the value:
+Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To create a "virtual" or "calculated" attribute, define an accessor method corresponding to the value name.  Laravel will look for a camel-cased method name, even though the value name itself may be snake-cased.  E.g. the `getIsAdminAttribute` corresponds to a value named `is_admin`:
 
 	public function getIsAdminAttribute()
 	{
 		return $this->attributes['admin'] == 'yes';
 	}
 
-Once you have created the accessor, just add the value to the `appends` property on the model:
+Once you have created the accessor method, add the value to the `appends` property on the model:
 
 	protected $appends = array('is_admin');
 
