@@ -940,7 +940,7 @@ Of course, the opposite of `attach` is `detach`:
 
 	$user->roles()->detach(1);
 
-Both `attach` and `detach` also take arrays as IDs:
+Both `attach` and `detach` also take arrays of IDs as input:
 
 	$user = User::find(1);
 
