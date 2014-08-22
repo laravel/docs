@@ -43,12 +43,12 @@ If the `driver` option of your `app/config/mail.php` configuration file is set t
 
 The `Mail::send` method may be used to send an e-mail message:
 
-	Mail::send('emails.welcome', $data, function($message)
+	Mail::send('emails.welcome', array('key'=>'value'), function($message)
 	{
 		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
-The first argument passed to the `send` method is the name of the view that should be used as the e-mail body. The second is the `$data` that should be passed to the view, and the third is a Closure allowing you to specify various options on the e-mail message.
+The first argument passed to the `send` method is the name of the view that should be used as the e-mail body. The second is the data to be passed to the view, often as an associative array where the data items are available to the view by `$key`. The third is a Closure allowing you to specify various options on the e-mail message.
 
 > **Note:** A `$message` variable is always passed to e-mail views, and allows the inline embedding of attachments. So, it is best to avoid passing a `message` variable in your view payload.
 
