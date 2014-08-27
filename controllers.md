@@ -4,6 +4,7 @@
 - [Controller Filters](#controller-filters)
 - [RESTful Controllers](#restful-controllers)
 - [Resource Controllers](#resource-controllers)
+- [Nested Resource Controllers](#nested-resource-controllers)
 - [Handling Missing Methods](#handling-missing-methods)
 
 <a name="basic-controllers"></a>
@@ -140,7 +141,7 @@ The `controller` method accepts two arguments. The first is the base URI the con
 		{
 			//
 		}
-		
+
 		public function anyLogin()
 		{
 			//
@@ -200,7 +201,16 @@ By default, all resource controller actions have a route name; however, you can 
 	Route::resource('photo', 'PhotoController',
 					array('names' => array('create' => 'photo.build')));
 
-#### Handling Nested Resource Controllers
+
+#### Adding Additional Routes To Resource Controllers
+
+If it becomes necessary for you to add additional routes to a resource controller beyond the default resource routes, you should define those routes before your call to `Route::resource`:
+
+	Route::get('photos/popular');
+	Route::resource('photos', 'PhotoController');
+
+<a name="basic-controllers"></a>
+## Nested Resource Controllers
 
 To "nest" resource controllers, use "dot" notation in your route declaration:
 
@@ -216,13 +226,6 @@ This route will register a "nested" resource that may be accessed with URLs like
 		}
 
 	}
-
-#### Adding Additional Routes To Resource Controllers
-
-If it becomes necessary for you to add additional routes to a resource controller beyond the default resource routes, you should define those routes before your call to `Route::resource`:
-
-	Route::get('photos/popular');
-	Route::resource('photos', 'PhotoController');
 
 <a name="handling-missing-methods"></a>
 ## Handling Missing Methods
