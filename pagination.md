@@ -1,4 +1,4 @@
-# Pagination
+# 分頁
 
 - [設置](#configuration)
 - [使用](#usage)
