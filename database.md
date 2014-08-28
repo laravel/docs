@@ -103,6 +103,25 @@ Lastly, you can commit a transaction via the `commit` method:
 
 	DB::commit();
 
+#### Listening For Transaction Events
+
+You may listen for transaction events using the `Event::listen` method:
+
+	Event::listen('connection.beganTransaction', function($connection)
+	{
+	    // Handle the event...
+	});
+	
+	Event::listen('connection.commited', function($connection)
+	{
+	    // Handle the event...
+	});
+	
+	Event::listen('connection.rollBacked', function($connection)
+	{
+	    // Handle the event...
+	});
+
 <a name="accessing-connections"></a>
 ## Accessing Connections
 
