@@ -20,7 +20,7 @@ The Laravel framework utilizes [Composer](http://getcomposer.org) for installati
 
 Now you can install Laravel by issuing the following command from your terminal:
 
-	composer create-project laravel/laravel your-project-name --prefer-dist
+	composer create-project laravel/laravel=4.1.* your-project-name --prefer-dist
 
 This command will download and install a fresh copy of Laravel in a new `your-project-name` folder within your current directory.
 
