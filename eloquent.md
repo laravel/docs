@@ -1,42 +1,42 @@
 # Eloquent ORM
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
+- [介紹](#introduction)
+- [基本用法](#basic-usage)
 - [Mass Assignment](#mass-assignment)
-- [Insert, Update, Delete](#insert-update-delete)
-- [Soft Deleting](#soft-deleting)
-- [Timestamps](#timestamps)
-- [Query Scopes](#query-scopes)
-- [Relationships](#relationships)
-- [Querying Relations](#querying-relations)
-- [Eager Loading](#eager-loading)
-- [Inserting Related Models](#inserting-related-models)
-- [Touching Parent Timestamps](#touching-parent-timestamps)
-- [Working With Pivot Tables](#working-with-pivot-tables)
+- [新增，修改，刪除](#insert-update-delete)
+- [軟刪除（ Soft Deleting ）](#soft-deleting)
+- [時間戳記](#timestamps)
+- [範圍查詢](#query-scopes)
+- [關聯](#relationships)
+- [關聯查詢](#querying-relations)
+- [預載入（ Eager Loading ）](#eager-loading)
+- [新增關聯模型](#inserting-related-models)
+- [更新上層模型時間戳](#touching-parent-timestamps)
+- [操作樞紐表](#working-with-pivot-tables)
 - [Collections](#collections)
-- [Accessors & Mutators](#accessors-and-mutators)
-- [Date Mutators](#date-mutators)
-- [Model Events](#model-events)
-- [Model Observers](#model-observers)
-- [Converting To Arrays / JSON](#converting-to-arrays-or-json)
+- [存取器和修改器](#accessors-and-mutators)
+- [日期轉換器](#date-mutators)
+- [模型事件](#model-events)
+- [模型觀察者](#model-observers)
+- [轉換陣列 / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-The Eloquent ORM included with Laravel provides a beautiful, simple ActiveRecord implementation for working with your database. Each database table has a corresponding "Model" which is used to interact with that table.
+Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和資料庫互動。 每個資料表會和一個對應的「模型」互動。
 
-Before getting started, be sure to configure a database connection in `app/config/database.php`.
+在開始之前，記得把 `app/config/database.php` 裡的資料庫連線設定好。
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-To get started, create an Eloquent model. Models typically live in the `app/models` directory, but you are free to place them anywhere that can be auto-loaded according to your `composer.json` file.
+先從建立一個 Eloquent 模型開始。模型通常放在 `app/models` 目錄下，但是你可以將它們放在任何地方，只要可以根據 `composer.json` 被自動載入。
 
-#### Defining An Eloquent Model
+#### 定義一個 Eloquent 模型
 
 	class User extends Eloquent {}
 
-Note that we did not tell Eloquent which table to use for our `User` model. The lower-case, plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
+注意我們並沒有告訴 Eloquent `User` 模型會使用哪個資料表。若沒有特別指定，預設會自動對應名稱為「類別名稱的小寫複數形態」的資料表。所以，在上面的例子中， Eloquent 會假設 `User` 將把資料存在 `users` 資料表。可以在類別裡定義 `table` 屬性自定要對應的資料表。
 
 	class User extends Eloquent {
 
@@ -44,31 +44,31 @@ Note that we did not tell Eloquent which table to use for our `User` model. The 
 
 	}
 
-> **Note:** Eloquent will also assume that each table has a primary key column named `id`. You may define a `primaryKey` property to override this convention. Likewise, you may define a `connection` property to override the name of the database connection that should be used when utilizing the model.
+> **注意：** Eloquent 也會假設每個資料表都有一個欄位名稱為 `id` 的主鍵。你可以在類別裡定義 `primaryKey` 屬性覆寫這個預設。同樣的，你也可以定義 `connection` 屬性，指定模型需要的資料庫連線。
 
-Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
+定義好模型之後，你就可以從資料表新增及取得資料了。注意預設上，在資料表裡需要有 `updated_at` 和 `created_at` 兩個欄位。如果你不想設定或自動更新這兩個欄位，將類別裡的 `$timestamps` 屬性設為 `false`。
 
-#### Retrieving All Models
+#### 取出所有模型資料
 
 	$users = User::all();
 
-#### Retrieving A Record By Primary Key
+#### 根據主鍵取出一筆資料
 
 	$user = User::find(1);
 
 	var_dump($user->name);
 
-> **Note:** All methods available on the [query builder](/docs/queries) are also available when querying Eloquent models.
+> **提示：** 所有[查詢產生器](/docs/queries)裡的方法，查詢 Eloquent 模型時也可以使用。
 
-#### Retrieving A Model By Primary Key Or Throw An Exception
+#### 根據主鍵取出一筆資料或拋出例外
 
-Sometimes you may wish to throw an exception if a model is not found, allowing you to catch the exceptions using an `App::error` handler and display a 404 page.
+有時你可能想要在找不到模型資料時拋出例外，以捕捉例外讓 `App::error` 處理並顯示 404 頁面。
 
 	$model = User::findOrFail(1);
 
 	$model = User::where('votes', '>', 100)->firstOrFail();
 
-To register the error handler, listen for the `ModelNotFoundException`
+要註冊錯誤處理，可以監聽 `ModelNotFoundException`
 
 	use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -77,7 +77,7 @@ To register the error handler, listen for the `ModelNotFoundException`
 		return Response::make('Not Found', 404);
 	});
 
-#### Querying Using Eloquent Models
+#### Eloquent 模型結合查詢語法
 
 	$users = User::where('votes', '>', 100)->take(10)->get();
 
@@ -86,19 +86,19 @@ To register the error handler, listen for the `ModelNotFoundException`
 		var_dump($user->name);
 	}
 
-#### Eloquent Aggregates
+#### Eloquent 聚合查詢
 
-Of course, you may also use the query builder aggregate functions.
+當然，你也可以使用查詢產生器的聚合查詢方法。
 
 	$count = User::where('votes', '>', 100)->count();
 
-If you are unable to generate the query you need via the fluent interface, feel free to use `whereRaw`:
+如果沒辦法使用流暢的介面產生出查詢語句，也可以使用 `whereRaw`：
 
 	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
 
-#### Chunking Results
+#### 切分查詢
 
-If you need to process a lot (thousands) of Eloquent records, using the `chunk` command will allow you to do without eating all of your RAM:
+如果你要處理非常多（數千筆）Eloquent 查詢結果，使用 `chunk` 方法可以讓你順利作業而不會吃掉記憶體：
 
 	User::chunk(200, function($users)
 	{
@@ -108,24 +108,24 @@ If you need to process a lot (thousands) of Eloquent records, using the `chunk` 
 		}
 	});
 
-The first argument passed to the method is the number of records you wish to receive per "chunk". The Closure passed as the second argument will be called for each chunk that is pulled from the database.
+傳到方法裡的第一個參數表示每次「切分」要取出的資料數量。第二個參數的閉合函數會在每次取出資料時被呼叫。
 
-#### Specifying The Query Connection
+#### 指定查詢時連線資料庫
 
-You may also specify which database connection should be used when running an Eloquent query. Simply use the `on` method:
+你也可以指定在執行 Eloquent 查詢時要使用哪個資料庫連線。只要使用 `on` 方法：
 
 	$user = User::on('connection-name')->find(1);
 
 <a name="mass-assignment"></a>
 ## Mass Assignment
 
-When creating a new model, you pass an array of attributes to the model constructor. These attributes are then assigned to the model via mass-assignment. This is convenient; however, can be a **serious** security concern when blindly passing user input into a model. If user input is blindly passed into a model, the user is free to modify **any** and **all** of the model's attributes. For this reason, all Eloquent models protect against mass-assignment by default.
+在建立一個新的模型時，你把屬性資料陣列傳入建構子，這些屬性值會經由 mass-assignment 存成模型資料。這非常方便，然而，當盲目地將使用者輸入存到模型時，可能會造成嚴重的安全議題。如果盲目的存入使用者輸入，使用者可以隨意的修改**任何**以及**所有**模型屬性。基於這個理由，所有 Eloquent 模型預設會防止 mass-assignment 。
 
-To get started, set the `fillable` or `guarded` properties on your model.
+在模型裡設定 `fillable` 或 `guarded` 屬性作為開始。
 
-#### Defining Fillable Attributes On A Model
+#### 定義模型 Fillable 屬性
 
-The `fillable` property specifies which attributes should be mass-assignable. This can be set at the class or instance level.
+`fillable` 屬性指定了哪些欄位 mass-assignable 。可以設定在類別裡或是建立實例後設定。
 
 	class User extends Eloquent {
 
@@ -133,11 +133,11 @@ The `fillable` property specifies which attributes should be mass-assignable. Th
 
 	}
 
-In this example, only the three listed attributes will be mass-assignable.
+在上面的範例裡，只有三個屬性 mass-assignable 。
 
-#### Defining Guarded Attributes On A Model
+#### 定義模型 Guarded 屬性
 
-The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of a "white-list":
+`guarded` 與 `fillable` 相反，是作為「黑名單」而不是「白名單」：
 
 	class User extends Eloquent {
 
@@ -145,20 +145,20 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 	}
 
-> **Note:** When using `guarded`, you should still never pass `Input::get()` or any raw array of user controlled input into a `save` or `update` method, as any column that is not guarded may be updated.
+> **注意：** 使用 `guarded` 時， `Input::get()` 或任何使用者可以控制的未過濾資料，永遠不應該傳入 `save` 或 `update` 方法，因為沒有在「黑名單」內的欄位可能被更新。
 
-#### Blocking All Attributes From Mass Assignment
+#### 阻擋所有屬性被 Mass Assignment
 
-In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard property:
+上面的範例中， `id` 和 `password` 屬性**不會**被 mass assigned，而所有其他的屬性則是 mass assignable。你也可以使用 guard 屬性阻擋**所有**屬性被 mass assignment ：
 
 	protected $guarded = array('*');
 
 <a name="insert-update-delete"></a>
-## Insert, Update, Delete
+## 新增，更新，刪除
 
-To create a new record in the database from a model, simply create a new model instance and call the `save` method.
+要從模型新增一筆資料到資料庫，只要建立一個模型實例並呼叫 `save` 方法即可。
 
-#### Saving A New Model
+#### 儲存新的模型資料
 
 	$user = new User;
 
@@ -166,15 +166,15 @@ To create a new record in the database from a model, simply create a new model i
 
 	$user->save();
 
-> **Note:** Typically, your Eloquent models will have auto-incrementing keys. However, if you wish to specify your own keys, set the `incrementing` property on your model to `false`.
+> **注意：** 通常 Eloquent 模型主鍵值會自動遞增。但是你若想自定主鍵，將 `incrementing` 屬性設成 `false` 。
 
-You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method. However, before doing so, you will need to specify either a `fillable` or `guarded` attribute on the model, as all Eloquent models protect against mass-assignment.
+也可以使用 `create` 方法存入新的模型資料，新增完後會回傳新增的模型實例。但是在新增前，需要先在模型類別裡設定好 `fillable` 或 `guarded` 屬性，因為 Eloquent 預設會防止 mass-assignment 。
 
-After saving or creating a new model that uses auto-incrementing IDs, you may retrieve the ID by accessing the object's `id` attribute:
+在新模型資料被儲存或新增後，若模型有自動遞增主鍵，可以從物件取得 `id` 屬性值：
 
 	$insertedId = $user->id;
 
-#### Setting The Guarded Attributes On The Model
+#### 在模型裡設定 Guarded 屬性
 
 	class User extends Eloquent {
 
@@ -182,20 +182,20 @@ After saving or creating a new model that uses auto-incrementing IDs, you may re
 
 	}
 
-#### Using The Model Create Method
+#### 使用模型的 Create 方法
 
-	// Create a new user in the database...
+	// 在資料庫建立一筆新的使用者...
 	$user = User::create(array('name' => 'John'));
 
-	// Retrieve the user by the attributes, or create it if it doesn't exist...
+	// 以屬性找使用者，若沒有則新增並取得新的實例...
 	$user = User::firstOrCreate(array('name' => 'John'));
 
-	// Retrieve the user by the attributes, or instantiate a new instance...
+	// 以屬性找使用者，若沒有則建立新的實例...
 	$user = User::firstOrNew(array('name' => 'John'));
 
-#### Updating A Retrieved Model
+#### 更新取出的模型
 
-To update a model, you may retrieve it, change an attribute, and use the `save` method:
+要更新模型，可以取出它，更改屬性值，然後使用 `save` 方法：
 
 	$user = User::find(1);
 
@@ -203,27 +203,27 @@ To update a model, you may retrieve it, change an attribute, and use the `save` 
 
 	$user->save();
 
-#### Saving A Model And Relationships
+#### 儲存模型和關聯資料
 
-Sometimes you may wish to save not only a model, but also all of its relationships. To do so, you may use the `push` method:
+有時你可能不只想要儲存模型本身，也想要儲存關聯的資料。你可以使用 `push` 方法達到目的：
 
 	$user->push();
 
-You may also run updates as queries against a set of models:
+你可以結合查詢語句，批次更新模型：
 
 	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
 
-> **Note:** No model events are fired when updating a set of models via the Eloquent query builder.
+> **注意：** 若使用 Eloquent 查詢產生器批次更新模型，則不會觸發模型事件。
 
-#### Deleting An Existing Model
+#### 刪除模型
 
-To delete a model, simply call the `delete` method on the instance:
+要刪除模型，只要使用實例呼叫 `delete` 方法：
 
 	$user = User::find(1);
 
 	$user->delete();
 
-#### Deleting An Existing Model By Key
+#### 依主鍵值刪除模型
 
 	User::destroy(1);
 
@@ -231,20 +231,20 @@ To delete a model, simply call the `delete` method on the instance:
 
 	User::destroy(1, 2, 3);
 
-Of course, you may also run a delete query on a set of models:
+當然，你也可以結合查詢語句批次刪除模型：
 
 	$affectedRows = User::where('votes', '>', 100)->delete();
 
-#### Updating Only The Model's Timestamps
+#### 只更新模型的時間戳
 
-If you wish to simply update the timestamps on a model, you may use the `touch` method:
+如果你只想要更新模型的時間戳，你可以使用 `touch` 方法：
 
 	$user->touch();
 
 <a name="soft-deleting"></a>
-## Soft Deleting
+## 軟刪除
 
-When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, apply the `SoftDeletingTrait` to the model:
+軟刪除了一筆模型資料後，資料並不是真的從資料庫被移除了。而是會設定 `deleted_at` 時間戳。要讓模型使用軟刪除功能，只要在模型類別裡加入 `SoftDeletingTrait`：
 
 	use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
@@ -256,47 +256,47 @@ When soft deleting a model, it is not actually removed from your database. Inste
 
 	}
 
-To add a `deleted_at` column to your table, you may use the `softDeletes` method from a migration:
+要加入 `deleted_at` 欄位到資料表，可以在遷移檔裡使用 `softDeletes` 方法：
 
 	$table->softDeletes();
 
-Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current timestamp. When querying a model that uses soft deletes, the "deleted" models will not be included in query results.
+現在當你使用模型呼叫 `delete` 方法時， `deleted_at` 欄位會被更新成現在的時間戳。在查詢使用軟刪除功能的模型時，被「刪除」的模型資料不會出現在查詢結果裡。
 
-#### Forcing Soft Deleted Models Into Results
+#### 強制查詢軟刪除資料
 
-To force soft deleted models to appear in a result set, use the `withTrashed` method on the query:
+要強制讓已被軟刪除的模型資料出現在查詢結果裡，在查詢時使用 `withTrashed` 方法：
 
 	$users = User::withTrashed()->where('account_id', 1)->get();
 
-The `withTrashed` method may be used on a defined relationship:
+`withTrashed` 也可以用在關聯查詢：
 
 	$user->posts()->withTrashed()->get();
 
-If you wish to **only** receive soft deleted models in your results, you may use the `onlyTrashed` method:
+如果你**只想**查詢被軟刪除的模型資料，可以使用 `onlyTrashed` 方法：
 
 	$users = User::onlyTrashed()->where('account_id', 1)->get();
 
-To restore a soft deleted model into an active state, use the `restore` method:
+要把被軟刪除的模型資料恢復，使用 `restore` 方法：
 
 	$user->restore();
 
-You may also use the `restore` method on a query:
+你也可以結合查詢語句使用 `restore` ：
 
 	User::withTrashed()->where('account_id', 1)->restore();
 
-Like with `withTrashed`, the `restore` method may also be used on relationships:
+如同 `withTrashed` ， `restore` 方法也可以用在關聯物件：
 
 	$user->posts()->restore();
 
-If you wish to truly remove a model from the database, you may use the `forceDelete` method:
+如果想要真的從模型資料庫刪除，使用 `forceDelete` 方法：
 
 	$user->forceDelete();
 
-The `forceDelete` method also works on relationships:
+`forceDelete` 方法也可以用在關聯物件：
 
 	$user->posts()->forceDelete();
 
-To determine if a given model instance has been soft deleted, you may use the `trashed` method:
+要確認模型是否被軟刪除了，可以使用 `trashed` 方法：
 
 	if ($user->trashed())
 	{
@@ -304,11 +304,12 @@ To determine if a given model instance has been soft deleted, you may use the `t
 	}
 
 <a name="timestamps"></a>
-## Timestamps
+<a name="timestamps"></a>
+## 時間戳
 
-By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `timestamp` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
+預設 Eloquent 會自動維護資料表的 `created_at` 和 `updated_at` 欄位。只要把這兩個「時間戳」欄位加到資料表， Eloquent 就會處理剩下的工作。如果不想讓 Eloquent 自動維護這些欄位，把下面的屬性加到模型類別裡：
 
-#### Disabling Auto Timestamps
+#### 關閉自動更新時間戳
 
 	class User extends Eloquent {
 
@@ -318,9 +319,9 @@ By default, Eloquent will maintain the `created_at` and `updated_at` columns on 
 
 	}
 
-#### Providing A Custom Timestamp Format
+#### 自定時間戳格式
 
-If you wish to customize the format of your timestamps, you may override the `getDateFormat` method in your model:
+如果想要自定時間戳格式，可以在模型類別裡覆寫 `getDateFormat` 方法：
 
 	class User extends Eloquent {
 
@@ -332,11 +333,11 @@ If you wish to customize the format of your timestamps, you may override the `ge
 	}
 
 <a name="query-scopes"></a>
-## Query Scopes
+## 範圍查詢
 
-#### Defining A Query Scope
+#### 定義範圍查詢
 
-Scopes allow you to easily re-use query logic in your models. To define a scope, simply prefix a model method with `scope`:
+範圍查詢可以讓你輕鬆的重複利用模型的查詢邏輯。要設定範圍查詢，只要定義有 `scope` 前綴的模型方法：
 
 	class User extends Eloquent {
 
@@ -352,13 +353,13 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 
 	}
 
-#### Utilizing A Query Scope
+#### 使用範圍查詢
 
 	$users = User::popular()->women()->orderBy('created_at')->get();
 
-#### Dynamic Scopes
+#### 動態範圍查詢
 
-Sometimes You may wish to define a scope that accepts parameters. Just add your parameters to your scope function:
+有時你可能想要定義可接受參數的範圍查詢方法。只要把參數加到方法裡：
 
 	class User extends Eloquent {
 
@@ -369,28 +370,28 @@ Sometimes You may wish to define a scope that accepts parameters. Just add your 
 
 	}
 
-Then pass the parameter into the scope call:
+然後把參數值傳到範圍查詢方法呼叫裡：
 
 	$users = User::ofType('member')->get();
 
 <a name="relationships"></a>
-## Relationships
+## 關聯
 
-Of course, your database tables are probably related to one another. For example, a blog post may have many comments, or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy. Laravel supports many types of relationships:
+當然，你的資料表很可能跟另一張表相關聯。例如，一篇部落格文章可能有很多評論，或是一張訂單跟下單客戶相關聯。 Eloquent 讓管理和處理這些關聯變得很容易。 Laravel 有很多種關聯種類：
 
-- [One To One](#one-to-one)
-- [One To Many](#one-to-many)
-- [Many To Many](#many-to-many)
-- [Has Many Through](#has-many-through)
-- [Polymorphic Relations](#polymorphic-relations)
-- [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
+- [一對一](#one-to-one)
+- [一對多](#one-to-many)
+- [多對多](#many-to-many)
+- [遠層一對多關聯](#has-many-through)
+- [多型關聯](#polymorphic-relations)
+- [多型的多對多關聯](#many-to-many-polymorphic-relations)
 
 <a name="one-to-one"></a>
-### One To One
+### 一對一
 
-#### Defining A One To One Relation
+#### 定義一對一關聯
 
-A one-to-one relationship is a very basic relation. For example, a `User` model might have one `Phone`. We can define this relation in Eloquent:
+一對一關聯是很基本的關聯。例如一個 `User` 模型會對應到一個 `Phone` 。 在 Eloquent 裡可以像下面這樣定義關聯：
 
 	class User extends Eloquent {
 
@@ -401,25 +402,25 @@ A one-to-one relationship is a very basic relation. For example, a `User` model 
 
 	}
 
-The first argument passed to the `hasOne` method is the name of the related model. Once the relationship is defined, we may retrieve it using Eloquent's [dynamic properties](#dynamic-properties):
+傳到 `hasOne` 方法裡的第一個參數是關聯模型的類別名稱。定義好關聯之後，就可以使用 Eloquent 的[動態屬性](#dynamic-properties)取得關聯物件：
 
 	$phone = User::find(1)->phone;
 
-The SQL performed by this statement will be as follows:
+SQL 會執行如下語句：
 
 	select * from users where id = 1
 
 	select * from phones where user_id = 1
 
-Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method. Furthermore, you may pass a third argument to the method to specify which local column that should be used for the association:
+注意， Eloquent 假設對應的關聯模型資料表裡，外鍵名稱是基於模型名稱。在這個例子裡，預設 `Phone` 模型資料表會以 `user_id` 作為外鍵。如果想要更改這個預設，可以傳入第二個參數到 `hasOne` 方法裡。更進一步，你可以傳入第三個參數，指定關聯的外鍵要對應到本身的哪個欄位：
 
 	return $this->hasOne('Phone', 'foreign_key');
 
 	return $this->hasOne('Phone', 'foreign_key', 'local_key');
 
-#### Defining The Inverse Of A Relation
+#### 定義相對的關聯
 
-To define the inverse of the relationship on the `Phone` model, we use the `belongsTo` method:
+要在 `Phone` 模型裡定義相對的關聯，可以使用 `belongsTo` 方法：
 
 	class Phone extends Eloquent {
 
@@ -430,7 +431,7 @@ To define the inverse of the relationship on the `Phone` model, we use the `belo
 
 	}
 
-In the example above, Eloquent will look for a `user_id` column on the `phones` table. If you would like to define a different foreign key column, you may pass it as the second argument to the `belongsTo` method:
+在上面的例子裡， Eloquent 預設會使用 `phones` 資料表的 `user_id` 欄位查詢關聯。如果想要自己指定外鍵欄位，可以在 `belongsTo` 方法裡傳入第二個參數：
 
 	class Phone extends Eloquent {
 
@@ -441,7 +442,7 @@ In the example above, Eloquent will look for a `user_id` column on the `phones` 
 
 	}
 
-Additionally, you pass a third parameter which specifies the name of the associated column on the parent table:
+除此之外，也可以傳入第三個參數指定要參照上層資料表的哪個欄位：
 
 	class Phone extends Eloquent {
 
@@ -453,9 +454,9 @@ Additionally, you pass a third parameter which specifies the name of the associa
 	}
 
 <a name="one-to-many"></a>
-### One To Many
+### 一對多
 
-An example of a one-to-many relation is a blog post that "has many" comments. We can model this relation like so:
+一對多關聯的例子像是，一篇部落格文章可能「有很多」評論。可以像這樣定義關聯：
 
 	class Post extends Eloquent {
 
@@ -466,23 +467,23 @@ An example of a one-to-many relation is a blog post that "has many" comments. We
 
 	}
 
-Now we can access the post's comments through the [dynamic property](#dynamic-properties):
+現在可以經由[動態屬性](#dynamic-properties)取得文章的評論：
 
 	$comments = Post::find(1)->comments;
 
-If you need to add further constraints to which comments are retrieved, you may call the `comments` method and continue chaining conditions:
+如果需要增加更多條件限制，可以在呼叫 `comments` 方法後面串接查詢條件方法：
 
 	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
 
-Again, you may override the conventional foreign key by passing a second argument to the `hasMany` method. And, like the `hasOne` relation, the local column may also be specified:
+同樣的，你可以傳入第二個參數到 `hasMany` 方法更改預設的外鍵名稱。以及，如同 `hasOne` 關聯，可以指定本身的對應欄位：
 
 	return $this->hasMany('Comment', 'foreign_key');
 
 	return $this->hasMany('Comment', 'foreign_key', 'local_key');
 
-#### Defining The Inverse Of A Relation
+#### 定義相對的關聯
 
-To define the inverse of the relationship on the `Comment` model, we use the `belongsTo` method:
+要在 `Comment` 模型定義相對的關聯，使用 `belongsTo` 方法：
 
 	class Comment extends Eloquent {
 
@@ -494,11 +495,11 @@ To define the inverse of the relationship on the `Comment` model, we use the `be
 	}
 
 <a name="many-to-many"></a>
-### Many To Many
+### 多對多
 
-Many-to-many relations are a more complicated relationship type. An example of such a relationship is a user with many roles, where the roles are also shared by other users. For example, many users may have the role of "Admin". Three database tables are needed for this relationship: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names, and should have `user_id` and `role_id` columns.
+多對多關聯更為複雜。這種關聯的例子如，一個使用者（ user ）可能用有很多身份（ role ），而一種身份可能很多使用者都有。例如很多使用者都是「管理者」。多對多關聯需要用到三個資料表： `users` ， `roles` ，和 `role_user` 。 `role_user` 樞紐表命名是以相關聯的兩個模型資料表，依照字母順序命名，樞紐表裡面應該要有 `user_id` 和 `role_id` 欄位。
 
-We can define a many-to-many relation using the `belongsToMany` method:
+可以使用 `belongsToMany` 方法定義多對多關係：
 
 	class User extends Eloquent {
 
@@ -509,19 +510,19 @@ We can define a many-to-many relation using the `belongsToMany` method:
 
 	}
 
-Now, we can retrieve the roles through the `User` model:
+現在我們可以從 `User` 模型取得 roles：
 
 	$roles = User::find(1)->roles;
 
-If you would like to use an unconventional table name for your pivot table, you may pass it as the second argument to the `belongsToMany` method:
+如果不想使用預設的樞紐資料表命名方式，可以傳遞資料表名稱作為 `belongsToMany` 方法的第二個參數：
 
 	return $this->belongsToMany('Role', 'user_roles');
 
-You may also override the conventional associated keys:
+也可以更改預設的關聯欄位名稱：
 
 	return $this->belongsToMany('Role', 'user_roles', 'user_id', 'foo_id');
 
-Of course, you may also define the inverse of the relationship on the `Role` model:
+當然，也可以在 `Role` 模型定義相對的關聯：
 
 	class Role extends Eloquent {
 
@@ -533,9 +534,9 @@ Of course, you may also define the inverse of the relationship on the `Role` mod
 	}
 
 <a name="has-many-through"></a>
-### Has Many Through
+### 遠層一對多關聯
 
-The "has many through" relation provides a convenient short-cut for accessing distant relations via an intermediate relation. For example, a `Country` model might have many `Posts` through a `Users` model. The tables for this relationship would look like this:
+「遠層一對多關聯」提供了方便簡短的方法，可以經由多層間的關聯取得遠層的關聯。例如，一個 `Country` 模型可能透過 `Users` 關聯到很多 `Posts` 模型。 資料表間的關係可能看起來如下：
 
 	countries
 		id - integer
@@ -551,7 +552,7 @@ The "has many through" relation provides a convenient short-cut for accessing di
 		user_id - integer
 		title - string
 
-Even though the `posts` table does not contain a `country_id` column, the `hasManyThrough` relation will allow us to access a country's posts via `$country->posts`. Let's define the relationship:
+雖然 `posts` 資料表本身沒有 `country_id` 欄位，但 `hasManyThrough` 方法讓我們可以使用 `$country->posts` 取得 country 的 posts。我們可以定義以下關聯：
 
 	class Country extends Eloquent {
 
@@ -562,7 +563,7 @@ Even though the `posts` table does not contain a `country_id` column, the `hasMa
 
 	}
 
-If you would like to manually specify the keys of the relationship, you may pass them as the third and fourth arguments to the method:
+如果想要手動指定關聯的欄位名稱，可以傳入第三和第四個參數到方法裡：
 
 	class Country extends Eloquent {
 
@@ -574,9 +575,9 @@ If you would like to manually specify the keys of the relationship, you may pass
 	}
 
 <a name="polymorphic-relations"></a>
-### Polymorphic Relations
+### 多型關聯
 
-Polymorphic relations allow a model to belong to more than one other model, on a single association. For example, you might have a photo model that belongs to either a staff model or an order model. We would define this relation like so:
+多型關聯可以用一個簡單的關聯方法，就讓一個模型同時關聯多個模型。例如，你可能想讓 photo 模型同時和一個 staff 或 order 模型關聯。可以定義關聯如下：
 
 	class Photo extends Eloquent {
 
@@ -605,9 +606,9 @@ Polymorphic relations allow a model to belong to more than one other model, on a
 
 	}
 
-#### Retrieving A Polymorphic Relation
+#### 取得多型關聯物件
 
-Now, we can retrieve the photos for either a staff member or an order:
+現在我們可以從 staff 或 order 模型取得多型關聯物件：
 
 	$staff = Staff::find(1);
 
@@ -616,19 +617,19 @@ Now, we can retrieve the photos for either a staff member or an order:
 		//
 	}
 
-#### Retrieving The Owner Of A Polymorphic Relation
+#### 取得多型關聯物件的擁有者
 
-However, the true "polymorphic" magic is when you access the staff or order from the `Photo` model:
+然而，多型關聯真正神奇的地方，在於要從 `Photo` 模型取得 staff 或 order 物件時：
 
 	$photo = Photo::find(1);
 
 	$imageable = $photo->imageable;
 
-The `imageable` relation on the `Photo` model will return either a `Staff` or `Order` instance, depending on which type of model owns the photo.
+`Photo` 模型裡的 `imageable` 關聯會回傳 `Staff` 或 `Order` 實例，取決于這是哪一種模型擁有的照片。
 
-#### Polymorphic Relation Table Structure
+#### 多型關聯的資料表結構
 
-To help understand how this works, let's explore the database structure for a polymorphic relation:
+為了理解多型關聯的運作機制，來看看它們的資料表結構：
 
 	staff
 		id - integer
@@ -644,14 +645,15 @@ To help understand how this works, let's explore the database structure for a po
 		imageable_id - integer
 		imageable_type - string
 
-The key fields to notice here are the `imageable_id` and `imageable_type` on the `photos` table. The ID will contain the ID value of, in this example, the owning staff or order, while the type will contain the class name of the owning model. This is what allows the ORM to determine which type of owning model to return when accessing the `imageable` relation.
+
+要注意的關鍵是 `photos` 資料表的 `imageable_id` 和 `imageable_type`。在上面的例子裡， ID 欄位會包含 staff 或 order 的 ID，而 type 是擁有者的模型類別名稱。這就是讓 ORM 在取得 `imageable` 關聯物件時，決定要哪一種模型物件的機制。
 
 <a name="many-to-many-polymorphic-relations"></a>
-### Many To Many Polymorphic Relations
+### 多型的多對多關聯
 
-#### Polymorphic Many To Many Relation Table Structure
+#### 多型的多對多關聯資料表結構
 
-In addition to traditional polymorphic relations, you may also specify many-to-many polymorphic relations. For example, a blog `Post` and `Video` model could share a polymorphic relation to a `Tag` model. First, let's examine the table structure:
+除了一般的多型關聯，也可以使用多對多的多型關聯。例如，部落格的 `Post` 和 `Video` 模型可以共用多型的 `Tag` 關聯模型。首先，來看看資料表結構：
 
 	posts
 		id - integer
@@ -670,7 +672,7 @@ In addition to traditional polymorphic relations, you may also specify many-to-m
 		taggable_id - integer
 		taggable_type - string
 
-Next, we're ready to setup the relationships on the model. The `Post` and `Video` model will both have a `morphToMany` relationship via a `tags` method:
+現在，我們準備好設定模型關聯了。 `Post` 和 `Video` 模型都可以經由 `tags` 方法建立 `morphToMany` 關聯：
 
 	class Post extends Eloquent {
 
@@ -681,7 +683,7 @@ Next, we're ready to setup the relationships on the model. The `Post` and `Video
 
 	}
 
-The `Tag` model may define a method for each of its relationships:
+在 `Tag` 模型裡針對每一種關聯建立一個方法：
 
 	class Tag extends Eloquent {
 
@@ -698,19 +700,19 @@ The `Tag` model may define a method for each of its relationships:
 	}
 
 <a name="querying-relations"></a>
-## Querying Relations
+## 關聯查詢
 
-#### Querying Relations When Selecting
+#### 根據關聯條件查詢
 
-When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, you wish to pull all blog posts that have at least one comment. To do so, you may use the `has` method:
+在取得模型資料時，你可能想要以關聯模型作為查詢限制。例如，你可能想要取得所有「至少有一篇評論」的部落格文章。可以使用 `has` 方法達成目的：
 
 	$posts = Post::has('comments')->get();
 
-You may also specify an operator and a count:
+也可以指定運算子和數量：
 
 	$posts = Post::has('comments', '>=', 3)->get();
 
-If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries:
+如果想要更進階，可以使用 `whereHas` 和 `orWhereHas` 方法，在 `has` 查詢裡設置 "where" 條件 ：
 
 	$posts = Post::whereHas('comments', function($q)
 	{
@@ -719,9 +721,9 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 	})->get();
 
 <a name="dynamic-properties"></a>
-### Dynamic Properties
+### 動態屬性
 
-Eloquent allows you to access your relations via dynamic properties. Eloquent will automatically load the relationship for you, and is even smart enough to know whether to call the `get` (for one-to-many relationships) or `first` (for one-to-one relationships) method.  It will then be accessible via a dynamic property by the same name as the relation. For example, with the following model `$phone`:
+Eloquent 可以經由動態屬性取得關聯物件。 Eloquent 會自動進行關聯查詢，而且會很聰明的知道應該要使用 `get`（用在一對多關聯）或是 `first` （用在一對一關聯）方法。可以經由和「關聯方法名稱相同」的動態屬性取得物件。例如，像是下面的模型物件 `$phone`：
 
 	class Phone extends Eloquent {
 
@@ -734,20 +736,20 @@ Eloquent allows you to access your relations via dynamic properties. Eloquent wi
 
 	$phone = Phone::find(1);
 
-Instead of echoing the user's email like this:
+或是像下面這樣印出使用者的 email ：
 
 	echo $phone->user()->first()->email;
 
-It may be shortened to simply:
+可以簡寫如下：
 
 	echo $phone->user->email;
 
-> **Note:** Relationships that return many results will return an instance of the `Illuminate\Database\Eloquent\Collection` class.
+> **注意：** 若取得的是許多關聯物件，會返回 `Illuminate\Database\Eloquent\Collection` 物件：
 
 <a name="eager-loading"></a>
-## Eager Loading
+## 預載入
 
-Eager loading exists to alleviate the N + 1 query problem. For example, consider a `Book` model that is related to `Author`. The relationship is defined like so:
+預載入是用來減少 N + 1 查詢問題。例如，一個 `Book` 模型資料會關聯到一個 `Author` 。關聯會像下面這樣定義：
 
 	class Book extends Eloquent {
 
@@ -758,43 +760,43 @@ Eager loading exists to alleviate the N + 1 query problem. For example, consider
 
 	}
 
-Now, consider the following code:
+現在考慮下面的程式碼：
 
 	foreach (Book::all() as $book)
 	{
 		echo $book->author->name;
 	}
 
-This loop will execute 1 query to retrieve all of the books on the table, then another query for each book to retrieve the author. So, if we have 25 books, this loop would run 26 queries.
+上面的迴圈會執行一次查詢取回所有資料表上的書籍，然而每本書籍都會執行一次查詢取得作者。所以若我們有 25 本書，就會進行 26次查詢。
 
-Thankfully, we can use eager loading to drastically reduce the number of queries. The relationships that should be eager loaded may be specified via the `with` method:
+很幸運地，我們可以使用預載入大量減少查詢次數。使用 `with` 方法指定想要預載入的關聯物件：
 
 	foreach (Book::with('author')->get() as $book)
 	{
 		echo $book->author->name;
 	}
 
-In the loop above, only two queries will be executed:
+現在，上面的迴圈總共只會執行兩次查詢：
 
 	select * from books
 
 	select * from authors where id in (1, 2, 3, 4, 5, ...)
 
-Wise use of eager loading can drastically increase the performance of your application.
+使用預載入可以大量增進程式效能。
 
-Of course, you may eager load multiple relationships at one time:
+當然，也可以同時載入多種關聯：
 
 	$books = Book::with('author', 'publisher')->get();
 
-You may even eager load nested relationships:
+甚至可以預載入巢狀關聯：
 
 	$books = Book::with('author.contacts')->get();
 
-In the example above, the `author` relationship will be eager loaded, and the author's `contacts` relation will also be loaded.
+上面的例子中， `author` 關聯會被預載入， author 的 `contacts` 關聯也會被預載入。
 
-### Eager Load Constraints
+### 預載入條件限制
 
-Sometimes you may wish to eager load a relationship, but also specify a condition for the eager load. Here's an example:
+有時你可能想要預載入關聯，同時也想要指定載入時的查詢限制。下面有一個範例：
 
 	$users = User::with(array('posts' => function($query)
 	{
@@ -802,9 +804,9 @@ Sometimes you may wish to eager load a relationship, but also specify a conditio
 
 	}))->get();
 
-In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
+上面的例子裡，我們預載入了 user 的 posts 關聯，並限制條件為 post 的 title 欄位需包含 "first" 。
 
-Of course, eager loading Closures aren't limited to "constraints". You may also apply orders:
+當然，預載入的閉合函數裡不一定只能加上條件限制，也可以加上排序：
 
 	$users = User::with(array('posts' => function($query)
 	{
@@ -812,20 +814,20 @@ Of course, eager loading Closures aren't limited to "constraints". You may also 
 
 	}))->get();
 
-### Lazy Eager Loading
+### 延遲預載入
 
-It is also possible to eagerly load related models directly from an already existing model collection. This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.
+也可以直接從模型的 collection 預載入關聯物件。這對於需要根據情況決定是否載入關聯物件時，或是跟快取一起使用時很有用。
 
 	$books = Book::all();
 
 	$books->load('author', 'publisher');
 
 <a name="inserting-related-models"></a>
-## Inserting Related Models
+## 新增關聯模型
 
-#### Attaching A Related Model
+#### 附加一個關聯模型
 
-You will often need to insert new related models. For example, you may wish to insert a new comment for a post. Instead of manually setting the `post_id` foreign key on the model, you may insert the new comment from its parent `Post` model directly:
+你常常會需要加入新的關聯模型。例如新增一個 comment 到 post 。除了手動設定模型的 `post_id` 外鍵，也可以從上層的 `Post` 模型新增關聯的 comment ：
 
 	$comment = new Comment(array('message' => 'A new comment.'));
 
@@ -833,9 +835,9 @@ You will often need to insert new related models. For example, you may wish to i
 
 	$comment = $post->comments()->save($comment);
 
-In this example, the `post_id` field will automatically be set on the inserted comment.
+上面的例子裡，新增的 comment `post_id` 欄位會被自動設定。
 
-If you need to save multiple related models:
+如果想要同時新增很多關聯模型：
 
 	$comments = array(
 		new Comment(array('message' => 'A new comment.')),
@@ -847,9 +849,9 @@ If you need to save multiple related models:
 
 	$post->comments()->saveMany($comments);
 
-### Associating Models (Belongs To)
+### 從屬關聯模型 ( Belongs To )
 
-When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
+要更新 `belongsTo` 關聯時，可以使用 `associate` 方法。這個方法會設定子模型的外鍵：
 
 	$account = Account::find(10);
 
@@ -857,50 +859,50 @@ When updating a `belongsTo` relationship, you may use the `associate` method. Th
 
 	$user->save();
 
-### Inserting Related Models (Many To Many)
+### 新增多對多關聯模型 ( Many To Many )
 
-You may also insert related models when working with many-to-many relations. Let's continue using our `User` and `Role` models as examples. We can easily attach new roles to a user using the `attach` method:
+你也可以新增多對多的關聯模型。讓我們繼續使用 `User` 和 `Role` 模型作為範例。我們可以使用 `attach` 方法簡單地把 roles 附加給一個 user：
 
-#### Attaching Many To Many Models
+#### 附加多對多模型
 
 	$user = User::find(1);
 
 	$user->roles()->attach(1);
 
-You may also pass an array of attributes that should be stored on the pivot table for the relation:
+也可以傳入要存在樞紐表中的屬性陣列：
 
 	$user->roles()->attach(1, array('expires' => $expires));
 
-Of course, the opposite of `attach` is `detach`:
+當然，有 `attach` 就會有相反的 `detach`：
 
 	$user->roles()->detach(1);
 
-#### Using Sync To Attach Many To Many Models
+#### 使用 Sync 方法同時附加一個以上多對多關聯
 
-You may also use the `sync` method to attach related models. The `sync` method accepts an array of IDs to place on the pivot table. After this operation is complete, only the IDs in the array will be on the intermediate table for the model:
+你也可以使用 `sync` 方法附加關聯模型。 `sync` 方法會把根據 ID 陣列把關聯存到樞紐表。附加完關聯後，樞紐表裡的模型只會關聯到 ID 陣列裡的 id ：
 
 	$user->roles()->sync(array(1, 2, 3));
 
-#### Adding Pivot Data When Syncing
+#### Sync 時在樞紐表加入額外資料
 
-You may also associate other pivot table values with the given IDs:
+也可以在把每個 ID 加入樞紐表時，加入其他欄位的資料：
 
 	$user->roles()->sync(array(1 => array('expires' => true)));
 
-Sometimes you may wish to create a new related model and attach it in a single command. For this operation, you may use the `save` method:
+有時你可能想要使用一個指令，在建立新模型資料的同時附加關聯。可以使用 `save` 方法達成目的：
 
 	$role = new Role(array('name' => 'Editor'));
 
 	User::find(1)->roles()->save($role);
 
-In this example, the new `Role` model will be saved and attached to the user model. You may also pass an array of attributes to place on the joining table for this operation:
+上面的例子裡，新的 `Role` 模型物件會在儲存的同時關聯到 user 模型。也可以傳入屬性陣列把資料加到關聯資料表：
 
 	User::find(1)->roles()->save($role, array('expires' => $expires));
 
 <a name="touching-parent-timestamps"></a>
-## Touching Parent Timestamps
+## 更新上層時間戳
 
-When a model `belongsTo` another model, such as a `Comment` which belongs to a `Post`, it is often helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically touch the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
+當模型 `belongsTo` 另一個模型，比方說一個 `Comment` 屬於一個 `Post` ，如果能在子模型被更新時，更新上層的時間戳，這將會很有用。例如，當 `Comment` 模型更新時，你可能想要能夠同時自動更新 `Post` 的 `updated_at` 時間戳。 Eloquent 讓事情變得很簡單。只要在子關聯的類別裡，把關聯方法名稱加入 `touches` 屬性即可：
 
 	class Comment extends Eloquent {
 
@@ -913,7 +915,7 @@ When a model `belongsTo` another model, such as a `Comment` which belongs to a `
 
 	}
 
-Now, when you update a `Comment`, the owning `Post` will have its `updated_at` column updated:
+現在，當你更新 `Comment` 時，對應的 `Post` 會自動更新 `updated_at` 欄位：
 
 	$comment = Comment::find(1);
 
@@ -922,9 +924,9 @@ Now, when you update a `Comment`, the owning `Post` will have its `updated_at` c
 	$comment->save();
 
 <a name="working-with-pivot-tables"></a>
-## Working With Pivot Tables
+## 使用樞紐表
 
-As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` object has many `Role` objects that it is related to. After accessing this relationship, we may access the `pivot` table on the models:
+如你所知，要操作多對多關聯需要一個中間的資料表。 Eloquent 提供了一些有用的方法可以和這張表互動。例如，假設 `User` 物件關聯到很多 `Role` 物件。取出這些關聯物件時，我們可以在關聯模型上取得 `pivot` 資料表的資料：
 
 	$user = User::find(1);
 
@@ -933,35 +935,35 @@ As you have already learned, working with many-to-many relations requires the pr
 		echo $role->pivot->created_at;
 	}
 
-Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table, and may be used as any other Eloquent model.
+注意我們取出的每個 `Role` 模型物件會自動給一個 `pivot` 屬性。這屬性包含了樞紐表的模型資料，可以像一般的 Eloquent 模型一樣使用。
 
-By default, only the keys will be present on the `pivot` object. If your pivot table contains extra attributes, you must specify them when defining the relationship:
+預設 `pivot` 物件只會有關聯鍵的屬性。如果你想讓 `pivot` 可以包含其他樞紐表的欄位，可以在定義關聯方法時指定那些欄位：
 
 	return $this->belongsToMany('Role')->withPivot('foo', 'bar');
 
-Now the `foo` and `bar` attributes will be accessible on our `pivot` object for the `Role` model.
+現在可以在 `Role` 模型的 `pivot` 物件上取得 `foo` 和 `bar` 屬性了。
 
-If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
+如果你想要可以自動維護樞紐表的 `created_at` 和 `updated_at` 時間戳，在定義關聯方法時加上 `withTimestamps` 方法：
 
 	return $this->belongsToMany('Role')->withTimestamps();
 
-#### Deleting Records On A Pivot Table
+#### 刪除樞紐表的關聯資料
 
-To delete all records on the pivot table for a model, you may use the `detach` method:
+要刪除模型在樞紐表的所有關聯資料，可以使用 `detach` 方法：
 
 	User::find(1)->roles()->detach();
 
-Note that this operation does not delete records from the `roles` table, but only from the pivot table.
+注意，如上的操作不會移除 `roles` 資料表裡面的資料，只會移除樞紐表裡的關聯資料。
 
-#### Updating A Record On A Pivot Table
+#### 更新樞紐表的資料
 
-Sometimes you may need to update your pivot table, but not detach it. If you wish to update your pivot table in place you may use `updateExistingPivot` method like so:
+有時你只想更新樞紐表的資料，而沒有要移除關聯。如果你想更新樞紐表，可以像下面的例子使用 `updateExistingPivot` 方法：
 
 	User::find(1)->roles()->updateExistingPivot($roleId, $attributes);
 
-#### Defining A Custom Pivot Model
+#### 自定樞紐模型
 
-Laravel also allows you to define a custom Pivot model. To define a custom model, first create your own "Base" model class that extends `Eloquent`. In your other Eloquent models, extend this custom base model instead of the default `Eloquent` base. In your base model, add the following function that returns an instance of your custom Pivot model:
+Laravel 允許你自定樞紐模型。要自定模型，首先要建立一個繼承 `Eloquent` 的「基本」模型類別。在其他的 Eloquent 模型繼承這個自定的基本類別，而不是預設的 `Eloquent` 。在基本模型類別裡，加入下面的方法回傳自定的樞紐模型實例：
 
 	public function newPivot(Model $parent, array $attributes, $table, $exists)
 	{
@@ -971,11 +973,11 @@ Laravel also allows you to define a custom Pivot model. To define a custom model
 <a name="collections"></a>
 ## Collections
 
-All multi-result sets returned by Eloquent, either via the `get` method or a `relationship`, will return a collection object. This object implements the `IteratorAggregate` PHP interface so it can be iterated over like an array. However, this object also has a variety of other helpful methods for working with result sets.
+所有 Eloquent 查詢回傳的資料，如果結果多於一筆，不管是經由 `get` 方法或是 `relationship`，都會轉換成 collection 物件回傳。這個物件實作了 `IteratorAggregate` PHP 介面，所以可以像陣列一般進行迭代。而 Collections 物件本身還擁有很多有用的方法可以操作模型資料。
 
-#### Checking If A Collection Contains A Key
+#### 確認 Collection 裡是否包含特定鍵值
 
-For example, we may determine if a result set contains a given primary key using the `contains` method:
+例如，我們可以使用 `contains` 方法，確認結果資料中，是否包含主鍵為特定值的物件。
 
 	$roles = User::find(1)->roles;
 
@@ -984,37 +986,37 @@ For example, we may determine if a result set contains a given primary key using
 		//
 	}
 
-Collections may also be converted to an array or JSON:
+Collection 也可以轉換成陣列或 JSON：
 
 	$roles = User::find(1)->roles->toArray();
 
 	$roles = User::find(1)->roles->toJson();
 
-If a collection is cast to a string, it will be returned as JSON:
+如果 collection 被型別轉換成字串，會回傳 JSON 格式：
 
 	$roles = (string) User::find(1)->roles;
 
-#### Iterating Collections
+#### Collections 迭代
 
-Eloquent collections also contain a few helpful methods for looping and filtering the items they contain:
+Eloquent collections 裡包含了一些有用的方法可以進行迴圈或是進行過濾：
 
 	$roles = $user->roles->each(function($role)
 	{
 		//
 	});
 
-#### Filtering Collections
+#### Collection 過濾
 
-When filtering collections, the callback provided will be used as callback for [array_filter](http://php.net/manual/en/function.array-filter.php).
+過濾 collection 時，回呼函數的使用方式和 [array_filter](http://php.net/manual/en/function.array-filter.php) 裡一樣。
 
 	$users = $users->filter(function($user)
 	{
 		return $user->isAdmin();
 	});
 
-> **Note:** When filtering a collection and converting it to JSON, try calling the `values` function first to reset the array's keys.
+> **注意：** 如果要在過濾 collection 之後轉成 JSON，轉換之前先呼叫 `values` 方法重設陣列的鍵值。
 
-#### Applying A Callback To Each Collection Object
+#### 迭代傳入 Collection 裡的每個物件到回呼函數
 
 	$roles = User::find(1)->roles;
 
@@ -1023,20 +1025,20 @@ When filtering collections, the callback provided will be used as callback for [
 		//
 	});
 
-#### Sorting A Collection By A Value
+#### 依照屬性值排序
 
 	$roles = $roles->sortBy(function($role)
 	{
 		return $role->created_at;
 	});
 
-#### Sorting A Collection By A Value
+#### 依照屬性值排序
 
 	$roles = $roles->sortBy('created_at');
 
-#### Returning A Custom Collection Type
+#### 回傳自定的集合物件
 
-Sometimes, you may wish to return a custom Collection object with your own added methods. You may specify this on your Eloquent model by overriding the `newCollection` method:
+有時你可能想要回傳自定的集合物件，讓你可以在集合類別裡加入想要的方法。可以在 Eloquent 模型類別裡覆寫 `newCollection` 方法：
 
 	class User extends Eloquent {
 
@@ -1048,11 +1050,11 @@ Sometimes, you may wish to return a custom Collection object with your own added
 	}
 
 <a name="accessors-and-mutators"></a>
-## Accessors & Mutators
+## 存取器和修改器
 
-#### Defining An Accessor
+#### 定義存取器
 
-Eloquent provides a convenient way to transform your model attributes when getting or setting them. Simply define a `getFooAttribute` method on your model to declare an accessor. Keep in mind that the methods should follow camel-casing, even though your database columns are snake-case:
+Eloquent 提供了便利的方法，可以在取得或設定屬性時進行轉換。要定義存取器，只要在模型裡加入類似 `getFooAttribute` 的方法。注意方法名稱應該使用駝峰式大小寫命名，而對應的 database 欄位名稱是底線分隔小寫命名：
 
 	class User extends Eloquent {
 
@@ -1063,11 +1065,11 @@ Eloquent provides a convenient way to transform your model attributes when getti
 
 	}
 
-In the example above, the `first_name` column has an accessor. Note that the value of the attribute is passed to the accessor.
+上面的例子中， `first_name` 欄位設定了一個存取器。注意傳入方法的參數是原本的欄位資料。
 
-#### Defining A Mutator
+#### 定義修改器
 
-Mutators are declared in a similar fashion:
+修改器的宣告方式很雷同：
 
 	class User extends Eloquent {
 
@@ -1079,20 +1081,20 @@ Mutators are declared in a similar fashion:
 	}
 
 <a name="date-mutators"></a>
-## Date Mutators
+## 日期轉換器
 
-By default, Eloquent will convert the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
+預設 Eloquent 會把 `created_at` 和 `updated_at` 欄位屬性轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 實例，它提供了很多有用的方法，並繼承了 PHP 原生的 `DateTime` 類別。
 
-You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `getDates` method of the model:
+你可以經由覆寫模型的 `getDates` 方法，自定哪個欄位可以被自動轉換，或甚至完全不要讓日期轉換成 Carbon：
 
 	public function getDates()
 	{
 		return array('created_at');
 	}
 
-When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
+當欄位是表示日期的時候，可以將值設為 UNIX timestamp 、日期字串（ `Y-m-d` ）、 日期時間（ date-time ）字串，當然還有 `DateTime` 或 `Carbon` 實例。
 
-To totally disable date mutations, simply return an empty array from the `getDates` method:
+要完全關閉日期轉換功能，只要從 `getDates` 方法回傳空陣列即可：
 
 	public function getDates()
 	{
@@ -1102,22 +1104,22 @@ To totally disable date mutations, simply return an empty array from the `getDat
 <a name="model-events"></a>
 ## Model Events
 
-Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`.
+Eloquent 模型有很多事件可以驅動，讓你可以在模型操作的生命週期中不同時間點，使用下列方法綁定事件： `creating` 、 `created` 、 `updating` 、 `updated` 、 `saving` 、 `saved` 、 `deleting` 、 `deleted` 、 `restoring` 、 `restored` 。
 
-Whenever a new item is saved for the first time, the `creating` and `created` events will fire. If an item is not new and the `save` method is called, the `updating` / `updated` events will fire. In both cases, the `saving` / `saved` events will fire.
+當一個物件初次被儲存到資料庫， `creating` 和 `created` 事件會被驅動。如果不是新物件而呼叫了 `save` 方法， `updating` / `updated` 事件會被驅動。而兩者的 `saving` / `saved` 事件都會被驅動。
 
-#### Cancelling Save Operations Via Events
+#### 使用事件取消資料庫操作
 
-If `false` is returned from the `creating`, `updating`, `saving`, or `deleting` events, the action will be cancelled:
+如果 `creating` 、 `updating` 、 `saving` 、 `deleting` 事件回傳 `false` 的話，就會取消資料庫操作：
 
 	User::creating(function($user)
 	{
 		if ( ! $user->isValid()) return false;
 	});
 
-#### Setting A Model Boot Method
+#### 設定模型 Boot 方法
 
-Eloquent models also contain a static `boot` method, which may provide a convenient place to register your event bindings.
+Eloquent 模型有靜態的 `boot` 方法，可以使用它方便的註冊事件綁定。
 
 	class User extends Eloquent {
 
@@ -1131,11 +1133,11 @@ Eloquent models also contain a static `boot` method, which may provide a conveni
 	}
 
 <a name="model-observers"></a>
-## Model Observers
+## 模型觀察者
 
-To consolidate the handling of model events, you may register a model observer. An observer class may have methods that correspond to the various model events. For example, `creating`, `updating`, `saving` methods may be on an observer, in addition to any other model event name.
+要整合模型的事件處理，可以註冊一個模型觀察者。觀察者類別裡要設定對應模型事件的方法。例如，觀察者類別裡可能有 `creating` 、 `updating` 、 `saving` 方法，還有其他對應模型事件名稱的方法：
 
-So, for example, a model observer might look like this:
+例如，一個模型觀察者類別可能看起來如下：
 
 	class UserObserver {
 
@@ -1151,43 +1153,43 @@ So, for example, a model observer might look like this:
 
 	}
 
-You may register an observer instance using the `observe` method:
+可以使用 `observe` 方法註冊一個觀察者實例：
 
 	User::observe(new UserObserver);
 
 <a name="converting-to-arrays-or-json"></a>
-## Converting To Arrays / JSON
+## 轉換成陣列 / JSON
 
-#### Converting A Model To An Array
+#### 將模型資料轉成陣列
 
-When building JSON APIs, you may often need to convert your models and relationships to arrays or JSON. So, Eloquent includes methods for doing so. To convert a model and its loaded relationship to an array, you may use the `toArray` method:
+建立 JSON API 時，你可能常常需要把模型和關聯物件轉換成陣列或 JSON 。所以 Eloquent 裡已經包含了這些方法。要把模型和已載入的關聯物件轉成陣列，可以使用 `toArray` 方法：
 
 	$user = User::with('roles')->first();
 
 	return $user->toArray();
 
-Note that entire collections of models may also be converted to arrays:
+記得也可以把模型 collection 轉換成陣列：
 
 	return User::all()->toArray();
 
-#### Converting A Model To JSON
+#### 把模型轉換成 JSON
 
-To convert a model to JSON, you may use the `toJson` method:
+要把模型轉換成 JSON，可以使用 `toJson` 方法：
 
 	return User::find(1)->toJson();
 
-#### Returning A Model From A Route
+#### 從路由回傳模型
 
-Note that when a model or collection is cast to a string, it will be converted to JSON, meaning you can return Eloquent objects directly from your application's routes!
+注意當模型或 collection 被型別轉換成字串，會自動轉換成 JSON 格式，這意味著你可以直接從路由回傳 Eloquent 物件！
 
 	Route::get('users', function()
 	{
 		return User::all();
 	});
 
-#### Hiding Attributes From Array Or JSON Conversion
+#### 轉換成陣列或 JSON 時隱藏屬性
 
-Sometimes you may wish to limit the attributes that are included in your model's array or JSON form, such as passwords. To do so, add a `hidden` property definition to your model:
+有時你可能想要限制能出現在陣列或 JSON 格式的屬性資料，比如密碼。只要在模型裡增加 `hidden` 屬性即可：
 
 	class User extends Eloquent {
 
@@ -1195,22 +1197,22 @@ Sometimes you may wish to limit the attributes that are included in your model's
 
 	}
 
-> **Note:** When hiding relationships, use the relationship's **method** name, not the dynamic accessor name.
+> **注意：** 要隱藏關聯資料，要使用關聯的**方法**名稱，而不是動態存取的屬性名稱。
 
-Alternatively, you may use the `visible` property to define a white-list:
+此外，可以使用 `visible` 屬性定義白名單：
 
 	protected $visible = array('first_name', 'last_name');
 
 <a name="array-appends"></a>
-Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, simply define an accessor for the value:
+有時候你可能想要增加不存在資料庫欄位的屬性資料。這時候只要定義一個存取器即可：
 
 	public function getIsAdminAttribute()
 	{
 		return $this->attributes['admin'] == 'yes';
 	}
 
-Once you have created the accessor, just add the value to the `appends` property on the model:
+定義好存取器之後，再把對應的屬性名稱加到模型裡的 `appends` 屬性：
 
 	protected $appends = array('is_admin');
 
-Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms.
+把屬性加到 `appends` 陣列之後，在模型資料轉換成陣列或 JSON 格式時就會有對應的值。
