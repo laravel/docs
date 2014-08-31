@@ -25,7 +25,7 @@ Laravel 4.3 ships with the entire `app` directory under the `App` namespace. Out
 
 ### Dependency Injection On Routes & Controller Methods
 
-In previous versions of Laravel 4.x, you can type type-hint controller dependencies in the controller's constructor and they will automatically be injected into the controller instance. Of course, this is still possible in Laravel 4.3; however, you can also type-hint dependencies on your controller **methods** as well! For example:
+In previous versions of Laravel 4.x, you can type-hint controller dependencies in the controller's constructor and they will automatically be injected into the controller instance. Of course, this is still possible in Laravel 4.3; however, you can also type-hint dependencies on your controller **methods** as well! For example:
 
 	public function show(PhotoService $photos, $id)
 	{
