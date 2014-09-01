@@ -106,7 +106,7 @@
 <a name="custom-presenters"></a>
 ## 自訂表示器（Presenter）
 
-預設的分頁表示器是相容 Bootstarp 的。不過，您也可以自訂表示器（presenter）
+預設的分頁表示器是相容 Bootstarp 的。不過，您也可以自訂表示器（presenter）。
 
 ### 擴展抽象表示器（Presenter）
 
