@@ -46,9 +46,9 @@
 <a name="csrf-protection"></a>
 ## CSRF 保護
 
-#### 添加 CSRF Token 到表單
+#### 添加 CSRF 標記（Token）到表單
 
-Laravel 提供簡易的方法，讓你可以保護你的應用程式不受到 CSRF (跨網站請求偽造) 攻擊。首先 Laravel 會自動在使用者的 session 中放置隨機的 token，別擔心這些會自動完成。這個 CSRF 參數會用隱藏欄位的方式自動加到你的表單中，你也可以使用 `token` 的方法去產生這個隱藏的 CSRF token 欄位：
+Laravel 提供簡易的方法，讓你可以保護你的應用程式不受到 CSRF (跨網站請求偽造) 攻擊。首先 Laravel 會自動在使用者的 session 中放置隨機的 token，別擔心這些會自動完成。這個 CSRF 參數會用隱藏欄位的方式自動加到你的表單中，你也可以使用 `token` 的方法去產生這個隱藏的 CSRF（token）欄位：
 
 	echo Form::token();
 
@@ -92,7 +92,7 @@ Laravel 提供簡易的方法，讓你可以保護你的應用程式不受到 CS
 > **注意：** 在建立標籤時，任何你建立的表單元素名稱與標籤相符時，將會自動在 ID 屬性建立與標籤名稱相同的 ID。
 
 <a name="text"></a>
-## 文字欄位、多行文字欄位、密碼欄位,、隱藏欄位
+## 文字欄位、多行文字欄位、密碼欄位、隱藏欄位
 
 #### 產生文字欄位
 
@@ -171,14 +171,14 @@ Laravel 提供簡易的方法，讓你可以保護你的應用程式不受到 CS
 
 	echo Form::submit('Click Me!');
 
-> **注意：** 需要產生按鈕（Button）元素嗎? 可以試著使用 *button* 方法去產生按鈕（Button）元素，button 方法與 *submit* 使用屬性參數是相同的。
+> **注意：** 需要產生按鈕（Button）元素嗎？可以試著使用 *button* 方法去產生按鈕（Button）元素，button 方法與 *submit* 使用屬性參數是相同的。
 
 <a name="custom-macros"></a>
 ## 自訂巨集
 
 #### 註冊表單巨集
 
-您可以輕鬆的定義你自己的表單類別的輔助方法叫「巨集（macros）」，首先只要註冊 巨集 ，並給預期名稱及封閉函式：
+您可以輕鬆的定義你自己的表單類別的輔助方法叫「巨集（macros）」，首先只要註冊巨集（macros），並給預期名稱及封閉函式：
 
 	Form::macro('myField', function()
 	{
@@ -195,4 +195,4 @@ Laravel 提供簡易的方法，讓你可以保護你的應用程式不受到 CS
 <a name="generating-urls"></a>
 ##產生 URL
 
-更多產生 URL 的資訊，請參閱文件[輔助方法](/docs/helpers#urls)。
+更多產生 URL 的資訊，請參閱文件 [輔助方法](/docs/helpers#urls)。
