@@ -311,29 +311,29 @@ Laravel 路由一樣可以處理通配的子網域，並且從網域中傳遞你
 
 模型綁定提供一個方便的方式將模型實體注入到你的路由中。例如，要注入一個使用者 ID 你可以注入符合給定 ID 的整個使用者模型實體。首先，使用 `Route::model` 方法可以指定作為參數的模型：
 
-#### Binding A Parameter To A Model
+#### 綁定參數至模型
 
 	Route::model('user', 'User');
 
-Next, define a route that contains a `{user}` parameter:
+接著，定義一個路由並包括一個 `{user}` 參數：
 
 	Route::get('profile/{user}', function(User $user)
 	{
 		//
 	});
 
-Since we have bound the `{user}` parameter to the `User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance which has an ID of 1.
+既然我們綁定了 `{user}` 參數到 `User` 模型，則 `User` 實體就會被注入到路由內。因此，假定有一個請求送至 `profile/1` 則會注入一個 ID 為 1 的 `User` 實體。
 
-> **Note:** If a matching model instance is not found in the database, a 404 error will be thrown.
+> **注意：** 假如在資料庫內沒有任何一個模型實體符合，則會拋出 404 錯誤。
 
-If you wish to specify your own "not found" behavior, you may pass a Closure as the third argument to the `model` method:
+假如您希望指定您自定的「找不到」錯誤行為，你可以在 `model` 方法裡的第三個參數指定一個 Closure：
 
 	Route::model('user', 'User', function()
 	{
 		throw new NotFoundHttpException;
 	});
 
-Sometimes you may wish to use your own resolver for route parameters. Simply use the `Route::bind` method:
+在某些情況下，您可能會希望可以使用您自定的路由綁定方式。這時您可以使用 `Route::bind` 方法來達成：
 
 	Route::bind('user', function($value, $route)
 	{
@@ -341,19 +341,19 @@ Sometimes you may wish to use your own resolver for route parameters. Simply use
 	});
 
 <a name="throwing-404-errors"></a>
-## Throwing 404 Errors
+## 404 錯誤
 
-There are two ways to manually trigger a 404 error from a route. First, you may use the `App::abort` method:
+有兩種方式可以在路由內手動觸發 404 錯誤。第一種是呼叫 `App::abort` 方法：
 
 	App::abort(404);
 
-Second, you may throw an instance of `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
+第二種，你可以拋出一個 `Symfony\Component\HttpKernel\Exception\NotFoundHttpException` 實體。
 
-More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/errors#handling-404-errors) section of the documentation.
+有關如何處理 404 例外狀況和自定回應的詳細資訊，可以參考 [錯誤](/docs/errors#handling-404-errors) 章節內的說明。
 
 <a name="routing-to-controllers"></a>
-## Routing To Controllers
+## 控制器路由
 
-Laravel allows you to not only route to Closures, but also to controller classes, and even allows the creation of [resource controllers](/docs/controllers#resource-controllers).
+Laravel 允許您不止可以路由至 Closures，也可以路由至控制器類別，甚至可以路由至 [資源控制器](/docs/controllers#resource-controllers)。
 
-See the documentation on [Controllers](/docs/controllers) for more details.
+更多詳細資訊可參考 [控制器](/docs/controllers) 一節內的說明。

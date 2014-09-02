@@ -16,7 +16,14 @@ Laravel 框架使用 [Composer](http://getcomposer.org)來管理其相依性。�
 
 ### 透過 Laravel 安裝工具
 
-首先，下載 [Laravel PHAR 安裝包](http://laravel.com/laravel.phar)。為了方便，將安裝包改名為 `laravel` 並搬移到 `/usr/local/bin`。一旦安裝完成，只要簡單的 `laravel new` 命令，一個全新的 laravel 就會安裝在你指定的目錄中。例如，`laravel new blog` 將會創建一個目錄為 `blog`，並在此目錄中安裝 laravel 及其相依套件。這方法安裝將會比透過 Composer 安裝要來得快許多。
+首先, 使用 `Composer` 下載 Laravel 安裝包: 
+
+	composer global require "laravel/installer=~1.1"
+
+
+請確定把 `~/.composer/vendor/bin` 路徑放置於您的 `PATH` 裡，這樣 `laravel` 執行檔才可以被找到，以後就可以在終端機下直接使用 `laravel` 指令.
+
+一旦安裝完成後，就可以使用 `laravel new` 指令建立一份全新安裝的 `Laravel` 專案，例如: `laravel new blog` 將會在當前目錄下建立一個叫 `blog` 的目錄, 此目錄裡面存放着全新安裝的 Laravel 相關程式碼, 此方法跟其他方法不一樣的地方在於是提前安裝好所有相關程式碼, 您無需再透過 `composer install` 安裝, 速度一下子提高了很多。
 
 ### 透過 Composer Create-Project
 

@@ -14,11 +14,18 @@
 
 ### 透過 Laravel 安裝器
 
-首先，下載 [Laravel 安裝器 PHAR 包](http://laravel.com/laravel.phar)。為使用上方便，將檔案搬移至 `/usr/local/bin` 並改名為 `laravel`。安裝完成後，只要執行 `laravel new` 命令即可以創立一個全新的 laravel 專案在你指定的目錄下。例如：`laravel new blog` 將會建立一個名為 `blog` 的目錄，所需之相依套件的全新 laravel 專案安裝其內。這個安裝方式將會比透過 Composer 快許多。
+首先, 使用 `Composer` 全局下載並安裝 `Laravel/installer`: 
+
+	composer global require "laravel/installer=~1.1"
+
+
+請確定把 `~/.composer/vendor/bin` 路徑放置於您的 `PATH` 里, 這樣`laravel` 可執行文件才能被命令行找到,  以後您就可以在命令行下直接使用 `laravel` 命令.
+
+安裝並且配置成功後, 可以使用命令 `laravel new` 在您指定的目錄下創建一份全新安裝的 `Laravel 應用`, 如這樣的調用: `laravel new blog` 將會在當前目錄下創建一個叫 `blog` 的目錄, 此目錄裡面存放着全新安裝的 Laravel 應用, 此方法跟其他方法不一樣的地方在於是提前安裝好所有代碼依賴的, 您無需再通過 `composer install` 安裝, 速度一下子提高了很多. 
 
 ### 透過 Composer
 
-Laravel 框架使用 [composer](http://getcomposer.org) 來執行安裝及相依性管理。如果還沒有安裝它的話，請先從 [安裝 Composer](http://getcomposer.org/doc/00-intro.md) 開始吧。
+Laravel 框架使用 [composer](http://getcomposer.org) 來執行安裝及相依性管理。如果還沒有安裝它的話，請先從[安裝 Composer](http://getcomposer.org/doc/00-intro.md)開始吧。
 
 安裝之後，你可以透過命令列模式執行下列指令來安裝 Laravel：
 
@@ -27,15 +34,15 @@ Laravel 框架使用 [composer](http://getcomposer.org) 來執行安裝及相依
 這個指令會下載並安裝一份乾淨的 Laravel 在你目前所在目錄的 `your-project-name` 的新建目錄中。
 
 
-如果你想要直接從 [Github 上的 Laravel Respoitory](https://github.com/laravel/laravel/archive/master.zip）手動下載一份 Laravel 也是可以的。只要在解壓後的目錄最頂層，執行 `composer install` 即可，這個指令會把框架相依的資源下載安裝好。
+如果你想要直接從 [Github 上的 Laravel Respoitory](https://github.com/laravel/laravel/archive/master.zip) 手動下載 Laravel 也是可以的。只要在解壓後的目錄最頂層，執行 `composer install` 即可，這個指令會把框架相依的資源下載安裝好。
 
 ### 權限設定
 
-在安裝 Laravel 之後，你需要讓網頁伺服器有寫入 `app/storage` 目錄的權限。詳情請見[安裝過程](/docs/installation)文件說明。
+在安裝 Laravel 之後，你需要讓網頁伺服器有寫入 `app/storage` 目錄的權限。詳情請見 [安裝過程](/docs/installation) 文件說明。
 
 ### 運行 Laravel
 
-一般而言，你需要一個網頁伺服器（如: Apache 或是 Nginx）來運行你的 Laravel 應用。如果你是使用 PHP 5.4 以上版本，那可以使用 PHP 內建的開發伺服器，你只需要使用 Artisan 命令 `serve`：
+一般而言，你需要網頁伺服器（如: Apache 或是 Nginx）來運行你的 Laravel 應用。如果你是使用 PHP 5.4 以上版本，那可以使用 PHP 內建的開發伺服器，你只需要使用 Artisan 命令 `serve`：
 
 	php artisan serve
 
@@ -47,7 +54,7 @@ Laravel 框架使用 [composer](http://getcomposer.org) 來執行安裝及相依
 <a name="local-development-environment"></a>
 ## 本地開發環境
 
-過去你要在本機上設定一個本地的 PHP 開發環境是讓人頭痛的事情。要安裝正確的 PHP 版本、必須的套件，還有所需的元件是廢時耗力的。為了解決這狀況，使用 [Laravel Homestead](/docs/homestead) 吧。Homestead 是以 Laravel 和 [Vagrant](http://vagrantup.com) 所設計的虛擬機器。而 Homestead Vagrant 封裝預載建立一個完整 PHP 應用所需的所有軟體。如此一來你可以在瞬間創建一個虛擬化、獨立不受干擾的開發環境。下面列出包裝在 Homestead 裏的軟體：
+過去你要在本機上設定本地的 PHP 開發環境是讓人頭痛的事情。要安裝正確的 PHP 版本、必須的套件，還有所需的元件是廢時耗力的。為了解決這狀況，使用 [Laravel Homestead](/docs/homestead) 吧。Homestead 是以 Laravel 和 [Vagrant](http://vagrantup.com) 所設計的虛擬機器。而 Homestead Vagrant 封裝預載建立完整 PHP 應用所需的所有軟體。如此一來你可以在瞬間創建一個虛擬化、獨立不受干擾的開發環境。下面列出包裝在 Homestead 裏的軟體：
 
 - Nginx
 - PHP 5.5
@@ -74,12 +81,12 @@ Laravel 框架使用 [composer](http://getcomposer.org) 來執行安裝及相依
 
 	Route::get('users', 'UserController@getIndex');
 
-這個路由告訴框架 `/users` 路由的請求應該使用 `UserController` 類別的 `getIndex` 方法。查看更多控制器路由的資訊，請查閱[控制器文件](/docs/controllers)。
+這個路由告訴框架 `/users` 路由的請求應該使用 `UserController` 類別的 `getIndex` 方法。查看更多控制器路由的資訊，請查閱 [控制器文件](/docs/controllers)。
 
 <a name="creating-a-view"></a>
 ## 建立視圖
 
-接下來，我們要創建試圖來顯示我們的用戶資料。視圖以 HTML 代碼存放在 `app/views` 的目錄中。我們來存放兩個視圖進目錄中： `layout.blade.php` 和 `user.blade.php`。首先，我們先來建立`layout.blade.php` 檔案：
+接下來，我們要創建試圖來顯示我們的用戶資料。視圖以 HTML 代碼存放在 `app/views` 的目錄中。我們來存放兩個視圖進目錄中： `layout.blade.php` 和 `user.blade.php`。首先，我們先來建立 `layout.blade.php` 檔案：
 
 	<html>
 		<body>
@@ -159,6 +166,7 @@ Laravel 提供了很棒的 ORM：Eloquent。如果你曾經使用過 Ruby on Rai
 使用你喜歡的資料庫管理工具，插入幾筆資料到 `users` 資料表，我們將使用 Eloquent 來取得這些資料並且傳遞到視圖當中。
 
 現在我們修改我們的 `/users` 路由，如下：
+
 	Route::get('users', function()
 	{
 		$users = User::all();

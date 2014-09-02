@@ -1,36 +1,36 @@
-# Pagination
+# 分頁
 
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Appending To Pagination Links](#appending-to-pagination-links)
-- [Converting To JSON](#converting-to-json)
-- [Custom Presenters](#custom-presenters)
+- [設置](#configuration)
+- [使用](#usage)
+- [加入分頁連結](#appending-to-pagination-links)
+- [轉換至 JSON](#converting-to-json)
+- [自定表示器（Presenter）](#custom-presenters)
 
 <a name="configuration"></a>
-## Configuration
+## 設置
 
-In other frameworks, pagination can be very painful. Laravel makes it a breeze. There is a single configuration option in the `app/config/view.php` file. The `pagination` option specifies which view should be used to create pagination links. By default, Laravel includes two views.
+在其他的框架中，實作分頁是令人感到苦惱的事，但是 Laravel 令它實作起來變得輕鬆。在 `app/config/view.php` 檔案中有設置選項可以設定，`pagination` 選項需要指定用哪個視圖來建立分頁，而 Laravel 預設包含兩種視圖。
 
-The `pagination::slider` view will show an intelligent "range" of links based on the current page, while the `pagination::simple` view will simply show "previous" and "next" buttons. **Both views are compatible with Twitter Bootstrap out of the box.**
+`pagination::slider` 視圖將會基於現在的頁面智慧的顯示「範圍」的頁數連結，`pagination::simple` 視圖將僅顯示「上一頁」和「下一頁」的按鈕。**兩種視圖都相容  Twitter Bootstrap 框架**
 
 <a name="usage"></a>
-## Usage
+## 使用
 
-There are several ways to paginate items. The simplest is by using the `paginate` method on the query builder or an Eloquent model.
+有幾種方法來分頁項目。最簡單的是在搜尋建立器或 Eloquent 模型使用 `paginate` 方法。
 
-#### Paginating Database Results
+#### 對資料庫結果分頁
 
 	$users = DB::table('users')->paginate(15);
 
-#### Paginating An Eloquent Model
+#### 對 Eloquent 模型分頁
 
-You may also paginate [Eloquent](/docs/eloquent) models:
+您也可以對 [Eloquent](/docs/eloquent) 模型分頁：
 
 	$allUsers = User::paginate(15);
 
 	$someUsers = User::where('votes', '>', 100)->paginate(15);
 
-The argument passed to the `paginate` method is the number of items you wish to display per page. Once you have retrieved the results, you may display them on your view, and create the pagination links using the `links` method:
+傳送給 `paginate` 方法的參數是您希望每頁要顯示的項目選項數目，只要您取得查詢結果後，您可以在視圖中顯示，並使用 `links` 方法去建立分頁連結：
 
 	<div class="container">
 		<?php foreach ($users as $user): ?>
@@ -40,13 +40,13 @@ The argument passed to the `paginate` method is the number of items you wish to 
 
 	<?php echo $users->links(); ?>
 
-This is all it takes to create a pagination system! Note that we did not have to inform the framework of the current page. Laravel will determine this for you automatically.
+這就是所有建立分頁系統的步驟了! 您會注意到我們還沒有告知 Laravel 我們目前的頁面是哪一頁，這個資訊 Laravel 會自動幫您做好。
 
-If you would like to specify a custom view to use for pagination, you may pass a view to the `links` method:
+如果您想要指定自訂的視圖來使用分頁，您可以透過 `links` 方法至視圖：
 
 	<?php echo $users->links('view.name'); ?>
 
-You may also access additional pagination information via the following methods:
+您也可以透過以下方法獲得額外的分頁資訊：
 
 - `getCurrentPage`
 - `getLastPage`
@@ -57,60 +57,60 @@ You may also access additional pagination information via the following methods:
 - `count`
 
 
-#### "Simple Pagination"
+#### 「簡單分頁」
 
-If you are only showing "Next" and "Previous" links in your pagination view, you have the option of using the `simplePaginate` method to perform a more efficient query. This is useful for larger datasets when you do not require the display of exact page numbers on your view:
+如果您只是要在您的分頁視圖顯示「上一頁」和「下一頁」連結，您有個選項 `simplePaginate`  方法來執行更高效率的搜尋。當您不需要精準的顯示頁碼在視圖上時，這個方法在較大的資料集非常有用：
 
 	$someUsers = User::where('votes', '>', 100)->simplePaginate(15);
 
-#### Creating A Paginator Manually
+#### 手動建立分頁
 
-Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
+有的時候您可能會想要從陣列中項目手動建立分頁實例。您可以使用 `Paginator::make` 方法：
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);
 
-#### Customizing The Paginator URI
+#### 自訂分頁 URL
 
-You may also customize the URI used by the paginator via the `setBaseUrl` method:
+您還可以透過 `setBaseUrl` 方法自訂使用的 URL：
 
 	$users = User::paginate();
 
 	$users->setBaseUrl('custom/url');
 
-The example above will create URLs like the following: http://example.com/custom/url?page=2
+上面的範例將建立 URL，類似以下內容： http://example.com/custom/url?page=2
 
 <a name="appending-to-pagination-links"></a>
-## Appending To Pagination Links
+## 加入分頁連結
 
-You can add to the query string of pagination links using the `appends` method on the Paginator:
+您可以使用 `appends` 方法增加搜尋字串到分頁連結中：
 
 	<?php echo $users->appends(array('sort' => 'votes'))->links(); ?>
 
-This will generate URLs that look something like this:
+這樣會產生類似下列的連結：
 
 	http://example.com/something?page=2&sort=votes
 
-If you wish to append a "hash fragment" to the paginator's URLs, you may use the `fragment` method:
+如果您想要將「雜湊片段」加到分頁的 URL，您可以使用 `fragment` 方法：
 
 	<?php echo $users->fragment('foo')->links(); ?>
 
-This method call will generate URLs that look something like this:
+此方法呼叫後將產生 Url，看起來像這樣：
 
 	http://example.com/something?page=2#foo
 
 <a name="converting-to-json"></a>
-## Converting To JSON
+## 轉換至 JSON
 
-The `Paginator` class implements the `Illuminate\Support\Contracts\JsonableInterface` contract and exposes the `toJson` method. You may also convert a `Paginator` instance to JSON by returning it from a route. The JSON'd form of the instance will include some "meta" information such as `total`, `current_page`, `last_page`, `from`, and `to`. The instance's data will be available via the `data` key in the JSON array.
+`Paginator` 類別實作 `Illuminate\Support\Contracts\JsonableInterface` 介面的 `toJson` 公開方法。 由路由返回的值，您可能將 `Paginator` 實力傳換成 JSON。JSON 表單的實力會包含一些「後設」資訊，例如 `total`, `current_page`, `last_page`, `from` , `to`。該實例資料將可透過在 JSON 陣列中 `data` 的鍵取得。
 
 <a name="custom-presenters"></a>
-## Custom Presenters
+## 自訂表示器（Presenter）
 
-The default pagination presenter is Bootstrap compatible out of the box; however, you may customize this with a presenter of your choice.
+預設的分頁表示器是相容 Bootstarp 的。不過，您也可以自訂表示器（presenter）。
 
-### Extending The Abstract Presenter
+### 擴展抽象表示器（Presenter）
 
-Extend the `Illuminate\Pagination\Presenter` class and implement its abstract methods. An example presenter for Zurb Foundation might look like this:
+實作 `Illuminate\Pagination\Presenter` 類別的抽象方法。Zurb Foundation 的表示器（presenter）範例如下：
 
     class ZurbPresenter extends Illuminate\Pagination\Presenter {
 
@@ -131,9 +131,9 @@ Extend the `Illuminate\Pagination\Presenter` class and implement its abstract me
 
     }
 
-### Using The Custom Presenter
+### 使用自訂表示器（Presenter）
 
-First, create a view in your `app/views` directory that will server as your custom presenter. Then, replace `pagination` option in the `app/config/view.php` configuration file with the new view's name. Finally, the following code would be placed in your custom presenter view:
+首先，在 `app/views` 建立新的視圖，這將會作為您的自定表示器（presenter）。並且用新的視圖取代 `app/config/view.php` 的 `pagination` 設定。最後，類似下方的程式碼會放在您的自定表示器（presenter）視圖中。
 
     <ul class="pagination">
         <?php echo with(new ZurbPresenter($paginator))->render(); ?>
