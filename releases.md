@@ -44,15 +44,16 @@ Artisan `queue:work` 命令現在支援 `--daemon` 參數讓 worker 可以以"�
 
 Laravel 4.2 為 `Mail` 函式採用了新的 Mailgun 和 Mandrill API 驅動。對許多應用程式而言，他提供了比 SMTP 更快也更可靠的方法來遞送郵件。新的驅動使用了 Guzzle 4 HTTP 資源庫。
 
-### 軟刪除特性
+### 軟刪除 Traits
 
-A much cleaner architecture for "soft deletes" and other "global scopes" has been introduced via PHP 5.4 traits. This new architecture allows for the easier construction of similar global traits, and a cleaner separation of concerns within the framework itself.
+對於軟刪除和全作用域更簡潔的方案
+PHP 5.4 的 `traits` 提供了一個更加簡潔的軟刪除架構和全局作用域, 這些新架構為框架提供了更有擴展性的功能, 並且讓框架更加簡潔.
 
-More information on the new `SoftDeletingTrait` may be found in the [Eloquent documentation](/docs/eloquent#soft-deleting).
+更多關於軟刪除的文檔請見: [Eloquent documentation](/docs/eloquent#soft-deleting).
 
-### Convenient Auth & Remindable Traits
+### 更為方便的 認證(auth) & Remindable Traits
 
-The default Laravel 4.2 installation now uses simple traits for including the needed properties for the authentication and password reminder user interfaces. This provides a much cleaner default `User` model file out of the box.
+得益於 PHP 5.4 traits , 我們有了一個更簡潔的 用戶認證 和 密碼提醒接口, 這也讓 `User` 模型文件更加精簡.
 
 ### "簡易分頁"
 
