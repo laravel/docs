@@ -151,7 +151,7 @@ View composers are callbacks or class methods that are called when a view is ren
 
 #### Defining A View Composer
 
-For example, using the `provider:make` Artisan command, you may wish to create a `ComposerServiceProvider` class, and register your view composers in the `boot` method of that provider:
+For example, using the `make:provider` Artisan command, you may wish to create a `ComposerServiceProvider` class, and register your view composers in the `boot` method of that provider:
 
 	public function before()
 	{
