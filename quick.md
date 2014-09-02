@@ -14,7 +14,14 @@
 
 ### 透過 Laravel 安裝器
 
-首先，下載 [Laravel 安裝器 PHAR 包](http://laravel.com/laravel.phar)。為使用上方便，將檔案搬移至 `/usr/local/bin` 並改名為 `laravel`。安裝完成後，只要執行 `laravel new` 命令即可以創立一個全新的 laravel 專案在你指定的目錄下。例如：`laravel new blog` 將會建立一個名為 `blog` 的目錄，所需之相依套件的全新 laravel 專案安裝其內。這個安裝方式將會比透過 Composer 快許多。
+首先, 使用 `Composer` 全局下載並安裝 `Laravel/installer`: 
+
+	composer global require "laravel/installer=~1.1"
+
+
+請確定把 `~/.composer/vendor/bin` 路徑放置於您的 `PATH` 里, 這樣`laravel` 可執行文件才能被命令行找到,  以後您就可以在命令行下直接使用 `laravel` 命令.
+
+安裝並且配置成功後, 可以使用命令 `laravel new` 在您指定的目錄下創建一份全新安裝的 `Laravel 應用`, 如這樣的調用: `laravel new blog` 將會在當前目錄下創建一個叫 `blog` 的目錄, 此目錄裡面存放着全新安裝的 Laravel 應用, 此方法跟其他方法不一樣的地方在於是提前安裝好所有代碼依賴的, 您無需再通過 `composer install` 安裝, 速度一下子提高了很多. 
 
 ### 透過 Composer
 
