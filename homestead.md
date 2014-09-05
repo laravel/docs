@@ -21,7 +21,7 @@ Homestead is currently built and tested using Vagrant 1.6.
 ## Included Software
 
 - Ubuntu 14.04
-- PHP 5.5
+- PHP 5.6
 - Nginx
 - MySQL
 - Postgres
