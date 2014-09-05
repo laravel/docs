@@ -13,7 +13,7 @@ Laravel strives to make the entire PHP development experience delightful, includ
 
 Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
-Homestead runs on any Windows, Mac, and Linux, and includes the Nginx web server, PHP 5.5, MySQL, Postgres, Redis, Memcached and all of the other goodies you need to develop amazing Laravel applications.
+Homestead runs on any Windows, Mac, and Linux, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached and all of the other goodies you need to develop amazing Laravel applications.
 
 Homestead is currently built and tested using Vagrant 1.6.
 
