@@ -944,9 +944,9 @@ Both `attach` and `detach` also take arrays of IDs as input:
 
 	$user = User::find(1);
 
-	$user->roles()->attach([1 => ['attribute1' => 'value1'], 2, 3]);
-	
 	$user->roles()->detach([1, 2, 3]);
+
+	$user->roles()->attach([1 => ['attribute1' => 'value1'], 2, 3]);
 
 #### Using Sync To Attach Many To Many Models
 
