@@ -107,13 +107,12 @@ The `array_forget` method will remove a given key / value pair from a deeply nes
 ### array_get
 
 The `array_get` method will retrieve a given value from a deeply nested array using "dot" notation.
-As a third parameter you may specify a custom default value.
 
 	$array = array('names' => array('joe' => array('programmer')));
 
 	$value = array_get($array, 'names.joe');
-	
-	$value = array_get($array, 'names.john', null);
+
+	$value = array_get($array, 'names.john', 'default');
 
 > **Note:** Want something like `array_get` but for objects instead? Use `object_get`.
 
