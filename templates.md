@@ -42,7 +42,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 		<body>
 			@section('sidebar')
 				This is the master sidebar.
-			@show
+			@stop
 
 			<div class="container">
 				@yield('content')
