@@ -97,6 +97,8 @@ Since you often will want to flash input in association with a redirect to the p
 <a name="files"></a>
 ## Files
 
+> **Note:** You will also need to add 'files' => true when [opening a form](/docs/html#opening-a-form)
+
 #### Retrieving An Uploaded File
 
 	$file = Input::file('photo');
