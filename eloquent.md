@@ -26,12 +26,12 @@
 
 The Eloquent ORM included with Laravel provides a beautiful, simple ActiveRecord implementation for working with your database. Each database table has a corresponding "Model" which is used to interact with that table.
 
-Before getting started, be sure to configure a database connection in `app/config/database.php`.
+Before getting started, be sure to configure a database connection in `config/database.php`.
 
 <a name="basic-usage"></a>
 ## Basic Usage
 
-To get started, create an Eloquent model. Models typically live in the `app/models` directory, but you are free to place them anywhere that can be auto-loaded according to your `composer.json` file.
+To get started, create an Eloquent model. Models typically live in the `app` directory, but you are free to place them anywhere that can be auto-loaded according to your `composer.json` file.
 
 #### Defining An Eloquent Model
 

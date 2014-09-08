@@ -66,6 +66,8 @@ If you need access to the `Response` class methods, but want to return a view as
 
 	return Redirect::action('HomeController@index');
 
+> **Note:** You do not need to specify the full namespace to the controller. Only the portion of the controller that comes after the `App\Http\Controllers` portion of the namespace. The root portion namespace will be automatically preprended for you.
+
 #### Returning A Redirect To A Controller Action With Parameters
 
 	return Redirect::action('UserController@profile', array(1));
@@ -77,11 +79,11 @@ If you need access to the `Response` class methods, but want to return a view as
 <a name="views"></a>
 ## Views
 
-Views typically contain the HTML of your application and provide a convenient way of separating your controller and domain logic from your presentation logic. Views are stored in the `app/views` directory.
+Views typically contain the HTML of your application and provide a convenient way of separating your controller and domain logic from your presentation logic. Views are stored in the `resources/views` directory.
 
 A simple view could look something like this:
 
-	<!-- View stored in app/views/greeting.php -->
+	<!-- View stored in resources/views/greeting.php -->
 
 	<html>
 		<body>
@@ -118,7 +120,7 @@ You may also share a piece of data across all views:
 
 #### Passing A Sub-View To A View
 
-Sometimes you may wish to pass a view into another view. For example, given a sub-view stored at `app/views/child/view.php`, we could pass it to another view like so:
+Sometimes you may wish to pass a view into another view. For example, given a sub-view stored at `resources/views/child/view.php`, we could pass it to another view like so:
 
 	$view = View::make('greeting')->nest('child', 'child.view');
 
@@ -145,14 +147,19 @@ If you need to check if a view exists, use the `View::exists` method:
 <a name="view-composers"></a>
 ## View Composers
 
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
+View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters". To organize your view composers, you may wish to create a new [service provider](/docs/ioc#service-providers):
 
 #### Defining A View Composer
 
-	View::composer('profile', function($view)
+For example, using the `make:provider` Artisan command, you may wish to create a `ComposerServiceProvider` class, and register your view composers in the `boot` method of that provider:
+
+	public function before()
 	{
-		$view->with('count', User::count());
-	});
+		View::composer('profile', function($view)
+		{
+			$view->with('count', User::count());
+		});
+	}
 
 Now each time the `profile` view is rendered, the `count` data will be bound to the view.
 
@@ -231,4 +238,4 @@ The `macro` function accepts a name as its first argument, and a Closure as its 
 
 	return Response::caps('foo');
 
-You may define your macros in one of your `app/start` files. Alternatively, you may organize your macros into a separate file which is included from one of your `start` files.
+You may define your macros in one of your [service providers](/docs/ioc#service-providers).

@@ -11,11 +11,16 @@
 
 Instead of defining all of your route-level logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related route logic into a class, as well as take advantage of more advanced framework features such as automatic [dependency injection](/docs/ioc).
 
-Controllers are typically stored in the `app/controllers` directory, and this directory is registered in the `classmap` option of your `composer.json` file by default. However, controllers can technically live in any directory or any sub-directory. Route declarations are not dependent on the location of the controller class file on disk. So, as long as Composer knows how to autoload the controller class, it may be placed anywhere you wish.
+Controllers are typically stored in the `app/Http/Controllers` directory. However, controllers can technically live in any directory or any sub-directory. Route declarations are not dependent on the location of the controller class file on disk. So, as long as Composer knows how to autoload the controller class, it may be placed anywhere you wish.
 
 Here is an example of a basic controller class:
 
-	class UserController extends BaseController {
+	namespace App\Http\Controllers;
+
+	use View, App\User;
+	use Illuminate\Routing\Controller;
+
+	class UserController extends Controller {
 
 		/**
 		 * Show the profile for the given user.
@@ -24,31 +29,36 @@ Here is an example of a basic controller class:
 		{
 			$user = User::find($id);
 
-			return View::make('user.profile', array('user' => $user));
+			return View::make('user.profile', ['user' => $user]);
 		}
 
 	}
 
-All controllers should extend the `BaseController` class. The `BaseController` is also stored in the `app/controllers` directory, and may be used as a place to put shared controller logic. The `BaseController` extends the framework's `Controller` class. Now, we can route to this controller action like so:
+All controllers should extend the `Illuminate\Routing\Controller` class. Now, we can route to this controller action like so:
 
 	Route::get('user/{id}', 'UserController@showProfile');
 
-If you choose to nest or organize your controller using PHP namespaces, simply use the fully qualified class name when defining the route:
+It is very important to note that we did not need to specify the full controller namespace, only the portion of the class name that comes after the `App\Http\Controllers` namespace "root". Because of the call to the `namespaced` helper in your `App\Providers\RouteServiceProvider` class, this "root" namespace will automatically be prepended to all controller routes you register.
 
-	Route::get('foo', 'Namespace\FooController@method');
+If you choose to nest or organize your controllers using PHP namespaces deeper into the `App\Http\Controllers` directory, simply use the specify the class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you would register a route like so:
+
+	Route::get('foo', 'Photos\AdminController@method');
 
 > **Note:** Since we're using [Composer](http://getcomposer.org) to auto-load our PHP classes, controllers may live anywhere on the file system, as long as composer knows how to load them. The controller directory does not enforce any folder structure for your application. Routing to controllers is entirely de-coupled from the file system.
 
 You may also specify names on controller routes:
 
-	Route::get('foo', array('uses' => 'FooController@method',
-											'as' => 'name'));
+	Route::get('foo', ['uses' => 'FooController@method', 'as' => 'name']);
 
 To generate a URL to a controller action, you may use the `URL::action` method or the `action` helper method:
 
 	$url = URL::action('FooController@method');
 
 	$url = action('FooController@method');
+
+**Again**, you only need to specify the portion of the class that that comes after the `App\Http\Controllers` namespace "root". If you wish to generate a URL to a controller action while using the fully qualified class name, without the URL generator automatically preprending the default namespace, you may use a leading slash:
+
+	$url = action('\Namespace\FooController@method');
 
 You may access the name of the controller action being run using the `currentRouteAction` method:
 
@@ -59,12 +69,11 @@ You may access the name of the controller action being run using the `currentRou
 
 [Filters](/docs/routing#route-filters) may be specified on controller routes similar to "regular" routes:
 
-	Route::get('profile', array('before' => 'auth',
-				'uses' => 'UserController@showProfile'));
+	Route::get('profile', ['before' => 'auth', 'uses' => 'UserController@showProfile']);
 
 However, you may also specify filters from within your controller:
 
-	class UserController extends BaseController {
+	class UserController extends Controller {
 
 		/**
 		 * Instantiate a new UserController instance.
@@ -83,7 +92,7 @@ However, you may also specify filters from within your controller:
 
 You may also specify controller filters inline using a Closure:
 
-	class UserController extends BaseController {
+	class UserController extends Controller {
 
 		/**
 		 * Instantiate a new UserController instance.
@@ -100,7 +109,7 @@ You may also specify controller filters inline using a Closure:
 
 If you would like to use another method on the controller as a filter, you may use `@` syntax to define the filter:
 
-	class UserController extends BaseController {
+	class UserController extends Controller {
 
 		/**
 		 * Instantiate a new UserController instance.
@@ -129,7 +138,7 @@ Laravel allows you to easily define a single route to handle every action in a c
 
 The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller. Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
 
-	class UserController extends BaseController {
+	class UserController extends Controller {
 
 		public function getIndex()
 		{
@@ -140,7 +149,7 @@ The `controller` method accepts two arguments. The first is the base URI the con
 		{
 			//
 		}
-		
+
 		public function anyLogin()
 		{
 			//
@@ -181,24 +190,18 @@ GET       | /resource/{resource}/edit   | edit         | resource.edit
 PUT/PATCH | /resource/{resource}        | update       | resource.update
 DELETE    | /resource/{resource}        | destroy      | resource.destroy
 
-Sometimes you may only need to handle a subset of the resource actions:
-
-	php artisan controller:make PhotoController --only=index,show
-
-	php artisan controller:make PhotoController --except=index
-
-And, you may also specify a subset of actions to handle on the route:
+Additionally, you may specify only a subset of actions to handle on the route:
 
 	Route::resource('photo', 'PhotoController',
-					array('only' => array('index', 'show')));
+					['only' => ['index', 'show']]);
 
 	Route::resource('photo', 'PhotoController',
-					array('except' => array('create', 'store', 'update', 'destroy')));
+					['except' => ['create', 'store', 'update', 'destroy']]);
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
 	Route::resource('photo', 'PhotoController',
-					array('names' => array('create' => 'photo.build')));
+					['names' => ['create' => 'photo.build']]);
 
 #### Handling Nested Resource Controllers
 
@@ -208,7 +211,7 @@ To "nest" resource controllers, use "dot" notation in your route declaration:
 
 This route will register a "nested" resource that may be accessed with URLs like the following: `photos/{photoResource}/comments/{commentResource}`.
 
-	class PhotoCommentController extends BaseController {
+	class PhotoCommentController extends Controller {
 
 		public function show($photoId, $commentId)
 		{

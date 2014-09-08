@@ -38,16 +38,18 @@ If you prefer, you can alternatively download a copy of the [Laravel repository 
 
 After installing Laravel, you may need to grant the web server write permissions to the `app/storage` directories. See the [Installation](/docs/installation) documentation for more details on configuration.
 
-### Serving Laravel
+### Naming Your Application
 
-Typically, you may use a web server such as Apache or Nginx to serve your Laravel applications. If you are on PHP 5.4+ and would like to use PHP's built-in development server, you may use the `serve` Artisan command:
+By default, most of the classes in a fresh Laravel installation are under the `App` namespace. You can modify this using the `app:name` Artisan command, which will re-namespace your fresh application for you. Give it a shot!
 
-	php artisan serve
+	php artisan app:name YourAppName
 
 <a name="directories"></a>
 ### Directory Structure
 
-After installing the framework, take a glance around the project to familiarize yourself with the directory structure. The `app` directory contains folders such as `views`, `controllers`, and `models`. Most of your application's code will reside somewhere in this directory. You may also wish to explore the `app/config` directory and the configuration options that are available to you.
+After installing the framework, take a glance around the project to familiarize yourself with the directory structure. The `app` directory contains folders such as `Console`, `Http`, and `Providers`. Almost all of your application's code will reside somewhere in this directory, including your controllers, filters, as well as domain specific code.
+
+You may also wish to explore the `config` directory and the configuration options that are available to you.
 
 <a name="local-development-environment"></a>
 ## Local Development Environment
@@ -66,7 +68,7 @@ Don't worry, even though "virtualized" sounds complicated, it's painless. Virtua
 <a name="routing"></a>
 ## Routing
 
-To get started, let's create our first route. In Laravel, the simplest route is a route to a Closure. Pop open the `app/routes.php` file and add the following route to the bottom of the file:
+To get started, let's create our first route. In Laravel, the simplest route is a route to a Closure. Pop open the `app/Http/routes.php` file and add the following route to the bottom of the file:
 
 	Route::get('users', function()
 	{
@@ -81,10 +83,12 @@ Routes can also be attached to controller classes. For example:
 
 This route informs the framework that requests to the `/users` route should call the `getIndex` method on the `UserController` class. For more information on controller routing, check out the [controller documentation](/docs/controllers).
 
+> **Note:** By default, Laravel will automatically prepend the default controller namespace to your controller routes.
+
 <a name="creating-a-view"></a>
 ## Creating A View
 
-Next, we'll create a simple view to display our user data. Views live in the `app/views` directory and contain the HTML of your application. We're going to place two new views in this directory: `layout.blade.php` and `users.blade.php`. First, let's create our `layout.blade.php` file:
+Next, we'll create a simple view to display our user data. Views live in the `resources/views` directory and contain the HTML of your application. We're going to place two new views in this directory: `layout.blade.php` and `users.blade.php`. First, let's create our `layout.blade.php` file:
 
 	<html>
 		<body>
@@ -118,13 +122,13 @@ Wonderful! Now you have setup a simple view that extends a layout. Next, let's s
 
 To create a table to hold our data, we'll use the Laravel migration system. Migrations let you expressively define modifications to your database, and easily share them with the rest of your team.
 
-First, let's configure a database connection. You may configure all of your database connections from the `app/config/database.php` file. By default, Laravel is configured to use MySQL, and you will need to supply connection credentials within the database configuration file. If you wish, you may change the `driver` option to `sqlite` and it will use the SQLite database included in the `app/database` directory.
+First, let's configure a database connection. You may configure all of your database connections from the `config/database.php` file. By default, Laravel is configured to use MySQL, and you will need to supply connection credentials within the database configuration file.
 
 Next, to create the migration, we'll use the [Artisan CLI](/docs/artisan). From the root of your project, run the following from your terminal:
 
 	php artisan migrate:make create_users_table
 
-Next, find the generated migration file in the `app/database/migrations` folder. This file contains a class with two methods: `up` and `down`. In the `up` method, you should make the desired changes to your database tables, and in the `down` method you simply reverse them.
+Next, find the generated migration file in the `database/migrations` folder. This file contains a class with two methods: `up` and `down`. In the `up` method, you should make the desired changes to your database tables, and in the `down` method you simply reverse them.
 
 Let's define a migration that looks like this:
 
@@ -155,7 +159,9 @@ If you wish to rollback a migration, you may issue the `migrate:rollback` comman
 
 Laravel ships with a superb ORM: Eloquent. If you have used the Ruby on Rails framework, you will find Eloquent familiar, as it follows the ActiveRecord ORM style of database interaction.
 
-First, let's define a model. An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Don't worry, it will all make sense soon! Models are typically stored in the `app/models` directory. Let's define a `User.php` model in that directory like so:
+First, let's define a model. An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Don't worry, it will all make sense soon! Models are typically stored in the `app` directory. Let's define a `User.php` model in that directory like so:
+
+	namespace App;
 
 	class User extends Eloquent {}
 
@@ -167,7 +173,7 @@ Now let's modify our `/users` route to look like this:
 
 	Route::get('users', function()
 	{
-		$users = User::all();
+		$users = App\User::all();
 
 		return View::make('users')->with('users', $users);
 	});

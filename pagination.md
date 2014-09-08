@@ -9,7 +9,7 @@
 <a name="configuration"></a>
 ## Configuration
 
-In other frameworks, pagination can be very painful. Laravel makes it a breeze. There is a single configuration option in the `app/config/view.php` file. The `pagination` option specifies which view should be used to create pagination links. By default, Laravel includes two views.
+In other frameworks, pagination can be very painful. Laravel makes it a breeze. There is a single configuration option in the `config/view.php` file. The `pagination` option specifies which view should be used to create pagination links. By default, Laravel includes two views.
 
 The `pagination::slider` view will show an intelligent "range" of links based on the current page, while the `pagination::simple` view will simply show "previous" and "next" buttons. **Both views are compatible with Twitter Bootstrap out of the box.**
 
@@ -135,7 +135,7 @@ Extend the `Illuminate\Pagination\Presenter` class and implement its abstract me
 
 ### Using The Custom Presenter
 
-First, create a view in your `app/views` directory that will server as your custom presenter. Then, replace `pagination` option in the `app/config/view.php` configuration file with the new view's name. Finally, the following code would be placed in your custom presenter view:
+First, create a view in your `resources/views` directory that will server as your custom presenter. Then, replace `pagination` option in the `config/view.php` configuration file with the new view's name. Finally, the following code would be placed in your custom presenter view:
 
     <ul class="pagination">
         <?php echo with(new ZurbPresenter($paginator))->render(); ?>
