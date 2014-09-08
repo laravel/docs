@@ -857,9 +857,13 @@ You may even eager load nested relationships:
 
 In the example above, the `author` relationship will be eager loaded, and the author's `contacts` relation will also be loaded.
 
-### Eager Load Constraints
+### Eager Load Constraints & Conditional Relationships
 
-Sometimes you may wish to eager load a relationship, but also specify a condition for the eager load. Here's an example:
+Sometimes you may wish to eager load a relationship, but also specify conditions to limit or sort the eager load.
+
+You can use any method found within the <a href="http://laravel.com/docs/queries">Query Builder</a> to conform the relationships to one or many foreign keys.
+
+An example of limiting with `where` which is eager loading the user's posts, but only if the post's title column contains the word "first":
 
 	$users = User::with(array('posts' => function($query)
 	{
@@ -867,9 +871,7 @@ Sometimes you may wish to eager load a relationship, but also specify a conditio
 
 	}))->get();
 
-In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
-
-Of course, eager loading Closures aren't limited to "constraints". You may also apply orders:
+Here we are once again eager loading the user's posts, this time ordering them by the date they were created:
 
 	$users = User::with(array('posts' => function($query)
 	{
