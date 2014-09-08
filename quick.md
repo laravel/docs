@@ -55,7 +55,7 @@ After installing the framework, take a glance around the project to familiarize 
 In the past, configuring a local PHP development environment on your machine was a headache. Installing the proper version of PHP, required extensions, and other needed components is time consuming and confusing. Instead, consider using [Laravel Homestead](/docs/homestead). Homestead is a simple virtual machine designed for Laravel and [Vagrant](http://vagrantup.com). Since the Homestead Vagrant box is pre-packaged with all of the software you need to build robust PHP applications, you can create a virtualized, isolated development environment in seconds. Here is a list of some of the goodies included with Homestead:
 
 - Nginx
-- PHP 5.5
+- PHP 5.6
 - MySQL
 - Redis
 - Memcached
@@ -196,6 +196,6 @@ This is just the beginning. In this tutorial, you've seen the very basics of Lar
 <a name="deploying-your-application"></a>
 ## Deploying Your Application
 
-One of Laravel's goals is to make PHP application development enjoyable from download to deploy, and [Laravel Forge](https://forge.laravel.com) provides a simple way to deploy your Laravel applications onto blazing fast servers. Forge can configure and provision servers on DigitalOcean, Linode, Rackspace, and Amazon EC2. Like Homestead, all of the latest goodes are included: Nginx, PHP 5.5, MySQL, Postgres, Redis, Memcached, and more. Forge "Quick Deploy" can even deploy your code for you each time you push changes out to Github or Bitbucket!
+One of Laravel's goals is to make PHP application development enjoyable from download to deploy, and [Laravel Forge](https://forge.laravel.com) provides a simple way to deploy your Laravel applications onto blazing fast servers. Forge can configure and provision servers on DigitalOcean, Linode, Rackspace, and Amazon EC2. Like Homestead, all of the latest goodes are included: Nginx, PHP 5.6, MySQL, Postgres, Redis, Memcached, and more. Forge "Quick Deploy" can even deploy your code for you each time you push changes out to Github or Bitbucket!
 
 On top of that, Forge can help you configure queue workers, SSL, Cron jobs, sub-domains, and more. For more information, visit the [Forge website](https://forge.laravel.com).
