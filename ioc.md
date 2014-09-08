@@ -53,9 +53,7 @@ You may also bind an existing object instance into the container using the `inst
 <a name="where-to-register"></a>
 ## Where To Register Bindings
 
-IoC bindings, like event handlers or route filters, generally fall under the title of "bootstrap code". In other words, they prepare your application to actually handle requests, and usually need to be executed before a route or controller is actually called. Like most other bootstrap code, the `start` files are always an option for registering IoC bindings. Alternatively, you could create an `app/ioc.php` (filename does not matter) file and require that file from your `start` file.
-
-If your application has a very large number of IoC bindings, or you simply wish to organize your IoC bindings in separate files by category, you may register your bindings in a [service provider](#service-providers).
+IoC bindings, like event handlers or route filters, generally fall under the title of "bootstrap code". In other words, they prepare your application to actually handle requests, and usually need to be executed before a route or controller is actually called. Like most other bootstrap code, your service provider classes are always an option for registering IoC bindings. You may create as many service providers as necessary for your application.
 
 <a name="automatic-resolution"></a>
 ## Automatic Resolution
@@ -138,7 +136,7 @@ In this example, the `OrderRepository` class will automatically be injected into
 
 Service providers are a great way to group related IoC registrations in a single location. Think of them as a way to bootstrap components in your application. Within a service provider, you might register a custom authentication driver, register your application's repository classes with the IoC container, or even setup a custom Artisan command.
 
-In fact, most of the core Laravel components include service providers. All of the registered service providers for your application are listed in the `providers` array of the `app/config/app.php` configuration file.
+In fact, most of the core Laravel components include service providers. All of the registered service providers for your application are listed in the `providers` array of the `config/app.php` configuration file.
 
 #### Defining A Service Provider
 
@@ -160,11 +158,7 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 
 Note that in the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
 
-#### Registering A Service Provider At Run-Time
-
-You may also register a service provider at run-time using the `App::register` method:
-
-	App::register('FooServiceProvider');
+The easiest way to quickly generate a new service provider is to use the `provider:make` Artisan command.
 
 <a name="container-events"></a>
 ## Container Events

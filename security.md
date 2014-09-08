@@ -13,9 +13,9 @@
 <a name="configuration"></a>
 ## Configuration
 
-Laravel aims to make implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `app/config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication facilities.
+Laravel aims to make implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication facilities.
 
-By default, Laravel includes a `User` model in your `app/models` directory which may be used with the default Eloquent authentication driver. Please remember when building the Schema for this Model to ensure that the password field is a minimum of 60 characters.
+By default, Laravel includes a `User` model in your `app` directory which may be used with the default Eloquent authentication driver. Please remember when building the Schema for this Model to ensure that the password field is a minimum of 60 characters.
 
 If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
@@ -79,6 +79,7 @@ If you would like to provide "remember me" functionality in your application, yo
 **Note:** If the `attempt` method returns `true`, the user is considered logged into the application.
 
 #### Determining If User Authed Via Remember
+
 If you are "remembering" user logins, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
 
 	if (Auth::viaRemember())
@@ -147,7 +148,7 @@ This is equivalent to logging in a user via credentials using the `attempt` meth
 <a name="protecting-routes"></a>
 ## Protecting Routes
 
-Route filters may be used to allow only authenticated users to access a given route. Laravel provides the `auth` filter by default, and it is defined in `app/filters.php`.
+Route filters may be used to allow only authenticated users to access a given route. Laravel provides the `auth` filter by default, and it is defined in `App\Http\Filters\AuthFilter`.
 
 #### Protecting A Route
 
@@ -183,21 +184,21 @@ HTTP Basic Authentication provides a quick way to authenticate users of your app
 		// Only authenticated users may enter...
 	}));
 
-By default, the `basic` filter will use the `email` column on the user record when authenticating. If you wish to use another column you may pass the column name as the first parameter to the `basic` method in your `app/filters.php` file:
+By default, the `basic` filter will use the `email` column on the user record when authenticating. If you wish to use another column you may pass the column name as the first parameter to the filter in your `App\Http\Filters\BasicAuthFilter` class:
 
-	Route::filter('auth.basic', function()
+	public function filter()
 	{
 		return Auth::basic('username');
-	});
+	};
 
 #### Setting Up A Stateless HTTP Basic Filter
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, define a filter that returns the `onceBasic` method:
+You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a filter](/docs/routing#route-filters) that returns the `onceBasic` method:
 
-	Route::filter('basic.once', function()
+	public function filter()
 	{
 		return Auth::onceBasic();
-	});
+	}
 
 If you are using PHP FastCGI, HTTP Basic authentication will not work correctly by default. The following lines should be added to your `.htaccess` file:
 
@@ -232,7 +233,7 @@ Next, a table must be created to store the password reset tokens. To generate a 
 
 ### Password Reminder Controller
 
-Now we're ready to generate the password reminder controller. To automatically generate a controller, you may use the `auth:reminders-controller` Artisan command, which will create a `RemindersController.php` file in your `app/controllers` directory.
+Now we're ready to generate the password reminder controller. To automatically generate a controller, you may use the `auth:reminders-controller` Artisan command, which will create a `RemindersController.php` file in your `app/Http/Controllers` directory.
 
 	php artisan auth:reminders-controller
 
@@ -279,7 +280,7 @@ By default, the `Password::reset` method will verify that the passwords match an
 		return strlen($credentials['password']) >= 6;
 	});
 
-> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `app/config/auth.php` file.
+> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `config/auth.php` file.
 
 <a name="encryption"></a>
 ## Encryption
@@ -290,7 +291,7 @@ Laravel provides facilities for strong AES encryption via the mcrypt PHP extensi
 
 	$encrypted = Crypt::encrypt('secret');
 
-> **Note:** Be sure to set a 16, 24, or 32 character random string in the `key` option of the `app/config/app.php` file. Otherwise, encrypted values will not be secure.
+> **Note:** Be sure to set a 16, 24, or 32 character random string in the `key` option of the `config/app.php` file. Otherwise, encrypted values will not be secure.
 
 #### Decrypting A Value
 

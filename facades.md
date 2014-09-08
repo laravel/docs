@@ -75,16 +75,14 @@ Let's look at an example. Here, we have a class defined as `PaymentGateway\Payme
 
 	}
 
-This class might live in your `app/models` directory, or any other directory that Composer knows how to auto-load.
-
-We need to be able to resolve this class from the IoC container. So, let's add a binding:
+We need to be able to resolve this class from the IoC container. So, let's add a binding to a service provider:
 
 	App::bind('payment', function()
 	{
 		return new \PaymentGateway\Payment;
 	});
 
-A great place to register this binding would be to create a new [service provider](/docs/ioc#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `app/config/app.php` configuration file.
+A great place to register this binding would be to create a new [service provider](/docs/ioc#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `config/app.php` configuration file.
 
 Next, we can create our own facade class:
 
@@ -96,13 +94,13 @@ Next, we can create our own facade class:
 
 	}
 
-Finally, if we wish, we can add an alias for our facade to the `aliases` array in the `app/config/app.php` configuration file. Now, we can call the `process` method on an instance of the `Payment` class.
+Finally, if we wish, we can add an alias for our facade to the `aliases` array in the `config/app.php` configuration file. Now, we can call the `process` method on an instance of the `Payment` class.
 
 	Payment::process();
 
 ### A Note On Auto-Loading Aliases
 
-Classes in the `aliases` array are not available in some instances because [PHP will not attempt to autoload undefined type-hinted classes](https://bugs.php.net/bug.php?id=39003). If `\ServiceWrapper\ApiTimeoutException` is aliased to `ApiTimeoutException`, a `catch(ApiTimeoutException $e)` outside of the namespace `\ServiceWrapper` will never catch the exception, even if one is thrown. A similar problem is found in Models which have type hints to aliased classes. The only workaround is to forego aliasing and `use` the classes you wish to type hint at the top of each file which requires them.
+Classes in the `aliases` array are not available in some instances because [PHP will not attempt to autoload undefined type-hinted classes](https://bugs.php.net/bug.php?id=39003). If `\ServiceWrapper\ApiTimeoutException` is aliased to `ApiTimeoutException`, a `catch(ApiTimeoutException $e)` outside of the namespace `\ServiceWrapper` will never catch the exception, even if one is thrown. A similar problem is found in classes which have type hints to aliased classes. The only workaround is to forego aliasing and `use` the classes you wish to type hint at the top of each file which requires them.
 
 <a name="mocking-facades"></a>
 ## Mocking Facades
@@ -116,44 +114,44 @@ Below you will find every facade and its underlying class. This is a useful tool
 
 Facade  |  Class  |  IoC Binding
 ------------- | ------------- | -------------
-App  |  [Illuminate\Foundation\Application](http://laravel.com/api/4.2/Illuminate/Foundation/Application.html)  | `app`
-Artisan  |  [Illuminate\Console\Application](http://laravel.com/api/4.2/Illuminate/Console/Application.html)  |  `artisan`
-Auth  |  [Illuminate\Auth\AuthManager](http://laravel.com/api/4.2/Illuminate/Auth/AuthManager.html)  |  `auth`
-Auth (Instance)  |  [Illuminate\Auth\Guard](http://laravel.com/api/4.2/Illuminate/Auth/Guard.html)  |
-Blade  |  [Illuminate\View\Compilers\BladeCompiler](http://laravel.com/api/4.2/Illuminate/View/Compilers/BladeCompiler.html)  |  `blade.compiler`
-Cache  |  [Illuminate\Cache\Repository](http://laravel.com/api/4.2/Illuminate/Cache/Repository.html)  |  `cache`
-Config  |  [Illuminate\Config\Repository](http://laravel.com/api/4.2/Illuminate/Config/Repository.html)  |  `config`
-Cookie  |  [Illuminate\Cookie\CookieJar](http://laravel.com/api/4.2/Illuminate/Cookie/CookieJar.html)  |  `cookie`
-Crypt  |  [Illuminate\Encryption\Encrypter](http://laravel.com/api/4.2/Illuminate/Encryption/Encrypter.html)  |  `encrypter`
-DB  |  [Illuminate\Database\DatabaseManager](http://laravel.com/api/4.2/Illuminate/Database/DatabaseManager.html)  |  `db`
-DB (Instance)  |  [Illuminate\Database\Connection](http://laravel.com/api/4.2/Illuminate/Database/Connection.html)  |
-Event  |  [Illuminate\Events\Dispatcher](http://laravel.com/api/4.2/Illuminate/Events/Dispatcher.html)  |  `events`
-File  |  [Illuminate\Filesystem\Filesystem](http://laravel.com/api/4.2/Illuminate/Filesystem/Filesystem.html)  |  `files`
-Form  |  [Illuminate\Html\FormBuilder](http://laravel.com/api/4.2/Illuminate/Html/FormBuilder.html)  |  `form`
-Hash  |  [Illuminate\Hashing\HasherInterface](http://laravel.com/api/4.2/Illuminate/Hashing/HasherInterface.html)  |  `hash`
-HTML  |  [Illuminate\Html\HtmlBuilder](http://laravel.com/api/4.2/Illuminate/Html/HtmlBuilder.html)  |  `html`
-Input  |  [Illuminate\Http\Request](http://laravel.com/api/4.2/Illuminate/Http/Request.html)  |  `request`
-Lang  |  [Illuminate\Translation\Translator](http://laravel.com/api/4.2/Illuminate/Translation/Translator.html)  |  `translator`
-Log  |  [Illuminate\Log\Writer](http://laravel.com/api/4.2/Illuminate/Log/Writer.html)  |  `log`
-Mail  |  [Illuminate\Mail\Mailer](http://laravel.com/api/4.2/Illuminate/Mail/Mailer.html)  |  `mailer`
-Paginator  |  [Illuminate\Pagination\Factory](http://laravel.com/api/4.2/Illuminate/Pagination/Factory.html)  |  `paginator`
-Paginator (Instance)  |  [Illuminate\Pagination\Paginator](http://laravel.com/api/4.2/Illuminate/Pagination/Paginator.html)  |
-Password  |  [Illuminate\Auth\Reminders\PasswordBroker](http://laravel.com/api/4.2/Illuminate/Auth/Reminders/PasswordBroker.html)  |  `auth.reminder`
-Queue  |  [Illuminate\Queue\QueueManager](http://laravel.com/api/4.2/Illuminate/Queue/QueueManager.html)  |  `queue`
-Queue (Instance) |  [Illuminate\Queue\QueueInterface](http://laravel.com/api/4.2/Illuminate/Queue/QueueInterface.html)  |
-Queue (Base Class) |  [Illuminate\Queue\Queue](http://laravel.com/api/4.2/Illuminate/Queue/Queue.html)  |
-Redirect  |  [Illuminate\Routing\Redirector](http://laravel.com/api/4.2/Illuminate/Routing/Redirector.html)  |  `redirect`
-Redis  |  [Illuminate\Redis\Database](http://laravel.com/api/4.2/Illuminate/Redis/Database.html)  |  `redis`
-Request  |  [Illuminate\Http\Request](http://laravel.com/api/4.2/Illuminate/Http/Request.html)  |  `request`
-Response  |  [Illuminate\Support\Facades\Response](http://laravel.com/api/4.2/Illuminate/Support/Facades/Response.html)  |
-Route  |  [Illuminate\Routing\Router](http://laravel.com/api/4.2/Illuminate/Routing/Router.html)  |  `router`
-Schema  |  [Illuminate\Database\Schema\Blueprint](http://laravel.com/api/4.2/Illuminate/Database/Schema/Blueprint.html)  |
-Session  |  [Illuminate\Session\SessionManager](http://laravel.com/api/4.2/Illuminate/Session/SessionManager.html)  |  `session`
-Session (Instance)  |  [Illuminate\Session\Store](http://laravel.com/api/4.2/Illuminate/Session/Store.html)  |
-SSH  |  [Illuminate\Remote\RemoteManager](http://laravel.com/api/4.2/Illuminate/Remote/RemoteManager.html)  |  `remote`
-SSH (Instance)  |  [Illuminate\Remote\Connection](http://laravel.com/api/4.2/Illuminate/Remote/Connection.html)  |
-URL  |  [Illuminate\Routing\UrlGenerator](http://laravel.com/api/4.2/Illuminate/Routing/UrlGenerator.html)  |  `url`
-Validator  |  [Illuminate\Validation\Factory](http://laravel.com/api/4.2/Illuminate/Validation/Factory.html)  |  `validator`
-Validator (Instance)  |  [Illuminate\Validation\Validator](http://laravel.com/api/4.2/Illuminate/Validation/Validator.html) |
-View  |  [Illuminate\View\Factory](http://laravel.com/api/4.2/Illuminate/View/Factory.html)  |  `view`
-View (Instance)  |  [Illuminate\View\View](http://laravel.com/api/4.2/Illuminate/View/View.html)  |
+App  |  [Illuminate\Foundation\Application](http://laravel.com/api/4.3/Illuminate/Foundation/Application.html)  | `app`
+Artisan  |  [Illuminate\Console\Application](http://laravel.com/api/4.3/Illuminate/Console/Application.html)  |  `artisan`
+Auth  |  [Illuminate\Auth\AuthManager](http://laravel.com/api/4.3/Illuminate/Auth/AuthManager.html)  |  `auth`
+Auth (Instance)  |  [Illuminate\Auth\Guard](http://laravel.com/api/4.3/Illuminate/Auth/Guard.html)  |
+Blade  |  [Illuminate\View\Compilers\BladeCompiler](http://laravel.com/api/4.3/Illuminate/View/Compilers/BladeCompiler.html)  |  `blade.compiler`
+Cache  |  [Illuminate\Cache\Repository](http://laravel.com/api/4.3/Illuminate/Cache/Repository.html)  |  `cache`
+Config  |  [Illuminate\Config\Repository](http://laravel.com/api/4.3/Illuminate/Config/Repository.html)  |  `config`
+Cookie  |  [Illuminate\Cookie\CookieJar](http://laravel.com/api/4.3/Illuminate/Cookie/CookieJar.html)  |  `cookie`
+Crypt  |  [Illuminate\Encryption\Encrypter](http://laravel.com/api/4.3/Illuminate/Encryption/Encrypter.html)  |  `encrypter`
+DB  |  [Illuminate\Database\DatabaseManager](http://laravel.com/api/4.3/Illuminate/Database/DatabaseManager.html)  |  `db`
+DB (Instance)  |  [Illuminate\Database\Connection](http://laravel.com/api/4.3/Illuminate/Database/Connection.html)  |
+Event  |  [Illuminate\Events\Dispatcher](http://laravel.com/api/4.3/Illuminate/Events/Dispatcher.html)  |  `events`
+File  |  [Illuminate\Filesystem\Filesystem](http://laravel.com/api/4.3/Illuminate/Filesystem/Filesystem.html)  |  `files`
+Form  |  [Illuminate\Html\FormBuilder](http://laravel.com/api/4.3/Illuminate/Html/FormBuilder.html)  |  `form`
+Hash  |  [Illuminate\Hashing\HasherInterface](http://laravel.com/api/4.3/Illuminate/Hashing/HasherInterface.html)  |  `hash`
+HTML  |  [Illuminate\Html\HtmlBuilder](http://laravel.com/api/4.3/Illuminate/Html/HtmlBuilder.html)  |  `html`
+Input  |  [Illuminate\Http\Request](http://laravel.com/api/4.3/Illuminate/Http/Request.html)  |  `request`
+Lang  |  [Illuminate\Translation\Translator](http://laravel.com/api/4.3/Illuminate/Translation/Translator.html)  |  `translator`
+Log  |  [Illuminate\Log\Writer](http://laravel.com/api/4.3/Illuminate/Log/Writer.html)  |  `log`
+Mail  |  [Illuminate\Mail\Mailer](http://laravel.com/api/4.3/Illuminate/Mail/Mailer.html)  |  `mailer`
+Paginator  |  [Illuminate\Pagination\Factory](http://laravel.com/api/4.3/Illuminate/Pagination/Factory.html)  |  `paginator`
+Paginator (Instance)  |  [Illuminate\Pagination\Paginator](http://laravel.com/api/4.3/Illuminate/Pagination/Paginator.html)  |
+Password  |  [Illuminate\Auth\Reminders\PasswordBroker](http://laravel.com/api/4.3/Illuminate/Auth/Reminders/PasswordBroker.html)  |  `auth.reminder`
+Queue  |  [Illuminate\Queue\QueueManager](http://laravel.com/api/4.3/Illuminate/Queue/QueueManager.html)  |  `queue`
+Queue (Instance) |  [Illuminate\Queue\QueueInterface](http://laravel.com/api/4.3/Illuminate/Queue/QueueInterface.html)  |
+Queue (Base Class) |  [Illuminate\Queue\Queue](http://laravel.com/api/4.3/Illuminate/Queue/Queue.html)  |
+Redirect  |  [Illuminate\Routing\Redirector](http://laravel.com/api/4.3/Illuminate/Routing/Redirector.html)  |  `redirect`
+Redis  |  [Illuminate\Redis\Database](http://laravel.com/api/4.3/Illuminate/Redis/Database.html)  |  `redis`
+Request  |  [Illuminate\Http\Request](http://laravel.com/api/4.3/Illuminate/Http/Request.html)  |  `request`
+Response  |  [Illuminate\Support\Facades\Response](http://laravel.com/api/4.3/Illuminate/Support/Facades/Response.html)  |
+Route  |  [Illuminate\Routing\Router](http://laravel.com/api/4.3/Illuminate/Routing/Router.html)  |  `router`
+Schema  |  [Illuminate\Database\Schema\Blueprint](http://laravel.com/api/4.3/Illuminate/Database/Schema/Blueprint.html)  |
+Session  |  [Illuminate\Session\SessionManager](http://laravel.com/api/4.3/Illuminate/Session/SessionManager.html)  |  `session`
+Session (Instance)  |  [Illuminate\Session\Store](http://laravel.com/api/4.3/Illuminate/Session/Store.html)  |
+SSH  |  [Illuminate\Remote\RemoteManager](http://laravel.com/api/4.3/Illuminate/Remote/RemoteManager.html)  |  `remote`
+SSH (Instance)  |  [Illuminate\Remote\Connection](http://laravel.com/api/4.3/Illuminate/Remote/Connection.html)  |
+URL  |  [Illuminate\Routing\UrlGenerator](http://laravel.com/api/4.3/Illuminate/Routing/UrlGenerator.html)  |  `url`
+Validator  |  [Illuminate\Validation\Factory](http://laravel.com/api/4.3/Illuminate/Validation/Factory.html)  |  `validator`
+Validator (Instance)  |  [Illuminate\Validation\Validator](http://laravel.com/api/4.3/Illuminate/Validation/Validator.html) |
+View  |  [Illuminate\View\Factory](http://laravel.com/api/4.3/Illuminate/View/Factory.html)  |  `view`
+View (Instance)  |  [Illuminate\View\View](http://laravel.com/api/4.3/Illuminate/View/View.html)  |

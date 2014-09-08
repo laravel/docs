@@ -503,7 +503,7 @@ Sometimes you may wish to specify a custom error messages only for a specific fi
 <a name="localization"></a>
 #### Specifying Custom Messages In Language Files
 
-In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
+In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `resources/lang/xx/validation.php` language file.
 
 	'custom' => array(
 		'email' => array(
