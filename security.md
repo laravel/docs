@@ -254,7 +254,7 @@ Within the `postRemind` controller method you may modify the message instance be
 		$message->subject('Password Reminder');
 	});
 
-Your user will receive an e-mail with a link that points to the `getReset` method of the controller. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method. The action is already configured to return a `password.reset` view which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
+Your user will receive an e-mail with a link that points to the `getReset` method of the controller. Make sure the route ends with 'reset' as the last segment. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method. The action is already configured to return a `password.reset` view which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
 
 A simple form on the `password.reset` view might look like this:
 
