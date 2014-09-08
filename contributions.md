@@ -53,7 +53,7 @@ If are unsure how to write a failing unit test for a bug, review the other unit 
 <a name="which-branch"></a>
 ## Which Branch?
 
-**ALL** bug fixes should be sent to the latest stable branch. Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest stable branch. Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
 **Minor** features that are **fully backwards compatible** with the current Laravel release may be sent to the latest stable branch.
 
