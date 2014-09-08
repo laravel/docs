@@ -140,7 +140,7 @@ The `controller` method accepts two arguments. The first is the base URI the con
 		{
 			//
 		}
-		
+
 		public function anyLogin()
 		{
 			//
@@ -227,7 +227,7 @@ If it becomes necessary for you to add additional routes to a resource controlle
 <a name="handling-missing-methods"></a>
 ## Handling Missing Methods
 
-A catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the method and parameter array for the request:
+When using `Route::controller`, a catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the method and parameter array for the request:
 
 #### Defining A Catch-All Method
 
@@ -235,3 +235,5 @@ A catch-all method may be defined which will be called when no other matching me
 	{
 		//
 	}
+
+If you are using resource controllers, you should define a `__call` magic method on the controller to handle any missing methods.
