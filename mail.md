@@ -43,7 +43,7 @@ If the `driver` option of your `app/config/mail.php` configuration file is set t
 
 The `Mail::send` method may be used to send an e-mail message:
 
-	Mail::send('emails.welcome', array('key'=>'value'), function($message)
+	Mail::send('emails.welcome', array('key' => 'value'), function($message)
 	{
 		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
