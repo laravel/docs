@@ -2,8 +2,8 @@
 
 - [Basic Controllers](#basic-controllers)
 - [Controller Filters](#controller-filters)
-- [RESTful Controllers](#restful-controllers)
-- [Resource Controllers](#resource-controllers)
+- [Implicit Controllers](#implicit-controllers)
+- [RESTful Resource Controllers](#resftul-resource-controllers)
 - [Handling Missing Methods](#handling-missing-methods)
 
 <a name="basic-controllers"></a>
@@ -129,10 +129,10 @@ If you would like to use another method on the controller as a filter, you may u
 
 	}
 
-<a name="restful-controllers"></a>
-## RESTful Controllers
+<a name="implicit-controllers"></a>
+## Implicit Controllers
 
-Laravel allows you to easily define a single route to handle every action in a controller using simple, REST naming conventions. First, define the route using the `Route::controller` method:
+Laravel allows you to easily define a single route to handle every action in a controller. First, define the route using the `Route::controller` method:
 
 	Route::controller('users', 'UserController');
 
@@ -163,8 +163,8 @@ If your controller action contains multiple words, you may access the action usi
 
 	public function getAdminProfile() {}
 
-<a name="resource-controllers"></a>
-## Resource Controllers
+<a name="restful-resource-controllers"></a>
+## RESTful Resource Controllers
 
 Resource controllers make it easier to build RESTful controllers around resources. For example, you may wish to create a controller that manages "photos" stored by your application. Using the `controller:make` command via the Artisan CLI and the `Route::resource` method, we can quickly create such a controller.
 
@@ -230,7 +230,7 @@ If it becomes necessary for you to add additional routes to a resource controlle
 <a name="handling-missing-methods"></a>
 ## Handling Missing Methods
 
-A catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the method and parameter array for the request:
+When using `Route::controller`, a catch-all method may be defined which will be called when no other matching method is found on a given controller. The method should be named `missingMethod`, and receives the method and parameter array for the request:
 
 #### Defining A Catch-All Method
 
@@ -238,3 +238,5 @@ A catch-all method may be defined which will be called when no other matching me
 	{
 		//
 	}
+
+If you are using resource controllers, you should define a `__call` magic method on the controller to handle any missing methods.

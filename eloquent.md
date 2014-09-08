@@ -940,6 +940,14 @@ Of course, the opposite of `attach` is `detach`:
 
 	$user->roles()->detach(1);
 
+Both `attach` and `detach` also take arrays of IDs as input:
+
+	$user = User::find(1);
+
+	$user->roles()->detach([1, 2, 3]);
+
+	$user->roles()->attach([1 => ['attribute1' => 'value1'], 2, 3]);
+
 #### Using Sync To Attach Many To Many Models
 
 You may also use the `sync` method to attach related models. The `sync` method accepts an array of IDs to place on the pivot table. After this operation is complete, only the IDs in the array will be on the intermediate table for the model:
@@ -1278,4 +1286,4 @@ Once you have created the accessor, just add the value to the `appends` property
 
 	protected $appends = array('is_admin');
 
-Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms.
+Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms. Attributes in the `appends` array respect the `visible` and `hidden` configuration on the model.

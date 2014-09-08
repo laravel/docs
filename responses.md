@@ -192,6 +192,7 @@ You may use the `composers` method to register a group of composers at the same 
 	View::composers(array(
 		'AdminComposer' => array('admin.index', 'admin.profile'),
 		'UserComposer' => 'user',
+		'ProductComposer@create' => 'product'
 	));
 
 > **Note:** There is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.

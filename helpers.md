@@ -112,6 +112,8 @@ The `array_get` method will retrieve a given value from a deeply nested array us
 
 	$value = array_get($array, 'names.joe');
 
+	$value = array_get($array, 'names.john', 'default');
+
 > **Note:** Want something like `array_get` but for objects instead? Use `object_get`.
 
 ### array_only

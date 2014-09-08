@@ -7,6 +7,7 @@
 - [Text, Text Area, Password & Hidden Fields](#text)
 - [Checkboxes and Radio Buttons](#checkboxes-and-radio-buttons)
 - [File Input](#file-input)
+- [Number Input](#number)
 - [Drop-Down Lists](#drop-down-lists)
 - [Buttons](#buttons)
 - [Custom Macros](#custom-macros)
@@ -127,6 +128,13 @@ This allows you to quickly build forms that not only bind to model values, but e
 	echo Form::checkbox('name', 'value', true);
 
 	echo Form::radio('name', 'value', true);
+
+<a name="number"></a>
+## Number
+
+#### Generating A Number Input
+
+	echo Form::number('name', 'value');
 
 <a name="file-input"></a>
 ## File Input

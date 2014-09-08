@@ -55,7 +55,7 @@ You may also configure a "fallback language", which will be used when the active
 
 The first segment of the string passed to the `get` method is the name of the language file, and the second is the name of the line that should be retrieved.
 
-> **Note**: If a language line does not exist, the key will be returned by the `get` method.
+> **Note:** If a language line does not exist, the key will be returned by the `get` method.
 
 You may also use the `trans` helper function, which is an alias for the `Lang::get` method.
 

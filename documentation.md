@@ -3,6 +3,7 @@
     - [Quickstart](/docs/quick)
     - [Release Notes](/docs/releases)
     - [Upgrade Guide](/docs/upgrade)
+    - [Contribution Guide](/docs/contributions)
 - Getting Started
     - [Installation](/docs/installation)
     - [Configuration](/docs/configuration)
