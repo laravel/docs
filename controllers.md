@@ -161,7 +161,7 @@ Resource controllers make it easier to build RESTful controllers around resource
 
 To create the controller via the command line, execute the following command:
 
-	php artisan controller:make PhotoController
+	php artisan make:controller PhotoController
 
 Now we can register a resourceful route to the controller:
 
