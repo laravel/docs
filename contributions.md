@@ -13,7 +13,7 @@
 
 Laravel is an open-source project and anyone may contribute to Laravel for its improvement. We welcome contributors, regardless of skill level, gender, race, religion, or nationality. Having a diverse, vibrant community is one of the core values of the framework!
 
-To encourage active collaboration, Laravel currently only accepts pull requests, not bug reports. "Bug reports" may be sent in the form of a pull request containing a failing unit test. A failing unit test provides the development team "proof" that the bug exists, and, after the development team addresses the bug, serves as a reliable indicator that the bug remains fixed.
+To encourage active collaboration, Laravel currently only accepts pull requests, not bug reports. **"Bug reports" may be sent in the form of a pull request containing a failing unit test.** A failing unit test provides the development team "proof" that the bug exists, and, after the development team addresses the bug, serves as a reliable indicator that the bug remains fixed.
 
 The Laravel source code is managed on Github, and there are repositories for each of the Laravel projects:
 
