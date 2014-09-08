@@ -6,6 +6,7 @@
 - [Advanced Wheres](#advanced-wheres)
 - [Aggregates](#aggregates)
 - [Raw Expressions](#raw-expressions)
+- [Incrementing & Decremeting](#incrementing-decrementing)
 - [Inserts](#inserts)
 - [Updates](#updates)
 - [Deletes](#deletes)
@@ -216,19 +217,26 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 	                     ->groupBy('status')
 	                     ->get();
 
+<a name="incrementing-decrementing"></a>
+## Incrementing & Decremeting
+
+You can increment or decrement a column using the `increment` and `decrement` methods:
+
 #### Incrementing or decrementing a value of a column
 
-	DB::table('users')->increment('votes');
+	DB::table('users')->where('id', 1')->increment('votes');
 
-	DB::table('users')->increment('votes', 5);
+	DB::table('users')->where('id', 1')->increment('votes', 5);
 
-	DB::table('users')->decrement('votes');
+	DB::table('users')->where('id', 1')->decrement('votes');
 
-	DB::table('users')->decrement('votes', 5);
+	DB::table('users')->where('id', 1')->decrement('votes', 5);
+
+> **Note:** Remember to include the 'where' operator to only affect one row. Otherwise you will increment or decrement the entire column, affecting all your records.
 
 You may also specify additional columns to update:
 
-	DB::table('users')->increment('votes', 1, array('name' => 'John'));
+	DB::table('users')->where('id', 1')->increment('votes', 1, array('name' => 'John'));
 
 <a name="inserts"></a>
 ## Inserts
