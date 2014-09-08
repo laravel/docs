@@ -1278,4 +1278,4 @@ Once you have created the accessor, just add the value to the `appends` property
 
 	protected $appends = array('is_admin');
 
-Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms. Note that attributes added via `appends` also respect the configuration made in the `visible` and `hidden` arrays of the model.
+Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms. Attributes in the `appends` array respect the `visible` and `hidden` configuration on the model.
