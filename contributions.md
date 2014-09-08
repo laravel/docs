@@ -30,7 +30,7 @@ The Laravel source code is managed on Github, and there are repositories for eac
 <a name="core-development-discussion"></a>
 ## Core Development Discussion
 
-Discussion regarding bugs, implementation of existing features, and new features takes place in the `#laravel-dev` IRC channel (Freenode). Taylor Otwell, the maintainer of Laravel, is typically present in the channel on weekdays from 8am-5pm (UTC-06:00 or America/Chicago), and sporadically present in the channel at other times.
+Discussion regarding bugs, new features, and implementation of existing features takes place in the `#laravel-dev` IRC channel (Freenode). Taylor Otwell, the maintainer of Laravel, is typically present in the channel on weekdays from 8am-5pm (UTC-06:00 or America/Chicago), and sporadically present in the channel at other times.
 
 The `#laravel-dev` IRC channel is open to all. All are welcome to join the channel either to participate or simply observe the discussions!
 
