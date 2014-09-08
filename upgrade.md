@@ -160,6 +160,8 @@ In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailing
 
 Next, replace your Apache `.htaccess` file with [this new one](https://github.com/laravel/laravel/blob/master/public/.htaccess) that handles trailing slashes.
 
+<!-- For nginx, do _______________________ -->
+
 ### Current Route Access
 
 The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
