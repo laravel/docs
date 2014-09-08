@@ -216,20 +216,6 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 	                     ->groupBy('status')
 	                     ->get();
 
-#### Incrementing or decrementing a value of a column
-
-	DB::table('users')->increment('votes');
-
-	DB::table('users')->increment('votes', 5);
-
-	DB::table('users')->decrement('votes');
-
-	DB::table('users')->decrement('votes', 5);
-
-You may also specify additional columns to update:
-
-	DB::table('users')->increment('votes', 1, array('name' => 'John'));
-
 <a name="inserts"></a>
 ## Inserts
 
@@ -264,6 +250,20 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 	DB::table('users')
 	            ->where('id', 1)
 	            ->update(array('votes' => 1));
+
+#### Incrementing or decrementing a value of a column
+
+	DB::table('users')->increment('votes');
+
+	DB::table('users')->increment('votes', 5);
+
+	DB::table('users')->decrement('votes');
+
+	DB::table('users')->decrement('votes', 5);
+
+You may also specify additional columns to update:
+
+	DB::table('users')->increment('votes', 1, array('name' => 'John'));
 
 <a name="deletes"></a>
 ## Deletes
