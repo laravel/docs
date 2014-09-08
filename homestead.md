@@ -15,6 +15,8 @@ Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a
 
 Homestead runs on any Windows, Mac, and Linux, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached and all of the other goodies you need to develop amazing Laravel applications.
 
+> **Note:** If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS.
+
 Homestead is currently built and tested using Vagrant 1.6.
 
 <a name="included-software"></a>
