@@ -77,6 +77,13 @@ When attaching files to a message, you may also specify a MIME type and / or a d
 
 > **Note:** The message instance passed to a `Mail::send` Closure extends the SwiftMailer message class, allowing you to call any method on that class to build your e-mail messages.
 
+<a name='attaching-dynamic-data'></a>
+## Attaching dynamic data
+
+If you're looking to attach a file generated from a dynamic data source, you can pass the raw file data and the filename you want to attach like so:
+
+    $message->attachData($data, $name, array('as' => $display, 'mime' => $mime))
+
 <a name="embedding-inline-attachments"></a>
 ## Embedding Inline Attachments
 

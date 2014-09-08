@@ -1,9 +1,37 @@
 # Upgrade Guide
 
+- [Upgrading To 4.3 From 4.2](#upgrade-4.3)
 - [Upgrading To 4.2 From 4.1](#upgrade-4.2)
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-4.3"></a>
+## Upgrading To 4.3 From 4.2
+
+### Compile Configuration File
+
+The `app/config/compile.php` configuration file should now follow the following format:
+
+	<?php
+
+	return [
+
+		'files' => [
+			//
+		],
+
+		'providers' => [
+			//
+		],
+
+	];
+
+The new `providers` option allows you to list service providers which return arrays of files from their `compiles` method.
+
+### Beanstalk Queuing
+
+Laravel 4.3 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"` that Laravel 4.2 required.
 
 <a name="upgrade-4.2"></a>
 ## Upgrading To 4.2 From 4.1
