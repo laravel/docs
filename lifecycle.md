@@ -8,7 +8,7 @@
 <a name="overview"></a>
 ## Overview
 
-When using any tool in the "real world", you feel more confidence if you understand how that tool works. Application development is no different. When you understand how your development tools function, you feel more comfortable and confident using them. The goal of this document is to give you a good, high-level overview of how the Laravel framework "works". By getting to know the overall framework better, everything feels less "magical" and you will be more confident building your applications. In addition to a high-level overview of the request lifecycle, we'll cover "start" files and application events.
+When using any tool in the "real world", you feel more confident if you understand how that tool works. Application development is no different. When you understand how your development tools function, you feel more comfortable and confident using them. The goal of this document is to give you a good, high-level overview of how the Laravel framework "works". By getting to know the overall framework better, everything feels less "magical" and you will be more confident building your applications. In addition to a high-level overview of the request lifecycle, we'll cover "start" files and application events.
 
 If you don't understand all of the terms right away, don't lose heart! Just try to get a basic grasp of what is going on, and your knowledge will grow as you explore other sections of the documentation.
 
