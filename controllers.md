@@ -3,7 +3,7 @@
 - [Basic Controllers](#basic-controllers)
 - [Controller Filters](#controller-filters)
 - [Implicit Controllers](#implicit-controllers)
-- [RESTful Resource Controllers](#resftul-resource-controllers)
+- [RESTful Resource Controllers](#restful-resource-controllers)
 - [Handling Missing Methods](#handling-missing-methods)
 
 <a name="basic-controllers"></a>
