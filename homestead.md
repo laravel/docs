@@ -73,6 +73,13 @@ The `folders` property of the `Homestead.yaml` file lists all of the folders you
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on!
 
+You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm` option to `true`:
+
+	sites:
+	    - map: homestead.app
+	      to: /home/vagrant/Code/Laravel/public
+	      hhvm: true
+
 ### Bash Aliases
 
 To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the Homestead directory.
