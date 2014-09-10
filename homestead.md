@@ -11,7 +11,7 @@
 
 Laravel strives to make the entire PHP development experience delightful, including your local development environment. [Vagrant](http://vagrantup.com) provides a simple, elegant way to manage and provision Virtual Machines.
 
-Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
+Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a wonderful development environment without requiring you to install PHP, HHVM, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
 Homestead runs on any Windows, Mac, and Linux, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached and all of the other goodies you need to develop amazing Laravel applications.
 
@@ -24,6 +24,7 @@ Homestead is currently built and tested using Vagrant 1.6.
 
 - Ubuntu 14.04
 - PHP 5.6
+- HHVM
 - Nginx
 - MySQL
 - Postgres
@@ -72,6 +73,13 @@ The `folders` property of the `Homestead.yaml` file lists all of the folders you
 ### Configure Your Nginx Sites
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on!
+
+You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm` option to `true`:
+
+	sites:
+	    - map: homestead.app
+	      to: /home/vagrant/Code/Laravel/public
+	      hhvm: true
 
 ### Bash Aliases
 
