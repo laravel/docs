@@ -1,19 +1,19 @@
 # Upgrade Guide
 
-- [Upgrading To 4.3 From 4.2](#upgrade-4.3)
+- [Upgrading To 5.0 From 4.2](#upgrade-5.0)
 - [Upgrading To 4.2 From 4.1](#upgrade-4.2)
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
 
-<a name="upgrade-4.3"></a>
-## Upgrading To 4.3 From 4.2
+<a name="upgrade-5.0"></a>
+## Upgrading To 5.0 From 4.2
 
 ### Quick Upgrade Using LegacyServiceProvider
 
-Laravel 4.3 introduces a robust new folder structure. However, if you wish to upgrade your application to Laravel 4.3 while maintaining the Laravel 4.2 folder structure, you may use the `Illuminate\Foundation\Providers\LegacyStructureServiceProvider`. To upgrade to Laravel 4.3 using this provider, you should do the following:
+Laravel 5.0 introduces a robust new folder structure. However, if you wish to upgrade your application to Laravel 5.0 while maintaining the Laravel 4.2 folder structure, you may use the `Illuminate\Foundation\Providers\LegacyStructureServiceProvider`. To upgrade to Laravel 5.0 using this provider, you should do the following:
 
-**1.** Update your `composer.json` dependency on `laravel/framework` to `4.3.*`.
+**1.** Update your `composer.json` dependency on `laravel/framework` to `5.0.*`.
 
 **2.** Run `composer update --no-scripts`.
 
@@ -56,7 +56,7 @@ The new `providers` option allows you to list service providers which return arr
 
 ### Beanstalk Queuing
 
-Laravel 4.3 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"` that Laravel 4.2 required.
+Laravel 5.0 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"` that Laravel 4.2 required.
 
 <a name="upgrade-4.2"></a>
 ## Upgrading To 4.2 From 4.1

@@ -1,19 +1,19 @@
 # Release Notes
 
-- [Laravel 4.3](#laravel-4.3)
+- [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
 - [Laravel 4.1](#laravel-4.1)
 
-<a name="laravel-4.3"></a>
-## Laravel 4.3
+<a name="laravel-5.0"></a>
+## Laravel 5.0
 
-Laravel 4.3 introduces a fresh application structure to the default Laravel project. This new structure serves as a better foundation for building robust application in Laravel, as well as embraces new auto-loading standards (PSR-4) throughout the application. First, let's examine two of the major changes:
+Laravel 5.0 introduces a fresh application structure to the default Laravel project. This new structure serves as a better foundation for building robust application in Laravel, as well as embraces new auto-loading standards (PSR-4) throughout the application. First, let's examine two of the major changes:
 
 ### New Folder Structure
 
 The old `app/models` directory has been entirely removed. Instead, all of your code lives directly within the `app` folder, and, by default, is organized to the `App` namespace. This default namespace can be quickly changed using the new `app:name` Artisan command. The Laravel class generators will remember your application namespace by examining the new `config/namespaces.php` configuration file.
 
-Controllers, filters, and requests (a new type of class in Laravel 4.3) are now grouped under the `app/Http` directory, as they are all classes related to the HTTP transport layer of your application. Instead of a single, flat file of route filters, all filters are now broken into their own class files.
+Controllers, filters, and requests (a new type of class in Laravel 5.0) are now grouped under the `app/Http` directory, as they are all classes related to the HTTP transport layer of your application. Instead of a single, flat file of route filters, all filters are now broken into their own class files.
 
 A new `app/Providers` directory replaces the `app/start` files from previous versions of Laravel 4.x. These service providers provide various bootstrapping functions to your application, such as error handling, logging, route loading, and more. Of course, you are free to create additional service providers for your application.
 
@@ -21,11 +21,11 @@ Application language files and views have been moved to the `resources` director
 
 ### Thorough Namespacing
 
-Laravel 4.3 ships with the entire `app` directory under the `App` namespace. Out of the box, Composer will auto-load all classes within the `app` directory using the PSR-4 auto-loading standard, eliminating the need to `composer dump-autoload` every time you add a new class to your project. Of course, since controllers are namespaced, you will need to import any classes you utilize from other namespaces.
+Laravel 5.0 ships with the entire `app` directory under the `App` namespace. Out of the box, Composer will auto-load all classes within the `app` directory using the PSR-4 auto-loading standard, eliminating the need to `composer dump-autoload` every time you add a new class to your project. Of course, since controllers are namespaced, you will need to import any classes you utilize from other namespaces.
 
 ### Dependency Injection On Routes & Controller Methods
 
-In previous versions of Laravel 4.x, you can type-hint controller dependencies in the controller's constructor and they will automatically be injected into the controller instance. Of course, this is still possible in Laravel 4.3; however, you can also type-hint dependencies on your controller **methods** as well! For example:
+In previous versions of Laravel 4.x, you can type-hint controller dependencies in the controller's constructor and they will automatically be injected into the controller instance. Of course, this is still possible in Laravel 5.0; however, you can also type-hint dependencies on your controller **methods** as well! For example:
 
 	public function show(PhotoService $photos, $id)
 	{
@@ -36,7 +36,7 @@ In previous versions of Laravel 4.x, you can type-hint controller dependencies i
 
 ### Form Requests
 
-Laravel 4.3 introduces **form requests**, which extend the `Illuminate\Foundation\Http\FormRequest` class. These request objects can be combined with the method injection described above to provide a boiler-plate free method of validating user input. Let's dig in and look at a sample `FormRequest`:
+Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundation\Http\FormRequest` class. These request objects can be combined with the method injection described above to provide a boiler-plate free method of validating user input. Let's dig in and look at a sample `FormRequest`:
 
 	<?php namespace App\Http\Requests;
 
