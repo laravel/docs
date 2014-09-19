@@ -13,7 +13,7 @@
 
 The Laravel inversion of control container is a powerful tool for managing class dependencies. Dependency injection is a method of removing hard-coded class dependencies. Instead, the dependencies are injected at run-time, allowing for greater flexibility as dependency implementations may be swapped easily.
 
-Understanding the Laravel IoC container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
+Understanding the Laravel IoC container is essential to build a powerful, large application, as well as for contributing to the Laravel core itself.
 
 <a name="basic-usage"></a>
 ## Basic Usage
