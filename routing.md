@@ -206,7 +206,7 @@ To register the filter with your application, you should add it to the array of 
 
 After filters receive a `$response` as the third argument passed to the filter:
 
-	public function filter($route, $request, $respones)
+	public function filter($route, $request, $response)
 	{
 		//
 	}
