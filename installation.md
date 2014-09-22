@@ -87,3 +87,5 @@ On Nginx, the following directive in your site configuration will allow "pretty"
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
+
+Of course, when using [Homestead](/docs/homestead), pretty URLs will be configured automatically.
