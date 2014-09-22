@@ -40,7 +40,7 @@ After installing Laravel, you may need to grant the web server write permissions
 
 ### Naming Your Application
 
-By default, most of the classes in a fresh Laravel installation are under the `App` namespace. You can modify this using the `app:name` Artisan command, which will re-namespace your fresh application for you. Give it a shot!
+By default, most of the classes in a fresh Laravel installation are under the `App` namespace, which follows the [PSR-4](http://www.php-fig.org/psr/psr-4/) standard for auto-loading. You can modify this namespace using the `app:name` Artisan command, which will re-namespace your fresh application for you, as well as update your `composer.json` file. Give it a shot!
 
 	php artisan app:name YourAppName
 
@@ -75,7 +75,7 @@ To get started, let's create our first route. In Laravel, the simplest route is 
 		return 'Users!';
 	});
 
-Now, if you hit the `/users` route in your web browser, you should see `Users!` displayed as the response. Great! You've just created your first route.
+Now, if you hit the `/users` URI in your web browser, you should see `Users!` displayed as the response. Great! You've just created your first route.
 
 Routes can also be attached to controller classes. For example:
 
@@ -106,9 +106,9 @@ Next, we'll create our `users.blade.php` view:
 		Users!
 	@stop
 
-Some of this syntax probably looks quite strange to you. That's because we're using Laravel's templating system: Blade. Blade is very fast, because it is simply a handful of regular expressions that are run against your templates to compile them to pure PHP. Blade provides powerful functionality like template inheritance, as well as some syntax sugar on typical PHP control structures such as `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
+Some of this syntax probably looks strange to you. That's because we're using Laravel's templating system: Blade. Blade is very fast, because it is simply a handful of regular expressions that are run against your templates to compile them to pure PHP. Blade provides a variety of powerful features like template inheritance, as well as some "syntax sugar" on typical PHP control structures like `if` and `for`. Check out the [Blade documentation](/docs/templates) for more details.
 
-Now that we have our views, let's return it from our `/users` route. Instead of returning `Users!` from the route, return the view instead:
+Now that we have created our views, let's return it from our `/users` route. Instead of returning `Users!`, return the view instead:
 
 	Route::get('users', function()
 	{
@@ -120,17 +120,17 @@ Wonderful! Now you have setup a simple view that extends a layout. Next, let's s
 <a name="creating-a-migration"></a>
 ## Creating A Migration
 
-To create a table to hold our data, we'll use the Laravel migration system. Migrations let you expressively define modifications to your database, and easily share them with the rest of your team.
+To create a table to hold our data, we'll use the Laravel migration system. Migrations allow you to expressively define modifications to your database and easily share them with the rest of your team.
 
 First, let's configure a database connection. You may configure all of your database connections from the `config/database.php` file. By default, Laravel is configured to use MySQL, and you will need to supply connection credentials within the database configuration file.
 
-Next, to create the migration, we'll use the [Artisan CLI](/docs/artisan). From the root of your project, run the following from your terminal:
+Next, to create the migration, we'll use the [Artisan CLI](/docs/artisan). From the root of your project, run the following command in your terminal:
 
-	php artisan migrate:make create_users_table
+	php artisan make:migration create_users_table
 
-Next, find the generated migration file in the `database/migrations` folder. This file contains a class with two methods: `up` and `down`. In the `up` method, you should make the desired changes to your database tables, and in the `down` method you simply reverse them.
+Next, find the generated migration file in the `database/migrations` folder. A migration file contains a class with two methods: `up` and `down`. In the `up` method, you should make the desired changes to your database tables, and in the `down` method you simply perform the reverse operations.
 
-Let's define a migration that looks like this:
+Let's define a migration like this:
 
 	public function up()
 	{
@@ -148,7 +148,7 @@ Let's define a migration that looks like this:
 		Schema::drop('users');
 	}
 
-Next, we can run our migrations from our terminal using the `migrate` command. Simply execute this command from the root of your project:
+Next, we can run our migrations from our terminal using the `migrate` command. Simply execute this command from your project root:
 
 	php artisan migrate
 
@@ -157,9 +157,9 @@ If you wish to rollback a migration, you may issue the `migrate:rollback` comman
 <a name="eloquent-orm"></a>
 ## Eloquent ORM
 
-Laravel ships with a superb ORM: Eloquent. If you have used the Ruby on Rails framework, you will find Eloquent familiar, as it follows the ActiveRecord ORM style of database interaction.
+Laravel ships with a superb ORM: Eloquent. If you have used the Ruby on Rails framework, you will find Eloquent familiar, as it follows the ActiveRecord ORM style of database interaction. If you prefer an ORM that follows the "data mapper" pattern, you should check out [Doctrine](http://www.doctrine-project.org/projects/orm.html).
 
-First, let's define a model. An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Don't worry, it will all make sense soon! Models are typically stored in the `app` directory. Let's define a `User.php` model in that directory like so:
+First, let's define a model. An Eloquent model can be used to query an associated database table, as well as represent a given row within that table. Don't worry, it will all make sense soon! Models are typically stored somewhere within the `app` directory. Let's define a `User.php` model in that directory like so:
 
 	namespace App;
 
@@ -169,7 +169,7 @@ Note that we do not have to tell Eloquent which table to use. Eloquent has a var
 
 Using your preferred database administration tool, insert a few rows into your `users` table, and we'll use Eloquent to retrieve them and pass them to our view.
 
-Now let's modify our `/users` route to look like this:
+Next, let's modify our `/users` route to look like this:
 
 	Route::get('users', function()
 	{
@@ -179,6 +179,8 @@ Now let's modify our `/users` route to look like this:
 	});
 
 Let's walk through this route. First, the `all` method on the `User` model will retrieve all of the rows in the `users` table. Next, we're passing these records to the view via the `with` method. The `with` method accepts a key and a value, and is used to make a piece of data available to a view.
+
+> **Note:** Typically, more robust applications abstract all data retrieval behind "repository" classes. However, simplicity's sake, we will just be using the Eloquent model directly from the route.
 
 Awesome. Now we're ready to display the users in our view!
 
