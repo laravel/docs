@@ -11,15 +11,27 @@
 
 All of the configuration files for the Laravel framework are stored in the `config` directory. Each option in every file is documented, so feel free to look through the files and get familiar with the options available to you.
 
-Sometimes you may need to access configuration values at run-time. You may do so using the `Config` class:
+Sometimes you may need to access configuration values at run-time. There are several ways to do this.
 
-#### Accessing A Configuration Value
+#### Accessing Configuration Values Via Helper
 
-	Config::get('app.timezone');
+First, you may use the `config` helper function:
+
+	$timezone = config('app.timezone');
 
 You may also specify a default value to return if the configuration option does not exist:
 
-	$timezone = Config::get('app.timezone', 'UTC');
+	$timezone = config('app.timezone', 'UTC');
+
+#### Via Facade
+
+Alternatively, you may access configuration values via the `Config` facade:
+
+	Config::get('app.timezone');
+
+#### Via Contract Implementation
+
+You may also manipulate configuration values by requesting an implementation of the `Illuminate\Contracts\Config\Repository` interface.
 
 #### Setting A Configuration Value
 
@@ -38,13 +50,11 @@ Simply create a folder within the `config` directory that matches your environme
 
 	<?php
 
-	return array(
-
+	return [
 		'driver' => 'file',
+	];
 
-	);
-
-> **Note:** Do not use 'testing' as an environment name. This is reserved for unit testing.
+> **Note:** Do not use 'testing' as an environment name. This is reserved for the unit testing environment.
 
 Notice that you do not have to specify _every_ option that is in the base configuration file, but only the options you wish to override. The environment configuration files will "cascade" over the base files.
 
@@ -52,11 +62,9 @@ Next, we need to instruct the framework how to determine which environment it is
 
     <?php
 
-    $env = $app->detectEnvironment(array(
-
-        'local' => array('your-machine-name'),
-
-    ));
+    $env = $app->detectEnvironment([
+        'local' => ['your-machine-name'],
+    ]);
 
 In this example, 'local' is the name of the environment and 'your-machine-name' is the hostname of your server. On Linux and Mac, you may determine your hostname using the `hostname` terminal command.
 
@@ -69,7 +77,7 @@ If you need more flexible environment detection, you may pass a `Closure` to the
 
 #### Accessing The Current Application Environment
 
-You may access the current application environment via the `environment` method:
+You may access the current application environment via the `environment` method on the `Application` instance:
 
 	$environment = App::environment();
 
@@ -84,6 +92,8 @@ You may also pass arguments to the `environment` method to check if the environm
 	{
 		// The environment is either local OR staging...
 	}
+
+Instead of using the `App` facade, you may also request an implementation of the `Illuminate\Contracts\Foundation\Application` interface.
 
 <a name="provider-configuration"></a>
 ### Provider Configuration
@@ -103,11 +113,9 @@ First, [configure your application](/docs/configuration#environment-configuratio
 
 	<?php
 
-	return array(
-
+	return [
 		'TEST_STRIPE_KEY' => 'super-secret-sauce',
-
-	);
+	];
 
 All of the key-value pairs returned by this file will automatically be available via the `$_ENV` and `$_SERVER` PHP "superglobals". You may now reference these globals from within your configuration files:
 
@@ -122,7 +130,7 @@ Now, on your production server, create a `.env.php` file in your project root th
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
-When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenamce mode check is included in the default `App::before` filter in `app/Http/Filters/MaintenanceFilter.php`. The response from this check will be sent to users when your application is in maintenance mode.
+When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenamce mode check is included in the default `before` filter in `app/Http/Filters/MaintenanceFilter.php`. The response from this check will be sent to users when your application is in maintenance mode.
 
 To enable maintenance mode, simply execute the `down` Artisan command:
 
@@ -134,4 +142,4 @@ To disable maintenance mode, use the `up` command:
 
 ### Maintenance Mode & Queues
 
-While your application is in maintenance mode, no [queue jobs](/docs/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+While your application is in maintenance mode, no [queued jobs](/docs/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
