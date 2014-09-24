@@ -19,7 +19,8 @@
     - [Filters](/docs/master/filters)
     - [Controllers](/docs/master/controllers)
     - [Requests](/docs/master/requests)
-    - [Views & Responses](/docs/master/responses)
+    - [Responses](/docs/master/responses)
+    - [Views](/docs/master/views)
 - Services
     - [Authentication](/docs/master/security)
     - [Billing](/docs/master/billing)

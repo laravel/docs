@@ -1,4 +1,4 @@
-# Routing
+# HTTP Routing
 
 - [Basic Routing](#basic-routing)
 - [Route Parameters](#route-parameters)
