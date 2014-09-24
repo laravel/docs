@@ -1,4 +1,4 @@
-# Route Filters
+# HTTP Filters
 
 - [Introduction](#introduction)
 - [The Filter Service Provider](#the-filter-service-provider)

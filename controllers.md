@@ -18,9 +18,7 @@ Controllers are typically stored in the `app/Http/Controllers` directory. Howeve
 
 Here is an example of a basic controller class:
 
-	<?php
-
-	namespace App\Http\Controllers;
+	<?php namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
 	use App\Users\Repository as UserRepository;
@@ -248,9 +246,7 @@ If it becomes necessary to add additional routes to a resource controller beyond
 
 As you may have noticed in the examples above, the Laravel [service contanier](/docs/master/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
 
-	<?php
-
-	namespace App\Http\Controllers;
+	<?php namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
 	use App\Users\Repository as UserRepository;
@@ -281,20 +277,46 @@ Of course, you may also type-hint any [Laravel contract](/docs/master/contracts)
 
 In addition to constructor injection, you may also type-hint dependencies on your controller's methods. For example, let's type-hint the `Request` instance on one of our methods:
 
-
-	<?php
-
-	namespace App\Http\Controllers;
+	<?php namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;
 
 	class UserController extends Controller {
 
+		/**
+		 * Store a new user.
+		 *
+		 * @param  Request  $request
+		 * @return Response
+		 */
 		public function store(Request $request)
 		{
 			$name = $request->input('name');
 
+			//
+		}
+
+	}
+
+If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies:
+
+	<?php namespace App\Http\Controllers;
+
+	use Illuminate\Http\Request;
+	use Illuminate\Routing\Controller;
+
+	class UserController extends Controller {
+
+		/**
+		 * Store a new user.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function update(Request $request, $id)
+		{
 			//
 		}
 
