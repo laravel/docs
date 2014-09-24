@@ -26,7 +26,7 @@ However, for most routes and controller actions, you will be returning a full `I
 	return (new Response($content, $status))
 	              ->header('Content-Type', $value);
 
-> **Note:** For a full list of available `Response` methods, check out [its API documentation](http://laravel.com/api/4.2/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
+> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/4.2/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
 
 #### Sending A View In A Response
 
