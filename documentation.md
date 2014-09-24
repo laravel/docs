@@ -1,29 +1,35 @@
-- Preface
+- Prologue
     - [Introduction](/docs/master/introduction)
-    - [Quickstart](/docs/master/quick)
     - [Release Notes](/docs/master/releases)
     - [Upgrade Guide](/docs/master/upgrade)
     - [Contribution Guide](/docs/master/contributions)
-- Getting Started
+- Setup
     - [Installation](/docs/master/installation)
     - [Configuration](/docs/master/configuration)
     - [Homestead](/docs/master/homestead)
+- Foundations
+    - [Service Providers](/docs/master/providers)
+    - [Service Container](/docs/master/container)
+    - [Contracts](/docs/master/contracts)
     - [Request Lifecycle](/docs/master/lifecycle)
+    - [Application Structure](/docs/master/structure)
+- The HTTP Layer
+    - [Quickstart](/docs/master/quick)
     - [Routing](/docs/master/routing)
-    - [Requests & Input](/docs/master/requests)
-    - [Views & Responses](/docs/master/responses)
+    - [Filters](/docs/master/filters)
     - [Controllers](/docs/master/controllers)
-    - [Errors & Logging](/docs/master/errors)
-- Learning More
+    - [Requests](/docs/master/requests)
+    - [Views & Responses](/docs/master/responses)
+- Services
     - [Authentication](/docs/master/security)
     - [Billing](/docs/master/billing)
     - [Cache](/docs/master/cache)
+    - [Configuration](/docs/master/configuration)
     - [Core Extension](/docs/master/extending)
+    - [Errors & Logging](/docs/master/errors)
     - [Events](/docs/master/events)
     - [Facades](/docs/master/facades)
-    - [Forms & HTML](/docs/master/html)
     - [Helpers](/docs/master/helpers)
-    - [IoC Container](/docs/master/ioc)
     - [Localization](/docs/master/localization)
     - [Mail](/docs/master/mail)
     - [Package Development](/docs/master/packages)
@@ -31,7 +37,6 @@
     - [Queues](/docs/master/queues)
     - [Security](/docs/master/security)
     - [Session](/docs/master/session)
-    - [SSH](/docs/master/ssh)
     - [Templates](/docs/master/templates)
     - [Unit Testing](/docs/master/testing)
     - [Validation](/docs/master/validation)

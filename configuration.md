@@ -1,45 +1,45 @@
 # Configuration
 
 - [Introduction](#introduction)
+- [After Installation](#after-installation)
 - [Environment Configuration](#environment-configuration)
-- [Provider Configuration](#provider-configuration)
 - [Protecting Sensitive Configuration](#protecting-sensitive-configuration)
 - [Maintenance Mode](#maintenance-mode)
+- [Pretty URLs](#pretty-urls)
 
 <a name="introduction"></a>
 ## Introduction
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option in every file is documented, so feel free to look through the files and get familiar with the options available to you.
+All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
 
-Sometimes you may need to access configuration values at run-time. There are several ways to do this.
+<a name="configuration"></a>
+## After Installation
 
-#### Accessing Configuration Values Via Helper
+### Naming Your Application
 
-First, you may use the `config` helper function:
+The first thing you should do after installing Laravel is name your application. By default, the `app` directory is namespaced under `App`, and autoloaded by Composer using the [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). However, you should change the namespace to match the name of your application, which you can easily do via the `app:name` Artisan command.
 
-	$timezone = config('app.timezone');
+For example, if your application is named "Horsefly", you should run the following command from the root of your installation:
 
-You may also specify a default value to return if the configuration option does not exist:
+	php artisan app:name Horsefly
 
-	$timezone = config('app.timezone', 'UTC');
+### Other Configuration
 
-#### Via Facade
+Laravel needs very little configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your location.
 
-Alternatively, you may access configuration values via the `Config` facade:
+Once Laravel is installed, you should also [configure your local environment](/docs/master/configuration#environment-configuration). This will allow you to receive detailed error messages when developing on your local machine. By default, detailed error reporting is disabled in your production configuration file.
 
-	Config::get('app.timezone');
+> **Note:** You should never have `app.debug` set to `true` for a production application. Never, ever do it.
 
-#### Via Contract Implementation
+<a name="permissions"></a>
+### Permissions
 
-You may also manipulate configuration values by requesting an implementation of the `Illuminate\Contracts\Config\Repository` interface.
+Folders within `storage` require write access by the web server.
 
-#### Setting A Configuration Value
+<a name="paths"></a>
+### Paths
 
-Notice that "dot" style syntax may be used to access values in the various files. You may also set configuration values at run-time:
-
-	Config::set('database.default', 'sqlite');
-
-Configuration values that are set at run-time are only set for the current request, and will not be carried over to subsequent requests.
+Several of the framework directory paths are configurable. To change the location of these directories, check out the `bootstrap/paths.php` file. These paths are primarily used by the Artisan CLI when generating various class files.
 
 <a name="environment-configuration"></a>
 ## Environment Configuration
@@ -79,26 +79,26 @@ If you need more flexible environment detection, you may pass a `Closure` to the
 
 You may access the current application environment via the `environment` method on the `Application` instance:
 
-	$environment = App::environment();
+	$environment = $app->environment();
 
 You may also pass arguments to the `environment` method to check if the environment matches a given value:
 
-	if (App::environment('local'))
+	if ($app->environment('local'))
 	{
 		// The environment is local
 	}
 
-	if (App::environment('local', 'staging'))
+	if ($app->environment('local', 'staging'))
 	{
 		// The environment is either local OR staging...
 	}
 
-Instead of using the `App` facade, you may also request an implementation of the `Illuminate\Contracts\Foundation\Application` interface.
+To obtain an instance of the application, resolve the `Illuminate\Contracts\Foundation\Application` contract via the [service container](/docs/master/container). Of course, if you are within a [service provider](/docs/master/providers), the application instance is available via the `$this->app` instance variable.
 
 <a name="provider-configuration"></a>
 ### Provider Configuration
 
-When using environment configuration, you may want to "append" environment [service providers](/docs/ioc#service-providers) to your primary `app` configuration file. However, if you try this, you will notice the environment `app` providers are overriding the providers in your primary `app` configuration file. To force the providers to be appended, use the `append_config` helper method in your environment `app` configuration file:
+When using environment configuration, you may want to "append" environment [service providers](/docs/master/providers) to your primary `app` configuration file. However, if you try this, you will notice the environment `app` providers are overriding the providers in your primary `app` configuration file. To force the providers to be appended, use the `append_config` helper method in your environment `app` configuration file:
 
 	'providers' => append_config(array(
 		'LocalOnlyServiceProvider',
@@ -109,7 +109,7 @@ When using environment configuration, you may want to "append" environment [serv
 
 For "real" applications, it is advisable to keep all of your sensitive configuration out of your configuration files. Things such as database passwords, Stripe API keys, and encryption keys should be kept out of your configuration files whenever possible. So, where should we place them? Thankfully, Laravel provides a very simple solution to protecting these types of configuration items using "dot" files.
 
-First, [configure your application](/docs/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env.local.php` file within the root of your project, which is usually the same directory that contains your `composer.json` file. The `.env.local.php` should return an array of key-value pairs, much like a typical Laravel configuration file:
+First, [configure your application](/docs/master/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env.local.php` file within the root of your project, which is usually the same directory that contains your `composer.json` file. The `.env.local.php` should return an array of key-value pairs, much like a typical Laravel configuration file:
 
 	<?php
 
@@ -142,4 +142,30 @@ To disable maintenance mode, use the `up` command:
 
 ### Maintenance Mode & Queues
 
-While your application is in maintenance mode, no [queued jobs](/docs/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+While your application is in maintenance mode, no [queued jobs](/docs/master/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+
+<a name="pretty-urls"></a>
+## Pretty URLs
+
+### Apache
+
+The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, be sure to enable the `mod_rewrite` module.
+
+If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
+
+	Options +FollowSymLinks
+	RewriteEngine On
+
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^ index.php [L]
+
+### Nginx
+
+On Nginx, the following directive in your site configuration will allow "pretty" URLs:
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+Of course, when using [Homestead](/docs/master/homestead), pretty URLs will be configured automatically.

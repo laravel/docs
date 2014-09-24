@@ -1,86 +1,48 @@
 # Request Lifecycle
 
-- [Overview](#overview)
-- [Request Lifecycle](#request-lifecycle)
-- [Service Providers](#service-providers)
-- [Application Events](#application-events)
+- [Introduction](#introduction)
+- [Lifecycle Overview](#lifecycle-overview)
+- [Focus On Service Providers](#focus-on-service-providers)
 
-<a name="overview"></a>
-## Overview
+<a name="introduction"></a>
+## Introduction
 
-When using any tool in the "real world", you feel more confident if you understand how that tool works. Application development is no different. When you understand how your development tools function, you feel more comfortable and confident using them. The goal of this document is to give you a good, high-level overview of how the Laravel framework "works". By getting to know the overall framework better, everything feels less "magical" and you will be more confident building your applications. In addition to a high-level overview of the request lifecycle, we'll cover service providers and application events.
+When using any tool in the "real world", you feel more confident if you understand how that tool works. Application development is no different. When you understand how your development tools function, you feel more comfortable and confident using them.
+
+The goal of this document is to give you a good, high-level overview of how the Laravel framework "works". By getting to know the overall framework better, everything feels less "magical" and you will be more confident building your applications.
 
 If you don't understand all of the terms right away, don't lose heart! Just try to get a basic grasp of what is going on, and your knowledge will grow as you explore other sections of the documentation.
 
-<a name="request-lifecycle"></a>
-## Request Lifecycle
+<a name="lifecycle-overview"></a>
+## Lifecycle Overview
 
-All requests into your application are directed through the `public/index.php` script. When using Apache, the `.htaccess` file that ships with Laravel handles the passing of all requests to `index.php`. From here, Laravel begins the process of handling the requests and returning a response to the client. Getting a general idea for the Laravel bootstrap process will be useful, so we'll cover that now!
+#### First Things
 
-By far, the most important concept to grasp when learning about Laravel's bootstrap process is **Service Providers**. You can find a list of service providers by opening your `config/app.php` configuration file and finding the `providers` array. These providers serve as the primary bootstrapping mechanism for Laravel. But, before we dig into service providers, let's go back to `index.php`. After a request enters your `index.php` file, the `bootstrap/start.php` file will be loaded. This file creates the new Laravel `Application` object, which also serves as an [IoC container](/docs/ioc).
+The entry point for all requests to a Laravel application is the `public/index.php` file. All requests are directed to this file by your web server (Apache / Nginx) configuration. The `index.php` file doesn't contain much code. Rather, it is simply a starting point for loading the rest of the framework.
 
-After creating the `Application` object, a few project paths will be set and [environment detection](/docs/configuration#environment-configuration) will be performed. Then, an internal Laravel bootstrap script will be called. This file lives deep within the Laravel source, and sets a few more settings based on your configuration files, such as timezone, error reporting, etc. But, in addition to setting these rather trivial configuration options, it also does something very important: registers all of the service providers configured for your application.
+The `index.php` file loads the Composer generated autoloader definition, and then retrieves an instance of the Laravel application from `bootstrap/start.php`. The first action taken by Laravel itself is to create an instance of the application / service container.
 
-Simple service providers only have one method: `register`. This `register` method is called when the service provider is registered with the application object via the application's own `register` method. Within this method, service providers register things with the [IoC container](/docs/ioc). Essentially, each service provider binds one or more [closures](http://us3.php.net/manual/en/functions.anonymous.php) into the container, which allows you to access those bound services within your application. So, for example, the `QueueServiceProvider` registers closures that resolve the various [Queue](/docs/queues) related classes. Of course, service providers may be used for any bootstrapping task, not just registering things with the IoC container. A service provider may register event listeners, view composers, Artisan commands, and more.
+#### Environment Detection
 
-After all of the service providers have been registered, including the providers in your `app/Providers` directory, the Request object is sent to the application so that it may be dispatched to a route.
+Next, Laravel detects the application environment by loading the `bootstrap/environment.php` file. The environment determines which versions of configuration files will be loaded for the given request.
 
-So, let's summarize:
+#### Error Handling
 
-1. Request enters `public/index.php` file.
-2. `bootstrap/start.php` file creates Application and detects environment.
-3. Internal `framework/start.php` file configures settings and loads service providers.
-4. Request object sent to Application, which returns Response object.
-5. Response object sent back to client.
+After the Application is created and the environment has been detected, the exception / error handling services are started. This is done by the `Illuminate\Foundation\start.php` script which is included in the `laravel/framework` Composer package.
 
-Now that you have a good idea of how a request to a Laravel application is handled, let's take a closer look at service providers!
+#### Service Providers
 
-<a name="service-providers"></a>
-## Service Providers
+Next, we are ready to load all of the configured [service providers](/docs/master/providers). All of the service providers for the application are configured in the `config/app.php` configuration file's `providers` array. First, the `register` method will be called on all providers. The `boot` method will not be called until an HTTP request or console command has actually been dispatched to the application.
 
-Your application's default service providers are stored at `app/Providers`. By default, several are shipped with your application, and handle things like setting up error handling, logging, etc. For more information about the `ArtisanServiceProvider`, refer to the documentation on the [Artisan command line](/docs/commands#registering-commands).
+#### Dispatch Request
 
-By default, the `AppServiceProvider` is blank. This provider is a great place to add your application's own bootstrapping and IoC registrations. Of course, for large applications, you may wish to create several service providers, each with a more granular type of bootstrapping. For example, you might create an `EventsServiceProvider` that only registers event listeners.
+Finally, we are ready to dispatch the HTTP request to the application. The Laravel application's `handle` method will be called with a `Symfony\Component\HttpFoundation\Request` instance. At this point, the `boot` method is called on all of the registered service providers. Once the service providers are booted, the request is handed to the router and dispatched to a route / controller.
 
-> **Note:** Within a service provider, the Laravel application instance / IoC container may be accessed via `$this->app` or through the `App` [facade](/docs/facades).
+<a name="focus-on-service-providers"></a>
+## Focus On Service Providers
 
-### What To Place In Service Providers
+Service providers are truly the key to bootstrapping a Laravel application. The application instance is created, the service providers are registered, and the request is handed to the bootstrapped application. It's really that simple!
 
-Service providers serve as a simple place to place any "bootstrapping" code and [IoC container](/docs/ioc) bindings. For example, you could register a View composer, configure your logging preferences, set some PHP settings, etc. It's totally up to you.
+Having a firm grasp of how a Laravel application is built and bootstrapped via service providers is very valuable. Of course, your application's default service providers are stored in the `app/Providers` directory. By default, several are shipped with your application, and handle things like bootstrapping error handling, logging, etc.
 
-<a name="application-events"></a>
-## Application Events
-
-#### Registering Application Events
-
-You may also do pre and post request processing by registering `before`, `after`, `finish`, and `shutdown` application events:
-
-	App::before(function($request)
-	{
-		//
-	});
-
-	App::after(function($request, $response)
-	{
-		//
-	});
-
-Listeners to these events will be run `before` and `after` each request to your application. These events can be helpful for global filtering or global modification of responses. You may register them in one of your own [service providers](/docs/ioc#service-providers) or you may use the included `FilterServiceProvider` which provides a simple array for assigning filter classes to application events:
-
-	/**
-	 * The filters that should run before all requests.
-	 *
-	 * @var array
-	 */
-	protected $before = [
-		'App\Http\Filters\MaintenanceFilter',
-	];
-
-You may also register a listener on the `matched` event, which is fired when an incoming request has been matched to a route but that route has not yet been executed:
-
-	Route::matched(function($route, $request)
-	{
-		//
-	});
-
-The `finish` event is called after the response from your application has been sent back to the client. This is a good place to do any last minute processing your application requires. The `shutdown` event is called immediately after all of the `finish` event handlers finish processing, and is the last opportunity to do any work before the script terminates. Most likely, you will not have a need to use either of these events.
+By default, the `AppServiceProvider` is blank. This provider is a great place to add your application's own bootstrapping and service container bindings. Of course, for large applications, you may wish to create several service providers, each with a more granular type of bootstrapping. For example, you might create an `EventsServiceProvider` that only registers event listeners.
