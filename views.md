@@ -27,6 +27,10 @@ This view may be returned to the browser like so:
 
 As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument passed to helper is an array of data that should be made available to the view.
 
+Of course, views may also be nested within sub-directories of the `resources/views` directory. For example, if your view is stored at `resources/views/admin/profile.php`, it would be returned like so:
+
+	return view('admin.profile', $data);
+
 #### Passing Data To Views
 
 	// Using conventional approach
