@@ -170,7 +170,9 @@ Let's organize our view composers within a [service provider](/docs/master/provi
 
 	}
 
-Now each time the `profile` view is rendered, the `ProfileComposer@compose` method will be executed. So, let's define the composer:
+> **Note:** Laravel does not include a default directory for view composers. You are free to organize them however you wish.
+
+Now that we have registered the composer, the `ProfileComposer@compose` method will be executed each time the `profile` view is being rendered. So, let's define the composer class:
 
 	<?php namespace App\Http\ViewComposers;
 
@@ -194,6 +196,7 @@ Now each time the `profile` view is rendered, the `ProfileComposer@compose` meth
 		 */
 		public function __construct(UserRepository $users)
 		{
+			// Dependencies automatically resolved by service container...
 			$this->users = $users;
 		}
 
