@@ -18,7 +18,7 @@ A simple view looks like this:
 		</body>
 	</html>
 
-This view may be returned to the browser like so:
+The view may be returned to the browser like so:
 
 	$router->get('/', function()
 	{
