@@ -27,7 +27,7 @@ This view may be returned to the browser like so:
 
 As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument passed to helper is an array of data that should be made available to the view.
 
-Of course, views may also be nested within sub-directories of the `resources/views` directory. For example, if your view is stored at `resources/views/admin/profile.php`, it would be returned like so:
+Of course, views may also be nested within sub-directories of the `resources/views` directory. For example, if your view is stored at `resources/views/admin/profile.php`, it should be returned like so:
 
 	return view('admin.profile', $data);
 
@@ -39,9 +39,9 @@ Of course, views may also be nested within sub-directories of the `resources/vie
 	// Using Magic Methods
 	$view = view('greeting')->withName('Victoria');
 
-In the example above the variable `$name` would be accessible from the view, and would contain `Victoria`.
+In the example above, the variable `$name` is made accessible to the view and contains `Victoria`.
 
-If you wish, you may pass an array of data as the second parameter given to the `make` method:
+If you wish, you may pass an array of data as the second parameter to the `make` method:
 
 	$view = view('greetings', $data);
 
@@ -149,7 +149,7 @@ Alternatively, type-hint the `Illuminate\Contracts\View\Factory` contract and us
 <a name="view-composers"></a>
 ## View Composers
 
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a certain view each time that view is rendered, a view composer can organize that code into a single location.
+View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a view each time that view is rendered, a view composer can organize that code into a single location.
 
 #### Defining A View Composer
 
@@ -174,7 +174,7 @@ Let's organize our view composers within a [service provider](/docs/master/provi
 
 	}
 
-> **Note:** Laravel does not include a default directory for view composers. You are free to organize them however you wish.
+> **Note:** Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `App\Http\ViewComposers` directory.
 
 Now that we have registered the composer, the `ProfileComposer@compose` method will be executed each time the `profile` view is being rendered. So, let's define the composer class:
 
@@ -217,13 +217,13 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
 
 	}
 
-Just before the view is rendered, the composer's `compose` method is called with the `Illuminate\Contracts\View\View` instance. You may use the `with` method to bind any data to the view.
+Just before the view is rendered, the composer's `compose` method is called with the `Illuminate\Contracts\View\View` instance. You may use the `with` method to bind data to the view.
 
 > **Note:** All view composers are resolved via the [service container](/docs/master/container), so you may type-hint any dependencies you need within a composer's constructor.
 
 #### Wildcard View Composers
 
-View composer registrations accept the `*` character as a wildcard, so you may attach a composer to all views like so:
+The `composer` method accepts the `*` character as a wildcard, so you may attach a composer to all views like so:
 
 	$this->view->composer('*', 'App\Http\ViewComposers\GlobalComposer');
 
@@ -242,8 +242,6 @@ You may use the `composers` method to register a group of composers at the same 
 		'App\Http\ViewComposers\UserComposer' => 'user',
 		'App\Http\ViewComposers\ProductComposer' => 'product'
 	]);
-
-> **Note:** There is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded by Composer.
 
 ### View Creators
 
