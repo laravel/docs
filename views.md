@@ -1,9 +1,14 @@
-<a name="views"></a>
-## Views
+# Views
 
-Views typically contain the HTML of your application and provide a convenient way of separating your controller and domain logic from your presentation logic. Views are stored in the `resources/views` directory.
+- [Basic Usage](#basic-usage)
+- [View Composers](#view-composers)
 
-A simple view could look something like this:
+<a name="basic-usage"></a>
+## Basic Usage
+
+Views contain the HTML served by your application, and serve as a convenient method of separating your controller and domain logic from your presentation logic. Views are stored in the `resources/views` directory.
+
+A simple view looks like this:
 
 	<!-- View stored in resources/views/greeting.php -->
 
@@ -17,113 +22,224 @@ This view may be returned to the browser like so:
 
 	$router->get('/', function()
 	{
-		return View::make('greeting', array('name' => 'Taylor'));
+		return view('greeting', ['name' => 'James']);
 	});
 
-The second argument passed to `View::make` is an array of data that should be made available to the view.
+As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument passed to helper is an array of data that should be made available to the view.
 
 #### Passing Data To Views
 
 	// Using conventional approach
-	$view = View::make('greeting')->with('name', 'Steve');
+	$view = view('greeting')->with('name', 'Victoria');
 
 	// Using Magic Methods
-	$view = View::make('greeting')->withName('steve');
+	$view = view('greeting')->withName('Victoria');
 
-In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
+In the example above the variable `$name` would be accessible from the view, and would contain `Victoria`.
 
 If you wish, you may pass an array of data as the second parameter given to the `make` method:
 
-	$view = View::make('greetings', $data);
+	$view = view('greetings', $data);
 
-You may also share a piece of data across all views:
+#### Sharing Data With All Views
 
-	View::share('name', 'Steve');
+Occasionally, you may need to share a piece of data with all views that are rendered by your application. You have several options: the `view` helper, the `Illuminate\Contracts\View\Factory` [contract](/docs/master/contracts), or a wildcard [view composer](#view-composers).
 
-#### Passing A Sub-View To A View
+First, using the `view` helper:
 
-Sometimes you may wish to pass a view into another view. For example, given a sub-view stored at `resources/views/child/view.php`, we could pass it to another view like so:
+	view()->share('data', [1, 2, 3]);
 
-	$view = View::make('greeting')->nest('child', 'child.view');
+> **Note:** When the `view` helper is called without arguments, it returns an implementation of the `Illuminate\Contracts\View\Factory` contract.
 
-	$view = View::make('greeting')->nest('child', 'child.view', $data);
+Alternatively, obtain an instance of the `Illuminate\Contracts\View\Factory` [contract](/docs/master/contracts). Once you have an implementation of the contract, you may use the `share` method to make data available to all views:
 
-The sub-view can then be rendered from the parent view:
+In this example, we'll assume we're sharing the data from within a [global HTTP filter](/docs/master/filters). However, you could also share the data from a service provider, or even a controller:
 
-	<html>
-		<body>
-			<h1>Hello!</h1>
-			<?php echo $child; ?>
-		</body>
-	</html>
+	<?php namespace App\Http\Filters;
+
+	use Illuminate\Http\Request;
+	use Illuminate\Contracts\View\Factory as ViewFactory;
+
+	class TestFilter {
+
+		/**
+		 * The view factory implementation.
+		 */
+		protected $view;
+
+		/**
+		 * Create a new filter instance.
+		 *
+		 * @param  ViewFactory  $view
+		 * @return void
+		 */
+		public function __construct(ViewFactory $view)
+		{
+			$this->view = $view;
+		}
+
+		/**
+		 * Run the request filter.
+		 *
+		 * @param  Request  $request
+		 * @return mixed
+		 */
+		public function filter(Request $request)
+		{
+			$this->view->share('data', [1, 2, 3]);
+		}
+
+	}
 
 #### Determining If A View Exists
 
-If you need to check if a view exists, use the `View::exists` method:
+If you need to determine if a view exists, you again have two options: the `view` helper and the `Illuminate\Contracts\View\Factory` [contract](/docs/master/contracts):
 
-	if (View::exists('emails.customer'))
+Using the helper:
+
+	if (view()->exists('emails.customer'))
 	{
 		//
 	}
 
-<a name="view-composers"></a>
-## View Composers
+Alternatively, type-hint the `Illuminate\Contracts\View\Factory` contract and use the `exists` method on the resolved instance:
 
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters". To organize your view composers, you may wish to create a new [service provider](/docs/ioc#service-providers):
+	<?php namespace App\Services;
 
-#### Defining A View Composer
+	use Illuminate\Contracts\View\Factory as ViewFactory;
 
-For example, using the `make:provider` Artisan command, you may wish to create a `ComposerServiceProvider` class, and register your view composers in the `boot` method of that provider:
+	class TaskRunner {
 
-	public function before()
-	{
-		View::composer('profile', function($view)
+		/**
+		 * The view factory implementation.
+		 */
+		protected $view;
+
+		/**
+		 * Create a new class instance.
+		 *
+		 * @param  ViewFactory  $view
+		 * @return void
+		 */
+		public function __construct(ViewFactory $view)
 		{
-			$view->with('count', User::count());
-		});
-	}
+			$this->view = $view;
+		}
 
-Now each time the `profile` view is rendered, the `count` data will be bound to the view.
-
-You may also attach a view composer to multiple views at once:
-
-    View::composer(array('profile','dashboard'), function($view)
-    {
-        $view->with('count', User::count());
-    });
-
-If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC Container](/docs/ioc), you may do so:
-
-	View::composer('profile', 'ProfileComposer');
-
-A view composer class should be defined like so:
-
-	class ProfileComposer {
-
-		public function compose($view)
+		/**
+		 * Do some work!
+		 *
+		 * @return void
+		 */
+		public function performTask()
 		{
-			$view->with('count', User::count());
+			if ($this->view->exists('emails.customer'))
+			{
+				//
+			}
 		}
 
 	}
+
+
+<a name="view-composers"></a>
+## View Composers
+
+View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a certain view each time that view is rendered, a view composer can organize that code into a single location.
+
+#### Defining A View Composer
+
+Let's organize our view composers within a [service provider](/docs/master/providers). We'll need an instance of the `Illuminate\Contracts\View\Factory` [contract](/docs/master/contracts), so we'll type-hint that in our provider's `boot` method:
+
+	<?php namespace App\Providers;
+
+	use Illuminate\Support\ServiceProvider;
+	use Illuminate\Contracts\View\Factory as ViewFactory;
+
+	class ComposerServiceProvider extends ServiceProvider {
+
+		/**
+		 * Register bindings in the container.
+		 *
+		 * @return void
+		 */
+		public function boot(ViewFactory $view)
+		{
+			$view->composer('profile', 'App\Http\ViewComposers\ProfileComposer');
+		}
+
+	}
+
+Now each time the `profile` view is rendered, the `ProfileComposer@compose` method will be executed. So, let's define the composer:
+
+	<?php namespace App\Http\ViewComposers;
+
+	use Illuminate\Contracts\View\View;
+	use Illuminate\Users\Repository as UserRepository;
+
+	class ProfileComposer {
+
+		/**
+		 * The user repository implementation.
+		 *
+		 * @var UserRepository
+		 */
+		protected $users;
+
+		/**
+		 * Create a new profile composer.
+		 *
+		 * @param  UserRepository  $users
+		 * @return void
+		 */
+		public function __construct(UserRepository $users)
+		{
+			$this->users = $users;
+		}
+
+		/**
+		 * Bind data to the view.
+		 *
+		 * @param  View  $view
+		 * @return void
+		 */
+		public function compose(View $view)
+		{
+			$view->with('count', $this->users->count());
+		}
+
+	}
+
+Just before the view is rendered, the composer's `compose` method is called with the `Illuminate\Contracts\View\View` instance. You may use the `with` method to bind any data to the view.
+
+> **Note:** All view composers are resolved via the [service container](/docs/master/container), so you may type-hint any dependencies you need within a composer's constructor.
+
+#### Wildcard View Composers
+
+View composer registrations accept the `*` character as a wildcard, so you may attach a composer to all views like so:
+
+	$this->view->composer('*', 'App\Http\ViewComposers\GlobalComposer');
+
+#### Attaching A Composer To Multiple Views
+
+You may also attach a view composer to multiple views at once:
+
+	$this->view->composer(['profile', 'dashboard'], 'App\Http\ViewComposers\MyViewComposer');
 
 #### Defining Multiple Composers
 
 You may use the `composers` method to register a group of composers at the same time:
 
-	View::composers(array(
-		'AdminComposer' => array('admin.index', 'admin.profile'),
-		'UserComposer' => 'user',
-		'ProductComposer@create' => 'product'
-	));
+	$this->view->composers([
+		'App\Http\ViewComposers\AdminComposer' => ['admin.index', 'admin.profile'],
+		'App\Http\ViewComposers\UserComposer' => 'user',
+		'App\Http\ViewComposers\ProductComposer' => 'product'
+	]);
 
-> **Note:** There is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
+> **Note:** There is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded by Composer.
 
 ### View Creators
 
-View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, simply use the `creator` method:
+View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, use the `creator` method on an `Illuminate\Contracts\View\Factory` instance:
 
-	View::creator('profile', function($view)
-	{
-		$view->with('count', User::count());
-	});
+	$this->view->creator('profile', 'App\Http\ViewCreators\ProfileCreator');
