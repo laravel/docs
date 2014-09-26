@@ -1,6 +1,7 @@
 # HTTP Routing
 
 - [Basic Routing](#basic-routing)
+- [CSRF Protection](#csrf-protection)
 - [Route Parameters](#route-parameters)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
@@ -45,6 +46,24 @@ Within the `routes.php` file, the `$router` variable is available as an instance
 Often, you will need to generate URLs to your routes, you may do so using the `url` helper:
 
 	$url = url('foo');
+
+<a name="csrf-protection"></a>
+## CSRF Protection
+
+Laravel provides an easy method of protecting your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
+
+Laravel automatically generates a CSRF "token" for each active user session being managed by the application. This token can be used to help verify that the authenticated user is the one actually making the requests to the application.
+
+#### Insert The CSRF Token Into A Form
+
+    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+
+#### Validate The Submitted CSRF Token
+
+    $router->post('register', ['before' => 'csrf', function()
+    {
+        return 'You gave a valid CSRF token!';
+    }]);
 
 <a name="route-parameters"></a>
 ## Route Parameters

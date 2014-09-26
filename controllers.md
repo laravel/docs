@@ -45,6 +45,7 @@ Here is an example of a basic controller class:
 		 * Show the profile for the given user.
 		 *
 		 * @param  int  $id
+		 * @return Response
 		 */
 		public function showProfile($id)
 		{
