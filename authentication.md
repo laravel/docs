@@ -268,7 +268,9 @@ Now we're ready to generate the password reminder controller. To automatically g
 
 	php artisan auth:reminders-controller
 
-The generated controller will already have a `getRemind` method that handles showing your password reminder form. All you need to do is create a `password.remind` [view](/docs/responses#views). This view should have a basic form with an `email` field. The form should POST to the `RemindersController@postRemind` action.
+The generated controller accepts an implementation of the `Illuminate\Contracts\Auth\PasswordBroker` [contract](/docs/master/contracts). This contract provides a few simple methods that allow you to reset passwords.
+
+The generated controller will also already have a `getRemind` method that handles showing your password reminder form. All you need to do is create a `password.remind` [view](/docs/responses#views). This view should have a basic form with an `email` field. The form should POST to the `RemindersController@postRemind` action.
 
 A simple form on the `password.remind` view might look like this:
 
@@ -279,14 +281,16 @@ A simple form on the `password.remind` view might look like this:
 
 In addition to `getRemind`, the generated controller will already have a `postRemind` method that handles sending the password reminder e-mails to your users. This method expects the `email` field to be present in the `POST` variables. If the reminder e-mail is successfully sent to the user, a `status` message will be flashed to the session. If the reminder fails, an `error` message will be flashed instead.
 
-Within the `postRemind` controller method you may modify the message instance before it is sent to the user:
+Within the `postRemind` controller method, you may modify the message instance before it is sent to the user:
 
-	Password::remind(Input::only('email'), function($message)
+	$result = $this->password->remind($request->only('email'), function($message)
 	{
 		$message->subject('Password Reminder');
 	});
 
-Your user will receive an e-mail with a link that points to the `getReset` method of the controller. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method. The action is already configured to return a `password.reset` view which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
+Your user will receive an e-mail with a link that points to the `getReset` method of the controller. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method.
+
+The action is already configured to return a `password.reset` view which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
 
 A simple form on the `password.reset` view might look like this:
 
@@ -304,9 +308,9 @@ If the password is successfully reset, the user will be redirected to the root o
 
 ### Password Validation
 
-By default, the `Password::reset` method will verify that the passwords match and are >= six characters. You may customize these rules using the `Password::validator` method, which accepts a Closure. Within this Closure, you may do any password validation you wish. Note that you are not required to verify that the passwords match, as this will be done automatically by the framework.
+By default, the `$password->reset` method of the `PasswordBroker` will verify that the passwords match and are >= six characters. You may customize these rules using the `$password->validator` method, which accepts a Closure. Within this Closure, you may do any password validation you wish. Note that you are not required to verify that the passwords match, as this will be done automatically by the framework.
 
-	Password::validator(function($credentials)
+	$this->password->validator(function($credentials)
 	{
 		return strlen($credentials['password']) >= 6;
 	});
