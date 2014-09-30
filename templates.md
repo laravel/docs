@@ -147,6 +147,10 @@ You may also pass an array of data to the included view:
 
 	@include('view.name', array('some'=>'data'))
 
+You can also include a sub-view directly into an `@each` loop:
+	
+	@each('view.name', $data, 'datum', 'raw|No data')
+
 #### Overwriting Sections
 
 By default, sections are appended to any previous content that exists in the section. To overwrite a section entirely, you may use the `overwrite` statement:
