@@ -15,7 +15,7 @@ There are several filters included in the Laravel framework, including an `auth`
 <a name="the-filter-service-provider"></a>
 ## The Filter Service Provider
 
-The filter service provider looks different than most other service providers because it extends the `Illuminate\Routing\Providers\FilterServiceProvider` class, which allows us to remove boilerplate bootstrapping code.
+The filter service provider looks different than most other service providers because it extends the `Illuminate\Foundation\Support\Providers\FilterServiceProvider` class, which allows us to remove boilerplate bootstrapping code.
 
 For example, to define a filter that should run before **every** request to the application, simply list the filter class to the `$before` property. To define a filter that should run after every request, list the filter in the `$after` property.
 
