@@ -28,6 +28,9 @@ For better performance, consider start Memcached as a UNIX socket and then set `
 		array('host' => '/var/run/memcached/memcached.sock', 'port' => 0, 'weight' => 100),
 	),
 
+#### Redis
+See [Redis Configuration](/docs/redis#configuration)
+
 <a name="cache-usage"></a>
 ## Cache Usage
 
