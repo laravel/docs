@@ -16,13 +16,13 @@ The cache configuration file also contains various other options, which are docu
 #### Memcached
 Requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.
 
-The default configuration uses TCP/IP
+The default configuration uses TCP/IP based on [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php)
 
 	'memcached' => array(
 		array('host' => '127.0.0.1', 'port' => 11211, 'weight' => 100),
 	),
 
-For better performance, consider start Memcached as a UNIX socket and then set `host` to a socket file path and `port` is `0`
+For better performance, start Memcached as a UNIX socket, and then set `host` to a socket file path and `port` to `0`
 
 	'memcached' => array(
 		array('host' => '/var/run/memcached/memcached.sock', 'port' => 0, 'weight' => 100),
