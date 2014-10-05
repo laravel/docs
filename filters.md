@@ -26,7 +26,7 @@ Route filters are listed in the `$filters` property, and are assigned a short-ha
 
 To create a new route filter, use the `make:filter` Artisan command:
 
-	php artisan filter:make OldFilter
+	php artisan make:filter OldFilter
 
 This command will place a new `OldFilter` class within your `app/Http/Filters` directory. In this filter, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the "home" URI.
 
