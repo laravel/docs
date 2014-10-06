@@ -101,6 +101,14 @@ To register your provider, simply add it to the array:
 		// Other Service Providers
 	],
 
+To append a provider, for example adding a provider to my local config
+	
+    	'providers' => append_config(
+    		array(
+        		'Clockwork\Support\Laravel\ClockworkServiceProvider'
+    		)
+    	)];
+
 <a name="deferred-providers"></a>
 ## Deferred Providers
 
