@@ -130,7 +130,7 @@ Now, on your production server, create a `.env.php` file in your project root th
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
-When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenamce mode check is included in the default `before` filter in `app/Http/Filters/MaintenanceFilter.php`. The response from this check will be sent to users when your application is in maintenance mode.
+When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default `before` filter in `app/Http/Filters/MaintenanceFilter.php`. The response from this check will be sent to users when your application is in maintenance mode.
 
 To enable maintenance mode, simply execute the `down` Artisan command:
 
