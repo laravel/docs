@@ -91,11 +91,11 @@ Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` c
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
-	127.0.0.1  homestead.app
+	192.168.10.10  homestead.app
 
-Once you have added the domain to your `hosts` file, you can access the site via your web browser on port 8000!
+Make sure the ip address is the one you set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file, you can access the site via your web browser!
 
-	http://homestead.app:8000
+	http://homestead.app
 
 To learn how to connect to your databases, read on!
 
