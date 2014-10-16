@@ -93,7 +93,7 @@ Don't forget to add the "domains" for your Nginx sites to the `hosts` file on yo
 
 	192.168.10.10  homestead.app
 
-Make sure the ip address is the one you set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file, you can access the site via your web browser!
+Make sure the IP address listed is the one you set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file, you can access the site via your web browser!
 
 	http://homestead.app
 
