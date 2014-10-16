@@ -75,19 +75,19 @@ Sometimes, such as when you are not sure if a section has been defined, you may 
 
 #### Echoing Data
 
-	Hello, {{{ $name }}}.
+	Hello, {{ $name }}.
 
-	The current UNIX timestamp is {{{ time() }}}.
+	The current UNIX timestamp is {{ time() }}.
 
 #### Echoing Data After Checking For Existence
 
 Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. Basically, you want to do this:
 
-	{{{ isset($name) ? $name : 'Default' }}}
+	{{ isset($name) ? $name : 'Default' }}
 
 However, instead of writing a ternary statement, Blade allows you to use the following convenient short-cut:
 
-	{{{ $name or 'Default' }}}
+	{{ $name or 'Default' }}
 
 #### Displaying Raw Text With Curly Braces
 
@@ -97,11 +97,11 @@ If you need to display a string that is wrapped in curly braces, you may escape 
 
 Of course, all user supplied data should be escaped or purified. To escape the output, you may use the triple curly brace syntax:
 
-	Hello, {{{ $name }}}.
+	Hello, {{ $name }}.
 
 If you don't want the data to be escaped, you may use double curly-braces:
 
-	Hello, {{ $name }}.
+	Hello, {!! $name !!}.
 
 > **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the triple curly brace syntax to escape any HTML entities in the content.
 
