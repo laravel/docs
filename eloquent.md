@@ -49,7 +49,7 @@ Note that we did not tell Eloquent which table to use for our `User` model. The 
 
 Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
 
-#### Retrieving All Models
+#### Retrieving All Records
 
 	$users = User::all();
 
@@ -150,7 +150,7 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 #### Blocking All Attributes From Mass Assignment
 
-In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard property:
+In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guarded property:
 
 	protected $guarded = array('*');
 
