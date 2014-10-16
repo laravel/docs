@@ -55,6 +55,8 @@ Next, add the BillableTrait and appropriate date mutators to your model definiti
 Finally, set your Stripe key in one of your bootstrap files:
 
 	User::setStripeKey('stripe-key');
+	
+> **Note:** For easier deployment and easier management you will likely want to store this key in an environment variable. For instructions on this you can check [Protecting Sensitive Configuration](http://laravel.com/docs/4.2/configuration#protecting-sensitive-configuration). 
 
 <a name="subscribing-to-a-plan"></a>
 ## Subscribing To A Plan
