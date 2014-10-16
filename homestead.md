@@ -13,7 +13,7 @@ Laravel strives to make the entire PHP development experience delightful, includ
 
 Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a wonderful development environment without requiring you to install PHP, HHVM, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
-Homestead runs on any Windows, Mac, and Linux, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached and all of the other goodies you need to develop amazing Laravel applications.
+Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached, and all of the other goodies you need to develop amazing Laravel applications.
 
 > **Note:** If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS.
 
@@ -60,7 +60,7 @@ Next, you should edit the `Homestead.yaml` file included in the repository. In t
 
 Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pair using the following command:
 
-	ssh-keygen -t rsa -C "your@email.com"
+	ssh-keygen -t rsa -C "you@homestead"
 
 On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` shell included with Git to issue the command above. Alternatively, you may use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
 
@@ -91,11 +91,11 @@ Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` c
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
-	127.0.0.1  homestead.app
+	192.168.10.10  homestead.app
 
-Once you have added the domain to your `hosts` file, you can access the site via your web browser on port 8000!
+Make sure the ip address is the one you set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file, you can access the site via your web browser!
 
-	http://homestead.app:8000
+	http://homestead.app
 
 To learn how to connect to your databases, read on!
 
