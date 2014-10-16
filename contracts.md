@@ -97,16 +97,20 @@ In addition, when you depend on simple interfaces, your code is easier to unders
 <a name="contract-reference"></a>
 ## Contract Reference
 
-This is a reference to most Laravel Contracts, as well as their Laravel 4.x facade counterparts:
+This is a reference to all Laravel Contracts, as well as their Laravel 4.x facade counterparts:
 
 Contract  |  Laravel 4.x Facade
 ------------- | -------------
-[Illuminate\Contracts\Auth\Authenticator](https://github.com/illuminate/contracts/blob/master/Auth/Authenticator.php)  |  Auth
+[Illuminate\Contracts\Auth\Authenticator](https://github.com/illuminate/contracts/blob/master/Auth/Guard.php)  |  Auth
 [Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)  |  Password
+[Illuminate\Contracts\Auth\User](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php) | &nbsp;
+[Illuminate\Contract\Auth\CanResetPassword](https://github.com/illuminate/contracts/blob/master/Auth/CanResetPassword.php) | &nbsp;
 [Illuminate\Contracts\Cache\Repository](https://github.com/illuminate/contracts/blob/master/Cache/Repository.php) | Cache
 [Illuminate\Contracts\Cache\Factory](https://github.com/illuminate/contracts/blob/master/Cache/Factory.php) | Cache::driver()
 [Illuminate\Contracts\Config\Repository](https://github.com/illuminate/contracts/blob/master/Config/Repository.php) | Config
+[Illuminate\Contracts\Console\Application](https://github.com/illuminate/contracts/blob/master/Console/Application.php) | &nbsp;
 [Illuminate\Contracts\Container\Container](https://github.com/illuminate/contracts/blob/master/Container/Container.php) | App
+[Illuminate\Contracts\Container\ContextualBindingBuilder](https://github.com/illuminate/contracts/blob/master/Container/ContextualBindingBuilder.php) | &nbsp;
 [Illuminate\Contracts\Cookie\Factory](https://github.com/illuminate/contracts/blob/master/Cookie/Factory.php) | Cookie
 [Illuminate\Contracts\Cookie\QueueingFactory](https://github.com/illuminate/contracts/blob/master/Cookie/QueueingFactory.php) | Cookie::queue()
 [Illuminate\Contracts\Encryption\Encrypter](https://github.com/illuminate/contracts/blob/master/Encryption/Encrypter.php) | Crypt
@@ -120,17 +124,26 @@ Contract  |  Laravel 4.x Facade
 [Illuminate\Contracts\Logging\Log](https://github.com/illuminate/contracts/blob/master/Logging/Log.php) | Log
 [Illuminate\Contracts\Mail\MailQueue](https://github.com/illuminate/contracts/blob/master/Mail/MailQueue.php) | Mail::queue()
 [Illuminate\Contracts\Mail\Mailer](https://github.com/illuminate/contracts/blob/master/Mail/Mailer.php) | Mail
+[Illuminate\Contracts\Pagination\Paginator](https://github.com/illuminate/contracts/blob/master/Pagination/Paginator.php) | &nbsp;
+[Illuminate\Contracts\Pagination\Presenter](https://github.com/illuminate/contracts/blob/master/Pagination/Presenter.php) | &nbsp;
+[Illuminate\Contracts\Pagination\LengthAwarePaginator](https://github.com/illuminate/contracts/blob/master/Pagination/LengthAwarePaginator.php) | &nbsp;
 [Illuminate\Contracts\Queue\Factory](https://github.com/illuminate/contracts/blob/master/Queue/Factory.php) | Queue::driver()
 [Illuminate\Contracts\Queue\Queue](https://github.com/illuminate/contracts/blob/master/Queue/Queue.php) | Queue
 [Illuminate\Contracts\Redis\Database](https://github.com/illuminate/contracts/blob/master/Redis/Database.php) | Redis
 [Illuminate\Contracts\Routing\Registrar](https://github.com/illuminate/contracts/blob/master/Routing/Registrar.php) | Route
 [Illuminate\Contracts\Routing\ResponseFactory](https://github.com/illuminate/contracts/blob/master/Routing/ResponseFactory.php) | Response
 [Illuminate\Contracts\Routing\UrlGenerator](https://github.com/illuminate/contracts/blob/master/Routing/UrlGenerator.php) | URL
+[Illuminate\Contracts\Routing\UrlRoutable](https://github.com/illuminate/contracts/blob/master/Routing/UrlRoutable.php) | &nbsp;
+[Illuminate\Contracts\Routing\Middleware](https://github.com/illuminate/contracts/blob/master/Routing/Middleware.php) | &nbsp;
 [Illuminate\Contracts\Support\Arrayable](https://github.com/illuminate/contracts/blob/master/Support/Arrayable.php) | &nbsp;
 [Illuminate\Contracts\Support\Jsonable](https://github.com/illuminate/contracts/blob/master/Support/Jsonable.php) | &nbsp;
 [Illuminate\Contracts\Support\Renderable](https://github.com/illuminate/contracts/blob/master/Support/Renderable.php) | &nbsp;
+[Illuminate\Contracts\Support\MessageBag](https://github.com/illuminate/contracts/blob/master/Support/MessageBag.php) | &nbsp;
+[Illuminate\Contracts\Support\MessageProvider](https://github.com/illuminate/contracts/blob/master/Support/MessageProvider.php) | &nbsp;
+[Illuminate\Contracts\Support\ResponsePreparer](https://github.com/illuminate/contracts/blob/master/Support/ResponsePreparer.php) | &nbsp;
 [Illuminate\Contracts\Validation\Factory](https://github.com/illuminate/contracts/blob/master/Validation/Factory.php) | Validator::make()
 [Illuminate\Contracts\Validation\Validator](https://github.com/illuminate/contracts/blob/master/Validation/Validator.php) | &nbsp;
+[Illuminate\Contracts\Validation\ValidatesWhenResolved](https://github.com/illuminate/contracts/blob/master/Validation/ValidatesWhenResolved.php) | &nbsp;
 [Illuminate\Contracts\View\Factory](https://github.com/illuminate/contracts/blob/master/View/Factory.php) | View::make()
 [Illuminate\Contracts\View\View](https://github.com/illuminate/contracts/blob/master/View/View.php) | &nbsp;
 
