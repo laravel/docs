@@ -60,7 +60,7 @@ Next, you should edit the `Homestead.yaml` file included in the repository. In t
 
 Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pair using the following command:
 
-	ssh-keygen -t rsa -C "your@email.com"
+	ssh-keygen -t rsa -C "you@homestead"
 
 On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` shell included with Git to issue the command above. Alternatively, you may use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
 
