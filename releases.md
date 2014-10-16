@@ -13,7 +13,16 @@ Laravel 5.0 introduces a fresh application structure to the default Laravel proj
 
 The old `app/models` directory has been entirely removed. Instead, all of your code lives directly within the `app` folder, and, by default, is organized to the `App` namespace. This default namespace can be quickly changed using the new `app:name` Artisan command. The Laravel class generators will remember your application namespace by examining the new `config/namespaces.php` configuration file.
 
-Controllers, filters, and requests (a new type of class in Laravel 5.0) are now grouped under the `app/Http` directory, as they are all classes related to the HTTP transport layer of your application. Instead of a single, flat file of route filters, all filters are now broken into their own class files.
+Controllers, middlewares, and requests (a new type of class in Laravel 5.0) are now grouped under the `app/Http` directory, as they are all classes related to the HTTP transport layer of your application. Filters are now replaced by middlewares.
+
+Again Laravel 5 introduces annotations that takes the preferences for declaring routes in a single file. So, `routes.php` file is no longer exists by default. But this can be easily used just by uncommenting a single line on `app/Providers/RouteServiceProvider.php` file.
+
+    // RouteServiceProviders.php
+
+    public function map(Router $router)
+    {
+        require app_path('Http/routes.php');
+    }
 
 A new `app/Providers` directory replaces the `app/start` files from previous versions of Laravel 4.x. These service providers provide various bootstrapping functions to your application, such as error handling, logging, route loading, and more. Of course, you are free to create additional service providers for your application.
 
@@ -68,7 +77,7 @@ When the Laravel IoC container identifies that the class it is injecting is a `F
 
 ### New Generators
 
-To compliment the new default application structure, `provider:make`, `filter:make`, and `request:make` Artisan commands have been added to the framework.
+To compliment the new default application structure, `make:provider`, `make:middleware`, and `make:request` Artisan commands have been added to the framework.
 
 ### Route Cache
 
