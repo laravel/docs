@@ -600,7 +600,7 @@ Of course, you may also define the inverse of the relationship on the `Role` mod
 <a name="has-many-through"></a>
 ### Has Many Through
 
-The "has many through" relation provides a convenient short-cut for accessing distant relations via an intermediate relation. For example, a `Country` model might has many `Post` through a `User` model. The tables for this relationship would look like this:
+The "has many through" relation provides a convenient short-cut for accessing distant relations via an intermediate relation. For example, a `Country` model might have many `Post` through a `User` model. The tables for this relationship would look like this:
 
 	countries
 		id - integer
