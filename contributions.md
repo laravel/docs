@@ -65,7 +65,7 @@ Laravel Liferaft provides a fresh, innovative way to contribute to Laravel. Firs
 
 ### Installing Liferaft
 
-	composer global require "laravel/liferaft=~1.0"
+	composer global require laravel/liferaft dev-master
 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `liferaft` executable is found when you run the `liferaft` command in your terminal.
 
