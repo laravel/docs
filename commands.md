@@ -8,26 +8,24 @@
 <a name="introduction"></a>
 ## Introduction
 
-In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
+In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
 
 <a name="building-a-command"></a>
 ## Building A Command
 
 ### Generating The Class
 
-To create a new command, you may use the `command:make` Artisan command, which will generate a command stub to help you get started:
+To create a new command, you may use the `make:console` Artisan command, which will generate a command stub to help you get started:
 
 #### Generate A New Command Class
 
-	php artisan command:make FooCommand
+	php artisan make:console FooCommand
 
-By default, generated commands will be stored in the `app/commands` directory; however, you may specify custom path or namespace:
-
-	php artisan command:make FooCommand --path=app/classes --namespace=Classes
+The command above would generate a class at `app/Console/FooCommand.php`.
 
 When creating the command, the `--command` option may be used to assign the terminal command name:
 
-	php artisan command:make AssignUsers --command=users:assign
+	php artisan make:console AssignUsers --command=users:assign
 
 ### Writing The Command
 
@@ -119,24 +117,16 @@ You may also specify a default value to the `confirm` method, which should be `t
 
 #### Registering An Artisan Command
 
-Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/start/artisan.php` file. Within this file, you may use the `Artisan::add` method to register the command:
+Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/Providers/ArtisanServiceProvider.php` file. Within this file, you may bind the commands in the [IoC container](/docs/ioc) and use the `commands` method to register them with Artisan. By default, a sample command registration is included in the service provider. For example:
 
-	Artisan::add(new CustomCommand);
-
-#### Registering A Command That Is In The IoC Container
-
-If your command is registered in the application [IoC container](/docs/ioc), you may use the `Artisan::resolve` method to make it available to Artisan:
-
-	Artisan::resolve('binding.name');
-
-#### Registering Commands In A Service Provider
-
-If you need to register commands from within a service provider, you should call the `commands` method from the provider's `boot` method, passing the [IoC container](/docs/ioc) binding for the command:
-
-	public function boot()
+	$this->app->bindShared('commands.inspire', function()
 	{
-		$this->commands('command.binding');
-	}
+		return new InspireCommand;
+	});
+
+Once the command has been bound in the IoC container, you may use the `commands` method in your service provider to instruct the framework to make the command available to Artisan. You should pass the name of the IoC binding you used when registering the command with the container:
+
+	$this->commands('commands.inspire');
 
 <a name="calling-other-commands"></a>
 ## Calling Other Commands

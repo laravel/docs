@@ -13,11 +13,11 @@
 
 The Laravel Queue component provides a unified API across a variety of different queue services. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time, thus drastically speeding up the web requests to your application.
 
-The queue configuration file is stored in `app/config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io), and synchronous (for local use) driver.
+The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io), and synchronous (for local use) driver.
 
 The following dependencies are needed for the listed queue drivers:
 
-- Beanstalkd: `pda/pheanstalk ~2.0`
+- Beanstalkd: `pda/pheanstalk ~3.0`
 - Amazon SQS: `aws/aws-sdk-php`
 - IronMQ: `iron-io/iron_mq`
 
@@ -209,7 +209,7 @@ Similarly, your database connection may disconnect when being used by long-runni
 <a name="push-queues"></a>
 ## Push Queues
 
-Push queues allow you to utilize the powerful Laravel 4 queue facilities without running any daemons or background listeners. Currently, push queues are only supported by the [Iron.io](http://iron.io) driver. Before getting started, create an Iron.io account, and add your Iron credentials to the `app/config/queue.php` configuration file.
+Push queues allow you to utilize the powerful Laravel 4 queue facilities without running any daemons or background listeners. Currently, push queues are only supported by the [Iron.io](http://iron.io) driver. Before getting started, create an Iron.io account, and add your Iron credentials to the `config/queue.php` configuration file.
 
 #### Registering A Push Queue Subscriber
 
@@ -229,7 +229,7 @@ The `marshal` method will take care of firing the correct job handler class. To 
 <a name="failed-jobs"></a>
 ## Failed Jobs
 
-Since things don't always go as planned, sometimes your queued jobs will fail. Don't worry, it happens to the best of us! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into a `failed_jobs` table. The failed jobs table name can be configured via the `app/config/queue.php` configuration file.
+Since things don't always go as planned, sometimes your queued jobs will fail. Don't worry, it happens to the best of us! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into a `failed_jobs` table. The failed jobs table name can be configured via the `config/queue.php` configuration file.
 
 To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
 

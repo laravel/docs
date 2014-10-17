@@ -1,10 +1,8 @@
-# Views & Responses
+# HTTP Responses
 
 - [Basic Responses](#basic-responses)
 - [Redirects](#redirects)
-- [Views](#views)
-- [View Composers](#view-composers)
-- [Special Responses](#special-responses)
+- [Other Responses](#other-responses)
 - [Response Macros](#response-macros)
 
 <a name="basic-responses"></a>
@@ -12,224 +10,145 @@
 
 #### Returning Strings From Routes
 
-	Route::get('/', function()
+The most basic response from a Laravel route is a string:
+
+	$router->get('/', function()
 	{
 		return 'Hello World';
 	});
 
 #### Creating Custom Responses
 
-A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses.
+However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` instance or a [view](/docs/master/views). Returning a full `Response` instance allows you customize the response's HTTP status code and headers. A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses:
 
-	$response = Response::make($contents, $statusCode);
+	use Illuminate\Http\Response;
 
-	$response->header('Content-Type', $value);
+	return (new Response($content, $status))
+	              ->header('Content-Type', $value);
 
-	return $response;
+> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/4.2/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
 
-If you need access to the `Response` class methods, but want to return a view as the response content, you may use the `Response::view` method for convenience:
+#### Sending A View In A Response
 
-	return Response::view('hello')->header('Content-Type', $type);
+If you need access to the `Response` class methods, but want to return a view as the response content, you may use the `view` helper for convenience:
+
+	return (new Response(view('hello')))->header('Content-Type', $type);
 
 #### Attaching Cookies To Responses
 
-	$cookie = Cookie::make('name', 'value');
+	return (new Response($content))->withCookie(cookie('name', 'value'));
 
-	return Response::make($content)->withCookie($cookie);
+#### The Response Factory
+
+The `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/master/contracts) provides a variety of helpful methods for generating `Response` and `RedirectResponse` instances.
 
 <a name="redirects"></a>
 ## Redirects
 
+Redirect responses are typically instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL.
+
 #### Returning A Redirect
 
-	return Redirect::to('user/login');
+There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the `redirect` helper method. When testing, it is not common to mock the creation of a redirect response, so using the helper method is almost always acceptable:
+
+	return redirect('user/login');
 
 #### Returning A Redirect With Flash Data
 
-	return Redirect::to('user/login')->with('message', 'Login Failed');
+Redirecting to a new URL and [flashing data to the session](/docs/master/session) are typically done at the same time. So, for convenience, you can create a `RedirectResponse` instance **and** flash data to the session in a single method chain:
 
-> **Note:** Since the `with` method flashes data to the session, you may retrieve the data using the typical `Session::get` method.
+	return redirect('user/login')->with('message', 'Login Failed');
 
 #### Returning A Redirect To A Named Route
 
-	return Redirect::route('login');
+When you call the `redirect` helper with no parameters, an instance of `Illuminate\Routing\Redirector` is returned, allowing you to call any method on the `Redirector` instance. For example, to generate a `RedirectResponse` to a named route, you may use the `route` method:
+
+	return redirect()->route('login');
 
 #### Returning A Redirect To A Named Route With Parameters
 
-	return Redirect::route('profile', array(1));
+If your route has parameters, you may pass them as the second argument to the `route` method.
+
+	// For a route with the following URI: profile/{id}
+
+	return redirect()->route('profile', [1]);
 
 #### Returning A Redirect To A Named Route Using Named Parameters
 
-	return Redirect::route('profile', array('user' => 1));
+	// For a route with the following URI: profile/{user}
+
+	return redirect()->route('profile', ['user' => 1]);
 
 #### Returning A Redirect To A Controller Action
 
-	return Redirect::action('HomeController@index');
+Similarly to generating `RedirectResponse` instances to named routes, you may also generate redirects to [controller actions](/docs/master/controllers):
+
+	return redirect()->action('HomeController@index');
+
+> **Note:** You do not need to specify the full namespace to the controller. Only specify the portion of the controller that comes after the `App\Http\Controllers` portion of the namespace. The root portion namespace will be automatically preprended for you.
 
 #### Returning A Redirect To A Controller Action With Parameters
 
-	return Redirect::action('UserController@profile', array(1));
+	return redirect()->action('UserController@profile', [1]);
 
 #### Returning A Redirect To A Controller Action Using Named Parameters
 
-	return Redirect::action('UserController@profile', array('user' => 1));
+	return redirect()->action('UserController@profile', ['user' => 1]);
 
-<a name="views"></a>
-## Views
+<a name="other-responses"></a>
+## Other Responses
 
-Views typically contain the HTML of your application and provide a convenient way of separating your controller and domain logic from your presentation logic. Views are stored in the `app/views` directory.
-
-A simple view could look something like this:
-
-	<!-- View stored in app/views/greeting.php -->
-
-	<html>
-		<body>
-			<h1>Hello, <?php echo $name; ?></h1>
-		</body>
-	</html>
-
-This view may be returned to the browser like so:
-
-	Route::get('/', function()
-	{
-		return View::make('greeting', array('name' => 'Taylor'));
-	});
-
-The second argument passed to `View::make` is an array of data that should be made available to the view.
-
-#### Passing Data To Views
-
-	// Using conventional approach
-	$view = View::make('greeting')->with('name', 'Steve');
-
-	// Using Magic Methods
-	$view = View::make('greeting')->withName('steve');
-
-In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
-
-If you wish, you may pass an array of data as the second parameter given to the `make` method:
-
-	$view = View::make('greetings', $data);
-
-You may also share a piece of data across all views:
-
-	View::share('name', 'Steve');
-
-#### Passing A Sub-View To A View
-
-Sometimes you may wish to pass a view into another view. For example, given a sub-view stored at `app/views/child/view.php`, we could pass it to another view like so:
-
-	$view = View::make('greeting')->nest('child', 'child.view');
-
-	$view = View::make('greeting')->nest('child', 'child.view', $data);
-
-The sub-view can then be rendered from the parent view:
-
-	<html>
-		<body>
-			<h1>Hello!</h1>
-			<?php echo $child; ?>
-		</body>
-	</html>
-
-#### Determining If A View Exists
-
-If you need to check if a view exists, use the `View::exists` method:
-
-	if (View::exists('emails.customer'))
-	{
-		//
-	}
-
-<a name="view-composers"></a>
-## View Composers
-
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location. Therefore, view composers may function like "view models" or "presenters".
-
-#### Defining A View Composer
-
-	View::composer('profile', function($view)
-	{
-		$view->with('count', User::count());
-	});
-
-Now each time the `profile` view is rendered, the `count` data will be bound to the view.
-
-You may also attach a view composer to multiple views at once:
-
-    View::composer(array('profile','dashboard'), function($view)
-    {
-        $view->with('count', User::count());
-    });
-
-If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC Container](/docs/ioc), you may do so:
-
-	View::composer('profile', 'ProfileComposer');
-
-A view composer class should be defined like so:
-
-	class ProfileComposer {
-
-		public function compose($view)
-		{
-			$view->with('count', User::count());
-		}
-
-	}
-
-#### Defining Multiple Composers
-
-You may use the `composers` method to register a group of composers at the same time:
-
-	View::composers(array(
-		'AdminComposer' => array('admin.index', 'admin.profile'),
-		'UserComposer' => 'user',
-		'ProductComposer@create' => 'product' 
-	));
-
-> **Note:** There is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.
-
-### View Creators
-
-View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, simply use the `creator` method:
-
-	View::creator('profile', function($view)
-	{
-		$view->with('count', User::count());
-	});
-
-<a name="special-responses"></a>
-## Special Responses
+The `response` helper may be used to conveniently generate other types of response instances. When the `response` helper is called without arguments, an implementation of the `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/master/contracts) is returned. This contract provides several helpful methods for generating responses.
 
 #### Creating A JSON Response
 
-	return Response::json(array('name' => 'Steve', 'state' => 'CA'));
+The `json` method will automatically set the `Content-Type` header to `application/json`:
+
+	return response()->json(['name' => 'Steve', 'state' => 'CA']);
 
 #### Creating A JSONP Response
 
-	return Response::json(array('name' => 'Steve', 'state' => 'CA'))->setCallback(Input::get('callback'));
+	return response()->json(['name' => 'Steve', 'state' => 'CA'])
+	                 ->setCallback($request->input('callback'));
 
 #### Creating A File Download Response
 
-	return Response::download($pathToFile);
+	return response()->download($pathToFile);
 
-	return Response::download($pathToFile, $name, $headers);
+	return response()->download($pathToFile, $name, $headers);
 
 > **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
 
 <a name="response-macros"></a>
 ## Response Macros
 
-If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `Response::macro` method:
+If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `macro` method on an implementation of `Illuminate\Contracts\Routing\ResponseFactory`.
 
-	Response::macro('caps', function($value)
-	{
-		return Response::make(strtoupper($value));
-	});
+For example, from a [service provider's](/docs/master/providers) `boot` method:
 
-The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name on the `Response` class:
+	<?php namespace App\Providers;
 
-	return Response::caps('foo');
+	use Illuminate\Support\ServiceProvider;
+	use Illuminate\Contracts\Routing\ResponseFactory;
 
-You may define your macros in one of your `app/start` files. Alternatively, you may organize your macros into a separate file which is included from one of your `start` files.
+	class ResponseMacroServiceProvider extends ServiceProvider {
+
+		/**
+		 * Perform post-registration booting of services.
+		 *
+		 * @param  ResponseFactory  $events
+		 * @return void
+		 */
+		public function boot(ResponseFactory $response)
+		{
+			$response->macro('caps', function($value) use ($response)
+			{
+				return $response->make(strtoupper($value));
+			});
+		}
+
+	}
+
+The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `ResponseFactory` implementation or the `response` helper:
+
+	return response()->caps('foo');
