@@ -12,7 +12,7 @@ Learning a new framework can be daunting, but it's also exciting. To smooth your
 - [Routing](/docs/master/routing)
 - [Requests & Input](/docs/master/requests)
 - [Responses](/docs/master/responses)
-- [Views](/docs/master/responses)
+- [Views](/docs/master/views)
 - [Controllers](/docs/master/controllers)
 
 After reading through these documents, you should have a good grasp on basic request / response handling in Laravel. Next, you may wish to read about [configuring your database](/docs/master/database), the [fluent query builder](/docs/master/queries), and the [Eloquent ORM](/docs/master/eloquent). Or, you may wish to read about [authentication and security](/docs/master/authentication) so you can start signing people into your application.
