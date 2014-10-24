@@ -8,7 +8,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-The default Laravel application structure is intended to provide a great starting point for both large and small applications. Of course, you are free to organize your application however you like. Laravel imposes almost no restirctions on where any given class is located - as long as Composer can autoload the class.
+The default Laravel application structure is intended to provide a great starting point for both large and small applications. Of course, you are free to organize your application however you like. Laravel imposes almost no restrictions on where any given class is located - as long as Composer can autoload the class.
 
 <a name="the-root-directory"></a>
 ## The Root Directory
