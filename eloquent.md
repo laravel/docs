@@ -450,6 +450,8 @@ Of course, your database tables are probably related to one another. For example
 - [Polymorphic Relations](#polymorphic-relations)
 - [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
 
+> **Note:** Relationship should be differently named than the field names they apply to, as there will otherwise be a naming collision. To work around this, either rename the database field name, or your relationship.
+
 <a name="one-to-one"></a>
 ### One To One
 
