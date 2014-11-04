@@ -111,6 +111,11 @@ We can mock the call to the `Event` class by using the `shouldReceive` method on
 		$this->call('GET', '/');
 	}
 
+To clear the mock for later use you can use the method `clearResolvedInstances`
+
+	Event::clearResolvedInstances();
+
+
 > **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the `call` method when running your test.
 
 <a name="framework-assertions"></a>
