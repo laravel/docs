@@ -36,7 +36,7 @@ The first argument given to the `push` method is the name of the class that shou
 
 	class SendEmail {
 
-		public function fire($job, $data)
+		public function fire(\Illuminate\Contracts\Queue\Job $job, $data)
 		{
 			//
 		}
