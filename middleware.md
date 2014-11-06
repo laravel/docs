@@ -31,8 +31,8 @@ This command will place a new `OldMiddleware` class within your `app/Http/Middle
 		/**
 		 * Run the request filter.
 		 *
-		 * @param  Request  $request
-		 * @param  Closure  $next
+		 * @param  \Illuminate\Http\Request  $request
+		 * @param  \Closure  $next
 		 * @return mixed
 		 */
 		public function handle($request, Closure $next)
