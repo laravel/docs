@@ -14,7 +14,7 @@ Of course, middleware can be written to perform a variety of tasks besides authe
 There are several middleware included in the Laravel framework, including middleware for maintenance, authentication, CSRF protection, and more. All of these middleware are located in the `app/Http/Middleware` directory.
 
 <a name="defining-middleware"></a>
-Defining Middleware
+## Defining Middleware
 
 To create a new route filter, use the `make:middleware` Artisan command:
 
