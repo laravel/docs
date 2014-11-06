@@ -40,7 +40,7 @@ Now, let's take a look at a basic service provider:
 		 */
 		public function register()
 		{
-			$this->app->bindShared('Riak\Contracts\Connection', function($app)
+			$this->app->singleton('Riak\Contracts\Connection', function($app)
 			{
 				return new Connection($app['config']['riak']);
 			});
@@ -129,7 +129,7 @@ To defer the loading of a provider, set the `defer` property to `true` and defin
 		 */
 		public function register()
 		{
-			$this->app->bindShared('Riak\Contracts\Connection', function($app)
+			$this->app->singleton('Riak\Contracts\Connection', function($app)
 			{
 				return new Connection($app['config']['riak']);
 			});
