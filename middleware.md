@@ -62,7 +62,7 @@ If you would like to assign middleware to specific routes, you should first assi
 
 Once the middleware has been defined in `RouteServiceProvider`, you may use the `middleware` key in the route options array:
 
-	$router->get('/admin/profile', ['middleware' => 'auth', function()
+	$router->get('admin/profile', ['middleware' => 'auth', function()
 	{
 		//
 	}]);
