@@ -17,7 +17,7 @@ The root directory of a fresh Laravel installation contains a variety of folders
 
 The `app` directory, as you might expect, contains the core code of your application. We'll explore this folder in more detail soon.
 
-The `bootstrap` folder contains a few files that bootstrap the framework, configure generator paths, and perform environment detection.
+The `bootstrap` folder contains a few files that bootstrap the framework and configure autoloading.
 
 The `config` directory, as the name implies, contains all of your application's configuration files.
 
