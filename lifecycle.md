@@ -20,23 +20,25 @@ If you don't understand all of the terms right away, don't lose heart! Just try 
 
 The entry point for all requests to a Laravel application is the `public/index.php` file. All requests are directed to this file by your web server (Apache / Nginx) configuration. The `index.php` file doesn't contain much code. Rather, it is simply a starting point for loading the rest of the framework.
 
-The `index.php` file loads the Composer generated autoloader definition, and then retrieves an instance of the Laravel application from `bootstrap/start.php`. The first action taken by Laravel itself is to create an instance of the application / service container.
+The `index.php` file loads the Composer generated autoloader definition, and then retrieves an instance of the Laravel application from `bootstrap/app.php` script. The first action taken by Laravel itself is to create an instance of the application / service container.
 
-#### Environment Detection
+#### HTTP / Console Kernels
 
-Next, Laravel detects the application environment by loading the `bootstrap/environment.php` file. The environment determines which versions of configuration files will be loaded for the given request.
+Next, the incoming request is sent to either the HTTP kernel or the console kernel, depending on the type of request that is entering the application. These two kernels serve as the central location that all requests flow through. For now, let's just focus on the HTTP kernel, which is located in `app/Http/Kernel.php`.
 
-#### Error Handling
+The HTTP kernel extends the `Illuminate\Foundation\Http\Kernel` class, which defines an array of `bootstrappers` that will be run before the request is executed. These bootstrappers do things like configure error handling, configure logging, detect the application environment, and other things that need to be done before the request is actually handled.
 
-After the Application is created and the environment has been detected, the exception / error handling services are started. This is done by the `Illuminate\Foundation\start.php` script which is included in the `laravel/framework` Composer package.
+The HTTP kernel also defines a list of HTTP middleware that all HTTP requests must pass through before being handled by the application. These middleware handle reading and writing the HTTP session, determine if the application is in maintenance mode, verifying the CSRF token, and more.
+
+The method signature for the HTTP kernel's `handle` method is quite simple: receive a `Request` and return a `Response`. Think of the Kernel as being a big black box that represents your entire application. Feed it HTTP requests and it will return HTTP responses.
 
 #### Service Providers
 
-Next, we are ready to load all of the configured [service providers](/docs/master/providers). All of the service providers for the application are configured in the `config/app.php` configuration file's `providers` array. First, the `register` method will be called on all providers. The `boot` method will not be called until an HTTP request or console command has actually been dispatched to the application.
+One of the most important Kernel bootstrapping actions is loading the service providers for your application. All of the service providers for the application are configured in the `config/app.php` configuration file's `providers` array. First, the `register` method will be called on all providers, then, once all providers have been registered, the `boot` method will be called.
 
 #### Dispatch Request
 
-Finally, we are ready to dispatch the HTTP request to the application. The Laravel application's `handle` method will be called with a `Symfony\Component\HttpFoundation\Request` instance. At this point, the `boot` method is called on all of the registered service providers. Once the service providers are booted, the request is handed to the router and dispatched to a route / controller.
+Once the application has been bootstrapped and all service providers have been registered, the `Request` will be handed off to the router for dispatching. The router will dispatch the request to a route or controller, as well as run any route specific middleware.
 
 <a name="focus-on-service-providers"></a>
 ## Focus On Service Providers
