@@ -58,12 +58,7 @@ Laravel automatically generates a CSRF "token" for each active user session bein
 
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-#### Validate The Submitted CSRF Token
-
-    $router->post('register', ['before' => 'csrf', function()
-    {
-        return 'You gave a valid CSRF token!';
-    }]);
+You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` HTTP middleware will verify token in the request input matches the token stored in the session.
 
 <a name="route-parameters"></a>
 ## Route Parameters

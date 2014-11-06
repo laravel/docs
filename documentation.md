@@ -14,9 +14,8 @@
     - [Request Lifecycle](/docs/master/lifecycle)
     - [Application Structure](/docs/master/structure)
 - The HTTP Layer
-    - [Quickstart](/docs/master/quick)
     - [Routing](/docs/master/routing)
-    - [Filters](/docs/master/filters)
+    - [Middleware](/docs/master/middleware)
     - [Controllers](/docs/master/controllers)
     - [Requests](/docs/master/requests)
     - [Responses](/docs/master/responses)
