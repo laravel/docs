@@ -58,22 +58,16 @@ Simply create a folder within the `config` directory that matches your environme
 
 Notice that you do not have to specify _every_ option that is in the base configuration file, but only the options you wish to override. The environment configuration files will "cascade" over the base files.
 
-Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `bootstrap/environment.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The array passed to this method is used to determine the current environment. You may add other environments and machine names to the array as needed.
+Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `bootstrap/environment.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The Closure passed to this method is used to determine the current environment.
 
     <?php
 
-    $env = $app->detectEnvironment([
-        'local' => ['your-machine-name'],
-    ]);
+    $env = $app->detectEnvironment(function()
+    {
+        return getenv('APP_ENV');
+    });
 
-In this example, 'local' is the name of the environment and 'your-machine-name' is the hostname of your server. On Linux and Mac, you may determine your hostname using the `hostname` terminal command.
-
-If you need more flexible environment detection, you may pass a `Closure` to the `detectEnvironment` method, allowing you to implement environment detection however you wish:
-
-	$env = $app->detectEnvironment(function()
-	{
-		return $_SERVER['MY_LARAVEL_ENV'];
-	});
+In this example, the 'APP_ENV' environment variable is the name of the environment. To set the environment variable, you should use a `.env` file in the root of your application. For more information on the `.env` file, see [the documentation below](#protecting-sensitive-configuration).
 
 #### Accessing The Current Application Environment
 
@@ -109,23 +103,19 @@ When using environment configuration, you may want to "append" environment [serv
 
 For "real" applications, it is advisable to keep all of your sensitive configuration out of your configuration files. Things such as database passwords, Stripe API keys, and encryption keys should be kept out of your configuration files whenever possible. So, where should we place them? Thankfully, Laravel provides a very simple solution to protecting these types of configuration items using "dot" files.
 
-First, [configure your application](/docs/master/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env.local.php` file within the root of your project, which is usually the same directory that contains your `composer.json` file. The `.env.local.php` should return an array of key-value pairs, much like a typical Laravel configuration file:
+First, [configure your application](/docs/master/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env.php` file within the root of your project, which is usually the same directory that contains your `composer.json` file. The `.env` file contains a simple list of environment variables for your application.
 
-	<?php
-
-	return [
-		'TEST_STRIPE_KEY' => 'super-secret-sauce',
-	];
+	APP_ENV=local
+	DB_USERNAME=homestead
+	DB_PASSWORD=homestead
 
 All of the key-value pairs returned by this file will automatically be available via the `$_ENV` and `$_SERVER` PHP "superglobals". You may now reference these globals from within your configuration files:
 
-	'key' => $_ENV['TEST_STRIPE_KEY']
+	'password' => $_ENV['DB_PASSWORD']
 
-Be sure to add the `.env.local.php` file to your `.gitignore` file. This will allow other developers on your team to create their own local environment configuration, as well as hide your sensitive configuration items from source control.
+Be sure to add the `.env.php` file to your `.gitignore` file. This will allow other developers on your team to create their own environment configuration, as well as hide your sensitive configuration items from source control.
 
-Now, on your production server, create a `.env.php` file in your project root that contains the corresponding values for your production environment. Like the `.env.local.php` file, the production `.env.php` file should never be included in source control.
-
-> **Note:** You may create a file for each environment supported by your application. For example, the `development` environment will load the `.env.development.php` file if it exists. However, the `production` environment always uses the `.env.php` file.
+Now, on your production server, create a `.env.php` file in your project root that contains the corresponding values for your production environment. Like your local `.env.php` file, the production `.env.php` file should never be included in source control.
 
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
