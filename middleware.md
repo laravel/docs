@@ -54,7 +54,7 @@ As you can see, if the given `age` is less than `200`, the middleware will retur
 
 ### Global Middleware
 
-If you want a middleware to be run during every HTTP request to your applciation, simply list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
+If you want a middleware to be run during every HTTP request to your application, simply list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
 
 ### Assigning Middleware To Routes
 
