@@ -245,13 +245,13 @@ If you wish to simply update the timestamps on a model, you may use the `touch` 
 <a name="soft-deleting"></a>
 ## Soft Deleting
 
-When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, apply the `SoftDeletingTrait` to the model:
+When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, apply the `SoftDeletes` to the model:
 
-	use Illuminate\Database\Eloquent\SoftDeletingTrait;
+	use Illuminate\Database\Eloquent\SoftDeletes;
 
 	class User extends Eloquent {
 
-		use SoftDeletingTrait;
+		use SoftDeletes;
 
 		protected $dates = ['deleted_at'];
 
@@ -379,16 +379,16 @@ Then pass the parameter into the scope call:
 
 Sometimes you may wish to define a scope that applies to all queries performed on a model. In essence, this is how Eloquent's own "soft delete" feature works. Global scopes are defined using a combination of PHP traits and an implementation of `Illuminate\Database\Eloquent\ScopeInterface`.
 
-First, let's define a trait. For this example, we'll use the `SoftDeletingTrait` that ships with Laravel:
+First, let's define a trait. For this example, we'll use the `SoftDeletes` that ships with Laravel:
 
-	trait SoftDeletingTrait {
+	trait SoftDeletes {
 
 		/**
 		 * Boot the soft deleting trait for a model.
 		 *
 		 * @return void
 		 */
-		public static function bootSoftDeletingTrait()
+		public static function bootSoftDeletes()
 		{
 			static::addGlobalScope(new SoftDeletingScope);
 		}
