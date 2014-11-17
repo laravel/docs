@@ -48,15 +48,23 @@ Once VirtualBox and Vagrant have been installed, you should add the `laravel/hom
 
 	vagrant box add laravel/homestead
 
-### Clone The Homestead Repository
+### Installing Homestead
 
-Once the box has been added to your Vagrant installation, you should clone or download this repository. Consider cloning the repository into a central `Homestead` directory where you keep all of your Laravel projects, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects.
+Once the box has been added to your Vagrant installation, you are ready to install the Homestead CLI tool using the Composer `global` command:
 
-	git clone https://github.com/laravel/homestead.git Homestead
+	composer global require "laravel/homestead=~2.0"
+
+Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `homestead` executable is found when you run the `homestead` command in your terminal.
+
+Once you have installed the Homestead CLI tool, run the `init` command to create the `Homestead.yaml` configuration file:
+
+	homestead init
+
+The `Homestead.yaml` file will be placed in the `~/.homestead` directory.
 
 ### Set Your SSH Key
 
-Next, you should edit the `Homestead.yaml` file included in the repository. In this file, you can configure the path to your public SSH key, as well as the folders you wish to be shared between your main machine and the Homestead virtual machine.
+Next, you should edit the `Homestead.yaml` file. In this file, you can configure the path to your public SSH key, as well as the folders you wish to be shared between your main machine and the Homestead virtual machine.
 
 Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pair using the following command:
 
@@ -83,11 +91,11 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
 
 ### Bash Aliases
 
-To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the Homestead directory.
+To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the `~/.homestead` directory.
 
 ### Launch The Vagrant Box
 
-Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from the Homestead directory in your terminal. Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically!
+Once you have edited the `Homestead.yaml` to your liking, run the `homestead up` command in your terminal. Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically! To destroy the machine, you may use the `homestead destroy` command. For a complete list of available Homestead commands, run `homestead list`.
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
@@ -104,11 +112,7 @@ To learn how to connect to your databases, read on!
 
 ### Connecting Via SSH
 
-To connect to your Homestead environment via SSH, you should connect to `127.0.0.1` on port 2222 using the SSH key you specified in your `Homestead.yaml` file. You may also simply run the `vagrant ssh` command from your `Homestead` directory.
-
-If you want even more convenience, it can be helpful to add the following alias to your `~/.bash_aliases` or `~/.bash_profile`:
-
-	alias vm='ssh vagrant@127.0.0.1 -p 2222'
+To connect to your Homestead environment via SSH, issue the `homestead ssh` commnad in your terminal.
 
 ### Connecting To Your Databases
 
