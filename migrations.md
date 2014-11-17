@@ -14,21 +14,21 @@ Migrations are a type of version control for your database. They allow a team to
 <a name="creating-migrations"></a>
 ## Creating Migrations
 
-To create a migration, you may use the `migrate:make` command on the Artisan CLI:
+To create a migration, you may use the `make:migration` command on the Artisan CLI:
 
-	php artisan migrate:make create_users_table
+	php artisan make:migration create_users_table
 
-The migration will be placed in your `app/database/migrations` folder, and will contain a timestamp which allows the framework to determine the order of the migrations.
+The migration will be placed in your `database/migrations` folder, and will contain a timestamp which allows the framework to determine the order of the migrations.
 
 You may also specify a `--path` option when creating the migration. The path should be relative to the root directory of your installation:
 
-	php artisan migrate:make foo --path=app/migrations
+	php artisan make:migration foo --path=app/migrations
 
 The `--table` and `--create` options may also be used to indicate the name of the table, and whether the migration will be creating a new table:
 
-	php artisan migrate:make add_votes_to_user_table --table=users
+	php artisan make:migration add_votes_to_user_table --table=users
 
-	php artisan migrate:make create_users_table --create=users
+	php artisan make:migration create_users_table --create=users
 
 <a name="running-migrations"></a>
 ## Running Migrations
@@ -73,7 +73,7 @@ Some migration operations are destructive, meaning they may cause you to lose da
 <a name="database-seeding"></a>
 ## Database Seeding
 
-Laravel also includes a simple way to seed your database with test data using seed classes. All seed classes are stored in `app/database/seeds`. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserTableSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
+Laravel also includes a simple way to seed your database with test data using seed classes. All seed classes are stored in `database/seeds`. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserTableSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
 
 #### Example Database Seed Class
 

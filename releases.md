@@ -1,7 +1,78 @@
 # Release Notes
 
+- [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
 - [Laravel 4.1](#laravel-4.1)
+
+<a name="laravel-5.0"></a>
+## Laravel 5.0
+
+Laravel 5.0 introduces a fresh application structure to the default Laravel project. This new structure serves as a better foundation for building robust application in Laravel, as well as embraces new auto-loading standards (PSR-4) throughout the application. First, let's examine two of the major changes:
+
+### New Folder Structure
+
+The old `app/models` directory has been entirely removed. Instead, all of your code lives directly within the `app` folder, and, by default, is organized to the `App` namespace. This default namespace can be quickly changed using the new `app:name` Artisan command. The Laravel class generators will remember your application namespace by examining the new `config/namespaces.php` configuration file.
+
+Controllers, filters, and requests (a new type of class in Laravel 5.0) are now grouped under the `app/Http` directory, as they are all classes related to the HTTP transport layer of your application. Instead of a single, flat file of route filters, all filters are now broken into their own class files.
+
+A new `app/Providers` directory replaces the `app/start` files from previous versions of Laravel 4.x. These service providers provide various bootstrapping functions to your application, such as error handling, logging, route loading, and more. Of course, you are free to create additional service providers for your application.
+
+Application language files and views have been moved to the `resources` directory.
+
+### Thorough Namespacing
+
+Laravel 5.0 ships with the entire `app` directory under the `App` namespace. Out of the box, Composer will auto-load all classes within the `app` directory using the PSR-4 auto-loading standard, eliminating the need to `composer dump-autoload` every time you add a new class to your project. Of course, since controllers are namespaced, you will need to import any classes you utilize from other namespaces.
+
+### Dependency Injection On Routes & Controller Methods
+
+In previous versions of Laravel 4.x, you can type-hint controller dependencies in the controller's constructor and they will automatically be injected into the controller instance. Of course, this is still possible in Laravel 5.0; however, you can also type-hint dependencies on your controller **methods** as well! For example:
+
+	public function show(PhotoService $photos, $id)
+	{
+		$photo = $photos->find($id);
+
+		//
+	}
+
+### Form Requests
+
+Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundation\Http\FormRequest` class. These request objects can be combined with the method injection described above to provide a boiler-plate free method of validating user input. Let's dig in and look at a sample `FormRequest`:
+
+	<?php namespace App\Http\Requests;
+
+	class RegisterRequest extends FormRequest {
+
+		public function rules()
+		{
+			return [
+				'email' => 'required|email|unique:users',
+				'password' => 'required|confirmed|min:8',
+			];
+		}
+
+		public function authorize()
+		{
+			return true;
+		}
+
+	}
+
+Once the class has been defined, we can type-hint it on our controller action:
+
+	public function register(RegisterRequest $request)
+	{
+		var_dump($request->input());
+	}
+
+When the Laravel IoC container identifies that the class it is injecting is a `FormRequest` instance, the request will **automatically be validated**. This means that if your controller action is called, you can safely assume the HTTP request input has been validated according to the rules you specified in your form request class. Even more, if the request is invalid, an HTTP redirect, which you may customize, will automatically be issued, and the error messages will be either flashed to the session or converted to JSON. **Form validation has never been more simple.** For more information on `FormRequest` validation, check out the [documentation](/docs/validation#form-requests).
+
+### New Generators
+
+To compliment the new default application structure, `provider:make`, `filter:make`, and `request:make` Artisan commands have been added to the framework.
+
+### Route Cache
+
+If your application is made up entirely of controller routes, you may utilize the new `route:cache` Artisan command to drastically speed up the registration of your routes. This is primarily useful on applications with 100+ routes and typically makes this portion of your code 50x faster. Literally!
 
 <a name="laravel-4.2"></a>
 ## Laravel 4.2
