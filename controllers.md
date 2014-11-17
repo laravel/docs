@@ -245,7 +245,7 @@ If it becomes necessary to add additional routes to a resource controller beyond
 
 #### Constructor Injection
 
-As you may have noticed in the examples above, the Laravel [service contanier](/docs/master/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
+As you may have noticed in the examples above, the Laravel [service container](/docs/master/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
 
 	<?php namespace App\Http\Controllers;
 
