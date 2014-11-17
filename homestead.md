@@ -114,7 +114,7 @@ To learn how to connect to your databases, read on!
 
 ### Connecting Via SSH
 
-To connect to your Homestead environment via SSH, issue the `homestead ssh` commnad in your terminal.
+To connect to your Homestead environment via SSH, issue the `homestead ssh` command in your terminal.
 
 ### Connecting To Your Databases
 
