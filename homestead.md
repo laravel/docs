@@ -60,7 +60,9 @@ Once you have installed the Homestead CLI tool, run the `init` command to create
 
 	homestead init
 
-The `Homestead.yaml` file will be placed in the `~/.homestead` directory.
+The `Homestead.yaml` file will be placed in the `~/.homestead` directory. If you're using a Mac or Linux system, you may edit `Homestead.yaml` file by running the `homestead edit` command in your terminal:
+
+	homestead edit
 
 ### Set Your SSH Key
 
