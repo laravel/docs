@@ -68,7 +68,7 @@ When the Laravel IoC container identifies that the class it is injecting is a `F
 
 ### New Generators
 
-To compliment the new default application structure, `provider:make`, `filter:make`, and `request:make` Artisan commands have been added to the framework.
+To compliment the new default application structure, `make:provider`, `make:filter`, and `make:request` Artisan commands have been added to the framework.
 
 ### Route Cache
 
