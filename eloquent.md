@@ -119,7 +119,7 @@ $users = User::whereRaw('age > ? and votes = 100', array(25))->get();
 
 If you need to process a lot (thousands) of Eloquent records, using the `chunk` command will allow you to do without eating all of your RAM:
 
-```
+```php
 User::chunk(200, function($users)
 {
 	foreach ($users as $user)
@@ -415,19 +415,21 @@ class User extends Eloquent {
 
 Scopes allow you to easily re-use query logic in your models. To define a scope, simply prefix a model method with `scope`:
 
-	class User extends Eloquent {
+```php
+class User extends Eloquent {
 
-		public function scopePopular($query)
-		{
-			return $query->where('votes', '>', 100);
-		}
-
-		public function scopeWomen($query)
-		{
-			return $query->whereGender('W');
-		}
-
+	public function scopePopular($query)
+	{
+		return $query->where('votes', '>', 100);
 	}
+
+	public function scopeWomen($query)
+	{
+		return $query->whereGender('W');
+	}
+
+}
+```
 
 #### Utilizing A Query Scope
 
@@ -544,43 +546,52 @@ Of course, your database tables are probably related to one another. For example
 
 A one-to-one relationship is a very basic relation. For example, a `User` model might have one `Phone`. We can define this relation in Eloquent:
 
-	class User extends Eloquent {
+```php
+class User extends Eloquent {
 
-		public function phone()
-		{
-			return $this->hasOne('Phone');
-		}
-
+	public function phone()
+	{
+		return $this->hasOne('Phone');
 	}
+
+}
 
 The first argument passed to the `hasOne` method is the name of the related model. Once the relationship is defined, we may retrieve it using Eloquent's [dynamic properties](#dynamic-properties):
 
-	$phone = User::find(1)->phone;
+```php
+$phone = User::find(1)->phone;
+```
 
 The SQL performed by this statement will be as follows:
 
-	select * from users where id = 1
+```sql
+select * from users where id = 1
 
-	select * from phones where user_id = 1
+select * from phones where user_id = 1
+```
 
 Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method. Furthermore, you may pass a third argument to the method to specify which local column that should be used for the association:
 
-	return $this->hasOne('Phone', 'foreign_key');
+```php
+return $this->hasOne('Phone', 'foreign_key');
 
-	return $this->hasOne('Phone', 'foreign_key', 'local_key');
+return $this->hasOne('Phone', 'foreign_key', 'local_key');
+```
 
 #### Defining The Inverse Of A Relation
 
 To define the inverse of the relationship on the `Phone` model, we use the `belongsTo` method:
 
-	class Phone extends Eloquent {
+```php
+class Phone extends Eloquent {
 
-		public function user()
-		{
-			return $this->belongsTo('User');
-		}
-
+	public function user()
+	{
+		return $this->belongsTo('User');
 	}
+
+}
+```
 
 In the example above, Eloquent will look for a `user_id` column on the `phones` table. If you would like to define a different foreign key column, you may pass it as the second argument to the `belongsTo` method:
 
