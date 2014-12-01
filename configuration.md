@@ -146,18 +146,24 @@ When your application is in maintenance mode, a custom view will be displayed fo
 
 To enable maintenance mode, simply execute the `down` Artisan command:
 
-	php artisan down
+```bash
+php artisan down
+```
 
 To disable maintenance mode, use the `up` command:
 
-	php artisan up
+```bash
+php artisan up
+```
 
 To show a custom view when your application is in maintenance mode, you may add something like the following to your application's `app/start/global.php` file:
 
-	App::down(function()
-	{
-		return Response::view('maintenance', array(), 503);
-	});
+```php
+App::down(function()
+{
+	return Response::view('maintenance', array(), 503);
+});
+```
 
 If the Closure passed to the `down` method returns `NULL`, maintenance mode will be ignored for that request.
 
