@@ -24,64 +24,78 @@ The configuration file is located at `app/config/remote.php`, and contains all o
 
 To run commands on your `default` remote connection, use the `SSH::run` method:
 
-	SSH::run(array(
-		'cd /var/www',
-		'git pull origin master',
-	));
+```php
+SSH::run(array(
+	'cd /var/www',
+	'git pull origin master',
+));
+```
 
 #### Running Commands On A Specific Connection
 
 Alternatively, you may run commands on a specific connection using the `into` method:
 
-	SSH::into('staging')->run(array(
-		'cd /var/www',
-		'git pull origin master',
-	));
+```php
+SSH::into('staging')->run(array(
+	'cd /var/www',
+	'git pull origin master',
+));
+```
 
 #### Catching Output From Commands
 
 You may catch the "live" output of your remote commands by passing a Closure into the `run` method:
 
-	SSH::run($commands, function($line)
-	{
-		echo $line.PHP_EOL;
-	});
+```php
+SSH::run($commands, function($line)
+{
+	echo $line.PHP_EOL;
+});
+```
 
 ## Tasks
 <a name="tasks"></a>
 
 If you need to define a group of commands that should always be run together, you may use the `define` method to define a `task`:
 
-	SSH::into('staging')->define('deploy', array(
-		'cd /var/www',
-		'git pull origin master',
-		'php artisan migrate',
-	));
+```php
+SSH::into('staging')->define('deploy', array(
+	'cd /var/www',
+	'git pull origin master',
+	'php artisan migrate',
+));
+```
 
 Once the task has been defined, you may use the `task` method to run it:
 
-	SSH::into('staging')->task('deploy', function($line)
-	{
-		echo $line.PHP_EOL;
-	});
+```php
+SSH::into('staging')->task('deploy', function($line)
+{
+	echo $line.PHP_EOL;
+});
+```
 
 <a name="sftp-downloads"></a>
 ## SFTP Downloads
 
 The `SSH` class includes a simple way to download files using the `get` and `getString` methods:
 
-	SSH::into('staging')->get($remotePath, $localPath);
+```php
+SSH::into('staging')->get($remotePath, $localPath);
 
-	$contents = SSH::into('staging')->getString($remotePath);
+$contents = SSH::into('staging')->getString($remotePath);
+```
 
 <a name="sftp-uploads"></a>
 ## SFTP Uploads
 
 The `SSH` class also includes a simple way to upload files, or even strings, to the server using the `put` and `putString` methods:
 
-	SSH::into('staging')->put($localFile, $remotePath);
+```php
+SSH::into('staging')->put($localFile, $remotePath);
 
-	SSH::into('staging')->putString($remotePath, 'Foo');
+SSH::into('staging')->putString($remotePath, 'Foo');
+```
 
 <a name="tailing-remote-logs"></a>
 ## Tailing Remote Logs
@@ -118,11 +132,13 @@ Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `e
 
 Next, create an `Envoy.blade.php` file in the root of your project. Here's an example to get you started:
 
+```php
 	@servers(['web' => '192.168.1.1'])
 
 	@task('foo', ['on' => 'web'])
 		ls -la
 	@endtask
+```
 
 As you can see, an array of `@servers` is defined at the top of the file. You can reference these servers in the `on` option of your task declarations. Within your `@task` declarations you should place the Bash code that will be run on your server when the task is executed.
 
