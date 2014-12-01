@@ -100,70 +100,94 @@ Input::flash();
 
 #### Flashing Only Some Input To The Session
 
-	Input::flashOnly('username', 'email');
+```php
+Input::flashOnly('username', 'email');
 
-	Input::flashExcept('password');
+Input::flashExcept('password');
+```
 
 Since you often will want to flash input in association with a redirect to the previous page, you may easily chain input flashing onto a redirect.
 
-	return Redirect::to('form')->withInput();
+```php
+return Redirect::to('form')->withInput();
 
-	return Redirect::to('form')->withInput(Input::except('password'));
+return Redirect::to('form')->withInput(Input::except('password'));
+```
 
 > **Note:** You may flash other data across requests using the [Session](/docs/session) class.
 
 #### Retrieving Old Data
 
-	Input::old('username');
+```php
+Input::old('username');
+```
 
 <a name="files"></a>
 ## Files
 
 #### Retrieving An Uploaded File
 
-	$file = Input::file('photo');
+```php
+$file = Input::file('photo');
+```
 
 #### Determining If A File Was Uploaded
 
-	if (Input::hasFile('photo'))
-	{
-		//
-	}
+```php
+if (Input::hasFile('photo'))
+{
+	//
+}
+```
 
 The object returned by the `file` method is an instance of the `Symfony\Component\HttpFoundation\File\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file.
 
 #### Determining If An Uploaded File Is Valid
 
-	if (Input::file('photo')->isValid())
-	{
-		//
-	}
+```php
+if (Input::file('photo')->isValid())
+{
+	//
+}
+```
 
 #### Moving An Uploaded File
 
-	Input::file('photo')->move($destinationPath);
+```php
+Input::file('photo')->move($destinationPath);
 
-	Input::file('photo')->move($destinationPath, $fileName);
+Input::file('photo')->move($destinationPath, $fileName);
+```
 
 #### Retrieving The Path To An Uploaded File
 
-	$path = Input::file('photo')->getRealPath();
+```php
+$path = Input::file('photo')->getRealPath();
+```
 
 #### Retrieving The Original Name Of An Uploaded File
 
-	$name = Input::file('photo')->getClientOriginalName();
+```php
+$name = Input::file('photo')->getClientOriginalName();
+```
 
 #### Retrieving The Extension Of An Uploaded File
 
-	$extension = Input::file('photo')->getClientOriginalExtension();
+```php
+$extension = Input::file('photo')->getClientOriginalExtension();
+```
 
 #### Retrieving The Size Of An Uploaded File
 
-	$size = Input::file('photo')->getSize();
+```php
+$size = Input::file('photo')->getSize();
+```
 
 #### Retrieving The MIME Type Of An Uploaded File
 
-	$mime = Input::file('photo')->getMimeType();
+```php
+$mime = Input::file('photo')->getMimeType();
+```
 
 <a name="request-information"></a>
 ## Request Information
@@ -172,73 +196,97 @@ The `Request` class provides many methods for examining the HTTP request for you
 
 #### Retrieving The Request URI
 
-	$uri = Request::path();
+```php
+$uri = Request::path();
+```
 
 #### Retrieving The Request Method
 
-	$method = Request::method();
+```php
+$method = Request::method();
 
-	if (Request::isMethod('post'))
-	{
-		//
-	}
+if (Request::isMethod('post'))
+{
+	//
+}
+```
 
 #### Determining If The Request Path Matches A Pattern
 
-	if (Request::is('admin/*'))
-	{
-		//
-	}
+```php
+if (Request::is('admin/*'))
+{
+	//
+}
+```
 
 #### Get The Request URL
 
-	$url = Request::url();
+```php
+$url = Request::url();
+```
 
 #### Retrieve A Request URI Segment
 
-	$segment = Request::segment(1);
+```php
+$segment = Request::segment(1);
+```
 
 #### Retrieving A Request Header
 
-	$value = Request::header('Content-Type');
+```php
+$value = Request::header('Content-Type');
+```
 
 #### Retrieving Values From $_SERVER
 
-	$value = Request::server('PATH_INFO');
+```php
+$value = Request::server('PATH_INFO');
+```
 
 #### Determining If The Request Is Over HTTPS
 
-	if (Request::secure())
-	{
-		//
-	}
+```php
+if (Request::secure())
+{
+	//
+}
+```
 
 #### Determine If The Request Is Using AJAX
 
-	if (Request::ajax())
-	{
-		//
-	}
+```php
+if (Request::ajax())
+{
+	//
+}
+```
 
 #### Determine If The Request Has JSON Content Type
 
-	if (Request::isJson())
-	{
-		//
-	}
+```php
+if (Request::isJson())
+{
+	//
+}
+```
 
 #### Determine If The Request Is Asking For JSON
 
-	if (Request::wantsJson())
-	{
-		//
-	}
+```php
+if (Request::wantsJson())
+{
+	//
+}
+```
 
 #### Checking The Requested Response Format
 
 The `Request::format` method will return the requested response format based on the HTTP Accept header:
 
-	if (Request::format() == 'json')
-	{
-		//
-	}
+```php
+if (Request::format() == 'json')
+{
+	//
+}
+```
