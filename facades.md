@@ -30,20 +30,23 @@ So, when you make a facade call like `Cache::get`, Laravel resolves the Cache ma
 
 In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class.
 
-	$value = Cache::get('key');
+```php
+$value = Cache::get('key');
+```
 
 However, if we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
 
-	class Cache extends Facade {
+```php
+class Cache extends Facade {
 
-		/**
-		 * Get the registered name of the component.
-		 *
-		 * @return string
-		 */
-		protected static function getFacadeAccessor() { return 'cache'; }
-
-	}
+	/**
+	 * Get the registered name of the component.
+	 *
+	 * @return string
+	 */
+	protected static function getFacadeAccessor() { return 'cache'; }
+}
+```
 
 The Cache class extends the base `Facade` class and defines a method `getFacadeAccessor()`. Remember, this method's job is to return the name of an IoC binding.
 
@@ -51,7 +54,9 @@ When a user references any static method on the `Cache` facade, Laravel resolves
 
 So, our `Cache::get` call could be re-written like so:
 
-	$value = $app->make('cache')->get('key');
+```php
+$value = $app->make('cache')->get('key');
+```
 
 <a name="creating-facades"></a>
 ## Creating Facades
@@ -64,41 +69,49 @@ Creating a facade for your own application or package is simple. You only need 3
 
 Let's look at an example. Here, we have a class defined as `PaymentGateway\Payment`.
 
-	namespace PaymentGateway;
+```php
+namespace PaymentGateway;
 
-	class Payment {
+class Payment {
 
-		public function process()
-		{
-			//
-		}
-
+	public function process()
+	{
+		//
 	}
+
+}
+```
 
 This class might live in your `app/models` directory, or any other directory that Composer knows how to auto-load.
 
 We need to be able to resolve this class from the IoC container. So, let's add a binding:
 
-	App::bind('payment', function()
-	{
-		return new \PaymentGateway\Payment;
-	});
+```php
+App::bind('payment', function()
+{
+	return new \PaymentGateway\Payment;
+});
+```
 
 A great place to register this binding would be to create a new [service provider](/docs/ioc#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `app/config/app.php` configuration file.
 
 Next, we can create our own facade class:
 
-	use Illuminate\Support\Facades\Facade;
+```php
+use Illuminate\Support\Facades\Facade;
 
-	class Payment extends Facade {
+class Payment extends Facade {
 
-		protected static function getFacadeAccessor() { return 'payment'; }
+	protected static function getFacadeAccessor() { return 'payment'; }
 
-	}
+}
+```
 
 Finally, if we wish, we can add an alias for our facade to the `aliases` array in the `app/config/app.php` configuration file. Now, we can call the `process` method on an instance of the `Payment` class.
 
-	Payment::process();
+```php
+Payment::process();
+```
 
 ### A Note On Auto-Loading Aliases
 
