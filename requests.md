@@ -22,10 +22,10 @@ You may access all user input with a few simple methods. You do not need to worr
 #### Determining If An Input Value Is Present
 
 ```php
-	if (Input::has('name'))
-	{
-		//
-	}
+if (Input::has('name'))
+{
+	//
+}
 ```
 
 #### Getting All Input For The Request
