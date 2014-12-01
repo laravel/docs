@@ -28,31 +28,39 @@ The Laravel `Hash` class provides secure Bcrypt hashing:
 
 #### Hashing A Password Using Bcrypt
 
-	$password = Hash::make('secret');
+```php
+$password = Hash::make('secret');
+```
 
 #### Verifying A Password Against A Hash
 
-	if (Hash::check('secret', $hashedPassword))
-	{
-		// The passwords match...
-	}
+```php
+if (Hash::check('secret', $hashedPassword))
+{
+	// The passwords match...
+}
+```
 
 #### Checking If A Password Needs To Be Rehashed
 
-	if (Hash::needsRehash($hashed))
-	{
-		$hashed = Hash::make('secret');
-	}
+```php
+if (Hash::needsRehash($hashed))
+{
+	$hashed = Hash::make('secret');
+}
+```
 
 <a name="authenticating-users"></a>
 ## Authenticating Users
 
 To log a user into your application, you may use the `Auth::attempt` method.
 
-	if (Auth::attempt(array('email' => $email, 'password' => $password)))
-	{
-		return Redirect::intended('dashboard');
-	}
+```php
+if (Auth::attempt(array('email' => $email, 'password' => $password)))
+{
+	return Redirect::intended('dashboard');
+}
+```
 
 Take note that `email` is not a required option, it is merely used for example. You should use whatever column name corresponds to a "username" in your database. The `Redirect::intended` function will redirect the user to the URL they were trying to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
 
@@ -62,38 +70,46 @@ When the `attempt` method is called, the `auth.attempt` [event](/docs/events) wi
 
 To determine if the user is already logged into your application, you may use the `check` method:
 
-	if (Auth::check())
-	{
-		// The user is logged in...
-	}
+```php
+if (Auth::check())
+{
+	// The user is logged in...
+}
+```
 
 #### Authenticating A User And "Remembering" Them
 
 If you would like to provide "remember me" functionality in your application, you may pass `true` as the second argument to the `attempt` method, which will keep the user authenticated indefinitely (or until they manually logout). Of course, your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
 
-	if (Auth::attempt(array('email' => $email, 'password' => $password), true))
-	{
-		// The user is being remembered...
-	}
+```php
+if (Auth::attempt(array('email' => $email, 'password' => $password), true))
+{
+	// The user is being remembered...
+}
+```
 
 **Note:** If the `attempt` method returns `true`, the user is considered logged into the application.
 
 #### Determining If User Authed Via Remember
 If you are "remembering" user logins, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
 
-	if (Auth::viaRemember())
-	{
-		//
-	}
+```php
+if (Auth::viaRemember())
+{
+	//
+}
+```
 
 #### Authenticating A User With Conditions
 
 You also may add extra conditions to the authenticating query:
 
-    if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1)))
-    {
-        // The user is active, not suspended, and exists.
-    }
+```php
+if (Auth::attempt(array('email' => $email, 'password' => $password, 'active' => 1)))
+{
+      // The user is active, not suspended, and exists.
+}
+```
 
 > **Note:** For added protection against session fixation, the user's session ID will automatically be regenerated after authenticating.
 
@@ -101,46 +117,60 @@ You also may add extra conditions to the authenticating query:
 
 Once a user is authenticated, you may access the User model / record:
 
-	$email = Auth::user()->email;
+```php
+$email = Auth::user()->email;
+```
 
 To retrieve the authenticated user's ID, you may use the `id` method:
 
-	$id = Auth::id();
+```php
+$id = Auth::id();
+```
 
 To simply log a user into the application by their ID, use the `loginUsingId` method:
 
-	Auth::loginUsingId(1);
+```php
+Auth::loginUsingId(1);
+```
 
 #### Validating User Credentials Without Login
 
 The `validate` method allows you to validate a user's credentials without actually logging them into the application:
 
-	if (Auth::validate($credentials))
-	{
-		//
-	}
+```php
+if (Auth::validate($credentials))
+{
+	//
+}
+```
 
 #### Logging A User In For A Single Request
 
 You may also use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized.
 
-	if (Auth::once($credentials))
-	{
-		//
-	}
+```php
+if (Auth::once($credentials))
+{
+	//
+}
+```
 
 #### Logging A User Out Of The Application
 
-	Auth::logout();
+```php
+Auth::logout();
+```
 
 <a name="manually"></a>
 ## Manually Logging In Users
 
 If you need to log an existing user instance into your application, you may simply call the `login` method with the instance:
 
-	$user = User::find(1);
+```php
+$user = User::find(1);
 
-	Auth::login($user);
+Auth::login($user);
+```
 
 This is equivalent to logging in a user via credentials using the `attempt` method.
 
@@ -151,10 +181,12 @@ Route filters may be used to allow only authenticated users to access a given ro
 
 #### Protecting A Route
 
-	Route::get('profile', array('before' => 'auth', function()
-	{
-		// Only authenticated users may enter...
-	}));
+```php
+Route::get('profile', array('before' => 'auth', function()
+{
+	// Only authenticated users may enter...
+}));
+```
 
 ### CSRF Protection
 
