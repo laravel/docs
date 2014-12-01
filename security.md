@@ -194,14 +194,18 @@ Laravel provides an easy method of protecting your application from cross-site r
 
 #### Inserting CSRF Token Into Form
 
-    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+```html
+<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+```
 
 #### Validate The Submitted CSRF Token
 
+```php
     Route::post('register', array('before' => 'csrf', function()
     {
         return 'You gave a valid CSRF token!';
     }));
+```
 
 <a name="http-basic-authentication"></a>
 ## HTTP Basic Authentication
@@ -210,31 +214,39 @@ HTTP Basic Authentication provides a quick way to authenticate users of your app
 
 #### Protecting A Route With HTTP Basic
 
-	Route::get('profile', array('before' => 'auth.basic', function()
-	{
-		// Only authenticated users may enter...
-	}));
+```php
+Route::get('profile', array('before' => 'auth.basic', function()
+{
+	// Only authenticated users may enter...
+}));
+```
 
 By default, the `basic` filter will use the `email` column on the user record when authenticating. If you wish to use another column you may pass the column name as the first parameter to the `basic` method in your `app/filters.php` file:
 
-	Route::filter('auth.basic', function()
-	{
-		return Auth::basic('username');
-	});
+```php
+Route::filter('auth.basic', function()
+{
+	return Auth::basic('username');
+});
+```
 
 #### Setting Up A Stateless HTTP Basic Filter
 
 You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, define a filter that returns the `onceBasic` method:
 
-	Route::filter('basic.once', function()
-	{
-		return Auth::onceBasic();
-	});
+```php
+Route::filter('basic.once', function()
+{
+	return Auth::onceBasic();
+});
+```
 
 If you are using PHP FastCGI, HTTP Basic authentication will not work correctly by default. The following lines should be added to your `.htaccess` file:
 
-	RewriteCond %{HTTP:Authorization} ^(.+)$
-	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+```apacheconf
+RewriteCond %{HTTP:Authorization} ^(.+)$
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+```
 
 <a name="password-reminders-and-reset"></a>
 ## Password Reminders & Reset
@@ -245,58 +257,70 @@ Most web applications provide a way for users to reset their forgotten passwords
 
 #### Implementing The RemindableInterface
 
-	use Illuminate\Auth\Reminders\RemindableTrait;
-	use Illuminate\Auth\Reminders\RemindableInterface;
+```php
+use Illuminate\Auth\Reminders\RemindableTrait;
+use Illuminate\Auth\Reminders\RemindableInterface;
 
-	class User extends Eloquent implements RemindableInterface {
+class User extends Eloquent implements RemindableInterface {
 
-		use RemindableTrait;
+	use RemindableTrait;
 
-	}
+}
+```
 
 #### Generating The Reminder Table Migration
 
 Next, a table must be created to store the password reset tokens. To generate a migration for this table, simply execute the `auth:reminders-table` Artisan command:
 
-	php artisan auth:reminders-table
+```bash
+php artisan auth:reminders-table
 
-	php artisan migrate
+php artisan migrate
+```
 
 ### Password Reminder Controller
 
 Now we're ready to generate the password reminder controller. To automatically generate a controller, you may use the `auth:reminders-controller` Artisan command, which will create a `RemindersController.php` file in your `app/controllers` directory.
 
-	php artisan auth:reminders-controller
+```bash
+php artisan auth:reminders-controller
+```
 
 The generated controller will already have a `getRemind` method that handles showing your password reminder form. All you need to do is create a `password.remind` [view](/docs/responses#views). This view should have a basic form with an `email` field. The form should POST to the `RemindersController@postRemind` action.
 
 A simple form on the `password.remind` view might look like this:
 
-	<form action="{{ action('RemindersController@postRemind') }}" method="POST">
-		<input type="email" name="email">
-		<input type="submit" value="Send Reminder">
-	</form>
+```html
+<form action="{{ action('RemindersController@postRemind') }}" method="POST">
+	<input type="email" name="email">
+	<input type="submit" value="Send Reminder">
+</form>
+```
 
 In addition to `getRemind`, the generated controller will already have a `postRemind` method that handles sending the password reminder e-mails to your users. This method expects the `email` field to be present in the `POST` variables. If the reminder e-mail is successfully sent to the user, a `status` message will be flashed to the session. If the reminder fails, an `error` message will be flashed instead.
 
 Within the `postRemind` controller method you may modify the message instance before it is sent to the user:
 
-	Password::remind(Input::only('email'), function($message)
-	{
-		$message->subject('Password Reminder');
-	});
+```php
+Password::remind(Input::only('email'), function($message)
+{
+	$message->subject('Password Reminder');
+});
+```
 
 Your user will receive an e-mail with a link that points to the `getReset` method of the controller. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method. The action is already configured to return a `password.reset` view which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
 
 A simple form on the `password.reset` view might look like this:
 
-	<form action="{{ action('RemindersController@postReset') }}" method="POST">
-		<input type="hidden" name="token" value="{{ $token }}">
-		<input type="email" name="email">
-		<input type="password" name="password">
-		<input type="password" name="password_confirmation">
-		<input type="submit" value="Reset Password">
-	</form>
+```html
+<form action="{{ action('RemindersController@postReset') }}" method="POST">
+	<input type="hidden" name="token" value="{{ $token }}">
+	<input type="email" name="email">
+	<input type="password" name="password">
+	<input type="password" name="password_confirmation">
+	<input type="submit" value="Reset Password">
+</form>
+```
 
 Finally, the `postReset` method is responsible for actually changing the password in storage. In this controller action, the Closure passed to the `Password::reset` method sets the `password` attribute on the `User` and calls the `save` method. Of course, this Closure is assuming your `User` model is an [Eloquent model](/docs/eloquent); however, you are free to change this Closure as needed to be compatible with your application's database storage system.
 
@@ -306,10 +330,12 @@ If the password is successfully reset, the user will be redirected to the root o
 
 By default, the `Password::reset` method will verify that the passwords match and are >= six characters. You may customize these rules using the `Password::validator` method, which accepts a Closure. Within this Closure, you may do any password validation you wish. Note that you are not required to verify that the passwords match, as this will be done automatically by the framework.
 
-	Password::validator(function($credentials)
-	{
-		return strlen($credentials['password']) >= 6;
-	});
+```php
+Password::validator(function($credentials)
+{
+	return strlen($credentials['password']) >= 6;
+});
+```
 
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `app/config/auth.php` file.
 
@@ -320,21 +346,27 @@ Laravel provides facilities for strong AES encryption via the mcrypt PHP extensi
 
 #### Encrypting A Value
 
-	$encrypted = Crypt::encrypt('secret');
+```php
+$encrypted = Crypt::encrypt('secret');
+```
 
 > **Note:** Be sure to set a 16, 24, or 32 character random string in the `key` option of the `app/config/app.php` file. Otherwise, encrypted values will not be secure.
 
 #### Decrypting A Value
 
-	$decrypted = Crypt::decrypt($encryptedValue);
+```php
+$decrypted = Crypt::decrypt($encryptedValue);
+```
 
 #### Setting The Cipher & Mode
 
 You may also set the cipher and mode used by the encrypter:
 
-	Crypt::setMode('ctr');
+```php
+Crypt::setMode('ctr');
 
-	Crypt::setCipher($cipher);
+Crypt::setCipher($cipher);
+```
 
 <a name="authentication-drivers"></a>
 ## Authentication Drivers
