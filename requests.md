@@ -13,11 +13,15 @@ You may access all user input with a few simple methods. You do not need to worr
 
 #### Retrieving An Input Value
 
+```php
 	$name = Input::get('name');
+```
 
 #### Retrieving A Default Value If The Input Value Is Absent
 
-	$name = Input::get('name', 'Sally');
+```php
+$name = Input::get('name', 'Sally');
+```
 
 #### Determining If An Input Value Is Present
 
@@ -31,18 +35,22 @@ if (Input::has('name'))
 #### Getting All Input For The Request
 
 ```php
-	$input = Input::all();
+$input = Input::all();
 ```
 
 #### Getting Only Some Of The Request Input
 
-	$input = Input::only('username', 'password');
+```php
+$input = Input::only('username', 'password');
 
-	$input = Input::except('credit_card');
+$input = Input::except('credit_card');
+```
 
 When working on forms with "array" inputs, you may use dot notation to access the arrays:
 
-	$input = Input::get('products.0.name');
+```php
+$input = Input::get('products.0.name');
+```
 
 > **Note:** Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
 
@@ -53,23 +61,31 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
 #### Retrieving A Cookie Value
 
-	$value = Cookie::get('name');
+```php
+$value = Cookie::get('name');
+```
 
 #### Attaching A New Cookie To A Response
 
-	$response = Response::make('Hello World');
+```php
+$response = Response::make('Hello World');
 
-	$response->withCookie(Cookie::make('name', 'value', $minutes));
+$response->withCookie(Cookie::make('name', 'value', $minutes));
+```
 
 #### Queueing A Cookie For The Next Response
 
 If you would like to set a cookie before a response has been created, use the `Cookie::queue()` method. The cookie will automatically be attached to the final response from your application.
 
-	Cookie::queue($name, $value, $minutes);
+```php
+Cookie::queue($name, $value, $minutes);
+```
 
 #### Creating A Cookie That Lasts Forever
 
-	$cookie = Cookie::forever('name', 'value');
+```php
+$cookie = Cookie::forever('name', 'value');
+```
 
 <a name="old-input"></a>
 ## Old Input
@@ -78,7 +94,9 @@ You may need to keep input from one request until the next request. For example,
 
 #### Flashing Input To The Session
 
-	Input::flash();
+```php
+Input::flash();
+```
 
 #### Flashing Only Some Input To The Session
 
