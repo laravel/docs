@@ -35,7 +35,9 @@ To get started, create an Eloquent model. Models typically live in the `app/mode
 
 #### Defining An Eloquent Model
 
-	class User extends Eloquent {}
+```php
+class User extends Eloquent {}
+```
 
 Note that we did not tell Eloquent which table to use for our `User` model. The lower-case, plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
 
@@ -53,13 +55,17 @@ Once a model is defined, you are ready to start retrieving and creating records 
 
 #### Retrieving All Models
 
-	$users = User::all();
+```php
+$users = User::all();
+```
 
 #### Retrieving A Record By Primary Key
 
-	$user = User::find(1);
+```php
+$user = User::find(1);
 
-	var_dump($user->name);
+var_dump($user->name);
+```
 
 > **Note:** All methods available on the [query builder](/docs/queries) are also available when querying Eloquent models.
 
@@ -67,49 +73,61 @@ Once a model is defined, you are ready to start retrieving and creating records 
 
 Sometimes you may wish to throw an exception if a model is not found, allowing you to catch the exceptions using an `App::error` handler and display a 404 page.
 
-	$model = User::findOrFail(1);
+```php
+$model = User::findOrFail(1);
 
-	$model = User::where('votes', '>', 100)->firstOrFail();
+$model = User::where('votes', '>', 100)->firstOrFail();
+```
 
 To register the error handler, listen for the `ModelNotFoundException`
 
-	use Illuminate\Database\Eloquent\ModelNotFoundException;
+```php
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-	App::error(function(ModelNotFoundException $e)
-	{
-		return Response::make('Not Found', 404);
-	});
+App::error(function(ModelNotFoundException $e)
+{
+	return Response::make('Not Found', 404);
+});
+```
 
 #### Querying Using Eloquent Models
 
-	$users = User::where('votes', '>', 100)->take(10)->get();
+```php
+$users = User::where('votes', '>', 100)->take(10)->get();
 
-	foreach ($users as $user)
-	{
-		var_dump($user->name);
-	}
+foreach ($users as $user)
+{
+	var_dump($user->name);
+}
+```
 
 #### Eloquent Aggregates
 
 Of course, you may also use the query builder aggregate functions.
 
-	$count = User::where('votes', '>', 100)->count();
+```php
+$count = User::where('votes', '>', 100)->count();
+```
 
 If you are unable to generate the query you need via the fluent interface, feel free to use `whereRaw`:
 
-	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
+```php
+$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
+```
 
 #### Chunking Results
 
 If you need to process a lot (thousands) of Eloquent records, using the `chunk` command will allow you to do without eating all of your RAM:
 
-	User::chunk(200, function($users)
+```
+User::chunk(200, function($users)
+{
+	foreach ($users as $user)
 	{
-		foreach ($users as $user)
-		{
-			//
-		}
-	});
+		//
+	}
+});
+```
 
 The first argument passed to the method is the number of records you wish to receive per "chunk". The Closure passed as the second argument will be called for each chunk that is pulled from the database.
 
@@ -117,7 +135,9 @@ The first argument passed to the method is the number of records you wish to rec
 
 You may also specify which database connection should be used when running an Eloquent query. Simply use the `on` method:
 
-	$user = User::on('connection-name')->find(1);
+```php
+$user = User::on('connection-name')->find(1);
+```
 
 <a name="mass-assignment"></a>
 ## Mass Assignment
@@ -130,11 +150,13 @@ To get started, set the `fillable` or `guarded` properties on your model.
 
 The `fillable` property specifies which attributes should be mass-assignable. This can be set at the class or instance level.
 
-	class User extends Eloquent {
+```php
+class User extends Eloquent {
 
-		protected $fillable = array('first_name', 'last_name', 'email');
+	protected $fillable = array('first_name', 'last_name', 'email');
 
-	}
+}
+```
 
 In this example, only the three listed attributes will be mass-assignable.
 
@@ -142,11 +164,13 @@ In this example, only the three listed attributes will be mass-assignable.
 
 The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of a "white-list":
 
-	class User extends Eloquent {
+```php
+class User extends Eloquent {
 
-		protected $guarded = array('id', 'password');
+	protected $guarded = array('id', 'password');
 
-	}
+}
+```
 
 > **Note:** When using `guarded`, you should still never pass `Input::get()` or any raw array of user controlled input into a `save` or `update` method, as any column that is not guarded may be updated.
 
@@ -154,7 +178,9 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard property:
 
-	protected $guarded = array('*');
+```php
+protected $guarded = array('*');
+```
 
 <a name="insert-update-delete"></a>
 ## Insert, Update, Delete
@@ -163,11 +189,13 @@ To create a new record in the database from a model, simply create a new model i
 
 #### Saving A New Model
 
-	$user = new User;
+```php
+$user = new User;
 
-	$user->name = 'John';
+$user->name = 'John';
 
-	$user->save();
+$user->save();
+```
 
 > **Note:** Typically, your Eloquent models will have auto-incrementing keys. However, if you wish to specify your own keys, set the `incrementing` property on your model to `false`.
 
@@ -175,46 +203,58 @@ You may also use the `create` method to save a new model in a single line. The i
 
 After saving or creating a new model that uses auto-incrementing IDs, you may retrieve the ID by accessing the object's `id` attribute:
 
-	$insertedId = $user->id;
+```php
+$insertedId = $user->id;
+```
 
 #### Setting The Guarded Attributes On The Model
 
-	class User extends Eloquent {
+```php
+class User extends Eloquent {
 
-		protected $guarded = array('id', 'account_id');
+	protected $guarded = array('id', 'account_id');
 
-	}
+}
+```
 
 #### Using The Model Create Method
 
-	// Create a new user in the database...
-	$user = User::create(array('name' => 'John'));
+```php
+// Create a new user in the database...
+$user = User::create(array('name' => 'John'));
 
-	// Retrieve the user by the attributes, or create it if it doesn't exist...
-	$user = User::firstOrCreate(array('name' => 'John'));
+// Retrieve the user by the attributes, or create it if it doesn't exist...
+$user = User::firstOrCreate(array('name' => 'John'));
 
-	// Retrieve the user by the attributes, or instantiate a new instance...
-	$user = User::firstOrNew(array('name' => 'John'));
+// Retrieve the user by the attributes, or instantiate a new instance...
+$user = User::firstOrNew(array('name' => 'John'));
+```
 
 #### Updating A Retrieved Model
 
 To update a model, you may retrieve it, change an attribute, and use the `save` method:
 
-	$user = User::find(1);
+```php
+$user = User::find(1);
 
-	$user->email = 'john@foo.com';
+$user->email = 'john@foo.com';
 
-	$user->save();
+$user->save();
+```
 
 #### Saving A Model And Relationships
 
 Sometimes you may wish to save not only a model, but also all of its relationships. To do so, you may use the `push` method:
 
-	$user->push();
+```php
+$user->push();
+```
 
 You may also run updates as queries against a set of models:
 
-	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
+```php
+$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
+```
 
 > **Note:** No model events are fired when updating a set of models via the Eloquent query builder.
 
@@ -222,46 +262,58 @@ You may also run updates as queries against a set of models:
 
 To delete a model, simply call the `delete` method on the instance:
 
-	$user = User::find(1);
+```php
+$user = User::find(1);
 
-	$user->delete();
+$user->delete();
+```
 
 #### Deleting An Existing Model By Key
 
-	User::destroy(1);
+```php
+User::destroy(1);
 
-	User::destroy(array(1, 2, 3));
+User::destroy(array(1, 2, 3));
 
-	User::destroy(1, 2, 3);
+User::destroy(1, 2, 3);
+```
 
 Of course, you may also run a delete query on a set of models:
 
-	$affectedRows = User::where('votes', '>', 100)->delete();
+```php
+$affectedRows = User::where('votes', '>', 100)->delete();
+```
 
 #### Updating Only The Model's Timestamps
 
 If you wish to simply update the timestamps on a model, you may use the `touch` method:
 
-	$user->touch();
+```php
+$user->touch();
+```
 
 <a name="soft-deleting"></a>
 ## Soft Deleting
 
 When soft deleting a model, it is not actually removed from your database. Instead, a `deleted_at` timestamp is set on the record. To enable soft deletes for a model, apply the `SoftDeletingTrait` to the model:
 
-	use Illuminate\Database\Eloquent\SoftDeletingTrait;
+```php
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-	class User extends Eloquent {
+class User extends Eloquent {
 
-		use SoftDeletingTrait;
+	use SoftDeletingTrait;
 
-		protected $dates = ['deleted_at'];
+	protected $dates = ['deleted_at'];
 
-	}
+}
+```
 
 To add a `deleted_at` column to your table, you may use the `softDeletes` method from a migration:
 
-	$table->softDeletes();
+```php
+$table->softDeletes();
+```
 
 Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current timestamp. When querying a model that uses soft deletes, the "deleted" models will not be included in query results.
 
@@ -269,42 +321,60 @@ Now, when you call the `delete` method on the model, the `deleted_at` column wil
 
 To force soft deleted models to appear in a result set, use the `withTrashed` method on the query:
 
-	$users = User::withTrashed()->where('account_id', 1)->get();
+```php
+$users = User::withTrashed()->where('account_id', 1)->get();
+```
 
 The `withTrashed` method may be used on a defined relationship:
 
-	$user->posts()->withTrashed()->get();
+```php
+$user->posts()->withTrashed()->get();
+```
 
 If you wish to **only** receive soft deleted models in your results, you may use the `onlyTrashed` method:
 
-	$users = User::onlyTrashed()->where('account_id', 1)->get();
+```php
+$users = User::onlyTrashed()->where('account_id', 1)->get();
+```
 
 To restore a soft deleted model into an active state, use the `restore` method:
 
-	$user->restore();
+```php
+$user->restore();
+```
 
 You may also use the `restore` method on a query:
 
-	User::withTrashed()->where('account_id', 1)->restore();
+```php
+User::withTrashed()->where('account_id', 1)->restore();
+```
 
 Like with `withTrashed`, the `restore` method may also be used on relationships:
 
-	$user->posts()->restore();
+```php
+$user->posts()->restore();
+```
 
 If you wish to truly remove a model from the database, you may use the `forceDelete` method:
 
-	$user->forceDelete();
+```php
+$user->forceDelete();
+```
 
 The `forceDelete` method also works on relationships:
 
-	$user->posts()->forceDelete();
+```php
+$user->posts()->forceDelete();
+```
 
 To determine if a given model instance has been soft deleted, you may use the `trashed` method:
 
-	if ($user->trashed())
-	{
-		//
-	}
+```php
+if ($user->trashed())
+{
+	//
+}
+```
 
 <a name="timestamps"></a>
 ## Timestamps
@@ -313,26 +383,30 @@ By default, Eloquent will maintain the `created_at` and `updated_at` columns on 
 
 #### Disabling Auto Timestamps
 
-	class User extends Eloquent {
+```php
+class User extends Eloquent {
 
-		protected $table = 'users';
+	protected $table = 'users';
 
-		public $timestamps = false;
+	public $timestamps = false;
 
-	}
+}
+```
 
 #### Providing A Custom Timestamp Format
 
 If you wish to customize the format of your timestamps, you may override the `getDateFormat` method in your model:
 
-	class User extends Eloquent {
+```php
+class User extends Eloquent {
 
-		protected function getDateFormat()
-		{
-			return 'U';
-		}
-
+	protected function getDateFormat()
+	{
+		return 'U';
 	}
+
+}
+```
 
 <a name="query-scopes"></a>
 ## Query Scopes
@@ -357,24 +431,30 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 
 #### Utilizing A Query Scope
 
-	$users = User::popular()->women()->orderBy('created_at')->get();
+```php
+$users = User::popular()->women()->orderBy('created_at')->get();
+```
 
 #### Dynamic Scopes
 
 Sometimes You may wish to define a scope that accepts parameters. Just add your parameters to your scope function:
 
-	class User extends Eloquent {
+```php
+class User extends Eloquent {
 
-		public function scopeOfType($query, $type)
-		{
-			return $query->whereType($type);
-		}
-
+	public function scopeOfType($query, $type)
+	{
+		return $query->whereType($type);
 	}
+
+}
+```
 
 Then pass the parameter into the scope call:
 
-	$users = User::ofType('member')->get();
+```php
+$users = User::ofType('member')->get();
+```
 
 <a name="global-scopes"></a>
 ## Global Scopes
@@ -383,62 +463,67 @@ Sometimes you may wish to define a scope that applies to all queries performed o
 
 First, let's define a trait. For this example, we'll use the `SoftDeletingTrait` that ships with Laravel:
 
-	trait SoftDeletingTrait {
+```php
+trait SoftDeletingTrait {
 
-		/**
-		 * Boot the soft deleting trait for a model.
-		 *
-		 * @return void
-		 */
-		public static function bootSoftDeletingTrait()
-		{
-			static::addGlobalScope(new SoftDeletingScope);
-		}
+ /**
+  * Boot the soft deleting trait for a model.
+	*
+	* @return void
+	*/
 
+	public static function bootSoftDeletingTrait()
+	{
+		static::addGlobalScope(new SoftDeletingScope);
 	}
+
+}
+```
 
 If an Eloquent model uses a trait that has a method matching the `bootNameOfTrait` naming convention, that trait method will be called when the Eloquent model is booted, giving you an opportunity to register a global scope, or do anything else you want. A scope must implement `ScopeInterface`, which specifies two methods: `apply` and `remove`.
 
 The `apply` method receives an `Illuminate\Database\Eloquent\Builder` query builder object, and is responsible for adding any additional `where` clauses that the scope wishes to add. The `remove` method also receives a `Builder` object and is responsible for reversing the action taken by `apply`. In other words, `remove` should remove the `where` clause (or any other clause) that was added. So, for our `SoftDeletingScope`, the methods look something like this:
 
-	/**
-	 * Apply the scope to a given Eloquent query builder.
-	 *
-	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
-	 * @return void
-	 */
-	public function apply(Builder $builder)
+```php
+/**
+ * Apply the scope to a given Eloquent query builder.
+ *
+ * @param  \Illuminate\Database\Eloquent\Builder  $builder
+ * @return void
+ */
+public function apply(Builder $builder)
+{
+	$model = $builder->getModel();
+
+	$builder->whereNull($model->getQualifiedDeletedAtColumn());
+}
+
+/**
+ * Remove the scope from the given Eloquent query builder.
+ *
+ * @param  \Illuminate\Database\Eloquent\Builder  $builder
+ * @return void
+ */
+public function remove(Builder $builder)
+{
+	$column = $builder->getModel()->getQualifiedDeletedAtColumn();
+
+	$query = $builder->getQuery();
+
+	foreach ((array) $query->wheres as $key => $where)
 	{
-		$model = $builder->getModel();
-
-		$builder->whereNull($model->getQualifiedDeletedAtColumn());
-	}
-
-	/**
-	 * Remove the scope from the given Eloquent query builder.
-	 *
-	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
-	 * @return void
-	 */
-	public function remove(Builder $builder)
-	{
-		$column = $builder->getModel()->getQualifiedDeletedAtColumn();
-
-		$query = $builder->getQuery();
-
-		foreach ((array) $query->wheres as $key => $where)
+		// If the where clause is a soft delete date constraint, we will remove it from
+		// the query and reset the keys on the wheres. This allows this developer to
+		// include deleted model in a relationship result set that is lazy loaded.
+		if ($this->isSoftDeleteConstraint($where, $column))
 		{
-			// If the where clause is a soft delete date constraint, we will remove it from
-			// the query and reset the keys on the wheres. This allows this developer to
-			// include deleted model in a relationship result set that is lazy loaded.
-			if ($this->isSoftDeleteConstraint($where, $column))
-			{
-				unset($query->wheres[$key]);
+			unset($query->wheres[$key]);
 
-				$query->wheres = array_values($query->wheres);
-			}
+			$query->wheres = array_values($query->wheres);
 		}
 	}
+}
+```
 
 <a name="relationships"></a>
 ## Relationships
