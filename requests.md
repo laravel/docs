@@ -21,14 +21,18 @@ You may access all user input with a few simple methods. You do not need to worr
 
 #### Determining If An Input Value Is Present
 
+```php
 	if (Input::has('name'))
 	{
 		//
 	}
+```
 
 #### Getting All Input For The Request
 
+```php
 	$input = Input::all();
+```
 
 #### Getting Only Some Of The Request Input
 
