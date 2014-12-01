@@ -131,7 +131,9 @@ return array(
 
 All of the key-value pairs returned by this file will automatically be available via the `$_ENV` and `$_SERVER` PHP "superglobals". You may now reference these globals from within your configuration files:
 
-	'key' => $_ENV['TEST_STRIPE_KEY']
+```php
+'key' => $_ENV['TEST_STRIPE_KEY']
+```
 
 Be sure to add the `.env.local.php` file to your `.gitignore` file. This will allow other developers on your team to create their own local environment configuration, as well as hide your sensitive configuration items from source control.
 
