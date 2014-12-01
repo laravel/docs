@@ -22,83 +22,113 @@ The Laravel framework uses the `flash` session key internally, so you should not
 
 #### Storing An Item In The Session
 
-	Session::put('key', 'value');
+```php
+Session::put('key', 'value');
+```
 
 #### Push A Value Onto An Array Session Value
 
-	Session::push('user.teams', 'developers');
+```php
+Session::push('user.teams', 'developers');
+```
 
 #### Retrieving An Item From The Session
 
-	$value = Session::get('key');
+```php
+$value = Session::get('key');
+```
 
 #### Retrieving An Item Or Returning A Default Value
 
-	$value = Session::get('key', 'default');
+```php
+$value = Session::get('key', 'default');
 
-	$value = Session::get('key', function() { return 'default'; });
+$value = Session::get('key', function() { return 'default'; });
+```
 
 #### Retrieving An Item And Forgetting It
 
-	$value = Session::pull('key', 'default');
+```php
+$value = Session::pull('key', 'default');
+```
 
 #### Retrieving All Data From The Session
 
-	$data = Session::all();
+```php
+$data = Session::all();
+```
 
 #### Determining If An Item Exists In The Session
 
-	if (Session::has('users'))
-	{
-		//
-	}
+```php
+if (Session::has('users'))
+{
+	//
+}
+```
 
 #### Removing An Item From The Session
 
-	Session::forget('key');
+```php
+Session::forget('key');
+```
 
 #### Removing All Items From The Session
 
-	Session::flush();
+```php
+Session::flush();
+```
 
 #### Regenerating The Session ID
 
-	Session::regenerate();
+```php
+Session::regenerate();
+```
 
 <a name="flash-data"></a>
 ## Flash Data
 
 Sometimes you may wish to store items in the session only for the next request. You may do so using the `Session::flash` method:
 
-	Session::flash('key', 'value');
+```php
+Session::flash('key', 'value');
+```
 
 #### Reflashing The Current Flash Data For Another Request
 
-	Session::reflash();
+```php
+Session::reflash();
+```
 
 #### Reflashing Only A Subset Of Flash Data
 
-	Session::keep(array('username', 'email'));
+```php
+Session::keep(array('username', 'email'));
+```
 
 <a name="database-sessions"></a>
 ## Database Sessions
 
 When using the `database` session driver, you will need to setup a table to contain the session items. Below is an example `Schema` declaration for the table:
 
-	Schema::create('sessions', function($table)
-	{
-		$table->string('id')->unique();
-		$table->text('payload');
-		$table->integer('last_activity');
-	});
+```php
+Schema::create('sessions', function($table)
+{
+	$table->string('id')->unique();
+	$table->text('payload');
+	$table->integer('last_activity');
+});
+```
 
 Of course, you may use the `session:table` Artisan command to generate this migration for you!
 
-	php artisan session:table
+```bash
+php artisan session:table
 
-	composer dump-autoload
+composer dump-autoload
 
-	php artisan migrate
+php artisan migrate
+```
 
 <a name="session-drivers"></a>
 ## Session Drivers
