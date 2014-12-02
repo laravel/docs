@@ -57,23 +57,27 @@ Start files serve as a simple place to place any "bootstrapping" code. For examp
 
 You may also do pre and post request processing by registering `before`, `after`, `finish`, and `shutdown` application events:
 
-	App::before(function($request)
-	{
-		//
-	});
+```php
+App::before(function($request)
+{
+	//
+});
 
-	App::after(function($request, $response)
-	{
-		//
-	});
+App::after(function($request, $response)
+{
+	//
+});
+```
 
 Listeners to these events will be run `before` and `after` each request to your application. These events can be helpful for global filtering or global modification of responses. You may register them in one of your `start` files or in a [service provider](/docs/ioc#service-providers).
 
 You may also register a listener on the `matched` event, which is fired when an incoming request has been matched to a route but that route has not yet been executed:
 
-	Route::matched(function($route, $request)
-	{
-		//
-	});
+```php
+Route::matched(function($route, $request)
+{
+	//
+});
+```
 
 The `finish` event is called after the response from your application has been sent back to the client. This is a good place to do any last minute processing your application requires. The `shutdown` event is called immediately after all of the `finish` event handlers finish processing, and is the last opportunity to do any work before the script terminates. Most likely, you will not have a need to use either of these events.
