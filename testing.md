@@ -23,14 +23,16 @@ To create a test case, simply create a new test file in the `app/tests` director
 
 #### An Example Test Class
 
-	class FooTest extends TestCase {
+```php
+class FooTest extends TestCase {
 
-		public function testSomethingIsTrue()
-		{
-			$this->assertTrue(true);
-		}
-
+	public function testSomethingIsTrue()
+	{
+		$this->assertTrue(true);
 	}
+
+}
+```
 
 You may run all of the tests for your application by executing the `phpunit` command from your terminal.
 
@@ -48,31 +50,41 @@ When running unit tests, Laravel will automatically set the configuration enviro
 
 You may easily call one of your routes for a test using the `call` method:
 
-	$response = $this->call('GET', 'user/profile');
+```php
+$response = $this->call('GET', 'user/profile');
 
-	$response = $this->call($method, $uri, $parameters, $files, $server, $content);
+$response = $this->call($method, $uri, $parameters, $files, $server, $content);
+```
 
 You may then inspect the `Illuminate\Http\Response` object:
 
-	$this->assertEquals('Hello World', $response->getContent());
+```php
+$this->assertEquals('Hello World', $response->getContent());
+```
 
 #### Calling A Controller From A Test
 
 You may also call a controller from a test:
 
-	$response = $this->action('GET', 'HomeController@index');
+```php
+$response = $this->action('GET', 'HomeController@index');
 
-	$response = $this->action('GET', 'UserController@profile', array('user' => 1));
+$response = $this->action('GET', 'UserController@profile', array('user' => 1));
+```
 
 The `getContent` method will return the evaluated string contents of the response. If your route returns a `View`, you may access it using the `original` property:
 
-	$view = $response->original;
+```php
+$view = $response->original;
 
-	$this->assertEquals('John', $view['name']);
+$this->assertEquals('John', $view['name']);
+```
 
 To call a HTTPS route, you may use the `callSecure` method:
 
-	$response = $this->callSecure('GET', 'foo/bar');
+```php
+$response = $this->callSecure('GET', 'foo/bar');
+```
 
 > **Note:** Route filters are disabled when in the testing environment. To enable them, add `Route::enableFilters()` to your test.
 
@@ -80,11 +92,13 @@ To call a HTTPS route, you may use the `callSecure` method:
 
 You may also call a route and receive a DOM Crawler instance that you may use to inspect the content:
 
-	$crawler = $this->client->request('GET', '/');
+```php
+$crawler = $this->client->request('GET', '/');
 
-	$this->assertTrue($this->client->getResponse()->isOk());
+$this->assertTrue($this->client->getResponse()->isOk());
 
-	$this->assertCount(1, $crawler->filter('h1:contains("Hello World!")'));
+$this->assertCount(1, $crawler->filter('h1:contains("Hello World!")'));
+```
 
 For more information on how to use the crawler, refer to its [official documentation](http://symfony.com/doc/master/components/dom_crawler.html).
 
@@ -93,23 +107,27 @@ For more information on how to use the crawler, refer to its [official documenta
 
 When testing, you may often want to mock a call to a Laravel static facade. For example, consider the following controller action:
 
-	public function getIndex()
-	{
-		Event::fire('foo', array('name' => 'Dayle'));
+```php
+public function getIndex()
+{
+	Event::fire('foo', array('name' => 'Dayle'));
 
-		return 'All done!';
-	}
+	return 'All done!';
+}
+```
 
 We can mock the call to the `Event` class by using the `shouldReceive` method on the facade, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock.
 
 #### Mocking A Facade
 
-	public function testGetIndex()
-	{
-		Event::shouldReceive('fire')->once()->with('foo', array('name' => 'Dayle'));
+```php
+public function testGetIndex()
+{
+	Event::shouldReceive('fire')->once()->with('foo', array('name' => 'Dayle'));
 
-		$this->call('GET', '/');
-	}
+	$this->call('GET', '/');
+}
+```
 
 > **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the `call` method when running your test.
 
@@ -120,68 +138,82 @@ Laravel ships with several `assert` methods to make testing a little easier:
 
 #### Asserting Responses Are OK
 
-	public function testMethod()
-	{
-		$this->call('GET', '/');
+```php
+public function testMethod()
+{
+	$this->call('GET', '/');
 
-		$this->assertResponseOk();
-	}
+	$this->assertResponseOk();
+}
+```
 
 #### Asserting Response Statuses
 
-	$this->assertResponseStatus(403);
+```php
+$this->assertResponseStatus(403);
+```
 
 #### Asserting Responses Are Redirects
 
-	$this->assertRedirectedTo('foo');
+```php
+$this->assertRedirectedTo('foo');
 
-	$this->assertRedirectedToRoute('route.name');
+$this->assertRedirectedToRoute('route.name');
 
-	$this->assertRedirectedToAction('Controller@method');
+$this->assertRedirectedToAction('Controller@method');
+```
 
 #### Asserting A View Has Some Data
 
-	public function testMethod()
-	{
-		$this->call('GET', '/');
+```php
+public function testMethod()
+{
+	$this->call('GET', '/');
 
-		$this->assertViewHas('name');
-		$this->assertViewHas('age', $value);
-	}
+	$this->assertViewHas('name');
+	$this->assertViewHas('age', $value);
+}
+```
 
 #### Asserting The Session Has Some Data
 
-	public function testMethod()
-	{
-		$this->call('GET', '/');
+```php
+public function testMethod()
+{
+	$this->call('GET', '/');
 
-		$this->assertSessionHas('name');
-		$this->assertSessionHas('age', $value);
-	}
+	$this->assertSessionHas('name');
+	$this->assertSessionHas('age', $value);
+}
+```
 
 #### Asserting The Session Has Errors
 
-    public function testMethod()
-    {
-        $this->call('GET', '/');
+```php
+public function testMethod()
+{
+    $this->call('GET', '/');
 
-        $this->assertSessionHasErrors();
+    $this->assertSessionHasErrors();
 
-        // Asserting the session has errors for a given key...
-        $this->assertSessionHasErrors('name');
+    // Asserting the session has errors for a given key...
+    $this->assertSessionHasErrors('name');
 
-        // Asserting the session has errors for several keys...
-        $this->assertSessionHasErrors(array('name', 'age'));
-    }
+    // Asserting the session has errors for several keys...
+    $this->assertSessionHasErrors(array('name', 'age'));
+}
+```
 
 #### Asserting Old Input Has Some Data
 
-	public function testMethod()
-	{
-		$this->call('GET', '/');
+```php
+public function testMethod()
+{
+	$this->call('GET', '/');
 
-		$this->assertHasOldInput();
-	}
+	$this->assertHasOldInput();
+}
+```
 
 <a name="helper-methods"></a>
 ## Helper Methods
@@ -190,25 +222,31 @@ The `TestCase` class contains several helper methods to make testing your applic
 
 #### Setting And Flushing Sessions From Tests
 
-	$this->session(['foo' => 'bar']);
+```php
+$this->session(['foo' => 'bar']);
 
-	$this->flushSession();
+$this->flushSession();
+```
 
 #### Setting The Currently Authenticated User
 
 You may set the currently authenticated user using the `be` method:
 
-	$user = new User(array('name' => 'John'));
+```php
+$user = new User(array('name' => 'John'));
 
-	$this->be($user);
+$this->be($user);
+```
 
 You may re-seed your database from a test using the `seed` method:
 
 #### Re-Seeding Database From Tests
 
-	$this->seed();
+```php
+$this->seed();
 
-	$this->seed($connection);
+$this->seed($connection);
+```
 
 More information on creating seeds may be found in the [migrations and seeding](/docs/migrations#database-seeding) section of the documentation.
 
