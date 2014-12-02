@@ -13,35 +13,43 @@ The Laravel `Event` class provides a simple observer implementation, allowing yo
 
 #### Subscribing To An Event
 
-	Event::listen('auth.login', function($user)
-	{
-		$user->last_login = new DateTime;
+```php
+Event::listen('auth.login', function($user)
+{
+	$user->last_login = new DateTime;
 
-		$user->save();
-	});
+	$user->save();
+});
+```
 
 #### Firing An Event
 
-	$event = Event::fire('auth.login', array($user));
+```php
+$event = Event::fire('auth.login', array($user));
+```
 
 #### Subscribing To Events With Priority
 
 You may also specify a priority when subscribing to events. Listeners with higher priority will be run first, while listeners that have the same priority will be run in order of subscription.
 
-	Event::listen('auth.login', 'LoginHandler', 10);
+```php
+Event::listen('auth.login', 'LoginHandler', 10);
 
-	Event::listen('auth.login', 'OtherHandler', 5);
+Event::listen('auth.login', 'OtherHandler', 5);
+```
 
 #### Stopping The Propagation Of An Event
 
 Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your listener:
 
-	Event::listen('auth.login', function($event)
-	{
-		// Handle the event...
+```php
+Event::listen('auth.login', function($event)
+{
+	// Handle the event...
 
-		return false;
-	});
+	return false;
+});
+```
 
 ### Where To Register Events
 
@@ -56,22 +64,26 @@ If your `start` files are getting too crowded, you could create a separate `app/
 
 When registering an event listener, you may use asterisks to specify wildcard listeners:
 
-	Event::listen('foo.*', function($param)
-	{
-		// Handle the event...
-	});
+```php
+Event::listen('foo.*', function($param)
+{
+	// Handle the event...
+});
+```
 
 This listener will handle all events that begin with `foo.`.
 
 You may use the `Event::firing` method to determine exactly which event was fired:
 
-	Event::listen('foo.*', function($param)
+```php
+Event::listen('foo.*', function($param)
+{
+	if (Event::firing() == 'foo.bar')
 	{
-		if (Event::firing() == 'foo.bar')
-		{
-			//
-		}
-	});
+		//
+	}
+});
+```
 
 <a name="using-classes-as-listeners"></a>
 ## Using Classes As Listeners
@@ -80,26 +92,32 @@ In some cases, you may wish to use a class to handle an event rather than a Clos
 
 #### Registering A Class Listener
 
-	Event::listen('auth.login', 'LoginHandler');
+```php
+Event::listen('auth.login', 'LoginHandler');
+```
 
 #### Defining An Event Listener Class
 
 By default, the `handle` method on the `LoginHandler` class will be called:
 
-	class LoginHandler {
+```php
+class LoginHandler {
 
-		public function handle($data)
-		{
-			//
-		}
-
+	public function handle($data)
+	{
+		//
 	}
+
+}
+```
 
 #### Specifying Which Method To Subscribe
 
 If you do not wish to use the default `handle` method, you may specify the method that should be subscribed:
 
-	Event::listen('auth.login', 'LoginHandler@onLogin');
+```php
+Event::listen('auth.login', 'LoginHandler@onLogin');
+```
 
 <a name="queued-events"></a>
 ## Queued Events
@@ -108,11 +126,15 @@ If you do not wish to use the default `handle` method, you may specify the metho
 
 Using the `queue` and `flush` methods, you may "queue" an event for firing, but not fire it immediately:
 
-	Event::queue('foo', array($user));
+```php
+Event::queue('foo', array($user));
+```
 
 You may run the "flusher" and flush all queued events using the `flush` method:
 
-	Event::flush('foo');
+```php
+Event::flush('foo');
+```
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
@@ -121,48 +143,56 @@ You may run the "flusher" and flush all queued events using the `flush` method:
 
 Event subscribers are classes that may subscribe to multiple events from within the class itself. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance:
 
-	class UserEventHandler {
+```php
+class UserEventHandler {
 
-		/**
-		 * Handle user login events.
-		 */
-		public function onUserLogin($event)
-		{
-			//
-		}
+	/**
+	 * Handle user login events.
+	 */
 
-		/**
-		 * Handle user logout events.
-		 */
-		public function onUserLogout($event)
-		{
-			//
-		}
-
-		/**
-		 * Register the listeners for the subscriber.
-		 *
-		 * @param  Illuminate\Events\Dispatcher  $events
-		 * @return array
-		 */
-		public function subscribe($events)
-		{
-			$events->listen('auth.login', 'UserEventHandler@onUserLogin');
-
-			$events->listen('auth.logout', 'UserEventHandler@onUserLogout');
-		}
-
+	public function onUserLogin($event)
+	{
+		//
 	}
+
+	/**
+	 * Handle user logout events.
+	 */
+
+	public function onUserLogout($event)
+	{
+		//
+	}
+
+	/**
+	 * Register the listeners for the subscriber.
+	 *
+	 * @param  Illuminate\Events\Dispatcher  $events
+	 * @return array
+	 */
+
+	public function subscribe($events)
+	{
+		$events->listen('auth.login', 'UserEventHandler@onUserLogin');
+
+		$events->listen('auth.logout', 'UserEventHandler@onUserLogout');
+	}
+
+}
+```
 
 #### Registering An Event Subscriber
 
 Once the subscriber has been defined, it may be registered with the `Event` class.
 
-	$subscriber = new UserEventHandler;
+```php
+$subscriber = new UserEventHandler;
 
-	Event::subscribe($subscriber);
+Event::subscribe($subscriber);
+```
 
 You may also use the [Laravel IoC container](/docs/ioc) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
 
-	Event::subscribe('UserEventHandler');
-
+```php
+Event::subscribe('UserEventHandler');
+```
