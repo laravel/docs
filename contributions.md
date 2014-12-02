@@ -65,7 +65,9 @@ Laravel Liferaft provides a fresh, innovative way to contribute to Laravel. Firs
 
 ### Installing Liferaft
 
-	composer global require "laravel/liferaft=~1.0"
+```bash
+composer global require "laravel/liferaft=~1.0"
+```
 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `liferaft` executable is found when you run the `liferaft` command in your terminal.
 
@@ -73,13 +75,17 @@ Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `l
 
 Before getting started with Liferaft, you need to register a GitHub personal access token. You can generate a personal access token from your [GitHub settings panel](https://github.com/settings/applications). The default scopes selected by GitHub will be sufficient; however, if you wish, you may grant the `delete_repo` scope so Liferaft can delete your old sandbox applications.
 
-	liferaft auth my-github-token
+```bash
+liferaft auth my-github-token
+```
 
 ### Create A New Liferaft Application
 
 To create a new Liferaft application, just use the `new` command:
 
-	liferaft new my-bug-fix
+```bash
+liferaft new my-bug-fix
+```
 
 This command will do several things. First, it will fork the [Laravel GitHub repository](https://github.com/laravel/laravel) to your GitHub account. Next, it will clone the forked repository to your machine and install the Composer dependencies. Once the repository has been installed, you can begin recreating your issue within the Liferaft application!
 
@@ -95,7 +101,9 @@ Once you have recreated your issue, it's almost time to send it for review! Howe
 
 After completing the `liferaft.md` file, push all of your changes to your GitHub repository. Next, just run the Liferaft `throw` command from your application's directory:
 
-	liferaft throw
+```bash
+liferaft throw
+```
 
 This command will create a pull request against the Laravel GitHub repository. A Laravel maintainer can easily grab your application and run it in their own Homestead environment!
 
@@ -106,21 +114,29 @@ Intrested in contributing to Laravel? Liferaft makes it painless to install Life
 
 First, for convenience, clone the [laravel/laravel](https://github.com/laravel/laravel) into a `liferaft` directory on your machine:
 
-	git clone https://github.com/laravel/laravel.git liferaft
+```bash
+git clone https://github.com/laravel/laravel.git liferaft
+```
 
 Next, check out the `develop` branch so you will be able to install Liferaft applications that target both stable and upcoming Laravel releases:
 
-	git checkout -b develop origin/develop
+```bash
+git checkout -b develop origin/develop
+```
 
 Next, you can run the Liferaft `grab` command from your repository directory. For example, if you want to install the Liferaft application associated with pull request #3000, you should run the following command:
 
-	liferaft grab 3000
+```bash
+liferaft grab 3000
+```
 
 The `grab` command will create a new branch on your Liferaft directory, and pull in the changes for the specified pull request. Once the Liferaft application is installed, simply serve the directory through your [Homestead](/docs/homestead) virtual machine! Once you debug the issue, don't forget to send a pull request to the [laravel/framework](https://github.com/laravel/framework) repository with the proper fix!
 
 Have an extra hour and want to solve a random issue? Just run `grab` without a pull request ID:
 
-	liferaft grab
+```bash
+liferaft grab
+```
 
 <a name="which-branch"></a>
 ## Which Branch?

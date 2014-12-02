@@ -18,7 +18,9 @@ Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. 
 
 First, download the Laravel installer using Composer.
 
-	composer global require "laravel/installer=~1.1"
+```bash
+composer global require "laravel/installer=~1.1"
+```
 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable is found when you run the `laravel` command in your terminal.
 
@@ -28,7 +30,9 @@ Once installed, the simple `laravel new` command will create a fresh Laravel ins
 
 You may also install Laravel by issuing the Composer `create-project` command in your terminal:
 
-	composer create-project laravel/laravel --prefer-dist
+```bash
+composer create-project laravel/laravel --prefer-dist
+```
 
 ### Via Download
 
@@ -73,17 +77,21 @@ The framework ships with a `public/.htaccess` file that is used to allow URLs wi
 
 If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
 
-	Options +FollowSymLinks
-	RewriteEngine On
+```apacheconf
+Options +FollowSymLinks
+RewriteEngine On
 
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^ index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+```
 
 ### Nginx
 
 On Nginx, the following directive in your site configuration will allow "pretty" URLs:
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+```php
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+```

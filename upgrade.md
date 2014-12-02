@@ -16,7 +16,9 @@ Laravel 4.2 requires PHP 5.4.0 or greater.
 
 Add a new `cipher` option in your `app/config/app.php` configuration file. The value of this option should be `MCRYPT_RIJNDAEL_256`.
 
-	'cipher' => MCRYPT_RIJNDAEL_256
+```php
+'cipher' => MCRYPT_RIJNDAEL_256
+```
 
 This setting may be used to control the default cipher used by the Laravel encryption facilities.
 
@@ -26,19 +28,23 @@ This setting may be used to control the default cipher used by the Laravel encry
 
 If you are using soft deleting models, the `softDeletes` property has been removed. You must now use the `SoftDeletingTrait` like so:
 
-	use Illuminate\Database\Eloquent\SoftDeletingTrait;
+```php
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-	class User extends Eloquent {
-		use SoftDeletingTrait;
-	}
+class User extends Eloquent {
+	use SoftDeletingTrait;
+}
+```
 
 You must also manually add the `deleted_at` column to your `dates` property:
 
-	class User extends Eloquent {
-		use SoftDeletingTrait;
+```php
+class User extends Eloquent {
+	use SoftDeletingTrait;
 
-		protected $dates = ['deleted_at'];
-	}
+	protected $dates = ['deleted_at'];
+}
+```
 
 The API for all soft delete operations remains the same.
 
@@ -58,7 +64,9 @@ If you are extending the `Illuminate\Pagination\Presenter` class, the abstract m
 
 If you are using the Iron.io queue driver, you will need to add a new `encrypt` option to your queue configuration file:
 
-    'encrypt' => true
+```php
+'encrypt' => true
+```
 
 <a name="upgrade-4.1.29"></a>
 ## Upgrading To 4.1.29 From <= 4.1.x
@@ -80,20 +88,22 @@ First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent
 
 Next, if you are using the Eloquent authentication driver, update your `User` class with the following three methods:
 
-	public function getRememberToken()
-	{
-		return $this->remember_token;
-	}
+```php
+public function getRememberToken()
+{
+	return $this->remember_token;
+}
 
-	public function setRememberToken($value)
-	{
-		$this->remember_token = $value;
-	}
+public function setRememberToken($value)
+{
+	$this->remember_token = $value;
+}
 
-	public function getRememberTokenName()
-	{
-		return 'remember_token';
-	}
+public function getRememberTokenName()
+{
+	return 'remember_token';
+}
+```
 
 > **Note:** All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
 
@@ -101,9 +111,11 @@ Next, if you are using the Eloquent authentication driver, update your `User` cl
 
 Two new methods were added to the `Illuminate\Auth\UserProviderInterface` interface. Sample implementations may be found in the default drivers:
 
-	public function retrieveByToken($identifier, $token);
+```php
+public function retrieveByToken($identifier, $token);
 
-	public function updateRememberToken(UserInterface $user, $token);
+public function updateRememberToken(UserInterface $user, $token);
+```
 
 The `Illuminate\Auth\UserInterface` also received the three new methods described in the "Upgrade Path".
 
@@ -130,9 +142,11 @@ Add the new `expire_on_close` configuration option to your `app/config/session.p
 
 Add the new `failed` configuration section to your `app/config/queue.php` file. Here are the default values for the section:
 
-	'failed' => array(
-		'database' => 'mysql', 'table' => 'failed_jobs',
-	),
+```php
+'failed' => array(
+	'database' => 'mysql', 'table' => 'failed_jobs',
+),
+```
 
 **(Optional)** Update the `pagination` configuration option in your `app/config/view.php` file to `pagination::slider-3`.
 

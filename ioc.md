@@ -22,14 +22,18 @@ Understanding the Laravel IoC container is essential to building a powerful, lar
 
 There are two ways the IoC container can resolve dependencies: via Closure callbacks or automatic resolution. First, we'll explore Closure callbacks. First, a "type" may be bound into the container:
 
-	App::bind('foo', function($app)
-	{
-		return new FooBar;
-	});
+```php
+App::bind('foo', function($app)
+{
+	return new FooBar;
+});
+```
 
 #### Resolving A Type From The Container
 
-	$value = App::make('foo');
+```php
+$value = App::make('foo');
+```
 
 When the `App::make` method is called, the Closure callback is executed and the result is returned.
 
@@ -37,18 +41,22 @@ When the `App::make` method is called, the Closure callback is executed and the 
 
 Sometimes, you may wish to bind something into the container that should only be resolved once, and the same instance should be returned on subsequent calls into the container:
 
-	App::singleton('foo', function()
-	{
-		return new FooBar;
-	});
+```php
+App::singleton('foo', function()
+{
+	return new FooBar;
+});
+```
 
 #### Binding An Existing Instance Into The Container
 
 You may also bind an existing object instance into the container using the `instance` method:
 
-	$foo = new Foo;
+```php
+$foo = new Foo;
 
-	App::instance('foo', $foo);
+App::instance('foo', $foo);
+```
 
 <a name="where-to-register"></a>
 ## Where To Register Bindings
@@ -64,16 +72,18 @@ If your application has a very large number of IoC bindings, or you simply wish 
 
 The IoC container is powerful enough to resolve classes without any configuration at all in many scenarios. For example:
 
-	class FooBar {
+```php
+class FooBar {
 
-		public function __construct(Baz $baz)
-		{
-			$this->baz = $baz;
-		}
-
+	public function __construct(Baz $baz)
+	{
+		$this->baz = $baz;
 	}
 
-	$fooBar = App::make('FooBar');
+}
+
+$fooBar = App::make('FooBar');
+```
 
 Note that even though we did not register the FooBar class in the container, the container will still be able to resolve the class, even injecting the `Baz` dependency automatically!
 
@@ -83,18 +93,22 @@ When a type is not bound in the container, it will use PHP's Reflection faciliti
 
 However, in some cases, a class may depend on an interface implementation, not a "concrete type". When this is the case, the `App::bind` method must be used to inform the container which interface implementation to inject:
 
-	App::bind('UserRepositoryInterface', 'DbUserRepository');
+```php
+App::bind('UserRepositoryInterface', 'DbUserRepository');
+```
 
 Now consider the following controller:
 
-	class UserController extends BaseController {
+```php
+class UserController extends BaseController {
 
-		public function __construct(UserRepositoryInterface $users)
-		{
-			$this->users = $users;
-		}
-
+	public function __construct(UserRepositoryInterface $users)
+	{
+		$this->users = $users;
 	}
+
+}
+```
 
 Since we have bound the `UserRepositoryInterface` to a concrete type, the `DbUserRepository` will automatically be injected into this controller when it is created.
 
@@ -105,21 +119,23 @@ Laravel provides several opportunities to use the IoC container to increase the 
 
 #### Type-Hinting Controller Dependencies
 
-	class OrderController extends BaseController {
+```php
+class OrderController extends BaseController {
 
-		public function __construct(OrderRepository $orders)
-		{
-			$this->orders = $orders;
-		}
-
-		public function getIndex()
-		{
-			$all = $this->orders->all();
-
-			return View::make('orders', compact('all'));
-		}
-
+	public function __construct(OrderRepository $orders)
+	{
+		$this->orders = $orders;
 	}
+
+	public function getIndex()
+	{
+		$all = $this->orders->all();
+
+		return View::make('orders', compact('all'));
+	}
+
+}
+```
 
 In this example, the `OrderRepository` class will automatically be injected into the controller. This means that when [unit testing](/docs/testing) a "mock" `OrderRepository` may be bound into the container and injected into the controller, allowing for painless stubbing of database layer interaction.
 
@@ -127,11 +143,13 @@ In this example, the `OrderRepository` class will automatically be injected into
 
 [Filters](/docs/routing#route-filters), [composers](/docs/responses#view-composers), and [event handlers](/docs/events#using-classes-as-listeners) may also be resolved out of the IoC container. When registering them, simply give the name of the class that should be used:
 
-	Route::filter('foo', 'FooFilter');
+```php
+Route::filter('foo', 'FooFilter');
 
-	View::composer('foo', 'FooComposer');
+View::composer('foo', 'FooComposer');
 
-	Event::listen('foo', 'FooHandler');
+Event::listen('foo', 'FooHandler');
+```
 
 <a name="service-providers"></a>
 ## Service Providers
@@ -144,19 +162,21 @@ In fact, most of the core Laravel components include service providers. All of t
 
 To create a service provider, simply extend the `Illuminate\Support\ServiceProvider` class and define a `register` method:
 
-	use Illuminate\Support\ServiceProvider;
+```php
+use Illuminate\Support\ServiceProvider;
 
-	class FooServiceProvider extends ServiceProvider {
+class FooServiceProvider extends ServiceProvider {
 
-		public function register()
+	public function register()
+	{
+		$this->app->bind('foo', function()
 		{
-			$this->app->bind('foo', function()
-			{
-				return new Foo;
-			});
-		}
-
+			return new Foo;
+		});
 	}
+
+}
+```
 
 Note that in the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
 
@@ -164,7 +184,9 @@ Note that in the `register` method, the application IoC container is available t
 
 You may also register a service provider at run-time using the `App::register` method:
 
-	App::register('FooServiceProvider');
+```php
+App::register('FooServiceProvider');
+```
 
 <a name="container-events"></a>
 ## Container Events
@@ -173,14 +195,16 @@ You may also register a service provider at run-time using the `App::register` m
 
 The container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
 
-	App::resolvingAny(function($object)
-	{
-		//
-	});
+```php
+App::resolvingAny(function($object)
+{
+	//
+});
 
-	App::resolving('foo', function($foo)
-	{
-		//
-	});
+App::resolving('foo', function($foo)
+{
+	//
+});
+```
 
 Note that the object that was resolved will be passed to the callback.

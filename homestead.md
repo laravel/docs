@@ -46,23 +46,31 @@ Before launching your Homestead environment, you must install [VirtualBox](https
 
 Once VirtualBox and Vagrant have been installed, you should add the `laravel/homestead` box to your Vagrant installation using the following command in your terminal. It will take a few minutes to download the box, depending on your Internet connection speed:
 
-	vagrant box add laravel/homestead
+```bash
+vagrant box add laravel/homestead
+```
 
 ### Installing Homestead
 
 Once the box has been added to your Vagrant installation, you are ready to install the Homestead CLI tool using the Composer `global` command:
 
-	composer global require "laravel/homestead=~2.0"
+```bash
+composer global require "laravel/homestead=~2.0"
+```
 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `homestead` executable is found when you run the `homestead` command in your terminal.
 
 Once you have installed the Homestead CLI tool, run the `init` command to create the `Homestead.yaml` configuration file:
 
-	homestead init
+```bash
+homestead init
+```
 
 The `Homestead.yaml` file will be placed in the `~/.homestead` directory. If you're using a Mac or Linux system, you may edit `Homestead.yaml` file by running the `homestead edit` command in your terminal:
 
-	homestead edit
+```bash
+homestead edit
+```
 
 ### Set Your SSH Key
 
@@ -70,7 +78,9 @@ Next, you should edit the `Homestead.yaml` file. In this file, you can configure
 
 Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pair using the following command:
 
-	ssh-keygen -t rsa -C "you@homestead"
+```bash
+ssh-keygen -t rsa -C "you@homestead"
+```
 
 On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` shell included with Git to issue the command above. Alternatively, you may use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
 
@@ -86,10 +96,12 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
 
 You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm` option to `true`:
 
-	sites:
-	    - map: homestead.app
-	      to: /home/vagrant/Code/Laravel/public
-	      hhvm: true
+```bash
+sites:
+	  - map: homestead.app
+	  to: /home/vagrant/Code/Laravel/public
+	    hhvm: true
+```
 
 ### Bash Aliases
 
@@ -101,7 +113,9 @@ Once you have edited the `Homestead.yaml` to your liking, run the `homestead up`
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
-	192.168.10.10  homestead.app
+```bash
+192.168.10.10  homestead.app
+```
 
 Make sure the IP address listed is the one you set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file, you can access the site via your web browser!
 
@@ -130,7 +144,9 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
 Alternatively, you may use the `serve` script that is available on your Homestead environment. To use the `serve` script, SSH into your Homestead environment and run the following command:
 
-	serve domain.app /home/vagrant/Code/path/to/public/directory
+```bash
+serve domain.app /home/vagrant/Code/path/to/public/directory
+```
 
 > **Note:** After running the `serve` command, do not forget to add the new site to the `hosts` file on your main machine!
 

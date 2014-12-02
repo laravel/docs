@@ -22,39 +22,49 @@ The Laravel `Schema` class provides a database agnostic way of manipulating tabl
 
 To create a new database table, the `Schema::create` method is used:
 
-	Schema::create('users', function($table)
-	{
-		$table->increments('id');
-	});
+```php
+Schema::create('users', function($table)
+{
+	$table->increments('id');
+});
+```
 
 The first argument passed to the `create` method is the name of the table, and the second is a `Closure` which will receive a `Blueprint` object which may be used to define the new table.
 
 To rename an existing database table, the `rename` method may be used:
 
-	Schema::rename($from, $to);
+```php
+Schema::rename($from, $to);
+```
 
 To specify which connection the schema operation should take place on, use the `Schema::connection` method:
 
-	Schema::connection('foo')->create('users', function($table)
-	{
-		$table->increments('id');
-	});
+```php
+Schema::connection('foo')->create('users', function($table)
+{
+	$table->increments('id');
+});
+```
 
 To drop a table, you may use the `Schema::drop` method:
 
-	Schema::drop('users');
+```php
+Schema::drop('users');
 
-	Schema::dropIfExists('users');
+Schema::dropIfExists('users');
+```
 
 <a name="adding-columns"></a>
 ## Adding Columns
 
 To update an existing table, we will use the `Schema::table` method:
 
-	Schema::table('users', function($table)
-	{
-		$table->string('email');
-	});
+```php
+Schema::table('users', function($table)
+{
+	$table->string('email');
+});
+```
 
 The table builder contains a variety of column types that you may use when building your tables:
 
@@ -96,17 +106,21 @@ Command  | Description
 
 If you are using the MySQL database, you may use the `after` method to specify the order of columns:
 
-	$table->string('name')->after('email');
+```php
+$table->string('name')->after('email');
+```
 
 <a name="renaming-columns"></a>
 ## Renaming Columns
 
 To rename a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
 
-	Schema::table('users', function($table)
-	{
-		$table->renameColumn('from', 'to');
-	});
+```php
+Schema::table('users', function($table)
+{
+	$table->renameColumn('from', 'to');
+});
+```
 
 > **Note:** Renaming `enum` column types is not supported.
 
@@ -117,17 +131,21 @@ To drop a column, you may use the `dropColumn` method on the Schema builder. Bef
 
 #### Dropping A Column From A Database Table
 
-	Schema::table('users', function($table)
-	{
-		$table->dropColumn('votes');
-	});
+```php
+Schema::table('users', function($table)
+{
+	$table->dropColumn('votes');
+});
+```
 
 #### Dropping Multiple Columns From A Database Table
 
-	Schema::table('users', function($table)
-	{
-		$table->dropColumn(array('votes', 'avatar', 'location'));
-	});
+```php
+Schema::table('users', function($table)
+{
+	$table->dropColumn(array('votes', 'avatar', 'location'));
+});
+```
 
 <a name="checking-existence"></a>
 ## Checking Existence
@@ -136,24 +154,30 @@ To drop a column, you may use the `dropColumn` method on the Schema builder. Bef
 
 You may easily check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
 
-	if (Schema::hasTable('users'))
-	{
-		//
-	}
+```php
+if (Schema::hasTable('users'))
+{
+	//
+}
+```
 
 #### Checking For Existence Of Columns
 
-	if (Schema::hasColumn('users', 'email'))
-	{
-		//
-	}
+```php
+if (Schema::hasColumn('users', 'email'))
+{
+	//
+}
+```
 
 <a name="adding-indexes"></a>
 ## Adding Indexes
 
 The schema builder supports several types of indexes. There are two ways to add them. First, you may fluently define them on a column definition, or you may add them separately:
 
-	$table->string('email')->unique();
+```php
+$table->string('email')->unique();
+```
 
 Or, you may choose to add the indexes on separate lines. Below is a list of all available index types:
 
@@ -169,20 +193,28 @@ Command  | Description
 
 Laravel also provides support for adding foreign key constraints to your tables:
 
-	$table->integer('user_id')->unsigned();
-	$table->foreign('user_id')->references('id')->on('users');
+```php
+$table->integer('user_id')->unsigned();
+$table->foreign('user_id')->references('id')->on('users');
+```
 
 In this example, we are stating that the `user_id` column references the `id` column on the `users` table. Make sure to create the foreign key column first!
 
 You may also specify options for the "on delete" and "on update" actions of the constraint:
 
-	$table->foreign('user_id')
-          ->references('id')->on('users')
-          ->onDelete('cascade');
+```php
+$table->foreign('user_id')
+      ->references('id')
+      ->on('users')
+      ->onDelete('cascade');
+```
+
 
 To drop a foreign key, you may use the `dropForeign` method. A similar naming convention is used for foreign keys as is used for other indexes:
 
-	$table->dropForeign('posts_user_id_foreign');
+```php
+$table->dropForeign('posts_user_id_foreign');
+```
 
 > **Note:** When creating a foreign key that references an incrementing integer, remember to always make the foreign key column `unsigned`.
 
@@ -212,9 +244,11 @@ Command  | Description
 
 To set the storage engine for a table, set the `engine` property on the schema builder:
 
-    Schema::create('users', function($table)
-    {
-        $table->engine = 'InnoDB';
+```php
+Schema::create('users', function($table)
+{
+	$table->engine = 'InnoDB';
 
         $table->string('email');
     });
+```
