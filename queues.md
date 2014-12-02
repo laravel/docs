@@ -28,20 +28,24 @@ The following dependencies are needed for the listed queue drivers:
 
 To push a new job onto the queue, use the `Queue::push` method:
 
-	Queue::push('SendEmail', array('message' => $message));
+```php
+Queue::push('SendEmail', array('message' => $message));
+```
 
 #### Defining A Job Handler
 
 The first argument given to the `push` method is the name of the class that should be used to process the job. The second argument is an array of data that should be passed to the handler. A job handler should be defined like so:
 
-	class SendEmail {
+```php
+class SendEmail {
 
-		public function fire($job, $data)
-		{
-			//
-		}
-
+	public function fire($job, $data)
+	{
+		//
 	}
+
+}
+```
 
 Notice the only method that is required is `fire`, which receives a `Job` instance as well as the array of `data` that was pushed onto the queue.
 
@@ -49,27 +53,35 @@ Notice the only method that is required is `fire`, which receives a `Job` instan
 
 If you want the job to use a method other than `fire`, you may specify the method when you push the job:
 
-	Queue::push('SendEmail@send', array('message' => $message));
+```php
+Queue::push('SendEmail@send', array('message' => $message));
+```
 
 #### Specifying The Queue / Tube For A Job
 
 You may also specify the queue / tube a job should be sent to:
 
-	Queue::push('SendEmail@send', array('message' => $message), 'emails');
+```php
+Queue::push('SendEmail@send', array('message' => $message), 'emails');
+```
 
 #### Passing The Same Payload To Multiple Jobs
 
 If you need to pass the same data to several queue jobs, you may use the `Queue::bulk` method:
 
-	Queue::bulk(array('SendEmail', 'NotifyUser'), $payload);
+```php
+Queue::bulk(array('SendEmail', 'NotifyUser'), $payload);
+```
 
 #### Delaying The Execution Of A Job
 
 Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
 
-	$date = Carbon::now()->addMinutes(15);
+```php
+$date = Carbon::now()->addMinutes(15);
 
-	Queue::later($date, 'SendEmail@send', array('message' => $message));
+Queue::later($date, 'SendEmail@send', array('message' => $message));
+```
 
 In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
 
@@ -77,42 +89,52 @@ In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon
 
 Once you have processed a job, it must be deleted from the queue, which can be done via the `delete` method on the `Job` instance:
 
-	public function fire($job, $data)
-	{
-		// Process the job...
+```php
+public function fire($job, $data)
+{
+	// Process the job...
 
-		$job->delete();
-	}
+	$job->delete();
+}
+```
 
 #### Releasing A Job Back Onto The Queue
 
 If you wish to release a job back onto the queue, you may do so via the `release` method:
 
-	public function fire($job, $data)
-	{
-		// Process the job...
+```php
+public function fire($job, $data)
+{
+	// Process the job...
 
-		$job->release();
-	}
+	$job->release();
+}
+```
 
 You may also specify the number of seconds to wait before the job is released:
 
-	$job->release(5);
+```php
+$job->release(5);
+```
 
 #### Checking The Number Of Run Attempts
 
 If an exception occurs while the job is being processed, it will automatically be released back onto the queue. You may check the number of attempts that have been made to run the job using the `attempts` method:
 
-	if ($job->attempts() > 3)
-	{
-		//
-	}
+```php
+if ($job->attempts() > 3)
+{
+	//
+}
+```
 
 #### Accessing The Job ID
 
 You may also access the job identifier:
 
-	$job->getJobId();
+```php
+$job->getJobId();
+```
 
 <a name="queueing-closures"></a>
 ## Queueing Closures
@@ -121,12 +143,14 @@ You may also push a Closure onto the queue. This is very convenient for quick, s
 
 #### Pushing A Closure Onto The Queue
 
-	Queue::push(function($job) use ($id)
-	{
-		Account::delete($id);
+```php
+Queue::push(function($job) use ($id)
+{
+	Account::delete($id);
 
-		$job->delete();
-	});
+	$job->delete();
+});
+```
 
 > **Note:** Instead of making objects available to queued Closures via the `use` directive, consider passing primary keys and re-pulling the associated models from within your queue job. This often avoids unexpected serialization behavior.
 
@@ -139,17 +163,23 @@ Laravel includes an Artisan task that will run new jobs as they are pushed onto 
 
 #### Starting The Queue Listener
 
-	php artisan queue:listen
+```bash
+php artisan queue:listen
+```
 
 You may also specify which queue connection the listener should utilize:
 
-	php artisan queue:listen connection
+```bash
+php artisan queue:listen connection
+```
 
 Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
 
 You may pass a comma-delimited list of queue connections to the `listen` command to set queue priorities:
 
-	php artisan queue:listen --queue=high,low
+```bash
+php artisan queue:listen --queue=high,low
+```
 
 In this example, jobs on the `high-connection` will always be processed before moving onto jobs from the `low-connection`.
 
@@ -157,13 +187,17 @@ In this example, jobs on the `high-connection` will always be processed before m
 
 You may also set the length of time (in seconds) each job should be allowed to run:
 
-	php artisan queue:listen --timeout=60
+```bash
+php artisan queue:listen --timeout=60
+```
 
 #### Specifying Queue Sleep Duration
 
 In addition, you may specify the number of seconds to wait before polling for new jobs:
 
-	php artisan queue:listen --sleep=5
+```bash
+php artisan queue:listen --sleep=5
+```
 
 Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
 
@@ -171,7 +205,9 @@ Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are 
 
 To process only the first job on the queue, you may use the `queue:work` command:
 
-	php artisan queue:work
+```bash
+php artisan queue:work
+```
 
 <a name="daemon-queue-worker"></a>
 ## Daemon Queue Worker
@@ -180,11 +216,13 @@ The `queue:work` also includes a `--daemon` option for forcing the queue worker 
 
 To start a queue worker in daemon mode, use the `--daemon` flag:
 
-	php artisan queue:work connection --daemon
+```bash
+php artisan queue:work connection --daemon
 
-	php artisan queue:work connection --daemon --sleep=3
+php artisan queue:work connection --daemon --sleep=3
 
-	php artisan queue:work connection --daemon --sleep=3 --tries=3
+php artisan queue:work connection --daemon --sleep=3 --tries=3
+```
 
 As you can see, the `queue:work` command supports most of the same options available to `queue:listen`. You may use the `php artisan help queue:work` command to view all of the available options.
 
@@ -194,7 +232,9 @@ The simplest way to deploy an application using daemon queue workers is to put t
 
 The easiest way to restart your workers is to include the following command in your deployment script:
 
-	php artisan queue:restart
+```bash
+php artisan queue:restart
+```
 
 This command will instruct all queue workers to restart after they finish processing their current job.
 
@@ -215,14 +255,18 @@ Push queues allow you to utilize the powerful Laravel 4 queue facilities without
 
 Next, you may use the `queue:subscribe` Artisan command to register a URL end-point that will receive newly pushed queue jobs:
 
-	php artisan queue:subscribe queue_name http://foo.com/queue/receive
+```bash
+php artisan queue:subscribe queue_name http://foo.com/queue/receive
+```
 
 Now, when you login to your Iron dashboard, you will see your new push queue, as well as the subscribed URL. You may subscribe as many URLs as you wish to a given queue. Next, create a route for your `queue/receive` end-point and return the response from the `Queue::marshal` method:
 
-	Route::post('queue/receive', function()
-	{
-		return Queue::marshal();
-	});
+```php
+Route::post('queue/receive', function()
+{
+	return Queue::marshal();
+});
+```
 
 The `marshal` method will take care of firing the correct job handler class. To fire jobs onto the push queue, just use the same `Queue::push` method used for conventional queues.
 
@@ -233,31 +277,45 @@ Since things don't always go as planned, sometimes your queued jobs will fail. D
 
 To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
 
-	php artisan queue:failed-table
+```bash
+php artisan queue:failed-table
+```
 
 You can specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:listen` command:
 
-	php artisan queue:listen connection-name --tries=3
+```bash
+php artisan queue:listen connection-name --tries=3
+```
 
 If you would like to register an event that will be called when a queue job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via e-mail or [HipChat](https://www.hipchat.com).
 
-	Queue::failing(function($connection, $job, $data)
-	{
-		//
-	});
+```php
+Queue::failing(function($connection, $job, $data)
+{
+	//
+});
+```
 
 To view all of your failed jobs, you may use the `queue:failed` Artisan command:
 
-	php artisan queue:failed
+```bash
+php artisan queue:failed
+```
 
 The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of 5, the following command should be issued:
 
-	php artisan queue:retry 5
+```bash
+php artisan queue:retry 5
+```
 
 If you would like to delete a failed job, you may use the `queue:forget` command:
 
-	php artisan queue:forget 5
+```bash
+php artisan queue:forget 5
+```
 
 To delete all of your failed jobs, you may use the `queue:flush` command:
 
-	php artisan queue:flush
+```bash
+php artisan queue:flush
+```
