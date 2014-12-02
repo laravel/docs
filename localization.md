@@ -59,7 +59,7 @@ You may also configure a "fallback language", which will be used when the active
 
 #### Retrieving Lines From A Language File
 
-```
+```php
 echo Lang::get('messages.welcome');
 ```
 
