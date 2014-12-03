@@ -50,6 +50,8 @@ Once VirtualBox and Vagrant have been installed, you should add the `laravel/hom
 
 ### Installing Homestead
 
+#### With Composer + PHP Tool
+
 Once the box has been added to your Vagrant installation, you are ready to install the Homestead CLI tool using the Composer `global` command:
 
 	composer global require "laravel/homestead=~2.0"
@@ -63,6 +65,18 @@ Once you have installed the Homestead CLI tool, run the `init` command to create
 The `Homestead.yaml` file will be placed in the `~/.homestead` directory. If you're using a Mac or Linux system, you may edit `Homestead.yaml` file by running the `homestead edit` command in your terminal:
 
 	homestead edit
+
+#### Manually Via Git (No Local PHP)
+
+Alternatively, if you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a central `Homestead` directory where you keep all of your Laravel projects, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
+
+	git clone https://github.com/laravel/homestead.git Homestead
+
+Once you have installed the Homestead CLI tool, run the `bash init.sh` command to create the `Homestead.yaml` configuration file:
+
+	bash init.sh
+
+The `Homestead.yaml` file will be placed in the `~/.homestead` directory.
 
 ### Set Your SSH Key
 
@@ -97,7 +111,9 @@ To add Bash aliases to your Homestead box, simply add to the `aliases` file in t
 
 ### Launch The Vagrant Box
 
-Once you have edited the `Homestead.yaml` to your liking, run the `homestead up` command in your terminal. Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically! To destroy the machine, you may use the `homestead destroy` command. For a complete list of available Homestead commands, run `homestead list`.
+Once you have edited the `Homestead.yaml` to your liking, run the `homestead up` command in your terminal. If you installed Homestead manually are are not using the PHP `homestead` tool, simply run `vagrant up` from the directory that contains your cloned Homestead Git repository.
+
+Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically! To destroy the machine, you may use the `homestead destroy` command. For a complete list of available Homestead commands, run `homestead list`.
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
