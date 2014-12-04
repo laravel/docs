@@ -111,7 +111,7 @@ To add Bash aliases to your Homestead box, simply add to the `aliases` file in t
 
 ### Launch The Vagrant Box
 
-Once you have edited the `Homestead.yaml` to your liking, run the `homestead up` command in your terminal. If you installed Homestead manually are are not using the PHP `homestead` tool, simply run `vagrant up` from the directory that contains your cloned Homestead Git repository.
+Once you have edited the `Homestead.yaml` to your liking, run the `homestead up` command in your terminal. If you installed Homestead manually and are not using the PHP `homestead` tool, run `vagrant up` from the directory that contains your cloned Homestead Git repository.
 
 Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically! To destroy the machine, you may use the `homestead destroy` command. For a complete list of available Homestead commands, run `homestead list`.
 
