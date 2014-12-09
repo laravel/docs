@@ -103,7 +103,7 @@ When using environment configuration, you may want to "append" environment [serv
 
 For "real" applications, it is advisable to keep all of your sensitive configuration out of your configuration files. Things such as database passwords, Stripe API keys, and encryption keys should be kept out of your configuration files whenever possible. So, where should we place them? Thankfully, Laravel provides a very simple solution to protecting these types of configuration items using "dot" files.
 
-First, [configure your application](/docs/master/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env.php` file within the root of your project, which is usually the same directory that contains your `composer.json` file. The `.env` file contains a simple list of environment variables for your application.
+First, [configure your application](/docs/master/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env` file within the root of your project, which is usually the same directory that contains your `composer.json` file. The `.env` file contains a simple list of environment variables for your application.
 
 	APP_ENV=local
 	DB_USERNAME=homestead
@@ -113,9 +113,9 @@ All of the key-value pairs returned by this file will automatically be available
 
 	'password' => $_ENV['DB_PASSWORD']
 
-Be sure to add the `.env.php` file to your `.gitignore` file. This will allow other developers on your team to create their own environment configuration, as well as hide your sensitive configuration items from source control.
+Be sure to add the `.env` file to your `.gitignore` file. This will allow other developers on your team to create their own environment configuration, as well as hide your sensitive configuration items from source control.
 
-Now, on your production server, create a `.env.php` file in your project root that contains the corresponding values for your production environment. Like your local `.env.php` file, the production `.env.php` file should never be included in source control.
+Now, on your production server, create a `.env` file in your project root that contains the corresponding values for your production environment. Like your local `.env` file, the production `.env` file should never be included in source control.
 
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
