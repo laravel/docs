@@ -68,7 +68,7 @@ Command  | Description
 `$table->date('created_at');`  |  DATE equivalent to the table
 `$table->dateTime('created_at');`  |  DATETIME equivalent to the table
 `$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
-`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision
+`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point 
 `$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
 `$table->float('amount');`  |  FLOAT equivalent to the table
 `$table->increments('id');`  |  Incrementing ID to the table (primary key).

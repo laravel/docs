@@ -22,7 +22,9 @@ The Laravel `Event` class provides a simple observer implementation, allowing yo
 
 #### Firing An Event
 
-	$event = Event::fire('auth.login', array($user));
+	$response = Event::fire('auth.login', array($user));
+
+The `fire` method returns an array of responses that you can use to control what happens next in your application.
 
 #### Subscribing To Events With Priority
 
