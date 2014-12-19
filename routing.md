@@ -354,6 +354,6 @@ More information on handling 404 exceptions and using custom responses for these
 <a name="routing-to-controllers"></a>
 ## Routing To Controllers
 
-Laravel allows you to not only route to Closures, but also to controller classes, and even allows the creation of [resource controllers](/docs/controllers#resource-controllers).
+Laravel allows you to not only route to Closures, but also to controller classes, and even allows the creation of [resource controllers](/docs/controllers#restful-resource-controllers).
 
 See the documentation on [Controllers](/docs/controllers) for more details.
