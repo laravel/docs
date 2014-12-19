@@ -10,7 +10,7 @@
 <a name="obtaining-a-request-instance"></a>
 ## Obtaining A Request Instance
 
-To an obtain an instance of the current HTTP request, you should type-hint the class on your controller constructor or method. The current request instance will automatically be injected by the [service container](/docs/master/container):
+To obtain an instance of the current HTTP request, you should type-hint the class on your controller constructor or method. The current request instance will automatically be injected by the [service container](/docs/master/container):
 
 	<?php namespace App\Http\Controllers;
 
