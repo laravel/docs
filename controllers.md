@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Basic Controllers](#basic-controllers)
-- [Controller Filters](#controller-filters)
+- [Controller Middleware](#controller-middleware)
 - [RESTful Resource Controllers](#restful-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
 
@@ -92,14 +92,14 @@ You may access the name of the controller action being run using the `currentRou
 
 	$action = $router->currentRouteAction();
 
-<a name="controller-filters"></a>
-## Controller Filters
+<a name="controller-middleware"></a>
+## Controller Middelare
 
-[Filters](/docs/master/filters) may be specified on controller routes like so:
+[Middleware](/docs/master/middleware) may be specified on controller routes like so:
 
-	$router->get('profile', ['before' => 'auth', 'uses' => 'UserController@showProfile']);
+	$router->get('profile', ['middleware' => 'auth', 'uses' => 'UserController@showProfile']);
 
-However, you may also specify filters from within your controller's constructor:
+However, you may also specify middleware from within your controller's constructor:
 
 	class UserController extends Controller {
 
@@ -108,20 +108,20 @@ However, you may also specify filters from within your controller's constructor:
 		 */
 		public function __construct()
 		{
-			$this->beforeFilter('auth');
+			$this->middleware('auth');
 
-			$this->beforeFilter('csrf', ['on' => 'post']);
+			$this->middleware('csrf', ['on' => 'post']);
 
-			$this->afterFilter('log', ['only' => ['fooAction', 'barAction']]);
+			$this->middleware('log', ['only' => ['fooAction', 'barAction']]);
 
-			$this->afterFilter('scan', ['except' => ['fooAction', 'barAction']]);
+			$this->middleware('scan', ['except' => ['fooAction', 'barAction']]);
 		}
 
 	}
 
 #### Closure Controller Filters
 
-Addtionally, you may even specify controller filters inline using a Closure:
+Addtionally, you may even specify controller middleware inline using a Closure:
 
 	class UserController extends Controller {
 
@@ -132,7 +132,7 @@ Addtionally, you may even specify controller filters inline using a Closure:
 		 */
 		public function __construct()
 		{
-			$this->beforeFilter(function()
+			$this->middleware(function()
 			{
 				//
 			});
@@ -140,7 +140,7 @@ Addtionally, you may even specify controller filters inline using a Closure:
 
 	}
 
-If you would like to use another method on the controller as a filter, you may use `@` syntax to define the filter:
+If you would like to use another method on the controller as a middleware, you may use `@` syntax to define the filter:
 
 	class UserController extends Controller {
 
@@ -151,7 +151,7 @@ If you would like to use another method on the controller as a filter, you may u
 		 */
 		public function __construct()
 		{
-			$this->beforeFilter('@filterRequests');
+			$this->middleware('@filterRequests');
 		}
 
 		/**
