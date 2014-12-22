@@ -36,8 +36,51 @@ You may also install Laravel by issuing the Composer `create-project` command in
 The Laravel framework has a few system requirements:
 
 - PHP >= 5.4
-- mcrypt PHP Extension
+- Mcrypt PHP Extension
 - OpenSSL PHP Extension
-- mbstring PHP Extension
+- Mbstring PHP Extension
+
+As of PHP 5.5, some OS distributions may require you to manually install the PHP JSON extension. When using Ubuntu, this can be done via `apt-get install php5-json`.
+
+<a name="configuration"></a>
+## Configuration
+
+**The first thing you should do after installing Laravel is set your application key to a random string. Typically, this string should be 32 characters long. The key can be set in the `app.php` configuration file.**
+
+Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `app/config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+
+Once Laravel is installed, you should also [configure your local environment](/docs/configuration#environment-configuration). This will allow you to receive detailed error messages when developing on your local machine. By default, detailed error reporting is disabled in your production configuration file.
+
+> **Note:** You should never have `app.debug` set to `true` for a production application. Never, ever do it.
+
+<a name="permissions"></a>
+### Permissions
+Laravel may require one set of permissions to be configured: folders within `app/storage` require write access by the web server.
+
+<a name="paths"></a>
+### Paths
+
+Several of the framework directory paths are configurable. To change the location of these directories, check out the `bootstrap/paths.php` file.
+
+<a name="pretty-urls"></a>
+## Pretty URLs
+
+### Apache
+
+The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, be sure to enable the `mod_rewrite` module.
+
+If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
+
+	Options +FollowSymLinks
+	RewriteEngine On
+
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^ index.php [L]
+
+### Nginx
+
+On Nginx, the following directive in your site configuration will allow "pretty" URLs:
+>>>>>>> 4.2
 
 > **Note:** As of PHP 5.5, some OS distributions may require you to manually install the PHP JSON extension. When using Ubuntu, this can be done via `apt-get install php5-json`.
