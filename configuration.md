@@ -119,6 +119,8 @@ Now, on your production server, create a `.env.php` file in your project root th
 
 > **Note:** You may create a file for each environment supported by your application. For example, the `development` environment will load the `.env.development.php` file if it exists. However, the `production` environment always uses the `.env.php` file.
 
+> **Caution:** Recently, Laravel 4.2 does not support .env files autoload by himself until Laravel 5. You can use https://github.com/vlucas/phpdotenv solution  as a dependency in your composer.json file. Take into account that Laravel 5 will use the same solution by himself.
+
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
