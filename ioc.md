@@ -27,6 +27,9 @@ There are two ways the IoC container can resolve dependencies: via Closure callb
 		return new FooBar;
 	});
 
+> **Note:** The callback function you bind to the application will always receive an instance of the application (`$app`) as its first argument.
+
+
 #### Resolving A Type From The Container
 
 	$value = App::make('foo');
@@ -53,7 +56,9 @@ You may also bind an existing object instance into the container using the `inst
 <a name="where-to-register"></a>
 ## Where To Register Bindings
 
-IoC bindings, like event handlers or route filters, generally fall under the title of "bootstrap code". In other words, they prepare your application to actually handle requests, and usually need to be executed before a route or controller is actually called. Like most other bootstrap code, your service provider classes are always an option for registering IoC bindings. You may create as many service providers as necessary for your application.
+IoC bindings, like event handlers or route filters, generally fall under the title of "bootstrap code". In other words, they prepare your application to actually handle requests, and usually need to be executed before a route or controller is actually called. Like most other bootstrap code, the `start` files are always an option for registering IoC bindings. Alternatively, you could create an `app/ioc.php` (filename does not matter) file and require that file from your `start` file.
+
+If your application has a very large number of IoC bindings, or you simply wish to organize your IoC bindings in separate files by category, you may register your bindings in a [service provider](#service-providers).
 
 <a name="automatic-resolution"></a>
 ## Automatic Resolution
@@ -121,6 +126,28 @@ Laravel provides several opportunities to use the IoC container to increase the 
 
 In this example, the `OrderRepository` class will automatically be injected into the controller. This means that when [unit testing](/docs/testing) a "mock" `OrderRepository` may be bound into the container and injected into the controller, allowing for painless stubbing of database layer interaction.
 
+#### Passing Parameters to Our Constructor
+
+Sometimes we need to pass parameters to our constructor.  For example, instead of relying on type-hinting to resolve a dependency, we might need to pass a _specific instance_ of a class to our constructor.  Your callback function accepts a second parameter:
+
+    App::bind('Foo',
+        function($app, $params)
+        {
+            $Something = $params[0];
+            $argument = $params[1];
+            return new Foo(Something $dependencyOne, $argument);
+        }
+    );
+
+In your code, the `App::make` and related methods can be passed a second parameter:
+
+    $Something = new Something();
+    $argument = 123;
+    $Foo = App::make('Foo', array($Something, $argument));
+
+
+
+
 #### Other Examples Of IoC Usage
 
 [Filters](/docs/routing#route-filters), [composers](/docs/responses#view-composers), and [event handlers](/docs/events#using-classes-as-listeners) may also be resolved out of the IoC container. When registering them, simply give the name of the class that should be used:
@@ -156,7 +183,9 @@ To create a service provider, simply extend the `Illuminate\Support\ServiceProvi
 
 	}
 
-Note that in the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
+> **Note:** In the `register` method, the application IoC container is available to you via the `$this->app` property. Once you have created a provider and are ready to register it with your application, simply add it to the `providers` array in your `app` configuration file.
+
+Inside a service provider, you will use the application IoC container directly without the `App` facade.  E.g. `$this->app->bind()` or `$this->app->singleton` instead of `App::bind()` and `App::singleton`.
 
 #### Registering A Service Provider At Run-Time
 
