@@ -127,7 +127,11 @@ Laravel allows you to easily define a single route to handle every action in a c
 
 	Route::controller('users', 'UserController');
 
-The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller. Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
+The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller. Optionally, a third argument can be supplied to provide route names for individual controller methods. This is given as an associative array:
+
+	Route::controller('users', 'UserController', array("anyLogin" => "user.login"));
+
+Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
 
 	class UserController extends BaseController {
 
