@@ -304,6 +304,8 @@ To "lock for update" on a SELECT statement, you may use the `lockForUpdate` meth
 
 	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
 
+> **Note:** Currently, Pessimistic Locking is implemented in the SQL server driver only.
+
 <a name="caching-queries"></a>
 ## Caching Queries
 
