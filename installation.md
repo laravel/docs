@@ -81,6 +81,8 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 ### Nginx
 
 On Nginx, the following directive in your site configuration will allow "pretty" URLs:
->>>>>>> 4.2
+	location / {
+    		try_files $uri $uri/ /index.php?$query_string;
+	}
 
 > **Note:** As of PHP 5.5, some OS distributions may require you to manually install the PHP JSON extension. When using Ubuntu, this can be done via `apt-get install php5-json`.
