@@ -97,7 +97,7 @@ In addition, when you depend on simple interfaces, your code is easier to unders
 <a name="contract-reference"></a>
 ## Contract Reference
 
-This is a reference to most Laravel Contracts, as well as their Laravel 4.x facade counterparts:
+This is a reference to most Laravel Contracts, as well as their Laravel "facade" counterparts:
 
 Contract  |  Laravel 4.x Facade
 ------------- | -------------
