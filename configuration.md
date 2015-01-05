@@ -29,45 +29,21 @@ Laravel needs very little configuration out of the box. You are free to get star
 
 Once Laravel is installed, you should also [configure your local environment](/docs/master/configuration#environment-configuration). This will allow you to receive detailed error messages when developing on your local machine. By default, detailed error reporting is disabled in your production configuration file.
 
-> **Note:** You should never have `app.debug` set to `true` for a production application. Never, ever do it.
+> **Note:** You should never have the `app.debug` configuration option set to `true` for a production application.
 
 <a name="permissions"></a>
 ### Permissions
 
-Folders within `storage` require write access by the web server.
-
-<a name="paths"></a>
-### Paths
-
-Several of the framework directory paths are configurable. To change the location of these directories, check out the `bootstrap/paths.php` file. These paths are primarily used by the Artisan CLI when generating various class files.
+The `storage` directory requires write access by the web server.
 
 <a name="environment-configuration"></a>
 ## Environment Configuration
 
 It is often helpful to have different configuration values based on the environment the application is running in. For example, you may wish to use a different cache driver on your local development machine than on the production server. It is easy to accomplish this using environment based configuration.
 
-Simply create a folder within the `config` directory that matches your environment name, such as `local`. Next, create the configuration files you wish to override and specify the options for that environment. For example, to override the cache driver for the local environment, you would create a `cache.php` file in `config/local` with the following content:
+To make this a cinch, Laravel utilizes the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vance Lucas. In a fresh Laravel installation, the root directory of your application will contain a `.env.example` file. If you wish, you may rename this file to `.env`. All of the variables listed in this file will be loaded into the `$_ENV` PHP super-global when your application receives a request. You may use the `env` helper to retrieve values from these variables. In fact, if you review the Laravel configuration files, you will notice several of the options already using this helper!
 
-	<?php
-
-	return [
-		'driver' => 'file',
-	];
-
-> **Note:** Do not use 'testing' as an environment name. This is reserved for the unit testing environment.
-
-Notice that you do not have to specify _every_ option that is in the base configuration file, but only the options you wish to override. The environment configuration files will "cascade" over the base files.
-
-Next, we need to instruct the framework how to determine which environment it is running in. The default environment is always `production`. However, you may setup other environments within the `bootstrap/environment.php` file at the root of your installation. In this file you will find an `$app->detectEnvironment` call. The Closure passed to this method is used to determine the current environment.
-
-    <?php
-
-    $env = $app->detectEnvironment(function()
-    {
-        return getenv('APP_ENV');
-    });
-
-In this example, the 'APP_ENV' environment variable is the name of the environment. To set the environment variable, you should use a `.env` file in the root of your application. For more information on the `.env` file, see [the documentation below](#protecting-sensitive-configuration).
+Feel free to modify your environment variables as needed for your own local development server, as well as your production environemnt. However, your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration.
 
 #### Accessing The Current Application Environment
 
@@ -89,38 +65,10 @@ You may also pass arguments to the `environment` method to check if the environm
 
 To obtain an instance of the application, resolve the `Illuminate\Contracts\Foundation\Application` contract via the [service container](/docs/master/container). Of course, if you are within a [service provider](/docs/master/providers), the application instance is available via the `$this->app` instance variable.
 
-<a name="provider-configuration"></a>
-### Provider Configuration
-
-When using environment configuration, you may want to "append" environment [service providers](/docs/master/providers) to your primary `app` configuration file. However, if you try this, you will notice the environment `app` providers are overriding the providers in your primary `app` configuration file. To force the providers to be appended, use the `append_config` helper method in your environment `app` configuration file:
-
-	'providers' => append_config(array(
-		'LocalOnlyServiceProvider',
-	))
-
-<a name="protecting-sensitive-configuration"></a>
-## Protecting Sensitive Configuration
-
-For "real" applications, it is advisable to keep all of your sensitive configuration out of your configuration files. Things such as database passwords, Stripe API keys, and encryption keys should be kept out of your configuration files whenever possible. So, where should we place them? Thankfully, Laravel provides a very simple solution to protecting these types of configuration items using "dot" files.
-
-First, [configure your application](/docs/master/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env.php` file within the root of your project, which is usually the same directory that contains your `composer.json` file. The `.env` file contains a simple list of environment variables for your application.
-
-	APP_ENV=local
-	DB_USERNAME=homestead
-	DB_PASSWORD=homestead
-
-All of the key-value pairs returned by this file will automatically be available via the `$_ENV` and `$_SERVER` PHP "superglobals". You may now reference these globals from within your configuration files:
-
-	'password' => $_ENV['DB_PASSWORD']
-
-Be sure to add the `.env.php` file to your `.gitignore` file. This will allow other developers on your team to create their own environment configuration, as well as hide your sensitive configuration items from source control.
-
-Now, on your production server, create a `.env.php` file in your project root that contains the corresponding values for your production environment. Like your local `.env.php` file, the production `.env.php` file should never be included in source control.
-
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
-When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default `before` filter in `app/Http/Filters/MaintenanceFilter.php`. The response from this check will be sent to users when your application is in maintenance mode.
+When your application is in maintenance mode, a custom view will be displayed for all routes into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, an `HttpException` will be thrown with a status code of 503.
 
 To enable maintenance mode, simply execute the `down` Artisan command:
 
@@ -129,6 +77,10 @@ To enable maintenance mode, simply execute the `down` Artisan command:
 To disable maintenance mode, use the `up` command:
 
 	php artisan up
+
+### Maintenance Mode Response Template
+
+The default template for maintenance mode responses is located in `resources/templates/errors/503.blade.php`.
 
 ### Maintenance Mode & Queues
 
