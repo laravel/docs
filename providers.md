@@ -96,9 +96,9 @@ All service providers are registered in the `config/app.php` configuration file.
 To register your provider, simply add it to the array:
 
 	'providers' => [
-		'App\Providers\EventServiceProvider',
-
 		// Other Service Providers
+
+		'App\Providers\AppServiceProvider',
 	],
 
 <a name="deferred-providers"></a>
@@ -147,11 +147,11 @@ To defer the loading of a provider, set the `defer` property to `true` and defin
 
 	}
 
-Laravel compiles and stores a list of all of the services supplied by deferred service providers, along with the name of its service provider class. Then, only when you attempt to resolve one of these services does Laravel load the service provider. The list of deferred services is stored in `storage/meta/services.json`.
+Laravel compiles and stores a list of all of the services supplied by deferred service providers, along with the name of its service provider class. Then, only when you attempt to resolve one of these services does Laravel load the service provider.
 
 <a name="generating-service-providers"></a>
 ## Generating Service Providers
 
 The Artisan CLI can easily generate a new provider via the `make:provider` command:
 
-	php artisan make:provider "App\Providers\RiakServiceProvider"
+	php artisan make:provider RiakServiceProvider
