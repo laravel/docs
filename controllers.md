@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Basic Controllers](#basic-controllers)
-- [Controller Filters](#controller-filters)
+- [Controller Middleware](#controller-middleware)
 - [RESTful Resource Controllers](#restful-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
 
@@ -94,7 +94,7 @@ You may access the name of the controller action being run using the `currentRou
 
 	$action = Route::currentRouteAction();
 
-<a name="controller-filters"></a>
+<a name="controller-middleware"></a>
 ## Controller Middleware
 
 [Middleware](/docs/master/middleware) may be specified on controller routes like so:
