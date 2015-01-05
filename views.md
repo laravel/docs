@@ -181,9 +181,10 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
 	<?php namespace App\Http\ViewComposers;
 
 	use Illuminate\Contracts\View\View;
+	use Illuminate\Contracts\View\ViewComposerInterface;
 	use Illuminate\Users\Repository as UserRepository;
 
-	class ProfileComposer {
+	class ProfileComposer implements ViewComposerInterface {
 
 		/**
 		 * The user repository implementation.
