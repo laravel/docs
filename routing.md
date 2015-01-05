@@ -17,28 +17,28 @@ Within the `routes.php` file, the `$router` variable is available as an instance
 
 #### Basic GET Route
 
-	$router->get('/', function()
+	Route::get('/', function()
 	{
 		return 'Hello World';
 	});
 
 #### Basic POST Route
 
-	$router->post('foo/bar', function()
+	Route::post('foo/bar', function()
 	{
 		return 'Hello World';
 	});
 
 #### Registering A Route For Multiple Verbs
 
-	$router->match(['get', 'post'], '/', function()
+	Route::match(['get', 'post'], '/', function()
 	{
 		return 'Hello World';
 	});
 
 #### Registering A Route That Responds To Any HTTP Verb
 
-	$router->any('foo', function()
+	Route::any('foo', function()
 	{
 		return 'Hello World';
 	});
@@ -60,6 +60,8 @@ Laravel automatically generates a CSRF "token" for each active user session bein
 
 You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` HTTP middleware will verify token in the request input matches the token stored in the session.
 
+In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-XSRF-TOKEN` request header.
+
 <a name="route-parameters"></a>
 ## Route Parameters
 
@@ -67,34 +69,34 @@ Of course, you can capture segments of the request URI within your route:
 
 #### Basic Route Parameter
 
-	$router->get('user/{id}', function($id)
+	Route::get('user/{id}', function($id)
 	{
 		return 'User '.$id;
 	});
 
 #### Optional Route Parameters
 
-	$router->get('user/{name?}', function($name = null)
+	Route::get('user/{name?}', function($name = null)
 	{
 		return $name;
 	});
 
 #### Optional Route Parameters With Default Value
 
-	$router->get('user/{name?}', function($name = 'John')
+	Route::get('user/{name?}', function($name = 'John')
 	{
 		return $name;
 	});
 
 #### Regular Expression Parameter Constraints
 
-	$router->get('user/{name}', function($name)
+	Route::get('user/{name}', function($name)
 	{
 		//
 	})
 	->where('name', '[A-Za-z]+');
 
-	$router->get('user/{id}', function($id)
+	Route::get('user/{id}', function($id)
 	{
 		//
 	})
@@ -102,7 +104,7 @@ Of course, you can capture segments of the request URI within your route:
 
 #### Passing An Array Of Constraints
 
-	$router->get('user/{id}/{name}', function($id, $name)
+	Route::get('user/{id}/{name}', function($id, $name)
 	{
 		//
 	})
@@ -112,25 +114,22 @@ Of course, you can capture segments of the request URI within your route:
 
 If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `before` method of your `RouteServiceProvider`:
 
-	$router->pattern('id', '[0-9]+');
+	Route::pattern('id', '[0-9]+');
 
 Once the pattern has been defined, it is applied to all routes using that parameter:
 
-	$router->get('user/{id}', function($id)
+	Route::get('user/{id}', function($id)
 	{
 		// Only called if {id} is numeric.
 	});
 
 #### Accessing A Route Parameter Value
 
-If you need to access a route parameter value outside of a route, use the `input` method. For instance, within a filter class, do something like the following:
+If you need to access a route parameter value outside of a route, use the `input` method:
 
-	public function filter($route, $request)
+	if ($route->input('id') == 1)
 	{
-		if ($route->input('id') == 1)
-		{
-			//
-		}
+		//
 	}
 
 <a name="named-routes"></a>
@@ -138,14 +137,14 @@ If you need to access a route parameter value outside of a route, use the `input
 
 Named routes allow you to conveniently generate URLs or redirects for a specific route. You may specify a name for a route with the `as` array key:
 
-	$router->get('user/profile', ['as' => 'profile', function()
+	Route::get('user/profile', ['as' => 'profile', function()
 	{
 		//
 	}]);
 
 You may also specify route names for controller actions:
 
-	$router->get('user/profile', ['as' => 'profile', 'uses' => 'UserController@showProfile']);
+	Route::get('user/profile', ['as' => 'profile', 'uses' => 'UserController@showProfile']);
 
 Now, you may use the route's name when generating URLs or redirects:
 
@@ -155,21 +154,21 @@ Now, you may use the route's name when generating URLs or redirects:
 
 The `currentRouteName` method returns the name of the route handling the current request:
 
-	$name = $router->currentRouteName();
+	$name = Route::currentRouteName();
 
 <a name="route-groups"></a>
 ## Route Groups
 
 Sometimes you may need to apply filters to a group of routes. Instead of specifying the filter on each route, you may use a route group:
 
-	$router->group(['before' => 'auth'], function($router)
+	Route::group(['before' => 'auth'], function($router)
 	{
-		$router->get('/', function()
+		Route::get('/', function()
 		{
 			// Has Auth Filter
 		});
 
-		$router->get('user/profile', function()
+		Route::get('user/profile', function()
 		{
 			// Has Auth Filter
 		});
@@ -177,7 +176,7 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 
 You may use the `namespace` parameter within your `group` array to specify the namespace for all controllers within the group:
 
-	$router->group(['namespace' => 'Admin'], function($router)
+	Route::group(['namespace' => 'Admin'], function($router)
 	{
 		//
 	});
@@ -191,10 +190,10 @@ Laravel routes can also handle wildcard sub-domains, and will pass your wildcard
 
 #### Registering Sub-Domain Routes
 
-	$router->group(['domain' => '{account}.myapp.com'], function($router)
+	Route::group(['domain' => '{account}.myapp.com'], function()
 	{
 
-		$router->get('user/{id}', function($account, $id)
+		Route::get('user/{id}', function($account, $id)
 		{
 			//
 		});
@@ -206,10 +205,10 @@ Laravel routes can also handle wildcard sub-domains, and will pass your wildcard
 
 A group of routes may be prefixed by using the `prefix` option in the attributes array of a group:
 
-	$router->group(['prefix' => 'admin'], function($router)
+	Route::group(['prefix' => 'admin'], function()
 	{
 
-		$router->get('user', function()
+		Route::get('user', function()
 		{
 			//
 		});
@@ -221,18 +220,20 @@ A group of routes may be prefixed by using the `prefix` option in the attributes
 
 Laravel model binding provides a convenient way to inject class instances into your routes. For example, instead of injecting a user's ID, you can inject the entire User class instance that matches the given ID.
 
-First, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::before` method:
+First, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::boot` method:
 
 #### Binding A Parameter To A Model
 
-	public function before(Router $router, UrlGenerator $url)
+	public function boot(Router $router)
 	{
+		parent::boot($router);
+
 		$router->model('user', 'App\User');
 	}
 
 Next, define a route that contains a `{user}` parameter:
 
-	$router->get('profile/{user}', function(App\User $user)
+	Route::get('profile/{user}', function(App\User $user)
 	{
 		//
 	});
@@ -243,23 +244,17 @@ Since we have bound the `{user}` parameter to the `App\User` model, a `User` ins
 
 If you wish to specify your own "not found" behavior, pass a Closure as the third argument to the `model` method:
 
-	public function before(Router $router, UrlGenerator $url)
+	Route::model('user', 'User', function()
 	{
-		$router->model('user', 'User', function()
-		{
-			throw new NotFoundHttpException;
-		});
-	}
+		throw new NotFoundHttpException;
+	});
 
 If you wish to use your own resolution logic, you should use the `Router::bind` method. The Closure you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
 
-	public function before(Router $router, UrlGenerator $url)
+	Route::bind('user', function($value)
 	{
-		$router->bind('user', function($value)
-		{
-			return User::where('name', $value)->first();
-		});
-	}
+		return User::where('name', $value)->first();
+	});
 
 <a name="throwing-404-errors"></a>
 ## Throwing 404 Errors
