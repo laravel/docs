@@ -28,7 +28,7 @@ All Laravel packages are distributed via [Packagist](http://packagist.org) and [
 <a name="creating-a-package"></a>
 ## Creating A Package
 
-The easiest way to create a new package for use with Laravel is the `workbench` Artisan command. First, you will need to set a few options in the `app/config/workbench.php` file. In that file, you will find a `name` and `email` option. These values will be used to generate a `composer.json` file for your new package. Once you have supplied those values, you are ready to build a workbench package!
+The easiest way to create a new package for use with Laravel is the `workbench` Artisan command. First, you will need to set a few options in the `config/workbench.php` file. In that file, you will find a `name` and `email` option. These values will be used to generate a `composer.json` file for your new package. Once you have supplied those values, you are ready to build a workbench package!
 
 #### Issuing The Workbench Artisan Command
 
@@ -36,7 +36,7 @@ The easiest way to create a new package for use with Laravel is the `workbench` 
 
 The vendor name is a way to distinguish your package from other packages of the same name from different authors. For example, if I (Taylor Otwell) were to create a new package named "Zapper", the vendor name could be `Taylor` while the package name would be `Zapper`. By default, the workbench will create framework agnostic packages; however, the `resources` command tells the workbench to generate the package with Laravel specific directories such as `migrations`, `views`, `config`, etc.
 
-Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. Next, you should register the `ServiceProvider` that was created for your package. You may register the provider by adding it to the `providers` array in the `app/config/app.php` file. This will instruct Laravel to load your package when your application starts. Service providers use a `[Package]ServiceProvider` naming convention. So, using the example above, you would add `Taylor\Zapper\ZapperServiceProvider` to the `providers` array.
+Once the `workbench` command has been executed, your package will be available within the `workbench` directory of your Laravel installation. Next, you should register the `ServiceProvider` that was created for your package. You may register the provider by adding it to the `providers` array in the `config/app.php` file. This will instruct Laravel to load your package when your application starts. Service providers use a `[Package]ServiceProvider` naming convention. So, using the example above, you would add `Taylor\Zapper\ZapperServiceProvider` to the `providers` array.
 
 Once the provider has been registered, you are ready to start developing your package! However, before diving in, you may wish to review the sections below to get more familiar with the package structure and development workflow.
 
@@ -184,18 +184,18 @@ When other developers install your package, they may wish to override some of th
 
 	php artisan config:publish vendor/package
 
-When this command is executed, the configuration files for your application will be copied to `app/config/packages/vendor/package` where they can be safely modified by the developer!
+When this command is executed, the configuration files for your application will be copied to `config/packages/vendor/package` where they can be safely modified by the developer!
 
-> **Note:** The developer may also create environment specific configuration files for your package by placing them in `app/config/packages/vendor/package/environment`.
+> **Note:** The developer may also create environment specific configuration files for your package by placing them in `config/packages/vendor/package/environment`.
 
 <a name="package-views"></a>
 ## Package Views
 
-If you are using a package in your application, you may occasionally wish to customize the package's views. You can easily export the package views to your own `app/views` directory using the `view:publish` Artisan command:
+If you are using a package in your application, you may occasionally wish to customize the package's views. You can easily export the package views to your own `resources/views` directory using the `view:publish` Artisan command:
 
 	php artisan view:publish vendor/package
 
-This command will move the package's views into the `app/views/packages` directory. If this directory doesn't already exist, it will be created when you run the command. Once the views have been published, you may tweak them to your liking! The exported views will automatically take precedence over the package's own view files.
+This command will move the package's views into the `resources/views/packages` directory. If this directory doesn't already exist, it will be created when you run the command. Once the views have been published, you may tweak them to your liking! The exported views will automatically take precedence over the package's own view files.
 
 <a name="package-migrations"></a>
 ## Package Migrations

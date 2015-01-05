@@ -3,8 +3,6 @@
 - [Install Composer](#install-composer)
 - [Install Laravel](#install-laravel)
 - [Server Requirements](#server-requirements)
-- [Configuration](#configuration)
-- [Pretty URLs](#pretty-urls)
 
 <a name="install-composer"></a>
 ## Install Composer
@@ -20,9 +18,11 @@ First, download the Laravel installer using Composer.
 
 	composer global require "laravel/installer=~1.1"
 
-Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable is found when you run the `laravel` command in your terminal.
+Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
 
-Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer.
+Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer:
+
+	laravel new blog
 
 ### Via Composer Create-Project
 
@@ -30,19 +30,15 @@ You may also install Laravel by issuing the Composer `create-project` command in
 
 	composer create-project laravel/laravel --prefer-dist
 
-### Via Download
-
-Once Composer is installed, download the [latest version](https://github.com/laravel/laravel/archive/master.zip) of the Laravel framework and extract its contents into a directory on your server. Next, in the root of your Laravel application, run the `php composer.phar install` (or `composer install`) command to install all of the framework's dependencies. This process requires Git to be installed on the server to successfully complete the installation.
-
-If you want to update the Laravel framework, you may issue the `php composer.phar update` command.
-
 <a name="server-requirements"></a>
 ## Server Requirements
 
 The Laravel framework has a few system requirements:
 
 - PHP >= 5.4
-- MCrypt PHP Extension
+- Mcrypt PHP Extension
+- OpenSSL PHP Extension
+- Mbstring PHP Extension
 
 As of PHP 5.5, some OS distributions may require you to manually install the PHP JSON extension. When using Ubuntu, this can be done via `apt-get install php5-json`.
 
@@ -85,7 +81,6 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 ### Nginx
 
 On Nginx, the following directive in your site configuration will allow "pretty" URLs:
+>>>>>>> 4.2
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+> **Note:** As of PHP 5.5, some OS distributions may require you to manually install the PHP JSON extension. When using Ubuntu, this can be done via `apt-get install php5-json`.

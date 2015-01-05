@@ -302,7 +302,7 @@ Passing `NULL` as a "where" clause value will add a check for a `NULL` database 
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpeg, png, bmp, or gif)
+The file under validation must be an image (jpeg, png, bmp, gif, or svg)
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
@@ -383,7 +383,7 @@ The field under validation must be present _only when_ any of the other specifie
 <a name="rule-required-without-all"></a>
 #### required_without_all:_foo_,_bar_,...
 
-The field under validation must be present _only when_ the all of the other specified fields are not present.
+The field under validation must be present _only when_ all of the other specified fields are not present.
 
 <a name="rule-same"></a>
 #### same:_field_
@@ -503,7 +503,7 @@ Sometimes you may wish to specify a custom error messages only for a specific fi
 <a name="localization"></a>
 #### Specifying Custom Messages In Language Files
 
-In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
+In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `resources/lang/xx/validation.php` language file.
 
 	'custom' => array(
 		'email' => array(

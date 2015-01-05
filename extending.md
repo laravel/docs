@@ -30,7 +30,7 @@ Each of these managers includes an `extend` method which may be used to easily i
 <a name="where-to-extend"></a>
 ## Where To Extend
 
-This documentation covers how to extend a variety of Laravel's components, but you may be wondering where to place your extension code. Like most other bootstrapping code, you are free to place some extensions in your `start` files. Cache and Auth extensions are good candidates for this approach. Other extensions, like `Session`, must be placed in the `register` method of a service provider since they are needed very early in the request life-cycle.
+This documentation covers how to extend a variety of Laravel's components, but you may be wondering where to place your extension code. Like most other bootstrapping code, you are free to place some extensions in your service provider files. Some extensions, like `Session`, **must** be placed in the `register` method of a service provider since they are needed very early in the request life-cycle.
 
 <a name="cache"></a>
 ## Cache
@@ -42,7 +42,9 @@ To extend the Laravel cache facility, we will use the `extend` method on the `Ca
 		// Return Illuminate\Cache\Repository instance...
 	});
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `app/config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of `Illuminate\Foundation\Application` and an IoC container.
+The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of `Illuminate\Foundation\Application` and an IoC container.
+
+The call to `Cache::extend` could be done in the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array.
 
 To create our custom cache driver, we first need to implement the `Illuminate\Cache\StoreInterface` contract. So, our MongoDB cache implementation would look something like this:
 
@@ -69,9 +71,7 @@ We just need to implement each of these methods using a MongoDB connection. Once
 
 As you can see in the example above, you may use the base `Illuminate\Cache\Repository` when creating custom cache drivers. There is typically no need to create your own repository class.
 
-If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your application's primary folder. For example, if the application is named `Snappy`, you could place the cache extension in `app/Snappy/Extensions/MongoStore.php`. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
-
-> **Note:** If you're ever wondering where to put a piece of code, always consider a service provider. As we've discussed, using a service provider to organize framework extensions is a great way to organize your code.
+If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
 
 <a name="session"></a>
 ## Session
@@ -85,7 +85,7 @@ Extending Laravel with a custom session driver is just as easy as extending the 
 
 ### Where To Extend The Session
 
-Session extensions need to be registered differently than other extensions like Cache and Auth. Since sessions are started very early in the request-lifecycle, registering the extensions in a `start` file will happen too late. Instead, a [service provider](/docs/ioc#service-providers) will be needed. You should place your session extension code in the `register` method of your service provider, and the provider should be placed **below** the default `Illuminate\Session\SessionServiceProvider` in the `providers` configuration array.
+You should place your session extension code in the `register` method of a service provider, and the provider should be placed **below** the default `Illuminate\Session\SessionServiceProvider` in the `providers` configuration array. You may use the default `App\Providers\AppServiceProvider` if you wish.
 
 ### Writing The Session Extension
 
@@ -118,7 +118,7 @@ Once the `SessionHandlerInterface` has been implemented, we are ready to registe
 		return new MongoHandler;
 	});
 
-Once the session driver has been registered, we may use the `mongo` driver in our `app/config/session.php` configuration file.
+Once the session driver has been registered, we may use the `mongo` driver in our `config/session.php` configuration file.
 
 > **Note:** Remember, if you write a custom session handler, share it on Packagist!
 
@@ -165,7 +165,7 @@ Now that we have explored each of the methods on the `UserProviderInterface`, le
 
 	}
 
-This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app/models` directory which implements this interface, so you may consult this class for an implementation example.
+This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
 
 Finally, once we have implemented the `UserProviderInterface`, we are ready to register our extension with the `Auth` facade:
 
@@ -174,22 +174,26 @@ Finally, once we have implemented the `UserProviderInterface`, we are ready to r
 		return new RiakUserProvider($app['riak.connection']);
 	});
 
-After you have registered the driver with the `extend` method, you switch to the new driver in your `app/config/auth.php` configuration file.
+After you have registered the driver with the `extend` method, you switch to the new driver in your `config/auth.php` configuration file.
 
 <a name="ioc-based-extension"></a>
 ## IoC Based Extension
 
-Almost every service provider included with the Laravel framework binds objects into the IoC container. You can find a list of your application's service providers in the `app/config/app.php` configuration file. As you have time, you should skim through each of these provider's source code. By doing so, you will gain a much better understanding of what each provider adds to the framework, as well as what keys are used to bind various services into the IoC container.
+Almost every service provider included with the Laravel framework binds objects into the IoC container. You can find a list of your application's service providers in the `config/app.php` configuration file. As you have time, you should skim through each of these provider's source code. By doing so, you will gain a much better understanding of what each provider adds to the framework, as well as what keys are used to bind various services into the IoC container.
 
 For example, the `HashServiceProvider` binds a `hash` key into the IoC container, which resolves into a `Illuminate\Hashing\BcryptHasher` instance. You can easily extend and override this class within your own application by overriding this IoC binding. For example:
 
-	class SnappyHashProvider extends Illuminate\Hashing\HashServiceProvider {
+	<?php namespace App\Providers;
+
+	use App;
+
+	class SnappyHashProvider extends \Illuminate\Hashing\HashServiceProvider {
 
 		public function boot()
 		{
 			App::bindShared('hash', function()
 			{
-				return new Snappy\Hashing\ScryptHasher;
+				return new \Snappy\Hashing\ScryptHasher;
 			});
 
 			parent::boot();
@@ -197,7 +201,7 @@ For example, the `HashServiceProvider` binds a `hash` key into the IoC container
 
 	}
 
-Note that this class extends the `HashServiceProvider`, not the default `ServiceProvider` base class. Once you have extended the service provider, swap out the `HashServiceProvider` in your `app/config/app.php` configuration file with the name of your extended provider.
+Note that this class extends the `HashServiceProvider`, not the default `ServiceProvider` base class. Once you have extended the service provider, swap out the `HashServiceProvider` in your `config/app.php` configuration file with the name of your extended provider.
 
 This is the general method of extending any core class that is bound in the container. Essentially every core class is bound in the container in this fashion, and can be overridden. Again, reading through the included framework service providers will familiarize you with where various classes are bound into the container, and what keys they are bound by. This is a great way to learn more about how Laravel is put together.
 
@@ -208,7 +212,7 @@ Because it is such a foundational piece of the framework and is instantiated ver
 
 First, extend the class like normal:
 
-	<?php namespace QuickBill\Extensions;
+	<?php namespace App\Extensions;
 
 	class Request extends \Illuminate\Http\Request {
 
