@@ -97,7 +97,7 @@ Using a few simple methods, you may access all user input from your `Illuminate\
 
 When working on forms with "array" inputs, you may use dot notation to access the arrays:
 
-	$input = Request::get('products.0.name');
+	$input = Request::input('products.0.name');
 
 <a name="old-input"></a>
 ## Old Input
