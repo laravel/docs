@@ -10,7 +10,15 @@
 <a name="obtaining-a-request-instance"></a>
 ## Obtaining A Request Instance
 
-To obtain an instance of the current HTTP request, you should type-hint the class on your controller constructor or method. The current request instance will automatically be injected by the [service container](/docs/master/container):
+### Via Facade
+
+The `Request` facade will grant you access to the current request that is bound in the container. For example:
+
+	$name = Request::input('name');
+
+### Via Dependency Injection
+
+To obtain an instance of the current HTTP request via dependency injection, you should type-hint the class on your controller constructor or method. The current request instance will automatically be injected by the [service container](/docs/master/container):
 
 	<?php namespace App\Http\Controllers;
 
@@ -64,32 +72,32 @@ If your controller method is also expecting input from a route parameter, simply
 
 Using a few simple methods, you may access all user input from your `Illuminate\Http\Request` instance. You do not need to worry about the HTTP verb used for the request, as input is accessed in the same way for all verbs.
 
-	$name = $request->input('name');
+	$name = Request::input('name');
 
 #### Retrieving A Default Value If The Input Value Is Absent
 
-	$name = $request->input('name', 'Sally');
+	$name = Request::input('name', 'Sally');
 
 #### Determining If An Input Value Is Present
 
-	if ($request->has('name'))
+	if (Request::has('name'))
 	{
 		//
 	}
 
 #### Getting All Input For The Request
 
-	$input = $request->all();
+	$input = Request::all();
 
 #### Getting Only Some Of The Request Input
 
-	$input = $request->only('username', 'password');
+	$input = Request::only('username', 'password');
 
-	$input = $request->except('credit_card');
+	$input = Request::except('credit_card');
 
 When working on forms with "array" inputs, you may use dot notation to access the arrays:
 
-	$input = $request->get('products.0.name');
+	$input = Request::get('products.0.name');
 
 <a name="old-input"></a>
 ## Old Input
@@ -100,13 +108,13 @@ Laravel also allows you to keep input from one request during the next request. 
 
 The `flash` method will flash the current input to the [session](/docs/master/session) so that it is available during the user's next request to the application:
 
-	$request->flash();
+	Request::flash();
 
 #### Flashing Only Some Input To The Session
 
-	$request->flashOnly('username', 'email');
+	Request::flashOnly('username', 'email');
 
-	$request->flashExcept('password');
+	Request::flashExcept('password');
 
 #### Flash & Redirect
 
@@ -114,13 +122,13 @@ Since you often will want to flash input in association with a redirect to the p
 
 	return redirect('form')->withInput();
 
-	return redirect('form')->withInput($request->except('password'));
+	return redirect('form')->withInput(Request::except('password'));
 
 #### Retrieving Old Data
 
 To retrieve flashed input from the previous request, use the `old` method on the `Request` instance.
 
-	$username = $request->old('username');
+	$username = Request::old('username');
 
 If you are displaying old input within a Blade template, it is more convenient to use the `old` helper:
 
@@ -133,7 +141,7 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
 #### Retrieving A Cookie Value
 
-	$value = $request->cookie('name');
+	$value = Request::cookie('name');
 
 #### Attaching A New Cookie To A Response
 
@@ -154,11 +162,11 @@ _By "forever", we really mean five years._
 
 #### Retrieving An Uploaded File
 
-	$file = $request->file('photo');
+	$file = Request::file('photo');
 
 #### Determining If A File Was Uploaded
 
-	if ($request->hasFile('photo'))
+	if (Request::hasFile('photo'))
 	{
 		//
 	}
@@ -167,16 +175,16 @@ The object returned by the `file` method is an instance of the `Symfony\Componen
 
 #### Determining If An Uploaded File Is Valid
 
-	if ($request->file('photo')->isValid())
+	if (Request::file('photo')->isValid())
 	{
 		//
 	}
 
 #### Moving An Uploaded File
 
-	$request->file('photo')->move($destinationPath);
+	Request::file('photo')->move($destinationPath);
 
-	$request->file('photo')->move($destinationPath, $fileName);
+	Request::file('photo')->move($destinationPath, $fileName);
 
 ### Other File Methods
 
@@ -189,28 +197,24 @@ The `Request` class provides many methods for examining the HTTP request for you
 
 #### Retrieving The Request URI
 
-	$uri = $request->path();
+	$uri = Request::path();
 
 #### Retrieving The Request Method
 
-	$method = $request->method();
+	$method = Request::method();
 
-	if ($request->isMethod('post'))
+	if (Request::isMethod('post'))
 	{
 		//
 	}
 
 #### Determining If The Request Path Matches A Pattern
 
-	if ($request->is('admin/*'))
+	if (Request::is('admin/*'))
 	{
 		//
 	}
 
 #### Get The Request URL
 
-	$url = $request->url();
-
-### Even More Request Methods
-
-There are a variety of other methods available on `Request` instances. Check out the [API documentation for the class](http://laravel.com/api/4.2/Illuminate/Http/Request.html) for more information regarding these methods.
+	$url = Request::url();
