@@ -168,7 +168,7 @@ So, how do you get an implementation of a contract? It's actually quite simple. 
 		 * @param  NewUserRegistered  $event
 		 * @return void
 		 */
-		public function handler(NewUserRegistered $event)
+		public function handle(NewUserRegistered $event)
 		{
 			//
 		}
