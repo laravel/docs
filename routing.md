@@ -13,8 +13,6 @@
 
 You will define most of the routes for your application in the `app/Http/routes.php` file, which is loaded by the `App\Providers\RouteServiceProvider` class.
 
-Within the `routes.php` file, the `$router` variable is available as an instance of the Laravel router, and may be used to register all of your routes. The simplest Laravel route consists of a URI and a Closure callback:
-
 #### Basic GET Route
 
 	Route::get('/', function()
