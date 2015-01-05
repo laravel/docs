@@ -101,7 +101,7 @@ This is a reference to most Laravel Contracts, as well as their Laravel 4.x faca
 
 Contract  |  Laravel 4.x Facade
 ------------- | -------------
-[Illuminate\Contracts\Auth\Authenticator](https://github.com/illuminate/contracts/blob/master/Auth/Authenticator.php)  |  Auth
+[Illuminate\Contracts\Auth\Guard](https://github.com/illuminate/contracts/blob/master/Auth/Guard.php)  |  Auth
 [Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)  |  Password
 [Illuminate\Contracts\Cache\Repository](https://github.com/illuminate/contracts/blob/master/Cache/Repository.php) | Cache
 [Illuminate\Contracts\Cache\Factory](https://github.com/illuminate/contracts/blob/master/Cache/Factory.php) | Cache::driver()
@@ -111,7 +111,6 @@ Contract  |  Laravel 4.x Facade
 [Illuminate\Contracts\Cookie\QueueingFactory](https://github.com/illuminate/contracts/blob/master/Cookie/QueueingFactory.php) | Cookie::queue()
 [Illuminate\Contracts\Encryption\Encrypter](https://github.com/illuminate/contracts/blob/master/Encryption/Encrypter.php) | Crypt
 [Illuminate\Contracts\Events\Dispatcher](https://github.com/illuminate/contracts/blob/master/Events/Dispatcher.php) | Event
-[Illuminate\Contracts\Exception\Handler](https://github.com/illuminate/contracts/blob/master/Exception/Handler.php) | App::error()
 [Illuminate\Contracts\Filesystem\Cloud](https://github.com/illuminate/contracts/blob/master/Filesystem/Cloud.php) | &nbsp;
 [Illuminate\Contracts\Filesystem\Factory](https://github.com/illuminate/contracts/blob/master/Filesystem/Factory.php) | File
 [Illuminate\Contracts\Filesystem\Filesystem](https://github.com/illuminate/contracts/blob/master/Filesystem/Filesystem.php) | File
@@ -137,40 +136,41 @@ Contract  |  Laravel 4.x Facade
 <a name="how-to-use-contracts"></a>
 ## How To Use Contracts
 
-So, how do you get an implementation of a contract? It's actually quite simple. Many types of classes in Laravel are resolved through the [service container](/docs/master/container), including controllers, event listeners, filters, queue jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved. For example, take a look at this event listener:
+So, how do you get an implementation of a contract? It's actually quite simple. Many types of classes in Laravel are resolved through the [service container](/docs/master/container), including controllers, event listeners, filters, queue jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved. For example, take a look at this event handler:
 
-	<?php namespace App\Events;
+	<?php namespace App\Handlers\Events;
 
 	use App\User;
-	use Illuminate\Contracts\Queue\Queue;
+	use App\Events\NewUserRegistered;
+	use Illuminate\Contracts\Redis\Database;
 
-	class NewUserRegistered {
+	class CacheUserInformation {
 
 		/**
-		 * The queue implementation.
+		 * The Redis database implementation.
 		 */
-		protected $queue;
+		protected $redis;
 
 		/**
-		 * Create a new event listener instance.
+		 * Create a new event handler instance.
 		 *
-		 * @param  Queue  $queue
+		 * @param  Database  $redis
 		 * @return void
 		 */
-		public function __construct(Queue $queue)
+		public function __construct(Database $redis)
 		{
-			$this->queue = $queue;
+			$this->redis = $redis;
 		}
 
 		/**
 		 * Handle the event.
 		 *
-		 * @param  User  $user
+		 * @param  NewUserRegistered  $event
 		 * @return void
 		 */
-		public function fire(User $user)
+		public function handler(NewUserRegistered $event)
 		{
-			// Queue an e-mail to the user...
+			//
 		}
 
 	}
