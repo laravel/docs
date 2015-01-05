@@ -47,20 +47,16 @@ As of PHP 5.5, some OS distributions may require you to manually install the PHP
 
 The first thing you should do after installing Laravel is set your application key to a random string. If you installed Laravel via Composer, this key has probably already been set for you by the `key:generate` command. Typically, this string should be 32 characters long. The key can be set in the `app.php` configuration file. **If the application key is not set, your user sessions and other encrypted data will not be secure.**
 
-Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `app/config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
 
 Once Laravel is installed, you should also [configure your local environment](/docs/configuration#environment-configuration). This will allow you to receive detailed error messages when developing on your local machine. By default, detailed error reporting is disabled in your production configuration file.
 
-> **Note:** You should never have `app.debug` set to `true` for a production application. Never, ever do it.
+> **Note:** You should never have the `app.debug` configuration option set to `true` for a production application.
 
 <a name="permissions"></a>
 ### Permissions
-Laravel may require one set of permissions to be configured: folders within `app/storage` require write access by the web server.
 
-<a name="paths"></a>
-### Paths
-
-Several of the framework directory paths are configurable. To change the location of these directories, check out the `bootstrap/paths.php` file.
+Laravel may require one set of permissions to be configured: folders within `storage` require write access by the web server.
 
 <a name="pretty-urls"></a>
 ## Pretty URLs
@@ -77,10 +73,3 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]
-
-### Nginx
-
-On Nginx, the following directive in your site configuration will allow "pretty" URLs:
->>>>>>> 4.2
-
-> **Note:** As of PHP 5.5, some OS distributions may require you to manually install the PHP JSON extension. When using Ubuntu, this can be done via `apt-get install php5-json`.
