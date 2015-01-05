@@ -584,7 +584,7 @@ If you would like to use an unconventional table name for your pivot table, you 
 
 You may also override the conventional associated keys:
 
-	return $this->belongsToMany('Role', 'user_roles', 'user_id', 'foo_id');
+	return $this->belongsToMany('Role', 'user_roles', 'user_id', 'role_id');
 
 Of course, you may also define the inverse of the relationship on the `Role` model:
 
