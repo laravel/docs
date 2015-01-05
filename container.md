@@ -15,12 +15,13 @@ The Laravel service container is a powerful tool for managing class dependencies
 
 Let's look at a simple example:
 
-	<?php namespace App\Users;
+	<?php namespace App\Handlers\Commands;
 
 	use App\User;
+	use App\Commands\PurchasePodcast;
 	use Illuminate\Contracts\Mail\Mailer;
 
-	class Registrar {
+	class PurchasePodcastHandler {
 
 		/**
 		 * The mailer implementation.
@@ -28,7 +29,7 @@ Let's look at a simple example:
 		protected $mailer;
 
 		/**
-		 * Create a new user registrar instance.
+		 * Create a new instance.
 		 *
 		 * @param  Mailer  $mailer
 		 * @return void
@@ -39,19 +40,19 @@ Let's look at a simple example:
 		}
 
 		/**
-		 * Register a new user with the application.
+		 * Purchase a podcast.
 		 *
-		 * @param  array  $input
-		 * @return User
+		 * @param  PurchasePodcastCommand  $command
+		 * @return void
 		 */
-		public function registerNewUser(array $input)
+		public function handle(PurchasePodcastCommand $command)
 		{
 			//
 		}
 
 	}
 
-In this example, the `Registrar` needs to send e-mails on user registration. Since we want the `Registrar` to remain solely concerned with registering users ([Single Responsibility Principle](http://en.wikipedia.org/wiki/Single_responsibility_principle)), we will **inject** a service that is able to send e-mails. Since the service is injected, we are able to easily swap it out with another implementation. We are also able to easily "mock", or create a dummy implementation of the mailer when testing our application.
+In this example, the `PurchasePodcast` command handler needs to send e-mails when a podcast is purchased. So, we will **inject** a service that is able to send e-mails. Since the service is injected, we are able to easily swap it out with another implementation. We are also able to easily "mock", or create a dummy implementation of the mailer when testing our application.
 
 A deep understanding of the Laravel service container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
 
@@ -145,10 +146,10 @@ Lastly, but most importantly, you may simply "type-hint" the dependency in the c
 
 A very powerful features of the service container is its ability to bind an interface to a given implementation. For example, perhaps our application integrates with the [Pusher](https://pusher.com) web service for sending and receiving real-time events. If we are using Pusher's PHP SDK, we could inject an instance of the Pusher client into a class:
 
-	<?php namespace App\Orders;
+	<?php namespace App\Handlers\Commands;
 
+	use App\Commands\CreateOrder;
 	use Pusher\Client as PusherClient;
-	use App\Orders\Commands\CreateOrder;
 
 	class CreateOrderHandler {
 
@@ -224,7 +225,7 @@ This tells the container that it should inject the `PusherEventPusher` when a cl
 
 Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, when our system receives a new Order, we may want to send an event via [PubNub](http://www.pubnub.com/) rather than Pusher. Laravel provides a simple, fluent interface for definining this behavior:
 
-	$this->app->when('App\Orders\CreateOrderHandler')
+	$this->app->when('App\Handlers\Commands\CreateOrderHandler')
 	          ->needs('App\Contracts\EventPusher')
 	          ->give('App\Services\PubNubEventPusher');
 
