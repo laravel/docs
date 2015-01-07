@@ -20,7 +20,7 @@ A simple view looks like this:
 
 The view may be returned to the browser like so:
 
-	$router->get('/', function()
+	Route::get('/', function()
 	{
 		return view('greeting', ['name' => 'James']);
 	});
@@ -55,46 +55,6 @@ First, using the `view` helper:
 
 > **Note:** When the `view` helper is called without arguments, it returns an implementation of the `Illuminate\Contracts\View\Factory` contract.
 
-Alternatively, obtain an instance of the `Illuminate\Contracts\View\Factory` [contract](/docs/master/contracts). Once you have an implementation of the contract, you may use the `share` method to make data available to all views:
-
-In this example, we'll assume we're sharing the data from within a [global HTTP filter](/docs/master/filters). However, you could also share the data from a service provider, or even a controller:
-
-	<?php namespace App\Http\Filters;
-
-	use Illuminate\Http\Request;
-	use Illuminate\Contracts\View\Factory as ViewFactory;
-
-	class TestFilter {
-
-		/**
-		 * The view factory implementation.
-		 */
-		protected $view;
-
-		/**
-		 * Create a new filter instance.
-		 *
-		 * @param  ViewFactory  $view
-		 * @return void
-		 */
-		public function __construct(ViewFactory $view)
-		{
-			$this->view = $view;
-		}
-
-		/**
-		 * Run the request filter.
-		 *
-		 * @param  Request  $request
-		 * @return mixed
-		 */
-		public function filter(Request $request)
-		{
-			$this->view->share('data', [1, 2, 3]);
-		}
-
-	}
-
 #### Determining If A View Exists
 
 If you need to determine if a view exists, you again have two options: the `view` helper and the `Illuminate\Contracts\View\Factory` [contract](/docs/master/contracts):
@@ -105,46 +65,6 @@ Using the helper:
 	{
 		//
 	}
-
-Alternatively, type-hint the `Illuminate\Contracts\View\Factory` contract and use the `exists` method on the resolved instance:
-
-	<?php namespace App\Services;
-
-	use Illuminate\Contracts\View\Factory as ViewFactory;
-
-	class TaskRunner {
-
-		/**
-		 * The view factory implementation.
-		 */
-		protected $view;
-
-		/**
-		 * Create a new class instance.
-		 *
-		 * @param  ViewFactory  $view
-		 * @return void
-		 */
-		public function __construct(ViewFactory $view)
-		{
-			$this->view = $view;
-		}
-
-		/**
-		 * Do some work!
-		 *
-		 * @return void
-		 */
-		public function performTask()
-		{
-			if ($this->view->exists('emails.customer'))
-			{
-				//
-			}
-		}
-
-	}
-
 
 <a name="view-composers"></a>
 ## View Composers

@@ -56,9 +56,9 @@ If you want a middleware to be run during every HTTP request to your application
 
 ### Assigning Middleware To Routes
 
-If you would like to assign middleware to specific routes, you should first assign a short-hand key in your `app/Providers/RouteServiceProvider.php` file. By default, the `$middleware` property of this service provider contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing.
+If you would like to assign middleware to specific routes, you should first assign a short-hand key in your `app/Http/Kernel.php` file. By default, the `$middleware` property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing.
 
-Once the middleware has been defined in `RouteServiceProvider`, you may use the `middleware` key in the route options array:
+Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:
 
 	Route::get('admin/profile', ['middleware' => 'auth', function()
 	{
