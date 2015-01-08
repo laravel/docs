@@ -43,7 +43,7 @@ It is often helpful to have different configuration values based on the environm
 
 To make this a cinch, Laravel utilizes the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vance Lucas. In a fresh Laravel installation, the root directory of your application will contain a `.env.example` file. If you wish, you may rename this file to `.env`. All of the variables listed in this file will be loaded into the `$_ENV` PHP super-global when your application receives a request. You may use the `env` helper to retrieve values from these variables. In fact, if you review the Laravel configuration files, you will notice several of the options already using this helper!
 
-Feel free to modify your environment variables as needed for your own local development server, as well as your production environemnt. However, your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration.
+Feel free to modify your environment variables as needed for your own local development server, as well as your production environment. However, your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration.
 
 #### Accessing The Current Application Environment
 
