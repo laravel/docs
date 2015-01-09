@@ -16,7 +16,7 @@
 - [Working With Pivot Tables](#working-with-pivot-tables)
 - [Collections](#collections)
 - [Accessors & Mutators](#accessors-and-mutators)
-- [Date Mutators](#date-mutators)
+- [Date Accessors](#date-accessors)
 - [Model Events](#model-events)
 - [Model Observers](#model-observers)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
@@ -1151,12 +1151,12 @@ Mutators are declared in a similar fashion:
 
 	}
 
-<a name="date-mutators"></a>
-## Date Mutators
+<a name="date-accessors"></a>
+## Date Accessors
 
 By default, Eloquent will convert the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
 
-You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `getDates` method of the model:
+You may customize which fields are automatically transformed, and even completely disable this transformation, by overriding the `getDates` method of the model:
 
 	public function getDates()
 	{
@@ -1165,7 +1165,7 @@ You may customize which fields are automatically mutated, and even completely di
 
 When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
 
-To totally disable date mutations, simply return an empty array from the `getDates` method:
+To totally disable date accessors, simply return an empty array from the `getDates` method:
 
 	public function getDates()
 	{
