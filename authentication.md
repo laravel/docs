@@ -22,14 +22,14 @@ If your application is not using Eloquent, you may use the `database` authentica
 <a name="authenticating-users"></a>
 ## Authenticating Users
 
-To authenticate users, you will need to obtain an implementation of the `Illuminate\Contracts\Auth\Authenticator` [contract](/docs/master/contracts). This contract provides methods for validating user credentials and managing authenticated user sessions.
+To authenticate users, you will need to obtain an implementation of the `Illuminate\Contracts\Auth\Guard` [contract](/docs/master/contracts). This contract provides methods for validating user credentials and managing authenticated user sessions.
 
-Of course, you can use Laravel's automatic [dependency injection](/docs/master/container) to obtain an implementation of the contract. Once we have the `Authenticator` instance, we can use the `attempt` method to log users into the application:
+Of course, you can use Laravel's automatic [dependency injection](/docs/master/container) to obtain an implementation of the contract. Once we have the `Guard` instance, we can use the `attempt` method to log users into the application:
 
 	<?php namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
-	use Illuminate\Contracts\Auth\Authenticator;
+	use Illuminate\Contracts\Auth\Guard;
 
 	class AuthController extends Controller {
 
@@ -41,10 +41,10 @@ Of course, you can use Laravel's automatic [dependency injection](/docs/master/c
 		/**
 		 * Create a new controller instance.
 		 *
-		 * @param  Authenticator  $auth
+		 * @param  Guard  $auth
 		 * @return void
 		 */
-		public function __construct(Authenticator $auth)
+		public function __construct(Guard $auth)
 		{
 			$this->auth = $auth;
 		}
@@ -64,7 +64,7 @@ Of course, you can use Laravel's automatic [dependency injection](/docs/master/c
 
 	}
 
-The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/master/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, the `Authenticator` will begin an authenticated session for the user.
+The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/master/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, the `Guard` will begin an authenticated session for the user.
 
 The `attempt` method will return `true` if authentication was successful. Otherwise, `false` will be returned.
 
@@ -83,7 +83,7 @@ You also may add extra conditions to the authentication query:
 
 #### Determining If A User Is Authenticated
 
-To determine if the user is already logged into your application, you may use the `check` method on the `Authenticator` implementation:
+To determine if the user is already logged into your application, you may use the `check` method on the `Guard` implementation:
 
 	if ($this->auth->check())
 	{
