@@ -253,7 +253,7 @@ When soft deleting a model, it is not actually removed from your database. Inste
 
 		use SoftDeletes;
 
-		protected $dates = ['deleted_at'];
+		const DELETED_AT = 'deleted_at';
 
 	}
 
