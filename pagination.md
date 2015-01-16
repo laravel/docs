@@ -40,13 +40,13 @@ The argument passed to the `paginate` method is the number of items you wish to 
 		<?php endforeach; ?>
 	</div>
 
-	<?php echo $users->links(); ?>
+	<?php echo $users->render(); ?>
 
 This is all it takes to create a pagination system! Note that we did not have to inform the framework of the current page. Laravel will determine this for you automatically.
 
-If you would like to specify a custom view to use for pagination, you may pass a view to the `links` method:
+If you would like to specify a custom view to use for pagination, you may pass a view to the `render` method:
 
-	<?php echo $users->links('view.name'); ?>
+	<?php echo $users->render('view.name'); ?>
 
 You may also access additional pagination information via the following methods:
 
