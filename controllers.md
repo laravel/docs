@@ -9,9 +9,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Instead of defining all of your request handling logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related HTTP request handling logic into a class, as well as take advantage of more advanced framework features such as automatic [dependency injection](/docs/master/container).
-
-Controllers are typically stored in the `app/Http/Controllers` directory. However, controllers can technically live in any directory or any sub-directory. Route declarations are not dependent on the location of the controller class file on disk. So, as long as Composer knows how to autoload the controller class, it may be placed anywhere you wish.
+Instead of defining all of your request handling logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related HTTP request handling logic into a class. Controllers are typically stored in the `app/Http/Controllers` directory.
 
 <a name="basic-controllers"></a>
 ## Basic Controllers
@@ -21,25 +19,8 @@ Here is an example of a basic controller class:
 	<?php namespace App\Http\Controllers;
 
 	use App\Http\Controllers\Controller;
-	use App\Users\Repository as UserRepository;
 
 	class UserController extends Controller {
-
-		/**
-		 * The user repository instance.
-		 */
-		protected $users;
-
-		/**
-		 * Create a new controller instance.
-		 *
-		 * @param  UserRepository  $users
-		 * @return void
-		 */
-		public function __construct(UserRepository $users)
-		{
-			$this->users = $users;
-		}
 
 		/**
 		 * Show the profile for the given user.
@@ -49,18 +30,16 @@ Here is an example of a basic controller class:
 		 */
 		public function showProfile($id)
 		{
-			$user = $this->users->find($id);
-
-			return view('user.profile', ['user' => $user]);
+			return view('user.profile', ['user' => User::findOrFail($id)]);
 		}
 
 	}
 
-All controllers should extend the base controller class. Also note that we are type-hinting a dependency in the controller's constructor. Any dependencies listed in the constructor will automatically be resolved by the [service container](/docs/master/container).
-
 We can route to the controller action like so:
 
 	Route::get('user/{id}', 'UserController@showProfile');
+
+> **Note:** All controllers should extend the base controller class.
 
 #### Controllers & Namespaces
 
@@ -197,7 +176,7 @@ If it becomes necessary to add additional routes to a resource controller beyond
 
 #### Constructor Injection
 
-As you may have noticed in the examples above, the Laravel [service container](/docs/master/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
+The Laravel [service container](/docs/master/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
 
 	<?php namespace App\Http\Controllers;
 
