@@ -43,13 +43,11 @@ We can route to the controller action like so:
 
 #### Controllers & Namespaces
 
-It is very important to note that we did not need to specify the full controller namespace, only the portion of the class name that comes after the `App\Http\Controllers` namespace "root". Because of the call to the `loadRoutesFrom` helper in your `App\Providers\RouteServiceProvider` class, this "root" namespace will automatically be prepended to all controller routes you register.
+It is very important to note that we did not need to specify the full controller namespace, only the portion of the class name that comes after the `App\Http\Controllers` namespace "root". By default, the `RouteServiceProvider` will load the `routes.php` file within a route group containing the root controller namespace.
 
 If you choose to nest or organize your controllers using PHP namespaces deeper into the `App\Http\Controllers` directory, simply use the specify the class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you would register a route like so:
 
 	Route::get('foo', 'Photos\AdminController@method');
-
-> **Note:** Since we're using [Composer](http://getcomposer.org) to auto-load our PHP classes, controllers may live anywhere on the file system, as long as composer knows how to load them. The controller directory does not enforce any folder structure for your application. Routing to controllers is entirely de-coupled from the file system.
 
 #### Naming Controller Routes
 
@@ -63,7 +61,7 @@ To generate a URL to a controller action, use the `action` helper method:
 
 	$url = action('App\Http\Controllers\FooController@method');
 
-**Again**, you only need to specify the portion of the class that that comes after the `App\Http\Controllers` namespace "root". If you wish to generate a URL to a controller action while using only the portion of the class name relative to your controller namespace, register the root controller namespace with the URL generator:
+If you wish to generate a URL to a controller action while using only the portion of the class name relative to your controller namespace, register the root controller namespace with the URL generator:
 
 	URL::setRootControllerNamespace('App\Http\Controllers');
 
@@ -83,7 +81,7 @@ You may access the name of the controller action being run using the `currentRou
 		'uses' => 'UserController@showProfile'
 	]);
 
-However, you may also specify middleware within your controller's constructor:
+Additionally, you may specify middleware within your controller's constructor:
 
 	class UserController extends Controller {
 
@@ -95,6 +93,8 @@ However, you may also specify middleware within your controller's constructor:
 			$this->middleware('auth');
 
 			$this->middleware('log', ['only' => ['fooAction', 'barAction']]);
+
+			$this->middleware('subscribed', ['except' => ['fooAction', 'barAction']]);
 		}
 
 	}
@@ -145,7 +145,7 @@ To "nest" resource controllers, use "dot" notation in your route declaration:
 
 	Route::resource('photos.comments', 'PhotoCommentController');
 
-This route will register a "nested" resource that may be accessed with URLs like the following: `photos/{photoResource}/comments/{commentResource}`.
+This route will register a "nested" resource that may be accessed with URLs like the following: `photos/{photos}/comments/{comments}`.
 
 	class PhotoCommentController extends Controller {
 
