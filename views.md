@@ -103,11 +103,11 @@ Let's organize our view composers within a [service provider](/docs/master/provi
 
 	}
 
-> **Note:** Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `App\Http\ViewComposers` directory.
+> **Note:** Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `App\Http\Composers` directory.
 
 Now that we have registered the composer, the `ProfileComposer@compose` method will be executed each time the `profile` view is being rendered. So, let's define the composer class:
 
-	<?php namespace App\Http\ViewComposers;
+	<?php namespace App\Http\Composers;
 
 	use Illuminate\Contracts\View\View;
 	use Illuminate\Users\Repository as UserRepository;
@@ -154,19 +154,22 @@ Just before the view is rendered, the composer's `compose` method is called with
 
 The `composer` method accepts the `*` character as a wildcard, so you may attach a composer to all views like so:
 
-	$this->view->composer('*', 'App\Http\ViewComposers\GlobalComposer');
+	View::composer('*', function()
+	{
+		//
+	});
 
 #### Attaching A Composer To Multiple Views
 
 You may also attach a view composer to multiple views at once:
 
-	$this->view->composer(['profile', 'dashboard'], 'App\Http\ViewComposers\MyViewComposer');
+	View::composer(['profile', 'dashboard'], 'App\Http\ViewComposers\MyViewComposer');
 
 #### Defining Multiple Composers
 
 You may use the `composers` method to register a group of composers at the same time:
 
-	$this->view->composers([
+	View::composers([
 		'App\Http\ViewComposers\AdminComposer' => ['admin.index', 'admin.profile'],
 		'App\Http\ViewComposers\UserComposer' => 'user',
 		'App\Http\ViewComposers\ProductComposer' => 'product'
@@ -174,6 +177,6 @@ You may use the `composers` method to register a group of composers at the same 
 
 ### View Creators
 
-View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, use the `creator` method on an `Illuminate\Contracts\View\Factory` instance:
+View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, use the `creator` method:
 
-	$this->view->creator('profile', 'App\Http\ViewCreators\ProfileCreator');
+	View::creator('profile', 'App\Http\ViewCreators\ProfileCreator');
