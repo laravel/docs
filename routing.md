@@ -2,6 +2,7 @@
 
 - [Basic Routing](#basic-routing)
 - [CSRF Protection](#csrf-protection)
+- [Method Spoofing](#method-spoofing)
 - [Route Parameters](#route-parameters)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
@@ -20,11 +21,21 @@ You will define most of the routes for your application in the `app/Http/routes.
 		return 'Hello World';
 	});
 
-#### Basic POST Route
+#### Other Basic Routes Route
 
 	Route::post('foo/bar', function()
 	{
 		return 'Hello World';
+	});
+
+	Route::put('foo/bar', function()
+	{
+		//
+	});
+
+	Route::delete('foo/bar', function()
+	{
+		//
 	});
 
 #### Registering A Route For Multiple Verbs
@@ -59,6 +70,16 @@ Laravel automatically generates a CSRF "token" for each active user session bein
 You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` HTTP middleware will verify token in the request input matches the token stored in the session.
 
 In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-XSRF-TOKEN` request header.
+
+<a name="method-spoofing"></a>
+## Method Spoofing
+
+HTML forms do not support `PUT` or `DELETE` actions. So, when defining `PUT` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field. The value sent with the `_method` field will be used as the HTTP request method. For example:
+
+	<form action="/foo/bar" method="POST">
+		<input type="hidden" name="_method" value="PUT">
+    	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+    </form>
 
 <a name="route-parameters"></a>
 ## Route Parameters
