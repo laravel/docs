@@ -322,7 +322,7 @@ The field under validation must be formatted as an IP address.
 <a name="rule-max"></a>
 #### max:_value_
 
-The field under validation must be less than or equal to a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+The field under validation must be less than or equal to a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
@@ -336,7 +336,7 @@ The file under validation must have a MIME type corresponding to one of the list
 <a name="rule-min"></a>
 #### min:_value_
 
-The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the `size` rule.
+The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
@@ -361,9 +361,9 @@ The field under validation must match the given regular expression.
 The field under validation must be present in the input data.
 
 <a name="rule-required-if"></a>
-#### required\_if:_field_,_value_
+#### required_if:_field_,_value_,...
 
-The field under validation must be present if the _field_ field is equal to _value_.
+The field under validation must be present if the _field_ field is equal to any _value_.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...

@@ -22,7 +22,9 @@ The Laravel `Event` class provides a simple observer implementation, allowing yo
 
 #### Firing An Event
 
-	$event = Event::fire('auth.login', array($user));
+	$response = Event::fire('auth.login', array($user));
+
+The `fire` method returns an array of responses that you can use to control what happens next in your application.
 
 #### Subscribing To Events With Priority
 
@@ -47,7 +49,9 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 
 So, you know how to register events, but you may be wondering _where_ to register them. Don't worry, this is a common question. Unfortunately, it's a hard question to answer because you can register an event almost anywhere! But, here are some tips. Again, like most other bootstrapping code, you may register events in one of your `start` files such as `app/start/global.php`.
 
-If your `start` files are getting too crowded, you could create a separate `app/events.php` file that is included from a `start` file. This is a simple solution that keeps your event registration cleanly separated from the rest of your bootstrapping. If you prefer a class based approach, you may register your events in a [service provider](/docs/ioc#service-providers). Since none of these approaches is inherently "correct", choose an approach you feel comfortable with based on the size of your application.
+If your `start` files are getting too crowded, you could create a separate `app/events.php` file that is included from a `start` file. This is a simple solution that keeps your event registration cleanly separated from the rest of your bootstrapping. 
+
+If you prefer a class based approach, you may register your events in a [service provider](/docs/ioc#service-providers). Since none of these approaches is inherently "correct", choose an approach you feel comfortable with based on the size of your application.
 
 <a name="wildcard-listeners"></a>
 ## Wildcard Listeners

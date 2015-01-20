@@ -68,7 +68,7 @@ Note that views which `extend` a Blade layout simply override sections from the 
 
 Sometimes, such as when you are not sure if a section has been defined, you may wish to pass a default value to the `@yield` directive. You may pass the default value as the second argument:
 
-	@yield('section', 'Default Content');
+	@yield('section', 'Default Content')
 
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
@@ -149,7 +149,7 @@ You may also pass an array of data to the included view:
 
 #### Overwriting Sections
 
-By default, sections are appended to any previous content that exists in the section. To overwrite a section entirely, you may use the `overwrite` statement:
+To overwrite a section entirely, you may use the `overwrite` statement:
 
 	@extends('list.item.container')
 
@@ -161,7 +161,7 @@ By default, sections are appended to any previous content that exists in the sec
 
 	@lang('language.line')
 
-	@choice('language.line', 1);
+	@choice('language.line', 1)
 
 #### Comments
 
