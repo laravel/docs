@@ -68,7 +68,7 @@ The `Homestead.yaml` file will be placed in the `~/.homestead` directory. If you
 
 #### Manually Via Git (No Local PHP)
 
-Alternatively, if you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a central `Homestead` directory where you keep all of your Laravel projects, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
+Alternatively, if you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
@@ -76,7 +76,7 @@ Once you have installed the Homestead CLI tool, run the `bash init.sh` command t
 
 	bash init.sh
 
-The `Homestead.yaml` file will be placed in the `~/.homestead` directory.
+The `Homestead.yaml` file will be placed in your `~/.homestead` directory.
 
 ### Set Your SSH Key
 
