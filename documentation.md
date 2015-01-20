@@ -7,19 +7,19 @@
     - [Installation](/docs/master/installation)
     - [Configuration](/docs/master/configuration)
     - [Homestead](/docs/master/homestead)
-- Foundations
-    - [Service Providers](/docs/master/providers)
-    - [Service Container](/docs/master/container)
-    - [Contracts](/docs/master/contracts)
-    - [Request Lifecycle](/docs/master/lifecycle)
-    - [Application Structure](/docs/master/structure)
-- The HTTP Layer
+- HTTP Basics
     - [Routing](/docs/master/routing)
     - [Middleware](/docs/master/middleware)
     - [Controllers](/docs/master/controllers)
     - [Requests](/docs/master/requests)
     - [Responses](/docs/master/responses)
     - [Views](/docs/master/views)
+- Architecture Foundations
+    - [Service Providers](/docs/master/providers)
+    - [Service Container](/docs/master/container)
+    - [Contracts](/docs/master/contracts)
+    - [Request Lifecycle](/docs/master/lifecycle)
+    - [Application Structure](/docs/master/structure)
 - Services
     - [Authentication](/docs/master/authentication)
     - [Billing](/docs/master/billing)
