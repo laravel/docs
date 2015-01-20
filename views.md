@@ -53,6 +53,10 @@ For example, using the `view` helper:
 
 	view()->share('data', [1, 2, 3]);
 
+You may also use the `View` facade:
+
+	View::share('data', [1, 2, 3]);
+
 Typically, you would place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them.
 
 > **Note:** When the `view` helper is called without arguments, it returns an implementation of the `Illuminate\Contracts\View\Factory` contract.
