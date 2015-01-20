@@ -49,15 +49,17 @@ If you wish, you may pass an array of data as the second parameter to the `make`
 
 Occasionally, you may need to share a piece of data with all views that are rendered by your application. You have several options: the `view` helper, the `Illuminate\Contracts\View\Factory` [contract](/docs/master/contracts), or a wildcard [view composer](#view-composers).
 
-First, using the `view` helper:
+For example, using the `view` helper:
 
 	view()->share('data', [1, 2, 3]);
+
+Typically, you would place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them.
 
 > **Note:** When the `view` helper is called without arguments, it returns an implementation of the `Illuminate\Contracts\View\Factory` contract.
 
 #### Determining If A View Exists
 
-If you need to determine if a view exists, you again have two options: the `view` helper and the `Illuminate\Contracts\View\Factory` [contract](/docs/master/contracts):
+If you need to determine if a view exists, you may use the `exists` method:
 
 Using the helper:
 
@@ -69,16 +71,16 @@ Using the helper:
 <a name="view-composers"></a>
 ## View Composers
 
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want bound to a view each time that view is rendered, a view composer can organize that code into a single location.
+View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer organizes that logic into a single location.
 
 #### Defining A View Composer
 
-Let's organize our view composers within a [service provider](/docs/master/providers). We'll need an instance of the `Illuminate\Contracts\View\Factory` [contract](/docs/master/contracts), so we'll type-hint that in our provider's `boot` method:
+Let's organize our view composers within a [service provider](/docs/master/providers). We'll use the `View` facade to access the underlying `Illuminate\Contracts\View\Factory` contract implementation:
 
 	<?php namespace App\Providers;
 
+	use View;
 	use Illuminate\Support\ServiceProvider;
-	use Illuminate\Contracts\View\Factory as ViewFactory;
 
 	class ComposerServiceProvider extends ServiceProvider {
 
@@ -87,9 +89,16 @@ Let's organize our view composers within a [service provider](/docs/master/provi
 		 *
 		 * @return void
 		 */
-		public function boot(ViewFactory $view)
+		public function boot()
 		{
-			$view->composer('profile', 'App\Http\ViewComposers\ProfileComposer');
+			// Using class based composers...
+			View::composer('profile', 'App\Http\ViewComposers\ProfileComposer');
+
+			// Using Closure based composers...
+			View::composer('dashboard', function()
+			{
+
+			});
 		}
 
 	}
