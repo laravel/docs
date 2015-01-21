@@ -308,14 +308,14 @@ Of course, as mentioned above, controllers are not the only classes Laravel reso
 
 The container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
 
-	$this->app->resolvingAny(function($object, $app)
+	$this->app->resolving(function($object, $app)
 	{
-		//
+		// Called when container resolves object of any type...
 	});
 
-	$this->app->resolving('FooBar', function($fooBar, $app)
+	$this->app->resolving(function(FooBar $fooBar, $app)
 	{
-		//
+		// Called when container resolves objects of type "FooBar"...
 	});
 
 The object being resolved will be passed to the callback.
