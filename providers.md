@@ -58,20 +58,19 @@ So, what if we need to register an event listener within our service provider? T
 
 	<?php namespace App\Providers;
 
+	use Event;
 	use Illuminate\Support\ServiceProvider;
-	use Illuminate\Contracts\Events\Dispatcher;
 
 	class EventServiceProvider extends ServiceProvider {
 
 		/**
 		 * Perform post-registration booting of services.
 		 *
-		 * @param  Dispatcher  $events
 		 * @return void
 		 */
-		public function boot(Dispatcher $events)
+		public function boot()
 		{
-			$events->listen('SomeEvent', 'SomeEventHandler');
+			Event::listen('SomeEvent', 'SomeEventHandler');
 		}
 
 		/**
@@ -86,7 +85,14 @@ So, what if we need to register an event listener within our service provider? T
 
 	}
 
-Notice that we are able to type-hint dependencies for our `boot` method. The service container will automatically inject any dependencies you need!
+We are able to type-hint dependencies for our `boot` method. The service container will automatically inject any dependencies you need:
+
+	use Illuminate\Contracts\Events\Dispatcher;
+
+	public function boot(Dispatcher $events)
+	{
+		$events->listen('SomeEvent', 'SomeEventHandler');
+	}
 
 <a name="registering-providers"></a>
 ## Registering Providers
