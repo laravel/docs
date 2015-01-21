@@ -58,7 +58,7 @@ If you choose not to use the provided `AuthController` implementation, you will 
 
 	}
 
-The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/master/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, the `Authenticator` will begin an authenticated session for the user.
+The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/master/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, a new authenticated session will be started for the user.
 
 The `attempt` method will return `true` if authentication was successful. Otherwise, `false` will be returned.
 
@@ -77,7 +77,7 @@ You also may add extra conditions to the authentication query:
 
 #### Determining If A User Is Authenticated
 
-To determine if the user is already logged into your application, you may use the `check` method on the `Authenticator` implementation:
+To determine if the user is already logged into your application, you may use the `check` method:
 
 	if (Auth::check())
 	{
