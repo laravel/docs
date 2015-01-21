@@ -18,6 +18,7 @@
     - [Service Providers](/docs/master/providers)
     - [Service Container](/docs/master/container)
     - [Contracts](/docs/master/contracts)
+    - [Facades](/docs/master/facades)
     - [Request Lifecycle](/docs/master/lifecycle)
     - [Application Structure](/docs/master/structure)
 - Services
@@ -29,7 +30,6 @@
     - [Encryption](/docs/master/encryption)
     - [Errors & Logging](/docs/master/errors)
     - [Events](/docs/master/events)
-    - [Facades](/docs/master/facades)
     - [Hashing](/docs/master/hashing)
     - [Helpers](/docs/master/helpers)
     - [Localization](/docs/master/localization)
