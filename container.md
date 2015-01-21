@@ -61,7 +61,7 @@ A deep understanding of the Laravel service container is essential to building a
 
 ### Binding
 
-Almost all of your service container bindings will be registered within [service providers](/docs/master/providers), so all of these examples will demonstrate using the container in that context. However, if you need an instance of the container elsewhere in your application, such as a factory, you may type-hint the `Illuminate\Contracts\Container\Container` contract and an instance of the container will be injected for you.
+Almost all of your service container bindings will be registered within [service providers](/docs/master/providers), so all of these examples will demonstrate using the container in that context. However, if you need an instance of the container elsewhere in your application, such as a factory, you may type-hint the `Illuminate\Contracts\Container\Container` contract and an instance of the container will be injected for you. Alternatively, you may use the `App` facade to access the container.
 
 #### Registering A Basic Resolver
 
