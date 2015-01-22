@@ -98,14 +98,14 @@ Embedding inline images into your e-mails is typically cumbersome; however, Lara
 		<img src="<?php echo $message->embedData($data, $name); ?>">
 	</body>
 
-Note that the `$message` variable is always passed to e-mail views by the `Mail` class.
+Note that the `$message` variable is always passed to e-mail views by the `Mail` facade.
 
 <a name="queueing-mail"></a>
 ## Queueing Mail
 
 #### Queueing A Mail Message
 
-Since sending e-mail messages can drastically lengthen the response time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/master/queues). To queue a mail message, simply use the `queue` method on the `Mail` class:
+Since sending e-mail messages can drastically lengthen the response time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/master/queues). To queue a mail message, simply use the `queue` method on the `Mail` facade:
 
 	Mail::queue('emails.welcome', $data, function($message)
 	{
