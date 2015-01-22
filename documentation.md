@@ -25,7 +25,6 @@
     - [Authentication](/docs/master/authentication)
     - [Billing](/docs/master/billing)
     - [Cache](/docs/master/cache)
-    - [Configuration](/docs/master/configuration)
     - [Core Extension](/docs/master/extending)
     - [Encryption](/docs/master/encryption)
     - [Errors & Logging](/docs/master/errors)
