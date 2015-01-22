@@ -15,9 +15,13 @@ The Laravel Queue component provides a unified API across a variety of different
 
 The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io), and synchronous (for local use) driver.
 
+### Queue Database Table
+
 In order to use the `database` queue driver, you will need a database table to hold the jobs. To generate a migration to create this table, run the `queue:table` Artisan command:
 
 	php artisan queue:table
+
+### Other Queue Dependencies
 
 The following dependencies are needed for the listed queue drivers:
 
