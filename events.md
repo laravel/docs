@@ -1,13 +1,13 @@
 # Events
 
 - [Basic Usage](#basic-usage)
-- [Wildcard Listeners](#wildcard-listeners)
+- [Queued Event Handlers](#queued-event-handlers)
 - [Event Subscribers](#event-subscribers)
 
 <a name="basic-usage"></a>
 ## Basic Usage
 
-The Laravel `Event` class provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Individual event classes for your application are typically stored in the `app/Events` directory, while their handlers are stored in `app/Handlers/Events`.
+The Laravel event facilities provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their handlers are stored in `app/Handlers/Events`.
 
 You can generate a new event class using the Artisan CLI tool:
 
@@ -15,7 +15,7 @@ You can generate a new event class using the Artisan CLI tool:
 
 #### Subscribing To An Event
 
-The `EventServiceProvider` included with your Laravel installation provides a convenient place to register all event handlers. The `listen` property contains an array of all events (keys) and their handlers (values). Of course, you may add as many events to this array as your application requires. For example, let's add our `PodcastWasPurchased` event:
+The `EventServiceProvider` included with your Laravel application provides a convenient place to register all event handlers. The `listen` property contains an array of all events (keys) and their handlers (values). Of course, you may add as many events to this array as your application requires. For example, let's add our `PodcastWasPurchased` event:
 
 	/**
 	 * The event handler mappings for the application.
@@ -34,7 +34,7 @@ To generate a handler for an event, use the `handler:event` Artisan CLI command:
 
 #### Firing An Event
 
-Now we are ready to fire our event:
+Now we are ready to fire our event using the `Event` facade:
 
 	$response = Event::fire(new PodcastWasPurchased($podcast));
 
@@ -63,6 +63,27 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 
 		return false;
 	});
+
+<a name="queued-evnet-handlers"></a>
+## Queued Event Handlers
+
+Need to [queue](/docs/master/queue) an event handler? It couldn't be any easier. When generating the handler, simply use the `--queued` flag:
+
+	php artisan handler:make SendPurchaseConfirmation --event=PodcastWasPurchased --queued
+
+This will generate a handler class that implements the `Illuminate\Contracts\Queue\ShouldBeQueued` interface. That's it! Now when this handler is called for an event, it will be queued automatically by the event dispatcher.
+
+If no exceptions are thrown when the handler is executed by the queue, the queued job will be deleted automatically after it has processed. If you need to access the queued job's `delete` and `release` methods manually, you may do so. The `Illuminate\Queue\InteractsWithQueue` trait, which is included by default on queued handlers, gives you access to these methods:
+
+	public function handle(PodcastWasPurchased $event)
+	{
+		if (true)
+		{
+			$this->release(30);
+		}
+	}
+
+If you have an existing handler that you would like to convert to a queued handler, simply add the `ShouldBeQueued` interface to the class manually.
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
