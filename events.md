@@ -67,7 +67,7 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 <a name="queued-evnet-handlers"></a>
 ## Queued Event Handlers
 
-Need to [queue](/docs/master/queue) an event handler? It couldn't be any easier. When generating the handler, simply use the `--queued` flag:
+Need to [queue](/docs/master/queues) an event handler? It couldn't be any easier. When generating the handler, simply use the `--queued` flag:
 
 	php artisan handler:make SendPurchaseConfirmation --event=PodcastWasPurchased --queued
 
