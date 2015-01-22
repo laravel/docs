@@ -167,13 +167,11 @@ For example, the `HashServiceProvider` binds a `hash` key into the IoC container
 
 	<?php namespace App\Providers;
 
-	use App;
-
 	class SnappyHashProvider extends \Illuminate\Hashing\HashServiceProvider {
 
 		public function boot()
 		{
-			App::bindShared('hash', function()
+			$this->app->bindShared('hash', function()
 			{
 				return new \Snappy\Hashing\ScryptHasher;
 			});
