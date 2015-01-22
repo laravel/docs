@@ -105,7 +105,7 @@ Note that the `$message` variable is always passed to e-mail views by the `Mail`
 
 #### Queueing A Mail Message
 
-Since sending e-mail messages can drastically lengthen the response time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/queues). To queue a mail message, simply use the `queue` method on the `Mail` class:
+Since sending e-mail messages can drastically lengthen the response time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/master/queues). To queue a mail message, simply use the `queue` method on the `Mail` class:
 
 	Mail::queue('emails.welcome', $data, function($message)
 	{
@@ -131,6 +131,4 @@ If you wish to specify a specific queue or "tube" on which to push the message, 
 
 When developing an application that sends e-mail, it's usually desirable to disable the sending of messages from your local or development environment. To do so, you may either call the `Mail::pretend` method, or set the `pretend` option in the `config/mail.php` configuration file to `true`. When the mailer is in `pretend` mode, messages will be written to your application's log files instead of being sent to the recipient.
 
-#### Enabling Pretend Mail Mode
-
-	Mail::pretend();
+If you would like to actually view the test e-mails, consider using a service like [MailTrap](https://mailtrap.io).
