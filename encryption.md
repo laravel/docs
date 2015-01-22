@@ -1,6 +1,15 @@
 # Encryption
 
-Laravel provides facilities for strong AES encryption via the mcrypt PHP extension:
+- [Introduction](#introduction)
+- [Basic Usage](#basic-usage)
+
+<a name="introduction"></a>
+## Introduction
+
+Laravel provides facilities for strong AES encryption via the Mcrypt PHP extension.
+
+<a name="basic-usage"></a>
+## Basic Usage
 
 #### Encrypting A Value
 
