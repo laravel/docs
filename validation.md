@@ -126,7 +126,7 @@ Once you have performed validation, you will need an easy way to get the error m
 
 		if ($validator->fails())
 		{
-			return Redirect::to('register')->withErrors($validator);
+			return redirect('register')->withErrors($validator);
 		}
 	});
 
@@ -142,7 +142,7 @@ So, after redirection, you may utilize the automatically bound `$errors` variabl
 
 If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors. This will allow you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
 
-	return Redirect::to('register')->withErrors($validator, 'login');
+	return redirect('register')->withErrors($validator, 'login');
 
 You may then access the named `MessageBag` instance from the `$errors` variable:
 
