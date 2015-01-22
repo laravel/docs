@@ -1,33 +1,8 @@
 # Templates
 
-- [Controller Layouts](#controller-layouts)
 - [Blade Templating](#blade-templating)
 - [Other Blade Control Structures](#other-blade-control-structures)
 - [Extending Blade](#extending-blade)
-
-<a name="controller-layouts"></a>
-## Controller Layouts
-
-One method of using templates in Laravel is via controller layouts. By specifying the `layout` property on the controller, the view specified will be created for you and will be the assumed response that should be returned from actions.
-
-#### Defining A Layout On A Controller
-
-	class UserController extends Controller {
-
-		/**
-		 * The layout that should be used for responses.
-		 */
-		protected $layout = 'layouts.master';
-
-		/**
-		 * Show the user profile.
-		 */
-		public function showProfile()
-		{
-			$this->layout->content = View::make('user.profile');
-		}
-
-	}
 
 <a name="blade-templating"></a>
 ## Blade Templating
@@ -95,11 +70,7 @@ If you need to display a string that is wrapped in curly braces, you may escape 
 
 	@{{ This will not be processed by Blade }}
 
-Of course, all user supplied data should be escaped or purified. To escape the output, you may use the triple curly brace syntax:
-
-	Hello, {{ $name }}.
-
-If you don't want the data to be escaped, you may use double curly-braces:
+If you don't want the data to be escaped, you may use the following syntax:
 
 	Hello, {!! $name !!}.
 
@@ -145,7 +116,7 @@ If you don't want the data to be escaped, you may use double curly-braces:
 
 You may also pass an array of data to the included view:
 
-	@include('view.name', array('some'=>'data'))
+	@include('view.name', ['some' => 'data'])
 
 #### Overwriting Sections
 
