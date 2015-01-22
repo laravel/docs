@@ -31,9 +31,22 @@ All exceptions are handled by the `App\Exceptions\Handler` class. This class con
 
 The `report` method is used to log exceptions or send them to an external service like [BugSnag](https://bugsnag.com). By default, the `report` method simply passes the exception to the base implementation on the parent class where the exception is logged. However, you are free to log exceptions however you wish. If you need to report different types of exceptions in different ways, you may use the PHP `instanceof` comparison operator:
 
-	if ($e instanceof CustomException)
+	/**
+	 * Report or log an exception.
+	 *
+	 * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+	 *
+	 * @param  \Exception  $e
+	 * @return void
+	 */
+	public function report(Exception $e)
 	{
-		//
+		if ($e instanceof CustomException)
+		{
+			//
+		}
+
+		return parent::report($e);
 	}
 
 The `render` method is responsible for converting the exception into an HTTP response that should be sent back to the browser. By default, the exception is passed to the base class which generates a response for you. However, you are free to check the exception type or return your own custom response.
