@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [After Installation](#after-installation)
+- [Accessing Configuration Values](#accessing-configuration-values)
 - [Environment Configuration](#environment-configuration)
 - [Protecting Sensitive Configuration](#protecting-sensitive-configuration)
 - [Maintenance Mode](#maintenance-mode)
@@ -37,6 +38,19 @@ Once Laravel is installed, you should also [configure your local environment](/d
 ### Permissions
 
 Laravel may require one set of permissions to be configured: folders within `storage` require write access by the web server.
+
+<a name="accessing-configuration-values"></a>
+## Accessing Configuration Values
+
+You may easily access your configuration values using the `Config` facade:
+
+	$value = Config::get('app.timezone');
+
+	Config::set('app.timezone', 'America/Chicago');
+
+You may also use the `config` helper function:
+
+	$value = config('app.timezone');
 
 <a name="environment-configuration"></a>
 ## Environment Configuration
