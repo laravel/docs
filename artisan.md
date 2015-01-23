@@ -75,8 +75,6 @@ Let's look at a few more scheduling examples:
 
 #### Scheduling Closures
 
-You may even schedule Closures to run on a schedule:
-
 	$schedule->call(function()
 	{
 		// Do some task...
@@ -84,8 +82,6 @@ You may even schedule Closures to run on a schedule:
 	})->hourly();
 
 #### Scheduling Terminal Commands
-
-Terminal / system commands may be scheduled as well:
 
 	$schedule->exec('composer self-update')->daily();
 
