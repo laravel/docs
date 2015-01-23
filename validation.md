@@ -127,6 +127,92 @@ If you wish to customize the format of the validation errors that are flashed to
 		return $validator->errors()->all();
 	}
 
+<a name="form-request-validation"></a>
+## Form Request Validation
+
+For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that contain validation logic. To create a form request class, use the `make:request` Artisan CLI command:
+
+	php artisan make:request StoreBlogPostRequest
+
+The generated class will be placed in the `app/Http/Requests` directory. Let's add a few validation rules to the `rules` method:
+
+	/**
+	 * Get the validation rules that apply to the request.
+	 *
+	 * @return array
+	 */
+	public function rules()
+	{
+		return [
+			'title' => 'required|unique|max:255',
+			'body' => 'required',
+		];
+	}
+
+So, how are the validation rules executed? All we need to do is type-hint the request on your controller method:
+
+	/**
+	 * Store the incoming blog post.
+	 *
+	 * @param  StoreBlogPostRequest  $request
+	 * @return Response
+	 */
+	public function store(StoreBlogPostRequest $request)
+	{
+		// The incoming request is valid...
+	}
+
+The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic. It has already been validated!
+
+If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
+
+### Authorizing Form Requests
+
+The form request class also contains an `authorize` method. Within this method, you may check if the authenticated user actually has the authority to update a given resource. For example, if a user is attempeting to update a blog post comment, do they actually own that comment? For example:
+
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
+	public function authorize()
+	{
+		$commentId = $this->route('comment');
+
+		return Comment::where('id', $commentId)
+                      ->where('user_id', Auth::id())->count() === 1;
+	}
+
+Note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, for example:
+
+	Route::post('comment/{comment}');
+
+If the `authorize` method returns `false`, a HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
+
+If you plan to have authorization logic in another part of your application, simply return `true` from the `authorize` method:
+
+	/**
+	 * Determine if the user is authorized to make this request.
+	 *
+	 * @return bool
+	 */
+	public function authorize()
+	{
+		return true;
+	}
+
+### Customizing The Flashed Error Format
+
+If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatValidationErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Validation\Validator` class at the top of the file:
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function formatErrors(Validator $validator)
+	{
+		return $validator->errors()->all();
+	}
+
 <a name="working-with-error-messages"></a>
 ## Working With Error Messages
 
