@@ -31,6 +31,25 @@ The database query builder provides a convenient, fluent interface to creating a
 		var_dump($user->name);
 	}
 
+#### Chunking Results From A Table
+
+	DB::table('users')->chunk(100, function($users)
+	{
+		foreach ($users as $user)
+		{
+			//
+		}
+	});
+
+You may stop further chunks from being processed by returning `false` from the `Closure`:
+
+	DB::table('users')->chunk(100, function($users)
+	{
+		//
+
+		return false;
+	});
+
 #### Retrieving A Single Row From A Table
 
 	$user = DB::table('users')->where('name', 'John')->first();
