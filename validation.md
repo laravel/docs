@@ -180,7 +180,7 @@ The form request class also contains an `authorize` method. Within this method, 
 		$commentId = $this->route('comment');
 
 		return Comment::where('id', $commentId)
-                      ->where('user_id', Auth::id())->count() === 1;
+                      ->where('user_id', Auth::id())->exists();
 	}
 
 Note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, for example:
