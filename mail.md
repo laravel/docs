@@ -75,6 +75,15 @@ When attaching files to a message, you may also specify a MIME type and / or a d
 
 	$message->attach($pathToFile, array('as' => $display, 'mime' => $mime));
 
+If you just need to e-mail a simple string instead of an entire view, use the `raw` method:
+
+	Mail::raw('Text to e-mail', function($message)
+	{
+		$message->from('us@example.com', 'Laravel');
+
+		$message->to('foo@example.com')->cc('bar@example.com');
+	});
+
 > **Note:** The message instance passed to a `Mail::send` Closure extends the SwiftMailer message class, allowing you to call any method on that class to build your e-mail messages.
 
 <a name="embedding-inline-attachments"></a>
