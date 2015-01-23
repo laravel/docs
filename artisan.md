@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Usage](#usage)
+- [Calling Commands Outside Of CLI](#calling-commands-outside-of-cli)
 
 <a name="introduction"></a>
 ## Introduction
@@ -34,3 +35,24 @@ You may specify the configuration environment that should be used while running 
 You may also view the current version of your Laravel installation using the `--version` option:
 
 	php artisan --version
+
+<a name="calling-commands-outside-of-cli"></a>
+## Calling Commands Outside Of CLI
+
+Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from an HTTP route. Just use the `Artisan` facade:
+
+	Route::get('/foo', function()
+	{
+		$exitCode = Artisan::call('command:name', ['--option' => 'foo']);
+
+		//
+	});
+
+You may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/master/queues):
+
+	Route::get('/foo', function()
+	{
+		Artisan::queue('command:name', ['--option' => 'foo']);
+
+		//
+	});
