@@ -111,7 +111,7 @@ You may also specify a default value to the `confirm` method, which should be `t
 
 	$this->confirm($question, true);
 
-#### Calling Other Commands
+### Calling Other Commands
 
 Sometimes you may wish to call other commands from your command. You may do so using the `call` method:
 
