@@ -1184,7 +1184,7 @@ To totally disable date mutations, simply return an empty array from the `getDat
 <a name="attribute-casting"></a>
 ## Attribute Casting
 
-If have some attributes that you want to always convert to another data-type, you may add the attribute to the `casts` property of your model. Otherwise, you will have to define a mutator for each of the attributes, which can be time consuming. Here is an example of using the `casts` property:
+If you have some attributes that you want to always convert to another data-type, you may add the attribute to the `casts` property of your model. Otherwise, you will have to define a mutator for each of the attributes, which can be time consuming. Here is an example of using the `casts` property:
 
 	/**
 	 * The attributes that should be casted to native types.
