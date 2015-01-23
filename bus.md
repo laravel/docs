@@ -27,6 +27,8 @@ The newly generated class will be placed in the `app/Commands` directory. By def
 
 	class PurchasePodcast extends Command implements SelfHandling {
 
+		protected $user, $podcast;
+
 		/**
 		 * Create a new command instance.
 		 *
@@ -34,7 +36,8 @@ The newly generated class will be placed in the `app/Commands` directory. By def
 		 */
 		public function __construct(User $user, Podcast $pocast)
 		{
-			//
+			$this->user = $user;
+			$this->podcast = $podcast;
 		}
 
 		/**
@@ -45,6 +48,8 @@ The newly generated class will be placed in the `app/Commands` directory. By def
 		public function handle()
 		{
 			// Handle the logic to purchase the podcast...
+
+			event(new PodcastWasPurchased($this->user, $this->podcast));
 		}
 
 	}
