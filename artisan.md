@@ -85,6 +85,10 @@ Let's look at a few more scheduling examples:
 
 	$schedule->exec('composer self-update')->daily();
 
+#### Manual Cron Expression
+
+	$schedule->command('foo')->cron('* * * * *');
+
 #### Frequent Jobs
 
 	$schedule->command('foo')->everyFiveMinutes();
