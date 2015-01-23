@@ -1188,19 +1188,24 @@ If `false` is returned from the `creating`, `updating`, `saving`, or `deleting` 
 		if ( ! $user->isValid()) return false;
 	});
 
-#### Setting A Model Boot Method
+#### Where To Register Event Listeners
 
-Eloquent models also contain a static `boot` method, which may provide a convenient place to register your event bindings.
+Your `EventServiceProvider` serves as a convenient place to register your model event bindings. For example:
 
-	class User extends Eloquent {
+	/**
+	 * Register any other events for your application.
+	 *
+	 * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+	 * @return void
+	 */
+	public function boot(DispatcherContract $events)
+	{
+		parent::boot($events);
 
-		public static function boot()
+		User::creating(function($user)
 		{
-			parent::boot();
-
-			// Setup event bindings...
-		}
-
+			//
+		});
 	}
 
 <a name="model-observers"></a>
