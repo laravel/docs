@@ -117,6 +117,10 @@ You may also specify which database connection should be used when running an El
 
 	$user = User::on('connection-name')->find(1);
 
+If you are using [read / write connections](/docs/master/database#read-write-connections), you may force the query to use the "write" connection with the following method:
+
+	$user = User::onWriteConnection()->find(1);
+
 <a name="mass-assignment"></a>
 ## Mass Assignment
 
