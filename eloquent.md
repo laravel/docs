@@ -780,6 +780,10 @@ You may also specify an operator and a count:
 
 	$posts = Post::has('comments', '>=', 3)->get();
 
+Nested `has` statements may also be constructed using "dot" notation:
+
+	$posts = Post::has('comments.votes')->get();
+
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries:
 
 	$posts = Post::whereHas('comments', function($q)
