@@ -72,6 +72,12 @@ Using the helper:
 		//
 	}
 
+### Returning A View From A File Path
+
+If you wish, you may generate a view from a fully-qualified file path:
+
+	return view()->file($pathToFile);
+
 <a name="view-composers"></a>
 ## View Composers
 
