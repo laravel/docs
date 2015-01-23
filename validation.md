@@ -1,6 +1,8 @@
 # Validation
 
 - [Basic Usage](#basic-usage)
+- [Controller Validation](#controller-validation)
+- [Form Request Validation](#form-request-validation)
 - [Working With Error Messages](#working-with-error-messages)
 - [Error Messages & Views](#error-messages-and-views)
 - [Available Validation Rules](#available-validation-rules)
@@ -64,6 +66,66 @@ You may also access an array of the failed validation rules, without messages. T
 #### Validating Files
 
 The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
+
+<a name="controller-validation"></a>
+## Controller Validation
+
+Of course, manually creating and checking a `Validator` instance each time you do validation is a headache. Don't worry, you have other options! The base `App\Http\Controllers\Controller` class included with Laravel uses a `ValidatesRequests` trait. This trait provides a single, convenient method for validating incoming HTTP requests. Here's what it looks like:
+
+	/**
+	 * Store the incoming blog post.
+	 *
+	 * @param  Request  $request
+	 * @return Response
+	 */
+	public function store(Request $request)
+	{
+		$this->validate($request, [
+			'title' => 'required|unique|max:255',
+			'body' => 'required',
+		]);
+
+		//
+	}
+
+If validation passes, your code will keep exeucting normally. However, if validation fails, a `Illuminate\Contracts\Validation\ValidationException` will be thrown. This exception is automatically caught and a redirect is generated to the user's previous location. The validation errors are also automatically flashed to the session.
+
+If the incoming request was an AJAX request, no redirect will be generated. Instead, an HTTP response with a 422 status code will be returned to the browser containing the JSON representation of the validation errors.
+
+For example, here is the equivalent code written manually:
+
+	/**
+	 * Store the incoming blog post.
+	 *
+	 * @param  Request  $request
+	 * @return Response
+	 */
+	public function store(Request $request)
+	{
+		$v = Validator::make($request->all(), [
+			'title' => 'required|unique|max:255',
+			'body' => 'required',
+		]);
+
+		if ($v->fails())
+		{
+			return redirect()->back()->withErrors($v->errors());
+		}
+
+		//
+	}
+
+### Customizing The Flashed Error Format
+
+If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatValidationErrors` on your base controller. Don't forget to import the `Illuminate\Validation\Validator` class at the top of the file:
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function formatValidationErrors(Validator $validator)
+	{
+		return $validator->errors()->all();
+	}
 
 <a name="working-with-error-messages"></a>
 ## Working With Error Messages
