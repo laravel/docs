@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/schema) to easily manage your application's schema.
+Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/master/schema) to easily manage your application's schema.
 
 <a name="creating-migrations"></a>
 ## Creating Migrations
@@ -36,14 +36,6 @@ The `--table` and `--create` options may also be used to indicate the name of th
 #### Running All Outstanding Migrations
 
 	php artisan migrate
-
-#### Running All Outstanding Migrations For A Path
-
-	php artisan migrate --path=app/foo/migrations
-
-#### Running All Outstanding Migrations For A Package
-
-	php artisan migrate --package=vendor/package
 
 > **Note:** If you receive a "class not found" error when running migrations, try running the `composer dump-autoload` command.
 
