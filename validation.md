@@ -183,7 +183,7 @@ The form request class also contains an `authorize` method. Within this method, 
                       ->where('user_id', Auth::id())->exists();
 	}
 
-Note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, for example:
+Note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:
 
 	Route::post('comment/{comment}');
 
