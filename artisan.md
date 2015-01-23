@@ -69,6 +69,10 @@ Your command schedule is stored in the `app/Console/Kernel.php` file. Within thi
 
 This Cron will call the Laravel command scheduler every minute. Then, Laravel evalutes your scheduled jobs and runs the jobs that are due. It couldn't be easier!
 
+### More Scheduling Examples
+
+Let's look at a few more scheduling examples:
+
 #### Scheduling Closures
 
 You may even schedule Closures to run on a schedule:
@@ -84,10 +88,6 @@ You may even schedule Closures to run on a schedule:
 Terminal / system commands may be scheduled as well:
 
 	$schedule->exec('composer self-update')->daily();
-
-### More Scheduling Examples
-
-Let's look at a few more scheduling examples:
 
 #### Frequent Jobs
 
