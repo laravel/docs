@@ -8,7 +8,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-The Laravel command bus provides a convenient method of encapsulating tasks your application needs to perform into simple, easy to understand "comamnds". To help us understand the purpose of commands, let's pretend we are building an application that allows users to purchase podcasts. When a user purchases a podcast, there are a variety of things that need to happen. For example, we may need to charge the user's credit card, add a record to our database that represents the purchase, send a confirmation e-mail of the purchase. Perhaps we also need to perform some kind of validation regarding if the user is allowed to purchase podcasts.
+The Laravel command bus provides a convenient method of encapsulating tasks your application needs to perform into simple, easy to understand "commands". To help us understand the purpose of commands, let's pretend we are building an application that allows users to purchase podcasts.
+
+When a user purchases a podcast, there are a variety of things that need to happen. For example, we may need to charge the user's credit card, add a record to our database that represents the purchase, and send a confirmation e-mail of the purchase. Perhaps we also need to perform some kind of validation as to whether the user is allowed to purchase podcasts.
 
 We could put all of this logic inside a controller method; however, this has several disadvantages. The first disadvantage is that our controller probably handles several other incoming HTTP actions, and including complicated logic in each controller method will soon bloat our controller and make it harder to read. Secondly, it is difficult to re-use the purchase podcast logic outside of the controller context. Thirdly, it is more difficult to unit-test the command as we must also generate a stub HTTP request and make a full request to the application to test the purchase podcast logic.
 
