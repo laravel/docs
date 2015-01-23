@@ -67,6 +67,27 @@ You may also access an array of the failed validation rules, without messages. T
 
 The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
 
+### After Validation Hook
+
+The validator also allows you to attach callbacks to be run after validation is completed. This allows you to easily perform further validation, and even add more error messages to the message collection. To get started, use the `after` method on a validator instance:
+
+	$validator = Validator::make(...);
+
+	$validator->after(function($validator)
+	{
+		if ($this->somethingElseIsInvalid())
+		{
+			$validator->errors()->add('field', 'Something is wrong with this field!');
+		}
+	});
+
+	if ($validator->fails())
+	{
+		//
+	}
+
+You may add as many `after` callbacks to a validator as needed.
+
 <a name="controller-validation"></a>
 ## Controller Validation
 
