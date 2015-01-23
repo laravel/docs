@@ -109,7 +109,7 @@ Of course, manually creating and checking a `Validator` instance each time you d
 		//
 	}
 
-If validation passes, your code will keep exeucting normally. However, if validation fails, an `Illuminate\Contracts\Validation\ValidationException` will be thrown. This exception is automatically caught and a redirect is generated to the user's previous location. The validation errors are even automatically flashed to the session!
+If validation passes, your code will keep executing normally. However, if validation fails, an `Illuminate\Contracts\Validation\ValidationException` will be thrown. This exception is automatically caught and a redirect is generated to the user's previous location. The validation errors are even automatically flashed to the session!
 
 If the incoming request was an AJAX request, no redirect will be generated. Instead, an HTTP response with a 422 status code will be returned to the browser containing a JSON representation of the validation errors.
 
@@ -189,7 +189,7 @@ If validation fails, a redirect response will be generated to send the user back
 
 ### Authorizing Form Requests
 
-The form request class also contains an `authorize` method. Within this method, you may check if the authenticated user actually has the authority to update a given resource. For example, if a user is attempeting to update a blog post comment, do they actually own that comment? For example:
+The form request class also contains an `authorize` method. Within this method, you may check if the authenticated user actually has the authority to update a given resource. For example, if a user is attempting to update a blog post comment, do they actually own that comment? For example:
 
 	/**
 	 * Determine if the user is authorized to make this request.
