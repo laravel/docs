@@ -83,6 +83,20 @@ You may add the `Illuminate\Foundation\Bus\DispatchesCommands` trait to any clas
 			new PurchasePodcast(Auth::user(), Podcast::findOrFail($podcastId))
 		);
 
+### Mapping Command Properties From Requests
+
+It is very common to map HTTP request variables into commands. So, instead of forcing you to do this manually for each request, Laravel provides some helper methods to make it a cinch. Let's take a look at the `dispatchFrom` method available on the `DispatchesCommands` trait:
+
+	$this->dispatchFrom('Command\Class\Name', $request);
+
+This method will examine the constructor of the command class it is given, and then extract variables from the HTTP request (or any other `ArrayAccess` object) to fill the needed constructor parameters of the command. So, if our command class accepts a `firstName` variable in its constructor, the command bus will attempt to pull the `firstName` parameter from the HTTP request.
+
+You may also pass an array as the third argument to the `dispatchFrom` method. This array will be used to fill any constructor parameters that are not available on the request:
+
+	$this->dispatchFrom('Command\Class\Name', $request, [
+		'firstName' => 'Taylor',
+	]);
+
 <a name="queued-commands"></a>
 ## Queued Commands
 
