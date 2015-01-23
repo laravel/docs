@@ -74,6 +74,7 @@ Command  | Description
 `$table->float('amount');`  |  FLOAT equivalent to the table
 `$table->increments('id');`  |  Incrementing ID to the table (primary key).
 `$table->integer('votes');`  |  INTEGER equivalent to the table
+`$table->json('options');`  |  JSON equivalent to the table
 `$table->longText('description');`  |  LONGTEXT equivalent to the table
 `$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent to the table
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent to the table
