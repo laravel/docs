@@ -17,13 +17,13 @@
 
 The Redis configuration for your application is stored in the `config/database.php` file. Within this file, you will see a `redis` array containing the Redis servers used by your application:
 
-	'redis' => array(
+	'redis' => [
 
 		'cluster' => true,
 
-		'default' => array('host' => '127.0.0.1', 'port' => 6379),
+		'default' => ['host' => '127.0.0.1', 'port' => 6379],
 
-	),
+	],
 
 The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Simply give each Redis server a name, and specify the host and port used by the server.
 
@@ -62,7 +62,7 @@ When you are simply executing commands against the default connection, just use 
 
 	$values = Redis::lrange('names', 5, 10);
 
-> **Note:** Redis [cache](/docs/cache) and [session](/docs/session) drivers are included with Laravel.
+> **Note:** Redis [cache](/docs/master/cache) and [session](/docs/master/session) drivers are included with Laravel.
 
 <a name="pipelining"></a>
 ## Pipelining
