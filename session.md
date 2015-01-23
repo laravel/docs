@@ -13,6 +13,8 @@ Since HTTP driven applications are stateless, sessions provide a way to store in
 
 The session configuration is stored in `config/session.php`. Be sure to review the well documented options available to you in this file. By default, Laravel is configured to use the `file` session driver, which will work well for the majority of applications.
 
+> **Note:** If you need all stored session data to be encrypted, set the `encrypt` configuration option to `true`.
+
 #### Reserved Keys
 
 The Laravel framework uses the `flash` session key internally, so you should not add an item to the session by that name.
