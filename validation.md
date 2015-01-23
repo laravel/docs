@@ -149,7 +149,7 @@ The generated class will be placed in the `app/Http/Requests` directory. Let's a
 		];
 	}
 
-So, how are the validation rules executed? All we need to do is type-hint the request on your controller method:
+So, how are the validation rules executed? All you need to do is type-hint the request on your controller method:
 
 	/**
 	 * Store the incoming blog post.
