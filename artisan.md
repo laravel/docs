@@ -109,7 +109,7 @@ Let's look at a few more scheduling examples:
 
 	$schedule->command('foo')->twiceDaily();
 
-#### Job The Runs Every Weekday
+#### Job That Runs Every Weekday
 
 	$schedule->command('foo')->weekdays();
 
