@@ -42,21 +42,21 @@ Note that two keys have been added to the configuration array: `read` and `write
 <a name="running-queries"></a>
 ## Running Queries
 
-Once you have configured your database connection, you may run queries using the `DB` class.
+Once you have configured your database connection, you may run queries using the `DB` facade.
 
 #### Running A Select Query
 
-	$results = DB::select('select * from users where id = ?', array(1));
+	$results = DB::select('select * from users where id = ?', [1]);
 
 The `select` method will always return an `array` of results.
 
 #### Running An Insert Statement
 
-	DB::insert('insert into users (id, name) values (?, ?)', array(1, 'Dayle'));
+	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
 #### Running An Update Statement
 
-	DB::update('update users set votes = 100 where name = ?', array('John'));
+	DB::update('update users set votes = 100 where name = ?', ['John']);
 
 #### Running A Delete Statement
 
@@ -84,7 +84,7 @@ To run a set of operations within a database transaction, you may use the `trans
 
 	DB::transaction(function()
 	{
-		DB::table('users')->update(array('votes' => 1));
+		DB::table('users')->update(['votes' => 1]);
 
 		DB::table('posts')->delete();
 	});
