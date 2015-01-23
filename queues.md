@@ -242,6 +242,15 @@ If you would like to register an event that will be called when a queue job fail
 		//
 	});
 
+You may also define a `failed` method directly on a queue job class, allowing you to perform job specific actions when a failure occurs:
+
+	public function failed()
+	{
+		// Called when the job is failing...
+	}
+
+### Retrying Failed Jobs
+
 To view all of your failed jobs, you may use the `queue:failed` Artisan command:
 
 	php artisan queue:failed
