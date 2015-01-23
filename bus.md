@@ -14,7 +14,7 @@ When a user purchases a podcast, there are a variety of things that need to happ
 
 We could put all of this logic inside a controller method; however, this has several disadvantages. The first disadvantage is that our controller probably handles several other incoming HTTP actions, and including complicated logic in each controller method will soon bloat our controller and make it harder to read. Secondly, it is difficult to re-use the purchase podcast logic outside of the controller context. Thirdly, it is more difficult to unit-test the command as we must also generate a stub HTTP request and make a full request to the application to test the purchase podcast logic.
 
-Instead of putting this logic in the controller, we may choose to encapsulte it within a "command" object, such as `PurchasePodcast` command.
+Instead of putting this logic in the controller, we may choose to encapsulte it within a "command" object, such as a `PurchasePodcast` command.
 
 <a name="creating-commands"></a>
 ## Creating Commands
