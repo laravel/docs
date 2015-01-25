@@ -298,4 +298,4 @@ The `abort` helper simply throws a `Symfony\Component\HttpFoundation\Exception\H
 
 Secondly, you may manually throw an instance of `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
 
-More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/master/errors#handling-404-errors) section of the documentation.
+More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/master/errors#http-exceptions) section of the documentation.
