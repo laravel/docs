@@ -28,11 +28,11 @@ The Laravel `Hash` class provides secure Bcrypt hashing:
 
 #### Hashing A Password Using Bcrypt
 
-	$password = Hash::make('secret');
+	$password = Hash::make('plaintext_password');
 
 #### Verifying A Password Against A Hash
 
-	if (Hash::check('secret', $hashedPassword))
+	if (Hash::check('plaintext_password', $hashedPassword))
 	{
 		// The passwords match...
 	}
@@ -41,7 +41,7 @@ The Laravel `Hash` class provides secure Bcrypt hashing:
 
 	if (Hash::needsRehash($hashed))
 	{
-		$hashed = Hash::make('secret');
+		$hashed = Hash::make('plaintext_password');
 	}
 
 <a name="authenticating-users"></a>
