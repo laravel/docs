@@ -189,6 +189,7 @@ Below is a list of all available validation rules and their function:
 - [Required Without All](#rule-required-without-all)
 - [Same](#rule-same)
 - [Size](#rule-size)
+- [String](#rule-string)
 - [Timezone](#rule-timezone)
 - [Unique (Database)](#rule-unique)
 - [URL](#rule-url)
@@ -394,6 +395,11 @@ The given _field_ must match the field under validation.
 #### size:_value_
 
 The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For files, _size_ corresponds to the file size in kilobytes.
+
+<a name="rule-string"></a>
+#### string:_value_
+
+The field under validation must be a string type.
 
 <a name="rule-timezone"></a>
 #### timezone
