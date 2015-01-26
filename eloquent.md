@@ -466,7 +466,7 @@ A one-to-one relationship is a very basic relation. For example, a `User` model 
 
 		public function phone()
 		{
-			return $this->hasOne('Phone');
+			return $this->hasOne('App\Phone');
 		}
 
 	}
@@ -483,9 +483,9 @@ The SQL performed by this statement will be as follows:
 
 Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method. Furthermore, you may pass a third argument to the method to specify which local column that should be used for the association:
 
-	return $this->hasOne('Phone', 'foreign_key');
+	return $this->hasOne('App\Phone', 'foreign_key');
 
-	return $this->hasOne('Phone', 'foreign_key', 'local_key');
+	return $this->hasOne('App\Phone', 'foreign_key', 'local_key');
 
 #### Defining The Inverse Of A Relation
 
@@ -495,7 +495,7 @@ To define the inverse of the relationship on the `Phone` model, we use the `belo
 
 		public function user()
 		{
-			return $this->belongsTo('User');
+			return $this->belongsTo('App\User');
 		}
 
 	}
@@ -506,7 +506,7 @@ In the example above, Eloquent will look for a `user_id` column on the `phones` 
 
 		public function user()
 		{
-			return $this->belongsTo('User', 'local_key');
+			return $this->belongsTo('App\User', 'local_key');
 		}
 
 	}
@@ -517,7 +517,7 @@ Additionally, you pass a third parameter which specifies the name of the associa
 
 		public function user()
 		{
-			return $this->belongsTo('User', 'local_key', 'parent_key');
+			return $this->belongsTo('App\User', 'local_key', 'parent_key');
 		}
 
 	}
@@ -531,7 +531,7 @@ An example of a one-to-many relation is a blog post that "has many" comments. We
 
 		public function comments()
 		{
-			return $this->hasMany('Comment');
+			return $this->hasMany('App\Comment');
 		}
 
 	}
@@ -546,9 +546,9 @@ If you need to add further constraints to which comments are retrieved, you may 
 
 Again, you may override the conventional foreign key by passing a second argument to the `hasMany` method. And, like the `hasOne` relation, the local column may also be specified:
 
-	return $this->hasMany('Comment', 'foreign_key');
+	return $this->hasMany('App\Comment', 'foreign_key');
 
-	return $this->hasMany('Comment', 'foreign_key', 'local_key');
+	return $this->hasMany('App\Comment', 'foreign_key', 'local_key');
 
 #### Defining The Inverse Of A Relation
 
@@ -558,7 +558,7 @@ To define the inverse of the relationship on the `Comment` model, we use the `be
 
 		public function post()
 		{
-			return $this->belongsTo('Post');
+			return $this->belongsTo('App\Post');
 		}
 
 	}
@@ -574,7 +574,7 @@ We can define a many-to-many relation using the `belongsToMany` method:
 
 		public function roles()
 		{
-			return $this->belongsToMany('Role');
+			return $this->belongsToMany('App\Role');
 		}
 
 	}
@@ -585,11 +585,11 @@ Now, we can retrieve the roles through the `User` model:
 
 If you would like to use an unconventional table name for your pivot table, you may pass it as the second argument to the `belongsToMany` method:
 
-	return $this->belongsToMany('Role', 'user_roles');
+	return $this->belongsToMany('App\Role', 'user_roles');
 
 You may also override the conventional associated keys:
 
-	return $this->belongsToMany('Role', 'user_roles', 'user_id', 'foo_id');
+	return $this->belongsToMany('App\Role', 'user_roles', 'user_id', 'foo_id');
 
 Of course, you may also define the inverse of the relationship on the `Role` model:
 
@@ -597,7 +597,7 @@ Of course, you may also define the inverse of the relationship on the `Role` mod
 
 		public function users()
 		{
-			return $this->belongsToMany('User');
+			return $this->belongsToMany('App\User');
 		}
 
 	}
@@ -627,7 +627,7 @@ Even though the `posts` table does not contain a `country_id` column, the `hasMa
 
 		public function posts()
 		{
-			return $this->hasManyThrough('Post', 'User');
+			return $this->hasManyThrough('App\Post', 'User');
 		}
 
 	}
@@ -638,7 +638,7 @@ If you would like to manually specify the keys of the relationship, you may pass
 
 		public function posts()
 		{
-			return $this->hasManyThrough('Post', 'User', 'country_id', 'user_id');
+			return $this->hasManyThrough('App\Post', 'User', 'country_id', 'user_id');
 		}
 
 	}
@@ -661,7 +661,7 @@ Polymorphic relations allow a model to belong to more than one other model, on a
 
 		public function photos()
 		{
-			return $this->morphMany('Photo', 'imageable');
+			return $this->morphMany('App\Photo', 'imageable');
 		}
 
 	}
@@ -670,7 +670,7 @@ Polymorphic relations allow a model to belong to more than one other model, on a
 
 		public function photos()
 		{
-			return $this->morphMany('Photo', 'imageable');
+			return $this->morphMany('App\Photo', 'imageable');
 		}
 
 	}
@@ -746,7 +746,7 @@ Next, we're ready to setup the relationships on the model. The `Post` and `Video
 
 		public function tags()
 		{
-			return $this->morphToMany('Tag', 'taggable');
+			return $this->morphToMany('App\Tag', 'taggable');
 		}
 
 	}
@@ -757,12 +757,12 @@ The `Tag` model may define a method for each of its relationships:
 
 		public function posts()
 		{
-			return $this->morphedByMany('Post', 'taggable');
+			return $this->morphedByMany('App\Post', 'taggable');
 		}
 
 		public function videos()
 		{
-			return $this->morphedByMany('Video', 'taggable');
+			return $this->morphedByMany('App\Video', 'taggable');
 		}
 
 	}
@@ -801,7 +801,7 @@ Eloquent allows you to access your relations via dynamic properties. Eloquent wi
 
 		public function user()
 		{
-			return $this->belongsTo('User');
+			return $this->belongsTo('App\User');
 		}
 
 	}
@@ -827,7 +827,7 @@ Eager loading exists to alleviate the N + 1 query problem. For example, consider
 
 		public function author()
 		{
-			return $this->belongsTo('Author');
+			return $this->belongsTo('App\Author');
 		}
 
 	}
@@ -990,7 +990,7 @@ When a model `belongsTo` another model, such as a `Comment` which belongs to a `
 
 		public function post()
 		{
-			return $this->belongsTo('Post');
+			return $this->belongsTo('App\Post');
 		}
 
 	}
@@ -1019,13 +1019,13 @@ Notice that each `Role` model we retrieve is automatically assigned a `pivot` at
 
 By default, only the keys will be present on the `pivot` object. If your pivot table contains extra attributes, you must specify them when defining the relationship:
 
-	return $this->belongsToMany('Role')->withPivot('foo', 'bar');
+	return $this->belongsToMany('App\Role')->withPivot('foo', 'bar');
 
 Now the `foo` and `bar` attributes will be accessible on our `pivot` object for the `Role` model.
 
 If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
 
-	return $this->belongsToMany('Role')->withTimestamps();
+	return $this->belongsToMany('App\Role')->withTimestamps();
 
 #### Deleting Records On A Pivot Table
 
