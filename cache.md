@@ -13,6 +13,8 @@ Laravel provides a unified API for various caching systems. The cache configurat
 
 The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC. You may even configure multiple cache configurations for the same driver.
 
+Before using a Redis cache with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+
 <a name="cache-usage"></a>
 ## Cache Usage
 
