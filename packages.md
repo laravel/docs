@@ -24,7 +24,7 @@ Your package's internal structure is entirely up to you; however, typically each
 
 ### Views
 
-Package views are typically referenced using a double-colon syntax:
+Package views are typically referenced using a double-colon "namespace" syntax:
 
 	return view('package::view.name');
 
