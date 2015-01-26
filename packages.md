@@ -54,7 +54,7 @@ To publish your package's views to the `resource/views/vendor` directory, you sh
 		]);
 	}
 
-Now, when users of your package execute Laravel's `vendor:publish` command, your views directory will be copied from the location you specified.
+Now, when users of your package execute Laravel's `vendor:publish` command, your views directory will be copied to the specified location.
 
 > **Note:** You may use the `publishes` method to publish **any** type of file to any location you wish.
 
@@ -89,7 +89,7 @@ To publish a configuration file, just use the `publishes` method from the `boot`
 		__DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
 	]);
 
-Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied from the location you specified. Of course, once your configuration has been published, it can be accessed like any other configuration file:
+Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified location. Of course, once your configuration has been published, it can be accessed like any other configuration file:
 
 	$value = config('courier.option');
 
