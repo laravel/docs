@@ -21,7 +21,7 @@ Before using the S3 or Rackspace drivers, you will need to install the appropria
 
 Of course, you may configure as many disks as you like, and may even have multiple disks that use the same driver.
 
-When using the `local` driver, note that all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt':
+When using the `local` driver, note that all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
 	Storage::disk('local')->put('file.txt', 'Contents');
 
