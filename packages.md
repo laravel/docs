@@ -39,7 +39,7 @@ Now you may load your package views using the following syntax:
 
 	return view('courier::view.name');
 
-When you use the `loadViewsFrom` method, Laravel actually registers **two** locations for your views: one in the `resources/views/vendor` directory and one in the directory you specify. So, using our `courier` example: when requesting a package view, Laravel will first check if a custom version of the view has been provided by the developer in `resources/views/vendor/courier`. Then, if the view has not been customized, Laravel will check the package view directory you specified in your call to `loadViewsFrom`. This makes it easy for end-users to customize / override your package's views.
+When you use the `loadViewsFrom` method, Laravel actually registers **two** locations for your views: one in the application's `resources/views/vendor` directory and one in the directory you specify. So, using our `courier` example: when requesting a package view, Laravel will first check if a custom version of the view has been provided by the developer in `resources/views/vendor/courier`. Then, if the view has not been customized, Laravel will check the package view directory you specified in your call to `loadViewsFrom`. This makes it easy for end-users to customize / override your package's views.
 
 #### Publishing Views
 
