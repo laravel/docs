@@ -4,7 +4,6 @@
 - [Basic Provider Example](#basic-provider-example)
 - [Registering Providers](#registering-providers)
 - [Deferred Providers](#deferred-providers)
-- [Generating Service Providers](#generating-service-providers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -21,6 +20,10 @@ In this overview you will learn how to write your own service providers and regi
 ## Basic Provider Example
 
 All service providers extend the `Illuminate\Support\ServiceProvider` class. This abstract class requires that you define at least one method on your provider: `register`. Within the `register` method, you should **only bind things into the [service container](/docs/master/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
+
+The Artisan CLI can easily generate a new provider via the `make:provider` command:
+
+	php artisan make:provider RiakServiceProvider
 
 ### The Register Method
 
@@ -58,20 +61,19 @@ So, what if we need to register an event listener within our service provider? T
 
 	<?php namespace App\Providers;
 
+	use Event;
 	use Illuminate\Support\ServiceProvider;
-	use Illuminate\Contracts\Events\Dispatcher;
 
 	class EventServiceProvider extends ServiceProvider {
 
 		/**
 		 * Perform post-registration booting of services.
 		 *
-		 * @param  Dispatcher  $events
 		 * @return void
 		 */
-		public function boot(Dispatcher $events)
+		public function boot()
 		{
-			$events->listen('SomeEvent', 'SomeEventHandler');
+			Event::listen('SomeEvent', 'SomeEventHandler');
 		}
 
 		/**
@@ -86,7 +88,14 @@ So, what if we need to register an event listener within our service provider? T
 
 	}
 
-Notice that we are able to type-hint dependencies for our `boot` method. The service container will automatically inject any dependencies you need!
+We are able to type-hint dependencies for our `boot` method. The service container will automatically inject any dependencies you need:
+
+	use Illuminate\Contracts\Events\Dispatcher;
+
+	public function boot(Dispatcher $events)
+	{
+		$events->listen('SomeEvent', 'SomeEventHandler');
+	}
 
 <a name="registering-providers"></a>
 ## Registering Providers
@@ -148,10 +157,3 @@ To defer the loading of a provider, set the `defer` property to `true` and defin
 	}
 
 Laravel compiles and stores a list of all of the services supplied by deferred service providers, along with the name of its service provider class. Then, only when you attempt to resolve one of these services does Laravel load the service provider.
-
-<a name="generating-service-providers"></a>
-## Generating Service Providers
-
-The Artisan CLI can easily generate a new provider via the `make:provider` command:
-
-	php artisan make:provider RiakServiceProvider

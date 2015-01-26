@@ -31,7 +31,7 @@ For convenience, you may also use the `response` helper:
 	return response($content, $status)
 	              ->header('Content-Type', $value);
 
-> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/4.2/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
+> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/master/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
 
 #### Sending A View In A Response
 
@@ -56,7 +56,7 @@ There are several ways to generate a `RedirectResponse` instance. The simplest m
 
 #### Returning A Redirect With Flash Data
 
-Redirecting to a new URL and [flashing data to the session](/docs/master/session) are typically done at the same time. So, for convenience, you can create a `RedirectResponse` instance **and** flash data to the session in a single method chain:
+Redirecting to a new URL and [flashing data to the session](/docs/master/session) are typically done at the same time. So, for convenience, you may create a `RedirectResponse` instance **and** flash data to the session in a single method chain:
 
 	return redirect('user/login')->with('message', 'Login Failed');
 
@@ -73,6 +73,10 @@ If your route has parameters, you may pass them as the second argument to the `r
 	// For a route with the following URI: profile/{id}
 
 	return redirect()->route('profile', [1]);
+
+If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may simply pass the model itself. The ID will be extracted automatically:
+
+	return redirect()->route('profile', [$user]);
 
 #### Returning A Redirect To A Named Route Using Named Parameters
 
@@ -129,20 +133,19 @@ For example, from a [service provider's](/docs/master/providers) `boot` method:
 
 	<?php namespace App\Providers;
 
+	use Response;
 	use Illuminate\Support\ServiceProvider;
-	use Illuminate\Contracts\Routing\ResponseFactory;
 
 	class ResponseMacroServiceProvider extends ServiceProvider {
 
 		/**
 		 * Perform post-registration booting of services.
 		 *
-		 * @param  ResponseFactory  $events
 		 * @return void
 		 */
-		public function boot(ResponseFactory $response)
+		public function boot()
 		{
-			$response->macro('caps', function($value) use ($response)
+			Response::('caps', function($value) use ($response)
 			{
 				return $response->make(strtoupper($value));
 			});

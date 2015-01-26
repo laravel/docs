@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Creating & Dropping Tables](#creating-and-dropping-tables)
 - [Adding Columns](#adding-columns)
+- [Changing Columns](#changing-columns)
 - [Renaming Columns](#renaming-columns)
 - [Dropping Columns](#dropping-columns)
 - [Checking Existence](#checking-existence)
@@ -68,11 +69,12 @@ Command  | Description
 `$table->date('created_at');`  |  DATE equivalent to the table
 `$table->dateTime('created_at');`  |  DATETIME equivalent to the table
 `$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
-`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point 
+`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point
 `$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
 `$table->float('amount');`  |  FLOAT equivalent to the table
 `$table->increments('id');`  |  Incrementing ID to the table (primary key).
 `$table->integer('votes');`  |  INTEGER equivalent to the table
+`$table->json('options');`  |  JSON equivalent to the table
 `$table->longText('description');`  |  LONGTEXT equivalent to the table
 `$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent to the table
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent to the table
@@ -97,6 +99,23 @@ Command  | Description
 If you are using the MySQL database, you may use the `after` method to specify the order of columns:
 
 	$table->string('name')->after('email');
+
+<a name="changing-columns"></a>
+## Changing Columns
+
+Sometimes you may need to modify an existing column. For example, you may wish to increase the size of a string column. The `change` method makes it easy! For example, let's increase the size of the `name` column from 25 to 50:
+
+	Schema::table('users', function($table)
+	{
+		$table->string('name', 50)->change();
+	});
+
+We could also modify a column to be nullable:
+
+	Schema::table('users', function($table)
+	{
+		$table->string('name', 50)->nullable()->change();
+	});
 
 <a name="renaming-columns"></a>
 ## Renaming Columns

@@ -5,13 +5,12 @@
 - [Controller Middleware](#controller-middleware)
 - [RESTful Resource Controllers](#restful-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
+- [Route Caching](#route-caching)
 
 <a name="introduction"></a>
 ## Introduction
 
-Instead of defining all of your request handling logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related HTTP request handling logic into a class, as well as take advantage of more advanced framework features such as automatic [dependency injection](/docs/master/container).
-
-Controllers are typically stored in the `app/Http/Controllers` directory. However, controllers can technically live in any directory or any sub-directory. Route declarations are not dependent on the location of the controller class file on disk. So, as long as Composer knows how to autoload the controller class, it may be placed anywhere you wish.
+Instead of defining all of your request handling logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related HTTP request handling logic into a class. Controllers are typically stored in the `app/Http/Controllers` directory.
 
 <a name="basic-controllers"></a>
 ## Basic Controllers
@@ -21,25 +20,8 @@ Here is an example of a basic controller class:
 	<?php namespace App\Http\Controllers;
 
 	use App\Http\Controllers\Controller;
-	use App\Users\Repository as UserRepository;
 
 	class UserController extends Controller {
-
-		/**
-		 * The user repository instance.
-		 */
-		protected $users;
-
-		/**
-		 * Create a new controller instance.
-		 *
-		 * @param  UserRepository  $users
-		 * @return void
-		 */
-		public function __construct(UserRepository $users)
-		{
-			$this->users = $users;
-		}
 
 		/**
 		 * Show the profile for the given user.
@@ -49,28 +31,24 @@ Here is an example of a basic controller class:
 		 */
 		public function showProfile($id)
 		{
-			$user = $this->users->find($id);
-
-			return view('user.profile', ['user' => $user]);
+			return view('user.profile', ['user' => User::findOrFail($id)]);
 		}
 
 	}
-
-All controllers should extend the base controller class. Also note that we are type-hinting a dependency in the controller's constructor. Any dependencies listed in the constructor will automatically be resolved by the [service container](/docs/master/container).
 
 We can route to the controller action like so:
 
 	Route::get('user/{id}', 'UserController@showProfile');
 
+> **Note:** All controllers should extend the base controller class.
+
 #### Controllers & Namespaces
 
-It is very important to note that we did not need to specify the full controller namespace, only the portion of the class name that comes after the `App\Http\Controllers` namespace "root". Because of the call to the `loadRoutesFrom` helper in your `App\Providers\RouteServiceProvider` class, this "root" namespace will automatically be prepended to all controller routes you register.
+It is very important to note that we did not need to specify the full controller namespace, only the portion of the class name that comes after the `App\Http\Controllers` namespace "root". By default, the `RouteServiceProvider` will load the `routes.php` file within a route group containing the root controller namespace.
 
 If you choose to nest or organize your controllers using PHP namespaces deeper into the `App\Http\Controllers` directory, simply use the specify the class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you would register a route like so:
 
 	Route::get('foo', 'Photos\AdminController@method');
-
-> **Note:** Since we're using [Composer](http://getcomposer.org) to auto-load our PHP classes, controllers may live anywhere on the file system, as long as composer knows how to load them. The controller directory does not enforce any folder structure for your application. Routing to controllers is entirely de-coupled from the file system.
 
 #### Naming Controller Routes
 
@@ -84,7 +62,7 @@ To generate a URL to a controller action, use the `action` helper method:
 
 	$url = action('App\Http\Controllers\FooController@method');
 
-**Again**, you only need to specify the portion of the class that that comes after the `App\Http\Controllers` namespace "root". If you wish to generate a URL to a controller action while using only the portion of the class name relative to your controller namespace, register the root controller namespace with the URL generator:
+If you wish to generate a URL to a controller action while using only the portion of the class name relative to your controller namespace, register the root controller namespace with the URL generator:
 
 	URL::setRootControllerNamespace('App\Http\Controllers');
 
@@ -104,7 +82,7 @@ You may access the name of the controller action being run using the `currentRou
 		'uses' => 'UserController@showProfile'
 	]);
 
-However, you may also specify middleware within your controller's constructor:
+Additionally, you may specify middleware within your controller's constructor:
 
 	class UserController extends Controller {
 
@@ -116,6 +94,8 @@ However, you may also specify middleware within your controller's constructor:
 			$this->middleware('auth');
 
 			$this->middleware('log', ['only' => ['fooAction', 'barAction']]);
+
+			$this->middleware('subscribed', ['except' => ['fooAction', 'barAction']]);
 		}
 
 	}
@@ -166,7 +146,7 @@ To "nest" resource controllers, use "dot" notation in your route declaration:
 
 	Route::resource('photos.comments', 'PhotoCommentController');
 
-This route will register a "nested" resource that may be accessed with URLs like the following: `photos/{photoResource}/comments/{commentResource}`.
+This route will register a "nested" resource that may be accessed with URLs like the following: `photos/{photos}/comments/{comments}`.
 
 	class PhotoCommentController extends Controller {
 
@@ -197,7 +177,7 @@ If it becomes necessary to add additional routes to a resource controller beyond
 
 #### Constructor Injection
 
-As you may have noticed in the examples above, the Laravel [service container](/docs/master/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
+The Laravel [service container](/docs/master/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
 
 	<?php namespace App\Http\Controllers;
 
@@ -276,3 +256,16 @@ If your controller method is also expecting input from a route parameter, simply
 	}
 
 > **Note:** Method injection is fully compatible with [model binding](/docs/master/routing#route-model-binding). The container will intelligently determine which arguments are model bound and which arguments should be injected.
+
+<a name="route-caching"></a>
+## Route Caching
+
+If your application is exclusively using controller routes, you may take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it take to register all of your application's routes. In some cases, your route registration may even be up to 100x faster! To generate a route cache, just execute the `route:cache` Artisan command:
+
+	php artisan route:cache
+
+That's all there is to it! Your cached routes file will now be used instead of your `app/Http/routes.php` file. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you may wish to only run the `route:cache` command during your project's deployment.
+
+To remove the cached routes file without generating a new cache, use the `route:clear` command:
+
+	php artisan route:clear

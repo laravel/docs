@@ -10,7 +10,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-The Laravel `Lang` class provides a convenient way of retrieving strings in various languages, allowing you to easily support multiple languages within your application.
+The Laravel `Lang` facade provides a convenient way of retrieving strings in various languages, allowing you to easily support multiple languages within your application.
 
 <a name="language-files"></a>
 ## Language Files
@@ -101,7 +101,7 @@ Since the Laravel translator is powered by the Symfony Translation component, yo
 <a name="validation"></a>
 ## Validation
 
-For localization for validation errors and messages, take a look at the <a href="/docs/validation#localization">documentation on Validation</a>.
+For localization for validation errors and messages, take a look at the <a href="/docs/master/validation#localization">documentation on Validation</a>.
 
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files

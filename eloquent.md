@@ -17,6 +17,7 @@
 - [Collections](#collections)
 - [Accessors & Mutators](#accessors-and-mutators)
 - [Date Mutators](#date-mutators)
+- [Attribute Casting](#attribute-casting)
 - [Model Events](#model-events)
 - [Model Observers](#model-observers)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
@@ -116,6 +117,10 @@ The first argument passed to the method is the number of records you wish to rec
 You may also specify which database connection should be used when running an Eloquent query. Simply use the `on` method:
 
 	$user = User::on('connection-name')->find(1);
+
+If you are using [read / write connections](/docs/master/database#read-write-connections), you may force the query to use the "write" connection with the following method:
+
+	$user = User::onWriteConnection()->find(1);
 
 <a name="mass-assignment"></a>
 ## Mass Assignment
@@ -775,6 +780,10 @@ You may also specify an operator and a count:
 
 	$posts = Post::has('comments', '>=', 3)->get();
 
+Nested `has` statements may also be constructed using "dot" notation:
+
+	$posts = Post::has('comments.votes')->get();
+
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries:
 
 	$posts = Post::whereHas('comments', function($q)
@@ -1172,6 +1181,43 @@ To totally disable date mutations, simply return an empty array from the `getDat
 		return array();
 	}
 
+<a name="attribute-casting"></a>
+## Attribute Casting
+
+If you have some attributes that you want to always convert to another data-type, you may add the attribute to the `casts` property of your model. Otherwise, you will have to define a mutator for each of the attributes, which can be time consuming. Here is an example of using the `casts` property:
+
+	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'is_admin' => 'boolean',
+	];
+
+Now the `is_admin` attribute will alwyas be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer. Other supported cast types are: `integer`, `real`, `float`, `double`, `string`, `boolean`, and `array`.
+
+The `array` cast is particularly useful for working with columns that are stored as serialized JSON. For example, if your database has a TEXT type field that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
+
+	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'options' => 'array',
+	];
+
+Now, when you utilize the Eloquent model:
+
+	$user = User::find(1);
+
+	// $options is an array...
+	$options = $user->options;
+
+	// options is automatically serialized back to JSON...
+	$user->options = ['foo' => 'bar'];
+
 <a name="model-events"></a>
 ## Model Events
 
@@ -1188,19 +1234,24 @@ If `false` is returned from the `creating`, `updating`, `saving`, or `deleting` 
 		if ( ! $user->isValid()) return false;
 	});
 
-#### Setting A Model Boot Method
+#### Where To Register Event Listeners
 
-Eloquent models also contain a static `boot` method, which may provide a convenient place to register your event bindings.
+Your `EventServiceProvider` serves as a convenient place to register your model event bindings. For example:
 
-	class User extends Eloquent {
+	/**
+	 * Register any other events for your application.
+	 *
+	 * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+	 * @return void
+	 */
+	public function boot(DispatcherContract $events)
+	{
+		parent::boot($events);
 
-		public static function boot()
+		User::creating(function($user)
 		{
-			parent::boot();
-
-			// Setup event bindings...
-		}
-
+			//
+		});
 	}
 
 <a name="model-observers"></a>

@@ -25,7 +25,7 @@ Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://s
 
 First, add the Cashier package to your `composer.json` file:
 
-	"laravel/cashier": "~2.0"
+	"laravel/cashier": "~3.0"
 
 #### Service Provider
 
@@ -37,14 +37,14 @@ Before using Cashier, we'll need to add several columns to your database. Don't 
 
 #### Model Setup
 
-Next, add the BillableTrait and appropriate date mutators to your model definition:
+Next, add the `Billable` trait and appropriate date mutators to your model definition:
 
-	use Laravel\Cashier\BillableTrait;
-	use Laravel\Cashier\BillableInterface;
+	use Laravel\Cashier\Billable;
+	use Laravel\Cashier\Contracts\Billable as BillableContract;
 
-	class User extends Eloquent implements BillableInterface {
+	class User extends Eloquent implements BillableContract {
 
-		use BillableTrait;
+		use Billable;
 
 		protected $dates = ['trial_ends_at', 'subscription_ends_at'];
 
@@ -52,7 +52,7 @@ Next, add the BillableTrait and appropriate date mutators to your model definiti
 
 #### Stripe Key
 
-Finally, set your Stripe key in one of your bootstrap files:
+Finally, set your Stripe key in one of your bootstrap files or service providers, such as the `AppServiceProvider`:
 
 	User::setStripeKey('stripe-key');
 
@@ -156,14 +156,16 @@ To verify that a user is subscribed to your application, use the `subscribed` co
 		//
 	}
 
-The `subscribed` method makes a great candidate for a [route filter](/docs/routing#route-filters):
+The `subscribed` method makes a great candidate for a [route middleware](/docs/master/middleware):
 
-	public function filter()
+	public function handle($request, Closure $next)
 	{
-		if (Auth::user() && ! Auth::user()->subscribed())
+		if ($request->user() && ! $request->user()->subscribed())
 		{
-			return Redirect::to('billing');
+			return redirect('billing');
 		}
+
+		return $next($request);
 	}
 
 You may also determine if the user is still within their trial period (if applicable) using the `onTrial` method:

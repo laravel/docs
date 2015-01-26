@@ -53,6 +53,30 @@ So, our `Cache::get` call could be re-written like so:
 
 	$value = $app->make('cache')->get('key');
 
+#### Importing Facades
+
+Remember, if you are using a facade when a controller that is namespaced, you will need to import the facade class into the namespace. All facades live in the global namespace:
+
+	<?php namespace App\Http\Controllers;
+
+	use Cache;
+
+	class PhotosController extends Controller {
+
+		/**
+		 * Get all of the application photos.
+		 *
+		 * @return Response
+		 */
+		public function index()
+		{
+			$photos = Cache::get('photos');
+
+			//
+		}
+
+	}
+
 <a name="creating-facades"></a>
 ## Creating Facades
 

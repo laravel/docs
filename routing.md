@@ -2,6 +2,7 @@
 
 - [Basic Routing](#basic-routing)
 - [CSRF Protection](#csrf-protection)
+- [Method Spoofing](#method-spoofing)
 - [Route Parameters](#route-parameters)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
@@ -11,7 +12,7 @@
 <a name="basic-routing"></a>
 ## Basic Routing
 
-You will define most of the routes for your application in the `app/Http/routes.php` file, which is loaded by the `App\Providers\RouteServiceProvider` class.
+You will define most of the routes for your application in the `app/Http/routes.php` file, which is loaded by the `App\Providers\RouteServiceProvider` class. The most basic Laravel routes simply accept a URI and a `Closure`:
 
 #### Basic GET Route
 
@@ -20,11 +21,21 @@ You will define most of the routes for your application in the `app/Http/routes.
 		return 'Hello World';
 	});
 
-#### Basic POST Route
+#### Other Basic Routes Route
 
 	Route::post('foo/bar', function()
 	{
 		return 'Hello World';
+	});
+
+	Route::put('foo/bar', function()
+	{
+		//
+	});
+
+	Route::delete('foo/bar', function()
+	{
+		//
 	});
 
 #### Registering A Route For Multiple Verbs
@@ -59,6 +70,16 @@ Laravel automatically generates a CSRF "token" for each active user session bein
 You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` HTTP middleware will verify token in the request input matches the token stored in the session.
 
 In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-XSRF-TOKEN` request header.
+
+<a name="method-spoofing"></a>
+## Method Spoofing
+
+HTML forms do not support `PUT` or `DELETE` actions. So, when defining `PUT` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field. The value sent with the `_method` field will be used as the HTTP request method. For example:
+
+	<form action="/foo/bar" method="POST">
+		<input type="hidden" name="_method" value="PUT">
+    	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+    </form>
 
 <a name="route-parameters"></a>
 ## Route Parameters
@@ -112,7 +133,7 @@ Of course, you can capture segments of the request URI within your route:
 
 If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `before` method of your `RouteServiceProvider`:
 
-	Route::pattern('id', '[0-9]+');
+	$router->pattern('id', '[0-9]+');
 
 Once the pattern has been defined, it is applied to all routes using that parameter:
 
@@ -129,6 +150,18 @@ If you need to access a route parameter value outside of a route, use the `input
 	{
 		//
 	}
+
+You may also access the current route parameters via the `Illuminate\Http\Request` instance. The request instance for the current request may be accessed via the `Request` facade, or by type-hinting the `Illuminate\Http\Request` where dependencies are injected:
+
+	use Illuminate\Http\Request;
+
+	Route::get('user/{id}', function(Request $request, $id)
+	{
+		if ($request->route('id'))
+		{
+			//
+		}
+	});
 
 <a name="named-routes"></a>
 ## Named Routes
@@ -148,7 +181,7 @@ Now, you may use the route's name when generating URLs or redirects:
 
 	$url = route('profile');
 
-	$redirect = redirect(route('profile'));
+	$redirect = redirect()->route('profile');
 
 The `currentRouteName` method returns the name of the route handling the current request:
 
@@ -159,7 +192,7 @@ The `currentRouteName` method returns the name of the route handling the current
 
 Sometimes you may need to apply filters to a group of routes. Instead of specifying the filter on each route, you may use a route group:
 
-	Route::group(['before' => 'auth'], function($router)
+	Route::group(['before' => 'auth'], function()
 	{
 		Route::get('/', function()
 		{
@@ -174,7 +207,7 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 
 You may use the `namespace` parameter within your `group` array to specify the namespace for all controllers within the group:
 
-	Route::group(['namespace' => 'Admin'], function($router)
+	Route::group(['namespace' => 'Admin'], function()
 	{
 		//
 	});
