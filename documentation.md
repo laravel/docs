@@ -30,6 +30,7 @@
     - [Encryption](/docs/master/encryption)
     - [Errors & Logging](/docs/master/errors)
     - [Events](/docs/master/events)
+    - [Filesystem / Cloud Storage](/docs/master/filesystem)
     - [Hashing](/docs/master/hashing)
     - [Helpers](/docs/master/helpers)
     - [Localization](/docs/master/localization)
