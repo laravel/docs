@@ -180,7 +180,7 @@ The method signature for `addNamespace` is identical on the `View`, `Lang`, and 
 
 ### Cascading Configuration Files
 
-When other developers install your package, they may wish to override some of the configuration options. However, if they change the values in your package source code, they will be overwritten the next time Composer updates the package. Instead, the `config:publish` artisan command should be used:
+When other developers install your package, they may wish to override some of the configuration options. However, if they change the values in your package source code, they will be overwritten the next time Composer updates the package. Instead, the `config:publish` Artisan command should be used:
 
 	php artisan config:publish vendor/package
 
