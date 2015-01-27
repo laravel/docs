@@ -6,6 +6,8 @@
 - [Protecting Routes](#protecting-routes)
 - [HTTP Basic Authentication](#http-basic-authentication)
 - [Password Reminders & Reset](#password-reminders-and-reset)
+- [Password Reminders & Reset](#password-reminders-and-reset)
+- [Social Authentication](#social-authentication)
 
 <a name="introduction"></a>
 ## Introduction
@@ -282,3 +284,57 @@ Your user will receive an e-mail with a link that points to the `getReset` metho
 	protected $redirectTo = '/dashboard';
 
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `config/auth.php` file.
+
+<a name="social-authentication"></a>
+## Social Authentication
+
+In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using Laravel Socialite. Socialite currently supports authentication with Facebook, Twitter, Google, and GitHub.
+
+To get started with Socialite, include the package in your `composer.json` file:
+
+	"laravel/socialite": "~2.0"
+
+Next, register the `Laravel/Socialite/SocialiteServiceProvider` in your `config/app.php` configuration file. You may also register a [facade](/docs/master/facades):
+
+	'Socialize' => 'Laravel\Socialite\Facades\Socialite',
+
+You will need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `google`, or `github`, depending on the providers your application requires. For example:
+
+	'github' => [
+		'client_id' => 'your-github-app-id',
+		'client_secret' => 'your-github-app-secret',
+		'redirect' => 'http://your-callback-url',
+	],
+
+Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication:
+
+	public function redirectToProvider()
+	{
+		return Socialize::with('github')->redirect();
+	}
+
+	public function handleProviderCallback()
+	{
+		$user = Socialize::with('github')->user();
+
+		// $user->token;
+	}
+
+The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Once you have a user instance, you can grab a few more details about the user:
+
+#### Retrieving User Details
+
+	$user = Socialize::with('github')->user();
+
+	// OAuth Two Providers
+	$token = $user->token;
+
+	// OAuth One Providers
+	$token = $user->token;
+	$tokenSecret = $user->tokenSecret;
+
+	// All Providers
+	$user->getNickname();
+	$user->getName();
+	$user->getEmail();
+	$user->getAvatar();
