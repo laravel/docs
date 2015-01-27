@@ -306,7 +306,7 @@ You will need to add credentials for the OAuth services your application utilize
 		'redirect' => 'http://your-callback-url',
 	],
 
-Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication:
+Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. Here's an example using the `Socialize` facade:
 
 	public function redirectToProvider()
 	{
