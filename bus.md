@@ -1,8 +1,8 @@
 # Command Bus
 
 - [Introduction](#introduction)
-- [Creating Commamnds](#creating-commands)
-- [Dispatching Commamnds](#dispatching-commands)
+- [Creating Commands](#creating-commands)
+- [Dispatching Commands](#dispatching-commands)
 - [Queued Commands](#queued-commands)
 
 <a name="introduction"></a>
