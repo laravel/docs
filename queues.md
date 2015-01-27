@@ -73,6 +73,8 @@ Sometimes you may wish to delay the execution of a queued job. For instance, you
 
 In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
 
+> **Note:** The Amazon SQS service has a delay limit of 900 seconds (15 minutes).
+
 #### Deleting A Processed Job
 
 Once you have processed a job, it must be deleted from the queue, which can be done via the `delete` method on the `Job` instance:
