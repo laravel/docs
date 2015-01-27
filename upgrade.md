@@ -133,7 +133,7 @@ Move all of your migration classes from the old `app/database/migrations` direct
 
 ### Global IoC Bindings
 
-If you have any [IoC](/docs/master/container) bindings in `start/global.php`, move them all to the `register` method of the `app/Providers/AppServiceProvider.php` file. You may need to improt the `App` facade.
+If you have any [IoC](/docs/master/container) bindings in `start/global.php`, move them all to the `register` method of the `app/Providers/AppServiceProvider.php` file. You may need to import the `App` facade.
 
 Optionally, you may break these bindings up into separate service providers by category.
 
