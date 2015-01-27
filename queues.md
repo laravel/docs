@@ -78,6 +78,8 @@ Sometimes you may wish to delay the execution of a queued job. For instance, you
 
 In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
 
+> **Note:** The Amazon SQS service has a delay limit of 900 seconds (15 minutes).
+
 #### Queues And Eloquent Models
 
 If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
