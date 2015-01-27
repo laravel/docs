@@ -320,7 +320,11 @@ Next, you are ready to authenticate users! You will need two routes: one for red
 		// $user->token;
 	}
 
-The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Once you have a user instance, you can grab a few more details about the user:
+The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Before redirecting the user, you may also set "scopes" on the request:
+
+	return Socialize::with('twitter')->scopes(['scope1', 'scope2'])->redirect();
+
+Once you have a user instance, you can grab a few more details about the user:
 
 #### Retrieving User Details
 
