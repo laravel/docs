@@ -70,11 +70,13 @@ If you need to display a string that is wrapped in curly braces, you may escape 
 
 	@{{ This will not be processed by Blade }}
 
-If you don't want the data to be escaped, you may use the following syntax:
+> **Note** Laravel always escape data included into two curly braces (except when use an `@` symbol)
+
+If you don't want the data to be escaped, you may use double exclamation marks within curly braces:
 
 	Hello, {!! $name !!}.
 
-> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the triple curly brace syntax to escape any HTML entities in the content.
+> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the double curly braces syntax to escape any HTML entities in the content.
 
 #### If Statements
 

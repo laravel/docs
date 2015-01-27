@@ -1,0 +1,913 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"marg",
+				"margin-bottom"
+			],
+			[
+				"h",
+				"height	Attr"
+			],
+			[
+				"real",
+				"realname"
+			],
+			[
+				"json",
+				"json_decode"
+			],
+			[
+				"coun",
+				"countryCode"
+			],
+			[
+				"lan",
+				"language  (variable)"
+			],
+			[
+				"ordere",
+				"orderedLanguages  (variable)"
+			],
+			[
+				"mb_con",
+				"mb_convert_encoding"
+			],
+			[
+				"for",
+				"foreach	foreach …"
+			],
+			[
+				"jso",
+				"jsonNames"
+			],
+			[
+				"file_",
+				"file_get_contents"
+			],
+			[
+				"code",
+				"codeMax"
+			],
+			[
+				"co",
+				"country  (variable)"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"font-",
+				"font-size:   (property)"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"he",
+				"height"
+			],
+			[
+				"padd",
+				"padding-left"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"dis",
+				"display"
+			],
+			[
+				"wi",
+				"width"
+			],
+			[
+				"array_f",
+				"array_filter"
+			],
+			[
+				"preg_",
+				"preg_match"
+			],
+			[
+				"al",
+				"algo"
+			],
+			[
+				"con",
+				"contenido"
+			],
+			[
+				"uri",
+				"URI"
+			],
+			[
+				"subs",
+				"substr"
+			],
+			[
+				"compo",
+				"composicion"
+			],
+			[
+				"strto",
+				"strtolower"
+			],
+			[
+				"array_u",
+				"array_unique"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"strp",
+				"strpos"
+			],
+			[
+				"error_",
+				"error_reporting"
+			],
+			[
+				"err",
+				"error_reporting"
+			],
+			[
+				"sub",
+				"subcontenido"
+			],
+			[
+				"pri",
+				"print_r"
+			],
+			[
+				"ut",
+				"utf8_decode"
+			],
+			[
+				"on",
+				"onclick	Attr"
+			],
+			[
+				"ge",
+				"getElementsByTagName"
+			],
+			[
+				"borde",
+				"border"
+			],
+			[
+				"sea",
+				"search"
+			],
+			[
+				"f",
+				"font-size"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"bord",
+				"border-radius"
+			],
+			[
+				"border-c",
+				"border-collapse"
+			],
+			[
+				"bor",
+				"border-radius"
+			],
+			[
+				"set",
+				"setItem"
+			],
+			[
+				"si",
+				"size	.size()"
+			],
+			[
+				"background-c",
+				"background-color"
+			],
+			[
+				"remove",
+				"removeAttr	.removeAttr()"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"hi",
+				"hide	hide"
+			],
+			[
+				"sh",
+				"show	show"
+			],
+			[
+				"type",
+				"typeof"
+			],
+			[
+				"margi",
+				"margin-bottom"
+			],
+			[
+				"background-",
+				"background-image"
+			],
+			[
+				"fon",
+				"font-size:   (property)"
+			],
+			[
+				"fo",
+				"font-family"
+			],
+			[
+				"wid",
+				"width:   (property)"
+			],
+			[
+				"pad",
+				"padding-bottom"
+			],
+			[
+				"max-",
+				"max-width:   (property)"
+			],
+			[
+				"border-",
+				"border-radius"
+			],
+			[
+				"inl",
+				"inline-block"
+			],
+			[
+				"ta",
+				"target	Attr"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"len",
+				"length"
+			],
+			[
+				"s",
+				"style	Attr"
+			],
+			[
+				"lis",
+				"list-style"
+			],
+			[
+				"cur",
+				"cursor"
+			],
+			[
+				"cu",
+				"cursor:   (property)"
+			],
+			[
+				"max",
+				"max-width"
+			],
+			[
+				"z",
+				"z-index"
+			],
+			[
+				"out",
+				"outline-color"
+			],
+			[
+				"border",
+				"border-right"
+			],
+			[
+				"boder-",
+				"border-left"
+			],
+			[
+				"im",
+				"important"
+			],
+			[
+				"fl",
+				"float"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 311.0,
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 536.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/xampp/htdocs/PublicGym/app/config/database.php",
+		"/D/xampp/htdocs/PublicGym/bootstrap/start.php",
+		"/D/xampp/htdocs/PublicGym/app/database/migrations/2015_01_05_214656_create_users_table.php",
+		"/D/xampp/htdocs/PublicGym/app/controllers/UsuarioController.php",
+		"/D/xampp/htdocs/PublicGym/app/controllers/PublicGymController.php",
+		"/D/xampp/htdocs/PublicGym/app/database/migrations/2015_01_05_214333_add_votes_to_user_table.php",
+		"/D/xampp/htdocs/PublicGym/app/config/local/database.php",
+		"/D/xampp/htdocs/PublicGym/app/views/contact.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/gallery.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/index.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/nutrition.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/timetable.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/trainings.blade.php",
+		"/D/xampp/htdocs/PublicGym/composer.json",
+		"/D/xampp/htdocs/PublicGym/app/controllers/publicgym/PublicGymController.php",
+		"/D/xampp/htdocs/PublicGym/app/routes.php",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/gallery.blade.php",
+		"/D/xampp/htdocs/PublicGym/public/publicgym/.htaccess",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/index.blade.php",
+		"/D/xampp/htdocs/PublicGym/public/publicgym/css/slider.css",
+		"/D/xampp/htdocs/PublicGym/public/publicgym/js/cufon-replace.js",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/layouts/master.blade.php",
+		"/D/xampp/htdocs/PublicGym/public/publicgym/js/all.js",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/nutrition.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/contact.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/trainings.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/timetable.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/layouts/inferior.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/layouts/superior.blade.php",
+		"/D/xampp/htdocs/PublicGym/app/config/app.php",
+		"/D/xampp/htdocs/PublicGym/app/views/publicgym/bad-name.blade.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/models/api/Name.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/models/api/Language.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/models/api/Country.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/views/Api/index.blade.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/resources/isocodes/country_iso.json",
+		"/D/xampp/htdocs/JuanDMeGon/app/resources/names/hombres-arg.json",
+		"/D/xampp/htdocs/JuanDMeGon/app/views/Api/bad-name.blade.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/config/app.php",
+		"/D/xampp/htdocs/JuanDMeGon/public/api/index.php",
+		"/D/xampp/htdocs/JuanDMeGon/composer.json",
+		"/D/xampp/htdocs/JuanDMeGon/app/views/Api/bad-request.blade.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/views/error.blade.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/config/database.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/controllers/portfolio/PersonController.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/controllers/BaseController.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/routes.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/controllers/portfolio/MessageController.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/resources/country_iso.json",
+		"/D/xampp/htdocs/JuanDMeGon/app/resources/mujeres-mex.json",
+		"/D/xampp/htdocs/JuanDMeGon/app/resources/langs_iso_1.json",
+		"/D/xampp/htdocs/JuanDMeGon/app/models/Work.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/models/Person.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/models/SocialNetwork.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/models/Skill.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/controllers/ApiController.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/controllers/MessageController.php",
+		"/D/xampp/htdocs/JuanDMeGon/app/controllers/PersonController.php",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/acerca/principal.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/inferior.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/index.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/js/all.js",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/terminos-y-condiciones/terminos-y-condiciones.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/css/all.css",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/superior.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/java-avanzado/curso-restful.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/cursos.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/principal.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/terminos-y-condiciones/principal.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/cursos/visual-basic.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/error.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/juegos/principal.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/almacenamiento/articles.xml",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/java/paquetes.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/java/modificadores-de-acceso.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/colabora/articulo-de-prueba.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/colabora/principal.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/colabora/pruebas.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/cursos/cpp.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/cursos/fundamentacion.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/cursos/principal.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/cursos/java.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/menus/cursos/java-avanzado.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/restful.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/juegos/clumsy-bird.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/juegos/swap.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/juegos/2048.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/cpp/estructuras-de-datos/arreglos-o-vectores.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/java/objetos-y-clases.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/java/ciclos/ciclo-for.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/juegos/hextris.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/controladores/videos.php",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/java/condicionales/condicionales.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/cpp/ciclos/ciclo-while.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/cpp/sistema-de-tipos/sistema-de-tipos.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/index.php",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/cpp/sistema-de-tipos/variables-y-constantes.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/controladores/info-videos.php",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/acerca/acerca.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/java/entornos/entornos.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/sitemap/sitemap.xml",
+		"/D/xampp/htdocs/NuevoAAP2/RSS/RSS.xml",
+		"/D/xampp/htdocs/NuevoAAP2/sitemap/mobilesitemap.xml",
+		"/D/xampp/htdocs/NuevoAAP2/controladores/imports.php",
+		"/D/xampp/htdocs/NuevoAAP2/.htaccess",
+		"/D/xampp/htdocs/NuevoAAP2/controladores/componentes.php",
+		"/D/xampp/htdocs/NuevoAAP2/controladores/redireccion.php",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/fb-comments.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/controladores/send-error-email.php",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/cpp/bibliotecas-o-librerias.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/secciones/cursos/c++/bibliotecas-o-librerias.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/robots.txt",
+		"/D/xampp/htdocs/NuevoAAP2/barnsley-fern.html",
+		"/D/xampp/htdocs/NuevoAAP2/sftp-config.json",
+		"/D/xampp/htdocs/NuevoAAP2/output.php",
+		"/D/xampp/htdocs/NuevoAAP2/.almacenamiento/.htaccess",
+		"/D/xampp/htdocs/NuevoAAP2/.plantillas/componentes/no-script.tpl",
+		"/D/xampp/htdocs/BBNames/index.php",
+		"/D/xampp/htdocs/NuevoAAP2/plantillas/componentes/superior.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/plantillas/componentes/inferior.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/js/jquerymobile.min.js",
+		"/D/xampp/htdocs/NuevoAAP2/plantillas/componentes/carousel.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/prueba.php",
+		"/D/xampp/htdocs/NuevoAAP2/plantillas/secciones/cursos/java/sistema-de-tipos/final-y-constantes.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/plantillas/secciones/cursos/fundamentacion/tecnicas-basicas.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/plantillas/secciones/cursos/c++/ciclos/ciclo-for.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/plantillas/secciones/cursos/c++/estructuras-de-datos/matrices.tpl",
+		"/D/xampp/htdocs/NuevoAAP2/plantillas/secciones/cursos/c++/entrada-y-salida-de-datos.tpl"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"D:\\xampp\\htdocs\\PublicGym\\public\\publicgym\\css",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\.plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\.plantillas\\componentes\\menus",
+			"D:\\xampp\\htdocs\\NuevoAAP2",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\.plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\js,D:\\xampp\\htdocs\\NuevoAAP2\\.plantillas,D:\\xampp\\htdocs\\NuevoAAP2\\almacenamiento,D:\\xampp\\htdocs\\NuevoAAP2\\controladores",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\.plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\.plantillas,D:\\xampp\\htdocs\\NuevoAAP2\\.plantillas_compiladas,D:\\xampp\\htdocs\\NuevoAAP2\\almacenamiento,D:\\xampp\\htdocs\\NuevoAAP2\\controladores,D:\\xampp\\htdocs\\NuevoAAP2\\js",
+			"D:\\xampp\\htdocs\\NuevoAAP2",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\.plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\.plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas\\secciones",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas\\componentes",
+			"D:\\xampp\\htdocs\\NuevoAAP2",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas\\secciones\\cursos\\c++",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas\\secciones",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas\\secciones",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas\\secciones\\cursos",
+			"",
+			"D:\\xampp\\htdocs\\NuevoAAP2\\plantillas",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"void",
+			"*/\n",
+			"font-1",
+			"font",
+			"_.me",
+			"_me",
+			"\"([a-zA-Z0-9])+\"",
+			"\"(([a-zA-Z])*(\\\\u[a-zA-Z0-9]{4})*)*( (([a-zA-Z])*(\\\\u[a-zA-Z0-9]{4})*)*)*\"",
+			"\"([a-zA-Z])*(\\\\u[a-zA-Z0-9]{4})*\"",
+			"([a-zA-Z])*(\\\\u[a-zA-Z0-9]{4})*",
+			"(-[u][0-9a-zA-Z]+)+( (-[u][0-9a-zA-Z]+)+){0,1}",
+			"(\\\\[u][0-9a-zA-Z]+)+( (\\\\[u][0-9a-zA-Z]+)+){0,1}",
+			"([u][0-9a-zA-Z]+)+",
+			"(\\\\[u][0-9a-zA-Z]+)+",
+			"(\\\\[u][0-9a-zA-Z]+)+( (\\\\[u][0-9a-zA-Z]+)+){0,1}",
+			"^(\\\\[u][0-9a-zA-Z]+)+( (\\\\[u][0-9a-zA-Z]+)+){0,1}$",
+			"(\\\\[u][0-9a-zA-Z]+)+( (\\\\[u][0-9a-zA-Z]+)+){0,1}",
+			"(\\\\u[0-9a-zA-Z]+)+( (\\\\u[0-9a-zA-Z]+)+){0,1}",
+			"(\\\\u[0-9a-zA-Z]+)+( (\\\\u[0-9a-zA-Z]+){0,1})*",
+			"(\\\\u[0-9a-zA-Z]+)+((\\\\u[0-9a-zA-Z]+){0,1})*",
+			"(\\\\u[0-9a-zA-Z]{1,})+(({1}\\\\u[0-9a-zA-Z]+){0,1})*",
+			"(\\\\u[0-9a-zA-Z]{1,})+(( {1}\\\\u[0-9a-zA-Z]+){0,1})*",
+			"(\\\\u[0-9a-zA-Z]+)+([ ]{1}\\\\u[0-9a-zA-Z]+)*",
+			"(\\\\u[0-9a-zA-Z]+)+( \\\\u[0-9a-zA-Z]+)*",
+			"(\\\\u[0-9a-zA-Z]+)+ (\\\\u[0-9a-zA-Z]+)+",
+			"(\\\\u[0-9a-zA-Z]+)+",
+			"([\\\\uA-Za-z0-9]+)( [\\\\uA-Za-z0-9]*){0,1}",
+			"((\\\\u[A-Za-z0-9]+)( \\\\u[A-Za-z0-9]*)){0,1}",
+			"(\\\\u[A-Za-z0-9]+)( \\\\u[A-Za-z0-9]*){0,1}",
+			"(\\\\u[A-Za-z0-9]+)( \\\\u[A-Za-z0-9]+){0,1}",
+			"\\\\u[a-zA-Z0-9]{4}",
+			"html_entity_decode",
+			"}\n",
+			"de",
+			"$",
+			"limit",
+			"juan",
+			"dir",
+			"(\"name\":\"[A-Za-z]*);(.*)",
+			"brazil",
+			"(\\{\\n\\t\\t.*\\n\\t\\t\"alpha-2\":\")([A-Za-z]*)\",",
+			"(\\{\\n\\t\\t.*){1}\\n\\t\\t\"alpha-2\":\")([A-Za-z]*)\",",
+			"(\\{((\\n\\t\\t.*){1})\\n\\t\\t\"alpha-2\":\")([A-Za-z]*)\",",
+			"\\{((\\n\\t\\t.*){1})\\n\\t\\t\"alpha-2\":\"([A-Za-z]*)\",",
+			",\\n\\t\\t\"iso_(.*\\n){3}",
+			"\",\"",
+			"\"\\},",
+			"\\{\"",
+			"{\"",
+			"\\{\"",
+			"\\},",
+			"sp",
+			"tpl",
+			"consejosy",
+			"curs",
+			".upc",
+			".center",
+			"menu h1",
+			"h1>",
+			"menu",
+			"ads",
+			"ad",
+			"nota",
+			"get",
+			".</",
+			">>",
+			"<<",
+			"upc",
+			"$url",
+			"librerias-y-paquetes",
+			"Java/librerias",
+			"librerias-y-paquetes",
+			"java_basico",
+			"ciclo_while",
+			"_while",
+			"compilar",
+			".php",
+			"condicion",
+			"estructuras",
+			"C++",
+			"visual_basic",
+			"local",
+			"ogbase",
+			"del",
+			"cliente",
+			"local",
+			"|",
+			"(([a-zA-Z0-9]*)(_))*",
+			"([a-zA-Z0-9]*)(_)",
+			"([a-zA-Z]*)(_)",
+			"([a-zA-Z]*)_",
+			"[a-zA-Z]*",
+			"_*",
+			".*",
+			"*",
+			"error.tpl",
+			"([0-9]\\.[0-9];)*\\n",
+			"([0-9]\\.[0-9])\\n",
+			"Escala 0 - 5",
+			"([0-9])\\n",
+			"				$",
+			"<lenguaje>c++</lenguaje>",
+			"C++",
+			"c++",
+			"OpenGraph",
+			"urlbase",
+			"$uri",
+			"echo",
+			"www.",
+			"www",
+			"http://aprenderaprogramar",
+			"aprenderaprogramar",
+			"http",
+			"STL",
+			"NuevoAAP2",
+			"aprender",
+			"Nuevoaap2/",
+			"host",
+			"{HTTP_HOST}",
+			"$_SERVER",
+			"@",
+			"/NuevoAAP2",
+			"almacenamiento",
+			"\\n",
+			"sama",
+			",",
+			".",
+			"\\n[0-9]*;"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"$1\",",
+			"$1",
+			"$0",
+			"\"$2\":\\n\\t$0",
+			"\"$2\":\\n\\t\\t$0",
+			"\"$2\":\\n$0",
+			"\"$2\":{\\n\\t\\t$0",
+			"\"$2\":{\\n$0",
+			"$2",
+			"$1",
+			"$0",
+			"$2",
+			"$1",
+			"$",
+			"$1",
+			"$0",
+			"$1",
+			"$2",
+			"\\n",
+			"",
+			"\",\\n\\t\\t\"",
+			"\",\\n\"",
+			"\"\\n\\t\\},",
+			"\"\\n\\t\\t\\},",
+			"\\{\\n\\t\\t\"",
+			"\\{\\n\\t\"",
+			"\\}\"\\n\\t",
+			"\\},\\n\\t",
+			"\\},\\n",
+			"h2>",
+			"&gt;&gt;",
+			"&lt;&lt;",
+			"&lt;",
+			"Java",
+			".",
+			"$1-",
+			"x",
+			"$1;",
+			"$1",
+			"",
+			"$1",
+			"<lenguaje>cpp</lenguaje>",
+			"cpp",
+			"",
+			"http://www.aprenderaprogramar",
+			"<em>STL</em>",
+			"",
+			"{SERVER_NAME}",
+			"{HTTP_HOST}/NuevoAAP2",
+			"",
+			";",
+			".",
+			"",
+			"\\n",
+			"",
+			";",
+			"\"",
+			";",
+			"",
+			"Java",
+			"java",
+			"}>",
+			"",
+			"{HTTP_HOST}/NuevoAAP2/",
+			"{HTTP_HOST}/NuevoAAP2",
+			"</loc>\\n\\t<mobile:mobile/>",
+			"</loc>\\n<mobile:mobile/>",
+			"</loc>",
+			"",
+			"([a-zA-Z0-9+-]*)",
+			"(a-zA-Z0-9+-)*",
+			"",
+			"$fila[0]->videos",
+			"''",
+			"'$subcontenido'",
+			"'$contenido'",
+			"'$lenguaje'",
+			"'$seccion'",
+			"]\")",
+			"(\"/",
+			"$fila",
+			"$fila;",
+			"$fila[0]->description;",
+			"$fila[0]->h1;",
+			"$fila[0]->title;",
+			"",
+			"'NULL'",
+			"",
+			"left",
+			"40px",
+			"6f",
+			"5f",
+			"4f",
+			"3f",
+			"2f",
+			"1f",
+			"0f",
+			"RESTfulWS",
+			"&lt;",
+			"&gt;",
+			"&lt;",
+			"$videos",
+			"title,h1,description",
+			"",
+			"text-align: center;",
+			"text-align: left;",
+			"&lt;&lt;",
+			"cout &lt;&lt;",
+			"section",
+			"",
+			"#4099FF",
+			"#2d6edd",
+			"[a-zA-Z0-9áéíóú_]",
+			"",
+			"$(",
+			"$",
+			"width=\"1%\"",
+			"",
+			"http://aprenderaprogramar.com.co/img/AAPAvatar.jpg",
+			"",
+			"<pre>\\n\\t<code>",
+			"ú",
+			"ó",
+			"í",
+			"é",
+			"á",
+			"</strong>",
+			"<strong>"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "templates.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"authenticatesandregistersusers",
+				"Laravel5\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Auth\\AuthenticatesAndRegistersUsers.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 259.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
