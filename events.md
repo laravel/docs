@@ -32,6 +32,10 @@ To generate a handler for an event, use the `handler:event` Artisan CLI command:
 
 	php artisan handler:event EmailPurchaseConfirmation --event=PodcastWasPurchased
 
+Of course, manually running the `make:event` and `handler:event` commands each time you need a handler or event is cumbersome. Instead, simply add handlers and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or handlers that are listed in your `EventServiceProvider`:
+
+	php artisan event:generate
+
 #### Firing An Event
 
 Now we are ready to fire our event using the `Event` facade:
