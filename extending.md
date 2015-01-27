@@ -68,7 +68,7 @@ You should place your session extension code in the `boot` method of your `AppSe
 
 ### Writing The Session Extension
 
-Note that our custom session driver should implement the `SessionHandlerInterface`. This interface is included in the PHP 5.4+ core. If you are using PHP 5.3, the interface will be defined for you by Laravel so you have forward-compatibility. This interface contains just a few simple methods we need to implement. A stubbed MongoDB implementation would look something like this:
+Note that our custom session driver should implement the `SessionHandlerInterface`. This interface contains just a few simple methods we need to implement. A stubbed MongoDB implementation would look something like this:
 
 	class MongoHandler implements SessionHandlerInterface {
 
