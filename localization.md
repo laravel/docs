@@ -88,6 +88,10 @@ Pluralization is a complex problem, as different languages have a variety of com
 You may then use the `Lang::choice` method to retrieve the line:
 
 	echo Lang::choice('messages.apples', 10);
+	
+You may still define an array of place-holders as a third parameter. In any case, a default `:count` place-holder will substitute for the count:
+
+        'apples' => 'There is :count apple|There are :count apples',
 
 You may also supply a locale argument to specify the language. For example, if you want to use the Russian (ru) language:
 
@@ -96,7 +100,6 @@ You may also supply a locale argument to specify the language. For example, if y
 Since the Laravel translator is powered by the Symfony Translation component, you may also create more explicit pluralization rules easily:
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
-
 
 <a name="validation"></a>
 ## Validation
