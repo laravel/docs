@@ -88,6 +88,8 @@ There is not a "default location" for service provider classes. You may put them
 If you have changed the location of your package's resources, such as configuration files or views, you should pass a third argument to the `package` method which specifies the location of your resources:
 
 	$this->package('vendor/package', null, '/path/to/resources');
+	
+> **Note**: If your package uses PSR-4 for autoloading, you will need to pass the path to your resources to the `package` method.
 
 <a name="deferred-providers"></a>
 ## Deferred Providers
