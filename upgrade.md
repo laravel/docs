@@ -67,15 +67,11 @@ Filters are not removed in Laravel 5. You can still bind and use your own custom
 
 By default, [CSRF protection](/docs/master/routing#csrf-protection) is enabled on all routes. If you'd like to disable this, or only manually enable it on certain routes, remove this line from `App\Http\Kernel`'s `middleware` array:
 
-```php
-		'App\Http\Middleware\VerifyCsrfToken',
-```
+	'App\Http\Middleware\VerifyCsrfToken',
 
 If you want to use it elsewhere, add this line to `$routeMiddleware`:
 
-```php
 	'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
-```
 
 Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/master/middleware).
 
@@ -112,6 +108,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 **Remove the UserInterface and RemindableInterface interfaces.**
 
 **Mark the class as implementing the following interfaces:**
+
 ```php
 implements AuthenticatableContract, CanResetPasswordContract
 ```
@@ -151,9 +148,9 @@ For better security by default, Laravel 5.0 escapes all output from both the `{{
 However, if you **must** use the old Blade syntax, add the following lines at the bottom of `AppServiceProvider@register`:
 
 ```php
-		\Blade::setRawTags('{{', '}}');
-		\Blade::setContentTags('{{{', '}}}');
-		\Blade::setEscapedContentTags('{{{', '}}}');
+\Blade::setRawTags('{{', '}}');
+\Blade::setContentTags('{{{', '}}}');
+\Blade::setEscapedContentTags('{{{', '}}}');
 ```
 
 This should not be done lightly, and may make your application more vulnerable to XSS exploits. Also, comments with `{{--` will no longer work.
