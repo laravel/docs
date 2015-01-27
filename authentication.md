@@ -6,7 +6,6 @@
 - [Protecting Routes](#protecting-routes)
 - [HTTP Basic Authentication](#http-basic-authentication)
 - [Password Reminders & Reset](#password-reminders-and-reset)
-- [Authentication Drivers](#authentication-drivers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -283,8 +282,3 @@ Your user will receive an e-mail with a link that points to the `getReset` metho
 	protected $redirectTo = '/dashboard';
 
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `config/auth.php` file.
-
-<a name="authentication-drivers"></a>
-## Authentication Drivers
-
-Laravel offers the `database` and `eloquent` authentication drivers out of the box. For more information about adding additional authentication drivers, check out the [Authentication extension documentation](/docs/master/extending#authentication).
