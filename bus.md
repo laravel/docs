@@ -34,7 +34,7 @@ The newly generated class will be placed in the `app/Commands` directory. By def
 		 *
 		 * @return void
 		 */
-		public function __construct(User $user, Podcast $pocast)
+		public function __construct(User $user, Podcast $podcast)
 		{
 			$this->user = $user;
 			$this->podcast = $podcast;
