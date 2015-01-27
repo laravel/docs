@@ -364,7 +364,7 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 
 #### Dynamic Scopes
 
-Sometimes You may wish to define a scope that accepts parameters. Just add your parameters to your scope function:
+Sometimes you may wish to define a scope that accepts parameters. Just add your parameters to your scope function:
 
 	class User extends Eloquent {
 
