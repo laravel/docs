@@ -19,15 +19,21 @@ A new `app/Providers` directory replaces the `app/start` files from previous ver
 
 Application language files and views have been moved to the `resources` directory.
 
+### Contracts
+
+All major Laravel components implement interfaces which are located in the `illuminate/contracts` repository. This repository has no external dependencies. Having a convenient, centrally located set of interfaces you may use for decoupling and dependency injection will serve as an easy alternative option to Laravel Facades.
+
+For more information on contracts, consult the [full documentation](/docs/master/contracts).
+
+### Route Cache
+
+If your application is made up entirely of controller routes, you may utilize the new `route:cache` Artisan command to drastically speed up the registration of your routes. This is primarily useful on applications with 100+ routes and will **drastically** speed up this portion of your application.
+
 ### Route Middleware
 
 In addition to Laravel 4 style route "filters", Laravel 5 now supports HTTP middlewware, and the included authentication and CSRF "filters" have been converted to middleware. Middleware provides a single, consistent interface to replace all types of filters, allowing you to easily inspect, and even reject, requests before they enter your application.
 
 For more information on middleware, check out [the documentation](/docs/master/middleware).
-
-### Authentication Scaffolding
-
-User registration, authentication, and password reset controllers are now included out of the box, as well as simple corresponding views, which are located at `resources/views/auth`. In addition, a "users" table migration has been included with the framework. Including these simple resources allows rapid development of application ideas without bogging down on authentication boilerplate. The authentication views may be accessed on the `auth/login` and `auth/register` routes. The `App\Services\Auth\Registrar` service is responsible for user validation and creation.
 
 ### Controller Method Injection
 
@@ -37,6 +43,10 @@ In addition to the existing constructor injection, you may now type-hint depende
 	{
 		//
 	}
+
+### Authentication Scaffolding
+
+User registration, authentication, and password reset controllers are now included out of the box, as well as simple corresponding views, which are located at `resources/views/auth`. In addition, a "users" table migration has been included with the framework. Including these simple resources allows rapid development of application ideas without bogging down on authentication boilerplate. The authentication views may be accessed on the `auth/login` and `auth/register` routes. The `App\Services\Auth\Registrar` service is responsible for user validation and creation.
 
 ### Event Objects
 
@@ -139,12 +149,6 @@ Laravel now includes the powerful [Flysystem](https://github.com/thephpleague/fl
 
 For more information on the Laravel Flysystem integration, consult the [full documentation](/docs/master/filesystem).
 
-### Contracts
-
-All major Laravel components implement interfaces which are located in the `illuminate/contracts` repository. This repository has no external dependencies. Having a convenient, centrally located set of interfaces you may use for decoupling and dependency injection will serve as an easy alternative option to Laravel Facades.
-
-For more information on contracts, consult the [full documentation](/docs/master/contracts).
-
 ### Form Requests
 
 Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundation\Http\FormRequest` class. These request objects can be combined with controller method injection to provide a boiler-plate free method of validating user input. Let's dig in and look at a sample `FormRequest`:
@@ -177,13 +181,29 @@ Once the class has been defined, we can type-hint it on our controller action:
 
 When the Laravel IoC container identifies that the class it is injecting is a `FormRequest` instance, the request will **automatically be validated**. This means that if your controller action is called, you can safely assume the HTTP request input has been validated according to the rules you specified in your form request class. Even more, if the request is invalid, an HTTP redirect, which you may customize, will automatically be issued, and the error messages will be either flashed to the session or converted to JSON. **Form validation has never been more simple.** For more information on `FormRequest` validation, check out the [documentation](/docs/master/validation#form-request-validation).
 
+### Simple Controller Request Validation
+
+The Laravel 5 base controller now includes a `ValidatesRequests` trait. This trait provides a simple `validate` method to validate incoming requests. If `FormRequests` are a little too much for your application, check this out:
+
+	public function createPost(Request $request)
+	{
+		$this->validate($request, [
+			'title' => 'required|max:255',
+			'body' => 'required',
+		]);
+	}
+
+If the validation fails, an exception will be thrown and the proper HTTP response will automatically be sent back to the browser. The validation errors will even be flashed to the session.! If the request was an AJAX request, Laravel even takes care of sending a JSON representation of the validation errors back to you.
+
+For more information on this new method, check out [the documentation](/docs/master/validation#controller-validation).
+
 ### New Generators
 
 To compliment the new default application structure, new Artisan generator commands have been added to the framework. See `php artisan list` for more details.
 
-### Route Cache
+### Configuration Cache
 
-If your application is made up entirely of controller routes, you may utilize the new `route:cache` Artisan command to drastically speed up the registration of your routes. This is primarily useful on applications with 100+ routes and will **drastically** speed up this portion of your application.
+You may now cache all of your configuration in a single file using the `config:cache` command.
 
 <a name="laravel-4.2"></a>
 ## Laravel 4.2
