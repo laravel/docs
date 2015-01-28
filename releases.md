@@ -11,32 +11,92 @@ Laravel 5.0 introduces a fresh application structure to the default Laravel proj
 
 ### New Folder Structure
 
-The old `app/models` directory has been entirely removed. Instead, all of your code lives directly within the `app` folder, and, by default, is organized to the `App` namespace. This default namespace can be quickly changed using the new `app:name` Artisan command. The Laravel class generators will remember your application namespace by examining the new `config/namespaces.php` configuration file.
+The old `app/models` directory has been entirely removed. Instead, all of your code lives directly within the `app` folder, and, by default, is organized to the `App` namespace. This default namespace can be quickly changed using the new `app:name` Artisan command.
 
-Controllers, filters, and requests (a new type of class in Laravel 5.0) are now grouped under the `app/Http` directory, as they are all classes related to the HTTP transport layer of your application. Instead of a single, flat file of route filters, all filters are now broken into their own class files.
+Controllers, middleware, and requests (a new type of class in Laravel 5.0) are now grouped under the `app/Http` directory, as they are all classes related to the HTTP transport layer of your application. Instead of a single, flat file of route filters, all middleware are now broken into their own class files.
 
 A new `app/Providers` directory replaces the `app/start` files from previous versions of Laravel 4.x. These service providers provide various bootstrapping functions to your application, such as error handling, logging, route loading, and more. Of course, you are free to create additional service providers for your application.
 
 Application language files and views have been moved to the `resources` directory.
 
-### Thorough Namespacing
+### Authentication Scaffolding
 
-Laravel 5.0 ships with the entire `app` directory under the `App` namespace. Out of the box, Composer will auto-load all classes within the `app` directory using the PSR-4 auto-loading standard, eliminating the need to `composer dump-autoload` every time you add a new class to your project. Of course, since controllers are namespaced, you will need to import any classes you utilize from other namespaces.
+User registration, authentication, and password reset controllers are now included out of the box, as well as simple corresponding views, which are located at `resources/views/auth`. In addition, a "users" table migration has been included with the framework. Including these simple resources allows rapid development of application ideas without bogging down on authentication boilerplate. The authentication views may be accessed on the `auth/login` and `auth/register` routes. The `App\Services\Auth\Registrar` service is responsible for user validation and creation.
 
-### Dependency Injection On Routes & Controller Methods
+### Commands / Queueing
 
-In previous versions of Laravel 4.x, you can type-hint controller dependencies in the controller's constructor and they will automatically be injected into the controller instance. Of course, this is still possible in Laravel 5.0; however, you can also type-hint dependencies on your controller **methods** as well! For example:
+In addition to the queue job format supported in Laravel 4, Laravel 5 allows you to represent your queued jobs as simple command objects. These commands live in the `app/Commands` directory. Here's a sample command:
 
-	public function show(PhotoService $photos, $id)
-	{
-		$photo = $photos->find($id);
+	class PurchasePodcast extends Command implements SelfHandling, ShouldBeQueued {
 
-		//
+		use SerializesModels;
+
+		protected $user, $podcast;
+
+		/**
+		 * Create a new command instance.
+		 *
+		 * @return void
+		 */
+		public function __construct(User $user, Podcast $podcast)
+		{
+			$this->user = $user;
+			$this->podcast = $podcast;
+		}
+
+		/**
+		 * Execute the command.
+		 *
+		 * @return void
+		 */
+		public function handle()
+		{
+			// Handle the logic to purchase the podcast...
+
+			event(new PodcastWasPurchased($this->user, $this->podcast));
+		}
+
 	}
+
+The base Laravel controller utilizes the new `DispatchesCommands` trait, allowing you to easily dispatch your commands for execution:
+
+	$this->dispatch(new PurchasePodcastCommand($user, $podcast));
+
+Of course, you may also use commands for tasks that are executed synchonrously (are not queued). In fact, using commands is a great way to encapsulate complex tasks your application needs to perform. For more information, check out the [command bus](/docs/master/bus) documentation.
+
+### Laravel Socialite
+
+Laravel Socialite is an optional, Laravel 5.0+ compatible package that provides totally painless authentication with OAuth providers. Currently, Socialite supports Facebook, Twitter, Google, and GitHub. Here's what it looks like:
+
+	public function redirectForAuth()
+	{
+		return Socialize::with('twitter')->redirect();
+	}
+
+	public function getUserFromProvider()
+	{
+		$user = Socialize::with('twitter')->user();
+	}
+
+No more spending hours writing OAuth authentication flows. Get started in minutes! The [full documentation](/docs/master/authentication#social-authentication) has all the details.
+
+### Flysystem Integration
+
+Laravel now includes the powerful [Flysystem](https://github.com/thephpleague/flysystem) filesystem abstraction library, providing pain free integration with local, Amazon S3, and Rackspace cloud storage - all with one, unified and elegant API! Storing a file in Amazon S3 is now as simple as:
+
+	Storage::put('file.txt', 'contents');
+
+For more information on the Laravel Flysystem integration, consult the [full documentation](/docs/master/filesystem).
+
+### Contracts
+
+All major Laravel components implement interfaces which are located in the `illuminate/contracts` repository. This repository has no external dependencies. Having a convenient, centrally located set of interfaces you may use for decoupling and dependency injection will serve as an easy alternative option to Laravel Facades.
+
+For more information on contracts, consult the [full documentation](/docs/master/contracts).
 
 ### Form Requests
 
-Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundation\Http\FormRequest` class. These request objects can be combined with the method injection described above to provide a boiler-plate free method of validating user input. Let's dig in and look at a sample `FormRequest`:
+Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundation\Http\FormRequest` class. These request objects can be combined with controller method injection to provide a boiler-plate free method of validating user input. Let's dig in and look at a sample `FormRequest`:
 
 	<?php namespace App\Http\Requests;
 
@@ -64,15 +124,15 @@ Once the class has been defined, we can type-hint it on our controller action:
 		var_dump($request->input());
 	}
 
-When the Laravel IoC container identifies that the class it is injecting is a `FormRequest` instance, the request will **automatically be validated**. This means that if your controller action is called, you can safely assume the HTTP request input has been validated according to the rules you specified in your form request class. Even more, if the request is invalid, an HTTP redirect, which you may customize, will automatically be issued, and the error messages will be either flashed to the session or converted to JSON. **Form validation has never been more simple.** For more information on `FormRequest` validation, check out the [documentation](/docs/validation#form-requests).
+When the Laravel IoC container identifies that the class it is injecting is a `FormRequest` instance, the request will **automatically be validated**. This means that if your controller action is called, you can safely assume the HTTP request input has been validated according to the rules you specified in your form request class. Even more, if the request is invalid, an HTTP redirect, which you may customize, will automatically be issued, and the error messages will be either flashed to the session or converted to JSON. **Form validation has never been more simple.** For more information on `FormRequest` validation, check out the [documentation](/docs/master/validation#form-request-validation).
 
 ### New Generators
 
-To compliment the new default application structure, `make:event`, `make:provider`, `make:filter`, and `make:request` Artisan commands have been added to the framework.
+To compliment the new default application structure, new Artisan generator commands have been added to the framework. See `php artisan list` for more details.
 
 ### Route Cache
 
-If your application is made up entirely of controller routes, you may utilize the new `route:cache` Artisan command to drastically speed up the registration of your routes. This is primarily useful on applications with 100+ routes and typically makes this portion of your code 50x faster. Literally!
+If your application is made up entirely of controller routes, you may utilize the new `route:cache` Artisan command to drastically speed up the registration of your routes. This is primarily useful on applications with 100+ routes and will **drastically** speed up this portion of your application.
 
 <a name="laravel-4.2"></a>
 ## Laravel 4.2
