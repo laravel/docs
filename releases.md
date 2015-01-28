@@ -19,9 +19,24 @@ A new `app/Providers` directory replaces the `app/start` files from previous ver
 
 Application language files and views have been moved to the `resources` directory.
 
+### Route Middleware
+
+In addition to Laravel 4 style route "filters", Laravel 5 now supports HTTP middlewware, and the included authentication and CSRF "filters" have been converted to middleware. Middleware provides a single, consistent interface to replace all types of filters, allowing you to easily inspect, and even reject, requests before they enter your application.
+
+For more information on middleware, check out [the documentation](/docs/master/middleware).
+
 ### Authentication Scaffolding
 
 User registration, authentication, and password reset controllers are now included out of the box, as well as simple corresponding views, which are located at `resources/views/auth`. In addition, a "users" table migration has been included with the framework. Including these simple resources allows rapid development of application ideas without bogging down on authentication boilerplate. The authentication views may be accessed on the `auth/login` and `auth/register` routes. The `App\Services\Auth\Registrar` service is responsible for user validation and creation.
+
+### Controller Method Injection
+
+In addition to the existing constructor injection, you may now type-hint dependencies on controller methods. The [IoC container](/docs/master/container) will automatically inject the dependencies, even if the route contains other parameters:
+
+	public function createPost(Request $request, PostRepository $posts)
+	{
+		//
+	}
 
 ### Event Objects
 
@@ -95,6 +110,10 @@ The base Laravel controller utilizes the new `DispatchesCommands` trait, allowin
 	$this->dispatch(new PurchasePodcastCommand($user, $podcast));
 
 Of course, you may also use commands for tasks that are executed synchonrously (are not queued). In fact, using commands is a great way to encapsulate complex tasks your application needs to perform. For more information, check out the [command bus](/docs/master/bus) documentation.
+
+### Database Queue
+
+A `database` queue driver is now included in Laravel, providing a simple, local queue driver that requires no extra package installation beyond your database software.
 
 ### Laravel Socialite
 
