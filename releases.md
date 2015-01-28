@@ -23,6 +23,38 @@ Application language files and views have been moved to the `resources` director
 
 User registration, authentication, and password reset controllers are now included out of the box, as well as simple corresponding views, which are located at `resources/views/auth`. In addition, a "users" table migration has been included with the framework. Including these simple resources allows rapid development of application ideas without bogging down on authentication boilerplate. The authentication views may be accessed on the `auth/login` and `auth/register` routes. The `App\Services\Auth\Registrar` service is responsible for user validation and creation.
 
+### Event Objects
+
+You may now define events as objects instead of simply using strings. For example, check out the following event:
+
+	class PodcastWasPurchased {
+
+		public $podcast;
+
+		public function __construct(Podcast $podcast)
+		{
+			$this->podcast = $podcast;
+		}
+
+	}
+
+The event may be dispatched like normal:
+
+	Event::fire(new PodcastWasPurchased($podcast));
+
+Of course, your event handler will receive the event object instead of a list of data:
+
+	class ReportPodcastPurchase {
+
+		public function handle(PodcastWasPurchased $event)
+		{
+			//
+		}
+
+	}
+
+For more information on working with events, check out the [full documentation](/docs/master/events).
+
 ### Commands / Queueing
 
 In addition to the queue job format supported in Laravel 4, Laravel 5 allows you to represent your queued jobs as simple command objects. These commands live in the `app/Commands` directory. Here's a sample command:
