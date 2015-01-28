@@ -188,7 +188,7 @@ Next, add these lines to the 'aliases' array:
 
 ### CacheManager
 
-If your application code was injecting `Illuminate\Cache\CacheManager` to get a non-Facade version of Laravel's cache, inject `Illuminate\Cache\Repository` instead.
+If your application code was injecting `Illuminate\Cache\CacheManager` to get a non-Facade version of Laravel's cache, inject `Illuminate\Contracts\Cache\Repository` instead.
 
 ### Pagination
 
