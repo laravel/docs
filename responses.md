@@ -66,6 +66,8 @@ You may wish to redirect the user to their previous location, for example, after
 
 	return redirect()->back();
 
+	return redirect()->back()->withInput();
+
 #### Returning A Redirect To A Named Route
 
 When you call the `redirect` helper with no parameters, an instance of `Illuminate\Routing\Redirector` is returned, allowing you to call any method on the `Redirector` instance. For example, to generate a `RedirectResponse` to a named route, you may use the `route` method:
