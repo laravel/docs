@@ -119,6 +119,10 @@ implements AuthenticatableContract, CanResetPasswordContract
 use Authenticatable, CanResetPassword;
 ```
 
+### Cashier User Changes
+
+The name of the trait and interface used by [Laravel Cashier](/docs/master/billing) has changed. Instead of using `BillableTrait`, use the `Laravel\Cashier\Billable` trait. And, instead of `Larave\Cashier\BillableInterface` implement the `Laravel\Cashier\Contracts\Billable` interface instead. No other method changes are required.
+
 ### Artisan Commands
 
 Move all of your command classes from your old `app/commands` directory to the new `app/Console/Commands` directory. Next, add the `app/Console/Commands` directory to the `classmap` directive of your `composer.json` file.
