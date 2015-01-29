@@ -33,4 +33,6 @@ As mentioned above, the `collect` helper will return a new `Illuminate\Support\C
 
 Of course, collections of [Eloquent](/docs/master/eloquent) objects are always returned as `Collection` instances; however, you should feel free to use the `Collection` class wherever it is convenient for your application.
 
+#### Explore The Collection
+
 Instead of listing all of the methods (there are a lot) the Collection makes available, check out the [API documentation for the class](http://laravel.com/api/master/Illuminate/Support/Collection.html)!
