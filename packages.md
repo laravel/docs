@@ -32,7 +32,7 @@ All you need to do is tell Laravel where the views for a given namespace are loc
 
 	public function boot()
 	{
-		$this->loadViewsFrom('courier', __DIR__.'/path/to/views');
+		$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
 	}
 
 Now you may load your package views using the following syntax:
@@ -47,7 +47,7 @@ To publish your package's views to the `resource/views/vendor` directory, you sh
 
 	public function boot()
 	{
-		$this->loadViewsFrom('courier', __DIR__.'/path/to/views');
+		$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
 
 		$this->publishes([
 			__DIR__.'/path/to/views' => base_path('resources/views/vendor/courier'),
@@ -96,7 +96,7 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
 You may also choose to merge your own package configuration file with the application's copy. This allows your users to include only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
 
 	$this->mergeConfigFrom(
-		'courier', __DIR__.'/path/to/config/courier.php'
+		__DIR__.'/path/to/config/courier.php', 'courier'
 	);
 
 <a name="routing"></a>
