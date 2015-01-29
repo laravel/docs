@@ -69,7 +69,7 @@ All you need to do is tell Laravel where the translations for a given namespace 
 
 	public function boot()
 	{
-		$this->loadTranslationsFrom('courier', __DIR__.'/path/to/translations');
+		$this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
 	}
 
 Note that within your `translations` folder, you would have further directories for each language, such as `en`, `es`, `ru`, etc.
