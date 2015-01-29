@@ -135,6 +135,16 @@ It looks like this:
 
 Of course, check out the [full documentation](/docs/master/artisan#scheduling-artisan-commands) to learn all about the scheduler!
 
+### Tinker / Psysh
+
+The `php artisan tinker` command now utilizes [Psysh](https://github.com/bobthecow/psysh) by Justin Hileman, a more robust REPL for PHP. If you liked Boris in Laravel 4, you're going to love Psysh. Even better, it works on Windows! To get started, just try:
+
+	php artisan tinker
+
+### DotEnv
+
+Instead of a variety of confusing, nested environment configuration directories, Laravel 5 now utilizes [DotEnv](https://github.com/vlucas/phpdotenv) by Vance Lucas. This library provides a super simple way to manage your environment configuration, and makes environment detection in Laravel 5 a breeze. For more details, check out the full [configuration documentation](/docs/master/configuration#environment-configuration.
+
 ### Laravel Socialite
 
 Laravel Socialite is an optional, Laravel 5.0+ compatible package that provides totally painless authentication with OAuth providers. Currently, Socialite supports Facebook, Twitter, Google, and GitHub. Here's what it looks like:
