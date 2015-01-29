@@ -4,7 +4,7 @@
 - [After Installation](#after-installation)
 - [Accessing Configuration Values](#accessing-configuration-values)
 - [Environment Configuration](#environment-configuration)
-- [Protecting Sensitive Configuration](#protecting-sensitive-configuration)
+- [Configuration Caching](#configuration-caching)
 - [Maintenance Mode](#maintenance-mode)
 - [Pretty URLs](#pretty-urls)
 
@@ -90,6 +90,13 @@ An application instance may also be accessed via the `app` helper of the `App` f
 	$environment = app()->environment();
 
 	$environment = App::environment();
+
+<a name="configuration-caching"></a>
+## Configuration Caching
+
+To give your application a little speed boost, you may cache all of your configuration files into a single file using the `config:cache` Artisan command. This will combine all of the configuration options for your application into a single file which can be loaded quickly by the framework.
+
+You should typically run the `config:cache` command as part of your deployment routine.
 
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
