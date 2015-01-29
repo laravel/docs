@@ -31,7 +31,7 @@ If your application is made up entirely of controller routes, you may utilize th
 
 ### Route Middleware
 
-In addition to Laravel 4 style route "filters", Laravel 5 now supports HTTP middlewware, and the included authentication and CSRF "filters" have been converted to middleware. Middleware provides a single, consistent interface to replace all types of filters, allowing you to easily inspect, and even reject, requests before they enter your application.
+In addition to Laravel 4 style route "filters", Laravel 5 now supports HTTP middleware, and the included authentication and CSRF "filters" have been converted to middleware. Middleware provides a single, consistent interface to replace all types of filters, allowing you to easily inspect, and even reject, requests before they enter your application.
 
 For more information on middleware, check out [the documentation](/docs/master/middleware).
 
