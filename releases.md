@@ -225,6 +225,12 @@ To compliment the new default application structure, new Artisan generator comma
 
 You may now cache all of your configuration in a single file using the `config:cache` command.
 
+### Symfony VarDumper
+
+The popular `dd` helper function, which dumps variable debug information, has been upgraded to use the amazing Symfony VarDumper. This provides color-coded output and even collapsing of arrays. Just try the following in your project:
+
+	dd([1, 2, 3]);
+
 <a name="laravel-4.2"></a>
 ## Laravel 4.2
 
