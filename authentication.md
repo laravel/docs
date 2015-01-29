@@ -6,7 +6,6 @@
 - [Protecting Routes](#protecting-routes)
 - [HTTP Basic Authentication](#http-basic-authentication)
 - [Password Reminders & Reset](#password-reminders-and-reset)
-- [Password Reminders & Reset](#password-reminders-and-reset)
 - [Social Authentication](#social-authentication)
 
 <a name="introduction"></a>
