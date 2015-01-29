@@ -125,6 +125,16 @@ Of course, you may also use commands for tasks that are executed synchonrously (
 
 A `database` queue driver is now included in Laravel, providing a simple, local queue driver that requires no extra package installation beyond your database software.
 
+### Laravel Scheduler
+
+In the past, developers have generated a Cron entry for each console command they wished to schedule. However, this is a headache. Your console schedule is no longer in source control, and you must SSH into your server to add the Cron entries. Let's make our lives easier. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
+
+It looks like this:
+
+	$schedule->command('artisan:command')->dailyAt('15:00');
+
+Of course, check out the [full documentation](/docs/master/artisan#scheduling-artisan-commands) to learn all about the scheduler!
+
 ### Laravel Socialite
 
 Laravel Socialite is an optional, Laravel 5.0+ compatible package that provides totally painless authentication with OAuth providers. Currently, Socialite supports Facebook, Twitter, Google, and GitHub. Here's what it looks like:
