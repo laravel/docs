@@ -112,7 +112,7 @@ The object returned by the `file` method is an instance of the `Symfony\Componen
 
 #### Determining If An Uploaded File Is Valid
 
-	if (Input::file('photo')->isValid())
+	if (Input::file('photo')->isValidFile())
 	{
 		//
 	}
