@@ -60,6 +60,12 @@ Redirecting to a new URL and [flashing data to the session](/docs/master/session
 
 	return redirect('user/login')->with('message', 'Login Failed');
 
+#### Redirecting To The Previous URL
+
+You may wish to redirect the user to their previous location, for example, after a form submission. You can do so by using the `back` method:
+
+	return redirect()->back();
+
 #### Returning A Redirect To A Named Route
 
 When you call the `redirect` helper with no parameters, an instance of `Illuminate\Routing\Redirector` is returned, allowing you to call any method on the `Redirector` instance. For example, to generate a `RedirectResponse` to a named route, you may use the `route` method:
