@@ -1,22 +1,22 @@
 # Templates
 
-- [Blade Templating](#blade-templating)
-- [Other Blade Control Structures](#other-blade-control-structures)
-- [Extending Blade](#extending-blade)
+- [Template Con Blade](#template-con-blade)
+- [Altre Strutture Di Controllo Con Blade](#altre-strutture-di-controllo-con-blade)
+- [Estendere Blade](#estendere-blade)
 
-<a name="blade-templating"></a>
+<a name="template-con-blade"></a>
 ## Blade Templating
 
-Blade is a simple, yet powerful templating engine provided with Laravel. Unlike controller layouts, Blade is driven by _template inheritance_ and _sections_. All Blade templates should use the `.blade.php` extension.
+Blade è un template engine molto semplice ma allo stesso tempo molto potente che viene incluso in ogni installazione di Laravel. A differenza dei controller layout, Blade è guidato da _template inheritance_ e _sections_. Tutti i template Blade devono avere `.blade.php` come estensione.
 
-#### Defining A Blade Layout
+#### Definire Un Layout Blade
 
-	<!-- Stored in resources/views/layouts/master.blade.php -->
+	<!-- Salvato in resources/views/layouts/master.blade.php -->
 
 	<html>
 		<body>
 			@section('sidebar')
-				This is the master sidebar.
+				Questa è la Sidebar principale.
 			@stop
 
 			<div class="container">
@@ -25,129 +25,129 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 		</body>
 	</html>
 
-#### Using A Blade Layout
+#### Utilizzare Un Layout Blade
 
 	@extends('layouts.master')
 
 	@section('sidebar')
 		@parent
 
-		<p>This is appended to the master sidebar.</p>
+		<p>Questo verrà aggiunto alla sidebar principale.</p>
 	@stop
 
 	@section('content')
-		<p>This is my body content.</p>
+		<p>Questo è il contenuto.</p>
 	@stop
 
-Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
+Nota che le view che estendono il layout Blade tramite la parola chiave `extend` non fanno altro che sovrascrivere le sezioni. Il contenuto del layout può essere incluso nel layout figlio usando la direttiva `@parent` nella sezione, permettendo così di aggiungere contenuti.
 
-Sometimes, such as when you are not sure if a section has been defined, you may wish to pass a default value to the `@yield` directive. You may pass the default value as the second argument:
+Qualche volta, come ad esempio quando non sai se una particolare sezione è stata definita, puoi passare un valore di default alla direttiva `@yield`. Puoi farlo passando il valore di default come secondo argomento:
 
 	@yield('section', 'Default Content')
 
-<a name="other-blade-control-structures"></a>
-## Other Blade Control Structures
+<a name="altre-strutture-di-controllo-con-blade"></a>
+## Altre Strutture Di Controllo Con Blade
 
-#### Echoing Data
+#### Stampare I Dati
 
-	Hello, {{ $name }}.
+	Ciao, {{ $name }}.
 
-	The current UNIX timestamp is {{ time() }}.
+	Lo UNIX timestamp corrente è {{ time() }}.
 
-#### Echoing Data After Checking For Existence
+#### Stampare Dati Dopo Aver Controllato La Loro Esistenza
 
-Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. Basically, you want to do this:
+Qualche volta potresti aver bisogno di stamapre una variabile ma non sei sicuro che quella variabile sia stata impostata, in pratica hai bisogno di una cosa del genere:
 
 	{{ isset($name) ? $name : 'Default' }}
 
-However, instead of writing a ternary statement, Blade allows you to use the following convenient short-cut:
+Tuttavia, invece di scrivere la forma contratta di controllo, Blade ti permette di utilizzare questo trucchetto che ti velocizza la scrittura:
 
 	{{ $name or 'Default' }}
 
-#### Displaying Raw Text With Curly Braces
+#### Mostrare Puro Testo Dentro Parentesi Graffe
 
-If you need to display a string that is wrapped in curly braces, you may escape the Blade behavior by prefixing your text with an `@` symbol:
+Se hai bisogno di stamapre a video del testo all'interno di parentesi graffe è necessario informare Balde evitando che effettui il parsing del testo. Per farlo è sufficiente anteporre il simbolo `@`:
 
-	@{{ This will not be processed by Blade }}
+	@{{ Questo testo non verrà processato da Blade }}
 
-If you don't want the data to be escaped, you may use the following syntax:
+Se non vuoi che sul contenuto di una variabile vengano eseguite funzioni di escape, puoi usare questa sintassi:
 
-	Hello, {!! $name !!}.
+	Ciao, {!! $name !!}.
 
-> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the triple curly brace syntax to escape any HTML entities in the content.
+> **Nota:** Fai molta attenzione quando stampi a video contenuto che arriva da un utente che utilizza la tua applicazione. Sempre meglio usare la tripla parentesi graffa per eseguire l'escape di qualsiasi codice HTML inserito nelle variabili.
 
-#### If Statements
+#### Costrutto If
 
 	@if (count($records) === 1)
-		I have one record!
+		Ho un valore!
 	@elseif (count($records) > 1)
-		I have multiple records!
+		Ho più di un valore!
 	@else
-		I don't have any records!
+		Non ho nessun valore!
 	@endif
 
 	@unless (Auth::check())
-		You are not signed in.
+		Non hai eseguito il login.
 	@endunless
 
-#### Loops
+#### Cicli
 
 	@for ($i = 0; $i < 10; $i++)
-		The current value is {{ $i }}
+		Il valore corrente è: {{ $i }}
 	@endfor
 
 	@foreach ($users as $user)
-		<p>This is user {{ $user->id }}</p>
+		<p>Questo è l'utente: {{ $user->id }}</p>
 	@endforeach
 
 	@forelse($users as $user)
 	  	<li>{{ $user->name }}</li>
 	@empty
-	  	<p>No users</p>
+	  	<p>Non ci sono utenti</p>
 	@endforelse
 
 	@while (true)
-		<p>I'm looping forever.</p>
+		<p>Questo ciclo non finirà mai.</p>
 	@endwhile
 
-#### Including Sub-Views
+#### Includere Sotto-View
 
 	@include('view.name')
 
-You may also pass an array of data to the included view:
+Puoi anche passare un array di dati alla view che vuoi includere:
 
 	@include('view.name', ['some' => 'data'])
 
-#### Overwriting Sections
+#### Sovrascrivere Le Sezioni
 
-To overwrite a section entirely, you may use the `overwrite` statement:
+Per sovrascrivere completamente una sezione puoi usare la direttiva `overwrite`:
 
 	@extends('list.item.container')
 
 	@section('list.item.content')
-		<p>This is an item of type {{ $item->type }}</p>
+		<p>Questo è un elemento di tipo {{ $item->type }}</p>
 	@overwrite
 
-#### Displaying Language Lines
+#### Mostrare Le Linee Di Una Lingua
 
 	@lang('language.line')
 
 	@choice('language.line', 1)
 
-#### Comments
+#### Commenti
 
-	{{-- This comment will not be in the rendered HTML --}}
+	{{-- Questo commento non sarà mostrato nell'HTML della pagina --}}
 
-<a name="extending-blade"></a>
-## Extending Blade
+<a name="estendere-blade"></a>
+## Estendere Blade
 
-Blade even allows you to define your own custom control structures. When a Blade file is compiled, each custom extension is called with the view contents, allowing you to do anything from simple `str_replace` manipulations to more complex regular expressions.
+Blade ti permette anche di definire le tue strutture di controllo. Quando un file Blade è compilato, ogni estensione viene chiamata con il contenuto della view, permettendoti così di fare quello che vuoi come ad esempio usare un semplice `str_replace` o una complessa espressione regolare.
 
-The Blade compiler comes with the helper methods `createMatcher` and `createPlainMatcher`, which generate the expression you need to build your own custom directives.
+Il compilatore Blade ha alcuni metodi molto utili come `createMatcher` e `createPlainMatcher`, che generano tutte le espressioni che ti servono per creare le tue direttive.
 
-The `createPlainMatcher` method is used for directives with no arguments like `@endif` and `@stop`, while `createMatcher` is used for directives with arguments.
+Il metodo `createPlainMatcher` è utilizzato per le direttive che non hanno nessun argomento come ad esempio `@endif` e `@stop`, mentre il metodo `createMatcher` viene usato per quelle direttive che richiedono almeno un argomento.
 
-The following example creates a `@datetime($var)` directive which simply calls `->format()` on `$var`:
+Il seguente esempio crea la direttiva `@datetime($var)` che semplicemente chiama `->format()` su `$var`:
 
 	Blade::extend(function($view, $compiler)
 	{
