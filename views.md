@@ -1,4 +1,4 @@
-# Views
+# View
 
 - [Utilizzo Base](#basic-usage)
 - [View Composer](#view-composers)
