@@ -1,14 +1,14 @@
 # Service Container
 
-- [Introduzione](#introduction)
-- [Utilizzo Base](#basic-usage)
-- [Legare Interfacce A Implementazioni](#binding-interfaces-to-implementations)
-- [Binding Contestuale](#contextual-binding)
+- [Introduzione](#introduzione)
+- [Utilizzo Base](#utilizzo-base)
+- [Legare Interfacce A Implementazioni](#legare-interfacce-a-implementazioni)
+- [Binding Contestuale](#binding-contestuale)
 - [Tagging](#tagging)
-- [Applicazioni Pratiche](#practical-applications)
-- [Eventi Del Container](#container-events)
+- [Applicazioni Pratiche](#applicazioni-pratiche)
+- [Eventi Del Container](#eventi-del-container)
 
-<a name="introduction"></a>
+<a name="introduzione"></a>
 ## Introduzione
 
 Il service container di Laravel è un potente strumento per gestire le dipendenze di una classe. Dependency injection è un parolone che sostanzialmente significa questo: le dipendenze di una classe sono "iniettate" nella classe stessa tramite il costruttore o, in alcuni casi, dei metodi "setter".
@@ -56,7 +56,7 @@ In questo esempio, il command handler `PurchasePodcast` ha bisogno di inviare de
 
 Una profonda comprensione del service container di Laravel è essenziale per creare applicazioni grandi e potenti, ed è ugualmente necessaria per contribuire al core di Laravel stesso.
 
-<a name="basic-usage"></a>
+<a name="utilizzo-base"></a>
 ## Utilizzo Base
 
 ### Binding
@@ -139,7 +139,7 @@ Infine, ma molto importante, puoi semplicemente fare il "type-hint" di una dipen
 
 	}
 
-<a name="binding-interfaces-to-implementations"></a>
+<a name="legare-interfacce-a-implementazioni"></a>
 ## Legare Interfacce A Implementazioni
 
 ### Iniettare Dipendenze Concrete
@@ -220,7 +220,7 @@ Questo suggerisce al container che deve iniettare `PusherEventPusher` quando una
 			$this->pusher = $pusher;
 		}
 
-<a name="contextual-binding"></a>
+<a name="binding-contestuale"></a>
 ## Binding Contestuale
 
 A volte potresti avere due classi che usano la stessa interfaccia, ma volere iniettare due implementazioni diverse. Per esempio quando il tuo sistema riceve un nuovo Order, potresti voler inviare un evento tramite [PubNub](http://www.pubnub.com/) piuttosto che Pusher. Laravel fornisce un'interfaccia semplice e armoniosa per definire tale comportamento:
@@ -253,7 +253,7 @@ Una volta che i servizi sono stati taggati, puoi facilmente risolverli tutti tra
 		return new ReportAggregator($app->tagged('reports'));
 	});
 
-<a name="practical-applications"></a>
+<a name="applicazioni-pratiche"></a>
 ## Applicazioni Pratiche
 
 Grazie al service container, Laravel fornisce molte opportunità per aumentare la flessibilità e testabilità delle tue applicazioni. Un esempio basilare è quando avviene la risoluzione dei controller. Tutti i controller vengono risolti tramite il service container, ciò significa che puoi fare il type-hint delle dipendenze nel costruttore di un controller e queste vengono automaticamente iniettate.
@@ -301,7 +301,7 @@ In questo esempio la classe `OrderRepository` viene automaticamente iniettata ne
 
 I controller non sono le uniche classi che Laravel risolve usando il service container. Puoi fare il type-hint anche delle dipendenze delle Closure delle route, filtri, queue job, event listeners e altro ancora. Fai riferimento alla loro documentazione per ulteriori esempi.
 
-<a name="container-events"></a>
+<a name="eventi-del-container"></a>
 ## Eventi Del Container
 
 #### Registrare Un Listener Di Risoluzioni
