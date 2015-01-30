@@ -1,24 +1,24 @@
 # Laravel Cashier
 
-- [Introduzione](#introduction)
-- [Configurazione](#configuration)
-- [Abbonamento Ad Un Piano](#subscribing-to-a-plan)
-- [Nessuna Carta Richiesta](#no-card-up-front)
-- [Cambiare Abbonamento](#swapping-subscriptions)
-- [Abbonamento Per Quantità](#subscription-quantity)
-- [Cancellare Un Abbonamento](#cancelling-a-subscription)
-- [Riattivare Un Abbonamento](#resuming-a-subscription)
-- [Controllare Lo Stato Di Un Abbonamento](#checking-subscription-status)
-- [Gestire I Pagamenti Falliti](#handling-failed-payments)
-- [Gestire Altri Webhook Di Pagamento](#handling-other-stripe-webhooks)
-- [Fatture](#invoices)
+- [Introduzione](#introduzione)
+- [Configurazione](#configurazione)
+- [Abbonamento Ad Un Piano](#abbonamento-ad-un-piano)
+- [Nessuna Carta Richiesta](#nessuna-carta-richiesta)
+- [Cambiare Abbonamento](#cambiare-abbonamento)
+- [Abbonamento Per Quantità](#abbonamento-per-quantita)
+- [Cancellare Un Abbonamento](#cancellare-un-abbonamento)
+- [Riattivare Un Abbonamento](#riattivare-un-abbonamento)
+- [Controllare Lo Stato Di Un Abbonamento](#controllare-lo-stato-di-un-abbonamento)
+- [Gestire I Pagamenti Falliti](#gestire-i-pagamenti-falliti)
+- [Gestire Altri Webhook Di Pagamento](#gestire-altri-webhook-di-pagamento)
+- [Fatture](#fatture)
 
-<a name="introduction"></a>
+<a name="introduzione"></a>
 ## Introduzione
 
 Laravel Cashier fornisce una espressiva e fluente interfaccia per utilizzare il servizio di sottoscrizione e pagamento di [Stripe's](https://stripe.com). Gestisce quasi tutto il codice necessario per la sottoscrizione di pagamenti. Oltre alla gestione base degli abbonamenti, Cashier può gestire facilmente  coupon, cambi di piano, abbonamenti di "quantità", cancellazione, periodi di grazia e persino generare fatture in PDF.
 
-<a name="configuration"></a>
+<a name="configurazione"></a>
 ## Configurazione
 
 #### Composer
@@ -56,7 +56,7 @@ Per finire, imposta la tua Stripe key in uno dei file di bootstrap o in un servi
 
 	User::setStripeKey('stripe-key');
 
-<a name="subscribing-to-a-plan"></a>
+<a name="abbonamento-ad-un-piano"></a>
 ## Abbonamento Ad Un Piano
 
 Una volta che hai una istanza del model, puoi facilmente abbonare l'utente al piano di pagamento scelto:
@@ -89,7 +89,7 @@ Se vuoi specificare alcuni dettagli aggiuntivi sul tuo cliente lo puoi fare pass
 
 Per sapere di più sui campi addizionali supportati da Stripe dai una occhiata alla loro [documentazione sulla creazione dei clienti](https://stripe.com/docs/api#create_customer).
 
-<a name="no-card-up-front"></a>
+<a name="nessuna-carta-richiesta"></a>
 ## Nessuna Carta Richiesta
 
 Se la tua applicazione offre un periodo di proa gratuito senza la richiesta iniziale dei dati della carta di credito, devi impostare la proprietà `cardUpFront` su `false` all'interno del tuo model:
@@ -102,7 +102,7 @@ Quando crei l'abbonamento, assicurati di impostare una data di scadenza:
 
 	$user->save();
 
-<a name="swapping-subscriptions"></a>
+<a name="cambiare-abbonamento"></a>
 ## Cambiare Abbonamento
 
 Per cambiare l'abbonamento di un utente devi usare il metodo `swap`:
@@ -111,7 +111,7 @@ Per cambiare l'abbonamento di un utente devi usare il metodo `swap`:
 
 Se l'utente è in un periodo di prova, questa verrà mantenuta fino alla scadenza. Se l'abbonamento è una "quantità" anche in questo caso verrà mantenuta.
 
-<a name="subscription-quantity"></a>
+<a name="abbonamento-per-quantita"></a>
 ## Abbonamento Per Quantità
 
 Qualche volta gli abbonamenti sono affette da una "quantità". Per esempio, la tua applicazione potrebbe addebitare $10 al mese per utente ad account. Per icrementare e decrementare facilmetne queste quantità puoi usare i metodi `increment` e `decrement`:
@@ -128,7 +128,7 @@ Qualche volta gli abbonamenti sono affette da una "quantità". Per esempio, la t
 	// Sottrai 5 dalla quantità attuale dell'abbonamento
 	$user->subscription()->decrement(5);
 
-<a name="cancelling-a-subscription"></a>
+<a name="cancellare-un-abbonamento"></a>
 ## Cancellare Un Abbonamento
 
 Cancellare un abbonamento è facile come fare una passeggiata al parco:
@@ -137,7 +137,7 @@ Cancellare un abbonamento è facile come fare una passeggiata al parco:
 
 Quando un abbonamento viene cancellato, Cashier imposterà automaticamente una nuova data nella colonna `subscription_ends_at` del tuo database. Questa colonna viene usata per decidere se il metodo `subscribed` deve restituire `false`. Per esempio, se un cliente cancella il suo abbonamento il 2 Marzo, ma il suo abbonamento sarebbe dovuto finire il 5 Marzo, il metodo `subscribed` continuerà a restituire `true` fino al 5 Marzo.
 
-<a name="resuming-a-subscription"></a>
+<a name="riattivare-un-abbonamento"></a>
 ## Riattivare Un Abbonamento
 
 Se un cliente ha cancellato il suo abbonamento e adesso devi riattivarlo puoi farlo usando il metodo `resume`:
@@ -146,7 +146,7 @@ Se un cliente ha cancellato il suo abbonamento e adesso devi riattivarlo puoi fa
 
 Se un cliente ha cancellato il suo abbonamento, ma ha fatto richiesta di riattivarlo prima che l'abobnamento orginale scadesse non gli sarà addebitato subito il costo del nuovo abbonamento. Il suo abbonamento sarà semplicemente riattivato e il pagamento sarà automaticamente effettuato alla normale scadenza.
 
-<a name="checking-subscription-status"></a>
+<a name="controllare-lo-stato-di-un-abbonamento"></a>
 ## Controllare Lo Stato Di Un Abbonamento
 
 Per verificare se un utente è abbonato alla tua applicazione, utilizza il metodo `subscribed`:
@@ -203,7 +203,7 @@ Il metodo `onPlan` può essere utilizzato per determinare se un utente è abbona
 		//
 	}
 
-<a name="handling-failed-payments"></a>
+<a name="gestire-i-pagamenti-falliti"></a>
 ## Gestire I Pagamenti Falliti
 
 E se la carta di credito di un cliente scade? Nessun problema - Cashier include un Webhook controller che si occuperà automaticamente di cancellare l'abbonamento al tuo posto. Non devi far altro che far puntare una route al controller controller:
@@ -212,7 +212,7 @@ E se la carta di credito di un cliente scade? Nessun problema - Cashier include 
 
 Tutto qui! Tutti i pagamenti che falliranno saranno catturati e gestiti dal controller. Il controller cancellerà l'abbonamento dopo 3 tentativi di pagamento falliti. L'URI `stripe/webhook` in questo caso è solo un esempio. Devi configurare un URI nelle impostazioni del tuo account Stripe.
 
-<a name="handling-other-stripe-webhooks"></a>
+<a name="gestire-altri-webhook-di-pagamento"></a>
 ## Gestire Altri Webhook Di Pagamento
 
 Se ci sono altri eventi Stripe che vuoi gestire, puoi estendere il Webhook controller. I nomi dei tuoi metodi dovranno rispettare le convenzioni di Cashier, in particolare, i metodi dovranno essere preceduti dalla parola `handle` e poi il nome dell'webhook che intendi gestire. Per esempio, se vuoi gestire il webhook `invoice.payment_succeeded`, dovrai aggiungere al tuo controller il metodo `handleInvoicePaymentSucceeded`.
@@ -228,7 +228,7 @@ Se ci sono altri eventi Stripe che vuoi gestire, puoi estendere il Webhook contr
 
 > **Nota:** Oltre ad aggiornare le informazioni degli abbonamenti nel tuo database, il Webhook controller cancellerà anche l'abbonamento tramite le Stripe API.
 
-<a name="invoices"></a>
+<a name="fatture"></a>
 ## Fatture
 
 Puoi facilmente recuperare un array di tutte le fatture di un utente utilizzando il metodo `invoices`:
