@@ -115,7 +115,7 @@ Organizziamo le view composers all'interno di un [service provider](/docs/master
 
 > **Nota:** Laravel non include di default una cartella per le view composers. Sei libero di organizzarle come preferisci e di salvarle dove ti è più comodo. Per esempio potresti creare la cartella `App\Http\Composers`.
 
-Adesso che hai registrato il tuo composer, il metodo `ProfileComposer@compose` sarà eseguito ogni volta he la view `profile`viene utilizzata. Definiamo una classe:
+Adesso che hai registrato il tuo composer, il metodo `ProfileComposer@compose` sarà eseguito ogni volta he la view `profile` viene utilizzata. Definiamo una classe:
 
 	<?php namespace App\Http\Composers;
 
