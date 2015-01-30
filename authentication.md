@@ -287,7 +287,7 @@ Your user will receive an e-mail with a link that points to the `getReset` metho
 <a name="social-authentication"></a>
 ## Social Authentication
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using Laravel Socialite. **Socialite currently supports authentication with Facebook, Twitter, Google, and GitHub.**
+In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). **Socialite currently supports authentication with Facebook, Twitter, Google, and GitHub.**
 
 To get started with Socialite, include the package in your `composer.json` file:
 
