@@ -1,14 +1,14 @@
 # SSH
 
-- [Configurazione](#configuration)
-- [Utilizzo Base](#basic-usage)
-- [Task](#tasks)
-- [Download SFTP](#sftp-downloads)
-- [Upload SFTP](#sftp-uploads)
-- [Mostrare le ultime righe di log remoti](#tailing-remote-logs)
+- [Configurazione](#configurazione)
+- [Utilizzo Base](#utilizzo-base)
+- [Task](#task)
+- [Download SFTP](#download-sftp)
+- [Upload SFTP](#upload-sftp)
+- [Mostrare le ultime righe di log remoti](#mostrare-le-ultime-righe-di-log-remoti)
 - [Envoy Task Runner](#envoy-task-runner)
 
-<a name="configuration"></a>
+<a name="configurazione"></a>
 ## Configurazione
 
 Laravel include un semplice modo per eseguire comandi SSH su server remoti, permettendoti così di creare facilmente task Artisan che lavorano sul server. La facade `SSH` ti fornisce un punto di accesso per collegarti a server remoti ed eseguire dei comandi.
@@ -17,7 +17,7 @@ Il file di configurazione è salvato in `config/remote.php`, e contiene tutte le
 
 > **Nota:** Hai bisogno di un metodo semplice per eseguire diversi task sul tuo server remoto? Dai una occhiata a [Envoy task runner](#envoy-task-runner)!
 
-<a name="basic-usage"></a>
+<a name="utilizzo-base"></a>
 ## Utilizzo Base
 
 #### Eseguire Comandi Sul Server Di Default
@@ -48,7 +48,7 @@ Puoi intercettare le risposte dei comandi eseguite semplicemente passando una Cl
 	});
 
 ## Task
-<a name="tasks"></a>
+<a name="task"></a>
 
 Se hai un gruppo di comandi che devono essere eseguiti sempre assieme, puoi utilizzare il metodo `define` per raggrupparli in un unico `task`:
 
@@ -65,7 +65,7 @@ Una volta che il task è stato definito puoi utilizzare il metodo `task` per ese
 		echo $line.PHP_EOL;
 	});
 
-<a name="sftp-downloads"></a>
+<a name="download-sftp"></a>
 ## Download SFTP
 
 La classe `SSH` include un modo facile per eseguire il download dei file utilizzando i metodi `get` e `getString`:
@@ -74,7 +74,7 @@ La classe `SSH` include un modo facile per eseguire il download dei file utilizz
 
 	$contents = SSH::into('staging')->getString($remotePath);
 
-<a name="sftp-uploads"></a>
+<a name="upload-sftp"></a>
 ## Upload SFTP
 
 La classe `SSH` include anche un modo facile per eseguire l'upload di file, oppure di stringhe, utilizzando i metodi `put` e `putString`:
@@ -83,7 +83,7 @@ La classe `SSH` include anche un modo facile per eseguire l'upload di file, oppu
 
 	SSH::into('staging')->putString($remotePath, 'Foo');
 
-<a name="tailing-remote-logs"></a>
+<a name="mostrare-le-ultime-righe-di-log-remoti"></a>
 ## Mostrare le ultime righe di log remoti
 
 Laravel include un utile comando che ti permette di vedere le ultime righe del file `laravel.log` di ogni tua connessione remota. Utilizza semplicemente il comando Artisan `tail` e specifica il nome della connessione remota per la quale vuoi visualizzare le ultime righe dei log:

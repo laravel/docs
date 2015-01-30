@@ -1,9 +1,9 @@
 # View
 
-- [Utilizzo Base](#basic-usage)
-- [View Composer](#view-composers)
+- [Utilizzo Base](#utilizzo-base)
+- [View Composer](#view-composer)
 
-<a name="basic-usage"></a>
+<a name="utilizzo-base"></a>
 ## Utilizzo Base
 
 Le View contengono il codice HTML utilizzato dalla tua applicazione, e ha l'utile funzione di separare il Controller e la logica dal'interfaccia grafica. Le View sono salvate nella cartella `resources/views`.
@@ -47,7 +47,7 @@ Se vuoi, puoi anche passare un array di dati alla view semplicemente usandolo co
 
 #### Condividere Dati Con Tutte Le View
 
-Qualche volta potresti aver bisogno di condividere alcuni dati tra tutte le view utilizzae dalla tua applicazione. Ci sono diversi modi per farlo: l'helper `view`, il [contratto](/docs/master/contracts) `Illuminate\Contracts\View\Factory`, o la wildcard [view composer](#view-composers).
+Qualche volta potresti aver bisogno di condividere alcuni dati tra tutte le view utilizzae dalla tua applicazione. Ci sono diversi modi per farlo: l'helper `view`, il [contratto](/docs/master/contracts) `Illuminate\Contracts\View\Factory`, o la wildcard [view composer](#view-composer).
 
 Ecco un esempio di condivisione con l'helper view:
 
@@ -78,7 +78,7 @@ Se lo desideri, puoi generare una view utilizzando il suo path assoluto:
 
 	return view()->file($pathToFile);
 
-<a name="view-composers"></a>
+<a name="view-composer"></a>
 ## View Composers
 
 Le View composer sono delle callback o metodi di una classe che sono chiamati quando viene mostrata una view. Se hai dei dati che vuoi rendere disponibili ogni volta che una view viene utilizzata le view composer sono il posto ideale dove scrivere tutta la logica.

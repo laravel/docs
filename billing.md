@@ -1,43 +1,43 @@
 # Laravel Cashier
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [Subscribing To A Plan](#subscribing-to-a-plan)
-- [No Card Up Front](#no-card-up-front)
-- [Swapping Subscriptions](#swapping-subscriptions)
-- [Subscription Quantity](#subscription-quantity)
-- [Cancelling A Subscription](#cancelling-a-subscription)
-- [Resuming A Subscription](#resuming-a-subscription)
-- [Checking Subscription Status](#checking-subscription-status)
-- [Handling Failed Payments](#handling-failed-payments)
-- [Handling Other Stripe Webhooks](#handling-other-stripe-webhooks)
-- [Invoices](#invoices)
+- [Introduzione](#introduzione)
+- [Configurazione](#configurazione)
+- [Abbonamento Ad Un Piano](#abbonamento-ad-un-piano)
+- [Nessuna Carta Richiesta](#nessuna-carta-richiesta)
+- [Cambiare Abbonamento](#cambiare-abbonamento)
+- [Abbonamento Per Quantità](#abbonamento-per-quantita)
+- [Cancellare Un Abbonamento](#cancellare-un-abbonamento)
+- [Riattivare Un Abbonamento](#riattivare-un-abbonamento)
+- [Controllare Lo Stato Di Un Abbonamento](#controllare-lo-stato-di-un-abbonamento)
+- [Gestire I Pagamenti Falliti](#gestire-i-pagamenti-falliti)
+- [Gestire Altri Webhook Di Pagamento](#gestire-altri-webhook-di-pagamento)
+- [Fatture](#fatture)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
+Laravel Cashier fornisce una espressiva e fluente interfaccia per utilizzare il servizio di sottoscrizione e pagamento di [Stripe's](https://stripe.com). Gestisce quasi tutto il codice necessario per la sottoscrizione di pagamenti. Oltre alla gestione base degli abbonamenti, Cashier può gestire facilmente  coupon, cambi di piano, abbonamenti di "quantità", cancellazione, periodi di grazia e persino generare fatture in PDF.
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
 #### Composer
 
-First, add the Cashier package to your `composer.json` file:
+Per prima cosa devi aggiungere il package Cashier al tuo file `composer.json`:
 
 	"laravel/cashier": "~3.0"
 
 #### Service Provider
 
-Next, register the `Laravel\Cashier\CashierServiceProvider` in your `app` configuration file.
+Devi poi registrare il provider `Laravel\Cashier\CashierServiceProvider` nel file di configurazione `app`
 
 #### Migration
 
-Before using Cashier, we'll need to add several columns to your database. Don't worry, you can use the `cashier:table` Artisan command to create a migration to add the necessary column. For example, to add the column to the users table use `php artisan cashier:table users`. Once the migration has been created, simply run the `migrate` command.
+Prima di utilizzare Cashier è necessario aggiungere alcune colonne al database. Non ti preoccupare, puoi usare il comando Artisan `cashier:table` che si occuperà di creare una migration per l'aggiunta delle colonne necessarie. Per esempio, per aggiungere la colonna alla tabella degli utenti puoi usare `php artisan cashier:table users`. Una volta che la migration è stata creata non devi far altro che eseguire il comando `migrate`.
 
-#### Model Setup
+#### Setup Del Model
 
-Next, add the `Billable` trait and appropriate date mutators to your model definition:
+Adesso, aggiungi il trait `Billable` e i necessari mutator per le date all'interno del tuo model:
 
 	use Laravel\Cashier\Billable;
 	use Laravel\Cashier\Contracts\Billable as BillableContract;
@@ -52,111 +52,111 @@ Next, add the `Billable` trait and appropriate date mutators to your model defin
 
 #### Stripe Key
 
-Finally, set your Stripe key in one of your bootstrap files or service providers, such as the `AppServiceProvider`:
+Per finire, imposta la tua Stripe key in uno dei file di bootstrap o in un service providers, come ad esempio il file `AppServiceProvider`:
 
 	User::setStripeKey('stripe-key');
 
-<a name="subscribing-to-a-plan"></a>
-## Subscribing To A Plan
+<a name="abbonamento-ad-un-piano"></a>
+## Abbonamento Ad Un Piano
 
-Once you have a model instance, you can easily subscribe that user to a given Stripe plan:
+Una volta che hai una istanza del model, puoi facilmente abbonare l'utente al piano di pagamento scelto:
 
 	$user = User::find(1);
 
 	$user->subscription('monthly')->create($creditCardToken);
 
-If you would like to apply a coupon when creating the subscription, you may use the `withCoupon` method:
+Se vuoi applicare un coupon quando crei una abbonamento lo puoi fare utilizzando il metodo `withCoupon`:
 
 	$user->subscription('monthly')
 	     ->withCoupon('code')
 	     ->create($creditCardToken);
 
-The `subscription` method will automatically create the Stripe subscription, as well as update your database with Stripe customer ID and other relevant billing information. If your plan has a trial configured in Stripe, the trial end date will also automatically be set on the user record.
+Il metodo `subscription` creerà in automatico un abbonamento utilizzando Stripe e si occuperà di aggiornare le informazioni nel database salvando l'ID cliente e altre informazioni utili per i pagamenti. Se il tuo piano di abbonamento ha un periodo di prova gratuita configurato nel tuo account Stripe verrà associata la data di scadenza della prova all'utente che hai registrato.
 
-If your plan has a trial period that is **not** configured in Stripe, you must set the trial end date manually after subscribing:
+Se il tuo abbonamento ha un periodo di prova che **non** è configurato nel tuo account Stripe, allora dovrai assicurarti di creare e salvare la data di fine subito dopo la sottoscrizione dell'abbonamento.:
 
 	$user->trial_ends_at = Carbon::now()->addDays(14);
 
 	$user->save();
 
-### Specifying Additional User Details
+### Specificare Dettagli Aggiuntivi Per L'Utente
 
-If you would like to specify additional customer details, you may do so by passing them as second argument to the `create` method:
+Se vuoi specificare alcuni dettagli aggiuntivi sul tuo cliente lo puoi fare passandoli come secondo parametro del metodo `create`:
 
 	$user->subscription('monthly')->create($creditCardToken, [
 		'email' => $email, 'description' => 'Our First Customer'
 	]);
 
-To learn more about the additional fields supported by Stripe, check out Stripe's [documentation on customer creation](https://stripe.com/docs/api#create_customer).
+Per sapere di più sui campi addizionali supportati da Stripe dai una occhiata alla loro [documentazione sulla creazione dei clienti](https://stripe.com/docs/api#create_customer).
 
-<a name="no-card-up-front"></a>
-## No Card Up Front
+<a name="nessuna-carta-richiesta"></a>
+## Nessuna Carta Richiesta
 
-If your application offers a free-trial with no credit-card up front, set the `cardUpFront` property on your model to `false`:
+Se la tua applicazione offre un periodo di proa gratuito senza la richiesta iniziale dei dati della carta di credito, devi impostare la proprietà `cardUpFront` su `false` all'interno del tuo model:
 
 	protected $cardUpFront = false;
 
-On account creation, be sure to set the trial end date on the model:
+Quando crei l'abbonamento, assicurati di impostare una data di scadenza:
 
 	$user->trial_ends_at = Carbon::now()->addDays(14);
 
 	$user->save();
 
-<a name="swapping-subscriptions"></a>
-## Swapping Subscriptions
+<a name="cambiare-abbonamento"></a>
+## Cambiare Abbonamento
 
-To swap a user to a new subscription, use the `swap` method:
+Per cambiare l'abbonamento di un utente devi usare il metodo `swap`:
 
 	$user->subscription('premium')->swap();
 
-If the user is on trial, the trial will be maintained as normal. Also, if a "quantity" exists for the subscription, that quantity will also be maintained.
+Se l'utente è in un periodo di prova, questa verrà mantenuta fino alla scadenza. Se l'abbonamento è una "quantità" anche in questo caso verrà mantenuta.
 
-<a name="subscription-quantity"></a>
-## Subscription Quantity
+<a name="abbonamento-per-quantita"></a>
+## Abbonamento Per Quantità
 
-Sometimes subscriptions are affected by "quantity". For example, your application might charge $10 per month per user on an account. To easily increment or decrement your subscription quantity, use the `increment` and `decrement` methods:
+Qualche volta gli abbonamenti sono affette da una "quantità". Per esempio, la tua applicazione potrebbe addebitare $10 al mese per utente ad account. Per icrementare e decrementare facilmetne queste quantità puoi usare i metodi `increment` e `decrement`:
 
 	$user = User::find(1);
 
 	$user->subscription()->increment();
 
-	// Add five to the subscription's current quantity...
+	// Aggiungi 5 alla quantità attuale dell'abbonamento
 	$user->subscription()->increment(5);
 
 	$user->subscription->decrement();
 
-	// Subtract five to the subscription's current quantity...
+	// Sottrai 5 dalla quantità attuale dell'abbonamento
 	$user->subscription()->decrement(5);
 
-<a name="cancelling-a-subscription"></a>
-## Cancelling A Subscription
+<a name="cancellare-un-abbonamento"></a>
+## Cancellare Un Abbonamento
 
-Cancelling a subscription is a walk in the park:
+Cancellare un abbonamento è facile come fare una passeggiata al parco:
 
 	$user->subscription()->cancel();
 
-When a subscription is cancelled, Cashier will automatically set the `subscription_ends_at` column on your database. This column is used to know when the `subscribed` method should begin returning `false`. For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th.
+Quando un abbonamento viene cancellato, Cashier imposterà automaticamente una nuova data nella colonna `subscription_ends_at` del tuo database. Questa colonna viene usata per decidere se il metodo `subscribed` deve restituire `false`. Per esempio, se un cliente cancella il suo abbonamento il 2 Marzo, ma il suo abbonamento sarebbe dovuto finire il 5 Marzo, il metodo `subscribed` continuerà a restituire `true` fino al 5 Marzo.
 
-<a name="resuming-a-subscription"></a>
-## Resuming A Subscription
+<a name="riattivare-un-abbonamento"></a>
+## Riattivare Un Abbonamento
 
-If a user has cancelled their subscription and you wish to resume it, use the `resume` method:
+Se un cliente ha cancellato il suo abbonamento e adesso devi riattivarlo puoi farlo usando il metodo `resume`:
 
 	$user->subscription('monthly')->resume($creditCardToken);
 
-If the user cancels a subscription and then resumes that subscription before the subscription has fully expired, they will not be billed immediately. Their subscription will simply be re-activated, and they will be billed on the original billing cycle.
+Se un cliente ha cancellato il suo abbonamento, ma ha fatto richiesta di riattivarlo prima che l'abobnamento orginale scadesse non gli sarà addebitato subito il costo del nuovo abbonamento. Il suo abbonamento sarà semplicemente riattivato e il pagamento sarà automaticamente effettuato alla normale scadenza.
 
-<a name="checking-subscription-status"></a>
-## Checking Subscription Status
+<a name="controllare-lo-stato-di-un-abbonamento"></a>
+## Controllare Lo Stato Di Un Abbonamento
 
-To verify that a user is subscribed to your application, use the `subscribed` command:
+Per verificare se un utente è abbonato alla tua applicazione, utilizza il metodo `subscribed`:
 
 	if ($user->subscribed())
 	{
 		//
 	}
 
-The `subscribed` method makes a great candidate for a [route middleware](/docs/master/middleware):
+Il metodo `subscribed` è un ottimo candidato per le [route middleware](/docs/master/middleware):
 
 	public function handle($request, Closure $next)
 	{
@@ -168,74 +168,74 @@ The `subscribed` method makes a great candidate for a [route middleware](/docs/m
 		return $next($request);
 	}
 
-You may also determine if the user is still within their trial period (if applicable) using the `onTrial` method:
+Puoi anche controllare se un utente è ancora nel periodo trial (se lo hai previsto) utilizzando il metodo `onTrial`:
 
 	if ($user->onTrial())
 	{
 		//
 	}
 
-To determine if the user was once an active subscriber, but has cancelled their subscription, you may use the `cancelled` method:
+Per verificare se un utente una volta era abbonato ma adesso ha cancellato la sua iscrizione puoi usare il metodo `cancelled`:
 
 	if ($user->cancelled())
 	{
 		//
 	}
 
-You may also determine if a user has cancelled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was scheduled to end on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time.
+Puoi anche controllare quali utenti hanno cancellato l'abbonamento ma sono ancora nel "periodo di grazia". Per esempio, se un utente cancella il suo abbonamento il 5 Marzo ma la scadenza dell'abbonamento è prevista per il 10 Marzo, l'utente fino a quella data sarà in un "periodo di grazia" durante il quale potrà ancora accedere alla tua applicazione. Nota che il metodo `subscribed` continuerà a restituire `true` fino alla data di scadenza.
 
 	if ($user->onGracePeriod())
 	{
 		//
 	}
 
-The `everSubscribed` method may be used to determine if the user has ever subscribed to a plan in your application:
+Il metodo `everSubscribed` può essere utilizzato per determinare se un utente è mai stato abbonato ad un piano della tua applicazione:
 
 	if ($user->everSubscribed())
 	{
 		//
 	}
 
-The `onPlan` method may be used to determine if the user is subscribed to a given plan based on its ID:
+Il metodo `onPlan` può essere utilizzato per determinare se un utente è abbonato ad un dato piano:
 
 	if ($user->onPlan('monthly'))
 	{
 		//
 	}
 
-<a name="handling-failed-payments"></a>
-## Handling Failed Payments
+<a name="gestire-i-pagamenti-falliti"></a>
+## Gestire I Pagamenti Falliti
 
-What if a customer's credit card expires? No worries - Cashier includes a Webhook controller that can easily cancel the customer's subscription for you. Just point a route to the controller:
+E se la carta di credito di un cliente scade? Nessun problema - Cashier include un Webhook controller che si occuperà automaticamente di cancellare l'abbonamento al tuo posto. Non devi far altro che far puntare una route al controller controller:
 
 	Route::post('stripe/webhook', 'Laravel\Cashier\WebhookController@handleWebhook');
 
-That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription after three failed payment attempts. The `stripe/webhook` URI in this example is just for example. You will need to configure the URI in your Stripe settings.
+Tutto qui! Tutti i pagamenti che falliranno saranno catturati e gestiti dal controller. Il controller cancellerà l'abbonamento dopo 3 tentativi di pagamento falliti. L'URI `stripe/webhook` in questo caso è solo un esempio. Devi configurare un URI nelle impostazioni del tuo account Stripe.
 
-<a name="handling-other-stripe-webhooks"></a>
-## Handling Other Stripe Webhooks
+<a name="gestire-altri-webhook-di-pagamento"></a>
+## Gestire Altri Webhook Di Pagamento
 
-If you have additional Stripe webhook events you would like to handle, simply extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the name of the Stripe webhook you wish to handle. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you should add a `handleInvoicePaymentSucceeded` method to the controller.
+Se ci sono altri eventi Stripe che vuoi gestire, puoi estendere il Webhook controller. I nomi dei tuoi metodi dovranno rispettare le convenzioni di Cashier, in particolare, i metodi dovranno essere preceduti dalla parola `handle` e poi il nome dell'webhook che intendi gestire. Per esempio, se vuoi gestire il webhook `invoice.payment_succeeded`, dovrai aggiungere al tuo controller il metodo `handleInvoicePaymentSucceeded`.
 
 	class WebhookController extends Laravel\Cashier\WebhookController {
 
 		public function handleInvoicePaymentSucceeded($payload)
 		{
-			// Handle The Event
+			// Gestisci l'evento
 		}
 
 	}
 
-> **Note:** In addition to updating the subscription information in your database, the Webhook controller will also cancel the subscription via the Stripe API.
+> **Nota:** Oltre ad aggiornare le informazioni degli abbonamenti nel tuo database, il Webhook controller cancellerà anche l'abbonamento tramite le Stripe API.
 
-<a name="invoices"></a>
-## Invoices
+<a name="fatture"></a>
+## Fatture
 
-You can easily retrieve an array of a user's invoices using the `invoices` method:
+Puoi facilmente recuperare un array di tutte le fatture di un utente utilizzando il metodo `invoices`:
 
 	$invoices = $user->invoices();
 
-When listing the invoices for the customer, you may use these helper methods to display the relevant invoice information:
+Quando mostri un elenco di fatture al cliente puoi utilizzare questi metodi per mostrare informazioni rilevanti:
 
 	{{ $invoice->id }}
 
@@ -243,7 +243,7 @@ When listing the invoices for the customer, you may use these helper methods to 
 
 	{{ $invoice->dollars() }}
 
-Use the `downloadInvoice` method to generate a PDF download of the invoice. Yes, it's really this easy:
+Puoi usare il metodo `downloadInvoice` per generare una fattura in PDF da scaricare. Si, è facilissimo creare le fatture:
 
 	return $user->downloadInvoice($invoice->id, [
 		'vendor'  => 'Your Company',
