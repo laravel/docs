@@ -6,7 +6,7 @@
 <a name="introduzione"></a>
 ## Introduzione
 
-Laravel fornisce sevizi per criptare utilizzando l'algoritmo AES utilizzando l'estensione Mcrypt di PHP.
+Laravel fornisce sevizi per criptare utilizzando l'algoritmo AES tramite l'estensione Mcrypt di PHP.
 
 <a name="utilizzo-base"></a>
 ## Utilizzo Base
