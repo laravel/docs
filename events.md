@@ -73,7 +73,7 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 
 Need to [queue](/docs/master/queues) an event handler? It couldn't be any easier. When generating the handler, simply use the `--queued` flag:
 
-	php artisan handler:make SendPurchaseConfirmation --event=PodcastWasPurchased --queued
+	php artisan handler:event SendPurchaseConfirmation --event=PodcastWasPurchased --queued
 
 This will generate a handler class that implements the `Illuminate\Contracts\Queue\ShouldBeQueued` interface. That's it! Now when this handler is called for an event, it will be queued automatically by the event dispatcher.
 
