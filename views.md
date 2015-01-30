@@ -6,7 +6,7 @@
 <a name="basic-usage"></a>
 ## Utilizzo Base
 
-Le Views contengono il codice HTML utilizzato dalla tua applicazione, e ha l'utile funzione di separare il Controller e la logica dal'interfaccia grafica. Le Views sono salvate nella cartella `resources/views`.
+Le View contengono il codice HTML utilizzato dalla tua applicazione, e ha l'utile funzione di separare il Controller e la logica dal'interfaccia grafica. Le View sono salvate nella cartella `resources/views`.
 
 Ecco un semplice esempio di view:
 
@@ -27,11 +27,11 @@ Una view può essere restituita al browser in questo modo:
 
 Come puoi vedere, il primo argomento passato all'helper `view` corrisponde al nome del file da caricare dalla cartella `resources/views`. Il secondo argomento passato all'helper è un array di dati che saranno resi disponibili all'interno della view.
 
-Le views possono essere salvate anche in sotto-cartelle create all'interno della catella `resources/views`. Per esempio, se la tua view è salvata in `resources/views/admin/profile.php`, dovrai restituirla al browser in questo modo:
+Le view possono essere salvate anche in sotto-cartelle create all'interno della catella `resources/views`. Per esempio, se la tua view è salvata in `resources/views/admin/profile.php`, dovrai restituirla al browser in questo modo:
 
 	return view('admin.profile', $data);
 
-#### Passare Dati Alle Views
+#### Passare Dati Alle View
 
 	// Approccio classico
 	$view = view('greeting')->with('name', 'Victoria');
@@ -81,11 +81,11 @@ Se lo desideri, puoi generare una view utilizzando il suo path assoluto:
 <a name="view-composers"></a>
 ## View Composers
 
-Le View composers sono delle callbacks o metodi di una classe che sono chiamati quando viene mostrata una view. Se hai dei dati che vuoi rendere disponibili ogni volta che una view viene utilizzata le view composers sono il posto ideale dove scrivere tutta la logica.
+Le View composer sono delle callback o metodi di una classe che sono chiamati quando viene mostrata una view. Se hai dei dati che vuoi rendere disponibili ogni volta che una view viene utilizzata le view composer sono il posto ideale dove scrivere tutta la logica.
 
 #### Definire Una View Composer
 
-Organizziamo le view composers all'interno di un [service provider](/docs/master/providers). Utilizzeremo la facade `View` per accedere all'implementazione del contratto `Illuminate\Contracts\View\Factory`:
+Organizziamo le view composer all'interno di un [service provider](/docs/master/providers). Utilizzeremo la facade `View` per accedere all'implementazione del contratto `Illuminate\Contracts\View\Factory`:
 
 	<?php namespace App\Providers;
 
@@ -158,7 +158,7 @@ Adesso che hai registrato il tuo composer, il metodo `ProfileComposer@compose` s
 
 Poco prima che la view venga utilizzata il metodo compose della classe appena creata viene chiamato dall'istanza `Illuminate\Contracts\View\View`. Puoi usare il metodo `with` per legare i dati alla view.
 
-> **Nota:** Tutte le view composers sono risolte attraverso il [service container](/docs/master/container), quindi puoi aggiungere tutte le dipendenze che ti servono all'interno del costruttore del tuo composer.
+> **Nota:** Tutte le view composer sono risolte attraverso il [service container](/docs/master/container), quindi puoi aggiungere tutte le dipendenze che ti servono all'interno del costruttore del tuo composer.
 
 #### Wildcard View Composers
 
@@ -169,9 +169,9 @@ Il metodo `composer` accetta il carattere `*` come wildcard, quindi puoi attacca
 		//
 	});
 
-#### Attaccare Un Composer A Multiple Views
+#### Attaccare Un Composer A Più View
 
-Puoi anche attaccare il composer a più views in una volta sola utilizzando:
+Puoi anche attaccare il composer a più view in una volta sola utilizzando:
 
 	View::composer(['profile', 'dashboard'], 'App\Http\ViewComposers\MyViewComposer');
 
@@ -185,8 +185,8 @@ Puoi utilizzare il metodo `composers` per registrare un gruppo di composer nello
 		'App\Http\ViewComposers\ProductComposer' => 'product'
 	]);
 
-### View Creators
+### View Creator
 
-I View **creators** funzionano quasi allo stesso modo dei view composers; Questi però vengono eseguiti immeditamente dopo che la view viene istanziata. Per registrare un view creator, utilizza il metodo `creator`:
+I View **creator** funzionano quasi allo stesso modo dei view composer; Questi però vengono eseguiti immeditamente dopo che la view viene istanziata. Per registrare un view creator, utilizza il metodo `creator`:
 
 	View::creator('profile', 'App\Http\ViewCreators\ProfileCreator');
