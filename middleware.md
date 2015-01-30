@@ -16,7 +16,7 @@ There are several middleware included in the Laravel framework, including middle
 <a name="defining-middleware"></a>
 ## Defining Middleware
 
-To create a new route filter, use the `make:middleware` Artisan command:
+To create a new middleware, use the `make:middleware` Artisan command:
 
 	php artisan make:middleware OldMiddleware
 
