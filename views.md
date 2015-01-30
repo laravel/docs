@@ -1,7 +1,7 @@
 # Views
 
 - [Utilizzo Base](#basic-usage)
-- [View Composers](#view-composers)
+- [View Composer](#view-composers)
 
 <a name="basic-usage"></a>
 ## Utilizzo Base
