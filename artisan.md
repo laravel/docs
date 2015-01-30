@@ -73,7 +73,7 @@ Questo Cron richiamerà il comando scheduler di Laravel ogni minuto. Then, Larav
 
 Diamo un'occhiata ad alcuni esempi di scheduling:
 
-#### Scheduling Closures
+#### Scheduling Closure
 
 	$schedule->call(function()
 	{
@@ -89,7 +89,7 @@ Diamo un'occhiata ad alcuni esempi di scheduling:
 
 	$schedule->command('foo')->cron('* * * * *');
 
-#### Jobs Frequenti
+#### Job Frequenti
 
 	$schedule->command('foo')->everyFiveMinutes();
 
@@ -97,15 +97,15 @@ Diamo un'occhiata ad alcuni esempi di scheduling:
 
 	$schedule->command('foo')->everyThirtyMinutes();
 
-#### Jobs Giornalieri
+#### Job Giornalieri
 
 	$schedule->command('foo')->daily();
 
-#### Jobs Giornalieri Ad Uno Specifico Orario (formato 24 Ore)
+#### Job Giornalieri Ad Uno Specifico Orario (formato 24 Ore)
 
 	$schedule->command('foo')->dailyAt('15:00');
 
-#### Jobs Due Volte al Giorno
+#### Job Due Volte al Giorno
 
 	$schedule->command('foo')->twiceDaily();
 
@@ -113,26 +113,26 @@ Diamo un'occhiata ad alcuni esempi di scheduling:
 
 	$schedule->command('foo')->weekdays();
 
-#### Jobs Settimanali
+#### Job Settimanali
 
 	$schedule->command('foo')->weekly();
 
 	// Scheduling job settimanali per uno giorno (0-6) ed ora specifici...
 	$schedule->command('foo')->weeklyOn(1, '8:00');
 
-#### Jobs Mensili
+#### Job Mensili
 
 	$schedule->command('foo')->monthly();
 
-#### Limitare L'Environment nel quale i Jobs dovrebbero essere eseguiti
+#### Limitare L'Environment nel quale i Job dovrebbero essere eseguiti
 
 	$schedule->command('foo')->monthly()->environments('production');
 
-#### Indicare Ai Jobs Di Non Essere Mai Eseguiti Quando L'Applicazione E' In Maintenance Mode
+#### Indicare Ai Job Di Non Essere Mai Eseguiti Quando L'Applicazione E' In Maintenance Mode
 
 	$schedule->command('foo')->monthly()->evenInMaintenanceMode();
 
-#### Permettere Ai Jobs Di Essere Eseguiti Soltanto Quando Una Funzione Callback E' True
+#### Permettere Ai Job Di Essere Eseguiti Soltanto Quando Una Funzione Callback E' True
 
 	$schedule->command('foo')->monthly()->when(function()
 	{
