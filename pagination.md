@@ -57,7 +57,7 @@ If you are only showing "Next" and "Previous" links in your pagination view, you
 
 #### Creating A Paginator Manually
 
-Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using by creating either an `Illuminate\Pagination\Paginator` or `Illuminate\Pagination\LengthAwarePaginator` instance, depending on your needs.
+Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so by creating either an `Illuminate\Pagination\Paginator` or `Illuminate\Pagination\LengthAwarePaginator` instance, depending on your needs.
 
 #### Customizing The Paginator URI
 
