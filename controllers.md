@@ -1,21 +1,21 @@
-# HTTP Controllers
+# Controller HTTP
 
-- [Introduction](#introduction)
-- [Basic Controllers](#basic-controllers)
+- [Introduzione](#introduzione)
+- [Controller Basilari](#controller-basilari)
 - [Controller Middleware](#controller-middleware)
-- [RESTful Resource Controllers](#restful-resource-controllers)
-- [Dependency Injection & Controllers](#dependency-injection-and-controllers)
+- [Controllers Resource RESTful](#controller-resource-restful)
+- [Dependency Injection & Controller](#dependency-injection-e-controller)
 - [Route Caching](#route-caching)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Instead of defining all of your request handling logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related HTTP request handling logic into a class. Controllers are typically stored in the `app/Http/Controllers` directory.
+Invece di definire tutta la logica con le routes, in un unico file `routes.php`, potresti voler organizzare il comportamento della tua applicazione usando i Controller. I Controller possono raggruppare tutta la logica a livello di percorso in una classe sola. I Controller sono in genere salvati all'interno della directory `app/Http/Controllers`.
 
-<a name="basic-controllers"></a>
-## Basic Controllers
+<a name="controller-basilari"></a>
+## Controller Basilari
 
-Here is an example of a basic controller class:
+Ecco un esempio di una classe controller di base:
 
 	<?php namespace App\Http\Controllers;
 
@@ -36,53 +36,53 @@ Here is an example of a basic controller class:
 
 	}
 
-We can route to the controller action like so:
+Possiamo creare un percorso per un'action di un controller in questo modo:
 
 	Route::get('user/{id}', 'UserController@showProfile');
 
-> **Note:** All controllers should extend the base controller class.
+> **Nota:** Tutti i controller dovrebbero ereditare la classe controller di base.
 
-#### Controllers & Namespaces
+#### Controller & Namespace
 
-It is very important to note that we did not need to specify the full controller namespace, only the portion of the class name that comes after the `App\Http\Controllers` namespace "root". By default, the `RouteServiceProvider` will load the `routes.php` file within a route group containing the root controller namespace.
+E' molto importante notare che non abbiamo bisogno di specificare il namespace completo del controller, ma solo la porzione del nome della classe che viene dopo il namespace “route” `App\Http\Controllers`. Di default, `RouteServiceProvider` caricherà il file `routes.php` con un gruppo di route contenente il namespace principale.
 
-If you choose to nest or organize your controllers using PHP namespaces deeper into the `App\Http\Controllers` directory, simply use the specific class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you would register a route like so:
+Se scegli di nidificare oppure organizzare i tuoi controller usando i namespace PHP all'interno della directory App\Http\Controllers`, è sufficiente specificare il nome della classe rispetto al namespace principale `App\Http\Controllers`. Quindi, se il namespace completo del tuo controller è `App\Http\Controllers\Photos\AdminController`, dovrai registrare la route in questo modo:
 
 	Route::get('foo', 'Photos\AdminController@method');
 
-#### Naming Controller Routes
+#### Controller Route Nominate
 
-Like Closure routes, you may specify names on controller routes:
+Come le route Clousure, puoi specificare un nome alle route dei controller:
 
 	Route::get('foo', ['uses' => 'FooController@method', 'as' => 'name']);
 
-#### URLs To Controller Actions
+#### URL Da Azioni del Controller
 
-To generate a URL to a controller action, use the `action` helper method:
+Per generare un URL da un'azione di un controller, usa il metodo helper `action`:
 
 	$url = action('App\Http\Controllers\FooController@method');
 
-If you wish to generate a URL to a controller action while using only the portion of the class name relative to your controller namespace, register the root controller namespace with the URL generator:
+Se preferisci generare un URL da un'azione del controller usando solo la porzione del nome della classe rispetto al namespace del tuo controller, registra il namespace principale del controller con il generatore URL:
 
 	URL::setRootControllerNamespace('App\Http\Controllers');
 
 	$url = action('FooController@method');
 
-You may access the name of the controller action being run using the `currentRouteAction` method:
+Puoi accedere al nome dell’azione del controller in fase di esecuzione utilizzando il metodo `currentRouteAction`:
 
 	$action = Route::currentRouteAction();
 
 <a name="controller-middleware"></a>
 ## Controller Middleware
 
-[Middleware](/docs/master/middleware) may be specified on controller routes like so:
+I [Middleware](/docs/master/middleware) possono essere specificati nella route del controller in questo modo:
 
 	Route::get('profile', [
 		'middleware' => 'auth',
 		'uses' => 'UserController@showProfile'
 	]);
 
-Additionally, you may specify middleware within your controller's constructor:
+Inoltre, puoi specificare il middleware all'interno del costruttore del controller:
 
 	class UserController extends Controller {
 
@@ -100,20 +100,20 @@ Additionally, you may specify middleware within your controller's constructor:
 
 	}
 
-<a name="restful-resource-controllers"></a>
-## RESTful Resource Controllers
+<a name="controller-resource-restful"></a>
+## Controller Resource RESTful
 
-Resource controllers make it painless to build RESTful controllers around resources. For example, you may wish to create a controller that handles HTTP requests regarding "photos" stored by your application. Using the `make:controller` Artisan command, we can quickly create such a controller:
+I controller resource permettono senza difficoltà la creazione di controller RESTful delle risorse. Per esempio, potresti aver bisogno di creare un controller che gestisca le “Foto” memorizzate dall’applicazione. Usando il comando Artisan `make:controller` puoi rapidamente creare un tale controller:
 
 	php artisan make:controller PhotoController
 
-Next, we register a resourceful route to the controller:
+Ora puoi creare un percorso al controller:
 
 	Route::resource('photo', 'PhotoController');
 
-This single route declaration creates multiple routes to handle a variety of RESTful actions on the photo resource. Likewise, the generated controller will already have methods stubbed for each of these actions, including notes informing you which URIs and verbs they handle.
+Questa unica dichiarazione crea percorsi multipli per gestire una serie di azioni RESTful sulla risorsa “Foto”. Allo stesso modo, il controller generato avrà già un metodo per ognuna di queste azioni con delle note che informano che URI e che verbi trattano.
 
-#### Actions Handled By Resource Controller
+#### Azioni Gestite Dal Controller Delle Risorse
 
 Verb      | Path                        | Action       | Route Name
 ----------|-----------------------------|--------------|---------------------
@@ -125,9 +125,9 @@ GET       | /resource/{resource}/edit   | edit         | resource.edit
 PUT/PATCH | /resource/{resource}        | update       | resource.update
 DELETE    | /resource/{resource}        | destroy      | resource.destroy
 
-#### Customizing Resource Routes
+#### Personalizzare Resource Routes
 
-Additionally, you may specify only a subset of actions to handle on the route:
+Puoi inoltre specificare un insieme di azioni per gestire il percorso:
 
 	Route::resource('photo', 'PhotoController',
 					['only' => ['index', 'show']]);
@@ -135,18 +135,19 @@ Additionally, you may specify only a subset of actions to handle on the route:
 	Route::resource('photo', 'PhotoController',
 					['except' => ['create', 'store', 'update', 'destroy']]);
 
-By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
+Di default, tutti i controller resource hanno una route nominata; comunque, puoi sovrascrivere questi nomi passando all'array `names` le tue opzioni:
 
 	Route::resource('photo', 'PhotoController',
 					['names' => ['create' => 'photo.build']]);
 
-#### Handling Nested Resource Controllers
+#### Gestione Controller Resource Nidificati
 
-To "nest" resource controllers, use "dot" notation in your route declaration:
+Per “nidificare” controller resource, usa la notazione “punto” nella dichiarazione della tua route:
 
 	Route::resource('photos.comments', 'PhotoCommentController');
 
-This route will register a "nested" resource that may be accessed with URLs like the following: `photos/{photos}/comments/{comments}`.
+Questa route registrerà una risorsa “nidificata” alla quale si può accedere tramite un URL come il seguente:
+`photos/{photos}/comments/{comments}`.
 
 	class PhotoCommentController extends Controller {
 
@@ -164,20 +165,20 @@ This route will register a "nested" resource that may be accessed with URLs like
 
 	}
 
-#### Adding Additional Routes To Resource Controllers
+#### Aggiungere Una Route Aggiuntiva Al Controller Resource
 
-If it becomes necessary to add additional routes to a resource controller beyond the default resource routes, you should define those routes before your call to `Route::resource`:
+Se fosse necessario aggiungere una route aggiuntiva al controller resource oltre alle risorse di default, potresti definire questi percorsi prima della chiamata a `Route::resource`:
 
 	Route::get('photos/popular');
 
 	Route::resource('photos', 'PhotoController');
 
-<a name="dependency-injection-and-controllers"></a>
-## Dependency Injection & Controllers
+<a name="dependency-injection-e-controller"></a>
+## Dependency Injection & Controller
 
 #### Constructor Injection
 
-The Laravel [service container](/docs/master/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
+Il [service container](/docs/master/container) di Laravel è usato per risolvere tutti i controller di Laravel. Come risultato, sei in grado di inserire qualsiasi dipendenza che il tuo controller abbia bisogno nel suo construct:
 
 	<?php namespace App\Http\Controllers;
 
@@ -204,11 +205,11 @@ The Laravel [service container](/docs/master/container) is used to resolve all L
 
 	}
 
-Of course, you may also type-hint any [Laravel contract](/docs/master/contracts). If the container can resolve it, you can type-hint it.
+Ovviamente, puoi anche inserire qualsiasi [Laravel contract](/docs/master/contracts). Se il container può risolverla, puoi aggiungerla.
 
-#### Method Injection
+#### Metodi Di Injection
 
-In addition to constructor injection, you may also type-hint dependencies on your controller's methods. For example, let's type-hint the `Request` instance on one of our methods:
+Oltre all'injection nel costruttore, puoi anche inserire le dipendenze nei metodi del tuo controller. Per esempio, inseriamo l'istanza `Request` in uno dei nostri metodi:
 
 	<?php namespace App\Http\Controllers;
 
@@ -232,7 +233,7 @@ In addition to constructor injection, you may also type-hint dependencies on you
 
 	}
 
-If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies:
+Se il metodo del tuo controller deve ricevere degli input da un parametro di una route, inserisci semplicemente i tuoi parametri dopo le altre dipendenze:
 
 	<?php namespace App\Http\Controllers;
 
@@ -255,16 +256,16 @@ If your controller method is also expecting input from a route parameter, simply
 
 	}
 
-> **Note:** Method injection is fully compatible with [model binding](/docs/master/routing#route-model-binding). The container will intelligently determine which arguments are model bound and which arguments should be injected.
+> **Nota:** Il metodo di injection è completamente compatibile con il [model  binding](/docs/master/routing#route-model-binding). Il container determinerà in maniera opportuna quali parametri sono vincolati al model e quali invece devono essere iniettati.
 
 <a name="route-caching"></a>
 ## Route Caching
 
-If your application is exclusively using controller routes, you may take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it take to register all of your application's routes. In some cases, your route registration may even be up to 100x faster! To generate a route cache, just execute the `route:cache` Artisan command:
+Se la tua applicazione usa esclusivamente route controller, puoi trarne vantaggio dalla cache route di Laravel. Usando la cache route verrà drasticamento diminuito il tempo per la registrazione di tutte le route dell'applicazione. In alcuni casi, la registrazione può anche essere 100 volte più veloce! Per generare una cache route, basta eseguire il comando Artisan `route:cache`
 
 	php artisan route:cache
 
-That's all there is to it! Your cached routes file will now be used instead of your `app/Http/routes.php` file. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you may wish to only run the `route:cache` command during your project's deployment.
+Questo è tutto quello che c'è da fare! Il tuo file di cache route verrà usato al posto del file `app/Http/routes.php`. Ricorda, se vuoi aggiungere qualsiasi altra route hai bisogno di rigenerare una nuova cache route. Per questo, hai bisogno di usare solo il comando `route:cache` durante lo sviluppo del tuo progetto.
 
 To remove the cached routes file without generating a new cache, use the `route:clear` command:
 
