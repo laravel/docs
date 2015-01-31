@@ -267,6 +267,6 @@ Se la tua applicazione usa esclusivamente route controller, puoi trarne vantaggi
 
 Questo è tutto quello che c'è da fare! Il tuo file di cache route verrà usato al posto del file `app/Http/routes.php`. Ricorda, se vuoi aggiungere qualsiasi altra route hai bisogno di rigenerare una nuova cache route. Per questo, hai bisogno di usare solo il comando `route:cache` durante lo sviluppo del tuo progetto.
 
-To remove the cached routes file without generating a new cache, use the `route:clear` command:
+Per rimuovere il file con le cache route senza generare una nuova cache, usa il comando `route:clear`:
 
 	php artisan route:clear
