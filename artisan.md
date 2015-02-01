@@ -61,13 +61,13 @@ Puoi anche mettere in coda i tuoi comandi Artisan in modo da essere eseguiti in 
 <a name="scheduling-comandi-artisan"></a>
 ## Scheduling Comandi Artisan
 
-In passato, gli sviluppatori generavano una Cron entry per ogni comando che volevano schedulare. Tuttavia, ciò procurava un forte mal di testa. Your console schedule is no longer in source control, and you must SSH into your server to add the Cron entries. Rendiamoci la vita più facile. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
+In passato, gli sviluppatori generavano una Cron entry per ogni comando che volevano pianificare. Tuttavia, ciò procurava un forte mal di testa. La tua schedule console non è più in controllo del codice, e bisogna essere connessi via SSH al server per aggiungere delle Cron entry. Rendiamoci la vita più facile. Il comando scheduler di Laravel ti permette facilmente di definire un comando schedule con Laravel stesso, ed è necessaria solo una singola Cron entry sul tuo server.
 
-Your command schedule is stored in the `app/Console/Kernel.php` file. Within this class you will see a `schedule` method. To help you get started, a simple example is included with the method. You are free to add as many scheduled jobs as you wish to the `Schedule` object. The only Cron entry you need to add to your server is this:
+I tuoi comandi schedule sono salvati nel file `app/Console/Kernel.php`. All'interno di questa classe potrai notare un metodo `schedule`. Per aiutarti ad iniziare, assieme al metodo è incluso un semplice esempio. Sei libero di aggiungere quanti scheduled job desideri all'oggetto `Schedule`. La sola Cron entry necessaria da aggiungere al tuo server è questa:
 
 	* * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
 
-Questo Cron richiamerà il comando scheduler di Laravel ogni minuto. Then, Laravel evalutes your scheduled jobs and runs the jobs that are due. Non potrebbe essere più facile!
+Questo Cron richiamerà il comando scheduler di Laravel ogni minuto. Quindi, Laravel valuterà i tuoi job pianificati ed eseguirà quelli opportuni. Non potrebbe essere più facile!
 
 ### Altri Esempi di Scheduling
 
