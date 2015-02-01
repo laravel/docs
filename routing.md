@@ -59,22 +59,28 @@ Often, you will need to generate URLs to your routes, you may do so using the `u
 <a name="csrf-protection"></a>
 ## CSRF Protection
 
-Laravel provides an easy method of protecting your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
+Laravel makes it easy to protect your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
 
-Laravel automatically generates a CSRF "token" for each active user session being managed by the application. This token can be used to help verify that the authenticated user is the one actually making the requests to the application.
+Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
 
 #### Insert The CSRF Token Into A Form
 
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` HTTP middleware will verify token in the request input matches the token stored in the session.
+Of course, using the Blade [templating engine](/docs/master/templating):
 
-In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-XSRF-TOKEN` request header.
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/master/middleware) will verify token in the request input matches the token stored in the session.
+
+In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-XSRF-TOKEN` request header, which is commonly used by JavaScript frameworks.
 
 <a name="method-spoofing"></a>
 ## Method Spoofing
 
-HTML forms do not support `PUT` or `DELETE` actions. So, when defining `PUT` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field. The value sent with the `_method` field will be used as the HTTP request method. For example:
+HTML forms do not support `PUT` or `DELETE` actions. So, when defining `PUT` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form.
+
+The value sent with the `_method` field will be used as the HTTP request method. For example:
 
 	<form action="/foo/bar" method="POST">
 		<input type="hidden" name="_method" value="PUT">
@@ -175,7 +181,9 @@ Named routes allow you to conveniently generate URLs or redirects for a specific
 
 You may also specify route names for controller actions:
 
-	Route::get('user/profile', ['as' => 'profile', 'uses' => 'UserController@showProfile']);
+	Route::get('user/profile', [
+        'as' => 'profile', 'uses' => 'UserController@showProfile'
+	]);
 
 Now, you may use the route's name when generating URLs or redirects:
 
@@ -217,7 +225,7 @@ You may use the `namespace` parameter within your `group` array to specify the n
 <a name="sub-domain-routing"></a>
 ### Sub-Domain Routing
 
-Laravel routes can also handle wildcard sub-domains, and will pass your wildcard parameters from the domain:
+Laravel routes also handle wildcard sub-domains, and will pass your wildcard parameters from the domain:
 
 #### Registering Sub-Domain Routes
 
