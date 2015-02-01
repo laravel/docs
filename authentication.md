@@ -194,12 +194,12 @@ Second, you may access the authenticated user via an `Illuminate\Http\Request` i
 
 	}
 
-Thirdly, you may type-hint the `Illuminate\Contracts\Auth\User` contract. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/master/container):
+Thirdly, you may type-hint the `UserContract`. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/master/container):
 
 	<?php namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
-	use Illuminate\Contracts\Auth\User;
+	use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
 	class ProfileController extends Controller {
 
@@ -208,7 +208,7 @@ Thirdly, you may type-hint the `Illuminate\Contracts\Auth\User` contract. This t
 		 *
 		 * @return Response
 		 */
-		public function updateProfile(User $user)
+		public function updateProfile(UserContract $user)
 		{
 			// $user is an instance of the authenticated user...
 		}
