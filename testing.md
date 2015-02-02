@@ -41,6 +41,8 @@ You may run all of the tests for your application by executing the `phpunit` com
 
 When running unit tests, Laravel will automatically set the configuration environment to `testing`. Also, Laravel includes configuration files for `session` and `cache` in the test environment. Both of these drivers are set to `array` while in the test environment, meaning no session or cache data will be persisted while testing. You are free to create other testing environment configurations as necessary.
 
+The `testing` environment variables may be configured in the `phpunit.xml` file.
+
 <a name="calling-routes-from-tests"></a>
 ## Calling Routes From Tests
 
