@@ -7,7 +7,7 @@
     - [Installation](/docs/master/installation)
     - [Configuration](/docs/master/configuration)
     - [Homestead](/docs/master/homestead)
-- HTTP Basics
+- The Basics
     - [Routing](/docs/master/routing)
     - [Middleware](/docs/master/middleware)
     - [Controllers](/docs/master/controllers)
