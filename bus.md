@@ -5,7 +5,7 @@
 - [Eseguire Comandi](#eseguire-comandi)
 - [Comandi Accodati](#comandi-accodati)
 
-<a name="introduction"></a>
+<a name="introduzione"></a>
 ## Introduzione
 
 Il command bus di Laravel rappresenta un mezzo conveniente per incapsulare all'interno di "comandi" semplici e comprensibili i compiti che la tua applicazione deve svolgere. Per comprendere meglio lo scopo dei comandi, immagina di costruire un'applicazione che consente agli utenti di acquistare podcast.
