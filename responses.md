@@ -43,6 +43,13 @@ If you need access to the `Response` class methods, but want to return a view as
 
 	return response($content)->withCookie(cookie('name', 'value'));
 
+#### Method Chaining
+
+Keep in mind that most `Response` methods are chainable, allowing for the fluent building of responses:
+
+	return response()->view('hello')->header('Content-Type', $type)
+                     ->withCookie(cookie('name', 'value'));
+
 <a name="redirects"></a>
 ## Redirects
 
@@ -117,11 +124,11 @@ The `response` helper may be used to conveniently generate other types of respon
 
 The `json` method will automatically set the `Content-Type` header to `application/json`:
 
-	return response()->json(['name' => 'Steve', 'state' => 'CA']);
+	return response()->json(['name' => 'Abigail', 'state' => 'CA']);
 
 #### Creating A JSONP Response
 
-	return response()->json(['name' => 'Steve', 'state' => 'CA'])
+	return response()->json(['name' => 'Abigail', 'state' => 'CA'])
 	                 ->setCallback($request->input('callback'));
 
 #### Creating A File Download Response

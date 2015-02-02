@@ -65,18 +65,16 @@ Typically, you would place calls to the `share` method within a service provider
 
 If you need to determine if a view exists, you may use the `exists` method:
 
-Using the helper:
-
 	if (view()->exists('emails.customer'))
 	{
 		//
 	}
 
-### Returning A View From A File Path
+#### Returning A View From A File Path
 
 If you wish, you may generate a view from a fully-qualified file path:
 
-	return view()->file($pathToFile);
+	return view()->file($pathToFile, $data);
 
 <a name="view-composers"></a>
 ## View Composers
