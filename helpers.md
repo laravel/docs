@@ -304,6 +304,18 @@ Generate a random string of the given length.
 Convert a string to its singular form (English only).
 
 	$singular = str_singular('cars');
+	
+### str_slug
+
+Generate a URL friendly "slug" from a given string.
+
+	str_slug($title, $separator);
+
+Example:
+	
+	$title = str_slug("Laravel 5 Framework", "-");
+	
+	// laravel-5-framework
 
 ### studly_case
 
