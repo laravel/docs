@@ -276,7 +276,6 @@ Il passo successivo, è quello di creare una tabella per memorizzare il token di
 
 ### Controller Per Il Remind Della Password
 
-Laravel include anche un controller `Auth\PasswordController` che contiene la logica necessaria ad eseguire il rest della password utente. 
 Laravel also includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords. Ti forniamo già le view per facilitarti le cose! Le view si trovano nella directory `resources/views/auth`. Sei libero di modificarle come meglio credi, seguendo il design della tua applicazione.
 
 I tuoi utenti riceveranno una email con un link che punta al metodo `getReset` di `PasswordController`. Questo metodo visualizzerà il form per il reset permettendo agli utenti di modificare la loro password. Dopo che la password è resettata, l'utente verrà automaticamente loggato nell'applicazione e reindirizzato a `/home`. Puoi personalizzare il redirect post-reset impostando la proprietà `redirectTo` in `PasswordController`:
