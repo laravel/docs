@@ -1,29 +1,29 @@
 # Command Bus
 
-- [Introduction](#introduction)
-- [Creating Commands](#creating-commands)
-- [Dispatching Commands](#dispatching-commands)
-- [Queued Commands](#queued-commands)
+- [Introduzione](#introduzione)
+- [Creare Comandi](#creare-comandi)
+- [Eseguire Comandi](#eseguire-comandi)
+- [Comandi Accodati](#comandi-accodati)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-The Laravel command bus provides a convenient method of encapsulating tasks your application needs to perform into simple, easy to understand "commands". To help us understand the purpose of commands, let's pretend we are building an application that allows users to purchase podcasts.
+Il command bus di Laravel rappresenta un mezzo conveniente per incapsulare all'interno di "comandi" semplici e comprensibili i compiti che la tua applicazione deve svolgere. Per comprendere meglio lo scopo dei comandi, immagina di costruire un'applicazione che consente agli utenti di acquistare podcast.
 
-When a user purchases a podcast, there are a variety of things that need to happen. For example, we may need to charge the user's credit card, add a record to our database that represents the purchase, and send a confirmation e-mail of the purchase. Perhaps we also need to perform some kind of validation as to whether the user is allowed to purchase podcasts.
+Quando un utente compra un podcast deve succedere tutta una serie di eventi. Ad esempio il costo del podcast deve essere detratto dalla sua carta di credito, deve essere salvato un record nel database che rappresenti l'acquisto e bisogna inviargli un'e-mail di conferma. E magari bisogna anche eseguire qualche sorta di validazione per stabilire se l'utente può comprare o meno il podcast.
 
-We could put all of this logic inside a controller method; however, this has several disadvantages. The first disadvantage is that our controller probably handles several other incoming HTTP actions, and including complicated logic in each controller method will soon bloat our controller and make it harder to read. Secondly, it is difficult to re-use the purchase podcast logic outside of the controller context. Thirdly, it is more difficult to unit-test the command as we must also generate a stub HTTP request and make a full request to the application to test the purchase podcast logic.
+Potresti inserire tutta questa logica dentro ad un controller, ma così facendo otterresti molti svantaggi. Il primo svantaggio è che il controller probabilmente gestisce già molte altre richieste HTTP e includere della logica complessa in ciascuna action rischia solo di ingigantirlo e renderlo poco leggibile. In secondo luogo è difficile in questo modo riutilizzare la logica dell'acquisto dei podcast fuori dal contesto del controller. Inoltre tutto ciò rende estremamente complesso effettuare gli unit test, dato che occorre creare stub per le richieste HTTP ed eseguire una richiesta completa verso l'applicazione per testare la logica dell'acquisto dei podcast.
 
-Instead of putting this logic in the controller, we may choose to encapsulate it within a "command" object, such as a `PurchasePodcast` command.
+Invece di inserire tale logica nel controller, puoi scegliere di incapsularla dentro un oggetto "comando", come il comando `PurchasePodcast`.
 
-<a name="creating-commands"></a>
-## Creating Commands
+<a name="creare-comandi"></a>
+## Creare Comandi
 
-The Artisan CLI can generate new command classes using the `make:command` command:
+Grazie ad Artisan puoi creare nuovi comandi tramite il terminale con `make:command`:
 
 	php artisan make:command PurchasePodcast
 
-The newly generated class will be placed in the `app/Commands` directory. By default, the command contains two methods: the constructor and the `handle` method. Of course, the constructor allows you to pass any relevant objects to the command, while the `handle` method executes the command. For example:
+La classe appena creata viene posta nella cartella `app/Commands`. Di default il comando contiene due metodi: il costruttore e il metodo `handle`. Il costruttore ti permette di passare qualsiasi oggetto al comando, mentre il metodo `handle` esegue il comando. Per esempio:
 
 	class PurchasePodcast extends Command implements SelfHandling {
 
@@ -47,14 +47,14 @@ The newly generated class will be placed in the `app/Commands` directory. By def
 		 */
 		public function handle()
 		{
-			// Handle the logic to purchase the podcast...
+			// Gestisci la logica per acquistare il podcast...
 
 			event(new PodcastWasPurchased($this->user, $this->podcast));
 		}
 
 	}
 
-The `handle` method may also type-hint dependencies, and they will be automatically injected by the [IoC container](/docs/master/container). For example:
+Nel metodo `handle` puoi anche fare il type-hint delle dipendenze e queste vengono automaticamente iniettate dall'[IoC container](/docs/master/container). Per esempio:
 
 		/**
 		 * Execute the command.
@@ -63,15 +63,15 @@ The `handle` method may also type-hint dependencies, and they will be automatica
 		 */
 		public function handle(BillingGateway $billing)
 		{
-			// Handle the logic to purchase the podcast...
+			// Gestisci la logica per acquistare il podcast...
 		}
 
-<a name="dispatching-commands"></a>
-## Dispatching Commands
+<a name="eseguire-comandi"></a>
+## Eseguire Comandi
 
-So, once we have created a command, how do we dispatch it? Of course, we could call the `handle` method directly; however, dispatching the command through the Laravel "command bus" has several advantages which we will discuss later.
+Come puoi eseguire un comando una volta creato? Puoi richiamare il metodo `handle` direttamente, certo, ma eseguirlo tramite il "command bus" di Laravel ha diversi vantaggi.
 
-If you glance at your application's base controller, you will see the `DispatchesCommands` trait. This trait allows us to call the `dispatch` method from any of our controllers. For example:
+Se dai un'occhiata al controller di base della tua applicazione, puoi notare che utilizza il trait `DispatchesCommands`. Tale trait ti consente di richiamare il metodo `dispatch` da qualsiasi controller. Per esempio:
 
 	public function purchasePodcast($podcastId)
 	{
@@ -80,39 +80,39 @@ If you glance at your application's base controller, you will see the `Dispatche
 		);
 	}
 
-The command bus will take care of executing the command and calling the IoC container to inject any needed dependencies into the `handle` method.
+Il command bus si prende l'incarico di eseguire il comando e chiamare l'IoC container per iniettare tutte le dipendenze richieste dal metodo `handle`.
 
-You may add the `Illuminate\Foundation\Bus\DispatchesCommands` trait to any class you wish. If you would like to receive a command bus instance through the constructor of any of your classes, you may type-hint the `Illuminate\Contracts\Bus\Dispatcher` interface. Finally, you may also use the `Bus` facade to quickly dispatch commands:
+Puoi aggiungere il trait `Illuminate\Foundation\Bus\DispatchesCommands` in qualsiasi classe desideri. Se invece preferisci ricevere un'istanza del command bus, puoi fare il type-hint dell'interfaccia `Illuminate\Contracts\Bus\Dispatcher`. O ancora, puoi usare il facade `Bus` per eseguire rapidamente i comandi:
 
-		Bus::dispatch(
-			new PurchasePodcast(Auth::user(), Podcast::findOrFail($podcastId))
-		);
+	Bus::dispatch(
+		new PurchasePodcast(Auth::user(), Podcast::findOrFail($podcastId))
+	);
 
-### Mapping Command Properties From Requests
+### Mappare Le Proprietà Dei Comandi Dalle Richieste
 
-It is very common to map HTTP request variables into commands. So, instead of forcing you to do this manually for each request, Laravel provides some helper methods to make it a cinch. Let's take a look at the `dispatchFrom` method available on the `DispatchesCommands` trait:
+È molto comune mappare le variabili delle richieste HTTP nei comandi. Per evitarti questa prassi ad ogni richiesta, Laravel fornisce alcuni utili metodi che la rendono un gioco da ragazzi. Dai un'occhiata al metodo `dispatchFrom` disponibile nel trait `DispatchesCommands`:
 
 	$this->dispatchFrom('Command\Class\Name', $request);
 
-This method will examine the constructor of the command class it is given, and then extract variables from the HTTP request (or any other `ArrayAccess` object) to fill the needed constructor parameters of the command. So, if our command class accepts a `firstName` variable in its constructor, the command bus will attempt to pull the `firstName` parameter from the HTTP request.
+Questo metodo esamina il costruttore del comando passato ed estrae le variabili dalla richiesta HTTP (o qualsiasi altro oggetto implementi `ArrayAccess`) per riempire i parametri richiesti. Quindi se il tuo comando accetta la variabile `firstName` nel suo costruttore, il command bus cerca di estrarlo dalla richiesta HTTP.
 
-You may also pass an array as the third argument to the `dispatchFrom` method. This array will be used to fill any constructor parameters that are not available on the request:
+Puoi anche passare un array come terzo parametro del metodo `dispatchFrom`. Tale array può essere usato per aggiungere al costruttore delle variabili che non sono presenti nella richiesta:
 
 	$this->dispatchFrom('Command\Class\Name', $request, [
 		'firstName' => 'Taylor',
 	]);
 
-<a name="queued-commands"></a>
-## Queued Commands
+<a name="comandi-accodati"></a>
+## Comandi Accodati
 
-The command bus is not just for synchronous jobs that run during the current request cycle, but also serves as the primary way to build queued jobs in Laravel. So, how do we instruct command bus to queue our job for background processing instead of running it synchronously? It's easy. Firstly, when generating a new command, just add the `--queued` flag to the command:
+Il command bus non gestisce solo lavori sincroni avviati durante il ciclo di richiesta corrente, ma in Laravel viene anche usato come mezzo primario per la creazione di lavori accodati. Quindi come puoi istruire il command bus per mettere in coda i tuoi lavori e processarli in background invece di eseguirli in modo sincrono? Facile, per prima cosa aggiungi il flag `--queued` durante la creazione da terminale del nuovo comando:
 
 	php artisan make:command PurchasePodcast --queued
 
-As you will see, this adds a few more features to the command, namely the `Illuminate\Contracts\Queue\ShouldBeQueued` interface and the `SerializesModels` trait. These instruct the command bus to queue the command, as well as gracefully serialize and deserialize any Eloquent models your command stores as properties.
+Così facendo aggiungi nuove funzionalità al comando, ossia l'interfaccia `Illuminate\Contracts\Queue\ShouldBeQueued` e il trait `SerializesModels`. Tutto ciò permette al command bus di accodare il comando e di serializzare e deserializzare qualsiasi modello Eloquent che il tuo comando usa come proprietà.
 
-If you would like to convert an existing command into a queued command, simply implement the `Illuminate\Contracts\Queue\ShouldBeQueued` interface on the class manually. It contains no methods, and merely serves as a "marker interface" for the dispatcher.
+Se vuoi convertire un comando esistente in un comando accodabile, aggiungi semplicemente `Illuminate\Contracts\Queue\ShouldBeQueued` come interfaccia implementata dal comando. Tale interfaccia non contiene metodi e serve solo come "interfaccia segnale" per il dispatcher.
 
-Then, just write your command normally. When you dispatch it to the bus that bus will automatically queue the command for background processing. It doesn't get any easier than that.
+A questo punto scrivi il tuo comando normalmente. Quando viene eseguito dal command bus, questo lo accoda automaticamente per processarlo in background. Non potrebbe essere più semplice.
 
-For more information on interacting with queued commands, view the full [queue documentation](/docs/master/queues).
+Per maggiori informazioni su come interagire con i comandi accodati, guarda la [documentazione completa sulle code](/docs/master/queues).
