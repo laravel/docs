@@ -303,12 +303,12 @@ Avrai bisogno di aggiungere le credenziali per i servizi OAuth  che la tua appli
 Per esempio:
 
 	'github' => [
-		'client_id' => 'your-github-app-id',
-		'client_secret' => 'your-github-app-secret',
-		'redirect' => 'http://your-callback-url',
+		'client_id' => 'la-tua-app-id-github',
+		'client_secret' => 'la-tua-app-secret-github',
+		'redirect' => 'http://il-tuo-url-callback',
 	],
 
-Ora, sei pronto per autenticare gli utenti! Avrai bisogno di due route: una per il redirect utente al provider OAut, un altra per ricevere il callback dal provider dopo l'autenticazione.
+Ora, sei pronto per autenticare gli utenti! Avrai bisogno di due route: una per il redirect utente al provider OAuth, un altra per ricevere il callback dal provider dopo l'autenticazione.
 Qui c'è un esempio usando la facade `Socialize`:
 
 	public function redirectToProvider()
@@ -333,14 +333,14 @@ Una volta avuta l'istanza utente, puoi ritrovare alcuni dettagli aggiunti sull'u
 
 	$user = Socialize::with('github')->user();
 
-	// OAuth Two Providers
+	// OAuth Provider Due
 	$token = $user->token;
 
-	// OAuth One Providers
+	// OAuth Provider Uno
 	$token = $user->token;
 	$tokenSecret = $user->tokenSecret;
 
-	// All Providers
+	// Tutti i Provider
 	$user->getNickname();
 	$user->getName();
 	$user->getEmail();
