@@ -51,7 +51,7 @@ It's best to envision middleware as a series of "layers" HTTP requests must pass
 
 ### *Before* vs *after* middleware
 
-Whether a middleware runs *before* or *after* a request has been processed depends on how performs its action:
+Whether a middleware runs *before* or *after* a request has been processed depends on how it performs its action:
 
 	<?php namespace App\Http\Middleware;
 	
