@@ -4,6 +4,7 @@
 - [Views](#views)
 - [Translations](#translations)
 - [Configuration](#configuration)
+- [Public assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 - [Routing](#routing)
 
@@ -103,6 +104,23 @@ You may also choose to merge your own package configuration file with the applic
 	$this->mergeConfigFrom(
 		__DIR__.'/path/to/config/courier.php', 'courier'
 	);
+
+<a name="public-assets"></a>
+## Public assets
+
+Some packages may have assets such as JavaScript, CSS, and images. However, we are unable to link to assets in the vendor or workbench directories, so we need a way to move these assets into the public directory of our application.
+
+To publish assets, use the `publishes` method from the `boot` method of your service provider, with the `public` tag:
+
+	$this->publishes([
+		__DIR__.'/path/to/assets' => public_path('vendor/courier'),
+	], 'public');
+
+Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified location. You usually want to overwrite the public assets every time the package is updated, so you can use the `--overwrite` flag for the `public` tag:
+
+	php artisan vendor:publish --tag=public --overwrite
+
+To make sure your public assets are always up-to-date, you might want to add that command to the `post-update-cmd` commands in your `composer.json`.
 
 <a name="publishing-file-groups"></a>
 ## Publishing File Groups
