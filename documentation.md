@@ -7,7 +7,6 @@
     - [Configuration](/docs/master/configuration)
     - [Homestead](/docs/master/homestead)
 - The Basics
-    - [Quickstart](/docs/master/quickstart)
     - [Routing](/docs/master/routing)
     - [Middleware](/docs/master/middleware)
     - [Controllers](/docs/master/controllers)
