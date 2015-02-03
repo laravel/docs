@@ -141,6 +141,8 @@ A command pipe is defined with a `handle` method, just like a middleware:
 
 	}
 
+Command pipe classes are resolved through the [IoC container](/docs/master/container), so feel free to type-hint any dependencies you need within their constructors.
+
 You may even define a `Closure` as a command pipe:
 
 	$dispatcher->pipeThrough([function($command, $next)
