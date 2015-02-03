@@ -24,8 +24,10 @@ To create a new middleware, use the `make:middleware` Artisan command:
 This command will place a new `OldMiddleware` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the "home" URI.
 
 	<?php namespace App\Http\Middleware;
+	
+	use Illuminate\Contracts\Routing\Middleware;
 
-	class OldMiddleware {
+	class OldMiddleware implements Middleware {
 
 		/**
 		 * Run the request filter.
