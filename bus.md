@@ -125,7 +125,7 @@ Before a command is dispatched to a handler, you may pass it through other class
 
 To add a pipe to your bus, call the `pipeThrough` method of the dispatcher from your `App\Providers\BusServiceProvider::boot` method:
 
-$dispatcher->pipeThrough(['UseDatabaseTransaction', 'LogCommand']);
+	$dispatcher->pipeThrough(['UseDatabaseTransaction', 'LogCommand']);
 
 A command pipe is defined with a `handle` method, just like a middleware:
 
