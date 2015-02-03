@@ -4,7 +4,7 @@
 - [Views](#views)
 - [Translations](#translations)
 - [Configuration](#configuration)
-- [Publishing Groups of Files Separately](#tags)
+- [Publishing File Groups](#publishing-file-groups)
 - [Routing](#routing)
 
 <a name="introduction"></a>
@@ -100,10 +100,10 @@ You may also choose to merge your own package configuration file with the applic
 		__DIR__.'/path/to/config/courier.php', 'courier'
 	);
 
-<a name="tags"></a>
-## Publishing Groups of Files Separately
+<a name="publishing-file-groups"></a>
+## Publishing File Groups
 
-You may want to group files to be published separately from the others in your package. For instance, you might want your users to be able to publish your package's configuration files but not its public assets. You can do this by 'tagging' them like so:
+You may want to publish groups of files separately. For instance, you might want your users to be able to publish your package's configuration files and asset files separately. You can do this by 'tagging' them:
 
 	// Publish a config file
 	$this->publishes([
