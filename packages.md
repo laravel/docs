@@ -6,6 +6,7 @@
 - [Configuration](#configuration)
 - [Publishing File Groups](#publishing-file-groups)
 - [Routing](#routing)
+- [Migrations](#migrations)
 
 <a name="introduction"></a>
 ## Introduction
@@ -136,3 +137,15 @@ To load a routes file for your package, simply `include` it from within your ser
 	}
 
 > **Note:** If your package is using controllers, you will need to make sure they are properly configured in your `composer.json` file's auto-load section.
+
+<a name="migrations"></a>
+## Migrations
+
+To specify package migrations that should be published to the application's migrations directory, simply use the `publishes` method within your service provider's `boot` method.
+
+	public function boot()
+	{
+		$this->publishes([
+			__DIR__.'/path/to/migrations' => base_path('database/migrations')
+		]);
+	}
