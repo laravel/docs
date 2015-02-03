@@ -47,7 +47,7 @@ Remember, if you add more keys to `.env` file, add sample values to the `.env.ex
 
 ### Routes
 
-Copy and paste your old `routes.php` file into your new `app/routes.php`.
+Copy and paste your old `routes.php` file into your new `app/Http/routes.php`.
 
 ### Controllers
 
