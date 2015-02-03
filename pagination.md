@@ -1,35 +1,35 @@
-# Pagination
+# Paginazione
 
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Appending To Pagination Links](#appending-to-pagination-links)
-- [Converting To JSON](#converting-to-json)
+- [Configurazione](#configurazione)
+- [Uso](#uso)
+- [Aggiungere I Link Di Paginazione](#aggiungere-link-paginazione)
+- [Convertire In JSON](#convertire-in-json)
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-In other frameworks, pagination can be very painful. Laravel makes it a breeze. Laravel can generate an intelligent "range" of links based on the current page. The generated HTML is compatible with the Bootstrap CSS framework.
+In altri framework, la paginazione può essere piuttosto noiosa. Laravel, invece, la rende “frizzante”! Laravel può generare un "range" intelligente di link basati sulla pagina corrente. L'HTML generato è compatibile con il framework CSS Bootstrap.
 
-<a name="usage"></a>
-## Usage
+<a name="uso"></a>
+## Uso
 
-There are several ways to paginate items. The simplest is by using the `paginate` method on the query builder or an Eloquent model.
+Ci sono una serie di modi per paginare degli elementi. Il più semplice è usare il metodo `paginate` sulla query builder o su un modello Eloquent.
 
-#### Paginating Database Results
+#### Paginare I Risultati Del Database
 
 	$users = DB::table('users')->paginate(15);
 
-> **Note:** Currently, pagination operations that use a `groupBy` statement cannot be executed efficiently by Laravel. If you need to use a `groupBy` with a paginated result set, it is recommended that you query the database manually and use `Paginator::make`.
+> **Nota:** Attualmente, l'operazione di paginazione che usano lo statement `groupBy` non possono essere eseguite efficientemente da Laravel. Se hai bisogno di usare `groupBy` con i risultati della paginazione, è raccomandato eseguire una query al database manualmente usando il metodo `Paginator::make`.
 
-#### Paginating An Eloquent Model
+#### Paginare Un Model Eloquent
 
-You may also paginate [Eloquent](/docs/master/eloquent) models:
+Puoi anche paginare i model [Eloquent](/docs/master/eloquent):
 
 	$allUsers = User::paginate(15);
 
 	$someUsers = User::where('votes', '>', 100)->paginate(15);
 
-The argument passed to the `paginate` method is the number of items you wish to display per page. Once you have retrieved the results, you may display them on your view, and create the pagination links using the `render` method:
+Il parametro passato al metodo `paginate` è il numero di elementi da visualizzare per pagina. Una volta recuperati i risultati, puoi visualizzarli nella tua view, creando i link di paginazione con il metodo `render`:
 
 	<div class="container">
 		<?php foreach ($users as $user): ?>
@@ -39,9 +39,9 @@ The argument passed to the `paginate` method is the number of items you wish to 
 
 	<?php echo $users->render(); ?>
 
-This is all it takes to create a pagination system! Note that we did not have to inform the framework of the current page. Laravel will determine this for you automatically.
+Questo è tutto quello da fare per creare un sistema di paginazione! Nota che non abbiamo bisogno di informare il framework sulla pagina corrente. Laravel lo determinerà per te, automaticamente. 
 
-You may also access additional pagination information via the following methods:
+Puoi anche accedere ad alcune informazioni aggiuntive di paginazione usando i seguenti metodi:
 
 - `currentPage`
 - `lastPage`
@@ -51,44 +51,44 @@ You may also access additional pagination information via the following methods:
 
 #### "Simple Pagination"
 
-If you are only showing "Next" and "Previous" links in your pagination view, you have the option of using the `simplePaginate` method to perform a more efficient query. This is useful for larger datasets when you do not require the display of exact page numbers on your view:
+Se vuoi mostrare solo i link "Successivo" e "Precedente" nella tua view, hai a disposizione il metodo `simplePaginate` per eseguire una query più efficiente. Questo è utile in caso di numero considerevole di elementi da visualizzare e non si richiede di visualizzare l'esatto numero di pagine nella view:
 
 	$someUsers = User::where('votes', '>', 100)->simplePaginate(15);
 
-#### Creating A Paginator Manually
+#### Creare Un Paginatore Manualemente
 
-Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using by creating either an `Illuminate\Pagination\Paginator` or `Illuminate\Pagination\LengthAwarePaginator` instance, depending on your needs.
+In alcuni casi puoi creare un istanza pagination manualmente, passando a tale istanza un array di elementi. Puoi farlo utilizzando un istanza di `Illuminate\Pagination\Paginator` oppure `Illuminate\Pagination\LengthAwarePaginator`, dipende dalle tue necessità.
 
-#### Customizing The Paginator URI
+#### Personalizzare Gli URL Paginator
 
-You may also customize the URI used by the paginator via the `setPath` method:
+Puoi anche personalizzare gli URL usando il paginator tramite il metodo `setPath`:
 
 	$users = User::paginate();
 
 	$users->setPath('custom/url');
 
-The example above will create URLs like the following: http://example.com/custom/url?page=2
+Nell'esempio sopra verrano creati degli URL come il seguente: http://example.com/custom/url?page=2
 
-<a name="appending-to-pagination-links"></a>
-## Appending To Pagination Links
+<a name="aggiungere-link-paginazione"></a>
+## Aggiungere I Link Di Paginazione
 
-You can add to the query string of pagination links using the `appends` method on the Paginator:
+Puoi aggiungere query string ai tuoi link di paginazione usando il medoto `appends` di Paginator:
 
 	<?php echo $users->appends(['sort' => 'votes'])->render(); ?>
 
-This will generate URLs that look something like this:
+Questo genererà URL di questo tipo:
 
 	http://example.com/something?page=2&sort=votes
 
-If you wish to append a "hash fragment" to the paginator's URLs, you may use the `fragment` method:
+Se desideri aggiungere un “hash fragment” alle URL, puoi usare il metodo `fragment`:
 
 	<?php echo $users->fragment('foo')->render(); ?>
 
-This method call will generate URLs that look something like this:
+Questo metodo genererà URL di questo tipo:
 
 	http://example.com/something?page=2#foo
 
-<a name="converting-to-json"></a>
-## Converting To JSON
+<a name="convertire-in-json"></a>
+## Convertire In JSON
 
-The `Paginator` class implements the `Illuminate\Contracts\Support\JsonableInterface` contract and exposes the `toJson` method. You may also convert a `Paginator` instance to JSON by returning it from a route. The JSON'd form of the instance will include some "meta" information such as `total`, `current_page`, and `last_page`. The instance's data will be available via the `data` key in the JSON array.
+La classe `Paginator` implementa il contract `Illuminate\Contracts\Support\JsonableInterface` che contiene il metodo `toJson`. Puoi convertire un istanza `Paginator` in JSON ritornando il valore da una route. I dati JSON dell'istanza includeranno alcune "meta" informazioni come `total`, `current_page`, e `last_page`. I dati dell'istanza saranno accessibili nell'array JSON tramite la chiave `data`.
