@@ -57,6 +57,10 @@ To publish your package's views to the `resource/views/vendor` directory, you sh
 
 Now, when users of your package execute Laravel's `vendor:publish` command, your views directory will be copied to the specified location.
 
+If you would like to overwrite existing files, use the `--force` switch:
+
+	php artisan vendor:publish --force
+
 > **Note:** You may use the `publishes` method to publish **any** type of file to any location you wish.
 
 <a name="translations"></a>
