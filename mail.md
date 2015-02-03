@@ -41,14 +41,14 @@ Se l'opzione `driver` del tuo file di configurazione mail `config/mail.php` è i
 <a name="uso-base"></a>
 ## Uso Base
 
-Il metodo `Mail::send` può essere usando per inviare un messaggio email:
+Il metodo `Mail::send` può essere usato per inviare un messaggio email:
 
 	Mail::send('emails.welcome', array('key' => 'value'), function($message)
 	{
 		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
-Il primo parametro passato al metodo `send` è il nome della view che viene usata come corpo della mail. Il secondo parametro sono i dati passati alla view, spesso si tratta di un array associativo dove i dati dei vari elementi sono accessibili dalla view tramite una chiave `$key`. Il terzo parametro è una Closure che ti permette di specificare una serie di opzioni per il messaggio della mail.
+Il primo parametro passato al metodo `send` è il nome della view che viene usata come corpo della mail. Il secondo parametro sono i dati passati alla view, spesso si tratta di un array associativo ai quali dati si accede tramite una chiave `$key`. Il terzo parametro è una Closure che ti permette di specificare una serie di opzioni per il messaggio della mail.
 
 > **Nota:** Una variabile `$message` è sempre passata alla view, che ti permette di incorporare allegati. Per questo motivo, quindi, è consigliabile evitare di utilizzare una variabile `message` nella view che non sia quella passata attraverso la Closure.
 
