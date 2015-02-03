@@ -4,6 +4,7 @@
 - [Creating Commands](#creating-commands)
 - [Dispatching Commands](#dispatching-commands)
 - [Queued Commands](#queued-commands)
+- [Command Pipeline](#command-pipeline)
 
 <a name="introduction"></a>
 ## Introduction
@@ -116,3 +117,32 @@ If you would like to convert an existing command into a queued command, simply i
 Then, just write your command normally. When you dispatch it to the bus that bus will automatically queue the command for background processing. It doesn't get any easier than that.
 
 For more information on interacting with queued commands, view the full [queue documentation](/docs/master/queues).
+
+<a name="command-pipeline"></a>
+## Command Pipeline
+
+Before a command is dispatched to a handler, you may pass it through other classes in a "pipeline". Command pipes work just like HTTP middleware, except for your commands! For example, a command pipe could wrap the entire command operation within a database transaction, or simply log its execution.
+
+To add a pipe to your bus, call the `pipeThrough` method of the dispatcher from your `App\Providers\BusServiceProvider::boot` method:
+
+$dispatcher->pipeThrough(['UseDatabaseTransaction', 'LogCommand']);
+
+A command pipe is defined with a `handle` method, just like a middleware:
+
+	public function handle($command, $next)
+	{
+		return DB::transaction(function() use ($command, $next)
+		{
+			return $next($command);
+		}
+	}
+
+You may even define a `Closure` as a command pipe:
+
+	$dispatcher->pipeThrough([function($command, $next)
+	{
+		return DB::transaction(function() use ($command, $next)
+		{
+			return $next($command);
+		}
+	}]);
