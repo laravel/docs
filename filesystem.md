@@ -99,7 +99,7 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 
 	// Recursive...
 	$directories = Storage::allDirectories($directory);
-	
+
 #### Create A Directory
 
 	Storage::makeDirectory($directory);
