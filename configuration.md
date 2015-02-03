@@ -113,7 +113,7 @@ To disable maintenance mode, use the `up` command:
 
 ### Maintenance Mode Response Template
 
-The default template for maintenance mode responses is located in `resources/templates/errors/503.blade.php`.
+The default template for maintenance mode responses is located in `resources/views/errors/503.blade.php`.
 
 ### Maintenance Mode & Queues
 
