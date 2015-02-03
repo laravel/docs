@@ -1,34 +1,34 @@
 # Hashing
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
+- [Introduzione](#introduzione)
+- [Uso Base](#uso-base)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-The Laravel `Hash` facade provides secure Bcrypt hashing for storing user passwords. If you are using the `AuthController` controller that is included with your Laravel application, it will be take care of verifying the Bcrypt password against the un-hashed version provided by the user.
+La facade Laravel `Hash` offre un metodo sicuro Bcrypt di crittografia per memorizzare le password degli utenti. Se stai usando il controller `AuthController` incluso nella tua applicazione Laravel, si prenderà cura di eseguire l'hash della password con Bcrypt contro la versione non crittografata fornita dall'utente. 
 
-Likewise, the user `Registrar` service that ships with Laravel makes the proper `bcrypt` function call to hash stored passwords.
+Allo stesso modo, il servizio `Registrar` fornito con Laravel permette in maniera opportuna di memorizzare la password crittografata.
 
-<a name="basic-usage"></a>
-## Basic Usage
+<a name="uso-base"></a>
+## Uso Base
 
-#### Hashing A Password Using Bcrypt
+#### Hash Di Una Password Usando Bcrypt
 
 	$password = Hash::make('secret');
 
-You may also use the `bcrypt` helper function:
+Puoi anche usare la funzione helper `bcrypt`:
 
 	$password = bcrypt('secret');
 
-#### Verifying A Password Against A Hash
+#### Verifica Di Una Password Tramite Il Metodo Check
 
 	if (Hash::check('secret', $hashedPassword))
 	{
 		// The passwords match...
 	}
 
-#### Checking If A Password Needs To Be Rehashed
+#### Verifica Dell’Eventuale Necessità Di Re-Hash Di Una Password
 
 	if (Hash::needsRehash($hashed))
 	{
