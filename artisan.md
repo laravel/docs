@@ -3,7 +3,7 @@
 - [Introduzione](#introduzione)
 - [Utilizzo](#utilizzo)
 - [Chiamata Comandi Esterni alla CLI](#chiamata-comandi-esterni-alla-cli)
-- [Scheduling Comandi Artisan](#scheduling-comandi-artisan)
+- [Scheduling dei Comandi Artisan](#scheduling-comandi-artisan)
 
 <a name="introduzione"></a>
 ## Introduzione
@@ -31,7 +31,7 @@ E' possibile specificare la configurazione d'ambiente da usare durante l'esecuzi
 
 	php artisan migrate --env=local
 
-#### Displaying Your Current Laravel Version
+#### Mostrare la Versione di Laravel
 
 E' inoltre possibile visualizzare la versione corrente di Laravel che si sta utilizzando con l'opzione `--version`:
 
@@ -59,7 +59,7 @@ Puoi anche mettere in coda i tuoi comandi Artisan in modo da essere eseguiti in 
 	});
 
 <a name="scheduling-comandi-artisan"></a>
-## Scheduling Comandi Artisan
+## Scheduling dei Comandi Artisan
 
 In passato, gli sviluppatori generavano una Cron entry per ogni comando che volevano pianificare. Tuttavia, ciò procurava un forte mal di testa. La tua schedule console non è più in controllo del codice, e bisogna essere connessi via SSH al server per aggiungere delle Cron entry. Rendiamoci la vita più facile. Il comando scheduler di Laravel ti permette facilmente di definire un comando schedule con Laravel stesso, ed è necessaria solo una singola Cron entry sul tuo server.
 
