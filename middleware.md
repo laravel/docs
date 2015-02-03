@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Defining Middleware](#defining-middleware)
 - [Registering Middleware](#registering-middleware)
+- [Terminable Middleware](#terminable-middleware)
 
 <a name="introduction"></a>
 ## Introduction
@@ -66,3 +67,26 @@ Once the middleware has been defined in the HTTP kernel, you may use the `middle
 	{
 		//
 	}]);
+
+<a name="terminable-middleware"></a>
+## Terminable Middleware
+
+Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, you may define the middleware as "terminable".
+
+	use Illuminate\Contracts\Routing\TerminableMiddleware;
+
+	class StartSession implements TerminableMiddleware {
+
+		public function handle($request, $next)
+		{
+			return $next($request);
+		}
+
+		public function terminate($request, $response)
+		{
+			// Store the session data...
+		}
+
+	}
+
+As you can see, in addition to defining a `handle` method, `TerminableMiddleware` define a `terminate` method. This method receives both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
