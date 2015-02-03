@@ -1,5 +1,4 @@
 - Prologue
-    - [Introduction](/docs/master/introduction)
     - [Release Notes](/docs/master/releases)
     - [Upgrade Guide](/docs/master/upgrade)
     - [Contribution Guide](/docs/master/contributions)
@@ -8,6 +7,7 @@
     - [Configuration](/docs/master/configuration)
     - [Homestead](/docs/master/homestead)
 - The Basics
+    - [Quickstart](/docs/master/quickstart)
     - [Routing](/docs/master/routing)
     - [Middleware](/docs/master/middleware)
     - [Controllers](/docs/master/controllers)
