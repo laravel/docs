@@ -27,6 +27,7 @@
     - [Collections](/docs/master/collections)
     - [Command Bus](/docs/master/bus)
     - [Core Extension](/docs/master/extending)
+    - [Elixir](/docs/master/elixir)
     - [Encryption](/docs/master/encryption)
     - [Errors & Logging](/docs/master/errors)
     - [Events](/docs/master/events)
