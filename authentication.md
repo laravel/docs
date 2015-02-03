@@ -15,7 +15,7 @@ Laravel makes implementing authentication very simple. In fact, almost everythin
 
 By default, Laravel includes an `App\User` model in your `app` directory. This model may be used with the default Eloquent authentication driver.
 
-Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration.
+Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration. Of course, Laravel 5 ships migrations for these columns out of the box!
 
 If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
