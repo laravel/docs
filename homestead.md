@@ -111,7 +111,7 @@ To add Bash aliases to your Homestead box, simply add to the `aliases` file in t
 
 ### Launch The Vagrant Box
 
-Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from your Homestead directory.
+Once you have edited the `Homestead.yaml` to your liking, run the `homestead up` command from your Homestead directory.
 
 Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically! To destroy the machine, you may use the `vagrant destroy --force` command.
 
@@ -130,7 +130,7 @@ To learn how to connect to your databases, read on!
 
 ### Connecting Via SSH
 
-To connect to your Homestead environment via SSH, issue the `vagrant ssh` command from your Homestead directory.
+To connect to your Homestead environment via SSH, issue the `homestead ssh` command from your Homestead directory.
 
 Since you will probably need to SSH into your Homestead machine frequently, consider creating an "alias" on your host machine:
 
