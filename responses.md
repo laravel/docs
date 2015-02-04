@@ -1,135 +1,136 @@
-# HTTP Responses
+# Risposte HTTP
 
-- [Basic Responses](#basic-responses)
-- [Redirects](#redirects)
-- [Other Responses](#other-responses)
-- [Response Macros](#response-macros)
+- [Risposte Base](#risposte-base)
+- [Redirect](#redirects)
+- [Altre Risposte](#altre-risposte)
+- [Macro Risposte](#macro-risposte)
 
-<a name="basic-responses"></a>
-## Basic Responses
+<a name="risposte-base"></a>
+## Risposte Base
 
-#### Returning Strings From Routes
+#### Ritornare Una Stringa Da Una Route
 
-The most basic response from a Laravel route is a string:
+La risposta più semplice proveniente da una route è una stringa:
 
 	Route::get('/', function()
 	{
 		return 'Hello World';
 	});
 
-#### Creating Custom Responses
+#### Creare Una Risposta Personalizzata
 
-However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` instance or a [view](/docs/master/views). Returning a full `Response` instance allows you customize the response's HTTP status code and headers. A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses:
+Tuttavia, per la maggior parte delle route e delle azioni dei controller, ritornerà un'istanza
+However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` oppure una [view](/docs/master/views). Il ritorno di una istanza completa di `Response` ti permette di personalizzare il codice di stato e gli header di una risposta HTTP. Un'istanza `Response` eredita la classe `Symfony\Component\HttpFoundation\Response`, che offre una serie di metodi per costruire le richieste HTTP:
 
 	use Illuminate\Http\Response;
 
 	return (new Response($content, $status))
 	              ->header('Content-Type', $value);
 
-For convenience, you may also use the `response` helper:
+Per convenienza, puoi usare anche l'helper `response`:
 
 	return response($content, $status)
 	              ->header('Content-Type', $value);
 
-> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/master/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
+> **Nota:** Per una lista completa dei metodi disponibili di `Response`, dai un oacchiata alla [documentazione delle API](http://laravel.com/api/master/Illuminate/Http/Response.html) ed alla [documentazione Symfony API](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
 
-#### Sending A View In A Response
+#### Inviare Una View In Una Risposta
 
-If you need access to the `Response` class methods, but want to return a view as the response content, you may use the `view` method for convenience:
+Se hai bisogno di accedere ai metodi della classe `Response`, ma vuoi ritornare una view il contenuto della risposta, puoi usare il metodo `view` come segue:
 
 	return response()->view('hello')->header('Content-Type', $type);
 
-#### Attaching Cookies To Responses
+#### Allegare Un Cookie Alla Risposta
 
 	return response($content)->withCookie(cookie('name', 'value'));
 
-<a name="redirects"></a>
-## Redirects
+<a name="redirect"></a>
+## Redirect
 
-Redirect responses are typically instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL.
+Le risposte redirect sono tipicamente delle istanze della classe `Illuminate\Http\RedirectResponse`, contenenti gli header necessari per reindirizzare l'utente ad un altro URL.
 
-#### Returning A Redirect
+#### Ritornare Un Redirect
 
-There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the `redirect` helper method. When testing, it is not common to mock the creation of a redirect response, so using the helper method is almost always acceptable:
+Ci sono vari metodi per generare un'istanza di `RedirectResponse`. Il metodo più semplice è quello di usare il metodo helper `redirect`. In fase di testing, non è solito fare il mock della creazione della risposta redirect, quindi è sempre accettabile usare il metodo helper:
 
 	return redirect('user/login');
 
-#### Returning A Redirect With Flash Data
+#### Ritornare Un Redirect Con Il Flash Dei Dati
 
-Redirecting to a new URL and [flashing data to the session](/docs/master/session) are typically done at the same time. So, for convenience, you may create a `RedirectResponse` instance **and** flash data to the session in a single method chain:
+Il re-indirizzamento ad un nuovo URL e il [flashing dei dati nella sessione](/docs/master/session) normalmente fanno la stessa cosa. Quindi, per convenienza, puoi crare un'istanza `RedirectResponse` **e** fare il flash dei dati nella sessione concatendando l'operazione con un singolo metodo:
 
 	return redirect('user/login')->with('message', 'Login Failed');
 
-#### Returning A Redirect To A Named Route
+#### Ritornare Un Redirect Di Una Route Nomiata
 
-When you call the `redirect` helper with no parameters, an instance of `Illuminate\Routing\Redirector` is returned, allowing you to call any method on the `Redirector` instance. For example, to generate a `RedirectResponse` to a named route, you may use the `route` method:
+Quando effettui una chiamata al metodo helper `redirect` senza parametri, viene ritornata un'istanza  `Illuminate\Routing\Redirector`, che ti permette di richiamare qualsiasi metodo sull'istanza  `Redirector`. Per esempio, per generare un `RedirectResponse` ad una route nominata, puoi usare il metodo `route`:
 
 	return redirect()->route('login');
 
-#### Returning A Redirect To A Named Route With Parameters
+#### Ritornare Un Redirect Di Una Route Nominata Con Parametri
 
-If your route has parameters, you may pass them as the second argument to the `route` method.
+Se la tua route ha dei parametri, puoi passarli come secondo parametro del metodo `route`.
 
 	// For a route with the following URI: profile/{id}
 
 	return redirect()->route('profile', [1]);
 
-If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may simply pass the model itself. The ID will be extracted automatically:
+Se stai per essere reindirizzato ad una route con un parametro "ID" che verrà popolato ad un modello Eloquent, puoi passare semplicemente il modello stesso al metodo. L'ID verrà estratta automaticamente:
 
 	return redirect()->route('profile', [$user]);
 
-#### Returning A Redirect To A Named Route Using Named Parameters
+#### Ritornare Un Redirect Di Una Route Nominata Usando I Parametri Nominati
 
 	// For a route with the following URI: profile/{user}
 
 	return redirect()->route('profile', ['user' => 1]);
 
-#### Returning A Redirect To A Controller Action
+#### Ritornare Un Redirect Ad Un'Azione Di Un Controller
 
-Similarly to generating `RedirectResponse` instances to named routes, you may also generate redirects to [controller actions](/docs/master/controllers):
+In maniera simile all'istanza  `RedirectResponse` ad una route nominata, puoi anche generare dei redirect alle [azioni del controller](/docs/master/controllers):
 
 	return redirect()->action('App\Http\Controllers\HomeController@index');
 
-> **Note:** You do not need to specify the full namespace to the controller if you have registered a root controller namespace via `URL::setRootControllerNamespace`.
+> **Nota:** Non hai bisogno di specificare il namespace completo ad un altro controller se hai registrato il namespace root tramite `URL::setRootControllerNamespace`.
 
-#### Returning A Redirect To A Controller Action With Parameters
+#### Ritornare Un Redirect Di Un'Azione Di Un Controller Con Parametri
 
 	return redirect()->action('App\Http\Controllers\UserController@profile', [1]);
 
-#### Returning A Redirect To A Controller Action Using Named Parameters
+#### Ritornare Un Redirect Di Un'Azione Di Un Controller Usando I Parametri Nominati
 
 	return redirect()->action('App\Http\Controllers\UserController@profile', ['user' => 1]);
 
-<a name="other-responses"></a>
-## Other Responses
+<a name="altre-risposte"></a>
+## Altre Risposte
 
-The `response` helper may be used to conveniently generate other types of response instances. When the `response` helper is called without arguments, an implementation of the `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/master/contracts) is returned. This contract provides several helpful methods for generating responses.
+L'helper `response` può essere usato per comodità per generare altri tipi di istanze di risposte. Quando l'helper `response` viene chiamato senza parametri, viene ritornata un'implementazione del contract `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/master/contracts). Questo contract offre dei metodi utili per generare delle risposte.
 
-#### Creating A JSON Response
+#### Creazione Di Una Risposta JSON
 
-The `json` method will automatically set the `Content-Type` header to `application/json`:
+Il metodo `json` imposterà automaticamente l'header `Content-Type` a `application/json`:
 
 	return response()->json(['name' => 'Steve', 'state' => 'CA']);
 
-#### Creating A JSONP Response
+#### Creazione Di Una Risposta JSONP
 
 	return response()->json(['name' => 'Steve', 'state' => 'CA'])
 	                 ->setCallback($request->input('callback'));
 
-#### Creating A File Download Response
+#### Creazione Di Una Risposta Di Download File
 
 	return response()->download($pathToFile);
 
 	return response()->download($pathToFile, $name, $headers);
 
-> **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
+> **Nota:** Symfony HttpFoundation, che gestisce il download dei file, richiede che il file che sta per essere scaricato abbia un nome file nel formato ASCII.
 
-<a name="response-macros"></a>
-## Response Macros
+<a name="macro-risposte"></a>
+## Macro Risposte
 
-If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `macro` method on an implementation of `Illuminate\Contracts\Routing\ResponseFactory`.
+Se preferisci definire una risposta personalizzata da ri-utilizzare nelle tue route o nei tuoi controller, puoi usare il metodo `macro` su un'implementazione del contract `Illuminate\Contracts\Routing\ResponseFactory`.
 
-For example, from a [service provider's](/docs/master/providers) `boot` method:
+Per esempio, dal metodo `boot` di un [service provider](/docs/master/providers):
 
 	<?php namespace App\Providers;
 
@@ -153,6 +154,6 @@ For example, from a [service provider's](/docs/master/providers) `boot` method:
 
 	}
 
-The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `ResponseFactory` implementation or the `response` helper:
+La funzione `macro` accetta un nome come primo parametro, e come secondo una Closure. La Closure della macro sarà eseguita quando verrà effettuata una chiamata al nome della macro da un'implementazione di `ResponseFactory` o dall'helper `response`:
 
 	return response()->caps('foo');
