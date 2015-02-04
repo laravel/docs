@@ -13,7 +13,7 @@
 Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gulpjs.com) tasks for your
 Laravel application. Elixir supports several common CSS and JavaScript pre-processors, and even testing tools.
 
-If you've ever been confused about how to get started with Gulp and asset compliation, you will love Laravel Elixir!
+If you've ever been confused about how to get started with Gulp and asset compilation, you will love Laravel Elixir!
 
 <a name="installation"></a>
 ## Installation & Setup
