@@ -20,10 +20,6 @@ To create a migration, you may use the `make:migration` command on the Artisan C
 
 The migration will be placed in your `database/migrations` folder, and will contain a timestamp which allows the framework to determine the order of the migrations.
 
-You may also specify a `--path` option when creating the migration. The path should be relative to the root directory of your installation:
-
-	php artisan make:migration foo --path=app/migrations
-
 The `--table` and `--create` options may also be used to indicate the name of the table, and whether the migration will be creating a new table:
 
 	php artisan make:migration add_votes_to_user_table --table=users
