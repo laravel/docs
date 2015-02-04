@@ -67,7 +67,7 @@ Laravel automatically generates a CSRF "token" for each active user session mana
 
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-Of course, using the Blade [templating engine](/docs/5.0/templating):
+Of course, using the Blade [templating engine](/docs/5.0/templates):
 
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
