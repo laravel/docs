@@ -111,7 +111,7 @@ You may want to publish groups of files separately. For instance, you might want
 
 	// Publish a config file
 	$this->publishes([
-		__DIR__.'/../config/package.php', config_path('package.php')
+		__DIR__.'/../config/package.php' => config_path('package.php')
 	], 'config');
 
 	// Publish your migrations
