@@ -48,6 +48,9 @@ You may also access additional pagination information via the following methods:
 - `perPage`
 - `total`
 - `count`
+- `hasMorePages`
+- `url`
+- `nextPageUrl`
 
 #### "Simple Pagination"
 
