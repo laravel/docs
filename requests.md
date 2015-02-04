@@ -1,26 +1,26 @@
-# HTTP Requests
+# HTTP Request
 
-- [Obtaining A Request Instance](#obtaining-a-request-instance)
-- [Retrieving Input](#retrieving-input)
-- [Old Input](#old-input)
-- [Cookies](#cookies)
-- [Files](#files)
-- [Other Request Information](#other-request-information)
+- [Ottenere Una Istanza Request](#ottenere-istanza-request)
+- [Recuperare L'Input](#recuperare-input)
+- [Input Precedente](#input-precedente)
+- [Cookie](#cookie)
+- [File](#file)
+- [Altre Informazioni Sulla Classe Request](#altre-informazioni-classe-request)
 
-<a name="obtaining-a-request-instance"></a>
-## Obtaining A Request Instance
+<a name="ottenere-istanza-request"></a>
+## Ottenere Una Istanza Request
 
 ### Via Facade
 
-The `Request` facade will grant you access to the current request that is bound in the container. For example:
+La facade `Request` ti garantirà l'accesso alla richiesta corrente contenuta nel container. Per esempio:
 
 	$name = Request::input('name');
 
-Remember, if you are in a namespace, you will have to import the `Request` facade using a `use Request;` statement at the top of your class file.
+Ricorda, se sei in un namespace, dovrai importare la facade `Request` usando lo statement `use Request;` in cima al file della tua classe.
 
 ### Via Dependency Injection
 
-To obtain an instance of the current HTTP request via dependency injection, you should type-hint the class on your controller constructor or method. The current request instance will automatically be injected by the [service container](/docs/master/container):
+Per ottenere un istanza della richiesta HTTP corrente via dependency injection, puoi importare la classe nel costruttore del tuo controller oppure in un suo metodo. L'istanza della richiesta corrente sarà automaticamente iniettata dal [service container](/docs/master/container):
 
 	<?php namespace App\Http\Controllers;
 
@@ -44,7 +44,7 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 
 	}
 
-If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies:
+Se il metodo del controller riceve un imput dal parametro di una route, inserisci gli eventuali parametri dopo  le altre dipendenze:
 
 	<?php namespace App\Http\Controllers;
 
@@ -67,52 +67,52 @@ If your controller method is also expecting input from a route parameter, simply
 
 	}
 
-<a name="retrieving-input"></a>
-## Retrieving Input
+<a name="recuperare-input"></a>
+## Recuperare L'Input
 
-#### Retrieving An Input Value
+#### Recupero Di Un Valore Di Un Input
 
-Using a few simple methods, you may access all user input from your `Illuminate\Http\Request` instance. You do not need to worry about the HTTP verb used for the request, as input is accessed in the same way for all verbs.
+Usando pochi semplici metodi, puoi accedere a tutti gli input utenti dall' istanza `Illuminate\Http\Request`. Non ti devi preoccupare del verbo HTTP usato per la richiesta, perchè l'accesso agli input avviene allo stesso modo per tutti i verbi HTTP.
 
 	$name = Request::input('name');
 
-#### Retrieving A Default Value If The Input Value Is Absent
+#### Recupero Di Un Valore Di Default Se Il Valore Di Un Input Non E' Presente
 
 	$name = Request::input('name', 'Sally');
 
-#### Determining If An Input Value Is Present
+#### Determinare Se Il Valore Di Un Input E' Presente
 
 	if (Request::has('name'))
 	{
 		//
 	}
 
-#### Getting All Input For The Request
+#### Recuperare Tutti Gli Input Di Una Richiesta
 
 	$input = Request::all();
 
-#### Getting Only Some Of The Request Input
+#### Recuperare Solo Alcuni Input Dalla Richiesta
 
 	$input = Request::only('username', 'password');
 
 	$input = Request::except('credit_card');
 
-When working on forms with "array" inputs, you may use dot notation to access the arrays:
+Quando si lavora sui form con input “array”, puoi usare la notazione dot per accedere agli elementi:
 
 	$input = Request::input('products.0.name');
 
-<a name="old-input"></a>
-## Old Input
+<a name="input-precedente"></a>
+## Input Precedente
 
-Laravel also allows you to keep input from one request during the next request. For example, you may need to re-populate a form after checking it for validation errors.
+Laravel ti offre la possibilità di mantenere l'input di una richiesta durante una successiva richiesta. Per esempio, puoi ripopolare un form dopo aver controllato l'input per errori di validazione.
 
-#### Flashing Input To The Session
+#### Flashing Dell'Input Nella Sessione
 
-The `flash` method will flash the current input to the [session](/docs/master/session) so that it is available during the user's next request to the application:
+Il metodo `flash` memorizzerà gli input correnti nella [sessione](/docs/master/session) in modo da renderli disponibili, durante la richiesta successiva dell'utente, all'applicazione:
 
 	Request::flash();
 
-#### Flashing Only Some Input To The Session
+#### Flashing Di Alcuni Input Nella Sessione
 
 	Request::flashOnly('username', 'email');
 
@@ -120,88 +120,88 @@ The `flash` method will flash the current input to the [session](/docs/master/se
 
 #### Flash & Redirect
 
-Since you often will want to flash input in association with a redirect to the previous page, you may easily chain input flashing onto a redirect.
+Dal momento che spesso si vuole fare il flash dell’input in associazione con un redirect alla pagina precedente, si può mettere facilmente a catena il flash su un redirect.
 
 	return redirect('form')->withInput();
 
 	return redirect('form')->withInput(Request::except('password'));
 
-#### Retrieving Old Data
+#### Recupero Dati Precedenti
 
-To retrieve flashed input from the previous request, use the `old` method on the `Request` instance.
+Per recuperare i dati memorizzati nella richiesta precedente, usa il metodo `old` dell'istanza  `Request`.
 
 	$username = Request::old('username');
 
-If you are displaying old input within a Blade template, it is more convenient to use the `old` helper:
+Se vuoi visualizzare l'input precedente all'interno di un template Blade, è molto conveniente usare la funzione helper `old`:
 
 	{{ old('username') }}
 
-<a name="cookies"></a>
-## Cookies
+<a name="cookie"></a>
+## Cookie
 
-All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client.
+Tutti i cookie creati del framework Laravel vengono crittografati e firmati con un codice di autenticazione. Ciò vuol dire che saranno considerati validi se sono stati cambiati dal client. 
 
-#### Retrieving A Cookie Value
+#### Recuperare Un Valore Di Un Cookie
 
 	$value = Request::cookie('name');
 
-#### Attaching A New Cookie To A Response
+#### Allegare Un Nuovo Cookie Ad Una Risposta
 
-The `cookie` helper serves as a simple factory for generating new `Symfony\Component\HttpFoundation\Cookie` instances. The cookies may be attached to a `Response` instance using the `withCookie` method:
+L'helper `cookie` fornice un modo semplice di generare una nuova istanza di `Symfony\Component\HttpFoundation\Cookie`. Il cookie può essere allegato ad una istanza `Response` usando il metodo `withCookie`:
 
 	$response = new Illuminate\Http\Response('Hello World');
 
 	$response->withCookie(cookie('name', 'value', $minutes));
 
-#### Creating A Cookie That Lasts Forever*
+#### Creare Un Cookie Che Duri Per Sempre*
 
-_By "forever", we really mean five years._
+_Durare "per sempre", significa veramente cinque anni._
 
 	$response->withCookie(cookie()->forever('name', 'value'));
 
-<a name="files"></a>
-## Files
+<a name="file"></a>
+## File
 
-#### Retrieving An Uploaded File
+#### Recuperare Un File Caricato
 
 	$file = Request::file('photo');
 
-#### Determining If A File Was Uploaded
+#### Determinare Se Un File E' Stato Caricato
 
 	if (Request::hasFile('photo'))
 	{
 		//
 	}
 
-The object returned by the `file` method is an instance of the `Symfony\Component\HttpFoundation\File\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file.
+L'oggetto ritornato dal metodo `file` è un'istanza della classe `Symfony\Component\HttpFoundation\File\UploadedFile`, che estende la classe PHP `SplFileInfo` e fornisce vari metodi per interagire con il file.
 
-#### Determining If An Uploaded File Is Valid
+#### Determinare La Validità Di Un File Caricato
 
 	if (Request::file('photo')->isValid())
 	{
 		//
 	}
 
-#### Moving An Uploaded File
+#### Spostare Un File Caricato
 
 	Request::file('photo')->move($destinationPath);
 
 	Request::file('photo')->move($destinationPath, $fileName);
 
-### Other File Methods
+### Altri Metodi Sui File
 
-There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
+Ci sono una serie di metodi disponibili sull'istanza `UploadedFile` instances. Controlla la [documentazione delle API per questa classe] http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/File/UploadedFile.html) per ulteruiori informazioni riguardo questi metodi.
 
-<a name="other-request-information"></a>
-## Other Request Information
+<a name="altre-informazioni-classe-request"></a>
+## Altre Informazioni Sulla Classe Request
 
-The `Request` class provides many methods for examining the HTTP request for your application and extends the `Symfony\Component\HttpFoundation\Request` class. Here are some of the highlights.
+La classe `Request` fornisce molti metodi per esaminare una richiesta HTTP per la tua applicazione, ed estende la classe  `Symfony\Component\HttpFoundation\Request` class.Qui di seguito un focus su alcuni metodi.
 
-#### Retrieving The Request URI
+#### Recuperare Un URL Dalla Richiesta
 
 	$uri = Request::path();
 
-#### Retrieving The Request Method
+#### Recupero Di Un Metodo
 
 	$method = Request::method();
 
@@ -210,13 +210,13 @@ The `Request` class provides many methods for examining the HTTP request for you
 		//
 	}
 
-#### Determining If The Request Path Matches A Pattern
+#### Determinare Se Il Percorso Della Richiesta Coincide Con Un Pattern
 
 	if (Request::is('admin/*'))
 	{
 		//
 	}
 
-#### Get The Current Request URL
+#### Recupero Dell'URL Corrente Della Richiesta
 
 	$url = Request::url();
