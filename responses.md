@@ -1,7 +1,7 @@
 # Risposte HTTP
 
 - [Risposte Base](#risposte-base)
-- [Redirect](#redirects)
+- [Redirect](#redirect)
 - [Altre Risposte](#altre-risposte)
 - [Macro Risposte](#macro-risposte)
 
