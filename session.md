@@ -115,4 +115,4 @@ The session "driver" defines where session data will be stored for each request.
 - `memcached` / `redis` - sessions will be stored in one of these fast, cached based stores.
 - `array` - sessions will be stored in a simple PHP array and will not be persisted across requests.
 
-> **Note:** The array driver is typically used for running [unit tests](/docs/master/testing), so no session data will be persisted.
+> **Note:** The array driver is typically used for running [unit tests](/docs/5.0/testing), so no session data will be persisted.

@@ -49,7 +49,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 		//
 	});
 
-You may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/master/queues):
+You may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/5.0/queues):
 
 	Route::get('/foo', function()
 	{

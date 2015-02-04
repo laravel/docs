@@ -156,7 +156,7 @@ To verify that a user is subscribed to your application, use the `subscribed` co
 		//
 	}
 
-The `subscribed` method makes a great candidate for a [route middleware](/docs/master/middleware):
+The `subscribed` method makes a great candidate for a [route middleware](/docs/5.0/middleware):
 
 	public function handle($request, Closure $next)
 	{

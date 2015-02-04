@@ -101,7 +101,7 @@ Since the Laravel translator is powered by the Symfony Translation component, yo
 <a name="validation"></a>
 ## Validation
 
-For localization for validation errors and messages, take a look at the <a href="/docs/master/validation#localization">documentation on Validation</a>.
+For localization for validation errors and messages, take a look at the <a href="/docs/5.0/validation#localization">documentation on Validation</a>.
 
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files

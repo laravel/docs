@@ -51,7 +51,7 @@ Typically, this string should be 32 characters long. The key can be set in the `
 
 Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
 
-Once Laravel is installed, you should also [configure your local environment](/docs/master/configuration#environment-configuration).
+Once Laravel is installed, you should also [configure your local environment](/docs/5.0/configuration#environment-configuration).
 
 > **Note:** You should never have the `app.debug` configuration option set to `true` for a production application.
 
@@ -84,4 +84,4 @@ On Nginx, the following directive in your site configuration will allow "pretty"
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-Of course, when using [Homestead](/docs/master/homestead), pretty URLs will be configured automatically.
+Of course, when using [Homestead](/docs/5.0/homestead), pretty URLs will be configured automatically.
