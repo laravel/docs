@@ -1,125 +1,125 @@
-# Artisan Development
+# Svilluppo Artisan
 
-- [Introduction](#introduction)
-- [Building A Command](#building-a-command)
-- [Registering Commands](#registering-commands)
+- [Introduzione](#introduzione)
+- [Costruire Un Comando](#costruire-un-comando)
+- [Registrazione Comandi](#registrazione-comandi)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
+In aggiunta ai comandi offerti da Artisan, puoi anche cotruire i tuoi comandi personalizzati da usare con la tua applicazione. Puoi salvare i tuoi comandi personalizzati nella directory `app/Console/Commands`; ma sei libero di scegliere la tua directory in cui salvarli, impostando il tuo file `composer.json` in modo tale da includerli nel caricamento.
 
-<a name="building-a-command"></a>
-## Building A Command
+<a name="costruire-un-comando"></a>
+## Costruire Un Comando
 
-### Generating The Class
+### Generare La Classe
 
-To create a new command, you may use the `make:console` Artisan command, which will generate a command stub to help you get started:
+Per creare un nuovo comando, puoi usare il comando Artisan `make:console`, che genererà i file necessari per aiutarti ad iniziare:
 
-#### Generate A New Command Class
+#### Generare Una Nuova Classe Command
 
 	php artisan make:console FooCommand
 
-The command above would generate a class at `app/Console/FooCommand.php`.
+Il comando sopra genera una classe in `app/Console/FooCommand.php`.
 
-When creating the command, the `--command` option may be used to assign the terminal command name:
+Quando crei il comando, l'opzione `--command` può essere usato per assegnare il nome del comando da usare nel terminale:
 
 	php artisan make:console AssignUsers --command=users:assign
 
-### Writing The Command
+### Scrivere Il Comando
 
-Once your command is generated, you should fill out the `name` and `description` properties of the class, which will be used when displaying your command on the `list` screen.
+Una volta che il tuo comando è stato generato, dovresti impostare le proprietà `name` e `description` della classe, che saranno usate nella visualizzazione dei tuoi comandi sulla lista che comparirà sul tuo schermo.
 
-The `fire` method will be called when your command is executed. You may place any command logic in this method.
+Il metodo `fire` sarà chiamato quando il tuo comando verrà eseguito. Puoi anche metterci la logica del comando in questo metodo.
 
-### Arguments & Options
+### Parametri & Opzioni
 
-The `getArguments` and `getOptions` methods are where you may define any arguments or options your command receives. Both of these methods return an array of commands, which are described by a list of array options.
+I metodi `getArguments` e `getOptions` vengono usati nel momento in cui definisci dei parametri o delle opzioni che il comando riceve. Entrambi questi metodi ritornano un array di comandi, rappresentati da una lista di array di opzioni.
 
-When defining `arguments`, the array definition values represent the following:
+Quando si definiscono i `parametri`, l'array delle definizioni dei valori viene rappresentato come segue:
 
 	array($name, $mode, $description, $defaultValue)
 
-The argument `mode` may be any of the following: `InputArgument::REQUIRED` or `InputArgument::OPTIONAL`.
+Il parametro `mode` può  assumere i seguenti valori: `InputArgument::REQUIRED` o `InputArgument::OPTIONAL`.
 
-When defining `options`, the array definition values represent the following:
+Quando si definisco le `options`, l'array delle definizioni dei valori viene rappresentato come segue:
 
 	array($name, $shortcut, $mode, $description, $defaultValue)
 
-For options, the argument `mode` may be: `InputOption::VALUE_REQUIRED`, `InputOption::VALUE_OPTIONAL`, `InputOption::VALUE_IS_ARRAY`, `InputOption::VALUE_NONE`.
+Per le opzioni, il parametro `mode` può assumere i seguenti valori: `InputOption::VALUE_REQUIRED`, `InputOption::VALUE_OPTIONAL`, `InputOption::VALUE_IS_ARRAY`, `InputOption::VALUE_NONE`.
 
-The `VALUE_IS_ARRAY` mode indicates that the switch may be used multiple times when calling the command:
+La modalità `VALUE_IS_ARRAY` indica che l'uso di quel flag può essere ripetuto più volte quando viene chiamato un comando:
 
 	php artisan foo --option=bar --option=baz
 
-The `VALUE_NONE` option indicates that the option is simply used as a "switch":
+L'opzione `VALUE_NONE` indica che quel flag è usato come un semplice "switch":
 
 	php artisan foo --option
 
-### Retrieving Input
+### Recuperare L'Input
 
-While your command is executing, you will obviously need to access the values for the arguments and options accepted by your application. To do so, you may use the `argument` and `option` methods:
+Mentre si sta eseguendo il comando, sarà ovviamente necessario accedere ai valori dei parametri o delle opzioni accettati dalla tua applicazione. Per farlo, puoi usare i metodi `argument` e `option`:
 
-#### Retrieving The Value Of A Command Argument
+#### Recuperare Il Valore Di Un Parametro Di Un Comando
 
 	$value = $this->argument('name');
 
-#### Retrieving All Arguments
+#### Recupero Di Tutti I Parametri
 
 	$arguments = $this->argument();
 
-#### Retrieving The Value Of A Command Option
+#### Recupero Del Valore Di Un'Opzione Del Comando
 
 	$value = $this->option('name');
 
-#### Retrieving All Options
+#### Recupero Di Tutte Le Opzioni
 
 	$options = $this->option();
 
-### Writing Output
+### Scrittura Dell'Output
 
-To send output to the console, you may use the `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
+Per inviare dell'output alla console, puoi usare i metodi `info`, `comment`, `question` e `error`. Ognuno di questi metodi userà in maniera appropriata il codice ANSI del colore per il loro scopo.
 
-#### Sending Information To The Console
+#### Inviare Informazioni Alla Console
 
 	$this->info('Display this on the screen');
 
-#### Sending An Error Message To The Console
+#### Inviare Un Messaggio Di Errore Alla Console
 
 	$this->error('Something went wrong!');
 
-### Asking Questions
+### Chiedere Domande
 
-You may also use the `ask` and `confirm` methods to prompt the user for input:
+Puoi anche usare i metodi `ask` e `confirm` per far confermare all'utente le operazioni:
 
-#### Asking The User For Input
+#### Richiedere Input All'Utente
 
 	$name = $this->ask('What is your name?');
 
-#### Asking The User For Secret Input
+#### Richiedere All'Utente Input Segreto
 
 	$password = $this->secret('What is the password?');
 
-#### Asking The User For Confirmation
+#### Riehicedere All'Utente Una Conferma
 
 	if ($this->confirm('Do you wish to continue? [yes|no]'))
 	{
 		//
 	}
 
-You may also specify a default value to the `confirm` method, which should be `true` or `false`:
+Puoi anche specificare un valore di default al metodo `confirm`, che può essere `true` o `false`:
 
 	$this->confirm($question, true);
 
-### Calling Other Commands
+### Chiamata Di Altri Comandi
 
-Sometimes you may wish to call other commands from your command. You may do so using the `call` method:
+In alcuni casi, potresti voler eseguire la chiamata di altri comandi dal tuo comando. Per farlo usa il metodo `call`:
 
 	$this->call('command:name', ['argument' => 'foo', '--option' => 'bar']);
 
-<a name="registering-commands"></a>
-## Registering Commands
+<a name="registrazione-comandi"></a>
+## Registrazione Comandi
 
-#### Registering An Artisan Command
+#### Registrare Un Comando Artisan
 
-Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/Console/Kernel.php` file. Within this file, you will find a list of commands in the `commands` property. To register your command, simply add it to this list. When Artisan boots, all the commands listed in this property will be resolved by the [IoC container](/docs/master/container) and registered with Artisan.
+Una volta completato il tuo comando, hai bisogno di registrarlo con Artisan, in modo da renderlo disponibile all'uso. Solitamente questo viene fatto nel file `app/Console/Kernel.php`. All'interno di questo file, potrai trovare una lista di comandi nella proprietà `commands`. Per registrare il tuo comando, aggiungilo semplicemente a questa lista. Quando Artisan si avvia, tutti i comandi inseriti in questa proprietà saranno risolti dall'[IoC container](/docs/master/container) e registrati con Artisan.
