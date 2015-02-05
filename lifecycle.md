@@ -1,50 +1,52 @@
-# Request Lifecycle
+# Ciclo di Vita della Richiesta
 
-- [Introduction](#introduction)
-- [Lifecycle Overview](#lifecycle-overview)
-- [Focus On Service Providers](#focus-on-service-providers)
+- [Introduzione](#introduzione)
+- [Overview del Ciclo di Vita](#overview-ciclo-vita)
+- [Focus sui Service Provider](#focus-service-provider)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-When using any tool in the "real world", you feel more confident if you understand how that tool works. Application development is no different. When you understand how your development tools function, you feel more comfortable and confident using them.
+Quando usi un qualsiasi tool nel "mondo reale", puoi sentirtici più in confidenza se sai effettivamente come lo strumento in questione funziona. Come puoi ben immaginare, lo sviluppo di applicazioni non fa eccezione. Una volta che hai capito al meglio come lavorare con i tuoi strumenti di sviluppo hai molta più potenza tra le mani.
 
-The goal of this document is to give you a good, high-level overview of how the Laravel framework "works". By getting to know the overall framework better, everything feels less "magical" and you will be more confident building your applications.
+L'obiettivo di questo piccolo capitolo della guida è di darti una conoscenza di alto livello ma comunque sufficiente a capire come Laravel "funziona". È bello poter dire "magico", ma sapere cosa c'è sotto lo è ancora di più!
 
-If you don't understand all of the terms right away, don't lose heart! Just try to get a basic grasp of what is going on, and your knowledge will grow as you explore other sections of the documentation.
+Se non dovessi capire tutto al primo tentativo non preoccuparti. Comincia a comprendere queste prime nozioni base e la tua conoscenza crescerà sempre di più, mano a mano che esplorerai le svariate sezioni della documentazione che stai leggendo.
 
-<a name="lifecycle-overview"></a>
-## Lifecycle Overview
+<a name="overview-ciclo-vita"></a>
+## Overview del Ciclo di Vita
 
-#### First Things
+#### Si Comincia!
 
-The entry point for all requests to a Laravel application is the `public/index.php` file. All requests are directed to this file by your web server (Apache / Nginx) configuration. The `index.php` file doesn't contain much code. Rather, it is simply a starting point for loading the rest of the framework.
+Il punto d'ingresso di tutte le richieste è il file `public/index.php`. 
 
-The `index.php` file loads the Composer generated autoloader definition, and then retrieves an instance of the Laravel application from `bootstrap/app.php` script. The first action taken by Laravel itself is to create an instance of the application / [service container](/docs/master/container).
+Tutte le richieste infatti vengono reindirizzate a questo file dal tuo server. Il file _index.php_ non contiene, in realtà, molto codice: non è altro che un punto di inizio per il caricamento di tutto il resto del framework.
 
-#### HTTP / Console Kernels
+Il file _index_, infatti, carica l'autoloader generato da Composer e recupera le istanze necessarie a lavorare dal file `bootstrap/app.php`. La prima cosa che viene fatta, quindi, è la creazione dell'istanza del [service container](/docs/master/container).
 
-Next, the incoming request is sent to either the HTTP kernel or the console kernel, depending on the type of request that is entering the application. These two kernels serve as the central location that all requests flow through. For now, let's just focus on the HTTP kernel, which is located in `app/Http/Kernel.php`.
+#### HTTP / Console Kernel
 
-The HTTP kernel extends the `Illuminate\Foundation\Http\Kernel` class, which defines an array of `bootstrappers` that will be run before the request is executed. These bootstrappers configure error handling, configure logging, detect the application environment, and perform other tasks that need to be done before the request is actually handled.
+Il passo successivo da effettuare è mandare la richiesta al Kernel HTTP (o Console, in base al tipo di richiesta). Questi due Kernel servono come centro di smistamento per le varie richieste. Concentriamoci, per ora, sul Kernel HTTP nel file `app/Http/Kernel.php`.
 
-The HTTP kernel also defines a list of HTTP [middleware](/docs/master/middleware) that all requests must pass through before being handled by the application. These middleware handle reading and writing the HTTP session, determine if the application is in maintenance mode, verifying the CSRF token, and more.
+Questo Kernel estende la classe `Illuminate\Foundation\Http\Kernel` che definisce un array di "bootstrapper", i quali verranno eseguiti prima di eseguire la richiesta vera e propria. Questi bootstrapper configurano la gestione degli errori, logging e così via.
 
-The method signature for the HTTP kernel's `handle` method is quite simple: receive a `Request` and return a `Response`. Think of the Kernel as being a big black box that represents your entire application. Feed it HTTP requests and it will return HTTP responses.
+Il Kernel inoltre definisce le liste di Middleware da usare. Questi middleware leggono le richieste e svolgono varie operazioni: dal controllo di un'eventuale modalità di manutenzione attiva alla verifica dei token CSRF, e così via.
 
-#### Service Providers
+La segnatura del metodo _handle_ del Kernel HTTP è molto semplice: riceve una _Request_ e ritorna una _Response_. Ecco, pensa al Kernel come una grande scatola nera che rappresenta l'intera applicazione.
 
-One of the most important Kernel bootstrapping actions is loading the service providers for your application. All of the service providers for the application are configured in the `config/app.php` configuration file's `providers` array. First, the `register` method will be called on all providers, then, once all providers have been registered, the `boot` method will be called.
+#### Service Provider
 
-#### Dispatch Request
+Una della cose più importanti che fa il Kernel in fase di Bootstrap è il caricamento dei service provider per la tua applicazione. Tutti i service provider sono configurati nel file _config/app.php_, nell'array _providers_. Una volta caricati tutti i provider tramite _register_, il metodo _boot_ verrà richiamato.
 
-Once the application has been bootstrapped and all service providers have been registered, the `Request` will be handed off to the router for dispatching. The router will dispatch the request to a route or controller, as well as run any route specific middleware.
+#### Invio della Richiesta
 
-<a name="focus-on-service-providers"></a>
-## Focus On Service Providers
+Una volta che l'applicazione è stata avviata correttamente, insieme alla registrazione dei service provider, la _Request_ vera e propria verrà passata al router per il dispatch. A questo punto dell'esecuzione sarà il router a capire verso quale route o verso quale controller mandare la richiesta.
 
-Service providers are truly the key to bootstrapping a Laravel application. The application instance is created, the service providers are registered, and the request is handed to the bootstrapped application. It's really that simple!
+<a name="focus-service-provider"></a>
+## Focus sui Service Provider
 
-Having a firm grasp of how a Laravel application is built and bootstrapped via service providers is very valuable. Of course, your application's default service providers are stored in the `app/Providers` directory.
+I service provider sono la chiave del bootstrapping di una qualsiasi applicazione Laravel. Una volta che l'istanza dell'applicazione viene creata, infatti, i service provider vengono registrati e la richiesta viene "rigirata" all'applicazione.
 
-By default, the `AppServiceProvider` is blank. This provider is a great place to add your application's own bootstrapping and service container bindings. Of course, for large applications, you may wish to create several service providers, each with a more granular type of bootstrapping.
+Averne una conoscenza aiuta molto. Di default, i service provider si trovano nella cartella _app/Providers_.
+
+Subito dopo la creazione di un progetto, la classe _AppServiceProvider_ è praticamente vuota. Tuttavia, può essere usata senza problemi come punto da cui registrare i vari binding del service container. Per applicazioni più grandi, invece, la cosa migliore da fare è creare più di un service provider adatto allo scopo, in modo tale da rendere la fase di avvio più "granulare" e più gestibile.

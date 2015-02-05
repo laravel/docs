@@ -1,38 +1,39 @@
-# Facades
+# Facade
 
-- [Introduction](#introduction)
-- [Explanation](#explanation)
-- [Practical Usage](#practical-usage)
-- [Creating Facades](#creating-facades)
-- [Mocking Facades](#mocking-facades)
-- [Facade Class Reference](#facade-class-reference)
+- [Introduzione](#introduzione)
+- [Spiegazione](#spiegazione)
+- [Uso Pratico](#uso-pratico)
+- [Creare Facade](#creare-facade)
+- [Mocking Delle Facades](#mocking-facades)
+- [Le Classi Facade Reference](#classi-facade-reference)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Facades provide a "static" interface to classes that are available in the application's [IoC container](/docs/ioc). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the IoC container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+Il sistema di Facade offre un interfaccia "statica" a tutte le classi disponibili attraverso l'[IoC container](/docs/ioc). Laravel conta già diverse facade pronte all'uso, e probabilmente le hai usate senza neanche saperlo. Le Facade di Laravel fanno da proxy per le classi "sottostanti" presenti nell'IoC Container, dando allo sviluppatore la possibilità di usare una sintassi espressiva ma mantenendo, allo stesso tempo, la flessibilità e la testabilità che con un metodo statico non si può ottenere. 
 
-Occasionally, You may wish to create your own facades for your applications and packages, so let's explore the concept, development and usage of these classes.
+Occasionalmente, portesti voler creare la tua propria facade per la tua applicazione o per i tuoi package, andiamo ad esaminare lo sviluppo, contetto ed uso di queste classi.
 
-> **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [IoC container](/docs/ioc).
+> **Nota:** prima di buttarti nel mondo della Facades, è consigliabile avere ben presente in mente il concetto di [IoC container](/docs/ioc).
 
-<a name="explanation"></a>
-## Explanation
+<a name="spiegazione"></a>
+## Spiegazione
 
-In the context of a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Facade` class.
+Nel contesto di un’applicazione Laravel, una Facade è una classe che permette l’accesso ad un oggetto tramite uno specifico “contenitore”. Questo “passaggio” trova la sua concretizzazione, appunto, nella classe Facade. Di conseguenza, quando dovrai creare le tue Facade in futuro sarà proprio questo il punto di partenza.  Le facade di Laravel, è qualsiasi facade personalizzata che crei, dovranno estendere la classe di base `Facade`.
 
-Your facade class only needs to implement a single method: `getFacadeAccessor`. It's the `getFacadeAccessor` method's job to define what to resolve from the container. The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to the resolved object.
+Una classe `Facade` ha bisogno solo di implementare un singolo metodo: `getFacadeAccessor`. Proprio questo metodo, infatti, definisce quello che viene poi “risolto” all’interno del container. 
+La classe di base `Facade`, infatti, fa largamente uso del metodo magico `__callStatic()` per la gestione delle varie chiamate.
 
-So, when you make a facade call like `Cache::get`, Laravel resolves the Cache manager class out of the IoC container and calls the `get` method on the class. In technical terms, Laravel Facades are a convenient syntax for using the Laravel IoC container as a service locator.
+Quindi, nel momento in cui effettui una chiamata ad una facade come `Cache::get`, Laravel “risolve” la classe che gestisce la Cache al di fuori dell' IoC container ed effettua la chiamata al metodo `get` della classe. In termini tecnici, le facade di Laravel rappresentano una sintassi conventiente per usare l'IoC container come service locator.
 
-<a name="practical-usage"></a>
-## Practical Usage
+<a name="uso-pratico"></a>
+## Uso Pratico
 
-In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class.
+Nell'esempio qui di seguito, si effettua una chiamata al sistema cache di Laravel. Guardando questo codice, si potrebbe assumere che il metodo statico `get` venga chiamato dalla classe `Cache`.
 
 	$value = Cache::get('key');
 
-However, if we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
+Tuttavia, se diamo un occhiata alla classe `Illuminate\Support\Facades\Cache`, vedrai che non esiste nessun metodo `get` al suo interno:
 
 	class Cache extends Facade {
 
@@ -45,17 +46,17 @@ However, if we look at that `Illuminate\Support\Facades\Cache` class, you'll see
 
 	}
 
-The Cache class extends the base `Facade` class and defines a method `getFacadeAccessor()`. Remember, this method's job is to return the name of an IoC binding.
+La classe Cache estende la classe di base `Facade` e definisce un metodo `getFacadeAccessor()`. Ricorda, il lavoro di questo metodo è di restituire il nome del Binding del IoC.
 
-When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the IoC container and runs the requested method (in this case, `get`) against that object.
+In poche parole, quando qualcuno richiama un metodo statico della facade `Cache`, Laravel “risolve” il binding `cache` dall'IoC container, ed esegue il metodo richiesto (in questo caso, `get`) di questo specifico oggetto.
 
-So, our `Cache::get` call could be re-written like so:
+Quindi, la nostra chiamata `Cache::get` potrebbe essere riscritta come segue:
 
 	$value = $app->make('cache')->get('key');
 
-#### Importing Facades
+#### Importare Facade
 
-Remember, if you are using a facade when a controller that is namespaced, you will need to import the facade class into the namespace. All facades live in the global namespace:
+Ricorda, se stai usando una facade in un controller sotto uno specifico namespace, hai bisogno di importare la classe facade all'interno di questo namespace. Tutte le facade si trovano in un global namespace:
 
 	<?php namespace App\Http\Controllers;
 
@@ -77,16 +78,16 @@ Remember, if you are using a facade when a controller that is namespaced, you wi
 
 	}
 
-<a name="creating-facades"></a>
-## Creating Facades
+<a name="creare-facade"></a>
+## Creare Facade
 
-Creating a facade for your own application or package is simple. You only need 3 things:
+Creare una facade per la tua applicazione o package è semplice. Hai bisogno soltanto di 3 cose in tutto:
 
-- An IoC binding.
-- A facade class.
-- A facade alias configuration.
+- Un Binding IoC.
+- Una classe facade.
+- Un alias per la tua facade.
 
-Let's look at an example. Here, we have a class defined as `PaymentGateway\Payment`.
+Guardiamo un esmepio. Qui, abbiamo definito una classe `PaymentGateway\Payment`.
 
 	namespace PaymentGateway;
 
@@ -99,16 +100,16 @@ Let's look at an example. Here, we have a class defined as `PaymentGateway\Payme
 
 	}
 
-We need to be able to resolve this class from the IoC container. So, let's add a binding to a service provider:
+Abbiamo bisogno che questa classe venga risolta dall'IoC container. Quindi, aggiungiamo un binding al service provider:
 
 	App::bind('payment', function()
 	{
 		return new \PaymentGateway\Payment;
 	});
 
-A great place to register this binding would be to create a new [service provider](/docs/ioc#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `config/app.php` configuration file.
+Un buon modo per registrare questo binding sarebbe quello di creare un nuovo [service provider](/docs/ioc#service-providers) chiamato `PaymentServiceProvider`,  e aggiungere questo binding al metodo `register`. Puoi quindi configurare Laravel in modo che carichi il tuo service provider dal file di configurazione `config/app.php`.
 
-Next, we can create our own facade class:
+Successivamente, possiamo creare la nostra classe facade:
 
 	use Illuminate\Support\Facades\Facade;
 
@@ -118,23 +119,23 @@ Next, we can create our own facade class:
 
 	}
 
-Finally, if we wish, we can add an alias for our facade to the `aliases` array in the `config/app.php` configuration file. Now, we can call the `process` method on an instance of the `Payment` class.
+Finalmente, puoi aggiungere, se lo desideri, un alias per la nostra facade nell'array `aliases` nel file di configurazione `config/app.php`. Ora, possiamo effettuare chiamate al metodo `process` sull'istanza della classe `Payment`.
 
 	Payment::process();
 
-### A Note On Auto-Loading Aliases
+### Note Sul Caricamento Automatico Degli Alias
+ 
+Le classi definite nell'array `aliases` non sono sempre disponibili in alcuni casi perchè il [PHP  non proverà a caricare delle classi non definite](https://bugs.php.net/bug.php?id=39003). Se `\ServiceWrapper\ApiTimeoutException` è un alias di `ApiTimeoutException`, un metodo `catch(ApiTimeoutException $e)` al di fuori del namespace `\ServiceWrapper`, non riuscirà mai ad intercettare questa eccezione se si verificherà. L'unica soluzione è quella di usare sempre l’istruzione use con le classi desiderate all’inizio del file sul quale si sta lavorando.
 
-Classes in the `aliases` array are not available in some instances because [PHP will not attempt to autoload undefined type-hinted classes](https://bugs.php.net/bug.php?id=39003). If `\ServiceWrapper\ApiTimeoutException` is aliased to `ApiTimeoutException`, a `catch(ApiTimeoutException $e)` outside of the namespace `\ServiceWrapper` will never catch the exception, even if one is thrown. A similar problem is found in classes which have type hints to aliased classes. The only workaround is to forego aliasing and `use` the classes you wish to type hint at the top of each file which requires them.
+<a name="mocking-facade"></a>
+## Mocking Facade
 
-<a name="mocking-facades"></a>
-## Mocking Facades
+Gli unit test sono un aspetto importante del perchè le facade lavorano nel modo in cui lo fanno. Infatti, la testabilità è una ragione primaria della loro esistenza. Per maggiori informazioni, dai un'occhiata alla documentazione [mocking facades](/docs/testing#mocking-facades).
 
-Unit testing is an important aspect of why facades work the way that they do. In fact, testability is the primary reason for facades to even exist. For more information, check out the [mocking facades](/docs/testing#mocking-facades) section of the documentation.
+<a name="classi-facade-reference"></a>
+## Le Classi Facade Reference
 
-<a name="facade-class-reference"></a>
-## Facade Class Reference
-
-Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [IoC binding](/docs/ioc) key is also included where applicable.
+Qui di seguito trovi le varie Facades e le classi sottostanti collegate. Può essere una buona reference in caso di problemi e, quindi, per poter sapere quale classe andare ad analizzare.
 
 Facade  |  Class  |  IoC Binding
 ------------- | ------------- | -------------
@@ -170,7 +171,8 @@ Request  |  [Illuminate\Http\Request](http://laravel.com/api/5.0/Illuminate/Http
 Response  |  [Illuminate\Support\Facades\Response](http://laravel.com/api/5.0/Illuminate/Support/Facades/Response.html)  |
 Route  |  [Illuminate\Routing\Router](http://laravel.com/api/5.0/Illuminate/Routing/Router.html)  |  `router`
 Schema  |  [Illuminate\Database\Schema\Blueprint](http://laravel.com/api/5.0/Illuminate/Database/Schema/Blueprint.html)  |
-Session  |  [Illuminate\Session\SessionManager](http://laravel.com/api/5.0/Illuminate/Session/SessionManager.html)  |  `session`
+Session  |  [Illuminate\Session\SessionManager](http://laravel.com/api/5.0/Illuminate/Session/SessionManager.html)
+  |  `session`
 Session (Instance)  |  [Illuminate\Session\Store](http://laravel.com/api/5.0/Illuminate/Session/Store.html)  |
 SSH  |  [Illuminate\Remote\RemoteManager](http://laravel.com/api/5.0/Illuminate/Remote/RemoteManager.html)  |  `remote`
 SSH (Instance)  |  [Illuminate\Remote\Connection](http://laravel.com/api/5.0/Illuminate/Remote/Connection.html)  |

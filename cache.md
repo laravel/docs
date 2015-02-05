@@ -1,75 +1,75 @@
 # Cache
 
-- [Configuration](#configuration)
-- [Cache Usage](#cache-usage)
-- [Increments & Decrements](#increments-and-decrements)
-- [Cache Tags](#cache-tags)
+- [Configurazione](#configurazione)
+- [Utilizzo Cache](#utilizzo-cache)
+- [Incrementi & Decrementi](#incrementi-e-decrementi)
+- [Cache Tag](#cache-tag)
 - [Database Cache](#database-cache)
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-Laravel provides a unified API for various caching systems. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](http://memcached.org) and [Redis](http://redis.io) out of the box.
+Laravel fornisce un API per vari sistemi di caching. Il file di configurazione della cache si trova in `config/cache.php`. In questo file puoi specificare il driver che preferisci usare di default per la tua applicazione. Laravel supporta le più conosciute tecnologie di caching come [Memcached](http://memcached.org) e [Redis](http://redis.io).
 
-The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC. You may even configure multiple cache configurations for the same driver.
+Il file di configurazione della cache contiene inoltre molte altre opzioni, documentate al suo interno, quindi assicurati di leggerle. Di default, Laravel è configurato in modo che usi il driver `file`, che memorizza gli oggetti sul filesystem, serializzandoli. Per applicazioni più grandi, è consigliato usare una cache in-memory come Memcached o APC. Puoi sempre configurare configurazioni multiple di cache per uno stesso driver.
 
-Before using a Redis cache with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+Prima di usare Redis con Laravel, è necessario installare il package `predis/predis` (~1.0) via Composer.
 
-<a name="cache-usage"></a>
-## Cache Usage
+<a name="utilizzo-cache"></a>
+## Utilizzo Cache
 
-#### Storing An Item In The Cache
+#### Memorizzare Un Elemento Nella Cache
 
 	Cache::put('key', 'value', $minutes);
 
-#### Using Carbon Objects To Set Expire Time
+#### Usare Un Oggetto Carbon Per Impostare Un Tempo Di Scadenza
 
 	$expiresAt = Carbon::now()->addMinutes(10);
 
 	Cache::put('key', 'value', $expiresAt);
 
-#### Storing An Item In The Cache If It Doesn't Exist
+#### Memorizzare Un Elemento Nella Cache Se Non Esiste
 
 	Cache::add('key', 'value', $minutes);
 
-The `add` method will return `true` if the item is actually **added** to the cache. Otherwise, the method will return `false`.
+Il metodo `add` ritornerà `true` se l'elemento è stato realmente aggiunto alla cache. Altrimenti, il metodo ritornerà `false`.
 
-#### Checking For Existence In Cache
+#### Verificare L'Esistenza Di Un Elemento Nella Cache
 
 	if (Cache::has('key'))
 	{
 		//
 	}
 
-#### Retrieving An Item From The Cache
+#### Recuperare Un Elemento Dalla Cache
 
 	$value = Cache::get('key');
 
-#### Retrieving An Item Or Returning A Default Value
+#### Recuperare Un Elemento Oppure Ritornare Un Valore Di Default
 
 	$value = Cache::get('key', 'default');
 
 	$value = Cache::get('key', function() { return 'default'; });
 
-#### Storing An Item In The Cache Permanently
+#### Memorizzare Un Elemento Nella Cache Permanentemente
 
 	Cache::forever('key', 'value');
 
-Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. You may do this using the `Cache::remember` method:
+A volte ti capiterà di dover recuperare un elemento dalla cache, ma anche di memorizzare un valore di default se l’elemento richiesto non è stato trovato. Potresti usare il metodo `Cache::remember`:
 
 	$value = Cache::remember('users', $minutes, function()
 	{
 		return DB::table('users')->get();
 	});
 
-You may also combine the `remember` and `forever` methods:
+Potrai combinare, inoltre i metodi `remember` e `forever`:
 
 	$value = Cache::rememberForever('users', function()
 	{
 		return DB::table('users')->get();
 	});
 
-Note that all items stored in the cache are serialized, so you are free to store any type of data.
+Nota che tutti gli elementi salvati sono serializzati, quindi sei libero di memorizzare qualsiasi tipo di dato.
 
 #### Pulling An Item From The Cache
 
@@ -77,64 +77,64 @@ If you need to retrieve an item from the cache and then delete it, you may use t
 
 	$value = Cache::pull('key');
 
-#### Removing An Item From The Cache
+#### Rimuovere Un Elemento Dalla Cache
 
 	Cache::forget('key');
 
-<a name="increments-and-decrements"></a>
-## Increments & Decrements
+<a name="incrementi-e-decrementi"></a>
+## Incrementi & Decrementi
 
-All drivers except `file` and `database` support the `increment` and `decrement` operations:
+Tutti i driver, tranne `file` e `database`, supportano le operazioni di `incremento` e `decremento`:
 
-#### Incrementing A Value
+#### Incrementare Un Valore
 
 	Cache::increment('key');
 
 	Cache::increment('key', $amount);
 
-#### Decrementing A Value
+#### Decrementare Un Valore
 
 	Cache::decrement('key');
 
 	Cache::decrement('key', $amount);
 
 <a name="cache-tags"></a>
-## Cache Tags
+## Cache Tag
 
-> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+> **Note:** I tag nella cache non sono supportati quando si usano i driver `file` o `database`. Di conseguenza, quando usi tag multipli con cache memorizzate per sempre, le performance saranno migliori usando un driver come `memcached` che elimina automaticamente i record non aggiornati.
 
-#### Accessing A Tagged Cache
+#### Accedere Ad Una Cache Taggata
 
-Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method.
+I tag ti permettono di “taggare” elementi correlati nella cache, per poi fare il flash di tutte le cache con un determinato nome. Per accederci, usa il metodo `tags`.
 
-You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names:
+Puoi salvare una cache “taggata” passandole una lista di tag come parametri, oppure un array ordinato di tag:
 
 	Cache::tags('people', 'authors')->put('John', $john, $minutes);
 
 	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
 
-You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`.
+Puoi usare qualsiasi metodo di memorizzazione della cache assieme, compresi `remember`, `forever`, e `rememberForever`. Puoi, inoltre, recuperare elementi, già presenti, dalla cache “taggata”, così come puoi usare i metodi `increment` e `decrement`.
 
-#### Accessing Items In A Tagged Cache
+#### Accedere Agli Elementi In Una Cache Taggata
 
-To access a tagged cache, pass the same ordered list of tags used to save it.
+Per accedere ad una cache “taggata”, passale la stessa lista ordinata di tag che hai usato quando l’hai salvata.
 
 	$anne = Cache::tags('people', 'artists')->get('Anne');
 
 	$john = Cache::tags(array('people', 'authors'))->get('John');
 
-You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
+Puoi eliminare tutti gli elementi taggati con un nome o lista di nomi. Ad esempio, questo codice rimuove tutti gli elementi presenti taggati con `people`, `authors`, od entrambi. Quindi, entrambi “Anne” e John” saranno rimossi:
 
 	Cache::tags('people', 'authors')->flush();
 
-In contrast, this statement would remove only caches tagged with `authors`, so "John" would be removed, but not "Anne".
+Viceversa, questo codice rimuove solo gli elementi taggati con `authors`, quindi “John” sarà rimosso, mentre “Anne” no.
 
 	Cache::tags('authors')->flush();
 
 <a name="database-cache"></a>
 ## Database Cache
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+Quando si usa il driver `database`, devi impostare una tabella che contenga gli elementi. Troverai, di seguito, una tabella di esempio, creata usando la classe `Schema`:
 
 	Schema::create('cache', function($table)
 	{

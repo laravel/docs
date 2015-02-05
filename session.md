@@ -1,93 +1,93 @@
-# Session
+# Sessione
 
-- [Configuration](#configuration)
-- [Session Usage](#session-usage)
+- [Configurazione](#configurazione)
+- [Usare La Sessione](#usare-la-sessione)
 - [Flash Data](#flash-data)
-- [Database Sessions](#database-sessions)
-- [Session Drivers](#session-drivers)
+- [Sessione Su Database](#sessione-su-database)
+- [Driver Sessione](#driver-sessione)
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-Since HTTP driven applications are stateless, sessions provide a way to store information about the user across requests. Laravel ships with a variety of session back-ends available for use through a clean, unified API. Support for popular back-ends such as [Memcached](http://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
+Visto che il protocollo HTTP è stateless, le sessioni forniscono un modo per conservare le informazioni attraverso le varie richieste dell'utente. Laravel fornisce una varietà di API per la gestione delle sessioni. Il supporto a [Memcached](http://memcached.org), [Redis](http://redis.io), e per il database sono già pronti all'uso.
 
-The session configuration is stored in `config/session.php`. Be sure to review the well documented options available to you in this file. By default, Laravel is configured to use the `file` session driver, which will work well for the majority of applications.
+La configurazione per la sessione è salvata in `config/session.php`. Assicurati di leggere bene tutte le opzioni che hai a disposizione per configurare al meglio questo file. Di dafault, Laravel è configurata per utilizzare le sessioni tramite il driver `file` che è sufficiente per la maggior parte delle applicazioni.
 
-Before using Redis sessions with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+Prima di utilizzare Redis per la gestione delle sessioni, è necessario installare un pacchetto aggiuntivo, ovvero `predis/predis` (~1.0) via Composer.
 
-> **Note:** If you need all stored session data to be encrypted, set the `encrypt` configuration option to `true`.
+> **Nota:** Se hai bisogno di criptare le sessioni salvate assicurati di impostare nella configurazione il parametro `encrypt` su`true`.
 
-#### Reserved Keys
+#### Chiavi Riservate
 
-The Laravel framework uses the `flash` session key internally, so you should not add an item to the session by that name.
+Laravel utilizza per le sessioni interne la chiave `flash`, quindi non dovresti mai utilizzarla come chiave nelle tue sessioni.
 
-<a name="session-usage"></a>
-## Session Usage
+<a name="usare-la-sessione"></a>
+## Usare La Sessione
 
-#### Storing An Item In The Session
+#### Salvare Un Valore Nella Sessione
 
 	Session::put('key', 'value');
 
-#### Push A Value Onto An Array Session Value
+#### Inserire Un Valore In Un Array In Sessione
 
 	Session::push('user.teams', 'developers');
 
-#### Retrieving An Item From The Session
+#### Recuperare Un Valore Dalla Sessione
 
 	$value = Session::get('key');
 
-#### Retrieving An Item Or Returning A Default Value
+#### Recuperare Un Valore O Restituire Un Valore Di Default
 
 	$value = Session::get('key', 'default');
 
 	$value = Session::get('key', function() { return 'default'; });
 
-#### Retrieving An Item And Forgetting It
+#### Recuperare Un Valore Ed Eliminarlo Dalla Sessione
 
 	$value = Session::pull('key', 'default');
 
-#### Retrieving All Data From The Session
+#### Recuperare Tutti I Dati Dalla Sessione
 
 	$data = Session::all();
 
-#### Determining If An Item Exists In The Session
+#### Controllare Se Un Valore Esiste Nella Sessione
 
 	if (Session::has('users'))
 	{
 		//
 	}
 
-#### Removing An Item From The Session
+#### Rimuovere Un Valore Dalla Sessione
 
 	Session::forget('key');
 
-#### Removing All Items From The Session
+#### Rimuovere Tutti I Valori Dalla Sessione
 
 	Session::flush();
 
-#### Regenerating The Session ID
+#### Rigenerare L'ID Della Sessione
 
 	Session::regenerate();
 
 <a name="flash-data"></a>
 ## Flash Data
 
-Sometimes you may wish to store items in the session only for the next request. You may do so using the `Session::flash` method:
+Qualche volta potrsti aver bisogno di salvare dei valori nella sessione solo per la richiesta successiva. Puoi farlo utilizzando il metodo `Session::flash`:
 
 	Session::flash('key', 'value');
 
-#### Reflashing The Current Flash Data For Another Request
+#### Riutilizzare Gli Stessi Dati Flash Per Un'Altra Richiesta
 
 	Session::reflash();
 
-#### Reflashing Only A Subset Of Flash Data
+#### Riutilizzare Solo Una Parte dei Flash Data
 
 	Session::keep(array('username', 'email'));
 
-<a name="database-sessions"></a>
-## Database Sessions
+<a name="sessione-su-database"></a>
+## Sessione Su Database
 
-When using the `database` session driver, you will need to setup a table to contain the session items. Below is an example `Schema` declaration for the table:
+Quando utilizzi il driver `database` per le sessioni, dovrai creare una tabella che conterrà i dati. Qui sotto c'è un esempio per la creazione della tabella utilizzando `Schema`:
 
 	Schema::create('sessions', function($table)
 	{
@@ -96,7 +96,7 @@ When using the `database` session driver, you will need to setup a table to cont
 		$table->integer('last_activity');
 	});
 
-Of course, you may use the `session:table` Artisan command to generate this migration for you!
+Ovviamente puoi utilizzare anche il comando Artisan `session:table` che si occuperà di generare la migration per te!
 
 	php artisan session:table
 
@@ -104,15 +104,15 @@ Of course, you may use the `session:table` Artisan command to generate this migr
 
 	php artisan migrate
 
-<a name="session-drivers"></a>
-## Session Drivers
+<a name="driver-sessione"></a>
+## Driver Sessione
 
-The session "driver" defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:
+Il "driver" della sessione definisce dove i dati devono essere salvati per ogni richiesta. Laravel possiede diversi ottimi driver già pronti all'uso:
 
-- `file` - sessions will be stored in `app/storage/sessions`.
-- `cookie` - sessions will be stored in secure, encrypted cookies.
-- `database` - sessions will be stored in a database used by your application.
-- `memcached` / `redis` - sessions will be stored in one of these fast, cached based stores.
-- `array` - sessions will be stored in a simple PHP array and will not be persisted across requests.
+- `file` - le sessioni saranno salvate in `app/storage/sessions`.
+- `cookie` - le sessioni saranno salvate in modo sicuto in cookie criptati.
+- `database` - le sessioni saranno salvate nel database utilizzato dalla tua applicazione.
+- `memcached` / `redis` - le sessioni saranno salvate in uno di questi velocissimi storage.
+- `array` - le sessioni saranno salvate in un semplice array PHP ma non saranno persistenti.
 
-> **Note:** The array driver is typically used for running [unit tests](/docs/master/testing), so no session data will be persisted.
+> **Nota:** Il driver array solitamente viene utilizzato per gli [unit test](/docs/master/testing), in questo modo non verranno salvate sessioni.

@@ -1,28 +1,28 @@
 # Query Builder
 
-- [Introduction](#introduction)
-- [Selects](#selects)
-- [Joins](#joins)
-- [Advanced Wheres](#advanced-wheres)
-- [Aggregates](#aggregates)
+- [Introduzione](#introduzione)
+- [Select](#select)
+- [Join](#join)
+- [Where Avanzati](#where-avanzati)
+- [Aggregati](#aggregati)
 - [Raw Expressions](#raw-expressions)
-- [Inserts](#inserts)
-- [Updates](#updates)
-- [Deletes](#deletes)
-- [Unions](#unions)
-- [Pessimistic Locking](#pessimistic-locking)
+- [Insert](#inserts)
+- [Update](#updates)
+- [Delete](#deletes)
+- [Union](#unions)
+- [Blocco Pessimistico](#blocco-pessimistico)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-The database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application, and works on all supported database systems.
+Il sistema di query building fornisce una comoda interfaccia per eseguire le tue queries. Può essere usato per eseguire molte altre operazioni sui database, ed è compatibile con tutti i database supportati da Laravel.
 
-> **Note:** The Laravel query builder uses PDO parameter binding throughout to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
+> **Nota:** Il query builder di Laravel usa il binding dei parametri PDO per proteggere la tua applicazione dagli attacchi di SQL injection. Non è necessario ripulire le stringhe passate come bindings.
 
-<a name="selects"></a>
-## Selects
+<a name="select"></a>
+## Select
 
-#### Retrieving All Rows From A Table
+#### Recuperare Tutte Le Righe Da Una Tabella
 
 	$users = DB::table('users')->get();
 
@@ -31,7 +31,7 @@ The database query builder provides a convenient, fluent interface to creating a
 		var_dump($user->name);
 	}
 
-#### Chunking Results From A Table
+#### Chunking Dei Risultati Di Una Tabella
 
 	DB::table('users')->chunk(100, function($users)
 	{
@@ -41,7 +41,7 @@ The database query builder provides a convenient, fluent interface to creating a
 		}
 	});
 
-You may stop further chunks from being processed by returning `false` from the `Closure`:
+Puoi arrestare il chunk dei dati ritornando `false` dalla `Closure` passata come secondo parametro del metodo chun:
 
 	DB::table('users')->chunk(100, function($users)
 	{
@@ -50,25 +50,25 @@ You may stop further chunks from being processed by returning `false` from the `
 		return false;
 	});
 
-#### Retrieving A Single Row From A Table
+#### Recuperare Una Singola Riga Da Una Tabella
 
 	$user = DB::table('users')->where('name', 'John')->first();
 
 	var_dump($user->name);
 
-#### Retrieving A Single Column From A Row
+#### Recuperare Una Singola Colonna Da Una Riga
 
 	$name = DB::table('users')->where('name', 'John')->pluck('name');
 
-#### Retrieving A List Of Column Values
+#### Recuperare Una Lista Di Valori Delle Colonne
 
 	$roles = DB::table('roles')->lists('title');
 
-This method will return an array of role titles. You may also specify a custom key column for the returned array:
+Questo metodo ritornerà un array di titoli di ruoli. Puoi anche specificare una chiave di colonna personalizzata per l'array che verrà ritornato:
 
 	$roles = DB::table('roles')->lists('title', 'name');
 
-#### Specifying A Select Clause
+#### Specificare Una Clausula Select
 
 	$users = DB::table('users')->select('name', 'email')->get();
 
@@ -76,34 +76,34 @@ This method will return an array of role titles. You may also specify a custom k
 
 	$users = DB::table('users')->select('name as user_name')->get();
 
-#### Adding A Select Clause To An Existing Query
+#### Aggiungere Una Clausula Select Ad Una Query Esistente
 
 	$query = DB::table('users')->select('name');
 
 	$users = $query->addSelect('age')->get();
 
-#### Using Where Operators
+#### Uusare L'Operatore Where
 
 	$users = DB::table('users')->where('votes', '>', 100)->get();
 
-#### Or Statements
+#### Statment Or
 
 	$users = DB::table('users')
 	                    ->where('votes', '>', 100)
 	                    ->orWhere('name', 'John')
 	                    ->get();
 
-#### Using Where Between
+#### Usare Where Between
 
 	$users = DB::table('users')
 	                    ->whereBetween('votes', array(1, 100))->get();
 
-#### Using Where Not Between
+#### Usare Where Not Between
 
 	$users = DB::table('users')
 	                    ->whereNotBetween('votes', array(1, 100))->get();
 
-#### Using Where In With An Array
+#### Usare Where In Con Un Array
 
 	$users = DB::table('users')
 	                    ->whereIn('id', array(1, 2, 3))->get();
@@ -111,12 +111,12 @@ This method will return an array of role titles. You may also specify a custom k
 	$users = DB::table('users')
 	                    ->whereNotIn('id', array(1, 2, 3))->get();
 
-#### Using Where Null To Find Records With Unset Values
+#### Usare Where Null Per Recuperare Righe Con Campi Nulli
 
 	$users = DB::table('users')
 	                    ->whereNull('updated_at')->get();
 
-#### Order By, Group By, And Having
+#### Order By, Group By, Ed Having
 
 	$users = DB::table('users')
 	                    ->orderBy('name', 'desc')
@@ -128,12 +128,12 @@ This method will return an array of role titles. You may also specify a custom k
 
 	$users = DB::table('users')->skip(10)->take(5)->get();
 
-<a name="joins"></a>
-## Joins
+<a name="join"></a>
+## Join
 
-The query builder may also be used to write join statements. Take a look at the following examples:
+Il query builder può essere usato per scrivere degli statment di join. Dai un'occhiata ai seguenti esempi:
 
-#### Basic Join Statement
+#### Join Statement Base
 
 	DB::table('users')
 	            ->join('contacts', 'users.id', '=', 'contacts.user_id')
@@ -141,13 +141,13 @@ The query builder may also be used to write join statements. Take a look at the 
 	            ->select('users.id', 'contacts.phone', 'orders.price')
 	            ->get();
 
-#### Left Join Statement
+#### Statement Left Join
 
 	DB::table('users')
 		    ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
 		    ->get();
 
-You may also specify more advanced join clauses:
+Puoi specificare anche più clausule join avanzate:
 
 	DB::table('users')
 	        ->join('contacts', function($join)
@@ -156,7 +156,7 @@ You may also specify more advanced join clauses:
 	        })
 	        ->get();
 
-If you would like to use a "where" style clause on your joins, you may use the `where` and `orWhere` methods on a join. Instead of comparing two columns, these methods will compare the column against a value:
+Se preferisci usare una clausula stile "where" nelle tue join, puoi usare i metodi `where` e `orWhere` in una join. Invece di confrontare due colonne, questi metodi confronteranno la colonna con un valore:
 
 	DB::table('users')
 	        ->join('contacts', function($join)
@@ -166,12 +166,12 @@ If you would like to use a "where" style clause on your joins, you may use the `
 	        })
 	        ->get();
 
-<a name="advanced-wheres"></a>
-## Advanced Wheres
+<a name="where-avanzati"></a>
+## Where Avanzati
 
-#### Parameter Grouping
+#### Raggruppamento Di Parametri
 
-Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well:
+In alcuni casi puoi aver necessità di creare delle clausule where avanzate come ad esempio "where exists" oppure raggruppare parametri annidati. Il query builder di Laravel può gestirlo come segue:
 
 	DB::table('users')
 	            ->where('name', '=', 'John')
@@ -182,11 +182,11 @@ Sometimes you may need to create more advanced where clauses such as "where exis
 	            })
 	            ->get();
 
-The query above will produce the following SQL:
+La query sopra produrrà il seguente codice SQL:
 
 	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
-#### Exists Statements
+#### Statement Exists
 
 	DB::table('users')
 	            ->whereExists(function($query)
@@ -197,19 +197,19 @@ The query above will produce the following SQL:
 	            })
 	            ->get();
 
-The query above will produce the following SQL:
+La query sopra produrrà il seguente codice SQL:
 
 	select * from users
 	where exists (
 		select 1 from orders where orders.user_id = users.id
 	)
 
-<a name="aggregates"></a>
-## Aggregates
+<a name="aggregati"></a>
+## Aggregati
 
-The query builder also provides a variety of aggregate methods, such as `count`, `max`, `min`, `avg`, and `sum`.
+Il query builder offre anche una serie di metodi aggregati, come `count`, `max`, `min`, `avg`, e `sum`.
 
-#### Using Aggregate Methods
+#### Usare I Metodi Aggregati
 
 	$users = DB::table('users')->count();
 
@@ -224,7 +224,7 @@ The query builder also provides a variety of aggregate methods, such as `count`,
 <a name="raw-expressions"></a>
 ## Raw Expressions
 
-Sometimes you may need to use a raw expression in a query. These expressions will be injected into the query as strings, so be careful not to create any SQL injection points! To create a raw expression, you may use the `DB::raw` method:
+In alcuni casi puoi aver bisogno di usare dell'espressioni grezze in una query. Queste espressioni saranno iniettate nella query come stringhe, quindi fai attenzione a non creare situazioni di SQL injection! Per creare un'espressione grezza, puoi usare il metodo `DB::raw`:
 
 #### Using A Raw Expression
 
@@ -234,42 +234,42 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 	                     ->groupBy('status')
 	                     ->get();
 
-<a name="inserts"></a>
-## Inserts
+<a name="insert"></a>
+## Insert
 
-#### Inserting Records Into A Table
+#### Inserire Delle Righe In Una Tabella
 
 	DB::table('users')->insert(
 		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
-#### Inserting Records Into A Table With An Auto-Incrementing ID
+#### Inserire Righe In Una Tabella Con ID Auto-Incrementante
 
-If the table has an auto-incrementing id, use `insertGetId` to insert a record and retrieve the id:
+Se una tabella ha un id auto-incrementante, usa `insertGetId` per inserire un record e recuperare l'id:
 
 	$id = DB::table('users')->insertGetId(
 		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
-> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
+> **Nota:** Quando usi PostgreSQL il metodo insertGetId si aspetta che la colonna auto-incrementante sia chiamata "id".
 
-#### Inserting Multiple Records Into A Table
+#### Inserire Righe Multiple In Una Tabella
 
 	DB::table('users')->insert(array(
 		array('email' => 'taylor@example.com', 'votes' => 0),
 		array('email' => 'dayle@example.com', 'votes' => 0),
 	));
 
-<a name="updates"></a>
-## Updates
+<a name="update"></a>
+## Update
 
-#### Updating Records In A Table
+#### Aggiornare Delle Righe Di Una Tabella
 
 	DB::table('users')
 	            ->where('id', 1)
 	            ->update(array('votes' => 1));
 
-#### Incrementing or decrementing a value of a column
+#### Incrementare o Decrementare Un Valore Di Una Colonna
 
 	DB::table('users')->increment('votes');
 
@@ -279,45 +279,45 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 
 	DB::table('users')->decrement('votes', 5);
 
-You may also specify additional columns to update:
+Puoi specificare anche delle colonne aggiuntive da aggiornare:
 
 	DB::table('users')->increment('votes', 1, array('name' => 'John'));
 
-<a name="deletes"></a>
-## Deletes
+<a name="delete"></a>
+## Delete
 
-#### Deleting Records In A Table
+#### Eliminare Delle Righe Da Una Tabella
 
 	DB::table('users')->where('votes', '<', 100)->delete();
 
-#### Deleting All Records From A Table
+#### Eliminare Tutte Le Righe Di Una Tabella
 
 	DB::table('users')->delete();
 
-#### Truncating A Table
+#### Operazione di Truncate Table
 
 	DB::table('users')->truncate();
 
-<a name="unions"></a>
-## Unions
+<a name="union"></a>
+## Union
 
-The query builder also provides a quick way to "union" two queries together:
+Il query builder offre un modo veloce di “unire” insieme due query:
 
 	$first = DB::table('users')->whereNull('first_name');
 
 	$users = DB::table('users')->whereNull('last_name')->union($first)->get();
 
-The `unionAll` method is also available, and has the same method signature as `union`.
+Puoi utilizzare anche il metodo `unionAll` allo stesso modo di `union`.
 
-<a name="pessimistic-locking"></a>
-## Pessimistic Locking
+<a name="blocco-pessimistico"></a>
+## Blocco Pessimistico
 
-The query builder includes a few functions to help you do "pessimistic locking" on your SELECT statements.
+Il query builder include alcune funzioni per aiutarti ad eseguire un "blocco pessimistico" sui tuoi statment SELECT.
 
-To run the SELECT statement with a "shared lock", you may use the `sharedLock` method on a query:
+Per eseguire uno statment SELECT con un "blocco condiviso", puoi usare il metodo `sharedLock` su una query:
 
 	DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 
-To "lock for update" on a SELECT statement, you may use the `lockForUpdate` method on a query:
+Per eseguire un “blocco per l'aggiornamento” su uno statment SELECT, puoi usare il metodo `lockForUpdate` su una query:
 
 	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
