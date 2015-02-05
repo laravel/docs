@@ -1,35 +1,35 @@
-# Pagination
+# 分頁
 
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Appending To Pagination Links](#appending-to-pagination-links)
-- [Converting To JSON](#converting-to-json)
+- [設置](#configuration)
+- [使用](#usage)
+- [追加分頁連結](#appending-to-pagination-links)
+- [轉換至 JSON](#converting-to-json)
 
 <a name="configuration"></a>
-## Configuration
+## 設置
 
-In other frameworks, pagination can be very painful. Laravel makes it a breeze. Laravel can generate an intelligent "range" of links based on the current page. The generated HTML is compatible with the Bootstrap CSS framework.
+在其他的框架中，實作分頁是令人感到苦惱的事，但是 Laravel 令它實作起來變得輕鬆。 Laravel 可以產生基於當前頁面的智慧「範圍」連結，所產生的 HTML 兼容 Bootstrap CSS 框架.
 
 <a name="usage"></a>
-## Usage
+## 使用
 
-There are several ways to paginate items. The simplest is by using the `paginate` method on the query builder or an Eloquent model.
+有幾種方法來分頁項目。最簡單的是在搜尋建立器使用 `paginate` 方法或 Eloquent 模型。
 
-#### Paginating Database Results
+#### 對資料庫結果分頁
 
 	$users = DB::table('users')->paginate(15);
 
-> **Note:** Currently, pagination operations that use a `groupBy` statement cannot be executed efficiently by Laravel. If you need to use a `groupBy` with a paginated result set, it is recommended that you query the database manually and use `Paginator::make`.
+> **注意：** 目前 Laravel 使用 `groupBy` 來做分頁操作無法有效率的執行，如果您需要使用 `groupBy` 來分頁資料集，建議您手動查詢資料庫，並使用 `Paginator::make`。
 
-#### Paginating An Eloquent Model
+#### 對 Eloquent 模型分頁
 
-You may also paginate [Eloquent](/docs/master/eloquent) models:
+您也可以對 [Eloquent](/docs/master/eloquent) 模型分頁:
 
 	$allUsers = User::paginate(15);
 
 	$someUsers = User::where('votes', '>', 100)->paginate(15);
 
-The argument passed to the `paginate` method is the number of items you wish to display per page. Once you have retrieved the results, you may display them on your view, and create the pagination links using the `render` method:
+傳送給 `paginate` 方法的參數是您希望每頁要顯示的項目選項數目，只要您取得查詢結果後，您可以在視圖中顯示，並使用 `render` 方法去建立分頁連結：
 
 	<div class="container">
 		<?php foreach ($users as $user): ?>
@@ -39,9 +39,9 @@ The argument passed to the `paginate` method is the number of items you wish to 
 
 	<?php echo $users->render(); ?>
 
-This is all it takes to create a pagination system! Note that we did not have to inform the framework of the current page. Laravel will determine this for you automatically.
+這就是所有建立分頁系統的步驟了！您會注意到我們還沒有告知 Laravel 我們目前的頁面是哪一頁，這個資訊 Laravel 會自動幫您做好。
 
-You may also access additional pagination information via the following methods:
+您也可以透過以下方法獲得額外的分頁資訊：
 
 - `currentPage`
 - `lastPage`
@@ -49,46 +49,47 @@ You may also access additional pagination information via the following methods:
 - `total`
 - `count`
 
-#### "Simple Pagination"
+#### 「簡單分頁」
 
-If you are only showing "Next" and "Previous" links in your pagination view, you have the option of using the `simplePaginate` method to perform a more efficient query. This is useful for larger datasets when you do not require the display of exact page numbers on your view:
+如果您只是要在您的分頁視圖顯示「上一頁」和「下一頁」連結，您有個選項 `simplePaginate` 方法來執行更高效率的搜尋。當您不需要精準的顯示頁碼在視圖上時，這個方法在較大的資料集非常有用：
 
 	$someUsers = User::where('votes', '>', 100)->simplePaginate(15);
 
-#### Creating A Paginator Manually
+#### 手動建立分頁
 
-Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so by creating either an `Illuminate\Pagination\Paginator` or `Illuminate\Pagination\LengthAwarePaginator` instance, depending on your needs.
+有的時候您可能會想要從陣列中項目手動建立分頁實體， 您可以根據您的需要透過 `Illuminate\Pagination\Paginator` 或 `Illuminate\Pagination\LengthAwarePaginator` 實體來建立。
 
-#### Customizing The Paginator URI
+#### 自訂分頁 URL
 
-You may also customize the URI used by the paginator via the `setPath` method:
+您還可以透過 `setPath` 方法自訂使用的 URL：
 
 	$users = User::paginate();
 
 	$users->setPath('custom/url');
 
-The example above will create URLs like the following: http://example.com/custom/url?page=2
+上面的範例將建立 URL，類似以下內容：
+http://example.com/custom/url?page=2
 
 <a name="appending-to-pagination-links"></a>
-## Appending To Pagination Links
+## 追加分頁連結
 
-You can add to the query string of pagination links using the `appends` method on the Paginator:
+您可以使用 `appends` 方法增加搜尋字串到分頁連結中：
 
 	<?php echo $users->appends(['sort' => 'votes'])->render(); ?>
 
-This will generate URLs that look something like this:
+這樣會產生類似下列的連結：
 
 	http://example.com/something?page=2&sort=votes
 
-If you wish to append a "hash fragment" to the paginator's URLs, you may use the `fragment` method:
+如果您想要將「雜湊片段」加到分頁的 URL，您可以使用 `fragment` 方法：
 
 	<?php echo $users->fragment('foo')->render(); ?>
 
-This method call will generate URLs that look something like this:
+此方法呼叫後將產生 URL，看起來像這樣：
 
 	http://example.com/something?page=2#foo
 
 <a name="converting-to-json"></a>
-## Converting To JSON
+## 轉換至 JSON
 
-The `Paginator` class implements the `Illuminate\Contracts\Support\JsonableInterface` contract and exposes the `toJson` method. You may also convert a `Paginator` instance to JSON by returning it from a route. The JSON'd form of the instance will include some "meta" information such as `total`, `current_page`, and `last_page`. The instance's data will be available via the `data` key in the JSON array.
+`Paginator` 類別實作 `Illuminate\Contracts\Support\JsonableInterface` 介面的 `toJson` 方法。由路由返回的值，您可能將 `Paginator` 實體傳換成 JSON。JSON 表單的實體會包含一些「後設」資訊，例如 `total`、`current_page`、`last_page`。該實體資料將可透過在 JSON 陣列中 `data` 的鍵取得。
