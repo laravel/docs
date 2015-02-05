@@ -4,6 +4,7 @@
 - [Creare Comandi](#creare-comandi)
 - [Eseguire Comandi](#eseguire-comandi)
 - [Comandi Accodati](#comandi-accodati)
+- [Pipeline Di Comandi](#pipeline-di-comandi)
 
 <a name="introduzione"></a>
 ## Introduzione
@@ -116,3 +117,38 @@ Se vuoi convertire un comando esistente in un comando accodabile, aggiungi sempl
 A questo punto scrivi il tuo comando normalmente. Quando viene eseguito dal command bus, questo lo accoda automaticamente per processarlo in background. Non potrebbe essere più semplice.
 
 Per maggiori informazioni su come interagire con i comandi accodati, guarda la [documentazione completa sulle code](/docs/master/queues).
+
+<a name="pipeline-di-comandi"></a>
+## Pipeline Di Comandi
+
+Puoi passare un comando attraverso altre classi in una "pipeline", prima che questo venga eseguito da un handler. Le pipe di un comando funzionano come i middleware HTTP, ma usano i tuoi comandi! Per esempio la pipe di un comando potrebbe avvolgere l'intero comando in una transazione del database o semplicemente loggarne l'esecuzione.
+
+Per aggiungere una pipe al tuo bus, chiama il metodo `pipeThrough` del dispatcher dal metodo `App\Providers\BusServiceProvider::boot`:
+
+	$dispatcher->pipeThrough(['UseDatabaseTransactions', 'LogCommand']);
+
+La pipe di un comando contiene il metodo `handle`, proprio come un middleware:
+
+	class UseDatabaseTransactions {
+
+		public function handle($command, $next)
+		{
+			return DB::transaction(function() use ($command, $next)
+			{
+				return $next($command);
+			}
+		}
+
+	}
+
+Le classi delle pipe vengono risolte tramite l'[IoC container](/docs/5.0/container), perciò sentiti libero di fare il type-hint nel loro costruttore di qualsiasi dipendenza tu abbia bisogno.
+
+Puoi anche definire una `Closure` come pipe di un comando:
+
+	$dispatcher->pipeThrough([function($command, $next)
+	{
+		return DB::transaction(function() use ($command, $next)
+		{
+			return $next($command);
+		}
+	}]);
