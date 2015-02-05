@@ -15,7 +15,7 @@ Laravel 的 `Lang` facade 提供方便的方法來取得多種語言的字串，
 <a name="language-files"></a>
 ## 語言檔
 
-語言字串儲存在 `resources/lang` 資料夾的檔案裡。在這個資料夾裡應該要有子資料夾給每一個應用程式支援的語言。
+語言字串儲存在 `resources/lang` 資料夾的檔案裡。在這個資料夾裡應該要給每一個應用程式支援的語言一個子資料夾。
 
 	/resources
 		/lang
