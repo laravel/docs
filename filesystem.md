@@ -1,108 +1,108 @@
 # Filesystem / Cloud Storage
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
+- [簡介](#introduction)
+- [設定檔](#configuration)
+- [基本用法](#basic-usage)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Laravel provides a wonderful filesystem abstraction thanks to the [Flysystem](https://github.com/thephpleague/flysystem) PHP package by Frank de Jonge. The Laravel Flysystem integration provides simple to use drivers for working with local filesystems, Amazon S3, and Rackspace Cloud Storage. Even better, it's amazingly simple to switch between these storage options as the API remains the same for each system!
+Laravel 有很棒的檔案系統抽象層，是基於 Frank de Jonge 的 [Flysystem](https://github.com/thephpleague/flysystem) 套件。 Laravel 整合的 Flysystem 提供了簡單的介面，可以操作本地端空間、 Amazon S3 、 Rackspace Cloud Storage 。更好的是，它可以非常簡單的切換不同儲存方式，但仍使用相同的 API 操作！
 
 <a name="configuration"></a>
-## Configuration
+## 設定檔
 
-The filesystem configuration file is located at `config/filesystems.php`. Within this file you may configure all of your "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver is included in the configuration file. So, simply modify the configuration to reflect your storage preferences and credentials!
+檔案系統的設定檔放在 `config/filesystems.php` 。在這個檔案內你可以設定所有的「硬碟」。每個硬碟代表一種儲存方式和地點。預設的設定檔內已經包含了所有儲存方式的範例。所以只要修改儲存設定和認證即可！
 
-Before using the S3 or Rackspace drivers, you will need to install the appropriate package via Composer:
+在使用 S3 或 Rackspace 之前，你必須先用 Composer 安裝相對應的套件：
 
 - Amazon S3: `league/flysystem-aws-s3-v2 ~1.0`
 - Rackspace: `league/flysystem-rackspace ~1.0`
 
-Of course, you may configure as many disks as you like, and may even have multiple disks that use the same driver.
+當然，你可以加入任意數量的硬碟設定檔，甚至設定多個硬碟都使用同一種儲存方式。
 
-When using the `local` driver, note that all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
+使用本地端空間時，要注意所有的操作路徑都是相對於設定檔裡 `local` 的 `root` ，預設的路徑是 `storage/app` 。因此下列的操作將會儲存一個檔案在 `storage/app/file.txt` ：
 
 	Storage::disk('local')->put('file.txt', 'Contents');
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-The `Storage` facade may be used to interact with any of your configured disks. Alternatively, you may type-hint the `Illuminate\Contracts\Filesystem\Factory` contract on any class that is resolved via the [IoC container](/docs/master/container).
+可以用 `Storage` facade 操作所有寫在設定檔裡的硬碟。或者是，你也可以將 `Illuminate\Contracts\Filesystem\Factory` 型別暗示寫到任何類別裡，經由 [IoC container](/docs/master/container) 解析。
 
-#### Retrieving A Particular Disk
+#### 取得一個特定硬碟
 
 	$disk = Storage::disk('s3');
 
 	$disk = Storage::disk('local');
 
-#### Calling Methods On The Default Disk
+#### 使用預設硬碟呼叫方法
 
 	$exists = Storage::disk('s3')->exists('file.jpg');
 
-#### Determining If A File Exists
+#### 確認檔案是否存在
 
 	if (Storage::exists('file.jpg'))
 	{
 		//
 	}
 
-#### Retrieving A File's Contents
+#### 取得檔案內容
 
 	$contents = Storage::get('file.jpg');
 
-#### Setting A File's Contents
+#### 設定檔案內容
 
 	Storage::put('file.jpg', $contents);
 
-#### Prepend To A File
+#### 附加內容到檔案結尾
 
 	Storage::prepend('file.log', 'Prepended Text');
 
-#### Append To A File
+#### 加入內容到檔案開頭
 
 	Storage::append('file.log', 'Appended Text');
 
-#### Delete A File
+#### 刪除檔案
 
 	Storage::delete('file.jpg');
 
 	Storage::delete(['file1.jpg', 'file2.jpg']);
 
-#### Copy A File To A New Location
+#### 複製檔案到新的路徑
 
 	Storage::copy('old/file1.jpg', 'new/file1.jpg');
 
-#### Move A File To A New Location
+#### 移動檔案到新的路徑
 
 	Storage::move('old/file1.jpg', 'new/file1.jpg');
 
-#### Get File Size
+#### 取得檔案大小
 
 	$size = Storage::size('file1.jpg');
 
-#### Get The Last Modification Time (UNIX)
+#### 取得最近修改時間 (UNIX)
 
 	$time = Storage::lastModified('file1.jpg');
 
-#### Get All Files Within A Directory
+#### 取得目錄下所有檔案
 
 	$files = Storage::files($directory);
 
 	// Recursive...
 	$files = Storage::allFiles($directory);
 
-#### Get All Directories Within A Directory
+#### 取得目錄下所有子目錄
 
 	$directories = Storage::directories($directory);
 
 	// Recursive...
 	$directories = Storage::allDirectories($directory);
 
-#### Create A Directory
+#### 建立目錄
 
 	Storage::makeDirectory($directory);
 
-#### Delete A Directory
+#### 刪除目錄
 
 	Storage::deleteDirectory($directory);
