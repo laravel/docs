@@ -1,29 +1,29 @@
-# Encryption
+# 加密
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
+- [介紹](#introduction)
+- [基本用法](#basic-usage)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-Laravel provides facilities for strong AES encryption via the Mcrypt PHP extension.
+Laravel 透過 Mcrypt PHP 擴充套件提供功能強大的 AES 加密功能。
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-#### Encrypting A Value
+#### 加密
 
 	$encrypted = Crypt::encrypt('secret');
 
-> **Note:** Be sure to set a 16, 24, or 32 character random string in the `key` option of the `config/app.php` file. Otherwise, encrypted values will not be secure.
+> **注意：** 請確保 `config/app.php` 檔案中的 `key` 選項設定了 16, 24, 或 32 字元的隨機字串，否則加密的數值不會安全。
 
-#### Decrypting A Value
+#### 解密
 
 	$decrypted = Crypt::decrypt($encryptedValue);
 
-#### Setting The Cipher & Mode
+#### 設定密碼與模式
 
-You may also set the cipher and mode used by the encrypter:
+您也可以使用加密器來設置密碼和模式：
 
 	Crypt::setMode('ctr');
 
