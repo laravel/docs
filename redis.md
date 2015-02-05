@@ -1,23 +1,23 @@
 # Redis
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [Usage](#usage)
+- [Introduzione](#introduzione)
+- [Configurazione](#configurazione)
+- [Uso](#uso)
 - [Pipelining](#pipelining)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-[Redis](http://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](http://redis.io/topics/data-types#strings), [hashes](http://redis.io/topics/data-types#hashes), [lists](http://redis.io/topics/data-types#lists), [sets](http://redis.io/topics/data-types#sets), and [sorted sets](http://redis.io/topics/data-types#sorted-sets).
+[Redis](http://redis.io) è un sistema di memorizzazione di dati chiave-valore, open source. Spesso viene definito come data structure server dato che ogni chiave può corrispondere ad una [stringa](http://redis.io/topics/data-types#strings), [hash](http://redis.io/topics/data-types#hashes), [lista](http://redis.io/topics/data-types#lists), [set](http://redis.io/topics/data-types#sets) o [set ordinato](http://redis.io/topics/data-types#sorted-sets).
 
-Before using Redis with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+Prima di usare Redis con Laravel, assicurati di aggiungere il package `predis/predis` (~1.0) con Composer.
 
-> **Note:** If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
+> **Nota:** se hai installato l'estensione PHP Redis tramite PECL, dovrai rinominare l'alias per Redis in `config/app.php`.
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-The Redis configuration for your application is stored in the `config/database.php` file. Within this file, you will see a `redis` array containing the Redis servers used by your application:
+Tutto quello che riguarda la configurazione di Redis per la tua applicazione può essere trovato in `config/database.php`. In questo file infatti puoi vedere un array `redis` contenente delle impostazioni di default:
 
 	'redis' => [
 
@@ -27,24 +27,24 @@ The Redis configuration for your application is stored in the `config/database.p
 
 	],
 
-The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Simply give each Redis server a name, and specify the host and port used by the server.
+Per semplici scopo di sviluppo, come configurazione dovrebbe essere più che sufficiente. Ad ogni modo sentiti libero di modificare tutto come meglio credi in base al tuo ambiente di sviluppo. Dai ad ogni server un nome e specifica host e porta da usare.
 
-The `cluster` option will tell the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
+L'opzione _cluster_ serve a spiegare al client Redis di Laravel di effettuare lo sharding client-side sui vari nodi, in modo tale da migliorare le performance attraverso la creazione di maggiore zone libere nella RAM. Tuttavia, il client-side sharding ha i suoi pro e i contro, quindi adatta tutto alle tue necessità dopo aver analizzato la situazione.
 
-If your Redis server requires authentication, you may supply a password by adding a `password` key / value pair to your Redis server configuration array.
+Se il tuo server Redis ha bisogno di autenticazione, puoi fornire una password aggiungendo un elemento all'array che dalla chiave _password_.
 
-<a name="usage"></a>
-## Usage
+<a name="uso"></a>
+## Uso
 
-You may get a Redis instance by calling the `Redis::connection` method:
+Puoi ottenere un'istanza di Redis usando il metodo `Redis::connection`:
 
 	$redis = Redis::connection();
 
-This will give you an instance of the default Redis server. If you are not using server clustering, you may pass the server name to the `connection` method to get a specific server as defined in your Redis configuration:
+Se non stai usando il Clustering, puoi decidere di richiamare un server specifico.
 
 	$redis = Redis::connection('other');
 
-Once you have an instance of the Redis client, we may issue any of the [Redis commands](http://redis.io/commands) to the instance. Laravel uses magic methods to pass the commands to the Redis server:
+Una volta ottenuta l'istanza del client puoi lavorarci come meglio credi attraverso i vari [comandi](http://redis.io/commands). Laravel, nello specifico, usa dei magic method per il passaggio dei comandi al server Redis.
 
 	$redis->set('name', 'Taylor');
 
@@ -52,11 +52,11 @@ Once you have an instance of the Redis client, we may issue any of the [Redis co
 
 	$values = $redis->lrange('names', 5, 10);
 
-Notice the arguments to the command are simply passed into the magic method. Of course, you are not required to use the magic methods, you may also pass commands to the server using the `command` method:
+I parametri per ogni comando vengono passati direttamente tramite il metodo. Ovviamente, non c'è bisogno di usare necessariamente i magic method: c'è il metodo _command_ da usare se lo ritieni opportuno.
 
 	$values = $redis->command('lrange', array(5, 10));
 
-When you are simply executing commands against the default connection, just use static magic methods on the `Redis` class:
+Inoltre, se stai eseguendo dei metodi sulla connessione di defaul, nulla ti vieta di usare i magic method statici sulla classe _Redis_ direttamente.
 
 	Redis::set('name', 'Taylor');
 
@@ -64,14 +64,16 @@ When you are simply executing commands against the default connection, just use 
 
 	$values = Redis::lrange('names', 5, 10);
 
-> **Note:** Redis [cache](/docs/master/cache) and [session](/docs/master/session) drivers are included with Laravel.
+> **Nota:** Dei driver Redis per la [cache](/docs/master/cache) e le [sessioni](/docs/master/session) sono inclusi con Laravel, se dovessi averne bisogno.
 
 <a name="pipelining"></a>
 ## Pipelining
 
-Pipelining should be used when you need to send many commands to the server in one operation. To get started, use the `pipeline` command:
+Il pipelining è una tecnica che dovresti prendere in considerazione nel caso in cui ti trovassi a dover mandare un sacco di comandi al server in una sola volta.
 
-#### Piping Many Commands To Your Servers
+Per usarla basta il comando _pipeline_:
+
+#### Piping di più Comandi Verso il Server
 
 	Redis::pipeline(function($pipe)
 	{
