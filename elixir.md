@@ -131,7 +131,7 @@ elixir(function(mix) {
     mix.styles([
         "normalize.css",
         "main.css"
-    ], 'public/build/css/everything.css', 'public/js');
+    ], 'public/build/css/everything.css', 'public/css');
 });
 ```
 

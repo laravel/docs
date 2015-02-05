@@ -36,11 +36,11 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 
 	$disk = Storage::disk('local');
 
-#### Calling Methods On The Default Disk
+#### Determining If A File Exists
 
 	$exists = Storage::disk('s3')->exists('file.jpg');
 
-#### Determining If A File Exists
+#### Calling Methods On The Default Disk
 
 	if (Storage::exists('file.jpg'))
 	{
