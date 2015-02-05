@@ -1,8 +1,8 @@
 # Laravel Elixir
 
-- [Introduction](#introduction)
-- [Installation & Setup](#installation)
-- [Usage](#usage)
+- [簡介](#introduction)
+- [安裝與設定](#installation)
+- [使用方式](#usage)
 - [Gulp](#gulp)
 - [Directory Defaults](#defaults)
 - [Extensions](#extensions)
