@@ -219,7 +219,7 @@ The Laravel 5 base controller now includes a `ValidatesRequests` trait. This tra
 		]);
 	}
 
-If the validation fails, an exception will be thrown and the proper HTTP response will automatically be sent back to the browser. The validation errors will even be flashed to the session.! If the request was an AJAX request, Laravel even takes care of sending a JSON representation of the validation errors back to you.
+If the validation fails, an exception will be thrown and the proper HTTP response will automatically be sent back to the browser. The validation errors will even be flashed to the session! If the request was an AJAX request, Laravel even takes care of sending a JSON representation of the validation errors back to you.
 
 For more information on this new method, check out [the documentation](/docs/5.0/validation#controller-validation).
 
