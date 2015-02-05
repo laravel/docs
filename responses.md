@@ -146,9 +146,9 @@ Per esempio, dal metodo `boot` di un [service provider](/docs/master/providers):
 		 */
 		public function boot()
 		{
-			Response::('caps', function($value) use ($response)
+			Response::macro('caps', function($value)
 			{
-				return $response->make(strtoupper($value));
+				return Response::make(strtoupper($value));
 			});
 		}
 
