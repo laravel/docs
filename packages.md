@@ -1,49 +1,49 @@
-# Package Development
+# Sviluppo Di Package
 
-- [Introduction](#introduction)
-- [Views](#views)
-- [Translations](#translations)
-- [Configuration](#configuration)
+- [Introduzione](#introduzione)
+- [View](#view)
+- [Traduzioni](#traduzioni)
+- [Configurazione](#configurazione)
 - [Routing](#routing)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Packages are the primary way of adding functionality to Laravel. Packages might be anything from a great way to work with dates like [Carbon](https://github.com/briannesbitt/Carbon), or an entire BDD testing framework like [Behat](https://github.com/Behat/Behat).
+I packages rappresentano la strada per aggiungere funzionalità a Laravel. I package possono essere un po' di tutto da usare per lavorare con le date come [Carbon](https://github.com/briannesbitt/Carbon), o un intero testing framework come [Behat](https://github.com/Behat/Behat).
 
-Of course, there are different types of packages. Some packages are stand-alone, meaning they work with any framework, not just Laravel. Both Carbon and Behat are examples of stand-alone packages. Any of these packages may be used with Laravel by simply requesting them in your `composer.json` file.
+Come puoi ben intuire, ci sono svariati tipi di package. Alucni sono stand-alone, significa che possono lavorare con qualsiasi framework, non solo con Laravel. Entrabi i package Carbon e Behat sono esempi di package stand-alone. Qualsiasi di questi package può essere usato con Laravel aggiungendoli al file `composer.json`.
 
-On the other hand, other packages are specifically intended for use with Laravel. These packages may have routes, controllers, views, and configuration specifically intended to enhance a Laravel application. This guide primarily covers the development of those that are Laravel specific.
+Altri package sono realizzati specificatamente per essere usati con Laravel. Questi package possono avere route, controller, view e configurazioni specifiche intese a migliorare la tua applicazione. Questa parte della guida si concentrerà essenzialmente sui package specifici per Laravel.
 
-All Laravel packages are distributed via [Packagist](http://packagist.org) and [Composer](http://getcomposer.org), so learning about these wonderful PHP package distribution tools is essential.
+Tutti i package di Laravel sono distribuiti via [Packagist](http://packagist.org) e [Composer](http://getcomposer.org), quindi documentati e fai tuoi questi meravigliosi tool di distribuzione dei package PHP.
 
-<a name="views"></a>
-## Views
+<a name="view"></a>
+## View
 
-Your package's internal structure is entirely up to you; however, typically each package will contain one or more [service providers](/docs/master/providers). The service provider contains any [IoC](/docs/master/container) bindings, as well as instructions as to where package configuration, views, and translation files are located.
+La struttura interna del tuo package è completamente nelle tue mani; normalmente ogni package conterrà uno o più [service providers](/docs/master/providers). Il service provider contieni qualsiasi binding [IoC](/docs/master/container), così come le istruzione su dove si trovano le configurazioni del package, le view ed i file di traduzione.
 
-### Views
+### View
 
-Package views are typically referenced using a double-colon "namespace" syntax:
+Le view del package sono referenciate usando la sintassi double-colon (doppio punto, ::):
 
 	return view('package::view.name');
 
-All you need to do is tell Laravel where the views for a given namespace are located. For example, if your package is named "courier", you might add the following to your service provider's `boot` method:
+Tutto quello che hai bisogno di fare è dire a Laravel dove sono posizionate le view per un dato namespace. Per esempio, se il tuo package si chiama “courier”, potresti aggiungere il codice seguente al metodo boot del tuo service provider:
 
 	public function boot()
 	{
 		$this->loadViewsFrom('courier', __DIR__.'/path/to/views');
 	}
 
-Now you may load your package views using the following syntax:
+Ora puoi caricare le view del package usando la seguente sintassi:
 
 	return view('courier::view.name');
 
-When you use the `loadViewsFrom` method, Laravel actually registers **two** locations for your views: one in the application's `resources/views/vendor` directory and one in the directory you specify. So, using our `courier` example: when requesting a package view, Laravel will first check if a custom version of the view has been provided by the developer in `resources/views/vendor/courier`. Then, if the view has not been customized, Laravel will search the package view directory you specified in your call to `loadViewsFrom`. This makes it easy for end-users to customize / override your package's views.
+Quando usi il metodo `loadViewsFrom`, Laravel registra **due** percorsi per le tue view: una nella directory dell'applicazione `resources/views/vendor` e l'altra nella directory da te specificata. Quindi, ritornado al nostro esempio `courier`: quando viene richiesta una view di un package, Laravel controllerà per primo se esiste una versione personalizzata della view fornita dallo sviluppatore in `resources/views/vendor/courier`. Quindi, se non esiste una versione personalizzata, Laravel ricercherà nella directory delle view del tuo package tramite la chiamata a `loadViewsFrom`. Questo è estremanente utile per l'utente finale per personalizzare / sovrascrivere le view del tuo package.
 
-#### Publishing Views
+#### Publicare Le View
 
-To publish your package's views to the `resource/views/vendor` directory, you should use the `publishes` method from the `boot` method of your service provider:
+Per pubblicare le view del tuo package nella directory `resource/views/vendor`, puoi usare il metodo `publishes` nel metodo `boot` del tuo service provider:
 
 	public function boot()
 	{
@@ -54,46 +54,46 @@ To publish your package's views to the `resource/views/vendor` directory, you sh
 		]);
 	}
 
-Now, when users of your package execute Laravel's `vendor:publish` command, your views directory will be copied to the specified location.
+Ora, quando un utente che ha scaricato il tuo package, lo esegue con Laravel usando il comando `vendor:publish`, la directory delle tue view sarà copiata nella posizione specifica.
 
-> **Note:** You may use the `publishes` method to publish **any** type of file to any location you wish.
+> **Nota:** Puoi usare il metodo `publishes` per pubblicare **qualsiasi** tipo di file verso qualsiasi posizione desideri.
 
-<a name="translations"></a>
-## Translations
+<a name="traduzioni"></a>
+## Traduzioni
 
-Package translation files are typically referenced using a double-colon syntax:
+I file di traduzione del package sono normalmente refernziati usando la sintassi double-colon:
 
 	return trans('package::file.line');
 
-All you need to do is tell Laravel where the translations for a given namespace are located. For example, if your package is named "courier", you might add the following to your service provider's `boot` method:
+Tutto quello di cui hai bisogno è di dire a Laravel dove si trovano i file di traduzione per un dato namespace. Per esempio, se il tuo package è chiamato "courier", puoi aggiungere la seguente linea di codice nel metodo `boot` del tuo service provider:
 
 	public function boot()
 	{
 		$this->loadTranslationsFrom('courier', __DIR__.'/path/to/translations');
 	}
 
-Note that within your `translations` folder, you would have further directories for each language, such as `en`, `es`, `ru`, etc.
+Nota che all'interno della cartella `translations`, puoi avere altre directory per ogni lingua tu abbia fornito come `en`, `es`, `ru`, etc.
 
-Now you may load your package translations using the following syntax:
+Ora puoi caricare le tue traduzioni usando la seguenti sintassi:
 
 	return trans('courier::file.line');
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-Typically, you will want to publish your package's configuration file to the application's own `config` directory. This will allow users of your package to easily override your default configuration options.
+Normalmente, vorrai pubblicare il file di configurazione del tuo package nella directory`config` della propria applicazione. Questo permettà agli utenti che usano il tuo package di sovrascrivere le tue configurazioni di default.
 
-To publish a configuration file, just use the `publishes` method from the `boot` method of your service provider:
+Per pubblicare un file di configurazione, basta usare il metodo `publishes` dal metodo `boot` del tuo service provider:
 
 	$this->publishes([
 		__DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
 	]);
 
-Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified location. Of course, once your configuration has been published, it can be accessed like any other configuration file:
+Ora, quando gli utenti eseguiranno il comando di Laravel `vendor:publish`, i tuoi file saranno copiati in una specifica posizione. Ovviamente, una volta che la configurazione è stata pubblicata, sarà accessibile come qualsiai altro file di configurazione:
 
 	$value = config('courier.option');
 
-You may also choose to merge your own package configuration file with the application's copy. This allows your users to include only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
+Puoi anche scegliere di unire il file di configurazione del tuo package con una copia dell'applicazione. Questo permette agli utenti di includere solo le opzioni che realmente vogliono sovrascrivere nella copia pubblicata della configurazione. Per unire le configurazioni, usa il metodo `mergeConfigFrom` nel metodo `register` del tuo service provider:
 
 	$this->mergeConfigFrom(
 		'courier', __DIR__.'/path/to/config/courier.php'
@@ -102,13 +102,13 @@ You may also choose to merge your own package configuration file with the applic
 <a name="routing"></a>
 ## Routing
 
-To load a routes file for your package, simply `include` it from within your service provider's `boot` method.
+Per caricare un file di route per il tuo package, includilo semplicemente nel metodo `boot` del tuo service provider.
 
-#### Including A Routes File From A Service Provider
+#### Includere Un File Di Route Da Un Service Provider
 
 	public function boot()
 	{
 		include __DIR__.'/../../routes.php';
 	}
 
-> **Note:** If your package is using controllers, you will need to make sure they are properly configured in your `composer.json` file's auto-load section.
+> **Nota:** Se il tuo package usa dei controller, avrai bisogno di essere sicuro che siano configurati in modo opportuno nella sezione auto-load del tuo file `composer.json`.
