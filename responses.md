@@ -160,9 +160,9 @@ For example, from a [service provider's](/docs/5.0/providers) `boot` method:
 		 */
 		public function boot()
 		{
-			Response::('caps', function($value) use ($response)
+			Response::macro('caps', function($value)
 			{
-				return $response->make(strtoupper($value));
+				return Response::make(strtoupper($value));
 			});
 		}
 
