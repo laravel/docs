@@ -119,6 +119,8 @@ implements AuthenticatableContract, CanResetPasswordContract
 use Authenticatable, CanResetPassword;
 ```
 
+**If you used them, remove `Illuminate\Auth\Reminders\RemindableTrait`  and `Illuminate\Auth\UserTrait` from your use block and your class declaration.**
+
 ### Cashier User Changes
 
 The name of the trait and interface used by [Laravel Cashier](/docs/5.0/billing) has changed. Instead of using `BillableTrait`, use the `Laravel\Cashier\Billable` trait. And, instead of `Larave\Cashier\BillableInterface` implement the `Laravel\Cashier\Contracts\Billable` interface instead. No other method changes are required.
