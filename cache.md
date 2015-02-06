@@ -1,7 +1,7 @@
 # Cache
 
 - [Configurazione](#configurazione)
-- [Utilizzo Cache](#utilizzo-cache)
+- [Uso della Cache](#uso-cache)
 - [Incrementi & Decrementi](#incrementi-e-decrementi)
 - [Cache Tag](#cache-tag)
 - [Database Cache](#database-cache)
@@ -15,8 +15,8 @@ Il file di configurazione della cache contiene inoltre molte altre opzioni, docu
 
 Prima di usare Redis con Laravel, è necessario installare il package `predis/predis` (~1.0) via Composer.
 
-<a name="utilizzo-cache"></a>
-## Utilizzo Cache
+<a name="uso-cache"></a>
+## Uso della Cache
 
 #### Memorizzare Un Elemento Nella Cache
 
@@ -71,9 +71,9 @@ Potrai combinare, inoltre i metodi `remember` e `forever`:
 
 Nota che tutti gli elementi salvati sono serializzati, quindi sei libero di memorizzare qualsiasi tipo di dato.
 
-#### Pulling An Item From The Cache
+#### Pull di un Elemento dalla Cache
 
-If you need to retrieve an item from the cache and then delete it, you may use the `pull` method:
+Se hai bisogno di prendere un elemento dalla cache per poi cancellarlo, usa _pull_:
 
 	$value = Cache::pull('key');
 
