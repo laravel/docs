@@ -44,7 +44,7 @@ Risulta spesso molto utile avere a disposizione valori di configurazioni diversi
 
 Nello specifico, Laravel usa la libreria [DotEnv](https://github.com/vlucas/phpdotenv) di Vance Lucas. In un'installazione "fresca fresca" di Laravel troverai un file _.env.example_. Se hai creato un nuovo progetto tramite Composer, invece, il file molto probabilmente sarà già stato rinominato in _.env_.
 
-Tutte le variabili presenti in questo file vengono caricate nell'array _super-global_ _$_ENV_, quando la tua applicazione riceve una richiesta. Puoi usare quindi l'helper _env()_ per recuperare i vari valori da questo array. Se guardi un po' i vari file di configurazione, infatti, noterai che questa funzione viene usata spesso!
+Tutte le variabili presenti in questo file vengono caricate nell'array _super-global_ *$_ENV*, quando la tua applicazione riceve una richiesta. Puoi usare quindi l'helper _env()_ per recuperare i vari valori da questo array. Se guardi un po' i vari file di configurazione, infatti, noterai che questa funzione viene usata spesso!
 
 Sentiti libero di modificare come meglio credi le tue variabili per l'ambiente locale, così come per quello di produzione. Ad ogni modo, il tuo file _.env_ non dovrebbe essere soggetto a commit in caso di controllo di versione, dato che ogni sviluppatore (o server) potrebbe richiederne uno differente o personalizzato ad hoc.
 
@@ -68,7 +68,7 @@ Puoi anche passare un argomento (o più di uno) al metodo in modo tale da contro
 		// Siamo in ambiente 'local' O 'staging'
 	}
 
-Per ottenere un istanza dell'applicazione, risolvi il contratto `Illuminate\Contracts\Foundation\Application` usando il [service container](/container). Se invece stai lavorando in un [service provider](/providers), ricorda sempre che puoi accedere ad un'istanza dell'applicazione tramite_$this->app_.
+Per ottenere un istanza dell'applicazione, risolvi il contratto `Illuminate\Contracts\Foundation\Application` usando il [service container](/container). Se invece stai lavorando in un [service provider](/provider), ricorda sempre che puoi accedere ad un'istanza dell'applicazione tramite_$this->app_.
 
 Puoi inoltre accedere ad un'istanza dell'applicazione tramite il metodo helper _app_ oppure con la Facade _App_.
 
