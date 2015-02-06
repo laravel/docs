@@ -20,7 +20,7 @@ La risposta più semplice proveniente da una route è una stringa:
 #### Creare Una Risposta Personalizzata
 
 Tuttavia, per la maggior parte delle route e delle azioni dei controller, ritornerà un'istanza
-However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` oppure una [view](/docs/master/views). Il ritorno di una istanza completa di `Response` ti permette di personalizzare il codice di stato e gli header di una risposta HTTP. Un'istanza `Response` eredita la classe `Symfony\Component\HttpFoundation\Response`, che offre una serie di metodi per costruire le richieste HTTP:
+However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` oppure una [view](/view). Il ritorno di una istanza completa di `Response` ti permette di personalizzare il codice di stato e gli header di una risposta HTTP. Un'istanza `Response` eredita la classe `Symfony\Component\HttpFoundation\Response`, che offre una serie di metodi per costruire le richieste HTTP:
 
 	use Illuminate\Http\Response;
 
@@ -57,7 +57,7 @@ Ci sono vari metodi per generare un'istanza di `RedirectResponse`. Il metodo pi�
 
 #### Ritornare Un Redirect Con Il Flash Dei Dati
 
-Il re-indirizzamento ad un nuovo URL e il [flashing dei dati nella sessione](/docs/master/session) normalmente fanno la stessa cosa. Quindi, per convenienza, puoi crare un'istanza `RedirectResponse` **e** fare il flash dei dati nella sessione concatendando l'operazione con un singolo metodo:
+Il re-indirizzamento ad un nuovo URL e il [flashing dei dati nella sessione](/sessioni) normalmente fanno la stessa cosa. Quindi, per convenienza, puoi crare un'istanza `RedirectResponse` **e** fare il flash dei dati nella sessione concatendando l'operazione con un singolo metodo:
 
 	return redirect('user/login')->with('message', 'Login Failed');
 
@@ -87,7 +87,7 @@ Se stai per essere reindirizzato ad una route con un parametro "ID" che verrà p
 
 #### Ritornare Un Redirect Ad Un'Azione Di Un Controller
 
-In maniera simile all'istanza  `RedirectResponse` ad una route nominata, puoi anche generare dei redirect alle [azioni del controller](/docs/master/controllers):
+In maniera simile all'istanza  `RedirectResponse` ad una route nominata, puoi anche generare dei redirect alle [azioni del controller](/controller):
 
 	return redirect()->action('App\Http\Controllers\HomeController@index');
 
@@ -104,7 +104,7 @@ In maniera simile all'istanza  `RedirectResponse` ad una route nominata, puoi an
 <a name="altre-risposte"></a>
 ## Altre Risposte
 
-L'helper `response` può essere usato per comodità per generare altri tipi di istanze di risposte. Quando l'helper `response` viene chiamato senza parametri, viene ritornata un'implementazione del contract `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/master/contracts). Questo contract offre dei metodi utili per generare delle risposte.
+L'helper `response` può essere usato per comodità per generare altri tipi di istanze di risposte. Quando l'helper `response` viene chiamato senza parametri, viene ritornata un'implementazione del contract `Illuminate\Contracts\Routing\ResponseFactory` [contract](/contratti). Questo contract offre dei metodi utili per generare delle risposte.
 
 #### Creazione Di Una Risposta JSON
 
@@ -130,7 +130,7 @@ Il metodo `json` imposterà automaticamente l'header `Content-Type` a `applicati
 
 Se preferisci definire una risposta personalizzata da ri-utilizzare nelle tue route o nei tuoi controller, puoi usare il metodo `macro` su un'implementazione del contract `Illuminate\Contracts\Routing\ResponseFactory`.
 
-Per esempio, dal metodo `boot` di un [service provider](/docs/master/providers):
+Per esempio, dal metodo `boot` di un [service provider](/provider):
 
 	<?php namespace App\Providers;
 
