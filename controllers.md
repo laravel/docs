@@ -131,7 +131,7 @@ Laravel 讓你能輕易地定義單一路由來處理控制器中的每一項行
 
 `index` 方法會回應控制器處理的根 URI ，在這個例子中是 `users` 。
 
-如果你的控制器行為包含多個字詞，你可以在 URI 中使用 "破折號" (dash) 語法來存取此行為。例如，下面這個在 `UserController` 中 的控制器動作會回應 `users/admin-profile` 此一 URI ：
+如果你的控制器行為包含多個字詞，你可以在 URI 中使用「破折號」語法來存取此行為。例如，下面這個在 `UserController` 中的控制器動作會回應 `users/admin-profile` 此一 URI ：
 
 	public function getAdminProfile() {}
 
