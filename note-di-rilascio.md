@@ -76,7 +76,7 @@ Chiaramente, il tuo event handler corrispondente adesso riceverà un oggetto ver
 
 	}
 
-Se vuoi saperne di più, dai uno sguardo [alla documentazione](/events).
+Se vuoi saperne di più, dai uno sguardo [alla documentazione](/eventi).
 
 ### Comandi / Code
 
@@ -149,7 +149,7 @@ Laravel ora include il potente sistema [Flysystem](https://github.com/thephpleag
 
 	Storage::put('file.txt', 'contents');
 
-Anche in questo caso, sulla [documentazione](/filesystem) troverai tutte le informazioni necessarie.
+Anche in questo caso, sulla [documentazione](/filesystem-cloud) troverai tutte le informazioni necessarie.
 
 ### Form Request
 
@@ -203,7 +203,7 @@ Volendo, è possibile inoltre effettuare una validazione base tramite il trait _
 
 Se la validazione non va a buon fine, verrà lanciata un'eccezione ed un'apposita risposta HTTP verrà automaticamente rimandata al browser. Gli errori di validazione verranno inoltre flashati in sessione. Ancora più interessante è sapere che in caso di metodo AJAX, Laravel **automaticamente** ritornerà un messaggio di errore appositamente formattato.
 
-Per saperne di più, dai un'occhiata a [questa pagina](/validazione#validazione-nel-controller).
+Per saperne di più, dai un'occhiata a [questa pagina](/validazione#validazione-controller).
 
 ### Nuovi Generatori
 
