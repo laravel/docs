@@ -89,13 +89,13 @@ Laravel 讓連結資料庫和執行查詢變得相當容易。資料庫相關設
 		DB::table('posts')->delete();
 	});
 
-> **注意：** 在 `transaction` 閉包若拋出任何例外會導致自動 rollback 。
+> **注意：** 在 `transaction` 閉包若拋出任何例外會導致交易自動還原 。
 
 有時候你可能需要自己開始一個交易：
 
 	DB::beginTransaction();
 
-你可以透過 `rollback` 的方法返回交易：
+你可以透過 `rollback` 的方法還原交易：
 
 	DB::rollback();
 
