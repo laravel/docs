@@ -1,73 +1,77 @@
-# 遷移和資料填充
+# Migrations & Seeding
 
-- [介紹](#introduction)
-- [建立遷移檔](#creating-migrations)
-- [執行遷移](#running-migrations)
-- [推回遷移](#rolling-back-migrations)
-- [資料填充](#database-seeding)
+- [Introduction](#introduction)
+- [Creating Migrations](#creating-migrations)
+- [Running Migrations](#running-migrations)
+- [Rolling Back Migrations](#rolling-back-migrations)
+- [Database Seeding](#database-seeding)
 
 <a name="introduction"></a>
-## 介紹
+## Introduction
 
+<<<<<<< HEAD
 遷移是一種資料庫的版本控制。可以讓團隊在修改資料庫結構的同時，保持彼此的進度一致。遷移通常會和 [結構生成器](/docs/5.0/schema) 一起使用，可以簡單的管理資料庫結構。
+=======
+Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/master/schema) to easily manage your application's schema.
+>>>>>>> parent of fd94c36... Translated migrations.md.
 
 <a name="creating-migrations"></a>
-## 建立遷移檔
+## Creating Migrations
 
-使用 Artisan CLI 的 `make:migrate` 命令建立遷移檔：
+To create a migration, you may use the `make:migration` command on the Artisan CLI:
 
 	php artisan make:migration create_users_table
 
-遷移檔會建立在 `database/migrations` 目錄下，檔名會包含時間戳記，在執行遷移時用來決定順序。
+The migration will be placed in your `database/migrations` folder, and will contain a timestamp which allows the framework to determine the order of the migrations.
 
-你也可以在建立遷移命令加上 `--path` 參數。路徑要相對於應用程式所在的根目錄。
+You may also specify a `--path` option when creating the migration. The path should be relative to the root directory of your installation:
 
 	php artisan make:migration foo --path=app/migrations
 
-`--table` 和 `--create` 參數可以用來指定資料表名稱，以及遷移檔是否要建立新的資料表。
+The `--table` and `--create` options may also be used to indicate the name of the table, and whether the migration will be creating a new table:
 
 	php artisan make:migration add_votes_to_user_table --table=users
 
 	php artisan make:migration create_users_table --create=users
 
 <a name="running-migrations"></a>
-## 執行遷移
+## Running Migrations
 
-#### 執行所有未執行遷移
+#### Running All Outstanding Migrations
 
 	php artisan migrate
 
-> **注意:** 如果在執行遷移時發生「class not found」錯誤，試著先執行 `composer dump-autoload` 命令後再進行一次。
+> **Note:** If you receive a "class not found" error when running migrations, try running the `composer dump-autoload` command.
 
-### 在上線環境 (Production) 中強制執行遷移
+### Forcing Migrations In Production
 
-有些遷移操作是具有破壞性的，意味著可能讓你遺失原本儲存的資料。為了防止你在上線環境執行到這些遷移命令，你會被提示要在執行遷移前進行確認。加上 `--force` 參數執行強制遷移：
+Some migration operations are destructive, meaning they may cause you to lose data. In order to protect you from running these commands against your production database, you will prompted for confirmation before these commands are executed. To force the commands to run without a prompt, use the `--force` flag:
 
 	php artisan migrate --force
 
 <a name="rolling-back-migrations"></a>
-## 推回遷移
+## Rolling Back Migrations
 
-#### 推回上一次的遷移
+#### Rollback The Last Migration Operation
 
 	php artisan migrate:rollback
 
-#### 推回所有遷移
+#### Rollback all migrations
 
 	php artisan migrate:reset
 
-#### 推回所有遷移並且再執行一次
+#### Rollback all migrations and run them all again
 
 	php artisan migrate:refresh
 
 	php artisan migrate:refresh --seed
 
 <a name="database-seeding"></a>
-## 資料填充
+## Database Seeding
 
-Laravel 可以簡單的使用 seed 類別，填充測試資料到資料庫。所有的 seed 類別放在 `database/seeds` 目錄下。可以使用任何你想要的類別名稱，但是應該遵守某些大小寫規範，像是 `UserTableSeeder` 之類。預設已經有一個 `DatabaseSeeder` 類別。在這個類別裡，使用 `call` 方法執行其他的 seed 類別，讓你控制填充的順序。
+Laravel also includes a simple way to seed your database with test data using seed classes. All seed classes are stored in `database/seeds`. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserTableSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
 
-#### Seed 類別範例
+#### Example Database Seed Class
 
 	class DatabaseSeeder extends Seeder {
 
@@ -91,14 +95,14 @@ Laravel 可以簡單的使用 seed 類別，填充測試資料到資料庫。所
 
 	}
 
-要執行資料填充，可以使用 Artisan CLI 的 `db:seed` 命令：
+To seed your database, you may use the `db:seed` command on the Artisan CLI:
 
 	php artisan db:seed
 
-預設 `db:seed` 命令會執行 `DatabaseSeeder`，可以使用它來呼叫其他 seed 類別，不過，也可以使用 `--class` 參數指定要單獨執行的類別：
+By default, the `db:seed` command runs the `DatabaseSeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
 
 	php artisan db:seed --class=UserTableSeeder
 
-你可以也使用 `migrate:refresh` 命令填充資料，它會推回並且再次執行所有遷移：
+You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations:
 
 	php artisan migrate:refresh --seed
