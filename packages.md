@@ -1,50 +1,50 @@
 # Package Development
 
-- [Introduction](#introduction)
-- [Views](#views)
-- [Translations](#translations)
-- [Configuration](#configuration)
-- [Publishing File Groups](#publishing-file-groups)
-- [Routing](#routing)
+- [介紹](#introduction)
+- [視圖](#views)
+- [語言](#translations)
+- [設定檔](#configuration)
+- [發佈分類檔案](#publishing-file-groups)
+- [路由](#routing)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-Packages are the primary way of adding functionality to Laravel. Packages might be anything from a great way to work with dates like [Carbon](https://github.com/briannesbitt/Carbon), or an entire BDD testing framework like [Behat](https://github.com/Behat/Behat).
+開發套件是新增功能到 Laravel 最主要的方法。套件可以是任何處理日期的方式。例如，[Carbon](https://github.com/briannesbitt/Carbon)，或是一個全套的 BDD testing 框架。例如，[Behat](https://github.com/Behat/Behat)
 
-Of course, there are different types of packages. Some packages are stand-alone, meaning they work with any framework, not just Laravel. Both Carbon and Behat are examples of stand-alone packages. Any of these packages may be used with Laravel by simply requesting them in your `composer.json` file.
+當然，有非常多不同類型的套件。有些套件是獨立的，意思是此套件運作且相容於任何的框架，不只有 Laravel。Carbon 以及 Behat 都是這類的套件。任何這類的套件只需要在您的 `composer.json` 檔案裡設定就可以使用。
 
-On the other hand, other packages are specifically intended for use with Laravel. These packages may have routes, controllers, views, and configuration specifically intended to enhance a Laravel application. This guide primarily covers the development of those that are Laravel specific.
+另一方面，其他的套件所設計的目的是只要在 Laravel 上使用。這些套件可能包含路由、控制器、視圖以及套件的相關設定，目的是為了增加 Laravel 的應用。接下來的說明主要涵蓋了 Laravel 開發這些套件的重點。
 
-All Laravel packages are distributed via [Packagist](http://packagist.org) and [Composer](http://getcomposer.org), so learning about these wonderful PHP package distribution tools is essential.
+所有 Laravel 套件都發佈到 [Packagist](http://packagist.org) 以及 [Composer](http://getcomposer.org)，所以學習這些美好的 PHP 套件管理工具是必須的。
 
 <a name="views"></a>
-## Views
+## 視圖
 
-Your package's internal structure is entirely up to you; however, typically each package will contain one or more [service providers](/docs/5.0/providers). The service provider contains any [IoC](/docs/5.0/container) bindings, as well as instructions as to where package configuration, views, and translation files are located.
+您套件內部的架構全部由您自己規劃。然而，原則上會有一個或更多的 [服務提供者](/docs/5.0/providers). 服務提供者包含著所有的 [IoC](/docs/5.0/container) 綁定，也定義了所有您套件的相關設定、視圖以及語言檔案在什麼地方。
 
-### Views
+### 視圖
 
-Package views are typically referenced using a double-colon "namespace" syntax:
+套件的視圖基本上的指定使用兩個雙冒號:
 
 	return view('package::view.name');
 
-All you need to do is tell Laravel where the views for a given namespace are located. For example, if your package is named "courier", you might add the following to your service provider's `boot` method:
+所有您所要做的只有告訴 Laravel 您所設定套件名稱視圖的位置在哪裡。如果您的套件取名為 “courier” 您可能需要新增如下到您的服務提供者的 `boot` 方法:
 
 	public function boot()
 	{
 		$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
 	}
 
-Now you may load your package views using the following syntax:
+現在您可以使用如下的語法來載入套件的視圖:
 
 	return view('courier::view.name');
 
-When you use the `loadViewsFrom` method, Laravel actually registers **two** locations for your views: one in the application's `resources/views/vendor` directory and one in the directory you specify. So, using our `courier` example: when requesting a package view, Laravel will first check if a custom version of the view has been provided by the developer in `resources/views/vendor/courier`. Then, if the view has not been customized, Laravel will search the package view directory you specified in your call to `loadViewsFrom`. This makes it easy for end-users to customize / override your package's views.
+當您使用 `loadViewsFrom` 方法，Laravel 實際上為了您的視圖註冊了**兩個位置**。一個是您應用程式的 `resources/views/vendor` 目錄，一個是您指定的目錄。所以使用我們的範例 `courier` 當要求一個套件的視圖時，Laravel 會第一時間檢查是否有一個開發者自行自訂在 `resources/views/vendor/courier` 的視圖存在。然而如果還沒有這個路徑的視圖被自訂。Laravel 會搜尋您在套件 `loadViewsFrom` 方法裡所指定的視圖。這個方法讓個別的使用者可以方便的自訂且覆寫您在套件裡的視圖。
 
-#### Publishing Views
+#### 視圖的發佈
 
-To publish your package's views to the `resource/views/vendor` directory, you should use the `publishes` method from the `boot` method of your service provider:
+發佈套件的視圖到 `resources/views/vendor` 目錄，您必須在服務提供者裡的 `boot` 方法裡使用 `publishes` 方法:
 
 	public function boot()
 	{
@@ -55,59 +55,59 @@ To publish your package's views to the `resource/views/vendor` directory, you sh
 		]);
 	}
 
-Now, when users of your package execute Laravel's `vendor:publish` command, your views directory will be copied to the specified location.
+現在當您套件的使用者使用 Laravel 的指令 `vendor:publish` 您的視圖目錄將會被複製到所特定的目錄
 
-If you would like to overwrite existing files, use the `--force` switch:
+如果您想要覆寫已存在的檔案，可以使用 `--force`:
 
 	php artisan vendor:publish --force
 
-> **Note:** You may use the `publishes` method to publish **any** type of file to any location you wish.
+> **注意:** 您可以使用 `publishes` 方法，發佈任何您的檔案到**任何**您想要的地方。
 
 <a name="translations"></a>
-## Translations
+## 語言
 
-Package translation files are typically referenced using a double-colon syntax:
+套件的語言檔案基本上的指定使用兩個雙冒號:
 
 	return trans('package::file.line');
 
-All you need to do is tell Laravel where the translations for a given namespace are located. For example, if your package is named "courier", you might add the following to your service provider's `boot` method:
+所有您所要做的只有告訴 Laravel 您所設定套件名稱的語言位置在哪裡。如果您的套件取名為 "courier" 您可能需要新增如下的語法到您的服務提供者的 `boot` 方法:
 
 	public function boot()
 	{
 		$this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
 	}
 
-Note that within your `translations` folder, you would have further directories for each language, such as `en`, `es`, `ru`, etc.
+注意在您的 `translations` 目錄裡，必須要有更下一層的目錄，例如 `en` `es` `ru`。
 
-Now you may load your package translations using the following syntax:
+現在您可以使用下方的語法來載入您套件的語言:
 
 	return trans('courier::file.line');
 
 <a name="configuration"></a>
-## Configuration
+## 設定檔
 
-Typically, you will want to publish your package's configuration file to the application's own `config` directory. This will allow users of your package to easily override your default configuration options.
+基本上，您可能想要將您套件相關設定的檔案發佈到應用程式本身的設定目錄 `config`。這將允許您套件的使用者簡單的覆寫這些預設的設定檔案。
 
-To publish a configuration file, just use the `publishes` method from the `boot` method of your service provider:
+發佈套件的設定檔只需要在服務提供者裡的 `boot` 方法裡使用 `publishes` 方法:
 
 	$this->publishes([
 		__DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
 	]);
 
-Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified location. Of course, once your configuration has been published, it can be accessed like any other configuration file:
+現在當套件的使用者執行 `vendor:publish` 指令，您的檔案將會被複製到特定的位置。當然只要設定檔案已經被發佈，就可以如其他設定檔一樣被存取:
 
 	$value = config('courier.option');
 
-You may also choose to merge your own package configuration file with the application's copy. This allows your users to include only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
+您可能也選擇想要合併您套件的設定檔和應用程式裡的副本設定檔。這允許您的使用者在已經被發佈的副本設定檔裡只包含任何他們想要覆寫的設定選項。如果想要合併設定檔，可在服務提供者裡的 `register` 方法裡使用 `mergeConfigFrom`方法
 
 	$this->mergeConfigFrom(
 		__DIR__.'/path/to/config/courier.php', 'courier'
 	);
 
 <a name="publishing-file-groups"></a>
-## Publishing File Groups
+## 發佈分類檔案
 
-You may want to publish groups of files separately. For instance, you might want your users to be able to publish your package's configuration files and asset files separately. You can do this by 'tagging' them:
+您可能想要分別的發佈一些分類的檔案。舉例，您可能想要您的使用者可以分別發佈套件的設定檔與資產檔。您可以使用 `tagging` 來達成:
 
 	// Publish a config file
 	$this->publishes([
@@ -119,20 +119,20 @@ You may want to publish groups of files separately. For instance, you might want
 		__DIR__.'/../database/migrations/' => base_path('/database/migrations')
 	], 'migrations');
 
-You can then publish these files separately by referencing their tag like so:
+您可以使用這些 `tag`，來分別發佈這些套件裡的檔案。
 
 	php artisan vendor:publish --provider="Vendor\Providers\PackageServiceProvider" --tag="config"
 
 <a name="routing"></a>
-## Routing
+## 路由
 
-To load a routes file for your package, simply `include` it from within your service provider's `boot` method.
+在套件裡載入一個路由檔案，只需要在服務提供者裡的 `boot` 方法裡使用 `include` :
 
-#### Including A Routes File From A Service Provider
+#### 根據服務提供者來包含一個路由檔
 
 	public function boot()
 	{
 		include __DIR__.'/../../routes.php';
 	}
 
-> **Note:** If your package is using controllers, you will need to make sure they are properly configured in your `composer.json` file's auto-load section.
+> **注意:** 如果您的套件裡使用了控制器，您必須要確認您在 `composer.json` 檔案裡的 auto-load 區塊裡，是否適當的設定這些控制器。
