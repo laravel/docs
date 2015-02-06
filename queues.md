@@ -1,94 +1,96 @@
-# Queues
+# Code
 
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
-- [Queueing Closures](#queueing-closures)
-- [Running The Queue Listener](#running-the-queue-listener)
-- [Daemon Queue Worker](#daemon-queue-worker)
-- [Push Queues](#push-queues)
-- [Failed Jobs](#failed-jobs)
+- [Configurazione](#configurazione)
+- [Uso Base](#uso-base)
+- [Closure in Coda!](#clousure-coda)
+- [Eseguire il Queue Listener](#eseguire-queue-listener)
+- [Il Demone del Queue Worker](#demone-queue-worker)
+- [Code Push](#code-push)
+- [Job Falliti](#job-falliti)
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-The Laravel Queue component provides a unified API across a variety of different queue services. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time, thus drastically speeding up the web requests to your application.
+Il componente _Queue_ di Laravel offre un'interfaccia unificata a svariati servizi di gestione delle code. Le code ti permettono di schedulare una certa operazione che ha bisogno di un certo tempo piuttosto lungo per la sua esecuzione, perlomeno in rapporto ad una normale richiesta al server. L'invio di email schedulato e non immediato, ad esempio, può velocizzare tantissime richieste.
 
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io), null, and synchronous (for local use) driver. The `null` queue driver simply discards queued jobs so they are never run.
+Il file di configurazione per le code è memorizzato in _config/queue.php_. In questo file troverai tutte le opzioni di configurazione per ognuno dei driver inclusi out of the box con il framework. Nello specifico, i driver riguardano il database,[ Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io), null, ed un driver sincrono (per uso locale). Il driver _null_ serve semplicemente ad indicare che non c'è bisogno di mettere in coda una o più operazioni.
 
-### Queue Database Table
+### Tabella delle Code
 
-In order to use the `database` queue driver, you will need a database table to hold the jobs. To generate a migration to create this table, run the `queue:table` Artisan command:
+Per usare il driver _database_ avrai bisogno di una tabella che contenga i dati dei vari cronjob. Per generare una migration utile, usa `queue:table`.
 
 	php artisan queue:table
 
-### Other Queue Dependencies
+### Altre Dipendenze
 
-The following dependencies are needed for the listed queue drivers:
+Per usare il componente con altri driver potresti aver bisogno di alcune dipendenze.
+
+Eccole:
 
 - Amazon SQS: `aws/aws-sdk-php`
 - Beanstalkd: `pda/pheanstalk ~3.0`
 - IronMQ: `iron-io/iron_mq`
 - Redis: `predis/predis ~1.0`
 
-<a name="basic-usage"></a>
-## Basic Usage
+<a name="uso-base"></a>
+## Uso Base
 
-#### Pushing A Job Onto The Queue
+#### Inserire in Coda un Lavoro
 
-All of the queueable jobs for your application are stored in the `App\Commands` directory. You may generate a new queued command using the Artisan CLI:
+Tutti i vari job che si possono mettere in coda vanno messi in _App\Commands_. Per generare un nuovo comando, usa Artisan:
 
 	php artisan make:command SendEmail --queued
 
-To push a new job onto the queue, use the `Queue::push` method:
+Per inserire quindi un nuovo job in coda, usa _push_.
 
 	Queue::push(new SendEmail($message));
 
-By default, the `make:command` Artisan command generates a "self-handling" command, meaning a `handle` method is added to the command itself. This method will be called when the job is executed by the queue. You may type-hint any dependencies you need on the `handle` method and the [IoC container](/docs/master/container) will automatically inject them:
+Di default, il comando `make:command` di Artisan genera una classe completa di metodo _handle_, che viene richiamato in fase di esecuzione del job in coda. Tieni in considerazione che puoi effettuare senza problemi la method injection di eventuali dipendenze necessarie gestite automaticamente dall'[IoC container](/container).
 
 	public function handle(UserRepository $users)
 	{
 		//
 	}
 
-If you would like your command to have a separate handler class, you should add the `--handler` flag to the `make:command` command:
+Nel caso in cui volessi specificare un'intera classe separata per il tuo handler, aggiungi il flag `--handler` a `make:command`:
 
 	php artisan make:command SendEmail --queued --handler
 
-The generated handler will be placed in `App\Handlers\Commands` and will be resolved out of the IoC container.
+L'handler verrà posizionato in `App\Handlers\Commands` e verrà risolto direttamente dal Container.
 
-#### Specifying The Queue / Tube For A Job
+#### Specificare la Coda / Tube per un certo Job
 
-You may also specify the queue / tube a job should be sent to:
+Puoi decidere in quale coda inserire un certo job.
 
 	Queue::pushOn('emails', new SendEmail($message));
 
-#### Passing The Same Payload To Multiple Jobs
+#### Passare lo Stesso Payload a più Job
 
-If you need to pass the same data to several queue jobs, you may use the `Queue::bulk` method:
+Potresti voler passare lo stesso insieme di dati a più job in coda. Usa `Queue::bulk`:
 
 	Queue::bulk(array(new SendEmail($message), new AnotherCommand));
 
-#### Delaying The Execution Of A Job
+#### Dilazionare l'Esecuzione di un Job
 
-Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
+A volte potresti voler dilazionare l'esecuzione di un certo job. Ad esempio, potresti voler inviare un'email ad un cliente 15 minuti dopo la sua registrazione. Basta usare il metodo `Queue::later`, in questo caso:
 
 	$date = Carbon::now()->addMinutes(15);
 
 	Queue::later($date, new SendEmail($message));
 
-In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
+In questo esempio stiamo usando [Carbon](https://github.com/briannesbitt/Carbon) per specificare il delay da assegnare al job. Alternativamente, puoi passare al metodo il numero di secondi di delay che desideri.
 
-> **Note:** The Amazon SQS service has a delay limit of 900 seconds (15 minutes).
+> **Nota:** Amazon SQS ha un delay massimo di 900 secondi (15 Minuti).
 
-#### Queues And Eloquent Models
+#### Code e Model di Eloquent
 
-If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
+Nel caso in cui un job in coda prendesse come parametro del costruttore un model Eloquent, solo l'identificatore principale verrebbe serializzato. Una volta avviato il job in questione, invece, il sistema si occuperebbe automaticamente di recuperare l'istanza completa dal database ed usarla. È una tecnica degna di nota che permette di evitare di occupare molta memoria inutilmente.
 
-#### Deleting A Processed Job
+#### Cancellare un Job
 
-Once you have processed a job, it must be deleted from the queue. If no exception is thrown during the execution of your job, this will be done automatically.
+Dopo aver processato un job, questo viene cancellato dalla coda. Se non vengono lanciate eccezioni durante l'esecuzione, la procedura di eliminazione viene svolta automaticamente.
 
-If you would like to `delete` or `release` the job manually, the `Illuminate\Queue\InteractsWithQueue` trait provides access to the queue job `release` and `delete` methods. The `release` method accepts a single value: the number of seconds you wish to wait until the job is made available again.
+Se invece vuoi cancellare o "rilasciare" un certo job manualmente, il trait `Illuminate\Queue\InteractsWithQueue` offre l'accesso alle procedure di cui si ha bisogno. Il metodo di _release_ accetta un singolo parametro in input: il numero di secondi che vuoi aspettare prima di rendere il job nuovamente "disponibile".
 
 	public function handle(SendEmail $command)
 	{
@@ -98,27 +100,27 @@ If you would like to `delete` or `release` the job manually, the `Illuminate\Que
 		}
 	}
 
-#### Releasing A Job Back Onto The Queue
+#### "Rilasciare" un Job in Coda
 
-IF an exception is thrown while the job is being processed, it will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The number of maximum attempts is defined by the `--tries` switch used on the `queue:listen` or `queue:work` Artisan commands.
+Nel caso in cui venga sollevata un'eccezione durante l'elaborazione di un job, questo verrà automaticamente risistemato in coda, in modo tale da poter effettuare un altro tentativo. Puoi definire, tramite il flag `--tries`, il numero di tentativi.
 
-#### Checking The Number Of Run Attempts
+#### Controllare il Numero di Tentativi
 
-If an exception occurs while the job is being processed, it will automatically be released back onto the queue. You may check the number of attempts that have been made to run the job using the `attempts` method:
+Se vuoi sapere quanti tentativi sono stati fatti da un certo job, usa _attempts_:
 
 	if ($this->attempts() > 3)
 	{
 		//
 	}
 
-> **Note:** Your command / handler must use the `Illuminate\Queue\InteractsWithQueue` trait in order to call this method.
+> **Nota:** ricorda di usare il trait `Illuminate\Queue\InteractsWithQueue` se vuoi richiamare questo metodo.
 
-<a name="queueing-closures"></a>
-## Queueing Closures
+<a name="clousure-coda"></a>
+## Closure in Coda!
 
-You may also push a Closure onto the queue. This is very convenient for quick, simple tasks that need to be queued:
+Se dovessi averne bisogno, puoi decidere anche di mettere una semplice Closure in coda. Per le operazioni più semplici può risultare una comoda scorciatoia.
 
-#### Pushing A Closure Onto The Queue
+#### Mandare in Coda una Closure
 
 	Queue::push(function($job) use ($id)
 	{
@@ -127,57 +129,51 @@ You may also push a Closure onto the queue. This is very convenient for quick, s
 		$job->delete();
 	});
 
-> **Note:** Instead of making objects available to queued Closures via the `use` directive, consider passing primary keys and re-pulling the associated models from within your queue job. This often avoids unexpected serialization behavior.
+> **Nota:** al posto di rendere alcuni oggetti disponibili alla closure tramite _use_, passa invece le chiavi principali e recupera nuovamente i dati. Si tratta di una procedura più sicura che evita svariati comportamenti inaspettati in fase di serializzazione.
 
-When using Iron.io [push queues](#push-queues), you should take extra precaution queueing Closures. The end-point that receives your queue messages should check for a token to verify that the request is actually from Iron.io. For example, your push queue end-point should be something like: `https://yourapp.com/queue/receive?token=SecretToken`. You may then check the value of the secret token in your application before marshalling the queue request.
+Usando le [push queues](#push-queues) di Iron.io, inoltre, dovresti prendere altre precauzioni aggiuntive. L'end point che riceve i messaggi in coda verificherà anche un token legato alla singola request. Ad esempio, il tuo end point potrebbe essere simile a `https://yourapp.com/queue/receive?token=SecretToken`. Controlla il token prima di lavorare la richiesta.
 
-<a name="running-the-queue-listener"></a>
-## Running The Queue Listener
+<a name="eseguire-queue-listener"></a>
+## Eseguire il Queue Listener
 
-Laravel includes an Artisan task that will run new jobs as they are pushed onto the queue. You may run this task using the `queue:listen` command:
+Laravel include, di default, un task Artisan che si occuperà di eseguire tutti i nuovi job messi in coda. Tale comando è `queue:listen`:
 
-#### Starting The Queue Listener
+#### Il Queue Listener
 
 	php artisan queue:listen
 
-You may also specify which queue connection the listener should utilize:
+Puoi anche specificare quale connessione usare per il listener:
 
 	php artisan queue:listen connection
 
-Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
+> **Nota:** una volta che il listener inizia a lavorare, continua fin quando non viene fermato manualmente. Se dovessi averne bisogno, quindi, usa un process monitor come [Supervisor](http://supervisord.org/) per assicurarti che tutto vada liscio.
 
-You may pass a comma-delimited list of queue connections to the `listen` command to set queue priorities:
+Puoi passare anche una serie di connessioni separate da virgola al comando _listen_ per impostare le priorità:
 
 	php artisan queue:listen --queue=high,low
 
-In this example, jobs on the `high-connection` will always be processed before moving onto jobs from the `low-connection`.
+In questo caso, i vari job presenti in _high_ verranno processati prima di quelli presenti in _low_.
 
-#### Specifying The Job Timeout Parameter
+#### Specifica il Timeout per un Job
 
-You may also set the length of time (in seconds) each job should be allowed to run:
+Puoi specificare il timeout di un job in secondi:
 
 	php artisan queue:listen --timeout=60
 
-#### Specifying Queue Sleep Duration
-
-In addition, you may specify the number of seconds to wait before polling for new jobs:
+#### Specifica i Secondi di Attesa prima del Polling
 
 	php artisan queue:listen --sleep=5
 
-Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
+> **Nota:** una coda "dorme" solo se non ci sono job da eseguire.
 
-#### Processing The First Job On The Queue
-
-To process only the first job on the queue, you may use the `queue:work` command:
+#### Processare Solo il Primo Job in Coda
 
 	php artisan queue:work
 
-<a name="daemon-queue-worker"></a>
-## Daemon Queue Worker
+<a name="demone-queue-worker"></a>
+## Il Demone del Queue Worker
 
-The `queue:work` also includes a `--daemon` option for forcing the queue worker to continue processing jobs without ever re-booting the framework. This results in a significant reduction of CPU usage when compared to the `queue:listen` command, but at the added complexity of needing to drain the queues of currently executing jobs during your deployments.
-
-To start a queue worker in daemon mode, use the `--daemon` flag:
+Il comando `queue:work` include anche un flag `--daemon` che forza il worker a proseguire nel processing dei vari job senza riavviare di volta in volta il framework. Il risultato è una riduzione significativa dell'utilizzo della CPU rispetto ad un _queue:listen_.
 
 	php artisan queue:work connection --daemon
 
@@ -185,87 +181,87 @@ To start a queue worker in daemon mode, use the `--daemon` flag:
 
 	php artisan queue:work connection --daemon --sleep=3 --tries=3
 
-As you can see, the `queue:work` command supports most of the same options available to `queue:listen`. You may use the `php artisan help queue:work` command to view all of the available options.
+Come puoi vedere, il comando _queue:work_ supporta tutti i vari flag visti prima per `queue:listen`.
 
-### Deploying With Daemon Queue Workers
+### Deploy con il Demone del Queue Worker
 
-The simplest way to deploy an application using daemon queue workers is to put the application in maintenance mode at the beginning of your deployment. This can be done using the `php artisan down` command. Once the application is in maintenance mode, Laravel will not accept any new jobs off of the queue, but will continue to process existing jobs.
+Il miglior modo di effettuare il deploy di un'applicazione usando i vari worker è di mettere l'applicazione in modalità di manutenzione all'inizio del deploy. Puoi farlo tramite _php artisan down_. Una volta che l'applicazione è in manutenzione, Laravel non accetta più job da mettere in coda, ma continuerà a processare quelli già presenti.
 
-The easiest way to restart your workers is to include the following command in your deployment script:
+Includi inoltre nel tuo script di deploy il comando di _restart_:
 
 	php artisan queue:restart
 
-This command will instruct all queue workers to restart after they finish processing their current job.
+> **Nota:** il comando fa affidamento al sistema di cache per schedulare il riavvio. Di default, APCu non lavora con i comandi via CLI. Se usi APCu ricorda di aggiungere al tuo file di configurazione `apc.enable_cli=1`.
 
-> **Note:** This command relies on the cache system to schedule the restart. By default, APCu does not work for CLI commands. If you are using APCu, add `apc.enable_cli=1` to your APCu configuration.
+### Scrivere Codice per un Worker
 
-### Coding For Daemon Queue Workers
+I queue worker non riavviano il framework prima di processare ogni job. In ogni caso dovresti comunque fare attenzione a liberare la memoria (soprattutto dagli oggetti più pesanti) prima della fine del job. Ad esempio, se stai lavorando con la libreria GD per le immagini, usa _imagedestroy_ quando hai finito.
 
-Daemon queue workers do not restart the framework before processing each job. Therefore, you should be careful to free any heavy resources before your job finishes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
+Per motivi simili potresti avere qualche problema con la connessione al database. Per essere sicuro di avere sempre una connessione "fresca" usa il metodo `DB::reconnect`.
 
-Similarly, your database connection may disconnect when being used by long-running daemon. You may use the `DB::reconnect` method to ensure you have a fresh connection.
+<a name="code-push"></a>
+## Code Push
 
-<a name="push-queues"></a>
-## Push Queues
+Le code push ti permettono di usare le varie facility di Laravel dedicate alle code senza dover lavorare con demoni e background listener di ogni sorta. Questo sistema è supportato solo dal driver di [Iron.io](http://iron.io). Prima di iniziare crea un account su Iron.io ed inserisci le credenziali nel file `config/queue.php`.
 
-Push queues allow you to utilize the powerful Laravel 4 queue facilities without running any daemons or background listeners. Currently, push queues are only supported by the [Iron.io](http://iron.io) driver. Before getting started, create an Iron.io account, and add your Iron credentials to the `config/queue.php` configuration file.
+#### Registrare un Subscriver
 
-#### Registering A Push Queue Subscriber
-
-Next, you may use the `queue:subscribe` Artisan command to register a URL end-point that will receive newly pushed queue jobs:
+Puoi usare il comando `queue:subscribe` di Artisan per registrare un endpoint che riceva i nuovi job.
 
 	php artisan queue:subscribe queue_name http://foo.com/queue/receive
 
-Now, when you login to your Iron dashboard, you will see your new push queue, as well as the subscribed URL. You may subscribe as many URLs as you wish to a given queue. Next, create a route for your `queue/receive` end-point and return the response from the `Queue::marshal` method:
+Eseguendo il login su Iron vedrai quindi la cosa, così come l'URL specificata. Crea quindi una route per _queue/receive_ in questo modo:
 
 	Route::post('queue/receive', function()
 	{
 		return Queue::marshal();
 	});
 
-The `marshal` method will take care of firing the correct job handler class. To fire jobs onto the push queue, just use the same `Queue::push` method used for conventional queues.
+Il metodo _marshal_ si occuperà di fare tutto il resto.
 
-<a name="failed-jobs"></a>
-## Failed Jobs
+<a name="job-falliti"></a>
+## Job Falliti
 
-Since things don't always go as planned, sometimes your queued jobs will fail. Don't worry, it happens to the best of us! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into a `failed_jobs` table. The failed jobs table name can be configured via the `config/queue.php` configuration file.
+Visto che le cose non vanno sempre come le pianifichi, alcuni job potrebbero fallire. Come hai già visto prima, puoi assegnare il numero di tentativi da effettuare. Cosa fare, però, nel caso in cui volessi segnarti tutto quello che ti sfugge?
 
-To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
+Puoi usare il comando `queue:failed-table` per creare una tabella `failed_jobs`.
 
 	php artisan queue:failed-table
 
-You can specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:listen` command:
+Specifica il numero massimo di tentativi...
 
 	php artisan queue:listen connection-name --tries=3
 
-If you would like to register an event that will be called when a queue job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via e-mail or [HipChat](https://www.hipchat.com).
+ed è fatta! Gli eventuali job non andati a buon fine verranno registrati qui.
+
+Se dovessi averne bisogno, inoltre, c'è il metodo `Queue::failing` che ti permette di specificare cosa fare in caso di faillimento di un job.
 
 	Queue::failing(function($connection, $job, $data)
 	{
 		//
 	});
 
-You may also define a `failed` method directly on a queue job class, allowing you to perform job specific actions when a failure occurs:
+In ogni classe di un job, inoltre, puoi specificare un metodo _failed_ che ti permette di decidere cosa fare per il singolo job in caso di fallimento.
 
 	public function failed()
 	{
 		// Called when the job is failing...
 	}
 
-### Retrying Failed Jobs
+### Riprovare ad Eseguire i Job Falliti
 
-To view all of your failed jobs, you may use the `queue:failed` Artisan command:
+Per visualizzare una lista dei vari job non andati a buon fine, usa
 
 	php artisan queue:failed
 
-The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of 5, the following command should be issued:
+Da questa lista puoi ottenere i vari ID, che puoi usare per riprovare un job fallito tramite _retry_:
 
 	php artisan queue:retry 5
 
-If you would like to delete a failed job, you may use the `queue:forget` command:
+Per cancellare un job andato male, invece, puoi usare _forget_.
 
 	php artisan queue:forget 5
 
-To delete all of your failed jobs, you may use the `queue:flush` command:
+Infine, usa _flush_ per cancellare tutto quello che non è andato bene.
 
 	php artisan queue:flush
