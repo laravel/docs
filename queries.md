@@ -31,7 +31,7 @@
 		var_dump($user->name);
 	}
 
-#### Chunking Results From A Table
+#### 從資料表中分塊查詢資料列
 
 	DB::table('users')->chunk(100, function($users)
 	{
@@ -41,7 +41,7 @@
 		}
 	});
 
-You may stop further chunks from being processed by returning `false` from the `Closure`:
+藉由在 `Closure` 中回傳 `false` 來停止處理接下來的資料列：
 
 	DB::table('users')->chunk(100, function($users)
 	{
@@ -269,7 +269,7 @@ You may stop further chunks from being processed by returning `false` from the `
 	            ->where('id', 1)
 	            ->update(array('votes' => 1));
 
-#### Incrementing or decrementing a value of a column
+#### 自增或自減一個欄位的值
 
 	DB::table('users')->increment('votes');
 
@@ -279,7 +279,7 @@ You may stop further chunks from being processed by returning `false` from the `
 
 	DB::table('users')->decrement('votes', 5);
 
-You may also specify additional columns to update:
+也能夠同時指定其他要更新的欄位：
 
 	DB::table('users')->increment('votes', 1, array('name' => 'John'));
 
