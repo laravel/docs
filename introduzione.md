@@ -17,7 +17,7 @@ Non sai da dove iniziare? Questi sono i nostri suggerimenti:
 - [View](/view)
 - [Controller](/controller)
 
-Dopo aver letto i capitoli appena elencati già sarai più capace di maneggiare il framework e capirne le potenzialità base. Un passo successivo, quindi, sarebbe l'approfondire la [configurazione del database](/database), l'uso di [Fluent, il query builder](/query) e di [Eloquent ORM](/eloquent). O, ancora, potresti leggere qualcosa sulla [sicurezza e l'autenticazione](/autenticazione) in modo tale da permettere ai tuoi primi utenti di iscriversi alla tua applicazione.
+Dopo aver letto i capitoli appena elencati già sarai più capace di maneggiare il framework e capirne le potenzialità base. Un passo successivo, quindi, sarebbe l'approfondire la [configurazione del database](/database), l'uso di [Fluent, il query builder](/query-builder) e di [Eloquent ORM](/eloquent). O, ancora, potresti leggere qualcosa sulla [sicurezza e l'autenticazione](/autenticazione) in modo tale da permettere ai tuoi primi utenti di iscriversi alla tua applicazione.
 
 <a name="filosofia-di-laravel"></a>
 ## La Filosofia di Laravel
