@@ -1,12 +1,12 @@
 # Collections
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
+- [介紹](#introduction)
+- [基本用法](#basic-usage)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper for working with arrays of data. For example, check out the following code. We'll use the `collect` helper to create a new collection instance from the array:
+`Illuminate\Support\Collection` 類別提供一個流暢、方便的封裝來操作陣列資料。舉個例子，查看下面的程式碼。我們將會使用 `collect` 輔助方法來用陣列建立一個新的集合實例：
 
 	$collection = collect(['taylor', 'abigail', null])->map(function($name)
 	{
@@ -18,21 +18,21 @@ The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper 
 	});
 
 
-As you can see, the `Collection` class allows you to chain its methods to perform fluent mapping and reducing of the underlying array. In general, every `Collection` method returns an entirely new `Collection` instance. To dig in further, keep reading!
+就像你可以看到的，`Collection` 類別允許你串接它的方法對背後的陣列執行流暢的映射和歸納。一般說來，每一個 `Collection` 的方法都回傳一個全新的 `Collection` 實例。為了更深一步的了解，請繼續閱讀！
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-#### Creating Collections
+#### 建立集合
 
-As mentioned above, the `collect` helper will return a new `Illuminate\Support\Collection` instance for the given array. You may also use the `make` command on the `Collection` class:
+如上述，`collect` 輔助方法將會用給定的陣列回傳一個新的 `Illuminate\Support\Collection` 實例。你也可以在 `Collection` 類別上使用 `make` 指令：
 
 	$collection = collect([1, 2, 3]);
 
 	$collection = Collection::make([1, 2, 3]);
 
-Of course, collections of [Eloquent](/docs/5.0/eloquent) objects are always returned as `Collection` instances; however, you should feel free to use the `Collection` class wherever it is convenient for your application.
+當然，[Eloquent](/docs/5.0/eloquent) 的集合物件總是回傳 `Collection` 實例；然而，你應該隨意在方便應用程式的地方使用 `Collection` 類別。
 
-#### Explore The Collection
+#### 探索集合
 
-Instead of listing all of the methods (there are a lot) the Collection makes available, check out the [API documentation for the class](http://laravel.com/api/master/Illuminate/Support/Collection.html)!
+作為列出集合可以用的所有方法 (有很多) 的替代，請查看 [類別的 API 文件](http://laravel.com/api/master/Illuminate/Support/Collection.html)！
