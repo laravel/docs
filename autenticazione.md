@@ -58,7 +58,7 @@ Se scegli di non usare l'implementazione offerta da `AuthController`, avrai biso
 
 	}
 
-Il metodo `attempt` accetta un array di coppie chiave / valore come suo primo parametro. Il valore di `password` sarà [codificato](/docs/master/hashing). Gli altri valori nell'array saranno usati per cercare l'utente nella tabella user del database. Quindi, in questo esempio sopra, l'utente verrà ricercato dal valore della colonna `email`. Se l'utente è presente, la password codificata nel database verrà confrontata con il valore di `password` passato al metodo tramite array. Se le due password coincidono, verrà iniziata una nuova sessione di autenticazione per l'utente.
+Il metodo `attempt` accetta un array di coppie chiave / valore come suo primo parametro. Il valore di `password` sarà [codificato](/hashing). Gli altri valori nell'array saranno usati per cercare l'utente nella tabella user del database. Quindi, in questo esempio sopra, l'utente verrà ricercato dal valore della colonna `email`. Se l'utente è presente, la password codificata nel database verrà confrontata con il valore di `password` passato al metodo tramite array. Se le due password coincidono, verrà iniziata una nuova sessione di autenticazione per l'utente.
 
 Il metodo `attempt` restituirà `true` se l'autenticazione ha avuto successo. Altrimenti, verrà restituito `false`.
 
@@ -140,7 +140,7 @@ Ovviamente, se stai usando i controller built-in, per la gestione dell'autentica
 
 #### Eventi Di Autenticazione
 
-Quando viene eseguito il metodo `attempt`, viene lanciato l'[evento](/docs/master/events) `auth.attempt`. Se l'autenticazione ha avuto successo e l'utente è loggato, verrà lanciato l'evento `auth.login`. 
+Quando viene eseguito il metodo `attempt`, viene lanciato l'[evento](/eventi) `auth.attempt`. Se l'autenticazione ha avuto successo e l'utente è loggato, verrà lanciato l'evento `auth.login`. 
 
 <a name="recupero-utenti-autenticati"></a>
 ## Recupero Utenti Autenticati
@@ -194,7 +194,7 @@ In secondo luogo, puoi avere accesso all'utente autenticato tramite un istanza d
 
 	}
 
-In terzo luogo, puoi passare il contract `Illuminate\Contracts\Auth\User`. Puoi aggiungerlo o al costruttore del controller, o al metodo, oppure in qualsiasi altra classe risolta dal [service container](/docs/master/container):
+In terzo luogo, puoi passare il contract `Illuminate\Contracts\Auth\User`. Puoi aggiungerlo o al costruttore del controller, o al metodo, oppure in qualsiasi altra classe risolta dal [service container](/container):
 
 	<?php namespace App\Http\Controllers;
 
@@ -218,7 +218,7 @@ In terzo luogo, puoi passare il contract `Illuminate\Contracts\Auth\User`. Puoi 
 <a name="route-protette"></a>
 ## Route Protette
 
-I [Route middleware](/docs/master/middleware) possono essere usati per permettere ai soli utenti autenticati di accedere ad una particolare route. Laravel offre di default il middleware `auth`, definito nel file `app\Http\Middleware\Authenticate.php`. Tutto ciò di cui hai bisogno è appendere questo filtro nella definizione della route:
+I [Route middleware](/middleware) possono essere usati per permettere ai soli utenti autenticati di accedere ad una particolare route. Laravel offre di default il middleware `auth`, definito nel file `app\Http\Middleware\Authenticate.php`. Tutto ciò di cui hai bisogno è appendere questo filtro nella definizione della route:
 
 	// Tramite Route Closure...
 
@@ -247,7 +247,7 @@ Di default, il middleware `basic` userà la colonna `email` del record utente co
 
 #### Impostare Un Filtro HTTP Basic Stateless
 
-Puoi inoltre usare l'autenticazione HTTP Basic senza impostare un cookie nella sessione, particolarmente utile per un API di autenticazione. Per fare ciò [definisci un middleware](/docs/master/middleware) che richiami il metodo `onceBasic`:
+Puoi inoltre usare l'autenticazione HTTP Basic senza impostare un cookie nella sessione, particolarmente utile per un API di autenticazione. Per fare ciò [definisci un middleware](/middleware) che richiami il metodo `onceBasic`:
 
 	public function handle($request, Closure $next)
 	{
@@ -294,7 +294,7 @@ Per iniziare ad usare Socialite, includi il package nel tuo file `composer.json`
 	"laravel/socialite": "~2.0"
 
 Successivamente, registra `Laravel/Socialite/SocialiteServiceProvider` nel tuo file di configurazione
-`config/app.php`. Puoi anche registrarlo come una [facade](/docs/master/facades):
+`config/app.php`. Puoi anche registrarlo come una [facade](/facades):
 
 	'Socialize' => 'Laravel\Socialite\Facades\Socialite',
 
