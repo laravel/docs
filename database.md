@@ -1,6 +1,6 @@
 # 資料庫使用基礎
 
-- [配置](#configuration)
+- [設定](#configuration)
 - [讀取 / 寫入 連接](#read-write-connections)
 - [執行查詢](#running-queries)
 - [資料庫交易](#database-transactions)
@@ -8,18 +8,18 @@
 - [查詢日誌紀錄](#query-logging)
 
 <a name="configuration"></a>
-## 設置
+## 設定
 
 Laravel 讓連結資料庫和執行查尋變得相當容易。 資料庫相關設定檔案都在 `config/database.php`。 在這個檔案你可以定義你所有的資料庫連線， 以及指定資料庫在預設情況下應該使用哪個連線並提供所有支援的資料庫系統的範例。
 
 目前 Laravel 支援四種資料庫系統： **MySQL**、**Postgres**、**SQLite**、以及 **SQL Server**。
 
 <a name="read-write-connections"></a>
-## 讀取 / 寫入 連接資料庫
+## 讀取/寫入 連接資料庫
 
 有時候你可能希望連接資料庫並使用 **SELECT** 語法或者是其他 **INSERT**、**UPDATE**、以及 **DELETE** 語法。 **Laravel** 讓這些變得輕鬆簡單，並使用正確的連接，不論你使用原始查詢、查詢建立器、或者是 **Eloquent ORM**。
 
-來看看如何 讀取 / 寫入 連結資料庫應該如何設置，讓我們來看以下的範例：
+來看看如何 讀取/寫入 連結資料庫應該如何設置，讓我們來看以下的範例：
 
 	'mysql' => [
 		'read' => [
@@ -37,12 +37,12 @@ Laravel 讓連結資料庫和執行查尋變得相當容易。 資料庫相關�
 		'prefix'    => '',
 	],
 
-請注意兩個 key 值已經被加到配置陣列： `read` 及 `write`。 這兩個 key 值(read、write)都包含了一個 key 值陣列值：`host`。 其餘的資料庫選項 `read` 及 `write` 會在連接資料庫被 `mysql` 陣列合併。 所以，如果我們想要重寫主陣列中的值，只要將選項放入在 `read` 和 `write` 陣列。 所以在這個情況下， `192.168.1.1` 將被用作 "讀取" 連接，而 `192.168.1.2` 將被用作 "寫入" 連接。 資料庫憑證、 前綴、 字元編碼設定、 以及其他所有的設定在 `mysql` 陣列將會在連接之間共用。
+請注意兩個 key 值已經被加到設定的陣列： `read` 及 `write`。 這兩個 key 值(read、write)都包含了一個 key 值陣列值：`host`。 其餘的資料庫選項 `read` 及 `write` 會在連接資料庫被 `mysql` 陣列合併。 所以，如果我們想要重寫主陣列中的值，只要將選項放入在 `read` 和 `write` 陣列。 所以在這個情況下， `192.168.1.1` 將被用作 "讀取" 連接，而 `192.168.1.2` 將被用作 "寫入" 連接。 資料庫憑證、 前綴、 字元編碼設定、 以及其他所有的設定在 `mysql` 陣列將會在連接之間共用。
 
 <a name="running-queries"></a>
 ## 執行查詢
 
-如果設置好你的資料庫連接，就可以執行查詢使用 `DB` **facade**。
+如果設定好資料庫連線，就可以透過 `DB` facade 執行查詢功能。
 
 
 #### 執行 Select 查詢
@@ -96,11 +96,11 @@ Laravel 讓連結資料庫和執行查尋變得相當容易。 資料庫相關�
 
 	DB::beginTransaction();
 
-你可以透過 `rollback` 方法去返回你的交易：
+你可以透過 `rollback` 的方法去返回你的交易：
 
 	DB::rollback();
 
-最後，你可以透過 `commit` 方法去提交你的交易：
+最後，你可以透過 `commit` 的方法去提交你的交易：
 
 	DB::commit();
 
@@ -115,11 +115,11 @@ Laravel 讓連結資料庫和執行查尋變得相當容易。 資料庫相關�
 
 	$pdo = DB::connection()->getPdo();
 
-有時後你可能需要重新連接到給定的資料庫：
+有時後你可能需要重新連接到指定的資料庫：
 
 	DB::reconnect('foo');
 
-因為超過了 **PDO** 實例下 `max_connections` 的限制，需要斷開連線從給定的資料庫，你可以透過 `disconnect` 的方法:
+因為超過了 **PDO** 實例下 `max_connections` 的限制，需要斷線從指定的資料庫，你可以透過 `disconnect` 的方法:
 
 	DB::disconnect('foo');
 
