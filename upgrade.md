@@ -21,6 +21,8 @@ Don't forget to copy any additional Composer dependencies into your 5.0 applicat
 
 Some Laravel-specific packages may not be compatible with Laravel 5 on initial release. Check with your package's maintainer to determine the proper version of the package for Laravel 5. Once you have added any additional Composer dependencies your application needs, run `composer update`.
 
+> The `illuminate/html` package has changed maintainers. You can install `"laravelcollective/html": "~5.0"` in Laravel 5.
+
 ### Namespacing
 
 By default, Laravel 4 applications did not utilize namespacing within your application code. So, for example, all Eloquent models and controllers simply lived in the "global" namespace. For a quicker migration, you can simply leave these classes in the global namespace in Laravel 5 as well.
