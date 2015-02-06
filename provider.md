@@ -52,7 +52,7 @@ Ora, dai un occhiata a questo service provider di base:
 
 	}
 
-Questo service provider definisce solo il metodo `register`, ed usa il metodo per definire un'implementazione di `Riak\Contracts\Connection` nel service container. Se non hai presente come il service container lavora, non preoccuparti [lo vedremo presto](/docs/master/container).
+Questo service provider definisce solo il metodo `register`, ed usa il metodo per definire un'implementazione di `Riak\Contracts\Connection` nel service container. Se non hai presente come il service container lavora, non preoccuparti [lo vedremo presto](/container).
 
 Questa classe è definita sotto il namespace `App\Providers` dal momento che rappresenta la posizione di default dei service provider in Laravel. Tuttavia, sei libero di cambiarlo come meglio preferisci. I tuoi service provider possono essere posizionani dovunque visto che Composer può comunque caricarli.
 
@@ -114,7 +114,7 @@ Per registrare il tuo provider, aggiungi semplicemente questa riga all'array:
 <a name="provider-differiti></a>
 ## Provider Differiti
 
-Se il tuo provider è registrato **soltanto** come binding nel [service container](/docs/master/container), puoi scegliere di differire la sua registrazione solo se il binding registrato è strettamente necessario. Differire il caricamento di un provider migliorerà le prestazioni della tua applicazione, dal momento che non viene caricato nel filesystem ad ogni richiesta.
+Se il tuo provider è registrato **soltanto** come binding nel [service container](/container), puoi scegliere di differire la sua registrazione solo se il binding registrato è strettamente necessario. Differire il caricamento di un provider migliorerà le prestazioni della tua applicazione, dal momento che non viene caricato nel filesystem ad ogni richiesta.
 
 Per differire il caricamento di un provider, imposta la proprietà `defer` su `true` e definisci un metodo `provides`. Il metodo `provides` ritorna il binding del service container che il provider registra:
 
