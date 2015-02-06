@@ -1,26 +1,26 @@
 # Laravel Homestead
 
-- [Introduction](#introduction)
-- [Included Software](#included-software)
-- [Installation & Setup](#installation-and-setup)
-- [Daily Usage](#daily-usage)
-- [Ports](#ports)
+- [導覽](#introduction)
+- [內建軟體](#included-software)
+- [安裝與設定](#installation-and-setup)
+- [常見用法](#daily-usage)
+- [連接埠](#ports)
 
 <a name="introduction"></a>
-## Introduction
+## 導覽
 
-Laravel strives to make the entire PHP development experience delightful, including your local development environment. [Vagrant](http://vagrantup.com) provides a simple, elegant way to manage and provision Virtual Machines.
+Laravel 致力於讓 PHP 開發體驗更愉快，也包含你的本地開發環境。[Vagrant](http://vagrantup.com) 提供了一個簡單、優雅的方式來管理與供應虛擬機器。
 
-Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a wonderful development environment without requiring you to install PHP, HHVM, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
+Laravel Homestead 是一個官方預載的 Vagrant「封裝包」，提供你一個美好的開發環境，你不需要在你的本機端安裝 PHP、HHVM、網頁伺服器或任何伺服器軟體。不用擔心搞亂你的系統！Vagrant 封裝包可以搞定一切。如果有什麼地方爛掉了，你可以在幾分鐘內快速的砍掉並重建虛擬機器。
 
-Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached, and all of the other goodies you need to develop amazing Laravel applications.
+Homestead 可以在任何 Windows、Mac 或 Linux 上面運行，裏面包含了 Nginx 網頁伺服器、PHP 5.6、MySQL、Postgres、Redis、Memcached 還有所有你要開發精彩的 Laravel 應用程式所需的軟體。
 
-> **Note:** If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS.
+> **附註：** 如果您是 Windows 的使用者，您可能需要啟用硬體虛擬化（VT-x）。通常需要透過 BIOS 來啟用它。
 
-Homestead is currently built and tested using Vagrant 1.6.
+Homestead 目前是建置且測試於 Vagrant 1.6。
 
 <a name="included-software"></a>
-## Included Software
+## 內建軟體
 
 - Ubuntu 14.04
 - PHP 5.6
@@ -36,69 +36,69 @@ Homestead is currently built and tested using Vagrant 1.6.
 - Fabric + HipChat Extension
 
 <a name="installation-and-setup"></a>
-## Installation & Setup
+## 安裝與設定
 
-### Installing VirtualBox & Vagrant
+### 安裝 VirtualBox 與 Vagrant
 
-Before launching your Homestead environment, you must install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) and [Vagrant](http://www.vagrantup.com/downloads.html). Both of these software packages provide easy-to-use visual installers for all popular operating systems.
+在啟動你的 Homestead 環境之前，你必須先安裝 [VirtualBox](https://www.virtualbox.org/wiki/Downloads) 和 [Vagrant](http://www.vagrantup.com/downloads.html). 兩套軟體在各平台都有提供易用的視覺化安裝程式。
 
-### Adding The Vagrant Box
+### 增加 Vagrant 封裝包
 
-Once VirtualBox and Vagrant have been installed, you should add the `laravel/homestead` box to your Vagrant installation using the following command in your terminal. It will take a few minutes to download the box, depending on your Internet connection speed:
+當 VirtualBox 和 Vagrant 安裝完成後，你可以在終端機以下列命令將 'laravel/homestead' 封裝包安裝進你的 Vagrant 安裝程式中。下載封裝包會花你一點時間，時間長短將依據你的網路速度決定:
 
 	vagrant box add laravel/homestead
 
-### Installing Homestead
+### 安裝 Homestead
 
-#### Manually Via Git (No Local PHP)
+#### 手動透過 Git 安裝（本地端沒有 PHP）
 
-Alternatively, if you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
+如果你不希望在你的本機上安裝 PHP ，你可以簡單地透過手動複製資源庫的方式來安裝 Homestead。建議可將資源庫複製至你的 "home" 目錄中的 `Homestead` 資料夾，如此一來 Homestead 封裝包將能提供主機服務給你所有的 Laravel（及 PHP）專案:
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
-Once you have installed the Homestead CLI tool, run the `bash init.sh` command to create the `Homestead.yaml` configuration file:
+一旦你安裝完 Homestead CLI 工具，即可執行 `bash init.sh` 指令來創建 `Homestead.yaml` 設定檔:
 
 	bash init.sh
 
-The `Homestead.yaml` file will be placed in your `~/.homestead` directory.
+此 `Homestead.yaml` 檔，將會被放置在你的 `~/.homestead` 目錄中。
 
-#### With Composer + PHP Tool
+#### 透過 Composer + PHP 工具
 
-Once the box has been added to your Vagrant installation, you are ready to install the Homestead CLI tool using the Composer `global` command:
+一旦封裝包已經安裝進你的 Vagrant 安裝程式，你就可以準備透過 Composer `global` 指令來安裝 Homestead CLI 工具：
 
 	composer global require "laravel/homestead=~2.0"
 
-Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `homestead` executable is found when you run the `homestead` command in your terminal.
+請務必確認 `homestead` 有被放置在目錄 `~/.composer/vendor/bin` 之中，如此一來你才能在終端機中順利執行 `homestead` 指令。
 
-Once you have installed the Homestead CLI tool, run the `init` command to create the `Homestead.yaml` configuration file:
+一旦你安裝完 Homestead CLI 工具，即可執行 `init` 指令來創建 `Homestead.yaml` 設定檔:
 
 	homestead init
 
-The `Homestead.yaml` file will be placed in the `~/.homestead` directory. If you're using a Mac or Linux system, you may edit `Homestead.yaml` file by running the `homestead edit` command in your terminal:
+此 `Homestead.yaml` 將會被放置在你的 `~/.homestead` 資料夾中。如果你是使用 Mac 或 Linux，你可以直接在終端機執行 `homestead edit` 指令來編輯 `Homestead.yaml` :
 
 	homestead edit
 
-### Set Your SSH Key
+### 設定你的 SSH 金鑰
 
-Next, you should edit the `Homestead.yaml` file. In this file, you can configure the path to your public SSH key, as well as the folders you wish to be shared between your main machine and the Homestead virtual machine.
+再來你要編輯 `Homestead.yaml`。可以在檔案中設定你的 SSH 公開金鑰，以及主要機器與 Homestead 虛擬機器之間的共享目錄。
 
-Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pair using the following command:
+你沒有 SSH 金鑰？在 Mac 和 Linux 下，你可以利用下面的指令來創建一個 SSH 金鑰組:
 
 	ssh-keygen -t rsa -C "you@homestead"
 
-On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` shell included with Git to issue the command above. Alternatively, you may use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
+在 Windows 下，你需要安裝 [Git](http://git-scm.com/) 並且使用包含在 Git 裏的 `Git Bash` 來執行上述的指令。另外你也可以使用 [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) 和 [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)。
 
-Once you have created a SSH key, specify the key's path in the `authorize` property of your `Homestead.yaml` file.
+一旦你創建了一個 SSH 金鑰，記得在你的 `Homestead.yaml` 檔案中的 `authorize` 屬性指明金鑰路徑。
 
-### Configure Your Shared Folders
+### 設定你的共享資料夾
 
-The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary!
+`Homestead.yaml` 檔案中的 `folders` 屬性列出所有你想跟你的 Homestead 環境共享的資料夾列表。這些資料夾中的檔案若有更動，他們將會同步在你的本機與 Homestead 環境裡。你可以將你需要的共享資料夾都設定進去。
 
-### Configure Your Nginx Sites
+### 設定你的 Nginx 站台
 
-Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on!
+對 Nginx 不熟悉？沒關係。`sites` 屬性允許你簡單的對應一個 `網域` 到一個 homestead 環境中的目錄。一個範例的站台設定被在 `Homestead.yaml` 檔案中。同樣的，你可以加任何你需要的站台到你的 Homestead 環境中。Homestead 可以為你每個進行中的 Laravel 專案提供方便的虛擬化環境。
 
-You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm` option to `true`:
+你可以透過設定 `hhvm` 屬性為 `true` 來讓虛擬站台支援 [HHVM](http://hhvm.com):
 
 	sites:
 	    - map: homestead.app
@@ -107,59 +107,59 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
 
 ### Bash Aliases
 
-To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the `~/.homestead` directory.
+如果要增加 Bash aliases 到你的 Homestead 封裝包中，只要將內容加到 `~/.homestead` 目錄最上層的 `aliases` 檔案中即可。
 
-### Launch The Vagrant Box
+### 啟動 Vagrant 封裝包
 
-Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from your Homestead directory.
+當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機裡進入你的 Homestead 資料夾並執行 `vagrant up` 指令。
 
-Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically! To destroy the machine, you may use the `vagrant destroy --force` command.
+Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx 站台。如果要移除虛擬機器，可以使用 `vagrant destroy --force` 指令。
 
-Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
+為了你的 Nginx 站台，別忘記在你的機器的 `hosts` 檔將「網域」加進去。`hosts` 檔會將你的本地網域的站台請求重導至你的 Homestead 環境中。在 Mac 和 Linux，該檔案放在 `/etc/hosts`。在 Windows 環境中，它被放置在 `C:\Windows\System32\drivers\etc\hosts`。你要加進去的內容類似如下：
 
 	192.168.10.10  homestead.app
 
-Make sure the IP address listed is the one you set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file, you can access the site via your web browser!
+務必確認 IP 位置與你的 `Homestead.yaml` 檔案中的相同。一旦你將網域加進你的 `hosts` 檔案中，你就可以透過網頁瀏覽器 存取到你的站台。
 
 	http://homestead.app
 
-To learn how to connect to your databases, read on!
+繼續讀下去，你會學到如何連結到資料庫！
 
 <a name="daily-usage"></a>
-## Daily Usage
+## 常見用法
 
-### Connecting Via SSH
+### 透過 SSH 連接
 
-To connect to your Homestead environment via SSH, issue the `vagrant ssh` command from your Homestead directory.
+要透過 SSH 連接上您的 Homestead 環境，在終端機裡進入你的 Homestead 目錄並執行  `vagrant ssh` 指令。
 
-Since you will probably need to SSH into your Homestead machine frequently, consider creating an "alias" on your host machine:
+因為你可能會經常需要透過 SSH 進入你的 Homestead 虛擬機器，可以考慮在你的主要機器上創建一個"別名":
 
 	alias vm="ssh vagrant@127.0.0.1 -p 2222"
 
-Once you create this alias, you can simply use the "vm" command to SSH into your Homestead machine from anywhere on your system.
+一旦你創建了這個別名，無論你在主要機器的哪個目錄，都可以簡單地使用 "vm" 指令來透過 SSH 進入你的 Homestead 虛擬機器。
 
-### Connecting To Your Databases
+### 連結資料庫
 
-A `homestead` database is configured for both MySQL and Postgres out of the box. For even more convenience, Laravel's `local` database configuration is set to use this database by default.
+在 `Homestead` 封裝包中，MySQL 與 Postgres 兩套資料庫都已預裝其中。為了更簡便，Laravel 的 `local` 資料庫設定已經預設將其設定完成。
 
-To connect to your MySQL or Postgres database from your main machine via Navicat or Sequel Pro, you should connect to `127.0.0.1` and port 33060 (MySQL) or 54320 (Postgres). The username and password for both databases is `homestead` / `secret`.
+如果想要從本機上透過 Navicat 或者是 Sequel Pro 連接 MySQL 或者 Postgres 資料庫，你可以連接 `127.0.0.1` 的埠 33060 (MySQL) 或 54320 (Postgres)。而帳號密碼分別是 `homestead` / `secret`。
 
-> **Note:** You should only use these non-standard ports when connecting to the databases from your main machine. You will use the default 3306 and 5432 ports in your Laravel database configuration file since Laravel is running _within_ the Virtual Machine.
+> **附註：** 從本機端你應該只能使用這些非標準的連接埠來連接資料庫。因為當 Laravel 運行在虛擬機器時，在 Laravel 的資料庫設定檔中依然是設定使用預設的 3306 及 5432 連接埠。
 
-### Adding Additional Sites
+### 增加更多的站台
 
-Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. There are two ways to do this: First, you may simply add the sites to your `Homestead.yaml` file and then run `vagrant provision`.
+一旦 Homestead 環境上架且運行後，你可能會需要為 Laravel 應用程式增加更多的 Nginx 站台。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。有兩種方式可以達成：第一種，在 `Homestead.yaml` 檔案中增加站台然後執行 `vagrant provision`。
 
-Alternatively, you may use the `serve` script that is available on your Homestead environment. To use the `serve` script, SSH into your Homestead environment and run the following command:
+另外，也可以使用存放在 Homestead 環境中的 `serve` 指令檔。要使用 `serve` 指令檔，請先 SSH 進入 Homestead 環境中，並執行下列命令：
 
 	serve domain.app /home/vagrant/Code/path/to/public/directory
 
-> **Note:** After running the `serve` command, do not forget to add the new site to the `hosts` file on your main machine!
+> **附註：** 在執行 `serve` 指令過後，別忘記將新的站台加進本機的 `hosts` 檔案中。
 
 <a name="ports"></a>
-## Ports
+## 連接埠
 
-The following ports are forwarded to your Homestead environment:
+以下的埠將會被重導至 Homestead 環境：
 
 - **SSH:** 2222 &rarr; Forwards To 22
 - **HTTP:** 8000 &rarr; Forwards To 80
