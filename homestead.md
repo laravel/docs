@@ -34,7 +34,7 @@ Al momento, Homestead usa Vagrant 1.6.
 - Redis
 - Memcached
 - Beanstalkd
-- [Laravel Envoy](/ssh#envoy)
+- Laravel Envoy
 - Fabric + HipChat Extension
 
 <a name="installazione-setup"></a>
