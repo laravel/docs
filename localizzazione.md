@@ -101,7 +101,7 @@ Dato che Laravel utilizza il componente Translation di Symfony, inoltre, puoi an
 <a name="validazione"></a>
 ## Validazione
 
-Per la localizzazione dei messaggi di errore e di validazione dai uno sguardo alla <a href="/docs/master/validation#localization">documentazione sulla Validazione</a>.
+Per la localizzazione dei messaggi di errore e di validazione dai uno sguardo alla [documentazione sulla Validazione](/validazione).
 
 <a name="sovrascrivere-language-file-package"></a>
 ## Sosvrascrivere I Language File Di Un Package
