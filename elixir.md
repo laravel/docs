@@ -4,7 +4,6 @@
 - [Installation & Setup](#installation)
 - [Usage](#usage)
 - [Gulp](#gulp)
-- [Directory Defaults](#defaults)
 - [Extensions](#extensions)
 
 <a name="introduction"></a>
