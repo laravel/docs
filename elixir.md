@@ -193,6 +193,19 @@ Within your views, you may use the `elixir()` function to load the appropriately
 
 Behind the scenes, the `elixir()` function will determine the name of the hashed file that should be included. Don't you feel the weight lifting off your shoulders already?
 
+It is also possible to pass an array to the version method to manage multiple files in version management.
+
+```javascript
+elixir(function(mix) {
+    mix.version(["css/all.css", "js/app.js"]);
+});
+```
+
+```html
+<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
+<script src="{{ elixir("js/app.js") }}"></script>
+```
+
 #### Copy a File to a New Location
 
 ```javascript
