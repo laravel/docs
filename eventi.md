@@ -1,11 +1,11 @@
-# Events
+# Eventi
 
-- [Uso base](#uso-base)
+- [Uso Base](#uso-base)
 - [Gestione Coda Eventi](#gestione-coda-eventi)
 - [Event Subscribers](#event-subscribers)
 
 <a name="uso-base"></a>
-## Uso base
+## Uso Base
 
 La classe Event fornisce una semplice implementazione di un observer, che permette di gestire la tua applicazione attraverso gli eventi. Le classi eventi sono normalmente salvate nella directory `app/Events`, mentre i loro handlers sono salvati all'interno di `app/Handlers/Events`.
 
@@ -72,7 +72,7 @@ A volte può succedere che tu debba fermare la propagazione di un evento per alt
 <a name="gestione-coda-eventi"></a>
 ## Gestione Coda Eventi
 
-Hai bisogno di inserire un evento in [coda](/docs/master/queues) ? Non potrebbe essere più facile. Quando generi un handler, semplicemente usa il flag `--queued`:
+Hai bisogno di inserire un evento in [coda](/code) ? Non potrebbe essere più facile. Quando generi un handler, semplicemente usa il flag `--queued`:
 
 	php artisan handler:make SendPurchaseConfirmation --event=PodcastWasPurchased --queued
 
@@ -139,7 +139,7 @@ Una volta che il subscriber è stato definito, è possibile registrarlo con la c
 
 	Event::subscribe($subscriber);
 
-Alternativamente puoi anche usare [Laravel IoC container](/docs/ioc) per risolvere il tuo subscriber.
+Alternativamente puoi anche usare l'[IoC Container](/container) per risolvere il tuo subscriber.
 Per falro, è sufficiente passare il nome del tuo subscriber al metodo `subscribe`:
 
 	Event::subscribe('UserEventHandler');
