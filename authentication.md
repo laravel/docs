@@ -293,7 +293,11 @@ To get started with Socialite, include the package in your `composer.json` file:
 
 	"laravel/socialite": "~2.0"
 
-Next, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. You may also register a [facade](/docs/5.0/facades):
+Next, register the service provider in your `config/app.php` configuration file:
+
+	'Laravel\Socialite\SocialiteServiceProvider',
+
+You may also register a [facade](/docs/5.0/facades):
 
 	'Socialize' => 'Laravel\Socialite\Facades\Socialite',
 
