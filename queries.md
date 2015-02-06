@@ -1,4 +1,4 @@
-# Query Builder
+# 查詢產生器
 
 - [介紹](#introduction)
 - [Selects](#selects)
