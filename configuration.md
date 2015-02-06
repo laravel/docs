@@ -30,7 +30,7 @@ Renaming your application is entirely optional, and you are free to keep the `Ap
 
 Laravel needs very little configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your location.
 
-Once Laravel is installed, you should also [configure your local environment](/docs/master/configuration#environment-configuration).
+Once Laravel is installed, you should also [configure your local environment](/docs/5.0/configuration#environment-configuration).
 
 > **Note:** You should never have the `app.debug` configuration option set to `true` for a production application.
 
@@ -83,7 +83,7 @@ You may also pass arguments to the `environment` method to check if the environm
 		// The environment is either local OR staging...
 	}
 
-To obtain an instance of the application, resolve the `Illuminate\Contracts\Foundation\Application` contract via the [service container](/docs/master/container). Of course, if you are within a [service provider](/docs/master/providers), the application instance is available via the `$this->app` instance variable.
+To obtain an instance of the application, resolve the `Illuminate\Contracts\Foundation\Application` contract via the [service container](/docs/5.0/container). Of course, if you are within a [service provider](/docs/5.0/providers), the application instance is available via the `$this->app` instance variable.
 
 An application instance may also be accessed via the `app` helper of the `App` facade:
 
@@ -117,7 +117,7 @@ The default template for maintenance mode responses is located in `resources/vie
 
 ### Maintenance Mode & Queues
 
-While your application is in maintenance mode, no [queued jobs](/docs/master/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+While your application is in maintenance mode, no [queued jobs](/docs/5.0/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
 
 <a name="pretty-urls"></a>
 ## Pretty URLs
@@ -143,4 +143,4 @@ On Nginx, the following directive in your site configuration will allow "pretty"
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-Of course, when using [Homestead](/docs/master/homestead), pretty URLs will be configured automatically.
+Of course, when using [Homestead](/docs/5.0/homestead), pretty URLs will be configured automatically.

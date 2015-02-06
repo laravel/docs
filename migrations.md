@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/master/schema) to easily manage your application's schema.
+Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/5.0/schema) to easily manage your application's schema.
 
 <a name="creating-migrations"></a>
 ## Creating Migrations
@@ -19,10 +19,6 @@ To create a migration, you may use the `make:migration` command on the Artisan C
 	php artisan make:migration create_users_table
 
 The migration will be placed in your `database/migrations` folder, and will contain a timestamp which allows the framework to determine the order of the migrations.
-
-You may also specify a `--path` option when creating the migration. The path should be relative to the root directory of your installation:
-
-	php artisan make:migration foo --path=app/migrations
 
 The `--table` and `--create` options may also be used to indicate the name of the table, and whether the migration will be creating a new table:
 

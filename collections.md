@@ -31,7 +31,7 @@ As mentioned above, the `collect` helper will return a new `Illuminate\Support\C
 
 	$collection = Collection::make([1, 2, 3]);
 
-Of course, collections of [Eloquent](/docs/master/eloquent) objects are always returned as `Collection` instances; however, you should feel free to use the `Collection` class wherever it is convenient for your application.
+Of course, collections of [Eloquent](/docs/5.0/eloquent) objects are always returned as `Collection` instances; however, you should feel free to use the `Collection` class wherever it is convenient for your application.
 
 #### Explore The Collection
 

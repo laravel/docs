@@ -23,7 +23,7 @@
 
 #### 對 Eloquent 模型分頁
 
-您也可以對 [Eloquent](/docs/master/eloquent) 模型分頁:
+您也可以對 [Eloquent](/docs/5.0/eloquent) 模型分頁:
 
 	$allUsers = User::paginate(15);
 

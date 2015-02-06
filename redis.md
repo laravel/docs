@@ -64,7 +64,7 @@
 
 	$values = Redis::lrange('names', 5, 10);
 
-> **提示：** 也可以使用 Redis 作為 Laravel 的 [快取](/docs/cache) 和 [session](/docs/session) 驅動。
+> **提示：** 也可以使用 Redis 作為 Laravel 的 [快取](/docs/5.0/cache) 和 [session](/docs/5.0/session) 驅動。
 
 <a name="pipelining"></a>
 ## 管線

@@ -20,7 +20,7 @@
 
 ### 透過依賴注入
 
-要透過依賴注入的方式取得 HTTP 請求的實例，你必須在控制器中的建構函式或方法對該類別使用型別提示。當前請求的實例將會自動由[服務容器](/docs/master/container)注入：
+要透過依賴注入的方式取得 HTTP 請求的實例，你必須在控制器中的建構函式或方法對該類別使用型別提示。當前請求的實例將會自動由[服務容器](/docs/5.0/master/container)注入：
 
 	<?php namespace App\Http\Controllers;
 
@@ -108,7 +108,7 @@ Laravel 可以讓你保留這次的輸入資料，直到下一次請求發送前
 
 #### 將輸入資料存成一次性 Session
 
-`flash` 方法會將當前的輸入資料存進 [session](/docs/master/session)中，所以下次使用者發出請求時可以使用儲存的資料：
+`flash` 方法會將當前的輸入資料存進 [session](/docs/5.0/session)中，所以下次使用者發出請求時可以使用儲存的資料：
 
 	Request::flash();
 

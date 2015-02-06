@@ -156,7 +156,7 @@ Laravel Cashier 提供口語化，流暢的介面和 [Stripe](https://stripe.com
 		//
 	}
 
-`subscribed` 方法很適合用在 [route middleware](/docs/master/middleware):
+`subscribed` 方法很適合用在 [route middleware](/docs/5.0/middleware):
 
 	public function handle($request, Closure $next)
 	{

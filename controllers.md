@@ -76,7 +76,7 @@ You may access the name of the controller action being run using the `currentRou
 <a name="controller-middleware"></a>
 ## Controller Middleware
 
-[Middleware](/docs/master/middleware) may be specified on controller routes like so:
+[Middleware](/docs/5.0/middleware) may be specified on controller routes like so:
 
 	Route::get('profile', [
 		'middleware' => 'auth',
@@ -212,7 +212,7 @@ If it becomes necessary to add additional routes to a resource controller beyond
 
 #### Constructor Injection
 
-The Laravel [service container](/docs/master/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
+The Laravel [service container](/docs/5.0/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor:
 
 	<?php namespace App\Http\Controllers;
 
@@ -239,7 +239,7 @@ The Laravel [service container](/docs/master/container) is used to resolve all L
 
 	}
 
-Of course, you may also type-hint any [Laravel contract](/docs/master/contracts). If the container can resolve it, you can type-hint it.
+Of course, you may also type-hint any [Laravel contract](/docs/5.0/contracts). If the container can resolve it, you can type-hint it.
 
 #### Method Injection
 
@@ -290,7 +290,7 @@ If your controller method is also expecting input from a route parameter, simply
 
 	}
 
-> **Note:** Method injection is fully compatible with [model binding](/docs/master/routing#route-model-binding). The container will intelligently determine which arguments are model bound and which arguments should be injected.
+> **Note:** Method injection is fully compatible with [model binding](/docs/5.0/routing#route-model-binding). The container will intelligently determine which arguments are model bound and which arguments should be injected.
 
 <a name="route-caching"></a>
 ## Route Caching

@@ -28,7 +28,7 @@ Laravel 有很棒的檔案系統抽象層，是基於 Frank de Jonge 的 [Flysys
 <a name="basic-usage"></a>
 ## 基本用法
 
-可以用 `Storage` facade 操作所有寫在設定檔裡的硬碟。或者是，你也可以將 `Illuminate\Contracts\Filesystem\Factory` 型別暗示寫到任何類別裡，經由 [IoC container](/docs/master/container) 解析。
+可以用 `Storage` facade 操作所有寫在設定檔裡的硬碟。或者是，你也可以將 `Illuminate\Contracts\Filesystem\Factory` 型別暗示寫到任何類別裡，經由 [IoC container](/docs/5.0/container) 解析。
 
 #### 取得一個特定硬碟
 
@@ -36,11 +36,11 @@ Laravel 有很棒的檔案系統抽象層，是基於 Frank de Jonge 的 [Flysys
 
 	$disk = Storage::disk('local');
 
-#### 使用預設硬碟呼叫方法
+#### 確認檔案是否存在
 
 	$exists = Storage::disk('s3')->exists('file.jpg');
 
-#### 確認檔案是否存在
+#### 使用預設硬碟呼叫方法
 
 	if (Storage::exists('file.jpg'))
 	{
