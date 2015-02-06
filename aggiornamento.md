@@ -29,7 +29,7 @@ Copia il nuovo file _.env.example_ in _.env_, che è appunto l'equivalente del v
 
 Inoltre, copia tutti i valori personalizzati che ti eri creato in _.env.php_, mettendoli in _.env_ (che userai per davvero) ed in _.env.example_ (un sample che userai con gli altri membri del tuo team).
 
-Per altre informazioni sulla configurazione degli ambienti, dai uno sguardo alla [sezione dedicata sulla documentazione](/configurazione#configurazione-ambienti).
+Per altre informazioni sulla configurazione degli ambienti, dai uno sguardo alla [sezione dedicata sulla documentazione](/configurazione#configurazione-ambiente).
 
 > **Nota:** Avrai bisogno di sistemare adeguatamente il file _.env_ sul tuo server prima di effettuare il deploy!
 
