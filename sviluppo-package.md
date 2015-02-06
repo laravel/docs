@@ -20,7 +20,7 @@ Tutti i package di Laravel sono distribuiti via [Packagist](http://packagist.org
 <a name="view"></a>
 ## View
 
-La struttura interna del tuo package è completamente nelle tue mani; normalmente ogni package conterrà uno o più [service providers](/docs/master/providers). Il service provider contieni qualsiasi binding [IoC](/docs/master/container), così come le istruzione su dove si trovano le configurazioni del package, le view ed i file di traduzione.
+La struttura interna del tuo package è completamente nelle tue mani; normalmente ogni package conterrà uno o più [service providers](/provider). Il service provider contieni qualsiasi binding [IoC](/container), così come le istruzione su dove si trovano le configurazioni del package, le view ed i file di traduzione.
 
 ### View
 
