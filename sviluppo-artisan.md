@@ -122,4 +122,4 @@ In alcuni casi, potresti voler eseguire la chiamata di altri comandi dal tuo com
 
 #### Registrare Un Comando Artisan
 
-Una volta completato il tuo comando, hai bisogno di registrarlo con Artisan, in modo da renderlo disponibile all'uso. Solitamente questo viene fatto nel file `app/Console/Kernel.php`. All'interno di questo file, potrai trovare una lista di comandi nella proprietà `commands`. Per registrare il tuo comando, aggiungilo semplicemente a questa lista. Quando Artisan si avvia, tutti i comandi inseriti in questa proprietà saranno risolti dall'[IoC container](/docs/master/container) e registrati con Artisan.
+Una volta completato il tuo comando, hai bisogno di registrarlo con Artisan, in modo da renderlo disponibile all'uso. Solitamente questo viene fatto nel file `app/Console/Kernel.php`. All'interno di questo file, potrai trovare una lista di comandi nella proprietà `commands`. Per registrare il tuo comando, aggiungilo semplicemente a questa lista. Quando Artisan si avvia, tutti i comandi inseriti in questa proprietà saranno risolti dall'[IoC container](/container) e registrati con Artisan.
