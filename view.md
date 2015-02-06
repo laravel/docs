@@ -47,7 +47,7 @@ Se vuoi, puoi anche passare un array di dati alla view semplicemente usandolo co
 
 #### Condividere Dati Con Tutte Le View
 
-Qualche volta potresti aver bisogno di condividere alcuni dati tra tutte le view utilizzae dalla tua applicazione. Ci sono diversi modi per farlo: l'helper `view`, il [contratto](/docs/master/contracts) `Illuminate\Contracts\View\Factory`, o la wildcard [view composer](#view-composer).
+Qualche volta potresti aver bisogno di condividere alcuni dati tra tutte le view utilizzae dalla tua applicazione. Ci sono diversi modi per farlo: l'helper `view`, il [contratto](/contratti) `Illuminate\Contracts\View\Factory`, o la wildcard [view composer](#view-composer).
 
 Ecco un esempio di condivisione con l'helper view:
 
@@ -85,7 +85,7 @@ Le View composer sono delle callback o metodi di una classe che sono chiamati qu
 
 #### Definire Una View Composer
 
-Organizziamo le view composer all'interno di un [service provider](/docs/master/providers). Utilizzeremo la facade `View` per accedere all'implementazione del contratto `Illuminate\Contracts\View\Factory`:
+Organizziamo le view composer all'interno di un [service provider](/provider). Utilizzeremo la facade `View` per accedere all'implementazione del contratto `Illuminate\Contracts\View\Factory`:
 
 	<?php namespace App\Providers;
 
@@ -158,7 +158,7 @@ Adesso che hai registrato il tuo composer, il metodo `ProfileComposer@compose` s
 
 Poco prima che la view venga utilizzata il metodo compose della classe appena creata viene chiamato dall'istanza `Illuminate\Contracts\View\View`. Puoi usare il metodo `with` per legare i dati alla view.
 
-> **Nota:** Tutte le view composer sono risolte attraverso il [service container](/docs/master/container), quindi puoi aggiungere tutte le dipendenze che ti servono all'interno del costruttore del tuo composer.
+> **Nota:** Tutte le view composer sono risolte attraverso il [service container](/container), quindi puoi aggiungere tutte le dipendenze che ti servono all'interno del costruttore del tuo composer.
 
 #### Wildcard View Composers
 
