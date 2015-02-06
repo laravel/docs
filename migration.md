@@ -9,7 +9,7 @@
 <a name="Introduzione"></a>
 ## Introduzione
 
-Le Migration possono essere definite come una sorta di version control per il tuo database. Permettono agevolmente ad un team di modificare lo schema del database e permettere a tutti di essere aggiornati sugli ultimi cambiamenti. Di solito, il sistema di Migration va a braccetto con lo [Schema Builder](/docs/master/schema).
+Le Migration possono essere definite come una sorta di version control per il tuo database. Permettono agevolmente ad un team di modificare lo schema del database e permettere a tutti di essere aggiornati sugli ultimi cambiamenti. Di solito, il sistema di Migration va a braccetto con lo [Schema Builder](/schema-builder).
 
 <a name="creare-migration"></a>
 ## Creare una Migration
