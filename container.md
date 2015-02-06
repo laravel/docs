@@ -61,9 +61,9 @@ Una profonda comprensione del service container di Laravel è essenziale per cre
 
 ### Binding
 
-Quasi tutti i binding vengono registrati all'interno dei [service provider](/docs/master/providers), perciò tutti i seguenti esempi dimostrano come usare il container in quel contesto. Ad ogni modo, se hai bisogno di un'istanza del container in qualsiasi altro punto della tua applicazione, ad esempio una factory, puoi effettuare il type-hinting dell'interfaccia `Illuminate\Contracts\Container\Container` e un'istanza del container viene automaticamente iniettata per te. In alternativa, puoi usare il facade `App` per accedere al container.
+Quasi tutti i binding vengono registrati all'interno dei [service provider](/provider), perciò tutti i seguenti esempi dimostrano come usare il container in quel contesto. Ad ogni modo, se hai bisogno di un'istanza del container in qualsiasi altro punto della tua applicazione, ad esempio una factory, puoi effettuare il type-hinting dell'interfaccia `Illuminate\Contracts\Container\Container` e un'istanza del container viene automaticamente iniettata per te. In alternativa, puoi usare il facade `App` per accedere al container.
 
-#### Registrare Un Resolver Basilare
+#### Registrare Un Resolver Base
 
 All'interno del service provider, puoi sempre accedere al container tramite la proprietà `$this->app`.
 
@@ -295,7 +295,7 @@ Grazie al service container, Laravel fornisce molte opportunità per aumentare l
 
 	}
 
-In questo esempio la classe `OrderRepository` viene automaticamente iniettata nel controller. In questo modo durante gli [unit test](/docs/master/testing) puoi registrare una "simulazione" di `OrderRepository` nel container, evitando ad esempio le interazioni con il database.
+In questo esempio la classe `OrderRepository` viene automaticamente iniettata nel controller. In questo modo durante gli [unit test](/testing) puoi registrare una "simulazione" di `OrderRepository` nel container, evitando ad esempio le interazioni con il database.
 
 #### Altri Esempi Sull'Uso Del Container
 
