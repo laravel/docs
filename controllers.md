@@ -208,7 +208,7 @@ DELETE    | /resource/{resource}        | 消減         | resource.destroy
 	Route::resource('photos', 'PhotoController');
 
 <a name="dependency-injection-and-controllers"></a>
-## 相依注入及控制器
+## 相依注入和控制器
 
 #### 建構式注入
 
