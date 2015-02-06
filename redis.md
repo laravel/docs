@@ -64,7 +64,7 @@ Inoltre, se stai eseguendo dei metodi sulla connessione di defaul, nulla ti viet
 
 	$values = Redis::lrange('names', 5, 10);
 
-> **Nota:** Dei driver Redis per la [cache](/docs/master/cache) e le [sessioni](/docs/master/session) sono inclusi con Laravel, se dovessi averne bisogno.
+> **Nota:** Dei driver Redis per la [cache](/cache) e le [sessioni](/sessioni) sono inclusi con Laravel, se dovessi averne bisogno.
 
 <a name="pipelining"></a>
 ## Pipelining
