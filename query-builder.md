@@ -6,10 +6,10 @@
 - [Where Avanzati](#where-avanzati)
 - [Aggregati](#aggregati)
 - [Raw Expressions](#raw-expressions)
-- [Insert](#inserts)
-- [Update](#updates)
-- [Delete](#deletes)
-- [Union](#unions)
+- [Insert](#insert)
+- [Update](#update)
+- [Delete](#delete)
+- [Union](#union)
 - [Blocco Pessimistico](#blocco-pessimistico)
 
 <a name="introduzione"></a>
