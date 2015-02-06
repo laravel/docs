@@ -74,7 +74,7 @@ If you don't want the data to be escaped, you may use the following syntax:
 
 	Hello, {!! $name !!}.
 
-> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the triple curly brace syntax to escape any HTML entities in the content.
+> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the double curly brace syntax to escape any HTML entities in the content.
 
 #### If Statements
 

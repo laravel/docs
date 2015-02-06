@@ -38,6 +38,10 @@ To get started, create an Eloquent model. Models typically live in the `app` dir
 
 	class User extends Eloquent {}
 
+You may also generate Eloquent models using the `make:model` command:
+
+	php artisan make:model User
+
 Note that we did not tell Eloquent which table to use for our `User` model. The lower-case, plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
 
 	class User extends Eloquent {
@@ -118,7 +122,7 @@ You may also specify which database connection should be used when running an El
 
 	$user = User::on('connection-name')->find(1);
 
-If you are using [read / write connections](/docs/master/database#read-write-connections), you may force the query to use the "write" connection with the following method:
+If you are using [read / write connections](/docs/5.0/database#read-write-connections), you may force the query to use the "write" connection with the following method:
 
 	$user = User::onWriteConnection()->find(1);
 

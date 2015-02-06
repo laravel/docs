@@ -55,7 +55,7 @@ The newly generated class will be placed in the `app/Commands` directory. By def
 
 	}
 
-The `handle` method may also type-hint dependencies, and they will be automatically injected by the [IoC container](/docs/master/container). For example:
+The `handle` method may also type-hint dependencies, and they will be automatically injected by the [IoC container](/docs/5.0/container). For example:
 
 		/**
 		 * Execute the command.
@@ -116,7 +116,7 @@ If you would like to convert an existing command into a queued command, simply i
 
 Then, just write your command normally. When you dispatch it to the bus that bus will automatically queue the command for background processing. It doesn't get any easier than that.
 
-For more information on interacting with queued commands, view the full [queue documentation](/docs/master/queues).
+For more information on interacting with queued commands, view the full [queue documentation](/docs/5.0/queues).
 
 <a name="command-pipeline"></a>
 ## Command Pipeline
@@ -141,7 +141,7 @@ A command pipe is defined with a `handle` method, just like a middleware:
 
 	}
 
-Command pipe classes are resolved through the [IoC container](/docs/master/container), so feel free to type-hint any dependencies you need within their constructors.
+Command pipe classes are resolved through the [IoC container](/docs/5.0/container), so feel free to type-hint any dependencies you need within their constructors.
 
 You may even define a `Closure` as a command pipe:
 

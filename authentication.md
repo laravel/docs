@@ -58,7 +58,7 @@ If you choose not to use the provided `AuthController` implementation, you will 
 
 	}
 
-The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/master/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, a new authenticated session will be started for the user.
+The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/5.0/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, a new authenticated session will be started for the user.
 
 The `attempt` method will return `true` if authentication was successful. Otherwise, `false` will be returned.
 
@@ -140,7 +140,7 @@ Of course, if you are using the built-in Laravel authentication controllers, a c
 
 #### Authentication Events
 
-When the `attempt` method is called, the `auth.attempt` [event](/docs/master/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
+When the `attempt` method is called, the `auth.attempt` [event](/docs/5.0/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
 
 <a name="retrieving-the-authenticated-user"></a>
 ## Retrieving The Authenticated User
@@ -194,7 +194,7 @@ Second, you may access the authenticated user via an `Illuminate\Http\Request` i
 
 	}
 
-Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contract. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/master/container):
+Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contract. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/5.0/container):
 
 	<?php namespace App\Http\Controllers;
 
@@ -218,7 +218,7 @@ Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contr
 <a name="protecting-routes"></a>
 ## Protecting Routes
 
-[Route middleware](/docs/master/middleware) can be used to allow only authenticated users to access a given route. Laravel provides the `auth` middleware by default, and it is defined in `app\Http\Middleware\Authenticate.php`. All you need to do is attach it to a route definition:
+[Route middleware](/docs/5.0/middleware) can be used to allow only authenticated users to access a given route. Laravel provides the `auth` middleware by default, and it is defined in `app\Http\Middleware\Authenticate.php`. All you need to do is attach it to a route definition:
 
 	// With A Route Closure...
 
@@ -247,7 +247,7 @@ By default, the `basic` middleware will use the `email` column on the user recor
 
 #### Setting Up A Stateless HTTP Basic Filter
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/master/middleware) that calls the `onceBasic` method:
+You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/5.0/middleware) that calls the `onceBasic` method:
 
 	public function handle($request, Closure $next)
 	{
@@ -293,7 +293,7 @@ To get started with Socialite, include the package in your `composer.json` file:
 
 	"laravel/socialite": "~2.0"
 
-Next, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. You may also register a [facade](/docs/master/facades):
+Next, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. You may also register a [facade](/docs/5.0/facades):
 
 	'Socialize' => 'Laravel\Socialite\Facades\Socialite',
 

@@ -19,7 +19,7 @@ The most basic response from a Laravel route is a string:
 
 #### Creating Custom Responses
 
-However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` instance or a [view](/docs/master/views). Returning a full `Response` instance allows you customize the response's HTTP status code and headers. A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses:
+However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` instance or a [view](/docs/5.0/views). Returning a full `Response` instance allows you customize the response's HTTP status code and headers. A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses:
 
 	use Illuminate\Http\Response;
 
@@ -63,7 +63,7 @@ There are several ways to generate a `RedirectResponse` instance. The simplest m
 
 #### Returning A Redirect With Flash Data
 
-Redirecting to a new URL and [flashing data to the session](/docs/master/session) are typically done at the same time. So, for convenience, you may create a `RedirectResponse` instance **and** flash data to the session in a single method chain:
+Redirecting to a new URL and [flashing data to the session](/docs/5.0/session) are typically done at the same time. So, for convenience, you may create a `RedirectResponse` instance **and** flash data to the session in a single method chain:
 
 	return redirect('user/login')->with('message', 'Login Failed');
 
@@ -101,7 +101,7 @@ If you are redirecting to a route with an "ID" parameter that is being populated
 
 #### Returning A Redirect To A Controller Action
 
-Similarly to generating `RedirectResponse` instances to named routes, you may also generate redirects to [controller actions](/docs/master/controllers):
+Similarly to generating `RedirectResponse` instances to named routes, you may also generate redirects to [controller actions](/docs/5.0/controllers):
 
 	return redirect()->action('App\Http\Controllers\HomeController@index');
 
@@ -118,7 +118,7 @@ Similarly to generating `RedirectResponse` instances to named routes, you may al
 <a name="other-responses"></a>
 ## Other Responses
 
-The `response` helper may be used to conveniently generate other types of response instances. When the `response` helper is called without arguments, an implementation of the `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/master/contracts) is returned. This contract provides several helpful methods for generating responses.
+The `response` helper may be used to conveniently generate other types of response instances. When the `response` helper is called without arguments, an implementation of the `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/5.0/contracts) is returned. This contract provides several helpful methods for generating responses.
 
 #### Creating A JSON Response
 
@@ -144,7 +144,7 @@ The `json` method will automatically set the `Content-Type` header to `applicati
 
 If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `macro` method on an implementation of `Illuminate\Contracts\Routing\ResponseFactory`.
 
-For example, from a [service provider's](/docs/master/providers) `boot` method:
+For example, from a [service provider's](/docs/5.0/providers) `boot` method:
 
 	<?php namespace App\Providers;
 
@@ -160,9 +160,9 @@ For example, from a [service provider's](/docs/master/providers) `boot` method:
 		 */
 		public function boot()
 		{
-			Response::('caps', function($value) use ($response)
+			Response::macro('caps', function($value)
 			{
-				return $response->make(strtoupper($value));
+				return Response::make(strtoupper($value));
 			});
 		}
 

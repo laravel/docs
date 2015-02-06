@@ -43,9 +43,9 @@ To push a new job onto the queue, use the `Queue::push` method:
 
 	Queue::push(new SendEmail($message));
 
-> **Note:** In this example, we are using the `Queue` facade directly; however, typically you would dispatch queued command via the [Command Bus](/docs/master/bus). We will continue to use the `Queue` facade throughout this page; however, familiarize with the command bus as well, since it is used to dispatch both queued and synchronous commands for your application.
+> **Note:** In this example, we are using the `Queue` facade directly; however, typically you would dispatch queued command via the [Command Bus](/docs/5.0/bus). We will continue to use the `Queue` facade throughout this page; however, familiarize with the command bus as well, since it is used to dispatch both queued and synchronous commands for your application.
 
-By default, the `make:command` Artisan command generates a "self-handling" command, meaning a `handle` method is added to the command itself. This method will be called when the job is executed by the queue. You may type-hint any dependencies you need on the `handle` method and the [IoC container](/docs/master/container) will automatically inject them:
+By default, the `make:command` Artisan command generates a "self-handling" command, meaning a `handle` method is added to the command itself. This method will be called when the job is executed by the queue. You may type-hint any dependencies you need on the `handle` method and the [IoC container](/docs/5.0/container) will automatically inject them:
 
 	public function handle(UserRepository $users)
 	{
