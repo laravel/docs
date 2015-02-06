@@ -16,7 +16,7 @@
 <a name="introduzione"></a>
 ## Introduzione
 
-Laravel Cashier fornisce una espressiva e fluente interfaccia per utilizzare il servizio di sottoscrizione e pagamento di [Stripe's](https://stripe.com). Gestisce quasi tutto il codice necessario per la sottoscrizione di pagamenti. Oltre alla gestione base degli abbonamenti, Cashier può gestire facilmente  coupon, cambi di piano, abbonamenti di "quantità", cancellazione, periodi di grazia e persino generare fatture in PDF.
+Laravel Cashier fornisce una espressiva e fluente interfaccia per utilizzare il servizio di sottoscrizione e pagamento di [Stripe](https://stripe.com). Gestisce quasi tutto il codice necessario per la sottoscrizione di pagamenti. Oltre alla gestione base degli abbonamenti, Cashier può gestire facilmente  coupon, cambi di piano, abbonamenti di "quantità", cancellazione, periodi di grazia e persino generare fatture in PDF.
 
 <a name="configurazione"></a>
 ## Configurazione
@@ -156,7 +156,7 @@ Per verificare se un utente è abbonato alla tua applicazione, utilizza il metod
 		//
 	}
 
-Il metodo `subscribed` è un ottimo candidato per le [route middleware](/docs/master/middleware):
+Il metodo `subscribed` è un ottimo candidato per le [middleware](/middleware):
 
 	public function handle($request, Closure $next)
 	{
