@@ -1,13 +1,13 @@
 # Events
 
 - [基本用法](#basic-usage)
-- [隊列的事件處理程式](#queued-event-handlers)
+- [事件處理隊列](#queued-event-handlers)
 - [事件訂閱者](#event-subscribers)
 
 <a name="basic-usage"></a>
 ## 基本用法
 
-Laravel 的 event 功能提供一個簡單的觀察者實作，允許你在應用程式裡訂閱與監聽事件。事件類別通常被儲存在 `app/Events` 資料夾，而它們的處理程式則被儲存在 `app/Handlers/Events` 資料夾。
+Laravel 的 event 功能提供一個簡單的觀察者實作，允許你在應用程式裡訂閱與監聽事件。事件類別通常被儲存在 `app/Events` 目錄下，而它們的處理程式則被儲存在 `app/Handlers/Events` 目錄下。
 
 你可以使用 Artisan 命令列工具產生一個新的事件類別：
 
@@ -15,7 +15,7 @@ Laravel 的 event 功能提供一個簡單的觀察者實作，允許你在應�
 
 #### 訂閱事件
 
-Laravel 應用程式引入 `EventServiceProvider` 來提供一個方便的地方去註冊所有的事件處理程式。`listen` 屬性包含一個所有的事件 (鍵) 和他們的處理程式 (值) 的 陣列。當然，你可以依你的應用程式需求添加任何數量的事件到這個陣列。舉個例子，讓我們來加上我們的 `PodcastWasPurchased` 事件：
+Laravel 裡的 `EventServiceProvider` 提供了一個方便的地方註冊所有的事件處理程式。`listen` 屬性包含一個所有的事件 (鍵) 和相對應的處理程式 (值) 的 陣列。當然，你可以依應用程式的需求添加任何數量的事件到這個陣列。舉個例子，讓我們來加上 `PodcastWasPurchased` 事件：
 
 	/**
 	 * 應用程式的事件處理程式對照。
@@ -50,7 +50,7 @@ Laravel 應用程式引入 `EventServiceProvider` 來提供一個方便的地方
 
 #### 監聽器閉包
 
-甚至你可以完全不用建立個別的處理程式類別就監聽事件。舉個例子，在你的 `EventServiceProvider` 的 `boot` 方法裡，你可以做下面這件事：
+你甚至可以不需對事件建立對應的處理類別。舉個例子，在你的 `EventServiceProvider` 的 `boot` 方法裡，你可以做下面這件事：
 
 	Event::listen('App\Events\PodcastWasPurchased', function($event)
 	{
@@ -69,7 +69,7 @@ Laravel 應用程式引入 `EventServiceProvider` 來提供一個方便的地方
 	});
 
 <a name="queued-event-handlers"></a>
-## 隊列的事件處理程式
+## 事件處理隊列
 
 需要把事件處理程式放到 [隊列](/docs/5.0/queues) 嗎？這不能變得再更簡單了。當你產生處理程式，簡單地使用 `--queued` 旗標：
 
@@ -77,7 +77,7 @@ Laravel 應用程式引入 `EventServiceProvider` 來提供一個方便的地方
 
 這將會產生一個實作了 `Illuminate\Contracts\Queue\ShouldBeQueued` 介面的處理程式類別。這樣就可以了！現在當這個處理程式因為事件發生被呼叫，它將會被事件配送器自動地排進隊列。
 
-當處理程式被隊列執行，如果沒有例外被丟出，在執行後該隊列中的任務將會自動地被刪除。如果你需要手動地取用隊列中的任務的 `delete` 和 `release` 方法也可以做到。引入隊列處理程式預設引入的 `Illuminate\Queue\InteractsWithQueue` trait，讓你可以取用這些方法：
+當處理程式被隊列執行，如果沒有例外被丟出，在執行後該隊列中的任務將會自動被刪除。你也可以手動取用隊列中的任務的 `delete` 和 `release` 方法。隊列處理程式預設會引入的 `Illuminate\Queue\InteractsWithQueue` trait，讓你可以取用這些方法：
 
 	public function handle(PodcastWasPurchased $event)
 	{
@@ -131,13 +131,13 @@ Laravel 應用程式引入 `EventServiceProvider` 來提供一個方便的地方
 
 #### 註冊事件訂閱者
 
-當訂閱者被定義時，它也許會使用 `Event` 類別註冊。
+當定義了訂閱者後，可以使用 `Event` 類別註冊。
 
 	$subscriber = new UserEventHandler;
 
 	Event::subscribe($subscriber);
 
-你也可以使用 [Laravel IoC 容器](/docs/5.0/container) 去處理你的訂閱者。簡單地傳遞訂閱者的名字給 `subscribe` 方法就可以做到：
+你也可以使用 [Laravel IoC 容器](/docs/5.0/container) 自動解析訂閱者。簡單地傳遞訂閱者的名字給 `subscribe` 方法就可以做到：
 
 	Event::subscribe('UserEventHandler');
 
