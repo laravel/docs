@@ -1,4 +1,4 @@
-# Controller HTTP
+# Controller
 
 - [Introduzione](#introduzione)
 - [Controller Basilari](#controller-basilari)
@@ -75,7 +75,7 @@ Puoi accedere al nome dell’azione del controller in fase di esecuzione utilizz
 <a name="controller-middleware"></a>
 ## Controller Middleware
 
-I [Middleware](/docs/master/middleware) possono essere specificati nella route del controller in questo modo:
+I [Middleware](/middleware) possono essere specificati nella route del controller in questo modo:
 
 	Route::get('profile', [
 		'middleware' => 'auth',
@@ -125,7 +125,7 @@ GET       | /resource/{resource}/edit   | edit         | resource.edit
 PUT/PATCH | /resource/{resource}        | update       | resource.update
 DELETE    | /resource/{resource}        | destroy      | resource.destroy
 
-#### Personalizzare Resource Routes
+#### Personalizzare le Resource Route
 
 Puoi inoltre specificare un insieme di azioni per gestire il percorso:
 
@@ -176,9 +176,9 @@ Se fosse necessario aggiungere una route aggiuntiva al controller resource oltre
 <a name="dependency-injection-e-controller"></a>
 ## Dependency Injection & Controller
 
-#### Constructor Injection
+#### Injection del Costruttore
 
-Il [service container](/docs/master/container) di Laravel è usato per risolvere tutti i controller di Laravel. Come risultato, sei in grado di inserire qualsiasi dipendenza che il tuo controller abbia bisogno nel suo construct:
+Il [service container](/container) di Laravel è usato per risolvere tutti i controller di Laravel. Come risultato, sei in grado di inserire qualsiasi dipendenza che il tuo controller abbia bisogno nel suo construct:
 
 	<?php namespace App\Http\Controllers;
 
@@ -205,7 +205,7 @@ Il [service container](/docs/master/container) di Laravel è usato per risolvere
 
 	}
 
-Ovviamente, puoi anche inserire qualsiasi [Laravel contract](/docs/master/contracts). Se il container può risolverla, puoi aggiungerla.
+Ovviamente, puoi anche inserire qualsiasi [Laravel contract](/contratti). Se il container può risolverla, puoi aggiungerla.
 
 #### Metodi Di Injection
 
@@ -256,7 +256,7 @@ Se il metodo del tuo controller deve ricevere degli input da un parametro di una
 
 	}
 
-> **Nota:** Il metodo di injection è completamente compatibile con il [model  binding](/docs/master/routing#route-model-binding). Il container determinerà in maniera opportuna quali parametri sono vincolati al model e quali invece devono essere iniettati.
+> **Nota:** Il metodo di injection è completamente compatibile con il [model  binding](/routing#binding-route-model). Il container determinerà in maniera opportuna quali parametri sono vincolati al model e quali invece devono essere iniettati.
 
 <a name="route-caching"></a>
 ## Route Caching
