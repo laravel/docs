@@ -48,7 +48,7 @@ Laravel 應用程式引入 `EventServiceProvider` 來提供一個方便的地方
 
 	event(new PodcastWasPurchased($podcast));
 
-#### 監聽者閉包
+#### 監聽器閉包
 
 甚至你可以完全不用建立個別的處理程式類別就監聽事件。舉個例子，在你的 `EventServiceProvider` 的 `boot` 方法裡，你可以做下面這件事：
 
@@ -59,7 +59,7 @@ Laravel 應用程式引入 `EventServiceProvider` 來提供一個方便的地方
 
 #### 停止繼續傳遞事件
 
-有時候你會希望停止繼續傳遞事件到其他監聽者。你可以藉由從處理程式回傳 `false` 來做到這件事：
+有時候你會希望停止繼續傳遞事件到其他監聽器。你可以藉由從處理程式回傳 `false` 來做到這件事：
 
 	Event::listen('App\Events\PodcastWasPurchased', function($event)
 	{
@@ -71,13 +71,13 @@ Laravel 應用程式引入 `EventServiceProvider` 來提供一個方便的地方
 <a name="queued-event-handlers"></a>
 ## 隊列的事件處理程式
 
-需要把事件處理程式放到 [隊列](/docs/5.0/queues)？這不能變得再更簡單了。當你產生處理程式，簡單地使用 `--queued` 旗標：
+需要把事件處理程式放到 [隊列](/docs/5.0/queues) 嗎？這不能變得再更簡單了。當你產生處理程式，簡單地使用 `--queued` 旗標：
 
 	php artisan handler:event SendPurchaseConfirmation --event=PodcastWasPurchased --queued
 
-這將會產生一個實作了 `Illuminate\Contracts\Queue\ShouldBeQueued` 介面的處理程式類別。就是這樣！現在當這個處理程式因為事件發生被呼叫，它將會被事件配送器自動地排進隊列。
+這將會產生一個實作了 `Illuminate\Contracts\Queue\ShouldBeQueued` 介面的處理程式類別。這樣就可以了！現在當這個處理程式因為事件發生被呼叫，它將會被事件配送器自動地排進隊列。
 
-當處理程式被隊列執行，如果沒有例外被丟出，在執行後該隊列中的任務將會自動地被刪除。如果你需要手動地取用隊列中的任務的 `delete` 和 `release` 方法也可以。引入隊列處理程式預設引入的 `Illuminate\Queue\InteractsWithQueue` trait，讓你可以取用這些方法：
+當處理程式被隊列執行，如果沒有例外被丟出，在執行後該隊列中的任務將會自動地被刪除。如果你需要手動地取用隊列中的任務的 `delete` 和 `release` 方法也可以做到。引入隊列處理程式預設引入的 `Illuminate\Queue\InteractsWithQueue` trait，讓你可以取用這些方法：
 
 	public function handle(PodcastWasPurchased $event)
 	{
