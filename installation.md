@@ -1,8 +1,8 @@
-# Installation
+# 安裝
 
-- [Install Composer](#install-composer)
-- [Install Laravel](#install-laravel)
-- [Server Requirements](#server-requirements)
+- [安裝 Composer](#install-composer)
+- [安裝 Laravel](#install-laravel)
+- [環境需求](#server-requirements)
 
 <a name="install-composer"></a>
 ## Install Composer
