@@ -22,7 +22,7 @@ Il punto d'ingresso di tutte le richieste è il file `public/index.php`.
 
 Tutte le richieste infatti vengono reindirizzate a questo file dal tuo server. Il file _index.php_ non contiene, in realtà, molto codice: non è altro che un punto di inizio per il caricamento di tutto il resto del framework.
 
-Il file _index_, infatti, carica l'autoloader generato da Composer e recupera le istanze necessarie a lavorare dal file `bootstrap/app.php`. La prima cosa che viene fatta, quindi, è la creazione dell'istanza del [service container](/docs/master/container).
+Il file _index_, infatti, carica l'autoloader generato da Composer e recupera le istanze necessarie a lavorare dal file `bootstrap/app.php`. La prima cosa che viene fatta, quindi, è la creazione dell'istanza del [service container](/container).
 
 #### HTTP / Console Kernel
 
