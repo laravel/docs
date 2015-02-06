@@ -45,9 +45,9 @@
 
 #### 控制器和命名空間
 
-有一點非常重要，那就是我們毋需指明完整的控制器命名空間， 類別名稱中， `App\Http\Controllers` 之後的部分即可用於表示「根」命名空間。 `RouteServiceProvider` 預設會在包含根控制器命名空間的路由群組中，載入 `routes.php` 此一檔案。
+有一點非常重要，那就是我們毋需指明完整的控制器命名空間，在類別名稱中 `App\Http\Controllers` 之後的部分即可用於表示「根」命名空間。 `RouteServiceProvider` 預設會在包含根控制器命名空間的路由群組中，載入 `routes.php` 此一檔案。
 
-若你選擇更深入 `App\Http\Controllers` 此目錄使用 PHP 命名空間，以巢狀化或組織你的控制器，只要使用相對於 `App\Http\Controllers` 根命名空間的特定類別名稱即可。因此，若你的控制器類別全名為 `App\Http\Controllers\Photos\AdminController`，你可以像這樣註冊一個路由：
+若你要在 `App\Http\Controllers` 此目錄深層使用 PHP 命名空間以巢狀化或組織你的控制器，只要使用相對於 `App\Http\Controllers` 根命名空間的特定類別名稱即可。因此，若你的控制器類別全名為 `App\Http\Controllers\Photos\AdminController`，你可以像這樣註冊一個路由：
 
 	Route::get('foo', 'Photos\AdminController@method');
 
@@ -277,7 +277,7 @@ Laravel [服務容器](/docs/5.0/container) 用於解析所有的 Laravel 控制
 	class UserController extends Controller {
 
 		/**
-		 * Store a new user.
+		 * 儲存一個新的使用者。
 		 *
 		 * @param  Request  $request
 		 * @param  int  $id
