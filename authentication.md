@@ -164,7 +164,7 @@ First, you may access the user from the `Auth` facade:
 		{
 			if (Auth::user())
 			{
-				// $request->user() returns an instance of the authenticated user...
+				// Auth::user() returns an instance of the authenticated user...
 			}
 		}
 
@@ -266,7 +266,7 @@ If you are using PHP FastCGI, HTTP Basic authentication may not work correctly o
 
 Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets.
 
-To get started, verify that your `User` model implements the `Illuminate\Contracts\Auth\Remindable` contract. Of course, the `User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Reminders\Remindable` trait to include the methods needed to implement the interface.
+To get started, verify that your `User` model implements the `Illuminate\Contracts\Auth\Authenticatable` and `Illuminate\Contracts\Auth\CanResetPassword` contracts. Of course, the `User` model included with the framework already implements these interfaces, and uses the `Illuminate\Auth\Authenticatable` and `Illuminate\Auth\Passwords\CanResetPassword` traits to include the methods needed to implement these interfaces.
 
 #### Generating The Reminder Table Migration
 
