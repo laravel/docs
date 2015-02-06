@@ -4,17 +4,17 @@
 - [Spiegazione](#spiegazione)
 - [Uso Pratico](#uso-pratico)
 - [Creare Facade](#creare-facade)
-- [Mocking Delle Facades](#mocking-facades)
+- [Mocking delle Facades](#mocking-facades)
 - [Le Classi Facade Reference](#classi-facade-reference)
 
 <a name="introduzione"></a>
 ## Introduzione
 
-Il sistema di Facade offre un interfaccia "statica" a tutte le classi disponibili attraverso l'[IoC container](/docs/ioc). Laravel conta già diverse facade pronte all'uso, e probabilmente le hai usate senza neanche saperlo. Le Facade di Laravel fanno da proxy per le classi "sottostanti" presenti nell'IoC Container, dando allo sviluppatore la possibilità di usare una sintassi espressiva ma mantenendo, allo stesso tempo, la flessibilità e la testabilità che con un metodo statico non si può ottenere. 
+Il sistema di Facade offre un interfaccia "statica" a tutte le classi disponibili attraverso l'[IoC container](/container). Laravel conta già diverse facade pronte all'uso, e probabilmente le hai usate senza neanche saperlo. Le Facade di Laravel fanno da proxy per le classi "sottostanti" presenti nell'IoC Container, dando allo sviluppatore la possibilità di usare una sintassi espressiva ma mantenendo, allo stesso tempo, la flessibilità e la testabilità che con un metodo statico non si può ottenere. 
 
 Occasionalmente, portesti voler creare la tua propria facade per la tua applicazione o per i tuoi package, andiamo ad esaminare lo sviluppo, contetto ed uso di queste classi.
 
-> **Nota:** prima di buttarti nel mondo della Facades, è consigliabile avere ben presente in mente il concetto di [IoC container](/docs/ioc).
+> **Nota:** prima di buttarti nel mondo della Facades, è consigliabile avere ben presente in mente il concetto di [IoC Container](/container).
 
 <a name="spiegazione"></a>
 ## Spiegazione
@@ -107,7 +107,7 @@ Abbiamo bisogno che questa classe venga risolta dall'IoC container. Quindi, aggi
 		return new \PaymentGateway\Payment;
 	});
 
-Un buon modo per registrare questo binding sarebbe quello di creare un nuovo [service provider](/docs/ioc#service-providers) chiamato `PaymentServiceProvider`,  e aggiungere questo binding al metodo `register`. Puoi quindi configurare Laravel in modo che carichi il tuo service provider dal file di configurazione `config/app.php`.
+Un buon modo per registrare questo binding sarebbe quello di creare un nuovo [service provider](/provider) chiamato `PaymentServiceProvider`,  e aggiungere questo binding al metodo `register`. Puoi quindi configurare Laravel in modo che carichi il tuo service provider dal file di configurazione `config/app.php`.
 
 Successivamente, possiamo creare la nostra classe facade:
 
@@ -128,7 +128,7 @@ Finalmente, puoi aggiungere, se lo desideri, un alias per la nostra facade nell'
 Le classi definite nell'array `aliases` non sono sempre disponibili in alcuni casi perchè il [PHP  non proverà a caricare delle classi non definite](https://bugs.php.net/bug.php?id=39003). Se `\ServiceWrapper\ApiTimeoutException` è un alias di `ApiTimeoutException`, un metodo `catch(ApiTimeoutException $e)` al di fuori del namespace `\ServiceWrapper`, non riuscirà mai ad intercettare questa eccezione se si verificherà. L'unica soluzione è quella di usare sempre l’istruzione use con le classi desiderate all’inizio del file sul quale si sta lavorando.
 
 <a name="mocking-facade"></a>
-## Mocking Facade
+## Mocking delle Facade
 
 Gli unit test sono un aspetto importante del perchè le facade lavorano nel modo in cui lo fanno. Infatti, la testabilità è una ragione primaria della loro esistenza. Per maggiori informazioni, dai un'occhiata alla documentazione [mocking facades](/docs/testing#mocking-facades).
 
