@@ -142,7 +142,7 @@ Contract  |  Laravel 4.x Facade
 <a name="come-usare-i-contratti"></a>
 ## Come Usare i Contratti
 
-Ok, come ottenere un'implementazione di un contract? Piuttosto semplicemente, in realtà. Molti tipi di classe in Laravel vengono risolti tramite il [service container](/docs/master/container), inclusi controller, listener di eventi, filtri, job in coda ed addirittura le Closures. Tutto quello che devi fare per ottenere l'implementazione corrispondente di una certa interfaccia (o contratto) è specificare il contratto tramite type-hinting.
+Ok, come ottenere un'implementazione di un contract? Piuttosto semplicemente, in realtà. Molti tipi di classe in Laravel vengono risolti tramite il [service container](/container), inclusi controller, listener di eventi, filtri, job in coda ed addirittura le Closures. Tutto quello che devi fare per ottenere l'implementazione corrispondente di una certa interfaccia (o contratto) è specificare il contratto tramite type-hinting.
 
 Così:
 
@@ -183,4 +183,4 @@ Così:
 
 	}
 
-Nel momento in cui l'event listener viene risolto, il service container legge il type-hint desiderato dal costruttore della classe, iniettando l'istanza corrispondente. Se il meccanismo non ti è ancora del tutto chiaro (cosa comprensibile) dai uno sguardo alla documentazione del [service container](/docs/master/container).
+Nel momento in cui l'event listener viene risolto, il service container legge il type-hint desiderato dal costruttore della classe, iniettando l'istanza corrispondente. Se il meccanismo non ti è ancora del tutto chiaro (cosa comprensibile) dai uno sguardo alla documentazione del [service container](/container).
