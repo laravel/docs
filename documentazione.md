@@ -43,7 +43,7 @@
     - [Unit Testing](/documentazione/5.0/testing)
     - [Validazione](/documentazione/5.0/validazione)
 - Database
-    - [Uso Base](/documentazione/5.0/uso-base)
+    - [Uso Base](/documentazione/5.0/database)
     - [Query Builder](/documentazione/5.0/query-builder)
     - [Eloquent ORM](/documentazione/5.0/eloquent)
     - [Schema Builder](/documentazione/5.0/schema-builder)
