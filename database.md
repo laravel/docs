@@ -12,12 +12,12 @@
 
 Laravel 讓連結資料庫和執行查尋變得相當容易。 資料庫相關設定檔案都在 `config/database.php`。 在這個檔案你可以定義你所有的資料庫連線，以及指定資料庫在預設情況下應該使用哪個連線並提供所有支援的資料庫系統的範例。
 
-目前 Laravel 支援四種資料庫系統： **MySQL**、**Postgres**、**SQLite**、以及 **SQL Server**。
+目前 Laravel 支援四種資料庫系統： MySQL、Postgres、SQLite、以及 SQL Server。
 
 <a name="read-write-connections"></a>
 ## 讀取/寫入 連接資料庫
 
-有時候你可能希望連接資料庫並使用 **SELECT** 語法或者是其他的語法像： **INSERT**、**UPDATE**、以及 **DELETE** 語法。 **Laravel** 讓這些變得輕鬆簡單，並使用正確的連接，不論你使用原始查詢、查詢建立器、或者是 **Eloquent ORM**。
+有時候你可能希望連接資料庫並使用 SELECT 語法或者是其他的語法像： INSERT、UPDATE、以及 DELETE 語法。 Laravel 讓這些變得輕鬆簡單，並使用正確的連接，不論你使用原始查詢、查詢建立器、或者是 Eloquent ORM。
 
 來看看如何 讀取/寫入 連結資料庫應該如何設定，讓我們來看以下的範例：
 
@@ -111,7 +111,7 @@ Laravel 讓連結資料庫和執行查尋變得相當容易。 資料庫相關�
 
 	$users = DB::connection('foo')->select(...);
 
-你也可以訪問原始，基本 **PDO** 的例子：
+你也可以訪問原始，基本 PDO 的例子：
 
 	$pdo = DB::connection()->getPdo();
 
@@ -119,14 +119,14 @@ Laravel 讓連結資料庫和執行查尋變得相當容易。 資料庫相關�
 
 	DB::reconnect('foo');
 
-因為超過了 **PDO** 實例下 `max_connections` 的限制，需要斷線從指定的資料庫，你可以透過 `disconnect` 的方法:
+因為超過了 PDO 實例下 `max_connections` 的限制，需要斷線從指定的資料庫，你可以透過 `disconnect` 的方法:
 
 	DB::disconnect('foo');
 
 <a name="query-logging"></a>
 ## 查詢日誌記錄
 
-預設情況下，**Laravel** 會保留日誌為目前要求執行的所有查詢的記憶體。 然而，在有些例子下，像 Insert 大量的語句，這會導致應用程式使用過多記憶體。 如果要禁用日誌，你可以使用 `disableQueryLog` 的方法：
+預設情況下，Laravel 會保留日誌為目前要求執行的所有查詢的記憶體。 然而，在有些例子下，像 Insert 大量的語句，這會導致應用程式使用過多記憶體。 如果要禁用日誌，你可以使用 `disableQueryLog` 的方法：
 
 	DB::connection()->disableQueryLog();
 
