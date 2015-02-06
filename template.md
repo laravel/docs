@@ -1,4 +1,4 @@
-# Templates
+# Template
 
 - [Template Con Blade](#template-con-blade)
 - [Altre Strutture Di Controllo Con Blade](#altre-strutture-di-controllo-con-blade)
