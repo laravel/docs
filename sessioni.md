@@ -1,7 +1,7 @@
-# Sessione
+# Sessioni
 
 - [Configurazione](#configurazione)
-- [Usare La Sessione](#usare-la-sessione)
+- [Usare Le Sessioni](#usare-sessioni)
 - [Flash Data](#flash-data)
 - [Sessione Su Database](#sessione-su-database)
 - [Driver Sessione](#driver-sessione)
@@ -21,8 +21,8 @@ Prima di utilizzare Redis per la gestione delle sessioni, è necessario installa
 
 Laravel utilizza per le sessioni interne la chiave `flash`, quindi non dovresti mai utilizzarla come chiave nelle tue sessioni.
 
-<a name="usare-la-sessione"></a>
-## Usare La Sessione
+<a name="usare-sessioni"></a>
+## Usare Le Sessioni
 
 #### Salvare Un Valore Nella Sessione
 
@@ -115,4 +115,4 @@ Il "driver" della sessione definisce dove i dati devono essere salvati per ogni 
 - `memcached` / `redis` - le sessioni saranno salvate in uno di questi velocissimi storage.
 - `array` - le sessioni saranno salvate in un semplice array PHP ma non saranno persistenti.
 
-> **Nota:** Il driver array solitamente viene utilizzato per gli [unit test](/docs/master/testing), in questo modo non verranno salvate sessioni.
+> **Nota:** Il driver array solitamente viene utilizzato per gli [unit test](/testing), in questo modo non verranno salvate sessioni.
