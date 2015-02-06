@@ -59,7 +59,7 @@ In the example above, Elixir assumes that your Less files are stored in `resourc
 
 ```javascript
 elixir(function(mix) {
-    mix.sass("app.scss");
+    mix.sass("app.sass");
 });
 ```
 
