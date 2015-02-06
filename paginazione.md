@@ -23,7 +23,7 @@ Ci sono una serie di modi per paginare degli elementi. Il più semplice è usare
 
 #### Paginare Un Model Eloquent
 
-Puoi anche paginare i model [Eloquent](/docs/master/eloquent):
+Puoi anche paginare i model [Eloquent](/eloquent):
 
 	$allUsers = User::paginate(15);
 
@@ -49,7 +49,7 @@ Puoi anche accedere ad alcune informazioni aggiuntive di paginazione usando i se
 - `total`
 - `count`
 
-#### "Simple Pagination"
+#### Paginazione Semplice
 
 Se vuoi mostrare solo i link "Successivo" e "Precedente" nella tua view, hai a disposizione il metodo `simplePaginate` per eseguire una query più efficiente. Questo è utile in caso di numero considerevole di elementi da visualizzare e non si richiede di visualizzare l'esatto numero di pagine nella view:
 
