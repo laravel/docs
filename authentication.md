@@ -136,7 +136,7 @@ This is equivalent to logging in a user via credentials using the `attempt` meth
 
 	Auth::logout();
 
-Of course, if you are using the built-in Laravel authentication controllers, a controller method that handles logging uers out of the application is provided out of the box.
+Of course, if you are using the built-in Laravel authentication controllers, a controller method that handles logging users out of the application is provided out of the box.
 
 #### Authentication Events
 
