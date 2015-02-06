@@ -1,5 +1,5 @@
-# Laravel Documentation
+# Laravel 繁體中文文件
 
-## Contribution Guidelines
+## 翻譯須知
 
-If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 4.2 would be submitted to the `4.2` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
+翻譯前請先詳細閱讀[中文文案排版指南](https://github.com/sparanoid/chinese-copywriting-guidelines)。
