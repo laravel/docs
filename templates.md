@@ -30,7 +30,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 	@extends('layouts.master')
 
 	@section('sidebar')
-		@parent
+		@@parent
 
 		<p>This is appended to the master sidebar.</p>
 	@stop
