@@ -55,7 +55,7 @@ La classe appena creata viene posta nella cartella `app/Commands`. Di default il
 
 	}
 
-Nel metodo `handle` puoi anche fare il type-hint delle dipendenze e queste vengono automaticamente iniettate dall'[IoC container](/docs/master/container). Per esempio:
+Nel metodo `handle` puoi anche fare il type-hint delle dipendenze e queste vengono automaticamente iniettate dall'[IoC container](/container). Per esempio:
 
 		/**
 		 * Execute the command.
@@ -116,7 +116,7 @@ Se vuoi convertire un comando esistente in un comando accodabile, aggiungi sempl
 
 A questo punto scrivi il tuo comando normalmente. Quando viene eseguito dal command bus, questo lo accoda automaticamente per processarlo in background. Non potrebbe essere più semplice.
 
-Per maggiori informazioni su come interagire con i comandi accodati, guarda la [documentazione completa sulle code](/docs/master/queues).
+Per maggiori informazioni su come interagire con i comandi accodati, guarda la [documentazione completa sulle code](/code).
 
 <a name="pipeline-di-comandi"></a>
 ## Pipeline Di Comandi
@@ -141,7 +141,7 @@ La pipe di un comando contiene il metodo `handle`, proprio come un middleware:
 
 	}
 
-Le classi delle pipe vengono risolte tramite l'[IoC container](/docs/5.0/container), perciò sentiti libero di fare il type-hint nel loro costruttore di qualsiasi dipendenza tu abbia bisogno.
+Le classi delle pipe vengono risolte tramite l'[IoC container](/container), perciò sentiti libero di fare il type-hint nel loro costruttore di qualsiasi dipendenza tu abbia bisogno.
 
 Puoi anche definire una `Closure` come pipe di un comando:
 
