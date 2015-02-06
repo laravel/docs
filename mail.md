@@ -114,7 +114,7 @@ Nota che la variabile `$message` è sempre passata alla view usando la facade `M
 
 #### Mettere In Coda Un Messaggio
 
-Nel momento in cui spedire email può drasticamente allungare i tempi di risposta della tua applicazione, molti sviluppatori scelgono di mettere in coda i messaggi attraverso un invio in background. Laravel rende questa operazione semplice attraverso un’[unified queue API](/docs/master/queues). Per mettere in coda una mail, usa il metodo `queue` della facade `Mail`:
+Nel momento in cui spedire email può drasticamente allungare i tempi di risposta della tua applicazione, molti sviluppatori scelgono di mettere in coda i messaggi attraverso un invio in background. Laravel rende questa operazione semplice attraverso un’[API apposita](/code). Per mettere in coda una mail, usa il metodo `queue` della facade `Mail`:
 
 	Mail::queue('emails.welcome', $data, function($message)
 	{
