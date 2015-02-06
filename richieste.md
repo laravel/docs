@@ -1,4 +1,4 @@
-# HTTP Request
+# Richieste HTTP
 
 - [Ottenere Una Istanza Request](#ottenere-istanza-request)
 - [Recuperare L'Input](#recuperare-input)
@@ -20,7 +20,7 @@ Ricorda, se sei in un namespace, dovrai importare la facade `Request` usando lo 
 
 ### Via Dependency Injection
 
-Per ottenere un istanza della richiesta HTTP corrente via dependency injection, puoi importare la classe nel costruttore del tuo controller oppure in un suo metodo. L'istanza della richiesta corrente sarà automaticamente iniettata dal [service container](/docs/master/container):
+Per ottenere un istanza della richiesta HTTP corrente via dependency injection, puoi importare la classe nel costruttore del tuo controller oppure in un suo metodo. L'istanza della richiesta corrente sarà automaticamente iniettata dal [service container](/container):
 
 	<?php namespace App\Http\Controllers;
 
@@ -108,7 +108,7 @@ Laravel ti offre la possibilità di mantenere l'input di una richiesta durante u
 
 #### Flashing Dell'Input Nella Sessione
 
-Il metodo `flash` memorizzerà gli input correnti nella [sessione](/docs/master/session) in modo da renderli disponibili, durante la richiesta successiva dell'utente, all'applicazione:
+Il metodo `flash` memorizzerà gli input correnti nella [sessione](/sessioni) in modo da renderli disponibili, durante la richiesta successiva dell'utente, all'applicazione:
 
 	Request::flash();
 
