@@ -32,7 +32,7 @@ Tutto quello che hai bisogno di fare è dire a Laravel dove sono posizionate le 
 
 	public function boot()
 	{
-		$this->loadViewsFrom('courier', __DIR__.'/path/to/views');
+		$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
 	}
 
 Ora puoi caricare le view del package usando la seguente sintassi:
@@ -47,7 +47,7 @@ Per pubblicare le view del tuo package nella directory `resource/views/vendor`, 
 
 	public function boot()
 	{
-		$this->loadViewsFrom('courier', __DIR__.'/path/to/views');
+		$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
 
 		$this->publishes([
 			__DIR__.'/path/to/views' => base_path('resources/views/vendor/courier'),
@@ -69,7 +69,7 @@ Tutto quello di cui hai bisogno è di dire a Laravel dove si trovano i file di t
 
 	public function boot()
 	{
-		$this->loadTranslationsFrom('courier', __DIR__.'/path/to/translations');
+		$this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
 	}
 
 Nota che all'interno della cartella `translations`, puoi avere altre directory per ogni lingua tu abbia fornito come `en`, `es`, `ru`, etc.
@@ -96,7 +96,7 @@ Ora, quando gli utenti eseguiranno il comando di Laravel `vendor:publish`, i tuo
 Puoi anche scegliere di unire il file di configurazione del tuo package con una copia dell'applicazione. Questo permette agli utenti di includere solo le opzioni che realmente vogliono sovrascrivere nella copia pubblicata della configurazione. Per unire le configurazioni, usa il metodo `mergeConfigFrom` nel metodo `register` del tuo service provider:
 
 	$this->mergeConfigFrom(
-		'courier', __DIR__.'/path/to/config/courier.php'
+		__DIR__.'/path/to/config/courier.php', 'courier'
 	);
 
 <a name="routing"></a>
