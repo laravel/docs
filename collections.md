@@ -1,4 +1,4 @@
-# Collections
+# 集合
 
 - [介紹](#introduction)
 - [基本用法](#basic-usage)
@@ -18,7 +18,7 @@
 	});
 
 
-就像你可以看到的，`Collection` 類別允許你串接它的方法對背後的陣列執行流暢的映射和歸納。一般說來，每一個 `Collection` 的方法都回傳一個全新的 `Collection` 實例。為了更深一步的了解，請繼續閱讀！
+就如你所見，`Collection` 類別允許你串接它的方法對背後的陣列執行流暢的映射和歸納。一般說來，每一個 `Collection` 的方法都回傳一個全新的 `Collection` 實例。為了更深一步的了解，請繼續閱讀！
 
 <a name="basic-usage"></a>
 ## 基本用法
