@@ -23,7 +23,7 @@ Laravel Elixir 提供了簡潔流暢的 API，讓你能夠為你的 Laravel 應�
 
     node -v
 
-預設情況下，Laravel Homestead 會包含你所需的一切；當然，如果你沒有使用 Vagrant，那麼你可以瀏覽 [Node 的下載頁](http://nodejs.org/download/)進行安裝。別擔心，安裝是很簡單又快速的！
+預設情況下，Laravel Homestead 會包含你所需的一切；當然，如果你沒有使用 Vagrant，那麼你可以瀏覽 [Node  的下載頁](http://nodejs.org/download/)進行安裝。別擔心，安裝是很簡單又快速的！
 
 ### Gulp
 
@@ -33,7 +33,7 @@ Laravel Elixir 提供了簡潔流暢的 API，讓你能夠為你的 Laravel 應�
 
 ### Laravel Elixir
 
-最後的步驟就是安裝 Elixir！伴隨著新安裝的 Laravel，你會發現根目錄有個名為 `package.json` 的檔案。想像它就如同你的 `composer.json` 檔案，只是它定義的是Node的依賴，而不是 PHP。你可以使用以下的指令進行安裝依賴的動作：
+最後的步驟就是安裝 Elixir！伴隨著新安裝的 Laravel，你會發現根目錄有個名為 `package.json` 的檔案。想像它就如同你的 `composer.json` 檔案，只是它定義的是 Node 的依賴，而不是 PHP。你可以使用以下的指令進行安裝依賴的動作：
 
     npm install
 
@@ -121,7 +121,7 @@ elixir(function(mix) {
 });
 ```
 
-#### 合併樣式檔案且指定相對目錄
+#### 從特定相對目錄合併樣式檔案
 
 ```javascript
 elixir(function(mix) {
@@ -163,7 +163,7 @@ elixir(function(mix) {
 });
 ```
 
-#### 合併多種組合的腳本檔案
+#### 合併多組腳本檔案
 
 ```javascript
 elixir(function(mix) {
@@ -208,7 +208,7 @@ elixir(function(mix) {
 
 #### 方法連接
 
-當然，你能夠連接 Elixir 大部份的方法來建立一連串的任務：
+當然，你能夠串連 Elixir 大部份的方法來建立一連串的任務：
 
 ```javascript
 elixir(function(mix) {
@@ -259,7 +259,7 @@ elixir(function(mix) {
  });
 ```
 
-請注意我們 `擴增（extend）` Elixir 的 API 時所使用的第一個參數，稍後我們需要在 Gulpfile 中使用它，以及建立 Gulp 任務所使用的回呼函式。
+請注意我們 `擴增（ extend ）` Elixir 的 API 時所使用的第一個參數，稍後我們需要在 Gulpfile 中使用它，以及建立 Gulp 任務所使用的回呼函式。
 
 如果你想要讓你的自訂任務能被監控，只要在監控器註冊就行了。
 
