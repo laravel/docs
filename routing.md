@@ -200,7 +200,7 @@ The `currentRouteName` method returns the name of the route handling the current
 
 Sometimes you may need to apply filters to a group of routes. Instead of specifying the filter on each route, you may use a route group:
 
-	Route::group(['before' => 'auth'], function()
+	Route::group(['middleware' => 'auth'], function()
 	{
 		Route::get('/', function()
 		{
