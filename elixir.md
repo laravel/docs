@@ -1,51 +1,48 @@
 # Laravel Elixir
 
 - [簡介](#introduction)
-- [安裝與設定](#installation)
+- [安裝](#installation)
 - [使用方式](#usage)
 - [Gulp](#gulp)
-- [Directory Defaults](#defaults)
-- [Extensions](#extensions)
+- [預設目錄](#defaults)
+- [功能擴充](#extensions)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gulpjs.com) tasks for your
-Laravel application. Elixir supports several common CSS and JavaScript pre-processors, and even testing tools.
+Laravel Elixir 提供了簡潔流暢的 API，讓你能夠為你的 Laravel 應用程式定義基本的 [Gulp](http://gulpjs.com) 任務。Elixir 支援許多常見的 CSS 與 JavaScrtip 預處理器，甚至包含了測試工具。
 
-If you've ever been confused about how to get started with Gulp and asset compliation, you will love Laravel Elixir!
+如果你曾經對於使用 Gulp 及編譯資源感到困惑，那麼你絕對會愛上 Laravel Elixir！
 
 <a name="installation"></a>
-## Installation & Setup
+## 安裝與設定
 
-### Installing Node
+### 安裝 Node
 
-Before triggering Elixir, you must first ensure that Node.js is installed on your machine.
+在開始使用 Elixir 之前，你必須先確定你的開發環境上有安裝 Node.js。
 
     node -v
 
-By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you
-can easily install Node by visiting [their download page](http://nodejs.org/download/). Don't worry, it's
-quick and easy!
+預設情況下，Laravel Homestead 會包含你所需的一切；當然，如果你沒有使用 Vagrant，那麼你可以瀏覽 [Node 的下載頁](http://nodejs.org/download/)進行安裝。別擔心，安裝是很簡單又快速的！
 
 ### Gulp
 
-Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package like so:
+接著你需要全域安裝 [Gulp](http://gulpjs.com) 的 NPM 安裝包，像是這樣：
 
     npm install --global gulp
 
 ### Laravel Elixir
 
-The only remaining step is to install Elixir! With a new install of Laravel, you'll find a `package.json` file in the root. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
+最後的步驟就是安裝 Elixir！伴隨著新安裝的 Laravel，你會發現根目錄有個名為 `package.json` 的檔案。想像它就如同你的 `composer.json` 檔案，只是它定義的是Node的依賴，而不是 PHP。你可以使用以下的指令進行安裝依賴的動作：
 
     npm install
 
 <a name="usage"></a>
-## Usage
+## 使用方式
 
-Now that you've installed Elixir, you'll be compiling and concatenating in no time!
+現在你已經安裝好 Elixir，未來任何時候你都能進行編譯及合併檔案！
 
-#### Compile Less
+#### 編譯 Less
 
 ```javascript
 elixir(function(mix) {
@@ -53,9 +50,9 @@ elixir(function(mix) {
 });
 ```
 
-In the example above, Elixir assumes that your Less files are stored in `resources/assets/less`.
+在上述例子中，Elixir 會假設你的 Less 檔案儲存在 `resources/assets/less` 裡。
 
-#### Compile Sass
+#### 編譯 Sass
 
 ```javascript
 elixir(function(mix) {
@@ -63,9 +60,9 @@ elixir(function(mix) {
 });
 ```
 
-This assumes that your Sass files are stored in `resources/assets/sass`.
+在上述例子中，Elixir 會假設你的 Sass 檔案儲存在 `resources/assets/sass` 裡。
 
-#### Compile CoffeeScript
+#### 編譯 CoffeeScript
 
 ```javascript
 elixir(function(mix) {
@@ -73,9 +70,9 @@ elixir(function(mix) {
 });
 ```
 
-This assumes that your CoffeeScript files are stored in `resources/assets/coffee`.
+在上述例子中，Elixir 會假設你的 CoffeeScript 檔案儲存在 `resources/assets/coffee` 裡。
 
-#### Compile All Less and CoffeeScript
+#### 編譯所有的 Less 及 CoffeeScript
 
 ```javascript
 elixir(function(mix) {
@@ -84,7 +81,7 @@ elixir(function(mix) {
 });
 ```
 
-#### Trigger PHPUnit Tests
+#### 觸發 PHPUnit 測試
 
 ```javascript
 elixir(function(mix) {
@@ -92,7 +89,7 @@ elixir(function(mix) {
 });
 ```
 
-#### Trigger PHPSpec Tests
+#### 觸發 PHPSpec 測試
 
 ```javascript
 elixir(function(mix) {
@@ -100,7 +97,7 @@ elixir(function(mix) {
 });
 ```
 
-#### Combine Stylesheets
+#### 合併樣式檔案
 
 ```javascript
 elixir(function(mix) {
@@ -111,9 +108,9 @@ elixir(function(mix) {
 });
 ```
 
-Paths passed to this method are relative to the `resources/css` directory.
+傳遞給此方法的檔案路徑均相對於 `resources/css` 目錄。
 
-#### Combine Stylesheets and Save to a Custom Directory
+#### 合併樣式檔案且儲存在自訂的路徑
 
 ```javascript
 elixir(function(mix) {
@@ -124,7 +121,7 @@ elixir(function(mix) {
 });
 ```
 
-#### Combine Stylesheets From A Custom Base Directory
+#### 合併樣式檔案且指定相對目錄
 
 ```javascript
 elixir(function(mix) {
@@ -135,9 +132,9 @@ elixir(function(mix) {
 });
 ```
 
-The third argument to both the `styles` and `scripts` methods determines the relative directory for all paths passed to the methods.
+`styles` 與 `scrtips` 方法可以透過傳入第三個參數來決定來源檔案的相對目錄。
 
-#### Combine All Styles in a Directory
+#### 合併指定目錄裡所有的樣式檔案
 
 ```javascript
 elixir(function(mix) {
@@ -145,7 +142,7 @@ elixir(function(mix) {
 });
 ```
 
-#### Combine Scripts
+#### 合併腳本檔案
 
 ```javascript
 elixir(function(mix) {
@@ -156,9 +153,9 @@ elixir(function(mix) {
 });
 ```
 
-Again, this assumes all paths are relative to the `resources/js` directory.
+同樣的，傳遞給此方法的檔案路徑均相對於 `resources/js` 目錄
 
-#### Combine All Scripts in a Directory
+#### 合併指定目錄裡所有的腳本檔案
 
 ```javascript
 elixir(function(mix) {
@@ -166,7 +163,7 @@ elixir(function(mix) {
 });
 ```
 
-#### Combine Multiple Sets of Scripts
+#### 合併多種組合的腳本檔案
 
 ```javascript
 elixir(function(mix) {
@@ -175,7 +172,7 @@ elixir(function(mix) {
 });
 ```
 
-#### Version / Hash A File
+#### 壓縮檔案並加上雜湊的版本號
 
 ```javascript
 elixir(function(mix) {
@@ -183,17 +180,17 @@ elixir(function(mix) {
 });
 ```
 
-This will append a unique hash to the filename, allowing for cache-busting. For example, the generated file name will look something like: `all-16d570a7.css`.
+這個動作會為你的檔案名稱加上獨特的雜湊值，以防止檔案被快取。舉例來說，產生出來的檔案名稱可能像這樣：`all-16d570a7.css`。
 
-Within your views, you may use the `elixir()` function to load the appropriately hashed asset. Here's an example:
+接著在你的視圖中，你能夠使用 `elixir()` 函式來正確載入名稱被雜湊後的檔案。舉例如下：
 
 ```html
 <link rel="stylesheet" href="{{ elixir("css/all.css") }}">
 ```
 
-Behind the scenes, the `elixir()` function will determine the name of the hashed file that should be included. Don't you feel the weight lifting off your shoulders already?
+程式的作用下，`elixir()` 函式會將參數內的原始檔名轉換成被雜湊後的檔名並載入。是否有如釋重擔的感覺呢？
 
-#### Copy a File to a New Location
+#### 複製檔案到新的位置
 
 ```javascript
 elixir(function(mix) {
@@ -201,7 +198,7 @@ elixir(function(mix) {
 });
 ```
 
-#### Copy an Entire Directory to a New Location
+#### 將整個目錄都複製到新的位置
 
 ```javascript
 elixir(function(mix) {
@@ -209,9 +206,9 @@ elixir(function(mix) {
 });
 ```
 
-#### Method Chaining
+#### 方法連接
 
-Of course, you may chain almost all of Elixir's methods together to build your recipe:
+當然，你能夠連接 Elixir 大部份的方法來建立一連串的任務：
 
 ```javascript
 elixir(function(mix) {
@@ -225,27 +222,26 @@ elixir(function(mix) {
 <a name="gulp"></a>
 ## Gulp
 
-Now that you've told Elixir which tasks to execute, you only need to trigger Gulp from the command line.
+現在你已經告訴 Elixir 要執行的任務，接著只需要在命令列執行 Gulp。
 
-#### Execute All Registered Tasks Once
+#### 執行一次所有註冊的任務
 
     gulp
 
-#### Watch Assets For Changes
+#### 監控檔案變更
 
     gulp watch
 
-#### Watch Tests And PHP Classes for Changes
+#### 監控測試以及 PHP 類別的變更
 
     gulp tdd
 
-> **Note:** All tasks will assume a development environment, and will exclude minification. For production, use `gulp --production`.
+> **提示：** 所有的任務都會使用開發環境進行，所以壓縮功能不會被執行。如果要使用上線環境，可以使用 `gulp --production`。
 
 <a name="extensions"></a>
-## Extensions
+## 功能擴充
 
-You can even create your own Gulp tasks, and hook them into Elixir. Imagine that you want to add a fun task that
- uses the Terminal to verbally notify you with some message. Here's what that might look like:
+你甚至能夠建立自己的 Gulp 任務至 Elixir 裡。想像一下，你想加入一個有趣的任務，使用終端機後會打印出一些訊息。看起來可能會如下：
 
 ```javascript
  var gulp = require("gulp");
@@ -263,23 +259,23 @@ You can even create your own Gulp tasks, and hook them into Elixir. Imagine that
  });
 ```
 
-Notice that we `extend` Elixir's API by passing the key that we will use within our Gulpfile, as well as a callback function that will create the Gulp task.
+請注意我們 `擴增（extend）` Elixir 的 API 時所使用的第一個參數，稍後我們需要在 Gulpfile 中使用它，以及建立 Gulp 任務所使用的回呼函式。
 
-If you want your custom task to be monitored, then register a watcher as well.
+如果你想要讓你的自訂任務能被監控，只要在監控器註冊就行了。
 
 ```javascript
 this.registerWatcher("message", "**/*.php");
 ```
 
-This lines designates that when any file that matches the regex, `**/*.php` is modified, we want to trigger the `message` task.
+這行程式的意思是指，當符合正規表示式的檔案一經修改，就會觸發 `message` 任務。
 
-That's it! You may either place this at the top of your Gulpfile, or instead extract it to a custom tasks file. If you choose the latter approach, simply require it into your Gulpfile, like so:
+很好！接著你可以將這行程式寫在 Gulpfile 的頂端，或者將它放到自訂任務的檔案裡。如果你選擇後者，那麼你必須將它載入至你的 Gulpfile，例如：
 
 ```javascript
 require("./custom-tasks")
 ```
 
-You're done! Now, you can mix it in.
+大功告成！最後你只需要將他們結合。
 
 ```javascript
 elixir(function(mix) {
@@ -287,4 +283,4 @@ elixir(function(mix) {
 });
 ```
 
-With this addition, each time you trigger Gulp, Picard will request some tea.
+加入之後，每當你觸發 Gulp，Picard 就會要求一些茶。
