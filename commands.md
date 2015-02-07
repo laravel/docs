@@ -20,7 +20,7 @@
 
 	php artisan make:console FooCommand
 
-上面的指令將會協助你自動產生一個類別，並儲存為檔案 `app/Console/FooCommand.php`。
+上面的指令將會協助你自動創建一個類別，並儲存為檔案 `app/Console/FooCommand.php`。
 
 在創建自訂指令時，加上 `--command` 這個選項，將可以指定之後在終端機使用此自訂指令時，所要輸入的自訂指令名稱：
 
@@ -28,7 +28,7 @@
 
 ### 撰寫自訂指令
 
-一旦你的自訂指令被創建後，你需要填寫自訂指令的 `名稱` 與 `描述`，您所填寫的內容將會被顯示在 Artisan 的 `list` 畫面中。
+一旦你的自訂指令被創建後，你需要填寫自訂指令的 `名稱（name）` 與 `描述（description）`，您所填寫的內容將會被顯示在 Artisan 的 `list` 畫面中。
 
 當您的自訂指令被執行時，將會呼叫 `fire` 方法，您可以在此為自訂指令加入任何的邏輯判斷。
 
@@ -48,11 +48,11 @@
 
 對選項而言，參數 `mode` 可以是下列其中一項：`InputOption::VALUE_REQUIRED`, `InputOption::VALUE_OPTIONAL`, `InputOption::VALUE_IS_ARRAY`, `InputOption::VALUE_NONE`。
 
- `VALUE_IS_ARRAY` 模式表示呼叫指令時可以多次使用此選項來傳入多個值：
+模式為 `VALUE_IS_ARRAY` 表示呼叫指令時可以多次使用此選項來傳入多個值：
 
 	php artisan foo --option=bar --option=baz
 
- `VALUE_NONE` 模式表示將此選項純粹作為一種有或無的「開關」使用：
+模式為 `VALUE_NONE` 則表示將此選項純粹作為一種有或無的「開關」使用：
 
 	php artisan foo --option
 
@@ -60,7 +60,7 @@
 
 當您的自訂指令執行時，您需要讓您的應用程式可以存取到這些參數和選項的值，要做到這一點，您可以使用 `argument` 和 `option` 方法：
 
-#### 取得自訂指令被輸入的參數值
+#### 取得自訂指令被輸入的參數
 
 	$value = $this->argument('name');
 
@@ -68,11 +68,11 @@
 
 	$arguments = $this->argument();
 
-#### 取得自訂指令被輸入的選項值
+#### 取得自訂指令被輸入的選項
 
 	$value = $this->option('name');
 
-#### 取得自訂指令被輸入的所有選項值
+#### 取得自訂指令被輸入的所有選項
 
 	$options = $this->option();
 
