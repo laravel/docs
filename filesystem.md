@@ -110,9 +110,9 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 
 <a name="custom-filesystems"></a>
 ## Custom Filesystems
-If you need to use a filesystem that is not provided out of the box, you may configure one using a service provider. Visit [Flysystem](https://github.com/thephpleague/flysystem#adapters) to view a list of available options.
+If you need to use a filesystem that is not provided out of the box, you may configure one using a Service Provider. Visit [Flysystem](https://github.com/thephpleague/flysystem#adapters) to view a list of available options.
 
-In order to setup your custom filesystem you call the `extend` method on the `Illuminate\Filesystem\FilesystemManager` class. This class is available to you through the `Illuminate\Contracts\Filesystem\Factory` interface which can be injected into the `boot` method in your service provider.
+In order to set up your custom filesystem you'll need to create a Service Provider (For example, `DropboxFilesystemServiceProvider`. In its `boot` method, you'll want to inject an instance of the `Illuminate\Contracts\Filesystem\Factory` contract, and then call the `extend` method of the injected instance.`
 
 The first argument of the `extend` method is the name of the disk you will use, while the second argument is a closure that gets passed both the `$app` and `$config` variables.  
 
@@ -122,13 +122,20 @@ From this closure you must return an instance of `League\Flysystem\Filesystem`. 
 
 #### Dropbox Example
 
+	<?php namespace App\Providers;
+
 	use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
-	
-	public function boot(FilesystemFactory $filesystem)
-	{
-		$filesystem->extend('dropbox',function($app,$config) {
-			$client = new Client($config['accessToken'],$config['clientIdentifier']);
-			$adapter = new DropboxAdapter($client);
-			return new Filesystem($adapter);
+
+	class DropboxFilesystemServiceProvider {
+		
+		public function boot(FilesystemFactory $filesystem)
+		{
+			$filesystem->extend('dropbox',function($app, $config) 
+			{
+				$client = new Client($config['accessToken'],$config['clientIdentifier']);
+				$adapter = new DropboxAdapter($client);
+				return new Filesystem($adapter);
+			});
 		});
-	});
+
+	}
