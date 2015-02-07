@@ -1,30 +1,30 @@
 # Command Bus
 
-- [Introduction](#introduction)
-- [Creating Commands](#creating-commands)
-- [Dispatching Commands](#dispatching-commands)
-- [Queued Commands](#queued-commands)
-- [Command Pipeline](#command-pipeline)
+- [簡介](#introduction)
+- [建立命令](#creating-commands)
+- [派送命令](#dispatching-commands)
+- [命令佇列](#queued-commands)
+- [命令管線](#command-pipeline)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-The Laravel command bus provides a convenient method of encapsulating tasks your application needs to perform into simple, easy to understand "commands". To help us understand the purpose of commands, let's pretend we are building an application that allows users to purchase podcasts.
+Command bus 提供一個簡便的方法來封裝任務，使你的程式更加容易閱讀與執行，為了幫助我們更加了解使用"命令"的目的，讓我們來模擬建立一個可以購買播客的網站。
 
-When a user purchases a podcast, there are a variety of things that need to happen. For example, we may need to charge the user's credit card, add a record to our database that represents the purchase, and send a confirmation e-mail of the purchase. Perhaps we also need to perform some kind of validation as to whether the user is allowed to purchase podcasts.
+當用戶購買了播客，過程中有許多事件會產生，例如，我們需要從用戶的信用卡扣款，將紀錄新增到資料庫以表示購買，並發送購買確認的電子郵件，或許，我們還需要進行許多驗證來確認使用者是否可以購買。
 
-We could put all of this logic inside a controller method; however, this has several disadvantages. The first disadvantage is that our controller probably handles several other incoming HTTP actions, and including complicated logic in each controller method will soon bloat our controller and make it harder to read. Secondly, it is difficult to re-use the purchase podcast logic outside of the controller context. Thirdly, it is more difficult to unit-test the command as we must also generate a stub HTTP request and make a full request to the application to test the purchase podcast logic.
+我們可以將這些邏輯通通放在控制器的方法內，然而，這樣做會有一些缺點，首先，控制器可能還需要處理許多其他的 HTTP 動作，包含複雜的邏輯，這會讓控制器變得很肥大且難易閱讀，第二點，這些邏輯無法在這個控制器以外被重複使用，第三，這些命令無法被單元測試，為此我們還得額外產生一個 HTTP 請求，並向網站進行完整購買播客的流程。
 
-Instead of putting this logic in the controller, we may choose to encapsulate it within a "command" object, such as a `PurchasePodcast` command.
+避免將邏輯放在控制器內，我們選擇使用一個“命令"物件來封裝它，像是 `PurchasePodcast` 命令。
 
 <a name="creating-commands"></a>
-## Creating Commands
+## 建立命令
 
-The Artisan CLI can generate new command classes using the `make:command` command:
+使用 `make:command` 這個 Artisan 指令可以產生一個新的命令類別 ：
 
 	php artisan make:command PurchasePodcast
 
-The newly generated class will be placed in the `app/Commands` directory. By default, the command contains two methods: the constructor and the `handle` method. Of course, the constructor allows you to pass any relevant objects to the command, while the `handle` method executes the command. For example:
+新產生的類別會被放在 `app/Commands` 目錄中，命令預設包含了兩個方法：建構子和 `handle` 。當然，`handle` 方法執行命令時，你可以使用建構子傳入相關的物件到這個命令中。例如：
 
 	class PurchasePodcast extends Command implements SelfHandling {
 
@@ -54,8 +54,7 @@ The newly generated class will be placed in the `app/Commands` directory. By def
 		}
 
 	}
-
-The `handle` method may also type-hint dependencies, and they will be automatically injected by the [IoC container](/docs/5.0/container). For example:
+`handle` 方法也可以型別限制相依，並且藉由 [IoC 容器](/docs/5.0/container) 機制，將會自動進行依賴注入。例如：
 
 		/**
 		 * Execute the command.
@@ -68,11 +67,11 @@ The `handle` method may also type-hint dependencies, and they will be automatica
 		}
 
 <a name="dispatching-commands"></a>
-## Dispatching Commands
+## 派送命令
 
-So, once we have created a command, how do we dispatch it? Of course, we could call the `handle` method directly; however, dispatching the command through the Laravel "command bus" has several advantages which we will discuss later.
+所以，我們建立的命令該如何派送它呢？當然，我們可以直接呼叫 `handle` 方法，然而使用 Laravel 的 "command bus" 來派送命令將會有許多優點，待會我們會討論這個部分。
 
-If you glance at your application's base controller, you will see the `DispatchesCommands` trait. This trait allows us to call the `dispatch` method from any of our controllers. For example:
+如果你有瀏覽過內建的基本控制器，將會發現 `DispatchesCommands` 特徵機制，它將允許我們在控制器內呼叫 `dispatch` 方法，例如：
 
 	public function purchasePodcast($podcastId)
 	{
@@ -81,53 +80,54 @@ If you glance at your application's base controller, you will see the `Dispatche
 		);
 	}
 
-The command bus will take care of executing the command and calling the IoC container to inject any needed dependencies into the `handle` method.
+The command bus 將會負責執行命令和呼叫 IoC 容器來將所需的相依注入到 `handle` 方法。
 
-You may add the `Illuminate\Foundation\Bus\DispatchesCommands` trait to any class you wish. If you would like to receive a command bus instance through the constructor of any of your classes, you may type-hint the `Illuminate\Contracts\Bus\Dispatcher` interface. Finally, you may also use the `Bus` facade to quickly dispatch commands:
+你也可以將 `Illuminate\Foundation\Bus\DispatchesCommands` 特徵機制加入任何要使用的類別內。若你想要在任何類別的建構子內接收 command bus 的實體 ，你可以使用型別限制 `Illuminate\Contracts\Bus\Dispatcher` 這個介面。
+最後，你也可以使用 `Bus` facade 來快速派發命令：
 
 		Bus::dispatch(
 			new PurchasePodcast(Auth::user(), Podcast::findOrFail($podcastId))
 		);
 
-### Mapping Command Properties From Requests
+### 從請求來映射命令
 
-It is very common to map HTTP request variables into commands. So, instead of forcing you to do this manually for each request, Laravel provides some helper methods to make it a cinch. Let's take a look at the `dispatchFrom` method available on the `DispatchesCommands` trait:
+映射 HTTP 請求到命令是很常見的，所以，與其要你針對每個請求苦命地進行手動對應，Laravel 則提供一些有用的方法來輕鬆達到，讓我們來看一下 `DispatchesCommands` 特徵機制提供的 `dispatchFrom` 方法：
 
 	$this->dispatchFrom('Command\Class\Name', $request);
 
-This method will examine the constructor of the command class it is given, and then extract variables from the HTTP request (or any other `ArrayAccess` object) to fill the needed constructor parameters of the command. So, if our command class accepts a `firstName` variable in its constructor, the command bus will attempt to pull the `firstName` parameter from the HTTP request.
+這個方法將會檢查這個被傳入的命令類的建構子，並取出來自於 HTTP 請求的變數(或其他任何的 `ArrayAccess` 物件) 並將其填入建構子，所以，若命令類在建構子接受 `firstName` 參數，command bus 將會試圖從 HTTP 請求取出 `firstName` 參數。
 
-You may also pass an array as the third argument to the `dispatchFrom` method. This array will be used to fill any constructor parameters that are not available on the request:
+`dispatchFrom` 方法的第三個參數允許你傳入陣列，那些不在 HTTP 請求內的參數可用這個陣列來填入建構子：
 
 	$this->dispatchFrom('Command\Class\Name', $request, [
 		'firstName' => 'Taylor',
 	]);
 
 <a name="queued-commands"></a>
-## Queued Commands
+## 命令佇列
 
-The command bus is not just for synchronous jobs that run during the current request cycle, but also serves as the primary way to build queued jobs in Laravel. So, how do we instruct command bus to queue our job for background processing instead of running it synchronously? It's easy. Firstly, when generating a new command, just add the `--queued` flag to the command:
+Command bus 不僅僅作為當下請求的同步作業，也可以作為 Laravel 佇列任務的主要方法，所以，我們要如何指示 command bus 在背景作業而不是同步處理呢？非常簡單，首先，在建立新的命令時加上 `--queued` 參數：
 
 	php artisan make:command PurchasePodcast --queued
 
-As you will see, this adds a few more features to the command, namely the `Illuminate\Contracts\Queue\ShouldBeQueued` interface and the `SerializesModels` trait. These instruct the command bus to queue the command, as well as gracefully serialize and deserialize any Eloquent models your command stores as properties.
+正如你所見的，這讓命令增加了一點功能，即 `Illuminate\Contracts\Queue\ShouldBeQueued` 介面和`SerializesModels` 特徵機制。 他們指示 command bus 使用佇列來執行命令，以及優雅的序列化和反序列化任何在命令內被儲存的 Eloquent 模型。
 
-If you would like to convert an existing command into a queued command, simply implement the `Illuminate\Contracts\Queue\ShouldBeQueued` interface on the class manually. It contains no methods, and merely serves as a "marker interface" for the dispatcher.
+若你想將已存在的命令轉換為佇列命令，只需手動修改實作 `Illuminate\Contracts\Queue\ShouldBeQueued` 介面，它不包含方法，而是僅僅給調度員作為"標記接口"。
 
-Then, just write your command normally. When you dispatch it to the bus that bus will automatically queue the command for background processing. It doesn't get any easier than that.
+然後，一如往常撰寫你的命令，當你將命令派發到 bus，它將會自動將命令丟到背景佇列執行，沒有比這個更容易的方法了。
 
-For more information on interacting with queued commands, view the full [queue documentation](/docs/5.0/queues).
+想瞭解更多關於佇列命令的方法，請見[佇列文件](/docs/5.0/queues).
 
 <a name="command-pipeline"></a>
-## Command Pipeline
+## 命令管線
 
-Before a command is dispatched to a handler, you may pass it through other classes in a "pipeline". Command pipes work just like HTTP middleware, except for your commands! For example, a command pipe could wrap the entire command operation within a database transaction, or simply log its execution.
+在命令被派發到處理器之前，你也可以將它藉由"命令管線"傳遞到其他類別去。命令管線操作上像是 HTTP 中介層，除了是專門來給命令用的，例如，一個命令管線能夠在資料庫交易期間包裝全部的命令操作，或者僅作為執行紀錄。
 
-To add a pipe to your bus, call the `pipeThrough` method of the dispatcher from your `App\Providers\BusServiceProvider::boot` method:
+要將管線添加到 bus，只要從`App\Providers\BusServiceProvider::boot` 方法呼叫調度員的`pipeThrough` 方法：
 
 	$dispatcher->pipeThrough(['UseDatabaseTransactions', 'LogCommand']);
 
-A command pipe is defined with a `handle` method, just like a middleware:
+一個命令管線被定義在 `handle` 方法，就像是個中介層：
 
 	class UseDatabaseTransactions {
 
@@ -141,9 +141,9 @@ A command pipe is defined with a `handle` method, just like a middleware:
 
 	}
 
-Command pipe classes are resolved through the [IoC container](/docs/5.0/container), so feel free to type-hint any dependencies you need within their constructors.
+命令管線是透過 IoC 容器來達成，所以請自行在建構子型別限制所需的相依。
 
-You may even define a `Closure` as a command pipe:
+你甚至可以定義一個 `閉包` 來作為命令管線：
 
 	$dispatcher->pipeThrough([function($command, $next)
 	{
