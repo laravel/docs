@@ -1,35 +1,35 @@
-# Extending The Framework
+# Estendere Il Framework
 
-- [Managers & Factories](#managers-and-factories)
+- [Manager & Factory](#manager-e-factory)
 - [Cache](#cache)
-- [Session](#session)
-- [Authentication](#authentication)
-- [IoC Based Extension](#ioc-based-extension)
+- [Sessioni](#sessioni)
+- [Autenticazione](#autenticazione)
+- [Estensione basata Su IoC](#estensione-basata-ioc)
 
-<a name="managers-and-factories"></a>
-## Managers & Factories
+<a name="manager-e-factory"></a>
+## Manager & Factory
 
-Laravel has several `Manager` classes that manage the creation of driver-based components. These include the cache, session, authentication, and queue components. The manager class is responsible for creating a particular driver implementation based on the application's configuration. For example, the `CacheManager` class can create APC, Memcached, File, and various other implementations of cache drivers.
+Laravel offre, letteralmente, una marea di classi `Manager` per quanto riguarda la personalizzazione del comportamento e dei suoi componenti. Queste includono la cache, le sessioni, l'autenticazione e le code. La classe Manager, come puoi immaginare, ha proprio la responsabilità di fornire le funzionalità base necessarie alla creazione di un componente basato su driver legato, a sua volta, con il sistema di configurazione dell’applicazione. Per esempio, la classe `CacheManager` può crare APC, Memcached, File, è altri tipi di implementazione di driver cache.
 
-Each of these managers includes an `extend` method which may be used to easily inject new driver resolution functionality into the manager. We'll cover each of these managers below, with examples of how to inject custom driver support into each of them.
+Ognuno di questi manager include un metodo `extend` il quale può essere usato facilmente per iniettare le funzionalità di risoluzione di un nuovo driver all'interno del manager. Esamineramo tutti questi manager sotto, con esempi di come iniettare il supporto dei driver personalizzati per ciascuno di essi.
 
-> **Note:** Take a moment to explore the various `Manager` classes that ship with Laravel, such as the `CacheManager` and `SessionManager`. Reading through these classes will give you a more thorough understanding of how Laravel works under the hood. All manager classes extend the `Illuminate\Support\Manager` base class, which provides some helpful, common functionality for each manager.
+> **Nota:** Prenditi del tempo per sfogliare i vari tipi di classe `Manager` usati da Laravel, come `CacheManager` e `SessionManager`. Leggendo il codice di queste classi avrai più coscienza di come Laravel lavora “dietro le quinte”. Tutte le classi manager estendo la classe base `Illuminate\Support\Manager`, la quale offre alcune utili funzionalità per ogni manager.
 
 <a name="cache"></a>
 ## Cache
 
-To extend the Laravel cache facility, we will use the `extend` method on the `CacheManager`, which is used to bind a custom driver resolver to the manager, and is common across all manager classes. For example, to register a new cache driver named "mongo", we would do the following:
+Per estendere la struttura delegata alla Cache di Laravel useremo il metodo `extend` nel `CacheManager`, che permette l’aggancio ad un nuovo driver da usare. Ecco, per esempio, il codice da scrivere per creare un nuovo driver “mongo”. 
 
 	Cache::extend('mongo', function($app)
 	{
 		return Cache::repository(new MongoStore);
 	});
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of `Illuminate\Foundation\Application` and an IoC container.
+Il primo parametro passato al metodo `extend` è il nome del driver. Dovrà essere un valore corrispondente a quello che, successivamente, verrà inserito in `config/cache.php`. Il secondo parametro è una Closure che ritorna un'istanza di `Illuminate\Cache\Repository. La Closure sarà passata ad un'istanza `$app`, che a sua volta è un istanza della classe `Illuminate\Foundation\Application`.
 
-The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array.
+La chiamata a `Cache::extend` potrebbe essere fatta nel metodo di default `boot` di `App\Providers\AppServiceProvider` che lavora con Laravel, oppure puoi creare un tuo service provider per creare questa estensione – non dimenticarti però di registrare il provider nell'array providce in `config/app.php`.
 
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` contract. So, our MongoDB cache implementation would look something like this:
+Per crare il nostro driver cache personalizzato, abbiamo bisogno di implementare ilò contract `Illuminate\Contracts\Cache\Store`. Quindi, la nostra implementazione del driver cache MongoDB dovrebbe essere qualcosa come:
 
 	class MongoStore implements Illuminate\Contracts\Cache\Store {
 
@@ -43,32 +43,32 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
 
 	}
 
-We just need to implement each of these methods using a MongoDB connection. Once our implementation is complete, we can finish our custom driver registration:
+Abbiamo bisogno di implementare tutti questi metodi usando una connessione a MongoDB. Una volta completata l'implementazione, possiamo terminare la nostra registrazione del driver personalizzato:
 
 	Cache::extend('mongo', function($app)
 	{
 		return Cache::repository(new MongoStore);
 	});
 
-If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+Nel caso ti stessi chiedendo dove mettere il codice creato, puoi tranquillamente creare un namespace Extensions, oppure, perchè no, renderlo disponibile su Packagist! Oppure, potresti creare un namespace `Extensions` nella tua directory `app`. Tuttavia, tieni a mente che Laravel non ha una struttura rigida e sei libero di organizzare la tua applicazione secondo le tue preferenze.
 
-<a name="session"></a>
-## Session
+<a name="sessioni"></a>
+## Sessioni
 
-Extending Laravel with a custom session driver is just as easy as extending the cache system. Again, we will use the `extend` method to register our custom code:
+Estendere Laravel con un driver di sessione personalizzato e facile come estendere il sistema cache. Ancora una volta, useremo il metodo `extend` per la registrazione del nostro codice personalizzato:
 
 	Session::extend('mongo', function($app)
 	{
 		// Return implementation of SessionHandlerInterface
 	});
 
-### Where To Extend The Session
+### Dove Estendere La Sessione
 
-You should place your session extension code in the `boot` method of your `AppServiceProvider`.
+Potresti inserire il tuo codice di estensione sessione nel metodo `boot` del tuo `AppServiceProvider`.
 
-### Writing The Session Extension
+### Scrivere L'Estensione Della Sessione
 
-Note that our custom session driver should implement the `SessionHandlerInterface`. This interface contains just a few simple methods we need to implement. A stubbed MongoDB implementation would look something like this:
+Nota che il nostro driver di sessione personalizzato deve implementare `SessionHandlerInterface`. Questa interfaccia contiene alcuni semplici metodi che hanno bisogno di essere implementati. Un'implementazione MongoDB sarebbe simile a qualcosa del tipo:
 
 	class MongoHandler implements SessionHandlerInterface {
 
@@ -81,39 +81,39 @@ Note that our custom session driver should implement the `SessionHandlerInterfac
 
 	}
 
-Since these methods are not as readily understandable as the cache `StoreInterface`, let's quickly cover what each of the methods do:
+Dal momento che questi metodi non sono di facile comprensione come per l'interfaccia cache `StoreInterface`, spieghiamo velocemente cosa fanno:
 
-- The `open` method would typically be used in file based session store systems. Since Laravel ships with a `file` session driver, you will almost never need to put anything in this method. You can leave it as an empty stub. It is simply a fact of poor interface design (which we'll discuss later) that PHP requires us to implement this method.
-- The `close` method, like the `open` method, can also usually be disregarded. For most drivers, it is not needed.
-- The `read` method should return the string version of the session data associated with the given `$sessionId`. There is no need to do any serialization or other encoding when retrieving or storing session data in your driver, as Laravel will perform the serialization for you.
-- The `write` method should write the given `$data` string associated with the `$sessionId` to some persistent storage system, such as MongoDB, Dynamo, etc.
-- The `destroy` method should remove the data associated with the `$sessionId` from persistent storage.
-- The `gc` method should destroy all session data that is older than the given `$lifetime`, which is a UNIX timestamp. For self-expiring systems like Memcached and Redis, this method may be left empty.
+- Il metodo `open` viene usato tipicamente usato nei sistemi di sessioni basati su files. Dato che Laravel ha, di default, un driver di questo tipo, non avrai quasi mai bisogno di scrivere niente in corrispondenza di questo metodo. Tutto quello che dovrai fare sarà lasciarlo come un semplice stub, vuoto. E' semplicemente una questione di design di interfacce “povere” (di cui parleremo più avanti) che PHP ci richiede per implementare questo metodo.
+- Il metodo `close`, come il metodo `open`, lascialo pure questo metodo così com’è. Per molti driver, non è necessario avere un implementazione.
+- Il metodo `read` ha il compito di ritornare una stringa contenente i dati della sessione associati ad un determinato `$sessionId`. Non c’è bisogno di effettuare nessuna serializzazione o encoding in fase di recupero del dato, dato che Laravel se ne occupa automaticamente.
+- Il metodo `write` si occupa di scrivere la stringa passata come parametro in `$data` in corrispondenza di un preciso id `$sessionId` per qualche sistema di memorizzazione, come MongoDB, Dynamo, etc.
+- Il metodo `destroy` snon fa altro che rimuovere tutti i dati associati ad una specifica sessione, indicata univocamente dall’id `$sessionId`.
+- Il metodo `gc` dato un certo parametro $lifetime, si occupa di rimuovere tutti i dati precedenti a questo. Per i vari sistemi dotati di auto-expiring invece, come Redis o Memcached, questo metodo dovrebbe essere lasciato vuoto.
 
-Once the `SessionHandlerInterface` has been implemented, we are ready to register it with the Session manager:
+Una volta che `SessionHandlerInterface` è stata implementata, siamo pronti per registrarla con il manager di Sessione:
 
 	Session::extend('mongo', function($app)
 	{
 		return new MongoHandler;
 	});
 
-Once the session driver has been registered, we may use the `mongo` driver in our `config/session.php` configuration file.
+Una volta registrato il driver di sessione, possiamo usare il driver `mongo` nel nostro file di configurazione `config/session.php`.
 
-> **Note:** Remember, if you write a custom session handler, share it on Packagist!
+> **Nota:** Ricorda, se scrivi un handler di sessione personalizzato, condividilo su Packagist!
 
-<a name="authentication"></a>
-## Authentication
+<a name="autenticazione"></a>
+## Autenticazione
 
-Authentication may be extended the same way as the cache and session facilities. Again, we will use the `extend` method we have become familiar with:
+Proprio come per il sistema di cache o di sessioni, anche l’autenticazione può facilmente essere presa, estesa e migliorata come meglio si crede, in modo tale da venire incontro a tutte le esigenze. Ancora una volta, useremo il metodo `extend` di cui abbiamo già preso familiarità:
 
 	Auth::extend('riak', function($app)
 	{
 		// Return implementation of Illuminate\Contracts\Auth\UserProvider
 	});
 
-The `UserProvider` implementations are only responsible for fetching a `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
+Le implementazioni di `UserProvider` sono responsabili di effettuare il fetching di un implementazione di `Illuminate\Contracts\Auth\Authenticatable` da un sistema di storage persistente, come un database, Riak e così via. Questi due tipi di interfaccia permetto al meccanismo di autenticazione di Laravel, di continuare a funzionare, senza stare a guardare come i dati dell’utente sono memorizzati e qual è la classe usata.
 
-Let's take a look at the `UserProvider` contract:
+Diamo un'occhiata al contract `UserProvider`:
 
 	interface UserProvider {
 
@@ -125,17 +125,17 @@ Let's take a look at the `UserProvider` contract:
 
 	}
 
-The `retrieveById` function typically receives a numeric key representing the user, such as an auto-incrementing ID from a MySQL database. The `Authenticatable` implementation matching the ID should be retrieved and returned by the method.
+Il metodo `retrieveById` si occupa tipicamente di ricevere una chiave numerica rappresentante il singolo utente. Un po’ come l’id autoincrementante, per intenderci. L’implementazione di `Authenticatable` corrispondente a quel determinato ID è quindi prelevata e restituita al sistema da questo metodo. 
 
-The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, stored in a field `remember_token`. As with with previous method, the `Authenticatable` implementation should be returned.
+Il metodo `retrieveByToken` recuperà un utente da un `$identifier` unico e dal `$token` “ricordati di me”, memorizzato nel campo `remember_token`. Come il metodo precedente, verrà prelevata e restituita un implementazione di `Authenticatable`.
 
-The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. The new token can be either a fresh token, assigned on successfull "remember me" login attempt, or a null when user is logged out.
+Il metodo `updateRememberToken` aggionra il campo `$user` `remember_token` con un nuovo `$token`. Il nuovo token può essere un token, assegnato da un tentativo di login andato a buon fine con l'opzione “ricordati di me”, oppure null quando l'utente esegue un logout.
 
-The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to sign into an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition on `$credentials['username']`. **This method should not attempt to do any password validation or authentication.**
+Il metodo `retrieveByCredentials` riceve un array di credenziali passato la metodo `Auth::attempt` quando si tenta di loggarsi nell'applicazione. Questo metodo effettua una query per ritrovare l'utente con queste credenziali. Normalmente, questo metodo eseguirà una query con una condizione “where” su `$credentials['username']`. **Questo metodo non deve tentare di eseguire nessuna operazione di convalida password o di autenticazione.**
 
-The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`.
+Il metodo `validateCredentials` confronta l'utente `$user` dato con `$credentials` con l'utente autenticato. Per esempio, questo metodo potrebbe confrontare la stringa `$user->getAuthPassword()` su un `Hash::make` di `$credentials['password']`.
 
-Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable`. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
+Ora che abbiamo esaminato ogni metodo di `UserProvider`, diamo uno sguardo a `Authenticatable`. Ricorda, il provider deve ritornare un implementazione di questa interfaccia dai metodi `retrieveById` e `retrieveByCredentials`:
 
 	interface Authenticatable {
 
@@ -147,23 +147,24 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
 
 	}
 
-This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
+Questa interfaccia è semplice. Il metodo `getAuthIdentifier` ritorna una "primary key" dell'utente. Nel database, questa chiave dovrebbe essere una chiave auto-incrementante. Il metodo `getAuthPassword` ritorna l'hash della password dell'utente. Questa interfaccia permette al sistema di autenticazione di lavorare con qualsiasi classe User, a seconda di quale ORM, o livello di astrazione dello storage, tu stia usando. Di default, Laravel offre una classe `User` nella directory `app` che implementa questa interfaccia, quindi puoi consultare questa classe per un esempio di implementazione.
 
-Finally, once we have implemented the `UserProvider`, we are ready to register our extension with the `Auth` facade:
+Finalmente, una volta implementato `UserProvider`, siamo pronti a registrare la nostra estensione con la facade `Auth`:
 
-	Auth::extend('riak', function($app)
+	Auth::extend('riak',
+ function($app)
 	{
 		return new RiakUserProvider($app['riak.connection']);
 	});
 
-After you have registered the driver with the `extend` method, you switch to the new driver in your `config/auth.php` configuration file.
+Dopo aver registrato il driver col metodo `extend`, passa al nuovo driver nel file di configurazione `config/auth.php`.
 
-<a name="ioc-based-extension"></a>
-## IoC Based Extension
+<a name="estensione-basata-ioc"></a>
+## Estensione basata Su IoC
 
-Almost every service provider included with the Laravel framework binds objects into the IoC container. You can find a list of your application's service providers in the `config/app.php` configuration file. As you have time, you should skim through each of these provider's source code. By doing so, you will gain a much better understanding of what each provider adds to the framework, as well as what keys are used to bind various services into the IoC container.
+Praticamente, quasi tutti i service provider inclusi in Laravel “agganciano” le varie istanze tramite l’IoC Container. Se vuoi avere un’idea precisa di tutti i vari service provider, dai uno sguardo. Con un po’ di tempo, l’ideale sarebbe guardarti nel dettaglio un po’ tutto il codice sorgente dei vari provider, per capire meglio il loro funzionamento. Facendolo, otterrai una maggiore consapevolezza di come ogni provider si aggiunge al framework, così come quali chiavi sono usate per eseguire il bind di vari servizi nell'IoC container.
 
-For example, the `HashServiceProvider` binds a `hash` key into the IoC container, which resolves into a `Illuminate\Hashing\BcryptHasher` instance. You can easily extend and override this class within your own application by overriding this IoC binding. For example:
+Per esempio, il provider `HashServiceProvider` usa il bind di una chiave `hash` nell'IoC container, che viene risolto in un istanza di `Illuminate\Hashing\BcryptHasher`. Puoi estendere e sovrascrivere facilmente questa classe con la tua applicazione e usare i tuoi binding. Per esempio:
 
 	<?php namespace App\Providers;
 
@@ -181,6 +182,6 @@ For example, the `HashServiceProvider` binds a `hash` key into the IoC container
 
 	}
 
-Note that this class extends the `HashServiceProvider`, not the default `ServiceProvider` base class. Once you have extended the service provider, swap out the `HashServiceProvider` in your `config/app.php` configuration file with the name of your extended provider.
+Nota che questa classe estende `HashServiceProvider`, non la classe base di default `ServiceProvider`. Una volta esteso il service provider, cambia l'`HashServiceProvider` nel tuo file di configurazione `config/app.php` con il nome del tuo nuovo provider.
 
-This is the general method of extending any core class that is bound in the container. Essentially every core class is bound in the container in this fashion, and can be overridden. Again, reading through the included framework service providers will familiarize you with where various classes are bound into the container, and what keys they are bound by. This is a great way to learn more about how Laravel is put together.
+Questo è il metodo generare di estendere qualsiasi classe del core del framework è vincolata al container. Essenzialmente ogni classe è vincolata nel container in questo modo, e può essere sovrascritta. Ancora una volta, analizza ogni service provider incluso nel framework per prendere familiarità con tutte le classi vincolate al container, è quali chiavi sono associate ad essi. Questo è il modo migliore per imparare di più su come Laravel le unisce tra loro.
