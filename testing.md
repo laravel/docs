@@ -1,27 +1,27 @@
 # Testing
 
-- [Introduction](#introduction)
-- [Defining & Running Tests](#defining-and-running-tests)
-- [Test Environment](#test-environment)
-- [Calling Routes From Tests](#calling-routes-from-tests)
-- [Mocking Facades](#mocking-facades)
-- [Framework Assertions](#framework-assertions)
-- [Helper Methods](#helper-methods)
-- [Refreshing The Application](#refreshing-the-application)
+- [Introduzione](#introduzione)
+- [Definire & Eseguire I Test](#definire-ed-eseguire-test)
+- [Ambiente di Test](#ambiente-di-test)
+- [Chiamare Una Route Da Un Test](#chiamare-route-da-test)
+- [Mocking Delle Facade](#mocking-facade)
+- [Asserzioni Framework](#asserzioni-framework)
+- [Metodi Di Helper](#metodi-helper)
+- [Refreshing Dell'Applicazione](#refreshing-applicazione)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Laravel is built with unit testing in mind. In fact, support for testing with PHPUnit is included out of the box, and a `phpunit.xml` file is already setup for your application.
+Laravel è nato con in mente lo unit testing. Il supporto per il testing con PHPUnit, infatti, è incluso nell’installazione base, e un file phpunit.xml è già pronto da usare per la tua applicazione.
 
-An example test file is provided in the `tests` directory. After installing a new Laravel application, simply run `phpunit` on the command line to run your tests.
+Un esempio di file test è fornito nella directory `tests`. Dopo l'installazione di una nuova applicazione Laravel, basta eseguire semplicemente da terminale `phpunit` per eseguire i tuoi test.
 
-<a name="defining-and-running-tests"></a>
-## Defining & Running Tests
+<a name="definire-ed-eseguire-test"></a>
+## Definire & Eseguire I Test
 
-To create a test case, simply create a new test file in the `tests` directory. The test class should extend `TestCase`. You may then define test methods as you normally would when using PHPUnit.
+Puoi creare un nuovo test case semplicemente aggiungendo un file di test nella directory `tests`. La classe test deve estendere la classe `TestCase`. Puoi definire i metodi della classe test con le stesse modalità di PHPUnit.
 
-#### An Example Test Class
+#### Un Esempio Di Classe Di Test
 
 	class FooTest extends TestCase {
 
@@ -32,54 +32,54 @@ To create a test case, simply create a new test file in the `tests` directory. T
 
 	}
 
-You may run all of the tests for your application by executing the `phpunit` command from your terminal.
+Puoi eseguire tutti i tuoi test per la tua applicazione eseguendo il comando `phpunit` dal terminale.
 
-> **Note:** If you define your own `setUp` method, be sure to call `parent::setUp`.
+> **Nota:** Se definisci il tuo metodo `setUp`, assicurati di effettuare la chiamata a parent::setUp`.
 
-<a name="test-environment"></a>
-## Test Environment
+<a name="ambiente-di-test"></a>
+## Ambiente di Test
 
-When running unit tests, Laravel will automatically set the configuration environment to `testing`. Also, Laravel includes configuration files for `session` and `cache` in the test environment. Both of these drivers are set to `array` while in the test environment, meaning no session or cache data will be persisted while testing. You are free to create other testing environment configurations as necessary.
+Quando esegui gli unit test, Laravel imposterà automaticamente la configurazione d'ambiente su `testing`. Laravel, include anche, file di configurazione per `session` e `cache` nell'ambiente di test. Entrambi questi driver sono impostati come array nell'ambiente di test, questo significa che nessun dato di sessione o di cache verrà mantenuto durante il test. Sei libero di creare tutte le configurazioni per i test di cui hai bisogno.
 
-<a name="calling-routes-from-tests"></a>
-## Calling Routes From Tests
+<a name="chiamare-route-da-test"></a>
+## Chiamare Una Route Da Un Test
 
-#### Calling A Route From A Test
+#### Chimare Una Route Da Un Test
 
-You may easily call one of your routes for a test using the `call` method:
+Puoi facilmente chiamare una delle tue route da un test usando il metodo `call`:
 
 	$response = $this->call('GET', 'user/profile');
 
 	$response = $this->call($method, $uri, $parameters, $files, $server, $content);
 
-You may then inspect the `Illuminate\Http\Response` object:
+Puoi dare una sbirciata all’oggetto `Illuminate\Http\Response`:
 
 	$this->assertEquals('Hello World', $response->getContent());
 
-#### Calling A Controller From A Test
+#### Chiamare Un Controller Da Un Test
 
-You may also call a controller from a test:
+Puoi anche chiamare un controller da un test:
 
 	$response = $this->action('GET', 'HomeController@index');
 
 	$response = $this->action('GET', 'UserController@profile', array('user' => 1));
 
-> **Note:** You do not need to specify the full controller namespace when using the `action` method. Only specify the portion of the class name that follows the `App\Http\Controllers` namespace.
+> **Nota:** Non hai bisogno di specificare il namespace completo del controller durante la chiamata al metodo `action`. Basta specificare soltanto la porzione data dal nome della classe seguito dal namespace `App\Http\Controllers`.
 
-The `getContent` method will return the evaluated string contents of the response. If your route returns a `View`, you may access it using the `original` property:
+Il metodo `getContent` ritornerà una stringa valorizzata che contiene la risposta. Se la tua route ritorna una `View`, puoi accedervi usando la proprietà `original`:
 
 	$view = $response->original;
 
 	$this->assertEquals('John', $view['name']);
 
-To call a HTTPS route, you may use the `callSecure` method:
+Per chiamare una route HTTPS, puoi usare il metodo `callSecure`:
 
 	$response = $this->callSecure('GET', 'foo/bar');
 
-<a name="mocking-facades"></a>
-## Mocking Facades
+<a name="mocking-facade"></a>
+## Mocking Delle Facades
 
-When testing, you may often want to mock a call to a Laravel static facade. For example, consider the following controller action:
+In fase di testing potresti aver bisogno di effettuare una finta chiamata alle static facade di Laravel. Per esempio, dai un’occhiata al seguente metodo di un controller:
 
 	public function getIndex()
 	{
@@ -88,7 +88,7 @@ When testing, you may often want to mock a call to a Laravel static facade. For 
 		return 'All done!';
 	}
 
-We can mock the call to the `Event` class by using the `shouldReceive` method on the facade, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock.
+Possiamo fingere la chiamate alla classe `Event` usando il metodo `shouldReceive` sulla facade, che restituirà un’istanza del mock [Mockery](https://github.com/padraic/mockery).
 
 #### Mocking A Facade
 
@@ -99,14 +99,14 @@ We can mock the call to the `Event` class by using the `shouldReceive` method on
 		$this->call('GET', '/');
 	}
 
-> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the `call` method when running your test.
+> **Nota:** Non dovresti eseguire il mock sulla facade `Request`. Invece, passa l'input all'interno del metodo `call` in fase di chiamata al test.
 
-<a name="framework-assertions"></a>
-## Framework Assertions
+<a name="asserzioni-framework"></a>
+## Asserzioni del Framework
 
-Laravel ships with several `assert` methods to make testing a little easier:
+Laravel include una serie di metodi assert per aiutarci a testare senza difficoltà:
 
-#### Asserting Responses Are OK
+#### Controllare Se La Risposta E' OK
 
 	public function testMethod()
 	{
@@ -115,11 +115,11 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertResponseOk();
 	}
 
-#### Asserting Response Statuses
+#### Controllare Lo Stato Della Risposta
 
 	$this->assertResponseStatus(403);
 
-#### Asserting Responses Are Redirects
+#### Controllare Che Le Risposte Sono Dei Redirect
 
 	$this->assertRedirectedTo('foo');
 
@@ -127,7 +127,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
 
 	$this->assertRedirectedToAction('Controller@method');
 
-#### Asserting A View Has Some Data
+#### Controllare Che Una View Ha Qualche Dato
 
 	public function testMethod()
 	{
@@ -137,7 +137,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertViewHas('age', $value);
 	}
 
-#### Asserting The Session Has Some Data
+#### Controllare Che La Sessione Ha Qualche Dato
 
 	public function testMethod()
 	{
@@ -147,7 +147,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertSessionHas('age', $value);
 	}
 
-#### Asserting The Session Has Errors
+#### Controllare Che La Sessione Ha Dei Messaggi Di Errore
 
     public function testMethod()
     {
@@ -162,7 +162,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
         $this->assertSessionHasErrors(array('name', 'age'));
     }
 
-#### Asserting Old Input Has Some Data
+#### Controllare Che Un Old Input Abbia Qualche Dato
 
 	public function testMethod()
 	{
@@ -171,36 +171,36 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertHasOldInput();
 	}
 
-<a name="helper-methods"></a>
-## Helper Methods
+<a name="metodi-helper"></a>
+## Metodi Di Helper
 
-The `TestCase` class contains several helper methods to make testing your application easier.
+La classe `TestCase` contiene vari metodi helper per rendere il testing della tua applicazione il semplice possibile.
 
-#### Setting And Flushing Sessions From Tests
+#### Impostare E Svuotare Una Sessione Da Un Test
 
 	$this->session(['foo' => 'bar']);
 
 	$this->flushSession();
 
-#### Setting The Currently Authenticated User
+#### Impostare L'Utente Autenticato Attuale
 
-You may set the currently authenticated user using the `be` method:
+Puoi impostare l'utente autenticato attuale usando il metodo `be`:
 
 	$user = new User(array('name' => 'John'));
 
 	$this->be($user);
 
-You may re-seed your database from a test using the `seed` method:
+Puoi inserire nel db dei dati con il metodo `seed`:
 
-#### Re-Seeding Database From Tests
+#### Re-Seeding Database Dai Test
 
 	$this->seed();
 
 	$this->seed($connection);
 
-More information on creating seeds may be found in the [migrations and seeding](/docs/migrations#database-seeding) section of the documentation.
+Maggiori informazioni su come creare un seed le puoi trovare nella sezione [migrazioni e seeding](/docs/migrations#database-seeding) della documentazione.
 
-<a name="refreshing-the-application"></a>
-## Refreshing The Application
+<a name="refreshing-applicazione"></a>
+## Refreshing Dell'Applicazione
 
-As you may already know, you can access your Laravel `Application` / IoC Container via `$this->app` from any test method. This Application instance is refreshed for each test class. If you wish to manually force the Application to be refreshed for a given method, you may use the `refreshApplication` method from your test method. This will reset any extra bindings, such as mocks, that have been placed in the IoC container since the test case started running.
+Come già sai, puoi accedere al tuo `Application` / IoC Container via `$this->app` da qualsiasi metodo per il test. Questa istanza dell'applicazione è resettata per ogni classe test.Se desideri forzare il refresh dell’Application per un determinato metodo, puoi usare il metodo `refreshApplication` dal tuo metodo test. Questa resetterà qualsiasi binding extra, come i mock, che sono stati sostituiti nel IoC container nel momento in cui è partito il test.
