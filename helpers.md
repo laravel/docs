@@ -208,7 +208,7 @@ Get the fully qualified path to the `public` directory.
 
 ### storage_path
 
-Get the fully qualified path to the `app/storage` directory.
+Get the fully qualified path to the `storage` directory.
 
 <a name="strings"></a>
 ## Strings
