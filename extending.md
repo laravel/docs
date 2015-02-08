@@ -27,9 +27,9 @@ Laravel 有幾個 `Manager` 類別用來管理創建基於驅動的元件。這�
 
 傳遞到 `extend` 方法的第一個參數是驅動的名稱。這將會對應到你的 `config/cache.php` 設定檔裡的 `driver` 選項。 第二個參數是個應該回傳 `Illuminate\Cache\Repository` 實例的閉包。`$app` 實例將會被傳遞到閉包，它是 `Illuminate\Foundation\Application` 和 IoC 容器的實例。
 
-`Cache::extend` 的呼叫可以在新的 Laravel 應用程式預設附帶的 `App\Providers\AppServiceProvider` 的 `boot` 方法中 完成，或者你可以建立自己的服務提供者來放置這個擴展 - 記得不要忘記在 `config/app.php` 的提供者陣列註冊提供者。
+`Cache::extend` 的呼叫可以在新的 Laravel 應用程式預設附帶的 `App\Providers\AppServiceProvider` 的 `boot` 方法中完成，或者你可以建立自己的服務提供者來放置這個擴展 - 記得不要忘記在 `config/app.php` 的提供者陣列註冊提供者。
 
-要建立我們的客製化快取驅動，首先需要實作 `Illuminate\Contracts\Cache\Store` 契約。所以，我們的 MongoDB 快取實作將會看起來像這樣：
+要建立客製化快取驅動，首先需要實作 `Illuminate\Contracts\Cache\Store` 契約。所以，我們的 MongoDB 快取實作將會看起來像這樣：
 
 	class MongoStore implements Illuminate\Contracts\Cache\Store {
 
@@ -43,19 +43,19 @@ Laravel 有幾個 `Manager` 類別用來管理創建基於驅動的元件。這�
 
 	}
 
-我們只需要使用 MongoDB 連接來實作這些方法。當實作完成，就可以完成我們的客製化驅動註冊：
+我們只需要使用 MongoDB 連接來實作這些方法。當實作完成，就可以完成客製化驅動註冊：
 
 	Cache::extend('mongo', function($app)
 	{
 		return Cache::repository(new MongoStore);
 	});
 
-如果你正在考慮要把你的客製化快取驅動程式碼放在哪裡，請考慮把它放上 Packagist！或者，你可以在 `app` 的目錄中建立 `Extensions`命名空間。然而，你必須牢記在心 Laravel 沒有嚴格的應用程式架構，你可以依照喜好自由的組織應用程式。
+如果你正在考慮要把客製化快取驅動程式碼放在哪裡，請考慮把它放上 Packagist！或者，你可以在 `app` 的目錄中建立 `Extensions`命名空間。然而，你必須牢記在心 Laravel 沒有嚴格的應用程式架構，你可以依照喜好自由的組織應用程式。
 
 <a name="session"></a>
 ## Session
 
-以客製化 session 驅動來擴展 Laravel 跟擴展快取系統一樣簡單。再一次的，我們將會使用 `extend` 方法來註冊我們的客製化程式碼：
+以客製化 session 驅動來擴展 Laravel 跟擴展快取系統一樣簡單。再一次的，我們將會使用 `extend` 方法來註冊客製化程式碼：
 
 	Session::extend('mongo', function($app)
 	{
@@ -104,7 +104,7 @@ Laravel 有幾個 `Manager` 類別用來管理創建基於驅動的元件。這�
 <a name="authentication"></a>
 ## 認證
 
-認證可以用與快取和 session 功能相同的方法擴展。再一次的，我們使用我們已經熟悉的 `extend` 方法：
+認證可以用與快取和 session 功能相同的方法擴展。再一次的，使用我們已經熟悉的 `extend` 方法：
 
 	Auth::extend('riak', function($app)
 	{
@@ -135,7 +135,7 @@ Laravel 有幾個 `Manager` 類別用來管理創建基於驅動的元件。這�
 
 `validateCredentials` 方法應該借由比較給定的 `$user` 與 `$credentials` 來驗證使用者。舉例來說，這個方法可以比較 `$user->getAuthPassword()` 字串跟 `Hash::make` 後的 `$credentials['password']`。
 
-現在我們已經看過 `UserProvider` 的每個方法，接著我們來看一下 `Authenticatable`。記住，提供者應該從 `retrieveById` 和 `retrieveByCredentials` 方法回傳這個介面的實作：
+現在我們已經看過 `UserProvider` 的每個方法，接著來看一下 `Authenticatable`。記住，提供者應該從 `retrieveById` 和 `retrieveByCredentials` 方法回傳這個介面的實作：
 
 	interface Authenticatable {
 
@@ -149,7 +149,7 @@ Laravel 有幾個 `Manager` 類別用來管理創建基於驅動的元件。這�
 
 這個介面很簡單。 The `getAuthIdentifier` 方法應該回傳使用者的「主鍵」。在 MySQL 後台，同樣，這將會是個自動遞增的主鍵。`getAuthPassword` 應該回傳使用者雜湊過的密碼。這個介面讓認證系統可以與任何使用者類別一起運作，無論你使用什麼 ORM 或儲存抽象層。預設，Laravel 包含一個實作這個介面的 `User` 類別在 `app` 資料夾裡，所以你可以參考這個類別當作實作的例子。
 
-最後，當我們已經實作了 `UserProvider`，我們準備好用 `Auth` facade 來註冊我們的擴展：
+最後，當我們已經實作了 `UserProvider`，我們準備好用 `Auth` facade 來註冊擴展：
 
 	Auth::extend('riak', function($app)
 	{
