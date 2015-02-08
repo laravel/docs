@@ -1,4 +1,4 @@
-# Hash
+# Hashing
 
 - [簡述](#introduction)
 - [基本用法](#basic-usage)
