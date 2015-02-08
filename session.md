@@ -82,7 +82,7 @@ Sometimes you may wish to store items in the session only for the next request. 
 
 #### Reflashing Only A Subset Of Flash Data
 
-	Session::keep(array('username', 'email'));
+	Session::keep(['username', 'email']);
 
 <a name="database-sessions"></a>
 ## Database Sessions

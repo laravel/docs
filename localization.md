@@ -30,9 +30,9 @@ Language files simply return an array of keyed strings. For example:
 
 	<?php
 
-	return array(
+	return [
 		'welcome' => 'Welcome to our application'
-	);
+	];
 
 #### Changing The Default Language At Runtime
 
@@ -69,7 +69,7 @@ You may also define place-holders in your language lines:
 
 Then, pass a second argument of replacements to the `Lang::get` method:
 
-	echo Lang::get('messages.welcome', array('name' => 'Dayle'));
+	echo Lang::get('messages.welcome', ['name' => 'Dayle']);
 
 #### Determine If A Language File Contains A Line
 
@@ -91,7 +91,7 @@ You may then use the `Lang::choice` method to retrieve the line:
 
 You may also supply a locale argument to specify the language. For example, if you want to use the Russian (ru) language:
 
-	echo Lang::choice('товар|товара|товаров', $count, array(), 'ru');
+	echo Lang::choice('товар|товара|товаров', $count, [], 'ru');
 
 Since the Laravel translator is powered by the Symfony Translation component, you may also create more explicit pluralization rules easily:
 

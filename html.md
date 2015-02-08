@@ -18,31 +18,31 @@
 
 #### Opening A Form
 
-	{{ Form::open(array('url' => 'foo/bar')) }}
+	{{ Form::open(['url' => 'foo/bar']) }}
 		//
 	{{ Form::close() }}
 
 By default, a `POST` method will be assumed; however, you are free to specify another method:
 
-	echo Form::open(array('url' => 'foo/bar', 'method' => 'put'))
+	echo Form::open(['url' => 'foo/bar', 'method' => 'put'])
 
 > **Note:** Since HTML forms only support `POST` and `GET`, `PUT` and `DELETE` methods will be spoofed by automatically adding a `_method` hidden field to your form.
 
 You may also open forms that point to named routes or controller actions:
 
-	echo Form::open(array('route' => 'route.name'))
+	echo Form::open(['route' => 'route.name'])
 
-	echo Form::open(array('action' => 'Controller@method'))
+	echo Form::open(['action' => 'Controller@method'])
 
 You may pass in route parameters as well:
 
-	echo Form::open(array('route' => array('route.name', $user->id)))
+	echo Form::open(['route' => ['route.name', $user->id]])
 
-	echo Form::open(array('action' => array('Controller@method', $user->id)))
+	echo Form::open(['action' => ['Controller@method', $user->id]])
 
 If your form is going to accept file uploads, add a `files` option to your array:
 
-	echo Form::open(array('url' => 'foo/bar', 'files' => true))
+	echo Form::open(['url' => 'foo/bar', 'files' => true])
 
 <a name="csrf-protection"></a>
 ## CSRF Protection
@@ -55,10 +55,10 @@ Laravel provides an easy method of protecting your application from cross-site r
 
 #### Attaching The CSRF Filter To A Route
 
-	Route::post('profile', array('before' => 'csrf', function()
+	Route::post('profile', ['before' => 'csrf', function()
 	{
 		//
-	}));
+	}]);
 
 <a name="form-model-binding"></a>
 ## Form Model Binding
@@ -67,7 +67,7 @@ Laravel provides an easy method of protecting your application from cross-site r
 
 Often, you will want to populate a form based on the contents of a model. To do so, use the `Form::model` method:
 
-	echo Form::model($user, array('route' => array('user.update', $user->id)))
+	echo Form::model($user, ['route' => ['user.update', $user->id]])
 
 Now, when you generate a form element, like a text input, the model's value matching the field's name will automatically be set as the field value. So, for example, for a text input named `email`, the user model's `email` attribute would be set as the value. However, there's more! If there is an item in the Session flash data matching the input name, that will take precedence over the model's value. So, the priority looks like this:
 
@@ -88,7 +88,7 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 #### Specifying Extra HTML Attributes
 
-	echo Form::label('email', 'E-Mail Address', array('class' => 'awesome'));
+	echo Form::label('email', 'E-Mail Address', ['class' => 'awesome']);
 
 > **Note:** After creating a label, any form element you create with a name matching the label name will automatically receive an ID matching the label name as well.
 
@@ -111,8 +111,8 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 #### Generating Other Inputs
 
-	echo Form::email($name, $value = null, $attributes = array());
-	echo Form::file($name, $attributes = array());
+	echo Form::email($name, $value = null, $attributes = []);
+	echo Form::file($name, $attributes = []);
 
 <a name="checkboxes-and-radio-buttons"></a>
 ## Checkboxes and Radio Buttons
@@ -150,18 +150,18 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 #### Generating A Drop-Down List
 
-	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'));
+	echo Form::select('size', ['L' => 'Large', 'S' => 'Small']);
 
 #### Generating A Drop-Down List With Selected Default
 
-	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S');
+	echo Form::select('size', ['L' => 'Large', 'S' => 'Small'], 'S');
 
 #### Generating A Grouped List
 
-	echo Form::select('animal', array(
-		'Cats' => array('leopard' => 'Leopard'),
-		'Dogs' => array('spaniel' => 'Spaniel'),
-	));
+	echo Form::select('animal', [
+		'Cats' => ['leopard' => 'Leopard'],
+		'Dogs' => ['spaniel' => 'Spaniel']
+	]);
 
 #### Generating A Drop-Down List With A Range
 
