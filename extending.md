@@ -1,35 +1,35 @@
-# Extending The Framework
+# 擴展框架
 
-- [Managers & Factories](#managers-and-factories)
-- [Cache](#cache)
+- [管理者和工廠](#managers-and-factories)
+- [快取](#cache)
 - [Session](#session)
-- [Authentication](#authentication)
-- [IoC Based Extension](#ioc-based-extension)
+- [認證](#authentication)
+- [基於 IoC 的擴展](#ioc-based-extension)
 
 <a name="managers-and-factories"></a>
-## Managers & Factories
+## 管理者和工廠
 
-Laravel has several `Manager` classes that manage the creation of driver-based components. These include the cache, session, authentication, and queue components. The manager class is responsible for creating a particular driver implementation based on the application's configuration. For example, the `CacheManager` class can create APC, Memcached, File, and various other implementations of cache drivers.
+Laravel 有幾個 `Manager` 類別用來管理創建基於驅動的元件。這些類別包括快取、session、認證和隊列元件。管理者類別負責基於應用程式的設定建立一個特定的驅動實作。例如，`CacheManager` 類別可以建立 APC、 Memcached 、檔案和各種其他的快取驅動實作。
 
-Each of these managers includes an `extend` method which may be used to easily inject new driver resolution functionality into the manager. We'll cover each of these managers below, with examples of how to inject custom driver support into each of them.
+這些管理者都擁有 `extend` 方法，可以簡單地用它來注入新的驅動解析功能到管理者。我們將會在下面的例子，隨著如何注入客製化驅動支援給它們，涵蓋這些管理者的內容。
 
-> **Note:** Take a moment to explore the various `Manager` classes that ship with Laravel, such as the `CacheManager` and `SessionManager`. Reading through these classes will give you a more thorough understanding of how Laravel works under the hood. All manager classes extend the `Illuminate\Support\Manager` base class, which provides some helpful, common functionality for each manager.
+> **注意：** 建議花點時間來探索 Laravel 附帶的各種 `Manager` 類別，例如：`CacheManager` 和 `SessionManager`。看過這些類別將會讓你更徹底了解 Laravel 表面下是如何運作。所有的管理者類別繼承 `Illuminate\Support\Manager`基底類別，它提供一些有用、常見的功能給每一個管理者。
 
 <a name="cache"></a>
-## Cache
+## 快取
 
-To extend the Laravel cache facility, we will use the `extend` method on the `CacheManager`, which is used to bind a custom driver resolver to the manager, and is common across all manager classes. For example, to register a new cache driver named "mongo", we would do the following:
+為了擴展 Laravel 快取功能，我們將會使用 `CacheManager` 的 `extend` 方法，它可以用來綁定一個客製化驅動解析器到管理者，並且是全部的管理者類別通用的。例如，註冊一個新的快取驅動命名為 「mongo」，我們將執行以下操作：
 
 	Cache::extend('mongo', function($app)
 	{
 		return Cache::repository(new MongoStore);
 	});
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of `Illuminate\Foundation\Application` and an IoC container.
+傳遞到 `extend` 方法的第一個參數是驅動的名稱。這將會對應到你的 `config/cache.php` 設定檔裡的 `driver` 選項。 第二個參數是個應該回傳 `Illuminate\Cache\Repository` 實例的閉包。`$app` 實例將會被傳遞到閉包，它是 `Illuminate\Foundation\Application` 和 IoC 容器的實例。
 
-The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array.
+`Cache::extend` 的呼叫可以在新的 Laravel 應用程式預設附帶的 `App\Providers\AppServiceProvider` 的 `boot` 方法中完成，或者你可以建立自己的服務提供者來放置這個擴展 - 記得不要忘記在 `config/app.php` 的提供者陣列註冊提供者。
 
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` contract. So, our MongoDB cache implementation would look something like this:
+要建立客製化快取驅動，首先需要實作 `Illuminate\Contracts\Cache\Store` 契約。所以，我們的 MongoDB 快取實作將會看起來像這樣：
 
 	class MongoStore implements Illuminate\Contracts\Cache\Store {
 
@@ -43,32 +43,32 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
 
 	}
 
-We just need to implement each of these methods using a MongoDB connection. Once our implementation is complete, we can finish our custom driver registration:
+我們只需要使用 MongoDB 連接來實作這些方法。當實作完成，就可以完成客製化驅動註冊：
 
 	Cache::extend('mongo', function($app)
 	{
 		return Cache::repository(new MongoStore);
 	});
 
-If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+如果你正在考慮要把客製化快取驅動程式碼放在哪裡，請考慮把它放上 Packagist！或者，你可以在 `app` 的目錄中建立 `Extensions`命名空間。然而，你必須牢記在心 Laravel 沒有嚴格的應用程式架構，你可以依照喜好自由的組織應用程式。
 
 <a name="session"></a>
 ## Session
 
-Extending Laravel with a custom session driver is just as easy as extending the cache system. Again, we will use the `extend` method to register our custom code:
+以客製化 session 驅動來擴展 Laravel 跟擴展快取系統一樣簡單。再一次的，我們將會使用 `extend` 方法來註冊客製化程式碼：
 
 	Session::extend('mongo', function($app)
 	{
 		// Return implementation of SessionHandlerInterface
 	});
 
-### Where To Extend The Session
+### 在哪裡擴展 Session
 
-You should place your session extension code in the `boot` method of your `AppServiceProvider`.
+你應該把 session 擴展程式碼放置在 `AppServiceProvider` 的 `boot` 方法裡。
 
-### Writing The Session Extension
+### 實作 Session 擴展
 
-Note that our custom session driver should implement the `SessionHandlerInterface`. This interface contains just a few simple methods we need to implement. A stubbed MongoDB implementation would look something like this:
+要注意我們的客製化快取驅動應該要實作 `SessionHandlerInterface`。這個介面只包含少數需要實作的簡單方法。一個留空的 MongoDB 實作會看起來像這樣：
 
 	class MongoHandler implements SessionHandlerInterface {
 
@@ -81,39 +81,39 @@ Note that our custom session driver should implement the `SessionHandlerInterfac
 
 	}
 
-Since these methods are not as readily understandable as the cache `StoreInterface`, let's quickly cover what each of the methods do:
+因為這些方法不像快取的 `StoreInterface` 一樣容易理解，讓我們快速地看過這些方法做些什麼：
 
-- The `open` method would typically be used in file based session store systems. Since Laravel ships with a `file` session driver, you will almost never need to put anything in this method. You can leave it as an empty stub. It is simply a fact of poor interface design (which we'll discuss later) that PHP requires us to implement this method.
-- The `close` method, like the `open` method, can also usually be disregarded. For most drivers, it is not needed.
-- The `read` method should return the string version of the session data associated with the given `$sessionId`. There is no need to do any serialization or other encoding when retrieving or storing session data in your driver, as Laravel will perform the serialization for you.
-- The `write` method should write the given `$data` string associated with the `$sessionId` to some persistent storage system, such as MongoDB, Dynamo, etc.
-- The `destroy` method should remove the data associated with the `$sessionId` from persistent storage.
-- The `gc` method should destroy all session data that is older than the given `$lifetime`, which is a UNIX timestamp. For self-expiring systems like Memcached and Redis, this method may be left empty.
+- `open` 方法通常會被用在基於檔案的 session 儲存系統。因為 Laravel 附帶一個 `file` session 驅動，幾乎不需要在這個方法放任何東西。你可以讓它留空。PHP 要求我們去實作這個方法，事實上明顯是個差勁的介面設計 (我們將會晚點討論它)。
+- `close` 方法，就像 `open` 方法，通常也可以忽略。對大部份的驅動來說，並不需要它。
+- `read` 方法應該回傳與給定 `$sessionId` 關聯的 session 資料的字串形態。當你的驅動取回或儲存 session 資料時不需要做任何序列化或進行其他編碼，因為 Laravel 將會為你進行序列化
+- `write` 方法應該寫入給定 `$data` 字串與 `$sessionId` 的關聯到一些永久存儲系統，例如：MongoDB、 Dynamo、等等。
+- `destroy` 方法應該從永久存儲移除與 `$sessionId` 關聯的資料。
+- `gc` 方法應該銷毀所有比給定 `$lifetime` UNIX 時間戳記還舊的 session 資料。對於會自己過期的系統如 Memcached 和 Redis，這個方法可以留空。
 
-Once the `SessionHandlerInterface` has been implemented, we are ready to register it with the Session manager:
+當 `SessionHandlerInterface` 實作完成，我們準備好要用 Session 管理者註冊它：
 
 	Session::extend('mongo', function($app)
 	{
 		return new MongoHandler;
 	});
 
-Once the session driver has been registered, we may use the `mongo` driver in our `config/session.php` configuration file.
+當 session 驅動已經被註冊，我們可以在 `config/session.php` 設定檔使用 `mongo` 驅動。
 
-> **Note:** Remember, if you write a custom session handler, share it on Packagist!
+> **注意：** 記住，如果你寫了個客製化 session 處理器，請在 Packagist 分享它！
 
 <a name="authentication"></a>
-## Authentication
+## 認證
 
-Authentication may be extended the same way as the cache and session facilities. Again, we will use the `extend` method we have become familiar with:
+認證可以用與快取和 session 功能相同的方法擴展。再一次的，使用我們已經熟悉的 `extend` 方法：
 
 	Auth::extend('riak', function($app)
 	{
-		// Return implementation of Illuminate\Contracts\Auth\UserProvider
+		// 回傳 Illuminate\Contracts\Auth\UserProvider 的實作
 	});
 
-The `UserProvider` implementations are only responsible for fetching a `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
+`UserProvider` 實作只負責從永久存儲系統抓取 `Illuminate\Contracts\Auth\Authenticatable` 實作，存儲系統例如：MySQL、 Riak，等等。這兩個介面讓 Laravel 認證機制無論使用者資料如何儲存或用什麼種類的類別來代表它都能繼續運作。
 
-Let's take a look at the `UserProvider` contract:
+讓我們來看一下 `UserProvider` 契約：
 
 	interface UserProvider {
 
@@ -125,17 +125,17 @@ Let's take a look at the `UserProvider` contract:
 
 	}
 
-The `retrieveById` function typically receives a numeric key representing the user, such as an auto-incrementing ID from a MySQL database. The `Authenticatable` implementation matching the ID should be retrieved and returned by the method.
+`retrieveById` 函式通常接收一個代表使用者的數字鍵，例如：MySQL 資料庫的自動遞增 ID。符合 ID 的 `Authenticatable` 實作應該被取回並被方法回傳。
 
-The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, stored in a field `remember_token`. As with with previous method, the `Authenticatable` implementation should be returned.
+`retrieveByToken` 函式用使用者唯一的 `$identifier` 和儲存在 `remember_token` 欄位的「記住我」 `$token` 來取得使用者。跟前面的方法一樣，應該回傳 `Authenticatable` 的實作。
 
-The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. The new token can be either a fresh token, assigned on successfull "remember me" login attempt, or a null when user is logged out.
+`updateRememberToken` 方法用新的 `$token` 更新 `$user` 的 `remember_token` 欄位。新 token 可以是在「記住我」成功地登入時發一個新的 token，或當使用者登出時為 null。
 
-The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to sign into an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition on `$credentials['username']`. **This method should not attempt to do any password validation or authentication.**
+`retrieveByCredentials` 方法接收當嘗試登入應用程式時，傳遞到 `Auth::attempt` 方法的憑證陣列。這個方法應該接著「查詢」背後的永久存儲，看使用者是否符合這些憑證。這個方法通常會對 `$credentials['username']` 用「where」條件查詢。 **這個方法不應該嘗試做任何密碼驗證或認證。**
 
-The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`.
+`validateCredentials` 方法應該借由比較給定的 `$user` 與 `$credentials` 來驗證使用者。舉例來說，這個方法可以比較 `$user->getAuthPassword()` 字串跟 `Hash::make` 後的 `$credentials['password']`。
 
-Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable`. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
+現在我們已經看過 `UserProvider` 的每個方法，接著來看一下 `Authenticatable`。記住，提供者應該從 `retrieveById` 和 `retrieveByCredentials` 方法回傳這個介面的實作：
 
 	interface Authenticatable {
 
@@ -147,23 +147,23 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
 
 	}
 
-This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
+這個介面很簡單。 The `getAuthIdentifier` 方法應該回傳使用者的「主鍵」。在 MySQL 後台，同樣，這將會是個自動遞增的主鍵。`getAuthPassword` 應該回傳使用者雜湊過的密碼。這個介面讓認證系統可以與任何使用者類別一起運作，無論你使用什麼 ORM 或儲存抽象層。預設，Laravel 包含一個實作這個介面的 `User` 類別在 `app` 資料夾裡，所以你可以參考這個類別當作實作的例子。
 
-Finally, once we have implemented the `UserProvider`, we are ready to register our extension with the `Auth` facade:
+最後，當我們已經實作了 `UserProvider`，我們準備好用 `Auth` facade 來註冊擴展：
 
 	Auth::extend('riak', function($app)
 	{
 		return new RiakUserProvider($app['riak.connection']);
 	});
 
-After you have registered the driver with the `extend` method, you switch to the new driver in your `config/auth.php` configuration file.
+用 `extend` 方法註冊驅動之後，在你的 `config/auth.php` 設定檔切換到新驅動。
 
 <a name="ioc-based-extension"></a>
-## IoC Based Extension
+## 基於 IoC 的擴展
 
-Almost every service provider included with the Laravel framework binds objects into the IoC container. You can find a list of your application's service providers in the `config/app.php` configuration file. As you have time, you should skim through each of these provider's source code. By doing so, you will gain a much better understanding of what each provider adds to the framework, as well as what keys are used to bind various services into the IoC container.
+幾乎每個 Laravel 框架引入的服務提供者都會綁定物件到 IoC 容器中。你可以在 `config/app.php` 設定檔中找到應用程式的服務提供者清單。如果你有時間，你應該瀏覽過這裡面每一個提供者的原始碼。借由這樣做，你將會對每一個提供者添加什麼到框架，以及用什麼鍵來綁定各種服務到 IoC 容器有更多的了解。
 
-For example, the `HashServiceProvider` binds a `hash` key into the IoC container, which resolves into a `Illuminate\Hashing\BcryptHasher` instance. You can easily extend and override this class within your own application by overriding this IoC binding. For example:
+例如，`HashServiceProvider` 綁定 `hash` 鍵到 IoC 容器，它將解析成 `Illuminate\Hashing\BcryptHasher` 實例。你可以借由在你的應用程式中覆寫這個 IoC 綁定，輕鬆地擴展並覆寫這個類別。例如：
 
 	<?php namespace App\Providers;
 
@@ -181,6 +181,6 @@ For example, the `HashServiceProvider` binds a `hash` key into the IoC container
 
 	}
 
-Note that this class extends the `HashServiceProvider`, not the default `ServiceProvider` base class. Once you have extended the service provider, swap out the `HashServiceProvider` in your `config/app.php` configuration file with the name of your extended provider.
+要注意的是這個類別擴展 `HashServiceProvider`，不是預設的 `ServiceProvider` 基底類別。當你擴展了服務提供者，在 `config/app.php` 設定檔把 `HashServiceProvider` 換成你擴展的提供者名稱。
 
-This is the general method of extending any core class that is bound in the container. Essentially every core class is bound in the container in this fashion, and can be overridden. Again, reading through the included framework service providers will familiarize you with where various classes are bound into the container, and what keys they are bound by. This is a great way to learn more about how Laravel is put together.
+這是被綁定在容器的所有核心類別的一般擴展方法。實際上，每個以這種方式綁定在容器的核心類別都可以被覆寫。再次強調，看過每個框架引入的服務提供者將會使你熟悉：每個類別被綁在容器的哪裡、它們是用什麼鍵去綁。這是個好方法可以了解更多關於 Laravel 如何結合它們。
