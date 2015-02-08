@@ -1,28 +1,26 @@
-# HTTP Middleware
+# HTTP 中介層
 
-- [Introduction](#introduction)
-- [Defining Middleware](#defining-middleware)
-- [Registering Middleware](#registering-middleware)
-- [Terminable Middleware](#terminable-middleware)
+- [簡介](#introduction)
+- [建立中介層](#defining-middleware)
+- [註冊中介層](#registering-middleware)
+- [限期中介層](#terminable-middleware)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-HTTP middleware provide a convenient mechanism for filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application.
+HTTP 中介層提供一個方便的機制來過濾進入應用程式的 HTTP 請求，例如，Laravel 本身使用中介層來檢驗使用者身份驗證，如果使用者經過身份驗證，中介層會將用戶導向登入頁面，然而，如果用戶通過身份驗證，中介層將會允許這個請求進一步繼續前進。
 
-Of course, middleware can be written to perform a variety of tasks besides authentication. A CORS middleware might be responsible for adding the proper headers to all responses leaving your application. A logging middleware might log all incoming requests to your application.
-
-There are several middleware included in the Laravel framework, including middleware for maintenance, authentication, CSRF protection, and more. All of these middleware are located in the `app/Http/Middleware` directory.
+當然，除了身份驗證之外，中介層也可以被用來執行各式各樣的任務，CORS 中介層負責替所有即將離開程式的回應加入適當的標頭，一個日誌中介層可以記錄所有傳入應用程式的請求。
+Laravel 框架已經內建一些中介層，包括維護、身份驗證、CSRF 保護，等等。所有的中介層都位於 `app/Http/Middleware` 目錄內。
 
 <a name="defining-middleware"></a>
-## Defining Middleware
+## 建立中介層
 
-To create a new middleware, use the `make:middleware` Artisan command:
+要建立一個新的中介層，可以使用 `make:middleware` 這個 Artisan 指令：
 
 	php artisan make:middleware OldMiddleware
 
-This command will place a new `OldMiddleware` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the "home" URI.
-
+此指令將會 在 `app/Http/Middleware` 目錄內建立一個名稱為 `OldMiddleware` 的類別。在這個中介層內我們只允許 `年齡` 大於 200 的才能存取路由，否則，我們會將用戶重新導向"家"的 URI。
 	<?php namespace App\Http\Middleware;
 
 	class OldMiddleware {
@@ -46,22 +44,19 @@ This command will place a new `OldMiddleware` class within your `app/Http/Middle
 
 	}
 
-As you can see, if the given `age` is less than `200`, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to "pass"), simply call the `$next` callback with the `$request`.
-
-It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
-
+如你所見，若是 `年齡` 小於 `200` ，中介層將會回傳 HTTP 重新導向給用戶端，否則，請求將會進一步傳遞到應用程式。只需調用帶有 `$request` 的 `$next` 方法，即可將請求傳遞到更深層的應用程式(允許跳過中介層)
+HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許多中介層，每一層都可以對請求進行檢查，甚至是完全拒絕請求。
 <a name="registering-middleware"></a>
-## Registering Middleware
+## 註冊中介層
 
-### Global Middleware
+### 全域中介層
 
-If you want a middleware to be run during every HTTP request to your application, simply list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
+若是希望中介層被所有的 HTTP 請求給執行，只要將中介層的類別加入到 `app/Http/Kernel.php` 的 `$middleware` 屬性清單列表中。
 
-### Assigning Middleware To Routes
+### 指派中介層給路由
 
-If you would like to assign middleware to specific routes, you should first assign the middleware a short-hand key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing.
-
-Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:
+如果你要指派中介層給特定的路由，你得先將中介層在 `app/Http/Kernel.php` 設定一個鍵值，預設情況下，這個檔案內的 `$routeMiddleware` 屬性已包含了 Laravel 目前設定的中介層，你只需要在清單列表中加上一組自訂的鍵值即可。
+中介層一旦在 HTTP kernel 檔案內被定義，你即可在路由選項內使用 `middleware` 鍵值來指派：
 
 	Route::get('admin/profile', ['middleware' => 'auth', function()
 	{
@@ -69,10 +64,9 @@ Once the middleware has been defined in the HTTP kernel, you may use the `middle
 	}]);
 
 <a name="terminable-middleware"></a>
-## Terminable Middleware
+## 限期中介層
 
-Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, you may define the middleware as "terminable".
-
+有些時候中介層需要在 HTTP 回應已被傳送到用戶端之後才執行，例如，Laravel 內建的 "session" 中介層，儲存 session 資料是在回應已被傳送到用戶端 _之後_ 才執行。為了做到這一點，你需要定義中介層為“限期”。
 	use Illuminate\Contracts\Routing\TerminableMiddleware;
 
 	class StartSession implements TerminableMiddleware {
@@ -89,4 +83,4 @@ Sometimes a middleware may need to do some work after the HTTP response has alre
 
 	}
 
-As you can see, in addition to defining a `handle` method, `TerminableMiddleware` define a `terminate` method. This method receives both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
+如你所見，除了定義 `處理` 方法之外, `TerminableMiddleware` 定義一個 `限期` 方法。這個方法接收請求和回應。一旦定義了限期中介層，你需要將它增加到 HTTP kernel 檔案的全域中介層清單列表中。
