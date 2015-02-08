@@ -44,7 +44,7 @@ When you use the `loadViewsFrom` method, Laravel actually registers **two** loca
 
 #### Publishing Views
 
-To publish your package's views to the `resource/views/vendor` directory, you should use the `publishes` method from the `boot` method of your service provider:
+To publish your package's views to the `resources/views/vendor` directory, you should use the `publishes` method from the `boot` method of your service provider:
 
 	public function boot()
 	{
