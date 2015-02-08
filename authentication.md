@@ -164,7 +164,7 @@ First, you may access the user from the `Auth` facade:
 		{
 			if (Auth::user())
 			{
-				// $request->user() returns an instance of the authenticated user...
+				// Auth::user() returns an instance of the authenticated user...
 			}
 		}
 
