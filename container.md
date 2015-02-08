@@ -61,7 +61,7 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 
 ### 綁定
 
-幾乎你所有服務容器將與已註冊的[服務提供者](/doc/master/providers)綁定，這些例子都在情境(context)使用容器做說明，如果應用程式其它地方需要容器實例，像是工廠(factory)，能以型別提示 `Illuminate\Contracts\Container\Container` 注入一個容器實例。另外，你可以使用 `App` 門面使用容器。
+幾乎你所有服務容器將與已註冊的[服務提供者](/doc/5.0/providers)綁定，這些例子都在情境(context)使用容器做說明，如果應用程式其它地方需要容器實例，像是工廠(factory)，能以型別提示 `Illuminate\Contracts\Container\Container` 注入一個容器實例。另外，你可以使用 `App` 門面使用容器。
 
 #### 註冊基本解析器
 
@@ -295,7 +295,7 @@ Laravel 提供幾個使用服務容器，提高應用程式彈性和可測試性
 
 	}
 
-在這範例中，`OrderRespository` 類別會自動被注入至控制器，這意味著，在[單元測試](/docs/master/testing)時，"mock" `OrderRepository` 可以綁定至容器，給予無痛地 stub 資料庫層互動。
+在這範例中，`OrderRespository` 類別會自動被注入至控制器，這意味著，在[單元測試](/docs/5.0/testing)時，"mock" `OrderRepository` 可以綁定至容器，給予無痛地 stub 資料庫層互動。
 
 #### 其他容器使用範例
 
