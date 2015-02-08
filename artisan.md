@@ -8,7 +8,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Artisan é o nome da interface da linha de comando incluída no Laravel. It provides a number of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component.
+Artisan é o nome da interface da linha de comando incluída no Laravel.Isto fornece um número of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component.
 
 <a name="usage"></a>
 ## Usage
