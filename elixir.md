@@ -192,6 +192,18 @@ Within your views, you may use the `elixir()` function to load the appropriately
 
 Behind the scenes, the `elixir()` function will determine the name of the hashed file that should be included. Don't you feel the weight lifting off your shoulders already?
 
+#### Version / Hash Multiple files
+
+```javascript
+elixir(function(mix) {
+    mix.version([
+        "css/all.css",
+        "js/scripts.js"
+    ]);
+});
+```
+If you wish to version multiple files, they must be specified in an array.
+
 #### Copy a File to a New Location
 
 ```javascript
