@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [Basic Usage](#basic-usage)
+- [Custom Filesystems](#custom-filesystems)
 
 <a name="introduction"></a>
 ## Introduction
@@ -106,3 +107,35 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 #### Delete A Directory
 
 	Storage::deleteDirectory($directory);
+
+<a name="custom-filesystems"></a>
+## Custom Filesystems
+In order to set up your custom filesystem you'll need to create a Service Provider (For example, `DropboxFilesystemServiceProvider`. In its `boot` method, you'll want to inject an instance of the `Illuminate\Contracts\Filesystem\Factory` contract, and then call the `extend` method of the injected instance.
+
+The first argument of the `extend` method is the name of the disk you will use, while the second argument is a closure that gets passed both the `$app` and `$config` variables.  
+
+From this closure you must return an instance of `League\Flysystem\Filesystem`. Use the details provided with each filesystem to set this up.
+
+> **Note:** The $config variable will already contain the proper values defined in `config/filesystems.php` for the provided disk.
+
+Visit [Flysystem](https://github.com/thephpleague/flysystem#adapters) to view a list of available filesystems.
+
+#### Dropbox Example
+
+	<?php namespace App\Providers;
+
+	use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
+
+	class DropboxFilesystemServiceProvider {
+		
+		public function boot(FilesystemFactory $filesystem)
+		{
+			$filesystem->extend('dropbox',function($app, $config) 
+			{
+				$client = new Client($config['accessToken'],$config['clientIdentifier']);
+				$adapter = new DropboxAdapter($client);
+				return new Filesystem($adapter);
+			});
+		});
+
+	}
