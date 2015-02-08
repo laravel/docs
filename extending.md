@@ -1,4 +1,4 @@
-# Extending The Framework
+# 擴展框架
 
 - [管理者和工廠](#managers-and-factories)
 - [快取](#cache)
