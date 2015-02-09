@@ -1,50 +1,50 @@
-# Request Lifecycle
+# 請求的生命週期
 
-- [Introduction](#introduction)
-- [Lifecycle Overview](#lifecycle-overview)
-- [Focus On Service Providers](#focus-on-service-providers)
+- [簡介](#introduction)
+- [生命週期概要](#lifecycle-overview)
+- [聚焦於服務提供者](#focus-on-service-providers)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-When using any tool in the "real world", you feel more confident if you understand how that tool works. Application development is no different. When you understand how your development tools function, you feel more comfortable and confident using them.
+當您使用「真實世界」中的任何工具時，若能瞭解它是如何運作的，您會更具信心。開發應用程式也是一樣。當您明白您的開發工具運作的方式，使用它們時，您會感到更舒適、更有信心。
 
-The goal of this document is to give you a good, high-level overview of how the Laravel framework "works". By getting to know the overall framework better, everything feels less "magical" and you will be more confident building your applications.
+這份文件的目的在給予您一個優良且高階的概述，關於 Laravel 框架是如何「運作」的。當您愈瞭解整個框架，這些事情便不再那麼令人感到「神奇」，而您在建立應用程式時也會更具信心。
 
-If you don't understand all of the terms right away, don't lose heart! Just try to get a basic grasp of what is going on, and your knowledge will grow as you explore other sections of the documentation.
+若您目前還無法瞭解所有的術語，不要灰心！只要試著對現在提到的東西有個基本掌握，您的知識將會隨著您探索這份文件其他章節的同時跟著成長。
 
 <a name="lifecycle-overview"></a>
-## Lifecycle Overview
+## 生命週期概要
 
-#### First Things
+#### 首要之事
 
-The entry point for all requests to a Laravel application is the `public/index.php` file. All requests are directed to this file by your web server (Apache / Nginx) configuration. The `index.php` file doesn't contain much code. Rather, it is simply a starting point for loading the rest of the framework.
+`public/index.php` 這個檔案是對 Laravel 應用程式所有請求的進入點。所有的請求都透過您網頁伺服器（Apache / Ngix）的設定導向這個檔案。 `index.php` 這個檔案並沒有太多的程式碼。更確切地說，它只是個起始點，用來載入框架其他的部分。
 
-The `index.php` file loads the Composer generated autoloader definition, and then retrieves an instance of the Laravel application from `bootstrap/app.php` script. The first action taken by Laravel itself is to create an instance of the application / [service container](/docs/5.0/container).
+`index.php` 載入由 Composer 產生的自動載入器定義，並接收由 `bootstrap/app.php` 指令稿所產生的 Laravel 應用程式實例。Laravel 自身的第一個動作就是創建一個應用程式 / [服務容器](/docs/5.0/container)的實例。
 
-#### HTTP / Console Kernels
+#### HTTP / 終端核心
 
-Next, the incoming request is sent to either the HTTP kernel or the console kernel, depending on the type of request that is entering the application. These two kernels serve as the central location that all requests flow through. For now, let's just focus on the HTTP kernel, which is located in `app/Http/Kernel.php`.
+接下來，進入應用程式的請求的會被送往 HTTP 核心或終端核心，視該請求的種類而定。這兩種核心是所有請求流向的中心位置。現在開始，我們只將焦點放在 HTTP 核心，它位於 `app/Http/Kernel.php`。
 
-The HTTP kernel extends the `Illuminate\Foundation\Http\Kernel` class, which defines an array of `bootstrappers` that will be run before the request is executed. These bootstrappers configure error handling, configure logging, detect the application environment, and perform other tasks that need to be done before the request is actually handled.
+HTTP 核心擴展了 `Illuminate\Foundation\Http\Kernel` 此一類別，它定義了一個 `bootstrappers` 陣列，在請求被執行前會先行運作。這些啟動器（bootstrappers）設定錯誤處理，日誌記錄，偵測應用程式環境，並執行在請求真正被處理之前，需要完成的其他工作。
 
-The HTTP kernel also defines a list of HTTP [middleware](/docs/5.0/middleware) that all requests must pass through before being handled by the application. These middleware handle reading and writing the HTTP session, determine if the application is in maintenance mode, verifying the CSRF token, and more.
+HTTP 核心也定義了一份 HTTP [中介層](/docs/5.0/middleware)清單，所有的請求在被應用程式處理之前都必須經過它們。這些中介層負責處理 HTTP session 的讀寫，決定應用程式是否處於維護模式，查驗跨站請求偽造（CSRF）標記，以及其他更多工作。
 
-The method signature for the HTTP kernel's `handle` method is quite simple: receive a `Request` and return a `Response`. Think of the Kernel as being a big black box that represents your entire application. Feed it HTTP requests and it will return HTTP responses.
+HTTP 核心 `handle` 方法的方法簽名相當簡單：它接收一個 `Request` 並回傳一個 `Response`。把核心想像成一個大的黑盒子，用來代表你整個的應用程式。對它輸入 HTTP 請求，它將回傳 HTTP 回覆。
 
-#### Service Providers
+#### 服務提供者
 
-One of the most important Kernel bootstrapping actions is loading the service providers for your application. All of the service providers for the application are configured in the `config/app.php` configuration file's `providers` array. First, the `register` method will be called on all providers, then, once all providers have been registered, the `boot` method will be called.
+最重要的核心啟動行為之一，是載入您的應用程式的服務提供者。所有應用程式的服務提供者，都在 `config/app.php` 此設定檔的 `providers` 陣列中被設定。首先，對所有的提供者呼叫 `register` 方法，一旦所有的提供者都被註冊之後，`boot` 方法也會被呼叫。
 
-#### Dispatch Request
+#### 請求分派
 
-Once the application has been bootstrapped and all service providers have been registered, the `Request` will be handed off to the router for dispatching. The router will dispatch the request to a route or controller, as well as run any route specific middleware.
+當應用程式啟動且所有的服務提供者都被註冊之後，`Request` 將被移轉給路由器進行分派。路由器會將請求分派給路由或控制器，並執行任何特定路由的中介層。
 
 <a name="focus-on-service-providers"></a>
-## Focus On Service Providers
+## 聚焦於服務提供者
 
-Service providers are truly the key to bootstrapping a Laravel application. The application instance is created, the service providers are registered, and the request is handed to the bootstrapped application. It's really that simple!
+服務提供者是啟動 Laravel 應用程式的真正關鍵。創建應用程式實例，註冊服務提供者，並將請求移轉至已啟動的應用程式。真的就是這麼簡單！
 
-Having a firm grasp of how a Laravel application is built and bootstrapped via service providers is very valuable. Of course, your application's default service providers are stored in the `app/Providers` directory.
+能確實掌握 Laravel 應用程式是如何建立，並透過服務提供者啟動是很有價值的。當然，您應用程式的預設服務提供者存放在 `app/Providers` 此一目錄中。
 
-By default, the `AppServiceProvider` is fairly empty. This provider is a great place to add your application's own bootstrapping and service container bindings. Of course, for large applications, you may wish to create several service providers, each with a more granular type of bootstrapping.
+`AppServiceProviders` 預設幾乎是空的。此提供者是一個很好的地方，可讓您加入您應用程式自身的啟動及對服務容器的綁定。當然，對大型應用程式而言，您可能希望創建若干個服務提供者，每一個都具備更精細的啟動類型。 
