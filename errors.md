@@ -8,7 +8,7 @@
 <a name="configuration"></a>
 ## 設定
 
-應用程式的日誌功能設定在 `Illuminate\Foundation\Bootstrap\ConfigureLogging` 啟動類別中。這個類別參照 `config/app.php` 設定檔的 `log` 設定選項。
+應用程式的日誌功能設定在 `Illuminate\Foundation\Bootstrap\ConfigureLogging` 啟動類別中。這個類別使用 `config/app.php` 設定檔的 `log` 設定選項。
 
 日誌工具預設使用每天的日誌檔案；然而，你可以依照需求客製化這個行為。因為 Laravel 使用受歡迎的 [Monolog](https://github.com/Seldaek/monolog) 日誌函式庫，你可以利用很多 Monolog 提供的處理程序。
 
@@ -16,20 +16,20 @@
 
 	'log' => 'single'
 
-Laravel 提供立即可用的 `single`、`daily` 和 `syslog` 日誌模式。然而，你可以藉由覆寫 `ConfigureLogging` 啟動類別，依照需求自由地客製化應用程式的日誌。
+Laravel 提供立即可用的 `single` 、 `daily` 和 `syslog` 日誌模式。然而，你可以藉由覆寫 `ConfigureLogging` 啟動類別，依照需求自由地客製化應用程式的日誌。
 
 ### 錯誤細節
 
 `config/app.php` 設定檔的 `app.debug` 設定選項控制應用程式透過瀏覽器顯示錯誤細節。設定選項預設參照 `.env` 檔案的 `APP_DEBUG` 環境變數。
 
-進行本地開發時，你應該設定 `APP_DEBUG` 環境變數為 `true`. **在產品環境，這個值應該永遠為 `false`。**
+進行本地開發時，你應該設定 `APP_DEBUG` 環境變數為 `true` 。 **在上線環境，這個值應該永遠為 `false` 。**
 
 <a name="handling-errors"></a>
 ## 錯誤處理
 
-所有的例外都由 `App\Exceptions\Handler` 類別處理。這個類別包含兩個方法：`report` 和 `render`。
+所有的例外都由 `App\Exceptions\Handler` 類別處理。這個類別包含兩個方法： `report` 和 `render` 。
 
-`report` 方法用來紀錄例外或把例外傳遞到外部服務，例如：[BugSnag](https://bugsnag.com)。預設情況下，`report` 方法只基本實作簡單地傳遞例外到父類別並於父類別紀錄例外。然而，你可以依你所需自由地紀錄例外。如果你需要使用不同的方法來回報不同類型的例外，你可以使用 PHP 的 `instanceof` 比較運算子：
+`report` 方法用來紀錄例外或把例外傳遞到外部服務，例如： [BugSnag](https://bugsnag.com) 。預設情況下， `report`  方法只基本實作簡單地傳遞例外到父類別並於父類別紀錄例外。然而，你可以依你所需自由地紀錄例外。如果你需要使用不同的方法來回報不同類型的例外，你可以使用 PHP 的 `instanceof` 比較運算子：
 
 	/**
 	 * 回報或紀錄例外。
@@ -81,13 +81,13 @@ Laravel 日誌工具在強大的 [Monolog](http://github.com/seldaek/monolog) �
 
 	Log::error('Something is really going wrong.');
 
-日誌工具提供定義在 [RFC 5424](http://tools.ietf.org/html/rfc5424) 的七個級別：**debug**、**info**、**notice**、**warning**、**error**、**critical** 和 **alert**。
+日誌工具提供定義在 [RFC 5424](http://tools.ietf.org/html/rfc5424)  的七個級別：**debug**、**info**、**notice**、**warning**、**error**、**critical** 和 **alert**。
 
 也可以傳入上下文相關的資料陣列到日誌方法裡：
 
 	Log::info('Log message', ['context' => 'Other helpful information']);
 
-Monolog 有很多其他的處理方法可以用在日誌上。如有需要，你可以取用裡面被 Laravel 使用的 Monolog 實例：
+Monolog 有很多其他的處理方法可以用在日誌上。如有需要，你可以取用 Laravel 底層使用的 Monolog 實例：
 
 	$monolog = Log::getMonolog();
 
