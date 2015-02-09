@@ -5,12 +5,12 @@
 - 環境設定
     - [安裝](/docs/5.0/installation)
     - [設定](/docs/5.0/configuration)
-    - [莊園(封裝)](/docs/5.0/homestead)
+    - [Homestead](/docs/5.0/homestead)
 - 基本功能
     - [路由](/docs/5.0/routing)
-    - [Middleware](/docs/5.0/middleware)
+    - [中介層](/docs/5.0/middleware)
     - [控制器](/docs/5.0/controllers)
-    - [請求與輸入](/docs/5.0/requests)
+    - [請求](/docs/5.0/requests)
     - [回應](/docs/5.0/responses)
     - [視圖](/docs/5.0/views)
 - 系統架構
@@ -24,7 +24,7 @@
     - [認證](/docs/5.0/authentication)
     - [交易](/docs/5.0/billing)
     - [快取](/docs/5.0/cache)
-    - [Collections](/docs/5.0/collections)
+    - [集合](/docs/5.0/collections)
     - [Command Bus](/docs/5.0/bus)
     - [核心擴展](/docs/5.0/extending)
     - [Elixir](/docs/5.0/elixir)
