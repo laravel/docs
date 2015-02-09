@@ -8,20 +8,20 @@
 <a name="introduction"></a>
 ## Introduction
 
-Artisan é o nome da interface da linha de comando incluída no Laravel.Isto fornece um número of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component.
+Artisan é o nome da interface da linha de comando incluída no Laravel. Esta interface fornece um bom número de comandos auxiliares para que você use durante o desenvolvimento de sua aplicação. O artisan é impulsionado pelo poderoso componente de Console do Symfony framework.
 
 <a name="usage"></a>
 ## Usage
 
 #### Listing All Available Commands
 
-To view a list of all available Artisan commands, you may use the `list` command:
+Para ver a lista de todos os comandos Artisan, você deve utilizar o comando `list`.
 
 	php artisan list
 
 #### Viewing The Help Screen For A Command
 
-Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, simply precede the name of the command with `help`:
+Todos os comandos também incluem uma tela de "help" que mostra e descreve os comandos e seus respectivos parâmetros e opções. Para ver a tela de "help" (ajuda), simplesmente preceda o nome do comando com `help`.
 
 	php artisan help migrate
 
