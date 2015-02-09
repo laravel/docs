@@ -3,7 +3,7 @@
 - [簡介](#introduction)
 - [建立中介層](#defining-middleware)
 - [註冊中介層](#registering-middleware)
-- [限期中介層](#terminable-middleware)
+- [Terminable 中介層](#terminable-middleware)
 
 <a name="introduction"></a>
 ## 簡介
@@ -66,9 +66,9 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
 	}]);
 
 <a name="terminable-middleware"></a>
-## 限期中介層
+## Terminable 中介層
 
-有些時候中介層需要在 HTTP 回應已被傳送到用戶端之後才執行，例如，Laravel 內建的 "session" 中介層，儲存 session 資料是在回應已被傳送到用戶端 _之後_ 才執行。為了做到這一點，你需要定義中介層為“限期”。
+有些時候中介層需要在 HTTP 回應已被傳送到用戶端之後才執行，例如，Laravel 內建的 "session" 中介層，儲存 session 資料是在回應已被傳送到用戶端 _之後_ 才執行。為了做到這一點，你需要定義中介層為“terminable”。
 
 	use Illuminate\Contracts\Routing\TerminableMiddleware;
 
@@ -86,4 +86,4 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
 
 	}
 
-如你所見，除了定義 `handle` 方法之外， `TerminableMiddleware` 定義一個 `terminate`  方法。這個方法接收請求和回應。一旦定義了限期中介層，你需要將它增加到 HTTP kernel 檔案的全域中介層清單列表中。
+如你所見，除了定義 `handle` 方法之外， `TerminableMiddleware` 定義一個 `terminate`  方法。這個方法接收請求和回應。一旦定義了 terminable 中介層，你需要將它增加到 HTTP kernel 檔案的全域中介層清單列表中。
