@@ -4,7 +4,7 @@
 - [CSRF 保護](#csrf-protection)
 - [方法欺騙](#method-spoofing)
 - [路由參數](#route-parameters)
-- [指名路由](#named-routes)
+- [命名路由](#named-routes)
 - [路由群組](#route-groups)
 - [路由模型綁定](#route-model-binding)
 - [拋出 404 錯誤](#throwing-404-errors)
@@ -12,7 +12,7 @@
 <a name="basic-routing"></a>
 ## 基本路由
 
-您將在您應用中的 `app/Http/routes.php` 的檔案載入了 `App\Providers\RouteServiceProvider` 類別來定義大多數的路由。大多數基本的 Laravel 路由都只透過 URI 和 `閉包(Closure)`：
+您將在您應用中的 `app/Http/routes.php` 的檔案載入了 `App\Providers\RouteServiceProvider`  類別來定義大多數的路由。大多數基本的 Laravel 路由都只透過 URI 和 `閉包(Closure)` ：
 
 #### 基本 GET 路由
 
@@ -52,16 +52,16 @@
 		return 'Hello World';
 	});
 
-通常情況下，您將會需要為您的路由產生 URL，您可以使用 `url` 輔助函數來操作：
+通常情況下，您將會需要為您的路由產生 URL ，您可以使用 `url` 輔助函數來操作：
 
 	$url = url('foo');
 
 <a name="csrf-protection"></a>
 ## CSRF 保護
 
-Laravel 提供簡易的方法，讓您可以保護您的應用程式不受到 [CSRF (跨網站請求偽造)]((http://en.wikipedia.org/wiki/Cross-site_request_forgery) 攻擊。跨網站請求偽造是一種惡意的攻擊，藉以代表經過身份驗證的使用者執行未經授權的命令。
+Laravel 提供簡易的方法，讓您可以保護您的應用程式不受到 [CSRF  (跨網站請求偽造)]((http://en.wikipedia.org/wiki/Cross-site_request_forgery) 攻擊。跨網站請求偽造是一種惡意的攻擊，藉以代表經過身份驗證的使用者執行未經授權的命令。
 
-Laravel 會自動在每一位使用者的 session 中放置隨機的 `token`，這個 token 將被用來確保經過驗證的使用者是實際發出請求至應用程式的使用者：
+Laravel 會自動在每一位使用者的 session 中放置隨機的 `token` ，這個 token  將被用來確保經過驗證的使用者是實際發出請求至應用程式的使用者：
 
 #### 插入 CSRF Token 到表單
 
@@ -71,9 +71,9 @@ Laravel 會自動在每一位使用者的 session 中放置隨機的 `token`，�
 
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-您不需要手動驗證在 POST, PUT, DELETE 請求的 CSRF token。`VerifyCsrfToken`  [HTTP 中介層](/docs/5.0/middleware)將儲存在 session 中的請求輸入的 token 配對來驗證 token。
+您不需要手動驗證在 POST 、 PUT 、 DELETE 請求的 CSRF token 。 `VerifyCsrfToken` [HTTP  中介層](/docs/5.0/middleware)將儲存在 session 中的請求輸入的 token 配對來驗證 token 。
 
-除了尋找 CSRF token 作為 「POST」參數，中介層也檢查 `X-XSRF-TOKEN` 請求標頭，這在多數 Javascript framework 常被拿來使用。
+除了尋找 CSRF token 作為「 POST 」參數，中介層也檢查 `X-XSRF-TOKEN` 請求標頭，這在多數 Javascript framework  常被拿來使用。
 
 <a name="method-spoofing"></a>
 ## 方法欺騙
@@ -90,7 +90,7 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 <a name="route-parameters"></a>
 ## 路由參數
 
-當然，您可以再您的路由獲取請求的 URI 區段。
+當然，您可以獲取請求路由的 URI 區段。
 
 #### 基礎路由參數
 
@@ -99,7 +99,7 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 		return 'User '.$id;
 	});
 
-#### 選項路由參數
+#### 可選擇的路由參數
 
 	Route::get('user/{name?}', function($name = null)
 	{
@@ -113,7 +113,7 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 		return $name;
 	});
 
-#### 正規表達式參數約束
+#### 使用正規表達式限制參數
 
 	Route::get('user/{name}', function($name)
 	{
@@ -127,7 +127,7 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 	})
 	->where('id', '[0-9]+');
 
-#### 傳替陣列約束
+#### 使用條件限制陣列
 
 	Route::get('user/{id}/{name}', function($id, $name)
 	{
@@ -137,27 +137,27 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 
 #### 定義全域模式
 
-如果妳喜歡路由參數總是被約束一個給定的正規表達式下，您可以使用 `pattern` 方法。您應該在 `before` 方法的 `RouteServiceProvider` 定義模式：
+如果你想讓特定路由參數總是遵詢特定的正規表達式，可以使用 `pattern` 方法。在 `RouteServiceProvider` 的  `before` 方法裡定義模式：
 
 	$router->pattern('id', '[0-9]+');
 
-一個模式被定義，這使用的參數被應用在所有的路由上：
+定義模式之後，會作用在所有使用這個特定參數的路由上：
 
 	Route::get('user/{id}', function($id)
 	{
 		// 只有 {id} 是數字才被呼叫。
 	});
 
-#### 允許路由參數
+#### 取得路由參數
 
-如果您需要允許外部路由參數，請使用 `input` 方法：
+如果需要在路由外部取得其參數，使用 `input` 方法：
 
 	if ($route->input('id') == 1)
 	{
 		//
 	}
 
-您也可以允許當前路由參數訪問 `Illuminate\Http\Request` 實體。當前請求的請求實體可以透過 `Request` facade 訪問，或透過類型提示 `Illuminate\Http\Request` 依賴注入：
+你也可以使用 `Illuminate\Http\Request` 實體取得路由參數。當前請求的實體可以透過 `Request` facade  取得，或透過型別暗示 `Illuminate\Http\Request` 注入依賴：
 
 	use Illuminate\Http\Request;
 
@@ -170,22 +170,22 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 	});
 
 <a name="named-routes"></a>
-## 指名路由
+## 命名路由
 
-指名路由在產生 URL 與重導至特定路由時更為方便。您可以用 `as` 的陣列鍵指定名稱給指定的路由：
+命名路由讓你更方便於產生 URL 與重導特定路。您可以用 `as` 的陣列鍵值指定名稱給路由：
 
 	Route::get('user/profile', ['as' => 'profile', function()
 	{
 		//
 	}]);
 
-您一樣可以為控制器動作指定的路由名稱：
+也可以為控制器動作指定路由名稱：
 
 	Route::get('user/profile', [
         'as' => 'profile', 'uses' => 'UserController@showProfile'
 	]);
 
-現在您可以在產生 URL 或重導時使用該路由名稱：
+現在你可以使用路由名稱產生 URL 或進行重導：
 
 	$url = route('profile');
 
@@ -213,14 +213,14 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 		});
 	});
 
-您一樣可以在 `group` 陣列中使用 `namespace` 參數，指定在這 group 中的控制器都有共同的命名空間：
+您一樣可以在 `group` 陣列中使用 `namespace` 參數，指定在這群組中控制器的命名空間：
 
 	Route::group(['namespace' => 'Admin'], function()
 	{
 		//
 	});
 
-> **注意：** 在預設情況下，`RouteServiceProvider` 包含內建您命名空間群組的 `routes.php` 檔案，允許您不須指定完整的命名空間來註冊控制器路由。
+> **注意：** 在預設情況下，`RouteServiceProvider` 包含內建您命名空間群組的 `routes.php` 檔案，讓您不須使用完整的命名空間就可以註冊控制器路由。
 
 <a name="sub-domain-routing"></a>
 ### 子網域路由
@@ -257,9 +257,9 @@ Laravel 路由一樣可以處理萬用字元的子網域，並且從網域中傳
 <a name="route-model-binding"></a>
 ## 路由模型綁定
 
-Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中。例如，要注入使用者 ID 您可以注入符合給定 ID 的整個使用者模型實體。
+Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中。例如，比起注入 User ID ，你可以選擇注入符合給定 ID 的 User 類別實體。
 
-首先，使用 `model` 方法來給參數指令的類別，您應該在 `RouteServiceProvider::boot` 方法定義您的模型綁定：
+首先，使用路由的 `model` 方法指定特定參數要對應的類別，您應該在 `RouteServiceProvider::boot` 方法定義您的模型綁定：
 
 #### 綁定參數至模型
 
@@ -270,18 +270,18 @@ Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中
 		$router->model('user', 'App\User');
 	}
 
-再來定義路由包涵 `{user}` 參數：
+再來定義一個有 `{user}` 參數的路由：
 
 	Route::get('profile/{user}', function(App\User $user)
 	{
 		//
 	});
 
-從我們有 `{user}` 綁定參數到 `App\User` 模型，`User` 實體將注入路由。所以舉例來說，請求至 `profile/1` 將注入有 ID 為 1 的 `User` 實體。
+因為我們已經將 `{user}` 參數綁定到 `App\User` 模型，所以 `User` 實體將被注入到路由。所以舉例來說，請求至  `profile/1` 將注入 ID 為 1 的 `User` 實體。
 
 > **注意：** 如果在資料庫中找不到匹配的模型實體，將引發 404 錯誤。
 
-如果您想要指定您自己的「沒有找到」的行為，將閉包作為第三個參數傳入 `model` 方法：
+如果您想要自定「沒有找到」的行為，將閉包作為第三個參數傳入 `model` 方法：
 
 	Route::model('user', 'User', function()
 	{
@@ -298,12 +298,12 @@ Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中
 <a name="throwing-404-errors"></a>
 ## 拋出 404 錯誤
 
-這裡有兩種方法從路由手動切換 404 錯誤。首先，您可以使用 `abort` 輔助函數：
+這裡有兩種方法從路由手動觸發 404 錯誤。首先，您可以使用 `abort` 輔助函數：
 
 	abort(404);
 
-`abort` 輔助函數只拋出 `Symfony\Component\HttpFoundation\Exception\HttpException` 帶有特定狀態代碼。
+`abort` 輔助函數只是簡單拋出帶有特定狀態代碼的 `Symfony\Component\HttpFoundation\Exception\HttpException` 。
 
-第二，您可以手動拋出實體 `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`。
+第二，您可以手動拋出 `Symfony\Component\HttpKernel\Exception\NotFoundHttpException` 的實體。
 
-有關如何處理 404 例外狀況和自定回應的更多資訊，可以參考 [錯誤](/docs/5.0/errors#http-exceptions) 章節內的文件。
+有關如何處理 404 例外狀況和自定回應的更多資訊，可以參考[錯誤](/docs/5.0/errors#http-exceptions)章節內的文件。
