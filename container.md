@@ -11,7 +11,7 @@
 <a name="introduction"></a>
 ## 介紹
 
-Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異想天開的字，真正意思是類別依賴透過建構子或 "setter" 方法注入。
+Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異想天開的詞，真正意思是類別依賴透過建構子或 "setter" 方法注入。
 
 來看個簡單範例:
 
@@ -52,22 +52,22 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 
 	}
 
-在這範例裡， 當播客被購買時， `PurchasePodcast` 命令處理器需要寄封 e-mails，因此，我們將 **注入** 能寄送 e-mails 的服務，由於服務被注入，我們能容易地切換成其它實例，當在測試應用程式時，一樣能輕易地 "mock" 或建立假的發信者(mailer)實例。
+在這範例裡， 當播客被購買時， `PurchasePodcast` 命令處理器需要寄封 e-mails，因此，我們將 **注入** 能寄送 e-mails 的服務，由於服務被注入，我們能容易地切換成其它實例，當測試應用程式時，一樣能輕易地 "mock" 或建立假的發信者(mailer)實例。
 
-在建置強力且大型應用程式，必須深入理解 Lavavel 服務容器，以及有助於 Lavael 核心本身。
+在建置強大應用程式，以及為 Lavael 核心貢獻，須深入理解 Lavavel 服務容器，。
 
 <a name="basic-usage"></a>
 ## 基本用法
 
 ### 綁定
 
-幾乎你所有服務容器將與已註冊的[服務提供者](/doc/5.0/providers)綁定，這些例子都在情境(context)使用容器做說明，如果應用程式其它地方需要容器實例，像是工廠(factory)，能以型別提示 `Illuminate\Contracts\Container\Container` 注入一個容器實例。另外，你可以使用 `App` 門面使用容器。
+幾乎你所有服務容器將與已註冊的[服務提供者](/doc/5.0/providers)綁定，這些例子都在情境(context)使用容器做說明，如果應用程式其它地方需要容器實例，像是工廠(factory)，能以型別提示 `Illuminate\Contracts\Container\Container` 注入一個容器實例。另外，你可以使用 `App` 門面存取容器。
 
 #### 註冊基本解析器
 
 在服務提供者裡，總是透過 `$this->app` 實例變數使用容器。
 
-服務容器注冊依賴有幾種方式，包括閉包函式和綁定實例的介面。首先，探討閉包函式，具有鍵值(通常是類別名稱)和返回值之閉包的閉包解析器，註冊至容器:
+服務容器注冊依賴有幾種方式，包括閉包函式和綁定實例的介面。首先，探討閉包函式，具有鍵值(通常是類別名稱)和返值閉包的閉包解析器，被註冊至容器:
 
 	$this->app->bind('FooBar', function($app)
 	{
@@ -101,7 +101,7 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 
 	$fooBar = $this->app['FooBar'];
 
-最後，最重要是你可以簡單地在類別建構子注入"型別提示"依賴，包含控制器、事件監聽者、工作隊列、篩選器等，容器將會自動注入依賴：
+最後，重點是你可以簡單地在類別建構子注入"型別提示"依賴，包含控制器、事件監聽者、工作隊列、篩選器等，容器將會自動注入依賴：
 
 	<?php namespace App\Http\Controllers;
 
@@ -182,7 +182,7 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 
 	}
 
-在這範例中，注入類別依賴是件好事，不過，與 Pusher SDK 緊密耦合，如果 Pusher SDK 方法異動，或是決定徹底改變成新的事件服務時，需要改寫 `CreateOrderHandler` 程式碼。
+在這範例中，注入類別依賴是件好事，不過，與 Pusher SDK 產生緊密耦合，如果 Pusher SDK 方法異動，或是決定徹底改變成新的事件服務時，需要改寫 `CreateOrderHandler` 程式碼。
 
 ### 設計成介面
 
@@ -207,7 +207,7 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 
 	$this->app->bind('App\Contracts\EventPusher', 'App\Services\PusherEventPusher');
 
-當有類別需要 `EventPusher` 實作時，這會告訴容器應該注入 `PusherEventPusher`，現在可以在建構子型別提示 `EventPusher` 介面：
+當有類別需要 `EventPusher` 實作時，會告訴容器應該注入 `PusherEventPusher`，現在可以在建構子做型別提示 `EventPusher` 介面：
 
 		/**
 		 * Create a new order handler instance.
@@ -256,7 +256,7 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 <a name="practical-applications"></a>
 ## 實際應用
 
-Laravel 提供幾個使用服務容器，提高應用程式彈性和可測試性的機會，主要例子是解析控制器。所有控制器都是透過服務容器解析，意思是你可在控制器建構子做型別提示依賴，它們將會自動注入。
+Laravel 提供幾個使用服務容器，提高應用程式彈性和可測試性的機會，主要例子是解析控制器時，所有控制器都是透過服務容器解析，意思是你可在控制器建構子做型別提示依賴，它們將會自動注入。
 
 	<?php namespace App\Http\Controllers;
 
@@ -295,11 +295,11 @@ Laravel 提供幾個使用服務容器，提高應用程式彈性和可測試性
 
 	}
 
-在這範例中，`OrderRespository` 類別會自動被注入至控制器，這意味著，在[單元測試](/docs/5.0/testing)時，"mock" `OrderRepository` 可以綁定至容器，給予無痛地 stub 資料庫層互動。
+在這範例中，`OrderRespository` 類別會自動被注入至控制器，這意味著，在[單元測試](/docs/5.0/testing)時，"mock" `OrderRepository` 可以綁定至容器，給予資料庫層互動無痛的 stub 。
 
 #### 其他容器使用範例
 
-當然，如上面所述，控制器不是唯一透過服務容器 Laravel 類別解析，你也可以在路由閉包、篩選器、工作隊列、事件聆聽等，做型別提示依賴，對於在這些情境使用服務容器的例子，請參考他們的文件。
+當然，如上面所述，控制器不是唯一透過服務容器 Laravel 類別解析，你也可以在路由閉包、篩選器、工作隊列、事件聆聽等，做型別提示依賴，對於在這些情境使用服務容器的例子，請參考相關文件。
 
 <a name="container-events"></a>
 ## 容器事件
