@@ -1,27 +1,27 @@
-# HTTP Routing
+# HTTP 路由
 
-- [Basic Routing](#basic-routing)
-- [CSRF Protection](#csrf-protection)
-- [Method Spoofing](#method-spoofing)
-- [Route Parameters](#route-parameters)
-- [Named Routes](#named-routes)
-- [Route Groups](#route-groups)
-- [Route Model Binding](#route-model-binding)
-- [Throwing 404 Errors](#throwing-404-errors)
+- [基本路由](#basic-routing)
+- [CSRF 保護](#csrf-protection)
+- [方法欺騙](#method-spoofing)
+- [路由參數](#route-parameters)
+- [指名路由](#named-routes)
+- [路由群組](#route-groups)
+- [路由模型綁定](#route-model-binding)
+- [拋出 404 錯誤](#throwing-404-errors)
 
 <a name="basic-routing"></a>
-## Basic Routing
+## 基本路由
 
-You will define most of the routes for your application in the `app/Http/routes.php` file, which is loaded by the `App\Providers\RouteServiceProvider` class. The most basic Laravel routes simply accept a URI and a `Closure`:
+您將在您應用中的 `app/Http/routes.php` 的檔案載入了 `App\Providers\RouteServiceProvider` 類別來定義大多數的路由。大多數基本的 Laravel 路由都只透過 URI 和 `閉包(Closure)`：
 
-#### Basic GET Route
+#### 基本 GET 路由
 
 	Route::get('/', function()
 	{
 		return 'Hello World';
 	});
 
-#### Other Basic Routes Route
+#### 其他基礎路由
 
 	Route::post('foo/bar', function()
 	{
@@ -38,49 +38,49 @@ You will define most of the routes for your application in the `app/Http/routes.
 		//
 	});
 
-#### Registering A Route For Multiple Verbs
+#### 為複數動作註冊路由
 
 	Route::match(['get', 'post'], '/', function()
 	{
 		return 'Hello World';
 	});
 
-#### Registering A Route That Responds To Any HTTP Verb
+#### 註冊路由回應所有 HTTP 動作
 
 	Route::any('foo', function()
 	{
 		return 'Hello World';
 	});
 
-Often, you will need to generate URLs to your routes, you may do so using the `url` helper:
+通常情況下，您將會需要為您的路由產生 URL，您可以使用 `url` 輔助函數來操作：
 
 	$url = url('foo');
 
 <a name="csrf-protection"></a>
-## CSRF Protection
+## CSRF 保護
 
-Laravel makes it easy to protect your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
+Laravel 提供簡易的方法，讓您可以保護您的應用程式不受到 [CSRF (跨網站請求偽造)]((http://en.wikipedia.org/wiki/Cross-site_request_forgery) 攻擊。跨網站請求偽造是一種惡意的攻擊，藉以代表經過身份驗證的使用者執行未經授權的命令。
 
-Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
+Laravel 會自動在每一位使用者的 session 中放置隨機的 `token`，這個 token 將被用來確保經過驗證的使用者是實際發出請求至應用程式的使用者：
 
-#### Insert The CSRF Token Into A Form
+#### 插入 CSRF Token 到表單
 
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-Of course, using the Blade [templating engine](/docs/5.0/templates):
+當然也可以在 Blade [模板引擎](/docs/5.0/templates)使用：
 
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/5.0/middleware) will verify token in the request input matches the token stored in the session.
+您不需要手動驗證在 POST, PUT, DELETE 請求的 CSRF token。`VerifyCsrfToken`  [HTTP 中介層](/docs/5.0/middleware)將儲存在 session 中的請求輸入的 token 配對來驗證 token。
 
-In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-XSRF-TOKEN` request header, which is commonly used by JavaScript frameworks.
+除了尋找 CSRF token 作為 「POST」參數，中介層也檢查 `X-XSRF-TOKEN` 請求標頭，這在多數 Javascript framework 常被拿來使用。
 
 <a name="method-spoofing"></a>
-## Method Spoofing
+## 方法欺騙
 
-HTML forms do not support `PUT` or `DELETE` actions. So, when defining `PUT` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form.
+HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `DELETE` 路由並在 HTML 表單中被呼叫的時候，您將需要添加隱藏 `_method` 欄位在表單中。
 
-The value sent with the `_method` field will be used as the HTTP request method. For example:
+將數值同 `_method` 欄位發送使用 HTTP 請求方法。舉例來說：
 
 	<form action="/foo/bar" method="POST">
 		<input type="hidden" name="_method" value="PUT">
@@ -88,32 +88,32 @@ The value sent with the `_method` field will be used as the HTTP request method.
     </form>
 
 <a name="route-parameters"></a>
-## Route Parameters
+## 路由參數
 
-Of course, you can capture segments of the request URI within your route:
+當然，您可以再您的路由獲取請求的 URI 區段。
 
-#### Basic Route Parameter
+#### 基礎路由參數
 
 	Route::get('user/{id}', function($id)
 	{
 		return 'User '.$id;
 	});
 
-#### Optional Route Parameters
+#### 選項路由參數
 
 	Route::get('user/{name?}', function($name = null)
 	{
 		return $name;
 	});
 
-#### Optional Route Parameters With Default Value
+#### 帶預設值的路由參數
 
 	Route::get('user/{name?}', function($name = 'John')
 	{
 		return $name;
 	});
 
-#### Regular Expression Parameter Constraints
+#### 正規表達式參數約束
 
 	Route::get('user/{name}', function($name)
 	{
@@ -127,7 +127,7 @@ Of course, you can capture segments of the request URI within your route:
 	})
 	->where('id', '[0-9]+');
 
-#### Passing An Array Of Constraints
+#### 傳替陣列約束
 
 	Route::get('user/{id}/{name}', function($id, $name)
 	{
@@ -135,29 +135,29 @@ Of course, you can capture segments of the request URI within your route:
 	})
 	->where(['id' => '[0-9]+', 'name' => '[a-z]+'])
 
-#### Defining Global Patterns
+#### 定義全域模式
 
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `before` method of your `RouteServiceProvider`:
+如果妳喜歡路由參數總是被約束一個給定的正規表達式下，您可以使用 `pattern` 方法。您應該在 `before` 方法的 `RouteServiceProvider` 定義模式：
 
 	$router->pattern('id', '[0-9]+');
 
-Once the pattern has been defined, it is applied to all routes using that parameter:
+一個模式被定義，這使用的參數被應用在所有的路由上：
 
 	Route::get('user/{id}', function($id)
 	{
-		// Only called if {id} is numeric.
+		// 只有 {id} 是數字才被呼叫。
 	});
 
-#### Accessing A Route Parameter Value
+#### 允許路由參數
 
-If you need to access a route parameter value outside of a route, use the `input` method:
+如果您需要允許外部路由參數，請使用 `input` 方法：
 
 	if ($route->input('id') == 1)
 	{
 		//
 	}
 
-You may also access the current route parameters via the `Illuminate\Http\Request` instance. The request instance for the current request may be accessed via the `Request` facade, or by type-hinting the `Illuminate\Http\Request` where dependencies are injected:
+您也可以允許當前路由參數訪問 `Illuminate\Http\Request` 實體。當前請求的請求實體可以透過 `Request` facade 訪問，或透過類型提示 `Illuminate\Http\Request` 依賴注入：
 
 	use Illuminate\Http\Request;
 
@@ -170,35 +170,35 @@ You may also access the current route parameters via the `Illuminate\Http\Reques
 	});
 
 <a name="named-routes"></a>
-## Named Routes
+## 指名路由
 
-Named routes allow you to conveniently generate URLs or redirects for a specific route. You may specify a name for a route with the `as` array key:
+指名路由在產生 URL 與重導至特定路由時更為方便。您可以用 `as` 的陣列鍵指定名稱給指定的路由：
 
 	Route::get('user/profile', ['as' => 'profile', function()
 	{
 		//
 	}]);
 
-You may also specify route names for controller actions:
+您一樣可以為控制器動作指定的路由名稱：
 
 	Route::get('user/profile', [
         'as' => 'profile', 'uses' => 'UserController@showProfile'
 	]);
 
-Now, you may use the route's name when generating URLs or redirects:
+現在您可以在產生 URL 或重導時使用該路由名稱：
 
 	$url = route('profile');
 
 	$redirect = redirect()->route('profile');
 
-The `currentRouteName` method returns the name of the route handling the current request:
+`currentRouteName` 方法會返回目前請求的路由名稱：
 
 	$name = Route::currentRouteName();
 
 <a name="route-groups"></a>
-## Route Groups
+## 路由群組
 
-Sometimes you may need to apply filters to a group of routes. Instead of specifying the filter on each route, you may use a route group:
+有時候您需要套用篩選器到群組的路由上。不需要為每個路由去套用篩選器，您只需使用路由群組：
 
 	Route::group(['before' => 'auth'], function()
 	{
@@ -213,21 +213,21 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 		});
 	});
 
-You may use the `namespace` parameter within your `group` array to specify the namespace for all controllers within the group:
+您一樣可以在 `group` 陣列中使用 `namespace` 參數，指定在這 group 中的控制器都有共同的命名空間：
 
 	Route::group(['namespace' => 'Admin'], function()
 	{
 		//
 	});
 
-> **Note:** By default, the `RouteServiceProvider` includes your `routes.php` file within a namespace group, allowing you to register controller routes without specifying the full namespace.
+> **注意：** 在預設情況下，`RouteServiceProvider` 包含內建您命名空間群組的 `routes.php` 檔案，允許您不須指定完整的命名空間來註冊控制器路由。
 
 <a name="sub-domain-routing"></a>
-### Sub-Domain Routing
+### 子網域路由
 
-Laravel routes also handle wildcard sub-domains, and will pass your wildcard parameters from the domain:
+Laravel 路由一樣可以處理萬用字元的子網域，並且從網域中傳遞您的萬用字元參數：
 
-#### Registering Sub-Domain Routes
+#### 註冊子網域路由
 
 	Route::group(['domain' => '{account}.myapp.com'], function()
 	{
@@ -240,9 +240,9 @@ Laravel routes also handle wildcard sub-domains, and will pass your wildcard par
 	});
 
 <a name="route-prefixing"></a>
-### Route Prefixing
+### 路由前綴
 
-A group of routes may be prefixed by using the `prefix` option in the attributes array of a group:
+群組路由可以透過群組的描述陣列中使用 `prefix` 選項，將群組內的路由加上前綴：
 
 	Route::group(['prefix' => 'admin'], function()
 	{
@@ -255,13 +255,13 @@ A group of routes may be prefixed by using the `prefix` option in the attributes
 	});
 
 <a name="route-model-binding"></a>
-## Route Model Binding
+## 路由模型綁定
 
-Laravel model binding provides a convenient way to inject class instances into your routes. For example, instead of injecting a user's ID, you can inject the entire User class instance that matches the given ID.
+Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中。例如，要注入使用者 ID 您可以注入符合給定 ID 的整個使用者模型實體。
 
-First, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::boot` method:
+首先，使用 `model` 方法來給參數指令的類別，您應該在 `RouteServiceProvider::boot` 方法定義您的模型綁定：
 
-#### Binding A Parameter To A Model
+#### 綁定參數至模型
 
 	public function boot(Router $router)
 	{
@@ -270,25 +270,25 @@ First, use the router's `model` method to specify the class for a given paramete
 		$router->model('user', 'App\User');
 	}
 
-Next, define a route that contains a `{user}` parameter:
+再來定義路由包涵 `{user}` 參數：
 
 	Route::get('profile/{user}', function(App\User $user)
 	{
 		//
 	});
 
-Since we have bound the `{user}` parameter to the `App\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance which has an ID of 1.
+從我們有 `{user}` 綁定參數到 `App\User` 模型，`User` 實體將注入路由。所以舉例來說，請求至 `profile/1` 將注入有 ID 為 1 的 `User` 實體。
 
-> **Note:** If a matching model instance is not found in the database, a 404 error will be thrown.
+> **注意：** 如果在資料庫中找不到匹配的模型實體，將引發 404 錯誤。
 
-If you wish to specify your own "not found" behavior, pass a Closure as the third argument to the `model` method:
+如果您想要指定您自己的「沒有找到」的行為，將閉包作為第三個參數傳入 `model` 方法：
 
 	Route::model('user', 'User', function()
 	{
 		throw new NotFoundHttpException;
 	});
 
-If you wish to use your own resolution logic, you should use the `Router::bind` method. The Closure you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
+如果您想要使用您自己決定的邏輯，您應該使用 `Router::bind`方法。閉包透過 `bind` 方法將傳遞 URI 區段數值，並應該返回您想要被注入路由的類別實體：
 
 	Route::bind('user', function($value)
 	{
@@ -296,14 +296,14 @@ If you wish to use your own resolution logic, you should use the `Router::bind` 
 	});
 
 <a name="throwing-404-errors"></a>
-## Throwing 404 Errors
+## 拋出 404 錯誤
 
-There are two ways to manually trigger a 404 error from a route. First, you may use the `abort` helper:
+這裡有兩種方法從路由手動切換 404 錯誤。首先，您可以使用 `abort` 輔助函數：
 
 	abort(404);
 
-The `abort` helper simply throws a `Symfony\Component\HttpFoundation\Exception\HttpException` with the specified status code.
+`abort` 輔助函數只拋出 `Symfony\Component\HttpFoundation\Exception\HttpException` 帶有特定狀態代碼。
 
-Secondly, you may manually throw an instance of `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
+第二，您可以手動拋出實體 `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`。
 
-More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/5.0/errors#http-exceptions) section of the documentation.
+有關如何處理 404 例外狀況和自定回應的更多資訊，可以參考 [錯誤](/docs/5.0/errors#http-exceptions) 章節內的文件。
