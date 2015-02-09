@@ -44,7 +44,7 @@ Per ottenere un istanza della richiesta HTTP corrente via dependency injection, 
 
 	}
 
-Se il metodo del controller riceve un imput dal parametro di una route, inserisci gli eventuali parametri dopo  le altre dipendenze:
+Se il metodo del controller riceve un input dal parametro di una route, inserisci gli eventuali parametri dopo  le altre dipendenze:
 
 	<?php namespace App\Http\Controllers;
 
