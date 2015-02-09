@@ -127,6 +127,9 @@ Visit [Flysystem](https://github.com/thephpleague/flysystem#adapters) to view a 
 	<?php namespace App\Providers;
 
 	use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
+	use League\Flysystem\Dropbox\DropboxAdapter;
+	use League\Flysystem\Filesystem;
+	use Dropbox\Client;
 
 	class DropboxFilesystemServiceProvider {
 		
