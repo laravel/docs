@@ -85,6 +85,10 @@ Update any models using `SoftDeletingTrait` to use `Illuminate\Database\Eloquent
 
 Eloquent no longer provides the `remember` method for caching queries. You now are responsible for caching your queries manually using the `Cache::remember` function. For more information on caching, consult the [full documentation](/docs/5.0/cache).
 
+#### Global Scopes
+
+Since `Illuminate\Database\Eloquent\ScopeInterface` has been changed, you need to update your [global scopes](http://laravel.com/docs/5.0/eloquent#global-scopes) to comply with that.
+
 ### User Authentication Model
 
 To upgrade your `User` model for Laravel 5's authentication system, follow these instructions:
