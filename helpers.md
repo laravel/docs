@@ -423,6 +423,6 @@ If the given value is a `Closure`, return the value returned by the `Closure`. O
 
 ### with
 
-Return the given object. Useful for method chaining constructors in PHP 5.3.x.
+Return the given object. Useful for method chaining constructors in PHP 5.4.x.
 
 	$value = with(new Foo)->doWork();
