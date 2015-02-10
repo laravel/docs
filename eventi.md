@@ -78,7 +78,7 @@ Hai bisogno di inserire un evento in [coda](/code) ? Non potrebbe essere più fa
 
 Questo comando genererà una classe handler che implementa l'interfaccia  `Illuminate\Contracts\Queue\ShouldBeQueued`. Ed è fatta! Ora quando questo handler è chiamato per un evento, verrà automaticamente messo in coda dall'event dispatcher.
 
-Se non si presentano errori quando l'handler viene eseguito dalla coda, il job queue verrà cancellato automaticamente a termine della sua esecuzione. Se hai bisogno di accedere ai metodi della coda `delete` e `release`, puoi falro. Il trait `Illuminate\Queue\InteractsWithQueue`, che è incluso di default dall'handler della coda, ti dà la possibilità di accedere a questi metodi:
+Se non si presentano errori quando l'handler viene eseguito dalla coda, il job queue verrà cancellato automaticamente a termine della sua esecuzione. Se hai bisogno di accedere ai metodi della coda `delete` e `release`, puoi farlo. Il trait `Illuminate\Queue\InteractsWithQueue`, che è incluso di default dall'handler della coda, ti dà la possibilità di accedere a questi metodi:
 
 	public function handle(PodcastWasPurchased $event)
 	{
