@@ -118,7 +118,7 @@
 <a name="other-responses"></a>
 ## 其他回應
 
-使用輔助方法 `response` 可以輕鬆的產生其他類型的回應實例。當你呼叫輔助方法 `response` 且不帶任何參數時，將會回傳 `Illuminate\Contracts\Routing\ResponseFactory` [Contract](/docs/5.0/contracts) 的實現。Contract 提供了一些有用的方法來產生回應。
+使用輔助方法 `response` 可以輕鬆的產生其他類型的回應實例。當你呼叫輔助方法 `response` 且不帶任何參數時，將會回傳 `Illuminate\Contracts\Routing\ResponseFactory` [Contract](/docs/5.0/contracts) 的實做。Contract 提供了一些有用的方法來產生回應。
 
 #### 建立 JSON 回應
 
@@ -142,7 +142,7 @@
 <a name="response-macros"></a>
 ## 回應巨集
 
-如果你想要自訂可以在很多路由和控制器重複使用的回應，你可以使用 `Illuminate\Contracts\Routing\ResponseFactory` 實現的方法 `macro`。
+如果你想要自訂可以在很多路由和控制器重複使用的回應，你可以使用 `Illuminate\Contracts\Routing\ResponseFactory` 實做的方法 `macro`。
 
 舉個例子，來自[服務提供者的](/docs/5.0/providers) `boot` 方法:
 
@@ -168,6 +168,6 @@
 
 	}
 
-`macro` 函式第一個參數為巨集名稱，第二個參數為閉包函式。閉包函式會在 `ResponseFactory`的實現或者輔助方法 `response` 呼叫巨集名稱的時候被執行：
+`macro` 函式第一個參數為巨集名稱，第二個參數為閉包函式。閉包函式會在 `ResponseFactory`的實做或者輔助方法 `response` 呼叫巨集名稱的時候被執行：
 
 	return response()->caps('foo');
