@@ -288,9 +288,9 @@ Laravel provides several opportunities to use the service container to increase 
 		 */
 		public function index()
 		{
-			$all = $this->orders->all();
+			$orders = $this->orders->all();
 
-			return view('orders', ['all' => $all]);
+			return view('orders', ['orders' => $orders]);
 		}
 
 	}
