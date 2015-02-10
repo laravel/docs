@@ -65,6 +65,23 @@ Feel free to modify your environment variables as needed for your own local serv
 
 If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting place-holder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
+#### Package Configuration ####
+The convention for Laravel packages is that they publish a configuration file to the `/config` directory which you can modify with values appropriate to your project. To provide different configuration values in different environments, you can take advantage of your `.env` file.
+
+For example, if a package you're using has a configuration variable defined as 
+
+	'host' => 'localhost'
+
+and you want to have different values for production  and development, you can replace the value  
+
+	'host' => env('SOMEPACKAGE_HOST')
+
+Even better, you can provide a default value (usually your production value) if one is not found in the `.env` file:
+
+	'host' => env('SOMEPACKAGE_HOST', 'production.example.com')
+
+then only add the `SOMEPACKAGE_HOST` value to your local `.env` file.
+
 #### Accessing The Current Application Environment
 
 You may access the current application environment via the `environment` method on the `Application` instance:
