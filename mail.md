@@ -1,4 +1,4 @@
-# Mail
+# 郵件
 
 - [設定](#configuration)
 - [基本用法](#basic-usage)
