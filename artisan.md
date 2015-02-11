@@ -19,26 +19,26 @@ Para ver a lista de todos os comandos Artisan, você deve utilizar o comando `li
 
 	php artisan list
 
-#### Viewing The Help Screen For A Command
+#### Visualizando a Tela de Ajuda para um Comando
 
 Todos os comandos também incluem uma tela de "help" que mostra e descreve os comandos e seus respectivos parâmetros e opções. Para ver a tela de "help" (ajuda), simplesmente preceda o nome do comando com `help`.
 
 	php artisan help migrate
 
-#### Specifying The Configuration Environment
+#### Especificando O Ambiente de Configuração
 
 You may specify the configuration environment that should be used while running a command using the `--env` switch:
 
 	php artisan migrate --env=local
 
-#### Displaying Your Current Laravel Version
+#### Exibindo Sua Versão Atual do Laravel
 
 You may also view the current version of your Laravel installation using the `--version` option:
 
 	php artisan --version
 
 <a name="calling-commands-outside-of-cli"></a>
-## Calling Commands Outside Of CLI
+## Chamando os Comandos de Fora do CLI
 
 Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from an HTTP route. Just use the `Artisan` facade:
 
@@ -59,7 +59,7 @@ You may even queue Artisan commands so they are processed in the background by y
 	});
 
 <a name="scheduling-artisan-commands"></a>
-## Scheduling Artisan Commands
+## Agendando Comandos Artisan
 
 In the past, developers have generated a Cron entry for each console command they wished to schedule. However, this is a headache. Your console schedule is no longer in source control, and you must SSH into your server to add the Cron entries. Let's make our lives easier. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
 
