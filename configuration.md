@@ -88,7 +88,7 @@ You may also pass arguments to the `environment` method to check if the environm
 <a name="provider-configuration"></a>
 ### Provider Configuration
 
-When using environment configuration, you may want to "append" environment [service providers](/docs/ioc#service-providers) to your primary `app` configuration file. However, if you try this, you will notice the environment `app` providers are overriding the providers in your primary `app` configuration file. To force the providers to be appended, use the `append_config` helper method in your environment `app` configuration file:
+When using environment configuration, you may want to "append" environment [service providers](/docs/4.2/ioc#service-providers) to your primary `app` configuration file. However, if you try this, you will notice the environment `app` providers are overriding the providers in your primary `app` configuration file. To force the providers to be appended, use the `append_config` helper method in your environment `app` configuration file:
 
 	'providers' => append_config(array(
 		'LocalOnlyServiceProvider',
@@ -99,7 +99,7 @@ When using environment configuration, you may want to "append" environment [serv
 
 For "real" applications, it is advisable to keep all of your sensitive configuration out of your configuration files. Things such as database passwords, Stripe API keys, and encryption keys should be kept out of your configuration files whenever possible. So, where should we place them? Thankfully, Laravel provides a very simple solution to protecting these types of configuration items using "dot" files.
 
-First, [configure your application](/docs/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env.local.php` file within the root of your project, which is usually the same directory that contains your `composer.json` file. The `.env.local.php` should return an array of key-value pairs, much like a typical Laravel configuration file:
+First, [configure your application](/docs/4.2/configuration#environment-configuration) to recognize your machine as being in the `local` environment. Next, create a `.env.local.php` file within the root of your project, which is usually the same directory that contains your `composer.json` file. The `.env.local.php` should return an array of key-value pairs, much like a typical Laravel configuration file:
 
 	<?php
 
@@ -143,4 +143,4 @@ If the Closure passed to the `down` method returns `NULL`, maintenance mode will
 
 ### Maintenance Mode & Queues
 
-While your application is in maintenance mode, no [queue jobs](/docs/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+While your application is in maintenance mode, no [queue jobs](/docs/4.2/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.

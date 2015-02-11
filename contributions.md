@@ -56,7 +56,7 @@ If are unsure how to write a failing unit test for a bug, review the other unit 
 
 ### Via Laravel Liferaft
 
-If you aren't able to write a unit test for your issue, Laravel Liferaft allows you to create a demo application that recreates the issue. Liferaft can even automate the forking and sending of pull requests to the Laravel repository. Once your Liferaft application is submitted, a Laravel maintainer can run your application on [Homestead](/docs/homestead) and review your issue.
+If you aren't able to write a unit test for your issue, Laravel Liferaft allows you to create a demo application that recreates the issue. Liferaft can even automate the forking and sending of pull requests to the Laravel repository. Once your Liferaft application is submitted, a Laravel maintainer can run your application on [Homestead](/docs/4.2/homestead) and review your issue.
 
 <a name="creating-liferaft-applications"></a>
 ## Creating Liferaft Applications
@@ -85,7 +85,7 @@ This command will do several things. First, it will fork the [Laravel GitHub rep
 
 ### Recreating Your Issue
 
-After creating a Liferaft application, simply recreate your issue. You are free to define routes, create Eloquent models, and even create database migrations! The only requirement is that your application is able to run on a fresh [Laravel Homestead](/docs/homestead) virtual machine. This allows Laravel maintainers to easily run your application on their own machines.
+After creating a Liferaft application, simply recreate your issue. You are free to define routes, create Eloquent models, and even create database migrations! The only requirement is that your application is able to run on a fresh [Laravel Homestead](/docs/4.2/homestead) virtual machine. This allows Laravel maintainers to easily run your application on their own machines.
 
 Once you have recreated your issue within the Liferaft application, you're ready to send it back to the Laravel repository for review!
 
@@ -102,7 +102,7 @@ This command will create a pull request against the Laravel GitHub repository. A
 <a name="grabbing-liferaft-applications"></a>
 ## Grabbing Liferaft Applications
 
-Intrested in contributing to Laravel? Liferaft makes it painless to install Liferaft applications and view them on your own [Homestead environment](/docs/homestead).
+Intrested in contributing to Laravel? Liferaft makes it painless to install Liferaft applications and view them on your own [Homestead environment](/docs/4.2/homestead).
 
 First, for convenience, clone the [laravel/laravel](https://github.com/laravel/laravel) into a `liferaft` directory on your machine:
 
@@ -116,7 +116,7 @@ Next, you can run the Liferaft `grab` command from your repository directory. Fo
 
 	liferaft grab 3000
 
-The `grab` command will create a new branch on your Liferaft directory, and pull in the changes for the specified pull request. Once the Liferaft application is installed, simply serve the directory through your [Homestead](/docs/homestead) virtual machine! Once you debug the issue, don't forget to send a pull request to the [laravel/framework](https://github.com/laravel/framework) repository with the proper fix!
+The `grab` command will create a new branch on your Liferaft directory, and pull in the changes for the specified pull request. Once the Liferaft application is installed, simply serve the directory through your [Homestead](/docs/4.2/homestead) virtual machine! Once you debug the issue, don't forget to send a pull request to the [laravel/framework](https://github.com/laravel/framework) repository with the proper fix!
 
 Have an extra hour and want to solve a random issue? Just run `grab` without a pull request ID:
 

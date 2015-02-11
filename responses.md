@@ -163,7 +163,7 @@ You may also attach a view composer to multiple views at once:
         $view->with('count', User::count());
     });
 
-If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC Container](/docs/ioc), you may do so:
+If you would rather use a class based composer, which will provide the benefits of being resolved through the application [IoC Container](/docs/4.2/ioc), you may do so:
 
 	View::composer('profile', 'ProfileComposer');
 
@@ -185,7 +185,7 @@ You may use the `composers` method to register a group of composers at the same 
 	View::composers(array(
 		'AdminComposer' => array('admin.index', 'admin.profile'),
 		'UserComposer' => 'user',
-		'ProductComposer@create' => 'product' 
+		'ProductComposer@create' => 'product'
 	));
 
 > **Note:** There is no convention on where composer classes may be stored. You are free to store them anywhere as long as they can be autoloaded using the directives in your `composer.json` file.

@@ -210,7 +210,7 @@ You may re-seed your database from a test using the `seed` method:
 
 	$this->seed($connection);
 
-More information on creating seeds may be found in the [migrations and seeding](/docs/migrations#database-seeding) section of the documentation.
+More information on creating seeds may be found in the [migrations and seeding](/docs/4.2/migrations#database-seeding) section of the documentation.
 
 <a name="refreshing-the-application"></a>
 ## Refreshing The Application

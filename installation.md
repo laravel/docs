@@ -53,7 +53,7 @@ The first thing you should do after installing Laravel is set your application k
 
 Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `app/config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
 
-Once Laravel is installed, you should also [configure your local environment](/docs/configuration#environment-configuration). This will allow you to receive detailed error messages when developing on your local machine. By default, detailed error reporting is disabled in your production configuration file.
+Once Laravel is installed, you should also [configure your local environment](/docs/4.2/configuration#environment-configuration). This will allow you to receive detailed error messages when developing on your local machine. By default, detailed error reporting is disabled in your production configuration file.
 
 > **Note:** You should never have `app.debug` set to `true` for a production application. Never, ever do it.
 

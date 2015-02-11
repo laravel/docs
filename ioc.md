@@ -121,11 +121,11 @@ Laravel provides several opportunities to use the IoC container to increase the 
 
 	}
 
-In this example, the `OrderRepository` class will automatically be injected into the controller. This means that when [unit testing](/docs/testing) a "mock" `OrderRepository` may be bound into the container and injected into the controller, allowing for painless stubbing of database layer interaction.
+In this example, the `OrderRepository` class will automatically be injected into the controller. This means that when [unit testing](/docs/4.2/testing) a "mock" `OrderRepository` may be bound into the container and injected into the controller, allowing for painless stubbing of database layer interaction.
 
 #### Other Examples Of IoC Usage
 
-[Filters](/docs/routing#route-filters), [composers](/docs/responses#view-composers), and [event handlers](/docs/events#using-classes-as-listeners) may also be resolved out of the IoC container. When registering them, simply give the name of the class that should be used:
+[Filters](/docs/4.2/routing#route-filters), [composers](/docs/4.2/responses#view-composers), and [event handlers](/docs/4.2/events#using-classes-as-listeners) may also be resolved out of the IoC container. When registering them, simply give the name of the class that should be used:
 
 	Route::filter('foo', 'FooFilter');
 

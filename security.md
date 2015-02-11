@@ -56,7 +56,7 @@ To log a user into your application, you may use the `Auth::attempt` method.
 
 Take note that `email` is not a required option, it is merely used for example. You should use whatever column name corresponds to a "username" in your database. The `Redirect::intended` function will redirect the user to the URL they were trying to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
 
-When the `attempt` method is called, the `auth.attempt` [event](/docs/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
+When the `attempt` method is called, the `auth.attempt` [event](/docs/4.2/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
 
 #### Determining If A User Is Authenticated
 
@@ -236,7 +236,7 @@ Now we're ready to generate the password reminder controller. To automatically g
 
 	php artisan auth:reminders-controller
 
-The generated controller will already have a `getRemind` method that handles showing your password reminder form. All you need to do is create a `password.remind` [view](/docs/responses#views). This view should have a basic form with an `email` field. The form should POST to the `RemindersController@postRemind` action.
+The generated controller will already have a `getRemind` method that handles showing your password reminder form. All you need to do is create a `password.remind` [view](/docs/4.2/responses#views). This view should have a basic form with an `email` field. The form should POST to the `RemindersController@postRemind` action.
 
 A simple form on the `password.remind` view might look like this:
 
@@ -266,7 +266,7 @@ A simple form on the `password.reset` view might look like this:
 		<input type="submit" value="Reset Password">
 	</form>
 
-Finally, the `postReset` method is responsible for actually changing the password in storage. In this controller action, the Closure passed to the `Password::reset` method sets the `password` attribute on the `User` and calls the `save` method. Of course, this Closure is assuming your `User` model is an [Eloquent model](/docs/eloquent); however, you are free to change this Closure as needed to be compatible with your application's database storage system.
+Finally, the `postReset` method is responsible for actually changing the password in storage. In this controller action, the Closure passed to the `Password::reset` method sets the `password` attribute on the `User` and calls the `save` method. Of course, this Closure is assuming your `User` model is an [Eloquent model](/docs/4.2/eloquent); however, you are free to change this Closure as needed to be compatible with your application's database storage system.
 
 If the password is successfully reset, the user will be redirected to the root of your application. Again, you are free to change this redirect URL. If the password reset fails, the user will be redirect back to the reset form, and an `error` message will be flashed to the session.
 
@@ -307,4 +307,4 @@ You may also set the cipher and mode used by the encrypter:
 <a name="authentication-drivers"></a>
 ## Authentication Drivers
 
-Laravel offers the `database` and `eloquent` authentication drivers out of the box. For more information about adding additional authentication drivers, check out the [Authentication extension documentation](/docs/extending#authentication).
+Laravel offers the `database` and `eloquent` authentication drivers out of the box. For more information about adding additional authentication drivers, check out the [Authentication extension documentation](/docs/4.2/extending#authentication).

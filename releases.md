@@ -12,7 +12,7 @@ The full change list for this release by running the `php artisan changes` comma
 
 ### PHP 5.4 Requirement
 
-Laravel 4.2 requires PHP 5.4 or greater. This upgraded PHP requirement allows us to use new PHP features such as traits to provide more expressive interfaces for tools like [Laravel Cashier](/docs/billing). PHP 5.4 also brings significant speed and performance improvements over PHP 5.3.
+Laravel 4.2 requires PHP 5.4 or greater. This upgraded PHP requirement allows us to use new PHP features such as traits to provide more expressive interfaces for tools like [Laravel Cashier](/docs/4.2/billing). PHP 5.4 also brings significant speed and performance improvements over PHP 5.3.
 
 ### Laravel Forge
 
@@ -28,7 +28,7 @@ Laravel Homestead is an official Vagrant environment for developing robust Larav
 
 The default Laravel 4.2 installation now includes an `app/config/local/database.php` configuration file that is configured to use the Homestead database out of the box, making Laravel initial installation and configuration more convenient.
 
-The official documentation has also been updated to include [Homestead documentation](/docs/homestead).
+The official documentation has also been updated to include [Homestead documentation](/docs/4.2/homestead).
 
 ### Laravel Cashier
 
@@ -38,7 +38,7 @@ Laravel Cashier is a simple, expressive library for managing subscription billin
 
 The Artisan `queue:work` command now supports a `--daemon` option to start a worker in "daemon mode", meaning the worker will continue to process jobs without ever re-booting the framework. This results in a significant reduction in CPU usage at the cost of a slightly more complex application deployment process.
 
-More information about daemon queue workers can be found in the [queue documentation](/docs/queues#daemon-queue-worker).
+More information about daemon queue workers can be found in the [queue documentation](/docs/4.2/queues#daemon-queue-worker).
 
 ### Mail API Drivers
 
@@ -48,7 +48,7 @@ Laravel 4.2 introduces new Mailgun and Mandrill API drivers for the `Mail` funct
 
 A much cleaner architecture for "soft deletes" and other "global scopes" has been introduced via PHP 5.4 traits. This new architecture allows for the easier construction of similar global traits, and a cleaner separation of concerns within the framework itself.
 
-More information on the new `SoftDeletingTrait` may be found in the [Eloquent documentation](/docs/eloquent#soft-deleting).
+More information on the new `SoftDeletingTrait` may be found in the [Eloquent documentation](/docs/4.2/eloquent#soft-deleting).
 
 ### Convenient Auth & Remindable Traits
 
@@ -71,9 +71,9 @@ The full change list for this release by running the `php artisan changes` comma
 
 ### New SSH Component
 
-An entirely new `SSH` component has been introduced with this release. This feature allows you to easily SSH into remote servers and run commands. To learn more, consult the [SSH component documentation](/docs/ssh).
+An entirely new `SSH` component has been introduced with this release. This feature allows you to easily SSH into remote servers and run commands. To learn more, consult the [SSH component documentation](/docs/4.2/ssh).
 
-The new `php artisan tail` command utilizes the new SSH component. For more information, consult the `tail` [command documentation](http://laravel.com/docs/ssh#tailing-remote-logs).
+The new `php artisan tail` command utilizes the new SSH component. For more information, consult the `tail` [command documentation](http://laravel.com/docs/4.2/ssh#tailing-remote-logs).
 
 ### Boris In Tinker
 
@@ -81,13 +81,13 @@ The `php artisan tinker` command now utilizes the [Boris REPL](https://github.co
 
 ### Eloquent Improvements
 
-A new `hasManyThrough` relationship has been added to Eloquent. To learn how to use it, consult the [Eloquent documentation](/docs/eloquent#has-many-through).
+A new `hasManyThrough` relationship has been added to Eloquent. To learn how to use it, consult the [Eloquent documentation](/docs/4.2/eloquent#has-many-through).
 
-A new `whereHas` method has also been introduced to allow [retrieving models based on relationship constraints](/docs/eloquent#querying-relations).
+A new `whereHas` method has also been introduced to allow [retrieving models based on relationship constraints](/docs/4.2/eloquent#querying-relations).
 
 ### Database Read / Write Connections
 
-Automatic handling of separate read / write connections is now available throughout the database layer, including the query builder and Eloquent. For more information, consult [the documentation](/docs/database#read-write-connections).
+Automatic handling of separate read / write connections is now available throughout the database layer, including the query builder and Eloquent. For more information, consult [the documentation](/docs/4.2/database#read-write-connections).
 
 ### Queue Priority
 
@@ -95,15 +95,15 @@ Queue priorities are now supported by passing a comma-delimited list to the `que
 
 ### Failed Queue Job Handling
 
-The queue facilities now include automatic handling of failed jobs when using the new `--tries` switch on `queue:listen`. More information on handling failed jobs can be found in the [queue documentation](/docs/queues#failed-jobs).
+The queue facilities now include automatic handling of failed jobs when using the new `--tries` switch on `queue:listen`. More information on handling failed jobs can be found in the [queue documentation](/docs/4.2/queues#failed-jobs).
 
 ### Cache Tags
 
-Cache "sections" have been superseded by "tags". Cache tags allow you to assign multiple "tags" to a cache item, and flush all items assigned to a single tag. More information on using cache tags may be found in the [cache documentation](/docs/cache#cache-tags).
+Cache "sections" have been superseded by "tags". Cache tags allow you to assign multiple "tags" to a cache item, and flush all items assigned to a single tag. More information on using cache tags may be found in the [cache documentation](/docs/4.2/cache#cache-tags).
 
 ### Flexible Password Reminders
 
-The password reminder engine has been changed to provide greater developer flexibility when validating passwords, flashing status messages to the session, etc. For more information on using the enhanced password reminder engine, [consult the documentation](/docs/security#password-reminders-and-reset).
+The password reminder engine has been changed to provide greater developer flexibility when validating passwords, flashing status messages to the session, etc. For more information on using the enhanced password reminder engine, [consult the documentation](/docs/4.2/security#password-reminders-and-reset).
 
 ### Improved Routing Engine
 
