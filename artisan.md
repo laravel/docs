@@ -13,7 +13,7 @@ Artisan é o nome da interface da linha de comando incluída no Laravel. Esta in
 <a name="usage"></a>
 ## Usage
 
-#### Listing All Available Commands
+#### Listando todos os comandos Disponíveis
 
 Para ver a lista de todos os comandos Artisan, você deve utilizar o comando `list`.
 
