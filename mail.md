@@ -91,7 +91,7 @@ Laravel 也包含了 Mailgun 及 Mandrill HTTP API 的驅動。這些 API 通常
 
 在電子郵件中嵌入內部圖像通常很麻煩；然而 Laravel 提供一個便利的方法讓您對電子郵件附加圖像，並取得相應的 CID。
 
-#### 在電子郵件視圖中嵌入圖像
+#### 在郵件視圖中嵌入圖像
 
 	<body>
 		這是一張圖像：
@@ -99,7 +99,7 @@ Laravel 也包含了 Mailgun 及 Mandrill HTTP API 的驅動。這些 API 通常
 		<img src="<?php echo $message->embed($pathToFile); ?>">
 	</body>
 
-#### Embedding Raw Data In An E-Mail View
+#### 在郵件視圖中嵌入原始資料
 
 	<body>
 		這是一張從原始資料來的圖像：
