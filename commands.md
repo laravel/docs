@@ -125,13 +125,13 @@ Once your command is finished, you need to register it with Artisan so it will b
 
 #### Registering A Command That Is In The IoC Container
 
-If your command is registered in the application [IoC container](/docs/ioc), you may use the `Artisan::resolve` method to make it available to Artisan:
+If your command is registered in the application [IoC container](/docs/4.1/ioc), you may use the `Artisan::resolve` method to make it available to Artisan:
 
 	Artisan::resolve('binding.name');
 
 #### Registering Commands In A Service Provider
 
-If you need to register commands from within a service provider, you should call the `commands` method from the provider's `boot` method, passing the [IoC container](/docs/ioc) binding for the command:
+If you need to register commands from within a service provider, you should call the `commands` method from the provider's `boot` method, passing the [IoC container](/docs/4.1/ioc) binding for the command:
 
 	public function boot()
 	{

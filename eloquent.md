@@ -58,7 +58,7 @@ Once a model is defined, you are ready to start retrieving and creating records 
 
 	var_dump($user->name);
 
-> **Note:** All methods available on the [query builder](/docs/queries) are also available when querying Eloquent models.
+> **Note:** All methods available on the [query builder](/docs/4.1/queries) are also available when querying Eloquent models.
 
 #### Retrieving A Model By Primary Key Or Throw An Exception
 

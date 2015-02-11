@@ -9,7 +9,7 @@
 <a name="basic-controllers"></a>
 ## Basic Controllers
 
-Instead of defining all of your route-level logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related route logic into a class, as well as take advantage of more advanced framework features such as automatic [dependency injection](/docs/ioc).
+Instead of defining all of your route-level logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related route logic into a class, as well as take advantage of more advanced framework features such as automatic [dependency injection](/docs/4.1/ioc).
 
 Controllers are typically stored in the `app/controllers` directory, and this directory is registered in the `classmap` option of your `composer.json` file by default. However, controllers can technically live in any directory or any sub-directory. Route declarations are not dependent on the location of the controller class file on disk. So, as long as Composer knows how to autoload the controller class, it may be placed anywhere you wish.
 
@@ -57,7 +57,7 @@ You may access the name of the controller action being run using the `currentRou
 <a name="controller-filters"></a>
 ## Controller Filters
 
-[Filters](/docs/routing#route-filters) may be specified on controller routes similar to "regular" routes:
+[Filters](/docs/4.1/routing#route-filters) may be specified on controller routes similar to "regular" routes:
 
 	Route::get('profile', array('before' => 'auth',
 				'uses' => 'UserController@showProfile'));
@@ -140,7 +140,7 @@ The `controller` method accepts two arguments. The first is the base URI the con
 		{
 			//
 		}
-		
+
 		public function anyLogin()
 		{
 			//

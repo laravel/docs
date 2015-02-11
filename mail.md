@@ -78,7 +78,7 @@ Note that the `$message` variable is always passed to e-mail views by the `Mail`
 
 #### Queueing A Mail Message
 
-Since sending e-mail messages can drastically lengthen the response time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/queues). To queue a mail message, simply use the `queue` method on the `Mail` class:
+Since sending e-mail messages can drastically lengthen the response time of your application, many developers choose to queue e-mail messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/4.1/queues). To queue a mail message, simply use the `queue` method on the `Mail` class:
 
 	Mail::queue('emails.welcome', $data, function($message)
 	{
