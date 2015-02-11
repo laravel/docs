@@ -186,7 +186,7 @@ This will append a unique hash to the filename, allowing for cache-busting. For 
 
 Within your views, you may use the `elixir()` function to load the appropriately hashed asset. Here's an example:
 
-```html
+```php
 <link rel="stylesheet" href="{{ elixir("css/all.css") }}">
 ```
 
