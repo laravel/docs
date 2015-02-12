@@ -136,7 +136,7 @@ Contract  |  Laravel 4.x Facade
 <a name="how-to-use-contracts"></a>
 ## 如何使用 Contracts
 
-所以，要如何實作一個 contract？實際上非常的簡單。很多 Laravel 的類別都是經由 [service container](/docs/master/container) 解析，包含控制器，事件監聽，過濾器，隊列任務，甚至是閉包。所以，要實作一個 contract，你可以在類別的建構子使用「型別提示」解析類別。例如，看下面的事件處理程式：
+所以，要如何實作一個 contract？實際上非常的簡單。很多 Laravel 的類別都是經由 [service container](/docs/5.0/container) 解析，包含控制器，事件監聽，過濾器，隊列任務，甚至是閉包。所以，要實作一個 contract，你可以在類別的建構子使用「型別提示」解析類別。例如，看下面的事件處理程式：
 
 	<?php namespace App\Handlers\Events;
 
