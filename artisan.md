@@ -1,46 +1,46 @@
-# Artisan CLI
+# Artisan 命令列介面
 
-- [Introduction](#introduction)
-- [Usage](#usage)
-- [Calling Commands Outside Of CLI](#calling-commands-outside-of-cli)
-- [Scheduling Artisan Commands](#scheduling-artisan-commands)
+- [介紹](#introduction)
+- [用法](#usage)
+- [在命令列介面以外的地方呼叫命令](#calling-commands-outside-of-cli)
+- [排程 Artisan 命令](#scheduling-artisan-commands)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-Artisan is the name of the command-line interface included with Laravel. It provides a number of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component.
+Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令協助您開發，它是由強大的 Symfony Console 元件所驅動。
 
 <a name="usage"></a>
-## Usage
+## 用法
 
-#### Listing All Available Commands
+#### 列出所有可用的命令
 
-To view a list of all available Artisan commands, you may use the `list` command:
+要查看所有可以使用的 Artisan 命令，你可以使用 `list` 命令：
 
 	php artisan list
 
-#### Viewing The Help Screen For A Command
+#### 瀏覽命令的幫助畫面
 
-Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, simply precede the name of the command with `help`:
+每個命令都包含一個顯示並描述這個命令能夠接受哪些參數和選項的「幫助畫面」。要瀏覽幫助畫面，只需要在命令名稱前面加上 `help` 即可：
 
 	php artisan help migrate
 
-#### Specifying The Configuration Environment
+#### 指定環境設定
 
-You may specify the configuration environment that should be used while running a command using the `--env` switch:
+您可以指定要使用的環境設定，只要在執行指令時加上 `--env` 即可切換：
 
 	php artisan migrate --env=local
 
-#### Displaying Your Current Laravel Version
+#### 顯示目前的 Laravel 版本
 
-You may also view the current version of your Laravel installation using the `--version` option:
+你也可以使用 `--version` 選項，查看目前安裝的 Laravel 版本：
 
 	php artisan --version
 
 <a name="calling-commands-outside-of-cli"></a>
-## Calling Commands Outside Of CLI
+## 在命令列介面以外的地方呼叫命令
 
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from an HTTP route. Just use the `Artisan` facade:
+有時你會希望在命令列介面以外的地方執行 Artisan 命令。例如，你可能會希望從 HTTP 路由呼叫 Artisan 命令。只要使用 `Artisan` facade 即可：
 
 	Route::get('/foo', function()
 	{
@@ -49,7 +49,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 		//
 	});
 
-You may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/5.0/queues):
+你甚至可以把 Artisan 命令放到隊列，他們會藉由 [隊列工作者](/docs/5.0/queues) 在背景執行：
 
 	Route::get('/foo', function()
 	{
@@ -59,37 +59,37 @@ You may even queue Artisan commands so they are processed in the background by y
 	});
 
 <a name="scheduling-artisan-commands"></a>
-## Scheduling Artisan Commands
+## 排程 Artisan 命令
 
-In the past, developers have generated a Cron entry for each console command they wished to schedule. However, this is a headache. Your console schedule is no longer in source control, and you must SSH into your server to add the Cron entries. Let's make our lives easier. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
+過去，開發者會對每個他們想要排程的主控台命令建立 Cron 項目。然而，這很令人頭痛。你的主控台排程不再包含在版本控制裡面，並且你必須 SSH 進入你的伺服器以添加 Cron 項目。讓我們來讓生活變得更輕鬆。Laravel 命令排程器允許你順暢地且語義化地定義命令排程在 Laravel 裡面，而且你的伺服器只需要一個 Cron 項目。
 
-Your command schedule is stored in the `app/Console/Kernel.php` file. Within this class you will see a `schedule` method. To help you get started, a simple example is included with the method. You are free to add as many scheduled jobs as you wish to the `Schedule` object. The only Cron entry you need to add to your server is this:
+你的命令排程儲存在 `app/Console/Kernel.php` 檔案。你會在這個類別裡看到一個 `schedule` 方法。為了幫助您開始，方法裡面包含一個簡單的例子。你可以依照你需要的自由地添加任何數量的預定工作到 `Schedule` 物件。你只需要添加這個 Cron 項目到伺服器：
 
 	* * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
 
-This Cron will call the Laravel command scheduler every minute. Then, Laravel evalutes your scheduled jobs and runs the jobs that are due. It couldn't be easier!
+這個 Cron 將會每分鐘呼叫 Laravel 命令排程器。接著，Laravel 評估你的預定工作並在時間到時執行工作。這不能再更簡單了！
 
-### More Scheduling Examples
+### 更多排程的例子
 
-Let's look at a few more scheduling examples:
+讓我們來多看幾個排程的例子：
 
-#### Scheduling Closures
+#### 排程閉包
 
 	$schedule->call(function()
 	{
-		// Do some task...
+		// 執行一些任務...
 
 	})->hourly();
 
-#### Scheduling Terminal Commands
+#### 排程終端機命令
 
 	$schedule->exec('composer self-update')->daily();
 
-#### Manual Cron Expression
+#### 自己設定 Cron 表達式
 
 	$schedule->command('foo')->cron('* * * * *');
 
-#### Frequent Jobs
+#### 頻繁的工作
 
 	$schedule->command('foo')->everyFiveMinutes();
 
@@ -97,42 +97,42 @@ Let's look at a few more scheduling examples:
 
 	$schedule->command('foo')->everyThirtyMinutes();
 
-#### Daily Jobs
+#### 每天一次的工作
 
 	$schedule->command('foo')->daily();
 
-#### Daily Jobs At A Specific Time (24 Hour Time)
+#### 每天一次在特定時間 (24 小時制) 的工作
 
 	$schedule->command('foo')->dailyAt('15:00');
 
-#### Twice Daily Jobs
+#### 每天兩次的工作
 
 	$schedule->command('foo')->twiceDaily();
 
-#### Job That Runs Every Weekday
+#### 每個工作日執行的工作
 
 	$schedule->command('foo')->weekdays();
 
-#### Weekly Jobs
+#### 每週一次的工作
 
 	$schedule->command('foo')->weekly();
 
-	// Schedule weekly job for specific day (0-6) and time...
+	// 排程每週一次在特定的日子 (0-6) 和時間的工作...
 	$schedule->command('foo')->weeklyOn(1, '8:00');
 
-#### Monthly Jobs
+#### 每月一次的工作
 
 	$schedule->command('foo')->monthly();
 
-#### Limit The Environment The Jobs Should Run In
+#### 限制應該執行工作的環境
 
 	$schedule->command('foo')->monthly()->environments('production');
 
-#### Indicate The Job Should Run Even When Application Is In Maintenance Mode
+#### 指定工作在當應用程式處於維護模式也應該執行
 
 	$schedule->command('foo')->monthly()->evenInMaintenanceMode();
 
-#### Only Allow Job To Run When Callback Is True
+#### 只允許工作在閉包回傳 true 的時候執行
 
 	$schedule->command('foo')->monthly()->when(function()
 	{
