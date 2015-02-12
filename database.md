@@ -125,10 +125,10 @@ If you need to disconnect from the given database due to exceeding the underlyin
 <a name="query-logging"></a>
 ## Query Logging
 
-By default, Laravel keeps a log in memory of all queries that have been run for the current request. However, in some cases, such as when inserting a large number of rows, this can cause the application to use excess memory. To disable the log, you may use the `disableQueryLog` method:
+Laravel can optionally log in memory all queries that have been run for the current request. Be aware that in some cases, such as when inserting a large number of rows, this can cause the application to use excess memory. To enable the log, you may use the `enableQueryLog` method:
 
-	DB::connection()->disableQueryLog();
+	DB::connection()->enableQueryLog();
 
 To get an array of the executed queries, you may use the `getQueryLog` method:
 
-       $queries = DB::getQueryLog();
+	$queries = DB::getQueryLog();
