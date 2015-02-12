@@ -1,17 +1,17 @@
 # Artisan CLI
 
-- [Introduction](#introduction)
-- [Usage](#usage)
-- [Calling Commands Outside Of CLI](#calling-commands-outside-of-cli)
-- [Scheduling Artisan Commands](#scheduling-artisan-commands)
+- [Introdução](#introduction)
+- [Uso](#usage)
+- [Chamando os Comandos de Fora do CLI](#calling-commands-outside-of-cli)
+- [Agendando Comandos Artisan](#scheduling-artisan-commands)
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
 Artisan é o nome da interface da linha de comando incluída no Laravel. Esta interface fornece um bom número de comandos auxiliares para que você use durante o desenvolvimento de sua aplicação. O artisan é impulsionado pelo poderoso componente de Console do Symfony framework.
 
 <a name="usage"></a>
-## Usage
+## Uso
 
 #### Listando todos os comandos Disponíveis
 
@@ -27,20 +27,20 @@ Todos os comandos também incluem uma tela de "help" que mostra e descreve os co
 
 #### Especificando O Ambiente de Configuração
 
-You may specify the configuration environment that should be used while running a command using the `--env` switch:
+Você pode especificar o ambiente em que o comando é executando usando o prefixo `--env`:
 
 	php artisan migrate --env=local
 
 #### Exibindo Sua Versão Atual do Laravel
 
-You may also view the current version of your Laravel installation using the `--version` option:
+Você também pode ver a versão atual do instalação do seu Laravel utilizando a opção `--version`:
 
 	php artisan --version
 
 <a name="calling-commands-outside-of-cli"></a>
 ## Chamando os Comandos de Fora do CLI
 
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from an HTTP route. Just use the `Artisan` facade:
+Algumas vezes você pode desejar executatar o comando Artisan de fora do CLI. Por exemplo, vocẽ pode desejar executar o comando Artisan de uma rota HTTP. Apenas use a fachada `Artisan`:
 
 	Route::get('/foo', function()
 	{
@@ -49,7 +49,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 		//
 	});
 
-You may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/5.0/queues):
+Você pode até enfileirar comandos Artisan para que eles sejam processados em segundo plano pelo seu [queue workers](/docs/5.0/queues):
 
 	Route::get('/foo', function()
 	{
@@ -61,19 +61,20 @@ You may even queue Artisan commands so they are processed in the background by y
 <a name="scheduling-artisan-commands"></a>
 ## Agendando Comandos Artisan
 
-In the past, developers have generated a Cron entry for each console command they wished to schedule. However, this is a headache. Your console schedule is no longer in source control, and you must SSH into your server to add the Cron entries. Let's make our lives easier. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
+No passado, desenvolvedores teêm gerado uma entrada de Cron para cada comando que eles queriam agendar. Contudo, isto é uma baita dor de cabeça. Seu console de agendamento não está mais no controle de origem, e você deve realizar uma conexão SSH com o seu servidor para dar entradas de Cron. Vamos fazer sua nossas vidas mais fáceis. O comando agendados do Laravel lhe permite nativamente definir seu comando agendador apenas com o próprio Laravel, e apenas uma entrada de Cron se faz necessária no seu servidor.
 
-Your command schedule is stored in the `app/Console/Kernel.php` file. Within this class you will see a `schedule` method. To help you get started, a simple example is included with the method. You are free to add as many scheduled jobs as you wish to the `Schedule` object. The only Cron entry you need to add to your server is this:
+Seu comando agendador é armazenado no arquivo `app/Console/Kernel.php`. Dentro desta classe você verá o método `schedule`. Para ajudar você a começar, um simples exemplo é incluído com o método. Sinta-se a vontade para adicionar quantas tarefas agendadas você desejar para o objeto `Schedule`. A única entrada de Cron que você precisa adicionar para o seu servidor é esta:
 
 	* * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
 
-This Cron will call the Laravel command scheduler every minute. Then, Laravel evalutes your scheduled jobs and runs the jobs that are due. It couldn't be easier!
+Este Cron(tarefa agendada) chamará o comando de agendamento do Laravel todo minuto. Em seguida, Laravel avalia sua tarefa agendada e executa os que são devidos. Não poderia ser mais fácil do que isto. 
 
-### More Scheduling Examples
 
-Let's look at a few more scheduling examples:
+### Mais Exemplos de Agendamento 
 
-#### Scheduling Closures
+Vamos dar uma olhada em mais alguns exemplos de agendamentos:
+
+#### Agendamentos com Closures
 
 	$schedule->call(function()
 	{
@@ -81,15 +82,15 @@ Let's look at a few more scheduling examples:
 
 	})->hourly();
 
-#### Scheduling Terminal Commands
+#### Comandos de Agendamento via Terminal
 
 	$schedule->exec('composer self-update')->daily();
 
-#### Manual Cron Expression
+#### Expressão Manual de Cron 
 
 	$schedule->command('foo')->cron('* * * * *');
 
-#### Frequent Jobs
+#### Tarefas Frequentes
 
 	$schedule->command('foo')->everyFiveMinutes();
 
@@ -97,42 +98,42 @@ Let's look at a few more scheduling examples:
 
 	$schedule->command('foo')->everyThirtyMinutes();
 
-#### Daily Jobs
+#### Tarefas Diárias
 
 	$schedule->command('foo')->daily();
 
-#### Daily Jobs At A Specific Time (24 Hour Time)
+#### Tarefas Diárias em Um Horário Específico (24 Horas)
 
 	$schedule->command('foo')->dailyAt('15:00');
 
-#### Twice Daily Jobs
+#### Tarefas Realizadas Duas Vezes ao Dia 
 
 	$schedule->command('foo')->twiceDaily();
 
-#### Job That Runs Every Weekday
+#### Tarefas Executadas Todos os Dias da Semana
 
 	$schedule->command('foo')->weekdays();
 
-#### Weekly Jobs
+#### Tarefas Realizadas em um Dia da Semana em Específico 
 
 	$schedule->command('foo')->weekly();
 
 	// Schedule weekly job for specific day (0-6) and time...
 	$schedule->command('foo')->weeklyOn(1, '8:00');
 
-#### Monthly Jobs
+#### Tarefas Mensais
 
 	$schedule->command('foo')->monthly();
 
-#### Limit The Environment The Jobs Should Run In
+#### Limitando os Ambientes em que as Tarefas Devem ser Executadas 
 
 	$schedule->command('foo')->monthly()->environments('production');
 
-#### Indicate The Job Should Run Even When Application Is In Maintenance Mode
+#### Indicando se a Execução da Tarefa Deve ser Relizada Mesmo Quando Aplicação Está em Manutenção 
 
 	$schedule->command('foo')->monthly()->evenInMaintenanceMode();
 
-#### Only Allow Job To Run When Callback Is True
+#### Permitindo que a Tarefa Seja Executada Apenas Quando o Retorno do Callback Seja Verdadeiro
 
 	$schedule->command('foo')->monthly()->when(function()
 	{
