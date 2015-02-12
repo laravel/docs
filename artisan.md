@@ -3,25 +3,25 @@
 - [介紹](#introduction)
 - [用法](#usage)
 - [在命令列介面以外的地方呼叫命令](#calling-commands-outside-of-cli)
-- [Artisan 命令排程](#scheduling-artisan-commands)
+- [排程 Artisan 命令](#scheduling-artisan-commands)
 
 <a name="introduction"></a>
 ## 介紹
 
-Artisan 是 Laravel 內建的命令列工具。它提供了一些有用的指令協助您開發，它是由強大的 Symfony Console 元件所驅動。
+Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令協助您開發，它是由強大的 Symfony Console 元件所驅動。
 
 <a name="usage"></a>
 ## 用法
 
 #### 列出所有可用的命令
 
-要查看所有可用的 Artisan 命令，您可以使用 `list` 命令：
+要查看所有可以使用的 Artisan 命令，你可以使用 `list` 命令：
 
 	php artisan list
 
-#### 瀏覽命令的幫助頁面
+#### 瀏覽命令的幫助畫面
 
-每個命令都包含一個顯示並描述這個命令能夠接受哪些參數和選項的「幫助頁面」。要瀏覽幫助頁面，只需要在命令名稱前面加上 `help` 即可：
+每個命令都包含一個顯示並描述這個命令能夠接受哪些參數和選項的「幫助畫面」。要瀏覽幫助畫面，只需要在命令名稱前面加上 `help` 即可：
 
 	php artisan help migrate
 
@@ -40,7 +40,7 @@ Artisan 是 Laravel 內建的命令列工具。它提供了一些有用的指令
 <a name="calling-commands-outside-of-cli"></a>
 ## 在命令列介面以外的地方呼叫命令
 
-有時你會希望在命令列介面以外的地方執行 Artisan 命令。例如，你可能會希望從 HTTP 路由呼叫 Artisan 命令。只要使用 `Artisan` facade：
+有時你會希望在命令列介面以外的地方執行 Artisan 命令。例如，你可能會希望從 HTTP 路由呼叫 Artisan 命令。只要使用 `Artisan` facade 即可：
 
 	Route::get('/foo', function()
 	{
@@ -59,11 +59,11 @@ Artisan 是 Laravel 內建的命令列工具。它提供了一些有用的指令
 	});
 
 <a name="scheduling-artisan-commands"></a>
-## Artisan 命令排程
+## 排程 Artisan 命令
 
-過去，開發者對每個他們想要排程的主控台命令建立 Cron 項目。然而，這很令人頭痛。你的主控台排程不再包含在版本控制裡面，並且你必須 SSH 進入你的伺服器以添加 Cron 項目。 讓我們來讓生活變得更輕鬆。Laravel 命令排程器允許你順暢地且語義化地定義命令排程在 Laravel 裡面，且你的伺服器只需要一個 Cron 項目。
+過去，開發者會對每個他們想要排程的主控台命令建立 Cron 項目。然而，這很令人頭痛。你的主控台排程不再包含在版本控制裡面，並且你必須 SSH 進入你的伺服器以添加 Cron 項目。讓我們來讓生活變得更輕鬆。Laravel 命令排程器允許你順暢地且語義化地定義命令排程在 Laravel 裡面，而且你的伺服器只需要一個 Cron 項目。
 
-你的命令排程儲存在 `app/Console/Kernel.php` 檔案。你會在這個類別裡看到一個 `schedule` 方法。為了幫助您開始，方法裡包含一個簡單的例子。你可以依你想要的自由地添加任何數量的預定工作到 `Schedule` 物件。你只需要添加這個 Cron 項目到伺服器：
+你的命令排程儲存在 `app/Console/Kernel.php` 檔案。你會在這個類別裡看到一個 `schedule` 方法。為了幫助您開始，方法裡面包含一個簡單的例子。你可以依照你需要的自由地添加任何數量的預定工作到 `Schedule` 物件。你只需要添加這個 Cron 項目到伺服器：
 
 	* * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
 
@@ -85,7 +85,7 @@ Artisan 是 Laravel 內建的命令列工具。它提供了一些有用的指令
 
 	$schedule->exec('composer self-update')->daily();
 
-#### Manual Cron 表達式
+#### 自己設定 Cron 表達式
 
 	$schedule->command('foo')->cron('* * * * *');
 
