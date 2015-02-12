@@ -1,29 +1,29 @@
 # Contracts
 
-- [Introduction](#introduction)
-- [Why Contracts?](#why-contracts)
-- [Contract Reference](#contract-reference)
-- [How To Use Contracts](#how-to-use-contracts)
+- [簡介](#introduction)
+- [為什麼用 Contracts？](#why-contracts)
+- [Contract 參考](#contract-reference)
+- [如何使用 Contracts](#how-to-use-contracts)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a `Queue` contract defines the methods needed for queueing jobs, while the `Mailer` contract defines the methods needed for sending e-mail.
+Laravel 的 Contracts 是一組定義了框架核心服務的介面（ interfaces ）。例如，`Queue` contract 定義了隊列任務所需要的方法，而 `Mailer` contract 定義了寄送 e-mail 需要的方法。
 
-Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a `Queue` implementation with a variety of drivers, and a `Mailer` implementation that is powered by [SwiftMailer](http://swiftmailer.org/).
+在 Laravel 框架裡，每個 contract 都提供了一個對應的實作。例如， Laravel 提供了有多種驅動的 `Queue` 的實作，而根據 [SwiftMailer](http://swiftmailer.org/) 實作了 `Mailer`。
 
-All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by other package developers.
+Laravel 所有的 contracts 都放在[各自的 Github repository](https://github.com/illuminate/contracts)。除了提供了所有可用的 contracts 一個快速的參考，也可以單獨作為一個低耦合的套件讓其他套件開發者使用。
 
 <a name="why-contracts"></a>
-## Why Contracts?
+## 為什麼用 Contracts？
 
-You may have several questions regarding contracts. Why use interfaces at all? Isn't using interfaces more complicated?
+你可能有很多關於 contracts 的問題。像是為什麼要使用介面？使用介面會不會變的更複雜？
 
-Let's distill the reasons for using interfaces to the following headings: loose coupling and simplicity.
+讓我們用下面的標題來解釋為什麼要使用介面：低耦合和簡單性。
 
-### Loose Coupling
+### 低耦合
 
-First, let's review some code that is tightly coupled to a cache implementation. Consider the following:
+首先，看一些強耦合的快取實作程式碼。如下：
 
 	<?php namespace App\Orders;
 
@@ -61,11 +61,11 @@ First, let's review some code that is tightly coupled to a cache implementation.
 
 	}
 
-In this class, the code is tightly coupled to a given cache implementation. It is tightly coupled because we are depending on a concrete Cache class from a package vendor. If the API of that package changes our code must change as well.
+在上面的類別裡，程式碼跟快取實作之間是強耦合。理由是它會依賴於套件庫（ package vendor ）的特定快取類別。一旦這個套件的 API 更改了，我們的程式碼也要跟著改變。
 
-Likewise, if we want to replace our underlying cache technology (Memcached) with another technology (Redis), we again will have to modify our repository. Our repository should not have so much knowledge regarding who is providing them data or how they are providing it.
+同樣的，如果想要將底層的快取技術（比如 Memcached ）抽換成另一種（像 Redis ），又一次的我們必須修改這個 repository 類別。我們的 repository 不應該知道這麼多關於誰提供了資料，或是如何提供等等細節。
 
-**Instead of this approach, we can improve our code by depending on a simple, vendor agnostic interface:**
+**比起上面的做法，我們可以改用一個簡單、和套件無關的介面來改進程式碼：**
 
 	<?php namespace App\Orders;
 
@@ -86,18 +86,18 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
 
 	}
 
-Now the code is not coupled to any specific vendor, or even Laravel. Since the contracts package contains no implementation and no dependencies, you may easily write an alternative implementation of any given contract, allowing you to replace your cache implementation without modifying any of your cache consuming code.
+現在上面的程式碼沒有跟任何套件耦合，甚至是 Laravel。既然 contracts 套件沒有包含實作和任何依賴，你可以很簡單的對任何 contract 進行實作，你可以很簡單的寫一個替換的實作，甚至是替換 contracts，讓你可以替換快取實作而不用修改任何用到快取的程式碼。
 
-### Simplicity
+### 簡單性
 
-When all of Laravel's services are neatly defined within simple interfaces, it is very easy to determine the functionality offered by a given service. **The contracts serve as succinct documentation to the framework's features.**
+當所有的 Laravel 服務都簡潔的使用簡單的介面定義，就能夠很簡單的決定一個服務需要提供的功能。** 可以將 contracts 視為說明框架特色的簡潔文件。**
 
-In addition, when you depend on simple interfaces, your code is easier to understand and maintain. Rather than tracking down which methods are available to you within a large, complicated class, you can refer to a simple, clean interface.
+除此之外，當你依賴簡潔的介面，你的程式碼能夠很簡單的被瞭解和維護。比起搜尋一個大型複雜的類別裡有哪些可用的方法，你有一個簡單，乾淨的介面可以參考。
 
 <a name="contract-reference"></a>
-## Contract Reference
+## Contract 參考
 
-This is a reference to most Laravel Contracts, as well as their Laravel "facade" counterparts:
+以下是大部分 Laravel Contracts 的參考，以及相對應的 "facade"
 
 Contract  |  Laravel 4.x Facade
 ------------- | -------------
@@ -134,9 +134,9 @@ Contract  |  Laravel 4.x Facade
 [Illuminate\Contracts\View\View](https://github.com/illuminate/contracts/blob/master/View/View.php) | &nbsp;
 
 <a name="how-to-use-contracts"></a>
-## How To Use Contracts
+## 如何使用 Contracts
 
-So, how do you get an implementation of a contract? It's actually quite simple. Many types of classes in Laravel are resolved through the [service container](/docs/5.0/container), including controllers, event listeners, filters, queue jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved. For example, take a look at this event handler:
+所以，要如何實作一個 contract？實際上非常的簡單。很多 Laravel 的類別都是經由 [service container](/docs/master/container) 解析，包含控制器，事件監聽，過濾器，隊列任務，甚至是閉包。所以，要實作一個 contract，你可以在類別的建構子使用「型別提示」解析類別。例如，看下面的事件處理程式：
 
 	<?php namespace App\Handlers\Events;
 
@@ -147,12 +147,12 @@ So, how do you get an implementation of a contract? It's actually quite simple. 
 	class CacheUserInformation {
 
 		/**
-		 * The Redis database implementation.
+		 * Redis 資料庫實作
 		 */
 		protected $redis;
 
 		/**
-		 * Create a new event handler instance.
+		 * 建立新的事件處理實例
 		 *
 		 * @param  Database  $redis
 		 * @return void
@@ -163,7 +163,7 @@ So, how do you get an implementation of a contract? It's actually quite simple. 
 		}
 
 		/**
-		 * Handle the event.
+		 * 處理事件
 		 *
 		 * @param  NewUserRegistered  $event
 		 * @return void
@@ -175,4 +175,4 @@ So, how do you get an implementation of a contract? It's actually quite simple. 
 
 	}
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [the documentation](/docs/5.0/container).
+當事件監聽被解析時，服務容器會經由類別建構子參數的型別提示，注入適當的值。要知道怎麼註冊更多服務容器，參考[這個文件](/docs/5.0/container)。
