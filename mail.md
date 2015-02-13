@@ -9,7 +9,7 @@
 <a name="configuration"></a>
 ## 设置
 
-Laravel 基于热门的 [SwiftMailer](http://swiftmailer.org) 函式库之上，提供了一个简洁的 API。邮件配置文件为 `config/mail.php`，包含若干选项，让您可以更改 SMTP  主机、连接端口、凭证，也可以让您对函式库发送出去的所有消息设置全域的 `from` 地址。您可使用任何您想要的 SMTP 服务器。如果想使用 PHP `mail` 函式来发送邮件，您可以将配置文件中的 `driver` 更改为 `mail`。您也可以使用 `sendmail`  驱动器。
+Laravel 基于热门的 [SwiftMailer](http://swiftmailer.org) 函式库之上，提供了一个简洁的 API。邮件配置文件为 `config/mail.php`，包含若干选项，让您可以更改 SMTP  主机、连接端口、凭证，也可以让您对函式库发送出去的所有消息设置全局的 `from` 地址。您可使用任何您想要的 SMTP 服务器。如果想使用 PHP `mail` 函式来发送邮件，您可以将配置文件中的 `driver` 更改为 `mail`。您也可以使用 `sendmail`  驱动器。
 
 ### API 驱动
 

@@ -51,7 +51,7 @@ HTTP 请求在实际碰触到应用程序之前，最好是可以层层通过许
 <a name="registering-middleware"></a>
 ## 注册中间层
 
-### 全域中间层
+### 全局中间层
 
 若是希望中间层被所有的 HTTP 请求给执行，只要将中间层的类别加入到 `app/Http/Kernel.php` 的 `$middleware` 属性清单列表中。
 
@@ -86,4 +86,4 @@ HTTP 请求在实际碰触到应用程序之前，最好是可以层层通过许
 
 	}
 
-如你所见，除了定义 `handle` 方法之外， `TerminableMiddleware` 定义一个 `terminate`  方法。这个方法接收请求和回应。一旦定义了 terminable 中间层，你需要将它增加到 HTTP kernel 文件的全域中间层清单列表中。
+如你所见，除了定义 `handle` 方法之外， `TerminableMiddleware` 定义一个 `terminate`  方法。这个方法接收请求和回应。一旦定义了 terminable 中间层，你需要将它增加到 HTTP kernel 文件的全局中间层清单列表中。

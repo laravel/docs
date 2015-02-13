@@ -3,7 +3,7 @@
 - [介绍](#introduction)
 - [Selects](#selects)
 - [Joins](#joins)
-- [高端 Wheres](#advanced-wheres)
+- [高级 Wheres](#advanced-wheres)
 - [聚合](#aggregates)
 - [Raw Expressions](#raw-expressions)
 - [添加](#inserts)
@@ -147,7 +147,7 @@
 		    ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
 		    ->get();
 
-你也可以指定更高端的 join 子句：
+你也可以指定更高级的 join 子句：
 
 	DB::table('users')
 	        ->join('contacts', function($join)
@@ -167,11 +167,11 @@
 	        ->get();
 
 <a name="advanced-wheres"></a>
-## 高端 Wheres
+## 高级 Wheres
 
 #### 群组化参数
 
-有些时候你需要更高端的 where 子句，像是「where exists」或嵌套的群组化参数。Laravel 的查找产生器也可以处理这样的情况：
+有些时候你需要更高级的 where 子句，像是「where exists」或嵌套的群组化参数。Laravel 的查找产生器也可以处理这样的情况：
 
 	DB::table('users')
 	            ->where('name', '=', 'John')

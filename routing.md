@@ -135,7 +135,7 @@ HTML 表单没有支持 `PUT` 或 `DELETE` 动作。所以当定义 `PUT` 或 `D
 	})
 	->where(['id' => '[0-9]+', 'name' => '[a-z]+'])
 
-#### 定义全域模式
+#### 定义全局模式
 
 如果你想让特定路由参数总是遵询特定的正规表达式，可以使用 `pattern` 方法。在 `RouteServiceProvider` 的 `before` 方法里定义模式：
 

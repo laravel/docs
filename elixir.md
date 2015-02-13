@@ -27,7 +27,7 @@ Laravel Elixir 提供了简洁流畅的 API，让你能够为你的 Laravel 应�
 
 ### Gulp
 
-接着你需要全域安装 [Gulp](http://gulpjs.com) 的 NPM 安装包，像是这样：
+接着你需要全局安装 [Gulp](http://gulpjs.com) 的 NPM 安装包，像是这样：
 
     npm install --global gulp
 

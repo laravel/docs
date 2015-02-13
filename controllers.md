@@ -158,7 +158,7 @@ POST      | /resource                   | 保存         | resource.store
 GET       | /resource/{resource}        | 显示         | resource.show
 GET       | /resource/{resource}/edit   | 编辑         | resource.edit
 PUT/PATCH | /resource/{resource}        | 更新         | resource.update
-DELETE    | /resource/{resource}        | 消减         | resource.destroy
+DELETE    | /resource/{resource}        | 删除         | resource.destroy
 
 #### 自定资源路由
 

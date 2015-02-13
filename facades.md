@@ -55,7 +55,7 @@ Cache 类别继承基本的 `Facade` 类别并定义一个 `getFacadeAccessor()`
 
 #### 导入 Facades
 
-记住，如果你在控制器有使用命名空间的状况使用 facade，你会需要导入 facade 类别进入命名空间。所有的 facades 存在于全域命名空间：
+记住，如果你在控制器有使用命名空间的情况下使用 facade，你会需要导入 facade 类别进入命名空间。所有的 facades 存在于全局命名空间：
 
 	<?php namespace App\Http\Controllers;
 
