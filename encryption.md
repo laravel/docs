@@ -1,4 +1,4 @@
-# Encryption
+# Encriptação
 
 - [Introdução](#introduction)
 - [Basic Usage](#basic-usage)
