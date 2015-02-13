@@ -135,7 +135,7 @@ Laravel Cashier 提供口语化，流畅的接口和 [Stripe](https://stripe.com
 
 	$user->subscription()->cancel();
 
-当客户取消订购时，Cashier 会自动更新数据库的 `subscription_ends_at` 字段。这个字段会被用来判断 `subscribed` 方法是否该回传 `false`。例如，如果顾客在三月一号取消订购，但是服务可以使用到三月五号为止，那么 `subscribed` 方法在三月五号前都会传回 `true`。
+当客户取消订购时，Cashier 会自动更新数据库的 `subscription_ends_at` 字段。这个字段会被用来判断 `subscribed` 方法是否该返回 `false`。例如，如果顾客在三月一号取消订购，但是服务可以使用到三月五号为止，那么 `subscribed` 方法在三月五号前都会传回 `true`。
 
 <a name="resuming-a-subscription"></a>
 ## 恢复订购
@@ -182,7 +182,7 @@ Laravel Cashier 提供口语化，流畅的接口和 [Stripe](https://stripe.com
 		//
 	}
 
-你可以可能想确认用户是否已经取消订单，但是服务还没有到期。例如，如果用户在三月五号取消了订购，但是服务会到三月十号才过期。那么用户到三月十号前都是有效期间。注意， `subscribed` 方法在过期前都会回传 `true` 。
+你可以可能想确认用户是否已经取消订单，但是服务还没有到期。例如，如果用户在三月五号取消了订购，但是服务会到三月十号才过期。那么用户到三月十号前都是有效期间。注意， `subscribed` 方法在过期前都会返回 `true` 。
 
 	if ($user->onGracePeriod())
 	{

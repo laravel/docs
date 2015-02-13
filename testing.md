@@ -68,7 +68,7 @@ Laravel 在建立时就有考虑到单元测试。事实上，它支持立即使
 
 > **注意:** 当使用 `action` 方法的时候，你不需要指定完整的控制器命名空间。只需要指定 `App\Http\Controllers` 命名空间后面的类别名称部分。
 
-`getContent` 方法会回传求值后的字串内容回应。如果你的路由回传一个 `View`，你可以透过 `original` 属性访问它：
+`getContent` 方法会返回求值后的字串内容回应。如果你的路由返回一个 `View`，你可以透过 `original` 属性访问它：
 
 	$view = $response->original;
 
@@ -90,7 +90,7 @@ Laravel 在建立时就有考虑到单元测试。事实上，它支持立即使
 		return 'All done!';
 	}
 
-我们可以在 facade 上使用 `shouldReceive` 方法，来仿真调用 `Event` 类别，它将会回传一个 [Mockery](https://github.com/padraic/mockery) mock 对象实例。
+我们可以在 facade 上使用 `shouldReceive` 方法，来仿真调用 `Event` 类别，它将会返回一个 [Mockery](https://github.com/padraic/mockery) mock 对象实例。
 
 #### 仿真 Facade
 

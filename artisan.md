@@ -132,7 +132,7 @@ Artisan 是 Laravel 内置的命令行接口。它提供了一些有用的指令
 
 	$schedule->command('foo')->monthly()->evenInMaintenanceMode();
 
-#### 只允许工作在闭包回传 true 的时候执行
+#### 只允许工作在闭包返回 true 的时候执行
 
 	$schedule->command('foo')->monthly()->when(function()
 	{

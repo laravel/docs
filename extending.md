@@ -25,7 +25,7 @@ Laravel 有几个 `Manager` 类别，用来管理创建基于驱动的组件。�
 		return Cache::repository(new MongoStore);
 	});
 
-传递到 `extend` 方法的第一个参数是驱动的名称。这将会对应到你的 `config/cache.php` 设置档里的 `driver` 选项。第二个参数是个应该回传 `Illuminate\Cache\Repository` 实例的闭包。 `$app` 将会被传递到闭包，它是 `Illuminate\Foundation\Application` 和 IoC 容器的实例。
+传递到 `extend` 方法的第一个参数是驱动的名称。这将会对应到你的 `config/cache.php` 设置档里的 `driver` 选项。第二个参数是个应该返回 `Illuminate\Cache\Repository` 实例的闭包。 `$app` 将会被传递到闭包，它是 `Illuminate\Foundation\Application` 和 IoC 容器的实例。
 
 `Cache::extend` 的调用可以在新的 Laravel 应用程序默认附带的 `App\Providers\AppServiceProvider` 的 `boot` 方法中完成，或者你可以建立自己的服务提供者来放置这个扩展 - 记得不要忘记在 `config/app.php` 的提供者数组注册提供者。
 
@@ -85,7 +85,7 @@ Laravel 有几个 `Manager` 类别，用来管理创建基于驱动的组件。�
 
 - `open` 方法通常会被用在基于文件的 session 保存系统。因为 Laravel 附带一个 `file` session 驱动，几乎不需要在这个方法放任何东西。你可以让它留空。PHP 要求我们去实作这个方法，事实上明显是个差劲的接口设计 (我们将会晚点讨论它)。
 - `close` 方法，就像 `open` 方法，通常也可以忽略。对大部份的驱动来说，并不需要它。
-- `read` 方法应该回传与给定 `$sessionId` 关联的 session 数据的字串形态。当你的驱动取回或保存 session 数据时不需要做任何串行化或进行其他编码，因为 Laravel 将会为你进行串行化
+- `read` 方法应该返回与给定 `$sessionId` 关联的 session 数据的字串形态。当你的驱动取回或保存 session 数据时不需要做任何串行化或进行其他编码，因为 Laravel 将会为你进行串行化
 - `write` 方法应该写入给定 `$data` 字串与 `$sessionId` 的关联到一些永久存储系统，例如：MongoDB、 Dynamo、等等。
 - `destroy` 方法应该从永久存储移除与 `$sessionId` 关联的数据。
 - `gc` 方法应该销毁所有比给定 `$lifetime` UNIX 时间戳记还旧的 session 数据。对于会自己过期的系统如 Memcached 和 Redis，这个方法可以留空。
@@ -108,7 +108,7 @@ Laravel 有几个 `Manager` 类别，用来管理创建基于驱动的组件。�
 
 	Auth::extend('riak', function($app)
 	{
-		// 回传 Illuminate\Contracts\Auth\UserProvider 的实作
+		// 返回 Illuminate\Contracts\Auth\UserProvider 的实作
 	});
 
 `UserProvider` 实作只负责从永久存储系统抓取 `Illuminate\Contracts\Auth\Authenticatable` 实作，存储系统例如： MySQL 、 Riak ，等等。这两个接口让 Laravel 认证机制无论用户数据如何保存或用什么种类的类别来代表它都能继续运作。
@@ -125,9 +125,9 @@ Laravel 有几个 `Manager` 类别，用来管理创建基于驱动的组件。�
 
 	}
 
-`retrieveById` 函式通常接收一个代表用户的数字键，例如：MySQL 数据库的自动递增 ID。这方法应该取得符合 ID 的 `Authenticatable` 实作并回传。
+`retrieveById` 函式通常接收一个代表用户的数字键，例如：MySQL 数据库的自动递增 ID。这方法应该取得符合 ID 的 `Authenticatable` 实作并返回。
 
-`retrieveByToken` 函式用用户唯一的 `$identifier` 和保存在 `remember_token` 字段的「记住我」 `$token` 来取得用户。跟前面的方法一样，应该回传 `Authenticatable` 的实作。
+`retrieveByToken` 函式用用户唯一的 `$identifier` 和保存在 `remember_token` 字段的「记住我」 `$token` 来取得用户。跟前面的方法一样，应该返回 `Authenticatable` 的实作。
 
 `updateRememberToken` 方法用新的 `$token` 更新 `$user` 的 `remember_token` 字段。新 token 可以是在「记住我」成功地登录时，传入一个新的 token，或当用户注销时传入一个 null。
 
@@ -135,7 +135,7 @@ Laravel 有几个 `Manager` 类别，用来管理创建基于驱动的组件。�
 
 `validateCredentials` 方法应该借由比较给定的 `$user` 与 `$credentials` 来验证用户。举例来说，这个方法可以比较 `$user->getAuthPassword()` 字串跟 `Hash::make` 后的 `$credentials['password']`。
 
-现在我们已经看过 `UserProvider` 的每个方法，接着来看一下 `Authenticatable`。记住，提供者应该从 `retrieveById` 和 `retrieveByCredentials` 方法回传这个接口的实作：
+现在我们已经看过 `UserProvider` 的每个方法，接着来看一下 `Authenticatable`。记住，提供者应该从 `retrieveById` 和 `retrieveByCredentials` 方法返回这个接口的实作：
 
 	interface Authenticatable {
 
@@ -147,7 +147,7 @@ Laravel 有几个 `Manager` 类别，用来管理创建基于驱动的组件。�
 
 	}
 
-这个接口很简单。 The `getAuthIdentifier` 方法应该回传用户的「主键」。在 MySQL 后台，同样，这将会是个自动递增的主键。`getAuthPassword` 应该回传用户哈希过的密码。这个接口让认证系统可以与任何用户类别一起运作，无论你使用什么 ORM 或保存抽象层。默认，Laravel 包含一个实作这个接口的 `User` 类别在 `app` 文件夹里，所以你可以参考这个类别当作实作的例子。
+这个接口很简单。 The `getAuthIdentifier` 方法应该返回用户的「主键」。在 MySQL 后台，同样，这将会是个自动递增的主键。`getAuthPassword` 应该返回用户哈希过的密码。这个接口让认证系统可以与任何用户类别一起运作，无论你使用什么 ORM 或保存抽象层。默认，Laravel 包含一个实作这个接口的 `User` 类别在 `app` 文件夹里，所以你可以参考这个类别当作实作的例子。
 
 最后，当我们已经实作了 `UserProvider`，我们准备好用 `Auth` facade 来注册扩展：
 

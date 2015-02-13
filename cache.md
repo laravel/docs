@@ -32,7 +32,7 @@ Laravel 为各种不同的缓存系统提供一致的 API 。缓存设置档位�
 
 	Cache::add('key', 'value', $minutes);
 
-当项目确实被加入缓存时，使用 `add` 方法将会回传 `true` 否则会回传 `false` 。
+当项目确实被加入缓存时，使用 `add` 方法将会返回 `true` 否则会返回 `false` 。
 
 #### 确认项目是否存在
 
@@ -45,7 +45,7 @@ Laravel 为各种不同的缓存系统提供一致的 API 。缓存设置档位�
 
 	$value = Cache::get('key');
 
-#### 取得项目或是回传默认值
+#### 取得项目或是返回默认值
 
 	$value = Cache::get('key', 'default');
 

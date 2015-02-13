@@ -36,7 +36,7 @@ Laravel 框架在内部有使用 `flash` 作为 session 的键值，所以应该
 
 	$value = Session::get('key');
 
-#### 从 Session 取回项目，若无则回传默认值
+#### 从 Session 取回项目，若无则返回默认值
 
 	$value = Session::get('key', 'default');
 

@@ -173,7 +173,7 @@ _虽然说是「永远」，但真正的意思是五年。_
 		//
 	}
 
-`file` 方法回传的对象是 `Symfony\Component\HttpFoundation\File\UploadedFile` 的实例，`UploadedFile` 继承了 PHP 的 `SplFileInfo` 类别并且提供了很多和文件交互的方法。
+`file` 方法返回的对象是 `Symfony\Component\HttpFoundation\File\UploadedFile` 的实例，`UploadedFile` 继承了 PHP 的 `SplFileInfo` 类别并且提供了很多和文件交互的方法。
 
 #### 确认上传的文件是否有效
 

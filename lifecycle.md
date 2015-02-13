@@ -30,7 +30,7 @@ HTTP 核心扩展了 `Illuminate\Foundation\Http\Kernel` 此一类别，它定�
 
 HTTP 核心也定义了一份 HTTP [中间层](/docs/5.0/middleware)清单，所有的请求在被应用程序处理之前都必须经过它们。这些中间层负责处理 HTTP session 的读写，决定应用程序是否处于维护模式，查验跨站请求伪造（CSRF）标记，以及其他更多任务作。
 
-HTTP 核心 `handle` 方法的方法签名相当简单：它接收一个 `Request` 并回传一个 `Response`。把核心想像成一个大的黑盒子，用来代表你整个的应用程序。对它输入 HTTP 请求，它将回传 HTTP 回复。
+HTTP 核心 `handle` 方法的方法签名相当简单：它接收一个 `Request` 并返回一个 `Response`。把核心想像成一个大的黑盒子，用来代表你整个的应用程序。对它输入 HTTP 请求，它将返回 HTTP 回复。
 
 #### 服务提供者
 

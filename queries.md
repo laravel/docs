@@ -41,7 +41,7 @@
 		}
 	});
 
-借由在 `Closure` 中回传 `false` 来停止处理接下来的数据列：
+借由在 `Closure` 中返回 `false` 来停止处理接下来的数据列：
 
 	DB::table('users')->chunk(100, function($users)
 	{
@@ -64,7 +64,7 @@
 
 	$roles = DB::table('roles')->lists('title');
 
-这个方法将会回传数据表 role 的 title 字段值的数组。你也可以透过下面的方法，为回传的数组指定自订键值。
+这个方法将会返回数据表 role 的 title 字段值的数组。你也可以透过下面的方法，为返回的数组指定自订键值。
 
 	$roles = DB::table('roles')->lists('title', 'name');
 
@@ -245,7 +245,7 @@
 
 #### 添加自动递增 (Auto-Incrementing) ID 的数据至数据表
 
-如果数据表有自动递增的ID，可以使用 `insertGetId` 添加数据并回传该 ID：
+如果数据表有自动递增的ID，可以使用 `insertGetId` 添加数据并返回该 ID：
 
 	$id = DB::table('users')->insertGetId(
 		array('email' => 'john@example.com', 'votes' => 0)

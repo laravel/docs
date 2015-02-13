@@ -27,7 +27,7 @@
 
 如你所见，`view` 辅助方法的第一个参数会对应到 `resources/views` 文件夹内视图文件的名称；传递到 `view` 辅助方法的第二个参数是一个能够在视图内取用的数据数组。
 
-当然，视图文件也可以被存放在 `resources/views` 的子文件夹内。举例来说，如果你的视图文件保存在 `resources/views/admin/profile.php`，你可以用以下的代码来回传：
+当然，视图文件也可以被存放在 `resources/views` 的子文件夹内。举例来说，如果你的视图文件保存在 `resources/views/admin/profile.php`，你可以用以下的代码来返回：
 
 	return view('admin.profile', $data);
 
@@ -59,7 +59,7 @@
 
 通常你应该在服务提供者的 `boot` 方法内使用 `share` 方法。你可以选择加在 `AppServiceProvider` 或者是新建一个单独的服务提供者来容纳这些代码。
 
-> **备注：** 当 `view` 辅助方法没有带入任何参数调用时，它将会回传一个的 `Illuminate\Contracts\View\Factory` 公约 (contract) 的实作 (implementation)。
+> **备注：** 当 `view` 辅助方法没有带入任何参数调用时，它将会返回一个的 `Illuminate\Contracts\View\Factory` 公约 (contract) 的实作 (implementation)。
 
 #### 确认视图是否存在
 

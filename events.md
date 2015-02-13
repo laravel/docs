@@ -42,7 +42,7 @@ Laravel 里的 `EventServiceProvider` 提供了一个方便的地方注册所有
 
 	$response = Event::fire(new PodcastWasPurchased($podcast));
 
-`fire` 方法回传一个回应的数组，让你可以用来控制你的应用程序接下来要有什么反应。
+`fire` 方法返回一个回应的数组，让你可以用来控制你的应用程序接下来要有什么反应。
 
 你也可以使用 `event` 辅助方法来触发事件：
 
@@ -59,7 +59,7 @@ Laravel 里的 `EventServiceProvider` 提供了一个方便的地方注册所有
 
 #### 停止继续传递事件
 
-有时候你会希望停止继续传递事件到其他监听器。你可以借由从处理程序回传 `false` 来做到这件事：
+有时候你会希望停止继续传递事件到其他监听器。你可以借由从处理程序返回 `false` 来做到这件事：
 
 	Event::listen('App\Events\PodcastWasPurchased', function($event)
 	{

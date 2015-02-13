@@ -45,7 +45,7 @@ Facades 提供一个静态接口给在应用程序的 [IoC 容器](/docs/5.0/con
 
 	}
 
-Cache 类别继承基本的 `Facade` 类别并定义一个 `getFacadeAccessor()` 方法。记住，这个方法的工作是回传 IoC 绑定的名称。
+Cache 类别继承基本的 `Facade` 类别并定义一个 `getFacadeAccessor()` 方法。记住，这个方法的工作是返回 IoC 绑定的名称。
 
 当用户在 `Cache` 的 facade 上参考任何的静态方法，Laravel 会从 IoC 容器解析被绑定的 `cache` ，并对该对象执行被请求的方法 (在这个例子中， `get`)。
 

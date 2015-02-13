@@ -48,7 +48,7 @@ Laravel 让链接数据库和执行查找变得相当容易。数据库相关设
 
 	$results = DB::select('select * from users where id = ?', [1]);
 
-`select` 方法会回传一个 `array` 结果。
+`select` 方法会返回一个 `array` 结果。
 
 #### 执行 Insert 语法
 
@@ -62,7 +62,7 @@ Laravel 让链接数据库和执行查找变得相当容易。数据库相关设
 
 	DB::delete('delete from users');
 
-> **注意：** `update` 和 `delete` 语法会回传在操作中所影响的数据笔数。
+> **注意：** `update` 和 `delete` 语法会返回在操作中所影响的数据笔数。
 
 #### 执行一般语法
 
