@@ -11,7 +11,7 @@
 
 由于 HTTP 协定是无状态（Stateless）的，所以 session 提供一种保存用户数据的方法。Laravel 支持了多种 session 后端驱动，并透过清楚、统一的 API 提供使用。也内置支持像是 [Memcached](http://memcached.org)、[Redis](http://redis.io) 和数据库的后端驱动。
 
-session 的设置档配置在 `config/session.php` 中，请务必看一下 session 设置档中可用的选项设置及注解。Laravel 缺省使用 `file` 的 session 驱动，它在大多的应用中可以良好运作。
+session 的设置档配置在 `config/session.php` 中，请务必看一下 session 设置档中可用的选项设置及注解。Laravel 默认使用 `file` 的 session 驱动，它在大多的应用中可以良好运作。
 
 如果你想在 Laravel 中使用 `Redis` sessions，你需要先透过 Composer 安装 `predis/predis` 套件 (~1.0)。
 

@@ -10,7 +10,7 @@
 
 应用程序的日志功能设置在 `Illuminate\Foundation\Bootstrap\ConfigureLogging` 启动类别中。这个类别使用 `config/app.php` 设置档的 `log` 设置选项。
 
-日志工具缺省使用每天的日志文件；然而，你可以依照需求客制化这个行为。因为 Laravel 使用受欢迎的 [Monolog](https://github.com/Seldaek/monolog) 日志函式库，你可以利用很多 Monolog 提供的处理进程。
+日志工具默认使用每天的日志文件；然而，你可以依照需求客制化这个行为。因为 Laravel 使用受欢迎的 [Monolog](https://github.com/Seldaek/monolog) 日志函式库，你可以利用很多 Monolog 提供的处理进程。
 
 例如，如果你想要使用单一日志档，而不是每天一个日志档，你可以对 `config/app.php` 设置档做下面的变更：
 
@@ -20,7 +20,7 @@ Laravel 提供立即可用的 `single` 、 `daily` 和 `syslog` 日志模式。�
 
 ### 错误细节
 
-`config/app.php` 设置档的 `app.debug` 设置选项控制应用程序透过浏览器显示错误细节。设置选项缺省参照 `.env` 文件的 `APP_DEBUG` 环境变量。
+`config/app.php` 设置档的 `app.debug` 设置选项控制应用程序透过浏览器显示错误细节。设置选项默认参照 `.env` 文件的 `APP_DEBUG` 环境变量。
 
 进行本地开发时，你应该设置 `APP_DEBUG` 环境变量为 `true` 。 **在上线环境，这个值应该永远为 `false` 。**
 
@@ -29,7 +29,7 @@ Laravel 提供立即可用的 `single` 、 `daily` 和 `syslog` 日志模式。�
 
 所有的例外都由 `App\Exceptions\Handler` 类别处理。这个类别包含两个方法： `report` 和 `render` 。
 
-`report` 方法用来纪录例外或把例外传递到外部服务，例如： [BugSnag](https://bugsnag.com) 。缺省情况下， `report`  方法只基本实作简单地传递例外到父类别并于父类别纪录例外。然而，你可以依你所需自由地纪录例外。如果你需要使用不同的方法来回报不同类型的例外，你可以使用 PHP 的 `instanceof` 比较运算子：
+`report` 方法用来纪录例外或把例外传递到外部服务，例如： [BugSnag](https://bugsnag.com) 。默认情况下， `report`  方法只基本实作简单地传递例外到父类别并于父类别纪录例外。然而，你可以依你所需自由地纪录例外。如果你需要使用不同的方法来回报不同类型的例外，你可以使用 PHP 的 `instanceof` 比较运算子：
 
 	/**
 	 * 回报或纪录例外。
@@ -49,9 +49,9 @@ Laravel 提供立即可用的 `single` 、 `daily` 和 `syslog` 日志模式。�
 		return parent::report($e);
 	}
 
-`render` 方法负责把例外转换成应该被传递回浏览器的 HTTP 回应。缺省情况下，例外会被传递到基底类别并帮你产生回应。然而，你可以自由的检查例外类型或回传客制化的回应。
+`render` 方法负责把例外转换成应该被传递回浏览器的 HTTP 回应。默认情况下，例外会被传递到基底类别并帮你产生回应。然而，你可以自由的检查例外类型或回传客制化的回应。
 
-例外处理进程的 `dontReport` 属性是个数组，包含应该不要被纪录的例外类型。由 404 错误导致的例外缺省不会被写到日志档。你可以依照需求添加其他类型的例外到这个数组。
+例外处理进程的 `dontReport` 属性是个数组，包含应该不要被纪录的例外类型。由 404 错误导致的例外默认不会被写到日志档。你可以依照需求添加其他类型的例外到这个数组。
 
 <a name="http-exceptions"></a>
 ## HTTP 例外
@@ -73,7 +73,7 @@ Laravel 提供立即可用的 `single` 、 `daily` 和 `syslog` 日志模式。�
 <a name="logging"></a>
 ## 日志
 
-Laravel 日志工具在强大的 [Monolog](http://github.com/seldaek/monolog) 函式库上提供一层简单的功能。Laravel 缺省为应用程序建立每天的日志档在 `storage/logs` 目录。你可以像这样把信息写到日志：
+Laravel 日志工具在强大的 [Monolog](http://github.com/seldaek/monolog) 函式库上提供一层简单的功能。Laravel 默认为应用程序建立每天的日志档在 `storage/logs` 目录。你可以像这样把信息写到日志：
 
 	Log::info('This is some useful information.');
 

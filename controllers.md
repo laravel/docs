@@ -45,7 +45,7 @@
 
 #### 控制器和命名空间
 
-有一点非常重要，那就是我们毋需指明完整的控制器命名空间，在类别名称中 `App\Http\Controllers` 之后的部分即可用于表示「根」命名空间。 `RouteServiceProvider` 缺省会在包含根控制器命名空间的路由群组中，加载 `routes.php` 此一文件。
+有一点非常重要，那就是我们毋需指明完整的控制器命名空间，在类别名称中 `App\Http\Controllers` 之后的部分即可用于表示「根」命名空间。 `RouteServiceProvider` 默认会在包含根控制器命名空间的路由群组中，加载 `routes.php` 此一文件。
 
 若你要在 `App\Http\Controllers` 此目录深层使用 PHP 命名空间以嵌套化或组织你的控制器，只要使用相对于 `App\Http\Controllers` 根命名空间的特定类别名称即可。因此，若你的控制器类别全名为 `App\Http\Controllers\Photos\AdminController`，你可以像这样注册一个路由：
 
@@ -170,7 +170,7 @@ DELETE    | /resource/{resource}        | 消减         | resource.destroy
 	Route::resource('photo', 'PhotoController',
 					['except' => ['create', 'store', 'update', 'destroy']]);
 
-所有的资源控制器行为缺省都有个路由名称。然而你可在选项中传递一个 `names` 数组来重载这些名称：
+所有的资源控制器行为默认都有个路由名称。然而你可在选项中传递一个 `names` 数组来重载这些名称：
 
 	Route::resource('photo', 'PhotoController',
 					['names' => ['create' => 'photo.build']]);
@@ -201,7 +201,7 @@ DELETE    | /resource/{resource}        | 消减         | resource.destroy
 
 #### 在资源控制器中加入其他的路由
 
-除了缺省的资源路由外，若你还需要在资源控制器中加入其他路由，应该在调用 `Route::resource` 之前先定义它们：
+除了默认的资源路由外，若你还需要在资源控制器中加入其他路由，应该在调用 `Route::resource` 之前先定义它们：
 
 	Route::get('photos/popular');
 

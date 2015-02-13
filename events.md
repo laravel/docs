@@ -77,7 +77,7 @@ Laravel 里的 `EventServiceProvider` 提供了一个方便的地方注册所有
 
 这将会产生一个实作了 `Illuminate\Contracts\Queue\ShouldBeQueued` 接口的处理程序类别。这样就可以了！现在当这个处理程序因为事件发生被调用，它将会被事件配送器自动地排进队列。
 
-当处理程序被队列执行，如果没有例外被丢出，在执行后该队列中的任务将会自动被删除。你也可以手动取用队列中的任务的 `delete` 和 `release` 方法。队列处理程序缺省会引入的 `Illuminate\Queue\InteractsWithQueue` trait，让你可以取用这些方法：
+当处理程序被队列执行，如果没有例外被丢出，在执行后该队列中的任务将会自动被删除。你也可以手动取用队列中的任务的 `delete` 和 `release` 方法。队列处理程序默认会引入的 `Illuminate\Queue\InteractsWithQueue` trait，让你可以取用这些方法：
 
 	public function handle(PodcastWasPurchased $event)
 	{

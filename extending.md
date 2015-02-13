@@ -27,7 +27,7 @@ Laravel 有几个 `Manager` 类别，用来管理创建基于驱动的组件。�
 
 传递到 `extend` 方法的第一个参数是驱动的名称。这将会对应到你的 `config/cache.php` 设置档里的 `driver` 选项。第二个参数是个应该回传 `Illuminate\Cache\Repository` 实例的闭包。 `$app` 将会被传递到闭包，它是 `Illuminate\Foundation\Application` 和 IoC 容器的实例。
 
-`Cache::extend` 的调用可以在新的 Laravel 应用程序缺省附带的 `App\Providers\AppServiceProvider` 的 `boot` 方法中完成，或者你可以建立自己的服务提供者来放置这个扩展 - 记得不要忘记在 `config/app.php` 的提供者数组注册提供者。
+`Cache::extend` 的调用可以在新的 Laravel 应用程序默认附带的 `App\Providers\AppServiceProvider` 的 `boot` 方法中完成，或者你可以建立自己的服务提供者来放置这个扩展 - 记得不要忘记在 `config/app.php` 的提供者数组注册提供者。
 
 要建立客制化缓存驱动，首先需要实作 `Illuminate\Contracts\Cache\Store` contract 。所以，我们的 MongoDB 缓存实作将会看起来像这样：
 
@@ -147,7 +147,7 @@ Laravel 有几个 `Manager` 类别，用来管理创建基于驱动的组件。�
 
 	}
 
-这个接口很简单。 The `getAuthIdentifier` 方法应该回传用户的「主键」。在 MySQL 后台，同样，这将会是个自动递增的主键。`getAuthPassword` 应该回传用户哈希过的密码。这个接口让认证系统可以与任何用户类别一起运作，无论你使用什么 ORM 或保存抽象层。缺省，Laravel 包含一个实作这个接口的 `User` 类别在 `app` 文件夹里，所以你可以参考这个类别当作实作的例子。
+这个接口很简单。 The `getAuthIdentifier` 方法应该回传用户的「主键」。在 MySQL 后台，同样，这将会是个自动递增的主键。`getAuthPassword` 应该回传用户哈希过的密码。这个接口让认证系统可以与任何用户类别一起运作，无论你使用什么 ORM 或保存抽象层。默认，Laravel 包含一个实作这个接口的 `User` 类别在 `app` 文件夹里，所以你可以参考这个类别当作实作的例子。
 
 最后，当我们已经实作了 `UserProvider`，我们准备好用 `Auth` facade 来注册扩展：
 
@@ -181,6 +181,6 @@ Laravel 有几个 `Manager` 类别，用来管理创建基于驱动的组件。�
 
 	}
 
-要注意的是这个类别扩展 `HashServiceProvider`，不是缺省的 `ServiceProvider` 基底类别。当你扩展了服务提供者，在 `config/app.php` 设置档把 `HashServiceProvider` 换成你扩展的提供者名称。
+要注意的是这个类别扩展 `HashServiceProvider`，不是默认的 `ServiceProvider` 基底类别。当你扩展了服务提供者，在 `config/app.php` 设置档把 `HashServiceProvider` 换成你扩展的提供者名称。
 
 这是被绑定在容器的所有核心类别的一般扩展方法。实际上，每个以这种方式绑定在容器的核心类别都可以被覆写。再次强调，看过每个框架引入的服务提供者将会使你熟悉：每个类别被绑在容器的哪里、它们是用什么键值绑定。这是个好方法可以了解更多关于 Laravel 如何结合它们。

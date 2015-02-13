@@ -10,7 +10,7 @@
 <a name="configuration"></a>
 ## 设置
 
-Laravel 让链接数据库和执行查找变得相当容易。数据库相关设置文件都在 `config/database.php`。 在这个文件你可以定义所有的数据库连接，以及指定缺省的数据库连接。缺省文件中已经有所有支持的数据库系统范例了。
+Laravel 让链接数据库和执行查找变得相当容易。数据库相关设置文件都在 `config/database.php`。 在这个文件你可以定义所有的数据库连接，以及指定默认的数据库连接。默认文件中已经有所有支持的数据库系统范例了。
 
 目前 Laravel 支持四种数据库系统： MySQL、Postgres、SQLite、以及 SQL Server。
 
@@ -125,7 +125,7 @@ Laravel 让链接数据库和执行查找变得相当容易。数据库相关设
 <a name="query-logging"></a>
 ## 查找日志记录
 
-缺省情况下，Laravel 会在内存里访问这次请求中所有的查找语句。然而，在有些例子下，比如一次添加 大量的数据，可能会导致应用程序耗损过多内存。 如果要禁用日志，可以使用 `disableQueryLog` 方法：
+默认情况下，Laravel 会在内存里访问这次请求中所有的查找语句。然而，在有些例子下，比如一次添加 大量的数据，可能会导致应用程序耗损过多内存。 如果要禁用日志，可以使用 `disableQueryLog` 方法：
 
 	DB::connection()->disableQueryLog();
 

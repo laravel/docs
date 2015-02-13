@@ -140,11 +140,11 @@ Vagrant 会将虚拟机开机，并且自动设置你的共享目录和 Nginx �
 
 ### 链接数据库
 
-在 `Homestead` 封装包中，MySQL 与 Postgres 两套数据库都已预装其中。为了更简便，Laravel 的 `local` 数据库设置已经缺省将其设置完成。
+在 `Homestead` 封装包中，MySQL 与 Postgres 两套数据库都已预装其中。为了更简便，Laravel 的 `local` 数据库设置已经默认将其设置完成。
 
 如果想要从本机上透过 Navicat 或者是 Sequel Pro 连接 MySQL 或者 Postgres 数据库，你可以连接 `127.0.0.1` 的端口 33060 (MySQL) 或 54320 (Postgres)。而帐号密码分别是 `homestead` / `secret`。
 
-> **附注：** 从本机端你应该只能使用这些非标准的连接端口来连接数据库。因为当 Laravel 运行在虚拟机时，在 Laravel 的数据库设置档中依然是设置使用缺省的 3306 及 5432 连接端口。
+> **附注：** 从本机端你应该只能使用这些非标准的连接端口来连接数据库。因为当 Laravel 运行在虚拟机时，在 Laravel 的数据库设置档中依然是设置使用默认的 3306 及 5432 连接端口。
 
 ### 增加更多的站台
 

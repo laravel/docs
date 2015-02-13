@@ -24,7 +24,7 @@ Command bus 提供一个简便的方法来封装任务，使你的程序更加�
 
 	php artisan make:command PurchasePodcast
 
-新产生的类别会被放在 `app/Commands` 目录中，命令缺省包含了两个方法：建构子和 `handle` 。当然，`handle` 方法执行命令时，你可以使用建构子传入相关的对象到这个命令中。例如：
+新产生的类别会被放在 `app/Commands` 目录中，命令默认包含了两个方法：建构子和 `handle` 。当然，`handle` 方法执行命令时，你可以使用建构子传入相关的对象到这个命令中。例如：
 
 	class PurchasePodcast extends Command implements SelfHandling {
 

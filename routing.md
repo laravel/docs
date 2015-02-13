@@ -220,7 +220,7 @@ HTML 表单没有支持 `PUT` 或 `DELETE` 动作。所以当定义 `PUT` 或 `D
 		//
 	});
 
-> **注意：** 在缺省情况下，`RouteServiceProvider` 包含内置您命名空间群组的 `routes.php` 文件，让您不须使用完整的命名空间就可以注册控制器路由。
+> **注意：** 在默认情况下，`RouteServiceProvider` 包含内置您命名空间群组的 `routes.php` 文件，让您不须使用完整的命名空间就可以注册控制器路由。
 
 <a name="sub-domain-routing"></a>
 ### 子网域路由

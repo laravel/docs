@@ -101,7 +101,7 @@ Laravel 通过 [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vanc
 <a name="maintenance-mode"></a>
 ## 维护模式
 
-当你的应用程序处于维护模式时，所有的路由都会指向一个自定的视图。当你要更新或进行维护作业时，「关闭」整个网站是很简单的。维护模式会检查包含在应用程序的缺省中间层堆叠。如果应用程序处于维护模式，`HttpException` 会抛出 503 的状态码。
+当你的应用程序处于维护模式时，所有的路由都会指向一个自定的视图。当你要更新或进行维护作业时，「关闭」整个网站是很简单的。维护模式会检查包含在应用程序的默认中间层堆叠。如果应用程序处于维护模式，`HttpException` 会抛出 503 的状态码。
 
 启用维护模式，只需要执行 Artisan 指令 `down`：
 
@@ -113,7 +113,7 @@ Laravel 通过 [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vanc
 
 ### 维护模式的回应模板
 
-维护模式回应的缺省模板放在 `resources/views/errors/503.blade.php`。
+维护模式回应的默认模板放在 `resources/views/errors/503.blade.php`。
 
 ### 维护模式与队列
 

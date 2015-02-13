@@ -57,7 +57,7 @@ HTTP 请求在实际碰触到应用程序之前，最好是可以层层通过许
 
 ### 指派中间层给路由
 
-如果你要指派中间层给特定的路由，你得先将中间层在 `app/Http/Kernel.php` 设置一个键值，缺省情况下，这个文件内的 `$routeMiddleware` 属性已包含了 Laravel 目前设置的中间层，你只需要在清单列表中加上一组自订的键值即可。
+如果你要指派中间层给特定的路由，你得先将中间层在 `app/Http/Kernel.php` 设置一个键值，默认情况下，这个文件内的 `$routeMiddleware` 属性已包含了 Laravel 目前设置的中间层，你只需要在清单列表中加上一组自订的键值即可。
 中间层一旦在 HTTP kernel 文件内被定义，你即可在路由选项内使用 `middleware` 键值来指派：
 
 	Route::get('admin/profile', ['middleware' => 'auth', function()

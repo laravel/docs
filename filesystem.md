@@ -12,7 +12,7 @@ Laravel 有很棒的文件系统抽象层，是基于 Frank de Jonge 的 [Flysys
 <a name="configuration"></a>
 ## 设置档
 
-文件系统的设置档放在 `config/filesystems.php` 。在这个文件内你可以设置所有的「硬盘」。每个硬盘代表一种保存方式和地点。缺省的设置档内已经包含了所有保存方式的范例。所以只要修改保存设置和认证即可！
+文件系统的设置档放在 `config/filesystems.php` 。在这个文件内你可以设置所有的「硬盘」。每个硬盘代表一种保存方式和地点。默认的设置档内已经包含了所有保存方式的范例。所以只要修改保存设置和认证即可！
 
 在使用 S3 或 Rackspace 之前，你必须先用 Composer 安装相对应的套件：
 
@@ -21,7 +21,7 @@ Laravel 有很棒的文件系统抽象层，是基于 Frank de Jonge 的 [Flysys
 
 当然，你可以加入任意数量的硬盘设置档，甚至设置多个硬盘都使用同一种保存方式。
 
-使用本地端空间时，要注意所有的操作路径都是相对于设置档里 `local` 的 `root` ，缺省的路径是 `storage/app` 。因此下列的操作将会保存一个文件在 `storage/app/file.txt` ：
+使用本地端空间时，要注意所有的操作路径都是相对于设置档里 `local` 的 `root` ，默认的路径是 `storage/app` 。因此下列的操作将会保存一个文件在 `storage/app/file.txt` ：
 
 	Storage::disk('local')->put('file.txt', 'Contents');
 
@@ -40,7 +40,7 @@ Laravel 有很棒的文件系统抽象层，是基于 Frank de Jonge 的 [Flysys
 
 	$exists = Storage::disk('s3')->exists('file.jpg');
 
-#### 使用缺省硬盘调用方法
+#### 使用默认硬盘调用方法
 
 	if (Storage::exists('file.jpg'))
 	{

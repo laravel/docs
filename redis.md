@@ -27,7 +27,7 @@
 
 	),
 
-缺省的服务器设置对于开发应该是足够的。然而，你可以根据使用环境自由修改数组数据。只要给每个 Redis 一个名称，并且设置服务器的 host 和 port。
+默认的服务器设置对于开发应该是足够的。然而，你可以根据使用环境自由修改数组数据。只要给每个 Redis 一个名称，并且设置服务器的 host 和 port。
 
 `cluster` 选项会让 Laravel 的 Redis 客户端在所有 Redis 节点间执行客户端分片（ client-side sharding ），让你建立节点池，并因此拥有大量的 RAM 可用。然而，客户端分片的节点不能执行容错转移；因此，这主要适合用可以从另一台主要数据保存库取得的缓存数据。
 
@@ -40,7 +40,7 @@
 
 	$redis = Redis::connection();
 
-你会得到一个使用 Redis 缺省服务器的实例。如果你没有使用服务器集群，你可以在 `connection` 方法传入定义在 Redis 设置档的服务器名称，以连到特定服务器：
+你会得到一个使用 Redis 默认服务器的实例。如果你没有使用服务器集群，你可以在 `connection` 方法传入定义在 Redis 设置档的服务器名称，以连到特定服务器：
 
 	$redis = Redis::connection('other');
 
@@ -56,7 +56,7 @@
 
 	$values = $redis->command('lrange', array(5, 10));
 
-若你只想对缺省服务器下命令，可以使用 `Redis` 类别的静态魔术方法：
+若你只想对默认服务器下命令，可以使用 `Redis` 类别的静态魔术方法：
 
 	Redis::set('name', 'Taylor');
 

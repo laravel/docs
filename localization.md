@@ -34,15 +34,15 @@ Laravel 的 `Lang` facade 提供方便的方法来取得多种语言的字串，
 		'welcome' => 'Welcome to our application'
 	);
 
-#### 在执行时变换缺省语言
+#### 在执行时变换默认语言
 
-应用进程的缺省语言被保存在 `config/app.php` 设置档。你可以在任何时候用 `App::setLocale` 方法变换现行语言：
+应用进程的默认语言被保存在 `config/app.php` 设置档。你可以在任何时候用 `App::setLocale` 方法变换现行语言：
 
 	App::setLocale('es');
 
 #### 设置备用语言
 
-你也可以设置「备用语言」，它将会在当现行语言没有给定的语句时被使用。就像缺省语言，备用语言也可以在 `config/app.php` 设置档设置：
+你也可以设置「备用语言」，它将会在当现行语言没有给定的语句时被使用。就像默认语言，备用语言也可以在 `config/app.php` 设置档设置：
 
 	'fallback_locale' => 'en',
 
