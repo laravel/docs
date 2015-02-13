@@ -1,28 +1,28 @@
-# Query Builder
+# 查找产生器
 
-- [Introduction](#introduction)
+- [介绍](#introduction)
 - [Selects](#selects)
 - [Joins](#joins)
-- [Advanced Wheres](#advanced-wheres)
-- [Aggregates](#aggregates)
+- [高端 Wheres](#advanced-wheres)
+- [聚合](#aggregates)
 - [Raw Expressions](#raw-expressions)
-- [Inserts](#inserts)
-- [Updates](#updates)
-- [Deletes](#deletes)
+- [添加](#inserts)
+- [更新](#updates)
+- [删除](#deletes)
 - [Unions](#unions)
-- [Pessimistic Locking](#pessimistic-locking)
+- [悲观锁定](#pessimistic-locking)
 
 <a name="introduction"></a>
-## Introduction
+## 介绍
 
-The database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application, and works on all supported database systems.
+数据库查找产生器 (query builder) 提供方便、流畅的接口，用来建立及执行数据库查找语法。在你的应用程序里面，它可以被使用在大部分的数据库操作，而且它在所有支持的数据库系统上都可以执行。
 
-> **Note:** The Laravel query builder uses PDO parameter binding throughout to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
+> **注意:** Laravel 查找产生器使用 PDO 参数绑定，以保护应用程序免于数据隐码攻击 (SQL injection)，因此传入的参数不需额外跳脱特殊字符。
 
 <a name="selects"></a>
 ## Selects
 
-#### Retrieving All Rows From A Table
+#### 从数据表中取得所有的数据列
 
 	$users = DB::table('users')->get();
 
@@ -31,7 +31,7 @@ The database query builder provides a convenient, fluent interface to creating a
 		var_dump($user->name);
 	}
 
-#### Chunking Results From A Table
+#### 从数据表中分块查找数据列
 
 	DB::table('users')->chunk(100, function($users)
 	{
@@ -41,7 +41,7 @@ The database query builder provides a convenient, fluent interface to creating a
 		}
 	});
 
-You may stop further chunks from being processed by returning `false` from the `Closure`:
+借由在 `Closure` 中回传 `false` 来停止处理接下来的数据列：
 
 	DB::table('users')->chunk(100, function($users)
 	{
@@ -50,25 +50,25 @@ You may stop further chunks from being processed by returning `false` from the `
 		return false;
 	});
 
-#### Retrieving A Single Row From A Table
+#### 从数据表中取得单一数据列
 
 	$user = DB::table('users')->where('name', 'John')->first();
 
 	var_dump($user->name);
 
-#### Retrieving A Single Column From A Row
+#### 从数据表中取得单一数据列的单一字段
 
 	$name = DB::table('users')->where('name', 'John')->pluck('name');
 
-#### Retrieving A List Of Column Values
+#### 取得单一字段值的列表
 
 	$roles = DB::table('roles')->lists('title');
 
-This method will return an array of role titles. You may also specify a custom key column for the returned array:
+这个方法将会回传数据表 role 的 title 字段值的数组。你也可以透过下面的方法，为回传的数组指定自订键值。
 
 	$roles = DB::table('roles')->lists('title', 'name');
 
-#### Specifying A Select Clause
+#### 指定查找子句 (Select Clause)
 
 	$users = DB::table('users')->select('name', 'email')->get();
 
@@ -76,34 +76,34 @@ This method will return an array of role titles. You may also specify a custom k
 
 	$users = DB::table('users')->select('name as user_name')->get();
 
-#### Adding A Select Clause To An Existing Query
+#### 增加查找子句到既存的查找中
 
 	$query = DB::table('users')->select('name');
 
 	$users = $query->addSelect('age')->get();
 
-#### Using Where Operators
+#### 使用 where 及运算子
 
 	$users = DB::table('users')->where('votes', '>', 100)->get();
 
-#### Or Statements
+#### 「or」语法
 
 	$users = DB::table('users')
 	                    ->where('votes', '>', 100)
 	                    ->orWhere('name', 'John')
 	                    ->get();
 
-#### Using Where Between
+#### 使用 Where Between
 
 	$users = DB::table('users')
 	                    ->whereBetween('votes', array(1, 100))->get();
 
-#### Using Where Not Between
+#### 使用 Where Not Between
 
 	$users = DB::table('users')
 	                    ->whereNotBetween('votes', array(1, 100))->get();
 
-#### Using Where In With An Array
+#### 使用 Where In 与数组
 
 	$users = DB::table('users')
 	                    ->whereIn('id', array(1, 2, 3))->get();
@@ -111,12 +111,12 @@ This method will return an array of role titles. You may also specify a custom k
 	$users = DB::table('users')
 	                    ->whereNotIn('id', array(1, 2, 3))->get();
 
-#### Using Where Null To Find Records With Unset Values
+#### 使用 Where Null 找有未设置的值的数据
 
 	$users = DB::table('users')
 	                    ->whereNull('updated_at')->get();
 
-#### Order By, Group By, And Having
+#### 排序(Order By)、分群(Group By) 及 Having
 
 	$users = DB::table('users')
 	                    ->orderBy('name', 'desc')
@@ -124,16 +124,16 @@ This method will return an array of role titles. You may also specify a custom k
 	                    ->having('count', '>', 100)
 	                    ->get();
 
-#### Offset & Limit
+#### 偏移(Offset) 及 限制(Limit)
 
 	$users = DB::table('users')->skip(10)->take(5)->get();
 
 <a name="joins"></a>
 ## Joins
 
-The query builder may also be used to write join statements. Take a look at the following examples:
+查找产生器也可以使用 join 语法，看看下面的范例：
 
-#### Basic Join Statement
+#### 基本的 Join 语法
 
 	DB::table('users')
 	            ->join('contacts', 'users.id', '=', 'contacts.user_id')
@@ -141,13 +141,13 @@ The query builder may also be used to write join statements. Take a look at the 
 	            ->select('users.id', 'contacts.phone', 'orders.price')
 	            ->get();
 
-#### Left Join Statement
+#### Left Join 语法
 
 	DB::table('users')
 		    ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
 		    ->get();
 
-You may also specify more advanced join clauses:
+你也可以指定更高端的 join 子句：
 
 	DB::table('users')
 	        ->join('contacts', function($join)
@@ -156,7 +156,7 @@ You may also specify more advanced join clauses:
 	        })
 	        ->get();
 
-If you would like to use a "where" style clause on your joins, you may use the `where` and `orWhere` methods on a join. Instead of comparing two columns, these methods will compare the column against a value:
+如果你想在你的 join 中使用 where 型式的子句，你可以在 join 子句里使用 `where` 或 `orWhere` 方法。下面的方法将会比较 contacts 数据表中的 user_id 的数值，而不是比较两个字段。
 
 	DB::table('users')
 	        ->join('contacts', function($join)
@@ -167,11 +167,11 @@ If you would like to use a "where" style clause on your joins, you may use the `
 	        ->get();
 
 <a name="advanced-wheres"></a>
-## Advanced Wheres
+## 高端 Wheres
 
-#### Parameter Grouping
+#### 群组化参数
 
-Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well:
+有些时候你需要更高端的 where 子句，像是「where exists」或嵌套的群组化参数。Laravel 的查找产生器也可以处理这样的情况：
 
 	DB::table('users')
 	            ->where('name', '=', 'John')
@@ -182,11 +182,11 @@ Sometimes you may need to create more advanced where clauses such as "where exis
 	            })
 	            ->get();
 
-The query above will produce the following SQL:
+上面的查找语法会产生下方的 SQL：
 
 	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
-#### Exists Statements
+#### Exists 语法
 
 	DB::table('users')
 	            ->whereExists(function($query)
@@ -197,7 +197,7 @@ The query above will produce the following SQL:
 	            })
 	            ->get();
 
-The query above will produce the following SQL:
+上面的查找语法会产生下方的 SQL：
 
 	select * from users
 	where exists (
@@ -205,11 +205,11 @@ The query above will produce the following SQL:
 	)
 
 <a name="aggregates"></a>
-## Aggregates
+## 聚合
 
-The query builder also provides a variety of aggregate methods, such as `count`, `max`, `min`, `avg`, and `sum`.
+查找产生器也提供各式各样的聚合方法，像是 `count`、`max`、`min`、`avg` 及 `sum`。
 
-#### Using Aggregate Methods
+#### 使用聚合方法
 
 	$users = DB::table('users')->count();
 
@@ -224,9 +224,9 @@ The query builder also provides a variety of aggregate methods, such as `count`,
 <a name="raw-expressions"></a>
 ## Raw Expressions
 
-Sometimes you may need to use a raw expression in a query. These expressions will be injected into the query as strings, so be careful not to create any SQL injection points! To create a raw expression, you may use the `DB::raw` method:
+有些时候你需要使用 raw expression 在查找语句里，这样的表达式会成为字串插入至查找，因此要小心勿建立任何 SQL 隐码攻击点。要建立 raw expression，你可以使用 `DB::raw` 方法：
 
-#### Using A Raw Expression
+#### 使用 Raw Expression
 
 	$users = DB::table('users')
 	                     ->select(DB::raw('count(*) as user_count, status'))
@@ -235,25 +235,25 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 	                     ->get();
 
 <a name="inserts"></a>
-## Inserts
+## 添加
 
-#### Inserting Records Into A Table
+#### 添加一笔数据进数据表
 
 	DB::table('users')->insert(
 		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
-#### Inserting Records Into A Table With An Auto-Incrementing ID
+#### 添加自动递增 (Auto-Incrementing) ID 的数据至数据表
 
-If the table has an auto-incrementing id, use `insertGetId` to insert a record and retrieve the id:
+如果数据表有自动递增的ID，可以使用 `insertGetId` 添加数据并回传该 ID：
 
 	$id = DB::table('users')->insertGetId(
 		array('email' => 'john@example.com', 'votes' => 0)
 	);
 
-> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
+> **注意:** 当使用 PostgreSQL 时，insertGetId 方法会预期自动增加的字段是以「id」为命名。
 
-#### Inserting Multiple Records Into A Table
+#### 添加多笔数据进数据表
 
 	DB::table('users')->insert(array(
 		array('email' => 'taylor@example.com', 'votes' => 0),
@@ -261,15 +261,15 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 	));
 
 <a name="updates"></a>
-## Updates
+## 更新
 
-#### Updating Records In A Table
+#### 更新数据表中的数据
 
 	DB::table('users')
 	            ->where('id', 1)
 	            ->update(array('votes' => 1));
 
-#### Incrementing or decrementing a value of a column
+#### 自增或自减一个字段的值
 
 	DB::table('users')->increment('votes');
 
@@ -279,45 +279,45 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 
 	DB::table('users')->decrement('votes', 5);
 
-You may also specify additional columns to update:
+也能够同时指定其他要更新的字段：
 
 	DB::table('users')->increment('votes', 1, array('name' => 'John'));
 
 <a name="deletes"></a>
-## Deletes
+## 删除
 
-#### Deleting Records In A Table
+#### 删除数据表中的数据
 
 	DB::table('users')->where('votes', '<', 100)->delete();
 
-#### Deleting All Records From A Table
+#### 删除数据表中的所有数据
 
 	DB::table('users')->delete();
 
-#### Truncating A Table
+#### 清空数据表
 
 	DB::table('users')->truncate();
 
 <a name="unions"></a>
 ## Unions
 
-The query builder also provides a quick way to "union" two queries together:
+查找产生器也提供一个快速的方法去「合并 (union)」两个查找的结果：
 
 	$first = DB::table('users')->whereNull('first_name');
 
 	$users = DB::table('users')->whereNull('last_name')->union($first)->get();
 
-The `unionAll` method is also available, and has the same method signature as `union`.
+`unionAll` 方法也可以使用，它与 `union` 方法的使用方式一样。
 
 <a name="pessimistic-locking"></a>
-## Pessimistic Locking
+## 悲观锁定 (Pessimistic Locking)
 
-The query builder includes a few functions to help you do "pessimistic locking" on your SELECT statements.
+查找产生器提供了少数函式协助你在 SELECT 语句中做到「悲观锁定」。
 
-To run the SELECT statement with a "shared lock", you may use the `sharedLock` method on a query:
+想要在 SELECT 语句中加上「Shard lock」，只要在查找语句中使用 `sharedLock` 函式：
 
 	DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 
-To "lock for update" on a SELECT statement, you may use the `lockForUpdate` method on a query:
+要在 select 语法中使用「锁住更新(lock for update)」时，你可以使用 `lockForUpdate` 方法：
 
 	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
