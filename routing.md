@@ -71,9 +71,9 @@ Laravel 会自动在每一位用户的 session 中放置随机的 `token` ，这
 
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-您不需要手动验证在 POST、PUT、DELETE 请求的 CSRF token。 `VerifyCsrfToken` [HTTP  中介层](/docs/5.0/middleware)将保存在 session 中的请求输入的 token 配对来验证 token 。
+您不需要手动验证在 POST、PUT、DELETE 请求的 CSRF token。 `VerifyCsrfToken` [HTTP  中间层](/docs/5.0/middleware)将保存在 session 中的请求输入的 token 配对来验证 token 。
 
-除了寻找 CSRF token 作为「POST」参数，中介层也检查 `X-XSRF-TOKEN` 请求标头，这在多数 Javascript framework  常被拿来使用。
+除了寻找 CSRF token 作为「POST」参数，中间层也检查 `X-XSRF-TOKEN` 请求标头，这在多数 Javascript framework  常被拿来使用。
 
 <a name="method-spoofing"></a>
 ## 方法欺骗

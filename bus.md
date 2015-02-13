@@ -122,13 +122,13 @@ Command bus 不仅仅作为当下请求的同步作业，也可以作为 Laravel
 <a name="command-pipeline"></a>
 ## 命令管线
 
-在命令被派发到处理器之前，你也可以将它借由"命令管线"传递到其他类别去。命令管线操作上像是 HTTP 中介层，除了是专门来给命令用的，例如，一个命令管线能够在数据库交易期间包装全部的命令操作，或者仅作为执行纪录。
+在命令被派发到处理器之前，你也可以将它借由"命令管线"传递到其他类别去。命令管线操作上像是 HTTP 中间层，除了是专门来给命令用的，例如，一个命令管线能够在数据库交易期间包装全部的命令操作，或者仅作为执行纪录。
 
 要将管线添加到 bus，只要从`App\Providers\BusServiceProvider::boot` 方法调用调度员的`pipeThrough` 方法：
 
 	$dispatcher->pipeThrough(['UseDatabaseTransactions', 'LogCommand']);
 
-一个命令管线被定义在 `handle` 方法，就像是个中介层：
+一个命令管线被定义在 `handle` 方法，就像是个中间层：
 
 	class UseDatabaseTransactions {
 
