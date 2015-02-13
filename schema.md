@@ -1,116 +1,116 @@
-# Schema Builder
+# 结构生成器
 
-- [Introduction](#introduction)
-- [Creating & Dropping Tables](#creating-and-dropping-tables)
-- [Adding Columns](#adding-columns)
-- [Changing Columns](#changing-columns)
-- [Renaming Columns](#renaming-columns)
-- [Dropping Columns](#dropping-columns)
-- [Checking Existence](#checking-existence)
-- [Adding Indexes](#adding-indexes)
-- [Foreign Keys](#foreign-keys)
-- [Dropping Indexes](#dropping-indexes)
-- [Dropping Timestamps & Soft Deletes](#dropping-timestamps)
-- [Storage Engines](#storage-engines)
+- [介绍](#introduction)
+- [建立与删除数据表](#creating-and-dropping-tables)
+- [加入字段](#adding-columns)
+- [修改字段](#changing-columns)
+- [修改字段名称](#renaming-columns)
+- [移除字段](#dropping-columns)
+- [检查是否存在](#checking-existence)
+- [加入索引](#adding-indexes)
+- [外键](#foreign-keys)
+- [移除索引](#dropping-indexes)
+- [移除时间戳记和软删除](#dropping-timestamps)
+- [保存引擎](#storage-engines)
 
 <a name="introduction"></a>
-## Introduction
+## 介绍
 
-The Laravel `Schema` class provides a database agnostic way of manipulating tables. It works well with all of the databases supported by Laravel, and has a unified API across all of these systems.
+Laravel 的结构生成器 (`Schema`) 提供一个与数据库无关的数据表产生方法，它可以很好的处理 Laravel 支持的各种数据库类型，并且在不同系统间提供一致性的 API 操作。
 
 <a name="creating-and-dropping-tables"></a>
-## Creating & Dropping Tables
+## 建立与删除数据表
 
-To create a new database table, the `Schema::create` method is used:
+要建立一个新的数据表，可使用 `Schema::create` 方法：
 
 	Schema::create('users', function($table)
 	{
 		$table->increments('id');
 	});
 
-The first argument passed to the `create` method is the name of the table, and the second is a `Closure` which will receive a `Blueprint` object which may be used to define the new table.
+传入 `create` 方法的第一个参数是数据表名称，第二个参数是 `Closure` 并接收 `Blueprint` 对象被用来定义新的数据表。
 
-To rename an existing database table, the `rename` method may be used:
+要修改数据表名称，可使用 `rename` 方法：
 
 	Schema::rename($from, $to);
 
-To specify which connection the schema operation should take place on, use the `Schema::connection` method:
+要指定特定连接来操作，可使用 `Schema::connection` 方法：
 
 	Schema::connection('foo')->create('users', function($table)
 	{
 		$table->increments('id');
 	});
 
-To drop a table, you may use the `Schema::drop` method:
+要移除数据表，可使用 `Schema::drop` 方法：
 
 	Schema::drop('users');
 
 	Schema::dropIfExists('users');
 
 <a name="adding-columns"></a>
-## Adding Columns
+## 加入字段
 
-To update an existing table, we will use the `Schema::table` method:
+更新现有的数据表，可使用 `Schema::table` 方法：
 
 	Schema::table('users', function($table)
 	{
 		$table->string('email');
 	});
 
-The table builder contains a variety of column types that you may use when building your tables:
+数据表产生器提供多种字段型态可使用，在您建立数据表时也许会用到：
 
-Command  | Description
+指令  | 功能描述
 ------------- | -------------
-`$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent.
-`$table->bigInteger('votes');`  |  BIGINT equivalent to the table
-`$table->binary('data');`  |  BLOB equivalent to the table
-`$table->boolean('confirmed');`  |  BOOLEAN equivalent to the table
-`$table->char('name', 4);`  |  CHAR equivalent with a length
-`$table->date('created_at');`  |  DATE equivalent to the table
-`$table->dateTime('created_at');`  |  DATETIME equivalent to the table
-`$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
-`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point
-`$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
-`$table->float('amount');`  |  FLOAT equivalent to the table
-`$table->increments('id');`  |  Incrementing ID to the table (primary key).
-`$table->integer('votes');`  |  INTEGER equivalent to the table
-`$table->json('options');`  |  JSON equivalent to the table
-`$table->longText('description');`  |  LONGTEXT equivalent to the table
-`$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent to the table
-`$table->mediumText('description');`  |  MEDIUMTEXT equivalent to the table
-`$table->morphs('taggable');`  |  Adds INTEGER `taggable_id` and STRING `taggable_type`
-`$table->nullableTimestamps();`  |  Same as `timestamps()`, except allows NULLs
-`$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
-`$table->tinyInteger('numbers');`  |  TINYINT equivalent to the table
-`$table->softDeletes();`  |  Adds **deleted\_at** column for soft deletes
-`$table->string('email');`  |  VARCHAR equivalent column
-`$table->string('name', 100);`  |  VARCHAR equivalent with a length
-`$table->text('description');`  |  TEXT equivalent to the table
-`$table->time('sunrise');`  |  TIME equivalent to the table
-`$table->timestamp('added_on');`  |  TIMESTAMP equivalent to the table
-`$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
-`$table->rememberToken();`  |  Adds `remember_token` as VARCHAR(100) NULL
-`->nullable()`  |  Designate that the column allows NULL values
-`->default($value)`  |  Declare a default value for a column
-`->unsigned()`  |  Set INTEGER to UNSIGNED
+`$table->bigIncrements('id');`  |  ID 自动增量，使用相当于「big integer」型态
+`$table->bigInteger('votes');`  |  相当于 BIGINT 型态
+`$table->binary('data');`  |  相当于 BLOB 型态
+`$table->boolean('confirmed');`  |  相当于 BOOLEAN 型态
+`$table->char('name', 4);`  |  相当于 CHAR 型态，并带有长度
+`$table->date('created_at');`  |  相当于 DATE 型态
+`$table->dateTime('created_at');`  |  相当于 DATETIME 型态
+`$table->decimal('amount', 5, 2);`  |  相当于 DECIMAL 型态，并带有精度与基数
+`$table->double('column', 15, 8);`  |  相当于 DOUBLE 型态，总共有 15 位数，在小数点后面有 8 位数
+`$table->enum('choices', array('foo', 'bar'));` | 相当于 ENUM 型态
+`$table->float('amount');`  |  相当于 FLOAT 型态
+`$table->increments('id');`  |  相当于 Incrementing 型态 (数据表主键)
+`$table->integer('votes');`  |  相当于 INTEGER 型态
+`$table->json('options');`  |  相当于 JSON 型态
+`$table->longText('description');`  |  相当于 LONGTEXT 型态
+`$table->mediumInteger('numbers');`  |  相当于 MEDIUMINT 型态
+`$table->mediumText('description');`  |  相当于 MEDIUMTEXT 型态
+`$table->morphs('taggable');`  |  加入整数 `taggable_id` 与字串 `taggable_type`
+`$table->nullableTimestamps();`  |  与 `timestamps()` 相同，但允许 NULL
+`$table->smallInteger('votes');`  |  相当于 SMALLINT 型态
+`$table->tinyInteger('numbers');`  |  相当于 TINYINT 型态
+`$table->softDeletes();`  |  加入 **deleted\_at** 字段于软删除使用
+`$table->string('email');`  |  相当于 VARCHAR 型态
+`$table->string('name', 100);`  |  相当于 VARCHAR 型态，并指定长度
+`$table->text('description');`  |  相当于 TEXT 型态
+`$table->time('sunrise');`  |  相当于 TIME 型态
+`$table->timestamp('added_on');`  |  相当于 TIMESTAMP 型态
+`$table->timestamps();`  |  加入 **created\_at** 和 **updated\_at** 字段
+`$table->rememberToken();`  |  加入 `remember_token` 使用 VARCHAR(100) NULL
+`->nullable()`  |  标示此字段允许 NULL
+`->default($value)`  |  宣告此字段的默认值
+`->unsigned()`  |  设置整数是无分正负
 
-#### Using After On MySQL
+#### 在 MySQL 使用 After 方法
 
-If you are using the MySQL database, you may use the `after` method to specify the order of columns:
+若您使用 MySQL 数据库，您可以使用 `after` 方法来指定字段的顺序：
 
 	$table->string('name')->after('email');
 
 <a name="changing-columns"></a>
-## Changing Columns
+## 修改字段
 
-Sometimes you may need to modify an existing column. For example, you may wish to increase the size of a string column. The `change` method makes it easy! For example, let's increase the size of the `name` column from 25 to 50:
+有时候您需要修改一个存在的字段，例如：您可能想增加保存文本字段的长度。借由 `change` 方法让这件事情变得非常容易！假设我们想要将字段 `name` 的长度从 25 增加到 50 的时候：
 
 	Schema::table('users', function($table)
 	{
 		$table->string('name', 50)->change();
 	});
 
-We could also modify a column to be nullable:
+另外也能将某个字段修改为允许 NULL：
 
 	Schema::table('users', function($table)
 	{
@@ -118,30 +118,30 @@ We could also modify a column to be nullable:
 	});
 
 <a name="renaming-columns"></a>
-## Renaming Columns
+## 修改字段名称
 
-To rename a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
+要修改字段名称，可在结构生成器内使用 `renameColumn` 方法，请确认在修改前 `composer.json` 文件内已经加入 `doctrine/dbal`。
 
 	Schema::table('users', function($table)
 	{
 		$table->renameColumn('from', 'to');
 	});
 
-> **Note:** Renaming `enum` column types is not supported.
+> **注意:** `enum` 字段型别不支持修改字段名称。
 
 <a name="dropping-columns"></a>
-## Dropping Columns
+## 移除字段
 
-To drop a column, you may use the `dropColumn` method on the Schema builder. Before dropping a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
+要移除字段，可在结构生成器内使用 `dropColumn` 方法，请确认在移除前 `composer.json` 文件内已经加入 `doctrine/dbal`。
 
-#### Dropping A Column From A Database Table
+#### 移除数据表字段
 
 	Schema::table('users', function($table)
 	{
 		$table->dropColumn('votes');
 	});
 
-#### Dropping Multiple Columns From A Database Table
+#### 移除数据表多笔字段
 
 	Schema::table('users', function($table)
 	{
@@ -149,18 +149,18 @@ To drop a column, you may use the `dropColumn` method on the Schema builder. Bef
 	});
 
 <a name="checking-existence"></a>
-## Checking Existence
+## 检查是否存在
 
-#### Checking For Existence Of Table
+#### 检查数据表是否存在
 
-You may easily check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
+您可以轻松的检查数据表或字段是否存在，使用 `hasTable` 和 `hasColumn` 方法：
 
 	if (Schema::hasTable('users'))
 	{
 		//
 	}
 
-#### Checking For Existence Of Columns
+#### 检查字段是否存在
 
 	if (Schema::hasColumn('users', 'email'))
 	{
@@ -168,68 +168,68 @@ You may easily check for the existence of a table or column using the `hasTable`
 	}
 
 <a name="adding-indexes"></a>
-## Adding Indexes
+## 加入索引
 
-The schema builder supports several types of indexes. There are two ways to add them. First, you may fluently define them on a column definition, or you may add them separately:
+结构生成器支持多种索引类型，有两种方法可以加入，方法一，您可以在定义字段时顺便附加上去，或者是分开另外加入：
 
 	$table->string('email')->unique();
 
-Or, you may choose to add the indexes on separate lines. Below is a list of all available index types:
+或者，您可以独立一行来加入索引，以下是支持的索引类型：
 
-Command  | Description
+指令  | 功能描述
 ------------- | -------------
-`$table->primary('id');`  |  Adding a primary key
-`$table->primary(array('first', 'last'));`  |  Adding composite keys
-`$table->unique('email');`  |  Adding a unique index
-`$table->index('state');`  |  Adding a basic index
+`$table->primary('id');`  |  加入主键 (primary key)
+`$table->primary(array('first', 'last'));`  |  加入复合键 (composite keys)
+`$table->unique('email');`  |  加入唯一索引 (unique index)
+`$table->index('state');`  |  加入基本索引 (index)
 
 <a name="foreign-keys"></a>
-## Foreign Keys
+## 外键
 
-Laravel also provides support for adding foreign key constraints to your tables:
+Laravel 也支持数据表的外键约束：
 
 	$table->integer('user_id')->unsigned();
 	$table->foreign('user_id')->references('id')->on('users');
 
-In this example, we are stating that the `user_id` column references the `id` column on the `users` table. Make sure to create the foreign key column first!
+范例中，我们关注字段 `user_id` 参照到 `users` 数据表的 `id` 字段。请先确认已经建立外键！
 
-You may also specify options for the "on delete" and "on update" actions of the constraint:
+您也可以指定选择在「on delete」和「on update」进行约束动作：
 
 	$table->foreign('user_id')
           ->references('id')->on('users')
           ->onDelete('cascade');
 
-To drop a foreign key, you may use the `dropForeign` method. A similar naming convention is used for foreign keys as is used for other indexes:
+要移除外键，可使用 `dropForeign` 方法。外键的命名约定如同其他索引：
 
 	$table->dropForeign('posts_user_id_foreign');
 
-> **Note:** When creating a foreign key that references an incrementing integer, remember to always make the foreign key column `unsigned`.
+> **注意:** 当外键有参照到自动增量时，记得设置外键为 `unsigned` 型态。
 
 <a name="dropping-indexes"></a>
-## Dropping Indexes
+## 移除索引
 
-To drop an index you must specify the index's name. Laravel assigns a reasonable name to the indexes by default. Simply concatenate the table name, the names of the column in the index, and the index type. Here are some examples:
+要移除索引您必须指定索引名称，Laravel 默认有脉络可循的索引名称。简单地链接这些数据表与索引的字段名称和型别。举例如下：
 
-Command  | Description
+指令  | 功能描述
 ------------- | -------------
-`$table->dropPrimary('users_id_primary');`  |  Dropping a primary key from the "users" table
-`$table->dropUnique('users_email_unique');`  |  Dropping a unique index from the "users" table
-`$table->dropIndex('geo_state_index');`  |  Dropping a basic index from the "geo" table
+`$table->dropPrimary('users_id_primary');`  |  从「users」数据表移除主键
+`$table->dropUnique('users_email_unique');`  |  从「users」数据表移除唯一索引
+`$table->dropIndex('geo_state_index');`  |  从「geo」数据表移除基本索引
 
 <a name="dropping-timestamps"></a>
-## Dropping Timestamps & SoftDeletes
+## 移除时间戳记和软删除
 
-To drop the `timestamps`, `nullableTimestamps` or `softDeletes` column types, you may use the following methods:
+要移除 `timestamps`、`nullableTimestamps` 或 `softDeletes` 字段型态，您可以使用以下方法：
 
-Command  | Description
+指令  | 功能描述
 ------------- | -------------
-`$table->dropTimestamps();`  |  Dropping the **created\_at** and **updated\_at** columns from the table
-`$table->dropSoftDeletes();`  |  Dropping **deleted\_at** column from the table
+`$table->dropTimestamps();`  |  移除 **created\_at** 和 **updated\_at** 字段
+`$table->dropSoftDeletes();`  |  移除 **deleted\_at** 字段
 
 <a name="storage-engines"></a>
-## Storage Engines
+## 保存引擎
 
-To set the storage engine for a table, set the `engine` property on the schema builder:
+要设置数据表的保存引擎，可在结构生成器设置 `engine` 属性：
 
     Schema::create('users', function($table)
     {

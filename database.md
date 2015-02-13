@@ -1,25 +1,25 @@
-# Basic Database Usage
+# 数据库使用基础
 
-- [Configuration](#configuration)
-- [Read / Write Connections](#read-write-connections)
-- [Running Queries](#running-queries)
-- [Database Transactions](#database-transactions)
-- [Accessing Connections](#accessing-connections)
-- [Query Logging](#query-logging)
+- [设置](#configuration)
+- [读取/写入连接](#read-write-connections)
+- [执行查找](#running-queries)
+- [数据库交易](#database-transactions)
+- [取用连接](#accessing-connections)
+- [查找日志纪录](#query-logging)
 
 <a name="configuration"></a>
-## Configuration
+## 设置
 
-Laravel makes connecting with databases and running queries extremely simple. The database configuration file is `config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
+Laravel 让链接数据库和执行查找变得相当容易。数据库相关设置文件都在 `config/database.php`。 在这个文件你可以定义所有的数据库连接，以及指定默认的数据库连接。默认文件中已经有所有支持的数据库系统范例了。
 
-Currently Laravel supports four database systems: MySQL, Postgres, SQLite, and SQL Server.
+目前 Laravel 支持四种数据库系统： MySQL、Postgres、SQLite、以及 SQL Server。
 
 <a name="read-write-connections"></a>
-## Read / Write Connections
+## 读取/写入连接
 
-Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
+有时候你可能希望使用特定数据库连接进行 SELECT 操作，同时使用另外的连接作 INSERT 、 UPDATE 、以及 DELETE 。 Laravel 让这些变得轻松简单，并确保你不论在使用原始查找、查找建立器、或者是 Eloquent ORM 使用的都是正确的连接。
 
-To see how read / write connections should be configured, let's look at this example:
+来看看如何设置读取/写入连接，让我们来看以下的范例：
 
 	'mysql' => [
 		'read' => [
@@ -37,40 +37,40 @@ To see how read / write connections should be configured, let's look at this exa
 		'prefix'    => '',
 	],
 
-Note that two keys have been added to the configuration array: `read` and `write`. Both of these keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array. So, we only need to place items in the `read` and `write` arrays if we wish to override the values in the main array. So, in this case, `192.168.1.1` will be used as the "read" connection, while `192.168.1.2` will be used as the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
+注意我们加了两个键值到设置档数组中： `read` 及 `write`。 两个键值都包含了单一键值的数组：`host`。`read` 及 `write` 的其余数据库设置会从`mysql` 数组中合并。 所以，如果我们想要覆写设置值，只要将选项放入 `read` 和 `write` 数组即可。 所以在上面的例子里， `192.168.1.1` 将被用作「读取」连接，而 `192.168.1.2` 将被用作「写入」连接。数据库凭证、 前缀、字符编码设置、以及其他所有的设置会共用 `mysql` 数组里的设置。
 
 <a name="running-queries"></a>
-## Running Queries
+## 执行查找
 
-Once you have configured your database connection, you may run queries using the `DB` facade.
+如果设置好数据库连接，就可以透过 `DB` facade 执行查找。
 
-#### Running A Select Query
+#### 执行 Select 查找
 
 	$results = DB::select('select * from users where id = ?', [1]);
 
-The `select` method will always return an `array` of results.
+`select` 方法会返回一个 `array` 结果。
 
-#### Running An Insert Statement
+#### 执行 Insert 语法
 
 	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
-#### Running An Update Statement
+#### 执行 Update 语法
 
 	DB::update('update users set votes = 100 where name = ?', ['John']);
 
-#### Running A Delete Statement
+#### 执行 Delete 语法
 
 	DB::delete('delete from users');
 
-> **Note:** The `update` and `delete` statements return the number of rows affected by the operation.
+> **注意：** `update` 和 `delete` 语法会返回在操作中所影响的数据笔数。
 
-#### Running A General Statement
+#### 执行一般语法
 
 	DB::statement('drop table users');
 
-#### Listening For Query Events
+#### 监听查找事件
 
-You may listen for query events using the `DB::listen` method:
+你可以使用 `DB::listen` 方法，去监听查找的事件：
 
 	DB::listen(function($sql, $bindings, $time)
 	{
@@ -78,9 +78,9 @@ You may listen for query events using the `DB::listen` method:
 	});
 
 <a name="database-transactions"></a>
-## Database Transactions
+## 数据库交易
 
-To run a set of operations within a database transaction, you may use the `transaction` method:
+你可以使用 `transaction` 方法，去执行一组数据库交易的操作：
 
 	DB::transaction(function()
 	{
@@ -89,46 +89,46 @@ To run a set of operations within a database transaction, you may use the `trans
 		DB::table('posts')->delete();
 	});
 
-> **Note:** Any exception thrown within the `transaction` closure will cause the transaction to be rolled back automatically.
+> **注意：** 在 `transaction` 闭包若抛出任何例外会导致交易自动还原 。
 
-Sometimes you may need to begin a transaction yourself:
+有时候你可能需要自己开始一个交易：
 
 	DB::beginTransaction();
 
-You can rollback a transaction via the `rollback` method:
+你可以透过 `rollback` 的方法还原交易：
 
 	DB::rollback();
 
-Lastly, you can commit a transaction via the `commit` method:
+最后，你可以透过 `commit` 的方法提交交易：
 
 	DB::commit();
 
 <a name="accessing-connections"></a>
-## Accessing Connections
+## 取用连接
 
-When using multiple connections, you may access them via the `DB::connection` method:
+若要使用多个连接，可以透过 `DB::connection` 方法取用：
 
 	$users = DB::connection('foo')->select(...);
 
-You may also access the raw, underlying PDO instance:
+你也可以取用原始底层的 PDO 实例：
 
 	$pdo = DB::connection()->getPdo();
 
-Sometimes you may need to reconnect to a given database:
+有时候你可能需要重新连接到特定的数据库：
 
 	DB::reconnect('foo');
 
-If you need to disconnect from the given database due to exceeding the underlying PDO instance's `max_connections` limit, use the `disconnect` method:
+如果你因为超过了底层 PDO 实例的 `max_connections` 的限制，需要关闭特定的数据库连接，可以透过 `disconnect` 方法:
 
 	DB::disconnect('foo');
 
 <a name="query-logging"></a>
-## Query Logging
+## 查找日志记录
 
-By default, Laravel keeps a log in memory of all queries that have been run for the current request. However, in some cases, such as when inserting a large number of rows, this can cause the application to use excess memory. To disable the log, you may use the `disableQueryLog` method:
+默认情况下，Laravel 会在内存里访问这次请求中所有的查找语句。然而，在有些例子下，比如一次添加 大量的数据，可能会导致应用程序耗损过多内存。 如果要禁用日志，可以使用 `disableQueryLog` 方法：
 
 	DB::connection()->disableQueryLog();
 
-To get an array of the executed queries, you may use the `getQueryLog` method:
+要得到执行过的查找纪录数组，你可以使用 `getQueryLog` 方法：
 
        $queries = DB::getQueryLog();

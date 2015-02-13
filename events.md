@@ -1,24 +1,24 @@
 # Events
 
-- [Basic Usage](#basic-usage)
-- [Queued Event Handlers](#queued-event-handlers)
-- [Event Subscribers](#event-subscribers)
+- [基本用法](#basic-usage)
+- [事件处理队列](#queued-event-handlers)
+- [事件订阅者](#event-subscribers)
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-The Laravel event facilities provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their handlers are stored in `app/Handlers/Events`.
+Laravel 的 event 功能提供一个简单的观察者实作，允许你在应用程序里订阅与监听事件。事件类别通常被保存在 `app/Events` 目录下，而它们的处理程序则被保存在 `app/Handlers/Events` 目录下。
 
-You can generate a new event class using the Artisan CLI tool:
+你可以使用 Artisan 命令行工具产生一个新的事件类别：
 
 	php artisan make:event PodcastWasPurchased
 
-#### Subscribing To An Event
+#### 订阅事件
 
-The `EventServiceProvider` included with your Laravel application provides a convenient place to register all event handlers. The `listen` property contains an array of all events (keys) and their handlers (values). Of course, you may add as many events to this array as your application requires. For example, let's add our `PodcastWasPurchased` event:
+Laravel 里的 `EventServiceProvider` 提供了一个方便的地方注册所有的事件处理程序。`listen` 属性包含一个所有的事件 (键) 和相对应的处理程序 (值) 的 数组。当然，你可以依应用程序的需求添加任何数量的事件到这个数组。举个例子，让我们来加上 `PodcastWasPurchased` 事件：
 
 	/**
-	 * The event handler mappings for the application.
+	 * 应用程序的事件处理程序对照。
 	 *
 	 * @var array
 	 */
@@ -28,56 +28,56 @@ The `EventServiceProvider` included with your Laravel application provides a con
 		],
 	];
 
-To generate a handler for an event, use the `handler:event` Artisan CLI command:
+使用 Artisan 命令行指令 `handler:event`，来产生一个事件的处理程序：
 
 	php artisan handler:event EmailPurchaseConfirmation --event=PodcastWasPurchased
 
-Of course, manually running the `make:event` and `handler:event` commands each time you need a handler or event is cumbersome. Instead, simply add handlers and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or handlers that are listed in your `EventServiceProvider`:
+当然，在每次你需要一个处理程序或是事件时，手动地执行 `make:event` 和 `handler:event` 指令很麻烦。作为替代，简单地添加处理程序跟事件到你的 `EventServiceProvider` 并使用 `event:generate` 指令。这个指令将会产生任何在你的 `EventServiceProvider` 列出的事件跟处理程序：
 
 	php artisan event:generate
 
-#### Firing An Event
+#### 触发事件
 
-Now we are ready to fire our event using the `Event` facade:
+现在我们准备好使用 `Event` facade 触发我们的事件：
 
 	$response = Event::fire(new PodcastWasPurchased($podcast));
 
-The `fire` method returns an array of responses that you can use to control what happens next in your application.
+`fire` 方法返回一个回应的数组，让你可以用来控制你的应用程序接下来要有什么反应。
 
-You may also use the `event` helper to fire an event:
+你也可以使用 `event` 辅助方法来触发事件：
 
 	event(new PodcastWasPurchased($podcast));
 
-#### Closure Listeners
+#### 监听器闭包
 
-You can even listen to events without creating a separate handler class at all. For example, in the `boot` method of your `EventServiceProvider`, you could do the following:
+你甚至可以不需对事件建立对应的处理类别。举个例子，在你的 `EventServiceProvider` 的 `boot` 方法里，你可以做下面这件事：
 
 	Event::listen('App\Events\PodcastWasPurchased', function($event)
 	{
-		// Handle the event...
+		// 处理事件...
 	});
 
-#### Stopping The Propagation Of An Event
+#### 停止继续传递事件
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your handler:
+有时候你会希望停止继续传递事件到其他监听器。你可以借由从处理程序返回 `false` 来做到这件事：
 
 	Event::listen('App\Events\PodcastWasPurchased', function($event)
 	{
-		// Handle the event...
+		// 处理事件...
 
 		return false;
 	});
 
 <a name="queued-event-handlers"></a>
-## Queued Event Handlers
+## 事件处理队列
 
-Need to [queue](/docs/5.0/queues) an event handler? It couldn't be any easier. When generating the handler, simply use the `--queued` flag:
+需要把事件处理程序放到 [队列](/docs/5.0/queues) 吗？这不能变得再更简单了。当你产生处理程序，简单地使用 `--queued` 旗标：
 
 	php artisan handler:event SendPurchaseConfirmation --event=PodcastWasPurchased --queued
 
-This will generate a handler class that implements the `Illuminate\Contracts\Queue\ShouldBeQueued` interface. That's it! Now when this handler is called for an event, it will be queued automatically by the event dispatcher.
+这将会产生一个实作了 `Illuminate\Contracts\Queue\ShouldBeQueued` 接口的处理程序类别。这样就可以了！现在当这个处理程序因为事件发生被调用，它将会被事件配送器自动地排进队列。
 
-If no exceptions are thrown when the handler is executed by the queue, the queued job will be deleted automatically after it has processed. If you need to access the queued job's `delete` and `release` methods manually, you may do so. The `Illuminate\Queue\InteractsWithQueue` trait, which is included by default on queued handlers, gives you access to these methods:
+当处理程序被队列执行，如果没有例外被丢出，在执行后该队列中的任务将会自动被删除。你也可以手动取用队列中的任务的 `delete` 和 `release` 方法。队列处理程序默认会引入的 `Illuminate\Queue\InteractsWithQueue` trait，让你可以取用这些方法：
 
 	public function handle(PodcastWasPurchased $event)
 	{
@@ -87,19 +87,19 @@ If no exceptions are thrown when the handler is executed by the queue, the queue
 		}
 	}
 
-If you have an existing handler that you would like to convert to a queued handler, simply add the `ShouldBeQueued` interface to the class manually.
+如果你想要把一个已存在的处理程序转换成一个队列的处理程序，简单地手动添加 `ShouldBeQueued` 接口到类别。
 
 <a name="event-subscribers"></a>
-## Event Subscribers
+## 事件订阅者
 
-#### Defining An Event Subscriber
+#### 定义事件订阅者
 
-Event subscribers are classes that may subscribe to multiple events from within the class itself. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance:
+事件订阅者是个可以从类别自身里面订阅多个事件的类别。订阅者应该定义 `subscribe` 方法，事件配送器实体将会被传递到这个方法：
 
 	class UserEventHandler {
 
 		/**
-		 * Handle user login events.
+		 * 处理用户登录事件。
 		 */
 		public function onUserLogin($event)
 		{
@@ -107,7 +107,7 @@ Event subscribers are classes that may subscribe to multiple events from within 
 		}
 
 		/**
-		 * Handle user logout events.
+		 * 处理用户注销事件。
 		 */
 		public function onUserLogout($event)
 		{
@@ -115,7 +115,7 @@ Event subscribers are classes that may subscribe to multiple events from within 
 		}
 
 		/**
-		 * Register the listeners for the subscriber.
+		 * 注册监听器给订阅者。
 		 *
 		 * @param  Illuminate\Events\Dispatcher  $events
 		 * @return array
@@ -129,15 +129,15 @@ Event subscribers are classes that may subscribe to multiple events from within 
 
 	}
 
-#### Registering An Event Subscriber
+#### 注册事件订阅者
 
-Once the subscriber has been defined, it may be registered with the `Event` class.
+当定义了订阅者后，可以使用 `Event` 类别注册。
 
 	$subscriber = new UserEventHandler;
 
 	Event::subscribe($subscriber);
 
-You may also use the [Laravel IoC container](/docs/5.0/container) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
+你也可以使用 [Laravel IoC 容器](/docs/5.0/container) 自动解析订阅者。简单地传递订阅者的名字给 `subscribe` 方法就可以做到：
 
 	Event::subscribe('UserEventHandler');
 

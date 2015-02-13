@@ -1,40 +1,40 @@
-# Errors & Logging
+# 错误与日志
 
-- [Configuration](#configuration)
-- [Handling Errors](#handling-errors)
-- [HTTP Exceptions](#http-exceptions)
-- [Logging](#logging)
+- [设置](#configuration)
+- [错误处理](#handling-errors)
+- [HTTP 例外](#http-exceptions)
+- [日志](#logging)
 
 <a name="configuration"></a>
-## Configuration
+## 设置
 
-The logging facilities for your application are configured in the `Illuminate\Foundation\Bootstrap\ConfigureLogging` bootstrapper class. This class utilizes the `log` configuration option from your `config/app.php` configuration file.
+应用程序的日志功能设置在 `Illuminate\Foundation\Bootstrap\ConfigureLogging` 启动类别中。这个类别使用 `config/app.php` 设置档的 `log` 设置选项。
 
-By default, the logger is configured to use daily log files; however, you may customize this behavior as needed. Since Laravel uses the popular [Monolog](https://github.com/Seldaek/monolog) logging library, you can take advantage of the variety of handlers that Monolog offers.
+日志工具默认使用每天的日志文件；然而，你可以依照需求客制化这个行为。因为 Laravel 使用受欢迎的 [Monolog](https://github.com/Seldaek/monolog) 日志函式库，你可以利用很多 Monolog 提供的处理进程。
 
-For example, if you wish to use a single log file instead of daily files, you can make the following change to your `config/app.php` configuration file:
+例如，如果你想要使用单一日志档，而不是每天一个日志档，你可以对 `config/app.php` 设置档做下面的变更：
 
 	'log' => 'single'
 
-Out of the box, Laravel supported `single`, `daily`, and `syslog` logging modes. However, you are free to customize the logging for your application as you wish by overriding the `ConfigureLogging` bootstrapper class.
+Laravel 提供立即可用的 `single` 、 `daily` 和 `syslog` 日志模式。然而，你可以借由覆写 `ConfigureLogging` 启动类别，依照需求自由地客制化应用程序的日志。
 
-### Error Detail
+### 错误细节
 
-The amount of error detail your application displays through the browser is controlled by the `app.debug` configuration option in your `config/app.php` configuration file. By default, this configuration option is set to respect the `APP_DEBUG` environment variable, which is stored in your `.env` file.
+`config/app.php` 设置档的 `app.debug` 设置选项控制应用程序透过浏览器显示错误细节。设置选项默认参照 `.env` 文件的 `APP_DEBUG` 环境变量。
 
-For local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`.**
+进行本地开发时，你应该设置 `APP_DEBUG` 环境变量为 `true` 。 **在上线环境，这个值应该永远为 `false` 。**
 
 <a name="handling-errors"></a>
-## Handling Errors
+## 错误处理
 
-All exceptions are handled by the `App\Exceptions\Handler` class. This class contains two methods: `report` and `render`.
+所有的例外都由 `App\Exceptions\Handler` 类别处理。这个类别包含两个方法： `report` 和 `render` 。
 
-The `report` method is used to log exceptions or send them to an external service like [BugSnag](https://bugsnag.com). By default, the `report` method simply passes the exception to the base implementation on the parent class where the exception is logged. However, you are free to log exceptions however you wish. If you need to report different types of exceptions in different ways, you may use the PHP `instanceof` comparison operator:
+`report` 方法用来纪录例外或把例外传递到外部服务，例如： [BugSnag](https://bugsnag.com) 。默认情况下， `report`  方法只基本实作简单地传递例外到父类别并于父类别纪录例外。然而，你可以依你所需自由地纪录例外。如果你需要使用不同的方法来回报不同类型的例外，你可以使用 PHP 的 `instanceof` 比较运算子：
 
 	/**
-	 * Report or log an exception.
+	 * 回报或纪录例外。
 	 *
-	 * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+	 * 这是一个送例外到 Sentry、Bugsnag 等服务的好地方。
 	 *
 	 * @param  \Exception  $e
 	 * @return void
@@ -49,31 +49,31 @@ The `report` method is used to log exceptions or send them to an external servic
 		return parent::report($e);
 	}
 
-The `render` method is responsible for converting the exception into an HTTP response that should be sent back to the browser. By default, the exception is passed to the base class which generates a response for you. However, you are free to check the exception type or return your own custom response.
+`render` 方法负责把例外转换成应该被传递回浏览器的 HTTP 回应。默认情况下，例外会被传递到基底类别并帮你产生回应。然而，你可以自由的检查例外类型或返回客制化的回应。
 
-The `dontReport` property of the exception handler contains an array of exception types that will not be logged. By default, exceptions resulting from 404 errors are not written to your log files. You may add other exception types to this array as needed.
+例外处理进程的 `dontReport` 属性是个数组，包含应该不要被纪录的例外类型。由 404 错误导致的例外默认不会被写到日志档。你可以依照需求添加其他类型的例外到这个数组。
 
 <a name="http-exceptions"></a>
-## HTTP Exceptions
+## HTTP 例外
 
-Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to return such a response, use the following:
+有一些例外是描述来自服务器的 HTTP 错误码。例如，这可能是个「找不到页面」错误 (404)、「未授权错误」(401)，或甚至是工程师导致的 500 错误。使用下面的方法来返回这样一个回应：
 
 	abort(404);
 
-Optionally, you may provide a response:
+或是你可以选择提供一个回应：
 
 	abort(403, 'Unauthorized action.');
 
-This method may be used at any time during the request's lifecycle.
+你可以在请求的生命周期中任何时间点使用这个方法。
 
-### Custom 404 Error Page
+### 客制化 404 错误页面
 
-To return a custom view for all 404 errors, create a `resources/views/errors/404.blade.php` file. This view will be served on all 404 errors generated by your application.
+要让所有的 404 错误返回客制化的视图，请建立一个 `resources/views/errors/404.blade.php` 文件。应用程序将会使用这个视图处理所有发生的 404 错误。
 
 <a name="logging"></a>
-## Logging
+## 日志
 
-The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create daily log files for your application which are stored in the `storage/logs` directory. You may write information to the log like so:
+Laravel 日志工具在强大的 [Monolog](http://github.com/seldaek/monolog) 函式库上提供一层简单的功能。Laravel 默认为应用程序建立每天的日志档在 `storage/logs` 目录。你可以像这样把信息写到日志：
 
 	Log::info('This is some useful information.');
 
@@ -81,19 +81,19 @@ The Laravel logging facilities provide a simple layer on top of the powerful [Mo
 
 	Log::error('Something is really going wrong.');
 
-The logger provides the seven logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, and **alert**.
+日志工具提供定义在 [RFC 5424](http://tools.ietf.org/html/rfc5424)  的七个级别：**debug**、**info**、**notice**、**warning**、**error**、**critical** 和 **alert**。
 
-An array of contextual data may also be passed to the log methods:
+也可以传入上下文相关的数据数组到日志方法里：
 
 	Log::info('Log message', ['context' => 'Other helpful information']);
 
-Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
+Monolog 有很多其他的处理方法可以用在日志上。如有需要，你可以取用 Laravel 底层使用的 Monolog 实例：
 
 	$monolog = Log::getMonolog();
 
-You may also register an event to catch all messages passed to the log:
+你也可以注册事件来捕捉所有传到日志的消息：
 
-#### Registering A Log Event Listener
+#### 注册日志事件监听器
 
 	Log::listen(function($level, $message, $context)
 	{
