@@ -1,29 +1,34 @@
 # Encryption
 
-- [Introduction](#introduction)
+- [Introdução](#introduction)
 - [Basic Usage](#basic-usage)
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-Laravel provides facilities for strong AES encryption via the Mcrypt PHP extension.
+Laravel fornece facildade para uma forte encriptação AES por meio da extenção PHP Mcrypt
+
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Uso Básico
 
-#### Encrypting A Value
+#### Encriptando um Valor
 
 	$encrypted = Crypt::encrypt('secret');
 
-> **Note:** Be sure to set a 16, 24, or 32 character random string in the `key` option of the `config/app.php` file. Otherwise, encrypted values will not be secure.
 
-#### Decrypting A Value
+> **Nota:** Certifique-se de setar uma string radomica de 16, 24 , ou 32 caractéres na opção `key` do arquivo, `config/app.php`. Caso contrário, os valores encriptados não estarão seguros.
+
+ Be sure to set a 16, 24, or 32 character random string in the `key` option of the `config/app.php` file. Otherwise, encrypted values will not be secure.
+> **Nota:** Be sure to set a 16, 24, or 32 character random string in the `key` option of the `config/app.php` file. Otherwise, encrypted values will not be secure.
+
+#### Decriptando Valores
 
 	$decrypted = Crypt::decrypt($encryptedValue);
 
-#### Setting The Cipher & Mode
+#### Setando O Modo e o Cipher
 
-You may also set the cipher and mode used by the encrypter:
+Você pode também setar o cipher e o modo usado pelo ecrypter:
 
 	Crypt::setMode('ctr');
 
