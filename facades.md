@@ -1,43 +1,43 @@
 # Facades
 
-- [Introduction](#introduction)
-- [Explanation](#explanation)
-- [Practical Usage](#practical-usage)
-- [Creating Facades](#creating-facades)
-- [Mocking Facades](#mocking-facades)
-- [Facade Class Reference](#facade-class-reference)
+- [介绍](#introduction)
+- [解释](#explanation)
+- [实际用法](#practical-usage)
+- [建立 Facades](#creating-facades)
+- [仿真 Facades](#mocking-facades)
+- [Facade 类别参考](#facade-class-reference)
 
 <a name="introduction"></a>
-## Introduction
+## 介绍
 
-Facades provide a "static" interface to classes that are available in the application's [IoC container](/docs/5.0/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the IoC container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+Facades 提供一个静态接口给在应用程序的 [IoC 容器](/docs/5.0/container) 中可以取用的类别。Laravel 附带许多 facades，甚至你可能已经在不知情的状况下使用过它们！Laravel 的「facades」作为在 IoC 容器里面的基底类别的静态代理，提供的语法有简洁、易表达的优点，同时维持比传统的静态方法更高的可测试性和弹性。
 
-Occasionally, You may wish to create your own facades for your applications and packages, so let's explore the concept, development and usage of these classes.
+有时，你或许会希望为应用程序和套件建立自己的 facades，所以让我们来探索这些类别的概念、开发和用法。
 
-> **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [IoC container](/docs/5.0/container).
+> **注意：** 在深入了解 facades 之前，强烈建议你先熟悉 Laravel [IoC 容器](/docs/5.0/container).
 
 <a name="explanation"></a>
-## Explanation
+## 解释
 
-In the context of a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Facade` class.
+在 Laravel 应用程序的环境中，facade 是个提供从容器访问对象的类别。`Facade` 类别是让这个机制可以运作的原因。Laravel 的 facades 和你建立的任何客制化 facades，将会继承基本的 `Facade` 类别。
 
-Your facade class only needs to implement a single method: `getFacadeAccessor`. It's the `getFacadeAccessor` method's job to define what to resolve from the container. The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to the resolved object.
+你的 facade 类别只需要去实作一个方法：`getFacadeAccessor`。`getFacadeAccessor` 方法的工作是定义要从容器解析什么。基本的 `Facade` 类别利用 `__callStatic()` 魔术方法来从你的 facade 调用到解析出来的对象。
 
-So, when you make a facade call like `Cache::get`, Laravel resolves the Cache manager class out of the IoC container and calls the `get` method on the class. In technical terms, Laravel Facades are a convenient syntax for using the Laravel IoC container as a service locator.
+所以当你对 facade 调用，例如 `Cache::get`，Laravel 从 IoC 容器解析缓存管理类别出来，并对该类别调用 `get` 方法。用科技术语来说，Laravel Facades 是使用 Laravel IoC 容器作为服务定位器的便捷语法。
 
 <a name="practical-usage"></a>
-## Practical Usage
+## 实际用法
 
-In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class.
+在下面的例子，对 Laravel 缓存系统进行调用。简单看过去这代码，有人可能会以为静态方法 `get` 是对 `Cache` 类别调用。
 
 	$value = Cache::get('key');
 
-However, if we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
+然而，如果我们去看 `Illuminate\Support\Facades\Cache` 类别，你将会看到它没有静态方法 `get`：
 
 	class Cache extends Facade {
 
 		/**
-		 * Get the registered name of the component.
+		 * 取得组件的注册名称
 		 *
 		 * @return string
 		 */
@@ -45,17 +45,17 @@ However, if we look at that `Illuminate\Support\Facades\Cache` class, you'll see
 
 	}
 
-The Cache class extends the base `Facade` class and defines a method `getFacadeAccessor()`. Remember, this method's job is to return the name of an IoC binding.
+Cache 类别继承基本的 `Facade` 类别并定义一个 `getFacadeAccessor()` 方法。记住，这个方法的工作是回传 IoC 绑定的名称。
 
-When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the IoC container and runs the requested method (in this case, `get`) against that object.
+当用户在 `Cache` 的 facade 上参考任何的静态方法，Laravel 会从 IoC 容器解析被绑定的 `cache` ，并对该对象执行被请求的方法 (在这个例子中， `get`)。
 
-So, our `Cache::get` call could be re-written like so:
+所以我们的 `Cache::get` 调用可以被重写成像这样：
 
 	$value = $app->make('cache')->get('key');
 
-#### Importing Facades
+#### 导入 Facades
 
-Remember, if you are using a facade when a controller that is namespaced, you will need to import the facade class into the namespace. All facades live in the global namespace:
+记住，如果你在控制器有使用命名空间的状况使用 facade，你会需要导入 facade 类别进入命名空间。所有的 facades 存在于全域命名空间：
 
 	<?php namespace App\Http\Controllers;
 
@@ -64,7 +64,7 @@ Remember, if you are using a facade when a controller that is namespaced, you wi
 	class PhotosController extends Controller {
 
 		/**
-		 * Get all of the application photos.
+		 * 取得所有的应用程序相片。
 		 *
 		 * @return Response
 		 */
@@ -78,15 +78,15 @@ Remember, if you are using a facade when a controller that is namespaced, you wi
 	}
 
 <a name="creating-facades"></a>
-## Creating Facades
+## 建立 Facades
 
-Creating a facade for your own application or package is simple. You only need 3 things:
+为你自己的应用程序或套件建立 facade 是很简单的。你只需要 3 个东西：
 
-- An IoC binding.
-- A facade class.
-- A facade alias configuration.
+- 一个 IoC 绑定。
+- 一个 facade 类别。
+- 一个 facade 别名设置。
 
-Let's look at an example. Here, we have a class defined as `PaymentGateway\Payment`.
+让我们来看个例子。这里有一个定义为 `PaymentGateway\Payment` 的类别。
 
 	namespace PaymentGateway;
 
@@ -99,16 +99,16 @@ Let's look at an example. Here, we have a class defined as `PaymentGateway\Payme
 
 	}
 
-We need to be able to resolve this class from the IoC container. So, let's add a binding to a service provider:
+我们需要可以从 IoC 容器解析出这个类别。所以，让我们来加上一个绑定到服务提供者：
 
 	App::bind('payment', function()
 	{
 		return new \PaymentGateway\Payment;
 	});
 
-A great place to register this binding would be to create a new [service provider](/docs/5.0/container#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `config/app.php` configuration file.
+注册这个绑定的好方式是建立新的 [服务提供者](/docs/5.0/container#service-providers) 命名为 `PaymentServiceProvider`，并把这个绑定加到 `register` 方法。再来你可以设置 Laravel 从 `config/app.php` 设置档加载你的服务提供者。
 
-Next, we can create our own facade class:
+接下来，我们可以建立我们自己的 facade 类别：
 
 	use Illuminate\Support\Facades\Facade;
 
@@ -118,37 +118,37 @@ Next, we can create our own facade class:
 
 	}
 
-Finally, if we wish, we can add an alias for our facade to the `aliases` array in the `config/app.php` configuration file. Now, we can call the `process` method on an instance of the `Payment` class.
+最后，如果我们希望，可以在 `config/app.php` 设置档为 facade 加个别名到 `aliases` 数组。现在我们可以在 `Payment` 类别的实例上调用 `process` 方法。
 
 	Payment::process();
 
-### A Note On Auto-Loading Aliases
+### 自动加载别名的附注
 
-Classes in the `aliases` array are not available in some instances because [PHP will not attempt to autoload undefined type-hinted classes](https://bugs.php.net/bug.php?id=39003). If `\ServiceWrapper\ApiTimeoutException` is aliased to `ApiTimeoutException`, a `catch(ApiTimeoutException $e)` outside of the namespace `\ServiceWrapper` will never catch the exception, even if one is thrown. A similar problem is found in classes which have type hints to aliased classes. The only workaround is to forego aliasing and `use` the classes you wish to type hint at the top of each file which requires them.
+在 `aliases` 数组中的类别在某些实例中不能使用，因为 [PHP 将不会尝试去自动加载未定义的类型暗示类别](https://bugs.php.net/bug.php?id=39003)。如果 `\ServiceWrapper\ApiTimeoutException` 命别名为 `ApiTimeoutException`，即便有例外被抛出，在 `\ServiceWrapper` 命名空间外面的 `catch(ApiTimeoutException $e)` 将永远捕捉不到例外。类似的问题在有类型暗示的别名类别一样会发生。唯一的替代方案就是放弃别名并用 `use` 在每一个文件的最上面引入你希望暗示类型的类别。
 
 <a name="mocking-facades"></a>
-## Mocking Facades
+## 仿真 Facades
 
-Unit testing is an important aspect of why facades work the way that they do. In fact, testability is the primary reason for facades to even exist. For more information, check out the [mocking facades](/docs/testing#mocking-facades) section of the documentation.
+单元测试是为什么现在 facades 采用这样的工作方式的重要面向。事实上，可测试性甚至是 facades 存在的主要理由。想要获得更多信息，请查看文档的 [仿真 facades](/docs/testing#mocking-facades) 章节。
 
 <a name="facade-class-reference"></a>
-## Facade Class Reference
+## Facade 类别参考
 
-Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [IoC binding](/docs/5.0/container) key is also included where applicable.
+你将会在下面找到每一个 facade 和它的基底类别。这是个可以从一个给定的 facade 根源快速地深入 API 文档的有用工具。可应用的 [IoC 绑定](/docs/5.0/container) 关键字也包含在里面。
 
 Facade  |  Class  |  IoC Binding
 ------------- | ------------- | -------------
 App  |  [Illuminate\Foundation\Application](http://laravel.com/api/5.0/Illuminate/Foundation/Application.html)  | `app`
 Artisan  |  [Illuminate\Console\Application](http://laravel.com/api/5.0/Illuminate/Console/Application.html)  |  `artisan`
 Auth  |  [Illuminate\Auth\AuthManager](http://laravel.com/api/5.0/Illuminate/Auth/AuthManager.html)  |  `auth`
-Auth (Instance)  |  [Illuminate\Auth\Guard](http://laravel.com/api/5.0/Illuminate/Auth/Guard.html)  |
+Auth (实例)  |  [Illuminate\Auth\Guard](http://laravel.com/api/5.0/Illuminate/Auth/Guard.html)  |
 Blade  |  [Illuminate\View\Compilers\BladeCompiler](http://laravel.com/api/5.0/Illuminate/View/Compilers/BladeCompiler.html)  |  `blade.compiler`
 Cache  |  [Illuminate\Cache\Repository](http://laravel.com/api/5.0/Illuminate/Cache/Repository.html)  |  `cache`
 Config  |  [Illuminate\Config\Repository](http://laravel.com/api/5.0/Illuminate/Config/Repository.html)  |  `config`
 Cookie  |  [Illuminate\Cookie\CookieJar](http://laravel.com/api/5.0/Illuminate/Cookie/CookieJar.html)  |  `cookie`
 Crypt  |  [Illuminate\Encryption\Encrypter](http://laravel.com/api/5.0/Illuminate/Encryption/Encrypter.html)  |  `encrypter`
 DB  |  [Illuminate\Database\DatabaseManager](http://laravel.com/api/5.0/Illuminate/Database/DatabaseManager.html)  |  `db`
-DB (Instance)  |  [Illuminate\Database\Connection](http://laravel.com/api/5.0/Illuminate/Database/Connection.html)  |
+DB (实例)  |  [Illuminate\Database\Connection](http://laravel.com/api/5.0/Illuminate/Database/Connection.html)  |
 Event  |  [Illuminate\Events\Dispatcher](http://laravel.com/api/5.0/Illuminate/Events/Dispatcher.html)  |  `events`
 File  |  [Illuminate\Filesystem\Filesystem](http://laravel.com/api/5.0/Illuminate/Filesystem/Filesystem.html)  |  `files`
 Form  |  [Illuminate\Html\FormBuilder](http://laravel.com/api/5.0/Illuminate/Html/FormBuilder.html)  |  `form`
@@ -159,11 +159,11 @@ Lang  |  [Illuminate\Translation\Translator](http://laravel.com/api/5.0/Illumina
 Log  |  [Illuminate\Log\Writer](http://laravel.com/api/5.0/Illuminate/Log/Writer.html)  |  `log`
 Mail  |  [Illuminate\Mail\Mailer](http://laravel.com/api/5.0/Illuminate/Mail/Mailer.html)  |  `mailer`
 Paginator  |  [Illuminate\Pagination\Factory](http://laravel.com/api/5.0/Illuminate/Pagination/Factory.html)  |  `paginator`
-Paginator (Instance)  |  [Illuminate\Pagination\Paginator](http://laravel.com/api/5.0/Illuminate/Pagination/Paginator.html)  |
+Paginator (实例)  |  [Illuminate\Pagination\Paginator](http://laravel.com/api/5.0/Illuminate/Pagination/Paginator.html)  |
 Password  |  [Illuminate\Auth\Passwords\PasswordBroker](http://laravel.com/api/5.0/Illuminate/Auth/Passwords/PasswordBroker.html)  |  `auth.reminder`
 Queue  |  [Illuminate\Queue\QueueManager](http://laravel.com/api/5.0/Illuminate/Queue/QueueManager.html)  |  `queue`
-Queue (Instance) |  [Illuminate\Queue\QueueInterface](http://laravel.com/api/5.0/Illuminate/Queue/QueueInterface.html)  |
-Queue (Base Class) |  [Illuminate\Queue\Queue](http://laravel.com/api/5.0/Illuminate/Queue/Queue.html)  |
+Queue (实例) |  [Illuminate\Queue\QueueInterface](http://laravel.com/api/5.0/Illuminate/Queue/QueueInterface.html)  |
+Queue (基底类别) |  [Illuminate\Queue\Queue](http://laravel.com/api/5.0/Illuminate/Queue/Queue.html)  |
 Redirect  |  [Illuminate\Routing\Redirector](http://laravel.com/api/5.0/Illuminate/Routing/Redirector.html)  |  `redirect`
 Redis  |  [Illuminate\Redis\Database](http://laravel.com/api/5.0/Illuminate/Redis/Database.html)  |  `redis`
 Request  |  [Illuminate\Http\Request](http://laravel.com/api/5.0/Illuminate/Http/Request.html)  |  `request`
@@ -171,11 +171,11 @@ Response  |  [Illuminate\Support\Facades\Response](http://laravel.com/api/5.0/Il
 Route  |  [Illuminate\Routing\Router](http://laravel.com/api/5.0/Illuminate/Routing/Router.html)  |  `router`
 Schema  |  [Illuminate\Database\Schema\Blueprint](http://laravel.com/api/5.0/Illuminate/Database/Schema/Blueprint.html)  |
 Session  |  [Illuminate\Session\SessionManager](http://laravel.com/api/5.0/Illuminate/Session/SessionManager.html)  |  `session`
-Session (Instance)  |  [Illuminate\Session\Store](http://laravel.com/api/5.0/Illuminate/Session/Store.html)  |
+Session (实例)  |  [Illuminate\Session\Store](http://laravel.com/api/5.0/Illuminate/Session/Store.html)  |
 SSH  |  [Illuminate\Remote\RemoteManager](http://laravel.com/api/5.0/Illuminate/Remote/RemoteManager.html)  |  `remote`
-SSH (Instance)  |  [Illuminate\Remote\Connection](http://laravel.com/api/5.0/Illuminate/Remote/Connection.html)  |
+SSH (实例)  |  [Illuminate\Remote\Connection](http://laravel.com/api/5.0/Illuminate/Remote/Connection.html)  |
 URL  |  [Illuminate\Routing\UrlGenerator](http://laravel.com/api/5.0/Illuminate/Routing/UrlGenerator.html)  |  `url`
 Validator  |  [Illuminate\Validation\Factory](http://laravel.com/api/5.0/Illuminate/Validation/Factory.html)  |  `validator`
-Validator (Instance)  |  [Illuminate\Validation\Validator](http://laravel.com/api/5.0/Illuminate/Validation/Validator.html) |
+Validator (实例)  |  [Illuminate\Validation\Validator](http://laravel.com/api/5.0/Illuminate/Validation/Validator.html) |
 View  |  [Illuminate\View\Factory](http://laravel.com/api/5.0/Illuminate/View/Factory.html)  |  `view`
-View (Instance)  |  [Illuminate\View\View](http://laravel.com/api/5.0/Illuminate/View/View.html)  |
+View (实例)  |  [Illuminate\View\View](http://laravel.com/api/5.0/Illuminate/View/View.html)  |
