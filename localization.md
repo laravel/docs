@@ -1,10 +1,10 @@
-# 在地化
+# 本地化
 
 - [介绍](#introduction)
 - [语言档](#language-files)
 - [基本用法](#basic-usage)
 - [复数](#pluralization)
-- [验证在地化](#validation)
+- [验证本地化](#validation)
 - [覆写套件的语言档](#overriding-package-language-files)
 
 <a name="introduction"></a>
@@ -101,7 +101,7 @@ Laravel 的 `Lang` facade 提供方便的方法来取得多种语言的字串，
 <a name="validation"></a>
 ## 验证
 
-要验证在地化的错误和消息，可以看一下<a href="/docs/5.0/validation#localization">验证的文档</a>.
+要验证本地化的错误和消息，可以看一下<a href="/docs/5.0/validation#localization">验证的文档</a>.
 
 <a name="overriding-package-language-files"></a>
 ## 覆写套件的语言档
