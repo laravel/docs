@@ -96,9 +96,9 @@ Homestead 目前是建置且测试于 Vagrant 1.6。
 
 ### 设置你的 Nginx 站点
 
-对 Nginx 不熟悉？没关系。`sites` 属性允许你简单的对应一个 `网域` 到一个 homestead 环境中的目录。一个范例的站点被站点设置在 `Homestead.yaml` 文件中。同样的，你可以加任何你需要的站点到你的 Homestead 环境中。Homestead 可以为你每个进行中的 Laravel 专案提供方便的虚拟化环境。
+对 Nginx 不熟悉？没关系。`sites` 属性允许你简单的对应一个 `网域` 到一个 homestead 环境中的目录。一个范例的站台被设置在 `Homestead.yaml` 文件中。同样的，你可以加任何你需要的站台到你的 Homestead 环境中。Homestead 可以为你每个进行中的 Laravel 专案提供方便的虚拟化环境。
 
-你可以透过设置 `hhvm` 属性为 `true` 来让虚拟站点支持 [HHVM](http://hhvm.com):
+你可以透过设置 `hhvm` 属性为 `true` 来让虚拟站台支持 [HHVM](http://hhvm.com):
 
 	sites:
 	    - map: homestead.app
@@ -113,13 +113,13 @@ Homestead 目前是建置且测试于 Vagrant 1.6。
 
 当你根据你的喜好编辑完 `Homestead.yaml` 后，在终端机里进入你的 Homestead 文件夹并执行 `vagrant up` 指令。
 
-Vagrant 会将虚拟机开机，并且自动设置你的共享目录和 Nginx 站点。如果要移除虚拟机，可以使用 `vagrant destroy --force` 指令。
+Vagrant 会将虚拟机开机，并且自动设置你的共享目录和 Nginx 站台。如果要移除虚拟机，可以使用 `vagrant destroy --force` 指令。
 
-为了你的 Nginx 站点，别忘记在你的机器的 `hosts` 档将「网域」加进去。`hosts` 档会将你的本地网域的站点请求重导至你的 Homestead 环境中。在 Mac 和 Linux，该文件放在 `/etc/hosts`。在 Windows 环境中，它被放置在 `C:\Windows\System32\drivers\etc\hosts`。你要加进去的内容类似如下：
+为了你的 Nginx 站台，别忘记在你的机器的 `hosts` 档将「网域」加进去。`hosts` 档会将你的本地网域的站台请求重导至你的 Homestead 环境中。在 Mac 和 Linux，该文件放在 `/etc/hosts`。在 Windows 环境中，它被放置在 `C:\Windows\System32\drivers\etc\hosts`。你要加进去的内容类似如下：
 
 	192.168.10.10  homestead.app
 
-务必确认 IP 位置与你的 `Homestead.yaml` 文件中的相同。一旦你将网域加进你的 `hosts` 文件中，你就可以透过网页浏览器 访问到你的站点。
+务必确认 IP 位置与你的 `Homestead.yaml` 文件中的相同。一旦你将网域加进你的 `hosts` 文件中，你就可以透过网页浏览器 访问到你的站台。
 
 	http://homestead.app
 
@@ -146,15 +146,15 @@ Vagrant 会将虚拟机开机，并且自动设置你的共享目录和 Nginx �
 
 > **附注：** 从本机端你应该只能使用这些非标准的连接端口来连接数据库。因为当 Laravel 运行在虚拟机时，在 Laravel 的数据库设置档中依然是设置使用缺省的 3306 及 5432 连接端口。
 
-### 增加更多的站点
+### 增加更多的站台
 
-一旦 Homestead 环境上架且运行后，你可能会需要为 Laravel 应用程序增加更多的 Nginx 站点。你可以在单一个 Homestead 环境中运行非常多 Laravel 安装程序。有两种方式可以达成：第一种，在 `Homestead.yaml` 文件中增加站点然后执行 `vagrant provision`。
+一旦 Homestead 环境上架且运行后，你可能会需要为 Laravel 应用程序增加更多的 Nginx 站台。你可以在单一个 Homestead 环境中运行非常多 Laravel 安装程序。有两种方式可以达成：第一种，在 `Homestead.yaml` 文件中增加站台然后执行 `vagrant provision`。
 
 另外，也可以使用存放在 Homestead 环境中的 `serve` 指令档。要使用 `serve` 指令档，请先 SSH 进入 Homestead 环境中，并执行下列命令：
 
 	serve domain.app /home/vagrant/Code/path/to/public/directory
 
-> **附注：** 在执行 `serve` 指令过后，别忘记将新的站点加进本机的 `hosts` 文件中。
+> **附注：** 在执行 `serve` 指令过后，别忘记将新的站台加进本机的 `hosts` 文件中。
 
 <a name="ports"></a>
 ## 连接端口
