@@ -96,7 +96,7 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 
 ### 設定你的 Nginx 站台
 
-對 Nginx 不熟悉？沒關係。`sites` 屬性允許你簡單的對應一個 `網域` 到一個 homestead 環境中的目錄。一個範例的站台設定被在 `Homestead.yaml` 檔案中。同樣的，你可以加任何你需要的站台到你的 Homestead 環境中。Homestead 可以為你每個進行中的 Laravel 專案提供方便的虛擬化環境。
+對 Nginx 不熟悉？沒關係。`sites` 屬性允許你簡單的對應一個 `網域` 到一個 homestead 環境中的目錄。一個範例的站台被設定在 `Homestead.yaml` 檔案中。同樣的，你可以加任何你需要的站台到你的 Homestead 環境中。Homestead 可以為你每個進行中的 Laravel 專案提供方便的虛擬化環境。
 
 你可以透過設定 `hhvm` 屬性為 `true` 來讓虛擬站台支援 [HHVM](http://hhvm.com):
 
