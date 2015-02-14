@@ -177,9 +177,9 @@ Laravel 內含一個 Artisan 命令，它將推送到隊列的工作拉來下執
 <a name="daemon-queue-worker"></a>
 ## 常駐隊列處理器
 
-在 `queue:work` 中也包含了一個 `--daemon` 選項強迫隊列處理器可以持續處理工作即使重新啟動框架，這個作法相對的比 `queue:listen` 可有效的減少CPU的使用量，但是卻增加了你佈署時正在處理中的隊列任務的複雜性。
+在 `queue:work` 中也包含了一個 `--daemon` 選項，強迫隊列處理器持續處理工作，而不會每次都重新啟動框架，這個作法比起 `queue:listen` 可有效減少 CPU 使用量，但是卻增加了佈署時，對於處理中隊列任務的複雜性。
 
-當開始一個隊列處理器於常駐模式，使用 `--daemon` 旗標：
+要啟動一個常駐的隊列處理器，使用 `--daemon`：
 
 	php artisan queue:work connection --daemon
 
