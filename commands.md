@@ -1,26 +1,26 @@
 # Artisan Development
 
-- [Introduction](#introduction)
+- [Introdução](#introduction)
 - [Building A Command](#building-a-command)
 - [Registering Commands](#registering-commands)
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
 In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
 
 <a name="building-a-command"></a>
-## Building A Command
+## Construindo um Comando
 
-### Generating The Class
+### Gerando a Classe
 
-To create a new command, you may use the `make:console` Artisan command, which will generate a command stub to help you get started:
+Para criar um novo comando, você pode usar o comando Artisan `make:console`, que gerará um esboço do comando para ajudar você a começar:
 
-#### Generate A New Command Class
+#### Gerando uma Nova Classe de Comando
 
 	php artisan make:console FooCommand
 
-The command above would generate a class at `app/Console/FooCommand.php`.
+O comando acima irá gerar a clsse em `app/Console/FooCommand.php`.
 
 When creating the command, the `--command` option may be used to assign the terminal command name:
 
