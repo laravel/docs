@@ -211,25 +211,25 @@ The Remote component has been deprecated.
 The Workbench component has been deprecated.
 
 <a name="upgrade-4.2"></a>
-## Upgrading To 4.2 From 4.1
+## 從 4.1 升級到 4.2
 
 ### PHP 5.4+
 
-Laravel 4.2 requires PHP 5.4.0 or greater.
+Laravel 4.2 需要 PHP 5.4.0 以上。
 
-### Encryption Defaults
+### 預設加密
 
-Add a new `cipher` option in your `app/config/app.php` configuration file. The value of this option should be `MCRYPT_RIJNDAEL_256`.
+增加一個新的 `cipher` 選項在你的 `app/config/app.php` 設定檔中。其選項值應為 `MCRYPT_RIJNDAEL_256`。
 
 	'cipher' => MCRYPT_RIJNDAEL_256
 
-This setting may be used to control the default cipher used by the Laravel encryption facilities.
+該設置可用於設定所使用的 Laravel 加密工具的預設加密方法。
 
-> **Note:** In Laravel 4.2, the default cipher is `MCRYPT_RIJNDAEL_128` (AES), which is considered to be the most secure cipher. Changing the cipher back to `MCRYPT_RIJNDAEL_256` is required to decrypt cookies/values that were encrypted in Laravel <= 4.1
+> **附註:** 在 Laravel 4.2，預設加密方法為`MCRYPT_RIJNDAEL_128` (AES)，被認為是最安全的加密。必須將加密改回`MCRYPT_RIJNDAEL_256` 來解密在 Laravel <= 4.1 下加密的 cookies/values
 
-### Soft Deleting Models Now Use Traits
+### 軟刪除模型現在改使用特性
 
-If you are using soft deleting models, the `softDeletes` property has been removed. You must now use the `SoftDeletingTrait` like so:
+如果你在模型下有使用軟刪除，現在 `softDeletes` 的屬性已經被移除。你現在要使用 `SoftDeletingTrait` 如下：
 
 	use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
@@ -237,7 +237,7 @@ If you are using soft deleting models, the `softDeletes` property has been remov
 		use SoftDeletingTrait;
 	}
 
-You must also manually add the `deleted_at` column to your `dates` property:
+你一樣必須手動增加 `deleted_at` 欄位到你的 `dates` 屬性中：
 
 	class User extends Eloquent {
 		use SoftDeletingTrait;
@@ -245,45 +245,45 @@ You must also manually add the `deleted_at` column to your `dates` property:
 		protected $dates = ['deleted_at'];
 	}
 
-The API for all soft delete operations remains the same.
+而所有軟刪除的 API 使用方式維持相同。
 
-> **Note:** The `SoftDeletingTrait` can not be applied on a base model. It must be used on an actual model class.
+> **附註:** `SoftDeletingTrait` 無法在基本模型下被使用。他只能在一個實際模型類別中使用。
 
-### View / Pagination Environment Renamed
+### 視圖 / 分頁 / 環境 類別改名
 
-If you are directly referencing the `Illuminate\View\Environment` class or `Illuminate\Pagination\Environment` class, update your code to reference `Illuminate\View\Factory` and `Illuminate\Pagination\Factory` instead. These two classes have been renamed to better reflect their function.
+如果你直接使用 `Illuminate\View\Environment` 或 `Illuminate\Pagination\Environment` 類別，請更新你的程式碼將其改為參照 `Illuminate\View\Factory` 和 `Illuminate\Pagination\Factory`。改名後的這兩個類別更可以代表他們的功能。
 
 ### Additional Parameter On Pagination Presenter
 
-If you are extending the `Illuminate\Pagination\Presenter` class, the abstract method `getPageLinkWrapper` signature has changed to add the `rel` argument:
+如果你擴展了 `Illuminate\Pagination\Presenter` 類別，抽象方法 `getPageLinkWrapper` 參數列變成要加上 `rel` 參數：
 
 	abstract public function getPageLinkWrapper($url, $page, $rel = null);
 
-### Iron.Io Queue Encryption
+### Iron.Io Queue 加密
 
-If you are using the Iron.io queue driver, you will need to add a new `encrypt` option to your queue configuration file:
+如果你使用 Iron.io queue 驅動，你將需要增加一個新的 `encrypt` 選項到你的 queue 設定檔中：
 
     'encrypt' => true
 
 <a name="upgrade-4.1.29"></a>
-## Upgrading To 4.1.29 From <= 4.1.x
+## 從 4.1.x 升級到 4.1.29
 
-Laravel 4.1.29 improves the column quoting for all database drivers. This protects your application from some mass assignment vulnerabilities when **not** using the `fillable` property on models. If you are using the `fillable` property on your models to protect against mass assignment, your application is not vulnerable. However, if you are using `guarded` and are passing a user controlled array into an "update" or "save" type function, you should upgrade to `4.1.29` immediately as your application may be at risk of mass assignment.
+Laravel 4.1.29 對於所有的資料庫驅動加強了 column quoting 的部分。當你的模型中**沒有**使用 `fillable` 屬性，他保護你的應用程式不會受到 mass assignment 漏洞影響。如果你在模型中使用 `fillable` 屬性來防範 mass assignment，你的應用程式將不會有漏洞。如果你使用 `guarded` 且在「更新」或「儲存」類型的函式中，傳遞了末端使用者控制的陣列，那你應該立即升級到 `4.1.29` 以避免 mass assignment 的風險。
 
-To upgrade to Laravel 4.1.29, simply `composer update`. No breaking changes are introduced in this release.
+升級到 Laravel 4.1.29，只要 `composer update` 即可。在這個發行版本中沒有重大的更新。
 
 <a name="upgrade-4.1.26"></a>
-## Upgrading To 4.1.26 From <= 4.1.25
+## 從 4.1.25 升級到 4.1.26
 
-Laravel 4.1.26 introduces security improvements for "remember me" cookies. Before this update, if a remember cookie was hijacked by another malicious user, the cookie would remain valid for a long period of time, even after the true owner of the account reset their password, logged out, etc.
+Laravel 4.1.26 採用了針對「記得我」cookies 的安全性更新。在此更新之前，如果一個記得我的 cookies 被惡意使用者劫持，該 cookie 將還可以生存很長一段時間，即使真實用戶重設密碼或者登出亦同。
 
-This change requires the addition of a new `remember_token` column to your `users` (or equivalent) database table. After this change, a fresh token will be assigned to the user each time they login to your application. The token will also be refreshed when the user logs out of the application. The implications of this change are: if a "remember me" cookie is hijacked, simply logging out of the application will invalidate the cookie.
+此更動需要在你的 `users` (或者類似的) 的資料表中增加一個額外的 `remember_token` 欄位。在更新之後，當用戶每次登入你的應用程式將會有一個全新的 token 將會被指派。這個 token 也會在使用者登出應用程式後被更新。這個更新的影響為：如果一個「記得我」的 cookie 被劫持，只要使用者登出應用程式將會廢除該 cookie。
 
-### Upgrade Path
+### 升級路徑
 
-First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent to your `users` table.
+首先，增加一個新的欄位，可空值、屬性為 VARCHAR(100)、TEXT 或同類型的欄位 `remember_token` 到你的 `users` 資料表中。
 
-Next, if you are using the Eloquent authentication driver, update your `User` class with the following three methods:
+然後，如果你使用 Eloquent 認證驅動，依照下面更新你的 `User` 類別的三個方法：
 
 	public function getRememberToken()
 	{
@@ -300,17 +300,17 @@ Next, if you are using the Eloquent authentication driver, update your `User` cl
 		return 'remember_token';
 	}
 
-> **Note:** All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
+> **附註:** 所有現存的「記得我」sessions 在此更新後將會失效，所以應用程式的所有使用者將會被迫重新登入。
 
-### Package Maintainers
+### 套件管理者
 
-Two new methods were added to the `Illuminate\Auth\UserProviderInterface` interface. Sample implementations may be found in the default drivers:
+兩個新的方法被加入到 `Illuminate\Auth\UserProviderInterface` 介面。範例實作方式可以在預設驅動中找到：
 
 	public function retrieveByToken($identifier, $token);
 
 	public function updateRememberToken(UserInterface $user, $token);
 
-The `Illuminate\Auth\UserInterface` also received the three new methods described in the "Upgrade Path".
+`Illuminate\Auth\UserInterface` 也加了三個新方法描述在「升級路徑」。
 
 <a name="upgrade-4.1"></a>
 ## 從 4.0 升級到 4.1
