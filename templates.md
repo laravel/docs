@@ -11,7 +11,7 @@ Blade 是 Laravel 所提供的一個簡單卻又非常強大的模板引擎。�
 
 #### 定義一個 Blade 頁面佈局
 
-	<!-- Stored in app/views/layouts/master.blade.php -->
+	<!-- Stored in resources/views/layouts/master.blade.php -->
 
 	<html>
 		<body>
