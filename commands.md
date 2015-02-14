@@ -22,21 +22,22 @@ Para criar um novo comando, você pode usar o comando Artisan `make:console`, qu
 
 O comando acima irá gerar a clsse em `app/Console/FooCommand.php`.
 
-When creating the command, the `--command` option may be used to assign the terminal command name:
+Quando nos estamos criando um comando, a opção `--command` pode ser usada para atribuir o nome do comando no terminal:
 
 	php artisan make:console AssignUsers --command=users:assign
 
-### Writing The Command
+### Escrevendo o Comando
 
-Once your command is generated, you should fill out the `name` and `description` properties of the class, which will be used when displaying your command on the `list` screen.
+Uma vez que o seu comando é gerado, você deve preencher o `nome` e `descrição` propriedades da classe, que irá ser utilizada quando seu comando for mostrado na tela de listagem `list`.
 
-The `fire` method will be called when your command is executed. You may place any command logic in this method.
+O método `fire` irá ser chamado quando seu comando é executado. Você pode colocar qualquer lógica de comando neste método. 
 
-### Arguments & Options
+### Argumentos e Opções
 
-The `getArguments` and `getOptions` methods are where you may define any arguments or options your command receives. Both of these methods return an array of commands, which are described by a list of array options.
+Os métodos `getArguments` e `getOptions` é onde você define qualquer parâmetro ou opção que o seu comando pode receber.
+Ambos dos méotoso retornam um array de comandos, que são descritos por uma lista de array de opções.
 
-When defining `arguments`, the array definition values represent the following:
+Quando se está definindo `arguments` (parâmetros), os valores de definição do array representam o seguinte.  
 
 	array($name, $mode, $description, $defaultValue)
 
