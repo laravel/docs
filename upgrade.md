@@ -313,66 +313,68 @@ Two new methods were added to the `Illuminate\Auth\UserProviderInterface` interf
 The `Illuminate\Auth\UserInterface` also received the three new methods described in the "Upgrade Path".
 
 <a name="upgrade-4.1"></a>
-## Upgrading To 4.1 From 4.0
+## 從 4.0 升級到 4.1
 
-### Upgrading Your Composer Dependency
+### 升級你的 Composer 相依性
 
-To upgrade your application to Laravel 4.1, change your `laravel/framework` version to `4.1.*` in your `composer.json` file.
+升級你的應用程式至 Laravel 4.1，將 `composer.json` 裡的 `laravel/framework` 版本更改至 `4.1.*`。
 
-### Replacing Files
+### 檔案置換
 
-Replace your `public/index.php` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/master/public/index.php).
+將你的 `public/index.php` 置換成 [這個 repository 的乾淨版本](https://github.com/laravel/laravel/blob/master/public/index.php)。
 
-Replace your `artisan` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/master/artisan).
+同樣的，將你的 `artisan` 置換成 [這個 repository 的乾淨版本](https://github.com/laravel/laravel/blob/master/artisan)。
 
-### Adding Configuration Files & Options
+### 新增設定檔案及選項
 
-Update your `aliases` and `providers` arrays in your `app/config/app.php` configuration file. The updated values for these arrays can be found [in this file](https://github.com/laravel/laravel/blob/master/app/config/app.php). Be sure to add your custom and package service providers / aliases back to the arrays.
+更新你在設定檔 `app/config/app.php` 裡的 `aliases` 和 `providers` 陣列。而更新的選項值可以在 [這個檔案](https://github.com/laravel/laravel/blob/master/app/config/app.php) 中找到。請確定將你後來加入自定和套件所需的 providers / aliases 加回陣列中。
 
-Add the new `app/config/remote.php` file [from the repository](https://github.com/laravel/laravel/blob/master/app/config/remote.php).
+從 [這個 repository](https://github.com/laravel/laravel/blob/master/app/config/remote.php) 增加 `app/config/remote.php` 檔案。
 
-Add the new `expire_on_close` configuration option to your `app/config/session.php` file. The default value should be `false`.
+在你的 `app/config/session.php` 增加新的選項 `expire_on_close`。而預設值為 `false`。
 
-Add the new `failed` configuration section to your `app/config/queue.php` file. Here are the default values for the section:
+在你的 `app/config/queue.php` 檔案裡新增 `failed` 設定區塊。以下為區塊的預設值：
 
 	'failed' => array(
 		'database' => 'mysql', 'table' => 'failed_jobs',
 	),
 
-**(Optional)** Update the `pagination` configuration option in your `app/config/view.php` file to `pagination::slider-3`.
+**（非必要）** 在你的 `app/config/view.php` 裡，將 `pagination` 設定選項更新為 `pagination::slider-3`。
 
-### Controller Updates
+### 更新控制器（Controllers）
 
-If `app/controllers/BaseController.php` has a `use` statement at the top, change `use Illuminate\Routing\Controllers\Controller;` to `use Illuminate\Routing\Controller;`.
+如果 `app/controllers/BaseController.php` 有 `use` 語句在最上面，將 `use Illuminate\Routing\Controllers\Controller;` 改為 `use Illuminate\Routing\Controller;`。
 
-### Password Reminders Updates
+### 更新密碼提醒
 
-Password reminders have been overhauled for greater flexibility. You may examine the new stub controller by running the `php artisan auth:reminders-controller` Artisan command. You may also browse the [updated documentation](/docs/security#password-reminders-and-reset) and update your application accordingly.
+密碼提醒功能已經大幅修正擁有更大的彈性。你可以執行 Artisan 指令 `php artisan auth:reminders-controller` 來檢查新的存根控制器。你也可以瀏覽 [更新文檔](/docs/security#password-reminders-and-reset) 然後相應的更新你的應用程式。
 
-Update your `app/lang/en/reminders.php` language file to match [this updated file](https://github.com/laravel/laravel/blob/master/app/lang/en/reminders.php).
+更新你的 `app/lang/en/reminders.php` 語系檔案來符合 [這個新版檔案](https://github.com/laravel/laravel/blob/master/app/lang/en/reminders.php)。
 
-### Environment Detection Updates
+### 更新環境偵測
 
-For security reasons, URL domains may no longer be used to detect your application environment. These values are easily spoofable and allow attackers to modify the environment for a request. You should convert your environment detection to use machine host names (`hostname` command on Mac, Linux, and Windows).
+為了安全因素，不再使用網域網址來偵測辨別應用程式的環境。因為這些直很容易被偽造欺騙，繼而讓攻擊者透過請求來達到變更環境。所以你必須改為使用機器的 hostname（在 Mac & Ubuntu 下執行 `hostname` 出來的值）
 
-### Simpler Log Files
+（譯按：的確原有方式有安全性考量，但對於現行 VirtualHost 大量使用下，反而這樣改會造成不便）
 
-Laravel now generates a single log file: `app/storage/logs/laravel.log`. However, you may still configure this behavior in your `app/start/global.php` file.
+### 更簡單的日誌文件
 
-### Removing Redirect Trailing Slash
+Laravel 目前只會產生單一的日誌文件：`app/storage/logs/laravel.log`。然而，你還是可以透過設定你的 `app/start/global.php` 檔案來更改他的行為。
 
-In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailingSlash()`. This method is no longer needed as this functionality is now handled by the `.htaccess` file included with the framework.
+### 刪除重定向結尾的斜線
 
-Next, replace your Apache `.htaccess` file with [this new one](https://github.com/laravel/laravel/blob/master/public/.htaccess) that handles trailing slashes.
+在你的 `bootstrap/start.php` 檔案中，移除呼叫 `$app->redirectIfTrailingSlash()`。這個方法已不再需要了，因為之後將會改以框架內的 `.htaccess` 來處理。
 
-### Current Route Access
+然後，用 [新版](https://github.com/laravel/laravel/blob/master/public/.htaccess) 替換掉你 Apache 中的 `.htaccess` 檔案，來處理結尾的斜線問題。
 
-The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
+### 取得目前路由
 
-### Composer Update
+取得目前路由的方法由 `Route::getCurrentRoute()` 改為 `Route::current()`。
 
-Once you have completed the changes above, you can run the `composer update` function to update your core application files! If you receive class load errors, try running the `update` command with the `--no-scripts` option enabled like so: `composer update --no-scripts`.
+### Composer 更新
 
-### Wildcard Event Listeners
+一旦你完成以上的更新，你可以執行 `composer update` 來更新應用程式的核心檔案。如果有 class load 錯誤，請在 `update` 之後加上 `--no-scripts`，如：`composer update --no-scripts`。
 
-The wildcard event listeners no longer append the event to your handler functions parameters. If you require finding the event that was fired you should use `Event::firing()`.
+### 萬用字元事件監聽者
+
+萬用字元事件監聽者不再添加事件為參數到你的處理函數。如果你需要尋找你觸發的事件你應該用 `Event::firing()`.
