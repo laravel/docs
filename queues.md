@@ -1,29 +1,29 @@
-# Queues
+# 隊列
 
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
-- [Queueing Closures](#queueing-closures)
-- [Running The Queue Listener](#running-the-queue-listener)
-- [Daemon Queue Worker](#daemon-queue-worker)
-- [Push Queues](#push-queues)
-- [Failed Jobs](#failed-jobs)
+- [設定](#configuration)
+- [基本用法](#basic-usage)
+- [隊列閉包](#queueing-closures)
+- [啟動隊列監聽](#running-the-queue-listener)
+- [常駐隊列工作](#daemon-queue-worker)
+- [推送隊列](#push-queues)
+- [失敗的工作](#failed-jobs)
 
 <a name="configuration"></a>
-## Configuration
+## 設定
 
-The Laravel Queue component provides a unified API across a variety of different queue services. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time, thus drastically speeding up the web requests to your application.
+Laravel 隊列元件提供一個統一的 API 整合了許多不同的隊列服務，隊列允許你延後執行一個耗時的任務，例如寄送郵件延後至你指定的時間，進而大幅的加快你的網站應用程式的速度。
 
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io), null, and synchronous (for local use) driver. The `null` queue driver simply discards queued jobs so they are never run.
+隊列的設定檔在 `config/queue.php`，在這個檔案你將可以找到框架中每種不同的隊列服務的連線設定，其中包含了 [Beanstalkd](http://kr.github.com/beanstalkd)、[IronMQ](http://iron.io)、[Amazon SQS](http://aws.amazon.com/sqs)、[Redis](http://redis.io)、`null`，以及同步 (本地端使用) 驅動設定。驅動 `null` 只是簡單的捨棄隊列工作，因此這些工作永遠不會執行。
 
-### Queue Database Table
+### 隊列資料表
 
-In order to use the `database` queue driver, you will need a database table to hold the jobs. To generate a migration to create this table, run the `queue:table` Artisan command:
+為了能夠使用 `database` 驅動，你需要建立一個資料表來儲存工作。要使用一個遷移建立這個資料表，可以執行 `queue:table` 這個 Artisan 命令：
 
 	php artisan queue:table
 
-### Other Queue Dependencies
+### 其他隊列依賴
 
-The following dependencies are needed for the listed queue drivers:
+下列的 `composer.json` 設定可以依照你使用的隊列服務必需在使用前安裝：
 
 - Amazon SQS: `aws/aws-sdk-php`
 - Beanstalkd: `pda/pheanstalk ~3.0`
@@ -31,66 +31,66 @@ The following dependencies are needed for the listed queue drivers:
 - Redis: `predis/predis ~1.0`
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-#### Pushing A Job Onto The Queue
+#### 推送一個工作至隊列
 
-All of the queueable jobs for your application are stored in the `App\Commands` directory. You may generate a new queued command using the Artisan CLI:
+所有在你的網站應用程式中能夠放進隊列的工作都存放在 `App\Commands` 這個目錄之下，你可以藉由下列 Artisan 命令產生一個可放進隊列的指令：
 
 	php artisan make:command SendEmail --queued
 
-To push a new job onto the queue, use the `Queue::push` method:
+要推送一個新的工作至隊列，請使用 `Queue::push` 方法：
 
 	Queue::push(new SendEmail($message));
 
-> **Note:** In this example, we are using the `Queue` facade directly; however, typically you would dispatch queued command via the [Command Bus](/docs/5.0/bus). We will continue to use the `Queue` facade throughout this page; however, familiarize with the command bus as well, since it is used to dispatch both queued and synchronous commands for your application.
+> **注意:** 在這個範例當中，我們直接使用 `Queue` Facade，然而常見的作法藉由 [Command Bus](/docs/5.0/bus) 是分派隊列指令。我們將會在整篇文章中繼續使用 `Queue` Facade，不過，也要熟悉使用 Command bus，因為 Command bus 能夠同時分派你的網站應用程式中隊列與同步的指令。
 
-By default, the `make:command` Artisan command generates a "self-handling" command, meaning a `handle` method is added to the command itself. This method will be called when the job is executed by the queue. You may type-hint any dependencies you need on the `handle` method and the [IoC container](/docs/5.0/container) will automatically inject them:
+愛預設，由 `make:command` Artisan 命令產生一個有一個 `handle` 方法的指令。這個方法將會在隊列執行時被呼叫。你可以使用型別提示任何你需要的依賴，而 [服務容器](/docs/5.0/container) 會自動注入他們。
 
 	public function handle(UserRepository $users)
 	{
 		//
 	}
 
-If you would like your command to have a separate handler class, you should add the `--handler` flag to the `make:command` command:
+如果你希望你的指令有獨立的處理類別，你可以在使用 `make:command` 命令時加上 `--handler` 旗標。
 
 	php artisan make:command SendEmail --queued --handler
 
-The generated handler will be placed in `App\Handlers\Commands` and will be resolved out of the IoC container.
+這個被產生出來的處理類別將會放在 `App\Handlers\Commands` 目錄下面，並且服務容器會自動解析。
 
-#### Specifying The Queue / Tube For A Job
+#### 指定隊列使用特定連線
 
-You may also specify the queue / tube a job should be sent to:
+你也可指定隊列工作送至指定的連線：
 
 	Queue::pushOn('emails', new SendEmail($message));
 
-#### Passing The Same Payload To Multiple Jobs
+#### 傳送相同的資料去多個隊列工作
 
-If you need to pass the same data to several queue jobs, you may use the `Queue::bulk` method:
+如果你需要傳送一樣的資料去幾個不同的隊列工作，你可以使用 `Queue::bulk` 方法：
 
 	Queue::bulk(array(new SendEmail($message), new AnotherCommand));
 
-#### Delaying The Execution Of A Job
+#### 延遲執行一個工作
 
-Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
+有時後你也希望延遲一個隊列工作的執行，舉例來說你希望一個隊列工作在客戶註冊 15 分鐘後寄送一個 e-mail，你可以使用 `Queue::later` 方法來完成這件事情：
 
 	$date = Carbon::now()->addMinutes(15);
 
 	Queue::later($date, new SendEmail($message));
 
-In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
+在這個範例中，我們使用 [Carbon](https://github.com/briannesbitt/Carbon) 日期函式庫來指定我們希望隊列工作希望延遲的時間，另外你也可傳送一個整數來設定你希望延遲的秒數。
 
-> **Note:** The Amazon SQS service has a delay limit of 900 seconds (15 minutes).
+> **注意:** 在 Amazon SQS 服務中，有最大 900 秒 (15 分鐘) 的限制。
 
-#### Queues And Eloquent Models
+#### 將 Eloquent 模型放進隊列
 
-If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
+如果你隊列工作的建構式接收一個 Eloquent 模型，只有這個模型的標記 (identifier) 會被序列化後放到隊列中。當工作真正開始被處理的時候，隊列系統會自動從資料庫中重新取得完整的模型實例。這個對你的網站應用程式來說是完全透明的，並且預防一些在序列化完整 Eloquent 模型實例時可能遇到的問題。
 
-#### Deleting A Processed Job
+#### 刪除一個處理中的工作
 
-Once you have processed a job, it must be deleted from the queue. If no exception is thrown during the execution of your job, this will be done automatically.
+一旦一個工作被處理過後，這個工作必須從隊列中刪除。假如在工作執行後沒有發生錯誤，這個將會自動完成。
 
-If you would like to `delete` or `release` the job manually, the `Illuminate\Queue\InteractsWithQueue` trait provides access to the queue job `release` and `delete` methods. The `release` method accepts a single value: the number of seconds you wish to wait until the job is made available again.
+如果你希望能夠手動刪除或著釋放工作，在 `Illuminate\Queue\InteractsWithQueue` 這個 trait 中提供 `release` 以及 `delete` 方法的接口。其中 `release` 方法接受單一一個值：你想要等待工作再次能夠執行的秒數。
 
 	public function handle(SendEmail $command)
 	{
@@ -100,27 +100,27 @@ If you would like to `delete` or `release` the job manually, the `Illuminate\Que
 		}
 	}
 
-#### Releasing A Job Back Onto The Queue
+#### 釋放一個工作回到隊列中
 
-IF an exception is thrown while the job is being processed, it will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The number of maximum attempts is defined by the `--tries` switch used on the `queue:listen` or `queue:work` Artisan commands.
+假如在工作執行後發生錯誤，這個工作將會自動被釋放回到隊列之中，如此一來便能夠再次嘗試執行工作。工作會一直被是放回隊列直到到達你的網站應用程式嘗試上限。這個上限數值可以在使用 `queue:listen` 或 `queue:work` Artisan 命令時候藉由 `--tries` 開關來設定。
 
-#### Checking The Number Of Run Attempts
+#### 檢查工作執行次數
 
-If an exception occurs while the job is being processed, it will automatically be released back onto the queue. You may check the number of attempts that have been made to run the job using the `attempts` method:
+當一個工作執行後發生錯誤，這個工作將會自動的釋放回隊列當中，你可以透過 `attempts` 方法來檢查這個工作已經被執行的次數：
 
 	if ($this->attempts() > 3)
 	{
 		//
 	}
 
-> **Note:** Your command / handler must use the `Illuminate\Queue\InteractsWithQueue` trait in order to call this method.
+> **注意:** 你的指令處理類別必須使用 `Illuminate\Queue\InteractsWithQueue` 這個 trait 才能夠使用這個方法。
 
 <a name="queueing-closures"></a>
-## Queueing Closures
+## 隊列閉包
 
-You may also push a Closure onto the queue. This is very convenient for quick, simple tasks that need to be queued:
+你也可以推送一個閉包去隊列，這個方法非常的方便及快速的來處理需要使用隊列的簡單的任務：
 
-#### Pushing A Closure Onto The Queue
+#### 推送一個閉包至隊列
 
 	Queue::push(function($job) use ($id)
 	{
@@ -129,57 +129,57 @@ You may also push a Closure onto the queue. This is very convenient for quick, s
 		$job->delete();
 	});
 
-> **Note:** Instead of making objects available to queued Closures via the `use` directive, consider passing primary keys and re-pulling the associated models from within your queue job. This often avoids unexpected serialization behavior.
+> **注意:** 要讓一個元件變數可以在隊列閉包中可以使用我們會透過 `use` 指令，試著傳送主鍵及重覆使用的相關模組在你的隊列工作中，這可以避免其他的序列化行為。
 
-When using Iron.io [push queues](#push-queues), you should take extra precaution queueing Closures. The end-point that receives your queue messages should check for a token to verify that the request is actually from Iron.io. For example, your push queue end-point should be something like: `https://yourapp.com/queue/receive?token=SecretToken`. You may then check the value of the secret token in your application before marshalling the queue request.
+當使用 Iron.io [push queues](#push-queues) 時,你應該在隊列閉包中采取一些其他的預防措施，我們應該在執行工作收到隊列資料時檢查token是否真來自 Iron.io，舉例來說你推送一個隊列工作到 `https://yourapp.com/queue/receive?token=SecretToken`，接下來在你的工作收到隊列的請求時，你就可以檢查token的值是否正確。
 
 <a name="running-the-queue-listener"></a>
-## Running The Queue Listener
+## 執行一個隊列監聽
 
-Laravel includes an Artisan task that will run new jobs as they are pushed onto the queue. You may run this task using the `queue:listen` command:
+Laravel 內含一個 Artisan 命令，它將推送到隊列的工作拉來下執行，你可以使用 `queue:listen` 命令，來執行這件常駐任務：
 
-#### Starting The Queue Listener
+#### 開始隊列監聽
 
 	php artisan queue:listen
 
-You may also specify which queue connection the listener should utilize:
+你也可以指定特定隊列連線讓監聽器使用：
 
 	php artisan queue:listen connection
 
-Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
+注意當這個任務開始時，這將會一直持續執行到他被手動停止，你也可以使用一個處理監控像是 [Supervisor](http://supervisord.org/) 來確保這個隊列監聽不會停止執行。
 
-You may pass a comma-delimited list of queue connections to the `listen` command to set queue priorities:
+你也可以在 `listen` 指令中使用逗號分隔不同的隊列連線來設定隊列的重要性：
 
 	php artisan queue:listen --queue=high,low
 
-In this example, jobs on the `high-connection` will always be processed before moving onto jobs from the `low-connection`.
+在這個範列中，相對於 `low-connection` 隊列總是會優先處理 `high-connection` 中的工作。
 
-#### Specifying The Job Timeout Parameter
+#### 指定工作逾時參數
 
-You may also set the length of time (in seconds) each job should be allowed to run:
+你也可以設定給每個工作允許執行的秒數：
 
 	php artisan queue:listen --timeout=60
 
-#### Specifying Queue Sleep Duration
+#### 指定隊列休息時間
 
-In addition, you may specify the number of seconds to wait before polling for new jobs:
+此外，你也可以指定讓監聽器在拉取新工作時要等待幾秒：
 
 	php artisan queue:listen --sleep=5
 
-Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
+注意隊列只會隊列上沒有工作時休息，假如有許多可執行的工作，隊列監聽將持續的處理工作不會休息
 
-#### Processing The First Job On The Queue
+#### 處理隊列上的第一個工作
 
-To process only the first job on the queue, you may use the `queue:work` command:
+當你只想處理隊列上的一個工作你可以使用 `queue:work` Artisan 命令：
 
 	php artisan queue:work
 
 <a name="daemon-queue-worker"></a>
-## Daemon Queue Worker
+## 常駐隊列處理器
 
-The `queue:work` also includes a `--daemon` option for forcing the queue worker to continue processing jobs without ever re-booting the framework. This results in a significant reduction of CPU usage when compared to the `queue:listen` command, but at the added complexity of needing to drain the queues of currently executing jobs during your deployments.
+在 `queue:work` 中也包含了一個 `--daemon` 選項強迫隊列處理器可以持續處理工作即使重新啟動框架，這個作法相對的比 `queue:listen` 可有效的減少CPU的使用量，但是卻增加了你佈署時正在處理中的隊列任務的複雜性。
 
-To start a queue worker in daemon mode, use the `--daemon` flag:
+當開始一個隊列處理器於常駐模式，使用 `--daemon` 旗標：
 
 	php artisan queue:work connection --daemon
 
@@ -187,87 +187,87 @@ To start a queue worker in daemon mode, use the `--daemon` flag:
 
 	php artisan queue:work connection --daemon --sleep=3 --tries=3
 
-As you can see, the `queue:work` command supports most of the same options available to `queue:listen`. You may use the `php artisan help queue:work` command to view all of the available options.
+如你所見 `queue:work` 指令支援 `queue:listen` 大多相同的選項參數，你也可使用 `php artisan help queue:work` 指令來觀看全部可用的選項參數。
 
-### Deploying With Daemon Queue Workers
+### 佈署常駐隊列處理器
 
-The simplest way to deploy an application using daemon queue workers is to put the application in maintenance mode at the beginning of your deployment. This can be done using the `php artisan down` command. Once the application is in maintenance mode, Laravel will not accept any new jobs off of the queue, but will continue to process existing jobs.
+最簡單的方式佈署一個應用程式使用常駐隊列處理器就是將應用程式在開始佈署時使用維護模式，你可以使用 `php artisan down` 指令來完成這件事情，當這個應用程式在維護模式，Laravel 將不會允許任何來自隊列上的新工作，但會持續的處理已存在的工作，當過了足夠的時間所有你正在執行的工作都已處理完（通常不會很久，約 30-60 秒），你可以停止處理器及繼續處理你的佈署工作。
 
-The easiest way to restart your workers is to include the following command in your deployment script:
+要重新啟動 `queue` 也是非常容易，請將底下 command 加入 deployment script 內：
 
 	php artisan queue:restart
 
-This command will instruct all queue workers to restart after they finish processing their current job.
+上述指令會在執行完目前的工作後，重新啟動隊列。
 
-> **Note:** This command relies on the cache system to schedule the restart. By default, APCu does not work for CLI commands. If you are using APCu, add `apc.enable_cli=1` to your APCu configuration.
+> **注意:** 這個指令依賴快取系統來排定重新啟動任務。預設 APCu 無法在命令提示字元中工作。如果你正在使用 APCu 請將 `apc.enable_cli=1` 加到你的 APCu 設定當中。
 
-### Coding For Daemon Queue Workers
+### 撰寫常駐隊列處理器
 
-Daemon queue workers do not restart the framework before processing each job. Therefore, you should be careful to free any heavy resources before your job finishes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
+常駐隊列處理器在處理每一個工作之前不會重新啟動框架。因此，你應該注意並小心地在工作處理完成之前釋放佔用的資源。例如，如果你正在使用 GD 函式庫操作圖片，當你完成工作的時候，你應該使用 `imagedestroy` 方法來釋放佔用的記憶體。
 
-Similarly, your database connection may disconnect when being used by long-running daemon. You may use the `DB::reconnect` method to ensure you have a fresh connection.
+同樣地，資料庫連線可能在長時間執行的隊列處理器中斷線，你可以使用 `DB::reconnect` 方法來確保你每次都有一個全新的連線。
 
 <a name="push-queues"></a>
-## Push Queues
+## 推送隊列
 
-Push queues allow you to utilize the powerful Laravel 4 queue facilities without running any daemons or background listeners. Currently, push queues are only supported by the [Iron.io](http://iron.io) driver. Before getting started, create an Iron.io account, and add your Iron credentials to the `config/queue.php` configuration file.
+你可以利用強大的 Laravel 4 隊列架構來進行推送隊列工作，不需要執行任何的常駐或背景監聽，目前只支援 [Iron.io](http://iron.io) 驅動，在你開始前建立一個 Iron.io 帳號及新增你的 Iron 憑證到 `config/queue.php` 設定檔。
 
-#### Registering A Push Queue Subscriber
+#### 註冊一個推送隊列訂閱
 
-Next, you may use the `queue:subscribe` Artisan command to register a URL end-point that will receive newly pushed queue jobs:
+接下來，你可以使用 `queue:subscribe` Artisan 指令註冊一個 URL，這將會接收新的推送隊列工作：
 
 	php artisan queue:subscribe queue_name http://foo.com/queue/receive
 
-Now, when you login to your Iron dashboard, you will see your new push queue, as well as the subscribed URL. You may subscribe as many URLs as you wish to a given queue. Next, create a route for your `queue/receive` end-point and return the response from the `Queue::marshal` method:
+現在當你登入你的 Iron 儀表板，你將會看到你新的推送隊列，以及訂閱的 URL，你可以訂閱許多的 URLs 給你希望的隊列，接下來建立一個 route 給你的 `queue/receive` 及從 `Queue::marshal` 方法回傳回應：
 
 	Route::post('queue/receive', function()
 	{
 		return Queue::marshal();
 	});
 
-The `marshal` method will take care of firing the correct job handler class. To fire jobs onto the push queue, just use the same `Queue::push` method used for conventional queues.
+這裡的 `marshal` 方法會將觸發正確的處理類別，而發送工作到隊列中只要使用一樣的 `Queue::push` 方法。
 
 <a name="failed-jobs"></a>
-## Failed Jobs
+## 已失敗的工作
 
-Since things don't always go as planned, sometimes your queued jobs will fail. Don't worry, it happens to the best of us! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into a `failed_jobs` table. The failed jobs table name can be configured via the `config/queue.php` configuration file.
+事情往往不會如你預期的一樣，有時後你推送工作到隊列會失敗，別擔心，Laravel 包含一個簡單的方法去指定一個工作最多可以被執行幾次，在工作被執行到一定的次數時，他將會新增至 `failed_jobs` 資料表裡，然後失敗工作的資料表名稱可以在 `config/queue.php` 裡進行設定：
 
-To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
+要產生一個遷移來建立 `failed_jobs` 資料表，你可以使用 `queue:failed-table` Artisan 指令：
 
 	php artisan queue:failed-table
 
-You can specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:listen` command:
+你可以指定一個最大值來限制一個工作應該最多被執行幾次透過 `--tries` 這個選項參數在你執行 `queue:listen` 的時候：
 
 	php artisan queue:listen connection-name --tries=3
 
-If you would like to register an event that will be called when a queue job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via e-mail or [HipChat](https://www.hipchat.com).
+假如你會想註冊一個事件，這個事件會將會在隊列失敗時被呼叫，你可以使用 `Queue::failing` 方法，這個事件是一個很好的機會讓你可以通知你的團隊透過 e-mail 或 [HipChat](https://www.hipchat.com)。
 
 	Queue::failing(function($connection, $job, $data)
 	{
 		//
 	});
 
-You may also define a `failed` method directly on a queue job class, allowing you to perform job specific actions when a failure occurs:
+你可能夠直接在隊列工作類別中定義一個 `failed` 方法，這讓你能夠在工作失敗時候，執行一些特定的動作：
 
 	public function failed()
 	{
-		// Called when the job is failing...
+		// 當工作失敗的時候會被呼叫……
 	}
 
-### Retrying Failed Jobs
+### 重新嘗試失敗的工作
 
-To view all of your failed jobs, you may use the `queue:failed` Artisan command:
+要看到所有失敗的工作，你可以使用 `queue:failed` 指令：
 
 	php artisan queue:failed
 
-The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of 5, the following command should be issued:
+這個 `queue:failed` 指令將會列出工作的 ID、連線、隊列名稱及失敗的時間，工作的 ID 也可以重新執行一個已經失敗的工作，例如一個已經失敗的工作他的 ID 是 5，我們可以使用下面的指令：
 
 	php artisan queue:retry 5
 
-If you would like to delete a failed job, you may use the `queue:forget` command:
+假如你會想刪除一個已失敗的工作，你可以使用 `queue:forget` 指令：
 
 	php artisan queue:forget 5
 
-To delete all of your failed jobs, you may use the `queue:flush` command:
+要刪除全部失敗的工作你可以使用 `queue:flush` 指令：
 
 	php artisan queue:flush
