@@ -13,7 +13,7 @@
 <a name="basic-usage"></a>
 ## 基本用法
 
-####對 A 密碼使用Bcrypt 加密
+#### 使用 Bcrypt 加密密碼
 
 	$password = Hash::make('secret');
 
@@ -21,14 +21,14 @@
 
 	$password = bcrypt('secret');
 
-#### 對加密的 A 密碼進行驗證
+#### 對加密的密碼進行驗證
 
 	if (Hash::check('secret', $hashedPassword))
 	{
 		// The passwords match...
 	}
 
-#### 檢查 A 密碼是否需要重新加密
+#### 檢查密碼是否需要重新加密
 
 	if (Hash::needsRehash($hashed))
 	{
