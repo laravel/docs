@@ -1,4 +1,4 @@
-# Contribution Guide
+# 貢獻導引
 
 - [錯誤回報](#bug-reports)
 - [核心開發探討](#core-development-discussion)
