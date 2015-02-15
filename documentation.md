@@ -42,6 +42,7 @@
     - [Session](/docs/5.0/session)
     - [Templates](/docs/5.0/templates)
     - [Unit Testing](/docs/5.0/testing)
+    - [Forms & HTML](/docs/5.0/html)
     - [Validation](/docs/5.0/validation)
 - Database
     - [Basic Usage](/docs/5.0/database)
