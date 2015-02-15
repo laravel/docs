@@ -30,7 +30,7 @@ Laravel 原始碼託管在 Github 上面，並且每個 Laravel 的專案都有�
 <a name="core-development-discussion"></a>
 ## 核心開發探討
 
-有關錯誤、新功能和現有功能的實作討論會在 `#laravel-dev` IRC 頻道 (Freenode) 裡面。Laravel 的維護者 Taylor Otwell 在工作日的 8am 到 5pm (UTC-06:00 或 America/Chicago) 通常會出現在頻道， 其他時間則是零星地出現在頻道。
+有關錯誤、新功能和現有功能的實作討論會在 `#laravel-dev` IRC 頻道 (Freenode) 裡面。Laravel 的維護者 Taylor Otwell 在工作日的 8am 到 5pm (UTC-06:00 或 America/Chicago) 通常會出現在頻道，其他時間則是零星地出現在頻道。
 
 `#laravel-dev` IRC 頻道開放給所有人。不論是參與討論或是簡單地觀看討論都歡迎加入頻道！
 
@@ -53,7 +53,7 @@ Laravel 原始碼託管在 Github 上面，並且每個 Laravel 的專案都有�
 <a name="coding-style"></a>
 ## 編碼風格
 
-Laravel 遵循 [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) 和 [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) 編碼規範。除了這些規範以外，以下編碼規範也應該被遵守：
+Laravel 遵循 [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) 和 [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) 編碼規範。除了這些規範以外，以下編碼規範也應該遵守：
 
 - 類別的命名空間宣告必須跟 `<?php` 在同一行。
 - 類別的起始 `{` 必須跟類別名稱在同一行。
