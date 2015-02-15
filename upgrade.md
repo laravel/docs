@@ -7,96 +7,96 @@
 - [從 4.0 升級到 4.1](#upgrade-4.1)
 
 <a name="upgrade-5.0"></a>
-## Upgrading To 5.0 From 4.2
+## 從 4.2 升級到 5.0
 
-### Fresh Install, Then Migrate
+### 全新安裝，然後遷移
 
-The recommended method of upgrading is to create a new Laravel `5.0` install and then to copy your `4.2` site's unique application files into the new application. This would include controllers, routes, Eloquent models, Artisan commands, assets, and other code specific to your application.
+推薦的升級方式是建立一個全新的 Laravel `5.0` 專案，然後複製您在 `4.2` 的檔案到此新的應用程式，這將包含控制器，路由，Eloquent 模型，Artisan 命令，資產，和關於此應用程式的其他特定檔案。
 
-To start, [install a new Laravel 5 application](/docs/5.0/installation) into a fresh directory in your local environment. We'll discuss each piece of the migration process in further detail below.
+開始在您的本機環境安裝全新的目錄結構，[安裝全新的 Laravel 5 應用程式](/docs/5.0/installation)，我們將詳細探討遷移各部分的過程。 
 
-### Composer Dependencies & Packages
+### Composer 相依與套件
 
-Don't forget to copy any additional Composer dependencies into your 5.0 application. This includes third-party code such as SDKs.
+別忘了將任何附加於 Composer 的相依套件加入 5.0 應用程式內，包含第三方代碼(例如 SDKs)
 
-Some Laravel-specific packages may not be compatible with Laravel 5 on initial release. Check with your package's maintainer to determine the proper version of the package for Laravel 5. Once you have added any additional Composer dependencies your application needs, run `composer update`.
+部分套件也許不相容剛釋出的 Laravel 5 版本，請向套件管理者確認該套件支援 Laravel 5的版本，當您在 Composer 內加入任何套件，請執行 `composer update`。
 
-### Namespacing
+### 命名空間
 
-By default, Laravel 4 applications did not utilize namespacing within your application code. So, for example, all Eloquent models and controllers simply lived in the "global" namespace. For a quicker migration, you can simply leave these classes in the global namespace in Laravel 5 as well.
+預設情況下，Laravel 4 並不會使用您程式代碼內的命名空間，所以，舉例來說，所有的 Eloquent 模型和控制器僅簡單存在"全域"的命名空間，為了更快速的遷移，Laravel 5 也允許您可以將這些類別一樣保留在"全域"的命名空間。
 
-### Configuration
+### 設定檔
 
-#### Migrating Environment Variables
+#### 遷移環境變數
 
-Copy the new `.env.example` file to `.env`, which is the `5.0` equivalent of the old `.env.php` file. Set any appropriate values there, like your `APP_ENV` and `APP_KEY` (your encryption key), your database credentials, and your cache and session drivers.
+複製新的 `.env.example` 檔案到 `.env`，這是 `5.0` 等同於原有 `.env.php` 的檔案。並設定適當的值，像是您的 `APP_ENV` 和 `APP_KEY` (您的加密鑰匙)資料庫認證和您的快取與 session 驅動。
 
-Additionally, copy any custom values you had in your old `.env.php` file and place them in both `.env` (the real value for your local environment) and `.env.example` (a sample instructional value for other team members).
+此外，複製原先您自訂的 `.env.php` 檔案，並修改為 `.env` (本機環境的真實值) 和 `.env.example` (給其他團隊成員的範本教學).
 
-For more information on environment configuration, view the [full documentation](/docs/5.0/configuration#environment-configuration).
+更多關於環境設定值，請見[完整文件](/docs/5.0/configuration#environment-configuration)。
 
-> **Note:** You will need to place the appropriate `.env` file and values on your production server before deploying your Laravel 5 application.
+> **注意:** 在部署 Laravel 5 應用程式之前，您需要在正式主機上放置適當的 `.env` 檔案與設定值。
 
-#### Configuration Files
+#### 設定檔
 
-Laravel 5.0 no longer uses `app/config/{environmentName}/` directories to provide specific configuration files for a given environment. Instead, move any configuration values that vary by environment into `.env`, and then access them in your configuration files using `env('key', 'default value')`. You will see examples of this in the `config/database.php` configuration file.
+Laravel 5.0 不再使用 `app/config/{environmentName}/` 目錄結構來提供對應該環境的設定檔，取而代之的是，將環境對應的設定值移到 `.env`，然後在設定檔案使用 `env('key', 'default value')` 來存取，您可以在 `config/database.php` 檔案內看到相關範例。
 
-Set the config files in the `config/` directory to represent either the values that are consistent across all of your environments, or set them to use `env()` to load values that vary by environment.
+將設定檔放在 `config/` 目錄下，來表示所有環境共用的設定檔，或是在檔案內使用 `env()` 來取得對應該環境的設定值。
 
-Remember, if you add more keys to `.env` file, add sample values to the `.env.example` file as well. This will help your other team members create their own `.env` files.
+請記住，若您在 `.env` 檔案內增加 key 值，同時也要對應增加到 `.env.example` 檔案中，這將可以幫助團隊成員去修改它們的 `.env` 檔案。
 
-### Routes
+### 路由
 
-Copy and paste your old `routes.php` file into your new `app/Http/routes.php`.
+複製原本的 `routes.php` 檔案到 `app/Http/routes.php`.
 
-### Controllers
+### 控制器
 
-Next, move all of your controllers into the `app/Http/Controllers` directory. Since we are not going to migrate to full namespacing in this guide, add the `app/Http/Controllers` directory to the `classmap` directive of your `composer.json` file. Next, you can remove the namespace from the abstract `app/Http/Controllers/Controller.php` base class. Verify that your migrated controllers are extending this base class.
+請將所有的控制器移到 `app/Http/Controllers` 目錄中，因為在本指南中我們不打算遷移到完整的命名空間，請將 `app/Http/Controllers` 添加到 `composer.json` 的 `classmap`，接下來，您可以從抽象的 `app/Http/Controllers/Controller.php` 基礎類別中移除該命名空間，請驗證您遷移的控制器是擴充這個基礎類別。
 
-In your `app/Providers/RouteServiceProvider.php` file, set the `namespace` property to `null`.
+在 `app/Providers/RouteServiceProvider.php` 檔案中，將 `namespace` 屬性設定為 `null`.
 
-### Route Filters
+### 路由篩選器
 
-Copy your filter bindings from `app/filters.php` and place them into the `boot()` method of `app/Providers/RouteServiceProvider.php`. Add `use Illuminate\Support\Facades\Route;` in the `app/Providers/RouteServiceProvider.php` in order to continue using the `Route` Facade.
+將篩選器從原本的 `app/filters.php` 複製到 `app/Providers/RouteServiceProvider.php` 的 `boot()` 方法中，並在 `app/Providers/RouteServiceProvider.php` 加入 `use Illuminate\Support\Facades\Route;` 來繼續使用 `Route` Facade。
 
-You do not need to move over any of the default Laravel 4.0 filters such as `auth` and `csrf`; they're all here, but as middleware. Edit any routes or controllers that reference the old default filters (e.g. `['before' => 'auth']`) and change them to reference the new middleware (e.g. `['middleware' => 'auth'].`)
+您不需要移動任何 Laravel 4.0 預設的過濾器，像是 `auth` 和 `csrf` 。他們已經內建，只是換作以中介層形式出現。那些在路由或控制器內有參照到舊有的過濾器 (例如 `['before' => 'auth']`) 請修改參照到新的中介層 (例如 `['middleware' => 'auth'].`)
 
-Filters are not removed in Laravel 5. You can still bind and use your own custom filters using `before` and `after`.
+Laravel 5 並沒有將過濾器移除，您一樣可以使用 `before` 和 `after` 綁定和使用您自訂的過濾器。
 
-### Global CSRF
+### 全域 CSRF
 
-By default, [CSRF protection](/docs/5.0/routing#csrf-protection) is enabled on all routes. If you'd like to disable this, or only manually enable it on certain routes, remove this line from `App\Http\Kernel`'s `middleware` array:
+預設情況下，[CSRF 保護](/docs/5.0/routing#csrf-protection) 在所有路由下是開啟的。若您想關閉他們，或是在特定路由手動開啟，請移除 `App\Http\Kernel` 的 `middleware` 陣列內的這一行：
 
 	'App\Http\Middleware\VerifyCsrfToken',
 
-If you want to use it elsewhere, add this line to `$routeMiddleware`:
+如果您想在其他地方使用它，加入這一行到 `$routeMiddleware`:
 
 	'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
 
-Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/5.0/middleware).
+現在，您可於路由內使用 `['middleware' => 'csrf']` 即可個別添加中介層到路由/控制器。了解更多關於中介層，請見[完整文件](/docs/5.0/middleware).
 
-### Eloquent Models
+### Eloquent 模型
 
-Feel free to create a new `app/Models` directory to house your Eloquent models. Again, add this directory to the `classmap` directive of your `composer.json` file.
+請建立新的 `app/Models` 目錄來管理您的 Eloquent 模型。再次開啟 `composer.json` 並將此目錄添加到 `classmap` 內。
 
-Update any models using `SoftDeletingTrait` to use `Illuminate\Database\Eloquent\SoftDeletes`.
+在模型內加入 `SoftDeletingTrait` 來使用`Illuminate\Database\Eloquent\SoftDeletes`.
 
-#### Eloquent Caching
+#### Eloquent 快取
 
-Eloquent no longer provides the `remember` method for caching queries. You now are responsible for caching your queries manually using the `Cache::remember` function. For more information on caching, consult the [full documentation](/docs/5.0/cache).
+Eloquent 不再提供 `remember` 方法來快取查詢字串。若需要快取字串，您可手動使用 `Cache::remember` 函數。了解更多關於快取，請見[完整文件](/docs/5.0/cache).
 
-### User Authentication Model
+### 會員認證模型
 
-To upgrade your `User` model for Laravel 5's authentication system, follow these instructions:
+要使用 Laravel 5 的會員認證系統，請遵循以下指引來升級您的 `User` 模型：
 
-**Delete the following from your `use` block:**
+**從 `use` 區塊刪除以下內容：**
 
 ```php
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 ```
 
-**Add the following to your `use` block:**
+**添加以下內容到 `use` 區塊：**
 
 ```php
 use Illuminate\Auth\Authenticatable;
@@ -105,51 +105,51 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 ```
 
-**Remove the UserInterface and RemindableInterface interfaces.**
+**移除 UserInterface 和 RemindableInterface 介面.**
 
-**Mark the class as implementing the following interfaces:**
+**讓類別實作以下介面：**
 
 ```php
 implements AuthenticatableContract, CanResetPasswordContract
 ```
 
-**Include the following traits within the class declaration:**
+**在類別宣告引入以下特徵機制：**
 
 ```php
 use Authenticatable, CanResetPassword;
 ```
 
-### Cashier User Changes
+### Cashier 的使用者需要的修改
 
-The name of the trait and interface used by [Laravel Cashier](/docs/5.0/billing) has changed. Instead of using `BillableTrait`, use the `Laravel\Cashier\Billable` trait. And, instead of `Larave\Cashier\BillableInterface` implement the `Laravel\Cashier\Contracts\Billable` interface instead. No other method changes are required.
+[Laravel Cashier](/docs/5.0/billing) 的特徵機制名稱和介面名稱已作修改。特徵機制請改用 `Laravel\Cashier\Billable` 取代 `BillableTrait`。介面請改用 `Laravel\Cashier\Contracts\Billable` 取代`Larave\Cashier\BillableInterface` 。只有這些部分需要修改。 
 
-### Artisan Commands
+### Artisan 命令
 
-Move all of your command classes from your old `app/commands` directory to the new `app/Console/Commands` directory. Next, add the `app/Console/Commands` directory to the `classmap` directive of your `composer.json` file.
+將所有的命令從舊的 `app/commands` 目錄移到新的`app/Console/Commands` 目錄。接下來，把`app/Console/Commands` 目錄添加到 `composer.json` 檔案的`classmap` 中。
 
-Then, copy your list of Artisan commands from `start/artisan.php` into the `command` array of the `app/Console/Kernel.php` file.
+然後，複製 Artisan 命令清單從 `start/artisan.php` 到 `app/Console/Kernel.php` 檔案的 `command` 陣列內。
 
-### Database Migrations & Seeds
+### 資料庫遷移和資料填充
 
-Delete the two migrations included with Laravel 5.0, since you should already have the users table in your database.
+如果在您的資料庫內已經有 users 表，請移除 Laravel 5 內建的兩個遷移檔。
 
-Move all of your migration classes from the old `app/database/migrations` directory to the new `database/migrations`. All of your seeds should be moved from `app/database/seeds` to `database/seeds`.
+將所有的遷移檔從舊的 `app/database/migrations` 目錄移到新的 `database/migrations` 。所有的資料填充檔也要從 `app/database/seeds` 移到 `database/seeds`。
 
-### Global IoC Bindings
+### 全域 IoC 綁定
 
-If you have any [IoC](/docs/5.0/container) bindings in `start/global.php`, move them all to the `register` method of the `app/Providers/AppServiceProvider.php` file. You may need to import the `App` facade.
+若您在 `start/global.php` 有綁定任何 [IoC](/docs/5.0/container)  ，請將它們移到 `app/Providers/AppServiceProvider.php` 檔案內的 `register` 方法，您需要引入 `App` facade。
 
-Optionally, you may break these bindings up into separate service providers by category.
+您也可以隨意地將這些綁定依照服務提供者的目錄來拆解。
 
-### Views
+### 視圖
 
-Move your views from `app/views` to the new `resources/views` directory.
+將所有的視圖從舊的 `app/views` 移到新的`resources/views` 目錄內。
 
-### Blade Tag Changes
+### Blade 標籤修改
 
-For better security by default, Laravel 5.0 escapes all output from both the `{{ }}` and `{{{ }}}` Blade directives. A new `{!! !!}` directive has been introduced to display raw, unescaped output. The most secure option when upgrading your application is to only use the new `{!! !!}` directive when you are **certain** that it is safe to display raw output.
+為了更安全地考量，Laravel 5.0 會過濾所有輸出，不論您使用 `{{ }}` 或 `{{{ }}}` 標籤。您可以使用 `{!! !!}` 新的標籤來取消輸出過濾。請務必 **確定** 輸出內容是安全地才使用 `{!! !!}` 標籤。
 
-However, if you **must** use the old Blade syntax, add the following lines at the bottom of `AppServiceProvider@register`:
+然而，如果您 **仍然必須** 使用舊的 Blade 語法，請在 `AppServiceProvider@register` 開頭加入以下內容：
 
 ```php
 \Blade::setRawTags('{{', '}}');
@@ -157,58 +157,58 @@ However, if you **must** use the old Blade syntax, add the following lines at th
 \Blade::setEscapedContentTags('{{{', '}}}');
 ```
 
-This should not be done lightly, and may make your application more vulnerable to XSS exploits. Also, comments with `{{--` will no longer work.
+可別輕忽上述設定，這將使您的應用程序更加容易暴露於 XSS 攻擊，而且註解 `{{--` 將無作用。
 
-### Translation Files
+### 語系檔
 
-Move your language files from `app/lang` to the new `resources/lang` directory.
+將所有的語系檔從舊的 `app/lang` 目錄移動到新的`resources/lang` 目錄。
 
-### Public Directory
+### 公開目錄
 
-Copy your application's public assets from your `4.2` application's `public` directory to your new application's `public` directory. Be sure to keep the `5.0` version of `index.php`.
+將 `4.2` 版公開目錄內的資產移到新應用程式內的`public` 目錄內。並確認保留 `5.0` 版的 `index.php` 檔案。
 
-### Tests
+### 測試
 
-Move your tests from `app/tests` to the new `tests` directory.
+將所有的測試從舊的 `app/tests` 移到 `tests` 目錄。
 
-### Misc. Files
+### 各式各樣的檔案
 
-Copy in any other files in your project. For example, `.scrutinizer.yml`, `bower.json` and other similar tooling configuration files.
+複製專案內其他各式各樣的檔案，例如：`.scrutinizer.yml`, `bower.json` 以及其他類似工具的設定檔。
 
-You may move your Sass, Less, or CoffeeScript to any location you wish. The `resources/assets` directory could be a good default location.
+您可以將 Sass，Less 或 CoffeeScript 移動到任何您想放置的地方。 `resources/assets` 目錄是一個不錯的預設位置。
 
-### Form & HTML Helpers
+### 表單和 HTML 輔助函數
 
-If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. To fix this, add `"illuminate/html": "~5.0"` to your `composer.json` file's `require` section.
+如果您使用表單或 HTML 輔助函數，您將會看到以下錯誤 `class 'Form' not found` 或 `class 'Html' not found` 。請加入 `"illuminate/html": "~5.0"` 到 `composer.json` 的 `require` 部分，以修正此錯誤。
 
-You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php`, and add this line to the 'providers' array:
+您也需要添加表單和 HTML 的 facades 以及服務提供者， 編輯 `config/app.php` 檔案，添加此行到 'providers' 陣列內：
 
     'Illuminate\Html\HtmlServiceProvider',
 
-Next, add these lines to the 'aliases' array:
+接著，添加以下到 'aliases' 陣列內：
 
     'Form'      => 'Illuminate\Html\FormFacade',
     'Html'      => 'Illuminate\Html\HtmlFacade',
 
-### CacheManager
+### 快取管理員
 
-If your application code was injecting `Illuminate\Cache\CacheManager` to get a non-Facade version of Laravel's cache, inject `Illuminate\Contracts\Cache\Repository` instead.
+如果您的程式注入 `Illuminate\Cache\CacheManager` 來取得非 Facade 版本的 Laravel 快取，請改用 `Illuminate\Contracts\Cache\Repository` 注入。
 
-### Pagination
+### 分頁
 
-Replace any calls to `$paginator->links()` with `$paginator->render()`.
+請將所有的 `$paginator->links()` 以 `$paginator->render()` 取代。
 
-### Beanstalk Queuing
+### Beanstalk 佇列
 
-Laravel 5.0 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"`.
+Laravel 5.0 使用 `"pda/pheanstalk": "~3.0"` 取代原本的 `"pda/pheanstalk": "~2.1"`。 
 
 ### Remote
 
-The Remote component has been deprecated.
+Remote 元件已不再使用。
 
-### Workbench
+### 工作區
 
-The Workbench component has been deprecated.
+工作區元件已不再使用。
 
 <a name="upgrade-4.2"></a>
 ## 從 4.1 升級到 4.2
