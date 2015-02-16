@@ -55,7 +55,7 @@ So, our `Cache::get` call could be re-written like so:
 
 #### Importing Facades
 
-Remember, if you are using a facade when a controller that is namespaced, you will need to import the facade class into the namespace. All facades live in the global namespace:
+Remember, if you are using a facade in a controller that is namespaced, you will need to import the facade class into the namespace. All facades live in the global namespace:
 
 	<?php namespace App\Http\Controllers;
 
