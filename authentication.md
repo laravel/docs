@@ -48,7 +48,7 @@ If you choose not to use the provided `AuthController` implementation, you will 
 		 *
 		 * @return Response
 		 */
-		public function authenticate()
+		public function authenticate($email, $password)
 		{
 			if (Auth::attempt(['email' => $email, 'password' => $password]))
 			{
