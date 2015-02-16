@@ -307,7 +307,7 @@ To "lock for update" on a SELECT statement, you may use the `lockForUpdate` meth
 <a name="caching-queries"></a>
 ## Caching Queries
 
-You may easily cache the results of a query using the `remember` method:
+You may easily cache the results of a query using the `remember` or `rememberForever` method:
 
 	$users = DB::table('users')->remember(10)->get();
 
