@@ -138,6 +138,8 @@ Since you will probably need to SSH into your Homestead machine frequently, cons
 
 Once you create this alias, you can simply use the "vm" command to SSH into your Homestead machine from anywhere on your system.
 
+Alternatively, you can use `homestead ssh` as well.
+
 ### Connecting To Your Databases
 
 A `homestead` database is configured for both MySQL and Postgres out of the box. For even more convenience, Laravel's `local` database configuration is set to use this database by default.
