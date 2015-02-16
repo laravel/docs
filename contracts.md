@@ -37,7 +37,7 @@ First, let's review some code that is tightly coupled to a cache implementation.
 		/**
 		 * Create a new repository instance.
 		 *
-		 * @param  \Package\Cache\Memcached  $cache
+		 * @param  \SomePackage\Cache\Memcached  $cache
 		 * @return void
 		 */
 		public function __construct(\SomePackage\Cache\Memcached $cache)
