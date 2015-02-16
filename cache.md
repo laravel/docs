@@ -111,7 +111,7 @@ You may store a tagged cache by passing in an ordered list of tag names as argum
 
 	Cache::tags('people', 'authors')->put('John', $john, $minutes);
 
-	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
+	Cache::tags(['people', 'artists'])->put('Anne', $anne, $minutes);
 
 You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`.
 
@@ -121,7 +121,7 @@ To access a tagged cache, pass the same ordered list of tags used to save it.
 
 	$anne = Cache::tags('people', 'artists')->get('Anne');
 
-	$john = Cache::tags(array('people', 'authors'))->get('John');
+	$john = Cache::tags(['people', 'authors'])->get('John');
 
 You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
 

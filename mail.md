@@ -21,18 +21,18 @@ Laravel also includes drivers for the Mailgun and Mandrill HTTP APIs. These APIs
 
 To use the Mailgun driver, set the `driver` option to `mailgun` in your `config/mail.php` configuration file. Next, create an `config/services.php` configuration file if one does not already exist for your project. Verify that it contains the following options:
 
-	'mailgun' => array(
+	'mailgun' => [
 		'domain' => 'your-mailgun-domain',
 		'secret' => 'your-mailgun-key',
-	),
+	],
 
 #### Mandrill Driver
 
 To use the Mandrill driver, set the `driver` option to `mandrill` in your `config/mail.php` configuration file. Next, create an `config/services.php` configuration file if one does not already exist for your project. Verify that it contains the following options:
 
-	'mandrill' => array(
+	'mandrill' => [
 		'secret' => 'your-mandrill-key',
-	),
+	],
 
 ### Log Driver
 
@@ -43,7 +43,7 @@ If the `driver` option of your `config/mail.php` configuration file is set to `l
 
 The `Mail::send` method may be used to send an e-mail message:
 
-	Mail::send('emails.welcome', array('key' => 'value'), function($message)
+	Mail::send('emails.welcome', ['key' => 'value'], function($message)
 	{
 		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
@@ -54,11 +54,11 @@ The first argument passed to the `send` method is the name of the view that shou
 
 You may also specify a plain text view to use in addition to an HTML view:
 
-	Mail::send(array('html.view', 'text.view'), $data, $callback);
+	Mail::send(['html.view', 'text.view'], $data, $callback);
 
 Or, you may specify only one type of view using the `html` or `text` keys:
 
-	Mail::send(array('text' => 'view'), $data, $callback);
+	Mail::send(['text' => 'view'], $data, $callback);
 
 You may specify other options on the e-mail message such as any carbon copies or attachments as well:
 
@@ -73,7 +73,7 @@ You may specify other options on the e-mail message such as any carbon copies or
 
 When attaching files to a message, you may also specify a MIME type and / or a display name:
 
-	$message->attach($pathToFile, array('as' => $display, 'mime' => $mime));
+	$message->attach($pathToFile, ['as' => $display, 'mime' => $mime]);
 
 If you just need to e-mail a simple string instead of an entire view, use the `raw` method:
 

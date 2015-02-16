@@ -64,7 +64,7 @@ You may also call a controller from a test:
 
 	$response = $this->action('GET', 'HomeController@index');
 
-	$response = $this->action('GET', 'UserController@profile', array('user' => 1));
+	$response = $this->action('GET', 'UserController@profile', ['user' => 1]);
 
 > **Note:** You do not need to specify the full controller namespace when using the `action` method. Only specify the portion of the class name that follows the `App\Http\Controllers` namespace.
 
@@ -161,7 +161,7 @@ Laravel ships with several `assert` methods to make testing a little easier:
         $this->assertSessionHasErrors('name');
 
         // Asserting the session has errors for several keys...
-        $this->assertSessionHasErrors(array('name', 'age'));
+        $this->assertSessionHasErrors(['name', 'age']);
     }
 
 #### Asserting Old Input Has Some Data
@@ -188,7 +188,7 @@ The `TestCase` class contains several helper methods to make testing your applic
 
 You may set the currently authenticated user using the `be` method:
 
-	$user = new User(array('name' => 'John'));
+	$user = new User(['name' => 'John']);
 
 	$this->be($user);
 

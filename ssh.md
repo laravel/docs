@@ -24,19 +24,19 @@ The configuration file is located at `config/remote.php`, and contains all of th
 
 To run commands on your `default` remote connection, use the `SSH::run` method:
 
-	SSH::run(array(
+	SSH::run([
 		'cd /var/www',
 		'git pull origin master',
-	));
+	]);
 
 #### Running Commands On A Specific Connection
 
 Alternatively, you may run commands on a specific connection using the `into` method:
 
-	SSH::into('staging')->run(array(
+	SSH::into('staging')->run([
 		'cd /var/www',
 		'git pull origin master',
-	));
+	]);
 
 #### Catching Output From Commands
 
@@ -52,11 +52,11 @@ You may catch the "live" output of your remote commands by passing a Closure int
 
 If you need to define a group of commands that should always be run together, you may use the `define` method to define a `task`:
 
-	SSH::into('staging')->define('deploy', array(
+	SSH::into('staging')->define('deploy', [
 		'cd /var/www',
 		'git pull origin master',
 		'php artisan migrate',
-	));
+	]);
 
 Once the task has been defined, you may use the `task` method to run it:
 

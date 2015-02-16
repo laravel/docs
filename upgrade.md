@@ -337,9 +337,9 @@ Add the new `expire_on_close` configuration option to your `app/config/session.p
 
 Add the new `failed` configuration section to your `app/config/queue.php` file. Here are the default values for the section:
 
-	'failed' => array(
+	'failed' => [
 		'database' => 'mysql', 'table' => 'failed_jobs',
-	),
+	],
 
 **(Optional)** Update the `pagination` configuration option in your `app/config/view.php` file to `pagination::slider-3`.
 

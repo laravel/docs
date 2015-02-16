@@ -54,7 +54,7 @@ Once you have an instance of the Redis client, we may issue any of the [Redis co
 
 Notice the arguments to the command are simply passed into the magic method. Of course, you are not required to use the magic methods, you may also pass commands to the server using the `command` method:
 
-	$values = $redis->command('lrange', array(5, 10));
+	$values = $redis->command('lrange', [5, 10]);
 
 When you are simply executing commands against the default connection, just use static magic methods on the `Redis` class:
 
