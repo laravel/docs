@@ -70,7 +70,7 @@ Command  | Description
 `$table->dateTime('created_at');`  |  DATETIME equivalent to the table
 `$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
 `$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point
-`$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
+`$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent to the table
 `$table->float('amount');`  |  FLOAT equivalent to the table
 `$table->increments('id');`  |  Incrementing ID to the table (primary key).
 `$table->integer('votes');`  |  INTEGER equivalent to the table
@@ -145,7 +145,7 @@ To drop a column, you may use the `dropColumn` method on the Schema builder. Bef
 
 	Schema::table('users', function($table)
 	{
-		$table->dropColumn(array('votes', 'avatar', 'location'));
+		$table->dropColumn(['votes', 'avatar', 'location']);
 	});
 
 <a name="checking-existence"></a>
@@ -179,7 +179,7 @@ Or, you may choose to add the indexes on separate lines. Below is a list of all 
 Command  | Description
 ------------- | -------------
 `$table->primary('id');`  |  Adding a primary key
-`$table->primary(array('first', 'last'));`  |  Adding composite keys
+`$table->primary(['first', 'last']);`  |  Adding composite keys
 `$table->unique('email');`  |  Adding a unique index
 `$table->index('state');`  |  Adding a basic index
 

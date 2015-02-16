@@ -38,13 +38,13 @@ The `getArguments` and `getOptions` methods are where you may define any argumen
 
 When defining `arguments`, the array definition values represent the following:
 
-	array($name, $mode, $description, $defaultValue)
+	[$name, $mode, $description, $defaultValue]
 
 The argument `mode` may be any of the following: `InputArgument::REQUIRED` or `InputArgument::OPTIONAL`.
 
 When defining `options`, the array definition values represent the following:
 
-	array($name, $shortcut, $mode, $description, $defaultValue)
+	[$name, $shortcut, $mode, $description, $defaultValue]
 
 For options, the argument `mode` may be: `InputOption::VALUE_REQUIRED`, `InputOption::VALUE_OPTIONAL`, `InputOption::VALUE_IS_ARRAY`, `InputOption::VALUE_NONE`.
 

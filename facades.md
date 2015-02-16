@@ -12,7 +12,7 @@
 
 Facades provide a "static" interface to classes that are available in the application's [IoC container](/docs/master/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the IoC container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
 
-Occasionally, You may wish to create your own facades for your applications and packages, so let's explore the concept, development and usage of these classes.
+Occasionally, you may wish to create your own facades for your application's and packages, so let's explore the concept, development and usage of these classes.
 
 > **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [IoC container](/docs/master/container).
 
@@ -55,7 +55,7 @@ So, our `Cache::get` call could be re-written like so:
 
 #### Importing Facades
 
-Remember, if you are using a facade when a controller that is namespaced, you will need to import the facade class into the namespace. All facades live in the global namespace:
+Remember, if you are using a facade in a controller that is namespaced, you will need to import the facade class into the namespace. All facades live in the global namespace:
 
 	<?php namespace App\Http\Controllers;
 
@@ -160,7 +160,7 @@ Log  |  [Illuminate\Log\Writer](http://laravel.com/api/5.0/Illuminate/Log/Writer
 Mail  |  [Illuminate\Mail\Mailer](http://laravel.com/api/5.0/Illuminate/Mail/Mailer.html)  |  `mailer`
 Paginator  |  [Illuminate\Pagination\Factory](http://laravel.com/api/5.0/Illuminate/Pagination/Factory.html)  |  `paginator`
 Paginator (Instance)  |  [Illuminate\Pagination\Paginator](http://laravel.com/api/5.0/Illuminate/Pagination/Paginator.html)  |
-Password  |  [Illuminate\Auth\Passwords\PasswordBroker](http://laravel.com/api/5.0/Illuminate/Auth/Passwords/PasswordBroker.html)  |  `auth.reminder`
+Password  |  [Illuminate\Auth\Passwords\PasswordBroker](http://laravel.com/api/5.0/Illuminate/Auth/Passwords/PasswordBroker.html)  |  `auth.password`
 Queue  |  [Illuminate\Queue\QueueManager](http://laravel.com/api/5.0/Illuminate/Queue/QueueManager.html)  |  `queue`
 Queue (Instance) |  [Illuminate\Queue\QueueInterface](http://laravel.com/api/5.0/Illuminate/Queue/QueueInterface.html)  |
 Queue (Base Class) |  [Illuminate\Queue\Queue](http://laravel.com/api/5.0/Illuminate/Queue/Queue.html)  |

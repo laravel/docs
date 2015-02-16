@@ -68,7 +68,7 @@ You may also specify the queue / tube a job should be sent to:
 
 If you need to pass the same data to several queue jobs, you may use the `Queue::bulk` method:
 
-	Queue::bulk(array(new SendEmail($message), new AnotherCommand));
+	Queue::bulk([new SendEmail($message), new AnotherCommand]);
 
 #### Delaying The Execution Of A Job
 

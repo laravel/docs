@@ -96,20 +96,20 @@ This method will return an array of role titles. You may also specify a custom k
 #### Using Where Between
 
 	$users = DB::table('users')
-	                    ->whereBetween('votes', array(1, 100))->get();
+	                    ->whereBetween('votes', [1, 100])->get();
 
 #### Using Where Not Between
 
 	$users = DB::table('users')
-	                    ->whereNotBetween('votes', array(1, 100))->get();
+	                    ->whereNotBetween('votes', [1, 100])->get();
 
 #### Using Where In With An Array
 
 	$users = DB::table('users')
-	                    ->whereIn('id', array(1, 2, 3))->get();
+	                    ->whereIn('id', [1, 2, 3])->get();
 
 	$users = DB::table('users')
-	                    ->whereNotIn('id', array(1, 2, 3))->get();
+	                    ->whereNotIn('id', [1, 2, 3])->get();
 
 #### Using Where Null To Find Records With Unset Values
 
@@ -240,7 +240,7 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 #### Inserting Records Into A Table
 
 	DB::table('users')->insert(
-		array('email' => 'john@example.com', 'votes' => 0)
+		['email' => 'john@example.com', 'votes' => 0]
 	);
 
 #### Inserting Records Into A Table With An Auto-Incrementing ID
@@ -248,17 +248,17 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 If the table has an auto-incrementing id, use `insertGetId` to insert a record and retrieve the id:
 
 	$id = DB::table('users')->insertGetId(
-		array('email' => 'john@example.com', 'votes' => 0)
+		['email' => 'john@example.com', 'votes' => 0]
 	);
 
 > **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
 
 #### Inserting Multiple Records Into A Table
 
-	DB::table('users')->insert(array(
-		array('email' => 'taylor@example.com', 'votes' => 0),
-		array('email' => 'dayle@example.com', 'votes' => 0),
-	));
+	DB::table('users')->insert([
+		['email' => 'taylor@example.com', 'votes' => 0],
+		['email' => 'dayle@example.com', 'votes' => 0]
+	]);
 
 <a name="updates"></a>
 ## Updates
@@ -267,7 +267,7 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 
 	DB::table('users')
 	            ->where('id', 1)
-	            ->update(array('votes' => 1));
+	            ->update(['votes' => 1]);
 
 #### Incrementing or decrementing a value of a column
 
@@ -281,7 +281,7 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 
 You may also specify additional columns to update:
 
-	DB::table('users')->increment('votes', 1, array('name' => 'John'));
+	DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
 <a name="deletes"></a>
 ## Deletes

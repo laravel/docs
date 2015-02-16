@@ -100,7 +100,7 @@ Of course, you may also use the query builder aggregate functions.
 
 If you are unable to generate the query you need via the fluent interface, feel free to use `whereRaw`:
 
-	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
+	$users = User::whereRaw('age > ? and votes = 100', [25])->get();
 
 #### Chunking Results
 
@@ -139,7 +139,7 @@ The `fillable` property specifies which attributes should be mass-assignable. Th
 
 	class User extends Model {
 
-		protected $fillable = array('first_name', 'last_name', 'email');
+		protected $fillable = ['first_name', 'last_name', 'email'];
 
 	}
 
@@ -151,7 +151,7 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 	class User extends Model {
 
-		protected $guarded = array('id', 'password');
+		protected $guarded = ['id', 'password'];
 
 	}
 
@@ -161,7 +161,7 @@ The inverse of `fillable` is `guarded`, and serves as a "black-list" instead of 
 
 In the example above, the `id` and `password` attributes may **not** be mass assigned. All other attributes will be mass assignable. You may also block **all** attributes from mass assignment using the guard property:
 
-	protected $guarded = array('*');
+	protected $guarded = ['*'];
 
 <a name="insert-update-delete"></a>
 ## Insert, Update, Delete
@@ -188,20 +188,20 @@ After saving or creating a new model that uses auto-incrementing IDs, you may re
 
 	class User extends Model {
 
-		protected $guarded = array('id', 'account_id');
+		protected $guarded = ['id', 'account_id'];
 
 	}
 
 #### Using The Model Create Method
 
 	// Create a new user in the database...
-	$user = User::create(array('name' => 'John'));
+	$user = User::create(['name' => 'John']);
 
 	// Retrieve the user by the attributes, or create it if it doesn't exist...
-	$user = User::firstOrCreate(array('name' => 'John'));
+	$user = User::firstOrCreate(['name' => 'John']);
 
 	// Retrieve the user by the attributes, or instantiate a new instance...
-	$user = User::firstOrNew(array('name' => 'John'));
+	$user = User::firstOrNew(['name' => 'John']);
 
 #### Updating A Retrieved Model
 
@@ -221,7 +221,7 @@ Sometimes you may wish to save not only a model, but also all of its relationshi
 
 You may also run updates as queries against a set of models:
 
-	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
+	$affectedRows = User::where('votes', '>', 100)->update(['status' => 2]);
 
 > **Note:** No model events are fired when updating a set of models via the Eloquent query builder.
 
@@ -237,7 +237,7 @@ To delete a model, simply call the `delete` method on the instance:
 
 	User::destroy(1);
 
-	User::destroy(array(1, 2, 3));
+	User::destroy([1, 2, 3]);
 
 	User::destroy(1, 2, 3);
 
@@ -406,30 +406,32 @@ First, let's define a trait. For this example, we'll use the `SoftDeletes` that 
 
 If an Eloquent model uses a trait that has a method matching the `bootNameOfTrait` naming convention, that trait method will be called when the Eloquent model is booted, giving you an opportunity to register a global scope, or do anything else you want. A scope must implement `ScopeInterface`, which specifies two methods: `apply` and `remove`.
 
-The `apply` method receives an `Illuminate\Database\Eloquent\Builder` query builder object, and is responsible for adding any additional `where` clauses that the scope wishes to add. The `remove` method also receives a `Builder` object and is responsible for reversing the action taken by `apply`. In other words, `remove` should remove the `where` clause (or any other clause) that was added. So, for our `SoftDeletingScope`, the methods look something like this:
+The `apply` method receives an `Illuminate\Database\Eloquent\Builder` query builder object and the `Model` it's applied to, and is responsible for adding any additional `where` clauses that the scope wishes to add. The `remove` method also receives a `Builder` object and `Model` and is responsible for reversing the action taken by `apply`. In other words, `remove` should remove the `where` clause (or any other clause) that was added. So, for our `SoftDeletingScope`, the methods look something like this:
 
 	/**
 	 * Apply the scope to a given Eloquent query builder.
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
 	 * @return void
 	 */
-	public function apply(Builder $builder)
+	public function apply(Builder $builder, Model $model)
 	{
-		$model = $builder->getModel();
-
 		$builder->whereNull($model->getQualifiedDeletedAtColumn());
+
+		$this->extend($builder);
 	}
 
 	/**
 	 * Remove the scope from the given Eloquent query builder.
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
 	 * @return void
 	 */
-	public function remove(Builder $builder)
+	public function remove(Builder $builder, Model $model)
 	{
-		$column = $builder->getModel()->getQualifiedDeletedAtColumn();
+		$column = $model->getQualifiedDeletedAtColumn();
 
 		$query = $builder->getQuery();
 
@@ -874,21 +876,21 @@ In the example above, the `author` relationship will be eager loaded, and the au
 
 Sometimes you may wish to eager load a relationship, but also specify a condition for the eager load. Here's an example:
 
-	$users = User::with(array('posts' => function($query)
+	$users = User::with(['posts' => function($query)
 	{
 		$query->where('title', 'like', '%first%');
 
-	}))->get();
+	}])->get();
 
 In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
 
 Of course, eager loading Closures aren't limited to "constraints". You may also apply orders:
 
-	$users = User::with(array('posts' => function($query)
+	$users = User::with(['posts' => function($query)
 	{
 		$query->orderBy('created_at', 'desc');
 
-	}))->get();
+	}])->get();
 
 ### Lazy Eager Loading
 
@@ -905,7 +907,7 @@ It is also possible to eagerly load related models directly from an already exis
 
 You will often need to insert new related models. For example, you may wish to insert a new comment for a post. Instead of manually setting the `post_id` foreign key on the model, you may insert the new comment from its parent `Post` model directly:
 
-	$comment = new Comment(array('message' => 'A new comment.'));
+	$comment = new Comment(['message' => 'A new comment.']);
 
 	$post = Post::find(1);
 
@@ -915,11 +917,11 @@ In this example, the `post_id` field will automatically be set on the inserted c
 
 If you need to save multiple related models:
 
-	$comments = array(
-		new Comment(array('message' => 'A new comment.')),
-		new Comment(array('message' => 'Another comment.')),
-		new Comment(array('message' => 'The latest comment.'))
-	);
+	$comments = [
+		new Comment(['message' => 'A new comment.']),
+		new Comment(['message' => 'Another comment.']),
+		new Comment(['message' => 'The latest comment.'])
+	];
 
 	$post = Post::find(1);
 
@@ -947,7 +949,7 @@ You may also insert related models when working with many-to-many relations. Let
 
 You may also pass an array of attributes that should be stored on the pivot table for the relation:
 
-	$user->roles()->attach(1, array('expires' => $expires));
+	$user->roles()->attach(1, ['expires' => $expires]);
 
 Of course, the opposite of `attach` is `detach`:
 
@@ -965,23 +967,23 @@ Both `attach` and `detach` also take arrays of IDs as input:
 
 You may also use the `sync` method to attach related models. The `sync` method accepts an array of IDs to place on the pivot table. After this operation is complete, only the IDs in the array will be on the intermediate table for the model:
 
-	$user->roles()->sync(array(1, 2, 3));
+	$user->roles()->sync([1, 2, 3]);
 
 #### Adding Pivot Data When Syncing
 
 You may also associate other pivot table values with the given IDs:
 
-	$user->roles()->sync(array(1 => array('expires' => true)));
+	$user->roles()->sync([1 => ['expires' => true]]);
 
 Sometimes you may wish to create a new related model and attach it in a single command. For this operation, you may use the `save` method:
 
-	$role = new Role(array('name' => 'Editor'));
+	$role = new Role(['name' => 'Editor']);
 
 	User::find(1)->roles()->save($role);
 
 In this example, the new `Role` model will be saved and attached to the user model. You may also pass an array of attributes to place on the joining table for this operation:
 
-	User::find(1)->roles()->save($role, array('expires' => $expires));
+	User::find(1)->roles()->save($role, ['expires' => $expires]);
 
 <a name="touching-parent-timestamps"></a>
 ## Touching Parent Timestamps
@@ -990,7 +992,7 @@ When a model `belongsTo` another model, such as a `Comment` which belongs to a `
 
 	class Comment extends Model {
 
-		protected $touches = array('post');
+		protected $touches = ['post'];
 
 		public function post()
 		{
@@ -1126,7 +1128,7 @@ Sometimes, you may wish to return a custom Collection object with your own added
 
 	class User extends Model {
 
-		public function newCollection(array $models = array())
+		public function newCollection(array $models = [])
 		{
 			return new CustomCollection($models);
 		}
@@ -1173,7 +1175,7 @@ You may customize which fields are automatically mutated, and even completely di
 
 	public function getDates()
 	{
-		return array('created_at');
+		return ['created_at'];
 	}
 
 When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
@@ -1182,7 +1184,7 @@ To totally disable date mutations, simply return an empty array from the `getDat
 
 	public function getDates()
 	{
-		return array();
+		return [];
 	}
 
 <a name="attribute-casting"></a>
@@ -1319,7 +1321,7 @@ Sometimes you may wish to limit the attributes that are included in your model's
 
 	class User extends Model {
 
-		protected $hidden = array('password');
+		protected $hidden = ['password'];
 
 	}
 
@@ -1327,7 +1329,7 @@ Sometimes you may wish to limit the attributes that are included in your model's
 
 Alternatively, you may use the `visible` property to define a white-list:
 
-	protected $visible = array('first_name', 'last_name');
+	protected $visible = ['first_name', 'last_name'];
 
 <a name="array-appends"></a>
 Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, simply define an accessor for the value:
@@ -1339,6 +1341,6 @@ Occasionally, you may need to add array attributes that do not have a correspond
 
 Once you have created the accessor, just add the value to the `appends` property on the model:
 
-	protected $appends = array('is_admin');
+	protected $appends = ['is_admin'];
 
 Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms. Attributes in the `appends` array respect the `visible` and `hidden` configuration on the model.

@@ -82,7 +82,7 @@ Laravel also includes a simple way to seed your database with test data using se
 		{
 			DB::table('users')->delete();
 
-			User::create(array('email' => 'foo@bar.com'));
+			User::create(['email' => 'foo@bar.com']);
 		}
 
 	}
