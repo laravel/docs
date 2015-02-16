@@ -12,7 +12,7 @@
 
 Facades provide a "static" interface to classes that are available in the application's [IoC container](/docs/5.0/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the IoC container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
 
-Occasionally, You may wish to create your own facades for your applications and packages, so let's explore the concept, development and usage of these classes.
+Occasionally, you may wish to create your own facades for your application's and packages, so let's explore the concept, development and usage of these classes.
 
 > **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [IoC container](/docs/5.0/container).
 
