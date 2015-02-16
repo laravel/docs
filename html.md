@@ -13,6 +13,8 @@
 - [Custom Macros](#custom-macros)
 - [Generating URLs](#generating-urls)
 
+> This package has changed maintainers to [LaravelCollective](https://packagist.org/packages/laravelcollective/html).
+
 <a name="opening-a-form"></a>
 ## Opening A Form
 
