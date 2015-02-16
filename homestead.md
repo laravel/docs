@@ -48,6 +48,10 @@ Once VirtualBox and Vagrant have been installed, you should add the `laravel/hom
 
 	vagrant box add laravel/homestead
 
+If this command fails, you may have an old version of Vagrant that requires the full URL:
+
+	vagrant box add laravel/homestead https://atlas.hashicorp.com/laravel/boxes/homestead
+
 ### Installing Homestead
 
 #### Manually Via Git (No Local PHP)
