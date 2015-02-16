@@ -225,7 +225,7 @@ For more information on this new method, check out [the documentation](/docs/5.0
 
 ### New Generators
 
-To compliment the new default application structure, new Artisan generator commands have been added to the framework. See `php artisan list` for more details.
+To complement the new default application structure, new Artisan generator commands have been added to the framework. See `php artisan list` for more details.
 
 ### Configuration Cache
 
