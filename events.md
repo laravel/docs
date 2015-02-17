@@ -1,4 +1,4 @@
-# Events
+# 事件（ Events ）
 
 - [基本用法](#basic-usage)
 - [事件處理隊列](#queued-event-handlers)
