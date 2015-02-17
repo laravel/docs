@@ -1,4 +1,4 @@
-# Release Notes
+# 發行說明
 
 - [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
