@@ -304,7 +304,7 @@ Generate a random string of the given length.
 Convert a string to its singular form (English only).
 
 	$singular = str_singular('cars');
-	
+
 ### str_slug
 
 Generate a URL friendly "slug" from a given string.
@@ -312,9 +312,9 @@ Generate a URL friendly "slug" from a given string.
 	str_slug($title, $separator);
 
 Example:
-	
+
 	$title = str_slug("Laravel 5 Framework", "-");
-	
+
 	// laravel-5-framework
 
 ### studly_case
@@ -357,30 +357,6 @@ Generate a URL for a given named route.
 Generate a URL for an asset.
 
 	$url = asset('img/photo.jpg');
-
-### link_to
-
-Generate a HTML link to the given URL.
-
-	echo link_to('foo/bar', $title, $attributes = [], $secure = null);
-
-### link_to_asset
-
-Generate a HTML link to the given asset.
-
-	echo link_to_asset('foo/bar.zip', $title, $attributes = [], $secure = null);
-
-### link_to_route
-
-Generate a HTML link to the given route.
-
-	echo link_to_route('route.name', $title, $parameters = [], $attributes = []);
-
-### link_to_action
-
-Generate a HTML link to the given controller action.
-
-	echo link_to_action('HomeController@getIndex', $title, $parameters = [], $attributes = []);
 
 ### secure_asset
 
