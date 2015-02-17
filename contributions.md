@@ -53,7 +53,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 <a name="coding-style"></a>
 ## Coding Style
 
-Laravel follows the [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) and [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) coding standards. In addition to these standards, the following coding standards should be followed:
+Laravel follows the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) and [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) coding standards. In addition to these standards, the following coding standards should be followed:
 
 - The class namespace declaration must be on the same line as `<?php`.
 - A class' opening `{` must be on the same line as the class name.
