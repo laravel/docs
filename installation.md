@@ -1,4 +1,4 @@
-# Installation
+# 安裝
 
 - [安裝 Composer](#install-composer)
 - [安裝 Laravel](#install-laravel)
