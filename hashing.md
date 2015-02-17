@@ -1,4 +1,4 @@
-# Hashing
+# 雜湊
 
 - [簡述](#introduction)
 - [基本用法](#basic-usage)
@@ -17,7 +17,7 @@
 
 	$password = Hash::make('secret');
 
-你也可直接使用 bcrypt 的 function
+你也可直接使用 bcrypt 的函數
 
 	$password = bcrypt('secret');
 
