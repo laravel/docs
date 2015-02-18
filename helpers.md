@@ -360,7 +360,7 @@ Generate a URL for an asset.
 
 ### secure_asset
 
-Generate a HTML link to the given asset using HTTPS.
+Generate a URL for an asset using HTTPS.
 
 	echo secure_asset('foo/bar.zip', $title, $attributes = []);
 
