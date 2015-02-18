@@ -109,7 +109,7 @@ Of course, you may use the `session:table` Artisan command to generate this migr
 
 The session "driver" defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:
 
-- `file` - sessions will be stored in `app/storage/sessions`.
+- `file` - sessions will be stored in `storage/framework/sessions`.
 - `cookie` - sessions will be stored in secure, encrypted cookies.
 - `database` - sessions will be stored in a database used by your application.
 - `memcached` / `redis` - sessions will be stored in one of these fast, cached based stores.
