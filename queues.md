@@ -210,7 +210,7 @@ Similarly, your database connection may disconnect when being used by long-runni
 <a name="push-queues"></a>
 ## Push Queues
 
-Push queues allow you to utilize the powerful Laravel 4 queue facilities without running any daemons or background listeners. Currently, push queues are only supported by the [Iron.io](http://iron.io) driver. Before getting started, create an Iron.io account, and add your Iron credentials to the `config/queue.php` configuration file.
+Push queues allow you to utilize the powerful Laravel 5 queue facilities without running any daemons or background listeners. Currently, push queues are only supported by the [Iron.io](http://iron.io) driver. Before getting started, create an Iron.io account, and add your Iron credentials to the `config/queue.php` configuration file.
 
 #### Registering A Push Queue Subscriber
 
