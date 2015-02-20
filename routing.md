@@ -73,7 +73,20 @@ Of course, using the Blade [templating engine](/docs/5.0/templates):
 
 You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/5.0/middleware) will verify token in the request input matches the token stored in the session.
 
-In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-XSRF-TOKEN` request header, which is commonly used by JavaScript frameworks.
+In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a meta-tag and use jQuery to add it to your headers before sending:
+
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
+	
+	$.ajax({
+	  url: "/foo/bar",
+	  beforeSend: function( xhr ) {
+	    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+	  }
+	})
+
+Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some Javascript frameworks, like Angular, do this automatically for you.
+
+> Note: The difference between the `X-CSRF-TOKEN` and `X-XSRF-TOKEN` is that the first uses a plain text value and the latter uses an encrypted value, because cookies in Laravel are always encrypted. If you use the `csrf_token()` function to supply the token value, you probably want to use the `X-CSRF-TOKEN` header.
 
 <a name="method-spoofing"></a>
 ## Method Spoofing
