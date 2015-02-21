@@ -77,11 +77,16 @@ In addition to looking for the CSRF token as a "POST" parameter, the middleware 
 
 	<meta name="csrf-token" content="{{ csrf_token() }}" />
 	
+	$.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+	
+Now anytime you use an ajax query the CSRF token will automatically be included in your ajax header - no need for any code changes to your individual functions:
+
 	$.ajax({
-	  url: "/foo/bar",
-	  beforeSend: function( xhr ) {
-	    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-	  }
+	   url: "/foo/bar",
 	})
 
 Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some Javascript frameworks, like Angular, do this automatically for you.
