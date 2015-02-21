@@ -1,204 +1,204 @@
 # Forms & HTML
 
-- [Opening A Form](#opening-a-form)
-- [CSRF Protection](#csrf-protection)
-- [Form Model Binding](#form-model-binding)
-- [Labels](#labels)
-- [Text, Text Area, Password & Hidden Fields](#text)
-- [Checkboxes and Radio Buttons](#checkboxes-and-radio-buttons)
-- [File Input](#file-input)
-- [Number Input](#number)
-- [Drop-Down Lists](#drop-down-lists)
-- [Buttons](#buttons)
-- [Custom Macros](#custom-macros)
-- [Generating URLs](#generating-urls)
+- [開啟表單](#opening-a-form)
+- [CSRF 保護](#csrf-protection)
+- [表單模型綁定](#form-model-binding)
+- [標籤（ Label ）](#labels)
+- [文字欄（ Text ）、多行文字欄（ Text Area ）、密碼欄（ Password ）和隱藏欄（ Hidden Field ）](#text)
+- [核取方塊（ Checkboxe ）和單選按鈕（ Radio Button ）](#checkboxes-and-radio-buttons)
+- [數字欄（ Number ）](#number)
+- [檔案輸入](#file-input)
+- [下拉式選單](#drop-down-lists)
+- [按鈕](#buttons)
+- [自定巨集（ Macro ）](#custom-macros)
+- [產生 URL](#generating-urls)
 
 <a name="opening-a-form"></a>
-## Opening A Form
+## 開啟表單
 
-#### Opening A Form
+#### 開啟表單
 
-	{{ Form::open(array('url' => 'foo/bar')) }}
+	{{ Form::open(['url' => 'foo/bar']) }}
 		//
 	{{ Form::close() }}
 
-By default, a `POST` method will be assumed; however, you are free to specify another method:
+預設表單使用 POST 方法，當然你也可以指定其他方法：
 
-	echo Form::open(array('url' => 'foo/bar', 'method' => 'put'))
+	echo Form::open(['url' => 'foo/bar', 'method' => 'put'])
 
-> **Note:** Since HTML forms only support `POST` and `GET`, `PUT` and `DELETE` methods will be spoofed by automatically adding a `_method` hidden field to your form.
+> **注意：**因為 HTML 表單只支援 `POST` 和 `GET` 方法，所以在使用 `PUT` 及 `DELETE` 方法時，Laravel 會自動加入 `_method` 隱藏欄位到表單中，來偽裝表單傳送的方法。
 
-You may also open forms that point to named routes or controller actions:
+你也可以建立指向命名路由或控制器動作的表單：
 
-	echo Form::open(array('route' => 'route.name'))
+	echo Form::open(['route' => 'route.name'])
 
-	echo Form::open(array('action' => 'Controller@method'))
+	echo Form::open(['action' => 'Controller@method'])
 
-You may pass in route parameters as well:
+也可以傳遞路由參數：
 
-	echo Form::open(array('route' => array('route.name', $user->id)))
+	echo Form::open(['route' => ['route.name', $user->id]])
 
-	echo Form::open(array('action' => array('Controller@method', $user->id)))
+	echo Form::open(['action' => ['Controller@method', $user->id]])
 
-If your form is going to accept file uploads, add a `files` option to your array:
+如果表單允許上傳檔案，在陣列中加上 `files` 選項：
 
-	echo Form::open(array('url' => 'foo/bar', 'files' => true))
+	echo Form::open(['url' => 'foo/bar', 'files' => true])
 
 <a name="csrf-protection"></a>
-## CSRF Protection
+## CSRF 保護
 
-#### Adding The CSRF Token To A Form
+#### 添加 CSRF Token 到表單
 
-Laravel provides an easy method of protecting your application from cross-site request forgeries. First, a random token is placed in your user's session. If you use the `Form::open` method with `POST`, `PUT` or `DELETE` the CSRF token will be added to your forms as a hidden field automatically. Alternatively, if you wish to generate the HTML for the hidden CSRF field, you may use the `token` method:
+Laravel 提供簡易的方法，讓你可以保護你的應用程式免於跨網站請求偽造（ CSRF ）攻擊。首先 Laravel 會自動在使用者的 session 中存放隨機產生的 token。如果你使用 `Form::open` 方法，並且選擇 `POST`、`PUT` 或是 `DELETE`，CSRF token 會自動加到表單的一個隱藏欄位中。但是，你如果想要替隱藏的 CSRF 欄位產生 HTML，也可以使用 `token` 方法：
 
 	echo Form::token();
 
-#### Attaching The CSRF Filter To A Route
+#### 附加 CSRF 過濾到路由
 
-	Route::post('profile', array('before' => 'csrf', function()
+	Route::post('profile', ['before' => 'csrf', function()
 	{
 		//
-	}));
+	}]);
 
 <a name="form-model-binding"></a>
-## Form Model Binding
+## 表單模型綁定
 
-#### Opening A Model Form
+#### 開啟模型表單
 
-Often, you will want to populate a form based on the contents of a model. To do so, use the `Form::model` method:
+你經常會想要將模型內容加到表單中，可以使用 `Form::model` 方法實現：
 
-	echo Form::model($user, array('route' => array('user.update', $user->id)))
+	echo Form::model($user, ['route' => ['user.update', $user->id]])
 
-Now, when you generate a form element, like a text input, the model's value matching the field's name will automatically be set as the field value. So, for example, for a text input named `email`, the user model's `email` attribute would be set as the value. However, there's more! If there is an item in the Session flash data matching the input name, that will take precedence over the model's value. So, the priority looks like this:
+現在當你產生表單元素時，像是 text 欄位，模型屬性和欄位名稱相符的屬性值，會被自動設成欄位值。舉例來說，使用者模型的 `email` 屬性，將會設定到欄位名稱為 `email` 的 text 欄位，不僅如此，當 Session 閃存資料中有與欄位名稱相符的資料，則會優先於模型的值被填入。優先順序如下：
 
-1. Session Flash Data (Old Input)
-2. Explicitly Passed Value
-3. Model Attribute Data
+1. Session 閃存資料（舊輸入資料）
+2. 自行傳入的資料
+3. 模型屬性資料
 
-This allows you to quickly build forms that not only bind to model values, but easily re-populate if there is a validation error on the server!
+這讓你可以快速建立表單，不僅是綁定模型資料，也可以在伺服器端資料驗證錯誤時，輕鬆的回填使用者輸入的舊資料！
 
-> **Note:** When using `Form::model`, be sure to close your form with `Form::close`!
+> **注意：**當使用 `Form::model` 方法時，必須確保有使用 `Form::close` 方法來關閉表單！
 
 <a name="labels"></a>
-## Labels
+## 標籤（ Label ）
 
-#### Generating A Label Element
+#### 產生標籤元素
 
 	echo Form::label('email', 'E-Mail Address');
 
-#### Specifying Extra HTML Attributes
+#### 指定額外 HTML 屬性
 
-	echo Form::label('email', 'E-Mail Address', array('class' => 'awesome'));
+	echo Form::label('email', 'E-Mail Address', ['class' => 'awesome']);
 
-> **Note:** After creating a label, any form element you create with a name matching the label name will automatically receive an ID matching the label name as well.
+> **注意：**在建立標籤後，當建立的表單元素名稱與標籤相符時，會自動建立與標籤名稱相同的 ID 屬性。
 
 <a name="text"></a>
-## Text, Text Area, Password & Hidden Fields
+## 文字欄（ Text ）、多行文字欄（ Text Area ）、密碼欄（ Password ）和隱藏欄（ Hidden Field ）
 
-#### Generating A Text Input
+#### 產生文字欄位
 
 	echo Form::text('username');
 
-#### Specifying A Default Value
+#### 自定預設值
 
 	echo Form::text('email', 'example@gmail.com');
 
-> **Note:** The *hidden* and *textarea* methods have the same signature as the *text* method.
+> **注意：** *hidden* 和 *textarea* 方法和 *text* 方法使用屬性參數相同。
 
-#### Generating A Password Input
+#### 產生密碼欄位
 
 	echo Form::password('password');
 
-#### Generating Other Inputs
+#### 產生其他欄位
 
-	echo Form::email($name, $value = null, $attributes = array());
-	echo Form::file($name, $attributes = array());
+	echo Form::email($name, $value = null, $attributes = []);
+	echo Form::file($name, $attributes = []);
 
 <a name="checkboxes-and-radio-buttons"></a>
-## Checkboxes and Radio Buttons
+## 核取方塊（ Checkboxe ）和單選按鈕（ Radio Button ）
 
-#### Generating A Checkbox Or Radio Input
+#### 產生核取方塊或單選按鈕
 
 	echo Form::checkbox('name', 'value');
 
 	echo Form::radio('name', 'value');
 
-#### Generating A Checkbox Or Radio Input That Is Checked
+#### 產生已選取的核取方塊或單選按鈕
 
 	echo Form::checkbox('name', 'value', true);
 
 	echo Form::radio('name', 'value', true);
 
 <a name="number"></a>
-## Number
+## 數字欄（ Number ）
 
-#### Generating A Number Input
+#### 產生數字欄位
 
 	echo Form::number('name', 'value');
 
 <a name="file-input"></a>
-## File Input
+## 檔案輸入
 
-#### Generating A File Input
+#### 產生檔案輸入
 
 	echo Form::file('image');
 
-> **Note:** The form must have been opened with the `files` option set to `true`.
+> **注意：**表單必須已將 `files` 選項設定為 `true`。
 
 <a name="drop-down-lists"></a>
-## Drop-Down Lists
+## 下拉式選單
 
-#### Generating A Drop-Down List
+#### 產生下拉式選單
 
-	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'));
+	echo Form::select('size', ['L' => 'Large', 'S' => 'Small']);
 
-#### Generating A Drop-Down List With Selected Default
+#### 產生有預設值的下拉式選單
 
-	echo Form::select('size', array('L' => 'Large', 'S' => 'Small'), 'S');
+	echo Form::select('size', ['L' => 'Large', 'S' => 'Small'], 'S');
 
-#### Generating A Grouped List
+#### 產生群組清單
 
-	echo Form::select('animal', array(
-		'Cats' => array('leopard' => 'Leopard'),
-		'Dogs' => array('spaniel' => 'Spaniel'),
-	));
+	echo Form::select('animal', [
+		'Cats' => ['leopard' => 'Leopard'],
+		'Dogs' => ['spaniel' => 'Spaniel']
+	]);
 
-#### Generating A Drop-Down List With A Range
+#### 產生數字區間的下拉式選單
 
     echo Form::selectRange('number', 10, 20);
 
-#### Generating A List With Month Names
+#### 產生月份名稱的清單
 
     echo Form::selectMonth('month');
 
 <a name="buttons"></a>
-## Buttons
+## 按鈕
 
-#### Generating A Submit Button
+#### 產生提交按鈕
 
 	echo Form::submit('Click Me!');
 
-> **Note:** Need to create a button element? Try the *button* method. It has the same signature as *submit*.
+> **提示：**需要產生按鈕（ Button ）元素嗎？試試看 *button* 方法。它與 *submit* 使用相同的屬性參數。
 
 <a name="custom-macros"></a>
-## Custom Macros
+## 自定巨集
 
-#### Registering A Form Macro
+#### 註冊表單巨集（ Macro ）
 
-It's easy to define your own custom Form class helpers called "macros". Here's how it works. First, simply register the macro with a given name and a Closure:
+定義稱為「巨集」的表單類別的輔助方法是很輕鬆的。下面是它的運作方式。首先註冊巨集，給定名稱及閉合函示：
 
 	Form::macro('myField', function()
 	{
 		return '<input type="awesome">';
 	});
 
-Now you can call your macro using its name:
+現在可以使用註冊名稱呼叫巨集：
 
-#### Calling A Custom Form Macro
+#### 呼叫自定表單巨集
 
 	echo Form::myField();
 
 <a name="generating-urls"></a>
-## Generating URLs
+## 產生 URL
 
-For more information on generating URL's, check out the documentation on [helpers](/docs/helpers#urls).
+更多關於產生 URL 的資訊，參考[輔助方法](/docs/5.0/helpers#urls)。
