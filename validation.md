@@ -86,7 +86,7 @@ The validator also allows you to attach callbacks to be run after validation is 
 		//
 	}
 
-You may add as many `after` callbacks to the validator as you need.
+You may add as many `after` callbacks to a validator as you need.
 
 <a name="controller-validation"></a>
 ## Controller Validation
