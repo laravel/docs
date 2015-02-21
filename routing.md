@@ -12,7 +12,7 @@
 <a name="basic-routing"></a>
 ## 基本路由
 
-您將在您應用中的 `app/Http/routes.php` 的檔案載入了 `App\Providers\RouteServiceProvider` 類別來定義大多數的路由。大多數基本的 Laravel 路由都只透過 URI 和 `閉包(Closure)`：
+你將在 `app/Http/routes.php` 中定義應用中大多數的路由，該檔案將會被 `App\Providers\RouteServiceProvider` 類別載入。而多數的基本路由接受使用 URI 或是 `閉包 (Closure)`:
 
 #### 基本 GET 路由
 
@@ -52,16 +52,16 @@
 		return 'Hello World';
 	});
 
-通常情況下，您將會需要為您的路由產生 URL，您可以使用 `url` 輔助函數來操作：
+通常情況下，您將會需要為您的路由產生 URL，您可以使用 `url` 輔助函式來產生：
 
 	$url = url('foo');
 
 <a name="csrf-protection"></a>
 ## CSRF 保護
 
-Laravel 提供簡易的方法，讓您可以保護您的應用程式不受到 [CSRF (跨網站請求偽造)](http://en.wikipedia.org/wiki/Cross-site_request_forgery) 攻擊。跨網站請求偽造是一種惡意的攻擊，藉以代表經過身份驗證的使用者執行未經授權的命令。
+Laravel 提供簡易的方法，讓您可以保護您的應用程式不受到 [CSRF (跨網站請求偽造)](http://en.wikipedia.org/wiki/Cross-site_request_forgery) 攻擊。跨網站請求偽造是一種惡意的攻擊，藉以透過經過身份驗證的使用者身份執行未經授權的命令。
 
-Laravel 會自動在每一位使用者的 session 中放置隨機的 `token` ，這個 token  將被用來確保經過驗證的使用者是實際發出請求至應用程式的使用者：
+Laravel 為所有上線使用者的 Session 產生一個 CSRF “token”。該 token 用來驗證使用者為實際發出請求至應用程式的使用者。
 
 #### 插入 CSRF Token 到表單
 
@@ -71,16 +71,29 @@ Laravel 會自動在每一位使用者的 session 中放置隨機的 `token` ，
 
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-您不需要手動驗證在 POST、PUT、DELETE 請求的 CSRF token。 `VerifyCsrfToken` [HTTP  中介層](/docs/5.0/middleware)將儲存在 session 中的請求輸入的 token 配對來驗證 token 。
+您不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。 `VerifyCsrfToken` [HTTP  中介層](/docs/5.0/middleware)將自動驗證請求與 Session 中的 token 是否相符合。
 
-除了尋找 CSRF token 作為「POST」參數，中介層也檢查 `X-XSRF-TOKEN` 請求標頭，這在多數 Javascript framework  常被拿來使用。
+除了 “POST” 參數中的 CSRF token 外，中介層也會驗證請求標頭中的 `X-CSRF-TOKEN`。例如，送出請求前，你可以將其儲存在 meta 標籤中，並使用 jQuery 加進你的標頭。
+
+	<meta name=“csrf-token” content=“{{ csrf_token() }}” />
+	
+	$.ajax({
+	  url: “/foo/bar”,
+	  beforeSend: function( xhr ) {
+	    xhr.setRequestHeader(‘X-CSRF-Token’, $(‘meta[name=“csrf-token”]’).attr(‘content’))
+	  }
+	})
+
+Laravel 也會在 `XSRF-TOKEN` cookie 中儲存 CSRF token。你也可以使用 cookie 的值來設定 `X-XSRF-TOKEN` 請求標頭。一些像是 Angular 的 Javascript 框架會自動幫你做到。
+
+> 注意: `X-CSRF-TOKEN` 與 `X-XSRF-TOKEN` 的差別在於前者無加密，而後者為加密過的值，因為在 Laravel 中的 cookies 預設是加密過的。如果你使用 `csrf_token()` 函式來取得 token 值，你就得使用 `X-CSRF-TOKEN` 標頭。
 
 <a name="method-spoofing"></a>
 ## 方法欺騙
 
-HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `DELETE` 路由並在 HTML 表單中被呼叫的時候，您將需要添加隱藏 `_method` 欄位在表單中。
+HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `DELETE` 路由，並在 HTML 表單中被呼叫的時候，您將需要在表單中添加隱藏 的`_method` 欄位。
 
-將數值同 `_method` 欄位發送使用 HTTP 請求方法。舉例來說：
+隨著 `_method` 欄位送出的值將被視為 HTTP 請求方法使用。舉例來說：
 
 	<form action="/foo/bar" method="POST">
 		<input type="hidden" name="_method" value="PUT">
@@ -99,14 +112,14 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 		return 'User '.$id;
 	});
 
-#### 可選擇的路由參數
+#### 選擇性路由參數
 
 	Route::get('user/{name?}', function($name = null)
 	{
 		return $name;
 	});
 
-#### 帶預設值的路由參數
+#### 帶預設值的選擇性路由參數
 
 	Route::get('user/{name?}', function($name = 'John')
 	{
@@ -157,7 +170,7 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 		//
 	}
 
-你也可以使用 `Illuminate\Http\Request` 實體取得路由參數。當前請求的實體可以透過 `Request` facade  取得，或透過型別暗示 `Illuminate\Http\Request` 注入依賴：
+你也可以使用 `Illuminate\Http\Request` 實體取得目前路由參數。當前請求的實體可以透過 `Request` facade  取得，或透過型別提示 `Illuminate\Http\Request` 注入依賴：
 
 	use Illuminate\Http\Request;
 
@@ -172,7 +185,7 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 <a name="named-routes"></a>
 ## 命名路由
 
-命名路由讓你更方便於產生 URL 與重導特定路。您可以用 `as` 的陣列鍵值指定名稱給路由：
+命名路由讓你更方便為特定路由產生 URL 或進行重導。你可以使用 `as` 的陣列鍵為路由指定名稱。
 
 	Route::get('user/profile', ['as' => 'profile', function()
 	{
@@ -213,7 +226,7 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 		});
 	});
 
-您一樣可以在 `group` 陣列中使用 `namespace` 參數，指定在這群組中控制器的命名空間：
+您一樣可以在 `group` 陣列中使用 `namespace` 參數，指定這群組中控制器的命名空間：
 
 	Route::group(['namespace' => 'Admin'], function()
 	{
@@ -277,7 +290,7 @@ Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中
 		//
 	});
 
-因為我們已經將 `{user}` 參數綁定到 `App\User` 模型，所以 `User` 實體將被注入到路由。所以舉例來說，請求至  `profile/1` 將注入 ID 為 1 的 `User` 實體。
+因為我們已經將 `{user}` 參數綁定到 `App\User` 模型，所以 `User` 實體將被注入到路由。所以舉例來說，請求至 `profile/1` 將注入 ID 為 1 的 `User` 實體。
 
 > **注意：** 如果在資料庫中找不到匹配的模型實體，將引發 404 錯誤。
 
@@ -288,7 +301,7 @@ Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中
 		throw new NotFoundHttpException;
 	});
 
-如果您想要使用您自己決定的邏輯，您應該使用 `Router::bind`方法。閉包透過 `bind` 方法將傳遞 URI 區段數值，並應該返回您想要被注入路由的類別實體：
+如果您想要使用您自定的處理邏輯，您應該使用 `Router::bind` 方法。閉包透過 `bind` 方法將傳遞 URI 區段數值，並返回您想要被注入路由的類別實體：
 
 	Route::bind('user', function($value)
 	{
@@ -298,11 +311,11 @@ Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中
 <a name="throwing-404-errors"></a>
 ## 拋出 404 錯誤
 
-這裡有兩種方法從路由手動觸發 404 錯誤。首先，您可以使用 `abort` 輔助函數：
+這裡有兩種方法從路由手動觸發 404 錯誤。首先，您可以使用 `abort` 輔助函式：
 
 	abort(404);
 
-`abort` 輔助函數只是簡單拋出帶有特定狀態代碼的 `Symfony\Component\HttpFoundation\Exception\HttpException` 。
+`abort` 輔助函式只是簡單拋出帶有指定狀態代碼的 `Symfony\Component\HttpFoundation\Exception\HttpException`。
 
 第二，您可以手動拋出 `Symfony\Component\HttpKernel\Exception\NotFoundHttpException` 的實體。
 
