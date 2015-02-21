@@ -1,56 +1,56 @@
 # SSH
 
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
-- [Tasks](#tasks)
-- [SFTP Downloads](#sftp-downloads)
-- [SFTP Uploads](#sftp-uploads)
-- [Tailing Remote Logs](#tailing-remote-logs)
-- [Envoy Task Runner](#envoy-task-runner)
+- [設定檔](#configuration)
+- [基本用法](#basic-usage)
+- [任務](#tasks)
+- [SFTP 下載](#sftp-downloads)
+- [SFTP 上傳](#sftp-uploads)
+- [編輯遠端日誌](#tailing-remote-logs)
+- [Envoy 任務執行](#envoy-task-runner)
 
 <a name="configuration"></a>
-## Configuration
+## 設定檔
 
-Laravel includes a simple way to SSH into remote servers and run commands, allowing you to easily build Artisan tasks that work on remote servers. The `SSH` facade provides the access point to connecting to your remote servers and running commands.
+Laravel 可以簡單的方式 SSH 連線到遠端伺服器並執行命令，讓你可以簡單在遠端執行的建立 Artisan 任務。`SSH` facade 提供了使用方式讓你連線到遠端伺服器並執行命令。
 
-The configuration file is located at `config/remote.php`, and contains all of the options you need to configure your remote connections. The `connections` array contains a list of your servers keyed by name. Simply populate the credentials in the `connections` array and you will be ready to start running remote tasks. Note that the `SSH` can authenticate using either a password or an SSH key.
+設定檔放在 `config/remote.php`，裡面包含所有需要設定的遠端連線設定，`connections` 陣列裡有以伺服器名稱作為鍵值的列表。只要在 `connections` 陣列設定好認證，你就準備好可以執行遠端任務了。記得 `SSH` 可以經由密碼或 SSH key 認證。
 
-> **Note:** Need to easily run a variety of tasks on your remote server? Check out the [Envoy task runner](#envoy-task-runner)!
+> **提示：** 需要在遠端伺服器執行很多任務嗎？瞧瞧 [Envoy 任務執行](#envoy-task-runner)！
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-#### Running Commands On The Default Server
+#### 在在預設伺服器執行命令
 
-To run commands on your `default` remote connection, use the `SSH::run` method:
+使用 `SSH::run` 方法，在預設的遠端伺服器執行命令：
 
 	SSH::run([
 		'cd /var/www',
 		'git pull origin master',
 	]);
 
-#### Running Commands On A Specific Connection
+#### 在特定伺服器執行命令
 
-Alternatively, you may run commands on a specific connection using the `into` method:
+你也可以使用 `into` 方法在特定的伺服器上執行命令：
 
 	SSH::into('staging')->run([
 		'cd /var/www',
 		'git pull origin master',
 	]);
 
-#### Catching Output From Commands
+#### 捕捉命令的輸出
 
-You may catch the "live" output of your remote commands by passing a Closure into the `run` method:
+你可以經由傳入閉合函數到 `run` 方法，捕捉遠端命令的即時輸出：
 
 	SSH::run($commands, function($line)
 	{
 		echo $line.PHP_EOL;
 	});
 
-## Tasks
 <a name="tasks"></a>
+## 任務
 
-If you need to define a group of commands that should always be run together, you may use the `define` method to define a `task`:
+如果你需要定義一組一起執行的命令，你可以用 `define` 方法定義一個「任務」：
 
 	SSH::into('staging')->define('deploy', [
 		'cd /var/www',
@@ -58,7 +58,7 @@ If you need to define a group of commands that should always be run together, yo
 		'php artisan migrate',
 	]);
 
-Once the task has been defined, you may use the `task` method to run it:
+你可以用 `task` 方法執行定義過的任務：
 
 	SSH::into('staging')->task('deploy', function($line)
 	{
@@ -66,57 +66,57 @@ Once the task has been defined, you may use the `task` method to run it:
 	});
 
 <a name="sftp-downloads"></a>
-## SFTP Downloads
+## SFTP 下載
 
-The `SSH` class includes a simple way to download files using the `get` and `getString` methods:
+`SSH` 類別裡有簡單的方式可以下載檔案，使用 `get` 和 `getString` 方法：
 
 	SSH::into('staging')->get($remotePath, $localPath);
 
 	$contents = SSH::into('staging')->getString($remotePath);
 
 <a name="sftp-uploads"></a>
-## SFTP Uploads
+## SFTP 上傳
 
-The `SSH` class also includes a simple way to upload files, or even strings, to the server using the `put` and `putString` methods:
+`SSH` 類別裡也有簡單的方式可以上傳檔案或甚至是字串到遠端伺服器，使用 `put` 和 `putString` 方法：
 
 	SSH::into('staging')->put($localFile, $remotePath);
 
 	SSH::into('staging')->putString($remotePath, 'Foo');
 
 <a name="tailing-remote-logs"></a>
-## Tailing Remote Logs
+## 編輯遠端日誌
 
-Laravel includes a helpful command for tailing the `laravel.log` files on any of your remote connections. Simply use the `tail` Artisan command and specify the name of the remote connection you would like to tail:
+Laravel 有一個有用的命令，可以讓你在任何遠端伺服器的 `laravel.log` 尾端附加日誌內容。使用 Artisan 的 `tail` 命令以及指定遠端連線的伺服器名稱：
 
 	php artisan tail staging
 
 	php artisan tail staging --path=/path/to/log.file
 
 <a name="envoy-task-runner"></a>
-## Envoy Task Runner
+## Envoy 任務執行
 
-- [Installation](#envoy-installation)
-- [Running Tasks](#envoy-running-tasks)
-- [Multiple Servers](#envoy-multiple-servers)
-- [Parallel Execution](#envoy-parallel-execution)
-- [Task Macros](#envoy-task-macros)
-- [Notifications](#envoy-notifications)
-- [Updating Envoy](#envoy-updating-envoy)
+- [安裝](#envoy-installation)
+- [執行任務](#envoy-running-tasks)
+- [多伺服器](#envoy-multiple-servers)
+- [平行執行](#envoy-parallel-execution)
+- [任務巨集](#envoy-task-macros)
+- [提醒通知](#envoy-notifications)
+- [更新 Envoy](#envoy-updating-envoy)
 
-Laravel Envoy provides a clean, minimal syntax for defining common tasks you run on your remote servers. Using a [Blade](/docs/templates#blade-templating) style syntax, you can easily setup tasks for deployment, Artisan commands, and more.
+Laravel Envoy 提供了簡潔，輕量的語法，定義在遠端伺服器執行的共同任務。使用 [Blade](/docs/templates#blade-templating) 風格的語法，你可以簡單的設置部署任務，執行 Artisan 命令或是更多。
 
-> **Note:** Envoy requires PHP version 5.4 or greater, and only runs on Mac / Linux operating systems.
+> **提醒:** Envoy 需要 PHP 5.4 或更高的版本，並且只能在 Mac / Linux 作業系統下執行。
 
 <a name="envoy-installation"></a>
-### Installation
+### 安裝
 
-First, install Envoy using the Composer `global` command:
+首先，使用 Composer `global` 命令安裝 Envoy：
 
 	composer global require "laravel/envoy=~1.0"
 
-Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `envoy` executable is found when you run the `envoy` command in your terminal.
+記得將 `~/.composer/vendor/bin` 路徑加入 PATH，如此在終端機執行 `envoy` 命令時才找得到。
 
-Next, create an `Envoy.blade.php` file in the root of your project. Here's an example to get you started:
+再來，在專案根目錄建立 `Envoy.blade.php` 檔案。這裡有個範例可以讓你作為起頭：
 
 	@servers(['web' => '192.168.1.1'])
 
@@ -124,24 +124,24 @@ Next, create an `Envoy.blade.php` file in the root of your project. Here's an ex
 		ls -la
 	@endtask
 
-As you can see, an array of `@servers` is defined at the top of the file. You can reference these servers in the `on` option of your task declarations. Within your `@task` declarations you should place the Bash code that will be run on your server when the task is executed.
+如你所見，`@servers` 陣列建立在檔案的起始。你可以在宣告任務時，在 `on` 選項裡參照這些伺服器。在你的 `@task` 宣告裡，寫入想要在遠端伺服器執行的 Bash code。
 
-The `init` command may be used to easily create a stub Envoy file:
+`init` 命令可以簡單的建立一個基本的 Envoy 檔：
 
 	envoy init user@192.168.1.1
 
 <a name="envoy-running-tasks"></a>
-### Running Tasks
+### 執行任務
 
-To run a task, use the `run` command of your Envoy installation:
+使用 `run` 命令去執行設定的任務：
 
 	envoy run foo
 
-If needed, you may pass variables into the Envoy file using command line switches:
+如有需要，你可以傳入參數到 Envoy 檔案：
 
 	envoy run deploy --branch=master
 
-You may use the options via the Blade syntax you are used to:
+利用你所熟悉的 Blade 語法使用這些參數：
 
 	@servers(['web' => '192.168.1.1'])
 
@@ -151,9 +151,9 @@ You may use the options via the Blade syntax you are used to:
 		php artisan migrate
 	@endtask
 
-#### Bootstrapping
+#### 啟動碼
 
-You may use the ```@setup``` directive to declare variables and do general PHP work inside the Envoy file:
+你可以使用 ```@setup``` 語法，然後就能夠在 Envoy 檔案裡宣告 PHP 變數，以及執行一般的 PHP 程式碼：
 
 	@setup
 		$now = new DateTime();
@@ -161,14 +161,14 @@ You may use the ```@setup``` directive to declare variables and do general PHP w
 		$environment = isset($env) ? $env : "testing";
 	@endsetup
 
-You may also use ```@include``` to include any PHP files:
+你也可以使用 ```@include``` 引入 PHP 檔案：
 
 	@include('vendor/autoload.php');
 
 <a name="envoy-multiple-servers"></a>
-### Multiple Servers
+### 多伺服器
 
-You may easily run a task across multiple servers. Simply list the servers in the task declaration:
+你可以簡單的在多個伺服器執行任務。只要在任務宣告裡列出伺服器名稱：
 
 	@servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
@@ -178,12 +178,12 @@ You may easily run a task across multiple servers. Simply list the servers in th
 		php artisan migrate
 	@endtask
 
-By default, the task will be executed on each server serially. Meaning, the task will finish running on the first server before proceeding to execute on the next server.
+預設上，任務會循序的在每個伺服器上執行。意味著任務會在第一個伺服器執行完後，才換到下一個。
 
 <a name="envoy-parallel-execution"></a>
-### Parallel Execution
+### 平行執行
 
-If you would like to run a task across multiple servers in parallel, simply add the `parallel` option to your task declaration:
+如果你想在多個伺服器上同時執行任務，只要簡單的在任務宣告裡加上 `parallel` 選項：
 
 	@servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
@@ -194,9 +194,9 @@ If you would like to run a task across multiple servers in parallel, simply add 
 	@endtask
 
 <a name="envoy-task-macros"></a>
-### Task Macros
+### 任務巨集
 
-Macros allow you to define a set of tasks to be run in sequence using a single command. For instance:
+巨集讓你可以只要使用一個命令，就能夠循序執行一組任務。例如：
 
 	@servers(['web' => '192.168.1.1'])
 
@@ -213,17 +213,17 @@ Macros allow you to define a set of tasks to be run in sequence using a single c
 		echo "WORLD"
 	@endtask
 
-The `deploy` macro can now be run via a single, simple command:
+現在 `deploy` 巨集可以經由一個簡單的命令執行：
 
 	envoy run deploy
 
 <a name="envoy-notifications"></a>
 <a name="envoy-hipchat-notifications"></a>
-### Notifications
+### 提醒通知
 
 #### HipChat
 
-After running a task, you may send a notification to your team's HipChat room using the simple `@hipchat` directive:
+你可能想要在執行完任務後，發送通知到團隊的 HipChat 聊天室，使用簡單的 `@hipchat` 宣告：
 
 	@servers(['web' => '192.168.1.1'])
 
@@ -235,29 +235,29 @@ After running a task, you may send a notification to your team's HipChat room us
 		@hipchat('token', 'room', 'Envoy')
 	@endafter
 
-You can also specify a custom message to the hipchat room. Any variables declared in ```@setup``` or included with ```@include``` will be available for use in the message:
+你也可以自定發送到 hipchat 聊天室的訊息，任何在 ```@setup``` 裡宣告，或是經由 ```@include``` 引入的變數都可以使用在訊息裡：
 
 	@after
 		@hipchat('token', 'room', 'Envoy', "$task ran on [$environment]")
 	@endafter
 
-This is an amazingly simple way to keep your team notified of the tasks being run on the server.
+這是一個令人驚豔的簡單方式，讓你的團隊保持通知在伺服器執行的任務。
 
 #### Slack
 
-The following syntax may be used to send a notification to [Slack](https://slack.com):
+下面的語法可以發送通知到 [Slack](https://slack.com)：
 
 	@after
 		@slack('team', 'token', 'channel')
 	@endafter
 
 <a name="envoy-updating-envoy"></a>
-### Updating Envoy
+### 更新 Envoy
 
-To update Envoy, simply run the `self-update` command:
+執行 `self-update` 命令即可簡單的更新 Envoy：
 
 	envoy self-update
 
-If your Envoy installation is in `/usr/local/bin`, you may need to use `sudo`:
+如果你的 Envoy 安裝在 `/usr/local/bin`，你可能需要加上 `sudo`：
 
 	composer global update
