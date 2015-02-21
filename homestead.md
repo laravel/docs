@@ -48,6 +48,10 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 
 	vagrant box add laravel/homestead
 
+如果上述指令失敗，你的 Vargrant 是舊版需要完整的鏈結：
+
+	vagrant box add laravel/homestead https://atlas.hashicorp.com/laravel/boxes/homestead
+
 ### 安裝 Homestead
 
 #### 手動透過 Git 安裝（本地端沒有 PHP）
@@ -68,7 +72,7 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 
 	composer global require "laravel/homestead=~2.0"
 
-請務必確認 `homestead` 有被放置在目錄 `~/.composer/vendor/bin` 之中，如此一來你才能在終端機中順利執行 `homestead` 指令。
+確認 `~/.composer/vendor/bin` 目錄是否設定在你的 PATH 環境變數中，如此當你在終端執行 `homestead` 命令時，`homestead` 才能被找到並執行。
 
 一旦你安裝完 Homestead CLI 工具，即可執行 `init` 指令來創建 `Homestead.yaml` 設定檔:
 
@@ -80,7 +84,7 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 
 ### 設定你的 SSH 金鑰
 
-再來你要編輯 `Homestead.yaml`。可以在檔案中設定你的 SSH 公開金鑰，以及主要機器與 Homestead 虛擬機器之間的共享目錄。
+再來你要編輯 `Homestead.yaml`。可以在檔案中設定你的 SSH 公開金鑰路徑，以及主要機器與 Homestead 虛擬機器之間的共享目錄。
 
 你沒有 SSH 金鑰？在 Mac 和 Linux 下，你可以利用下面的指令來創建一個 SSH 金鑰組:
 
@@ -92,11 +96,11 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 
 ### 設定你的共享資料夾
 
-`Homestead.yaml` 檔案中的 `folders` 屬性列出所有你想跟你的 Homestead 環境共享的資料夾列表。這些資料夾中的檔案若有更動，他們將會同步在你的本機與 Homestead 環境裡。你可以將你需要的共享資料夾都設定進去。
+`Homestead.yaml` 檔案中的 `folders` 屬性列出所有你想跟你的 Homestead 環境共享的資料夾列表。這些資料夾中的檔案若有更動，他們將會在你的本機與 Homestead 環境裡保持同步。你可以將你需要的共享資料夾都設定進去。
 
 ### 設定你的 Nginx 站台
 
-對 Nginx 不熟悉？沒關係。`sites` 屬性允許你簡單的對應一個 `網域` 到一個 homestead 環境中的目錄。一個範例的站台被設定在 `Homestead.yaml` 檔案中。同樣的，你可以加任何你需要的站台到你的 Homestead 環境中。Homestead 可以為你每個進行中的 Laravel 專案提供方便的虛擬化環境。
+對 Nginx 不熟悉？沒關係。`sites` 屬性允許你簡單的對應一個 `網域` 到一個 homestead 環境中的目錄。在 `Homestead.yaml` 檔案中有一個範例的站台設定。同樣的，你可以加任何你需要的站台到你的 Homestead 環境中。Homestead 可以為你每個進行中的 Laravel 專案提供方便的虛擬化環境。
 
 你可以透過設定 `hhvm` 屬性為 `true` 來讓虛擬站台支援 [HHVM](http://hhvm.com):
 
@@ -107,11 +111,11 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 
 ### Bash Aliases
 
-如果要增加 Bash aliases 到你的 Homestead 封裝包中，只要將內容加到 `~/.homestead` 目錄最上層的 `aliases` 檔案中即可。
+如果要增加 Bash aliases 到你的 Homestead 封裝包中，只要將內容加到 `~/.homestead` 根目錄的 `aliases` 檔案中即可。
 
 ### 啟動 Vagrant 封裝包
 
-當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機裡進入你的 Homestead 資料夾並執行 `vagrant up` 指令。
+當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機從你的 Homestead 資料夾下執行 `vagrant up` 指令。
 
 Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx 站台。如果要移除虛擬機器，可以使用 `vagrant destroy --force` 指令。
 
@@ -119,18 +123,18 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 
 	192.168.10.10  homestead.app
 
-務必確認 IP 位置與你的 `Homestead.yaml` 檔案中的相同。一旦你將網域加進你的 `hosts` 檔案中，你就可以透過網頁瀏覽器 存取到你的站台。
+務必確認 IP 位置與你的 `Homestead.yaml` 檔案中的相同。一旦你將網域加進你的 `hosts` 檔案中，你就可以透過網頁瀏覽器存取到你的站台。
 
 	http://homestead.app
 
 繼續讀下去，你會學到如何連結到資料庫！
 
 <a name="daily-usage"></a>
-## 常見用法
+## 日常使用
 
 ### 透過 SSH 連接
 
-要透過 SSH 連接上您的 Homestead 環境，在終端機裡進入你的 Homestead 目錄並執行  `vagrant ssh` 指令。
+要透過 SSH 連接上您的 Homestead 環境，在你的 Homestead 目錄下執行  `vagrant ssh` 指令。
 
 因為你可能會經常需要透過 SSH 進入你的 Homestead 虛擬機器，可以考慮在你的主要機器上創建一個"別名":
 
