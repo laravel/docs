@@ -1,6 +1,6 @@
 # Authentication
 
-- [Introduction](#introduction)
+- [Introdução](#introduction)
 - [Authenticating Users](#authenticating-users)
 - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
 - [Protecting Routes](#protecting-routes)
@@ -9,9 +9,9 @@
 - [Social Authentication](#social-authentication)
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
+Laravel faz a implementação de autenticação muito simples. Na verdade, quase tudo está configurado para você de fora da caixa. O arquivo de configuração de autenticação está localizado no diretório `config/auth.php`, que contém muitas opções bem documentadas para adequar o comportamento dos serviços de autenticação.
 
 By default, Laravel includes an `App\User` model in your `app` directory. This model may be used with the default Eloquent authentication driver.
 
