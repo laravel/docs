@@ -32,7 +32,7 @@ Laravel 幾乎不需設定就可以馬上使用。你可以自由的開始開發
 
 一旦 Laravel 安裝完成，你應該同時 [設定本機環境](/docs/5.0/configuration#environment-configuration)。
 
-> **注意：** 你不應該在正式環境中將 `app.debug` 設定為 `true` 。絕對！千萬不要！
+> **注意：** 你不應該在正式環境中將 `app.debug` 設定為 `true` 。
 
 <a name="permissions"></a>
 ### 權限
@@ -48,7 +48,7 @@ Laravel 框架有一個目錄需要額外設置權限：`storage` 目錄必須�
 
 	Config::set('app.timezone', 'America/Chicago');
 
-你也可以使用 `config` 輔助方法：
+你也可以使用 `config` 輔助函式：
 
 	$value = config('app.timezone');
 
@@ -57,11 +57,11 @@ Laravel 框架有一個目錄需要額外設置權限：`storage` 目錄必須�
 
 通常應用程式常常需要根據不同的執行環境而有不同的設定值。例如，你會希望在你的本機開發環境上會有與正式環境不同的暫存驅動（cache driver），透過設定檔案，就可以輕鬆完成。
 
-Laravel 透過 [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vance Lucas。 在全新安裝好的 Laravel 裡，你的應用程式的根目錄下會包含一個 `.env.example` 檔案。如果你透過 Composer 安裝 Laravel，這個檔案將自動被命名為 `.env`，不然你應該手動更改檔名。
+Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP 套件達成。 在全新安裝好的 Laravel 裡，你的應用程式的根目錄下會包含一個 `.env.example` 檔案。如果你透過 Composer 安裝 Laravel，這個檔案將自動被改名為 `.env`，不然你應該手動更改檔名。
 
-當你的應用程式收到請求，這個檔案所有的變數會被載入到 `$_ENV` PHP 超級全域變數裡。你可以使用輔助方法 `env` 檢視這些變數。事實上，如果你檢閱過 Laravel 設定檔案，你會注意到幾個選項已經在使用這個輔助方法！
+當你的應用程式收到請求，這個檔案所有的變數會被載入到 PHP 超級全域變數`$_ENV` 裡。你可以使用輔助函式 `env` 來取得這些變數。事實上，如果你檢閱過 Laravel 設定檔案，你會注意到幾個選項已經在使用這個輔助函式！
 
-根據你的本機伺服器或者上線環境需求，你可以自由的修改你的環境變數。然而， 你的 `.env`  檔案不應該被提交到應用程式的版本控制系統，因為每個開發人員或伺服器使用你的應用程式可能需要不同的環境設定。
+根據你的本機伺服器或者正式環境需求，你可以自由的修改你的環境變數。然而， 你的 `.env`  檔案不應該被提交到應用程式的版本控制系統，因為每個開發人員或伺服器使用你的應用程式可能需要不同的環境設定。
 
 如果你是一個團隊的開發者，不妨將 `.env.example` 檔案包含到你的應用程式。透過範例設定檔裡的預留值，你的團隊中其他開發人員可以清楚地看到執行你的應用程式所需的哪些環境變數。
 
@@ -85,7 +85,7 @@ Laravel 透過 [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vanc
 
 如果想取得應用程式的實例，可以透過[服務容器](/docs/5.0/container)的 `Illuminate\Contracts\Foundation\Application`  contract 來取得。當然，如果你想在[服務提供者](/docs/5.0/providers)中使用，應用程式實例可以透過實例變數 `$this->app` 取得。
 
-也能透過 `App` facade 的輔助方法 `app` 取得應用程式實例：
+也能透過 `App` facade 的輔助函式 `app` 取得應用程式實例：
 
 	$environment = app()->environment();
 
@@ -101,7 +101,7 @@ Laravel 透過 [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vanc
 <a name="maintenance-mode"></a>
 ## 維護模式
 
-當你的應用程式處於維護模式時，所有的路由都會指向一個自定的視圖。當你要更新或進行維護作業時，「關閉」整個網站是很簡單的。維護模式會檢查包含在應用程式的預設中介層堆疊。如果應用程式處於維護模式，`HttpException` 會拋出 503 的狀態碼。
+當你的應用程式處於維護模式時，所有的路由都會指向一個自定的視圖。當你要更新或進行維護作業時，很簡單的「關閉」整個網站。維護模式會檢查包含在應用程式的預設中介層堆疊。如果應用程式處於維護模式，`HttpException` 會拋出 503 的狀態碼。
 
 啟用維護模式，只需要執行 Artisan 指令 `down`：
 
