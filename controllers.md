@@ -150,15 +150,15 @@ This single route declaration creates multiple routes to handle a variety of RES
 
 #### Actions Handled By Resource Controller
 
-Verb      | Path                        | Action       | Route Name
-----------|-----------------------------|--------------|---------------------
-GET       | /resource                   | index        | resource.index
-GET       | /resource/create            | create       | resource.create
-POST      | /resource                   | store        | resource.store
-GET       | /resource/{resource}        | show         | resource.show
-GET       | /resource/{resource}/edit   | edit         | resource.edit
-PUT/PATCH | /resource/{resource}        | update       | resource.update
-DELETE    | /resource/{resource}        | destroy      | resource.destroy
+Verb      | Path                  | Action       | Route Name
+----------|-----------------------|--------------|---------------------
+GET       | /photo                | index        | photo.index
+GET       | /photo/create         | create       | photo.create
+POST      | /photo                | store        | photo.store
+GET       | /photo/{photo}        | show         | photo.show
+GET       | /photo/{photo}/edit   | edit         | photo.edit
+PUT/PATCH | /photo/{photo}        | update       | photo.update
+DELETE    | /photo/{photo}        | destroy      | photo.destroy
 
 #### Customizing Resource Routes
 
