@@ -7,27 +7,27 @@
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
 
-Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架構提供了更好的功能建立強健的 Laravel 應用程式，以及在應用程式中全面採用新的自動載入標準（ PSR-4 ）。首先，來檢視一些主要更動：
+Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架構提供了更好的基礎在 Laravel 中建立強健的應用程式，以及在應用程式中全面採用新的自動載入標準（ PSR-4 ）。首先，來檢視一些主要更動：
 
 ### 新的目錄結構
 
-舊的 `app/models` 目錄已經完全被移除。相對的，你所有的程式碼都放在 `app` 目錄下，以及預設上使用 `App` 命名空間。這個預設的命名空間可以快速的被更改，使用新的 `app:name` Artisan 命令。
+舊的 `app/models` 目錄已經完全被移除。相對的，你所有的程式碼都放在 `app` 目錄下，以及預設上使用 `App` 命名空間。這個預設的命名空間可以快速的使用新的 `app:name` Artisan 命令來做更改。
 
 控制器（ controller ），中介層（ middleware ），以及請求（ requests，Laravel 5.0 中新型態的類別），現在分門別類的放在 `app/Http` 目錄下，因為他們都與應用程式的 HTTP 傳輸層相關。除了一個路由設定的檔案外，所有的中介層現在都分開成為獨自的類別檔。
 
-新的 `app/Providers` 目錄取代了舊版 Laravel 4.x `app/start` 裡的檔案。這些服務提供者有很多啟動應用程式相關的方法，像是錯誤處理，日誌紀錄，路由載入，以及更多。當然，你可以自由的建立新的服務提供者到應用程式。
+新的 `app/Providers` 目錄取代了舊版 Laravel 4.x `app/start` 裡的檔案。這些服務提供者為應用程式提供了各種的引導功能，像是錯誤處理，日誌紀錄，路由載入等等。當然，你可以任意的建立新的服務提供者到應用程式中。
 
-應用程式的語言檔案和視圖都移到 `resources` 目錄下。
+應用程式的語系檔案和視圖都被移到 `resources` 目錄下。
 
 ### Contracts
 
-所有 Laravel 主要元件實作所用的介面都放在 `illuminate/contracts` 專案下。這個專案沒有其他的外部相依。這些方便、集成的介面，可以讓你用來讓依賴注入變得低耦合，將可以簡單作為 Laravel Facades 的替代選項。
+所有 Laravel 主要元件實作所用的介面都放在 `illuminate/contracts` 儲存庫中。這個儲存庫沒有其他的外部相依。這些方便、集成的介面，可以讓你用來讓依賴注入變得低耦合，將可以簡單作為 Laravel Facades 的替代選項。
 
 更多關於 contracts 的資訊，參考[完整文件](/docs/5.0/contracts)。
 
 ### 路由快取
 
-如果你的應用程式全部都是使用控制器路由，你可以使用新的 `route:cache` Artisan 命令大幅度地加快路由註冊。這對於有 100 個以上路由規則的應用程式很有用，可以**大幅度地**加快應用程式這部分的處理速度。
+如果你的應用程式全部都是使用控制器路由，你可以使用新的 `route:cache` Artisan 命令來大幅度地加快註冊路由。這對於有 100 個以上路由規則的應用程式很有用，可以**大幅度地**加快應用程式這部分的處理速度。
 
 ### 路由中介層（ Middleware ）
 
@@ -35,9 +35,9 @@ Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架�
 
 更多關於中介層的資訊，參考[完整文件](/docs/5.0/middleware)。
 
-### 控制器方法依賴注入
+### 控制器方法注入
 
-除了之前有的控制器依賴注入，你現在可以在控制器方法使用型別提示（ type-hint ）進行依賴注入。[服務容器](/docs/5.0/container)會自動注入依賴，即使路由包含了其他參數也不成問題：
+除了之前有的建構函數注入外，你現在可以在控制器方法使用型別提示（ type-hint ）進行依賴注入。[服務容器](/docs/5.0/container)會自動注入依賴，即使路由包含了其他參數也不成問題：
 
 	public function createPost(Request $request, PostRepository $posts)
 	{
@@ -82,7 +82,7 @@ Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架�
 
 ### 命令（ Commands ）、隊列（ Queueing ）
 
-除了 Laravel 4 形式的隊列任務，Laravel 5 以簡單的命令物件作為隊列任務。這些命令放在 `app/Commands` 目錄下。下面是個簡單的命令：
+除了 Laravel 4 形式的隊列任務，Laravel 5 以簡單的命令物件作為隊列任務。這些命令放在 `app/Commands` 目錄下。下面是個範例的命令：
 
 	class PurchasePodcast extends Command implements SelfHandling, ShouldBeQueued {
 
@@ -127,7 +127,7 @@ Laravel 的基底控制器使用了新的 `DispatchesCommands` trait，讓你可
 
 ### Laravel 排程（ Scheduler ）
 
-過去，開發者可以產生 Cron 設定，用以排程所有他們想要執行的命令列指令。然而，這是件很頭痛的事情，你的命令列排程不再屬於版本控制的一部分，而你必須 SSH 到伺服器裏加入 Cron 設定。讓生活變得簡單點。Laravel 命令列排程，讓你可以流暢而且具有表達性的定義在 Laravel 裡面，定義你的命令排程，而且伺服器只需要單一個 Cron 設定。
+過去，開發者可以產生 Cron 設定，用以排程所有他們想要執行的命令列指令。然而，這是件很頭痛的事情，因為你的命令列排程不在版本控制中，而你必須登入到伺服器裏加入 Cron 設定。讓生活變得簡單點。Laravel 命令列排程，讓你可以流暢而且具有表達性的定義在 Laravel 裡面，定義你的命令排程，而且只需要在伺服器裡設定一個 Cron 設定。
 
 它會看起來如下：
 
@@ -137,7 +137,7 @@ Laravel 的基底控制器使用了新的 `DispatchesCommands` trait，讓你可
 
 ### Tinker、Psysh
 
-`php artisan tinker` 命令現在使用 Justin Hileman 的 [Psysh](https://github.com/bobthecow/psysh)，一個 PHP 更強大的 REPL。如果你喜歡 Laravel 4 的 Boris，你也會喜歡上 Psysh。更好的是，它可以跑在 Windows！要開始使用，只要輸入：
+`php artisan tinker` 命令現在使用 Justin Hileman 的 [Psysh](https://github.com/bobthecow/psysh)，一個 PHP 更強大的 REPL。如果你喜歡 Laravel 4 的 Boris，你也會喜歡上 Psysh。更好的是，它可以在 Windows 上運行！要開始使用，只要輸入：
 
 	php artisan tinker
 
@@ -147,7 +147,7 @@ Laravel 的基底控制器使用了新的 `DispatchesCommands` trait，讓你可
 
 ### Laravel Elixir
 
-Jeffrey Way 的 Laravel Elixir 提供了一個流暢、口語的介面，可以編譯以及合併 assets。如果你曾經在學習 Grunt 或 Gulp 被嚇到，不必再害怕了。Elixir 讓使用 Gulp 編譯 Less、Sass 及 CoffeeScript 變得簡單。它甚至可以幫你執行測試！
+Jeffrey Way 的 Laravel Elixir 提供了一個流暢、口語化的介面，可以編譯以及合併 assets。如果你曾經因為學習 Grunt 或 Gulp 而被嚇到，不必再害怕了。Elixir 讓使用 Gulp 編譯 Less、Sass 及 CoffeeScript 變得簡單。它甚至可以幫你執行測試！
 
 更多關於 Elixir 的資訊，參考[完整文件](/docs/5.0/elixir)。
 
@@ -165,7 +165,7 @@ Laravel Socialite 是個選用的，Laravel 5.0 以上相容的套件，提供�
 		$user = Socialize::with('twitter')->user();
 	}
 
-不用再花上數小時撰寫 OAuth 的認證流程。數分鐘就可開始！查看[完整文件](/docs/5.0/authentication#social-authentication) 裡有所有的細節。
+不用再花上數小時撰寫 OAuth 的認證流程。只要幾分鐘！查看[完整文件](/docs/5.0/authentication#social-authentication) 裡有所有的細節。
 
 ### Flysystem 整合
 
@@ -178,7 +178,7 @@ Laravel 現在包含了強大的 [Flysystem](https://github.com/thephpleague/fly
 
 ### Form Requests
 
-Laravel 5.0 使用了 **form requests**，是繼承了 `Illuminate\Foundation\Http\FormRequest` 的類別。這些 request 物件可以和控制器方法依賴注入結合，提供一個不需樣板的方法，可以驗證使用者輸入。讓我們深入點，看一個 `FormRequest` 的範例：
+Laravel 5.0 引進了 **form requests**，是繼承自 `Illuminate\Foundation\Http\FormRequest` 的類別。這些 request 物件可以和控制器方法依賴注入結合，提供一個不需樣板的方法，來驗證使用者輸入。讓我們深入點，看一個 `FormRequest` 的範例：
 
 	<?php namespace App\Http\Requests;
 
@@ -206,11 +206,11 @@ Laravel 5.0 使用了 **form requests**，是繼承了 `Illuminate\Foundation\Ht
 		var_dump($request->input());
 	}
 
-當 Laravel 的服務容器辨別出要注入的類別是個 `FormRequest` 實例，請求會被**自動驗證**。意味著，當你的控制器動作被呼叫了，你可以安全的假設 HTTP 的請求輸入己經被驗證過，根據你在 form request 類別裡自定的規則。甚至，若這個請求驗證不通過，一個 HTTP 重導（可以自定），會自動發出，錯誤訊息可以被閃存到 session 或是轉換成 JSON 返回。**表單驗證再簡單不過如此。**更多關於 `FormRequest` 驗證，參考[文件](/docs/5.0/validation#form-request-validation)。
+當 Laravel 的服務容器辨別出要注入的類別是個 `FormRequest` 實例，該請求將會被**自動驗證**。意味著，當你的控制器動作被呼叫了，你可以安全的假設 HTTP 的請求輸入己經被驗證過，根據你在 form request 類別裡自定的規則。甚至，若這個請求驗證不通過，一個 HTTP 重導（可以自定），會自動發出，錯誤訊息可以被閃存到 session 中或是轉換成 JSON 返回。**表單驗證再簡單不過如此。**更多關於 `FormRequest` 驗證，參考[文件](/docs/5.0/validation#form-request-validation)。
 
 ### 簡易控制器請求驗證
 
-Laravel 5 基底控制器包含一個 `ValidatesRequests` trait。這個 trait 包含了一個簡單的 `validate` 方法可以驗證請求。如果對應用程式來說 `FormRequests` 太複雜了，參考這個：
+Laravel 5 基底控制器包含一個 `ValidatesRequests` trait。這個 trait 包含了一個簡單的 `validate` 方法可以驗證請求。如果對你的應用程式來說 `FormRequests` 太複雜了，參考這個：
 
 	public function createPost(Request $request)
 	{
@@ -224,17 +224,17 @@ Laravel 5 基底控制器包含一個 `ValidatesRequests` trait。這個 trait �
 
 更多關於這個新方法的資訊，參考[這個文件](/docs/5.0/validation#controller-validation)。
 
-### 新的 Generators
+### 新的產生器
 
 因應新的應用程式預設架構，框架新增了 Artisan generator 命令。使用 `php artisan list` 瞧瞧更多細節。
 
 ### 設定檔快取
 
-你現在可以在單一檔案裡快取所有設定檔了，使用 `config:cache` 命令。
+你現在可以透過 `config:cache` 命令將所有的設定檔緩存在單一檔案中了。
 
 ### Symfony VarDumper
 
-出名的 `dd` 輔助函示，其可以在除錯時印出變數資訊，已經升級成使用令人驚豔的 Symfony VarDumper。它提供了顏色標記的輸出，甚至陣列可以自動縮合。在專案中試試下列程式碼：
+出名的 `dd` 輔助函式，其可以在除錯時印出變數資訊，已經升級成使用令人驚豔的 Symfony VarDumper 套件。它提供了顏色標記的輸出，甚至陣列可以自動縮合。在專案中試試下列程式碼：
 
 	dd([1, 2, 3]);
 
