@@ -7,7 +7,7 @@
 <a name="install-composer"></a>
 ## 安裝 Composer
 
-Laravel 框架使用 [Composer](http://getcomposer.org) 來管理其相依性。所以，在你使用 Laravel 之前，你必須確認你在你電腦上是否安裝了 Composer。
+Laravel 使用 [Composer](http://getcomposer.org) 來管理其相依性。所以，在你使用 Laravel 之前，你必須確認你在你電腦上是否安裝了 Composer。
 
 <a name="install-laravel"></a>
 ## 安裝 Laravel
@@ -45,15 +45,15 @@ Laravel 框架有一些系統上的需求：
 <a name="configuration"></a>
 ## 設定
 
-在你安裝完 Laravel 後，首先需要做的事情是設定一個隨機字串到應用程式金鑰。假設你安裝 Laravel 是透過 Composer，這個金鑰會透過 `key:generate` 指令幫你設定完成。
+在你安裝完 Laravel 後，首先需要做的事情是設定一個隨機字串到應用程式金鑰。假設你是透過 Composer 安裝 Laravel，這個金鑰有可能已經透過 `key:generate` 指令幫你設定完成。
 
 通常這個金鑰應該有 32 字元長。這個金鑰可以被設定在 `.env` 環境檔案中。 **如果這金鑰沒有被設定的話，你的使用者 sessions 和其他的加密資料都是不安全的！**
 
-Laravel 幾乎不需設定就可以馬上使用。你可以自由的開始開發！然而，你可以查看 `config/app.php` 檔案和其他的文件。你可能希望依據你的應用程式而做更改，檔案包含數個選項如 `時區` 和 `語言環境`。
+Laravel 幾乎不需設定就可以馬上使用。你可以自由的開始開發！然而，你可以查看 `config/app.php` 檔案和其他的文件。你可能希望依據你的應用程式而做更改，檔案包含數個選項如 `時區` 和 `語系`。
 
-一旦 Laravel 安裝完成，你應該同時 [設定本地環境](/docs/5.0/configuration#environment-configuration)。
+一旦 Laravel 安裝完成，你可以開始 [設定本地環境](/docs/5.0/configuration#environment-configuration)。
 
-> **注意：** 你不應該在正式環境中將 `app.debug` 設定為 `true`。絕對！千萬不要！
+> **注意：** 你不應該在正式環境中將 `app.debug` 設定為 `true`。
 
 <a name="permissions"></a>
 ### 權限
