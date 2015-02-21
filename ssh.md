@@ -103,7 +103,7 @@ Laravel 有一個有用的命令，可以讓你在任何遠端伺服器的 `lara
 - [提醒通知](#envoy-notifications)
 - [更新 Envoy](#envoy-updating-envoy)
 
-Laravel Envoy 提供了簡潔，輕量的語法，定義在遠端伺服器執行的共同任務。使用 [Blade](/docs/templates#blade-templating) 風格的語法，你可以簡單的設置部署任務，執行 Artisan 命令或是更多。
+Laravel Envoy 提供了簡潔，輕量的語法，定義在遠端伺服器執行的共同任務。使用 [Blade](/docs/5.0/templates#blade-templating) 風格的語法，你可以簡單的設置部署任務，執行 Artisan 命令或是更多。
 
 > **提醒:** Envoy 需要 PHP 5.4 或更高的版本，並且只能在 Mac / Linux 作業系統下執行。
 
