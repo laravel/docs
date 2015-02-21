@@ -44,7 +44,7 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 
 ### 增加 Vagrant 封裝包
 
-當 VirtualBox 和 Vagrant 安裝完成後，你可以在終端機以下列命令將 'laravel/homestead' 封裝包安裝進你的 Vagrant 安裝程式中。下載封裝包會花你一點時間，時間長短將依據你的網路速度決定:
+當 VirtualBox 和 Vagrant 安裝完成後，你可以在終端機以下列命令將 `laravel/homestead` 封裝包安裝進你的 Vagrant 安裝程式中。下載封裝包會花你一點時間，時間長短將依據你的網路速度決定:
 
 	vagrant box add laravel/homestead
 
