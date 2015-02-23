@@ -24,7 +24,7 @@ The `EventServiceProvider` included with your Laravel application provides a con
 	 */
 	protected $listen = [
 		'App\Events\PodcastWasPurchased' => [
-			'App\Handlers\Events\EmailPurchaseConfirmation@handle',
+			'App\Handlers\Events\EmailPurchaseConfirmation',
 		],
 	];
 
