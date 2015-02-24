@@ -61,6 +61,16 @@ Once a model is defined, you are ready to start retrieving and creating records 
 
 > **Note:** All methods available on the [query builder](/docs/4.2/queries) are also available when querying Eloquent models.
 
+#### Retrieving A Record By Non-Primary Attributes
+
+	$attributes = ['external_id' => '123456', 'status' => 'active'];
+	
+	// Return the model if it can be retrieved
+	$user = User::firstByAttributes($attributes);
+	
+	// Guarantee the model will be returned
+	$user = User::firstOrCreate($attributes);
+
 #### Retrieving A Model By Primary Key Or Throw An Exception
 
 Sometimes you may wish to throw an exception if a model is not found, allowing you to catch the exceptions using an `App::error` handler and display a 404 page.
