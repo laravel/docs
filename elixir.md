@@ -247,11 +247,11 @@ Now that you've told Elixir which tasks to execute, you only need to trigger Gul
 
     gulp watch
 
-#### Only compile scripts
+#### Only Compile Scripts
 
     gulp scripts
 
-#### Only compile styles
+#### Only Compile Styles
 
     gulp styles
 
