@@ -181,7 +181,7 @@ You may move your Sass, Less, or CoffeeScript to any location you wish. The `res
 
 ### Form & HTML Helpers
 
-If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. To fix this, add `"illuminate/html": "~5.0"` to your `composer.json` file's `require` section.
+If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'HTML' not found`. To fix this, add `"illuminate/html": "~5.0"` to your `composer.json` file's `require` section.
 
 You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php`, and add this line to the 'providers' array:
 
@@ -190,7 +190,7 @@ You'll also need to add the Form and HTML facades and service provider. Edit `co
 Next, add these lines to the 'aliases' array:
 
     'Form'      => 'Illuminate\Html\FormFacade',
-    'Html'      => 'Illuminate\Html\HtmlFacade',
+    'HTML'      => 'Illuminate\Html\HtmlFacade',
 
 ### CacheManager
 
