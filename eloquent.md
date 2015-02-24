@@ -900,6 +900,13 @@ It is also possible to eagerly load related models directly from an already exis
 
 	$books->load('author', 'publisher');
 
+You may also pass a Closure to set constraints on the query:
+
+	$books->load(['author' => function($query)
+	{
+		$query->orderBy('published_date', 'asc');
+	}]);
+
 <a name="inserting-related-models"></a>
 ## Inserting Related Models
 
