@@ -177,19 +177,13 @@ The following ports are forwarded to your Homestead environment:
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **Postgres:** 54320 &rarr; Forwards To 5432
 
-### Adding Additional Port Forwarding Settings
+### Adding Additional Ports
 
-Should you add additional services to the vagrant box. You may wish to overwrite the default port settings or add additional port forwarding settings to the vagrant box, to allow for additional remote access from the host machine.
-
-The `ports` property can be used to define additional port settings, by specifying the guest and host port numbers. You also have the option to specify the protocol setting either `tcp` or `udp` as demonstrated below:
+If you wish, you may forward additional ports to the Vagrant box, as well as specify their protocol:
 
 	ports:
-	    - guest: 80
-	      host: 8080
-	    - guest: 1028
-	      host: 1028
-	    - guest: 443
-	      host: 44500
+	    - send: 93000
+	      to: 9300
+	    - send: 7777
+	      to: 777
 	      protocol: udp
-	      
-> **Note:** The default port configurations settings detailed above remain however should you required they can be overridden using the custom setup.
