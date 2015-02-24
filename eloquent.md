@@ -20,6 +20,7 @@
 - [Attribute Casting](#attribute-casting)
 - [Model Events](#model-events)
 - [Model Observers](#model-observers)
+- [Model URL Generation](#model-url-generation)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
@@ -1291,6 +1292,22 @@ So, for example, a model observer might look like this:
 You may register an observer instance using the `observe` method:
 
 	User::observe(new UserObserver);
+
+<a name="model-url-generation"></a>
+## Model URL Generation
+
+When you pass a model to the `route` or `action` methods, it's primary key is inserted into the generated URI. For example:
+
+	Route::get('user/{user}', 'UserController@show');
+
+	action('UserController@show', [$user]);
+
+In this example the `$user->id` property will be inserted into the `{user}` place-holder of the generated URL. However, if you would like to use another property instead of the ID, you may override the `getRouteKey` method on your model:
+
+    public function getRouteKey()
+    {
+        return $this->slug;
+    }
 
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON
