@@ -110,37 +110,33 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 
 <a name="custom-filesystems"></a>
 ## Custom Filesystems
-Laravel's Flysystem integration provides drivers for local filesystems, Amazon S3, and Rackspace Cloud Storage. Flysystem is not limited to these and has adapters for many additional storage systems. If you want to use one of these additional adapters in your Laravel application, you'll want to create a custom driver.
 
-In order to set up your custom filesystem you'll need to create a Service Provider (for example, `DropboxFilesystemServiceProvider`). In its `boot` method, you'll want to inject an instance of the `Illuminate\Contracts\Filesystem\Factory` contract, and then call the `extend` method of the injected instance.
+Laravel's Flysystem integration provides drivers for several "drivers" out of the box; however, Flysystem is not limited to these and has adapters for many other storage systems. You can create a custom driver if you want to use one of these additional adapters in your Laravel application. Don't worry, it's not too hard!
 
-The first argument of the `extend` method is the name of the driver you will use, while the second argument is a closure that gets passed both the `$app` and `$config` variables.  
+In order to set up the custom filesystem you will need to create a service provider such as `DropboxFilesystemServiceProvider`. In the provider's `boot` method, you can inject an instance of the `Illuminate\Contracts\Filesystem\Factory` contract and call the `extend` method of the injected instance. Alternatively, You may use the `Disk` facade's `extend` method.
 
-From this closure you must return an instance of `League\Flysystem\Filesystem`. Use the details provided with each filesystem to set this up.
+The first argument of the `extend` method is the name of the driver and the second is a Closure that receives the `$app` and `$config` variables. The resolver Closure must return an instance of `League\Flysystem\Filesystem`.
 
-> **Note:** The $config variable will already contain the proper values defined in `config/filesystems.php` for the provided disk.
-
-Visit [Flysystem](https://github.com/thephpleague/flysystem#adapters) to view a list of available filesystems.
+> **Note:** The $config variable will already contain the values defined in `config/filesystems.php` for the specified disk.
 
 #### Dropbox Example
 
 	<?php namespace App\Providers;
 
-	use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
-	use League\Flysystem\Dropbox\DropboxAdapter;
+	use Disk;
 	use League\Flysystem\Filesystem;
-	use Dropbox\Client;
+	use Dropbox\Client as DropboxClient;
+	use League\Flysystem\Dropbox\DropboxAdapter;
 
 	class DropboxFilesystemServiceProvider {
-		
-		public function boot(FilesystemFactory $filesystem)
+
+		public function boot()
 		{
-			$filesystem->extend('dropbox', function($app, $config) 
+			Disk::extend('dropbox', function($app, $config)
 			{
-				$client = new Client($config['accessToken'], $config['clientIdentifier']);
-				$adapter = new DropboxAdapter($client);
-				
-				return new Filesystem($adapter);
+				$client = new DropboxClient($config['accessToken'], $config['clientIdentifier']);
+
+				return new Filesystem(new DropboxAdapter($client));
 			});
 		}
 
