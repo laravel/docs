@@ -20,6 +20,7 @@
 - [Attribute Casting](#attribute-casting)
 - [Model Events](#model-events)
 - [Model Observers](#model-observers)
+- [Model Routing](#model-routing)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
@@ -1284,6 +1285,16 @@ So, for example, a model observer might look like this:
 You may register an observer instance using the `observe` method:
 
 	User::observe(new UserObserver);
+
+<a name="model-routing"></a>
+## Model Routing
+
+When a model is used for generating a route it's primary key is going to be used as the value for the URL. Because the model implements the `UrlRouteable` interface you are able to override the value that is used for generating routes, if you'd prefer to use a slug or another value for identifying a model from the URL.
+
+    public function getRouteKey()
+    {
+        return $this->slug;
+    }
 
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON
