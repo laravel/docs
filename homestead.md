@@ -98,6 +98,15 @@ Once you have created a SSH key, specify the key's path in the `authorize` prope
 
 The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary!
 
+#### Enabling NFS synced folders
+
+To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add the `type: "nfs"` flag onto your synced folder:
+
+	folders:
+	    - map: ~/Code
+	      to: /home/vagrant/Code
+	      type: "nfs"
+
 ### Configure Your Nginx Sites
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on!
