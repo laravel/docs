@@ -144,6 +144,15 @@ elixir(function(mix) {
 });
 ```
 
+#### Combine All Styles in a Directory Using a Wildcard
+
+```javascript
+elixir(function(mix) {
+    mix.styles("public/css/*.css");
+});
+```
+
+
 #### Combine Scripts
 
 ```javascript
@@ -162,6 +171,14 @@ Again, this assumes all paths are relative to the `resources/js` directory.
 ```javascript
 elixir(function(mix) {
     mix.scriptsIn("public/js/some/directory");
+});
+```
+
+#### Combine All Scripts in a Directory Using a Wildcard
+
+```javascript
+elixir(function(mix) {
+    mix.scripts("public/js/some/*.js");
 });
 ```
 
