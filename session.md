@@ -24,9 +24,15 @@ The Laravel framework uses the `flash` session key internally, so you should not
 <a name="session-usage"></a>
 ## Session Usage
 
+The session may be accessed in several ways, via the HTTP request's `session` method, the `Session` facade, or the `session` helper function. When the `session` helper is called without arguments, it will return the entire session object. For example:
+
+	session()->regenerate();
+
 #### Storing An Item In The Session
 
 	Session::put('key', 'value');
+
+	session(['key' => 'value']);
 
 #### Push A Value Onto An Array Session Value
 
@@ -35,6 +41,8 @@ The Laravel framework uses the `flash` session key internally, so you should not
 #### Retrieving An Item From The Session
 
 	$value = Session::get('key');
+
+	$value = session('key');
 
 #### Retrieving An Item Or Returning A Default Value
 
