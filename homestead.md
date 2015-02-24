@@ -98,6 +98,13 @@ Once you have created a SSH key, specify the key's path in the `authorize` prope
 
 The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary!
 
+To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add a simple flag to your synced folder:
+
+	folders:
+	    - map: ~/Code
+	      to: /home/vagrant/Code
+	      type: "nfs"
+
 ### Configure Your Nginx Sites
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on!
@@ -152,7 +159,7 @@ To connect to your MySQL or Postgres database from your main machine via Navicat
 
 ### Adding Additional Sites
 
-Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. There are two ways to do this: First, you may simply add the sites to your `Homestead.yaml` file and then run `vagrant provision`.
+Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. There are two ways to do this: First, you may simply add the sites to your `Homestead.yaml` file and then run `homestead provision` or `vagrant provision`.
 
 Alternatively, you may use the `serve` script that is available on your Homestead environment. To use the `serve` script, SSH into your Homestead environment and run the following command:
 
@@ -169,3 +176,14 @@ The following ports are forwarded to your Homestead environment:
 - **HTTP:** 8000 &rarr; Forwards To 80
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **Postgres:** 54320 &rarr; Forwards To 5432
+
+### Adding Additional Ports
+
+If you wish, you may forward additional ports to the Vagrant box, as well as specify their protocol:
+
+	ports:
+	    - send: 93000
+	      to: 9300
+	    - send: 7777
+	      to: 777
+	      protocol: udp
