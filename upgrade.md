@@ -181,16 +181,18 @@ You may move your Sass, Less, or CoffeeScript to any location you wish. The `res
 
 ### Form & HTML Helpers
 
-If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. To fix this, add `"illuminate/html": "~5.0"` to your `composer.json` file's `require` section.
+If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective]([LaravelCollective.com](http://laravelcollective.com/docs/5.0/html).
 
-You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php`, and add this line to the 'providers' array:
+For example, you may add `"laravelcollective/html": "~5.0"` to your `composer.json` file's `require` section.
 
-    'Illuminate\Html\HtmlServiceProvider',
+You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php` and add this line to the 'providers' array:
+
+    'Collective\Html\HtmlServiceProvider',
 
 Next, add these lines to the 'aliases' array:
 
-    'Form'      => 'Illuminate\Html\FormFacade',
-    'Html'      => 'Illuminate\Html\HtmlFacade',
+    'Form' => 'Collective\Html\FormFacade',
+    'Html' => 'Collective\Html\HtmlFacade',
 
 ### CacheManager
 
