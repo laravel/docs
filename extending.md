@@ -4,7 +4,7 @@
 - [Cache](#cache)
 - [Session](#session)
 - [Authentication](#authentication)
-- [IoC Based Extension](#ioc-based-extension)
+- [Service Container Based Extension](#container-based-extension)
 
 <a name="managers-and-factories"></a>
 ## Managers & Factories
@@ -25,7 +25,7 @@ To extend the Laravel cache facility, we will use the `extend` method on the `Ca
 		return Cache::repository(new MongoStore);
 	});
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of `Illuminate\Foundation\Application` and an IoC container.
+The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of `Illuminate\Foundation\Application` and a service container.
 
 The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array.
 
@@ -158,12 +158,12 @@ Finally, once we have implemented the `UserProvider`, we are ready to register o
 
 After you have registered the driver with the `extend` method, you switch to the new driver in your `config/auth.php` configuration file.
 
-<a name="ioc-based-extension"></a>
-## IoC Based Extension
+<a name="container-based-extension"></a>
+## Service Container Based Extension
 
-Almost every service provider included with the Laravel framework binds objects into the IoC container. You can find a list of your application's service providers in the `config/app.php` configuration file. As you have time, you should skim through each of these provider's source code. By doing so, you will gain a much better understanding of what each provider adds to the framework, as well as what keys are used to bind various services into the IoC container.
+Almost every service provider included with the Laravel framework binds objects into the service container. You can find a list of your application's service providers in the `config/app.php` configuration file. As you have time, you should skim through each of these provider's source code. By doing so, you will gain a much better understanding of what each provider adds to the framework, as well as what keys are used to bind various services into the service container.
 
-For example, the `HashServiceProvider` binds a `hash` key into the IoC container, which resolves into a `Illuminate\Hashing\BcryptHasher` instance. You can easily extend and override this class within your own application by overriding this IoC binding. For example:
+For example, the `HashServiceProvider` binds a `hash` key into the service container, which resolves into a `Illuminate\Hashing\BcryptHasher` instance. You can easily extend and override this class within your own application by overriding this binding. For example:
 
 	<?php namespace App\Providers;
 
