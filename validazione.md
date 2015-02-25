@@ -151,8 +151,7 @@ Se desideri personalizzare il formato degli errori memorizzati nella sessione qu
 <a name="validazione-form-request"></a>
 ## Validazione Form Request
 
-Per scenari di validazione più complessi, 
-For more complex validation scenarios, potresti creare un "form request". I Form request sono delle classi request personalizzate che contengono la logica della validazione. Per crare una classe form request, usa il comando Artisan CLI `make:request`:
+Per scenari di validazione più complessi, potresti creare un "form request". I Form request sono delle classi request personalizzate che contengono la logica della validazione. Per creare una classe form request, usa il comando Artisan CLI `make:request`:
 
 	php artisan make:request StoreBlogPostRequest
 
@@ -171,7 +170,7 @@ La classe generata verrà memorizzata nella directory `app/Http/Requests`. Andia
 		];
 	}
 
-Ora, come possiamo eseguire queste regole di validazione ? Tutto quello di cui hai bisogno è di passare al metodo del tuo controller la classe appena creata, in questo modo:
+Ora, come eseguire queste regole di validazione? E' sufficiente passare al metodo del tuo controller la classe appena creata, in questo modo:
 
 	/**
 	 * Store the incoming blog post.
@@ -187,11 +186,10 @@ Ora, come possiamo eseguire queste regole di validazione ? Tutto quello di cui h
 La form request è validata prima della chiamata al metodo del controller, questo significa che non hai bisogno di inserire ulteriore logica di validazione nel tuo controller. È già stata eseguita la validazione!
 
 Se la validazione fallisce, verrà generato un redirect che riporta l'utente alla pagina precedente. Gli errori verranno memorizzati nella sessione in modo da renderli disponibili per la visualizzazione. Se la richiesta è stata una richiesta AJAX, verrà ritornata all'utente una risposta HTTP con codice di stato 422, inclusa una rappresentazione JSON degli errori della validazione.
-If validation fails, a redirect response will be generated to send the user back to their previous stato 422, inclusa una rappresentazione JSON degli errori della validazione.
 
 ### Autorizzazione Form Request
 
-La classe form request contiene anche un metodo `authorize`. All'interno di questo metodo, puoi controllare se l'utente autenticato ha l'autorizzazione ad aggiornare una data risorsa. Per esempio, se un utente sta tentando di aggiornare un commento di un post, lo sta facendo su un suo commento ? Per esempio:
+La classe form request contiene anche un metodo `authorize`. All'interno di questo metodo, puoi controllare se l'utente autenticato ha l'autorizzazione ad aggiornare una data risorsa. Per esempio, se un utente sta tentando di aggiornare un commento di un post, è autorizzato ad effettuare l'aggiornamento? Per esempio:
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -212,7 +210,7 @@ Nota la chiamata al metodo `route` nell'esempio sopra illustrato. Questo metodo 
 
 Se il metodo `authorize` ritorna `false`, verrà ritornata automaticamente una risposta HTTP con un codice di stato 403 è il metodo del tuo controller non verrà eseguito.
 
-Se decidi di avere la logica di autorizzazione in un altra parte della tua applicazione, ritorna semplicemente `true` dal metodo `authorize`:
+Se decidi di spostare la logica di autorizzazione in un altra parte della tua applicazione, ritorna semplicemente `true` dal metodo `authorize`:
 
 	/**
 	 * Determine if the user is authorized to make this request.
