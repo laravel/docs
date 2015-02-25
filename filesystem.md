@@ -123,7 +123,7 @@ The first argument of the `extend` method is the name of the driver and the seco
 
 	<?php namespace App\Providers;
 
-	use Disk;
+	use Storage;
 	use League\Flysystem\Filesystem;
 	use Dropbox\Client as DropboxClient;
 	use League\Flysystem\Dropbox\DropboxAdapter;
@@ -132,7 +132,7 @@ The first argument of the `extend` method is the name of the driver and the seco
 
 		public function boot()
 		{
-			Disk::extend('dropbox', function($app, $config)
+			Storage::extend('dropbox', function($app, $config)
 			{
 				$client = new DropboxClient($config['accessToken'], $config['clientIdentifier']);
 
