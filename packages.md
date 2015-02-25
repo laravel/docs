@@ -4,6 +4,7 @@
 - [Views](#views)
 - [Translations](#translations)
 - [Configuration](#configuration)
+- [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 - [Routing](#routing)
 
@@ -103,6 +104,21 @@ You may also choose to merge your own package configuration file with the applic
 	$this->mergeConfigFrom(
 		__DIR__.'/path/to/config/courier.php', 'courier'
 	);
+
+<a name="public-assets"></a>
+## Public Assets
+
+Your packages may have assets such as JavaScript, CSS, and images. To publish assets, use the `publishes` method from your service provider's `boot` method. In this example, we will also add a "public" asset group tag.
+
+	$this->publishes([
+		__DIR__.'/path/to/assets' => public_path('vendor/courier'),
+	], 'public');
+
+Now, when your package's users execute the `vendor:publish` command, your files will be copied to the specified location. Since you typically will need to overwrite the assets every time the package is updated, you may use the `--force` flag:
+
+	php artisan vendor:publish --tag=public --force
+
+If you would like to make sure your public assets are always up-to-date, you can add this command to the `post-update-cmd` list in your `composer.json` file.
 
 <a name="publishing-file-groups"></a>
 ## Publishing File Groups

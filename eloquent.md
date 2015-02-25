@@ -20,6 +20,7 @@
 - [Attribute Casting](#attribute-casting)
 - [Model Events](#model-events)
 - [Model Observers](#model-observers)
+- [Model URL Generation](#model-url-generation)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
@@ -42,7 +43,7 @@ You may also generate Eloquent models using the `make:model` command:
 
 	php artisan make:model User
 
-Note that we did not tell Eloquent which table to use for our `User` model. The lower-case, plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
+Note that we did not tell Eloquent which table to use for our `User` model. The "snake case" name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
 
 	class User extends Model {
 
@@ -900,6 +901,13 @@ It is also possible to eagerly load related models directly from an already exis
 
 	$books->load('author', 'publisher');
 
+You may also pass a Closure to set constraints on the query:
+
+	$books->load(['author' => function($query)
+	{
+		$query->orderBy('published_date', 'asc');
+	}]);
+
 <a name="inserting-related-models"></a>
 ## Inserting Related Models
 
@@ -1284,6 +1292,22 @@ So, for example, a model observer might look like this:
 You may register an observer instance using the `observe` method:
 
 	User::observe(new UserObserver);
+
+<a name="model-url-generation"></a>
+## Model URL Generation
+
+When you pass a model to the `route` or `action` methods, it's primary key is inserted into the generated URI. For example:
+
+	Route::get('user/{user}', 'UserController@show');
+
+	action('UserController@show', [$user]);
+
+In this example the `$user->id` property will be inserted into the `{user}` place-holder of the generated URL. However, if you would like to use another property instead of the ID, you may override the `getRouteKey` method on your model:
+
+    public function getRouteKey()
+    {
+        return $this->slug;
+    }
 
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON

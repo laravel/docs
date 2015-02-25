@@ -123,7 +123,7 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
 	// Add five to the subscription's current quantity...
 	$user->subscription()->increment(5);
 
-	$user->subscription->decrement();
+	$user->subscription()->decrement();
 
 	// Subtract five to the subscription's current quantity...
 	$user->subscription()->decrement(5);

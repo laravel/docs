@@ -135,6 +135,14 @@ If your controller action contains multiple words, you may access the action usi
 
 	public function getAdminProfile() {}
 
+#### Assigning Route Names
+
+If you would like to "name" some of the routes on the controller, you may pass a third argument to the `controller` method:
+
+	Route::controller('users', 'UserController', [
+		'anyLogin' => 'user.login',
+	]);
+
 <a name="restful-resource-controllers"></a>
 ## RESTful Resource Controllers
 
