@@ -4,7 +4,7 @@
 - [Cache](#cache)
 - [Session](#session)
 - [Authentication](#authentication)
-- [IoC Based Extension](#ioc-based-extension)
+- [Service Container Based Extension](#container-based-extension)
 
 <a name="managers-and-factories"></a>
 ## Managers & Factories
@@ -158,8 +158,8 @@ Finally, once we have implemented the `UserProvider`, we are ready to register o
 
 After you have registered the driver with the `extend` method, you switch to the new driver in your `config/auth.php` configuration file.
 
-<a name="ioc-based-extension"></a>
-## IoC Based Extension
+<a name="container-based-extension"></a>
+## Service Container Based Extension
 
 Almost every service provider included with the Laravel framework binds objects into the IoC container. You can find a list of your application's service providers in the `config/app.php` configuration file. As you have time, you should skim through each of these provider's source code. By doing so, you will gain a much better understanding of what each provider adds to the framework, as well as what keys are used to bind various services into the IoC container.
 
