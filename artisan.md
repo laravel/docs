@@ -49,7 +49,7 @@ A volte potresti avere il bisogno di eseguire un comando Artisan al di fuori del
 		//
 	});
 
-Puoi anche mettere in coda i tuoi comandi Artisan in modo da essere eseguiti in background dal proprio [queue workers](/docs/master/queues):
+Puoi anche mettere in coda i tuoi comandi Artisan in modo da essere eseguiti in background dal proprio [queue workers](/code):
 
 	Route::get('/foo', function()
 	{
