@@ -37,7 +37,7 @@ For more information on middleware, check out [the documentation](/docs/master/m
 
 ### Controller Method Injection
 
-In addition to the existing constructor injection, you may now type-hint dependencies on controller methods. The [IoC container](/docs/master/container) will automatically inject the dependencies, even if the route contains other parameters:
+In addition to the existing constructor injection, you may now type-hint dependencies on controller methods. The [service container](/docs/master/container) will automatically inject the dependencies, even if the route contains other parameters:
 
 	public function createPost(Request $request, PostRepository $posts)
 	{
