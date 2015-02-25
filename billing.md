@@ -97,16 +97,16 @@ If you would like to make a "one off" charge against a subscribed customer's cre
 
 	$user->charge(100);
 
-The `charge` method accepts the amount you would like to charge in the lowest denominator of the currency. So, for example, the example above will charge 100 cents, or $1.00, against the user's credit card.
+The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency**. So, for example, the example above will charge 100 cents, or $1.00, against the user's credit card.
 
-The `charge` method also accepts an array for its second argument, allowing you to pass any options you wish to the underlying Stripe charge creation:
+The `charge` method accepts an array as its second argument, allowing you to pass any options you wish to the underlying Stripe charge creation:
 
 	$user->charge(100, [
 		'source' => $token,
 		'receipt_email' => $user->email,
 	]);
 
-The charge method will return `false` if the charge fails. This typically indicates the charge was denied:
+The `charge` method will return `false` if the charge fails. This typically indicates the charge was denied:
 
 	if ( ! $user->charge(100))
 	{
