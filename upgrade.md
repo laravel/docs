@@ -181,18 +181,18 @@ You may move your Sass, Less, or CoffeeScript to any location you wish. The `res
 
 ### Form & HTML Helpers
 
-The Form & HTML package has been moved to `"laravelcollective/html"`. Documentation on the package can be found at [LaravelCollective.com](http://laravelcollective.com/docs/5.0/html).
+If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective]([LaravelCollective.com](http://laravelcollective.com/docs/5.0/html).
 
-If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. To fix this, add `"laravelcollective/html": "~5.0"` to your `composer.json` file's `require` section.
+For example, you may add `"laravelcollective/html": "~5.0"` to your `composer.json` file's `require` section.
 
-You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php`, and add this line to the 'providers' array:
+You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php` and add this line to the 'providers' array:
 
     'Collective\Html\HtmlServiceProvider',
 
 Next, add these lines to the 'aliases' array:
 
-    'Form'      => 'Collective\Html\FormFacade',
-    'Html'      => 'Collective\Html\HtmlFacade',
+    'Form' => 'Collective\Html\FormFacade',
+    'Html' => 'Collective\Html\HtmlFacade',
 
 ### CacheManager
 
