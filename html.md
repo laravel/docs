@@ -1,5 +1,6 @@
 # Forms & HTML
 
+- [Installation](#installation)
 - [Opening A Form](#opening-a-form)
 - [CSRF Protection](#csrf-protection)
 - [Form Model Binding](#form-model-binding)
@@ -12,6 +13,32 @@
 - [Buttons](#buttons)
 - [Custom Macros](#custom-macros)
 - [Generating URLs](#generating-urls)
+
+<a name="installation"></a>
+## Installation
+
+The Forms & HTML helpers are no longer bundled with Laravel core. 
+
+You can install this package through Composer. Edit your project's `composer.json` file to require `laravel/html`.
+
+    "require": {
+        "laravel/html": "~5.0"
+    }
+
+Next, update Composer from the Terminal:
+
+    composer update
+
+Finally, add the class aliases to the `aliases` array of `config/app.php`:
+
+```php
+  'aliases' => [
+    // ...
+    'Form' => 'Illuminate\Support\Facades\Form',
+    'Html' => 'Illuminate\Support\Facades\Form',
+    // ...
+  ],
+```
 
 <a name="opening-a-form"></a>
 ## Opening A Form
