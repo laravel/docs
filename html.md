@@ -1,5 +1,8 @@
 # Forms & HTML
 
+> **Warning:** The Form helper was removed from Laravel 5, and is now being maintained by Laravel Collective. For further information, please refer to the [Laravel Collective](http://laravelcollective.com/docs/5.0/html) documentation.
+
+- [Installation](#installation)
 - [Opening A Form](#opening-a-form)
 - [CSRF Protection](#csrf-protection)
 - [Form Model Binding](#form-model-binding)
@@ -12,6 +15,40 @@
 - [Buttons](#buttons)
 - [Custom Macros](#custom-macros)
 - [Generating URLs](#generating-urls)
+
+<a name="installation"></a>
+## Installation
+
+Begin by installing this package through Composer. Edit your project's `composer.json` file to require `laravelcollective/html`.
+
+    "require": {
+        "laravelcollective/html": "~5.0"
+    }
+
+Next, update Composer from the Terminal:
+
+    composer update
+
+Next, add your new provider to the `providers` array of `config/app.php`:
+
+```php
+  'providers' => [
+    // ...
+    'Collective\Html\HtmlServiceProvider',
+    // ...
+  ],
+```
+
+Finally, add two class aliases to the `aliases` array of `config/app.php`:
+
+```php
+  'aliases' => [
+    // ...
+      'Form' => 'Collective\Html\FormFacade',
+      'Html' => 'Collective\Html\HtmlFacade',
+    // ...
+  ],
+```
 
 <a name="opening-a-form"></a>
 ## Opening A Form
