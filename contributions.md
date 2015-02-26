@@ -11,7 +11,7 @@
 
 To encourage active collaboration, Laravel strongly encourages pull requests, not just bug reports. "Bug reports" may also be sent in the form of a pull request containing a failing unit test.
 
-However, if you file a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself - and others - to replicate the bug and develop a fix.
+However, if you file a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself—and others—to replicate the bug and develop a fix.
 
 Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem.
 
@@ -56,6 +56,6 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 Laravel follows the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) and [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) coding standards. In addition to these standards, the following coding standards should be followed:
 
 - The class namespace declaration must be on the same line as `<?php`.
-- A class' opening `{` must be on the same line as the class name.
-- Functions and control structures must use Allman style braces.
+- A class' opening brace must be on the same line as the class name.
+- Functions and control structures must use [Allman style](http://en.wikipedia.org/wiki/Indent_style#Allman_style) braces (i.e. on a line of their own).
 - Indent with tabs, align with spaces.
