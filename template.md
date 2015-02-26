@@ -5,7 +5,7 @@
 - [Estendere Blade](#estendere-blade)
 
 <a name="template-con-blade"></a>
-## Blade Templating
+## Template Con Blade
 
 Blade è un template engine molto semplice ma allo stesso tempo molto potente che viene incluso in ogni installazione di Laravel. A differenza dei controller layout, Blade è guidato da _template inheritance_ e _sections_. Tutti i template Blade devono avere `.blade.php` come estensione.
 

@@ -198,7 +198,7 @@ Puoi inserire nel db dei dati con il metodo `seed`:
 
 	$this->seed($connection);
 
-Maggiori informazioni su come creare un seed le puoi trovare nella sezione [migrazioni e seeding](/docs/migrations#database-seeding) della documentazione.
+Maggiori informazioni su come creare un seed le puoi trovare nella sezione [migrazioni e seeding](/migration#database-seeding) della documentazione.
 
 <a name="refreshing-applicazione"></a>
 ## Refreshing Dell'Applicazione
