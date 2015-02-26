@@ -136,7 +136,7 @@ A command pipe is defined with a `handle` method, just like a middleware:
 			return DB::transaction(function() use ($command, $next)
 			{
 				return $next($command);
-			}
+			});
 		}
 
 	}
@@ -150,5 +150,5 @@ You may even define a `Closure` as a command pipe:
 		return DB::transaction(function() use ($command, $next)
 		{
 			return $next($command);
-		}
+		});
 	}]);
