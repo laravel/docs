@@ -159,7 +159,7 @@ Of course, you can capture segments of the request URI within your route:
 
 #### Defining Global Patterns
 
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `before` method of your `RouteServiceProvider`:
+If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
 
 	$router->pattern('id', '[0-9]+');
 

@@ -113,6 +113,8 @@ The `charge` method will return `false` if the charge fails. This typically indi
 		// The charge was denied...
 	}
 
+If the charge is successful, the full Stripe response will be returned from the method.
+
 <a name="no-card-up-front"></a>
 ## No Card Up Front
 

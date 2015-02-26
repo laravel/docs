@@ -109,9 +109,21 @@ Let's organize our view composers within a [service provider](/docs/master/provi
 			});
 		}
 
+		/**
+		 * Register
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			//
+		}
+
 	}
 
 > **Note:** Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `App\Http\ViewComposers` directory.
+
+Remember, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
 
 Now that we have registered the composer, the `ProfileComposer@compose` method will be executed each time the `profile` view is being rendered. So, let's define the composer class:
 
