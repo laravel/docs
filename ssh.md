@@ -103,7 +103,7 @@ Laravel include un utile comando che ti permette di vedere le ultime righe del f
 - [Notifiche](#envoy-notifications)
 - [Aggiornamento Envoy](#envoy-updating-envoy)
 
-Laravel Envoy fornisce una sintassi minima e pulita che ti permette di definire task da eseguire sui tuoi server remoti. Utilizza una sintassi simile a quella di [Blade](/docs/templates#blade-templating), e puoi facilmente impostare task per il deployment, comandi di Artisan, e molto altro.
+Laravel Envoy fornisce una sintassi minima e pulita che ti permette di definire task da eseguire sui tuoi server remoti. Utilizza una sintassi simile a quella di [Blade](/template#template-con-blade), e puoi facilmente impostare task per il deployment, comandi di Artisan, e molto altro.
 
 > **Nota:** Envoy richiede una versione di PHP maggiore o uguale alla 5.4, e può essere eseguita solo su sistemi operativi Mac / Linux.
 

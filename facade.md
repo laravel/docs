@@ -130,7 +130,7 @@ Le classi definite nell'array `aliases` non sono sempre disponibili in alcuni ca
 <a name="mocking-facade"></a>
 ## Mocking delle Facade
 
-Gli unit test sono un aspetto importante del perchè le facade lavorano nel modo in cui lo fanno. Infatti, la testabilità è una ragione primaria della loro esistenza. Per maggiori informazioni, dai un'occhiata alla documentazione [mocking facades](/docs/testing#mocking-facades).
+Gli unit test sono un aspetto importante del perchè le facade lavorano nel modo in cui lo fanno. Infatti, la testabilità è una ragione primaria della loro esistenza. Per maggiori informazioni, dai un'occhiata alla documentazione [mocking facades](/testing#mocking-facade).
 
 <a name="classi-facade-reference"></a>
 ## Le Classi Facade Reference

@@ -20,7 +20,7 @@ In questa visione generate imparerai come scrivere i tuoi service provider e reg
 <a name="esempio-provider-base"></a>
 ## Esempio Di Provider Base
 
-Tutti i service provider estendono la classe `Illuminate\Support\ServiceProvider`. Questa classe astratta richiede che tu definisca almeno un metodo nel tuo provider: il metodo `register`. All'interno del metodo `register`, **dovrai eseguire il bind nel [service container](/docs/master/container)**. Non dovrai mai tentare di registrare qualsiasi tra eventi, route o altre funzionalità nel metodo `register`.
+Tutti i service provider estendono la classe `Illuminate\Support\ServiceProvider`. Questa classe astratta richiede che tu definisca almeno un metodo nel tuo provider: il metodo `register`. All'interno del metodo `register`, **dovrai eseguire il bind nel [service container](/container)**. Non dovrai mai tentare di registrare qualsiasi tra eventi, route o altre funzionalità nel metodo `register`.
 
 I comandi CLI di Artisan possono generare facilmente un nuovo provider tramite il comando `make:provider`:
 
