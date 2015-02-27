@@ -391,38 +391,38 @@ Dump the given variable and end execution of the script.
 
 	dd($value);
 
+### elixir
+
+Get the path to a versioned Elixir file.
+
+	elixir($file);
+
+### env
+
+Gets the value of an environment variable or return a default value.
+
+	env('APP_ENV', 'production')
+
+### event
+
+Fire an event.
+
+	event('my.event');
+
 ### value
 
 If the given value is a `Closure`, return the value returned by the `Closure`. Otherwise, return the value.
 
 	$value = value(function() { return 'bar'; });
 
+### view
+
+Get a View instance for the given view path.
+
+	return view('auth.login');
+
 ### with
 
 Return the given object. Useful for method chaining constructors in PHP 5.3.x.
 
 	$value = with(new Foo)->doWork();
-	
-### view
-
-Get the evaluated view contents for the given view.
-
-	return view('auth.login');
-
-### env
-
-Gets the value of an environment variable. Second parameter is the default string to be returned.
-
-	env('APP_ENV', 'production')
-
-### event
-
-Fire an event and call the listeners.
-
-	event('my.event');
-
-### elixir
-
-Get the path to a versioned Elixir file.
-
-	elixir($file);
