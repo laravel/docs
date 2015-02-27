@@ -171,12 +171,12 @@ For example, the `HashServiceProvider` binds a `hash` key into the service conta
 
 		public function boot()
 		{
+			parent::boot();
+					
 			$this->app->bindShared('hash', function()
 			{
 				return new \Snappy\Hashing\ScryptHasher;
 			});
-
-			parent::boot();
 		}
 
 	}
