@@ -2,7 +2,6 @@
 
 - [Configuration](#configuration)
 - [Cache Usage](#cache-usage)
-- [Accessing Stores](#accessing-stores)
 - [Increments & Decrements](#increments-and-decrements)
 - [Cache Tags](#cache-tags)
 - [Database Cache](#database-cache)
