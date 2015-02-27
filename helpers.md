@@ -402,3 +402,27 @@ If the given value is a `Closure`, return the value returned by the `Closure`. O
 Return the given object. Useful for method chaining constructors in PHP 5.3.x.
 
 	$value = with(new Foo)->doWork();
+	
+### view
+
+Get the evaluated view contents for the given view.
+
+	return view('auth.login');
+
+### env
+
+Gets the value of an environment variable. Second parameter is the default string to be returned.
+
+	env('APP_ENV', 'production')
+
+### event
+
+Fire an event and call the listeners.
+
+	event('my.event');
+
+### elixir
+
+Get the path to a versioned Elixir file.
+
+	elixir($file);
