@@ -54,6 +54,17 @@ elixir(function(mix) {
 
 In the example above, Elixir assumes that your Less files are stored in `resources/assets/less`.
 
+#### Compiling Multiple Less Files
+
+```javascript
+elixir(function(mix) {
+    mix.less([
+        'app.less',
+        'something-else.less'
+    ]);
+});
+```
+
 #### Compile Sass
 
 ```javascript

@@ -391,11 +391,35 @@ Dump the given variable and end execution of the script.
 
 	dd($value);
 
+### elixir
+
+Get the path to a versioned Elixir file.
+
+	elixir($file);
+
+### env
+
+Gets the value of an environment variable or return a default value.
+
+	env('APP_ENV', 'production')
+
+### event
+
+Fire an event.
+
+	event('my.event');
+
 ### value
 
 If the given value is a `Closure`, return the value returned by the `Closure`. Otherwise, return the value.
 
 	$value = value(function() { return 'bar'; });
+
+### view
+
+Get a View instance for the given view path.
+
+	return view('auth.login');
 
 ### with
 
