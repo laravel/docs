@@ -87,7 +87,7 @@ If you need to retrieve an item from the cache and then delete it, you may use t
 
 When using multiple stores, you may access them via the `Cache::store` method:
 
-	value = Cache::store('foo')->get(...);
+	$value = Cache::store('foo')->get(...);
 
 <a name="increments-and-decrements"></a>
 ## Increments & Decrements
@@ -138,7 +138,7 @@ You may flush all items tagged with a name or list of names. For example, this s
 In contrast, this statement would remove only caches tagged with `authors`, so "John" would be removed, but not "Anne".
 
 	Cache::tags('authors')->flush();
-	
+
 <a name="database-cache"></a>
 ## Database Cache
 
