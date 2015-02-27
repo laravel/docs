@@ -54,7 +54,7 @@ elixir(function(mix) {
 
 In the example above, Elixir assumes that your Less files are stored in `resources/assets/less`.
 
-#### Pass an array for more than one file
+#### Compiling Multiple Less Files
 
 ```javascript
 elixir(function(mix) {
