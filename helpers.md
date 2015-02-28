@@ -3,6 +3,7 @@
 - [Arrays](#arrays)
 - [Paths](#paths)
 - [Strings](#strings)
+- [Routing](#routing)
 - [URLs](#urls)
 - [Miscellaneous](#miscellaneous)
 
@@ -336,6 +337,39 @@ Translate a given language line. Alias of `Lang::get`.
 Translate a given language line with inflection. Alias of `Lang::choice`.
 
 	$value = trans_choice('foo.bar', $count);
+
+<a name="routing"></a>
+## Routing
+
+### get
+
+Register a new GET route with the router.
+
+	get('/', function() { return 'Hello World'; });
+
+### post
+
+Register a new POST route with the router.
+
+	post('foo/bar', function() { });
+
+### put
+
+Register a new PUT route with the router.
+
+	put('foo/bar', function() { });
+
+### patch
+
+Register a new PATCH route with the router.
+
+	patch('foo/bar', function() { });
+
+### delete
+
+Register a new DELETE route with the router.
+
+	delete('foo/bar', function() { });
 
 <a name="urls"></a>
 ## URLs
