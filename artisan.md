@@ -138,3 +138,7 @@ Let's look at a few more scheduling examples:
 	{
 		return true;
 	});
+
+#### Send The Output Of The Schduled Job To A Given Location
+
+	$schedule->command('foo')->sendOutputTo($filePath);
