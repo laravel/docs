@@ -124,6 +124,16 @@ Let's look at a few more scheduling examples:
 
 	$schedule->command('foo')->monthly();
 
+#### Jobs That Runs On Specific Days
+
+	$schedule->command('foo')->mondays();
+	$schedule->command('foo')->tuesdays();
+	$schedule->command('foo')->wednesdays();
+	$schedule->command('foo')->thursdays();
+	$schedule->command('foo')->fridays();
+	$schedule->command('foo')->saturdays();
+	$schedule->command('foo')->sundays();
+
 #### Limit The Environment The Jobs Should Run In
 
 	$schedule->command('foo')->monthly()->environments('production');
