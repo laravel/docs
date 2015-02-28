@@ -113,6 +113,16 @@ Let's look at a few more scheduling examples:
 
 	$schedule->command('foo')->weekdays();
 
+#### Jobs That Runs On Specific Days
+
+	$schedule->command('foo')->mondays();
+	$schedule->command('foo')->tuesdays();
+	$schedule->command('foo')->wednesdays();
+	$schedule->command('foo')->thursdays();
+	$schedule->command('foo')->fridays();
+	$schedule->command('foo')->saturdays();
+	$schedule->command('foo')->sundays();
+
 #### Weekly Jobs
 
 	$schedule->command('foo')->weekly();
