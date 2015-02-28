@@ -138,3 +138,7 @@ Let's look at a few more scheduling examples:
 	{
 		return true;
 	});
+
+#### E-mail the results of the scheduled job
+
+	$schedule->command('foo')->emailOutputTo('foo@example.com');
