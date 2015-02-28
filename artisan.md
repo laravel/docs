@@ -139,6 +139,10 @@ Let's look at a few more scheduling examples:
 		return true;
 	});
 
+#### Send The Output Of The Schduled Job To A Given Location
+
+	$schedule->command('foo')->sendOutputTo($filePath);
+
 #### Ping A Given URL After The Job Runs
 
 	$schedule->command('foo')->thenPing($url);
