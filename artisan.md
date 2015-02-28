@@ -138,3 +138,7 @@ Let's look at a few more scheduling examples:
 	{
 		return true;
 	});
+
+#### Ping A Given URL After The Job Runs
+
+	$schedule->command('foo')->thenPing($url);
