@@ -81,9 +81,11 @@ If you need to retrieve an item from the cache and then delete it, you may use t
 
 	Cache::forget('key');
 
+#### Access Specific Cache Stores
+
 When using multiple cache stores, you may access them via the `store` method:
 
-	$value = Cache::store('foo')->get('foo');
+	$value = Cache::store('foo')->get('key');
 
 <a name="increments-and-decrements"></a>
 ## Increments & Decrements
