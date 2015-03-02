@@ -1,4 +1,4 @@
-# Filesystem / Cloud Storage
+﻿# Filesystem / Cloud Storage
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)
@@ -107,6 +107,46 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 #### Delete A Directory
 
 	Storage::deleteDirectory($directory);
+
+## Type Hinted Controller Example
+
+In the example below an instance of the Factory is aliased to `Filesystem` which is then injected into the constructor as usual.
+
+This method allows you to select the disk you wish to interact with similar to the `Storage` Facade above in [Basic Usage](#basic-usage).
+
+    <?php namespace App\Http\Controllers;
+    
+    use Illuminate\Contracts\Filesystem\Factory as Filesystem;
+    
+    class DemoController extends Controller
+    {
+    
+        public function __construct(Filesystem $filesystem)
+        {
+            $this->filesystem = $filesystem;
+        }
+    
+        public function putDemoFile()
+        {
+            // $this->filesystem->disk('local') is also available by default
+            $this->filesystem->disk('s3')->put('demo1.txt', 'Foo');
+            $this->filesystem->disk('s3')->append('demo1.txt', 'Bar');
+    
+            return $this->filesystem->disk('s3')->get('demo1.txt');
+        }
+        
+    }    
+
+In addition when used inside controllers you can use method injection :-
+
+    public function putDemoFile(Filesystem $filesystem)
+    {
+        $filesystem->disk('s3')->put('demo1.txt', 'Foo');
+        $filesystem->disk('s3')->append('demo1.txt', 'Bar');
+
+        return $filesystem->disk('s3')->get('demo1.txt');
+    } 
+
 
 <a name="custom-filesystems"></a>
 ## Custom Filesystems
