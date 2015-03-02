@@ -52,7 +52,7 @@ You may easily call one of your routes for a test using the `call` method:
 
 	$response = $this->call('GET', 'user/profile');
 
-	$response = $this->call($method, $uri, $parameters, $files, $server, $content);
+	$response = $this->call($method, $uri, $parameters, $cookies, $files, $server, $content);
 
 You may then inspect the `Illuminate\Http\Response` object:
 

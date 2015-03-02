@@ -2,6 +2,7 @@
 
 - [Arrays](#arrays)
 - [Paths](#paths)
+- [Routing](#routing)
 - [Strings](#strings)
 - [URLs](#urls)
 - [Miscellaneous](#miscellaneous)
@@ -209,6 +210,39 @@ Get the fully qualified path to the `public` directory.
 ### storage_path
 
 Get the fully qualified path to the `storage` directory.
+
+<a name="routing"></a>
+## Routing
+
+### get
+
+Register a new GET route with the router.
+
+	get('/', function() { return 'Hello World'; });
+
+### post
+
+Register a new POST route with the router.
+
+	post('foo/bar', 'FooController@action');
+
+### put
+
+Register a new PUT route with the router.
+
+	put('foo/bar', 'FooController@action');
+
+### patch
+
+Register a new PATCH route with the router.
+
+	patch('foo/bar', 'FooController@action');
+
+### delete
+
+Register a new DELETE route with the router.
+
+	delete('foo/bar', 'FooController@action');
 
 <a name="strings"></a>
 ## Strings
