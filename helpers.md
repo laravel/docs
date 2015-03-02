@@ -224,25 +224,25 @@ Register a new GET route with the router.
 
 Register a new POST route with the router.
 
-	post('foo/bar', function() { });
+	post('foo/bar', 'FooController@action');
 
 ### put
 
 Register a new PUT route with the router.
 
-	put('foo/bar', function() { });
+	put('foo/bar', 'FooController@action');
 
 ### patch
 
 Register a new PATCH route with the router.
 
-	patch('foo/bar', function() { });
+	patch('foo/bar', 'FooController@action');
 
 ### delete
 
 Register a new DELETE route with the router.
 
-	delete('foo/bar', function() { });
+	delete('foo/bar', 'FooController@action');
 
 <a name="strings"></a>
 ## Strings
