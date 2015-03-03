@@ -13,11 +13,11 @@
 
 Laravel faz a implementação de autenticação muito simples. Na verdade, quase tudo está configurado para você de fora da caixa. O arquivo de configuração de autenticação está localizado no diretório `config/auth.php`, que contém muitas opções bem documentadas para adequar o comportamento dos serviços de autenticação.
 
-By default, Laravel includes an `App\User` model in your `app` directory. This model may be used with the default Eloquent authentication driver.
+Por Padrão, Laravel aicionona um modelo `App\User` em seu diretório `app`. Este modelo poderá ser usado com o Driver de Autentição do Eloquent. 
 
-Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration. Of course, Laravel 5 ships migrations for these columns out of the box!
+Lembre-se: quando estiver criando o schema do banco de dados para este modelo, faça que a coluna password tenha no mínimo 60 caracteres. Também, antes de começar, garanta que a sua tabela `users` (ou equivalente) contenha uma coluna padrão Null `remember_token` com no mínimo 100 caracteres. Esta coluna será usada para armazenar uma token sessões "Me lembre"  que são mantidas pela sua aplicação. Isto pode ser feito usando o método `$table->rememberToken();` na migração. Claro que, Laravel 5 manda migrações para estas colunas de fora da caixa. 
 
-If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
+Se sua aplicação não estiver utilizando o Eloquent, você pode usar o driver de autenticação `database` que usa o contrutor de querys do Laravel. 
 
 <a name="authenticating-users"></a>
 ## Authenticating Users
