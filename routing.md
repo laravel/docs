@@ -213,7 +213,7 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 
 有時候您需要套用篩選器到群組的路由上。不需要為每個路由去套用篩選器，您只需使用路由群組：
 
-	Route::group(['before' => 'auth'], function()
+	Route::group(['middleware' => 'auth'], function()
 	{
 		Route::get('/', function()
 		{
