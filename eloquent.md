@@ -32,15 +32,15 @@ Prima di iniziare, comunque, assicurati di configurare una connessione in _confi
 <a name="uso-base"></a>
 ## Uso Base
 
-Per iniziare, crea il tuo primo model Eloquent. Tipicamente, un model va messo nella cartella _app_. Ad ogni modo sei libero di posizionare il tuo file dove meglio credi: l'importante è che venga "coperto" dall'autoloading, in accordo con le regole specificate nel file _composer.json_.
+Per iniziare, crea il tuo primo model Eloquent. Tipicamente, un model va messo nella cartella _app_. Ad ogni modo sei libero di posizionare il tuo file dove meglio credi: l'importante è che venga "coperto" dall'autoloading, in accordo con le regole specificate nel file _composer.json_. Tutti i modelli Eloquent estendono `Illuminate\Database\Eloquent\Model`.
 
 #### Definire un Model
 
-	class User extends Eloquent {}
+	class User extends Model {}
 
 Se ci fai caso, non abbiamo specificato neanche il nome della tabella da usare per il model _User_. Automaticamente, infatti, Laravel prova ad indovinare quale tabella usare trasformando il nome del model in plurale ed in lettere minuscole. Tale nome verrà "usato" a meno di specifiche diverse. Per decidere tu quale tabella usare, infatti, puoi definire la proprietà _table_ sul model:
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		protected $table = 'my_users';
 
@@ -135,7 +135,7 @@ Puoi comunque specificare quali singoli campi proteggere e quali no, tramite le 
 
 La proprietà _fillable_ serve a specificare quali attributi devono essere assegnabili tramite il mass-assignment. Eloquent permette di farlo sia a livello di classe che a livello di istanza.
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		protected $fillable = array('first_name', 'last_name', 'email');
 
@@ -147,7 +147,7 @@ In questo esempio, solo i tre attributi in lista saranno assegnabili in massa.
 
 Eloquent permette anche di effettuare l'operazione inversa di quella appena vista: al posto di specificare quali attributi rendere _fillable_, è possibile definire quali devono essere _guarded_, ovvero protetti. In poche parole, si fa una blacklist al posto di una whitelist.
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		protected $guarded = array('id', 'password');
 
@@ -248,7 +248,7 @@ Cancellare con il soft delete un model significa non cancellarlo davvero. In rea
 
 	use Illuminate\Database\Eloquent\SoftDeletes;
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		use SoftDeletes;
 
@@ -310,7 +310,7 @@ Di default, Eloquent gestisce in modo autonomo i campi _created_at_ e _updated_a
 
 #### Disabilitare la Gestione Automatica dei Timestamp
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		protected $table = 'users';
 
@@ -322,7 +322,7 @@ Di default, Eloquent gestisce in modo autonomo i campi _created_at_ e _updated_a
 
 Nel caso in cui dovessi avere bisogno di personalizzare il formato dei tuoi timestamp, usa _getDateFormat_ nel tuo model:
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		protected function getDateFormat()
 		{
@@ -338,7 +338,7 @@ Nel caso in cui dovessi avere bisogno di personalizzare il formato dei tuoi time
 
 Gli scope ti permettono di ri-usare una certa logica più velocemente all'interno dei tuoi model. Per definirne, inserisci come prefisso del metodo _scope_:
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		public function scopePopular($query)
 		{
@@ -360,7 +360,7 @@ Gli scope ti permettono di ri-usare una certa logica più velocemente all'intern
 
 A volte potresti voler creare uno scope che accetta dei parametri: niente di complesso. Aggiungi i tuoi parametri al metodo in questo modo:
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		public function scopeOfType($query, $type)
 		{
@@ -460,7 +460,7 @@ Precisamente:
 
 Una relazione uno ad uno è quella più basilare. Ad esempio, uno _User_ del tuo sistema può avere collegato un _Phone_ (telefono). Definiamo subito questa relazione in Eloquent.
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		public function phone()
 		{
@@ -489,7 +489,7 @@ Se ci fai caso, Eloquent cerca ancora una volta di "indovinare" il nome della ch
 
 Definire l'inverso di una relazione è tanto semplice quanto definire una relazione: basta usare _belongsTo_.
 
-	class Phone extends Eloquent {
+	class Phone extends Model {
 
 		public function user()
 		{
@@ -500,7 +500,7 @@ Definire l'inverso di una relazione è tanto semplice quanto definire una relazi
 
 Nell'esempio visto appena sopra, Eloquent cercherà una colonna _user_id_ nella tabella _phones_. Esattamente come prima, nel caso in cui tu voglia defnire un nome diverso da quello suggerito dalla convenzione per il nome della chiave locale, tutto quello che devi fare è specificare un secondo parametro.
 
-	class Phone extends Eloquent {
+	class Phone extends Model {
 
 		public function user()
 		{
@@ -511,7 +511,7 @@ Nell'esempio visto appena sopra, Eloquent cercherà una colonna _user_id_ nella 
 
 Opzionalmente puoi decidere di passare un terzo parametro, che specifichi il nome della colonna associata sulla tabella _parent_:
 
-	class Phone extends Eloquent {
+	class Phone extends Model {
 
 		public function user()
 		{
@@ -525,7 +525,7 @@ Opzionalmente puoi decidere di passare un terzo parametro, che specifichi il nom
 
 Uno degli esempi più classici di relazione uno a molti è il post di un blog che conta più commenti ad esso legati. Possiamo modellare la relazione in questo modo:
 
-	class Post extends Eloquent {
+	class Post extends Model {
 
 		public function comments()
 		{
@@ -552,7 +552,7 @@ Ancora, come già visto in precedenza, nulla ti vieta di sovrascrivere le chiavi
 
 Per definire l'inverso di una relazione molti a molti si usa il _belongsTo_:
 
-	class Comment extends Eloquent {
+	class Comment extends Model {
 
 		public function post()
 		{
@@ -570,7 +570,7 @@ Tale tabella deve avere due campi _user_id_ e _role_id_.
 
 A questo punto, definire la relazione è semplice: basta usare _belongsToMany_.
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		public function roles()
 		{
@@ -593,7 +593,7 @@ Chiaramente puoi sovrascrivere anche i nomi da usare per i campi riguardanti la 
 
 Ecco quindi come definire l'inverso della relazione, dal punto di vista del ruolo e non dell'utente:
 
-	class Role extends Eloquent {
+	class Role extends Model {
 
 		public function users()
 		{
@@ -623,7 +623,7 @@ La relazione "ha molti tramite" permette di usare una scorciatoia piuttosto conv
 
 Anche se la tabella _posts_ non ha di certo una chiave _country_id_, tramite _hasManyThrough_ è possibile definire una relazione che permette di accedere ai post di una certa nazione tramite _$country->posts_.
 
-	class Country extends Eloquent {
+	class Country extends Model {
 
 		public function posts()
 		{
@@ -634,7 +634,7 @@ Anche se la tabella _posts_ non ha di certo una chiave _country_id_, tramite _ha
 
 Come al solito, anche in questo caso è possibile specificare nomi diversi da quelli che seguono la convenzione, in caso di necessità.
 
-	class Country extends Eloquent {
+	class Country extends Model {
 
 		public function posts()
 		{
@@ -648,7 +648,7 @@ Come al solito, anche in questo caso è possibile specificare nomi diversi da qu
 
 Le relazioni polimorfiche permettono ad un certo model di "appartenere" a più di un model, ma in una singola associazione. Per fare un esempio pratico, immagina di avere il model di una foto che può appartenere ad un membro dello staff di un organizzazione, oppure ad un ordine piazzato da un cliente. Potremmo definire la relazione in questo modo:
 
-	class Photo extends Eloquent {
+	class Photo extends Model {
 
 		public function imageable()
 		{
@@ -657,7 +657,7 @@ Le relazioni polimorfiche permettono ad un certo model di "appartenere" a più d
 
 	}
 
-	class Staff extends Eloquent {
+	class Staff extends Model {
 
 		public function photos()
 		{
@@ -666,7 +666,7 @@ Le relazioni polimorfiche permettono ad un certo model di "appartenere" a più d
 
 	}
 
-	class Order extends Eloquent {
+	class Order extends Model {
 
 		public function photos()
 		{
@@ -744,7 +744,7 @@ Vediamo, per questa situazione, una struttura delle tabelle da usare.
 
 Creata la struttura siamo pronti a creare la relazione tra model. Sia _Post_ che _Video_ useranno _morphToMany_ per la definizione della relazione.
 
-	class Post extends Eloquent {
+	class Post extends Model {
 
 		public function tags()
 		{
@@ -755,7 +755,7 @@ Creata la struttura siamo pronti a creare la relazione tra model. Sia _Post_ che
 
 Il model _Tag_ implementerà un metodo per ognuna delle possibilità:
 
-	class Tag extends Eloquent {
+	class Tag extends Model {
 
 		public function posts()
 		{
@@ -799,7 +799,7 @@ Hai bisogno di più potenza? No problem: usa _whereHas_ e _orWhereHas_ per speci
 
 Eloquent ti permette di accedere alle tue relazioni attraverso proprietà dinamiche. In caso d'uso, Eloquent carica automaticamente tutto quello che serve ed è anche abbastanza "intelligente" da capire qunado serve usare _get()_ (in caso di uno a molti) o _first()_ (in caso di uno ad uno). Il risultato sarà quindi accessibile tramite una proprietà dinamica dallo stesso nome della relazione. Ecco un esempio:
 
-	class Phone extends Eloquent {
+	class Phone extends Model {
 
 		public function user()
 		{
@@ -825,7 +825,7 @@ Basterà fare così:
 
 L'Eager Loading è un'ottima soluzione in caso di esecuzione di un numero spropositato di query. Ipotizza la presenza di un model _Book_ legato ad un _Author_. La relazione verrebbe così definita:
 
-	class Book extends Eloquent {
+	class Book extends Model {
 
 		public function author()
 		{
@@ -978,7 +978,7 @@ In questo esempio, il nuovo _Role_ viene salvato ed agganciato al model _User_. 
 
 Quando un model è soggetto ad una relazione _belongsTo_ con un altro model, come ad esempio _Comment_ che appartiene a _Post_, potrebbe essere utile lavorare con i timestamp dell'elemento parent della relazione. Ancora una volta Eloquent rende semplice una tale operazione, semplicemente usando la proprietà _$touches_:
 
-	class Comment extends Eloquent {
+	class Comment extends Model {
 
 		protected $touches = array('post');
 
@@ -1116,7 +1116,7 @@ Filtrare una collection significa specificare una callback che verrà usata per 
 
 Se può servirti, puoi far ritornare ad un metodo una collection personalizzata a cui aggiungere i tuoi metodi. Basta effettuare l'override del metodo _newCollection_.
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		public function newCollection(array $models = array())
 		{
@@ -1134,7 +1134,7 @@ Eloquent ti da la possibilità di trasformare gli attributi del tuo model quando
 
 Un esempio:
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		public function getFirstNameAttribute($value)
 		{
@@ -1149,7 +1149,7 @@ Cosa è successo? L'attributo *first_name* ha un accessor. Nel momento in cui ri
 
 Un mutator è l'esatto opposto dell'accessor. Se l'accessor trasforma un attributo restituendone come output la versione "modificata", il mutator invece trasforma un dato in input, cambiando quindi il dato inserito nell'attributo.
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		public function setFirstNameAttribute($value)
 		{
@@ -1307,7 +1307,7 @@ Ci hai fatto già caso? Se ritorni un model o una collection da una route, quest
 
 A volte potresti avere la necessità di limitare il numero di attributi mandati in output durante una conversione, che sia in JSON o semplice array. Ricorda che c'è la proprietà _hidden_!
 
-	class User extends Eloquent {
+	class User extends Model {
 
 		protected $hidden = array('password');
 
