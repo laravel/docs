@@ -1,4 +1,4 @@
-# Laravel Homestead
+# Homestead
 
 - [Introduzione](#introduzione)
 - [Software Incluso](#software-incluso)
