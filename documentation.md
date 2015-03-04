@@ -29,6 +29,7 @@
     - [Core Extension](/docs/master/extending)
     - [Elixir](/docs/master/elixir)
     - [Encryption](/docs/master/encryption)
+    - [Envoy](/docs/master/envoy)
     - [Errors & Logging](/docs/master/errors)
     - [Events](/docs/master/events)
     - [Filesystem / Cloud Storage](/docs/master/filesystem)
