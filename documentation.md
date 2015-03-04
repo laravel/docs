@@ -29,6 +29,7 @@
     - [Core Extension](/docs/5.0/extending)
     - [Elixir](/docs/5.0/elixir)
     - [Encryption](/docs/5.0/encryption)
+    - [Envoy](/docs/5.0/envoy)
     - [Errors & Logging](/docs/5.0/errors)
     - [Events](/docs/5.0/events)
     - [Filesystem / Cloud Storage](/docs/5.0/filesystem)
