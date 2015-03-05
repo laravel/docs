@@ -137,6 +137,8 @@ The `json` method will automatically set the `Content-Type` header to `applicati
 
 	return response()->download($pathToFile, $name, $headers);
 
+	return response()->download($pathToFile)->deleteFileAfterSend(true);
+
 > **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
 
 <a name="response-macros"></a>
