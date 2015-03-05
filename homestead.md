@@ -143,9 +143,11 @@ To learn how to connect to your databases, read on!
 
 ### Connecting Via SSH
 
-To connect to your Homestead environment via SSH, issue the `vagrant ssh` command from your Homestead directory.
+To connect to your Homestead environment via SSH, simply run `homestead ssh` command in your terminal:
 
-Since you will probably need to SSH into your Homestead machine frequently, consider creating an "alias" on your host machine:
+	homestead ssh
+	
+Alternatively, you might consider creating an "alias" on your host machine:
 
 	alias vm="ssh vagrant@127.0.0.1 -p 2222"
 
