@@ -88,7 +88,9 @@ Once you have created a SSH key, specify the key's path in the `authorize` prope
 
 ### Configure Your Provider
 
-The `provider` property of the `Homestead.yaml` file allows you to select one of VirtualBox or VMWare as VM provider. The VMWare provider requires that you have VMWare Fusion or Workstation installed as well as the [Vagrant VMWare plugin](http://www.vagrantup.com/vmware)
+The `provider` property of the `Homestead.yaml` file allows you to select one of VirtualBox or VMWare as the VM provider. The VMWare provider requires that you have VMWare Fusion or Workstation installed as well as the [Vagrant VMWare plugin](http://www.vagrantup.com/vmware)
+
+`provider: virtualbox` or `provider: vmware_fusion`
 
 > **Note:** If you already have a VirtualBox provided install and wish to switch to VMWare you will need to destroy the vm first. `vagrant destroy -f && rm -rf .vagrant`
 
