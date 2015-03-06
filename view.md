@@ -47,7 +47,7 @@ Se vuoi, puoi anche passare un array di dati alla view semplicemente usandolo co
 
 #### Condividere Dati Con Tutte Le View
 
-Qualche volta potresti aver bisogno di condividere alcuni dati tra tutte le view utilizzae dalla tua applicazione. Ci sono diversi modi per farlo: l'helper `view`, il [contratto](/contratti) `Illuminate\Contracts\View\Factory`, o la wildcard [view composer](#view-composer).
+Qualche volta potresti aver bisogno di condividere alcuni dati tra tutte le view utilizzate dalla tua applicazione. Ci sono diversi modi per farlo: l'helper `view`, il [contratto](/contratti) `Illuminate\Contracts\View\Factory`, o la wildcard [view composer](#view-composer).
 
 Ecco un esempio di condivisione con l'helper view:
 
