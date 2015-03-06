@@ -40,9 +40,11 @@ Homestead is currently built and tested using Vagrant 1.6.
 <a name="installation-and-setup"></a>
 ## Installation & Setup
 
-### Installing VirtualBox & Vagrant
+### Installing VirtualBox / VMware & Vagrant
 
 Before launching your Homestead environment, you must install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) and [Vagrant](http://www.vagrantup.com/downloads.html). Both of these software packages provide easy-to-use visual installers for all popular operating systems.
+
+In addition to VirtualBox, Homestead also supports VMware. To use the VMware provider, you will need to purchase both VMware Fusion / Desktop and the [VMware Vagrant plug-in](http://www.vagrantup.com/vmware). VMware provides much faster shared folder performance out of the box.
 
 ### Adding The Vagrant Box
 
@@ -83,6 +85,12 @@ Once you have installed the Homestead CLI tool, run the `init` command to create
 The `Homestead.yaml` file will be placed in the `~/.homestead` directory. If you're using a Mac or Linux system, you may edit `Homestead.yaml` file by running the `homestead edit` command in your terminal:
 
 	homestead edit
+
+### Configure Your Provider
+
+The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `vmware_fusion`. You may set this to whichever provider you prefer.
+
+	provider: virtualbox
 
 ### Set Your SSH Key
 
