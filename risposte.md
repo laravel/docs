@@ -20,7 +20,7 @@ La risposta più semplice proveniente da una route è una stringa:
 #### Creare Una Risposta Personalizzata
 
 Tuttavia, per la maggior parte delle route e delle azioni dei controller, ritornerà un'istanza
-However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` oppure una [view](/view). Il ritorno di una istanza completa di `Response` ti permette di personalizzare il codice di stato e gli header di una risposta HTTP. Un'istanza `Response` eredita la classe `Symfony\Component\HttpFoundation\Response`, che offre una serie di metodi per costruire le richieste HTTP:
+Tuttavia, per molte routes e per la azione di un controller, ti sarà restituita una istanza di `Illuminate\Http\Response` oppure una [view](/view). Il ritorno di una istanza completa di `Response` ti permette di personalizzare il codice di stato e gli header di una risposta HTTP. Un'istanza `Response` eredita la classe `Symfony\Component\HttpFoundation\Response`, che offre una serie di metodi per costruire le richieste HTTP:
 
 	use Illuminate\Http\Response;
 
