@@ -261,7 +261,7 @@ Se il metodo del tuo controller deve ricevere degli input da un parametro di una
 <a name="route-caching"></a>
 ## Route Caching
 
-Se la tua applicazione usa esclusivamente route controller, puoi trarne vantaggio dalla cache route di Laravel. Usando la cache route verrà drasticamento diminuito il tempo per la registrazione di tutte le route dell'applicazione. In alcuni casi, la registrazione può anche essere 100 volte più veloce! Per generare una cache route, basta eseguire il comando Artisan `route:cache`
+Se la tua applicazione usa esclusivamente route controller, puoi trarne vantaggio dalla cache route di Laravel. Usando la cache route verrà drasticamente diminuito il tempo per la registrazione di tutte le route dell'applicazione. In alcuni casi, la registrazione può anche essere 100 volte più veloce! Per generare una cache route, basta eseguire il comando Artisan `route:cache`
 
 	php artisan route:cache
 
