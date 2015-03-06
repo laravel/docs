@@ -160,7 +160,7 @@
 		 */
 		public function boot()
 		{
-			Response::('caps', function($value) use ($response)
+			Response::macro('caps', function($value) use ($response)
 			{
 				return $response->make(strtoupper($value));
 			});
