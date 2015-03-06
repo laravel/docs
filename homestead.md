@@ -44,16 +44,6 @@ Homestead is currently built and tested using Vagrant 1.6.
 
 Before launching your Homestead environment, you must install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) and [Vagrant](http://www.vagrantup.com/downloads.html). Both of these software packages provide easy-to-use visual installers for all popular operating systems.
 
-### Adding The Vagrant Box
-
-Once VirtualBox and Vagrant have been installed, you should add the `laravel/homestead` box to your Vagrant installation using the following command in your terminal. It will take a few minutes to download the box, depending on your Internet connection speed:
-
-	vagrant box add laravel/homestead
-
-If this command fails, you may have an old version of Vagrant that requires the full URL:
-
-	vagrant box add laravel/homestead https://atlas.hashicorp.com/laravel/boxes/homestead
-
 ### Installing Homestead
 
 #### Manually Via Git (No Local PHP)
@@ -95,6 +85,14 @@ Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pai
 On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` shell included with Git to issue the command above. Alternatively, you may use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
 
 Once you have created a SSH key, specify the key's path in the `authorize` property of your `Homestead.yaml` file.
+
+### Configure Your Provider
+
+The `provider` property of the `Homestead.yaml` file allows you to select one of VirtualBox or VMWare as the VM provider. The VMWare provider requires that you have VMWare Fusion or Workstation installed as well as the [Vagrant VMWare plugin](http://www.vagrantup.com/vmware)
+
+`provider: virtualbox` or `provider: vmware_fusion`
+
+> **Note:** If you already have a VirtualBox provided install and wish to switch to VMWare you will need to destroy the vm first. `vagrant destroy -f && rm -rf .vagrant`
 
 ### Configure Your Shared Folders
 
