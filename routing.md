@@ -88,7 +88,7 @@ Laravel 為所有上線使用者的 Session 產生一個 CSRF “token”。該 
             }
         });
 
-Now all AJAX requests will automatically include the CSRF token:
+現在所有的 AJAX 請求將會自動帶入 CSRF token:
 
 	$.ajax({
 	   url: "/foo/bar",
