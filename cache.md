@@ -134,7 +134,7 @@ In contrast, this statement would remove only caches tagged with `authors`, so "
 <a name="cache-events"></a>
 ## Cache events
 
-Cache actions can trigger events. You may for instance use `Event` listeners to and access the following events.
+Cache actions can trigger events. You may for instance use `Event` listeners to access the following events.
 
 A cache entry exists and has been hit:
 
