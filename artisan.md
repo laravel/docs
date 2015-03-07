@@ -124,6 +124,16 @@ Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令
 
 	$schedule->command('foo')->monthly();
 
+#### Job That Runs On Specific Days
+
+	$schedule->command('foo')->mondays();
+	$schedule->command('foo')->tuesdays();
+	$schedule->command('foo')->wednesdays();
+	$schedule->command('foo')->thursdays();
+	$schedule->command('foo')->fridays();
+	$schedule->command('foo')->saturdays();
+	$schedule->command('foo')->sundays();
+
 #### 限制應該執行工作的環境
 
 	$schedule->command('foo')->monthly()->environments('production');
@@ -138,3 +148,15 @@ Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令
 	{
 		return true;
 	});
+
+#### E-mail The Output Of A Scheduled Job
+
+	$schedule->command('foo')->emailOutputTo('foo@example.com');
+
+#### Send The Output Of The Scheduled Job To A Given Location
+
+	$schedule->command('foo')->sendOutputTo($filePath);
+
+#### Ping A Given URL After The Job Runs
+
+	$schedule->command('foo')->thenPing($url);

@@ -24,7 +24,7 @@ Laravel 裡的 `EventServiceProvider` 提供了一個方便的地方註冊所有
 	 */
 	protected $listen = [
 		'App\Events\PodcastWasPurchased' => [
-			'App\Handlers\Events\EmailPurchaseConfirmation@handle',
+			'App\Handlers\Events\EmailPurchaseConfirmation',
 		],
 	];
 
@@ -137,7 +137,6 @@ Laravel 裡的 `EventServiceProvider` 提供了一個方便的地方註冊所有
 
 	Event::subscribe($subscriber);
 
-你也可以使用 [Laravel IoC 容器](/docs/5.0/container) 自動解析訂閱者。簡單地傳遞訂閱者的名字給 `subscribe` 方法就可以做到：
+你也可以使用 [服務容器](/docs/5.0/container) 自動解析訂閱者。簡單地傳遞訂閱者的名字給 `subscribe` 方法就可以做到：
 
 	Event::subscribe('UserEventHandler');
-

@@ -85,7 +85,7 @@ Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP
 
 如果想取得應用程式的實例，可以透過[服務容器](/docs/5.0/container)的 `Illuminate\Contracts\Foundation\Application`  contract 來取得。當然，如果你想在[服務提供者](/docs/5.0/providers)中使用，應用程式實例可以透過實例變數 `$this->app` 取得。
 
-也能透過 `App` facade 的輔助函式 `app` 取得應用程式實例：
+也能透過 `App` facade 或是 `app` 取得應用程式實例：
 
 	$environment = app()->environment();
 

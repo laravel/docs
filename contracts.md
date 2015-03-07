@@ -37,7 +37,7 @@ Laravel 所有的 contracts 都放在[各自的 Github repository](https://githu
 		/**
 		 * Create a new repository instance.
 		 *
-		 * @param  \Package\Cache\Memcached  $cache
+		 * @param  \SomePackage\Cache\Memcached  $cache
 		 * @return void
 		 */
 		public function __construct(\SomePackage\Cache\Memcached $cache)
@@ -103,6 +103,7 @@ Contract  |  Laravel 4.x Facade
 ------------- | -------------
 [Illuminate\Contracts\Auth\Guard](https://github.com/illuminate/contracts/blob/master/Auth/Guard.php)  |  Auth
 [Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)  |  Password
+[Illuminate\Contracts\Bus\Dispatcher](https://github.com/illuminate/contracts/blob/master/Bus/Dispatcher.php)  |  Bus
 [Illuminate\Contracts\Cache\Repository](https://github.com/illuminate/contracts/blob/master/Cache/Repository.php) | Cache
 [Illuminate\Contracts\Cache\Factory](https://github.com/illuminate/contracts/blob/master/Cache/Factory.php) | Cache::driver()
 [Illuminate\Contracts\Config\Repository](https://github.com/illuminate/contracts/blob/master/Config/Repository.php) | Config

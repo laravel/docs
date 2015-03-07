@@ -3,6 +3,7 @@
 - [介紹](#introduction)
 - [設定檔](#configuration)
 - [訂購方案](#subscribing-to-a-plan)
+- [Single Charges](#single-charges)
 - [免信用卡試用](#no-card-up-front)
 - [訂購轉換](#swapping-subscriptions)
 - [訂購數量](#subscription-quantity)
@@ -89,6 +90,31 @@ Laravel Cashier 提供口語化，流暢的介面和 [Stripe](https://stripe.com
 
 想知道更多 Stripe 支援的額外欄位，瞧瞧 Stripe 的線上文件 [建立客戶](https://stripe.com/docs/api#create_customer)。
 
+<a name="single-charges"></a>
+## Single Charges
+
+If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method:
+
+	$user->charge(100);
+
+The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency**. So, for example, the example above will charge 100 cents, or $1.00, against the user's credit card.
+
+The `charge` method accepts an array as its second argument, allowing you to pass any options you wish to the underlying Stripe charge creation:
+
+	$user->charge(100, [
+		'source' => $token,
+		'receipt_email' => $user->email,
+	]);
+
+The `charge` method will return `false` if the charge fails. This typically indicates the charge was denied:
+
+	if ( ! $user->charge(100))
+	{
+		// The charge was denied...
+	}
+
+If the charge is successful, the full Stripe response will be returned from the method.
+
 <a name="no-card-up-front"></a>
 ## 免信用卡試用
 
@@ -123,7 +149,7 @@ Laravel Cashier 提供口語化，流暢的介面和 [Stripe](https://stripe.com
 	// Add five to the subscription's current quantity...
 	$user->subscription()->increment(5);
 
-	$user->subscription->decrement();
+	$user->subscription()->decrement();
 
 	// Subtract five to the subscription's current quantity...
 	$user->subscription()->decrement(5);

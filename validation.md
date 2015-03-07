@@ -18,8 +18,8 @@ Laravel 透過 `Validation` 類別讓你可以簡單、方便的驗證資料正�
 #### 基本驗證範例
 
 	$validator = Validator::make(
-		array('name' => 'Dayle'),
-		array('name' => 'required|min:5')
+		['name' => 'Dayle'],
+		['name' => 'required|min:5']
 	);
 
 傳入 `make` 方法的第一個參數是待驗證的資料，第二個參數是資料的驗證規則。
@@ -29,23 +29,23 @@ Laravel 透過 `Validation` 類別讓你可以簡單、方便的驗證資料正�
 多個規則之間可以使用「管線（ pipe ）」符號分隔，或是作爲陣列裡的單一元素。
 
 	$validator = Validator::make(
-		array('name' => 'Dayle'),
-		array('name' => array('required', 'min:5'))
+		['name' => 'Dayle'],
+		['name' => ['required', 'min:5']]
 	);
 
 #### 驗證多個欄位
 
     $validator = Validator::make(
-        array(
+        [
             'name' => 'Dayle',
             'password' => 'lamepassword',
             'email' => 'email@example.com'
-        ),
-        array(
+        ],
+        [
             'name' => 'required',
             'password' => 'required|min:8',
             'email' => 'required|email|unique:users'
-        )
+        ]
     );
 
 當一個 `Validator` 實例被建立，`fails`（或 `passes`）這二個方法可以取得驗證結果。
@@ -289,7 +289,7 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 
 	Route::post('register', function()
 	{
-		$rules = array(...);
+		$rules = [...];
 
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -612,9 +612,9 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 
 某些情況下，你可能**只想**在輸入資料中有此欄位時，才進行驗證。只要增加 `sometimes` 規則到進規則列表，就可以快速達成：
 
-	$v = Validator::make($data, array(
+	$v = Validator::make($data, [
 		'email' => 'sometimes|required|email',
-	));
+	]);
 
 在上面的範例中，`email` 欄位的驗證，只會在 `$data` 陣列有此欄位才會進行。
 
@@ -623,10 +623,10 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 有時，你可以希望某個指定欄位，在另一個欄位的值有超過 100 時才為必填。
 或者你當某個指定欄位有值時，另外兩個欄位要符合特定值。增加這樣的驗證條件並不痛苦。首先，利用你熟悉的 _靜態規則_ 建立一個 `Validator` 實例：
 
-	$v = Validator::make($data, array(
+	$v = Validator::make($data, [
 		'email' => 'required|email',
 		'games' => 'required|numeric',
-	));
+	]);
 
 假設我們的網頁應用程式是專為遊戲收藏家所設計。如果遊戲收藏家收藏超過一百款遊戲，我們希望他們說明為什麼他們擁有這麼多遊戲。像是，可能他們經營一家二手遊戲商店，或是他們可能只是享受收集的樂趣。為了在特定條件下，加入此驗證需求，我們可以在 `Validator` 實例使用 `sometimes` 方法。
 
@@ -637,7 +637,7 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 
 傳入 `sometimes` 方法的第一個參數，是我們要依條件認證的欄位名稱。第二個參數是我們想加入驗證規則。`閉包（ Closure ）`作為第三個參數傳入，如果其回傳 `true`，額外的規則就會被加入。這個方法可以輕而易舉的建立複雜的條件式驗證。你甚至可以一次對多個欄位增加條件式驗證：
 
-	$v->sometimes(array('reason', 'cost'), 'required', function($input)
+	$v->sometimes(['reason', 'cost'], 'required', function($input)
 	{
 		return $input->games >= 100;
 	});
@@ -651,9 +651,9 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 
 #### 將自定訊息傳入 Validator
 
-	$messages = array(
+	$messages = [
 		'required' => 'The :attribute field is required.',
-	);
+	];
 
 	$validator = Validator::make($input, $rules, $messages);
 
@@ -661,31 +661,31 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 
 #### 其他的驗證 Place-Holders
 
-	$messages = array(
+	$messages = [
 		'same'    => 'The :attribute and :other must match.',
 		'size'    => 'The :attribute must be exactly :size.',
 		'between' => 'The :attribute must be between :min - :max.',
 		'in'      => 'The :attribute must be one of the following types: :values',
-	);
+	];
 
 #### 為特定屬性指定自定的訊息
 
 有時你可能想為特定欄位指定自定的錯誤訊息：
 
-	$messages = array(
+	$messages = [
 		'email.required' => 'We need to know your e-mail address!',
-	);
+	];
 
 <a name="localization"></a>
 #### 在語言檔中指定自定訊息
 
 某些狀況下，你可能希望在語言檔中指定自定訊息，而非直接將他們傳遞給 `Validator`。要達到目的，將你的訊息增加至 `resources/lang/xx/validation.php` 語言檔的 `custom` 陣列中。
 
-	'custom' => array(
-		'email' => array(
+	'custom' => [
+		'email' => [
 			'required' => 'We need to know your e-mail address!',
-		),
-	),
+		],
+	],
 
 <a name="custom-validation-rules"></a>
 ## 自定驗證規則

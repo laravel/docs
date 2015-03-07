@@ -30,9 +30,9 @@ Laravel 的 `Lang` facade 提供方便的方法來取得多種語言的字串，
 
 	<?php
 
-	return array(
+	return [
 		'welcome' => 'Welcome to our application'
-	);
+	];
 
 #### 在執行時變換預設語言
 
@@ -69,7 +69,7 @@ Laravel 的 `Lang` facade 提供方便的方法來取得多種語言的字串，
 
 接著，傳遞替代用的第二個參數給 `Lang::get` 方法：
 
-	echo Lang::get('messages.welcome', array('name' => 'Dayle'));
+	echo Lang::get('messages.welcome', ['name' => 'Dayle']);
 
 #### 判斷語言檔是否有指定的句子
 
@@ -91,7 +91,7 @@ Laravel 的 `Lang` facade 提供方便的方法來取得多種語言的字串，
 
 你也可以提供一個地區參數來指定語言。舉個例，如果你想要使用俄語 (ru)：
 
-	echo Lang::choice('товар|товара|товаров', $count, array(), 'ru');
+	echo Lang::choice('товар|товара|товаров', $count, [], 'ru');
 
 因為 Laravel 的翻譯器由 Symfony 翻譯元件提供，你也可以很容易地建立更明確的複數規則：
 
@@ -101,7 +101,7 @@ Laravel 的 `Lang` facade 提供方便的方法來取得多種語言的字串，
 <a name="validation"></a>
 ## 驗證
 
-要驗證在地化的錯誤和訊息，可以看一下<a href="/docs/5.0/validation#localization">驗證的文件</a>.
+要驗證在地化的錯誤和訊息，可以看一下<a href="/docs/5.0/validation#localization">驗證的文件</a>。
 
 <a name="overriding-package-language-files"></a>
 ## 覆寫套件的語言檔

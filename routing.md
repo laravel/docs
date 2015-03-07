@@ -71,18 +71,30 @@ Laravel 為所有上線使用者的 Session 產生一個 CSRF “token”。該 
 
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-您不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。 `VerifyCsrfToken` [HTTP  中介層](/docs/5.0/middleware)將自動驗證請求與 Session 中的 token 是否相符合。
 
-除了 “POST” 參數中的 CSRF token 外，中介層也會驗證請求標頭中的 `X-CSRF-TOKEN`。例如，送出請求前，你可以將其儲存在 meta 標籤中，並使用 jQuery 加進你的標頭。
+除了 “POST” 參數中的 CSRF token 外，中介層也會驗證請求標頭中的 `X-CSRF-TOKEN`。
 
-	<meta name=“csrf-token” content=“{{ csrf_token() }}” />
-	
+您不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。`VerifyCsrfToken` [HTTP  中介層](/docs/5.0/middleware)將自動驗證請求與 Session 中的 token 是否相符合。
+
+#### X-CSRF-TOKEN
+
+除了「POST」參數中的 CSRF token 外，中介層也會驗證請求標頭中的 `X-CSRF-TOKEN`。例如，你可以將其儲存在 meta 標籤中，並使用 jQuery 加進你的標頭：
+
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
+
+	$.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+Now all AJAX requests will automatically include the CSRF token:
+
 	$.ajax({
-	  url: “/foo/bar”,
-	  beforeSend: function( xhr ) {
-	    xhr.setRequestHeader(‘X-CSRF-Token’, $(‘meta[name=“csrf-token”]’).attr(‘content’))
-	  }
+	   url: "/foo/bar",
 	})
+
+#### X-XSRF-TOKEN
 
 Laravel 也會在 `XSRF-TOKEN` cookie 中儲存 CSRF token。你也可以使用 cookie 的值來設定 `X-XSRF-TOKEN` 請求標頭。一些像是 Angular 的 Javascript 框架會自動幫你做到。
 
@@ -150,7 +162,7 @@ HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `D
 
 #### 定義全域模式
 
-如果你想讓特定路由參數總是遵詢特定的正規表達式，可以使用 `pattern` 方法。在 `RouteServiceProvider` 的 `before` 方法裡定義模式：
+如果你想讓特定路由參數總是遵詢特定的正規表達式，可以使用 `pattern` 方法。你應該在 `RouteServiceProvider` 的 `boot` 方法裡定義模式：
 
 	$router->pattern('id', '[0-9]+');
 

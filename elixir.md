@@ -4,7 +4,6 @@
 - [安裝](#installation)
 - [使用方式](#usage)
 - [Gulp](#gulp)
-- [預設目錄](#defaults)
 - [功能擴充](#extensions)
 
 <a name="introduction"></a>
@@ -40,7 +39,7 @@ Laravel Elixir 提供了簡潔流暢的 API，讓你能夠為你的 Laravel 應�
 <a name="usage"></a>
 ## 使用方式
 
-現在你已經安裝好 Elixir，未來任何時候你都能進行編譯及合併檔案！
+現在你已經安裝好 Elixir，未來任何時候你都能進行編譯及合併檔案！The `gulpfile.js` file in your project's root directory contains all of your Elixir tasks.
 
 #### 編譯 Less
 
@@ -52,11 +51,22 @@ elixir(function(mix) {
 
 在上述例子中，Elixir 會假設你的 Less 檔案儲存在 `resources/assets/less` 裡。
 
+#### Compiling Multiple Less Files
+
+```javascript
+elixir(function(mix) {
+    mix.less([
+        'app.less',
+        'something-else.less'
+    ]);
+});
+```
+
 #### 編譯 Sass
 
 ```javascript
 elixir(function(mix) {
-    mix.sass("app.scss");
+    mix.sass("app.sass");
 });
 ```
 
@@ -190,6 +200,19 @@ elixir(function(mix) {
 
 程式的作用下，`elixir()` 函式會將參數內的原始檔名轉換成被雜湊後的檔名並載入。是否有如釋重擔的感覺呢？
 
+You may also pass an array to the `version` method to version multiple files:
+
+```javascript
+elixir(function(mix) {
+    mix.version(["css/all.css", "js/app.js"]);
+});
+```
+
+```html
+<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
+<script src="{{ elixir("js/app.js") }}"></script>
+```
+
 #### 複製檔案到新的位置
 
 ```javascript
@@ -231,6 +254,14 @@ elixir(function(mix) {
 #### 監控檔案變更
 
     gulp watch
+
+#### Only Compile Scripts
+
+    gulp scripts
+
+#### Only Compile Styles
+
+    gulp styles
 
 #### 監控測試以及 PHP 類別的變更
 

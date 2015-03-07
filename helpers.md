@@ -2,6 +2,7 @@
 
 - [陣列](#arrays)
 - [路徑](#paths)
+- [Routing](#routing)
 - [字串](#strings)
 - [網址](#urls)
 - [其他](#miscellaneous)
@@ -13,7 +14,7 @@
 
 如果給定的鍵不在陣列中，`array_add` 函式會把給定的鍵值對加到陣列中。
 
-	$array = array('foo' => 'bar');
+	$array = ['foo' => 'bar'];
 
 	$array = array_add($array, 'key', 'value');
 
@@ -21,7 +22,7 @@
 
 `array_divide` 函式回傳兩個陣列，一個包含原本陣列的鍵，另一個包含原本陣列的值。
 
-	$array = array('foo' => 'bar');
+	$array = ['foo' => 'bar'];
 
 	list($keys, $values) = array_divide($array);
 
@@ -29,36 +30,36 @@
 
 `array_dot` 函式把多維陣列扁平化成一維陣列，並用「點」符號表示深度。
 
-	$array = array('foo' => array('bar' => 'baz'));
+	$array = ['foo' => ['bar' => 'baz']];
 
 	$array = array_dot($array);
 
-	// array('foo.bar' => 'baz');
+	// ['foo.bar' => 'baz'];
 
 ### array_except
 
 `array_except` 函式從陣列移除給定的鍵值對。
 
-	$array = array_except($array, array('keys', 'to', 'remove'));
+	$array = array_except($array, ['keys', 'to', 'remove']);
 
 ### array_fetch
 
 `array_fetch` 函式回傳包含被選擇的巢狀元素的扁平化陣列。
 
-	$array = array(
-		array('developer' => array('name' => 'Taylor')),
-		array('developer' => array('name' => 'Dayle')),
+	$array = [
+		['developer' => ['name' => 'Taylor']],
+		['developer' => ['name' => 'Dayle']]
 	);
 
 	$array = array_fetch($array, 'developer.name');
 
-	// array('Taylor', 'Dayle');
+	// ['Taylor', 'Dayle'];
 
 ### array_first
 
 `array_first` 函式回傳陣列中第一個通過給定的測試為真的元素。
 
-	$array = array(100, 200, 300);
+	$array = [100, 200, 300];
 
 	$value = array_first($array, function($key, $value)
 	{
@@ -73,7 +74,7 @@
 
 `array_last` 函式回傳陣列中最後一個通過給定的測試為真的元素。
 
-	$array = array(350, 400, 500, 300, 200, 100);
+	$array = [350, 400, 500, 300, 200, 100];
 
 	$value = array_last($array, function($key, $value)
 	{
@@ -90,17 +91,17 @@
 
 `array_flatten` 函式將會把多維陣列扁平化成一維。
 
-	$array = array('name' => 'Joe', 'languages' => array('PHP', 'Ruby'));
+	$array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
 
 	$array = array_flatten($array);
 
-	// array('Joe', 'PHP', 'Ruby');
+	// ['Joe', 'PHP', 'Ruby'];
 
 ### array_forget
 
 `array_forget` 函式將會用「點」符號從深度巢狀陣列移除給定的鍵值對。
 
-	$array = array('names' => array('joe' => array('programmer')));
+	$array = ['names' => ['joe' => ['programmer']]];
 
 	array_forget($array, 'names.joe');
 
@@ -108,7 +109,7 @@
 
 `array_get` 函式將會使用「點」符號從深度巢狀陣列取回給定的值。
 
-	$array = array('names' => array('joe' => array('programmer')));
+	$array = ['names' => ['joe' => ['programmer']]];
 
 	$value = array_get($array, 'names.joe');
 
@@ -120,25 +121,25 @@
 
 `array_only` 函式將會只從陣列回傳給定的鍵值對。
 
-	$array = array('name' => 'Joe', 'age' => 27, 'votes' => 1);
+	$array = ['name' => 'Joe', 'age' => 27, 'votes' => 1];
 
-	$array = array_only($array, array('name', 'votes'));
+	$array = array_only($array, ['name', 'votes']);
 
 ### array_pluck
 
 `array_pluck` 函式將會從陣列拉出給定鍵值對的清單。
 
-	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
+	$array = [['name' => 'Taylor'], ['name' => 'Dayle']];
 
 	$array = array_pluck($array, 'name');
 
-	// array('Taylor', 'Dayle');
+	// ['Taylor', 'Dayle'];
 
 ### array_pull
 
 `array_pull` 函式將會從陣列回傳給定的鍵值對，並移除它。
 
-	$array = array('name' => 'Taylor', 'age' => 27);
+	$array = ['name' => 'Taylor', 'age' => 27];
 
 	$name = array_pull($array, 'name');
 
@@ -146,7 +147,7 @@
 
 `array_set` 函式將會使用「點」符號在深度巢狀陣列中指定值。
 
-	$array = array('names' => array('programmer' => 'Joe'));
+	$array = ['names' => ['programmer' => 'Joe']];
 
 	array_set($array, 'names.editor', 'Taylor');
 
@@ -154,10 +155,10 @@
 
 `array_sort` 函式借由給定閉包的結果來排序陣列。
 
-	$array = array(
-		array('name' => 'Jill'),
-		array('name' => 'Barry'),
-	);
+	$array = [
+		['name' => 'Jill'],
+		['name' => 'Barry']
+	];
 
 	$array = array_values(array_sort($array, function($value)
 	{
@@ -168,7 +169,7 @@
 
 使用給定的閉包過濾陣列。
 
-	$array = array(100, '200', 300, '400', 500);
+	$array = [100, '200', 300, '400', 500];
 
 	$array = array_where($array, function($key, $value)
 	{
@@ -208,7 +209,46 @@
 
 ### storage_path
 
-取得 `app/storage` 資料夾的完整路徑。
+取得 `storage` 資料夾的完整路徑。
+
+<a name="routing"></a>
+## Routing
+
+### get
+
+Register a new GET route with the router.
+
+	get('/', function() { return 'Hello World'; });
+
+### post
+
+Register a new POST route with the router.
+
+	post('foo/bar', 'FooController@action');
+
+### put
+
+Register a new PUT route with the router.
+
+	put('foo/bar', 'FooController@action');
+
+### patch
+
+Register a new PATCH route with the router.
+
+	patch('foo/bar', 'FooController@action');
+
+### delete
+
+Register a new DELETE route with the router.
+
+	delete('foo/bar', 'FooController@action');
+
+### resource
+
+Register a new RESTful resource route with the router.
+
+	resource('foo', 'FooController');
 
 <a name="strings"></a>
 ## 字串
@@ -358,47 +398,23 @@
 
 	$url = asset('img/photo.jpg');
 
-### link_to
-
-產生給定網址的 HTML 連結。
-
-	echo link_to('foo/bar', $title, $attributes = array(), $secure = null);
-
-### link_to_asset
-
-產生給定資源的 HTML 連結。
-
-	echo link_to_asset('foo/bar.zip', $title, $attributes = array(), $secure = null);
-
-### link_to_route
-
-產生給定路由的 HTML 連結。
-
-	echo link_to_route('route.name', $title, $parameters = array(), $attributes = array());
-
-### link_to_action
-
-產生給定控制器行為的 HTML 連結。
-
-	echo link_to_action('HomeController@getIndex', $title, $parameters = array(), $attributes = array());
-
 ### secure_asset
 
-產生給定資源的 HTTPS HTML 連結。
+產生給定資源的 HTTPS 連結。
 
-	echo secure_asset('foo/bar.zip', $title, $attributes = array());
+	echo secure_asset('foo/bar.zip', $title, $attributes = []);
 
 ### secure_url
 
 產生給定路徑的 HTTPS 完整網址。
 
-	echo secure_url('foo/bar', $parameters = array());
+	echo secure_url('foo/bar', $parameters = []);
 
 ### url
 
 產生給定路徑的完整網址。
 
-	echo url('foo/bar', $parameters = array(), $secure = null);
+	echo url('foo/bar', $parameters = [], $secure = null);
 
 <a name="miscellaneous"></a>
 ## 其他
@@ -415,11 +431,35 @@
 
 	dd($value);
 
+### elixir
+
+Get the path to a versioned Elixir file.
+
+	elixir($file);
+
+### env
+
+Gets the value of an environment variable or return a default value.
+
+	env('APP_ENV', 'production')
+
+### event
+
+Fire an event.
+
+	event('my.event');
+
 ### value
 
 如果給定的值是個 `閉包`，回傳 `閉包` 的回傳值。不是的話，則回傳值。
 
 	$value = value(function() { return 'bar'; });
+
+### view
+
+Get a View instance for the given view path.
+
+	return view('auth.login');
 
 ### with
 

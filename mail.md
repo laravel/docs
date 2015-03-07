@@ -21,18 +21,18 @@ Laravel 也包含了 Mailgun 及 Mandrill HTTP API 的驅動。這些 API 通常
 
 要使用 Mailgun 驅動，請將 `config/mail.php` 設定檔中的 `driver` 選項設定為 `mailgun`。接下來，若 `config/service.php` 設定檔還不存在於您的專案中，請建立此檔，並確認其包含下列選項：
 
-	'mailgun' => array(
+	'mailgun' => [
 		'domain' => 'your-mailgun-domain',
 		'secret' => 'your-mailgun-key',
-	),
+	],
 
 #### Mandrill 驅動
 
 要使用 Mandrill 驅動，將 `config/mail.php` 設定檔中的 `driver` 選項設定為 `mandrill`。接下來，若 `config/service.php` 設定檔還不存在於您的專案中，請建立此檔，並確認其包含下列選項：
 
-	'mandrill' => array(
+	'mandrill' => [
 		'secret' => 'your-mandrill-key',
-	),
+	],
 
 ### 日誌驅動
 
@@ -43,22 +43,22 @@ Laravel 也包含了 Mailgun 及 Mandrill HTTP API 的驅動。這些 API 通常
 
 您可使用 `Mail::send` 方法來寄送電子郵件訊息：
 
-	Mail::send('emails.welcome', array('key' => 'value'), function($message)
+	Mail::send('emails.welcome', ['key' => 'value'], function($message)
 	{
 		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
 傳入 `send` 方法的第一個參數為郵件視圖的名稱。第二個是傳遞給該視圖的資料，通常是一個關聯式陣列，讓視圖可透過 `$key` 來取得資料項目。第三個參數是一個閉包，可以對 message 進行各種設定。
 
-> **注意：** `$message` 變數總是會被傳入郵件視圖中，並且允許內嵌附件。因此最好避免在您的視圖本體中傳入 `message` 變數。 
+> **注意：** `$message` 變數總是會被傳入郵件視圖中，並且允許內嵌附件。因此最好避免在您的視圖本體中傳入 `message` 變數。
 
 除了 HTML 視圖外，您也可以指定使用純文字視圖：
 
-	Mail::send(array('html.view', 'text.view'), $data, $callback);
+	Mail::send(['html.view', 'text.view'], $data, $callback);
 
 或者，您可使用 `html` 或 `text` 作為鍵值來指定單一類型的視圖：
 
-	Mail::send(array('text' => 'view'), $data, $callback);
+	Mail::send(['text' => 'view'], $data, $callback);
 
 您也可以在郵件訊息中指定其他選項，例如副本收件者或附件：
 
@@ -73,7 +73,7 @@ Laravel 也包含了 Mailgun 及 Mandrill HTTP API 的驅動。這些 API 通常
 
 要附加檔案至 message 時，可以指定 MIME 的類型、顯示名稱：
 
-	$message->attach($pathToFile, array('as' => $display, 'mime' => $mime));
+	$message->attach($pathToFile, ['as' => $display, 'mime' => $mime]);
 
 若您只需寄送一個簡單的字串而非完整的視圖，可使用 `raw` 方法：
 

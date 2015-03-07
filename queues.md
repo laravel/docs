@@ -68,7 +68,7 @@ Laravel 隊列元件提供一個統一的 API 整合了許多不同的隊列服�
 
 如果你需要傳送一樣的資料去幾個不同的隊列工作，你可以使用 `Queue::bulk` 方法：
 
-	Queue::bulk(array(new SendEmail($message), new AnotherCommand));
+	Queue::bulk([new SendEmail($message), new AnotherCommand]);
 
 #### 延遲執行一個工作
 
@@ -210,7 +210,7 @@ Laravel 內含一個 Artisan 命令，它將推送到隊列的工作拉來下執
 <a name="push-queues"></a>
 ## 推送隊列
 
-你可以利用強大的 Laravel 4 隊列架構來進行推送隊列工作，不需要執行任何的常駐或背景監聽，目前只支援 [Iron.io](http://iron.io) 驅動，在你開始前建立一個 Iron.io 帳號及新增你的 Iron 憑證到 `config/queue.php` 設定檔。
+你可以利用強大的 Laravel 5 隊列架構來進行推送隊列工作，不需要執行任何的常駐或背景監聽，目前只支援 [Iron.io](http://iron.io) 驅動，在你開始前建立一個 Iron.io 帳號及新增你的 Iron 憑證到 `config/queue.php` 設定檔。
 
 #### 註冊一個推送隊列訂閱
 

@@ -30,6 +30,12 @@ Laravel 使用 [Composer](http://getcomposer.org) 來管理其相依性。所以
 
 	composer create-project laravel/laravel --prefer-dist
 
+### Scaffolding
+
+Laravel ships with scaffolding for user registration and authentication. If you would like to remove this scaffolding, use the `fresh` Artisan command:
+
+	php artisan fresh
+
 <a name="server-requirements"></a>
 ## 環境需求
 

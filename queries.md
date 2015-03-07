@@ -96,20 +96,20 @@
 #### 使用 Where Between
 
 	$users = DB::table('users')
-	                    ->whereBetween('votes', array(1, 100))->get();
+	                    ->whereBetween('votes', [1, 100])->get();
 
 #### 使用 Where Not Between
 
 	$users = DB::table('users')
-	                    ->whereNotBetween('votes', array(1, 100))->get();
+	                    ->whereNotBetween('votes', [1, 100])->get();
 
 #### 使用 Where In 與陣列
 
 	$users = DB::table('users')
-	                    ->whereIn('id', array(1, 2, 3))->get();
+	                    ->whereIn('id', [1, 2, 3])->get();
 
 	$users = DB::table('users')
-	                    ->whereNotIn('id', array(1, 2, 3))->get();
+	                    ->whereNotIn('id', [1, 2, 3])->get();
 
 #### 使用 Where Null 找有未設定的值的資料
 
@@ -240,7 +240,7 @@
 #### 新增一筆資料進資料表
 
 	DB::table('users')->insert(
-		array('email' => 'john@example.com', 'votes' => 0)
+		['email' => 'john@example.com', 'votes' => 0]
 	);
 
 #### 新增自動遞增 (Auto-Incrementing) ID 的資料至資料表
@@ -248,17 +248,17 @@
 如果資料表有自動遞增的ID，可以使用 `insertGetId` 新增資料並回傳該 ID：
 
 	$id = DB::table('users')->insertGetId(
-		array('email' => 'john@example.com', 'votes' => 0)
+		['email' => 'john@example.com', 'votes' => 0]
 	);
 
 > **注意:** 當使用 PostgreSQL 時，insertGetId 方法會預期自動增加的欄位是以「id」為命名。
 
 #### 新增多筆資料進資料表
 
-	DB::table('users')->insert(array(
-		array('email' => 'taylor@example.com', 'votes' => 0),
-		array('email' => 'dayle@example.com', 'votes' => 0),
-	));
+	DB::table('users')->insert([
+		['email' => 'taylor@example.com', 'votes' => 0],
+		['email' => 'dayle@example.com', 'votes' => 0]
+	]);
 
 <a name="updates"></a>
 ## 更新
@@ -267,7 +267,7 @@
 
 	DB::table('users')
 	            ->where('id', 1)
-	            ->update(array('votes' => 1));
+	            ->update(['votes' => 1]);
 
 #### 自增或自減一個欄位的值
 
@@ -281,7 +281,7 @@
 
 也能夠同時指定其他要更新的欄位：
 
-	DB::table('users')->increment('votes', 1, array('name' => 'John'));
+	DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
 <a name="deletes"></a>
 ## 刪除

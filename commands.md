@@ -38,13 +38,13 @@
 
 當定義 `arguments` 時，該陣列值的定義分別如下：
 
-	array($name, $mode, $description, $defaultValue)
+	[$name, $mode, $description, $defaultValue]
 
 參數 `mode` 可以是下列其中一項： `InputArgument::REQUIRED` 或 `InputArgument::OPTIONAL`。
 
 當定義 `options` 時，該陣列值的定義分別如下：
 
-	array($name, $shortcut, $mode, $description, $defaultValue)
+	[$name, $shortcut, $mode, $description, $defaultValue]
 
 對選項而言，參數 `mode` 可以是下列其中一項：`InputOption::VALUE_REQUIRED`, `InputOption::VALUE_OPTIONAL`, `InputOption::VALUE_IS_ARRAY`, `InputOption::VALUE_NONE`。
 
@@ -122,4 +122,4 @@
 
 #### 註冊一個 Artisan 指令
 
-一旦你的自訂指令撰寫完成後，你需要將它註冊於 Artisan 它才能被使用。這通常位於 `app/Console/Kernel.php` 這個檔案中。在此檔案的 `commands` 屬性，你會找到一份指令的清單。若要註冊你的自訂指令，很簡單的你只要將它加入清單中。當 Artisan 啟動時，被列於此屬性中的所有指令都將被 [IoC container](/docs/5.0/container) 解析，並且被註冊於 Artisan 。
+一旦你的自訂指令撰寫完成後，你需要將它註冊於 Artisan 它才能被使用。這通常位於 `app/Console/Kernel.php` 這個檔案中。在此檔案的 `commands` 屬性，你會找到一份指令的清單。若要註冊你的自訂指令，很簡單的你只要將它加入清單中。當 Artisan 啟動時，被列於此屬性中的所有指令都將被 [服務容器](/docs/5.0/container) 解析，並且被註冊於 Artisan。

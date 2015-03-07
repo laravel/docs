@@ -223,7 +223,7 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 <a name="contextual-binding"></a>
 ## 情境綁定
 
-有時候，你可能有兩個類別使用到相同介面，但你希望每個類別能注入不同實例，例如當系統收到新訂單時，想透過 [PubNub](http://www.pubnub.com/) 來發送事件，而不是 Pusher。 Laravel 提供一個簡單又流利介面來定義這行為：
+有時候，你可能有兩個類別使用到相同介面，但你希望每個類別能注入不同實例，例如當系統收到新訂單時，想透過 [PubNub](http://www.pubnub.com/) 來發送事件，而不是 Pusher。Laravel 提供一個簡單又流利介面來定義這行為：
 
 	$this->app->when('App\Handlers\Commands\CreateOrderHandler')
 			  ->needs('App\Contracts\EventPusher')
@@ -288,9 +288,9 @@ Laravel 提供幾個使用服務容器，提高應用程式彈性和可測試性
 		 */
 		public function index()
 		{
-			$all = $this->orders->all();
+      $orders = $this->orders->all();
 
-			return view('orders', ['all' => $all]);
+			return view('orders', ['orders' => $orders]);
 		}
 
 	}
