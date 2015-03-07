@@ -152,7 +152,6 @@ A cache entry has been deleted:
 
 	Event::listen('cache.delete', function($key) { ... }); 
 
-
 <a name="database-cache"></a>
 ## Database Cache
 
