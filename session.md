@@ -24,9 +24,15 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該
 <a name="session-usage"></a>
 ## 使用 Session
 
+The session may be accessed in several ways, via the HTTP request's `session` method, the `Session` facade, or the `session` helper function. When the `session` helper is called without arguments, it will return the entire session object. For example:
+
+	session()->regenerate();
+
 #### 儲存項目到 Session 中
 
 	Session::put('key', 'value');
+
+	session(['key' => 'value']);
 
 #### 儲存項目進 Session 陣列值中
 
@@ -35,6 +41,8 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該
 #### 從 Session 取回項目
 
 	$value = Session::get('key');
+
+	$value = session('key');
 
 #### 從 Session 取回項目，若無則回傳預設值
 
@@ -82,7 +90,7 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該
 
 #### 只刷新指定快閃資料
 
-	Session::keep(array('username', 'email'));
+	Session::keep(['username', 'email']);
 
 <a name="database-sessions"></a>
 ## 資料庫 Sessions
@@ -109,7 +117,7 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該
 
 session 設定檔中的「driver」定義了 session 資料將以哪種方式被儲存。Laravel 提供了許多良好的驅動：
 
-- `file` - sessions 將儲存在 `app/storage/sessions`。
+- `file` - sessions 將儲存在 `storage/framework/sessions`。
 - `cookie` - sessions 將安全儲存在加密的 cookies 中。
 - `database` - sessions 將儲存在你的應用程式資料庫中
 - `memcached` / `redis` - sessions 將儲存在一個高速快取的系統中。

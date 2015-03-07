@@ -52,7 +52,7 @@ Laravel 在建立時就已考慮到單元測試。事實上，預設上就支援
 
 	$response = $this->call('GET', 'user/profile');
 
-	$response = $this->call($method, $uri, $parameters, $files, $server, $content);
+	$response = $this->call($method, $uri, $parameters, $cookies, $files, $server, $content);
 
 接著你可以檢查 `Illuminate\Http\Response` 物件：
 
@@ -64,7 +64,7 @@ Laravel 在建立時就已考慮到單元測試。事實上，預設上就支援
 
 	$response = $this->action('GET', 'HomeController@index');
 
-	$response = $this->action('GET', 'UserController@profile', array('user' => 1));
+	$response = $this->action('GET', 'UserController@profile', ['user' => 1]);
 
 > **注意:**使用 `action` 方法的時候，不需要指定完整的控制器命名空間。只需要指定 `App\Http\Controllers` 命名空間後面的類別名稱部分。
 
@@ -205,4 +205,4 @@ Laravel 附帶幾個 `assert` 方法，讓測試更簡單一點：
 <a name="refreshing-the-application"></a>
 ## 重置應用程式
 
-你可能已經知道，你可以透過 `$this->app` 在任何測試方法中取得你的 Laravel `Application` / IoC 容器。這個應用程式物件實例會在每個測試類別被重置。如果你希望在某個方法中手動強制重置應用程式，可以在測試方法中使用 `refreshApplication` 方法。這將會重置任何額外的綁定，例如那些從測試案例執行開始被放到 IoC 容器的 mocks。
+你可能已經知道，你可以透過 `$this->app` 在任何測試方法中存取應用程式 ([服務容器](/docs/5.0/container))。這個應用程式物件實例會在每個測試類別被重置。如果你希望在某個方法中手動強制重置應用程式，可以在測試方法中使用 `refreshApplication` 方法。這將會重置任何額外的綁定，例如那些從測試案例執行開始被放到 IoC 容器的 mock。

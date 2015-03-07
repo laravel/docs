@@ -14,7 +14,7 @@
 	})
 	->reject(function($name)
 	{
-		return is_null($value);
+		return empty($name);
 	});
 
 

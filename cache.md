@@ -81,6 +81,12 @@ Laravel 為各種不同的快取系統提供一致的 API 。快取設定檔位�
 
 	Cache::forget('key');
 
+#### Access Specific Cache Stores
+
+When using multiple cache stores, you may access them via the `store` method:
+
+	$value = Cache::store('foo')->get('key');
+
 <a name="increments-and-decrements"></a>
 ## 遞增與遞減
 
@@ -111,7 +117,7 @@ Laravel 為各種不同的快取系統提供一致的 API 。快取設定檔位�
 
 	Cache::tags('people', 'authors')->put('John', $john, $minutes);
 
-	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
+	Cache::tags(['people', 'artists'])->put('Anne', $anne, $minutes);
 
 您可以結合使用各種快取儲存方法與標籤，包含 `remember`, `forever`, 和 `rememberForever` 。您也可以從已標記的快取中存取項目，以及使用其他快取方法像是 `increment` 和 `decrement` 。
 
@@ -121,7 +127,7 @@ Laravel 為各種不同的快取系統提供一致的 API 。快取設定檔位�
 
 	$anne = Cache::tags('people', 'artists')->get('Anne');
 
-	$john = Cache::tags(array('people', 'authors'))->get('John');
+	$john = Cache::tags(['people', 'authors'])->get('John');
 
 您可以更新所有已標記的項目，使用指定名稱或名稱列表。例如，以下範例將會移除帶有 `people` 或 `authors` 或者兩者皆有的所有快取標籤，所以「Anne」和「John」皆會從快取中被移除:
 

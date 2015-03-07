@@ -53,7 +53,7 @@ Laravel 原始碼託管在 Github 上面，並且每個 Laravel 的專案都有�
 <a name="coding-style"></a>
 ## 編碼風格
 
-Laravel 遵循 [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) 和 [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) 編碼規範。除了這些規範以外，以下編碼規範也應該遵守：
+Laravel 遵循 [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) 和 [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) 編碼規範。除了這些規範以外，以下編碼規範也應該遵守：
 
 - 類別的命名空間宣告必須跟 `<?php` 在同一行。
 - 類別的起始 `{` 必須跟類別名稱在同一行。

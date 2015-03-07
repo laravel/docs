@@ -13,7 +13,7 @@
 
 推薦的升級方式是建立一個全新的 Laravel `5.0` 專案，然後複製您在 `4.2` 的檔案到此新的應用程式，這將包含控制器、路由、Eloquent 模型、Artisan 命令、assets 和關於此應用程式的其他特定檔案。
 
-一開始，在你的本地環境中[安裝新的 Laravel 5 應用程式](/docs/5.0/installation)在一個全新的目錄下，我們將詳細探討整合各部分的過程。 
+一開始，在你的本地環境中[安裝新的 Laravel 5 應用程式](/docs/5.0/installation)在一個全新的目錄下，我們將詳細探討整合各部分的過程。
 
 ### Composer 相依與套件
 
@@ -121,9 +121,9 @@ use Authenticatable, CanResetPassword;
 
 **如果你引入了上面的 traits，從 use 區塊和類別宣告中移除 `Illuminate\Auth\Reminders\RemindableTrait` 和 `Illuminate\Auth\UserTrait`**
 
-### Cashier 的使用者需要的修改
+### Cashier 的使用者需要做的修改
 
-[Laravel Cashier](/docs/5.0/billing) 的 trait 和介面名稱已作修改。trait 請改用 `Laravel\Cashier\Billable` 取代 `BillableTrait`。介面請改用 `Laravel\Cashier\Contracts\Billable` 取代 `Laravel\Cashier\BillableInterface` 。不需要修改任何方法。 
+[Laravel Cashier](/docs/5.0/billing) 的 trait 和介面名稱已作修改。trait 請改用 `Laravel\Cashier\Billable` 取代 `BillableTrait`。介面請改用 `Laravel\Cashier\Contracts\Billable` 取代 `Laravel\Cashier\BillableInterface`。不需要修改任何方法。
 
 ### Artisan 命令
 
@@ -181,16 +181,18 @@ use Authenticatable, CanResetPassword;
 
 ### 表單和 HTML 輔助函式
 
-如果您使用表單或 HTML 輔助函式，您將會看到以下錯誤 `class 'Form' not found` 或 `class 'Html' not found`。請加入 `"illuminate/html": "~5.0"` 到 `composer.json` 的 `require` 區塊，以修正此錯誤。
+如果您使用表單或 HTML 輔助函數，您將會看到以下錯誤 `class 'Form' not found` 或 `class 'Html' not found`。 The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective](http://laravelcollective.com/docs/5.0/html).
+
+舉例來說，你可以加 `"laravelcollective/html": "~5.0"` 到 `composer.json` 檔案的 `require` 區塊。
 
 您也需要添加表單和 HTML 的 facades 以及服務提供者，編輯 `config/app.php` 檔案，添加此行到 'providers' 陣列內：
 
-    'Illuminate\Html\HtmlServiceProvider',
+    'Collective\Html\HtmlServiceProvider',
 
 接著，添加以下到 'aliases' 陣列內：
 
-    'Form'      => 'Illuminate\Html\FormFacade',
-    'Html'      => 'Illuminate\Html\HtmlFacade',
+    'Form' => 'Collective\Html\FormFacade',
+    'Html' => 'Collective\Html\HtmlFacade',
 
 ### 快取管理員
 
@@ -202,7 +204,7 @@ use Authenticatable, CanResetPassword;
 
 ### Beanstalk 隊列
 
-Laravel 5.0 使用 `"pda/pheanstalk": "~3.0"` 取代原本的 `"pda/pheanstalk": "~2.1"`。 
+Laravel 5.0 使用 `"pda/pheanstalk": "~3.0"` 取代原本的 `"pda/pheanstalk": "~2.1"`。
 
 ### Remote
 
@@ -337,9 +339,9 @@ Laravel 4.1.26 採用了針對「記得我」cookies 的安全性更新。在此
 
 在你的 `app/config/queue.php` 檔案裡新增 `failed` 設定區塊。以下為區塊的預設值：
 
-	‘failed’ => array(
-		‘database’ => ‘mysql’, ‘table’ => ‘failed_jobs’,
-	),
+	'failed' => [
+		'database' => 'mysql', 'table' => 'failed_jobs',
+	],
 
 **（非必要）** 在你的 `app/config/view.php` 裡，將 `pagination` 設定選項更新為 `pagination::slider-3`。
 

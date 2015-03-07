@@ -20,6 +20,7 @@
 - [屬性型別轉換](#attribute-casting)
 - [模型事件](#model-events)
 - [模型觀察者](#model-observers)
+- [Model URL Generation](#model-url-generation)
 - [轉換陣列 / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
@@ -32,7 +33,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 <a name="basic-usage"></a>
 ## 基本用法
 
-我們先從建立一個 Eloquent 模型開始。模型通常放在 `app` 目錄下，但是您可以將它們放在任何地方，只要能通過 composer.json 自動載入。所有的 Eloquent 模型都繼承 `Illuminate\Database\Eloquent\Model`。
+我們先從建立一個 Eloquent 模型開始。模型通常放在 `app` 目錄下，但是您可以將它們放在任何地方，只要能通過 `composer.json` 自動載入。所有的 Eloquent 模型都繼承 `Illuminate\Database\Eloquent\Model`。
 
 #### 定義一個 Eloquent 模型
 
@@ -42,7 +43,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 	php artisan make:model User
 
-注意我們並沒有告訴 Eloquent，`User` 模型會使用哪個資料表。若沒有特別指定，系統會預設自動對應名稱為「類別名稱的小寫複數形態」的資料表。所以，在上面的例子中，Eloquent 會假設 `User` 模型將把資料存在 `users` 資料表。您也可以在類別中定義 `table` 屬性自定要對應的資料表名稱。
+注意我們並沒有告訴 Eloquent，`User` 模型會使用哪個資料表。若沒有特別指定，系統會預設自動對應名稱為「nake case」的資料表。所以，在上面的例子中，Eloquent 會假設 `User` 模型將把資料存在 `users` 資料表。您也可以在類別中定義 `table` 屬性自定要對應的資料表名稱。
 
 	class User extends Model {
 
@@ -100,7 +101,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 如果沒辦法使用流暢介面產生出查詢語句，也可以使用 `whereRaw` 方法：
 
-	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
+	$users = User::whereRaw('age > ? and votes = 100', [25])->get();
 
 #### 切分查詢
 
@@ -139,7 +140,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 	class User extends Model {
 
-		protected $fillable = array('first_name', 'last_name', 'email');
+		protected $fillable = ['first_name', 'last_name', 'email'];
 
 	}
 
@@ -151,7 +152,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 	class User extends Model {
 
-		protected $guarded = array('id', 'password');
+		protected $guarded = ['id', 'password'];
 
 	}
 
@@ -161,7 +162,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 上面的例子中，`id` 和 `password` 屬性**不會**被批量賦值，而所有其他的屬性則允許批量賦值。您也可以使用 guard 屬性阻止所有屬性被批量賦值：
 
-	protected $guarded = array('*');
+	protected $guarded = ['*'];
 
 <a name="insert-update-delete"></a>
 ## 新增、更新、刪除
@@ -188,20 +189,20 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 	class User extends Model {
 
-		protected $guarded = array('id', 'account_id');
+		protected $guarded = ['id', 'account_id'];
 
 	}
 
 #### 使用模型的 Create 方法
 
 	// 在資料庫中建立一個新的使用者...
-	$user = User::create(array('name' => 'John'));
+	$user = User::create(['name' => 'John']);
 
 	// 以屬性找使用者，若沒有則新增並取得新的實例...
-	$user = User::firstOrCreate(array('name' => 'John'));
+	$user = User::firstOrCreate(['name' => 'John']);
 
 	// 以屬性找使用者，若沒有則建立新的實例...
-	$user = User::firstOrNew(array('name' => 'John'));
+	$user = User::firstOrNew(['name' => 'John']);
 
 #### 更新取出的模型
 
@@ -221,7 +222,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 你可以結合查詢語句，批次更新模型：
 
-	$affectedRows = User::where('votes', '>', 100)->update(array('status' => 2));
+	$affectedRows = User::where('votes', '>', 100)->update(['status' => 2]);
 
 > **注意：**若使用 Eloquent 查詢產生器批次更新模型，則不會觸發模型事件。
 
@@ -237,7 +238,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 	User::destroy(1);
 
-	User::destroy(array(1, 2, 3));
+	User::destroy([1, 2, 3]);
 
 	User::destroy(1, 2, 3);
 
@@ -407,30 +408,32 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 如果一個 Eloquent 模型引入了一個 trait，而這個 trait 中帶有符合 `bootNameOfTrait` 形式的命名方法 ,那麼這個方法會在 Eloquent 模型啟動的時候呼叫，
 您可以在此時註冊全域範圍查詢，或者其他想進行的操作。scope 必須實作 `ScopeInterface` 介面，介面定義了兩個方法：`apply` 和 `remove`。
 
-`apply` 方法會傳入 `Illuminate\Database\Eloquent\Builder` 查詢產生器物件，用來新增這個 scope 所需的額外的 `where` 查詢。而 `remove` 方法同樣接受一個 `Builder` 物件，用來反向執行 `apply` 操作。換句話說，`remove` 方法應該移除已經新增的 `where` 查詢（或者其他查詢子句）。因此，以 `SoftDeletingScope` 來說，方法看起來如下：
+`apply` 方法會傳入 `Illuminate\Database\Eloquent\Builder` 查詢產生器物件和要使用它的 `Model`，用來新增這個 scope 所需的額外的 `where` 查詢。而 `remove` 方法同樣接受一個 `Builder`  物件和 `Model`，用來反向執行 `apply` 操作。換句話說，`remove` 方法應該移除已經新增的 `where` 查詢（或者其他查詢子句）。因此，以 `SoftDeletingScope` 來說，方法看起來如下：
 
 	/**
 	 * Apply the scope to a given Eloquent query builder.
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
 	 * @return void
 	 */
-	public function apply(Builder $builder)
+	public function apply(Builder $builder, Model $model)
 	{
-		$model = $builder->getModel();
-
 		$builder->whereNull($model->getQualifiedDeletedAtColumn());
+
+		$this->extend($builder);
 	}
 
 	/**
 	 * Remove the scope from the given Eloquent query builder.
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
 	 * @return void
 	 */
-	public function remove(Builder $builder)
+	public function remove(Builder $builder, Model $model)
 	{
-		$column = $builder->getModel()->getQualifiedDeletedAtColumn();
+		$column = $model->getQualifiedDeletedAtColumn();
 
 		$query = $builder->getQuery();
 
@@ -875,21 +878,21 @@ Eloquent 可以經由動態屬性取得關聯物件。Eloquent 會自動進行�
 
 有時你可能想要預載入關聯，並且指定預載入的查詢限制。下面有一個例子：
 
-	$users = User::with(array('posts' => function($query)
+	$users = User::with(['posts' => function($query)
 	{
 		$query->where('title', 'like', '%first%');
 
-	}))->get();
+	}])->get();
 
 上面的例子裡，我們打算預載入 user 的 posts 關聯，並限制條件為 post 的 title 欄位需包含 "first"。
 
 當然，預載入的閉合函數裡不一定只能加上條件限制，也可以加上排序：
 
-	$users = User::with(array('posts' => function($query)
+	$users = User::with(['posts' => function($query)
 	{
 		$query->orderBy('created_at', 'desc');
 
-	}))->get();
+	}])->get();
 
 ### 延遲預載入
 
@@ -899,6 +902,13 @@ Eloquent 可以經由動態屬性取得關聯物件。Eloquent 會自動進行�
 
 	$books->load('author', 'publisher');
 
+You may also pass a Closure to set constraints on the query:
+
+	$books->load(['author' => function($query)
+	{
+		$query->orderBy('published_date', 'asc');
+	}]);
+
 <a name="inserting-related-models"></a>
 ## 新增關聯模型
 
@@ -906,7 +916,7 @@ Eloquent 可以經由動態屬性取得關聯物件。Eloquent 會自動進行�
 
 你會常常需要加入新的關聯模型。例如新增一個 comment 到 post。除了手動設定模型的 `post_id` 外鍵，也可以從上層的 `Post` 模型新增關聯的 comment：
 
-	$comment = new Comment(array('message' => 'A new comment.'));
+	$comment = new Comment(['message' => 'A new comment.']);
 
 	$post = Post::find(1);
 
@@ -916,11 +926,11 @@ Eloquent 可以經由動態屬性取得關聯物件。Eloquent 會自動進行�
 
 如果想要同時新增很多關聯模型：
 
-	$comments = array(
-		new Comment(array('message' => 'A new comment.')),
-		new Comment(array('message' => 'Another comment.')),
-		new Comment(array('message' => 'The latest comment.'))
-	);
+	$comments = [
+		new Comment(['message' => 'A new comment.']),
+		new Comment(['message' => 'Another comment.']),
+		new Comment(['message' => 'The latest comment.'])
+	];
 
 	$post = Post::find(1);
 
@@ -948,7 +958,7 @@ Eloquent 可以經由動態屬性取得關聯物件。Eloquent 會自動進行�
 
 也可以傳入要存在樞紐表中的屬性陣列：
 
-	$user->roles()->attach(1, array('expires' => $expires));
+	$user->roles()->attach(1, ['expires' => $expires]);
 
 當然，有 `attach` 方法就會有相反的 `detach` 方法：
 
@@ -966,23 +976,23 @@ Eloquent 可以經由動態屬性取得關聯物件。Eloquent 會自動進行�
 
 您也可以使用 `sync` 方法附加關聯模型。`sync` 方法會把根據 ID 陣列，同步樞紐表裡的關聯。同步完後，模型只會和 ID 陣列裡有的 id 相關聯：
 
-	$user->roles()->sync(array(1, 2, 3));
+	$user->roles()->sync([1, 2, 3]);
 
 #### Sync 時在樞紐表加入額外資料
 
 也可以在把每個 ID 加入樞紐表時，加入其他欄位的資料：
 
-	$user->roles()->sync(array(1 => array('expires' => true)));
+	$user->roles()->sync([1 => ['expires' => true]]);
 
 有時候，你可能想要能只用一行指令，就建立一個新關聯模型，並且附加到模型上。可以使用 `save` 方法達成目的：
 
-	$role = new Role(array('name' => 'Editor'));
+	$role = new Role(['name' => 'Editor']);
 
 	User::find(1)->roles()->save($role);
 
 上面的例子裡，新的 `Role` 模型物件被儲存，同時附加關聯到 `user` 模型。也可以傳入屬性陣列，把資料加到關聯資料表：
 
-	User::find(1)->roles()->save($role, array('expires' => $expires));
+	User::find(1)->roles()->save($role, ['expires' => $expires]);
 
 <a name="touching-parent-timestamps"></a>
 ## 更新上層時間戳
@@ -991,7 +1001,7 @@ Eloquent 可以經由動態屬性取得關聯物件。Eloquent 會自動進行�
 
 	class Comment extends Model {
 
-		protected $touches = array('post');
+		protected $touches = ['post'];
 
 		public function post()
 		{
@@ -1127,7 +1137,7 @@ Eloquent 集合裡包含了一些有用的方法可以進行迴圈或是進行�
 
 	class User extends Model {
 
-		public function newCollection(array $models = array())
+		public function newCollection(array $models = [])
 		{
 			return new CustomCollection($models);
 		}
@@ -1174,7 +1184,7 @@ Eloquent 提供了一種便利的方法，可以在取得或設定屬性時進�
 
 	public function getDates()
 	{
-		return array('created_at');
+		return ['created_at'];
 	}
 
 當欄位是表示日期的時候，可以將值設為 UNIX timestamp、日期字串（ `Y-m-d` ）、日期時間（ date-time ）字串，當然還有 `DateTime` 或 `Carbon` 實例。
@@ -1183,7 +1193,7 @@ Eloquent 提供了一種便利的方法，可以在取得或設定屬性時進�
 
 	public function getDates()
 	{
-		return array();
+		return [];
 	}
 
 <a name="attribute-casting"></a>
@@ -1200,7 +1210,7 @@ Eloquent 提供了一種便利的方法，可以在取得或設定屬性時進�
 		'is_admin' => 'boolean',
 	];
 
-現在當你取用 `is_admin` 屬性時，總是會被轉換成布林型別，即便原本它在資料庫中是存成整數。其他支援的型別轉換有： `integer`、`real`、`float`、`double`、`string`、`boolean` 和 `array`。
+現在當你取用 `is_admin` 屬性時，總是會被轉換成布林型別，即便原本它在資料庫中是存成整數。其他支援的型別轉換有： `integer`、`real`、`float`、`double`、`string`、`boolean`、`object` 和 `array`。
 
 如果原本欄位是被儲存的為序列化的 JSON 時，那麼 `array` 型別轉換將會非常有用。比如，資料表裡有一個 TEXT 型別的欄位儲存著序列化後的 JSON 資料，通過增加 `array` 型別轉換, 當取得這個屬性的時候會自動反序列化成 PHP 的陣列：
 
@@ -1284,6 +1294,22 @@ Eloquent 模型有很多事件可以觸發，讓您可以在模型操作的生�
 
 	User::observe(new UserObserver);
 
+<a name="model-url-generation"></a>
+## Model URL Generation
+
+When you pass a model to the `route` or `action` methods, it's primary key is inserted into the generated URI. For example:
+
+	Route::get('user/{user}', 'UserController@show');
+
+	action('UserController@show', [$user]);
+
+In this example the `$user->id` property will be inserted into the `{user}` place-holder of the generated URL. However, if you would like to use another property instead of the ID, you may override the `getRouteKey` method on your model:
+
+    public function getRouteKey()
+    {
+        return $this->slug;
+    }
+
 <a name="converting-to-arrays-or-json"></a>
 ## 轉換成陣列 / JSON
 
@@ -1320,7 +1346,7 @@ Eloquent 模型有很多事件可以觸發，讓您可以在模型操作的生�
 
 	class User extends Model {
 
-		protected $hidden = array('password');
+		protected $hidden = ['password'];
 
 	}
 
@@ -1328,7 +1354,7 @@ Eloquent 模型有很多事件可以觸發，讓您可以在模型操作的生�
 
 此外，可以使用 `visible` 屬性定義白名單：
 
-	protected $visible = array('first_name', 'last_name');
+	protected $visible = ['first_name', 'last_name'];
 
 <a name="array-appends"></a>
 有時候你可能想要增加不存在資料庫欄位的屬性資料。這時候只要定義一個存取器即可：
@@ -1340,6 +1366,6 @@ Eloquent 模型有很多事件可以觸發，讓您可以在模型操作的生�
 
 定義好存取器之後，再把對應的屬性名稱加到模型裡的 `appends` 屬性：
 
-	protected $appends = array('is_admin');
+	protected $appends = ['is_admin'];
 
 把屬性加到 `appends` 陣列之後，在模型資料轉換成陣列或 JSON 格式時就會有對應的值。在 `appends` 陣列中定義的值同樣遵循模型中 `visible` 和 `hidden` 的設定。

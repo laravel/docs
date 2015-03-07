@@ -29,6 +29,7 @@
     - [核心擴展](/docs/5.0/extending)
     - [Elixir](/docs/5.0/elixir)
     - [加密](/docs/5.0/encryption)
+    - [Envoy](/docs/5.0/envoy)
     - [錯誤與日誌](/docs/5.0/errors)
     - [事件](/docs/5.0/events)
     - [檔案系統與雲端儲存](/docs/5.0/filesystem)

@@ -4,6 +4,7 @@
 - [視圖](#views)
 - [語言](#translations)
 - [設定檔](#configuration)
+- [Public Assets](#public-assets)
 - [發佈分類檔案](#publishing-file-groups)
 - [路由](#routing)
 
@@ -21,7 +22,7 @@
 <a name="views"></a>
 ## 視圖
 
-您套件內部的架構全部由您自己規劃。然而，原則上會有一個或更多的 [服務提供者](/docs/5.0/providers). 服務提供者包含著所有的 [IoC](/docs/5.0/container) 綁定，也定義了所有您套件的相關設定、視圖以及語言檔案在什麼地方。
+您套件內部的架構全部由您自己規劃。然而，原則上會有一個或更多的 [服務提供者](/docs/5.0/providers)。服務提供者包含著所有的 [服務容器](/docs/5.0/container) 綁定，也定義了所有您套件的相關設定、視圖以及語言檔案在什麼地方。
 
 ### 視圖
 
@@ -29,14 +30,14 @@
 
 	return view('package::view.name');
 
-所有您所要做的只有告訴 Laravel 您所設定套件名稱視圖的位置在哪裡。如果您的套件取名為 “courier” 您可能需要新增如下到您的服務提供者的 `boot` 方法:
+所有您所要做的只有告訴 Laravel 您所設定套件名稱視圖的位置在哪裡。如果您的套件取名為「courier」，您可能需要新增如下到您的服務提供者的 `boot` 方法：
 
 	public function boot()
 	{
 		$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
 	}
 
-現在您可以使用如下的語法來載入套件的視圖:
+現在您可以使用如下的語法來載入套件的視圖：
 
 	return view('courier::view.name');
 
@@ -44,7 +45,7 @@
 
 #### 視圖的發佈
 
-發佈套件的視圖到 `resources/views/vendor` 目錄，您必須在服務提供者裡的 `boot` 方法裡使用 `publishes` 方法:
+發佈套件的視圖到 `resources/views/vendor` 目錄，您必須在服務提供者裡的 `boot` 方法裡使用 `publishes` 方法：
 
 	public function boot()
 	{
@@ -104,6 +105,21 @@
 		__DIR__.'/path/to/config/courier.php', 'courier'
 	);
 
+<a name="public-assets"></a>
+## Public Assets
+
+Your packages may have assets such as JavaScript, CSS, and images. To publish assets, use the `publishes` method from your service provider's `boot` method. In this example, we will also add a "public" asset group tag.
+
+	$this->publishes([
+		__DIR__.'/path/to/assets' => public_path('vendor/courier'),
+	], 'public');
+
+Now, when your package's users execute the `vendor:publish` command, your files will be copied to the specified location. Since you typically will need to overwrite the assets every time the package is updated, you may use the `--force` flag:
+
+	php artisan vendor:publish --tag=public --force
+
+If you would like to make sure your public assets are always up-to-date, you can add this command to the `post-update-cmd` list in your `composer.json` file.
+
 <a name="publishing-file-groups"></a>
 ## 發佈分類檔案
 
@@ -111,7 +127,7 @@
 
 	// Publish a config file
 	$this->publishes([
-		__DIR__.'/../config/package.php', config_path('package.php')
+		__DIR__.'/../config/package.php' => config_path('package.php')
 	], 'config');
 
 	// Publish your migrations

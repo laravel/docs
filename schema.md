@@ -70,7 +70,7 @@ Laravel 的結構生成器 (`Schema`) 提供一個與資料庫無關的資料表
 `$table->dateTime('created_at');`  |  相當於 DATETIME 型態
 `$table->decimal('amount', 5, 2);`  |  相當於 DECIMAL 型態，並帶有精度與基數
 `$table->double('column', 15, 8);`  |  相當於 DOUBLE 型態，總共有 15 位數，在小數點後面有 8 位數
-`$table->enum('choices', array('foo', 'bar'));` | 相當於 ENUM 型態
+`$table->enum('choices', ['foo', 'bar']);` | 相當於 ENUM 型態
 `$table->float('amount');`  |  相當於 FLOAT 型態
 `$table->increments('id');`  |  相當於 Incrementing 型態 (資料表主鍵)
 `$table->integer('votes');`  |  相當於 INTEGER 型態
@@ -127,7 +127,7 @@ Laravel 的結構生成器 (`Schema`) 提供一個與資料庫無關的資料表
 		$table->renameColumn('from', 'to');
 	});
 
-> **注意:** `enum` 欄位型別不支援修改欄位名稱。
+> **注意:** `enum` 欄位型別現在不支援修改欄位名稱。
 
 <a name="dropping-columns"></a>
 ## 移除欄位
@@ -145,7 +145,7 @@ Laravel 的結構生成器 (`Schema`) 提供一個與資料庫無關的資料表
 
 	Schema::table('users', function($table)
 	{
-		$table->dropColumn(array('votes', 'avatar', 'location'));
+		$table->dropColumn(['votes', 'avatar', 'location']);
 	});
 
 <a name="checking-existence"></a>
@@ -179,7 +179,7 @@ Laravel 的結構生成器 (`Schema`) 提供一個與資料庫無關的資料表
 指令  | 功能描述
 ------------- | -------------
 `$table->primary('id');`  |  加入主鍵 (primary key)
-`$table->primary(array('first', 'last'));`  |  加入複合鍵 (composite keys)
+`$table->primary(['first', 'last']);`  |  加入複合鍵 (composite keys)
 `$table->unique('email');`  |  加入唯一索引 (unique index)
 `$table->index('state');`  |  加入基本索引 (index)
 

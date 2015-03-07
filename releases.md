@@ -349,7 +349,6 @@ Laravel 4.1 擁有一個完全重新編寫的路由層。API 一樣不變。然�
 
 此發行版本中，我們亦發佈了全新的 Session 引擎。如同路由增進的部分，新的 Session 曾更加簡化且更快速。我們不再使用 Symfony 的 Session 處理工具，並且使用更簡單、更容易維護的客製化解法。
 
-
 ### Doctrine DBAL
 
 如果你有在你的遷移中使用到 `renameColumn`，之後你必須在 `composer.json` 裡加 `doctrine/dbal` 進相依套件中。此套件不再預設包含在 Laravel 之中。

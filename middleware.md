@@ -46,9 +46,41 @@ Laravel 框架已經內建一些中介層，包括維護、身份驗證、CSRF �
 
 	}
 
-如你所見，若是 `age` 小於 `200` ，中介層將會回傳 HTTP 重新導向給用戶端，否則，請求將會進一步傳遞到應用程式。只需調用帶有 `$request` 的 `$next` 方法，即可將請求傳遞到更深層的應用程式(允許通過中介層)。
+如你所見，若是 `age` 小於 `200`，中介層將會回傳 HTTP 重新導向給用戶端，否則，請求將會進一步傳遞到應用程式。只需調用帶有 `$request` 的 `$next` 方法，即可將請求傳遞到更深層的應用程式(允許通過中介層)。
 
 HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許多中介層，每一層都可以對請求進行檢查，甚至是完全拒絕請求。
+
+### *Before* / *After* Middleware
+
+Whether a middleware runs before or after a request depends on the middleware itself. This middleware would perform some task **before** the request is handled by the application:
+
+	<?php namespace App\Http\Middleware;
+
+	class BeforeMiddleware implements Middleware {
+
+		public function handle($request, Closure $next)
+		{
+			// Perform action
+
+			return $next($request);
+		}
+	}
+
+However, this middleware would perform its task **after** the request is handled by the application:
+
+	<?php namespace App\Http\Middleware;
+
+	class AfterMiddleware implements Middleware {
+
+		public function handle($request, Closure $next)
+		{
+			$response = $next($request);
+
+			// Perform action
+
+			return $response;
+		}
+	}
 
 <a name="registering-middleware"></a>
 ## 註冊中介層
@@ -71,7 +103,7 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
 <a name="terminable-middleware"></a>
 ## Terminable 中介層
 
-有些時候中介層需要在 HTTP 回應已被傳送到用戶端之後才執行，例如，Laravel 內建的 "session" 中介層，儲存 session 資料是在回應已被傳送到用戶端 _之後_ 才執行。為了做到這一點，你需要定義中介層為“terminable”。
+有些時候中介層需要在 HTTP 回應已被傳送到用戶端之後才執行，例如，Laravel 內建的「session」中介層，儲存 session 資料是在回應已被傳送到用戶端 _之後_ 才執行。為了做到這一點，你需要定義中介層為“terminable”。
 
 	use Illuminate\Contracts\Routing\TerminableMiddleware;
 
@@ -89,4 +121,4 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
 
 	}
 
-如你所見，除了定義 `handle` 方法之外， `TerminableMiddleware` 定義一個 `terminate`  方法。這個方法接收請求和回應。一旦定義了 terminable 中介層，你需要將它增加到 HTTP kernel 檔案的全域中介層清單列表中。
+如你所見，除了定義 `handle` 方法之外，`TerminableMiddleware` 定義一個 `terminate` 方法。這個方法接收請求和回應。一旦定義了 terminable 中介層，你需要將它增加到 HTTP kernel 檔案的全域中介層清單列表中。

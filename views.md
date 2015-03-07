@@ -1,4 +1,4 @@
-# 視圖（ View ）
+# 視圖
 
 - [基本用法](#basic-usage)
 - [視圖組件](#view-composers)
@@ -27,7 +27,7 @@
 
 如你所見，`view` 輔助方法的第一個參數會對應到 `resources/views` 資料夾內視圖檔案的名稱；傳遞到 `view` 輔助方法的第二個參數是一個能夠在視圖內取用的資料陣列。
 
-當然，視圖檔案也可以被存放在 `resources/views` 的子資料夾內。舉例來說，如果你的視圖檔案儲存在 `resources/views/admin/profile.php`，你可以用以下的程式碼來回傳：
+當然，視圖檔案也可以被存放在 `resources/views` 的子目錄內。舉例來說，如果你的視圖檔案儲存在 `resources/views/admin/profile.php`，你可以用以下的程式碼來回傳：
 
 	return view('admin.profile', $data);
 
@@ -109,13 +109,25 @@
 			});
 		}
 
+		/**
+		 * Register
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			//
+		}
+
 	}
 
-> **備註：**Laravel 沒有預設目錄放置視圖組件。你可以自由的把它們放在你想要的地方。舉例來說，你可以放在 `App\Http\Composers` 目錄下。
+> **備註：**Laravel 沒有預設目錄放置視圖組件。你可以自由的把它們放在你想要的地方。舉例來說，你可以建立一個 `App\Http\ViewComposers` 目錄。
+
+Remember, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
 
 現在我們已經註冊了視圖組件，並且在每次 `profile` 視圖渲染的時候，`ProfileComposer@compose` 都將會被執行。接下來我們來看看這個類別要如何定義：
 
-	<?php namespace App\Http\Composers;
+	<?php namespace App\Http\ViewComposers;
 
 	use Illuminate\Contracts\View\View;
 	use Illuminate\Users\Repository as UserRepository;

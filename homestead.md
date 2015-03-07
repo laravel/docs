@@ -5,6 +5,7 @@
 - [安裝與設定](#installation-and-setup)
 - [常見用法](#daily-usage)
 - [連接埠](#ports)
+- [Blackfire Profiler](#blackfire-profiler)
 
 <a name="introduction"></a>
 ## 導覽
@@ -32,19 +33,24 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 - Redis
 - Memcached
 - Beanstalkd
-- [Laravel Envoy](/docs/ssh#envoy-task-runner)
+- [Laravel Envoy](/docs/5.0/envoy)
 - Fabric + HipChat Extension
+- [Blackfire Profiler](#blackfire-profiler)
 
 <a name="installation-and-setup"></a>
 ## 安裝與設定
 
-### 安裝 VirtualBox 與 Vagrant
+### 安裝 VirtualBox / VMware 與 Vagrant
 
 在啟動你的 Homestead 環境之前，你必須先安裝 [VirtualBox](https://www.virtualbox.org/wiki/Downloads) 和 [Vagrant](http://www.vagrantup.com/downloads.html). 兩套軟體在各平台都有提供易用的視覺化安裝程式。
 
+#### VMware
+
+In addition to VirtualBox, Homestead also supports VMware. To use the VMware provider, you will need to purchase both VMware Fusion / Desktop and the [VMware Vagrant plug-in](http://www.vagrantup.com/vmware). VMware provides much faster shared folder performance out of the box.
+
 ### 增加 Vagrant 封裝包
 
-當 VirtualBox 和 Vagrant 安裝完成後，你可以在終端機以下列命令將 `laravel/homestead` 封裝包安裝進你的 Vagrant 安裝程式中。下載封裝包會花你一點時間，時間長短將依據你的網路速度決定:
+當 VirtualBox / VMware 和 Vagrant 安裝完成後，你可以在終端機以下列命令將 `laravel/homestead` 封裝包安裝進你的 Vagrant 安裝程式中。下載封裝包會花你一點時間，時間長短將依據你的網路速度決定:
 
 	vagrant box add laravel/homestead
 
@@ -82,6 +88,12 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 
 	homestead edit
 
+### Configure Your Provider
+
+The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `vmware_fusion`. You may set this to whichever provider you prefer.
+
+	provider: virtualbox
+
 ### 設定你的 SSH 金鑰
 
 再來你要編輯 `Homestead.yaml`。可以在檔案中設定你的 SSH 公開金鑰路徑，以及主要機器與 Homestead 虛擬機器之間的共享目錄。
@@ -97,6 +109,13 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 ### 設定你的共享資料夾
 
 `Homestead.yaml` 檔案中的 `folders` 屬性列出所有你想跟你的 Homestead 環境共享的資料夾列表。這些資料夾中的檔案若有更動，他們將會在你的本機與 Homestead 環境裡保持同步。你可以將你需要的共享資料夾都設定進去。
+
+To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add a simple flag to your synced folder:
+
+	folders:
+	    - map: ~/Code
+	      to: /home/vagrant/Code
+	      type: "nfs"
 
 ### 設定你的 Nginx 站台
 
@@ -115,7 +134,7 @@ Homestead 目前是建置且測試於 Vagrant 1.6。
 
 ### 啟動 Vagrant 封裝包
 
-當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機從你的 Homestead 資料夾下執行 `vagrant up` 指令。
+當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機從你的 Homestead 資料夾下執行 `homestead up` 指令。
 
 Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx 站台。如果要移除虛擬機器，可以使用 `vagrant destroy --force` 指令。
 
@@ -152,7 +171,7 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 
 ### 增加更多的站台
 
-一旦 Homestead 環境上架且運行後，你可能會需要為 Laravel 應用程式增加更多的 Nginx 站台。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。有兩種方式可以達成：第一種，在 `Homestead.yaml` 檔案中增加站台然後執行 `vagrant provision`。
+一旦 Homestead 環境上架且運行後，你可能會需要為 Laravel 應用程式增加更多的 Nginx 站台。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。有兩種方式可以達成：第一種，在 `Homestead.yaml` 檔案中增加站台然後執行 `homestead provision` 或是 `vagrant provision`。
 
 另外，也可以使用存放在 Homestead 環境中的 `serve` 指令檔。要使用 `serve` 指令檔，請先 SSH 進入 Homestead 環境中，並執行下列命令：
 
@@ -169,3 +188,27 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 - **HTTP:** 8000 &rarr; Forwards To 80
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **Postgres:** 54320 &rarr; Forwards To 5432
+
+### Adding Additional Ports
+
+If you wish, you may forward additional ports to the Vagrant box, as well as specify their protocol:
+
+	ports:
+	    - send: 93000
+	      to: 9300
+	    - send: 7777
+	      to: 777
+	      protocol: udp
+
+<a name="blackfire-profiler"></a>
+## Blackfire Profiler
+
+[Blackfire Profiler](https://blackfire.io) by SensioLabs automatically gathers data about your code's execution, such as RAM, CPU time, and disk I/O. Homestead makes it a breeze to use this profiler for your own applications.
+
+All of the proper packages have already been installed on your Homestead box, you simply need to set a Blackfire Server ID and token in your `Homestead.yaml` file:
+
+	blackfire:
+	    - id: your-id
+	      token: your-token
+
+Once you have configured your Blackfire credentials, re-provision the box using `homestead provision` or `vagrant provision`. Of course, be sure to review the [Blackfire documentation](https://blackfire.io/getting-started) to learn how to install the Blackfire companion extension for your web browser.

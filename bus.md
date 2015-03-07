@@ -54,8 +54,8 @@ Command bus 提供一個簡便的方法來封裝任務，使你的程式更加�
 		}
 
 	}
-	
-`handle` 方法也可以使用型別暗示相依，並且藉由 [IoC 容器](/docs/5.0/container) 機制自動進行依賴注入。例如：
+
+`handle` 方法也可以使用型別暗示相依，並且藉由 [服務容器](/docs/5.0/container) 機制自動進行依賴注入。例如：
 
 		/**
 		 * Execute the command.
@@ -137,7 +137,7 @@ Command bus 不僅僅作為當下請求的同步作業，也可以作為 Laravel
 			return DB::transaction(function() use ($command, $next)
 			{
 				return $next($command);
-			}
+			});
 		}
 
 	}
@@ -151,5 +151,5 @@ Command bus 不僅僅作為當下請求的同步作業，也可以作為 Laravel
 		return DB::transaction(function() use ($command, $next)
 		{
 			return $next($command);
-		}
+		});
 	}]);

@@ -125,10 +125,10 @@ Laravel 讓連結資料庫和執行查詢變得相當容易。資料庫相關設
 <a name="query-logging"></a>
 ## 查詢日誌記錄
 
-預設情況下，Laravel 會在記憶體裡存取這次請求中所有的查詢語句。然而，在有些例子下，比如一次新增 大量的資料，可能會導致應用程式耗損過多記憶體。 如果要禁用日誌，可以使用 `disableQueryLog` 方法：
+Laravel 可以選擇把目前的請求中所有執行過的查詢記錄在記憶體中。要小心在有些情況下，例如新增大量的筆數，這會導致應用程式耗損過多記憶體。如果要啟用日誌，你可以使用 `enableQueryLog` 的方法：
 
-	DB::connection()->disableQueryLog();
+	DB::connection()->enableQueryLog();
 
 要得到執行過的查詢紀錄陣列，你可以使用 `getQueryLog` 方法：
 
-       $queries = DB::getQueryLog();
+	$queries = DB::getQueryLog();

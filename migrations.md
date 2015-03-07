@@ -20,13 +20,9 @@
 
 遷移檔會建立在 `database/migrations` 目錄下，檔名會包含時間戳記，在執行遷移時用來決定順序。
 
-你也可以在建立遷移命令加上 `--path` 參數。路徑要相對於應用程式所在的根目錄。
+`--table` 和 `--create` 參數可以用來指定資料表名稱，以及遷移檔是否要建立新的資料表：
 
-    php artisan make:migration foo --path=app/migrations
-
-`--table` 和 `--create` 參數可以用來指定資料表名稱，以及遷移檔是否要建立新的資料表。
-
-    php artisan make:migration add_votes_to_user_table --table=users
+	  php artisan make:migration add_votes_to_users_table --table=users
 
     php artisan make:migration create_users_table --create=users
 
@@ -86,7 +82,7 @@ Laravel 可以簡單的使用 seed 類別，填充測試資料到資料庫。所
         {
             DB::table('users')->delete();
 
-            User::create(array('email' => 'foo@bar.com'));
+            User::create(['email' => 'foo@bar.com']);
         }
 
     }

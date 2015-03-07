@@ -135,6 +135,14 @@ Laravel 讓你能輕易地定義單一路由來處理控制器中的每一項行
 
 	public function getAdminProfile() {}
 
+#### Assigning Route Names
+
+If you would like to "name" some of the routes on the controller, you may pass a third argument to the `controller` method:
+
+	Route::controller('users', 'UserController', [
+		'anyLogin' => 'user.login',
+	]);
+
 <a name="restful-resource-controllers"></a>
 ## RESTful 資源控制器
 
@@ -150,15 +158,15 @@ Laravel 讓你能輕易地定義單一路由來處理控制器中的每一項行
 
 #### 由資源控制器處理的行為
 
-動詞      | 路徑                        | 行為         | 路由名稱
-----------|-----------------------------|--------------|---------------------
-GET       | /resource                   | 索引         | resource.index
-GET       | /resource/create            | 創建         | resource.create
-POST      | /resource                   | 儲存         | resource.store
-GET       | /resource/{resource}        | 顯示         | resource.show
-GET       | /resource/{resource}/edit   | 編輯         | resource.edit
-PUT/PATCH | /resource/{resource}        | 更新         | resource.update
-DELETE    | /resource/{resource}        | 消減         | resource.destroy
+動詞       | 路徑                   | 行為         | 路由名稱
+----------|-----------------------|--------------|---------------------
+GET       | /photo                | index        | photo.index
+GET       | /photo/create         | create       | photo.create
+POST      | /photo                | store        | photo.store
+GET       | /photo/{photo}        | show         | photo.show
+GET       | /photo/{photo}/edit   | edit         | photo.edit
+PUT/PATCH | /photo/{photo}        | update       | photo.update
+DELETE    | /photo/{photo}        | destroy      | photo.destroy
 
 #### 自定資源路由
 
@@ -203,7 +211,7 @@ DELETE    | /resource/{resource}        | 消減         | resource.destroy
 
 除了預設的資源路由外，若你還需要在資源控制器中加入其他路由，應該在呼叫 `Route::resource` 之前先定義它們：
 
-	Route::get('photos/popular');
+	Route::get('photos/popular', 'PhotoController@method');
 
 	Route::resource('photos', 'PhotoController');
 
@@ -290,7 +298,7 @@ Laravel [服務容器](/docs/5.0/container) 用於解析所有的 Laravel 控制
 
 	}
 
-> **注意：** 方法注入和 [模型繫結](/docs/5.0/routing#route-model-binding) 是完全相容的。容器可智慧地判斷那些參數和模型相關以及那些參數應該被注入。	
+> **注意：** 方法注入和 [模型繫結](/docs/5.0/routing#route-model-binding) 是完全相容的。容器可智慧地判斷那些參數和模型相關以及那些參數應該被注入。
 
 <a name="route-caching"></a>
 ## 路由快取
