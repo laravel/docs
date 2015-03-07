@@ -288,7 +288,7 @@ Laravel 提供幾個使用服務容器，提高應用程式彈性和可測試性
 		 */
 		public function index()
 		{
-      $orders = $this->orders->all();
+			$orders = $this->orders->all();
 
 			return view('orders', ['orders' => $orders]);
 		}
