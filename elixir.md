@@ -39,7 +39,7 @@ Laravel Elixir 提供了簡潔流暢的 API，讓你能夠為你的 Laravel 應�
 <a name="usage"></a>
 ## 使用方式
 
-現在你已經安裝好 Elixir，未來任何時候你都能進行編譯及合併檔案！The `gulpfile.js` file in your project's root directory contains all of your Elixir tasks.
+現在你已經安裝好 Elixir，未來任何時候你都能進行編譯及合併檔案！專案根目錄的 `gulpfile.js` 包含你所有的 Elixir 任務。
 
 #### 編譯 Less
 
@@ -51,7 +51,7 @@ elixir(function(mix) {
 
 在上述例子中，Elixir 會假設你的 Less 檔案儲存在 `resources/assets/less` 裡。
 
-#### Compiling Multiple Less Files
+#### 編譯多個 Less 檔案
 
 ```javascript
 elixir(function(mix) {
@@ -200,7 +200,7 @@ elixir(function(mix) {
 
 程式的作用下，`elixir()` 函式會將參數內的原始檔名轉換成被雜湊後的檔名並載入。是否有如釋重擔的感覺呢？
 
-You may also pass an array to the `version` method to version multiple files:
+你也可以傳遞一個陣列給 `version` 方法來把多個檔案加上版本：
 
 ```javascript
 elixir(function(mix) {
@@ -255,11 +255,11 @@ elixir(function(mix) {
 
     gulp watch
 
-#### Only Compile Scripts
+#### 只編譯腳本
 
     gulp scripts
 
-#### Only Compile Styles
+#### 只編譯樣式
 
     gulp styles
 
@@ -290,7 +290,7 @@ elixir(function(mix) {
  });
 ```
 
-請注意我們 `擴增（ extend ）` Elixir 的 API 時所使用的第一個參數，稍後我們需要在 Gulpfile 中使用它，以及建立 Gulp 任務所使用的回呼函式。
+請注意我們 `擴增（extend）` Elixir 的 API 時所使用的第一個參數，稍後我們需要在 Gulpfile 中使用它，以及建立 Gulp 任務所使用的回呼函式。
 
 如果你想要讓你的自訂任務能被監控，只要在監控器註冊就行了。
 
