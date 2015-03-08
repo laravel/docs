@@ -151,7 +151,9 @@ Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令
 
 #### 把排程工作的輸出 E-mail 出去
 
-	$schedule->command('foo')->emailOutputTo('foo@example.com');
+注意，必須要先將輸出存入檔案中才能 E-mail 出去。
+
+	$schedule->command('foo')->sendOutputTo($filePath)->emailOutputTo('foo@example.com');
 
 #### 把排程工作的輸出送到指定位置
 
