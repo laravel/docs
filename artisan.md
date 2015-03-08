@@ -8,7 +8,7 @@
 <a name="introduction"></a>
 ## 介紹
 
-Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令協助您開發，它是由強大的 Symfony Console 元件所驅動。
+Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令以協助您開發，它是由強大的 Symfony Console 元件所驅動。
 
 <a name="usage"></a>
 ## 用法
@@ -124,7 +124,7 @@ Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令
 
 	$schedule->command('foo')->monthly();
 
-#### Job That Runs On Specific Days
+#### 特定日子執行的工作
 
 	$schedule->command('foo')->mondays();
 	$schedule->command('foo')->tuesdays();
@@ -149,14 +149,14 @@ Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令
 		return true;
 	});
 
-#### E-mail The Output Of A Scheduled Job
+#### 把排程工作的輸出 E-mail 出去
 
 	$schedule->command('foo')->emailOutputTo('foo@example.com');
 
-#### Send The Output Of The Scheduled Job To A Given Location
+#### 把排程工作的輸出送到指定位置
 
 	$schedule->command('foo')->sendOutputTo($filePath);
 
-#### Ping A Given URL After The Job Runs
+#### 在工作執行之後 Ping 給定的 URL
 
 	$schedule->command('foo')->thenPing($url);
