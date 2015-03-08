@@ -9,11 +9,11 @@
 <a name="configuration"></a>
 ## 設定
 
-Laravel 為各種不同的快取系統提供一致的 API 。快取設定檔位在 `config/cache.php` 。您可以在此為應用程式指定使用哪一種快取系統， Laravel 支援各種常見的後端快取系統，像是 [Memcached](http://memcached.org) 和 [Redis](http://redis.io) 。
+Laravel 為各種不同的快取系統提供一致的 API。快取設定檔位在 `config/cache.php`。您可以在此為應用程式指定使用哪一種快取系統， Laravel 支援各種常見的後端快取系統，像是 [Memcached](http://memcached.org) 和 [Redis](http://redis.io)。
 
 快取設定檔也包含多個其他選項，在檔案裡都有說明，所以請務必先閱讀過。 Laravel 預設使用`檔案` 快取系統，該系統會儲存序列化、快取物件在檔案系統中。在大型應用程式上，建議使用儲存在記憶體內的快取系統，像是 Memcached 或 APC 。你甚至可以以同一個快取系統設定多個快取設定。
 
-在 Laravel 中使用 Redis 快取系統前， 必須先使用 Composer 安裝 `predis/predis` 套件 (~1.0) 。
+在 Laravel 中使用 Redis 快取系統前，必須先使用 Composer 安裝 `predis/predis` 套件 (~1.0)。
 
 <a name="cache-usage"></a>
 ## 快取用法
@@ -32,7 +32,7 @@ Laravel 為各種不同的快取系統提供一致的 API 。快取設定檔位�
 
 	Cache::add('key', 'value', $minutes);
 
-當項目確實被加入快取時，使用 `add` 方法將會回傳 `true` 否則會回傳 `false` 。
+當項目確實被加入快取時，使用 `add` 方法將會回傳 `true` 否則會回傳 `false`。
 
 #### 確認項目是否存在
 
@@ -81,9 +81,9 @@ Laravel 為各種不同的快取系統提供一致的 API 。快取設定檔位�
 
 	Cache::forget('key');
 
-#### Access Specific Cache Stores
+#### 獲取特定快取儲存庫
 
-When using multiple cache stores, you may access them via the `store` method:
+當使用多種快取儲存庫時，你可以藉由 `store` 方法獲取它們：
 
 	$value = Cache::store('foo')->get('key');
 
@@ -129,7 +129,7 @@ When using multiple cache stores, you may access them via the `store` method:
 
 	$john = Cache::tags(['people', 'authors'])->get('John');
 
-您可以更新所有已標記的項目，使用指定名稱或名稱列表。例如，以下範例將會移除帶有 `people` 或 `authors` 或者兩者皆有的所有快取標籤，所以「Anne」和「John」皆會從快取中被移除:
+您可以更新所有已標記的項目，使用指定名稱或名稱列表。例如，以下範例將會移除帶有 `people` 或 `authors` 或者兩者皆有的所有快取標籤，所以「Anne」和「John」皆會從快取中被移除：
 
 	Cache::tags('people', 'authors')->flush();
 
