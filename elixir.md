@@ -73,7 +73,7 @@ elixir(function(mix) {
 });
 ```
 
-This assumes that your Sass files are stored in `resources/assets/sass`.
+This assumes that your Sass files are stored in `resources/assets/sass`. The `sass` method may only be called once, if you would like to compile multiple Sass files, pass an array to the `sass` method.
 
 #### Compile CoffeeScript
 
