@@ -74,6 +74,7 @@ elixir(function(mix) {
 ```
 
 This assumes that your Sass files are stored in `resources/assets/sass`.
+> **Note:** mix.sass() can only be called once. If compiling multiple files pass them as an array.
 
 #### Compile CoffeeScript
 
