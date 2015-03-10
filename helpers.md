@@ -2,7 +2,7 @@
 
 - [陣列](#arrays)
 - [路徑](#paths)
-- [Routing](#routing)
+- [路由](#routing)
 - [字串](#strings)
 - [網址](#urls)
 - [其他](#miscellaneous)
@@ -216,37 +216,37 @@
 
 ### get
 
-Register a new GET route with the router.
+跟路由器註冊一個新的 GET 路由。
 
 	get('/', function() { return 'Hello World'; });
 
 ### post
 
-Register a new POST route with the router.
+跟路由器註冊一個新的 POST 路由。
 
 	post('foo/bar', 'FooController@action');
 
 ### put
 
-Register a new PUT route with the router.
+跟路由器註冊一個新的 PUT 路由。
 
 	put('foo/bar', 'FooController@action');
 
 ### patch
 
-Register a new PATCH route with the router.
+跟路由器註冊一個新的 PATCH 路由。
 
 	patch('foo/bar', 'FooController@action');
 
 ### delete
 
-Register a new DELETE route with the router.
+跟路由器註冊一個新的 DELETE 路由。
 
 	delete('foo/bar', 'FooController@action');
 
 ### resource
 
-Register a new RESTful resource route with the router.
+跟路由器註冊一個新的 RESTful 資源路由。
 
 	resource('foo', 'FooController');
 
@@ -433,19 +433,19 @@ Register a new RESTful resource route with the router.
 
 ### elixir
 
-Get the path to a versioned Elixir file.
+取得加上版本號的 Elixir 檔案路徑。
 
 	elixir($file);
 
 ### env
 
-Gets the value of an environment variable or return a default value.
+取得環境變數的值或回傳預設值。
 
 	env('APP_ENV', 'production')
 
 ### event
 
-Fire an event.
+觸發一個事件。
 
 	event('my.event');
 
@@ -457,7 +457,7 @@ Fire an event.
 
 ### view
 
-Get a View instance for the given view path.
+用給定的視圖路徑取得一個視圖實例。
 
 	return view('auth.login');
 
