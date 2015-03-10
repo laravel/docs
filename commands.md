@@ -35,7 +35,7 @@ O método `fire` irá ser chamado quando seu comando é executado. Você pode co
 ### Argumentos e Opções
 
 Os métodos `getArguments` e `getOptions` é onde você define qualquer parâmetro ou opção que o seu comando pode receber.
-Ambos dos méotoso retornam um array de comandos, que são descritos por uma lista de array de opções.
+Ambos os métodos retornam um array de comandos, que são descritos por uma lista de array de opções.
 
 Quando se está definindo `arguments` (parâmetros), os valores de definição do array representam o seguinte.  
 
@@ -108,13 +108,13 @@ Você pode também usar os métodos `ask` e `confirm` para para solicitar entrad
 		//
 	}
 
-Você pode também pode especificar por um valor default para o método `confirm`, que deve ser `true` ou `false`
+Você também pode especificar um valor default para o método `confirm`, que deve ser `true` ou `false`
 
 	$this->confirm($question, true);
 
 ### Chamando Outros Comandos
 
-Algumas vezes você pode desejar chmar outros comandos a partir do seu. Você pode fazer isto usando o método `call`:
+Algumas vezes você pode desejar chamar outros comandos a partir do seu. Você pode fazer isto usando o método `call`:
 
 	$this->call('command:name', ['argument' => 'foo', '--option' => 'bar']);
 
