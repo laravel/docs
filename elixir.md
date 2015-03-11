@@ -54,7 +54,7 @@ elixir(function(mix) {
 
 In the example above, Elixir assumes that your Less files are stored in `resources/assets/less`.
 
-#### Compiling Multiple Less Files
+#### Compile Multiple Less Files
 
 ```javascript
 elixir(function(mix) {
@@ -74,6 +74,27 @@ elixir(function(mix) {
 ```
 
 This assumes that your Sass files are stored in `resources/assets/sass`. The `sass` method may only be called once, if you would like to compile multiple Sass files, pass an array to the `sass` method.
+
+By default, Elixir, underneath the hood, uses the LibSass library for compilation. In some instances, it might prove advantageous to instead leverage the Ruby version, which, though slower, is more feature rich. Assuming that you have both Ruby and the Sass gem installed (`gem install sass`), you can enable "Ruby-mode" as the fourth argument to the `sass` method, like so:
+
+```javascript
+elixir(function(mix) {
+    // src, outputDir, pluginOpts, useRuby
+    mix.sass("app.sass", "public/css", null, true);
+});
+```
+
+#### Compile Without Source Maps
+
+```javascript
+elixir.config.sourcemaps = false;
+
+elixir(function(mix) {
+    mix.sass("app.scss");
+});
+```
+
+Source maps are enabled out of the box. As such, for each file that is compiled, you'll find a companion `*.css.map` file in the same directory. This mapping allows you to, when debugging, trace your compiled stylesheet selectors  back to your original Sass or Less partials! Should you need to disable this functionality, however, the code sample above will do the trick.
 
 #### Compile CoffeeScript
 
