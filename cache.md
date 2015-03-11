@@ -4,6 +4,7 @@
 - [Cache Usage](#cache-usage)
 - [Increments & Decrements](#increments-and-decrements)
 - [Cache Tags](#cache-tags)
+- [Cache Events](#cache-events)
 - [Database Cache](#database-cache)
 
 <a name="configuration"></a>
@@ -138,25 +139,25 @@ In contrast, this statement would remove only caches tagged with `authors`, so "
 	Cache::tags('authors')->flush();
 
 <a name="cache-events"></a>
-## Cache events
+## Cache Events
 
-Cache actions can trigger events. You may for instance use `Event` listeners to access the following events.
+To execute code on every cache operation, you may listen for the events fired by the cache:
 
-A cache entry exists and has been hit:
+	Event::listen('cache.hit', function($key, $value) {
+		//
+	});
 
-	Event::listen('cache.hit', function($key, $value) { ... });
+	Event::listen('cache.missed', function($key) {
+		//
+	});
 
-A cache entry has been asked but does not exist:
+	Event::listen('cache.write', function($key, $value, $minutes) {
+		//
+	});
 
-	Event::listen('cache.missed', function($key) { ... });
-
-A cache entry has been set or updated. `$minutes` will be equal to `0` if no expiration duration is set:
-
-	Event::listen('cache.write', function($key, $value, $minutes) { ... });
-
-A cache entry has been deleted:
-
-	Event::listen('cache.delete', function($key) { ... }); 
+	Event::listen('cache.delete', function($key) {
+		//
+	});
 
 <a name="database-cache"></a>
 ## Database Cache
