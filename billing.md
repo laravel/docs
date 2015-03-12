@@ -53,7 +53,14 @@ Next, add the `Billable` trait and appropriate date mutators to your model defin
 
 #### Stripe Key
 
-Finally, set your Stripe key in one of your bootstrap files or service providers, such as the `AppServiceProvider`:
+Finally, set your Stripe key in your `services.php` config file:
+
+	'stripe' => [
+		'model'  => 'User',
+		'secret' => env('STRIPE_API_SECRET', 'place_your_stripe_key_here'),
+	],
+	
+Alternatively you can store it in one of your bootstrap files or service providers, such as the `AppServiceProvider`:
 
 	User::setStripeKey('stripe-key');
 
