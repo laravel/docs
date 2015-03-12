@@ -1,6 +1,6 @@
 # Laravel Cashier
 
-- [Introduction](#introduction)
+- [Introdução](#introduction)
 - [Configuration](#configuration)
 - [Subscribing To A Plan](#subscribing-to-a-plan)
 - [No Card Up Front](#no-card-up-front)
@@ -14,9 +14,10 @@
 - [Invoices](#invoices)
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
+Laravel Cashier oferece uma interface expressiva e fluente para [Stripe's](https://stripe.com) sserviços de cobrança de assinatura. Ele ainda lida com quase todo o código de faturamento e subscrição que você tanto reluta em escrever. Além do gerenciamento de assinaturas básicas, o Laravel Cashier pode ligar com cupons, troca de subscrição, subscrição em grandes "quantidades", períodos de carência de cancelamento, até mesmo gerar faturas em PDF.
+
 
 <a name="configuration"></a>
 ## Configuration
