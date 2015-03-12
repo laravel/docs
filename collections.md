@@ -39,4 +39,4 @@ Como mencionado acima, o helper `collect` retornará uma nova instância de `Ill
 
 #### Explore a Coleção
 
-Ao invés de listar todos os métodos (que são muitos) a Api de `Collection` é disponibilizada, dê uma olhada na [API documentation for the class](http://laravel.com/api/master/Illuminate/Support/Collection.html)!
+Ao invés de listar todos os métodos (que são muitos) a Api de `Collection` é disponibilizada, dê uma olhada na [Na documentação da API para a classe](http://laravel.com/api/master/Illuminate/Support/Collection.html)!
