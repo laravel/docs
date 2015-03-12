@@ -19,9 +19,8 @@ A classe `Illuminate\Support\Collection` um nativo, conveniente warapper para tr
 	});
 
 
-Como você pode ver, a classe `Collection` permite que você chame encadeadamento métodos para realizar nativamente mapeamento e redução do array subjacente. Em geral, todo método `Collection` retorna uma nova instância inteira de `Collection`. 
+Como você pode ver, a classe `Collection` permite que você chame encadeadamento métodos para realizar nativamente mapeamento e redução do array subjacente. Em geral, todo método `Collection` retorna uma nova instância inteira de `Collection`. Para mais detalhes, continue lendo! 
 
-As you can see, the `Collection` class allows you to chain its methods to perform fluent mapping and reducing of the underlying array. In general, every `Collection` method returns an entirely new `Collection` instance. Para cavar mais fundo, continue lendo!
 
 <a name="basic-usage"></a>
 ## Uso Básico
@@ -29,9 +28,7 @@ As you can see, the `Collection` class allows you to chain its methods to perfor
 #### Criado Coleções
 
 
-Como mencionado acima, o helper `collect` retornará uma nova instância de `Illuminate\Support\Collection` para o arrau dado. Você pode também usar o comando `make` na classe `Collection`:
-
-As mentioned above, the `collect` helper will return a new `Illuminate\Support\Collection` instance for the given array. You may also use the `make` command on the `Collection` class:
+Como mencionado acima, o helper `collect` retornará uma nova instância de `Illuminate\Support\Collection` para o array dado. Você pode também usar o comando `make` na classe `Collection`:
 
 	$collection = collect([1, 2, 3]);
 
