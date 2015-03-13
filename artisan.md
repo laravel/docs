@@ -151,7 +151,9 @@ Let's look at a few more scheduling examples:
 
 #### E-mail The Output Of A Scheduled Job
 
-	$schedule->command('foo')->emailOutputTo('foo@example.com');
+	$schedule->command('foo')->sendOutputTo($filePath)->emailOutputTo('foo@example.com');
+
+> **Note:** You must send the output to a file before it can be mailed.
 
 #### Send The Output Of The Scheduled Job To A Given Location
 

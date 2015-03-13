@@ -243,6 +243,12 @@ Register a new PATCH route with the router.
 Register a new DELETE route with the router.
 
 	delete('foo/bar', 'FooController@action');
+	
+### resource
+
+Register a new RESTful resource route with the router.
+
+	resource('foo', 'FooController');
 
 <a name="strings"></a>
 ## Strings

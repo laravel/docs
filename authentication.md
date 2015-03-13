@@ -337,6 +337,7 @@ Once you have a user instance, you can grab a few more details about the user:
 	$tokenSecret = $user->tokenSecret;
 
 	// All Providers
+	$user->getId();
 	$user->getNickname();
 	$user->getName();
 	$user->getEmail();

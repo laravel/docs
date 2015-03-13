@@ -4,6 +4,7 @@
 - [Cache Usage](#cache-usage)
 - [Increments & Decrements](#increments-and-decrements)
 - [Cache Tags](#cache-tags)
+- [Cache Events](#cache-events)
 - [Database Cache](#database-cache)
 
 <a name="configuration"></a>
@@ -136,6 +137,27 @@ You may flush all items tagged with a name or list of names. For example, this s
 In contrast, this statement would remove only caches tagged with `authors`, so "John" would be removed, but not "Anne".
 
 	Cache::tags('authors')->flush();
+
+<a name="cache-events"></a>
+## Cache Events
+
+To execute code on every cache operation, you may listen for the events fired by the cache:
+
+	Event::listen('cache.hit', function($key, $value) {
+		//
+	});
+
+	Event::listen('cache.missed', function($key) {
+		//
+	});
+
+	Event::listen('cache.write', function($key, $value, $minutes) {
+		//
+	});
+
+	Event::listen('cache.delete', function($key) {
+		//
+	});
 
 <a name="database-cache"></a>
 ## Database Cache
