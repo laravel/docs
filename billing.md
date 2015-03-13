@@ -26,7 +26,8 @@ Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://s
 
 First, add the Cashier package to your `composer.json` file:
 
-	"laravel/cashier": "~3.0"
+	"laravel/cashier": "~4.0" (For Stripe APIs on 2015-02-18 version and later)
+	"laravel/cashier": "~3.0" (For Stripe APIs up to and including 2015-02-16 version)
 
 #### Service Provider
 
