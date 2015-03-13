@@ -100,7 +100,7 @@ Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the coo
 <a name="method-spoofing"></a>
 ## Method Spoofing
 
-HTML forms do not support `PUT` or `DELETE` actions. So, when defining `PUT` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form.
+HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining `PUT`, `PATCH` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form.
 
 The value sent with the `_method` field will be used as the HTTP request method. For example:
 
