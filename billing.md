@@ -20,25 +20,28 @@ Laravel Cashier oferece uma interface expressiva e fluente para [Stripe's](https
 
 
 <a name="configuration"></a>
-## Configuration
+## Configuração 
 
 #### Composer
 
-First, add the Cashier package to your `composer.json` file:
+Primiero, adicione o pacote Cashier em seu arquivo  `composer.json`:
 
 	"laravel/cashier": "~3.0"
 
-#### Service Provider
+#### Fornecedor de Serviços (Service Provider)
 
-Next, register the `Laravel\Cashier\CashierServiceProvider` in your `app` configuration file.
+Após, registre o serviço `Laravel\Cashier\CashierServiceProvider` no seu aquivo de configuralção `app`.
 
-#### Migration
+#### Migração
 
-Before using Cashier, we'll need to add several columns to your database. Don't worry, you can use the `cashier:table` Artisan command to create a migration to add the necessary column. For example, to add the column to the users table use `php artisan cashier:table users`. Once the migration has been created, simply run the `migrate` command.
+Antes de usar o Cashier, nos precisaremos adicionar varias colunas no seu banco de dados. Não se preocupe, você pode usar o comando Artisan `cashier:table` para criar a migração necessária para criar as colunas. Por examplo, para adicionar a coluna à tabela usuários use `php artisan cashier:table users`. Uma vez que a migração for criada, apenas execute o comando `migrate`.
 
-#### Model Setup
 
-Next, add the `Billable` trait and appropriate date mutators to your model definition:
+#### Setup do Modelo
+
+Logo apó, adicione a trait `Billable` e os mutators (metódos modificadores de dados "Sets") de dados apropriados na definição do seu modelo.
+
+Após isso, adicion a trait `Billable` e os mutator de dados a definição do seu modelo:
 
 	use Laravel\Cashier\Billable;
 	use Laravel\Cashier\Contracts\Billable as BillableContract;
@@ -51,14 +54,14 @@ Next, add the `Billable` trait and appropriate date mutators to your model defin
 
 	}
 
-#### Stripe Key
+#### Chave Stripe
 
-Finally, set your Stripe key in one of your bootstrap files or service providers, such as the `AppServiceProvider`:
+Por fim, defina sua chave Stripe em um dos seus arquivos do bootstrap ou nos fornecedores de serviço, como o `AppServiceProvider`: 
 
 	User::setStripeKey('stripe-key');
 
 <a name="subscribing-to-a-plan"></a>
-## Subscribing To A Plan
+## Inscrevendo-se em um Plano.
 
 Once you have a model instance, you can easily subscribe that user to a given Stripe plan:
 
