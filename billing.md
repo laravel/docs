@@ -39,9 +39,9 @@ Antes de usar o Cashier, nos precisaremos adicionar varias colunas no seu banco 
 
 #### Setup do Modelo
 
-Logo apó, adicione a trait `Billable` e os mutators (metódos modificadores de dados "Sets") de dados apropriados na definição do seu modelo.
+Logo após, adicione a trait `Billable` e os mutators (metódos modificadores de dados "Sets") de dados apropriados na definição do seu modelo.
 
-Após isso, adicion a trait `Billable` e os mutator de dados a definição do seu modelo:
+Após isso, adicione a trait `Billable` e os mutator de dados a definição do seu modelo:
 
 	use Laravel\Cashier\Billable;
 	use Laravel\Cashier\Contracts\Billable as BillableContract;
@@ -62,14 +62,13 @@ Por fim, defina sua chave Stripe em um dos seus arquivos do bootstrap ou nos for
 
 <a name="subscribing-to-a-plan"></a>
 ## Inscrevendo-se em um Plano.
-
-Once you have a model instance, you can easily subscribe that user to a given Stripe plan:
+Uma vez que você tenha uma instacia do seu modelo, você pode facilmente inscrever este usuário para um plano do Stripe. 
 
 	$user = User::find(1);
 
 	$user->subscription('monthly')->create($creditCardToken);
-
-If you would like to apply a coupon when creating the subscription, you may use the `withCoupon` method:
+	
+Se você desejar aplica algum cupon quando estiver criando a inscrição, você pode usar o método `withCoupon`:
 
 	$user->subscription('monthly')
 	     ->withCoupon('code')
