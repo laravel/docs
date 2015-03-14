@@ -1,10 +1,18 @@
 # Upgrade Guide
 
+- [Upgrading To 5.0.16](#upgrade-5.0.16)
 - [Upgrading To 5.0 From 4.2](#upgrade-5.0)
 - [Upgrading To 4.2 From 4.1](#upgrade-4.2)
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-5.0.16"></a>
+## Upgrading To 5.0.16
+
+In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
+
+	$compiledPath = __DIR__.'/../vendor/compiled.php';
 
 <a name="upgrade-5.0"></a>
 ## Upgrading To 5.0 From 4.2
