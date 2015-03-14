@@ -4,6 +4,7 @@
 - [快取用法](#cache-usage)
 - [遞增與遞減](#increments-and-decrements)
 - [快取標籤](#cache-tags)
+- [Cache Events](#cache-events)
 - [資料庫快取](#database-cache)
 
 <a name="configuration"></a>
@@ -136,6 +137,27 @@ Laravel 為各種不同的快取系統提供一致的 API。快取設定檔位�
 對照來看，以下範例將只會移除帶有 `authors` 的標籤，所以「John」會被移除，但是「Anne」不會。
 
 	Cache::tags('authors')->flush();
+
+<a name="cache-events"></a>
+## Cache Events
+
+To execute code on every cache operation, you may listen for the events fired by the cache:
+
+	Event::listen('cache.hit', function($key, $value) {
+		//
+	});
+
+	Event::listen('cache.missed', function($key) {
+		//
+	});
+
+	Event::listen('cache.write', function($key, $value, $minutes) {
+		//
+	});
+
+	Event::listen('cache.delete', function($key) {
+		//
+	});
 
 <a name="database-cache"></a>
 ## 資料庫快取

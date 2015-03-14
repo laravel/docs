@@ -26,7 +26,8 @@ Laravel Cashier 提供口語化，流暢的介面和 [Stripe](https://stripe.com
 
 首先，把 Cashier 套件加到 `composer.json`：
 
-	"laravel/cashier": "~3.0"
+	"laravel/cashier": "~4.0" (For Stripe APIs on 2015-02-18 version and later)
+	"laravel/cashier": "~3.0" (For Stripe APIs up to and including 2015-02-16 version)
 
 #### 註冊服務
 
@@ -53,7 +54,14 @@ Laravel Cashier 提供口語化，流暢的介面和 [Stripe](https://stripe.com
 
 #### Stripe Key
 
-最後，在起始檔或服務註冊裡（像是 `AppServiceProvider` ）加入 Stripe key：
+最後，在 `services.php` 設定檔中加入 Stripe key：
+
+	'stripe' => [
+		'model'  => 'User',
+		'secret' => env('STRIPE_API_SECRET'),
+	],
+
+Alternatively you can store it in one of your bootstrap files or service providers, such as the `AppServiceProvider`:
 
 	User::setStripeKey('stripe-key');
 

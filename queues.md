@@ -27,7 +27,7 @@ Laravel 隊列元件提供一個統一的 API 整合了許多不同的隊列服�
 
 - Amazon SQS: `aws/aws-sdk-php`
 - Beanstalkd: `pda/pheanstalk ~3.0`
-- IronMQ: `iron-io/iron_mq`
+- IronMQ: `iron-io/iron_mq ~1.5`
 - Redis: `predis/predis ~1.0`
 
 <a name="basic-usage"></a>
