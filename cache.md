@@ -4,7 +4,7 @@
 - [快取用法](#cache-usage)
 - [遞增與遞減](#increments-and-decrements)
 - [快取標籤](#cache-tags)
-- [Cache Events](#cache-events)
+- [快取事件](#cache-events)
 - [資料庫快取](#database-cache)
 
 <a name="configuration"></a>
@@ -139,9 +139,9 @@ Laravel 為各種不同的快取系統提供一致的 API。快取設定檔位�
 	Cache::tags('authors')->flush();
 
 <a name="cache-events"></a>
-## Cache Events
+## 快取事件
 
-To execute code on every cache operation, you may listen for the events fired by the cache:
+想要對每個快取操作執行程式碼的話，你可以監聽快取觸發的事件：
 
 	Event::listen('cache.hit', function($key, $value) {
 		//
