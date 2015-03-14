@@ -18,7 +18,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 
 > **Note:** If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS.
 
-Homestead is currently built and tested using Vagrant 1.6.
+Homestead is currently built and tested using Vagrant 1.7.
 
 <a name="included-software"></a>
 ## Included Software
