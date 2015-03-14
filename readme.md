@@ -2,7 +2,7 @@
 
 ## 翻譯須知
 
-目前翻譯到原文的 Commit 進度： #69dc61
+目前翻譯到原文的 Commit 進度： #800c995
 
 翻譯前請先詳細閱讀[中文文案排版指南](https://github.com/sparanoid/chinese-copywriting-guidelines)。
 
