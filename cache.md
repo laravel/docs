@@ -141,7 +141,7 @@ Laravel 為各種不同的快取系統提供一致的 API。快取設定檔位�
 <a name="cache-events"></a>
 ## 快取事件
 
-想要在每個快取操作時執行程式碼的話，你可以監聽快取觸發的事件：
+想要對每個快取操作執行程式碼的話，你可以監聽快取觸發的事件：
 
 	Event::listen('cache.hit', function($key, $value) {
 		//
