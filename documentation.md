@@ -25,7 +25,6 @@
     - [Billing](/docs/master/billing)
     - [Cache](/docs/master/cache)
     - [Collections](/docs/master/collections)
-    - [Command Bus](/docs/master/bus)
     - [Core Extension](/docs/master/extending)
     - [Elixir](/docs/master/elixir)
     - [Encryption](/docs/master/encryption)

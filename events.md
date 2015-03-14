@@ -7,7 +7,7 @@
 <a name="basic-usage"></a>
 ## Basic Usage
 
-The Laravel event facilities provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their handlers are stored in `app/Handlers/Events`.
+The Laravel event facilities provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their handlers are stored in `app/Listeners`.
 
 You can generate a new event class using the Artisan CLI tool:
 
@@ -24,15 +24,15 @@ The `EventServiceProvider` included with your Laravel application provides a con
 	 */
 	protected $listen = [
 		'App\Events\PodcastWasPurchased' => [
-			'App\Handlers\Events\EmailPurchaseConfirmation',
+			'App\Listeners\EmailPurchaseConfirmation',
 		],
 	];
 
 To generate a handler for an event, use the `handler:event` Artisan CLI command:
 
-	php artisan handler:event EmailPurchaseConfirmation --event=PodcastWasPurchased
+	php artisan make:listener EmailPurchaseConfirmation --event=PodcastWasPurchased
 
-Of course, manually running the `make:event` and `handler:event` commands each time you need a handler or event is cumbersome. Instead, simply add handlers and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or handlers that are listed in your `EventServiceProvider`:
+Of course, manually running the `make:event` and `make:listener` commands each time you need a handler or event is cumbersome. Instead, simply add handlers and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or handlers that are listed in your `EventServiceProvider`:
 
 	php artisan event:generate
 
@@ -73,7 +73,7 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 
 Need to [queue](/docs/master/queues) an event handler? It couldn't be any easier. When generating the handler, simply use the `--queued` flag:
 
-	php artisan handler:event SendPurchaseConfirmation --event=PodcastWasPurchased --queued
+	php artisan make:listener SendPurchaseConfirmation --event=PodcastWasPurchased --queued
 
 This will generate a handler class that implements the `Illuminate\Contracts\Queue\ShouldBeQueued` interface. That's it! Now when this handler is called for an event, it will be queued automatically by the event dispatcher.
 
