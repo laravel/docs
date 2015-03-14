@@ -221,7 +221,7 @@ This route will register a "nested" resource that may be accessed with URLs like
 
 If it becomes necessary for you to add additional routes to a resource controller beyond the default resource routes, you should define those routes before your call to `Route::resource`:
 
-	Route::get('photos/popular');
+	Route::get('photos/popular', 'PhotoController@method');
 	Route::resource('photos', 'PhotoController');
 
 <a name="handling-missing-methods"></a>
