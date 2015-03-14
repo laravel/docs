@@ -1,7 +1,7 @@
 # Laravel Cashier
 
 - [Introdução](#introduction)
-- [Configuration](#configuration)
+- [Configuração](#configuration)
 - [Subscribing To A Plan](#subscribing-to-a-plan)
 - [No Card Up Front](#no-card-up-front)
 - [Swapping Subscriptions](#swapping-subscriptions)
@@ -74,7 +74,7 @@ Se você desejar aplica algum cupon quando estiver criando a inscrição, você 
 	     ->withCoupon('code')
 	     ->create($creditCardToken);
 
-The `subscription` method will automatically create the Stripe subscription, as well as update your database with Stripe customer ID and other relevant billing information. If your plan has a trial configured in Stripe, the trial end date will also automatically be set on the user record.
+O método `subscription` irá criar uma inscrição no Stripe automaticamente, bem como atualizar o seu banco de dados com o ID do cliente e outras informações importantes faturamento. Se seu plano foi configurado como trial(tempporário) no Stripe, a data final do trial será automaticamente definida no registro do usuário.
 
 If your plan has a trial period that is **not** configured in Stripe, you must set the trial end date manually after subscribing:
 
