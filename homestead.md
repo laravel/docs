@@ -18,7 +18,7 @@ Homestead 可以在任何 Windows、Mac 或 Linux 上面運行，裏面包含了
 
 > **附註：** 如果您是 Windows 的使用者，您可能需要啟用硬體虛擬化（VT-x）。通常需要透過 BIOS 來啟用它。
 
-Homestead 目前是建置且測試於 Vagrant 1.6。
+Homestead 目前是建置且測試於 Vagrant 1.7。
 
 <a name="included-software"></a>
 ## 內建軟體

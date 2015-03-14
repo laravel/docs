@@ -103,7 +103,7 @@ Laravel 也會在 `XSRF-TOKEN` cookie 中儲存 CSRF token。你也可以使用 
 <a name="method-spoofing"></a>
 ## 方法欺騙
 
-HTML 表單沒有支援 `PUT` 或 `DELETE` 動作。所以當定義 `PUT` 或 `DELETE` 路由，並在 HTML 表單中被呼叫的時候，您將需要在表單中添加隱藏 的`_method` 欄位。
+HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以當定義 `PUT`、`PATCH` 或 `DELETE` 路由，並在 HTML 表單中被呼叫的時候，您將需要在表單中添加隱藏 的`_method` 欄位。
 
 隨著 `_method` 欄位送出的值將被視為 HTTP 請求方法使用。舉例來說：
 

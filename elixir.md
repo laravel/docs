@@ -70,7 +70,27 @@ elixir(function(mix) {
 });
 ```
 
-在上述例子中，Elixir 會假設你的 Sass 檔案儲存在 `resources/assets/sass` 裡。
+在上述例子中，Elixir 會假設你的 Sass 檔案儲存在 `resources/assets/sass` 裡。 The `sass` method may only be called once, if you would like to compile multiple Sass files, pass an array to the `sass` method.
+
+By default, Elixir, underneath the hood, uses the LibSass library for compilation. In some instances, it might prove advantageous to instead leverage the Ruby version, which, though slower, is more feature rich. Assuming that you have both Ruby and the Sass gem installed (`gem install sass`), you may enable Ruby-mode, like so:
+
+```javascript
+elixir(function(mix) {
+    mix.rubySass("app.sass");
+});
+```
+
+#### Compile Without Source Maps
+
+```javascript
+elixir.config.sourcemaps = false;
+
+elixir(function(mix) {
+    mix.sass("app.scss");
+});
+```
+
+Source maps are enabled out of the box. As such, for each file that is compiled, you'll find a companion `*.css.map` file in the same directory. This mapping allows you to, when debugging, trace your compiled stylesheet selectors  back to your original Sass or Less partials! Should you need to disable this functionality, however, the code sample above will do the trick.
 
 #### 編譯 CoffeeScript
 
