@@ -282,7 +282,7 @@ Your user will receive an e-mail with a link that points to the `getReset` metho
 
 	protected $redirectTo = '/dashboard';
 
-> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `config/auth.php` file.
+> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option in your `config/auth.php` file.
 
 <a name="social-authentication"></a>
 ## Social Authentication
