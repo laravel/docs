@@ -48,6 +48,30 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
         ]
     );
 
+#### Setting a Custom Database Connection For the Validator
+
+Sometimes you need to set a custom connection for database queries that the Validator will make. 
+As seen above, setting `unique:users` as a validation rule will use the default database connection to 
+query the database and confirm uniqueness. To override this, do the following:
+
+	$verifier = App::make('validation.presence');
+	$verifier->setConnection('connectionName');
+
+	$validator = Validator::make(
+		[
+			'name' => 'Dayle',
+			'password' => 'lamepassword',
+			'email' => 'email@example.com',
+		],
+		[
+			'name' => 'required',
+			'password' => 'required|min:8',
+			'email' => 'required|email|unique:users',
+		]
+	);
+
+	$validator->setPresenceVerifier($verifier);
+
 Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
 
 	if ($validator->fails())
