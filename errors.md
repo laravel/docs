@@ -16,7 +16,7 @@ For example, if you wish to use a single log file instead of daily files, you ca
 
 	'log' => 'single'
 
-Out of the box, Laravel supported `single`, `daily`, and `syslog` logging modes. However, you are free to customize the logging for your application as you wish by overriding the `ConfigureLogging` bootstrapper class.
+Out of the box, Laravel supported `single`, `daily`, `syslog` and `errorlog` logging modes. However, you are free to customize the logging for your application as you wish by overriding the `ConfigureLogging` bootstrapper class.
 
 ### Error Detail
 
