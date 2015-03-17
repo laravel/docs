@@ -187,6 +187,21 @@ The incoming form request is validated before the controller method is called, m
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
 
+You can also use form requests manually by resolving through Laravel's IoC container:
+
+	/**
+	 * Store the incoming blog post.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		$request = app('App\Http\Requests\StoreBlogPostRequest');
+		$request->validate();
+
+		// The incoming request is valid...
+	}
+
 ### Authorizing Form Requests
 
 The form request class also contains an `authorize` method. Within this method, you may check if the authenticated user actually has the authority to update a given resource. For example, if a user is attempting to update a blog post comment, do they actually own that comment? For example:
