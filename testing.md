@@ -208,7 +208,7 @@ You may re-seed your database from a test using the `seed` method:
 
 	$this->seed();
 
-	$this->seed($connection);
+	$this->seed('DatabaseSeeder');
 
 More information on creating seeds may be found in the [migrations and seeding](/docs/4.2/migrations#database-seeding) section of the documentation.
 
