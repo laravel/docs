@@ -15,26 +15,33 @@ Laravel makes implementing authentication very simple. In fact, almost everythin
 
 By default, Laravel includes an `App\User` model in your `app` directory. This model may be used with the default Eloquent authentication driver.
 
-Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration. Of course, Laravel 5 ships migrations for these columns out of the box!
+Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration. The `scaffold:auth` command will generate these migrations for you.
 
 If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
 <a name="authenticating-users"></a>
 ## Authenticating Users
 
-Laravel ships with two authentication related controllers out of the box. The `AuthController` handles new user registration and "logging in", while the `PasswordController` contains the logic to help existing users reset their forgotten passwords.
+If you would like, Laravel can scaffold the necessary authentication controllers and views for your application using the `scaffold:auth` command:
+
+	php artisan scaffold:auth
+
+> **Note:** If you prefer to build your authentication system manually, check out the [Manual Authentication](#manual-authentication) section below.
+
+This command will create new controllers, migrations, views, and Less / CSS files for providing authentication. The generated `AuthController` handles new user registration and "logging in", while the `PasswordController` contains the logic to help existing users reset their forgotten passwords.
 
 Each of these controllers uses a trait to include their necessary methods. For many applications, you will not need to modify these controllers at all. The views that these controllers render are located in the `resources/views/auth` directory. You are free to customize these views however you wish.
 
 ### The User Registrar
 
-To modify the form fields that are required when a new user registers with your application, you may modify the `App\Services\Registrar` class. This class is responsible for validating and creating new users of your application.
+To modify the form fields that are required when a new user registers with your application, you may modify the `AuthController` class. This class is responsible for validating and creating new users of your application.
 
-The `validator` method of the `Registrar` contains the validation rules for new users of the application, while the `create` method of the `Registrar` is responsible for creating new `User` records in your database. You are free to modify each of these methods as you wish. The `Registrar` is called by the `AuthController` via the methods contained in the `AuthenticatesAndRegistersUsers` trait.
+The `validator` method of the `AuthController` contains the validation rules for new users of the application, while the `create` method of the `AuthController` is responsible for creating new `User` records in your database. You are free to modify each of these methods as you wish.
 
+<a name="manual-authentication"></a>
 #### Manual Authentication
 
-If you choose not to use the provided `AuthController` implementation, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method:
+If you choose not to use the authentication scaffolding provided by `scaffold:auth`, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method:
 
 	<?php namespace App\Http\Controllers;
 
