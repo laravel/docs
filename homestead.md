@@ -60,9 +60,9 @@ If this command fails, you may have an old version of Vagrant that requires the 
 
 ### Installing Homestead
 
-#### Manually Via Git (No Local PHP)
+#### Option 1 - Manually Via Git (No Local PHP)
 
-Alternatively, if you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
+If you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
@@ -72,7 +72,7 @@ Once you have installed the Homestead CLI tool, run the `bash init.sh` command t
 
 The `Homestead.yaml` file will be placed in your `~/.homestead` directory.
 
-#### With Composer + PHP Tool
+#### Option 2 - With Composer + PHP Tool
 
 Once the box has been added to your Vagrant installation, you are ready to install the Homestead CLI tool using the Composer `global` command:
 
