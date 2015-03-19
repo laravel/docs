@@ -76,7 +76,7 @@ The `Homestead.yaml` file will be placed in your `~/.homestead` directory.
 
 Once the box has been added to your Vagrant installation, you are ready to install the Homestead CLI tool using the Composer `global` command:
 
-	composer global require "laravel/homestead=~2.0"
+	composer global require "laravel/homestead=dev-master"
 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `homestead` executable is found when you run the `homestead` command in your terminal.
 
@@ -90,7 +90,7 @@ The `Homestead.yaml` file will be placed in the `~/.homestead` directory. If you
 
 ### Configure Your Provider
 
-The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `vmware_fusion`. You may set this to whichever provider you prefer.
+The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `vmware_fusion` / `vmware_workstation`. You may set this to whichever provider you prefer.
 
 	provider: virtualbox
 
