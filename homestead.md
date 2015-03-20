@@ -173,6 +173,8 @@ To connect to your MySQL or Postgres database from your main machine via Navicat
 
 Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. There are two ways to do this: First, you may simply add the sites to your `Homestead.yaml` file and then run `homestead provision` or `vagrant provision`.
 
+> **Note:** This process is destructive. When running the `provision` command, your existing databases will be destroyed and recreated.
+
 Alternatively, you may use the `serve` script that is available on your Homestead environment. To use the `serve` script, SSH into your Homestead environment and run the following command:
 
 	serve domain.app /home/vagrant/Code/path/to/public/directory
