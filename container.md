@@ -144,7 +144,7 @@ Lastly, but most importantly, you may simply "type-hint" the dependency in the c
 
 ### Injecting Concrete Dependencies
 
-A very powerful features of the service container is its ability to bind an interface to a given implementation. For example, perhaps our application integrates with the [Pusher](https://pusher.com) web service for sending and receiving real-time events. If we are using Pusher's PHP SDK, we could inject an instance of the Pusher client into a class:
+A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, perhaps our application integrates with the [Pusher](https://pusher.com) web service for sending and receiving real-time events. If we are using Pusher's PHP SDK, we could inject an instance of the Pusher client into a class:
 
 	<?php namespace App\Handlers\Commands;
 
