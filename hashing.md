@@ -8,7 +8,7 @@
 
 O facade `Hash` do Laravel, fornece um seguro hash Bcrypt para armazenar senhas de usuários. Se você estiver usando o controller `AuthController` que está incluso na sua aplicação Laravel, ele será responsável por verificar as senhas Bcrypt contra as versões un-hashed fornecidas pelo usuário.
 
-Da mesma forma, o serviço0 `Registrar` que vem com o Laravel faz uma chamada apropriada da função `bcrypt` para senhas armazenadas.
+Da mesma forma, o serviço `Registrar` que vem com o Laravel faz uma chamada apropriada da função `bcrypt` para senhas armazenadas.
 
 <a name="basic-usage"></a>
 ## Uso básico
@@ -17,7 +17,7 @@ Da mesma forma, o serviço0 `Registrar` que vem com o Laravel faz uma chamada ap
 
 	$password = Hash::make('secret');
 
-Voc� também pode usar a função helper `bcrypt`;
+Você também pode usar a função helper `bcrypt`;
 
 	$password = bcrypt('secret');
 
