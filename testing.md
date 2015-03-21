@@ -151,18 +151,18 @@ Laravel ships with several `assert` methods to make testing a little easier:
 
 #### Asserting The Session Has Errors
 
-    public function testMethod()
-    {
-        $this->call('GET', '/');
+	public function testMethod()
+	{
+		$this->call('GET', '/');
 
-        $this->assertSessionHasErrors();
+		$this->assertSessionHasErrors();
 
-        // Asserting the session has errors for a given key...
-        $this->assertSessionHasErrors('name');
+		// Asserting the session has errors for a given key...
+		$this->assertSessionHasErrors('name');
 
-        // Asserting the session has errors for several keys...
-        $this->assertSessionHasErrors(['name', 'age']);
-    }
+		// Asserting the session has errors for several keys...
+ 		$this->assertSessionHasErrors(['name', 'age']);
+	}
 
 #### Asserting Old Input Has Some Data
 
