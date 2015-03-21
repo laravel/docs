@@ -87,8 +87,8 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 
 On Nginx, the following directive in your site configuration will allow "pretty" URLs:
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
 
 Of course, when using [Homestead](/docs/5.0/homestead), pretty URLs will be configured automatically.

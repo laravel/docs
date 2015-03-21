@@ -37,7 +37,7 @@ Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package l
 
 The only remaining step is to install Elixir! With a new install of Laravel, you'll find a `package.json` file in the root. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
 
-    npm install
+	npm install
 
 <a name="usage"></a>
 ## Usage
@@ -48,7 +48,7 @@ Now that you've installed Elixir, you'll be compiling and concatenating in no ti
 
 ```javascript
 elixir(function(mix) {
-    mix.less("app.less");
+	mix.less("app.less");
 });
 ```
 
@@ -58,10 +58,10 @@ In the example above, Elixir assumes that your Less files are stored in `resourc
 
 ```javascript
 elixir(function(mix) {
-    mix.less([
-        'app.less',
-        'something-else.less'
-    ]);
+	mix.less([
+		'app.less',
+		'something-else.less'
+	]);
 });
 ```
 
@@ -69,7 +69,7 @@ elixir(function(mix) {
 
 ```javascript
 elixir(function(mix) {
-    mix.sass("app.sass");
+	mix.sass("app.sass");
 });
 ```
 
@@ -79,7 +79,7 @@ By default, Elixir, underneath the hood, uses the LibSass library for compilatio
 
 ```javascript
 elixir(function(mix) {
-    mix.rubySass("app.sass");
+	mix.rubySass("app.sass");
 });
 ```
 
@@ -89,7 +89,7 @@ elixir(function(mix) {
 elixir.config.sourcemaps = false;
 
 elixir(function(mix) {
-    mix.sass("app.scss");
+	mix.sass("app.scss");
 });
 ```
 
@@ -99,7 +99,7 @@ Source maps are enabled out of the box. As such, for each file that is compiled,
 
 ```javascript
 elixir(function(mix) {
-    mix.coffee();
+	mix.coffee();
 });
 ```
 
@@ -118,7 +118,7 @@ elixir(function(mix) {
 
 ```javascript
 elixir(function(mix) {
-    mix.phpUnit();
+	mix.phpUnit();
 });
 ```
 
@@ -126,7 +126,7 @@ elixir(function(mix) {
 
 ```javascript
 elixir(function(mix) {
-    mix.phpSpec();
+	mix.phpSpec();
 });
 ```
 
@@ -134,10 +134,10 @@ elixir(function(mix) {
 
 ```javascript
 elixir(function(mix) {
-    mix.styles([
-        "normalize.css",
-        "main.css"
-    ]);
+	mix.styles([
+		"normalize.css",
+		"main.css"
+	]);
 });
 ```
 
@@ -147,10 +147,10 @@ Paths passed to this method are relative to the `resources/css` directory.
 
 ```javascript
 elixir(function(mix) {
-    mix.styles([
-        "normalize.css",
-        "main.css"
-    ], 'public/build/css/everything.css');
+	mix.styles([
+		"normalize.css",
+		"main.css"
+	], 'public/build/css/everything.css');
 });
 ```
 
@@ -158,10 +158,10 @@ elixir(function(mix) {
 
 ```javascript
 elixir(function(mix) {
-    mix.styles([
-        "normalize.css",
-        "main.css"
-    ], 'public/build/css/everything.css', 'public/css');
+	mix.styles([
+		"normalize.css",
+		"main.css"
+	], 'public/build/css/everything.css', 'public/css');
 });
 ```
 
@@ -171,7 +171,7 @@ The third argument to both the `styles` and `scripts` methods determines the rel
 
 ```javascript
 elixir(function(mix) {
-    mix.stylesIn("public/css");
+	mix.stylesIn("public/css");
 });
 ```
 
@@ -179,10 +179,10 @@ elixir(function(mix) {
 
 ```javascript
 elixir(function(mix) {
-    mix.scripts([
-        "jquery.js",
-        "app.js"
-    ]);
+	mix.scripts([
+		"jquery.js",
+		"app.js"
+	]);
 });
 ```
 
@@ -192,7 +192,7 @@ Again, this assumes all paths are relative to the `resources/js` directory.
 
 ```javascript
 elixir(function(mix) {
-    mix.scriptsIn("public/js/some/directory");
+	mix.scriptsIn("public/js/some/directory");
 });
 ```
 
@@ -209,7 +209,7 @@ elixir(function(mix) {
 
 ```javascript
 elixir(function(mix) {
-    mix.version("css/all.css");
+	mix.version("css/all.css");
 });
 ```
 
@@ -227,7 +227,7 @@ You may also pass an array to the `version` method to version multiple files:
 
 ```javascript
 elixir(function(mix) {
-    mix.version(["css/all.css", "js/app.js"]);
+	mix.version(["css/all.css", "js/app.js"]);
 });
 ```
 
@@ -240,7 +240,7 @@ elixir(function(mix) {
 
 ```javascript
 elixir(function(mix) {
-    mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
+	mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
 });
 ```
 
@@ -248,7 +248,7 @@ elixir(function(mix) {
 
 ```javascript
 elixir(function(mix) {
-    mix.copy('vendor/package/views', 'resources/views');
+	mix.copy('vendor/package/views', 'resources/views');
 });
 ```
 
@@ -272,23 +272,23 @@ Now that you've told Elixir which tasks to execute, you only need to trigger Gul
 
 #### Execute All Registered Tasks Once
 
-    gulp
+	gulp
 
 #### Watch Assets For Changes
 
-    gulp watch
+	gulp watch
 
 #### Only Compile Scripts
 
-    gulp scripts
+	gulp scripts
 
 #### Only Compile Styles
 
-    gulp styles
+	gulp styles
 
 #### Watch Tests And PHP Classes for Changes
 
-    gulp tdd
+	gulp tdd
 
 > **Note:** All tasks will assume a development environment, and will exclude minification. For production, use `gulp --production`.
 
@@ -299,17 +299,17 @@ You can even create your own Gulp tasks, and hook them into Elixir. Imagine that
  uses the Terminal to verbally notify you with some message. Here's what that might look like:
 
 ```javascript
- var gulp = require("gulp");
- var shell = require("gulp-shell");
- var elixir = require("laravel-elixir");
+var gulp = require("gulp");
+var shell = require("gulp-shell");
+var elixir = require("laravel-elixir");
 
- elixir.extend("message", function(message) {
+elixir.extend("message", function(message) {
 
-     gulp.task("say", function() {
-         gulp.src("").pipe(shell("say " + message));
-     });
+	gulp.task("say", function() {
+		gulp.src("").pipe(shell("say " + message));
+	});
 
-     return this.queueTask("say");
+	return this.queueTask("say");
 
  });
 ```
@@ -334,7 +334,7 @@ You're done! Now, you can mix it in.
 
 ```javascript
 elixir(function(mix) {
-    mix.message("Tea, Earl Grey, Hot");
+	mix.message("Tea, Earl Grey, Hot");
 });
 ```
 

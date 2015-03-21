@@ -70,10 +70,10 @@ The `intended` redirect function will redirect the user to the URL they were att
 
 You also may add extra conditions to the authentication query:
 
-    if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1]))
-    {
-        // The user is active, not suspended, and exists.
-    }
+	if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1]))
+	{
+		// The user is active, not suspended, and exists.
+	}
 
 #### Determining If A User Is Authenticated
 

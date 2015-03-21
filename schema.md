@@ -231,9 +231,9 @@ Command  | Description
 
 To set the storage engine for a table, set the `engine` property on the schema builder:
 
-    Schema::create('users', function($table)
-    {
-        $table->engine = 'InnoDB';
+	Schema::create('users', function($table)
+	{
+		$table->engine = 'InnoDB';
 
-        $table->string('email');
-    });
+		$table->string('email');
+	});
