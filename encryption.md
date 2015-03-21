@@ -1,4 +1,4 @@
-# Encriptação
+﻿# Encriptação
 
 - [Introdução](#introduction)
 - [Basic Usage](#basic-usage)
@@ -19,8 +19,6 @@ Laravel fornece facildade para uma forte encriptação AES por meio da extençã
 
 > **Nota:** Certifique-se de setar uma string radomica de 16, 24 , ou 32 caractéres na opção `key` do arquivo, `config/app.php`. Caso contrário, os valores encriptados não estarão seguros.
 
- Be sure to set a 16, 24, or 32 character random string in the `key` option of the `config/app.php` file. Otherwise, encrypted values will not be secure.
-> **Nota:** Be sure to set a 16, 24, or 32 character random string in the `key` option of the `config/app.php` file. Otherwise, encrypted values will not be secure.
 
 #### Decriptando Valores
 
