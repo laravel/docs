@@ -1,23 +1,23 @@
 # Hashing
 
-- [IntroduÁ„o](#introducao)
-- [Uso b·sico](#uso-basico)
+- [Introdu√ß√£o](#introduction)
+- [Uso b√°sico](#basic-usage)
 
 <a name="introducao"></a>
-## IntroduÁ„o
+## Introdu√ß√£o
 
-O facade `Hash` do Laravel, fornece um seguro hash Bcrypt para armazenar senhas de usu·rios. Se vocÍ estiver usando o controller `AuthController` que est· incluso na sua aplicaÁ„o Laravel, ele ser· respons·vel por verificar as senhas Bcrypt contra as versıes un-hashed fornecidas pelo usu·rio.
+O facade `Hash` do Laravel, fornece um seguro hash Bcrypt para armazenar senhas de usu√°rios. Se voc√™ estiver usando o controller `AuthController` que est√° incluso na sua aplica√ß√£o Laravel, ele ser√° respons√°vel por verificar as senhas Bcrypt contra as vers√µes un-hashed fornecidas pelo usu√°rio.
 
-Da mesma forma, o serviÁo `Registrar` que vem com o Laravel faz uma chamada apropriada da funÁ„o `bcrypt` para senhas armazenadas.
+Da mesma forma, o servi√ßo0 `Registrar` que vem com o Laravel faz uma chamada apropriada da fun√ß√£o `bcrypt` para senhas armazenadas.
 
-<a name="uso-basico"></a>
-## Uso b·sico
+<a name="basic-usage"></a>
+## Uso b√°sico
 
 #### Criando um Hash usando Bcrypt
 
 	$password = Hash::make('secret');
 
-VocÍ tambÈm pode usar a funÁ„o helper `bcrypt`;
+VocÔøΩ tamb√©m pode usar a fun√ß√£o helper `bcrypt`;
 
 	$password = bcrypt('secret');
 
