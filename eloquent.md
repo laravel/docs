@@ -43,7 +43,7 @@ You may also generate Eloquent models using the `make:model` command:
 
 	php artisan make:model User
 
-Note that we did not tell Eloquent which table to use for our `User` model. The "snake case" name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
+Note that we did not tell Eloquent which table to use for our `User` model. The plural "snake case" name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
 
 	class User extends Model {
 
