@@ -151,18 +151,18 @@ Laravel 附帶幾個 `assert` 方法，讓測試更簡單一點：
 
 #### 斷言 Session 有錯誤資訊
 
-    public function testMethod()
-    {
-        $this->call('GET', '/');
+	public function testMethod()
+	{
+		$this->call('GET', '/');
 
-        $this->assertSessionHasErrors();
+		$this->assertSessionHasErrors();
 
-        // 斷言 session 有特定鍵值的錯誤資訊...
-        $this->assertSessionHasErrors('name');
+		// 斷言 session 有特定鍵值的錯誤資訊...
+		$this->assertSessionHasErrors('name');
 
-        // 斷言 session 有數個特定鍵值的錯誤資訊...
-        $this->assertSessionHasErrors(['name', 'age']);
-    }
+		// 斷言 session 有數個特定鍵值的錯誤資訊...
+ 		$this->assertSessionHasErrors(['name', 'age']);
+	}
 
 #### 斷言舊輸入有一些資料
 
@@ -198,7 +198,7 @@ Laravel 附帶幾個 `assert` 方法，讓測試更簡單一點：
 
 	$this->seed();
 
-	$this->seed($connection);
+	$this->seed('DatabaseSeeder');
 
 更多建立填充資料的資訊，可以在文件的[遷移與資料填充](/docs/5.0/migrations#database-seeding)部分找到。
 

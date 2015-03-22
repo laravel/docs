@@ -87,8 +87,8 @@ Laravel 框架透過 `public/.htaccess` 檔案使網址中不需要 `index.php`�
 
 使用 Nginx 時，在你的網站設定增加下面的設定，可以「美化」路徑：
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
 
 當然，如果你使用 [Homestead](/docs/5.0/homestead) 的話，會自動幫你設定美化路徑。

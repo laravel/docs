@@ -231,9 +231,9 @@ Laravel 也支援資料表的外鍵約束：
 
 要設定資料表的儲存引擎，可在結構生成器設定 `engine` 屬性：
 
-    Schema::create('users', function($table)
-    {
-        $table->engine = 'InnoDB';
+	Schema::create('users', function($table)
+	{
+		$table->engine = 'InnoDB';
 
-        $table->string('email');
-    });
+		$table->string('email');
+	});

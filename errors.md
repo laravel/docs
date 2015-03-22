@@ -16,7 +16,7 @@
 
 	'log' => 'single'
 
-Laravel 提供立即可用的 `single` 、 `daily` 和 `syslog` 日誌模式。然而，你可以藉由覆寫 `ConfigureLogging` 啟動類別，依照需求自由地客製化應用程式的日誌。
+Laravel 提供立即可用的 `single`、`daily`、`syslog` 和 `errorlog` 日誌模式。然而，你可以藉由覆寫 `ConfigureLogging` 啟動類別，依照需求自由地客製化應用程式的日誌。
 
 ### 錯誤細節
 

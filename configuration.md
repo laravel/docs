@@ -139,8 +139,8 @@ Laravel 框架透過 `public/.htaccess` 檔案來讓網址中不需要 `index.ph
 
 若使用 Nginx ，可以在你的網站設定中增加下面的設定，以開啟「優雅連結」：
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
 
 當然，如果你使用 [Homestead](/docs/5.0/homestead) 的話，優雅鏈結會自動的幫你設定完成。
