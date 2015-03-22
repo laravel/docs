@@ -72,7 +72,7 @@ Note que todos os itens gravados no cache são serializados, neste caso, você f
 
 #### Puxando um item do Cache
 
-Se você precisar recuperar um item do cache e, ao mesmo tempo, deletá-lo, você pode usar o método `pull`:
+Se você precisar recuperar um item do cache e, em seguida, deletá-lo, você pode usar o método `pull`:
 
 	$value = Cache::pull('key');
 
@@ -112,7 +112,7 @@ Você pode armazenar um cache passando um array dos nomes das marcações como a
 
 	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
 
-Você pode combinar os métodos de armazenamento, incluindo `remember`, `forever`e `rememberForever`. Você também pode acessar items marcados, e também pode usar outros métodos como `increment` e `decrement`.
+Você pode usar qualquer método de armazenamento de cache em combinação com as marcações, incluindo `remember`, `forever` e `rememberForever`. Você também pode acessar itens que estão no cache oriundos das marcações de cache, também pode usar outros métodos de cache como `increment` e `decrement`. 
 
 #### Acessando items em um Cache marcado
 
@@ -122,7 +122,7 @@ Para acessar um cache marcado, passe o array das tags usadas anteriormente para 
 
 	$john = Cache::tags(array('people', 'authors'))->get('John');
 
-Você pode limpar todos os itens marcados com um nome ou array de nomes. Neste exemplo, removeremos todos os caches marcados com `people`, `author` ou ambos. Então, "Anne" e "John" seriam removidos do cache:
+Você pode limpar todos os itens marcados com um nome ou array de nomes. Por exemplo, nesta declaração removeremos todas as marcações de cache com  `people`, `author` ou ambos. Então, "Anne" e "John" seriam removidos do cache:
 
 	Cache::tags('people', 'authors')->flush();
 
