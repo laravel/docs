@@ -159,19 +159,18 @@ The following syntax may be used to send a notification to [Slack](https://slack
 	@after
 		@slack('hook', 'channel', 'message')
 	@endafter
-	
-You may retrieve your token by creating an `Incoming WebHooks` integration on Slack's website.
 
-The hook argument is the entire webhook URL provided by the Incoming Webhooks Slack Integration:
+You may retrieve your webhook URL by creating an `Incoming WebHooks` integration on Slack's website. The `hook` argument should be the entire webhook URL provided by the Incoming Webhooks Slack Integration. For example:
 
-- `https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYYY/XXXXXXXXXXXXXXX`
-	
+	https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYYY/XXXXXXXXXXXXXXX
+
 You may provide one of the following for the channel argument:
 
-- For a regular channel: `#channel`
-- For a specific user: `@user`
-- If no argument is provided Envoy will use the default channel configured on the Slack website.
-	
+- To send the notification to a channel: `#channel`
+- To send the notification to a user: `@user`
+
+If no `channel` argument is provided the default channel will be used.
+
 > Note: Slack notifications will only be sent if all tasks complete successfully.
 
 <a name="envoy-updating-envoy"></a>
