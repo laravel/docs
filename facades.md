@@ -10,11 +10,11 @@
 <a name="introduction"></a>
 ## Introduction
 
-Facades provide a "static" interface to classes that are available in the application's [IoC container](/docs/5.0/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+Facades provide a "static" interface to classes that are available in the application's [service container](/docs/5.0/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
 
 Occasionally, you may wish to create your own facades for your application's and packages, so let's explore the concept, development and usage of these classes.
 
-> **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [IoC container](/docs/5.0/container).
+> **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [service container](/docs/5.0/container).
 
 <a name="explanation"></a>
 ## Explanation
@@ -23,7 +23,7 @@ In the context of a Laravel application, a facade is a class that provides acces
 
 Your facade class only needs to implement a single method: `getFacadeAccessor`. It's the `getFacadeAccessor` method's job to define what to resolve from the container. The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to the resolved object.
 
-So, when you make a facade call like `Cache::get`, Laravel resolves the Cache manager class out of the IoC container and calls the `get` method on the class. In technical terms, Laravel Facades are a convenient syntax for using the Laravel IoC container as a service locator.
+So, when you make a facade call like `Cache::get`, Laravel resolves the Cache manager class out of the service container and calls the `get` method on the class. In technical terms, Laravel Facades are a convenient syntax for using the Laravel service container as a service locator.
 
 <a name="practical-usage"></a>
 ## Practical Usage
@@ -45,9 +45,9 @@ However, if we look at that `Illuminate\Support\Facades\Cache` class, you'll see
 
 	}
 
-The Cache class extends the base `Facade` class and defines a method `getFacadeAccessor()`. Remember, this method's job is to return the name of an IoC binding.
+The Cache class extends the base `Facade` class and defines a method `getFacadeAccessor()`. Remember, this method's job is to return the name of a service container binding.
 
-When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the IoC container and runs the requested method (in this case, `get`) against that object.
+When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the service container and runs the requested method (in this case, `get`) against that object.
 
 So, our `Cache::get` call could be re-written like so:
 
@@ -82,7 +82,7 @@ Remember, if you are using a facade in a controller that is namespaced, you will
 
 Creating a facade for your own application or package is simple. You only need 3 things:
 
-- An IoC binding.
+- A service container binding.
 - A facade class.
 - A facade alias configuration.
 
@@ -99,7 +99,7 @@ Let's look at an example. Here, we have a class defined as `PaymentGateway\Payme
 
 	}
 
-We need to be able to resolve this class from the IoC container. So, let's add a binding to a service provider:
+We need to be able to resolve this class from the service container. So, let's add a binding to a service provider:
 
 	App::bind('payment', function()
 	{
@@ -134,9 +134,9 @@ Unit testing is an important aspect of why facades work the way that they do. In
 <a name="facade-class-reference"></a>
 ## Facade Class Reference
 
-Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [IoC binding](/docs/5.0/container) key is also included where applicable.
+Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [service container binding](/docs/5.0/container) key is also included where applicable.
 
-Facade  |  Class  |  IoC Binding
+Facade  |  Class  |  Service Container Binding
 ------------- | ------------- | -------------
 App  |  [Illuminate\Foundation\Application](http://laravel.com/api/5.0/Illuminate/Foundation/Application.html)  | `app`
 Artisan  |  [Illuminate\Console\Application](http://laravel.com/api/5.0/Illuminate/Console/Application.html)  |  `artisan`
