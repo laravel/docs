@@ -108,7 +108,7 @@ Laravel 讓你能輕易地定義單一路由來處理控制器中的每一項行
 
 	Route::controller('users', 'UserController');
 
-`Controller` 方法接受兩個參數。第一個參數是控制器欲處理的 base URI，第二個是控制器的類別名稱。接著只要在你的控制器中加入方法，並在名稱前冠上它們所回應的 HTTP 動詞。
+`controller` 方法接受兩個參數。第一個參數是控制器欲處理的 base URI，第二個是控制器的類別名稱。接著只要在你的控制器中加入方法，並在名稱前冠上它們所回應的 HTTP 動詞。
 
 	class UserController extends BaseController {
 
