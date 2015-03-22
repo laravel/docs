@@ -49,7 +49,7 @@ The `array_fetch` method returns a flattened array containing the selected neste
 	$array = [
 		['developer' => ['name' => 'Taylor']],
 		['developer' => ['name' => 'Dayle']]
-	);
+	];
 
 	$array = array_fetch($array, 'developer.name');
 
