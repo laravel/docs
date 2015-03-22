@@ -195,12 +195,12 @@ use Authenticatable, CanResetPassword;
 
 您也需要添加表單和 HTML 的 facades 以及服務提供者，編輯 `config/app.php` 檔案，添加此行到 'providers' 陣列內：
 
-    'Collective\Html\HtmlServiceProvider',
+	'Collective\Html\HtmlServiceProvider',
 
 接著，添加以下到 'aliases' 陣列內：
 
-    'Form' => 'Collective\Html\FormFacade',
-    'Html' => 'Collective\Html\HtmlFacade',
+	'Form' => 'Collective\Html\FormFacade',
+	'Html' => 'Collective\Html\HtmlFacade',
 
 ### 快取管理員
 
@@ -209,6 +209,10 @@ use Authenticatable, CanResetPassword;
 ### 分頁
 
 請將所有的 `$paginator->links()` 以 `$paginator->render()` 取代。
+
+Replace any calls to `$paginator->getFrom()` and `$paginator->getTo()` with `$paginator->firstItem()` and `$paginator->lastItem()` respectively.
+
+Remove the "get" prefix from calls to `$paginator->getPerPage()`, `$paginator->getCurrentPage()`, `$paginator->getLastPage()` and `$paginator->getTotal()` (e.g. `$paginator->perPage()`).
 
 ### Beanstalk 隊列
 
@@ -275,7 +279,7 @@ Laravel 4.2 需要 PHP 5.4.0 以上。
 
 如果你使用 Iron.io queue 驅動，你將需要增加一個新的 `encrypt` 選項到你的 queue 設定檔中：
 
-    'encrypt' => true
+	'encrypt' => true
 
 <a name="upgrade-4.1.29"></a>
 ## 從 4.1.x 升級到 4.1.29

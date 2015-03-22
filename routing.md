@@ -65,7 +65,7 @@ Laravel 為所有上線使用者的 Session 產生一個 CSRF “token”。該 
 
 #### 插入 CSRF Token 到表單
 
-    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
 當然也可以在 Blade [模板引擎](/docs/5.0/templates)使用：
 
@@ -83,10 +83,10 @@ Laravel 為所有上線使用者的 Session 產生一個 CSRF “token”。該 
 	<meta name="csrf-token" content="{{ csrf_token() }}" />
 
 	$.ajaxSetup({
-            headers: {
-            	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-	});
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
 
 現在所有的 AJAX 請求將會自動帶入 CSRF token:
 
@@ -109,8 +109,8 @@ HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以當定義 `P
 
 	<form action="/foo/bar" method="POST">
 		<input type="hidden" name="_method" value="PUT">
-    	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-    </form>
+		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+	</form>
 
 <a name="route-parameters"></a>
 ## 路由參數
@@ -207,7 +207,7 @@ HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以當定義 `P
 也可以為控制器動作指定路由名稱：
 
 	Route::get('user/profile', [
-        'as' => 'profile', 'uses' => 'UserController@showProfile'
+		'as' => 'profile', 'uses' => 'UserController@showProfile'
 	]);
 
 現在你可以使用路由名稱產生 URL 或進行重導：

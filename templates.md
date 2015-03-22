@@ -101,9 +101,9 @@ Blade 是 Laravel 所提供的一個簡單卻又非常強大的模板引擎。�
 	@endforeach
 
 	@forelse($users as $user)
-	  	<li>{{ $user->name }}</li>
+		<li>{{ $user->name }}</li>
 	@empty
-	  	<p>No users</p>
+		<p>No users</p>
 	@endforelse
 
 	@while (true)

@@ -35,18 +35,18 @@ Laravel 透過 `Validation` 類別讓你可以簡單、方便的驗證資料正�
 
 #### 驗證多個欄位
 
-    $validator = Validator::make(
-        [
-            'name' => 'Dayle',
-            'password' => 'lamepassword',
-            'email' => 'email@example.com'
-        ],
-        [
-            'name' => 'required',
-            'password' => 'required|min:8',
-            'email' => 'required|email|unique:users'
-        ]
-    );
+	$validator = Validator::make(
+		[
+			'name' => 'Dayle',
+			'password' => 'lamepassword',
+			'email' => 'email@example.com'
+		],
+		[
+			'name' => 'required',
+			'password' => 'required|min:8',
+		'email' => 'required|email|unique:users'
+		]
+	);
 
 當一個 `Validator` 實例被建立，`fails`（或 `passes`）這二個方法可以取得驗證結果。
 

@@ -60,9 +60,11 @@ In addition to VirtualBox, Homestead also supports VMware. To use the VMware pro
 
 ### 安裝 Homestead
 
-#### 手動透過 Git 安裝（本地端沒有 PHP）
+#### 方法 1 - 手動透過 Git 安裝（本地端沒有 PHP）
 
 如果你不希望在你的本機上安裝 PHP ，你可以簡單地透過手動複製資源庫的方式來安裝 Homestead。建議可將資源庫複製至你的 "home" 目錄中的 `Homestead` 資料夾，如此一來 Homestead 封裝包將能提供主機服務給你所有的 Laravel（及 PHP）專案:
+
+If you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
@@ -72,7 +74,7 @@ In addition to VirtualBox, Homestead also supports VMware. To use the VMware pro
 
 此 `Homestead.yaml` 檔，將會被放置在你的 `~/.homestead` 目錄中。
 
-#### 透過 Composer + PHP 工具
+#### 方法 2 - 透過 Composer + PHP 工具
 
 一旦封裝包已經安裝進你的 Vagrant 安裝程式，你就可以準備透過 Composer `global` 指令來安裝 Homestead CLI 工具：
 
@@ -173,6 +175,8 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 
 一旦 Homestead 環境上架且運行後，你可能會需要為 Laravel 應用程式增加更多的 Nginx 站台。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。有兩種方式可以達成：第一種，在 `Homestead.yaml` 檔案中增加站台然後執行 `homestead provision` 或是 `vagrant provision`。
 
+> **Note:** This process is destructive. When running the `provision` command, your existing databases will be destroyed and recreated.
+
 另外，也可以使用存放在 Homestead 環境中的 `serve` 指令檔。要使用 `serve` 指令檔，請先 SSH 進入 Homestead 環境中，並執行下列命令：
 
 	serve domain.app /home/vagrant/Code/path/to/public/directory
@@ -205,10 +209,10 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
 
 [Blackfire Profiler](https://blackfire.io) by SensioLabs automatically gathers data about your code's execution, such as RAM, CPU time, and disk I/O. Homestead makes it a breeze to use this profiler for your own applications.
 
-All of the proper packages have already been installed on your Homestead box, you simply need to set a Blackfire Server ID and token in your `Homestead.yaml` file:
+All of the proper packages have already been installed on your Homestead box, you simply need to set a Blackfire **Server** ID and token in your `Homestead.yaml` file:
 
 	blackfire:
-	    - id: your-id
-	      token: your-token
+	    - id: your-server-id
+	      token: your-server-token
 
 Once you have configured your Blackfire credentials, re-provision the box using `homestead provision` or `vagrant provision`. Of course, be sure to review the [Blackfire documentation](https://blackfire.io/getting-started) to learn how to install the Blackfire companion extension for your web browser.
