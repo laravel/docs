@@ -123,7 +123,7 @@
 
 > **備註：**Laravel 沒有預設目錄放置視圖組件。你可以自由的把它們放在你想要的地方。舉例來說，你可以建立一個 `App\Http\ViewComposers` 目錄。
 
-Remember, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
+記住，你需要把服務提供者加入在 `config/app.php` 設定檔內的 `providers` 陣列。
 
 現在我們已經註冊了視圖組件，並且在每次 `profile` 視圖渲染的時候，`ProfileComposer@compose` 都將會被執行。接下來我們來看看這個類別要如何定義：
 
