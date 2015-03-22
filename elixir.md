@@ -293,36 +293,66 @@ Now that you've told Elixir which tasks to execute, you only need to trigger Gul
 > **Note:** All tasks will assume a development environment, and will exclude minification. For production, use `gulp --production`.
 
 <a name="extensions"></a>
-## Extensions
+## Custom Tasks and Extensions
 
-You can even create your own Gulp tasks, and hook them into Elixir. Imagine that you want to add a fun task that
- uses the Terminal to verbally notify you with some message. Here's what that might look like:
+Sometimes, you'll want to hook your own Gulp tasks into Elixir. Perhaps you have a special bit of functionality that you'd like Elixir to mix and watch for you. No problem!
+
+As an example, imagine that you have a general task that simply speaks a bit of text when called.
+
+```javascript
+gulp.task("speak", function() {
+	var message = "Tea...Earl Grey...Hot";
+
+	gulp.src("").pipe(shell("say " + message));
+});
+```
+
+Easy enough. From the command line, you may, of course, call `gulp speak` to trigger the task. To add it to Elixir, however, use the `mix.task()` method:
+
+```javascript
+elixir(function(mix) {
+    mix.task('speak');
+});
+```
+
+That's it! Now, each time you run Gulp, your custom "speak" task will be executed alongside any other Elixir tasks that you've mixed in. To additionally register a watcher, so that your custom tasks will be re-triggered each time one or more files are modified, you may pass a regular expression as the second argument.
+
+```javascript
+elixir(function(mix) {
+    mix.task('speak', 'app/**/*.php');
+});
+```
+
+By adding this second argument, we've instructed Elixir to re-trigger the "speak" task each time a PHP file in the "app/" directory is saved.
+
+
+For even more flexibility, you can create full Elixir extensions. Using the previous "speak" example, you may write an extension, like so:
 
 ```javascript
 var gulp = require("gulp");
 var shell = require("gulp-shell");
 var elixir = require("laravel-elixir");
 
-elixir.extend("message", function(message) {
+elixir.extend("speak", function(message) {
 
-	gulp.task("say", function() {
+	gulp.task("speak", function() {
 		gulp.src("").pipe(shell("say " + message));
 	});
 
-	return this.queueTask("say");
+	return this.queueTask("speak");
 
  });
 ```
 
-Notice that we `extend` Elixir's API by passing the key that we will use within our Gulpfile, as well as a callback function that will create the Gulp task.
+Notice that we `extend` Elixir's API by passing the name that we will reference within our Gulpfile, as well as a callback function that will create the Gulp task.
 
-If you want your custom task to be monitored, then register a watcher as well.
+As before, if you want your custom task to be monitored, then register a watcher.
 
 ```javascript
-this.registerWatcher("message", "**/*.php");
+this.registerWatcher("speak", "app/**/*.php");
 ```
 
-This lines designates that when any file that matches the regex, `**/*.php` is modified, we want to trigger the `message` task.
+This lines designates that when any file that matches the regular expression, `app/**/*.php`, is modified, we want to trigger the `speak` task.
 
 That's it! You may either place this at the top of your Gulpfile, or instead extract it to a custom tasks file. If you choose the latter approach, simply require it into your Gulpfile, like so:
 
@@ -334,7 +364,7 @@ You're done! Now, you can mix it in.
 
 ```javascript
 elixir(function(mix) {
-	mix.message("Tea, Earl Grey, Hot");
+	mix.speak("Tea, Earl Grey, Hot");
 });
 ```
 
