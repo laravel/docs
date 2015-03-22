@@ -195,12 +195,12 @@ For example, you may add `"laravelcollective/html": "~5.0"` to your `composer.js
 
 You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php` and add this line to the 'providers' array:
 
-    'Collective\Html\HtmlServiceProvider',
+	'Collective\Html\HtmlServiceProvider',
 
 Next, add these lines to the 'aliases' array:
 
-    'Form' => 'Collective\Html\FormFacade',
-    'Html' => 'Collective\Html\HtmlFacade',
+	'Form' => 'Collective\Html\FormFacade',
+	'Html' => 'Collective\Html\HtmlFacade',
 
 ### CacheManager
 
@@ -209,6 +209,10 @@ If your application code was injecting `Illuminate\Cache\CacheManager` to get a 
 ### Pagination
 
 Replace any calls to `$paginator->links()` with `$paginator->render()`.
+
+Replace any calls to `$paginator->getFrom()` and `$paginator->getTo()` with `$paginator->firstItem()` and `$paginator->lastItem()` respectively.
+
+Remove the "get" prefix from calls to `$paginator->getPerPage()`, `$paginator->getCurrentPage()`, `$paginator->getLastPage()` and `$paginator->getTotal()` (e.g. `$paginator->perPage()`).
 
 ### Beanstalk Queuing
 
@@ -275,7 +279,7 @@ If you are extending the `Illuminate\Pagination\Presenter` class, the abstract m
 
 If you are using the Iron.io queue driver, you will need to add a new `encrypt` option to your queue configuration file:
 
-    'encrypt' => true
+	'encrypt' => true
 
 <a name="upgrade-4.1.29"></a>
 ## Upgrading To 4.1.29 From <= 4.1.x

@@ -101,9 +101,9 @@ If you don't want the data to be escaped, you may use the following syntax:
 	@endforeach
 
 	@forelse($users as $user)
-	  	<li>{{ $user->name }}</li>
+		<li>{{ $user->name }}</li>
 	@empty
-	  	<p>No users</p>
+		<p>No users</p>
 	@endforelse
 
 	@while (true)

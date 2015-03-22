@@ -60,9 +60,9 @@ If this command fails, you may have an old version of Vagrant that requires the 
 
 ### Installing Homestead
 
-#### Manually Via Git (No Local PHP)
+#### Option 1 - Manually Via Git (No Local PHP)
 
-Alternatively, if you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
+If you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
@@ -72,7 +72,7 @@ Once you have installed the Homestead CLI tool, run the `bash init.sh` command t
 
 The `Homestead.yaml` file will be placed in your `~/.homestead` directory.
 
-#### With Composer + PHP Tool
+#### Option 2 - With Composer + PHP Tool
 
 Once the box has been added to your Vagrant installation, you are ready to install the Homestead CLI tool using the Composer `global` command:
 
@@ -172,6 +172,8 @@ To connect to your MySQL or Postgres database from your main machine via Navicat
 ### Adding Additional Sites
 
 Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. There are two ways to do this: First, you may simply add the sites to your `Homestead.yaml` file and then run `homestead provision` or `vagrant provision`.
+
+> **Note:** This process is destructive. When running the `provision` command, your existing databases will be destroyed and recreated.
 
 Alternatively, you may use the `serve` script that is available on your Homestead environment. To use the `serve` script, SSH into your Homestead environment and run the following command:
 
