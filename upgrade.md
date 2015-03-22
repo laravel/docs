@@ -210,6 +210,10 @@ If your application code was injecting `Illuminate\Cache\CacheManager` to get a 
 
 Replace any calls to `$paginator->links()` with `$paginator->render()`.
 
+Replace any calls to `$paginator->getFrom()` and `$paginator->getTo()` with `$paginator->firstItem()` and `$paginator->lastItem()` respectively.
+
+Remove the "get" prefix from calls to `$paginator->getPerPage()`, `$paginator->getCurrentPage()`, `$paginator->getLastPage()` and `$paginator->getTotal()` (e.g. `$paginator->perPage()`).
+
 ### Beanstalk Queuing
 
 Laravel 5.0 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"`.
