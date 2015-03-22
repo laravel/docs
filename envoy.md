@@ -157,8 +157,21 @@ This is an amazingly simple way to keep your team notified of the tasks being ru
 The following syntax may be used to send a notification to [Slack](https://slack.com):
 
 	@after
-		@slack('team', 'token', 'channel')
+		@slack('hook', 'channel', 'message')
 	@endafter
+
+You may retrieve your webhook URL by creating an `Incoming WebHooks` integration on Slack's website. The `hook` argument should be the entire webhook URL provided by the Incoming Webhooks Slack Integration. For example:
+
+	https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYYY/XXXXXXXXXXXXXXX
+
+You may provide one of the following for the channel argument:
+
+- To send the notification to a channel: `#channel`
+- To send the notification to a user: `@user`
+
+If no `channel` argument is provided the default channel will be used.
+
+> Note: Slack notifications will only be sent if all tasks complete successfully.
 
 <a name="envoy-updating-envoy"></a>
 ## Updating Envoy
