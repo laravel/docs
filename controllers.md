@@ -220,7 +220,7 @@ DELETE    | /photo/{photo}        | destroy      | photo.destroy
 
 #### 建構式注入
 
-Laravel [服務容器](/docs/5.0/container) 用於解析所有的 Laravel 控制器。因此，你可以在控制器所需要的建構式中，對相依作任何的型別限制。
+Laravel [服務容器](/docs/5.0/container) 用於解析所有的 Laravel 控制器。因此，在建構式中，你可以對控制器需要的任何相依做型別限制：
 
 	<?php namespace App\Http\Controllers;
 
