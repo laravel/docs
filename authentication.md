@@ -11,13 +11,13 @@
 <a name="introduction"></a>
 ## Introdução
 
-Laravel faz a implementação de autenticação muito simples. Na verdade, quase tudo está configurado para você de fora da caixa. O arquivo de configuração de autenticação está localizado no diretório `config/auth.php`, que contém muitas opções bem documentadas para adequar o comportamento dos serviços de autenticação.
+Laravel faz a implementação de autenticação de maneira muito simples. Na verdade, quase tudo está previamente configurado para você. O arquivo de configuração da autenticação está localizado no diretório `config/auth.php`, o qual contém muitas opções bem documentadas para adequar o comportamento dos serviços de autenticação.
 
-Por Padrão, Laravel aicionona um modelo `App\User` em seu diretório `app`. Este modelo poderá ser usado com o Driver de Autentição do Eloquent. 
+Por Padrão, Laravel adiciona um modelo `App\User` em seu diretório `app`. Este modelo poderá ser usado com o Driver de Autentição do Eloquent. 
 
-Lembre-se: quando estiver criando o schema do banco de dados para este modelo, faça que a coluna password tenha no mínimo 60 caracteres. Também, antes de começar, garanta que a sua tabela `users` (ou equivalente) contenha uma coluna padrão Null `remember_token` com no mínimo 100 caracteres. Esta coluna será usada para armazenar uma token sessões "Me lembre"  que são mantidas pela sua aplicação. Isto pode ser feito usando o método `$table->rememberToken();` na migração. Claro que, Laravel 5 manda migrações para estas colunas de fora da caixa. 
+Lembre-se: quando estiver criando o schema do banco de dados para este modelo, faça com que a coluna password tenha no mínimo 60 caracteres. Também, antes de começar, garanta que a sua tabela `users` (ou equivalente) contenha uma coluna padrão Null `remember_token` com no mínimo 100 caracteres. Esta coluna será usada para armazenar um token de sessões "Lembre-me"  que são mantidas pela sua aplicação. Isto pode ser feito usando o método `$table->rememberToken();` na migração. Por padrão Laravel 5 realiza as migrações para estas colunas. 
 
-Se sua aplicação não estiver utilizando o Eloquent, você pode usar o driver de autenticação `database` que usa o contrutor de querys do Laravel. 
+Se sua aplicação não estiver utilizando o Eloquent, você pode usar o driver de autenticação `database` que usa o construtor de querys do Laravel. 
 
 <a name="authenticating-users"></a>
 ## Authenticating Users
