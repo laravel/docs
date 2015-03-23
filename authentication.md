@@ -1,7 +1,7 @@
 # Authentication
 
 - [Introdução](#introduction)
-- [Authenticating Users](#authenticating-users)
+- [Autenticação de usuários](#authenticating-users)
 - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
 - [Protecting Routes](#protecting-routes)
 - [HTTP Basic Authentication](#http-basic-authentication)
@@ -20,11 +20,11 @@ Lembre-se: quando estiver criando o schema do banco de dados para este modelo, f
 Se sua aplicação não estiver utilizando o Eloquent, você pode usar o driver de autenticação `database` que usa o construtor de querys do Laravel. 
 
 <a name="authenticating-users"></a>
-## Authenticating Users
+## Autenticação de usuários
 
-Laravel ships with two authentication related controllers out of the box. The `AuthController` handles new user registration and "logging in", while the `PasswordController` contains the logic to help existing users reset their forgotten passwords.
+Laravel vem pré-configurado com duas autenticações relacionadas aos controladores (controllers). O `AuthController`gerencia o registro de novos usuários e a autenticação ("logging in"), enquanto o `PasswordController`contem a lógica para ajudar usuários existentes na recuperação de suas senhas esquecidas.
 
-Each of these controllers uses a trait to include their necessary methods. For many applications, you will not need to modify these controllers at all. The views that these controllers render are located in the `resources/views/auth` directory. You are free to customize these views however you wish.
+Cada um destes controladores (controllers) usa um trait para incluir os métodos necessários. Para muitas aplicações você não precisará modificá-los. As visões (views) que estes controladores (controllers) renderizam estão localizadas no diretório `resources/views/auth`. Você pode personaliza-las da maneira que melhor atender à sua aplicação.
 
 ### The User Registrar
 
