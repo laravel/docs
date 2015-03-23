@@ -26,15 +26,17 @@ Laravel vem pré-configurado com duas autenticações relacionadas aos controlad
 
 Cada um destes controladores (controllers) usa um trait para incluir os métodos necessários. Para muitas aplicações você não precisará modificá-los. As visões (views) que estes controladores (controllers) renderizam estão localizadas no diretório `resources/views/auth`. Você pode personaliza-las da maneira que melhor atender à sua aplicação.
 
-### The User Registrar
+### O Registro do usuário
 
-To modify the form fields that are required when a new user registers with your application, you may modify the `App\Services\Registrar` class. This class is responsible for validating and creating new users of your application.
+Para modificar os campos do formulário que são necessários quando um novo usuário se registra em sua aplicação, você pode alterar a classe `App\Services\Registrar`. Essta classe é responsável pela validação e criação de novos usuários em sua aplicação.
 
 The `validator` method of the `Registrar` contains the validation rules for new users of the application, while the `create` method of the `Registrar` is responsible for creating new `User` records in your database. You are free to modify each of these methods as you wish. The `Registrar` is called by the `AuthController` via the methods contained in the `AuthenticatesAndRegistersUsers` trait.
 
-#### Manual Authentication
+O método `validator` da classe `Registrar` contem as regras de validação para novos usuários na aplicação, enquanto o método `create` da classe `Registrar` é responsável pela criação do novo registro de `User` (usuário) no banco de dados. Você pode modificar cada um destes métodos para atender às necessidades de sua aplicação. `Registrar` é chamado por `AuthController` por meio dos métodos existentes no trait `AuthenticatesAndRegistersUsers`.
 
-If you choose not to use the provided `AuthController` implementation, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method:
+#### Autenticação manual
+
+Se você optar por não utilizar a implementação do provedor `AuthController`, será necessário gerenciar a autenticação de seus usuários usando as classes de autenticação do Laravel diretamente. Não se preocupe, isto é simples. Primeiro vamos verificar um método  `attempt` (tentativa):
 
 	<?php namespace App\Http\Controllers;
 
@@ -58,26 +60,26 @@ If you choose not to use the provided `AuthController` implementation, you will 
 
 	}
 
-The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/5.0/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, a new authenticated session will be started for the user.
+O método `attempt` aceita um array de pares  chave / valor como seu primeiro argumento. O valor de `password` (senha) será [criptografado](docs/5.0/hashing). Os demais valores no array serão utilizados para encontrar o usuário no banco de dados. Assim, no exemplo acima, o usuário será recuperado pelo valor da coluna `email`. Se o usuário for encontrado, a senha criptografada armazanada no banco de dados, será comparada com o valor criptografado da senha passado pelo método na array. Se duas senhas criptografadas combinarem com a pesquisada, uma nova seção de usuário autenticado será iniciada.
 
-The `attempt` method will return `true` if authentication was successful. Otherwise, `false` will be returned.
+O método `attempt` irá retornar `true` se a autenticação for realizada com sucesso. Caso contrário irá retornar `false`.
 
-> **Note:** In this example, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
+> **Nota:** neste exemplo, `email` não é uma opção obrigatória, ele é usado apenas como um exemplo. Você deverá utilizar qualquer nome de coluna correspondente a um "username" (nome de usuário) em seu banco de dados.
 
-The `intended` redirect function will redirect the user to the URL they were attempting to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
+A função de redirecionamento `intended` redirecionará o usuário para a URL que ele estava tentando acessar antes de ser captuado pelo filtro de autenticação. Uma URI de retaguarda deve ser fornecida para o método caso o destino previamente tentado não estiver disponível.
 
-#### Authenticating A User With Conditions
+#### Autenticando um usuário com condições
 
-You also may add extra conditions to the authentication query:
+Você também pode adicionar condições extrar para a query de autenticação:
 
     if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1]))
     {
         // The user is active, not suspended, and exists.
     }
 
-#### Determining If A User Is Authenticated
+#### Determinando se um usuário está autenticado
 
-To determine if the user is already logged into your application, you may use the `check` method:
+Para determinar se um usuário já está autenticado (logged) em sua aplicação, pode-se utilizar o método `check`:
 
 	if (Auth::check())
 	{
