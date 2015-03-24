@@ -129,7 +129,7 @@ If you need to access a route parameter value outside of a route, you may use th
 
 Route filters provide a convenient way of limiting access to a given route, which is useful for creating areas of your site which require authentication. There are several filters included in the Laravel framework, including an `auth` filter, an `auth.basic` filter, a `guest` filter, and a `csrf` filter. These are located in the `app/filters.php` file.
 
-> **Note:** Filters are disabled for unit testing. This may cause unexpected behaviour if you have an environment named `testing`
+> **Note:** When the current environment is `testing`, filters are disabled for unit tests
 
 #### Defining A Route Filter
 
