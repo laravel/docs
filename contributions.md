@@ -59,3 +59,5 @@ Laravel follows the [PSR-4](https://github.com/php-fig/fig-standards/blob/master
 - A class' opening `{` must be on the same line as the class name.
 - Functions and control structures must use Allman style braces.
 - Indent with tabs, align with spaces.
+
+> **Note:** By putting the class namespace declaration on the same line as `<?php`, phpDocumentor will throw error: "No summary was found for this file"
