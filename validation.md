@@ -61,12 +61,12 @@ query the database and confirm uniqueness. To override this, do the following:
 		[
 			'name' => 'Dayle',
 			'password' => 'lamepassword',
-			'email' => 'email@example.com'
+			'email' => 'email@example.com',
 		],
 		[
 			'name' => 'required',
 			'password' => 'required|min:8',
-			'email' => 'required|email|unique:users'
+			'email' => 'required|email|unique:users',
 		]
 	);
 
