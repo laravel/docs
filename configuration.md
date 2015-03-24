@@ -37,7 +37,7 @@ Once Laravel is installed, you should also [configure your local environment](/d
 <a name="permissions"></a>
 ### Permissions
 
-Laravel may require one set of permissions to be configured: folders within `storage` require write access by the web server.
+Laravel may require one set of permissions to be configured: folders within `storage` and `vendor` require write access by the web server.
 
 <a name="accessing-configuration-values"></a>
 ## Accessing Configuration Values
@@ -134,6 +134,8 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]
+
+If your web host doesn't allow the `FollowSymlinks` option, try replacing it with `Options +SymLinksIfOwnerMatch`.
 
 ### Nginx
 
