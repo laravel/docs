@@ -634,7 +634,7 @@ Even though the `posts` table does not contain a `country_id` column, the `hasMa
 
 		public function posts()
 		{
-			return $this->hasManyThrough('App\Post', 'User');
+			return $this->hasManyThrough('App\Post', 'App\User');
 		}
 
 	}
@@ -645,7 +645,7 @@ If you would like to manually specify the keys of the relationship, you may pass
 
 		public function posts()
 		{
-			return $this->hasManyThrough('App\Post', 'User', 'country_id', 'user_id');
+			return $this->hasManyThrough('App\Post', 'App\User', 'country_id', 'user_id');
 		}
 
 	}
