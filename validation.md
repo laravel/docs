@@ -58,11 +58,11 @@ query the database and confirm uniqueness. To override this, do the following:
 	$verifier->setConnection('connectionName');
 
 	$validator = Validator::make(
-	[
-		'name' => 'Dayle',
-		'password' => 'lamepassword',
-		'email' => 'email@example.com'
-	],
+		[
+			'name' => 'Dayle',
+			'password' => 'lamepassword',
+			'email' => 'email@example.com'
+		],
 		[
 			'name' => 'required',
 			'password' => 'required|min:8',
