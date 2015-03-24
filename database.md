@@ -50,6 +50,13 @@ Once you have configured your database connection, you may run queries using the
 
 The `select` method will always return an `array` of results.
 
+You can also run a select query using named prepared statements.
+
+	$results = DB::select('select * from users where id = :id', ['id' => 1]);
+	
+> **Note:** You can not reuse the same named prepared statement.
+
+
 #### Running An Insert Statement
 
 	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
