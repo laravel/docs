@@ -50,6 +50,10 @@ For options, the argument `mode` may be: `InputOption::VALUE_REQUIRED`, `InputOp
 
 The `VALUE_IS_ARRAY` mode indicates that the switch may be used multiple times when calling the command:
 
+	InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY
+	
+Would then allow for this command:
+
 	php artisan foo --option=bar --option=baz
 
 The `VALUE_NONE` option indicates that the option is simply used as a "switch":
