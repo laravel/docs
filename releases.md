@@ -1,8 +1,16 @@
 # Release Notes
 
+- [Support Policy](#support-policy)
 - [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
 - [Laravel 4.1](#laravel-4.1)
+
+<a name="support-policy"></a>
+## Support Policy
+
+Security fixes are **always** applied to the previous major version of Laravel. Currently, **all** security fixes and patches will be applied to both Laravel 5.x **and** Laravel 4.x.
+
+When feasible, security fixes will also be applied to even older releases of the framework, such as Laravel 3.x.
 
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
