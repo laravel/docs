@@ -135,6 +135,8 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]
 
+If `Options +FollowSymLinks` creates a 500 error, try replacing it with `Options +SymLinksIfOwnerMatch`.
+
 ### Nginx
 
 On Nginx, the following directive in your site configuration will allow "pretty" URLs:
