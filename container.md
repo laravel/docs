@@ -54,7 +54,7 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 
 在這範例裡， 當播客被購買時， `PurchasePodcast` 命令處理器需要寄封 e-mails，因此，我們將 **注入** 能寄送 e-mails 的服務，由於服務被注入，我們能容易地切換成其它實例，當測試應用程式時，一樣能輕易地 "mock" 或建立假的發信者(mailer)實例。
 
-在建置強大應用程式，以及為 Lavael 核心貢獻，須深入理解 Lavavel 服務容器，。
+在建置強大應用程式，以及為 Laravel 核心貢獻，須深入理解 Laravel 服務容器。
 
 <a name="basic-usage"></a>
 ## 基本用法
@@ -186,7 +186,7 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 
 ### 設計成介面
 
-為了"隔離" `createOrderHander` 倚靠於事件推送變化，可以定義 `EventPusher` 介面和 `PusherEventPusher` 實例：
+為了"隔離" `CreateOrderHander` 倚靠於事件推送變化，可以定義 `EventPusher` 介面和 `PusherEventPusher` 實例：
 
 	<?php namespace App\Contracts;
 
