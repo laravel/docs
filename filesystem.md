@@ -127,8 +127,9 @@ The first argument of the `extend` method is the name of the driver and the seco
 	use League\Flysystem\Filesystem;
 	use Dropbox\Client as DropboxClient;
 	use League\Flysystem\Dropbox\DropboxAdapter;
+	use Illuminate\Support\ServiceProvider;
 
-	class DropboxFilesystemServiceProvider {
+    class DropboxFilesystemServiceProvider extends ServiceProvider {
 
 		public function boot()
 		{
@@ -139,5 +140,10 @@ The first argument of the `extend` method is the name of the driver and the seco
 				return new Filesystem(new DropboxAdapter($client));
 			});
 		}
+		
+		public function register()
+        {
+            //
+        }
 
 	}
