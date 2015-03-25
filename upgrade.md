@@ -19,7 +19,7 @@ Update the `$compiledPath` variable in `bootstrap/autoload.php` to the following
 
 ### Create `bootstrap/cache` Directory
 
-Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`). Place a `.gitignore` file in this directory will the following contents:
+Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`). Place a `.gitignore` file in this directory with the following contents:
 
 	*
 	!.gitignore
