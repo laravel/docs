@@ -80,6 +80,8 @@ Once the box has been added to your Vagrant installation, you are ready to insta
 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `homestead` executable is found when you run the `homestead` command in your terminal.
 
+	PATH=~/.composer/vendor/bin:$PATH
+
 Once you have installed the Homestead CLI tool, run the `init` command to create the `Homestead.yaml` configuration file:
 
 	homestead init
