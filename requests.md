@@ -161,25 +161,25 @@ _By "forever", we really mean five years._
 
 #### Queueing Cookies
 
-We can also queue a cookie using Laravel’s `CookieJar`. Queued cookies are automatically added to a subsequent response.
+You may also "queue" a cookie to be added to the outgoing response, even before that response has been created:
 
 	<?php namespace App\Http\Controllers;
 
-	use Illuminate\Cookie\CookieJar;
+	use Cookie;
 	use Illuminate\Routing\Controller;
-	use Illuminate\Http\Response;
 
 	class UserController extends Controller
 	{
 		/**
 		 * Update a resource
 		 *
-		 * @param  \Illuminate\Cookie\CookieJar $cookie
+		 * @return Response
 		 */
-		 public function update(CookieJar $cookie)
+		 public function update()
 		 {
-		 	$cookie->queue('name', 'value', $minutes);
-		 	return (new Response($content, 200));
+		 	Cookie::queue('name', 'value');
+
+		 	return response('Hello World');
 		 }
 	}
 
