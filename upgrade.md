@@ -24,7 +24,7 @@ Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`
 	*
 	!.gitignore
 
-This directory will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
+This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
 
 <a name="upgrade-5.0.16"></a>
 ## Upgrading To 5.0.16
