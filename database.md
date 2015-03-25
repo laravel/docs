@@ -50,6 +50,10 @@ Once you have configured your database connection, you may run queries using the
 
 The `select` method will always return an `array` of results.
 
+You may also execute a query using named bindings:
+
+	$results = DB::select('select * from users where id = :id', ['id' => 1]);
+
 #### Running An Insert Statement
 
 	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);

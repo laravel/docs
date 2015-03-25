@@ -44,7 +44,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 		[
 			'name' => 'required',
 			'password' => 'required|min:8',
-		'email' => 'required|email|unique:users'
+			'email' => 'required|email|unique:users'
 		]
 	);
 
@@ -579,6 +579,20 @@ The field under validation must be a valid timezone identifier according to the 
 #### unique:_table_,_column_,_except_,_idColumn_
 
 The field under validation must be unique on a given database table. If the `column` option is not specified, the field name will be used.
+
+Occasionally, you may need to set a custom connection for database queries made by the Validator. As seen above, setting `unique:users` as a validation rule will use the default database connection to query the database. To override this, do the following:
+
+	$verifier = App::make('validation.presence');
+
+	$verifier->setConnection('connectionName');
+
+	$validator = Validator::make($input, [
+		'name' => 'required',
+		'password' => 'required|min:8',
+		'email' => 'required|email|unique:users',
+	]);
+
+	$validator->setPresenceVerifier($verifier);
 
 #### Basic Usage Of Unique Rule
 

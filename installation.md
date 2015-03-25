@@ -59,7 +59,7 @@ Once Laravel is installed, you should also [configure your local environment](/d
 <a name="permissions"></a>
 ### Permissions
 
-Laravel may require some permissions to be configured: folders within `storage` require write access by the web server.
+Laravel may require some permissions to be configured: folders within `storage` and `vendor` require write access by the web server.
 
 <a name="pretty-urls"></a>
 ## Pretty URLs
