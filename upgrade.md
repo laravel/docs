@@ -1,11 +1,30 @@
 # Upgrade Guide
 
+- [Upgrading To 5.1.0](#upgrade-5.1.0)
 - [Upgrading To 5.0.16](#upgrade-5.0.16)
 - [Upgrading To 5.0 From 4.2](#upgrade-5.0)
 - [Upgrading To 4.2 From 4.1](#upgrade-4.2)
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-5.1.0"></a>
+## Upgrading To 5.1.0
+
+### Update `bootstrap/autoload.php`
+
+Update the `$compiledPath` variable in `bootstrap/autoload.php` to the following:
+
+	$compiledPath = __DIR__.'/cache/compiled.php';
+
+### Create `bootstrap/cache` Directory
+
+Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`). Place a `.gitignore` file in this directory will the following contents:
+
+	*
+	!.gitignore
+
+This directory will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
 
 <a name="upgrade-5.0.16"></a>
 ## Upgrading To 5.0.16
