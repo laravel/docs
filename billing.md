@@ -2,8 +2,8 @@
 
 - [Introdução](#introduction)
 - [Configuração](#configuration)
-- [Subscribing To A Plan](#subscribing-to-a-plan)
-- [No Card Up Front](#no-card-up-front)
+- [Inscrevendo-se em um Plano.](#subscribing-to-a-plan)
+- [Não requerer cartão de crédito no período Trial](#no-card-up-front)
 - [Swapping Subscriptions](#swapping-subscriptions)
 - [Subscription Quantity](#subscription-quantity)
 - [Cancelling A Subscription](#cancelling-a-subscription)
@@ -62,6 +62,7 @@ Por fim, defina sua chave Stripe em um dos seus arquivos do bootstrap ou nos for
 
 <a name="subscribing-to-a-plan"></a>
 ## Inscrevendo-se em um Plano.
+
 Uma vez que você tenha uma instacia do seu modelo, você pode facilmente inscrever este usuário para um plano do Stripe. 
 
 	$user = User::find(1);
@@ -76,30 +77,30 @@ Se você desejar aplica algum cupon quando estiver criando a inscrição, você 
 
 O método `subscription` irá criar uma inscrição no Stripe automaticamente, bem como atualizar o seu banco de dados com o ID do cliente e outras informações importantes faturamento. Se seu plano foi configurado como trial(tempporário) no Stripe, a data final do trial será automaticamente definida no registro do usuário.
 
-If your plan has a trial period that is **not** configured in Stripe, you must set the trial end date manually after subscribing:
+Se o seu plano tem um período experimental que é ** não ** configurado no Stripe, você tem que definir a data final do período trial manualment após a inscrição: 
 
 	$user->trial_ends_at = Carbon::now()->addDays(14);
 
 	$user->save();
 
-### Specifying Additional User Details
+### Especificando Detalhes Adicionais do Usuário 
 
-If you would like to specify additional customer details, you may do so by passing them as second argument to the `create` method:
+Se você gostar de especificar detalhes adicionais dos clientes, você pode fazer, passando-os como segundo argumento para o méotodo `create`:
 
 	$user->subscription('monthly')->create($creditCardToken, [
 		'email' => $email, 'description' => 'Our First Customer'
 	]);
 
-To learn more about the additional fields supported by Stripe, check out Stripe's [documentation on customer creation](https://stripe.com/docs/api#create_customer).
+Para aprender mais sobre os campos adicionais suportados pelo Stripe, dê uma olhada na documentação do Stripe [documentation on customer creation](https://stripe.com/docs/api#create_customer).
 
 <a name="no-card-up-front"></a>
-## No Card Up Front
+## Não requerer cartão de crédito no período Trial
 
-If your application offers a free-trial with no credit-card up front, set the `cardUpFront` property on your model to `false`:
+Se sua aplicação ofrecer um período-trial gratís sem a requisão de cartão de crédito para a inscrição, defina a propriedade `cardUpFront` no seu modelo como `false`:
 
 	protected $cardUpFront = false;
 
-On account creation, be sure to set the trial end date on the model:
+Na criação da conta, tenha certeza de definir a data final do período trial no modelo.
 
 	$user->trial_ends_at = Carbon::now()->addDays(14);
 
