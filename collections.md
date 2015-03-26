@@ -7,7 +7,7 @@
 ## Introdução
 
 
-A classe `Illuminate\Support\Collection` um nativo, conveniente warapper para trabalhar com arrays de dados. Por exemplo, dê uma olhada no seguinte código. Usaremos o helper `collect` para criar uma nova instância de uma coleção a partir de um array:
+A classe `Illuminate\Support\Collection` um nativo, conveniente wrapper para trabalhar com arrays de dados. Por exemplo, dê uma olhada no seguinte código. Usaremos o helper `collect` para criar uma nova instância de uma coleção a partir de um array:
 
 	$collection = collect(['taylor', 'abigail', null])->map(function($name)
 	{
