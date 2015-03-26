@@ -52,7 +52,7 @@ To publish your package's views to the `resources/views/vendor` directory, you s
 		$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
 
 		$this->publishes([
-			__DIR__.'/path/to/views' => base_path('resources/views/vendor/courier'),
+			__DIR__.'/path/to/views' => base_path('resources/views/vendor/courier')
 		]);
 	}
 
@@ -92,7 +92,7 @@ Typically, you will want to publish your package's configuration file to the app
 To publish a configuration file, just use the `publishes` method from the `boot` method of your service provider:
 
 	$this->publishes([
-		__DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
+		__DIR__.'/path/to/config/courier.php' => config_path('courier.php')
 	]);
 
 Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified location. Of course, once your configuration has been published, it can be accessed like any other configuration file:
@@ -111,7 +111,7 @@ You may also choose to merge your own package configuration file with the applic
 Your packages may have assets such as JavaScript, CSS, and images. To publish assets, use the `publishes` method from your service provider's `boot` method. In this example, we will also add a "public" asset group tag.
 
 	$this->publishes([
-		__DIR__.'/path/to/assets' => public_path('vendor/courier'),
+		__DIR__.'/path/to/assets' => public_path('vendor/courier')
 	], 'public');
 
 Now, when your package's users execute the `vendor:publish` command, your files will be copied to the specified location. Since you typically will need to overwrite the assets every time the package is updated, you may use the `--force` flag:
