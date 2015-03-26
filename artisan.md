@@ -134,7 +134,7 @@ Let's look at a few more scheduling examples:
 	$schedule->command('foo')->saturdays();
 	$schedule->command('foo')->sundays();
 
-### Prevent Jobs From Overlapping
+#### Prevent Jobs From Overlapping
 
 By default, scheduled jobs will be run even if the previous instance of the job is still running. To prevent this, you may use the `withoutOverlapping` method:
 
