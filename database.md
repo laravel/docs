@@ -50,7 +50,7 @@ Uma vez configurada sua conexão com o banco de dados, você pode executar consu
 
 O métodos `select` sempre retornará um `array` de resultados.
 
-#### Executando uma consulta Isert
+#### Executando uma consulta Insert
 
 	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
