@@ -107,9 +107,8 @@ Na criação da conta, tenha certeza de definir a data final do período trial n
 	$user->save();
 
 <a name="swapping-subscriptions"></a>
-## Swapping Subscriptions
-
-To swap a user to a new subscription, use the `swap` method:
+## Trocando a assinatura de Plano
+Para trocar o plano do usuário, use o método `swap`: 
 
 	$user->subscription('premium')->swap();
 
