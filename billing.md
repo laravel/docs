@@ -183,7 +183,7 @@ If the user cancels a subscription and then resumes that subscription before the
 <a name="checking-subscription-status"></a>
 ## Checking Subscription Status
 
-To verify that a user is subscribed to your application, use the `subscribed` command:
+To verify that a user is subscribed to your application, use the `subscribed` method:
 
 	if ($user->subscribed())
 	{
