@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [Upgrading To 5.0.23](#upgrade-5.0.23)
 - [Upgrading To 5.0.16](#upgrade-5.0.16)
 - [Upgrading To 5.0 From 4.2](#upgrade-5.0)
 - [Upgrading To 4.2 From 4.1](#upgrade-4.2)
@@ -7,6 +8,13 @@
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
 
+<a name="upgrade-5.0.23"></a>
+## Upgrading To 5.0.23
+
+In your `app/Http/Kernel.php` file, update the `$middleware` array to include the following immediately after the `CheckForMaintenanceMode` line:
+
+	'Illuminate\Foundation\Http\Middleware\VerifyPostSize',
+	
 <a name="upgrade-5.0.16"></a>
 ## Upgrading To 5.0.16
 
