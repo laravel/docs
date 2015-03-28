@@ -4,7 +4,7 @@
 - [Configuração](#configuration)
 - [Inscrevendo-se em um Plano.](#subscribing-to-a-plan)
 - [Não requerer cartão de crédito no período Trial](#no-card-up-front)
-- [Swapping Subscriptions](#swapping-subscriptions)
+- [Trocando a assinatura de Plano](#swapping-subscriptions)
 - [Subscription Quantity](#subscription-quantity)
 - [Cancelling A Subscription](#cancelling-a-subscription)
 - [Resuming A Subscription](#resuming-a-subscription)
@@ -108,6 +108,7 @@ Na criação da conta, tenha certeza de definir a data final do período trial n
 
 <a name="swapping-subscriptions"></a>
 ## Trocando a assinatura de Plano
+
 Para trocar o plano do usuário, use o método `swap`: 
 
 	$user->subscription('premium')->swap();
