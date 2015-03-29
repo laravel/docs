@@ -255,7 +255,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 <a name="soft-deleting"></a>
 ## 軟刪除（ Soft Deleting ）
 
-通過軟刪除方式刪除了一個模型後，資料並不是真的從資料庫被移除。而是會設定 `deleted_at` 時間戳。要讓模型使用軟刪除功能，只要在模型類別加入 `SoftDeletingTrait`：
+通過軟刪除方式刪除了一個模型後，資料並不是真的從資料庫被移除。而是會設定 `deleted_at` 時間戳。要讓模型使用軟刪除功能，只要在模型類別加入 `SoftDeletes`：
 
 	use Illuminate\Database\Eloquent\SoftDeletes;
 
