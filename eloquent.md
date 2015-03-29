@@ -43,7 +43,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 	php artisan make:model User
 
-注意我們並沒有告訴 Eloquent，`User` 模型會使用哪個資料表。若沒有特別指定，系統會預設自動對應名稱為「nake case」的資料表。所以，在上面的例子中，Eloquent 會假設 `User` 模型將把資料存在 `users` 資料表。您也可以在類別中定義 `table` 屬性自定要對應的資料表名稱。
+注意我們並沒有告訴 Eloquent，`User` 模型會使用哪個資料表。若沒有特別指定，系統會預設自動對應名稱為「snake case」的資料表。所以，在上面的例子中，Eloquent 會假設 `User` 模型將把資料存在 `users` 資料表。您也可以在類別中定義 `table` 屬性自定要對應的資料表名稱。
 
 	class User extends Model {
 
