@@ -132,7 +132,7 @@ You may want to publish groups of files separately. For instance, you might want
 
 	// Publish your migrations
 	$this->publishes([
-		__DIR__.'/../database/migrations/' => base_path('/database/migrations')
+		__DIR__.'/../database/migrations/' => database_path('/migrations')
 	], 'migrations');
 
 You can then publish these files separately by referencing their tag like so:
