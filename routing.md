@@ -123,14 +123,7 @@ Once the pattern has been defined, it is applied to all routes using that parame
 
 #### Accessing A Route Parameter Value
 
-If you need to access a route parameter value outside of a route, use the `input` method:
-
-	if ($route->input('id') == 1)
-	{
-		//
-	}
-
-You may also access the current route parameters via the `Illuminate\Http\Request` instance. The request instance for the current request may be accessed via the `Request` facade, or by type-hinting the `Illuminate\Http\Request` where dependencies are injected:
+You may access the current route parameters via the `Illuminate\Http\Request` instance. The request instance for the current request may be accessed via the `Request` facade, or by type-hinting the `Illuminate\Http\Request` where dependencies are injected:
 
 	use Illuminate\Http\Request;
 
@@ -141,6 +134,19 @@ You may also access the current route parameters via the `Illuminate\Http\Reques
 			//
 		}
 	});
+
+Alternatively, to access the values within a controller:
+
+	// Import The Request At The Top Of Class...
+	use Illuminate\Http\Request;
+
+	public function index(Request $request)
+	{
+		if ($request->route('id'))
+		{
+			//
+		}
+	}
 
 <a name="named-routes"></a>
 ## Named Routes
