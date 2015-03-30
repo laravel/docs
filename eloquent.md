@@ -43,7 +43,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 	php artisan make:model User
 
-注意我們並沒有告訴 Eloquent，`User` 模型會使用哪個資料表。若沒有特別指定，系統會預設自動對應名稱為「nake case」的資料表。所以，在上面的例子中，Eloquent 會假設 `User` 模型將把資料存在 `users` 資料表。您也可以在類別中定義 `table` 屬性自定要對應的資料表名稱。
+注意我們並沒有告訴 Eloquent，`User` 模型會使用哪個資料表。若沒有特別指定，系統會預設自動對應名稱為「snake case」的資料表。所以，在上面的例子中，Eloquent 會假設 `User` 模型將把資料存在 `users` 資料表。您也可以在類別中定義 `table` 屬性自定要對應的資料表名稱。
 
 	class User extends Model {
 
@@ -255,7 +255,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 <a name="soft-deleting"></a>
 ## 軟刪除（ Soft Deleting ）
 
-通過軟刪除方式刪除了一個模型後，資料並不是真的從資料庫被移除。而是會設定 `deleted_at` 時間戳。要讓模型使用軟刪除功能，只要在模型類別加入 `SoftDeletingTrait`：
+通過軟刪除方式刪除了一個模型後，資料並不是真的從資料庫被移除。而是會設定 `deleted_at` 時間戳。要讓模型使用軟刪除功能，只要在模型類別加入 `SoftDeletes`：
 
 	use Illuminate\Database\Eloquent\SoftDeletes;
 
