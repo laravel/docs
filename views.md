@@ -45,7 +45,7 @@ If you wish, you may pass an array of data as the second parameter to the `view`
 
 	$view = view('greetings', $data);
 
-When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, like `{{ this }}` (assuming `$data['this']` exists).
+When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, like `{{ $key }}` (assuming `$data['$key']` exists).
 
 #### Sharing Data With All Views
 
