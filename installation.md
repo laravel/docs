@@ -52,7 +52,7 @@ Typically, this string should be 32 characters long. The key can be set in the `
 
 Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
 
-Of course, you may wish to configure a few additional components of Laravel, such as:
+You may also want to configure a few additional components of Laravel, such as:
 
 - [Cache](/docs/master/cache#configuration)
 - [Database](/docs/master/database#configuration)
