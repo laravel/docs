@@ -206,7 +206,7 @@ You may use the `namespace` parameter within your `group` array to specify the n
 <a name="sub-domain-routing"></a>
 ### Sub-Domain Routing
 
-Laravel routes also handle wildcard sub-domains, and will pass your wildcard parameters from the domain:
+Laravel routes can also handle wildcard sub-domains, and will pass your wildcard parameters from the domain:
 
 #### Registering Sub-Domain Routes
 
@@ -230,7 +230,7 @@ A group of routes may be prefixed by using the `prefix` option in the attributes
 
 		Route::get('user', function()
 		{
-			//
+			// Handles Requests To admin/user
 		});
 
 	});
