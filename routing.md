@@ -259,10 +259,10 @@ In addition to looking for the CSRF token as a "POST" parameter, the middleware 
 	<meta name="csrf-token" content="{{ csrf_token() }}" />
 
 	$.ajaxSetup({
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			}
-		});
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
 
 Now all AJAX requests will automatically include the CSRF token:
 
