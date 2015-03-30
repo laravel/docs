@@ -285,7 +285,7 @@ The value sent with the `_method` field will be used as the HTTP request method.
 
 	<form action="/foo/bar" method="POST">
 		<input type="hidden" name="_method" value="PUT">
-		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	</form>
 
 <a name="route-model-binding"></a>
