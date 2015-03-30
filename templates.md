@@ -151,7 +151,7 @@ The following example creates a `@datetime($var)` directive which simply calls `
 
 	Blade::extend(function($view, $compiler)
 	{
-		$pattern = $compiler->createOpenMatcher('datetime');
+		$pattern = $compiler->createMatcher('datetime');
 
 		return preg_replace($pattern, '$1<?php echo $2->format(\'m/d/Y H:i\')); ?>', $view);
 	});
