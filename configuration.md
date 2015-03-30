@@ -73,34 +73,30 @@ If you are developing with a team, you may wish to continue including a `.env.ex
 
 #### Accessing The Current Application Environment
 
-You may access the current application environment via the `environment` method on the `Application` instance:
+You may access the current application environment via the `environment` method on the `App` facade:
 
-	$environment = $app->environment();
+	$environment = App::environment();
 
 You may also pass arguments to the `environment` method to check if the environment matches a given value:
 
-	if ($app->environment('local'))
+	if (App::environment('local'))
 	{
 		// The environment is local
 	}
 
-	if ($app->environment('local', 'staging'))
+	if (App::environment('local', 'staging'))
 	{
 		// The environment is either local OR staging...
 	}
 
-To obtain an instance of the application, resolve the `Illuminate\Contracts\Foundation\Application` contract via the [service container](/docs/master/container). Of course, if you are within a [service provider](/docs/master/providers), the application instance is available via the `$this->app` instance variable.
-
-An application instance may also be accessed via the `app` helper or the `App` facade:
+An application instance may also be accessed via the `app` helper method:
 
 	$environment = app()->environment();
-
-	$environment = App::environment();
 
 <a name="configuration-caching"></a>
 ## Configuration Caching
 
-To give your application a little speed boost, you may cache all of your configuration files into a single file using the `config:cache` Artisan command. This will combine all of the configuration options for your application into a single file which can be loaded quickly by the framework.
+To give your application a speed boost, you should cache all of your configuration files into a single file using the `config:cache` Artisan command. This will combine all of the configuration options for your application into a single file which can be loaded quickly by the framework.
 
 You should typically run the `config:cache` command as part of your deployment routine.
 
