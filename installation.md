@@ -48,9 +48,15 @@ As of PHP 5.5, some OS distributions may require you to manually install the PHP
 
 The first thing you should do after installing Laravel is set your application key to a random string. If you installed Laravel via Composer, this key has probably already been set for you by the `key:generate` command.
 
-Typically, this string should be 32 characters long. The key can be set in the `.env` environment file. **If the application key is not set, your user sessions and other encrypted data will not be secure!**
+Typically, this string should be 32 characters long. The key can be set in the `.env` environment file. If you have not renamed the `.env.example` file to `.env`, you may do that now. **If the application key is not set, your user sessions and other encrypted data will not be secure!**
 
 Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+
+Of course, you may wish to configure a few additional components of Laravel, such as:
+
+- Cache (/docs/master/cache#configuration)
+- Database (/docs/master/database#configuration)
+- Session (/docs/master/session#configuration)
 
 Once Laravel is installed, you should also [configure your local environment](/docs/master/configuration#environment-configuration).
 
