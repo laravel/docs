@@ -56,6 +56,8 @@ Often, you will need to generate URLs to your routes, you may do so using the `u
 
 	$url = url('foo');
 
+#### Routing Requests To Controllers
+
 If you are interested in routing requests to classes, check out the documentation on [controllers](/docs/controllers).
 
 <a name="route-parameters"></a>
