@@ -54,7 +54,7 @@ You may easily access your configuration values using the `Config` facade:
 
 	Config::set('app.timezone', 'America/Chicago');
 
-You may also use the `config` helper function:
+You may also use the `config` helper function from anywhere in your application:
 
 	$value = config('app.timezone');
 
