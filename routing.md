@@ -170,9 +170,11 @@ Now, you may use the route's name when generating URLs or redirects:
 
 	$redirect = redirect()->route('profile');
 
-The `currentRouteName` method returns the name of the route handling the current request:
+The `currentRouteName` method returns the name of the route handling the current request. You may call this method using the `Route` facade:
 
 	$name = Route::currentRouteName();
+
+Don't forget to import the `Route` facade into your current namespace when calling this method.
 
 <a name="route-groups"></a>
 ## Route Groups
