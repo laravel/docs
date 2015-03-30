@@ -1,11 +1,11 @@
 # HTTP Routing
 
 - [Basic Routing](#basic-routing)
-- [CSRF Protection](#csrf-protection)
-- [Method Spoofing](#method-spoofing)
 - [Route Parameters](#route-parameters)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
+- [CSRF Protection](#csrf-protection)
+- [Method Spoofing](#method-spoofing)
 - [Route Model Binding](#route-model-binding)
 - [Throwing 404 Errors](#throwing-404-errors)
 
@@ -57,59 +57,6 @@ Often, you will need to generate URLs to your routes, you may do so using the `u
 	$url = url('foo');
 
 If you are interested in routing requests to classes, check out the documentation on [controllers](/docs/controllers).
-
-<a name="csrf-protection"></a>
-## CSRF Protection
-
-Laravel makes it easy to protect your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
-
-Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
-
-#### Insert The CSRF Token Into A Form
-
-	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-
-Of course, using the Blade [templating engine](/docs/master/templating):
-
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/master/middleware) will verify token in the request input matches the token stored in the session.
-
-#### X-CSRF-TOKEN
-
-In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag and instruct jQuery to add it to all request headers:
-
-	<meta name="csrf-token" content="{{ csrf_token() }}" />
-
-	$.ajaxSetup({
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			}
-		});
-
-Now all AJAX requests will automatically include the CSRF token:
-
-	$.ajax({
-	   url: "/foo/bar",
-	})
-
-#### X-XSRF-TOKEN
-
-Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some Javascript frameworks, like Angular, do this automatically for you.
-
-> Note: The difference between the `X-CSRF-TOKEN` and `X-XSRF-TOKEN` is that the first uses a plain text value and the latter uses an encrypted value, because cookies in Laravel are always encrypted. If you use the `csrf_token()` function to supply the token value, you probably want to use the `X-CSRF-TOKEN` header.
-
-<a name="method-spoofing"></a>
-## Method Spoofing
-
-HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining `PUT`, `PATCH` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form.
-
-The value sent with the `_method` field will be used as the HTTP request method. For example:
-
-	<form action="/foo/bar" method="POST">
-		<input type="hidden" name="_method" value="PUT">
-		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-	</form>
 
 <a name="route-parameters"></a>
 ## Route Parameters
@@ -277,6 +224,59 @@ A group of routes may be prefixed by using the `prefix` option in the attributes
 		});
 
 	});
+
+<a name="csrf-protection"></a>
+## CSRF Protection
+
+Laravel makes it easy to protect your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
+
+Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
+
+#### Insert The CSRF Token Into A Form
+
+	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+
+Of course, using the Blade [templating engine](/docs/master/templating):
+
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/master/middleware) will verify token in the request input matches the token stored in the session.
+
+#### X-CSRF-TOKEN
+
+In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag and instruct jQuery to add it to all request headers:
+
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
+
+	$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+
+Now all AJAX requests will automatically include the CSRF token:
+
+	$.ajax({
+	   url: "/foo/bar",
+	})
+
+#### X-XSRF-TOKEN
+
+Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some Javascript frameworks, like Angular, do this automatically for you.
+
+> Note: The difference between the `X-CSRF-TOKEN` and `X-XSRF-TOKEN` is that the first uses a plain text value and the latter uses an encrypted value, because cookies in Laravel are always encrypted. If you use the `csrf_token()` function to supply the token value, you probably want to use the `X-CSRF-TOKEN` header.
+
+<a name="method-spoofing"></a>
+## Method Spoofing
+
+HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining `PUT`, `PATCH` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form.
+
+The value sent with the `_method` field will be used as the HTTP request method. For example:
+
+	<form action="/foo/bar" method="POST">
+		<input type="hidden" name="_method" value="PUT">
+		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+	</form>
 
 <a name="route-model-binding"></a>
 ## Route Model Binding
