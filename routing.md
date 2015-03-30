@@ -179,18 +179,18 @@ Don't forget to import the `Route` facade into your current namespace when calli
 <a name="route-groups"></a>
 ## Route Groups
 
-Sometimes you may need to apply filters to a group of routes. Instead of specifying the filter on each route, you may use a route group:
+Sometimes you may need to apply middleware to a group of routes. Instead of specifying the middleware on each route, you may use a route group:
 
 	Route::group(['middleware' => 'auth'], function()
 	{
 		Route::get('/', function()
 		{
-			// Has Auth Filter
+			// Uses Auth Middleware
 		});
 
 		Route::get('user/profile', function()
 		{
-			// Has Auth Filter
+			// Uses Auth Middleware
 		});
 	});
 
