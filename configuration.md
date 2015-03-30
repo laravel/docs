@@ -30,6 +30,12 @@ Renaming your application is entirely optional, and you are free to keep the `Ap
 
 Laravel needs very little configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your location.
 
+You may also want to configure a few additional components of Laravel, such as:
+
+- [Cache](/docs/master/cache#configuration)
+- [Database](/docs/master/database#configuration)
+- [Session](/docs/master/session#configuration)
+
 Once Laravel is installed, you should also [configure your local environment](/docs/master/configuration#environment-configuration).
 
 > **Note:** You should never have the `app.debug` configuration option set to `true` for a production application.
