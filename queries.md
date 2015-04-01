@@ -116,6 +116,20 @@ This method will return an array of role titles. You may also specify a custom k
 	$users = DB::table('users')
 	                    ->whereNull('updated_at')->get();
 
+#### Dynamic Where Clauses
+
+You may even use "dynamic" where statements to fluently build where statements using magic methods:
+
+	$admin = DB::table('users')->whereId(1)->first();
+
+	$john = DB::table('users')
+	                    ->whereIdAndEmail(2, 'john@doe.com')
+	                    ->first();
+
+	$jane = DB::table('users')
+	                    ->whereNameOrAge('Jane', 22)
+	                    ->first();
+
 #### Order By, Group By, And Having
 
 	$users = DB::table('users')
@@ -127,23 +141,6 @@ This method will return an array of role titles. You may also specify a custom k
 #### Offset & Limit
 
 	$users = DB::table('users')->skip(10)->take(5)->get();
-
-#### Dynamic Where Clauses
-
-This feature allows you to write `where()` and `orWhere()` statements in a more readable and elegant fashion.
-
-	$admin = DB::table('users')->whereId(1)->first();
-
-	$john = DB::table('users')
-	                    ->whereIdAndEmail(2, 'john@doe.com')
-	                    ->first();
-
-	$jane = DB::table('users')
-	                    ->whereNameOrGender('Jane', 'F')
-	                    ->first();
-
-	// Note that snake_case column names are converted into PascalCase
-	$doe = DB::table('users')->whereLastName('doe')->first();
 
 <a name="joins"></a>
 ## Joins
