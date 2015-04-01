@@ -180,7 +180,7 @@ Filter the array using the given Closure.
 
 ### head
 
-Return the first element in the array. Useful for method chaining in PHP 5.3.x.
+Return the first element in the array.
 
 	$first = head($this->returnsArray('foo'));
 
@@ -463,6 +463,6 @@ Get a View instance for the given view path.
 
 ### with
 
-Return the given object. Useful for method chaining constructors in PHP 5.3.x.
+Return the given object.
 
 	$value = with(new Foo)->doWork();
