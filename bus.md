@@ -1,24 +1,24 @@
 # Command Bus
 
-- [Introduction](#introduction)
+- [Introdução](#introduction)
 - [Creating Commands](#creating-commands)
 - [Dispatching Commands](#dispatching-commands)
 - [Queued Commands](#queued-commands)
 - [Command Pipeline](#command-pipeline)
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-The Laravel command bus provides a convenient method of encapsulating tasks your application needs to perform into simple, easy to understand "commands". To help us understand the purpose of commands, let's pretend we are building an application that allows users to purchase podcasts.
+O comando Bus do Laravel é um método conveniente de encapsulamento de tarefas que sua aplicação precisa executar em um "commands"(comando) simples, e facil de entender. Para nos ajudar a entender o propósito dos comandos, vamos imaginar que estamos construindo uma aplicação que permita que os usuários comprem podcasts.
 
-When a user purchases a podcast, there are a variety of things that need to happen. For example, we may need to charge the user's credit card, add a record to our database that represents the purchase, and send a confirmation e-mail of the purchase. Perhaps we also need to perform some kind of validation as to whether the user is allowed to purchase podcasts.
+Quando o usuário compra podcast, existem uma variedade de coisas que precisam acontecer. Por exemplo, nos podemos necessitar carregar o cartão de crédito do usuário, registrar a compra no banco de dados, e mandar um e-mail de confirmação de compra. Talvez, também precisaremos realizar algum tipo de validação para saber ser o usuário é autorizado a comprar podcasts. 
 
-We could put all of this logic inside a controller method; however, this has several disadvantages. The first disadvantage is that our controller probably handles several other incoming HTTP actions, and including complicated logic in each controller method will soon bloat our controller and make it harder to read. Secondly, it is difficult to re-use the purchase podcast logic outside of the controller context. Thirdly, it is more difficult to unit-test the command as we must also generate a stub HTTP request and make a full request to the application to test the purchase podcast logic.
+Nos podemos colocar toda essa lógica dentro do método do controlador(controller); contudo, isso teria várias desvantagens. A primeira disvatagem é que nosso controlador provavelmente lida com várias outras ações de entrada HTTP, e incluir uma lógica complicada em cada método no controlador logo irá inchar nosso controlador(controller) e com isso fazer com que o mesmo seja dificil de ler. Segundo, é difícil de reusar a lógica de compra de podcast fora do contexto do controlador. Terceiro, é mais difícil para realizar os testes unitários do comando, como também temos que gerar uma solicitação HTTP stub e fazer uma requisição inteira para aplicação para testar a lógica da compra do podcast.
 
-Instead of putting this logic in the controller, we may choose to encapsulate it within a "command" object, such as a `PurchasePodcast` command.
+Ao invés de colocar esta lógica no controlador(controller), nos podemos escolher encapsular isto com o objeto "command" (comando), como o comando `PurchasePodcast`(ComparaPodcast).
 
 <a name="creating-commands"></a>
-## Creating Commands
+## Criando Comandos
 
 The Artisan CLI can generate new command classes using the `make:command` command:
 
