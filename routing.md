@@ -220,7 +220,16 @@ The `currentRouteName` method returns the name of the route handling the current
 <a name="route-groups"></a>
 ## Route Groups
 
-Sometimes you may need to apply filters to a group of routes. Instead of specifying the filter on each route, you may use a route group:
+Sometimes many of your routes will share common requirements such as URL segments, middleware, namespaces, etc. Instead of specifying each of these options on each route individually, you may use a route group to apply attributes to many routes.
+
+Shared attributes are specified in an array format as the first parameter to the `Route@group` method. Attributes are applied to nested route groups and merged as you'd expect.
+
+<a name="route-group-middleware">
+### Middleware
+
+Middleware is applied to all routes within the group by defining the list of middleware with the `middleware` parameter on the attribute array. You may specify your middleware as a string describing a single middleware task, or as an array of strings describing multiple middleware tasks. Middleware will be executed in the order you define this array:
+
+#### Applying filters to a group of routes via middleware
 
 	Route::group(['middleware' => 'auth'], function()
 	{
@@ -233,16 +242,27 @@ Sometimes you may need to apply filters to a group of routes. Instead of specify
 		{
 			// Has Auth Filter
 		});
+
 	});
 
-You may use the `namespace` parameter within your `group` array to specify the namespace for all controllers within the group:
+<a name="route-group-namespace">
+### Namespaces
+
+You may use the `namespace` parameter within your `group` attributes array to specify the namespace for all controllers within the group:
+
+#### Applying namespaces and nested namespaces to a group of routes
 
 	Route::group(['namespace' => 'Admin'], function()
 	{
-		//
+		// Controllers will be expected to be within the App\Http\Controllers\Admin namespace
+
+		Route::group(['namespace' => 'User'], function()
+		{
+			// Controllers will be expected to be within the App\Http\Controllers\Admin\User namespace
+		});
 	});
 
-> **Note:** By default, the `RouteServiceProvider` includes your `routes.php` file within a namespace group, allowing you to register controller routes without specifying the full namespace.
+> **Note:** By default, the `RouteServiceProvider` includes your `routes.php` file within a namespace group, allowing you to register controller routes without specifying the full (App\Http\Controllers) namespace prefix.
 
 <a name="sub-domain-routing"></a>
 ### Sub-Domain Routing
@@ -262,18 +282,42 @@ Laravel routes also handle wildcard sub-domains, and will pass your wildcard par
 	});
 
 <a name="route-prefixing"></a>
-### Route Prefixing
+### Route prefixing
 
-A group of routes may be prefixed by using the `prefix` option in the attributes array of a group:
+If you'd like your routes within a group to share the same URL prefix, you can utilize the `prefix` key on the attribute array to define the URL prefix that all routes must match.
+
+#### Registering a URL prefix for a group of routes
 
 	Route::group(['prefix' => 'admin'], function()
 	{
-
-		Route::get('user', function()
+		Route::get('users', function()
 		{
-			//
+			// Matches the /admin/users URL
 		});
+	});
 
+You can also utilize the `prefix` parameter to pass common parameters to your routes:
+
+#### Registering a URL parameter in a route prefix
+
+	Route::group(['prefix' => 'accounts/{account_id}'], function()
+	{
+		Route::get('detail', function($account_id)
+		{
+			// $account_id will be the value retrieved by the 'account_id' parameter from the route group prefix
+		});
+	});
+
+Like Routes, you can define parameter constraints for the named parameters in your prefix:
+
+#### Defining route prefix parameter constraints using regular expressions
+
+	Route::group([
+		'prefix' => 'accounts/{account_id}',
+		'where' => ['account_id' => '[0-9]+'],
+	], function() {
+
+		// All routes within this group will require $account_id to be numeric, otherwise the group will not match
 	});
 
 <a name="route-model-binding"></a>
