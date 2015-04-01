@@ -243,7 +243,7 @@ Middleware is applied to all routes within the group by defining the list of mid
 
 	});
 
-<a name="route-group-namespace">
+<a name="route-group-namespace"></a>
 ### Namespaces
 
 You may use the `namespace` parameter in your group attribute array to specify the namespace for all controllers within the group:
