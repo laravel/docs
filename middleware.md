@@ -52,7 +52,8 @@ It's best to envision middleware as a series of "layers" HTTP requests must pass
 
 ### *Before* / *After* Middleware
 
-Whether a middleware runs before or after a request depends on the middleware itself. This middleware would perform some task **before** the request is handled by the application:
+Whether a middleware runs before or after a request depends on when the `$next` closure is called.
+This middleware would perform some task **before** the request is handled by the application because the `$next` clousure is run after your logic:
 
 	<?php namespace App\Http\Middleware;
 
@@ -66,7 +67,7 @@ Whether a middleware runs before or after a request depends on the middleware it
 		}
 	}
 
-However, this middleware would perform its task **after** the request is handled by the application:
+However, this middleware would perform its task **after** the request is handled by the application because the `$next` clousure is called before your logic:
 
 	<?php namespace App\Http\Middleware;
 
@@ -91,15 +92,7 @@ If you want a middleware to be run during every HTTP request to your application
 
 ### Assigning Middleware To Routes
 
-If you would like to assign middleware to specific routes, you should first assign the middleware a short-hand key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing. For example:
-
-	// Within App\Http\Kernel Class...
-
-    protected $routeMiddleware = [
-        'auth' => 'App\Http\Middleware\Authenticate',
-        'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-        'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
-    ];
+If you would like to assign middleware to specific routes, you should first assign the middleware a short-hand key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing.
 
 Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:
 
@@ -111,7 +104,7 @@ Once the middleware has been defined in the HTTP kernel, you may use the `middle
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
 
-Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, define the middleware as "terminable" by implementing the `Illuminate\Contracts\Routing\TerminableMiddleware` contract:
+Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, you may define the middleware as "terminable".
 
 	use Illuminate\Contracts\Routing\TerminableMiddleware;
 
@@ -129,4 +122,4 @@ Sometimes a middleware may need to do some work after the HTTP response has alre
 
 	}
 
-As you can see, in addition to defining a `handle` method, the `TerminableMiddleware` contract requires a `terminate` method. This method receives both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
+As you can see, in addition to defining a `handle` method, `TerminableMiddleware` define a `terminate` method. This method receives both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
