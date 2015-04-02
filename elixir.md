@@ -252,6 +252,18 @@ elixir(function(mix) {
 });
 ```
 
+#### Trigger Browserify
+
+```javascript
+elixir(function(mix) {
+	mix.browserify('index.js');
+});
+```
+
+Want to require modules in the browser? Hoping to use EcmaScript 6 sooner than later? Need a built-in JSX transformer? If so, [Browserify](http://browserify.org/), along with the `browserify` Elixir task, will handle the job nicely.
+
+This task assumes that your scripts are stored in `resources/js`, though you're free to override the default.
+
 #### Method Chaining
 
 Of course, you may chain almost all of Elixir's methods together to build your recipe:
