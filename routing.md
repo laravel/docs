@@ -21,7 +21,7 @@ You will define most of the routes for your application in the `app/Http/routes.
 		return 'Hello World';
 	});
 
-#### Other Basic Routes Route
+#### Other Basic Routes
 
 	Route::post('foo/bar', function()
 	{
