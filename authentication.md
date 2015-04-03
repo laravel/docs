@@ -15,26 +15,33 @@ Laravel makes implementing authentication very simple. In fact, almost everythin
 
 By default, Laravel includes an `App\User` model in your `app` directory. This model may be used with the default Eloquent authentication driver.
 
-Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration. Of course, Laravel 5 ships migrations for these columns out of the box!
+Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration. The `scaffold:auth` command will generate these migrations for you.
 
 If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
 <a name="authenticating-users"></a>
 ## Authenticating Users
 
-Laravel ships with two authentication related controllers out of the box. The `AuthController` handles new user registration and "logging in", while the `PasswordController` contains the logic to help existing users reset their forgotten passwords.
+If you would like, Laravel can scaffold the necessary authentication controllers and views for your application using the `scaffold:auth` command:
+
+	php artisan scaffold:auth
+
+> **Note:** If you prefer to build your authentication system manually, check out the [Manual Authentication](#manual-authentication) section below.
+
+This command will create new controllers, migrations, views, and Less / CSS files for providing authentication. The generated `AuthController` handles new user registration and "logging in", while the `PasswordController` contains the logic to help existing users reset their forgotten passwords.
 
 Each of these controllers uses a trait to include their necessary methods. For many applications, you will not need to modify these controllers at all. The views that these controllers render are located in the `resources/views/auth` directory. You are free to customize these views however you wish.
 
 ### The User Registrar
 
-To modify the form fields that are required when a new user registers with your application, you may modify the `App\Services\Registrar` class. This class is responsible for validating and creating new users of your application.
+To modify the form fields that are required when a new user registers with your application, you may modify the `AuthController` class. This class is responsible for validating and creating new users of your application.
 
-The `validator` method of the `Registrar` contains the validation rules for new users of the application, while the `create` method of the `Registrar` is responsible for creating new `User` records in your database. You are free to modify each of these methods as you wish. The `Registrar` is called by the `AuthController` via the methods contained in the `AuthenticatesAndRegistersUsers` trait.
+The `validator` method of the `AuthController` contains the validation rules for new users of the application, while the `create` method of the `AuthController` is responsible for creating new `User` records in your database. You are free to modify each of these methods as you wish.
 
+<a name="manual-authentication"></a>
 #### Manual Authentication
 
-If you choose not to use the provided `AuthController` implementation, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method:
+If you choose not to use the authentication scaffolding provided by `scaffold:auth`, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method:
 
 	<?php namespace App\Http\Controllers;
 
@@ -58,7 +65,7 @@ If you choose not to use the provided `AuthController` implementation, you will 
 
 	}
 
-The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/5.0/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, a new authenticated session will be started for the user.
+The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/master/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, a new authenticated session will be started for the user.
 
 The `attempt` method will return `true` if authentication was successful. Otherwise, `false` will be returned.
 
@@ -140,7 +147,7 @@ Of course, if you are using the built-in Laravel authentication controllers, a c
 
 #### Authentication Events
 
-When the `attempt` method is called, the `auth.attempt` [event](/docs/5.0/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
+When the `attempt` method is called, the `auth.attempt` [event](/docs/master/events) will be fired. If the authentication attempt is successful and the user is logged in, the `auth.login` event will be fired as well.
 
 <a name="retrieving-the-authenticated-user"></a>
 ## Retrieving The Authenticated User
@@ -194,7 +201,7 @@ Second, you may access the authenticated user via an `Illuminate\Http\Request` i
 
 	}
 
-Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contract. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/5.0/container):
+Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contract. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/master/container):
 
 	<?php namespace App\Http\Controllers;
 
@@ -218,7 +225,7 @@ Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contr
 <a name="protecting-routes"></a>
 ## Protecting Routes
 
-[Route middleware](/docs/5.0/middleware) can be used to allow only authenticated users to access a given route. Laravel provides the `auth` middleware by default, and it is defined in `app\Http\Middleware\Authenticate.php`. All you need to do is attach it to a route definition:
+[Route middleware](/docs/master/middleware) can be used to allow only authenticated users to access a given route. Laravel provides the `auth` middleware by default, and it is defined in `app\Http\Middleware\Authenticate.php`. All you need to do is attach it to a route definition:
 
 	// With A Route Closure...
 
@@ -247,7 +254,7 @@ By default, the `basic` middleware will use the `email` column on the user recor
 
 #### Setting Up A Stateless HTTP Basic Filter
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/5.0/middleware) that calls the `onceBasic` method:
+You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/master/middleware) that calls the `onceBasic` method:
 
 	public function handle($request, Closure $next)
 	{
@@ -293,7 +300,7 @@ To get started with Socialite, include the package in your `composer.json` file:
 
 	"laravel/socialite": "~2.0"
 
-Next, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. You may also register a [facade](/docs/5.0/facades):
+Next, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. You may also register a [facade](/docs/master/facades):
 
 	'Socialize' => 'Laravel\Socialite\Facades\Socialite',
 

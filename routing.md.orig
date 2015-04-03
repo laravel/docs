@@ -179,7 +179,11 @@ Don't forget to import the `Route` facade into your current namespace when calli
 <a name="route-groups"></a>
 ## Route Groups
 
+<<<<<<< HEAD
+Sometimes many of your routes will share common requirements such as URL segments, middleware, namespaces, etc. Instead of specifying each of these options on every route individually, you may use a route group to apply attributes to many routes.
+=======
 Sometimes you may need to apply middleware to a group of routes. Instead of specifying the middleware on each route, you may use a route group:
+>>>>>>> upstream/master
 
 Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
 
@@ -192,12 +196,20 @@ Middleware is applied to all routes within the group by defining the list of mid
 	{
 		Route::get('/', function()
 		{
+<<<<<<< HEAD
+			// Has Foo And Bar Middleware
+=======
 			// Uses Auth Middleware
+>>>>>>> upstream/master
 		});
 
 		Route::get('user/profile', function()
 		{
+<<<<<<< HEAD
+			// Has Foo And Bar Middleware
+=======
 			// Uses Auth Middleware
+>>>>>>> upstream/master
 		});
 
 	});
