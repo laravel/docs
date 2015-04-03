@@ -138,6 +138,16 @@ To overwrite a section entirely, you may use the `overwrite` statement:
 
 	{{-- This comment will not be in the rendered HTML --}}
 
+#### Service injection
+We can use `@inject` to resolve services from the service container.
+
+	@inject('html', 'HtmlBuilder')
+
+	<div>
+		{{ $html->image('/assets/images/laravel.png') }}
+	</div>
+
+
 <a name="extending-blade"></a>
 ## Extending Blade
 
