@@ -213,7 +213,7 @@ You may use the `namespace` parameter in your group attribute array to specify t
 
 		Route::group(['namespace' => 'User'], function()
 		{
-			// Controllers Within The "App\Http\Controllers\Admin" Namespace
+			// Controllers Within The "App\Http\Controllers\Admin\User" Namespace
 		});
 	});
 
