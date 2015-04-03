@@ -10,11 +10,11 @@
 <a name="introduction"></a>
 ## Introduction
 
-Facades provide a "static" interface to classes that are available in the application's [service container](/docs/5.0/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+Facades provide a "static" interface to classes that are available in the application's [service container](/docs/master/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
 
 Occasionally, you may wish to create your own facades for your application's and packages, so let's explore the concept, development and usage of these classes.
 
-> **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [service container](/docs/5.0/container).
+> **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [service container](/docs/master/container).
 
 <a name="explanation"></a>
 ## Explanation
@@ -106,7 +106,7 @@ We need to be able to resolve this class from the service container. So, let's a
 		return new \PaymentGateway\Payment;
 	});
 
-A great place to register this binding would be to create a new [service provider](/docs/5.0/container#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `config/app.php` configuration file.
+A great place to register this binding would be to create a new [service provider](/docs/master/container#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `config/app.php` configuration file.
 
 Next, we can create our own facade class:
 
