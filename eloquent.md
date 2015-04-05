@@ -879,6 +879,22 @@ You may even eager load nested relationships:
 
 In the example above, the `author` relationship will be eager loaded, and the author's `contacts` relation will also be loaded.
 
+If you **always** want to eager load the relationships, you can set the relationships on the model's 'with' attribute, which accepts an array.
+
+	class Book extends Model {
+		
+		protected $with = ['author'];
+		
+		public function author()
+		{
+			return $this->belongsTo('App\Author');
+		}
+
+	}
+
+This means that you do not have specify `->with('author')` each time.
+
+
 ### Eager Load Constraints
 
 Sometimes you may wish to eager load a relationship, but also specify a condition for the eager load. Here's an example:
@@ -898,6 +914,7 @@ Of course, eager loading Closures aren't limited to "constraints". You may also 
 		$query->orderBy('created_at', 'desc');
 
 	}])->get();
+
 
 ### Lazy Eager Loading
 
