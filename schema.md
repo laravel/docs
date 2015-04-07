@@ -61,7 +61,7 @@ The table builder contains a variety of column types that you may use when build
 
 Command  | Description
 ------------- | -------------
-`$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent.
+`$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent
 `$table->bigInteger('votes');`  |  BIGINT equivalent to the table
 `$table->binary('data');`  |  BLOB equivalent to the table
 `$table->boolean('confirmed');`  |  BOOLEAN equivalent to the table
@@ -72,7 +72,7 @@ Command  | Description
 `$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point
 `$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent to the table
 `$table->float('amount');`  |  FLOAT equivalent to the table
-`$table->increments('id');`  |  Incrementing ID to the table (primary key).
+`$table->increments('id');`  |  Incrementing ID to the table (primary key)
 `$table->integer('votes');`  |  INTEGER equivalent to the table
 `$table->json('options');`  |  JSON equivalent to the table
 `$table->jsonb('options');`  |  JSONB equivalent to the table
