@@ -224,7 +224,7 @@ If you plan to have authorization logic in another part of your application, sim
 
 ### Customizing The Flashed Error Format
 
-If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatValidationErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Validation\Validator` class at the top of the file:
+If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Validation\Validator` class at the top of the file:
 
 	/**
 	 * {@inheritdoc}
