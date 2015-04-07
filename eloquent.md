@@ -20,6 +20,7 @@
 - [Attribute Casting](#attribute-casting)
 - [Model Events](#model-events)
 - [Model Observers](#model-observers)
+- [Model URL Generation](#model-url-generation)
 - [Converting To Arrays / JSON](#converting-to-arrays-or-json)
 
 <a name="introduction"></a>
@@ -42,7 +43,7 @@ You may also generate Eloquent models using the `make:model` command:
 
 	php artisan make:model User
 
-Note that we did not tell Eloquent which table to use for our `User` model. The lower-case, plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
+Note that we did not tell Eloquent which table to use for our `User` model. The "snake case" name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
 
 	class User extends Model {
 
@@ -406,30 +407,32 @@ First, let's define a trait. For this example, we'll use the `SoftDeletes` that 
 
 If an Eloquent model uses a trait that has a method matching the `bootNameOfTrait` naming convention, that trait method will be called when the Eloquent model is booted, giving you an opportunity to register a global scope, or do anything else you want. A scope must implement `ScopeInterface`, which specifies two methods: `apply` and `remove`.
 
-The `apply` method receives an `Illuminate\Database\Eloquent\Builder` query builder object, and is responsible for adding any additional `where` clauses that the scope wishes to add. The `remove` method also receives a `Builder` object and is responsible for reversing the action taken by `apply`. In other words, `remove` should remove the `where` clause (or any other clause) that was added. So, for our `SoftDeletingScope`, the methods look something like this:
+The `apply` method receives an `Illuminate\Database\Eloquent\Builder` query builder object and the `Model` it's applied to, and is responsible for adding any additional `where` clauses that the scope wishes to add. The `remove` method also receives a `Builder` object and `Model` and is responsible for reversing the action taken by `apply`. In other words, `remove` should remove the `where` clause (or any other clause) that was added. So, for our `SoftDeletingScope`, the methods look something like this:
 
 	/**
 	 * Apply the scope to a given Eloquent query builder.
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
 	 * @return void
 	 */
-	public function apply(Builder $builder)
+	public function apply(Builder $builder, Model $model)
 	{
-		$model = $builder->getModel();
-
 		$builder->whereNull($model->getQualifiedDeletedAtColumn());
+
+		$this->extend($builder);
 	}
 
 	/**
 	 * Remove the scope from the given Eloquent query builder.
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
 	 * @return void
 	 */
-	public function remove(Builder $builder)
+	public function remove(Builder $builder, Model $model)
 	{
-		$column = $builder->getModel()->getQualifiedDeletedAtColumn();
+		$column = $model->getQualifiedDeletedAtColumn();
 
 		$query = $builder->getQuery();
 
@@ -631,7 +634,7 @@ Even though the `posts` table does not contain a `country_id` column, the `hasMa
 
 		public function posts()
 		{
-			return $this->hasManyThrough('App\Post', 'User');
+			return $this->hasManyThrough('App\Post', 'App\User');
 		}
 
 	}
@@ -642,7 +645,7 @@ If you would like to manually specify the keys of the relationship, you may pass
 
 		public function posts()
 		{
-			return $this->hasManyThrough('App\Post', 'User', 'country_id', 'user_id');
+			return $this->hasManyThrough('App\Post', 'App\User', 'country_id', 'user_id');
 		}
 
 	}
@@ -897,6 +900,13 @@ It is also possible to eagerly load related models directly from an already exis
 	$books = Book::all();
 
 	$books->load('author', 'publisher');
+
+You may also pass a Closure to set constraints on the query:
+
+	$books->load(['author' => function($query)
+	{
+		$query->orderBy('published_date', 'asc');
+	}]);
 
 <a name="inserting-related-models"></a>
 ## Inserting Related Models
@@ -1199,7 +1209,7 @@ If you have some attributes that you want to always convert to another data-type
 		'is_admin' => 'boolean',
 	];
 
-Now the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer. Other supported cast types are: `integer`, `real`, `float`, `double`, `string`, `boolean`, and `array`.
+Now the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer. Other supported cast types are: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object` and `array`.
 
 The `array` cast is particularly useful for working with columns that are stored as serialized JSON. For example, if your database has a TEXT type field that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
 
@@ -1282,6 +1292,22 @@ So, for example, a model observer might look like this:
 You may register an observer instance using the `observe` method:
 
 	User::observe(new UserObserver);
+
+<a name="model-url-generation"></a>
+## Model URL Generation
+
+When you pass a model to the `route` or `action` methods, it's primary key is inserted into the generated URI. For example:
+
+	Route::get('user/{user}', 'UserController@show');
+
+	action('UserController@show', [$user]);
+
+In this example the `$user->id` property will be inserted into the `{user}` place-holder of the generated URL. However, if you would like to use another property instead of the ID, you may override the `getRouteKey` method on your model:
+
+	public function getRouteKey()
+	{
+		return $this->slug;
+	}
 
 <a name="converting-to-arrays-or-json"></a>
 ## Converting To Arrays / JSON

@@ -3,13 +3,14 @@
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [Subscribing To A Plan](#subscribing-to-a-plan)
+- [Single Charges](#single-charges)
 - [No Card Up Front](#no-card-up-front)
 - [Swapping Subscriptions](#swapping-subscriptions)
 - [Subscription Quantity](#subscription-quantity)
 - [Cancelling A Subscription](#cancelling-a-subscription)
 - [Resuming A Subscription](#resuming-a-subscription)
 - [Checking Subscription Status](#checking-subscription-status)
-- [Handling Failed Payments](#handling-failed-payments)
+- [Handling Failed Subscriptions](#handling-failed-subscriptions)
 - [Handling Other Stripe Webhooks](#handling-other-stripe-webhooks)
 - [Invoices](#invoices)
 
@@ -25,7 +26,8 @@ Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://s
 
 First, add the Cashier package to your `composer.json` file:
 
-	"laravel/cashier": "~3.0"
+	"laravel/cashier": "~4.0" (For Stripe APIs on 2015-02-18 version and later)
+	"laravel/cashier": "~3.0" (For Stripe APIs up to and including 2015-02-16 version)
 
 #### Service Provider
 
@@ -52,7 +54,14 @@ Next, add the `Billable` trait and appropriate date mutators to your model defin
 
 #### Stripe Key
 
-Finally, set your Stripe key in one of your bootstrap files or service providers, such as the `AppServiceProvider`:
+Finally, set your Stripe key in your `services.php` config file:
+
+	'stripe' => [
+		'model'  => 'User',
+		'secret' => env('STRIPE_API_SECRET'),
+	],
+
+Alternatively you can store it in one of your bootstrap files or service providers, such as the `AppServiceProvider`:
 
 	User::setStripeKey('stripe-key');
 
@@ -89,6 +98,31 @@ If you would like to specify additional customer details, you may do so by passi
 
 To learn more about the additional fields supported by Stripe, check out Stripe's [documentation on customer creation](https://stripe.com/docs/api#create_customer).
 
+<a name="single-charges"></a>
+## Single Charges
+
+If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method:
+
+	$user->charge(100);
+
+The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency**. So, for example, the example above will charge 100 cents, or $1.00, against the user's credit card.
+
+The `charge` method accepts an array as its second argument, allowing you to pass any options you wish to the underlying Stripe charge creation:
+
+	$user->charge(100, [
+		'source' => $token,
+		'receipt_email' => $user->email,
+	]);
+
+The `charge` method will return `false` if the charge fails. This typically indicates the charge was denied:
+
+	if ( ! $user->charge(100))
+	{
+		// The charge was denied...
+	}
+
+If the charge is successful, the full Stripe response will be returned from the method.
+
 <a name="no-card-up-front"></a>
 ## No Card Up Front
 
@@ -123,7 +157,7 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
 	// Add five to the subscription's current quantity...
 	$user->subscription()->increment(5);
 
-	$user->subscription->decrement();
+	$user->subscription()->decrement();
 
 	// Subtract five to the subscription's current quantity...
 	$user->subscription()->decrement(5);
@@ -149,7 +183,7 @@ If the user cancels a subscription and then resumes that subscription before the
 <a name="checking-subscription-status"></a>
 ## Checking Subscription Status
 
-To verify that a user is subscribed to your application, use the `subscribed` command:
+To verify that a user is subscribed to your application, use the `subscribed` method:
 
 	if ($user->subscribed())
 	{
@@ -203,14 +237,14 @@ The `onPlan` method may be used to determine if the user is subscribed to a give
 		//
 	}
 
-<a name="handling-failed-payments"></a>
-## Handling Failed Payments
+<a name="handling-failed-subscriptions"></a>
+## Handling Failed Subscriptions
 
 What if a customer's credit card expires? No worries - Cashier includes a Webhook controller that can easily cancel the customer's subscription for you. Just point a route to the controller:
 
 	Route::post('stripe/webhook', 'Laravel\Cashier\WebhookController@handleWebhook');
 
-That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription after three failed payment attempts. The `stripe/webhook` URI in this example is just for example. You will need to configure the URI in your Stripe settings.
+That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts). The `stripe/webhook` URI in this example is just for example. You will need to configure the URI in your Stripe settings.
 
 <a name="handling-other-stripe-webhooks"></a>
 ## Handling Other Stripe Webhooks

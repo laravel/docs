@@ -14,7 +14,7 @@ The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper 
 	})
 	->reject(function($name)
 	{
-		return is_null($value);
+		return empty($name);
 	});
 
 

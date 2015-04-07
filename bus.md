@@ -55,7 +55,7 @@ The newly generated class will be placed in the `app/Commands` directory. By def
 
 	}
 
-The `handle` method may also type-hint dependencies, and they will be automatically injected by the [IoC container](/docs/5.0/container). For example:
+The `handle` method may also type-hint dependencies, and they will be automatically injected by the [service container](/docs/5.0/container). For example:
 
 		/**
 		 * Execute the command.
@@ -136,7 +136,7 @@ A command pipe is defined with a `handle` method, just like a middleware:
 			return DB::transaction(function() use ($command, $next)
 			{
 				return $next($command);
-			}
+			});
 		}
 
 	}
@@ -150,5 +150,5 @@ You may even define a `Closure` as a command pipe:
 		return DB::transaction(function() use ($command, $next)
 		{
 			return $next($command);
-		}
+		});
 	}]);

@@ -52,7 +52,7 @@ You may easily call one of your routes for a test using the `call` method:
 
 	$response = $this->call('GET', 'user/profile');
 
-	$response = $this->call($method, $uri, $parameters, $files, $server, $content);
+	$response = $this->call($method, $uri, $parameters, $cookies, $files, $server, $content);
 
 You may then inspect the `Illuminate\Http\Response` object:
 
@@ -151,18 +151,18 @@ Laravel ships with several `assert` methods to make testing a little easier:
 
 #### Asserting The Session Has Errors
 
-    public function testMethod()
-    {
-        $this->call('GET', '/');
+	public function testMethod()
+	{
+		$this->call('GET', '/');
 
-        $this->assertSessionHasErrors();
+		$this->assertSessionHasErrors();
 
-        // Asserting the session has errors for a given key...
-        $this->assertSessionHasErrors('name');
+		// Asserting the session has errors for a given key...
+		$this->assertSessionHasErrors('name');
 
-        // Asserting the session has errors for several keys...
-        $this->assertSessionHasErrors(['name', 'age']);
-    }
+		// Asserting the session has errors for several keys...
+ 		$this->assertSessionHasErrors(['name', 'age']);
+	}
 
 #### Asserting Old Input Has Some Data
 
@@ -198,11 +198,11 @@ You may re-seed your database from a test using the `seed` method:
 
 	$this->seed();
 
-	$this->seed($connection);
+	$this->seed('DatabaseSeeder');
 
 More information on creating seeds may be found in the [migrations and seeding](/docs/migrations#database-seeding) section of the documentation.
 
 <a name="refreshing-the-application"></a>
 ## Refreshing The Application
 
-As you may already know, you can access your Laravel `Application` / IoC Container via `$this->app` from any test method. This Application instance is refreshed for each test class. If you wish to manually force the Application to be refreshed for a given method, you may use the `refreshApplication` method from your test method. This will reset any extra bindings, such as mocks, that have been placed in the IoC container since the test case started running.
+As you may already know, you can access your Application ([service container](/docs/5.0/container)) via `$this->app` from any test method. This service container instance is refreshed for each test class. If you wish to manually force the Application to be refreshed for a given method, you may use the `refreshApplication` method from your test method. This will reset any extra bindings, such as mocks, that have been placed in the IoC container since the test case started running.

@@ -22,7 +22,7 @@ The migration will be placed in your `database/migrations` folder, and will cont
 
 The `--table` and `--create` options may also be used to indicate the name of the table, and whether the migration will be creating a new table:
 
-	php artisan make:migration add_votes_to_user_table --table=users
+	php artisan make:migration add_votes_to_users_table --table=users
 
 	php artisan make:migration create_users_table --create=users
 

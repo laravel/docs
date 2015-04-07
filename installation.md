@@ -30,6 +30,12 @@ You may also install Laravel by issuing the Composer `create-project` command in
 
 	composer create-project laravel/laravel --prefer-dist
 
+### Scaffolding
+
+Laravel ships with scaffolding for user registration and authentication. If you would like to remove this scaffolding, use the `fresh` Artisan command:
+
+	php artisan fresh
+
 <a name="server-requirements"></a>
 ## Server Requirements
 
@@ -39,6 +45,7 @@ The Laravel framework has a few system requirements:
 - Mcrypt PHP Extension
 - OpenSSL PHP Extension
 - Mbstring PHP Extension
+- Tokenizer PHP Extension
 
 As of PHP 5.5, some OS distributions may require you to manually install the PHP JSON extension. When using Ubuntu, this can be done via `apt-get install php5-json`.
 
@@ -58,7 +65,7 @@ Once Laravel is installed, you should also [configure your local environment](/d
 <a name="permissions"></a>
 ### Permissions
 
-Laravel may require some permissions to be configured: folders within `storage` require write access by the web server.
+Laravel may require some permissions to be configured: folders within `storage` and `vendor` require write access by the web server.
 
 <a name="pretty-urls"></a>
 ## Pretty URLs
@@ -80,8 +87,8 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 
 On Nginx, the following directive in your site configuration will allow "pretty" URLs:
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
 
 Of course, when using [Homestead](/docs/5.0/homestead), pretty URLs will be configured automatically.

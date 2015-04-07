@@ -24,7 +24,7 @@ The `EventServiceProvider` included with your Laravel application provides a con
 	 */
 	protected $listen = [
 		'App\Events\PodcastWasPurchased' => [
-			'App\Handlers\Events\EmailPurchaseConfirmation@handle',
+			'App\Handlers\Events\EmailPurchaseConfirmation',
 		],
 	];
 
@@ -137,7 +137,7 @@ Once the subscriber has been defined, it may be registered with the `Event` clas
 
 	Event::subscribe($subscriber);
 
-You may also use the [Laravel IoC container](/docs/5.0/container) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
+You may also use the [service container](/docs/5.0/container) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
 
 	Event::subscribe('UserEventHandler');
 

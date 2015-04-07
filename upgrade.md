@@ -1,10 +1,18 @@
 # Upgrade Guide
 
+- [Upgrading To 5.0.16](#upgrade-5.0.16)
 - [Upgrading To 5.0 From 4.2](#upgrade-5.0)
 - [Upgrading To 4.2 From 4.1](#upgrade-4.2)
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-5.0.16"></a>
+## Upgrading To 5.0.16
+
+In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
+
+	$compiledPath = __DIR__.'/../vendor/compiled.php';
 
 <a name="upgrade-5.0"></a>
 ## Upgrading To 5.0 From 4.2
@@ -181,16 +189,18 @@ You may move your Sass, Less, or CoffeeScript to any location you wish. The `res
 
 ### Form & HTML Helpers
 
-If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. To fix this, add `"illuminate/html": "~5.0"` to your `composer.json` file's `require` section.
+If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective](http://laravelcollective.com/docs/5.0/html).
 
-You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php`, and add this line to the 'providers' array:
+For example, you may add `"laravelcollective/html": "~5.0"` to your `composer.json` file's `require` section.
 
-    'Illuminate\Html\HtmlServiceProvider',
+You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php` and add this line to the 'providers' array:
+
+	'Collective\Html\HtmlServiceProvider',
 
 Next, add these lines to the 'aliases' array:
 
-    'Form'      => 'Illuminate\Html\FormFacade',
-    'Html'      => 'Illuminate\Html\HtmlFacade',
+	'Form' => 'Collective\Html\FormFacade',
+	'Html' => 'Collective\Html\HtmlFacade',
 
 ### CacheManager
 
@@ -199,6 +209,10 @@ If your application code was injecting `Illuminate\Cache\CacheManager` to get a 
 ### Pagination
 
 Replace any calls to `$paginator->links()` with `$paginator->render()`.
+
+Replace any calls to `$paginator->getFrom()` and `$paginator->getTo()` with `$paginator->firstItem()` and `$paginator->lastItem()` respectively.
+
+Remove the "get" prefix from calls to `$paginator->getPerPage()`, `$paginator->getCurrentPage()`, `$paginator->getLastPage()` and `$paginator->getTotal()` (e.g. `$paginator->perPage()`).
 
 ### Beanstalk Queuing
 
@@ -265,7 +279,7 @@ If you are extending the `Illuminate\Pagination\Presenter` class, the abstract m
 
 If you are using the Iron.io queue driver, you will need to add a new `encrypt` option to your queue configuration file:
 
-    'encrypt' => true
+	'encrypt' => true
 
 <a name="upgrade-4.1.29"></a>
 ## Upgrading To 4.1.29 From <= 4.1.x

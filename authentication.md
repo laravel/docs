@@ -70,10 +70,10 @@ The `intended` redirect function will redirect the user to the URL they were att
 
 You also may add extra conditions to the authentication query:
 
-    if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1]))
-    {
-        // The user is active, not suspended, and exists.
-    }
+	if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1]))
+	{
+		// The user is active, not suspended, and exists.
+	}
 
 #### Determining If A User Is Authenticated
 
@@ -282,12 +282,12 @@ Your user will receive an e-mail with a link that points to the `getReset` metho
 
 	protected $redirectTo = '/dashboard';
 
-> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `config/auth.php` file.
+> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option in your `config/auth.php` file.
 
 <a name="social-authentication"></a>
 ## Social Authentication
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). **Socialite currently supports authentication with Facebook, Twitter, Google, and GitHub.**
+In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). **Socialite currently supports authentication with Facebook, Twitter, Google, GitHub and Bitbucket.**
 
 To get started with Socialite, include the package in your `composer.json` file:
 
@@ -337,6 +337,7 @@ Once you have a user instance, you can grab a few more details about the user:
 	$tokenSecret = $user->tokenSecret;
 
 	// All Providers
+	$user->getId();
 	$user->getNickname();
 	$user->getName();
 	$user->getEmail();

@@ -50,6 +50,38 @@ As you can see, if the given `age` is less than `200`, the middleware will retur
 
 It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
 
+### *Before* / *After* Middleware
+
+Whether a middleware runs before or after a request depends on the middleware itself. This middleware would perform some task **before** the request is handled by the application:
+
+	<?php namespace App\Http\Middleware;
+
+	class BeforeMiddleware implements Middleware {
+
+		public function handle($request, Closure $next)
+		{
+			// Perform action
+
+			return $next($request);
+		}
+	}
+
+However, this middleware would perform its task **after** the request is handled by the application:
+
+	<?php namespace App\Http\Middleware;
+
+	class AfterMiddleware implements Middleware {
+
+		public function handle($request, Closure $next)
+		{
+			$response = $next($request);
+
+			// Perform action
+
+			return $response;
+		}
+	}
+
 <a name="registering-middleware"></a>
 ## Registering Middleware
 

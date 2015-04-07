@@ -21,7 +21,7 @@ You will define most of the routes for your application in the `app/Http/routes.
 		return 'Hello World';
 	});
 
-#### Other Basic Routes Route
+#### Other Basic Routes
 
 	Route::post('foo/bar', function()
 	{
@@ -65,7 +65,7 @@ Laravel automatically generates a CSRF "token" for each active user session mana
 
 #### Insert The CSRF Token Into A Form
 
-    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
 Of course, using the Blade [templating engine](/docs/5.0/templates):
 
@@ -73,19 +73,41 @@ Of course, using the Blade [templating engine](/docs/5.0/templates):
 
 You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/5.0/middleware) will verify token in the request input matches the token stored in the session.
 
-In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-XSRF-TOKEN` request header, which is commonly used by JavaScript frameworks.
+#### X-CSRF-TOKEN
+
+In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag and instruct jQuery to add it to all request headers:
+
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
+
+	$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+
+Now all AJAX requests will automatically include the CSRF token:
+
+	$.ajax({
+	   url: "/foo/bar",
+	})
+
+#### X-XSRF-TOKEN
+
+Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some Javascript frameworks, like Angular, do this automatically for you.
+
+> Note: The difference between the `X-CSRF-TOKEN` and `X-XSRF-TOKEN` is that the first uses a plain text value and the latter uses an encrypted value, because cookies in Laravel are always encrypted. If you use the `csrf_token()` function to supply the token value, you probably want to use the `X-CSRF-TOKEN` header.
 
 <a name="method-spoofing"></a>
 ## Method Spoofing
 
-HTML forms do not support `PUT` or `DELETE` actions. So, when defining `PUT` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form.
+HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining `PUT`, `PATCH` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form.
 
 The value sent with the `_method` field will be used as the HTTP request method. For example:
 
 	<form action="/foo/bar" method="POST">
 		<input type="hidden" name="_method" value="PUT">
-    	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-    </form>
+		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+	</form>
 
 <a name="route-parameters"></a>
 ## Route Parameters
@@ -137,7 +159,7 @@ Of course, you can capture segments of the request URI within your route:
 
 #### Defining Global Patterns
 
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `before` method of your `RouteServiceProvider`:
+If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
 
 	$router->pattern('id', '[0-9]+');
 
@@ -182,7 +204,7 @@ Named routes allow you to conveniently generate URLs or redirects for a specific
 You may also specify route names for controller actions:
 
 	Route::get('user/profile', [
-        'as' => 'profile', 'uses' => 'UserController@showProfile'
+		'as' => 'profile', 'uses' => 'UserController@showProfile'
 	]);
 
 Now, you may use the route's name when generating URLs or redirects:
@@ -198,29 +220,45 @@ The `currentRouteName` method returns the name of the route handling the current
 <a name="route-groups"></a>
 ## Route Groups
 
-Sometimes you may need to apply filters to a group of routes. Instead of specifying the filter on each route, you may use a route group:
+Sometimes many of your routes will share common requirements such as URL segments, middleware, namespaces, etc. Instead of specifying each of these options on every route individually, you may use a route group to apply attributes to many routes.
 
-	Route::group(['middleware' => 'auth'], function()
+Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
+
+<a name="route-group-middleware"></a>
+### Middleware
+
+Middleware is applied to all routes within the group by defining the list of middleware with the `middleware` parameter on the group attribute array. Middleware will be executed in the order you define this array:
+
+	Route::group(['middleware' => 'foo|bar'], function()
 	{
 		Route::get('/', function()
 		{
-			// Has Auth Filter
+			// Has Foo And Bar Middleware
 		});
 
 		Route::get('user/profile', function()
 		{
-			// Has Auth Filter
+			// Has Foo And Bar Middleware
 		});
+
 	});
 
-You may use the `namespace` parameter within your `group` array to specify the namespace for all controllers within the group:
+<a name="route-group-namespace"></a>
+### Namespaces
+
+You may use the `namespace` parameter in your group attribute array to specify the namespace for all controllers within the group:
 
 	Route::group(['namespace' => 'Admin'], function()
 	{
-		//
+		// Controllers Within The "App\Http\Controllers\Admin" Namespace
+
+		Route::group(['namespace' => 'User'], function()
+		{
+			// Controllers Within The "App\Http\Controllers\Admin\User" Namespace
+		});
 	});
 
-> **Note:** By default, the `RouteServiceProvider` includes your `routes.php` file within a namespace group, allowing you to register controller routes without specifying the full namespace.
+> **Note:** By default, the `RouteServiceProvider` includes your `routes.php` file within a namespace group, allowing you to register controller routes without specifying the full `App\Http\Controllers` namespace prefix.
 
 <a name="sub-domain-routing"></a>
 ### Sub-Domain Routing
@@ -246,12 +284,32 @@ A group of routes may be prefixed by using the `prefix` option in the attributes
 
 	Route::group(['prefix' => 'admin'], function()
 	{
+		Route::get('users', function()
+		{
+			// Matches The "/admin/users" URL
+		});
+	});
 
-		Route::get('user', function()
+You can also utilize the `prefix` parameter to pass common parameters to your routes:
+
+#### Registering a URL parameter in a route prefix
+
+	Route::group(['prefix' => 'accounts/{account_id}'], function()
+	{
+		Route::get('detail', function($account_id)
 		{
 			//
 		});
+	});
 
+You can even define parameter constraints for the named parameters in your prefix:
+
+	Route::group([
+		'prefix' => 'accounts/{account_id}',
+		'where' => ['account_id' => '[0-9]+'],
+	], function() {
+
+		// Define Routes Here
 	});
 
 <a name="route-model-binding"></a>

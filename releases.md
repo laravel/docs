@@ -1,8 +1,16 @@
 # Release Notes
 
+- [Support Policy](#support-policy)
 - [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
 - [Laravel 4.1](#laravel-4.1)
+
+<a name="support-policy"></a>
+## Support Policy
+
+Security fixes are **always** applied to the previous major version of Laravel. Currently, **all** security fixes and patches will be applied to both Laravel 5.x **and** Laravel 4.x.
+
+When feasible, security fixes will also be applied to even older releases of the framework, such as Laravel 3.x.
 
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
@@ -37,7 +45,7 @@ For more information on middleware, check out [the documentation](/docs/5.0/midd
 
 ### Controller Method Injection
 
-In addition to the existing constructor injection, you may now type-hint dependencies on controller methods. The [IoC container](/docs/5.0/container) will automatically inject the dependencies, even if the route contains other parameters:
+In addition to the existing constructor injection, you may now type-hint dependencies on controller methods. The [service container](/docs/5.0/container) will automatically inject the dependencies, even if the route contains other parameters:
 
 	public function createPost(Request $request, PostRepository $posts)
 	{
@@ -119,7 +127,7 @@ The base Laravel controller utilizes the new `DispatchesCommands` trait, allowin
 
 	$this->dispatch(new PurchasePodcastCommand($user, $podcast));
 
-Of course, you may also use commands for tasks that are executed synchonrously (are not queued). In fact, using commands is a great way to encapsulate complex tasks your application needs to perform. For more information, check out the [command bus](/docs/5.0/bus) documentation.
+Of course, you may also use commands for tasks that are executed synchronously (are not queued). In fact, using commands is a great way to encapsulate complex tasks your application needs to perform. For more information, check out the [command bus](/docs/5.0/bus) documentation.
 
 ### Database Queue
 
@@ -205,7 +213,7 @@ Once the class has been defined, we can type-hint it on our controller action:
 		var_dump($request->input());
 	}
 
-When the Laravel IoC container identifies that the class it is injecting is a `FormRequest` instance, the request will **automatically be validated**. This means that if your controller action is called, you can safely assume the HTTP request input has been validated according to the rules you specified in your form request class. Even more, if the request is invalid, an HTTP redirect, which you may customize, will automatically be issued, and the error messages will be either flashed to the session or converted to JSON. **Form validation has never been more simple.** For more information on `FormRequest` validation, check out the [documentation](/docs/5.0/validation#form-request-validation).
+When the Laravel service container identifies that the class it is injecting is a `FormRequest` instance, the request will **automatically be validated**. This means that if your controller action is called, you can safely assume the HTTP request input has been validated according to the rules you specified in your form request class. Even more, if the request is invalid, an HTTP redirect, which you may customize, will automatically be issued, and the error messages will be either flashed to the session or converted to JSON. **Form validation has never been more simple.** For more information on `FormRequest` validation, check out the [documentation](/docs/5.0/validation#form-request-validation).
 
 ### Simple Controller Request Validation
 
@@ -225,7 +233,7 @@ For more information on this new method, check out [the documentation](/docs/5.0
 
 ### New Generators
 
-To compliment the new default application structure, new Artisan generator commands have been added to the framework. See `php artisan list` for more details.
+To complement the new default application structure, new Artisan generator commands have been added to the framework. See `php artisan list` for more details.
 
 ### Configuration Cache
 

@@ -50,6 +50,9 @@ You may also access additional pagination information via the following methods:
 - `currentPage`
 - `lastPage`
 - `perPage`
+- `hasMorePages`
+- `url`
+- `nextPageUrl`
 - `total`
 - `count`
 

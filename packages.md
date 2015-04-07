@@ -4,6 +4,7 @@
 - [Views](#views)
 - [Translations](#translations)
 - [Configuration](#configuration)
+- [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 - [Routing](#routing)
 
@@ -21,7 +22,7 @@ All Laravel packages are distributed via [Packagist](http://packagist.org) and [
 <a name="views"></a>
 ## Views
 
-Your package's internal structure is entirely up to you; however, typically each package will contain one or more [service providers](/docs/5.0/providers). The service provider contains any [IoC](/docs/5.0/container) bindings, as well as instructions as to where package configuration, views, and translation files are located.
+Your package's internal structure is entirely up to you; however, typically each package will contain one or more [service providers](/docs/5.0/providers). The service provider contains any [service container](/docs/5.0/container) bindings, as well as instructions as to where package configuration, views, and translation files are located.
 
 ### Views
 
@@ -104,6 +105,21 @@ You may also choose to merge your own package configuration file with the applic
 		__DIR__.'/path/to/config/courier.php', 'courier'
 	);
 
+<a name="public-assets"></a>
+## Public Assets
+
+Your packages may have assets such as JavaScript, CSS, and images. To publish assets, use the `publishes` method from your service provider's `boot` method. In this example, we will also add a "public" asset group tag.
+
+	$this->publishes([
+		__DIR__.'/path/to/assets' => public_path('vendor/courier'),
+	], 'public');
+
+Now, when your package's users execute the `vendor:publish` command, your files will be copied to the specified location. Since you typically will need to overwrite the assets every time the package is updated, you may use the `--force` flag:
+
+	php artisan vendor:publish --tag=public --force
+
+If you would like to make sure your public assets are always up-to-date, you can add this command to the `post-update-cmd` list in your `composer.json` file.
+
 <a name="publishing-file-groups"></a>
 ## Publishing File Groups
 
@@ -111,12 +127,12 @@ You may want to publish groups of files separately. For instance, you might want
 
 	// Publish a config file
 	$this->publishes([
-		__DIR__.'/../config/package.php', config_path('package.php')
+		__DIR__.'/../config/package.php' => config_path('package.php')
 	], 'config');
 
 	// Publish your migrations
 	$this->publishes([
-		__DIR__.'/../database/migrations/' => base_path('/database/migrations')
+		__DIR__.'/../database/migrations/' => database_path('/migrations')
 	], 'migrations');
 
 You can then publish these files separately by referencing their tag like so:

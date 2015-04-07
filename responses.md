@@ -19,7 +19,7 @@ The most basic response from a Laravel route is a string:
 
 #### Creating Custom Responses
 
-However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` instance or a [view](/docs/5.0/views). Returning a full `Response` instance allows you customize the response's HTTP status code and headers. A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses:
+However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` instance or a [view](/docs/5.0/views). Returning a full `Response` instance allows you to customize the response's HTTP status code and headers. A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses:
 
 	use Illuminate\Http\Response;
 
@@ -136,6 +136,8 @@ The `json` method will automatically set the `Content-Type` header to `applicati
 	return response()->download($pathToFile);
 
 	return response()->download($pathToFile, $name, $headers);
+
+	return response()->download($pathToFile)->deleteFileAfterSend(true);
 
 > **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
 

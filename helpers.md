@@ -2,6 +2,7 @@
 
 - [Arrays](#arrays)
 - [Paths](#paths)
+- [Routing](#routing)
 - [Strings](#strings)
 - [URLs](#urls)
 - [Miscellaneous](#miscellaneous)
@@ -48,7 +49,7 @@ The `array_fetch` method returns a flattened array containing the selected neste
 	$array = [
 		['developer' => ['name' => 'Taylor']],
 		['developer' => ['name' => 'Dayle']]
-	);
+	];
 
 	$array = array_fetch($array, 'developer.name');
 
@@ -179,7 +180,7 @@ Filter the array using the given Closure.
 
 ### head
 
-Return the first element in the array. Useful for method chaining in PHP 5.3.x.
+Return the first element in the array.
 
 	$first = head($this->returnsArray('foo'));
 
@@ -209,6 +210,45 @@ Get the fully qualified path to the `public` directory.
 ### storage_path
 
 Get the fully qualified path to the `storage` directory.
+
+<a name="routing"></a>
+## Routing
+
+### get
+
+Register a new GET route with the router.
+
+	get('/', function() { return 'Hello World'; });
+
+### post
+
+Register a new POST route with the router.
+
+	post('foo/bar', 'FooController@action');
+
+### put
+
+Register a new PUT route with the router.
+
+	put('foo/bar', 'FooController@action');
+
+### patch
+
+Register a new PATCH route with the router.
+
+	patch('foo/bar', 'FooController@action');
+
+### delete
+
+Register a new DELETE route with the router.
+
+	delete('foo/bar', 'FooController@action');
+	
+### resource
+
+Register a new RESTful resource route with the router.
+
+	resource('foo', 'FooController');
 
 <a name="strings"></a>
 ## Strings
@@ -304,7 +344,7 @@ Generate a random string of the given length.
 Convert a string to its singular form (English only).
 
 	$singular = str_singular('cars');
-	
+
 ### str_slug
 
 Generate a URL friendly "slug" from a given string.
@@ -312,9 +352,9 @@ Generate a URL friendly "slug" from a given string.
 	str_slug($title, $separator);
 
 Example:
-	
+
 	$title = str_slug("Laravel 5 Framework", "-");
-	
+
 	// laravel-5-framework
 
 ### studly_case
@@ -358,33 +398,9 @@ Generate a URL for an asset.
 
 	$url = asset('img/photo.jpg');
 
-### link_to
-
-Generate a HTML link to the given URL.
-
-	echo link_to('foo/bar', $title, $attributes = [], $secure = null);
-
-### link_to_asset
-
-Generate a HTML link to the given asset.
-
-	echo link_to_asset('foo/bar.zip', $title, $attributes = [], $secure = null);
-
-### link_to_route
-
-Generate a HTML link to the given route.
-
-	echo link_to_route('route.name', $title, $parameters = [], $attributes = []);
-
-### link_to_action
-
-Generate a HTML link to the given controller action.
-
-	echo link_to_action('HomeController@getIndex', $title, $parameters = [], $attributes = []);
-
 ### secure_asset
 
-Generate a HTML link to the given asset using HTTPS.
+Generate a URL for an asset using HTTPS.
 
 	echo secure_asset('foo/bar.zip', $title, $attributes = []);
 
@@ -415,14 +431,38 @@ Dump the given variable and end execution of the script.
 
 	dd($value);
 
+### elixir
+
+Get the path to a versioned Elixir file.
+
+	elixir($file);
+
+### env
+
+Gets the value of an environment variable or return a default value.
+
+	env('APP_ENV', 'production')
+
+### event
+
+Fire an event.
+
+	event('my.event');
+
 ### value
 
 If the given value is a `Closure`, return the value returned by the `Closure`. Otherwise, return the value.
 
 	$value = value(function() { return 'bar'; });
 
+### view
+
+Get a View instance for the given view path.
+
+	return view('auth.login');
+
 ### with
 
-Return the given object. Useful for method chaining constructors in PHP 5.3.x.
+Return the given object.
 
 	$value = with(new Foo)->doWork();

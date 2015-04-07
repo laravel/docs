@@ -159,6 +159,30 @@ _By "forever", we really mean five years._
 
 	$response->withCookie(cookie()->forever('name', 'value'));
 
+#### Queueing Cookies
+
+You may also "queue" a cookie to be added to the outgoing response, even before that response has been created:
+
+	<?php namespace App\Http\Controllers;
+
+	use Cookie;
+	use Illuminate\Routing\Controller;
+
+	class UserController extends Controller
+	{
+		/**
+		 * Update a resource
+		 *
+		 * @return Response
+		 */
+		 public function update()
+		 {
+		 	Cookie::queue('name', 'value');
+
+		 	return response('Hello World');
+		 }
+	}
+
 <a name="files"></a>
 ## Files
 

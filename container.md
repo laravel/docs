@@ -18,7 +18,7 @@ Let's look at a simple example:
 	<?php namespace App\Handlers\Commands;
 
 	use App\User;
-	use App\Commands\PurchasePodcast;
+	use App\Commands\PurchasePodcastCommand;
 	use Illuminate\Contracts\Mail\Mailer;
 
 	class PurchasePodcastHandler {
@@ -144,7 +144,7 @@ Lastly, but most importantly, you may simply "type-hint" the dependency in the c
 
 ### Injecting Concrete Dependencies
 
-A very powerful features of the service container is its ability to bind an interface to a given implementation. For example, perhaps our application integrates with the [Pusher](https://pusher.com) web service for sending and receiving real-time events. If we are using Pusher's PHP SDK, we could inject an instance of the Pusher client into a class:
+A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, perhaps our application integrates with the [Pusher](https://pusher.com) web service for sending and receiving real-time events. If we are using Pusher's PHP SDK, we could inject an instance of the Pusher client into a class:
 
 	<?php namespace App\Handlers\Commands;
 
@@ -223,7 +223,7 @@ This tells the container that it should inject the `PusherEventPusher` when a cl
 <a name="contextual-binding"></a>
 ## Contextual Binding
 
-Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, when our system receives a new Order, we may want to send an event via [PubNub](http://www.pubnub.com/) rather than Pusher. Laravel provides a simple, fluent interface for definining this behavior:
+Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, when our system receives a new Order, we may want to send an event via [PubNub](http://www.pubnub.com/) rather than Pusher. Laravel provides a simple, fluent interface for defining this behavior:
 
 	$this->app->when('App\Handlers\Commands\CreateOrderHandler')
 	          ->needs('App\Contracts\EventPusher')
@@ -288,9 +288,9 @@ Laravel provides several opportunities to use the service container to increase 
 		 */
 		public function index()
 		{
-			$all = $this->orders->all();
+			$orders = $this->orders->all();
 
-			return view('orders', ['all' => $all]);
+			return view('orders', ['orders' => $orders]);
 		}
 
 	}

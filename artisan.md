@@ -124,6 +124,24 @@ Let's look at a few more scheduling examples:
 
 	$schedule->command('foo')->monthly();
 
+#### Job That Runs On Specific Days
+
+	$schedule->command('foo')->mondays();
+	$schedule->command('foo')->tuesdays();
+	$schedule->command('foo')->wednesdays();
+	$schedule->command('foo')->thursdays();
+	$schedule->command('foo')->fridays();
+	$schedule->command('foo')->saturdays();
+	$schedule->command('foo')->sundays();
+
+#### Prevent Jobs From Overlapping
+
+By default, scheduled jobs will be run even if the previous instance of the job is still running. To prevent this, you may use the `withoutOverlapping` method:
+
+	$schedule->command('foo')->withoutOverlapping();
+
+In this example, the `foo` command will be run every minute if it is not already running.
+
 #### Limit The Environment The Jobs Should Run In
 
 	$schedule->command('foo')->monthly()->environments('production');
@@ -138,3 +156,17 @@ Let's look at a few more scheduling examples:
 	{
 		return true;
 	});
+
+#### E-mail The Output Of A Scheduled Job
+
+	$schedule->command('foo')->sendOutputTo($filePath)->emailOutputTo('foo@example.com');
+
+> **Note:** You must send the output to a file before it can be mailed.
+
+#### Send The Output Of The Scheduled Job To A Given Location
+
+	$schedule->command('foo')->sendOutputTo($filePath);
+
+#### Ping A Given URL After The Job Runs
+
+	$schedule->command('foo')->thenPing($url);
