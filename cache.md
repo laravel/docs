@@ -176,15 +176,15 @@ When using the `database` cache driver, you will need to setup a table to contai
 <a name="memcached-cache"></a>
 #### Memcached Cache
 
-Requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.
+Using the Memcached cache requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.
 
-The default [configuration](#configuration) uses TCP/IP based on [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php)
+The default [configuration](#configuration) uses TCP/IP based on [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php):
 
 	'memcached' => array(
 		array('host' => '127.0.0.1', 'port' => 11211, 'weight' => 100),
 	),
 
-For better performance, start Memcached as a UNIX socket, and then set `host` to a socket file path and `port` to `0`
+You may also set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
 
 	'memcached' => array(
 		array('host' => '/var/run/memcached/memcached.sock', 'port' => 0, 'weight' => 100),
