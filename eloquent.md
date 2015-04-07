@@ -69,36 +69,28 @@ Once a model is defined, you are ready to start retrieving and creating records 
 
 #### Retrieving A Model By Primary Key Or Throw An Exception
 
-Sometimes you may wish to throw an exception if a model is not found.
+Sometimes you may wish to throw an exception if a model is not found. To do this, you may use the `firstOrFail` method:
 
 	$model = User::findOrFail(1);
 
 	$model = User::where('votes', '>', 100)->firstOrFail();
 
-Doing this will let you catch the exception so you can log and display an error page as necessary. To register the error handler for the `ModelNotFoundException`, edit the `app/Exceptions/Handler.php` file.
+Doing this will let you catch the exception so you can log and display an error page as necessary. To catch the `ModelNotFoundException`, add some logic to your `app/Exceptions/Handler.php` file.
 
 	use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 	class Handler extends ExceptionHandler {
-		public function report(Exception $e)
-		{
-			if ($e instanceof ModelNotFoundException) {
-				// log the error
-			}
-		
-			return parent::report($e);
-		}
-		
+
 		public function render($request, Exception $e)
 		{
-			if ($e instanceof ModelNotFoundException) {
-				// display the error with a custom page (make the view in the views/errors folder)
-				// alternatively, for a simple 404 page use abort(404)
-				return response(view('errors.modelnotfound'), 404);
+			if ($e instanceof ModelNotFoundException)
+			{
+				// Custom logic for model not found...
 			}
-		
+
 			return parent::render($request, $e);
 		}
+
 	}
 
 #### Querying Using Eloquent Models
