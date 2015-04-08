@@ -346,7 +346,7 @@ If you wish to specify your own "not found" behavior, pass a Closure as the thir
 		throw new NotFoundHttpException;
 	});
 
-If you wish to use your own resolution logic, you should use the `Router::bind` method. The Closure you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
+If you wish to use your own resolution logic, you should use the `Route::bind` method. The Closure you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
 
 	Route::bind('user', function($value)
 	{
