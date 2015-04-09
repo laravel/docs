@@ -9,8 +9,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gulpjs.com) tasks for your
-Laravel application. Elixir supports several common CSS and JavaScript pre-processors, and even testing tools.
+Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gulpjs.com) tasks for your Laravel application. Elixir supports several common CSS and JavaScript pre-processors, and even testing tools.
 
 If you've ever been confused about how to get started with Gulp and asset compilation, you will love Laravel Elixir!
 
@@ -23,9 +22,7 @@ Before triggering Elixir, you must first ensure that Node.js is installed on you
 
     node -v
 
-By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you
-can easily install Node by visiting [their download page](http://nodejs.org/download/). Don't worry, it's
-quick and easy!
+By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install Node by visiting [their download page](http://nodejs.org/download/). Don't worry, it's quick and easy!
 
 ### Gulp
 
