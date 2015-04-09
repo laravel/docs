@@ -54,7 +54,7 @@ In addition to VirtualBox, Homestead also supports VMware. To use the VMware pro
 
 	vagrant box add laravel/homestead
 
-如果上述指令失敗，你的 Vargrant 是舊版需要完整的鏈結：
+如果上述指令失敗，你的 Vagrant 是舊版需要完整的鏈結：
 
 	vagrant box add laravel/homestead https://atlas.hashicorp.com/laravel/boxes/homestead
 
@@ -63,8 +63,6 @@ In addition to VirtualBox, Homestead also supports VMware. To use the VMware pro
 #### 方法 1 - 手動透過 Git 安裝（本地端沒有 PHP）
 
 如果你不希望在你的本機上安裝 PHP ，你可以簡單地透過手動複製資源庫的方式來安裝 Homestead。建議可將資源庫複製至你的 "home" 目錄中的 `Homestead` 資料夾，如此一來 Homestead 封裝包將能提供主機服務給你所有的 Laravel（及 PHP）專案:
-
-If you do not want to install PHP on your local machine, you may install Homestead manually by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel (and PHP) projects:
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
@@ -175,7 +173,9 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 
 一旦 Homestead 環境上架且運行後，你可能會需要為 Laravel 應用程式增加更多的 Nginx 站台。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。有兩種方式可以達成：第一種，在 `Homestead.yaml` 檔案中增加站台然後執行 `homestead provision` 或是 `vagrant provision`。
 
-> **Note:** This process is destructive. When running the `provision` command, your existing databases will be destroyed and recreated.
+> **附註：** This process is destructive. When running the `provision` command, your existing databases will be destroyed and recreated.
+
+> **附註：** 這個是具有破壞性的步驟。 當執行 `provision` 指令，你現有的資料庫將會被摧毀及重建。
 
 另外，也可以使用存放在 Homestead 環境中的 `serve` 指令檔。要使用 `serve` 指令檔，請先 SSH 進入 Homestead 環境中，並執行下列命令：
 
@@ -193,9 +193,9 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **Postgres:** 54320 &rarr; Forwards To 5432
 
-### Adding Additional Ports
+### 加入額外的連接埠
 
-If you wish, you may forward additional ports to the Vagrant box, as well as specify their protocol:
+如果你願意，可以重導額外的連接埠到 Vagrant 封裝包，以及指定他們的協定：
 
 	ports:
 	    - send: 93000
