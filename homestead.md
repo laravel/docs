@@ -173,8 +173,6 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 
 一旦 Homestead 環境上架且運行後，你可能會需要為 Laravel 應用程式增加更多的 Nginx 站台。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。有兩種方式可以達成：第一種，在 `Homestead.yaml` 檔案中增加站台然後執行 `homestead provision` 或是 `vagrant provision`。
 
-> **附註：** This process is destructive. When running the `provision` command, your existing databases will be destroyed and recreated.
-
 > **附註：** 這個是具有破壞性的步驟。 當執行 `provision` 指令，你現有的資料庫將會被摧毀及重建。
 
 另外，也可以使用存放在 Homestead 環境中的 `serve` 指令檔。要使用 `serve` 指令檔，請先 SSH 進入 Homestead 環境中，並執行下列命令：
