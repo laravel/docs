@@ -44,7 +44,7 @@ Next, add the `Billable` trait and appropriate date mutators to your model defin
 	use Laravel\Cashier\Billable;
 	use Laravel\Cashier\Contracts\Billable as BillableContract;
 
-	class User extends Eloquent implements BillableContract {
+	class User extends Model implements BillableContract {
 
 		use Billable;
 
