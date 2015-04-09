@@ -179,7 +179,7 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
 Alternatively, you may use the `serve` script that is available on your Homestead environment. To use the `serve` script, SSH into your Homestead environment and run the following command:
 
-	serve domain.app /home/vagrant/Code/path/to/public/directory
+	serve domain.app /home/vagrant/Code/path/to/public/directory 80
 
 > **Note:** After running the `serve` command, do not forget to add the new site to the `hosts` file on your main machine!
 
