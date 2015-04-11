@@ -214,5 +214,7 @@ All of the proper packages have already been installed on your Homestead box, yo
 	blackfire:
 	    - id: your-server-id
 	      token: your-server-token
+	      client-id: your-client-id
+	      client-token: your-client-token
 
 Once you have configured your Blackfire credentials, re-provision the box using `homestead provision` or `vagrant provision`. Of course, be sure to review the [Blackfire documentation](https://blackfire.io/getting-started) to learn how to install the Blackfire companion extension for your web browser.
