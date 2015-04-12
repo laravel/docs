@@ -2,6 +2,7 @@
 
 - [Blade Templating](#blade-templating)
 - [Other Blade Control Structures](#other-blade-control-structures)
+- [Service Injection](#service-injection)
 
 <a name="blade-templating"></a>
 ## Blade Templating
@@ -30,7 +31,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 #### Using A Blade Layout
 
 	@extends('layouts.master')
-	
+
 	@section('title', 'Page Title')
 
 	@section('sidebar')
@@ -142,3 +143,13 @@ To overwrite a section entirely, you may use the `overwrite` statement:
 
 	{{-- This comment will not be in the rendered HTML --}}
 
+<a name="service-injection"></a>
+## Service Injection
+
+The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/master/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second `argument` is the class / interface name of the service you wish to resolve:
+
+	@inject('metrics', 'App\Services\MetricsService')
+
+	<div>
+		Monthly Revenue: {{ $metrics->monthlyRevenue() }}.
+	</div>
