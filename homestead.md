@@ -130,6 +130,8 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
 	      to: /home/vagrant/Code/Laravel/public
 	      hhvm: true
 
+Each site will be accessible by HTTP via port 8000 and HTTPS via port 44300.
+
 ### Bash Aliases
 
 To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the `~/.homestead` directory.
