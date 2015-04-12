@@ -55,7 +55,7 @@ Note that we did not tell Eloquent which table to use for our `User` model. The 
 
 Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
 
-#### Retrieving All Models
+#### Retrieving All Records
 
 	$users = User::all();
 
