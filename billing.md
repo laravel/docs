@@ -44,7 +44,7 @@ Next, add the `Billable` trait and appropriate date mutators to your model defin
 	use Laravel\Cashier\Billable;
 	use Laravel\Cashier\Contracts\Billable as BillableContract;
 
-	class User extends Eloquent implements BillableContract {
+	class User extends Model implements BillableContract {
 
 		use Billable;
 
@@ -183,7 +183,7 @@ If the user cancels a subscription and then resumes that subscription before the
 <a name="checking-subscription-status"></a>
 ## Checking Subscription Status
 
-To verify that a user is subscribed to your application, use the `subscribed` command:
+To verify that a user is subscribed to your application, use the `subscribed` method:
 
 	if ($user->subscribed())
 	{

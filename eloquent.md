@@ -43,13 +43,13 @@ You may also generate Eloquent models using the `make:model` command:
 
 	php artisan make:model User
 
-If you would like to generate a migration when you generate the model, you may use the `migrate` / `m` switch:
+If you would like to generate a migration when you generate the model, you may use the `migration` / `m` switch:
 
 	php artisan make:model User --migration
 
 	php artisan make:model User -m
 
-Note that we did not tell Eloquent which table to use for our `User` model. The "snake case" name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
+Note that we did not tell Eloquent which table to use for our `User` model. The "snake case", plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `User` model stores records in the `users` table. You may specify a custom table by defining a `table` property on your model:
 
 	class User extends Model {
 
@@ -61,7 +61,7 @@ Note that we did not tell Eloquent which table to use for our `User` model. The 
 
 Once a model is defined, you are ready to start retrieving and creating records in your table. Note that you will need to place `updated_at` and `created_at` columns on your table by default. If you do not wish to have these columns automatically maintained, set the `$timestamps` property on your model to `false`.
 
-#### Retrieving All Models
+#### Retrieving All Records
 
 	$users = User::all();
 
@@ -75,20 +75,29 @@ Once a model is defined, you are ready to start retrieving and creating records 
 
 #### Retrieving A Model By Primary Key Or Throw An Exception
 
-Sometimes you may wish to throw an exception if a model is not found, allowing you to catch the exceptions using an `App::error` handler and display a 404 page.
+Sometimes you may wish to throw an exception if a model is not found. To do this, you may use the `firstOrFail` method:
 
 	$model = User::findOrFail(1);
 
 	$model = User::where('votes', '>', 100)->firstOrFail();
 
-To register the error handler, listen for the `ModelNotFoundException`
+Doing this will let you catch the exception so you can log and display an error page as necessary. To catch the `ModelNotFoundException`, add some logic to your `app/Exceptions/Handler.php` file.
 
 	use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-	App::error(function(ModelNotFoundException $e)
-	{
-		return Response::make('Not Found', 404);
-	});
+	class Handler extends ExceptionHandler {
+
+		public function render($request, Exception $e)
+		{
+			if ($e instanceof ModelNotFoundException)
+			{
+				// Custom logic for model not found...
+			}
+
+			return parent::render($request, $e);
+		}
+
+	}
 
 #### Querying Using Eloquent Models
 

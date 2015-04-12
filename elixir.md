@@ -9,8 +9,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gulpjs.com) tasks for your
-Laravel application. Elixir supports several common CSS and JavaScript pre-processors, and even testing tools.
+Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gulpjs.com) tasks for your Laravel application. Elixir supports several common CSS and JavaScript pre-processors, and even testing tools.
 
 If you've ever been confused about how to get started with Gulp and asset compilation, you will love Laravel Elixir!
 
@@ -23,9 +22,7 @@ Before triggering Elixir, you must first ensure that Node.js is installed on you
 
     node -v
 
-By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you
-can easily install Node by visiting [their download page](http://nodejs.org/download/). Don't worry, it's
-quick and easy!
+By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install Node by visiting [their download page](http://nodejs.org/download/). Don't worry, it's quick and easy!
 
 ### Gulp
 
@@ -73,7 +70,7 @@ elixir(function(mix) {
 });
 ```
 
-This assumes that your Sass files are stored in `resources/assets/sass`. The `sass` method may only be called once. If you would like to compile multiple Sass files, pass an array to the `sass` method.
+This assumes that your Sass files are stored in `resources/assets/sass`.
 
 By default, Elixir, underneath the hood, uses the LibSass library for compilation. In some instances, it might prove advantageous to instead leverage the Ruby version, which, though slower, is more feature rich. Assuming that you have both Ruby and the Sass gem installed (`gem install sass`), you may enable Ruby-mode, like so:
 
@@ -251,6 +248,18 @@ elixir(function(mix) {
 	mix.copy('vendor/package/views', 'resources/views');
 });
 ```
+
+#### Trigger Browserify
+
+```javascript
+elixir(function(mix) {
+	mix.browserify('index.js');
+});
+```
+
+Want to require modules in the browser? Hoping to use EcmaScript 6 sooner than later? Need a built-in JSX transformer? If so, [Browserify](http://browserify.org/), along with the `browserify` Elixir task, will handle the job nicely.
+
+This task assumes that your scripts are stored in `resources/js`, though you're free to override the default.
 
 #### Method Chaining
 

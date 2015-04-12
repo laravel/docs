@@ -6,6 +6,8 @@
 - [Cache Tags](#cache-tags)
 - [Cache Events](#cache-events)
 - [Database Cache](#database-cache)
+- [Memcached Cache](#memcached-cache)
+- [Redis Cache](#redis-cache)
 
 <a name="configuration"></a>
 ## Configuration
@@ -170,3 +172,25 @@ When using the `database` cache driver, you will need to setup a table to contai
 		$table->text('value');
 		$table->integer('expiration');
 	});
+
+<a name="memcached-cache"></a>
+#### Memcached Cache
+
+Using the Memcached cache requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.
+
+The default [configuration](#configuration) uses TCP/IP based on [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php):
+
+	'memcached' => array(
+		array('host' => '127.0.0.1', 'port' => 11211, 'weight' => 100),
+	),
+
+You may also set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
+
+	'memcached' => array(
+		array('host' => '/var/run/memcached/memcached.sock', 'port' => 0, 'weight' => 100),
+	),
+
+<a name="redis-cache"></a>
+#### Redis Cache
+
+See [Redis Configuration](/docs/redis#configuration)

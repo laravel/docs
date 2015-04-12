@@ -109,6 +109,8 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
 	      to: /home/vagrant/Code/Laravel/public
 	      hhvm: true
 
+Each site will be accessible by HTTP via port 8000 and HTTPS via port 44300.
+
 ### Bash Aliases
 
 To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the `~/.homestead` directory.
@@ -158,7 +160,7 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
 Alternatively, you may use the `serve` script that is available on your Homestead environment. To use the `serve` script, SSH into your Homestead environment and run the following command:
 
-	serve domain.app /home/vagrant/Code/path/to/public/directory
+	serve domain.app /home/vagrant/Code/path/to/public/directory 80
 
 > **Note:** After running the `serve` command, do not forget to add the new site to the `hosts` file on your main machine!
 
@@ -193,5 +195,7 @@ All of the proper packages have already been installed on your Homestead box, yo
 	blackfire:
 	    - id: your-server-id
 	      token: your-server-token
+	      client-id: your-client-id
+	      client-token: your-client-token
 
 Once you have configured your Blackfire credentials, re-provision the box using `vagrant provision` from your Homestead directory. Of course, be sure to review the [Blackfire documentation](https://blackfire.io/getting-started) to learn how to install the Blackfire companion extension for your web browser.
