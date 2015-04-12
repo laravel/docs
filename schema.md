@@ -104,6 +104,8 @@ If you are using the MySQL database, you may use the `after` method to specify t
 <a name="changing-columns"></a>
 ## Changing Columns
 
+**Note:** Before changing a column, be sure to add the doctrine/dbal dependency to your composer.json file.
+
 Sometimes you may need to modify an existing column. For example, you may wish to increase the size of a string column. The `change` method makes it easy! For example, let's increase the size of the `name` column from 25 to 50:
 
 	Schema::table('users', function($table)
