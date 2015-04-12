@@ -146,7 +146,7 @@ To overwrite a section entirely, you may use the `overwrite` statement:
 <a name="service-injection"></a>
 ## Service Injection
 
-The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/master/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second `argument` is the class / interface name of the service you wish to resolve:
+The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/master/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class / interface name of the service you wish to resolve:
 
 	@inject('metrics', 'App\Services\MetricsService')
 
