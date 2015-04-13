@@ -126,7 +126,7 @@ Once you have performed validation, you will need an easy way to get the error m
 
 		if ($validator->fails())
 		{
-			return Redirect::to('register')->withErrors($validator);
+			return Redirect::to('register')->withErrors($validator->messages());
 		}
 	});
 
