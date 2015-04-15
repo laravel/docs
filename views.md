@@ -105,7 +105,7 @@ Let's organize our view composers within a [service provider](/docs/master/provi
 			View::composer('profile', 'App\Http\ViewComposers\ProfileComposer');
 
 			// Using Closure based composers...
-			View::composer('dashboard', function()
+			View::composer('dashboard', function($view)
 			{
 
 			});
@@ -176,7 +176,7 @@ Just before the view is rendered, the composer's `compose` method is called with
 
 The `composer` method accepts the `*` character as a wildcard, so you may attach a composer to all views like so:
 
-	View::composer('*', function()
+	View::composer('*', function($view)
 	{
 		//
 	});

@@ -72,6 +72,8 @@ Of course, you can capture segments of the request URI within your route:
 		return 'User '.$id;
 	});
 
+> **Note:** Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
+
 #### Optional Route Parameters
 
 	Route::get('user/{name?}', function($name = null)
