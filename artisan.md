@@ -69,6 +69,8 @@ Your command schedule is stored in the `app/Console/Kernel.php` file. Within thi
 
 This Cron will call the Laravel command scheduler every minute. Then, Laravel evaluates your scheduled jobs and runs the jobs that are due. It couldn't be easier!
 
+> **Note:** You need to require the `"guzzlehttp/guzzle"` package in your composer.json when scheduling Artisan commands.
+
 ### More Scheduling Examples
 
 Let's look at a few more scheduling examples:
