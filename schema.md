@@ -120,6 +120,8 @@ We could also modify a column to be nullable:
 		$table->string('name', 50)->nullable()->change();
 	});
 
+> **Note:** Changing columns in a table with `enum` column is currently not supported.
+
 <a name="renaming-columns"></a>
 ## Renaming Columns
 
