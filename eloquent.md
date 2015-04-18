@@ -1134,6 +1134,7 @@ When filtering collections, the callback provided will be used as callback for [
 	{
 		return $role->created_at;
 	});
+
 	$roles = $roles->sortByDesc(function($role)
 	{
 		return $role->created_at;
@@ -1142,6 +1143,7 @@ When filtering collections, the callback provided will be used as callback for [
 #### Sorting A Collection By A Value
 
 	$roles = $roles->sortBy('created_at');
+
 	$roles = $roles->sortByDesc('created_at');
 
 #### Returning A Custom Collection Type
