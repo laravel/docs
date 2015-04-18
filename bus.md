@@ -1,7 +1,7 @@
 # Command Bus
 
 - [Introdução](#introduction)
-- [Creating Commands](#creating-commands)
+- [Criando Comandos](#creating-commands)
 - [Dispatching Commands](#dispatching-commands)
 - [Queued Commands](#queued-commands)
 - [Command Pipeline](#command-pipeline)
@@ -20,11 +20,11 @@ Ao invés de colocar esta lógica no controlador(controller), nos podemos escolh
 <a name="creating-commands"></a>
 ## Criando Comandos
 
-The Artisan CLI can generate new command classes using the `make:command` command:
+O artisan CLI pode gerar uma nova classe de comento usando o comando `make:command`:
 
 	php artisan make:command PurchasePodcast
 
-The newly generated class will be placed in the `app/Commands` directory. By default, the command contains two methods: the constructor and the `handle` method. Of course, the constructor allows you to pass any relevant objects to the command, while the `handle` method executes the command. For example:
+A nova classe gerada será alocada no diretório `app/Commands`. Por padrão, o comando contém dois métodos: o contrutor e o método `handle`. É claro que, o contrutor permite que você passe qualquer objeto relavante para o comando, enquanto o método `handle` executa o comando, Por exemplo:
 
 	class PurchasePodcast extends Command implements SelfHandling {
 
