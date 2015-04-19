@@ -2,9 +2,9 @@
 
 - [Introdução](#introduction)
 - [Criando Comandos](#creating-commands)
-- [Dispatching Commands](#dispatching-commands)
-- [Queued Commands](#queued-commands)
-- [Command Pipeline](#command-pipeline)
+- [Despachando Commandos](#dispatching-commands)
+- [Comandos Queued](#queued-commands)
+- [Comandos em Pipeline](#command-pipeline)
 
 <a name="introduction"></a>
 ## Introdução
@@ -118,7 +118,7 @@ Para mais informações de como interagir com os comandos queued, veja a documen
 
 
 <a name="command-pipeline"></a>
-## Comando em Pipeline
+## Comandos em Pipeline
 
 Antes de um comando ser despachado ao manipulador, você pode passar isso por meio de outras classes em um "pipeline". Comando pipes funcionam como um middleware HTTP, exceto para seus comandos! Por exemplo, um comando pipe pode envolver todo a operação do comando dentro de uma transação com banco de dados, ou simplesmente registrar a sua execução.
 
