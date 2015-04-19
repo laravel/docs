@@ -54,8 +54,7 @@ A nova classe gerada será alocada no diretório `app/Commands`. Por padrão, o 
 		}
 
 	}
-
-The `handle` method may also type-hint dependencies, and they will be automatically injected by the [IoC container](/docs/5.0/container). For example:
+O méotodo `handle` também pode tipar tipar dependencias, e elas irão ser automaticamente injetadoas pelo [IoC container](/docs/5.0/container). Por exemplo:
 
 		/**
 		 * Execute the command.
@@ -68,11 +67,11 @@ The `handle` method may also type-hint dependencies, and they will be automatica
 		}
 
 <a name="dispatching-commands"></a>
-## Dispatching Commands
+## Despachando Comandos
 
-So, once we have created a command, how do we dispatch it? Of course, we could call the `handle` method directly; however, dispatching the command through the Laravel "command bus" has several advantages which we will discuss later.
+Então, umas vez que criamos o comando, como poderemos despacha-lo? É claro que, nos podemos chamar o método `handle` diretamento; entretanto, há várias vantagens em despachar o comando por meio do Laravel "command bus", essas serão discutidas mais tarde.
 
-If you glance at your application's base controller, you will see the `DispatchesCommands` trait. This trait allows us to call the `dispatch` method from any of our controllers. For example:
+Se você der uma olhada no controller base da sua aplicação, você verá a trait `DispatchesCommands`. Esta trait nos permite chmar o méotodo `dispatch` de qualquer um de nossos controllers. Por exemplo:
 
 	public function purchasePodcast($podcastId)
 	{
@@ -80,33 +79,32 @@ If you glance at your application's base controller, you will see the `Dispatche
 			new PurchasePodcast(Auth::user(), Podcast::findOrFail($podcastId))
 		);
 	}
+O comando bus irá cuidar da execução do comando e chamar o container IoC para injetar qualquer dependência necessária ao método `handle`.
 
-The command bus will take care of executing the command and calling the IoC container to inject any needed dependencies into the `handle` method.
-
-You may add the `Illuminate\Foundation\Bus\DispatchesCommands` trait to any class you wish. If you would like to receive a command bus instance through the constructor of any of your classes, you may type-hint the `Illuminate\Contracts\Bus\Dispatcher` interface. Finally, you may also use the `Bus` facade to quickly dispatch commands:
+Você pode adicionar a trait `Illuminate\Foundation\Bus\DispatchesCommands` em qualquer classe que você desejar. Se você gostaria de receber a instância do comando bus por meio do contrutor de qualquer de suas classes, você pode sugerir o tipar a interface `Illuminate\Contracts\Bus\Dispatcher`. Finanlmente, você pode também usar a fachada `Bus`para rapidamente dipachar comandos:
 
 		Bus::dispatch(
 			new PurchasePodcast(Auth::user(), Podcast::findOrFail($podcastId))
 		);
 
-### Mapping Command Properties From Requests
+### Mapeando Propriedades do comando a partir da requests
 
-It is very common to map HTTP request variables into commands. So, instead of forcing you to do this manually for each request, Laravel provides some helper methods to make it a cinch. Let's take a look at the `dispatchFrom` method available on the `DispatchesCommands` trait:
+Isso é bem comum para mapear variáveis de requests(requisições) HTTP em comandos. Então, ao invés de forçar você a fazer isto manualmente para cada requisição, Laravel disponibiliza alguns métodos helpers para tornar isso mais fácil. Vamos dar uma olhada no método `dispatchFrom` disponível na trait `DispatchesCommands`.
 
 	$this->dispatchFrom('Command\Class\Name', $request);
 
-This method will examine the constructor of the command class it is given, and then extract variables from the HTTP request (or any other `ArrayAccess` object) to fill the needed constructor parameters of the command. So, if our command class accepts a `firstName` variable in its constructor, the command bus will attempt to pull the `firstName` parameter from the HTTP request.
+Este método irá examinar o construtor da classe comando concedida, e em seguida, extrai variáveis da requisição HTTP( ou qualquer oturo objeto `ArrayAccess` ) para preencher os parâmetros do construtor do comando. Assim, se a nossa classe comando aceitar uma vaiável  `firstName` em seu construtor, o comando bus tentará puxar o parâmetro `firstName` a partir da requisição HTTP. 
 
-You may also pass an array as the third argument to the `dispatchFrom` method. This array will be used to fill any constructor parameters that are not available on the request:
+Você também pode passar um array como o terceiro argumento para o método `dispatchFrom`. Este array irá ser usado para preecher qualquer parâmetro do contrutor que não estiver disponível na request.
 
 	$this->dispatchFrom('Command\Class\Name', $request, [
 		'firstName' => 'Taylor',
 	]);
 
 <a name="queued-commands"></a>
-## Queued Commands
+## Comandos Queued
 
-The command bus is not just for synchronous jobs that run during the current request cycle, but also serves as the primary way to build queued jobs in Laravel. So, how do we instruct command bus to queue our job for background processing instead of running it synchronously? It's easy. Firstly, when generating a new command, just add the `--queued` flag to the command:
+O comando bus não serve apenas para sincronizar jobs(tarefas agendadas) que são executados durante o ciclo requisição atual, mas também servem como a principal maneira de construir jobs em fila no Laravel. Então, como vamos instruir o comando bus para enfileirar o nosso job para o processamento em segundo plano ao invés de executa-lo sincronizadamente? Isto é fácil. Primeiramente, quando estivermos gerando um novo comando, devemos adicionar a flag (mais um parâmetro) `--queued` ao comando:
 
 	php artisan make:command PurchasePodcast --queued
 
