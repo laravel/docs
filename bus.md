@@ -108,24 +108,25 @@ O comando bus não serve apenas para sincronizar jobs(tarefas agendadas) que sã
 
 	php artisan make:command PurchasePodcast --queued
 
-As you will see, this adds a few more features to the command, namely the `Illuminate\Contracts\Queue\ShouldBeQueued` interface and the `SerializesModels` trait. These instruct the command bus to queue the command, as well as gracefully serialize and deserialize any Eloquent models your command stores as properties.
+Como você vai ver, isso adiciona mais algumas funcionalidades para comando, ou seja, a interface `Illuminate\Contracts\Queue\ShouldBeQueued` e a trait `SerializesModels`. Estes instruem o comando bus a enfileirar os comandos, bem como graciosamente serializa e desserializa qualquer modelo Eloquent do seu comando armazenando como propriedades.
 
-If you would like to convert an existing command into a queued command, simply implement the `Illuminate\Contracts\Queue\ShouldBeQueued` interface on the class manually. It contains no methods, and merely serves as a "marker interface" for the dispatcher.
+Se você desejar converter a um comando existente em um comando queued, simplesminte implemente a interface `Illuminate\Contracts\Queue\ShouldBeQueued` na classe manualmente. Esta interface não contém métódos, e serve apenas como uma "marker interface"(interface marcadora) para o despachante.
 
-Then, just write your command normally. When you dispatch it to the bus that bus will automatically queue the command for background processing. It doesn't get any easier than that.
+Em seguida, apenas escreva seu comando normalmente. Quando você dispacha isto para o "bus" o bus será automaticamente enfileirado no processamento em segundo plano. Isto não tem como ser mais fácil.
 
-For more information on interacting with queued commands, view the full [queue documentation](/docs/5.0/queues).
+Para mais informações de como interagir com os comandos queued, veja a documentação completa [queue documentation](/docs/5.0/queues)..
+
 
 <a name="command-pipeline"></a>
-## Command Pipeline
+## Comando em Pipeline
 
-Before a command is dispatched to a handler, you may pass it through other classes in a "pipeline". Command pipes work just like HTTP middleware, except for your commands! For example, a command pipe could wrap the entire command operation within a database transaction, or simply log its execution.
+Antes de um comando ser despachado ao manipulador, você pode passar isso por meio de outras classes em um "pipeline". Comando pipes funcionam como um middleware HTTP, exceto para seus comandos! Por exemplo, um comando pipe pode envolver todo a operação do comando dentro de uma transação com banco de dados, ou simplesmente registrar a sua execução.
 
-To add a pipe to your bus, call the `pipeThrough` method of the dispatcher from your `App\Providers\BusServiceProvider::boot` method:
+Para adicionar o pipe em seu comando bus, chame o méotodo `pipeThrough` do despachante a partir do seu método `App\Providers\BusServiceProvider::boot`:
 
 	$dispatcher->pipeThrough(['UseDatabaseTransactions', 'LogCommand']);
 
-A command pipe is defined with a `handle` method, just like a middleware:
+O comando pipe é definido com o método `handle`, apenas como um middleware:
 
 	class UseDatabaseTransactions {
 
@@ -139,9 +140,9 @@ A command pipe is defined with a `handle` method, just like a middleware:
 
 	}
 
-Command pipe classes are resolved through the [IoC container](/docs/5.0/container), so feel free to type-hint any dependencies you need within their constructors.
+As classes comando pipe são resolvidas através do [IoC container](/docs/5.0/container), então sinta-se livre para tipar qualquer dependencia que você precisar dentro dos seus contrutores.
 
-You may even define a `Closure` as a command pipe:
+Você pode até mesmo definir um `Closure` como um comando pipe:
 
 	$dispatcher->pipeThrough([function($command, $next)
 	{
