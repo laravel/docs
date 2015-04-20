@@ -216,6 +216,8 @@ Push queues allow you to utilize the powerful Laravel 5 queue facilities without
 
 Next, you may use the `queue:subscribe` Artisan command to register a URL end-point that will receive newly pushed queue jobs:
 
+	php artisan queue:subscribe queue_name queue/receive
+
 	php artisan queue:subscribe queue_name http://foo.com/queue/receive
 
 Now, when you login to your Iron dashboard, you will see your new push queue, as well as the subscribed URL. You may subscribe as many URLs as you wish to a given queue. Next, create a route for your `queue/receive` end-point and return the response from the `Queue::marshal` method:
