@@ -138,7 +138,7 @@ To add Bash aliases to your Homestead box, simply add to the `aliases` file in t
 
 ### Launch The Vagrant Box
 
-Once you have edited the `Homestead.yaml` to your liking, run the `homestead up` command from your Homestead directory.
+Once you have edited the `Homestead.yaml` to your liking, it is time to boot up your Homestead. If you chose option 1 earlier, run the `vagrant init laravel/homestead` command in your Homestead directory and then the `vagrant up` command to launch. If you installed with option 2 run the `homestead up` command from your Homestead directory.
 
 Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically! To destroy the machine, you may use the `vagrant destroy --force` command.
 
