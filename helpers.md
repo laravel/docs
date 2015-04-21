@@ -211,6 +211,10 @@ Get the fully qualified path to the `public` directory.
 
 Get the fully qualified path to the `storage` directory.
 
+### config_path
+
+Get the fully qualitifed path to the `config` directory.
+
 <a name="routing"></a>
 ## Routing
 
