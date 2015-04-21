@@ -203,6 +203,10 @@ Get the fully qualified path to the `app` directory.
 
 Get the fully qualified path to the root of the application install.
 
+### config_path
+
+Get the fully qualitifed path to the `config` directory.
+
 ### public_path
 
 Get the fully qualified path to the `public` directory.
@@ -210,10 +214,6 @@ Get the fully qualified path to the `public` directory.
 ### storage_path
 
 Get the fully qualified path to the `storage` directory.
-
-### config_path
-
-Get the fully qualitifed path to the `config` directory.
 
 <a name="routing"></a>
 ## Routing
