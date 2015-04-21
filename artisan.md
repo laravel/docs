@@ -171,6 +171,8 @@ In this example, the `foo` command will be run every minute if it is not already
 
 	$schedule->command('foo')->thenPing($url);
 
-Using the `thenPing($url)` feature require that the Guzzle 4 HTTP library be installed into your application. You can add Guzzle 4 to your project by adding the following line to your `composer.json` file:
+Using the `thenPing($url)` feature require that the Guzzle 4 or 5 HTTP library be installed into your application. You can add Guzzle 4 or 5 to your project by adding the following line to your `composer.json` file:
 
 	"guzzlehttp/guzzle": "~4.0"
+	// or
+	"guzzlehttp/guzzle": "~5.0"
