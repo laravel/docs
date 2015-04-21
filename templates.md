@@ -164,5 +164,5 @@ The following example creates a `@datetime($var)` directive which formats a give
 
 	Blade::directive('datetime', function($expression)
 	{
-		return "<?php echo $expression->format('m/d/Y H:i'); ?>";
+		return "<?php echo {$expression}->format('m/d/Y H:i'); ?>";
 	});
