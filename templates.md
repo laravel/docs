@@ -3,6 +3,7 @@
 - [Blade Templating](#blade-templating)
 - [Other Blade Control Structures](#other-blade-control-structures)
 - [Service Injection](#service-injection)
+- [Extending Blade](#extending-blade)
 
 <a name="blade-templating"></a>
 ## Blade Templating
@@ -153,3 +154,15 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
 	<div>
 		Monthly Revenue: {{ $metrics->monthlyRevenue() }}.
 	</div>
+
+<a name="extending-blade"></a>
+## Extending Blade
+
+Blade even allows you to define your own custom directives. You can use the `directive` method to register a directive. When the Blade compiler encounters the directive, it calls the provided callback with its parameter. This allows you to replace your directives with any logic as complex as you want.
+
+The following example creates a `@datetime($var)` directive which formats a given `$var`:
+
+	Blade::directive('datetime', function($expression)
+	{
+		return "<?php echo $expression->format('m/d/Y H:i'); ?>";
+	});
