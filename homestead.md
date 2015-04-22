@@ -66,11 +66,11 @@ If you do not want to install PHP on your local machine, you may install Homeste
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
-Once you have installed the Homestead CLI tool, run the `bash init.sh` command to create the `Homestead.yaml` configuration file:
+Once the repo is checked out, switch into the directory and run `composer install` to complete installation.
 
-	bash init.sh
+Make sure to place the Homestead folder in your PATH so the `homestead` executable is found when you run the `homestead` command in your terminal. For example, if you cloned the repository into `~/Homestead`:
 
-The `Homestead.yaml` file will be placed in your `~/.homestead` directory.
+	PATH=~/Homestead:$PATH
 
 #### Option 2 - With Composer + PHP Tool
 
@@ -81,6 +81,8 @@ Once the box has been added to your Vagrant installation, you are ready to insta
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `homestead` executable is found when you run the `homestead` command in your terminal.
 
 	PATH=~/.composer/vendor/bin:$PATH
+
+#### Post-installation tasks
 
 Once you have installed the Homestead CLI tool, run the `init` command to create the `Homestead.yaml` configuration file:
 
@@ -138,9 +140,9 @@ To add Bash aliases to your Homestead box, simply add to the `aliases` file in t
 
 ### Launch The Vagrant Box
 
-Once you have edited the `Homestead.yaml` to your liking, run the `homestead up` command from your Homestead directory.
+Once you have edited the `Homestead.yaml` to your liking, run the `homestead up` command.
 
-Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically! To destroy the machine, you may use the `vagrant destroy --force` command.
+Vagrant will boot the virtual machine, and configure your shared folders and Nginx sites automatically! To destroy the machine, you may use the `homestead destroy` command.
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
 
@@ -157,7 +159,7 @@ To learn how to connect to your databases, read on!
 
 ### Connecting Via SSH
 
-To connect to your Homestead environment via SSH, issue the `vagrant ssh` command from your Homestead directory.
+To connect to your Homestead environment via SSH, issue the `homestead ssh` command.
 
 Since you will probably need to SSH into your Homestead machine frequently, consider creating an "alias" on your host machine:
 
@@ -175,7 +177,7 @@ To connect to your MySQL or Postgres database from your main machine via Navicat
 
 ### Adding Additional Sites
 
-Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. There are two ways to do this: First, you may simply add the sites to your `Homestead.yaml` file and then run `homestead provision` or `vagrant provision`.
+Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. There are two ways to do this: First, you may simply add the sites to your `Homestead.yaml` file and then run `homestead provision`.
 
 > **Note:** This process is destructive. When running the `provision` command, your existing databases will be destroyed and recreated.
 
@@ -220,4 +222,4 @@ All of the proper packages have already been installed on your Homestead box, yo
 	      client-id: your-client-id
 	      client-token: your-client-token
 
-Once you have configured your Blackfire credentials, re-provision the box using `homestead provision` or `vagrant provision`. Of course, be sure to review the [Blackfire documentation](https://blackfire.io/getting-started) to learn how to install the Blackfire companion extension for your web browser.
+Once you have configured your Blackfire credentials, re-provision the box using `homestead provision`. Of course, be sure to review the [Blackfire documentation](https://blackfire.io/getting-started) to learn how to install the Blackfire companion extension for your web browser.
