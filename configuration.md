@@ -1,6 +1,6 @@
 # Configuration
 
-- [Introduction](#introduction)
+- [Introdução](#introduction)
 - [After Installation](#after-installation)
 - [Accessing Configuration Values](#accessing-configuration-values)
 - [Environment Configuration](#environment-configuration)
@@ -9,26 +9,27 @@
 - [Pretty URLs](#pretty-urls)
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+Todos os arquivos de configuração para o framework Laravel são armazenados no diretório `config`. Cada opção é documentada, então sinta-se livre para dar uma olhada nos arquivos
+e se famialirizar com as opções disponíves pra você.
 
 <a name="after-installation"></a>
-## After Installation
+## Depois Da Instalação
 
-### Naming Your Application
+### Nomeando sua aplicação
 
-After installing Laravel, you may wish to "name" your application. By default, the `app` directory is namespaced under `App`, and autoloaded by Composer using the [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). However, you may change the namespace to match the name of your application, which you can easily do via the `app:name` Artisan command.
+Depois de instalar Laravel, você pode querer nomear a sua aplicação. Por padrão, o diretório `app` tem o namespace `App`, e é carregado automaticamente pelo Composer usando a [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). Contudo, você pode mudar o namespace para o mesmo da sua aplicação, que você pode facilmente fazer por meio do comando Artisan `app:name`.
 
-For example, if your application is named "Horsefly", you could run the following command from the root of your installation:
+Por exemplo, se sua aplicação é nomeada "Horsefly", você pode executar o seguinte comando a partir do diretório root da sua instalação:
 
 	php artisan app:name Horsefly
 
-Renaming your application is entirely optional, and you are free to keep the `App` namespace if you wish.
+Renomear sua aplicação é totalmente opcional, e você é livre para manter o namespace `App` se você desejar.
 
-### Other Configuration
+### Outras Configurações
 
-Laravel needs very little configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your location.
+Laravel precisa de poucas configurações de fora da caixa. Você é livre para começar a desenvolver! No entanto, você pode desejar revisar o arquivo `config/app.php` e sua documentação. Nela, contém várias opções como as de `timezone` (fuso-horário) e `locale` (localização) que você pode desejar mudar de acordo com a sua localização.
 
 You may also want to configure a few additional components of Laravel, such as:
 
@@ -36,14 +37,15 @@ You may also want to configure a few additional components of Laravel, such as:
 - [Database](/docs/master/database#configuration)
 - [Session](/docs/master/session#configuration)
 
-Once Laravel is installed, you should also [configure your local environment](/docs/master/configuration#environment-configuration).
 
-> **Note:** You should never have the `app.debug` configuration option set to `true` for a production application.
+Uma vez que o Laravel é instalado, você deve tambeḿ [configure your local environment](/docs/5.0/configuration#environment-configuration).
+
+> **Nota:** Você nunca deve ter a configuração `app.debug` definida como "true" no ambiente de produção da sua aplicação.
 
 <a name="permissions"></a>
-### Permissions
+### Permissões
 
-Laravel may require some permissions to be configured: folders within `storage` and the `bootstrap/cache` directory require write access by the web server.
+Laravel pode requerir um conjunto de permissões para ser configurado: pastas dentro do diretório `storage` requerem permissões de acesso a escrita no servidor. 
 
 <a name="accessing-configuration-values"></a>
 ## Accessing Configuration Values
