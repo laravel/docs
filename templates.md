@@ -166,3 +166,7 @@ The following example creates a `@datetime($var)` directive which formats a give
 	{
 		return "<?php echo with{$expression}->format('m/d/Y H:i'); ?>";
 	});
+
+The final PHP executed by this directive will be:
+
+	<?php echo with($var)->format('m/d/Y H:i'); ?>
