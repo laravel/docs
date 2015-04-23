@@ -229,7 +229,7 @@ Shared attributes are specified in an array format as the first parameter to the
 <a name="route-group-middleware"></a>
 ### Middleware
 
-Middleware is applied to all routes within the group by defining the list of middleware with the `middleware` parameter on the group attribute array. Middleware will be executed in the order you define this array:
+Middleware are applied to all routes within the group by defining the list of middleware with the `middleware` parameter on the group attribute array. Middleware will be executed in the order you define this array:
 
 	Route::group(['middleware' => 'foo|bar'], function()
 	{
