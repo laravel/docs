@@ -20,7 +20,7 @@ To create a new command, you may use the `make:console` Artisan command, which w
 
 	php artisan make:console FooCommand
 
-The command above would generate a class at `app/Console/FooCommand.php`.
+The command above would generate a class at `app/Console/Commands/FooCommand.php`.
 
 When creating the command, the `--command` option may be used to assign the terminal command name:
 
@@ -51,7 +51,7 @@ For options, the argument `mode` may be: `InputOption::VALUE_REQUIRED`, `InputOp
 The `VALUE_IS_ARRAY` mode indicates that the switch may be used multiple times when calling the command:
 
 	InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY
-	
+
 Would then allow for this command:
 
 	php artisan foo --option=bar --option=baz
@@ -127,3 +127,9 @@ Sometimes you may wish to call other commands from your command. You may do so u
 #### Registering An Artisan Command
 
 Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/Console/Kernel.php` file. Within this file, you will find a list of commands in the `commands` property. To register your command, simply add it to this list. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/master/container) and registered with Artisan.
+
+	protected $commands = [
+		'App\Console\Commands\FooCommand'
+	];
+
+When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/5.0/container) and registered with Artisan.

@@ -48,7 +48,7 @@ If you are unsure if your feature qualifies as a major or minor, please ask Tayl
 <a name="security-vulnerabilities"></a>
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at <a href="mailto:taylorotwell@gmail.com">taylorotwell@gmail.com</a>. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. All security vulnerabilities will be promptly addressed.
 
 <a name="coding-style"></a>
 ## Coding Style
