@@ -26,6 +26,23 @@ Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`
 
 This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
 
+### The collection class
+
+#### The `groupBy` method now returns nested collections
+
+If you need them to be actual arrays, `map` over them:
+
+	$collection->groupBy('type')->map(function($item)
+	{
+		return $item->all();
+	});
+
+#### The `lists` method now returns a collection instance
+
+If you need an actual array, you should call `all()` on the result:
+
+	$collection->lists('id')->all();
+
 <a name="upgrade-5.0.16"></a>
 ## Upgrading To 5.0.16
 
