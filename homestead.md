@@ -63,9 +63,9 @@ You may install Homestead manually by simply cloning the repository. Consider cl
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
-Once you have installed the Homestead CLI tool, run the `bash init.sh` command to create the `Homestead.yaml` configuration file:
+Once you have cloned the Homestead repository tool, run the `cd Homestead` and then the `bash init.sh` commands to create the `Homestead.yaml` configuration file:
 
-	bash init.sh
+	cd Homestead && bash init.sh
 
 The `Homestead.yaml` file will be placed in your `~/.homestead` directory.
 
@@ -88,7 +88,7 @@ On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` sh
 Once you have created a SSH key, specify the key's path in the `authorize` property of your `Homestead.yaml` file.
 
 ### Configure Your Shared Folders
-
+c
 The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary!
 
 To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add a simple flag to your synced folder:
