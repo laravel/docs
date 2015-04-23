@@ -17,6 +17,8 @@ Before using Redis sessions with Laravel, you will need to install the `predis/p
 
 > **Note:** If you need all stored session data to be encrypted, set the `encrypt` configuration option to `true`.
 
+> **Note:** When using the `cookie` session driver, you should **never** remove the `EncryptCookie` middleware from your HTTP kernel. If you remove this middleware, your application will be vulnerable to remote code injection.
+
 #### Reserved Keys
 
 The Laravel framework uses the `flash` session key internally, so you should not add an item to the session by that name.
