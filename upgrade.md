@@ -26,6 +26,14 @@ Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`
 
 This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
 
+### Sessions
+
+Sessions now use JSON encoding for storage instead of PHP serialization. If you are serializing PHP objects into the session and wish to continue doing so, you may do the following:
+
+	Session::put('key', serialize($value));
+
+	$value = unserialize(Session::get('key'));
+
 ### The Collection Class
 
 #### The `groupBy` Method
