@@ -105,11 +105,12 @@ Once the middleware has been defined in the HTTP kernel, you may use the `middle
 
 Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, you may define the middleware as "terminable".
 
+	use Closure;
 	use Illuminate\Contracts\Routing\TerminableMiddleware;
 
 	class StartSession implements TerminableMiddleware {
 
-		public function handle($request, $next)
+		public function handle($request, Closure $next)
 		{
 			return $next($request);
 		}
