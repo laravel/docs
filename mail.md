@@ -34,6 +34,16 @@ To use the Mandrill driver, set the `driver` option to `mandrill` in your `confi
 		'secret' => 'your-mandrill-key',
 	],
 
+#### SES Driver
+
+To use the Amazon SES driver, set the `driver` option to `ses` in your `config/mail.php` configuration file. Next, create an `config/services.php` configuration file if one does not already exist for your project. Verify that it contains the following options:
+
+	'ses' => [
+		'key' => 'your-ses-key',
+		'secret' => 'your-ses-secret',
+		'region' => 'ses-region',  // e.g. us-east-1
+	],
+
 ### Log Driver
 
 If the `driver` option of your `config/mail.php` configuration file is set to `log`, all e-mails will be written to your log files, and will not actually be sent to any of the recipients. This is primarily useful for quick, local debugging and content verification.
