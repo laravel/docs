@@ -106,7 +106,7 @@ If you don't want the data to be escaped, you may use the following syntax:
 		<p>This is user {{ $user->id }}</p>
 	@endforeach
 
-	@forelse($users as $user)
+	@forelse ($users as $user)
 		<li>{{ $user->name }}</li>
 	@empty
 		<p>No users</p>
