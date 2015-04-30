@@ -30,7 +30,7 @@ The HTTP kernel extends the `Illuminate\Foundation\Http\Kernel` class, which def
 
 The HTTP kernel also defines a list of HTTP [middleware](/docs/5.0/middleware) that all requests must pass through before being handled by the application. These middleware handle reading and writing the HTTP session, determine if the application is in maintenance mode, verifying the CSRF token, and more.
 
-The method signature for the HTTP kernel's `handle` method is quite simple: receive a `Request` and return a `Response`. Think of the Kernel as being a big black box that represents your entire application. Feed it HTTP requests and it will return HTTP responses.
+The method signature for the HTTP kernel's `handle` method is quite simple: receive a `Request` and return a `Response`. Think of the Kernel as being a big black box that represents your entire application. Feed it with HTTP requests and it will return HTTP responses.
 
 #### Service Providers
 
