@@ -14,7 +14,7 @@ Laravel strives to make the entire PHP development experience delightful, includ
 
 Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a wonderful development environment without requiring you to install PHP, HHVM, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
-Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached, and all of the other goodies you need to develop amazing Laravel applications.
+Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
 
 > **Note:** If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS.
 
@@ -29,7 +29,7 @@ Homestead is currently built and tested using Vagrant 1.7.
 - Nginx
 - MySQL
 - Postgres
-- Node (With Bower, Grunt, and Gulp)
+- Node (With PM2, Bower, Grunt, and Gulp)
 - Redis
 - Memcached
 - Beanstalkd
@@ -77,7 +77,7 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 
 ### Set Your SSH Key
 
-Next, you should edit the `Homestead.yaml` file. In this file, you can configure the path to your public SSH key, as well as the folders you wish to be shared between your main machine and the Homestead virtual machine.
+In the `Homestead.yaml` file, you can also configure the path to your public SSH key, as well as the folders you wish to be shared between your main machine and the Homestead virtual machine.
 
 Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pair using the following command:
 
@@ -85,11 +85,17 @@ Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pai
 
 On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` shell included with Git to issue the command above. Alternatively, you may use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
 
-Once you have created a SSH key, specify the key's path in the `authorize` property of your `Homestead.yaml` file.
+Once you have created a SSH key, specify the public key's path in the `authorize` property of your `Homestead.yaml` file.
 
 ### Configure Your Shared Folders
 
 The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary!
+
+	folders:
+	    - map: ~/Code
+	      to: /home/vagrant/Code
+
+#### NFS Folders
 
 To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add a simple flag to your synced folder:
 
@@ -101,6 +107,12 @@ To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add 
 ### Configure Your Nginx Sites
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on!
+
+	sites:
+	    - map: homestead.app
+	      to: /home/vagrant/Code/Laravel/public
+
+#### HHVM Sites
 
 You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm` option to `true`:
 
@@ -142,7 +154,7 @@ Since you will probably need to SSH into your Homestead machine frequently, cons
 
 Once you create this alias, you can simply use the "vm" command to SSH into your Homestead machine from anywhere on your system.
 
-Alternatively, you can use the `vagrant ssh` command from your Homestead directory.
+**Alternatively, you can use the `vagrant ssh` command from your Homestead directory.**
 
 ### Connecting To Your Databases
 
