@@ -14,12 +14,12 @@
     - [Responses](/docs/{{version}}/responses)
     - [Views](/docs/{{version}}/views)
 - Architecture Foundations
+    - [Request Lifecycle](/docs/{{version}}/lifecycle)
+    - [Application Structure](/docs/{{version}}/structure)
     - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
     - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
-    - [Request Lifecycle](/docs/{{version}}/lifecycle)
-    - [Application Structure](/docs/{{version}}/structure)
 - Services
     - [Authentication](/docs/{{version}}/authentication)
     - [Billing](/docs/{{version}}/billing)
