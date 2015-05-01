@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
 - [Basic Controllers](#basic-controllers)
 - [Controller Middleware](#controller-middleware)
-- [Implicit Controllers](#implicit-controllers)
 - [RESTful Resource Controllers](#restful-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
 - [Route Caching](#route-caching)
@@ -61,17 +60,9 @@ Like Closure routes, you may specify names on controller routes:
 
 To generate a URL to a controller action, use the `action` helper method:
 
-	$url = action('App\Http\Controllers\FooController@method');
-
-If you wish to generate a URL to a controller action while using only the portion of the class name relative to your controller namespace, register the root controller namespace with the URL generator:
-
-	URL::setRootControllerNamespace('App\Http\Controllers');
-
 	$url = action('FooController@method');
 
-You may access the name of the controller action being run using the `currentRouteAction` method:
-
-	$action = Route::currentRouteAction();
+Again notice that we did not need to specify the full controller namespace. We only specified the controller class name relative to the `App\Http\Controllers` namespace.
 
 <a name="controller-middleware"></a>
 ## Controller Middleware
@@ -83,12 +74,14 @@ You may access the name of the controller action being run using the `currentRou
 		'uses' => 'UserController@showProfile'
 	]);
 
-Additionally, you may specify middleware within your controller's constructor:
+However, it is more convenient to specify middleware within your controller's constructor:
 
-	class UserController extends Controller {
-
+	class UserController extends Controller
+	{
 		/**
 		 * Instantiate a new UserController instance.
+		 *
+		 * @return void
 		 */
 		public function __construct()
 		{
@@ -98,50 +91,9 @@ Additionally, you may specify middleware within your controller's constructor:
 
 			$this->middleware('subscribed', ['except' => ['fooAction', 'barAction']]);
 		}
-
 	}
 
-<a name="implicit-controllers"></a>
-## Implicit Controllers
-
-Laravel allows you to easily define a single route to handle every action in a controller. First, define the route using the `Route::controller` method:
-
-	Route::controller('users', 'UserController');
-
-The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller. Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
-
-	class UserController extends BaseController {
-
-		public function getIndex()
-		{
-			//
-		}
-
-		public function postProfile()
-		{
-			//
-		}
-
-		public function anyLogin()
-		{
-			//
-		}
-
-	}
-
-The `index` methods will respond to the root URI handled by the controller, which, in this case, is `users`.
-
-If your controller action contains multiple words, you may access the action using "dash" syntax in the URI. For example, the following controller action on our `UserController` would respond to the `users/admin-profile` URI:
-
-	public function getAdminProfile() {}
-
-#### Assigning Route Names
-
-If you would like to "name" some of the routes on the controller, you may pass a third argument to the `controller` method:
-
-	Route::controller('users', 'UserController', [
-		'anyLogin' => 'user.login',
-	]);
+As you can see, you may easily restrict the middleware to only certain methods on the controller class.
 
 <a name="restful-resource-controllers"></a>
 ## RESTful Resource Controllers
@@ -227,8 +179,8 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
 	use Illuminate\Routing\Controller;
 	use App\Repositories\UserRepository;
 
-	class UserController extends Controller {
-
+	class UserController extends Controller
+	{
 		/**
 		 * The user repository instance.
 		 */
@@ -244,7 +196,6 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
 		{
 			$this->users = $users;
 		}
-
 	}
 
 Of course, you may also type-hint any [Laravel contract](/docs/{{version}}/contracts). If the container can resolve it, you can type-hint it.
@@ -258,8 +209,8 @@ In addition to constructor injection, you may also type-hint dependencies on you
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;
 
-	class UserController extends Controller {
-
+	class UserController extends Controller
+	{
 		/**
 		 * Store a new user.
 		 *
@@ -272,7 +223,6 @@ In addition to constructor injection, you may also type-hint dependencies on you
 
 			//
 		}
-
 	}
 
 If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies:
@@ -282,8 +232,8 @@ If your controller method is also expecting input from a route parameter, simply
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;
 
-	class UserController extends Controller {
-
+	class UserController extends Controller
+	{
 		/**
 		 * Store a new user.
 		 *
@@ -295,10 +245,7 @@ If your controller method is also expecting input from a route parameter, simply
 		{
 			//
 		}
-
 	}
-
-> **Note:** Method injection is fully compatible with [model binding](/docs/{{version}}/routing#route-model-binding). The container will intelligently determine which arguments are model bound and which arguments should be injected.
 
 <a name="route-caching"></a>
 ## Route Caching
