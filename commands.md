@@ -51,7 +51,7 @@ For options, the argument `mode` may be: `InputOption::VALUE_REQUIRED`, `InputOp
 The `VALUE_IS_ARRAY` mode indicates that the switch may be used multiple times when calling the command:
 
 	InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY
-	
+
 Would then allow for this command:
 
 	php artisan foo --option=bar --option=baz
@@ -132,4 +132,4 @@ Once your command is finished, you need to register it with Artisan so it will b
 		'App\Console\Commands\FooCommand'
 	];
 
-When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/5.0/container) and registered with Artisan.
+When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.

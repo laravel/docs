@@ -21,7 +21,7 @@ In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
 
 The recommended method of upgrading is to create a new Laravel `5.0` install and then to copy your `4.2` site's unique application files into the new application. This would include controllers, routes, Eloquent models, Artisan commands, assets, and other code specific to your application.
 
-To start, [install a new Laravel 5 application](/docs/5.0/installation) into a fresh directory in your local environment. We'll discuss each piece of the migration process in further detail below.
+To start, [install a new Laravel 5 application](/docs/{{version}}/installation) into a fresh directory in your local environment. We'll discuss each piece of the migration process in further detail below.
 
 ### Composer Dependencies & Packages
 
@@ -41,7 +41,7 @@ Copy the new `.env.example` file to `.env`, which is the `5.0` equivalent of the
 
 Additionally, copy any custom values you had in your old `.env.php` file and place them in both `.env` (the real value for your local environment) and `.env.example` (a sample instructional value for other team members).
 
-For more information on environment configuration, view the [full documentation](/docs/5.0/configuration#environment-configuration).
+For more information on environment configuration, view the [full documentation](/docs/{{version}}/configuration#environment-configuration).
 
 > **Note:** You will need to place the appropriate `.env` file and values on your production server before deploying your Laravel 5 application.
 
@@ -73,7 +73,7 @@ Filters are not removed in Laravel 5. You can still bind and use your own custom
 
 ### Global CSRF
 
-By default, [CSRF protection](/docs/5.0/routing#csrf-protection) is enabled on all routes. If you'd like to disable this, or only manually enable it on certain routes, remove this line from `App\Http\Kernel`'s `middleware` array:
+By default, [CSRF protection](/docs/{{version}}/routing#csrf-protection) is enabled on all routes. If you'd like to disable this, or only manually enable it on certain routes, remove this line from `App\Http\Kernel`'s `middleware` array:
 
 	'App\Http\Middleware\VerifyCsrfToken',
 
@@ -81,7 +81,7 @@ If you want to use it elsewhere, add this line to `$routeMiddleware`:
 
 	'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
 
-Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/5.0/middleware).
+Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/{{version}}/middleware).
 
 ### Eloquent Models
 
@@ -91,7 +91,7 @@ Update any models using `SoftDeletingTrait` to use `Illuminate\Database\Eloquent
 
 #### Eloquent Caching
 
-Eloquent no longer provides the `remember` method for caching queries. You now are responsible for caching your queries manually using the `Cache::remember` function. For more information on caching, consult the [full documentation](/docs/5.0/cache).
+Eloquent no longer provides the `remember` method for caching queries. You now are responsible for caching your queries manually using the `Cache::remember` function. For more information on caching, consult the [full documentation](/docs/{{version}}/cache).
 
 ### User Authentication Model
 
@@ -131,7 +131,7 @@ use Authenticatable, CanResetPassword;
 
 ### Cashier User Changes
 
-The name of the trait and interface used by [Laravel Cashier](/docs/5.0/billing) has changed. Instead of using `BillableTrait`, use the `Laravel\Cashier\Billable` trait. And, instead of `Laravel\Cashier\BillableInterface` implement the `Laravel\Cashier\Contracts\Billable` interface instead. No other method changes are required.
+The name of the trait and interface used by [Laravel Cashier](/docs/{{version}}/billing) has changed. Instead of using `BillableTrait`, use the `Laravel\Cashier\Billable` trait. And, instead of `Laravel\Cashier\BillableInterface` implement the `Laravel\Cashier\Contracts\Billable` interface instead. No other method changes are required.
 
 ### Artisan Commands
 
@@ -147,7 +147,7 @@ Move all of your migration classes from the old `app/database/migrations` direct
 
 ### Global IoC Bindings
 
-If you have any [IoC](/docs/5.0/container) bindings in `start/global.php`, move them all to the `register` method of the `app/Providers/AppServiceProvider.php` file. You may need to import the `App` facade.
+If you have any [IoC](/docs/{{version}}/container) bindings in `start/global.php`, move them all to the `register` method of the `app/Providers/AppServiceProvider.php` file. You may need to import the `App` facade.
 
 Optionally, you may break these bindings up into separate service providers by category.
 
@@ -189,7 +189,7 @@ You may move your Sass, Less, or CoffeeScript to any location you wish. The `res
 
 ### Form & HTML Helpers
 
-If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective](http://laravelcollective.com/docs/5.0/html).
+If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective](http://laravelcollective.com/docs/{{version}}/html).
 
 For example, you may add `"laravelcollective/html": "~5.0"` to your `composer.json` file's `require` section.
 

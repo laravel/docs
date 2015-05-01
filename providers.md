@@ -19,7 +19,7 @@ In this overview you will learn how to write your own service providers and regi
 <a name="basic-provider-example"></a>
 ## Basic Provider Example
 
-All service providers extend the `Illuminate\Support\ServiceProvider` class. This abstract class requires that you define at least one method on your provider: `register`. Within the `register` method, you should **only bind things into the [service container](/docs/5.0/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
+All service providers extend the `Illuminate\Support\ServiceProvider` class. This abstract class requires that you define at least one method on your provider: `register`. Within the `register` method, you should **only bind things into the [service container](/docs/{{version}}/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
 
 The Artisan CLI can easily generate a new provider via the `make:provider` command:
 
@@ -51,7 +51,7 @@ Now, let's take a look at a basic service provider:
 
 	}
 
-This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Contracts\Connection` in the service container. If you don't understand how the service container works, don't worry, [we'll cover that soon](/docs/5.0/container).
+This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Contracts\Connection` in the service container. If you don't understand how the service container works, don't worry, [we'll cover that soon](/docs/{{version}}/container).
 
 This class is namespaced under `App\Providers` since that is the default location for service providers in Laravel. However, you are free to change this as you wish. Your service providers may be placed anywhere that Composer can autoload them.
 
@@ -113,7 +113,7 @@ To register your provider, simply add it to the array:
 <a name="deferred-providers"></a>
 ## Deferred Providers
 
-If your provider is **only** registering bindings in the [service container](/docs/5.0/container), you may choose to defer its registration until one of the registered bindings is actually needed. Deferring the loading of such a provider will improve the performance of your application, since it is not loaded from the filesystem on every request.
+If your provider is **only** registering bindings in the [service container](/docs/{{version}}/container), you may choose to defer its registration until one of the registered bindings is actually needed. Deferring the loading of such a provider will improve the performance of your application, since it is not loaded from the filesystem on every request.
 
 To defer the loading of a provider, set the `defer` property to `true` and define a `provides` method. The `provides` method returns the service container bindings that the provider registers:
 

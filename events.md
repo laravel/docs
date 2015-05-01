@@ -71,7 +71,7 @@ Sometimes, you may wish to stop the propagation of an event to other listeners. 
 <a name="queued-event-handlers"></a>
 ## Queued Event Handlers
 
-Need to [queue](/docs/5.0/queues) an event handler? It couldn't be any easier. When generating the handler, simply use the `--queued` flag:
+Need to [queue](/docs/{{version}}/queues) an event handler? It couldn't be any easier. When generating the handler, simply use the `--queued` flag:
 
 	php artisan handler:event SendPurchaseConfirmation --event=PodcastWasPurchased --queued
 
@@ -137,7 +137,7 @@ Once the subscriber has been defined, it may be registered with the `Event` clas
 
 	Event::subscribe($subscriber);
 
-You may also use the [service container](/docs/5.0/container) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
+You may also use the [service container](/docs/{{version}}/container) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
 
 	Event::subscribe('UserEventHandler');
 

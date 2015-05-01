@@ -132,7 +132,7 @@ You may also specify which database connection should be used when running an El
 
 	$user = User::on('connection-name')->find(1);
 
-If you are using [read / write connections](/docs/5.0/database#read-write-connections), you may force the query to use the "write" connection with the following method:
+If you are using [read / write connections](/docs/{{version}}/database#read-write-connections), you may force the query to use the "write" connection with the following method:
 
 	$user = User::onWriteConnection()->find(1);
 

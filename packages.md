@@ -22,7 +22,7 @@ All Laravel packages are distributed via [Packagist](http://packagist.org) and [
 <a name="views"></a>
 ## Views
 
-Your package's internal structure is entirely up to you; however, typically each package will contain one or more [service providers](/docs/5.0/providers). The service provider contains any [service container](/docs/5.0/container) bindings, as well as instructions as to where package configuration, views, and translation files are located.
+Your package's internal structure is entirely up to you; however, typically each package will contain one or more [service providers](/docs/{{version}}/providers). The service provider contains any [service container](/docs/{{version}}/container) bindings, as well as instructions as to where package configuration, views, and translation files are located.
 
 ### Views
 

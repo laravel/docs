@@ -205,4 +205,4 @@ More information on creating seeds may be found in the [migrations and seeding](
 <a name="refreshing-the-application"></a>
 ## Refreshing The Application
 
-As you may already know, you can access your Application ([service container](/docs/5.0/container)) via `$this->app` from any test method. This service container instance is refreshed for each test class. If you wish to manually force the Application to be refreshed for a given method, you may use the `refreshApplication` method from your test method. This will reset any extra bindings, such as mocks, that have been placed in the IoC container since the test case started running.
+As you may already know, you can access your Application ([service container](/docs/{{version}}/container)) via `$this->app` from any test method. This service container instance is refreshed for each test class. If you wish to manually force the Application to be refreshed for a given method, you may use the `refreshApplication` method from your test method. This will reset any extra bindings, such as mocks, that have been placed in the IoC container since the test case started running.

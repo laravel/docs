@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/5.0/schema) to easily manage your application's schema.
+Migrations are a type of version control for your database. They allow a team to modify the database schema and stay up to date on the current schema state. Migrations are typically paired with the [Schema Builder](/docs/{{version}}/schema) to easily manage your application's schema.
 
 <a name="creating-migrations"></a>
 ## Creating Migrations

@@ -137,7 +137,7 @@ Contract  |  Laravel 4.x Facade
 <a name="how-to-use-contracts"></a>
 ## How To Use Contracts
 
-So, how do you get an implementation of a contract? It's actually quite simple. Many types of classes in Laravel are resolved through the [service container](/docs/5.0/container), including controllers, event listeners, filters, queue jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved. For example, take a look at this event handler:
+So, how do you get an implementation of a contract? It's actually quite simple. Many types of classes in Laravel are resolved through the [service container](/docs/{{version}}/container), including controllers, event listeners, filters, queue jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved. For example, take a look at this event handler:
 
 	<?php namespace App\Handlers\Events;
 
@@ -176,4 +176,4 @@ So, how do you get an implementation of a contract? It's actually quite simple. 
 
 	}
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [the documentation](/docs/5.0/container).
+When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [the documentation](/docs/{{version}}/container).

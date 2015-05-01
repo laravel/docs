@@ -61,7 +61,7 @@ A deep understanding of the Laravel service container is essential to building a
 
 ### Binding
 
-Almost all of your service container bindings will be registered within [service providers](/docs/5.0/providers), so all of these examples will demonstrate using the container in that context. However, if you need an instance of the container elsewhere in your application, such as a factory, you may type-hint the `Illuminate\Contracts\Container\Container` contract and an instance of the container will be injected for you. Alternatively, you may use the `App` facade to access the container.
+Almost all of your service container bindings will be registered within [service providers](/docs/{{version}}/providers), so all of these examples will demonstrate using the container in that context. However, if you need an instance of the container elsewhere in your application, such as a factory, you may type-hint the `Illuminate\Contracts\Container\Container` contract and an instance of the container will be injected for you. Alternatively, you may use the `App` facade to access the container.
 
 #### Registering A Basic Resolver
 
@@ -295,7 +295,7 @@ Laravel provides several opportunities to use the service container to increase 
 
 	}
 
-In this example, the `OrderRepository` class will automatically be injected into the controller. This means that a "mock" `OrderRepository` may be bound into the container when [unit testing](/docs/5.0/testing), allowing for painless stubbing of database layer interaction.
+In this example, the `OrderRepository` class will automatically be injected into the controller. This means that a "mock" `OrderRepository` may be bound into the container when [unit testing](/docs/{{version}}/testing), allowing for painless stubbing of database layer interaction.
 
 #### Other Examples Of Container Usage
 

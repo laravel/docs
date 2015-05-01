@@ -67,11 +67,11 @@ Laravel automatically generates a CSRF "token" for each active user session mana
 
 	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-Of course, using the Blade [templating engine](/docs/5.0/templates):
+Of course, using the Blade [templating engine](/docs/{{version}}/templates):
 
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/5.0/middleware) will verify token in the request input matches the token stored in the session.
+You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify token in the request input matches the token stored in the session.
 
 #### X-CSRF-TOKEN
 
@@ -366,4 +366,4 @@ The `abort` helper simply throws a `Symfony\Component\HttpFoundation\Exception\H
 
 Secondly, you may manually throw an instance of `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
 
-More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/5.0/errors#http-exceptions) section of the documentation.
+More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/{{version}}/errors#http-exceptions) section of the documentation.
