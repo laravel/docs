@@ -89,13 +89,7 @@ You may also pass arguments to the `environment` method to check if the environm
 		// The environment is either local OR staging...
 	}
 
-<<<<<<< HEAD
 An application instance may also be accessed via the `app` helper method:
-=======
-To obtain an instance of the application, resolve the `Illuminate\Contracts\Foundation\Application` contract via the [service container](/docs/{{version}}/container). Of course, if you are within a [service provider](/docs/{{version}}/providers), the application instance is available via the `$this->app` instance variable.
-
-An application instance may also be accessed via the `app` helper or the `App` facade:
->>>>>>> 5.0
 
 	$environment = app()->environment();
 
