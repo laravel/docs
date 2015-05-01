@@ -119,11 +119,7 @@ The default template for maintenance mode responses is located in `resources/vie
 
 ### Maintenance Mode & Queues
 
-<<<<<<< HEAD
-While your application is in maintenance mode, no [queued jobs](/docs/master/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
-=======
 While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
->>>>>>> 5.0
 
 <a name="pretty-urls"></a>
 ## Pretty URLs
@@ -151,8 +147,4 @@ On Nginx, the following directive in your site configuration will allow "pretty"
 		try_files $uri $uri/ /index.php?$query_string;
 	}
 
-<<<<<<< HEAD
-Of course, when using [Homestead](/docs/master/homestead), pretty URLs will be configured automatically.
-=======
 Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
->>>>>>> 5.0
