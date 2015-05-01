@@ -1,14 +1,14 @@
 # HTTP Requests
 
-- [Obtaining A Request Instance](#obtaining-a-request-instance)
+- [Accessing The Request](#accessing-the-request)
 - [Retrieving Input](#retrieving-input)
 - [Old Input](#old-input)
 - [Cookies](#cookies)
 - [Files](#files)
 - [Other Request Information](#other-request-information)
 
-<a name="obtaining-a-request-instance"></a>
-## Obtaining A Request Instance
+<a name="accessing-the-request"></a>
+## Accessing The Request
 
 ### Via Facade
 
@@ -27,8 +27,8 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;
 
-	class UserController extends Controller {
-
+	class UserController extends Controller
+	{
 		/**
 		 * Store a new user.
 		 *
@@ -41,7 +41,6 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 
 			//
 		}
-
 	}
 
 If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies:
@@ -51,8 +50,8 @@ If your controller method is also expecting input from a route parameter, simply
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;
 
-	class UserController extends Controller {
-
+	class UserController extends Controller
+	{
 		/**
 		 * Store a new user.
 		 *
@@ -64,7 +63,6 @@ If your controller method is also expecting input from a route parameter, simply
 		{
 			//
 		}
-
 	}
 
 <a name="retrieving-input"></a>
@@ -74,32 +72,32 @@ If your controller method is also expecting input from a route parameter, simply
 
 Using a few simple methods, you may access all user input from your `Illuminate\Http\Request` instance. You do not need to worry about the HTTP verb used for the request, as input is accessed in the same way for all verbs.
 
-	$name = Request::input('name');
+	$name = $request->input('name');
 
 #### Retrieving A Default Value If The Input Value Is Absent
 
-	$name = Request::input('name', 'Sally');
+	$name = $request->input('name', 'Sally');
 
 #### Determining If An Input Value Is Present
 
-	if (Request::has('name'))
+	if ($request->has('name'))
 	{
 		//
 	}
 
 #### Getting All Input For The Request
 
-	$input = Request::all();
+	$input = $request->all();
 
 #### Getting Only Some Of The Request Input
 
-	$input = Request::only('username', 'password');
+	$input = $request->only('username', 'password');
 
-	$input = Request::except('credit_card');
+	$input = $request->except('credit_card');
 
 When working on forms with "array" inputs, you may use dot notation to access the arrays:
 
-	$input = Request::input('products.0.name');
+	$input = $request->input('products.0.name');
 
 <a name="old-input"></a>
 ## Old Input
@@ -110,13 +108,13 @@ Laravel also allows you to keep input from one request during the next request. 
 
 The `flash` method will flash the current input to the [session](/docs/{{version}}/session) so that it is available during the user's next request to the application:
 
-	Request::flash();
+	$request->flash();
 
 #### Flashing Only Some Input To The Session
 
-	Request::flashOnly('username', 'email');
+	$request->flashOnly('username', 'email');
 
-	Request::flashExcept('password');
+	$request->flashExcept('password');
 
 #### Flash & Redirect
 
@@ -124,13 +122,13 @@ Since you often will want to flash input in association with a redirect to the p
 
 	return redirect('form')->withInput();
 
-	return redirect('form')->withInput(Request::except('password'));
+	return redirect('form')->withInput($request->except('password'));
 
 #### Retrieving Old Data
 
 To retrieve flashed input from the previous request, use the `old` method on the `Request` instance.
 
-	$username = Request::old('username');
+	$username = $request->old('username');
 
 If you are displaying old input within a Blade template, it is more convenient to use the `old` helper:
 
@@ -143,7 +141,7 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
 #### Retrieving A Cookie Value
 
-	$value = Request::cookie('name');
+	$value = $request->cookie('name');
 
 #### Attaching A New Cookie To A Response
 
@@ -159,40 +157,16 @@ _By "forever", we really mean five years._
 
 	$response->withCookie(cookie()->forever('name', 'value'));
 
-#### Queueing Cookies
-
-You may also "queue" a cookie to be added to the outgoing response, even before that response has been created:
-
-	<?php namespace App\Http\Controllers;
-
-	use Cookie;
-	use Illuminate\Routing\Controller;
-
-	class UserController extends Controller
-	{
-		/**
-		 * Update a resource
-		 *
-		 * @return Response
-		 */
-		 public function update()
-		 {
-		 	Cookie::queue('name', 'value');
-
-		 	return response('Hello World');
-		 }
-	}
-
 <a name="files"></a>
 ## Files
 
 #### Retrieving An Uploaded File
 
-	$file = Request::file('photo');
+	$file = $request->file('photo');
 
 #### Determining If A File Was Uploaded
 
-	if (Request::hasFile('photo'))
+	if ($request->hasFile('photo'))
 	{
 		//
 	}
@@ -201,16 +175,16 @@ The object returned by the `file` method is an instance of the `Symfony\Componen
 
 #### Determining If An Uploaded File Is Valid
 
-	if (Request::file('photo')->isValid())
+	if ($request->file('photo')->isValid())
 	{
 		//
 	}
 
 #### Moving An Uploaded File
 
-	Request::file('photo')->move($destinationPath);
+	$request->file('photo')->move($destinationPath);
 
-	Request::file('photo')->move($destinationPath, $fileName);
+	$request->file('photo')->move($destinationPath, $fileName);
 
 ### Other File Methods
 
@@ -223,24 +197,24 @@ The `Request` class provides many methods for examining the HTTP request for you
 
 #### Retrieving The Request URI
 
-	$uri = Request::path();
+	$uri = $request->path();
 
 #### Retrieving The Request Method
 
-	$method = Request::method();
+	$method = $request->method();
 
-	if (Request::isMethod('post'))
+	if ($request->isMethod('post'))
 	{
 		//
 	}
 
 #### Determining If The Request Path Matches A Pattern
 
-	if (Request::is('admin/*'))
+	if ($request->is('admin/*'))
 	{
 		//
 	}
 
 #### Get The Current Request URL
 
-	$url = Request::url();
+	$url = $request->url();
