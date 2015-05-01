@@ -12,8 +12,7 @@
 
 The most basic response from a Laravel route is a string:
 
-	Route::get('/', function()
-	{
+	Route::get('/', function () {
 		return 'Hello World';
 	});
 
@@ -71,9 +70,9 @@ Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/se
 
 You may wish to redirect the user to their previous location, for example, after a form submission. You can do so by using the `back` method:
 
-	return redirect()->back();
+	return back();
 
-	return redirect()->back()->withInput();
+	return back()->withInput();
 
 #### Returning A Redirect To A Named Route
 
@@ -103,17 +102,17 @@ If you are redirecting to a route with an "ID" parameter that is being populated
 
 Similarly to generating `RedirectResponse` instances to named routes, you may also generate redirects to [controller actions](/docs/{{version}}/controllers):
 
-	return redirect()->action('App\Http\Controllers\HomeController@index');
+	return redirect()->action('HomeController@index');
 
-> **Note:** You do not need to specify the full namespace to the controller if you have registered a root controller namespace via `URL::setRootControllerNamespace`.
+> **Note:** You do not need to specify the full namespace to the controller if you have a namespace specified in your `App\Providers\RouteServiceProvider` class.
 
 #### Returning A Redirect To A Controller Action With Parameters
 
-	return redirect()->action('App\Http\Controllers\UserController@profile', [1]);
+	return redirect()->action('UserController@profile', [1]);
 
 #### Returning A Redirect To A Controller Action Using Named Parameters
 
-	return redirect()->action('App\Http\Controllers\UserController@profile', ['user' => 1]);
+	return redirect()->action('UserController@profile', ['user' => 1]);
 
 <a name="other-responses"></a>
 ## Other Responses
@@ -150,24 +149,23 @@ For example, from a [service provider's](/docs/{{version}}/providers) `boot` met
 
 	<?php namespace App\Providers;
 
-	use Response;
 	use Illuminate\Support\ServiceProvider;
+	use Illuminate\Contracts\Routing\ResponseFactory;
 
-	class ResponseMacroServiceProvider extends ServiceProvider {
-
+	class ResponseMacroServiceProvider extends ServiceProvider
+	{
 		/**
 		 * Perform post-registration booting of services.
 		 *
+		 * @param  ResponseFactory  $factory
 		 * @return void
 		 */
-		public function boot()
+		public function boot(ResponseFactory $factory)
 		{
-			Response::macro('caps', function($value)
-			{
-				return Response::make(strtoupper($value));
+			$factory->macro('caps', function ($value) use ($factory) {
+				return $factory->make(strtoupper($value));
 			});
 		}
-
 	}
 
 The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `ResponseFactory` implementation or the `response` helper:
