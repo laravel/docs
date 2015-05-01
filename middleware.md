@@ -25,8 +25,8 @@ This command will place a new `OldMiddleware` class within your `app/Http/Middle
 
 	<?php namespace App\Http\Middleware;
 
-	class OldMiddleware {
-
+	class OldMiddleware
+	{
 		/**
 		 * Run the request filter.
 		 *
@@ -36,8 +36,7 @@ This command will place a new `OldMiddleware` class within your `app/Http/Middle
 		 */
 		public function handle($request, Closure $next)
 		{
-			if ($request->input('age') < 200)
-			{
+			if ($request->input('age') < 200) {
 				return redirect('home');
 			}
 
@@ -52,12 +51,12 @@ It's best to envision middleware as a series of "layers" HTTP requests must pass
 
 ### *Before* / *After* Middleware
 
-Whether a middleware runs before or after a request depends on the middleware itself. This middleware would perform some task **before** the request is handled by the application:
+Whether a middleware runs before or after a request depends on the middleware itself. For example, the following middleware would perform some task **before** the request is handled by the application:
 
 	<?php namespace App\Http\Middleware;
 
-	class BeforeMiddleware implements Middleware {
-
+	class BeforeMiddleware implements Middleware
+	{
 		public function handle($request, Closure $next)
 		{
 			// Perform action
@@ -70,8 +69,8 @@ However, this middleware would perform its task **after** the request is handled
 
 	<?php namespace App\Http\Middleware;
 
-	class AfterMiddleware implements Middleware {
-
+	class AfterMiddleware implements Middleware
+	{
 		public function handle($request, Closure $next)
 		{
 			$response = $next($request);
@@ -103,8 +102,7 @@ If you would like to assign middleware to specific routes, you should first assi
 
 Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:
 
-	Route::get('admin/profile', ['middleware' => 'auth', function()
-	{
+	Route::get('admin/profile', ['middleware' => 'auth', function () {
 		//
 	}]);
 
@@ -116,8 +114,8 @@ Sometimes a middleware may need to do some work after the HTTP response has alre
 	use Closure;
 	use Illuminate\Contracts\Routing\TerminableMiddleware;
 
-	class StartSession implements TerminableMiddleware {
-
+	class StartSession implements TerminableMiddleware
+	{
 		public function handle($request, Closure $next)
 		{
 			return $next($request);
@@ -127,7 +125,6 @@ Sometimes a middleware may need to do some work after the HTTP response has alre
 		{
 			// Store the session data...
 		}
-
 	}
 
 As you can see, in addition to defining a `handle` method, the `TerminableMiddleware` contract requires a `terminate` method. This method receives both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
