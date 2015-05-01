@@ -35,14 +35,6 @@ Eloquent's `create` method can now be called without any parameters. If you are 
 		// Your custom implementation
 	}
 
-### Sessions
-
-Sessions now use JSON encoding for storage instead of PHP serialization. If you are serializing PHP objects into the session and wish to continue doing so, you may do the following:
-
-	Session::put('key', serialize($value));
-
-	$value = unserialize(Session::get('key'));
-
 ### The Collection Class
 
 #### The `groupBy` Method
