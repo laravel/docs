@@ -12,6 +12,33 @@
 
 Facades provide a "static" interface to classes that are available in the application's [service container](/docs/{{version}}/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
 
+### An Example
+
+For example, consider the following controller code:
+
+	<?php namespace App\Http\Controllers;
+
+	use Cache;
+	use App\Http\Controllers\Controller;
+
+	class UserController extends Controller
+	{
+		/**
+		 * Show the profile for the given user.
+		 *
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function showProfile($id)
+		{
+			$user = Cache::get('user:'.$id');
+
+			return view('profile', ['user' => $user]);
+		}
+	}
+
+Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy to accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be pased to the underlying instance of Laravel's cache service.
+
 Occasionally, you may wish to create your own facades for your application's and packages, so let's explore the concept, development and usage of these classes.
 
 > **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [service container](/docs/{{version}}/container).

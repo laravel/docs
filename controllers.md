@@ -33,7 +33,6 @@ Here is an example of a basic controller class:
 		{
 			return view('user.profile', ['user' => User::findOrFail($id)]);
 		}
-
 	}
 
 We can route to the controller action like so:
