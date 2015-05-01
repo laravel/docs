@@ -7,6 +7,7 @@
 - [No Card Up Front](#no-card-up-front)
 - [Swapping Subscriptions](#swapping-subscriptions)
 - [Subscription Quantity](#subscription-quantity)
+- [Subscription Tax](#subscription-tax)
 - [Cancelling A Subscription](#cancelling-a-subscription)
 - [Resuming A Subscription](#resuming-a-subscription)
 - [Checking Subscription Status](#checking-subscription-status)
@@ -162,6 +163,18 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
 
 	// Subtract five to the subscription's current quantity...
 	$user->subscription()->decrement(5);
+
+<a name="subscription-tax"></a>
+## Subscription Tax
+
+With Cashier, it's easy to override the `tax_percent` value sent to Stripe. To specify the percentage tax a user pays on a subscription, simply implement the `getTaxPercent` method on your model, and return an numeric value between 0 and 100, with no more than 2 decimal places.
+
+	public function getTaxPercent()
+	{
+		return 20;
+	}
+	
+This enables you to apply a tax rate on a model-by-model basis, which may be helpful for a userbase that spans multiple countries.
 
 <a name="cancelling-a-subscription"></a>
 ## Cancelling A Subscription
