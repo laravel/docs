@@ -96,7 +96,7 @@ The `validator` method of the `AuthController` contains the validation rules for
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
 
-If you choose not to use the authentication scaffolding provided by `scaffold:auth`, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method on the Auth facade:
+Of course, you are not required to use the authentication controllers included with Laravel. If you choose to remove these controllers, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method on the Auth facade:
 
     <?php namespace App\Http\Controllers;
 
