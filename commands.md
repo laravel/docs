@@ -132,4 +132,4 @@ Once your command is finished, you need to register it with Artisan so it will b
 		'App\Console\Commands\FooCommand'
 	];
 
-When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/5.0/container) and registered with Artisan.
+When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.

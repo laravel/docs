@@ -56,9 +56,28 @@ Often, you will need to generate URLs to your routes, you may do so using the `u
 
 	$url = url('foo');
 
-#### Routing Requests To Controllers
+<a name="csrf-protection"></a>
+## CSRF Protection
 
-If you are interested in routing requests to classes, check out the documentation on [controllers](/docs/controllers).
+Laravel makes it easy to protect your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
+
+Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
+
+#### Insert The CSRF Token Into A Form
+
+	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+
+Of course, using the Blade [templating engine](/docs/{{version}}/templates):
+
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify token in the request input matches the token stored in the session.
+
+#### X-CSRF-TOKEN
+
+In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag and instruct jQuery to add it to all request headers:
+
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
 
 <a name="route-parameters"></a>
 ## Route Parameters
@@ -188,7 +207,7 @@ Shared attributes are specified in an array format as the first parameter to the
 <a name="route-group-middleware"></a>
 ### Middleware
 
-Middleware is applied to all routes within the group by defining the list of middleware with the `middleware` parameter on the group attribute array. Middleware will be executed in the order you define this array:
+Middleware are applied to all routes within the group by defining the list of middleware with the `middleware` parameter on the group attribute array. Middleware will be executed in the order you define this array:
 
 	Route::group(['middleware' => 'auth'], function()
 	{
@@ -378,4 +397,4 @@ The `abort` helper simply throws a `Symfony\Component\HttpFoundation\Exception\H
 
 Secondly, you may manually throw an instance of `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
 
-More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/master/errors#http-exceptions) section of the documentation.
+More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/{{version}}/errors#http-exceptions) section of the documentation.

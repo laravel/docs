@@ -32,11 +32,11 @@ Laravel needs very little configuration out of the box. You are free to get star
 
 You may also want to configure a few additional components of Laravel, such as:
 
-- [Cache](/docs/master/cache#configuration)
-- [Database](/docs/master/database#configuration)
-- [Session](/docs/master/session#configuration)
+- [Cache](/docs/{{version}}/cache#configuration)
+- [Database](/docs/{{version}}/database#configuration)
+- [Session](/docs/{{version}}/session#configuration)
 
-Once Laravel is installed, you should also [configure your local environment](/docs/master/configuration#environment-configuration).
+Once Laravel is installed, you should also [configure your local environment](/docs/{{version}}/configuration#environment-configuration).
 
 > **Note:** You should never have the `app.debug` configuration option set to `true` for a production application.
 
@@ -89,7 +89,13 @@ You may also pass arguments to the `environment` method to check if the environm
 		// The environment is either local OR staging...
 	}
 
+<<<<<<< HEAD
 An application instance may also be accessed via the `app` helper method:
+=======
+To obtain an instance of the application, resolve the `Illuminate\Contracts\Foundation\Application` contract via the [service container](/docs/{{version}}/container). Of course, if you are within a [service provider](/docs/{{version}}/providers), the application instance is available via the `$this->app` instance variable.
+
+An application instance may also be accessed via the `app` helper or the `App` facade:
+>>>>>>> 5.0
 
 	$environment = app()->environment();
 
@@ -119,7 +125,11 @@ The default template for maintenance mode responses is located in `resources/vie
 
 ### Maintenance Mode & Queues
 
+<<<<<<< HEAD
 While your application is in maintenance mode, no [queued jobs](/docs/master/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+=======
+While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+>>>>>>> 5.0
 
 <a name="pretty-urls"></a>
 ## Pretty URLs
@@ -147,4 +157,8 @@ On Nginx, the following directive in your site configuration will allow "pretty"
 		try_files $uri $uri/ /index.php?$query_string;
 	}
 
+<<<<<<< HEAD
 Of course, when using [Homestead](/docs/master/homestead), pretty URLs will be configured automatically.
+=======
+Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
+>>>>>>> 5.0

@@ -48,7 +48,7 @@ You may also use the `dispatch` method provided to your controllers via the `Dis
 
 	$this->dispatch(new SendEmail($message));
 
-The job's `handle` method will be called when the job is executed by the queue. You may type-hint any dependencies you need on the `handle` method and the [service container](/docs/master/container) will automatically inject them:
+The job's `handle` method will be called when the job is executed by the queue. You may type-hint any dependencies you need on the `handle` method and the [service container](/docs/{{version}}/container) will automatically inject them:
 
 	public function handle(UserRepository $users)
 	{

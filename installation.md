@@ -54,11 +54,11 @@ Laravel needs almost no other configuration out of the box. You are free to get 
 
 You may also want to configure a few additional components of Laravel, such as:
 
-- [Cache](/docs/master/cache#configuration)
-- [Database](/docs/master/database#configuration)
-- [Session](/docs/master/session#configuration)
+- [Cache](/docs/{{version}}/cache#configuration)
+- [Database](/docs/{{version}}/database#configuration)
+- [Session](/docs/{{version}}/session#configuration)
 
-Once Laravel is installed, you should also [configure your local environment](/docs/master/configuration#environment-configuration).
+Once Laravel is installed, you should also [configure your local environment](/docs/{{version}}/configuration#environment-configuration).
 
 > **Note:** You should never have the `app.debug` configuration option set to `true` for a production application.
 
@@ -91,4 +91,4 @@ On Nginx, the following directive in your site configuration will allow "pretty"
 		try_files $uri $uri/ /index.php?$query_string;
 	}
 
-Of course, when using [Homestead](/docs/master/homestead), pretty URLs will be configured automatically.
+Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
