@@ -209,16 +209,16 @@ Once we have coded our `PusherEventPusher` implementation of this interface, we 
 
 This tells the container that it should inject the `PusherEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in our constructor:
 
-		/**
-		 * Create a new order handler instance.
-		 *
-		 * @param  EventPusher  $pusher
-		 * @return void
-		 */
-		public function __construct(EventPusher $pusher)
-		{
-			$this->pusher = $pusher;
-		}
+	/**
+	 * Create a new order handler instance.
+	 *
+	 * @param  EventPusher  $pusher
+	 * @return void
+	 */
+	public function __construct(EventPusher $pusher)
+	{
+		$this->pusher = $pusher;
+	}
 
 <a name="contextual-binding"></a>
 ## Contextual Binding
