@@ -289,21 +289,17 @@ You do not need to manually verify the CSRF token on POST, PUT, or DELETE reques
 
 #### X-CSRF-TOKEN
 
-In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag and instruct jQuery to add it to all request headers:
+In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag:
 
 	<meta name="csrf-token" content="{{ csrf_token() }}" />
+
+ Then, you can instruct a library like jQuery to add it to all request headers:
 
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		}
 	});
-
-Now all AJAX requests will automatically include the CSRF token:
-
-	$.ajax({
-	   url: "/foo/bar",
-	})
 
 #### X-XSRF-TOKEN
 
