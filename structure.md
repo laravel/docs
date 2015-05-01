@@ -57,4 +57,4 @@ As discussed above, the default application namespace is `App`; however, you may
 
 	php artisan app:name SocialNet
 
-Of course, you are free to simply use the `App` namespace if you wish.
+Of course, you are free to simply use the `App` namespace.
