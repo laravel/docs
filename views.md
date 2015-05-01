@@ -20,8 +20,7 @@ A simple view looks like this:
 
 The view may be returned to the browser like so:
 
-	Route::get('/', function()
-	{
+	Route::get('/', function ()	{
 		return view('greeting', ['name' => 'James']);
 	});
 
@@ -49,17 +48,28 @@ When passing information in this manner, `$data` should be an array with key/val
 
 #### Sharing Data With All Views
 
-Occasionally, you may need to share a piece of data with all views that are rendered by your application. You have several options: the `view` helper, the `Illuminate\Contracts\View\Factory` [contract](/docs/{{version}}/contracts), or a wildcard [view composer](#view-composers).
-
-For example, using the `view` helper:
+Occasionally, you may need to share a piece of data with all views that are rendered by your application. You may do so using the `share` method:
 
 	view()->share('data', [1, 2, 3]);
 
-You may also use the `View` facade:
-
-	View::share('data', [1, 2, 3]);
-
 Typically, you would place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them.
+
+For example, here is what it looks like to call the `share` method from a service provider:
+
+	<?php namespace App\Providers;
+
+	class AppServiceProvider extends ServiceProvider
+	{
+		/**
+		 * Perform post-registration booting of services.
+		 *
+		 * @return void
+		 */
+		public function boot()
+		{
+			view()->share('key', 'value');
+		}
+	}
 
 > **Note:** When the `view` helper is called without arguments, it returns an implementation of the `Illuminate\Contracts\View\Factory` contract.
 
@@ -67,8 +77,7 @@ Typically, you would place calls to the `share` method within a service provider
 
 If you need to determine if a view exists, you may use the `exists` method:
 
-	if (view()->exists('emails.customer'))
-	{
+	if (view()->exists('emails.customer')) {
 		//
 	}
 
@@ -85,15 +94,14 @@ View composers are callbacks or class methods that are called when a view is ren
 
 #### Defining A View Composer
 
-Let's organize our view composers within a [service provider](/docs/{{version}}/providers). We'll use the `View` facade to access the underlying `Illuminate\Contracts\View\Factory` contract implementation:
+Let's organize our view composers within a [service provider](/docs/{{version}}/providers). We'll use the `view` helper to access the underlying `Illuminate\Contracts\View\Factory` contract implementation:
 
 	<?php namespace App\Providers;
 
-	use View;
 	use Illuminate\Support\ServiceProvider;
 
-	class ComposerServiceProvider extends ServiceProvider {
-
+	class ComposerServiceProvider extends ServiceProvider
+	{
 		/**
 		 * Register bindings in the container.
 		 *
@@ -102,11 +110,10 @@ Let's organize our view composers within a [service provider](/docs/{{version}}/
 		public function boot()
 		{
 			// Using class based composers...
-			View::composer('profile', 'App\Http\ViewComposers\ProfileComposer');
+			view()->composer('profile', 'App\Http\ViewComposers\ProfileComposer');
 
 			// Using Closure based composers...
-			View::composer('dashboard', function($view)
-			{
+			view()->composer('dashboard', function ($view) {
 
 			});
 		}
@@ -120,7 +127,6 @@ Let's organize our view composers within a [service provider](/docs/{{version}}/
 		{
 			//
 		}
-
 	}
 
 > **Note:** Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `App\Http\ViewComposers` directory.
@@ -134,8 +140,8 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
 	use Illuminate\Contracts\View\View;
 	use Illuminate\Users\Repository as UserRepository;
 
-	class ProfileComposer {
-
+	class ProfileComposer
+	{
 		/**
 		 * The user repository implementation.
 		 *
@@ -176,8 +182,7 @@ Just before the view is rendered, the composer's `compose` method is called with
 
 The `composer` method accepts the `*` character as a wildcard, so you may attach a composer to all views like so:
 
-	View::composer('*', function($view)
-	{
+	view()->composer('*', function ($view) {
 		//
 	});
 
@@ -185,13 +190,16 @@ The `composer` method accepts the `*` character as a wildcard, so you may attach
 
 You may also attach a view composer to multiple views at once:
 
-	View::composer(['profile', 'dashboard'], 'App\Http\ViewComposers\MyViewComposer');
+	view()->composer(
+		['profile', 'dashboard'],
+		'App\Http\ViewComposers\MyViewComposer'
+	);
 
 #### Defining Multiple Composers
 
 You may use the `composers` method to register a group of composers at the same time:
 
-	View::composers([
+	view()->composers([
 		'App\Http\ViewComposers\AdminComposer' => ['admin.index', 'admin.profile'],
 		'App\Http\ViewComposers\UserComposer' => 'user',
 		'App\Http\ViewComposers\ProductComposer' => 'product'
@@ -201,4 +209,4 @@ You may use the `composers` method to register a group of composers at the same 
 
 View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, use the `creator` method:
 
-	View::creator('profile', 'App\Http\ViewCreators\ProfileCreator');
+	view()->creator('profile', 'App\Http\ViewCreators\ProfileCreator');
