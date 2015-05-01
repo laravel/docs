@@ -13,11 +13,15 @@
 
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
 
-By default, Laravel includes an `App\User` model in your `app` directory. This model may be used with the default Eloquent authentication driver.
+By default, Laravel includes an `App\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app` directory. This model may be used with the default Eloquent authentication driver.
 
-Remember: when building the database schema for this model, make the password column at least 60 characters. Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration. The `scaffold:auth` command will generate these migrations for you.
+### Database Considerations
 
-If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
+When building the database schema for this model, make the password column at least 60 characters.
+
+Also, before getting started, make sure that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for "remember me" sessions being maintained by your application. This can be done by using `$table->rememberToken();` in a migration. The `scaffold:auth` command will generate these migrations for you.
+
+> **Note:** If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
 <a name="authenticating-users"></a>
 ## Authenticating Users
@@ -41,15 +45,15 @@ The `validator` method of the `AuthController` contains the validation rules for
 <a name="manual-authentication"></a>
 #### Manual Authentication
 
-If you choose not to use the authentication scaffolding provided by `scaffold:auth`, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method:
+If you choose not to use the authentication scaffolding provided by `scaffold:auth`, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method on the Auth facade:
 
 	<?php namespace App\Http\Controllers;
 
 	use Auth;
 	use Illuminate\Routing\Controller;
 
-	class AuthController extends Controller {
-
+	class AuthController extends Controller
+	{
 		/**
 		 * Handle an authentication attempt.
 		 *
@@ -57,12 +61,11 @@ If you choose not to use the authentication scaffolding provided by `scaffold:au
 		 */
 		public function authenticate()
 		{
-			if (Auth::attempt(['email' => $email, 'password' => $password]))
-			{
+			if (Auth::attempt(['email' => $email, 'password' => $password])) {
+				// Authentication passed...
 				return redirect()->intended('dashboard');
 			}
 		}
-
 	}
 
 The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/{{version}}/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, a new authenticated session will be started for the user.
@@ -77,8 +80,7 @@ The `intended` redirect function will redirect the user to the URL they were att
 
 You also may add extra conditions to the authentication query:
 
-	if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1]))
-	{
+	if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
 		// The user is active, not suspended, and exists.
 	}
 
@@ -86,8 +88,7 @@ You also may add extra conditions to the authentication query:
 
 To determine if the user is already logged into your application, you may use the `check` method:
 
-	if (Auth::check())
-	{
+	if (Auth::check()) {
 		// The user is logged in...
 	}
 
@@ -95,15 +96,13 @@ To determine if the user is already logged into your application, you may use th
 
 If you would like to provide "remember me" functionality in your application, you may pass a boolean value as the second argument to the `attempt` method, which will keep the user authenticated indefinitely, or until they manually logout. Of course, your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
 
-	if (Auth::attempt(['email' => $email, 'password' => $password], $remember))
-	{
+	if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
 		// The user is being remembered...
 	}
 
 If you are "remembering" users, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
 
-	if (Auth::viaRemember())
-	{
+	if (Auth::viaRemember()) {
 		//
 	}
 
@@ -117,8 +116,7 @@ To log a user into the application by their ID, use the `loginUsingId` method:
 
 The `validate` method allows you to validate a user's credentials without actually logging them into the application:
 
-	if (Auth::validate($credentials))
-	{
+	if (Auth::validate($credentials)) {
 		//
 	}
 
@@ -126,10 +124,11 @@ The `validate` method allows you to validate a user's credentials without actual
 
 You may also use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized:
 
-	if (Auth::once($credentials))
-	{
+	if (Auth::once($credentials)) {
 		//
 	}
+
+The `once` method is primarily useful for building stateless APIs.
 
 #### Manually Logging In A User
 
@@ -142,8 +141,6 @@ This is equivalent to logging in a user via credentials using the `attempt` meth
 #### Logging A User Out Of The Application
 
 	Auth::logout();
-
-Of course, if you are using the built-in Laravel authentication controllers, a controller method that handles logging users out of the application is provided out of the box.
 
 #### Authentication Events
 
@@ -158,10 +155,11 @@ First, you may access the user from the `Auth` facade:
 
 	<?php namespace App\Http\Controllers;
 
+	use Auth;
 	use Illuminate\Routing\Controller;
 
-	class ProfileController extends Controller {
-
+	class ProfileController extends Controller
+	{
 		/**
 		 * Update the user's profile.
 		 *
@@ -169,12 +167,10 @@ First, you may access the user from the `Auth` facade:
 		 */
 		public function updateProfile()
 		{
-			if (Auth::user())
-			{
+			if (Auth::user()) {
 				// Auth::user() returns an instance of the authenticated user...
 			}
 		}
-
 	}
 
 Second, you may access the authenticated user via an `Illuminate\Http\Request` instance:
@@ -193,31 +189,9 @@ Second, you may access the authenticated user via an `Illuminate\Http\Request` i
 		 */
 		public function updateProfile(Request $request)
 		{
-			if ($request->user())
-			{
+			if ($request->user()) {
 				// $request->user() returns an instance of the authenticated user...
 			}
-		}
-
-	}
-
-Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contract. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/{{version}}/container):
-
-	<?php namespace App\Http\Controllers;
-
-	use Illuminate\Routing\Controller;
-	use Illuminate\Contracts\Auth\Authenticatable;
-
-	class ProfileController extends Controller {
-
-		/**
-		 * Update the user's profile.
-		 *
-		 * @return Response
-		 */
-		public function updateProfile(Authenticatable $user)
-		{
-			// $user is an instance of the authenticated user...
 		}
 
 	}
@@ -227,16 +201,18 @@ Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contr
 
 [Route middleware](/docs/{{version}}/middleware) can be used to allow only authenticated users to access a given route. Laravel provides the `auth` middleware by default, and it is defined in `app\Http\Middleware\Authenticate.php`. All you need to do is attach it to a route definition:
 
-	// With A Route Closure...
+	// Using A Route Closure...
 
-	Route::get('profile', ['middleware' => 'auth', function()
-	{
+	Route::get('profile', ['middleware' => 'auth', function() {
 		// Only authenticated users may enter...
 	}]);
 
-	// With A Controller...
+	// Using A Controller...
 
-	Route::get('profile', ['middleware' => 'auth', 'uses' => 'ProfileController@show']);
+	Route::get('profile', [
+		'middleware' => 'auth',
+		'uses' => 'ProfileController@show'
+	]);
 
 <a name="http-basic-authentication"></a>
 ## HTTP Basic Authentication
@@ -245,8 +221,7 @@ HTTP Basic Authentication provides a quick way to authenticate users of your app
 
 #### Protecting A Route With HTTP Basic
 
-	Route::get('profile', ['middleware' => 'auth.basic', function()
-	{
+	Route::get('profile', ['middleware' => 'auth.basic', function() {
 		// Only authenticated users may enter...
 	}]);
 
@@ -260,6 +235,8 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 	{
 		return Auth::onceBasic() ?: $next($request);
 	}
+
+Next, just [register the middleware](/docs/{{version}}/middleware#registering-middleware) and attach it to a route.
 
 If you are using PHP FastCGI, HTTP Basic authentication may not work correctly out of the box. The following lines should be added to your `.htaccess` file:
 
