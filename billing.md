@@ -167,7 +167,7 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
 <a name="subscription-tax"></a>
 ## Subscription Tax
 
-With Cashier, it's easy to override the `tax_percent` value sent to Stripe. To specify the tax percentage a user pays on a subscription. Implement the `getTaxPercent` method on your model, and return a numeric value between 0 and 100, with no more than 2 decimal places.
+With Cashier, it's easy to override the `tax_percent` value sent to Stripe. To specify the tax percentage a user pays on a subscription, implement the `getTaxPercent` method on your model, and return a numeric value between 0 and 100, with no more than 2 decimal places.
 
 	public function getTaxPercent()
 	{
