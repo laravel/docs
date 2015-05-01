@@ -4,6 +4,7 @@
 - [Route Parameters](#route-parameters)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
+- [Sub-Domain Routing](#sub-domain-routing)
 - [CSRF Protection](#csrf-protection)
 - [Method Spoofing](#method-spoofing)
 - [Route Model Binding](#route-model-binding)
