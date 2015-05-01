@@ -57,15 +57,14 @@ This class is namespaced under `App\Providers` since that is the default locatio
 
 ### The Boot Method
 
-So, what if we need to register an event listener within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework.
+So, what if we need to register a view composer within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework.
 
 	<?php namespace App\Providers;
 
-	use Event;
 	use Illuminate\Support\ServiceProvider;
 
-	class EventServiceProvider extends ServiceProvider {
-
+	class EventServiceProvider extends ServiceProvider
+	{
 		/**
 		 * Perform post-registration booting of services.
 		 *
@@ -73,7 +72,9 @@ So, what if we need to register an event listener within our service provider? T
 		 */
 		public function boot()
 		{
-			Event::listen('SomeEvent', 'SomeEventHandler');
+			view()->composer('view', function() {
+				//
+			});
 		}
 
 		/**
@@ -85,16 +86,17 @@ So, what if we need to register an event listener within our service provider? T
 		{
 			//
 		}
-
 	}
 
 We are able to type-hint dependencies for our `boot` method. The service container will automatically inject any dependencies you need:
 
-	use Illuminate\Contracts\Events\Dispatcher;
+	use Illuminate\Contracts\Routing\ResponseFactory;
 
-	public function boot(Dispatcher $events)
+	public function boot(ResponseFactory $factory)
 	{
-		$events->listen('SomeEvent', 'SomeEventHandler');
+		$factory->macro('caps', function($value) {
+			//
+		});
 	}
 
 <a name="registering-providers"></a>
