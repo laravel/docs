@@ -1,7 +1,7 @@
 # Authentication
 
 - [Introduction](#introduction)
-- [The Included Authentication Controllers](#the-included-authentication-controllers)
+- [Included Authentication Controllers](#included-authentication-controllers)
 - [Manually Authenticating Users](#authenticating-users)
 - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
 - [Protecting Routes](#protecting-routes)
@@ -24,10 +24,10 @@ Also, before getting started, make sure that your `users` (or equivalent) table 
 
 > **Note:** If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
 
-<a name="the-included-authentication-controllers"></a>
-## The Included Authentication Controllers
+<a name="included-authentication-controllers"></a>
+## Included Authentication Controllers
 
-Laravel ships with two authentication controllers out of the box. These controllers are located in the `App\Http\Controllers\Auth` namespace. The `AuthController` handles new user registration and "logging in", while the `PasswordController` contains the logic to help existing users reset their forgotten passwords.
+Laravel ships with two authentication controllers out of the box. These controllers are located in the `App\Http\Controllers\Auth` namespace. The `AuthController` handles new user registration and authentication, while the `PasswordController` contains the logic to help existing users reset their forgotten passwords.
 
 Each of these controllers uses a trait to include their necessary methods. For many applications, you will not need to modify these controllers at all.
 
@@ -87,16 +87,20 @@ However, you will need to provide [views](/docs/{{version}}/views) that these co
         </div>
     </form>
 
-### The Auth Controller
+### Customizing New User Validation
 
 To modify the form fields that are required when a new user registers with your application, you may modify the `AuthController` class. This class is responsible for validating and creating new users of your application.
 
-The `validator` method of the `AuthController` contains the validation rules for new users of the application, while the `create` method of the `AuthController` is responsible for creating new `User` records in your database. You are free to modify each of these methods as you wish.
+The `validator` method of the `AuthController` contains the validation rules for new users of the application. You are free to modify this method as you wish.
+
+### Customizing New User Storage
+
+The `create` method of the `AuthController` is responsible for creating new `User` records in your database. You are free to modify this method according to the needs of your database.
 
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
 
-Of course, you are not required to use the authentication controllers included with Laravel. If you choose to remove these controllers, you will need to manage the authentication of your users using the Laravel authentication classes directly. Don't worry, it's still a cinch! First, let's check out the `attempt` method on the Auth facade:
+Of course, you are not required to use the authentication controllers included with Laravel. If you choose to remove these controllers, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch! First, let's check out the `attempt` method on the Auth facade:
 
     <?php namespace App\Http\Controllers;
 
@@ -119,7 +123,7 @@ Of course, you are not required to use the authentication controllers included w
         }
     }
 
-The `attempt` method accepts an array of key / value pairs as its first argument. The `password` value will be [hashed](/docs/{{version}}/hashing). The other values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match, a new authenticated session will be started for the user.
+The `attempt` method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match an authenticated session will be started for the user.
 
 The `attempt` method will return `true` if authentication was successful. Otherwise, `false` will be returned.
 
@@ -250,7 +254,7 @@ Second, you may access the authenticated user via an `Illuminate\Http\Request` i
 <a name="protecting-routes"></a>
 ## Protecting Routes
 
-[Route middleware](/docs/{{version}}/middleware) can be used to allow only authenticated users to access a given route. Laravel provides the `auth` middleware by default, and it is defined in `app\Http\Middleware\Authenticate.php`. All you need to do is attach it to a route definition:
+[Route middleware](/docs/{{version}}/middleware) can be used to allow only authenticated users to access a given route. Laravel ships with the `auth` middleware, which is defined in `app\Http\Middleware\Authenticate.php`. All you need to do is attach it to a route definition:
 
     // Using A Route Closure...
 
@@ -276,7 +280,7 @@ HTTP Basic Authentication provides a quick way to authenticate users of your app
         // Only authenticated users may enter...
     }]);
 
-By default, the `basic` middleware will use the `email` column on the user record as the "username".
+By default, the `auth.basic` middleware will use the `email` column on the user record as the "username".
 
 #### Setting Up A Stateless HTTP Basic Filter
 
@@ -311,11 +315,57 @@ Next, a table must be created to store the password reset tokens. The migration 
 
 ### Password Reminder Controller
 
-Laravel also includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords. We've even provided views to get you started! The views are located in the `resources/views/auth` directory. You are free to modify these views as you wish to suit your own application's design.
+Laravel includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords.
 
-Your user will receive an e-mail with a link that points to the `getReset` method of the `PasswordController`. This method will render the password reset form and allow users to reset their passwords. After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post-reset redirect location by defining a `redirectTo` property on the `PasswordController`:
+#### Sample Password Reset Request Form
+
+You will simply need to provide an HTML view for the password reset request form. Here is a sample form to get you started:
+
+    <form method="POST" action="/password/email">
+        {{ csrf_field() }}
+
+        <div>
+        	Email
+            <input type="email" name="email" value="{{ old('email') }}">
+        </div>
+
+        <div>
+            <button type="submit">
+                Send Password Reset Link
+            </button>
+        </div>
+    </form>
+
+When a user submits a request to reset their password, they will receive an e-mail with a link that points to the `getReset` method of the `PasswordController`. This method will render the password reset form and allow users to reset their passwords. After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post-reset redirect location by defining a `redirectTo` property on the `PasswordController`:
 
     protected $redirectTo = '/dashboard';
+
+#### Sample Password Reset Form
+
+Here is a sample password reset form to get you started:
+
+    <form method="POST" action="/password/reset">
+        {{ csrf_field() }}
+        <input type="hidden" name="token" value="{{ $token }}">
+
+        <div>
+            <input type="email" name="email" value="{{ old('email') }}">
+        </div>
+
+        <div>
+            <input type="password" name="password">
+        </div>
+
+        <div>
+            <input type="password" name="password_confirmation">
+        </div>
+
+        <div>
+            <button type="submit">
+                Reset Password
+            </button>
+        </div>
+    </form>
 
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option in your `config/auth.php` file.
 
