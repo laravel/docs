@@ -323,7 +323,9 @@ Laravel includes an `Auth\PasswordController` that contains the logic necessary 
 
 #### Sample Password Reset Request Form
 
-You will simply need to provide an HTML view for the password reset request form. This view shuold be placed at `resources/views/auth/password.blade.php` Here is a sample form to get you started:
+You will simply need to provide an HTML view for the password reset request form. This view should be placed at `resources/views/auth/password.blade.php` Here is a sample form to get you started:
+
+    <!-- resources/views/auth/password.blade.php -->
 
     <form method="POST" action="/password/email">
         {{ csrf_field() }}
@@ -349,6 +351,8 @@ When a user submits a request to reset their password, they will receive an e-ma
 When the user clicks the e-mailed link to reset their password, they will be presented with a password reset form. This view should be placed at `resources/views/auth/reset.blade.php`.
 
 Here is a sample password reset form to get you started:
+
+    <!-- resources/views/auth/reset.blade.php -->
 
     <form method="POST" action="/password/reset">
         {{ csrf_field() }}
