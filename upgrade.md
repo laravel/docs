@@ -28,7 +28,7 @@ This directory should be writable, and will be used by the framework to store te
 
 ### Authentication
 
-If you are using the provided `AuthController` which uses the `AuthenticatesAndRegistersUsers` trait, you will need to makoe a few changes to how new users are validated and created.
+If you are using the provided `AuthController` which uses the `AuthenticatesAndRegistersUsers` trait, you will need to make a few changes to how new users are validated and created.
 
 First, you no longer need to pass the `Guard` and `Registrar` instances to the base constructor. You can remove these dependencies entirely from your controller's constructor.
 
