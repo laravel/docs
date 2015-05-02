@@ -9,10 +9,31 @@
 
 <a name="upgrade-5.0.16"></a>
 ## Upgrading To 5.0.16
+ 
 
-In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
+In Your `bootstrap/autoload.php` file, change the `$compiledPath` variable :
 
-	$compiledPath = __DIR__.'/../vendor/compiled.php';
+ From (old path):
+
+ $compiledPath = __DIR__.'/../storage/framework/compiled.php';
+
+ TO (new path):
+ 
+ $compiledPath = __DIR__.'/../vendor/compiled.php';
+
+next, remove manually all compiled.php files , for example:
+
+in Terminal :
+
+sudo rm {your project folder}/storage/compiled.php
+
+and if exists, also remove from vendor folder :
+
+sudo rm {your project folder}/vendor/compiled.php
+
+Finaly, update Your Project :
+
+composer update
 
 <a name="upgrade-5.0"></a>
 ## Upgrading To 5.0 From 4.2
