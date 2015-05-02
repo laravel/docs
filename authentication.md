@@ -91,6 +91,14 @@ However, you will need to provide [views](/docs/{{version}}/views) that these co
         </div>
     </form>
 
+### After Authentication
+
+If a user is successfully authenticated, they will be redirected to the `/home` URI. You will need to register a route to handle this URI.
+
+You can customize the post-authentication redirect location by defining a `redirectTo` property on the `AuthController`:
+
+    protected $redirectTo = '/dashboard';
+
 ### Customizing New User Validation
 
 To modify the form fields that are required when a new user registers with your application, you may modify the `AuthController` class. This class is responsible for validating and creating new users of your application.
