@@ -31,9 +31,11 @@ Laravel ships with two authentication controllers out of the box. These controll
 
 Each of these controllers uses a trait to include their necessary methods. For many applications, you will not need to modify these controllers at all.
 
-However, you will need to provide [views](/docs/{{version}}/views) that these controllers can render. The views should be placed in `resources/views/auth` directory. You are free to customize these views however you wish.
+However, you will need to provide [views](/docs/{{version}}/views) that these controllers can render. The views should be placed in `resources/views/auth` directory. You are free to customize these views however you wish. The login view should be placed at `resources/auth/login.blade.php`, and the registration view should be placed at `resources/auth/register.blade.php`.
 
 #### Sample Authentication Form
+
+    <!-- resources/auth/login.blade.php -->
 
     <form method="POST" action="/auth/login">
         {{ csrf_field() }}
@@ -58,6 +60,8 @@ However, you will need to provide [views](/docs/{{version}}/views) that these co
     </form>
 
 #### Sample Registration Form
+
+    <!-- resources/auth/register.blade.php -->
 
     <form method="POST" action="/auth/register">
         {{ csrf_field() }}
@@ -319,7 +323,7 @@ Laravel includes an `Auth\PasswordController` that contains the logic necessary 
 
 #### Sample Password Reset Request Form
 
-You will simply need to provide an HTML view for the password reset request form. Here is a sample form to get you started:
+You will simply need to provide an HTML view for the password reset request form. This view shuold be placed at `resources/views/auth/password.blade.php` Here is a sample form to get you started:
 
     <form method="POST" action="/password/email">
         {{ csrf_field() }}
@@ -336,11 +340,13 @@ You will simply need to provide an HTML view for the password reset request form
         </div>
     </form>
 
-When a user submits a request to reset their password, they will receive an e-mail with a link that points to the `getReset` method of the `PasswordController`. This method will render the password reset form and allow users to reset their passwords. After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post-reset redirect location by defining a `redirectTo` property on the `PasswordController`:
+When a user submits a request to reset their password, they will receive an e-mail with a link that points to the `getReset` method of the `PasswordController`. You will need to create a view for this e-mail at `resources/views/emails/password.blade.php`. The view will receive the `$token` variable which contains the password reset token to match the user to the password reset request. Here is an example view to get you started:
 
-    protected $redirectTo = '/dashboard';
+    Click here to reset your password: {{ url('password/reset/'.$token) }}
 
 #### Sample Password Reset Form
+
+When the user clicks the e-mailed link to reset their password, they will be presented with a password reset form. This view should be placed at `resources/views/auth/reset.blade.php`.
 
 Here is a sample password reset form to get you started:
 
@@ -366,6 +372,10 @@ Here is a sample password reset form to get you started:
             </button>
         </div>
     </form>
+
+After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post-reset redirect location by defining a `redirectTo` property on the `PasswordController`:
+
+    protected $redirectTo = '/dashboard';
 
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option in your `config/auth.php` file.
 
