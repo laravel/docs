@@ -18,8 +18,7 @@ The cache configuration file also contains various other options, which are docu
 
 When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
 
-	Schema::create('cache', function($table)
-	{
+	Schema::create('cache', function($table) {
 		$table->string('key')->unique();
 		$table->text('value');
 		$table->integer('expiration');
@@ -60,33 +59,17 @@ For more information on configuring Redis, consult its [Laravel documentation pa
 
 The `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
 
-To obtain an implementation of these contracts, simply type-hint them in a class that is resolved by the Laravel [service container](/docs/{{version}}/container), such as a controller, middleware, event listener, queued job, etc.
+However, you may also use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts.
 
-For example, to retrieve a cache implementation in a controller:
+For example, let's import the `Cache` facade into a controller:
 
 	<?php namespace App\Http\Controllers;
 
+	use Cache;
 	use Illuminate\Routing\Controller;
-	use Illuminate\Contracts\Cache\Repository as Cache;
 
 	class UserController extends Controller
 	{
-		/**
-		 * The cache implementation.
-		 */
-		protected $cache;
-
-		/**
-		 * Create a new controller instance.
-		 *
-		 * @param  \Illuminate\Contracts\Cache\Repository  $cache
-		 * @return void
-		 */
-		public function __construct(Cache $cache)
-		{
-			$this->cache = $cache;
-		}
-
 		/**
 		 * Show a list of all users of the application.
 		 *
@@ -94,24 +77,20 @@ For example, to retrieve a cache implementation in a controller:
 		 */
 		public function index()
 		{
-			$value = $this->cache->get('key');
+			$value = Cache::get('key');
 
 			//
 		}
 	}
 
-Of course, service container dependencies are resolved recursively. So, if your controller receives a `UserRepository` instance, and that `UserRepository` type-hints a cache contract on its constructor, the cache implementation will be automatically injected into the `UserRepository`.
-
 <a name="cache-usage"></a>
 ## Cache Usage
-
-Once you have an instance of the cache, you may use it to retrieve and set values.
 
 #### Storing An Item In The Cache
 
 When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
 
-	$this->cache->put('key', 'value', $minutes);
+	Cache::put('key', 'value', $minutes);
 
 #### Using DateTime Objects To Set Expire Time
 
@@ -119,33 +98,33 @@ You may also pass a PHP `DateTime` instance representing the expiration time of 
 
 	$expiresAt = Carbon::now()->addMinutes(10);
 
-	$this->cache->put('key', 'value', $expiresAt);
+	Cache::put('key', 'value', $expiresAt);
 
 #### Storing An Item In The Cache If It Doesn't Exist
 
 The `add` method will return `true` if the item is actually **added** to the cache. Otherwise, the method will return `false`.
 
-	$this->cache->add('key', 'value', $minutes);
+	Cache::add('key', 'value', $minutes);
 
 #### Checking For Item Existence
 
-	if ($this->cache->has('key')) {
+	if (Cache::has('key')) {
 		//
 	}
 
 #### Retrieving An Item From The Cache
 
-	$value = $this->cache->get('key');
+	$value = Cache::get('key');
 
 #### Retrieving An Item Or Returning A Default Value
 
 The second argument passed to the `get` method will be returned if the specified item does not exist in the cache:
 
-	$value = $this->cache->get('key', 'default');
+	$value = Cache::get('key', 'default');
 
 You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache:
 
-	$value = $this->cache->get('key', function() {
+	$value = Cache::get('key', function() {
 		return 'default';
 	});
 
@@ -153,29 +132,29 @@ You may even pass a `Closure` as the default value. The result of the `Closure` 
 
 > **Note:** All cache drivers except the `database` driver support the increment and decrement operations:
 
-	$this->cache->increment('key');
+	Cache::increment('key');
 
-	$this->cache->increment('key', $amount);
+	Cache::increment('key', $amount);
 
-	$this->cache->decrement('key');
+	Cache::decrement('key');
 
-	$this->cache->decrement('key', $amount);
+	Cache::decrement('key', $amount);
 
 #### Storing An Item In The Cache Permanently
 
-	$this->cache->forever('key', 'value');
+	Cache::forever('key', 'value');
 
 #### Retrieve An Item & Update Value If Missing
 
 Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. You may do this using the `Cache::remember` method:
 
-	$value = $this->cache->remember('users', $minutes, function() {
+	$value = Cache::remember('users', $minutes, function() {
 		return DB::table('users')->get();
 	});
 
 You may also combine the `remember` and `forever` methods:
 
-	$value = $this->cache->rememberForever('users', function() {
+	$value = Cache::rememberForever('users', function() {
 		return DB::table('users')->get();
 	});
 
@@ -185,43 +164,17 @@ You may also combine the `remember` and `forever` methods:
 
 If you need to retrieve an item from the cache and then delete it, you may use the `pull` method:
 
-	$value = $this->cache->pull('key');
+	$value = Cache::pull('key');
 
 #### Removing An Item From The Cache
 
-	$this->cache->forget('key');
+	Cache::forget('key');
 
 <a name="accessing-multiple-cache-stores"></a>
 ## Accessing Multiple Cache Stores
 
-When using multiple cache stores, you may access them via an implementation of the `Illuminate\Contracts\Cache\Factory` [contract](/docs/{{version}}/contracts). First, you will need to obtain an implementation of this contract from the Laravel [service container](/docs/{{version}}/container). You can do this by type-hinting the contract on a class that is resolved by the container. In this example, we'll type-hint it on a controller:
+Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
 
-	<?php namespace App\Http\Controllers;
+	$value = Cache::store('file')->get('foo');
 
-	use Illuminate\Routing\Controller;
-	use Illuminate\Contracts\Cache\Factory as CacheFactory;
-
-	class UserController extends Controller
-	{
-		/**
-		 * The cache implementation.
-		 */
-		protected $cache;
-
-		/**
-		 * Create a new controller instance.
-		 *
-		 * @param  \Illuminate\Contracts\Cache\Factory  $cache
-		 * @return void
-		 */
-		public function __construct(CacheFactory $cache)
-		{
-			$this->cache = $cache;
-		}
-	}
-
-Once you have obstained an implementation of the contract, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
-
-	$value = $this->cache->store('file')->get('foo');
-
-	$this->cache->store('redis')->put('bar', 'baz', 10);
+	Cache::store('redis')->put('bar', 'baz', 10);
