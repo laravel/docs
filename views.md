@@ -380,8 +380,7 @@ Blade even allows you to define your own custom directives. You can use the `dir
 
 The following example creates a `@datetime($var)` directive which formats a given `$var`:
 
-	Blade::directive('datetime', function($expression)
-	{
+	Blade::directive('datetime', function($expression) {
 		return "<?php echo with{$expression}->format('m/d/Y H:i'); ?>";
 	});
 
