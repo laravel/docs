@@ -3,7 +3,6 @@
 - [Basic Usage](#basic-usage)
 - [View Composers](#view-composers)
 - [Blade Templating](#blade-templating)
-- [Blade Templating](#blade-templating)
 - [Other Blade Control Structures](#other-blade-control-structures)
 - [Blade Service Injection](#blade-service-injection)
 - [Extending Blade](#extending-blade)
@@ -219,9 +218,11 @@ View **creators** work almost exactly like view composers; however, they are fir
 <a name="blade-templating"></a>
 ## Blade Templating
 
-Blade is a simple, yet powerful templating engine provided with Laravel. Unlike controller layouts, Blade is driven by _template inheritance_ and _sections_. All Blade templates should use the `.blade.php` extension.
+Blade is a simple, yet powerful templating engine provided with Laravel. The core benefits of Blade are _template inheritance_ and _sections_. All Blade template files should use the `.blade.php` extension, and are typically stored in `resources/views`.
 
 #### Defining A Blade Layout
+
+First, let's check out a simple Blade layout. First, we will examine a "master" template. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view.
 
 	<!-- Stored in resources/views/layouts/master.blade.php -->
 
@@ -242,6 +243,8 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 #### Using A Blade Layout
 
+Once we have defined our template, we can use the Blade `@extends` directive to inject content into this template from a "child" page of our application.
+
 	@extends('layouts.master')
 
 	@section('title', 'Page Title')
@@ -258,6 +261,8 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
 
+#### Default Yield Content
+
 Sometimes, such as when you are not sure if a section has been defined, you may wish to pass a default value to the `@yield` directive. You may pass the default value as the second argument:
 
 	@yield('section', 'Default Content')
@@ -270,6 +275,8 @@ Sometimes, such as when you are not sure if a section has been defined, you may 
 	Hello, {{ $name }}.
 
 	The current UNIX timestamp is {{ time() }}.
+
+> **Note:** Blade `{{ }}` statements are automatically send through PHP's `htmlentities` function to prevent XSS attacks.
 
 #### Echoing Data After Checking For Existence
 
@@ -358,7 +365,7 @@ To overwrite a section entirely, you may use the `overwrite` statement:
 <a name="blade-service-injection"></a>
 ## Blade Service Injection
 
-The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/master/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class / interface name of the service you wish to resolve:
+The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class / interface name of the service you wish to resolve:
 
 	@inject('metrics', 'App\Services\MetricsService')
 

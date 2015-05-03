@@ -280,11 +280,11 @@ Laravel automatically generates a CSRF "token" for each active user session mana
 
 	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-Of course, using the Blade [templating engine](/docs/master/templating):
+Of course, using the Blade [templating engine](/docs/{{version}}/templating):
 
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/master/middleware) will verify token in the request input matches the token stored in the session.
+You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify token in the request input matches the token stored in the session.
 
 #### X-CSRF-TOKEN
 
