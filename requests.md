@@ -35,7 +35,11 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 		}
 	}
 
-If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies:
+If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies. For example, if your route is defined like so:
+
+	Route::put('user/{id}', 'UserController@update');
+
+You may stil type-hint the `Request` and access your route parameter `id` by defining your controller method like the following:
 
 	<?php namespace App\Http\Controllers;
 
