@@ -98,17 +98,18 @@ To learn more about the additional fields supported by Stripe, check out Stripe'
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
 
-To verify that a user is subscribed to your application, use the `subscribed` method:
+To verify that a user is subscribed to your application, use the `subscribed` method on the model:
 
 	if ($user->subscribed()) {
 		//
 	}
 
-The `subscribed` method makes a great candidate for a [route middleware](/docs/{{version}}/middleware):
+The `subscribed` method also makes a great candidate for a [route middleware](/docs/{{version}}/middleware), allowing you to filter access to routes and controllers based on the user's subscription status:
 
 	public function handle($request, Closure $next)
 	{
 		if ($request->user() && ! $request->user()->subscribed()) {
+			// This user is not a paying customer...
 			return redirect('billing');
 		}
 
@@ -127,7 +128,7 @@ To determine if the user was once an active subscriber, but has cancelled their 
 		//
 	}
 
-You may also determine if a user has cancelled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was scheduled to end on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time.
+You may also determine if a user has cancelled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time.
 
 	if ($user->onGracePeriod()) {
 		//
@@ -152,6 +153,10 @@ If your application offers a free-trial with no credit-card up front, set the `c
 	protected $cardUpFront = false;
 
 On account creation, be sure to set the trial end date on the model:
+
+	$user = User::create([
+		// User fields...
+	]);
 
 	$user->trial_ends_at = Carbon::now()->addDays(14);
 
