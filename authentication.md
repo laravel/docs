@@ -114,26 +114,15 @@ The `create` method of the `AuthController` is responsible for creating new `Use
 
 Of course, you are not required to use the authentication controllers included with Laravel. If you choose to remove these controllers, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch! First, let's check out the `attempt` method.
 
-We will access Laravel's authentication services via the `Illuminate\Contracts\Auth\Guard` [contract](/docs/{{version}}/contracts). So, let's type-hint the contract on the controller:
+We will access Laravel's authentication services via the `Auth` [facade](/docs/{{version}}/facades), so we'll need to make sure to import the `Auth` facade at the top of the class.
 
     <?php namespace App\Http\Controllers;
 
+    use Auth;
     use Illuminate\Routing\Controller;
-    use Illuminate\Contracts\Auth\Guard;
 
     class AuthController extends Controller
     {
-        /**
-         * Create a new controller instance.
-         *
-         * @param  \Illuminate\Contracts\Auth\Guard  $auth
-         * @return void
-         */
-        public function __construct(Guard $auth)
-        {
-            $this->auth = $auth;
-        }
-
         /**
          * Handle an authentication attempt.
          *
@@ -141,7 +130,7 @@ We will access Laravel's authentication services via the `Illuminate\Contracts\A
          */
         public function authenticate()
         {
-            if ($this->auth->attempt(['email' => $email, 'password' => $password])) {
+            if (Auth::attempt(['email' => $email, 'password' => $password])) {
                 // Authentication passed...
                 return redirect()->intended('dashboard');
             }
@@ -160,7 +149,7 @@ The `intended` redirect function will redirect the user to the URL they were att
 
 You also may add extra conditions to the authentication query:
 
-    if ($this->auth->attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
+    if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
         // The user is active, not suspended, and exists.
     }
 
@@ -168,7 +157,7 @@ You also may add extra conditions to the authentication query:
 
 To determine if the user is already logged into your application, you may use the `check` method:
 
-    if ($this->auth->check()) {
+    if (Auth::check()) {
         // The user is logged in...
     }
 
@@ -178,13 +167,13 @@ However, you may use middleware to verify that the user is authenticated before 
 
 If you would like to provide "remember me" functionality in your application, you may pass a boolean value as the second argument to the `attempt` method, which will keep the user authenticated indefinitely, or until they manually logout. Of course, your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
 
-    if ($this->auth->attempt(['email' => $email, 'password' => $password], $remember)) {
+    if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
         // The user is being remembered...
     }
 
 If you are "remembering" users, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
 
-    if ($this->auth->viaRemember()) {
+    if (Auth::viaRemember()) {
         //
     }
 
@@ -192,13 +181,13 @@ If you are "remembering" users, you may use the `viaRemember` method to determin
 
 To log a user into the application by their ID, use the `loginUsingId` method:
 
-    $this->auth->loginUsingId(1);
+    Auth::loginUsingId(1);
 
 #### Validating User Credentials Without Login
 
 The `validate` method allows you to validate a user's credentials without actually logging them into the application:
 
-    if ($this->auth->validate($credentials)) {
+    if (Auth::validate($credentials)) {
         //
     }
 
@@ -206,7 +195,7 @@ The `validate` method allows you to validate a user's credentials without actual
 
 You may also use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized:
 
-    if ($this->auth->once($credentials)) {
+    if (Auth::once($credentials)) {
         //
     }
 
@@ -216,18 +205,22 @@ The `once` method is primarily useful for building stateless APIs.
 
 If you need to log an existing user instance into your application, you may call the `login` method with the user instance:
 
-    $this->auth->login($user);
+    Auth::login($user);
 
 This is equivalent to logging in a user via credentials using the `attempt` method.
 
 #### Logging A User Out Of The Application
 
-    $this->auth->logout();
+    Auth::logout();
 
 <a name="retrieving-the-authenticated-user"></a>
 ## Retrieving The Authenticated User
 
-Once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance:
+You may access the authenticated user via the `Auth` facade:
+
+    $user = Auth::user();
+
+Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance:
 
     <?php namespace App\Http\Controllers;
 
@@ -388,7 +381,9 @@ To get started with Socialite, include the package in your `composer.json` file:
 
     "laravel/socialite": "~2.0"
 
-Next, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file.
+Next, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
+
+    'Socialite' => 'Laravel\Socialite\Facades\Socialite',
 
 You will need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `google`, or `github`, depending on the providers your application requires. For example:
 
@@ -400,31 +395,14 @@ You will need to add credentials for the OAuth services your application utilize
 
 ### Basic Usage
 
-Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. We will access Socialite using the `Laravel\Socialite\Contracts\Factory` [contract](/docs/{{version}}/contracts):
+Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. We will access Socialite using the `Socialite` [facade](/docs/{{version}}/facades):
 
     <?php namespace App\Http\Controllers;
 
     use Illuminate\Routing\Controller;
-    use Laravel\Socialite\Contracts\Factory as Socialite;
 
     class AuthController extends Controller
     {
-        /**
-         * The Socialite implementation.
-         */
-        protected $socialite;
-
-        /**
-         * Create a new controller instance.
-         *
-         * @param  \Laravel\Socialite\Contracts\Factory  $socialite
-         * @return void
-         */
-        public function __construct(Socialite $socialite)
-        {
-            $this->socialite = $socialite;
-        }
-
         /**
          * Redirect the user to the GitHub authentication page.
          *
@@ -432,7 +410,7 @@ Next, you are ready to authenticate users! You will need two routes: one for red
          */
         public function redirectToProvider()
         {
-            return $this->socialite->driver('github')->redirect();
+            return Socialite::driver('github')->redirect();
         }
 
         /**
@@ -442,7 +420,7 @@ Next, you are ready to authenticate users! You will need two routes: one for red
          */
         public function handleProviderCallback()
         {
-            $user = $this->socialite->driver('github')->user();
+            $user = Socialite::driver('github')->user();
 
             // $user->token;
         }
@@ -450,7 +428,7 @@ Next, you are ready to authenticate users! You will need two routes: one for red
 
 The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Before redirecting the user, you may also set "scopes" on the request:
 
-    return $this->socialite->driver('github')
+    return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
 
 Once you have a user instance, you can grab a few more details about the user:
