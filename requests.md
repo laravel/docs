@@ -10,14 +10,6 @@
 <a name="accessing-the-request"></a>
 ## Accessing The Request
 
-### Via Facade
-
-The `Request` facade will grant you access to the current request that is bound in the container. For example:
-
-	$name = Request::input('name');
-
-Remember, if you are in a namespace, you will have to import the `Request` facade using a `use Request;` statement at the top of your class file.
-
 ### Via Dependency Injection
 
 To obtain an instance of the current HTTP request via dependency injection, you should type-hint the class on your controller constructor or method. The current request instance will automatically be injected by the [service container](/docs/{{version}}/container):
