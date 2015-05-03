@@ -100,7 +100,7 @@ In addition, when you depend on simple interfaces, your code is easier to unders
 
 This is a reference to most Laravel Contracts, as well as their Laravel "facade" counterparts:
 
-Contract  |  Laravel 4.x Facade
+Contract  |  References Facade
 ------------- | -------------
 [Illuminate\Contracts\Auth\Guard](https://github.com/illuminate/contracts/blob/master/Auth/Guard.php)  |  Auth
 [Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)  |  Password
