@@ -12,7 +12,7 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
-    - [Views](/docs/{{version}}/views)
+    - [Views / Blade Templates](/docs/{{version}}/views)
 - Architecture Foundations
     - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Application Structure](/docs/{{version}}/structure)
@@ -40,7 +40,6 @@
     - [Pagination](/docs/{{version}}/pagination)
     - [Queues](/docs/{{version}}/queues)
     - [Session](/docs/{{version}}/session)
-    - [Templates](/docs/{{version}}/templates)
     - [Unit Testing](/docs/{{version}}/testing)
     - [Validation](/docs/{{version}}/validation)
 - Database
