@@ -195,8 +195,7 @@ For more information on subscription "quantities", consult the [Stripe documenta
 
 With Cashier, it's easy to override the `tax_percent` value sent to Stripe. To specify the tax percentage a user pays on a subscription, implement the `getTaxPercent` method on your model, and return a numeric value between 0 and 100, with no more than 2 decimal places.
 
-	public function getTaxPercent()
-	{
+	public function getTaxPercent() {
 		return 20;
 	}
 
@@ -205,11 +204,11 @@ This enables you to apply a tax rate on a model-by-model basis, which may be hel
 <a name="cancelling-a-subscription"></a>
 ## Cancelling A Subscription
 
-Cancelling a subscription is a walk in the park:
+To cancel a subscription, simply call the `cancel` method on the user's subscription:
 
 	$user->subscription()->cancel();
 
-When a subscription is cancelled, Cashier will automatically set the `subscription_ends_at` column on your database. This column is used to know when the `subscribed` method should begin returning `false`. For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th.
+When a subscription is cancelled, Cashier will automatically set the `subscription_ends_at` column in your database. This column is used to know when the `subscribed` method should begin returning `false`. For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th.
 
 <a name="resuming-a-subscription"></a>
 ## Resuming A Subscription
@@ -227,7 +226,13 @@ What if a customer's credit card expires? No worries - Cashier includes a Webhoo
 
 	Route::post('stripe/webhook', 'Laravel\Cashier\WebhookController@handleWebhook');
 
-That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts). The `stripe/webhook` URI in this example is just for example. You will need to configure the URI in your Stripe settings.
+That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts). The `stripe/webhook` URI in this example is just for example. You will need to configure the webhook URI in your Stripe control panel settings.
+
+Since Stripe webhooks will need to bypass Laravel's CSRF verification, be sure to list the URI an exception in your `VerifyCsrfToken` middleware:
+
+	protected $except = [
+		'stripe/*',
+	];
 
 <a name="handling-other-stripe-webhooks"></a>
 ## Handling Other Stripe Webhooks
