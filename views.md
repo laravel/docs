@@ -222,7 +222,7 @@ Blade is a simple, yet powerful templating engine provided with Laravel. The cor
 
 #### Defining A Blade Layout
 
-First, let's check out a simple Blade layout. First, we will examine a "master" template. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view.
+Let's take a look at a simple Blade templating example. First, we will examine a "master" template. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view.
 
 	<!-- Stored in resources/views/layouts/master.blade.php -->
 
