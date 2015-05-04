@@ -51,6 +51,8 @@ Alternatively, you may also use the `bcrypt` helper function:
 
 #### Verifying A Password Against A Hash
 
+The `check` method allows you to verify that a given plain-text string matches to a given hash. However, if you are using the `AuthController` [included with Laravel](/docs/{{version}}/authentication), you will probably not need to use this directly, as the included authentication controller automatically calls this method:
+
 	if (Hash::check('plain-text', $hashedPassword)) {
 		// The passwords match...
 	}
