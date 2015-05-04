@@ -455,7 +455,7 @@ Once you have a user instance, you can grab a few more details about the user:
 <a name="adding-custom-authentication-drivers"></a>
 ## Adding Custom Authentication Drivers
 
-Authentication may be extended the same way as the cache and session facilities. Again, we will use the `extend` method used to extend other parts of the framework:
+Authentication may be extended the same way as the cache and session facilities. Again, we will use the `extend` method used to extend other parts of the framework. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers):
 
     <?php namespace App\Providers;
 
