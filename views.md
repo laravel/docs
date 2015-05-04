@@ -342,6 +342,25 @@ You may also pass an array of data to the included view:
 
 	@include('view.name', ['some' => 'data'])
 
+#### Extending Sections
+
+To extend a section, you can use the `parent` statement.
+First you should have your `father` section somewhere:
+	
+	@section('heading')
+		<h1>Heading</h1>
+	@stop
+	
+Then, inside another file, you can simply call the `parent` statement:
+
+	@extends('master.layout')
+	
+	@section('heading')
+		@parent
+		<p>Extended section</p>
+	@stop
+
+
 #### Overwriting Sections
 
 To overwrite a section entirely, you may use the `overwrite` statement:
