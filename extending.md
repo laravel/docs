@@ -1,7 +1,6 @@
 # Extending The Framework
 
 - [Managers & Factories](#managers-and-factories)
-- [Cache](#cache)
 - [Session](#session)
 - [Authentication](#authentication)
 - [Service Container Based Extension](#container-based-extension)
@@ -14,43 +13,6 @@ Laravel has several `Manager` classes that manage the creation of driver-based c
 Each of these managers includes an `extend` method which may be used to easily inject new driver resolution functionality into the manager. We'll cover each of these managers below, with examples of how to inject custom driver support into each of them.
 
 > **Note:** Take a moment to explore the various `Manager` classes that ship with Laravel, such as the `CacheManager` and `SessionManager`. Reading through these classes will give you a more thorough understanding of how Laravel works under the hood. All manager classes extend the `Illuminate\Support\Manager` base class, which provides some helpful, common functionality for each manager.
-
-<a name="cache"></a>
-## Cache
-
-To extend the Laravel cache facility, we will use the `extend` method on the `CacheManager`, which is used to bind a custom driver resolver to the manager, and is common across all manager classes. For example, to register a new cache driver named "mongo", we would do the following:
-
-	Cache::extend('mongo', function($app)
-	{
-		return Cache::repository(new MongoStore);
-	});
-
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of `Illuminate\Foundation\Application` and a service container.
-
-The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array.
-
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` contract. So, our MongoDB cache implementation would look something like this:
-
-	class MongoStore implements Illuminate\Contracts\Cache\Store {
-
-		public function get($key) {}
-		public function put($key, $value, $minutes) {}
-		public function increment($key, $value = 1) {}
-		public function decrement($key, $value = 1) {}
-		public function forever($key, $value) {}
-		public function forget($key) {}
-		public function flush() {}
-
-	}
-
-We just need to implement each of these methods using a MongoDB connection. Once our implementation is complete, we can finish our custom driver registration:
-
-	Cache::extend('mongo', function($app)
-	{
-		return Cache::repository(new MongoStore);
-	});
-
-If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
 
 <a name="session"></a>
 ## Session
@@ -172,7 +134,7 @@ For example, the `HashServiceProvider` binds a `hash` key into the service conta
 		public function boot()
 		{
 			parent::boot();
-					
+
 			$this->app->bindShared('hash', function()
 			{
 				return new \Snappy\Hashing\ScryptHasher;
