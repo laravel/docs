@@ -15,15 +15,15 @@ Likewise, the user `Registrar` service that ships with Laravel makes the proper 
 
 #### Hashing A Password Using Bcrypt
 
-	$password = Hash::make('secret');
+	$password = Hash::make('plain-text');
 
 You may also use the `bcrypt` helper function:
 
-	$password = bcrypt('secret');
+	$password = bcrypt('plain-text');
 
 #### Verifying A Password Against A Hash
 
-	if (Hash::check('secret', $hashedPassword))
+	if (Hash::check('plain-text', $hashedPassword))
 	{
 		// The passwords match...
 	}
@@ -32,5 +32,5 @@ You may also use the `bcrypt` helper function:
 
 	if (Hash::needsRehash($hashed))
 	{
-		$hashed = Hash::make('secret');
+		$hashed = Hash::make('plain-text');
 	}
