@@ -459,7 +459,7 @@ Authentication may be extended the same way as the cache and session facilities.
 
     <?php namespace App\Providers;
 
-    use Cache;
+    use Auth;
     use App\Extensions\RiakUserProvider;
     use Illuminate\Support\ServiceProvider;
 

@@ -25,7 +25,6 @@
     - [Billing](/docs/{{version}}/billing)
     - [Cache](/docs/{{version}}/cache)
     - [Collections](/docs/{{version}}/collections)
-    - [Core Extension](/docs/{{version}}/extending)
     - [Elixir](/docs/{{version}}/elixir)
     - [Encryption](/docs/{{version}}/encryption)
     - [Envoy](/docs/{{version}}/envoy)
