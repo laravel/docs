@@ -5,6 +5,7 @@
 - [Working With Stylesheets](#working-with-stylesheets)
 - [Working With Scripts](#working-with-scripts)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
+- [Running PHP Test Suites](#running-php-test-suites)
 - [Running Elixir](#running-elixir)
 - [Calling Existing Gulp Tasks](#calling-existing-gulp-tasks)
 - [Defining Custom Elixir Extensions](#defining-custom-elixir-extensions)
@@ -248,6 +249,29 @@ elixir(function(mix) {
 <link rel="stylesheet" href="{{ elixir("css/all.css") }}">
 
 <script src="{{ elixir("js/app.js") }}"></script>
+```
+
+<a name="running-php-test-suites"></a>
+## Running PHP Test Suites
+
+You may even instruct Elixir to run your PHP test suites using the `phpUnit` and `phpSpec` methods:
+
+#### Trigger PHPUnit Tests
+
+```javascript
+elixir(function(mix) {
+	mix.less("app.less")
+	   .phpUnit();
+});
+```
+
+#### Trigger PHPSpec Tests
+
+```javascript
+elixir(function(mix) {
+	mix.less("app.less")
+	   .phpSpec();
+});
 ```
 
 <a name="running-elixir"></a>
