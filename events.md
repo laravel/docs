@@ -1,21 +1,18 @@
 # Events
 
-- [Basic Usage](#basic-usage)
-- [Queued Event Handlers](#queued-event-handlers)
+- [Registering Events / Listeners](#registering-events-and-listeners)
+- [Defining Events](#defining-events)
+- [Defining Listeners](#defining-listeners)
+- [Firing Events](#firing-events)
+- [Queued Event Listeners](#queued-event-listeners)
 - [Event Subscribers](#event-subscribers)
 
-<a name="basic-usage"></a>
-## Basic Usage
+<a name="registering-events-and-listeners"></a>
+## Registering Events / Listeners
 
-The Laravel event facilities provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their handlers are stored in `app/Listeners`.
+Laravel's events provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their handlers are stored in `app/Listeners`.
 
-You can generate a new event class using the Artisan CLI tool:
-
-	php artisan make:event PodcastWasPurchased
-
-#### Subscribing To An Event
-
-The `EventServiceProvider` included with your Laravel application provides a convenient place to register all event handlers. The `listen` property contains an array of all events (keys) and their handlers (values). Of course, you may add as many events to this array as your application requires. For example, let's add our `PodcastWasPurchased` event:
+The `EventServiceProvider` included with your Laravel application provides a convenient place to register all event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). Of course, you may add as many events to this array as your application requires. For example, let's add our `PodcastWasPurchased` event:
 
 	/**
 	 * The event handler mappings for the application.
@@ -28,45 +25,122 @@ The `EventServiceProvider` included with your Laravel application provides a con
 		],
 	];
 
-To generate a handler for an event, use the `handler:event` Artisan CLI command:
+### Generating Event / Listener Classes
 
-	php artisan make:listener EmailPurchaseConfirmation --event=PodcastWasPurchased
-
-Of course, manually running the `make:event` and `make:listener` commands each time you need a handler or event is cumbersome. Instead, simply add handlers and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or handlers that are listed in your `EventServiceProvider`:
+Of course, manually creating the files for each event and listener is cumbersome. Instead, simply add listeners and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or listeners that are listed in your `EventServiceProvider`:
 
 	php artisan event:generate
 
-#### Firing An Event
+<a name="defining-events"></a>
+## Defining Events
 
-Now we are ready to fire our event using the `Event` facade:
+An event class is simply a data container which holds the information related to the event. For example, let's assume our generated `PodcastWasPurchased` event receives a `Podcast` [Eloquent ORM](/docs/{{version}}/eloquent) object:
 
-	$response = Event::fire(new PodcastWasPurchased($podcast));
+	<?php namespace App\Events;
 
-The `fire` method returns an array of responses that you can use to control what happens next in your application.
+	use App\Podcast;
+	use App\Events\Event;
+	use Illuminate\Queue\SerializesModels;
 
-You may also use the `event` helper to fire an event:
-
-	event(new PodcastWasPurchased($podcast));
-
-#### Closure Listeners
-
-You can even listen to events without creating a separate handler class at all. For example, in the `boot` method of your `EventServiceProvider`, you could do the following:
-
-	Event::listen('App\Events\PodcastWasPurchased', function($event)
+	class PodcastWasPurchased extends Event
 	{
-		// Handle the event...
-	});
+	    use SerializesModels;
+
+	    public $podcast;
+
+	    /**
+	     * Create a new event instance.
+	     *
+	     * @param  Podcast  $podcast
+	     * @return void
+	     */
+	    public function __construct(Podcast $podcast)
+	    {
+	        $this->podcast = $podcast;
+	    }
+	}
+
+As you can see, this event class contains no special logic. It is simply a container for the `Podcast` object that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function.
+
+<a name="defining-event-listeners"></a>
+## Defining Event Listeners
+
+Next, let's take a look at the listener for our example event. Event listeners receive the event in their `handle` method. The `event:generate` command will automatically import the proper event class and type-hint the event on the `handle` method. Within the `handle` method, you may perform any logic necessary to respond to the event.
+
+	<?php namespace App\Listeners;
+
+	use App\Events\PodcastWasPurchased;
+	use Illuminate\Queue\InteractsWithQueue;
+	use Illuminate\Contracts\Queue\ShouldQueue;
+
+	class EmailPurchaseConfirmation
+	{
+	    /**
+	     * Create the event listener.
+	     *
+	     * @return void
+	     */
+	    public function __construct()
+	    {
+	        //
+	    }
+
+	    /**
+	     * Handle the event.
+	     *
+	     * @param  PodcastWasPurchased  $event
+	     * @return void
+	     */
+	    public function handle(PodcastWasPurchased $event)
+	    {
+	        // Access the podcast using $event->podcast...
+	    }
+	}
+
+Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically:
+
+	use Illuminate\Contracts\Mail\Mailer;
+
+	public function __construct(Mailer $mailer)
+	{
+		$this->mailer = $mailer;
+	}
 
 #### Stopping The Propagation Of An Event
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your handler:
+Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your listener's `handle` method.
 
-	Event::listen('App\Events\PodcastWasPurchased', function($event)
+<a name="firing-events"></a>
+## Firing Events
+
+To fire an event, you may use the simple `event` helper function, passing the function an instance of the event:
+
+	event(new PodcastWasPurchased($podcast));
+
+	<?php namespace App\Http\Controllers;
+
+	use App\Podcast;
+	use App\Events\PodcastWasPurchased;
+	use App\Http\Controllers\Controller;
+
+	class UserController extends Controller
 	{
-		// Handle the event...
+		/**
+		 * Show the profile for the given user.
+		 *
+		 * @param  int  $userId
+		 * @param  int  $podcastId
+		 * @return Response
+		 */
+		public function purchasePodcast($userId, $podcastId)
+		{
+			$podcast = Podcast::findOrFail($podcastId);
 
-		return false;
-	});
+			// Purhcase podcast logic...
+
+			event(new PodcastWasPurchased($podcast));
+		}
+	}
 
 <a name="queued-event-handlers"></a>
 ## Queued Event Handlers
