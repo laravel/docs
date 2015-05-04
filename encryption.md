@@ -7,7 +7,7 @@
 
 #### Encrypting A Value
 
-You may encrypt a value using the `Crypt` [facade](/docs/{{version}}/facades).
+You may encrypt a value using the `Crypt` [facade](/docs/{{version}}/facades). All encrypted values are signed with a MAC to detect any modifications to the encrypted string.
 
 	<?php namespace App\Http\Controllers;
 

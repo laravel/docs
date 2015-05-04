@@ -229,9 +229,7 @@ This will append a unique hash to the filename, allowing for cache-busting. For 
 
 Then, within your [Laravel views](/docs/{{version}}/views), you may use the `elixir` function to load the appropriately hashed asset:
 
-```html
-<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
-```
+	<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
 
 The `elixir` function will automatically determine the name of the hashed file.
 
@@ -245,11 +243,9 @@ elixir(function(mix) {
 });
 ```
 
-```html
-<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
+	<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
 
-<script src="{{ elixir("js/app.js") }}"></script>
-```
+	<script src="{{ elixir("js/app.js") }}"></script>
 
 <a name="running-php-test-suites"></a>
 ## Running PHP Test Suites
