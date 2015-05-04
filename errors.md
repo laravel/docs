@@ -16,6 +16,16 @@ For example, if you wish to use daily log files instead of a single file, you ca
 
 Out of the box, Laravel supports `single`, `daily`, `syslog` and `errorlog` logging modes. However, you are free to customize the logging for your application as you wish by overriding the `ConfigureLogging` bootstrapper class.
 
+### Custom Monolog Configuration
+
+If you would like to have complete control over how Monolog is configured for your application, you may use the application's `configureMonologUsing` method. You should place a call to this method in your `bootstrap/app.php` file right before the `$app` variable is returned by the file:
+
+	$app->configureMonologUsing(function($monolog) {
+		$monolog->pushHandler(...);
+	});
+
+	return $app;
+
 ### Error Detail
 
 The amount of error detail your application displays through the browser is controlled by the `debug` configuration option in your `config/app.php` configuration file. By default, this configuration option is set to respect the `APP_DEBUG` environment variable, which is stored in your `.env` file.
