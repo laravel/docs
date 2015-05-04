@@ -8,6 +8,7 @@
 - [HTTP Basic Authentication](#http-basic-authentication)
 - [Password Reminders & Reset](#password-reminders-and-reset)
 - [Social Authentication](#social-authentication)
+- [Adding Custom Authentication Drivers](#adding-custom-authentication-drivers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -450,3 +451,86 @@ Once you have a user instance, you can grab a few more details about the user:
     $user->getName();
     $user->getEmail();
     $user->getAvatar();
+
+<a name="adding-custom-authentication-drivers"></a>
+## Adding Custom Authentication Drivers
+
+Authentication may be extended the same way as the cache and session facilities. Again, we will use the `extend` method used to extend other parts of the framework:
+
+    <?php namespace App\Providers;
+
+    use Cache;
+    use App\Extensions\RiakUserProvider;
+    use Illuminate\Support\ServiceProvider;
+
+    class AuthServiceProvider extends ServiceProvider
+    {
+        /**
+         * Perform post-registration booting of services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Auth::extend('riak', function($app) {
+                // Return an instance of Illuminate\Contracts\Auth\UserProvider...
+                return new RiakUserProvider($app['riak.connection']);
+            });
+        }
+
+        /**
+         * Register bindings in the container.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+    }
+
+The `UserProvider` implementations are only responsible for fetching a `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
+
+Let's take a look at the `UserProvider` contract:
+
+    interface UserProvider {
+
+        public function retrieveById($identifier);
+        public function retrieveByToken($identifier, $token);
+        public function updateRememberToken(Authenticatable $user, $token);
+        public function retrieveByCredentials(array $credentials);
+        public function validateCredentials(Authenticatable $user, array $credentials);
+
+    }
+
+The `retrieveById` function typically receives a key representing the user, such as an auto-incrementing ID from a MySQL database. The `Authenticatable` implementation matching the ID should be retrieved and returned by the method.
+
+The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, stored in a field `remember_token`. As with the previous method, the `Authenticatable` implementation should be returned.
+
+The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. The new token can be either a fresh token, assigned on successful "remember me" login attempt, or a null when user is logged out.
+
+The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to sign into an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition on `$credentials['username']`. The method should then return an implementation of `UserInterface`. **This method should not attempt to do any password validation or authentication.**
+
+The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`. This method should only validate the user's credentials and return boolean.
+
+Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable`. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
+
+    interface Authenticatable {
+
+        public function getAuthIdentifier();
+        public function getAuthPassword();
+        public function getRememberToken();
+        public function setRememberToken($value);
+        public function getRememberTokenName();
+
+    }
+
+This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
+
+Finally, once we have implemented the `UserProvider`, we are ready to register our extension with the `Auth` facade:
+
+    Auth::extend('riak', function($app) {
+        return new RiakUserProvider($app['riak.connection']);
+    });
+
+After you have registered the driver with the `extend` method, you may switch to the new driver in your `config/auth.php` configuration file.

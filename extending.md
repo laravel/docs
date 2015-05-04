@@ -2,7 +2,6 @@
 
 - [Managers & Factories](#managers-and-factories)
 - [Session](#session)
-- [Authentication](#authentication)
 - [Service Container Based Extension](#container-based-extension)
 
 <a name="managers-and-factories"></a>
@@ -62,63 +61,6 @@ Once the `SessionHandlerInterface` has been implemented, we are ready to registe
 Once the session driver has been registered, we may use the `mongo` driver in our `config/session.php` configuration file.
 
 > **Note:** Remember, if you write a custom session handler, share it on Packagist!
-
-<a name="authentication"></a>
-## Authentication
-
-Authentication may be extended the same way as the cache and session facilities. Again, we will use the `extend` method we have become familiar with:
-
-	Auth::extend('riak', function($app)
-	{
-		// Return implementation of Illuminate\Contracts\Auth\UserProvider
-	});
-
-The `UserProvider` implementations are only responsible for fetching a `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
-
-Let's take a look at the `UserProvider` contract:
-
-	interface UserProvider {
-
-		public function retrieveById($identifier);
-		public function retrieveByToken($identifier, $token);
-		public function updateRememberToken(Authenticatable $user, $token);
-		public function retrieveByCredentials(array $credentials);
-		public function validateCredentials(Authenticatable $user, array $credentials);
-
-	}
-
-The `retrieveById` function typically receives a numeric key representing the user, such as an auto-incrementing ID from a MySQL database. The `Authenticatable` implementation matching the ID should be retrieved and returned by the method.
-
-The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, stored in a field `remember_token`. As with the previous method, the `Authenticatable` implementation should be returned.
-
-The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. The new token can be either a fresh token, assigned on successful "remember me" login attempt, or a null when user is logged out.
-
-The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to sign into an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition on `$credentials['username']`. The method should then return an implementation of `UserInterface`. **This method should not attempt to do any password validation or authentication.**
-
-The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`. This method should only validate the user's credentials and return boolean.
-
-Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable`. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
-
-	interface Authenticatable {
-
-		public function getAuthIdentifier();
-		public function getAuthPassword();
-		public function getRememberToken();
-		public function setRememberToken($value);
-		public function getRememberTokenName();
-
-	}
-
-This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
-
-Finally, once we have implemented the `UserProvider`, we are ready to register our extension with the `Auth` facade:
-
-	Auth::extend('riak', function($app)
-	{
-		return new RiakUserProvider($app['riak.connection']);
-	});
-
-After you have registered the driver with the `extend` method, you switch to the new driver in your `config/auth.php` configuration file.
 
 <a name="container-based-extension"></a>
 ## Service Container Based Extension
