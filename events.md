@@ -278,4 +278,4 @@ Once the subscriber has been defined, it may be registered with the event dispat
 
 You may also use the [service container](/docs/{{version}}/container) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
 
-	Event::subscribe('App\Listeners\UserEventHandler');
+	$events->subscribe('App\Listeners\UserEventHandler');
