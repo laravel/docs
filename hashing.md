@@ -6,31 +6,59 @@
 <a name="introduction"></a>
 ## Introduction
 
-The Laravel `Hash` facade provides secure Bcrypt hashing for storing user passwords. If you are using the `AuthController` controller that is included with your Laravel application, it will be take care of verifying the Bcrypt password against the un-hashed version provided by the user.
+The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt hashing for storing user passwords. If you are using the `AuthController` controller that is included with your Laravel application, it will be take care of verifying the Bcrypt password against the un-hashed version provided by the user.
 
-Likewise, the user `Registrar` service that ships with Laravel makes the proper `bcrypt` function call to hash stored passwords.
+Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases.
 
 <a name="basic-usage"></a>
 ## Basic Usage
 
 #### Hashing A Password Using Bcrypt
 
-	$password = Hash::make('secret');
+You may hash a password by calling the `make` method on the `Hash` facade:
 
-You may also use the `bcrypt` helper function:
 
-	$password = bcrypt('secret');
+	<?php namespace App\Http\Controllers;
+
+	use Hash;
+	use Illuminate\Http\Request;
+	use App\Http\Controllers\Controller;
+
+	class UserController extends Controller
+	{
+		/**
+		 * Update the password for the user.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function updatePassword(Request $request, $id)
+		{
+			$user = User::findOrFail($id);
+
+			// Validate the new password length...
+
+			$user->fill([
+				'password' => Hash::make($request->newPassword)
+			])->save();
+		}
+	}
+
+Alternatively, you may also use the `bcrypt` helper function:
+
+	bcrypt('plain-text');
 
 #### Verifying A Password Against A Hash
 
-	if (Hash::check('secret', $hashedPassword))
-	{
+	if (Hash::check('plain-text', $hashedPassword)) {
 		// The passwords match...
 	}
 
 #### Checking If A Password Needs To Be Rehashed
 
-	if (Hash::needsRehash($hashed))
-	{
-		$hashed = Hash::make('secret');
+The `needsRehash` function allows you to determine if the work factor used by the hasher has changed since the password was hashed.
+
+	if (Hash::needsRehash($hashed)) {
+		$hashed = Hash::make('plain-text');
 	}
