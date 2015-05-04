@@ -204,23 +204,19 @@ If you need to access the queued job's `delete` and `release` methods manually, 
 
 Event subscribers are classes that may subscribe to multiple events from within the class itself. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance:
 
-	class UserEventHandler {
+	<?php namespace App\Listeners;
+
+	class UserEventListener {
 
 		/**
 		 * Handle user login events.
 		 */
-		public function onUserLogin($event)
-		{
-			//
-		}
+		public function onUserLogin($event) {}
 
 		/**
 		 * Handle user logout events.
 		 */
-		public function onUserLogout($event)
-		{
-			//
-		}
+		public function onUserLogout($event) {}
 
 		/**
 		 * Register the listeners for the subscriber.
@@ -230,22 +226,56 @@ Event subscribers are classes that may subscribe to multiple events from within 
 		 */
 		public function subscribe($events)
 		{
-			$events->listen('App\Events\UserLoggedIn', 'UserEventHandler@onUserLogin');
+			$events->listen(
+				'App\Events\UserLoggedIn',
+				'App\Listeners\UserEventListener@onUserLogin'
+			);
 
-			$events->listen('App\Events\UserLoggedOut', 'UserEventHandler@onUserLogout');
+			$events->listen(
+				'App\Events\UserLoggedOut',
+				'App\Listeners\UserEventListener@onUserLogout'
+			);
 		}
 
 	}
 
 #### Registering An Event Subscriber
 
-Once the subscriber has been defined, it may be registered with the `Event` class.
+Once the subscriber has been defined, it may be registered with the event dispatcher. A good place to perform this registration is the `boot` method of your `App\Providers\EventServiceProvider`, which already receives a dispatcher instance:
 
-	$subscriber = new UserEventHandler;
+	<?php namespace App\Providers;
 
-	Event::subscribe($subscriber);
+	use App\Listeners\UserEventListener;
+	use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
+	use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+
+	class EventServiceProvider extends ServiceProvider
+	{
+	    /**
+	     * The event listener mappings for the application.
+	     *
+	     * @var array
+	     */
+	    protected $listen = [
+	        'App\Events\PodcastWasPurchased' => [
+	            'App\Listeners\EmailPurchaseConfirmation',
+	        ],
+	    ];
+
+	    /**
+	     * Register any other events for your application.
+	     *
+	     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+	     * @return void
+	     */
+	    public function boot(DispatcherContract $events)
+	    {
+	        parent::boot($events);
+
+	        $events->subscribe(new UserEventListener);
+	    }
+	}
 
 You may also use the [service container](/docs/{{version}}/container) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
 
 	Event::subscribe('UserEventHandler');
-
