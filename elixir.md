@@ -90,7 +90,7 @@ elixir(function(mix) {
 
 #### Combine Plain Stylesheets
 
-If you would just like to combine some plain CSS stylesheets into a single file, you may use the `styles` method. Paths passed to this method are relative to the `resources/css` directory:
+If you would just like to combine some plain CSS stylesheets into a single file, you may use the `styles` method. Paths passed to this method are relative to the `resources/assets/css` directory:
 
 ```javascript
 elixir(function(mix) {
