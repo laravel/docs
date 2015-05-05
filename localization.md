@@ -95,6 +95,6 @@ Since the Laravel translator is powered by the Symfony Translation component, yo
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
 
-Many packages ship with their own language files. Instead of hacking the package's core files to tweak these lines, you may override them by placing files in the `resources/lang/vendor/{package}/{locale}` directory.
+Some packages may ship with their own language files. Instead of hacking the package's core files to tweak these lines, you may override them by placing files in the `resources/lang/vendor/{package}/{locale}` directory.
 
 So, for example, if you need to override the English language lines in `messages.php` for a package named `skyrim/hearthfire`, you would place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. In this file you should only define the language lines you wish to override. Any language lines you don't override will still be loaded from the package's original language files.
