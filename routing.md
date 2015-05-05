@@ -323,9 +323,9 @@ First, use the router's `model` method to specify the class for a given paramete
 
 #### Binding A Parameter To A Model
 
-	public function boot(Router $router)
+	public static function boot(Router $router)
 	{
-		parent::boot($router);
+		parent::boot();
 
 		$router->model('user', 'App\User');
 	}
