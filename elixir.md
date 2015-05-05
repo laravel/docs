@@ -138,7 +138,7 @@ elixir(function(mix) {
 });
 ```
 
-Paths passed to this method are relative to the `resources/css` directory.
+Paths passed to this method are relative to the `resources/assets/css` directory.
 
 #### Combine Stylesheets and Save to a Custom Directory
 
@@ -183,7 +183,7 @@ elixir(function(mix) {
 });
 ```
 
-Again, this assumes all paths are relative to the `resources/js` directory.
+Again, this assumes all paths are relative to the `resources/assets/js` directory.
 
 #### Combine All Scripts in a Directory
 
@@ -259,7 +259,7 @@ elixir(function(mix) {
 
 Want to require modules in the browser? Hoping to use EcmaScript 6 sooner than later? Need a built-in JSX transformer? If so, [Browserify](http://browserify.org/), along with the `browserify` Elixir task, will handle the job nicely.
 
-This task assumes that your scripts are stored in `resources/js`, though you're free to override the default.
+This task assumes that your scripts are stored in `resources/assets/js`, though you're free to override the default.
 
 #### Method Chaining
 
