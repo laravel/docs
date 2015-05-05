@@ -129,7 +129,7 @@ Classes in the `aliases` array are not available in some instances because [PHP 
 <a name="mocking-facades"></a>
 ## Mocking Facades
 
-Unit testing is an important aspect of why facades work the way that they do. In fact, testability is the primary reason for facades to even exist. For more information, check out the [mocking facades](/docs/testing#mocking-facades) section of the documentation.
+Unit testing is an important aspect of why facades work the way that they do. In fact, testability is the primary reason for facades to even exist. For more information, check out the [mocking facades](/docs/{{version}}/testing#mocking-facades) section of the documentation.
 
 <a name="facade-class-reference"></a>
 ## Facade Class Reference
