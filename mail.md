@@ -2,7 +2,7 @@
 
 - [Configuration](#configuration)
 - [Basic Usage](#basic-usage)
-- [Embedding Inline Attachments](#embedding-inline-attachments)
+- [Working With Attachments](#working-with-attachments)
 - [Queueing Mail](#queueing-mail)
 - [Mail & Local Development](#mail-and-local-development)
 
