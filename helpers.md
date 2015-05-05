@@ -247,7 +247,7 @@ Register a new PATCH route with the router.
 Register a new DELETE route with the router.
 
 	delete('foo/bar', 'FooController@action');
-	
+
 ### resource
 
 Register a new RESTful resource route with the router.
@@ -443,7 +443,7 @@ Get the path to a versioned Elixir file.
 
 ### env
 
-Gets the value of an environment variable or return a default value.
+Get the value of an environment variable or return a default value.
 
 	env('APP_ENV', 'production')
 
@@ -452,6 +452,14 @@ Gets the value of an environment variable or return a default value.
 Fire an event.
 
 	event('my.event');
+
+### response
+
+Create a response instance or obtain an instance of the response factory.
+
+	return response('Hello World', 200, $headers);
+
+	return response()->json(['foo' => 'bar'], 200, $headers);
 
 ### value
 
