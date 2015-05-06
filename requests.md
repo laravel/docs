@@ -16,7 +16,7 @@
 
 	$name = Request::input('name');
 
-切記，如果你在一個命名空間中，你必須導入 `Request` facade，接著在類別的上方宣告 `use Request;`。
+切記，如果你在一個命名空間中，你必須在類別檔案的上方宣告 `use Request;` 以導入 `Request` facade。
 
 ### 透過依賴注入
 
