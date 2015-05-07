@@ -279,11 +279,11 @@ Once the subscriber has been defined, it may be registered with the event dispat
 You may also use the [service container](/docs/{{version}}/container) to resolve your subscriber. To do so, simply pass the name of your subscriber to the `subscribe` method:
 
 	$events->subscribe('App\Listeners\UserEventHandler');
-	
-Another way to register subscribers is with the `subscribe` property of the `EventServiceProvider`. For example, let's add the `UserEventListener`.
+
+Alternatively, you may register subscribers using the `$subscribe` property on the `EventServiceProvider`. For example, let's add the `UserEventListener`.
 
     <?php namespace App\Providers;
-    
+
     use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
     use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -295,11 +295,9 @@ Another way to register subscribers is with the `subscribe` property of the `Eve
          * @var array
          */
         protected $listen = [
-            'App\Events\PodcastWasPurchased' => [
-                'App\Listeners\EmailPurchaseConfirmation',
-            ],
+            //
         ];
-        
+
         /**
          * The subscriber classes to register.
          *
