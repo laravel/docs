@@ -2,11 +2,10 @@
 
 - [Introduction](#introduction)
 - [Application Testing](#application-testing)
+- [Sessions / Authentication](#sessions-and-authentication)
 - [Working With Databases](#working-with-databases)
 - [Working With Events](#working-with-events)
 - [Mocking Facades](#mocking-facades)
-- [Framework Assertions](#framework-assertions)
-- [Helper Methods](#helper-methods)
 
 <a name="introduction"></a>
 ## Introduction
@@ -192,6 +191,40 @@ If you are making `POST`, `PUT`, or `PATCH` requests you may pass an array of da
 
    	$response = $this->call('POST', '/user', ['name' => 'Taylor']);
 
+<a name="sessions-and-authentication"></a>
+## Sessions / Authentication
+
+Laravel provides several helpers for working with the session during testing. First, you may set the session data to a given array using the `withSession` method. This is useful for laoding the session with data before testing a request to your application:
+
+	<?php
+
+	class ExampleTest extends TestCase
+	{
+	    public function testApplication()
+	    {
+			$this->withSession(['foo' => 'bar'])
+			     ->visit('/');
+	    }
+	}
+
+Of course, one common use of the session is for maintaining user state, such as the authenticated user. The `actingAs` helper method provides a simple way to force authenticate a given user as the current user:
+
+	<?php
+
+	class ExampleTest extends TestCase
+	{
+	    public function testApplication()
+	    {
+	    	$user = $this->factory->create('App\User');
+
+			$this->actingAs($user)
+				 ->withSession(['foo' => 'bar'])
+			     ->visit('/')
+			     ->see('Hello, '.$user->name);
+	    }
+	}
+
+
 <a name="working-with-databases"></a>
 ## Working With Databases
 
@@ -361,123 +394,28 @@ If you would like to prevent any event handlers from running, you may use the `w
 <a name="mocking-facades"></a>
 ## Mocking Facades
 
-When testing, you may often want to mock a call to a Laravel static facade. For example, consider the following controller action:
+When testing, you may often want to mock a call to a Laravel [facade](/docs/{{version}}/facades). For example, consider the following controller action:
 
 	public function getIndex()
 	{
-		Event::fire('foo', ['name' => 'Dayle']);
-
-		return 'All done!';
+		return Cache::get('key');
 	}
 
-We can mock the call to the `Event` class by using the `shouldReceive` method on the facade, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock.
+We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade:
 
-#### Mocking A Facade
+	<?php
 
-	public function testGetIndex()
+	class FooTest extends TestCase
 	{
-		Event::shouldReceive('fire')->once()->with('foo', ['name' => 'Dayle']);
+		public function testGetIndex()
+		{
+			Cache::shouldReceive('get')
+						->once()
+						->with('key')
+						->andReturn('value');
 
-		$this->call('GET', '/');
+			$this->visit('/')->see('value');
+		}
 	}
 
-> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the `call` method when running your test.
-
-<a name="framework-assertions"></a>
-## Framework Assertions
-
-Laravel ships with several `assert` methods to make testing a little easier:
-
-#### Asserting Responses Are OK
-
-	public function testMethod()
-	{
-		$this->call('GET', '/');
-
-		$this->assertResponseOk();
-	}
-
-#### Asserting Response Statuses
-
-	$this->assertResponseStatus(403);
-
-#### Asserting Responses Are Redirects
-
-	$this->assertRedirectedTo('foo');
-
-	$this->assertRedirectedToRoute('route.name');
-
-	$this->assertRedirectedToAction('Controller@method');
-
-#### Asserting A View Has Some Data
-
-	public function testMethod()
-	{
-		$this->call('GET', '/');
-
-		$this->assertViewHas('name');
-		$this->assertViewHas('age', $value);
-	}
-
-#### Asserting The Session Has Some Data
-
-	public function testMethod()
-	{
-		$this->call('GET', '/');
-
-		$this->assertSessionHas('name');
-		$this->assertSessionHas('age', $value);
-	}
-
-#### Asserting The Session Has Errors
-
-	public function testMethod()
-	{
-		$this->call('GET', '/');
-
-		$this->assertSessionHasErrors();
-
-		// Asserting the session has errors for a given key...
-		$this->assertSessionHasErrors('name');
-
-		// Asserting the session has errors for several keys...
- 		$this->assertSessionHasErrors(['name', 'age']);
-	}
-
-#### Asserting Old Input Has Some Data
-
-	public function testMethod()
-	{
-		$this->call('GET', '/');
-
-		$this->assertHasOldInput();
-	}
-
-<a name="helper-methods"></a>
-## Helper Methods
-
-The `TestCase` class contains several helper methods to make testing your application easier.
-
-#### Setting And Flushing Sessions From Tests
-
-	$this->session(['foo' => 'bar']);
-
-	$this->flushSession();
-
-#### Setting The Currently Authenticated User
-
-You may set the currently authenticated user using the `be` method:
-
-	$user = new User(['name' => 'John']);
-
-	$this->be($user);
-
-You may re-seed your database from a test using the `seed` method:
-
-#### Re-Seeding Database From Tests
-
-	$this->seed();
-
-	$this->seed('DatabaseSeeder');
-
-More information on creating seeds may be found in the [migrations and seeding](/docs/migrations#database-seeding) section of the documentation.
+> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the HTTP helper methods such as `call` and `post` when running your test.
