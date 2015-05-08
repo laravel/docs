@@ -39,7 +39,7 @@
     - [Pagination](/docs/{{version}}/pagination)
     - [Queues](/docs/{{version}}/queues)
     - [Session](/docs/{{version}}/session)
-    - [Unit Testing](/docs/{{version}}/testing)
+    - [Testing](/docs/{{version}}/testing)
     - [Validation](/docs/{{version}}/validation)
 - Database
     - [Basic Usage](/docs/{{version}}/database)
