@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Application Testing](#application-testing)
+- [JSON API Testing](#json-api-testing)
 - [Sessions / Authentication](#sessions-and-authentication)
 - [Working With Databases](#working-with-databases)
 - [Model Factories](#model-factories)
@@ -177,7 +178,7 @@ If your form contains `file` input types, you may attach files to the form using
              ->see('Upload Successful!');
     }
 
-### Making Custom HTTP Requsts
+### Making Custom HTTP Requests
 
 If you would like to make an HTTP request into your application and get the full `Illuminate\Http\Response` object, you may use the `call` method from your tests:
 
@@ -191,6 +192,59 @@ If you would like to make an HTTP request into your application and get the full
 If you are making `POST`, `PUT`, or `PATCH` requests you may pass an array of data with the request. Of course, this data will be available in your routes and controller via the [Request instance](/docs/{{version}}/requests).
 
    	$response = $this->call('POST', '/user', ['name' => 'Taylor']);
+
+<a name="json-api-testing"></a>
+## JSON API Testing
+
+Laravel provides several helpers for testing JSON APIs and their responses. For example, the `get`, `post`, `put`, `patch`, and `delete` methods may be used to issue requests with various HTTP verbs. You may also easily pass data and headers to these methods, for example:
+
+	$this->post($uri, $data, $headers);
+
+#### Verify JSON Contained In Response
+
+To get started, let's write a test to make a `POST` request to `/user` and assert that a given array was returned in JSON format:
+
+	<?php
+
+	class ExampleTest extends TestCase
+	{
+	    /**
+	     * A basic functional test example.
+	     *
+	     * @return void
+	     */
+	    public function testBasicExample()
+	    {
+	    	$this->post('/user', ['name' => 'Sally'])
+	    	     ->seeJson([
+	    	     	'name' => 'Sally',
+	    	     ]);
+	    }
+	}
+
+The `seeJson` method converts the given array into JSON, and then verifies that the JSON fragment occurs **anywhere** within the entire JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
+
+#### Verify Exact JSON Match
+
+If you would like to check that the given array is an exact match for the JSON returned by the application, you should use the `seeJsonEquals` method:
+
+	<?php
+
+	class ExampleTest extends TestCase
+	{
+	    /**
+	     * A basic functional test example.
+	     *
+	     * @return void
+	     */
+	    public function testBasicExample()
+	    {
+	    	$this->post('/user', ['name' => 'Sally'])
+	    	     ->seeJsonEquals([
+	    	     	'name' => 'Sally',
+	    	     ]);
+	    }
+	}
 
 <a name="sessions-and-authentication"></a>
 ## Sessions / Authentication
