@@ -70,7 +70,7 @@ The `visit` method makes a `GET` request into the application. The `see` method 
 
 ### Disabling Middleware
 
-When testing your application, you may find it convenient to disable middleware for some of your tests. This will allow you to test your routes and controller in isolation from any middleware concerns. Laravel includes a simple `WithoutMiddleware` trait that you can use to automatically disable all middleware for the test class:
+When testing your application, you may find it convenient to disable [middleware](/docs/{{version}}/middleware) for some of your tests. This will allow you to test your routes and controller in isolation from any middleware concerns. Laravel includes a simple `WithoutMiddleware` trait that you can use to automatically disable all middleware for the test class:
 
 	<?php
 
