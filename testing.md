@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Application Testing](#application-testing)
 - [Working With Databases](#working-with-databases)
+- [Working With Events](#working-with-events)
 - [Mocking Facades](#mocking-facades)
 - [Framework Assertions](#framework-assertions)
 - [Helper Methods](#helper-methods)
@@ -67,11 +68,47 @@ Laravel provides a very fluent API for making HTTP requests to your application,
 
 The `visit` method makes a `GET` request into the application. The `see` method asserts that we should see the given text should be contained in the response returned by the application. This is the most basic application test available in Laravel.
 
+### Disabling Middleware
+
+When testing your application, you may find it convenient to disable middleware for some of your tests. This will allow you to test your routes and controller in isolation from any middleware concerns. Laravel includes a simple `WithoutMiddleware` trait that you can use to automatically disable all middleware for the test class:
+
+	<?php
+
+	use Illuminate\Foundation\Testing\WithoutMiddleware;
+	use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+	class ExampleTest extends TestCase
+	{
+		use WithoutMiddleware;
+
+	    //
+	}
+
+If you would like to only disable middleware for a few test methods, you may use the `withoutMiddleware` method:
+
+	<?php
+
+	class ExampleTest extends TestCase
+	{
+	    /**
+	     * A basic functional test example.
+	     *
+	     * @return void
+	     */
+	    public function testBasicExample()
+	    {
+	    	$this->withoutMiddleware();
+
+	        $this->visit('/')
+	             ->see('Laravel 5');
+	    }
+	}
+
 ### Interacting With Your Application
 
 Of course, you can do much more than simply assert that text appears in a given response. Let's take a look at some examples of clicking links and filling out forms:
 
-#### Clicking A Link
+#### Clicking Links
 
 In this test, we will make a request to the application, "click" a link in the returned response, and then assert that we landed on a given URI. In this example, let's assume there is a link in our response that has a text value of "About Us". For example:
 
@@ -98,12 +135,6 @@ Laravel also provides several methods for testing forms such as `type`, `select`
 		</div>
 
 		<div>
-			Plan:
-			<input type="radio" value="basic_plan" name="plan"> Basic
-			<input type="radio" value="pro_plan" name="plan"> Pro
-		</div>
-
-		<div>
 			<input type="checkbox" value="yes" name="terms"> Accept Terms
 		</div>
 
@@ -118,26 +149,20 @@ Now we can write a test to complete this form and inspect the result:
     {
         $this->visit('/register')
              ->type('Taylor', 'name')
-             ->select('basic_plan', 'plan')
              ->check('terms')
              ->press('Register');
              ->seePageIs('/dashboard');
     }
 
-Alternatively, you may use the `submitForm` method to pass an array of all of the inputs in one method call:
+Of course, if your form contains other inputs such as radio buttons or drop-down boxes, you may easily fill out those types of fields as well. Here is a list of each form manipulation method:
 
-    public function testNewUserRegistration()
-    {
-    	$formData = [
-         	'name' => 'Taylor',
-         	'plan' => 'basic_plan',
-         	'terms' => true,
-    	];
-
-        $this->visit('/register')
-             ->submitForm('Register', $formData)
-             ->seePageIs('/dashboard');
-    }
+Method  | Description
+------------- | -------------
+`$this->type($text, $elementName)`  |  "Type" text into a given field.
+`$this->select($value, $elementName)`  |  "Select" a radio button or drop-down field.
+`$this->check($elementName)`  |  "Check" a checkbox field.
+`$this->attach($pathToFile, $elementName)`  |  "Attach" a file to the form.
+`$this->press($buttonTextOrElementName)`  |  "Press" a button with the given text or name.
 
 #### Working With Attachments
 
@@ -163,14 +188,9 @@ If you would like to make an HTTP request into your application and get the full
     	$this->assertEquals(200, $response->status());
     }
 
-If you are making `POST`, `PUT`, or `PATCH` requests you may pass an array of data with the request:
+If you are making `POST`, `PUT`, or `PATCH` requests you may pass an array of data with the request. Of course, this data will be available in your routes and controller via the [Request instance](/docs/{{version}}/requests).
 
-    public function testApplication()
-    {
-    	$response = $this->call('POST', '/user', ['name' => 'Taylor']);
-
-    	$this->assertEquals(200, $response->status());
-    }
+   	$response = $this->call('POST', '/user', ['name' => 'Taylor']);
 
 <a name="working-with-databases"></a>
 ## Working With Databases
@@ -304,6 +324,39 @@ You may even persist multiple models to the database. In this example, we'll eve
                ->each(function($u) {
 					$u->posts()->save($this->factory['App\Post']);
 				});
+
+<a name="working-with-events"></a>
+## Working With Events
+
+If you are making heavy use of Laravel's event system, you may wish to silence or mock certain events while testing. For example, if you are testing user registration, you probably do not want all of a `UserRegistered` event's handlers firing, since these may send "welcome" e-mails, etc.
+
+Laravel provides a convenient `expectsEvents` method that will verify that the expected events are fired, but will prevent any handlers for those events from running:
+
+	<?php
+
+	class ExampleTest extends TestCase
+	{
+	    public function testUserRegistration()
+	    {
+	    	$this->expectsEvents('App\Events\UserRegistered');
+
+	    	// Test user registration code...
+	    }
+	}
+
+If you would like to prevent any event handlers from running, you may use the `withoutEvents` method:
+
+	<?php
+
+	class ExampleTest extends TestCase
+	{
+	    public function testUserRegistration()
+	    {
+	    	$this->withoutEvents();
+
+	    	// Test user registration code...
+	    }
+	}
 
 <a name="mocking-facades"></a>
 ## Mocking Facades
