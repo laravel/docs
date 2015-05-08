@@ -183,7 +183,7 @@ elixir(function(mix) {
 });
 ```
 
-Again, this assumes all paths are relative to the `resources/assets/js` directory.
+Again, this assumes all paths are relative to the `resources/js` directory.
 
 #### Combine All Scripts in a Directory
 
@@ -215,7 +215,7 @@ This will append a unique hash to the filename, allowing for cache-busting. For 
 Within your views, you may use the `elixir()` function to load the appropriately hashed asset. Here's an example:
 
 ```html
-<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
+<link rel="stylesheet" href="{{ assets("css/all.css") }}">
 ```
 
 Behind the scenes, the `elixir()` function will determine the name of the hashed file that should be included. Don't you feel the weight lifting off your shoulders already?
@@ -229,8 +229,8 @@ elixir(function(mix) {
 ```
 
 ```html
-<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
-<script src="{{ elixir("js/app.js") }}"></script>
+<link rel="stylesheet" href="{{ assets("css/all.css") }}">
+<script src="{{ assets("js/app.js") }}"></script>
 ```
 
 #### Copy a File to a New Location
@@ -259,7 +259,7 @@ elixir(function(mix) {
 
 Want to require modules in the browser? Hoping to use EcmaScript 6 sooner than later? Need a built-in JSX transformer? If so, [Browserify](http://browserify.org/), along with the `browserify` Elixir task, will handle the job nicely.
 
-This task assumes that your scripts are stored in `resources/assets/js`, though you're free to override the default.
+This task assumes that your scripts are stored in `resources/js`, though you're free to override the default.
 
 #### Method Chaining
 
