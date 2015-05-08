@@ -4,6 +4,7 @@
 - [Application Testing](#application-testing)
 - [Sessions / Authentication](#sessions-and-authentication)
 - [Working With Databases](#working-with-databases)
+- [Model Factories](#model-factories)
 - [Working With Events](#working-with-events)
 - [Mocking Facades](#mocking-facades)
 
@@ -264,7 +265,8 @@ If is often useful to wrap every test case in a database transactions so that th
 	    }
 	}
 
-### Factories
+<a name="model-factories"></a>
+## Model Factories
 
 When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using "factories". To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
 
