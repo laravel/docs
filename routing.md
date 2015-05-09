@@ -362,7 +362,7 @@ There are two ways to manually trigger a 404 error from a route. First, you may 
 
 	abort(404);
 
-The `abort` helper simply throws a `Symfony\Component\HttpFoundation\Exception\HttpException` with the specified status code.
+The `abort` helper simply throws a `Symfony\Component\HttpKernel\Exception\HttpException` with the specified status code.
 
 Secondly, you may manually throw an instance of `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
 
