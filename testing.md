@@ -7,6 +7,7 @@
 - [Working With Databases](#working-with-databases)
 - [Model Factories](#model-factories)
 - [Working With Events](#working-with-events)
+- [Working With Queues](#working-with-queues)
 - [Mocking Facades](#mocking-facades)
 
 <a name="introduction"></a>
@@ -444,6 +445,25 @@ If you would like to prevent any event handlers from running, you may use the `w
 	    	$this->withoutEvents();
 
 	    	// Test user registration code...
+	    }
+	}
+
+<a name="working-with-queues"></a>
+## Working With Queues
+
+Sometimes, you may wish to simply test that specific jobs are dispatched by your controllers when making requests to your application. This allows you to test your routes / controllers in isolation - set apart from your job's logic. Of course, you can test the job itself in a separate test class.
+
+Laravel provides a convenient `expectsJobs` method that will verify that the expected jobs are dispatched, but the job itself will not be executed:
+
+	<?php
+
+	class ExampleTest extends TestCase
+	{
+	    public function testPurchasePodcast()
+	    {
+	    	$this->expectsJobs('App\Jobs\PurchasePodcast');
+
+	    	// Test purchase podcast code...
 	    }
 	}
 
