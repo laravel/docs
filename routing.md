@@ -223,29 +223,45 @@ HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以當定義 `P
 <a name="route-groups"></a>
 ## 路由群組
 
-有時候您需要套用篩選器到群組的路由上。不需要為每個路由去套用篩選器，您只需使用路由群組：
+有時候你的許多路由會有共通的需求，例如 URL 區段、中介層、命名空間等等。你可以利用路由群組套用這些屬性到多個路由，而不用每個路由都設定一次。
 
-	Route::group(['middleware' => 'auth'], function()
+以陣列設定共享屬性為 `Route::group` 方法的第一個參數。
+
+<a name="route-group-middleware"></a>
+### 中介層
+
+在群組屬性陣列的 `middleware` 參數定義中介層列表，這些中介層就會套用到群組內所有路由。中介層將會依照你在列表內指定的順序執行：
+
+	Route::group(['middleware' => ['foo', 'bar']], function()
 	{
 		Route::get('/', function()
 		{
-			// Has Auth Filter
+			// 擁有 Foo 和 Bar 中介層
 		});
 
 		Route::get('user/profile', function()
 		{
-			// Has Auth Filter
+			// 擁有 Foo 和 Bar 中介層
 		});
+
 	});
 
-您一樣可以在 `group` 陣列中使用 `namespace` 參數，指定這群組中控制器的命名空間：
+<a name="route-group-namespace"></a>
+### Namespaces
+
+你可以在群組屬性陣列內，使用 `namespace` 參數指定群組內所有控制器的命名空間：
 
 	Route::group(['namespace' => 'Admin'], function()
 	{
-		//
+		// 控制器位於「App\Http\Controllers\Admin」命名空間內
+
+		Route::group(['namespace' => 'User'], function()
+		{
+			// 控制器位於「App\Http\Controllers\Admin\User」命名空間內
+		});
 	});
 
-> **注意：** 在預設情況下，`RouteServiceProvider` 包含內建您命名空間群組的 `routes.php` 檔案，讓您不須使用完整的命名空間就可以註冊控制器路由。
+> **注意：** 預設 `RouteServiceProvider` 會在命名空間群組內導入你的 `routes.php` 檔案，讓你不用指定完整的 `App\Http\Controllers` 命名空間前綴就能註冊控制器路由。
 
 <a name="sub-domain-routing"></a>
 ### 子網域路由
@@ -267,16 +283,35 @@ Laravel 路由一樣可以處理萬用字元的子網域，並且從網域中傳
 <a name="route-prefixing"></a>
 ### 路由前綴
 
-群組路由可以透過群組的描述陣列中使用 `prefix` 選項，將群組內的路由加上前綴：
+透過群組屬性陣列中的 `prefix` 選項，可以為群組內的路由加上前綴：
 
 	Route::group(['prefix' => 'admin'], function()
 	{
+		Route::get('users', function()
+		{
+			// 對應「/admin/users」URL
+		});
+	});
 
-		Route::get('user', function()
+你也可以用 `prefix` 參數傳入共通參數到路由：
+
+#### 在路由前綴註冊 URL 參數
+
+	Route::group(['prefix' => 'accounts/{account_id}'], function()
+	{
+		Route::get('detail', function($account_id)
 		{
 			//
 		});
+	});
 
+你甚至能在路由前綴中，為已命名的參數定義參數限制：
+
+	Route::group([
+		'prefix' => 'accounts/{account_id}',
+		'where' => ['account_id' => '[0-9]+'],
+	], function() {
+		// 在此定義路由
 	});
 
 <a name="route-model-binding"></a>
