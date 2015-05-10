@@ -130,11 +130,10 @@ As noted above, if an exception occurs while the job is being processed, it will
 <a name="pushing-jobs-onto-the-queue"></a>
 ## Pushing Jobs Onto The Queue
 
-To push the new job onto the queue, use the `push` method on the `Queue` facade:
+The default Laravel controller located in `app/Http/Controllers/Controller.php` uses a `DispatchesJob` trait. This trait provides several methods allowing you to conveniently push jobs onto the queue, such as the `dispatch` method:
 
 	<?php namespace App\Http\Controllers;
 
-	use Queue;
 	use App\User;
 	use Illuminate\Http\Request;
 	use App\Jobs\SendReminderEmail;
@@ -153,19 +152,37 @@ To push the new job onto the queue, use the `push` method on the `Queue` facade:
 		{
 			$user = User::findOrFail($id);
 
-			Queue::push(new SendReminderEmail($user));
+			$this->dispatch(new SendReminderEmail($user));
 		}
 	}
 
 #### Delaying The Execution Of A Job
 
-Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
+Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You may accomplish this by setting the `$delay` property on your job class:
 
-	$date = Carbon::now()->addMinutes(15);
+	<?php namespace App\Jobs;
 
-	Queue::later($date, new SendReminderEmail($user));
+	use App\Jobs\Job;
+	use Illuminate\Queue\SerializesModels;
+	use Illuminate\Queue\InteractsWithQueue;
+	use Illuminate\Contracts\Bus\SelfHandling;
+	use Illuminate\Contracts\Queue\ShouldQueue;
 
-In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
+	class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
+	{
+	    use InteractsWithQueue, SerializesModels;
+
+	    /**
+	     * The seconds before the job should be made available.
+	     *
+	     * @var int
+	     */
+	    protected $delay = 60;
+
+	    // Rest of job class...
+	}
+
+In this example, we're specifying that the job should be delayed in the queue for 60 seconds before being made available to workers.
 
 > **Note:** The Amazon SQS service has a maximum delay time of 15 minutes.
 
@@ -173,13 +190,29 @@ In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon
 
 You may also specify the queue a job should be sent to.
 
-By pushing jobs to different queues, you may "categorize" your queued jobs, and even prioritize how many workers you assign to various queues. This does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection:
+By pushing jobs to different queues, you may "categorize" your queued jobs, and even prioritize how many workers you assign to various queues. This does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, set the `$queue` property on the job class:
 
-	Queue::pushOn('emails', new SendEmail($message));
+	<?php namespace App\Jobs;
 
-You may also use the `dispatch` method provided to your controllers via the `DispatchesJobs` trait:
+	use App\Jobs\Job;
+	use Illuminate\Queue\SerializesModels;
+	use Illuminate\Queue\InteractsWithQueue;
+	use Illuminate\Contracts\Bus\SelfHandling;
+	use Illuminate\Contracts\Queue\ShouldQueue;
 
-	$this->dispatch(new SendEmail($message));
+	class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
+	{
+	    use InteractsWithQueue, SerializesModels;
+
+	    /**
+	     * The name of the queue the job should be sent to.
+	     *
+	     * @var string
+	     */
+	    protected $queue = 'high-priority';
+
+	    // Rest of job class...
+	}
 
 <a name="dispatching-jobs-from-requests"></a>
 ## Dispatching Jobs From Requests
@@ -202,7 +235,7 @@ It is very common to map HTTP request variables into jobs. So, instead of forcin
 		 */
 		public function processOrder(Request $request, $id)
 		{
-			//
+			// Process the request...
 
 			$this->dispatchFrom('App\Jobs\ProcessOrder', $request);
 		}
