@@ -156,6 +156,17 @@ The default Laravel controller located in `app/Http/Controllers/Controller.php` 
 		}
 	}
 
+Of course, sometimes you may wish to dispatch a job from somewhere in your application besides a route or controller. For that reason, you can include the `DispatchesJobs` trait on any of the classes in your application to gain access to its various dispatch methods. For example, here is a sample class that uses the trait:
+
+	<?php namespace App;
+
+	use Illuminate\Foundation\Bus\DispatchesJobs;
+
+	class ExampleClass
+	{
+		use DispatchesJobs;
+	}
+
 #### Delaying The Execution Of A Job
 
 Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You may accomplish this by setting the `$delay` property on your job class:

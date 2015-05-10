@@ -467,6 +467,8 @@ Laravel provides a convenient `expectsJobs` method that will verify that the exp
 	    }
 	}
 
+> **Note:** This method only detects jobs that are dispatched via the `DispatchesCommands` trait's dispatch methods. It does not detect jobs that are sent directly to `Queue::push`.
+
 <a name="mocking-facades"></a>
 ## Mocking Facades
 
