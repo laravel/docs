@@ -278,43 +278,6 @@ Laravel automatically generates a CSRF "token" for each active user session mana
 
 #### Insert The CSRF Token Into A Form
 
-	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-
-Of course, using the Blade [templating engine](/docs/{{version}}/templating):
-
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify token in the request input matches the token stored in the session.
-
-#### X-CSRF-TOKEN
-
-In addition to looking for the CSRF token as a "POST" parameter, the middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag:
-
-	<meta name="csrf-token" content="{{ csrf_token() }}" />
-
- Then, you can instruct a library like jQuery to add it to all request headers:
-
-	$.ajaxSetup({
-		headers: {
-			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		}
-	});
-
-#### X-XSRF-TOKEN
-
-Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some Javascript frameworks, like Angular, do this automatically for you.
-
-> Note: The difference between the `X-CSRF-TOKEN` and `X-XSRF-TOKEN` is that the first uses a plain text value and the latter uses an encrypted value, because cookies in Laravel are always encrypted.
-
-<a name="csrf-protection"></a>
-## CSRF Protection
-
-Laravel makes it easy to protect your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
-
-Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
-
-#### Insert The CSRF Token Into A Form
-
 	<?php echo csrf_field(); ?>
 
 The code above generates the following HTML:
