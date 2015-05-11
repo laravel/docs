@@ -89,6 +89,8 @@ As you can see, we simply pass the incoming HTTP request and desired validation 
 
 So, what if the incoming request parameters do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors will automatically be [flashed to the session](/docs/{{version}}/session#flash-data).
 
+Again, notice that we did not have to explicitly bind the error messages to the view in our `GET` route. This is because Laravel will always check for errors in the session data, and automatically bind them to the view if they are available. **So, it is important to note that an `$errors` variable will always be available in all of your views, on every request**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
+
 So, in our example, the user will be redirected to our controller's `create` method when validation fails, allowing us to display the error messages in the view. Laravel will automatically share any errors that are in the session with all views, so we can simply access the shared errors using the `$errors` variable:
 
 	<!-- /resources/views/post/create.blade.php -->
@@ -106,8 +108,6 @@ So, in our example, the user will be redirected to our controller's `create` met
 	@endif
 
 	<!-- Create Post Form -->
-
-The `$errors` variable will always be an instance of `Illuminate\Support\MessageBag`, which provides many convenient methods for working for validation errors. For more information on working with this object, [check out its documentation](#working-with-error-messages).
 
 #### Customizing The Flashed Error Format
 
@@ -174,6 +174,8 @@ If you do not want to use the `ValidatesRequests` trait's `validate` method, you
 	}
 
 The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
+
+After checking if the request failed to pass validation, we used the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with our views after redirection, allowing us to easily display them back to the user.
 
 ### Named Error Bags
 
@@ -330,46 +332,6 @@ After calling the `messages` method on a `Validator` instance, you will receive 
 	{
 		//
 	}
-
-<a name="error-messages-and-views"></a>
-## Error Messages & Views
-
-Once you have performed validation, you will need an easy way to get the error messages back to your views. This is conveniently handled by Laravel. Consider the following routes as an example:
-
-	Route::get('register', function()
-	{
-		return View::make('user.register');
-	});
-
-	Route::post('register', function()
-	{
-		$rules = [...];
-
-		$validator = Validator::make(Input::all(), $rules);
-
-		if ($validator->fails())
-		{
-			return redirect('register')->withErrors($validator);
-		}
-	});
-
-Note that when validation fails, we pass the `Validator` instance to the Redirect using the `withErrors` method. This method will flash the error messages to the session so that they are available on the next request.
-
-However, notice that we do not have to explicitly bind the error messages to the view in our GET route. This is because Laravel will always check for errors in the session data, and automatically bind them to the view if they are available. **So, it is important to note that an `$errors` variable will always be available in all of your views, on every request**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `MessageBag`.
-
-So, after redirection, you may utilize the automatically bound `$errors` variable in your view:
-
-	<?php echo $errors->first('email'); ?>
-
-### Named Error Bags
-
-If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors. This will allow you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
-
-	return redirect('register')->withErrors($validator, 'login');
-
-You may then access the named `MessageBag` instance from the `$errors` variable:
-
-	<?php echo $errors->login->first('email'); ?>
 
 <a name="available-validation-rules"></a>
 ## Available Validation Rules
