@@ -169,28 +169,32 @@ Of course, sometimes you may wish to dispatch a job from somewhere in your appli
 
 #### Delaying The Execution Of A Job
 
-Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You may accomplish this by setting the `$delay` property on your job class:
+Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You may accomplish this using the `delay` method on your job class, which is provided by the `Illuminate\Bus\Queueable` trait:
 
-	<?php namespace App\Jobs;
+	<?php namespace App\Http\Controllers;
 
-	use App\Jobs\Job;
-	use Illuminate\Queue\SerializesModels;
-	use Illuminate\Queue\InteractsWithQueue;
-	use Illuminate\Contracts\Bus\SelfHandling;
-	use Illuminate\Contracts\Queue\ShouldQueue;
+	use App\User;
+	use Illuminate\Http\Request;
+	use App\Jobs\SendReminderEmail;
+	use App\Http\Controllers\Controller;
 
-	class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
+	class UserController extends Controller
 	{
-	    use InteractsWithQueue, SerializesModels;
+		/**
+		 * Send a reminder e-mail to a given user.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function sendReminderEmail(Request $request, $id)
+		{
+			$user = User::findOrFail($id);
 
-	    /**
-	     * The seconds before the job should be made available.
-	     *
-	     * @var int
-	     */
-	    protected $delay = 60;
+			$job = (new SendReminderEmail($user))->delay(60);
 
-	    // Rest of job class...
+			$this->dispatch($job);
+		}
 	}
 
 In this example, we're specifying that the job should be delayed in the queue for 60 seconds before being made available to workers.
@@ -201,28 +205,32 @@ In this example, we're specifying that the job should be delayed in the queue fo
 
 You may also specify the queue a job should be sent to.
 
-By pushing jobs to different queues, you may "categorize" your queued jobs, and even prioritize how many workers you assign to various queues. This does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, set the `$queue` property on the job class:
+By pushing jobs to different queues, you may "categorize" your queued jobs, and even prioritize how many workers you assign to various queues. This does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method on the job instance:
 
-	<?php namespace App\Jobs;
+	<?php namespace App\Http\Controllers;
 
-	use App\Jobs\Job;
-	use Illuminate\Queue\SerializesModels;
-	use Illuminate\Queue\InteractsWithQueue;
-	use Illuminate\Contracts\Bus\SelfHandling;
-	use Illuminate\Contracts\Queue\ShouldQueue;
+	use App\User;
+	use Illuminate\Http\Request;
+	use App\Jobs\SendReminderEmail;
+	use App\Http\Controllers\Controller;
 
-	class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
+	class UserController extends Controller
 	{
-	    use InteractsWithQueue, SerializesModels;
+		/**
+		 * Send a reminder e-mail to a given user.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function sendReminderEmail(Request $request, $id)
+		{
+			$user = User::findOrFail($id);
 
-	    /**
-	     * The name of the queue the job should be sent to.
-	     *
-	     * @var string
-	     */
-	    protected $queue = 'high-priority';
+			$job = (new SendReminderEmail($user))->onQueue('emails');
 
-	    // Rest of job class...
+			$this->dispatch($job);
+		}
 	}
 
 <a name="dispatching-jobs-from-requests"></a>
