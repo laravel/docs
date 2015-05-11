@@ -1,7 +1,7 @@
 # Validation
 
 - [A Complete Example](#a-complete-example)
-- [Validation Overview](#validation-overview)
+- [Manually Creating Validators](#manually-creating-validators)
 - [Form Request Validation](#form-request-validation)
 - [Working With Error Messages](#working-with-error-messages)
 - [Available Validation Rules](#available-validation-rules)
@@ -63,7 +63,9 @@ So, let's take a look at a sample controller that handles these routes. We'll le
 
 Now we are ready to fill in our `store` method with logic to validate the new blog post. If you examine your appliation's base controller (`App\Http\Controllers\Controller`) class, you will see that the class uses a `ValidatesRequests` trait. This trait provides a convenient `validate` method in all of your controllers.
 
-The `validate` method accepts an incoming HTTP request and a set of validation rules. If the validation rules pass, your code will keep executing normally; however, if validation fails, an exception will be thrown and the proper error responses will automatically be sent back to the user. To get a better understanding of the `validate` method, let's jump back into the `store` method:
+The `validate` method accepts an incoming HTTP request and a set of validation rules. If the validation rules pass, your code will keep executing normally; however, if validation fails, an exception will be thrown and the proper error response will automatically be sent back to the user. In the case of a traditional HTTP request, a redirect response will be generated, while a JSON response will be sent for AJAX requests.
+
+To get a better understanding of the `validate` method, let's jump back into the `store` method:
 
 	/**
 	 * Store a new blog post.
@@ -81,7 +83,7 @@ The `validate` method accepts an incoming HTTP request and a set of validation r
 		// The blog post is valid, store in database...
 	}
 
-As you can see, we simply pass the incoming HTTP request and desired validation rules into the `validate` method.
+As you can see, we simply pass the incoming HTTP request and desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
 
 #### Displaying The Validation Errors
 
@@ -107,49 +109,6 @@ So, in our example, the user will be redirected to our controller's `create` met
 
 The `$errors` variable will always be an instance of `Illuminate\Support\MessageBag`, which provides many convenient methods for working for validation errors. For more information on working with this object, [check out its documentation](#working-with-error-messages).
 
-### AJAX Requests & Validation
-
-In this example, we used a traditional form to send data to the application. However, many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
-
-<a name="basic-usage"></a>
-## Validation Overview
-
-### Validating The Request
-
-Laravel ships with a simple, convenient facility for validating data and retrieving validation error messages. There are several ways to use Laravel's validator, so we'll examine a few different approaches. First, let's look at a basic example that validates request input in a controller.
-
-The base `App\Http\Controllers\Controller` class included with Laravel uses a `ValidatesRequests` trait. This trait provides a single, convenient method for validating incoming HTTP requests. Here's what it looks like:
-
-	<?php namespace App\Http\Controllers;
-
-	use Illuminate\Http\Request;
-	use App\Http\Controllers\Controller;
-
-	class BlogController extends Controller
-	{
-		/**
-		 * Store the incoming blog post.
-		 *
-		 * @param  Request  $request
-		 * @return Response
-		 */
-		public function store(Request $request)
-		{
-			$this->validate($request, [
-				'title' => 'required|unique|max:255',
-				'body' => 'required',
-			]);
-
-			// Store the blog post...
-		}
-	}
-
-In this example, we're validating that the `title` and `body` parameters that were sent with the `Request` pass a set of validation tests. Don't worry, later in this document you will find a list of all of the available [validation rules](#available-validation-rules)
-
-If validation passes, your code will keep executing normally. However, if validation fails, an `Illuminate\Contracts\Validation\ValidationException` will be thrown. This exception is automatically caught and a redirect is generated to the user's previous location. The validation errors are even automatically flashed to the session!
-
-If the incoming request was an AJAX request, no redirect will be generated. Instead, an HTTP response with a 422 status code will be returned to the browser containing a JSON representation of the validation errors.
-
 #### Customizing The Flashed Error Format
 
 If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatValidationErrors` on your base controller. Don't forget to import the `Illuminate\Contracts\Validation\Validator` class at the top of the file:
@@ -174,114 +133,74 @@ If you wish to customize the format of the validation errors that are flashed to
 		}
 	}
 
-### Displaying The Validation Errors
+### AJAX Requests & Validation
 
-Once you have performed validation, you need an easy way to get the error messages back to your views. Thankfully, this is conveniently handled by Laravel. When using the `validate` method from a controller and the validation fails, the error messages will automatically be flashed to the session so they are available during the next request.
+In this example, we used a traditional form to send data to the application. However, many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
 
-When errors exist in the session, Laravel will automatically bind them as `$errors` to all views that are rendered during that request. So, it is important to note that an `$errors` variable will always be available in all of your views, on every request, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`.
+<a name="manually-creating-validators"></a>
+## Manually Creating Validators
 
-So, after redirection, you may utilize the automatically bound `$errors` variable in your view like so:
+If you do not want to use the `ValidatesRequests` trait's `validate` method, you may create a validator instance manually using the `Validator` [facade](/docs/{{version}}/facades). The `make` method on the facade generates a new validator instance:
 
-	<h1>Create Blog Post</h1>
+	<?php namespace App\Http\Controllers;
 
-	@if (count($errors) > 0)
-		{{ $errors->first('email') }}
-	@endif
+	use Validator;
+	use Illuminate\Http\Request;
+	use App\Http\Controllers\Controller;
 
-Or, you may display all error messages like so:
+	class PostController extends Controller
+	{
+		/**
+		 * Store a new blog post.
+		 *
+		 * @param  Request  $request
+		 * @return Response
+		 */
+		public function store(Request $request)
+		{
+			$validator = Validator::make($request->all(), [
+				'title' => 'required|unique:posts|max:255',
+				'body' => 'required',
+			]);
 
-	<h1>Create Blog Post</h1>
+			if ($validator->fails()) {
+				return redirect('post/create')
+							->withErrors($validator->errors()->all())
+							->withInput();
+			}
 
-	@if (count($errors) > 0)
-		<ul>
-			@foreach ($errors->all() as $error)
-				{{ $error }}
-			@endforeach
-		</ul>
-	@endif
-
-### Named Error Bags
-
-If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors. This will allow you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
-
-	return redirect('register')->withErrors($validator, 'login');
-
-You may then access the named `MessageBag` instance from the `$errors` variable:
-
-	<?php echo $errors->login->first('email'); ?>
-
-#### Basic Validation Example
-
-	$validator = Validator::make(
-		['name' => 'Dayle'],
-		['name' => 'required|min:5']
-	);
+			// Store the blog post...
+		}
+	}
 
 The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
 
-#### Using Arrays To Specify Rules
+### Named Error Bags
 
-Multiple rules may be delimited using either a "pipe" character, or as separate elements of an array.
+If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors, allowing you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
 
-	$validator = Validator::make(
-		['name' => 'Dayle'],
-		['name' => ['required', 'min:5']]
-	);
+	return redirect('register')
+				->withErrors($validator->errors()->all(), 'login');
 
-#### Validating Multiple Fields
+You may then access the named `MessageBag` instance from the `$errors` variable:
 
-	$validator = Validator::make(
-		[
-			'name' => 'Dayle',
-			'password' => 'lamepassword',
-			'email' => 'email@example.com'
-		],
-		[
-			'name' => 'required',
-			'password' => 'required|min:8',
-			'email' => 'required|email|unique:users'
-		]
-	);
+	{{ $errors->login->first('email') }}
 
-Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
-
-	if ($validator->fails())
-	{
-		// The given data did not pass validation
-	}
-
-If validation has failed, you may retrieve the error messages from the validator.
-
-	$messages = $validator->messages();
-
-You may also access an array of the failed validation rules, without messages. To do so, use the `failed` method:
-
-	$failed = $validator->failed();
-
-#### Validating Files
-
-The `Validator` class provides several rules for validating files, such as `size`, `mimes`, and others. When validating files, you may simply pass them into the validator with your other data.
-
-### After Validation Hook
+#### After Validation Hook
 
 The validator also allows you to attach callbacks to be run after validation is completed. This allows you to easily perform further validation, and even add more error messages to the message collection. To get started, use the `after` method on a validator instance:
 
 	$validator = Validator::make(...);
 
-	$validator->after(function($validator)
-	{
-		if ($this->somethingElseIsInvalid())
-		{
+	$validator->after(function($validator) {
+		if ($this->somethingElseIsInvalid()) {
 			$validator->errors()->add('field', 'Something is wrong with this field!');
 		}
 	});
 
-	if ($validator->fails())
-	{
+	if ($validator->fails()) {
 		//
 	}
-
-You may add as many `after` callbacks to a validator as needed.
 
 <a name="form-request-validation"></a>
 ## Form Request Validation
