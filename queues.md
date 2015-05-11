@@ -2,8 +2,8 @@
 
 - [Configuration](#configuration)
 - [Generating Job Classes](#generating-job-classes)
-- [Pushing Jobs Onto The Queue](#pushing-jobs-onto-the-queue)
 - [Writing Job Classes](#writing-job-classes)
+- [Pushing Jobs Onto The Queue](#pushing-jobs-onto-the-queue)
 - [Dispatching Jobs From Requests](#dispatching-jobs-from-requests)
 - [Running The Queue Listener](#running-the-queue-listener)
 - [Daemon Queue Listener](#daemon-queue-listener)
