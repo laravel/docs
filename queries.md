@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Selects](#selects)
+- [Basic Where Clauses](#basic-where-clauses)
 - [Joins](#joins)
 - [Advanced Wheres](#advanced-wheres)
 - [Aggregates](#aggregates)
@@ -24,63 +25,100 @@ The database query builder provides a convenient, fluent interface to creating a
 
 #### Retrieving All Rows From A Table
 
-	$users = DB::table('users')->get();
+To begin a fluent query, use the `table` method on the `DB` facade. The `table` method returns a fluent query builder instance for the given table, allowing you to chain more constraints onto the query and then finally get the results. In this example, let's just `get` all records from a table:
 
-	foreach ($users as $user)
+	<?php namespace App\Http\Controllers;
+
+	use DB;
+	use App\Http\Controllers\Controller;
+
+	class UserController extends Controller
 	{
-		var_dump($user->name);
+		/**
+		 * Show a list of all of the application's users.
+		 *
+		 * @return Response
+		 */
+		public function index()
+		{
+			$users = DB::table('users')->get();
+
+			return view('user.index', ['users' => $users]);
+		}
+	}
+
+Like [raw queries](/docs/{{version}}/database), the `get` method returns an `array` of results where each result is an instance of the PHP `StdClass` object. You may access each column's value by access the column as a property of the object:
+
+	foreach ($users as $user) {
+		echo $user->name;
 	}
 
 #### Chunking Results From A Table
 
-	DB::table('users')->chunk(100, function($users)
-	{
-		foreach ($users as $user)
-		{
+If you need to work with thousands of database records, consider using the `chunk` method. This method will retrieve a small "chunk" of the results at a time, and feed each chunk into a `Closure` for processing. This method is very useful for writing [Artisan](/docs/{{version}}/artisan) commands that process thousands of records. For example, let's work with the entire `users` table in chunks of 100 records at a time:
+
+	DB::table('users')->chunk(100, function($users) {
+		foreach ($users as $user) {
 			//
 		}
 	});
 
 You may stop further chunks from being processed by returning `false` from the `Closure`:
 
-	DB::table('users')->chunk(100, function($users)
-	{
-		//
+	DB::table('users')->chunk(100, function($users) {
+		// Process the records...
 
 		return false;
 	});
 
-#### Retrieving A Single Row From A Table
+#### Retrieving A Single Row / Column From A Table
+
+If you just need to retrieve a single row from the database table, you may use the `first` method. This method will return a single `StdClass` object:
 
 	$user = DB::table('users')->where('name', 'John')->first();
 
-	var_dump($user->name);
+	echo $user->name;
 
-#### Retrieving A Single Column From A Row
+If you don't even need an entire row, you may pluck a single value from a record using the `pluck` method. This method will return the value of the column directly:
 
 	$name = DB::table('users')->where('name', 'John')->pluck('name');
 
 #### Retrieving A List Of Column Values
 
-	$roles = DB::table('roles')->lists('title');
+If you would like to retrieve an array contains the values of a single column, you may use the `lists` method. This method will return an array of role titles, allowing you to loop through each title:
 
-This method will return an array of role titles. You may also specify a custom key column for the returned array:
+	$titles = DB::table('roles')->lists('title');
+
+	foreach ($titles as $title) {
+		echo $title;
+	}
+
+ You may also specify a custom key column for the returned array:
 
 	$roles = DB::table('roles')->lists('title', 'name');
 
+	foreach ($roles as $name => $title) {
+		echo $title;
+	}
+
 #### Specifying A Select Clause
 
-	$users = DB::table('users')->select('name', 'email')->get();
+Of course, you may not always want to select all columns from a database table. Using the `select` method, you can specify a custom `select` clause for the query, only selecting the columns you need:
+
+	$users = DB::table('users')->select('name', 'email as user_email')->get();
+
+The `distinct` method allows you to force the query to return distinct reuslts:
 
 	$users = DB::table('users')->distinct()->get();
 
-	$users = DB::table('users')->select('name as user_name')->get();
-
-#### Adding A Select Clause To An Existing Query
+If you already have a query builder instance and you wish to add a column to its existing select clause, you may use the `addSelect` method:
 
 	$query = DB::table('users')->select('name');
 
 	$users = $query->addSelect('age')->get();
+
+<a name="basic-where-clauses"></a>
+## Basic Where Clauses
 
 #### Using Where Operators
 
