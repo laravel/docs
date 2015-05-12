@@ -38,6 +38,7 @@
     - [Package Development](/docs/{{version}}/packages)
     - [Pagination](/docs/{{version}}/pagination)
     - [Queues](/docs/{{version}}/queues)
+    - [Redis](/docs/{{version}}/redis)
     - [Session](/docs/{{version}}/session)
     - [Testing](/docs/{{version}}/testing)
     - [Validation](/docs/{{version}}/validation)
@@ -47,7 +48,6 @@
     - [Eloquent ORM](/docs/{{version}}/eloquent)
     - [Migrations / Schema](/docs/{{version}}/schema)
     - [Database Seeding](/docs/{{version}}/seeds)
-    - [Redis](/docs/{{version}}/redis)
 - Artisan CLI
     - [Overview](/docs/{{version}}/artisan)
     - [Development](/docs/{{version}}/commands)
