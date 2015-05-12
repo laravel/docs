@@ -58,43 +58,4 @@ Some migration operations are destructive, meaning they may cause you to lose da
 
 	php artisan migrate:refresh --seed
 
-<a name="database-seeding"></a>
-## Database Seeding
 
-Laravel also includes a simple way to seed your database with test data using seed classes. All seed classes are stored in `database/seeds`. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserTableSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
-
-#### Example Database Seed Class
-
-	class DatabaseSeeder extends Seeder {
-
-		public function run()
-		{
-			$this->call('UserTableSeeder');
-
-			$this->command->info('User table seeded!');
-		}
-
-	}
-
-	class UserTableSeeder extends Seeder {
-
-		public function run()
-		{
-			DB::table('users')->delete();
-
-			User::create(['email' => 'foo@bar.com']);
-		}
-
-	}
-
-To seed your database, you may use the `db:seed` command on the Artisan CLI:
-
-	php artisan db:seed
-
-By default, the `db:seed` command runs the `DatabaseSeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
-
-	php artisan db:seed --class=UserTableSeeder
-
-You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations:
-
-	php artisan migrate:refresh --seed

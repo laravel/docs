@@ -45,8 +45,8 @@
     - [Basic Usage](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)
     - [Eloquent ORM](/docs/{{version}}/eloquent)
-    - [Schema Builder](/docs/{{version}}/schema)
-    - [Migrations & Seeding](/docs/{{version}}/migrations)
+    - [Migrations / Schema](/docs/{{version}}/schema)
+    - [Database Seeding](/docs/{{version}}/seeds)
     - [Redis](/docs/{{version}}/redis)
 - Artisan CLI
     - [Overview](/docs/{{version}}/artisan)
