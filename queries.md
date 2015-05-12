@@ -5,6 +5,7 @@
 - [Joins](#joins)
 - [Basic Where Clauses](#basic-where-clauses)
 - [Advanced Wheres Clauses](#advanced-where-clauses)
+- [Ordering, Grouping, Limit, & Offset](#ordering-grouping-limit-and-offset)
 - [Aggregates](#aggregates)
 - [Raw Expressions](#raw-expressions)
 - [Inserts](#inserts)
@@ -166,65 +167,85 @@ If you would like to use a "where" style clause on your joins, you may use the `
 <a name="basic-where-clauses"></a>
 ## Basic Where Clauses
 
-#### Using Where Operators
+#### Simple Where Constraints
 
-	$users = DB::table('users')->where('votes', '>', 100)->get();
+To add `where` constraints to the query, use the `where` method on a query builder instance. The most basic call to `where` requires three arguments. The first argument is the name of the column. The second argument is an operating, which can be any of the database's supported operators. The third argument is the value to evaluate against the column.
+
+For example, here is a query that verifies the value of the "votes" column is equal to 100:
+
+	$users = DB::table('users')->where('votes', '=', 100)->get();
+
+If you want to verify that a column is simply equal to a given value, you may pass the value directly as the second argument to the `where` method for convenience:
+
+	$users = DB::table('users')->where('votes', 100)->get();
+
+Of course, we can use a variety of other operators when writing a `where` clause:
+
+	$users = DB::table('users')
+					->where('votes', '>=', 100)
+					->get();
+
+	$users = DB::table('users')
+					->where('votes', '<>', 100)
+					->get();
+
+	$users = DB::table('users')
+					->where('name', 'like', 'T%')
+					->get();
 
 #### Or Statements
+
+You may chain where constraints together, as well as add `or` clauses to the query. The `orWhere` method accepts the same arguments as the `where` method:
 
 	$users = DB::table('users')
 	                    ->where('votes', '>', 100)
 	                    ->orWhere('name', 'John')
 	                    ->get();
 
-#### Using Where Between
+#### Additional Where Clauses
+
+**whereBetween**
+
+The `whereBetween` method verifies that a column's value is between two values:
 
 	$users = DB::table('users')
 	                    ->whereBetween('votes', [1, 100])->get();
 
-#### Using Where Not Between
+**whereNotBetween**
+
+The `whereNotBetween` method verifies that a column's value lies outside of two values:
 
 	$users = DB::table('users')
-	                    ->whereNotBetween('votes', [1, 100])->get();
-
-#### Using Where In With An Array
-
-	$users = DB::table('users')
-	                    ->whereIn('id', [1, 2, 3])->get();
-
-	$users = DB::table('users')
-	                    ->whereNotIn('id', [1, 2, 3])->get();
-
-#### Using Where Null To Find Records With Unset Values
-
-	$users = DB::table('users')
-	                    ->whereNull('updated_at')->get();
-
-#### Dynamic Where Clauses
-
-You may even use "dynamic" where statements to fluently build where statements using magic methods:
-
-	$admin = DB::table('users')->whereId(1)->first();
-
-	$john = DB::table('users')
-	                    ->whereIdAndEmail(2, 'john@doe.com')
-	                    ->first();
-
-	$jane = DB::table('users')
-	                    ->whereNameOrAge('Jane', 22)
-	                    ->first();
-
-#### Order By, Group By, And Having
-
-	$users = DB::table('users')
-	                    ->orderBy('name', 'desc')
-	                    ->groupBy('count')
-	                    ->having('count', '>', 100)
+	                    ->whereNotBetween('votes', [1, 100])
 	                    ->get();
 
-#### Offset & Limit
+**whereIn / whereNotIn**
 
-	$users = DB::table('users')->skip(10)->take(5)->get();
+The `whereIn` method verifies that a given column's value is contained within the given array:
+
+	$users = DB::table('users')
+	                    ->whereIn('id', [1, 2, 3])
+	                    ->get();
+
+The `whereNotIn` method verifies that the given column's value is **not** contained in the given array:
+
+	$users = DB::table('users')
+	                    ->whereNotIn('id', [1, 2, 3])
+	                    ->get();
+
+**whereNull / whereNotNull**
+
+The `whereNull` method verifies that the value of the given column is set to `NULL` in the database:
+
+	$users = DB::table('users')
+	                    ->whereNull('updated_at')
+	                    ->get();
+
+The `whereNotNull` method verifies that the column's value is **not** `NULL`:
+
+	$users = DB::table('users')
+	                    ->whereNotNull('updated_at')
+	                    ->get();
 
 <a name="advanced-wheres"></a>
 ## Advanced Wheres
@@ -263,6 +284,40 @@ The query above will produce the following SQL:
 	where exists (
 		select 1 from orders where orders.user_id = users.id
 	)
+
+<a name="ordering-grouping-limit-and-offset"></a>
+## Ordering, Grouping, Limit, & Offset
+
+#### orderBy
+
+The `orderBy` method allows you to sort the result of the query by a given column. The first argument to the `orderBy` method should be the column you wish to sort by, while the second argument controls the direction of the sort and may be either `asc` or `desc`:
+
+	$users = DB::table('users')
+					->orderBy('name', 'desc')
+					->get();
+
+#### groupBy / having / havingRaw
+
+The `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
+
+	$users = DB::table('users')
+                    ->groupBy('account_id')
+                    ->having('account_id', '>', 100)
+                    ->get();
+
+The `havingRaw` method may be used to set a raw string as the value of the `having` clause. For example, we can find all of the departments with sales greater than $2,500:
+
+	$users = DB::table('orders')
+					->select('department', DB::raw('SUM(price) as total_sales'))
+                    ->groupBy('department')
+                    ->havingRaw('SUM(price) > 2500')
+                    ->get();
+
+#### skip / take
+
+To limit the number of results returned from the query, or to skip a given number of results in the query (`OFFSET`), you may use the `skip` and `take` methods:
+
+	$users = DB::table('users')->skip(10)->take(5)->get();
 
 <a name="aggregates"></a>
 ## Aggregates
