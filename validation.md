@@ -566,7 +566,7 @@ The given _field_ must match the field under validation.
 The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For files, _size_ corresponds to the file size in kilobytes.
 
 <a name="rule-string"></a>
-#### string:_value_
+#### string
 
 The field under validation must be a string type.
 
