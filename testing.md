@@ -325,14 +325,14 @@ If is often useful to wrap every test case in a database transactions so that th
 
 When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using "factories". To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
 
-	$factory['App\User'] = function ($faker) {
+	$factory->define('App\User', function ($faker) {
 	    return [
 	        'name' => $faker->name,
 	        'email' => $faker->email,
 	        'password' => str_random(10),
 	        'remember_token' => str_random(10),
 	    ];
-	};
+	});
 
 Within the Closure, which serves as the factory definition, you may return the default test values of all attributes on the model. The Closure will receive an instance of the [Faker](https://github.com/fzaninotto/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
