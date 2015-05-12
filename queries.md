@@ -252,26 +252,26 @@ The `whereNotNull` method verifies that the column's value is **not** `NULL`:
 
 #### Parameter Grouping
 
-Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well:
+Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well. To get started, let's look at an example of grouping sets of constraints within parenthesis:
 
 	DB::table('users')
 	            ->where('name', '=', 'John')
-	            ->orWhere(function($query)
-	            {
+	            ->orWhere(function ($query) {
 	            	$query->where('votes', '>', 100)
 	            	      ->where('title', '<>', 'Admin');
 	            })
 	            ->get();
 
-The query above will produce the following SQL:
+As you can see, passing `Closure` into the `orWhere` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The query above will produce the following SQL:
 
 	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
 #### Exists Statements
 
+The `whereExists` method allows you to write `where exist` clauses. The `whereExists` method accepts a `Closure` argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
+
 	DB::table('users')
-	            ->whereExists(function($query)
-	            {
+	            ->whereExists(function ($query) {
 	            	$query->select(DB::raw(1))
 	            	      ->from('orders')
 	            	      ->whereRaw('orders.user_id = users.id');
