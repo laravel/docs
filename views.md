@@ -64,14 +64,24 @@ For example, here is what it looks like to call the `share` method from a servic
 
 	class AppServiceProvider extends ServiceProvider
 	{
-		/**
-		 * Perform post-registration booting of services.
-		 *
-		 * @return void
-		 */
+	    /**
+	     * Bootstrap any application services.
+	     *
+	     * @return void
+	     */
 		public function boot()
 		{
 			view()->share('key', 'value');
+		}
+
+		/**
+		 * Register the service provider.
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			//
 		}
 	}
 

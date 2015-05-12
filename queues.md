@@ -360,12 +360,12 @@ If you would like to register an event that will be called when a queue job fail
 
 	class AppServiceProvider extends ServiceProvider
 	{
-		/**
-		 * Get the services provided by the provider.
-		 *
-		 * @return array
-		 */
-		public function provides()
+	    /**
+	     * Bootstrap any application services.
+	     *
+	     * @return void
+	     */
+		public function boot()
 		{
 			Queue::failing(function ($connection, $job, $data) {
 				//

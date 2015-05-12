@@ -4,9 +4,9 @@
 - [Manually Creating Validators](#manually-creating-validators)
 - [Form Request Validation](#form-request-validation)
 - [Working With Error Messages](#working-with-error-messages)
+- [Custom Error Messages](#custom-error-messages)
 - [Available Validation Rules](#available-validation-rules)
 - [Conditionally Adding Rules](#conditionally-adding-rules)
-- [Custom Error Messages](#custom-error-messages)
 - [Custom Validation Rules](#custom-validation-rules)
 
 <a name="a-complete-example"></a>
@@ -177,7 +177,7 @@ The first argument passed to the `make` method is the data under validation. The
 
 After checking if the request failed to pass validation, we used the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with our views after redirection, allowing us to easily display them back to the user.
 
-### Named Error Bags
+#### Named Error Bags
 
 If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors, allowing you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
 
@@ -280,7 +280,7 @@ If you plan to have authorization logic in another part of your application, sim
 
 ### Customizing The Flashed Error Format
 
-If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Validation\Validator` class at the top of the file:
+If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Contracts\Validation\Validator` class at the top of the file:
 
 	/**
 	 * {@inheritdoc}
@@ -293,30 +293,35 @@ If you wish to customize the format of the validation errors that are flashed to
 <a name="working-with-error-messages"></a>
 ## Working With Error Messages
 
-After calling the `messages` method on a `Validator` instance, you will receive a `MessageBag` instance, which has a variety of convenient methods for working with error messages.
+After calling the `errors` method on a `Validator` instance, you will receive an `Illuminate\Support\MessageBag` instance, which has a variety of convenient methods for working with error messages.
 
 #### Retrieving The First Error Message For A Field
+
+To retrieve the first error message for a given field, use the `first` method:
+
+	$messages = $validator->errors();
 
 	echo $messages->first('email');
 
 #### Retrieving All Error Messages For A Field
 
-	foreach ($messages->get('email') as $message)
-	{
+If you wish to simply retrieve an array of all of the messages for a given field, use the `get` method:
+
+	foreach ($messages->get('email') as $message) {
 		//
 	}
 
 #### Retrieving All Error Messages For All Fields
 
-	foreach ($messages->all() as $message)
-	{
+To retrieve an array of all messages for all fields, use the `all` method:
+
+	foreach ($messages->all() as $message) {
 		//
 	}
 
 #### Determining If Messages Exist For A Field
 
-	if ($messages->has('email'))
-	{
+	if ($messages->has('email')) {
 		//
 	}
 
@@ -324,14 +329,54 @@ After calling the `messages` method on a `Validator` instance, you will receive 
 
 	echo $messages->first('email', '<p>:message</p>');
 
-> **Note:** By default, messages are formatted using Bootstrap compatible syntax.
-
 #### Retrieving All Error Messages With A Format
 
-	foreach ($messages->all('<li>:message</li>') as $message)
-	{
+	foreach ($messages->all('<li>:message</li>') as $message) {
 		//
 	}
+
+<a name="custom-error-messages"></a>
+## Custom Error Messages
+
+If needed, you may use custom error messages for validation instead of the defaults. There are several ways to specify custom messages.
+
+#### Passing Custom Messages Into Validator
+
+	$messages = [
+		'required' => 'The :attribute field is required.',
+	];
+
+	$validator = Validator::make($input, $rules, $messages);
+
+> *Note:* The `:attribute` place-holder will be replaced by the actual name of the field under validation. You may also utilize other place-holders in validation messages.
+
+#### Other Validation Place-Holders
+
+	$messages = [
+		'same'    => 'The :attribute and :other must match.',
+		'size'    => 'The :attribute must be exactly :size.',
+		'between' => 'The :attribute must be between :min - :max.',
+		'in'      => 'The :attribute must be one of the following types: :values',
+	];
+
+#### Specifying A Custom Message For A Given Attribute
+
+Sometimes you may wish to specify a custom error messages only for a specific field:
+
+	$messages = [
+		'email.required' => 'We need to know your e-mail address!',
+	];
+
+<a name="localization"></a>
+#### Specifying Custom Messages In Language Files
+
+In many cases, you may wish to specify your attribute specific custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `resources/lang/xx/validation.php` language file.
+
+	'custom' => [
+		'email' => [
+			'required' => 'We need to know your e-mail address!',
+		],
+	],
 
 <a name="available-validation-rules"></a>
 ## Available Validation Rules
@@ -610,19 +655,17 @@ Occasionally, you may need to set a custom connection for database queries made 
 
 	$validator->setPresenceVerifier($verifier);
 
-#### Basic Usage Of Unique Rule
-
-	'email' => 'unique:users'
-
-#### Specifying A Custom Column Name
+**Specifying A Custom Column Name:**
 
 	'email' => 'unique:users,email_address'
 
-#### Forcing A Unique Rule To Ignore A Given ID
+**Forcing A Unique Rule To Ignore A Given ID:**
+
+Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address. You only want to throw a validation error if the user provides an e-mail address that is already by a different user. To tell the unique rule to ignore the user's ID, you may pass the ID as the third parameter:
 
 	'email' => 'unique:users,email_address,10'
 
-#### Adding Additional Where Clauses
+**Adding Additional Where Clauses:**
 
 You may also specify more conditions that will be added as "where" clauses to the query:
 
@@ -659,74 +702,52 @@ Sometimes you may wish to require a given field only if another field has a grea
 
 Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game re-sell shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
 
-	$v->sometimes('reason', 'required|max:500', function($input)
-	{
+	$v->sometimes('reason', 'required|max:500', function($input) {
 		return $input->games >= 100;
 	});
 
 The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
 
-	$v->sometimes(['reason', 'cost'], 'required', function($input)
-	{
+	$v->sometimes(['reason', 'cost'], 'required', function($input) {
 		return $input->games >= 100;
 	});
 
 > **Note:** The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used as an object to access your input and files.
 
-<a name="custom-error-messages"></a>
-## Custom Error Messages
-
-If needed, you may use custom error messages for validation instead of the defaults. There are several ways to specify custom messages.
-
-#### Passing Custom Messages Into Validator
-
-	$messages = [
-		'required' => 'The :attribute field is required.',
-	];
-
-	$validator = Validator::make($input, $rules, $messages);
-
-> *Note:* The `:attribute` place-holder will be replaced by the actual name of the field under validation. You may also utilize other place-holders in validation messages.
-
-#### Other Validation Place-Holders
-
-	$messages = [
-		'same'    => 'The :attribute and :other must match.',
-		'size'    => 'The :attribute must be exactly :size.',
-		'between' => 'The :attribute must be between :min - :max.',
-		'in'      => 'The :attribute must be one of the following types: :values',
-	];
-
-#### Specifying A Custom Message For A Given Attribute
-
-Sometimes you may wish to specify a custom error messages only for a specific field:
-
-	$messages = [
-		'email.required' => 'We need to know your e-mail address!',
-	];
-
-<a name="localization"></a>
-#### Specifying Custom Messages In Language Files
-
-In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `resources/lang/xx/validation.php` language file.
-
-	'custom' => [
-		'email' => [
-			'required' => 'We need to know your e-mail address!',
-		],
-	],
-
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
 
-#### Registering A Custom Validation Rule
+Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `extend` method on the `Validator` [facade](/docs/{{version}}/facades). Let's use this method within a [service provider](/docs/{{version}}/providers) to register a custom validation rule:
 
-Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `Validator::extend` method:
+	<?php namespace App\Providers;
 
-	Validator::extend('foo', function($attribute, $value, $parameters)
+	use Validator;
+	use Illuminate\Support\ServiceProvider;
+
+	class AppServiceProvider extends ServiceProvider
 	{
-		return $value == 'foo';
-	});
+	    /**
+	     * Bootstrap any application services.
+	     *
+	     * @return void
+	     */
+		public function boot()
+		{
+			Validator::extend('foo', function($attribute, $value, $parameters) {
+				return $value == 'foo';
+			});
+		}
+
+		/**
+		 * Register the service provider.
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			//
+		}
+	}
 
 The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
 
@@ -734,42 +755,28 @@ You may also pass a class and method to the `extend` method instead of a Closure
 
 	Validator::extend('foo', 'FooValidator@validate');
 
-Note that you will also need to define an error message for your custom rules. You can do so either using an inline custom message array or by adding an entry in the validation language file.
+#### Defining The Error Message
 
-#### Extending The Validator Class
+You will also need to define an error message for your custom rules. You can do so either using an inline custom message array or by adding an entry in the validation language file. **This message should be placed in the first level of the array**, not within the `custom` array, which is only for attribute-specific error messages:
 
-Instead of using Closure callbacks to extend the Validator, you may also extend the Validator class itself. To do so, write a Validator class that extends `Illuminate\Validation\Validator`. You may add validation methods to the class by prefixing them with `validate`:
+	"foo" => "Your input was invalid!",
 
-	<?php
+    "accepted" => "The :attribute must be accepted.",
 
-	class CustomValidator extends Illuminate\Validation\Validator {
+    // The rest of the validation error messages...
 
-		public function validateFoo($attribute, $value, $parameters)
-		{
-			return $value == 'foo';
-		}
+When creating a custom validation rule, you may sometimes need to define custom place-holder replacements for error messages. You may do so by creating a custom Validator as described above, and making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
 
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+	public function boot()
+	{
+		Validator::extend(...);
+
+		Validator::replacer('foo', function($message, $attribute, $rule, $parameters) {
+			return str_replace(...);
+		});
 	}
-
-#### Registering A Custom Validator Resolver
-
-Next, you need to register your custom Validator extension:
-
-	Validator::resolver(function($translator, $data, $rules, $messages)
-	{
-		return new CustomValidator($translator, $data, $rules, $messages);
-	});
-
-When creating a custom validation rule, you may sometimes need to define custom place-holder replacements for error messages. You may do so by creating a custom Validator as described above, and adding a `replaceXXX` function to the validator.
-
-	protected function replaceFoo($message, $attribute, $rule, $parameters)
-	{
-		return str_replace(':foo', $parameters[0], $message);
-	}
-
-If you would like to add a custom message "replacer" without extending the `Validator` class, you may use the `Validator::replacer` method:
-
-	Validator::replacer('rule', function($message, $attribute, $rule, $parameters)
-	{
-		//
-	});
