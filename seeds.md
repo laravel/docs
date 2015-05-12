@@ -31,8 +31,6 @@ As an example, let's modify the `DatabaseSeeder` class which is included with a 
 	     */
 	    public function run()
 	    {
-	        Model::unguard();
-
 	        DB::table('users')->insert([
 	        	'name' => str_random(10);
 	        	'email' => str_random(10).'@gmail.com',
@@ -47,19 +45,17 @@ Of course, manually specifying the attributes for each model seed is cumbersome.
 
 For example, let's create 50 users and attach a "post" to each user:
 
-	    /**
-	     * Run the database seeds.
-	     *
-	     * @return void
-	     */
-	    public function run()
-	    {
-	        Model::unguard();
-
-	        factory('App\User')->times(50)->create()->each(function($u) {
-	        	$u->posts()->save(factory('App\Post')->make());
-	        });
-	    }
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        factory('App\User')->times(50)->create()->each(function($u) {
+        	$u->posts()->save(factory('App\Post')->make());
+        });
+    }
 
 ### Calling Additional Seeder Classes
 
