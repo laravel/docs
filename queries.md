@@ -3,15 +3,14 @@
 - [Introduction](#introduction)
 - [Selects](#selects)
 - [Joins](#joins)
+- [Unions](#unions)
 - [Basic Where Clauses](#basic-where-clauses)
 - [Advanced Wheres Clauses](#advanced-where-clauses)
 - [Ordering, Grouping, Limit, & Offset](#ordering-grouping-limit-and-offset)
 - [Aggregates](#aggregates)
-- [Raw Expressions](#raw-expressions)
 - [Inserts](#inserts)
 - [Updates](#updates)
 - [Deletes](#deletes)
-- [Unions](#unions)
 - [Pessimistic Locking](#pessimistic-locking)
 
 <a name="introduction"></a>
@@ -19,7 +18,7 @@
 
 The database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application, and works on all supported database systems.
 
-> **Note:** The Laravel query builder uses PDO parameter binding throughout to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
+> **Note:** The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
 
 <a name="selects"></a>
 ## Selects
@@ -118,6 +117,16 @@ If you already have a query builder instance and you wish to add a column to its
 
 	$users = $query->addSelect('age')->get();
 
+#### Raw Expressions
+
+Sometimes you may need to use a raw expression in a query. These expressions will be injected into the query as strings, so be careful not to create any SQL injection points! To create a raw expression, you may use the `DB::raw` method:
+
+	$users = DB::table('users')
+	                     ->select(DB::raw('count(*) as user_count, status'))
+	                     ->where('status', '<>', 1)
+	                     ->groupBy('status')
+	                     ->get();
+
 <a name="joins"></a>
 ## Joins
 
@@ -163,6 +172,21 @@ If you would like to use a "where" style clause on your joins, you may use the `
 	        	     ->where('contacts.user_id', '>', 5);
 	        })
 	        ->get();
+
+<a name="unions"></a>
+## Unions
+
+The query builder also provides a quick way to "union" two queries together. For example, you may create an initial query, and then use the `union` method to union it with a second query:
+
+	$first = DB::table('users')
+				->whereNull('first_name');
+
+	$users = DB::table('users')
+				->whereNull('last_name')
+				->union($first)
+				->get();
+
+The `unionAll` method is also available and has the same method signature as `union`.
 
 <a name="basic-where-clauses"></a>
 ## Basic Where Clauses
@@ -322,53 +346,40 @@ To limit the number of results returned from the query, or to skip a given numbe
 <a name="aggregates"></a>
 ## Aggregates
 
-The query builder also provides a variety of aggregate methods, such as `count`, `max`, `min`, `avg`, and `sum`.
-
-#### Using Aggregate Methods
+The query builder also provides a variety of aggregate methods, such as `count`, `max`, `min`, `avg`, and `sum`:
 
 	$users = DB::table('users')->count();
 
 	$price = DB::table('orders')->max('price');
 
-	$price = DB::table('orders')->min('price');
+Of course, you may combine these methods with other clauses to build your query:
 
-	$price = DB::table('orders')->avg('price');
-
-	$total = DB::table('users')->sum('votes');
-
-<a name="raw-expressions"></a>
-## Raw Expressions
-
-Sometimes you may need to use a raw expression in a query. These expressions will be injected into the query as strings, so be careful not to create any SQL injection points! To create a raw expression, you may use the `DB::raw` method:
-
-#### Using A Raw Expression
-
-	$users = DB::table('users')
-	                     ->select(DB::raw('count(*) as user_count, status'))
-	                     ->where('status', '<>', 1)
-	                     ->groupBy('status')
-	                     ->get();
+	$price = DB::table('orders')
+					->where('finalized', 1)
+					->avg('price');
 
 <a name="inserts"></a>
 ## Inserts
 
-#### Inserting Records Into A Table
+The query builder also provides an `insert` method for inserting records into the database table. The `insert` method accepts an array of column names and values to insert:
 
 	DB::table('users')->insert(
 		['email' => 'john@example.com', 'votes' => 0]
 	);
 
-#### Inserting Records Into A Table With An Auto-Incrementing ID
+#### Auto-Incrementing IDs
 
-If the table has an auto-incrementing id, use `insertGetId` to insert a record and retrieve the id:
+If the table has an auto-incrementing id, use the `insertGetId` method to insert a record and retrieve the id:
 
 	$id = DB::table('users')->insertGetId(
 		['email' => 'john@example.com', 'votes' => 0]
 	);
 
-> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id".
+> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named "id". If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
 
 #### Inserting Multiple Records Into A Table
+
+You may even insert several records into the table with a single call to `insert` by passing an array of arrays. Each array represents a row to be inserted into the table:
 
 	DB::table('users')->insert([
 		['email' => 'taylor@example.com', 'votes' => 0],
@@ -378,13 +389,19 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 <a name="updates"></a>
 ## Updates
 
-#### Updating Records In A Table
+Of course, in addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated.
+
+Of course, you may constrain the `update` query using `where` clauses:
 
 	DB::table('users')
 	            ->where('id', 1)
 	            ->update(['votes' => 1]);
 
-#### Incrementing or decrementing a value of a column
+#### Increment / Decrement
+
+The query builder also provides convenient methods for incrementing or decrementing the value of a given column. This is simply a short-cut, providing a more expressive and terse interface compared to manually writing the `update` statement.
+
+Both of these methods accept at least one argument: the column to modify. An second argument may optionally be passed to control the amount by which the column should be incremented / decremented.
 
 	DB::table('users')->increment('votes');
 
@@ -394,45 +411,32 @@ If the table has an auto-incrementing id, use `insertGetId` to insert a record a
 
 	DB::table('users')->decrement('votes', 5);
 
-You may also specify additional columns to update:
+You may also specify additional columns to update during the operation:
 
 	DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
 <a name="deletes"></a>
 ## Deletes
 
-#### Deleting Records In A Table
-
-	DB::table('users')->where('votes', '<', 100)->delete();
-
-#### Deleting All Records From A Table
+Of course, the query builder may also be used to delete records from the table via the `delete` method:
 
 	DB::table('users')->delete();
 
-#### Truncating A Table
+You may constrain `delete` statements by adding `where` clauses before calling the `delete` method:
+
+	DB::table('users')->where('votes', '<', 100)->delete();
+
+If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to 0, you may use the `truncate` method:
 
 	DB::table('users')->truncate();
-
-<a name="unions"></a>
-## Unions
-
-The query builder also provides a quick way to "union" two queries together:
-
-	$first = DB::table('users')->whereNull('first_name');
-
-	$users = DB::table('users')->whereNull('last_name')->union($first)->get();
-
-The `unionAll` method is also available, and has the same method signature as `union`.
 
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
 
-The query builder includes a few functions to help you do "pessimistic locking" on your SELECT statements.
-
-To run the SELECT statement with a "shared lock", you may use the `sharedLock` method on a query:
+The query builder includes a few functions to help you do "pessimistic locking" on your `select` statements. To run the statement with a "shared lock", you may use the `sharedLock` method on a query. A shared lock prevents the selected rows from being modified until your transaction commits:
 
 	DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 
-To "lock for update" on a SELECT statement, you may use the `lockForUpdate` method on a query:
+Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the rows from being modified, or from being selected with another shared lock:
 
 	DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
