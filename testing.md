@@ -250,7 +250,7 @@ If you would like to check that the given array is an exact match for the JSON r
 <a name="sessions-and-authentication"></a>
 ## Sessions / Authentication
 
-Laravel provides several helpers for working with the session during testing. First, you may set the session data to a given array using the `withSession` method. This is useful for laoding the session with data before testing a request to your application:
+Laravel provides several helpers for working with the session during testing. First, you may set the session data to a given array using the `withSession` method. This is useful for loading the session with data before testing a request to your application:
 
 	<?php
 

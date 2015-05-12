@@ -246,7 +246,7 @@ In this example, the `OrderRepository` class will automatically be injected into
 
 #### Other Examples Of Container Usage
 
-Of course, as mentioned above, controllers are not the only classes Laravel resolves via the service container. You may also type-hint dependencies on route Closures, middleware, queue jobs, event listeners, and more. For examples of using the service container in these contexts, please refer to their documentation.
+Of course, as mentioned above, controllers are not the only classes Laravel resolves via the service container. You may also type-hint dependencies on route closures, middleware, queue jobs, event listeners, and more. For examples of using the service container in these contexts, please refer to their documentation.
 
 <a name="container-events"></a>
 ## Container Events
