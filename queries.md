@@ -2,9 +2,9 @@
 
 - [Introduction](#introduction)
 - [Selects](#selects)
-- [Basic Where Clauses](#basic-where-clauses)
 - [Joins](#joins)
-- [Advanced Wheres](#advanced-wheres)
+- [Basic Where Clauses](#basic-where-clauses)
+- [Advanced Wheres Clauses](#advanced-where-clauses)
 - [Aggregates](#aggregates)
 - [Raw Expressions](#raw-expressions)
 - [Inserts](#inserts)
@@ -117,6 +117,52 @@ If you already have a query builder instance and you wish to add a column to its
 
 	$users = $query->addSelect('age')->get();
 
+<a name="joins"></a>
+## Joins
+
+The query builder may also be used to write join statements. Take a look at the following examples:
+
+#### Basic Join Statement
+
+To do a basic SQL "inner join", we can use the `join` method on a query builder instance:
+
+	$users = DB::table('users')
+	            ->join('contacts', 'users.id', '=', 'contacts.user_id')
+	            ->join('orders', 'users.id', '=', 'orders.user_id')
+	            ->select('users.*', 'contacts.phone', 'orders.price')
+	            ->get();
+
+The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. Of course, as you can see, you can join to multiple tables in a single query.
+
+#### Left Join Statement
+
+If you would like to perform a "left join" instead of an "inner join", you may use the `leftJoin` method. The arguments passed to `leftJoin` are the same as those passed to the `join` method:
+
+	$users = DB::table('users')
+		    	->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+		    	->get();
+
+#### Advanced Join Statements
+
+You may also specify more advanced join clauses, such as placing `orOn` constraints within the `join` clause. To get started, pass a `Closure` as the second argument into the `join` method. The `Closure` will receive a `JoinClause` object which allows you to specify constraints on the `join` clause:
+
+	DB::table('users')
+	        ->join('contacts', function($join)
+	        {
+	        	$join->on('users.id', '=', 'contacts.user_id')->orOn(...);
+	        })
+	        ->get();
+
+If you would like to use a "where" style clause on your joins, you may use the `where` and `orWhere` methods on a join. Instead of comparing two columns, these methods will compare the column against a value:
+
+	DB::table('users')
+	        ->join('contacts', function($join)
+	        {
+	        	$join->on('users.id', '=', 'contacts.user_id')
+	        	     ->where('contacts.user_id', '>', 5);
+	        })
+	        ->get();
+
 <a name="basic-where-clauses"></a>
 ## Basic Where Clauses
 
@@ -179,44 +225,6 @@ You may even use "dynamic" where statements to fluently build where statements u
 #### Offset & Limit
 
 	$users = DB::table('users')->skip(10)->take(5)->get();
-
-<a name="joins"></a>
-## Joins
-
-The query builder may also be used to write join statements. Take a look at the following examples:
-
-#### Basic Join Statement
-
-	DB::table('users')
-	            ->join('contacts', 'users.id', '=', 'contacts.user_id')
-	            ->join('orders', 'users.id', '=', 'orders.user_id')
-	            ->select('users.id', 'contacts.phone', 'orders.price')
-	            ->get();
-
-#### Left Join Statement
-
-	DB::table('users')
-		    ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
-		    ->get();
-
-You may also specify more advanced join clauses:
-
-	DB::table('users')
-	        ->join('contacts', function($join)
-	        {
-	        	$join->on('users.id', '=', 'contacts.user_id')->orOn(...);
-	        })
-	        ->get();
-
-If you would like to use a "where" style clause on your joins, you may use the `where` and `orWhere` methods on a join. Instead of comparing two columns, these methods will compare the column against a value:
-
-	DB::table('users')
-	        ->join('contacts', function($join)
-	        {
-	        	$join->on('users.id', '=', 'contacts.user_id')
-	        	     ->where('contacts.user_id', '>', 5);
-	        })
-	        ->get();
 
 <a name="advanced-wheres"></a>
 ## Advanced Wheres
