@@ -234,7 +234,15 @@ To send output to the console, use the `info`, `comment`, `question` and `error`
 
 To display an information message to the user, use the `info` method. Typically, this will display in the console as green text:
 
-	$this->info('Display this on the screen');
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+		$this->info('Display this on the screen');
+    }
 
 To display an error message, use the `error` method. Error message text is typically displayed in red:
 
