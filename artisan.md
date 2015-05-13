@@ -1,4 +1,4 @@
-# Artisan CLI
+# Artisan Console
 
 - [Introduction](#introduction)
 - [Writing Commands](#writing-commands)
@@ -8,6 +8,7 @@
 - [Writing Output To The Console](#writing-output-to-the-console)
 - [Registering Commands](#registering-commands)
 - [Calling Commands Via Code](#calling-commands-via-code)
+- [Scheduling Artisan Commands](/docs/{{version}}/scheduling)
 
 <a name="introduction"></a>
 ## Introduction

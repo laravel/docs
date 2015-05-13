@@ -22,6 +22,7 @@
     - [Facades](/docs/{{version}}/facades)
 - Services
     - [Authentication](/docs/{{version}}/authentication)
+    - [Artisan Console](/docs/{{version}}/artisan)
     - [Billing](/docs/{{version}}/billing)
     - [Cache](/docs/{{version}}/cache)
     - [Collections](/docs/{{version}}/collections)
@@ -40,6 +41,7 @@
     - [Queues](/docs/{{version}}/queues)
     - [Redis](/docs/{{version}}/redis)
     - [Session](/docs/{{version}}/session)
+    - [Task Scheduling](/docs/{{version}}/scheduling)
     - [Testing](/docs/{{version}}/testing)
     - [Validation](/docs/{{version}}/validation)
 - Database
@@ -48,6 +50,3 @@
     - [Eloquent ORM](/docs/{{version}}/eloquent)
     - [Migrations / Schema](/docs/{{version}}/schema)
     - [Database Seeding](/docs/{{version}}/seeds)
-- Artisan CLI
-    - [Basic Usage](/docs/{{version}}/artisan)
-    - [Scheduling Commands](/docs/{{version}}/scheduling)

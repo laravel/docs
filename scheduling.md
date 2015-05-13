@@ -1,115 +1,158 @@
-<a name="scheduling-artisan-commands"></a>
-## Scheduling Artisan Commands
+# Task Scheduling
 
-In the past, developers have generated a Cron entry for each console command they wished to schedule. However, this is a headache. Your console schedule is no longer in source control, and you must SSH into your server to add the Cron entries. Let's make our lives easier. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
+- [Introduction](#introduction)
+- [Defining Schedules](#defining-schedules)
+- [Preventing Task Overlaps](#preventing-task-overlaps)
+- [Task Output](#task-output)
+- [Post Task Hooks](#post-task-hooks)
 
-Your command schedule is stored in the `app/Console/Kernel.php` file. Within this class you will see a `schedule` method. To help you get started, a simple example is included with the method. You are free to add as many scheduled jobs as you wish to the `Schedule` object. The only Cron entry you need to add to your server is this:
+<a name="introduction"></a>
+## Introduction
+
+In the past, developers have generated a Cron entry for each task they needed to schedule. However, this is a headache. Your task schedule is no longer in source control, and you must SSH into your server to add the Cron entries. Let's make our lives easier. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
+
+Your task schedule is stored in the `app/Console/Kernel.php` file. Within this file you will see a `schedule` method. To help you get started, a simple example is included with the method. You are free to add as many scheduled tasks as you wish to the `Schedule` object.
+
+### Starting The Scheduler
+
+The only Cron entry you need to add to your server is this:
 
 	* * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
 
-This Cron will call the Laravel command scheduler every minute. Then, Laravel evaluates your scheduled jobs and runs the jobs that are due. It couldn't be easier!
+This Cron will call the Laravel command scheduler every minute. Then, Laravel evaluates your scheduled jobs and runs the jobs that are due.
 
-### More Scheduling Examples
+<a name="defining-schedules"></a>
+## Defining Schedules
 
-Let's look at a few more scheduling examples:
+You may define all of your scheduled tasks in the `schedule` method of the `App\Console\Kernel` class. To get started, let's look at an example of scheduling a task. In this example, we will schedule a `Closure` to be called every day at midnight. Within the `Closure` we will execute a database query to clear a table:
 
-#### Scheduling Closures
+	<?php namespace App\Console;
 
-	$schedule->call(function()
+	use DB;
+	use Illuminate\Console\Scheduling\Schedule;
+	use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
+	class Kernel extends ConsoleKernel
 	{
-		// Do some task...
+	    /**
+	     * The Artisan commands provided by your application.
+	     *
+	     * @var array
+	     */
+	    protected $commands = [
+	        'App\Console\Commands\Inspire',
+	    ];
 
-	})->hourly();
+	    /**
+	     * Define the application's command schedule.
+	     *
+	     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+	     * @return void
+	     */
+	    protected function schedule(Schedule $schedule)
+	    {
+	        $schedule->call(function () {
+	        	DB::table('recent_users')->delete();
+	        })->daily();
+	    }
+	}
 
-#### Scheduling Terminal Commands
+In addition to scheduling `Closure` calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command:
 
-	$schedule->exec('composer self-update')->daily();
+    $schedule->command('emails:send --force')->daily();
 
-#### Manual Cron Expression
+The `exec` command may be used to issue a command to the operating system:
 
-	$schedule->command('foo')->cron('* * * * *');
+    $schedule->exec('node /home/forge/script.js')->daily();
 
-#### Frequent Jobs
+### Available Schedule Methods
 
-	$schedule->command('foo')->everyFiveMinutes();
+Of course, there are a variety of schedules you may assign to your task:
 
-	$schedule->command('foo')->everyTenMinutes();
+Method  | Description
+------------- | -------------
+`->cron('* * * * *');`  |  Run the task on a custom Cron schedule
+`->everyFiveMinutes();`  |  Run the task every five minutes
+`->everyTenMinutes();`  |  Run the task every ten minutes
+`->everyThirtyMinutes();`  |  Run the task every thirty minutes
+`->hourly();`  |  Run the task every hour
+`->daily();`  |  Run the task every day at midnight
+`->dailyAt('13:00');`  |  Run the task every day at 13:00
+`->twiceDaily();`  |  Run the task daily at 1:00 & 13:00
+`->weekly();`  |  Run the task every week
+`->monthly();`  |  Run the task every month
 
-	$schedule->command('foo')->everyThirtyMinutes();
+These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. Some of these methods may be combined with other methods. For example, to schedule a command to run weekly on Monday:
 
-#### Daily Jobs
+	$schedule->call(function () {
+		// Runs once a week on Monday at 13:00...
+	})->weekly()->mondays()->at('13:00');
 
-	$schedule->command('foo')->daily();
+Below is a list of the additional schedule constraints:
 
-#### Daily Jobs At A Specific Time (24 Hour Time)
+Method  | Description
+------------- | -------------
+`->weekdays();`  |  Limit the task to weekdays
+`->sundays();`  |  Limit the task to Sunday
+`->mondays();`  |  Limit the task to Monday
+`->tuesdays();`  |  Limit the task to Tuesday
+`->wednesdays();`  |  Limit the task to Wednesday
+`->thursdays();`  |  Limit the task to Thursday
+`->fridays();`  |  Limit the task to Friday
+`->saturdays();`  |  Limit the task to Saturday
+`->when(Closure);`  |  Limit the task based on a truth test
 
-	$schedule->command('foo')->dailyAt('15:00');
+#### Truth Test Constraints
 
-#### Twice Daily Jobs
+The `when` method may be used to limit the execution of a task to a value of a given truth test. In other words, if the given `Closure` return `true` the task will execute as long as no other constraining conditions prevent the task from running:
 
-	$schedule->command('foo')->twiceDaily();
-
-#### Job That Runs Every Weekday
-
-	$schedule->command('foo')->weekdays();
-
-#### Weekly Jobs
-
-	$schedule->command('foo')->weekly();
-
-	// Schedule weekly job for specific day (0-6) and time...
-	$schedule->command('foo')->weeklyOn(1, '8:00');
-
-#### Monthly Jobs
-
-	$schedule->command('foo')->monthly();
-
-#### Job That Runs On Specific Days
-
-	$schedule->command('foo')->mondays();
-	$schedule->command('foo')->tuesdays();
-	$schedule->command('foo')->wednesdays();
-	$schedule->command('foo')->thursdays();
-	$schedule->command('foo')->fridays();
-	$schedule->command('foo')->saturdays();
-	$schedule->command('foo')->sundays();
-
-#### Prevent Jobs From Overlapping
-
-By default, scheduled jobs will be run even if the previous instance of the job is still running. To prevent this, you may use the `withoutOverlapping` method:
-
-	$schedule->command('foo')->withoutOverlapping();
-
-In this example, the `foo` command will be run every minute if it is not already running.
-
-#### Limit The Environment The Jobs Should Run In
-
-	$schedule->command('foo')->monthly()->environments('production');
-
-#### Indicate The Job Should Run Even When Application Is In Maintenance Mode
-
-	$schedule->command('foo')->monthly()->evenInMaintenanceMode();
-
-#### Only Allow Job To Run When Callback Is True
-
-	$schedule->command('foo')->monthly()->when(function()
-	{
+	$schedule->command('emails:send')->daily()->when(function () {
 		return true;
 	});
 
-#### E-mail The Output Of A Scheduled Job
+<a name="preventing-task-overlaps"></a>
+## Preventing Task Overlaps
 
-	$schedule->command('foo')->sendOutputTo($filePath)->emailOutputTo('foo@example.com');
+By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use the `withoutOverlapping` method:
 
-> **Note:** You must send the output to a file before it can be mailed.
+	$schedule->command('emails:send')->withoutOverlapping();
 
-#### Send The Output Of The Scheduled Job To A Given Location
+In this example, the `emails:send` [Artisan command](/docs/{{version}}/artisan) will be run every minute if it is not already running. The `withoutOverlapping` method is especially useful if you have tasks that vary drastically in their execution time, preventing you from predicting exactly how long a given task will take.
 
-	$schedule->command('foo')->sendOutputTo($filePath);
+<a name="task-output"></a>
+## Task Output
 
-#### Ping A Given URL After The Job Runs
+The Laravel scheduler provides several convenient methods for working with the output generated by scheduled tasks. First, using the `sendOutputTo` method, you may send the output to a file for later inspection:
 
-	$schedule->command('foo')->thenPing($url);
+	$schedule->command('emails:send')
+			 ->daily()
+			 ->sendOutputTo($filePath);
+
+Using the `emailOutputTo` method, you may e-mail the output to an e-mail address of your choice. Note that the output must first be sent to a file using the `sendOutputTo` method:
+
+	$schedule->command('foo')
+			 ->daily()
+			 ->sendOutputTo($filePath)
+			 ->emailOutputTo('foo@example.com');
+
+<a name="post-task-hooks"></a>
+## Post Task Hooks
+
+Using the `then` method, you may specify code to be executed after the scheduled task is complete:
+
+	$schedule->command('emails:send')
+			 ->daily()
+			 ->then(function () {
+			 	// Task is complete...
+			 });
+
+#### Pinging URLs
+
+Using the `thenPing` method, the scheduler can automatically ping a given URL when a task is complete. This method is useful for notifying an external service, such as [Laravel Envoyer](https://envoyer.io), that your scheduled task is complete:
+
+	$schedule->command('emails:send')
+			 ->daily()
+			 ->thenPing($url);
 
 Using the `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle 5 to your project by adding the following line to your `composer.json` file:
 

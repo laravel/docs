@@ -141,7 +141,7 @@ It looks like this:
 
 	$schedule->command('artisan:command')->dailyAt('15:00');
 
-Of course, check out the [full documentation](/docs/{{version}}/artisan#scheduling-artisan-commands) to learn all about the scheduler!
+Of course, check out the [full documentation](/docs/5.0/artisan#scheduling-artisan-commands) to learn all about the scheduler!
 
 ### Tinker / Psysh
 
