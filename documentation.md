@@ -49,5 +49,5 @@
     - [Migrations / Schema](/docs/{{version}}/schema)
     - [Database Seeding](/docs/{{version}}/seeds)
 - Artisan CLI
-    - [Overview](/docs/{{version}}/artisan)
-    - [Development](/docs/{{version}}/commands)
+    - [Basic Usage](/docs/{{version}}/artisan)
+    - [Scheduling Commands](/docs/{{version}}/scheduling)
