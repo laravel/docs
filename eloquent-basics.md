@@ -91,7 +91,7 @@ By default, Eloquent expects `created_at` and `updated_at` columns to exist on y
 		public $timestamps = false;
 	}
 
-If you need to customize the format of your timestamps, override the `getDateFormat` method in your model:
+If you need to customize the format of your timestamps, you may set the `$dateFormat` property on your model. This will determine how date attributes are stored in the database, as well as their format when the model is serialized to an array or JSON:
 
 	<?php namespace App;
 
@@ -100,14 +100,11 @@ If you need to customize the format of your timestamps, override the `getDateFor
 	class Flight extends Model
 	{
 		/**
-		 * Get the format for database stored dates.
+		 * The storage format of the model's date columns.
 		 *
-		 * @return string
+		 * @var string
 		 */
-		protected function getDateFormat()
-		{
-			return 'U';
-		}
+		protected $dateFormat = 'U';
 	}
 
 <a name="retrieving-multiple-models"></a>
