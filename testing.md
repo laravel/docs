@@ -141,7 +141,7 @@ Laravel also provides several methods for testing forms such as `type`, `select`
 		</div>
 
 		<div>
-			<input type="subnit" value="Register">
+			<input type="submit" value="Register">
 		</div>
 	</form>
 
