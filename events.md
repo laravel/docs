@@ -137,7 +137,7 @@ To fire an event, you may use the simple `Event` [facade](/docs/{{version}}/faca
 		{
 			$podcast = Podcast::findOrFail($podcastId);
 
-			// Purhcase podcast logic...
+			// Purchase podcast logic...
 
 			Event::fire(new PodcastWasPurchased($podcast));
 		}
