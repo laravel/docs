@@ -45,8 +45,13 @@
     - [Testing](/docs/{{version}}/testing)
     - [Validation](/docs/{{version}}/validation)
 - Database
-    - [Basic Usage](/docs/{{version}}/database)
+    - [The Basics](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)
-    - [Eloquent ORM](/docs/{{version}}/eloquent)
     - [Migrations / Schema](/docs/{{version}}/schema)
-    - [Database Seeding](/docs/{{version}}/seeds)
+    - [Seeding](/docs/{{version}}/seeds)
+- Eloquent ORM
+    - [The Basics](/docs/{{version}}/eloquent-basics)
+    - [Relationships](/docs/{{version}}/eloquent-relationships)
+    - [Collections](/docs/{{version}}/eloquent-collections)
+    - [Mutators](/docs/{{version}}/eloquent-mutators)
+    - [JSON Serialization](/docs/{{version}}/eloquent-serialization)

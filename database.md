@@ -1,4 +1,4 @@
-# Basic Database Usage
+# Database Basics
 
 - [Configuration](#configuration)
 - [Running Raw SQL Queries](#running-queries)
