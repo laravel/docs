@@ -116,7 +116,7 @@ You may also access additional pagination information via the following methods 
 
 The Laravel paginator result classes implement the `Illuminate\Contracts\Support\JsonableInterface` contract and exposes the `toJson` method, so it's very easy to convert your pagination results to JSON.
 
-You may also convert a pagiantor instance to JSON by simply returning it from a route or controller action:
+You may also convert a pagintor instance to JSON by simply returning it from a route or controller action:
 
 	Route::get('users/paginate', function() {
 		return App\User::paginate();

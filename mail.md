@@ -11,7 +11,7 @@
 
 Laravel provides a clean, simple API over the popular [SwiftMailer](http://swiftmailer.org) library. Laravel provides drivers for SMTP, Mailgun, Mandrill, Amazon SES, PHP's `mail` function and `sendmail`.
 
-### Driver Prerequisuites
+### Driver Prerequisites
 
 These drivers for API based mail systems such as Mailgun and Mandrill are often simpler and quicker than using SMTP servers. Both of these drivers require that the Guzzle 5 HTTP library be installed for your application. You can add Guzzle 5 to your project by adding the following line to your `composer.json` file:
 
