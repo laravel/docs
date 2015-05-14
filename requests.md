@@ -39,7 +39,7 @@ If your controller method is also expecting input from a route parameter, simply
 
 	Route::put('user/{id}', 'UserController@update');
 
-You may stil type-hint the `Request` and access your route parameter `id` by defining your controller method like the following:
+You may still type-hint the `Request` and access your route parameter `id` by defining your controller method like the following:
 
 	<?php namespace App\Http\Controllers;
 
