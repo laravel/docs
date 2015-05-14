@@ -6,7 +6,7 @@
 - [Retrieving Multiple Models](#retrieving-multiple-models)
 - [Retrieving Single Models / Aggregates](#retrieving-single-models)
 	- [Retrieving Aggregates](#retrieving-aggregates)
-- [Inserting & Updating Modals](#inserting-and-updating-models)
+- [Inserting & Updating Models](#inserting-and-updating-models)
 	- [Basic Inserts](#basic-inserts)
 	- [Basic Updates](#basic-updates)
 	- [Mass Assignment](#mass-assignment)
@@ -331,7 +331,7 @@ To delete a model, call the `delete` method on a model instance:
 
 #### Deleting An Existing Model By Key
 
-In the example above, we are retrieving the modal from the database before calling the `delete` method. However, if you know the primary key of the model, you may delete the model without retrieving it. To do so, call the `destroy` method:
+In the example above, we are retrieving the model from the database before calling the `delete` method. However, if you know the primary key of the model, you may delete the model without retrieving it. To do so, call the `destroy` method:
 
 	App\Flight::destroy(1);
 
