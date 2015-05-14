@@ -107,7 +107,7 @@ Of course, you may not always want to select all columns from a database table. 
 
 	$users = DB::table('users')->select('name', 'email as user_email')->get();
 
-The `distinct` method allows you to force the query to return distinct reuslts:
+The `distinct` method allows you to force the query to return distinct results:
 
 	$users = DB::table('users')->distinct()->get();
 
