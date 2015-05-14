@@ -36,12 +36,20 @@ Secondly, the `App\Services\Registrar` class used in Laravel 5.0 is no longer ne
 
 ### Eloquent
 
+#### Create Method Signature
+
 Eloquent's `create` method can now be called without any parameters. If you are overriding the `create` method in your own models, set the default value of the `$attributes` parameter to an array:
 
 	public static function create(array $attributes = [])
 	{
 		// Your custom implementation
 	}
+
+#### Date Formatting
+
+Perviously, the storage format for Eloquent date fields could be modified by overriding the `getDateFormat` method on your model. This is still possible; however, for convenience you may simply specify a `$dateFormat` property on the model instead of overriding the method.
+
+The date format is also now applied when serializing a model to an `array` or JSON. This may change the format of your JSON serialized date fields whe migrating from Laravel 5.0 to 5.1. To set a specific date format for serialized models, you may override the `serializeDate(DateTime $date)` method on your model. This method allows you to have granular control over the formatting of serialized Eloquent date fields without changing their storage format.
 
 ### The Collection Class
 
