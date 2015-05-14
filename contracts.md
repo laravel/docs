@@ -23,7 +23,7 @@ Laravel's [facades](/docs/{{version}}/facades) provide a simple way of utilizing
 
 You may have several questions regarding contracts. Why use interfaces at all? Isn't using interfaces more complicated?
 
-Let's distill the reasons for using interfaces to the following headings: loose coupling and simplicity.
+Let's distil the reasons for using interfaces to the following headings: loose coupling and simplicity.
 
 ### Loose Coupling
 
