@@ -6,6 +6,8 @@
 	- [One To Many](#one-to-many)
 	- [Many To Many](#many-to-many)
 	- [Has Many Through](#has-many-through)
+	- [Polymorphic Relations](#polymorphic-relations)
+	- [Many To Many Polymorphic Relations](#many-to-many-polymorphic-relations)
 - [Querying Relations](#querying-relations)
 	- [Eager Loading](#eager-loading)
 	- [Constraining Eager Loads](#constraining-eager-loads)
@@ -320,6 +322,176 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 			return $this->hasManyThrough('App\Post', 'App\User', 'country_id', 'user_id');
 		}
 
+	}
+
+<a name="polymorphic-relations"></a>
+### Polymorphic Relations
+
+#### Table Structure
+
+Polymorphic relations allow a model to belong to more than one other model on a single association. For example, imagine you want to store photos for your staff members and for your products. Using polymorphic relationships, you can use a single `photos` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
+
+	staff
+		id - integer
+		name - string
+
+	products
+		id - integer
+		price - integer
+
+	photos
+		id - integer
+		path - string
+		imageable_id - integer
+		imageable_type - string
+
+Two important columns to note are the `imageable_id` and `imageable_type` columns on the `photos` table. The `imageable_id` column will contain the ID value of the owning staff or product, while the `imageable_type` column will contain the class name of the owning model. The `imageable_type` column is how the ORM determines which "type" of owning model to return when accessing the `imageable` relation.
+
+#### Model Structure
+
+Next, let's examine the model definitions needed to build this relationship:
+
+	<?php namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class Photo extends Model
+	{
+		/**
+		 * Get all of the owning imageable models.
+		 */
+		public function imageable()
+		{
+			return $this->morphTo();
+		}
+	}
+
+	class Staff extends Model
+	{
+		/**
+		 * Get all of the staff member's photos.
+		 */
+		public function photos()
+		{
+			return $this->morphMany('App\Photo', 'imageable');
+		}
+	}
+
+	class Product extends Model
+	{
+		/**
+		 * Get all of the product's photos.
+		 */
+		public function photos()
+		{
+			return $this->morphMany('App\Photo', 'imageable');
+		}
+	}
+
+#### Retrieving Polymorphic Relations
+
+Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the photos for a staff member, we can simply use the `photos` dynamic property:
+
+	$staff = App\Staff::find(1);
+
+	foreach ($staff->photos as $photo) {
+		//
+	}
+
+You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `imageable` method on the `Photo` model. So, we will access that method as a dynamic property:
+
+	$photo = App\Photo::find(1);
+
+	$imageable = $photo->imageable;
+
+The `imageable` relation on the `Photo` model will return either a `Staff` or `Order` instance, depending on which type of model owns the photo.
+
+<a name="many-to-many-polymorphic-relations"></a>
+### Many To Many Polymorphic Relations
+
+#### Table Structure
+
+In addition to traditional polymorphic relations, you may also define "many-to-many" polymorphic relations. For example, a blog `Post` and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation allows you to have a single list of unique tags that are shared across blog posts and videos. First, let's examine the table structure:
+
+	posts
+		id - integer
+		name - string
+
+	videos
+		id - integer
+		name - string
+
+	tags
+		id - integer
+		name - string
+
+	taggables
+		tag_id - integer
+		taggable_id - integer
+		taggable_type - string
+
+#### Model Structure
+
+Next, we're ready to define the relationships on the model. The `Post` and `Video` models will both have a `tags` method that calls the `morphToMany` method on the base Eloquent class:
+
+	<?php namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class Post extends Model
+	{
+		/**
+		 * Get all of the tags for the post.
+		 */
+		public function tags()
+		{
+			return $this->morphToMany('App\Tag', 'taggable');
+		}
+	}
+
+#### Defining The Inverse Of The Relationship
+
+Next, on the `Tag` model, you should define a method for each of its related models. So, for this example, we will define a `posts` method and a `videos` method:
+
+	<?php namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class Tag extends Model
+	{
+		/**
+		 * Get all of the posts that are assigned this tag.
+		 */
+		public function posts()
+		{
+			return $this->morphedByMany('App\Post', 'taggable');
+		}
+
+		/**
+		 * Get all of the videos that are assigned this tag.
+		 */
+		public function videos()
+		{
+			return $this->morphedByMany('App\Video', 'taggable');
+		}
+	}
+
+#### Retrieving The Relationship
+
+Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you can simply use the `tags` dynamic property:
+
+	$post = App\Post::find(1);
+
+	foreach ($post->tags as $tag) {
+		//
+	}
+
+You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphedByMany`. In our case, that is the `posts` or `videos` methods on the `Tag` model. So, you will access those methods as dynamic properties:
+
+	$tag = App\Tag::find(1);
+
+	foreach ($tag->videos as $video) {
+		//
 	}
 
 <a name="querying-relations"></a>
