@@ -304,6 +304,12 @@ Then, you could instruct a library like jQuery to add the token to all request h
 			}
 	});
 
+#### X-XSRF-TOKEN
+
+Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some JavaScript frameworks, like Angular, do this automatically for you.
+
+> Note: The difference between the `X-CSRF-TOKEN` and `X-XSRF-TOKEN` is that the first uses a plain text value and the latter uses an encrypted value since Laravel cookies are always encrypted and signed.
+
 <a name="method-spoofing"></a>
 ## Method Spoofing
 
