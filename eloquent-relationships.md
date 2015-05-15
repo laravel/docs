@@ -11,8 +11,7 @@
 	- [Constraining Eager Loads](#constraining-eager-loads)
 	- [Lazy Eager Loading](#lazy-eager-loading)
 - [Inserting Related Models](#inserting-related-models)
-- [Touching Parent Timestamps](#touching-parent-timestamps)
-- [Working With Pivot Tables](#working-with-pivot-tables)
+	- [Many To Many Relationships](#inserting-many-to-many-relationships)
 
 <a name="introduction"></a>
 ## Introduction
@@ -251,6 +250,26 @@ To define the inverse of a many-to-many relationship, you simply place another c
 	}
 
 As you can see, the relationship is defined exactly the same as its `User` counterpart, with the exception of simply referencing the `App\User` model. Since we're reusing the `belongsToMany` method, all of the usual table and key customization options are available when defining the inverse of many-to-many relationships.
+
+#### Retrieving Intermediate Table Columns
+
+As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` object has many `Role` objects that it is related to. After accessing this relationship, we may access the intermediate table using the `pivot` attribute on the models:
+
+	$user = App\User::find(1);
+
+	foreach ($user->roles as $role) {
+		echo $role->pivot->created_at;
+	}
+
+Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table, and may be used like any other Eloquent model.
+
+By default, only the model keys will be present on the `pivot` object. If your pivot table contains extra attributes, you must specify them when defining the relationship:
+
+	return $this->belongsToMany('App\Role')->withPivot('column1', 'column2');
+
+If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
+
+	return $this->belongsToMany('App\Role')->withTimestamps();
 
 <a name="has-many-through"></a>
 ### Has Many Through
@@ -501,6 +520,7 @@ In addition to the `save` and `saveMany` methods, you may also use the `create` 
 
 Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent-basics#mass-assignment).
 
+<a name="inserting-many-to-many-relationships"></a>
 ### Many To Many Relationships
 
 #### Attaching / Detaching
@@ -517,7 +537,11 @@ When attaching a relationship to a model, you may also pass an array of addition
 
 Of course, sometimes it may be necessary to remove a role from a user. To remove a many-to-many relationship record, use the `detach` method. The `detach` method will remove the appropriate record out of the intermediate table; however, both models will remain in the database:
 
+	// Detach a single role from the user...
 	$user->roles()->detach($roleId);
+
+	// Detach all roles from the user...
+	$user->roles()->detach();
 
 For convenience, `attach` and `detach` also accept arrays of IDs as input:
 
@@ -536,74 +560,3 @@ You may also use the `sync` method to construct many-to-many associations. The `
 You may also pass additional intermediate table values with the IDs:
 
 	$user->roles()->sync([1 => ['expires' => true], 2, 3]);
-
-<a name="touching-parent-timestamps"></a>
-## Touching Parent Timestamps
-
-When a model `belongsTo` another model, such as a `Comment` which belongs to a `Post`, it is often helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically touch the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
-
-	class Comment extends Model {
-
-		protected $touches = ['post'];
-
-		public function post()
-		{
-			return $this->belongsTo('App\Post');
-		}
-
-	}
-
-Now, when you update a `Comment`, the owning `Post` will have its `updated_at` column updated:
-
-	$comment = Comment::find(1);
-
-	$comment->text = 'Edit to this comment!';
-
-	$comment->save();
-
-<a name="working-with-pivot-tables"></a>
-## Working With Pivot Tables
-
-As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` object has many `Role` objects that it is related to. After accessing this relationship, we may access the `pivot` table on the models:
-
-	$user = User::find(1);
-
-	foreach ($user->roles as $role)
-	{
-		echo $role->pivot->created_at;
-	}
-
-Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table, and may be used as any other Eloquent model.
-
-By default, only the keys will be present on the `pivot` object. If your pivot table contains extra attributes, you must specify them when defining the relationship:
-
-	return $this->belongsToMany('App\Role')->withPivot('foo', 'bar');
-
-Now the `foo` and `bar` attributes will be accessible on our `pivot` object for the `Role` model.
-
-If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
-
-	return $this->belongsToMany('App\Role')->withTimestamps();
-
-#### Deleting Records On A Pivot Table
-
-To delete all records on the pivot table for a model, you may use the `detach` method:
-
-	User::find(1)->roles()->detach();
-
-Note that this operation does not delete records from the `roles` table, but only from the pivot table.
-
-#### Updating A Record On A Pivot Table
-
-Sometimes you may need to update your pivot table, but not detach it. If you wish to update your pivot table in place you may use `updateExistingPivot` method like so:
-
-	User::find(1)->roles()->updateExistingPivot($roleId, $attributes);
-
-#### Defining A Custom Pivot Model
-
-Laravel also allows you to define a custom Pivot model. To define a custom model, first create your own "Base" model class that extends `Eloquent`. In your other Eloquent models, extend this custom base model instead of the default `Eloquent` base. In your base model, add the following function that returns an instance of your custom Pivot model:
-
-	public function newPivot(Model $parent, array $attributes, $table, $exists)
-	{
-		return new YourCustomPivot($parent, $attributes, $table, $exists);
-	}
