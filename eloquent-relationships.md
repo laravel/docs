@@ -7,7 +7,9 @@
 	- [Many To Many](#many-to-many)
 	- [Has Many Through](#has-many-through)
 - [Querying Relations](#querying-relations)
-- [Eager Loading](#eager-loading)
+	- [Eager Loading](#eager-loading)
+	- [Constraining Eager Loads](#constraining-eager-loads)
+	- [Lazy Eager Loading](#lazy-eager-loading)
 - [Inserting Related Models](#inserting-related-models)
 - [Touching Parent Timestamps](#touching-parent-timestamps)
 - [Working With Pivot Tables](#working-with-pivot-tables)
@@ -253,7 +255,7 @@ As you can see, the relationship is defined exactly the same as its `User` count
 <a name="has-many-through"></a>
 ### Has Many Through
 
-The "has many through" relation provides a convenient short-cut for accessing distant relations via an intermediate relation. For example, a `Country` model might have many `Post` through a `User` model. The tables for this relationship would look like this:
+The "has-many-through" relationship provides a convenient short-cut for accessing distant relations via an intermediate relation. For example, a `Country` model might have many `Post` models through an intermediate `User` model. In this example, you could easily gather all blog posts for a given country. Let's look at the tables required to define this relationship:
 
 	countries
 		id - integer
@@ -269,18 +271,28 @@ The "has many through" relation provides a convenient short-cut for accessing di
 		user_id - integer
 		title - string
 
-Even though the `posts` table does not contain a `country_id` column, the `hasManyThrough` relation will allow us to access a country's posts via `$country->posts`. Let's define the relationship:
+Though `posts` does not contain a `country_id` column, the `hasManyThrough` relation provides access to a country's posts via `$country->posts`. To perform this query, Eloquent inspects the `country_id` on the intermediate `users` table. After finding the matching user IDs, they are used to query the `posts` table.
 
-	class Country extends Model {
+Now that we have examined the table structure for the relationship, let's define it on the `Country` model:
 
+	<?php namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class Country extends Model
+	{
+		/**
+		 * Get all of the posts for the country.
+		 */
 		public function posts()
 		{
 			return $this->hasManyThrough('App\Post', 'App\User');
 		}
-
 	}
 
-If you would like to manually specify the keys of the relationship, you may pass them as the third and fourth arguments to the method:
+The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+
+Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model, while the fourth argument is the name of the foreign key on the final model.
 
 	class Country extends Model {
 
@@ -294,221 +306,236 @@ If you would like to manually specify the keys of the relationship, you may pass
 <a name="querying-relations"></a>
 ## Querying Relations
 
-#### Querying Relations When Selecting
+Since all types of Eloquent relationships are defined via functions, you may call those functions to obtain an instance of the relationship without actually executing the relationship queries. In addition, all types of Eloquent relationships also serve as [query builders](/docs/{{version}}/queries), allowing you to continue to chain constraints onto the relationship query before finally executing the SQL against your database.
 
-When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, you wish to pull all blog posts that have at least one comment. To do so, you may use the `has` method:
+For example, imagine a blog system in which a `User` model has many associated `Post` models:
 
-	$posts = Post::has('comments')->get();
+	<?php namespace App;
 
-You may also specify an operator and a count:
+	use Illuminate\Database\Eloquent\Model;
 
-	$posts = Post::has('comments', '>=', 3)->get();
-
-Nested `has` statements may also be constructed using "dot" notation:
-
-	$posts = Post::has('comments.votes')->get();
-
-If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries:
-
-	$posts = Post::whereHas('comments', function($q)
+	class User extends Model
 	{
-		$q->where('content', 'like', 'foo%');
-
-	})->get();
-
-<a name="dynamic-properties"></a>
-### Dynamic Properties
-
-Eloquent allows you to access your relations via dynamic properties. Eloquent will automatically load the relationship for you, and is even smart enough to know whether to call the `get` (for one-to-many relationships) or `first` (for one-to-one relationships) method.  It will then be accessible via a dynamic property by the same name as the relation. For example, with the following model `$phone`:
-
-	class Phone extends Model {
-
-		public function user()
+		/**
+		 * Get all of the posts for the user.
+		 */
+		public function posts()
 		{
-			return $this->belongsTo('App\User');
+			return $this->hasMany('App\Post');
 		}
-
 	}
 
-	$phone = Phone::find(1);
+You may query the `posts` relationship and add additional constraints to the relationship like so:
 
-Instead of echoing the user's email like this:
+	$user = App\User::find(1);
 
-	echo $phone->user()->first()->email;
+	$user->posts()->where('active', 1)->get();
 
-It may be shortened to simply:
+Note that you are able to use any of the [query builder](/docs/{{version}}/queries) on the relationship!
 
-	echo $phone->user->email;
+#### Relationship Methods Vs. Dynamic Properties
 
-> **Note:** Relationships that return many results will return an instance of the `Illuminate\Database\Eloquent\Collection` class.
+If you do not need to add additional constraints to an Eloquent relationship query, you may simply access the relationship as if it were a property. For example, continuing to use our `User` and `Post` example models, we may access all of a user's posts like so:
+
+	$user = App\User::find(1);
+
+	foreach ($user->posts as $post) {
+		//
+	}
+
+Dynamic properties are "lazy loading", meaning they will only load their relationship data when you actually access them. Because of this, developers often use [eager loading](#eager-loading) to pre-load relationships they know will be accessed after loading the model. Eager loading provides a significant reduction in SQL queries that must be executed to load a model's relations.
+
+#### Querying Relationship Existence
+
+When accessing the records for a model, you may wish to limit your results based on the existence of a relationship. For example, imagine you want to retrieve all blog posts that have at least one comment. To do so, you may pass the name of the relationship to the `has` method:
+
+	// Retrieve all posts that have at least one comment...
+	$posts = App\Post::has('comments')->get();
+
+You may also specify an operator and count to further customize the query:
+
+	// Retrieve all posts that have three or more comments...
+	$posts = Post::has('comments', '>=', 3)->get();
+
+Nested `has` statements may also be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment and vote:
+
+	// Retrieve all posts that have at least one comment with votes...
+	$posts = Post::has('comments.votes')->get();
+
+If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
+
+	// Retrieve all posts with at least one comment containing words like foo%
+	$posts = Post::whereHas('comments', function ($q) {
+		$q->where('content', 'like', 'foo%');
+	})->get();
 
 <a name="eager-loading"></a>
-## Eager Loading
+### Eager Loading
 
-Eager loading exists to alleviate the N + 1 query problem. For example, consider a `Book` model that is related to `Author`. The relationship is defined like so:
+When accessing Eloquent relationships as properties, the relationship data is "lazy loaded". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can "eager load" relationships at the time you query the parent model. Eager loading alleviates the N + 1 query problem. To illustrate the N + 1 query problem, consider a `Book` model that is related to `Author`:
 
-	class Book extends Model {
+	<?php namespace App;
 
+	use Illuminate\Database\Eloquent\Model;
+
+	class Book extends Model
+	{
+		/**
+		 * Get the author that wrote the book.
+		 */
 		public function author()
 		{
 			return $this->belongsTo('App\Author');
 		}
-
 	}
 
-Now, consider the following code:
+Now, let's retrieve all books and their authors:
 
-	foreach (Book::all() as $book)
-	{
+	$books = App\Book::all();
+
+	foreach ($books as $book) {
 		echo $book->author->name;
 	}
 
-This loop will execute 1 query to retrieve all of the books on the table, then another query for each book to retrieve the author. So, if we have 25 books, this loop would run 26 queries.
+This loop will execute 1 query to retrieve all of the books on the table, then another query for each book to retrieve the author. So, if we have 25 books, this loop would run 26 queries: 1 for the original book, and 25 additional queries to retrieve the author of each book.
 
-Thankfully, we can use eager loading to drastically reduce the number of queries. The relationships that should be eager loaded may be specified via the `with` method:
+Thankfully, we can use eager loading to reduce this opreation to just 2 queries. When querying, you may specify which relationships should be eager loaded using the `with` method:
 
-	foreach (Book::with('author')->get() as $book)
-	{
+	$books = App\Book::with('author')->get();
+
+	foreach ($books as $book) {
 		echo $book->author->name;
 	}
 
-In the loop above, only two queries will be executed:
+For this operation, only two queries will be executed:
 
 	select * from books
 
 	select * from authors where id in (1, 2, 3, 4, 5, ...)
 
-Wise use of eager loading can drastically increase the performance of your application.
+#### Eager Loading Multiple Relationships
 
-Of course, you may eager load multiple relationships at one time:
+Sometimes you may need to eager load several different relationships in a single operation. To do so, just pass additional arguments to the `with` method:
 
-	$books = Book::with('author', 'publisher')->get();
+	$books = App\Book::with('author', 'publisher')->get();
 
-You may even eager load nested relationships:
+#### Nested Eager Loading
+
+To eager load nested relationships, you may use "dot" synatx. For example, let's eager load all of the book's authors and all of the author's personal contacts in one Eloquent statement:
 
 	$books = Book::with('author.contacts')->get();
 
-In the example above, the `author` relationship will be eager loaded, and the author's `contacts` relation will also be loaded.
+<a name="constraining-eager-loads"></a>
+### Constraining Eager Loads
 
-### Eager Load Constraints
+Sometimes you may wish to eager load a relationship, but also specify additional query constraints for the eager loading query. Here's an example:
 
-Sometimes you may wish to eager load a relationship, but also specify a condition for the eager load. Here's an example:
-
-	$users = User::with(['posts' => function($query)
-	{
+	$users = App\User::with(['posts' => function ($query) {
 		$query->where('title', 'like', '%first%');
 
 	}])->get();
 
-In this example, we're eager loading the user's posts, but only if the post's title column contains the word "first".
+In this example, Eloquent will only eager load posts that if the post's `title` column contains the word `first`. Of course, you may call other [query builder](/docs/{{version}}/queries) to further customize the eager loading operation:
 
-Of course, eager loading Closures aren't limited to "constraints". You may also apply orders:
-
-	$users = User::with(['posts' => function($query)
-	{
+	$users = App\User::with(['posts' => function ($query) {
 		$query->orderBy('created_at', 'desc');
 
 	}])->get();
 
+<a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
-It is also possible to eagerly load related models directly from an already existing model collection. This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.
+Sometimes you may need to eager load a relationship after the parent model has already been retrieved. For example, this may be useful if you need to dynamically decide whether to load related models:
 
-	$books = Book::all();
+	$books = App\Book::all();
 
-	$books->load('author', 'publisher');
+	if ($someCondition) {
+		$books->load('author', 'publisher');
+	}
 
-You may also pass a Closure to set constraints on the query:
+If you need set additional query constraints on the eager loading query, you may pass a `Closure` to the `load` method:
 
-	$books->load(['author' => function($query)
-	{
+	$books->load(['author' => function ($query) {
 		$query->orderBy('published_date', 'asc');
 	}]);
 
 <a name="inserting-related-models"></a>
 ## Inserting Related Models
 
-#### Attaching A Related Model
+#### The Save Method
 
-You will often need to insert new related models. For example, you may wish to insert a new comment for a post. Instead of manually setting the `post_id` foreign key on the model, you may insert the new comment from its parent `Post` model directly:
+Eloquent provides convenient methods for adding new models to relationships. For example, perhaps you need to insert a new `Comment` for a `Post` model. Instead of manually setting the `post_id` attribute on the `Comment`, you may insert the `Comment` directly from the relationship's `save` method:
 
-	$comment = new Comment(['message' => 'A new comment.']);
+	$comment = new App\Comment(['message' => 'A new comment.']);
 
-	$post = Post::find(1);
+	$post = App\Post::find(1);
 
 	$comment = $post->comments()->save($comment);
 
-In this example, the `post_id` field will automatically be set on the inserted comment.
+Notice that we did not access the `comments` relationship as a dynamic property. Instead, we called the `comments` method to obtain an instance of the relationship. The `save` method will automatically add the appropriate `post_id` value to the new `Comment` model.
 
-If you need to save multiple related models:
+If you need to save multiple related models, you may use the `saveMany` method:
 
-	$comments = [
-		new Comment(['message' => 'A new comment.']),
-		new Comment(['message' => 'Another comment.']),
-		new Comment(['message' => 'The latest comment.'])
-	];
+	$post = App\Post::find(1);
 
-	$post = Post::find(1);
+	$post->comments()->saveMany([
+		new App\Comment(['message' => 'A new comment.']),
+		new App\Comment(['message' => 'Another comment.']),
+	]);
 
-	$post->comments()->saveMany($comments);
+#### Save & Many To Many Relationships
 
-### Associating Models (Belongs To)
+When working with a many-to-many relationship, the `save` method accepts an array of additional intermediate table attributes as its second argument:
 
-When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
+	App\User::find(1)->roles()->save($role, ['expires' => $expires]);
 
-	$account = Account::find(10);
+#### The Create Method
 
-	$user->account()->associate($account);
+In addition to the `save` and `saveMany` methods, you may also use the `create` method, which accepts an array of attributes, creates a model, and inserts it into the database. Again, the difference between `save` and `create` is that `save` accepts a full Eloquent model instance while `create` accepts a plain PHP `array`:
 
-	$user->save();
+	$post = App\Post::find(1);
 
-### Inserting Related Models (Many To Many)
+	$comment = $post->comments()->create([
+		'message' => 'A new comment.',
+	]);
 
-You may also insert related models when working with many-to-many relations. Let's continue using our `User` and `Role` models as examples. We can easily attach new roles to a user using the `attach` method:
+Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent-basics#mass-assignment).
 
-#### Attaching Many To Many Models
+### Many To Many Relationships
 
-	$user = User::find(1);
+#### Attaching / Detaching
 
-	$user->roles()->attach(1);
+When working with many-to-many relationships, Eloquent provides a few additional helper methods to make working with related models more convenient. For example, let's imagine a user can have many roles and a role can have many users. To attach a role to a user by inserting a record in the intermediate table that joins the models, use the `attach` method:
 
-You may also pass an array of attributes that should be stored on the pivot table for the relation:
+	$user = App\User::find(1);
 
-	$user->roles()->attach(1, ['expires' => $expires]);
+	$user->roles()->attach($roleId);
 
-Of course, the opposite of `attach` is `detach`:
+When attaching a relationship to a model, you may also pass an array of additional data to be inserted into the intermediate table:
 
-	$user->roles()->detach(1);
+	$user->roles()->attach($roleId, ['expires' => $expires]);
 
-Both `attach` and `detach` also take arrays of IDs as input:
+Of course, sometimes it may be necessary to remove a role from a user. To remove a many-to-many relationship record, use the `detach` method. The `detach` method will remove the appropriate record out of the intermediate table; however, both models will remain in the database:
 
-	$user = User::find(1);
+	$user->roles()->detach($roleId);
+
+For convenience, `attach` and `detach` also accept arrays of IDs as input:
+
+	$user = App\User::find(1);
 
 	$user->roles()->detach([1, 2, 3]);
 
-	$user->roles()->attach([1 => ['attribute1' => 'value1'], 2, 3]);
+	$user->roles()->attach([1 => ['expires' => $expires], 2, 3]);
 
-#### Using Sync To Attach Many To Many Models
+#### Syncing For Convenience
 
-You may also use the `sync` method to attach related models. The `sync` method accepts an array of IDs to place on the pivot table. After this operation is complete, only the IDs in the array will be on the intermediate table for the model:
+You may also use the `sync` method to construct many-to-many associations. The `sync` method accepts an array of IDs to place on the intermediate table. Any IDs that are not in the given array will be removed from the intermediate table. So, after this operation is complete, only the IDs in the array will exist in the intermediate table:
 
 	$user->roles()->sync([1, 2, 3]);
 
-#### Adding Pivot Data When Syncing
+You may also pass additional intermediate table values with the IDs:
 
-You may also associate other pivot table values with the given IDs:
-
-	$user->roles()->sync([1 => ['expires' => true]]);
-
-Sometimes you may wish to create a new related model and attach it in a single command. For this operation, you may use the `save` method:
-
-	$role = new Role(['name' => 'Editor']);
-
-	User::find(1)->roles()->save($role);
-
-In this example, the new `Role` model will be saved and attached to the user model. You may also pass an array of attributes to place on the joining table for this operation:
-
-	User::find(1)->roles()->save($role, ['expires' => $expires]);
+	$user->roles()->sync([1 => ['expires' => true], 2, 3]);
 
 <a name="touching-parent-timestamps"></a>
 ## Touching Parent Timestamps
