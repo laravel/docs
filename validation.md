@@ -533,7 +533,7 @@ The field under validation must be present in the input data.
 <a name="rule-required-if"></a>
 #### required_if:_field_,_value_,...
 
-The field under validation must be present if the _field_ field is equal to any _value_.
+The field under validation must be present if the _field_ is equal to any _value_.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
