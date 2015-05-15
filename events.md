@@ -89,6 +89,15 @@ If no exceptions are thrown when the handler is executed by the queue, the queue
 
 If you have an existing handler that you would like to convert to a queued handler, simply add the `ShouldBeQueued` interface to the class manually.
 
+### Specifying The Queue / Tube for a Queued Event
+
+You can also specify the tube / queue for the job by implementing the queue method to gain access to the queue instance and manually call push.
+
+	public function queue($queue, $job, $args)
+	{
+		$queue->push($job, $args, 'someTube');
+	}
+
 <a name="event-subscribers"></a>
 ## Event Subscribers
 
