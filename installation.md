@@ -3,6 +3,8 @@
 - [Install Composer](#install-composer)
 - [Install Laravel](#install-laravel)
 - [Server Requirements](#server-requirements)
+- [Configuration](#configuration)
+- [Pretty URLs](#pretty-urls)
 
 <a name="install-composer"></a>
 ## Install Composer
