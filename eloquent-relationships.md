@@ -64,7 +64,7 @@ Eloquent assumes the foreign key of the relationship based on the model name. In
 
 	return $this->hasOne('App\Phone', 'foreign_key');
 
-Additionally, Eloquent assumes that the foreign key should have a value matching the `id` column of the parent. In otherwords, Eloquent will look for the value of the user's `id` column in the `user_id` column of the `Phone` record. If you would like the relationship to use a value other than `id`, you may pass a third argument to the `hasOne` method specifying your custom key:
+Additionally, Eloquent assumes that the foreign key should have a value matching the `id` column of the parent. In other words, Eloquent will look for the value of the user's `id` column in the `user_id` column of the `Phone` record. If you would like the relationship to use a value other than `id`, you may pass a third argument to the `hasOne` method specifying your custom key:
 
 	return $this->hasOne('App\Phone', 'foreign_key', 'local_key');
 
@@ -592,7 +592,7 @@ Now, let's retrieve all books and their authors:
 
 This loop will execute 1 query to retrieve all of the books on the table, then another query for each book to retrieve the author. So, if we have 25 books, this loop would run 26 queries: 1 for the original book, and 25 additional queries to retrieve the author of each book.
 
-Thankfully, we can use eager loading to reduce this opreation to just 2 queries. When querying, you may specify which relationships should be eager loaded using the `with` method:
+Thankfully, we can use eager loading to reduce this operation to just 2 queries. When querying, you may specify which relationships should be eager loaded using the `with` method:
 
 	$books = App\Book::with('author')->get();
 
@@ -614,7 +614,7 @@ Sometimes you may need to eager load several different relationships in a single
 
 #### Nested Eager Loading
 
-To eager load nested relationships, you may use "dot" synatx. For example, let's eager load all of the book's authors and all of the author's personal contacts in one Eloquent statement:
+To eager load nested relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts in one Eloquent statement:
 
 	$books = Book::with('author.contacts')->get();
 
