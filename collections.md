@@ -432,7 +432,7 @@ As you can see, the resulting array will preserve the original collection's keys
 <a name="method-isempty"></a>
 #### `isEmpty()` {#collection-method}
 
-The `isEmpty` method returns `true` if the collction is empty; otherwise, `false` is returned:
+The `isEmpty` method returns `true` if the collection is empty; otherwise, `false` is returned:
 
 	collect([])->isEmpty() // true
 
@@ -653,7 +653,7 @@ You may optionally pass an integer to `random`. If that integer is more than `1`
 <a name="method-reduce"></a>
 #### `reduce()` {#collection-method}
 
-The `reduce` method reduces the collection to a single value, passing the result of each iteration into the subsequent interation:
+The `reduce` method reduces the collection to a single value, passing the result of each iteration into the subsequent iteration:
 
 	$collection = collect([1, 2, 3]);
 
