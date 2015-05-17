@@ -809,7 +809,7 @@ The `sortBy` method sorts the collection by the given key:
 
 	$sorted = $collection->sortBy('price');
 
-	$sorted->->values()->all();
+	$sorted->values()->all();
 
 	/*
 		[
@@ -980,7 +980,7 @@ The `toJson` method converts the collection into JSON:
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}
 
-The `transform` method iterates over the collection and calls the given callback with each item in the collection. The items in the collection will ber replaced by the values returned by the callback:
+The `transform` method iterates over the collection and calls the given callback with each item in the collection. The items in the collection will be replaced by the values returned by the callback:
 
 	$collection = collect([1, 2, 3, 4, 5]);
 
