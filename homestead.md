@@ -5,7 +5,7 @@
 - [安裝與設定](#installation-and-setup)
 - [常見用法](#daily-usage)
 - [連接埠](#ports)
-- [Blackfire Profiler](#blackfire-profiler)
+- [Blackfire 分析器](#blackfire-profiler)
 
 <a name="introduction"></a>
 ## 導覽
@@ -46,7 +46,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 #### VMware
 
-In addition to VirtualBox, Homestead also supports VMware. To use the VMware provider, you will need to purchase both VMware Fusion / Desktop and the [VMware Vagrant plug-in](http://www.vagrantup.com/vmware). VMware provides much faster shared folder performance out of the box.
+除了 VirtualBox 外， Homestead 也支援 VMware。如果要在 Homestead 使用 VMwate，你必須購買 VMware Fusion / Desktop 及 [VMware Vagrant 外掛](http://www.vagrantup.com/vmware)。VMware 在虛擬機器中的共享資料夾提供更快的效能。
 
 ### 增加 Vagrant 封裝包
 
@@ -88,9 +88,9 @@ In addition to VirtualBox, Homestead also supports VMware. To use the VMware pro
 
 	homestead edit
 
-### Configure Your Provider
+### 設定你的提供者
 
-The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `vmware_fusion`. You may set this to whichever provider you prefer.
+你能夠在 `Homestead.yaml` 檔案中設定 `provider`，指定 Vagrant 要使用哪個提供者：`virtualbox` 或 `vmware_fusion`。你可以將它修改成你所偏好的提供者。
 
 	provider: virtualbox
 
@@ -110,7 +110,7 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 
 `Homestead.yaml` 檔案中的 `folders` 屬性列出所有你想跟你的 Homestead 環境共享的資料夾列表。這些資料夾中的檔案若有更動，他們將會在你的本機與 Homestead 環境裡保持同步。你可以將你需要的共享資料夾都設定進去。
 
-To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add a simple flag to your synced folder:
+如果要開啟 [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html)，只需要共享資料夾中增加簡單的一行：
 
 	folders:
 	    - map: ~/Code
@@ -203,14 +203,14 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 	      protocol: udp
 
 <a name="blackfire-profiler"></a>
-## Blackfire Profiler
+## Blackfire 分析器
 
-[Blackfire Profiler](https://blackfire.io) by SensioLabs automatically gathers data about your code's execution, such as RAM, CPU time, and disk I/O. Homestead makes it a breeze to use this profiler for your own applications.
+SensioLabs 所發佈的 [Blackfire 分析器](https://blackfire.io) 會在你的程式執行時自動搜集相關的資訊，像是 RAM，CPU 耗時，及硬碟 I/O。在 Homestead 中對你的應用程式使用此分析器是相當輕而易舉的一件事。
 
-All of the proper packages have already been installed on your Homestead box, you simply need to set a Blackfire **Server** ID and token in your `Homestead.yaml` file:
+所有必須的安裝包已經安裝於你的 Homestead 虛擬環境，你只需要在 `Homestead.yaml` 檔案中設定 Blackfire **Server** ID 及 token ：
 
 	blackfire:
 	    - id: your-server-id
 	      token: your-server-token
 
-Once you have configured your Blackfire credentials, re-provision the box using `homestead provision` or `vagrant provision`. Of course, be sure to review the [Blackfire documentation](https://blackfire.io/getting-started) to learn how to install the Blackfire companion extension for your web browser.
+一旦你設定完了 Blackfire 的憑證，請透過 `homestead provision` 或 `vagrant provision` 重置你的虛擬機器。當然，請確定你已經看過 [Blackfire 文件](https://blackfire.io/getting-started)，以瞭解如何在你的瀏覽器安裝 Blackfire 的擴充套件。
