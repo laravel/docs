@@ -312,6 +312,8 @@ The `forPage` method returns a new collection containing the items that would be
 
 	// [4, 5, 6]
 
+The method requires the page number and the number of items to show per page, respectively.
+
 <a name="method-get"></a>
 #### `get()` {#collection-method}
 
@@ -432,7 +434,7 @@ As you can see, the resulting array will preserve the original collection's keys
 <a name="method-isempty"></a>
 #### `isEmpty()` {#collection-method}
 
-The `isEmpty` method returns `true` if the collction is empty; otherwise, `false` is returned:
+The `isEmpty` method returns `true` if the collection is empty; otherwise, `false` is returned:
 
 	collect([])->isEmpty() // true
 
@@ -653,7 +655,7 @@ You may optionally pass an integer to `random`. If that integer is more than `1`
 <a name="method-reduce"></a>
 #### `reduce()` {#collection-method}
 
-The `reduce` method reduces the collection to a single value, passing the result of each iteration into the subsequent interation:
+The `reduce` method reduces the collection to a single value, passing the result of each iteration into the subsequent iteration:
 
 	$collection = collect([1, 2, 3]);
 
@@ -809,7 +811,7 @@ The `sortBy` method sorts the collection by the given key:
 
 	$sorted = $collection->sortBy('price');
 
-	$sorted->->values()->all();
+	$sorted->values()->all();
 
 	/*
 		[
@@ -891,7 +893,7 @@ In addition, you can pass a third argument containing the new items to replace t
 
 	$collection->all();
 
-	// [2, 10, 11, 4, 5]
+	// [1, 2, 10, 11, 4, 5]
 
 <a name="method-sum"></a>
 #### `sum()` {#collection-method}
@@ -980,7 +982,7 @@ The `toJson` method converts the collection into JSON:
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}
 
-The `transform` method iterates over the collection and calls the given callback with each item in the collection. The items in the collection will ber replaced by the values returned by the callback:
+The `transform` method iterates over the collection and calls the given callback with each item in the collection. The items in the collection will be replaced by the values returned by the callback:
 
 	$collection = collect([1, 2, 3, 4, 5]);
 
