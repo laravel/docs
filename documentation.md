@@ -50,7 +50,7 @@
     - [Migrations / Schema](/docs/{{version}}/schema)
     - [Seeding](/docs/{{version}}/seeds)
 - Eloquent ORM
-    - [The Basics](/docs/{{version}}/eloquent-basics)
+    - [The Basics](/docs/{{version}}/eloquent)
     - [Relationships](/docs/{{version}}/eloquent-relationships)
     - [Collections](/docs/{{version}}/eloquent-collections)
     - [Mutators](/docs/{{version}}/eloquent-mutators)

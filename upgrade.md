@@ -55,7 +55,7 @@ The date format is also now applied when serializing a model to an `array` or JS
 
 #### The `groupBy` Method
 
-The `groupBy` method now returns `Collection` instances for each item in the parent `Collection`. If you would like convert all of the items back to plain arrays, you may `map` over them:
+The `groupBy` method now returns `Collection` instances for each item in the parent `Collection`. If you would like to convert all of the items back to plain arrays, you may `map` over them:
 
 	$collection->groupBy('type')->map(function($item)
 	{

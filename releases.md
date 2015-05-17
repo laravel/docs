@@ -15,7 +15,7 @@ When feasible, security fixes will also be applied to even older releases of the
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
 
-Laravel 5.0 introduces a fresh application structure to the default Laravel project. This new structure serves as a better foundation for building robust application in Laravel, as well as embraces new auto-loading standards (PSR-4) throughout the application. First, let's examine some of the major changes:
+Laravel 5.0 introduces a fresh application structure to the default Laravel project. This new structure serves as a better foundation for building a robust application in Laravel, as well as embraces new auto-loading standards (PSR-4) throughout the application. First, let's examine some of the major changes:
 
 ### New Folder Structure
 
@@ -60,15 +60,16 @@ User registration, authentication, and password reset controllers are now includ
 
 You may now define events as objects instead of simply using strings. For example, check out the following event:
 
-	class PodcastWasPurchased {
+	<?php
 
+	class PodcastWasPurchased
+	{
 		public $podcast;
 
 		public function __construct(Podcast $podcast)
 		{
 			$this->podcast = $podcast;
 		}
-
 	}
 
 The event may be dispatched like normal:
@@ -77,13 +78,14 @@ The event may be dispatched like normal:
 
 Of course, your event handler will receive the event object instead of a list of data:
 
-	class ReportPodcastPurchase {
+	<?php
 
+	class ReportPodcastPurchase
+	{
 		public function handle(PodcastWasPurchased $event)
 		{
 			//
 		}
-
 	}
 
 For more information on working with events, check out the [full documentation](/docs/{{version}}/events).
@@ -92,8 +94,10 @@ For more information on working with events, check out the [full documentation](
 
 In addition to the queue job format supported in Laravel 4, Laravel 5 allows you to represent your queued jobs as simple command objects. These commands live in the `app/Commands` directory. Here's a sample command:
 
-	class PurchasePodcast extends Command implements SelfHandling, ShouldBeQueued {
+	<?php
 
+	class PurchasePodcast extends Command implements SelfHandling, ShouldBeQueued
+	{
 		use SerializesModels;
 
 		protected $user, $podcast;
@@ -120,7 +124,6 @@ In addition to the queue job format supported in Laravel 4, Laravel 5 allows you
 
 			event(new PodcastWasPurchased($this->user, $this->podcast));
 		}
-
 	}
 
 The base Laravel controller utilizes the new `DispatchesCommands` trait, allowing you to easily dispatch your commands for execution:
@@ -141,7 +144,7 @@ It looks like this:
 
 	$schedule->command('artisan:command')->dailyAt('15:00');
 
-Of course, check out the [full documentation](/docs/5.0/artisan#scheduling-artisan-commands) to learn all about the scheduler!
+Of course, check out the [full documentation](/docs/{{version}}/scheduling) to learn all about the scheduler!
 
 ### Tinker / Psysh
 
@@ -189,8 +192,8 @@ Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundatio
 
 	<?php namespace App\Http\Requests;
 
-	class RegisterRequest extends FormRequest {
-
+	class RegisterRequest extends FormRequest
+	{
 		public function rules()
 		{
 			return [
@@ -203,7 +206,6 @@ Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundatio
 		{
 			return true;
 		}
-
 	}
 
 Once the class has been defined, we can type-hint it on our controller action:
