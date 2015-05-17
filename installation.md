@@ -94,3 +94,34 @@ On Nginx, the following directive in your site configuration will allow "pretty"
 	}
 
 Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
+
+### Internet Information Server
+
+If you use IIS to serve your Laravel application, you can have also pretty URLS.
+
+Create a new file `public/web.config` with this content:
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <configuration>
+      <system.webServer>
+        <rewrite>
+          <rules>
+            <rule name="RewriteRequestsToPublic">
+              <match url="^(.*)$" />
+              <conditions logicalGrouping="MatchAll" trackAllCaptures="false">
+              </conditions>
+              <action type="Rewrite" url="public/{R:0}" />
+            </rule>
+            <rule name="Imported Rule 1" stopProcessing="true">
+              <match url="^(.*)$" ignoreCase="false" />
+              <conditions logicalGrouping="MatchAll">
+                <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+                <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+              </conditions>
+              <action type="Rewrite" url="public/index.php/{R:1}" appendQueryString="true" />
+            </rule>
+          </rules>
+        </rewrite>
+      </system.webServer>
+    </configuration>
+    
