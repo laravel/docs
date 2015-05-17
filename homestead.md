@@ -20,6 +20,8 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 
 Homestead is currently built and tested using Vagrant 1.7.
 
+> **Note:** Windows users should use Vagrant 1.7.3 or higher. Older versions have a [bug](https://github.com/mitchellh/vagrant/pull/5495) that prevents `npm install` from working.
+
 <a name="included-software"></a>
 ## Included Software
 
