@@ -1,4 +1,4 @@
-# Database Basics
+# Database: Getting Started
 
 - [Configuration](#configuration)
 - [Running Raw SQL Queries](#running-queries)

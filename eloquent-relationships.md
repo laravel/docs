@@ -1,4 +1,4 @@
-# Eloquent ORM: Relationships
+# Eloquent: Relationships
 
 - [Introduction](#introduction)
 - [Defining Relationships](#defining-relationships)
@@ -406,7 +406,7 @@ You may also retrieve the owner of a polymorphic relation from the polymorphic m
 
 	$imageable = $photo->imageable;
 
-The `imageable` relation on the `Photo` model will return either a `Staff` or `Order` instance, depending on which type of model owns the photo.
+The `imageable` relation on the `Photo` model will return either a `Staff` or `Product` instance, depending on which type of model owns the photo.
 
 <a name="many-to-many-polymorphic-relations"></a>
 ### Many To Many Polymorphic Relations

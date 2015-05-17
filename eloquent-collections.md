@@ -1,77 +1,105 @@
-# Eloquent Collections
+# Eloquent: Collections
 
-<a name="collections"></a>
-## Collections
+- [Introduction](#introduction)
+- [Available Methods](#available-methods)
+- [Custom Collections](#custom-collections)
 
-All multi-result sets returned by Eloquent, either via the `get` method or a `relationship`, will return a collection object. This object implements the `IteratorAggregate` PHP interface so it can be iterated over like an array. However, this object also has a variety of other helpful methods for working with result sets.
+<a name="introduction"></a>
+## Introduction
 
-#### Checking If A Collection Contains A Key
+All multi-result sets returned by Eloquent are an instance of the `Illuminate\Database\Eloquent\Collection` object, including results retrieved via the `get` method or accessed via a relationship. The Eloquent collection object extends the Laravel [base collection](/docs/{{version}}/collections), so it naturally inherits dozens of methods used to fluently work with the underlying array of Eloquent models.
 
-For example, we may determine if a result set contains a given primary key using the `contains` method:
+Of course, all collections also serve as iterators, allowing you to loop over them as if they were simple PHP arrays:
 
-	$roles = User::find(1)->roles;
+	$users = App\User::where('active', 1)->get();
 
-	if ($roles->contains(2))
-	{
-		//
+	foreach ($users as $user) {
+		echo $user->name;
 	}
 
-Collections may also be converted to an array or JSON:
+However, collections are much more powerful than arrays and expose a variety of map / reduce operations using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:
 
-	$roles = User::find(1)->roles->toArray();
+	$users = App\User::where('active', 1)->get();
 
-	$roles = User::find(1)->roles->toJson();
-
-If a collection is cast to a string, it will be returned as JSON:
-
-	$roles = (string) User::find(1)->roles;
-
-#### Iterating Collections
-
-Eloquent collections also contain a few helpful methods for looping and filtering the items they contain:
-
-	$roles = $user->roles->each(function($role)
-	{
-		//
+	$names = $users->reject(function ($user) {
+		return $user->active === false;
+	})
+	->map(function ($user) {
+		return $user->name;
 	});
 
-#### Filtering Collections
+<a name="available-methods"></a>
+## Available Methods
 
-When filtering collections, the callback provided will be used as callback for [array_filter](http://php.net/manual/en/function.array-filter.php).
+### The Base Collection
 
-	$users = $users->filter(function($user)
-	{
-		return $user->isAdmin();
-	});
+All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections) object; therefore, they inherit all of the powerful methods provided by the base collection class:
 
-> **Note:** When filtering a collection and converting it to JSON, try calling the `values` function first to reset the array's keys.
+<style>
+	#collection-method-list > p {
+		column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+		column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+	}
 
-#### Applying A Callback To Each Collection Object
+	#collection-method-list a {
+		display: block;
+	}
+</style>
 
-	$roles = User::find(1)->roles;
-
-	$roles->each(function($role)
-	{
-		//
-	});
-
-#### Sorting A Collection By A Value
-
-	$roles = $roles->sortBy(function($role)
-	{
-		return $role->created_at;
-	});
-
-	$roles = $roles->sortByDesc(function($role)
-	{
-		return $role->created_at;
-	});
-
-#### Sorting A Collection By A Value
-
-	$roles = $roles->sortBy('created_at');
-
-	$roles = $roles->sortByDesc('created_at');
+<div id="collection-method-list" markdown="1">
+[all](/docs/{{version}}/collections#method-all)
+[chunk](/docs/{{version}}/collections#method-chunk)
+[collapse](/docs/{{version}}/collections#method-collapse)
+[contains](/docs/{{version}}/collections#method-contains)
+[count](/docs/{{version}}/collections#method-count)
+[diff](/docs/{{version}}/collections#method-diff)
+[each](/docs/{{version}}/collections#method-each)
+[filter](/docs/{{version}}/collections#method-filter)
+[first](/docs/{{version}}/collections#method-first)
+[flatten](/docs/{{version}}/collections#method-flatten)
+[flip](/docs/{{version}}/collections#method-flip)
+[forget](/docs/{{version}}/collections#method-forget)
+[forPage](/docs/{{version}}/collections#method-forpage)
+[get](/docs/{{version}}/collections#method-get)
+[groupBy](/docs/{{version}}/collections#method-groupby)
+[has](/docs/{{version}}/collections#method-has)
+[implode](/docs/{{version}}/collections#method-implode)
+[intersect](/docs/{{version}}/collections#method-intersect)
+[isEmpty](/docs/{{version}}/collections#method-isempty)
+[keyBy](/docs/{{version}}/collections#method-keyby)
+[keys](/docs/{{version}}/collections#method-keys)
+[last](/docs/{{version}}/collections#method-last)
+[map](/docs/{{version}}/collections#method-map)
+[merge](/docs/{{version}}/collections#method-merge)
+[pluck](/docs/{{version}}/collections#method-pluck)
+[pop](/docs/{{version}}/collections#method-pop)
+[prepend](/docs/{{version}}/collections#method-prepend)
+[pull](/docs/{{version}}/collections#method-pull)
+[push](/docs/{{version}}/collections#method-push)
+[put](/docs/{{version}}/collections#method-put)
+[random](/docs/{{version}}/collections#method-random)
+[reduce](/docs/{{version}}/collections#method-reduce)
+[reject](/docs/{{version}}/collections#method-reject)
+[reverse](/docs/{{version}}/collections#method-reverse)
+[search](/docs/{{version}}/collections#method-search)
+[shift](/docs/{{version}}/collections#method-shift)
+[shuffle](/docs/{{version}}/collections#method-shuffle)
+[slice](/docs/{{version}}/collections#method-slice)
+[sort](/docs/{{version}}/collections#method-sort)
+[sortBy](/docs/{{version}}/collections#method-sortby)
+[sortByDesc](/docs/{{version}}/collections#method-sortbydesc)
+[splice](/docs/{{version}}/collections#method-splice)
+[sum](/docs/{{version}}/collections#method-sum)
+[take](/docs/{{version}}/collections#method-take)
+[toArray](/docs/{{version}}/collections#method-toarray)
+[toJson](/docs/{{version}}/collections#method-tojson)
+[transform](/docs/{{version}}/collections#method-transform)
+[unique](/docs/{{version}}/collections#method-unique)
+[values](/docs/{{version}}/collections#method-values)
+[where](/docs/{{version}}/collections#method-where)
+[whereLoose](/docs/{{version}}/collections#method-whereloose)
+[zip](/docs/{{version}}/collections#method-zip)
+</div>
 
 #### Returning A Custom Collection Type
 

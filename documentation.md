@@ -45,12 +45,12 @@
     - [Testing](/docs/{{version}}/testing)
     - [Validation](/docs/{{version}}/validation)
 - Database
-    - [The Basics](/docs/{{version}}/database)
+    - [Getting Started](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)
-    - [Migrations / Schema](/docs/{{version}}/schema)
-    - [Seeding](/docs/{{version}}/seeds)
+    - [Migrations](/docs/{{version}}/migrations)
+    - [Seeding](/docs/{{version}}/seeding)
 - Eloquent ORM
-    - [The Basics](/docs/{{version}}/eloquent-basics)
+    - [Getting Started](/docs/{{version}}/eloquent)
     - [Relationships](/docs/{{version}}/eloquent-relationships)
     - [Collections](/docs/{{version}}/eloquent-collections)
     - [Mutators](/docs/{{version}}/eloquent-mutators)

@@ -1,4 +1,4 @@
-# Eloquent ORM: The Basics
+# Eloquent: Getting Started
 
 - [Introduction](#introduction)
 - [Defining Models](#defining-models)
