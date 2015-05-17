@@ -138,7 +138,7 @@ elixir(function(mix) {
 });
 ```
 
-Paths passed to this method are relative to the `resources/assets/css` directory.
+Paths passed to this method are relative to the `resources/css` directory.
 
 #### Combine Stylesheets and Save to a Custom Directory
 
