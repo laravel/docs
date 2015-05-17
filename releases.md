@@ -1,8 +1,16 @@
 # 發行說明
 
+- [Support Policy](#support-policy)
 - [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
 - [Laravel 4.1](#laravel-4.1)
+
+<a name="support-policy"></a>
+## Support Policy
+
+Security fixes are **always** applied to the previous major version of Laravel. Currently, **all** security fixes and patches will be applied to both Laravel 5.x **and** Laravel 4.x.
+
+When feasible, security fixes will also be applied to even older releases of the framework, such as Laravel 3.x.
 
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
@@ -23,7 +31,7 @@ Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架�
 
 所有 Laravel 主要元件實作所用的介面都放在 `illuminate/contracts` 儲存庫中。這個儲存庫沒有其他的外部相依。這些方便、集成的介面，可以讓你用來讓依賴注入變得低耦合，將可以簡單作為 Laravel Facades 的替代選項。
 
-更多關於 contracts 的資訊，參考[完整文件](/docs/5.0/contracts)。
+更多關於 contracts 的資訊，參考[完整文件](/docs/{{version}}/contracts)。
 
 ### 路由快取
 
@@ -33,11 +41,11 @@ Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架�
 
 除了像 Laravel 4 風格的路由「過濾器（ filters ）」，Laravel 5 現在有 HTTP 中介層，而原本的認證和 CSRF 「過濾器」已經改寫成中介層。中介層提供了單一、一致的介面取代了各種過濾器，讓你在請求進到應用程式前，可以簡單地檢查甚至拒絕請求。
 
-更多關於中介層的資訊，參考[完整文件](/docs/5.0/middleware)。
+更多關於中介層的資訊，參考[完整文件](/docs/{{version}}/middleware)。
 
 ### 控制器方法注入
 
-除了之前有的建構函數注入外，你現在可以在控制器方法使用型別提示（ type-hint ）進行依賴注入。[服務容器](/docs/5.0/container)會自動注入依賴，即使路由包含了其他參數也不成問題：
+除了之前有的建構函數注入外，你現在可以在控制器方法使用型別提示（ type-hint ）進行依賴注入。[服務容器](/docs/{{version}}/container)會自動注入依賴，即使路由包含了其他參數也不成問題：
 
 	public function createPost(Request $request, PostRepository $posts)
 	{
@@ -78,7 +86,7 @@ Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架�
 
 	}
 
-更多關於使用事件的資訊，參考[完整文件](/docs/5.0/events)。
+更多關於使用事件的資訊，參考[完整文件](/docs/{{version}}/events)。
 
 ### 命令（ Commands ）、隊列（ Queueing ）
 
@@ -119,7 +127,7 @@ Laravel 的基底控制器使用了新的 `DispatchesCommands` trait，讓你可
 
 	$this->dispatch(new PurchasePodcastCommand($user, $podcast));
 
-當然，你也可以將命令視為同步執行（而不會被放到隊列裡）的任務。事實上，使用命令是個好方式，讓你可以封裝應用程式需要執行的複雜任務。更多相關的資訊，參考 [command bus](/docs/5.0/bus) 文件。
+當然，你也可以將命令視為同步執行（而不會被放到隊列裡）的任務。事實上，使用命令是個好方式，讓你可以封裝應用程式需要執行的複雜任務。更多相關的資訊，參考 [command bus](/docs/{{version}}/bus) 文件。
 
 ### 資料庫隊列
 
@@ -133,7 +141,7 @@ Laravel 的基底控制器使用了新的 `DispatchesCommands` trait，讓你可
 
 	$schedule->command('artisan:command')->dailyAt('15:00');
 
-當然，快參考[完整文件](/docs/5.0/artisan#scheduling-artisan-commands)學習所有排程相關知識。
+當然，快參考[完整文件](/docs/{{version}}/artisan#scheduling-artisan-commands)學習所有排程相關知識。
 
 ### Tinker、Psysh
 
@@ -143,13 +151,13 @@ Laravel 的基底控制器使用了新的 `DispatchesCommands` trait，讓你可
 
 ### DotEnv
 
-比起一堆令人困惑的、巢狀的環境設定檔目錄，Laravel 5 現在使用了 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv)。這個套件提供了超級簡單的方式管理設定檔，並且讓 Laravel 5 環境偵測變得輕鬆。更多的細節，參考完整的[設定檔文件](/docs/5.0/configuration#environment-configuration)。
+比起一堆令人困惑的、巢狀的環境設定檔目錄，Laravel 5 現在使用了 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv)。這個套件提供了超級簡單的方式管理設定檔，並且讓 Laravel 5 環境偵測變得輕鬆。更多的細節，參考完整的[設定檔文件](/docs/{{version}}/configuration#environment-configuration)。
 
 ### Laravel Elixir
 
 Jeffrey Way 的 Laravel Elixir 提供了一個流暢、口語化的介面，可以編譯以及合併 assets。如果你曾經因為學習 Grunt 或 Gulp 而被嚇到，不必再害怕了。Elixir 讓使用 Gulp 編譯 Less、Sass 及 CoffeeScript 變得簡單。它甚至可以幫你執行測試！
 
-更多關於 Elixir 的資訊，參考[完整文件](/docs/5.0/elixir)。
+更多關於 Elixir 的資訊，參考[完整文件](/docs/{{version}}/elixir)。
 
 ### Laravel Socialite
 
@@ -165,7 +173,7 @@ Laravel Socialite 是個選用的，Laravel 5.0 以上相容的套件，提供�
 		$user = Socialize::with('twitter')->user();
 	}
 
-不用再花上數小時撰寫 OAuth 的認證流程。只要幾分鐘！查看[完整文件](/docs/5.0/authentication#social-authentication) 裡有所有的細節。
+不用再花上數小時撰寫 OAuth 的認證流程。只要幾分鐘！查看[完整文件](/docs/{{version}}/authentication#social-authentication) 裡有所有的細節。
 
 ### Flysystem 整合
 
@@ -174,7 +182,7 @@ Laravel 現在包含了強大的 [Flysystem](https://github.com/thephpleague/fly
 
 	Storage::put('file.txt', 'contents');
 
-更多關於 Laravel 檔案系統整合，參考[完整文件](/docs/5.0/filesystem)。
+更多關於 Laravel 檔案系統整合，參考[完整文件](/docs/{{version}}/filesystem)。
 
 ### Form Requests
 
@@ -206,7 +214,7 @@ Laravel 5.0 引進了 **form requests**，是繼承自 `Illuminate\Foundation\Ht
 		var_dump($request->input());
 	}
 
-當 Laravel 的服務容器辨別出要注入的類別是個 `FormRequest` 實例，該請求將會被**自動驗證**。意味著，當你的控制器動作被呼叫了，你可以安全的假設 HTTP 的請求輸入己經被驗證過，根據你在 form request 類別裡自定的規則。甚至，若這個請求驗證不通過，一個 HTTP 重導（可以自定），會自動發出，錯誤訊息可以被閃存到 session 中或是轉換成 JSON 返回。**表單驗證再簡單不過如此。**更多關於 `FormRequest` 驗證，參考[文件](/docs/5.0/validation#form-request-validation)。
+當 Laravel 的服務容器辨別出要注入的類別是個 `FormRequest` 實例，該請求將會被**自動驗證**。意味著，當你的控制器動作被呼叫了，你可以安全的假設 HTTP 的請求輸入己經被驗證過，根據你在 form request 類別裡自定的規則。甚至，若這個請求驗證不通過，一個 HTTP 重導（可以自定），會自動發出，錯誤訊息可以被閃存到 session 中或是轉換成 JSON 返回。**表單驗證再簡單不過如此。**更多關於 `FormRequest` 驗證，參考[文件](/docs/{{version}}/validation#form-request-validation)。
 
 ### 簡易控制器請求驗證
 
@@ -222,7 +230,7 @@ Laravel 5 基底控制器包含一個 `ValidatesRequests` trait。這個 trait �
 
 如果驗證失敗，會拋出例外以及回傳適當的 HTTP 回應到瀏覽器。驗證錯誤資訊會被閃存到 session！而如果請求是 AJAX 請求，Laravel 會自動回傳 JSON 格式的驗證錯誤資訊。
 
-更多關於這個新方法的資訊，參考[這個文件](/docs/5.0/validation#controller-validation)。
+更多關於這個新方法的資訊，參考[這個文件](/docs/{{version}}/validation#controller-validation)。
 
 ### 新的產生器
 

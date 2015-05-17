@@ -49,7 +49,7 @@
 	$array = [
 		['developer' => ['name' => 'Taylor']],
 		['developer' => ['name' => 'Dayle']]
-	);
+	];
 
 	$array = array_fetch($array, 'developer.name');
 
@@ -180,7 +180,7 @@
 
 ### head
 
-回傳陣列中第一個元素。對 PHP 5.3.x 的方法鏈很有用。
+回傳陣列中第一個元素。
 
 	$first = head($this->returnsArray('foo'));
 
@@ -202,6 +202,10 @@
 ### base_path
 
 取得應用程式安裝根目錄的完整路徑。
+
+### config_path
+
+Get the fully qualified path to the `config` directory.
 
 ### public_path
 
@@ -463,6 +467,6 @@
 
 ### with
 
-回傳給定物件。對 PHP 5.3.x 的建構式方法鏈很有用。
+回傳給定物件。
 
 	$value = with(new Foo)->doWork();

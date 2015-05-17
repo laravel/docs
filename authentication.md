@@ -58,7 +58,7 @@ Laravel 可以預設建立了兩個驗證相關的控制器。`AuthController` �
 
 	}
 
-`attempt` 方法可以接受鍵值對組成的陣列作為第一個參數。`password` 的值先進行 [雜湊](/docs/5.0/hashing)。陣列中的其他值會被用來查詢資料表裡的使用者。所以，在上面的範例中，會依照 `email` 的值找出使用者。如果找到該使用者，會比對資料庫中的雜湊的密碼會和陣列裡的 `password` 值雜湊 。假設兩個雜湊密碼相同，會重新為使用者啟動認證通過的 session。
+`attempt` 方法可以接受鍵值對組成的陣列作為第一個參數。`password` 的值先進行 [雜湊](/docs/{{version}}/hashing)。陣列中的其他值會被用來查詢資料表裡的使用者。所以，在上面的範例中，會依照 `email` 的值找出使用者。如果找到該使用者，會比對資料庫中的雜湊的密碼會和陣列裡的 `password` 值雜湊 。假設兩個雜湊密碼相同，會重新為使用者啟動認證通過的 session。
 
 假設認證成功，`attempt` 將會回傳 `true`。否則，會回傳 `false`。
 
@@ -141,7 +141,7 @@ Laravel 可以預設建立了兩個驗證相關的控制器。`AuthController` �
 
 #### 認證事件
 
-當 `attempt` 方法被呼叫時，`auth.attempt` [事件](/docs/5.0/events) 會被觸發。假設嘗試認證成功而使用者登入了，`auth.login` 事件會被觸發。
+當 `attempt` 方法被呼叫時，`auth.attempt` [事件](/docs/{{version}}/events) 會被觸發。假設嘗試認證成功而使用者登入了，`auth.login` 事件會被觸發。
 
 <a name="retrieving-the-authenticated-user"></a>
 ## 取得經過認證的使用者
@@ -195,7 +195,7 @@ Laravel 可以預設建立了兩個驗證相關的控制器。`AuthController` �
 
 	}
 
-第三，你可以使用 `Illuminate\Contracts\Auth\Authenticatable` contract 型別提示。這個型別提示可以用在控制器的建構子，控制器的方法，或是其他可以透過[服務容器](/docs/5.0/container) 解析的類別的建構子：
+第三，你可以使用 `Illuminate\Contracts\Auth\Authenticatable` contract 型別提示。這個型別提示可以用在控制器的建構子，控制器的方法，或是其他可以透過[服務容器](/docs/{{version}}/container) 解析的類別的建構子：
 
 	<?php namespace App\Http\Controllers;
 
@@ -219,7 +219,7 @@ Laravel 可以預設建立了兩個驗證相關的控制器。`AuthController` �
 <a name="protecting-routes"></a>
 ## 保護路由
 
-[路由中介層](/docs/5.0/middleware)只允許通過認證的使用者訪問指定的路由。Laravel 預設提供了 `auth` 中介層，放在 `app\Http\Middleware\Authenticate.php`。所以你需要做的是將其加到一個路由定義中：
+[路由中介層](/docs/{{version}}/middleware)只允許通過認證的使用者訪問指定的路由。Laravel 預設提供了 `auth` 中介層，放在 `app\Http\Middleware\Authenticate.php`。所以你需要做的是將其加到一個路由定義中：
 
 	// With A Route Closure...
 
@@ -248,7 +248,7 @@ HTTP 基本認證提供了一個快速的方式認證使用者，而不用特定
 
 #### 設定無狀態的 HTTP 基本過濾器
 
-你可能想要使用 HTTP 基本認證，但不會在 session 裡設置 使用者身份的設置 cookie，這在 API 認證時特別有用。如果要這樣做，[定義一個中介層](/docs/5.0/middleware)並呼叫 `onceBasic` 方法：
+你可能想要使用 HTTP 基本認證，但不會在 session 裡設置 使用者身份的設置 cookie，這在 API 認證時特別有用。如果要這樣做，[定義一個中介層](/docs/{{version}}/middleware)並呼叫 `onceBasic` 方法：
 
 	public function handle($request, Closure $next)
 	{
@@ -294,7 +294,7 @@ Laravel 還包含了 `Auth\PasswordController` 其中包含重設使用者密碼
 
 	"laravel/socialite": "~2.0"
 
-接下來，在你的 `config/app.php` 設定檔裡註冊 `Laravel\Socialite\SocialiteServiceProvider`。也可以註冊 [facade](/docs/5.0/facades)：
+接下來，在你的 `config/app.php` 設定檔裡註冊 `Laravel\Socialite\SocialiteServiceProvider`。也可以註冊 [facade](/docs/{{version}}/facades)：
 
 	'Socialize' => 'Laravel\Socialite\Facades\Socialite',
 

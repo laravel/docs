@@ -43,7 +43,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 	php artisan make:model User
 
-注意我們並沒有告訴 Eloquent，`User` 模型會使用哪個資料表。若沒有特別指定，系統會預設自動對應名稱為「snake case」的資料表。所以，在上面的例子中，Eloquent 會假設 `User` 模型將把資料存在 `users` 資料表。您也可以在類別中定義 `table` 屬性自定要對應的資料表名稱。
+注意我們並沒有告訴 Eloquent，`User` 模型會使用哪個資料表。若沒有特別指定，系統會預設自動對應「snake case」且複數的資料表名稱。所以，在上面的例子中，Eloquent 會假設 `User` 模型將把資料存在 `users` 資料表。您也可以在類別中定義 `table` 屬性自定要對應的資料表名稱。
 
 	class User extends Model {
 
@@ -55,7 +55,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 定義好模型之後，你就可以從資料表新增及取得資料了。注意預設上，在資料表裡需要有 `updated_at` 和 `created_at` 兩個欄位。如果你不想設定或自動更新這兩個欄位，將類別裡的 `$timestamps` 屬性設為 `false`。
 
-#### 取出所有模型資料
+#### 取出所有資料
 
 	$users = User::all();
 
@@ -69,20 +69,29 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 #### 根據主鍵取出一條資料或拋出異常
 
-有時, 你可能想要在找不到模型資料時拋出例外，以捕捉例外讓 `App::error` 處理並顯示 404 頁面。
+有時, 你可能想要在找不到模型資料時拋出例外。要做到這個，你可以使用 `firstOrFail` 方法：
 
 	$model = User::findOrFail(1);
 
 	$model = User::where('votes', '>', 100)->firstOrFail();
 
-要註冊錯誤處理，可以監聽 `ModelNotFoundException`
+Doing this will let you catch the exception so you can log and display an error page as necessary. To catch the `ModelNotFoundException`, add some logic to your `app/Exceptions/Handler.php` file.
 
 	use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-	App::error(function(ModelNotFoundException $e)
-	{
-		return Response::make('Not Found', 404);
-	});
+	class Handler extends ExceptionHandler {
+
+		public function render($request, Exception $e)
+		{
+			if ($e instanceof ModelNotFoundException)
+			{
+				// Custom logic for model not found...
+			}
+
+			return parent::render($request, $e);
+		}
+
+	}
 
 #### Eloquent 模型結合查詢語法
 
@@ -123,7 +132,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 	$user = User::on('connection-name')->find(1);
 
-如果您有使用 [讀取 / 寫入連線](/docs/5.0/database#read-write-connections), 可以使用如下方法，強制使用 "write" 連線進行查詢：
+如果您有使用 [讀取 / 寫入連線](/docs/{{version}}/database#read-write-connections), 可以使用如下方法，強制使用 "write" 連線進行查詢：
 
 	$user = User::onWriteConnection()->find(1);
 
@@ -635,7 +644,7 @@ SQL 會執行如下語句：
 
 		public function posts()
 		{
-			return $this->hasManyThrough('App\Post', 'User');
+			return $this->hasManyThrough('App\Post', 'App\User');
 		}
 
 	}
@@ -646,7 +655,7 @@ SQL 會執行如下語句：
 
 		public function posts()
 		{
-			return $this->hasManyThrough('App\Post', 'User', 'country_id', 'user_id');
+			return $this->hasManyThrough('App\Post', 'App\User', 'country_id', 'user_id');
 		}
 
 	}
@@ -1127,11 +1136,18 @@ Eloquent 集合裡包含了一些有用的方法可以進行迴圈或是進行�
 		return $role->created_at;
 	});
 
-#### 依照屬性值排序
+	$roles = $roles->sortByDesc(function($role)
+	{
+		return $role->created_at;
+	});
+
+#### 依照屬性值排序集合
 
 	$roles = $roles->sortBy('created_at');
 
-#### 返回自定義的集合物件
+	$roles = $roles->sortByDesc('created_at');
+
+#### 返回自定義的集合類別
 
 有時您可能想要返回自定義的集合物件，讓您可以在集合類別里加入想要的方法。可以在 Eloquent 模型類別裡覆寫 `newCollection` 方法：
 

@@ -48,7 +48,7 @@ Laravel 原始碼託管在 Github 上面，並且每個 Laravel 的專案都有�
 <a name="security-vulnerabilities"></a>
 ## 安全缺陷
 
-如果你發現 Laravel 的安全漏洞，請寄電子郵件到 <a href="mailto:taylorotwell@gmail.com">taylorotwell@gmail.com</a> 給 Taylor Otwell。所有的安全漏洞，將會及時予以處理。
+如果你發現 Laravel 的安全漏洞，請寄電子郵件到 <a href="mailto:taylor@laravel.com">taylor@laravel.com</a> 給 Taylor Otwell。所有的安全漏洞，將會及時予以處理。
 
 <a name="coding-style"></a>
 ## 編碼風格

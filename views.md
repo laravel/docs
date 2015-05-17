@@ -45,9 +45,11 @@
 
 	$view = view('greetings', $data);
 
+When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, like `{{ $key }}` (assuming `$data['$key']` exists).
+
 #### 把資料共享給所有視圖
 
-有時候你可能需要共享一些資料給所有視圖，你有很多個選擇：`view` 輔助方法；`Illuminate\Contracts\View\Factory`  [contract](/docs/5.0/contracts)；或是在[視圖組件](#view-composers)內使用萬用字元。
+有時候你可能需要共享一些資料給所有視圖，你有很多個選擇：`view` 輔助方法；`Illuminate\Contracts\View\Factory` [contract](/docs/{{version}}/contracts)；或是在[視圖組件](#view-composers)內使用萬用字元。
 
 這裡有個 `view` 輔助方法的範例：
 
@@ -83,7 +85,7 @@
 
 #### 定義一個視圖組件
 
-讓我們在[服務提供者](/docs/5.0/providers)內組織我們的視圖組件。底下範例將使用 `View` Facade 來取得底層 `Illuminate\Contracts\View\Factory` contract 實作：
+讓我們在[服務提供者](/docs/{{version}}/providers)內組織我們的視圖組件。底下範例將使用 `View` Facade 來取得底層 `Illuminate\Contracts\View\Factory` contract 實作：
 
 	<?php namespace App\Providers;
 
@@ -102,8 +104,8 @@
 			// 使用類別來指定視圖組件
 			View::composer('profile', 'App\Http\ViewComposers\ProfileComposer');
 
-			// 使用閉包來指定視圖組件
-			View::composer('dashboard', function()
+			// 使用閉包來指定視圖組件...
+			View::composer('dashboard', function($view)
 			{
 
 			});
@@ -168,13 +170,13 @@
 
 在視圖被渲染之前，視圖組件的 `compose` 方法就會被呼叫，並且傳入一個 `Illuminate\Contracts\View\View` 實例。你可以使用 `with` 方法來把資料綁定到 `view`。
 
-> **備註：**所有的視圖組件會被[服務容器](/docs/5.0/container) 解析，所以你可以在視圖組件的建構子，型別提示注入所需的任何依賴。
+> **備註：**所有的視圖組件會被[服務容器](/docs/{{version}}/container) 解析，所以你可以在視圖組件的建構子，型別提示注入所需的任何依賴。
 
 #### 在視圖組件內使用萬用字元
 
 `View` 的 `composer` 方法可以接受 `*` 作為萬用字元，所以你可以對所有視圖附加 `composer` 如下：
 
-	View::composer('*', function()
+	View::composer('*', function($view)
 	{
 		//
 	});

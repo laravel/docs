@@ -20,7 +20,7 @@
 
 	php artisan make:console FooCommand
 
-上面的指令將會協助你自動創建一個類別，並儲存為檔案 `app/Console/FooCommand.php`。
+上面的指令將會協助你自動創建一個類別，並儲存為檔案 `app/Console/Commands/FooCommand.php`。
 
 在創建自訂指令時，加上 `--command` 這個選項，將可以指定之後在終端機使用此自訂指令時，所要輸入的自訂指令名稱：
 
@@ -49,6 +49,10 @@
 對選項而言，參數 `mode` 可以是下列其中一項：`InputOption::VALUE_REQUIRED`, `InputOption::VALUE_OPTIONAL`, `InputOption::VALUE_IS_ARRAY`, `InputOption::VALUE_NONE`。
 
 模式為 `VALUE_IS_ARRAY` 表示呼叫指令時可以多次使用此選項來傳入多個值：
+
+	InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY
+
+Would then allow for this command:
 
 	php artisan foo --option=bar --option=baz
 
@@ -122,4 +126,10 @@
 
 #### 註冊一個 Artisan 指令
 
-一旦你的自訂指令撰寫完成後，你需要將它註冊於 Artisan 它才能被使用。這通常位於 `app/Console/Kernel.php` 這個檔案中。在此檔案的 `commands` 屬性，你會找到一份指令的清單。若要註冊你的自訂指令，很簡單的你只要將它加入清單中。當 Artisan 啟動時，被列於此屬性中的所有指令都將被 [服務容器](/docs/5.0/container) 解析，並且被註冊於 Artisan。
+一旦自訂指令撰寫完成後，你需要將它註冊於 Artisan 才能被使用。這通常位於 `app/Console/Kernel.php` 這個檔案中。在此檔案的 `commands` 屬性，你會找到一份指令的清單。若要註冊你的自訂指令，很簡單的你只要將它加入清單中。
+
+	protected $commands = [
+		'App\Console\Commands\FooCommand'
+	];
+
+當 Artisan 啟動時，被列於此屬性中的所有指令都將被 [服務容器](/docs/{{version}}/container) 解析，並且被註冊於 Artisan。

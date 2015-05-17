@@ -17,6 +17,8 @@ session 的設定檔配置在 `config/session.php` 中，請務必看一下 sess
 
 > **注意：** 如果你需要加密所有的 session 資料，就將選項 `encrypt` 設定為 `true` 。
 
+> **Note:** When using the `cookie` session driver, you should **never** remove the `EncryptCookie` middleware from your HTTP kernel. If you remove this middleware, your application will be vulnerable to remote code injection.
+
 #### 保留鍵值
 
 Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該避免 session 使用此名稱。
@@ -123,4 +125,4 @@ session 設定檔中的「driver」定義了 session 資料將以哪種方式被
 - `memcached` / `redis` - sessions 將儲存在一個高速快取的系統中。
 - `array` - sessions 將單純的以 PHP 陣列儲存，只存活在當次請求。
 
-> **注意：** array 驅動典型應用在 [unit tests](/docs/5.0/testing) 環境下，所以不會留下任何 session 資料。
+> **注意：** array 驅動典型應用在 [unit tests](/docs/{{version}}/testing) 環境下，所以不會留下任何 session 資料。

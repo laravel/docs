@@ -30,14 +30,14 @@
 
 Laravel 幾乎不需設定就可以馬上使用。你可以自由的開始開發！然而，你可以瀏覽 `config/app.php` 檔案和其他的文件。你可能希望依據你的本機而做更改，檔案包含數個選項如`時區`和`語言環境`。
 
-一旦 Laravel 安裝完成，你應該同時 [設定本機環境](/docs/5.0/configuration#environment-configuration)。
+一旦 Laravel 安裝完成，你應該同時 [設定本機環境](/docs/{{version}}/configuration#environment-configuration)。
 
 > **注意：** 你不應該在正式環境中將 `app.debug` 設定為 `true` 。
 
 <a name="permissions"></a>
 ### 權限
 
-Laravel 框架有一個目錄需要額外設置權限：`storage` 目錄必須讓伺服器有寫入權限。
+Laravel 框架有一些目錄需要額外設置權限：`storage` 和 `vendor` 目錄必須讓伺服器有寫入權限。
 
 <a name="accessing-configuration-values"></a>
 ## 取得設定值
@@ -83,7 +83,7 @@ Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP
 		// The environment is either local OR staging...
 	}
 
-如果想取得應用程式的實例，可以透過[服務容器](/docs/5.0/container)的 `Illuminate\Contracts\Foundation\Application`  contract 來取得。當然，如果你想在[服務提供者](/docs/5.0/providers)中使用，應用程式實例可以透過實例變數 `$this->app` 取得。
+如果想取得應用程式的實例，可以透過[服務容器](/docs/{{version}}/container)的 `Illuminate\Contracts\Foundation\Application`  contract 來取得。當然，如果你想在[服務提供者](/docs/{{version}}/providers)中使用，應用程式實例可以透過實例變數 `$this->app` 取得。
 
 也能透過 `App` facade 或是 `app` 取得應用程式實例：
 
@@ -117,7 +117,7 @@ Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP
 
 ### 維護模式與隊列
 
-當應用程式處於維護模式中，將不會處理任何[隊列工作](/docs/5.0/queues)。所有的隊列工作將會在應用程式離開維護模式後繼續被進行。
+當應用程式處於維護模式中，將不會處理任何[隊列工作](/docs/{{version}}/queues)。所有的隊列工作將會在應用程式離開維護模式後繼續被進行。
 
 <a name="pretty-urls"></a>
 ## 優雅鏈結
@@ -135,6 +135,8 @@ Laravel 框架透過 `public/.htaccess` 檔案來讓網址中不需要 `index.ph
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]
 
+If your web host doesn't allow the `FollowSymlinks` option, try replacing it with `Options +SymLinksIfOwnerMatch`.
+
 ### Nginx
 
 若使用 Nginx ，可以在你的網站設定中增加下面的設定，以開啟「優雅連結」：
@@ -143,4 +145,4 @@ Laravel 框架透過 `public/.htaccess` 檔案來讓網址中不需要 `index.ph
 		try_files $uri $uri/ /index.php?$query_string;
 	}
 
-當然，如果你使用 [Homestead](/docs/5.0/homestead) 的話，優雅鏈結會自動的幫你設定完成。
+當然，如果你使用 [Homestead](/docs/{{version}}/homestead) 的話，優雅鏈結會自動的幫你設定完成。

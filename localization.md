@@ -101,7 +101,7 @@ Laravel 的 `Lang` facade 提供方便的方法來取得多種語言的字串，
 <a name="validation"></a>
 ## 驗證
 
-要驗證在地化的錯誤和訊息，可以看一下<a href="/docs/5.0/validation#localization">驗證的文件</a>。
+要驗證在地化的錯誤和訊息，可以看一下<a href="/docs/{{version}}/validation#localization">驗證的文件</a>。
 
 <a name="overriding-package-language-files"></a>
 ## 覆寫套件的語言檔

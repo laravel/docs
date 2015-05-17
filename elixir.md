@@ -22,7 +22,7 @@ Laravel Elixir 提供了簡潔流暢的 API，讓你能夠為你的 Laravel 應�
 
     node -v
 
-預設情況下，Laravel Homestead 會包含你所需的一切；當然，如果你沒有使用 Vagrant，那麼你可以瀏覽 [Node  的下載頁](http://nodejs.org/download/)進行安裝。別擔心，安裝是很簡單又快速的！
+預設情況下，Laravel Homestead 會包含你所需的一切；然而，如果你沒有使用 Vagrant，那麼你可以瀏覽 [Node 的下載頁](http://nodejs.org/download/) 進行安裝。別擔心，安裝是很簡單又快速的！
 
 ### Gulp
 
@@ -70,7 +70,7 @@ elixir(function(mix) {
 });
 ```
 
-在上述例子中，Elixir 會假設你的 Sass 檔案儲存在 `resources/assets/sass` 裡。 The `sass` method may only be called once. If you would like to compile multiple Sass files, pass an array to the `sass` method.
+在上述例子中，是假設你的 Sass 檔案儲存在 `resources/assets/sass` 裡。
 
 By default, Elixir, underneath the hood, uses the LibSass library for compilation. In some instances, it might prove advantageous to instead leverage the Ruby version, which, though slower, is more feature rich. Assuming that you have both Ruby and the Sass gem installed (`gem install sass`), you may enable Ruby-mode, like so:
 
@@ -138,7 +138,7 @@ elixir(function(mix) {
 });
 ```
 
-傳遞給此方法的檔案路徑均相對於 `resources/css` 目錄。
+傳遞給此方法的檔案路徑均相對於 `resources/assets/css` 目錄。
 
 #### 合併樣式檔案且儲存在自訂的路徑
 
@@ -183,7 +183,7 @@ elixir(function(mix) {
 });
 ```
 
-同樣的，傳遞給此方法的檔案路徑均相對於 `resources/js` 目錄
+同樣的，傳遞給此方法的檔案路徑均相對於 `resources/assets/js` 目錄
 
 #### 合併指定目錄裡所有的腳本檔案
 
@@ -248,6 +248,18 @@ elixir(function(mix) {
 	mix.copy('vendor/package/views', 'resources/views');
 });
 ```
+
+#### Trigger Browserify
+
+```javascript
+elixir(function(mix) {
+	mix.browserify('index.js');
+});
+```
+
+Want to require modules in the browser? Hoping to use EcmaScript 6 sooner than later? Need a built-in JSX transformer? If so, [Browserify](http://browserify.org/), along with the `browserify` Elixir task, will handle the job nicely.
+
+This task assumes that your scripts are stored in `resources/assets/js`, though you're free to override the default.
 
 #### 方法連接
 

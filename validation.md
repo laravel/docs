@@ -44,7 +44,7 @@ Laravel 透過 `Validation` 類別讓你可以簡單、方便的驗證資料正�
 		[
 			'name' => 'required',
 			'password' => 'required|min:8',
-		'email' => 'required|email|unique:users'
+			'email' => 'required|email|unique:users'
 		]
 	);
 
@@ -224,7 +224,7 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 
 ### 自定閃存的錯誤訊息格式
 
-如果你想要自定驗證失敗時，閃存到 session 的驗證錯誤的格式，在你的基底 request（`App\Http\Requests\Request` ）覆寫 `formatValidationErrors` 方法。別忘了上方要引入 `Illuminate\Validation\Validator`：
+如果你想要自定驗證失敗時，閃存到 session 的驗證錯誤的格式，在你的基底 request（`App\Http\Requests\Request` ）覆寫 `formatErrors` 方法。別忘了上方要引入 `Illuminate\Validation\Validator`：
 
 	/**
 	 * {@inheritdoc}
@@ -366,7 +366,7 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 <a name="rule-accepted"></a>
 #### accepted
 
-驗證欄位值是否為 _yes_ ， _on_ ，或 _1_ 。這在確認「服務條款」是否同意時很有用。
+驗證欄位值是否為 _yes_、_on_、_1_ 或 _true_。這在確認「服務條款」是否同意時很有用。
 
 <a name="rule-active-url"></a>
 #### active_url
@@ -533,7 +533,7 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 <a name="rule-required-if"></a>
 #### required_if:_field_,_value_,...
 
-如果指定 _欄位（ field ）_ 的欄位值等於任何一個 _value_ ，則此欄位為必填。
+如果指定 _欄位（ field ）_ 的等於任何一個 _value_ ，則此欄位為必填。
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
@@ -566,7 +566,7 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 驗證欄位值的大小需符合給定 _value_ 值。對於字串來說， _value_ 為字元數。對於數字來說， _value_ 為某個整數值。對於檔案來說， _value_ 是檔案大小（單位 kb ）。
 
 <a name="rule-string"></a>
-#### string:_value_
+#### string
 
 驗證欄位值的型別是否為字串。
 
@@ -579,6 +579,20 @@ Validator 也可以讓你附加回呼函數，並在驗證後執行。這可以�
 #### unique:_table_,_column_,_except_,_idColumn_
 
 驗證欄位值在給定的資料表中唯一。如果沒有指定 `column`，將會使用欄位本身的名稱。
+
+Occasionally, you may need to set a custom connection for database queries made by the Validator. As seen above, setting `unique:users` as a validation rule will use the default database connection to query the database. To override this, do the following:
+
+	$verifier = App::make('validation.presence');
+
+	$verifier->setConnection('connectionName');
+
+	$validator = Validator::make($input, [
+		'name' => 'required',
+		'password' => 'required|min:8',
+		'email' => 'required|email|unique:users',
+	]);
+
+	$validator->setPresenceVerifier($verifier);
 
 #### Unique 規則的基本用法
 

@@ -27,7 +27,7 @@
 
 #### 對 Eloquent 模型分頁
 
-您也可以對 [Eloquent](/docs/5.0/eloquent) 模型分頁:
+您也可以對 [Eloquent](/docs/{{version}}/eloquent) 模型分頁:
 
 	$allUsers = User::paginate(15);
 
@@ -53,6 +53,8 @@
 - `hasMorePages`
 - `url`
 - `nextPageUrl`
+- `firstItem`
+- `lastItem`
 - `total`
 - `count`
 

@@ -12,7 +12,7 @@
 <a name="introduction"></a>
 ## 介紹
 
-Laravel Envoy 提供了簡潔，輕量的語法，定義在遠端伺服器執行的共同任務。使用 Blade 風格的語法，你可以簡單的設置部署任務，執行 Artisan 命令或是更多。
+[Laravel Envoy](https://github.com/laravel/envoy) 提供了簡潔，輕量的語法，定義在遠端伺服器執行的共同任務。使用 Blade 風格的語法，你可以簡單的設置部署任務，執行 Artisan 命令或是更多。
 
 > **提醒:** Envoy 需要 PHP 5.4 或更高的版本，並且只能在 Mac / Linux 作業系統下執行。
 
@@ -73,6 +73,16 @@ Laravel Envoy 提供了簡潔，輕量的語法，定義在遠端伺服器執行
 你也可以使用 ```@include``` 引入 PHP 檔案：
 
 	@include('vendor/autoload.php');
+
+#### Confirming Tasks Before Running
+
+If you would like to be prompted for confirmation before running a given task on your servers, you may use the `confirm` directive:
+
+	@task('deploy', ['on' => 'web', 'confirm' => true])
+		cd site
+		git pull origin {{ $branch }}
+		php artisan migrate
+	@endtask
 
 <a name="envoy-multiple-servers"></a>
 ## 多伺服器
@@ -157,8 +167,21 @@ Laravel Envoy 提供了簡潔，輕量的語法，定義在遠端伺服器執行
 下面的語法可以發送通知到 [Slack](https://slack.com)：
 
 	@after
-		@slack('team', 'token', 'channel')
+		@slack('hook', 'channel', 'message')
 	@endafter
+
+You may retrieve your webhook URL by creating an `Incoming WebHooks` integration on Slack's website. The `hook` argument should be the entire webhook URL provided by the Incoming Webhooks Slack Integration. For example:
+
+	https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYYY/XXXXXXXXXXXXXXX
+
+You may provide one of the following for the channel argument:
+
+- To send the notification to a channel: `#channel`
+- To send the notification to a user: `@user`
+
+If no `channel` argument is provided the default channel will be used.
+
+> Note: Slack notifications will only be sent if all tasks complete successfully.
 
 <a name="envoy-updating-envoy"></a>
 ## 更新 Envoy

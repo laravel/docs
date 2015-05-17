@@ -19,7 +19,7 @@
 <a name="basic-provider-example"></a>
 ## 基本提供者範例
 
-所有的服務提供者都應繼承 `Illuminate\Support\ServiceProvider` 此一類別。在這個抽象類別中，至少必須定義一個方法： `register` 。在 `register` 方法中，應該**只綁定服務到[服務容器](/docs/5.0/container)之中**。你永遠不該試圖在 `register` 方法中註冊任何事件監聽器、路由或任何其他功能。
+所有的服務提供者都應繼承 `Illuminate\Support\ServiceProvider` 此一類別。在這個抽象類別中，至少必須定義一個方法： `register` 。在 `register` 方法中，應該**只綁定服務到[服務容器](/docs/{{version}}/container)之中**。你永遠不該試圖在 `register` 方法中註冊任何事件監聽器、路由或任何其他功能。
 
 Artisan 命令行介面可以很容易地透過 `make:provider` 產生新的提供者：
 
@@ -51,7 +51,7 @@ Artisan 命令行介面可以很容易地透過 `make:provider` 產生新的提�
 
 	}
 
-這個服務提供者只定義了一個 `register` 方法，並在服務容器中使用此方法定義了一份 `Riak\Contracts\Connection` 的實作。若你還不瞭解服務容器是如何運作的，不用擔心，[我們很快會提到它](/docs/5.0/container)。
+這個服務提供者只定義了一個 `register` 方法，並在服務容器中使用此方法定義了一份 `Riak\Contracts\Connection` 的實作。若你還不瞭解服務容器是如何運作的，不用擔心，[我們很快會提到它](/docs/{{version}}/container)。
 
 此類別位於 `App\Providers` 命名空間之下，因為這是 Laravel 中預設服務提供者所在的位置。然而，你可以隨自己的需要改變它。你的服務提供者可被置於任何 Composer 能自動載入的位置。
 
@@ -113,7 +113,7 @@ Artisan 命令行介面可以很容易地透過 `make:provider` 產生新的提�
 <a name="deferred-providers"></a>
 ## 緩載提供者
 
-若你的提供者**僅僅**用於綁定註冊到[服務容器](/docs/5.0/container)，你可以選擇延緩其註冊，直到真正需要其中註冊的綁定才載入。延緩像這樣的提供者載入可增進應用程式的效能，因為這樣就不用每個請求都從檔案系統中將其載入。
+若你的提供者**僅僅**用於綁定註冊到[服務容器](/docs/{{version}}/container)，你可以選擇延緩其註冊，直到真正需要其中註冊的綁定才載入。延緩像這樣的提供者載入可增進應用程式的效能，因為這樣就不用每個請求都從檔案系統中將其載入。
 
 要延緩提供者載入，將 `defer` 性質設為 `true`，並定義一個 `provides` 方法。 `provides` 方法應回傳提供者所註冊的服務容器綁定。
 

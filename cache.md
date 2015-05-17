@@ -6,6 +6,8 @@
 - [快取標籤](#cache-tags)
 - [快取事件](#cache-events)
 - [資料庫快取](#database-cache)
+- [Memcached 快取](#memcached-cache)
+- [Redis 快取](#redis-cache)
 
 <a name="configuration"></a>
 ## 設定
@@ -91,7 +93,7 @@ Laravel 為各種不同的快取系統提供一致的 API。快取設定檔位�
 <a name="increments-and-decrements"></a>
 ## 遞增與遞減
 
-除了`檔案`與`資料庫`以外的快取系統都支援`遞增`和`遞減`操作：
+除了 `資料庫` 以外的快取系統都支援 `遞增` 和 `遞減` 操作：
 
 #### 遞增值
 
@@ -170,3 +172,25 @@ Laravel 為各種不同的快取系統提供一致的 API。快取設定檔位�
 		$table->text('value');
 		$table->integer('expiration');
 	});
+
+<a name="memcached-cache"></a>
+#### Memcached 快取
+
+Using the Memcached cache requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.
+
+The default [configuration](#configuration) uses TCP/IP based on [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php):
+
+	'memcached' => array(
+		array('host' => '127.0.0.1', 'port' => 11211, 'weight' => 100),
+	),
+
+You may also set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
+
+	'memcached' => array(
+		array('host' => '/var/run/memcached/memcached.sock', 'port' => 0, 'weight' => 100),
+	),
+
+<a name="redis-cache"></a>
+#### Redis 快取
+
+See [Redis Configuration](/docs/redis#configuration)

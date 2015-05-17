@@ -7,10 +7,11 @@
 - [免信用卡試用](#no-card-up-front)
 - [訂購轉換](#swapping-subscriptions)
 - [訂購數量](#subscription-quantity)
+- [Subscription Tax](#subscription-tax)
 - [取消訂購](#cancelling-a-subscription)
 - [恢復訂購](#resuming-a-subscription)
 - [確認訂購狀態](#checking-subscription-status)
-- [處理交易失敗](#handling-failed-payments)
+- [處理訂購失敗](#handling-failed-subscriptions)
 - [處理其它 Stripe Webhooks](#handling-other-stripe-webhooks)
 - [收據](#invoices)
 
@@ -26,6 +27,7 @@ Laravel Cashier 提供口語化，流暢的介面和 [Stripe](https://stripe.com
 
 首先，把 Cashier 套件加到 `composer.json`：
 
+	"laravel/cashier": "~5.0" (For Stripe SDK ~2.0, and Stripe APIs on 2015-02-18 version and later)
 	"laravel/cashier": "~4.0" (For Stripe APIs on 2015-02-18 version and later)
 	"laravel/cashier": "~3.0" (For Stripe APIs up to and including 2015-02-16 version)
 
@@ -44,7 +46,7 @@ Laravel Cashier 提供口語化，流暢的介面和 [Stripe](https://stripe.com
 	use Laravel\Cashier\Billable;
 	use Laravel\Cashier\Contracts\Billable as BillableContract;
 
-	class User extends Eloquent implements BillableContract {
+	class User extends Model implements BillableContract {
 
 		use Billable;
 
@@ -162,6 +164,18 @@ If the charge is successful, the full Stripe response will be returned from the 
 	// Subtract five to the subscription's current quantity...
 	$user->subscription()->decrement(5);
 
+<a name="subscription-tax"></a>
+## Subscription Tax
+
+With Cashier, it's easy to override the `tax_percent` value sent to Stripe. To specify the tax percentage a user pays on a subscription, implement the `getTaxPercent` method on your model, and return a numeric value between 0 and 100, with no more than 2 decimal places.
+
+	public function getTaxPercent()
+	{
+		return 20;
+	}
+
+This enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries.
+
 <a name="cancelling-a-subscription"></a>
 ## 取消訂購
 
@@ -190,7 +204,7 @@ If the charge is successful, the full Stripe response will be returned from the 
 		//
 	}
 
-`subscribed` 方法很適合用在 [route middleware](/docs/5.0/middleware):
+`subscribed` 方法很適合用在 [route middleware](/docs/{{version}}/middleware):
 
 	public function handle($request, Closure $next)
 	{
@@ -237,14 +251,14 @@ If the charge is successful, the full Stripe response will be returned from the 
 		//
 	}
 
-<a name="handling-failed-payments"></a>
-## 處理交易失敗
+<a name="handling-failed-subscriptions"></a>
+## 處理訂購失敗
 
 如果顧客的信用卡過期了呢？無需擔心，Cashier 包含了 Webhook 控制器，可以幫你簡單的取消顧客的訂單。只要在路由註冊控制器：
 
 	Route::post('stripe/webhook', 'Laravel\Cashier\WebhookController@handleWebhook');
 
-這樣就成了！失敗的交易會經由控制器捕捉並進行處理。控制器會進行至多三次再交易嘗試，都失敗後才會取消顧客的訂單。上面的 `stripe/webhook` URI 只是一個範例，你必須使用設定在 Stripe 裡的 URI 才行。
+這樣就成了！失敗的交易會經由控制器捕捉並進行處理。控制器在 Stripe 確認訂購已經失敗後 (通常在三次交易嘗試失敗後)，才會取消顧客的訂單。上面的 `stripe/webhook` URI 只是一個範例，你必須使用設定在 Stripe 裡的 URI 才行。
 
 <a name="handling-other-stripe-webhooks"></a>
 ## 處理其它 Stripe Webhooks

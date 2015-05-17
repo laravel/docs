@@ -2,7 +2,6 @@
 
 - [Blade 模板](#blade-templating)
 - [其他 Blade 控制語法結構](#other-blade-control-structures)
-- [擴展 Blade](#extending-blade)
 
 <a name="blade-templating"></a>
 ## Blade 模板
@@ -14,6 +13,9 @@ Blade 是 Laravel 所提供的一個簡單卻又非常強大的模板引擎。�
 	<!-- Stored in resources/views/layouts/master.blade.php -->
 
 	<html>
+		<head>
+			<title>App Name - @yield('title')</title>
+		</head>
 		<body>
 			@section('sidebar')
 				This is the master sidebar.
@@ -28,6 +30,8 @@ Blade 是 Laravel 所提供的一個簡單卻又非常強大的模板引擎。�
 #### 使用 Blade 頁面佈局
 
 	@extends('layouts.master')
+
+	@section('title', 'Page Title')
 
 	@section('sidebar')
 		@parent
@@ -137,21 +141,3 @@ Blade 是 Laravel 所提供的一個簡單卻又非常強大的模板引擎。�
 #### 註釋
 
 	{{-- This comment will not be in the rendered HTML --}}
-
-<a name="extending-blade"></a>
-## 擴展 Blade
-
-Blade 甚至允許你定義自己的控制語法結構。當一個 Blade 檔案被編譯時，每一個自定義的擴展語法會與視圖一起被呼叫，您可以做任何的操作，簡單的從 `str_replace` 或甚至是複雜的正則表示式。
-
-Blade 的編譯器帶有一些輔助方法 `createMatcher` 及 `createPlainMatcher`，這些輔助方法可以產生您需要的表示式來幫助您構建自己的自定義擴展語法。
-
-`createPlainMatcher` 方法是用在沒有參數的語法指令如 `@endif` 及 `@stop` 等，而 `createMatcher` 方法是用在帶參數的語法指令中。
-
-下面的例子創建了一個 `@datetime($var)` 語法，簡單的對 `$var` 呼叫 `->format()` 方法：
-
-	Blade::extend(function($view, $compiler)
-	{
-		$pattern = $compiler->createOpenMatcher('datetime');
-
-		return preg_replace($pattern, '$1<?php echo $2->format(\'m/d/Y H:i\')); ?>', $view);
-	});

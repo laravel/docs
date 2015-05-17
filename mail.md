@@ -13,9 +13,9 @@ Laravel 基於熱門的 [SwiftMailer](http://swiftmailer.org) 函式庫之上，
 
 ### API 驅動
 
-Laravel 也包含了 Mailgun 及 Mandrill HTTP API 的驅動。這些 API 通常比 SMTP  伺服器更簡單快速。這兩套驅動都需要在應用程式中安裝 Guzzle 4 HTTP 函式庫。您可在 `composer.josn` 中加入下列程式碼， 以便在專案中加入 Guzzle 4：
+Laravel 也包含了 Mailgun 及 Mandrill HTTP API 的驅動。這些 API 通常比 SMTP  伺服器更簡單快速。這兩套驅動都需要在應用程式中安裝 Guzzle 5 HTTP 函式庫。您可在 `composer.josn` 中加入下列程式碼， 以便在專案中加入 Guzzle 5：
 
-	"guzzlehttp/guzzle": "~4.0"
+	"guzzlehttp/guzzle": "~5.0"
 
 #### Mailgun 驅動
 
@@ -114,7 +114,7 @@ Laravel 也包含了 Mailgun 及 Mandrill HTTP API 的驅動。這些 API 通常
 
 #### 將郵件訊息加入隊列
 
-寄送電子郵件訊息會大幅延長應用程式的回應時間，因此許多開發者選擇將郵件訊息加入隊列並於背景發送。 Laravel  使用內建 [統一的 queue API](/docs/5.0/queues) ，讓您輕鬆地完成此工作。要將郵件訊息加入隊列，只要使用 `Mail` 類別的 `queue` 方法：
+寄送電子郵件訊息會大幅延長應用程式的回應時間，因此許多開發者選擇將郵件訊息加入隊列並於背景發送。 Laravel 使用內建 [統一的 queue API](/docs/{{version}}/queues) ，讓您輕鬆地完成此工作。要將郵件訊息加入隊列，只要使用 `Mail` 類別的 `queue` 方法：
 
 	Mail::queue('emails.welcome', $data, function($message)
 	{

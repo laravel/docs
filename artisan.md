@@ -49,7 +49,7 @@ Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令
 		//
 	});
 
-你甚至可以把 Artisan 命令放到隊列，他們會藉由 [隊列工作者](/docs/5.0/queues) 在背景執行：
+你甚至可以把 Artisan 命令放到隊列，他們會藉由 [隊列工作者](/docs/{{version}}/queues) 在背景執行：
 
 	Route::get('/foo', function()
 	{
@@ -134,6 +134,14 @@ Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令
 	$schedule->command('foo')->saturdays();
 	$schedule->command('foo')->sundays();
 
+#### Prevent Jobs From Overlapping
+
+By default, scheduled jobs will be run even if the previous instance of the job is still running. To prevent this, you may use the `withoutOverlapping` method:
+
+	$schedule->command('foo')->withoutOverlapping();
+
+In this example, the `foo` command will be run every minute if it is not already running.
+
 #### 限制應該執行工作的環境
 
 	$schedule->command('foo')->monthly()->environments('production');
@@ -162,3 +170,7 @@ Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令
 #### 在工作執行之後 Ping 給定的 URL
 
 	$schedule->command('foo')->thenPing($url);
+
+Using the `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle 5 to your project by adding the following line to your `composer.json` file:
+
+	"guzzlehttp/guzzle": "~5.0"

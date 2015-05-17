@@ -75,6 +75,7 @@ Laravel 的結構生成器 (`Schema`) 提供一個與資料庫無關的資料表
 `$table->increments('id');`  |  相當於 Incrementing 型態 (資料表主鍵)
 `$table->integer('votes');`  |  相當於 INTEGER 型態
 `$table->json('options');`  |  相當於 JSON 型態
+`$table->jsonb('options');`  |  相當於 JSONB 型態
 `$table->longText('description');`  |  相當於 LONGTEXT 型態
 `$table->mediumInteger('numbers');`  |  相當於 MEDIUMINT 型態
 `$table->mediumText('description');`  |  相當於 MEDIUMTEXT 型態
@@ -103,6 +104,8 @@ Laravel 的結構生成器 (`Schema`) 提供一個與資料庫無關的資料表
 <a name="changing-columns"></a>
 ## 修改欄位
 
+**Note:** Before changing a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file.
+
 有時候您需要修改一個存在的欄位，例如：您可能想增加儲存文字欄位的長度。藉由 `change` 方法讓這件事情變得非常容易！假設我們想要將欄位 `name` 的長度從 25 增加到 50 的時候：
 
 	Schema::table('users', function($table)
@@ -127,7 +130,11 @@ Laravel 的結構生成器 (`Schema`) 提供一個與資料庫無關的資料表
 		$table->renameColumn('from', 'to');
 	});
 
+<<<<<<< HEAD
 > **注意:** `enum` 欄位型別現在不支援修改欄位名稱。
+=======
+> **Note:** Renaming columns in a table with `enum` column is currently not supported.
+>>>>>>> headstream/5.0
 
 <a name="dropping-columns"></a>
 ## 移除欄位
