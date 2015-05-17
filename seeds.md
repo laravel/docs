@@ -1,6 +1,7 @@
 # Database Seeding
 
 - [Introduction](#introduction)
+- [Creating Seeders](#creating-seeders)
 - [Writing Seeders](#writing-seeders)
 - [Running Seeders](#running-seeders)
 
@@ -8,6 +9,15 @@
 ## Introduction
 
 Laravel includes a simple method of seeding your database with test data using seed classes. All seed classes are stored in `database/seeds`. Seed classes may have any name you wish, but probably should follow some sensible convention, such as `UserTableSeeder`, etc. By default, a `DatabaseSeeder` class is defined for you. From this class, you may use the `call` method to run other seed classes, allowing you to control the seeding order.
+
+<a name="creating-seeders"></a>
+## Creating Seeders
+
+To create a new seeder, you may use the `make:seeder` artisan command, which will generate a seeder stub to help you get started:
+
+	php artisan make:seeder UserTableSeeder
+
+The command above would generate a class at `database/seeds`.
 
 <a name="writing-seeders"></a>
 ## Writing Seeders
