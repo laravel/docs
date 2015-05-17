@@ -891,7 +891,7 @@ In addition, you can pass a third argument containing the new items to replace t
 
 	$collection->all();
 
-	// [2, 10, 11, 4, 5]
+	// [1, 2, 10, 11, 4, 5]
 
 <a name="method-sum"></a>
 #### `sum()` {#collection-method}
