@@ -63,7 +63,7 @@ You may now define events as objects instead of simply using strings. For exampl
 	<?php
 
 	class PodcastWasPurchased
-  {
+	{
 		public $podcast;
 
 		public function __construct(Podcast $podcast)
@@ -81,7 +81,7 @@ Of course, your event handler will receive the event object instead of a list of
 	<?php
 
 	class ReportPodcastPurchase
-  {
+	{
 		public function handle(PodcastWasPurchased $event)
 		{
 			//
@@ -97,7 +97,7 @@ In addition to the queue job format supported in Laravel 4, Laravel 5 allows you
 	<?php
 
 	class PurchasePodcast extends Command implements SelfHandling, ShouldBeQueued
-  {
+	{
 		use SerializesModels;
 
 		protected $user, $podcast;
@@ -193,7 +193,7 @@ Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundatio
 	<?php namespace App\Http\Requests;
 
 	class RegisterRequest extends FormRequest
-  {
+	{
 		public function rules()
 		{
 			return [
