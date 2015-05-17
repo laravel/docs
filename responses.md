@@ -31,7 +31,7 @@ For convenience, you may also use the `response` helper:
 	return response($content, $status)
 	              ->header('Content-Type', $value);
 
-> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/master/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
+> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/{{version}}/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
 
 #### Sending A View In A Response
 
