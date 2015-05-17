@@ -312,6 +312,8 @@ The `forPage` method returns a new collection containing the items that would be
 
 	// [4, 5, 6]
 
+The method requires the page number and the number of items to show per page, respectively.
+
 <a name="method-get"></a>
 #### `get()` {#collection-method}
 
