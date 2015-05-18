@@ -18,7 +18,7 @@
     - [Service Container](/docs/{{version}}/container)
     - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
-    - [Request Lifecycle](/docs/{{version}}/lifecycle)
+    - [Request Life Cycle](/docs/{{version}}/life-cycle)
     - [Application Structure](/docs/{{version}}/structure)
 - Services
     - [Authentication](/docs/{{version}}/authentication)
