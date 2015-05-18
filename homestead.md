@@ -71,7 +71,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 ### 設定你的提供者
 
-你能夠在 `Homestead.yaml` 檔案中設定 `provider`，指定 Vagrant 要使用哪個提供者：`virtualbox`、`vmware_fusion` (Mac OS X) 或 `vmware_workstation` (Windows)。你可以可以特定你偏好的提供者。
+你能夠在 `Homestead.yaml` 檔案中設定 `provider`，指定 Vagrant 要使用哪個提供者：`virtualbox`、`vmware_fusion` (Mac OS X) 或 `vmware_workstation` (Windows)。你可以指定你偏好的提供者。
 
 	provider: virtualbox
 
