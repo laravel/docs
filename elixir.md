@@ -72,7 +72,7 @@ elixir(function(mix) {
 
 在上述例子中，是假設你的 Sass 檔案儲存在 `resources/assets/sass` 裡。
 
-By default, Elixir, underneath the hood, uses the LibSass library for compilation. In some instances, it might prove advantageous to instead leverage the Ruby version, which, though slower, is more feature rich. Assuming that you have both Ruby and the Sass gem installed (`gem install sass`), you may enable Ruby-mode, like so:
+以預設來說，Elixir 在執行時底層採用的是 LibSass 函式庫來編譯。在一些實例中，Ruby 的版本被證明比前者更加有利，雖然它速度較慢一些，但是它擁有更加豐富的功能。假設你已經安裝了 Ruby 及 Sass 的 gem（`gem install sass`），你可以開啟 Ruby 的模式，如下：
 
 ```javascript
 elixir(function(mix) {
@@ -80,7 +80,7 @@ elixir(function(mix) {
 });
 ```
 
-#### Compile Without Source Maps
+#### 編譯並排除 Source Maps
 
 ```javascript
 elixir.config.sourcemaps = false;
@@ -90,7 +90,7 @@ elixir(function(mix) {
 });
 ```
 
-Source maps are enabled out of the box. As such, for each file that is compiled, you'll find a companion `*.css.map` file in the same directory. This mapping allows you to, when debugging, trace your compiled stylesheet selectors  back to your original Sass or Less partials! Should you need to disable this functionality, however, the code sample above will do the trick.
+Source maps 在預設情況下是開啟的。因此，在每個被編譯的檔案，同目錄內都會伴隨著一個 `*.css.map` 檔案。這個檔案能夠讓你在除錯時，能夠追蹤編譯後的樣式表選擇器至原始的 Sass 或 Less 位置。如果你想要關閉此功能，當然，上方的範例程式碼做的就是這件事情。
 
 #### 編譯 CoffeeScript
 
@@ -302,11 +302,11 @@ elixir(function(mix) {
 > **提示：** 所有的任務都會使用開發環境進行，所以壓縮功能不會被執行。如果要使用上線環境，可以使用 `gulp --production`。
 
 <a name="extensions"></a>
-## Custom Tasks and Extensions
+## 自訂任務及擴展
 
-Sometimes, you'll want to hook your own Gulp tasks into Elixir. Perhaps you have a special bit of functionality that you'd like Elixir to mix and watch for you. No problem!
+有些時候，你可能寫要在掛接自己的 Gulp 任務至 Elixie 中。也許你的功能有點特別，並且想透過 Elixir 來幫你混合或是監看。這當然沒問題！
 
-As an example, imagine that you have a general task that simply speaks a bit of text when called.
+舉個例子，假設你有一個一般的任務，當你呼叫時就會說一些簡單的文字。
 
 ```javascript
 gulp.task("speak", function() {
@@ -316,7 +316,7 @@ gulp.task("speak", function() {
 });
 ```
 
-Easy enough. From the command line, you may, of course, call `gulp speak` to trigger the task. To add it to Elixir, however, use the `mix.task()` method:
+很容易的。當然，在終端機中，你可以透過呼叫 `gulp speak` 來觸發這個任務。想要將這個任務加入 Elixir ，你只需要使用 `mix.task()` 方法：
 
 ```javascript
 elixir(function(mix) {
@@ -324,7 +324,7 @@ elixir(function(mix) {
 });
 ```
 
-That's it! Now, each time you run Gulp, your custom "speak" task will be executed alongside any other Elixir tasks that you've mixed in. To additionally register a watcher, so that your custom tasks will be re-triggered each time one or more files are modified, you may pass a regular expression as the second argument.
+就是這樣！現在開始，當你每次執行 Gulp，你自訂的「speak」任務就會和其他 Gulp 任務一起被執行，因為你已經將他們混合在一起了。除此之外你也可以註冊一個監控器，當一個或多個檔案被修改時，就重新觸發你的自訂任務，你只需要傳入一個正規表示式作為第二個參數。
 
 ```javascript
 elixir(function(mix) {
@@ -332,10 +332,10 @@ elixir(function(mix) {
 });
 ```
 
-By adding this second argument, we've instructed Elixir to re-trigger the "speak" task each time a PHP file in the "app/" directory is saved.
+在加入第二個參數之後，每次只要有 PHP 檔案在「app/」資料夾中被儲存，就會重新觸發「speak」任務。
 
 
-For even more flexibility, you can create full Elixir extensions. Using the previous "speak" example, you may write an extension, like so:
+為了得到更好的靈活性，你可以建立一個完整的 Elixir 擴展。以剛剛的「speak」作為範例，如果你想寫一個擴展，可以這麼做：
 
 ```javascript
 var gulp = require("gulp");
