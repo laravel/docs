@@ -74,9 +74,9 @@
 
 	@include('vendor/autoload.php');
 
-#### Confirming Tasks Before Running
+#### 任務執行之前進行確認
 
-If you would like to be prompted for confirmation before running a given task on your servers, you may use the `confirm` directive:
+如果你想要在伺服器執行你指定的任務之前進行確認，可以使用 `confirm` 選項：
 
 	@task('deploy', ['on' => 'web', 'confirm' => true])
 		cd site
@@ -170,22 +170,22 @@ If you would like to be prompted for confirmation before running a given task on
 		@slack('hook', 'channel', 'message')
 	@endafter
 
-You may retrieve your webhook URL by creating an `Incoming WebHooks` integration on Slack's website. The `hook` argument should be the entire webhook URL provided by the Incoming Webhooks Slack Integration. For example:
+當你在 Slack 的網站建立 `Incoming WebHooks` 時會取得一組 webhook 的網址。`hook` 參數指的是 Slack 的 `Incoming WebHooks` 所提供的整串網址。
 
 	https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYYY/XXXXXXXXXXXXXXX
 
-You may provide one of the following for the channel argument:
+你可以為 channel 參數指定下方的其中一種：
 
-- To send the notification to a channel: `#channel`
-- To send the notification to a user: `@user`
+- 如果要發送通知至一個頻道：`#channel`
+- 如果要發送通知給一位使用者：`@user`
 
-If no `channel` argument is provided the default channel will be used.
+如果沒有指定 `channel` 參數，那麼就會使用預設的頻道。
 
-> Note: Slack notifications will only be sent if all tasks complete successfully.
+> 注意：Slack的通知只會在所有任務都成功執行後才會送出。
 
 <a name="envoy-updating-envoy"></a>
 ## 更新 Envoy
 
-To update Envoy, simply use Composer:
+如果要更新 Envoy，只需要使用 Composer：
 
 	composer global update
