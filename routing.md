@@ -121,7 +121,7 @@ HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以當定義 `P
 		return 'User '.$id;
 	});
 
-> **Note:** Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
+> **注意：** 路由參數不能包含 `-` 字元。用下劃線 (`_`) 取代它。
 
 #### 選擇性路由參數
 
