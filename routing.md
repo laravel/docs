@@ -67,14 +67,11 @@ Laravel 為所有上線使用者的 Session 產生一個 CSRF “token”。該 
 
 	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-當然也可以在 Blade [模板引擎](/docs/5.0/templates)使用：
+當然也可以在 Blade [模板引擎](/docs/{{version}}/templates)使用：
 
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-
-除了 “POST” 參數中的 CSRF token 外，中介層也會驗證請求標頭中的 `X-CSRF-TOKEN`。
-
-您不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。`VerifyCsrfToken` [HTTP  中介層](/docs/5.0/middleware)將自動驗證請求與 Session 中的 token 是否相符合。
+	您不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。`VerifyCsrfToken` [HTTP  中介層](/docs/{{version}}/middleware)將自動驗證請求與 Session 中的 token 是否相符合。
 
 #### X-CSRF-TOKEN
 
@@ -96,7 +93,7 @@ Laravel 為所有上線使用者的 Session 產生一個 CSRF “token”。該 
 
 #### X-XSRF-TOKEN
 
-Laravel 也會在 `XSRF-TOKEN` cookie 中儲存 CSRF token。你也可以使用 cookie 的值來設定 `X-XSRF-TOKEN` 請求標頭。一些像是 Angular 的 Javascript 框架會自動幫你做到。
+Laravel 也會在 `XSRF-TOKEN` cookie 中儲存 CSRF token。你也可以使用 cookie 的值來設定 `X-XSRF-TOKEN` 請求標頭。一些像是 Angular 的 JavaScript 框架會自動幫你做到。
 
 > 注意: `X-CSRF-TOKEN` 與 `X-XSRF-TOKEN` 的差別在於前者無加密，而後者為加密過的值，因為在 Laravel 中的 cookies 預設是加密過的。如果你使用 `csrf_token()` 函式來取得 token 值，你就得使用 `X-CSRF-TOKEN` 標頭。
 
@@ -123,6 +120,8 @@ HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以當定義 `P
 	{
 		return 'User '.$id;
 	});
+
+> **Note:** Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
 
 #### 選擇性路由參數
 
@@ -311,6 +310,7 @@ Laravel 路由一樣可以處理萬用字元的子網域，並且從網域中傳
 		'prefix' => 'accounts/{account_id}',
 		'where' => ['account_id' => '[0-9]+'],
 	], function() {
+
 		// 在此定義路由
 	});
 
@@ -348,7 +348,7 @@ Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中
 		throw new NotFoundHttpException;
 	});
 
-如果您想要使用您自定的處理邏輯，您應該使用 `Router::bind` 方法。閉包透過 `bind` 方法將傳遞 URI 區段數值，並返回您想要被注入路由的類別實體：
+如果您想要使用您自定的處理邏輯，您應該使用 `Route::bind` 方法。閉包透過 `bind` 方法將傳遞 URI 區段數值，並返回您想要被注入路由的類別實體：
 
 	Route::bind('user', function($value)
 	{
@@ -362,8 +362,8 @@ Laravel 模型綁定提供方便的方式將模型實體注入到您的路由中
 
 	abort(404);
 
-`abort` 輔助函式只是簡單拋出帶有指定狀態代碼的 `Symfony\Component\HttpFoundation\Exception\HttpException`。
+`abort` 輔助函式只是簡單拋出帶有指定狀態代碼的 `Symfony\Component\HttpKernel\Exception\HttpException`。
 
 第二，您可以手動拋出 `Symfony\Component\HttpKernel\Exception\NotFoundHttpException` 的實體。
 
-有關如何處理 404 例外狀況和自定回應的更多資訊，可以參考[錯誤](/docs/5.0/errors#http-exceptions)章節內的文件。
+有關如何處理 404 例外狀況和自定回應的更多資訊，可以參考[錯誤](/docs/{{version}}/errors#http-exceptions)章節內的文件。

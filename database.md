@@ -50,6 +50,10 @@ Laravel 讓連結資料庫和執行查詢變得相當容易。資料庫相關設
 
 `select` 方法會回傳一個 `array` 結果。
 
+You may also execute a query using named bindings:
+
+	$results = DB::select('select * from users where id = :id', ['id' => 1]);
+
 #### 執行 Insert 語法
 
 	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);

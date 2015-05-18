@@ -29,7 +29,7 @@ Laravel 有很棒的檔案系統抽象層，是基於 Frank de Jonge 的 [Flysys
 <a name="basic-usage"></a>
 ## 基本用法
 
-可以用 `Storage` facade 操作所有寫在設定檔裡的硬碟。或者是，你也可以將 `Illuminate\Contracts\Filesystem\Factory` 型別暗示寫到任何類別裡，經由 [IoC container](/docs/5.0/container) 解析。
+可以用 `Storage` facade 操作所有寫在設定檔裡的硬碟。或者是，你也可以將 `Illuminate\Contracts\Filesystem\Factory` 型別暗示寫到任何類別裡，經由 [IoC container](/docs/{{version}}/container) 解析。
 
 #### 取得一個特定硬碟
 
@@ -113,7 +113,7 @@ Laravel 有很棒的檔案系統抽象層，是基於 Frank de Jonge 的 [Flysys
 
 Laravel's Flysystem integration provides drivers for several "drivers" out of the box; however, Flysystem is not limited to these and has adapters for many other storage systems. You can create a custom driver if you want to use one of these additional adapters in your Laravel application. Don't worry, it's not too hard!
 
-In order to set up the custom filesystem you will need to create a service provider such as `DropboxFilesystemServiceProvider`. In the provider's `boot` method, you can inject an instance of the `Illuminate\Contracts\Filesystem\Factory` contract and call the `extend` method of the injected instance. Alternatively, You may use the `Disk` facade's `extend` method.
+In order to set up the custom filesystem you will need to create a service provider such as `DropboxFilesystemServiceProvider`. In the provider's `boot` method, you can inject an instance of the `Illuminate\Contracts\Filesystem\Factory` contract and call the `extend` method of the injected instance. Alternatively, you may use the `Disk` facade's `extend` method.
 
 The first argument of the `extend` method is the name of the driver and the second is a Closure that receives the `$app` and `$config` variables. The resolver Closure must return an instance of `League\Flysystem\Filesystem`.
 
@@ -127,8 +127,9 @@ The first argument of the `extend` method is the name of the driver and the seco
 	use League\Flysystem\Filesystem;
 	use Dropbox\Client as DropboxClient;
 	use League\Flysystem\Dropbox\DropboxAdapter;
+	use Illuminate\Support\ServiceProvider;
 
-	class DropboxFilesystemServiceProvider {
+	class DropboxFilesystemServiceProvider extends ServiceProvider {
 
 		public function boot()
 		{
@@ -138,6 +139,11 @@ The first argument of the `extend` method is the name of the driver and the seco
 
 				return new Filesystem(new DropboxAdapter($client));
 			});
+		}
+
+		public function register()
+		{
+			//
 		}
 
 	}

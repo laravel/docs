@@ -116,6 +116,20 @@
 	$users = DB::table('users')
 	                    ->whereNull('updated_at')->get();
 
+#### Dynamic Where Clauses
+
+You may even use "dynamic" where statements to fluently build where statements using magic methods:
+
+	$admin = DB::table('users')->whereId(1)->first();
+
+	$john = DB::table('users')
+	                    ->whereIdAndEmail(2, 'john@doe.com')
+	                    ->first();
+
+	$jane = DB::table('users')
+	                    ->whereNameOrAge('Jane', 22)
+	                    ->first();
+
 #### 排序(Order By)、分群(Group By) 及 Having
 
 	$users = DB::table('users')

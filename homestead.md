@@ -33,8 +33,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 - Redis
 - Memcached
 - Beanstalkd
-- [Laravel Envoy](/docs/5.0/envoy)
-- Fabric + HipChat Extension
+- [Laravel Envoy](/docs/{{version}}/envoy)
 - [Blackfire Profiler](#blackfire-profiler)
 
 <a name="installation-and-setup"></a>
@@ -60,37 +59,19 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 ### 安裝 Homestead
 
-#### 方法 1 - 手動透過 Git 安裝（本地端沒有 PHP）
-
-如果你不希望在你的本機上安裝 PHP ，你可以簡單地透過手動複製資源庫的方式來安裝 Homestead。建議可將資源庫複製至你的 "home" 目錄中的 `Homestead` 資料夾，如此一來 Homestead 封裝包將能提供主機服務給你所有的 Laravel（及 PHP）專案:
+你可以透過手動複製資源庫的方式來安裝 Homestead。建議可將資源庫複製至你的 "home" 目錄中的 `Homestead` 資料夾，如此一來 Homestead 封裝包將能提供主機服務給你所有的 Laravel（及 PHP）專案:
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
-一旦你安裝完 Homestead CLI 工具，即可執行 `bash init.sh` 指令來創建 `Homestead.yaml` 設定檔:
+一旦你安裝完 Homestead，即可在 Homestead 目錄執行 `bash init.sh` 指令來創建 `Homestead.yaml` 設定檔:
 
 	bash init.sh
 
 此 `Homestead.yaml` 檔，將會被放置在你的 `~/.homestead` 目錄中。
 
-#### 方法 2 - 透過 Composer + PHP 工具
-
-一旦封裝包已經安裝進你的 Vagrant 安裝程式，你就可以準備透過 Composer `global` 指令來安裝 Homestead CLI 工具：
-
-	composer global require "laravel/homestead=~2.0"
-
-確認 `~/.composer/vendor/bin` 目錄是否設定在你的 PATH 環境變數中，如此當你在終端執行 `homestead` 命令時，`homestead` 才能被找到並執行。
-
-一旦你安裝完 Homestead CLI 工具，即可執行 `init` 指令來創建 `Homestead.yaml` 設定檔:
-
-	homestead init
-
-此 `Homestead.yaml` 將會被放置在你的 `~/.homestead` 資料夾中。如果你是使用 Mac 或 Linux，你可以直接在終端機執行 `homestead edit` 指令來編輯 `Homestead.yaml` :
-
-	homestead edit
-
 ### 設定你的提供者
 
-你能夠在 `Homestead.yaml` 檔案中設定 `provider`，指定 Vagrant 要使用哪個提供者：`virtualbox` 或 `vmware_fusion`。你可以將它修改成你所偏好的提供者。
+你能夠在 `Homestead.yaml` 檔案中設定 `provider`，指定 Vagrant 要使用哪個提供者：`virtualbox`、`vmware_fusion` (Mac OS X) 或 `vmware_workstation` (Windows)。你可以指定你偏好的提供者。
 
 	provider: virtualbox
 
@@ -128,13 +109,15 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 	      to: /home/vagrant/Code/Laravel/public
 	      hhvm: true
 
+Each site will be accessible by HTTP via port 8000 and HTTPS via port 44300.
+
 ### Bash Aliases
 
 如果要增加 Bash aliases 到你的 Homestead 封裝包中，只要將內容加到 `~/.homestead` 根目錄的 `aliases` 檔案中即可。
 
 ### 啟動 Vagrant 封裝包
 
-當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機從你的 Homestead 資料夾下執行 `homestead up` 指令。
+當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機從你的 Homestead 資料夾下執行 `vagrant up` 指令。
 
 Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx 站台。如果要移除虛擬機器，可以使用 `vagrant destroy --force` 指令。
 
@@ -153,13 +136,13 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 
 ### 透過 SSH 連接
 
-要透過 SSH 連接上您的 Homestead 環境，在你的 Homestead 目錄下執行  `vagrant ssh` 指令。
-
-因為你可能會經常需要透過 SSH 進入你的 Homestead 虛擬機器，可以考慮在你的主要機器上創建一個"別名":
+因為你可能會經常需要透過 SSH 進入你的 Homestead 虛擬機器，可以考慮在你的主要機器上創建一個「別名」來快速 SSH 進入你的 Homestead:
 
 	alias vm="ssh vagrant@127.0.0.1 -p 2222"
 
 一旦你創建了這個別名，無論你在主要機器的哪個目錄，都可以簡單地使用 "vm" 指令來透過 SSH 進入你的 Homestead 虛擬機器。
+
+或者，你可以在 Homestead 目錄下執行 `vagrant ssh` 指令。
 
 ### 連結資料庫
 
@@ -171,13 +154,13 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 
 ### 增加更多的站台
 
-一旦 Homestead 環境上架且運行後，你可能會需要為 Laravel 應用程式增加更多的 Nginx 站台。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。有兩種方式可以達成：第一種，在 `Homestead.yaml` 檔案中增加站台然後執行 `homestead provision` 或是 `vagrant provision`。
+一旦 Homestead 環境上架且運行後，你可能會需要為 Laravel 應用程式增加更多的 Nginx 站台。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。有兩種方式可以達成：第一種，在 `Homestead.yaml` 檔案中增加站台然後在 Homestead 目錄執行 `vagrant provision`。
 
 > **附註：** 這個是具有破壞性的步驟。 當執行 `provision` 指令，你現有的資料庫將會被摧毀及重建。
 
 另外，也可以使用存放在 Homestead 環境中的 `serve` 指令檔。要使用 `serve` 指令檔，請先 SSH 進入 Homestead 環境中，並執行下列命令：
 
-	serve domain.app /home/vagrant/Code/path/to/public/directory
+	serve domain.app /home/vagrant/Code/path/to/public/directory 80
 
 > **附註：** 在執行 `serve` 指令過後，別忘記將新的站台加進本機的 `hosts` 檔案中。
 
@@ -188,6 +171,7 @@ Vagrant 會將虛擬機器開機，並且自動設定你的共享目錄和 Nginx
 
 - **SSH:** 2222 &rarr; Forwards To 22
 - **HTTP:** 8000 &rarr; Forwards To 80
+- **HTTPS:** 44300 &rarr; Forwards To 443
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **Postgres:** 54320 &rarr; Forwards To 5432
 
@@ -212,5 +196,7 @@ SensioLabs 所發佈的 [Blackfire 分析器](https://blackfire.io) 會在你的
 	blackfire:
 	    - id: your-server-id
 	      token: your-server-token
+	      client-id: your-client-id
+	      client-token: your-client-token
 
-一旦你設定完了 Blackfire 的憑證，請透過 `homestead provision` 或 `vagrant provision` 重置你的虛擬機器。當然，請確定你已經看過 [Blackfire 文件](https://blackfire.io/getting-started)，以瞭解如何在你的瀏覽器安裝 Blackfire 的擴充套件。
+一旦你設定完了 Blackfire 的憑證，請從你的 Homestead 目錄透過 `vagrant provision` 重置你的虛擬機器。當然，請確定你已經看過 [Blackfire 文件](https://blackfire.io/getting-started)，以瞭解如何在你的瀏覽器安裝 Blackfire 的擴充套件。

@@ -20,7 +20,7 @@
 
 ### 透過依賴注入
 
-要透過依賴注入的方式取得 HTTP 請求的實例，你必須在控制器中的建構函式或方法對該類別使用型別提示。當前請求的實例將會自動由[服務容器](/docs/5.0/container)注入：
+要透過依賴注入的方式取得 HTTP 請求的實例，你必須在控制器中的建構函式或方法對該類別使用型別提示。當前請求的實例將會自動由[服務容器](/docs/{{version}}/container)注入：
 
 	<?php namespace App\Http\Controllers;
 
@@ -108,7 +108,7 @@ Laravel 可以讓你保留這次的輸入資料，直到下一次請求發送前
 
 #### 將輸入資料存成一次性 Session
 
-`flash` 方法會將當前的輸入資料存進 [session](/docs/5.0/session)中，所以下次使用者發出請求時可以使用儲存的資料：
+`flash` 方法會將當前的輸入資料存進 [session](/docs/{{version}}/session)中，所以下次使用者發出請求時可以使用儲存的資料：
 
 	Request::flash();
 
@@ -159,6 +159,30 @@ _雖然說是「永遠」，但真正的意思是五年。_
 
 	$response->withCookie(cookie()->forever('name', 'value'));
 
+#### Queueing Cookies
+
+You may also "queue" a cookie to be added to the outgoing response, even before that response has been created:
+
+	<?php namespace App\Http\Controllers;
+
+	use Cookie;
+	use Illuminate\Routing\Controller;
+
+	class UserController extends Controller
+	{
+		/**
+		 * Update a resource
+		 *
+		 * @return Response
+		 */
+		 public function update()
+		 {
+		 	Cookie::queue('name', 'value');
+
+		 	return response('Hello World');
+		 }
+	}
+
 <a name="files"></a>
 ## 上傳檔案
 
@@ -200,6 +224,14 @@ _雖然說是「永遠」，但真正的意思是五年。_
 #### 取得請求 URI
 
 	$uri = Request::path();
+
+#### Determine If The Request Is Using AJAX
+
+	if (Request::ajax())
+	{
+		//
+	}
+
 
 #### 取得請求方法
 

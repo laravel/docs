@@ -22,7 +22,7 @@
 <a name="views"></a>
 ## 視圖
 
-您套件內部的架構全部由您自己規劃。然而，原則上會有一個或更多的 [服務提供者](/docs/5.0/providers)。服務提供者包含著所有的 [服務容器](/docs/5.0/container) 綁定，也定義了所有您套件的相關設定、視圖以及語言檔案在什麼地方。
+您套件內部的架構全部由您自己規劃。然而，原則上會有一個或更多的 [服務提供者](/docs/{{version}}/providers)。服務提供者包含著所有的 [服務容器](/docs/{{version}}/container) 綁定，也定義了所有您套件的相關設定、視圖以及語言檔案在什麼地方。
 
 ### 視圖
 
@@ -132,7 +132,7 @@ If you would like to make sure your public assets are always up-to-date, you can
 
 	// Publish your migrations
 	$this->publishes([
-		__DIR__.'/../database/migrations/' => base_path('/database/migrations')
+		__DIR__.'/../database/migrations/' => database_path('/migrations')
 	], 'migrations');
 
 您可以使用這些 `tag`，來分別發佈這些套件裡的檔案。

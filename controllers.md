@@ -76,7 +76,7 @@
 <a name="controller-middleware"></a>
 ## 控制器中介層
 
-[中介層](/docs/5.0/middleware) 可在控制器路由中指定，例如：
+[中介層](/docs/{{version}}/middleware) 可在控制器路由中指定，例如：
 
 	Route::get('profile', [
 		'middleware' => 'auth',
@@ -220,7 +220,7 @@ DELETE    | /photo/{photo}        | destroy      | photo.destroy
 
 #### 建構式注入
 
-Laravel [服務容器](/docs/5.0/container) 用於解析所有的 Laravel 控制器。因此，在建構式中，你可以對控制器需要的任何相依做型別限制：
+Laravel [服務容器](/docs/{{version}}/container) 用於解析所有的 Laravel 控制器。因此，在建構式中，你可以對控制器需要的任何相依做型別限制：
 
 	<?php namespace App\Http\Controllers;
 
@@ -247,7 +247,7 @@ Laravel [服務容器](/docs/5.0/container) 用於解析所有的 Laravel 控制
 
 	}
 
-當然了，你也可以對任何的 [Laravel contract](/docs/5.0/contracts) 作型別限制。只要容器能解析它，你就可以對它作型別限制。
+當然了，你也可以對任何的 [Laravel contract](/docs/{{version}}/contracts) 作型別限制。只要容器能解析它，你就可以對它作型別限制。
 
 #### 方法注入
 
@@ -298,7 +298,7 @@ Laravel [服務容器](/docs/5.0/container) 用於解析所有的 Laravel 控制
 
 	}
 
-> **注意：** 方法注入和 [模型繫結](/docs/5.0/routing#route-model-binding) 是完全相容的。容器可智慧地判斷那些參數和模型相關以及那些參數應該被注入。
+> **注意：** 方法注入和 [模型繫結](/docs/{{version}}/routing#route-model-binding) 是完全相容的。容器可智慧地判斷那些參數和模型相關以及那些參數應該被注入。
 
 <a name="route-caching"></a>
 ## 路由快取

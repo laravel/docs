@@ -21,7 +21,7 @@
 
 推薦的升級方式是建立一個全新的 Laravel `5.0` 專案，然後複製您在 `4.2` 的檔案到此新的應用程式，這將包含控制器、路由、Eloquent 模型、Artisan 命令、assets 和關於此應用程式的其他特定檔案。
 
-一開始，在你的本地環境中[安裝新的 Laravel 5 應用程式](/docs/5.0/installation)在一個全新的目錄下，我們將詳細探討整合各部分的過程。
+一開始，在你的本地環境中[安裝新的 Laravel 5 應用程式](/docs/{{version}}/installation)在一個全新的目錄下，我們將詳細探討整合各部分的過程。
 
 ### Composer 相依與套件
 
@@ -41,7 +41,7 @@
 
 此外，將你舊的 `.env.php` 檔案中自訂的設定值都搬到 `.env` （本機環境的真實設定值）和 `.env.example` (給其他團隊成員的範本教學）中。
 
-更多關於環境設定值，請見[完整文件](/docs/5.0/configuration#environment-configuration)。
+更多關於環境設定值，請見[完整文件](/docs/{{version}}/configuration#environment-configuration)。
 
 > **注意:** 在部署 Laravel 5 應用程式之前，您需要在正式主機上放置 `.env` 檔案並設定適當的值。
 
@@ -73,7 +73,7 @@ Laravel 5 並沒有將過濾器移除，您一樣可以使用 `before` 和 `afte
 
 ### 全域 CSRF
 
-預設情況下，所有路由都會使用 [CSRF 保護](/docs/5.0/routing#csrf-protection)。若想關閉它們，或是只在特定路由開啟，請移除 `App\Http\Kernel` 中 `middleware` 陣列內的這一行：
+預設情況下，所有路由都會使用 [CSRF 保護](/docs/{{version}}/routing#csrf-protection)。若想關閉它們，或是只在特定路由開啟，請移除 `App\Http\Kernel` 中 `middleware` 陣列內的這一行：
 
 	'App\Http\Middleware\VerifyCsrfToken',
 
@@ -81,7 +81,7 @@ Laravel 5 並沒有將過濾器移除，您一樣可以使用 `before` 和 `afte
 
 	'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
 
-現在，您可於路由內使用 `['middleware' => 'csrf']` 即可個別添加中介層到路由/控制器。了解更多關於中介層，請見[完整文件](/docs/5.0/middleware)。
+現在，您可於路由內使用 `['middleware' => 'csrf']` 即可個別添加中介層到路由/控制器。了解更多關於中介層，請見[完整文件](/docs/{{version}}/middleware)。
 
 ### Eloquent 模型
 
@@ -91,7 +91,7 @@ Laravel 5 並沒有將過濾器移除，您一樣可以使用 `before` 和 `afte
 
 #### Eloquent 快取
 
-Eloquent 不再提供 `remember` 方法來快取查詢結果。現在你需要手動使用 `Cache::remember` 方法快取查詢結果。了解更多關於快取，請見[完整文件](/docs/5.0/cache).
+Eloquent 不再提供 `remember` 方法來快取查詢結果。現在你需要手動使用 `Cache::remember` 方法快取查詢結果。了解更多關於快取，請見[完整文件](/docs/{{version}}/cache)。
 
 ### 使用者認證模型
 
@@ -131,7 +131,7 @@ use Authenticatable, CanResetPassword;
 
 ### Cashier 的使用者需要做的修改
 
-[Laravel Cashier](/docs/5.0/billing) 的 trait 和介面名稱已作修改。trait 請改用 `Laravel\Cashier\Billable` 取代 `BillableTrait`。介面請改用 `Laravel\Cashier\Contracts\Billable` 取代 `Laravel\Cashier\BillableInterface`。不需要修改任何方法。
+[Laravel Cashier](/docs/{{version}}/billing) 的 trait 和介面名稱已作修改。trait 請改用 `Laravel\Cashier\Billable` 取代 `BillableTrait`。介面請改用 `Laravel\Cashier\Contracts\Billable` 取代 `Laravel\Cashier\BillableInterface`。不需要修改任何方法。
 
 ### Artisan 命令
 
@@ -147,7 +147,7 @@ use Authenticatable, CanResetPassword;
 
 ### 全域 IoC 綁定
 
-若您在 `start/global.php` 有綁定任何 [IoC](/docs/5.0/container)，請將它們移到 `app/Providers/AppServiceProvider.php` 內的 `register` 方法中，你可能需要引入 `App` facade。
+若您在 `start/global.php` 有綁定任何 [IoC](/docs/{{version}}/container)，請將它們移到 `app/Providers/AppServiceProvider.php` 內的 `register` 方法中，你可能需要引入 `App` facade。
 
 你也可以選擇將這些綁定，依照類別拆分到不同的服務提供者中。
 
@@ -189,7 +189,7 @@ use Authenticatable, CanResetPassword;
 
 ### 表單和 HTML 輔助函式
 
-如果您使用表單或 HTML 輔助函數，您將會看到以下錯誤 `class 'Form' not found` 或 `class 'Html' not found`。 The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective](http://laravelcollective.com/docs/5.0/html).
+如果您使用表單或 HTML 輔助函數，您將會看到以下錯誤 `class 'Form' not found` 或 `class 'Html' not found`。 The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective](http://laravelcollective.com/{{version}}/5.0/html).
 
 舉例來說，你可以加 `"laravelcollective/html": "~5.0"` 到 `composer.json` 檔案的 `require` 區塊。
 
@@ -337,15 +337,15 @@ Laravel 4.1.26 採用了針對「記得我」cookies 的安全性更新。在此
 
 ### 檔案置換
 
-將你的 `public/index.php` 置換成 [這個 repository 的乾淨版本](https://github.com/laravel/laravel/blob/master/public/index.php)。
+將你的 `public/index.php` 置換成 [這個 repository 的乾淨版本](https://github.com/laravel/laravel/blob/master/v4.1.0/index.php)。
 
-同樣的，將你的 `artisan` 置換成 [這個 repository 的乾淨版本](https://github.com/laravel/laravel/blob/master/artisan)。
+同樣的，將你的 `artisan` 置換成 [這個 repository 的乾淨版本](https://github.com/laravel/laravel/blob/v4.1.0/artisan)。
 
 ### 新增設定檔案及選項
 
-更新你在設定檔 `app/config/app.php` 裡的 `aliases` 和 `providers` 陣列。而更新的選項值可以在 [這個檔案](https://github.com/laravel/laravel/blob/master/app/config/app.php) 中找到。請確定將你後來加入自定和套件所需的 providers / aliases 加回陣列中。
+更新你在設定檔 `app/config/app.php` 裡的 `aliases` 和 `providers` 陣列。而更新的選項值可以在 [這個檔案](https://github.com/laravel/laravel/blob/v4.1.0/app/config/app.php) 中找到。請確定將你後來加入自定和套件所需的 providers / aliases 加回陣列中。
 
-從 [這個 repository](https://github.com/laravel/laravel/blob/master/app/config/remote.php) 增加 `app/config/remote.php` 檔案。
+從 [這個 repository](https://github.com/laravel/laravel/blob/v4.1.0/app/config/remote.php) 增加 `app/config/remote.php` 檔案。
 
 在你的 `app/config/session.php` 增加新的選項 `expire_on_close`。而預設值為 `false`。
 
@@ -365,7 +365,7 @@ Laravel 4.1.26 採用了針對「記得我」cookies 的安全性更新。在此
 
 密碼提醒功能已經大幅修正擁有更大的彈性。你可以執行 Artisan 指令 `php artisan auth:reminders-controller` 來檢查新的存根控制器。你也可以瀏覽 [更新文檔](/docs/security#password-reminders-and-reset) 然後相應的更新你的應用程式。
 
-更新你的 `app/lang/en/reminders.php` 語系檔案來符合 [這個新版檔案](https://github.com/laravel/laravel/blob/master/app/lang/en/reminders.php)。
+更新你的 `app/lang/en/reminders.php` 語系檔案來符合 [這個新版檔案](https://github.com/laravel/laravel/blob/v4.1.0/app/lang/en/reminders.php)。
 
 ### 更新環境偵測
 
@@ -381,7 +381,7 @@ Laravel 目前只會產生單一的日誌文件：`app/storage/logs/laravel.log`
 
 在你的 `bootstrap/start.php` 檔案中，移除呼叫 `$app->redirectIfTrailingSlash()`。這個方法已不再需要了，因為之後將會改以框架內的 `.htaccess` 來處理。
 
-然後，用 [新版](https://github.com/laravel/laravel/blob/master/public/.htaccess) 替換掉你 Apache 中的 `.htaccess` 檔案，來處理結尾的斜線問題。
+然後，用 [新版](https://github.com/laravel/laravel/blob/v4.1.0/public/.htaccess) 替換掉你 Apache 中的 `.htaccess` 檔案，來處理結尾的斜線問題。
 
 ### 取得目前路由
 

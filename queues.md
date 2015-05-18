@@ -43,9 +43,9 @@ Laravel 隊列元件提供一個統一的 API 整合了許多不同的隊列服�
 
 	Queue::push(new SendEmail($message));
 
-> **注意:** 在這個範例當中，我們直接使用 `Queue` Facade，然而，常見的作法是藉由 [Command Bus](/docs/5.0/bus) 是分派隊列指令。我們將會在整篇文章中繼續使用 `Queue` Facade，不過，也要熟悉使用 command bus，因為它能夠同時分派你的網站應用程式中隊列與同步的指令。
+> **注意:** 在這個範例當中，我們直接使用 `Queue` Facade，然而，常見的作法是藉由 [Command Bus](/docs/{{version}}/bus) 是分派隊列指令。我們將會在整篇文章中繼續使用 `Queue` Facade，不過，也要熟悉使用 command bus，因為它能夠同時分派你的網站應用程式中隊列與同步的指令。
 
-預設上，由 `make:command` Artisan 命令會產生一個 "self-handling" 的指令，意味著指令裡會包含一個 `handle` 方法。這個方法將會在隊列執行時被呼叫。你可以在 `handle` 方法使用型別提示傳入任何你需要的依賴，而 [服務容器](/docs/5.0/container)會自動注入他們：
+預設上，由 `make:command` Artisan 命令會產生一個 "self-handling" 的指令，意味著指令裡會包含一個 `handle` 方法。這個方法將會在隊列執行時被呼叫。你可以在 `handle` 方法使用型別提示傳入任何你需要的依賴，而 [服務容器](/docs/{{version}}/container)會自動注入他們：
 
 	public function handle(UserRepository $users)
 	{
@@ -215,6 +215,8 @@ Laravel 內含一個 Artisan 命令，它將推送到隊列的工作拉來下執
 #### 註冊一個推送隊列訂閱
 
 接下來，你可以使用 `queue:subscribe` Artisan 指令註冊一個 URL，這將會接收新的推送隊列工作：
+
+	php artisan queue:subscribe queue_name queue/receive
 
 	php artisan queue:subscribe queue_name http://foo.com/queue/receive
 
