@@ -78,55 +78,95 @@ In this example, the `setFirstNameAttribute` function will be called with the va
 
 By default, Eloquent will convert the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
 
-You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `getDates` method of the model:
+You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `$dates` property of your model:
 
-	public function getDates()
+	<?php namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model
 	{
-		return ['created_at'];
+		/**
+		 * The attributes that should be mutated to dates.
+		 *
+		 * @var array
+		 */
+		protected $dates = ['created_at', 'updated_at', 'disabled_at'];
 	}
 
-When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance.
+When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance, and the date's value will automatically be correctly stored in your database:
 
-To totally disable date mutations, simply return an empty array from the `getDates` method:
+	$user = App\User::find(1);
 
-	public function getDates()
-	{
-		return [];
-	}
+	$user->disabled_at = Carbon::now();
+
+	$user->save();
+
+As noted above, when retrieving attributes that are listed in your `$dates` property, they will automatically be cast to [Carbon](https://github.com/briannesbitt/Carbon) instances, allowing you to use any of Carbon's methods on your attributes:
+
+	$user = App\User::find(1);
+
+	return $user->disabled_at->getTimestamp();
 
 <a name="attribute-casting"></a>
 ## Attribute Casting
 
-If you have some attributes that you want to always convert to another data-type, you may add the attribute to the `casts` property of your model. Otherwise, you will have to define a mutator for each of the attributes, which can be time consuming. Here is an example of using the `casts` property:
+The `$casts` property on your model provides a convenient method of converting attributes to common data types. The `$casts` property should be an array where the key is the name of the attribute being cast, while the value is the type you wish to cast to the column to. The supported cast types are: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object` and `array`.
 
-	/**
-	 * The attributes that should be casted to native types.
-	 *
-	 * @var array
-	 */
-	protected $casts = [
-		'is_admin' => 'boolean',
-	];
+For example, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a booelan value:
 
-Now the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer. Other supported cast types are: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object` and `array`.
+	<?php namespace App;
 
-The `array` cast is particularly useful for working with columns that are stored as serialized JSON. For example, if your database has a TEXT type field that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
+	use Illuminate\Database\Eloquent\Model;
 
-	/**
-	 * The attributes that should be casted to native types.
-	 *
-	 * @var array
-	 */
-	protected $casts = [
-		'options' => 'array',
-	];
+	class User
+	{
+		/**
+		 * The attributes that should be casted to native types.
+		 *
+		 * @var array
+		 */
+		protected $casts = [
+			'is_admin' => 'boolean',
+		];
+	}
 
-Now, when you utilize the Eloquent model:
+Now the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer:
 
-	$user = User::find(1);
+	$user = App\User::find(1);
 
-	// $options is an array...
+	if ($user->is_admin) {
+		//
+	}
+
+#### Array Casting
+
+The `array` cast type is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
+
+	<?php namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class User
+	{
+		/**
+		 * The attributes that should be casted to native types.
+		 *
+		 * @var array
+		 */
+		protected $casts = [
+			'options' => 'array',
+		];
+	}
+
+Once the cast is defined, you may access the `options` attribute and it will automatically be deserialized from JSON into a PHP array. When you set the value of the `options` attribute, the given array will automatically be serialized back into JSON for storage:
+
+	$user = App\User::find(1);
+
 	$options = $user->options;
 
-	// options is automatically serialized back to JSON...
-	$user->options = ['foo' => 'bar'];
+	$options['key'] = 'value';
+
+	$user->options = $options;
+
+	$user->save();
