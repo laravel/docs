@@ -134,19 +134,19 @@ Artisan 是 Laravel 內建的命令列介面。它提供了一些有用的指令
 	$schedule->command('foo')->saturdays();
 	$schedule->command('foo')->sundays();
 
-#### Prevent Jobs From Overlapping
+#### 防止工作重疊
 
-By default, scheduled jobs will be run even if the previous instance of the job is still running. To prevent this, you may use the `withoutOverlapping` method:
+預設情況下，即使前一個工作實例正在進行中，被排程的工作也會同時被執行。如果要避免這件事情發生，你可以使用 `withoutOverlapping` 方法：
 
 	$schedule->command('foo')->withoutOverlapping();
 
-In this example, the `foo` command will be run every minute if it is not already running.
+在這個例子中，`foo` 命令每分鐘都會被執行，除非他已經在執行中。
 
 #### 限制應該執行工作的環境
 
 	$schedule->command('foo')->monthly()->environments('production');
 
-#### 指定工作在當應用程式處於維護模式也應該執行
+#### 指定當應用程式處於維護模式也會被執行的工作
 
 	$schedule->command('foo')->monthly()->evenInMaintenanceMode();
 
@@ -157,20 +157,20 @@ In this example, the `foo` command will be run every minute if it is not already
 		return true;
 	});
 
-#### 把排程工作的輸出 E-mail 出去
+#### 把排程工作的輸出結果發送至 E-mail
 
 	$schedule->command('foo')->sendOutputTo($filePath)->emailOutputTo('foo@example.com');
 
-> **注意：** 必須要先將輸出存入檔案中才能 E-mail 出去。
+> **注意：** 必須要先將輸出結果儲存至檔案中才能發送至 E-mail。
 
-#### 把排程工作的輸出送到指定位置
+#### 把排程工作的輸出結果儲存到到指定位置
 
 	$schedule->command('foo')->sendOutputTo($filePath);
 
-#### 在工作執行之後 Ping 給定的 URL
+#### 在工作執行之後 Ping 給指定的 URL
 
 	$schedule->command('foo')->thenPing($url);
 
-Using the `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle 5 to your project by adding the following line to your `composer.json` file:
+若要使用 `thenPing($url)` 功能則必須擁有 Guzzle 的 HTTP 函式庫。你能夠透過新增下方那行至你的 `composer.json` 檔案來為專案增加 Guzzle 5：
 
 	"guzzlehttp/guzzle": "~5.0"
