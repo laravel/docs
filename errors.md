@@ -64,7 +64,7 @@ Optionally, you may provide a response:
 
 	abort(403, 'Unauthorized action.');
 
-This method may be used at any time during the request's lifecycle.
+This method may be used at any time during the request's life cycle.
 
 ### Custom 404 Error Page
 

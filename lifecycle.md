@@ -1,7 +1,7 @@
-# Request Lifecycle
+# Request Life Cycle
 
 - [Introduction](#introduction)
-- [Lifecycle Overview](#lifecycle-overview)
+- [Life Cycle Overview](#life-cycle-overview)
 - [Focus On Service Providers](#focus-on-service-providers)
 
 <a name="introduction"></a>
@@ -13,8 +13,8 @@ The goal of this document is to give you a good, high-level overview of how the 
 
 If you don't understand all of the terms right away, don't lose heart! Just try to get a basic grasp of what is going on, and your knowledge will grow as you explore other sections of the documentation.
 
-<a name="lifecycle-overview"></a>
-## Lifecycle Overview
+<a name="life-cycle-overview"></a>
+## Life Cycle Overview
 
 #### First Things
 
