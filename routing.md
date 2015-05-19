@@ -286,7 +286,7 @@ The code above generates the following HTML:
 
 Of course, using the Blade [templating engine](/docs/{{version}}/templates):
 
-	{!! csrf_field() !!]
+	{!! csrf_field() !!}
 
 You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify token in the request input matches the token stored in the session.
 

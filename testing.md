@@ -130,7 +130,7 @@ Now, let's write a test that clicks the link and asserts the user is on the corr
 Laravel also provides several methods for testing forms such as `type`, `select`, `check`, `attach`, and `press`. Let's take a look at each of these methods using an example. First, let's imagine this form exists on the application's registration page:
 
 	<form action="/register" method="POST">
-		{!! csrf_field() !!]
+		{!! csrf_field() !!}
 
 		<div>
 			Name: <input type="text" name="name">
