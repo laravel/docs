@@ -39,7 +39,7 @@ However, you will need to provide [views](/docs/{{version}}/views) that these co
     <!-- resources/auth/login.blade.php -->
 
     <form method="POST" action="/auth/login">
-        {{ csrf_field() }}
+        {!! csrf_field() !!]
 
         <div>
             Email
@@ -65,7 +65,7 @@ However, you will need to provide [views](/docs/{{version}}/views) that these co
     <!-- resources/auth/register.blade.php -->
 
     <form method="POST" action="/auth/register">
-        {{ csrf_field() }}
+        {!! csrf_field() !!]
 
         <div class="col-md-6">
             Name
@@ -316,7 +316,7 @@ You will simply need to provide an HTML view for the password reset request form
     <!-- resources/views/auth/password.blade.php -->
 
     <form method="POST" action="/password/email">
-        {{ csrf_field() }}
+        {!! csrf_field() !!]
 
         <div>
         	Email
@@ -343,7 +343,7 @@ Here is a sample password reset form to get you started:
     <!-- resources/views/auth/reset.blade.php -->
 
     <form method="POST" action="/password/reset">
-        {{ csrf_field() }}
+        {!! csrf_field() !!]
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div>
