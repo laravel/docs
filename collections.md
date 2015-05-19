@@ -181,7 +181,9 @@ You may also pass a key / value pair to the `contains` method, which will determ
 		['product' => 'Chair', 'price' => 100],
 	]);
 
-	$collection->contains('product', 'Bookcase'); // false
+	$collection->contains('product', 'Bookcase');
+
+	// false
 
 Finally, you may also pass a callback to the `contains` method to perform your own truth test:
 
@@ -442,14 +444,16 @@ The `intersect` method removes any values that are not present in the given `arr
 
 	// [0 => 'Desk', 2 => 'Chair']
 
-As you can see, the resulting array will preserve the original collection's keys.
+As you can see, the resulting collection will preserve the original collection's keys.
 
 <a name="method-isempty"></a>
 #### `isEmpty()` {#collection-method}
 
 The `isEmpty` method returns `true` if the collection is empty; otherwise, `false` is returned:
 
-	collect([])->isEmpty() // true
+	collect([])->isEmpty();
+
+	// true
 
 <a name="method-keyby"></a>
 #### `keyBy()` {#collection-method}
@@ -841,22 +845,22 @@ The sorted collection keeps the original array keys. In this example we used the
 You can also pass your own callback to determine how to sort the collection values:
 
 	$collection = collect([
-		['name' => 'Desk', 'price' => 200],
-		['name' => 'Chair', 'price' => 100],
-		['name' => 'Bookcase', 'price' => 150],
+		['name' => 'Desk', 'colors' => ['Black', 'Mahogany']],
+		['name' => 'Chair', 'colors' => ['Black']],
+		['name' => 'Bookcase', 'colors' => ['Red', 'Beige', 'Brown']],
 	]);
 
 	$sorted = $collection->sortBy(function ($product, $key) {
-		return $product['name'];
+		return count($product['colors']);
 	});
 
 	$sorted->values()->all();
 
 	/*
 		[
-			['name' => 'Bookcase', 'price' => 150],
-			['name' => 'Chair', 'price' => 100],
-			['name' => 'Desk', 'price' => 200],
+			['name' => 'Chair', 'colors' => ['Black']],
+			['name' => 'Desk', 'colors' => ['Black', 'Mahogany']],
+			['name' => 'Bookcase', 'colors' => ['Red', 'Beige', 'Brown']],
 		]
 	*/
 
@@ -933,15 +937,16 @@ If the collection contains nested arrays or objects, you should pass a key to us
 In addition, you may pass your own callback to determine which values of the collection to sum:
 
 	$collection = collect([
-		['name' => 'Chair', 'price' => 100],
-		['name' => 'Desk', 'price' => 200],
+		['name' => 'Chair', 'colors' => ['Black']],
+		['name' => 'Desk', 'colors' => ['Black', 'Mahogany']],
+		['name' => 'Bookcase', 'colors' => ['Red', 'Beige', 'Brown']],
 	]);
 
-	$collection->sum(function ($person) {
-		return $person['price'] * .25;
+	$collection->sum(function ($product) {
+		return count($product['colors']);
 	});
 
-	// 75
+	// 6
 
 <a name="method-take"></a>
 #### `take()` {#collection-method}
