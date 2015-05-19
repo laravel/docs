@@ -6,7 +6,6 @@
 - [Environment Configuration](#environment-configuration)
 - [Configuration Caching](#configuration-caching)
 - [Maintenance Mode](#maintenance-mode)
-- [Pretty URLs](#pretty-urls)
 
 <a name="introduction"></a>
 ## Introduction
@@ -121,30 +120,3 @@ The default template for maintenance mode responses is located in `resources/vie
 
 While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
 
-<a name="pretty-urls"></a>
-## Pretty URLs
-
-### Apache
-
-The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, be sure to enable the `mod_rewrite` module.
-
-If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
-
-	Options +FollowSymLinks
-	RewriteEngine On
-
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^ index.php [L]
-
-If your web host doesn't allow the `FollowSymlinks` option, try replacing it with `Options +SymLinksIfOwnerMatch`.
-
-### Nginx
-
-On Nginx, the following directive in your site configuration will allow "pretty" URLs:
-
-	location / {
-		try_files $uri $uri/ /index.php?$query_string;
-	}
-
-Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
