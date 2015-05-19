@@ -159,7 +159,7 @@ Of course, you may assign default values to options:
 <a name="prompting-for-input"></a>
 ## Prompting For Input
 
-In addition to display output, you may also ask the user to provide input during the execution of your command. 
+In addition to displaying output, you may also ask the user to provide input during the execution of your command.
 
 The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command. This method is useful for gathering user options while a command is executing:
 
@@ -176,7 +176,7 @@ The `ask` method will prompt the user with the given question, accept their inpu
 The `secret` method is similar to `ask`; however, the user's input will not be visible to them as they type in the console. This method is useful for asking for sensitive information such as a password:
 
 	$password = $this->secret('What is the password?');
-	
+
 The `askWithCompletion` method can be used to provided autocompletion for possible choices. The user can still choose any answer, regardless of the choices.
 
 	$name = $this->askWithCompletion('What is your name?', ['Taylor', 'Dayle']);
@@ -193,23 +193,14 @@ You may also specify a default value to the `confirm` method, which should be `t
 
 	$this->confirm($question, true);
 
-<a name="working-with-input"></a>
-
 #### Giving The User A Choice
 
-If you want to give the user a predefined set of choices, you can use the `choice` method. The user can choose the index of the answer, but the value of the answer will be returned to you. You can set the default value if nothing is chosen.
+If you need to give the user a predefined set of choices, you may use the `choice` method. The user chooses the index of the answer, but the value of the answer will be returned to you. You may set the default value to be returned if nothing is chosen:
 
-	$name = $this->choice('What is your name?', ['Taylor', 'Dayle'], 0);
-	
-You can set the max number of tries, before an `InvalidArgumentException` is thrown.
+	$name = $this->choice('What is your name?', ['Taylor', 'Dayle'], false);
 
-	$name = $this->choice('What is your name?', ['Taylor', 'Dayle'], null, 3);
 
-If you want to allow multiple answers, you can set `$multiple` to true. The return value will be an array of values.
-
-	$names = $this->choice('What is your name?', ['Taylor', 'Dayle'], null, null, true);
-
-#### 
+<a name="working-with-input"></a>
 ## Working With Input
 
 While your command is executing, you will obviously need to access the values for the arguments and options accepted by your application. To do so, you may use the `argument` and `option` methods:
