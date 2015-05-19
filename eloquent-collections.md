@@ -124,3 +124,5 @@ If you need to use a custom `Collection` object with your own extension methods,
 			return new CustomCollection($models);
 		}
 	}
+
+	Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent returns a `Collection` instance of that model. If you would like to use a custom collection for every model in your application, you should override the `newCollection` method on a model base class that is extended by all of your models.
