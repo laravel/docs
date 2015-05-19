@@ -150,7 +150,8 @@ Once a user is authenticated, there are several ways to obtain an instance of th
 First, you may access the user from the `Auth` facade:
 
 	<?php namespace App\Http\Controllers;
-
+	
+	use Auth;
 	use Illuminate\Routing\Controller;
 
 	class ProfileController extends Controller {
