@@ -54,4 +54,4 @@
     - [Relationships](/docs/{{version}}/eloquent-relationships)
     - [Collections](/docs/{{version}}/eloquent-collections)
     - [Mutators](/docs/{{version}}/eloquent-mutators)
-    - [JSON Serialization](/docs/{{version}}/eloquent-serialization)
+    - [Serialization](/docs/{{version}}/eloquent-serialization)

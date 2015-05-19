@@ -1,4 +1,4 @@
-# Eloquent: JSON Serialization
+# Eloquent: Serialization
 
 - [Introduction](#introduction)
 - [Basic Usage](#basic-usage)
