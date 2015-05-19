@@ -260,6 +260,30 @@ To display an error message, use the `error` method. Error message text is typic
 
 	$this->error('Something went wrong!');
 
+### Table Layouts
+
+If you have a lot of data to show, a table could be more appropriate. The `table` method makes it easy to correctly format multiple rows/columns. Just pass in the headers and rows, the width and height will be dynamiccally calculated.
+
+	$headers = ['Name', 'Email'];
+	$users = User::all(['name', 'email'])->toArray();
+	$this->table($headers, $users);
+	
+### Progress Bar
+
+For long running tasks, it could be helpful to show a progress indicator. Using the output object, we can start, advance and stop the Progress Bar. You have to define the number of steps when you start the progress and advance the Progress Bar after each step.
+
+	$users = User::all();
+        $this->output->progressStart(count($users));
+        
+        foreach ($users as $user) {
+            $this->doSomething($user);
+            $this->output->progressAdvance();
+        }
+        
+        $this->output->progressFinish();
+	
+For more advanced options, look at the [Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
+
 <a name="registering-commands"></a>
 ## Registering Commands
 
