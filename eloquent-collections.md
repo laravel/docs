@@ -101,15 +101,26 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [zip](/docs/{{version}}/collections#method-zip)
 </div>
 
-#### Returning A Custom Collection Type
+<a name="custom-collections"></a>
+## Custom Collections
 
-Sometimes, you may wish to return a custom Collection object with your own added methods. You may specify this on your Eloquent model by overriding the `newCollection` method:
+If you need to use a custom `Collection` object with your own extension methods, you may override the `newCollection` method on your model:
 
-	class User extends Model {
+	<?php namespace App;
 
+	use App\CustomCollection;
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model
+	{
+		/**
+		 * Create a new Eloquent Collection instance.
+		 *
+		 * @param  array  $models
+		 * @return \Illuminate\Database\Eloquent\Collection
+		 */
 		public function newCollection(array $models = [])
 		{
 			return new CustomCollection($models);
 		}
-
 	}
