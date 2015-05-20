@@ -6,7 +6,6 @@
 - [Creating Columns](#creating-columns)
 - [Modifying Columns](#modifying-columns)
 - [Creating Indexes](#creating-indexes)
-- [Storage Engines](#storage-engines)
 
 <a name="introduction"></a>
 ## Introduction
