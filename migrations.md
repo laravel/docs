@@ -1,4 +1,4 @@
-# Migrations / Schema Builder
+# Database: Migrations
 
 - [Introduction](#introduction)
 - [Database Migrations](#database-migrations)
