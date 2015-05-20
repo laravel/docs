@@ -52,7 +52,7 @@ Now, let's look at an example `Flight` model class, which will use to retrieve a
 	}
 
 
-#### Table Names
+#### Setting Model-Table Interaction
 
 Note that we did not tell Eloquent which table to use for our `Flight` model. The "snake case", plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `Flight` model stores records in the `flights` table. You may specify a custom table by defining a `table` property on your model:
 
