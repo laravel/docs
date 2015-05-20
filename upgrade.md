@@ -36,13 +36,28 @@ Secondly, the `App\Services\Registrar` class used in Laravel 5.0 is no longer ne
 
 ### Eloquent
 
-#### Create Method Signature
+#### The `create` Method
 
 Eloquent's `create` method can now be called without any parameters. If you are overriding the `create` method in your own models, set the default value of the `$attributes` parameter to an array:
 
 	public static function create(array $attributes = [])
 	{
 		// Your custom implementation
+	}
+
+#### The `find` Method
+
+The `find` method has now been removed from the `Model` class. Calling `User::find()` will instead defer the call to the underlying Eloquent Query Builder, as all other querying methods do.
+
+If you have been overriding the `find` method in your own models and calling `parent::find()`, you should now change it to call `find` on the query directly:
+
+	public static function find($id, $columns = ['*'])
+	{
+		$model = static::query()->find($id, $columns);
+
+		// do something with the model
+
+		return $model;
 	}
 
 #### Date Formatting
