@@ -4,7 +4,6 @@
 - [Route Parameters](#route-parameters)
 	- [Optional Parameters](#parameters-optional-parameters)
 	- [Regular Expression Constraints](#parameters-regular-expression-constraints)
-	- [Global Constraints](#parameters-global-constraints)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
 	- [Middleware](#route-group-middleware)
@@ -112,7 +111,7 @@ You may constrain the format of your route parameters using the `where` method o
 	->where(['id' => '[0-9]+', 'name' => '[a-z]+'])
 
 <a name="parameters-global-constraints"></a>
-### Global Constraints
+#### Global Constraints
 
 If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
 
