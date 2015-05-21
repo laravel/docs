@@ -34,7 +34,7 @@ Blade 是 Laravel 所提供的一個簡單卻又非常強大的模板引擎。�
 	@section('title', 'Page Title')
 
 	@section('sidebar')
-		@parent
+		@@parent
 
 		<p>This is appended to the master sidebar.</p>
 	@stop
@@ -43,7 +43,7 @@ Blade 是 Laravel 所提供的一個簡單卻又非常強大的模板引擎。�
 		<p>This is my body content.</p>
 	@stop
 
-請注意，`extend` Blade 頁面佈局的視圖，只是覆寫頁面佈局中定義的 section。如果在繼承的頁面裡，想顯示原本頁面佈局中 section 裡的內容，那就要在 section 中使用 `@parent`  語法，把內容附加到頁面佈局中，像是側邊欄區塊或者頁尾區塊。
+請注意，`extend` Blade 頁面佈局的視圖，只是覆寫頁面佈局中定義的 section。如果在繼承的頁面裡，想顯示原本頁面佈局中 section 裡的內容，那就要在 section 中使用 `@@parent`  語法，把內容附加到頁面佈局中，像是側邊欄區塊或者頁尾區塊。
 
 在某些時候，像是不確定 section 有沒有被定義，你可能會想要傳一個預設的值給 `@yield`。可以傳入第二個參數作為預設值：
 
