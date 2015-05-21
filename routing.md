@@ -2,6 +2,9 @@
 
 - [Basic Routing](#basic-routing)
 - [Route Parameters](#route-parameters)
+	- [Optional Parameters](#parameters-optional-parameters)
+	- [Regular Expression Constraints](#parameters-regular-expression-constraints)
+	- [Global Constraints](#parameters-global-constraints)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
 	- [Middleware](#route-group-middleware)
@@ -75,7 +78,8 @@ Route parameters are always encased within "curly" braces. The parameters will b
 
 > **Note:** Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
 
-#### Optional Route Parameters
+<a name="parameters-optional-parameters"></a>
+### Optional Parameters
 
 Occasionally you may need to specify a route parameter, but make the presence of that route parameter optional. You may do so by placing a `?` mark after the parameter name:
 
@@ -87,7 +91,8 @@ Occasionally you may need to specify a route parameter, but make the presence of
 		return $name;
 	});
 
-#### Regular Expression Parameter Constraints
+<a name="parameters-regular-expression-constraints"></a>
+### Regular Expression Constraints
 
 You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
 
@@ -106,7 +111,8 @@ You may constrain the format of your route parameters using the `where` method o
 	})
 	->where(['id' => '[0-9]+', 'name' => '[a-z]+'])
 
-#### Defining Global Patterns
+<a name="parameters-global-constraints"></a>
+### Global Constraints
 
 If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
 
