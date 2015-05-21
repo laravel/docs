@@ -1,16 +1,16 @@
 # 發行說明
 
-- [Support Policy](#support-policy)
+- [支援政策](#support-policy)
 - [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
 - [Laravel 4.1](#laravel-4.1)
 
 <a name="support-policy"></a>
-## Support Policy
+## 支援政策
 
-Security fixes are **always** applied to the previous major version of Laravel. Currently, **all** security fixes and patches will be applied to both Laravel 5.x **and** Laravel 4.x.
+安全修補程式會**一直**適用於 Laravel 之前的主要版本。目前，**所有**的安全修補及更新程式都會應用在 Laravel 5.X **以及** Laravel 4.x 上。
 
-When feasible, security fixes will also be applied to even older releases of the framework, such as Laravel 3.x.
+如果可能的話，安全修補程式也會被應用在更舊版本的框架，例如 Laravel 3.x。
 
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
