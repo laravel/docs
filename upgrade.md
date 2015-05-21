@@ -47,15 +47,13 @@ Eloquent's `create` method can now be called without any parameters. If you are 
 
 #### The `find` Method
 
-The `find` method has now been removed from the `Model` class. Calling `User::find()` will instead defer the call to the underlying Eloquent Query Builder, as all other querying methods do.
-
-If you have been overriding the `find` method in your own models and calling `parent::find()`, you should now change it to call `find` on the query directly:
+If you are overriding the `find` method in your own models and calling `parent::find()` within your custom method, you should now change it to call the `find` method on the Eloquent query builder:
 
 	public static function find($id, $columns = ['*'])
 	{
 		$model = static::query()->find($id, $columns);
 
-		// do something with the model
+		// ...
 
 		return $model;
 	}
