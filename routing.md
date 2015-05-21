@@ -59,15 +59,23 @@ Of course, sometimes you will need to capture segments of the URI within your ro
 		return 'User '.$id;
 	});
 
+You may define as many route parameters as required by your route:
+
+	Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
+		//
+	});
+
+Route parameters are always encased within "curly" braces. The parameters will be passed into your route's `Closure` when the route is executed.
+
 > **Note:** Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
 
 #### Optional Route Parameters
 
+Occasionally you may need to specify a route parameter, but make the presence of that route parameter optional. You may do so by placing a `?` mark after the parameter name:
+
 	Route::get('user/{name?}', function ($name = null) {
 		return $name;
 	});
-
-#### Optional Route Parameters With Default Value
 
 	Route::get('user/{name?}', function ($name = 'John') {
 		return $name;
