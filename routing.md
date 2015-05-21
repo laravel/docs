@@ -83,6 +83,8 @@ Occasionally you may need to specify a route parameter, but make the presence of
 
 #### Regular Expression Parameter Constraints
 
+You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
+
 	Route::get('user/{name}', function ($name) {
 		//
 	})
@@ -93,8 +95,6 @@ Occasionally you may need to specify a route parameter, but make the presence of
 	})
 	->where('id', '[0-9]+');
 
-#### Passing An Array Of Constraints
-
 	Route::get('user/{id}/{name}', function ($id, $name) {
 		//
 	})
@@ -104,49 +104,31 @@ Occasionally you may need to specify a route parameter, but make the presence of
 
 If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
 
-	$router->pattern('id', '[0-9]+');
+    /**
+     * Define your route model bindings, pattern filters, etc.
+     *
+     * @param  \Illuminate\Routing\Router  $router
+     * @return void
+     */
+    public function boot(Router $router)
+    {
+		$router->pattern('id', '[0-9]+');
 
-Once the pattern has been defined, it is applied to all routes using that parameter:
+        parent::boot($router);
+    }
 
-	Route::get('user/{id}', function($id)
-	{
+Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
+
+	Route::get('user/{id}', function ($id) {
 		// Only called if {id} is numeric.
 	});
-
-#### Accessing A Route Parameter Value
-
-You may access the current route parameters via the `Illuminate\Http\Request` instance. The request instance for the current request may be accessed via the `Request` facade, or by type-hinting the `Illuminate\Http\Request` where dependencies are injected:
-
-	use Illuminate\Http\Request;
-
-	Route::get('user/{id}', function(Request $request, $id)
-	{
-		if ($request->route('id'))
-		{
-			//
-		}
-	});
-
-Alternatively, to access the values within a controller:
-
-	// Import The Request At The Top Of Class...
-	use Illuminate\Http\Request;
-
-	public function index(Request $request)
-	{
-		if ($request->route('id'))
-		{
-			//
-		}
-	}
 
 <a name="named-routes"></a>
 ## Named Routes
 
-Named routes allow you to conveniently generate URLs or redirects for a specific route. You may specify a name for a route with the `as` array key:
+Named routes allow you to conveniently generate URLs or redirects for a specific route. You may specify a name for a route using the `as` array key when defining the route:
 
-	Route::get('user/profile', ['as' => 'profile', function()
-	{
+	Route::get('user/profile', ['as' => 'profile', function () {
 		//
 	}]);
 
@@ -156,17 +138,19 @@ You may also specify route names for controller actions:
 		'as' => 'profile', 'uses' => 'UserController@showProfile'
 	]);
 
-Now, you may use the route's name when generating URLs or redirects:
+Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the `route` function:
 
 	$url = route('profile');
 
 	$redirect = redirect()->route('profile');
 
-The `currentRouteName` method returns the name of the route handling the current request. You may call this method using the `Route` facade:
+If the route defines parameters, you may pass the parameters as the second argument to the `route` method. The given parameters will automatically be inserted into the URL:
 
-	$name = Route::currentRouteName();
+	Route::get('user/{id}/profile', ['as' => 'profile', function ($id) {
+		//
+	}]);
 
-Don't forget to import the `Route` facade into your current namespace when calling this method.
+	$url = route('profile', ['id' => 1]);
 
 <a name="route-groups"></a>
 ## Route Groups
