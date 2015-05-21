@@ -14,57 +14,48 @@
 
 You will define most of the routes for your application in the `app/Http/routes.php` file, which is loaded by the `App\Providers\RouteServiceProvider` class. The most basic Laravel routes simply accept a URI and a `Closure`:
 
-#### Basic GET Route
-
-	Route::get('/', function()
-	{
+	Route::get('/', function () {
 		return 'Hello World';
 	});
 
-#### Other Basic Routes
-
-	Route::post('foo/bar', function()
-	{
+	Route::post('foo/bar', function () {
 		return 'Hello World';
 	});
 
-	Route::put('foo/bar', function()
-	{
+	Route::put('foo/bar', function () {
 		//
 	});
 
-	Route::delete('foo/bar', function()
-	{
+	Route::delete('foo/bar', function () {
 		//
 	});
 
 #### Registering A Route For Multiple Verbs
 
-	Route::match(['get', 'post'], '/', function()
-	{
+Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method on the `Route` [facade](/docs/{{version}}/facades):
+
+	Route::match(['get', 'post'], '/', function () {
 		return 'Hello World';
 	});
 
-#### Registering A Route That Responds To Any HTTP Verb
+Or, you may even register a route that responds to all HTTP verbs using the `any` method:
 
-	Route::any('foo', function()
-	{
+	Route::any('foo', function () {
 		return 'Hello World';
 	});
 
-Often, you will need to generate URLs to your routes, you may do so using the `url` helper:
+#### Generating URLs To Routes
+
+You may generate URLs to your application's routes using the `url` helper:
 
 	$url = url('foo');
 
 <a name="route-parameters"></a>
 ## Route Parameters
 
-Of course, you can capture segments of the request URI within your route:
+Of course, sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
 
-#### Basic Route Parameter
-
-	Route::get('user/{id}', function($id)
-	{
+	Route::get('user/{id}', function ($id) {
 		return 'User '.$id;
 	});
 
@@ -72,36 +63,31 @@ Of course, you can capture segments of the request URI within your route:
 
 #### Optional Route Parameters
 
-	Route::get('user/{name?}', function($name = null)
-	{
+	Route::get('user/{name?}', function ($name = null) {
 		return $name;
 	});
 
 #### Optional Route Parameters With Default Value
 
-	Route::get('user/{name?}', function($name = 'John')
-	{
+	Route::get('user/{name?}', function ($name = 'John') {
 		return $name;
 	});
 
 #### Regular Expression Parameter Constraints
 
-	Route::get('user/{name}', function($name)
-	{
+	Route::get('user/{name}', function ($name) {
 		//
 	})
 	->where('name', '[A-Za-z]+');
 
-	Route::get('user/{id}', function($id)
-	{
+	Route::get('user/{id}', function ($id) {
 		//
 	})
 	->where('id', '[0-9]+');
 
 #### Passing An Array Of Constraints
 
-	Route::get('user/{id}/{name}', function($id, $name)
-	{
+	Route::get('user/{id}/{name}', function ($id, $name) {
 		//
 	})
 	->where(['id' => '[0-9]+', 'name' => '[a-z]+'])
