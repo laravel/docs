@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Defining Middleware](#defining-middleware)
 - [Registering Middleware](#registering-middleware)
+- [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
 
 <a name="introduction"></a>
@@ -10,7 +11,7 @@
 
 HTTP middleware provide a convenient mechanism for filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application.
 
-Of course, middleware can be written to perform a variety of tasks besides authentication. A CORS middleware might be responsible for adding the proper headers to all responses leaving your application. A logging middleware might log all incoming requests to your application.
+Of course, additional middleware can be written to perform a variety of tasks besides authentication. A CORS middleware might be responsible for adding the proper headers to all responses leaving your application. A logging middleware might log all incoming requests to your application.
 
 There are several middleware included in the Laravel framework, including middleware for maintenance, authentication, CSRF protection, and more. All of these middleware are located in the `app/Http/Middleware` directory.
 
@@ -106,10 +107,47 @@ Once the middleware has been defined in the HTTP kernel, you may use the `middle
 		//
 	}]);
 
+<a name="middleware-parameters"></a>
+## Middleware Parameters
+
+Middleware can also receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create a `RoleMiddleware` that receives a role name as an additional argument.
+
+Additional middleware parameters will be passed to the middleware after the `$next` argument:
+
+	<?php namespace App\Http\Middleware;
+
+	class RoleMiddleware
+	{
+		/**
+		 * Run the request filter.
+		 *
+		 * @param  \Illuminate\Http\Request  $request
+		 * @param  \Closure  $next
+		 * @return mixed
+		 */
+		public function handle($request, Closure $next, $role)
+		{
+			if (! $request->user()->hasRole($role)) {
+				// Redirect...
+			}
+
+			return $next($request);
+		}
+
+	}
+
+Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+
+	Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
+
+	}]);
+
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
 
 Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, define the middleware as "terminable" by implementing the `Illuminate\Contracts\Routing\TerminableMiddleware` contract:
+
+	<?php namespace Illuminate\Session\Middleware;
 
 	use Closure;
 	use Illuminate\Contracts\Routing\TerminableMiddleware;
