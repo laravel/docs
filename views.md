@@ -1,4 +1,4 @@
-# Views
+# Views / Blade Templating
 
 - [Basic Usage](#basic-usage)
 - [View Composers](#view-composers)
