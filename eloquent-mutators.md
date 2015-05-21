@@ -113,7 +113,7 @@ As noted above, when retrieving attributes that are listed in your `$dates` prop
 
 The `$casts` property on your model provides a convenient method of converting attributes to common data types. The `$casts` property should be an array where the key is the name of the attribute being cast, while the value is the type you wish to cast to the column to. The supported cast types are: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object` and `array`.
 
-For example, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a booelan value:
+For example, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:
 
 	<?php namespace App;
 
