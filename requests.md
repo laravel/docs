@@ -1,11 +1,11 @@
 # HTTP Requests
 
 - [Accessing The Request](#accessing-the-request)
+	- [Basic Request Information](#basic-request-information)
 - [Retrieving Input](#retrieving-input)
 	- [Old Input](#old-input)
 	- [Cookies](#cookies)
 	- [Files](#files)
-- [Other Request Information](#other-request-information)
 
 <a name="accessing-the-request"></a>
 ## Accessing The Request
@@ -57,6 +57,37 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
 		{
 			//
 		}
+	}
+
+<a name="basic-request-information"></a>
+### Basic Request Information
+
+The `Illuminate\Http\Request` instance provides a variety of methods for examining the HTTP request for your application. The Laravel `Illuminate\Http\Request` extends the `Symfony\Component\HttpFoundation\Request` class. Here are a few more of the useful methods available on this class:
+
+#### Retrieving The Request URI
+
+The `path` method returns the request's URI. So, if the incoming request is targeted at `http://domain.com/foo/bar`, the `path` method will return `foo/bar`:
+
+	$uri = $request->path();
+
+The `is` method allows you to verify that the incoming request URI matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:
+
+	if ($request->is('admin/*')) {
+		//
+	}
+
+To get the full URL, not just the path info, you may use the `url` method on the request instance:
+
+	$url = $request->url();
+
+#### Retrieving The Request Method
+
+The `method` method will return the HTTP verb for the request. You may also use the `isMethod` method to verify that the HTTP verb matches a given string:
+
+	$method = $request->method();
+
+	if ($request->isMethod('post')) {
+		//
 	}
 
 <a name="retrieving-input"></a>
@@ -161,27 +192,32 @@ To create a long-lived cookie, which lasts for five years, you may use the `fore
 <a name="files"></a>
 ### Files
 
-#### Retrieving An Uploaded File
+#### Retrieving Uploaded Files
+
+You may access uploaded files that are included with the `Illuminate\Http\Request` instance using the `file` method. The object returned by the `file` method is an instance of the `Symfony\Component\HttpFoundation\File\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:
 
 	$file = $request->file('photo');
 
-#### Determining If A File Was Uploaded
+#### Verifying File Presence
 
-	if ($request->hasFile('photo'))
-	{
+You may also determine if a file is present on the request using the `hasFile` method:
+
+	if ($request->hasFile('photo')) {
 		//
 	}
 
-The object returned by the `file` method is an instance of the `Symfony\Component\HttpFoundation\File\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file.
+#### Validating Successful Uploads
 
-#### Determining If An Uploaded File Is Valid
+In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:
 
 	if ($request->file('photo')->isValid())
 	{
 		//
 	}
 
-#### Moving An Uploaded File
+#### Moving Uploaded Files
+
+To move the uploaded file to a new location, you should use the `move` directory. This method wil move the file from its temporary upload location (as determined by your PHP configuration) to a more permanent destination of your choosing:
 
 	$request->file('photo')->move($destinationPath);
 
@@ -189,33 +225,4 @@ The object returned by the `file` method is an instance of the `Symfony\Componen
 
 #### Other File Methods
 
-There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
-
-<a name="other-request-information"></a>
-## Other Request Information
-
-The `Request` class provides many methods for examining the HTTP request for your application and extends the `Symfony\Component\HttpFoundation\Request` class. Here are some of the highlights.
-
-#### Retrieving The Request URI
-
-	$uri = $request->path();
-
-#### Retrieving The Request Method
-
-	$method = $request->method();
-
-	if ($request->isMethod('post'))
-	{
-		//
-	}
-
-#### Determining If The Request Path Matches A Pattern
-
-	if ($request->is('admin/*'))
-	{
-		//
-	}
-
-#### Get The Current Request URL
-
-	$url = $request->url();
+There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](http://api.symfony.com/2.7/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
