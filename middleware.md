@@ -56,6 +56,8 @@ Whether a middleware runs before or after a request depends on the middleware it
 
 	<?php namespace App\Http\Middleware;
 
+	use Illuminate\Contracts\Routing\Middleware;
+
 	class BeforeMiddleware implements Middleware
 	{
 		public function handle($request, Closure $next)
@@ -69,6 +71,8 @@ Whether a middleware runs before or after a request depends on the middleware it
 However, this middleware would perform its task **after** the request is handled by the application:
 
 	<?php namespace App\Http\Middleware;
+
+	use Illuminate\Contracts\Routing\Middleware;
 
 	class AfterMiddleware implements Middleware
 	{
