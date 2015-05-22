@@ -1,16 +1,18 @@
 # Views / Blade Templating
 
 - [Basic Usage](#basic-usage)
+	- [Passing Data To Views](#passing-data-to-views)
+	- [Sharing Data With All Views](#sharing-data-with-all-views)
 - [View Composers](#view-composers)
 - [Blade Templating](#blade-templating)
-- [Other Blade Control Structures](#other-blade-control-structures)
-- [Blade Service Injection](#blade-service-injection)
-- [Extending Blade](#extending-blade)
+	- [Blade Control Structures](#blade-control-structures)
+	- [Blade Service Injection](#blade-service-injection)
+	- [Extending Blade](#extending-blade)
 
 <a name="basic-usage"></a>
 ## Basic Usage
 
-Views contain the HTML served by your application, and serve as a convenient method of separating your controller and domain logic from your presentation logic. Views are stored in the `resources/views` directory.
+Views contain the HTML served by your application, and serve as a convenient method of separating your controller and application logic from your presentation logic. Views are stored in the `resources/views` directory.
 
 A simple view looks like this:
 
@@ -34,31 +36,36 @@ Of course, views may also be nested within sub-directories of the `resources/vie
 
 	return view('admin.profile', $data);
 
+#### Determining If A View Exists
+
+If you need to determine if a view exists, you may use the `exists` method. This method will return `true` if the view exists on disk:
+
+	if (view()->exists('emails.customer')) {
+		//
+	}
+
+<a name="view-data"></a>
+### View Data
+
+<a name="passing-data-to-views"></a>
 #### Passing Data To Views
 
-	// Using conventional approach
+As you saw in the previous examples, you may easily pass an array of data to views:
+
+	return view('greetings', ['name' => 'Victoria']);
+
+When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, like `{{ $key }}` (assuming `$data['key']` exists). The view can then access that data to display it within its HTML. In addition to passing an array of data as the second argument to the `view` function, you may also use the `with` method to add individual pieces of data to the view:
+
 	$view = view('greeting')->with('name', 'Victoria');
 
-	// Using Magic Methods
-	$view = view('greeting')->withName('Victoria');
+In the example above, the variable `$name` is made accessible to the view and contains the string `Victoria`.
 
-In the example above, the variable `$name` is made accessible to the view and contains `Victoria`.
-
-If you wish, you may pass an array of data as the second parameter to the `view` helper:
-
-	$view = view('greetings', $data);
-
-When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, like `{{ $key }}` (assuming `$data['key']` exists).
-
+<a name="sharing-data-with-all-views"></a>
 #### Sharing Data With All Views
 
-Occasionally, you may need to share a piece of data with all views that are rendered by your application. You may do so using the `share` method:
+Occasionally, you may need to share a piece of data with all views that are rendered by your application. You may do so using the `share` method. Typically, you would place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them.
 
-	view()->share('data', [1, 2, 3]);
-
-Typically, you would place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them.
-
-For example, here is what it looks like to call the `share` method from a service provider:
+When the `view` helper is called without arguments, it returns an implementation of the `Illuminate\Contracts\View\Factory` [contract](/docs/{{version}}/contracts), allowing us to call additional methods like `share`:
 
 	<?php namespace App\Providers;
 
@@ -85,28 +92,10 @@ For example, here is what it looks like to call the `share` method from a servic
 		}
 	}
 
-> **Note:** When the `view` helper is called without arguments, it returns an implementation of the `Illuminate\Contracts\View\Factory` contract.
-
-#### Determining If A View Exists
-
-If you need to determine if a view exists, you may use the `exists` method:
-
-	if (view()->exists('emails.customer')) {
-		//
-	}
-
-#### Returning A View From A File Path
-
-If you wish, you may generate a view from a fully-qualified file path:
-
-	return view()->file($pathToFile, $data);
-
 <a name="view-composers"></a>
 ## View Composers
 
 View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer organizes that logic into a single location.
-
-#### Defining A View Composer
 
 Let's organize our view composers within a [service provider](/docs/{{version}}/providers). We'll use the `view` helper to access the underlying `Illuminate\Contracts\View\Factory` contract implementation:
 
@@ -192,43 +181,31 @@ Just before the view is rendered, the composer's `compose` method is called with
 
 > **Note:** All view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor.
 
-#### Wildcard View Composers
-
-The `composer` method accepts the `*` character as a wildcard, so you may attach a composer to all views like so:
-
-	view()->composer('*', function ($view) {
-		//
-	});
-
 #### Attaching A Composer To Multiple Views
 
-You may also attach a view composer to multiple views at once:
+You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
 
 	view()->composer(
 		['profile', 'dashboard'],
 		'App\Http\ViewComposers\MyViewComposer'
 	);
 
-#### Defining Multiple Composers
+The `composer` method accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
 
-You may use the `composers` method to register a group of composers at the same time:
-
-	view()->composers([
-		'App\Http\ViewComposers\AdminComposer' => ['admin.index', 'admin.profile'],
-		'App\Http\ViewComposers\UserComposer' => 'user',
-		'App\Http\ViewComposers\ProductComposer' => 'product'
-	]);
+	view()->composer('*', function ($view) {
+		//
+	});
 
 ### View Creators
 
-View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, use the `creator` method:
+View **creators** are very similar to view composers; however, they are fired immediately when the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
 
 	view()->creator('profile', 'App\Http\ViewCreators\ProfileCreator');
 
 <a name="blade-templating"></a>
 ## Blade Templating
 
-Blade is a simple, yet powerful templating engine provided with Laravel. The core benefits of Blade are _template inheritance_ and _sections_. All Blade template files should use the `.blade.php` extension, and are typically stored in `resources/views`.
+Blade is the simple, yet powerful templating engine provided with Laravel. The core benefits of Blade are _template inheritance_ and _sections_. All Blade template files should use the `.blade.php` extension, and are typically stored in `resources/views`.
 
 #### Defining A Blade Layout
 
@@ -373,7 +350,7 @@ To overwrite a section entirely, you may use the `overwrite` statement:
 	{{-- This comment will not be in the rendered HTML --}}
 
 <a name="blade-service-injection"></a>
-## Blade Service Injection
+### Blade Service Injection
 
 The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class / interface name of the service you wish to resolve:
 
@@ -384,7 +361,7 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
 	</div>
 
 <a name="extending-blade"></a>
-## Extending Blade
+### Extending Blade
 
 Blade even allows you to define your own custom directives. You can use the `directive` method to register a directive. When the Blade compiler encounters the directive, it calls the provided callback with its parameter. This allows you to replace your directives with any logic as complex as you want.
 
