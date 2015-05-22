@@ -205,11 +205,11 @@ View **creators** are very similar to view composers; however, they are fired im
 <a name="blade-templating"></a>
 ## Blade Templating
 
-Blade is the simple, yet powerful templating engine provided with Laravel. The core benefits of Blade are _template inheritance_ and _sections_. All Blade template files should use the `.blade.php` extension, and are typically stored in `resources/views`.
+Blade is the simple, yet powerful templating engine provided with Laravel. All Blade template files should use the `.blade.php` extension, and are typically stored in `resources/views`.
 
-#### Defining A Blade Layout
+#### Defining A Layout
 
-Let's take a look at a simple Blade templating example. First, we will examine a "master" template. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view.
+The core benefits of Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple Blade templating example. First, we will examine a "master" template. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
 
 	<!-- Stored in resources/views/layouts/master.blade.php -->
 
@@ -228,9 +228,15 @@ Let's take a look at a simple Blade templating example. First, we will examine a
 		</body>
 	</html>
 
-#### Using A Blade Layout
+The `@yield` Blade directive will display the contents of the section name it is given. This directive allows you to display the contents of sections that receive their contents from child pages which extend the layout. Don't worry, you'll see an example of extending layouts soon!
 
-Once we have defined our template, we can use the Blade `@extends` directive to inject content into this template from a "child" page of our application.
+Sometimes, such as when you are not sure if a section has been defined, you may wish to pass a default value into the `@yield` directive. You may pass the default value as the second argument:
+
+	@yield('section', 'Default Content')
+
+#### Extending A Layout
+
+Once the master layout for the application has been defined, you may use the Blade `@extends` directive to inject content into this layout from a "child" page of the application:
 
 	@extends('layouts.master')
 
@@ -246,13 +252,7 @@ Once we have defined our template, we can use the Blade `@extends` directive to 
 		<p>This is my body content.</p>
 	@stop
 
-Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
-
-#### Default Yield Content
-
-Sometimes, such as when you are not sure if a section has been defined, you may wish to pass a default value to the `@yield` directive. You may pass the default value as the second argument:
-
-	@yield('section', 'Default Content')
+Note that views which `@extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
 
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
