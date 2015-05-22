@@ -1,53 +1,99 @@
 # HTTP Responses
 
 - [Basic Responses](#basic-responses)
+	- [Attaching Headers To Responses](#attaching-headers-to-responses)
+	- [Attaching Cookies To Responses](#attaching-cookies-to-responses)
+- [Other Response Types](#other-response-types)
+	- [View Responses](#view-responses)
+	- [JSON Responses](#json-responses)
+	- [File Downloads](#file-downloads)
 - [Redirects](#redirects)
-- [Other Responses](#other-responses)
 - [Response Macros](#response-macros)
 
 <a name="basic-responses"></a>
 ## Basic Responses
 
-#### Returning Strings From Routes
-
-The most basic response from a Laravel route is a string:
+Of course, all routes and controllers should return some kind of response to be sent back to the user's browser. Laravel provdies several different ways to return responses. The most basic response is simply returning a string from a route or controller:
 
 	Route::get('/', function () {
 		return 'Hello World';
 	});
 
-#### Creating Custom Responses
+The given string will automatically be converted into an HTTP response by the framework.
 
 However, for most routes and controller actions, you will be returning a full `Illuminate\Http\Response` instance or a [view](/docs/{{version}}/views). Returning a full `Response` instance allows you to customize the response's HTTP status code and headers. A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, providing a variety of methods for building HTTP responses:
 
 	use Illuminate\Http\Response;
 
-	return (new Response($content, $status))
-	              ->header('Content-Type', $value);
+	Route::get('home', function () {
+		return (new Response($content, $status))
+		              ->header('Content-Type', $value);
+	});
 
 For convenience, you may also use the `response` helper:
 
-	return response($content, $status)
-	              ->header('Content-Type', $value);
+	Route::get('home', function () {
+		return response($content, $status)
+		              ->header('Content-Type', $value);
+	});
 
-> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/master/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
+> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/master/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/2.7/Symfony/Component/HttpFoundation/Response.html).
 
-#### Sending A View In A Response
+<a name="attaching-headers-to-responses"></a>
+#### Attaching Headers To Responses
 
-If you need access to the `Response` class methods, but want to return a view as the response content, you may use the `view` method for convenience:
+Keep in mind that most response methods are chainable, allowing for the fluent building of responses. For example, you may use the `header` method to add a series of headers to the response before sending it back to the user:
 
-	return response()->view('hello')->header('Content-Type', $type);
+	return response($content)
+				->header('Content-Type', $type)
+				->header('X-Header-One', 'Header Value')
+				->header('X-Header-Two', 'Header Value');
 
+
+<a name="attaching-cookies-to-responses"></a>
 #### Attaching Cookies To Responses
 
-	return response($content)->withCookie(cookie('name', 'value'));
+The `withCookie` helper method on the response instance allows you to easily attach cookies to the response. For example, you may use the `withCookie` method along with the global `cookie` helper function to generate a cookie and attach it to the response instance:
 
-#### Method Chaining
-
-Keep in mind that most `Response` methods are chainable, allowing for the fluent building of responses:
-
-	return response()->view('hello')->header('Content-Type', $type)
+	return response($content)->header('Content-Type', $type)
                      ->withCookie(cookie('name', 'value'));
+
+<a name="other-response-types"></a>
+## Other Response Types
+
+The `response` helper may be used to conveniently generate other types of response instances. When the `response` helper is called without arguments, an implementation of the `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/{{version}}/contracts) is returned. This contract provides several helpful methods for generating responses.
+
+<a name="view-responses"></a>
+#### View Responses
+
+If you need control over the response status and headers, but want to return a view as the response content, you may use the `view` method:
+
+	return response()->view('hello', $data)->header('Content-Type', $type);
+
+Of course, if you do not need to pass a custom HTTP status code or custom headers, you may simply use the global `view` helper function.
+
+<a name="json-responses"></a>
+#### JSON Responses
+
+The `json` method will automatically set the `Content-Type` header to `application/json`, as well as convert the given array into JSON using the `json_encode` PHP function:
+
+	return response()->json(['name' => 'Abigail', 'state' => 'CA']);
+
+If you would like to create a JSONP response, you may use the `jsonp` method in addition to `setCallback`:
+
+	return response()->json(['name' => 'Abigail', 'state' => 'CA'])
+	                 ->setCallback($request->input('callback'));
+
+<a name="file-downloads"></a>
+#### File Downloads
+
+The `download` method may be used to generate a response that forces the user's browser to download the file at the given path. The `download` method accepts a file name as the second argument to the method, which will determine the file name that is seen by the user downloading the file. Finally, you may pass an array of HTTP headers as the third argument to the method:
+
+	return response()->download($pathToFile);
+
+	return response()->download($pathToFile, $name, $headers);
+
+> **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
 
 <a name="redirects"></a>
 ## Redirects
@@ -113,32 +159,6 @@ Similarly to generating `RedirectResponse` instances to named routes, you may al
 #### Returning A Redirect To A Controller Action Using Named Parameters
 
 	return redirect()->action('UserController@profile', ['user' => 1]);
-
-<a name="other-responses"></a>
-## Other Responses
-
-The `response` helper may be used to conveniently generate other types of response instances. When the `response` helper is called without arguments, an implementation of the `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/{{version}}/contracts) is returned. This contract provides several helpful methods for generating responses.
-
-#### Creating A JSON Response
-
-The `json` method will automatically set the `Content-Type` header to `application/json`:
-
-	return response()->json(['name' => 'Abigail', 'state' => 'CA']);
-
-#### Creating A JSONP Response
-
-	return response()->json(['name' => 'Abigail', 'state' => 'CA'])
-	                 ->setCallback($request->input('callback'));
-
-#### Creating A File Download Response
-
-	return response()->download($pathToFile);
-
-	return response()->download($pathToFile, $name, $headers);
-
-	return response()->download($pathToFile)->deleteFileAfterSend(true);
-
-> **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
 
 <a name="response-macros"></a>
 ## Response Macros
