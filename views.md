@@ -236,7 +236,7 @@ Sometimes, such as when you are not sure if a section has been defined, you may 
 
 #### Extending A Layout
 
-Once the master layout for the application has been defined, you may use the Blade `@extends` directive to inject content into this layout from a "child" page of the application:
+Once the master layout for the application has been defined, you may use the Blade `@extends` directive to specify which layout a child page should "inherit". Note that views which `@extend` a Blade layout may inject content into their layout using `@section` directives. Remember, the contents of these sections are displayed in the layout using `@yield`:
 
 	@extends('layouts.master')
 
@@ -252,7 +252,7 @@ Once the master layout for the application has been defined, you may use the Bla
 		<p>This is my body content.</p>
 	@stop
 
-Note that views which `@extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
+The `sidebar` section is using the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
