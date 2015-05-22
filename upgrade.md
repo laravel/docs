@@ -26,6 +26,12 @@ Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`
 
 This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
 
+### Create `database/factories` Directory
+
+Within your `database` directory, create a `factories` directory (`database/factories`). Place an empty `.gitkeep` file in this directory.	
+
+This directory will be used to store your models factories. [more on " Model Factories "](/docs/{{version}}/testing#model-factories)
+
 ### Authentication
 
 If you are using the provided `AuthController` which uses the `AuthenticatesAndRegistersUsers` trait, you will need to make a few changes to how new users are validated and created.
