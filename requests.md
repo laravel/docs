@@ -103,6 +103,10 @@ You may pass a default value as the second argument to the `input` method. This 
 
 	$name = $request->input('name', 'Sally');
 
+When working on forms with array inputs, you may use "dot" notation to access the arrays:
+
+	$input = $request->input('products.0.name');
+
 #### Determining If An Input Value Is Present
 
 To determine if a value is present on the request, you may use the `has` method. The `has` method returns `true` if the value is present **and** is not an empty string:
@@ -124,12 +128,6 @@ If you need to retrieve a sub-set of the input data, you may use the `only` and 
 	$input = $request->only('username', 'password');
 
 	$input = $request->except('credit_card');
-
-#### Retrieving Array Input
-
-When working on forms with array inputs, you may use "dot" notation to access the arrays:
-
-	$input = $request->input('products.0.name');
 
 <a name="old-input"></a>
 ### Old Input
