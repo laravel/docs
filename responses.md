@@ -16,7 +16,7 @@
 <a name="basic-responses"></a>
 ## Basic Responses
 
-Of course, all routes and controllers should return some kind of response to be sent back to the user's browser. Laravel provdies several different ways to return responses. The most basic response is simply returning a string from a route or controller:
+Of course, all routes and controllers should return some kind of response to be sent back to the user's browser. Laravel provides several different ways to return responses. The most basic response is simply returning a string from a route or controller:
 
 	Route::get('/', function () {
 		return 'Hello World';
