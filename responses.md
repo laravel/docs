@@ -8,6 +8,9 @@
 	- [JSON Responses](#json-responses)
 	- [File Downloads](#file-downloads)
 - [Redirects](#redirects)
+	- [Redirecting To Named Routes](#redirecting-named-routes)
+	- [Redirecting To Controller Actions](#redirecting-controller-actions)
+	- [Redirecting With Flashed Session Data](#redirecting-with-flashed-session-data)
 - [Response Macros](#response-macros)
 
 <a name="basic-responses"></a>
@@ -98,37 +101,28 @@ The `download` method may be used to generate a response that forces the user's 
 <a name="redirects"></a>
 ## Redirects
 
-Redirect responses are typically instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL.
+Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL. There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the global `redirect` helper method:
 
-#### Returning A Redirect
+	Route::get('dashboard', function () {
+		return redirect('home/dashboard');
+	});
 
-There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the `redirect` helper method. When testing, it is not common to mock the creation of a redirect response, so using the helper method is almost always acceptable:
+Sometimes you may wish to redirect the user to their previous location, for example, after a form submission that is invalid. You may do so by using the global `back` helper function:
 
-	return redirect('user/login');
+	Route::post('user/profile', function () {
+		// Validate the request...
 
-#### Returning A Redirect With Flash Data
+		return back()->withInput();
+	});
 
-Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/session) are typically done at the same time. So, for convenience, you may create a `RedirectResponse` instance **and** flash data to the session in a single method chain:
-
-	return redirect('user/login')->with('message', 'Login Failed');
-
-#### Redirecting To The Previous URL
-
-You may wish to redirect the user to their previous location, for example, after a form submission. You can do so by using the `back` method:
-
-	return back();
-
-	return back()->withInput();
-
-#### Returning A Redirect To A Named Route
+<a name="redirecting-named-routes"></a>
+#### Redirecting To Named Routes
 
 When you call the `redirect` helper with no parameters, an instance of `Illuminate\Routing\Redirector` is returned, allowing you to call any method on the `Redirector` instance. For example, to generate a `RedirectResponse` to a named route, you may use the `route` method:
 
 	return redirect()->route('login');
 
-#### Returning A Redirect To A Named Route With Parameters
-
-If your route has parameters, you may pass them as the second argument to the `route` method.
+If your route has parameters, you may pass them as the second argument to the `route` method:
 
 	// For a route with the following URI: profile/{id}
 
@@ -138,27 +132,35 @@ If you are redirecting to a route with an "ID" parameter that is being populated
 
 	return redirect()->route('profile', [$user]);
 
-#### Returning A Redirect To A Named Route Using Named Parameters
+<a name="redirecting-controller-actions"></a>
+#### Redirecting To Controller Actions
 
-	// For a route with the following URI: profile/{user}
-
-	return redirect()->route('profile', ['user' => 1]);
-
-#### Returning A Redirect To A Controller Action
-
-Similarly to generating `RedirectResponse` instances to named routes, you may also generate redirects to [controller actions](/docs/{{version}}/controllers):
+You may also generate redirects to [controller actions](/docs/{{version}}/controllers). To do so, simply pass the controller and action name to the `action` method. Remember, you do not need to specify the full namespace to the controller since Laravel's `RouteServiceProvider` will automatically set the default controller namespace:
 
 	return redirect()->action('HomeController@index');
 
-> **Note:** You do not need to specify the full namespace to the controller if you have a namespace specified in your `App\Providers\RouteServiceProvider` class.
-
-#### Returning A Redirect To A Controller Action With Parameters
+Of course, if your controller route requires parameters, you may pass them as the second argument to the `action` method:
 
 	return redirect()->action('UserController@profile', [1]);
 
-#### Returning A Redirect To A Controller Action Using Named Parameters
+<a name="redirecting-with-flashed-session-data"></a>
+#### Redirecting With Flashed Session Data
 
-	return redirect()->action('UserController@profile', ['user' => 1]);
+Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/session) are typically done at the same time. So, for convenience, you may create a `RedirectResponse` instance **and** flash data to the session in a single method chain. This is particularly convenient for storing status messages after an action:
+
+	Route::post('user/profile', function () {
+		// Update the user's profile...
+
+		return redirect('dashboard')->with('status', 'Profile updated!');
+	});
+
+Of course, after the user is redirected to a new page, you may retrieve and display the flashed message from the [session](/docs/{{version}}/session). For example, using [Blade syntax](/docs/{{version}}/views):
+
+	@if (session('status'))
+		<div class="alert alert-success">
+			{{ session('status') }}
+		</div>
+	@endif
 
 <a name="response-macros"></a>
 ## Response Macros
