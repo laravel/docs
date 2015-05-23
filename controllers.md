@@ -244,7 +244,7 @@ If your controller method is also expecting input from a route parameter, simply
 	class UserController extends Controller
 	{
 		/**
-		 * Store a new user.
+		 * Update the specified user.
 		 *
 		 * @param  Request  $request
 		 * @param  int  $id
