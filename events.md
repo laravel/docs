@@ -196,6 +196,15 @@ If you need to access the queued job's `delete` and `release` methods manually, 
 			}
 		}
 	}
+	
+### Specifying The Queue / Tube for a Queued Event
+
+You can also specify the tube / queue for the job by implementing the queue method to gain access to the queue instance and manually call push.
+
+	public function queue($queue, $job, $args)
+	{
+		$queue->push($job, $args, 'someTube');
+	}
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
