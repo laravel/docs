@@ -124,7 +124,7 @@ Let's organize our view composers within a [service provider](/docs/{{version}}/
 		}
 
 		/**
-		 * Register
+		 * Register the service provider.
 		 *
 		 * @return void
 		 */
