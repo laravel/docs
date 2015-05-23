@@ -69,7 +69,7 @@ The `response` helper may be used to conveniently generate other types of respon
 <a name="view-responses"></a>
 #### View Responses
 
-If you need control over the response status and headers, but want to return a view as the response content, you may use the `view` method:
+If you need control over the response status and headers, but also need to return a [view](/docs/{{version}}/views) as the response content, you may use the `view` method:
 
 	return response()->view('hello', $data)->header('Content-Type', $type);
 

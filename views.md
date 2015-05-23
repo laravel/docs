@@ -14,9 +14,9 @@
 <a name="basic-usage"></a>
 ## Basic Usage
 
-Views contain the HTML served by your application, and serve as a convenient method of separating your controller and application logic from your presentation logic. Views are stored in the `resources/views` directory.
+Views contain the HTML served by your application and separate your controller / application logic from your presentation logic. Views are stored in the `resources/views` directory.
 
-A simple view looks like this:
+A simple view might look something like this:
 
 	<!-- View stored in resources/views/greeting.php -->
 
@@ -26,25 +26,27 @@ A simple view looks like this:
 		</body>
 	</html>
 
-The view may be returned to the browser like so:
+Since this view is stored at `resources/views/greeting.php`, we may return it using the global `view` helper function like so:
 
 	Route::get('/', function ()	{
 		return view('greeting', ['name' => 'James']);
 	});
 
-As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument passed to helper is an array of data that should be made available to the view.
+As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument passed to helper is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view by simply executing `echo` on the variable.
 
-Of course, views may also be nested within sub-directories of the `resources/views` directory. For example, if your view is stored at `resources/views/admin/profile.php`, it should be returned like so:
+Of course, views may also be nested within sub-directories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.php`, you may reference it like so:
 
 	return view('admin.profile', $data);
 
 #### Determining If A View Exists
 
-If you need to determine if a view exists, you may use the `exists` method. This method will return `true` if the view exists on disk:
+If you need to determine if a view exists, you may use the `exists` method after calling the `view` helper with no arguments. This method will return `true` if the view exists on disk:
 
 	if (view()->exists('emails.customer')) {
 		//
 	}
+
+When the `view` helper is called without arguments, an instance of `Illuminate\Contracts\View\Factory` is returned, giving you access to any of the factory's methods.
 
 <a name="view-data"></a>
 ### View Data
@@ -56,18 +58,14 @@ As you saw in the previous examples, you may easily pass an array of data to vie
 
 	return view('greetings', ['name' => 'Victoria']);
 
-When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, like `{{ $key }}` (assuming `$data['key']` exists). The view can then access that data to display it within its HTML. In addition to passing an array of data as the second argument to the `view` function, you may also use the `with` method to add individual pieces of data to the view:
+When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, such as `<?php echo $key; ?>`. As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view:
 
 	$view = view('greeting')->with('name', 'Victoria');
-
-In the example above, the variable `$name` is made accessible to the view and contains the string `Victoria`.
 
 <a name="sharing-data-with-all-views"></a>
 #### Sharing Data With All Views
 
-Occasionally, you may need to share a piece of data with all views that are rendered by your application. You may do so using the `share` method. Typically, you would place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them.
-
-When the `view` helper is called without arguments, it returns an implementation of the `Illuminate\Contracts\View\Factory` [contract](/docs/{{version}}/contracts), allowing us to call additional methods like `share`:
+Occasionally, you may need to share a piece of data with all views that are rendered by your application. You may do so using the view factory's `share` method. Typically, you would place calls to `share` within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them:
 
 	<?php namespace App\Providers;
 
@@ -97,9 +95,9 @@ When the `view` helper is called without arguments, it returns an implementation
 <a name="view-composers"></a>
 ## View Composers
 
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer organizes that logic into a single location.
+View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer can help you organize that logic into a single location.
 
-Let's organize our view composers within a [service provider](/docs/{{version}}/providers). We'll use the `view` helper to access the underlying `Illuminate\Contracts\View\Factory` contract implementation:
+Let's register our view composers within a [service provider](/docs/{{version}}/providers). We'll use the `view` helper to access the underlying `Illuminate\Contracts\View\Factory` contract implementation. Remember, Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `App\Http\ViewComposers` directory:
 
 	<?php namespace App\Providers;
 
@@ -115,7 +113,9 @@ Let's organize our view composers within a [service provider](/docs/{{version}}/
 		public function boot()
 		{
 			// Using class based composers...
-			view()->composer('profile', 'App\Http\ViewComposers\ProfileComposer');
+			view()->composer(
+				'profile', 'App\Http\ViewComposers\ProfileComposer'
+			);
 
 			// Using Closure based composers...
 			view()->composer('dashboard', function ($view) {
@@ -134,9 +134,7 @@ Let's organize our view composers within a [service provider](/docs/{{version}}/
 		}
 	}
 
-> **Note:** Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `App\Http\ViewComposers` directory.
-
-Remember, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
+Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
 
 Now that we have registered the composer, the `ProfileComposer@compose` method will be executed each time the `profile` view is being rendered. So, let's define the composer class:
 
@@ -176,7 +174,6 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
 		{
 			$view->with('count', $this->users->count());
 		}
-
 	}
 
 Just before the view is rendered, the composer's `compose` method is called with the `Illuminate\Contracts\View\View` instance. You may use the `with` method to bind data to the view.
@@ -207,14 +204,14 @@ View **creators** are very similar to view composers; however, they are fired im
 <a name="blade-templating"></a>
 ## Blade Templating
 
+Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your templates. All Blade templates are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade template files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
+
 <a name="blade-template-inheritance"></a>
 ### Template Inheritance
 
-Blade is the simple, yet powerful templating engine provided with Laravel. All Blade template files should use the `.blade.php` extension, and are typically stored in `resources/views`.
-
 #### Defining A Layout
 
-The core benefits of Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple Blade templating example. First, we will examine a "master" layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade template:
+Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a "master" page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade template:
 
 	<!-- Stored in resources/views/layouts/master.blade.php -->
 
@@ -233,15 +230,13 @@ The core benefits of Blade are _template inheritance_ and _sections_. To get sta
 		</body>
 	</html>
 
-The `@yield` Blade directive will display the contents of the specified section. Sections will receive their content from child pages which extend the layout via template inheritance. Don't worry, you'll see an example of extending layouts soon!
+As you can see, this file contains typical HTML mark-up. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
 
-Sometimes, such as when you are not sure if a section has received content from a child template, you may wish to pass a default value into the `@yield` directive. You may pass the default value as the second argument:
-
-	@yield('section', 'Default Content')
+Now that we have defined a layout for our application, let's define a child page that inherits the layout.
 
 #### Extending A Layout
 
-Once the master layout for the application has been defined, you may use the Blade `@extends` directive to specify which layout a child page should "inherit". Note that templates which `@extend` a Blade layout may inject content into the layout using `@section` directives. Remember, the contents of these sections are displayed in the layout using `@yield`:
+When defining a child page, you may use the Blade `@extends` directive to specify which layout the child page should "inherit". Templates which `@extend` a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
 	<!-- Stored in resources/views/layouts/child.blade.php -->
 
@@ -259,9 +254,9 @@ Once the master layout for the application has been defined, you may use the Bla
 		<p>This is my body content.</p>
 	@stop
 
-In the example above, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the template is rendered.
+In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the template is rendered.
 
-Of course, Blade templates may be returned from routes using the global `view` helper function:
+Of course, just like plain PHP views, Blade views may be returned from routes using the global `view` helper function:
 
 	Route::get('blade', function () {
 		return view('child');
