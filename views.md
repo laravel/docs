@@ -204,14 +204,14 @@ View **creators** are very similar to view composers; however, they are fired im
 <a name="blade-templating"></a>
 ## Blade Templating
 
-Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your templates. All Blade templates are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade template files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
+Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. All Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
 
 <a name="blade-template-inheritance"></a>
 ### Template Inheritance
 
 #### Defining A Layout
 
-Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a "master" page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade template:
+Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a "master" page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
 
 	<!-- Stored in resources/views/layouts/master.blade.php -->
 
@@ -236,7 +236,7 @@ Now that we have defined a layout for our application, let's define a child page
 
 #### Extending A Layout
 
-When defining a child page, you may use the Blade `@extends` directive to specify which layout the child page should "inherit". Templates which `@extend` a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
+When defining a child page, you may use the Blade `@extends` directive to specify which layout the child page should "inherit". Views which `@extend` a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
 	<!-- Stored in resources/views/layouts/child.blade.php -->
 
@@ -254,7 +254,7 @@ When defining a child page, you may use the Blade `@extends` directive to specif
 		<p>This is my body content.</p>
 	@stop
 
-In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the template is rendered.
+In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
 Of course, just like plain PHP views, Blade views may be returned from routes using the global `view` helper function:
 
@@ -283,7 +283,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 
 #### Blade & JavaScript Frameworks
 
-Since many JavaScript frameworks also use "curly" braces to indicate a given expression  should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine a given string should not be rendered by PHP. For example:
+Since many JavaScript frameworks also use "curly" braces to indicate a given expression  should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
 
 	<h1>Laravel</h1>
 
@@ -314,7 +314,11 @@ By default, Blade `{{ }}` statements are automatically send through PHP's `htmle
 <a name="blade-control-structures"></a>
 ### Control Structures
 
+In addition to template inheritance and displaying data, Blade also provides convenient short-cuts for common PHP control structures, such as conditional statements and loops. These short-cuts provide a very clean, terse way of working with PHP control structures, while also remaining familiar to their PHP counterparts.
+
 #### If Statements
+
+You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@endif` directives. These directives function identically to their PHP counterparts:
 
 	@if (count($records) === 1)
 		I have one record!
@@ -324,11 +328,15 @@ By default, Blade `{{ }}` statements are automatically send through PHP's `htmle
 		I don't have any records!
 	@endif
 
+For convenience, Blade also provides an `@unless` directive:
+
 	@unless (Auth::check())
 		You are not signed in.
 	@endunless
 
 #### Loops
+
+In addition to conditional statements, Blade provides simple directives for working with PHP's supported loop structures. Again, each of these directives functions identically to their PHP counterparts:
 
 	@for ($i = 0; $i < 10; $i++)
 		The current value is {{ $i }}
@@ -350,31 +358,25 @@ By default, Blade `{{ }}` statements are automatically send through PHP's `htmle
 
 #### Including Sub-Views
 
-	@include('view.name')
+Blade's `@include` directive, allows you to easily include a Blade view from within an existing view. All variables that are available to the parent view will be made available to the included view:
 
-You may also pass an array of data to the included view:
+	<div>
+		@include('shared.errors')
+
+		<form>
+			<!-- Form Contents -->
+		</form>
+	</div>
+
+Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
 
 	@include('view.name', ['some' => 'data'])
 
-#### Overwriting Sections
-
-To overwrite a section entirely, you may use the `overwrite` statement:
-
-	@extends('list.item.container')
-
-	@section('list.item.content')
-		<p>This is an item of type {{ $item->type }}</p>
-	@overwrite
-
-#### Displaying Language Lines
-
-	@lang('language.line')
-
-	@choice('language.line', 1)
-
 #### Comments
 
-	{{-- This comment will not be in the rendered HTML --}}
+Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
+
+	{{-- This comment will not be present in the rendered HTML --}}
 
 <a name="blade-service-injection"></a>
 ### Service Injection
