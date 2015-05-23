@@ -5,8 +5,10 @@
 	- [Sharing Data With All Views](#sharing-data-with-all-views)
 - [View Composers](#view-composers)
 - [Blade Templating](#blade-templating)
-	- [Blade Control Structures](#blade-control-structures)
-	- [Blade Service Injection](#blade-service-injection)
+	- [Template Inheritance](#blade-template-inheritance)
+	- [Displaying Data](#blade-displaying-data)
+	- [Control Structures](#blade-control-structures)
+	- [Service Injection](#blade-service-injection)
 	- [Extending Blade](#extending-blade)
 
 <a name="basic-usage"></a>
@@ -205,6 +207,7 @@ View **creators** are very similar to view composers; however, they are fired im
 <a name="blade-templating"></a>
 ## Blade Templating
 
+<a name="blade-template-inheritance"></a>
 ### Template Inheritance
 
 Blade is the simple, yet powerful templating engine provided with Laravel. All Blade template files should use the `.blade.php` extension, and are typically stored in `resources/views`.
@@ -264,10 +267,8 @@ Of course, Blade templates may be returned from routes using the global `view` h
 		return view('child');
 	});
 
-<a name="other-blade-control-structures"></a>
-## Other Blade Control Structures
-
-#### Echoing Data
+<a name="blade-displaying-data"></a>
+### Displaying Data
 
 	Hello, {{ $name }}.
 
@@ -296,6 +297,9 @@ If you don't want the data to be escaped, you may use the following syntax:
 	Hello, {!! $name !!}.
 
 > **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the double curly brace syntax to escape any HTML entities in the content.
+
+<a name="blade-control-structures"></a>
+### Control Structures
 
 #### If Statements
 
@@ -360,7 +364,7 @@ To overwrite a section entirely, you may use the `overwrite` statement:
 	{{-- This comment will not be in the rendered HTML --}}
 
 <a name="blade-service-injection"></a>
-### Blade Service Injection
+### Service Injection
 
 The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class / interface name of the service you wish to resolve:
 
