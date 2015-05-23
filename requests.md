@@ -47,7 +47,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
 	class UserController extends Controller
 	{
 		/**
-		 * Store a new user.
+		 * Update the specified user.
 		 *
 		 * @param  Request  $request
 		 * @param  int  $id
