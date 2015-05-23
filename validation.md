@@ -208,6 +208,9 @@ Note the call to the `route` method in the example above. This method grants you
 
 	Route::post('comment/{comment}');
 
+If you defined the [Route Model Binding](http://laravel.com/docs/5.0/routing#route-model-binding), the `route` method will return the model object.
+
+
 If the `authorize` method returns `false`, a HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
 
 If you plan to have authorization logic in another part of your application, simply return `true` from the `authorize` method:
