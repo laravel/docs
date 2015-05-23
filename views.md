@@ -265,29 +265,47 @@ Of course, just like plain PHP views, Blade views may be returned from routes us
 <a name="blade-displaying-data"></a>
 ### Displaying Data
 
+You may display data passed to your Blade views by wrapping the variable in "curly" braces. For example, given the following route:
+
+	Route::get('greeting', function () {
+		return view('welcome', ['name' => 'Samantha']);
+	});
+
+You may display the contents of the `name` variable like so:
+
 	Hello, {{ $name }}.
+
+Of course, you are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
 
 	The current UNIX timestamp is {{ time() }}.
 
 > **Note:** Blade `{{ }}` statements are automatically send through PHP's `htmlentities` function to prevent XSS attacks.
 
-#### Echoing Data After Checking For Existence
+#### Blade & JavaScript Frameworks
 
-Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. Basically, you want to do this:
+Since many JavaScript frameworks also use "curly" braces to indicate a given expression  should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine a given string should not be rendered by PHP. For example:
+
+	<h1>Laravel</h1>
+
+	Hello, @{{ name }}.
+
+In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead by rendered by your JavaScript framework.
+
+#### Echoing Data If It Exists
+
+Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. We can express this in verbose PHP code like so:
 
 	{{ isset($name) ? $name : 'Default' }}
 
-However, instead of writing a ternary statement, Blade allows you to use the following convenient short-cut:
+However, instead of writing a ternary statement, Blade provides you with the following convenient short-cut:
 
 	{{ $name or 'Default' }}
 
-#### Displaying Raw Text With Curly Braces
+In this example, if the `$name` variable exists, its value will be displayed. However, if it does not exists, the word `Default` will be displayed.
 
-If you need to display a string that is wrapped in curly braces, you may escape the Blade behavior by prefixing your text with an `@` symbol:
+#### Displaying Unescaped Data
 
-	@{{ This will not be processed by Blade }}
-
-If you don't want the data to be escaped, you may use the following syntax:
+By default, Blade `{{ }}` statements are automatically send through PHP's `htmlentities` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
 
 	Hello, {!! $name !!}.
 
