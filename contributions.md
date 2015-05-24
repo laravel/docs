@@ -57,5 +57,5 @@ Laravel follows the [PSR-4](https://github.com/php-fig/fig-standards/blob/master
 
 - The class namespace declaration must be on the same line as `<?php`.
 - A class' opening `{` must be on the same line as the class name.
-- Functions and control structures must use Allman style braces.
+- Functions and control structures must use [Allman style](http://en.wikipedia.org/wiki/Indent_style#Allman_style) braces.
 - Indent with tabs, align with spaces.
