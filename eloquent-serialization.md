@@ -15,7 +15,7 @@ When building JSON APIs, you will often need to convert your models and relation
 
 #### Converting A Model To An Array
 
-To convert a model and its loaded [relationships](/docs/{{version}}/eloquent-relationships) to an array, you may use the `toArray` method. This method is recursive, so all attributes and all relations (including the relations of relations) will be converted to arrays:
+To convert a model to an array, you may use the `toArray` method. If you also want to load its [relationships](/docs/{{version}}/eloquent-relationships), you may use the `with` method to eager load the model. This method is recursive, so all attributes and all relations (including the relations of relations) will be converted to arrays:
 
 	$user = App\User::with('roles')->first();
 
