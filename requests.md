@@ -54,7 +54,7 @@
 	class UserController extends Controller {
 
 		/**
-		 * Store a new user.
+		 * Update the specified user.
 		 *
 		 * @param  Request  $request
 		 * @param  int  $id
@@ -232,8 +232,8 @@ You may also "queue" a cookie to be added to the outgoing response, even before 
 		//
 	}
 
-
 #### 取得請求方法
+
 
 	$method = Request::method();
 

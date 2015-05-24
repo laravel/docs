@@ -31,7 +31,7 @@
 	return response($content, $status)
 	              ->header('Content-Type', $value);
 
-> **提示：** 有關 `Response` 方法的完整列表可以參照 [API 文件](http://laravel.com/api/5.0/Illuminate/Http/Response.html) 以及 [Symfony API 文件](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
+> **提示：** 有關 `Response` 方法的完整列表可以參照 [API 文件](http://laravel.com/api/{{version}}/Illuminate/Http/Response.html) 以及 [Symfony API 文件](http://api.symfony.com/2.5/Symfony/Component/HttpFoundation/Response.html).
 
 #### 在回應送出視圖
 

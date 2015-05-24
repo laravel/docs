@@ -151,7 +151,8 @@ Laravel 可以預設建立了兩個驗證相關的控制器。`AuthController` �
 首先，你可以從 `Auth` facade 取得使用者：
 
 	<?php namespace App\Http\Controllers;
-
+	
+	use Auth;
 	use Illuminate\Routing\Controller;
 
 	class ProfileController extends Controller {

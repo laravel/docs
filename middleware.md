@@ -24,6 +24,8 @@ Laravel 框架已經內建一些中介層，包括維護、身份驗證、CSRF �
 此指令將會在 `app/Http/Middleware` 目錄內建立一個名稱為 `OldMiddleware` 的類別。在這個中介層內我們只允許請求內的 `age` 變數大於 200 的才能存取路由，否則，我們會將用戶重新導向「home」這個 URI。
 
 	<?php namespace App\Http\Middleware;
+	
+	use Closure;
 
 	class OldMiddleware {
 
@@ -55,6 +57,8 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
 一個中介層是在請求前還是請求後執行要看中介層自己。這個中介層會在應用程式處理請求**前**執行一些任務：
 
 	<?php namespace App\Http\Middleware;
+	
+	use Closure;
 
 	class BeforeMiddleware implements Middleware {
 
@@ -69,6 +73,8 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
 這個中介層則會在應用程式處理請求**後**執行它的任務：
 
 	<?php namespace App\Http\Middleware;
+	
+	use Closure;
 
 	class AfterMiddleware implements Middleware {
 
