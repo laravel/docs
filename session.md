@@ -52,6 +52,8 @@ The Laravel framework uses the `flash` session key internally, so you should not
 
 If you need all stored session data to be encrypted, set the `encrypt` configuration option to `true`.
 
+For security reasons Laravel reads session data at the beginning and writes it back at the end of each request. Avoid using session while there is possibility of multiple simultaneous requests from one user (such can occur during long-polling).
+
 <a name="basic-usage"></a>
 ## Basic Usage
 
