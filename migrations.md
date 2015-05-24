@@ -307,7 +307,7 @@ Command  | Description
 
 Laravel also provides support for creating foreign key constraints to your tables, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
 
-	Schema::table('users', function ($table) {
+	Schema::table('posts', function ($table) {
 		$table->integer('user_id')->unsigned();
 
 		$table->foreign('user_id')->references('id')->on('users');
