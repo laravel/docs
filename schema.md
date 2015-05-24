@@ -130,11 +130,7 @@ Laravel 的結構生成器 (`Schema`) 提供一個與資料庫無關的資料表
 		$table->renameColumn('from', 'to');
 	});
 
-<<<<<<< HEAD
 > **注意:** `enum` 欄位型別現在不支援修改欄位名稱。
-=======
-> **Note:** Renaming columns in a table with `enum` column is currently not supported.
->>>>>>> headstream/5.0
 
 <a name="dropping-columns"></a>
 ## 移除欄位
