@@ -62,7 +62,7 @@
 
 	php artisan vendor:publish --force
 
-> **注意：** 你可以使用 `publishes` 方法發佈**任何**類型的檔案到任何你想要的地方。
+> **注意：** 你可以使用 `publishes` 方法發佈**任何**類型的檔案到任何想要的地方。
 
 <a name="translations"></a>
 ## 語言
@@ -71,7 +71,7 @@
 
 	return trans('package::file.line');
 
-你所要做的只有告訴 Laravel ，給定的命名空間所對應的語言檔案位置。如果你的套件取名為「courier」，你可以按照以下方式新增至你的服務提供者的 `boot` 方法：
+你所要做的只有告訴 Laravel ，給定的命名空間所對應的語言檔案位置。如果套件取名為「courier」，你可以按照以下方式新增至服務提供者的 `boot` 方法：
 
 	public function boot()
 	{
@@ -80,7 +80,7 @@
 
 請注意，在你的 `translations` 目錄裡，必須對每個語言有更下一層的目錄，例如 `en`、`es`、`ru`、等等。
 
-現在你可以使用下方的語法來載入你的套件語言:
+現在你可以使用以下語法來載入套件語言:
 
 	return trans('courier::file.line');
 
@@ -108,22 +108,22 @@
 <a name="public-assets"></a>
 ## 公用資源
 
-你的套件可能會有像是 JavaScript，CSS，及圖片的資源。如果要發布資源，只需要在服務提供者裡的 `boot` 方法裡使用 `publishes` 方法。在這個例子中，我們也會增加一個「Public」的資源分類標籤。
+你的套件可能會有像是 JavaScript、CSS、及圖片的資源。如果要發布資源，只需要在服務提供者裡的 `boot` 方法裡使用 `publishes` 方法。在這個例子中，我們也會增加一個「Public」的資源分類標籤。
 
 	$this->publishes([
 		__DIR__.'/path/to/assets' => public_path('vendor/courier'),
 	], 'public');
 
-現在當你套件的使用者使用 `vendor:publish` 指令時，你的檔案將會被複製到指定的位置。當每次套件更新需要複寫資源時，你可以使用 `--force` 標記：
+現在當你套件的使用者使用 `vendor:publish` 指令時，你的檔案將會被複製到指定的位置。當每次套件更新需要覆寫資源時，你可以使用 `--force` 標記：
 
 	php artisan vendor:publish --tag=public --force
 
 如果你想要確保你的公用資源始終保持在最新的版本，可以將此指令加入你的 `composer.json` 中的 `post-update-cmd` 列表。
 
 <a name="publishing-file-groups"></a>
-## 發佈分類檔案
+## 發佈分群檔案
 
-您可能想要分別的發佈一些分類的檔案。舉例來說，你可能想要你的使用者可以分別發佈套件的設定檔與資源檔。你可以使用 `tagging` 來達成:
+你可能想要分別發佈某些檔案。舉例來說，你可能想讓使用者可以分別發佈套件的設定檔與資源檔。你可以使用 `tagging` 來達成:
 
 	// Publish a config file
 	$this->publishes([
@@ -135,7 +135,7 @@
 		__DIR__.'/../database/migrations/' => database_path('/migrations')
 	], 'migrations');
 
-你可以使用這些 `tag`，來分別發佈這些套件裡的檔案。
+之後就可以用 `tag` 分別發佈套件裡的檔案。
 
 	php artisan vendor:publish --provider="Vendor\Providers\PackageServiceProvider" --tag="config"
 
