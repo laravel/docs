@@ -233,6 +233,7 @@ Alternatively, once a user is authenticated, you may access the authenticated us
         /**
          * Update the user's profile.
          *
+         * @param  Request  $request
          * @return Response
          */
         public function updateProfile(Request $request)
