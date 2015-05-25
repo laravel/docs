@@ -55,7 +55,7 @@ By default, no [routes](/docs/{{version}}/routing) are included to point request
 <a name="included-views"></a>
 ### Views
 
-Though the authentication controllers are included with the framework, you will need to provide [views](/docs/{{version}}/views) that these controllers can render. The views should be placed in the `resources/views/auth` directory. You are free to customize these views however you wish. The login view should be placed at `resources/auth/login.blade.php`, and the registration view should be placed at `resources/auth/register.blade.php`.
+Though the authentication controllers are included with the framework, you will need to provide [views](/docs/{{version}}/views) that these controllers can render. The views should be placed in the `resources/views/auth` directory. You are free to customize these views however you wish. The login view should be placed at `resources/views/auth/login.blade.php`, and the registration view should be placed at `resources/views/auth/register.blade.php`.
 
 #### Sample Authentication Form
 
