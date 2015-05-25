@@ -108,7 +108,7 @@ You may constrain the format of your route parameters using the `where` method o
 	Route::get('user/{id}/{name}', function ($id, $name) {
 		//
 	})
-	->where(['id' => '[0-9]+', 'name' => '[a-z]+'])
+	->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 
 <a name="parameters-global-constraints"></a>
 #### Global Constraints
@@ -279,7 +279,7 @@ You may exclude URIs by adding them to the `$except` property of the `VerifyCsrf
 
 In addition to checking for the CSRF token as a POST parameter, the Laravel `VerifyCsrfToken` middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag:
 
-	<meta name="csrf-token" content="{{ csrf_token() }}" />
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 Once you have created the `meta` tag, you can instruct a library like jQuery to add the token to all request headers. This provides simple, convenient CSRF protection for your AJAX based applications:
 
