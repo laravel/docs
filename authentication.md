@@ -183,6 +183,7 @@ Second, you may access the authenticated user via an `Illuminate\Http\Request` i
 		/**
 		 * Update the user's profile.
 		 *
+		 * @param  Request  $request
 		 * @return Response
 		 */
 		public function updateProfile(Request $request)
@@ -207,6 +208,7 @@ Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contr
 		/**
 		 * Update the user's profile.
 		 *
+		 * @param Authenticatable $user
 		 * @return Response
 		 */
 		public function updateProfile(Authenticatable $user)
