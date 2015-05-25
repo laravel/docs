@@ -428,12 +428,10 @@ Next, you are ready to authenticate users! You will need two routes: one for red
         }
     }
 
-The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Before redirecting the user, you may also set "scopes" on the request:
+The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Before redirecting the user, you may also set "scopes" on the request using the `scope` method. This method will overwrite all existing scopes:
 
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
-
-> **Note:** Using `scopes` method will overwrite default scope `email`. If you want to get user's email, you should add it to scopes manually.
 
 Once you have a user instance, you can grab a few more details about the user:
 
