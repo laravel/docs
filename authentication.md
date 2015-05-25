@@ -13,6 +13,10 @@
 - [HTTP Basic Authentication](#http-basic-authentication)
      - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
 - [Resetting Passwords](#resetting-passwords)
+    - [Database Considerations](#resetting-database)
+    - [Routing](#resetting-routing)
+    - [Views](#resetting-views)
+    - [After Resetting Passwords](#after-resetting-passwords)
 - [Social Authentication](#social-authentication)
 - [Adding Custom Authentication Drivers](#adding-custom-authentication-drivers)
 
@@ -331,25 +335,40 @@ Next, [register the route middleware](/docs/{{version}}/middleware#registering-m
 <a name="resetting-passwords"></a>
 ## Resetting Passwords
 
-### Model & Table
+<a name="resetting-database"></a>
+### Database Considerations
 
 Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets.
 
-To get started, verify that your `User` model implements the `Illuminate\Contracts\Auth\CanResetPassword` contract. Of course, the `User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Passwords\CanResetPassword` trait to include the methods needed to implement the interface.
+To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\CanResetPassword` contract. Of course, the `App\User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Passwords\CanResetPassword` trait to include the methods needed to implement the interface.
 
-#### Generating The Reminder Table Migration
+#### Generating The Reset Token Table Migration
 
-Next, a table must be created to store the password reset tokens. The migration for this table is included with Laravel out of the box, and resides in the `database/migrations` directory. So all you need to do is migrate:
+Next, a table must be created to store the password reset tokens. The migration for this table is included with Laravel out of the box, and resides in the `database/migrations` directory. So, all you need to do is migrate:
 
     php artisan migrate
 
-### Password Reminder Controller
+<a name="resetting-routing"></a>
+### Routing
 
-Laravel includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords.
+Laravel includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords. However, you will need to define routes to point requests to this controller:
 
-#### Sample Password Reset Request Form
+    // Password reset link request routes...
+    Route::get('password/email', 'PasswordController@getEmail');
+    Route::post('password/email', 'PasswordController@postEmail');
 
-You will simply need to provide an HTML view for the password reset request form. This view should be placed at `resources/views/auth/password.blade.php` Here is a sample form to get you started:
+    // Password reset routes...
+    Route::get('password/reset', 'PasswordController@getReset');
+    Route::post('password/reset', 'PasswordController@postReset');
+
+<a name="resetting-views"></a>
+### Views
+
+In addition to defining the routes for the `PasswordController`, you will need to provide views that can be returned by this controller. Don't worry, we will provide sample views to help you get started. Of course, you are free to style your forms however you wish.
+
+#### Sample Password Reset Link Request Form
+
+You will need to provide an HTML view for the password reset request form. This view should be placed at `resources/views/auth/password.blade.php`. This form provides a single field for the user's e-mail address, allowing them to request a password reset link:
 
     <!-- resources/views/auth/password.blade.php -->
 
@@ -368,7 +387,9 @@ You will simply need to provide an HTML view for the password reset request form
         </div>
     </form>
 
-When a user submits a request to reset their password, they will receive an e-mail with a link that points to the `getReset` method of the `PasswordController`. You will need to create a view for this e-mail at `resources/views/emails/password.blade.php`. The view will receive the `$token` variable which contains the password reset token to match the user to the password reset request. Here is an example view to get you started:
+When a user submits a request to reset their password, they will receive an e-mail with a link that points to the `getReset` method (typically routed at `/password/reset`) of the `PasswordController`. You will need to create a view for this e-mail at `resources/views/emails/password.blade.php`. The view will receive the `$token` variable which contains the password reset token to match the user to the password reset request. Here is an example e-mail view to get you started:
+
+    <!-- resources/views/emails/password.blade.php -->
 
     Click here to reset your password: {{ url('password/reset/'.$token) }}
 
@@ -403,7 +424,12 @@ Here is a sample password reset form to get you started:
         </div>
     </form>
 
-After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post-reset redirect location by defining a `redirectTo` property on the `PasswordController`:
+<a name="after-resetting-passwords"></a>
+### After Resetting Passwords
+
+Once you have defined the routes and views to reset your user's passwords, you may simply access the routes in your browser. The `PasswordController` included with the framework already includes the logic to send the password reset link e-mails as well as update passwords in the database.
+
+After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post password reset redirect location by defining a `redirectTo` property on the `PasswordController`:
 
     protected $redirectTo = '/dashboard';
 
@@ -412,19 +438,19 @@ After the password is reset, the user will automatically be logged into the appl
 <a name="social-authentication"></a>
 ## Social Authentication
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). **Socialite currently supports authentication with Facebook, Twitter, Google, GitHub and Bitbucket.**
+In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, Google, GitHub and Bitbucket.
 
-### Installation
+To get started with Socialite, add to your `composer.json` file as a dependency:
 
-To get started with Socialite, include the package in your `composer.json` file:
+    composer require laravel/socialite
 
-    "laravel/socialite": "~2.0"
+### Configuration
 
-Next, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
+After installing the Socialite library, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
 
     'Socialite' => 'Laravel\Socialite\Facades\Socialite',
 
-You will need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `google`, or `github`, depending on the providers your application requires. For example:
+You will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `google`, or `github`, depending on the providers your application requires. For example:
 
     'github' => [
         'client_id' => 'your-github-app-id',
@@ -470,11 +496,11 @@ The `redirect` method takes care of sending the user to the OAuth provider, whil
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
 
-Once you have a user instance, you can grab a few more details about the user:
-
 #### Retrieving User Details
 
-    $user = $this->socialite->driver('github')->user();
+Once you have a user instance, you can grab a few more details about the user:
+
+    $user = Socialite::driver('github')->user();
 
     // OAuth Two Providers
     $token = $user->token;
@@ -493,7 +519,7 @@ Once you have a user instance, you can grab a few more details about the user:
 <a name="adding-custom-authentication-drivers"></a>
 ## Adding Custom Authentication Drivers
 
-Authentication may be extended the same way as the cache and session facilities. Again, we will use the `extend` method used to extend other parts of the framework. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers):
+If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication driver. We will use the `extend` method on the `Auth` facade to define a custom driver. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers):
 
     <?php namespace App\Providers;
 
@@ -527,9 +553,15 @@ Authentication may be extended the same way as the cache and session facilities.
         }
     }
 
-The `UserProvider` implementations are only responsible for fetching a `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
+After you have registered the driver with the `extend` method, you may switch to the new driver in your `config/auth.php` configuration file.
 
-Let's take a look at the `UserProvider` contract:
+### The User Provider Contract
+
+The `Illuminate\Contracts\Auth\UserProvider` implementations are only responsible for fetching a `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
+
+Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
+
+    <?php namespace Illuminate\Contracts\Auth;
 
     interface UserProvider {
 
@@ -551,7 +583,11 @@ The `retrieveByCredentials` method receives the array of credentials passed to t
 
 The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`. This method should only validate the user's credentials and return boolean.
 
+### The Authenticatable Contract
+
 Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable`. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
+
+    <?php namespace Illuminate\Contracts\Auth;
 
     interface Authenticatable {
 
@@ -564,11 +600,3 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
     }
 
 This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
-
-Finally, once we have implemented the `UserProvider`, we are ready to register our extension with the `Auth` facade:
-
-    Auth::extend('riak', function($app) {
-        return new RiakUserProvider($app['riak.connection']);
-    });
-
-After you have registered the driver with the `extend` method, you may switch to the new driver in your `config/auth.php` configuration file.
