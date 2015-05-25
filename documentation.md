@@ -13,7 +13,8 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
-    - [Views / Blade Templating](/docs/{{version}}/views)
+    - [Views](/docs/{{version}}/views)
+    - [Blade Templates](/docs/{{version}}/blade)
 - Architecture Foundations
     - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Application Structure](/docs/{{version}}/structure)
