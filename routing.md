@@ -97,17 +97,17 @@ You may constrain the format of your route parameters using the `where` method o
 
 	Route::get('user/{name}', function ($name) {
 		//
-	});
+	})
 	->where('name', '[A-Za-z]+');
 
 	Route::get('user/{id}', function ($id) {
 		//
-	});
+	})
 	->where('id', '[0-9]+');
 
 	Route::get('user/{id}/{name}', function ($id, $name) {
 		//
-	});
+	})
 	->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 
 <a name="parameters-global-constraints"></a>
