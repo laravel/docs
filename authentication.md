@@ -433,6 +433,8 @@ The `redirect` method takes care of sending the user to the OAuth provider, whil
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
 
+> **Note:** Using `scopes` method will overwrite default scope `email`. If you want to get user's email, you should add it to scopes manually.
+
 Once you have a user instance, you can grab a few more details about the user:
 
 #### Retrieving User Details
