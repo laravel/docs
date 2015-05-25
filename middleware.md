@@ -133,6 +133,7 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 		 *
 		 * @param  \Illuminate\Http\Request  $request
 		 * @param  \Closure  $next
+		 * @param  string  $role
 		 * @return mixed
 		 */
 		public function handle($request, Closure $next, $role)
