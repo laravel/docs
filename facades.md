@@ -1,10 +1,7 @@
 # Facades
 
 - [Introduction](#introduction)
-- [Explanation](#explanation)
-- [Practical Usage](#practical-usage)
-- [Creating Facades](#creating-facades)
-- [Mocking Facades](#mocking-facades)
+- [Using Facades](#using-facades)
 - [Facade Class Reference](#facade-class-reference)
 
 <a name="introduction"></a>
@@ -12,9 +9,14 @@
 
 Facades provide a "static" interface to classes that are available in the application's [service container](/docs/{{version}}/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
 
-### An Example
+<a name="using-facades"></a>
+## Using Facades
 
-For example, consider the following controller code:
+In the context of a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Illuminate\Support\Facades\Facade` class.
+
+A facade class only needs to implement a single method: `getFacadeAccessor`. It's the `getFacadeAccessor` method's job to define what to resolve from the container. The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to the resolved object.
+
+In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class:
 
 	<?php namespace App\Http\Controllers;
 
@@ -39,27 +41,7 @@ For example, consider the following controller code:
 
 Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy to accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service.
 
-Occasionally, you may wish to create your own facades for your application's and packages, so let's explore the concept, development and usage of these classes.
-
-> **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [service container](/docs/{{version}}/container).
-
-<a name="explanation"></a>
-## Explanation
-
-In the context of a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Facade` class.
-
-Your facade class only needs to implement a single method: `getFacadeAccessor`. It's the `getFacadeAccessor` method's job to define what to resolve from the container. The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to the resolved object.
-
-So, when you make a facade call like `Cache::get`, Laravel resolves the Cache manager class out of the service container and calls the `get` method on the class. In technical terms, Laravel Facades are a convenient syntax for using the Laravel service container as a service locator.
-
-<a name="practical-usage"></a>
-## Practical Usage
-
-In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class.
-
-	$value = Cache::get('key');
-
-However, if we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
+If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
 
 	class Cache extends Facade {
 
@@ -72,91 +54,7 @@ However, if we look at that `Illuminate\Support\Facades\Cache` class, you'll see
 
 	}
 
-The Cache class extends the base `Facade` class and defines a method `getFacadeAccessor()`. Remember, this method's job is to return the name of a service container binding.
-
-When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the service container and runs the requested method (in this case, `get`) against that object.
-
-So, our `Cache::get` call could be re-written like so:
-
-	$value = $app->make('cache')->get('key');
-
-#### Importing Facades
-
-Remember, if you are using a facade in a controller that is namespaced, you will need to import the facade class into the namespace. All facades live in the global namespace:
-
-	<?php namespace App\Http\Controllers;
-
-	use Cache;
-
-	class PhotosController extends Controller {
-
-		/**
-		 * Get all of the application photos.
-		 *
-		 * @return Response
-		 */
-		public function index()
-		{
-			$photos = Cache::get('photos');
-
-			//
-		}
-
-	}
-
-<a name="creating-facades"></a>
-## Creating Facades
-
-Creating a facade for your own application or package is simple. You only need 3 things:
-
-- A service container binding.
-- A facade class.
-- A facade alias configuration.
-
-Let's look at an example. Here, we have a class defined as `PaymentGateway\Payment`.
-
-	namespace PaymentGateway;
-
-	class Payment {
-
-		public function process()
-		{
-			//
-		}
-
-	}
-
-We need to be able to resolve this class from the service container. So, let's add a binding to a service provider:
-
-	App::bind('payment', function()
-	{
-		return new \PaymentGateway\Payment;
-	});
-
-A great place to register this binding would be to create a new [service provider](/docs/{{version}}/container#service-providers) named `PaymentServiceProvider`, and add this binding to the `register` method. You can then configure Laravel to load your service provider from the `config/app.php` configuration file.
-
-Next, we can create our own facade class:
-
-	use Illuminate\Support\Facades\Facade;
-
-	class Payment extends Facade {
-
-		protected static function getFacadeAccessor() { return 'payment'; }
-
-	}
-
-Finally, if we wish, we can add an alias for our facade to the `aliases` array in the `config/app.php` configuration file. Now, we can call the `process` method on an instance of the `Payment` class.
-
-	Payment::process();
-
-### A Note On Auto-Loading Aliases
-
-Classes in the `aliases` array are not available in some instances because [PHP will not attempt to autoload undefined type-hinted classes](https://bugs.php.net/bug.php?id=39003). If `\ServiceWrapper\ApiTimeoutException` is aliased to `ApiTimeoutException`, a `catch(ApiTimeoutException $e)` outside of the namespace `\ServiceWrapper` will never catch the exception, even if one is thrown. A similar problem is found in classes which have type hints to aliased classes. The only workaround is to forego aliasing and `use` the classes you wish to type hint at the top of each file which requires them.
-
-<a name="mocking-facades"></a>
-## Mocking Facades
-
-Unit testing is an important aspect of why facades work the way that they do. In fact, testability is the primary reason for facades to even exist. For more information, check out the [mocking facades](/docs/testing#mocking-facades) section of the documentation.
+Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. Remember, this method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the service container and runs the requested method (in this case, `get`) against that object.
 
 <a name="facade-class-reference"></a>
 ## Facade Class Reference
