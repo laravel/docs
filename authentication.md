@@ -358,7 +358,7 @@ Laravel includes an `Auth\PasswordController` that contains the logic necessary 
     Route::post('password/email', 'PasswordController@postEmail');
 
     // Password reset routes...
-    Route::get('password/reset', 'PasswordController@getReset');
+    Route::get('password/reset/{token}', 'PasswordController@getReset');
     Route::post('password/reset', 'PasswordController@postReset');
 
 <a name="resetting-views"></a>
