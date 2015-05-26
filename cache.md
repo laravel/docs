@@ -1,9 +1,11 @@
 # Cache
 
 - [Configuration](#configuration)
-- [Accessing The Cache](#accessing-the-cache)
 - [Cache Usage](#cache-usage)
-- [Accessing Multiple Cache Stores](#accessing-multiple-cache-stores)
+	- [Obtaining A Cache Instance](#obtaining-a-cache-instance)
+	- [Storing Items In The Cache](#storing-items-in-the-cache)
+	- [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
+	- [Removing Items From The Cache](#removing-items-from-the-cache)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
 
 <a name="configuration"></a>
@@ -55,8 +57,11 @@ Before using a Redis cache with Laravel, you will need to install the `predis/pr
 
 For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
 
-<a name="accessing-the-cache"></a>
-## Accessing The Cache
+<a name="cache-usage"></a>
+## Cache Usage
+
+<a name="obtaining-a-cache-instance"></a>
+### Obtaining A Cache Instance
 
 The `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
 
@@ -84,54 +89,62 @@ For example, let's import the `Cache` facade into a controller:
 		}
 	}
 
-<a name="cache-usage"></a>
-## Cache Usage
+#### Accessing Multiple Cache Stores
 
-#### Storing An Item In The Cache
+Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
 
-When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
+	$value = Cache::store('file')->get('foo');
+
+	Cache::store('redis')->put('bar', 'baz', 10);
+
+<a name="storing-items-in-the-cache"></a>
+### Storing Items In The Cache
+
+You may use the `set` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
 
 	Cache::put('key', 'value', $minutes);
 
-#### Using DateTime Objects To Set Expire Time
-
-You may also pass a PHP `DateTime` instance representing the expiration time of the cache item:
+Instead of passing the number of minutes until the item expires, you may also pass a PHP `DateTime` instance representing the expiration time of the cached item:
 
 	$expiresAt = Carbon::now()->addMinutes(10);
 
 	Cache::put('key', 'value', $expiresAt);
 
-#### Storing An Item In The Cache If It Doesn't Exist
-
-The `add` method will return `true` if the item is actually **added** to the cache. Otherwise, the method will return `false`.
+The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
 
 	Cache::add('key', 'value', $minutes);
 
+The `forever` method may be used to store an item in the cache permanently. These values must be manually removed from the cache using the `forget` method:
+
+	Cache::forever('key', 'value');
+
+<a name="retrieving-items-from-the-cache"></a>
+### Retrieving Items From The Cache
+
+The `get` method on the `Cache` facade is used to retrieve items from the cache. If the item does not exist in the cache, `null` will be returned. If you wish, you may pass a second argument to the `get` method specifying the custom default value you wish to be returned if the item doesn't exist:
+
+	$value = Cache::get('key');
+
+	$value = Cache::get('key', 'default');
+
+
+You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
+
+	$value = Cache::get('key', function() {
+		return DB::table(...)->get();
+	});
+
 #### Checking For Item Existence
+
+The `has` method may be used to determine if an item exists in the cache:
 
 	if (Cache::has('key')) {
 		//
 	}
 
-#### Retrieving An Item From The Cache
-
-	$value = Cache::get('key');
-
-#### Retrieving An Item Or Returning A Default Value
-
-The second argument passed to the `get` method will be returned if the specified item does not exist in the cache:
-
-	$value = Cache::get('key', 'default');
-
-You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache:
-
-	$value = Cache::get('key', function() {
-		return 'default';
-	});
-
 #### Incrementing / Decrementing Values
 
-> **Note:** All cache drivers except the `database` driver support the increment and decrement operations:
+The `increment` and `decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods optionally accept a second argument indicating the amount by which to increment or decrement the item's value:
 
 	Cache::increment('key');
 
@@ -141,17 +154,15 @@ You may even pass a `Closure` as the default value. The result of the `Closure` 
 
 	Cache::decrement('key', $amount);
 
-#### Storing An Item In The Cache Permanently
+#### Retrieve Or Update
 
-	Cache::forever('key', 'value');
-
-#### Retrieve An Item & Update Value If Missing
-
-Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. You may do this using the `Cache::remember` method:
+Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
 
 	$value = Cache::remember('users', $minutes, function() {
 		return DB::table('users')->get();
 	});
+
+If the item does not exist in the cache, the `Closure` passed to the `remember` method will be executed and its result will be placed in the cache.
 
 You may also combine the `remember` and `forever` methods:
 
@@ -159,31 +170,23 @@ You may also combine the `remember` and `forever` methods:
 		return DB::table('users')->get();
 	});
 
-> **Note:** All items stored in the cache are serialized, so you are free to store any type of data.
+#### Retrieve And Delete
 
-#### Pulling An Item From The Cache
-
-If you need to retrieve an item from the cache and then delete it, you may use the `pull` method:
+If you need to retrieve an item from the cache and then delete it, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
 
 	$value = Cache::pull('key');
 
-#### Removing An Item From The Cache
+<a name="removing-items-from-the-cache"></a>
+### Removing Items From The Cache
+
+You may remove items from the cache using the `forget` method on the `Cache` facade:
 
 	Cache::forget('key');
-
-<a name="accessing-multiple-cache-stores"></a>
-## Accessing Multiple Cache Stores
-
-Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
-
-	$value = Cache::store('file')->get('foo');
-
-	Cache::store('redis')->put('bar', 'baz', 10);
 
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
 
-To extend the Laravel cache with a custom driver, we will use the `extend` method on the `CacheManager`, which is used to bind a custom driver resolver to the manager, and is common across all manager classes. Typically, this is done within a [service provider](/docs/{{version}}/providers).
+To extend the Laravel cache with a custom driver, we will use the `extend` method on the `Cache` facade, which is used to bind a custom driver resolver to the manager. Typically, this is done within a [service provider](/docs/{{version}}/providers).
 
 For example, to register a new cache driver named "mongo":
 
@@ -218,13 +221,15 @@ For example, to register a new cache driver named "mongo":
 		}
 	}
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of the `Illuminate\Foundation\Application` [service container](/docs/{{version}}/container).
+The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
 
 The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array.
 
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts). So, our MongoDB cache implementation would look something like this:
+To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts) contract. So, our MongoDB cache implementation would look something like this:
 
-	class MongoStore implements Illuminate\Contracts\Cache\Store
+	<?php namespace App\Extensions;
+
+	class MongoStore implements \Illuminate\Contracts\Cache\Store
 	{
 		public function get($key) {}
 		public function put($key, $value, $minutes) {}
@@ -240,5 +245,7 @@ We just need to implement each of these methods using a MongoDB connection. Once
 	Cache::extend('mongo', function($app) {
 		return Cache::repository(new MongoStore);
 	});
+
+Once your extension is complete, simply update your `config/cache.php` configuration file's `driver` option to the name of your extension.
 
 If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
