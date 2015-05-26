@@ -67,7 +67,7 @@ To define a mutator, define a `setFooAttribute` method on your model where `Foo`
 
 The mutator will receive the value that is being set on the attribute, allowing you to manipulate the value and set the manipulated value on the Eloquent model's internal `$attributes` property. So, for example, if we attempt to set the `first_name` attribute to `Sally`:
 
-	$user = App\Find::user(1);
+	$user = App\User::find(1);
 
 	$user->first_name = 'Sally';
 
