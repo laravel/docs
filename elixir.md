@@ -11,7 +11,7 @@
 - [Working With Scripts](#working-with-scripts)
 	- [CoffeeScript](#coffeescript)
 	- [Browserify](#browserify)
-	- [Concatenating Scripts](#concatenating-scripts)
+	- [ECMAScript 6 / JavaScript](#javascript)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [Calling Existing Gulp Tasks](#calling-existing-gulp-tasks)
 - [Writing Elixir Extensions](#writing-elixir-extensions)
@@ -172,7 +172,7 @@ elixir(function(mix) {
 <a name="working-with-scripts"></a>
 ## Working With Scripts
 
-Elixir also provides several functions to help you work with your JavaScript files, such as compiling CoffeeScript, using Browserify, minification, and simply concatenating plain JavaScript files.
+Elixir also provides several functions to help you work with your JavaScript files, such as compiling ECMAScript 6, compiling CoffeeScript, Browserify, minification, and simply concatenating plain JavaScript files.
 
 <a name="coffeescript"></a>
 ### CoffeeScript
@@ -198,10 +198,12 @@ elixir(function(mix) {
 });
 ```
 
-<a name="concatenating-scripts"></a>
-### Concatenating Scripts
+<a name="javascript"></a>
+### ECMAScript 6 / JavaScript
 
-If you have multiple JavaScript files that you would like to combine into a single file, you may use the `scripts` method. Again, this assumes all paths are relative to the `resources/assets/js` directory, and will place the resulting JavaScript in `public/js/all.js` by default:
+If you have multiple ECMAScript 6 / JavaScript files that you would like to combine into a single file, you may use the `scripts` method. The `scripts` method will automatically compile your ECMA Script 6 into portable JavaScript, as well as combine the given files.
+
+The `scripts` method assumes all paths are relative to the `resources/assets/js` directory, and will place the resulting JavaScript in `public/js/all.js` by default:
 
 ```javascript
 elixir(function(mix) {
