@@ -157,7 +157,7 @@ Of course, you can capture segments of the request URI within your route:
 	{
 		//
 	})
-	->where(['id' => '[0-9]+', 'name' => '[a-z]+'])
+	->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 
 #### Defining Global Patterns
 
