@@ -162,7 +162,7 @@ The `everSubscribed` method may be used to determine if the user has ever subscr
 <a name="changing-plans"></a>
 ### Changing Plans
 
-After a user is subscribed to your application, they may occassinally want to change to a new subscription plan. To swap a user to a new subscription, use the `swap` method. For example, we may easily switch a user to the `premium` subscription:
+After a user is subscribed to your application, they may occasionally want to change to a new subscription plan. To swap a user to a new subscription, use the `swap` method. For example, we may easily switch a user to the `premium` subscription:
 
 	$user = App\User::find(1);
 
