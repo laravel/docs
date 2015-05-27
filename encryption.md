@@ -15,7 +15,7 @@ Before using Laravel's encrypter, you should set the `key` option of your `confi
 
 You may encrypt a value using the `Crypt` [facade](/docs/{{version}}/facades). All encrypted values are encrypted using the `MCRYPT_RIJNDAEL_128` MCrypt cipher in CBC mode. Furthermore, all encrypted values are signed with a message authentication code (MAC) to detect any modifications to the encrypted string.
 
-For exmample, we may use the `encrypt` method to encrypt a secret and store it on an [Eloquent model](/docs/{{version}}/eloquent):
+For example, we may use the `encrypt` method to encrypt a secret and store it on an [Eloquent model](/docs/{{version}}/eloquent):
 
 	<?php namespace App\Http\Controllers;
 
