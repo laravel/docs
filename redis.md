@@ -106,7 +106,6 @@ First, let's setup a listener on a channel via Redis using the `subscribe` metho
 
 	use Redis;
 	use Illuminate\Console\Command;
-	use Illuminate\Foundation\Inspiring;
 
 	class RedisSubscribe extends Command
 	{
