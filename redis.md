@@ -1,9 +1,8 @@
 # Redis
 
 - [Introduction](#introduction)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Pipelines](#pipelining)
+- [Basic Usage](#basic-usage)
+	- [Pipelining Commands](#pipelining-commands)
 - [Pub / Sub](#pubsub)
 
 <a name="introduction"></a>
@@ -36,10 +35,10 @@ If your Redis server requires authentication, you may supply a password by addin
 
 > **Note:** If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
 
-<a name="usage"></a>
-## Usage
+<a name="basic-usage"></a>
+## Basic Usage
 
-You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](http://redis.io/commands) on the facade:
+You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](http://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the `GET` command on Redis by calling the `get` method on the `Redis` facade:
 
 	<?php namespace App\Http\Controllers;
 
@@ -62,15 +61,13 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
 		}
 	}
 
-#### Executing Additional Redis Commands
-
-Of course, as mentioned above, you may call any of the Redis commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server:
+Of course, as mentioned above, you may call any of the Redis commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server, so simply pass the arguments the Redis command expects:
 
 	Redis::set('name', 'Taylor');
 
 	$values = Redis::lrange('names', 5, 10);
 
-Notice the arguments to the command are simply passed into the magic method. Alternatively, you may also pass commands to the server using the `command` method, which accepts the name of the command as its first argument, and an array of values as its second argument:
+Alternatively, you may also pass commands to the server using the `command` method, which accepts the name of the command as its first argument, and an array of values as its second argument:
 
 	$values = Redis::command('lrange', [5, 10]);
 
@@ -84,10 +81,10 @@ This will give you an instance of the default Redis server. If you are not using
 
 	$redis = Redis::connection('other');
 
-<a name="pipelining"></a>
-## Pipelining
+<a name="pipelining-commands"></a>
+### Pipelining Commands
 
-Pipelining should be used when you need to send many commands to the server in one operation. To get started, use the `pipeline` method. The `pipeline` method accepts one argument: a `Closure` that receives a Redis instance. You may issue all of yours commands to this Redis instance and they will all be executed within a single operation:
+Pipelining should be used when you need to send many commands to the server in one operation. The `pipeline` method accepts one argument: a `Closure` that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be executed within a single operation:
 
 	Redis::pipeline(function ($pipe) {
 		for ($i = 0; $i < 1000; $i++) {
@@ -109,12 +106,12 @@ First, let's setup a listener on a channel via Redis using the `subscribe` metho
 
 	class RedisSubscribe extends Command
 	{
-	    /**
-	     * The console command name.
-	     *
-	     * @var string
-	     */
-	    protected $name = 'redis:subscribe';
+        /**
+         * The name and signature of the console command.
+         *
+         * @var string
+         */
+        protected $signature = 'redis:subscribe';
 
 	    /**
 	     * The console command description.
@@ -138,11 +135,15 @@ First, let's setup a listener on a channel via Redis using the `subscribe` metho
 
 Now, we may publish messages to the channel using the `publish` method:
 
-	Redis::publish('test-channel', json_encode(['foo' => 'bar']));
+	Route::get('publish', function () {
+		// Route logic...
+
+		Redis::publish('test-channel', json_encode(['foo' => 'bar']));
+	});
 
 #### Wildcard Subscriptions
 
-Using the `psubscribe` method, you may subscribe to a wildcard channel, which is useful for catching all messages on all channels:
+Using the `psubscribe` method, you may subscribe to a wildcard channel, which is useful for catching all messages on all channels. The `$channel` name will be passed as the second argument to the provided callback `Closure`:
 
 	Redis::psubscribe(['*'], function($message, $channel) {
 		echo $message;
