@@ -355,6 +355,13 @@ The `config_path` function returns the fully qualified path to the application c
 
 	$path = config_path();
 
+<a name="method-database-path"></a>
+#### `database_path()` {#collection-method}
+
+The `database_path` function returns the fully qualified path to the application's database directory:
+
+	$path = database_path();
+
 <a name="method-public-path"></a>
 #### `public_path()` {#collection-method}
 
