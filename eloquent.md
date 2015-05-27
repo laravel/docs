@@ -1274,7 +1274,7 @@ Your `EventServiceProvider` serves as a convenient place to register your model 
 	 * @param  \Illuminate\Contracts\Events\Dispatcher  $events
 	 * @return void
 	 */
-	public function boot(DispatcherContract $events)
+	public static function boot(DispatcherContract $events)
 	{
 		parent::boot($events);
 
