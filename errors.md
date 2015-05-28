@@ -1,112 +1,162 @@
 # Errors & Logging
 
+- [Introduction](#introduction)
 - [Configuration](#configuration)
-- [Handling Errors](#handling-errors)
+- [The Exception Handler](#the-exception-handler)
+	- [Report Method](#report-method)
+	- [Render Method](#render-method)
 - [HTTP Exceptions](#http-exceptions)
-- [Handling 404 Errors](#handling-404-errors)
+	- [Custom HTTP Error Pages](#custom-http-error-pages)
 - [Logging](#logging)
+
+<a name="introduction"></a>
+## Introduction
+
+When you start a new Laravel project, error and exception handling is already configured for you. In addition, Laravel is integrated with the [Monolog](https://github.com/Seldaek/monolog) logging library, which provides support for a variety of powerful log handlers.
 
 <a name="configuration"></a>
 ## Configuration
 
-The logging handler for your application is registered in the `App\Providers\ErrorServiceProvider` [service provider](/docs/ioc#service-providers). By default, the logger is configured to use a single log file; however, you may customize this behavior as needed. Since Laravel uses the popular [Monolog](https://github.com/Seldaek/monolog) logging library, you can take advantage of the variety of handlers that Monolog offers.
+#### Error Detail
 
-For example, if you wish to use daily log files instead of a single, large file, you can make the following change to your start file:
+The amount of error detail your application displays through the browser is controlled by the `debug` configuration option in your `config/app.php` configuration file. By default, this configuration option is set to respect the `APP_DEBUG` environment variable, which is stored in your `.env` file.
 
-	$logFile = 'laravel.log';
+For local development, you should set the `APP_DEBUG` environment variable to `true`. In your production environment, this value should always be `false`.
 
-	Log::useDailyFiles(storage_path().'/logs/'.$logFile);
+#### Log Modes
 
-### Error Detail
+Out of the box, Laravel supports `single`, `daily`, `syslog` and `errorlog` logging modes. For example, if you wish to use daily log files instead of a single file, you should simply set the `log` value in your `config/app.php` configuration file:
 
-By default, error detail is enabled for your application. This means that when an error occurs you will be shown an error page with a detailed stack trace and error message. You may turn off error details by setting the `debug` option in your `config/app.php` file to `false`.
+	'log' => 'daily'
 
-> **Note:** It is strongly recommended that you turn off error detail in a production environment.
+#### Custom Monolog Configuration
 
-<a name="handling-errors"></a>
-## Handling Errors
+If you would like to have complete control over how Monolog is configured for your application, you may use the application's `configureMonologUsing` method. You should place a call to this method in your `bootstrap/app.php` file right before the `$app` variable is returned by the file:
 
-By default, the `ErrorServiceProvider` class contains an error handler for all exceptions:
-
-	App::error(function(Exception $exception)
-	{
-		Log::error($exception);
+	$app->configureMonologUsing(function($monolog) {
+		$monolog->pushHandler(...);
 	});
 
-This is the most basic error handler. However, you may specify more handlers if needed. Handlers are called based on the type-hint of the Exception they handle. For example, you may create a handler that only handles `RuntimeException` instances:
+	return $app;
 
-	App::error(function(RuntimeException $exception)
+<a name="the-exception-handler"></a>
+## The Exception Handler
+
+All exceptions are handled by the `App\Exceptions\Handler` class. This class contains two methods: `report` and `render`. We'll examine each of these methods in detail.
+
+<a name="report-method"></a>
+### The Report Method
+
+The `report` method is used to log exceptions or send them to an external service like [BugSnag](https://bugsnag.com). By default, the `report` method simply passes the exception to the base class where the exception is logged. However, you are free to log exceptions however you wish.
+
+For example, if you need to report different types of exceptions in different ways, you may use the PHP `instanceof` comparison operator:
+
+	/**
+	 * Report or log an exception.
+	 *
+	 * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+	 *
+	 * @param  \Exception  $e
+	 * @return void
+	 */
+	public function report(Exception $e)
 	{
-		// Handle the exception...
-	});
+		if ($e instanceof CustomException) {
+			//
+		}
 
-If an exception handler returns a response, that response will be sent to the browser and no other error handlers will be called:
+		return parent::report($e);
+	}
 
-	App::error(function(InvalidUserException $exception)
-	{
-		Log::error($exception);
+#### Ignoring Exceptions By Type
 
-		return 'Sorry! Something is wrong with this account!';
-	});
+The `$dontReport` property of the exception handler contains an array of exception types that will not be logged. By default, exceptions resulting from 404 errors are not written to your log files. You may add other exception types to this array as needed.
 
-To listen for PHP fatal errors, you may use the `App::fatal` method:
+<a name="render-method"></a>
+### The Render Method
 
-	App::fatal(function($exception)
-	{
-		//
-	});
+The `render` method is responsible for converting a given exception into an HTTP response that should be sent back to the browser. By default, the exception is passed to the base class which generates a response for you. However, you are free to check the exception type or return your own custom response:
 
-If you have several exception handlers, they should be defined from most generic to most specific. So, for example, a handler that handles all exceptions of type `Exception` should be defined before a custom exception type such as `Illuminate\Encryption\DecryptException`.
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $e
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Exception $e)
+    {
+    	if ($e instanceof CustomException) {
+    		return response()->view('errors.custom', [], 500);
+    	}
+
+        return parent::render($request, $e);
+    }
 
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
 
-Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to return such a response, use the following:
+Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to generate such a response from anywhere in your application, use the following:
 
-	App::abort(404);
+	abort(404);
 
-Optionally, you may provide a response:
+The `abort` method will immediately raise an exception which will be rendered by the exception handler. Optionally, you may provide the response text:
 
-	App::abort(403, 'Unauthorized action.');
+	abort(403, 'Unauthorized action.');
 
 This method may be used at any time during the request's lifecycle.
 
-<a name="handling-404-errors"></a>
-## Handling 404 Errors
+<a name="custom-http-error-pages"></a>
+### Custom HTTP Error Pages
 
-You may register an error handler that handles all "404 Not Found" errors in your application, allowing you to easily return custom 404 error pages:
+Laravel makes it easy to return custom error pages for various HTTP status codes. For example, if you wish to customize the error page for 404 HTTP status codes, create a `resources/views/errors/404.blade.php`. This file will be served on all 404 errors generated by your application.
 
-	App::missing(function($exception)
-	{
-		return Response::view('errors.missing', array(), 404);
-	});
+The views within this directory should be named to match the HTTP status code they correspond to.
 
 <a name="logging"></a>
 ## Logging
 
-The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create a single log file for your application, and this file is stored in `storage/logs/laravel.log`. You may write information to the log like so:
+The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create daily log files for your application which are stored in the `storage/logs` directory. You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades):
 
-	Log::info('This is some useful information.');
+	<?php namespace App\Http\Controllers;
 
-	Log::warning('Something could be going wrong.');
+	use Log;
+	use App\Http\Controllers\Controller;
 
-	Log::error('Something is really going wrong.');
+	class UserController extends Controller
+	{
+		/**
+		 * Show the profile for the given user.
+		 *
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function showProfile($id)
+		{
+			Log::info('Showing user profile for user: '.$id);
+
+			return view('user.profile', ['user' => User::findOrFail($id)]);
+		}
+	}
 
 The logger provides the seven logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, and **alert**.
 
-An array of contextual data may also be passed to the log methods:
+	Log::debug($error);
+	Log::info($error);
+	Log::notice($error);
+	Log::warning($error);
+	Log::error($error);
+	Log::critical($error);
+	Log::alert($error);
 
-	Log::info('Log message', array('context' => 'Other helpful information'));
+#### Contextual Information
+
+An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
+
+	Log::info('User failed to login.', ['id' => $user->id]);
+
+#### Accessing The Underlying Monolog Instance
 
 Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
 
 	$monolog = Log::getMonolog();
-
-You may also register an event to catch all messages passed to the log:
-
-#### Registering A Log Listener
-
-	Log::listen(function($level, $message, $context)
-	{
-		//
-	});

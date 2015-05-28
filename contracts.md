@@ -8,18 +8,20 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a `Queue` contract defines the methods needed for queueing jobs, while the `Mailer` contract defines the methods needed for sending e-mail.
+Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending e-mail.
 
-Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a `Queue` implementation with a variety of drivers, and a `Mailer` implementation that is powered by [SwiftMailer](http://swiftmailer.org/).
+Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by [SwiftMailer](http://swiftmailer.org/).
 
-All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by other package developers.
+All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
+
+### Contracts Vs. Facades
+
+Laravel's [facades](/docs/{{version}}/facades) provide a simple way of utilizing Laravel's services without needing to type-hint and resolve contracts out of the service container. However, using contracts allows you to define explicit dependencies for your classes. For most applications, using a facade is just fine. However, if you really need the extra loose coupling that contracts can provide, keep reading!
 
 <a name="why-contracts"></a>
 ## Why Contracts?
 
-You may have several questions regarding contracts. Why use interfaces at all? Isn't using interfaces more complicated?
-
-Let's distill the reasons for using interfaces to the following headings: loose coupling and simplicity.
+You may have several questions regarding contracts. Why use interfaces at all? Isn't using interfaces more complicated? Let's distil the reasons for using interfaces to the following headings: loose coupling and simplicity.
 
 ### Loose Coupling
 
@@ -27,8 +29,8 @@ First, let's review some code that is tightly coupled to a cache implementation.
 
 	<?php namespace App\Orders;
 
-	class Repository {
-
+	class Repository
+	{
 		/**
 		 * The cache.
 		 */
@@ -37,7 +39,7 @@ First, let's review some code that is tightly coupled to a cache implementation.
 		/**
 		 * Create a new repository instance.
 		 *
-		 * @param  \Package\Cache\Memcached  $cache
+		 * @param  \SomePackage\Cache\Memcached  $cache
 		 * @return void
 		 */
 		public function __construct(\SomePackage\Cache\Memcached $cache)
@@ -53,15 +55,13 @@ First, let's review some code that is tightly coupled to a cache implementation.
 		 */
 		public function find($id)
 		{
-			if ($this->cache->has($id))
-			{
+			if ($this->cache->has($id))	{
 				//
 			}
 		}
-
 	}
 
-In this class, the code is tightly coupled to a given cache implementation. It is tightly coupled because we are depending on a concrete Cache class from a package vendor. If the API of that package changes, so our code must change.
+In this class, the code is tightly coupled to a given cache implementation. It is tightly coupled because we are depending on a concrete Cache class from a package vendor. If the API of that package changes our code must change as well.
 
 Likewise, if we want to replace our underlying cache technology (Memcached) with another technology (Redis), we again will have to modify our repository. Our repository should not have so much knowledge regarding who is providing them data or how they are providing it.
 
@@ -71,8 +71,8 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
 
 	use Illuminate\Contracts\Cache\Repository as Cache;
 
-	class Repository {
-
+	class Repository
+	{
 		/**
 		 * Create a new repository instance.
 		 *
@@ -83,7 +83,6 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
 		{
 			$this->cache = $cache;
 		}
-
 	}
 
 Now the code is not coupled to any specific vendor, or even Laravel. Since the contracts package contains no implementation and no dependencies, you may easily write an alternative implementation of any given contract, allowing you to replace your cache implementation without modifying any of your cache consuming code.
@@ -99,10 +98,12 @@ In addition, when you depend on simple interfaces, your code is easier to unders
 
 This is a reference to most Laravel Contracts, as well as their Laravel "facade" counterparts:
 
-Contract  |  Laravel 4.x Facade
+Contract  |  References Facade
 ------------- | -------------
 [Illuminate\Contracts\Auth\Guard](https://github.com/illuminate/contracts/blob/master/Auth/Guard.php)  |  Auth
 [Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)  |  Password
+[Illuminate\Contracts\Bus\Dispatcher](https://github.com/illuminate/contracts/blob/master/Bus/Dispatcher.php)  |  Bus
+[Illuminate\Contracts\Broadcasting\Broadcaster](https://github.com/illuminate/contracts/blob/master/Broadcasting/Broadcaster.php)  | &nbsp;
 [Illuminate\Contracts\Cache\Repository](https://github.com/illuminate/contracts/blob/master/Cache/Repository.php) | Cache
 [Illuminate\Contracts\Cache\Factory](https://github.com/illuminate/contracts/blob/master/Cache/Factory.php) | Cache::driver()
 [Illuminate\Contracts\Config\Repository](https://github.com/illuminate/contracts/blob/master/Config/Repository.php) | Config
@@ -136,16 +137,20 @@ Contract  |  Laravel 4.x Facade
 <a name="how-to-use-contracts"></a>
 ## How To Use Contracts
 
-So, how do you get an implementation of a contract? It's actually quite simple. Many types of classes in Laravel are resolved through the [service container](/docs/master/container), including controllers, event listeners, filters, queue jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved. For example, take a look at this event handler:
+So, how do you get an implementation of a contract? It's actually quite simple.
 
-	<?php namespace App\Handlers\Events;
+Many types of classes in Laravel are resolved through the [service container](/docs/{{version}}/container), including controllers, event listeners, middleware, queued jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved.
+
+For example, take a look at this event listener:
+
+	<?php namespace App\Listeners;
 
 	use App\User;
 	use App\Events\NewUserRegistered;
 	use Illuminate\Contracts\Redis\Database;
 
-	class CacheUserInformation {
-
+	class CacheUserInformation
+	{
 		/**
 		 * The Redis database implementation.
 		 */
@@ -172,7 +177,6 @@ So, how do you get an implementation of a contract? It's actually quite simple. 
 		{
 			//
 		}
-
 	}
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [the documentation](/docs/master/container).
+When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).

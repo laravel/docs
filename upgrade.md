@@ -1,19 +1,304 @@
 # Upgrade Guide
 
+- [Upgrading To 5.1.0](#upgrade-5.1.0)
+- [Upgrading To 5.0.16](#upgrade-5.0.16)
 - [Upgrading To 5.0 From 4.2](#upgrade-5.0)
 - [Upgrading To 4.2 From 4.1](#upgrade-4.2)
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
 
+<a name="upgrade-5.1.0"></a>
+## Upgrading To 5.1.0
+
+### Update `bootstrap/autoload.php`
+
+Update the `$compiledPath` variable in `bootstrap/autoload.php` to the following:
+
+	$compiledPath = __DIR__.'/cache/compiled.php';
+
+### Create `bootstrap/cache` Directory
+
+Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`). Place a `.gitignore` file in this directory with the following contents:
+
+	*
+	!.gitignore
+
+This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
+
+### Authentication
+
+If you are using the provided `AuthController` which uses the `AuthenticatesAndRegistersUsers` trait, you will need to make a few changes to how new users are validated and created.
+
+First, you no longer need to pass the `Guard` and `Registrar` instances to the base constructor. You can remove these dependencies entirely from your controller's constructor.
+
+Secondly, the `App\Services\Registrar` class used in Laravel 5.0 is no longer needed. You can simply copy and paste your `validator` and `create` method from this class directly into your `AuthController`. No other changes should need to be made to these methods; however, you should be sure to import the `Validator` facade and your `User` model at the top of your `AuthController`.
+
+### Eloquent
+
+#### The `create` Method
+
+Eloquent's `create` method can now be called without any parameters. If you are overriding the `create` method in your own models, set the default value of the `$attributes` parameter to an array:
+
+	public static function create(array $attributes = [])
+	{
+		// Your custom implementation
+	}
+
+#### The `find` Method
+
+If you are overriding the `find` method in your own models and calling `parent::find()` within your custom method, you should now change it to call the `find` method on the Eloquent query builder:
+
+	public static function find($id, $columns = ['*'])
+	{
+		$model = static::query()->find($id, $columns);
+
+		// ...
+
+		return $model;
+	}
+
+#### Date Formatting
+
+Previously, the storage format for Eloquent date fields could be modified by overriding the `getDateFormat` method on your model. This is still possible; however, for convenience you may simply specify a `$dateFormat` property on the model instead of overriding the method.
+
+The date format is also now applied when serializing a model to an `array` or JSON. This may change the format of your JSON serialized date fields when migrating from Laravel 5.0 to 5.1. To set a specific date format for serialized models, you may override the `serializeDate(DateTime $date)` method on your model. This method allows you to have granular control over the formatting of serialized Eloquent date fields without changing their storage format.
+
+### The Collection Class
+
+#### The `groupBy` Method
+
+The `groupBy` method now returns `Collection` instances for each item in the parent `Collection`. If you would like to convert all of the items back to plain arrays, you may `map` over them:
+
+	$collection->groupBy('type')->map(function($item)
+	{
+		return $item->all();
+	});
+
+#### The `lists` Method
+
+The `lists` method now returns a `Collection` instance. If you would like to convert the `Collection` into a plain array, use the `all` method:
+
+	$collection->lists('id')->all();
+
+<a name="upgrade-5.0.16"></a>
+## Upgrading To 5.0.16
+
+In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
+
+	$compiledPath = __DIR__.'/../vendor/compiled.php';
+
 <a name="upgrade-5.0"></a>
 ## Upgrading To 5.0 From 4.2
 
-Information coming soon.
+### Fresh Install, Then Migrate
+
+The recommended method of upgrading is to create a new Laravel `5.0` install and then to copy your `4.2` site's unique application files into the new application. This would include controllers, routes, Eloquent models, Artisan commands, assets, and other code specific to your application.
+
+To start, [install a new Laravel 5 application](/docs/{{version}}/installation) into a fresh directory in your local environment. We'll discuss each piece of the migration process in further detail below.
+
+### Composer Dependencies & Packages
+
+Don't forget to copy any additional Composer dependencies into your 5.0 application. This includes third-party code such as SDKs.
+
+Some Laravel-specific packages may not be compatible with Laravel 5 on initial release. Check with your package's maintainer to determine the proper version of the package for Laravel 5. Once you have added any additional Composer dependencies your application needs, run `composer update`.
+
+### Namespacing
+
+By default, Laravel 4 applications did not utilize namespacing within your application code. So, for example, all Eloquent models and controllers simply lived in the "global" namespace. For a quicker migration, you can simply leave these classes in the global namespace in Laravel 5 as well.
+
+### Configuration
+
+#### Migrating Environment Variables
+
+Copy the new `.env.example` file to `.env`, which is the `5.0` equivalent of the old `.env.php` file. Set any appropriate values there, like your `APP_ENV` and `APP_KEY` (your encryption key), your database credentials, and your cache and session drivers.
+
+Additionally, copy any custom values you had in your old `.env.php` file and place them in both `.env` (the real value for your local environment) and `.env.example` (a sample instructional value for other team members).
+
+For more information on environment configuration, view the [full documentation](/docs/{{version}}/configuration#environment-configuration).
+
+> **Note:** You will need to place the appropriate `.env` file and values on your production server before deploying your Laravel 5 application.
+
+#### Configuration Files
+
+Laravel 5.0 no longer uses `app/config/{environmentName}/` directories to provide specific configuration files for a given environment. Instead, move any configuration values that vary by environment into `.env`, and then access them in your configuration files using `env('key', 'default value')`. You will see examples of this in the `config/database.php` configuration file.
+
+Set the config files in the `config/` directory to represent either the values that are consistent across all of your environments, or set them to use `env()` to load values that vary by environment.
+
+Remember, if you add more keys to `.env` file, add sample values to the `.env.example` file as well. This will help your other team members create their own `.env` files.
+
+### Routes
+
+Copy and paste your old `routes.php` file into your new `app/Http/routes.php`.
+
+### Controllers
+
+Next, move all of your controllers into the `app/Http/Controllers` directory. Since we are not going to migrate to full namespacing in this guide, add the `app/Http/Controllers` directory to the `classmap` directive of your `composer.json` file. Next, you can remove the namespace from the abstract `app/Http/Controllers/Controller.php` base class. Verify that your migrated controllers are extending this base class.
+
+In your `app/Providers/RouteServiceProvider.php` file, set the `namespace` property to `null`.
+
+### Route Filters
+
+Copy your filter bindings from `app/filters.php` and place them into the `boot()` method of `app/Providers/RouteServiceProvider.php`. Add `use Illuminate\Support\Facades\Route;` in the `app/Providers/RouteServiceProvider.php` in order to continue using the `Route` Facade.
+
+You do not need to move over any of the default Laravel 4.0 filters such as `auth` and `csrf`; they're all here, but as middleware. Edit any routes or controllers that reference the old default filters (e.g. `['before' => 'auth']`) and change them to reference the new middleware (e.g. `['middleware' => 'auth'].`)
+
+Filters are not removed in Laravel 5. You can still bind and use your own custom filters using `before` and `after`.
+
+### Global CSRF
+
+By default, [CSRF protection](/docs/{{version}}/routing#csrf-protection) is enabled on all routes. If you'd like to disable this, or only manually enable it on certain routes, remove this line from `App\Http\Kernel`'s `middleware` array:
+
+	'App\Http\Middleware\VerifyCsrfToken',
+
+If you want to use it elsewhere, add this line to `$routeMiddleware`:
+
+	'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
+
+Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/{{version}}/middleware).
+
+### Eloquent Models
+
+Feel free to create a new `app/Models` directory to house your Eloquent models. Again, add this directory to the `classmap` directive of your `composer.json` file.
+
+Update any models using `SoftDeletingTrait` to use `Illuminate\Database\Eloquent\SoftDeletes`.
+
+#### Eloquent Caching
+
+Eloquent no longer provides the `remember` method for caching queries. You now are responsible for caching your queries manually using the `Cache::remember` function. For more information on caching, consult the [full documentation](/docs/{{version}}/cache).
+
+### User Authentication Model
+
+To upgrade your `User` model for Laravel 5's authentication system, follow these instructions:
+
+**Delete the following from your `use` block:**
+
+```php
+use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\Reminders\RemindableInterface;
+```
+
+**Add the following to your `use` block:**
+
+```php
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+```
+
+**Remove the UserInterface and RemindableInterface interfaces.**
+
+**Mark the class as implementing the following interfaces:**
+
+```php
+implements AuthenticatableContract, CanResetPasswordContract
+```
+
+**Include the following traits within the class declaration:**
+
+```php
+use Authenticatable, CanResetPassword;
+```
+
+**If you used them, remove `Illuminate\Auth\Reminders\RemindableTrait`  and `Illuminate\Auth\UserTrait` from your use block and your class declaration.**
+
+### Cashier User Changes
+
+The name of the trait and interface used by [Laravel Cashier](/docs/{{version}}/billing) has changed. Instead of using `BillableTrait`, use the `Laravel\Cashier\Billable` trait. And, instead of `Laravel\Cashier\BillableInterface` implement the `Laravel\Cashier\Contracts\Billable` interface instead. No other method changes are required.
+
+### Artisan Commands
+
+Move all of your command classes from your old `app/commands` directory to the new `app/Console/Commands` directory. Next, add the `app/Console/Commands` directory to the `classmap` directive of your `composer.json` file.
+
+Then, copy your list of Artisan commands from `start/artisan.php` into the `command` array of the `app/Console/Kernel.php` file.
+
+### Database Migrations & Seeds
+
+Delete the two migrations included with Laravel 5.0, since you should already have the users table in your database.
+
+Move all of your migration classes from the old `app/database/migrations` directory to the new `database/migrations`. All of your seeds should be moved from `app/database/seeds` to `database/seeds`.
+
+### Global IoC Bindings
+
+If you have any [service container](/docs/{{version}}/container) bindings in `start/global.php`, move them all to the `register` method of the `app/Providers/AppServiceProvider.php` file. You may need to import the `App` facade.
+
+Optionally, you may break these bindings up into separate service providers by category.
+
+### Views
+
+Move your views from `app/views` to the new `resources/views` directory.
+
+### Blade Tag Changes
+
+For better security by default, Laravel 5.0 escapes all output from both the `{{ }}` and `{{{ }}}` Blade directives. A new `{!! !!}` directive has been introduced to display raw, unescaped output. The most secure option when upgrading your application is to only use the new `{!! !!}` directive when you are **certain** that it is safe to display raw output.
+
+However, if you **must** use the old Blade syntax, add the following lines at the bottom of `AppServiceProvider@register`:
+
+```php
+\Blade::setRawTags('{{', '}}');
+\Blade::setContentTags('{{{', '}}}');
+\Blade::setEscapedContentTags('{{{', '}}}');
+```
+
+This should not be done lightly, and may make your application more vulnerable to XSS exploits. Also, comments with `{{--` will no longer work.
+
+### Translation Files
+
+Move your language files from `app/lang` to the new `resources/lang` directory.
+
+### Public Directory
+
+Copy your application's public assets from your `4.2` application's `public` directory to your new application's `public` directory. Be sure to keep the `5.0` version of `index.php`.
+
+### Tests
+
+Move your tests from `app/tests` to the new `tests` directory.
+
+### Misc. Files
+
+Copy in any other files in your project. For example, `.scrutinizer.yml`, `bower.json` and other similar tooling configuration files.
+
+You may move your Sass, Less, or CoffeeScript to any location you wish. The `resources/assets` directory could be a good default location.
+
+### Form & HTML Helpers
+
+If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective](http://laravelcollective.com/docs/{{version}}/html).
+
+For example, you may add `"laravelcollective/html": "~5.0"` to your `composer.json` file's `require` section.
+
+You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php` and add this line to the 'providers' array:
+
+	'Collective\Html\HtmlServiceProvider',
+
+Next, add these lines to the 'aliases' array:
+
+	'Form' => 'Collective\Html\FormFacade',
+	'Html' => 'Collective\Html\HtmlFacade',
+
+### CacheManager
+
+If your application code was injecting `Illuminate\Cache\CacheManager` to get a non-Facade version of Laravel's cache, inject `Illuminate\Contracts\Cache\Repository` instead.
+
+### Pagination
+
+Replace any calls to `$paginator->links()` with `$paginator->render()`.
+
+Replace any calls to `$paginator->getFrom()` and `$paginator->getTo()` with `$paginator->firstItem()` and `$paginator->lastItem()` respectively.
+
+Remove the "get" prefix from calls to `$paginator->getPerPage()`, `$paginator->getCurrentPage()`, `$paginator->getLastPage()` and `$paginator->getTotal()` (e.g. `$paginator->perPage()`).
 
 ### Beanstalk Queuing
 
-Laravel 5.0 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"` that Laravel 4.2 required.
+Laravel 5.0 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"`.
+
+### Remote
+
+The Remote component has been deprecated.
+
+### Workbench
+
+The Workbench component has been deprecated.
 
 <a name="upgrade-4.2"></a>
 ## Upgrading To 4.2 From 4.1
@@ -68,7 +353,7 @@ If you are extending the `Illuminate\Pagination\Presenter` class, the abstract m
 
 If you are using the Iron.io queue driver, you will need to add a new `encrypt` option to your queue configuration file:
 
-    'encrypt' => true
+	'encrypt' => true
 
 <a name="upgrade-4.1.29"></a>
 ## Upgrading To 4.1.29 From <= 4.1.x
@@ -126,23 +411,23 @@ To upgrade your application to Laravel 4.1, change your `laravel/framework` vers
 
 ### Replacing Files
 
-Replace your `public/index.php` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/master/public/index.php).
+Replace your `public/index.php` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/v4.1.0/public/index.php).
 
-Replace your `artisan` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/master/artisan).
+Replace your `artisan` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/v4.1.0/artisan).
 
 ### Adding Configuration Files & Options
 
-Update your `aliases` and `providers` arrays in your `app/config/app.php` configuration file. The updated values for these arrays can be found [in this file](https://github.com/laravel/laravel/blob/master/app/config/app.php). Be sure to add your custom and package service providers / aliases back to the arrays.
+Update your `aliases` and `providers` arrays in your `app/config/app.php` configuration file. The updated values for these arrays can be found [in this file](https://github.com/laravel/laravel/blob/v4.1.0/app/config/app.php). Be sure to add your custom and package service providers / aliases back to the arrays.
 
-Add the new `app/config/remote.php` file [from the repository](https://github.com/laravel/laravel/blob/master/app/config/remote.php).
+Add the new `app/config/remote.php` file [from the repository](https://github.com/laravel/laravel/blob/v4.1.0/app/config/remote.php).
 
 Add the new `expire_on_close` configuration option to your `app/config/session.php` file. The default value should be `false`.
 
 Add the new `failed` configuration section to your `app/config/queue.php` file. Here are the default values for the section:
 
-	'failed' => array(
+	'failed' => [
 		'database' => 'mysql', 'table' => 'failed_jobs',
-	),
+	],
 
 **(Optional)** Update the `pagination` configuration option in your `app/config/view.php` file to `pagination::slider-3`.
 
@@ -154,7 +439,7 @@ If `app/controllers/BaseController.php` has a `use` statement at the top, change
 
 Password reminders have been overhauled for greater flexibility. You may examine the new stub controller by running the `php artisan auth:reminders-controller` Artisan command. You may also browse the [updated documentation](/docs/security#password-reminders-and-reset) and update your application accordingly.
 
-Update your `app/lang/en/reminders.php` language file to match [this updated file](https://github.com/laravel/laravel/blob/master/app/lang/en/reminders.php).
+Update your `app/lang/en/reminders.php` language file to match [this updated file](https://github.com/laravel/laravel/blob/v4.1.0/app/lang/en/reminders.php).
 
 ### Environment Detection Updates
 
@@ -168,7 +453,7 @@ Laravel now generates a single log file: `app/storage/logs/laravel.log`. However
 
 In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailingSlash()`. This method is no longer needed as this functionality is now handled by the `.htaccess` file included with the framework.
 
-Next, replace your Apache `.htaccess` file with [this new one](https://github.com/laravel/laravel/blob/master/public/.htaccess) that handles trailing slashes.
+Next, replace your Apache `.htaccess` file with [this new one](https://github.com/laravel/laravel/blob/v4.1.0/public/.htaccess) that handles trailing slashes.
 
 ### Current Route Access
 

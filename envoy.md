@@ -1,100 +1,6 @@
-# SSH
+# Envoy Task Runner
 
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
-- [Tasks](#tasks)
-- [SFTP Downloads](#sftp-downloads)
-- [SFTP Uploads](#sftp-uploads)
-- [Tailing Remote Logs](#tailing-remote-logs)
-- [Envoy Task Runner](#envoy-task-runner)
-
-<a name="configuration"></a>
-## Configuration
-
-Laravel includes a simple way to SSH into remote servers and run commands, allowing you to easily build Artisan tasks that work on remote servers. The `SSH` facade provides the access point to connecting to your remote servers and running commands.
-
-The configuration file is located at `config/remote.php`, and contains all of the options you need to configure your remote connections. The `connections` array contains a list of your servers keyed by name. Simply populate the credentials in the `connections` array and you will be ready to start running remote tasks. Note that the `SSH` can authenticate using either a password or an SSH key.
-
-> **Note:** Need to easily run a variety of tasks on your remote server? Check out the [Envoy task runner](#envoy-task-runner)!
-
-<a name="basic-usage"></a>
-## Basic Usage
-
-#### Running Commands On The Default Server
-
-To run commands on your `default` remote connection, use the `SSH::run` method:
-
-	SSH::run(array(
-		'cd /var/www',
-		'git pull origin master',
-	));
-
-#### Running Commands On A Specific Connection
-
-Alternatively, you may run commands on a specific connection using the `into` method:
-
-	SSH::into('staging')->run(array(
-		'cd /var/www',
-		'git pull origin master',
-	));
-
-#### Catching Output From Commands
-
-You may catch the "live" output of your remote commands by passing a Closure into the `run` method:
-
-	SSH::run($commands, function($line)
-	{
-		echo $line.PHP_EOL;
-	});
-
-## Tasks
-<a name="tasks"></a>
-
-If you need to define a group of commands that should always be run together, you may use the `define` method to define a `task`:
-
-	SSH::into('staging')->define('deploy', array(
-		'cd /var/www',
-		'git pull origin master',
-		'php artisan migrate',
-	));
-
-Once the task has been defined, you may use the `task` method to run it:
-
-	SSH::into('staging')->task('deploy', function($line)
-	{
-		echo $line.PHP_EOL;
-	});
-
-<a name="sftp-downloads"></a>
-## SFTP Downloads
-
-The `SSH` class includes a simple way to download files using the `get` and `getString` methods:
-
-	SSH::into('staging')->get($remotePath, $localPath);
-
-	$contents = SSH::into('staging')->getString($remotePath);
-
-<a name="sftp-uploads"></a>
-## SFTP Uploads
-
-The `SSH` class also includes a simple way to upload files, or even strings, to the server using the `put` and `putString` methods:
-
-	SSH::into('staging')->put($localFile, $remotePath);
-
-	SSH::into('staging')->putString($remotePath, 'Foo');
-
-<a name="tailing-remote-logs"></a>
-## Tailing Remote Logs
-
-Laravel includes a helpful command for tailing the `laravel.log` files on any of your remote connections. Simply use the `tail` Artisan command and specify the name of the remote connection you would like to tail:
-
-	php artisan tail staging
-
-	php artisan tail staging --path=/path/to/log.file
-
-<a name="envoy-task-runner"></a>
-## Envoy Task Runner
-
+- [Introduction](#introduction)
 - [Installation](#envoy-installation)
 - [Running Tasks](#envoy-running-tasks)
 - [Multiple Servers](#envoy-multiple-servers)
@@ -103,12 +9,15 @@ Laravel includes a helpful command for tailing the `laravel.log` files on any of
 - [Notifications](#envoy-notifications)
 - [Updating Envoy](#envoy-updating-envoy)
 
-Laravel Envoy provides a clean, minimal syntax for defining common tasks you run on your remote servers. Using a [Blade](/docs/templates#blade-templating) style syntax, you can easily setup tasks for deployment, Artisan commands, and more.
+<a name="introduction"></a>
+## Introduction
+
+[Laravel Envoy](https://github.com/laravel/envoy) provides a clean, minimal syntax for defining common tasks you run on your remote servers. Using a Blade style syntax, you can easily setup tasks for deployment, Artisan commands, and more.
 
 > **Note:** Envoy requires PHP version 5.4 or greater, and only runs on Mac / Linux operating systems.
 
 <a name="envoy-installation"></a>
-### Installation
+## Installation
 
 First, install Envoy using the Composer `global` command:
 
@@ -131,7 +40,7 @@ The `init` command may be used to easily create a stub Envoy file:
 	envoy init user@192.168.1.1
 
 <a name="envoy-running-tasks"></a>
-### Running Tasks
+## Running Tasks
 
 To run a task, use the `run` command of your Envoy installation:
 
@@ -165,8 +74,18 @@ You may also use ```@include``` to include any PHP files:
 
 	@include('vendor/autoload.php');
 
+#### Confirming Tasks Before Running
+
+If you would like to be prompted for confirmation before running a given task on your servers, you may use the `confirm` directive:
+
+	@task('deploy', ['on' => 'web', 'confirm' => true])
+		cd site
+		git pull origin {{ $branch }}
+		php artisan migrate
+	@endtask
+
 <a name="envoy-multiple-servers"></a>
-### Multiple Servers
+## Multiple Servers
 
 You may easily run a task across multiple servers. Simply list the servers in the task declaration:
 
@@ -181,7 +100,7 @@ You may easily run a task across multiple servers. Simply list the servers in th
 By default, the task will be executed on each server serially. Meaning, the task will finish running on the first server before proceeding to execute on the next server.
 
 <a name="envoy-parallel-execution"></a>
-### Parallel Execution
+## Parallel Execution
 
 If you would like to run a task across multiple servers in parallel, simply add the `parallel` option to your task declaration:
 
@@ -194,7 +113,7 @@ If you would like to run a task across multiple servers in parallel, simply add 
 	@endtask
 
 <a name="envoy-task-macros"></a>
-### Task Macros
+## Task Macros
 
 Macros allow you to define a set of tasks to be run in sequence using a single command. For instance:
 
@@ -219,7 +138,7 @@ The `deploy` macro can now be run via a single, simple command:
 
 <a name="envoy-notifications"></a>
 <a name="envoy-hipchat-notifications"></a>
-### Notifications
+## Notifications
 
 #### HipChat
 
@@ -248,16 +167,26 @@ This is an amazingly simple way to keep your team notified of the tasks being ru
 The following syntax may be used to send a notification to [Slack](https://slack.com):
 
 	@after
-		@slack('team', 'token', 'channel')
+		@slack('hook', 'channel', 'message')
 	@endafter
 
+You may retrieve your webhook URL by creating an `Incoming WebHooks` integration on Slack's website. The `hook` argument should be the entire webhook URL provided by the Incoming Webhooks Slack Integration. For example:
+
+	https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYYY/XXXXXXXXXXXXXXX
+
+You may provide one of the following for the channel argument:
+
+- To send the notification to a channel: `#channel`
+- To send the notification to a user: `@user`
+
+If no `channel` argument is provided the default channel will be used.
+
+> Note: Slack notifications will only be sent if all tasks complete successfully.
+
 <a name="envoy-updating-envoy"></a>
-### Updating Envoy
+## Updating Envoy
 
-To update Envoy, simply run the `self-update` command:
-
-	envoy self-update
-
-If your Envoy installation is in `/usr/local/bin`, you may need to use `sudo`:
+To update Envoy, simply use Composer:
 
 	composer global update
+
