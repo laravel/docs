@@ -7,6 +7,8 @@
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 - [Routing](#routing)
+- [Middleware](#middleware)
+- [Commands](#commands)
 
 <a name="introduction"></a>
 ## Introduction
@@ -152,3 +154,33 @@ To load a routes file for your package, simply `include` it from within your ser
 	}
 
 > **Note:** If your package is using controllers, you will need to make sure they are properly configured in your `composer.json` file's auto-load section.
+
+<a name="middleware"></a>
+## Middleware
+
+To define global or route based middleware from your package, simply define them within your service provider's `boot` method.
+
+	use Illuminate\Routing\Router;
+	use Illuminate\Contracts\Http\Kernel;
+
+	public function boot(Kernel $kernel, Router $router)
+	{
+		// Push your global middleware to the end of the stack
+		$kernel->pushMiddleware('App\Http\Middleware\OldMiddleware');
+
+		// Prepend your global middleware to the front of the stack
+		$kernel->prependMiddleware('App\Http\Middleware\OldMiddleware');
+
+		// Assign a short-hand key for route based middleware
+		$router->middleware('auth.admin', 'App\Http\Middleware\AuthenticateAdmin');
+	}
+
+<a name="commands"></a>
+## Commands
+
+To register your package's artisan commands, simply define them within your service provider's `register` method.
+
+	public function register()
+	{
+		$this->commands('App\Console\Commands\SendEmails');
+	}
