@@ -3,8 +3,8 @@
 - [Configuration](#configuration)
 - [Cache Usage](#cache-usage)
 	- [Obtaining A Cache Instance](#obtaining-a-cache-instance)
-	- [Storing Items In The Cache](#storing-items-in-the-cache)
 	- [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
+	- [Storing Items In The Cache](#storing-items-in-the-cache)
 	- [Removing Items From The Cache](#removing-items-from-the-cache)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
 
@@ -97,27 +97,6 @@ Using the `Cache` facade, you may access various cache stores via the `store` me
 
 	Cache::store('redis')->put('bar', 'baz', 10);
 
-<a name="storing-items-in-the-cache"></a>
-### Storing Items In The Cache
-
-You may use the `set` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
-
-	Cache::put('key', 'value', $minutes);
-
-Instead of passing the number of minutes until the item expires, you may also pass a PHP `DateTime` instance representing the expiration time of the cached item:
-
-	$expiresAt = Carbon::now()->addMinutes(10);
-
-	Cache::put('key', 'value', $expiresAt);
-
-The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
-
-	Cache::add('key', 'value', $minutes);
-
-The `forever` method may be used to store an item in the cache permanently. These values must be manually removed from the cache using the `forget` method:
-
-	Cache::forever('key', 'value');
-
 <a name="retrieving-items-from-the-cache"></a>
 ### Retrieving Items From The Cache
 
@@ -175,6 +154,27 @@ You may also combine the `remember` and `forever` methods:
 If you need to retrieve an item from the cache and then delete it, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
 
 	$value = Cache::pull('key');
+
+<a name="storing-items-in-the-cache"></a>
+### Storing Items In The Cache
+
+You may use the `set` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
+
+	Cache::put('key', 'value', $minutes);
+
+Instead of passing the number of minutes until the item expires, you may also pass a PHP `DateTime` instance representing the expiration time of the cached item:
+
+	$expiresAt = Carbon::now()->addMinutes(10);
+
+	Cache::put('key', 'value', $expiresAt);
+
+The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
+
+	Cache::add('key', 'value', $minutes);
+
+The `forever` method may be used to store an item in the cache permanently. These values must be manually removed from the cache using the `forget` method:
+
+	Cache::forever('key', 'value');
 
 <a name="removing-items-from-the-cache"></a>
 ### Removing Items From The Cache
