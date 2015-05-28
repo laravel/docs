@@ -37,11 +37,13 @@ You may also install Laravel by issuing the Composer `create-project` command in
 
 The Laravel framework has a few system requirements:
 
+<div class="content-list" markdown="1">
 - PHP >= 5.4
 - Mcrypt PHP Extension
 - OpenSSL PHP Extension
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
+</div>
 
 As of PHP 5.5, some OS distributions may require you to manually install the PHP JSON extension. When using Ubuntu, this can be done via `apt-get install php5-json`.
 
