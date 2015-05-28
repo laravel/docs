@@ -221,7 +221,7 @@ The generated class will be placed in the `app/Http/Requests` directory. Let's a
 	public function rules()
 	{
 		return [
-			'title' => 'required|unique|max:255',
+			'title' => 'required|unique:blog_posts|max:255',
 			'body' => 'required',
 		];
 	}
