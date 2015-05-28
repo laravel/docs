@@ -103,10 +103,10 @@ Alternatively you may register your global middleware from any service provider.
 
 	public function boot(Kernel $kernel)
 	{
-		// Push your global middleware to end of the stack
+		// Push your global middleware to the end of the stack
 		$kernel->pushMiddleware('App\Http\Middleware\OldMiddleware');
 
-		// Prepent your global middleware to the front of the stack
+		// Prepend your global middleware to the front of the stack
 		$kernel->prependMiddleware('App\Http\Middleware\OldMiddleware');
 	}
 

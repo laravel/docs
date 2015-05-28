@@ -165,7 +165,7 @@ To define global or route based middleware from your package, simply define them
 
 	public function boot(Kernel $kernel, Router $router)
 	{
-		// Push your global middleware to end of the stack
+		// Push your global middleware to the end of the stack
 		$kernel->pushMiddleware('App\Http\Middleware\OldMiddleware');
 
 		// Prepend your global middleware to the front of the stack
