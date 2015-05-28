@@ -138,7 +138,7 @@ Using the `emailOutputTo` method, you may e-mail the output to an e-mail address
 			 ->sendOutputTo($filePath)
 			 ->emailOutputTo('foo@example.com');
 
-> **Note:** The `emailOutputTo` and `sendOutputTo` methods are exclusive to `command` and are not supported for `call`.
+> **Note:** The `emailOutputTo` and `sendOutputTo` methods are exclusive to the `command` method and are not supported for `call`.
 
 <a name="post-task-hooks"></a>
 ## Post Task Hooks
