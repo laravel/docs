@@ -1,26 +1,30 @@
 # Database: Getting Started
 
-- [Configuration](#configuration)
+- [Introduction](#introduction)
 - [Running Raw SQL Queries](#running-queries)
+	- [Listening For Query Events](#listening-for-query-events)
 - [Database Transactions](#database-transactions)
 - [Using Multiple Database Connections](#accessing-connections)
 
-<a name="configuration"></a>
-## Configuration
+<a name="introduction"></a>
+## Introduction
 
-Laravel makes connecting with databases and running queries extremely simple. The database configuration for your application is located at `config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
-
-By default, Laravel's sample [environment configuration](/docs/{{version}}/configuration#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. Of course, you are free to modify this configuration as needed for your local database.
-
-Currently, Laravel supports four database systems:
+Laravel makes connecting with databases and running queries extremely simple across a variety of database back-ends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four database systems:
 
 - MySQL
 - Postgres
 - SQLite
 - SQL Server
 
+<a name="configuration"></a>
+### Configuration
+
+Laravel makes connecting with databases and running queries extremely simple. The database configuration for your application is located at `config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
+
+By default, Laravel's sample [environment configuration](/docs/{{version}}/configuration#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. Of course, you are free to modify this configuration as needed for your local database.
+
 <a name="read-write-connections"></a>
-### Read / Write Connections
+#### Read / Write Connections
 
 Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
 
@@ -75,7 +79,7 @@ To run a basic query, we can use the `select` method on the `DB` facade:
 		}
 	}
 
-The first argument passed to the `select` method is the raw SQL query, and the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
+The first argument passed to the `select` method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
 
 The `select` method will always return an `array` of results. Each result within the array will be a PHP `StdClass` object, allowing you to access the values of the results:
 
@@ -91,7 +95,7 @@ Instead of using `?` to represent your parameter bindings, you may execute a que
 
 #### Running An Insert Statement
 
-To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument, and any bindings as the second argument:
+To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument, and bindings as the second argument:
 
 	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
@@ -109,11 +113,12 @@ The `delete` method should be used to delete records from the database. Like `up
 
 #### Running A General Statement
 
-Some database statements should not return any value. For these types of operations, you may use the generic `statement` method on the `DB` facade:
+Some database statements should not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
 
 	DB::statement('drop table users');
 
-#### Listening For Query Events
+<a name="listening-for-query-events"></a>
+### Listening For Query Events
 
 If you would like to receive each SQL query executed by your application, you may use the `listen` method. This method is useful for logging queries or debugging. You may register your query listener in a [service provider](/docs/{{version}}/providers):
 
@@ -150,15 +155,13 @@ If you would like to receive each SQL query executed by your application, you ma
 <a name="database-transactions"></a>
 ## Database Transactions
 
-To run a set of operations within a database transaction, you may use the `transaction` method on the `DB` facade:
+To run a set of operations within a database transaction, you may use the `transaction` method on the `DB` facade. If an exception is thrown within the transaction `Closure`, the transaction will automatically be rolled back. If the `Closure` executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
 
 	DB::transaction(function () {
 		DB::table('users')->update(['votes' => 1]);
 
 		DB::table('posts')->delete();
 	});
-
-If an exception is thrown within the transaction `Closure`, the transaction will automatically be rolled back. If the `Closure` executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method.
 
 #### Manually Using Transactions
 
