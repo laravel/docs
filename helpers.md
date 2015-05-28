@@ -29,7 +29,6 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_divide](#method-array-divide)
 [array_dot](#method-array-dot)
 [array_except](#method-array-except)
-[array_fetch](#method-array-fetch)
 [array_first](#method-array-first)
 [array_flatten](#method-array-flatten)
 [array_forget](#method-array-forget)
@@ -153,20 +152,6 @@ The `array_except` method removes the given key / value pairs from the array:
 
 	// ['name' => 'Desk']
 
-<a name="method-array-fetch"></a>
-#### `array_fetch()` {#collection-method}
-
-The `array_fetch` method returns a flattened array containing the values of the specified nested element:
-
-	$array = [
-		['developer' => ['name' => 'Taylor']],
-		['developer' => ['name' => 'Abigail']]
-	];
-
-	$array = array_fetch($array, 'developer.name');
-
-	// ['Taylor', 'Abigail'];
-
 <a name="method-array-first"></a>
 #### `array_first()` {#collection-method}
 
@@ -237,11 +222,14 @@ The `array_only` method will return only the specified key / value pairs from th
 
 The `array_pluck` method will pluck a list of the given key / value pairs from the array:
 
-	$array = [['name' => 'Desk'], ['name' => 'Chair']];
+	$array = [
+		['developer' => ['name' => 'Taylor']],
+		['developer' => ['name' => 'Abigail']]
+	];
 
-	$array = array_pluck($array, 'name');
+	$array = array_pluck($array, 'developer.name');
 
-	// ['Desk', 'Chair'];
+	// ['Taylor', 'Abigail'];
 
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
