@@ -2,20 +2,21 @@
 
 - [Introduction](#introduction)
 - [Defining Schedules](#defining-schedules)
-- [Preventing Task Overlaps](#preventing-task-overlaps)
+	- [Schedule Frequency Options](#schedule-frequency-options)
+	- [Preventing Task Overlaps](#preventing-task-overlaps)
 - [Task Output](#task-output)
 - [Post Task Hooks](#post-task-hooks)
 
 <a name="introduction"></a>
 ## Introduction
 
-In the past, developers have generated a Cron entry for each task they needed to schedule. However, this is a headache. Your task schedule is no longer in source control, and you must SSH into your server to add the Cron entries. Let's make our lives easier. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
+In the past, developers have generated a Cron entry for each task they need to schedule. However, this is a headache. Your task schedule is no longer in source control, and you must SSH into your server to add the Cron entries. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
 
-Your task schedule is stored in the `app/Console/Kernel.php` file. Within this file you will see a `schedule` method. To help you get started, a simple example is included with the method. You are free to add as many scheduled tasks as you wish to the `Schedule` object.
+Your task schedule is defined in the `app/Console/Kernel.php` file's `schedule` method. To help you get started, a simple example is included with the method. You are free to add as many scheduled tasks as you wish to the `Schedule` object.
 
 ### Starting The Scheduler
 
-The only Cron entry you need to add to your server is this:
+Here is the only Cron entry you need to add to your server:
 
 	* * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
 
@@ -65,13 +66,15 @@ The `exec` command may be used to issue a command to the operating system:
 
     $schedule->exec('node /home/forge/script.js')->daily();
 
-### Available Schedule Methods
+<a name="schedule-frequency-options"></a>
+### Schedule Frequency Options
 
 Of course, there are a variety of schedules you may assign to your task:
 
 Method  | Description
 ------------- | -------------
 `->cron('* * * * *');`  |  Run the task on a custom Cron schedule
+`->everyMinute();`  |  Run the task every minute
 `->everyFiveMinutes();`  |  Run the task every five minutes
 `->everyTenMinutes();`  |  Run the task every ten minutes
 `->everyThirtyMinutes();`  |  Run the task every thirty minutes
@@ -82,7 +85,7 @@ Method  | Description
 `->weekly();`  |  Run the task every week
 `->monthly();`  |  Run the task every month
 
-These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. Some of these methods may be combined with other methods. For example, to schedule a command to run weekly on Monday:
+These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, to schedule a command to run weekly on Monday:
 
 	$schedule->call(function () {
 		// Runs once a week on Monday at 13:00...
@@ -104,14 +107,14 @@ Method  | Description
 
 #### Truth Test Constraints
 
-The `when` method may be used to limit the execution of a task to a value of a given truth test. In other words, if the given `Closure` return `true` the task will execute as long as no other constraining conditions prevent the task from running:
+The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given `Closure` return `true`, the task will execute as long as no other constraining conditions prevent the task from running:
 
 	$schedule->command('emails:send')->daily()->when(function () {
 		return true;
 	});
 
 <a name="preventing-task-overlaps"></a>
-## Preventing Task Overlaps
+### Preventing Task Overlaps
 
 By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use the `withoutOverlapping` method:
 
@@ -128,7 +131,7 @@ The Laravel scheduler provides several convenient methods for working with the o
 			 ->daily()
 			 ->sendOutputTo($filePath);
 
-Using the `emailOutputTo` method, you may e-mail the output to an e-mail address of your choice. Note that the output must first be sent to a file using the `sendOutputTo` method:
+Using the `emailOutputTo` method, you may e-mail the output to an e-mail address of your choice. Note that the output must first be sent to a file using the `sendOutputTo` method. Also, before e-mailing the output of a task, you should configure Laravel's [e-mail services](/docs/{{version}}/mail):
 
 	$schedule->command('foo')
 			 ->daily()
