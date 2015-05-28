@@ -16,11 +16,13 @@ The session configuration file is stored at `config/session.php`. Be sure to rev
 
 The session `driver` defines where session data will be stored for each request. Laravel ships with several great drivers out of the box:
 
-- `file` - sessions will be stored in `storage/framework/sessions`.
-- `cookie` - sessions will be stored in secure, encrypted cookies.
-- `database` - sessions will be stored in a database used by your application.
-- `memcached` / `redis` - sessions will be stored in one of these fast, cached based stores.
-- `array` - sessions will be stored in a simple PHP array and will not be persisted across requests.
+<div class="content-list" markdown="1">
+- `file` - sessions are stored in `storage/framework/sessions`.
+- `cookie` - sessions are stored in secure, encrypted cookies.
+- `database` - sessions are stored in a database used by your application.
+- `memcached` / `redis` - sessions are stored in one of these fast, cached based stores.
+- `array` - sessions are stored in a simple PHP array and will not be persisted across requests.
+</div>
 
 > **Note:** The array driver is typically used for running [tests](/docs/{{version}}/testing) to prevent session data from persisting.
 
