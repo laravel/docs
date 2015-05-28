@@ -281,6 +281,13 @@ Within this file, you will find a list of commands in the `commands` property. T
         'App\Console\Commands\SendEmails'
     ];
 
+Alternatively you may register your command from any service provider.  This should be done within the `register` method
+
+    public function register()
+    {
+        $this->commands('App\Console\Commands\SendEmails');
+    }
+
 <a name="calling-commands-via-code"></a>
 ## Calling Commands Via Code
 

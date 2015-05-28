@@ -97,6 +97,19 @@ However, this middleware would perform its task **after** the request is handled
 
 If you want a middleware to be run during every HTTP request to your application, simply list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
 
+Alternatively you may register your global middleware from any service provider.  This should be done within the `boot` method.
+
+	use Illuminate\Contracts\Http\Kernel;
+
+	public function boot(Kernel $kernel)
+	{
+		// Push your global middleware to end of the stack
+		$kernel->pushMiddleware('App\Http\Middleware\OldMiddleware');
+
+		// Prepent your global middleware to the front of the stack
+		$kernel->prependMiddleware('App\Http\Middleware\OldMiddleware');
+	}
+
 ### Assigning Middleware To Routes
 
 If you would like to assign middleware to specific routes, you should first assign the middleware a short-hand key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing. For example:
@@ -108,6 +121,15 @@ If you would like to assign middleware to specific routes, you should first assi
         'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
         'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
     ];
+
+Alternatively you may assign a short-hand key from any service provider.  This should be done within the `boot` method.
+
+	use Illuminate\Routing\Router;
+
+	public function boot(Router $router)
+	{
+		$router->middleware('auth.admin', 'App\Http\Middleware\AuthenticateAdmin');
+	}
 
 Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:
 
