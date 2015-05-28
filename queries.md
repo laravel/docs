@@ -2,8 +2,8 @@
 
 - [Introduction](#introduction)
 - [Retrieving Results](#retrieving-results)
-- [Selects](#selects)
 	- [Aggregates](#aggregates)
+- [Selects](#selects)
 - [Joins](#joins)
 - [Unions](#unions)
 - [Where Clauses](#where-clause)
