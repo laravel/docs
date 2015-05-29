@@ -2,15 +2,17 @@
 
 - [Basic Routing](#basic-routing)
 - [Route Parameters](#route-parameters)
+	- [Required Parameters](#required-parameters)
 	- [Optional Parameters](#parameters-optional-parameters)
 	- [Regular Expression Constraints](#parameters-regular-expression-constraints)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
-	- [Middleware](#route-group-middleware)
+	- [Middleware](#route-groups)
 	- [Namespaces](#route-group-namespaces)
 	- [Sub-Domain Routing](#route-group-sub-domain-routing)
 	- [Route Prefixes](#route-group-prefixes)
 - [CSRF Protection](#csrf-protection)
+	- [Introduction](#csrf-introduction)
 	- [Excluding URIs](#csrf-excluding-uris)
 	- [X-CSRF-Token](#csrf-x-csrf-token)
 	- [X-XSRF-Token](#csrf-x-xsrf-token)
@@ -60,6 +62,9 @@ You may generate URLs to your application's routes using the `url` helper:
 
 <a name="route-parameters"></a>
 ## Route Parameters
+
+<a name="required-parameters"></a>
+### Required Parameters
 
 Of course, sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
 
@@ -234,6 +239,9 @@ You may also use the `prefix` parameter to specify common parameters for your gr
 
 <a name="csrf-protection"></a>
 ## CSRF Protection
+
+<a name="csrf-introduction"></a>
+### Introduction
 
 Laravel makes it easy to protect your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
 
