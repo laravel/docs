@@ -115,7 +115,7 @@ Copy the new `.env.example` file to `.env`, which is the `5.0` equivalent of the
 
 Additionally, copy any custom values you had in your old `.env.php` file and place them in both `.env` (the real value for your local environment) and `.env.example` (a sample instructional value for other team members).
 
-For more information on environment configuration, view the [full documentation](/docs/{{version}}/configuration#environment-configuration).
+For more information on environment configuration, view the [full documentation](/docs/{{version}}/installation#environment-configuration).
 
 > **Note:** You will need to place the appropriate `.env` file and values on your production server before deploying your Laravel 5 application.
 
