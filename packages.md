@@ -31,7 +31,7 @@ To learn more about the structure and purpose of service providers, check out [t
 <a name="routing"></a>
 ## Routing
 
-To define routes for your package, simply `include` the routes file from within your package service provider's `boot` method. From within your routes file, you may use the `Route` facade to [register routes](/docs/{{version}}/routing) just as you would within a typical Laravel application:
+To define routes for your package, simply `require` the routes file from within your package service provider's `boot` method. From within your routes file, you may use the `Route` facade to [register routes](/docs/{{version}}/routing) just as you would within a typical Laravel application:
 
 	/**
 	 * Perform post-registration booting of services.
@@ -40,7 +40,9 @@ To define routes for your package, simply `include` the routes file from within 
 	 */
 	public function boot()
 	{
-		include __DIR__.'/../../routes.php';
+		if (! $this->app->routesAreCached()) {
+			require __DIR__.'/../../routes.php';
+		}
 	}
 
 <a name="resources"></a>
