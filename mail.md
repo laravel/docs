@@ -39,7 +39,7 @@ To use the Mandrill driver, first install Guzzle, then set the `driver` option i
 
 To use the Amazon SES driver, install the Amazon AWS SDK for PHP. You may install this library by adding the following line to your `composer.json` file's `require` section:
 
-	"aws/aws-sdk-php": "~2.4"
+	"aws/aws-sdk-php": "~3.0"
 
 Next, set the `driver` option in your `config/mail.php` configuration file to `ses`. Then, verify that your `config/services.php` configuration file contains the following options:
 
