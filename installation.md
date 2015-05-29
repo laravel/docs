@@ -3,10 +3,10 @@
 - [Installation](#installation)
 - [Configuration](#configuration)
 	- [Basic Configuration](#basic-configuration)
-	- [Naming Your Application](#naming-your-application)
 	- [Environment Configuration](#environment-configuration)
 	- [Configuration Caching](#configuration-caching)
 	- [Accessing Configuration Values](#accessing-configuration-values)
+	- [Naming Your Application](#naming-your-application)
 - [Maintenance Mode](#maintenance-mode)
 
 <a name="installation"></a>
@@ -101,17 +101,6 @@ On Nginx, the following directive in your site configuration will allow "pretty"
 
 Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
 
-<a name="naming-your-installation"></a>
-### Naming Your Application
-
-After installing Laravel, you may wish to "name" your application. By default, the `app` directory is namespaced under `App`, and autoloaded by Composer using the [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). However, you may change the namespace to match the name of your application, which you can easily do via the `app:name` Artisan command.
-
-For example, if your application is named "Horsefly", you could run the following command from the root of your installation:
-
-	php artisan app:name Horsefly
-
-Renaming your application is entirely optional, and you are free to keep the `App` namespace if you wish.
-
 <a name="environment-configuration"></a>
 ### Environment Configuration
 
@@ -162,6 +151,17 @@ You may easily access your configuration values using the global `config` helper
 To set configuration values at runtime, pass an array to the `config` helper:
 
 	config(['app.timezone' => 'America/Chicago']);
+
+<a name="naming-your-installation"></a>
+### Naming Your Application
+
+After installing Laravel, you may wish to "name" your application. By default, the `app` directory is namespaced under `App`, and autoloaded by Composer using the [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). However, you may change the namespace to match the name of your application, which you can easily do via the `app:name` Artisan command.
+
+For example, if your application is named "Horsefly", you could run the following command from the root of your installation:
+
+	php artisan app:name Horsefly
+
+Renaming your application is entirely optional, and you are free to keep the `App` namespace if you wish.
 
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
