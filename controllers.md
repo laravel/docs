@@ -4,7 +4,6 @@
 - [Basic Controllers](#basic-controllers)
 - [Controller Middleware](#controller-middleware)
 - [RESTful Resource Controllers](#restful-resource-controllers)
-	- [Writing RESTful Controllers](#writing-restful-controllers)
 	- [Partial Resource Routes](#restful-partial-resource-routes)
 	- [Naming Resource Routes](#restful-naming-resource-routes)
 	- [Nested Resources](#restful-nested-resources)
@@ -95,9 +94,6 @@ However, it is more convenient to specify middleware within your controller's co
 
 <a name="restful-resource-controllers"></a>
 ## RESTful Resource Controllers
-
-<a name="writing-restful-controllers"></a>
-### Writing RESTful Controllers
 
 Resource controllers make it painless to build RESTful controllers around resources. For example, you may wish to create a controller that handles HTTP requests regarding "photos" stored by your application. Using the `make:controller` Artisan command, we can quickly create such a controller:
 
