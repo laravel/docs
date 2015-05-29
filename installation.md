@@ -2,6 +2,7 @@
 
 - [Installation](#installation)
 - [Configuration](#configuration)
+	- [Basic Configuration](#basic-configuration)
 	- [Naming Your Application](#naming-your-application)
 	- [Environment Configuration](#environment-configuration)
 	- [Configuration Caching](#configuration-caching)
@@ -48,6 +49,9 @@ You may also install Laravel by issuing the Composer `create-project` command in
 
 <a name="configuration"></a>
 ## Configuration
+
+<a name="basic-configuration"></a>
+### Basic Configuration
 
 All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
 
