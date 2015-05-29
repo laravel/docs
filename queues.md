@@ -40,7 +40,7 @@ In order to use the `database` queue driver, you will need a database table to h
 
 The following dependencies are needed for the listed queue drivers:
 
-- Amazon SQS: `aws/aws-sdk-php ~2.4`
+- Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~3.0`
 - IronMQ: `iron-io/iron_mq ~2.0`
 - Redis: `predis/predis ~1.0`
