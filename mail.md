@@ -211,6 +211,6 @@ If you wish to specify a specific queue on which to push the message, you may do
 
 When developing an application that sends e-mail, you probably don't want to actually send e-mails to live e-mail addresses. Laravel provides several ways to "disable" the actual sending of e-mail messages.
 
-One solution is to use the `log` mail driver during local development. This driver will write all e-mail messages to your log files for inspection. For more information on configuring your application per environment, check out the [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+One solution is to use the `log` mail driver during local development. This driver will write all e-mail messages to your log files for inspection. For more information on configuring your application per environment, check out the [configuration documentation](/docs/{{version}}/installation#environment-configuration).
 
 Alternatively, you may use a service like [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your e-mail messages to a "dummy" mailbox where you may view them in a true e-mail client. This approach has the benefit of allowing you to actually inspect the final e-mails in Mailtrap's message viewer.

@@ -4,7 +4,6 @@
     - [Contribution Guide](/docs/{{version}}/contributions)
 - Setup
     - [Installation](/docs/{{version}}/installation)
-    - [Configuration](/docs/{{version}}/configuration)
     - [Homestead](/docs/{{version}}/homestead)
 - The Basics
     - [Quickstart](/docs/{{version}}/quickstart)
