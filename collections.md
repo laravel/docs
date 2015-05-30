@@ -723,7 +723,7 @@ The `reverse` method reverses the order of the collection's items:
 	// [5, 4, 3, 2, 1]
 
 <a name="method-search"></a>
-#### `search()`
+#### `search()` {#collection-method}
 
 The `search` method searches the collection for the given value and returns its key if found. If the item is not found, `false` is returned.
 
