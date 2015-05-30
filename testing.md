@@ -87,7 +87,7 @@ Now, let's write a test that clicks the link and asserts the user lands on the c
     {
         $this->visit('/')
              ->click('About Us')
-             ->seePageIs('/about-us');
+             ->onPage('/about-us');
     }
 
 #### Working With Forms
@@ -118,7 +118,7 @@ We can write a test to complete this form and inspect the result:
              ->type('Taylor', 'name')
              ->check('terms')
              ->press('Register');
-             ->seePageIs('/dashboard');
+             ->onPage('/dashboard');
     }
 
 Of course, if your form contains other inputs such as radio buttons or drop-down boxes, you may easily fill out those types of fields as well. Here is a list of each form manipulation method:
