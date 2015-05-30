@@ -32,7 +32,7 @@ When using the `local` driver, note that all file operations are relative to the
 
 Before using the S3 or Rackspace drivers, you will need to install the appropriate package via Composer:
 
-- Amazon S3: `league/flysystem-aws-s3-v2 ~1.0`
+- Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 - Rackspace: `league/flysystem-rackspace ~1.0`
 
 <a name="basic-usage"></a>
