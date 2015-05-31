@@ -308,7 +308,7 @@ One option is to rollback the database after each test and migrate it before the
 
 	class ExampleTest extends TestCase
 	{
-		use Migrations;
+		use DatabaseMigrations;
 
 	    /**
 	     * A basic functional test example.
