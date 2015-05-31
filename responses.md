@@ -82,7 +82,7 @@ The `json` method will automatically set the `Content-Type` header to `applicati
 
 	return response()->json(['name' => 'Abigail', 'state' => 'CA']);
 
-If you would like to create a JSONP response, you may use the `jsonp` method in addition to `setCallback`:
+If you would like to create a JSONP response, you may use the `json` method in addition to `setCallback`:
 
 	return response()->json(['name' => 'Abigail', 'state' => 'CA'])
 	                 ->setCallback($request->input('callback'));
