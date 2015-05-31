@@ -303,7 +303,7 @@ One option is to rollback the database after each test and migrate it before the
 	<?php
 
 	use Illuminate\Foundation\Testing\WithoutMiddleware;
-	use Illuminate\Foundation\Testing\DatabaseMigrations;
+	use Illuminate\Foundation\Testing\Migrations;
 	use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 	class ExampleTest extends TestCase
