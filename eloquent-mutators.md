@@ -119,7 +119,7 @@ For example, let's cast the `is_admin` attribute, which is stored in our databas
 
 	use Illuminate\Database\Eloquent\Model;
 
-	class User
+	class User extends Model
 	{
 		/**
 		 * The attributes that should be casted to native types.
@@ -147,7 +147,7 @@ The `array` cast type is particularly useful when working with columns that are 
 
 	use Illuminate\Database\Eloquent\Model;
 
-	class User
+	class User extends Model
 	{
 		/**
 		 * The attributes that should be casted to native types.
