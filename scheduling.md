@@ -159,6 +159,6 @@ Using the `thenPing` method, the scheduler can automatically ping a given URL wh
 			 ->daily()
 			 ->thenPing($url);
 
-Using the `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle 5 to your project by adding the following line to your `composer.json` file:
+Using the `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project by adding the following line to your `composer.json` file:
 
-	"guzzlehttp/guzzle": "~5.0"
+	"guzzlehttp/guzzle": "~5.3|~6.0"
