@@ -289,7 +289,7 @@ You may consume events broadcast using the [Pusher](https://pusher.com) driver u
 
 	this.pusherChannel = this.pusher.subscribe('user.' + USER_ID);
 
-	this.pusherChannel.bind('App\Events\ServerCreated', function(message) {
+	this.pusherChannel.bind('App\\Events\\ServerCreated', function(message) {
 		console.log(message.user);
 	});
 
