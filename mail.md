@@ -61,6 +61,7 @@ The send a message, use the `send` method on the `Mail` [facade](/docs/{{version
 	use Mail;
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
+	use App\User;
 
 	class UserController extends Controller
 	{
