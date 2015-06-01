@@ -81,6 +81,10 @@ The `lists` method now returns a `Collection` instance. If you would like to con
 
 	$collection->lists('id')->all();
 
+### Amazon SDK
+
+If you are using the Amazon SQS queue driver or the Amazon SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
+
 <a name="upgrade-5.0.16"></a>
 ## Upgrading To 5.0.16
 
