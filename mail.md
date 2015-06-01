@@ -59,9 +59,9 @@ The send a message, use the `send` method on the `Mail` [facade](/docs/{{version
 	<?php namespace App\Http\Controllers;
 
 	use Mail;
+	use App\User;
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
-	use App\User;
 
 	class UserController extends Controller
 	{
