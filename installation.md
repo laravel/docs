@@ -152,7 +152,7 @@ To set configuration values at runtime, pass an array to the `config` helper:
 
 	config(['app.timezone' => 'America/Chicago']);
 
-<a name="naming-your-installation"></a>
+<a name="naming-your-application"></a>
 ### Naming Your Application
 
 After installing Laravel, you may wish to "name" your application. By default, the `app` directory is namespaced under `App`, and autoloaded by Composer using the [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). However, you may change the namespace to match the name of your application, which you can easily do via the `app:name` Artisan command.
