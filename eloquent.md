@@ -232,7 +232,7 @@ To create a new record in the database, simply create a new model instance, set 
 		{
 			// Validate the request...
 
-			$flight = new App\Flight;
+			$flight = new Flight;
 
 			$flight->name = $request->name;
 
