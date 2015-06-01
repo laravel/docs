@@ -211,7 +211,7 @@ Command  | Description
 `$table->time('sunrise');`  |  TIME equivalent for the database.
 `$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
-`$table->timestamps();`  |  Adds `created\_at` and `updated\_at` columns.
+`$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
 
 #### Column Modifiers
 
