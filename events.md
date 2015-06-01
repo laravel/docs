@@ -6,6 +6,11 @@
 - [Defining Listeners](#defining-listeners)
 	- [Queued Event Listeners](#queued-event-listeners)
 - [Firing Events](#firing-events)
+- [Broadcasting Events](#broadcasting-events)
+	- [Configuration](#broadcast-configuration)
+	- [Marking Events For Broadcast](#marking-events-for-broadcast)
+	- [Broadcast Data](#broadcast-data)
+	- [Consuming Event Broadcasts](#consuming-event-broadcasts)
 - [Event Subscribers](#event-subscribers)
 
 <a name="introduction"></a>
@@ -190,6 +195,99 @@ To fire an event, you may use the `Event` [facade](/docs/{{version}}/facades), p
 Alternatively, you may use the global `event` helper function to fire events:
 
 	event(new PodcastWasPurchased($podcast));
+
+<a name="broadcasting-events"></a>
+## Broadcasting Events
+
+In many modern web applications, web sockets are used to implement real-time, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a websocket connection to be handled by the client.
+
+To assist you in building these types of applications, Laravel makes it easy to "broadcast" your events over a websocket connection. Broadcasting your Laravel events allow you to share the same event names between your server-side code and your client-side JavaScript framework.
+
+<a name="broadcast-configuration"></a>
+### Configuration
+
+All of the event broadcasting configuration options are stored in the `config/broadcasting.php` configuration file. Laravel supports several broadcast drivers out of the box: [Pusher](https://pusher.com), [Redis](/docs/{{version}}/redis), and a `log` driver for local development and debugging. A configuration example is included for each of these drivers.
+
+<a name="marking-events-for-broadcast"></a>
+### Marking Events For Broadcast
+
+To inform Laravel that a given event should be broadcast, implement the `Illuminate\Contracts\Broadcasting\ShouldBroadcast` interface on the event class. The `ShouldBroadcast` interface requires you to implement a single method: `broadcastOn`. The `broadcastOn` method should return an array of "channel" names that the event should be broadcast on.
+
+	<?php namespace App\Events;
+
+	use App\User;
+	use App\Events\Event;
+	use Illuminate\Queue\SerializesModels;
+	use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+	class ServerCreated extends Event implements ShouldBroadcast
+	{
+	    use SerializesModels;
+
+	    public $user;
+
+	    /**
+	     * Create a new event instance.
+	     *
+	     * @return void
+	     */
+	    public function __construct(User $user)
+	    {
+	        $this->user = $user;
+	    }
+
+	    /**
+	     * Get the channels the event should be broadcast on.
+	     *
+	     * @return array
+	     */
+	    public function broadcastOn()
+	    {
+	        return ['user.'.$this->user->id];
+	    }
+	}
+
+Once the event has been [fired](#firing-events), a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
+
+<a name="broadcast-data"></a>
+### Broadcast Data
+
+When an event is broadcast, all of its `public` properties are automatially serialized and broadcast as the event's payload, allowing you to access any of its public data from your JavaScript application. So, for example, if your event has a single public `$user` property that contains an Eloquent model, the broadcast payload would be:
+
+	{
+		"user": {
+			"id": 1,
+			"name": "Jonathan Banks"
+			...
+		}
+	}
+
+However, if you wish to have even more fine-grained control over your broadcast payload, you may add a `broadcastWith` method to your event. This method should return the array of data that you wish to broadcast with the event:
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return ['user' => $this->user->id];
+    }
+
+<a name="consuming-event-broadcasts"></a>
+### Consuming Event Broadcasts
+
+#### Pusher
+
+You may consume events broadcast using the [Pusher](https://pusher.com) driver using Pusher's JavaScript SDK. For example, let's consume the `App\Events\ServerCreated` event from our previous examples:
+
+	this.pusher = new Pusher('pusher-key');
+
+	this.pusherChannel = this.pusher.subscribe('user.' + USER_ID);
+
+	this.pusherChannel.bind('App\Events\ServerCreated', function(message) {
+		console.log(message.user);
+	});
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
