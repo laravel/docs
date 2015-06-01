@@ -7,7 +7,7 @@
 	- [Regular Expression Constraints](#parameters-regular-expression-constraints)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
-	- [Middleware](#route-groups)
+	- [Middleware](#route-group-middleware)
 	- [Namespaces](#route-group-namespaces)
 	- [Sub-Domain Routing](#route-group-sub-domain-routing)
 	- [Route Prefixes](#route-group-prefixes)
