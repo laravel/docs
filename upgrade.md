@@ -81,6 +81,10 @@ The `lists` method now returns a `Collection` instance. If you would like to con
 
 	$collection->lists('id')->all();
 
+#### Path generation changes
+
+If you are running Laravel under a Windows server this may affect you. Path generation now uses `DIRECTORY_SEPARATOR` instead of a hard-coded forward slash. This means under Windows the directory paths use a consistent separator. If you were relying upon a forward slash in the generated path, this change needs to be accounted for when upgrading.
+
 <a name="upgrade-5.0.16"></a>
 ## Upgrading To 5.0.16
 
