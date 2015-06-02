@@ -303,11 +303,11 @@ The `head` function simply returns the first element in the given array:
 <a name="method-last"></a>
 #### `last()` {#collection-method}
 
-The `last` function returns the first element in the given array:
+The `last` function returns the last element in the given array:
 
 	$array = [100, 200, 300];
 
-	$last = head($array);
+	$last = last($array);
 
 	// 300
 
