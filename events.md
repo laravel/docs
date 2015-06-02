@@ -256,7 +256,7 @@ Once the event has been [fired](#firing-events), a [queued job](/docs/{{version}
 <a name="broadcast-data"></a>
 ### Broadcast Data
 
-When an event is broadcast, all of its `public` properties are automatially serialized and broadcast as the event's payload, allowing you to access any of its public data from your JavaScript application. So, for example, if your event has a single public `$user` property that contains an Eloquent model, the broadcast payload would be:
+When an event is broadcast, all of its `public` properties are automatically serialized and broadcast as the event's payload, allowing you to access any of its public data from your JavaScript application. So, for example, if your event has a single public `$user` property that contains an Eloquent model, the broadcast payload would be:
 
 	{
 		"user": {
