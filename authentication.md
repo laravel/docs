@@ -446,7 +446,15 @@ To get started with Socialite, add to your `composer.json` file as a dependency:
 
 ### Configuration
 
-After installing the Socialite library, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
+After installing the Socialite library, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file:
+
+    'providers' => [
+        // Other service providers...
+
+        'Laravel\Socialite\SocialiteServiceProvider',
+    ],
+
+Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
 
     'Socialite' => 'Laravel\Socialite\Facades\Socialite',
 
