@@ -52,7 +52,6 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [database_path](#method-database-path)
 [public_path](#method-public-path)
 [storage_path](#method-storage-path)
-[storage_path](#method-storage-path)
 </div>
 
 ### Strings
