@@ -117,7 +117,7 @@ We can write a test to complete this form and inspect the result:
         $this->visit('/register')
              ->type('Taylor', 'name')
              ->check('terms')
-             ->press('Register');
+             ->press('Register')
              ->seePageIs('/dashboard');
     }
 

@@ -52,7 +52,6 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [database_path](#method-database-path)
 [public_path](#method-public-path)
 [storage_path](#method-storage-path)
-[storage_path](#method-storage-path)
 </div>
 
 ### Strings
@@ -303,11 +302,11 @@ The `head` function simply returns the first element in the given array:
 <a name="method-last"></a>
 #### `last()` {#collection-method}
 
-The `last` function returns the first element in the given array:
+The `last` function returns the last element in the given array:
 
 	$array = [100, 200, 300];
 
-	$last = head($array);
+	$last = last($array);
 
 	// 300
 
