@@ -307,7 +307,7 @@ The `forget` method removes an item from the collection by its key:
 
 	$collection->all();
 
-	// ['laravel' => 'framework']
+	// [framework' => 'laravel']
 
 > **Note:** Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
 
