@@ -1,25 +1,26 @@
 # Cache
 
-- [Configuration](#configuration)
-- [Cache Usage](#cache-usage)
-	- [Obtaining A Cache Instance](#obtaining-a-cache-instance)
-	- [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
-	- [Storing Items In The Cache](#storing-items-in-the-cache)
-	- [Removing Items From The Cache](#removing-items-from-the-cache)
-- [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
+- [Configuração](#configuration)
+- [Uso do Cache](#cache-usage)
+	- [Obtendo uma Instância do Cache](#obtaining-a-cache-instance)
+	- [Recuperando Itens do Cache](#retrieving-items-from-the-cache)
+	- [Armazenando Itens no Cache](#storing-items-in-the-cache)
+	- [Removendo Itens do Cache](#removing-items-from-the-cache)
+- [Adicionando Drivers Customizados](#adding-custom-cache-drivers)
 
 <a name="configuration"></a>
-## Configuration
+## Configuração
 
-Laravel provides a unified API for various caching systems. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](http://memcached.org) and [Redis](http://redis.io) out of the box.
 
-The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC. You may even configure multiple cache configurations for the same driver.
+O Laravel fornece uma API unificada para vários sistemas de cache. A configuração do cache do laravel fica em `config/cache.php`. Neste arquivo você pode especificar o driver que você gostaria de usar por padrão em toda a sua aplicação. O Laravel suporta ferramentas como [Memcached](http://memcached.org) e [Redis](http://redis.io) de uma maneira massa.
 
-### Cache Prerequisites
+O arquivo de configuração do cache também contém várias outras opções que são documentadas dentro do arquivo, sendo assim, certifique-se de ler estas opções. Por padrão, o Laravel é configurado para usar o drive `file`, que armazena objetos serializados no sistema de arquivos. Para grandes aplicações, recomenda-se que você utilize um in-memory cache como Memcached ou APC. Você pode ter várias configurações de cache para o mesmo driver.
 
-#### Database
+### Pré-requisitos do Cache
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+#### Banco de dados
+
+Quando estiver usando o drive `database`, você precisará criar uma tabela para os itens do cachê. Aqui temos um exemplo de `Schema` para a tabela:
 
 	Schema::create('cache', function($table) {
 		$table->string('key')->unique();
@@ -29,9 +30,9 @@ When using the `database` cache driver, you will need to setup a table to contai
 
 #### Memcached
 
-Using the Memcached cache requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.
+Usar o cache do Memcached requer a instalação do [pacote Memcached PECL](http://pecl.php.net/package/memcached)
 
-The default [configuration](#configuration) uses TCP/IP based on [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php):
+A [configuração](#configuration) padrão usa [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php) baseado em TCP/IP:
 
 	'memcached' => [
 		[
@@ -41,7 +42,7 @@ The default [configuration](#configuration) uses TCP/IP based on [Memcached::add
 		],
 	],
 
-You may also set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
+Você pode também setar a opção `host` para um caminho de socket UNIX. Se você fizer isto, a opção `port` deverá ser setada como `0`:
 
 	'memcached' => [
 		[
@@ -53,21 +54,21 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
 
 #### Redis
 
-Before using a Redis cache with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+Para usar um cache de Redis no Laravel, você precisa instalar o pacote `predis/predis` (~1.0) via Composer.
 
-For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
+Para mais informações sobre como configurar o Redis, consulte esta [Página da Documentação do Laravel](/docs/{{version}}/redis#configuration).
 
 <a name="cache-usage"></a>
-## Cache Usage
+## Uso do Cache
 
 <a name="obtaining-a-cache-instance"></a>
-### Obtaining A Cache Instance
+### Obtendo uma instância do Cache
 
-The `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
+As [Contracts](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Factory` e `Illuminate\Contracts\Cache\Repository` fornecem acesso para os serviços de cache do Laravel. A contract `Factory` fornecem acesso para todos o sdrivers de cache definidos por sua aplicação. A contract `Repository` é tipicamente uma implementação do drive de cache padrão para sua aplicação especificado pelo seu arquivo de configuração de `cache`.
 
-However, you may also use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts.
+Por outro lado, você também pode usar a facade `Cache`, que é o que vamos utilizar em toda esta documentação. A facade `Cache` fornece convenientemente acesso elegante para as implementações subjacentes dos contratos de cache Laravel
 
-For example, let's import the `Cache` facade into a controller:
+Por exemplo, vamos importar a facade `Cache` dentro de um controller:
 
 	<?php namespace App\Http\Controllers;
 
@@ -89,41 +90,40 @@ For example, let's import the `Cache` facade into a controller:
 		}
 	}
 
-#### Accessing Multiple Cache Stores
+#### Acessando Múltiplos Caches Armazenados
 
-Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
+Usando a facade `Cache`, você pode acessar vários caches armazenados através do método `store`. A variável passada para o método `store` deve corresponder a um dos itens do array de configuração `store` que fica no seu arquivo de configuração do `cache`:
 
 	$value = Cache::store('file')->get('foo');
 
 	Cache::store('redis')->put('bar', 'baz', 10);
 
 <a name="retrieving-items-from-the-cache"></a>
-### Retrieving Items From The Cache
+### Recuperando Itens do Cache
 
-The `get` method on the `Cache` facade is used to retrieve items from the cache. If the item does not exist in the cache, `null` will be returned. If you wish, you may pass a second argument to the `get` method specifying the custom default value you wish to be returned if the item doesn't exist:
+O método `get` da facade `Cache` é usado para recuperar itens do cache. Se o item não existir no cache, `null` será retornado. Se você preferir, você pode passar um segundo argumento para o método `get`, especificando o valor padrão que você quiser que seja retornado caso o item não exista:
 
 	$value = Cache::get('key');
 
 	$value = Cache::get('key', 'default');
 
-
-You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
+Você pode passar uma `Closure` como um valor padrão também. O resultado da `Closure` será retornado se o item especificado não existir no cache. Passando uma Closure você pode diferenciar a recuperação de valores padrão de um banco de dados ou outro serviço externo:
 
 	$value = Cache::get('key', function() {
 		return DB::table(...)->get();
 	});
 
-#### Checking For Item Existence
+#### Verificando a Existência de um Item
 
-The `has` method may be used to determine if an item exists in the cache:
+O método `has` pode ser usado para determinar se um item existe no cache:
 
 	if (Cache::has('key')) {
 		//
 	}
 
-#### Incrementing / Decrementing Values
+#### Incremetando / Desincrementando Valores
 
-The `increment` and `decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods optionally accept a second argument indicating the amount by which to increment or decrement the item's value:
+Os métodos `increment` e `decrement` podem ser usados para ajustar o valor dos itens numéricos inteiros do cache. Ambos os métodos opcionalmente aceitam um segundo argumento indicando o número que você deve incrementar ou desincrementar.
 
 	Cache::increment('key');
 
@@ -133,62 +133,62 @@ The `increment` and `decrement` methods may be used to adjust the value of integ
 
 	Cache::decrement('key', $amount);
 
-#### Retrieve Or Update
+#### Recuperar ou Atualizar
 
-Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
+Algumas vezes você pode querer recuperar um item do cache, mas também gravar um valor padrão se o item pedido não existir. Por exemplo, você quer recuperar todos os usuários do cache ou, se se eles não existirem, recuperar do banco de dados e adicionar no cache. Você pode fazer isto usando o método `Cache::remember`:
 
 	$value = Cache::remember('users', $minutes, function() {
 		return DB::table('users')->get();
 	});
 
-If the item does not exist in the cache, the `Closure` passed to the `remember` method will be executed and its result will be placed in the cache.
+Se o item não existir no cache, a `Closure` passada para o método `remember` será executada e seu resultado serar colocado no cache.
 
-You may also combine the `remember` and `forever` methods:
+Você pode também combinar os métodos `remembeŕ` e `forever`:
 
 	$value = Cache::rememberForever('users', function() {
 		return DB::table('users')->get();
 	});
 
-#### Retrieve And Delete
+#### Recuperando e Deletando
 
-If you need to retrieve an item from the cache and then delete it, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
+Se você precisar recuperar um item do cache e posteriormente deletá-lo, você pode usar o método `pull`. Assim como o método `get`, `null` será retornado se o item não existir no cache:
 
 	$value = Cache::pull('key');
 
 <a name="storing-items-in-the-cache"></a>
-### Storing Items In The Cache
+### Gravando Itens no Cache
 
-You may use the `set` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
+Você pode usar o método `set` na facade `Cache` para armazenar itens no cache. Quando você coloca um item no cache, você precisa especificar o número de minutos que o valor ficará cacheado:
 
 	Cache::put('key', 'value', $minutes);
 
-Instead of passing the number of minutes until the item expires, you may also pass a PHP `DateTime` instance representing the expiration time of the cached item:
+Em vez de passar o número de minutos de expiração do item, você também pode passar uma instancia da classe `DateTime` do PHP representando o tempo de expiração do item cacheado:
 
 	$expiresAt = Carbon::now()->addMinutes(10);
 
 	Cache::put('key', 'value', $expiresAt);
 
-The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
+O método `add` somente adicionará o item para o cache se ele ainda não existir no cache. O método retornará `true` se o item for armazenado com sucesso. Do contrário, o método retornará `false`:
 
 	Cache::add('key', 'value', $minutes);
 
-The `forever` method may be used to store an item in the cache permanently. These values must be manually removed from the cache using the `forget` method:
+O método `forever` pode ser usado para armazenar um item no cache permanentemente. Estes valores deve ser manualmente removidos do cache utilizando o método `forget`:
 
 	Cache::forever('key', 'value');
 
 <a name="removing-items-from-the-cache"></a>
-### Removing Items From The Cache
+### Removendo Items do Cache
 
-You may remove items from the cache using the `forget` method on the `Cache` facade:
+Você pode remover itens do cache usando o método `forget` na facade `Cache`
 
 	Cache::forget('key');
 
 <a name="adding-custom-cache-drivers"></a>
-## Adding Custom Cache Drivers
+## Adicionando um Driver de Cache Customizado
 
-To extend the Laravel cache with a custom driver, we will use the `extend` method on the `Cache` facade, which is used to bind a custom driver resolver to the manager. Typically, this is done within a [service provider](/docs/{{version}}/providers).
+Para extender o cache do Laravel com um driver customizado, nós usaremos o método `extend` da facade `Cache`, que é usado para vincular um driver resolver customizado para o gerenciador. Normalmente, isto é feito com um [service provider](/docs/{{version}}/providers).
 
-For example, to register a new cache driver named "mongo":
+Por exemplo, para registrar um novo driver de cache com o nome "mongo":
 
 	<?php namespace App\Providers;
 
@@ -221,11 +221,11 @@ For example, to register a new cache driver named "mongo":
 		}
 	}
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
+O primeiro argumento passado para o método `extend` é o nome do driver. Isto corresponderá à sua opção escolhida para `driver` no arquivo de configuração `config/cache.php`. O segundo argumento é a Closure que deve retornar uma instância de `Illuminate\Cache\Repository`. Na Closure será passada a variável `$app`, que é a instancia de [service container](/docs/{{version}}/container).
 
-The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array.
+A chamada para `Cache::extend` poderia ser feita no método `boot` do `App\Providers\AppServiceProvider` que é fornecido com a aplicação Laravel, ou você pode criar seu próprio service provider para abrigar a extensão - Não se esquece de registrar o serviço no array de service providers em `config/app.php`
 
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts) contract. So, our MongoDB cache implementation would look something like this:
+Para criar seu cache de driver customizado, antes você precisa implementar a [contract](/docs/{{version}}/contracts) contract `Illuminate\Contracts\Cache\Store`. Então, sua implementação de cache MongoDB seria algo como isto:
 
 	<?php namespace App\Extensions;
 
@@ -240,12 +240,12 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
 		public function flush() {}
 	}
 
-We just need to implement each of these methods using a MongoDB connection. Once our implementation is complete, we can finish our custom driver registration:
+Nós precisamos implementar cada um desses métodos usando uma conexão MongoDB. Uma vez que sua implementação é completa, nós podemos finalizar o registro de seu driver customizado:
 
 	Cache::extend('mongo', function($app) {
 		return Cache::repository(new MongoStore);
 	});
 
-Once your extension is complete, simply update your `config/cache.php` configuration file's `driver` option to the name of your extension.
+Uma vez que sua extensão for completada, simplesmente mude a opção `driver` no seu arquivo de configuração `config/cache.php` para o nome de sua extensão.
 
-If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+Se você estiver querendo saber onde colocar o código do seu driver de cache customizado, considere deixar isto disponível no Packagist! Ou, você pode criar um namespace `Extensions` dentro do seu diretório `app`. Contudo, tenha em mente que Laravel não tem uma estrutura de aplicação rígida e você é livre para organizar sua aplicação de acordo com suas preferências. E o mais importante, sem bule.
