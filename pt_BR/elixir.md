@@ -15,6 +15,7 @@
 - [Versionando / Cache Busting](#versioning-and-cache-busting)
 - [Gulp - Chamando tarefas existentes](#calling-existing-gulp-tasks)
 - [Escrevendo extenções Elixir](#writing-elixir-extensions)
+- [Extras](#elixir-extras)
 
 <a name="introduction"></a>
 ## Introdução
@@ -343,3 +344,52 @@ this.registerWatcher("speak", "app/**/*.php");
 
 return this.queueTask("speak");
 ```
+
+<a name="elixir-extras"></a>
+# Extras
+
+instale o bower e crie o arquivo .bowerrc:
+
+```javascript
+{
+  "directory": "vendor/bower_components"
+}
+```
+em `projeto\node_modules\laravel-elixir\Config.js` ja vem alguns paths configurado para usar:
+
+```javascript
+//Diretorio padrão do bower
+var bowerDir  = elixir.config.bowerDir + '/';
+```
+Se você usa **angular** pode instalar tambem [laravel-elixir-angular](https://www.npmjs.com/package/laravel-elixir-angular):
+
+    npm i laravel-elixir-angular
+
+Exemplo:
+
+```javascript
+var elixir = require('laravel-elixir');
+ 
+require('laravel-elixir-angular');
+ 
+elixir(function(mix) {
+   mix.angular();
+});
+```
+
+ou, se quiser usar **typescript**, instale  [laravel-elixir-typescript](https://www.npmjs.com/package/laravel-elixir-typescript):
+
+    npm i laravel-elixir-typescript
+
+Exemplo:
+
+```javascript
+var elixir = require('laravel-elixir');
+ 
+require('laravel-elixir-typescript');
+ 
+elixir(function(mix) {
+  mix.typescript('app.js');
+});
+```
+
