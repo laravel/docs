@@ -11,7 +11,8 @@
 - [Working With Scripts](#working-with-scripts)
 	- [CoffeeScript](#coffeescript)
 	- [Browserify](#browserify)
-	- [ECMAScript 6 / JavaScript](#javascript)
+	- [Babel](#babel)
+	- [Scripts](#javascript)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [Calling Existing Gulp Tasks](#calling-existing-gulp-tasks)
 - [Writing Elixir Extensions](#writing-elixir-extensions)
@@ -198,10 +199,27 @@ elixir(function(mix) {
 });
 ```
 
-<a name="javascript"></a>
-### ECMAScript 6 / JavaScript
+<a name="babel"></a>
+### Babel
 
-If you have multiple ECMAScript 6 / JavaScript files that you would like to combine into a single file, you may use the `scripts` method. The `scripts` method will automatically compile your ECMA Script 6 into portable JavaScript, as well as combine the given files.
+The `babel` method may be used to compile [EcmaScript 6 and 7](https://babeljs.io/docs/learn-es2015/) into plain JavaScript. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single `all.js` file in the `public/js` directory:
+
+```javascript
+elixir(function(mix) {
+	mix.babel([
+                "order.js",
+                "product.js"
+        ]);
+});
+```
+
+To choose a different output location, simply specify your desired path as the second argument. The signature and functionality of this method are identical to `mix.scripts()`, excluding the Babel compilation.
+
+
+<a name="javascript"></a>
+### Scripts
+
+If you have multiple JavaScript files that you would like to combine into a single file, you may use the `scripts` method.
 
 The `scripts` method assumes all paths are relative to the `resources/assets/js` directory, and will place the resulting JavaScript in `public/js/all.js` by default:
 
