@@ -111,7 +111,7 @@ However, instead of writing a ternary statement, Blade provides you with the fol
 
 	{{ $name or 'Default' }}
 
-In this example, if the `$name` variable exists, its value will be displayed. However, if it does not exists, the word `Default` will be displayed.
+In this example, if the `$name` variable exists, its value will be displayed. However, if it does not exist, the word `Default` will be displayed.
 
 #### Displaying Unescaped Data
 
