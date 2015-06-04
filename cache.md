@@ -248,4 +248,4 @@ Nós precisamos implementar cada um desses métodos usando uma conexão MongoDB.
 
 Uma vez que sua extensão for completada, simplesmente mude a opção `driver` no seu arquivo de configuração `config/cache.php` para o nome de sua extensão.
 
-Se você estiver querendo saber onde colocar o código do seu driver de cache customizado, considere deixar isto disponível no Packagist! Ou, você pode criar um namespace `Extensions` dentro do seu diretório `app`. Contudo, tenha em mente que Laravel não tem uma estrutura de aplicação rígida e você é livre para organizar sua aplicação de acordo com suas preferências, e o mais importante, sem bule.
+Se você estiver querendo saber onde colocar o código do seu driver de cache customizado, considere deixar isto disponível no Packagist! Ou, você pode criar um namespace `Extensions` dentro do seu diretório `app`. Contudo, tenha em mente que Laravel não tem uma estrutura de aplicação rígida e você é livre para organizar sua aplicação de acordo com suas preferências. E o mais importante, sem bule.
