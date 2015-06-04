@@ -202,7 +202,7 @@ elixir(function(mix) {
 <a name="babel"></a>
 ### Babel
 
-The `babel` method may be used to compile [EcmaScript 6 and 7](https://babeljs.io/docs/learn-es2015/) into plain JavaScript. This function accepts an array of files relative to the `resources/assets/js` directory and generates a single `all.js` file in the `public/js` directory:
+The `babel` method may be used to compile [EcmaScript 6 and 7](https://babeljs.io/docs/learn-es2015/) into plain JavaScript. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single `all.js` file in the `public/js` directory:
 
 ```javascript
 elixir(function(mix) {
@@ -213,7 +213,7 @@ elixir(function(mix) {
 });
 ```
 
-To specify a different output location, simply specify your desired path as the second argument. The signature and functionality of this method is identical to `mix.scripts()`, excluding the Babel compilation.
+To choose a different output location, simply specify your desired path as the second argument. The signature and functionality of this method are identical to `mix.scripts()`, excluding the Babel compilation.
 
 
 <a name="javascript"></a>
