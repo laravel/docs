@@ -1,25 +1,26 @@
 # Cache
 
-- [Configuration](#configuration)
-- [Cache Usage](#cache-usage)
-	- [Obtaining A Cache Instance](#obtaining-a-cache-instance)
-	- [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
-	- [Storing Items In The Cache](#storing-items-in-the-cache)
-	- [Removing Items From The Cache](#removing-items-from-the-cache)
-- [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
+- [Configuração](#configuration)
+- [Uso do Cache](#cache-usage)
+	- [Obtendo uma Instância do Cache](#obtaining-a-cache-instance)
+	- [Recuperando Itens do Cache](#retrieving-items-from-the-cache)
+	- [Armazenando Itens no Cache](#storing-items-in-the-cache)
+	- [Removendo Itens do Cache](#removing-items-from-the-cache)
+- [Adicionando Drivers Customizados](#adding-custom-cache-drivers)
 
 <a name="configuration"></a>
-## Configuration
+## Configuração
 
-Laravel provides a unified API for various caching systems. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](http://memcached.org) and [Redis](http://redis.io) out of the box.
 
-The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC. You may even configure multiple cache configurations for the same driver.
+O Laravel fornece uma API unificada para vários sistemas de cache. A configuração do cache do laravel fica em `config/cache.php`. Neste arquivo você pode especificar o driver que você gostaria de usar por padrão em toda a sua aplicação. O Laravel suporta ferramentas como [Memcached](http://memcached.org) e [Redis](http://redis.io) de uma maneira massa.
 
-### Cache Prerequisites
+O arquivo de configuração do cache também contém várias outras opções que são documentadas dentro do arquivo, sendo assim, certifique-se de ler estas opções. Por padrão, o Laravel é configurado para usar o drive `file`, que armazena objetos serializados no sistema de arquivos. Para grandes aplicações, recomenda-se que você utilize um in-memory cache como Memcached ou APC. Você pode ter várias configurações de cache para o mesmo driver.
 
-#### Database
+### Pré-requisitos do Cache
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+#### Banco de dados
+
+Quando estiver usando o drive `database`, você precisará criar uma tabela para os itens do cachê. Aqui temos um exemplo de `Schema` para a tabela:
 
 	Schema::create('cache', function($table) {
 		$table->string('key')->unique();
@@ -29,9 +30,9 @@ When using the `database` cache driver, you will need to setup a table to contai
 
 #### Memcached
 
-Using the Memcached cache requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.
+Usar o cache do Memcached requer a instalação do [pacote Memcached PECL](http://pecl.php.net/package/memcached)
 
-The default [configuration](#configuration) uses TCP/IP based on [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php):
+A [configuração](#configuration) padrão usa [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php) baseado em TCP/IP:
 
 	'memcached' => [
 		[
@@ -41,7 +42,7 @@ The default [configuration](#configuration) uses TCP/IP based on [Memcached::add
 		],
 	],
 
-You may also set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
+Você pode também setar a opção `host` para um caminho de socket UNIX. Se você fizer isto, a opção `port` deveria ser setada como `0`:
 
 	'memcached' => [
 		[
@@ -53,17 +54,17 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
 
 #### Redis
 
-Before using a Redis cache with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+Para usar um cache de Redis no Laravel, você precisa instalar o pacote `predis/predis` (~1.0) via Composer.
 
-For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
+Para mais informações sobre como configurar o Redis, consulte esta [Página da Documentação do Laravel](/docs/{{version}}/redis#configuration).
 
 <a name="cache-usage"></a>
-## Cache Usage
+## Uso do Cache
 
 <a name="obtaining-a-cache-instance"></a>
-### Obtaining A Cache Instance
+### Obtendo uma instância do Cache
 
-The `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
+O `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
 
 However, you may also use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts.
 
@@ -249,3 +250,4 @@ We just need to implement each of these methods using a MongoDB connection. Once
 Once your extension is complete, simply update your `config/cache.php` configuration file's `driver` option to the name of your extension.
 
 If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+
