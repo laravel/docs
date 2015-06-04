@@ -18,6 +18,10 @@ For general releases, bug fixes are provided for 6 months and security fixes are
 
 Laravel 5.1 continues the improvements made in Laravel 5.0 by adopting PSR-2 and adding event broadcasting, middleware parameters, Artisan improvements, and more.
 
+### PHP 5.5.9+
+
+Since PHP 5.4 will enter "end of life" in September and will no longer receive security updates from the PHP development team, Laravel 5.1 requires PHP 5.5.9 or greater. PHP 5.5.9 allows compatibility with the latest versions of popular PHP libraries such as Guzzle and the AWS SDK.
+
 ### LTS
 
  Laravel 5.1 is the first release of Laravel to receive **long term support**. Laravel 5.1 will receive bug fixes for 2 years and security fixes for 3 years. This support winodw is the largest ever provided for Laravel and provides stability and peace of mind for larger, enterprise clients and customers.
