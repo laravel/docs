@@ -107,6 +107,10 @@ For more information on defining Artisan commands, consult the [Artisan document
 
 To better express intent, the `app/Commands` directory has been renamed to `app/Jobs`. Additionally, the `app/Handlers` directory has been consolidated into a single `app/Listeners` directory which simply contains event listeners. However, this is not a breaking change and you are not required to update to the new folder structure to use Laravel 5.1.
 
+### Encryption
+
+In previous versions of Laravel, encryption was handled by the `mcrypt` PHP extension. However, beginning in Laravel 5.1, encryption is handled by the `openssl` extension, which is more actively maintained.
+
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
 
