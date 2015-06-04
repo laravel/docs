@@ -28,7 +28,7 @@
     - [Cache](/docs/{{version}}/cache)
     - [Coleções](/docs/{{version}}/collections)
     - [Elixir](/docs/{{version}}/elixir)
-    - [Encriptaçaõ](/docs/{{version}}/encryption)
+    - [Encriptação](/docs/{{version}}/encryption)
     - [Erros & Log](/docs/{{version}}/errors)
     - [Eventos](/docs/{{version}}/events)
     - [Sistema de Arquivos / Armazenamento em Núvem](/docs/{{version}}/filesystem)
