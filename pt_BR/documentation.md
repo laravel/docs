@@ -7,9 +7,9 @@
     - [Homestead](/docs/{{version}}/homestead)
 - O Básico
     - [Início Rápido](/docs/{{version}}/quickstart)
-    - [Rotas](/docs/{{version}}/routing)
+    - [Routes](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
-    - [Controladores](/docs/{{version}}/controllers)
+    - [Controllers](/docs/{{version}}/controllers)
     - [Requisições](/docs/{{version}}/requests)
     - [Respostas](/docs/{{version}}/responses)
     - [Views](/docs/{{version}}/views)
@@ -17,14 +17,14 @@
 - Fundamentações da Arquitetura
     - [Ciclio de Vida Da Requisição](/docs/{{version}}/lifecycle)
     - [Estrutura da Aplicação](/docs/{{version}}/structure)
-    - [Provedores de Serviços](/docs/{{version}}/providers)
-    - [Container de Serviços](/docs/{{version}}/container)
-    - [Contratos](/docs/{{version}}/contracts)
+    - [Service Providers](/docs/{{version}}/providers)
+    - [Service Container](/docs/{{version}}/container)
+    - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
 - Serviços
     - [Autenticação](/docs/{{version}}/authentication)
     - [Artisan Console](/docs/{{version}}/artisan)
-    - [Faturamento](/docs/{{version}}/billing)
+    - [Billing (Faturamento)](/docs/{{version}}/billing)
     - [Cache](/docs/{{version}}/cache)
     - [Coleções](/docs/{{version}}/collections)
     - [Elixir](/docs/{{version}}/elixir)
@@ -47,9 +47,9 @@
     - [Validação](/docs/{{version}}/validation)
 - Banco de Dados
     - [Iniciando](/docs/{{version}}/database)
-    - [Construtor de Query](/docs/{{version}}/queries)
-    - [Migrações](/docs/{{version}}/migrations)
-    - [Alimentando o BD](/docs/{{version}}/seeding)
+    - [Query Builder](/docs/{{version}}/queries)
+    - [Migrations](/docs/{{version}}/migrations)
+    - [Alimentando o Banco de Dados](/docs/{{version}}/seeding)
 - Eloquent ORM
     - [Iniciando](/docs/{{version}}/eloquent)
     - [Relacionamentos](/docs/{{version}}/eloquent-relationships)
