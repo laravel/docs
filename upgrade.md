@@ -64,6 +64,16 @@ Previously, the storage format for Eloquent date fields could be modified by ove
 
 The date format is also now applied when serializing a model to an `array` or JSON. This may change the format of your JSON serialized date fields when migrating from Laravel 5.0 to 5.1. To set a specific date format for serialized models, you may override the `serializeDate(DateTime $date)` method on your model. This method allows you to have granular control over the formatting of serialized Eloquent date fields without changing their storage format.
 
+### Encryption
+
+If the `cipher` option in your `config/app.php` configuration file is currently `MCRYPT_RIJNDAEL_128`, change the option to the following:
+
+	'cipher' => 'AES-128-CBC',
+
+If the `cipher` option in your `config/app.php` configuration file is currently `MCRYPT_RIJNDAEL_256`, change the option to the following:
+
+	'cipher' => 'AES-256-CBC',
+
 ### The Collection Class
 
 #### The `groupBy` Method
