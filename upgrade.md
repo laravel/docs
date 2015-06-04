@@ -11,6 +11,8 @@
 <a name="upgrade-5.1.0"></a>
 ## Upgrading To 5.1.0
 
+#### Estimated Upgrade Time: Less Than 1 Hour
+
 ### Update `bootstrap/autoload.php`
 
 Update the `$compiledPath` variable in `bootstrap/autoload.php` to the following:
