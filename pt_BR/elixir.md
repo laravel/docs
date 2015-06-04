@@ -28,14 +28,14 @@ elixir(function(mix) {
 });
 ```
 
-Se você ficou confuso sobre como iniciar com Gulp e compilação de assets, você amará o Laravel Elixir. Entretanto, você não é obrigado a usá-lo enquanto desenvolve sua aplicação. Você é livre para usar qualquer outra ferramenta de asset pipeline, ou nenhuma delas.
+Se você já esteve confuso antes sobre como começar com Gulp e compilações de assets, você irá amar o Laravel Elixir. Entretanto, você não é obrigado a usá-lo enquanto desenvolve sua aplicação. Você é livre para usar qualquer outra ferramenta de assets pipeline, ou nenhuma delas.
 
 <a name="installation"></a>
 ## Instalação & Configuração
 
 ### Instalando o NodeJS
 
-Antes de exicutar o elixir, você deve se certificar que o NodeJS está instalado na sua máquina.
+Antes de executar o elixir, você deve se certificar que o NodeJS está instalado na sua máquina.
 
     node -v
 
@@ -90,7 +90,7 @@ elixir(function(mix) {
 });
 ```
 
-Você pode também combinar multiplos arquivos Less em um único arquivo CSS. Novamente, o arquivo resultante será `public/css/app.css`. Se você desejar alterar local de armazenamento do arquivo compilado, você pode passar o segundo argumento do método `less`:
+Você pode também combinar multiplos arquivos Less em um único arquivo CSS. Novamente, o arquivo resultante será `public/css/app.css`. Se você desejar alterar o local de armazenamento do arquivo compilado, você pode passar o segundo argumento do método `less`:
 
 ```javascript
 elixir(function(mix) {
@@ -163,7 +163,7 @@ elixir(function(mix) {
 
 Mapaas de código são ativados automaticamente. Então, para cada arquivo compilado você verá um acompanhado `*.css.map` no mesmo diretório. Esse arquivo permitira rastrear seu código compilado de volta aos seus seletores originais em Sass ou Less quando for debugar no navegador.
 
-Se você não quiser que os arquivos de mapa de código sejam gerados para seu CSS, você pode desabilitar essa funcionalidade com a opção::
+Se você não quiser que os arquivos de mapa de código sejam gerados para seu CSS, você pode desabilitar essa funcionalidade com a opção:
 
 ```javascript
 elixir.config.sourcemaps = false;
