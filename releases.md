@@ -22,6 +22,10 @@ Laravel 5.1 continues the improvements made in Laravel 5.0 by adopting PSR-2 and
 
  Laravel 5.1 is the first release of Laravel to receive **long term support**. Laravel 5.1 will receive bug fixes for 2 years and security fixes for 3 years. This support winodw is the largest ever provided for Laravel and provides stability and peace of mind for larger, enterprise clients and customers.
 
+### PSR-2
+
+The [PSR-2 coding style guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) has been adopted as the default style guide for the Laravel framework. Additionally, all generators have been updated to generate PSR-2 compatible syntax.
+
 ### Documentation
 
 Every page of the Laravel documentation has been metriculously reviewed and dramatically improved. All code examples have also been reviewed and expanded to provide more relevance and context.
@@ -98,6 +102,10 @@ Artisan commands may now be defined using a simple, route-like "signature", whic
     protected $signature = 'email:send {user} {--force}';
 
 For more information on defining Artisan commands, consult the [Artisan documentation](/docs/{{version}}/artisan).
+
+### Folder Structure
+
+To better express intent, the `app/Commands` directory has been renamed to `app/Jobs`. Additionally, the `app/Handlers` directory has been consolidated into a single `app/Listeners` directory which simply contains event listeners. However, this is not a breaking change and you are not required to update to the new folder structure to use Laravel 5.1.
 
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
