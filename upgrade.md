@@ -11,6 +11,12 @@
 <a name="upgrade-5.1.0"></a>
 ## Upgrading To 5.1.0
 
+### Update `config/app.php`
+
+Update the `'cipher'` key in `config/app.php` to the following:
+
+	'cipher' => 'AES-128-CBC',
+
 ### Update `bootstrap/autoload.php`
 
 Update the `$compiledPath` variable in `bootstrap/autoload.php` to the following:
