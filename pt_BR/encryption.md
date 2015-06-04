@@ -1,4 +1,4 @@
-# Criptografando
+# Encriptação
 
 - [Configuração](#configuration)
 - [Uso Básico](#basic-usage)
