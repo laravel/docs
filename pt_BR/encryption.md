@@ -13,7 +13,7 @@ Antes de usar o encrypter do Laravel, você deve definir a opção `key` no seu 
 
 #### Criptografando Um Valor
 
-Você pode criptografar um valor usando o [facade](/docs/{{version}}/facades) `Crypt`. Todos os valores criptografados são criptografadas usando o OpenSSL e o `AES-128-CBC` cipher. Além disso, todos os valores criptografados são assinados com um código de autenticação de mensagem (MAC) para detectar quaisquer modificações na sequência criptografada.
+Você pode criptografar um valor usando o [facade](/docs/{{version}}/facades) `Crypt`. Todos os valores são criptografados usando o OpenSSL e o `AES-128-CBC` cipher. Além disso, todos os valores criptografados são assinados com um código de autenticação de mensagem (MAC) para detectar quaisquer modificações na sequência criptografada.
 
 Por exemplo, nós podemos usar o metodo `encrypt` para criptografar um valor e armazená-lo em um [Eloquent model](/docs/{{version}}/eloquent):
 
