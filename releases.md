@@ -1,6 +1,7 @@
 # Release Notes
 
 - [Support Policy](#support-policy)
+- [Laravel 5.1](#laravel-5.1)
 - [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
 - [Laravel 4.1](#laravel-4.1)
@@ -8,9 +9,95 @@
 <a name="support-policy"></a>
 ## Support Policy
 
-Security fixes are **always** applied to the previous major version of Laravel. Currently, **all** security fixes and patches will be applied to both Laravel 5.x **and** Laravel 4.x.
+For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance.
 
-When feasible, security fixes will also be applied to even older releases of the framework, such as Laravel 3.x.
+For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+
+<a name="laravel-5.1"></a>
+## Laravel 5.1
+
+Laravel 5.1 continues the improvements made in Laravel 5.0 by adopting PSR-2 and adding event broadcasting, middleware parameters, Artisan improvements, and more.
+
+### LTS
+
+ Laravel 5.1 is the first release of Laravel to receive **long term support**. Laravel 5.1 will receive bug fixes for 2 years and security fixes for 3 years. This support winodw is the largest ever provided for Laravel and provides stability and peace of mind for larger, enterprise clients and customers.
+
+### Documentation
+
+Every page of the Laravel documentation has been metriculously reviewed and dramatically improved. All code examples have also been reviewed and expanded to provide more relevance and context.
+
+### Event Broadcasting
+
+In many modern web applications, web sockets are used to implement real-time, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a websocket connection to be handled by the client.
+
+To assist you in building these types of applications, Laravel makes it easy to "broadcast" your events over a websocket connection. Broadcasting your Laravel events allows you to share the same event names between your server-side code and your client-side JavaScript framework.
+
+To learn more about event broadcasting, check out the [event documentation](/docs/{{version}}/events#broadcasting-events)
+
+### Middleware Parameters
+
+Middleware can now receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create a `RoleMiddleware` that receives a role name as an additional argument:
+
+	<?php namespace App\Http\Middleware;
+
+	use Closure;
+
+	class RoleMiddleware
+	{
+		/**
+		 * Run the request filter.
+		 *
+		 * @param  \Illuminate\Http\Request  $request
+		 * @param  \Closure  $next
+		 * @param  string  $role
+		 * @return mixed
+		 */
+		public function handle($request, Closure $next, $role)
+		{
+			if (! $request->user()->hasRole($role)) {
+				// Redirect...
+			}
+
+			return $next($request);
+		}
+
+	}
+
+Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+
+	Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
+		//
+	}]);
+
+For more information on middleware, check out the [middleware documentation](/docs/{{version}}/middleware).
+
+### Testing Overhaul
+
+The built-in testing capabilities of Laravel have been dramatically improved. A variety of new methods provide a fluent, expressive interface for interacting with your application and examining its responses. For example, check out the following test:
+
+    public function testNewUserRegistration()
+    {
+        $this->visit('/register')
+             ->type('Taylor', 'name')
+             ->check('terms')
+             ->press('Register')
+             ->seePageIs('/dashboard');
+    }
+
+For more information on testing, check out the [testing documentation](/docs/{{version}}/testing).
+
+### Artisan Improvements
+
+Artisan commands may now be defined using a simple, route-like "signature", which provides an extremely simple interface for defining command line arguments and options. For example, you may define a simple command and its options like so:
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'email:send {user} {--force}';
+
+For more information on defining Artisan commands, consult the [Artisan documentation](/docs/{{version}}/artisan).
 
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
