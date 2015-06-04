@@ -95,9 +95,9 @@ The `lists` method now returns a `Collection` instance. If you would like to con
 
 ### Commands & Handlers
 
-The `app/Commands` directory has been renamed to `App\Jobs`. However, you are not required to convert all of your commands, and you may continue using the `make:command` and `handler:command` Artisan commands if you wish.
+The `app/Commands` directory has been renamed to `App\Jobs`. However, you are not required to move all of your commands to the new location, and you may continue using the `make:command` and `handler:command` Artisan commands to generate your classes.
 
-The `app/Handlers` directory has been renamed to `app/Listeners` and only contains event listeners. However, you are not required to move or rename your existing command and event handlers, and you may continue to use the `handler:event` command to generate event handlers.
+Likewise, the `app/Handlers` directory has been renamed to `app/Listeners` and now only contains event listeners. However, you are not required to move or rename your existing command and event handlers, and you may continue to use the `handler:event` command to generate event handlers.
 
 By providing backwards compatibility for the Laravel 5.0 folder structure, you may upgrade your applications to Laravel 5.1 and slowly upgrade your events and commands to their new locations when it is convenient for you or your team.
 
