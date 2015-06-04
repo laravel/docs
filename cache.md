@@ -42,7 +42,7 @@ A [configuração](#configuration) padrão usa [Memcached::addServer](http://php
 		],
 	],
 
-Você pode também setar a opção `host` para um caminho de socket UNIX. Se você fizer isto, a opção `port` deveria ser setada como `0`:
+Você pode também setar a opção `host` para um caminho de socket UNIX. Se você fizer isto, a opção `port` deverá ser setada como `0`:
 
 	'memcached' => [
 		[
@@ -64,11 +64,11 @@ Para mais informações sobre como configurar o Redis, consulte esta [Página da
 <a name="obtaining-a-cache-instance"></a>
 ### Obtendo uma instância do Cache
 
-O `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
+As [Contracts](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Factory` e `Illuminate\Contracts\Cache\Repository` fornecem acesso para os serviços de cache do Laravel. A contract `Factory` fornecem acesso para todos o sdrivers de cache definidos por sua aplicação. A contract `Repository` é tipicamente uma implementação do drive de cache padrão para sua aplicação especificado pelo seu arquivo de configuração de `cache`.
 
-However, you may also use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts.
+Por outro lado, você também pode usar a facade `Cache`, que é o que vamos utilizar em toda esta documentação. A facade `Cache` fornece convenientemente acesso elegante para as implementações subjacentes dos contratos de cache Laravel
 
-For example, let's import the `Cache` facade into a controller:
+Por exemplo, vamos importar a facade `Cache` dentro de um controller:
 
 	<?php namespace App\Http\Controllers;
 
