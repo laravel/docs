@@ -17,12 +17,12 @@ Pacotes são um modo primário de adicionar funcionalidades ao Laravel. Eles pod
 
 E é claro, existem diferentes tipos de pacotes. Alguns deles são agnósticos, isso significa que funcionam em qualquer framework, não somente Laravel. Carbon e Behat são exemplos de pacotes agnósticos. Qualquer um desses pacotes podem ser usados com o Laravel simplemente requerindo-os no arquivo `composer.json`.
 
-Por outro lado, existem pacotes que são para uso específico no Laravel. Esses pacotes podem ter rotas, controllers, views e configurações específicas para melhor entrosamento com a aplicação Laravel. Esse artigo lhe instruirá a construir pacotes que serão específicos para Laravel. 
+Por outro lado, existem pacotes que são para uso específico no Laravel. Esses pacotes podem ter rotas, controllers, views e configurações específicas para melhor entrosamento com a aplicação Laravel. Esse artigo lhe instruirá a construir pacotes que serão específicos para Laravel.
 
 <a name="service-providers"></a>
 ## Service Providers
 
-[Service providers](/docs/{{version}}/providers) são o ponto de conexão entre seu pacote e o Lareavel. Um service provider é responsável por atrelar coisas no [service container](/docs/{{version}}/container) do Laravel e informá-lo onde estão os recursos como views, configurações, e arquivos de localização.
+[Service providers](/docs/{{version}}/providers) são o ponto de conexão entre seu pacote e o Laravel. Um service provider é responsável por atrelar coisas no [service container](/docs/{{version}}/container) do Laravel e informá-lo onde estão os recursos como views, configurações, e arquivos de localização.
 
 Um service provider deve estender a classe `Illuminate\Support\ServiceProvider` e conter dois métodos: `register` e `boot`. A classe base `ServiceProvider` está localizada no pacote Composer `illuminate/support`, que você deve adicionar nas dependências do seu pacote.
 
@@ -31,9 +31,9 @@ Para aprender mais sobre a estrutura do service provider, leia [sua documentaç�
 <a name="routing"></a>
 ## Rotas
 
-Para definir rotas para seu pacote, simplesmente `require` o arquivo de rotas dentro do método `boot` do service provider. Dentro do seu arquivo de rotas você pode usar o facade `Route` para [regisrar rotas](/docs/{{version}}/routing) como você quiser dentro de uma aplicação Laravel típica:
+Para definir rotas para seu pacote, simplesmente `require` o arquivo de rotas dentro do método `boot` do service provider. Dentro do seu arquivo de rotas você pode usar o facade `Route` para [registrar rotas](/docs/{{version}}/routing) como você quiser dentro de uma aplicação Laravel típica:
 
-    /**
+	/**
 	 * Perform post-registration booting of services.
 	 *
 	 * @return void
@@ -72,7 +72,7 @@ As views do pacote serão referenciadas usando a sintaxe dois-pontos-duplos `pac
 
 #### Sobrescrevendo as Views do Pacote
 
-Quando você usa o método `loadViewsFrom`, o Laravel na realidade registra **duas** localizações para suas views: Uma no diretório da sua aplicação `resources/views/vendor` e outra no diretório que você especificou. Então, usando o exemplo `courier`: Quando você requerer uma view do pacote, o Laravel ira primeiro checar se existe uma versão dessa view gerada pelo desenvolvedor que está usando seu pacote em `resources/views/vendor/courier`. Então, se não há uma versão dessa view, o Laravel ira procurar a view no diretório que você especificou na chamada ao método `loadViewsFrom`. Isso torna fácil para o usuário final (desenvolvedor que está usando seu pacote) customizar ou sobrescrevê-las.
+Quando você usa o método `loadViewsFrom`, o Laravel na realidade registra **duas** localizações para suas views: Uma no diretório da sua aplicação `resources/views/vendor` e outra no diretório que você especificou. Então, usando o exemplo `courier`: Quando você requerer uma view do pacote, o Laravel irá primeiro checar se existe uma versão dessa view gerada pelo desenvolvedor que está usando seu pacote em `resources/views/vendor/courier`. Então, se não há uma versão dessa view, o Laravel irá procurar a view no diretório que você especificou na chamada ao método `loadViewsFrom`. Isso torna fácil para o usuário final (desenvolvedor que está usando seu pacote) customizar ou sobrescrevê-las.
 
 #### Publicando Views
 
@@ -95,7 +95,7 @@ Se você gostaria de disponibilizar suas views para o diretório da aplicação 
 Agora, quando os desenvolvedores que usam seu pacote executarem o comando Artisan `vendor:publish`, as views do seu pacote serão copiadas para o local que você especificou.
 
 <a name="translations"></a>
-### Traduções 
+### Traduções
 
 Se seu pacote contiver [arquivos de tradução](/docs/{{version}}/localization), você pode usar o método `loadTranslationsFrom` para informar ao Laravel como carregá-las. Por exemplo, se o nome do seu pacote é "courier", você pode adicionar o seguinte trecho ao método `boot` do service provider:
 
@@ -130,13 +130,13 @@ Usualmente, você pode querer publicar os arquivos de configuração do seu paco
 		]);
 	}
 
-Agora, quando o desenvolvedor que usa seu pacote executar o comando Artisan `vendor:publish`, seu arquivo de configuração será copiado para o diretório que você especificou. E é claro, uma vez que um arquivo fora copiado, ele pode ser acessado como qualquer outro arquivo de configuração:
+Agora, quando o desenvolvedor que usa seu pacote executar o comando Artisan `vendor:publish`, seu arquivo de configuração será copiado para o diretório que você especificou. E é claro, uma vez que seu arquivo foi publicado, ele pode ser acessado como qualquer outro arquivo de configuração:
 
 	$value = config('courier.option');
 
 #### Configuração Padrão do Pacote
 
-Você pode escolher mergir as configurações do seu pacote com a cópia das configurações da aplicação. Isso permitira que os desenvolvedores incluam somente as opções que eles querem sobrescrever na cópia do seu arquivo de configuração. Para mergir as configurações, no método `register` do seu service provider use  `mergeConfigFrom`:
+Você pode escolher fundir as configurações do seu pacote com a cópia das configurações da aplicação. Isso permitira que os desenvolvedores incluam somente as opções que eles querem sobrescrever na cópia do seu arquivo de configuração. Para fundir as configurações, no método `register` do seu service provider use  `mergeConfigFrom`:
 
 	/**
 	 * Register bindings in the container.
@@ -176,7 +176,7 @@ Caso queira se certificar que os assets serão sempre atualizados, você pode ad
 <a name="publishing-file-groups"></a>
 ## Publicando Grupos de Arquivos
 
-Você pode publicar grupos de assets e recursos separadamente. Por exemplo, se quiser que seus usuários possam publicar os arquivos configuração do seu pacote sem forçá-lo a publicar também os assets ao mesmo tempo. Para evitar isso, use tags quando chamar o método `publishes`. Por exemplo, vamos definir dois grupos de publicação no método `boot` do service provider do pacote. 
+Você pode publicar grupos de assets e recursos separadamente. Por exemplo, se quiser que seus usuários possam publicar os arquivos configuração do seu pacote sem forçá-lo a publicar também os assets ao mesmo tempo. Para evitar isso, use tags quando chamar o método `publishes`. Por exemplo, vamos definir dois grupos de publicação no método `boot` do service provider do pacote.
 
 	/**
 	 * Perform post-registration booting of services.
@@ -194,7 +194,7 @@ Você pode publicar grupos de assets e recursos separadamente. Por exemplo, se q
 		], 'migrations');
 	}
 
-Agora os usuários poderão publicar esses grupos serparadamente referenciado o nome da tag quando usar o comando Artisan `vendor:publish`:
+Agora os usuários poderão publicar esses grupos separadamente, referenciado o nome da tag quando usar o comando Artisan `vendor:publish`:
 
 	php artisan vendor:publish --provider="Vendor\Providers\PackageServiceProvider" --tag="config"
 
