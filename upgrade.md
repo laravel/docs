@@ -72,10 +72,6 @@ If the `cipher` option in your `config/app.php` configuration file is currently 
 
 	'cipher' => 'AES-128-CBC',
 
-If the `cipher` option in your `config/app.php` configuration file is currently `MCRYPT_RIJNDAEL_256`, change the option to the following:
-
-	'cipher' => 'AES-256-CBC',
-
 ### The Collection Class
 
 #### The `groupBy` Method
