@@ -13,6 +13,7 @@
 - [Deleting Models](#deleting-models)
 	- [Soft Deleting](#soft-deleting)
 	- [Querying Soft Deleted Models](#querying-soft-deleted-models)
+- [Query Scopes](#query-scopes)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -427,6 +428,69 @@ Sometimes you may need to truly remove a model from your database. To permanentl
 
 	// Force deleting all related models...
 	$flight->history()->forceDelete();
+
+<a name="query-scopes"></a>
+## Query Scopes
+
+Scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`:
+
+	<?php namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model
+	{
+		/**
+		 * Scope a query to only include popular users.
+		 *
+		 * @return \Illuminate\Database\Eloquent\Builder
+		 */
+		public function scopePopular($query)
+		{
+			return $query->where('votes', '>', 100);
+		}
+
+		/**
+		 * Scope a query to only include active users.
+		 *
+		 * @return \Illuminate\Database\Eloquent\Builder
+		 */
+		public function scopeActive($query)
+		{
+			return $query->where('active', 1);
+		}
+	}
+
+#### Utilizing A Query Scope
+
+Once the scope has been defined, you may call the scope methods when querying the model. Hoewver, you do not need to include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
+
+	$users = App\User::popular()->women()->orderBy('created_at')->get();
+
+#### Dynamic Scopes
+
+Sometimes you may wish to define a scope that accepts parameters. To get started, just add your additional parameters to your scope. Scope parameters should be defined after the `$query` argument:
+
+	<?php namespace App;
+
+	use Illuminate\Database\Eloquent\Model;
+
+	class User extends Model
+	{
+		/**
+		 * Scope a query to only include users of a given type.
+		 *
+		 * @return \Illuminate\Database\Eloquent\Builder
+		 */
+		public function scopeOfType($query, $type)
+		{
+			return $query->where('type', $type);
+		}
+	}
+
+Now, you may pass the parameters when calling the scope:
+
+	$users = App\User::ofType('admin')->get();
 
 <a name="events"></a>
 ## Events
