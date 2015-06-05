@@ -24,7 +24,7 @@ Since PHP 5.4 will enter "end of life" in September and will no longer receive s
 
 ### LTS
 
- Laravel 5.1 is the first release of Laravel to receive **long term support**. Laravel 5.1 will receive bug fixes for 2 years and security fixes for 3 years. This support winodw is the largest ever provided for Laravel and provides stability and peace of mind for larger, enterprise clients and customers.
+ Laravel 5.1 is the first release of Laravel to receive **long term support**. Laravel 5.1 will receive bug fixes for 2 years and security fixes for 3 years. This support window is the largest ever provided for Laravel and provides stability and peace of mind for larger, enterprise clients and customers.
 
 ### PSR-2
 
@@ -32,7 +32,7 @@ The [PSR-2 coding style guide](https://github.com/php-fig/fig-standards/blob/mas
 
 ### Documentation
 
-Every page of the Laravel documentation has been metriculously reviewed and dramatically improved. All code examples have also been reviewed and expanded to provide more relevance and context.
+Every page of the Laravel documentation has been meticulously reviewed and dramatically improved. All code examples have also been reviewed and expanded to provide more relevance and context.
 
 ### Event Broadcasting
 
