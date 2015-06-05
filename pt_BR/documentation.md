@@ -7,7 +7,7 @@
     - [Homestead](/docs/{{version}}/homestead)
 - O Básico
     - [Início Rápido](/docs/{{version}}/quickstart)
-    - [Routes](/docs/{{version}}/routing)
+    - [Rotas](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
     - [Controllers](/docs/{{version}}/controllers)
     - [Requisições](/docs/{{version}}/requests)
@@ -15,7 +15,7 @@
     - [Views](/docs/{{version}}/views)
     - [Templates Blade](/docs/{{version}}/blade)
 - Fundamentações da Arquitetura
-    - [Ciclio de Vida Da Requisição](/docs/{{version}}/lifecycle)
+    - [Ciclo de Vida Da Requisição](/docs/{{version}}/lifecycle)
     - [Estrutura da Aplicação](/docs/{{version}}/structure)
     - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
