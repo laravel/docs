@@ -233,7 +233,7 @@ You may also use the `prefix` parameter to specify common parameters for your gr
 
 	Route::group(['prefix' => 'accounts/{account_id}'], function () {
 		Route::get('detail', function ($account_id)	{
-			// Handles Requests To admin/user
+			// Matches The accounts/{account_id}/detail URL
 		});
 	});
 
