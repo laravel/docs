@@ -3,8 +3,8 @@
 - [Introdução](#introduction)
 - [Configuração](#configuration)
 - [Manipulador de Exceções](#the-exception-handler)
-	- [Metodo Report](#report-method)
-	- [Metodo Render](#render-method)
+	- [Método Report](#report-method)
+	- [Método Render](#render-method)
 - [HTTP Exceptions](#http-exceptions)
 	- [Páginas de Erro HTTP Personalizadas](#custom-http-error-pages)
 - [Logging](#logging)
@@ -12,7 +12,7 @@
 <a name="introduction"></a>
 ## Introdução
 
-Quando você inicia um novo projeto Laravel, erro e manipulação de exceção já estão configurados para você. Além disso, Laravel está integrado com a biblioteca de log [Monolog](https://github.com/Seldaek/monolog), o que proporciona suporte para uma variedade de manipuladores de log poderosos.
+Quando você inicia um novo projeto Laravel, erro e manipulação de exceção já estão configurados para você. Além disso, Laravel está integrado com a biblioteca de log [Monolog](https://github.com/Seldaek/monolog), que proporciona suporte para uma variedade de manipuladores de log poderosos.
 
 <a name="configuration"></a>
 ## Configuração
@@ -31,7 +31,7 @@ O Laravel trás pronto para uso os modos de log `single`, `daily`, `syslog` e `e
 
 #### Monolog Configuração Personalizada
 
-Se você gostaria de ter controle completo sobre como Monolog está configurado em sua aplicação, você pode usar método `configureMonologUsing` do aplicativo. Você deve fazer uma chamada para este método em seu arquivo `bootstrap/app.php` logo antes da variável `$app` ser retornada pelo arquivo:
+Se você gostaria de ter controle completo sobre como Monolog está configurado em sua aplicação, você pode usar método `configureMonologUsing` da aplicação. Você deve fazer uma chamada para este método em seu arquivo `bootstrap/app.php` logo antes da variável `$app` ser retornada pelo arquivo:
 
 	$app->configureMonologUsing(function($monolog) {
 		$monolog->pushHandler(...);
@@ -70,7 +70,7 @@ Por exemplo, se você precisa relatar diferentes tipos de exceções de maneiras
 
 #### Ignorando Exceções Por Tipo
 
-A propriedade `$dontReport` do manipulador de exceção contém uma matriz de tipos de exceção que não será registada. Por padrão, as exceções resultantes de erros 404 não são escritas em seus arquivos de log. Você pode adicionar outros tipos de exceção a essa matriz, conforme necessário.
+A propriedade `$dontReport` do manipulador de exceção contém um array de tipos de exceção que não serão registados. Por padrão, as exceções resultantes de erros 404 não são escritas em seus arquivos de log. Você pode adicionar outros tipos de exceção a esse array, conforme necessário.
 
 <a name="render-method"></a>
 ### Método Render
@@ -96,8 +96,6 @@ O método `render` é responsável por converter uma determinada exceção em um
 <a name="http-exceptions"></a>
 ## Exceções HTTP
 
-Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to generate such a response from anywhere in your application, use the following:
-
 Algumas exceções HTTP descrevem os códigos de erro a partir do servidor. Por exemplo, esta pode ser uma "page not found" (página não encontrada) erro (404), um "unauthorized" (não autorizado) erro (401) ou até mesmo um "internal server error" (erro interno do servidor) erro 500. A fim de gerar essas respostas de qualquer lugar em sua aplicação, use o seguinte:
 
 	abort(404);
@@ -111,14 +109,12 @@ Este método pode ser utilizado em qualquer momento durante o ciclo de vida da r
 <a name="custom-http-error-pages"></a>
 ### Páginas de Erro HTTP Customizadas
 
-Laravel torna fácil o retorno de páginas de erro personalizadas para vários códigos de status HTTP. Por exemplo, se você deseja personalizar a página de erro para os códigos de status HTTP 404, crie um `resources/views/errors/404.blade.php`. Este arquivo será servido em todos os 404 erros gerados pela sua aplicação.
+Laravel torna fácil o retorno de páginas de erro personalizadas para vários códigos de status HTTP. Por exemplo, se você deseja personalizar a página de erro para os códigos de status HTTP 404, crie um `resources/views/errors/404.blade.php`. Este arquivo será servido em todos os erros404 gerados pela sua aplicação.
 
 As views dentro deste diretório devem ser nomeadas para coincidir com o código de status HTTP que a corresponde.
 
 <a name="logging"></a>
 ## Logging
-
-The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create daily log files for your application which are stored in the `storage/logs` directory. You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades):
 
 O recurso de logging do Laravel proporciona uma camada simples em cima da poderosa biblioteca [Monolog](http://github.com/seldaek/monolog). Por padrão, Laravel está configurado para criar arquivos de log diários para a sua aplicação, que são armazenados no diretório `storage/logs`. Você pode escrever informações para os logs usando o `Log` [facade](/docs/{{version}}/facades):
 
@@ -155,15 +151,11 @@ O logger prevê os sete níveis de log definidos no [RFC 5424](http://tools.ietf
 
 #### Informação Contextual
 
-An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
-
 Um array de dados contextuais também podem ser passadas para os métodos de log. Estes dados contextuais serão formatados e exibidos com a mensagem de log:
 
 	Log::info('Usuário falhou ao logar.', ['id' => $user->id]);
 
 #### Acessando a Instância Básica para Monolog
-
-Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
 
 Monolog tem uma variedade de handlers (manipuladores) adicionais que você pode usar para fazer logging. Se necessário, você pode acessar a instância básica para Monolog básico utilizada pelo Laravel:
 
