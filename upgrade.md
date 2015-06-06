@@ -68,7 +68,7 @@ The date format is also now applied when serializing a model to an `array` or JS
 
 ### Encryption
 
-If the `cipher` option in your `config/app.php` configuration file is currently `MCRYPT_RIJNDAEL_128` or `MCRYPT_RIJNDAEL_256`, change the option to the following:
+If the `cipher` option in your `config/app.php` configuration file is currently `MCRYPT_RIJNDAEL_128`, change the option to the following:
 
 	'cipher' => 'AES-256-CBC',
 
