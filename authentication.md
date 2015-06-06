@@ -59,7 +59,7 @@ Though the authentication controllers are included with the framework, you will 
 
 #### Sample Authentication Form
 
-    <!-- resources/auth/login.blade.php -->
+    <!-- resources/views/auth/login.blade.php -->
 
     <form method="POST" action="/auth/login">
         {!! csrf_field() !!}
@@ -85,7 +85,7 @@ Though the authentication controllers are included with the framework, you will 
 
 #### Sample Registration Form
 
-    <!-- resources/auth/register.blade.php -->
+    <!-- resources/views/auth/register.blade.php -->
 
     <form method="POST" action="/auth/register">
         {!! csrf_field() !!}
