@@ -202,6 +202,8 @@ Next, add these lines to the 'aliases' array:
 	'Form' => 'Collective\Html\FormFacade',
 	'Html' => 'Collective\Html\HtmlFacade',
 
+> **Note:** In Laravel 4.2, the HTML facade alias is 'HTML' - not 'Html'.
+
 ### CacheManager
 
 If your application code was injecting `Illuminate\Cache\CacheManager` to get a non-Facade version of Laravel's cache, inject `Illuminate\Contracts\Cache\Repository` instead.
