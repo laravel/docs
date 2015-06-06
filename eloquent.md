@@ -463,7 +463,7 @@ Scopes allow you to define common sets of constraints that you may easily re-use
 
 #### Utilizing A Query Scope
 
-Once the scope has been defined, you may call the scope methods when querying the model. Hoewver, you do not need to include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
+Once the scope has been defined, you may call the scope methods when querying the model. However, you do not need to include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
 
 	$users = App\User::popular()->women()->orderBy('created_at')->get();
 
