@@ -422,7 +422,7 @@ Below is a list of all available validation rules and their function:
 - [Integer](#rule-integer)
 - [IP Address](#rule-ip)
 - [Max](#rule-max)
-- [MIME Types](#rule-mimes)
+- [MIME Types (File)](#rule-mimes)
 - [Min](#rule-min)
 - [Not In](#rule-not-in)
 - [Numeric](#rule-numeric)
