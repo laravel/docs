@@ -44,13 +44,13 @@ Laravel ships with two authentication controllers out of the box, which are loca
 By default, no [routes](/docs/{{version}}/routing) are included to point requests to the authentication controllers. You may manually add them to your `app/Http/routes.php` file:
 
     // Authentication routes...
-    Route::get('auth/login', 'AuthController@getLogin');
-    Route::post('auth/login', 'AuthController@postLogin');
-    Route::get('auth/logout', 'AuthController@getLogout');
+    Route::get('auth/login', 'Auth\AuthController@getLogin');
+    Route::post('auth/login', 'Auth\AuthController@postLogin');
+    Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
     // Registration routes...
-    Route::get('auth/register', 'AuthController@getRegister');
-    Route::post('auth/register', 'AuthController@postRegister');
+    Route::get('auth/register', 'Auth\AuthController@getRegister');
+    Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 <a name="included-views"></a>
 ### Views
@@ -59,7 +59,7 @@ Though the authentication controllers are included with the framework, you will 
 
 #### Sample Authentication Form
 
-    <!-- resources/auth/login.blade.php -->
+    <!-- resources/views/auth/login.blade.php -->
 
     <form method="POST" action="/auth/login">
         {!! csrf_field() !!}
@@ -85,7 +85,7 @@ Though the authentication controllers are included with the framework, you will 
 
 #### Sample Registration Form
 
-    <!-- resources/auth/register.blade.php -->
+    <!-- resources/views/auth/register.blade.php -->
 
     <form method="POST" action="/auth/register">
         {!! csrf_field() !!}
