@@ -222,6 +222,24 @@ If you plan to have authorization logic in another part of your application, sim
 		return true;
 	}
 
+### Custom Error Messages Method
+
+A public method `messages` is available to allow for overriding of the default messages. You may provide custom messages for some or all available form properties For example:
+
+	/**
+	 * Provide custom message for email address input.
+	 *
+	 * @return array
+	 */
+	public function messages()
+	{
+		return [
+			'required' => 'The :attribute field is required.'
+		]
+	}
+
+For more information and examples, please refer to [Custom Error Messages](#custom-error-messages) section.
+
 ### Customizing The Flashed Error Format
 
 If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Validation\Validator` class at the top of the file:
