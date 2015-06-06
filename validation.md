@@ -13,7 +13,7 @@
 <a name="basic-usage"></a>
 ## Basic Usage
 
-Laravel ships with a simple, convenient facility for validating data and retrieving validation error messages via the `Validation` class.
+Laravel ships with a simple, convenient facility for validating data and retrieving validation error messages via the `Validator` class.
 
 #### Basic Validation Example
 
