@@ -65,6 +65,37 @@ Once you have assigned a name to the controller route, you can easily generate U
 	$url = action('FooController@method');
 
 <a name="controller-middleware"></a>
+
+####Implicit Controllers
+
+Laravel allows you to easily define a single route to handle every action in a controller. First, define the route using the Route::controller method:
+
+Route::controller('users', 'UserController');
+The controller method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller. Next, just add methods to your controller, prefixed with the HTTP verb they respond to:
+
+class UserController extends Controller {
+
+public function getIndex()
+{
+    //
+}
+
+public function postProfile()
+{
+    //
+}
+
+public function anyLogin()
+{
+    //
+}
+}
+The index methods will respond to the root URI handled by the controller, which, in this case, is users.
+
+If your controller action contains multiple words, you may access the action using "dash" syntax in the URI. For example, the following controller action on our UserController would respond to the users/admin-profile URI:
+
+public function getAdminProfile() {}
+
 ## Controller Middleware
 
 [Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes like so:
