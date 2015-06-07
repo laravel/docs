@@ -215,7 +215,7 @@ Before broadcasting events, you will also need to configure and run a [queue lis
 <a name="marking-events-for-broadcast"></a>
 ### Marking Events For Broadcast
 
-To inform Laravel that a given event should be broadcast, implement the `Illuminate\Contracts\Broadcasting\ShouldBroadcast` interface on the event class. The `ShouldBroadcast` interface requires you to implement a single method: `broadcastOn`. The `broadcastOn` method should return an array of "channel" names that the event should be broadcast on.
+To inform Laravel that a given event should be broadcast, implement the `Illuminate\Contracts\Broadcasting\ShouldBroadcast` interface on the event class. The `ShouldBroadcast` interface requires you to implement a single method: `broadcastOn`. The `broadcastOn` method should return an array of "channel" names that the event should be broadcast on:
 
 	<?php namespace App\Events;
 
@@ -251,7 +251,7 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
 	    }
 	}
 
-Once the event has been [fired](#firing-events), a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
+Then, you only need to [fire the event](#firing-events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
 
 <a name="broadcast-data"></a>
 ### Broadcast Data
@@ -283,7 +283,7 @@ However, if you wish to have even more fine-grained control over your broadcast 
 
 #### Pusher
 
-You may consume events broadcast using the [Pusher](https://pusher.com) driver using Pusher's JavaScript SDK. For example, let's consume the `App\Events\ServerCreated` event from our previous examples:
+You may conveniently consume events broadcast using the [Pusher](https://pusher.com) driver using Pusher's JavaScript SDK. For example, let's consume the `App\Events\ServerCreated` event from our previous examples:
 
 	this.pusher = new Pusher('pusher-key');
 
@@ -291,6 +291,40 @@ You may consume events broadcast using the [Pusher](https://pusher.com) driver u
 
 	this.pusherChannel.bind('App\\Events\\ServerCreated', function(message) {
 		console.log(message.user);
+	});
+
+#### Redis
+
+If you are using the Redis broadcaster, you will need to write your own Redis pub/sub consumer to receive the messages and broadcast them using the websocket technology of your choice. For example, you may choose to use the popular [Socket.io](http://socket.io) library which is written in Node.
+
+Using the `socket.io` and `ioredis` Node libraries, you can quickly write an event broadcaster to publish all events that are broadcast by your Laravel application:
+
+	var app = require('http').createServer(handler);
+	var io = require('socket.io')(app);
+
+	var Redis = require('ioredis');
+	var redis = new Redis();
+
+	app.listen(6001, function() {
+		console.log('Server is running!');
+	});
+
+	function handler(req, res) {
+		res.writeHead(200);
+		res.end('');
+	}
+
+	io.on('connection', function(socket) {
+		//
+	});
+
+	redis.psubscribe('*', function(err, count) {
+		//
+	});
+
+	redis.on('pmessage', function(subscribed, channel, message) {
+		message = JSON.parse(message);
+		io.emit(channel + ':' + message.event, message.data);
 	});
 
 <a name="event-subscribers"></a>
