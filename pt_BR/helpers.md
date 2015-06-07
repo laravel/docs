@@ -134,7 +134,7 @@ A função `array_divide` retorna 2 arrays, um contendo as chaves e outro conten
 <a name="method-array-dot"></a>
 #### `array_dot()` {#collection-method}
 
-A função `array_dot` nivela um array multi-dimensional em um único nível que usa um "." para indicar a profundidade
+A função `array_dot` nivela um array multi-dimensional em um único nível que usa um "." para indicar a profundidade:
 
 	$array = array_dot(['foo' => ['bar' => 'baz']]);
 
@@ -143,7 +143,7 @@ A função `array_dot` nivela um array multi-dimensional em um único nível que
 <a name="method-array-except"></a>
 #### `array_except()` {#collection-method}
 
-O método `array_except` remove os itens chave / valor do array
+O método `array_except` remove os itens chave / valor do array:
 
 	$array = ['name' => 'Desk', 'price' => 100];
 
@@ -193,7 +193,7 @@ O método `array_forget` remove um item chave / valor de um array que usa um "."
 <a name="method-array-get"></a>
 #### `array_get()` {#collection-method}
 
-O método `array_get` recupera um valor de um array usando o "." para indicar a profundidade
+O método `array_get` recupera um valor de um array usando o "." para indicar a profundidade:
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -246,7 +246,7 @@ O método `array_pull` retornará e removerá um item chave / valor do array:
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
-O método `array_set` seta um valor dentro de um array usando o "." para indicar profundidade
+O método `array_set` seta um valor dentro de um array usando o "." para indicar profundidade:
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -291,7 +291,7 @@ A função `array_where` filtra o array usando a Closure passada:
 <a name="method-head"></a>
 #### `head()` {#collection-method}
 
-A função `head` simplesmente retorna o primeiro elemento do array passado
+A função `head` simplesmente retorna o primeiro elemento do array passado:
 
 	$array = [100, 200, 300];
 
@@ -464,7 +464,7 @@ A função `str_is` determina se uma string passada corresponde a um determinado
 <a name="method-str-plural"></a>
 #### `str_plural()` {#collection-method}
 
-A função `str_plural` converte uma string para o seu formato plural. Esta função atualmente, soporta somente a línga inglesa:
+A função `str_plural` converte uma string para o seu formato plural. Esta função atualmente, suporta somente a línga inglesa:
 
 	$plural = str_plural('car');
 
@@ -528,7 +528,7 @@ A função `trans_choice` retorna uma linha da linguagem com inflexão:
 <a name="method-action"></a>
 #### `action()` {#collection-method}
 
-A função `action` gera uma URL para a ação do controller passado. Você não precisa inserir o namespace do controller. Em vez disso, passe o nome da classe relatova para o namespace `App\Http\Controllers`:
+A função `action` gera uma URL para a ação do controller passado. Você não precisa inserir o namespace do controller. Em vez disso, passe o nome da classe relativa para o namespace `App\Http\Controllers`:
 
 	$url = action('HomeController@getIndex');
 
@@ -616,7 +616,7 @@ O comportamento da função `value` simplesmente retornará o valor que for pass
 <a name="method-view"></a>
 #### `view()` {#collection-method}
 
-A função `view` retorna uma insância de [view](/docs/{{version}}/views):
+A função `view` retorna uma instância da [view](/docs/{{version}}/views):
 
 	return view('auth.login');
 
