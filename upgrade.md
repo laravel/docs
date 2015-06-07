@@ -95,6 +95,22 @@ By providing backwards compatibility for the Laravel 5.0 folder structure, you m
 
 If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
 
+### Deprecations
+
+The following Laravel features have been deprecated and will be removed entirely with the release of Laravel 5.2 in December 2015:
+
+<div class="content-list" markdown="1">
+- Route filters have been deprecated in preference of [middleware](/docs/{{version}}/middleware).
+- The `Illuminate\Contracts\Queue\ShouldBeQueued` contract has been deprecated in favor of `Illuminate\Contracts\Queue\ShouldQueue`.
+- Iron.io "push queues" have been deprecated in favor of typical Iron.io queues and [queue listeners](/docs/{{version}}/queues#running-the-queue-listener).
+- The `Illuminate\Foundation\Bus\DispatchesCommands` trait has been deprecated and renamed to `Illuminate\Foundation\Bus\DispatchesJobs`.
+- `Illuminate\Container\BindingResolutionException` has been moved to `Illuminate\Contracts\Container\BindingResolutionException`.
+- The service container's `bindShared` method has been deprecated in favor of the `singleton` method.
+- The Eloquent and query builder `pluck` method has been deprecated and renamed to `value`.
+- The collection `fetch` method has been deprecated in favor of the `pluck` method.
+- The `array_fetch` helper has been deprecated in favor of the `array_pluck` method.
+</div>
+
 <a name="upgrade-5.0.16"></a>
 ## Upgrading To 5.0.16
 
