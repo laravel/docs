@@ -227,9 +227,9 @@ Nós acessamos os serviçs de autenticação do Laravel pelo [facade](/docs/{{ve
 
 O método `attempt` aceita um array de chave/valor no primeiro parâmetro. Os valores no array serão usados para procurar o usuário na sua tabela do banco de dados. Então, no exemplo acima, o usuário será procurado pelo valor da columa `email`. Se o usuário for encontrado, o valor da senha no banco de dados será comparado com o `password` passado pelo método no array. Se tudo correr bem, uma sessão será iniciada para esse usuário.
 
-O método `attempt`vai retornar `true` se a autenticação for feita. Em outro caso, `false` será retornado.
+O método `attempt` irá retornar `true` se a autenticação for feita. Em outro caso, `false` será retornado.
 
-O método `intended` levará o usuário de volta a URL que estava acessando antes do filtro de autenticação ser acionado. uma URI de retorno pode serdada a este método no caso de o destino pretendido não estiver disponível.
+O método `intended` levará o usuário de volta a URL que estava acessando antes do filtro de autenticação ser acionado. Uma URI de retorno pode ser dada a este método no caso de o destino pretendido não estiver disponível.
 
 Se você desejar, também pode ser adicionado condições extras para a consulta além do email e senha do usuário. Por exemplo, você pode verificar se o usuário está marcado como "active(ativo)":
 
@@ -241,7 +241,7 @@ Para deslogar os usuários de sua aplicação, vocẽ deve usaar o método `logo
 
      Auth::logout();
 
-> **Note:** Nesses exemplos, `email` não é uma opção obrigatório, é meramente usado como um exemplo. VOcê pode usar qualquer coluna correspondente ao nome do usuáario em seu banco de dados
+> **Nota:** Nesses exemplos, `email` não é uma opção obrigatório, é meramente usado como um exemplo. Você deve usar qualquer coluna que corresponda a um "username(nome de usuário)" em seu banco de dados.
 
 <a name="remembering-users"></a>
 ## Lembrando Usuários
@@ -263,7 +263,7 @@ Se você está "lembrando" usuários, pode usar o método `viaRemember` para det
 
 #### Uma instância do usuário autenticado
 
-se você precisar logar um usuário existente em sua aplicação, você pode chamar o método `login` com a instancia user. O objeto deve ser uma implementação do `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). Lembrando que o model `App\User` incluido com o Laravel já implementa essa interface:
+Se você precisar logar um usuário existente em sua aplicação, você pode chamar o método `login` com a instância user. O objeto deve ser uma implementação do `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). Lembrando que o model `App\User` incluido com o Laravel já implementa essa interface:
 
      Auth::login($user);
 
@@ -433,7 +433,7 @@ Após a senha estiver resetada, o usuário deverá estar logado na aplicação e
 
     protected $redirectTo = '/dashboard';
 
-> ##Aviso:## Por padrão, o token enviado por email expira depois de uma hora. Você mudar isso na opção `reminder.expire` no arquivo `config/auth.php`.
+> **Nota:** Por padrão, o token enviado por email expira depois de uma hora. Você pode mudar isso na opção `reminder.expire` no arquivo `config/auth.php`.
 
 <a name="social-authentication"></a>
 ## Autenticação Social
@@ -460,7 +460,7 @@ Você também precisa adicionar as credenciais de acesso para os serviços de OA
 
 ### Uso Básico
 
-Em seguida, você precisará de duas rotas: uma para redirecionar o usuário ao provider selecinado, e outra para receber o retorno depois da autenticação. Nos vamos acessar o Socialite usando o [facade](/docs/{{version}}/facades) `Socialite`:
+Em seguida, você precisará de duas rotas: uma para redirecionar o usuário ao provider selecionado, e outra para receber o retorno depois da autenticação. Nós vamos acessar o Socialite usando o [facade](/docs/{{version}}/facades) `Socialite`:
 
     <?php namespace App\Http\Controllers;
 
@@ -491,7 +491,7 @@ Em seguida, você precisará de duas rotas: uma para redirecionar o usuário ao 
         }
     }
 
-    O método `redirect` cuida de enviar o usuário para provider selecionado, enquanto o `user`vai receber a solicitação e recuperar as informações do usuário. Antes de redirecionar o usuário, você pode também setar os "escopos" na requisição usando o método `scope`. Esse método vai sobrescrever todos os escopos existentes:
+O método `redirect` cuida de enviar o usuário para provider selecionado, enquanto o `user` irá receber a solicitação e recuperar as informações do usuário. Antes de redirecionar o usuário, você pode também setar os "escopos" na requisição usando o método `scope`. Esse método vai sobrescrever todos os escopos existentes:
 
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
@@ -519,7 +519,7 @@ Uma vez que estiver o usuário instanciado, você pode pegar mais detalhes sobre
 <a name="adding-custom-authentication-drivers"></a>
 ## Adicionando Drivers de Auteticação Personalizado
 
-Se você não estiver usando o tradicional banco de dados relacional para gravar seus usuários, você pode precisar extender o Laravel com seu próprio driver. Nós usaremos o método `extend` no facade `Auth` para definir um driver personalizado. Você pode fazer essa chamada ao `extend`com um [service provider](/docs/{{version}}/providers):
+Se você não estiver usando o tradicional banco de dados relacional para gravar seus usuários, você pode precisar extender o Laravel com seu próprio driver. Nós usaremos o método `extend` no facade `Auth` para definir um driver personalizado. Você pode fazer essa chamada ao `extend` com um [service provider](/docs/{{version}}/providers):
 
     <?php namespace App\Providers;
 
@@ -557,7 +557,7 @@ Após registar o driver, você pode configurar o seu driver no arquivo de config
 
 ### O User Provider Contract
 
-As implementações no `Illuminate\Contracts\Auth\UserProvider` são somente responsáveis por uma implementação de `Illuminate\Contracts\Auth\Authenticatable` fora de um sistema de armazenamento persistente. como MySQL, Riak, etc. Essas duas interfaces habilitam o mecanismo de autenticação do Laraval para continuar funcionando independente de como os dados do usuário será salvo ou que tipo de classe é usada para representar.
+As implementações no `Illuminate\Contracts\Auth\UserProvider` são somente responsáveis por uma implementação de `Illuminate\Contracts\Auth\Authenticatable` fora de um sistema de armazenamento persistente, como MySQL, Riak, etc. Essas duas interfaces habilitam o mecanismo de autenticação do Laraval para continuar funcionando independente de como os dados do usuário serão salvos ou que tipo de classe é usada para representar.
 
 Vamos dar uma olhada no contract `Illuminate\Contracts\Auth\UserProvider`:
 
@@ -573,11 +573,11 @@ Vamos dar uma olhada no contract `Illuminate\Contracts\Auth\UserProvider`:
 
     }
 
-A função `retrieveById` recebe tipicamente uma chave repesentando o usuário, como um campo auto-increment ID de um banco de dados MySQL. A implementação `Authenticatetable` combiando o ID deve ser recuperado e retornado pelo método.
+A função `retrieveById` recebe tipicamente uma chave repesentando o usuário, como um campo auto-increment ID de um banco de dados MySQL. A implementação `Authenticatetable` combinando o ID deve ser recuperado e retornado pelo método.
 
 A função `retrieveByToken` recupera um usário pelo seu `$identificador` único e "lembrar meus dados", salvo em um campo `remember_token`. Tal como acontece o método anterior,  a implementação `Authenticatable` deve ser retornada.
 
-O método `updateRememberToken` atualiza o `$user` campo `remember_token`com o novo `$token`. O novo token pode ser atualizado, atribuido quando o "lembrar meus dados" for marcado no login, ou nulo quando o usuário deslogar.
+O método `updateRememberToken` atualiza o `$user` campo `remember_token` com o novo `$token`. O novo token pode ser atualizado, atribuido quando o "lembrar meus dados" for marcado no login, ou nulo quando o usuário deslogar.
 
 O método `retrieveByCredentials` recebe um array de credenciais passado para o método `Auth::attempt` ao tentar logar na aplicação. O método deve "query" (consultar) o armazenamento persistente para o usuário com essas credenciais. Tipicamente, esse método vai rodar uma consulta com uma condição "where" em `$credentials['username']`. O método deve então retornar uma implementação de `UserInterface`. **Esse método não deve tentar fazer qualquer validação ou autenticação.**
 
@@ -599,4 +599,4 @@ Agora que exploramos cada um dos métodos do `UserProvider`, vamos dar uma olhar
 
     }
 
-Essa interface é simples. O método `getAuthIdentifier` deve retornar o ID do usuário. no MySQL, novamente, isso seria a chave primária do usuário. O `getAuthPassword` retorna a senha do usuário. Essa interface habilita o sistema de autenticação para trabalhar com qualquer classe User, independentemente de ORM ou qualquer camada de abstração para banco de dados que você estiver usando. Por padrão, Laravel inclui uma classe `User` no diretório `app` que implementa essa interface, então você pode consultar para ter um exemplo de implementação
+Essa interface é simples. O método `getAuthIdentifier` deve retornar o ID do usuário. no MySQL, novamente, isso seria a chave primária do usuário. O `getAuthPassword` retorna a senha do usuário. Essa interface habilita o sistema de autenticação para trabalhar com qualquer classe User, independentemente de ORM ou qualquer camada de abstração para banco de dados que você estiver usando. Por padrão, Laravel inclui uma classe `User` no diretório `app` que implementa essa interface, então você pode consultar para ter um exemplo de implementação.
