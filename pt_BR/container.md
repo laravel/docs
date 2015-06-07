@@ -11,7 +11,7 @@
 <a name="introduction"></a>
 ## Introdução
 
-O service container do Laravel é uma ferramenta poderosa para gerenciamento das denpendências das suas classes e fazer injeção de dependência. Injetação de dependencia é um a frase bonita pra: as dependências das classes são "injetadas" via construtor ou, em alguns casos, nos métodos "setter".
+O service container do Laravel é uma ferramenta poderosa para gerenciamento das dependências das suas classes e fazer injeção de dependência. Injetação de dependencia é um a frase bonita pra: as dependências das classes são "injetadas" via construtor ou, em alguns casos, nos métodos "setter".
 
 Vamos ver um exemplo simples:
 
@@ -58,7 +58,7 @@ Um entendimento profundo do service container do Laravel é essencial para const
 ## Atrelando (Binding)
 
 Quase todos os atrelamentos de service container serão registrados dentro de um
-[service providers](/docs/{{version}}/providers), então, todos os exemplos irão demonstrar como usar o container nesse contexto. Entretanto, não é necessário atrelar classes ao container se você só precisa da interface. O container não precisa ser instruído a como construir esses objetos, desde qe ele possa automaticamente resolver o objeto "concreto" usando o serviço de reflexão do PHP.
+[service providers](/docs/{{version}}/providers), então, todos os exemplos irão demonstrar como usar o container nesse contexto. Entretanto, não é necessário atrelar classes ao container se você só precisa da interface. O container não precisa ser instruído a como construir esses objetos, desde que ele possa automaticamente resolver o objeto "concreto" usando o serviço de reflexão do PHP.
 
 Dentro de um service provider, você sempre tem acesso ao container através da variável da instância `$this->app`. Nós podemos registrar um atrelamento usando o método `bind`, passando a classe ou o nome da interface que nós queremos registrar dentro de um `Closure` (função anônima) que retorna uma instância da classe:
 
@@ -126,7 +126,7 @@ Você pode até passar um `Closure` ao método `give`:
 <a name="tagging"></a>
 ### Tagging
 
-Ocasionamente, você pode precisar resolver todas as dependência de atrelamento de uma certa "categoria". Por exemplo, talvez você esteja construindo um agregador de relatório que recebe um array de muitas implementações da interface `Report`. Depois de registrar a implementação de `Report`, você pode atribuí-la a uma tag usando o método `tag`:
+Ocasionalmente, você pode precisar resolver todas as dependência de atrelamento de uma certa "categoria". Por exemplo, talvez você esteja construindo um agregador de relatório que recebe um array de muitas implementações da interface `Report`. Depois de registrar a implementação de `Report`, você pode atribuí-la a uma tag usando o método `tag`:
 
 	$this->app->bind('SpeedReport', function () {
 		//
