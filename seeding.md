@@ -38,7 +38,7 @@ As an example, let's modify the `DatabaseSeeder` class which is included with a 
 	    public function run()
 	    {
 	        DB::table('users')->insert([
-	        	'name' => str_random(10);
+	        	'name' => str_random(10),
 	        	'email' => str_random(10).'@gmail.com',
 	        	'password' => bcrypt('secret'),
 	        ]);
