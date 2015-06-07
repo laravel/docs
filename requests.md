@@ -2,6 +2,7 @@
 
 - [Accessing The Request](#accessing-the-request)
 	- [Basic Request Information](#basic-request-information)
+	- [PSR-7 Requests](#psr7-requests)
 - [Retrieving Input](#retrieving-input)
 	- [Old Input](#old-input)
 	- [Cookies](#cookies)
@@ -89,6 +90,25 @@ The `method` method will return the HTTP verb for the request. You may also use 
 	if ($request->isMethod('post')) {
 		//
 	}
+
+<a name="psr7-requests"></a>
+### PSR-7 Requests
+
+The PSR-7 standard specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request, you will first need to install a few libraries. Laravel uses the Symfony HTTP Message Bridge component to convert typical Laravel requests and responses into PSR-7 compatible implementations:
+
+	composer require symfony/psr-http-message-bridge
+
+	composer require zendframework/zend-diactoros
+
+Once you have installed these libraries, you may obtain a PSR-7 request by simply type-hinting the request type on your route or controller:
+
+	use Psr\Http\Message\ServerRequestInterface;
+
+	Route::get('/', function (ServerRequestInterface $request) {
+		//
+	});
+
+If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
 
 <a name="retrieving-input"></a>
 ## Retrieving Input
