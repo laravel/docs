@@ -149,9 +149,22 @@ In this example, the user may pass a value for the option like so:
 
     php artisan email:send 1 --queue=default
 
-Of course, you may also assign default values to options:
+You may also assign default values to options:
 
     email:send {user} {--queue=default}
+
+#### Input Descriptions
+
+You may assign descriptions to input arguments and options by separating the parameter from the description using a colon:
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'email:send
+                            {user : The ID of the user}
+                            {--queue= : Whether the job should be queued}';
 
 <a name="retrieving-input"></a>
 ### Retrieving Input
