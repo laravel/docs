@@ -323,7 +323,7 @@ Supervisor is a process monitor for the Linux operating system, and will automat
 
 	sudo apt-get install supervisor
 
-Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors a `queue:listen` process:
+Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors a `queue:work` process:
 
 	[program:laravel-worker]
 	process_name=%(program_name)s_%(process_num)02d
