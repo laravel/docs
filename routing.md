@@ -154,6 +154,8 @@ You may also specify route names for controller actions:
 		'as' => 'profile', 'uses' => 'UserController@showProfile'
 	]);
 
+#### Route Groups & Named Routes
+
 If you are using [route groups](#route-groups), you may specify an `as` keyword in the route group attribute array, allowing you to set a common route name prefix for all routes within the group:
 
 	Route::group(['as' => 'admin::'], function () {
