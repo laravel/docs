@@ -9,7 +9,7 @@
 - [Serviço de Injeção](#service-injection)
 - [Extendendo o Blade](#extending-blade)
 
-<a name="blade-templating"></a>
+<a name="introduction"></a>
 ## Introdução
 
 Blade é um simples e poderoso mecanismo de templates fornecido com o Laravel. Diferentemente de outros mecanismos de templates PHP, o Blade não lhe restringe de usar puro PHP em suas views. Todas as views Blade são compiladas em PHP puro e armazenadas em cache até serem modificadas, e isso significa que usar templates Blade essenciamente não "pesam" sua aplicação. Todos os arquivos Blade usam a extensão `.blade.php` e tipicamente estão armazenados no diretório `resources/views`.
