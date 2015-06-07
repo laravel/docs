@@ -12,7 +12,7 @@
 ## Configuração
 
 
-O Laravel fornece uma API unificada para vários sistemas de cache. A configuração do cache do laravel fica em `config/cache.php`. Neste arquivo você pode especificar o driver que você gostaria de usar por padrão em toda a sua aplicação. O Laravel suporta ferramentas como [Memcached](http://memcached.org) e [Redis](http://redis.io) de uma maneira massa.
+O Laravel fornece uma API unificada para vários sistemas de cache. A configuração do cache do Laravel fica em `config/cache.php`. Neste arquivo você pode especificar o driver que você gostaria de usar por padrão em toda a sua aplicação. O Laravel suporta ferramentas como [Memcached](http://memcached.org) e [Redis](http://redis.io) de uma maneira massa.
 
 O arquivo de configuração do cache também contém várias outras opções que são documentadas dentro do arquivo, sendo assim, certifique-se de ler estas opções. Por padrão, o Laravel é configurado para usar o drive `file`, que armazena objetos serializados no sistema de arquivos. Para grandes aplicações, recomenda-se que você utilize um in-memory cache como Memcached ou APC. Você pode ter várias configurações de cache para o mesmo driver.
 
@@ -20,7 +20,7 @@ O arquivo de configuração do cache também contém várias outras opções que
 
 #### Banco de dados
 
-Quando estiver usando o drive `database`, você precisará criar uma tabela para os itens do cachê. Aqui temos um exemplo de `Schema` para a tabela:
+Quando estiver usando o driver `database`, você precisará criar uma tabela para os itens do cachê. Aqui temos um exemplo de `Schema` para a tabela:
 
 	Schema::create('cache', function($table) {
 		$table->string('key')->unique();
@@ -64,7 +64,7 @@ Para mais informações sobre como configurar o Redis, consulte esta [Página da
 <a name="obtaining-a-cache-instance"></a>
 ### Obtendo uma instância do Cache
 
-As [Contracts](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Factory` e `Illuminate\Contracts\Cache\Repository` fornecem acesso para os serviços de cache do Laravel. A contract `Factory` fornecem acesso para todos o sdrivers de cache definidos por sua aplicação. A contract `Repository` é tipicamente uma implementação do drive de cache padrão para sua aplicação especificado pelo seu arquivo de configuração de `cache`.
+As [Contracts](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Factory` e `Illuminate\Contracts\Cache\Repository` fornecem acesso para os serviços de cache do Laravel. A contract `Factory` fornecem acesso para todos os drivers de cache definidos por sua aplicação. A contract `Repository` é tipicamente uma implementação do drive de cache padrão para sua aplicação especificado pelo seu arquivo de configuração de `cache`.
 
 Por outro lado, você também pode usar a facade `Cache`, que é o que vamos utilizar em toda esta documentação. A facade `Cache` fornece convenientemente acesso elegante para as implementações subjacentes dos contratos de cache Laravel
 
@@ -186,7 +186,7 @@ Você pode remover itens do cache usando o método `forget` na facade `Cache`
 <a name="adding-custom-cache-drivers"></a>
 ## Adicionando um Driver de Cache Customizado
 
-Para extender o cache do Laravel com um driver customizado, nós usaremos o método `extend` da facade `Cache`, que é usado para vincular um driver resolver customizado para o gerenciador. Normalmente, isto é feito com um [service provider](/docs/{{version}}/providers).
+Para extender o cache do Laravel com um driver customizado, nós usaremos o método `extend` da facade `Cache`, que é usado para vincular um driver customizado para o gerenciador. Normalmente, isto é feito com um [service provider](/docs/{{version}}/providers).
 
 Por exemplo, para registrar um novo driver de cache com o nome "mongo":
 
@@ -223,9 +223,9 @@ Por exemplo, para registrar um novo driver de cache com o nome "mongo":
 
 O primeiro argumento passado para o método `extend` é o nome do driver. Isto corresponderá à sua opção escolhida para `driver` no arquivo de configuração `config/cache.php`. O segundo argumento é a Closure que deve retornar uma instância de `Illuminate\Cache\Repository`. Na Closure será passada a variável `$app`, que é a instancia de [service container](/docs/{{version}}/container).
 
-A chamada para `Cache::extend` poderia ser feita no método `boot` do `App\Providers\AppServiceProvider` que é fornecido com a aplicação Laravel, ou você pode criar seu próprio service provider para abrigar a extensão - Não se esquece de registrar o serviço no array de service providers em `config/app.php`
+A chamada para `Cache::extend` poderia ser feita no método `boot` do `App\Providers\AppServiceProvider` que é fornecido com a aplicação Laravel, ou você pode criar seu próprio service provider para abrigar a extensão - Não se esqueça de registrar o serviço no array de service providers em `config/app.php`
 
-Para criar seu cache de driver customizado, antes você precisa implementar a [contract](/docs/{{version}}/contracts) contract `Illuminate\Contracts\Cache\Store`. Então, sua implementação de cache MongoDB seria algo como isto:
+Para criar seu cache de driver customizado, antes você precisa implementar a [contract](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Store`. Então, sua implementação de cache MongoDB seria algo como isto:
 
 	<?php namespace App\Extensions;
 
