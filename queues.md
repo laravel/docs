@@ -8,6 +8,7 @@
 	- [Delayed Jobs](#delayed-jobs)
 	- [Dispatching Jobs From Requests](#dispatching-jobs-from-requests)
 - [Running The Queue Listener](#running-the-queue-listener)
+	- [Supervisor Configuration](#supervisor-configuration)
 	- [Daemon Queue Listener](#daemon-queue-listener)
 	- [Deploying With Daemon Queue Listeners](#deploying-with-daemon-queue-listeners)
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
@@ -314,6 +315,35 @@ In addition, you may specify the number of seconds to wait before polling for ne
 	php artisan queue:listen --sleep=5
 
 Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
+
+<a name="supervisor-configuration"></a>
+### Supervisor Configuration
+
+Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:listen` or `queue:work` commands if they fail. To install Supervisor on Ubuntu, you may use the following command:
+
+	sudo apt-get install supervisor
+
+Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors a `queue:listen` process:
+
+	[program:laravel-worker]
+	process_name=%(program_name)s_%(process_num)02d
+	command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3 --daemon
+	autostart=true
+	autorestart=true
+	user=forge
+	numprocs=8
+	redirect_stderr=true
+	stdout_logfile=/home/forge/app.com/worker.log
+
+In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
+
+	supervisorctl reread
+
+	supervisorctl update
+
+	supervisorctl start laravel-worker
+
+For more information on configuring and using Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html). Alternatively, you may use [Laravel Forge](https://forge.laravel.com) to automatically configure and manage your Supervisor configuration from a convenient web interface.
 
 <a name="daemon-queue-listener"></a>
 ### Daemon Queue Listener
