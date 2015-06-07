@@ -1,27 +1,27 @@
 # Contracts
 
 - [Introdução](#introduction)
-- [Por que Contratos?](#why-contracts)
-- [Referência dos Contratos](#contract-reference)
-- [Como Utilizar Contratos](#how-to-use-contracts)
+- [Por que Contracts?](#why-contracts)
+- [Referência das Contracts](#contract-reference)
+- [Como Utilizar Contracts](#how-to-use-contracts)
 
 <a name="introduction"></a>
 ## Introdução
 
-Os Contratos do Laravel são uma série de *interfaces* que definem os serviços essenciais fornecidos pelo framework. Por exemplo, o contrato `Illuminate\Contracts\Queue\Queue` define os metodos para trabalhar com filas, enquanto o contrato `Illuminate\Contracts\Mail\Mailer` define os métodos necessários para o envio de emails.
+As Contracts do Laravel são uma série de *interfaces* que definem os serviços essenciais fornecidos pelo framework. Por exemplo, a contract `Illuminate\Contracts\Queue\Queue` define os metodos para trabalhar com filas, enquanto a contract `Illuminate\Contracts\Mail\Mailer` define os métodos necessários para o envio de emails.
 
-Cada contrato possui uma implementação correspondente disponibilizada pelo framework. Por exemplo, o Laravel disponibiliza uma implementação de *queue* para inúmeros *drivers*, e uma implementação do *mailer* fornecida pelo [SwiftMailer](http://swiftmailer.org/).
+Cada contract possui uma implementação correspondente disponibilizada pelo framework. Por exemplo, o Laravel disponibiliza uma implementação de *queue* para inúmeros *drivers*, e uma implementação do *mailer* fornecida pelo [SwiftMailer](http://swiftmailer.org/).
 
-Todos os contratos do Laravel estão em um [repositório no GitHub](https://github.com/illuminate/contracts). Isto fornece um ponto de referência rápida para todos os contratos disponíveis, assim como um pacote único, dissociado dos demais, que pode ser utilizado por desenvolvedores de pacotes.
+Todas as contracts do Laravel estão em um [repositório no GitHub](https://github.com/illuminate/contracts). Isto fornece um ponto de referência rápida para todas as contracts disponíveis, assim como um pacote único, dissociado dos demais, que pode ser utilizado por desenvolvedores de pacotes.
 
-### Contratos Vs. Facades
+### Contracts Vs. Facades
 
-As [facades](/docs/{{version}}/facades) do Laravel fornecem um modo simples de utilizar os serviços do framework, sem a necessidade de explicitar e resolver os contratos através do *service container*. Entretanto, utilizar contratos permite que você defina explicitamente as dependências de sua classe. Para a maioria das aplicações as *Facades* são o sufuciente. Porém, caso seja necessário o baixo acoplamente fornecido pelos contratos, continue lendo!
+As [facades](/docs/{{version}}/facades) do Laravel fornecem um modo simples de utilizar os serviços do framework, sem a necessidade de explicitar e resolver as contracts através do *service container*. Entretanto, utilizar contracts permite que você defina explicitamente as dependências de sua classe. Para a maioria das aplicações as *Facades* são o sufuciente. Porém, caso seja necessário o baixo acoplamente fornecido pelos contracts, continue lendo!
 
 <a name="why-contracts"></a>
-## Por que Contratos?
+## Por que Contracts?
 
-Você pode ter muitas perguntas a respeito de contratos. Por que utilizar interfaces? Utilizar interfaces não é mais complicado? Vamos exemplificar as razões para o uso de *interfaces* para os seguintes tópicos: Simplicidade e Baixo Acoplamento.
+Você pode ter muitas perguntas a respeito de contracts. Por que utilizar interfaces? Utilizar interfaces não é mais complicado? Vamos exemplificar as razões para o uso de *interfaces* para os seguintes tópicos: Simplicidade e Baixo Acoplamento.
 
 ### Baixo Acoplamento
 
@@ -86,21 +86,21 @@ Do mesmo modo, se for necessário alterar a atual tecnologia de *cache* (Memcach
 		}
 	}
 
-Agora o código não está vinculado a um *vendor* específico, nem mesmo ao Laravel. Já que o pacote de contratos não contém implementações e dependências, você pode facilmente escrever uma implementação alternativa para qualquer um dos contratos, possibilitando que você troque a implementação do *cache* sem que seja necessário alterações em seu código.
+Agora o código não está vinculado a um *vendor* específico, nem mesmo ao Laravel. Já que o pacote de contracts não contém implementações e dependências, você pode facilmente escrever uma implementação alternativa para qualquer uma das contracts, possibilitando que você troque a implementação do *cache* sem que seja necessário alterações em seu código.
 
 ### Simplicidade
 
-Quando todos os serviços do Laravel estão nitidamente definidos em *interfaces* simples, é muito fácil determinar a funcionalidade oferecida pelo serviço. **Os contatos servem como uma documentação sucinta dos recursos do framework.**
+Quando todos os serviços do Laravel estão nitidamente definidos em *interfaces* simples, é muito fácil determinar a funcionalidade oferecida pelo serviço. **As contracts servem como uma documentação sucinta dos recursos do framework.**
 
 Além disso, quando você depende de *interfaces* simples, o entendimento e a manutenção do seu código são mais fáceis. Ao invés de rastrear quais métodos estão disponíveis dentro de uma extensa e complexa classe, você pode consultar uma *interface* simples e limpa.
 
 <a name="contract-reference"></a>
-## Referência dos Contratos
+## Referência das Contracts
 
-Esta é uma referência para a maiorias dos Contratos do Laravel, assim como suas respectivas *Facades*:
+Esta é uma referência para a maiorias das Contracts do Laravel, assim como suas respectivas *Facades*:
 
 
-Contrato  |  Facade
+Contract  |  Facade
 ------------- | -------------
 [Illuminate\Contracts\Auth\Guard](https://github.com/illuminate/contracts/blob/master/Auth/Guard.php)  |  Auth
 [Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)  |  Password
@@ -137,11 +137,11 @@ Contrato  |  Facade
 [Illuminate\Contracts\View\View](https://github.com/illuminate/contracts/blob/master/View/View.php) | &nbsp;
 
 <a name="how-to-use-contracts"></a>
-## Como Utilizar Contratos
+## Como Utilizar Contracts
 
-Então, como você consegue uma implementação de um contrato? Na verdade é bastante simples.
+Então, como você consegue uma implementação de uma contract? Na verdade é bastante simples.
 
-Muitos tipos de classes no Laravel são resolvidos através do [service container](/docs/{{version}}/container), incluindos os *controllers*, *event listeners*, *middlewares*, *queue jobs*, e até *route Closures*. Logo, para obter a implementação de um contrato, basta você "informar" a interface desejada no construtor da classe que está sendo resolvida.
+Muitos tipos de classes no Laravel são resolvidos através do [service container](/docs/{{version}}/container), incluindos os *controllers*, *event listeners*, *middlewares*, *queue jobs*, e até *route Closures*. Logo, para obter a implementação de uma contract, basta você "informar" a interface desejada no construtor da classe que está sendo resolvida.
 
 Por exemplo, considere o seguinte *event listener*:
 
