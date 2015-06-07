@@ -337,11 +337,11 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
 
 In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
 
-	supervisorctl reread
+	sudo supervisorctl reread
 
-	supervisorctl update
+	sudo supervisorctl update
 
-	supervisorctl start laravel-worker
+	sudo supervisorctl start laravel-worker
 
 For more information on configuring and using Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html). Alternatively, you may use [Laravel Forge](https://forge.laravel.com) to automatically configure and manage your Supervisor configuration from a convenient web interface.
 
