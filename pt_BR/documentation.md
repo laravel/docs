@@ -41,7 +41,7 @@
     - [Filas](/docs/{{version}}/queues)
     - [Redis DB](/docs/{{version}}/redis)
     - [Sessão](/docs/{{version}}/session)
-    - [Tarefas SSH](/docs/{{version}}/envoy)
+    - [Envoy / Tarefas SSH](/docs/{{version}}/envoy)
     - [Agendamento de Tarefas](/docs/{{version}}/scheduling)
     - [Testes](/docs/{{version}}/testing)
     - [Validação](/docs/{{version}}/validation)
