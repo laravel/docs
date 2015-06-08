@@ -513,11 +513,19 @@ The `keys` method returns all of the collection's keys:
 <a name="method-last"></a>
 #### `last()` {#collection-method}
 
-The `last` method returns the last item in the collection:
+The `last` method returns the last element in the collection that passes a given truth test:
 
-	collect([1, 2, 3, 4, 5])->last();
+	collect([1, 2, 3, 4])->last(function ($key, $value) {
+		return $value < 3;
+	});
 
-	// 5
+	// 2
+
+You may also call the `last` method with no arguments to get the last element in the collection. If the collection is empty, `null` is returned:
+
+	collect([1, 2, 3, 4])->last();
+
+	// 4
 
 <a name="method-map"></a>
 #### `map()` {#collection-method}
