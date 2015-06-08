@@ -9,9 +9,9 @@
 <a name="introduction"></a>
 ## Introdução
 
-HTTP middleware fornece um mecanismo conveniente para filtragem das requisições HTTP que entram em sua aplicação. Por exemplo, Laravel inclui um middleware que verifica se o usuário de sua aplicação está autenticado. Se o usuário não estiver autenticado, o middleware irá redirecionar o usuário para a tela de login. No entanto, se o usuário é autenticado, o middleware irá permitir que a requisição siga em frente na aplicação.
+HTTP middleware fornece um mecanismo conveniente para filtragem das requisições HTTP que entram em sua aplicação. Por exemplo, Laravel inclui um middleware que verifica se o usuário de sua aplicação está autenticado. Se o usuário não estiver autenticado, o middleware irá redirecionar o usuário para a tela de login. No entanto, se o usuário é autenticado, o middleware irá permitir que a requisição siga dentro da aplicação.
 
-Claro que middlewares adicionais podem ser escritos para realizar uma variedade de tarefas além da autenticação. Um CORS middleware pode ser responsável por adicionar os headers apropriados para todas as responses que saem da sua aplicação. Um logging middleware pode logar todas as requisições que chegam em sua aplicação, e assim por diante.
+Claro, middlewares adicionais podem ser escritos para realizar uma variedade de tarefas além da autenticação. Um CORS middleware pode ser responsável por adicionar os headers apropriados para todas as responses que saem da sua aplicação. Um logging middleware pode logar todas as requisições que chegam em sua aplicação.
 
 Existem vários middlewares já inclusos no framework Laravel, incluindo middleware para manutenção, autenticação, proteção CSRF, entre outros. Todos esses middlewares estão localizados no diretório `app/Http/Middleware`.
 
@@ -25,7 +25,7 @@ Para criar um novo middleware, use o comando `make:middleware` do Artisan:
 Este comando irá colocar a nova classe `OldMiddleware` em seu diretório `app/Http/Middleware`. Neste middleware, vamos somente permitir o acesso a uma rota se o `age` fornecido for maior que 200. Caso contrário, iremos redirecionar os usuários de volta a URI "home".
 
 	<?php namespace App\Http\Middleware;
-	
+
 	use Closure;
 
 	class OldMiddleware
@@ -57,7 +57,7 @@ Como você pode ver, se o `age` fornecido for menor que `200`, o middleware irá
 Se um middleware roda antes ou depois de uma request, depende do próprio middleware. Por exemplo, o middleware a seguir performaria alguma tarefa **antes** da request ser tratada pela aplicação:
 
 	<?php namespace App\Http\Middleware;
-	
+
 	use Closure;
 	use Illuminate\Contracts\Routing\Middleware;
 
@@ -74,7 +74,7 @@ Se um middleware roda antes ou depois de uma request, depende do próprio middle
 No entanto, este middleware executaria uma tarefa **depois** da request ser tratada pela aplicação:
 
 	<?php namespace App\Http\Middleware;
-	
+
 	use Closure;
 	use Illuminate\Contracts\Routing\Middleware;
 
@@ -99,7 +99,7 @@ Se você quer que um middleware seja executado durante qualquer requisição HTT
 
 ### Atribuindo Middlewares às Rotas
 
-Se você gostaria de atribuir um middleware a uma rota específica, você deve primeiro atribuir uma chave para o middleware no seu arquivo `app/Http/Kernel.php`. Por padrão, a propriedade `$routeMiddleware` dessa classe contém as entradas para o middleware incluido no Laravel. Para adicionar a sua própria, basta adicioná-la a essa lista e atribuir a chave de sua escolha. Por exemplo:
+Se você gostaria de atribuir middleware a rotas específicas, você deve primeiro atribuir uma chave para o middleware no seu arquivo `app/Http/Kernel.php`. Por padrão, a propriedade `$routeMiddleware` dessa classe contém as entradas para o middleware incluido no Laravel. Para adicionar a sua própria, basta adicioná-la a essa lista e atribuir a chave de sua escolha. Por exemplo:
 
 	// Within App\Http\Kernel Class...
 
@@ -123,7 +123,7 @@ Middleware pode também receber parâmetros personalizados adicionais. Por exemp
 Parâmetros adicionais do middleware serão passados para o middleware depois do argumento `$next`:
 
 	<?php namespace App\Http\Middleware;
-	
+
 	use Closure;
 
 	class RoleMiddleware
@@ -150,13 +150,13 @@ Parâmetros adicionais do middleware serão passados para o middleware depois do
 Parâmetros do Middleware podem ser especificados na definição de uma rota separando o nome do middleware e seus parâmetros com `:`. Múltiplos parâmetros devem ser separados por vírgulas:
 
 	Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
-
+		//
 	}]);
 
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
 
-Alguma vezes um middleware pode precisar realizar algum trabalho depois do HTTP response já ter sido enviado ao browser. Por exemplo, o "session" middleware incluído no Laravel escreve os dados da sessão para armazenamento _depois_ da resposta ter sido enviada ao navegador. Para conseguir isso, defina o middleware como "terminable" por meio da implementação do contrato `Illuminate\Contracts\Routing\TerminableMiddleware`:
+Alguma vezes um middleware pode precisar realizar algum trabalho depois do HTTP response já ter sido enviado ao browser. Por exemplo, o "session" middleware incluído no Laravel escreve os dados da sessão para armazenamento _depois_ da resposta ter sido enviada ao navegador. Para conseguir fazer isso, defina o middleware como "terminable" por meio da implementação do contrato `Illuminate\Contracts\Routing\TerminableMiddleware`:
 
 	<?php namespace Illuminate\Session\Middleware;
 
