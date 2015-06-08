@@ -5,7 +5,7 @@
 	- [Atrelando Interfaces Para Implementações](#binding-interfaces-to-implementations)
 	- [Atrelamento Contextual](#contextual-binding)
 	- [Tagging](#tagging)
-- [Resolving](#resolving)
+- [Resolvendo Atrelamentos](#resolving)
 - [Eventos do Container](#container-events)
 
 <a name="introduction"></a>
@@ -198,7 +198,7 @@ O container irá automaticamente injetar a dependência que ele resolveu para su
 <a name="container-events"></a>
 ## Eventos do Container
 
-O service container lança um evento toda vez que resolve um objeto. Você pode escutar esses evento usando o método `resolving`:
+O service container lança um evento toda vez que resolve um objeto. Você pode escutar esses eventos usando o método `resolving`:
 
 	$this->app->resolving(function ($object, $app) {
 		// Called when container resolves object of any type...
