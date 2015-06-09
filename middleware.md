@@ -59,9 +59,8 @@ Whether a middleware runs before or after a request depends on the middleware it
 	<?php namespace App\Http\Middleware;
 
 	use Closure;
-	use Illuminate\Contracts\Routing\Middleware;
 
-	class BeforeMiddleware implements Middleware
+	class BeforeMiddleware
 	{
 		public function handle($request, Closure $next)
 		{
@@ -76,9 +75,8 @@ However, this middleware would perform its task **after** the request is handled
 	<?php namespace App\Http\Middleware;
 
 	use Closure;
-	use Illuminate\Contracts\Routing\Middleware;
 
-	class AfterMiddleware implements Middleware
+	class AfterMiddleware
 	{
 		public function handle($request, Closure $next)
 		{
@@ -156,14 +154,13 @@ Middleware parameters may be specified when defining the route by separating the
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
 
-Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, define the middleware as "terminable" by implementing the `Illuminate\Contracts\Routing\TerminableMiddleware` contract:
+Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, define the middleware as "terminable" by adding a `terminate` method to the middleware:
 
 	<?php namespace Illuminate\Session\Middleware;
 
 	use Closure;
-	use Illuminate\Contracts\Routing\TerminableMiddleware;
 
-	class StartSession implements TerminableMiddleware
+	class StartSession
 	{
 		public function handle($request, Closure $next)
 		{
@@ -176,4 +173,4 @@ Sometimes a middleware may need to do some work after the HTTP response has alre
 		}
 	}
 
-As you can see, in addition to defining a `handle` method, the `TerminableMiddleware` contract requires a `terminate` method. This method receives both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
+The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
