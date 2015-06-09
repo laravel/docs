@@ -71,8 +71,8 @@ An event class is simply a data container which holds the information related to
 
 As you can see, this event class contains no special logic. It is simply a container for the `Podcast` object that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function.
 
-<a name="defining-event-listeners"></a>
-## Defining Event Listeners
+<a name="defining-listeners"></a>
+## Defining Listeners
 
 Next, let's take a look at the listener for our example event. Event listeners receive the event instance in their `handle` method. The `event:generate` command will automatically import the proper event class and type-hint the event on the `handle` method. Within the `handle` method, you may perform any logic necessary to respond to the event.
 
@@ -163,8 +163,6 @@ If you need to access the underlying queue job's `delete` and `release` methods 
 ## Firing Events
 
 To fire an event, you may use the `Event` [facade](/docs/{{version}}/facades), passing an instance of the event to the `fire` method. The `fire` method will dispatch the event to all of its registered listeners:
-
-	event(new PodcastWasPurchased($podcast));
 
 	<?php namespace App\Http\Controllers;
 
