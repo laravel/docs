@@ -354,12 +354,12 @@ Next, a table must be created to store the password reset tokens. The migration 
 Laravel includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords. However, you will need to define routes to point requests to this controller:
 
     // Password reset link request routes...
-    Route::get('password/email', 'PasswordController@getEmail');
-    Route::post('password/email', 'PasswordController@postEmail');
+    Route::get('password/email', 'Auth\PasswordController@getEmail');
+    Route::post('password/email', 'Auth\PasswordController@postEmail');
 
     // Password reset routes...
-    Route::get('password/reset/{token}', 'PasswordController@getReset');
-    Route::post('password/reset', 'PasswordController@postReset');
+    Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
+    Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 <a name="resetting-views"></a>
 ### Views
