@@ -107,6 +107,12 @@ Likewise, the `app/Handlers` directory has been renamed to `app/Listeners` and n
 
 By providing backwards compatibility for the Laravel 5.0 folder structure, you may upgrade your applications to Laravel 5.1 and slowly upgrade your events and commands to their new locations when it is convenient for you or your team.
 
+### Tests
+
+Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
+
+	protected $baseUrl = 'http://localhost';
+
 ### Amazon Web Services SDK
 
 If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
