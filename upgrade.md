@@ -105,7 +105,7 @@ By providing backwards compatibility for the Laravel 5.0 folder structure, you m
 
 ### Tests
 
-Add the protected `$baseUrl` property to the `tests/TestCase` class:
+Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 
 	protected $baseUrl = 'http://localhost';
 
