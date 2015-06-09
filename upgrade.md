@@ -111,6 +111,10 @@ By providing backwards compatibility for the Laravel 5.0 folder structure, you m
 
 If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
 
+### Service Providers
+
+To use the new Broadcasting Events, 'Illuminate\Broadcasting\BroadcastServiceProvider' must be added to the providers array in 'app.php'
+
 ### Deprecations
 
 The following Laravel features have been deprecated and will be removed entirely with the release of Laravel 5.2 in December 2015:
