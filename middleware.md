@@ -39,7 +39,7 @@ This command will place a new `OldMiddleware` class within your `app/Http/Middle
 		 */
 		public function handle($request, Closure $next)
 		{
-			if ($request->input('age') < 200) {
+			if ($request->input('age') <= 200) {
 				return redirect('home');
 			}
 
