@@ -1,28 +1,28 @@
 # Service Container
 
-- [Introduzione](#introduzione)
-- [Utilizzo Base](#utilizzo-base)
-- [Legare Interfacce A Implementazioni](#legare-interfacce-a-implementazioni)
-- [Binding Contestuale](#binding-contestuale)
-- [Tagging](#tagging)
-- [Applicazioni Pratiche](#applicazioni-pratiche)
-- [Eventi Del Container](#eventi-del-container)
+- [Introduction](#introduction)
+- [Binding](#binding)
+	- [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
+	- [Contextual Binding](#contextual-binding)
+	- [Tagging](#tagging)
+- [Resolving](#resolving)
+- [Container Events](#container-events)
 
-<a name="introduzione"></a>
-## Introduzione
+<a name="introduction"></a>
+## Introduction
 
-Il service container di Laravel è un potente strumento per gestire le dipendenze di una classe. Dependency injection è un parolone che sostanzialmente significa questo: le dipendenze di una classe sono "iniettate" nella classe stessa tramite il costruttore o, in alcuni casi, dei metodi "setter".
+The Laravel service container is a powerful tool for managing class dependencies and performing dependency injection. Dependency injection is a fancy phrase that essentially means this: class dependencies are "injected" into the class via the constructor or, in some cases, "setter" methods.
 
-Ecco un esempio:
+Let's look at a simple example:
 
-	<?php namespace App\Handlers\Commands;
+	<?php namespace App\Jobs;
 
 	use App\User;
-	use App\Commands\PurchasePodcast;
 	use Illuminate\Contracts\Mail\Mailer;
+	use Illuminate\Contracts\Bus\SelfHandling;
 
-	class PurchasePodcastHandler {
-
+	class PurchasePodcast implements SelfHandling
+	{
 		/**
 		 * The mailer implementation.
 		 */
@@ -42,74 +42,129 @@ Ecco un esempio:
 		/**
 		 * Purchase a podcast.
 		 *
-		 * @param  PurchasePodcastCommand  $command
 		 * @return void
 		 */
-		public function handle(PurchasePodcastCommand $command)
+		public function handle()
 		{
 			//
 		}
-
 	}
 
-In questo esempio, il command handler `PurchasePodcast` ha bisogno di inviare delle e-mail quando un podcast viene acquistato. Perciò viene **iniettato** un servizio in grado di inviare e-mail. Grazie a questa iniezione, hai la possibilità di sostituire tale servizio quando vuoi con un'altra implementazione. Inoltre semplifica la "simulazione" o creazione di finte implementazioni del mailer durante il test della tua applicazione.
+In this example, the `PurchasePodcast` job needs to send e-mails when a podcast is purchased. So, we will **inject** a service that is able to send e-mails. Since the service is injected, we are able to easily swap it out with another implementation. We are also able to easily "mock", or create a dummy implementation of the mailer when testing our application.
 
-Una profonda comprensione del service container di Laravel è essenziale per creare applicazioni grandi e potenti, ed è ugualmente necessaria per contribuire al core di Laravel stesso.
+A deep understanding of the Laravel service container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
 
-<a name="utilizzo-base"></a>
-## Utilizzo Base
+<a name="binding"></a>
+## Binding
 
-### Binding
+Almost all of your service container bindings will be registered within [service providers](/docs/{{version}}/providers), so all of these examples will demonstrate using the container in that context. However, there is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed how to build these objects, since it can automatically resolve such "concrete" objects using PHP's reflection services.
 
-Quasi tutti i binding vengono registrati all'interno dei [service provider](/provider), perciò tutti i seguenti esempi dimostrano come usare il container in quel contesto. Ad ogni modo, se hai bisogno di un'istanza del container in qualsiasi altro punto della tua applicazione, ad esempio una factory, puoi effettuare il type-hinting dell'interfaccia `Illuminate\Contracts\Container\Container` e un'istanza del container viene automaticamente iniettata per te. In alternativa, puoi usare il facade `App` per accedere al container.
+Within a service provider, you always have access to the container via the `$this->app` instance variable. We can register a binding using the `bind` method, passing the class or interface name that we wish to register along with a `Closure` that returns an instance of the class:
 
-#### Registrare Un Resolver Base
+	$this->app->bind('HelpSpot\API', function ($app) {
+		return new HelpSpot\API($app['HttpClient']);
+	});
 
-All'interno del service provider, puoi sempre accedere al container tramite la proprietà `$this->app`.
+Notice that we receive the container itself as an argument to the resolver. We can then use the container to resolve sub-dependencies of the object we are building.
 
-Esistono molti modi con cui il service container può registrare le dipendenze, come richiamare delle callback (Closure) e legare le interfacce alle relative implementazioni. Un resolver di Closure viene registrato nel container con una chiave (di solito il nome di una classe) e una Closure che restituisce un qualche valore:
+#### Binding A Singleton
 
-	$this->app->bind('FooBar', function($app)
-	{
+The `singleton` method binds a class or interface into the container that should only be resolved one time, and then that same instance will be returned on subsequent calls into the container:
+
+	$this->app->singleton('FooBar', function ($app) {
 		return new FooBar($app['SomethingElse']);
 	});
 
-#### Registrare Un Singleton
+#### Binding Instances
 
-A volte potresti voler registrare qualcosa nel container che dovrebbe essere istanziato solo una volta, e la stessa istanza dovrebbe essere restituita in tutte le seguenti chiamate al container:
-
-	$this->app->singleton('FooBar', function($app)
-	{
-		return new FooBar($app['SomethingElse']);
-	});
-
-#### Registrare Un'Istanza Nel Container
-
-Puoi anche registrare nel container un oggetto già istanziato usando il metodo `instance`. Così facendo l'istanza fornita viene sempre restituita nelle successive chiamate al container:
+You may also bind an existing object instance into the container using the `instance` method. The given instance will always be returned on subsequent calls into the container:
 
 	$fooBar = new FooBar(new SomethingElse);
 
 	$this->app->instance('FooBar', $fooBar);
 
-### Risoluzioni
+<a name="binding-interfaces-to-implementations"></a>
+### Binding Interfaces To Implementations
 
-Esistono diversi modi per risolvere (o istanziare) qualcosa registrato nel container. Per prima cosa puoi usare il metodo `make`:
+A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, let's assume we have an `EventPusher` interface and a `RedisEventPusher` implementation. Once we have coded our `RedisEventPusher` implementation of this interface, we can register it with the service container like so:
+
+	$this->app->bind('App\Contracts\EventPusher', 'App\Services\RedisEventPusher');
+
+This tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in a constructor, or any other location where dependencies are injected by the service container:
+
+	use App\Contracts\EventPusher;
+
+	/**
+	 * Create a new class instance.
+	 *
+	 * @param  EventPusher  $pusher
+	 * @return void
+	 */
+	public function __construct(EventPusher $pusher)
+	{
+		$this->pusher = $pusher;
+	}
+
+<a name="contextual-binding"></a>
+### Contextual Binding
+
+Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, when our system receives a new Order, we may want to send an event via [PubNub](http://www.pubnub.com/) rather than Pusher. Laravel provides a simple, fluent interface for defining this behavior:
+
+	$this->app->when('App\Handlers\Commands\CreateOrderHandler')
+	          ->needs('App\Contracts\EventPusher')
+	          ->give('App\Services\PubNubEventPusher');
+
+You may even pass a Closure to the `give` method:
+
+	$this->app->when('App\Handlers\Commands\CreateOrderHandler')
+	          ->needs('App\Contracts\EventPusher')
+	          ->give(function () {
+	          		// Resolve dependency...
+	          	});
+
+<a name="tagging"></a>
+### Tagging
+
+Occasionally, you may need to resolve all of a certain "category" of binding. For example, perhaps you are building a report aggregator that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:
+
+	$this->app->bind('SpeedReport', function () {
+		//
+	});
+
+	$this->app->bind('MemoryReport', function () {
+		//
+	});
+
+	$this->app->tag(['SpeedReport', 'MemoryReport'], 'reports');
+
+Once the services have been tagged, you may easily resolve them all via the `tagged` method:
+
+	$this->app->bind('ReportAggregator', function ($app) {
+		return new ReportAggregator($app->tagged('reports'));
+	});
+
+<a name="resolving"></a>
+## Resolving
+
+There are several ways to resolve something out of the container. First, you may use the `make` method, which accepts the name of the class or interface you wish to resolve:
 
 	$fooBar = $this->app->make('FooBar');
 
-Oppure puoi accedere al container come se fosse un array, dal momento che implementa l'interfaccia `ArrayAccess`:
+Secondly, you may access the container like an array, since it implements PHP's `ArrayAccess` interface:
 
 	$fooBar = $this->app['FooBar'];
 
-Infine, ma molto importante, puoi semplicemente fare il "type-hint" di una dipendenza nel costruttore di una classe risolta in automatico dal container, come i controller, gli event listener, i queue job, i filtri e altro ancora. In questo modo il container inietta automaticamente le dipendenze:
+Lastly, but most importantly, you may simply "type-hint" the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [queue jobs](/docs/{{version}}/queues), [middleware](/docs/{{version}}/middleware), and more. In practice, this is how most of your objects are resolved by the container.
+
+The container will automatically inject dependencies for the classes it resolves. For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:
 
 	<?php namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
 	use App\Users\Repository as UserRepository;
 
-	class UserController extends Controller {
-
+	class UserController extends Controller
+	{
 		/**
 		 * The user repository instance.
 		 */
@@ -136,186 +191,19 @@ Infine, ma molto importante, puoi semplicemente fare il "type-hint" di una dipen
 		{
 			//
 		}
-
 	}
 
-<a name="legare-interfacce-a-implementazioni"></a>
-## Legare Interfacce A Implementazioni
+<a name="container-events"></a>
+## Container Events
 
-### Iniettare Dipendenze Concrete
+The service container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
 
-Una funzionalità molto potente del service container è la sua abilità nel legare un interfaccia ad una data implementazione. Per esempio, supponi che la tua applicazione integri [Pusher](https://pusher.com), il servizio web per inviare e ricevere eventi in tempo reale. Se usi l'SDK PHP di Pusher puoi iniettare un istanza del suo client all'interno di una classe:
-
-	<?php namespace App\Handlers\Commands;
-
-	use App\Commands\CreateOrder;
-	use Pusher\Client as PusherClient;
-
-	class CreateOrderHandler {
-
-		/**
-		 * The Pusher SDK client instance.
-		 */
-		protected $pusher;
-
-		/**
-		 * Create a new order handler instance.
-		 *
-		 * @param  PusherClient  $pusher
-		 * @return void
-		 */
-		public function __construct(PusherClient $pusher)
-		{
-			$this->pusher = $pusher;
-		}
-
-		/**
-		 * Execute the given command.
-		 *
-		 * @param  CreateOrder  $command
-		 * @return void
-		 */
-		public function execute(CreateOrder $command)
-		{
-			//
-		}
-
-	}
-
-In questo esempio fai bene a iniettare la dipendenza della classe, però stai forzando la tua applicazione ad usare l'SDK di Pusher. Se i metodi dell'SDK di Pusher cambiano o vuoi rimpiazzare Pusher del tutto, sei costretto a cambiare tutto il codice di `CreateOrderHandler`.
-
-### Programmare Un'Interfaccia
-
-Per "isolare" `CreateOrderHandler` dalle modifiche dell'event pushing, puoi definire un'interfaccia `EventPusher` e un'implementazione `PusherEventPusher`:
-
-	<?php namespace App\Contracts;
-
-	interface EventPusher {
-
-		/**
-		 * Push a new event to all clients.
-		 *
-		 * @param  string  $event
-		 * @param  array  $data
-		 * @return void
-		 */
-		public function push($event, array $data);
-
-	}
-
-Una volta scritto il codice per `PusherEventPusher` che implementa l'interfaccia creata, puoi registrarlo nel service container in questo modo:
-
-	$this->app->bind('App\Contracts\EventPusher', 'App\Services\PusherEventPusher');
-
-Questo suggerisce al container che deve iniettare `PusherEventPusher` quando una classe ha bisogno di un'implementazione per l'interfaccia `EventPusher`. Ora puoi fare il type-hint dell'interfaccia `EventPusher` nel costruttore:
-
-		/**
-		 * Create a new order handler instance.
-		 *
-		 * @param  EventPusher  $pusher
-		 * @return void
-		 */
-		public function __construct(EventPusher $pusher)
-		{
-			$this->pusher = $pusher;
-		}
-
-<a name="binding-contestuale"></a>
-## Binding Contestuale
-
-A volte potresti avere due classi che usano la stessa interfaccia, ma volere iniettare due implementazioni diverse. Per esempio quando il tuo sistema riceve un nuovo Order, potresti voler inviare un evento tramite [PubNub](http://www.pubnub.com/) piuttosto che Pusher. Laravel fornisce un'interfaccia semplice e armoniosa per definire tale comportamento:
-
-	$this->app->when('App\Handlers\Commands\CreateOrderHandler')
-	          ->needs('App\Contracts\EventPusher')
-	          ->give('App\Services\PubNubEventPusher');
-
-<a name="tagging"></a>
-## Tagging
-
-Di tanto in tanto potresti aver bisogno di risolvere tutti i binding di una certa "categoria". Ad esempio immagina di costruire un aggregatore di report che riceve un array con molte implementazioni diverse dell'interfaccia `Report`. Dopo aver registrato tutte le implementazioni di `Report`, puoi assegnare un tag a tali registrazioni tramite il metodo `tag`:
-
-	$this->app->bind('SpeedReport', function()
-	{
-		//
+	$this->app->resolving(function ($object, $app) {
+		// Called when container resolves object of any type...
 	});
 
-	$this->app->bind('MemoryReport', function()
-	{
-		//
+	$this->app->resolving(function (FooBar $fooBar, $app) {
+		// Called when container resolves objects of type "FooBar"...
 	});
 
-	$this->app->tag(['SpeedReport', 'MemoryReport'], 'reports');
-
-Una volta che i servizi sono stati taggati, puoi facilmente risolverli tutti tramite il metodo `tagged`:
-
-	$this->app->bind('ReportAggregator', function($app)
-	{
-		return new ReportAggregator($app->tagged('reports'));
-	});
-
-<a name="applicazioni-pratiche"></a>
-## Applicazioni Pratiche
-
-Grazie al service container, Laravel fornisce molte opportunità per aumentare la flessibilità e testabilità delle tue applicazioni. Un esempio basilare è quando avviene la risoluzione dei controller. Tutti i controller vengono risolti tramite il service container, ciò significa che puoi fare il type-hint delle dipendenze nel costruttore di un controller e queste vengono automaticamente iniettate.
-
-	<?php namespace App\Http\Controllers;
-
-	use Illuminate\Routing\Controller;
-	use App\Repositories\OrderRepository;
-
-	class OrdersController extends Controller {
-
-		/**
-		 * The order repository instance.
-		 */
-		protected $orders;
-
-		/**
-		 * Create a controller instance.
-		 *
-		 * @param  OrderRepository  $orders
-		 * @return void
-		 */
-		public function __construct(OrderRepository $orders)
-		{
-			$this->orders = $orders;
-		}
-
-		/**
-		 * Show all of the orders.
-		 *
-		 * @return Response
-		 */
-		public function index()
-		{
-			$all = $this->orders->all();
-
-			return view('orders', ['all' => $all]);
-		}
-
-	}
-
-In questo esempio la classe `OrderRepository` viene automaticamente iniettata nel controller. In questo modo durante gli [unit test](/testing) puoi registrare una "simulazione" di `OrderRepository` nel container, evitando ad esempio le interazioni con il database.
-
-#### Altri Esempi Sull'Uso Del Container
-
-I controller non sono le uniche classi che Laravel risolve usando il service container. Puoi fare il type-hint anche delle dipendenze delle Closure delle route, filtri, queue job, event listeners e altro ancora. Fai riferimento alla loro documentazione per ulteriori esempi.
-
-<a name="eventi-del-container"></a>
-## Eventi Del Container
-
-#### Registrare Un Listener Di Risoluzioni
-
-Il container lancia un evento ogni volta che risolve un oggetto. Puoi ascoltare tale evento usando il metodo `resolving`:
-
-	$this->app->resolving(function($object, $app)
-	{
-		// Viene chiamato quando il container risolve un oggetto di qualsiasi tipo...
-	});
-
-	$this->app->resolving(function(FooBar $fooBar, $app)
-	{
-		// Viene chiamato quando il container risolve un oggetto di tipo "FooBar"...
-	});
-
-L'oggetto risolto viene passato alla callback.
+As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.

@@ -1,5 +1,5 @@
-# Documentazione di Laravel
+# Laravel Documentation
 
-Questa è la documentazione (in fase di traduzione) di Laravel. Verrà pubblicata su Laravel-Italia.it, nella sezione documentazione. Chiunque voglia partecipare può farlo tramite pull-request, ed è il benvenuto.
+## Contribution Guidelines
 
-**IMPORTANTE: per organizzare il lavoro da fare c'è un thread sul forum di Laravel-Italia [a questo indirizzo](http://laravel-italia.it/forum/laravel/1422554582-documentazione-laravel-50).**
+If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 5.0 would be submitted to the `5.0` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.

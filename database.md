@@ -1,33 +1,42 @@
-# Uso Base Dei Database
+# Database: Getting Started
 
-- [Configurazione](#configurazione)
-- [Lettura / Scrittura delle Connesioni](#lettura-scrittura-connessioni)
-- [Esecuzione Query](#esecuzione-query)
-- [Database Transaction](#database-transaction)
-- [Connessioni Di Accesso Al DB](#connessioni-di-accesso)
-- [Query Logging](#query-logging)
+- [Introduction](#introduction)
+- [Running Raw SQL Queries](#running-queries)
+	- [Listening For Query Events](#listening-for-query-events)
+- [Database Transactions](#database-transactions)
+- [Using Multiple Database Connections](#accessing-connections)
 
-<a name="configurazione"></a>
-## Configurazione
+<a name="introduction"></a>
+## Introduction
 
-Con Laravel connettersi al database ed eseguire queries è davvero un gioco da ragazzi. Il file di configurazione è `config/database.php`. In questo file puoi definire tutte le connessioni ai database, specificandone una di default. Esempi per tutti i sistemi database vengono forniti in questo file.
+Laravel makes connecting with databases and running queries extremely simple across a variety of database back-ends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four database systems:
 
-Attualmente Laravel supporta 4 sistemi database: MySQL, Postgres, SQLite, e SQL Server.
+- MySQL
+- Postgres
+- SQLite
+- SQL Server
 
-<a name="ettura-scrittura-connessioni"></a>
-## Lettura / Scrittura delle Connesioni
+<a name="configuration"></a>
+### Configuration
 
-Qualche volta potresti desidera di usare una connessione per lo statmente SELECT, un altra per gli statement INSERT, UPDATE e DELETE. Laravel lo rende un gioco da ragazzi, e saranno sempre usate le opportune connesioni mentre stai eseguendo raw query, o query builder, o Eloquent ORM.
+Laravel makes connecting with databases and running queries extremely simple. The database configuration for your application is located at `config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
 
-Per vedere come le connesioni debbano essere configurate per lettura / scrittura, dai un'occhiata a questo esempio:
+By default, Laravel's sample [environment configuration](/docs/{{version}}/installation#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. Of course, you are free to modify this configuration as needed for your local database.
 
-	'mysql' => array(
-		'read' => array(
+<a name="read-write-connections"></a>
+#### Read / Write Connections
+
+Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
+
+To see how read / write connections should be configured, let's look at this example:
+
+	'mysql' => [
+		'read' => [
 			'host' => '192.168.1.1',
-		),
-		'write' => array(
+		],
+		'write' => [
 			'host' => '196.168.1.2'
-		),
+		],
 		'driver'    => 'mysql',
 		'database'  => 'database',
 		'username'  => 'root',
@@ -35,100 +44,148 @@ Per vedere come le connesioni debbano essere configurate per lettura / scrittura
 		'charset'   => 'utf8',
 		'collation' => 'utf8_unicode_ci',
 		'prefix'    => '',
-	),
+	],
 
-Nota che le due chiavi devono essere aggiunte all'array di configurazione: `read` e `write`. Entrambe le chiavi contengono un array con una sola chiave: `host`. Il resto delle opzioni del database per la lettura e scrittura delle connessioni sarà inglobato nell'array principale `mysql`. Quindi, abbiamo solo bisogno di inserire gli elementi negli array `read` e `write` se vogliamo sovrascrivere i valori nell'array principale. In questo caso, `192.168.1.1` sarà usato per la connessione in "lettura", mentre `192.168.1.2` sarà usato per la connessione in "scrittura". Le credenziali del database, prefix, character set, e tutte le altre nell'array `mysql` saranno condivise con entrambe le connessioni.
+Note that two keys have been added to the configuration array: `read` and `write`. Both of these keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
 
-<a name="esecuzione-query"></a>
-## Esecuzione Query
+So, we only need to place items in the `read` and `write` arrays if we wish to override the values in the main array. So, in this case, `192.168.1.1` will be used as the "read" connection, while `192.168.1.2` will be used as the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
 
-Una volta configurato la connessione al database, puoi eseguire le query usando la facade `DB`.
+<a name="running-queries"></a>
+## Running Raw SQL Queries
 
-#### Eseguire Una Query Di Selezione
+Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, and `statement`.
 
-	$results = DB::select('select * from users where id = ?', [1]);
+#### Running A Select Query
 
-Il metodo `select` ritornerà sempre un `array` di risultati.
+To run a basic query, we can use the `select` method on the `DB` facade:
 
-#### Eseguire Uno Statement Insert
+	<?php namespace App\Http\Controllers;
+
+	use DB;
+	use App\Http\Controllers\Controller;
+
+	class UserController extends Controller
+	{
+		/**
+		 * Show a list of all of the application's users.
+		 *
+		 * @return Response
+		 */
+		public function index()
+		{
+			$users = DB::select('select * from users where active = ?', [1]);
+
+			return view('user.index', ['users' => $users]);
+		}
+	}
+
+The first argument passed to the `select` method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
+
+The `select` method will always return an `array` of results. Each result within the array will be a PHP `StdClass` object, allowing you to access the values of the results:
+
+	foreach ($users as $user) {
+		echo $user->name;
+	}
+
+#### Using Named Bindings
+
+Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
+
+	$results = DB::select('select * from users where id = :id', ['id' => 1]);
+
+#### Running An Insert Statement
+
+To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument, and bindings as the second argument:
 
 	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
-#### Eseguire Uno Statement Update
+#### Running An Update Statement
 
-	DB::update('update users set votes = 100 where name = ?', ['John']);
+The `update` method should be used to update existing records in the database. The number of rows affected by the statement will be returned by the method:
 
-#### Eseguire Uno Statement Delete
+	$affected = DB::update('update users set votes = 100 where name = ?', ['John']);
 
-	DB::delete('delete from users');
+#### Running A Delete Statement
 
-> **Nota:** Gli statement `update` e `delete` ritornano il numero di righe affette dall'operazione.
+The `delete` method should be used to delete records from the database. Like `update`, the number of rows deleted will be returned:
 
-#### Eseguire Uno Statement Generale
+	$deleted = DB::delete('delete from users');
+
+#### Running A General Statement
+
+Some database statements should not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
 
 	DB::statement('drop table users');
 
-#### Intercettare Eventi
+<a name="listening-for-query-events"></a>
+### Listening For Query Events
 
-Puoi anche intercettare eventi per le query usando il metodo `DB::listen`:
+If you would like to receive each SQL query executed by your application, you may use the `listen` method. This method is useful for logging queries or debugging. You may register your query listener in a [service provider](/docs/{{version}}/providers):
 
-	DB::listen(function($sql, $bindings, $time)
+	<?php namespace App\Providers;
+
+	use DB;
+	use Illuminate\Support\ServiceProvider;
+
+	class AppServiceProvider extends ServiceProvider
 	{
-		//
-	});
+	    /**
+	     * Bootstrap any application services.
+	     *
+	     * @return void
+	     */
+		public function boot()
+		{
+			DB::listen(function($sql, $bindings, $time) {
+				//
+			});
+		}
 
-<a name="database-transaction"></a>
-## Database Transaction
+		/**
+		 * Register the service provider.
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			//
+		}
+	}
 
-Per eseuire un insieme di operazioni con le database transaction, puoi usare il metodo `transaction`:
+<a name="database-transactions"></a>
+## Database Transactions
 
-	DB::transaction(function()
-	{
+To run a set of operations within a database transaction, you may use the `transaction` method on the `DB` facade. If an exception is thrown within the transaction `Closure`, the transaction will automatically be rolled back. If the `Closure` executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
+
+	DB::transaction(function () {
 		DB::table('users')->update(['votes' => 1]);
 
 		DB::table('posts')->delete();
 	});
 
-> **Nota:** Qualsiari eccezione intercettata all'interno di `transaction` dalla Closure eseguirà un rollback delle transazioni in modo automatico.
+#### Manually Using Transactions
 
-In alcuni casi puoi aver bisogno di iniziare una transazione stessa:
+If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method on the `DB` facade:
 
 	DB::beginTransaction();
 
-Puoi eseguire un rollback di una transazione tramite il metodo `rollback`:
+You can rollback the transaction via the `rollBack` method:
 
-	DB::rollback();
+	DB::rollBack();
 
-Infine, puoi eseguire il commit di una transazione tramite il metodo `commit`:
+Lastly, you can commit a transaction via the `commit` method:
 
 	DB::commit();
 
-<a name="connessioni-di-accesso"></a>
-## Connessioni Di Accesso Al DB
+> **Note:** Using the `DB` facade's transaction methods also controls transactions for the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
-Quando usi connessioni multiple, puoi accederci tramite il metodo `DB::connection`:
+<a name="accessing-connections"></a>
+## Using Multiple Database Connections
+
+When using multiple connections, you may access each connection via the `connection` method on the `DB` facade. The `name` passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file:
 
 	$users = DB::connection('foo')->select(...);
 
-Puoi anche accedere direttamente ai dati attraverso un’istanza PDO:
+You may also access the raw, underlying PDO instance using the `getPdo` method on a connection instance:
 
 	$pdo = DB::connection()->getPdo();
-
-Oppure potresti aver bisogno di riconentterti ad un database. Ecco come fare:
-
-	DB::reconnect('foo');
-
-Se hai bisogno di disconnetterti da un database per evitare di eccedere il limite di istanze PDO `max_connections`, usa il metodo `disconnect`:
-
-	DB::disconnect('foo');
-
-<a name="query-logging"></a>
-## Query Logging
-
-Di default, Laravel mantiene un log in memoria di tutte le query che sono state eseguite dalla richiesta corrente. Tuttavia, in alcuni casi, come ad esempio nel caso di inserimento di un gran numero di righe, questo può causare un uso eccessivo della memoria da parte della tua applicazione. Per disabilitare il log, puoi usare il metodo `disableQueryLog`:
-
-	DB::connection()->disableQueryLog();
-
-Per recuperare un array delle query eseguite, usa il metodo `getQueryLog`:
-
-       $queries = DB::getQueryLog();

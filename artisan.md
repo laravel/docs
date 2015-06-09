@@ -1,140 +1,342 @@
-# Artisan CLI
+# Artisan Console
 
-- [Introduzione](#introduzione)
-- [Utilizzo](#utilizzo)
-- [Chiamata Comandi Esterni alla CLI](#chiamata-comandi-esterni-alla-cli)
-- [Scheduling dei Comandi Artisan](#scheduling-comandi-artisan)
+- [Introduction](#introduction)
+- [Writing Commands](#writing-commands)
+    - [Command Structure](#command-structure)
+- [Command I/O](#command-io)
+    - [Defining Input Expectations](#defining-input-expectations)
+    - [Retrieving Input](#retrieving-input)
+    - [Prompting For Input](#prompting-for-input)
+    - [Writing Output](#writing-output)
+- [Registering Commands](#registering-commands)
+- [Calling Commands Via Code](#calling-commands-via-code)
 
-<a name="introduzione"></a>
-## Introduzione
+<a name="introduction"></a>
+## Introduction
 
-Artisan è il nome dell'interfaccia command-line di Laravel. Offre una serie di utili comandi da usare mentre si sviluppa la propria applicazione. Inoltre, è basato sul componente Console di Symfony.
+Artisan is the name of the command-line interface included with Laravel. It provides a number of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component. To view a list of all available Artisan commands, you may use the `list` command:
 
-<a name="utilizzo"></a>
-## Utilizzo
+    php artisan list
 
-#### Lista Di Tutti i Comandi Disponibili
+Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, simply precede the name of the command with `help`:
 
-Per visualizzare la lista di tutti i comandi Artisan disponibili, puoi usare il comando `list`:
+    php artisan help migrate
 
-	php artisan list
+<a name="writing-commands"></a>
+## Writing Commands
 
-#### Visualizzare La Schermata Di Aiuto Per un Comando
+In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
 
-Ogni comando include anche una schermata di "aiuto" che visualizza e descrive i parametri e le opzioni del comando. Per visualizzare la schermata di aiuto, basta precedere il nome del comando dal flag `help`:
+To create a new command, you may use the `make:console` Artisan command, which will generate a command stub to help you get started:
 
-	php artisan help migrate
+    php artisan make:console SendEmails
 
-#### Specificare La Configurazione D'Ambiente
+The command above would generate a class at `app/Console/Commands/SendEmails.php`. When creating the command, the `--command` option may be used to assign the terminal command name:
 
-E' possibile specificare la configurazione d'ambiente da usare durante l'esecuzione di un comando utilizzando il flag  `--env`:
+    php artisan make:console SendEmails --command=emails:send
 
-	php artisan migrate --env=local
+<a name="command-structure"></a>
+### Command Structure
 
-#### Mostrare la Versione di Laravel
+Once your command is generated, you should fill out the `signature` and `description` properties of the class, which will be used when displaying your command on the `list` screen.
 
-E' inoltre possibile visualizzare la versione corrente di Laravel che si sta utilizzando con l'opzione `--version`:
+The `handle` method will be called when your command is executed. You may place any command logic in this method. Let's take a look at an example command.
 
-	php artisan --version
+Note that we are able to inject any dependencies we need into the command's constructor. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies type-hinted in the constructor. For greater code reusability, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks.
 
-<a name="chiamata-comandi-esterni-alla-cli"></a>
-## Chiamata Comandi Esterni alla CLI
+    <?php namespace App\Console\Commands;
 
-A volte potresti avere il bisogno di eseguire un comando Artisan al di fuori della CLI. Per esempio, eseguire un comando Artisan all'interno di una route. Basta utilizzare la facade `Artisan`:
+    use App\User;
+    use App\DripEmailer;
+    use Illuminate\Console\Command;
+    use Illuminate\Foundation\Inspiring;
 
-	Route::get('/foo', function()
-	{
-		$exitCode = Artisan::call('command:name', ['--option' => 'foo']);
+    class Inspire extends Command
+    {
+        /**
+         * The name and signature of the console command.
+         *
+         * @var string
+         */
+        protected $signature = 'email:send {user}';
 
-		//
-	});
+        /**
+         * The console command description.
+         *
+         * @var string
+         */
+        protected $description = 'Send drip e-mails to a user';
 
-Puoi anche mettere in coda i tuoi comandi Artisan in modo da essere eseguiti in background dal proprio [queue workers](/code):
+        /**
+         * The drip e-mail service.
+         *
+         * @var DripEmailer
+         */
+        protected $drip;
 
-	Route::get('/foo', function()
-	{
-		Artisan::queue('command:name', ['--option' => 'foo']);
+        /**
+         * Create a new command instance.
+         *
+         * @param  DripEmailer  $drip
+         * @return void
+         */
+        public function __construct(DripEmailer $drip)
+        {
+            parent::__construct();
 
-		//
-	});
+            $this->drip = $drip;
+        }
 
-<a name="scheduling-comandi-artisan"></a>
-## Scheduling dei Comandi Artisan
+        /**
+         * Execute the console command.
+         *
+         * @return mixed
+         */
+        public function handle()
+        {
+            $this->drip->send(User::find($this->argument('user')));
+        }
+    }
 
-In passato, gli sviluppatori generavano una Cron entry per ogni comando che volevano pianificare. Tuttavia, ciò procurava un forte mal di testa. La tua schedule console non è più in controllo del codice, e bisogna essere connessi via SSH al server per aggiungere delle Cron entry. Rendiamoci la vita più facile. Il comando scheduler di Laravel ti permette facilmente di definire un comando schedule con Laravel stesso, ed è necessaria solo una singola Cron entry sul tuo server.
+<a name="command-io"></a>
+## Command I/O
 
-I tuoi comandi schedule sono salvati nel file `app/Console/Kernel.php`. All'interno di questa classe potrai notare un metodo `schedule`. Per aiutarti ad iniziare, assieme al metodo è incluso un semplice esempio. Sei libero di aggiungere quanti scheduled job desideri all'oggetto `Schedule`. La sola Cron entry necessaria da aggiungere al tuo server è questa:
+<a name="defining-input-expectations"></a>
+### Defining Input Expectations
 
-	* * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
+When writing console commands, it is common to gather input from the user through arguments or options. Laravel makes it very convenient to define the input you expect from the user using the `signature` property on your commands. The `signature` property allows you to define the name, arguments, and options for the command in a single, expressive, route-like syntax.
 
-Questo Cron richiamerà il comando scheduler di Laravel ogni minuto. Quindi, Laravel valuterà i tuoi job pianificati ed eseguirà quelli opportuni. Non potrebbe essere più facile!
+All user supplied arguments and options are wrapped in curly braces, for example:
 
-### Altri Esempi di Scheduling
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'email:send {user}';
 
-Diamo un'occhiata ad alcuni esempi di scheduling:
+In this example, the command defines one **required** argument: `user`. You may also make arguments optional and define default values for optional arguments:
 
-#### Scheduling Closure
+    // Optional argument...
+    email:send {user?}
 
-	$schedule->call(function()
-	{
-		// Do some task...
+    // Optional argument with default value...
+    email:send {user=foo}
 
-	})->hourly();
+Options, like arguments, also are a form of user input. However, they are prefixed by two hyphens (`--`) when they are specified on the command line. We can define options in the signature like so:
 
-#### Scheduling Comandi da Terminale
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'email:send {user} {--queue}';
 
-	$schedule->exec('composer self-update')->daily();
+In this example, the `--queue` switch may be specified when calling the Artisan command. If the `--queue` switch is passed, the value of the option will be `true`. Otherwise, the value will be `false`:
 
-#### Espressione Cron Manuale
+    php artisan email:send 1 --queue
 
-	$schedule->command('foo')->cron('* * * * *');
+You may also specify that the option should be assigned a value by the user by suffixing the option name with a `=` sign, indicating that a value should be provided:
 
-#### Job Frequenti
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'email:send {user} {--queue=}';
 
-	$schedule->command('foo')->everyFiveMinutes();
+In this example, the user may pass a value for the option like so:
 
-	$schedule->command('foo')->everyTenMinutes();
+    php artisan email:send 1 --queue=default
 
-	$schedule->command('foo')->everyThirtyMinutes();
+You may also assign default values to options:
 
-#### Job Giornalieri
+    email:send {user} {--queue=default}
 
-	$schedule->command('foo')->daily();
+#### Input Descriptions
 
-#### Job Giornalieri Ad Uno Specifico Orario (formato 24 Ore)
+You may assign descriptions to input arguments and options by separating the parameter from the description using a colon:
 
-	$schedule->command('foo')->dailyAt('15:00');
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'email:send
+                            {user : The ID of the user}
+                            {--queue= : Whether the job should be queued}';
 
-#### Job Due Volte al Giorno
+<a name="retrieving-input"></a>
+### Retrieving Input
 
-	$schedule->command('foo')->twiceDaily();
+While your command is executing, you will obviously need to access the values for the arguments and options accepted by your command. To do so, you may use the `argument` and `option` methods:
 
-#### Job Eseguiti Ogni Giorno Feriale
+To retrieve the value of an argument, use the `argument` method:
 
-	$schedule->command('foo')->weekdays();
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $userId = $this->argument('user');
 
-#### Job Settimanali
+        //
+    }
 
-	$schedule->command('foo')->weekly();
+If you need to retrieve all of the arguments as an `array`, call the `argument` with no parameters:
 
-	// Scheduling job settimanali per uno giorno (0-6) ed ora specifici...
-	$schedule->command('foo')->weeklyOn(1, '8:00');
+    $arguments = $this->argument();
 
-#### Job Mensili
+Options may be retrieved just as easily as arguments using the `option` method. Like the `argument` method, you may call `option` without any arguments in order to retrieve all of the options as an `array`:
 
-	$schedule->command('foo')->monthly();
+    // Retrieve a specific option...
+    $queueName = $this->option('queue');
 
-#### Limitare L'Environment nel quale i Job dovrebbero essere eseguiti
+    // Retrieve all options...
+    $options = $this->option();
 
-	$schedule->command('foo')->monthly()->environments('production');
+<a name="prompting-for-input"></a>
+### Prompting For Input
 
-#### Indicare Ai Job Di Non Essere Mai Eseguiti Quando L'Applicazione E' In Maintenance Mode
+In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:
 
-	$schedule->command('foo')->monthly()->evenInMaintenanceMode();
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $name = $this->ask('What is your name?');
+    }
 
-#### Permettere Ai Job Di Essere Eseguiti Soltanto Quando Una Funzione Callback E' True
+The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful for asking for sensitive information such as a password:
 
-	$schedule->command('foo')->monthly()->when(function()
-	{
-		return true;
-	});
+    $password = $this->secret('What is the password?');
+
+#### Asking For Confirmation
+
+If you need to ask the user for a simple confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` in response to the prompt, the method will return `true`.
+
+    if ($this->confirm('Do you wish to continue? [y|N]')) {
+        //
+    }
+
+#### Giving The User A Choice
+
+The `anticipate` method can be used to provided autocompletion for possible choices. The user can still choose any answer, regardless of the choices.
+
+    $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
+
+If you need to give the user a predefined set of choices, you may use the `choice` method. The user chooses the index of the answer, but the value of the answer will be returned to you. You may set the default value to be returned if nothing is chosen:
+
+    $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], false);
+
+<a name="writing-output"></a>
+### Writing Output
+
+To send output to the console, use the `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
+
+To display an information message to the user, use the `info` method. Typically, this will display in the console as green text:
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->info('Display this on the screen');
+    }
+
+To display an error message, use the `error` method. Error message text is typically displayed in red:
+
+    $this->error('Something went wrong!');
+
+#### Table Layouts
+
+The `table` method makes it easy to correctly format multiple rows / columns of data. Just pass in the headers and rows to the method. The width and height will be dynamically calculated based on the given data:
+
+    $headers = ['Name', 'Email'];
+
+    $users = App\User::all(['name', 'email'])->toArray();
+
+    $this->table($headers, $users);
+
+#### Progress Bars
+
+For long running tasks, it could be helpful to show a progress indicator. Using the output object, we can start, advance and stop the Progress Bar. You have to define the number of steps when you start the progress, then advance the Progress Bar after each step:
+
+    $users = App\User::all();
+
+    $this->output->progressStart(count($users));
+
+    foreach ($users as $user) {
+        $this->performTask($user);
+
+        $this->output->progressAdvance();
+    }
+
+    $this->output->progressFinish();
+
+For more advanced options, check out the [Symfony Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
+
+<a name="registering-commands"></a>
+## Registering Commands
+
+Once your command is finished, you need to register it with Artisan so it will be available for use. This is done within the `app/Console/Kernel.php` file.
+
+Within this file, you will find a list of commands in the `commands` property. To register your command, simply add the class name to the list. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:
+
+    protected $commands = [
+        'App\Console\Commands\SendEmails'
+    ];
+
+<a name="calling-commands-via-code"></a>
+## Calling Commands Via Code
+
+Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from an route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts the name of the command as the first argument, and an array of command parameters as the second argument. The exit code will be returned:
+
+    Route::get('/foo', function () {
+        $exitCode = Artisan::call('email:send', [
+            'user' => 1, '--queue' => 'default'
+        ]);
+
+        //
+    });
+
+Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/{{version}}/queues):
+
+    Route::get('/foo', function () {
+        Artisan::queue('email:send', [
+            'user' => 1, '--queue' => 'default'
+        ]);
+
+        //
+    });
+
+### Calling Commands From Other Commands
+
+Sometimes you may wish to call other commands from an existing Artisan command. You may do so using the `call` method. This `call` method accepts the command name and an array of command parameters:
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->call('email:send', [
+            'user' => 1, '--queue' => 'default'
+        ]);
+
+        //
+    }
+
+If you would like to call another console command and suppress all of its output, you may use the `callSilent` method. The `callSilent` method has the same signature as the `call` method:
+
+    $this->callSilent('email:send', [
+        'user' => 1, '--queue' => 'default'
+    ]);
