@@ -206,9 +206,9 @@ To assist you in building these types of applications, Laravel makes it easy to 
 
 All of the event broadcasting configuration options are stored in the `config/broadcasting.php` configuration file. Laravel supports several broadcast drivers out of the box: [Pusher](https://pusher.com), [Redis](/docs/{{version}}/redis), and a `log` driver for local development and debugging. A configuration example is included for each of these drivers.
 
-#### Broadcast Dependencies
+#### Broadcast Prerequisites
 
-The following dependencies are needed for the listed broadcast drivers:
+The following dependencies are needed for event broadcasting:
 
 - Pusher: `pusher/pusher-php-server ~2.0`
 - Redis: `predis/predis ~1.0`
