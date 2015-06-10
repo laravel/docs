@@ -369,6 +369,7 @@ Of course, you are free to add your own additional factories to the `ModelFactor
 
 ##### Adding relationships
 To add a relationship, instead of pointing the value of an array to a hardcoded value or faker, point it to the classname of an eloquent model. For example,
+
 	$factory->define(App\Block::class, function($faker) {
 	    return [
 	        'name' => $faker->name,
