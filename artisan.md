@@ -197,7 +197,7 @@ Options may be retrieved just as easily as arguments using the `option` method. 
     // Retrieve all options...
     $options = $this->option();
 
-If either requested argument or option keys don't exist, a `null` value is returned:
+If either requested `argument` or `option` keys don't exist, a `null` value is returned:
 
     // If the userId argument isn't defined, $userId will be set to null.
     $userId = $this->argument('userId');
