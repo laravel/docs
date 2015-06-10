@@ -1,21 +1,19 @@
-# Contribution Guide
+# Guida Di Contribuzione
 
 - [Bug Reports](#bug-reports)
-- [Core Development Discussion](#core-development-discussion)
-- [Which Branch?](#which-branch)
-- [Security Vulnerabilities](#security-vulnerabilities)
+- [Discussioni sullo Sviluppo del Core](#discussioni-sviluppo-core)
+- [Quale Branch?](#quale-branch)
+- [Vulnerabilità e Sicurezza](#vulnerabilita-e-sicurezza)
 - [Coding Style](#coding-style)
 
 <a name="bug-reports"></a>
 ## Bug Reports
 
-To encourage active collaboration, Laravel strongly encourages pull requests, not just bug reports. "Bug reports" may also be sent in the form of a pull request containing a failing test.
+Per incoraggiare una collaborazione più attiva, Laravel raccomanda fortemente le pull request, senza limitarsi al bug reporting. Un "bug report" può comunque essere inviato sotto forma di una pull request contenente un test fallito.
 
-However, if you file a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself - and others - to replicate the bug and develop a fix.
+Tuttavia, se dovessi decidere di inviare un bug report, cerca di indicare nel modo più chiaro possibile il titolo ed una descrizione del problema. Dovresti inoltre inserire quante più informazioni ed un esempio di codice che dimostri tale problema. L'obiettivo di un bug report è migliorare la tua vita (e quella di altri). 
 
-Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem.
-
-The Laravel source code is managed on Github, and there are repositories for each of the Laravel projects:
+Tutto il codice sorgente di Laravel è ospitato su GitHub. Ci sono svariati repository a disposizione:
 
 - [Laravel Framework](https://github.com/laravel/framework)
 - [Laravel Application](https://github.com/laravel/laravel)
@@ -27,28 +25,28 @@ The Laravel source code is managed on Github, and there are repositories for eac
 - [Laravel Website](https://github.com/laravel/laravel.com)
 - [Laravel Art](https://github.com/laravel/art)
 
-<a name="core-development-discussion"></a>
-## Core Development Discussion
+<a name="discussioni-sviluppo-core"></a>
+## Discussioni sullo Sviluppo del Core
 
-Discussion regarding bugs, new features, and implementation of existing features takes place in the `#internals` channel of the [LaraChat](http://larachat.co) Slack team. Taylor Otwell, the maintainer of Laravel, is typically present in the channel on weekdays from 8am-5pm (UTC-06:00 or America/Chicago), and sporadically present in the channel at other times.
+Le discussioni riguardanti i bug, nuove feautre, ed implementazioni di feature esistenti si svolgono nel canale `#internals` di Slack team [LaraChat](http://larachat.co). Taylor Otwelll, solitamente sarà presnete nel canale  typically present in the channel nei giorni feriali dalle 8am-5pm (UTC-06:00, America/Chicago), Sporadicamente lo puoi trovare anche in altri momenti oltre quelli citati.
 
-<a name="which-branch"></a>
-## Which Branch?
+<a name="quale-branch"></a>
+## Quale Branch?
 
-**All** bug fixes should be sent to the latest stable branch. Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**Tutti** i bug fix dovrebbero essere inviati alla versione stable più recente. Non bisogna **mai** inviare un bug fix alla versione master del progetto.
 
-**Minor** features that are **fully backwards compatible** with the current Laravel release may be sent to the latest stable branch.
+Le Feature **Minori** che sono **totalmente retrocompatibili** con la release attuale di Laravel possono essere inviate all'ultima branch stable.
 
-**Major** new features should always be sent to the `master` branch, which contains the upcoming Laravel release.
+Le Feature **Maggiori** di nuova introduzione dovrebbero essere inviate alla master branch, che contiene la versione "in arrivo" di Laravel.
 
-If you are unsure if your feature qualifies as a major or minor, please ask Taylor Otwell in the `#laravel-dev` IRC channel (Freenode).
+Se non sei sicuro di come regolarti, chiedi direttamente a Taylor nel IRC canale `#laravel-dev`.
 
-<a name="security-vulnerabilities"></a>
-## Security Vulnerabilities
+<a name="vulnerabilita-e-sicurezza"></a>
+## Vulnerabilità e Sicurezza
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. All security vulnerabilities will be promptly addressed.
+Se scopri una vulnerabilità di sicurezza in Laravel, invia una mail a Taylor Otwell all'indirizzo <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. Ogni vulnerabilità riguardante la sicurezza verrà prontamente sistemata.
 
 <a name="coding-style"></a>
 ## Coding Style
 
-Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
+Laravel segue lo standard [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) per la scrittura del codice e lo standard [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) per l'autoloading standard.
