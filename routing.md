@@ -265,7 +265,7 @@ The `csrf_field` helper function generates the following HTML:
 
 	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-Of course, using the Blade [templating engine](/docs/{{version}}/templates):
+Of course, using the Blade [templating engine](/docs/{{version}}/blade):
 
 	{!! csrf_field() !!}
 
