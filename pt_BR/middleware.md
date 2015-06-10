@@ -59,9 +59,8 @@ Se um middleware roda antes ou depois de uma request, depende do próprio middle
 	<?php namespace App\Http\Middleware;
 
 	use Closure;
-	use Illuminate\Contracts\Routing\Middleware;
 
-	class BeforeMiddleware implements Middleware
+	class BeforeMiddleware
 	{
 		public function handle($request, Closure $next)
 		{
@@ -76,9 +75,8 @@ No entanto, este middleware executaria uma tarefa **depois** da request ser trat
 	<?php namespace App\Http\Middleware;
 
 	use Closure;
-	use Illuminate\Contracts\Routing\Middleware;
 
-	class AfterMiddleware implements Middleware
+	class AfterMiddleware
 	{
 		public function handle($request, Closure $next)
 		{
@@ -156,14 +154,13 @@ Parâmetros do Middleware podem ser especificados na definição de uma rota sep
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
 
-Alguma vezes um middleware pode precisar realizar algum trabalho depois do HTTP response já ter sido enviado ao browser. Por exemplo, o "session" middleware incluído no Laravel escreve os dados da sessão para armazenamento _depois_ da resposta ter sido enviada ao navegador. Para conseguir fazer isso, defina o middleware como "terminable" por meio da implementação do contrato `Illuminate\Contracts\Routing\TerminableMiddleware`:
+Alguma vezes um middleware pode precisar realizar algum trabalho depois do HTTP response já ter sido enviado ao browser. Por exemplo, o "session" middleware incluído no Laravel escreve os dados da sessão para armazenamento _depois_ da resposta ter sido enviada ao navegador. Para conseguir fazer isso, defina o middleware como "terminable" adicionando um método `terminate` para o middleware:
 
 	<?php namespace Illuminate\Session\Middleware;
 
 	use Closure;
-	use Illuminate\Contracts\Routing\TerminableMiddleware;
 
-	class StartSession implements TerminableMiddleware
+	class StartSession
 	{
 		public function handle($request, Closure $next)
 		{
@@ -176,4 +173,4 @@ Alguma vezes um middleware pode precisar realizar algum trabalho depois do HTTP 
 		}
 	}
 
-Como você pode ver, além de definir um método `handle`, o contrato `TerminableMiddleware` requer um método `terminate`. Este método recebe tanto a requisição (request) quanto a resposta (response). Uma vez definido um terminable middleware, você deve adicioná-lo a sua lista global de middlewares no seu HTTP kernel.
+O método `terminate` deve receber tanto a requisição (request) quanto a resposta (response). Uma vez definido um terminable middleware, você deve adicioná-lo a sua lista global de middlewares no seu HTTP kernel.
