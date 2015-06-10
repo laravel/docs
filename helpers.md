@@ -89,6 +89,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 <div class="collection-method-list" markdown="1">
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
+[csrf_field](#method-csrf-field)
 [dd](#method-dd)
 [elixir](#method-elixir)
 [env](#method-env)
@@ -574,6 +575,13 @@ The `csrf_field` function generates an HTML `hidden` input field containing the 
 The `csrf_token` function retrieves the value of the current CSRF token:
 
 	$token = csrf_token();
+	
+<a name="method-csrf-field"></a>
+#### `csrf_field()` {#collection-method}
+
+The `csrf_field` function generates a CSRF token form field.
+
+	csrf_field()
 
 <a name="method-dd"></a>
 #### `dd()` {#collection-method}
