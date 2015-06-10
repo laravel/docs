@@ -112,16 +112,14 @@ By providing backwards compatibility for the Laravel 5.0 folder structure, you m
 Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 
 	protected $baseUrl = 'http://localhost';
-	
-### Filesystem
-
-If you are using the Amazon S3 driver, you will need to update the related package via Composer:
-
-- Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 
 ### Amazon Web Services SDK
 
 If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
+
+If you are using the Amazon S3 filesystem driver, you will need to update the corresponding Flysystem package via Composer:
+
+- Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 
 ### Deprecations
 
