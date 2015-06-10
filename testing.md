@@ -366,6 +366,16 @@ Within the Closure, which serves as the factory definition, you may return the d
 
 Of course, you are free to add your own additional factories to the `ModelFactory.php` file.
 
+
+##### Adding relationships
+To add a relationship, instead of pointing the value of an array to a hardcoded value or faker, point it to the classname of an eloquent model. For example,
+	$factory->define(App\Block::class, function($faker) {
+	    return [
+	        'name' => $faker->name,
+	        'owner_id' => App\User::class
+	    ];
+	});
+
 #### Multiple Factory Types
 
 Sometimes you may wish to have multiple factories for the same Eloquent model class. For example, perhaps you would like to have a factory for "Administrator" users in addition to normal users. You may define these factories using the `defineAs` method:
