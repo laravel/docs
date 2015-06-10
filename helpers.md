@@ -87,6 +87,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 ### Miscellaneous
 
 <div class="collection-method-list" markdown="1">
+[csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
 [elixir](#method-elixir)
@@ -559,6 +560,13 @@ The `url` function generates a fully qualified URL to the given path:
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
+
+<a name="method-csrf-field"></a>
+#### `csrf_field()` {#collection-method}
+
+The `csrf_field` function generates an HTML `hidden` input field containing the value of the CSRF token. For example, using [Blade syntax](/docs/{{version}}/blade):
+
+	{!! csrf_field() !!}
 
 <a name="method-csrf-token"></a>
 #### `csrf_token()` {#collection-method}
