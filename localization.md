@@ -48,7 +48,7 @@ You may retrieve lines from language files using the `trans` helper function. Th
 
 	echo trans('messages.welcome');
 
-Of course if you are using the [Blade templating engine](/docs/{{version}}/views#blade-templating), you may use the `{{ }}` syntax to echo the language line:
+Of course if you are using the [Blade templating engine](/docs/{{version}}/blade), you may use the `{{ }}` syntax to echo the language line:
 
 	{{ trans('messages.welcome') }}
 
