@@ -197,6 +197,15 @@ Options may be retrieved just as easily as arguments using the `option` method. 
     // Retrieve all options...
     $options = $this->option();
 
+If either requested argument or option keys don't exist, a `null` value is returned:
+
+    // If the userId argument isn't defined, $userId will be set to null.
+    $userId = $this->argument('userId');
+
+    // If the queue option isn't set, $queueName will be set to null.
+    $queueName = $this->option('queue');
+
+
 <a name="prompting-for-input"></a>
 ### Prompting For Input
 
