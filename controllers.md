@@ -64,6 +64,10 @@ Once you have assigned a name to the controller route, you can easily generate U
 
 	$url = action('FooController@method');
 
+You may also use the `route` helper to generate a URL to a named controller route:
+
+	$url = route('name');
+
 <a name="controller-middleware"></a>
 ## Controller Middleware
 
