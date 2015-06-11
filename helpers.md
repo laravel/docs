@@ -87,6 +87,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 ### Miscellaneous
 
 <div class="collection-method-list" markdown="1">
+[config](#method-config)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
@@ -560,6 +561,16 @@ The `url` function generates a fully qualified URL to the given path:
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
+
+<a name="method-config"></a>
+#### `config()` {#collection-method}
+
+The `config` function gets the value of a configuration variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
+
+	$value = config('app.timezone');
+
+	// Return a default value if the variable doesn't exist...
+	$value = config('app.timezone', 'America/Chicago');
 
 <a name="method-csrf-field"></a>
 #### `csrf_field()` {#collection-method}
