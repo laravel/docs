@@ -197,6 +197,8 @@ Options may be retrieved just as easily as arguments using the `option` method. 
     // Retrieve all options...
     $options = $this->option();
 
+If the argument or option does not exist, `null` will be returned.
+
 <a name="prompting-for-input"></a>
 ### Prompting For Input
 

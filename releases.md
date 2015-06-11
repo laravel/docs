@@ -40,7 +40,7 @@ In many modern web applications, web sockets are used to implement real-time, li
 
 To assist you in building these types of applications, Laravel makes it easy to "broadcast" your events over a websocket connection. Broadcasting your Laravel events allows you to share the same event names between your server-side code and your client-side JavaScript framework.
 
-To learn more about event broadcasting, check out the [event documentation](/docs/{{version}}/events#broadcasting-events)
+To learn more about event broadcasting, check out the [event documentation](/docs/{{version}}/events#broadcasting-events).
 
 ### Middleware Parameters
 
@@ -93,6 +93,21 @@ The built-in testing capabilities of Laravel have been dramatically improved. A 
     }
 
 For more information on testing, check out the [testing documentation](/docs/{{version}}/testing).
+
+### Model Factories
+
+Laravel now ships with an easy way to create stub Eloquent models using [model factories](/docs/{{version}}/testing#model-factories). Model factories allow you to easily define a set of "default" attributes for your Eloquent model, and then generate test model instances for your tests or database seeds. Model factories also take advantage of the powerful [Faker](https://github.com/fzaninotto/Faker) PHP library for generating random attribute data:
+
+	$factory->define('App\User', function ($faker) {
+	    return [
+	        'name' => $faker->name,
+	        'email' => $faker->email,
+	        'password' => str_random(10),
+	        'remember_token' => str_random(10),
+	    ];
+	});
+
+For more information on model factories, check out [the documentation](/docs/{{version}}/testing#model-factories).
 
 ### Artisan Improvements
 
