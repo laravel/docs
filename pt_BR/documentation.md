@@ -6,7 +6,6 @@
     - [Instalação](/docs/{{version}}/installation)
     - [Homestead](/docs/{{version}}/homestead)
 - O Básico
-    - [Início Rápido](/docs/{{version}}/quickstart)
     - [Rotas](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
     - [Controllers](/docs/{{version}}/controllers)
