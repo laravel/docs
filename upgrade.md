@@ -28,6 +28,16 @@ Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`
 
 This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
 
+### Update the cipher key in `config/app.php`
+
+Because of switching from the Mcrypt extension to the OpenSSL extension, update the cipher key in `config/app.php` from the Mcrypt constant:
+
+	'cipher' => MCRYPT_RIJNDAEL_128,
+	
+to the appropriate OpenSSL extension cipher:
+
+	'cipher' => 'AES-256-CBC',
+
 ### Authentication
 
 If you are using the provided `AuthController` which uses the `AuthenticatesAndRegistersUsers` trait, you will need to make a few changes to how new users are validated and created.
