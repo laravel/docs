@@ -143,7 +143,7 @@ You should typically run the `config:cache` command as part of your deployment r
 <a name="accessing-configuration-values"></a>
 ### Accessing Configuration Values
 
-You may easily access your configuration values using the global `config` helper function. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you with to access. A default value may also be specified and will be returned if the configuration option does not exist:
+You may easily access your configuration values using the global `config` helper function. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
 
 	$value = config('app.timezone');
 
