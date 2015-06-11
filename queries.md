@@ -6,7 +6,7 @@
 - [Selects](#selects)
 - [Joins](#joins)
 - [Unions](#unions)
-- [Where Clauses](#where-clause)
+- [Where Clauses](#where-clauses)
 	- [Advanced Where Clauses](#advanced-where-clauses)
 - [Ordering, Grouping, Limit, & Offset](#ordering-grouping-limit-and-offset)
 - [Inserts](#inserts)
