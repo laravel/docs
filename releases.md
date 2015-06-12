@@ -46,7 +46,9 @@ To learn more about event broadcasting, check out the [event documentation](/doc
 
 Middleware can now receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create a `RoleMiddleware` that receives a role name as an additional argument:
 
-	<?php namespace App\Http\Middleware;
+	<?php
+
+	namespace App\Http\Middleware;
 
 	use Closure;
 
@@ -308,7 +310,9 @@ For more information on the Laravel Flysystem integration, consult the [full doc
 
 Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundation\Http\FormRequest` class. These request objects can be combined with controller method injection to provide a boiler-plate free method of validating user input. Let's dig in and look at a sample `FormRequest`:
 
-	<?php namespace App\Http\Requests;
+	<?php
+
+	namespace App\Http\Requests;
 
 	class RegisterRequest extends FormRequest
 	{

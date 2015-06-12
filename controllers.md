@@ -22,7 +22,9 @@ Instead of defining all of your request handling logic in a single `routes.php` 
 
 Here is an example of a basic controller class. All Laravel controllers should extend the base controller class included with the default Laravel installation:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use App\Http\Controllers\Controller;
 
@@ -152,7 +154,9 @@ Sometimes you may need to define routes to a "nested" resource. For example, a p
 
 This route will register a "nested" resource that may be accessed with URLs like the following: `photos/{photos}/comments/{comments}`.
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use App\Http\Controllers\Controller;
 
@@ -190,7 +194,9 @@ Laravel allows you to easily define a single route to handle every action in a c
 
  Next, just add methods to your controller. The method names should begin with the HTTP verb they respond to followed by the title case version of the URI:
 
- 	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	class UserController extends Controller
 	{
@@ -244,7 +250,9 @@ If you would like to [name](/docs/{{version}}/routing#named-routes) some of the 
 
 The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The dependencies will automatically be resolved and injected into the controller instance:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
 	use App\Repositories\UserRepository;
@@ -274,7 +282,9 @@ Of course, you may also type-hint any [Laravel contract](/docs/{{version}}/contr
 
 In addition to constructor injection, you may also type-hint dependencies on your controller's action methods. For example, let's type-hint the `Illuminate\Http\Request` instance on one of our methods:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;
@@ -297,7 +307,9 @@ In addition to constructor injection, you may also type-hint dependencies on you
 
 If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;

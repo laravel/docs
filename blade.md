@@ -206,7 +206,9 @@ Blade even allows you to define your own custom directives. You can use the `dir
 
 The following example creates a `@datetime($var)` directive which formats a given `$var`:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Blade;
 	use Illuminate\Support\ServiceProvider;

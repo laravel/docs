@@ -15,7 +15,9 @@ The Laravel service container is a powerful tool for managing class dependencies
 
 Let's look at a simple example:
 
-	<?php namespace App\Jobs;
+	<?php
+
+	namespace App\Jobs;
 
 	use App\User;
 	use Illuminate\Contracts\Mail\Mailer;
@@ -158,7 +160,9 @@ Lastly, but most importantly, you may simply "type-hint" the dependency in the c
 
 The container will automatically inject dependencies for the classes it resolves. For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
 	use App\Users\Repository as UserRepository;

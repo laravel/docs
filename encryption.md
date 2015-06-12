@@ -17,7 +17,9 @@ You may encrypt a value using the `Crypt` [facade](/docs/{{version}}/facades). A
 
 For example, we may use the `encrypt` method to encrypt a secret and store it on an [Eloquent model](/docs/{{version}}/eloquent):
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Crypt;
 	use Illuminate\Http\Request;

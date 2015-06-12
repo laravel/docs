@@ -106,7 +106,9 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 
 If you need to use a custom `Collection` object with your own extension methods, you may override the `newCollection` method on your model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use App\CustomCollection;
 	use Illuminate\Database\Eloquent\Model;

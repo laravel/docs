@@ -44,7 +44,9 @@ The `handle` method will be called when your command is executed. You may place 
 
 Note that we are able to inject any dependencies we need into the command's constructor. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies type-hinted in the constructor. For greater code reusability, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks.
 
-    <?php namespace App\Console\Commands;
+    <?php
+
+    namespace App\Console\Commands;
 
     use App\User;
     use App\DripEmailer;
