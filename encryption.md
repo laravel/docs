@@ -1,30 +1,55 @@
-# 加密
+# Encryption
 
-- [介紹](#introduction)
-- [基本用法](#basic-usage)
+- [Configuration](#configuration)
+- [Basic Usage](#basic-usage)
 
-<a name="introduction"></a>
-## 介紹
+<a name="configuration"></a>
+## Configuration
 
-Laravel 透過 Mcrypt PHP 擴充套件提供功能強大的 AES 加密功能。
+Before using Laravel's encrypter, you should set the `key` option of your `config/app.php` configuration file to a 32 character, random string. If this value is not properly set, all values encrypted by Laravel will be insecure.
 
 <a name="basic-usage"></a>
-## 基本用法
+## Basic Usage
 
-#### 加密數值
+#### Encrypting A Value
 
-	$encrypted = Crypt::encrypt('secret');
+You may encrypt a value using the `Crypt` [facade](/docs/{{version}}/facades). All encrypted values are encrypted using the OpenSSL and the `AES-256-CBC` cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC) to detect any modifications to the encrypted string.
 
-> **注意：** 請確保 `config/app.php` 檔案中的 `key` 選項設定了 16, 24, 或 32 字元的隨機字串，否則加密的數值不會安全。
+For example, we may use the `encrypt` method to encrypt a secret and store it on an [Eloquent model](/docs/{{version}}/eloquent):
 
-#### 解密數值
+	<?php namespace App\Http\Controllers;
 
-	$decrypted = Crypt::decrypt($encryptedValue);
+	use Crypt;
+	use Illuminate\Http\Request;
+	use App\Http\Controllers\Controller;
 
-#### 設定暗號與模式
+	class UserController extends Controller
+	{
+		/**
+		 * Store a secret message for the user.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function storeSecret(Request $request, $id)
+		{
+			$user = User::findOrFail($id);
 
-您也可以使用加密器來設置暗號和模式：
+			$user->fill([
+				'secret' => Crypt::encrypt($request->secret)
+			])->save();
+		}
+	}
 
-	Crypt::setMode('ctr');
+#### Decrypting A Value
 
-	Crypt::setCipher($cipher);
+Of course, you may decrypt values using the `decrypt` method on the `Crypt` facade. If the value can not be properly decrypted, such as when the MAC is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:
+
+	use Illuminate\Contracts\Encryption\DecryptException;
+
+	try {
+		$decrypted = Crypt::decrypt($encryptedValue);
+	} catch (DecryptException $e) {
+		//
+	}

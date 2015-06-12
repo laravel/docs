@@ -1,36 +1,37 @@
-# HTTP 中介層
+# HTTP Middleware
 
-- [簡介](#introduction)
-- [建立中介層](#defining-middleware)
-- [註冊中介層](#registering-middleware)
-- [Terminable 中介層](#terminable-middleware)
+- [Introduction](#introduction)
+- [Defining Middleware](#defining-middleware)
+- [Registering Middleware](#registering-middleware)
+- [Middleware Parameters](#middleware-parameters)
+- [Terminable Middleware](#terminable-middleware)
 
 <a name="introduction"></a>
-## 簡介
+## Introduction
 
-HTTP 中介層提供一個方便的機制來過濾進入應用程式的 HTTP 請求，例如，Laravel 本身使用中介層來檢驗使用者身份驗證，如果使用者未經過身份驗證，中介層會將用戶導向登入頁面，然而，如果用戶通過身份驗證，中介層將會允許這個請求進入應用的其他部分。
+HTTP middleware provide a convenient mechanism for filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application.
 
-當然，除了身份驗證之外，中介層也可以被用來執行各式各樣的任務，CORS 中介層負責替所有即將離開程式的回應加入適當的標頭。而日誌中介層可以記錄所有傳入應用程式的請求。
+Of course, additional middleware can be written to perform a variety of tasks besides authentication. A CORS middleware might be responsible for adding the proper headers to all responses leaving your application. A logging middleware might log all incoming requests to your application.
 
-Laravel 框架已經內建一些中介層，包括維護、身份驗證、CSRF 保護，等等。所有的中介層都放在 `app/Http/Middleware` 目錄內。
+There are several middleware included in the Laravel framework, including middleware for maintenance, authentication, CSRF protection, and more. All of these middleware are located in the `app/Http/Middleware` directory.
 
 <a name="defining-middleware"></a>
-## 建立中介層
+## Defining Middleware
 
-要建立一個新的中介層，可以使用 `make:middleware` 這個 Artisan 指令：
+To create a new middleware, use the `make:middleware` Artisan command:
 
 	php artisan make:middleware OldMiddleware
 
-此指令將會在 `app/Http/Middleware` 目錄內建立一個名稱為 `OldMiddleware` 的類別。在這個中介層內我們只允許請求內的 `age` 變數大於 200 的才能存取路由，否則，我們會將用戶重新導向「home」這個 URI。
+This command will place a new `OldMiddleware` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the "home" URI.
 
 	<?php namespace App\Http\Middleware;
-	
+
 	use Closure;
 
-	class OldMiddleware {
-
+	class OldMiddleware
+	{
 		/**
-		 * 執行請求過濾器。
+		 * Run the request filter.
 		 *
 		 * @param  \Illuminate\Http\Request  $request
 		 * @param  \Closure  $next
@@ -38,8 +39,7 @@ Laravel 框架已經內建一些中介層，包括維護、身份驗證、CSRF �
 		 */
 		public function handle($request, Closure $next)
 		{
-			if ($request->input('age') < 200)
-			{
+			if ($request->input('age') <= 200) {
 				return redirect('home');
 			}
 
@@ -48,74 +48,120 @@ Laravel 框架已經內建一些中介層，包括維護、身份驗證、CSRF �
 
 	}
 
-如你所見，若是 `age` 小於 `200`，中介層將會回傳 HTTP 重新導向給用戶端，否則，請求將會進一步傳遞到應用程式。只需調用帶有 `$request` 的 `$next` 方法，即可將請求傳遞到更深層的應用程式(允許通過中介層)。
+As you can see, if the given `age` is less than or equal to `200`, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to "pass"), simply call the `$next` callback with the `$request`.
 
-HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許多中介層，每一層都可以對請求進行檢查，甚至是完全拒絕請求。
+It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
 
-### *前* / *後* 中介層
+### *Before* / *After* Middleware
 
-一個中介層是在請求前還是請求後執行要看中介層自己。這個中介層會在應用程式處理請求**前**執行一些任務：
+Whether a middleware runs before or after a request depends on the middleware itself. For example, the following middleware would perform some task **before** the request is handled by the application:
 
 	<?php namespace App\Http\Middleware;
-	
+
 	use Closure;
 
-	class BeforeMiddleware implements Middleware {
-
+	class BeforeMiddleware
+	{
 		public function handle($request, Closure $next)
 		{
-			// 執行動作
+			// Perform action
 
 			return $next($request);
 		}
 	}
 
-這個中介層則會在應用程式處理請求**後**執行它的任務：
+However, this middleware would perform its task **after** the request is handled by the application:
 
 	<?php namespace App\Http\Middleware;
-	
+
 	use Closure;
 
-	class AfterMiddleware implements Middleware {
-
+	class AfterMiddleware
+	{
 		public function handle($request, Closure $next)
 		{
 			$response = $next($request);
 
-			// 執行動作
+			// Perform action
 
 			return $response;
 		}
 	}
 
 <a name="registering-middleware"></a>
-## 註冊中介層
+## Registering Middleware
 
-### 全域中介層
+### Global Middleware
 
-若是希望每個 HTTP 請求都經過一個中介層，只要將中介層的類別加入到 `app/Http/Kernel.php` 的 `$middleware` 屬性清單列表中。
+If you want a middleware to be run during every HTTP request to your application, simply list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
 
-### 為路由指派中介層
+### Assigning Middleware To Routes
 
-如果你要指派中介層給特定的路由，你得先將中介層在 `app/Http/Kernel.php` 設定一個好記的鍵值，預設情況下，這個檔案內的 `$routeMiddleware` 屬性已包含了 Laravel 目前設定的中介層，你只需要在清單列表中加上一組自訂的鍵值即可。
+If you would like to assign middleware to specific routes, you should first assign the middleware a short-hand key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing. For example:
 
-中介層一旦在 HTTP kernel 檔案內被定義，你即可在路由選項內使用 `middleware` 鍵值來指派：
+	// Within App\Http\Kernel Class...
 
-	Route::get('admin/profile', ['middleware' => 'auth', function()
+    protected $routeMiddleware = [
+        'auth' => 'App\Http\Middleware\Authenticate',
+        'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
+        'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
+    ];
+
+Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:
+
+	Route::get('admin/profile', ['middleware' => 'auth', function () {
+		//
+	}]);
+
+<a name="middleware-parameters"></a>
+## Middleware Parameters
+
+Middleware can also receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create a `RoleMiddleware` that receives a role name as an additional argument.
+
+Additional middleware parameters will be passed to the middleware after the `$next` argument:
+
+	<?php namespace App\Http\Middleware;
+
+	use Closure;
+
+	class RoleMiddleware
 	{
+		/**
+		 * Run the request filter.
+		 *
+		 * @param  \Illuminate\Http\Request  $request
+		 * @param  \Closure  $next
+		 * @param  string  $role
+		 * @return mixed
+		 */
+		public function handle($request, Closure $next, $role)
+		{
+			if (! $request->user()->hasRole($role)) {
+				// Redirect...
+			}
+
+			return $next($request);
+		}
+
+	}
+
+Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+
+	Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
 		//
 	}]);
 
 <a name="terminable-middleware"></a>
-## Terminable 中介層
+## Terminable Middleware
 
-有些時候中介層需要在 HTTP 回應已被傳送到用戶端之後才執行，例如，Laravel 內建的「session」中介層，儲存 session 資料是在回應已被傳送到用戶端 _之後_ 才執行。為了做到這一點，你需要定義中介層為「terminable」。
+Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, define the middleware as "terminable" by adding a `terminate` method to the middleware:
+
+	<?php namespace Illuminate\Session\Middleware;
 
 	use Closure;
-	use Illuminate\Contracts\Routing\TerminableMiddleware;
 
-	class StartSession implements TerminableMiddleware {
-
+	class StartSession
+	{
 		public function handle($request, Closure $next)
 		{
 			return $next($request);
@@ -123,9 +169,8 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
 
 		public function terminate($request, $response)
 		{
-			// 儲存 session 資料...
+			// Store the session data...
 		}
-
 	}
 
-如你所見，除了定義 `handle` 方法之外，`TerminableMiddleware` 定義一個 `terminate` 方法。這個方法接收請求和回應。一旦定義了 terminable 中介層，你需要將它增加到 HTTP kernel 檔案的全域中介層清單列表中。
+The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.

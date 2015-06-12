@@ -1,47 +1,85 @@
 # Laravel Elixir
 
-- [簡介](#introduction)
-- [安裝](#installation)
-- [使用方式](#usage)
-- [Gulp](#gulp)
-- [功能擴充](#extensions)
+- [Introduction](#introduction)
+- [Installation & Setup](#installation)
+- [Running Elixir](#running-elixir)
+- [Working With Stylesheets](#working-with-stylesheets)
+	- [Less](#less)
+	- [Sass](#sass)
+	- [Plain CSS](#plain-css)
+	- [Source Maps](#css-source-maps)
+- [Working With Scripts](#working-with-scripts)
+	- [CoffeeScript](#coffeescript)
+	- [Browserify](#browserify)
+	- [Babel](#babel)
+	- [Scripts](#javascript)
+- [Versioning / Cache Busting](#versioning-and-cache-busting)
+- [Calling Existing Gulp Tasks](#calling-existing-gulp-tasks)
+- [Writing Elixir Extensions](#writing-elixir-extensions)
 
 <a name="introduction"></a>
-## 簡介
+## Introduction
 
-Laravel Elixir 提供了簡潔流暢的 API，讓你能夠為你的 Laravel 應用程式定義基本的 [Gulp](http://gulpjs.com) 任務。Elixir 支援許多常見的 CSS 與 JavaScrtip 預處理器，甚至包含了測試工具。
+Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gulpjs.com) tasks for your Laravel application. Elixir supports several common CSS and JavaScript pre-processors, and even testing tools. Using method chaining, Elixir allows you to fluently define your asset pipeline. For example:
 
-如果你曾經對於使用 Gulp 及編譯資源感到困惑，那麼你絕對會愛上 Laravel Elixir！
+```javascript
+elixir(function(mix) {
+	mix.sass('app.scss')
+	   .coffee('app.coffee');
+});
+```
+
+If you've ever been confused about how to get started with Gulp and asset compilation, you will love Laravel Elixir. However, you are not required to use it while developing your application. You are free to use any asset pipeline tool you wish, or even none at all.
 
 <a name="installation"></a>
-## 安裝與設定
+## Installation & Setup
 
-### 安裝 Node
+### Installing Node
 
-在開始使用 Elixir 之前，你必須先確定你的開發環境上有安裝 Node.js。
+Before triggering Elixir, you must first ensure that Node.js is installed on your machine.
 
     node -v
 
-預設情況下，Laravel Homestead 會包含你所需的一切；然而，如果你沒有使用 Vagrant，那麼你可以瀏覽 [Node 的下載頁](http://nodejs.org/download/) 進行安裝。別擔心，安裝是很簡單又快速的！
+By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install Node by visiting [their download page](http://nodejs.org/download/).
 
 ### Gulp
 
-接著你需要全域安裝 [Gulp](http://gulpjs.com) 的 NPM 安裝包，像是這樣：
+Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package:
 
     npm install --global gulp
 
 ### Laravel Elixir
 
-最後的步驟就是安裝 Elixir！伴隨著新安裝的 Laravel，你會發現根目錄有個名為 `package.json` 的檔案。想像它就如同你的 `composer.json` 檔案，只是它定義的是 Node 的依賴，而不是 PHP。你可以使用以下的指令進行安裝依賴的動作：
+The only remaining step is to install Elixir! Within a fresh installation of Laravel, you'll find a `package.json` file in the root. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
 
 	npm install
 
-<a name="usage"></a>
-## 使用方式
+<a name="running-elixir"></a>
+## Running Elixir
 
-現在你已經安裝好 Elixir，未來任何時候你都能進行編譯及合併檔案！專案根目錄的 `gulpfile.js` 包含你所有的 Elixir 任務。
+Elixir is built on top of [Gulp](http://gulpjs.com), so to run your Elixir tasks you only need to run the `gulp` command in your terminal. Adding the `--production` flag to the command will instruct Elixir to minify your CSS and JavaScript files:
 
-#### 編譯 Less
+	// Run all tasks...
+	gulp
+
+	// Run all tasks and minify all CSS and JavaScript...
+	gulp --production
+
+#### Watching Assets For Changes
+
+Since it is inconvenient to run the `gulp` command on your terminal after every change to your assets, you may use the `gulp watch` command. This command will continue running in your terminal and watch your assets for any changes. When changes occur, new files will automatically be compiled:
+
+	gulp watch
+
+<a name="working-with-stylesheets"></a>
+## Working With Stylesheets
+
+The `gulpfile.js` file in your project's root directory contains all of your Elixir tasks. Elixir tasks can be chained together to define exactly how your assets should be compiled.
+
+<a name="less"></a>
+### Less
+
+To compile [Less](http://lesscss.org/) into CSS, you may use the `less` method. The `less` method assumes that your Less files are stored in `resources/assets/less`. By default, the task will place the compiled CSS for this example in `public/css/app.css`:
 
 ```javascript
 elixir(function(mix) {
@@ -49,20 +87,21 @@ elixir(function(mix) {
 });
 ```
 
-在上述例子中，Elixir 會假設你的 Less 檔案儲存在 `resources/assets/less` 裡。
-
-#### 編譯多個 Less 檔案
+You may also combine multiple Less files into a single CSS file. Again, the resulting CSS will be placed in `public/css/app.css`. If you wish to customize the output location of the compiled CSS, you may pass a second argument to the `less` method:
 
 ```javascript
 elixir(function(mix) {
 	mix.less([
-		'app.less',
-		'something-else.less'
-	]);
+		"app.less",
+		"controllers.less"
+	], "public/assets/css");
 });
 ```
 
-#### 編譯 Sass
+<a name="sass"></a>
+### Sass
+
+The `sass` method allows you to compile [Sass](http://sass-lang.com/) into CSS. Assuming your Sass files are stored at `resources/assets/sass`, you may use the method like so:
 
 ```javascript
 elixir(function(mix) {
@@ -70,17 +109,58 @@ elixir(function(mix) {
 });
 ```
 
-在上述例子中，是假設你的 Sass 檔案儲存在 `resources/assets/sass` 裡。
-
-以預設來說，Elixir 在執行時底層採用的是 LibSass 函式庫來編譯。在一些實例中，Ruby 的版本被證明比前者更加有利，雖然它速度較慢一些，但是它擁有更加豐富的功能。假設你已經安裝了 Ruby 及 Sass 的 gem（`gem install sass`），你可以開啟 Ruby 的模式，如下：
+Again, like the `less` method, you may compile multiple scripts into a single CSS file, and even customize the output directory of the resulting CSS:
 
 ```javascript
 elixir(function(mix) {
-	mix.rubySass("app.sass");
+	mix.sass([
+		"app.scss",
+		"controllers.scss"
+	], "public/assets/css");
 });
 ```
 
-#### 編譯並排除 Source Maps
+#### Ruby Sass
+
+Under the hood, Elixir uses the LibSass library for compilation. In some instances, it may be advantageous to leverage the Ruby version which, though slower, is more feature rich. Assuming that you have both Ruby and the Sass gem installed (`gem install sass`), you may use the Ruby compiler like so:
+
+```javascript
+elixir(function(mix) {
+	mix.rubySass("app.scss");
+});
+```
+
+<a name="plain-css"></a>
+### Plain CSS
+
+If you would just like to combine some plain CSS stylesheets into a single file, you may use the `styles` method. Paths passed to this method are relative to the `resources/assets/css` directory and the resulting CSS will be placed in `public/css/all.css`:
+
+```javascript
+elixir(function(mix) {
+	mix.styles([
+		"normalize.css",
+		"main.css"
+	]);
+});
+```
+
+Of course, you may also output the resulting file to a custom location by passing a second argument to the `styles` method:
+
+```javascript
+elixir(function(mix) {
+	mix.styles([
+		"normalize.css",
+		"main.css"
+	], "public/assets/css");
+});
+```
+
+<a name="css-source-maps"></a>
+### Source Maps
+
+Source maps are enabled out of the box. So, for each file that is compiled you will find a companion `*.css.map` file in the same directory. This mapping allows you to trace your compiled stylesheet selectors back to your original Sass or Less while debugging in your browser.
+
+If you do not want source maps generated for your CSS, you may disable them using a simple configuration option:
 
 ```javascript
 elixir.config.sourcemaps = false;
@@ -90,89 +170,58 @@ elixir(function(mix) {
 });
 ```
 
-Source maps 在預設情況下是開啟的。因此，在每個被編譯的檔案，同目錄內都會伴隨著一個 `*.css.map` 檔案。這個檔案能夠讓你在除錯時，能夠追蹤編譯後的樣式表選擇器至原始的 Sass 或 Less 位置。如果你想要關閉此功能，當然，上方的範例程式碼做的就是這件事情。
+<a name="working-with-scripts"></a>
+## Working With Scripts
 
-#### 編譯 CoffeeScript
+Elixir also provides several functions to help you work with your JavaScript files, such as compiling ECMAScript 6, compiling CoffeeScript, Browserify, minification, and simply concatenating plain JavaScript files.
 
-```javascript
-elixir(function(mix) {
-	mix.coffee();
-});
-```
+<a name="coffeescript"></a>
+### CoffeeScript
 
-在上述例子中，Elixir 會假設你的 CoffeeScript 檔案儲存在 `resources/assets/coffee` 裡。
-
-#### 編譯所有的 Less 及 CoffeeScript
+The `coffee` method may be used to compile [CoffeeScript](http://coffeescript.org/) into plain JavaScript. The `coffee` function accepts an array of CoffeeScript files relative to the `resources/assets/coffee` directory and generates a single `app.js` file in the `public/js` directory:
 
 ```javascript
 elixir(function(mix) {
-    mix.less()
-       .coffee();
+	mix.coffee(['app.coffee', 'controllers.coffee']);
 });
 ```
 
-#### 觸發 PHPUnit 測試
+<a name="browserify"></a>
+### Browserify
+
+Elixir also ships with a `browserify` method, which gives you all the benefits of  requiring modules in the browser and using EcmaScript 6.
+
+This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/bundle.js`:
 
 ```javascript
 elixir(function(mix) {
-	mix.phpUnit();
+	mix.browserify('index.js');
 });
 ```
 
-#### 觸發 PHPSpec 測試
+<a name="babel"></a>
+### Babel
+
+The `babel` method may be used to compile [EcmaScript 6 and 7](https://babeljs.io/docs/learn-es2015/) into plain JavaScript. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single `all.js` file in the `public/js` directory:
 
 ```javascript
 elixir(function(mix) {
-	mix.phpSpec();
+	mix.babel([
+                "order.js",
+                "product.js"
+        ]);
 });
 ```
 
-#### 合併樣式檔案
+To choose a different output location, simply specify your desired path as the second argument. The signature and functionality of this method are identical to `mix.scripts()`, excluding the Babel compilation.
 
-```javascript
-elixir(function(mix) {
-	mix.styles([
-		"normalize.css",
-		"main.css"
-	]);
-});
-```
 
-傳遞給此方法的檔案路徑均相對於 `resources/assets/css` 目錄。
+<a name="javascript"></a>
+### Scripts
 
-#### 合併樣式檔案且儲存在自訂的路徑
+If you have multiple JavaScript files that you would like to combine into a single file, you may use the `scripts` method.
 
-```javascript
-elixir(function(mix) {
-	mix.styles([
-		"normalize.css",
-		"main.css"
-	], 'public/build/css/everything.css');
-});
-```
-
-#### 從特定相對目錄合併樣式檔案
-
-```javascript
-elixir(function(mix) {
-	mix.styles([
-		"normalize.css",
-		"main.css"
-	], 'public/build/css/everything.css', 'public/css');
-});
-```
-
-`styles` 與 `scrtips` 方法可以透過傳入第三個參數來決定來源檔案的相對目錄。
-
-#### 合併指定目錄裡所有的樣式檔案
-
-```javascript
-elixir(function(mix) {
-	mix.stylesIn("public/css");
-});
-```
-
-#### 合併腳本檔案
+The `scripts` method assumes all paths are relative to the `resources/assets/js` directory, and will place the resulting JavaScript in `public/js/all.js` by default:
 
 ```javascript
 elixir(function(mix) {
@@ -183,9 +232,16 @@ elixir(function(mix) {
 });
 ```
 
-同樣的，傳遞給此方法的檔案路徑均相對於 `resources/assets/js` 目錄
+If you need to combine multiple sets of scripts into different files, you may make multiple calls to the `scripts` method. The second argument given to the method determines the resulting file name for each concatenation:
 
-#### 合併指定目錄裡所有的腳本檔案
+```javascript
+elixir(function(mix) {
+    mix.scripts(['app.js', 'controllers.js'], 'public/js/app.js')
+       .scripts(['forum.js', 'threads.js'], 'public/js/forum.js');
+});
+```
+
+If you need to combine all of the scripts in a given directory, you may use the `scriptsIn` method. The resulting JavaScript will be placed in `public/js/all.js`:
 
 ```javascript
 elixir(function(mix) {
@@ -193,16 +249,12 @@ elixir(function(mix) {
 });
 ```
 
-#### 合併多組腳本檔案
+<a name="versioning-and-cache-busting"></a>
+## Versioning / Cache Busting
 
-```javascript
-elixir(function(mix) {
-    mix.scripts(['jquery.js', 'main.js'], 'public/js/main.js')
-       .scripts(['forum.js', 'threads.js'], 'public/js/forum.js');
-});
-```
+Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Elixir can handle this for you using the `version` method.
 
-#### 壓縮檔案並加上雜湊的版本號
+The `version` method accepts a file name relative to the `public` directory, and will append a unique hash to the filename, allowing for cache-busting. For example, the generated file name will look something like: `all-16d570a7.css`:
 
 ```javascript
 elixir(function(mix) {
@@ -210,17 +262,13 @@ elixir(function(mix) {
 });
 ```
 
-這個動作會為你的檔案名稱加上獨特的雜湊值，以防止檔案被快取。舉例來說，產生出來的檔案名稱可能像這樣：`all-16d570a7.css`。
+After generating the versioned file, you may use Laravel's global `elixir` PHP helper function within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `elixir` function will automatically determine the name of the hashed file:
 
-接著在你的視圖中，你能夠使用 `elixir()` 函式來正確載入名稱被雜湊後的檔案。舉例如下：
+	<link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 
-```html
-<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
-```
+#### Versioning Multiple Files
 
-程式的作用下，`elixir()` 函式會將參數內的原始檔名轉換成被雜湊後的檔名並載入。是否有如釋重擔的感覺呢？
-
-你也可以傳遞一個陣列給 `version` 方法來把多個檔案加上版本：
+You may pass an array to the `version` method to version multiple files:
 
 ```javascript
 elixir(function(mix) {
@@ -228,85 +276,16 @@ elixir(function(mix) {
 });
 ```
 
-```html
-<link rel="stylesheet" href="{{ elixir("css/all.css") }}">
-<script src="{{ elixir("js/app.js") }}"></script>
-```
+Once the files have been versioned, you may use the `elixir` helper function to generate links to the proper hashed files. Remember, you only need to pass the name of the un-hashed file to the `elixir` helper function. The helper will use the un-hashed name to determine the current hashed version of the file:
 
-#### 複製檔案到新的位置
+	<link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 
-```javascript
-elixir(function(mix) {
-	mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
-});
-```
+	<script src="{{ elixir('js/app.js') }}"></script>
 
-#### 將整個目錄都複製到新的位置
+<a name="calling-existing-gulp-tasks"></a>
+## Calling Existing Gulp Tasks
 
-```javascript
-elixir(function(mix) {
-	mix.copy('vendor/package/views', 'resources/views');
-});
-```
-
-#### Trigger Browserify
-
-```javascript
-elixir(function(mix) {
-	mix.browserify('index.js');
-});
-```
-
-Want to require modules in the browser? Hoping to use EcmaScript 6 sooner than later? Need a built-in JSX transformer? If so, [Browserify](http://browserify.org/), along with the `browserify` Elixir task, will handle the job nicely.
-
-This task assumes that your scripts are stored in `resources/assets/js`, though you're free to override the default.
-
-#### 方法連接
-
-當然，你能夠串連 Elixir 大部份的方法來建立一連串的任務：
-
-```javascript
-elixir(function(mix) {
-    mix.less("app.less")
-       .coffee()
-       .phpUnit()
-       .version("css/bootstrap.css");
-});
-```
-
-<a name="gulp"></a>
-## Gulp
-
-現在你已經告訴 Elixir 要執行的任務，接著只需要在命令列執行 Gulp。
-
-#### 執行一次所有註冊的任務
-
-	gulp
-
-#### 監控檔案變更
-
-	gulp watch
-
-#### 只編譯腳本
-
-	gulp scripts
-
-#### 只編譯樣式
-
-	gulp styles
-
-#### 監控測試以及 PHP 類別的變更
-
-	gulp tdd
-
-> **提示：** 所有的任務都會使用開發環境進行，所以壓縮功能不會被執行。如果要使用上線環境，可以使用 `gulp --production`。
-
-<a name="extensions"></a>
-## 自訂任務及擴展
-
-有些時候，你可能寫要在掛接自己的 Gulp 任務至 Elixie 中。也許你的功能有點特別，並且想透過 Elixir 來幫你混合或是監看。這當然沒問題！
-
-舉個例子，假設你有一個一般的任務，當你呼叫時就會說一些簡單的文字。
+If you need to call an existing Gulp task from Elixir, you may use the `task` method. As an example, imagine that you have a Gulp task that simply speaks a bit of text when called:
 
 ```javascript
 gulp.task("speak", function() {
@@ -316,7 +295,7 @@ gulp.task("speak", function() {
 });
 ```
 
-很容易的。當然，在終端機中，你可以透過呼叫 `gulp speak` 來觸發這個任務。想要將這個任務加入 Elixir ，你只需要使用 `mix.task()` 方法：
+If you wish to call this task from Elixir, use the `mix.task` method and pass the name of the task as the only argument to the method:
 
 ```javascript
 elixir(function(mix) {
@@ -324,7 +303,9 @@ elixir(function(mix) {
 });
 ```
 
-就是這樣！現在開始，當你每次執行 Gulp，你自訂的「speak」任務就會和其他 Gulp 任務一起被執行，因為你已經將他們混合在一起了。除此之外你也可以註冊一個監控器，當一個或多個檔案被修改時，就重新觸發你的自訂任務，你只需要傳入一個正規表示式作為第二個參數。
+#### Custom Watchers
+
+If you need to register a watcher to run your custom task each time some files are modified, pass a regular expression as the second argument to the `task` method:
 
 ```javascript
 elixir(function(mix) {
@@ -332,12 +313,14 @@ elixir(function(mix) {
 });
 ```
 
-在加入第二個參數之後，每次只要有 PHP 檔案在「app/」資料夾中被儲存，就會重新觸發「speak」任務。
+<a name="writing-elixir-extensions"></a>
+## Writing Elixir Extensions
 
-
-為了得到更好的靈活性，你可以建立一個完整的 Elixir 擴展。以剛剛的「speak」作為範例，如果你想寫一個擴展，可以這麼做：
+If you need more flexibility than Elixir's `task` method can provide, you may create custom Elixir extensions. Elixir extensions allow you to pass arguments to your custom tasks. For example, you could write an extension like so:
 
 ```javascript
+// File: elixir-extensions.js
+
 var gulp = require("gulp");
 var shell = require("gulp-shell");
 var elixir = require("laravel-elixir");
@@ -353,28 +336,26 @@ elixir.extend("speak", function(message) {
  });
 ```
 
-請注意我們 `擴增（extend）` Elixir 的 API 時所使用的第一個參數名稱，稍後我們需要在 Gulpfile 中參考到它，以及建立 Gulp 任務所使用的回呼函式。
-
-跟前面一樣，如果你想要讓你的自訂任務能被監控，只要在註冊一個監控器就行了。
+That's it! You may either place this at the top of your Gulpfile, or instead extract it to a custom tasks file. For example, if you place your extensions in `elixir-extensions.js`, you may require the file from your main `Gulpfile` like so:
 
 ```javascript
-this.registerWatcher("speak", "app/**/*.php");
-```
+// File: Gulpfile.js
 
-這行程式的意思是指，當符合正規表示式 `app/**/*.php` 的檔案一經修改，就會觸發 `speak` 任務。
+var elixir = require("laravel-elixir");
 
-很好！接著你可以將這行程式寫在 Gulpfile 的頂端，或者將它放到自訂任務的檔案裡。如果你選擇後者，那麼你必須將它載入至你的 Gulpfile，例如：
+require("./elixir-tasks")
 
-```javascript
-require("./custom-tasks")
-```
-
-大功告成！最後你只需要將他們結合。
-
-```javascript
 elixir(function(mix) {
 	mix.speak("Tea, Earl Grey, Hot");
 });
 ```
 
-加入之後，每當你觸發 Gulp，Picard 就會要求一些茶。
+#### Custom Watchers
+
+If you would like your custom task to be re-triggered while running `gulp watch`, you may register a watcher:
+
+```javascript
+this.registerWatcher("speak", "app/**/*.php");
+
+return this.queueTask("speak");
+```

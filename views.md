@@ -1,16 +1,18 @@
-# 視圖
+# Views
 
-- [基本用法](#basic-usage)
-- [視圖組件](#view-composers)
+- [Basic Usage](#basic-usage)
+	- [Passing Data To Views](#passing-data-to-views)
+	- [Sharing Data With All Views](#sharing-data-with-all-views)
+- [View Composers](#view-composers)
 
 <a name="basic-usage"></a>
-## 基本用法
+## Basic Usage
 
-視圖通常包含 HTML，並且提供便利的方式分開控制器和表現層的領域邏輯。視圖被儲存在 `resources/views` 目錄下。
+Views contain the HTML served by your application and separate your controller / application logic from your presentation logic. Views are stored in the `resources/views` directory.
 
-一個簡單的視圖看起來可能像這樣：
+A simple view might look something like this:
 
-	<!-- 視圖被儲存在 resources/views/greeting.php -->
+	<!-- View stored in resources/views/greeting.php -->
 
 	<html>
 		<body>
@@ -18,82 +20,85 @@
 		</body>
 	</html>
 
-視圖可以像這樣回傳到使用者瀏覽器：
+Since this view is stored at `resources/views/greeting.php`, we may return it using the global `view` helper function like so:
 
-	Route::get('/', function()
-	{
+	Route::get('/', function ()	{
 		return view('greeting', ['name' => 'James']);
 	});
 
-如你所見，`view` 輔助方法的第一個參數會對應到 `resources/views` 資料夾內視圖檔案的名稱；傳遞到 `view` 輔助方法的第二個參數是一個能夠在視圖內取用的資料陣列。
+As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument passed to helper is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view by simply executing `echo` on the variable.
 
-當然，視圖檔案也可以被存放在 `resources/views` 的子目錄內。舉例來說，如果你的視圖檔案儲存在 `resources/views/admin/profile.php`，你可以用以下的程式碼來回傳：
+Of course, views may also be nested within sub-directories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.php`, you may reference it like so:
 
 	return view('admin.profile', $data);
 
-#### 傳遞資料到視圖
+#### Determining If A View Exists
 
-	// 使用常用的方法
-	$view = view('greeting')->with('name', 'Victoria');
+If you need to determine if a view exists, you may use the `exists` method after calling the `view` helper with no arguments. This method will return `true` if the view exists on disk:
 
-	// 使用魔術方法
-	$view = view('greeting')->withName('Victoria');
-
-在上面的範例程式碼中，視圖將可以使用 `$name` 來取得資料，其值為 `Victoria`。
-
-如果你想的話，還有一種方式就是直接在 `view` 輔助方法的第二個參數直接傳遞一個陣列：
-
-	$view = view('greetings', $data);
-
-When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, like `{{ $key }}` (assuming `$data['key']` exists).
-
-#### 把資料共享給所有視圖
-
-有時候你可能需要共享一些資料給所有視圖，你有很多個選擇：`view` 輔助方法；`Illuminate\Contracts\View\Factory` [contract](/docs/{{version}}/contracts)；或是在[視圖組件](#view-composers)內使用萬用字元。
-
-這裡有個 `view` 輔助方法的範例：
-
-	view()->share('data', [1, 2, 3]);
-
-你也可以使用 `view` 的 Facade：
-
-	View::share('data', [1, 2, 3]);
-
-通常你應該在服務提供者的 `boot` 方法內使用 `share` 方法。你可以選擇加在 `AppServiceProvider` 或者是新建一個單獨的服務提供者來放置這些程式碼。
-
-> **備註：**當 `view` 輔助方法被呼叫，而沒有帶入任何參數時，它會回傳一個 `Illuminate\Contracts\View\Factory`  contract 的實作。
-
-#### 確認視圖是否存在
-
-如果你需要確認視圖是否存在，使用 `exists` 方法：
-
-	if (view()->exists('emails.customer'))
-	{
+	if (view()->exists('emails.customer')) {
 		//
 	}
 
-#### 從一個檔案路徑產生視圖
+When the `view` helper is called without arguments, an instance of `Illuminate\Contracts\View\Factory` is returned, giving you access to any of the factory's methods.
 
-如果你想要的話，你可以從一個完整的檔案路徑來產生一個視圖：
+<a name="view-data"></a>
+### View Data
 
-	return view()->file($pathToFile, $data);
+<a name="passing-data-to-views"></a>
+#### Passing Data To Views
 
-<a name="view-composers"></a>
-## 視圖組件
+As you saw in the previous examples, you may easily pass an array of data to views:
 
-視圖組件就是在視圖被渲染前，會呼叫的閉包或類別方法。如果你想在每次渲染某些視圖時綁定資料，視圖組件可以把這樣的程式邏輯組織在同一個地方。
+	return view('greetings', ['name' => 'Victoria']);
 
-#### 定義一個視圖組件
+When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, such as `<?php echo $key; ?>`. As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view:
 
-讓我們在[服務提供者](/docs/{{version}}/providers)內組織我們的視圖組件。底下範例將使用 `View` Facade 來取得底層 `Illuminate\Contracts\View\Factory` contract 實作：
+	$view = view('greeting')->with('name', 'Victoria');
+
+<a name="sharing-data-with-all-views"></a>
+#### Sharing Data With All Views
+
+Occasionally, you may need to share a piece of data with all views that are rendered by your application. You may do so using the view factory's `share` method. Typically, you would place calls to `share` within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them:
 
 	<?php namespace App\Providers;
 
-	use View;
+	class AppServiceProvider extends ServiceProvider
+	{
+	    /**
+	     * Bootstrap any application services.
+	     *
+	     * @return void
+	     */
+		public function boot()
+		{
+			view()->share('key', 'value');
+		}
+
+		/**
+		 * Register the service provider.
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			//
+		}
+	}
+
+<a name="view-composers"></a>
+## View Composers
+
+View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer can help you organize that logic into a single location.
+
+Let's register our view composers within a [service provider](/docs/{{version}}/providers). We'll use the `view` helper to access the underlying `Illuminate\Contracts\View\Factory` contract implementation. Remember, Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `App\Http\ViewComposers` directory:
+
+	<?php namespace App\Providers;
+
 	use Illuminate\Support\ServiceProvider;
 
-	class ComposerServiceProvider extends ServiceProvider {
-
+	class ComposerServiceProvider extends ServiceProvider
+	{
 		/**
 		 * Register bindings in the container.
 		 *
@@ -101,12 +106,13 @@ When passing information in this manner, `$data` should be an array with key/val
 		 */
 		public function boot()
 		{
-			// 使用類別來指定視圖組件
-			View::composer('profile', 'App\Http\ViewComposers\ProfileComposer');
+			// Using class based composers...
+			view()->composer(
+				'profile', 'App\Http\ViewComposers\ProfileComposer'
+			);
 
-			// 使用閉包來指定視圖組件...
-			View::composer('dashboard', function($view)
-			{
+			// Using Closure based composers...
+			view()->composer('dashboard', function ($view) {
 
 			});
 		}
@@ -120,22 +126,19 @@ When passing information in this manner, `$data` should be an array with key/val
 		{
 			//
 		}
-
 	}
 
-> **備註：**Laravel 沒有預設目錄放置視圖組件。你可以自由的把它們放在你想要的地方。舉例來說，你可以建立一個 `App\Http\ViewComposers` 目錄。
+Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
 
-記住，你需要把服務提供者加入在 `config/app.php` 設定檔內的 `providers` 陣列。
-
-現在我們已經註冊了視圖組件，並且在每次 `profile` 視圖渲染的時候，`ProfileComposer@compose` 都將會被執行。接下來我們來看看這個類別要如何定義：
+Now that we have registered the composer, the `ProfileComposer@compose` method will be executed each time the `profile` view is being rendered. So, let's define the composer class:
 
 	<?php namespace App\Http\ViewComposers;
 
 	use Illuminate\Contracts\View\View;
 	use Illuminate\Users\Repository as UserRepository;
 
-	class ProfileComposer {
-
+	class ProfileComposer
+	{
 		/**
 		 * The user repository implementation.
 		 *
@@ -151,7 +154,7 @@ When passing information in this manner, `$data` should be an array with key/val
 		 */
 		public function __construct(UserRepository $users)
 		{
-			// service container 會自動解析所需的參數
+			// Dependencies automatically resolved by service container...
 			$this->users = $users;
 		}
 
@@ -165,40 +168,29 @@ When passing information in this manner, `$data` should be an array with key/val
 		{
 			$view->with('count', $this->users->count());
 		}
-
 	}
 
-在視圖被渲染之前，視圖組件的 `compose` 方法就會被呼叫，並且傳入一個 `Illuminate\Contracts\View\View` 實例。你可以使用 `with` 方法來把資料綁定到 `view`。
+Just before the view is rendered, the composer's `compose` method is called with the `Illuminate\Contracts\View\View` instance. You may use the `with` method to bind data to the view.
 
-> **備註：**所有的視圖組件會被[服務容器](/docs/{{version}}/container) 解析，所以你可以在視圖組件的建構子，型別提示注入所需的任何依賴。
+> **Note:** All view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor.
 
-#### 在視圖組件內使用萬用字元
+#### Attaching A Composer To Multiple Views
 
-`View` 的 `composer` 方法可以接受 `*` 作為萬用字元，所以你可以對所有視圖附加 `composer` 如下：
+You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
 
-	View::composer('*', function($view)
-	{
+	view()->composer(
+		['profile', 'dashboard'],
+		'App\Http\ViewComposers\MyViewComposer'
+	);
+
+The `composer` method accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
+
+	view()->composer('*', function ($view) {
 		//
 	});
 
-#### 同時對多個視圖附加視圖組件
+### View Creators
 
-你也可以同時針對多個視圖附加同一個視圖組件：
+View **creators** are very similar to view composers; however, they are fired immediately when the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
 
-	View::composer(['profile', 'dashboard'], 'App\Http\ViewComposers\MyViewComposer');
-
-#### 定義多個視圖組件
-
-你可以使用 `composers` 方法來同時定義一群視圖組件：
-
-	View::composers([
-		'App\Http\ViewComposers\AdminComposer' => ['admin.index', 'admin.profile'],
-		'App\Http\ViewComposers\UserComposer' => 'user',
-		'App\Http\ViewComposers\ProductComposer' => 'product'
-	]);
-
-### 視圖創建者
-
-視圖**創建者**幾乎和視圖組件運作方式一樣；只是視圖創建者會在視圖初始化後就立刻執行。要註冊一個創建者，只要使用 `creator` 方法：
-
-	View::creator('profile', 'App\Http\ViewCreators\ProfileCreator');
+	view()->creator('profile', 'App\Http\ViewCreators\ProfileCreator');

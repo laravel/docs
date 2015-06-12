@@ -1,99 +1,221 @@
-# 發行說明
+# Release Notes
 
-- [支援政策](#support-policy)
+- [Support Policy](#support-policy)
+- [Laravel 5.1](#laravel-5.1)
 - [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
 - [Laravel 4.1](#laravel-4.1)
 
 <a name="support-policy"></a>
-## 支援政策
+## Support Policy
 
-安全修補程式會**一直**適用於 Laravel 之前的主要版本。目前，**所有**的安全修補及更新程式都會應用在 Laravel 5.X **以及** Laravel 4.x 上。
+For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance.
 
-如果可能的話，安全修補程式也會被應用在更舊版本的框架，例如 Laravel 3.x。
+For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+
+<a name="laravel-5.1"></a>
+## Laravel 5.1
+
+Laravel 5.1 continues the improvements made in Laravel 5.0 by adopting PSR-2 and adding event broadcasting, middleware parameters, Artisan improvements, and more.
+
+### PHP 5.5.9+
+
+Since PHP 5.4 will enter "end of life" in September and will no longer receive security updates from the PHP development team, Laravel 5.1 requires PHP 5.5.9 or greater. PHP 5.5.9 allows compatibility with the latest versions of popular PHP libraries such as Guzzle and the AWS SDK.
+
+### LTS
+
+ Laravel 5.1 is the first release of Laravel to receive **long term support**. Laravel 5.1 will receive bug fixes for 2 years and security fixes for 3 years. This support window is the largest ever provided for Laravel and provides stability and peace of mind for larger, enterprise clients and customers.
+
+### PSR-2
+
+The [PSR-2 coding style guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) has been adopted as the default style guide for the Laravel framework. Additionally, all generators have been updated to generate PSR-2 compatible syntax.
+
+### Documentation
+
+Every page of the Laravel documentation has been meticulously reviewed and dramatically improved. All code examples have also been reviewed and expanded to provide more relevance and context.
+
+### Event Broadcasting
+
+In many modern web applications, web sockets are used to implement real-time, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a websocket connection to be handled by the client.
+
+To assist you in building these types of applications, Laravel makes it easy to "broadcast" your events over a websocket connection. Broadcasting your Laravel events allows you to share the same event names between your server-side code and your client-side JavaScript framework.
+
+To learn more about event broadcasting, check out the [event documentation](/docs/{{version}}/events#broadcasting-events).
+
+### Middleware Parameters
+
+Middleware can now receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create a `RoleMiddleware` that receives a role name as an additional argument:
+
+	<?php namespace App\Http\Middleware;
+
+	use Closure;
+
+	class RoleMiddleware
+	{
+		/**
+		 * Run the request filter.
+		 *
+		 * @param  \Illuminate\Http\Request  $request
+		 * @param  \Closure  $next
+		 * @param  string  $role
+		 * @return mixed
+		 */
+		public function handle($request, Closure $next, $role)
+		{
+			if (! $request->user()->hasRole($role)) {
+				// Redirect...
+			}
+
+			return $next($request);
+		}
+
+	}
+
+Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+
+	Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
+		//
+	}]);
+
+For more information on middleware, check out the [middleware documentation](/docs/{{version}}/middleware).
+
+### Testing Overhaul
+
+The built-in testing capabilities of Laravel have been dramatically improved. A variety of new methods provide a fluent, expressive interface for interacting with your application and examining its responses. For example, check out the following test:
+
+    public function testNewUserRegistration()
+    {
+        $this->visit('/register')
+             ->type('Taylor', 'name')
+             ->check('terms')
+             ->press('Register')
+             ->seePageIs('/dashboard');
+    }
+
+For more information on testing, check out the [testing documentation](/docs/{{version}}/testing).
+
+### Model Factories
+
+Laravel now ships with an easy way to create stub Eloquent models using [model factories](/docs/{{version}}/testing#model-factories). Model factories allow you to easily define a set of "default" attributes for your Eloquent model, and then generate test model instances for your tests or database seeds. Model factories also take advantage of the powerful [Faker](https://github.com/fzaninotto/Faker) PHP library for generating random attribute data:
+
+	$factory->define('App\User', function ($faker) {
+	    return [
+	        'name' => $faker->name,
+	        'email' => $faker->email,
+	        'password' => str_random(10),
+	        'remember_token' => str_random(10),
+	    ];
+	});
+
+For more information on model factories, check out [the documentation](/docs/{{version}}/testing#model-factories).
+
+### Artisan Improvements
+
+Artisan commands may now be defined using a simple, route-like "signature", which provides an extremely simple interface for defining command line arguments and options. For example, you may define a simple command and its options like so:
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'email:send {user} {--force}';
+
+For more information on defining Artisan commands, consult the [Artisan documentation](/docs/{{version}}/artisan).
+
+### Folder Structure
+
+To better express intent, the `app/Commands` directory has been renamed to `app/Jobs`. Additionally, the `app/Handlers` directory has been consolidated into a single `app/Listeners` directory which simply contains event listeners. However, this is not a breaking change and you are not required to update to the new folder structure to use Laravel 5.1.
+
+### Encryption
+
+In previous versions of Laravel, encryption was handled by the `mcrypt` PHP extension. However, beginning in Laravel 5.1, encryption is handled by the `openssl` extension, which is more actively maintained.
 
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
 
-Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架構提供了更好的基礎在 Laravel 中建立強健的應用程式，以及在應用程式中全面採用新的自動載入標準（ PSR-4 ）。首先，來檢視一些主要更動：
+Laravel 5.0 introduces a fresh application structure to the default Laravel project. This new structure serves as a better foundation for building a robust application in Laravel, as well as embraces new auto-loading standards (PSR-4) throughout the application. First, let's examine some of the major changes:
 
-### 新的目錄結構
+### New Folder Structure
 
-舊的 `app/models` 目錄已經完全被移除。相對的，你所有的程式碼都放在 `app` 目錄下，以及預設上使用 `App` 命名空間。這個預設的命名空間可以快速的使用新的 `app:name` Artisan 命令來做更改。
+The old `app/models` directory has been entirely removed. Instead, all of your code lives directly within the `app` folder, and, by default, is organized to the `App` namespace. This default namespace can be quickly changed using the new `app:name` Artisan command.
 
-控制器（ controller ），中介層（ middleware ），以及請求（ requests，Laravel 5.0 中新型態的類別），現在分門別類的放在 `app/Http` 目錄下，因為他們都與應用程式的 HTTP 傳輸層相關。除了一個路由設定的檔案外，所有的中介層現在都分開成為獨自的類別檔。
+Controllers, middleware, and requests (a new type of class in Laravel 5.0) are now grouped under the `app/Http` directory, as they are all classes related to the HTTP transport layer of your application. Instead of a single, flat file of route filters, all middleware are now broken into their own class files.
 
-新的 `app/Providers` 目錄取代了舊版 Laravel 4.x `app/start` 裡的檔案。這些服務提供者為應用程式提供了各種的引導功能，像是錯誤處理，日誌紀錄，路由載入等等。當然，你可以任意的建立新的服務提供者到應用程式中。
+A new `app/Providers` directory replaces the `app/start` files from previous versions of Laravel 4.x. These service providers provide various bootstrapping functions to your application, such as error handling, logging, route loading, and more. Of course, you are free to create additional service providers for your application.
 
-應用程式的語系檔案和視圖都被移到 `resources` 目錄下。
+Application language files and views have been moved to the `resources` directory.
 
 ### Contracts
 
-所有 Laravel 主要元件實作所用的介面都放在 `illuminate/contracts` 儲存庫中。這個儲存庫沒有其他的外部相依。這些方便、集成的介面，可以讓你用來讓依賴注入變得低耦合，將可以簡單作為 Laravel Facades 的替代選項。
+All major Laravel components implement interfaces which are located in the `illuminate/contracts` repository. This repository has no external dependencies. Having a convenient, centrally located set of interfaces you may use for decoupling and dependency injection will serve as an easy alternative option to Laravel Facades.
 
-更多關於 contracts 的資訊，參考[完整文件](/docs/{{version}}/contracts)。
+For more information on contracts, consult the [full documentation](/docs/{{version}}/contracts).
 
-### 路由快取
+### Route Cache
 
-如果你的應用程式全部都是使用控制器路由，你可以使用新的 `route:cache` Artisan 命令來大幅度地加快註冊路由。這對於有 100 個以上路由規則的應用程式很有用，可以**大幅度地**加快應用程式這部分的處理速度。
+If your application is made up entirely of controller routes, you may utilize the new `route:cache` Artisan command to drastically speed up the registration of your routes. This is primarily useful on applications with 100+ routes and will **drastically** speed up this portion of your application.
 
-### 路由中介層（ Middleware ）
+### Route Middleware
 
-除了像 Laravel 4 風格的路由「過濾器（ filters ）」，Laravel 5 現在有 HTTP 中介層，而原本的認證和 CSRF 「過濾器」已經改寫成中介層。中介層提供了單一、一致的介面取代了各種過濾器，讓你在請求進到應用程式前，可以簡單地檢查甚至拒絕請求。
+In addition to Laravel 4 style route "filters", Laravel 5 now supports HTTP middleware, and the included authentication and CSRF "filters" have been converted to middleware. Middleware provides a single, consistent interface to replace all types of filters, allowing you to easily inspect, and even reject, requests before they enter your application.
 
-更多關於中介層的資訊，參考[完整文件](/docs/{{version}}/middleware)。
+For more information on middleware, check out [the documentation](/docs/{{version}}/middleware).
 
-### 控制器方法注入
+### Controller Method Injection
 
-除了之前有的建構函數注入外，你現在可以在控制器方法使用型別提示（ type-hint ）進行依賴注入。[服務容器](/docs/{{version}}/container)會自動注入依賴，即使路由包含了其他參數也不成問題：
+In addition to the existing constructor injection, you may now type-hint dependencies on controller methods. The [service container](/docs/{{version}}/container) will automatically inject the dependencies, even if the route contains other parameters:
 
 	public function createPost(Request $request, PostRepository $posts)
 	{
 		//
 	}
 
-### 認證基本架構
+### Authentication Scaffolding
 
-使用者註冊，認證，以及重設密碼的控制器現在已經預設含括了，包含相對應的視圖，放在 `resources/views/auth`。除此之外， "users" 資料表遷移也已經預設存在框架中了。這些簡單的資源，可以讓你快速開發應用程式的點子，而不用陷在撰寫認證模板的泥淖上。認證相關的視圖可以經由 `auth/login` 以及 `auth/register` 路由訪問。`App\Services\Auth\Registrar` 服務會負責處理使用者認證和新增的相關邏輯。
+User registration, authentication, and password reset controllers are now included out of the box, as well as simple corresponding views, which are located at `resources/views/auth`. In addition, a "users" table migration has been included with the framework. Including these simple resources allows rapid development of application ideas without bogging down on authentication boilerplate. The authentication views may be accessed on the `auth/login` and `auth/register` routes. The `App\Services\Auth\Registrar` service is responsible for user validation and creation.
 
-### 事件物件
+### Event Objects
 
-你現在可以將事件定義成物件，而不是僅使用字串。例如，瞧瞧以下的事件：
+You may now define events as objects instead of simply using strings. For example, check out the following event:
 
-	class PodcastWasPurchased {
+	<?php
 
+	class PodcastWasPurchased
+	{
 		public $podcast;
 
 		public function __construct(Podcast $podcast)
 		{
 			$this->podcast = $podcast;
 		}
-
 	}
 
-這個事件可以像一般使用那樣被派發：
+The event may be dispatched like normal:
 
 	Event::fire(new PodcastWasPurchased($podcast));
 
-當然，你的事件處理會收到事件的物件而不是資料的列表：
+Of course, your event handler will receive the event object instead of a list of data:
 
-	class ReportPodcastPurchase {
+	<?php
 
+	class ReportPodcastPurchase
+	{
 		public function handle(PodcastWasPurchased $event)
 		{
 			//
 		}
-
 	}
 
-更多關於使用事件的資訊，參考[完整文件](/docs/{{version}}/events)。
+For more information on working with events, check out the [full documentation](/docs/{{version}}/events).
 
-### 命令（ Commands ）、隊列（ Queueing ）
+### Commands / Queueing
 
-除了 Laravel 4 形式的隊列任務，Laravel 5 以簡單的命令物件作為隊列任務。這些命令放在 `app/Commands` 目錄下。下面是個範例的命令：
+In addition to the queue job format supported in Laravel 4, Laravel 5 allows you to represent your queued jobs as simple command objects. These commands live in the `app/Commands` directory. Here's a sample command:
 
-	class PurchasePodcast extends Command implements SelfHandling, ShouldBeQueued {
+	<?php
 
+	class PurchasePodcast extends Command implements SelfHandling, ShouldBeQueued
+	{
 		use SerializesModels;
 
 		protected $user, $podcast;
@@ -120,48 +242,47 @@ Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架�
 
 			event(new PodcastWasPurchased($this->user, $this->podcast));
 		}
-
 	}
 
-Laravel 的基底控制器使用了新的 `DispatchesCommands` trait，讓你可以簡單的派發命令執行。
+The base Laravel controller utilizes the new `DispatchesCommands` trait, allowing you to easily dispatch your commands for execution:
 
 	$this->dispatch(new PurchasePodcastCommand($user, $podcast));
 
-當然，你也可以將命令視為同步執行（而不會被放到隊列裡）的任務。事實上，使用命令是個好方式，讓你可以封裝應用程式需要執行的複雜任務。更多相關的資訊，參考 [command bus](/docs/{{version}}/bus) 文件。
+Of course, you may also use commands for tasks that are executed synchronously (are not queued). In fact, using commands is a great way to encapsulate complex tasks your application needs to perform. For more information, check out the [command bus](/docs/{{version}}/bus) documentation.
 
-### 資料庫隊列
+### Database Queue
 
-`database` 隊列驅動現在已經包含在 Laravel 中了，提供了簡單的本地端隊列驅動，讓你除了資料庫相關軟體外不需安裝其他套件。
+A `database` queue driver is now included in Laravel, providing a simple, local queue driver that requires no extra package installation beyond your database software.
 
-### Laravel 排程（ Scheduler ）
+### Laravel Scheduler
 
-過去，開發者可以產生 Cron 設定，用以排程所有他們想要執行的命令列指令。然而，這是件很頭痛的事情，因為你的命令列排程不在版本控制中，而你必須登入到伺服器裏加入 Cron 設定。讓生活變得簡單點。Laravel 命令列排程，讓你可以流暢而且具有表達性的定義在 Laravel 裡面，定義你的命令排程，而且只需要在伺服器裡設定一個 Cron 設定。
+In the past, developers have generated a Cron entry for each console command they wished to schedule. However, this is a headache. Your console schedule is no longer in source control, and you must SSH into your server to add the Cron entries. Let's make our lives easier. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
 
-它會看起來如下：
+It looks like this:
 
 	$schedule->command('artisan:command')->dailyAt('15:00');
 
-當然，快參考[完整文件](/docs/{{version}}/artisan#scheduling-artisan-commands)學習所有排程相關知識。
+Of course, check out the [full documentation](/docs/{{version}}/scheduling) to learn all about the scheduler!
 
-### Tinker、Psysh
+### Tinker / Psysh
 
-`php artisan tinker` 命令現在使用 Justin Hileman 的 [Psysh](https://github.com/bobthecow/psysh)，一個 PHP 更強大的 REPL。如果你喜歡 Laravel 4 的 Boris，你也會喜歡上 Psysh。更好的是，它可以在 Windows 上運行！要開始使用，只要輸入：
+The `php artisan tinker` command now utilizes [Psysh](https://github.com/bobthecow/psysh) by Justin Hileman, a more robust REPL for PHP. If you liked Boris in Laravel 4, you're going to love Psysh. Even better, it works on Windows! To get started, just try:
 
 	php artisan tinker
 
 ### DotEnv
 
-比起一堆令人困惑的、巢狀的環境設定檔目錄，Laravel 5 現在使用了 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv)。這個套件提供了超級簡單的方式管理設定檔，並且讓 Laravel 5 環境偵測變得輕鬆。更多的細節，參考完整的[設定檔文件](/docs/{{version}}/configuration#environment-configuration)。
+Instead of a variety of confusing, nested environment configuration directories, Laravel 5 now utilizes [DotEnv](https://github.com/vlucas/phpdotenv) by Vance Lucas. This library provides a super simple way to manage your environment configuration, and makes environment detection in Laravel 5 a breeze. For more details, check out the full [configuration documentation](/docs/{{version}}/installation#environment-configuration).
 
 ### Laravel Elixir
 
-Jeffrey Way 的 Laravel Elixir 提供了一個流暢、口語化的介面，可以編譯以及合併 assets。如果你曾經因為學習 Grunt 或 Gulp 而被嚇到，不必再害怕了。Elixir 讓使用 Gulp 編譯 Less、Sass 及 CoffeeScript 變得簡單。它甚至可以幫你執行測試！
+Laravel Elixir, by Jeffrey Way, provides a fluent, expressive interface to compiling and concatenating your assets. If you've ever been intimidated by learning Grunt or Gulp, fear no more. Elixir makes it a cinch to get started using Gulp to compile your Less, Sass, and CoffeeScript. It can even run your tests for you!
 
-更多關於 Elixir 的資訊，參考[完整文件](/docs/{{version}}/elixir)。
+For more information on Elixir, check out the [full documentation](/docs/{{version}}/elixir).
 
 ### Laravel Socialite
 
-Laravel Socialite 是個選用的，Laravel 5.0 以上相容的套件，提供了無痛的 OAuth 認證。目前 Socialite 支援 Facebook、Twitter、Google 以及 GitHub。它寫起來可能像這樣：
+Laravel Socialite is an optional, Laravel 5.0+ compatible package that provides totally painless authentication with OAuth providers. Currently, Socialite supports Facebook, Twitter, Google, and GitHub. Here's what it looks like:
 
 	public function redirectForAuth()
 	{
@@ -173,25 +294,24 @@ Laravel Socialite 是個選用的，Laravel 5.0 以上相容的套件，提供�
 		$user = Socialize::with('twitter')->user();
 	}
 
-不用再花上數小時撰寫 OAuth 的認證流程。只要幾分鐘！查看[完整文件](/docs/{{version}}/authentication#social-authentication) 裡有所有的細節。
+No more spending hours writing OAuth authentication flows. Get started in minutes! The [full documentation](/docs/{{version}}/authentication#social-authentication) has all the details.
 
-### Flysystem 整合
+### Flysystem Integration
 
-Laravel 現在包含了強大的 [Flysystem](https://github.com/thephpleague/flysystem)（一個檔案系統的抽象函式庫），提供了無痛的整合，把本地端檔案系統、Amazon S3 和 Rackspace 雲端儲存整合在一起，
-有統一且優雅的 API！現在要將檔案存到 Amazon S3 相當簡單：
+Laravel now includes the powerful [Flysystem](https://github.com/thephpleague/flysystem) filesystem abstraction library, providing pain free integration with local, Amazon S3, and Rackspace cloud storage - all with one, unified and elegant API! Storing a file in Amazon S3 is now as simple as:
 
 	Storage::put('file.txt', 'contents');
 
-更多關於 Laravel 檔案系統整合，參考[完整文件](/docs/{{version}}/filesystem)。
+For more information on the Laravel Flysystem integration, consult the [full documentation](/docs/{{version}}/filesystem).
 
 ### Form Requests
 
-Laravel 5.0 引進了 **form requests**，是繼承自 `Illuminate\Foundation\Http\FormRequest` 的類別。這些 request 物件可以和控制器方法依賴注入結合，提供一個不需樣板的方法，來驗證使用者輸入。讓我們深入點，看一個 `FormRequest` 的範例：
+Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundation\Http\FormRequest` class. These request objects can be combined with controller method injection to provide a boiler-plate free method of validating user input. Let's dig in and look at a sample `FormRequest`:
 
 	<?php namespace App\Http\Requests;
 
-	class RegisterRequest extends FormRequest {
-
+	class RegisterRequest extends FormRequest
+	{
 		public function rules()
 		{
 			return [
@@ -204,21 +324,20 @@ Laravel 5.0 引進了 **form requests**，是繼承自 `Illuminate\Foundation\Ht
 		{
 			return true;
 		}
-
 	}
 
-定義好類別後，我們可以在控制器動作裡使用型別提示：
+Once the class has been defined, we can type-hint it on our controller action:
 
 	public function register(RegisterRequest $request)
 	{
 		var_dump($request->input());
 	}
 
-當 Laravel 的服務容器辨別出要注入的類別是個 `FormRequest` 實例，該請求將會被**自動驗證**。意味著，當你的控制器動作被呼叫了，你可以安全的假設 HTTP 的請求輸入己經被驗證過，根據你在 form request 類別裡自定的規則。甚至，若這個請求驗證不通過，一個 HTTP 重導（可以自定），會自動發出，錯誤訊息可以被閃存到 session 中或是轉換成 JSON 返回。**表單驗證再簡單不過如此。**更多關於 `FormRequest` 驗證，參考[文件](/docs/{{version}}/validation#form-request-validation)。
+When the Laravel service container identifies that the class it is injecting is a `FormRequest` instance, the request will **automatically be validated**. This means that if your controller action is called, you can safely assume the HTTP request input has been validated according to the rules you specified in your form request class. Even more, if the request is invalid, an HTTP redirect, which you may customize, will automatically be issued, and the error messages will be either flashed to the session or converted to JSON. **Form validation has never been more simple.** For more information on `FormRequest` validation, check out the [documentation](/docs/{{version}}/validation#form-request-validation).
 
-### 簡易控制器請求驗證
+### Simple Controller Request Validation
 
-Laravel 5 基底控制器包含一個 `ValidatesRequests` trait。這個 trait 包含了一個簡單的 `validate` 方法可以驗證請求。如果對你的應用程式來說 `FormRequests` 太複雜了，參考這個：
+The Laravel 5 base controller now includes a `ValidatesRequests` trait. This trait provides a simple `validate` method to validate incoming requests. If `FormRequests` are a little too much for your application, check this out:
 
 	public function createPost(Request $request)
 	{
@@ -228,135 +347,134 @@ Laravel 5 基底控制器包含一個 `ValidatesRequests` trait。這個 trait �
 		]);
 	}
 
-如果驗證失敗，會拋出例外以及回傳適當的 HTTP 回應到瀏覽器。驗證錯誤資訊會被閃存到 session！而如果請求是 AJAX 請求，Laravel 會自動回傳 JSON 格式的驗證錯誤資訊。
+If the validation fails, an exception will be thrown and the proper HTTP response will automatically be sent back to the browser. The validation errors will even be flashed to the session! If the request was an AJAX request, Laravel even takes care of sending a JSON representation of the validation errors back to you.
 
-更多關於這個新方法的資訊，參考[這個文件](/docs/{{version}}/validation#controller-validation)。
+For more information on this new method, check out [the documentation](/docs/{{version}}/validation#controller-validation).
 
-### 新的產生器
+### New Generators
 
-因應新的應用程式預設架構，框架新增了 Artisan generator 命令。使用 `php artisan list` 瞧瞧更多細節。
+To complement the new default application structure, new Artisan generator commands have been added to the framework. See `php artisan list` for more details.
 
-### 設定檔快取
+### Configuration Cache
 
-你現在可以透過 `config:cache` 命令將所有的設定檔緩存在單一檔案中了。
+You may now cache all of your configuration in a single file using the `config:cache` command.
 
 ### Symfony VarDumper
 
-出名的 `dd` 輔助函式，其可以在除錯時印出變數資訊，已經升級成使用令人驚豔的 Symfony VarDumper 套件。它提供了顏色標記的輸出，甚至陣列可以自動縮合。在專案中試試下列程式碼：
+The popular `dd` helper function, which dumps variable debug information, has been upgraded to use the amazing Symfony VarDumper. This provides color-coded output and even collapsing of arrays. Just try the following in your project:
 
 	dd([1, 2, 3]);
 
 <a name="laravel-4.2"></a>
 ## Laravel 4.2
 
-此發行版本的完整更動列表可以從一個 4.2 的完整安裝下，執行 `php artisan changes` 命令，或者 [Github 上的更動紀錄](https://github.com/laravel/framework/blob/4.2/src/Illuminate/Foundation/changes.json)。此紀錄僅含括主要的強化更新和此發行的更動部分。
+The full change list for this release by running the `php artisan changes` command from a 4.2 installation, or by [viewing the change file on Github](https://github.com/laravel/framework/blob/4.2/src/Illuminate/Foundation/changes.json). These notes only cover the major enhancements and changes for the release.
 
-> **附註:** 在 4.2 發佈週期間，許多小的臭蟲修正與功能強化被整併至各個 4.1 的子發行版本中。所以最好確認 Laravel 4.1 版本的更新列表。
+> **Note:** During the 4.2 release cycle, many small bug fixes and enhancements were incorporated into the various Laravel 4.1 point releases. So, be sure to check the change list for Laravel 4.1 as well!
 
-### PHP 5.4 需求
+### PHP 5.4 Requirement
 
-Laravel 4.2 需要 PHP 5.4 以上的版本。此 PHP 更新版本讓我們可以使用 PHP 的新功能：traits 來為像是 [Laravel 收銀台](/docs/billing) 來提供更具表達力的介面。PHP 5.4 也比 PHP 5.3 帶來顯著的速度及效能提升。
+Laravel 4.2 requires PHP 5.4 or greater. This upgraded PHP requirement allows us to use new PHP features such as traits to provide more expressive interfaces for tools like [Laravel Cashier](/docs/billing). PHP 5.4 also brings significant speed and performance improvements over PHP 5.3.
 
 ### Laravel Forge
 
-Larvel Forge，一個網頁應用程式，提供一個簡單的介面去建立管理你雲端上的 PHP 伺服器，像是 Linode、DigitalOcean、Rackspace 和 Amazon EC2。支援自動化 nginx 設定、SSH 金鑰管理、Cron job 自動化、透過 NewRelic & Papertrail 伺服器監控、「推送部署」、Laravel queue worker 設定等等。Forge 提供最簡單且更實惠的方式來部署所有你的 Laravel 應用程式。
+Laravel Forge, a new web based application, provides a simple way to create and manage PHP servers on the cloud of your choice, including Linode, DigitalOcean, Rackspace, and Amazon EC2. Supporting automated Nginx configuration, SSH key access, Cron job automation, server monitoring via NewRelic & Papertrail, "Push To Deploy", Laravel queue worker configuration, and more, Forge provides the simplest and most affordable way to launch all of your Laravel applications.
 
-預設 Laravel 4.2 的安裝裡，`app/config/database.php` 設定檔預設已為 Forge 設定完成，讓在平台上的全新應用程式更方便部署。
+The default Laravel 4.2 installation's `app/config/database.php` configuration file is now configured for Forge usage by default, allowing for more convenient deployment of fresh applications onto the platform.
 
-關於 Laravel Forge 的更多資訊可以在[官方 Forge 網站](https://forge.laravel.com)上找到。
+More information about Laravel Forge can be found on the [official Forge website](https://forge.laravel.com).
 
 ### Laravel Homestead
 
-Laravel Homestead 是一個為部署健全的 Laravel 和 PHP 應用程式的官方 Vagrant 環境。絕大多數的封裝包的相依與軟體在發佈前已經部署處理完成，讓封裝包可以極快的被啟用。Homestead 包含 Nginx 1.6、PHP 5.5.12、MySQL、Postres、Redis、Memcached、Beanstalk、Node、Gulp、Grunt 和 Bower。Homestead 包含一個簡單的 `Homestead.yaml` 設定檔，讓你在單一個封裝包中管理多個 Laravel 應用程式。
+Laravel Homestead is an official Vagrant environment for developing robust Laravel and PHP applications. The vast majority of the boxes' provisioning needs are handled before the box is packaged for distribution, allowing the box to boot extremely quickly. Homestead includes Nginx 1.6, PHP 5.6, MySQL, Postgres, Redis, Memcached, Beanstalk, Node, Gulp, Grunt, & Bower. Homestead includes a simple `Homestead.yaml` configuration file for managing multiple Laravel applications on a single box.
 
-預設的 Laravel 4.2 安裝中包含的 `app/config/local/database.php` 設定檔使用 Homestead 的資料庫作為預設。讓 Laravel 初始化安裝與設定更為方便。
+The default Laravel 4.2 installation now includes an `app/config/local/database.php` configuration file that is configured to use the Homestead database out of the box, making Laravel initial installation and configuration more convenient.
 
-官方文件已經更新並包含在 [Homestead 文件](/docs/homestead) 中。
+The official documentation has also been updated to include [Homestead documentation](/docs/homestead).
 
-### Laravel 收銀台
+### Laravel Cashier
 
-Laravel 收銀台是一個簡單、具表達性的資源庫，用來管理 Stripe 的訂閱帳務。雖然在安裝中此元件依然是選用，我們依然將收銀台文件包含在主要 Laravel 文件中。此收銀台發布版本帶來了數個錯誤修正、多貨幣支援還有支援最新的 Stripe API。
+Laravel Cashier is a simple, expressive library for managing subscription billing with Stripe. With the introduction of Laravel 4.2, we are including Cashier documentation along with the main Laravel documentation, though installation of the component itself is still optional. This release of Cashier brings numerous bug fixes, multi-currency support, and compatibility with the latest Stripe API.
 
-### Queue Workers 常駐程式
+### Daemon Queue Workers
 
-Artisan `queue:work` 命令現在支援 `--daemon` 參數讓 worker 可以以「常駐程式」啟用。代表 worker 可以持續的處理隊列工作不需要重啓框架。這讓一個複雜的應用程式部署過程中，使得 CPU 的使用有顯著的降低。
+The Artisan `queue:work` command now supports a `--daemon` option to start a worker in "daemon mode", meaning the worker will continue to process jobs without ever re-booting the framework. This results in a significant reduction in CPU usage at the cost of a slightly more complex application deployment process.
 
-更多關於 Queue Workers 常駐程式資訊請詳閱 [queue 文件](/docs/queues#daemon-queue-worker)。
+More information about daemon queue workers can be found in the [queue documentation](/docs/queues#daemon-queue-worker).
 
 ### Mail API Drivers
 
-Laravel 4.2 為 `Mail` 函式採用了新的 Mailgun 和 Mandrill API 驅動。對許多應用程式而言，他提供了比 SMTP 更快也更可靠的方法來遞送郵件。新的驅動使用了 Guzzle 4 HTTP 資源庫。
+Laravel 4.2 introduces new Mailgun and Mandrill API drivers for the `Mail` functions. For many applications, this provides a faster and more reliable method of sending e-mails than the SMTP options. The new drivers utilize the Guzzle 4 HTTP library.
 
-### 軟刪除 Traits
+### Soft Deleting Traits
 
-對於軟刪除和全作用域更簡潔的方案
-PHP 5.4 的 `traits` 提供了一個更加簡潔的軟刪除架構和全局作用域，這些新架構為框架提供了更有擴展性的功能，並且讓框架更加簡潔。
+A much cleaner architecture for "soft deletes" and other "global scopes" has been introduced via PHP 5.4 traits. This new architecture allows for the easier construction of similar global traits, and a cleaner separation of concerns within the framework itself.
 
-更多關於軟刪除的文檔請見: [Eloquent documentation](/docs/eloquent#soft-deleting).
+More information on the new `SoftDeletingTrait` may be found in the [Eloquent documentation](/docs/eloquent#soft-deleting).
 
-### 更為方便的 認證(auth) & Remindable Traits
+### Convenient Auth & Remindable Traits
 
-得益於 PHP 5.4 traits，我們有了一個更簡潔的用戶認證和密碼提醒接口，這也讓 `User` 模型文件更加精簡。
+The default Laravel 4.2 installation now uses simple traits for including the needed properties for the authentication and password reminder user interfaces. This provides a much cleaner default `User` model file out of the box.
 
-### "簡易分頁"
+### "Simple Paginate"
 
-一個新的 `simplePaginate` 方法已被加入到查詢以及 Eloquent 查詢器中。讓你在分頁視圖中，使用簡單的「上一頁」和「下一頁」連結查詢更為高效。
+A new `simplePaginate` method was added to the query and Eloquent builder which allows for more efficient queries when using simple "Next" and "Previous" links in your pagination view.
 
-### 遷移確認
+### Migration Confirmation
 
-在正式環境中，破壞性的遷移動作將會被再次確認。如果希望取消提示字元確認請使用 `--force` 參數。
+In production, destructive migration operations will now ask for confirmation. Commands may be forced to run without any prompts using the `--force` command.
 
 <a name="laravel-4.1"></a>
 ## Laravel 4.1
 
-### 完整更動列表
+### Full Change List
 
-此發行版本的完整更動列表，可以在版本 4.1 的安裝中命令列執行 `php artisan changes` 取得，或者瀏覽 [Github 更動檔](https://github.com/laravel/framework/blob/4.1/src/Illuminate/Foundation/changes.json) 中了解。其中只記錄了該版本比較主要的強化功能和更動。
+The full change list for this release by running the `php artisan changes` command from a 4.1 installation, or by [viewing the change file on Github](https://github.com/laravel/framework/blob/4.1/src/Illuminate/Foundation/changes.json). These notes only cover the major enhancements and changes for the release.
 
-### 新的 SSH 元件
+### New SSH Component
 
-一個全新的 `SSH` 元件在此發行版本中登場。此功能讓你可以輕易的 SSH 至遠端伺服器並執行命令。更多資訊，可以參閱 [SSH 元件文件](/docs/ssh)。
+An entirely new `SSH` component has been introduced with this release. This feature allows you to easily SSH into remote servers and run commands. To learn more, consult the [SSH component documentation](/docs/ssh).
 
-新的 `php artisan tail` 指令就是使用這個新的 SSH 元件。更多的資訊，請參閱 `tail` [指令集文件](http://laravel.com/docs/ssh#tailing-remote-logs)。
+The new `php artisan tail` command utilizes the new SSH component. For more information, consult the `tail` [command documentation](http://laravel.com/docs/ssh#tailing-remote-logs).
 
 ### Boris In Tinker
 
-如果您的系統支援 [Boris REPL](https://github.com/d11wtq/boris)，`php artisan thinker` 指令將會使用到它。系統中也必須先行安裝好 `readline` 和 `pcntl` 兩個 PHP 套件。如果你沒這些套件，從 4.0 之後將會使用到它。
+The `php artisan tinker` command now utilizes the [Boris REPL](https://github.com/d11wtq/boris) if your system supports it. The `readline` and `pcntl` PHP extensions must be installed to use this feature. If you do not have these extensions, the shell from 4.0 will be used.
 
-### Eloquent 強化
+### Eloquent Improvements
 
-Eloquent 新增了新的 `hasManyThrough` 關係鏈。想要了解更多，請參見 [Eloquent 文件](/docs/eloquent#has-many-through)。
+A new `hasManyThrough` relationship has been added to Eloquent. To learn how to use it, consult the [Eloquent documentation](/docs/eloquent#has-many-through).
 
-一個新的 `whereHas` 方法也同時登場，他將允許[檢索基於關係模型的約束](/docs/eloquent#querying-relations)。
+A new `whereHas` method has also been introduced to allow [retrieving models based on relationship constraints](/docs/eloquent#querying-relations).
 
-### 資料庫讀寫分離
+### Database Read / Write Connections
 
-Query Builder 和 Eloquent 目前透過資料庫層，已經可以自動做到讀寫分離。更多的資訊，請參考 [文件](/docs/database#read-write-connections)。
+Automatic handling of separate read / write connections is now available throughout the database layer, including the query builder and Eloquent. For more information, consult [the documentation](/docs/database#read-write-connections).
 
-### 隊列排序
+### Queue Priority
 
-隊列排序已經被支援，只要在 `queue:listen` 命令後將隊列以逗號分隔送出。
+Queue priorities are now supported by passing a comma-delimited list to the `queue:listen` command.
 
-### 失敗隊列作業處理
+### Failed Queue Job Handling
 
-現在隊列將會自動處理失敗的作業，只要在 `queue:listen` 後加上 `--tries` 即可。更多的失敗作業處理可以參見 [隊列文件](/docs/queues#failed-jobs)。
+The queue facilities now include automatic handling of failed jobs when using the new `--tries` switch on `queue:listen`. More information on handling failed jobs can be found in the [queue documentation](/docs/queues#failed-jobs).
 
-### 緩存標籤
+### Cache Tags
 
-緩存「區塊」已經被「標籤」取代。緩存標籤允許你將多個「標籤」指向同一個緩存物件，而且可以清空所有被指定某個標籤的所有物件。更多使用緩存標籤資訊請見 [緩存文件](/docs/cache#cache-tags)。
+Cache "sections" have been superseded by "tags". Cache tags allow you to assign multiple "tags" to a cache item, and flush all items assigned to a single tag. More information on using cache tags may be found in the [cache documentation](/docs/cache#cache-tags).
 
-### 更具彈性的密碼提醒
+### Flexible Password Reminders
 
-密碼提醒引擎已經可以提供更強大的開發彈性，如：認證密碼、顯示狀態訊息等等。使用強化的密碼提醒引擎，更多的資訊 [請參閱文件](/docs/security#password-reminders-and-reset)。
+The password reminder engine has been changed to provide greater developer flexibility when validating passwords, flashing status messages to the session, etc. For more information on using the enhanced password reminder engine, [consult the documentation](/docs/security#password-reminders-and-reset).
 
-### 強化路由引擎
+### Improved Routing Engine
 
-Laravel 4.1 擁有一個完全重新編寫的路由層。API 一樣不變。然而與 4.0 相比，速度快上 100%。整個引擎大幅的簡化，且對於路由表達式的編譯大大減少對 Symfony Routing 的依賴。
+Laravel 4.1 features a totally re-written routing layer. The API is the same; however, registering routes is a full 100% faster compared to 4.0. The entire engine has been greatly simplified, and the dependency on Symfony Routing has been minimized to the compiling of route expressions.
 
-### 強化 Session 引擎
+### Improved Session Engine
 
-此發行版本中，我們亦發佈了全新的 Session 引擎。如同路由增進的部分，新的 Session 曾更加簡化且更快速。我們不再使用 Symfony 的 Session 處理工具，並且使用更簡單、更容易維護的客製化解法。
+With this release, we're also introducing an entirely new session engine. Similar to the routing improvements, the new session layer is leaner and faster. We are no longer using Symfony's (and therefore PHP's) session handling facilities, and are using a custom solution that is simpler and easier to maintain.
 
 ### Doctrine DBAL
 
-如果你有在你的遷移中使用到 `renameColumn`，之後你必須在 `composer.json` 裡加 `doctrine/dbal` 進相依套件中。此套件不再預設包含在 Laravel 之中。
+If you are using the `renameColumn` function in your migrations, you will need to add the `doctrine/dbal` dependency to your `composer.json` file. This package is no longer included in Laravel by default.

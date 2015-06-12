@@ -1,28 +1,28 @@
-# 服務容器
+# Service Container
 
-- [介紹](#introduction)
-- [基本用法](#basic-usage)
-- [綁定實例的介面](#binding-interfaces-to-implementations)
-- [情境綁定](#contextual-binding)
-- [標籤](#tagging)
-- [實際應用](#practical-applications)
-- [容器事件](#container-events)
+- [Introduction](#introduction)
+- [Binding](#binding)
+	- [Binding Interfaces To Implementations](#binding-interfaces-to-implementations)
+	- [Contextual Binding](#contextual-binding)
+	- [Tagging](#tagging)
+- [Resolving](#resolving)
+- [Container Events](#container-events)
 
 <a name="introduction"></a>
-## 介紹
+## Introduction
 
-Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異想天開的詞，真正意思是類別依賴透過建構子或 "setter" 方法注入。
+The Laravel service container is a powerful tool for managing class dependencies and performing dependency injection. Dependency injection is a fancy phrase that essentially means this: class dependencies are "injected" into the class via the constructor or, in some cases, "setter" methods.
 
-來看個簡單範例:
+Let's look at a simple example:
 
-	<?php namespace App\Handlers\Commands;
+	<?php namespace App\Jobs;
 
 	use App\User;
-	use App\Commands\PurchasePodcastCommand;
 	use Illuminate\Contracts\Mail\Mailer;
+	use Illuminate\Contracts\Bus\SelfHandling;
 
-	class PurchasePodcastHandler {
-
+	class PurchasePodcast implements SelfHandling
+	{
 		/**
 		 * The mailer implementation.
 		 */
@@ -42,74 +42,129 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 		/**
 		 * Purchase a podcast.
 		 *
-		 * @param  PurchasePodcastCommand  $command
 		 * @return void
 		 */
-		public function handle(PurchasePodcastCommand $command)
+		public function handle()
 		{
 			//
 		}
-
 	}
 
-在這範例裡， 當播客被購買時， `PurchasePodcast` 命令處理器需要寄封 e-mails，因此，我們將 **注入** 能寄送 e-mails 的服務，由於服務被注入，我們能容易地切換成其它實例，當測試應用程式時，一樣能輕易地 "mock" 或建立假的發信者(mailer)實例。
+In this example, the `PurchasePodcast` job needs to send e-mails when a podcast is purchased. So, we will **inject** a service that is able to send e-mails. Since the service is injected, we are able to easily swap it out with another implementation. We are also able to easily "mock", or create a dummy implementation of the mailer when testing our application.
 
-在建置強大應用程式，以及為 Laravel 核心貢獻，須深入理解 Laravel 服務容器。
+A deep understanding of the Laravel service container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
 
-<a name="basic-usage"></a>
-## 基本用法
+<a name="binding"></a>
+## Binding
 
-### 綁定
+Almost all of your service container bindings will be registered within [service providers](/docs/{{version}}/providers), so all of these examples will demonstrate using the container in that context. However, there is no need to bind classes into the container if they do not depend on any interfaces. The container does not need to be instructed how to build these objects, since it can automatically resolve such "concrete" objects using PHP's reflection services.
 
-幾乎你所有服務容器將與已註冊的[服務提供者](/docs/{{version}}/providers)綁定，這些例子都在情境(context)使用容器做說明，如果應用程式其它地方需要容器實例，像是工廠(factory)，能以型別提示 `Illuminate\Contracts\Container\Container` 注入一個容器實例。另外，你可以使用 `App` facade 存取容器。
+Within a service provider, you always have access to the container via the `$this->app` instance variable. We can register a binding using the `bind` method, passing the class or interface name that we wish to register along with a `Closure` that returns an instance of the class:
 
-#### 註冊基本解析器
+	$this->app->bind('HelpSpot\API', function ($app) {
+		return new HelpSpot\API($app['HttpClient']);
+	});
 
-在服務提供者裡，總是透過 `$this->app` 實例變數使用容器。
+Notice that we receive the container itself as an argument to the resolver. We can then use the container to resolve sub-dependencies of the object we are building.
 
-服務容器注冊依賴有幾種方式，包括閉包函式和綁定實例的介面。首先，探討閉包函式，具有鍵值(通常是類別名稱)和返值閉包的閉包解析器，被註冊至容器:
+#### Binding A Singleton
 
-	$this->app->bind('FooBar', function($app)
-	{
+The `singleton` method binds a class or interface into the container that should only be resolved one time, and then that same instance will be returned on subsequent calls into the container:
+
+	$this->app->singleton('FooBar', function ($app) {
 		return new FooBar($app['SomethingElse']);
 	});
 
-#### 註冊共享
+#### Binding Instances
 
-有時候，你可能希望綁定到容器的型別只會被解析一次，之後的呼叫都返回相同的實例：
-
-	$this->app->singleton('FooBar', function($app)
-	{
-		return new FooBar($app['SomethingElse']);
-	});
-
-#### 綁定已存在的實例到容器
-
-你也可以使用 `instance` 方法，綁定一個已經存在的實例到容器，將總是返回特定的實例：
+You may also bind an existing object instance into the container using the `instance` method. The given instance will always be returned on subsequent calls into the container:
 
 	$fooBar = new FooBar(new SomethingElse);
 
 	$this->app->instance('FooBar', $fooBar);
 
-### 解析
+<a name="binding-interfaces-to-implementations"></a>
+### Binding Interfaces To Implementations
 
-從容器解析有幾種方式。一、可以使用 `make` 方法：
+A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, let's assume we have an `EventPusher` interface and a `RedisEventPusher` implementation. Once we have coded our `RedisEventPusher` implementation of this interface, we can register it with the service container like so:
+
+	$this->app->bind('App\Contracts\EventPusher', 'App\Services\RedisEventPusher');
+
+This tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in a constructor, or any other location where dependencies are injected by the service container:
+
+	use App\Contracts\EventPusher;
+
+	/**
+	 * Create a new class instance.
+	 *
+	 * @param  EventPusher  $pusher
+	 * @return void
+	 */
+	public function __construct(EventPusher $pusher)
+	{
+		$this->pusher = $pusher;
+	}
+
+<a name="contextual-binding"></a>
+### Contextual Binding
+
+Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, when our system receives a new Order, we may want to send an event via [PubNub](http://www.pubnub.com/) rather than Pusher. Laravel provides a simple, fluent interface for defining this behavior:
+
+	$this->app->when('App\Handlers\Commands\CreateOrderHandler')
+	          ->needs('App\Contracts\EventPusher')
+	          ->give('App\Services\PubNubEventPusher');
+
+You may even pass a Closure to the `give` method:
+
+	$this->app->when('App\Handlers\Commands\CreateOrderHandler')
+	          ->needs('App\Contracts\EventPusher')
+	          ->give(function () {
+	          		// Resolve dependency...
+	          	});
+
+<a name="tagging"></a>
+### Tagging
+
+Occasionally, you may need to resolve all of a certain "category" of binding. For example, perhaps you are building a report aggregator that receives an array of many different `Report` interface implementations. After registering the `Report` implementations, you can assign them a tag using the `tag` method:
+
+	$this->app->bind('SpeedReport', function () {
+		//
+	});
+
+	$this->app->bind('MemoryReport', function () {
+		//
+	});
+
+	$this->app->tag(['SpeedReport', 'MemoryReport'], 'reports');
+
+Once the services have been tagged, you may easily resolve them all via the `tagged` method:
+
+	$this->app->bind('ReportAggregator', function ($app) {
+		return new ReportAggregator($app->tagged('reports'));
+	});
+
+<a name="resolving"></a>
+## Resolving
+
+There are several ways to resolve something out of the container. First, you may use the `make` method, which accepts the name of the class or interface you wish to resolve:
 
 	$fooBar = $this->app->make('FooBar');
 
-二、可以對實作 PHP `ArrayAccess` 介面的容器，使用 "陣列存取"：
+Secondly, you may access the container like an array, since it implements PHP's `ArrayAccess` interface:
 
 	$fooBar = $this->app['FooBar'];
 
-最後，重點是你可以簡單地在類別建構子注入"型別提示"依賴，包含控制器、事件監聽者、工作隊列、篩選器等，容器將會自動注入依賴：
+Lastly, but most importantly, you may simply "type-hint" the dependency in the constructor of a class that is resolved by the container, including [controllers](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [queue jobs](/docs/{{version}}/queues), [middleware](/docs/{{version}}/middleware), and more. In practice, this is how most of your objects are resolved by the container.
+
+The container will automatically inject dependencies for the classes it resolves. For example, you may type-hint a repository defined by your application in a controller's constructor. The repository will automatically be resolved and injected into the class:
 
 	<?php namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
 	use App\Users\Repository as UserRepository;
 
-	class UserController extends Controller {
-
+	class UserController extends Controller
+	{
 		/**
 		 * The user repository instance.
 		 */
@@ -136,186 +191,19 @@ Laravel 服務容器是管理類別依賴的強力工具。依賴注入是個異
 		{
 			//
 		}
-
 	}
-
-<a name="binding-interfaces-to-implementations"></a>
-## 綁定實例的介面
-
-### 注入具體依賴
-
-服務容器有個非常強大特色，能夠綁定特定實例的介面。舉例，假設我們應用程式要整合 [Pusher](https://pusher.com) 服務去收發即時事件，如果使用 Pusher 的 PHP SDK，可以在類別注入一個 Pusher 客戶端實例：
-
-	<?php namespace App\Handlers\Commands;
-
-	use App\Commands\CreateOrder;
-	use Pusher\Client as PusherClient;
-
-	class CreateOrderHandler {
-
-		/**
-		 * The Pusher SDK client instance.
-		 */
-		protected $pusher;
-
-		/**
-		 * Create a new order handler instance.
-		 *
-		 * @param  PusherClient  $pusher
-		 * @return void
-		 */
-		public function __construct(PusherClient $pusher)
-		{
-			$this->pusher = $pusher;
-		}
-
-		/**
-		 * Execute the given command.
-		 *
-		 * @param  CreateOrder  $command
-		 * @return void
-		 */
-		public function execute(CreateOrder $command)
-		{
-			//
-		}
-
-	}
-
-在這範例中，注入類別依賴是件好事，不過，與 Pusher SDK 產生緊密耦合，如果 Pusher SDK 方法異動，或是決定徹底改變成新的事件服務時，需要改寫 `CreateOrderHandler` 程式碼。
-
-### 設計成介面
-
-為了"隔離" `CreateOrderHander` 倚靠於事件推送變化，可以定義 `EventPusher` 介面和 `PusherEventPusher` 實例：
-
-	<?php namespace App\Contracts;
-
-	interface EventPusher {
-
-		/**
-		 * Push a new event to all clients.
-		 *
-		 * @param  string  $event
-		 * @param  array  $data
-		 * @return void
-		 */
-		public function push($event, array $data);
-
-	}
-
-一旦 `PusherEventPusher` 實作這介面，就可以在服務容器像這樣註冊它：
-
-	$this->app->bind('App\Contracts\EventPusher', 'App\Services\PusherEventPusher');
-
-當有類別需要 `EventPusher` 實作時，會告訴容器應該注入 `PusherEventPusher`，現在可以在建構子做型別提示 `EventPusher` 介面：
-
-		/**
-		 * Create a new order handler instance.
-		 *
-		 * @param  EventPusher  $pusher
-		 * @return void
-		 */
-		public function __construct(EventPusher $pusher)
-		{
-			$this->pusher = $pusher;
-		}
-
-<a name="contextual-binding"></a>
-## 情境綁定
-
-有時候，你可能有兩個類別使用到相同介面，但你希望每個類別能注入不同實例，例如當系統收到新訂單時，想透過 [PubNub](http://www.pubnub.com/) 來發送事件，而不是 Pusher。Laravel 提供一個簡單又流利介面來定義這行為：
-
-	$this->app->when('App\Handlers\Commands\CreateOrderHandler')
-			  ->needs('App\Contracts\EventPusher')
-			  ->give('App\Services\PubNubEventPusher');
-
-<a name="tagging"></a>
-## 標籤
-
-你偶爾可能需要解析某一個分類下的所有綁定，例如你正在建置一個能接收各種 `Report` 介面實例之陣列的報表聚合器(report aggregator)，註冊完 `Report` 實例後，可以使用 `tag` 方法將它們指派成一個標籤：
-
-	$this->app->bind('SpeedReport', function()
-	{
-		//
-	});
-
-	$this->app->bind('MemoryReport', function()
-	{
-		//
-	});
-
-	$this->app->tag(['SpeedReport', 'MemoryReport'], 'reports');
-
-一旦服務完成標籤，可以透過 `tagged` 方法輕易地解析它們：
-
-	$this->app->bind('ReportAggregator', function($app)
-	{
-		return new ReportAggregator($app->tagged('reports'));
-	});
-
-<a name="practical-applications"></a>
-## 實際應用
-
-Laravel 提供幾個使用服務容器，提高應用程式彈性和可測試性的機會，主要例子是解析控制器時，所有控制器都是透過服務容器解析，意思是你可在控制器建構子做型別提示依賴，它們將會自動注入。
-
-	<?php namespace App\Http\Controllers;
-
-	use Illuminate\Routing\Controller;
-	use App\Repositories\OrderRepository;
-
-	class OrdersController extends Controller {
-
-		/**
-		 * The order repository instance.
-		 */
-		protected $orders;
-
-		/**
-		 * Create a controller instance.
-		 *
-		 * @param  OrderRepository  $orders
-		 * @return void
-		 */
-		public function __construct(OrderRepository $orders)
-		{
-			$this->orders = $orders;
-		}
-
-		/**
-		 * Show all of the orders.
-		 *
-		 * @return Response
-		 */
-		public function index()
-		{
-			$orders = $this->orders->all();
-
-			return view('orders', ['orders' => $orders]);
-		}
-
-	}
-
-在這範例中，`OrderRespository` 類別會自動被注入至控制器，這意味著，在[單元測試](/docs/{{version}}/testing)時，"mock" `OrderRepository` 可以綁定至容器，給予資料庫層互動無痛的 stub 。
-
-#### 其他容器使用範例
-
-當然，如上面所述，控制器不是唯一透過服務容器 Laravel 類別解析，你也可以在路由閉包、篩選器、工作隊列、事件聆聽等，做型別提示依賴，對於在這些情境使用服務容器的例子，請參考相關文件。
 
 <a name="container-events"></a>
-## 容器事件
+## Container Events
 
-#### 註冊解析事件的監聽
+The service container fires an event each time it resolves an object. You may listen to this event using the `resolving` method:
 
-每當容器解析一個物件時就會觸發事件，你可以使用 `resolving` 方法監聽這個事件：
-
-	$this->app->resolving(function($object, $app)
-	{
+	$this->app->resolving(function ($object, $app) {
 		// Called when container resolves object of any type...
 	});
 
-	$this->app->resolving(function(FooBar $fooBar, $app)
-	{
+	$this->app->resolving(function (FooBar $fooBar, $app) {
 		// Called when container resolves objects of type "FooBar"...
 	});
 
-被解析的物件會被傳到閉合函式。
+As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.
