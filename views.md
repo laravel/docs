@@ -61,7 +61,9 @@ When passing information in this manner, `$data` should be an array with key/val
 
 Occasionally, you may need to share a piece of data with all views that are rendered by your application. You may do so using the view factory's `share` method. Typically, you would place calls to `share` within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	class AppServiceProvider extends ServiceProvider
 	{
@@ -93,7 +95,9 @@ View composers are callbacks or class methods that are called when a view is ren
 
 Let's register our view composers within a [service provider](/docs/{{version}}/providers). We'll use the `view` helper to access the underlying `Illuminate\Contracts\View\Factory` contract implementation. Remember, Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `App\Http\ViewComposers` directory:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Illuminate\Support\ServiceProvider;
 
@@ -132,7 +136,9 @@ Remember, if you create a new service provider to contain your view composer reg
 
 Now that we have registered the composer, the `ProfileComposer@compose` method will be executed each time the `profile` view is being rendered. So, let's define the composer class:
 
-	<?php namespace App\Http\ViewComposers;
+	<?php
+
+	namespace App\Http\ViewComposers;
 
 	use Illuminate\Contracts\View\View;
 	use Illuminate\Users\Repository as UserRepository;

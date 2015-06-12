@@ -28,7 +28,9 @@ The database query builder provides a convenient, fluent interface to creating a
 
 To begin a fluent query, use the `table` method on the `DB` facade. The `table` method returns a fluent query builder instance for the given table, allowing you to chain more constraints onto the query and then finally get the results. In this example, let's just `get` all records from a table:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use DB;
 	use App\Http\Controllers\Controller;

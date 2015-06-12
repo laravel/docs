@@ -59,7 +59,9 @@ Once you have configured your database connection, you may run queries using the
 
 To run a basic query, we can use the `select` method on the `DB` facade:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use DB;
 	use App\Http\Controllers\Controller;
@@ -122,7 +124,9 @@ Some database statements should not return any value. For these types of operati
 
 If you would like to receive each SQL query executed by your application, you may use the `listen` method. This method is useful for logging queries or debugging. You may register your query listener in a [service provider](/docs/{{version}}/providers):
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use DB;
 	use Illuminate\Support\ServiceProvider;

@@ -13,7 +13,9 @@
 
 To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your controller constructor or method. The current request instance will automatically be injected by the [service container](/docs/{{version}}/container):
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;
@@ -40,7 +42,9 @@ If your controller method is also expecting input from a route parameter, simply
 
 You may still type-hint the `Illuminate\Http\Request` and access your route parameter `id` by defining your controller method like the following:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;

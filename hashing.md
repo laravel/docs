@@ -15,7 +15,9 @@ Bcrypt is a great choice for hashing passwords because its "work factor" is adju
 
 You may hash a password by calling the `make` method on the `Hash` facade:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Hash;
 	use Illuminate\Http\Request;
