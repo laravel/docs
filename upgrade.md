@@ -70,6 +70,14 @@ If you are overriding the `find` method in your own models and calling `parent::
 		return $model;
 	}
 
+#### The `lists` Method
+
+The `lists` method now returns a `Collection` instance instead of a plain array for Eloquent queries. If you would like to convert the `Collection` into a plain array, use the `all` method:
+
+	User::lists('id')->all();
+
+Be aware that the Query Builder `lists` method still returns an array.
+
 #### Date Formatting
 
 Previously, the storage format for Eloquent date fields could be modified by overriding the `getDateFormat` method on your model. This is still possible; however, for convenience you may simply specify a `$dateFormat` property on the model instead of overriding the method.
@@ -95,7 +103,7 @@ The `groupBy` method now returns `Collection` instances for each item in the par
 
 #### The `lists` Method
 
-The `lists` method now returns a `Collection` instance for Eloquent queries. If you would like to convert the `Collection` into a plain array, use the `all` method:
+The `lists` method now returns a `Collection` instance instead of a plain array for Collections. If you would like to convert the `Collection` into a plain array, use the `all` method:
 
 	$collection->lists('id')->all();
 
