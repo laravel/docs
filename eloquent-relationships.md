@@ -716,7 +716,7 @@ In addition to the `save` and `saveMany` methods, you may also use the `create` 
 		'message' => 'A new comment.',
 	]);
 
-Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent-basics#mass-assignment).
+Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent#mass-assignment).
 
 <a name="inserting-many-to-many-relationships"></a>
 ### Many To Many Relationships
