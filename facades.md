@@ -18,7 +18,9 @@ A facade class only needs to implement a single method: `getFacadeAccessor`. It'
 
 In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Cache;
 	use App\Http\Controllers\Controller;

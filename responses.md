@@ -184,7 +184,9 @@ If you would like to define a custom response that you can re-use in a variety o
 
 For example, from a [service provider's](/docs/{{version}}/providers) `boot` method:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Illuminate\Support\ServiceProvider;
 	use Illuminate\Contracts\Routing\ResponseFactory;

@@ -19,7 +19,9 @@ In addition to custom accessors and mutators, Eloquent can also automatically ca
 
 To define an accessor, create a `getFooAttribute` method on your model where `Foo` is the "camel" cased name of the column you wish to access. In this example, we'll defined an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of `first_name`:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -47,7 +49,9 @@ As you can see, the original value of the column is passed to the accessor, allo
 
 To define a mutator, define a `setFooAttribute` method on your model where `Foo` is the "camel" cased name of the column you wish to access. So, again, let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -80,7 +84,9 @@ By default, Eloquent will convert the `created_at` and `updated_at` columns to i
 
 You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `$dates` property of your model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -115,7 +121,9 @@ The `$casts` property on your model provides a convenient method of converting a
 
 For example, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -143,7 +151,9 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
 
 The `array` cast type is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 

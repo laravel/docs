@@ -41,7 +41,9 @@ But, before diving too deep into using relationships, let's learn how to define 
 
 A one-to-one relationship is a very basic relation. For example, a `User` model might be associated with one `Phone`. To define this relationship, we place a `phone` method on the `User` model. The `phone` method should return the results of the `hasOne` method on the base Eloquent model class:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -72,7 +74,9 @@ Additionally, Eloquent assumes that the foreign key should have a value matching
 
 So, we can access the `Phone` model from our `User`. Now, let's define a relationship on the `Phone` model that will let us access the `User` the owns the phone. We can define the inverse of a `hasOne` relationship using the `belongsTo` method:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -112,7 +116,9 @@ If your parent model does not use `id` as its primary key, or you wish to join t
 
 A "one-to-many" relationship is used to define relationships where a single model owns any amount of other models. For example, a blog post may have an infinite number of comments. Like all other Eloquent relationships, one-to-many relationships are defined by placing a function on your Eloquent model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -151,7 +157,9 @@ Like the `hasOne` method, you may also override the foreign and local keys by pa
 
 Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `hasMany` relationship, define a relationship function on the child model which calls the `belongsTo` method:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -199,7 +207,9 @@ Many-to-many relations are slightly more complicated than `hasOne` and `hasMany`
 
 Many-to-many relationships are defined by writing a method that calls the `belongsToMany` method on the base Eloquent class. For example, let's define the `roles` method on our `User` model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -238,7 +248,9 @@ In addition to customizing the name of the joining table, you may also customize
 
 To define the inverse of a many-to-many relationship, you simply place another call to `belongsToMany` on your related model. To continue our user roles example, let's define the `users` method on the `Role` model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -298,7 +310,9 @@ Though `posts` does not contain a `country_id` column, the `hasManyThrough` rela
 
 Now that we have examined the table structure for the relationship, let's define it on the `Country` model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -353,7 +367,9 @@ Two important columns to note are the `imageable_id` and `imageable_type` column
 
 Next, let's examine the model definitions needed to build this relationship:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -436,7 +452,9 @@ In addition to traditional polymorphic relations, you may also define "many-to-m
 
 Next, we're ready to define the relationships on the model. The `Post` and `Video` models will both have a `tags` method that calls the `morphToMany` method on the base Eloquent class:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -455,7 +473,9 @@ Next, we're ready to define the relationships on the model. The `Post` and `Vide
 
 Next, on the `Tag` model, you should define a method for each of its related models. So, for this example, we will define a `posts` method and a `videos` method:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -503,7 +523,9 @@ Since all types of Eloquent relationships are defined via functions, you may cal
 
 For example, imagine a blog system in which a `User` model has many associated `Post` models:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -567,7 +589,9 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 
 When accessing Eloquent relationships as properties, the relationship data is "lazy loaded". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can "eager load" relationships at the time you query the parent model. Eager loading alleviates the N + 1 query problem. To illustrate the N + 1 query problem, consider a `Book` model that is related to `Author`:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 

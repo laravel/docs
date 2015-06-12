@@ -63,7 +63,9 @@ If you need all stored session data to be encrypted, set the `encrypt` configura
 
 First, let's access the session. We can access the session instance via the HTTP request, which can be type-hinted on a controller method. Remember, controller method dependencies are injected via the Laravel [service container](/docs/{{version}}/container):
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
@@ -165,7 +167,9 @@ If you need to keep your flash data around for even more requests, you may use t
 
 To add additional drivers to Laravel's session back-end, you may use the `extend` method on the `Session` [facade](/docs/{{version}}/session). You can call the `extend` method from the `boot` method of a [service provider](/docs/{{version}}/providers):
 
-    <?php namespace App\Providers;
+    <?php
+
+    namespace App\Providers;
 
     use Session;
     use App\Extensions\MongoSessionStore;
@@ -199,7 +203,9 @@ To add additional drivers to Laravel's session back-end, you may use the `extend
 
 Note that your custom session driver should implement the `SessionHandlerInterface`. This interface contains just a few simple methods we need to implement. A stubbed MongoDB implementation looks something like this:
 
-	<?php namespace App\Extensions;
+	<?php
+
+	namespace App\Extensions;
 
 	class MongoHandler implements SessionHandlerInterface
 	{

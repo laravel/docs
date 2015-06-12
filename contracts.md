@@ -27,7 +27,9 @@ You may have several questions regarding contracts. Why use interfaces at all? I
 
 First, let's review some code that is tightly coupled to a cache implementation. Consider the following:
 
-	<?php namespace App\Orders;
+	<?php
+
+	namespace App\Orders;
 
 	class Repository
 	{
@@ -67,7 +69,9 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
 
 **Instead of this approach, we can improve our code by depending on a simple, vendor agnostic interface:**
 
-	<?php namespace App\Orders;
+	<?php
+
+	namespace App\Orders;
 
 	use Illuminate\Contracts\Cache\Repository as Cache;
 
@@ -143,7 +147,9 @@ Many types of classes in Laravel are resolved through the [service container](/d
 
 For example, take a look at this event listener:
 
-	<?php namespace App\Listeners;
+	<?php
+
+	namespace App\Listeners;
 
 	use App\User;
 	use App\Events\NewUserRegistered;

@@ -63,7 +63,9 @@ This command will generate a new class in the `app/Jobs` directory, and the clas
 
 Job classes are very simple, normally containing only a `handle` method which is called when the job is processed by the queue. To get started, let's take a look at an example job class:
 
-	<?php namespace App\Jobs;
+	<?php
+
+	namespace App\Jobs;
 
 	use Mail;
 	use App\User;
@@ -142,7 +144,9 @@ As noted above, if an exception occurs while the job is being processed, it will
 
 The default Laravel controller located in `app/Http/Controllers/Controller.php` uses a `DispatchesJob` trait. This trait provides several methods allowing you to conveniently push jobs onto the queue, such as the `dispatch` method:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use App\User;
 	use Illuminate\Http\Request;
@@ -168,7 +172,9 @@ The default Laravel controller located in `app/Http/Controllers/Controller.php` 
 
 Of course, sometimes you may wish to dispatch a job from somewhere in your application besides a route or controller. For that reason, you can include the `DispatchesJobs` trait on any of the classes in your application to gain access to its various dispatch methods. For example, here is a sample class that uses the trait:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -183,7 +189,9 @@ You may also specify the queue a job should be sent to.
 
 By pushing jobs to different queues, you may "categorize" your queued jobs, and even prioritize how many workers you assign to various queues. This does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method on the job instance. The `onQueue` method is provided by the base `App\Jobs\Job` class included with Laravel:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use App\User;
 	use Illuminate\Http\Request;
@@ -214,7 +222,9 @@ By pushing jobs to different queues, you may "categorize" your queued jobs, and 
 
 Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You may accomplish this using the `delay` method on your job class, which is provided by the `Illuminate\Bus\Queueable` trait:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use App\User;
 	use Illuminate\Http\Request;
@@ -249,7 +259,9 @@ In this example, we're specifying that the job should be delayed in the queue fo
 
 It is very common to map HTTP request variables into jobs. So, instead of forcing you to do this manually for each request, Laravel provides some helper methods to make it a cinch. Let's take a look at the `dispatchFrom` method available on the `DispatchesJobs` trait. By default, this trait is included on the base Laravel controller class:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
@@ -395,7 +407,9 @@ When running your [queue listener](#running-the-queue-listener), you may specify
 
 If you would like to register an event that will be called when a queued job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via e-mail or [HipChat](https://www.hipchat.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Queue;
 	use Illuminate\Support\ServiceProvider;
@@ -429,7 +443,9 @@ If you would like to register an event that will be called when a queued job fai
 
 For more granular control, you may define a `failed` method directly on a queue job class, allowing you to perform job specific actions when a failure occurs:
 
-	<?php namespace App\Jobs;
+	<?php
+
+	namespace App\Jobs;
 
 	use App\Jobs\Job;
 	use Illuminate\Queue\SerializesModels;
