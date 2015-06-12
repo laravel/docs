@@ -13,7 +13,7 @@
 <a name="basic-usage"></a>
 ## 基本用法
 
-Laravel 透過 `Validation` 類別讓你可以簡單、方便的驗證資料正確性及取得驗證的錯誤訊息。
+Laravel 透過 `Validator` 類別讓你可以簡單、方便的驗證資料正確性及取得驗證的錯誤訊息。
 
 #### 基本驗證範例
 

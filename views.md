@@ -45,7 +45,7 @@
 
 	$view = view('greetings', $data);
 
-When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, like `{{ $key }}` (assuming `$data['$key']` exists).
+When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, like `{{ $key }}` (assuming `$data['key']` exists).
 
 #### 把資料共享給所有視圖
 
@@ -112,7 +112,7 @@ When passing information in this manner, `$data` should be an array with key/val
 		}
 
 		/**
-		 * Register
+		 * Register the service provider.
 		 *
 		 * @return void
 		 */
