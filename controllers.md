@@ -8,6 +8,7 @@
 	- [Naming Resource Routes](#restful-naming-resource-routes)
 	- [Nested Resources](#restful-nested-resources)
 	- [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
+- [Implicit Controllers](#implicit-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
 - [Route Caching](#route-caching)
 
@@ -175,6 +176,62 @@ If it becomes necessary to add additional routes to a resource controller beyond
 	Route::get('photos/popular', 'PhotoController@method');
 
 	Route::resource('photos', 'PhotoController');
+
+<a name="implicit-controllers"></a>
+## Implicit Controllers
+
+Laravel allows you to easily define a single route to handle every action in a controller class. First, define the route using the `Route::controller` method. The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller:
+
+	Route::controller('users', 'UserController');
+
+ Next, just add methods to your controller. The method names should begin with the HTTP verb they respond to followed by the title case version of the URI:
+
+ 	<?php namespace App\Http\Controllers;
+
+	class UserController extends Controller
+	{
+		/**
+		 * Responds to requests to GET /users
+		 */
+		public function getIndex()
+		{
+			//
+		}
+
+		/**
+		 * Responds to requests to GET /users/show/1
+		 */
+		public function getShow($id)
+		{
+			//
+		}
+
+		/**
+		 * Responds to requests to GET /users/admin-profile
+		 */
+		public function getAdminProfile()
+		{
+			//
+		}
+
+		/**
+		 * Responds to requests to POST /users/profile
+		 */
+		public function postProfile()
+		{
+			//
+		}
+	}
+
+As you can see in the example above, `index` methods will respond to the root URI handled by the controller, which, in this case, is `users`.
+
+#### Assigning Route Names
+
+If you would like to [name](/docs/{{version}}/routing#named-routes) some of the routes on the controller, you may pass an array of names as the third argument to the `controller` method:
+
+	Route::controller('users', 'UserController', [
+		'getShow' => 'user.show',
+	]);
 
 <a name="dependency-injection-and-controllers"></a>
 ## Dependency Injection & Controllers

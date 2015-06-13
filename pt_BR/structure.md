@@ -27,7 +27,7 @@ O diretório `public` contém o front controller e os seus assets (imagens, Java
 
 O diretório `resources` contém as suas views, raw assets (LESS, SASS, CoffeeScript), e arquivos de localização.
 
-O diretório `storage` contém os templates compilados do Blade, arquivos de sessão, arquivos de cache, e outros arquivos gerados pelo framework. Esta pasta é dividida pelos diretórios `app`, `framework`, e `logs`. O diretório `app` pode ser usado para armazenar qualquer arquivo utilizado pelo seu aplicativo. O diretório `framework` é usado para armazenar os arquvios gerados pelo framework e caches. Finalmente, o diretório `logs` contém os arquivos de log da aplicação.
+O diretório `storage` contém os templates compilados do Blade, arquivos de sessão, arquivos de cache, e outros arquivos gerados pelo framework. Esta pasta é dividida pelos diretórios `app`, `framework`, e `logs`. O diretório `app` pode ser usado para armazenar qualquer arquivo utilizado pelo seu aplicativo. O diretório `framework` é usado para armazenar os arquivos gerados pelo framework e caches. Finalmente, o diretório `logs` contém os arquivos de log da aplicação.
 
 O diretório `tests` contém seus testes automatizados. Um exemplo [PHPUnit](https://phpunit.de/) é fornecido pronto para usar.
 
@@ -38,7 +38,7 @@ O diretório `vendor` contém as dependências do [Composer](https://getcomposer
 
 O "core" da sua aplicação fica no dirétório `app`. Por padrão, este diretório está sob o namespace `App` e é carregado pelo Composer usando o padrão [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). **Você pode mudar este namespace usando o comando `app:name` do Artisan**.
 
-O diretório `app` vem com uma variedade de diretórios adicionais, como `Console`, `Http`, e `Providers`. Pense nos diretórios `Console` e `Http` como provendo uma API dentro do "core" de sua aplicação. Os protocolos HTTP e CLI são, ambos, mecanismos que interagem com sua aplicação, mas não contém a lógica de aplicação. Em outras palavras, eles são simplesmente dois de meios de enviarem comandos para sua aplicação. O diretório `Console` contém todos os seus comandos do Artisan, enquanto o diretório `Http` contém seus controllers, filters, e requests.
+O diretório `app` vem com uma variedade de diretórios adicionais, como `Console`, `Http`, e `Providers`. Pense nos diretórios `Console` e `Http` como provendo uma API dentro do "core" de sua aplicação. Os protocolos HTTP e CLI são, ambos, mecanismos que interagem com sua aplicação, mas não contém a lógica de aplicação. Em outras palavras, eles são simplesmente dois meios de enviarem comandos para sua aplicação. O diretório `Console` contém todos os seus comandos do Artisan, enquanto o diretório `Http` contém seus controllers, filters, e requests.
 
 O diretório `Jobs`, é claro, guarda as [queueable jobs](/docs/{{version}}/queues) para sua aplicação. Jobs podem ser enfileirados pela aplicação, assim como podem rodar de forma sincronizada dentro do ciclo da request atual.
 
@@ -46,7 +46,7 @@ O diretório `Events`, como você deve esperar, guarda as [event classes](/docs/
 
 O diretório `Listeners` contém as classes handler para seus events. Handlers recebem um evento e executam uma lógica em resposta ao evento disparado. Por exemplo, o evento `UserRegistered` pode disparar e ser tratado por um `SendWelcomeEmail` listener.
 
-O diretório `Exceptions` contém as exceções de sua aplicação, e também um bom lugar para colocar qualquer exceção disparada pela aplicação. 
+O diretório `Exceptions` contém as exceções de sua aplicação, e também um bom lugar para colocar qualquer exceção disparada pela aplicação.
 
 > **Nota:** Muitas das classes dentro do diretório `app` podem ser geradas via comandos do Artisan. Para ver a lista de comandos disponíveis, rode o comando `php artisan list make` no seu terminal.
 

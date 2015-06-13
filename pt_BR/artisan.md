@@ -18,20 +18,20 @@ Artisan é o nome da interface para linha de comando incluida que faz parte do L
 
     php artisan list
 
-Cada comando inclui também uma tela de ajuda ("help") que exibe e descreve os possíveis argumentos e opções disponíveis. Para vizualizar a tela de ajuda, basta informat antes do nome do comando, a palavra `help`:
+Cada comando inclui também uma tela de ajuda ("help") que exibe e descreve os possíveis argumentos e opções disponíveis. Para visualizar a tela de ajuda, basta informar antes do nome do comando, a palavra `help`:
 
     php artisan help migrate
 
 <a name="writing-commands"></a>
 ## Escrevendo comandos
 
-Além dos comandos fornecidos pelo Artisan, você talvez queira criar seus proprios comandos customizados para sua aplicação. Você pode armazenar seus comandos customizados no diretório `app/Console/Commands`; porem, você é livre para escolher outro local para armazená-los, desde que seus comandos estejam sendo carregados com base nas configurações do seu arquivo `composer.json`.
+Além dos comandos fornecidos pelo Artisan, você talvez queira criar seus próprios comandos customizados para sua aplicação. Você pode armazenar seus comandos customizados no diretório `app/Console/Commands`; porém, você é livre para escolher outro local para armazená-los, desde que seus comandos estejam sendo carregados com base nas configurações do seu arquivo `composer.json`.
 
 Para criar um novo comando, você pode utilizar o comando `make:console` do próprio Artisan, que irá gerar um comando básico para te ajudar a começar:
 
     php artisan make:console SendEmails
 
-O Comando acima iria gerar uma classe em `app/Console/Commands/SendEmails.php`. No momento da criação do comando, a opção `--command` pode também ser usada para definir o nome ao qual o comando irá atender quando invocado na linha de comando:
+O comando acima iria gerar uma classe em `app/Console/Commands/SendEmails.php`. No momento da criação do comando, a opção `--command` pode também ser usada para definir o nome ao qual o comando irá atender quando invocado na linha de comando:
 
     php artisan make:console SendEmails --command=emails:send
 
@@ -42,7 +42,7 @@ Uma vez que seu comando foi gerado, você pode preencher as propriedades `signat
 
 O método `handle` será chamado automaticamente quando seu comando for executado. Você pode colocar qualquer lógica ali dentro. Vamos dar uma olhada em um comando de exemplo.
 
-Veja que nós podemos injetar qualquer dependência necessária no construtor do método. O [service container](/docs/{{version}}/container) do Laravel irá automaticamente injetar todas as dependências definidas pela dia dia de tipo (type-hint) no construtor. Para melhor reusabilidade, aconselho deixar seus comandos "leves" e deixar o [service container](/docs/{{version}}/container) tomar conta da resolução das dependências.
+Veja que nós podemos injetar qualquer dependência necessária no construtor do método. O [service container](/docs/{{version}}/container) do Laravel irá automaticamente injetar todas as dependências definidas com tipo (type-hint) no construtor. Para melhor reusabilidade, aconselho deixar seus comandos "leves" e deixar o [service container](/docs/{{version}}/container) tomar conta da resolução das dependências.
 
     <?php namespace App\Console\Commands;
 
@@ -104,7 +104,7 @@ Veja que nós podemos injetar qualquer dependência necessária no construtor do
 <a name="defining-input-expectations"></a>
 ### Definindo possíveis entradas
 
-Ao desenvolver um comando, é comum que você necessite obter a alguma entrada do usuário no momento da execução, o que pode ser feito através de argumentos ou opções (arguments and options). O Laravel torna a tarefa de definir qual entrada experar do usuário extremamente conveniente através da propriedade `signature` (assinatura) do comando. A propriedade `signature` permite você definir o nome, os argumentos e opções para o comando em uma forma simples, expressiva, semelhante o que você já faz nas suas rotas.
+Ao desenvolver um comando, é comum que você necessite obter a alguma entrada do usuário no momento da execução, o que pode ser feito através de argumentos ou opções (arguments and options). O Laravel torna a tarefa de definir qual entrada esperar do usuário utilizando a propriedade de `signature` (assinatura) em seus comandos. A propriedade `signature` permite você definir o nome, os argumentos e opções para o comando em uma forma simples, expressiva, semelhante o que você já faz nas suas rotas.
 
 Todos os argumentos e opções que podem ser utilizadas pelo usuário devem estar entre chaves {}:
 
@@ -123,7 +123,7 @@ Nesse exemplo, o comando define um argumento **obrigatório** : `user`. Mas é c
     // Argumento Opcional com valor padrão...
     email:send {user=foo}
 
-Opções, assim como argumentos, também são uma forma de entrada. Todavia, opções são utilizadas com o prefixo `--` (dois traços). Podemos definir opções na assinatura do do comando da seguinte forma:
+Opções, assim como argumentos, também são uma forma de entrada. Todavia, opções são utilizadas com o prefixo `--` (dois traços). Podemos definir opções na assinatura do comando da seguinte forma:
 
     /**
      * O nome e assinatura do comando.
@@ -132,7 +132,7 @@ Opções, assim como argumentos, também são uma forma de entrada. Todavia, op�
      */
     protected $signature = 'email:send {user} {--queue}';
 
-Nesse exemplo, a opções `--queue` poderá ser especificada pelo comando Artisan. Se a opção `--queue` for utilizada, o valor dessa opção será `true`. Caso contrário, o valor será `false`:
+Nesse exemplo, a opção `--queue` pode ser especificada pelo comando Artisan. Se a opção `--queue` for utilizada, o valor dessa opção será `true`. Caso contrário, o valor será `false`:
 
     php artisan email:send 1 --queue
 
@@ -172,7 +172,7 @@ Para obter o valor passado a um argumento, use o método `argument`:
         //
     }
 
-Se você precisar obter todos os argumentos ao mesmo tempo, em formato de `array`, é só chamar o método `argument` sem passar parametro algum:
+Se você precisar obter todos os argumentos ao mesmo tempo, em formato de `array`, é só chamar o método `argument` sem passar parâmetro algum:
 
     $arguments = $this->argument();
 
@@ -199,11 +199,11 @@ Além de exibir alguma saída, você pode também pedir ao usuário que forneça
         $name = $this->ask('What is your name?');
     }
 
-O método `secret` é similiar ao método `ask`, porem a entrada fornecida pelo usuário não será visivel enquanto ele a digita. Esse método é útil quando a pergunta em questão espera uma resposta que contenha informações sensíveis, como senhas:
+O método `secret` é similiar ao método `ask`, porém a entrada fornecida pelo usuário não será visivel enquanto ele a digita. Esse método é útil quando a pergunta em questão espera uma resposta que contenha informações sensíveis, como senhas:
 
     $password = $this->secret('What is the password?');
 
-#### Perdindo confirmação
+#### Pedindo confirmação
 
 Se precisar de uma simples confirmação, você pode usar o método `confirm`. Por padrão, esse método irá retornar `false` para qualquer entrada, exceto quando a entrada for igual a `y`, nesse caso, o método retornará `true`.
 
@@ -244,7 +244,7 @@ Para exibir uma mensagem de erro, use o método `error`. Mensagens de erro são 
 
 #### Layout de tabelas
 
-O méotod `table` torna fácil a tarefa de exibir multiplas colunas e linhas de dados formatados. Apenas passe os cabeçalhos e linhas ao método. A largura e altura da tabela serão automaticamente calculados baseado nos dados passados:
+O método `table` torna fácil a tarefa de exibir multiplas colunas e linhas de dados formatados. Apenas passe os cabeçalhos e linhas ao método. A largura e altura da tabela serão automaticamente calculados baseado nos dados passados:
 
     $headers = ['Name', 'Email'];
 
@@ -254,7 +254,7 @@ O méotod `table` torna fácil a tarefa de exibir multiplas colunas e linhas de 
 
 #### Barras de progresso
 
-Para tarefas demoradas, é útil exibir ao usuário um indicador de progresso. Usandoo objeto de saída, podemos iniciar, avançar e parar uma barra de progresso. Você precisa definir o número de passos ao iniciar, e então ir avançando a barra a cada passo:
+Para tarefas demoradas, é útil exibir ao usuário um indicador de progresso. Usando objeto de saída, podemos iniciar, avançar e parar uma barra de progresso. Você precisa definir o número de passos ao iniciar, e então ir avançando a barra a cada passo:
 
     $users = App\User::all();
 
@@ -284,7 +284,7 @@ Nesse arquivo, você irá encontrar uma lista de comandos na propriedade `comman
 <a name="calling-commands-via-code"></a>
 ## Chamando comandos a partir do código
 
-ALgumas vezes, você talvez precise executar um comando fora do console. Por exemplo, você talvez queira disparar um comando do Artisan a partir de uma rota ou controller. Para fazer isso, você pode utilizar o método `call` da Facade `Artisan`. O método `call` aceita o nome do comando a ser executado como o primeiro parâmetro, e um array de argumentos e opções como segundo parâmetro. O retorno do método `call` é o código de saida do comando:
+Algumas vezes, você talvez precise executar um comando fora do console. Por exemplo, você talvez queira disparar um comando do Artisan a partir de uma rota ou controller. Para fazer isso, você pode utilizar o método `call` da Facade `Artisan`. O método `call` aceita o nome do comando a ser executado como o primeiro parâmetro, e um array de argumentos e opções como segundo parâmetro. O retorno do método `call` é o código de saida do comando:
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
@@ -294,7 +294,7 @@ ALgumas vezes, você talvez precise executar um comando fora do console. Por exe
         //
     });
 
-Usando o méotod `queue` da Facade `Artisan`, você pode colocar um comando para ser executado em fila, afim de que os mesmo sejam executados em plano de fundo pelos seus [queue workers](/docs/{{version}}/queues):
+Usando o método `queue` da Facade `Artisan`, você pode colocar um comando para ser executado em fila, afim de que os mesmo sejam executados em plano de fundo pelos seus [queue workers](/docs/{{version}}/queues):
 
     Route::get('/foo', function () {
         Artisan::queue('email:send', [

@@ -40,7 +40,7 @@ The `--table` and `--create` options may also be used to indicate the name of th
 <a name="migration-structure"></a>
 ## Migration Structure
 
-A migration class contains two method: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should simply reverse the operations performed by the `up` method.
+A migration class contains two methods: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should simply reverse the operations performed by the `up` method.
 
 Within both of these methods you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, let's look at a sample migration that creates a `flights` table:
 
