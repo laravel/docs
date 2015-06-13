@@ -43,6 +43,14 @@ All of your Envoy tasks should be defined in an `Envoy.blade.php` file in the ro
 
 As you can see, an array of `@servers` is defined at the top of the file, allowing you to reference these servers in the `on` option of your task declarations. Within your `@task` declarations, you should place the Bash code that will be run on your server when the task is executed.
 
+#### Setting the remote user and SSH options
+
+If you need to specify the user to run the task under on a remote server, just add it with an @. For example if you're running a task on a server managed with [Laravel Forge](http://forge.laravel.com/) your `@servers` might be defined like this:
+
+	@servers(['web' => 'forge@192.168.1.1'])
+
+If you need set to additional SSH options, Envoy will parse your local user `~/.ssh/config` file before connecting to the remote servers.
+
 #### Bootstrapping
 
 Sometimes, you may need to execute some PHP code before evaluating your Envoy tasks. You may use the ```@setup``` directive to declare variables and do general PHP work inside the Envoy file:
