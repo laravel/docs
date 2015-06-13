@@ -18,8 +18,9 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 	<?php
 
 	namespace App\Http\Controllers;
-
+	
 	use Hash;
+	use App\User;
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
 
