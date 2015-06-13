@@ -44,13 +44,13 @@ Laravel ships with two authentication controllers out of the box, which are loca
 By default, no [routes](/docs/{{version}}/routing) are included to point requests to the authentication controllers. You may manually add them to your `app/Http/routes.php` file:
 
     // Authentication routes...
-    Route::get('auth/login', 'AuthController@getLogin');
-    Route::post('auth/login', 'AuthController@postLogin');
-    Route::get('auth/logout', 'AuthController@getLogout');
+    Route::get('auth/login', 'Auth\AuthController@getLogin');
+    Route::post('auth/login', 'Auth\AuthController@postLogin');
+    Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
     // Registration routes...
-    Route::get('auth/register', 'AuthController@getRegister');
-    Route::post('auth/register', 'AuthController@postRegister');
+    Route::get('auth/register', 'Auth\AuthController@getRegister');
+    Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 <a name="included-views"></a>
 ### Views
@@ -59,7 +59,7 @@ Though the authentication controllers are included with the framework, you will 
 
 #### Sample Authentication Form
 
-    <!-- resources/auth/login.blade.php -->
+    <!-- resources/views/auth/login.blade.php -->
 
     <form method="POST" action="/auth/login">
         {!! csrf_field() !!}
@@ -85,7 +85,7 @@ Though the authentication controllers are included with the framework, you will 
 
 #### Sample Registration Form
 
-    <!-- resources/auth/register.blade.php -->
+    <!-- resources/views/auth/register.blade.php -->
 
     <form method="POST" action="/auth/register">
         {!! csrf_field() !!}
@@ -354,12 +354,12 @@ Next, a table must be created to store the password reset tokens. The migration 
 Laravel includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords. However, you will need to define routes to point requests to this controller:
 
     // Password reset link request routes...
-    Route::get('password/email', 'PasswordController@getEmail');
-    Route::post('password/email', 'PasswordController@postEmail');
+    Route::get('password/email', 'Auth\PasswordController@getEmail');
+    Route::post('password/email', 'Auth\PasswordController@postEmail');
 
     // Password reset routes...
-    Route::get('password/reset/{token}', 'PasswordController@getReset');
-    Route::post('password/reset', 'PasswordController@postReset');
+    Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
+    Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 <a name="resetting-views"></a>
 ### Views
@@ -446,7 +446,15 @@ To get started with Socialite, add to your `composer.json` file as a dependency:
 
 ### Configuration
 
-After installing the Socialite library, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
+After installing the Socialite library, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file:
+
+    'providers' => [
+        // Other service providers...
+
+        'Laravel\Socialite\SocialiteServiceProvider',
+    ],
+
+Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
 
     'Socialite' => 'Laravel\Socialite\Facades\Socialite',
 

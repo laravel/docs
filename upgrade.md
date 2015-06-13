@@ -11,6 +11,8 @@
 <a name="upgrade-5.1.0"></a>
 ## Upgrading To 5.1.0
 
+#### Estimated Upgrade Time: Less Than 1 Hour
+
 ### Update `bootstrap/autoload.php`
 
 Update the `$compiledPath` variable in `bootstrap/autoload.php` to the following:
@@ -33,6 +35,16 @@ If you are using the provided `AuthController` which uses the `AuthenticatesAndR
 First, you no longer need to pass the `Guard` and `Registrar` instances to the base constructor. You can remove these dependencies entirely from your controller's constructor.
 
 Secondly, the `App\Services\Registrar` class used in Laravel 5.0 is no longer needed. You can simply copy and paste your `validator` and `create` method from this class directly into your `AuthController`. No other changes should need to be made to these methods; however, you should be sure to import the `Validator` facade and your `User` model at the top of your `AuthController`.
+
+#### Password Controller
+
+The included `PasswordController` no longer requires any dependencies in its constructor. You may remove both of the dependencies that were required under 5.0.
+
+### Validation
+
+If you are overriding the `formatValidationErrors` method on your base controller class, you should now type-hint the `Illuminate\Contracts\Validation\Validator` contract instead of the concrete `Illuminate\Validation\Validator` instance.
+
+Likewise, if you are overriding the `formatErrors` method on the base form request class, you should now type-hint `Illuminate\Contracts\Validation\Validator` contract instead of the concrete `Illuminate\Validation\Validator` instance.
 
 ### Eloquent
 
@@ -66,6 +78,12 @@ The date format is also now applied when serializing a model to an `array` or JS
 
 ### The Collection Class
 
+#### The `sortBy` method:
+
+The `sortBy` method now returns a fresh collection instance instead of modifying the existing collection:
+
+	$collection = $collection->sortBy('name');
+
 #### The `groupBy` Method
 
 The `groupBy` method now returns `Collection` instances for each item in the parent `Collection`. If you would like to convert all of the items back to plain arrays, you may `map` over them:
@@ -81,9 +99,40 @@ The `lists` method now returns a `Collection` instance. If you would like to con
 
 	$collection->lists('id')->all();
 
-### Amazon SDK
+### Commands & Handlers
 
-If you are using the Amazon SQS queue driver or the Amazon SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
+The `app/Commands` directory has been renamed to `app/Jobs`. However, you are not required to move all of your commands to the new location, and you may continue using the `make:command` and `handler:command` Artisan commands to generate your classes.
+
+Likewise, the `app/Handlers` directory has been renamed to `app/Listeners` and now only contains event listeners. However, you are not required to move or rename your existing command and event handlers, and you may continue to use the `handler:event` command to generate event handlers.
+
+By providing backwards compatibility for the Laravel 5.0 folder structure, you may upgrade your applications to Laravel 5.1 and slowly upgrade your events and commands to their new locations when it is convenient for you or your team.
+
+### Tests
+
+Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
+
+	protected $baseUrl = 'http://localhost';
+
+### Amazon Web Services SDK
+
+If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
+
+### Deprecations
+
+The following Laravel features have been deprecated and will be removed entirely with the release of Laravel 5.2 in December 2015:
+
+<div class="content-list" markdown="1">
+- Route filters have been deprecated in preference of [middleware](/docs/{{version}}/middleware).
+- The `Illuminate\Contracts\Routing\Middleware` contract has been deprecated. No contract is required on your middleware. In addition, the `TerminableMiddleware` contract has also been deprecated. Instead of implementing the interface, simply define a `terminate` method on your middleware.
+- The `Illuminate\Contracts\Queue\ShouldBeQueued` contract has been deprecated in favor of `Illuminate\Contracts\Queue\ShouldQueue`.
+- Iron.io "push queues" have been deprecated in favor of typical Iron.io queues and [queue listeners](/docs/{{version}}/queues#running-the-queue-listener).
+- The `Illuminate\Foundation\Bus\DispatchesCommands` trait has been deprecated and renamed to `Illuminate\Foundation\Bus\DispatchesJobs`.
+- `Illuminate\Container\BindingResolutionException` has been moved to `Illuminate\Contracts\Container\BindingResolutionException`.
+- The service container's `bindShared` method has been deprecated in favor of the `singleton` method.
+- The Eloquent and query builder `pluck` method has been deprecated and renamed to `value`.
+- The collection `fetch` method has been deprecated in favor of the `pluck` method.
+- The `array_fetch` helper has been deprecated in favor of the `array_pluck` method.
+</div>
 
 <a name="upgrade-5.0.16"></a>
 ## Upgrading To 5.0.16

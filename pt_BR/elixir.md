@@ -11,10 +11,12 @@
 - [Trabahando com scripts](#working-with-scripts)
 	- [CoffeeScript](#coffeescript)
 	- [Browserify](#browserify)
-	- [ECMAScript 6 / JavaScript](#javascript)
+	- [Babel](#babel)
+	- [Scripts](#javascript)
 - [Versionando / Cache Busting](#versioning-and-cache-busting)
 - [Gulp - Chamando tarefas existentes](#calling-existing-gulp-tasks)
 - [Escrevendo extenções Elixir](#writing-elixir-extensions)
+- [Extras](#elixir-extras)
 
 <a name="introduction"></a>
 ## Introdução
@@ -28,14 +30,14 @@ elixir(function(mix) {
 });
 ```
 
-Se você ficou confuso sobre como iniciar com Gulp e compilação de assets, você amará o Laravel Elixir. Entretanto, você não é obrigado a usá-lo enquanto desenvolve sua aplicação. Você é livre para usar qualquer outra ferramenta de asset pipeline, ou nenhuma delas.
+Se você já esteve confuso antes sobre como começar com Gulp e compilações de assets, você irá amar o Laravel Elixir. Entretanto, você não é obrigado a usá-lo enquanto desenvolve sua aplicação. Você é livre para usar qualquer outra ferramenta de assets pipeline, ou nenhuma delas.
 
 <a name="installation"></a>
 ## Instalação & Configuração
 
 ### Instalando o NodeJS
 
-Antes de exicutar o elixir, você deve se certificar que o NodeJS está instalado na sua máquina.
+Antes de executar o elixir, você deve se certificar que o NodeJS está instalado na sua máquina.
 
     node -v
 
@@ -56,7 +58,7 @@ Por último, você deve instalar o Elixir. Dentro da sua instalação do Laravel
 <a name="running-elixir"></a>
 ## Executando o Elixir
 
-Elixir foi construido a partir da última versão do [Gulp](http://gulpjs.com), então, para executar as tarefas do Elixir você só precisa executar o comando `gulp` no seu terminal. Se você adicionar o parâmetro `--production` ao comando, isso indicará ao Elixir que deve minificar seu arquivos CSS e Javascript gerados:
+Elixir foi construído a partir da última versão do [Gulp](http://gulpjs.com), então, para executar as tarefas do Elixir você só precisa executar o comando `gulp` no seu terminal. Se você adicionar o parâmetro `--production` ao comando, isso indicará ao Elixir que deve minificar seu arquivos CSS e Javascript gerados:
 
 	// Executa todas as tarefas...
 	gulp
@@ -67,7 +69,7 @@ Elixir foi construido a partir da última versão do [Gulp](http://gulpjs.com), 
 #### Verificando por modificações nos Assets
 
 É muito inconveniente ficar executando o comando `gulp` no terminal a cada alteração nos seus assets, você pode usar o comando `gulp watch`. Esse comando vai continar rodando no seu terminal e verificando alterações nos seus assets. Quando uma alteração acontecer, os assets serão compilados automaticamente.
-    
+
     // Executa as tarefas a cada alteração nos assets
     gulp watch
 
@@ -90,7 +92,7 @@ elixir(function(mix) {
 });
 ```
 
-Você pode também combinar multiplos arquivos Less em um único arquivo CSS. Novamente, o arquivo resultante será `public/css/app.css`. Se você desejar alterar local de armazenamento do arquivo compilado, você pode passar o segundo argumento do método `less`:
+Você pode também combinar multiplos arquivos Less em um único arquivo CSS. Novamente, o arquivo resultante será `public/css/app.css`. Se você desejar alterar o local de armazenamento do arquivo compilado, você pode passar o segundo argumento do método `less`:
 
 ```javascript
 elixir(function(mix) {
@@ -161,9 +163,9 @@ elixir(function(mix) {
 <a name="css-source-maps"></a>
 ### Mapas de Código
 
-Mapaas de código são ativados automaticamente. Então, para cada arquivo compilado você verá um acompanhado `*.css.map` no mesmo diretório. Esse arquivo permitira rastrear seu código compilado de volta aos seus seletores originais em Sass ou Less quando for debugar no navegador.
+Mapas de código são ativados automaticamente. Então, para cada arquivo compilado você verá um acompanhado `*.css.map` no mesmo diretório. Esse arquivo permitira rastrear seu código compilado de volta aos seus seletores originais em Sass ou Less quando for debugar no navegador.
 
-Se você não quiser que os arquivos de mapa de código sejam gerados para seu CSS, você pode desabilitar essa funcionalidade com a opção::
+Se você não quiser que os arquivos de mapa de código sejam gerados para seu CSS, você pode desabilitar essa funcionalidade com a opção:
 
 ```javascript
 elixir.config.sourcemaps = false;
@@ -174,7 +176,7 @@ elixir(function(mix) {
 ```
 
 <a name="working-with-scripts"></a>
-## Trabalhando com Scripts 
+## Trabalhando com Scripts
 
 O Elixir também provê algumas funções para ajudá-lo a trabalhar com arquivos JavaScript, compilar ECMAScript 6, CoffeeScript, Browserify, minificação ou simplesmente concatenar arquivos javascript plano.
 
@@ -202,10 +204,26 @@ elixir(function(mix) {
 });
 ```
 
-<a name="javascript"></a>
-### ECMAScript 6 / JavaScript
+<a name="babel"></a>
+### Babel
 
-Se você tem multiplos arquivos ECMAScript 6 / JavaScript que gostaria de combinar em um único arquivo, você pode usar o método `scripts`. Esse método irá automaticamente compilar EcmaScript 6 em javascript portável e também combinar com os arquivos javascript. 
+O método `babel` pode ser usado para compilar [EcmaScript 6 e 7](https://babeljs.io/docs/learn-es2015/) JavaScript. Esta função aceita um array de arquivos relativos ao diretório `resources/assets/js`, e gera um único arquivo `all.js` no diretório `public/js`:
+
+```javascript
+elixir(function(mix) {
+	mix.babel([
+                "order.js",
+                "product.js"
+        ]);
+});
+```
+
+Para escolher um local de saída diferente, basta especificar seu caminho desejado como o segundo argumento. A assinatura e funcionalidade deste método são idênticos aos mix.scripts (), excluindo a compilação Babel.
+
+<a name="javascript"></a>
+### Scripts
+
+Se você tem multiplos arquivos JavaScript que gostaria de combinar em um único arquivo, você pode usar o método `scripts`.
 
 O método `scripts` assume que todos os arquivos são relativos ao diretório `resources/assets/js`, e o arquivo javascript resultante será `public/js/all.js` por padrão:
 
@@ -217,7 +235,7 @@ elixir(function(mix) {
 	]);
 });
 ```
-Se você precisar combinar mais de um grupo de script em diferentes arquivos, você poe fazer múltiplas chamadas ao método `scripts`. O segundo argumento determina o nome do arquivo resultante para cada concatenação:
+Se você precisar combinar mais de um grupo de script em diferentes arquivos, você pode fazer múltiplas chamadas ao método `scripts`. O segundo argumento determina o nome do arquivo resultante para cada concatenação:
 
 ```javascript
 elixir(function(mix) {
@@ -237,9 +255,9 @@ elixir(function(mix) {
 <a name="versioning-and-cache-busting"></a>
 ## Versionamento / Evitando o Cache
 
-Muitos desenvolvedores sufixam seus assets compilados com uma marca de tempo ou um token unico para forçar o navegador a ler os novos assets ao invés das suas cópias locais em cache. O Elixir pode lidar com isso usando o método `version`.
+Muitos desenvolvedores sufixam seus assets compilados com uma marca de tempo ou um token único para forçar o navegador a ler os novos assets ao invés das suas cópias locais em cache. O Elixir pode lidar com isso usando o método `version`.
 
-O método `version` aceita o nome do arquivo relativo ao diretório `public` e adicionará um hash unico ao nome desse arquivo, permitindo que o navegador renove seu cache. Por exemplo, o nome do arquivo gerado se parecerá com `all-16d570a7.css`:
+O método `version` aceita o nome do arquivo relativo ao diretório `public` e adicionará um hash único ao nome desse arquivo, permitindo que o navegador renove seu cache. Por exemplo, o nome do arquivo gerado se parecerá com `all-16d570a7.css`:
 
 ```javascript
 elixir(function(mix) {
@@ -336,10 +354,59 @@ elixir(function(mix) {
 
 #### Observador de Modificações de Arquivos
 
-Se você quiser que suas tarefas sejão re-executadas enquanto executa o comando `gulp watch`, você pode registrar um observador:
+Se você quiser que suas tarefas sejam re-executadas enquanto executa o comando `gulp watch`, você pode registrar um observador:
 
 ```javascript
 this.registerWatcher("speak", "app/**/*.php");
 
 return this.queueTask("speak");
 ```
+
+<a name="elixir-extras"></a>
+# Extras
+
+instale o bower e crie o arquivo .bowerrc:
+
+```javascript
+{
+  "directory": "vendor/bower_components"
+}
+```
+em `projeto\node_modules\laravel-elixir\Config.js` ja vem alguns paths configurado para usar:
+
+```javascript
+//Diretorio padrão do bower
+var bowerDir  = elixir.config.bowerDir + '/';
+```
+Se você usa **angular** pode instalar tambem [laravel-elixir-angular](https://www.npmjs.com/package/laravel-elixir-angular):
+
+    npm i laravel-elixir-angular
+
+Exemplo:
+
+```javascript
+var elixir = require('laravel-elixir');
+
+require('laravel-elixir-angular');
+
+elixir(function(mix) {
+   mix.angular();
+});
+```
+
+ou, se quiser usar **typescript**, instale  [laravel-elixir-typescript](https://www.npmjs.com/package/laravel-elixir-typescript):
+
+    npm i laravel-elixir-typescript
+
+Exemplo:
+
+```javascript
+var elixir = require('laravel-elixir');
+
+require('laravel-elixir-typescript');
+
+elixir(function(mix) {
+  mix.typescript('app.js');
+});
+```
+

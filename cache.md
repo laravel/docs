@@ -158,7 +158,7 @@ If you need to retrieve an item from the cache and then delete it, you may use t
 <a name="storing-items-in-the-cache"></a>
 ### Storing Items In The Cache
 
-You may use the `set` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
+You may use the `put` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
 
 	Cache::put('key', 'value', $minutes);
 
