@@ -1,48 +1,64 @@
-# Artisan Console  Artisan 命令
+# Artisan Console-Artisan 命令
 
-- [Introduction](#introduction)
-- [Writing Commands](#writing-commands)
-    - [Command Structure](#command-structure)
-- [Command I/O](#command-io)
-    - [Defining Input Expectations](#defining-input-expectations)
-    - [Retrieving Input](#retrieving-input)
-    - [Prompting For Input](#prompting-for-input)
-    - [Writing Output](#writing-output)
-- [Registering Commands](#registering-commands)
-- [Calling Commands Via Code](#calling-commands-via-code)
+- [Introduction-介绍](#introduction)
+- [Writing Commands-写命令](#writing-commands)
+    - [Command Structure-命令结构](#command-structure)
+- [Command I/O-命令 I/O](#command-io)
+    - [Defining Input Expectations-定义输入期望](#defining-input-expectations)
+    - [Retrieving Input-输入检索](#retrieving-input)
+    - [Prompting For Input-提示输入](#prompting-for-input)
+    - [Writing Output-写输出](#writing-output)
+- [Registering Commands-注册命令](#registering-commands)
+- [Calling Commands Via Code-调用命令通过代码](#calling-commands-via-code)
 
 <a name="introduction"></a>
-## Introduction
+## Introduction-介绍
 
 Artisan is the name of the command-line interface included with Laravel. It provides a number of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component. To view a list of all available Artisan commands, you may use the `list` command:
+
+Artisan 是包含Laravel命令行接口的名称。它提供了一些有用的命令，为您的使用，同时开发应用程序。它是由强大的Symfony控制台组件驱动。要查看所有可用的Artisan 命令的列表，你可以使用`list`命令：
 
     php artisan list
 
 Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, simply precede the name of the command with `help`:
 
+每个命令还包括一个“help”屏幕，显示和描述了命令的可用参数和选项。要查看帮助屏幕，只是前面加上'help`命令的名称：
     php artisan help migrate
 
 <a name="writing-commands"></a>
-## Writing Commands
+## Writing Commands-写命令
 
 In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
 
+除了提供与Artisan的命令，你也可以建立自己的自定义命令与您的应用程序中工作。您可以存储您的自定义命令，在命令行`app/Console/ Commands`目录;不过，你可以自由选择自己的存储位置，只要你的命令，可以根据你的`composer.json`设置来自动加载。
+
 To create a new command, you may use the `make:console` Artisan command, which will generate a command stub to help you get started:
+
+要创建一个新的命令，你可以使用`make：console`工匠命令，它会生成一个命令存根，以帮助您开始：
 
     php artisan make:console SendEmails
 
 The command above would generate a class at `app/Console/Commands/SendEmails.php`. When creating the command, the `--command` option may be used to assign the terminal command name:
 
+上面的命令会产生一类的应用程序`app/Console/Commands/SendEmails.php`。当创建的命令，可以使用`--command`选项来分配终端命令名：
+
     php artisan make:console SendEmails --command=emails:send
 
 <a name="command-structure"></a>
-### Command Structure
+### Command Structure-命令结构
 
 Once your command is generated, you should fill out the `signature` and `description` properties of the class, which will be used when displaying your command on the `list` screen.
 
+一旦生成你的命令，你应填写`signature`和类中，`list`屏幕上显示你的命令时将使用`description`性能。
+
+
 The `handle` method will be called when your command is executed. You may place any command logic in this method. Let's take a look at an example command.
 
+当执行你的命令`handle`方法将被调用。你可以将任何命令逻辑在此方法中。让我们看一个例子命令。
+
 Note that we are able to inject any dependencies we need into the command's constructor. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies type-hinted in the constructor. For greater code reusability, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks.
+
+需要注意的是，我们能够注入，我们需要在命令的构造任何依赖。该Laravel[服务容器](/docs/{{version}}/container) 将自动注入所有依赖型暗示在构造函数中。对于更大的代码重用，这是很好的做法，让您的控制台命令点亮，让他们推迟到应用服务来完成他们的任务。
 
     <?php namespace App\Console\Commands;
 
@@ -54,28 +70,28 @@ Note that we are able to inject any dependencies we need into the command's cons
     class Inspire extends Command
     {
         /**
-         * The name and signature of the console command.
+         * The name and signature of the console command.这个名字和控制台命令的签名。
          *
          * @var string
          */
         protected $signature = 'email:send {user}';
 
         /**
-         * The console command description.
+         * The console command description.控制台命令的说明。
          *
          * @var string
          */
         protected $description = 'Send drip e-mails to a user';
 
         /**
-         * The drip e-mail service.
+         * The drip e-mail service.滴水电子邮件服务。
          *
          * @var DripEmailer
          */
         protected $drip;
 
         /**
-         * Create a new command instance.
+         * Create a new command instance.创建一个新的命令实例。
          *
          * @param  DripEmailer  $drip
          * @return void
@@ -88,7 +104,7 @@ Note that we are able to inject any dependencies we need into the command's cons
         }
 
         /**
-         * Execute the console command.
+         * Execute the console command.执行控制台命令。
          *
          * @return mixed
          */
@@ -99,17 +115,20 @@ Note that we are able to inject any dependencies we need into the command's cons
     }
 
 <a name="command-io"></a>
-## Command I/O
+## Command I/O-命令 I/O
 
 <a name="defining-input-expectations"></a>
-### Defining Input Expectations
+### Defining Input Expectations-定义输入期望
 
 When writing console commands, it is common to gather input from the user through arguments or options. Laravel makes it very convenient to define the input you expect from the user using the `signature` property on your commands. The `signature` property allows you to define the name, arguments, and options for the command in a single, expressive, route-like syntax.
 
+当写控制台命令，它是常见的，收集从通过参数或选项的用户输入。 Laravel可以很方便地定义你用你的命令`signature`属性用户期望的输入。该`signature`属性，可以在一个单一的，表现力，路由的语法定义的名称，参数和选项的命令。
+
 All user supplied arguments and options are wrapped in curly braces, for example:
+所有的用户提供的参数和选项都包裹在花括号，例如：
 
     /**
-     * The name and signature of the console command.
+     * The name and signature of the console command.这个名字和控制台命令的签名。
      *
      * @var string
      */
@@ -117,48 +136,60 @@ All user supplied arguments and options are wrapped in curly braces, for example
 
 In this example, the command defines one **required** argument: `user`. You may also make arguments optional and define default values for optional arguments:
 
-    // Optional argument...
+在这个例子中，该命令定义了一个**必需**的参数：`user`。您也可以进行申辩和可选的可选参数定义默认值：
+
+    // Optional argument... 可选参数
     email:send {user?}
 
-    // Optional argument with default value...
+    // Optional argument with default value...使用默认值可选参数...
     email:send {user=foo}
 
 Options, like arguments, also are a form of user input. However, they are prefixed by two hyphens (`--`) when they are specified on the command line. We can define options in the signature like so:
 
+选项，如参数，也有用户输入的形式。然而，他们是由两个连字符（`--`）时，在命令行上指定它们的前缀。我们可以定义在像这样的签名选项：
+
     /**
      * The name and signature of the console command.
-     *
+     * 这个名字和控制台命令的签名。
      * @var string
      */
     protected $signature = 'email:send {user} {--queue}';
 
 In this example, the `--queue` switch may be specified when calling the Artisan command. If the `--queue` switch is passed, the value of the option will be `true`. Otherwise, the value will be `false`:
 
+在这个例子中，`--queue`开关可以调用工匠命令时指定。如果`--queue`开关传递，期权的价值将是'真'。否则，该值将是`FALSE`：
+
     php artisan email:send 1 --queue
 
 You may also specify that the option should be assigned a value by the user by suffixing the option name with a `=` sign, indicating that a value should be provided:
 
+你也可以指定该选项应该由用户分配一个值由一个'='符号后面添加选项名称，表明值应提供：
+
     /**
-     * The name and signature of the console command.
-     *
+     * The name and signature of the console command.这个名字和控制台命令的签名。
+     * 
      * @var string
      */
     protected $signature = 'email:send {user} {--queue=}';
 
 In this example, the user may pass a value for the option like so:
+在本实施例中，用户可以通过一个数值为像这样的选项：
 
     php artisan email:send 1 --queue=default
 
 You may also assign default values to options:
+您也可以指定默认值的选项：
 
     email:send {user} {--queue=default}
 
-#### Input Descriptions
+#### Input Descriptions-输入描述
 
 You may assign descriptions to input arguments and options by separating the parameter from the description using a colon:
 
+您可以通过使用一个冒号参数的描述分离分配描述输入参数和选项：
+
     /**
-     * The name and signature of the console command.
+     * The name and signature of the console command.这个名字和控制台命令的签名。
      *
      * @var string
      */
@@ -167,7 +198,7 @@ You may assign descriptions to input arguments and options by separating the par
                             {--queue= : Whether the job should be queued}';
 
 <a name="retrieving-input"></a>
-### Retrieving Input
+### Retrieving Input-输入检索
 
 While your command is executing, you will obviously need to access the values for the arguments and options accepted by your command. To do so, you may use the `argument` and `option` methods:
 
