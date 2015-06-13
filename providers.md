@@ -34,7 +34,9 @@ As mentioned previously, within the `register` method, you should only bind thin
 
 Now, let's take a look at a basic service provider:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Riak\Connection;
 	use Illuminate\Support\ServiceProvider;
@@ -61,7 +63,9 @@ This service provider only defines a `register` method, and uses that method to 
 
 So, what if we need to register a view composer within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Illuminate\Support\ServiceProvider;
 
@@ -123,7 +127,9 @@ If your provider is **only** registering bindings in the [service container](/do
 
 To defer the loading of a provider, set the `defer` property to `true` and define a `provides` method. The `provides` method returns the service container bindings that the provider registers:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Riak\Connection;
 	use Illuminate\Support\ServiceProvider;

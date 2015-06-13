@@ -505,7 +505,9 @@ Laravel provides a convenient `expectsJobs` method that will verify that the exp
 
 When testing, you may often want to mock a call to a Laravel [facade](/docs/{{version}}/facades). For example, consider the following controller action:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Cache;
 	use Illuminate\Routing\Controller;

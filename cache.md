@@ -69,7 +69,9 @@ However, you may also use the `Cache` facade, which is what we will use througho
 
 For example, let's import the `Cache` facade into a controller:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Cache;
 	use Illuminate\Routing\Controller;
@@ -190,7 +192,9 @@ To extend the Laravel cache with a custom driver, we will use the `extend` metho
 
 For example, to register a new cache driver named "mongo":
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Cache;
 	use App\Extensions\MongoStore;
@@ -227,7 +231,9 @@ The call to `Cache::extend` could be done in the `boot` method of the default `A
 
 To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts) contract. So, our MongoDB cache implementation would look something like this:
 
-	<?php namespace App\Extensions;
+	<?php
+
+	namespace App\Extensions;
 
 	class MongoStore implements \Illuminate\Contracts\Cache\Store
 	{

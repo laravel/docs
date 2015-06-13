@@ -141,7 +141,9 @@ You may access the authenticated user via the `Auth` facade:
 
 Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance:
 
-    <?php namespace App\Http\Controllers;
+    <?php
+
+    namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
     use Illuminate\Routing\Controller;
@@ -204,7 +206,9 @@ Of course, you are not required to use the authentication controllers included w
 
 We will access Laravel's authentication services via the `Auth` [facade](/docs/{{version}}/facades), so we'll need to make sure to import the `Auth` facade at the top of the class. Next, let's check out the `attempt` method:
 
-    <?php namespace App\Http\Controllers;
+    <?php
+
+    namespace App\Http\Controllers;
 
     use Auth;
     use Illuminate\Routing\Controller;
@@ -470,7 +474,9 @@ You will also need to add credentials for the OAuth services your application ut
 
 Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. We will access Socialite using the `Socialite` [facade](/docs/{{version}}/facades):
 
-    <?php namespace App\Http\Controllers;
+    <?php
+
+    namespace App\Http\Controllers;
 
     use Illuminate\Routing\Controller;
 
@@ -529,7 +535,9 @@ Once you have a user instance, you can grab a few more details about the user:
 
 If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication driver. We will use the `extend` method on the `Auth` facade to define a custom driver. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers):
 
-    <?php namespace App\Providers;
+    <?php
+
+    namespace App\Providers;
 
     use Auth;
     use App\Extensions\RiakUserProvider;

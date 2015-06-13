@@ -52,7 +52,9 @@ Since models and collections are converted to JSON when cast to a string, you ca
 
 Sometimes you may wish to limit the attributes, such as passwords, that are included in your model's array or JSON representation. To do so, add a `$hidden` property definition to your model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -70,7 +72,9 @@ Sometimes you may wish to limit the attributes, such as passwords, that are incl
 
 Alternatively, you may use the `visible` property to define a white-list of attributes that should be included in your model's array and JSON representation:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -89,7 +93,9 @@ Alternatively, you may use the `visible` property to define a white-list of attr
 
 Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, first define an [accessor](/docs/{{version}}/eloquent-mutators) for the value:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -108,7 +114,9 @@ Occasionally, you may need to add array attributes that do not have a correspond
 
 Once you have created the accessor, add the attribute name to the `appends` property on the model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 

@@ -43,7 +43,9 @@ If you would like to generate a [database migration](/docs/{{version}}/schema#da
 
 Now, let's look at an example `Flight` model class, which will use to retrieve and store information from our `flights` database table:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -57,7 +59,9 @@ Now, let's look at an example `Flight` model class, which will use to retrieve a
 
 Note that we did not tell Eloquent which table to use for our `Flight` model. The "snake case", plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `Flight` model stores records in the `flights` table. You may specify a custom table by defining a `table` property on your model:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -79,7 +83,9 @@ Eloquent will also assume that each table has a primary key column named `id`. Y
 
 By default, Eloquent expects `created_at` and `updated_at` columns to exist on your tables.  If you do not wish to have these columns automatically managed by Eloquent, set the `$timestamps` property on your model to `false`:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -95,7 +101,9 @@ By default, Eloquent expects `created_at` and `updated_at` columns to exist on y
 
 If you need to customize the format of your timestamps, set the `$dateFormat` property on your model. This property determines how date attributes are stored in the database, as well as their format when the model is serialized to an array or JSON:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -114,7 +122,9 @@ If you need to customize the format of your timestamps, set the `$dateFormat` pr
 
 Once you have created a model and [its associated database table](/docs/{{version}}/schema), you are ready to start retrieving data from your database. Think of each Eloquent model as a powerful [query builder](/docs/{{version}}/queries) allowing you to fluently query the database table associated with the model. For example:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use App\Flight;
 	use App\Http\Controllers\Controller;
@@ -215,7 +225,9 @@ Of course, you may also use the query builder aggregate functions such as `count
 
 To create a new record in the database, simply create a new model instance, set attributes on the model, then call the `save` method:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use App\Flight;
 	use Illuminate\Http\Request;
@@ -271,7 +283,9 @@ A mass-assignment vulnerability occurs when user's pass unexpected HTTP paramete
 
 So, to get started, you should define which model attributes you want to make mass assignable. You may do this using the `$fillable` property on the model. For example, let's make the `name` attribute of our `Flight` model mass assignable:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -291,7 +305,9 @@ Once we have made the attributes mass assignable, we can use the `create` method
 
 While `$fillable` serves as a "white list" of attributes that should be mass assignable, you may also choose to use `$guarded`. The `$guarded` property should contain an array of attributes that you do not want to be mass assignable. All other attributes not in the array will be mass assignable. So, `$guarded` functions like a "black list". Of course, you should use either `$fillable` or `$guarded` - not both:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -349,7 +365,9 @@ Of course, you may also run a delete query on a set of models. In this example, 
 
 In addition to actually removing records from your database, Eloquent can also "soft delete" models. When models are soft deleted, they are not actually removed from your database. Instead, a `deleted_at` attribute is set on the model and inserted into the database. If a model has a non-null `deleted_at` value, the model has been soft deleted. To enable soft deletes for a model, use the `Illuminate\Database\Eloquent\SoftDeletes` trait on the model and add the `deleted_at` column to your `$dates` property:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 	use Illuminate\Database\Eloquent\SoftDeletes;
@@ -434,7 +452,9 @@ Sometimes you may need to truly remove a model from your database. To permanentl
 
 Scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -471,7 +491,9 @@ Once the scope has been defined, you may call the scope methods when querying th
 
 Sometimes you may wish to define a scope that accepts parameters. To get started, just add your additional parameters to your scope. Scope parameters should be defined after the `$query` argument:
 
-	<?php namespace App;
+	<?php
+
+	namespace App;
 
 	use Illuminate\Database\Eloquent\Model;
 
@@ -504,7 +526,9 @@ Whenever a new model is saved for the first time, the `creating` and `created` e
 
 For example, let's define an Eloquent event listener in a [service provider](/docs/{{version}}/providers). Within our event listener, we will call the `isValid` method on the given model, and return `false` if the model is not valid. Returning `false` from an Eloquent event listener will cancel the `save` / `update` operation:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use App\User;
 	use Illuminate\Support\ServiceProvider;

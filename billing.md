@@ -251,7 +251,9 @@ Since Stripe webhooks need to bypass Laravel's [CSRF verification](/docs/{{versi
 
 If you have additional Stripe webhook events you would like to handle, simply extend the Webhook controller. Your method names should correspond to Cashier's expected convention, specifically, methods should be prefixed with `handle` and the "camel case" name of the Stripe webhook you wish to handle. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you should add a `handleInvoicePaymentSucceeded` method to the controller.
 
-	<?php namespace App\Http\Controller;
+	<?php
+
+	namespace App\Http\Controller;
 
 	use Laravel\Cashier\WebhookController as BaseController;
 

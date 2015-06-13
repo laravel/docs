@@ -40,7 +40,9 @@ If your Redis server requires authentication, you may supply a password by addin
 
 You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](http://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the `GET` command on Redis by calling the `get` method on the `Redis` facade:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Redis;
 	use App\Http\Controllers\Controller;
@@ -99,7 +101,9 @@ Laravel also provides a convenient interface to the Redis `publish` and `subscri
 
 First, let's setup a listener on a channel via Redis using the `subscribe` method. We will place this method call within an [Artisan command](/docs/{{version}}/commands) since calling the `subscribe` method begins a long-running process:
 
-	<?php namespace App\Console\Commands;
+	<?php
+
+	namespace App\Console\Commands;
 
 	use Redis;
 	use Illuminate\Console\Command;
