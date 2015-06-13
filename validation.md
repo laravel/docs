@@ -37,7 +37,9 @@ Of course, the `GET` route will display a form for the user to create a new blog
 
 Next, let's take a look at a simple controller that handles these routes. We'll leave the `store` method empty for now:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use App\Http\Controllers\Controller;
@@ -120,7 +122,9 @@ So, in our example, the user will be redirected to our controller's `create` met
 
 If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatValidationErrors` on your base controller. Don't forget to import the `Illuminate\Contracts\Validation\Validator` class at the top of the file:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Illuminate\Foundation\Bus\DispatchesJobs;
 	use Illuminate\Contracts\Validation\Validator;
@@ -152,7 +156,9 @@ In this example, we used a traditional form to send data to the application. How
 
 If you do not want to use the `ValidatesRequests` trait's `validate` method, you may create a validator instance manually using the `Validator` [facade](/docs/{{version}}/facades). The `make` method on the facade generates a new validator instance:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Validator;
 	use Illuminate\Http\Request;
@@ -670,7 +676,7 @@ Occasionally, you may need to set a custom connection for database queries made 
 
 **Forcing A Unique Rule To Ignore A Given ID:**
 
-Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address. You only want to throw a validation error if the user provides an e-mail address that is already by a different user. To tell the unique rule to ignore the user's ID, you may pass the ID as the third parameter:
+Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address. You only want to throw a validation error if the user provides an e-mail address that is already used by a different user. To tell the unique rule to ignore the user's ID, you may pass the ID as the third parameter:
 
 	'email' => 'unique:users,email_address,'.$user->id
 
@@ -726,7 +732,9 @@ The first argument passed to the `sometimes` method is the name of the field we 
 
 Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `extend` method on the `Validator` [facade](/docs/{{version}}/facades). Let's use this method within a [service provider](/docs/{{version}}/providers) to register a custom validation rule:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Validator;
 	use Illuminate\Support\ServiceProvider;

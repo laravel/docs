@@ -278,7 +278,9 @@ Sometimes you may wish to exclude a set of URIs from CSRF protection. For exampl
 
 You may exclude URIs by adding them to the `$except` property of the `VerifyCsrfToken` middleware:
 
-	<?php namespace App\Http\Middleware;
+	<?php
+
+	namespace App\Http\Middleware;
 
 	use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 

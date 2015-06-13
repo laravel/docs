@@ -23,7 +23,9 @@ There are several ways to paginate items. The simplest is by using the `paginate
 
 First, let's take a look at calling the `paginate` method on a query. In this example, the only argument passed to `paginate` is the number of items you would like displayed "per page". In this case, let's specify that we would like to display `15` items per page:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use DB;
 	use App\Http\Controllers\Controller;

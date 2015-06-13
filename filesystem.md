@@ -43,7 +43,9 @@ Before using the S3 or Rackspace drivers, you will need to install the appropria
 
 The `Storage` facade may be used to interact with any of your configured disks. For example, you may use the `put` method on the facade to store an avatar on the default disk. If you call methods on the `Storage` facade without first calling the `disk` method, the method call will automatically be passed to the default disk:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+
+	namespace App\Http\Controllers;
 
 	use Storage;
 	use Illuminate\Http\Request;
@@ -169,7 +171,9 @@ Laravel's Flysystem integration provides drivers for several "drivers" out of th
 
 In order to set up the custom filesystem you will need to create a [service provider](/docs/{{version}}/providers) such as `DropboxServiceProvider`. In the provider's `boot` method, you may use the `Storage` facade's `extend` method to define the custom driver:
 
-	<?php namespace App\Providers;
+	<?php
+
+	namespace App\Providers;
 
 	use Storage;
 	use League\Flysystem\Filesystem;
