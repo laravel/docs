@@ -2,27 +2,27 @@
 
 - [Básico sobre Rotas](#basic-routing)
 - [Parâmetros](#route-parameters)
-	- [Parâmetros Requeridos](#required-parameters)
+	- [Parâmetros Obrigatórios](#required-parameters)
 	- [Parâmetros Opcionais](#parameters-optional-parameters)
-	- [Regular Expression Constraints](#parameters-regular-expression-constraints)
+	- [Restrições por Expressões Regulares](#parameters-regular-expression-constraints)
 - [Rotas Nomeadas](#named-routes)
 - [Grupo de Rotas](#route-groups)
 	- [Middleware](#route-group-middleware)
 	- [Namespaces](#route-group-namespaces)
-	- [Rotas e Sub-Domain](#route-group-sub-domain-routing)
-	- [Prefixo para Rotas](#route-group-prefixes)
-- [CSRF Protection](#csrf-protection)
+	- [Rotas e sub-domínios](#route-group-sub-domain-routing)
+	- [Prefixos para Rotas](#route-group-prefixes)
+- [Proteção CSRF](#csrf-protection)
 	- [Introdução](#csrf-introduction)
 	- [Excluindo URIs](#csrf-excluding-uris)
 	- [X-CSRF-Token](#csrf-x-csrf-token)
 	- [X-XSRF-Token](#csrf-x-xsrf-token)
-- [Form Method Spoofing](#form-method-spoofing)
-- [Throwing 404 Errors](#throwing-404-errors)
+- [Spoofing do Método do Formulário](#form-method-spoofing)
+- [Disparando Erros 404](#throwing-404-errors)
 
 <a name="basic-routing"></a>
 ## O Básico das Rotas
 
-Você vai definir a maioria das rotas para a sua aplicação no arquivo `app/Http/routes.php`, que é carregado por `App\Providers\classe RouteServiceProvider`. As rotas básicas no Laravel aceitam um URL e uma `Closure`:
+Você vai definir a maioria das rotas para a sua aplicação no arquivo `app/Http/routes.php`, que é carregado por `App\Providers\RouteServiceProvider`. As rotas básicas no Laravel aceitam um URL e uma `Closure`:
 
 	Route::get('/', function () {
 		return 'Olá Mundo';
@@ -42,7 +42,7 @@ Você vai definir a maioria das rotas para a sua aplicação no arquivo `app/Htt
 
 #### Registrando uma rota para múltiplos verbos HTTP
 
-Às vezes você pode querer registrar uma rota que responderá a vários verbos HTTP. Você pode fazer isso usando o método `match` no `Route` [facade](/docs/{{version}}/facades):
+Às vezes você pode querer registrar uma rota que responderá a vários verbos HTTP. Você pode fazer isso usando o método `match` no [facade](/docs/{{version}}/facades) `Route`:
 
 	Route::match(['get', 'post'], '/', function () {
 		return 'Olá Mundo';
@@ -56,7 +56,7 @@ Ou, você pode escolher registrar uma rota que responde a todos os verbos HTTP u
 
 #### Gerando URLs para Rotas
 
-Você pode gerar URLs para rotas na sua aplicação usando o helper `url`:
+Você pode gerar URLs para rotas na sua aplicação usando a função utilitária `url`:
 
 	$url = url('foo');
 
@@ -74,13 +74,13 @@ Claro que, às vezes você terá que capturar pedaços da URI dentro de sua rota
 
 Você pode definir quantos parâmetros sua rota precisar:
 
-	Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
+	Route::get('posts/{post}/comments/{comment}', function ($post, $comment) {
 		//
 	});
 
-Os parâmetros de rota devem ser colocados dentro de chaves "curly". Os parâmetros serão passados em uma `Closure`, quando a rota é executada.
+Os parâmetros de rota devem ser colocados dentro de chaves. Os parâmetros serão passados em uma `Closure`, quando a rota é executada.
 
-> **Nota:** Os parâmetros não podem conter o caracter `-`. No lugar dele você pode usar o (`_`).
+> **Nota:** Os parâmetros não podem conter o caracter `-`. No lugar dele você pode usar o caractere (`_`).
 
 <a name="parameters-optional-parameters"></a>
 ### Parâmetros Opcionais
@@ -98,7 +98,7 @@ Ocasionalmente, você pode precisar especificar um parâmetro de rota, mas torna
 <a name="parameters-regular-expression-constraints"></a>
 ### Restrições por Expressões Regulares
 
-Você pode restringir o formato dos seus parâmetros de rota usando o método `WHERE` em uma instância de rota. O método `WHERE` aceita o nome do parâmetro e uma expressão regular que define como o parâmetro deve ser restringido:
+Você pode restringir o formato dos seus parâmetros de rota usando o método `where` em uma instância de rota. O método `where` aceita o nome do parâmetro e uma expressão regular que define como o parâmetro deve ser restringido:
 
 	Route::get('user/{name}', function ($name) {
 		//
@@ -118,7 +118,7 @@ Você pode restringir o formato dos seus parâmetros de rota usando o método `W
 <a name="parameters-global-constraints"></a>
 #### Constantes Globais
 
-Se você precissar verificar um parâmetro com uma expressão regular, você pode usar o método `pattern`. Você deve definir esses padrões no método `boot` de seus RouteServiceProvider`:
+Se você precissar verificar em muitas rotas um parâmetro com uma expressão regular, você pode usar o método `pattern`. Você deve definir esses padrões no método `boot` de seus `RouteServiceProvider`:
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -154,7 +154,7 @@ Você também pode especificar nomes de rota para ações do controller:
 		'as' => 'profile', 'uses' => 'UserController@showProfile'
 	]);
 
-Depois de atribuir um nome a uma determinada rota, você pode usar o nome da rota ao gerar URLs ou redireciona através da função `route`:
+Depois de atribuir um nome a uma determinada rota, você pode usar o nome da rota ao gerar URLs ou redirecionar através da função `route`:
 
 	$url = route('profile');
 
@@ -171,7 +171,7 @@ Se a rota tem parâmetros definidos, você pode passar os parâmetros como o seg
 <a name="route-groups"></a>
 ## Grupos para Rotas
 
-Grupos de rotas permitem que você compartilhe atributos de rotas, como middleware ou namespaces, para um grande número de rotas sem a necessidade de definir os atributos em cada rota individual. Atributos compartilhados são especificados em um formato de array, enviados pelo método `Route::group`.
+Grupos de rotas permitem que você compartilhe atributos de rotas, como middleware ou namespaces, para um grande número de rotas sem a necessidade de definir os atributos em cada rota individualmente. Atributos compartilhados são especificados em um formato de array, enviados pelo método `Route::group`.
 
 Para saber mais sobre grupos de rotas, vamos percorrer vários casos de uso comuns para o recurso.
 
@@ -205,7 +205,7 @@ Outro caso de uso comum para grupos de rotas é atribuir o mesmo namespace PHP a
 		});
 	});
 
-Lembre, por padrão, o `RouteServiceProvider` inclui Seu arquivo `routes.php` dentro de um namespace, permitindo-lhe registar as rotas do controller sem especificar o prefixo `App\Http\Controllers`. Então, só é preciso especificar o nome que vem após a base `App\Http\Controllers`.
+Lembre, por padrão, o `RouteServiceProvider` inclui seu arquivo `routes.php` dentro de um namespace, permitindo-lhe registar as rotas do controller sem especificar o prefixo `App\Http\Controllers`. Então, só é preciso especificar o nome que vem após a base `App\Http\Controllers`.
 
 <a name="route-group-sub-domain-routing"></a>
 ### Rotas e Subdomínios
@@ -221,11 +221,11 @@ Grupos de rota também podem ser utilizados para encaminhar subdomínios. Subdom
 <a name="route-group-prefixes"></a>
 ### Prefixos para Rotas
 
-O `prefix` group no array pode ser usado para prefixar cada rota no grupo com um determinado URI. Por exemplo, você pode querer prefixar todos os URIs de rota dentro do grupo com `admin`:
+Você pode usar o parâmetro `prefix` do array passado ao método `group` para prefixar cada rota no grupo com um determinado URI. Por exemplo, você pode querer prefixar todos os URIs de rota dentro do grupo com `admin`:
 
 	Route::group(['prefix' => 'admin'], function () {
 		Route::get('users', function ()	{
-			// Matches The "/admin/users" URL
+			// Essa rota terá a URL "/admin/users"
 		});
 	});
 
@@ -243,21 +243,21 @@ Você também pode usar o parâmetro `prefix` para especificar parâmetros comun
 <a name="csrf-introduction"></a>
 ### Introdução
 
-Laravel makes it easy to protect your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
+O Laravel torna fácil proteger sua aplicação de ataques [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF). CSRF é uma forma de explorar maliciosamente comandos (requisições) em nome do usuário autorizado.
 
-Laravel gera automaticamente um "token" CSRF para cada sessão do usuário ativo. Esse token é utilizado para verificar se o usuário autenticado é o único realmente fazendo as solicitações para o aplicativo. Para gerar um campo de entrada oculto `_token` contendo o token CSRF, você pode usar a função auxiliar `csrf_field`:
+Laravel gera automaticamente um "token" CSRF para cada sessão do usuário ativo. Esse token é utilizado para verificar se o usuário autenticado é o único que realmente está fazendo as solicitações para o aplicativo. Para gerar um campo de entrada oculto `_token` contendo o token CSRF, você pode usar a função utilitária `csrf_field`:
 
 	<?php echo csrf_field(); ?>
 
-O Helper `csrf_field` gera o seguinte html:
+O utilitário `csrf_field` gera o seguinte html:
 
 	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-E claso, usando no blade [templating engine](/docs/{{version}}/templates):
+E claro, usando no [template blade](/docs/{{version}}/templates):
 
 	{!! csrf_field() !!}
 
-Você não precisa verificar manualmente o token CSRF nos verbos Http: POST, PUT ou DELETE. O `VerifyCsrfToken`[HTTP middleware](/docs/{{version}}/middleware) irá verificar o token na entrada do pedido corresponde ao token armazenado na sessão.
+Você não precisa verificar manualmente o token CSRF nos verbos HTTP: POST, PUT ou DELETE. O [HTTP middleware](/docs/{{version}}/middleware) `VerifyCsrfToken` irá verificar o token na entrada do pedido corresponde ao token armazenado na sessão.
 
 <a name="csrf-excluding-uris"></a>
 ### Excluindo URLs dda Proteção CSRF
@@ -305,7 +305,7 @@ Laravel também armazena o token `CSRF` em um cookie `XSRF-TOKEN`. Você pode us
 <a name="form-method-spoofing"></a>
 ## Burlando o Métodos do Formulário
 
-Formulários HTML não suportam o método `PUT`, ações 'PATCH` ou `DELETE`. Assim, ao definir `PUT`, `PATCH` ou rotas `DELETE` em um formulário HTML, você precisará adicionar um campo `_method` oculto ao formulário. O valor enviado com o campo `_method` vai ser usado com o nome do método HTTP:
+Formulários HTML não suportam os verbos `PUT`, ações `PATCH` ou `DELETE`. Assim, ao definir rotas `PUT`, `PATCH` ou `DELETE` em um formulário HTML, você precisará adicionar um campo `_method` oculto ao formulário. O valor enviado com o campo `_method` vai ser usado como o nome do verbo HTTP:
 
 	<form action="/foo/bar" method="POST">
 		<input type="hidden" name="_method" value="PUT">
@@ -315,10 +315,10 @@ Formulários HTML não suportam o método `PUT`, ações 'PATCH` ou `DELETE`. As
 <a name="throwing-404-errors"></a>
 ## Disparando Erros 404
 
-Existem duas maneiras de disparar manualmente um erro 404 a partir de uma rota. Primeiro, você pode usar o helper `abort`. O `abort` simplesmente joga um `Symfony\Component\HttpFoundation\Exception\HttpException` com o código de status especificado:
+Existem duas maneiras de disparar manualmente um erro 404 a partir de uma rota. Primeiro, você pode usar a função utilitária `abort`. O `abort` simplesmente lança uma exceção `Symfony\Component\HttpFoundation\Exception\HttpException` com o código de status especificado:
 
 	abort(404);
 
 Em segundo lugar, você pode lançar manualmente uma instância de `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
 
-Mais informações sobre como manusear exeções 404 e usar respostas personalizadas para esses erros podem ser encontrados aqui [Errors](/docs/{{version}}/errors#http-exceções).
+Mais informações sobre como manusear exceções 404 e usar respostas personalizadas para esses erros podem ser encontrados aqui [Errors](/docs/{{version}}/errors#http-exceções).
