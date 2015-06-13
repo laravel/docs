@@ -14,7 +14,7 @@
 
 Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. All Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
 
-Blade 是 Laravel 所提供的一個簡單且強大的模板引擎。相較於其它知名的 PHP 模板引擎， Blade 並不會限制你必須在視圖中使用 PHP 程式碼。在 Blade 被修改之前，所有的視圖都會被編譯為普通的 PHP 程式碼並置入快取，這代表著 Blade 視圖基本上對於整個應用程式而言並不會增加太多負擔。Blade 視圖檔案使用 `.blade.php` 做為副檔名，並存在 `resources/views` 資料夾。
+Blade 模板是 Laravel 所提供的簡單且強大的模板引擎。相較於其它知名的 PHP 模板引擎， Blade 並不會限制你必須在視圖中使用 PHP 程式碼。在 Blade 被修改之前，所有的視圖都會被轉換（ compiled ）為普通的 PHP 程式碼並產生快取，這代表著 Blade 視圖基本上對於整個系統而言並不會增加太多負擔。Blade 視圖檔案使用 `.blade.php` 做為副檔名，並儲存於 `resources/views` 資料夾。
 
 <a name="template-inheritance"></a>
 ## 模板繼承（ template inheritance ）
@@ -24,7 +24,7 @@ Blade 是 Laravel 所提供的一個簡單且強大的模板引擎。相較於�
 
 Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a "master" page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
 
-Blade 視圖的兩個主要優點是 _模板繼承（ template inheritance）_ 與 _區塊（ sections ）_。先從下面的 Blade 視圖範例開始。首先，我們確認一下 "master" 頁面輸出：由於大多數的網頁應用程式在不同頁面都保持著相同的佈局方式，用以下方式即可定義單一 Blade 視圖輸出。
+Blade 模板具有兩個主要優點： _模板繼承（ template inheritance）_ 與 _區塊（ sections ）_。從下面的 Blade 模板範例開始：首先，我們確認一下 "master" 這個頁面的輸出，由於大多數的網頁應用程式在不同頁面都保持著相同的佈局方式，用以下方式即可定義單一 Blade 模板輸出。
 
 	<!-- 檔案儲存於 resources/views/layouts/master.blade.php -->
 
@@ -49,14 +49,14 @@ Now that we have defined a layout for our application, let's define a child page
 
 正如你所見，這個檔案包含了傳統的 HTML 語法。然而，我們可以見到 `@section` 與 `@yield` 兩個有異於 HTML 語法的指令。正如其名， `@section` 指令定義一個內容區塊，而 `@yield` 指令則輸出一個已經被定義的區塊。
 
-現在，我們已經定義了 Web 應用程式的基本輸出，以下就使用模板繼承的方式建立一個子頁面。
+現在，我們已經定義了這個應用程式的基本輸出，以下就使用模板繼承的方式建立一個子頁面。
 
 <a name="extending-a-layout"></a>
-### Extending A Layout
+### 繼承視圖輸出
 
 When defining a child page, you may use the Blade `@extends` directive to specify which layout the child page should "inherit". Views which `@extends` a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
-當我們建立了一個子頁面後，你可以使用 `@extends` 指令進行模板繼承，在模板繼承之下， `@section` 的內容會覆蓋原本頁面的 `@yield` 內容：
+當建立了一個子頁面後，便可以使用 `@extends` 指令進行模板繼承。在模板繼承之後， `@section` 的內容會覆蓋原本頁面的 `@yield` 內容：
 
 	<!-- 儲存於 resources/views/layouts/child.blade.php -->
 
@@ -78,7 +78,7 @@ In this example, the `sidebar` section is utilizing the `@@parent` directive to 
 
 Of course, just like plain PHP views, Blade views may be returned from routes using the global `view` helper function:
 
-在這個範例下， `sidebar` 區塊利用了 `@@parent` 指令顯示原本頁面（ master.blade.php ）的內容，而不會去覆寫原本頁面的內容。 `@@parent` 指令將會在內容呈現時被置換於視圖中。
+在這個範例中， `sidebar` 區塊利用了 `@@parent` 指令顯示原本頁面（ master.blade.php ）的內容，而不會去覆寫原本頁面的內容。 `@@parent` 指令會將父頁面的內容呈現於視圖中。
 
 當然，就像一般的 PHP 視圖， Blade 視圖可以在 routes 中使用 `view` 函式顯示：
 
@@ -86,7 +86,7 @@ Of course, just like plain PHP views, Blade views may be returned from routes us
 		return view('child');
 	});
 
-> **譯註：** `view` 函式是 Laravel 所提供的全域函式，可應用於控制器與路由。
+> **譯註：** `view` 函式是 Laravel 所提供的全域函式，常應用於控制器與路由。
 
 
 <a name="displaying-data"></a>
@@ -95,7 +95,7 @@ Of course, just like plain PHP views, Blade views may be returned from routes us
 You may display data passed to your Blade views by wrapping the variable in "curly" braces. For example, given the following route:
 
 你可能會需要傳送某些資料給視圖，此時可以使用 `view` 函式的第二參數。
-舉例而言，如同以下的路由：
+舉例而言，就像以下的路由設定：
 
 	Route::get('greeting', function () {
 		return view('welcome', ['name' => 'Samantha']);
@@ -103,26 +103,26 @@ You may display data passed to your Blade views by wrapping the variable in "cur
 
 You may display the contents of the `name` variable like so:
 
-你可以用以下方式顯示陣列中的鍵（ key ）為 `name` 的值（ value ）：
+你可以用以下方式顯示陣列中的索引（ key ）為 `name` 的值（ value ）：
 
 	Hello, {{ $name }}.
 
 Of course, you are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
 
-當然，也不是一定只能顯示從 routes 傳送過來的資料。你可以用以下方式代入 PHP 原有的函式，或是任何你希望被 `echo` 出來的 PHP 指令或字串：
+當然，也不是一定只能顯示從 routes 傳送過來的資料。你可以用以下方式代入 PHP 原有的函式，或是任何你希望被印出的 PHP 指令或字串：
 
 	The current UNIX timestamp is {{ time() }}.
 
 > **Note:** Blade `{{ }}` statements are automatically send through PHP's `htmlentities` function to prevent XSS attacks.
 
-> **注意：** 在 Blade 視圖中， `{{}}` 已經自動以 PHP 既有的 `htmlentites` 函式防禦 XSS 攻擊手法。
+> **注意：** 在 Blade 視圖中， `{{ }}` 已經自動以 PHP 既有的 `htmlentites` 函式防禦 XSS 攻擊手法。
 
 
 #### Blade 與 JavaScript 框架配合使用
 
 Since many JavaScript frameworks also use "curly" braces to indicate a given expression  should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
 
-自從有許多 JavaScript 框架也使用 `{{}}` 來顯示資料或敘述，你可以使用 `@` 符號避免 Blade 解析引擎針對 `{{}}`的轉義：
+自從有許多 JavaScript 框架也使用 `{{ }}` 來顯示資料或敘述，你可以使用 `@` 符號避免 Blade 解析引擎針對 `{{ }}`的轉義：
 
 	<h1>Laravel</h1>
 
@@ -142,19 +142,19 @@ Sometimes you may wish to echo a variable, but you aren't sure if the variable h
 
 However, instead of writing a ternary statement, Blade provides you with the following convenient short-cut:
 
-然而，若不想使用三元運算子， Blade 模板也提供了較簡潔的方法：
+然而，若不習慣使用三元運算子， Blade 模板也提供了較簡潔的方法：
 
 	{{ $name or 'Default' }}
 
 In this example, if the `$name` variable exists, its value will be displayed. However, if it does not exist, the word `Default` will be displayed.
 
-在這個範例中，如果 `$name` 這個變數存在，它將會被顯示；然而，如果這個變數不存在，便會顯示 `Default`。
+在這個範例中，如果 `$name` 這個變數存在，它將會被印出；然而，如果這個變數不存在，便會印出 `Default`。
 
 #### 顯示 HTML 原始資料
 
 By default, Blade `{{ }}` statements are automatically send through PHP's `htmlentities` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
 
-在預設情況下， Blade 模板中的 `{{}}` 敘述將會自動套用 PHP 的 `htmlentities` 函式，以避免 XSS 攻擊。如你想要印出任何未被 `htmlentities` 處理過的資料，可以使用下列的方式：
+在預設情況下， Blade 模板中的 `{{ }}` 敘述將會自動套用 PHP 的 `htmlentities` 函式，以避免 XSS 攻擊。如你想要印出任何未被 `htmlentities` 處理過的資料，可以使用下列的方式：
 
 	Hello, {!! $name !!}.
 
@@ -249,22 +249,22 @@ Even though the included view will inherit all data available in the parent view
 
 	@include('view.name', ['error' => '你忘記輸入帳號囉'])
 	
-> **譯註：** 這邊為了更容易看懂引入的邏輯與使用方式，所以我新增了 errors.blade.php 範例。
+> **譯註：** 這邊為了更容易看懂引入的邏輯與使用方式，所以新增了 errors.blade.php 範例。
 
 #### 註解
 
 Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
 
-Blade 同時也允許定義註解在頁面中。然而，有異於 HTML 的註解， Blade 的註解並不會被放在 HTML 中：
+Blade 同時也允許在頁面中定義註解。然而，有異於 HTML 的註解， Blade 的註解並不會被顯示於在 HTML 內：
 
 	{{-- This comment will not be present in the rendered HTML --}}
 
 <a name="service-injection"></a>
-## Service Injection
+## 服務注入
 
 The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class / interface name of the service you wish to resolve:
 
-`@inject` 指令可以取出 Laravel 的 [服務容器](/docs/{{version}}/container)。在 `@inject` 的第一個參數表示在這個頁面中，這個服務容器所代表的變數名；第二個參數表示這個服務容器中的解析位置：
+`@inject` 指令可以取出 Laravel 的 [服務容器](/docs/{{version}}/container)。在 `@inject` 的第一個參數表示在這個頁面中，這個服務容器在頁面所代表的變數名；第二個參數表示這個服務容器中的解析位置：
 
 	@inject('metrics', 'App\Services\MetricsService')
 
@@ -273,7 +273,7 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
 	</div>
 
 <a name="extending-blade"></a>
-## 繼承擴充
+## 模板擴充
 
 Blade even allows you to define your own custom directives. You can use the `directive` method to register a directive. When the Blade compiler encounters the directive, it calls the provided callback with its parameter.
 
