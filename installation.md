@@ -161,6 +161,7 @@ For example, if your application is named "Horsefly", you could run the followin
 	php artisan app:name Horsefly
 
 Renaming your application is entirely optional, and you are free to keep the `App` namespace if you wish.
+If you do renamed your application, you will need to run `sudo composer update` so that your new app namespace is carried through out.
 
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
