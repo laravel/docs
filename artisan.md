@@ -355,7 +355,7 @@ Once your command is finished, you need to register it with Artisan so it will b
 
 Within this file, you will find a list of commands in the `commands` property. To register your command, simply add the class name to the list. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:
 
-在这个文件中，你会发现命令中的`commands` property list（财产清单）。要注册您的命令，只需添加类名到列表中。当Artisan的boots ，都在这个属性中列出的命令将由[服务容器](/docs/{{version}}/container)，并与Artisan注册：
+在这个文件中，你会发现命令中的`commands` property list（保护清单）。要注册您的命令，只需添加类名到列表中。当Artisan的boots ，都在这个属性中列出的命令将由[服务容器](/docs/{{version}}/container)，并与Artisan注册：
 
     protected $commands = [
         'App\Console\Commands\SendEmails'
