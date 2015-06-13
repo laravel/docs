@@ -103,7 +103,7 @@ The `groupBy` method now returns `Collection` instances for each item in the par
 
 #### The `lists` Method
 
-The `lists` method now returns a `Collection` instance instead of a plain array for Collections. If you would like to convert the `Collection` into a plain array, use the `all` method:
+The `lists` method now returns a `Collection` instance instead of a plain array. If you would like to convert the `Collection` into a plain array, use the `all` method:
 
 	$collection->lists('id')->all();
 
