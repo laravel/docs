@@ -22,7 +22,7 @@
     - [Facades](/docs/{{version}}/facades)
 - 系統服務
     - [認證](/docs/{{version}}/authentication)
-    - [Artisan Console](/docs/{{version}}/artisan)
+    - [Artisan 命令列](/docs/{{version}}/artisan)
     - [交易](/docs/{{version}}/billing)
     - [快取](/docs/{{version}}/cache)
     - [集合](/docs/{{version}}/collections)
@@ -40,8 +40,8 @@
     - [隊列](/docs/{{version}}/queues)
     - [Redis](/docs/{{version}}/redis)
     - [Session](/docs/{{version}}/session)
-    - [SSH Tasks](/docs/{{version}}/envoy)
-    - [工作排程](/docs/{{version}}/scheduling)
+    - [SSH 任務](/docs/{{version}}/envoy)
+    - [任務排程](/docs/{{version}}/scheduling)
     - [單元測試](/docs/{{version}}/testing)
     - [驗證](/docs/{{version}}/validation)
 - 資料庫
@@ -53,5 +53,5 @@
     - [基本入門](/docs/{{version}}/eloquent)
     - [關聯](/docs/{{version}}/eloquent-relationships)
     - [集合](/docs/{{version}}/eloquent-collections)
-    - [Mutators](/docs/{{version}}/eloquent-mutators)
-    - [Serialization](/docs/{{version}}/eloquent-serialization)
+    - [存取器](/docs/{{version}}/eloquent-mutators)
+    - [序列化](/docs/{{version}}/eloquent-serialization)
