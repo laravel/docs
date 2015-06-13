@@ -44,13 +44,13 @@ Laravel é fornecido com dois controllers de autenticação já configurados, qu
 Por padrão, nas [rotas](/docs/{{version}}/routing) estão inclusos os pontos de acesso para os controllers de autenticação. Você deve manualmente adicioná-los no seu arquivo `app/Http/routes.php`:
 
     // Authentication routes...
-    Route::get('auth/login', 'AuthController@getLogin');
-    Route::post('auth/login', 'AuthController@postLogin');
-    Route::get('auth/logout', 'AuthController@getLogout');
+    Route::get('auth/login', 'Auth\AuthController@getLogin');
+    Route::post('auth/login', 'Auth\AuthController@postLogin');
+    Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
     // Registration routes...
-    Route::get('auth/register', 'AuthController@getRegister');
-    Route::post('auth/register', 'AuthController@postRegister');
+    Route::get('auth/register', 'Auth\AuthController@getRegister');
+    Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 <a name="included-views"></a>
 ### Views
@@ -59,7 +59,7 @@ Embora os controllers de autenticação estarem inclusos com o framework, você 
 
 #### Formulário Simples de Login
 
-    <!-- resources/auth/login.blade.php -->
+    <!-- resources/views/auth/login.blade.php -->
 
     <form method="POST" action="/auth/login">
         {!! csrf_field() !!}
@@ -85,7 +85,7 @@ Embora os controllers de autenticação estarem inclusos com o framework, você 
 
 #### Formulário Simples de Cadastro
 
-    <!-- resources/auth/register.blade.php -->
+    <!-- resources/views/auth/register.blade.php -->
 
     <form method="POST" action="/auth/register">
         {!! csrf_field() !!}
@@ -446,7 +446,15 @@ Para iniciar com Socialite, adicione essa dependência no seu arquivo `composer.
 
 ### Configuração
 
-Após instalar a biblioteca, registre o `Laravel\Socialite\SocialiteServiceProvider` no seu arquivo de configuração `config/app.php`. Também adicione o facade `Socialite` ao array de `aliases` no mesmo arquivo:
+Após instalar a biblioteca, registre o `Laravel\Socialite\SocialiteServiceProvider` no seu arquivo de configuração `config/app.php`:
+
+    'providers' => [
+        // Other service providers...
+
+        'Laravel\Socialite\SocialiteServiceProvider',
+    ],
+
+Também adicione o facade `Socialite` ao array de `aliases` no mesmo arquivo:
 
     'Socialite' => 'Laravel\Socialite\Facades\Socialite',
 
