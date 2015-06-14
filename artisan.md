@@ -1,48 +1,48 @@
-# Artisan Console
+# Artisan 命令列
 
-- [Introduction](#introduction)
-- [Writing Commands](#writing-commands)
-    - [Command Structure](#command-structure)
-- [Command I/O](#command-io)
-    - [Defining Input Expectations](#defining-input-expectations)
-    - [Retrieving Input](#retrieving-input)
-    - [Prompting For Input](#prompting-for-input)
-    - [Writing Output](#writing-output)
-- [Registering Commands](#registering-commands)
-- [Calling Commands Via Code](#calling-commands-via-code)
+- [介紹](#introduction)
+- [撰寫命令](#writing-commands)
+    - [指令結構](#command-structure)
+- [指令輸入與輸出](#command-io)
+    - [定義期待的輸入](#defining-input-expectations)
+    - [抽取輸入](#retrieving-input)
+    - [為輸入加上提示](#prompting-for-input)
+    - [撰寫輸出](#writing-output)
+- [註冊命令](#registering-commands)
+- [使用程式碼來呼叫命令](#calling-commands-via-code)
 
 <a name="introduction"></a>
-## Introduction
+## 介紹
 
-Artisan is the name of the command-line interface included with Laravel. It provides a number of helpful commands for your use while developing your application. It is driven by the powerful Symfony Console component. To view a list of all available Artisan commands, you may use the `list` command:
+Artisan 是 Laravel 裡的一個命令列介面的名稱。當你在開發你的應用程式時，它提供了許多有用的命令來幫助你開發。它是由強大的 Symfony 終端元件所驅動的。你可以使用 list 命令來列出所有可以使用的 Artisan 命令:
 
     php artisan list
 
-Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, simply precede the name of the command with `help`:
+每個命令也包含了 "幫助" 畫面，它會顯示並敘述命令可以使用的參數及選擇。只要在指令前面加上 `help` 即可顯示幫助畫面:
 
     php artisan help migrate
 
 <a name="writing-commands"></a>
-## Writing Commands
+## 撰寫命令
 
-In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
+除了使用 Artisan 本身所提供的命令之外，你也可以建立自己客製化的命令來為你的應用程式工作。你可以選擇將你的客製化指令儲存在`app/Console/Commands` 資料夾，只要你的命令可以藉由 `composer.json` 的設定來自動載入，你也可以自由選擇你想要放置的地方。
 
-To create a new command, you may use the `make:console` Artisan command, which will generate a command stub to help you get started:
+你可以使用 `make:console` 這個 Artisan 命令來創造新的命令，這個命令會產生一個預設的腳本來幫助你開始撰寫:
 
     php artisan make:console SendEmails
 
-The command above would generate a class at `app/Console/Commands/SendEmails.php`. When creating the command, the `--command` option may be used to assign the terminal command name:
+上面的這個命令會產生一個放置在 `app/Console/Commands/SendEmails.php` 的類別。當創造命令時， `--command` 這個選擇可以用來指定要使用的終端命令名稱:
 
     php artisan make:console SendEmails --command=emails:send
 
 <a name="command-structure"></a>
-### Command Structure
+### 指令結構
 
-Once your command is generated, you should fill out the `signature` and `description` properties of the class, which will be used when displaying your command on the `list` screen.
+一旦你的命令被產生，你應該填寫類別的 `signature` 和 `description` 這兩個屬性，它們會被顯示在 `list` 畫面:
 
-The `handle` method will be called when your command is executed. You may place any command logic in this method. Let's take a look at an example command.
+當你的命令被執行的時候 `handle` 方法會被呼叫，因此你可以將任何的命令邏輯放置在這個方法中，讓我們來看看一個範例。
 
-Note that we are able to inject any dependencies we need into the command's constructor. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies type-hinted in the constructor. For greater code reusability, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks.
+注意我們可以注入任何我們需要的依賴在建構子中，Laravel [service container](/docs/{{version}}/container) 將會自動注入任何有型別提示的依賴到建構子中。為了更好的程式碼重用性，使你的終端命令輕量，並讓它們緩載到應用程式服務來完成任務是一個好習慣。
 
     <?php
 
@@ -56,28 +56,28 @@ Note that we are able to inject any dependencies we need into the command's cons
     class Inspire extends Command
     {
         /**
-         * The name and signature of the console command.
+         * 命令列的名字及署名
          *
          * @var string
          */
         protected $signature = 'email:send {user}';
 
         /**
-         * The console command description.
+         * 命令列的敘述
          *
          * @var string
          */
         protected $description = 'Send drip e-mails to a user';
 
         /**
-         * The drip e-mail service.
+         * 滴灌電子郵件服務
          *
          * @var DripEmailer
          */
         protected $drip;
 
         /**
-         * Create a new command instance.
+         * 創造新的命令實例
          *
          * @param  DripEmailer  $drip
          * @return void
@@ -90,7 +90,7 @@ Note that we are able to inject any dependencies we need into the command's cons
         }
 
         /**
-         * Execute the console command.
+         * 執行命令
          *
          * @return mixed
          */
@@ -101,82 +101,82 @@ Note that we are able to inject any dependencies we need into the command's cons
     }
 
 <a name="command-io"></a>
-## Command I/O
+## 指令輸入與輸出
 
 <a name="defining-input-expectations"></a>
-### Defining Input Expectations
+### 定義期待的輸入
 
-When writing console commands, it is common to gather input from the user through arguments or options. Laravel makes it very convenient to define the input you expect from the user using the `signature` property on your commands. The `signature` property allows you to define the name, arguments, and options for the command in a single, expressive, route-like syntax.
+當撰寫命令列時，從參數或是選擇來得到使用者的輸入是一種普遍的做法。藉由使用命令的 `signature` 屬性 Laravel 讓你很方便的定義希望從使用者得到的輸入， `signature` 屬性允許你用單獨、具表現力、與路由相似的語法，並用以定義命令的名字、參數及選擇。
 
-All user supplied arguments and options are wrapped in curly braces, for example:
+所有提供給使用者的參數及選擇都在包在大括號中，例如:
 
     /**
-     * The name and signature of the console command.
+     * 命令列的名字及署名
      *
      * @var string
      */
     protected $signature = 'email:send {user}';
 
-In this example, the command defines one **required** argument: `user`. You may also make arguments optional and define default values for optional arguments:
+在這個例子中，命令定義了一個 **一定要的** 參數: `user` 。你也可以使用選擇性的參數和定義預設的值給選擇性的參數:
 
-    // Optional argument...
+    // 選擇性的參數...
     email:send {user?}
 
-    // Optional argument with default value...
+    // 選擇性的參數及預設的值...
     email:send {user=foo}
 
-Options, like arguments, also are a form of user input. However, they are prefixed by two hyphens (`--`) when they are specified on the command line. We can define options in the signature like so:
+選擇，就跟參數一樣，同樣是使用者輸入的一種格式，不過當使用選擇時，需要加入兩個連字符 (`--`) 在命令列，我們可以像這樣子在署名中定義選擇:
 
     /**
-     * The name and signature of the console command.
+     * 命令列的名字及署名
      *
      * @var string
      */
     protected $signature = 'email:send {user} {--queue}';
 
-In this example, the `--queue` switch may be specified when calling the Artisan command. If the `--queue` switch is passed, the value of the option will be `true`. Otherwise, the value will be `false`:
+在這個範例中，當呼叫 Artisan 指令時， `--queue` 這個選擇可以被明確的指定。如果 `--queue` 被當成輸入時，這個選擇的值會是 `true` ，如果沒有指定時，這個選擇的值將會是 `false`:
 
     php artisan email:send 1 --queue
 
-You may also specify that the option should be assigned a value by the user by suffixing the option name with a `=` sign, indicating that a value should be provided:
+你也可以藉由在這個選擇後面加個 `=` 來為選擇明確指定值:
 
     /**
-     * The name and signature of the console command.
+     * 命令列的名字及署名
      *
      * @var string
      */
     protected $signature = 'email:send {user} {--queue=}';
 
-In this example, the user may pass a value for the option like so:
+在這個範例中，使用者可以為這個選擇傳入一個值:
 
     php artisan email:send 1 --queue=default
 
-You may also assign default values to options:
+你也可以指定預設值給選擇:
 
     email:send {user} {--queue=default}
 
-#### Input Descriptions
+#### 輸入的敘述
 
-You may assign descriptions to input arguments and options by separating the parameter from the description using a colon:
+藉由加入冒號及敘述，你也可以為輸入參數及選擇加上敘述:
 
     /**
-     * The name and signature of the console command.
+     * 命令列的名字及署名
      *
      * @var string
      */
     protected $signature = 'email:send
-                            {user : The ID of the user}
-                            {--queue= : Whether the job should be queued}';
+                            {user : 使用者的 ID }
+                            {--queue= : 這個工作是否該進入隊列}';
 
 <a name="retrieving-input"></a>
-### Retrieving Input
+### 抽取輸入
 
-While your command is executing, you will obviously need to access the values for the arguments and options accepted by your command. To do so, you may use the `argument` and `option` methods:
+當你的命令正在被執行時，你將需要存取參數及選擇。為了達到這個目的，你會需要使用 `argument` 及 `option` 方法:
 
-To retrieve the value of an argument, use the `argument` method:
+使用 `argument` 方法來抽取參數的值:
 
     /**
-     * Execute the console command.
+     * 執行這個命令列
      *
      * @return mixed
      */
@@ -187,81 +187,82 @@ To retrieve the value of an argument, use the `argument` method:
         //
     }
 
-If you need to retrieve all of the arguments as an `array`, call the `argument` with no parameters:
+如果你需要將所有的參數匯聚成一個陣列，只要簡單的呼叫 `argument` 即可，不需要加入任何輸入:
 
     $arguments = $this->argument();
 
-Options may be retrieved just as easily as arguments using the `option` method. Like the `argument` method, you may call `option` without any arguments in order to retrieve all of the options as an `array`:
+而選擇的抽取就跟參數一樣簡單，除了使用的方法變為 `option` 。就像 `argument` 方法一樣，只要不加入任何輸入，即可抽取所有的
+選擇並將之轉為一個 `array` :
 
-    // Retrieve a specific option...
+    // 抽取特定的選擇
     $queueName = $this->option('queue');
 
-    // Retrieve all options...
+    // 抽取所有選擇
     $options = $this->option();
 
-If the argument or option does not exist, `null` will be returned.
+如果參數或選擇不存在， 將會返回 `null`
 
 <a name="prompting-for-input"></a>
-### Prompting For Input
+### 為輸入加上提示
 
-In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:
+除了顯示輸出，你也可以在命令執行期間，要求使用者輸入值。 `ask` 方法將會用提供的問題來提示使用者，並且接受他們的輸入，並返回使用者的輸入回命令:
 
     /**
-     * Execute the console command.
+     * 執行這個命令列
      *
      * @return mixed
      */
     public function handle()
     {
-        $name = $this->ask('What is your name?');
+        $name = $this->ask('你是名字是?');
     }
 
-The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful for asking for sensitive information such as a password:
+`secret` 方法就如同 `ask` 方法一般，但是使用者的輸入將不會顯示在命令列。這個方法適合的場景是輸入的值是敏感的資訊，例如密碼:
 
-    $password = $this->secret('What is the password?');
+    $password = $this->secret('密碼是？');
 
-#### Asking For Confirmation
+#### 要求確認
 
-If you need to ask the user for a simple confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` in response to the prompt, the method will return `true`.
+如果你需要使用者做簡單的確認，你可以使用 `confirm` 方法。預設的情況時，這個方法會回傳 `false` ，然而，如果使用者對這個提示輸入 `y` ，那這個方法將會回傳 `true`
 
-    if ($this->confirm('Do you wish to continue? [y|N]')) {
+    if ($this->confirm('你希望繼續嗎? [y|N]')) {
         //
     }
 
-#### Giving The User A Choice
+#### 讓使用者做選擇
 
-The `anticipate` method can be used to provided autocompletion for possible choices. The user can still choose any answer, regardless of the choices.
+`anticipate` 方法可被用於使用自動完成來為你提供可能的選擇，使用者仍可以選擇任何答案，不管這些提供的選擇。
 
-    $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
+    $name = $this->anticipate('你的名字是?', ['泰勒', '戴爾']);
 
-If you need to give the user a predefined set of choices, you may use the `choice` method. The user chooses the index of the answer, but the value of the answer will be returned to you. You may set the default value to be returned if nothing is chosen:
+如果你需要提供使用者一系列事先定義的選擇，你可以使用 `choice` 方法，使用者選擇了答案的索引，但是答案會返回給你，你可以設定返回的預設值來防止沒有任何東西被選擇:
 
-    $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], false);
+    $name = $this->choice('你的名字是?', ['泰勒', '戴爾'], false);
 
 <a name="writing-output"></a>
-### Writing Output
+### 撰寫輸出
 
-To send output to the console, use the `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
+使用 `info` 、 `comment` 、 `question` 和 `error` 方法來傳送輸出到終端。每個方法都有適當的 ANSI 顏色來表達它們的目的。
 
-To display an information message to the user, use the `info` method. Typically, this will display in the console as green text:
+使用 `info` 方法來傳送資訊訊息給使用者，並以綠色呈現在終端。
 
     /**
-     * Execute the console command.
+     * 執行這個命令列
      *
      * @return mixed
      */
     public function handle()
     {
-        $this->info('Display this on the screen');
+        $this->info('顯示我在畫面上');
     }
 
-To display an error message, use the `error` method. Error message text is typically displayed in red:
+使用 `info` 方法來傳送錯誤訊息給使用者，並以紅色呈現在終端。
 
-    $this->error('Something went wrong!');
+    $this->error('有東西出問題了！');
 
-#### Table Layouts
+#### 表格佈局
 
-The `table` method makes it easy to correctly format multiple rows / columns of data. Just pass in the headers and rows to the method. The width and height will be dynamically calculated based on the given data:
+`table` 方法讓格式化多 行/列 的資料變得簡單。只要傳送標頭和行到這個方法，寬跟高將會基於給的資料做動態的計算:
 
     $headers = ['Name', 'Email'];
 
@@ -269,9 +270,9 @@ The `table` method makes it easy to correctly format multiple rows / columns of 
 
     $this->table($headers, $users);
 
-#### Progress Bars
+#### 進度條
 
-For long running tasks, it could be helpful to show a progress indicator. Using the output object, we can start, advance and stop the Progress Bar. You have to define the number of steps when you start the progress, then advance the Progress Bar after each step:
+對於需要長時間執行的任務，使用進度指示器將會有不錯的幫助。使用 output 物件，我們可以開始、前進、停止進度條，當開始執行時你需要定義總共有幾個階段，然後每階段完成後就讓進度條前進:
 
     $users = App\User::all();
 
@@ -285,23 +286,25 @@ For long running tasks, it could be helpful to show a progress indicator. Using 
 
     $this->output->progressFinish();
 
-For more advanced options, check out the [Symfony Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
+
+想得到更多資訊，請看看 [Symfony Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>
-## Registering Commands
+## 註冊命令
 
-Once your command is finished, you need to register it with Artisan so it will be available for use. This is done within the `app/Console/Kernel.php` file.
+一旦你的命令完成，你需要先向 Artisan 註冊它，才可以使用它，註冊的檔案為 `app/Console/Kernel.php` 。
 
-Within this file, you will find a list of commands in the `commands` property. To register your command, simply add the class name to the list. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:
+在這個檔案中，你會在 `commands` 屬性找到一整個名單的命令。只要加入類別的名稱到這個名單，當 Artisan 啟動時，所有條列在這個
+屬性的命令，都會被 [service container](/docs/{{version}}/container) 解析並向 Artisan 註冊:
 
     protected $commands = [
         'App\Console\Commands\SendEmails'
     ];
 
 <a name="calling-commands-via-code"></a>
-## Calling Commands Via Code
+## 使用程式碼呼叫命令
 
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from an route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts the name of the command as the first argument, and an array of command parameters as the second argument. The exit code will be returned:
+有時候你想在命令列介面外執行 Artisan 命令，例如，你希望在路由或控制器觸發 Artisan 命令。你只要在 `Artisan` facade 使用 `call` 方法來觸發。 `call` 方法的第一個參數為命令的名稱，第二個參數為陣列型態的命令輸入:
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
@@ -311,7 +314,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
         //
     });
 
-Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/{{version}}/queues):
+在 `Artisan` facade 使用 `queue` 方法，你甚至會將一堆 Artisan 命令放進隊列，好讓它們能在背景被你的 [queue workers](/docs/{{version}}/queues) 執行:
 
     Route::get('/foo', function () {
         Artisan::queue('email:send', [
@@ -321,12 +324,12 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
         //
     });
 
-### Calling Commands From Other Commands
+### 在命令中呼叫其他命令
 
-Sometimes you may wish to call other commands from an existing Artisan command. You may do so using the `call` method. This `call` method accepts the command name and an array of command parameters:
+有時候，你會希望在命令中呼叫其他命令，你可以使用 `call` 方法來達成， `call` 方法接受命令名稱和陣列型態的命令輸入:
 
     /**
-     * Execute the console command.
+     * 執行這個命令列
      *
      * @return mixed
      */
@@ -339,7 +342,7 @@ Sometimes you may wish to call other commands from an existing Artisan command. 
         //
     }
 
-If you would like to call another console command and suppress all of its output, you may use the `callSilent` method. The `callSilent` method has the same signature as the `call` method:
+如果你想要呼叫其他命令並忽視所有它的輸出，你可以使用 `callSilent` 命令來完成。 `callSilent` 方法有和 `call` 方法一樣的署名:
 
     $this->callSilent('email:send', [
         'user' => 1, '--queue' => 'default'
