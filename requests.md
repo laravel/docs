@@ -180,7 +180,7 @@ To retrieve flashed input from the previous request, use the `old` method on the
 
 	$username = $request->old('username');
 
-Laravel also provides a global `old` helper function. If you are displaying old input within a [Blade template](/docs/{{version}}/views), it is more convenient to use the `old` helper:
+Laravel also provides a global `old` helper function. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper:
 
 	{{ old('username') }}
 
@@ -235,7 +235,7 @@ In addition to checking if the file is present, you may verify that there were n
 
 #### Moving Uploaded Files
 
-To move the uploaded file to a new location, you should use the `move` directory. This method will move the file from its temporary upload location (as determined by your PHP configuration) to a more permanent destination of your choosing:
+To move the uploaded file to a new location, you should use the `move` method. This method will move the file from its temporary upload location (as determined by your PHP configuration) to a more permanent destination of your choosing:
 
 	$request->file('photo')->move($destinationPath);
 

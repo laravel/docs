@@ -95,7 +95,7 @@ The `groupBy` method now returns `Collection` instances for each item in the par
 
 #### The `lists` Method
 
-The `lists` method now returns a `Collection` instance. If you would like to convert the `Collection` into a plain array, use the `all` method:
+The `lists` method now returns a `Collection` instance for Eloquent queries. If you would like to convert the `Collection` into a plain array, use the `all` method:
 
 	$collection->lists('id')->all();
 
@@ -116,6 +116,10 @@ Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 ### Amazon Web Services SDK
 
 If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
+
+If you are using the Amazon S3 filesystem driver, you will need to update the corresponding Flysystem package via Composer:
+
+- Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 
 ### Deprecations
 
