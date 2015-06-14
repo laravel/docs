@@ -121,6 +121,19 @@ Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 
 	protected $baseUrl = 'http://localhost';
 
+### Elixir
+
+If you pass multiple source files in an array to CSS functions such as `sass` and `less`, Laravel 5.0 would generate a separate output file for each source file.  Laravel 5.1 instead combines the source files into a single output file, which is named `app.css` by default.  So for example in Laravel 5.1 this will combine `file1.sass` and `file2.sass` and put the final output in `public/css/app.css`:
+
+	mix.sass([ "file1.sass", "file2.sass" ], "public/assets/css");
+
+If you want the output to be in separate files as Laravel 5.0 would have done, you need to call the function separately for each input file, and also specify the filename for the output like this:
+
+	mix.sass("file1.sass", "public/assets/css/file1.css");
+	   .sass("file2.sass", "public/assets/css/file2.css");
+
+The same applies to JavaScript functions such as `coffee` and `scripts`, which output to `app.js` by default.  These functions too will now combine multiple files into one file unless you make separate function calls for each file as explained above.
+
 ### Amazon Web Services SDK
 
 If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
