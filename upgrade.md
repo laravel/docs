@@ -123,7 +123,7 @@ Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 
 ### Elixir
 
-If you pass multiple source files in an array to CSS functions such as `sass` and `less`, Laravel 5.0 would generate a separate output file for each source file.  Laravel 5.1 instead combines the source files into a single output file, which is named `app.css` by default.  So for example in Laravel 5.1 this will combine `file1.sass` and `file2.sass` and put the final output in `public/css/app.css`:
+If you pass multiple source files in an array to CSS functions such as `sass` and `less`, Laravel 5.0 would generate a separate output file for each source file.  Laravel 5.1 instead combines the source files into a single output file, which is named `app.css` by default.  So for example, in Laravel 5.1 this will now combine `file1.sass` and `file2.sass` and put the final output in `public/css/app.css`:
 
 	mix.sass([ "file1.sass", "file2.sass" ], "public/assets/css");
 
