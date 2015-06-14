@@ -1,28 +1,29 @@
-# HTTP Routing
+# Routing
 
-- [Basic Routing](#basic-routing)
-- [Route Parameters](#route-parameters)
-	- [Required Parameters](#required-parameters)
-	- [Optional Parameters](#parameters-optional-parameters)
-	- [Regular Expression Constraints](#parameters-regular-expression-constraints)
-- [Named Routes](#named-routes)
-- [Route Groups](#route-groups)
-	- [Middleware](#route-group-middleware)
-	- [Namespaces](#route-group-namespaces)
-	- [Sub-Domain Routing](#route-group-sub-domain-routing)
-	- [Route Prefixes](#route-group-prefixes)
-- [CSRF Protection](#csrf-protection)
-	- [Introduction](#csrf-introduction)
-	- [Excluding URIs](#csrf-excluding-uris)
-	- [X-CSRF-Token](#csrf-x-csrf-token)
-	- [X-XSRF-Token](#csrf-x-xsrf-token)
-- [Form Method Spoofing](#form-method-spoofing)
-- [Throwing 404 Errors](#throwing-404-errors)
+- [Routing di Base](#routing-di-base)
+- [Parametri delle Route](#parametri-route)
+	- [Parametri Obbligatori](#parametri-obbligatori)
+	- [Parametri Opzionali](#parametri-opzionali)
+	- [Uso di Espressioni Regolari](#uso-espressioni-regolari)
+	- [Regole "Globali"](#regole-globali)
+- [Route "Rinominate"](#route-rinominate)
+- [Gruppi di Route](#gruppi-route)
+	- [Condivisione di Middleware](#condivisione-middleware)
+	- [Condivisione di Namespace](#condivisione-namespace)
+	- [Routing del Sottodominio](#routing-sottodominio)
+	- [Prefissi dei Gruppi](#prefissi-gruppi)
+- [Protezione CSRF](#protezione-csrf)
+	- [Introduzione](#introduzione)
+	- [Escludere degli URL dalla Protezione CSRF](#escludere-url-protezione-csrf)
+	- [X-CSRF-TOKEN](#x-csrf-token)
+	- [X-XSRF-TOKEN](#x-xsrf-token)
+- [Method Spoofing per i Form](#method-spoofing-form)
+- [Errori 404](#errori-404)
 
-<a name="basic-routing"></a>
+<a name="routing-di-base"></a>
 ## Basic Routing
 
-You will define most of the routes for your application in the `app/Http/routes.php` file, which is loaded by the `App\Providers\RouteServiceProvider` class. The most basic Laravel routes simply accept a URI and a `Closure`:
+Le route della tua applicazione verranno definite, di default, in `app/Http/routes.php` caricato automaticamente dalla class `App\Providers\RouteServiceProvider`. Ecco alcuni esmepi di definizione base: tutto quello che bisogna fare è definire l'url ed una closure corrispondente. Il nome del metodo corrisponde al verb HTTP da usare.
 
 	Route::get('/', function () {
 		return 'Hello World';
@@ -40,52 +41,52 @@ You will define most of the routes for your application in the `app/Http/routes.
 		//
 	});
 
-#### Registering A Route For Multiple Verbs
+#### Registrare una Route per più Verb
 
-Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method on the `Route` [facade](/docs/{{version}}/facades):
+A volte potresti voler registrare una route che risponda, contemporaneamente, a più verb HTTP. Puoi farlo tramite _match()_:
 
 	Route::match(['get', 'post'], '/', function () {
 		return 'Hello World';
 	});
 
-Or, you may even register a route that responds to all HTTP verbs using the `any` method:
+Oppure, potresti anche voler registrare una route per tutti i verb HTTP. In questo caso usa `any`:
 
 	Route::any('foo', function () {
 		return 'Hello World';
 	});
 
-#### Generating URLs To Routes
+#### Generare gli URL corrispondenti alle Route
 
-You may generate URLs to your application's routes using the `url` helper:
+Per generare gli URL relativi alle route, usa l'helper `url`:
 
 	$url = url('foo');
 
-<a name="route-parameters"></a>
-## Route Parameters
+<a name="parametri-route"></a>
+## Parametri delle Route
 
-<a name="required-parameters"></a>
-### Required Parameters
+<a name="parametri-obbligatori"></a>
+### Parametri Obbligatori
 
-Of course, sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
+Ovviamente, molto spesso avrai la necessità di "intercettare" i segmenti dell'URI della tua route. Ad esempio, potresti voler prelevare l'id di un utente dall'URL. In questo caso, basta usare i parametri in questo modo:
 
 	Route::get('user/{id}', function ($id) {
 		return 'User '.$id;
 	});
 
-You may define as many route parameters as required by your route:
+Puoi definirne, ovviamente, quanti ne vuoi:
 
 	Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
 		//
 	});
 
-Route parameters are always encased within "curly" braces. The parameters will be passed into your route's `Closure` when the route is executed.
+Vengono sempre usate le parentesi graffe. I parametri verranno passati alla closure nell'ordine in cui sono scritti.
 
-> **Note:** Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
+> **Nota:** il nome di un parametro non può contenere il carattere `-`. Puoi usare però un underscore (`_`).
 
-<a name="parameters-optional-parameters"></a>
-### Optional Parameters
+<a name="parametri-opzionali"></a>
+### Parametri Opzionali
 
-Occasionally you may need to specify a route parameter, but make the presence of that route parameter optional. You may do so by placing a `?` mark after the parameter name:
+Occasionalmente, potresti avere la necessità di specificare dei parametri non obbligatori. In tal caso, aggiungi un `?` subito dopo il nome del parametro.
 
 	Route::get('user/{name?}', function ($name = null) {
 		return $name;
@@ -95,10 +96,10 @@ Occasionally you may need to specify a route parameter, but make the presence of
 		return $name;
 	});
 
-<a name="parameters-regular-expression-constraints"></a>
-### Regular Expression Constraints
+<a name="uso-espressioni-regolari"></a>
+### Uso di Espressioni Regolari
 
-You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
+Tramite il metodo _where()_ puoi decidere di dare delle "regole" per l'ammissibilità di alcuni parametri. Tali regole possono essere specificate tramite l'uso di espressioni regolari, come nell'esempio di seguito:
 
 	Route::get('user/{name}', function ($name) {
 		//
@@ -115,10 +116,10 @@ You may constrain the format of your route parameters using the `where` method o
 	})
 	->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 
-<a name="parameters-global-constraints"></a>
-#### Global Constraints
+<a name="regole-globali"></a>
+#### Regole "Globali"
 
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
+Se preferisci, puoi assegnare delle regole globali a tutti i parametri (di tutte le route) che hanno un certo nome. Immagina, ad esempio, di aver deciso che un qualsiasi parametro "id" sarà sempre un numero intero. Apri la classe _RouteServiceProvider_ in _app/Providers_ e aggiungi al metodo _boot_:
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -133,46 +134,50 @@ If you would like a route parameter to always be constrained by a given regular 
         parent::boot($router);
     }
 
-Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
+Una volta definito, il pattern viene applicato a tutti i parametri con quello specifico nome.
 
 	Route::get('user/{id}', function ($id) {
-		// Only called if {id} is numeric.
+		// Viene eseguito solo se {id} è numerico
 	});
 
-<a name="named-routes"></a>
-## Named Routes
+<a name="route-rinominate"></a>
+## Route "Rinominate"
 
-Named routes allow you to conveniently generate URLs or redirects for a specific route. You may specify a name for a route using the `as` array key when defining the route:
+Tramite le route "rinominate" (Named Routes) puoi generare più agevolmente dei redirect verso una route specifica. Tutto quello che devi fare è usare la chiave "as" nell'array associativo usato per definire una route.
 
 	Route::get('user/profile', ['as' => 'profile', function () {
 		//
 	}]);
 
-You may also specify route names for controller actions:
+La stessa cosa può essere fatta per le action di un controller:
 
 	Route::get('user/profile', [
 		'as' => 'profile', 'uses' => 'UserController@showProfile'
 	]);
 
-#### Route Groups & Named Routes
+#### Route "Rinominate" e Gruppi
 
-If you are using [route groups](#route-groups), you may specify an `as` keyword in the route group attribute array, allowing you to set a common route name prefix for all routes within the group:
+Se stai usando i [gruppi di route](#gruppi-route), puoi specificare l'elemento "as" anche come attributo di un gruppo, in modo tale da dare un prefisso comune in fase di ridenominazione di una route.
 
 	Route::group(['as' => 'admin::'], function () {
 		Route::get('dashboard', ['as' => 'dashboard', function () {
-			// Route named "admin::dashboard"
+			// "admin::dashboard"
 		}]);
 	});
 
-#### Generating URLs To Named Routes
+In questo esempio, la route sarà "raggiungibile" con un link generato da
 
-Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the `route` function:
+	url('admin::dashboard');
+
+#### Generare gli URL per le Route "Rinominate"
+
+Una volta che hai assegnato un nome ad una certa route, puoi usare il suo nome in fase di generazione tramite il metodo _route_:
 
 	$url = route('profile');
 
 	$redirect = redirect()->route('profile');
 
-If the route defines parameters, you may pass the parameters as the second argument to the `route` method. The given parameters will automatically be inserted into the URL:
+Se per tale route sono stati definiti dei parametri, puoi passare tali parametri come secondo argomento del metodo _route_. Questi parametri verranno automaticamente aggiunti all'URL finale.
 
 	Route::get('user/{id}/profile', ['as' => 'profile', function ($id) {
 		//
@@ -180,49 +185,49 @@ If the route defines parameters, you may pass the parameters as the second argum
 
 	$url = route('profile', ['id' => 1]);
 
-<a name="route-groups"></a>
-## Route Groups
+<a name="gruppi-route"></a>
+## Gruppi di Route
 
-Route groups allow you to share route attributes, such as middleware or namespaces, across a large number of routes without needing to define those attributes on each individual routes. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
+I gruppi di route ti permettono di far condividere a più route attributi, middleware, namespace e così via, senza dover definire la stessa cosa più volte. Tali attributi condivisi sono specificati in un array in corrispondenza della definizione del gruppo stesso.
 
-To learn more about route groups, we'll walk through several common use-cases for the feature.
+Vediamo alcuni esempi.
 
-<a name="route-group-middleware"></a>
-### Middleware
+<a name="condivisione-middleware"></a>
+### Condivisione di Middleware
 
-To assign middleware to all routes within a group, you may use the `middleware` key in the group attribute array. Middleware will be executed in the order you define this array:
+Per far condividere a più route lo stesso middleware, usa la chiave _middleware_ come segue.
 
 	Route::group(['middleware' => 'auth'], function () {
 		Route::get('/', function ()	{
-			// Uses Auth Middleware
+			// Viene usato il middleware auth
 		});
 
 		Route::get('user/profile', function () {
-			// Uses Auth Middleware
+			// Viene usato il middleware auth
 		});
 	});
 
-<a name="route-group-namespaces"></a>
-### Namespaces
+<a name="condivisione-namespace"></a>
+### Condivisione di Namespace
 
-Another common use-case for route groups is assigning the same PHP namespace to a group of controllers. You may use the `namespace` parameter in your group attribute array to specify the namespace for all controllers within the group:
+Un altro caso d'uso comune è la condivisione di namespace PHP per un determinato gruppi di controller. Questo tramite l'elemento _namespace_ nell'array degli attributi.
 
 	Route::group(['namespace' => 'Admin'], function()
 	{
-		// Controllers Within The "App\Http\Controllers\Admin" Namespace
+		// controller nel namespace "App\Http\Controllers\Admin"
 
 		Route::group(['namespace' => 'User'], function()
 		{
-			// Controllers Within The "App\Http\Controllers\Admin\User" Namespace
+			// controller nel namespace "App\Http\Controllers\Admin\User"
 		});
 	});
 
-Remember, by default, the `RouteServiceProvider` includes your `routes.php` file within a namespace group, allowing you to register controller routes without specifying the full `App\Http\Controllers` namespace prefix. So, we only need to specify the portion of the namespace that comes after the base `App\Http\Controllers` namespace root.
+Ricorda che di default il `RouteServiceProvider` include tutte le tue route in `routes.php` in un gruppo di default, che ti permette di registrare i tuoi controller senza dover specificare, ogni volta, `App\Http\Controllers`.
 
-<a name="route-group-sub-domain-routing"></a>
-### Sub-Domain Routing
+<a name="routing-sottodominio"></a>
+### Routing del Sottodominio
 
-Route groups may also be used to route wildcard sub-domains. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified using the `domain` key on the group attribute array:
+I gruppi di route possono essere usati anche per specificare il routing relativo ai sottodomini. Tali sottodomini possono essere assegnati esattamente come qualsiasi altra route. Stavolta l'elemento da usare è _domain_:
 
 	Route::group(['domain' => '{account}.myapp.com'], function () {
 		Route::get('user/{id}', function ($account, $id) {
@@ -230,53 +235,53 @@ Route groups may also be used to route wildcard sub-domains. Sub-domains may be 
 		});
 	});
 
-<a name="route-group-prefixes"></a>
-### Route Prefixes
+<a name="prefissi-gruppi"></a>
+### Prefissi dei Gruppi
 
-The `prefix` group array attribute may be used to prefix each route in the group with a given URI. For example, you may want to prefix all route URIs within the group with `admin`:
+L'elemento _prefix_ dell'array degli attributi può essere usato per specificare un prefisso per ogni route inclusa nel gruppo stesso. Ecco un esempio:
 
 	Route::group(['prefix' => 'admin'], function () {
 		Route::get('users', function ()	{
-			// Matches The "/admin/users" URL
+			// Risponderà a "/admin/users"
 		});
 	});
 
-You may also use the `prefix` parameter to specify common parameters for your grouped routes:
+Puoi anche specificare dei parametri nel prefisso, se preferisci.
 
 	Route::group(['prefix' => 'accounts/{account_id}'], function () {
 		Route::get('detail', function ($account_id)	{
-			// Matches The accounts/{account_id}/detail URL
+			// Risponderà a accounts/{account_id}/detail URL
 		});
 	});
 
-<a name="csrf-protection"></a>
-## CSRF Protection
+<a name="protezione-csrf"></a>
+## Protezione CSRF
 
-<a name="csrf-introduction"></a>
+<a name="introduzione"></a>
 ### Introduction
 
-Laravel makes it easy to protect your application from [cross-site request forgeries](http://en.wikipedia.org/wiki/Cross-site_request_forgery). Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of the authenticated user.
+Laravel permette, in modo molto facile, di proteggere la tua applicazione da attacchi di tipo [cross-site request forgery](https://it.wikipedia.org/wiki/Cross-site_request_forgery). Tali attacchi consistono in exploit con lo scopo di portare all'esecuzione di comandi da parte utenti non autorizzati.
 
-Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application. To generate a hidden input field `_token` containing the CSRF token, you may use the `csrf_field` helper function:
+Tramite l'helper *csrf_field* è possibile generare un "token" di verifica per la messa in sicurezza dell'applicazione.
 
 	<?php echo csrf_field(); ?>
 
-The `csrf_field` helper function generates the following HTML:
+L'HTML risultante generato è il seguente:
 
 	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-Of course, using the Blade [templating engine](/docs/{{version}}/templates):
+Ovviamente puoi anche usare il [sistema di template Blade](/docs/5.1/templates), se vuoi:
 
 	{!! csrf_field() !!}
 
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify token in the request input matches the token stored in the session.
+Non devi assolutamente fare nulla per verificare il token creato: tramite il middleware `VerifyCsrfToken`, infatti, l'operazione è svolta automaticamente. In caso di problemi viene mostrato un errore che blocca i tentativi di attacco.
 
-<a name="csrf-excluding-uris"></a>
-### Excluding URIs From CSRF Protection
+<a name="escludere-url-protezione-csrf"></a>
+### Escludere degli URL dalla Protezione CSRF
 
-Sometimes you may wish to exclude a set of URIs from CSRF protection. For example, if you are using [Stripe](https://stripe.com) to process payments and are utilizing their webhook system, you will need to exclude your webhook handler route from Laravel's CSRF protection.
+A volte potresti aver bisogno di escludere un certo set di URI dalla protezione da CSRF. Ad esempio, se dovessi usare [Stripe](https://stripe.com) per processare i pagamenti ne avrai sicuramente bisogno.
 
-You may exclude URIs by adding them to the `$except` property of the `VerifyCsrfToken` middleware:
+Puoi sistemare la cosa velocemente aggiungendo tali URI alla proprietà _$except_ del middleware `VerifyCsrfToken`
 
 	<?php namespace App\Http\Middleware;
 
@@ -294,14 +299,14 @@ You may exclude URIs by adding them to the `$except` property of the `VerifyCsrf
 	    ];
 	}
 
-<a name="csrf-x-csrf-token"></a>
+<a name="x-csrf-token"></a>
 ### X-CSRF-TOKEN
 
-In addition to checking for the CSRF token as a POST parameter, the Laravel `VerifyCsrfToken` middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag:
+In aggiunta al controllo del token CSRF appena citato come parametro POST, il middleware `VerifyCsrfToken` controlla anche l'eventuale presenza di un header `X-CSRF-TOKEN` nella richiesta. Se preferisci puoi anche usare un meta tag come il seguente.
 
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
-Once you have created the `meta` tag, you can instruct a library like jQuery to add the token to all request headers. This provides simple, convenient CSRF protection for your AJAX based applications:
+Tale soluzione può essere ottima se stai effettuando delle chiamate asincrone tramite librerie e framework come jQuery, o AngularJS.
 
 	$.ajaxSetup({
 			headers: {
@@ -309,28 +314,28 @@ Once you have created the `meta` tag, you can instruct a library like jQuery to 
 			}
 	});
 
-<a name="csrf-x-xsrf-token"></a>
+<a name="x-xsrf-token"></a>
 ### X-XSRF-TOKEN
 
-Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some JavaScript frameworks, like Angular, do this automatically for you. It is unlikely that you will need to use this value manually.
+Laravel, inoltre, memorizza il token in un cookie chiamato `XSRF-TOKEN` cookie. Puoi usare tale cookie per impostare il valore dell'header `X-XSRF-TOKEN`. Ad ogni modo, alcuni framework come Angular effettuano questa operazione automaticamente.
 
-<a name="form-method-spoofing"></a>
-## Form Method Spoofing
+<a name="method-spoofing-form"></a>
+## Method Spoofing per i Form
 
-HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining `PUT`, `PATCH` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form. The value sent with the `_method` field will be used as the HTTP request method:
+I form HTML non supportano i verb `PUT`, `PATCH` e `DELETE`. Se tuttavia dovessi averne bisogno, tutto quello che devi fare è specificare un campo hidden chiamato `_method`:
 
 	<form action="/foo/bar" method="POST">
 		<input type="hidden" name="_method" value="PUT">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	</form>
 
-<a name="throwing-404-errors"></a>
-## Throwing 404 Errors
+<a name="errori-404"></a>
+## Errori 404
 
-There are two ways to manually trigger a 404 error from a route. First, you may use the `abort` helper. The `abort` helper simply throws a `Symfony\Component\HttpFoundation\Exception\HttpException` with the specified status code:
+Ci sono due diversi modi di lanciare un errore 404 da una route. Il primo, più semplice, è tramite l'uso dell'helper _abort()_.
 
 	abort(404);
 
-Secondly, you may manually throw an instance of `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
+Altrimenti, se preferisci le cose più complesse, ti basta lanciare un'istanza di `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
 
-More information on handling 404 exceptions and using custom responses for these errors may be found in the [errors](/docs/{{version}}/errors#http-exceptions) section of the documentation.
+Se vuoi avere più informazioni su come gestire le eccezioni di questo genere e, eventualmente, come personalizzare l'output relativo, dai uno sguardo alla [pagina dedicata su questa documentazione](/docs/5.1/errors#http-exceptions).
