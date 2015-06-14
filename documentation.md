@@ -45,12 +45,12 @@
     - [單元測試](/docs/{{version}}/testing)
     - [驗證](/docs/{{version}}/validation)
 - 資料庫
-    - [基本入門](/docs/{{version}}/database)
-    - [查詢架構器](/docs/{{version}}/queries)
+    - [入門](/docs/{{version}}/database)
+    - [查詢生成器](/docs/{{version}}/queries)
     - [遷移](/docs/{{version}}/migrations)
     - [資料填充](/docs/{{version}}/seeding)
 - Eloquent ORM
-    - [基本入門](/docs/{{version}}/eloquent)
+    - [入門](/docs/{{version}}/eloquent)
     - [關聯](/docs/{{version}}/eloquent-relationships)
     - [集合](/docs/{{version}}/eloquent-collections)
     - [存取器](/docs/{{version}}/eloquent-mutators)
