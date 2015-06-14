@@ -123,7 +123,7 @@ Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 
 ### Elixir
 
-Run `npm upgrade` to also update Elixir.  If you pass multiple source files in an array to CSS functions such as `sass` and `less`, previously Elixir would generate a separate output file for each source file.  The new version instead combines the source files into a single output file, which is named `app.css` by default.  So for example, in the new version this will now combine `file1.sass` and `file2.sass` and put the final output in `public/css/app.css`:
+Run `npm update` to also update Elixir.  If you pass multiple source files in an array to CSS functions such as `sass` and `less`, previously Elixir would generate a separate output file for each source file.  The new version instead combines the source files into a single output file, which is named `app.css` by default.  So for example, in the new version this will now combine `file1.sass` and `file2.sass` and put the final output in `public/css/app.css`:
 
 	mix.sass([ "file1.sass", "file2.sass" ], "public/assets/css");
 
