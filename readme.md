@@ -1,5 +1,5 @@
-# Laravel Documentation
+# Documentazioni di Laravel
 
-## Contribution Guidelines
+## Contribuire alla Traduzione
 
-If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 5.0 would be submitted to the `5.0` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
+Su <a href="http://laravel-italia.it" target="_blank">Laravel-Italia.it</a> stiamo lavorando alla traduzione della documentazione ufficiale. Per maggiori informazioni, <a href="http://laravel-italia.it/forum/laravel/1433864846-documentazione-laravel-51-traduzione" target="_blank">dai un'occhiata a questo post sul forum</a>.
