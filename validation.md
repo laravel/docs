@@ -615,9 +615,9 @@ The field under validation must match the given regular expression.
 The field under validation must be present in the input data.
 
 <a name="rule-required-if"></a>
-#### required_if:_field_,_value_,...
+#### required_if:_anotherfield_,_value_,...
 
-The field under validation must be present if the _field_ field is equal to any _value_.
+The field under validation must be present if the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
