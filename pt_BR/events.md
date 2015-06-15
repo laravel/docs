@@ -241,7 +241,14 @@ Todas as configuração de "propagação" de eventos são armazenadas no arquivo
 diversos *drivers* nativamente: [Pusher](https://pusher.com), [Redis](/docs/{{version}}/redis), e um *driver* `log` para desenvolvimento
 local e depuração. Está incluso um exemplo de configuração para cada um desses *drivers*.
 
-#### Pre-requisito
+#### Pre-requisitos para a propagação de eventos
+
+As seguintes dependências são necessárias para propagação de eventos:
+
+- Pusher: `pusher/pusher-php-server ~2.0`
+- Redis: `predis/predis ~1.0`
+
+#### Pre-requisito de fila
 
 Antes de transmitir os eventos, você também precisa configurar e executar um [queue listener](/docs/{{version}}/queues). Todas as
 transmissões de eventos são realizadas através de filas para que o tempo de resposta de sua aplicação não seja afetado seriamente.
