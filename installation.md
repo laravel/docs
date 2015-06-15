@@ -115,7 +115,7 @@ If you are developing with a team, you may wish to continue including a `.env.ex
 
 #### Accessing The Current Application Environment
 
-You may access the current application environment via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
+The current application environment is set using the `APP_ENV` variable inside your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
 
 	$environment = App::environment();
 
