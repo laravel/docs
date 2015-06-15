@@ -139,103 +139,103 @@ As seguintes características do Laravel estão depreciadas e serão removidas c
 </div>
 
 <a name="upgrade-5.0.16"></a>
-## Upgrading To 5.0.16
+## Atualizando Para 5.0.16
 
-In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
+No seu arquivo `bootstrap/autoload.php`, atualize a variável `$compiledPath` para:
 
 	$compiledPath = __DIR__.'/../vendor/compiled.php';
 
 <a name="upgrade-5.0"></a>
-## Upgrading To 5.0 From 4.2
+## Atualizando do 4.2
 
-### Fresh Install, Then Migrate
+### Crie Uma Nova Instalação, então migre
 
-The recommended method of upgrading is to create a new Laravel `5.0` install and then to copy your `4.2` site's unique application files into the new application. This would include controllers, routes, Eloquent models, Artisan commands, assets, and other code specific to your application.
+É método recomendado para atualizar é criar uma nova instalação do Laravel `5.0` e então copiar seus arquivos da aplicação Laravel  `4.2` para a nova instalação do `5.0`. Isso inclui controllers, rotas, models, comandos artisan, assets, e outros códigos específicos de sua aplicação.
 
-To start, [install a new Laravel 5 application](/docs/{{version}}/installation) into a fresh directory in your local environment. We'll discuss each piece of the migration process in further detail below.
+Para iniciar, [instale uma nova aplicação Laravel 5](/docs/{{version}}/installation) em um novo diretório no seu ambiente local. Nós vamos discutir cada parte do processo de migração nos detalhes abaixo.
 
-### Composer Dependencies & Packages
+### Dependências do Composer & Pacotes
 
-Don't forget to copy any additional Composer dependencies into your 5.0 application. This includes third-party code such as SDKs.
+Não se esqueça de copiar qualquer dependência adicional do Composer em sua aplicação Laravel `5.0`. Isso inclue códigos de terceiros como SDKs.
 
-Some Laravel-specific packages may not be compatible with Laravel 5 on initial release. Check with your package's maintainer to determine the proper version of the package for Laravel 5. Once you have added any additional Composer dependencies your application needs, run `composer update`.
+Alguns pacotes específicos para Laravel podem não ser compatíveis com o lançamento inicial do Laravel `5.0`. Verifique com o mantenedor do pacote para determinar qual a versão apropriada do pacote para o Laravel `5.0`. Depois de adicionar as dependências do Composer que você precisa, então você pode executar o comando `composer update`.
 
 ### Namespacing
 
-By default, Laravel 4 applications did not utilize namespacing within your application code. So, for example, all Eloquent models and controllers simply lived in the "global" namespace. For a quicker migration, you can simply leave these classes in the global namespace in Laravel 5 as well.
+Por padrão, aplicações Laravel 4 não utilizava namespaces no código da aplicação. Então, por exemplo, todos os models Eloquent e controllers estariam disponíveis no namespace "global". Para uma rápida migração, vocÊ pode simplesmente deixar essas classes no namespace global no Laravel 5 como quiser.
 
-### Configuration
+### Configuração
 
-#### Migrating Environment Variables
+#### Migrando Variáveis de Ambiente
 
-Copy the new `.env.example` file to `.env`, which is the `5.0` equivalent of the old `.env.php` file. Set any appropriate values there, like your `APP_ENV` and `APP_KEY` (your encryption key), your database credentials, and your cache and session drivers.
+Copie o novo arquivo `.env.example` para `.env`, ele é o equivalente do Laravel `5.0` para o antigo arquivo `.env.php`. Configure qualquer valor lá, como sua `APP_ENV` e `APP_KEY` (sua chave de encriptação), suas credencias do banco de dados, e seus drivers de cache e sessão.
 
-Additionally, copy any custom values you had in your old `.env.php` file and place them in both `.env` (the real value for your local environment) and `.env.example` (a sample instructional value for other team members).
+Adicionalmente, copie qualquer valor customizado do seu arquivo `.env.php` para ambos os arquivos `.env` (o valor real para seu ambiente local) e `.env.example` (um exemplo com instruções de como outros do seu time podem configurá-lo).
 
-For more information on environment configuration, view the [full documentation](/docs/{{version}}/installation#environment-configuration).
+Para mais informações sobre a configuração do ambiente, veja a [documentação completa](/docs/{{version}}/installation#environment-configuration).
 
-> **Note:** You will need to place the appropriate `.env` file and values on your production server before deploying your Laravel 5 application.
+> **Nota:** Você precisará criar um arquivo `.env` apropriado para seu server antes de enviar (deploy) sua aplicação Laravel 5.
 
-#### Configuration Files
+#### Arquivos de Configuração
 
-Laravel 5.0 no longer uses `app/config/{environmentName}/` directories to provide specific configuration files for a given environment. Instead, move any configuration values that vary by environment into `.env`, and then access them in your configuration files using `env('key', 'default value')`. You will see examples of this in the `config/database.php` configuration file.
+O Laravel 5.0 não usará mais os diretórios `app/config/{environmentName}/` para especificar arquivos de configuração para um ambiente. Ao invés, mova qualquer valor de configuração que variam de acordo com o ambiete para o arquivo `.env`, e então acesse esse valor nos seus arquivos de configuração usando `env('key', 'default value')`. Você verá exemplos disso no arquivo de configuração `config/database.php`.
 
-Set the config files in the `config/` directory to represent either the values that are consistent across all of your environments, or set them to use `env()` to load values that vary by environment.
+Adicione arquivos de configuração no diretório `config/` para representar valores consistentes através dos ambientes, ou configure-os para usar `env()` para carregar valores que variam de ambiente para ambiente.
 
-Remember, if you add more keys to `.env` file, add sample values to the `.env.example` file as well. This will help your other team members create their own `.env` files.
+Lembre-se, se você adicionar mais chaves para o arquivo `.env`, adicione um exemplo do valor ao arquivo `.env.sample` também. Isso ajudará os outros membros da sua equipe a criar seus próprios arquivos `.env`.
 
-### Routes
+### Rotas
 
-Copy and paste your old `routes.php` file into your new `app/Http/routes.php`.
+Copie e cole seu arquivo de rotas antigo`routes.php` para seu novo local `app/Http/routes.php`.
 
 ### Controllers
 
-Next, move all of your controllers into the `app/Http/Controllers` directory. Since we are not going to migrate to full namespacing in this guide, add the `app/Http/Controllers` directory to the `classmap` directive of your `composer.json` file. Next, you can remove the namespace from the abstract `app/Http/Controllers/Controller.php` base class. Verify that your migrated controllers are extending this base class.
+Em seguida, mova todos os seus controllers para o diretório `app/Http/Controllers`. Como nós não estamos migrando a aplicação para um namespace completo, adicione o diretório `app/Http/Controllers` à diretiva `classmap` do seu arquivo `composer.json`. Depois, você pode remover o namespace do controller abstrato `app/Http/Controllers/Controller.php`. Verifique se seus controllers estão estendendo essa classe abstrata.
 
-In your `app/Providers/RouteServiceProvider.php` file, set the `namespace` property to `null`.
+No seu arquivo `app/Providers/RouteServiceProvider.php` , configure a propriedade `namespace` para `null`.
 
-### Route Filters
+### Filtros de Rotas
 
-Copy your filter bindings from `app/filters.php` and place them into the `boot()` method of `app/Providers/RouteServiceProvider.php`. Add `use Illuminate\Support\Facades\Route;` in the `app/Providers/RouteServiceProvider.php` in order to continue using the `Route` Facade.
+Copie todos os seus filtros de `app/filters.php` e coloque-os no método `boot()` do seu `app/Providers/RouteServiceProvider.php`. Adicione `use Illuminate\Support\Facades\Route;` no `app/Providers/RouteServiceProvider.php` para continuar usando o facade `Route`.
 
-You do not need to move over any of the default Laravel 4.0 filters such as `auth` and `csrf`; they're all here, but as middleware. Edit any routes or controllers that reference the old default filters (e.g. `['before' => 'auth']`) and change them to reference the new middleware (e.g. `['middleware' => 'auth'].`)
+Você não precisa mover os filtros padrão do Laravel 4.0 como `auth` e `csrf`; eles estão todos aqui, mas como middleware. Edite as rotas ou controllers que fazem referência  aos antigos filtros (ex.: `['before' => 'auth']`) e altere-os para referenciar o novo middleware (ex.: `['middleware' => 'auth'].`).
 
-Filters are not removed in Laravel 5. You can still bind and use your own custom filters using `before` and `after`.
+Filtros não foram removidos do Laravel 5. Você ainda pode atrelar e usar seus filtros com `before` e `after`.
 
 ### Global CSRF
 
-By default, [CSRF protection](/docs/{{version}}/routing#csrf-protection) is enabled on all routes. If you'd like to disable this, or only manually enable it on certain routes, remove this line from `App\Http\Kernel`'s `middleware` array:
+Por padrão, a [proteção CSRF](/docs/{{version}}/routing#csrf-protection) é ativada em todas as rotas. Se você gostaria de desativar, ou adicionar manualmente em certas rotas, remova essa linha do array `middelware` na classe `App\Http\Kernel`:
 
 	'App\Http\Middleware\VerifyCsrfToken',
 
-If you want to use it elsewhere, add this line to `$routeMiddleware`:
+Se você quer usá-la em outros lugares, adicione essa linha ao `$routeMiddleware`:
 
 	'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
 
-Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/{{version}}/middleware).
+Agora você poderá adicionar o middleware para rotas individuais ou controlleres usando `['middleware' => 'csrf']` na rota. Para mais informações sobre middleware, consulte a [documentação completa](/docs/{{version}}/middleware).
 
-### Eloquent Models
+### Models Eloquent
 
-Feel free to create a new `app/Models` directory to house your Eloquent models. Again, add this directory to the `classmap` directive of your `composer.json` file.
+Sinta-se livre para criar um novo diretório`app/Models` para seus Models Eloquent. E novamente, adicione esse diretório a diretiva`classmap` do seu arquivo `composer.json`.
 
-Update any models using `SoftDeletingTrait` to use `Illuminate\Database\Eloquent\SoftDeletes`.
+Atualize todos os models que usavam `SoftDeletingTrait` para usar `Illuminate\Database\Eloquent\SoftDeletes`.
 
 #### Eloquent Caching
 
-Eloquent no longer provides the `remember` method for caching queries. You now are responsible for caching your queries manually using the `Cache::remember` function. For more information on caching, consult the [full documentation](/docs/{{version}}/cache).
+O Eloquent não provê mais o método `remember` para cache das suas queries. Você é responsável por fazer o cache das suas queries manualmente usando a função `Cache::remember`. Para mais informações sobre cache, consulte a [documentação completa](/docs/{{version}}/cache).
 
-### User Authentication Model
+### Model de Autenticação do Usuário
 
-To upgrade your `User` model for Laravel 5's authentication system, follow these instructions:
+Para atualizar seu model `User` para o sistema de autenticação do Laravel 5, siga essas instruções:
 
-**Delete the following from your `use` block:**
+**Delete o seguinte trecho do bloco `use`:**
 
 ```php
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 ```
 
-**Add the following to your `use` block:**
+**Adicione o seguinte trecho ao bloco `use`:**
 
 ```php
 use Illuminate\Auth\Authenticatable;
@@ -244,21 +244,21 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 ```
 
-**Remove the UserInterface and RemindableInterface interfaces.**
+**Remova as interfaces UserInterface e RemindableInterface.**
 
-**Mark the class as implementing the following interfaces:**
+**Adicione as seguintes interfaces na lista de implementações do seu model:**
 
 ```php
 implements AuthenticatableContract, CanResetPasswordContract
 ```
 
-**Include the following traits within the class declaration:**
+**Inclua as seguintes traits dentro da declaração da sua classe:**
 
 ```php
 use Authenticatable, CanResetPassword;
 ```
 
-**If you used them, remove `Illuminate\Auth\Reminders\RemindableTrait`  and `Illuminate\Auth\UserTrait` from your use block and your class declaration.**
+**Remova `Illuminate\Auth\Reminders\RemindableTrait` e `Illuminate\Auth\UserTrait` do bloco use e da declaração da sua classe, se você as estava utilizando.**
 
 ### Cashier User Changes
 
