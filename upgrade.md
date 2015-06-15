@@ -120,6 +120,13 @@ By providing backwards compatibility for the Laravel 5.0 folder structure, you m
 Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 
 	protected $baseUrl = 'http://localhost';
+	
+Add the following to your `composer.json`:
+
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+     }
+    
 
 ### Amazon Web Services SDK
 
@@ -128,6 +135,41 @@ If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you shou
 If you are using the Amazon S3 filesystem driver, you will need to update the corresponding Flysystem package via Composer:
 
 - Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
+
+### Model Factories
+Create the file `database/factories/ModelFactory.php` with the following content:
+
+    <?php
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Model Factories
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define all of your model factories. Model factories give
+    | you a convenient way to create models for testing and seeding your
+    | database. Just tell the factory how a default model should look.
+    |
+    */
+    
+    $factory->define(App\User::class, function ($faker) {
+        return [
+            'name' => $faker->name,
+            'email' => $faker->email,
+            'password' => str_random(10),
+            'remember_token' => str_random(10),
+        ];
+    });
+
+And add the following to your `composer.json`:
+
+    "require-dev": {
+        "fzaninotto/faker": "~1.4",
+    }
+
+### Update app/, config/, bootstrap/ code differences
+
+Several minor changes, such as code constructs, new config files, and method implementations in default service providers can be updated by performing a diff on these directories against a fresh laravel 5.1 project and updating the code.
 
 ### Deprecations
 
