@@ -1,4 +1,4 @@
-# Guia de AtualizaçãoUpgrade Guide
+# Guia de Atualização
 
 - [Atualizando para 5.1.0](#upgrade-5.1.0)
 - [Atualizando para 5.0.16](#upgrade-5.0.16)
@@ -21,7 +21,7 @@ Atualize a variável `$compiledPath` em `bootstrap/autoload.php` para o seguinte
 
 ### Crie o Diretório `bootstrap/cache`
 
-Dentro do seu diretório `bootstrap` crie o diretório `cache` (`bootstrap/cache`). E adicione o arquivo `.gitignore` nesse diretório com o seguinte conteúdo:
+Dentro do seu diretório `bootstrap` crie o diretório `cache` (`bootstrap/cache`) e adicione o arquivo `.gitignore` nesse diretório com o seguinte conteúdo:
 
 	*
 	!.gitignore
@@ -121,7 +121,7 @@ Se você está usando o driver Amazon S3 Filesystem, você precisará atualizar 
 
 - Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 
-### Depreciações 
+### Depreciações
 
 As seguintes características do Laravel estão depreciadas e serão removidas completamente com a versão do Laravel 5.2 em Dezembro de 2015:
 
