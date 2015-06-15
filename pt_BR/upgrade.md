@@ -2,7 +2,7 @@
 
 - [Atualizando para 5.1.0](#upgrade-5.1.0)
 - [Atualizando para 5.0.16](#upgrade-5.0.16)
-- [Atualizando para 5.0 From 4.2](#upgrade-5.0)
+- [Atualizando para 5.0 A Partir do 4.2](#upgrade-5.0)
 - [Atualizando para 4.2 From 4.1](#upgrade-4.2)
 - [Atualizando para 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Atualizando para 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
@@ -146,7 +146,7 @@ No seu arquivo `bootstrap/autoload.php`, atualize a variável `$compiledPath` pa
 	$compiledPath = __DIR__.'/../vendor/compiled.php';
 
 <a name="upgrade-5.0"></a>
-## Atualizando do 4.2
+## Atualizando para 5.0 A Partir do 4.2
 
 ### Crie Uma Nova Instalação, então migre
 
