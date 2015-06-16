@@ -1,16 +1,16 @@
-# Localization
+# 在地化
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
+- [簡介](#introduction)
+- [基本用法](#basic-usage)
 	- [Pluralization](#pluralization)
 - [Overriding Vendor Language Files](#overriding-package-language-files)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Laravel's localization features provide a convenient way to retrieve strings in various languages, allowing you to easily support multiple languages within your application.
+Laravel 的在地化功能提供方便的方法來取得多語系的字串，讓你的網站可以簡單的支援多語系。
 
-Language strings are stored in files within the `resources/lang` directory. Within this directory there should be a subdirectory for each language supported by the application:
+語系檔存放在 `resources/lang` 資料夾的檔案裡。在此資料夾內，應該要有網站支援的語系並對應到每一個子目錄。：
 
 	/resources
 		/lang
@@ -19,7 +19,7 @@ Language strings are stored in files within the `resources/lang` directory. With
 			/es
 				messages.php
 
-All language files simply return an array of keyed strings. For example:
+語系檔簡單地回傳鍵值和字串陣列，例如：
 
 	<?php
 
@@ -27,9 +27,8 @@ All language files simply return an array of keyed strings. For example:
 		'welcome' => 'Welcome to our application'
 	];
 
-#### Configuring The Locale
-
-The default language for your application is stored in the `config/app.php` configuration file. Of course, you may modify this value to suit the needs of your application. You may also change the active language at runtime using the `setLocale` method on the `App` facade:
+#### 切換語系
+網站的預設語系儲存在 `config/app.php` 設定檔。您可以在任何時後使用 `App` facade 的 `setLocale` 方法動態地變換現行語系：
 
 	Route::get('welcome/{locale}', function ($locale) {
 		App::setLocale($locale);
@@ -37,18 +36,18 @@ The default language for your application is stored in the `config/app.php` conf
 		//
 	});
 
-You may also configure a "fallback language", which will be used when the active language does not contain a given language line. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:
+您也可以設定 "備用語系"，它將會在當現行語言沒有給定的語句時被使用。就像預設語言，備用語言也可以在 `config/app.php` 設定檔設定：
 
 	'fallback_locale' => 'en',
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-You may retrieve lines from language files using the `trans` helper function. The `trans` method accepts the file and key of the language line as its first argument. For example, let's retrieve the language line `welcome` in the `resources/lang/messages.php` language file:
+您可以使用 `trans` 輔助函式來取得語系字串， The `trans` method accepts the file and key of the language line as its first argument. For example, let's retrieve the language line `welcome` in the `resources/lang/messages.php` language file:
 
 	echo trans('messages.welcome');
 
-Of course if you are using the [Blade templating engine](/docs/{{version}}/blade), you may use the `{{ }}` syntax to echo the language line:
+當然，若您使用 [Blade 樣版引擎](/docs/{{version}}/blade), 您可以使用 `{{ }}` 來輸出語言列：
 
 	{{ trans('messages.welcome') }}
 
