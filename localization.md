@@ -30,6 +30,7 @@ Laravel 的在地化功能提供方便的方法來取得多語系的字串，讓
 #### 切換語系
 網站的預設語系儲存在 `config/app.php` 設定檔。您可以在任何時後使用 `App` facade 的 `setLocale` 方法動態地變換現行語系：
 
+
 	Route::get('welcome/{locale}', function ($locale) {
 		App::setLocale($locale);
 
@@ -55,6 +56,7 @@ Laravel 的在地化功能提供方便的方法來取得多語系的字串，讓
 #### 在句子中做替代
 
 如果需要，你也可以在語系檔中定義佔位符，佔位符使用 `:` 開頭，例如，您可以定義一則歡迎訊息的佔位符：
+
 
 	'welcome' => 'Welcome, :name',
 
