@@ -2,7 +2,7 @@
 
 - [簡介](#introduction)
 - [基本用法](#basic-usage)
-	- [Pluralization](#pluralization)
+	- [複數](#pluralization)
 - [Overriding Vendor Language Files](#overriding-package-language-files)
 
 <a name="introduction"></a>
@@ -43,38 +43,37 @@ Laravel 的在地化功能提供方便的方法來取得多語系的字串，讓
 <a name="basic-usage"></a>
 ## 基本用法
 
-您可以使用 `trans` 輔助函式來取得語系字串， The `trans` method accepts the file and key of the language line as its first argument. For example, let's retrieve the language line `welcome` in the `resources/lang/messages.php` language file:
+您可以使用 `trans` 輔助函式來取得語系字串，`trans` 函式的第一個參數接受檔名和鍵值名稱，例如，從 `resources/lang/messages.php` 語言檔取得名稱為 `welcome` 的句子：
 
 	echo trans('messages.welcome');
 
-當然，若您使用 [Blade 樣版引擎](/docs/{{version}}/blade), 您可以使用 `{{ }}` 來輸出語言列：
+當然，若您使用 [Blade 樣版引擎](/docs/{{version}}/blade), 您可以使用 `{{ }}` 來輸出句子：
 
 	{{ trans('messages.welcome') }}
 
-If the specified language line does not exist, the `trans` function will simply return the language line key. So, using the example above, the `trans` function would return `messages.welcome` if the language line does not exist.
+如果句子不存在， `trans` 方法將會回傳鍵值的名稱，如上範例會回傳 `messages.welcome` 。
+#### 在句子中做替代
 
-#### Replacing Parameters In Language Lines
-
-If you wish, you may define place-holders in your language lines. All place-holders are prefixed with a `:`. For example, you may define a welcome message with a place-holder name:
+如果需要，你也可以在語系檔中定義佔位符，佔位符使用 `:` 開頭，例如，您可以定義一則歡迎訊息的佔位符：
 
 	'welcome' => 'Welcome, :name',
 
-To replace the place-holders when retrieving a language line, pass an array of replacements as the second argument to the `trans` function:
+接著，傳入替代用的第二個參數給 `trans` 方法：
 
 	echo trans('messages.welcome', ['name' => 'Dayle']);
 
 <a name="pluralization"></a>
-### Pluralization
+### 複數
 
-Pluralization is a complex problem, as different languages have a variety of complex rules for pluralization. By using a "pipe" character, you may distinguish a singular and plural form of a string:
+複數是個複雜的問題，不同語言對於複數有不同的規則，使用 "管線" 字元，可以區分單複數字串格式：
 
 	'apples' => 'There is one apple|There are many apples',
 
-Then, you may then use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the language line is returned:
+接著，可以使用 `trans_choice` 方法來設定總數，例如，當總數大於一將會取得複數句子：
 
 	echo trans_choice('messages.apples', 10);
 
-Since the Laravel translator is powered by the Symfony Translation component, you may create even more complex pluralization rules:
+由於 Laravel 的翻譯器是來自於 Symfony 翻譯套件，您甚至可以使用更複雜的複數規則：
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
 
