@@ -108,9 +108,9 @@ If you would like to assign middleware to specific routes, you should first assi
 	// Within App\Http\Kernel Class...
 
     protected $routeMiddleware = [
-        'auth' => 'App\Http\Middleware\Authenticate',
-        'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-        'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
     ];
 
 Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:

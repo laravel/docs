@@ -628,7 +628,7 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 <a name="method-value"></a>
 #### `value()` {#collection-method}
 
-The `value` function's behavior will simply return the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed the its result will be returned:
+The `value` function's behavior will simply return the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed then its result will be returned:
 
 	$value = value(function() { return 'bar'; });
 

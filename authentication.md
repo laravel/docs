@@ -455,12 +455,12 @@ After installing the Socialite library, register the `Laravel\Socialite\Socialit
     'providers' => [
         // Other service providers...
 
-        'Laravel\Socialite\SocialiteServiceProvider',
+        Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
 Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
 
-    'Socialite' => 'Laravel\Socialite\Facades\Socialite',
+    'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
 You will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `google`, or `github`, depending on the providers your application requires. For example:
 
