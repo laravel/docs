@@ -42,7 +42,7 @@
     - [Session](/docs/{{version}}/session)
     - [SSH 任務](/docs/{{version}}/envoy)
     - [任務排程](/docs/{{version}}/scheduling)
-    - [單元測試](/docs/{{version}}/testing)
+    - [測試](/docs/{{version}}/testing)
     - [驗證](/docs/{{version}}/validation)
 - 資料庫
     - [入門](/docs/{{version}}/database)
