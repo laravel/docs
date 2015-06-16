@@ -3,7 +3,7 @@
 - [簡介](#introduction)
 - [基本用法](#basic-usage)
 	- [複數](#pluralization)
-- [Overriding Vendor Language Files](#overriding-package-language-files)
+- [覆寫套件的語言檔](#overriding-package-language-files)
 
 <a name="introduction"></a>
 ## 簡介
@@ -78,8 +78,8 @@ Laravel 的在地化功能提供方便的方法來取得多語系的字串，讓
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
 
 <a name="overriding-package-language-files"></a>
-## Overriding Package Language Files
+## 覆寫套件的語言檔
 
-Some packages may ship with their own language files. Instead of hacking the package's core files to tweak these lines, you may override them by placing your own files in the `resources/lang/vendor/{package}/{locale}` directory.
+部分套件帶有自己的語系檔，您可以藉由放置檔案在 `resources/lang/vendor/{package}/{locale}` 來複寫它們，而不是直接修改套件的核心檔案。
 
-So, for example, if you need to override the English language lines in `messages.php` for a package named `skyrim/hearthfire`, you would place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. In this file you should only define the language lines you wish to override. Any language lines you don't override will still be loaded from the package's original language files.
+例如，您需要複寫 `skyrim/hearthfire` 套件的英文語系檔 `messages.php`，您需要把檔案放置在 `resources/lang/vendor/hearthfire/en/messages.php`。這個檔案內，只要去定義需要覆寫的語句，任何沒有覆寫的語句將會仍從套件的語言檔載入。
