@@ -289,8 +289,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
     	$this->seeInDatabase('users', ['email' => 'sally@foo.com']);
     }
 
-當然，使用 `seeInDatabase` 方法及其他的輔助方法都是為了方便起見。你可以自由使用
-任何 PHPUnit 內建的斷言方法來擴充你的測試。
+當然，使用 `seeInDatabase` 方法及其他的輔助方法都是為了方便起見。你可以自由使用任何 PHPUnit 內建的斷言方法來擴充你的測試。
 
 <a name="resetting-the-database-after-each-test"></a>
 ### 每次測試結束後重置資料庫
@@ -499,8 +498,7 @@ Laravel 提供了一個簡潔的 `expectsJobs` 方法，驗證預期的任務有
 	    }
 	}
 
-> **注意：** 此方法只檢測被 `DispatchesCommands` trait 的派送方法所派送的任務。
-它並不會檢測直接發送到 `Queue::push` 的任務。
+> **注意：** 此方法只檢測被 `DispatchesCommands` trait 的派送方法所派送的任務。它並不會檢測直接發送到 `Queue::push` 的任務。
 
 <a name="mocking-facades"></a>
 ### 模擬 Facades
