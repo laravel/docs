@@ -169,7 +169,7 @@ Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/se
 		return redirect('dashboard')->with('status', 'Profile updated!');
 	});
 
-Of course, after the user is redirected to a new page, you may retrieve and display the flashed message from the [session](/docs/{{version}}/session). For example, using [Blade syntax](/docs/{{version}}/blade):
+Of course, after the user is redirected to a new page, you may retrieve and display the flashed message from the [session](/docs/{{version}}/session). For example, using [Blade syntax](/docs/{{version}}/views):
 
 	@if (session('status'))
 		<div class="alert alert-success">
