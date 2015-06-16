@@ -225,7 +225,7 @@ Below is a list of all the available column modifiers. This list does not includ
 
 Modifier  | Description
 ------------- | -------------
-`->first()`  |  Place the column "first" in the in the table (MySQL Only)
+`->first()`  |  Place the column "first" in the table (MySQL Only)
 `->after('column')`  |  Place the column "after" another column (MySQL Only)
 `->nullable()`  |  Allow NULL values to be inserted into the column
 `->default($value)`  |  Specify a "default" value for the column
