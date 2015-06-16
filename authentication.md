@@ -312,9 +312,8 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 
     use Auth;
     use Closure;
-    use Illuminate\Contracts\Routing\Middleware;
 
-    class AuthenticateOnceWithBasicAuth implements Middleware
+    class AuthenticateOnceWithBasicAuth
     {
         /**
          * Handle an incoming request.
