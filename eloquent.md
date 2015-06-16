@@ -41,7 +41,7 @@ If you would like to generate a [database migration](/docs/{{version}}/schema#da
 <a name="eloquent-model-conventions"></a>
 ### Eloquent Model Conventions
 
-Now, let's look at an example `Flight` model class, which will use to retrieve and store information from our `flights` database table:
+Now, let's look at an example `Flight` model class, which we will use to retrieve and store information from our `flights` database table:
 
 	<?php
 
