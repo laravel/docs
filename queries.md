@@ -88,7 +88,7 @@ You may stop further chunks from being processed by returning `false` from the `
 
 #### Retrieving A List Of Column Values
 
-If you would like to retrieve an array contains the values of a single column, you may use the `lists` method. In this example, we'll retrieve an array of role titles:
+If you would like to retrieve an array containing the values of a single column, you may use the `lists` method. In this example, we'll retrieve an array of role titles:
 
 	$titles = DB::table('roles')->lists('title');
 
