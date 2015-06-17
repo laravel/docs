@@ -725,7 +725,7 @@ Before using the `create` method, be sure to review the documentation on attribu
 
 When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
 
-	$account = Account::find(10);
+	$account = App\Account::find(10);
 
 	$user->account()->associate($account);
 
