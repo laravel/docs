@@ -461,7 +461,7 @@ Also, add the `Socialite` facade to the `aliases` array in your `app` configurat
 
     'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
-You will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `linkedin`, `google`, or `github`, depending on the providers your application requires. For example:
+You will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `linkedin`, `google`, `github` or `bitbucket`, depending on the providers your application requires. For example:
 
     'github' => [
         'client_id' => 'your-github-app-id',
