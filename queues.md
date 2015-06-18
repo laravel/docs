@@ -105,7 +105,7 @@ Job classes are very simple, normally containing only a `handle` method which is
 	    		//
 	    	});
 
-	    	$user->reminders()->create(...);
+	    	$this->user->reminders()->create(...);
 	    }
 	}
 
