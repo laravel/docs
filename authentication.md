@@ -18,7 +18,7 @@
     - [視圖](#resetting-views)
     - [重設密碼後](#after-resetting-passwords)
 - [社交認證](#social-authentication)
-- [新增客製化驅動](#adding-custom-authentication-drivers)
+- [新增客製化認證驅動](#adding-custom-authentication-drivers)
 
 <a name="introduction"></a>
 ## 介紹
@@ -636,4 +636,3 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
     }
 
 這個介面很簡單。 `getAuthIdentifier` 方法需要回傳 使用者的"主鍵"。在 MySQL，這個主鍵是指自動增加的主見。而 `getAuthPassword` 應該要回傳使用者雜湊後的密碼。這個介面允許認證系統和任何使用者類別運作，不用管你在使用什麼 ORM 或是儲存抽象層。預設上， Laravel 包含了 `User` 類別在 `app` 資料夾中，它實現了這個介面，所以你可以觀察這個類別來當然實現的範例。
-This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
