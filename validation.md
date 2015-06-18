@@ -371,7 +371,7 @@ In this example, the `:attribute` place-holder will be replaced by the actual na
 
 #### Specifying A Custom Message For A Given Attribute
 
-Sometimes you may wish to specify a custom error messages only for a specific field. You may do so using "dot" notation. Specify the rule first, followed by the attribute's name:
+Sometimes you may wish to specify a custom error messages only for a specific field. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule:
 
 	$messages = [
 		'email.required' => 'We need to know your e-mail address!',
