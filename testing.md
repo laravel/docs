@@ -4,7 +4,7 @@
 - [測試應用程式](#application-testing)
 	- [與你的應用程式進行互動](#interacting-with-your-application)
 	- [測試 JSON APIs](#testing-json-apis)
-	- [Sessions / 認證](#sessions-and-authentication)
+	- [Sessions 和認證](#sessions-and-authentication)
 	- [停用中介層](#disabling-middleware)
 	- [自訂 HTTP 請求](#custom-http-requests)
 - [使用資料庫](#working-with-databases)
@@ -24,7 +24,7 @@ Laravel 在建立時就已考慮到測試的部分。事實上，預設就支援
 
 ### 測試環境
 
-在執行測試時，Laravel 會自動將環境變數設定為 `testing`，並將 Session 及快取存入`陣列`驅動，也就是說在測試時不會有任何 Session 或快取資料被儲存。
+在執行測試時，Laravel 會自動將環境變數設定為 `testing`，並將 Session 及快取存入`陣列`形式，也就是說在測試時不會有任何 Session 或快取資料被儲存。
 
 你可以自由建立其他必要的測試環境設定。`testing` 的環境變數可以在 `phpunit.xml` 檔案中做修改。
 
@@ -42,12 +42,12 @@ Laravel 在建立時就已考慮到測試的部分。事實上，預設就支援
 		}
 	}
 
-> **注意：** 如果你要在你的類別定義自己的 `setUp` 方法，請確定有呼叫 `parent::setUp` 。
+> **注意：** 如果你要在你的類別定義自己的 `setUp` 方法，請確定有呼叫 `parent::setUp`。
 
 <a name="application-testing"></a>
 ## 測試應用程式
 
-Laravel 對於製造 HTTP 請求至應用程式，檢查輸出，甚至填寫表單，都提供了非常流利的 API。 舉例來說，你可以看看 `tests` 目錄中的 `ExampleTest.php` 檔案：
+Laravel 對於產生 HTTP 請求並送至應用程式，檢查輸出，甚至填寫表單，都提供了非常流利的 API。 舉例來說，你可以看看 `tests` 目錄中的 `ExampleTest.php` 檔案：
 
 	<?php
 
@@ -68,7 +68,7 @@ Laravel 對於製造 HTTP 請求至應用程式，檢查輸出，甚至填寫表
 	    }
 	}
 
-`visit` 方法會製造 `GET` 請求至應用程式，`see` 方法則斷言我們必須在應用程式回傳的回應中看見給定的文字參數。這是 Laravel 所提供最基本的應用程式測試。
+`visit` 方法會製造 `GET` 請求至應用程式，`see` 方法則斷言在應用程式回傳的回應中，有指定的文字。這是 Laravel 所提供最基本的應用程式測試。
 
 <a name="interacting-with-your-application"></a>
 ### 與你的應用程式進行互動
@@ -77,11 +77,11 @@ Laravel 對於製造 HTTP 請求至應用程式，檢查輸出，甚至填寫表
 
 #### 點擊連結
 
-在這個測試中，我們會製造一個請求至應用程式，並「點擊」回傳回應中的連結，接著斷言我們會停留在一個給定的 URI。舉個例子，假設有個連結在我們的回應中，而且他的文字值為「About Us」：
+在這個測試中，我們會產生一個請求送到應用程式，並「點擊」回傳回應中的連結，接著斷言我們會停留在指定的 URI。舉個例子，假設在回應中有個連結，並寫著「About Us」：
 
 	<a href="/about-us">About Us</a>
 
-現在，我們撰寫一個測試點擊連結並斷言使用者會停留在正確的頁面：
+現在，我們撰寫一個測試，點擊連結並斷言使用者會停留在正確的頁面：
 
     public function testBasicExample()
     {
@@ -147,7 +147,7 @@ Laravel 還提供了幾種用於測試表單的方法。透過 `type`、`select`
 <a name="testing-json-apis"></a>
 ### 測試 JSON APIs
 
-Laravel 也提供了幾個輔助方法測試 JSON APIs 及其回應。舉例來說，`get`、`post`、`put`、`patch` 及 `delete` 方法可以用於發出各種 HTTP 動詞的請求。你也可以很輕鬆的傳入資料或是標頭在這些方法中。首先，我們撰寫一個發出 `POST` 請求至 `/user` 的測試，並斷言一個給定的陣列以 JSON 格式回傳：
+Laravel 也提供了幾個輔助方法測試 JSON APIs 及其回應。舉例來說，`get`、`post`、`put`、`patch` 及 `delete` 方法可以用於發出各種 HTTP 動詞的請求。你也可以很輕鬆的傳入資料或是標頭到這些方法。首先，我們撰寫一個測試，發出 `POST` 請求至 `/user` ，並斷言會回傳JSON 格式的指定陣列：
 
 	<?php
 
@@ -167,11 +167,11 @@ Laravel 也提供了幾個輔助方法測試 JSON APIs 及其回應。舉例來�
 	    }
 	}
 
-`seeJson` 方法會將給定的陣列轉換成 JSON，並驗證該 JSON 片段是否存在於應用程式回傳的 JSON 回應中的**任何位置**。也就是說，即使有其他的屬性在 JSON 回應中，但是只要給定的片段存在，此測試仍然會通過。
+`seeJson` 方法會將傳入的陣列轉換成 JSON，並驗證該 JSON 片段是否存在於應用程式回傳的 JSON 回應中的**任何位置**。也就是說，即使有其他的屬性在 JSON 回應中，但是只要給定的片段存在，此測試仍然會通過。
 
 #### 驗證 JSON 完全匹配
 
-如果你想驗證給定的陣列與應用程式回傳的 JSON **完全**匹配，你可以使用 `seeJsonEquals` 方法：
+如果你想驗證傳入的陣列要與應用程式回傳的 JSON **完全**匹配，可以使用 `seeJsonEquals` 方法：
 
 	<?php
 
@@ -192,9 +192,9 @@ Laravel 也提供了幾個輔助方法測試 JSON APIs 及其回應。舉例來�
 	}
 
 <a name="sessions-and-authentication"></a>
-### Sessions / 認證
+### Sessions 和認證
 
-Laravel 提供了幾個輔助方法在測試時使用 Session。首先，你需要設定 Session 資料至給定的陣列，並使用 `withSession` 方法。這對於在測試請求至你的應用程式之前載入 Session 資料相當有用：
+Laravel 提供了幾個輔助方法在測試時使用 Session。首先，你需要設定 Session 資料至給定的陣列，並使用 `withSession` 方法。對於要測試送到應用程式的請求之前，先將資料載入 session 上相當有用：
 
 	<?php
 
@@ -202,12 +202,12 @@ Laravel 提供了幾個輔助方法在測試時使用 Session。首先，你需�
 	{
 	    public function testApplication()
 	    {
-			$this->withSession(['foo' => 'bar'])
-			     ->visit('/');
+		$this->withSession(['foo' => 'bar'])
+		     ->visit('/');
 	    }
 	}
 
-當然，一般使用 Session 時都是用於保持使用者的狀態，像是認證使用者。`actingAs`  輔助方法提供了簡單的方法讓給定的使用者作為當前的使用者並認證。舉個例子，我們可以使用[模型工廠](#model-factories)來產生並認證使用者：
+當然，一般使用 Session 時都是用於保持使用者的狀態，像是認證使用者。`actingAs`  輔助方法提供了簡單的方式，讓指定的使用者認證為當前的使用者。舉個例子，我們可以使用[模型工廠](#model-factories)來產生並認證使用者：
 
 	<?php
 
@@ -217,17 +217,17 @@ Laravel 提供了幾個輔助方法在測試時使用 Session。首先，你需�
 	    {
 	    	$user = factory('App\User')->create();
 
-			$this->actingAs($user)
-				 ->withSession(['foo' => 'bar'])
-			     ->visit('/')
-			     ->see('Hello, '.$user->name);
+		$this->actingAs($user)
+		     ->withSession(['foo' => 'bar'])
+		     ->visit('/')
+		     ->see('Hello, '.$user->name);
 	    }
 	}
 
 <a name="disabling-middleware"></a>
 ### 停用中介層
 
-當測試你的應用程式時，你可能已經發現它能夠在你的測試中很簡便的停用[中介層](/docs/{{version}}/middleware)。這將讓你測試你的路由及控制器並隔離任何中介層的影響。Laravel 包含一個簡潔的 `WithoutMiddlewate` trait，你能夠使用它自動在測試類別中停用所有的中介層：
+測試應用程式時，你會發現，在某些測試中停用[中介層](/docs/{{version}}/middleware)是很方便的。讓你可以隔離任何中介層的影響，來測試路由及控制器。Laravel 包含一個簡潔的 `WithoutMiddlewate` trait，你能夠使用它自動在測試類別中停用所有的中介層：
 
 	<?php
 
@@ -280,7 +280,7 @@ Laravel 提供了幾個輔助方法在測試時使用 Session。首先，你需�
 <a name="working-with-databases"></a>
 ## 使用資料庫
 
-Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程式的資料庫。首先，你可以使用 `seeInDatabase` 輔助方法來斷言資料庫中是否存在與給定條件互相匹配的資料。舉例來說，如果我們想驗證 `users` 資料表中是否存在 `email` 值為 `sally@example.com` 的資料，我們可以按照以下的方式：
+Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫的應用程式。首先，你可以使用 `seeInDatabase` 輔助方法，來斷言資料庫中是否存在與指定條件互相匹配的資料。舉例來說，如果我們想驗證 `users` 資料表中是否存在 `email` 值為 `sally@example.com` 的資料，我們可以按照以下的方式：
 
     public function testDatabase()
     {
@@ -289,7 +289,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
     	$this->seeInDatabase('users', ['email' => 'sally@foo.com']);
     }
 
-當然，使用 `seeInDatabase` 方法及其他的輔助方法都是為了方便起見。你可以自由使用任何 PHPUnit 內建的斷言方法來擴充你的測試。
+當然，使用 `seeInDatabase` 方法及其他的輔助方法只是基於方便。你可以自由使用任何 PHPUnit 內建的斷言方法來擴充你的測試。
 
 <a name="resetting-the-database-after-each-test"></a>
 ### 每次測試結束後重置資料庫
@@ -324,7 +324,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
 
 #### 使用交易
 
-另一個方式就是將每個測試案例包裝至資料庫交易。當然，Laravel 提供了一個簡潔的 `DatabaseTransactions` trait，它會自動幫你處理這些操作：
+另一個方式，就是將每個測試案例包裝在資料庫交易中。當然，Laravel 提供了一個簡潔的 `DatabaseTransactions` trait，它會自動幫你處理這些操作：
 
 	<?php
 
@@ -351,7 +351,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
 <a name="model-factories"></a>
 ### 模型工廠
 
-在測試時，常常需要在執行測試之前寫入一些資料到資料庫中。當你在建立這些測試資料時，除了手動設定每一列的值，Laravel 讓你可以使用 [Eloquent 模型](/docs/{{version}}/eloquent)的「工廠」設定每個屬性的預設值。開始之前，你可以查看應用程式的 `database/factories/ModelFactory.php` 檔案。此檔案包含一個現成的工廠定義：
+測試時，常常需要在執行測試之前寫入一些資料到資料庫中。建立測試資料時，除了手動設定每個欄位的值，Laravel 讓你可以使用 [Eloquent 模型](/docs/{{version}}/eloquent)的「工廠」設定每個屬性的預設值。開始之前，你可以查看應用程式的 `database/factories/ModelFactory.php` 檔案。此檔案包含一個現成的工廠定義：
 
 	$factory->define('App\User', function ($faker) {
 	    return [
@@ -368,7 +368,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
 
 #### 多個工廠類型
 
-有時你可以希望多個工廠對應至同一個 Eloquent 模型類別。例如，你想要有一個除了一般使用者以外的「管理員」使用者工廠。你可以使用 `defineAs` 方法定義這個工廠：
+有時你可能希望針對同一個 Eloquent 模型類別，能建立多個工廠。例如，除了一般使用者的工廠之外，還有「管理員」的工廠。你可以使用 `defineAs` 方法定義這個工廠：
 
 	$factory->defineAs('App\User', 'admin', function ($faker) {
 	    return [
@@ -380,7 +380,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
 	    ];
 	});
 
-除了從你的原本使用者工廠複製所有的屬性，你還可以使用 `raw` 方法來取得那些原本的屬性。一旦你取得這些屬性，就可以輕鬆的增加額外任何你需要的值：
+除了從一般使用者工廠複製所有基底屬性，你也可以使用 `raw` 方法來取得基底屬性。一旦你取得這些屬性，就可以輕鬆的增加額外任何你需要的值：
 
 	$factory->defineAs('App\User', 'admin', function ($faker) use ($factory) {
 		$user = $factory->raw('App\User');
@@ -390,7 +390,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
 
 #### 在測試中使用工廠
 
-一旦你定義了你的工廠，你可以在測試或是資料庫填充檔案中，透過全域 `factory` 函式產生模型實例並使用它們。那麼讓我們來看看幾個建立模型的例子。首先我們會使用 `make` 方法建立模型，但是不將它們儲存至資料庫：
+定義工廠後，就可以在測試或是資料庫填充檔案中，透過全域 `factory` 函式產生模型實例。那麼讓我們來看看幾個建立模型的例子。首先我們會使用 `make` 方法建立模型，但是不將它們儲存至資料庫：
 
     public function testDatabase()
     {
@@ -403,7 +403,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
 
     $user = factory('App\User')->make([
     	'name' => 'Abigail',
-   	]);
+    ]);
 
 你也可以建立一個含有多個模型的集合，或建立一個給定類型的模型：
 
@@ -431,7 +431,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
 
     $user = factory('App\User')->create([
     	'name' => 'Abigail',
-   	]);
+    ]);
 
 #### 增加關聯至模型
 
@@ -440,8 +440,8 @@ Laravel 也提供了多種有用的工具，讓你更容易測試驅動應用程
     $users = factory('App\User', 3)
                ->create()
                ->each(function($u) {
-					$u->posts()->save(factory('App\Post')->make());
-				});
+			$u->posts()->save(factory('App\Post')->make());
+		});
 
 <a name="mocking"></a>
 ## 模擬
