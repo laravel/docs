@@ -160,8 +160,8 @@ This route will register a "nested" resource that may be accessed with URLs like
 
 	use App\Http\Controllers\Controller;
 
-	class PhotoCommentController extends Controller {
-
+	class PhotoCommentController extends Controller
+	{
 		/**
 		 * Show the specified photo comment.
 		 *
@@ -173,7 +173,6 @@ This route will register a "nested" resource that may be accessed with URLs like
 		{
 			//
 		}
-
 	}
 
 <a name="restful-supplementing-resource-controllers"></a>
