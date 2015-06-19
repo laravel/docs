@@ -28,6 +28,10 @@ Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`
 
 This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
 
+### Add `BroadcastServiceProvider` Provider
+
+Within your `config/app.php` file , add `Illuminate\Broadcasting\BroadcastServiceProvider` under the `providers` key.
+
 ### Authentication
 
 If you are using the provided `AuthController` which uses the `AuthenticatesAndRegistersUsers` trait, you will need to make a few changes to how new users are validated and created.
