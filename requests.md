@@ -11,7 +11,7 @@
 <a name="accessing-the-request"></a>
 ## 取得請求
 
-要透過依賴注入的方式取得 HTTP 請求的實例，你必須在控制器中的建構函式或方法中，對 `Illuminate\Http\Request` 類別使用型別提示。當前請求的實例將會自動由[服務容器](/docs/{{version}}/container)注入：
+要透過依賴注入的方式取得 HTTP 請求的實例，你必須在控制器的建構函子或方法中，使用 `Illuminate\Http\Request` 型別提示。當前的請求實例就會自動由[服務容器](/docs/{{version}}/container)注入：
 
 	<?php
 
@@ -40,7 +40,7 @@
 
 	Route::put('user/{id}', 'UserController@update');
 
-只要像下方一樣定義你的控制器方法，你一樣可以對 `Illuminate\Http\Request` 使用型別提示，然後存取你的路由參數 `id`：
+只要像下方一樣定義控制器方法，一樣可以使用 `Illuminate\Http\Request` 型別提示，同時取得你的路由參數 `id`：
 
 	<?php
 
@@ -67,11 +67,11 @@
 <a name="basic-request-information"></a>
 ### 基本請求資訊
 
-`Illuminate\Http\Request` 的實例提供了多種方法，用於檢查你應用程式的 HTTP 請求。Larevel 的 `Illuminate\Http\Request` 繼承了 `Symfony\Component\HttpFoundation\Request` 類別。下方是該類別的幾個有用的方法：
+`Illuminate\Http\Request` 的實例提供了多種方法，用於檢查應用程式的 HTTP 請求。Larevel 的 `Illuminate\Http\Request` 繼承了 `Symfony\Component\HttpFoundation\Request` 類別。下方是該類別的幾個有用的方法：
 
 #### 取得請求的 URI
 
-`path` 方法會回傳請求的 URI。所以，如果接收到的請求是目標是 `http://domain.com/foo/bar`，那麼 `path` 方法就會回傳 `foo/bar`：
+`path` 方法會回傳請求的 URI。所以，如果接收到的請求目標是 `http://domain.com/foo/bar`，那麼 `path` 方法就會回傳 `foo/bar`：
 
 	$uri = $request->path();
 
@@ -112,7 +112,7 @@ PSR-7 標準制定的 HTTP 訊息介面包含了請求及回應。如果你想�
 		//
 	});
 
-如果你從路由或控制器回傳一個 PSR-7 的回應實例，它會被框架自動轉換回Laravel 的回應實例並顯示。
+如果你從路由或控制器回傳一個 PSR-7 的回應實例，它會被框架自動轉換回 Laravel 的回應實例並顯示。
 
 <a name="retrieving-input"></a>
 ## 取得輸入資料
