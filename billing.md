@@ -49,12 +49,11 @@ Next, add the `Billable` trait and appropriate date mutators to your model defin
 	use Laravel\Cashier\Billable;
 	use Laravel\Cashier\Contracts\Billable as BillableContract;
 
-	class User extends Model implements BillableContract {
-
+	class User extends Model implements BillableContract
+	{
 		use Billable;
 
 		protected $dates = ['trial_ends_at', 'subscription_ends_at'];
-
 	}
 
 Adding the columns to your model's `$dates` property will instruct Eloquent to return the columns as Carbon / DateTime instances instead of raw strings.
