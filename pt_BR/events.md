@@ -6,7 +6,7 @@
 - [Definindo Ouvintes](#defining-listeners)
 	- [Queued Event Listeners](#queued-event-listeners)
 - [Disparando Eventos](#firing-events)
-- [Transmitiando Eventos](#broadcasting-events)
+- [Transmitindo Eventos](#broadcasting-events)
 	- [Configuração](#broadcast-configuration)
 	- [Fazendo eventos para Transmissão](#marking-events-for-broadcast)
 	- [Transmitindo Dados](#broadcast-data)
