@@ -30,7 +30,7 @@ This directory should be writable, and will be used by the framework to store te
 
 ### Add `BroadcastServiceProvider` Provider
 
-Within your `config/app.php` file , add `Illuminate\Broadcasting\BroadcastServiceProvider` under the `providers` key.
+Within your `config/app.php` configuration file , add `Illuminate\Broadcasting\BroadcastServiceProvider` to the `providers` array.
 
 ### Authentication
 
