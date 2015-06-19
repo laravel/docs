@@ -89,7 +89,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 
 	The current UNIX timestamp is {{ time() }}.
 
-> **Note:** Blade `{{ }}` statements are automatically send through PHP's `htmlentities` function to prevent XSS attacks.
+> **Note:** Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks.
 
 #### Blade & JavaScript Frameworks
 
@@ -115,7 +115,7 @@ In this example, if the `$name` variable exists, its value will be displayed. Ho
 
 #### Displaying Unescaped Data
 
-By default, Blade `{{ }}` statements are automatically send through PHP's `htmlentities` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
+By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
 
 	Hello, {!! $name !!}.
 
