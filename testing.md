@@ -353,7 +353,7 @@ Another option is to wrap every test case in a database transaction. Again, Lara
 
 When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using "factories". To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
 
-	$factory->define('App\User', function ($faker) {
+	$factory->define(App\User::class, function ($faker) {
 	    return [
 	        'name' => $faker->name,
 	        'email' => $faker->email,
@@ -370,7 +370,7 @@ Of course, you are free to add your own additional factories to the `ModelFactor
 
 Sometimes you may wish to have multiple factories for the same Eloquent model class. For example, perhaps you would like to have a factory for "Administrator" users in addition to normal users. You may define these factories using the `defineAs` method:
 
-	$factory->defineAs('App\User', 'admin', function ($faker) {
+	$factory->defineAs(App\User::class, 'admin', function ($faker) {
 	    return [
 	        'name' => $faker->name,
 	        'email' => $faker->email,
@@ -382,8 +382,8 @@ Sometimes you may wish to have multiple factories for the same Eloquent model cl
 
 Instead of duplicating all of the attributes from your base user factory, you may use the `raw` method to retrieve the base attributes. Once you have the attributes, simply supplement them with any additional values you require:
 
-	$factory->defineAs('App\User', 'admin', function ($faker) use ($factory) {
-		$user = $factory->raw('App\User');
+	$factory->defineAs(App\User::class, 'admin', function ($faker) use ($factory) {
+		$user = $factory->raw(App\User::class);
 
 		return array_merge($user, ['admin' => true]);
 	});
@@ -394,27 +394,27 @@ Once you have defined your factories, you may use them in your tests or database
 
     public function testDatabase()
     {
-    	$user = factory('App\User')->make();
+    	$user = factory(App\User::class)->make();
 
     	// Use model in tests...
     }
 
 If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified values will be replaced while the rest of the values remain set to their default values as specified by the factory:
 
-    $user = factory('App\User')->make([
+    $user = factory(App\User::class)->make([
     	'name' => 'Abigail',
    	]);
 
 You may also create a Collection of many models or create models of a given type:
 
 	// Create three App\User instances...
-	$users = factory('App\User', 3)->make();
+	$users = factory(App\User::class, 3)->make();
 
 	// Create an App\User "admin" instance...
-	$user = factory('App\User', 'admin')->make();
+	$user = factory(App\User::class, 'admin')->make();
 
 	// Create three App\User "admin" instances...
-	$users = factory('App\User', 'admin', 3)->make();
+	$users = factory(App\User::class, 'admin', 3)->make();
 
 #### Persisting Factory Models
 
@@ -422,14 +422,14 @@ The `create` method not only creates the model instances, but also saves them to
 
     public function testDatabase()
     {
-    	$user = factory('App\User')->create();
+    	$user = factory(App\User::class)->create();
 
     	// Use model in tests...
     }
 
 Again, you may override attributes on the model by passing an array to the `create` method:
 
-    $user = factory('App\User')->create([
+    $user = factory(App\User::class)->create([
     	'name' => 'Abigail',
    	]);
 
@@ -437,10 +437,10 @@ Again, you may override attributes on the model by passing an array to the `crea
 
 You may even persist multiple models to the database. In this example, we'll even attach a relation to the created models. When using the `create` method to create multiple models, an Eloquent [collection instance](/docs/{{version}}/eloquent-collections) is returned, allowing you to use any of the convenient functions provided by the collection, such as `each`:
 
-    $users = factory('App\User', 3)
+    $users = factory(App\User::class, 3)
                ->create()
                ->each(function($u) {
-					$u->posts()->save(factory('App\Post')->make());
+					$u->posts()->save(factory(App\Post::class)->make());
 				});
 
 <a name="mocking"></a>
@@ -459,7 +459,7 @@ Laravel provides a convenient `expectsEvents` method that verifies the expected 
 	{
 	    public function testUserRegistration()
 	    {
-	    	$this->expectsEvents('App\Events\UserRegistered');
+	    	$this->expectsEvents(App\Events\UserRegistered::class);
 
 	    	// Test user registration code...
 	    }
@@ -492,7 +492,7 @@ Laravel provides a convenient `expectsJobs` method that will verify that the exp
 	{
 	    public function testPurchasePodcast()
 	    {
-	    	$this->expectsJobs('App\Jobs\PurchasePodcast');
+	    	$this->expectsJobs(App\Jobs\PurchasePodcast::class);
 
 	    	// Test purchase podcast code...
 	    }
