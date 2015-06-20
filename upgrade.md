@@ -392,13 +392,15 @@ If you are using soft deleting models, the `softDeletes` property has been remov
 
 	use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-	class User extends Eloquent {
+	class User extends Eloquent
+	{
 		use SoftDeletingTrait;
 	}
 
 You must also manually add the `deleted_at` column to your `dates` property:
 
-	class User extends Eloquent {
+	class User extends Eloquent
+	{
 		use SoftDeletingTrait;
 
 		protected $dates = ['deleted_at'];
