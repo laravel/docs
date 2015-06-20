@@ -112,7 +112,7 @@ The `setPath` method allows you to customize the URI used by the paginator when 
 
 #### Appending To Pagination Links
 
-You may add to the query string of pagination links using the `appends` method. For example, to append `&sort=yes` to each pagination link, you should make the following call to `appends`:
+You may add to the query string of pagination links using the `appends` method. For example, to append `&sort=votes` to each pagination link, you should make the following call to `appends`:
 
 	{!! $users->appends(['sort' => 'votes'])->render() !!}
 
