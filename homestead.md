@@ -149,7 +149,7 @@ To install Homestead directly into your project, require it using Composer:
 
 	composer require laravel/homestead
 
-Once Homestead has been installed, you the `make` command to create the `Vagrantfile` and `Homestead.yaml` file in your project root. The `make` command will automatically configure the `sites` and `folders` directives within the `Homestead.yaml` file:
+Once Homestead has been installed, use the `make` command to generate the `Vagrantfile` and `Homestead.yaml` file in your project root. The `make` command will automatically configure the `sites` and `folders` directives in the `Homestead.yaml` file:
 
 	php vendor/bin/homestead make
 
