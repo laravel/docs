@@ -5,6 +5,7 @@
 	- [First Steps](#first-steps)
 	- [Configuring Homestead](#configuring-homestead)
 	- [Launching The Vagrant Box](#launching-the-vagrant-box)
+	- [Per Project Installation](#per-project-installation)
 - [Daily Usage](#daily-usage)
 	- [Connecting Via SSH](#connecting-via-ssh)
 	- [Connecting To Databases](#connecting-to-databases)
@@ -138,6 +139,21 @@ Make sure the IP address listed is the one you set in your `Homestead.yaml` file
 Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from your Homestead directory. Vagrant will boot the virtual machine and automatically configure your shared folders and Nginx sites automatically.
 
 To destroy the machine, you may use the `vagrant destroy --force` command.
+
+<a name="per-project-installation"></a>
+### Per Project Installation
+
+Instead of installing Homestead globally and sharing the same Homestead box across all of your projects, you may instead configure a Homestead instance for each specific project. Installing Homestead per project may be beneficial if you wish to ship a `Vagrantfile` directly within your project, allowing others working on the project to simply `vagrant up`.
+
+To install Homestead directly into your project, simply require it using Composer:
+
+	composer require laravel/homestead
+
+Once Homestead has been installed, you the `make` command to create the `Vagrantfile` and `Homestead.yaml` file in your project root. The `make` command will automatically configure the `sites` and `folders` directives within the `Homestead.yaml` file:
+
+	php vendor/bin/homestead make
+
+Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.app` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
 
 <a name="daily-usage"></a>
 ## Daily Usage
