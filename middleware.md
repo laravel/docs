@@ -97,15 +97,15 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
 <a name="registering-middleware"></a>
 ## 註冊中介層
 
-### Global Middleware
+### 全域中介層
 
-If you want a middleware to be run during every HTTP request to your application, simply list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
+若是希望每個 HTTP 請求都經過一個中介層，只要將中介層的類別加入到 `app/Http/Kernel.php` 的 `$middleware` 屬性清單列表中。
 
-### Assigning Middleware To Routes
+### 為路由指派中介層
 
-If you would like to assign middleware to specific routes, you should first assign the middleware a short-hand key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing. For example:
+如果你要指派中介層給特定的路由，你得先將中介層在 app/Http/Kernel.php 設定一個好記的鍵，預設情況下，這個檔案內的 $routeMiddleware 屬性已包含了 Laravel 目前設定的中介層，你只需要在清單列表中加上一組自訂的鍵即可。
 
-	// Within App\Http\Kernel Class...
+	// 在 App\Http\Kernel 類別內...
 
     protected $routeMiddleware = [
         'auth' => 'App\Http\Middleware\Authenticate',
@@ -113,18 +113,18 @@ If you would like to assign middleware to specific routes, you should first assi
         'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
     ];
 
-Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:
+中介層一旦在 HTTP kernel 檔案內被定義，你即可在路由選項內使用 middleware 鍵值來指派：
 
 	Route::get('admin/profile', ['middleware' => 'auth', function () {
 		//
 	}]);
 
 <a name="middleware-parameters"></a>
-## Middleware Parameters
+## 中介層參數
 
-Middleware can also receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create a `RoleMiddleware` that receives a role name as an additional argument.
+中介層也可以額外接受自訂參數，例如，如果應用程式要在執行特定操作之前，檢查通過驗證的使用者是否具備該操作的「角色」，可以建立 `RoleMiddleware` 來接收角色名稱作為額外的參數。
 
-Additional middleware parameters will be passed to the middleware after the `$next` argument:
+附加的中介層參數將會在 `$next` 參數之後被傳入中介層：
 
 	<?php
 
@@ -135,7 +135,7 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 	class RoleMiddleware
 	{
 		/**
-		 * Run the request filter.
+		 * 執行請求過濾
 		 *
 		 * @param  \Illuminate\Http\Request  $request
 		 * @param  \Closure  $next
@@ -145,7 +145,7 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 		public function handle($request, Closure $next, $role)
 		{
 			if (! $request->user()->hasRole($role)) {
-				// Redirect...
+				// 重新導向...
 			}
 
 			return $next($request);
@@ -153,7 +153,7 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
 	}
 
-Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+在路由中可使用冒號 `：` 來區隔中介層名稱與指派參數，多筆參數可使用逗號作為分隔：
 
 	Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
 		//
@@ -162,7 +162,7 @@ Middleware parameters may be specified when defining the route by separating the
 <a name="terminable-middleware"></a>
 ## Terminable 中介層
 
-Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, define the middleware as "terminable" by adding a `terminate` method to the middleware:
+有些時候中介層需要在 HTTP 回應已被傳送到用戶端之後才執行，例如，Laravel 內建的「session」中介層，儲存 session 資料是在回應已被傳送到用戶端 之後 才執行。為了做到這一點，你需要定義中介層為「terminable」。
 
 	<?php namespace Illuminate\Session\Middleware;
 
@@ -177,8 +177,8 @@ Sometimes a middleware may need to do some work after the HTTP response has alre
 
 		public function terminate($request, $response)
 		{
-			// Store the session data...
+			// 儲存 session 資料...
 		}
 	}
 
-The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
+如你所見，除了定義 handle 方法之外，TerminableMiddleware 定義一個 terminate 方法。這個方法接收請求和回應。一旦定義了 terminable 中介層，你需要將它增加到 HTTP kernel 檔案的全域中介層清單列表中。
