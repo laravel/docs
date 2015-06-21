@@ -1,28 +1,28 @@
-# HTTP Middleware
+# HTTP 中介層
 
-- [Introduction](#introduction)
-- [Defining Middleware](#defining-middleware)
-- [Registering Middleware](#registering-middleware)
+- [簡介](#introduction)
+- [建立中介層](#defining-middleware)
+- [註冊中介層](#registering-middleware)
 - [Middleware Parameters](#middleware-parameters)
-- [Terminable Middleware](#terminable-middleware)
+- [Terminable 中介層](#terminable-middleware)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-HTTP middleware provide a convenient mechanism for filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application.
+HTTP 中介層提供一個方便的機制來過濾進入應用程式的 HTTP 請求，例如，Laravel 本身使用中介層來檢驗使用者身份驗證，如果使用者未經過身份驗證，中介層會將用戶導向登入頁面，反之，當用戶通過身份驗證，中介層將會同意此請求繼續往前進。
 
-Of course, additional middleware can be written to perform a variety of tasks besides authentication. A CORS middleware might be responsible for adding the proper headers to all responses leaving your application. A logging middleware might log all incoming requests to your application.
+當然，除了身份驗證之外，中介層也可以被用來執行各式各樣的任務，CORS 中介層負責替所有即將離開程式的回應加入適當的標頭。而日誌中介層可以記錄所有傳入應用程式的請求。
 
-There are several middleware included in the Laravel framework, including middleware for maintenance, authentication, CSRF protection, and more. All of these middleware are located in the `app/Http/Middleware` directory.
+Laravel 框架已經內建一些中介層，包括維護、身份驗證、CSRF 保護，等等。所有的中介層都放在 `app/Http/Middleware` 目錄內。
 
 <a name="defining-middleware"></a>
-## Defining Middleware
+## 建立中介層
 
-To create a new middleware, use the `make:middleware` Artisan command:
+要建立一個新的中介層，可以使用 `make:middleware` 這個 Artisan 指令：
 
 	php artisan make:middleware OldMiddleware
 
-This command will place a new `OldMiddleware` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the "home" URI.
+此指令將會在 `app/Http/Middleware` 目錄內建立一個名稱為 `OldMiddleware` 的類別。在這個中介層內我們只允許請求內的 `age` 變數大於 200 的才能存取路由，否則，我們會將用戶重新導向「home」這個 URI。
 
 	<?php
 
@@ -33,7 +33,7 @@ This command will place a new `OldMiddleware` class within your `app/Http/Middle
 	class OldMiddleware
 	{
 		/**
-		 * Run the request filter.
+		 * 執行請求過濾器。
 		 *
 		 * @param  \Illuminate\Http\Request  $request
 		 * @param  \Closure  $next
@@ -50,13 +50,13 @@ This command will place a new `OldMiddleware` class within your `app/Http/Middle
 
 	}
 
-As you can see, if the given `age` is less than or equal to `200`, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to "pass"), simply call the `$next` callback with the `$request`.
+如你所見，若是 age 小於 200，中介層將會回傳 HTTP 重新導向給用戶端，否則，請求將會進一步傳遞到應用程式。只需調用帶有 $request 的 $next 方法，即可將請求傳遞到更深層的應用程式(允許通過中介層)。
 
-It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
+HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許多中介層，每一層都可以對請求進行檢查，甚至是完全拒絕請求。
 
-### *Before* / *After* Middleware
+### *前* / *後* 中介層
 
-Whether a middleware runs before or after a request depends on the middleware itself. For example, the following middleware would perform some task **before** the request is handled by the application:
+一個中介層是在請求前還是請求後執行要看中介層自己。這個中介層會在應用程式處理請求**前**執行一些任務：
 
 	<?php
 
@@ -68,13 +68,13 @@ Whether a middleware runs before or after a request depends on the middleware it
 	{
 		public function handle($request, Closure $next)
 		{
-			// Perform action
+			// 執行動作
 
 			return $next($request);
 		}
 	}
 
-However, this middleware would perform its task **after** the request is handled by the application:
+這個中介層則會在應用程式處理請求後執行它的任務：
 
 	<?php
 
@@ -88,14 +88,14 @@ However, this middleware would perform its task **after** the request is handled
 		{
 			$response = $next($request);
 
-			// Perform action
+			// 執行動作
 
 			return $response;
 		}
 	}
 
 <a name="registering-middleware"></a>
-## Registering Middleware
+## 註冊中介層
 
 ### Global Middleware
 
@@ -160,7 +160,7 @@ Middleware parameters may be specified when defining the route by separating the
 	}]);
 
 <a name="terminable-middleware"></a>
-## Terminable Middleware
+## Terminable 中介層
 
 Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, define the middleware as "terminable" by adding a `terminate` method to the middleware:
 
