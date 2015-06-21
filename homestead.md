@@ -1,32 +1,32 @@
 # Laravel Homestead
 
-- [Introduction](#introduction)
-- [Installation & Setup](#installation-and-setup)
-	- [First Steps](#first-steps)
-	- [Configuring Homestead](#configuring-homestead)
-	- [Launching The Vagrant Box](#launching-the-vagrant-box)
-- [Daily Usage](#daily-usage)
-	- [Connecting Via SSH](#connecting-via-ssh)
-	- [Connecting To Databases](#connecting-to-databases)
-	- [Adding Additional Sites](#adding-additional-sites)
-	- [Ports](#ports)
+- [Introduzione](#introduzione)
+- [Installazione & Setup](#installazione-e-setup)
+	- [Primo Step](#primo-step)
+	- [Configurare Homestead](#configurare-homestead)
+	- [Avviare La Vagrant Box](#avviare-vagrant-box)
+- [Uso quotidiano](#uso-quotidiano)
+	- [Connessione tramite SSH](#connessione-tramite-ssh)
+	- [Connessione ai Database](#connessione-database)
+	- [Aggiunta di Altri Siti](#aggiunta-altri-siti)
+	- [Porte](#porte)
 - [Blackfire Profiler](#blackfire-profiler)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Laravel strives to make the entire PHP development experience delightful, including your local development environment. [Vagrant](http://vagrantup.com) provides a simple, elegant way to manage and provision Virtual Machines.
+L'obiettivo di Laravel è migliorare l'esperienza di sviluppo PHP. La cosa, ovviamente, include anche l'ambiente di lavoro locale. [Vagrant](http://vagrantup.com) fornisce un modo semplice ed elegante di gestire delle macchine virtuali.
 
-Laravel Homestead is an official, pre-packaged Vagrant "box" that provides you a wonderful development environment without requiring you to install PHP, HHVM, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
+Laravel Homestead è la nostra "box" ufficiale già pronta per Vagrant che ti permette di avere a disposizione un ambiente di lavoro in locale completo di tutto quello di cui hai bisogno, senza dover stare ad installare ogni volta PHP, HHVM e tutto il resto dello stack di cui necessiti. Tra l'altro, una delle cose più interessanti di Vagrant è che è possibile distruggere al volo una macchina e ricostruirla se qualcosa va storto, ma senza perdere i file del tuo progetto! Il tutto in pochi minuti.
 
-Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 5.6, MySQL, Postgres, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
+Homestead lavora senza problemi su Windows, Mac e sistemi Linux. Include un web server Nginx, PHP 5.6, MySQL, Postgres, Redis, Memcached e tanti altri software utili per lo sviluppo di applicazioni Laravel.
 
-> **Note:** If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS.
+> **Nota:** Se stai lavorando con Windows, potresti avere la necessità di attivare la virtualizzazione hardware dal BIOS (VT-x). Solitamente può essera attivata dal BIOS.
 
-Homestead is currently built and tested using Vagrant 1.7.
+Al momento, Homestead usa Vagrant 1.7.
 
-<a name="included-software"></a>
-### Included Software
+<a name="software-incluso"></a>
+### Software Incluso
 
 - Ubuntu 14.04
 - PHP 5.6
@@ -41,146 +41,146 @@ Homestead is currently built and tested using Vagrant 1.7.
 - [Laravel Envoy](/docs/{{version}}/envoy)
 - [Blackfire Profiler](#blackfire-profiler)
 
-<a name="installation-and-setup"></a>
-## Installation & Setup
+<a name="installazione-e-setup"></a>
+## Installazione & Setup
 
-<a name="first-steps"></a>
-### First Steps
+<a name="primo-step"></a>
+### Primo Step
 
-Before launching your Homestead environment, you must install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) or [VMWare](http://www.vmware.com) as well as [Vagrant](http://www.vagrantup.com/downloads.html). All of these software packages provide easy-to-use visual installers for all popular operating systems.
+Prima di eseguire il tuo ambiente Homestead, devi necessariamente installare [VirtualBox](https://www.virtualbox.org/wiki/Downloads) o [VMWare](http://www.vmware.com) così come [Vagrant](http://www.vagrantup.com/downloads.html). Entrambi questi software hanno degli installer visuali facilissimi da usare, per tutti i sistemi operativi.
 
-To use the VMware provider, you will need to purchase both VMware Fusion / Desktop and the [VMware Vagrant plug-in](http://www.vagrantup.com/vmware). VMware provides much faster shared folder performance out of the box.
+Per usare il provider VMware, hai necessita di compare entrambi VMware Fusion / Desktop e il plugin [VMware Vagrant plug-in](http://www.vagrantup.com/vmware). VMware fornisce una condivisione di cartella molto più veloce come prestazioni.
 
-#### Installing The Homestead Vagrant Box
+#### Installare Homestead Vagrant Box
 
-Once VirtualBox / VMware and Vagrant have been installed, you should add the `laravel/homestead` box to your Vagrant installation using the following command in your terminal. It will take a few minutes to download the box, depending on your Internet connection speed:
+Una volta installati VirtualBox / VMware e Vagrant, il passo successivo è aggiungere la box di `laravel/homestead` alla tua installazione usando i seguenti comandi nel tuo terminale. Richiede pochissimi minuti (in base alla velocità della tua connessione).
 
 	vagrant box add laravel/homestead
 
-If this command fails, you may have an old version of Vagrant that requires the full URL:
+Se il comando non và a buon fine, puoi usare una vecchia versione di Vagrant che richiede il seguente URL:
 
 	vagrant box add laravel/homestead https://atlas.hashicorp.com/laravel/boxes/homestead
 
-#### Cloning The Homestead Repository
+#### Clonare Il Repository Homestead
 
-You may install Homestead by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel projects:
+Puoi installare Homestead semplicemente clonando il repository. Considera la clonazione del repository, in una cartella `Homestead` all'interno della tua directory "home", come il box Homestead che fungerà da host per tutti i tuoi progetti Laravel:
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
-Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in your `~/.homestead` directory:
+Una volta clonato il repository di Homestead, esegui il comando `bash init.sh` dalla directory Homestead per creare il file di configurazione `Homestead.yaml`. Il file `Homestead.yaml` sarà salvato nella directory `~/.homestead`:
 
 	bash init.sh
 
-<a name="configuring-homestead"></a>
-### Configuring Homestead
+<a name="configurare-homestead"></a>
+### Configurare Homestead
 
-#### Setting Your Provider
+#### Imposta il tuo Provider
 
-The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `vmware_fusion`. You may set this to whichever provider you prefer:
+La chiave `provider` nel file `Homestead.yaml` indica quale provider di Vagrant dovrebbe essere usato: `virtualbox` o `vmware_fusion`. Puoi impostare uno dei due a sceonda delle tue esigenze:
 
 	provider: virtualbox
 
-#### Setting Your SSH Key
+#### Impostare la Chiave SSH
 
-In the `Homestead.yaml` file, you should also configure the path to your public SSH key. Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pair using the following command:
+Nel file `Homestead.yaml`, dovresti configurare anche il percorso della tua chiave pubblica SSH. Non hai una chiave SSH? Con Mac e Linuz, puoi solitamente creare una chiave SSH usando il seguente comando:
 
 	ssh-keygen -t rsa -C "you@homestead"
 
-On Windows, you may install [Git](http://git-scm.com/) and use the "Git Bash" shell included with Git to issue the command above. Alternatively, you may use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
+Con Windows, puoi installare [Git](http://git-scm.com/) ed usare la shell "Git Bash" inclusa con Git per generare la chiave SSH. In alternariva, puoi usare [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
 
-Once you have created a SSH key, specify the public key's path in the `authorize` property of your `Homestead.yaml` file.
+Una volta create la chiave SSH, specifica il path della chiave pubblica nella proprietà `authorize` del file `Homestead.yaml`.
 
-#### Configuring Shared Folders
+#### Configura le Cartelle Condivise
 
-The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary:
+La proprietà `folders` nel file `Homestead.yaml` elenca tutte le cartelle che vengono condivise tra la tua macchina locale e quella virtuale. Ad ogni cambiamento di uno di questi file, questi vengono sincronizzati tra le due macchine. Puoi configurare quante cartelle condivise hai bisogno, se necessario:
 
 	folders:
 	    - map: ~/Code
 	      to: /home/vagrant/Code
 
-To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add a simple flag to your synced folder configuration:
+Per abilitare [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), aggiungi un flag alla tua configurazione:
 
 	folders:
 	    - map: ~/Code
 	      to: /home/vagrant/Code
 	      type: "nfs"
 
-#### Configuring Nginx Sites
+#### Configura i siti Nginx
 
-Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on:
+Non sei familiare con il mondo Nginx? E che problema c'è? La proprietà `sites` permette di mappare un certo "dominio" con una cartella del tuo ambiente Homestead. Una configurazione di esempio è già presente in Homestead.yaml. Esattamente come per le cartelle condivise, puoi aggiungerne quanti ne vuoi. Homestead può garantire un conveniente, ambiente virtualizzato per goni progetto Laravel al quale stai lavorando:
 
 	sites:
 	    - map: homestead.app
 	      to: /home/vagrant/Code/Laravel/public
 
-You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm` option to `true`:
+Puoi anche specificare per quali siti usare [HHVM](http://hhvm.com) impostando l'opzione `hhvm` a `true`:
 
 	sites:
 	    - map: homestead.app
 	      to: /home/vagrant/Code/Laravel/public
 	      hhvm: true
 
-By default, each site will be accessible by HTTP via port 8000 and HTTPS via port 44300.
+Di default, ogni sito sarà accessibile tramite protocollo HTTP sulla porta 8000 e tramite protocollo HTTPS sulla porta 44300.
 
-#### The Hosts File
+#### Il File Hosts
 
-Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
+Non dimenticare di aggiungere il “dominio” per i tuoi siti Nginx al file `hosts` sul tuo computer! Il file `hosts` reindirizzerà le tue richieste per il dominio locale all'interno dell'ambiente Homestead. Su Mac e Linux, questo file si trova in `/etc/hosts`. Su Windows, lo trovi in `C:\Windows\System32\drivers\etc\hosts`. Questa linea da aggiungere a questo file dovrebbe essere come la seguente:
 
 	192.168.10.10  homestead.app
 
-Make sure the IP address listed is the one you set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file, you can access the site via your web browser!
+Assicurati che l'indirizzo IP della lista sia settato nel file `Homestead.yaml`. Una volta aggiunto il dominio al file `hosts`, puoi accedere al sito tramite browser!
 
 	http://homestead.app
 
-<a name="launching-the-vagrant-box"></a>
-### Launching The Vagrant Box
+<a name="avviare-vagrant-box"></a>
+### Avviare La Vagrant Box
 
-Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from your Homestead directory. Vagrant will boot the virtual machine and automatically configure your shared folders and Nginx sites automatically.
+Una volta modificato il file `Homestead.yaml`, esegui il comando `vagrant up` dalla cartella Homestead. Vagrant avvierà la macchia virtuale e automaticamente configurerà le tue cartelle condivise e i tuoi siti Nginx automaticamente.
 
-To destroy the machine, you may use the `vagrant destroy --force` command.
+Per distruggere la macchina, puoi usare il comando `vagrant destroy --force`.
 
-<a name="daily-usage"></a>
-## Daily Usage
+<a name="uso-quotidiano"></a>
+## Uso Quotidiano
 
-<a name="connecting-via-ssh"></a>
-### Connecting Via SSH
+<a name="connessione-tramite-ssh"></a>
+### Connessione tramite SSH
 
-You can SSH into your virtual machine by issuing the `vagrant ssh` terminal command from your Homestead directory.
+Puoi connetterti nella tua macchina virtuale tramite SSH digitando il comando `vagrant ssh` dalla tua cartella Homestead.
 
-But, since you will probably need to SSH into your Homestead machine frequently, consider creating an "alias" on your host machine to quickly SSH into the Homestead box. Once you create this alias, you can simply use the "vm" command to SSH into your Homestead machine from anywhere on your system:
+Ma, se dovrai accedere frequentemente tramite SSH alla tua macchina Homestad, prendi in considerazione la creazione di un "alias" sulla macchina locale per accedere più velocemente tramite SSH nel box Homestead. Una volta creato l'alias, usa semplicemente il comando "vm" 
+per connetterti tramite SSH nella tua macchina Homestead da qualsiasi punto del tuo sistema:
 
 	alias vm="ssh vagrant@127.0.0.1 -p 2222"
 
-<a name="connecting-to-databases"></a>
-### Connecting To Databases
+<a name="connessione-database"></a>
+### Connessione ai Database
 
-A `homestead` database is configured for both MySQL and Postgres out of the box. For even more convenience, Laravel's `local` database configuration is already set to use this database by default.
+Un database homestead è già pronto per essere usato in caso di bisogno, sia in MySQL che in Postgres. Per una maggiore convenienza, inoltre, Laravel è normalmente configurato per usare di default questo database.
+Per connetterti al tuo database sulla macchina virtuale dalla macchina fisica, non devi fare altro che usare l'IP `127.0.0.1` con la porta 33060 (MySQL) o 54320 (Postgres). Lo username e la password di default sono, in entrambi i casi, `homestead` / `secret`.
 
-To connect to your MySQL or Postgres database from your host machine via Navicat or Sequel Pro, you should connect to `127.0.0.1` and port 33060 (MySQL) or 54320 (Postgres). The username and password for both databases is `homestead` / `secret`.
+> **Nota:** dovresti usare sempre queste porte non-standard in caso di connessione al database dalla macchina fisica principale. Nei tuoi file di configurazione di Laravel invece userai la 3306 e 5432, dato che l'applicazione viene eseguita sulla macchina virtuale. 
 
-> **Note:** You should only use these non-standard ports when connecting to the databases from your host machine. You will use the default 3306 and 5432 ports in your Laravel database configuration file since Laravel is running _within_ the Virtual Machine.
+<a name="aggiunta-altri-siti"></a>
+### Aggiunta di Altri Siti
 
-<a name="adding-additional-sites"></a>
-### Adding Additional Sites
+Una volta che il tuo sistema è avviato ed attivo, potresti voler aggiungere altri siti al file di configurazione. Puoi farlo tranquillamente modificando come meglio ritieni il file Homestead.yaml, quindi provvedendo ad eseguire il comando `vagrant provision`.
 
-Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `Homestead.yaml` file and then run the `vagrant provision` terminal command from your Homestead directory.
+> **Nota:** Questo processo è distruttivo. Quando si esegue il comando `provision`, i tuoi database esistenti verrano distrutti e poi ricreati.
 
-> **Note:** This process is destructive. When running the `provision` command, your existing databases will be destroyed and recreated.
+<a name="porte"></a>
+### Porte
 
-<a name="ports"></a>
-### Ports
+Di default, le seguenti porte sono già state sistemate per lavorare con Homestead:
 
-By default, the following ports are forwarded to your Homestead environment:
+- **SSH:** 2222 &rarr; Forwards alla 22
+- **HTTP:** 8000 &rarr; Forwards alla 80
+- **HTTPS:** 44300 &rarr; Forwards alla 443
+- **MySQL:** 33060 &rarr; Forwards alla 3306
+- **Postgres:** 54320 &rarr; Forwards alla 5432
 
-- **SSH:** 2222 &rarr; Forwards To 22
-- **HTTP:** 8000 &rarr; Forwards To 80
-- **HTTPS:** 44300 &rarr; Forwards To 443
-- **MySQL:** 33060 &rarr; Forwards To 3306
-- **Postgres:** 54320 &rarr; Forwards To 5432
+#### Forward di Porte Aggiuntivi
 
-#### Forwarding Additional Ports
-
-If you wish, you may forward additional ports to the Vagrant box, as well as specify their protocol:
+Se lo desideri, puoi aggiungere forward aggiuntivi alle porte per Vagrant, specificando il loro protocollo:
 
 	ports:
 	    - send: 93000
@@ -192,9 +192,9 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
 <a name="blackfire-profiler"></a>
 ## Blackfire Profiler
 
-[Blackfire Profiler](https://blackfire.io) by SensioLabs automatically gathers data about your code's execution, such as RAM, CPU time, and disk I/O. Homestead makes it a breeze to use this profiler for your own applications.
+[Blackfire Profiler](https://blackfire.io) di SensioLabs raccoglie automaticamente i dati sull' esecuzione del codice, ad esempio RAM, tempo di esecuzione della CPU, e l'I/O del disco. Homestead rende facile utilizzare questo profiler per le proprie applicazioni. 
 
-All of the proper packages have already been installed on your Homestead box, you simply need to set a Blackfire **Server** ID and token in your `Homestead.yaml` file:
+Tutti i package necessari sono già stati installati nel box Homestead, imposta semplicemente impostare l'id e il token del **Server** Blackfire nel tuo file `Homestead.yaml` file:
 
 	blackfire:
 	    - id: your-server-id
@@ -202,4 +202,4 @@ All of the proper packages have already been installed on your Homestead box, yo
 	      client-id: your-client-id
 	      client-token: your-client-token
 
-Once you have configured your Blackfire credentials, re-provision the box using `vagrant provision` from your Homestead directory. Of course, be sure to review the [Blackfire documentation](https://blackfire.io/getting-started) to learn how to install the Blackfire companion extension for your web browser.
+Una volta configurate le tue credenziali di Blackfire, ri esegui il comando `vagrant provision` dalla tua directory Homestead. Ovviamente, assicurati di rileggerti la [documentazione Blackfire](https://blackfire.io/getting-started) per imparare come installare le estensioni Blackfire per il tuo browser web.
