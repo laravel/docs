@@ -3,7 +3,7 @@
 - [簡介](#introduction)
 - [建立中介層](#defining-middleware)
 - [註冊中介層](#registering-middleware)
-- [Middleware Parameters](#middleware-parameters)
+- [中介層參數](#middleware-parameters)
 - [Terminable 中介層](#terminable-middleware)
 
 <a name="introduction"></a>
