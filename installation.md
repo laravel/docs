@@ -1,20 +1,20 @@
-# Installation
+# Installazione
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-	- [Basic Configuration](#basic-configuration)
-	- [Environment Configuration](#environment-configuration)
-	- [Configuration Caching](#configuration-caching)
-	- [Accessing Configuration Values](#accessing-configuration-values)
-	- [Naming Your Application](#naming-your-application)
-- [Maintenance Mode](#maintenance-mode)
+- [Installazione](#installazione)
+- [Configurazione](#configurazione)
+	- [Configurazione Base](#configurazione-base)
+	- [Configurazione Ambiente](#configurazione-ambiente)
+	- [Configurazioni Cache](#configurazioni-cache)
+	- [Accesso ai Valori di Configurazione](#accesso-valori-configurazione)
+	- [Dare un Nome alla Tua Applicazione](#dare-nome-alla-tua-applicazione)
+- [Modalità di Manutenzione](#modalita-manutenzione)
 
-<a name="installation"></a>
-## Installation
+<a name="installazione"></a>
+## Installazione
 
-### Server Requirements
+### Requisiti Server
 
-The Laravel framework has a few system requirements. Of course, all of these requirements are satisfied by the [Laravel Homestead](/docs/{{version}}/homestead) virtual machine:
+Laravel richiede alcuni requisiti di sistema. Ovviamente, tutti questi requisiti sono soddisfatti dalla macchina virtuale di [Laravel Homestead](/docs/{{version}}/homestead):
 
 <div class="content-list" markdown="1">
 - PHP >= 5.5.9
@@ -23,65 +23,65 @@ The Laravel framework has a few system requirements. Of course, all of these req
 - Tokenizer PHP Extension
 </div>
 
-<a name="install-laravel"></a>
-### Installing Laravel
+<a name="installare-laravel"></a>
+### Installare Laravel
 
-Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. So, before using Laravel, make sure you have Composer installed on your machine.
+Laravel utilizza [Composer](http://getcomposer.org) per gestire le sue dipendenze. Quindi, prima di usare Laravel, assicurati di avere installato Composer sulla tua macchina.
 
-#### Via Laravel Installer
+#### Tramite Laravel Installer
 
-First, download the Laravel installer using Composer:
+Per prima cosa, scarica Laravel installer usando Composer:
 
 	composer global require "laravel/installer=~1.1"
 
-Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
+Assicurati di aggiungere la directory `~/.composer/vendor/bin` nella variabile di sistema PATH della tua macchina, in modo che l'eseguibile `laravel` venga riconosciuto dal tuo sistema.
 
-Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed. This method of installation is much faster than installing via Composer:
+Una volta installato, usa il comando `laravel new` per creare una nuova installazione di Laravel nella directory da te specificata. Per esempio, `laravel new blog` creerà una directory chiamata `blog` contenente una nuova installazione di Laravel cont tutte le dipendenze già installate. Questo metodo di installazione è più veloce rispetto all'installazione tramite Composer:
 
 	laravel new blog
 
-#### Via Composer Create-Project
+#### Tramite Composer Create-Project
 
-You may also install Laravel by issuing the Composer `create-project` command in your terminal:
+Puoi anche installare Laravel usando il comando `create-project` di Composer da terminale:
 
 	composer create-project laravel/laravel --prefer-dist
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-<a name="basic-configuration"></a>
-### Basic Configuration
+<a name="configurazione-base"></a>
+### Configurazione Base
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+Tutti i file di configurazione di Laravel sono salvati nella directory `config`. Ogni opzione è documentata, quindi sentiti libero di darci un'occhiata per acquisire familiarità con le varie opzioni disponibili.
 
-#### Directory Permissions
+#### Permessi Directory
 
-After installing Laravel, you may need to configure some permissions. Directories within the `storage` and the `bootstrap/cache` directories should be writable by your web server. If you are using the [Homestead](/docs/{{version}}/homestead) virtual machine, these permissions should already be set.
+Dopo aver installato Laravel, devi configurare alcuni permessi. Le directory all'interno di `storage` e `bootstrap/cache` dovrebbero essere scrivibili da tuo web server. Se stai usando[Homestead](/docs/{{version}}/homestead), questi permessi sono già settati.
 
-#### Application Key
+#### Chiave dell'Applicazione
 
-The next thing you should do after installing Laravel is set your application key to a random string. If you installed Laravel via Composer or the Laravel installer, this key has already been set for you by the `key:generate` command. Typically, this string should be 32 characters long. The key can be set in the `.env` environment file. If you have not renamed the `.env.example` file to `.env`, you should do that now. **If the application key is not set, your user sessions and other encrypted data will not be secure!**
+Il successivo passo che dovresti fare dopo l'installazione di Laravel e di impostare la chiave della tua applicazione ad una stringa casuale. Se hai installato Laravel tramite Composer o Laravel installer, questa chiave è già stata impostata per te tramite il comando `key:generate`. Solitamente, questa stringa dovrebbe essere composta da 32 caratteri. La chaive può essere impostata nel file di configurazione d'ambiente `.env`. Se non hai rinominato il file`.env.example` in `.env`, dovresti farlo ora.. **Se la chiave dell'applicazione non è impostata, le sessioni utente e altri dati crittografati non saranno sicuri!**
 
-#### Additional Configuration
+#### Configurazioni Aggiuntive
 
-Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+Laravel non ha bisogno di altre configurazioni. Sei libero di iniziare a sviluppare la tua applicazione! Tuttavia, portesti rivederti il file `config/app.php` e la sua documentazione. Il file contiene diverse opzioni come il `timezone` e `locale` che puoi cambiare liberamente in base alla tua applicazione.
 
-You may also want to configure a few additional components of Laravel, such as:
+Puoi configurare inoltre alcuni componenti aggiuntivi di Laravel, come:
 
 - [Cache](/docs/{{version}}/cache#configuration)
 - [Database](/docs/{{version}}/database#configuration)
 - [Session](/docs/{{version}}/session#configuration)
 
-Once Laravel is installed, you should also [configure your local environment](/docs/{{version}}/installation#environment-configuration).
+Una volta installato Laravel, puoi anche [configurare il tuo ambiente in locale](/docs/{{version}}/installation#environment-configuration).
 
-<a name="pretty-urls"></a>
-#### Pretty URLs
+<a name="riscrittura-url"></a>
+#### Riscrittura URL
 
 **Apache**
 
-The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, be sure to enable the `mod_rewrite` module.
+Il framework lavora con un file `public/.htaccess` usato per permettere gli URL senza `index.php`. Se usi Apache per eseguire la tua applicazione, assicurati di abilitare il modulo `mod_rewrite`.
 
-If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
+Se il file `.htaccess` usato con Laravel non dovesse funzionare con la tua installazione di Apache, prova questa configurazione:
 
 	Options +FollowSymLinks
 	RewriteEngine On
@@ -92,34 +92,34 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 
 **Nginx**
 
-On Nginx, the following directive in your site configuration will allow "pretty" URLs:
+Su Nginx, invece, puoi usare le seguenti direttive nel tuo file di configurazione per ottenere lo stesso risultato:
 
 	location / {
 		try_files $uri $uri/ /index.php?$query_string;
 	}
 
-Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
+Ovviamente, quando usi [Homestead](/docs/{{version}}/homestead), la riscrittura degli indirizzi è sarà configurata automaticamente.
 
-<a name="environment-configuration"></a>
-### Environment Configuration
+<a name="configurazione-ambiente"></a>
+### Configurazione Ambiente
 
-It is often helpful to have different configuration values based on the environment the application is running in. For example, you may wish to use a different cache driver locally than you do on your production server. It's easy using environment based configuration.
+Spesso è utile avere differenti valori basati sull'ambiente sul quale viene eseguita l'applicazione. Per esempio, potresti usare diversi driver di cache in locale diversamente da come si farebbe su un server di produzione. E' davvero facile usare le configurazioni d'ambiente.
 
-To make this a cinch, Laravel utilizes the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vance Lucas. In a fresh Laravel installation, the root directory of your application will contain a `.env.example` file. If you install Laravel via Composer, this file will automatically be renamed to `.env`. Otherwise, you should rename the file manually.
+Per renderlo un gioco da ragazzi, Laravel usa la libreria PHP [DotEnv](https://github.com/vlucas/phpdotenv) di Vance Lucas. In una nuova installazione di Laravel, la directory principale della tua applicazione conterrà un file `.env.example`. Se installi Laravel tramite Composer, questo file sarà automaticamente rinominato in `.env`.Altrimenti, devi rinominarlo manualmente.
 
-All of the variables listed in this file will be loaded into the `$_ENV` PHP super-global when your application receives a request. You may use the `env` helper to retrieve values from these variables. In fact, if you review the Laravel configuration files, you will notice several of the options already using this helper!
+Tutte le variabili presenti in questo file vengono caricate nell'array super-global $_ENV, quando la tua applicazione riceve una richiesta. Puoi usare quindi l'helper env() per recuperare i vari valori da questo array. Se guardi un po' i vari file di configurazione, infatti, noterai che questa funzione viene usata spesso!
 
-Feel free to modify your environment variables as needed for your own local server, as well as your production environment. However, your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration.
+Sentiti libero di modificare come meglio credi le tue variabili per l'ambiente locale, così come per quello di produzione. Ad ogni modo, il tuo file .env non dovrebbe essere soggetto a commit in caso di controllo di versione, dato che ogni sviluppatore (o server) potrebbe richiederne uno differente o personalizzato ad hoc.
 
-If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting place-holder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
+Se stai sviluppando in team, assicurati che venga comunque incluso un file `.env.example` con la tua applicazione. Inserendo dei valori place-holder values nel file di configurazione di esempio, gli altri sviluppatori del tuo team possono chiaramente vedere quali variabili d'ambiente sono necessarie per eseguire la tua applicazione.
 
-#### Accessing The Current Application Environment
+#### Accedere alle Impostazioni dell'Ambiente Corrente
 
-You may access the current application environment via the `environment` method on the `App` facade:
+uoi accedere alle impostazioni dell'ambiente corrente tramite il metodo `environment` della facade`App`:
 
 	$environment = App::environment();
 
-You may also pass arguments to the `environment` method to check if the environment matches a given value. You may even pass multiple values if necessary:
+Puoi anche passare un argomento (o più di uno) al metodo in modo tale da controllare se ci si trova in un certo ambiente oppure no. Puoi anche passare valori multipli se necessario:
 
 	if (App::environment('local')) {
 		// The environment is local
@@ -129,56 +129,56 @@ You may also pass arguments to the `environment` method to check if the environm
 		// The environment is either local OR staging...
 	}
 
-An application instance may also be accessed via the `app` helper method:
+All'instanza dell'applicazione si può accedere anche tramite l'helper `app`:
 
 	$environment = app()->environment();
 
-<a name="configuration-caching"></a>
-### Configuration Caching
+<a name="configurazioni-cache"></a>
+### Configurazioni Cache
 
-To give your application a speed boost, you should cache all of your configuration files into a single file using the `config:cache` Artisan command. This will combine all of the configuration options for your application into a single file which can be loaded quickly by the framework.
+Per rendere la tua applicazione più veloce, potresti mettere in cache tutti i tuoi file di configurazione in un singolo file usando il comando Artisan `config:cache`. Questo comando combinerà tutte le opzioni di configurazione per la tua applicazione in un singolo file che potrà poi essere caricato più velocemente dal framework.
 
-You should typically run the `config:cache` command as part of your deployment routine.
+Dovresti eseguire il comando `config:cache` come parte delle tue operazioni di deploy.
 
-<a name="accessing-configuration-values"></a>
-### Accessing Configuration Values
+<a name="accesso-valori-configurazione"></a>
+### Accesso ai Valori di Configurazione
 
-You may easily access your configuration values using the global `config` helper function. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you with to access. A default value may also be specified and will be returned if the configuration option does not exist:
+Puoi facilmente accedere ai tuoi valori di configurazione usando l'helper globale `config`. Ai valori di configurazione si può accedere tramite la sintassi"dot", che include il nome del file e l'opzione alla quale vuoi accedere. Può anche essere specificato un valore di default e in caso l'opzione non esiste verrà ritornato:
 
 	$value = config('app.timezone');
 
-To set configuration values at runtime, pass an array to the `config` helper:
+Per impostare un valore di configurazione in runtime, basta passare un array all'helper `config`:
 
 	config(['app.timezone' => 'America/Chicago']);
 
-<a name="naming-your-application"></a>
-### Naming Your Application
+<a name="dare-nome-alla-tua-applicazione"></a>
+### Dare un Nome alla Tua Applicazione
 
-After installing Laravel, you may wish to "name" your application. By default, the `app` directory is namespaced under `App`, and autoloaded by Composer using the [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). However, you may change the namespace to match the name of your application, which you can easily do via the `app:name` Artisan command.
+Dopo aver installato Laravel, potresti dare un “nome” alla tua applicazione. Di default, la directory `app` è inclusa sotto il namespace`App`, è caricato da Composer usando lo [standard autoloading PSR-4](http://www.php-fig.org/psr/psr-4/). Tuttavia, puoi cambiare il namespace per la tua applicazione, è lo puoi fare con il comando Artisan `app:name`.
 
-For example, if your application is named "Horsefly", you could run the following command from the root of your installation:
+Per esempio, se la tua applicazione s ichiama "LaravelItalia", puoi eseguire il comando dalla root della tua installazione di laravel in questo modo:
 
-	php artisan app:name Horsefly
+	php artisan app:name LaravelItalia
 
-Renaming your application is entirely optional, and you are free to keep the `App` namespace if you wish.
+Rinominare la tua applicazione è facoltativo, se libero di mantenere il namespace `App` se lo desideri.
 
-<a name="maintenance-mode"></a>
-## Maintenance Mode
+<a name="modalita-manutenzione"></a>
+## Modalità di Manutenzione
 
-When your application is in maintenance mode, a custom view will be displayed for all requests into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, an `HttpException` will be thrown with a status code of 503.
+Se la tua applicazione è in modalità di manutenzione, una view personalizzata verrà mostrata per tutte le richieste in arrivo. Tale funzionalità rende semplice "disabilitare" la tua applicazione per un po', magari durante un update o durante un'operazione di manutenzione. Un controllo di stato di manutenzione è già presente nello stack dell'applicazione. Se quindi il tuo progetto dovesse trovarsi in manutenzione verrà restituita una HttpException con uno status code 503. 
 
-To enable maintenance mode, simply execute the `down` Artisan command:
+Abilitare la modalità di manutenzione è semplicissimo, se si usa Artisan:
 
 	php artisan down
 
-To disable maintenance mode, use the `up` command:
+Per ritornare in piena attività, invece, basta usare up:
 
 	php artisan up
 
-### Maintenance Mode Response Template
+### Template Modalità di Manutenzione
 
-The default template for maintenance mode responses is located in `resources/views/errors/503.blade.php`.
+Di default il template per la modalità di manutenzione si trova in `resources/views/errors/503.blade.php`.
 
-### Maintenance Mode & Queues
+### Modalità di Manutenzione & Code
 
-While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+Mente la tua applicazione è in modalità di manutenzione, non verrà gestita nessuna [coda jobs](/docs/{{version}}/queues). Le code ritorneranno ad essere gestite una volta che l'applicazione sarà uscita dalla modalità di manutenzione.
