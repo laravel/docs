@@ -23,16 +23,13 @@
 <a name="introduction"></a>
 ## 介紹
 
-Laravel 讓實作認證變得非常簡單。事實上，幾乎所有東西都是可以被藉由配置來實現。認證配置檔被放在 `config/auth.php` ，
-其中包含了好幾個有良好文件的選項，以此來控制認證服務的行為。
+Laravel 讓實作認證變得非常簡單。事實上，幾乎所有東西都是可以被藉由配置來實現。認證配置檔被放在 `config/auth.php`，其中包含了好幾個有良好文件的選項，以此來控制認證服務的行為。
 
 ### 資料庫的思考
 
-預設的Laravel 在你的 `app` 資料夾中含有 `App\User` [Eloquent model](/docs/{{version}}/eloquent) 。這個 model 被用來驅動預設的 Eloquent 認證。如果你的應用程式沒有使用 Eloquent 你可以使用 `database` 認證驅動，它使用了 Laravel query builder
+預設的Laravel 在你的 `app` 資料夾中含有 `App\User` [Eloquent 模型](/docs/{{version}}/eloquent) 。這個模型被用來驅動預設的 Eloquent 認證。如果你的應用程式沒有使用 Eloquent 你可以使用 `database` 認證驅動，它使用了 Laravel query builder 為 `App\User` 模型建立資料庫結構時，確定 password 欄位至少擁有60字元的長度。
 
-為 `App\User` model 建立資料庫結構時，確定 password 欄位至少擁有60字元的長度。
-
-同時，你需要確認你的 `users` (或是相同意義的) 資料表含有 nullable 、100字元長的 `remember_token` 欄位，這個欄位將會被用來儲存 "remember me" session 的 標記 。只要在遷移時，使用 `$table->rememberToken()` ，即可輕鬆加入這個欄位。
+同時，你需要確認你的 `users` (或是相同意義的) 資料表含有 nullable 、100字元長的 `remember_token` 欄位，這個欄位將會被用來儲存 "remember me" session 的標記 。只要在遷移時，使用 `$table->rememberToken()` ，即可輕鬆加入這個欄位。
 
 <a name="authentication-quickstart"></a>
 ## 認證快速入門
@@ -119,11 +116,9 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 <a name="included-authenticating"></a>
 ### 認證
 
-現在你已經為認證控制器設定好了路由及視圖，你準備好為你的新使用者提供註冊及認證功能。你只要簡單地在瀏覽器存取你定義的路由，
-認證控制器早已包含了處理認證現有使用者，及儲存新使用者在資料庫的邏輯了(透過他們各自的 traits )。
+現在你已經為認證控制器設定好了路由及視圖，你準備好為你的新使用者提供註冊及認證功能。你只要簡單地在瀏覽器存取你定義的路由，認證控制器早已包含了處理認證現有使用者，及儲存新使用者在資料庫的邏輯了(透過他們各自的 traits )。
 
-當使用者成功的認證後，他們將被導向 `/home` URI，而你需要向路由註冊這個 URI 來處理這個請求，你可以客製化認證後，轉向的
-URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
+當使用者成功的認證後，他們將被導向 `/home` URI，而你需要向路由註冊這個 URI 來處理這個請求，你可以客製化認證後，轉向的URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 
     protected $redirectTo = '/dashboard';
 
@@ -172,11 +167,10 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 為了確認使用者是否已經登入，你可以使用 `Auth` facade 的 `check` 方法，如果認證過，將會回傳 `true`:
 
     if (Auth::check()) {
-        // The user is logged in...
+        // 這個使用者已經登入...
     }
 
-不過，在允許這個使用這存取特定的 路由/控制器 之前，你可以使用中介層來確認這個使用者是否認證過。想得到
-更多資訊，請閱讀這份文件 [保護路由](/docs/{{version}}/authentication#protecting-routes)
+不過，在允許這個使用這存取特定的 路由/控制器 之前，你可以使用中介層來確認這個使用者是否認證過。想得到更多資訊，請閱讀這份文件 [保護路由](/docs/{{version}}/authentication#protecting-routes)
 
 <a name="protecting-routes"></a>
 ### 保護路由
@@ -206,11 +200,9 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 <a name="authenticating-users"></a>
 ## 手動認證使用者
 
-當然，你不一定要使用 Laravel 內建的認證控制器，如果你選擇刪除這些控制器，你將需要自己處理使用者認證，並使用 Laravel 的
-認證控制器。
+當然，你不一定要使用 Laravel 內建的認證控制器，如果你選擇刪除這些控制器，你將需要自己處理使用者認證，並使用 Laravel 的認證控制器。
 
-我們將透過 `Auth` [facade](/docs/{{version}}/facades) 存取 Laravel 的認證服務，所以我們需要確認是否在
-類別的最上面引入 `Auth` facade ，接下來，讓我們看一下 `attempt` 方法:
+我們將透過 `Auth` [facade](/docs/{{version}}/facades) 存取 Laravel 的認證服務，所以我們需要確認是否在類別的最上面引入 `Auth` facade ，接下來，讓我們看一下 `attempt` 方法:
 
     <?php
 
@@ -237,7 +229,7 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 
 `attempt` 方法的第一個參數接受陣列，在這個陣列的值用來找尋資料庫裡的使用者資料，所以在上面的範例中，使用者會藉由 `email` 欄位抽取，如果使用者被找到了，資料庫裡經過雜湊的密碼將會與陣列中雜湊的 `password` 值做比對，如果兩個一樣的話經會開啟一個通過認證的 session 給使用者
 
-如果認證成功， `attempt` 方法將會回傳 `true` ，反之則為 `false` 。
+如果認證成功，`attempt` 方法將會回傳 `true` ，反之則為 `false` 。
 
 重導器上的 `intended` 方法將會重導使用者回原本想要進入的頁面，一個 fallback URI 也可以傳入這個方法，以避免要轉回的頁面不可使用。
 
@@ -251,14 +243,12 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 
     Auth::logout();
 
-> **注意:** 在這些例子中， `email` 不是一個一定要有的選項，它僅僅是被用來當作範例，你可以用任何欄位，只
-要它在資料庫的意思等同於 "username" 。
+> **注意:** 在這些例子中，`email` 不是一個一定要有的選項，它僅僅是被用來當作範例，你可以用任何欄位，只要它在資料庫的意思等同於 "username"。
 
 <a name="remembering-users"></a>
 ## 記住使用者
 
-如果你想要提供"記住我"的功能，你需要傳入一個 boolean 值到 `attempt` 方法的第二個參數，這會永久保持使用者的 session ，
-直到登出。你的 `users` 資料表一定要包含一個 `remember_token` 欄位，這是用來儲存"記住我"的標記。
+如果你想要提供"記住我"的功能，你需要傳入一個 boolean 值到 `attempt` 方法的第二個參數，這會永久保持使用者的 session，直到登出。你的 `users` 資料表一定要包含一個 `remember_token` 欄位，這是用來儲存"記住我"的標記。
 
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
         // 這個使用者被記住了...
@@ -275,7 +265,7 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 
 #### 用使用者實例做認證
 
-如果你需要使用存在的使用者實例來登入，你需要呼叫 `login` 方法，並傳入使用實例，這個物件必須是由 `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts) 所實現。當然， `App/User` model 已經實現了這個介面:
+如果你需要使用存在的使用者實例來登入，你需要呼叫 `login` 方法，並傳入使用實例，這個物件必須是由 `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts) 所實現。當然，`App/User` 模型 已經實現了這個介面:
 
     Auth::login($user);
 
@@ -287,8 +277,7 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 
 #### 只認證這個使用者這次
 
-你可以使用 `once` 方法來只針對一次的請求來認證使用者，沒有任何的 session 或 cookie 會被使用，這個對於建議無狀態的 API
-非常的有用， `once` 方法跟 `attempt` 方法擁有同樣的署名:
+你可以使用 `once` 方法來只針對一次的請求來認證使用者，沒有任何的 session 或 cookie 會被使用，這個對於建議無狀態的 API 非常的有用，`once` 方法跟 `attempt` 方法擁有同樣的署名:
 
     if (Auth::once($credentials)) {
         //
@@ -303,11 +292,11 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
         // 只有認證過的使用者可進入...
     }]);
 
-一旦中介層被附著到路由上，當使用瀏覽器進入這個路由時，你將自動的被提示要求憑證。預設上， `auth.basic` 中介詞將會使用使用者的 `email` 欄位當作 "username" 。
+一旦中介層被附著到路由上，當使用瀏覽器進入這個路由時，你將自動的被提示要求憑證。預設上，`auth.basic` 中介詞將會使用使用者的 `email` 欄位當作 "username" 。
 
 #### FastCGI 的注意事項
 
-如果是正在使用 FastCGI ， HTTP 基礎認證可能無法正常運作，下面這幾行需要加入你的 `.htaccess` 檔中:
+如果是正在使用 FastCGI，HTTP 基礎認證可能無法正常運作，下面這幾行需要加入你的 `.htaccess` 檔中:
 
     RewriteCond %{HTTP:Authorization} ^(.+)$
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -339,7 +328,7 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 
     }
 
-接著， [註冊這個路由中介層](/docs/{{version}}/middleware#registering-middleware) ， 然後附著它於一個路由:
+接著， [註冊這個路由中介層](/docs/{{version}}/middleware#registering-middleware) ，然後附著它於一個路由:
 
     Route::get('api/user', ['middleware' => 'auth.basic.once', function() {
         // 只有認證過的使用者可以進入...
@@ -353,7 +342,7 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 
 很多網路應用程式提供使用者一些方式來重設密碼， Laravel 提供便利的方法來傳送密碼提示和實現密碼重設，而不是強迫你重新實作這些功能一次。
 
-一開始，先確認你的 `App\User` model 實現了 `Illuminate\Contracts\Auth\CanResetPassword` contract ，當然，原有的 `App\User` 早已實現了這個介面，並且使用 `Illuminate\Auth\Passwords\CanResetPassword` trait 來包含實現這個介面所需要的方法。
+一開始，先確認你的 `App\User` 模型實現了 `Illuminate\Contracts\Auth\CanResetPassword` contract ，當然，原有的 `App\User` 早已實現了這個介面，並且使用 `Illuminate\Auth\Passwords\CanResetPassword` trait 來包含實現這個介面所需要的方法。
 
 #### 產生重置標記資料庫遷移
 
@@ -364,7 +353,7 @@ URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 <a name="resetting-routing"></a>
 ### 路由
 
-Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者密碼的邏輯。然而，你仍需要指定路由到這個控制器:
+Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者密碼的邏輯。然而，你仍需要指定路由到這個控制器:
 
     // 密碼重置連結的路由...
     Route::get('password/email', 'Auth\PasswordController@getEmail');
@@ -381,7 +370,7 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
 
 #### 重置密碼連結請求表單範例
 
-你將會需要提供 HTML 視圖給密碼重置請求表單。這些視圖被放在 `resources/views/auth/password.blade.php` 。這個表單提供了單一的欄位來給使用者輸入電子郵件，讓他們可以收到密碼重置連結:
+你將會需要提供 HTML 視圖給密碼重置請求表單。這些視圖被放在 `resources/views/auth/password.blade.php`。這個表單提供了單一的欄位來給使用者輸入電子郵件，讓他們可以收到密碼重置連結:
 
     <!-- resources/views/auth/password.blade.php -->
 
@@ -400,8 +389,7 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
         </div>
     </form>
 
-當使用者提交重置密碼的請求，他們會收到一封有連結到 `PasswordController` 的 `getReset` 方法 ( 通常是路由到 `/password/reset` ) 的電子郵件。
-你將需要為電子郵件創造一個 `resources/views/emails/password.blade.php` 視圖。這個視圖會接收一個帶有密碼重置標記的 `$token` 變數，這個變數含有了密碼重置標記來匹配使用者的密碼重置請求，以下是範例來讓你開始:
+當使用者提交重置密碼的請求，他們會收到一封有連結到 `PasswordController` 的 `getReset` 方法 ( 通常是路由到 `/password/reset` ) 的電子郵件。你將需要為電子郵件創造一個 `resources/views/emails/password.blade.php` 視圖。這個視圖會接收一個帶有密碼重置標記的 `$token` 變數，這個變數含有了密碼重置標記來匹配使用者的密碼重置請求，以下是範例來讓你開始:
 
     <!-- resources/views/emails/password.blade.php -->
 
@@ -441,11 +429,9 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
 <a name="after-resetting-passwords"></a>
 ### 重設密碼後
 
-一旦你定義了路由跟視圖來重置使用者的密碼，你只需要在瀏覽器存取這個路由。 Laravel 中的 `PasswordController` 已經包含了
-傳送密碼重置連結的電子郵件，及更新密碼到資料庫的邏輯。
+一旦你定義了路由跟視圖來重置使用者的密碼，你只需要在瀏覽器存取這個路由。Laravel 中的 `PasswordController` 已經包含了傳送密碼重置連結的電子郵件，及更新密碼到資料庫的邏輯。
 
-密碼重置以後，這個使用者會自動登入，並導向 `/home` 。你可以自己客製化導向的目標，只要
-定義 `PasswordController` 的 `redirectTo` 屬性:
+密碼重置以後，這個使用者會自動登入，並導向 `/home`。你可以自己客製化導向的目標，只要定義 `PasswordController` 的 `redirectTo` 屬性:
 
     protected $redirectTo = '/dashboard';
 
@@ -454,7 +440,7 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
 <a name="social-authentication"></a>
 ## 社群認證
 
-除了傳統的表單認證， Laravel 同樣提供了簡單方便的方法來認證 OAuth 提供者，這個方法使用了 [Laravel Socialite](https://github.com/laravel/socialite) 。 Socialite 最近支援 Facebook, Twitter, Google, GitHub 跟 Bitbucket
+除了傳統的表單認證，Laravel 同樣提供了簡單方便的方法來認證 OAuth 提供者，這個方法使用了 [Laravel Socialite](https://github.com/laravel/socialite) 。 Socialite 最近支援 Facebook, Twitter, Google, GitHub 跟 Bitbucket
 
 修改你的 `composer.json` 來新增相依來開始使用 Socialite:
 
@@ -484,7 +470,7 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
 
 ### 基礎應用
 
-接下來，你已經準備好開始認證使用者了！你將需要兩個路由: 一個用來重導使用者到 OAuth 提供者，另一個在認證後接收提供者的 callback 。 我們將會藉由`Socialite` [facade](/docs/{{version}}/facades) 存取 Socialite:
+接下來，你已經準備好開始認證使用者了！你將需要兩個路由: 一個用來重導使用者到 OAuth 提供者，另一個在認證後接收提供者的 callback。 我們將會藉由`Socialite` [facade](/docs/{{version}}/facades) 存取 Socialite:
 
     <?php
 
@@ -517,8 +503,7 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
         }
     }
 
-`redirect` 方法會負責處理傳送使用者到 OAuth 提供者，而 `user` 方法會從提供者返回的請求來抽取使用者資訊。在重導使用
-者之前，你也可以使用 `scopes` 方法來設定請求的 "scope" 。這個方法將覆寫所有已經存在的範圍:
+`redirect` 方法會負責處理傳送使用者到 OAuth 提供者，而 `user` 方法會從提供者返回的請求來抽取使用者資訊。在重導使用者之前，你也可以使用 `scopes` 方法來設定請求的 "scope"。這個方法將覆寫所有已經存在的範圍:
 
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
@@ -546,8 +531,7 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
 <a name="adding-custom-authentication-drivers"></a>
 ## 新增客製化的認證驅動
 
-如果你不是使用傳統的關聯式資料庫來儲存使用者，你將需要擴充 Laravel 來新增你自己的認證驅動。我們
-將使用 `Auth` facade 的 `extend` 方法來定義客製化驅動。 你將放置這個呼叫在 [服務提供者](/docs/{{version}}/providers) 來 `extend` :
+如果你不是使用傳統的關聯式資料庫來儲存使用者，你將需要擴充 Laravel 來新增你自己的認證驅動。我們將使用 `Auth` facade 的 `extend` 方法來定義客製化驅動。你將放置這個呼叫在 [服務提供者](/docs/{{version}}/providers) 來 `extend` :
 
     <?php
 
@@ -587,8 +571,7 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
 
 ### The User Provider Contract
 
-`Illuminate\Contracts\Auth\UserProvider` 單單只負責取得 `Illuminate\Contracts\Auth\Authenticatable` 而不受限於永久儲存系統，例如 MySQL, Riak 之類的，這兩個介面允許 Laravel 認證機制繼續作用，而不用管使用者如何儲存
-或是什麼類別代表它。
+`Illuminate\Contracts\Auth\UserProvider` 單單只負責取得 `Illuminate\Contracts\Auth\Authenticatable` 而不受限於永久儲存系統，例如 MySQL, Riak 之類的，這兩個介面允許 Laravel 認證機制繼續作用，而不用管使用者如何儲存或是什麼類別代表它。
 
 讓我們來看看 `Illuminate\Contracts\Auth\UserProvider` contract:
 
@@ -604,24 +587,19 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
 
     }
 
-`retrieveById` 函數通常取得一個代表使用者的值，例如 MySQL 的自動增加的 ID。這個 `Authenticate` 實現匹配
-應該被取得並被這個方法返回的 ID 。
+`retrieveById` 函數通常取得一個代表使用者的值，例如 MySQL 的自動增加的 ID。這個 `Authenticate` 實現匹配應該被取得並被這個方法返回的 ID 。
 
-`retrieveByToken` 函數藉由使用者獨特的 `$identifier` 和 "記住我" `$token` 取得使用者。如同之前的方法，
-`Authenticatable` 實現應該被返回。
+`retrieveByToken` 函數藉由使用者獨特的 `$identifier` 和 "記住我" `$token` 取得使用者。如同之前的方法，`Authenticatable` 實現應該被返回。
 
-`updateRememberToken` 方法使用新的 `$token` 更新了 `$user` 的 `remember_token` 欄位。這個新的標記可以是
-全新的標記 (當使用者成功登入)或是 null (當使用者登出) 。
+`updateRememberToken` 方法使用新的 `$token` 更新了 `$user` 的 `remember_token` 欄位。這個新的標記可以是全新的標記 (當使用者成功登入)或是 null (當使用者登出) 。
 
-`retrieveByCredentials` 方法取得了從 `Auth::attempt` 方法傳送過來的憑證陣列 (當想要登入時) ，這個方法應該要 "query"
-所使用的永久式儲存系統，來匹配這些憑證，通常，這個方法會執行一個帶著 "where" `$credentials['username']`條件的詢問。
-這個方法接著需要回傳一個 `UserInterface` 的實現。 **這個方法不應該企圖做任何密碼的驗證或是認證。**
+`retrieveByCredentials` 方法取得了從 `Auth::attempt` 方法傳送過來的憑證陣列 (當想要登入時) ，這個方法應該要 "query"所使用的永久式儲存系統，來匹配這些憑證，通常，這個方法會執行一個帶著 "where" `$credentials['username']`條件的詢問。這個方法接著需要回傳一個 `UserInterface` 的實現。 **這個方法不應該企圖做任何密碼的驗證或是認證。**
 
 `validateCredentials` 方法應該要比較 `$user` 和 `$credentials` 來認證這個使用者。例如，這個方法可能會比較`$user->getAuthPassword()` 字串及 `Hash::make` 後的 `$credentials['password']`。這個方法應該只驗證使用者的憑證和回傳布林值。
 
 ### The Authenticatable Contract
 
-現在我們已經介紹了 `UserProvider` 的每個方法，讓我們看一下 `Authenticate` 。記得，這個提供者需要 `retrieveById` 和 `retrieveByCredentials` 方法回傳這個介面的實現:
+現在我們已經介紹了 `UserProvider` 的每個方法，讓我們看一下 `Authenticate`。記得，這個提供者需要 `retrieveById` 和 `retrieveByCredentials` 方法回傳這個介面的實現:
 
     <?php namespace Illuminate\Contracts\Auth;
 
@@ -635,4 +613,4 @@ Laravel 包含了 `Auth\PasswordController` ，而它含有所有重置使用者
 
     }
 
-這個介面很簡單。 `getAuthIdentifier` 方法需要回傳 使用者的"主鍵"。在 MySQL，這個主鍵是指自動增加的主見。而 `getAuthPassword` 應該要回傳使用者雜湊後的密碼。這個介面允許認證系統和任何使用者類別運作，不用管你在使用什麼 ORM 或是儲存抽象層。預設上， Laravel 包含了 `User` 類別在 `app` 資料夾中，它實現了這個介面，所以你可以觀察這個類別來當然實現的範例。
+這個介面很簡單。`getAuthIdentifier` 方法需要回傳使用者的"主鍵"。在 MySQL，這個主鍵是指自動增加的主見。而 `getAuthPassword` 應該要回傳使用者雜湊後的密碼。這個介面允許認證系統和任何使用者類別運作，不用管你在使用什麼 ORM 或是儲存抽象層。預設上，Laravel 包含了 `User` 類別在 `app` 資料夾中，它實現了這個介面，所以你可以觀察這個類別來當然實現的範例。
