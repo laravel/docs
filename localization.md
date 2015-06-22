@@ -1,109 +1,87 @@
 # 在地化
 
-- [介紹](#introduction)
-- [語言檔](#language-files)
+- [簡介](#introduction)
 - [基本用法](#basic-usage)
-- [複數](#pluralization)
-- [驗證在地化](#validation)
+	- [複數](#pluralization)
 - [覆寫套件的語言檔](#overriding-package-language-files)
 
 <a name="introduction"></a>
-## 介紹
+## 簡介
 
-Laravel 的 `Lang` 類別提供方便的方法來取得多種語言的字串，讓你簡單地在應用程式裡支援多種語言。
+Laravel 的在地化功能提供方便的方法來取得多語系的字串，讓你的網站可以簡單的支援多語系。
 
-<a name="language-files"></a>
-## 語言檔
+語系檔存放在 `resources/lang` 資料夾的檔案裡。在此資料夾內，應該要有網站支援的語系並對應到每一個子目錄。：
 
-語言字串儲存在 `app/lang` 資料夾的檔案裡。 在這個資料夾裡應該要有子資料夾給每一個應用程式支援的語言。
-
-	/app
+	/resources
 		/lang
 			/en
 				messages.php
 			/es
 				messages.php
 
-#### 語言檔範例
-
-語言檔簡單地回傳鍵跟字串的陣列。例如：
+語系檔簡單地回傳鍵值和字串陣列，例如：
 
 	<?php
 
-	return array(
+	return [
 		'welcome' => 'Welcome to our application'
-	);
+	];
 
-#### 在執行時變換預設語言
+#### 切換語系
 
-應用程式的預設語言被儲存在 `app/config/app.php` 設定檔。 你可以在任何時候用 `App::setLocale` 方法變換現行語言：
+網站的預設語系儲存在 `config/app.php` 設定檔。您可以在任何時後使用 `App` facade 的 `setLocale` 方法動態地變換現行語系：
 
-	App::setLocale('es');
+	Route::get('welcome/{locale}', function ($locale) {
+		App::setLocale($locale);
 
-#### 設定備用語言
+		//
+	});
 
-你也可以設定 "備用語言"，它將會在當現行語言沒有給定的語句時被使用。 就像預設語言，備用語言也可以在 `app/config/app.php` 設定檔設定：
+您也可以設定 "備用語系"，它將會在當現行語言沒有給定的語句時被使用。就像預設語言，備用語言也可以在 `config/app.php` 設定檔設定：
 
 	'fallback_locale' => 'en',
 
 <a name="basic-usage"></a>
 ## 基本用法
 
-#### 從語言檔取得句子
-
-	echo Lang::get('messages.welcome');
-
- 傳遞給 `get` 方法的字串的第一個部分是語言檔的名稱，第二個部分是應該被取得的句子的名稱。
-
-> **備註**: 如果句子不存在， `get` 方法將會回傳鍵的名稱。
-
-你也可以使用 `trans` 輔助方法，它是 `Lang::get` 方法的別名。
+您可以使用 `trans` 輔助函式來取得語系字串，`trans` 函式的第一個參數接受檔名和鍵值名稱，例如，從 `resources/lang/messages.php` 語言檔取得名稱為 `welcome` 的句子：
 
 	echo trans('messages.welcome');
 
+當然，若您使用 [Blade 樣版引擎](/docs/{{version}}/blade), 您可以使用 `{{ }}` 來輸出句子：
+
+	{{ trans('messages.welcome') }}
+
+如果句子不存在， `trans` 方法將會回傳鍵值的名稱，如上範例會回傳 `messages.welcome` 。
+
 #### 在句子中做替代
 
-你也可以在語言檔中定義佔位符：
+如果需要，你也可以在語系檔中定義佔位符，佔位符使用 `:` 開頭，例如，您可以定義一則歡迎訊息的佔位符：
 
 	'welcome' => 'Welcome, :name',
 
-接著，傳遞替代用的第二個參數給 `Lang::get` 方法：
+接著，傳入替代用的第二個參數給 `trans` 方法：
 
-	echo Lang::get('messages.welcome', array('name' => 'Dayle'));
-
-#### 判斷語言檔是否有句子
-
-	if (Lang::has('messages.welcome'))
-	{
-		//
-	}
+	echo trans('messages.welcome', ['name' => 'Dayle']);
 
 <a name="pluralization"></a>
-## 複數
+### 複數
 
-複數是個複雜的問題，不同語言對於複數有很多種複雜的規則。 你可以簡單地在你的語言檔裡管理它。 你可以用 "管道" 字元區分字串的單數和複數形態：
+複數是個複雜的問題，不同語言對於複數有不同的規則，使用 "管線" 字元，可以區分單複數字串格式：
 
 	'apples' => 'There is one apple|There are many apples',
 
-接著你可以用 `Lang::choice` 方法取得語句：
+接著，可以使用 `trans_choice` 方法來設定總數，例如，當總數大於一將會取得複數句子：
 
-	echo Lang::choice('messages.apples', 10);
+	echo trans_choice('messages.apples', 10);
 
-你也可以提供一個地區參數來指定語言。 舉個例，如果你想要使用俄語 (ru)：
-
-	echo Lang::choice('товар|товара|товаров', $count, array(), 'ru');
-
-因為 Laravel 的翻譯器由 Symfony 翻譯元件贊助，你也可以很容易地建立更明確的複數規則：
+由於 Laravel 的翻譯器是來自於 Symfony 翻譯套件，您甚至可以使用更複雜的複數規則：
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
-
-
-<a name="validation"></a>
-## 驗證
-
-要驗證在地化的錯誤和訊息，可以看一下 <a href="/docs/validation#localization">驗證的文件</a>.
 
 <a name="overriding-package-language-files"></a>
 ## 覆寫套件的語言檔
 
-許多套件附帶它們自有的語句。 你可以借由放置檔案在 `app/lang/packages/{locale}/{package}` 資料夾覆寫它們，而不是改變套件的核心檔案來調整這些句子。 所以，舉個例子，如果你需要覆寫 `skyrim/hearthfire` 套件在 `messages.php` 的英文語句 ，你可以放置語言檔在： `app/lang/packages/en/hearthfire/messages.php`。 你可以只定義你想要覆寫的語句在這個檔案裡，任何你沒有覆寫的語句將會仍從套件的語言檔載入。
+部分套件帶有自己的語系檔，您可以藉由放置檔案在 `resources/lang/vendor/{package}/{locale}` 來複寫它們，而不是直接修改套件的核心檔案。
+
+例如，您需要複寫 `skyrim/hearthfire` 套件的英文語系檔 `messages.php`，您需要把檔案放置在 `resources/lang/vendor/hearthfire/en/messages.php`。這個檔案內，只要去定義需要覆寫的語句，任何沒有覆寫的語句將會仍從套件的語言檔載入。

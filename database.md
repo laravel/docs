@@ -1,33 +1,42 @@
-# 資料庫基本用法
+# Database: Getting Started
 
-- [設定](#configuration)
-- [讀取 / 寫入 連線](#read-write-connections)
-- [資料庫操作](#running-queries)
-- [資料庫交易](#database-transactions)
-- [存取連線](#accessing-connections)
-- [資料庫操作紀錄](#query-logging)
+- [Introduction](#introduction)
+- [Running Raw SQL Queries](#running-queries)
+	- [Listening For Query Events](#listening-for-query-events)
+- [Database Transactions](#database-transactions)
+- [Using Multiple Database Connections](#accessing-connections)
+
+<a name="introduction"></a>
+## Introduction
+
+Laravel makes connecting with databases and running queries extremely simple across a variety of database back-ends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four database systems:
+
+- MySQL
+- Postgres
+- SQLite
+- SQL Server
 
 <a name="configuration"></a>
-## 設定
+### Configuration
 
-Laravel 讓資料庫連線與執行查詢語句變得相當簡單。資料庫設定檔位在 `app/config/database.php`。 您可以在此定義所需的資料庫連線，也可以指定哪一個連線是預設的。所有支援的資料庫類型與範例皆在檔案內說明。
+Laravel makes connecting with databases and running queries extremely simple. The database configuration for your application is located at `config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
 
-目前為止 Laravel 支援 4 種資料庫系統: MySQL, Postgres, SQLite 和 SQL Server。
+By default, Laravel's sample [environment configuration](/docs/{{version}}/installation#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. Of course, you are free to modify this configuration as needed for your local database.
 
 <a name="read-write-connections"></a>
-## 讀取 / 寫入 連線
+#### Read / Write Connections
 
-有時候您會需要使用一個資料庫進行查詢操作，另一個資料庫負責新增、修改和刪除操作。Laravel 使這件事變得輕而易舉,且會自動使用適當的連線，不論您是使用原生查詢、query builder 或是 Eloquent ORM。
+Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
 
-要了解如何設定 讀取 / 寫入 連線, 請看以下範例:
+To see how read / write connections should be configured, let's look at this example:
 
-	'mysql' => array(
-		'read' => array(
+	'mysql' => [
+		'read' => [
 			'host' => '192.168.1.1',
-		),
-		'write' => array(
+		],
+		'write' => [
 			'host' => '196.168.1.2'
-		),
+		],
 		'driver'    => 'mysql',
 		'database'  => 'database',
 		'username'  => 'root',
@@ -35,100 +44,152 @@ Laravel 讓資料庫連線與執行查詢語句變得相當簡單。資料庫設
 		'charset'   => 'utf8',
 		'collation' => 'utf8_unicode_ci',
 		'prefix'    => '',
-	),
+	],
 
-注意到有兩個鍵值 `read` 和 `write` 已經被加到設定陣列中。這兩個鍵值都包含一個關鍵數值組 `host`。 而資料庫 `read` 和 `write`的其他選項將會併入 `mysql` 的主要陣列值內。所以,我們只需要取代 `read` 和 `write` 陣列，如果我們想要複寫主要陣列的值。因此，以這個範例來看 `192.168.1.1` 將會被當作 `讀取` 連線，`192.168.1.2` 將會被當作 `寫入` 連線。該資料庫的憑證、前綴詞、字元集和所有其他在 `mysql` 陣列內的選項將會被兩個連線內共享。
+Note that two keys have been added to the configuration array: `read` and `write`. Both of these keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
+
+So, we only need to place items in the `read` and `write` arrays if we wish to override the values in the main array. So, in this case, `192.168.1.1` will be used as the "read" connection, while `192.168.1.2` will be used as the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
 
 <a name="running-queries"></a>
-## 資料庫操作
+## Running Raw SQL Queries
 
-一但完成資料庫連線設定後，即可使用 `DB` 類別進行資料庫操作。
+Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, and `statement`.
 
-#### 查詢操作
+#### Running A Select Query
 
-	$results = DB::select('select * from users where id = ?', array(1));
+To run a basic query, we can use the `select` method on the `DB` facade:
 
-方法 `select` 總是回傳陣列值。
+	<?php
 
-#### 新增操作
+	namespace App\Http\Controllers;
 
-	DB::insert('insert into users (id, name) values (?, ?)', array(1, 'Dayle'));
+	use DB;
+	use App\Http\Controllers\Controller;
 
-#### 修改操作
+	class UserController extends Controller
+	{
+		/**
+		 * Show a list of all of the application's users.
+		 *
+		 * @return Response
+		 */
+		public function index()
+		{
+			$users = DB::select('select * from users where active = ?', [1]);
 
-	DB::update('update users set votes = 100 where name = ?', array('John'));
+			return view('user.index', ['users' => $users]);
+		}
+	}
 
-#### 刪除操作
+The first argument passed to the `select` method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
 
-	DB::delete('delete from users');
+The `select` method will always return an `array` of results. Each result within the array will be a PHP `StdClass` object, allowing you to access the values of the results:
 
-> **注意:**  `修改` 和 `刪除` 會回傳該次操作影響到的筆數。
+	foreach ($users as $user) {
+		echo $user->name;
+	}
 
-#### 一般性操作
+#### Using Named Bindings
+
+Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
+
+	$results = DB::select('select * from users where id = :id', ['id' => 1]);
+
+#### Running An Insert Statement
+
+To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument, and bindings as the second argument:
+
+	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
+
+#### Running An Update Statement
+
+The `update` method should be used to update existing records in the database. The number of rows affected by the statement will be returned by the method:
+
+	$affected = DB::update('update users set votes = 100 where name = ?', ['John']);
+
+#### Running A Delete Statement
+
+The `delete` method should be used to delete records from the database. Like `update`, the number of rows deleted will be returned:
+
+	$deleted = DB::delete('delete from users');
+
+#### Running A General Statement
+
+Some database statements should not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
 
 	DB::statement('drop table users');
 
-#### 聆聽資料庫操作事件
+<a name="listening-for-query-events"></a>
+### Listening For Query Events
 
-您可以使用 `DB::listen` 方法來聆聽資料庫操作事件:
+If you would like to receive each SQL query executed by your application, you may use the `listen` method. This method is useful for logging queries or debugging. You may register your query listener in a [service provider](/docs/{{version}}/providers):
 
-	DB::listen(function($sql, $bindings, $time)
+	<?php
+
+	namespace App\Providers;
+
+	use DB;
+	use Illuminate\Support\ServiceProvider;
+
+	class AppServiceProvider extends ServiceProvider
 	{
-		//
-	});
+	    /**
+	     * Bootstrap any application services.
+	     *
+	     * @return void
+	     */
+		public function boot()
+		{
+			DB::listen(function($sql, $bindings, $time) {
+				//
+			});
+		}
+
+		/**
+		 * Register the service provider.
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			//
+		}
+	}
 
 <a name="database-transactions"></a>
-## 資料庫交易
+## Database Transactions
 
-執行資料庫交易中的一組操作，您可以使用 `transaction` 方法:
+To run a set of operations within a database transaction, you may use the `transaction` method on the `DB` facade. If an exception is thrown within the transaction `Closure`, the transaction will automatically be rolled back. If the `Closure` executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
 
-	DB::transaction(function()
-	{
-		DB::table('users')->update(array('votes' => 1));
+	DB::transaction(function () {
+		DB::table('users')->update(['votes' => 1]);
 
 		DB::table('posts')->delete();
 	});
 
-> **注意:** 在 `交易` 閉包內拋出的任何錯誤皆會導致交易自動回復上一步。
+#### Manually Using Transactions
 
-有時候您需要自行初始化一筆交易:
+If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method on the `DB` facade:
 
 	DB::beginTransaction();
 
-您可以使用 `rollback` 方法來將交易回復到上一步:
+You can rollback the transaction via the `rollBack` method:
 
-	DB::rollback();
+	DB::rollBack();
 
-最後，您可以藉由 `commit` 方法來提交一筆交易:
+Lastly, you can commit a transaction via the `commit` method:
 
 	DB::commit();
 
-<a name="accessing-connections"></a>
-## 存取連線
+> **Note:** Using the `DB` facade's transaction methods also controls transactions for the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
 
-當使用多筆連線時，您可以藉由 `DB::connection` 方法存取它們:
+<a name="accessing-connections"></a>
+## Using Multiple Database Connections
+
+When using multiple connections, you may access each connection via the `connection` method on the `DB` facade. The `name` passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file:
 
 	$users = DB::connection('foo')->select(...);
 
-您也可以在底層 PDO 實體化之下存取原生查詢，
+You may also access the raw, underlying PDO instance using the `getPdo` method on a connection instance:
 
 	$pdo = DB::connection()->getPdo();
-
-有時候您會需要重新連線至某個資料庫:
-
-	DB::reconnect('foo');
-
-由於執行底層 PDO 實體化的 `最大連線數` 限制，若需要從某個資料庫斷開時，您可以使用 `disconnect` 方法:
-
-	DB::disconnect('foo');
-
-<a name="query-logging"></a>
-## 資料庫操作紀錄
-
-預設之下，Laravel 將現有連線請求的所有操作紀錄存放在記憶體中，然而，在某些情況下，像是插入一組大量紀錄時，這可能會導致應用程式使用內存過量。要將紀錄關閉，您可以使用 `disableQueryLog` 方法:
-
-	DB::connection()->disableQueryLog();
-
-要得到執行過的操作紀錄陣列，您可以使用 `getQueryLog` 方法:
-
-       $queries = DB::getQueryLog();

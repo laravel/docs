@@ -1,182 +1,368 @@
-# 佇列
+# Queues
 
-- [設定](#configuration)
-- [基本用法](#basic-usage)
-- [佇列閉包](#queueing-closures)
-- [起動佇列監聽](#running-the-queue-listener)
-- [常駐佇列工作](#daemon-queue-worker)
-- [推送佇列](#push-queues)
-- [失敗的工作](#failed-jobs)
+- [Introduction](#introduction)
+- [Writing Job Classes](#writing-job-classes)
+	- [Generating Job Classes](#generating-job-classes)
+	- [Job Class Structure](#job-class-structure)
+- [Pushing Jobs Onto The Queue](#pushing-jobs-onto-the-queue)
+	- [Delayed Jobs](#delayed-jobs)
+	- [Dispatching Jobs From Requests](#dispatching-jobs-from-requests)
+- [Running The Queue Listener](#running-the-queue-listener)
+	- [Supervisor Configuration](#supervisor-configuration)
+	- [Daemon Queue Listener](#daemon-queue-listener)
+	- [Deploying With Daemon Queue Listeners](#deploying-with-daemon-queue-listeners)
+- [Dealing With Failed Jobs](#dealing-with-failed-jobs)
+	- [Failed Job Events](#failed-job-events)
+	- [Retrying Failed Jobs](#retrying-failed-jobs)
+
+<a name="introduction"></a>
+## Introduction
+
+The Laravel queue service provides a unified API across a variety of different queue back-ends. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time which drastically speeds up web requests to your application.
 
 <a name="configuration"></a>
-## 設定
+### Configuration
 
-Laravel 佇列元件提供一個統一的API整合了許多不同的佇列服務，佇列允許你將一個執行任務延後執行，例如寄送郵件延後至你指定的時間，進而大幅的加快你的網站應用程式的速度。
+The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io),  and synchronous (for local use) driver.
 
-佇列的設定檔在 `app/config/queue.php`，在這個檔案你將可以找到框架中每種不同的佇列服務的連線設定，其中包含了 [Beanstalkd](http://kr.github.com/beanstalkd)，[IronMQ](http://iron.io)，[Amazon SQS](http://aws.amazon.com/sqs)，[Redis](http://redis.io)，以及同步(本地端使用)驅動設定。
+A `null` queue driver is also included which simply discards queued jobs.
 
-下列的 composer.json 設定可以依照你使用的佇列服務必需在使用前安裝：
+### Driver Prerequisites
 
+#### Database
+
+In order to use the `database` queue driver, you will need a database table to hold the jobs. To generate a migration that creates this table, run the `queue:table` Artisan command. Once the migration is created, you may migrate your database using the `migrate` command:
+
+	php artisan queue:table
+
+	php artisan migrate
+
+#### Other Queue Dependencies
+
+The following dependencies are needed for the listed queue drivers:
+
+- Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~3.0`
-- Amazon SQS: `aws/aws-sdk-php`
-- IronMQ: `iron-io/iron_mq`
+- IronMQ: `iron-io/iron_mq ~2.0`
+- Redis: `predis/predis ~1.0`
 
-<a name="basic-usage"></a>
-## 基本用法
+<a name="writing-job-classes"></a>
+## Writing Job Classes
 
-#### 推送一個工作至佇列
+<a name="generating-job-classes"></a>
+### Generating Job Classes
 
-要推送一個新的工作至佇列，請使用 `Queue::push` 方法：
+By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. You may generate a new queued job using the Artisan CLI:
 
-	Queue::push('SendEmail', array('message' => $message));
+	php artisan make:job SendReminderEmail --queued
 
-#### 宣告一個工作處理程序
+This command will generate a new class in the `app/Jobs` directory, and the class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue instead of run synchronously.
 
-`push` 方法的第一個參數為應該處理這個工作的類別方法名稱，第二個參數是一個要傳遞至處理程序的資料陣列，一個工作處理程序應該參照下列宣告：
+<a name="job-class-structure"></a>
+### Job Class Structure
 
-	class SendEmail {
+Job classes are very simple, normally containing only a `handle` method which is called when the job is processed by the queue. To get started, let's take a look at an example job class:
 
-		public function fire($job, $data)
-		{
+	<?php
+
+	namespace App\Jobs;
+
+	use Mail;
+	use App\User;
+	use App\Jobs\Job;
+	use Illuminate\Contracts\Mail\Mailer;
+	use Illuminate\Queue\SerializesModels;
+	use Illuminate\Queue\InteractsWithQueue;
+	use Illuminate\Contracts\Bus\SelfHandling;
+	use Illuminate\Contracts\Queue\ShouldQueue;
+
+	class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
+	{
+	    use InteractsWithQueue, SerializesModels;
+
+	    protected $user;
+
+	    /**
+	     * Create a new job instance.
+	     *
+	     * @param  User  $user
+	     * @return void
+	     */
+	    public function __construct(User $user)
+	    {
+	        $this->user = $user;
+	    }
+
+	    /**
+	     * Execute the job.
+	     *
+	     * @param  Mailer  $mailer
+	     * @return void
+	     */
+	    public function handle(Mailer $mailer)
+	    {
+	    	$mailer->send('emails.reminder', ['user' => $this->user], function ($m) {
+	    		//
+	    	});
+
+	    	$user->reminders()->create(...);
+	    }
+	}
+
+In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models will be gracefully serialized and unserialized when the job is processing. If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
+
+The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
+
+#### When Things Go Wrong
+
+If an exception is thrown while the job is being processed, it will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The number of maximum attempts is defined by the `--tries` switch used on the `queue:listen` or `queue:work` Artisan jobs. More information on running the queue listener [can be found below](#running-the-queue-listener).
+
+#### Manually Releasing Jobs
+
+If you would like to `release` the job manually, the `InteractsWithQueue` trait, which is already included in your generated job class, provides access to the queue job `release` method. The `release` method accepts one argument: the number of seconds you wish to wait until the job is made available again:
+
+	public function handle(Mailer $mailer)
+	{
+		if (condition) {
+			$this->release(10);
+		}
+	}
+
+#### Checking The Number Of Run Attempts
+
+As noted above, if an exception occurs while the job is being processed, it will automatically be released back onto the queue. You may check the number of attempts that have been made to run the job using the `attempts` method:
+
+	public function handle(Mailer $mailer)
+	{
+		if ($this->attempts() > 3) {
 			//
 		}
-
 	}
 
-注意如果你未在第一個參數指定工作處理的類別及方法(如 SendEmail@process)，那 `fire` 為類別中預設必需的方法用來接收被推送至佇列 `Job` 實例以及 `data`。
+<a name="pushing-jobs-onto-the-queue"></a>
+## Pushing Jobs Onto The Queue
 
-#### 指定一個特定的處理程序方法
+The default Laravel controller located in `app/Http/Controllers/Controller.php` uses a `DispatchesJob` trait. This trait provides several methods allowing you to conveniently push jobs onto the queue, such as the `dispatch` method:
 
-假如你想要用一個 `fire` 以外的方法處理工作，你可以在推送工作時指定方法如下：
+	<?php
 
-	Queue::push('SendEmail@send', array('message' => $message));
+	namespace App\Http\Controllers;
 
-#### 指定佇列使用特定連線
+	use App\User;
+	use Illuminate\Http\Request;
+	use App\Jobs\SendReminderEmail;
+	use App\Http\Controllers\Controller;
 
-你也可指定佇列工作送至指定的連線：
-
-	Queue::push('SendEmail@send', array('message' => $message), 'emails');
-
-#### 傳送相同的資料去多個連線
-
-如果你需要傳送一樣的資料去幾個不同的佇列伺服器，你也可以使用 `Queue::bulk` 方法：
-
-	Queue::bulk(array('SendEmail', 'NotifyUser'), $payload);
-
-#### 延遲執行一個工作
-
-有時後你也希望延遲一個佇列工作的執行，舉例來說你希望一個佇列工作在客戶註冊 15 分鐘後寄送一個 e-mail，你可以使用 `Queue::later` 方法來完成這件事情：
-
-	$date = Carbon::now()->addMinutes(15);
-
-	Queue::later($date, 'SendEmail@send', array('message' => $message));
-
-在這個範例中，我們使用 [Carbon](https://github.com/briannesbitt/Carbon) 日期函式庫來指定我們希望佇列工作希望延遲的時間，另外你也可傳送一個整數來設定你希望延遲的秒數。
-
-#### 刪除一個處理中的工作
-
-當你已經開始處理完成一個佇列工作，它就必需在佇列中刪除，我們可以透過 `Job` 實例中的 `delete` 方法來完成這件事：
-
-	public function fire($job, $data)
+	class UserController extends Controller
 	{
-		// Process the job...
+		/**
+		 * Send a reminder e-mail to a given user.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function sendReminderEmail(Request $request, $id)
+		{
+			$user = User::findOrFail($id);
 
-		$job->delete();
+			$this->dispatch(new SendReminderEmail($user));
+		}
 	}
 
-#### 釋放一個工作回到佇列中
+Of course, sometimes you may wish to dispatch a job from somewhere in your application besides a route or controller. For that reason, you can include the `DispatchesJobs` trait on any of the classes in your application to gain access to its various dispatch methods. For example, here is a sample class that uses the trait:
 
-假如你希望將一個工作釋放回佇列之中，你可以透過 `release` 方法來完成這件事情：
+	<?php
 
-	public function fire($job, $data)
+	namespace App;
+
+	use Illuminate\Foundation\Bus\DispatchesJobs;
+
+	class ExampleClass
 	{
-		// Process the job...
-
-		$job->release();
+		use DispatchesJobs;
 	}
 
-你也可以指定秒數來讓這個工作延遲釋放：
+#### Specifying The Queue For A Job
 
-	$job->release(5);
+You may also specify the queue a job should be sent to.
 
-#### 檢查工作執行次數
+By pushing jobs to different queues, you may "categorize" your queued jobs, and even prioritize how many workers you assign to various queues. This does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method on the job instance. The `onQueue` method is provided by the base `App\Jobs\Job` class included with Laravel:
 
-當一個工作執行後發生錯誤，這個工作將會自動的釋放回佇列當中，你可以透過 `attempts` 方法來檢查這個工作已經被執行的次數：
+	<?php
 
-	if ($job->attempts() > 3)
+	namespace App\Http\Controllers;
+
+	use App\User;
+	use Illuminate\Http\Request;
+	use App\Jobs\SendReminderEmail;
+	use App\Http\Controllers\Controller;
+
+	class UserController extends Controller
 	{
-		//
+		/**
+		 * Send a reminder e-mail to a given user.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function sendReminderEmail(Request $request, $id)
+		{
+			$user = User::findOrFail($id);
+
+			$job = (new SendReminderEmail($user))->onQueue('emails');
+
+			$this->dispatch($job);
+		}
 	}
 
-#### 取得一個工作的 ID
+<a name="delayed-jobs"></a>
+### Delayed Jobs
 
-你也可以取得這個工作的識別碼：
+Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You may accomplish this using the `delay` method on your job class, which is provided by the `Illuminate\Bus\Queueable` trait:
 
-	$job->getJobId();
+	<?php
 
-<a name="queueing-closures"></a>
-## 佇列閉包
+	namespace App\Http\Controllers;
 
-你也可以推送一個閉包去佇列，這個方法非常的方便及快速的來處理需要使用佇列的簡單的任務：
+	use App\User;
+	use Illuminate\Http\Request;
+	use App\Jobs\SendReminderEmail;
+	use App\Http\Controllers\Controller;
 
-	Queue::push(function($job) use ($id)
+	class UserController extends Controller
 	{
-		Account::delete($id);
+		/**
+		 * Send a reminder e-mail to a given user.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function sendReminderEmail(Request $request, $id)
+		{
+			$user = User::findOrFail($id);
 
-		$job->delete();
-	});
+			$job = (new SendReminderEmail($user))->delay(60);
 
-> **註記:** 要讓一個元件變數可以在佇列閉包中可以使用我們會透過 `use` 指令，試著傳送主鍵及重覆使用的相關模組在你的佇列工作中，這可以避免其他的序列化行為。
+			$this->dispatch($job);
+		}
+	}
 
-當使用 Iron.io [push queues](#push-queues) 時,你應該在佇列閉包中采取一些其他的預防措施，我們應該在執行工作收到佇列資料時檢查token是否真來自 Iron.io，舉例來說你推送一個佇列工作到 `https://yourapp.com/queue/receive?token=SecretToken`，接下來在你的工作收到佇列的請求時，你就可以檢查token的值是否正確。
+In this example, we're specifying that the job should be delayed in the queue for 60 seconds before being made available to workers.
+
+> **Note:** The Amazon SQS service has a maximum delay time of 15 minutes.
+
+<a name="dispatching-jobs-from-requests"></a>
+### Dispatching Jobs From Requests
+
+It is very common to map HTTP request variables into jobs. So, instead of forcing you to do this manually for each request, Laravel provides some helper methods to make it a cinch. Let's take a look at the `dispatchFrom` method available on the `DispatchesJobs` trait. By default, this trait is included on the base Laravel controller class:
+
+	<?php
+
+	namespace App\Http\Controllers;
+
+	use Illuminate\Http\Request;
+	use App\Http\Controllers\Controller;
+
+	class CommerceController extends Controller
+	{
+		/**
+		 * Process the given order.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function processOrder(Request $request, $id)
+		{
+			// Process the request...
+
+			$this->dispatchFrom('App\Jobs\ProcessOrder', $request);
+		}
+	}
+
+This method will examine the constructor of the given job class and extract variables from the HTTP request (or any other `ArrayAccess` object) to fill the needed constructor parameters of the job. So, if our job class accepts a `productId` variable in its constructor, the job bus will attempt to pull the `productId` parameter from the HTTP request.
+
+You may also pass an array as the third argument to the `dispatchFrom` method. This array will be used to fill any constructor parameters that are not available on the request:
+
+	$this->dispatchFrom('App\Jobs\ProcessOrder', $request, [
+		'taxPercentage' => 20,
+	]);
 
 <a name="running-the-queue-listener"></a>
-## 執行一個佇列監聽
+## Running The Queue Listener
 
-Laravel 內含一個 Artisan 指令，它將推送到佇列的工作拉來下執行，你可以使用 `queue:listen` 命令，來執行這件常駐任務：
+#### Starting The Queue Listener
 
-#### 開始佇列監聽
+Laravel includes an Artisan command that will run new jobs as they are pushed onto the queue. You may run the listener using the `queue:listen` command:
 
 	php artisan queue:listen
 
-你也可以指定特定佇列連線讓監聽器使用：
+You may also specify which queue connection the listener should utilize:
 
 	php artisan queue:listen connection
 
-注意當這個任務開始時，這將會一直持續執行到他被手動停止，你也可以使用一個處理監控像是 [Supervisor](http://supervisord.org/) 來確保這個佇列監聽不會停止執行。
+Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
 
-你也可以在 `listen` 指令中使用逗號分隔不同的佇列連線來設定佇列的重要性：
+#### Queue Priorities
+
+You may pass a comma-delimited list of queue connections to the `listen` job to set queue priorities:
 
 	php artisan queue:listen --queue=high,low
 
-在這個範列中 `high-connection` 將總是會優先處理佇列的工作，相對於 `low-connection`
+In this example, jobs on the `high` queue will always be processed before moving onto jobs from the `low` queue.
 
-#### 指定工作逾時參數
+#### Specifying The Job Timeout Parameter
 
-你也可以設定給每個工作允許執行的秒數：
+You may also set the length of time (in seconds) each job should be allowed to run:
 
 	php artisan queue:listen --timeout=60
 
-#### 指定佇列休息時間
+#### Specifying Queue Sleep Duration
 
-此外，你也可以指定讓監聽器在拉取新工作時要等待幾秒：
+In addition, you may specify the number of seconds to wait before polling for new jobs:
 
 	php artisan queue:listen --sleep=5
 
-注意佇列只會佇列上沒有工作時休息，假如有許多可執行的工作，佇列監聽將持續的處理工作不會休息
+Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
 
-#### 處理第佇列上的一個工作
+<a name="supervisor-configuration"></a>
+### Supervisor Configuration
 
-當你只想處理佇列上的一個工作你可以使用 `queue:work` 指令：
+Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:listen` or `queue:work` commands if they fail. To install Supervisor on Ubuntu, you may use the following command:
 
-	php artisan queue:work
+	sudo apt-get install supervisor
 
-<a name="daemon-queue-worker"></a>
-## 常駐佇列處理器
+Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors a `queue:work` process:
 
-`queue:work` 也包含了一個 `--daemon` 選項強迫佇列處理器可以持續處理工作即使重新啟動框架，這個作法相對的比 `queue:listen` 可有效的減少CPU的使用量，但是卻增加了你佈署時正在處理中的佇列任務的複雜性。
+	[program:laravel-worker]
+	process_name=%(program_name)s_%(process_num)02d
+	command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3 --daemon
+	autostart=true
+	autorestart=true
+	user=forge
+	numprocs=8
+	redirect_stderr=true
+	stdout_logfile=/home/forge/app.com/worker.log
 
-當開始一個佇列處理器於常駐模式，使用 `--daemon` 旗標：
+In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
+
+	sudo supervisorctl reread
+
+	sudo supervisorctl update
+
+	sudo supervisorctl start laravel-worker
+
+For more information on configuring and using Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html). Alternatively, you may use [Laravel Forge](https://forge.laravel.com) to automatically configure and manage your Supervisor configuration from a convenient web interface.
+
+<a name="daemon-queue-listener"></a>
+### Daemon Queue Listener
+
+The `queue:work` Artisan command includes a `--daemon` option for forcing the queue worker to continue processing jobs without ever re-booting the framework. This results in a significant reduction of CPU usage when compared to the `queue:listen` command:
+
+To start a queue worker in daemon mode, use the `--daemon` flag:
 
 	php artisan queue:work connection --daemon
 
@@ -184,71 +370,130 @@ Laravel 內含一個 Artisan 指令，它將推送到佇列的工作拉來下執
 
 	php artisan queue:work connection --daemon --sleep=3 --tries=3
 
+As you can see, the `queue:work` job supports most of the same options available to `queue:listen`. You may use the `php artisan help queue:work` job to view all of the available options.
 
-如你所見 `queue:work` 指令支援 `queue:listen` 大多相同的選項參數，你也可使用 `php artisan help queue:work` 指令來觀看全部可用的選項參數。
+#### Coding Considerations For Daemon Queue Listeners
 
-### 佈署常駐佇列處理器
+Daemon queue workers do not restart the framework before processing each job. Therefore, you should be careful to free any heavy resources before your job finishes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
 
-最簡單的方式佈署一個應用程式使用常駐佇列處理器就是將應用程式在開始佈署時使用維護模式，你可以使用 `php artisan down` 指令來完成這件事情，當這個應用程式在維護模式，Laravel 將不會允許任何來自佇列上的新工作，但會持續的處理已存在的工作，當過了足夠的時間所有你正在執行的工作都已處理完(通常不會很久約 30-60 秒)，你可以停止處理器及繼續處理你的佈署工作。
+Similarly, your database connection may disconnect when being used by long-running daemon. You may use the `DB::reconnect` method to ensure you have a fresh connection.
 
-假如你使用 Supervisor 或 Laravel Forge，那你通常就會使用下面的指令來停止處理器：
+<a name="deploying-with-daemon-queue-listeners"></a>
+### Deploying With Daemon Queue Listeners
+
+Since daemon queue workers are long-lived processes, they will not pick up changes in your code without being restarted. So, the simplest way to deploy an application using daemon queue workers is to restart the workers during your deployment script. You may gracefully restart all of the workers by including the following command in your deployment script:
 
 	php artisan queue:restart
 
-當這些佇列都處理完且你更新完你的伺服器上的程式碼，你應該重啟常駐佇列處理器，假如你使用 Supervisor，通常會使用下面的指令：
+This command will gracefully instruct all queue workers to restart after they finish processing their current job so that no existing jobs are lost.
 
-<a name="push-queues"></a>
-## 推送佇列
+> **Note:** This command relies on the cache system to schedule the restart. By default, APCu does not work for CLI jobs. If you are using APCu, add `apc.enable_cli=1` to your APCu configuration.
 
-你可以利用強大的 Laravel 4 佇列架構來進行推送佇列工作，不需要執行任何的常駐或背景監聽，目前只支援 [Iron.io](http://iron.io) 驅動，在你開始前建立一個 Iron.io 帳號及新增你的 Iron 憑證到 `app/config/queue.php` 設定檔。
+<a name="dealing-with-failed-jobs"></a>
+## Dealing With Failed Jobs
 
-#### 註冊一個推送佇列訂閱
+Since things don't always go as planned, sometimes your queued jobs will fail. Don't worry, it happens to the best of us! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into a `failed_jobs` table. The name of the failed jobs can be configured via the `config/queue.php` configuration file.
 
-接下來，你可以使用 `queue:subscribe` 指令註冊一個URL，這將會接收新的推送佇列工作：
-
-	php artisan queue:subscribe queue_name http://foo.com/queue/receive
-
-現在當你登入你的Iron儀表板，你將會看到你新的推送佇列，以及訂閱的 URL，你可以訂閱許多的URLs給你希望的佇列，接下來建立一個 route 給你的 `queue/receive` 及從 `Queue::marshal` 方法回傳回應：
-
-	Route::post('queue/receive', function()
-	{
-		return Queue::marshal();
-	});
-
-`marshal` 方法會將工作處理到正確的類別，而發送工作到佇列中只要使用一樣的 `Queue::push` 方法。
-
-<a name="failed-jobs"></a>
-## 已失敗的工作
-
-事情往往不會如你預期的一樣，有時後你推送工作到佇列會失敗，別擔心，Laravel 包含一個簡單的方法去指定一個工作最多可以被執行幾次，在工作被執行到一定的次數時，他將會新增至 `failed_jobs` 資料表裡，然後失敗工作的資料表名稱可以在 `app/config/queue.php` 裡進行設定：
-
-要新增一個migration建立 `failed_jobs` 資料表，你可以使用 `queue:failed-table` 指令：
+To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
 
 	php artisan queue:failed-table
 
-你可以指定一個最大值來限制一個工作應該最多被執行幾次透過 `--tries` 這個選項參數在你執行 `queue:listen` 的時後：
+When running your [queue listener](#running-the-queue-listener), you may specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:listen` command:
 
 	php artisan queue:listen connection-name --tries=3
 
-假如你會想註冊一個事件，這個事件會將會在佇列失敗時被呼叫，你可以使用 `Queue::failing` 方法，這個事件是一個很好的機會讓你可以通知你的團隊透過 e-mail 或 [HipChat](https://www.hipchat.com)。
+<a name="failed-job-events"></a>
+### Failed Job Events
 
-	Queue::failing(function($connection, $job, $data)
+If you would like to register an event that will be called when a queued job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via e-mail or [HipChat](https://www.hipchat.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+
+	<?php
+
+	namespace App\Providers;
+
+	use Queue;
+	use Illuminate\Support\ServiceProvider;
+
+	class AppServiceProvider extends ServiceProvider
 	{
-		//
-	});
+	    /**
+	     * Bootstrap any application services.
+	     *
+	     * @return void
+	     */
+		public function boot()
+		{
+			Queue::failing(function ($connection, $job, $data) {
+				// Notify team of failing job...
+			});
+		}
 
-要看到所有的失敗工作，你可以使用 `queue:failed` 指令：
+		/**
+		 * Register the service provider.
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			//
+		}
+	}
+
+#### Failed Method On Job Classes
+
+For more granular control, you may define a `failed` method directly on a queue job class, allowing you to perform job specific actions when a failure occurs:
+
+	<?php
+
+	namespace App\Jobs;
+
+	use App\Jobs\Job;
+	use Illuminate\Queue\SerializesModels;
+	use Illuminate\Queue\InteractsWithQueue;
+	use Illuminate\Contracts\Bus\SelfHandling;
+	use Illuminate\Contracts\Queue\ShouldQueue;
+
+	class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
+	{
+	    use InteractsWithQueue, SerializesModels;
+
+	    /**
+	     * Execute the job.
+	     *
+	     * @param  Mailer  $mailer
+	     * @return void
+	     */
+	    public function handle(Mailer $mailer)
+	    {
+			//
+	    }
+
+	    /**
+	     * Handle a job failure.
+	     *
+	     * @return void
+	     */
+		public function failed()
+		{
+			// Called when the job is failing...
+		}
+	}
+
+<a name="retrying-failed-jobs"></a>
+### Retrying Failed Jobs
+
+To view all of your failed jobs that have been inserted into your `failed_jobs` database table, you may use the `queue:failed` Artisan command:
 
 	php artisan queue:failed
 
-`queue:failed` 指令將會列出工作的 ID、連線、佇列名稱及失敗的時間，工作的 ID 也可以重新執行一個已經失敗的工作，例如一個已經失敗的工作他的 ID 是 5，我們可以使用下面的指令：
+The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of 5, the following command should be issued:
 
 	php artisan queue:retry 5
 
-假如你會想刪除一個已失敗的工作，你可以使用 `queue:forget` 指令：
+If you would like to delete a failed job, you may use the `queue:forget` command:
 
 	php artisan queue:forget 5
 
-要刪除全部失敗的工作你可以使用 `queue:flush` 指令：
+To delete all of your failed jobs, you may use the `queue:flush` command:
 
 	php artisan queue:flush

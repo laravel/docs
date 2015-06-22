@@ -1,80 +1,158 @@
 # Redis
 
-- [介紹](#introduction)
-- [設定檔](#configuration)
-- [使用方式](#usage)
-- [管線](#pipelining)
+- [Introduction](#introduction)
+- [Basic Usage](#basic-usage)
+	- [Pipelining Commands](#pipelining-commands)
+- [Pub / Sub](#pubsub)
 
 <a name="introduction"></a>
-## 介紹
+## Introduction
 
-[Redis](http://redis.io) 是開源，先進的鍵值對儲存庫。由於它可用的鍵包含了[字串](http://redis.io/topics/data-types#strings)，[雜湊](http://redis.io/topics/data-types#hashes)，[列表](http://redis.io/topics/data-types#lists)，[集合](http://redis.io/topics/data-types#sets)，和[有序集合](http://redis.io/topics/data-types#sorted-sets)，因此常被稱作資料結構伺服器。
-
-> **提醒：** 如果你用 PECL 安裝了 Redis PHP extension，則需要重新命名 `app/config/app.php` 裡的 Redis 別名。
+[Redis](http://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](http://redis.io/topics/data-types#strings), [hashes](http://redis.io/topics/data-types#hashes), [lists](http://redis.io/topics/data-types#lists), [sets](http://redis.io/topics/data-types#sets), and [sorted sets](http://redis.io/topics/data-types#sorted-sets). Before using Redis with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
 
 <a name="configuration"></a>
-## 設定檔
+### Configuration
 
-應用程式的 Redis 設定檔在 **app/config/database.php** 。在這個檔案裡，你會看到 **redis** 陣列，裡面有應用程式使用的 Redis 伺服器資料：
+The Redis configuration for your application is located in the `config/database.php` configuration file. Within this file, you will see a `redis` array containing the Redis servers used by your application:
 
-	'redis' => array(
+    'redis' => [
 
-		'cluster' => true,
+        'cluster' => false,
 
-		'default' => array('host' => '127.0.0.1', 'port' => 6379),
+        'default' => [
+            'host'     => '127.0.0.1',
+            'port'     => 6379,
+            'database' => 0,
+        ],
 
-	),
+    ],
 
-預設的伺服器設定對於開發應該是足夠的。然而，你可以根據使用環境自由修改陣列資料。只要給每個 Redis 一個名稱，並且設定伺服器的 host 和 port。
+The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Simply give each Redis server a name, and specify the host and port used by the server.
 
-`cluster` 選項會讓 Laravel 的 Redis 客戶端在所有 Redis 節點間執行客戶端分片（ client-side sharding ），讓你建立節點池，並因此擁有大量的 RAM 可用。然而，客戶端分片的節點不能執行容錯轉移；因此，這主要適合用可以從另一台主要資料儲存庫取得的快取資料。
+The `cluster` option will tell the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
 
-如果你的 Redis 伺服器需要認證，你可以在 Redis 伺服器設定檔裡加入 `password` 參數設定。
+If your Redis server requires authentication, you may supply a password by adding a `password` configuration item to your Redis server configuration array.
 
-<a name="usage"></a>
-## 使用方式
+> **Note:** If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
 
-你可以經由 `Redis::connection` 方法得到 Redis 實例：
+<a name="basic-usage"></a>
+## Basic Usage
 
-	$redis = Redis::connection();
+You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](http://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the `GET` command on Redis by calling the `get` method on the `Redis` facade:
 
-你會得到一個使用 Redis 預設伺服器的實例。如果你沒有使用伺服器叢集，你可以在 `connection` 方法傳入定義在 Redis 設定檔的伺服器名稱，以連到特定伺服器：
+	<?php
 
-	$redis = Redis::connection('other');
+	namespace App\Http\Controllers;
 
-一旦你有了 Redis 客戶端實例，就可以使用實例發出任何 [Redis 命令](http://redis.io/commands)。Laravel 使用魔術方法傳遞命令到伺服器：
+	use Redis;
+	use App\Http\Controllers\Controller;
 
-	$redis->set('name', 'Taylor');
+	class UserController extends Controller
+	{
+		/**
+		 * Show the profile for the given user.
+		 *
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function showProfile($id)
+		{
+			$user = Redis::get('user:profile:'.$id);
 
-	$name = $redis->get('name');
+			return view('user.profile', ['user' => $user]);
+		}
+	}
 
-	$values = $redis->lrange('names', 5, 10);
-
-注意，傳入命令的參數僅只是傳遞到魔術方法裡。當然，你不一定要使用魔術方法，你也可以使用 `command` 方法傳遞命令到伺服器：
-
-	$values = $redis->command('lrange', array(5, 10));
-
-若你只想對預設伺服器下命令，可以使用 `Redis` 類別的靜態魔術方法：
+Of course, as mentioned above, you may call any of the Redis commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server, so simply pass the arguments the Redis command expects:
 
 	Redis::set('name', 'Taylor');
 
-	$name = Redis::get('name');
-
 	$values = Redis::lrange('names', 5, 10);
 
-> **提示：** 也可以使用 Redis 作為 Laravel 的[快取](/docs/cache) 和 [session](/docs/session) 驅動。
+Alternatively, you may also pass commands to the server using the `command` method, which accepts the name of the command as its first argument, and an array of values as its second argument:
 
-<a name="pipelining"></a>
-## 管線
+	$values = Redis::command('lrange', [5, 10]);
 
-當你想要一次發送很多命令到伺服器時可以使用管線 。使用 `pipeline` 方法：
+#### Using Multiple Redis Connections
 
-#### 發送多個命令到伺服器
+You may get a Redis instance by calling the `Redis::connection` method:
 
-	Redis::pipeline(function($pipe)
-	{
-		for ($i = 0; $i < 1000; $i++)
-		{
+	$redis = Redis::connection();
+
+This will give you an instance of the default Redis server. If you are not using server clustering, you may pass the server name to the `connection` method to get a specific server as defined in your Redis configuration:
+
+	$redis = Redis::connection('other');
+
+<a name="pipelining-commands"></a>
+### Pipelining Commands
+
+Pipelining should be used when you need to send many commands to the server in one operation. The `pipeline` method accepts one argument: a `Closure` that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be executed within a single operation:
+
+	Redis::pipeline(function ($pipe) {
+		for ($i = 0; $i < 1000; $i++) {
 			$pipe->set("key:$i", $i);
 		}
+	});
+
+<a name="pubsub"></a>
+## Pub / Sub
+
+Laravel also provides a convenient interface to the Redis `publish` and `subscribe` commands. These Redis commands allow you to listen for messages on a given "channel". You may publish messages to the channel from another application, or even using another programming language, allowing easy communication between applications / processes.
+
+First, let's setup a listener on a channel via Redis using the `subscribe` method. We will place this method call within an [Artisan command](/docs/{{version}}/commands) since calling the `subscribe` method begins a long-running process:
+
+	<?php
+
+	namespace App\Console\Commands;
+
+	use Redis;
+	use Illuminate\Console\Command;
+
+	class RedisSubscribe extends Command
+	{
+        /**
+         * The name and signature of the console command.
+         *
+         * @var string
+         */
+        protected $signature = 'redis:subscribe';
+
+	    /**
+	     * The console command description.
+	     *
+	     * @var string
+	     */
+	    protected $description = 'Subscribe to a Redis channel';
+
+	    /**
+	     * Execute the console command.
+	     *
+	     * @return mixed
+	     */
+	    public function handle()
+	    {
+			Redis::subscribe(['test-channel'], function($message) {
+				echo $message;
+			});
+	    }
+	}
+
+Now, we may publish messages to the channel using the `publish` method:
+
+	Route::get('publish', function () {
+		// Route logic...
+
+		Redis::publish('test-channel', json_encode(['foo' => 'bar']));
+	});
+
+#### Wildcard Subscriptions
+
+Using the `psubscribe` method, you may subscribe to a wildcard channel, which is useful for catching all messages on all channels. The `$channel` name will be passed as the second argument to the provided callback `Closure`:
+
+	Redis::psubscribe(['*'], function($message, $channel) {
+		echo $message;
+	});
+
+	Redis::psubscribe(['users.*'], function($message, $channel) {
+		echo $message;
 	});

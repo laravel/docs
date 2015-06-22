@@ -1,217 +1,174 @@
-# 控制器 (Controllers)
+# HTTP Controllers
 
-- [基本控制器](#basic-controllers)
-- [控制器過濾器(Controller filters)](#controller-filters)
-- [RESTful 控制器](#restful-controllers)
-- [資源控制器](#resource-controllers)
-- [對應遺漏的方法](#handling-missing-methods)
+- [Introduction](#introduction)
+- [Basic Controllers](#basic-controllers)
+- [Controller Middleware](#controller-middleware)
+- [RESTful Resource Controllers](#restful-resource-controllers)
+	- [Partial Resource Routes](#restful-partial-resource-routes)
+	- [Naming Resource Routes](#restful-naming-resource-routes)
+	- [Nested Resources](#restful-nested-resources)
+	- [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
+- [Implicit Controllers](#implicit-controllers)
+- [Dependency Injection & Controllers](#dependency-injection-and-controllers)
+- [Route Caching](#route-caching)
+
+<a name="introduction"></a>
+## Introduction
+
+Instead of defining all of your request handling logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related HTTP request handling logic into a class. Controllers are typically stored in the `app/Http/Controllers` directory.
 
 <a name="basic-controllers"></a>
-## 基本 Controllers
+## Basic Controllers
 
-除了在單一 `routes.php` 檔中定義所有路由層邏輯外，你可能也想利用控制器類別來整合這些行為模式。控制器可以統合相關的路由邏輯到同一個類別中，並且利用更先進的框架特性的優勢，如自動的[依賴注入](/docs/ioc)。
+Here is an example of a basic controller class. All Laravel controllers should extend the base controller class included with the default Laravel installation:
 
+	<?php
 
-控制器一般存放在 `app/controllers` 目錄下，這個目錄已預設註冊在 `composer.json` 的 `classmap` 中。然而，技術上控制器可以放在任何目錄或是子目錄。路由宣告與控制器類別存放在哪個位址並無關係。所以，只要 Composer 知道如何自動載入控制器類別，你就可以放在任何你想要的地方。
+	namespace App\Http\Controllers;
 
-下面是一個基本的控制器類別例子：
+	use App\Http\Controllers\Controller;
 
-	class UserController extends BaseController {
-
+	class UserController extends Controller
+	{
 		/**
 		 * Show the profile for the given user.
+		 *
+		 * @param  int  $id
+		 * @return Response
 		 */
 		public function showProfile($id)
 		{
-			$user = User::find($id);
-
-			return View::make('user.profile', array('user' => $user));
+			return view('user.profile', ['user' => User::findOrFail($id)]);
 		}
-
 	}
 
-所有的控制器都應該繼承自 `BaseController` 類別。`BaseController` 也放在 `app/controllers` 目錄下，`BaseController` 可以作為放置共同控制器邏輯的地方。`BaseController` 繼承了框架的 `Controller` 類別。現在，我們可以像這樣將請求從路由導至控制器行為中：
+We can route to the controller action like so:
 
 	Route::get('user/{id}', 'UserController@showProfile');
 
-如果你選擇使用 PHP 命名空間來分層或整合你的控制器，只要在定義路由時使用完整的類別名稱：
+Now, when a request matches the specified route URI, the `showProfile` method on the `UserController` class will be executed. Of course, the route parameters will also be passed to the method.
 
-	Route::get('foo', 'Namespace\FooController@method');
+#### Controllers & Namespaces
 
-> **注意：**既然我們使用 [Composer](http://getcomposer.org) 自動載入 PHP 類別，控制器可以放在檔案系統的任何地方，只要 Composer 知道如何載入他們。對你的應用程式而言，控制器目錄並沒有強制使用怎樣目錄結構。路由至控制器是完全與檔案系統脫鉤的。
+It is very important to note that we did not need to specify the full controller namespace when defining the controller route. We only defined the portion of the class name that comes after the `App\Http\Controllers` namespace "root". By default, the `RouteServiceProvider` will load the `routes.php` file within a route group containing the root controller namespace.
 
-你可以為控制器路由指定名稱：
+If you choose to nest or organize your controllers using PHP namespaces deeper into the `App\Http\Controllers` directory, simply use the specific class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you would register a route like so:
 
-	Route::get('foo', array('uses' => 'FooController@method',
-											'as' => 'name'));
+	Route::get('foo', 'Photos\AdminController@method');
 
-你可以使用 `URL::action` 方法或者是 `action` 輔助方法來產生到控制器行為的 URL：
+#### Naming Controller Routes
 
-	$url = URL::action('FooController@method');
+Like Closure routes, you may specify names on controller routes:
+
+	Route::get('foo', ['uses' => 'FooController@method', 'as' => 'name']);
+
+Once you have assigned a name to the controller route, you can easily generate URLs to the action. To generate a URL to a controller action, use the `action` helper method. Again, we only need to specify the part of the controller class name that comes after the base `App\Http\Controllers` namespace:
 
 	$url = action('FooController@method');
 
-你可以利用 `currentRouteAction` 方法取得正在執行的控制器行為名稱：
+You may also use the `route` helper to generate a URL to a named controller route:
 
-	$action = Route::currentRouteAction();
+	$url = route('name');
 
-<a name="controller-filters"></a>
-## 控制器過濾器
+<a name="controller-middleware"></a>
+## Controller Middleware
 
-[過濾器(Filter)](/docs/routing#route-filters) 在控制器路由中宣告方式，如同"一般"的路由一樣。
+[Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes like so:
 
-	Route::get('profile', array('before' => 'auth',
-				'uses' => 'UserController@showProfile'));
+	Route::get('profile', [
+		'middleware' => 'auth',
+		'uses' => 'UserController@showProfile'
+	]);
 
-然而，你也可以在控制器中指定過濾器：
+However, it is more convenient to specify middleware within your controller's constructor. Using the `middleware` method from your controller's constructor, you may easily assign middleware to the controller. You may even restrict the middleware to only certain methods on the controller class:
 
-	class UserController extends BaseController {
-
+	class UserController extends Controller
+	{
 		/**
 		 * Instantiate a new UserController instance.
+		 *
+		 * @return void
 		 */
 		public function __construct()
 		{
-			$this->beforeFilter('auth', array('except' => 'getLogin'));
+			$this->middleware('auth');
 
-			$this->beforeFilter('csrf', array('on' => 'post'));
+			$this->middleware('log', ['only' => ['fooAction', 'barAction']]);
 
-			$this->afterFilter('log', array('only' =>
-								array('fooAction', 'barAction')));
+			$this->middleware('subscribed', ['except' => ['fooAction', 'barAction']]);
 		}
-
 	}
 
-你可以在控制器裡使用閉合函式定義過濾器：
+<a name="restful-resource-controllers"></a>
+## RESTful Resource Controllers
 
-	class UserController extends BaseController {
+Resource controllers make it painless to build RESTful controllers around resources. For example, you may wish to create a controller that handles HTTP requests regarding "photos" stored by your application. Using the `make:controller` Artisan command, we can quickly create such a controller:
 
-		/**
-		 * Instantiate a new UserController instance.
-		 */
-		public function __construct()
-		{
-			$this->beforeFilter(function()
-			{
-				//
-			});
-		}
+	php artisan make:controller PhotoController
 
-	}
+The Artisan command will generate a controller file at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations.
 
-如果你想使用控制器裡的方法當做過濾器，你可以使用`@`語法定義過濾器：
-
-	class UserController extends BaseController {
-
-		/**
-		 * Instantiate a new UserController instance.
-		 */
-		public function __construct()
-		{
-			$this->beforeFilter('@filterRequests');
-		}
-
-		/**
-		 * Filter the incoming requests.
-		 */
-		public function filterRequests($route, $request)
-		{
-			//
-		}
-
-	}
-
-<a name="restful-controllers"></a>
-## RESTful 控制器
-
-Laravel 讓你可以簡單的經由定義一個路由規則來處理控制器裡的所有遵照 REST 命名規範的行為。首先，使用 `Route::controller` 方法定義路由：
-
-	Route::controller('users', 'UserController');
-
-`controller` 方法可以接收兩個參數，第一個是控制器對應的基本 URI，第二個是控制器的類別名稱。接下來，只要把對應的 HTTP 請求動詞前綴加在控制器方法前：
-
-	class UserController extends BaseController {
-
-		public function getIndex()
-		{
-			//
-		}
-
-		public function postProfile()
-		{
-			//
-		}
-		
-		public function anyLogin()
-		{
-			//
-		}
-
-	}
-
-`index` 方法會對應到 controller 的根 URI，以上面的例子來說，就是 `users`。
-
-若你的控制器方法包含很多單字，你可以在 URI 使用 "破折號(-)" 來對應方法。例如 `UserController` 中，如下的方法會對應到 `users/admin-profile` URI：
-
-	public function getAdminProfile() {}
-
-<a name="resource-controllers"></a>
-## 資源控制器
-
-
-資源控制器可以簡單的建立跟資源相關的 RESTful 控制器。例如，你可能想要建立控制器管理應用程式裡儲存的照片。透過 Artisan 命令列工具裡的 `controller:make` 以及使用 `Route::resource` 方法，可以很快的建立 控制器。
-
-從命令列執行下列命令建立控制器：
-
-	php artisan controller:make PhotoController
-
-然後我們可以註冊一個資源化路由至控制器上：
+Next, you may register a resourceful route to the controller:
 
 	Route::resource('photo', 'PhotoController');
 
-此單一路由宣告創建了處理一系列對圖片資源的 RESTful 行為路由。同樣的，剛才產生的控制器對這些動作已經有預建的對應方法，以及註解告知對應的 URI 和所處理的請求動作。
+This single route declaration creates multiple routes to handle a variety of RESTful actions on the photo resource. Likewise, the generated controller will already have methods stubbed for each of these actions, including notes informing you which URIs and verbs they handle.
 
-#### 資源控制器對應的動作
+#### Actions Handled By Resource Controller
 
-Verb      | Path                        | Action       | Route Name
-----------|-----------------------------|--------------|---------------------
-GET       | /resource                   | index        | resource.index
-GET       | /resource/create            | create       | resource.create
-POST      | /resource                   | store        | resource.store
-GET       | /resource/{resource}        | show         | resource.show
-GET       | /resource/{resource}/edit   | edit         | resource.edit
-PUT/PATCH | /resource/{resource}        | update       | resource.update
-DELETE    | /resource/{resource}        | destroy      | resource.destroy
+Verb      | Path                  | Action       | Route Name
+----------|-----------------------|--------------|---------------------
+GET       | `/photo`              | index        | photo.index
+GET       | `/photo/create`       | create       | photo.create
+POST      | `/photo`              | store        | photo.store
+GET       | `/photo/{photo}`      | show         | photo.show
+GET       | `/photo/{photo}/edit` | edit         | photo.edit
+PUT/PATCH | `/photo/{photo}`      | update       | photo.update
+DELETE    | `/photo/{photo}`      | destroy      | photo.destroy
 
-有時你可能只需要對應部分的資源的動作：
+<a name="restful-partial-resource-routes"></a>
+#### Partial Resource Routes
 
-	php artisan controller:make PhotoController --only=index,show
-
-	php artisan controller:make PhotoController --except=index
-
-你也可以在路由宣告時指定需要對應的動作：
+When declaring a resource route, you may specify a subset of actions to handle on the route:
 
 	Route::resource('photo', 'PhotoController',
-					array('only' => array('index', 'show')));
+					['only' => ['index', 'show']]);
 
 	Route::resource('photo', 'PhotoController',
-					array('except' => array('create', 'store', 'update', 'destroy')));
+					['except' => ['create', 'store', 'update', 'destroy']]);
 
-預設所有的資源控制器動作都有路由名稱，然而，你可以在選項傳入 `names` 陣列，覆寫這些名稱：
+<a name="restful-naming-resource-routes"></a>
+#### Naming Resource Routes
+
+By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
 	Route::resource('photo', 'PhotoController',
-					array('names' => array('create' => 'photo.build')));
+					['names' => ['create' => 'photo.build']]);
 
-#### 處理巢狀資源控制器
+<a name="restful-nested-resources"></a>
+#### Nested Resources
 
-為了使用巢狀資源控制器，在路由宣告時使用"點"表示法：
+Sometimes you may need to define routes to a "nested" resource. For example, a photo resource may have multiple "comments" that may be attached to the photo. To "nest" resource controllers, use "dot" notation in your route declaration:
 
 	Route::resource('photos.comments', 'PhotoCommentController');
 
-這個路由規則會註冊一個"巢狀"資源，可以對應如下的 URLs：`photos/{photoResource}/comments/{commentResource}`。
+This route will register a "nested" resource that may be accessed with URLs like the following: `photos/{photos}/comments/{comments}`.
 
-	class PhotoCommentController extends BaseController {
+	<?php
 
+	namespace App\Http\Controllers;
+
+	use App\Http\Controllers\Controller;
+
+	class PhotoCommentController extends Controller {
+
+		/**
+		 * Show the specified photo comment.
+		 *
+		 * @param  int  $photoId
+		 * @param  int  $commentId
+		 * @return Response
+		 */
 		public function show($photoId, $commentId)
 		{
 			//
@@ -219,21 +176,168 @@ DELETE    | /resource/{resource}        | destroy      | resource.destroy
 
 	}
 
-#### 增加額外路由規則到 Resource Controller
+<a name="restful-supplementing-resource-controllers"></a>
+#### Supplementing Resource Controllers
 
-你果你需要增加額外的 route 規則到預設的 resource controller，你應該在宣告`Route::resource`之前宣告這些規則：
+If it becomes necessary to add additional routes to a resource controller beyond the default resource routes, you should define those routes before your call to `Route::resource`; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
 
-	Route::get('photos/popular');
+	Route::get('photos/popular', 'PhotoController@method');
+
 	Route::resource('photos', 'PhotoController');
 
-<a name="handling-missing-methods"></a>
-## 對應遺漏的方法
+<a name="implicit-controllers"></a>
+## Implicit Controllers
 
-可以定義一個 catch-all 方法，當 controller 找不到對應的方法就會被呼叫，這個方法應該宣告為`missingMethod`, 會傳入請求的方法和參數陣列：
+Laravel allows you to easily define a single route to handle every action in a controller class. First, define the route using the `Route::controller` method. The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller:
 
-#### 定義一個 Catch-All 方法
+	Route::controller('users', 'UserController');
 
-	public function missingMethod($parameters = array())
+ Next, just add methods to your controller. The method names should begin with the HTTP verb they respond to followed by the title case version of the URI:
+
+	<?php
+
+	namespace App\Http\Controllers;
+
+	class UserController extends Controller
 	{
-		//
+		/**
+		 * Responds to requests to GET /users
+		 */
+		public function getIndex()
+		{
+			//
+		}
+
+		/**
+		 * Responds to requests to GET /users/show/1
+		 */
+		public function getShow($id)
+		{
+			//
+		}
+
+		/**
+		 * Responds to requests to GET /users/admin-profile
+		 */
+		public function getAdminProfile()
+		{
+			//
+		}
+
+		/**
+		 * Responds to requests to POST /users/profile
+		 */
+		public function postProfile()
+		{
+			//
+		}
 	}
+
+As you can see in the example above, `index` methods will respond to the root URI handled by the controller, which, in this case, is `users`.
+
+#### Assigning Route Names
+
+If you would like to [name](/docs/{{version}}/routing#named-routes) some of the routes on the controller, you may pass an array of names as the third argument to the `controller` method:
+
+	Route::controller('users', 'UserController', [
+		'getShow' => 'user.show',
+	]);
+
+<a name="dependency-injection-and-controllers"></a>
+## Dependency Injection & Controllers
+
+#### Constructor Injection
+
+The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The dependencies will automatically be resolved and injected into the controller instance:
+
+	<?php
+
+	namespace App\Http\Controllers;
+
+	use Illuminate\Routing\Controller;
+	use App\Repositories\UserRepository;
+
+	class UserController extends Controller
+	{
+		/**
+		 * The user repository instance.
+		 */
+		protected $users;
+
+		/**
+		 * Create a new controller instance.
+		 *
+		 * @param  UserRepository  $users
+		 * @return void
+		 */
+		public function __construct(UserRepository $users)
+		{
+			$this->users = $users;
+		}
+	}
+
+Of course, you may also type-hint any [Laravel contract](/docs/{{version}}/contracts). If the container can resolve it, you can type-hint it.
+
+#### Method Injection
+
+In addition to constructor injection, you may also type-hint dependencies on your controller's action methods. For example, let's type-hint the `Illuminate\Http\Request` instance on one of our methods:
+
+	<?php
+
+	namespace App\Http\Controllers;
+
+	use Illuminate\Http\Request;
+	use Illuminate\Routing\Controller;
+
+	class UserController extends Controller
+	{
+		/**
+		 * Store a new user.
+		 *
+		 * @param  Request  $request
+		 * @return Response
+		 */
+		public function store(Request $request)
+		{
+			$name = $request->input('name');
+
+			//
+		}
+	}
+
+If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies:
+
+	<?php
+
+	namespace App\Http\Controllers;
+
+	use Illuminate\Http\Request;
+	use Illuminate\Routing\Controller;
+
+	class UserController extends Controller
+	{
+		/**
+		 * Update the specified user.
+		 *
+		 * @param  Request  $request
+		 * @param  int  $id
+		 * @return Response
+		 */
+		public function update(Request $request, $id)
+		{
+			//
+		}
+	}
+
+<a name="route-caching"></a>
+## Route Caching
+
+If your application is exclusively using controller based routes, you may take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it take to register all of your application's routes. In some cases, your route registration may even be up to 100x faster! To generate a route cache, just execute the `route:cache` Artisan command:
+
+	php artisan route:cache
+
+That's all there is to it! Your cached routes file will now be used instead of your `app/Http/routes.php` file. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you may wish to only run the `route:cache` command during your project's deployment.
+
+To remove the cached routes file without generating a new cache, use the `route:clear` command:
+
+	php artisan route:clear

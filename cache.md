@@ -1,142 +1,257 @@
-# 快取
+# Cache
 
-- [設定](#configuration)
-- [快取用法](#cache-usage)
-- [遞增與遞減](#increments-and-decrements)
-- [快取標籤](#cache-tags)
-- [資料庫快取](#database-cache)
+- [Configuration](#configuration)
+- [Cache Usage](#cache-usage)
+	- [Obtaining A Cache Instance](#obtaining-a-cache-instance)
+	- [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
+	- [Storing Items In The Cache](#storing-items-in-the-cache)
+	- [Removing Items From The Cache](#removing-items-from-the-cache)
+- [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
 
 <a name="configuration"></a>
-## 設定
+## Configuration
 
-Laravel 為各種不同的快取系統提供一致的 API。 快取設定檔位在 `app/config/cache.php`。 您可以在此為應用程式指定使用哪一種快取系統，Laravel 支援各種常見的後端快取系統，像是 [Memcached](http://memcached.org) 和 [Redis](http://redis.io)。
+Laravel provides a unified API for various caching systems. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](http://memcached.org) and [Redis](http://redis.io) out of the box.
 
-快取設定檔也包含多個其他選項，在檔案裡都有說明，所以請務必先閱讀過。Laravel 預設使用 `檔案` 快取系統，該系統會儲存序列化、快取物件在檔案系統中。在大型應用程式上，建議使用儲存在記憶體內的快取系統，像是 Memcached 或 APC。
+The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC. You may even configure multiple cache configurations for the same driver.
+
+### Cache Prerequisites
+
+#### Database
+
+When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+
+	Schema::create('cache', function($table) {
+		$table->string('key')->unique();
+		$table->text('value');
+		$table->integer('expiration');
+	});
+
+#### Memcached
+
+Using the Memcached cache requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.
+
+The default [configuration](#configuration) uses TCP/IP based on [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php):
+
+	'memcached' => [
+		[
+			'host' => '127.0.0.1',
+			'port' => 11211,
+			'weight' => 100
+		],
+	],
+
+You may also set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
+
+	'memcached' => [
+		[
+			'host' => '/var/run/memcached/memcached.sock',
+			'port' => 0,
+			'weight' => 100
+		],
+	],
+
+#### Redis
+
+Before using a Redis cache with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+
+For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
 
 <a name="cache-usage"></a>
-## 快取用法
+## Cache Usage
 
-#### 儲存項目到快取中
+<a name="obtaining-a-cache-instance"></a>
+### Obtaining A Cache Instance
 
-	Cache::put('key', 'value', $minutes);
+The `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
 
-#### 使用 Carbon 物件設定快取過期時間
+However, you may also use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts.
 
-	$expiresAt = Carbon::now()->addMinutes(10);
+For example, let's import the `Cache` facade into a controller:
 
-	Cache::put('key', 'value', $expiresAt);
+	<?php
 
-#### 若是項目不存在，則將其存入快取中
+	namespace App\Http\Controllers;
 
-	Cache::add('key', 'value', $minutes);
+	use Cache;
+	use Illuminate\Routing\Controller;
 
-當項目確實被**加入**快取時，使用 `add` 方法將會回傳 `true` 否則會回傳 `false`。
-
-#### 項目確實被  檢查快取是否存在
-
-	if (Cache::has('key'))
+	class UserController extends Controller
 	{
-		//
+		/**
+		 * Show a list of all users of the application.
+		 *
+		 * @return Response
+		 */
+		public function index()
+		{
+			$value = Cache::get('key');
+
+			//
+		}
 	}
 
-#### 從快取中取得項目
+#### Accessing Multiple Cache Stores
+
+Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
+
+	$value = Cache::store('file')->get('foo');
+
+	Cache::store('redis')->put('bar', 'baz', 10);
+
+<a name="retrieving-items-from-the-cache"></a>
+### Retrieving Items From The Cache
+
+The `get` method on the `Cache` facade is used to retrieve items from the cache. If the item does not exist in the cache, `null` will be returned. If you wish, you may pass a second argument to the `get` method specifying the custom default value you wish to be returned if the item doesn't exist:
 
 	$value = Cache::get('key');
 
-#### 取得項目或是回傳預設值
-
 	$value = Cache::get('key', 'default');
 
-	$value = Cache::get('key', function() { return 'default'; });
 
-#### 永久儲存項目到快取中
+You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
 
-	Cache::forever('key', 'value');
-
-有時候您會希望從快取中取得項目，而當此項目不存在時會儲存一筆預設值，您可以使用 `Cache::remember` 方法:
-
-	$value = Cache::remember('users', $minutes, function()
-	{
-		return DB::table('users')->get();
+	$value = Cache::get('key', function() {
+		return DB::table(...)->get();
 	});
 
-您也可以結合 `remember` 和 `forever` 方法:
+#### Checking For Item Existence
 
-	$value = Cache::rememberForever('users', function()
-	{
-		return DB::table('users')->get();
-	});
+The `has` method may be used to determine if an item exists in the cache:
 
-請注意所有儲存在快取中的項目皆會被序列化，所以您可以任意儲存各種型別的資料。
+	if (Cache::has('key')) {
+		//
+	}
 
-#### 從快取拉出項目
+#### Incrementing / Decrementing Values
 
-如果您需要從快取中取得項目後將它刪除，您可以使用 `pull` 方法:
-
-	$value = Cache::pull('key');
-
-#### 從快取中刪除項目
-
-	Cache::forget('key');
-
-<a name="increments-and-decrements"></a>
-## 遞增與遞減
-
-除了 `檔案` 與 `資料庫` 以外的快取系統都支援 `遞增` 和 `遞減` 操作:
-
-#### 遞增值
+The `increment` and `decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods optionally accept a second argument indicating the amount by which to increment or decrement the item's value:
 
 	Cache::increment('key');
 
 	Cache::increment('key', $amount);
 
-#### 遞減值
-
 	Cache::decrement('key');
 
 	Cache::decrement('key', $amount);
 
-<a name="cache-tags"></a>
-## 快取標籤
+#### Retrieve Or Update
 
-> **注意:** `檔案` 或 `資料庫` 這類快取系統均不支援快取標籤. 此外, 使用帶有 "forever" 的快取標籤時, 挑選 `memcached` 這類快取系統將獲得最好的效能, 它會自動清除過期的紀錄。
+Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
 
-#### 存取快取標籤
-
-快取標籤允許您標記快取內的相關項目，然後使用特定名稱刷新所有快取標籤。要存取快取標籤可以使用 `tags` 方法。
-
-您可以儲存快取標籤，藉由將有序列表當作參數傳入，或者作為標籤名稱的有序陣列:
-
-	Cache::tags('people', 'authors')->put('John', $john, $minutes);
-
-	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
-
-您可以結合使用各種快取儲存方法與標籤，包含 `remember`, `forever` 和 `rememberForever`。您也可以從已標記的快取中存取項目 ，以及使用其他快取方法像是 `increment` 和 `decrement`。
-
-#### 從已標記的快取中存取項目
-
-要存取已標記的快取，可傳入相同的有序標籤列表。
-
-	$anne = Cache::tags('people', 'artists')->get('Anne');
-
-	$john = Cache::tags(array('people', 'authors'))->get('John');
-
-您可以刷新所有已標記的項目，使用指定名稱或名稱列表。例如，以下演示將會移除帶有 `people` 或 `authors` 或者兩者皆有的所有快取標籤，所以 "Anne" 和 "John" 皆會從快取中被移除:
-
-	Cache::tags('people', 'authors')->flush();
-
-對照來看，以下演示將只會移除帶有 `authors` 的標籤，所以 "John" 會被移除，但是 "Anne" 不會。
-
-	Cache::tags('authors')->flush();
-
-<a name="database-cache"></a>
-## 資料庫快取
-
-當使用 `資料庫` 快取系統時，您必須設定一張資料表來儲存快取項目。資料表的 `Schema` 宣告範例如下:
-
-	Schema::create('cache', function($table)
-	{
-		$table->string('key')->unique();
-		$table->text('value');
-		$table->integer('expiration');
+	$value = Cache::remember('users', $minutes, function() {
+		return DB::table('users')->get();
 	});
+
+If the item does not exist in the cache, the `Closure` passed to the `remember` method will be executed and its result will be placed in the cache.
+
+You may also combine the `remember` and `forever` methods:
+
+	$value = Cache::rememberForever('users', function() {
+		return DB::table('users')->get();
+	});
+
+#### Retrieve And Delete
+
+If you need to retrieve an item from the cache and then delete it, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
+
+	$value = Cache::pull('key');
+
+<a name="storing-items-in-the-cache"></a>
+### Storing Items In The Cache
+
+You may use the `put` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
+
+	Cache::put('key', 'value', $minutes);
+
+Instead of passing the number of minutes until the item expires, you may also pass a PHP `DateTime` instance representing the expiration time of the cached item:
+
+	$expiresAt = Carbon::now()->addMinutes(10);
+
+	Cache::put('key', 'value', $expiresAt);
+
+The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
+
+	Cache::add('key', 'value', $minutes);
+
+The `forever` method may be used to store an item in the cache permanently. These values must be manually removed from the cache using the `forget` method:
+
+	Cache::forever('key', 'value');
+
+<a name="removing-items-from-the-cache"></a>
+### Removing Items From The Cache
+
+You may remove items from the cache using the `forget` method on the `Cache` facade:
+
+	Cache::forget('key');
+
+<a name="adding-custom-cache-drivers"></a>
+## Adding Custom Cache Drivers
+
+To extend the Laravel cache with a custom driver, we will use the `extend` method on the `Cache` facade, which is used to bind a custom driver resolver to the manager. Typically, this is done within a [service provider](/docs/{{version}}/providers).
+
+For example, to register a new cache driver named "mongo":
+
+	<?php
+
+	namespace App\Providers;
+
+	use Cache;
+	use App\Extensions\MongoStore;
+	use Illuminate\Support\ServiceProvider;
+
+	class CacheServiceProvider extends ServiceProvider
+	{
+		/**
+		 * Perform post-registration booting of services.
+		 *
+		 * @return void
+		 */
+		public function boot()
+		{
+			Cache::extend('mongo', function($app) {
+				return Cache::repository(new MongoStore);
+			});
+		}
+
+		/**
+		 * Register bindings in the container.
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			//
+		}
+	}
+
+The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
+
+The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array.
+
+To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts) contract. So, our MongoDB cache implementation would look something like this:
+
+	<?php
+
+	namespace App\Extensions;
+
+	class MongoStore implements \Illuminate\Contracts\Cache\Store
+	{
+		public function get($key) {}
+		public function put($key, $value, $minutes) {}
+		public function increment($key, $value = 1) {}
+		public function decrement($key, $value = 1) {}
+		public function forever($key, $value) {}
+		public function forget($key) {}
+		public function flush() {}
+	}
+
+We just need to implement each of these methods using a MongoDB connection. Once our implementation is complete, we can finish our custom driver registration:
+
+	Cache::extend('mongo', function($app) {
+		return Cache::repository(new MongoStore);
+	});
+
+Once your extension is complete, simply update your `config/cache.php` configuration file's `driver` option to the name of your extension.
+
+If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
