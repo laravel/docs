@@ -228,7 +228,7 @@ Come puoi inoltre notare dall'esempio qui in alto, il metodo _index_ risponde al
 
 #### Assegnare i Nomi alle Route
 
-Nel caso in cui tu voglia [assegnare dei nomi](/docs/5.1/routing#named-routes) ad alcune delle route assegnate ad un controller implicito, puoi passare un array di nomi come terzo parametro del metodo _controller_.
+Nel caso in cui tu voglia [assegnare dei nomi](/docs/5.1/routing#route-rinominate) ad alcune delle route assegnate ad un controller implicito, puoi passare un array di nomi come terzo parametro del metodo _controller_.
 
 	Route::controller('users', 'UserController', [
 		'getShow' => 'user.show',
