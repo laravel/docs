@@ -1,4 +1,4 @@
-# Authentication
+# 認證
 
 - [介紹](#introduction)
 - [認證快速入門](#authentication-quickstart)
@@ -27,19 +27,19 @@ Laravel 讓實作認證變得非常簡單。事實上，幾乎所有東西都是
 
 ### 資料庫的思考
 
-預設的Laravel 在你的 `app` 資料夾中含有 `App\User` [Eloquent 模型](/docs/{{version}}/eloquent) 。這個模型被用來驅動預設的 Eloquent 認證。如果你的應用程式沒有使用 Eloquent 你可以使用 `database` 認證驅動，它使用了 Laravel query builder 為 `App\User` 模型建立資料庫結構時，確定 password 欄位至少擁有60字元的長度。
+預設的Laravel 在你的 `app` 資料夾中含有 `App\User` [Eloquent 模型](/docs/{{version}}/eloquent)。這個模型被用來驅動預設的 Eloquent 認證。如果你的應用程式沒有使用 Eloquent 你可以使用 `database` 認證驅動，它使用了 Laravel query builder 為 `App\User` 模型建立資料庫結構時，確定 password 欄位至少擁有 60 字元的長度。
 
-同時，你需要確認你的 `users` (或是相同意義的) 資料表含有 nullable 、100字元長的 `remember_token` 欄位，這個欄位將會被用來儲存 "remember me" session 的標記 。只要在遷移時，使用 `$table->rememberToken()` ，即可輕鬆加入這個欄位。
+同時，你需要確認你的 `users` (或是相同意義的) 資料表含有 nullable 、100 字元長的 `remember_token` 欄位，這個欄位將會被用來儲存 "remember me" session 的標記。只要在遷移時，使用 `$table->rememberToken()`，即可輕鬆加入這個欄位。
 
 <a name="authentication-quickstart"></a>
 ## 認證快速入門
 
-Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\Auth` 命名空間， `AuthController` 處理使用者註冊及認證，而 `PasswordController` 負責處理重置使用者的密碼。這些控制器使用了 trait 來包含所需要的方法，對於大多數的應用程式而言，你並不需要修改這些控制器。
+Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\Auth` 命名空間，`AuthController` 處理使用者註冊及認證，而 `PasswordController` 負責處理重置使用者的密碼。這些控制器使用了 trait 來包含所需要的方法，對於大多數的應用程式而言，你並不需要修改這些控制器。
 
 <a name="included-routing"></a>
 ### 路由
 
-預設中，沒有 [路由](/docs/{{version}}/routing) 指向這些認證控制器，你需要自己新增到 `app/Http/routes.php` 中。
+預設中，沒有[路由](/docs/{{version}}/routing)指向這些認證控制器，你需要自己新增到 `app/Http/routes.php` 中。
 
     // 認證路由...
     Route::get('auth/login', 'Auth\AuthController@getLogin');
@@ -53,7 +53,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 <a name="included-views"></a>
 ### 視圖
 
-雖然這些認證控制器被包含在 framework 中，你仍需提供 [視圖](/docs/{{version}}/views) 給控制器來算圖 (render) ，而視圖需要被放置在 `resources/views/auth` 資料夾中，你可以任意的客製化這視圖。登入視圖應該被放在 `resources/views/auth/login.blade.php` 而註冊視圖則放在 `resources/views/auth/register.blade.php`
+雖然這些認證控制器被包含在框架中，你仍需提供 [視圖](/docs/{{version}}/views) 給控制器來算圖 (render)，而視圖需要被放置在 `resources/views/auth` 資料夾中，你可以任意的客製化這視圖。登入視圖應該被放在 `resources/views/auth/login.blade.php` 而註冊視圖則放在 `resources/views/auth/register.blade.php`
 
 #### 認證表單範例
 
@@ -118,7 +118,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
 現在你已經為認證控制器設定好了路由及視圖，你準備好為你的新使用者提供註冊及認證功能。你只要簡單地在瀏覽器存取你定義的路由，認證控制器早已包含了處理認證現有使用者，及儲存新使用者在資料庫的邏輯了(透過他們各自的 traits )。
 
-當使用者成功的認證後，他們將被導向 `/home` URI，而你需要向路由註冊這個 URI 來處理這個請求，你可以客製化認證後，轉向的URI ，只需要修改 `AuthController` 的 `redirectTo` 屬性:
+當使用者成功的認證後，他們將被導向 `/home` URI，而你需要向路由註冊這個 URI 來處理這個請求，你可以客製化認證後，轉向的 URI，只需要修改 `AuthController` 的 `redirectTo` 屬性:
 
     protected $redirectTo = '/dashboard';
 
@@ -190,7 +190,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
         'uses' => 'ProfileController@show'
     ]);
 
-當然，如果你正在使用 [控制器類別](/docs/{{version}}/controllers) ，你可以在建構子中呼叫 `middleware` 方法，而不是在路由中直接定義它:
+當然，如果你正在使用 [控制器類別](/docs/{{version}}/controllers)，你可以在建構子中呼叫 `middleware` 方法，而不是在路由中直接定義它:
 
     public function __construct()
     {
@@ -202,7 +202,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
 當然，你不一定要使用 Laravel 內建的認證控制器，如果你選擇刪除這些控制器，你將需要自己處理使用者認證，並使用 Laravel 的認證控制器。
 
-我們將透過 `Auth` [facade](/docs/{{version}}/facades) 存取 Laravel 的認證服務，所以我們需要確認是否在類別的最上面引入 `Auth` facade ，接下來，讓我們看一下 `attempt` 方法:
+我們將透過 `Auth` [facade](/docs/{{version}}/facades) 存取 Laravel 的認證服務，所以我們需要確認是否在類別的最上面引入 `Auth` facade，接下來，讓我們看一下 `attempt` 方法:
 
     <?php
 
@@ -229,7 +229,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
 `attempt` 方法的第一個參數接受陣列，在這個陣列的值用來找尋資料庫裡的使用者資料，所以在上面的範例中，使用者會藉由 `email` 欄位抽取，如果使用者被找到了，資料庫裡經過雜湊的密碼將會與陣列中雜湊的 `password` 值做比對，如果兩個一樣的話經會開啟一個通過認證的 session 給使用者
 
-如果認證成功，`attempt` 方法將會回傳 `true` ，反之則為 `false` 。
+如果認證成功，`attempt` 方法將會回傳 `true`，反之則為 `false`。
 
 重導器上的 `intended` 方法將會重導使用者回原本想要進入的頁面，一個 fallback URI 也可以傳入這個方法，以避免要轉回的頁面不可使用。
 
@@ -286,13 +286,13 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 <a name="http-basic-authentication"></a>
 ## HTTP 基礎認證
 
-[HTTP 基礎認證](http://en.wikipedia.org/wiki/Basic_access_authentication) 提供一個快速的方法來認證使用者，不需要任何登入頁面。從附著 `auth.basic` [中介層](/docs/{{version}}/middleware) 到你的路由來開始， `auth.basic` 中介層已經被包含在 Laravel framework 中，所以你不需要定義它:
+[HTTP 基礎認證](http://en.wikipedia.org/wiki/Basic_access_authentication) 提供一個快速的方法來認證使用者，不需要任何登入頁面。從附著 `auth.basic` [中介層](/docs/{{version}}/middleware) 到你的路由來開始，`auth.basic` 中介層已經被包含在 Laravel 框架中，所以你不需要定義它:
 
     Route::get('profile', ['middleware' => 'auth.basic', function() {
         // 只有認證過的使用者可進入...
     }]);
 
-一旦中介層被附著到路由上，當使用瀏覽器進入這個路由時，你將自動的被提示要求憑證。預設上，`auth.basic` 中介詞將會使用使用者的 `email` 欄位當作 "username" 。
+一旦中介層被附著到路由上，當使用瀏覽器進入這個路由時，你將自動的被提示要求憑證。預設上，`auth.basic` 中介詞將會使用使用者的 `email` 欄位當作 "username"。
 
 #### FastCGI 的注意事項
 
@@ -304,7 +304,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 <a name="stateless-http-basic-authentication"></a>
 ### 無狀態 HTTP 基礎認證
 
-你可以使用 HTTP 基礎認證而不用設定使用者認證用 cookie 在 session 中，這個功能對 API 認證來說，來非常有用。為了達到這個目的， [定義一個中介層](/docs/{{version}}/middleware) ，這個中介層會呼叫 `onceBasic` 方法，如果沒有任何回應從 `onceBasic` 方法返回的話，這個請求會直接傳進應用程式中:
+你可以使用 HTTP 基礎認證而不用設定使用者認證用 cookie 在 session 中，這個功能對 API 認證來說，來非常有用。為了達到這個目的，[定義一個中介層](/docs/{{version}}/middleware)，這個中介層會呼叫 `onceBasic` 方法，如果沒有任何回應從 `onceBasic` 方法返回的話，這個請求會直接傳進應用程式中:
 
     <?php namespace Illuminate\Auth\Middleware;
 
@@ -328,7 +328,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
     }
 
-接著， [註冊這個路由中介層](/docs/{{version}}/middleware#registering-middleware) ，然後附著它於一個路由:
+接著，[註冊這個路由中介層](/docs/{{version}}/middleware#registering-middleware)，然後附著它於一個路由:
 
     Route::get('api/user', ['middleware' => 'auth.basic.once', function() {
         // 只有認證過的使用者可以進入...
@@ -340,9 +340,9 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 <a name="resetting-database"></a>
 ### 資料庫的思考
 
-很多網路應用程式提供使用者一些方式來重設密碼， Laravel 提供便利的方法來傳送密碼提示和實現密碼重設，而不是強迫你重新實作這些功能一次。
+很多網路應用程式提供使用者一些方式來重設密碼，Laravel 提供便利的方法來傳送密碼提示和實現密碼重設，而不是強迫你重新實作這些功能一次。
 
-一開始，先確認你的 `App\User` 模型實現了 `Illuminate\Contracts\Auth\CanResetPassword` contract ，當然，原有的 `App\User` 早已實現了這個介面，並且使用 `Illuminate\Auth\Passwords\CanResetPassword` trait 來包含實現這個介面所需要的方法。
+一開始，先確認你的 `App\User` 模型實現了 `Illuminate\Contracts\Auth\CanResetPassword` contract，當然，原有的 `App\User` 早已實現了這個介面，並且使用 `Illuminate\Auth\Passwords\CanResetPassword` trait 來包含實現這個介面所需要的方法。
 
 #### 產生重置標記資料庫遷移
 
@@ -440,7 +440,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 <a name="social-authentication"></a>
 ## 社群認證
 
-除了傳統的表單認證，Laravel 同樣提供了簡單方便的方法來認證 OAuth 提供者，這個方法使用了 [Laravel Socialite](https://github.com/laravel/socialite) 。 Socialite 最近支援 Facebook, Twitter, Google, GitHub 跟 Bitbucket
+除了傳統的表單認證，Laravel 同樣提供了簡單方便的方法來認證 OAuth 提供者，這個方法使用了 [Laravel Socialite](https://github.com/laravel/socialite)。Socialite 最近支援 Facebook, Twitter, Google, GitHub 跟 Bitbucket
 
 修改你的 `composer.json` 來新增相依來開始使用 Socialite:
 
@@ -460,7 +460,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
     'Socialite' => 'Laravel\Socialite\Facades\Socialite',
 
-你將需要新增憑證來使用 OAuth 服務，這些憑證需要被放在 `config/services.php` 設定檔，而且需要使用鍵值 `facebook`, `twitter`, `google`, 或 `github` ，全都看你使用的服務，例如:
+你將需要新增憑證來使用 OAuth 服務，這些憑證需要被放在 `config/services.php` 設定檔，而且需要使用鍵值 `facebook`, `twitter`, `google`, 或 `github`，全都看你使用的服務，例如:
 
     'github' => [
         'client_id' => 'your-github-app-id',
@@ -470,7 +470,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
 ### 基礎應用
 
-接下來，你已經準備好開始認證使用者了！你將需要兩個路由: 一個用來重導使用者到 OAuth 提供者，另一個在認證後接收提供者的 callback。 我們將會藉由`Socialite` [facade](/docs/{{version}}/facades) 存取 Socialite:
+接下來，你已經準備好開始認證使用者了！你將需要兩個路由: 一個用來重導使用者到 OAuth 提供者，另一個在認證後接收提供者的 callback。我們將會藉由`Socialite` [facade](/docs/{{version}}/facades) 存取 Socialite:
 
     <?php
 
@@ -587,13 +587,13 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
     }
 
-`retrieveById` 函數通常取得一個代表使用者的值，例如 MySQL 的自動增加的 ID。這個 `Authenticate` 實現匹配應該被取得並被這個方法返回的 ID 。
+`retrieveById` 函數通常取得一個代表使用者的值，例如 MySQL 的自動增加的 ID。這個 `Authenticate` 實現匹配應該被取得並被這個方法返回的 ID。
 
 `retrieveByToken` 函數藉由使用者獨特的 `$identifier` 和 "記住我" `$token` 取得使用者。如同之前的方法，`Authenticatable` 實現應該被返回。
 
-`updateRememberToken` 方法使用新的 `$token` 更新了 `$user` 的 `remember_token` 欄位。這個新的標記可以是全新的標記 (當使用者成功登入)或是 null (當使用者登出) 。
+`updateRememberToken` 方法使用新的 `$token` 更新了 `$user` 的 `remember_token` 欄位。這個新的標記可以是全新的標記 (當使用者成功登入)或是 null (當使用者登出)。
 
-`retrieveByCredentials` 方法取得了從 `Auth::attempt` 方法傳送過來的憑證陣列 (當想要登入時) ，這個方法應該要 "query"所使用的永久式儲存系統，來匹配這些憑證，通常，這個方法會執行一個帶著 "where" `$credentials['username']`條件的詢問。這個方法接著需要回傳一個 `UserInterface` 的實現。 **這個方法不應該企圖做任何密碼的驗證或是認證。**
+`retrieveByCredentials` 方法取得了從 `Auth::attempt` 方法傳送過來的憑證陣列 (當想要登入時)，這個方法應該要 "query"所使用的永久式儲存系統，來匹配這些憑證，通常，這個方法會執行一個帶著 "where" `$credentials['username']`條件的詢問。這個方法接著需要回傳一個 `UserInterface` 的實現。**這個方法不應該企圖做任何密碼的驗證或是認證。**
 
 `validateCredentials` 方法應該要比較 `$user` 和 `$credentials` 來認證這個使用者。例如，這個方法可能會比較`$user->getAuthPassword()` 字串及 `Hash::make` 後的 `$credentials['password']`。這個方法應該只驗證使用者的憑證和回傳布林值。
 
