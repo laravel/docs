@@ -5,7 +5,7 @@
 	- [Schedule Frequency Options](#schedule-frequency-options)
 	- [Preventing Task Overlaps](#preventing-task-overlaps)
 - [Task Output](#task-output)
-- [Post Task Hooks](#post-task-hooks)
+- [Pre & Post Task Hooks](#post-task-hooks)
 
 <a name="introduction"></a>
 ## Introduction
@@ -143,24 +143,28 @@ Using the `emailOutputTo` method, you may e-mail the output to an e-mail address
 > **Note:** The `emailOutputTo` and `sendOutputTo` methods are exclusive to the `command` method and are not supported for `call`.
 
 <a name="post-task-hooks"></a>
-## Post Task Hooks
+## Pre & Post Task Hooks
 
-Using the `then` method, you may specify code to be executed after the scheduled task is complete:
+Using the `first` and `then` method, you may specify code to be executed before and/or after the scheduled task is complete:
 
 	$schedule->command('emails:send')
 			 ->daily()
+			 ->first(function () {
+			 	// Task has not yet started...
+			 })
 			 ->then(function () {
 			 	// Task is complete...
 			 });
 
 #### Pinging URLs
 
-Using the `thenPing` method, the scheduler can automatically ping a given URL when a task is complete. This method is useful for notifying an external service, such as [Laravel Envoyer](https://envoyer.io), that your scheduled task is complete:
+Using the `firstPing` and `thenPing` method, the scheduler can automatically ping a given URL before and/or after a task is complete. This method is useful for notifying an external service, such as [Laravel Envoyer](https://envoyer.io), that your scheduled task is commencing or complete:
 
 	$schedule->command('emails:send')
 			 ->daily()
+			 ->firstPing($url)
 			 ->thenPing($url);
 
-Using the `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project by adding the following line to your `composer.json` file:
+Using either the `firstPing($url)` or `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project by adding the following line to your `composer.json` file:
 
 	"guzzlehttp/guzzle": "~5.3|~6.0"
