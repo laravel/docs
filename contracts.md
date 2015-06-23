@@ -16,7 +16,7 @@ Laravel 所有的 contracts 都放在 [各自的 GitHub 儲存庫](https://githu
 
 ### Contracts Vs. Facades
 
-Laravel 的 [facades](/docs/{{version}}/facades) 提供一個簡單的方法來使用服務，而不需要使用型別提示和在服務容器之外拆解 contracts。然而，使用 contracts 可以明顯地定義出類別的依賴，對大部分應用程序而言，使用 facade 就很足夠了，然而，若您實在需要特別的低耦合，使用 contracts 可以做到這一點，就讓我們繼續看下去！
+Laravel 的 [facades](/docs/{{version}}/facades) 提供一個簡單的方法來使用服務，而不需要使用型別提示和在服務容器之外解析 contracts。然而，使用 contracts 可以明顯地定義出類別的依賴，對大部分應用程序而言，使用 facade 就很足夠了，然而，若您實在需要特別的低耦合，使用 contracts 可以做到這一點，就讓我們繼續看下去！
 
 <a name="why-contracts"></a>
 ## 為何要用 Contracts?
@@ -102,9 +102,9 @@ Laravel 的 [facades](/docs/{{version}}/facades) 提供一個簡單的方法來�
 <a name="contract-reference"></a>
 ## Contract 參考
 
-This is a reference to most Laravel Contracts, as well as their Laravel "facade" counterparts:
+以下是大部分 Laravel Contracts 的參考，以及相對應的「facade」：
 
-Contract  |  References Facade
+Contract  |  對應的 Facade
 ------------- | -------------
 [Illuminate\Contracts\Auth\Guard](https://github.com/illuminate/contracts/blob/master/Auth/Guard.php)  |  Auth
 [Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)  |  Password
@@ -143,11 +143,11 @@ Contract  |  References Facade
 <a name="how-to-use-contracts"></a>
 ## 如何使用 Contracts
 
-So, how do you get an implementation of a contract? It's actually quite simple.
+所以，要如何實作一個 contract 呢？實際上非常的簡單。
 
-Many types of classes in Laravel are resolved through the [service container](/docs/{{version}}/container), including controllers, event listeners, middleware, queued jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved.
+很多 Laravel 的類別都是經由[服務容器](/docs/{{version}}/container) 來解析，包含控制器，事件監聽，中介層，隊列任務，甚至是路由閉包。所以，要實作一個 contract，你可以在類別的建構子使用「型別提示」解析類別。
 
-For example, take a look at this event listener:
+例如，我們來看看這個事件監聽程式：
 
 	<?php
 
@@ -160,12 +160,12 @@ For example, take a look at this event listener:
 	class CacheUserInformation
 	{
 		/**
-		 * The Redis database implementation.
+		 * 實作 Redis 資料庫
 		 */
 		protected $redis;
 
 		/**
-		 * Create a new event handler instance.
+		 * 建立一個新的事件處理物件
 		 *
 		 * @param  Database  $redis
 		 * @return void
@@ -176,7 +176,7 @@ For example, take a look at this event listener:
 		}
 
 		/**
-		 * Handle the event.
+		 * 處理事件
 		 *
 		 * @param  NewUserRegistered  $event
 		 * @return void
@@ -187,4 +187,4 @@ For example, take a look at this event listener:
 		}
 	}
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
+當事件監聽被解析時，服務容器會經由類別建構子參數的型別提示，注入適當的值。要知道怎麼註冊更多服務容器，參考[這份文件](/docs/{{version}}/container).
