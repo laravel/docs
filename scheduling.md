@@ -5,7 +5,7 @@
 	- [Schedule Frequency Options](#schedule-frequency-options)
 	- [Preventing Task Overlaps](#preventing-task-overlaps)
 - [Task Output](#task-output)
-- [Pre & Post Task Hooks](#post-task-hooks)
+- [Task Hooks](#task-hooks)
 
 <a name="introduction"></a>
 ## Introduction
@@ -142,29 +142,29 @@ Using the `emailOutputTo` method, you may e-mail the output to an e-mail address
 
 > **Note:** The `emailOutputTo` and `sendOutputTo` methods are exclusive to the `command` method and are not supported for `call`.
 
-<a name="post-task-hooks"></a>
-## Pre & Post Task Hooks
+<a name="task-hooks"></a>
+## Task Hooks
 
-Using the `first` and `then` method, you may specify code to be executed before and/or after the scheduled task is complete:
+Using the `before` and `after` methods, you may specify code to be executed before and after the scheduled task is complete:
 
 	$schedule->command('emails:send')
 			 ->daily()
-			 ->first(function () {
-			 	// Task has not yet started...
+			 ->before(function () {
+			 	// Task is about to start...
 			 })
-			 ->then(function () {
+			 ->after(function () {
 			 	// Task is complete...
 			 });
 
 #### Pinging URLs
 
-Using the `firstPing` and `thenPing` method, the scheduler can automatically ping a given URL before and/or after a task is complete. This method is useful for notifying an external service, such as [Laravel Envoyer](https://envoyer.io), that your scheduled task is commencing or complete:
+Using the `pingBefore` and `thenPing` methods, the scheduler can automatically ping a given URL before or after a task is complete. This method is useful for notifying an external service, such as [Laravel Envoyer](https://envoyer.io), that your scheduled task is commencing or complete:
 
 	$schedule->command('emails:send')
 			 ->daily()
-			 ->firstPing($url)
+			 ->pingBefore($url)
 			 ->thenPing($url);
 
-Using either the `firstPing($url)` or `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project by adding the following line to your `composer.json` file:
+Using either the `pingBefore($url)` or `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project by adding the following line to your `composer.json` file:
 
 	"guzzlehttp/guzzle": "~5.3|~6.0"
