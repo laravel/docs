@@ -17,7 +17,7 @@
 Laravel 提供了各種不同的處理方法來驗證應用程式傳入進來的資料。預設情況下，Laravel 的基底控制器類別使用了 `ValidatesRequests` trait，提供了一種方便的方法來驗證傳入的 HTTP 要求和各種強大的驗證規則。
 
 <a name="validation-quickstart"></a>
-## 開始快速驗證
+## 驗證快速上手
 
 要了解有關 Laravel 強大的驗證特色，讓我們來看看一個完整的表單驗證範例以及回傳錯誤訊息給使用者。
 
