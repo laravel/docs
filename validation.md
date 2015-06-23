@@ -1,7 +1,7 @@
 # 驗證
 
 - [介紹](#introduction)
-- [開始快速驗證](#validation-quickstart)
+- [驗證快速上手](#validation-quickstart)
 - [其他驗證的處理](#foo)
 	- [手動建立驗證程式](#manually-creating-validators)
 	- [表單要求驗證](#form-request-validation)
@@ -144,7 +144,7 @@ Laravel 提供了各種不同的處理方法來驗證應用程式傳入進來的
 		}
 	}
 
-### AJAX 請求 & 驗證
+### AJAX 請求和驗證
 
 在這個範例中，我們用一種傳統形式將資料發送到應用程式。然而，許多應用程式使用 AJAX 請求。當我們使用 `validate` 方法在 AJAX 的請求中，Laravel 不會產生一個重導的回應。相反的，Laravel 會產生一個包含所有錯誤驗證的 JSON 回應。這個 JSON 回應會傳送一個 422 HTTP 的狀態碼。
 
@@ -294,7 +294,7 @@ Laravel 提供了各種不同的處理方法來驗證應用程式傳入進來的
 
 #### 自訂閃存的錯誤訊息格式
 
-如果你想要自訂驗證失敗時，閃存到 session 的驗證錯誤的格式， 在你的基底 request (`App\Http\Requests\Request`) 覆寫 `formatErrors`。別忘了檔案上方要引入 `Illuminate\Contracts\Validation\Validator` 類別：
+如果你想要自訂驗證失敗時，閃存到 session 的驗證錯誤的格式， 在你的基底要求 (`App\Http\Requests\Request`) 覆寫 `formatErrors`。別忘了檔案上方要引入 `Illuminate\Contracts\Validation\Validator` 類別：
 
 	/**
 	 * {@inheritdoc}
