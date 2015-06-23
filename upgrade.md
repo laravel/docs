@@ -74,13 +74,6 @@ If you are overriding the `find` method in your own models and calling `parent::
 		return $model;
 	}
 
-#### The `lists` Method
-
-The `lists` method now returns a `Collection` instance instead of a plain array for Eloquent queries. If you would like to convert the `Collection` into a plain array, use the `all` method:
-
-	User::lists('id')->all();
-
-Be aware that the Query Builder `lists` method still returns an array.
 
 #### Date Formatting
 
