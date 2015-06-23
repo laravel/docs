@@ -29,7 +29,9 @@ Laravel 讓實作認證變得非常簡單。事實上，幾乎所有東西都是
 
 預設的 Laravel 在你的 `app` 資料夾中含有 `App\User` [Eloquent 模型](/docs/{{version}}/eloquent)。這個模型使用預設的 Eloquent 認證來驅動。如果你的應用程式沒有使用 Eloquent 你可以使用 `database` 認證驅動，它使用了 Laravel query builder。
 
-同時，你需要確認你的 `users` (或是相同意義的) 資料表含有 nullable 、100 字元長的 `remember_token` 欄位，這個欄位將會被用來儲存 "remember me" session 的標記。只要在遷移時，使用 `$table->rememberToken()`，即可輕鬆加入這個欄位。
+為 `App\User` 模型建立資料庫結構時，確認密碼欄位最少有 60 字元長。
+
+同時，你需要確認你的 `users` (或是相同意義的) 資料表含有 nullable 、100 字元長的 `remember_token` 欄位，這個欄位將會被用來儲存"記住我" session 的標記。只要在遷移時，使用 `$table->rememberToken()`，即可輕鬆加入這個欄位。
 
 <a name="authentication-quickstart"></a>
 ## 認證快速入門
