@@ -27,7 +27,7 @@ Laravel 讓實作認證變得非常簡單。事實上，幾乎所有東西都是
 
 ### 資料庫的思考
 
-預設的Laravel 在你的 `app` 資料夾中含有 `App\User` [Eloquent 模型](/docs/{{version}}/eloquent)。這個模型被用來驅動預設的 Eloquent 認證。如果你的應用程式沒有使用 Eloquent 你可以使用 `database` 認證驅動，它使用了 Laravel query builder 為 `App\User` 模型建立資料庫結構時，確定 password 欄位至少擁有 60 字元的長度。
+預設的 Laravel 在你的 `app` 資料夾中含有 `App\User` [Eloquent 模型](/docs/{{version}}/eloquent)。這個模型使用預設的 Eloquent 認證來驅動。如果你的應用程式沒有使用 Eloquent 你可以使用 `database` 認證驅動，它使用了 Laravel query builder。
 
 同時，你需要確認你的 `users` (或是相同意義的) 資料表含有 nullable 、100 字元長的 `remember_token` 欄位，這個欄位將會被用來儲存 "remember me" session 的標記。只要在遷移時，使用 `$table->rememberToken()`，即可輕鬆加入這個欄位。
 
@@ -265,7 +265,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
 #### 用使用者實例做認證
 
-如果你需要使用存在的使用者實例來登入，你需要呼叫 `login` 方法，並傳入使用實例，這個物件必須是由 `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts) 所實現。當然，`App/User` 模型 已經實現了這個介面：
+如果你需要使用存在的使用者實例來登入，你需要呼叫 `login` 方法，並傳入使用實例，這個物件必須是由 `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts) 所實現。當然，`App/User` 模型已經實現了這個介面：
 
     Auth::login($user);
 
