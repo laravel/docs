@@ -115,7 +115,7 @@ Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP
 
 #### 取得目前應用程式的環境
 
-The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
+應用程式的當前環境是由 `.env` 檔案中的 `APP_ENV` 變數所決定。你可以透過 `App` [facade](/docs/{{version}}/facades) 的 `environment` 方法取得該值：
 
 	$environment = App::environment();
 
