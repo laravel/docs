@@ -296,7 +296,7 @@ The `array_sort_recursive` function recursively sorts the array by sort() functi
 		],
 	];
 
-	$array = array_sort($array);
+	$array = array_sort_recursive($array);
 
 	/*
 		[
