@@ -123,6 +123,7 @@ The Laravel logging facilities provide a simple layer on top of the powerful [Mo
 	namespace App\Http\Controllers;
 
 	use Log;
+	use App\User;
 	use App\Http\Controllers\Controller;
 
 	class UserController extends Controller
