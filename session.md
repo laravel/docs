@@ -165,7 +165,7 @@ If you need to keep your flash data around for even more requests, you may use t
 <a name="adding-custom-session-drivers"></a>
 ## Adding Custom Session Drivers
 
-To add additional drivers to Laravel's session back-end, you may use the `extend` method on the `Session` [facade](/docs/{{version}}/session). You can call the `extend` method from the `boot` method of a [service provider](/docs/{{version}}/providers):
+To add additional drivers to Laravel's session back-end, you may use the `extend` method on the `Session` [facade](/docs/{{version}}/facades). You can call the `extend` method from the `boot` method of a [service provider](/docs/{{version}}/providers):
 
     <?php
 
