@@ -87,7 +87,7 @@ elixir(function(mix) {
 });
 ```
 
-You may also combine multiple Less files into a single CSS file. Again, the resulting CSS will be placed in `public/css/app.css`. If you wish to customize the output location of the compiled CSS, you may pass a second argument to the `less` method:
+You may also combine multiple Less files into a single CSS file. Again, the resulting CSS will be placed in `public/css/app.css`:
 
 ```javascript
 elixir(function(mix) {
@@ -95,6 +95,19 @@ elixir(function(mix) {
 		"app.less",
 		"controllers.less"
 	], "public/assets/css");
+});
+```
+
+If you wish to customize the output location of the compiled CSS, you may pass a second argument to the `less` method:
+
+```javascript
+elixir(function(mix) {
+	mix.less('app.less', 'public/stylesheets');
+});
+
+// Specifying a specific output filename...
+elixir(function(mix) {
+	mix.less('app.less', 'public/stylesheets/style.css');
 });
 ```
 
