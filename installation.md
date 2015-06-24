@@ -19,6 +19,7 @@ The Laravel framework has a few system requirements. Of course, all of these req
 <div class="content-list" markdown="1">
 - PHP >= 5.5.9
 - OpenSSL PHP Extension
+- PDO PHP Extension
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
 </div>
