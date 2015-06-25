@@ -67,7 +67,6 @@ Job classes are very simple, normally containing only a `handle` method which is
 
 	namespace App\Jobs;
 
-	use Mail;
 	use App\User;
 	use App\Jobs\Job;
 	use Illuminate\Contracts\Mail\Mailer;
