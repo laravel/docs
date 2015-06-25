@@ -76,7 +76,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 #### 設定你的 Provider
 
-在 `Homestead.yaml` 檔案中的 `provider` 參數是用來設定你想要使用哪一個 Vagrant provider：  `virtualbox` 或 `vmware_fusion` 。你可以根據你的喜好來決定 provider：
+在 `Homestead.yaml` 檔案中的 `provider` 參數是用來設定你想要使用哪一個 Vagrant provider：  `virtualbox` 或 `vmware_fusion`。你可以根據你的喜好來決定 provider：
 
 	provider: virtualbox
 
@@ -133,7 +133,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 	http://homestead.app
 
 <a name="launching-the-vagrant-box"></a>
-### 啟動 Vagrant box
+### 啟動 Vagrant Box
 
 當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機裡進入你的 Homestead 目錄並執行 `vagrant up` 指令。Vagrant 就會將虛擬主機啟動並自動設定你的共享資料夾和 Nginx 網站們。
 
@@ -194,7 +194,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 由 SensioLabs 推出的 [Blackfire 分析器](https://blackfire.io) 能協助你自動收集程式運行時的相關數據，像是 RAM、CPU time 及 disk I/O。若想在 Homestead 中替你的應用程式使用這個分析器是非常容易的。
 
-在 Homestead box 中同樣已經預裝好所有需要的套件，很簡單地你只需要在 `Homestead.yaml` 檔案中設定你的 Blackfire **Server ID 及 token 即可：
+在 Homestead box 中同樣已經預裝好所有需要的套件，很簡單地你只需要在 `Homestead.yaml` 檔案中設定你的 Blackfire **Server** ID 及 token 即可：
 
 	blackfire:
 	    - id: your-server-id
