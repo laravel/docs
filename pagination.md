@@ -84,7 +84,7 @@ When manually creating a paginator instance, you should manually "slice" the arr
 
 When you call the `paginate` or `simplePaginate` methods on a query builder or Eloquent query, you will receive a paginator instance. When calling the `paginate` method, you will receive an instance of `Illuminate\Pagination\LengthAwarePaginator`. When calling the `simplePaginate` method, you will receive an instance of `Illuminate\Pagination\Paginator`. These objects provide several methods that describe the result set. In addition to these helpers methods, the paginator instances are iterators and may be looped as an array.
 
-So, once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/views):
+So, once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/blade):
 
 	<div class="container">
 		@foreach ($users as $user)
