@@ -535,7 +535,7 @@ The `action` function generates a URL for the given controller action. You do no
 
 	$url = action('HomeController@getIndex');
 
-If the method accepts route parameters, you may them as the second argument to the method:
+If the method accepts route parameters, you may pass them as the second argument to the method:
 
 	$url = action('UserController@profile', ['id' => 1]);
 
