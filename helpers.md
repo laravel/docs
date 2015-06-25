@@ -546,7 +546,7 @@ The `route` function generates a URL for the given named route:
 
 	$url = route('routeName');
 
-If the route accepts parameters, you may them as the second argument to the method:
+If the route accepts parameters, you may pass them as the second argument to the method:
 
 	$url = route('routeName', ['id' => 1]);
 
