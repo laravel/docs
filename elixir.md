@@ -53,8 +53,10 @@ Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package:
 The only remaining step is to install Elixir! Within a fresh installation of Laravel, you'll find a `package.json` file in the root. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
 
 	npm install
-	
-> **Note:** Windows users who experience errors in their install should try and run `npm install --no-bin-links`
+
+If you are developing on a Windows system, you may need to run the `npm install` command with the `--no-bin-links` switch enabled:
+
+	npm install --no-bin-links
 
 <a name="running-elixir"></a>
 ## Running Elixir
