@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Basic Usage](#basic-usage)
 	- [Pluralization](#pluralization)
-- [Overriding Vendor Language Files](#overriding-package-language-files)
+- [Overriding Vendor Language Files](#overriding-vendor-language-files)
 
 <a name="introduction"></a>
 ## Introduction
@@ -79,8 +79,8 @@ Since the Laravel translator is powered by the Symfony Translation component, yo
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
 
-<a name="overriding-package-language-files"></a>
-## Overriding Package Language Files
+<a name="overriding-vendor-language-files"></a>
+## Overriding Vendor Language Files
 
 Some packages may ship with their own language files. Instead of hacking the package's core files to tweak these lines, you may override them by placing your own files in the `resources/lang/vendor/{package}/{locale}` directory.
 
