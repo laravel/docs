@@ -31,7 +31,7 @@ The default server configuration should suffice for development. However, you ar
 
 The `cluster` option will tell the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
 
-You can add an optional `options` item to your configuration to pass an array of Predis [client options](https://github.com/nrk/predis/wiki/Client-Options). For example to set a global key prefix.
+Additinoally, you may define an `options` array value in your Redis connection definition, allowing you to specify a set Predis [client options](https://github.com/nrk/predis/wiki/Client-Options).
 
 If your Redis server requires authentication, you may supply a password by adding a `password` configuration item to your Redis server configuration array.
 
