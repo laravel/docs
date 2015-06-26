@@ -50,9 +50,10 @@
 
 #### 控制器和命名空間
 
-有一點非常重要，那就是我們在定義控制器路由時，不需要指定完整的控制器命名空間。我們只需要定義「根」命名空間 `App\Http\Controllers` 之後的部分類別名稱。預設 `RouteServiceProvider` 會在包含根控制器命名空間的路由群組中載入 `routes.php` 此一檔案。
+有一點非常重要，那就是我們在定義控制器路由時，不需要指定完整的控制器命名空間。我們只需要定義「根」命名空間 `App\Http\Controllers` 之後的部分類別名稱。預設 `RouteServiceProvider` 會將 `routes.php` 檔案裡的路由規則包在
+根控制器命名空間的路由群組下。
 
-若你選擇在 `App\Http\Controllers` 此一目錄深層使用 PHP 命名空間以巢狀化或組織您的控制器，只要使用相對於 `App\Http\Controllers` 根命名空間的特定類別名稱即可。因此，若您的控制器類別全名為 `App\Http\Controllers\Photos\AdminController`，您可以像這樣註冊一個路由：
+若你選擇在 `App\Http\Controllers` 目錄內層，使用 PHP 命名空間巢狀或組織控制器，只要使用相對於 `App\Http\Controllers` 根命名空間的特定類別名稱即可。因此，若您的控制器類別全名為 `App\Http\Controllers\Photos\AdminController`，您可以像這樣註冊一個路由：
 
 	Route::get('foo', 'Photos\AdminController@method');
 
@@ -66,7 +67,7 @@
 
 	$url = action('FooController@method');
 
-您也可以使用 `route` 輔助方法來產生指向具名控制器路由的 URL：
+您也可以使用 `route` 輔助方法，產生命名控制器路由的 URL：
 
 	$url = route('name');
 
@@ -80,7 +81,7 @@
 		'uses' => 'UserController@showProfile'
 	]);
 
-不過，在你的控制器建構子中指定中介層會更為方便。在控制器建構子中使用 `middleware` 方法，你可以很容易地將中介層指定給控制器。你甚至可以對中介層作出限制，僅將它提供給控制器類別中的某些方法。
+不過，在控制器建構子中指定中介層會更為方便。在控制器建構子中使用 `middleware` 方法，你可以很容易地將中介層指定給控制器。你甚至可以對中介層作出限制，僅將它提供給控制器類別中的某些方法。
 
 	class UserController extends Controller
 	{
@@ -112,7 +113,7 @@
 
 	Route::resource('photo', 'PhotoController');
 
-此單一的路由宣告會創建多個路由，用來處理各式各樣和相片資源相關的的 RESTful 行為。同樣地，產生的控制器已有各種和這些行為繫結的方法，並包含通知您它們所處理的 URI 及動詞的記錄。
+這一條路由宣告會創建多個路由，用來處理各式各樣和相片資源相關的的 RESTful 行為。同樣地，產生的控制器已有各種和這些行為繫結的方法，並包含通知您它們所處理的 URI 及動詞的記錄。
 
 #### 由資源控制器處理的行為
 
@@ -192,7 +193,7 @@ Laravel 讓您能夠輕易地透過定義單一路由來處理控制器類別中
 
 	Route::controller('users', 'UserController');
 
-接下來，只要在控制器中加入方法。方法的名稱應由它們所回應的 HTTP 動詞作為開頭，緊跟著 URI 的首字母大寫版本所組成：
+接下來，只要在控制器中加入方法。方法的名稱應由它們所回應的 HTTP 動詞作為開頭，緊跟著首字母大寫的 URI 所組成：
 
 	<?php
 
@@ -276,7 +277,7 @@ Laravel [服務容器](/docs/{{version}}/container)用於解析所有的 Laravel
 		}
 	}
 
-當然，您也可以對任何的 [Laravel contract](/docs/{{version}}/contracts) 使用型別提示。若容器能夠解析它，你就可以對它使用型別提示。
+當然，您也可以對任何的 [Laravel contract](/docs/{{version}}/contracts) 使用型別提示。若容器能夠解析它，你就可以使用型別提示。
 
 #### 方法注入
 
