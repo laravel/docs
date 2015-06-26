@@ -119,6 +119,10 @@ Likewise, the `app/Handlers` directory has been renamed to `app/Listeners` and n
 
 By providing backwards compatibility for the Laravel 5.0 folder structure, you may upgrade your applications to Laravel 5.1 and slowly upgrade your events and commands to their new locations when it is convenient for you or your team.
 
+### Blade
+
+Methods `createMatcher`, `createOpenMatcher`, and `createPlainMatcher` have been removed from the Blade compiler. Use `directive` to create custom directives for Blade in Laravel 5.1. Consult [extending blade](/docs/{{version}}/blade#extending-blade) for more information.
+
 ### Tests
 
 Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
