@@ -53,7 +53,7 @@ So, we only need to place items in the `read` and `write` arrays if we wish to o
 <a name="running-queries"></a>
 ## Running Raw SQL Queries
 
-Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, and `statement`.
+Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, `delete`, and `statement`.
 
 #### Running A Select Query
 
