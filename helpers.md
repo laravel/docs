@@ -281,7 +281,7 @@ The `array_sort` method sorts the array by the results of the given Closure:
 <a name="method-array-sort-recursive"></a>
 #### `array_sort_recursive()` {#collection-method}
 
-The `array_sort_recursive` function recursively sorts the array by sort() function:
+The `array_sort_recursive` function recursively sorts the array using the `sort` function:
 
 	$array = [
 		[
