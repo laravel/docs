@@ -121,7 +121,7 @@ By providing backwards compatibility for the Laravel 5.0 folder structure, you m
 
 ### Blade
 
-Methods `createMatcher`, `createOpenMatcher`, and `createPlainMatcher` have been removed from the Blade compiler. Use `directive` to create custom directives for Blade in Laravel 5.1. Consult [extending blade](/docs/{{version}}/blade#extending-blade) for more information.
+The `createMatcher`, `createOpenMatcher`, and `createPlainMatcher` methods have been removed from the Blade compiler. Use the new `directive` method to create custom directives for Blade in Laravel 5.1. Consult the [extending blade](/docs/{{version}}/blade#extending-blade) documentation for more information.
 
 ### Tests
 
