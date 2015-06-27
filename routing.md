@@ -98,7 +98,7 @@
 <a name="parameters-regular-expression-constraints"></a>
 ### 正規表達式限制參數
 
-你可以限制你的路由參數格式，在路由實例中使用 `where` 的方法。在 `where` 方法中接受名稱參數和正規表達式，定義參數應該如何被限制：
+你可以限制你的路由參數格式，在路由實例中使用 `where` 的方法。`where` 方法接受名稱參數和正規表達式，定義參數應該如何被限制：
 
 	Route::get('user/{name}', function ($name) {
 		//
@@ -334,6 +334,6 @@ HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以在定義 `P
 
 	abort(404);
 
-第二，你可以手動拋出 `Symfony\Component\HttpKernel\Exception\NotFoundHttpException` 的實體。
+第二，你可以手動拋出 `Symfony\Component\HttpKernel\Exception\NotFoundHttpException` 的實例。
 
 更多有關如何操作 404 例外和自訂的回應，可以到 [錯誤](/docs/{{version}}/errors#http-exceptions) 章節內參考文件。
