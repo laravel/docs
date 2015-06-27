@@ -1,17 +1,17 @@
-# HTTP Requests
+# Richieste HTTP
 
-- [Accessing The Request](#accessing-the-request)
-	- [Basic Request Information](#basic-request-information)
-	- [PSR-7 Requests](#psr7-requests)
-- [Retrieving Input](#retrieving-input)
-	- [Old Input](#old-input)
-	- [Cookies](#cookies)
-	- [Files](#files)
+- [Accedere alla Richiesta](#accedere-alla-richiesta)
+	- [Informazioni Base della Richiesta](#informazioni-base-richiesta)
+	- [Richieste PSR-7](#richieste-psr7)
+- [Recupeare L'Input](#recuperare-input)
+	- [Input Precedente](#input-precedente)
+	- [Cookie](#cookie)
+	- [File](#file)
 
-<a name="accessing-the-request"></a>
-## Accessing The Request
+<a name="accedere-alla-richiesta"></a>
+## Accedere alla Richiesta
 
-To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your controller constructor or method. The current request instance will automatically be injected by the [service container](/docs/{{version}}/container):
+Per ottenere un istanza di una richiesta HTTP tramite dependency injection, devi importare la classe `Illuminate\Http\Request` nel construttore o nel metodo del controller. L'istanza corrente sarà automaticamente iniettata dal [service container](/docs/{{version}}/container):
 
 	<?php namespace App\Http\Controllers;
 
@@ -34,11 +34,11 @@ To obtain an instance of the current HTTP request via dependency injection, you 
 		}
 	}
 
-If your controller method is also expecting input from a route parameter, simply list your route arguments after your other dependencies. For example, if your route is defined like so:
+Se il metodo del controller si aspetta di ricevere dai parametri da una route, inserisci i parametri dopo le altre dipendeze. Per esempio, se la tua route è definita in questo modo:
 
 	Route::put('user/{id}', 'UserController@update');
 
-You may still type-hint the `Illuminate\Http\Request` and access your route parameter `id` by defining your controller method like the following:
+Puoi importare la classe `Illuminate\Http\Request` ed accedere al parametro id della route, modificando il tuo metodo in quesot modo:
 
 	<?php namespace App\Http\Controllers;
 
@@ -60,30 +60,30 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
 		}
 	}
 
-<a name="basic-request-information"></a>
-### Basic Request Information
+<a name="informazioni-base-richiesta"></a>
+### Informazioni Base della Richiesta
 
-The `Illuminate\Http\Request` instance provides a variety of methods for examining the HTTP request for your application. The Laravel `Illuminate\Http\Request` extends the `Symfony\Component\HttpFoundation\Request` class. Here are a few more of the useful methods available on this class:
+L'istanza `Illuminate\Http\Request` offre vari metodi per esaminare le richieste HTTP per la tua applicazione. La classe `Illuminate\Http\Request` estende la classe `Symfony\Component\HttpFoundation\Request`. Qui di seguito un focus su alcuni metodi:
 
-#### Retrieving The Request URI
+#### Recuperare Un URL Dalla Richiesta
 
-The `path` method returns the request's URI. So, if the incoming request is targeted at `http://domain.com/foo/bar`, the `path` method will return `foo/bar`:
+Il metodo `path` ritorna l'URL dalla richiesta. In questo modo, se la richiesta corrente proviene da `http://domain.com/foo/bar`, il metodo `path` ritonerà `foo/bar`:
 
 	$uri = $request->path();
 
-The `is` method allows you to verify that the incoming request URI matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:
+Il metodo `is` ti permette di verificare che la richiesta corrente coincida con un dato pattern. Puoi usare il carattere `*` come una wildcard quando usi questo metodo, in questo modo:
 
 	if ($request->is('admin/*')) {
 		//
 	}
 
-To get the full URL, not just the path info, you may use the `url` method on the request instance:
+Per recuperare l'URL completo, non solo il path, puoi usare il metodo `url` sull'instanza della richiesta:
 
 	$url = $request->url();
 
-#### Retrieving The Request Method
+#### Recupero Di Un Metodo
 
-The `method` method will return the HTTP verb for the request. You may also use the `isMethod` method to verify that the HTTP verb matches a given string:
+Il metodo `method` recupererà il verbo HTTP per la richiesta. Puoi usare anche il metodo`isMethod` per verificare che il verbo HTTP coincida con una stringa data, in questo modo:
 
 	$method = $request->method();
 
@@ -91,16 +91,16 @@ The `method` method will return the HTTP verb for the request. You may also use 
 		//
 	}
 
-<a name="psr7-requests"></a>
-### PSR-7 Requests
+<a name="richieste-psr7"></a>
+### Richieste PSR-7
 
-The PSR-7 standard specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request, you will first need to install a few libraries. Laravel uses the Symfony HTTP Message Bridge component to convert typical Laravel requests and responses into PSR-7 compatible implementations:
+Lo standard PSR-7 specifica le interefface per i messagi HTTP, incluse le richieste e le risposte. Se vuoi ottenere un istanza di una richiesta PSR-7, dovrai installare alcune librerie aggiuntive. Laravel usa il componente di Symphony HTTP Message Bridge per convertir le tipiche richieste e risposte Laravel in un implementazione compatibile di richiesta PSR-7:
 
 	composer require symfony/psr-http-message-bridge
 
 	composer require zendframework/zend-diactoros
 
-Once you have installed these libraries, you may obtain a PSR-7 request by simply type-hinting the request type on your route or controller:
+Una volta installate queste librerie, puoi ottenere una richiesta PSR-7 importando semplicemente il tipo di richiesta nella route o nel controller:
 
 	use Psr\Http\Message\ServerRequestInterface;
 
@@ -108,94 +108,95 @@ Once you have installed these libraries, you may obtain a PSR-7 request by simpl
 		//
 	});
 
-If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
+Se ritorni un istanza di risposta PSR-7 dalla route o dal controller, verrà automaticamente convertita ina un istanza di risposta Laravel e sarà visualizzata dal framework.
 
-<a name="retrieving-input"></a>
-## Retrieving Input
+<a name="recuperare-input"></a>
+## Recupeare L'Input
 
 #### Retrieving An Input Value
 
-Using a few simple methods, you may access all user input from your `Illuminate\Http\Request` instance. You do not need to worry about the HTTP verb used for the request, as input is accessed in the same way for all verbs.
+Usando pochi semplici metodi, puoi accedere a tutti gli input utenti dall'istanza `Illuminate\Http\Request`. Non ti devi preoccupare del verbo HTTP usato per la richiesta, perchè l'accesso agli input avviene allo stesso modo per tutti i verbi HTTP.
 
 	$name = $request->input('name');
 
-You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:
+Puoi passare un valore di default come secondo parametro al metodo `input`. Questo valore sarà ritornato se il valore richiesto non è presnete nella richiesta:
 
 	$name = $request->input('name', 'Sally');
 
-When working on forms with array inputs, you may use "dot" notation to access the arrays:
+Quando stai lavorando sui form con array di input, puoi usare la notazione "dot" per accedere all'array:
 
 	$input = $request->input('products.0.name');
 
-#### Determining If An Input Value Is Present
+#### Determinare Se Il Valore Di Un Input E' Presente
 
-To determine if a value is present on the request, you may use the `has` method. The `has` method returns `true` if the value is present **and** is not an empty string:
+Per determinare se un valore è presente nella richiesta, puoi usare il metodo `has`. Il metodo `has` ritorna `true` se il valore è presente **e** se non presente una stringa vuota:
 
 	if ($request->has('name')) {
 		//
 	}
 
-#### Retrieving All Input Data
+#### Recuperare Tutti Gli Input Di Una Richiesta
 
-You may also retrieve all of the input data as an `array` using the `all` method:
+Puoi anche recuperare tutti i dati di input come un `array` usando il metodo `all`:
 
 	$input = $request->all();
 
-#### Retrieving A Portion Of The Input Data
+#### Recuperare Solo Alcuni Input Dalla Richiesta
 
-If you need to retrieve a sub-set of the input data, you may use the `only` and `except` methods. Both of these methods accept a single `array` as their only argument:
+Se hai bisogno di recuperare un sotto-insieme degli input della richiesta, puoi usare i metodi `only` e `except`. Entrambi questi metodi accettano un singolo `array` come unico argomento:
 
 	$input = $request->only('username', 'password');
 
 	$input = $request->except('credit_card');
 
-<a name="old-input"></a>
-### Old Input
+<a name="input-precedente"></a>
+### Input Precedente
 
-Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation services](/docs/{{version}}/validation), it is unlikely you will need to manually use these methods, as some of Laravel's built-in validation facilities will call them automatically.
+Laravel ti offre la possibilità di mantenere l'input di una richiesta durante una successiva richiesta. Per esempio, puoi ripopolare un form dopo aver controllato l'input per errori di validazione. Tuttavia, se stai usando la validazione inclusa di Laravel [validation services](/docs/{{version}}/validation), non sarà necessario usare manualmente questi metodi, perchè sarà il meccanismo built-in di Laravel a richiamarli automaticamente.
 
-#### Flashing Input To The Session
+#### Flashing Dell'Input Nella Sessione
 
-The `flash` method on the `Illuminate\Http\Request` instance will flash the current input to the [session](/docs/{{version}}/session) so that it is available during the user's next request to the application:
+Il metodo `flash` sull'istanza `Illuminate\Http\Request`  memorizzerà gli input correnti nella
+[sessione](/docs/{{version}}/session) in modo da renderli disponibili, durante la richiesta successiva dell'utente, all'applicazione:
 
 	$request->flash();
 
-You may also use the `flashOnly` and `flashExcept` methods to flash a sub-set of the request data into the session:
+Puoi usare anche i metodi `flashOnly` e `flashExcept` per memorizzare solo alcuni input della richiesta:
 
 	$request->flashOnly('username', 'email');
 
 	$request->flashExcept('password');
 
-#### Flash Input Into Session Then Redirect
+#### Flashing Dell'Input Nella Session E Redirect
 
-Since you often will want to flash input in association with a redirect to the previous page, you may easily chain input flashing onto a redirect using the `withInput` method:
+Dal momento che spesso si vuole memorizzare gli input in associazione con un redirect alla pagina precedente, si può facilmente agganciarli su un redirect utilizzando il metodo `withInput`:
 
 	return redirect('form')->withInput();
 
 	return redirect('form')->withInput($request->except('password'));
 
-#### Retrieving Old Data
+#### Recuperare I Dati Precedenti
 
-To retrieve flashed input from the previous request, use the `old` method on the `Request` instance. The `old` method provides a convenient helper for pulling the flashed input data out of the [session](/docs/{{version}}/session):
+Per recuperare gli input memorizzati dalla precedente richiesta, usa il metodo `old` dell'istanza `Request`. Il metodo `old` offre un conveniente helper per recupare gli input fuori dalla [sessione](/docs/{{version}}/session):
 
 	$username = $request->old('username');
 
-Laravel also provides a global `old` helper function. If you are displaying old input within a [Blade template](/docs/{{version}}/views), it is more convenient to use the `old` helper:
+Laravel offre anche una funzione hepler `old` globale. Se stai visualizzando l'input precedente all'interno di un [template Blade](/docs/{{version}}/views), è più conveniente usare l'helper `old`:
 
 	{{ old('username') }}
 
-<a name="cookies"></a>
-### Cookies
+<a name="cookie"></a>
+### Cookie
 
-#### Retrieving Cookies From The Request
+#### Recupeare I Cookie Da Una Richiesta
 
-All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, you may use the `cookie` method on the `Illuminate\Http\Request` instance:
+Tutti i cookie creati da Laravel sono criptati e segnati da un codice di autenticazione, ciò vuol dire che saranno considerati validi se sono stati cambiati dal client. Per recupeare il valore di un cookie dalla richiesta, puoi usare il metodo `cookie` dell'istanza `Illuminate\Http\Request`:
 
 	$value = $request->cookie('name');
 
-#### Attaching A New Cookie To A Response
+#### Allegare Un Nuovo Cookie Ad Una Risposta
 
-Laravel provides a global `cookie` helper function which serves as a simple factory for generating new `Symfony\Component\HttpFoundation\Cookie` instances. The cookies may be attached to a `Illuminate\Http\Response` instance using the `withCookie` method:
+Laravel offre una funzione helper globale `cookie` fornice un modo semplice di generare una nuova istanza di `Symfony\Component\HttpFoundation\Cookie`Il cookie può essere allegato ad una istanza `Illuminate\Http\Response` usando il metodo `withCookie`:
 
 	$response = new Illuminate\Http\Response('Hello World');
 
@@ -203,44 +204,44 @@ Laravel provides a global `cookie` helper function which serves as a simple fact
 
 	return $response;
 
-To create a long-lived cookie, which lasts for five years, you may use the `forever` method on the cookie factory by first calling the `cookie` helper with no arguments, and then chaining the `forever` method onto the returned cookie factory:
+Per crare un cookie che duri per sempre, per i prossimi cinque anni, puoi richiamare il metodo `forever` dopo la chiamata all'helper `cookie`:
 
 	$response->withCookie(cookie()->forever('name', 'value'));
 
-<a name="files"></a>
-### Files
+<a name="file"></a>
+### File
 
-#### Retrieving Uploaded Files
+#### Recuperare I File Caricati
 
-You may access uploaded files that are included with the `Illuminate\Http\Request` instance using the `file` method. The object returned by the `file` method is an instance of the `Symfony\Component\HttpFoundation\File\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:
+Puoi accedere ai file caricati che sono inclusi con `Illuminate\Http\Request` usando il metodo `file`. L'oggeto ritornato dal metodo `file` è un istanza della classe `Symfony\Component\HttpFoundation\File\UploadedFile`, che estende la classe PHP `SplFileInfo` e fornisce una serie di metodi per interagire con i file:
 
 	$file = $request->file('photo');
 
-#### Verifying File Presence
+#### Verificare la Presenza di un File
 
-You may also determine if a file is present on the request using the `hasFile` method:
+Puoi anche determinare se un file è presente nella richiesta usando il meteodo `hasFile`:
 
 	if ($request->hasFile('photo')) {
 		//
 	}
 
-#### Validating Successful Uploads
+#### Determinare La Validità Di Un File Caricato
 
-In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:
+In aggiunta a verificare la presenza di un file, puoi anche verificare che non ci siano stati problemi durante l'upload del file, tramite il metodo:
 
 	if ($request->file('photo')->isValid())
 	{
 		//
 	}
 
-#### Moving Uploaded Files
+#### Spostare Un File Caricato
 
-To move the uploaded file to a new location, you should use the `move` directory. This method will move the file from its temporary upload location (as determined by your PHP configuration) to a more permanent destination of your choosing:
+Per spostare un file caricato in una nuova destinazione, puoi usare il metodo `move`. Questo metodo sposterà il file dalla directory di upload temporanea (determinata dalla configurazione di PHP) ad una nuova destinazione da te scelta:
 
 	$request->file('photo')->move($destinationPath);
 
 	$request->file('photo')->move($destinationPath, $fileName);
 
-#### Other File Methods
+#### Altri Metodi sui File
 
-There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](http://api.symfony.com/2.7/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
+Ci sono molti altri metodi disponibili per l'istanza `UploadedFile`. Controlla la [documentazione delle API per questa classe] http://api.symfony.com/2.7/Symfony/Component/HttpFoundation/File/UploadedFile.html) per ulteruiori informazioni riguardo questi metodi.
