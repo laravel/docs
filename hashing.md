@@ -1,19 +1,19 @@
 # Hashing
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
+- [Introduzione](#introduzione)
+- [Utilizzo base](#utilizzo-base)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt hashing for storing user passwords. If you are using the `AuthController` controller that is included with your Laravel application, it will automatically use Bcrypt for registration and authentication.
+La [facade](/docs/{{version}}/facade) `Hash` di Laravel fornisce tramite l'utilizzo di Bcrypt un hashing sicuro per salvare le password degli utenti. Se stai utilizzando il controller `AuthController` incluso con l'installazione di Laravel, stai anche utilizzando automaticamente Bcrypt per la registrazione e l'autenticazione.
 
-Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases.
+Bcrypt è una ottima soluzione per creare l'hash di una password perchè il suo "work factor" è modificabile, questo vuol dire che il tempo di generazione dell'hash può essere incrementato se si dispone di un hardware più potente.
 
-<a name="basic-usage"></a>
-## Basic Usage
+<a name="utilizzo-base"></a>
+## Utilizzo base
 
-You may hash a password by calling the `make` method on the `Hash` facade:
+Puoi creare un hash di una password semplicemente richiamando il metodo `make` tramite la facade `Hash`:
 
 	<?php namespace App\Http\Controllers;
 
@@ -24,7 +24,7 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 	class UserController extends Controller
 	{
 		/**
-		 * Update the password for the user.
+		 * Aggiorna la password dell'utente
 		 *
 		 * @param  Request  $request
 		 * @param  int  $id
@@ -34,7 +34,7 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 		{
 			$user = User::findOrFail($id);
 
-			// Validate the new password length...
+			// Qui la validazione della password, come ad esempio la lunghezza minima
 
 			$user->fill([
 				'password' => Hash::make($request->newPassword)
@@ -42,22 +42,22 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 		}
 	}
 
-Alternatively, you may also use the global `bcrypt` helper function:
+In alternativa, puoi utilizzare anche l'helper `bcrypt` che è una funzione disponibile globalmente:
 
-	bcrypt('plain-text');
+	bcrypt('testo-in-chiaro');
 
-#### Verifying A Password Against A Hash
+#### Verifica Di Una Password Con Il Suo Hash
 
-The `check` method allows you to verify that a given plain-text string corresponds to a given hash. However, if you are using the `AuthController` [included with Laravel](/docs/{{version}}/authentication), you will probably not need to use this directly, as the included authentication controller automatically calls this method:
+Il metodo `check` ti permette di verificare se il testo passato come primo argomento corrisponde all'hash passato come secondo argomento. Tuttavia, se utilizzi il controller `AuthController` [incluso in Laravel](/docs/{{version}}/autenticazione), non hai bisogno di richiamare direttamente questo metodo in quanto viene chiamato automaticamente dal controller:
 
-	if (Hash::check('plain-text', $hashedPassword)) {
-		// The passwords match...
+	if (Hash::check('password-in-chiaro', $hashedPassword)) {
+		// le password corrispondono...
 	}
 
-#### Checking If A Password Needs To Be Rehashed
+#### Controllare Se Una Password Deve Essere Ri-hashata
 
-The `needsRehash` function allows you to determine if the work factor used by the hasher has changed since the password was hashed:
+Il metodo `needsRehash` ti permette di determianre se il "work factor" utilizzato per creare l'hash della password è cambiato. Nel caso in cui questo valore fosse stato modificato dopo la creazione della password, questo metodo ti permette di rigenerare l'hash corretto:
 
 	if (Hash::needsRehash($hashed)) {
-		$hashed = Hash::make('plain-text');
+		$hashed = Hash::make('password-in-chiaro');
 	}
