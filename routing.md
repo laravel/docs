@@ -42,7 +42,7 @@
 
 #### 為多重的動作註冊路由
 
-有時候你可能需要註冊多個路由來回應 HTTP 的動作。你可以透過 `Route` [facade](/docs/{{version}}/facades) 的 `match` 方法來使用：
+有時候你可能需要註冊一個路由來回應多個 HTTP 的動作。你可以透過 `Route` [facade](/docs/{{version}}/facades) 的 `match` 方法來使用：
 
 	Route::match(['get', 'post'], '/', function () {
 		return 'Hello World';
@@ -56,7 +56,7 @@
 
 #### 產生 URLs 路由
 
-你可以產生應用程式路由透過 `url` 輔助函式：
+你可以透過 `url` 輔助函式產生應用程式路由：
 
 	$url = url('foo');
 
@@ -72,7 +72,7 @@
 		return 'User '.$id;
 	});
 
-你可以定義許多路由參數，在你必要的路由中：
+你可以依照路由需要，定義任何數量的路由參數：
 
 	Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
 		//
@@ -166,7 +166,7 @@
 
 #### 對命名路由產生 URLs
 
-一旦你在給定的路由中分配了名稱，你可以使用路由名稱產生 URLs 或重新導向，透過 `route` 函式：
+一旦你在給定的路由中分配了名稱，你可以透過 `route` 函式，使用路由名稱產生 URLs 或是重新導向：
 
 	$url = route('profile');
 
@@ -185,7 +185,7 @@
 
 路由群組允許你共用路由屬性, 例如：中介層、命名空間，你可以利用路由群組套用這些屬性到多個路由，而不需在每個路由都設定一次。共用屬性被指定到陣列格式，當作 `Route::group` 方法的第一個參數：
 
-要了解更多有關路由群組，我們會通過幾個常見的使用範例和功能。
+要了解更多有關路由群組，我們會透過幾個常見的使用範例和功能。
 
 <a name="route-group-middleware"></a>
 ### 中介層
@@ -273,7 +273,7 @@ Laravel 自動產生了一個 CSRF token 由應用程式管理每個活動使用
 你不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。在 `VerifyCsrfToken` [HTTP 中介層](/docs/{{version}}/middleware) 將自動驗證請求與 Session 中的 token 是否相符。
 
 <a name="csrf-excluding-uris"></a>
-### Excluding URIs From CSRF Protection
+### 不受 CSRF 保護的 URIs
 
 有時候你可能會希望 URIs 被 CSRF 排除保護。例如，你如果使用 [Stripe](https://stripe.com) 處理付款，並且利用他們的 webhook 系統，你需要從 Laravel CSRF 保護中，排除 webhook 的處理路由。
 
@@ -330,7 +330,7 @@ HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以在定義 `P
 <a name="throwing-404-errors"></a>
 ## 拋出 404 錯誤
 
-這裡有兩種方法從路由手動觸發 404 錯誤。首先，你可以使用 `abort` 輔助函式。在 `abort` 輔助函式只是簡單的拋出一個帶有指定狀態代碼的 `Symfony\Component\HttpFoundation\Exception\HttpException`：
+這裡有兩種方法從路由手動觸發 404 錯誤。首先，你可以使用 `abort` 輔助函式。`abort` 輔助函式只是簡單的拋出一個帶有指定狀態代碼的 `Symfony\Component\HttpFoundation\Exception\HttpException`：
 
 	abort(404);
 
