@@ -1,15 +1,15 @@
-# Eloquent: Collections
+# Eloquent: Collection
 
-- [Introduction](#introduction)
-- [Available Methods](#available-methods)
-- [Custom Collections](#custom-collections)
+- [Introduzione](#introduzione)
+- [Metodi Disponibili](#metodi-disponibili)
+- [Collection Personalizzate](#collection-personalizzate)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-All multi-result sets returned by Eloquent are an instance of the `Illuminate\Database\Eloquent\Collection` object, including results retrieved via the `get` method or accessed via a relationship. The Eloquent collection object extends the Laravel [base collection](/docs/{{version}}/collections), so it naturally inherits dozens of methods used to fluently work with the underlying array of Eloquent models.
+Tutti i set di risultati (non le singole istanze, ma i set) sono a loro volta istanze della classe `Illuminate\Database\Eloquent\Collection`. Tale classe estende a sua volta la [base collection](/docs/5.1/collection). Molti dei metodi ereditati, quindi, sono quelli della classe base, adattati però a lavorare bene con le istanze dei model Eloquent.
 
-Of course, all collections also serve as iterators, allowing you to loop over them as if they were simple PHP arrays:
+Ovviamente, ogni collection serve anche da iteratore, permettendoti di "loopare" al suo interno come fosse un semplice array:
 
 	$users = App\User::where('active', 1)->get();
 
@@ -17,7 +17,9 @@ Of course, all collections also serve as iterators, allowing you to loop over th
 		echo $user->name;
 	}
 
-However, collections are much more powerful than arrays and expose a variety of map / reduce operations using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:
+Tuttavia, le collection sono molto più potenti di quello che sembrano. Tra le varie cose interessanti, ad esempio, espongono alcuni metodi dedicati alle operazioni di map/reduce sugli elementi.
+
+Facciamo una prova: rimuoviamo tutti i model degli utenti inattivi e raccogliamo i nomi dei rimanenti.
 
 	$users = App\User::where('active', 1)->get();
 
@@ -28,12 +30,12 @@ However, collections are much more powerful than arrays and expose a variety of 
 		return $user->name;
 	});
 
-<a name="available-methods"></a>
-## Available Methods
+<a name="metodi-disponibili"></a>
+## Metodi Disponibili
 
-### The Base Collection
+### La Collection Base
 
-All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections) object; therefore, they inherit all of the powerful methods provided by the base collection class:
+Tutte le Eloquent collection estendono la [base collection](/docs/5.1/collection) di Laravel. Ad ogni modo, ereditano tutti i gli utili metodi della classe base:
 
 <style>
 	#collection-method-list > p {
@@ -47,64 +49,64 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 </style>
 
 <div id="collection-method-list" markdown="1">
-[all](/docs/{{version}}/collections#method-all)
-[chunk](/docs/{{version}}/collections#method-chunk)
-[collapse](/docs/{{version}}/collections#method-collapse)
-[contains](/docs/{{version}}/collections#method-contains)
-[count](/docs/{{version}}/collections#method-count)
-[diff](/docs/{{version}}/collections#method-diff)
-[each](/docs/{{version}}/collections#method-each)
-[filter](/docs/{{version}}/collections#method-filter)
-[first](/docs/{{version}}/collections#method-first)
-[flatten](/docs/{{version}}/collections#method-flatten)
-[flip](/docs/{{version}}/collections#method-flip)
-[forget](/docs/{{version}}/collections#method-forget)
-[forPage](/docs/{{version}}/collections#method-forpage)
-[get](/docs/{{version}}/collections#method-get)
-[groupBy](/docs/{{version}}/collections#method-groupby)
-[has](/docs/{{version}}/collections#method-has)
-[implode](/docs/{{version}}/collections#method-implode)
-[intersect](/docs/{{version}}/collections#method-intersect)
-[isEmpty](/docs/{{version}}/collections#method-isempty)
-[keyBy](/docs/{{version}}/collections#method-keyby)
-[keys](/docs/{{version}}/collections#method-keys)
-[last](/docs/{{version}}/collections#method-last)
-[map](/docs/{{version}}/collections#method-map)
-[merge](/docs/{{version}}/collections#method-merge)
-[pluck](/docs/{{version}}/collections#method-pluck)
-[pop](/docs/{{version}}/collections#method-pop)
-[prepend](/docs/{{version}}/collections#method-prepend)
-[pull](/docs/{{version}}/collections#method-pull)
-[push](/docs/{{version}}/collections#method-push)
-[put](/docs/{{version}}/collections#method-put)
-[random](/docs/{{version}}/collections#method-random)
-[reduce](/docs/{{version}}/collections#method-reduce)
-[reject](/docs/{{version}}/collections#method-reject)
-[reverse](/docs/{{version}}/collections#method-reverse)
-[search](/docs/{{version}}/collections#method-search)
-[shift](/docs/{{version}}/collections#method-shift)
-[shuffle](/docs/{{version}}/collections#method-shuffle)
-[slice](/docs/{{version}}/collections#method-slice)
-[sort](/docs/{{version}}/collections#method-sort)
-[sortBy](/docs/{{version}}/collections#method-sortby)
-[sortByDesc](/docs/{{version}}/collections#method-sortbydesc)
-[splice](/docs/{{version}}/collections#method-splice)
-[sum](/docs/{{version}}/collections#method-sum)
-[take](/docs/{{version}}/collections#method-take)
-[toArray](/docs/{{version}}/collections#method-toarray)
-[toJson](/docs/{{version}}/collections#method-tojson)
-[transform](/docs/{{version}}/collections#method-transform)
-[unique](/docs/{{version}}/collections#method-unique)
-[values](/docs/{{version}}/collections#method-values)
-[where](/docs/{{version}}/collections#method-where)
-[whereLoose](/docs/{{version}}/collections#method-whereloose)
-[zip](/docs/{{version}}/collections#method-zip)
+[all](/docs/5.1/collection#method-all)
+[chunk](/docs/5.1/collection#method-chunk)
+[collapse](/docs/5.1/collection#method-collapse)
+[contains](/docs/5.1/collection#method-contains)
+[count](/docs/5.1/collection#method-count)
+[diff](/docs/5.1/collection#method-diff)
+[each](/docs/5.1/collection#method-each)
+[filter](/docs/5.1/collection#method-filter)
+[first](/docs/5.1/collection#method-first)
+[flatten](/docs/5.1/collection#method-flatten)
+[flip](/docs/5.1/collection#method-flip)
+[forget](/docs/5.1/collection#method-forget)
+[forPage](/docs/5.1/collection#method-forpage)
+[get](/docs/5.1/collection#method-get)
+[groupBy](/docs/5.1/collection#method-groupby)
+[has](/docs/5.1/collection#method-has)
+[implode](/docs/5.1/collection#method-implode)
+[intersect](/docs/5.1/collection#method-intersect)
+[isEmpty](/docs/5.1/collection#method-isempty)
+[keyBy](/docs/5.1/collection#method-keyby)
+[keys](/docs/5.1/collection#method-keys)
+[last](/docs/5.1/collection#method-last)
+[map](/docs/5.1/collection#method-map)
+[merge](/docs/5.1/collection#method-merge)
+[pluck](/docs/5.1/collection#method-pluck)
+[pop](/docs/5.1/collection#method-pop)
+[prepend](/docs/5.1/collection#method-prepend)
+[pull](/docs/5.1/collection#method-pull)
+[push](/docs/5.1/collection#method-push)
+[put](/docs/5.1/collection#method-put)
+[random](/docs/5.1/collection#method-random)
+[reduce](/docs/5.1/collection#method-reduce)
+[reject](/docs/5.1/collection#method-reject)
+[reverse](/docs/5.1/collection#method-reverse)
+[search](/docs/5.1/collection#method-search)
+[shift](/docs/5.1/collection#method-shift)
+[shuffle](/docs/5.1/collection#method-shuffle)
+[slice](/docs/5.1/collection#method-slice)
+[sort](/docs/5.1/collection#method-sort)
+[sortBy](/docs/5.1/collection#method-sortby)
+[sortByDesc](/docs/5.1/collection#method-sortbydesc)
+[splice](/docs/5.1/collection#method-splice)
+[sum](/docs/5.1/collection#method-sum)
+[take](/docs/5.1/collection#method-take)
+[toArray](/docs/5.1/collection#method-toarray)
+[toJson](/docs/5.1/collection#method-tojson)
+[transform](/docs/5.1/collection#method-transform)
+[unique](/docs/5.1/collection#method-unique)
+[values](/docs/5.1/collection#method-values)
+[where](/docs/5.1/collection#method-where)
+[whereLoose](/docs/5.1/collection#method-whereloose)
+[zip](/docs/5.1/collection#method-zip)
 </div>
 
-<a name="custom-collections"></a>
-## Custom Collections
+<a name="collection-personalizzate"></a>
+## Collection Personalizzate
 
-If you need to use a custom `Collection` object with your own extension methods, you may override the `newCollection` method on your model:
+Potresti aver bisogno di usare, per un tuo model in particolare, una _Collection_ personalizzata da estendere con i tuoi metodi. Nessun problema, effettua l'override del metodo _newCollection_ nel tuo model.
 
 	<?php namespace App;
 
@@ -125,4 +127,4 @@ If you need to use a custom `Collection` object with your own extension methods,
 		}
 	}
 
-Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent returns a `Collection` instance of that model. If you would like to use a custom collection for every model in your application, you should override the `newCollection` method on a model base class that is extended by all of your models.
+Una volta definito il metodo _newCollection_, riceverai un'istanza della collection personalizzata ogni volta che Eloquent ritornerà un'istanza di una collection per tale model. Per intenderci, verrà ritornata la tua collection personalizzata ogni volta che userai i metodi _get_, _all_ e così via.
