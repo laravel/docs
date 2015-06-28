@@ -16,7 +16,7 @@
 	- [例外 URIs](#csrf-excluding-uris)
 	- [X-CSRF-Token](#csrf-x-csrf-token)
 	- [X-XSRF-Token](#csrf-x-xsrf-token)
-- [方法欺騙](#form-method-spoofing)
+- [表單方法欺騙](#form-method-spoofing)
 - [拋出 404 錯誤](#throwing-404-errors)
 
 <a name="basic-routing"></a>
@@ -318,7 +318,7 @@ Laravel 自動產生了一個 CSRF token 由應用程式管理每個活動使用
 Laravel 也會在 `XSRF-TOKEN` cookie 中儲存 CSRF token。你也可以使用 cookie 的值來設定 `X-XSRF-TOKEN` 請求標頭。一些像是 Angular 的 JavaScript 框架會自動幫你做到。
 
 <a name="form-method-spoofing"></a>
-## 方法欺騙
+## 表單方法欺騙
 
 HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以在定義 `PUT`、`PATCH` 或 `DELETE` 路由，並在 HTML 表單中被呼叫的時候，你將需要在表單中增加隱藏的 `_method` 欄位。隨著 `_method`  欄位送出的值將被視為 HTTP 請求方法使用：
 
