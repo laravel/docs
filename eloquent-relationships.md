@@ -639,7 +639,7 @@ Sometimes you may need to eager load several different relationships in a single
 
 To eager load nested relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts in one Eloquent statement:
 
-	$books = Book::with('author.contacts')->get();
+	$books = App\Book::with('author.contacts')->get();
 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
