@@ -37,7 +37,7 @@ Primeiro baixe o instalador usando o Composer:
 
 Certifique-se de que o diretório `~/.composer/vendor/bin` esteja no PATH do sistema e então o executável `laravel` poderá ser localizado pelo seu sistema.
 
-Uma vez instlado, um simples comando  `laravel new` criará uma nova instalação do Laravel no diretório que você especificou. Por exemplo, `laravel new blog` criará um diretório chamado blog contendo os arquivos da instalação inicial do Laravel com todas as suas dependências instaladas. Esse método de instalação é muito mais rápido do que a instalação via Composer:
+Uma vez instalado, um simples comando `laravel new` criará uma nova instalação do Laravel no diretório que você especificou. Por exemplo, `laravel new blog` criará um diretório chamado blog contendo os arquivos da instalação inicial do Laravel com todas as suas dependências instaladas. Esse método de instalação é muito mais rápido do que a instalação via Composer:
 
 	laravel new blog
 
