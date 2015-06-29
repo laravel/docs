@@ -509,13 +509,13 @@ The `redirect` method takes care of sending the user to the OAuth provider, whil
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
 
-Your routes could, for example, look like this
+Of course, you will need to define routes to your controller methods:
 
     <?php
 
         Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
         Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
-    
+
 
 #### Retrieving User Details
 
