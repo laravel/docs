@@ -1,23 +1,23 @@
-# Eloquent: Mutators
+# Eloquent: Mutator
 
-- [Introduction](#introduction)
-- [Accessors & Mutators](#accessors-and-mutators)
-- [Date Mutators](#date-mutators)
+- [Introduzione](#introduzione)
+- [Accessor e Mutator](#accessor-mutator)
+- [Date Mutator](#date-mutator)
 - [Attribute Casting](#attribute-casting)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Accessors and mutators allow you to format Eloquent attributes when retrieving them from a model or setting their value. For example, you may want to use the [Laravel encrypter](/docs/{{version}}/encryption) to encrypt a value while it is stored in the database, and then automatically decrypt the attribute when you access it on an Eloquent model.
+Gli accessor ed i mutator ti permettono di formattare (sia in input che in output) gli attributi del tuo model Eloquent. Ad esempio, immagina di voler usare l'[encrypter](/docs/5.1/encryption) di Laravel per crittare una password quando viene salvata su database, e decrittarla automaticamente quando viene invece recuperata in un secondo momento. Sono due strumenti molto utili, che vedremo a breve.
 
-In addition to custom accessors and mutators, Eloquent can also automatically cast date fields to [Carbon](https://github.com/briannesbitt/Carbon) instances or even [cast text fields to JSON](#attribute-casting).
+Inoltre, Eloquent permette di definire ancora più velocemente il casting dei vari attributi, che si tratti di date da convertire in istanze [Carbon](https://github.com/briannesbitt/Carbon) o addirittura da [campi di testo a JSON](#attribute-casting).
 
-<a name="accessors-and-mutators"></a>
-## Accessors & Mutators
+<a name="accessor-mutator"></a>
+## Accessor e Mutator
 
-#### Defining An Accessor
+#### Definire un Accessor
 
-To define an accessor, create a `getFooAttribute` method on your model where `Foo` is the "camel" cased name of the column you wish to access. In this example, we'll defined an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of `first_name`:
+Per definire un accessor, non devi fare altro che creare un metodo il cui nome è nel formato _getFooAttribute_, dove Foo è l'attributo da recuperare. Guarda l'esempio di seguito, che si occupa di formattare il recupero dell'attributo *first_name*. Una volta definito, l'accessor verrà automaticamente usato ad ogni uso di *$user->first_name*.
 
 	<?php namespace App;
 
@@ -37,15 +37,17 @@ To define an accessor, create a `getFooAttribute` method on your model where `Fo
 		}
 	}
 
-As you can see, the original value of the column is passed to the accessor, allowing you to manipulate and return the value. To access the value of the mutator, you may simply access the `first_name` attribute:
+Come puoi vedere, l'accessor prende in input il valore _$value_ originale, permettendoti di modificarlo come meglio credi per poi ritornarlo. A quel punto, come già detto, accedere al valore desiderato è semplice.
 
+	// first_name è memorizzato su db come "francesco"
 	$user = App\User::find(1);
 
+	// in $firstName ci sarà "Francesco"
 	$firstName = $user->first_name;
 
-#### Defining A Mutator
+#### Definire un Mutator
 
-To define a mutator, define a `setFooAttribute` method on your model where `Foo` is the "camel" cased name of the column you wish to access. So, again, let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:
+Per definire un mutator bisogna usare una sintassi molto simile a quella vista per gli accessor: al posto di _getFooAttribute_, infatti, stavolta avrai _setFooAttribute_. Usando lo stesso esempio appena visto, vediamo come modificare il valore di *first_name* sul model _User_ prima di memorizzarlo.
 
 	<?php namespace App;
 
@@ -65,20 +67,20 @@ To define a mutator, define a `setFooAttribute` method on your model where `Foo`
 		}
 	}
 
-The mutator will receive the value that is being set on the attribute, allowing you to manipulate the value and set the manipulated value on the Eloquent model's internal `$attributes` property. So, for example, if we attempt to set the `first_name` attribute to `Sally`:
+Il mutator riceverà il valore impostato inizialmente come parametro. Nel metodo potrai quindi modificarlo come meglio credi. Quindi, se proviamo a specificare come nome utente "Sally"...
 
 	$user = App\User::find(1);
 
 	$user->first_name = 'Sally';
 
-In this example, the `setFirstNameAttribute` function will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its value in the internal `$attributes` array.
+Il risultato, su database, sarà "sally".
 
-<a name="date-mutators"></a>
-## Date Mutators
+<a name="date-mutator"></a>
+## Date Mutator
 
-By default, Eloquent will convert the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
+Di default, Laravel converte le colonne *created_at* ed *updated_at* in istanze di [Carbon](https://github.com/briannesbitt/Carbon), che fornisce out of the box una marea di metodi utili per la gestione delle date.
 
-You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `$dates` property of your model:
+Nel caso dovessi averne bisogno anche per altri campi, non c'è nessun problema: basta effettuare l'override della proprietà _$dates_ del model desiderato.
 
 	<?php namespace App;
 
@@ -94,7 +96,7 @@ You may customize which fields are automatically mutated, and even completely di
 		protected $dates = ['created_at', 'updated_at', 'disabled_at'];
 	}
 
-When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance, and the date's value will automatically be correctly stored in your database:
+Quando una colonna viene considerata una data, puoi impostare il suo valore con uno UNIX Timestamp, una stringa nel formato 'Y-m-d' e, ovviamente, un'istanza `DateTime` o `Carbon`. La data inserita viene automaticamente convertita in un valore compatibile con il sistema di database sottostante.
 
 	$user = App\User::find(1);
 
@@ -102,7 +104,7 @@ When a column is considered a date, you may set its value to a UNIX timestamp, d
 
 	$user->save();
 
-As noted above, when retrieving attributes that are listed in your `$dates` property, they will automatically be cast to [Carbon](https://github.com/briannesbitt/Carbon) instances, allowing you to use any of Carbon's methods on your attributes:
+Inoltre, in fase di successivo recupero dei dati **tutte queste date vengono riconvertite in istanze [Carbon](https://github.com/briannesbitt/Carbon)**, permettendoti di usarle come meglio credi.
 
 	$user = App\User::find(1);
 
@@ -111,9 +113,9 @@ As noted above, when retrieving attributes that are listed in your `$dates` prop
 <a name="attribute-casting"></a>
 ## Attribute Casting
 
-The `$casts` property on your model provides a convenient method of converting attributes to common data types. The `$casts` property should be an array where the key is the name of the attribute being cast, while the value is the type you wish to cast to the column to. The supported cast types are: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object` and `array`.
+La proprietà _$casts_ del tuo model permette di definire, in modo ancora più veloce di quello visto finora, delle trasformazioni dei tuoi attributi in tipi comuni. I tipi supportati per questa conversione veloce sono: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object` and `array`.
 
-For example, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:
+Vediamo un esempio pratico: partendo da un attributo *is_admin*, memorizzato come _integer (0 o 1)_, vogliamo che in fase di recupero venga convertito in boolean per poterlo usare in un semplice _if_: 
 
 	<?php namespace App;
 
@@ -131,7 +133,9 @@ For example, let's cast the `is_admin` attribute, which is stored in our databas
 		];
 	}
 
-Now the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer:
+Fatto! La proprietà _$casts_ è un semplice array associativo, dove il nome dell'attributo da convertire è la chiave, mentre il valore indica il tipo di destinazione.
+
+A questo punto possiamo usare *is_admin* facilmente:
 
 	$user = App\User::find(1);
 
@@ -141,7 +145,7 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
 
 #### Array Casting
 
-The `array` cast type is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
+Qualche parola va spesa sul tipo _array_. A volte possiamo avere, su database, dei valori memorizzati come JSON serializzato. In tal caso, usare l'attribute casting su una colonna simile scegliendo come formato di destinazione _array_ può essere molto comodo. Il testo JSON verrà infatti deserializzato automaticamente e sarà pronto per essere usato!
 
 	<?php namespace App;
 
@@ -159,7 +163,7 @@ The `array` cast type is particularly useful when working with columns that are 
 		];
 	}
 
-Once the cast is defined, you may access the `options` attribute and it will automatically be deserialized from JSON into a PHP array. When you set the value of the `options` attribute, the given array will automatically be serialized back into JSON for storage:
+A quel punto, una volta definito il cast, accedere all'attributo _options_ sarà un gioco da ragazzi.
 
 	$user = App\User::find(1);
 
