@@ -579,8 +579,8 @@ Nested `has` statements may also be constructed using "dot" notation. For exampl
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
 	// Retrieve all posts with at least one comment containing words like foo%
-	$posts = Post::whereHas('comments', function ($q) {
-		$q->where('content', 'like', 'foo%');
+	$posts = Post::whereHas('comments', function ($query) {
+		$query->where('content', 'like', 'foo%');
 	})->get();
 
 <a name="eager-loading"></a>
@@ -639,7 +639,7 @@ Sometimes you may need to eager load several different relationships in a single
 
 To eager load nested relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts in one Eloquent statement:
 
-	$books = Book::with('author.contacts')->get();
+	$books = App\Book::with('author.contacts')->get();
 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
