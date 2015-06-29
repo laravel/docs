@@ -1,56 +1,56 @@
-# Eloquent: Serialization
+# Eloquent: Serializzazione
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
-- [Hiding Attributes From JSON](#hiding-attributes-from-json)
-- [Appending Values To JSON](#appending-values-to-json)
+- [Introduzione](#introduzione)
+- [Uso Base](#uso-base)
+- [Nascondere degli Attributi nel JSON](#nascondere-attributi-json)
+- [Aggiungere degli Attributi nel JSON](#aggiungere-attributi-json)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-When building JSON APIs, you will often need to convert your models and relationships to arrays or JSON. Eloquent includes convenient methods for making these conversions, as well as controlling which attributes are included in your serializations.
+Ti è mai capitato di costruire delle API JSON? Si? Beh, probabilmente avrai avuto la necessità di convertire i dati ottenuti dalle tue chiamate in JSON. Realizzare API con Laravel ed Eloquent, sotto questo punto di vista, è ancora più comodo! Eloquent infatti presenta alcuni metodi per effettuare queste conversioni in modo semplice e veloce.
 
-<a name="basic-usage"></a>
-## Basic Usage
+<a name="uso-base"></a>
+## Uso Base
 
-#### Converting A Model To An Array
+#### Da Model ad Array
 
-To convert a model and its loaded [relationships](/docs/{{version}}/eloquent-relationships) to an array, you may use the `toArray` method. This method is recursive, so all attributes and all relations (including the relations of relations) will be converted to arrays:
+Per convertire un model e le sue eventuali [relazioni](/docs/5.1/eloquent-relazioni) in un array, puoi usare il metodo _toArray_. Il metodo è ricorsivo, quindi non dovrai preoccuparti dei vari sotto-elementi.
 
 	$user = App\User::with('roles')->first();
 
 	return $user->toArray();
 
-You may also convert [collections](/docs/{{version}}/eloquent-collections) to arrays:
+Tale utility è disponibile anche per le [collection](/docs/5.1/eloquent-collection):
 
 	$users = App\User::all();
 
 	return $users->toArray();
 
-#### Converting A Model To JSON
+#### Da Model a JSON
 
-To convert a model to JSON, you may use the `toJson` method. Like `toArray`, the `toJson` method is recursive, so all attributes and relations will be converted to JSON:
+Per convertire un model in JSON puoi usare il metodo _toJson_. Esattamente come avvenuto per `toArray`, anche _toJson_ è ricorsivo.
 
 	$user = App\User::find(1);
 
 	return $user->toJson();
 
-Alternatively, you may cast a model or collection to a string, which will automatically call the `toJson` method:
+Il metodo _toJson_, inoltre, viene richiamato anche nell'eventualità di un cast in string dell'istanza risultante (che sia un model o una collection):
 
 	$user = App\User::find(1);
 
 	return (string) $user;
 
-Since models and collections are converted to JSON when cast to a string, you can return Eloquent objects directly from your application's routes or controllers:
+Tra l'altro, partendo da questa ultima osservazione, in una qualsiasi route o action di un tuo controller puoi tranquillamente ritornare una cosa del genere:
 
 	Route::get('users', function () {
 		return App\User::all();
 	});
 
-<a name="hiding-attributes-from-json"></a>
-## Hiding Attributes From JSON
+<a name="nascondere-attributi-json"></a>
+## Nascondere degli Attributi nel JSON
 
-Sometimes you may wish to limit the attributes, such as passwords, that are included in your model's array or JSON representation. To do so, add a `$hidden` property definition to your model:
+A volte potresti avere la necessità di limitare gli attributi da mandare in output. Immagina un campo password: non sarebbe esattamente il massimo della sicurezza mandarlo in output come se niente fosse. Puoi ovviare al problema in modo molto semplice aggiungendo i campi che vuoi nascondere all'array _$hidden_ del tuo model.
 
 	<?php namespace App;
 
@@ -66,9 +66,9 @@ Sometimes you may wish to limit the attributes, such as passwords, that are incl
 		protected $hidden = ['password'];
 	}
 
-> **Note:** When hiding relationships, use the relationship's **method** name, not its dynamic property name.
+> **Nota:** se vuoi nascondere dei dati inerenti ad una relazione, usa il nome del **metodo** e non quello della proprietà dinamica.
 
-Alternatively, you may use the `visible` property to define a white-list of attributes that should be included in your model's array and JSON representation:
+In alternativa puoi sempre usare la proprietà _visible_ per definire una white-list di attributi da mostrare.
 
 	<?php namespace App;
 
@@ -84,10 +84,10 @@ Alternatively, you may use the `visible` property to define a white-list of attr
 		protected $visible = ['first_name', 'last_name'];
 	}
 
-<a name="appending-values-to-json"></a>
-## Appending Values To JSON
+<a name="aggiungere-attributi-json"></a>
+## Aggiungere degli Attributi nel JSON
 
-Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, first define an [accessor](/docs/{{version}}/eloquent-mutators) for the value:
+Così come puoi togliere, puoi anche aggiungere. A volte potresti avere la necessità di aggiungere dei nuovi attributi al tuo JSON. Nessun problema: non devi fare altro che definire un [accessor](/docs/5.1/eloquent-mutator) per tale attributo.
 
 	<?php namespace App;
 
@@ -106,7 +106,7 @@ Occasionally, you may need to add array attributes that do not have a correspond
 		}
 	}
 
-Once you have created the accessor, add the attribute name to the `appends` property on the model:
+Una volta che hai creato l'accessor, aggiungilo alla proprietà/array _$appends_ del model.
 
 	<?php namespace App;
 
@@ -122,4 +122,4 @@ Once you have created the accessor, add the attribute name to the `appends` prop
 		protected $appends = ['is_admin'];
 	}
 
-Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms. Attributes in the `appends` array will also respect the `visible` and `hidden` settings configured on the model.
+Una volta aggiungo all'array, il nuovo attributo sarà incluso nel JSON risultante (vale anche per il metodo _toArray_). Ricorda, inoltre, che gli attributi in _appends_ rispettano le regole specificate in _hidden_ e _visible_.
