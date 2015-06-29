@@ -85,19 +85,12 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [url](#method-url)
 </div>
 
-### Routes
-
-<div class="collection-method-list" markdown="1">
-[get](#method-route-get)
-[post](#method-route-post)
-[put](#method-route-put)
-[patch](#method-route-patch)
-[delete](#method-route-delete)
-</div>
-
 ### Miscellaneous
 
 <div class="collection-method-list" markdown="1">
+[auth](#method-auth)
+[back](#method-back)
+[bcrypt](#method-bcrypt)
 [config](#method-config)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
@@ -105,16 +98,13 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [elixir](#method-elixir)
 [env](#method-env)
 [event](#method-event)
+[factory](#method-factory)
+[old](#method-old)
+[redirect](#method-redirect)
 [response](#method-response)
 [value](#method-value)
 [view](#method-view)
 [with](#method-with)
-[auth](#method-auth)
-[redirect](#method-redirect)
-[back](#method-back)
-[old](#method-old)
-[factory](#method-factory)
-[bcrypt](#method-bcrypt)
 </div>
 
 <a name="method-listing"></a>
@@ -614,46 +604,29 @@ The `url` function generates a fully qualified URL to the given path:
 
 	echo url('user/profile', [1]);
 
-<a name="routes"></a>
-## Routes
-
-<a name="method-route-get"></a>
-#### `get()` {#collection-method}
-
-The `get` function creates a new **GET** route. You can use it as an alternative to the `Route` facade:
-
-	get('/home');
-
-<a name="method-route-post"></a>
-#### `post()` {#collection-method}
-
-The `post` function creates a new **POST** route. You can use it as an alternative to the `Route` facade:
-
-	post('/users');
-
-<a name="method-route-put"></a>
-#### `put()` {#collection-method}
-
-The `put` function creates a new **PUT** route. You can use it as an alternative to the `Route` facade:
-
-	put('/users/{id}');
-
-<a name="method-route-patch"></a>
-#### `patch()` {#collection-method}
-
-The `patch` function creates a new **PATCH** route. You can use it as an alternative to the `Route` facade:
-
-	patch('/users/{id}');
-
-<a name="method-route-delete"></a>
-#### `delete()` {#collection-method}
-
-The `delete` function creates a new **DELETE** route. You can use it as an alternative to the `Route` facade:
-
-	delete('/users/{id}');
-
 <a name="miscellaneous"></a>
 ## Miscellaneous
+
+<a name="method-auth"></a>
+#### `auth()` {#collection-method}
+
+The `auth` function return an authenticator instance. You may use it instead of the `Auth` facade for convenience:
+
+	$user = auth()->user();
+
+<a name="method-back"></a>
+#### `back()` {#collection-method}
+
+The `back()` function generates a redirect response to the uesr's previous location:
+
+	return back();
+
+<a href="method-bcrypt"></a>
+#### `bcrypt()` {#collection-method}
+
+The `bcrypt` function hashes the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
+
+	$password = bcrypt('my-secret-password');
 
 <a name="method-config"></a>
 #### `config()` {#collection-method}
@@ -709,6 +682,27 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 
 	event(new UserRegistered($user));
 
+<a name="method-factory"></a>
+#### `factory()` {#collection-method}
+
+The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/testing#model-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
+
+	$user = factory('App\User')->make();
+
+<a name="method-old"></a>
+#### `old()` {#collection-method}
+
+The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session.:
+
+	$value = old('value');
+
+<a name="method-redirect"></a>
+#### `redirect()` {#collection-method}
+
+The `redirect` function return an instance of the redirector to do [redirects](/docs/{{version}}/responses#redirects):
+
+	return redirect('/home');
+
 <a name="method-response"></a>
 #### `response()` {#collection-method}
 
@@ -738,45 +732,3 @@ The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 The `with` function return the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
 
 	$value = with(new Foo)->work();
-
-<a name="method-auth"></a>
-#### `auth()` {#collection-method}
-
-The `auth` function return the available auth instance. You can use it instead of the `Auth` facade for convenience:
-
-	$user = auth()->user();
-
-<a name="method-redirect"></a>
-#### `redirect()` {#collection-method}
-
-The `redirect` function return an instance of the redirector to do [redirects](/docs/{{version}}/responses#redirects):
-
-	return redirect('/home');
-
-<a name="method-back"></a>
-#### `back()` {#collection-method}
-
-The `back()` function redirects the user to the previous location, this is the simplest method:
-
-	return back();
-
-<a name="method-old"></a>
-#### `old()` {#collection-method}
-
-The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session.:
-
-	$value = old('value');
-
-<a name="method-factory"></a>
-#### `factory()` {#collection-method}
-
-The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/testing#model-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
-
-	$user = factory('App\User')->make();
-
-<a href="method-bcrypt"></a>
-#### `bcrypt()` {#collection-method}
-
-The `bcrypt` function hash a given value. You can use it as an alternative to the `Hash` facade. See [hashing](/docs/{{version}}/hashing) for more:
-
-	$password = bcrypt('my-secret-password');
