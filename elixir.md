@@ -360,7 +360,7 @@ That's it! You may either place this at the top of your Gulpfile, or instead ext
 
 var elixir = require("laravel-elixir");
 
-require("./elixir-tasks")
+require("./elixir-extensions")
 
 elixir(function(mix) {
 	mix.speak("Tea, Earl Grey, Hot");
