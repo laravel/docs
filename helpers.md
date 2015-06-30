@@ -617,7 +617,7 @@ The `auth` function return an authenticator instance. You may use it instead of 
 <a name="method-back"></a>
 #### `back()` {#collection-method}
 
-The `back()` function generates a redirect response to the uesr's previous location:
+The `back()` function generates a redirect response to the user's previous location:
 
 	return back();
 
