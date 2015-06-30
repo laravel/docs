@@ -1,22 +1,22 @@
-# Facades
+# Facade
 
-- [Introduction](#introduction)
-- [Using Facades](#using-facades)
-- [Facade Class Reference](#facade-class-reference)
+- [Introduzione](#introduzione)
+- [Uso di Facade](#uso-facade)
+- [Reference Classi Facade](#reference-classi-facade)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Facades provide a "static" interface to classes that are available in the application's [service container](/docs/{{version}}/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+Il sistema di Facade offre un interfaccia "statica" a tutte le classi disponibili attraverso il [service container](/docs/{{version}}/container). Laravel conta già diverse facade pronte all'uso, e probabilmente le hai usate senza neanche saperlo. Le Facade di Laravel fanno da proxy per le classi "sottostanti" presenti nell'IoC Container, dando allo sviluppatore la possibilità di usare una sintassi espressiva ma mantenendo, allo stesso tempo, la flessibilità e la testabilità che con un metodo statico non si può ottenere. 
 
-<a name="using-facades"></a>
-## Using Facades
+<a name="uso-facade"></a>
+## Uso di Facade
 
-In the context of a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Illuminate\Support\Facades\Facade` class.
+Nel contesto di applicazioni Laravel, una facade è una classe che offre l'accesso ad un oggeto tramite uno specifico “contenitore”. Questo “passaggio” trova la sua concretizzazione, appunto, nella classe Facade. Le facade di Laravel, e qualsiai altra facade personalizzata che crei, dovranno estendere la classe base `Illuminate\Support\Facades\Facade`.
 
-A facade class only needs to implement a single method: `getFacadeAccessor`. It's the `getFacadeAccessor` method's job to define what to resolve from the container. The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to the resolved object.
+Una classe facade ha solo bisogno di implementare un singolo metodo: `getFacadeAccessor`. E' compito del metodo `getFacadeAccessor` infatti, definisce quello che viene poi “risolto” all’interno del container. La classe di base `Facade` fa largamente uso del metodo magico `__callStatic()` per la gestione delle varie chiamate.
 
-In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class:
+Nell'esempio sotto, viene eseguita una chiamata al sistema di cache di Laravel. Guardando il codice, si potrebbe pensare che il metodo statico `get` venga chiamato dalla classe `Cache`:
 
 	<?php namespace App\Http\Controllers;
 
@@ -38,10 +38,9 @@ In the example below, a call is made to the Laravel cache system. By glancing at
 			return view('profile', ['user' => $user]);
 		}
 	}
+Nota come all'inizio del file abbiamo "importato" la facade `Cache`. Questa facade funge da proxy per accedere all'implementazione dell'interfaccia`Illuminate\Contracts\Cache\Factory`. Qualsiasi chiamata esegui usando la facade sarà passata all'istanza della cache di Laravel.
 
-Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy to accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service.
-
-If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
+Se diamo uno sguardo alla classe `Illuminate\Support\Facades\Cache`, vedrai che non è presente nessun metodo statico `get`:
 
 	class Cache extends Facade {
 
@@ -54,12 +53,12 @@ If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that the
 
 	}
 
-Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. Remember, this method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
+Invece, la facade `Cache` estende la classe base `Facade` e viene definito il metodo `getFacadeAccessor()`. Ricorda, la funzione di questo metodo è quella di ritornare il nome del binding dal service container. Quando un utente referenzia qualsiasi metodo statico sulla facade `Cache`, Laravel risolte il binding `cache` dal  [service container](/docs/{{version}}/container) ed esegue il metodo richiesto (in questo caso, `get`) di questo specifico oggetto.
 
-<a name="facade-class-reference"></a>
-## Facade Class Reference
+<a name="reference-classi-facade"></a>
+## Reference Classi Facade
 
-Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [service container binding](/docs/{{version}}/container) key is also included where applicable.
+Qui di seguito trovi le varie Facades e le classi sottostanti collegate. Può essere una buona reference in caso di problemi e, quindi, per poter sapere quale classe andare ad analizzare. E' inclusa anche la chiave del [binding del service container](/docs/{{version}}/container) dove applicabile.
 
 Facade  |  Class  |  Service Container Binding
 ------------- | ------------- | -------------
