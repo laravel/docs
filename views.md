@@ -112,7 +112,7 @@ Let's register our view composers within a [service provider](/docs/{{version}}/
 		{
 			// Using class based composers...
 			view()->composer(
-				'profile', 'App\Http\ViewComposers\ProfileComposer'
+				'profile', App\Http\ViewComposers\ProfileComposer::class
 			);
 
 			// Using Closure based composers...
@@ -186,7 +186,7 @@ You may attach a view composer to multiple views at once by passing an array of 
 
 	view()->composer(
 		['profile', 'dashboard'],
-		'App\Http\ViewComposers\MyViewComposer'
+		App\Http\ViewComposers\MyViewComposer::class
 	);
 
 The `composer` method accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
@@ -199,4 +199,4 @@ The `composer` method accepts the `*` character as a wildcard, allowing you to a
 
 View **creators** are very similar to view composers; however, they are fired immediately when the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
 
-	view()->creator('profile', 'App\Http\ViewCreators\ProfileCreator');
+	view()->creator('profile', App\Http\ViewCreators\ProfileCreator::class);
