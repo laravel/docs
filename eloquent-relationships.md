@@ -669,7 +669,7 @@ Sometimes you may need to eager load a relationship after the parent model has a
 		$books->load('author', 'publisher');
 	}
 
-If you need set additional query constraints on the eager loading query, you may pass a `Closure` to the `load` method:
+If you need to set additional query constraints on the eager loading query, you may pass a `Closure` to the `load` method:
 
 	$books->load(['author' => function ($query) {
 		$query->orderBy('published_date', 'asc');
