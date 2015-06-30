@@ -33,6 +33,8 @@ The new migration will be placed in your `database/migrations` directory. Each m
 
 The `--table` and `--create` options may also be used to indicate the name of the table and whether the migration will be creating a new table. These options simply pre-fill the generated migration stub file with the specified table:
 
+The `--path` option can be supplied to designate a custom path where the migration file should be created.
+
 	php artisan make:migration add_votes_to_users_table --table=users
 
 	php artisan make:migration create_users_table --create=users
