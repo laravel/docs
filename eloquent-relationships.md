@@ -331,13 +331,12 @@ The first argument passed to the `hasManyThrough` method is the name of the fina
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model, while the fourth argument is the name of the foreign key on the final model.
 
-	class Country extends Model {
-
+	class Country extends Model
+	{
 		public function posts()
 		{
 			return $this->hasManyThrough('App\Post', 'App\User', 'country_id', 'user_id');
 		}
-
 	}
 
 <a name="polymorphic-relations"></a>
@@ -580,8 +579,8 @@ Nested `has` statements may also be constructed using "dot" notation. For exampl
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
 	// Retrieve all posts with at least one comment containing words like foo%
-	$posts = Post::whereHas('comments', function ($q) {
-		$q->where('content', 'like', 'foo%');
+	$posts = Post::whereHas('comments', function ($query) {
+		$query->where('content', 'like', 'foo%');
 	})->get();
 
 <a name="eager-loading"></a>
@@ -640,7 +639,7 @@ Sometimes you may need to eager load several different relationships in a single
 
 To eager load nested relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts in one Eloquent statement:
 
-	$books = Book::with('author.contacts')->get();
+	$books = App\Book::with('author.contacts')->get();
 
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
@@ -670,7 +669,7 @@ Sometimes you may need to eager load a relationship after the parent model has a
 		$books->load('author', 'publisher');
 	}
 
-If you need set additional query constraints on the eager loading query, you may pass a `Closure` to the `load` method:
+If you need to set additional query constraints on the eager loading query, you may pass a `Closure` to the `load` method:
 
 	$books->load(['author' => function ($query) {
 		$query->orderBy('published_date', 'asc');
@@ -717,6 +716,23 @@ In addition to the `save` and `saveMany` methods, you may also use the `create` 
 	]);
 
 Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent#mass-assignment).
+
+<a name="updating-belongs-to-relationships"></a>
+#### Updating "Belongs To" Relationships
+
+When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
+
+	$account = App\Account::find(10);
+
+	$user->account()->associate($account);
+
+	$user->save();
+
+When removing a `belongsTo` relationship, you may use the `dissociate` method. This method will reset the foreign key as well as the relation on the child model:
+
+	$user->account()->dissociate();
+
+	$user->save();
 
 <a name="inserting-many-to-many-relationships"></a>
 ### Many To Many Relationships

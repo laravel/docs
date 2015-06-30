@@ -19,6 +19,7 @@ Laravel 框架有一些系統上的需求。當然，[Laravel Homestead](/docs/{
 <div class="content-list" markdown="1">
 - PHP >= 5.5.9
 - OpenSSL PHP Extension
+- PDO PHP Extension
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
 </div>

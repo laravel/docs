@@ -95,8 +95,6 @@ Blade 模板具有兩個主要優點： _模板繼承（ template inheritance）
 
 	The current UNIX timestamp is {{ time() }}.
 
-> **Note:** Blade `{{ }}` statements are automatically send through PHP's `htmlentities` function to prevent XSS attacks.
-
 > **注意：** 在 Blade 視圖中， `{{ }}` 已經自動以 PHP 既有的 `htmlentites` 函式防禦 XSS 攻擊手法。
 
 
@@ -139,10 +137,10 @@ Blade 模板具有兩個主要優點： _模板繼承（ template inheritance）
 
 #### If 敘述
 
-你可以利用 `@if`、`@elseif`、`@else`及`@endif` 指令進行條件分歧判斷與執行： 
+你可以利用 `@if`、`@elseif`、`@else`及`@endif` 指令進行條件分歧判斷與執行：
 
 	@if (count($records) === 1)
-		有一條記錄		
+		有一條記錄
 	@elseif (count($records) > 1)
 		有多條記錄
 	@else
@@ -154,12 +152,12 @@ Blade 模板具有兩個主要優點： _模板繼承（ template inheritance）
 	@unless (Auth::check())
 		你尚未登入
 	@endunless
-	
+
 > **譯註：** Blade 尚未提供 `switch` 敘述的使用，若有 `switch` 使用需要者，需要自行撰寫。
 
 #### 迴圈
 
-除了條件分歧控制以外， Blade 也提供了簡易迴圈使用方式。 
+除了條件分歧控制以外， Blade 也提供了簡易迴圈使用方式。
 
 	@for ($i = 0; $i < 10; $i++)
 		The current value is {{ $i }}
@@ -203,7 +201,7 @@ Blade 模板中的 `@include` 指令，允使開發者簡單地引入一個已�
 在引入頁面時，可以傳送特定資料給被引入的頁面：
 
 	@include('view.name', ['error' => '你忘記輸入帳號囉'])
-	
+
 > **譯註：** 這邊為了更容易看懂引入的邏輯與使用方式，所以新增了 errors.blade.php 範例。
 
 #### 註解

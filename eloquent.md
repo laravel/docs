@@ -358,7 +358,7 @@ In the example above, we are retrieving the model from the database before calli
 
 Of course, you may also run a delete query on a set of models. In this example, we will delete all flights that are marked as inactive:
 
-	$deletedRows = App\Flight::where('votes', '>', 100)->delete();
+	$deletedRows = App\Flight::where('active', 0)->delete();
 
 <a name="soft-deleting"></a>
 ### Soft Deleting

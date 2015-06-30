@@ -3,7 +3,7 @@
 - [簡介](#introduction)
 - [基本用法](#basic-usage)
 	- [複數](#pluralization)
-- [覆寫套件的語言檔](#overriding-package-language-files)
+- [覆寫套件的語言檔](#overriding-vendor-language-files)
 
 <a name="introduction"></a>
 ## 簡介
@@ -79,7 +79,7 @@ Laravel 的在地化功能提供方便的方法來取得多語系的字串，讓
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
 
-<a name="overriding-package-language-files"></a>
+<a name="overriding-vendor-language-files"></a>
 ## 覆寫套件的語言檔
 
 部分套件帶有自己的語系檔，您可以藉由放置檔案在 `resources/lang/vendor/{package}/{locale}` 來複寫它們，而不是直接修改套件的核心檔案。

@@ -54,6 +54,10 @@ The only remaining step is to install Elixir! Within a fresh installation of Lar
 
 	npm install
 
+If you are developing on a Windows system, you may need to run the `npm install` command with the `--no-bin-links` switch enabled:
+
+	npm install --no-bin-links
+
 <a name="running-elixir"></a>
 ## Running Elixir
 
@@ -87,7 +91,7 @@ elixir(function(mix) {
 });
 ```
 
-You may also combine multiple Less files into a single CSS file. Again, the resulting CSS will be placed in `public/css/app.css`. If you wish to customize the output location of the compiled CSS, you may pass a second argument to the `less` method:
+You may also combine multiple Less files into a single CSS file. Again, the resulting CSS will be placed in `public/css/app.css`:
 
 ```javascript
 elixir(function(mix) {
@@ -95,6 +99,19 @@ elixir(function(mix) {
 		"app.less",
 		"controllers.less"
 	], "public/assets/css");
+});
+```
+
+If you wish to customize the output location of the compiled CSS, you may pass a second argument to the `less` method:
+
+```javascript
+elixir(function(mix) {
+	mix.less('app.less', 'public/stylesheets');
+});
+
+// Specifying a specific output filename...
+elixir(function(mix) {
+	mix.less('app.less', 'public/stylesheets/style.css');
 });
 ```
 
@@ -343,7 +360,7 @@ That's it! You may either place this at the top of your Gulpfile, or instead ext
 
 var elixir = require("laravel-elixir");
 
-require("./elixir-tasks")
+require("./elixir-extensions")
 
 elixir(function(mix) {
 	mix.speak("Tea, Earl Grey, Hot");

@@ -49,7 +49,7 @@ First, let's take a look at calling the `paginate` method on a query. In this ex
 
 #### "Simple Pagination"
 
-If you are only showing "Next" and "Previous" links in your pagination view, you have the option of using the `simplePaginate` method to perform a more efficient query. This is very useful for large datasets if you do not need to display a link for each page number when rendering your view:
+If you only need to display simple "Next" and "Previous" links in your pagination view, you have the option of using the `simplePaginate` method to perform a more efficient query. This is very useful for large datasets if you do not need to display a link for each page number when rendering your view:
 
 	$users = DB::table('users')->simplePaginate(15);
 
@@ -84,7 +84,7 @@ When manually creating a paginator instance, you should manually "slice" the arr
 
 When you call the `paginate` or `simplePaginate` methods on a query builder or Eloquent query, you will receive a paginator instance. When calling the `paginate` method, you will receive an instance of `Illuminate\Pagination\LengthAwarePaginator`. When calling the `simplePaginate` method, you will receive an instance of `Illuminate\Pagination\Paginator`. These objects provide several methods that describe the result set. In addition to these helpers methods, the paginator instances are iterators and may be looped as an array.
 
-So, once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/views):
+So, once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/blade):
 
 	<div class="container">
 		@foreach ($users as $user)
@@ -112,7 +112,7 @@ The `setPath` method allows you to customize the URI used by the paginator when 
 
 #### Appending To Pagination Links
 
-You may add to the query string of pagination links using the `appends` method. For example, to append `&sort=yes` to each pagination link, you should make the following call to `appends`:
+You may add to the query string of pagination links using the `appends` method. For example, to append `&sort=votes` to each pagination link, you should make the following call to `appends`:
 
 	{!! $users->appends(['sort' => 'votes'])->render() !!}
 
@@ -138,13 +138,13 @@ You may also access additional pagination information via the following methods 
 
 The Laravel paginator result classes implement the `Illuminate\Contracts\Support\JsonableInterface` contract and expose the `toJson` method, so it's very easy to convert your pagination results to JSON.
 
-You may also convert a pagintor instance to JSON by simply returning it from a route or controller action:
+You may also convert a paginator instance to JSON by simply returning it from a route or controller action:
 
 	Route::get('users', function () {
 		return App\User::paginate();
 	});
 
-The JSON from of the paginator will include meta information such as `total`, `current_page`, `last_page`, and more. The actual result objects will be available via the `data` key in the JSON array. Here is an example of the JSON created by returning a paginator instance from a route:
+The JSON from the paginator will include meta information such as `total`, `current_page`, `last_page`, and more. The actual result objects will be available via the `data` key in the JSON array. Here is an example of the JSON created by returning a paginator instance from a route:
 
 #### Example Paginator JSON
 

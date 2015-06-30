@@ -38,6 +38,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_pull](#method-array-pull)
 [array_set](#method-array-set)
 [array_sort](#method-array-sort)
+[array_sort_recursive](#method-array-recursive)
 [array_where](#method-array-where)
 [head](#method-head)
 [last](#method-last)
@@ -87,6 +88,9 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 ### Miscellaneous
 
 <div class="collection-method-list" markdown="1">
+[auth](#method-auth)
+[back](#method-back)
+[bcrypt](#method-bcrypt)
 [config](#method-config)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
@@ -94,6 +98,9 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [elixir](#method-elixir)
 [env](#method-env)
 [event](#method-event)
+[factory](#method-factory)
+[old](#method-old)
+[redirect](#method-redirect)
 [response](#method-response)
 [value](#method-value)
 [view](#method-view)
@@ -112,6 +119,9 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 		margin-top: 50px;
 	}
 </style>
+
+<a name="arrays"></a>
+## Arrays
 
 <a name="method-array-add"></a>
 #### `array_add()` {#collection-method .first-collection-method}
@@ -275,6 +285,41 @@ The `array_sort` method sorts the array by the results of the given Closure:
 			['name' => 'Chair'],
 			['name' => 'Desk'],
 		]
+	*/
+
+<a name="method-array-sort-recursive"></a>
+#### `array_sort_recursive()` {#collection-method}
+
+The `array_sort_recursive` function recursively sorts the array using the `sort` function:
+
+	$array = [
+		[
+			'Roman',
+			'Taylor',
+			'Li',
+		],
+		[
+			'PHP',
+			'Ruby',
+			'JavaScript',
+		],
+	];
+
+	$array = array_sort_recursive($array);
+
+	/*
+		[
+			[
+				'Li',
+				'Roman',
+				'Taylor',
+			],
+			[
+				'JavaScript',
+				'PHP',
+				'Ruby',
+			]
+		];
 	*/
 
 <a name="method-array-where"></a>
@@ -535,7 +580,7 @@ The `action` function generates a URL for the given controller action. You do no
 
 	$url = action('HomeController@getIndex');
 
-If the method accepts route parameters, you may them as the second argument to the method:
+If the method accepts route parameters, you may pass them as the second argument to the method:
 
 	$url = action('UserController@profile', ['id' => 1]);
 
@@ -546,7 +591,7 @@ The `route` function generates a URL for the given named route:
 
 	$url = route('routeName');
 
-If the route accepts parameters, you may them as the second argument to the method:
+If the route accepts parameters, you may pass them as the second argument to the method:
 
 	$url = route('routeName', ['id' => 1]);
 
@@ -561,6 +606,27 @@ The `url` function generates a fully qualified URL to the given path:
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
+
+<a name="method-auth"></a>
+#### `auth()` {#collection-method}
+
+The `auth` function return an authenticator instance. You may use it instead of the `Auth` facade for convenience:
+
+	$user = auth()->user();
+
+<a name="method-back"></a>
+#### `back()` {#collection-method}
+
+The `back()` function generates a redirect response to the user's previous location:
+
+	return back();
+
+<a href="method-bcrypt"></a>
+#### `bcrypt()` {#collection-method}
+
+The `bcrypt` function hashes the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
+
+	$password = bcrypt('my-secret-password');
 
 <a name="method-config"></a>
 #### `config()` {#collection-method}
@@ -615,6 +681,27 @@ The `env` function gets the value of an environment variable or returns a defaul
 The `event` function dispatches the given [event](/docs/{{version}}/events) to its listeners:
 
 	event(new UserRegistered($user));
+
+<a name="method-factory"></a>
+#### `factory()` {#collection-method}
+
+The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/testing#model-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
+
+	$user = factory('App\User')->make();
+
+<a name="method-old"></a>
+#### `old()` {#collection-method}
+
+The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session.:
+
+	$value = old('value');
+
+<a name="method-redirect"></a>
+#### `redirect()` {#collection-method}
+
+The `redirect` function return an instance of the redirector to do [redirects](/docs/{{version}}/responses#redirects):
+
+	return redirect('/home');
 
 <a name="method-response"></a>
 #### `response()` {#collection-method}

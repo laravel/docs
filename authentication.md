@@ -120,9 +120,9 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
 現在你已經為認證控制器設定好了路由及視圖，你可以準備在你的應用程式註冊新使用者並認證他。你只要簡單地在瀏覽器存取你定義的路由，認證控制器早已包含了處理認證現有使用者，及儲存新使用者在資料庫的邏輯了（透過他們各自的 traits）。
 
-當使用者成功的認證後，他們將被導向 `/home` URI，而你需要向路由註冊這個 URI 來處理這個請求，你可以客製化認證後，轉向的 URI，只需要修改 `AuthController` 的 `redirectTo` 屬性：
+當使用者成功的認證後，他們將被導向 `/home` URI，而你需要向路由註冊這個 URI 來處理這個請求，你可以客製化認證後，轉向的 URI，只需要修改 `AuthController` 的 `redirectPath` 屬性：
 
-    protected $redirectTo = '/dashboard';
+    protected $redirectPath = '/dashboard';
 
 #### 客製化
 
@@ -312,9 +312,8 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
     use Auth;
     use Closure;
-    use Illuminate\Contracts\Routing\Middleware;
 
-    class AuthenticateOnceWithBasicAuth implements Middleware
+    class AuthenticateOnceWithBasicAuth
     {
         /**
          * 處理請求
@@ -442,7 +441,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 <a name="social-authentication"></a>
 ## 社群認證
 
-除了傳統的表單認證，Laravel 同樣提供了簡單方便的方法來認證 OAuth 提供者，這個方法使用了 [Laravel Socialite](https://github.com/laravel/socialite)。Socialite 目前支援 Facebook、Twitter、Google、GitHub 跟 Bitbucket。
+除了傳統的表單認證，Laravel 同樣提供了簡單方便的方法來認證 OAuth 提供者，這個方法使用了 [Laravel Socialite](https://github.com/laravel/socialite)。Socialite 目前支援 Facebook、Twitter、LinkedIn、Google、GitHub 跟 Bitbucket。
 
 開始使用 Socialite 前，新增依賴包至你的 `composer.json`：
 
@@ -462,7 +461,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
     'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
-你將需要新增憑證來使用 OAuth 服務，這些憑證需要被放在 `config/services.php` 設定檔，並根據你應用程式的需求，增加 `facebook`、`twitter`、`google` 或 `github` 的鍵，例如：
+你將需要新增憑證來使用 OAuth 服務，這些憑證需要被放在 `config/services.php` 設定檔，並根據你應用程式的需求，增加 `facebook`、`twitter`、`linkedin`、`google`、`github` 或 `bitbucket` 的鍵，例如：
 
     'github' => [
         'client_id' => 'your-github-app-id',
@@ -509,6 +508,14 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
+
+Of course, you will need to define routes to your controller methods:
+
+    <?php
+
+        Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
+        Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
+
 
 #### 取得使用者細節
 

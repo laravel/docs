@@ -28,6 +28,10 @@ Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`
 
 This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
 
+### Add `BroadcastServiceProvider` Provider
+
+Within your `config/app.php` configuration file , add `Illuminate\Broadcasting\BroadcastServiceProvider` to the `providers` array.
+
 ### Authentication
 
 If you are using the provided `AuthController` which uses the `AuthenticatesAndRegistersUsers` trait, you will need to make a few changes to how new users are validated and created.
@@ -114,6 +118,10 @@ The `app/Commands` directory has been renamed to `app/Jobs`. However, you are no
 Likewise, the `app/Handlers` directory has been renamed to `app/Listeners` and now only contains event listeners. However, you are not required to move or rename your existing command and event handlers, and you may continue to use the `handler:event` command to generate event handlers.
 
 By providing backwards compatibility for the Laravel 5.0 folder structure, you may upgrade your applications to Laravel 5.1 and slowly upgrade your events and commands to their new locations when it is convenient for you or your team.
+
+### Blade
+
+The `createMatcher`, `createOpenMatcher`, and `createPlainMatcher` methods have been removed from the Blade compiler. Use the new `directive` method to create custom directives for Blade in Laravel 5.1. Consult the [extending blade](/docs/{{version}}/blade#extending-blade) documentation for more information.
 
 ### Tests
 
@@ -388,13 +396,15 @@ If you are using soft deleting models, the `softDeletes` property has been remov
 
 	use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-	class User extends Eloquent {
+	class User extends Eloquent
+	{
 		use SoftDeletingTrait;
 	}
 
 You must also manually add the `deleted_at` column to your `dates` property:
 
-	class User extends Eloquent {
+	class User extends Eloquent
+	{
 		use SoftDeletingTrait;
 
 		protected $dates = ['deleted_at'];

@@ -353,7 +353,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫
 
 測試時，常常需要在執行測試之前寫入一些資料到資料庫中。建立測試資料時，除了手動設定每個欄位的值，Laravel 讓你可以使用 [Eloquent 模型](/docs/{{version}}/eloquent)的「工廠」設定每個屬性的預設值。開始之前，你可以查看應用程式的 `database/factories/ModelFactory.php` 檔案。此檔案包含一個現成的工廠定義：
 
-	$factory->define('App\User', function ($faker) {
+	$factory->define(App\User::class, function ($faker) {
 	    return [
 	        'name' => $faker->name,
 	        'email' => $faker->email,
@@ -370,7 +370,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫
 
 有時你可能希望針對同一個 Eloquent 模型類別，能建立多個工廠。例如，除了一般使用者的工廠之外，還有「管理員」的工廠。你可以使用 `defineAs` 方法定義這個工廠：
 
-	$factory->defineAs('App\User', 'admin', function ($faker) {
+	$factory->defineAs(App\User::class, 'admin', function ($faker) {
 	    return [
 	        'name' => $faker->name,
 	        'email' => $faker->email,
@@ -382,8 +382,8 @@ Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫
 
 除了從一般使用者工廠複製所有基底屬性，你也可以使用 `raw` 方法來取得基底屬性。一旦你取得這些屬性，就可以輕鬆的增加額外任何你需要的值：
 
-	$factory->defineAs('App\User', 'admin', function ($faker) use ($factory) {
-		$user = $factory->raw('App\User');
+	$factory->defineAs(App\User::class, 'admin', function ($faker) use ($factory) {
+		$user = $factory->raw(App\User::class);
 
 		return array_merge($user, ['admin' => true]);
 	});
@@ -394,27 +394,27 @@ Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫
 
     public function testDatabase()
     {
-    	$user = factory('App\User')->make();
+    	$user = factory(App\User::class)->make();
 
     	// 在測試中使用模型...
     }
 
 如果你想覆寫模型中的某些預設值，你可以傳遞一個包含數值的陣列至 `make` 方法。只有指定的數值會被替換，其它剩餘的數值則會按照工廠指定的預設值設定：
 
-    $user = factory('App\User')->make([
+    $user = factory(App\User::class)->make([
     	'name' => 'Abigail',
     ]);
 
 你也可以建立一個含有多個模型的集合，或建立一個給定類型的模型：
 
 	// 建立三個 App\User 實例...
-	$users = factory('App\User', 3)->make();
+	$users = factory(App\User::class, 3)->make();
 
 	// 建立一個 App\User「管理員」實例...
-	$user = factory('App\User', 'admin')->make();
+	$user = factory(App\User::class, 'admin')->make();
 
 	// 建立三個 App\User「管理員」實例...
-	$users = factory('App\User', 'admin', 3)->make();
+	$users = factory(App\User::class, 'admin', 3)->make();
 
 #### 保存工廠模型
 
@@ -422,14 +422,14 @@ Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫
 
     public function testDatabase()
     {
-    	$user = factory('App\User')->create();
+    	$user = factory(App\User::class)->create();
 
     	// 在測試中使用模型...
     }
 
 同樣的，你可以在傳遞陣列至 `create` 方法時覆寫模型的屬性：
 
-    $user = factory('App\User')->create([
+    $user = factory(App\User::class)->create([
     	'name' => 'Abigail',
     ]);
 
@@ -437,11 +437,12 @@ Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫
 
 你甚至能保存多個模型至資料庫。在本例中，我們還會增加關聯至我們建立的模型。當使用 `create` 方法建立多個模型時，它會回傳一個 Eloquent [集合實例](/docs/{{version}}/eloquent-collections)，讓你能夠使用集合所提供的方便函式，像是 `each`：
 
-    $users = factory('App\User', 3)
+    $users = factory(App\User::class, 3)
                ->create()
                ->each(function($u) {
-			$u->posts()->save(factory('App\Post')->make());
-		});
+					$u->posts()->save(factory(App\Post::class)->make());
+				});
+
 
 <a name="mocking"></a>
 ## 模擬
@@ -459,7 +460,7 @@ Laravel 提供了簡潔的 `expectsEvents` 方法，驗證預期的事件有被�
 	{
 	    public function testUserRegistration()
 	    {
-	    	$this->expectsEvents('App\Events\UserRegistered');
+	    	$this->expectsEvents(App\Events\UserRegistered::class);
 
 	    	// 測試使用者註冊的程式碼...
 	    }
@@ -492,13 +493,13 @@ Laravel 提供了一個簡潔的 `expectsJobs` 方法，驗證預期的任務有
 	{
 	    public function testPurchasePodcast()
 	    {
-	    	$this->expectsJobs('App\Jobs\PurchasePodcast');
+	    	$this->expectsJobs(App\Jobs\PurchasePodcast::class);
 
 	    	// 測試購買 podcast 的程式碼...
 	    }
 	}
 
-> **注意：** 此方法只檢測被 `DispatchesCommands` trait 的派送方法所派送的任務。它並不會檢測直接發送到 `Queue::push` 的任務。
+> **注意：** 此方法只檢測被 `DispatchesJobs` trait 的派送方法所派送的任務。它並不會檢測直接發送到 `Queue::push` 的任務。
 
 <a name="mocking-facades"></a>
 ### 模擬 Facades

@@ -26,6 +26,7 @@
 
 	namespace App\Http\Controllers;
 
+	use App\User;
 	use App\Http\Controllers\Controller;
 
 	class UserController extends Controller
@@ -101,9 +102,9 @@
 	}
 
 <a name="restful-resource-controllers"></a>
-## RESTful 資源控制器 
+## RESTful 資源控制器
 
-資源控制器讓您可以無痛地建立與資源有關的 RESTful 控制器。例如，你可能想要建立一個控制器，用來處理對你應用程式儲存「相片」發送的 HTTP 請求。使用 `make:controller` Artisan 指令，我們可以快速地建立像這樣的控制器： 
+資源控制器讓您可以無痛地建立與資源有關的 RESTful 控制器。例如，你可能想要建立一個控制器，用來處理對你應用程式儲存「相片」發送的 HTTP 請求。使用 `make:controller` Artisan 指令，我們可以快速地建立像這樣的控制器：
 
 	php artisan make:controller PhotoController
 
@@ -161,8 +162,8 @@ DELETE    | `/photo/{photo}`      | destroy      | photo.destroy
 
 	use App\Http\Controllers\Controller;
 
-	class PhotoCommentController extends Controller {
-
+	class PhotoCommentController extends Controller
+	{
 		/**
 		 * 顯示指定相片的註解。
 		 *
@@ -174,7 +175,6 @@ DELETE    | `/photo/{photo}`      | destroy      | photo.destroy
 		{
 			//
 		}
-
 	}
 
 <a name="restful-supplementing-resource-controllers"></a>
@@ -306,7 +306,11 @@ Laravel [服務容器](/docs/{{version}}/container)用於解析所有的 Laravel
 		}
 	}
 
-若你的控制器方法也預期從路由參數獲得輸入值，只要在你其它的依賴之後列出路由參數即可：
+若你的控制器方法也預期從路由參數獲得輸入值，只要在你其它的依賴之後列出路由參數即可。For example, if your route is defined like so:
+
+	Route::put('user/{id}', 'UserController@update');
+
+You may still type-hint the `Illuminate\Http\Request` and access your route parameter `id` by defining your controller method like the following:
 
 	<?php
 

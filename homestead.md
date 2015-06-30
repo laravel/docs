@@ -5,6 +5,7 @@
 	- [前置動作](#first-steps)
 	- [配置 Homestead](#configuring-homestead)
 	- [啟動 Vagrant box](#launching-the-vagrant-box)
+	- [Per Project Installation](#per-project-installation)
 - [常見用法](#daily-usage)
 	- [透過 SSH 連接](#connecting-via-ssh)
 	- [連接資料庫](#connecting-to-databases)
@@ -138,6 +139,21 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機裡進入你的 Homestead 目錄並執行 `vagrant up` 指令。Vagrant 就會將虛擬主機啟動並自動設定你的共享資料夾和 Nginx 網站們。
 
 如果要移除虛擬機器，可以使用 `vagrant destroy --force` 指令。
+
+<a name="per-project-installation"></a>
+### Per Project Installation
+
+Instead of installing Homestead globally and sharing the same Homestead box across all of your projects, you may instead configure a Homestead instance for each specific project. Installing Homestead per project may be beneficial if you wish to ship a `Vagrantfile` directly within your project, allowing others working on the project to simply `vagrant up`.
+
+To install Homestead directly into your project, require it using Composer:
+
+	composer require laravel/homestead
+
+Once Homestead has been installed, use the `make` command to generate the `Vagrantfile` and `Homestead.yaml` file in your project root. The `make` command will automatically configure the `sites` and `folders` directives in the `Homestead.yaml` file:
+
+	php vendor/bin/homestead make
+
+Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.app` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
 
 <a name="daily-usage"></a>
 ## 常見用法

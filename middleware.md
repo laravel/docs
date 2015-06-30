@@ -164,7 +164,9 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
 
 有些時候中介層需要在 HTTP 回應已被傳送到用戶端之後才執行，例如，Laravel 內建的「session」中介層，儲存 session 資料是在回應已被傳送到用戶端 之後 才執行。為了做到這一點，你需要定義中介層為「terminable」。
 
-	<?php namespace Illuminate\Session\Middleware;
+	<?php
+	
+	namespace Illuminate\Session\Middleware;
 
 	use Closure;
 
