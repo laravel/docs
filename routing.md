@@ -315,7 +315,7 @@ Laravel 自動產生了一個 CSRF token 由應用程式管理每個活動使用
 <a name="csrf-x-xsrf-token"></a>
 ### X-XSRF-TOKEN
 
-Laravel 也會在 `XSRF-TOKEN` cookie 中儲存 CSRF token。你也可以使用 cookie 的值來設定 `X-XSRF-TOKEN` 請求標頭。一些像是 Angular 的 JavaScript 框架會自動幫你做到。
+Laravel 也會在 `XSRF-TOKEN` cookie 中儲存 CSRF token。你也可以使用 cookie 的值來設定 `X-XSRF-TOKEN` 請求標頭。一些像是 Angular 的 JavaScript 框架會自動幫你做到。不太可能需要去手動設定這個值。
 
 <a name="form-method-spoofing"></a>
 ## 表單方法欺騙
