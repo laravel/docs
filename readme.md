@@ -12,7 +12,7 @@ Laravel 台灣 目前正在整合社群資源進行官方文件的翻譯工作�
 若有任何問題請與我們聯絡，謝謝！
 
 
-目前翻譯到原文的 Commit 進度： #e7af807
+目前翻譯到原文的 Commit 進度： #c4f472a (Jul 1, 2015)
 
 翻譯前請先詳細閱讀[中文文案排版指南](https://github.com/sparanoid/chinese-copywriting-guidelines)。
 
