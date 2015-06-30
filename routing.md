@@ -304,7 +304,7 @@ Laravel 自動產生了一個 CSRF token 由應用程式管理每個活動使用
 
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
-一旦你建立了 `meta` 標籤，你可以使用 jQuery 將 token 加入到所有的請求標頭。基於 AJAX 的應用，提供了簡單、方便的 CSRF 保護：
+一旦你建立了 `meta` 標籤，你可以使用 jQuery 之類的函式庫將 token 加入到所有的請求標頭。基於 AJAX 的應用，提供了簡單、方便的 CSRF 保護：
 
 	$.ajaxSetup({
 			headers: {
