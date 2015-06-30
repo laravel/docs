@@ -226,7 +226,7 @@ By default, [CSRF protection](/docs/{{version}}/routing#csrf-protection) is enab
 
 If you want to use it elsewhere, add this line to `$routeMiddleware`:
 
-	'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
+	'csrf' => App\Http\Middleware\VerifyCsrfToken::class,
 
 Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/{{version}}/middleware).
 
