@@ -22,7 +22,7 @@
 <a name="basic-routing"></a>
 ## 基本路由
 
-你會在 `app/Http/routes.php` 中定義應用程式大多數的路由，該檔案將會被 `App\Providers\RouteServiceProvider` 類別載入。而多數的基本路由接受使用 URI 或是 `閉包 (Closure)`：
+你會在 `app/Http/routes.php` 中定義應用程式大多數的路由，該檔案將會被 `App\Providers\RouteServiceProvider` 類別載入。而多數的基本路由接受使用 URI 加上 `閉包 (Closure)`：
 
 	Route::get('/', function () {
 		return 'Hello World';
