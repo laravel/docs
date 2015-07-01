@@ -7,6 +7,7 @@
     - [Authenticating](#included-authenticating)
     - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
     - [Protecting Routes](#protecting-routes)
+    - [Authentication Throttling](#authentication-throttling)
 - [Manually Authenticating Users](#authenticating-users)
     - [Remembering Users](#remembering-users)
     - [Other Authentication Methods](#other-authentication-methods)
@@ -197,6 +198,28 @@ Of course, if you are using [controller classes](/docs/{{version}}/controllers),
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+<a name="authentication-throttling"></a>
+### Authentication Throttling
+
+If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to login for one minute if they fail to provide the correct credentials three times. The throttling is unique to the user's username / e-mail address and their IP address:
+
+    <?php
+
+    namespace App\Http\Controllers\Auth;
+
+    use App\User;
+    use Validator;
+    use App\Http\Controllers\Controller;
+    use Illuminate\Foundation\Auth\ThrottlesLogins;
+    use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+
+    class AuthController extends Controller
+    {
+        use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+
+        // Rest of AuthController class...
     }
 
 <a name="authenticating-users"></a>
