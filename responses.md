@@ -68,7 +68,7 @@
 預設情況下，所有 Laravel 產生的 cookies 都會被加密並加上認證記號，所以無法被使用者讀取及修改。如果你想將應用程式產生的 cookies 中某個子集的加密停用，你可以使用 `App\Http\Middleware\EncryptCookies` 中介層的 `$except` 屬性：
 
     /**
-     * The names of the cookies that should not be encrypted.
+     * 不需被加密的 cookies 名稱。
      *
      * @var array
      */
@@ -79,7 +79,7 @@
 <a name="other-response-types"></a>
 ## 其它回應類型
 
-使用輔助方法 `response` 可以輕鬆的產生其他類型的回應實例。當你呼叫輔助方法 `response` 且不帶任何參數時，將會回傳 `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/{{version}}/contracts) 的實做。Contract 提供了一些有用的方法來產生回應。
+使用輔助方法 `response` 可以輕鬆的產生其他類型的回應實例。當你呼叫輔助方法 `response` 且不帶任何參數時，將會回傳 `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/{{version}}/contracts) 的實作。此 Contract 提供了一些有用的方法來產生回應。
 
 <a name="view-responses"></a>
 #### 視圖回應
@@ -88,7 +88,7 @@
 
 	return response()->view('hello', $data)->header('Content-Type', $type);
 
-當然，如果你沒有自定 HTTP 狀態碼及標頭的需求，你可以簡單的使用全域的 `view` 輔助方法
+當然，如果你沒有自定 HTTP 狀態碼及標頭的需求，你可以簡單的使用全域的 `view` 輔助方法。
 
 <a name="json-responses"></a>
 #### JSON 回應
@@ -105,7 +105,7 @@
 <a name="file-downloads"></a>
 #### 檔案下載
 
-`download` 方法可以用於產生強制讓使用者的瀏覽器下載給定路徑檔案的回應。`download` 方法接受第二個參數作為檔案名稱，此名稱為使用者下載檔案時看見的檔案名稱。最後，你可以傳遞一個 HTTP 標頭的陣列作為第三個參數傳入該方法：
+`download` 方法可以用於產生強制讓使用者的瀏覽器下載給定路徑檔案的回應。`download` 方法接受檔案名稱作為方法的第二個參數，此名稱為使用者下載檔案時看見的檔案名稱。最後，你可以傳遞一個 HTTP 標頭的陣列作為第三個參數傳入該方法：
 
 	return response()->download($pathToFile);
 
@@ -116,13 +116,13 @@
 <a name="redirects"></a>
 ## 重導
 
-重導回應通常是類別 `Illuminate\Http\RedirectResponse` 的實例，並且包含使用者要重導至另一個 URL 所需的標頭。有幾種方法可以產生 `RedirectResponse` 的實例。最簡單的方式就是透過全域的 `redirect` 輔助方法：
+重導回應是類別 `Illuminate\Http\RedirectResponse` 的實例，並且包含使用者要重導至另一個 URL 所需的標頭。有幾種方法可以產生 `RedirectResponse` 的實例。最簡單的方式就是透過全域的 `redirect` 輔助方法：
 
 	Route::get('dashboard', function () {
 		return redirect('home/dashboard');
 	});
 
-有時你可能希望將使用者重導至前一個位置，例如當表單提交之後。你可以使用全域的 `back` 輔助方法來達成這個目的：
+有時你可能希望將使用者重導至前一個位置，例如當提交一個無效的表單之後。你可以使用全域的 `back` 輔助方法來達成這個目的：
 
 	Route::post('user/profile', function () {
 		// 驗證該請求...
@@ -150,7 +150,7 @@
 <a name="redirecting-controller-actions"></a>
 #### 重導至控制器行為
 
-你可能會希望產生重導至[控制器行為](/docs/{{version}}/controllers)。要做到這一點，只需傳遞控制器及行為名稱至 `action` 方法。請記得，你輕不需要指定完整的命名空間，因為 Laravel 的 `RouteServiceProvider` 會自動設定預設的控制器命名空間：
+你可能會希望產生重導至[控制器行為](/docs/{{version}}/controllers)。要做到這一點，只需傳遞控制器及行為名稱至 `action` 方法。請記得，你不需要指定完整的命名空間，因為 Laravel 的 `RouteServiceProvider` 會自動設定預設的控制器命名空間：
 
 	return redirect()->action('HomeController@index');
 
@@ -161,7 +161,7 @@
 <a name="redirecting-with-flashed-session-data"></a>
 #### 重導並加上快閃 Session 資料
 
-通常重導至新的 URL 時會一併[快閃資料至 session](/docs/{{version}}/session#flash-data)。所以為了方便，你可以利用方法鏈結的方式創建一個 `RedirectResponse` 的實例**並**快閃資料至 Session。這對於在一個動作之後儲存狀態訊息相當方便：
+通常重導至新的 URL 時會一併[寫入快閃資料至 session](/docs/{{version}}/session#flash-data)。所以為了方便，你可以利用方法鏈結的方式創建一個 `RedirectResponse` 的實例**並**快閃資料至 Session。這對於在一個動作之後儲存狀態訊息相當方便：
 
 	Route::post('user/profile', function () {
 		// 更新使用者的個人資料...
@@ -180,7 +180,7 @@
 <a name="response-macros"></a>
 ## 回應巨集
 
-如果你想要自訂可以在很多路由和控制器重複使用的回應，你可以使用 `Illuminate\Contracts\Routing\ResponseFactory` 實做的方法 `macro`。
+如果你想要自訂可以在很多路由和控制器重複使用的回應，你可以使用 `Illuminate\Contracts\Routing\ResponseFactory` 實作的方法 `macro`。
 
 舉個例子，來自[服務提供者的](/docs/{{version}}/providers) `boot` 方法：
 
@@ -207,6 +207,6 @@
 		}
 	}
 
-`macro` 函式第一個參數為巨集名稱，第二個參數為閉包函式。巨集的閉包函式會在 `ResponseFactory` 的實做或者輔助方法 `response` 呼叫巨集名稱的時候被執行：
+`macro` 函式第一個參數為巨集名稱，第二個參數為閉包函式。巨集的閉包函式會在 `ResponseFactory` 的實作或者輔助方法 `response` 呼叫巨集名稱的時候被執行：
 
 	return response()->caps('foo');
