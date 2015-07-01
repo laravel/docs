@@ -623,3 +623,7 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
     }
 
 This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
+
+### Extending Socialite
+
+Socialite already comes with Facebook, Github, Google, Linkedin, Twitter and Bitbucket drivers. If you wish to use other drivers, feel free to visit [http://socialiteproviders.github.io](http://socialiteproviders.github.io).
