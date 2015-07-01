@@ -1,6 +1,7 @@
 # Release Notes
 
 - [Support Policy](#support-policy)
+- [Laravel 5.1.4](#laravel-5.1.4)
 - [Laravel 5.1](#laravel-5.1)
 - [Laravel 5.0](#laravel-5.0)
 - [Laravel 4.2](#laravel-4.2)
@@ -12,6 +13,11 @@
 For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance.
 
 For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+
+<a name="laravel-5.1.4"></a>
+## Laravel 5.1.4
+
+Laravel 5.1.4 introduces simple login throttling to the framework. Consult the [authentication documentation](/docs/{{version}}/authentication#authentication-throttling) for more information.
 
 <a name="laravel-5.1"></a>
 ## Laravel 5.1
