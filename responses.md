@@ -161,7 +161,7 @@
 <a name="redirecting-with-flashed-session-data"></a>
 #### 重導並加上快閃 Session 資料
 
-通常重導至新的 URL 時會一併[快閃資料至 session](/docs/{{version}}/session#flash-data)。所以為了方便，你可以利用方法連接的方式創建一個 `RedirectResponse` 的實例**並**快閃資料至 Session。這對於在一個動作之後儲存狀態訊息相當方便：
+通常重導至新的 URL 時會一併[快閃資料至 session](/docs/{{version}}/session#flash-data)。所以為了方便，你可以利用方法鏈結的方式創建一個 `RedirectResponse` 的實例**並**快閃資料至 Session。這對於在一個動作之後儲存狀態訊息相當方便：
 
 	Route::post('user/profile', function () {
 		// 更新使用者的個人資料...
