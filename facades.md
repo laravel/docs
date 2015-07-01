@@ -35,7 +35,7 @@ In the example below, a call is made to the Laravel cache system. By glancing at
 		 */
 		public function showProfile($id)
 		{
-			$user = Cache::get('user:'.$id');
+			$user = Cache::get('user:'.$id);
 
 			return view('profile', ['user' => $user]);
 		}
