@@ -17,42 +17,42 @@ You may encrypt a value using the `Crypt` [facade](/docs/{{version}}/facades). A
 
 For example, we may use the `encrypt` method to encrypt a secret and store it on an [Eloquent model](/docs/{{version}}/eloquent):
 
-	<?php
+    <?php
 
-	namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-	use Crypt;
-	use App\User;
-	use Illuminate\Http\Request;
-	use App\Http\Controllers\Controller;
+    use Crypt;
+    use App\User;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
 
-	class UserController extends Controller
-	{
-		/**
-		 * Store a secret message for the user.
-		 *
-		 * @param  Request  $request
-		 * @param  int  $id
-		 * @return Response
-		 */
-		public function storeSecret(Request $request, $id)
-		{
-			$user = User::findOrFail($id);
+    class UserController extends Controller
+    {
+        /**
+         * Store a secret message for the user.
+         *
+         * @param  Request  $request
+         * @param  int  $id
+         * @return Response
+         */
+        public function storeSecret(Request $request, $id)
+        {
+            $user = User::findOrFail($id);
 
-			$user->fill([
-				'secret' => Crypt::encrypt($request->secret)
-			])->save();
-		}
-	}
+            $user->fill([
+                'secret' => Crypt::encrypt($request->secret)
+            ])->save();
+        }
+    }
 
 #### Decrypting A Value
 
 Of course, you may decrypt values using the `decrypt` method on the `Crypt` facade. If the value can not be properly decrypted, such as when the MAC is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:
 
-	use Illuminate\Contracts\Encryption\DecryptException;
+    use Illuminate\Contracts\Encryption\DecryptException;
 
-	try {
-		$decrypted = Crypt::decrypt($encryptedValue);
-	} catch (DecryptException $e) {
-		//
-	}
+    try {
+        $decrypted = Crypt::decrypt($encryptedValue);
+    } catch (DecryptException $e) {
+        //
+    }

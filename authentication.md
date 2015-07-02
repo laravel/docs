@@ -404,7 +404,7 @@ You will need to provide an HTML view for the password reset request form. This 
         {!! csrf_field() !!}
 
         <div>
-        	Email
+            Email
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
 

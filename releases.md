@@ -52,38 +52,38 @@ To learn more about event broadcasting, check out the [event documentation](/doc
 
 Middleware can now receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create a `RoleMiddleware` that receives a role name as an additional argument:
 
-	<?php
+    <?php
 
-	namespace App\Http\Middleware;
+    namespace App\Http\Middleware;
 
-	use Closure;
+    use Closure;
 
-	class RoleMiddleware
-	{
-		/**
-		 * Run the request filter.
-		 *
-		 * @param  \Illuminate\Http\Request  $request
-		 * @param  \Closure  $next
-		 * @param  string  $role
-		 * @return mixed
-		 */
-		public function handle($request, Closure $next, $role)
-		{
-			if (! $request->user()->hasRole($role)) {
-				// Redirect...
-			}
+    class RoleMiddleware
+    {
+        /**
+         * Run the request filter.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Closure  $next
+         * @param  string  $role
+         * @return mixed
+         */
+        public function handle($request, Closure $next, $role)
+        {
+            if (! $request->user()->hasRole($role)) {
+                // Redirect...
+            }
 
-			return $next($request);
-		}
+            return $next($request);
+        }
 
-	}
+    }
 
 Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
 
-	Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
-		//
-	}]);
+    Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
+        //
+    }]);
 
 For more information on middleware, check out the [middleware documentation](/docs/{{version}}/middleware).
 
@@ -106,14 +106,14 @@ For more information on testing, check out the [testing documentation](/docs/{{v
 
 Laravel now ships with an easy way to create stub Eloquent models using [model factories](/docs/{{version}}/testing#model-factories). Model factories allow you to easily define a set of "default" attributes for your Eloquent model, and then generate test model instances for your tests or database seeds. Model factories also take advantage of the powerful [Faker](https://github.com/fzaninotto/Faker) PHP library for generating random attribute data:
 
-	$factory->define('App\User', function ($faker) {
-	    return [
-	        'name' => $faker->name,
-	        'email' => $faker->email,
-	        'password' => str_random(10),
-	        'remember_token' => str_random(10),
-	    ];
-	});
+    $factory->define('App\User', function ($faker) {
+        return [
+            'name' => $faker->name,
+            'email' => $faker->email,
+            'password' => str_random(10),
+            'remember_token' => str_random(10),
+        ];
+    });
 
 For more information on model factories, check out [the documentation](/docs/{{version}}/testing#model-factories).
 
@@ -173,10 +173,10 @@ For more information on middleware, check out [the documentation](/docs/{{versio
 
 In addition to the existing constructor injection, you may now type-hint dependencies on controller methods. The [service container](/docs/{{version}}/container) will automatically inject the dependencies, even if the route contains other parameters:
 
-	public function createPost(Request $request, PostRepository $posts)
-	{
-		//
-	}
+    public function createPost(Request $request, PostRepository $posts)
+    {
+        //
+    }
 
 ### Authentication Scaffolding
 
@@ -186,33 +186,33 @@ User registration, authentication, and password reset controllers are now includ
 
 You may now define events as objects instead of simply using strings. For example, check out the following event:
 
-	<?php
+    <?php
 
-	class PodcastWasPurchased
-	{
-		public $podcast;
+    class PodcastWasPurchased
+    {
+        public $podcast;
 
-		public function __construct(Podcast $podcast)
-		{
-			$this->podcast = $podcast;
-		}
-	}
+        public function __construct(Podcast $podcast)
+        {
+            $this->podcast = $podcast;
+        }
+    }
 
 The event may be dispatched like normal:
 
-	Event::fire(new PodcastWasPurchased($podcast));
+    Event::fire(new PodcastWasPurchased($podcast));
 
 Of course, your event handler will receive the event object instead of a list of data:
 
-	<?php
+    <?php
 
-	class ReportPodcastPurchase
-	{
-		public function handle(PodcastWasPurchased $event)
-		{
-			//
-		}
-	}
+    class ReportPodcastPurchase
+    {
+        public function handle(PodcastWasPurchased $event)
+        {
+            //
+        }
+    }
 
 For more information on working with events, check out the [full documentation](/docs/{{version}}/events).
 
@@ -220,41 +220,41 @@ For more information on working with events, check out the [full documentation](
 
 In addition to the queue job format supported in Laravel 4, Laravel 5 allows you to represent your queued jobs as simple command objects. These commands live in the `app/Commands` directory. Here's a sample command:
 
-	<?php
+    <?php
 
-	class PurchasePodcast extends Command implements SelfHandling, ShouldBeQueued
-	{
-		use SerializesModels;
+    class PurchasePodcast extends Command implements SelfHandling, ShouldBeQueued
+    {
+        use SerializesModels;
 
-		protected $user, $podcast;
+        protected $user, $podcast;
 
-		/**
-		 * Create a new command instance.
-		 *
-		 * @return void
-		 */
-		public function __construct(User $user, Podcast $podcast)
-		{
-			$this->user = $user;
-			$this->podcast = $podcast;
-		}
+        /**
+         * Create a new command instance.
+         *
+         * @return void
+         */
+        public function __construct(User $user, Podcast $podcast)
+        {
+            $this->user = $user;
+            $this->podcast = $podcast;
+        }
 
-		/**
-		 * Execute the command.
-		 *
-		 * @return void
-		 */
-		public function handle()
-		{
-			// Handle the logic to purchase the podcast...
+        /**
+         * Execute the command.
+         *
+         * @return void
+         */
+        public function handle()
+        {
+            // Handle the logic to purchase the podcast...
 
-			event(new PodcastWasPurchased($this->user, $this->podcast));
-		}
-	}
+            event(new PodcastWasPurchased($this->user, $this->podcast));
+        }
+    }
 
 The base Laravel controller utilizes the new `DispatchesCommands` trait, allowing you to easily dispatch your commands for execution:
 
-	$this->dispatch(new PurchasePodcastCommand($user, $podcast));
+    $this->dispatch(new PurchasePodcastCommand($user, $podcast));
 
 Of course, you may also use commands for tasks that are executed synchronously (are not queued). In fact, using commands is a great way to encapsulate complex tasks your application needs to perform. For more information, check out the [command bus](/docs/{{version}}/bus) documentation.
 
@@ -268,7 +268,7 @@ In the past, developers have generated a Cron entry for each console command the
 
 It looks like this:
 
-	$schedule->command('artisan:command')->dailyAt('15:00');
+    $schedule->command('artisan:command')->dailyAt('15:00');
 
 Of course, check out the [full documentation](/docs/{{version}}/scheduling) to learn all about the scheduler!
 
@@ -276,7 +276,7 @@ Of course, check out the [full documentation](/docs/{{version}}/scheduling) to l
 
 The `php artisan tinker` command now utilizes [Psysh](https://github.com/bobthecow/psysh) by Justin Hileman, a more robust REPL for PHP. If you liked Boris in Laravel 4, you're going to love Psysh. Even better, it works on Windows! To get started, just try:
 
-	php artisan tinker
+    php artisan tinker
 
 ### DotEnv
 
@@ -292,15 +292,15 @@ For more information on Elixir, check out the [full documentation](/docs/{{versi
 
 Laravel Socialite is an optional, Laravel 5.0+ compatible package that provides totally painless authentication with OAuth providers. Currently, Socialite supports Facebook, Twitter, Google, and GitHub. Here's what it looks like:
 
-	public function redirectForAuth()
-	{
-		return Socialize::with('twitter')->redirect();
-	}
+    public function redirectForAuth()
+    {
+        return Socialize::with('twitter')->redirect();
+    }
 
-	public function getUserFromProvider()
-	{
-		$user = Socialize::with('twitter')->user();
-	}
+    public function getUserFromProvider()
+    {
+        $user = Socialize::with('twitter')->user();
+    }
 
 No more spending hours writing OAuth authentication flows. Get started in minutes! The [full documentation](/docs/{{version}}/authentication#social-authentication) has all the details.
 
@@ -308,7 +308,7 @@ No more spending hours writing OAuth authentication flows. Get started in minute
 
 Laravel now includes the powerful [Flysystem](https://github.com/thephpleague/flysystem) filesystem abstraction library, providing pain free integration with local, Amazon S3, and Rackspace cloud storage - all with one, unified and elegant API! Storing a file in Amazon S3 is now as simple as:
 
-	Storage::put('file.txt', 'contents');
+    Storage::put('file.txt', 'contents');
 
 For more information on the Laravel Flysystem integration, consult the [full documentation](/docs/{{version}}/filesystem).
 
@@ -316,32 +316,32 @@ For more information on the Laravel Flysystem integration, consult the [full doc
 
 Laravel 5.0 introduces **form requests**, which extend the `Illuminate\Foundation\Http\FormRequest` class. These request objects can be combined with controller method injection to provide a boiler-plate free method of validating user input. Let's dig in and look at a sample `FormRequest`:
 
-	<?php
+    <?php
 
-	namespace App\Http\Requests;
+    namespace App\Http\Requests;
 
-	class RegisterRequest extends FormRequest
-	{
-		public function rules()
-		{
-			return [
-				'email' => 'required|email|unique:users',
-				'password' => 'required|confirmed|min:8',
-			];
-		}
+    class RegisterRequest extends FormRequest
+    {
+        public function rules()
+        {
+            return [
+                'email' => 'required|email|unique:users',
+                'password' => 'required|confirmed|min:8',
+            ];
+        }
 
-		public function authorize()
-		{
-			return true;
-		}
-	}
+        public function authorize()
+        {
+            return true;
+        }
+    }
 
 Once the class has been defined, we can type-hint it on our controller action:
 
-	public function register(RegisterRequest $request)
-	{
-		var_dump($request->input());
-	}
+    public function register(RegisterRequest $request)
+    {
+        var_dump($request->input());
+    }
 
 When the Laravel service container identifies that the class it is injecting is a `FormRequest` instance, the request will **automatically be validated**. This means that if your controller action is called, you can safely assume the HTTP request input has been validated according to the rules you specified in your form request class. Even more, if the request is invalid, an HTTP redirect, which you may customize, will automatically be issued, and the error messages will be either flashed to the session or converted to JSON. **Form validation has never been more simple.** For more information on `FormRequest` validation, check out the [documentation](/docs/{{version}}/validation#form-request-validation).
 
@@ -349,13 +349,13 @@ When the Laravel service container identifies that the class it is injecting is 
 
 The Laravel 5 base controller now includes a `ValidatesRequests` trait. This trait provides a simple `validate` method to validate incoming requests. If `FormRequests` are a little too much for your application, check this out:
 
-	public function createPost(Request $request)
-	{
-		$this->validate($request, [
-			'title' => 'required|max:255',
-			'body' => 'required',
-		]);
-	}
+    public function createPost(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'body' => 'required',
+        ]);
+    }
 
 If the validation fails, an exception will be thrown and the proper HTTP response will automatically be sent back to the browser. The validation errors will even be flashed to the session! If the request was an AJAX request, Laravel even takes care of sending a JSON representation of the validation errors back to you.
 
@@ -373,7 +373,7 @@ You may now cache all of your configuration in a single file using the `config:c
 
 The popular `dd` helper function, which dumps variable debug information, has been upgraded to use the amazing Symfony VarDumper. This provides color-coded output and even collapsing of arrays. Just try the following in your project:
 
-	dd([1, 2, 3]);
+    dd([1, 2, 3]);
 
 <a name="laravel-4.2"></a>
 ## Laravel 4.2

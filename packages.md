@@ -4,9 +4,9 @@
 - [Service Providers](#service-providers)
 - [Routing](#routing)
 - [Resources](#resources)
-	- [Views](#views)
-	- [Translations](#translations)
-	- [Configuration](#configuration)
+    - [Views](#views)
+    - [Translations](#translations)
+    - [Configuration](#configuration)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 
@@ -33,17 +33,17 @@ To learn more about the structure and purpose of service providers, check out [t
 
 To define routes for your package, simply `require` the routes file from within your package service provider's `boot` method. From within your routes file, you may use the `Route` facade to [register routes](/docs/{{version}}/routing) just as you would within a typical Laravel application:
 
-	/**
-	 * Perform post-registration booting of services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		if (! $this->app->routesAreCached()) {
-			require __DIR__.'/../../routes.php';
-		}
-	}
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        if (! $this->app->routesAreCached()) {
+            require __DIR__.'/../../routes.php';
+        }
+    }
 
 <a name="resources"></a>
 ## Resources
@@ -53,21 +53,21 @@ To define routes for your package, simply `require` the routes file from within 
 
 To register your package's [views](/docs/{{version}}/views) with Laravel, you need to tell Laravel where the views are located. You may do this using the service provider's `loadViewsFrom` method. The `loadViewsFrom` method accepts two arguments: the path to your view templates and your package's name. For example, if your package name is "courier", add the following to your service provider's `boot` method:
 
-	/**
-	 * Perform post-registration booting of services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
-	}
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
+    }
 
 Package views are referenced using a double-colon `package::view` syntax. So, you may load the `admin` view from the `courier` package like so:
 
-	Route::get('admin', function () {
-		return view('courier::admin');
-	});
+    Route::get('admin', function () {
+        return view('courier::admin');
+    });
 
 #### Overriding Package Views
 
@@ -77,19 +77,19 @@ When you use the `loadViewsFrom` method, Laravel actually registers **two** loca
 
 If you would like to make your views available for publishing to the application's `resources/views/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package view paths and their corresponding publish locations.
 
-	/**
-	 * Perform post-registration booting of services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
 
-		$this->publishes([
-			__DIR__.'/path/to/views' => base_path('resources/views/vendor/courier'),
-		]);
-	}
+        $this->publishes([
+            __DIR__.'/path/to/views' => base_path('resources/views/vendor/courier'),
+        ]);
+    }
 
 Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your views package's will be copied to the specified location.
 
@@ -98,77 +98,77 @@ Now, when users of your package execute Laravel's `vendor:publish` Artisan comma
 
 If your package contains [translation files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named "courier", you should add the following to your service provider's `boot` method:
 
-	/**
-	 * Perform post-registration booting of services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
-	}
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+    }
 
 Package translations are referenced using a double-colon `package::file.line` syntax. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
 
-	echo trans('courier::messages.welcome');
+    echo trans('courier::messages.welcome');
 
 <a name="configuration"></a>
 ### Configuration
 
 Typically, you will want to publish your package's configuration file to the application's own `config` directory. This will allow users of your package to easily override your default configuration options. To publish a configuration file, just use the `publishes` method from the `boot` method of your service provider:
 
-	/**
-	 * Perform post-registration booting of services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->publishes([
-			__DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
-		]);
-	}
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
+        ]);
+    }
 
 Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified location. Of course, once your configuration has been published, it can be accessed like any other configuration file:
 
-	$value = config('courier.option');
+    $value = config('courier.option');
 
 #### Default Package Configuration
 
 You may also choose to merge your own package configuration file with the application's copy. This allows your users to include only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
 
-	/**
-	 * Register bindings in the container.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		$this->mergeConfigFrom(
-			__DIR__.'/path/to/config/courier.php', 'courier'
-		);
-	}
+    /**
+     * Register bindings in the container.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__.'/path/to/config/courier.php', 'courier'
+        );
+    }
 
 <a name="public-assets"></a>
 ## Public Assets
 
 Your packages may have assets such as JavaScript, CSS, and images. To publish these assets to the application's `public` directory, use the service provider's `publishes` method. In this example, we will also add a `public` asset group tag, which may be used to publish groups of related assets:
 
-	/**
-	 * Perform post-registration booting of services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->publishes([
-			__DIR__.'/path/to/assets' => public_path('vendor/courier'),
-		], 'public');
-	}
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'/path/to/assets' => public_path('vendor/courier'),
+        ], 'public');
+    }
 
 Now, when your package's users execute the `vendor:publish` command, your assets will be copied to the specified location. Since you typically will need to overwrite the assets every time the package is updated, you may use the `--force` flag:
 
-	php artisan vendor:publish --tag=public --force
+    php artisan vendor:publish --tag=public --force
 
 If you would like to make sure your public assets are always up-to-date, you can add this command to the `post-update-cmd` list in your `composer.json` file.
 
@@ -177,22 +177,22 @@ If you would like to make sure your public assets are always up-to-date, you can
 
 You may want to publish groups of package assets and resources separately. For instance, you might want your users to be able to publish your package's configuration files without being forced to publish your package's assets at the same time. You may do this by "tagging" them when calling the `publishes` method. For example, let's define two publish groups in the `boot` method of a package service provider:
 
-	/**
-	 * Perform post-registration booting of services.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->publishes([
-			__DIR__.'/../config/package.php' => config_path('package.php')
-		], 'config');
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'/../config/package.php' => config_path('package.php')
+        ], 'config');
 
-		$this->publishes([
-			__DIR__.'/../database/migrations/' => database_path('/migrations')
-		], 'migrations');
-	}
+        $this->publishes([
+            __DIR__.'/../database/migrations/' => database_path('/migrations')
+        ], 'migrations');
+    }
 
 Now your users may publish these groups separately by referencing their tag name when using the `vendor:publish` Artisan command:
 
-	php artisan vendor:publish --provider="Vendor\Providers\PackageServiceProvider" --tag="config"
+    php artisan vendor:publish --provider="Vendor\Providers\PackageServiceProvider" --tag="config"

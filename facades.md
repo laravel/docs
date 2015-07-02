@@ -18,42 +18,42 @@ A facade class only needs to implement a single method: `getFacadeAccessor`. It'
 
 In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class:
 
-	<?php
+    <?php
 
-	namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-	use Cache;
-	use App\Http\Controllers\Controller;
+    use Cache;
+    use App\Http\Controllers\Controller;
 
-	class UserController extends Controller
-	{
-		/**
-		 * Show the profile for the given user.
-		 *
-		 * @param  int  $id
-		 * @return Response
-		 */
-		public function showProfile($id)
-		{
-			$user = Cache::get('user:'.$id);
+    class UserController extends Controller
+    {
+        /**
+         * Show the profile for the given user.
+         *
+         * @param  int  $id
+         * @return Response
+         */
+        public function showProfile($id)
+        {
+            $user = Cache::get('user:'.$id);
 
-			return view('profile', ['user' => $user]);
-		}
-	}
+            return view('profile', ['user' => $user]);
+        }
+    }
 
 Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy to accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service.
 
 If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
 
-	class Cache extends Facade
-	{
-		/**
-		 * Get the registered name of the component.
-		 *
-		 * @return string
-		 */
-		protected static function getFacadeAccessor() { return 'cache'; }
-	}
+    class Cache extends Facade
+    {
+        /**
+         * Get the registered name of the component.
+         *
+         * @return string
+         */
+        protected static function getFacadeAccessor() { return 'cache'; }
+    }
 
 Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. Remember, this method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
 

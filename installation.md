@@ -2,11 +2,11 @@
 
 - [Installation](#installation)
 - [Configuration](#configuration)
-	- [Basic Configuration](#basic-configuration)
-	- [Environment Configuration](#environment-configuration)
-	- [Configuration Caching](#configuration-caching)
-	- [Accessing Configuration Values](#accessing-configuration-values)
-	- [Naming Your Application](#naming-your-application)
+    - [Basic Configuration](#basic-configuration)
+    - [Environment Configuration](#environment-configuration)
+    - [Configuration Caching](#configuration-caching)
+    - [Accessing Configuration Values](#accessing-configuration-values)
+    - [Naming Your Application](#naming-your-application)
 - [Maintenance Mode](#maintenance-mode)
 
 <a name="installation"></a>
@@ -33,19 +33,19 @@ Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. 
 
 First, download the Laravel installer using Composer:
 
-	composer global require "laravel/installer=~1.1"
+    composer global require "laravel/installer=~1.1"
 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
 
 Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed. This method of installation is much faster than installing via Composer:
 
-	laravel new blog
+    laravel new blog
 
 #### Via Composer Create-Project
 
 You may also install Laravel by issuing the Composer `create-project` command in your terminal:
 
-	composer create-project laravel/laravel --prefer-dist
+    composer create-project laravel/laravel --prefer-dist
 
 <a name="configuration"></a>
 ## Configuration
@@ -84,20 +84,20 @@ The framework ships with a `public/.htaccess` file that is used to allow URLs wi
 
 If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
 
-	Options +FollowSymLinks
-	RewriteEngine On
+    Options +FollowSymLinks
+    RewriteEngine On
 
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^ index.php [L]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
 
 **Nginx**
 
 On Nginx, the following directive in your site configuration will allow "pretty" URLs:
 
-	location / {
-		try_files $uri $uri/ /index.php?$query_string;
-	}
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
 
 Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
 
@@ -118,21 +118,21 @@ If you are developing with a team, you may wish to continue including a `.env.ex
 
 The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
 
-	$environment = App::environment();
+    $environment = App::environment();
 
 You may also pass arguments to the `environment` method to check if the environment matches a given value. You may even pass multiple values if necessary:
 
-	if (App::environment('local')) {
-		// The environment is local
-	}
+    if (App::environment('local')) {
+        // The environment is local
+    }
 
-	if (App::environment('local', 'staging')) {
-		// The environment is either local OR staging...
-	}
+    if (App::environment('local', 'staging')) {
+        // The environment is either local OR staging...
+    }
 
 An application instance may also be accessed via the `app` helper method:
 
-	$environment = app()->environment();
+    $environment = app()->environment();
 
 <a name="configuration-caching"></a>
 ### Configuration Caching
@@ -146,11 +146,11 @@ You should typically run the `config:cache` command as part of your deployment r
 
 You may easily access your configuration values using the global `config` helper function. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
 
-	$value = config('app.timezone');
+    $value = config('app.timezone');
 
 To set configuration values at runtime, pass an array to the `config` helper:
 
-	config(['app.timezone' => 'America/Chicago']);
+    config(['app.timezone' => 'America/Chicago']);
 
 <a name="naming-your-application"></a>
 ### Naming Your Application
@@ -159,7 +159,7 @@ After installing Laravel, you may wish to "name" your application. By default, t
 
 For example, if your application is named "Horsefly", you could run the following command from the root of your installation:
 
-	php artisan app:name Horsefly
+    php artisan app:name Horsefly
 
 Renaming your application is entirely optional, and you are free to keep the `App` namespace if you wish.
 
@@ -170,11 +170,11 @@ When your application is in maintenance mode, a custom view will be displayed fo
 
 To enable maintenance mode, simply execute the `down` Artisan command:
 
-	php artisan down
+    php artisan down
 
 To disable maintenance mode, use the `up` command:
 
-	php artisan up
+    php artisan up
 
 ### Maintenance Mode Response Template
 

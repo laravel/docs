@@ -17,14 +17,14 @@
 
 Update the `$compiledPath` variable in `bootstrap/autoload.php` to the following:
 
-	$compiledPath = __DIR__.'/cache/compiled.php';
+    $compiledPath = __DIR__.'/cache/compiled.php';
 
 ### Create `bootstrap/cache` Directory
 
 Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`). Place a `.gitignore` file in this directory with the following contents:
 
-	*
-	!.gitignore
+    *
+    !.gitignore
 
 This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
 
@@ -56,29 +56,29 @@ Likewise, if you are overriding the `formatErrors` method on the base form reque
 
 Eloquent's `create` method can now be called without any parameters. If you are overriding the `create` method in your own models, set the default value of the `$attributes` parameter to an array:
 
-	public static function create(array $attributes = [])
-	{
-		// Your custom implementation
-	}
+    public static function create(array $attributes = [])
+    {
+        // Your custom implementation
+    }
 
 #### The `find` Method
 
 If you are overriding the `find` method in your own models and calling `parent::find()` within your custom method, you should now change it to call the `find` method on the Eloquent query builder:
 
-	public static function find($id, $columns = ['*'])
-	{
-		$model = static::query()->find($id, $columns);
+    public static function find($id, $columns = ['*'])
+    {
+        $model = static::query()->find($id, $columns);
 
-		// ...
+        // ...
 
-		return $model;
-	}
+        return $model;
+    }
 
 #### The `lists` Method
 
 The `lists` method now returns a `Collection` instance instead of a plain array for Eloquent queries. If you would like to convert the `Collection` into a plain array, use the `all` method:
 
-	User::lists('id')->all();
+    User::lists('id')->all();
 
 Be aware that the Query Builder `lists` method still returns an array.
 
@@ -94,22 +94,22 @@ The date format is also now applied when serializing a model to an `array` or JS
 
 The `sortBy` method now returns a fresh collection instance instead of modifying the existing collection:
 
-	$collection = $collection->sortBy('name');
+    $collection = $collection->sortBy('name');
 
 #### The `groupBy` Method
 
 The `groupBy` method now returns `Collection` instances for each item in the parent `Collection`. If you would like to convert all of the items back to plain arrays, you may `map` over them:
 
-	$collection->groupBy('type')->map(function($item)
-	{
-		return $item->all();
-	});
+    $collection->groupBy('type')->map(function($item)
+    {
+        return $item->all();
+    });
 
 #### The `lists` Method
 
 The `lists` method now returns a `Collection` instance instead of a plain array. If you would like to convert the `Collection` into a plain array, use the `all` method:
 
-	$collection->lists('id')->all();
+    $collection->lists('id')->all();
 
 ### Commands & Handlers
 
@@ -127,7 +127,7 @@ The `createMatcher`, `createOpenMatcher`, and `createPlainMatcher` methods have 
 
 Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 
-	protected $baseUrl = 'http://localhost';
+    protected $baseUrl = 'http://localhost';
 
 ### Translation Files
 
@@ -163,7 +163,7 @@ The following Laravel features have been deprecated and will be removed entirely
 
 In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
 
-	$compiledPath = __DIR__.'/../vendor/compiled.php';
+    $compiledPath = __DIR__.'/../vendor/compiled.php';
 
 <a name="upgrade-5.0"></a>
 ## Upgrading To 5.0 From 4.2
@@ -226,11 +226,11 @@ Filters are not removed in Laravel 5. You can still bind and use your own custom
 
 By default, [CSRF protection](/docs/{{version}}/routing#csrf-protection) is enabled on all routes. If you'd like to disable this, or only manually enable it on certain routes, remove this line from `App\Http\Kernel`'s `middleware` array:
 
-	'App\Http\Middleware\VerifyCsrfToken',
+    'App\Http\Middleware\VerifyCsrfToken',
 
 If you want to use it elsewhere, add this line to `$routeMiddleware`:
 
-	'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
+    'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
 
 Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/{{version}}/middleware).
 
@@ -346,12 +346,12 @@ For example, you may add `"laravelcollective/html": "~5.0"` to your `composer.js
 
 You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php` and add this line to the 'providers' array:
 
-	'Collective\Html\HtmlServiceProvider',
+    'Collective\Html\HtmlServiceProvider',
 
 Next, add these lines to the 'aliases' array:
 
-	'Form' => 'Collective\Html\FormFacade',
-	'Html' => 'Collective\Html\HtmlFacade',
+    'Form' => 'Collective\Html\FormFacade',
+    'Html' => 'Collective\Html\HtmlFacade',
 
 ### CacheManager
 
@@ -388,7 +388,7 @@ Laravel 4.2 requires PHP 5.4.0 or greater.
 
 Add a new `cipher` option in your `app/config/app.php` configuration file. The value of this option should be `MCRYPT_RIJNDAEL_256`.
 
-	'cipher' => MCRYPT_RIJNDAEL_256
+    'cipher' => MCRYPT_RIJNDAEL_256
 
 This setting may be used to control the default cipher used by the Laravel encryption facilities.
 
@@ -398,21 +398,21 @@ This setting may be used to control the default cipher used by the Laravel encry
 
 If you are using soft deleting models, the `softDeletes` property has been removed. You must now use the `SoftDeletingTrait` like so:
 
-	use Illuminate\Database\Eloquent\SoftDeletingTrait;
+    use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-	class User extends Eloquent
-	{
-		use SoftDeletingTrait;
-	}
+    class User extends Eloquent
+    {
+        use SoftDeletingTrait;
+    }
 
 You must also manually add the `deleted_at` column to your `dates` property:
 
-	class User extends Eloquent
-	{
-		use SoftDeletingTrait;
+    class User extends Eloquent
+    {
+        use SoftDeletingTrait;
 
-		protected $dates = ['deleted_at'];
-	}
+        protected $dates = ['deleted_at'];
+    }
 
 The API for all soft delete operations remains the same.
 
@@ -426,13 +426,13 @@ If you are directly referencing the `Illuminate\View\Environment` class or `Illu
 
 If you are extending the `Illuminate\Pagination\Presenter` class, the abstract method `getPageLinkWrapper` signature has changed to add the `rel` argument:
 
-	abstract public function getPageLinkWrapper($url, $page, $rel = null);
+    abstract public function getPageLinkWrapper($url, $page, $rel = null);
 
 ### Iron.Io Queue Encryption
 
 If you are using the Iron.io queue driver, you will need to add a new `encrypt` option to your queue configuration file:
 
-	'encrypt' => true
+    'encrypt' => true
 
 <a name="upgrade-4.1.29"></a>
 ## Upgrading To 4.1.29 From <= 4.1.x
@@ -454,20 +454,20 @@ First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent
 
 Next, if you are using the Eloquent authentication driver, update your `User` class with the following three methods:
 
-	public function getRememberToken()
-	{
-		return $this->remember_token;
-	}
+    public function getRememberToken()
+    {
+        return $this->remember_token;
+    }
 
-	public function setRememberToken($value)
-	{
-		$this->remember_token = $value;
-	}
+    public function setRememberToken($value)
+    {
+        $this->remember_token = $value;
+    }
 
-	public function getRememberTokenName()
-	{
-		return 'remember_token';
-	}
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
+    }
 
 > **Note:** All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
 
@@ -475,9 +475,9 @@ Next, if you are using the Eloquent authentication driver, update your `User` cl
 
 Two new methods were added to the `Illuminate\Auth\UserProviderInterface` interface. Sample implementations may be found in the default drivers:
 
-	public function retrieveByToken($identifier, $token);
+    public function retrieveByToken($identifier, $token);
 
-	public function updateRememberToken(UserInterface $user, $token);
+    public function updateRememberToken(UserInterface $user, $token);
 
 The `Illuminate\Auth\UserInterface` also received the three new methods described in the "Upgrade Path".
 
@@ -504,9 +504,9 @@ Add the new `expire_on_close` configuration option to your `app/config/session.p
 
 Add the new `failed` configuration section to your `app/config/queue.php` file. Here are the default values for the section:
 
-	'failed' => [
-		'database' => 'mysql', 'table' => 'failed_jobs',
-	],
+    'failed' => [
+        'database' => 'mysql', 'table' => 'failed_jobs',
+    ],
 
 **(Optional)** Update the `pagination` configuration option in your `app/config/view.php` file to `pagination::slider-3`.
 

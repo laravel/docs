@@ -27,41 +27,41 @@ You may have several questions regarding contracts. Why use interfaces at all? I
 
 First, let's review some code that is tightly coupled to a cache implementation. Consider the following:
 
-	<?php
+    <?php
 
-	namespace App\Orders;
+    namespace App\Orders;
 
-	class Repository
-	{
-		/**
-		 * The cache.
-		 */
-		protected $cache;
+    class Repository
+    {
+        /**
+         * The cache.
+         */
+        protected $cache;
 
-		/**
-		 * Create a new repository instance.
-		 *
-		 * @param  \SomePackage\Cache\Memcached  $cache
-		 * @return void
-		 */
-		public function __construct(\SomePackage\Cache\Memcached $cache)
-		{
-			$this->cache = $cache;
-		}
+        /**
+         * Create a new repository instance.
+         *
+         * @param  \SomePackage\Cache\Memcached  $cache
+         * @return void
+         */
+        public function __construct(\SomePackage\Cache\Memcached $cache)
+        {
+            $this->cache = $cache;
+        }
 
-		/**
-		 * Retrieve an Order by ID.
-		 *
-		 * @param  int  $id
-		 * @return Order
-		 */
-		public function find($id)
-		{
-			if ($this->cache->has($id))	{
-				//
-			}
-		}
-	}
+        /**
+         * Retrieve an Order by ID.
+         *
+         * @param  int  $id
+         * @return Order
+         */
+        public function find($id)
+        {
+            if ($this->cache->has($id))    {
+                //
+            }
+        }
+    }
 
 In this class, the code is tightly coupled to a given cache implementation. It is tightly coupled because we are depending on a concrete Cache class from a package vendor. If the API of that package changes our code must change as well.
 
@@ -69,25 +69,25 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
 
 **Instead of this approach, we can improve our code by depending on a simple, vendor agnostic interface:**
 
-	<?php
+    <?php
 
-	namespace App\Orders;
+    namespace App\Orders;
 
-	use Illuminate\Contracts\Cache\Repository as Cache;
+    use Illuminate\Contracts\Cache\Repository as Cache;
 
-	class Repository
-	{
-		/**
-		 * Create a new repository instance.
-		 *
-		 * @param  Cache  $cache
-		 * @return void
-		 */
-		public function __construct(Cache $cache)
-		{
-			$this->cache = $cache;
-		}
-	}
+    class Repository
+    {
+        /**
+         * Create a new repository instance.
+         *
+         * @param  Cache  $cache
+         * @return void
+         */
+        public function __construct(Cache $cache)
+        {
+            $this->cache = $cache;
+        }
+    }
 
 Now the code is not coupled to any specific vendor, or even Laravel. Since the contracts package contains no implementation and no dependencies, you may easily write an alternative implementation of any given contract, allowing you to replace your cache implementation without modifying any of your cache consuming code.
 
@@ -147,42 +147,42 @@ Many types of classes in Laravel are resolved through the [service container](/d
 
 For example, take a look at this event listener:
 
-	<?php
+    <?php
 
-	namespace App\Listeners;
+    namespace App\Listeners;
 
-	use App\User;
-	use App\Events\NewUserRegistered;
-	use Illuminate\Contracts\Redis\Database;
+    use App\User;
+    use App\Events\NewUserRegistered;
+    use Illuminate\Contracts\Redis\Database;
 
-	class CacheUserInformation
-	{
-		/**
-		 * The Redis database implementation.
-		 */
-		protected $redis;
+    class CacheUserInformation
+    {
+        /**
+         * The Redis database implementation.
+         */
+        protected $redis;
 
-		/**
-		 * Create a new event handler instance.
-		 *
-		 * @param  Database  $redis
-		 * @return void
-		 */
-		public function __construct(Database $redis)
-		{
-			$this->redis = $redis;
-		}
+        /**
+         * Create a new event handler instance.
+         *
+         * @param  Database  $redis
+         * @return void
+         */
+        public function __construct(Database $redis)
+        {
+            $this->redis = $redis;
+        }
 
-		/**
-		 * Handle the event.
-		 *
-		 * @param  NewUserRegistered  $event
-		 * @return void
-		 */
-		public function handle(NewUserRegistered $event)
-		{
-			//
-		}
-	}
+        /**
+         * Handle the event.
+         *
+         * @param  NewUserRegistered  $event
+         * @return void
+         */
+        public function handle(NewUserRegistered $event)
+        {
+            //
+        }
+    }
 
 When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).

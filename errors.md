@@ -3,10 +3,10 @@
 - [Introduction](#introduction)
 - [Configuration](#configuration)
 - [The Exception Handler](#the-exception-handler)
-	- [Report Method](#report-method)
-	- [Render Method](#render-method)
+    - [Report Method](#report-method)
+    - [Render Method](#render-method)
 - [HTTP Exceptions](#http-exceptions)
-	- [Custom HTTP Error Pages](#custom-http-error-pages)
+    - [Custom HTTP Error Pages](#custom-http-error-pages)
 - [Logging](#logging)
 
 <a name="introduction"></a>
@@ -27,17 +27,17 @@ For local development, you should set the `APP_DEBUG` environment variable to `t
 
 Out of the box, Laravel supports `single`, `daily`, `syslog` and `errorlog` logging modes. For example, if you wish to use daily log files instead of a single file, you should simply set the `log` value in your `config/app.php` configuration file:
 
-	'log' => 'daily'
+    'log' => 'daily'
 
 #### Custom Monolog Configuration
 
 If you would like to have complete control over how Monolog is configured for your application, you may use the application's `configureMonologUsing` method. You should place a call to this method in your `bootstrap/app.php` file right before the `$app` variable is returned by the file:
 
-	$app->configureMonologUsing(function($monolog) {
-		$monolog->pushHandler(...);
-	});
+    $app->configureMonologUsing(function($monolog) {
+        $monolog->pushHandler(...);
+    });
 
-	return $app;
+    return $app;
 
 <a name="the-exception-handler"></a>
 ## The Exception Handler
@@ -51,22 +51,22 @@ The `report` method is used to log exceptions or send them to an external servic
 
 For example, if you need to report different types of exceptions in different ways, you may use the PHP `instanceof` comparison operator:
 
-	/**
-	 * Report or log an exception.
-	 *
-	 * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-	 *
-	 * @param  \Exception  $e
-	 * @return void
-	 */
-	public function report(Exception $e)
-	{
-		if ($e instanceof CustomException) {
-			//
-		}
+    /**
+     * Report or log an exception.
+     *
+     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+     *
+     * @param  \Exception  $e
+     * @return void
+     */
+    public function report(Exception $e)
+    {
+        if ($e instanceof CustomException) {
+            //
+        }
 
-		return parent::report($e);
-	}
+        return parent::report($e);
+    }
 
 #### Ignoring Exceptions By Type
 
@@ -86,9 +86,9 @@ The `render` method is responsible for converting a given exception into an HTTP
      */
     public function render($request, Exception $e)
     {
-    	if ($e instanceof CustomException) {
-    		return response()->view('errors.custom', [], 500);
-    	}
+        if ($e instanceof CustomException) {
+            return response()->view('errors.custom', [], 500);
+        }
 
         return parent::render($request, $e);
     }
@@ -98,11 +98,11 @@ The `render` method is responsible for converting a given exception into an HTTP
 
 Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to generate such a response from anywhere in your application, use the following:
 
-	abort(404);
+    abort(404);
 
 The `abort` method will immediately raise an exception which will be rendered by the exception handler. Optionally, you may provide the response text:
 
-	abort(403, 'Unauthorized action.');
+    abort(403, 'Unauthorized action.');
 
 This method may be used at any time during the request's lifecycle.
 
@@ -118,48 +118,48 @@ The views within this directory should be named to match the HTTP status code th
 
 The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create daily log files for your application which are stored in the `storage/logs` directory. You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades):
 
-	<?php
+    <?php
 
-	namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-	use Log;
-	use App\User;
-	use App\Http\Controllers\Controller;
+    use Log;
+    use App\User;
+    use App\Http\Controllers\Controller;
 
-	class UserController extends Controller
-	{
-		/**
-		 * Show the profile for the given user.
-		 *
-		 * @param  int  $id
-		 * @return Response
-		 */
-		public function showProfile($id)
-		{
-			Log::info('Showing user profile for user: '.$id);
+    class UserController extends Controller
+    {
+        /**
+         * Show the profile for the given user.
+         *
+         * @param  int  $id
+         * @return Response
+         */
+        public function showProfile($id)
+        {
+            Log::info('Showing user profile for user: '.$id);
 
-			return view('user.profile', ['user' => User::findOrFail($id)]);
-		}
-	}
+            return view('user.profile', ['user' => User::findOrFail($id)]);
+        }
+    }
 
 The logger provides the seven logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, and **alert**.
 
-	Log::debug($error);
-	Log::info($error);
-	Log::notice($error);
-	Log::warning($error);
-	Log::error($error);
-	Log::critical($error);
-	Log::alert($error);
+    Log::debug($error);
+    Log::info($error);
+    Log::notice($error);
+    Log::warning($error);
+    Log::error($error);
+    Log::critical($error);
+    Log::alert($error);
 
 #### Contextual Information
 
 An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
 
-	Log::info('User failed to login.', ['id' => $user->id]);
+    Log::info('User failed to login.', ['id' => $user->id]);
 
 #### Accessing The Underlying Monolog Instance
 
 Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
 
-	$monolog = Log::getMonolog();
+    $monolog = Log::getMonolog();

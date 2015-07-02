@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Basic Usage](#basic-usage)
-	- [Pluralization](#pluralization)
+    - [Pluralization](#pluralization)
 - [Overriding Vendor Language Files](#overriding-vendor-language-files)
 
 <a name="introduction"></a>
@@ -12,45 +12,45 @@ Laravel's localization features provide a convenient way to retrieve strings in 
 
 Language strings are stored in files within the `resources/lang` directory. Within this directory there should be a subdirectory for each language supported by the application:
 
-	/resources
-		/lang
-			/en
-				messages.php
-			/es
-				messages.php
+    /resources
+        /lang
+            /en
+                messages.php
+            /es
+                messages.php
 
 All language files simply return an array of keyed strings. For example:
 
-	<?php
+    <?php
 
-	return [
-		'welcome' => 'Welcome to our application'
-	];
+    return [
+        'welcome' => 'Welcome to our application'
+    ];
 
 #### Configuring The Locale
 
 The default language for your application is stored in the `config/app.php` configuration file. Of course, you may modify this value to suit the needs of your application. You may also change the active language at runtime using the `setLocale` method on the `App` facade:
 
-	Route::get('welcome/{locale}', function ($locale) {
-		App::setLocale($locale);
+    Route::get('welcome/{locale}', function ($locale) {
+        App::setLocale($locale);
 
-		//
-	});
+        //
+    });
 
 You may also configure a "fallback language", which will be used when the active language does not contain a given language line. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:
 
-	'fallback_locale' => 'en',
+    'fallback_locale' => 'en',
 
 <a name="basic-usage"></a>
 ## Basic Usage
 
 You may retrieve lines from language files using the `trans` helper function. The `trans` method accepts the file and key of the language line as its first argument. For example, let's retrieve the language line `welcome` in the `resources/lang/messages.php` language file:
 
-	echo trans('messages.welcome');
+    echo trans('messages.welcome');
 
 Of course if you are using the [Blade templating engine](/docs/{{version}}/blade), you may use the `{{ }}` syntax to echo the language line:
 
-	{{ trans('messages.welcome') }}
+    {{ trans('messages.welcome') }}
 
 If the specified language line does not exist, the `trans` function will simply return the language line key. So, using the example above, the `trans` function would return `messages.welcome` if the language line does not exist.
 
@@ -58,26 +58,26 @@ If the specified language line does not exist, the `trans` function will simply 
 
 If you wish, you may define place-holders in your language lines. All place-holders are prefixed with a `:`. For example, you may define a welcome message with a place-holder name:
 
-	'welcome' => 'Welcome, :name',
+    'welcome' => 'Welcome, :name',
 
 To replace the place-holders when retrieving a language line, pass an array of replacements as the second argument to the `trans` function:
 
-	echo trans('messages.welcome', ['name' => 'Dayle']);
+    echo trans('messages.welcome', ['name' => 'Dayle']);
 
 <a name="pluralization"></a>
 ### Pluralization
 
 Pluralization is a complex problem, as different languages have a variety of complex rules for pluralization. By using a "pipe" character, you may distinguish a singular and plural form of a string:
 
-	'apples' => 'There is one apple|There are many apples',
+    'apples' => 'There is one apple|There are many apples',
 
 Then, you may then use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the language line is returned:
 
-	echo trans_choice('messages.apples', 10);
+    echo trans_choice('messages.apples', 10);
 
 Since the Laravel translator is powered by the Symfony Translation component, you may create even more complex pluralization rules:
 
-	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
+    'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
 
 <a name="overriding-vendor-language-files"></a>
 ## Overriding Vendor Language Files
