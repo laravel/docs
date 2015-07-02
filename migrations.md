@@ -37,6 +37,8 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
 	php artisan make:migration create_users_table --create=users
 
+If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The provided path should be relative to your application's base path.
+
 <a name="migration-structure"></a>
 ## Migration Structure
 
