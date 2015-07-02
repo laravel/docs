@@ -10,6 +10,7 @@
 - [Available Validation Rules](#available-validation-rules)
 - [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Custom Validation Rules](#custom-validation-rules)
+- [Nested Validation Rules](#nested-validation-rules)
 
 <a name="introduction"></a>
 ## Introduction
@@ -794,4 +795,24 @@ When creating a custom validation rule, you may sometimes need to define custom 
 		Validator::replacer('foo', function($message, $attribute, $rule, $parameters) {
 			return str_replace(...);
 		});
+	}
+
+<a name="nested-validation-rules"></a>
+## Nested Validation Rules
+
+In some cases you might want to validate nested attributes. This is possible by adding dot notation on your nested attributes.
+
+	/**
+	 * Get the validation rules that apply to the request.
+	 *
+	 * @return array
+	 */
+	public function rules()
+	{
+		return [
+			'title' => 'required|unique:posts|max:255',
+			'body' => 'required',
+			'author.name' => 'required',
+			'author.description' => 'required',
+		];
 	}
