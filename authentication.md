@@ -331,7 +331,9 @@ If you are using PHP FastCGI, HTTP Basic authentication may not work correctly o
 
 You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/{{version}}/middleware) that calls the `onceBasic` method. If no response is returned by the `onceBasic` method, the request may be passed further into the application:
 
-    <?php namespace Illuminate\Auth\Middleware;
+    <?php
+
+    namespace Illuminate\Auth\Middleware;
 
     use Auth;
     use Closure;
@@ -607,7 +609,9 @@ The `Illuminate\Contracts\Auth\UserProvider` implementations are only responsibl
 
 Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 
-    <?php namespace Illuminate\Contracts\Auth;
+    <?php
+
+    namespace Illuminate\Contracts\Auth;
 
     interface UserProvider {
 
@@ -633,7 +637,9 @@ The `validateCredentials` method should compare the given `$user` with the `$cre
 
 Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable`. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
 
-    <?php namespace Illuminate\Contracts\Auth;
+    <?php
+
+    namespace Illuminate\Contracts\Auth;
 
     interface Authenticatable {
 
