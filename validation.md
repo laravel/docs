@@ -164,7 +164,7 @@ If you wish to customize the format of the validation errors that are flashed to
         }
     }
 
-<a name="quick-ajx-requests-and-validation"></a>
+<a name="quick-ajax-requests-and-validation"></a>
 ### AJAX Requests & Validation
 
 In this example, we used a traditional form to send data to the application. However, many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
