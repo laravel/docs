@@ -99,7 +99,7 @@ Since many JavaScript frameworks also use "curly" braces to indicate a given exp
 
 	Hello, @{{ name }}.
 
-In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead by rendered by your JavaScript framework.
+In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
 
 #### Echoing Data If It Exists
 
