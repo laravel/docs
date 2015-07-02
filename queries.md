@@ -397,7 +397,7 @@ Of course, in addition to inserting records into the database, the query builder
 
 The query builder also provides convenient methods for incrementing or decrementing the value of a given column. This is simply a short-cut, providing a more expressive and terse interface compared to manually writing the `update` statement.
 
-Both of these methods accept at least one argument: the column to modify. An second argument may optionally be passed to control the amount by which the column should be incremented / decremented.
+Both of these methods accept at least one argument: the column to modify. A second argument may optionally be passed to control the amount by which the column should be incremented / decremented.
 
     DB::table('users')->increment('votes');
 
