@@ -124,7 +124,7 @@ Now that you have routes and views setup for the included authentication control
 When a user is successfully authenticated, they will be redirected to the `/home` URI, which you will need to register a route to handle. You can customize the post-authentication redirect location by defining a `redirectPath` property on the `AuthController`:
 
     protected $redirectPath = '/dashboard';
-    
+
 When a user is not successfully authenticated, they will be redirected to the `/auth/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
 
     protected $loginPath = '/login';
@@ -207,7 +207,7 @@ Of course, if you are using [controller classes](/docs/{{version}}/controllers),
 <a name="authentication-throttling"></a>
 ### Authentication Throttling
 
-If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to login for one minute if they fail to provide the correct credentials three times. The throttling is unique to the user's username / e-mail address and their IP address:
+If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address:
 
     <?php
 
