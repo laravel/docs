@@ -693,9 +693,11 @@ The `factory` function creates a model factory builder for a given class, name, 
 <a name="method-method-field"></a>
 #### `method_field()` {#collection-method}
 
-The `method_field` function generates an HTML `hidden` input field containing the spoofed value of the form type. For example, using [Blade syntax](/docs/{{version}}/blade):
+The `method_field` function generates an HTML `hidden` input field containing the spoofed value of the form's HTTP verb. For example, using [Blade syntax](/docs/{{version}}/blade):
 
-    {!! method_field('delete') !!}
+    <form method="POST">
+        {!! method_field('delete') !!}
+    </form>
 
 <a name="method-old"></a>
 #### `old()` {#collection-method}
