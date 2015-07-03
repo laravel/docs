@@ -81,6 +81,8 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
         $this->call('UserTableSeeder');
         $this->call('PostsTableSeeder');
         $this->call('CommentsTableSeeder');
+        
+        Model::reguard();
     }
 
 <a name="running-seeders"></a>
