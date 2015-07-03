@@ -99,6 +99,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
+[method_field](#method-method-field)
 [old](#method-old)
 [redirect](#method-redirect)
 [response](#method-response)
@@ -688,6 +689,13 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/testing#model-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
 
     $user = factory('App\User')->make();
+
+<a name="method-method-field"></a>
+#### `method_field()` {#collection-method}
+
+The `method_field` function generates an HTML `hidden` input field containing the spoofed value of the form type. For example, using [Blade syntax](/docs/{{version}}/blade):
+
+    {!! method_field('delete') !!}
 
 <a name="method-old"></a>
 #### `old()` {#collection-method}
