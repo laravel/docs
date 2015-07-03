@@ -207,7 +207,7 @@ Of course, if you are using [controller classes](/docs/{{version}}/controllers),
 <a name="authentication-throttling"></a>
 ### Authentication Throttling
 
-If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to login for one minute if they fail to provide the correct credentials three times. The throttling is unique to the user's username / e-mail address and their IP address:
+If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to login for one minute if they fail to provide the correct credentials five times. The throttling is unique to the user's username / e-mail address and their IP address:
 
     <?php
 
