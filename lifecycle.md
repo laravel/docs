@@ -26,11 +26,11 @@
 
 接下來，進入應用程式的請求的會被送往 HTTP 核心或終端核心，視該請求的種類而定。這兩種核心是所有請求流向的中心位置。現在開始，我們只將焦點放在 HTTP 核心，它位於 `app/Http/Kernel.php`。
 
-HTTP 核心擴展了 `Illuminate\Foundation\Http\Kernel` 類別，它定義了一個 `bootstrappers` 陣列，在請求被執行前會先行運作。這些啟動器設定了錯誤處理，日誌記錄，[偵測應用程式環境](/docs/{{version}}/installation#environment-configuration)，並執行其他在請求被實際處理前，需要完成的工作。
+HTTP 核心擴展了 `Illuminate\Foundation\Http\Kernel` 類別，它定義了一個 `bootstrappers` 陣列，在請求被執行前會先行運作。這些啟動器設定了錯誤處理、日誌記錄、[偵測應用程式環境](/docs/{{version}}/installation#environment-configuration)，並執行其他在請求被實際處理前，需要完成的工作。
 
-HTTP 核心也定義了一份 HTTP [中介層](/docs/{{version}}/middleware)清單，所有的請求在被應用程式處理之前都必須經過它們。這些中介層處理 [HTTP session](/docs/{{version}}/session) 的讀寫，[驗證 CSRF 標記](/docs/{{version}}/routing#csrf-protection)，以及其他更多工作。
+HTTP 核心也定義了一份 HTTP [中介層](/docs/{{version}}/middleware)清單，所有的請求在被應用程式處理之前都必須經過它們。這些中介層處理 [HTTP session](/docs/{{version}}/session) 的讀寫、[驗證 CSRF 標記](/docs/{{version}}/routing#csrf-protection)、決定應用程式是否處於維護模式，以及其他更多工作。
 
-HTTP 核心 `handle` 方法的方法簽章相當簡單：接收一個 `Request` 並回傳一個 `Response`。把核心想像成一個大的黑盒子，代表你完整的應用程式。餵給它一個 HTTP 請求，它就會傳回一個 HTTP 回應。
+HTTP 核心 `handle` 方法的方法簽章相當簡單：接收一個 `Request` 並回傳一個 `Response`。把核心想像成一個大的黑盒子，代表你完整的應用程式。餵給它 HTTP 請求，它就會傳回 HTTP 回應。
 
 #### 服務提供者
 
@@ -45,7 +45,7 @@ HTTP 核心 `handle` 方法的方法簽章相當簡單：接收一個 `Request` 
 <a name="focus-on-service-providers"></a>
 ## 聚焦於服務提供者
 
-服務提供者是啟動 Laravel 應用程式的真正關鍵。應用程式的實例被建立，服務提供者被註冊，請求被移轉至已啟動的應用程式。真的就是這麼簡單！
+服務提供者是啟動 Laravel 應用程式的真正關鍵。應用程式的實例被建立、服務提供者被註冊、請求被移轉至已啟動的應用程式。真的就是這麼簡單！
 
 確實掌握 Laravel 應用程式如何建立並透過服務提供者啟動，這是很有價值的。當然，你的應用程式預設的服務提供者存放在 `app/Providers` 此一目錄下。
 
