@@ -481,7 +481,10 @@ The field under validation must be a valid URL according to the `checkdnsrr` PHP
 <a name="rule-after"></a>
 #### after:_date_
 
-The field under validation must be a value after a given date. The dates will be passed into the `strtotime` PHP function.
+The field under validation must be a value after a given date. The dates will be passed into the `strtotime` PHP function. You can also pass another field here:
+
+    'start' => 'required|date'
+    'end' => 'required|date|after:start'
 
 <a name="rule-alpha"></a>
 #### alpha
@@ -531,7 +534,7 @@ The field under validation must be a valid date according to the `strtotime` PHP
 <a name="rule-date-format"></a>
 #### date_format:_format_
 
-The field under validation must match the given _format_. The format will be evaluated using the PHP `date_parse_from_format` function.
+The field under validation must match the given _format_. The format will be evaluated using the PHP `date_parse_from_format` function. *Note:* You should use either `date` or `date_format` - not both.
 
 <a name="rule-different"></a>
 #### different:_field_
