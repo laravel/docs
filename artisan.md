@@ -305,7 +305,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
-            'user' => 1, '--queue' => 'default', '--force' => true
+            'user' => 1, '--queue' => 'default'
         ]);
 
         //
@@ -315,11 +315,17 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
 
     Route::get('/foo', function () {
         Artisan::queue('email:send', [
-            'user' => 1, '--queue' => 'default', '--force' => true
+            'user' => 1, '--queue' => 'default'
         ]);
 
         //
     });
+
+If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you may pass a booelan `true` or `false`:
+
+    $exitCode = Artisan::call('migrate:refresh', [
+        '--force' => true,
+    ]);
 
 ### Calling Commands From Other Commands
 
