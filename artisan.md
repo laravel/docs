@@ -305,7 +305,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
-            'user' => 1, '--queue' => 'default'
+            'user' => 1, '--queue' => 'default', '--force' => true
         ]);
 
         //
@@ -315,7 +315,7 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
 
     Route::get('/foo', function () {
         Artisan::queue('email:send', [
-            'user' => 1, '--queue' => 'default'
+            'user' => 1, '--queue' => 'default', '--force' => true
         ]);
 
         //
