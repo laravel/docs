@@ -142,15 +142,16 @@ The Laravel logging facilities provide a simple layer on top of the powerful [Mo
         }
     }
 
-The logger provides the seven logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, and **alert**.
+The logger provides the eight logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**.
 
-    Log::debug($error);
-    Log::info($error);
-    Log::notice($error);
-    Log::warning($error);
-    Log::error($error);
-    Log::critical($error);
+    Log::emergency($error);
     Log::alert($error);
+    Log::critical($error);
+    Log::error($error);
+    Log::warning($error);
+    Log::notice($error);
+    Log::info($error);
+    Log::debug($error);
 
 #### Contextual Information
 
