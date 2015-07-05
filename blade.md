@@ -5,14 +5,14 @@
 	- [定義頁面佈局](#defining-a-layout)
 	- [繼承頁面佈局](#extending-a-layout)
 - [顯示資料](#displaying-data)
-- [控制語法](#control-structures)
+- [控制結構](#control-structures)
 - [服務注入](#service-injection)
-- [模板擴充](#extending-blade)
+- [擴充 Blade](#extending-blade)
 
 <a name="introduction"></a>
 ## 簡介
 
-Blade 模板是 Laravel 所提供的簡單且強大的模板引擎。相較於其它知名的 PHP 模板引擎， Blade 並不會限制你必須在視圖中使用 PHP 程式碼。在 Blade 被修改之前，所有的視圖都會被轉換為普通的 PHP 程式碼並產生快取，這代表著 Blade 視圖基本上對於整個系統而言並不會增加太多負擔。Blade 視圖檔案使用 `.blade.php` 做為副檔名，並儲存於 `resources/views` 資料夾。
+Blade 是 Laravel 所提供的簡單且強大的模板引擎。相較於其它知名的 PHP 模板引擎，Blade 並不會限制你必須在視圖中使用 PHP 程式碼。所有 Blade 視圖會被編譯成一般的 PHP 程式碼並快取直到它們被更動為止，這代表著基本上 Blade 不會對你的應用程式產生負擔。Blade 視圖檔案使用 `.blade.php` 做為副檔名，且通常儲存於 `resources/views` 資料夾。
 
 <a name="template-inheritance"></a>
 ## 模板繼承
@@ -30,7 +30,7 @@ Blade 模板是 Laravel 所提供的簡單且強大的模板引擎。相較於�
 		</head>
 		<body>
 			@section('sidebar')
-				這是 master 的側邊欄。
+				這是主要的側邊欄。
 			@show
 
 			<div class="container">
