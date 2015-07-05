@@ -2,7 +2,7 @@
     - [發行說明](/docs/{{version}}/releases)
     - [升級導引](/docs/{{version}}/upgrade)
     - [貢獻導引](/docs/{{version}}/contributions)
-    - [API 文件](/api/{{version}})
+    - [API 文件](http://laravel.com/api/{{version}})
 - 環境設定
     - [安裝](/docs/{{version}}/installation)
     - [Homestead](/docs/{{version}}/homestead)
