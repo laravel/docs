@@ -20,7 +20,7 @@ Blade 是 Laravel 所提供的簡單且強大的模板引擎。相較於其它�
 <a name="defining-a-layout"></a>
 ### 定義頁面佈局
 
-使用 Blade 模板的兩個主要優點為_模板繼承_與_區塊_。從下方的 Blade 模板範例開始。首先，我們確認一下「master」的頁面佈局。由於大多數的網頁應用程式在不同頁面都保持著相同的佈局方式，用以下方式即可簡單的將佈局定義為單一的 Blade 模板視圖。
+使用 Blade 模板的兩個主要優點為_模板繼承_與_區塊_。讓我們先看一個簡單的範例來上手。首先，我們確認一下「主要的」頁面佈局。由於大多數的網頁應用程式在不同頁面都保持著相同的佈局方式，這便於定義這個佈局為單一的 Blade 視圖：
 
 	<!-- 檔案儲存於 resources/views/layouts/master.blade.php -->
 
@@ -39,34 +39,34 @@ Blade 是 Laravel 所提供的簡單且強大的模板引擎。相較於其它�
 		</body>
 	</html>
 
-如你所見，這個檔案包含了傳統的 HTML 語法。不過，請注意 `@section` 與 `@yield` 指令。正如其名， `@section` 指令定義一個內容區塊，而 `@yield` 指令則輸出一個已經被定義的區塊。
+如你所見，這個檔案包含了傳統的 HTML 語法。不過，請注意 `@section` 與 `@yield` 指令。正如其名，`@section` 指令定義一個內容區塊，而 `@yield` 指令被用來顯示給定區塊的內容。
 
 現在，我們已經定義了這個應用程式的佈局，讓我們來定義一個繼承此佈局的子頁面。
 
 <a name="extending-a-layout"></a>
 ### 繼承頁面佈局
 
-當定義了一個子頁面後，便可以使用 Blade 的 `@extends` 指令指定子頁面必須進行「繼承」。當視圖 `@extends（繼承）` Blade 的佈局之後，即可使用 `@section` 指令將內容注入於佈局的區塊中。切記，如上述範例，這些區塊中內容都會使用 `@yield` 被顯示在佈局中：
+當正在定義子頁面時，你可以使用 Blade 的 `@extends` 指令指定子頁面應該「繼承」哪一個佈局。當視圖 `@extends` Blade 的佈局之後，即可使用 `@section` 指令將內容注入於佈局的區塊中。切記，如上述範例所見，這些區塊的內容都會使用 `@yield` 顯示在佈局中：
 
 	<!-- 儲存於 resources/views/layouts/child.blade.php -->
 
 	@extends('layouts.master')
 
-	@section('title', 'Page Title')
+	@section('title', '頁面標題')
 
 	@section('sidebar')
 		@@parent
 
-		<p>這邊會附加在 master 的側邊欄。</p>
+		<p>這邊會附加在主要的側邊欄。</p>
 	@endsection
 
 	@section('content')
 		<p>這是我的主要內容。</p>
 	@endsection
 
-在這個範例中， `sidebar` 區塊利用了 `@@parent` 指令增加（而不是覆蓋）內容至佈局的側邊欄。`@@parent` 指令會在視圖輸出時置換成佈局的內容。
+在這個範例中，`sidebar` 區塊利用了 `@@parent` 指令增加（而不是覆蓋）內容至佈局的側邊欄。`@@parent` 指令會在視圖輸出時被置換成佈局的內容。
 
-當然，就像一般的 PHP 視圖， Blade 視圖可以在路由中使用全域的 `view` 輔助函式回傳：
+當然，就像一般的 PHP 視圖，可以在路由中使用全域的 `view` 輔助函式回傳 Blade 視圖：
 
 	Route::get('blade', function () {
 		return view('child');
@@ -200,7 +200,7 @@ Blade 同時也允許在頁面中定義註解。然而，有異於 HTML 的註�
 	</div>
 
 <a name="extending-blade"></a>
-## 模板擴充
+## 擴充 Blade
 
 Blade 模板允許客製化指令。你可以使用 `directive` 方法註冊指令。當 Blade 編譯器遇到該指令時，將會帶參數呼叫被提供的回呼。
 
