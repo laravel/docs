@@ -64,11 +64,12 @@ Laravel provides a very fluent API for making HTTP requests to your application,
         public function testBasicExample()
         {
             $this->visit('/')
-                 ->see('Laravel 5');
+                 ->see('Laravel 5')
+                 ->dontSee('Rails');
         }
     }
 
-The `visit` method makes a `GET` request into the application. The `see` method asserts that we should see the given text in the response returned by the application. This is the most basic application test available in Laravel.
+The `visit` method makes a `GET` request into the application. The `see` method asserts that we should see the given text in the response returned by the application. The `dontSee` method asserts that the given text is not returned in the application response. This is the most basic application test available in Laravel.
 
 <a name="interacting-with-your-application"></a>
 ### Interacting With Your Application
