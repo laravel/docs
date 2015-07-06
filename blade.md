@@ -146,7 +146,7 @@ Blade 是 Laravel 所提供的簡單且強大的模板引擎。相較於其它�
 
 #### 迴圈
 
-除了條件陳述式外，Blade 也提供了簡易指令使用 PHP 支援的迴圈結構。Again, each of these directives functions identically to their PHP counterparts:
+除了條件陳述式外，Blade 也提供了簡易指令使用 PHP 支援的迴圈結構。再次提及，這每個指令函式等同於他們 PHP 中的語法：
 
 	@for ($i = 0; $i < 10; $i++)
 		目前的值為 {{ $i }}
@@ -184,14 +184,14 @@ Blade 的 `@include` 指令，允使你簡單地從一個已存在的視圖引�
 
 #### 註解
 
-Blade 同時也允許在頁面中定義註解。然而，有異於 HTML 的註解， Blade 的註解並不會被顯示於在 HTML 內：
+Blade 也允許在頁面中定義註解。然而，有異於 HTML 的註解，Blade 的註解並不會被包含在應用程式回傳的 HTML 內：
 
 	{{-- 此註解將不會出現在渲染後的 HTML --}}
 
 <a name="service-injection"></a>
 ## 服務注入
 
-`@inject` 指令可以取出 Laravel [服務容器](/docs/{{version}}/container)中的服務。傳遞給 `@inject` 的第一個參數為替換該服務的變數名稱，而第二個參數為服務的類別或是介面的名稱：
+`@inject` 指令可以取出 Laravel [服務容器](/docs/{{version}}/container)中的服務。傳遞給 `@inject` 的第一個參數為置放該服務的變數名稱，而第二個參數為你想要解析的服務的類別或是介面的名稱：
 
 	@inject('metrics', 'App\Services\MetricsService')
 
@@ -202,9 +202,9 @@ Blade 同時也允許在頁面中定義註解。然而，有異於 HTML 的註�
 <a name="extending-blade"></a>
 ## 擴充 Blade
 
-Blade 模板允許客製化指令。你可以使用 `directive` 方法註冊指令。當 Blade 編譯器遇到該指令時，將會帶參數呼叫被提供的回呼。
+Blade 甚至允許你定義客製化的指令。你可以使用 `directive` 方法註冊指令。當 Blade 編譯器遇到該指令時，它將會帶參數呼叫提供的回呼函式。
 
-以下範例將會建立一個給定的 `$var` 格式化的 `@datetime($var)` 指令：
+以下範例建立一個把給定的 `$var` 格式化的 `@datetime($var)` 指令：
 
 	<?php
 
@@ -216,7 +216,7 @@ Blade 模板允許客製化指令。你可以使用 `directive` 方法註冊指�
 	class AppServiceProvider extends ServiceProvider
 	{
 		/**
-		 * Perform post-registration booting of services.
+		 * 執行服務註冊後的啟動程序。
 		 *
 		 * @return void
 		 */
@@ -228,7 +228,7 @@ Blade 模板允許客製化指令。你可以使用 `directive` 方法註冊指�
 		}
 
 		/**
-		 * Register bindings in the container.
+		 * 在容器註冊綁定。
 		 *
 		 * @return void
 		 */
@@ -238,7 +238,7 @@ Blade 模板允許客製化指令。你可以使用 `directive` 方法註冊指�
 		}
 	}
 
-如你所見， Laravel 的 `with` 輔助函式被用在這個指令中。`with` 輔助函式會簡單地回傳其中的 物件或值，並允許使用簡便的方法鏈結。最後此指令將會產生如以下的 PHP：
+如你所見，Laravel 的 `with` 輔助函式被用在這個指令中。`with` 輔助函式會簡單地回傳給定的 物件或值，並允許使用便利的方法鏈結。最後此指令產生的 PHP 會是：
 
 	<?php echo with($var)->format('m/d/Y H:i'); ?>
 
