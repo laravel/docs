@@ -114,6 +114,24 @@ As noted above, when retrieving attributes that are listed in your `$dates` prop
 
     return $user->disabled_at->getTimestamp();
 
+If you need to customize the format of your timestamps, set the `$dateFormat` property on your model. This property determines how date attributes are stored in the database, as well as their format when the model is serialized to an array or JSON:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Flight extends Model
+    {
+        /**
+         * The storage format of the model's date columns.
+         *
+         * @var string
+         */
+        protected $dateFormat = 'U';
+    }
+
 <a name="attribute-casting"></a>
 ## Attribute Casting
 
