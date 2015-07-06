@@ -1,47 +1,46 @@
 # Filesystem / Cloud Storage
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
-	- [Obtaining Disk Instances](#obtaining-disk-instances)
-	- [Retrieving Files](#retrieving-files)
-	- [Storing Files](#storing-files)
-	- [Deleting Files](#deleting-files)
-	- [Directories](#directories)
-- [Custom Filesystems](#custom-filesystems)
+- [Introduzione](#introduzione)
+- [Configurazione](#configurazione)
+- [Utilizzo Base](#utilizzo-base)
+	- [Ottenere Istanze Del Disco](#ottenere-istanze-del-disco)
+	- [Recuperare File](#recuperare-file)
+	- [Salvare File](#salvare-file)
+	- [Eliminare File](#eliminare-file)
+	- [Cartelle](#cartelle)
+- [Filesystem Personalizzati](#filesystem-personalizzati)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Laravel provides a powerful filesystem abstraction thanks to the wonderful [Flysystem](https://github.com/thephpleague/flysystem) PHP package by Frank de Jonge. The Laravel Flysystem integration provides simple to use drivers for working with local filesystems, Amazon S3, and Rackspace Cloud Storage. Even better, it's amazingly simple to switch between these storage options as the API remains the same for each system.
+Laravel fornisce un potente sistema di astrazione del filesystem grazie allo straordinario package [Flysystem](https://github.com/thephpleague/flysystem) sviluppato da Frank de Jonge. La sua integrazione con Laravel permette di utilizzare in modo semplice driver per lavorare con il filesystem locale, con Amazon S3 e con Rackspace Cloud Storage. E' molto semplice cambiare queste tipologie di storage in quanto le API da utilizzare sarano sempre le stesse.
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-The filesystem configuration file is located at `config/filesystems.php`. Within this file you may configure all of your "disks". Each disk represents a particular storage driver and storage location. Example configurations for each supported driver is included in the configuration file. So, simply modify the configuration to reflect your storage preferences and credentials.
+Il file di configurazione del filesystem si trova in `config/filesystems.php`. All'interno di questo file puoi configurare tutti i tuoi "dischi". Ogni disco rappresenta un particolare driver e una particolare posizione. Nel file sono inclusi esempi di configurazione epr ognuno dei driver supportati, così ti sarà facile modificare la configurazione in base alle tue esigenze.
 
-Of course, you may configure as many disks as you like, and may even have multiple disks that use the same driver.
+Puoi configurare tutti i dischi che ti servono e più dischi possono usare gli stessi driver.
 
-#### The Local Driver
+#### Il Driver Locale
+Quando utilizzi il driver `local` tutte le operazioni saranno relative alla cartella `root` definita nel file di configurazione. Per default il valore di questa cartella è impostato a `storage/app`. Questo esempio ti permette di salvare un file in `storage/app/file.txt`:
 
-When using the `local` driver, note that all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
+	Storage::disk('local')->put('file.txt', 'Contenuto');
 
-	Storage::disk('local')->put('file.txt', 'Contents');
+#### Prerequisiti Per Gli Altri Driver
 
-#### Other Driver Prerequisites
-
-Before using the S3 or Rackspace drivers, you will need to install the appropriate package via Composer:
+Prima di utilizzare i driver per S3 o Rackspace, devi installare i rispettivi package tramite Composer:
 
 - Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 - Rackspace: `league/flysystem-rackspace ~1.0`
 
-<a name="basic-usage"></a>
-## Basic Usage
+<a name="utilizzo-base"></a>
+## Utilizzo Base
 
-<a name="obtaining-disk-instances"></a>
-### Obtaining Disk Instances
+<a name="ottenere-istanze-del-disco"></a>
+### Ottenere Istanze Del Disco
 
-The `Storage` facade may be used to interact with any of your configured disks. For example, you may use the `put` method on the facade to store an avatar on the default disk. If you call methods on the `Storage` facade without first calling the `disk` method, the method call will automatically be passed to the default disk:
+La facade `Storage` può essere utilizzata per lavorare con qualsiasi dei dischi configurati. Per esempio puoi utilizzare il metodo `put` per salvare una immagine nel disco di default. Se richiami la facede `Storage` senza specificare un disco, il metodo utilizzerà il disco impostato come default:
 
 	<?php namespace App\Http\Controllers;
 
@@ -52,7 +51,7 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 	class UserController extends Controller
 	{
 		/**
-		 * Update the avatar for the given user.
+		 * Aggiorna l'immagine di Avatar
 		 *
 		 * @param  Request  $request
 		 * @param  int  $id
@@ -69,105 +68,105 @@ The `Storage` facade may be used to interact with any of your configured disks. 
 		}
 	}
 
-When using multiple disks, you may access a particular disk using the `disk` method on the `Storage` facade. Of course, you may continue to chain methods to execute methods on the disk:
+Se utilizzi diversi dischi, puoi accedervi utilizzando il metodo `disk`. In questo modo tutti i metodi successivi faranno riferimento al disco specificato.
 
 	$disk = Storage::disk('s3');
 
 	$contents = Storage::disk('local')->get('file.jpg')
 
-<a name="retrieving-files"></a>
-### Retrieving Files
+<a name="recuperare-file"></a>
+### Recuperare File
 
-The `get` method may be used to retrieve the contents of a given file. The raw string contents of the file will be returned by the method:
+Il metodo `get` può essere utilizzato per recuperare il contenuto di un file specificato:
 
 	$contents = Storage::get('file.jpg');
 
-The `exists` method may be used to determine if a given file exists on the disk:
+Il metodo `exists` può essere utilizzato per determinere se uno specifico file esiste sul disco indicato:
 
 	$exists = Storage::disk('s3')->exists('file.jpg');
 
-#### File Meta Information
+#### Informazioni Meta Del File
 
-The `size` method may be used to get the size of the file in bytes:
+Il metodo `size` può essere utilizzato per recuperare il peso del file in byte:
 
 	$size = Storage::size('file1.jpg');
 
-The `lastModified` method returns the UNIX timestamp of the last time the file was modified:
+Il metodo `lastModified` restituisce il timestamp UNIX dell'ultima volta che il file è stato modificato:
 
 	$time = Storage::lastModified('file1.jpg');
 
-<a name="storing-files"></a>
-### Storing Files
+<a name="salvare-file"></a>
+### Salvare File
 
-The `put` method may be used to store a file on disk. You may also pass a PHP `resource` to the `put` method, which will use Flysystem's underlying stream support. Using streams is greatly recommended when dealing with large files:
+Il metodo `put` può essere utilizzato per salvare un file sul un disco. Puoi anche passare una `resource` al metodo `put` per utilizzare il supporto stream dei Flysystem. L'utilizzo degli stream è consigliato quando si ha a che fare con file di grandi dimensioni:
 
 	Storage::put('file.jpg', $contents);
 
 	Storage::put('file.jpg', $resource);
 
-The `copy` method may be used to move an existing file to a new location on the disk:
+Il metodo `copy` può essere utilizzato per spostare un file esistente in una nuova locazione del disco:
 
 	Storage::copy('old/file1.jpg', 'new/file1.jpg');
 
-The `move` method may be used to move an existing file to a new location:
+Il metodo `copy` può essere utilizzato per spostare un file esistente in una nuova locazione del disco:
 
 	Storage::move('old/file1.jpg', 'new/file1.jpg');
 
-#### Prepending / Appending To Files
+#### Anteporre / Aggiungere Ad Un File
 
-The `prepend` and `append` methods allow you to easily insert content at the beginning or end of a file:
+I metodi `prepend` e `append`ti permettono di aggiungere contenuto all'inizio o alla fine di un file:
 
-	Storage::prepend('file.log', 'Prepended Text');
+	Storage::prepend('file.log', 'Testo da aggiungere in testa');
 
-	Storage::append('file.log', 'Appended Text');
+	Storage::append('file.log', 'Testo da aggiungere in coda');
 
-<a name="deleting-files"></a>
-### Deleting Files
+<a name="eliminare-file"></a>
+### Eliminare File
 
-The `delete` method accepts a single filename or an array of files to remove from the disk:
+Il metodo `delete` accetta come argomento il nome del file da cancellare oppure un array contenente più nomi da eliminare:
 
 	Storage::delete('file.jpg');
 
 	Storage::delete(['file1.jpg', 'file2.jpg']);
 
-<a name="directories"></a>
-### Directories
+<a name="cartelle"></a>
+### Cartelle
 
-#### Get All Files Within A Directory
+#### Recupera Tutti I File Di Una Cartella
 
-The `files` method returns an array of all of the files in a given directory. If you would like to retrieve a list of all files within a given directory including all sub-directories, you may use the `allFiles` method:
+Il metodo `files` restituisce un array contenente tutti i file presenti all'interno di una specifica cartella. Se vuoi recuperare un elenco di tutti i file presenti in una cartella e nelle sue sotto-cartelle devi utilizzare il metodo `allFiles`:
 
 	$files = Storage::files($directory);
 
 	$files = Storage::allFiles($directory);
 
-#### Get All Directories Within A Directory
+#### Recupera Tutte Le Cartelle Dentro Ad Una Cartella
 
-The `directories` method returns an array of all the directories within a given directory. Additionally, you may use the `allDirectories` method to get a list of all directories within a given directory and all of its sub-directories:
+Il metodo `directories` restituisce tutte le cartelle che sono presenti all'interno di una cartella specifica. Puoi utilizzare il metodo `allDirectories` per recuperare tutte le cartelle e le sotto-cartelle presenti in una cartella specificata:
 
 	$directories = Storage::directories($directory);
 
-	// Recursive...
+	// Ricorsiva...
 	$directories = Storage::allDirectories($directory);
 
-#### Create A Directory
+#### Creare Una Cartella
 
-The `makeDirectory` method will create the given directory, including any needed sub-directories:
+Il metodo `makeDirectory` creearà una cartella, incluse eventuali sotto-cartelle:
 
 	Storage::makeDirectory($directory);
 
-#### Delete A Directory
+#### Cancellare Una Cartella
 
-Finally, the `deleteDirectory` may be used to remove a directory, including all of its files, from the disk:
+Infine, puoi usare il metodo `deleteDirectory` per eliminare una cartella e tutti i file contenuti:
 
 	Storage::deleteDirectory($directory);
 
-<a name="custom-filesystems"></a>
-## Custom Filesystems
+<a name="filesystem-personalizzati"></a>
+## Filesystem Personalizzati
 
-Laravel's Flysystem integration provides drivers for several "drivers" out of the box; however, Flysystem is not limited to these and has adapters for many other storage systems. You can create a custom driver if you want to use one of these additional adapters in your Laravel application.
+L'integrazione di Laravel con Flysystem fornisce diversi "driver" senza bisogno di configurazione; tuttavia, Flysystem non è limitato a questi e possiede diversi adattori (adapters) per molti altri storage system. Puoi creare driver personalizzati se vuoi utilizzare uno di questi adapters all'interno della tua applicazione Laravel.
 
-In order to set up the custom filesystem you will need to create a [service provider](/docs/{{version}}/providers) such as `DropboxServiceProvider`. In the provider's `boot` method, you may use the `Storage` facade's `extend` method to define the custom driver:
+Per creare un filesystem personalizzato devi per prima cosa creare un [service provider](/docs/{{version}}/provider) come ad esempio `DropboxServiceProvider`. Nel metodo `boot` del nuovo provider puoi usare la facade `Storage` e il metodo `extend` per definire il tuo filesystem:
 
 	<?php namespace App\Providers;
 
@@ -206,6 +205,6 @@ In order to set up the custom filesystem you will need to create a [service prov
 		}
 	}
 
-The first argument of the `extend` method is the name of the driver and the second is a Closure that receives the `$app` and `$config` variables. The resolver Closure must return an instance of `League\Flysystem\Filesystem`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
+Il primo argomento del metodo `extend` è il nome del driver mentre il secondo argomento è una Closure che riceve le variabili `$app` e `$config`. La Closure dovrà restituire una istanza di `League\Flysystem\Filesystem`. La variabile `$config` conterrà i valori definiti in `config/filesystems.php` per il disco specificato.
 
-Once you have created the service provider to register the extension, you may use the `dropbox` driver in your `config/filesystem.php` configuration file.
+Una volta che hai creato il service provider e registrato l'estensione potrai utilizzare il driver `dropbox` nel file di configurazione `config/filesystem.php`.
