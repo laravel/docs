@@ -99,7 +99,7 @@
 <a name="pubsub"></a>
 ## 發佈與訂閱
 
-Laravel 也對 Redis 的 `publish` 及 `subscribe` 提供了方便的介面。這些 Redis 指令讓你可以監聽給定「頻道」的訊息。你可以從另一個應用程式發佈訊息至頻道，甚至使用另一個程式語言，讓應用程式或程序之間容易溝通。
+Laravel 也對 Redis 的 `publish` 及 `subscribe` 提供了方便的介面。這些 Redis 指令讓你可以監聽給定「頻道」的訊息。你可以從另一個應用程式發佈訊息至頻道，甚至使用另一種程式語言，讓應用程式或程序之間容易溝通。
 
 首先，讓我們透過 `Redis` 使用 `subscribe` 方法在一個頻道設定監聽器。我們會將方法呼叫放置於一個 [Artisan 指令](/docs/{{version}}/commands)中，因為呼叫 `subscribe` 方法會啟動一個長時間執行的程序：
 
