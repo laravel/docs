@@ -31,14 +31,14 @@
 
 `cluster` 選項會讓 Laravel 的 Redis 客戶端在所有 Redis 節點間執行客戶端分片（client-side sharding），讓你建立節點池，並因此擁有大量的可用記憶體。但是請注意，客戶端分片的節點不能執行容錯轉移；因此，此選項主要適用於可從另一台主要資料儲存庫取得的快取資料。
 
-你可以在你的 Redis 連線中定義一個 `options` 陣列值，讓你指定 Predis 的[客戶端選項](https://github.com/nrk/predis/wiki/Client-Options)。
+此外，你可以在你的 Redis 連線中定義一個 `options` 陣列值，讓你指定一套 Predis 的[客戶端選項](https://github.com/nrk/predis/wiki/Client-Options)。
 
 如果你的 Redis 伺服器需要認證，你可以在 Redis 伺服器的設定陣列裡加入 `password` 設定項目作為提供的密碼。
 
 > **注意：**如果你是透過 PECL 安裝 Redis PHP extension，則需要重新命名 `config/app.php` 檔案裡的 Redis 別名。
 
 <a name="basic-usage"></a>
-## 基本使用
+## 基本用法
 
 你可以透過呼叫 `Redis` [facade](/docs/{{version}}/facades) 的各種方法與 Redis 進行互動。`Redis` facade 支援動態方法，意思就是指你可以在該 facade 呼叫任何 [Redis 指令](http://redis.io/commands)，該指令會直接傳遞給 Redis。在本例中，我們會透過 `Redis` facade 的 `get` 方法來呼叫 Redis 的 `GET` 指令：
 
@@ -81,14 +81,14 @@
 
 	$redis = Redis::connection();
 
-你會得到一個使用 Redis 預設伺服器的實例。如果你沒有使用伺服器叢集，你可以在 `connection` 方法傳入定義在 Redis 設定檔的伺服器名稱，以連到特定伺服器：
+你會得到一個 Redis 預設伺服器的實例。如果你沒有使用伺服器叢集，你可以在 `connection` 方法傳入定義在 Redis 設定檔的伺服器名稱，以取得特定伺服器：
 
 	$redis = Redis::connection('other');
 
 <a name="pipelining-commands"></a>
 ### 管線化指令
 
-當你想要在單次操作中發送多個指令至伺服器時可以使用管線化。`pipeline` 方法接受一個參數：接收 Redis 實例的 `閉包`。你可以發送所有的指令至此 Redis 實例，它們都會執行於單次操作中：
+當你想要在單次操作中發送多個指令至伺服器時可以使用管線化。`pipeline` 方法接受一個參數：接收 Redis 實例的`閉包`。你可以發送所有的指令至此 Redis 實例，它們都會在單次操作中執行：
 
 	Redis::pipeline(function ($pipe) {
 		for ($i = 0; $i < 1000; $i++) {
@@ -99,9 +99,9 @@
 <a name="pubsub"></a>
 ## 發佈與訂閱
 
-Laravel 也對 Redis 的 `publish` 及 `subscribe` 提供了方便的介面。這些 Redis 指令讓你可以監聽給定「頻道」的訊息。你可以從任何應用程式發佈訊息至頻道，甚至使用另一個程式語言，讓應用程式或程序之間容易溝通。
+Laravel 也對 Redis 的 `publish` 及 `subscribe` 提供了方便的介面。這些 Redis 指令讓你可以監聽給定「頻道」的訊息。你可以從另一個應用程式發佈訊息至頻道，甚至使用另一個程式語言，讓應用程式或程序之間容易溝通。
 
-首先，讓我們透過 `Redis` 使用 `subscribe` 方法在一個頻道設定監聽器。我們會將方法呼叫放置於一個 [Artisan 指令](/docs/{{version}}/commands)中，因為呼叫 `subscribe` 方法是一個長時間執行的程序：
+首先，讓我們透過 `Redis` 使用 `subscribe` 方法在一個頻道設定監聽器。我們會將方法呼叫放置於一個 [Artisan 指令](/docs/{{version}}/commands)中，因為呼叫 `subscribe` 方法會啟動一個長時間執行的程序：
 
 	<?php
 
@@ -149,7 +149,7 @@ Laravel 也對 Redis 的 `publish` 及 `subscribe` 提供了方便的介面。�
 
 #### 萬用字元訂閱
 
-你可以使用 `psubscribe` 方法訂閱一個萬用字元頻道，這在所有頻道獲取所有訊息時相當有用。`$channel` 名稱會被傳遞至該方法提供的回呼`閉包`的第二個參數：
+你可以使用 `psubscribe` 方法訂閱一個萬用字元頻道，這在要在所有頻道獲取所有訊息時相當有用。`$channel` 名稱會被傳遞至該方法提供的回呼`閉包`的第二個參數：
 
 	Redis::psubscribe(['*'], function($message, $channel) {
 		echo $message;
