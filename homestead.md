@@ -5,7 +5,7 @@
 	- [前置動作](#first-steps)
 	- [配置 Homestead](#configuring-homestead)
 	- [啟動 Vagrant box](#launching-the-vagrant-box)
-	- [Per Project Installation](#per-project-installation)
+	- [根據專案分別安裝](#per-project-installation)
 - [常見用法](#daily-usage)
 	- [透過 SSH 連接](#connecting-via-ssh)
 	- [連接資料庫](#connecting-to-databases)
@@ -18,11 +18,11 @@
 
 Laravel 致力於讓 PHP 開發體驗更愉快，也包含你的本地開發環境。[Vagrant](http://vagrantup.com) 提供了一個簡單、優雅的方式來管理與供應虛擬機器。
 
-Laravel Homestead 是一個官方預載的 Vagrant「box」，提供你一個美好的開發環境，你不需要在你的本機電腦安裝 PHP、HHVM、網頁伺服器或任何伺服器軟體。不用擔心搞亂你的系統！Vagrant box 可以搞定一切。如果有什麼地方爛掉了，你可以在幾分鐘內快速的砍掉並重建虛擬機器。
+Laravel Homestead 是一個官方預載的 Vagrant「box」，提供你一個美好的開發環境，你不需要在你的本機電腦安裝 PHP、HHVM、網頁伺服器或任何伺服器軟體。不用擔心搞亂你的系統！Vagrant box 可以搞定一切。如果有什麼地方爛掉了，你可以在幾分鐘內快速的砍掉並重建虛擬機器！
 
-Homestead 可以在任何 Windows、Mac 或 Linux 上面運行，裡面包含了 Nginx 網頁伺服器、PHP 5.6、MySQL、Postgres、Redis、Memcached 還有所有你要開發精彩的 Laravel 應用程式所需的軟體。
+Homestead 可以在任何 Windows、Mac 或 Linux 上面運行，裡面包含了 Nginx 網頁伺服器、PHP 5.6、MySQL、Postgres、Redis、Memcached、Node，以及所有你在使用 Laravel 開發各種精彩的應用程式時所需要的軟體。
 
-> **附註：** 如果您是 Windows 的使用者，您可能需要啟用硬體虛擬化（VT-x）。通常需要透過 BIOS 來啟用它。
+> **附註：** 如果您是 Windows 的使用者，您可能需要啟用硬體虛擬化（VT-x）。這通常需要透過 BIOS 來啟用它。
 
 Homestead 目前是建置且測試於 Vagrant 1.7。
 
@@ -64,7 +64,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 #### 手動克隆 Homestead 資源庫
 
-你可以簡單地透過手動克隆資源庫的方式來安裝 Homestead。建議可將資源庫複製至你的 "home" 目錄中的 `Homestead` 資料夾，如此一來 Homestead box 將能提供主機服務給你所有的 Laravel 專案：
+你可以簡單地透過手動克隆資源庫的方式來安裝 Homestead。建議可將資源庫克隆至你的 "home" 目錄中的 `Homestead` 資料夾，如此一來 Homestead box 將能提供主機服務給你所有的 Laravel 專案：
 
 	git clone https://github.com/laravel/homestead.git Homestead
 
@@ -77,7 +77,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 #### 設定你的 Provider
 
-在 `Homestead.yaml` 檔案中的 `provider` 參數是用來設定你想要使用哪一個 Vagrant provider：  `virtualbox` 或 `vmware_fusion`。你可以根據你的喜好來決定 provider：
+在 `Homestead.yaml` 檔案中的 `provider` 參數是用來設定你想要使用哪一個 Vagrant provider： `virtualbox` 或 `vmware_fusion` 。你可以根據你的喜好來決定 provider：
 
 	provider: virtualbox
 
@@ -87,9 +87,9 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 	ssh-keygen -t rsa -C "you@homestead"
 
-在 Windows 下，你需要安裝 [Git](http://git-scm.com/) 並且使用包含在 Git 裏的 `Git Bash` 來執行上述的指令。另外你也可以使用 [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) 和 [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)。
+在 Windows 下，你需要安裝 [Git](http://git-scm.com/) 並且使用包含在 Git 裡的 `Git Bash` 來執行上述的指令。另外你也可以使用 [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) 和 [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)。
 
-一旦你創建了一組 SSH 金鑰，記得在你的 `Homestead.yaml` 檔案中的 `authorize` 屬性設定 public 金鑰的路徑。
+一旦你創建了一組 SSH 金鑰，記得在你的 `Homestead.yaml` 檔案中的 `authorize` 屬性去設定 public 金鑰的路徑。
 
 #### 設定共享資料夾
 
@@ -114,7 +114,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 	    - map: homestead.app
 	      to: /home/vagrant/Code/Laravel/public
 
-你可以將 `hhvm` 屬性設定為 `true` 讓任何一個網站改用 [HHVM](http://hhvm.com)：
+你可以將 `hhvm` 屬性設定為 `true` 讓 Homestead 裡面的任一個網站改用 [HHVM](http://hhvm.com)：
 
 	sites:
 	    - map: homestead.app
@@ -134,26 +134,26 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 	http://homestead.app
 
 <a name="launching-the-vagrant-box"></a>
-### 啟動 Vagrant Box
+### 啟動 Vagrant box
 
-當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機裡進入你的 Homestead 目錄並執行 `vagrant up` 指令。Vagrant 就會將虛擬主機啟動並自動設定你的共享資料夾和 Nginx 網站們。
+當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機裡進入你的 Homestead 目錄並執行 `vagrant up` 指令。Vagrant 就會將虛擬主機啟動並自動設定你的共享資料夾和 Nginx 網站。
 
 如果要移除虛擬機器，可以使用 `vagrant destroy --force` 指令。
 
 <a name="per-project-installation"></a>
-### Per Project Installation
+### 根據專案分別安裝
 
-Instead of installing Homestead globally and sharing the same Homestead box across all of your projects, you may instead configure a Homestead instance for each specific project. Installing Homestead per project may be beneficial if you wish to ship a `Vagrantfile` directly within your project, allowing others working on the project to simply `vagrant up`.
+有別於將 Homestead 安裝成全域環境且讓所有的專案共用同一個 Homestead box，你可以各別為每一個專案獨立配置一個 Homstead。如果你希望直接在專案裡傳遞 `Vagrantfile`，那麼替每個專案安裝 Homestead 即是你可以考慮的方式，這將會允許其他人可以簡單地執行 `vagrant up` 即能開始工作於此專案。
 
-To install Homestead directly into your project, require it using Composer:
+你可以使用 Composer 將 Homestead 直接安裝至你的專案中：
 
 	composer require laravel/homestead
 
-Once Homestead has been installed, use the `make` command to generate the `Vagrantfile` and `Homestead.yaml` file in your project root. The `make` command will automatically configure the `sites` and `folders` directives in the `Homestead.yaml` file:
+一旦 Homestead 安裝完畢，你可以使用 `make` 指令產生 `Vagrantfile` 與 `Homestead.yaml` 存放於專案的根目錄。這個 `make` 指令將會自動配置 `sites` 及 `folders` 於 `Homestead.yaml` ：
 
 	php vendor/bin/homestead make
 
-Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.app` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
+接著，執行在終端機中執行 `vagrant up` 並透過網頁瀏覽器造訪 `http://homestead.app`。再次提醒，你仍然需要在 `/etc/hosts` 裡設定 `homestead.app` 或其他想要使用的網域。
 
 <a name="daily-usage"></a>
 ## 常見用法
@@ -210,7 +210,7 @@ Next, run the `vagrant up` command in your terminal and access your project at `
 
 由 SensioLabs 推出的 [Blackfire 分析器](https://blackfire.io) 能協助你自動收集程式運行時的相關數據，像是 RAM、CPU time 及 disk I/O。若想在 Homestead 中替你的應用程式使用這個分析器是非常容易的。
 
-在 Homestead box 中同樣已經預裝好所有需要的套件，很簡單地你只需要在 `Homestead.yaml` 檔案中設定你的 Blackfire **Server** ID 及 token 即可：
+在 Homestead box 中同樣已經預裝好所有需要的套件，很簡單地你只需要在 `Homestead.yaml` 檔案中設定你的 Blackfire **Server ID 及 token 即可：
 
 	blackfire:
 	    - id: your-server-id
@@ -218,4 +218,4 @@ Next, run the `vagrant up` command in your terminal and access your project at `
 	      client-id: your-client-id
 	      client-token: your-client-token
 
-一旦你設定完 Blackfire 的認證，在你的 Homestead 目錄下執行 `vagrant provision` 來重新配置 box。當然，請務必閱讀 [Blackfire 使用文件](https://blackfire.io/getting-started) 來學習如何透過在你的網頁瀏覽器上安裝 Blackfire 擴充套件。
+一旦你設定完 Blackfire 的認證，在你的 Homestead 目錄下執行 `vagrant provision` 來重新配置 box。當然，請務必閱讀 [Blackfire 使用文件](https://blackfire.io/getting-started) 來學習如何在你的網頁瀏覽器上安裝 Blackfire 擴充套件。
