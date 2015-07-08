@@ -1,4 +1,4 @@
-# Encryption
+# 加密
 
 - [設定](#configuration)
 - [基本使用](#basic-usage)
