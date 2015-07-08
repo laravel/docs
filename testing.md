@@ -227,7 +227,7 @@ Laravel 提供了幾個輔助方法在測試時使用 Session。首先，你需�
 <a name="disabling-middleware"></a>
 ### 停用中介層
 
-測試應用程式時，你會發現，在某些測試中停用[中介層](/docs/{{version}}/middleware)是很方便的。讓你可以隔離任何中介層的影響，來測試路由及控制器。Laravel 包含一個簡潔的 `WithoutMiddlewate` trait，你能夠使用它自動在測試類別中停用所有的中介層：
+測試應用程式時，你會發現，在某些測試中停用[中介層](/docs/{{version}}/middleware)是很方便的。讓你可以隔離任何中介層的影響，來測試路由及控制器。Laravel 包含一個簡潔的 `WithoutMiddleware` trait，你能夠使用它自動在測試類別中停用所有的中介層：
 
 	<?php
 
