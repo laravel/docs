@@ -774,3 +774,10 @@ You may also use the `sync` method to construct many-to-many associations. The `
 You may also pass additional intermediate table values with the IDs:
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
+
+The `sync` method accepts a second parameter that is a boolean.
+
+By default the boolean is set to true which removes all records before adding your array. Setting the boolean to `false` retains all previous records and adds the array records.
+
+    $user->roles()->sync([1,2, 3], false);
+
