@@ -189,7 +189,7 @@ You may want to publish groups of package assets and resources separately. For i
         ], 'config');
 
         $this->publishes([
-            __DIR__.'/../database/migrations/' => database_path('/migrations')
+            __DIR__.'/../database/migrations/' => database_path('migrations')
         ], 'migrations');
     }
 
