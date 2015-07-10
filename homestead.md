@@ -198,11 +198,11 @@ By default, the following ports are forwarded to your Homestead environment:
 
 By default, Redis is listening in its normal port (6379), so you can just connect to Homestead's IP address:
 
-- redis-cli -h 192.168.10.10
+    redis-cli -h 192.168.10.10
 
 If you have domain name set up in your local /etc/hosts, you can use it instead:
 
-- redis-cli -h myapp.dev
+    redis-cli -h myapp.dev
 
 #### Forwarding Additional Ports
 
