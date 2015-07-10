@@ -12,27 +12,27 @@
 	- [批量賦值](#mass-assignment)
 - [刪除模型](#deleting-models)
 	- [軟刪除](#soft-deleting)
-	- [查詢軟刪除的模型](#querying-soft-deleted-models)
+	- [查詢被軟刪除的模型](#querying-soft-deleted-models)
 - [查詢範圍](#query-scopes)
 - [事件](#events)
 
 <a name="introduction"></a>
 ## 介紹
 
-Laravel 提供了漂亮、簡潔的 ActiveRecord 實作來和資料庫互動。每個資料庫表會和一個對應的「模型」互動。你可以透過模型搜尋資料表內的資料，以及新增記錄到資料表中。
+Laravel 包含了 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和資料庫互動。每個資料表有一個被用來跟表互動的對應「模型」。你可以透過模型查詢資料表內的資料，以及新增記錄到資料表中。
 
-在開始之前，確認你的資料庫連結設定在 `config/database.php` 檔案內。更多連結資料庫的設定資訊，請參考 [資料庫設定](/docs/{{version}}/database#configuration)。
+在開始之前，確認你的資料庫連結設定在 `config/database.php` 檔案內。更多資料庫的設定資訊，請參考[資料庫設定](/docs/{{version}}/database#configuration)。
 
 <a name="defining-models"></a>
 ## 定義模型
 
-開始之前，讓我們先建立一個 Eloquent 模型。模型通常放在 `app` 目錄，你可以自由的把他們放在任何地方，可以透過你的 `composer.json` 自動載入。所有的 Eloquent 模型都繼承 `Illuminate\Database\Eloquent\Model` 類別。
+開始之前，讓我們先建立一個 Eloquent 模型。模型通常放在 `app` 目錄，你可以自由的把他們放在任何可以透過你的 `composer.json` 自動載入的地方。所有的 Eloquent 模型都繼承 `Illuminate\Database\Eloquent\Model` 類別。
 
-用最簡單的方法來建立模組實例，透過 [Artisan command](/docs/{{version}}/artisan) 下的 `make:model` 指令：
+建立模型實例的最簡單的方法是使用，`make:model` [Artisan 指令](/docs/{{version}}/artisan)：
 
 	php artisan make:model User
 
-當你產生一個模型時，假設你想要產生一個 [資料庫遷移](/docs/{{version}}/schema#database-migrations) ，可以使用 `--migration` 或者 `-m` 的選項：
+當你產生一個模型時，假設你想要產生一個[資料庫遷移](/docs/{{version}}/schema#database-migrations) ，可以使用 `--migration`：
 
 	php artisan make:model User --migration
 
@@ -41,7 +41,7 @@ Laravel 提供了漂亮、簡潔的 ActiveRecord 實作來和資料庫互動。�
 <a name="eloquent-model-conventions"></a>
 ### Eloquent 模型規範
 
-現在，讓我們來看一個 `Flight` 模型類別的例子，我們可以從 `flights` 資料表來取得或是儲存資訊：
+現在，讓我們來看一個 `Flight` 模型類別的例子，我們會用它來從 `flights` 資料表取得與儲存資訊：
 
 	<?php
 
@@ -152,7 +152,7 @@ Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定
 		echo $flight->name;
 	}
 
-#### 增加額外的規範
+#### 增加額外的限制
 
 Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每個 Eloquent 模型可以當作一個 [查詢構造器](/docs/{{version}}/queries)，所以你可以在查詢中增加規則，然後透過 `get` 方法來取得結果：
 
@@ -279,7 +279,6 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 
 你也可以在使用 `create` 方法來儲存新的模型。新增的模型實例會從你的方法中來回傳。然而，在這樣做之前，你需要指定一個 `fillable` 或 `guarded` 屬性在你的模型中，可以保護所有 Eloquent 模型預防被批量賦值（Mass-Assignment）。
 
-
 之所以會發生批量賦值（Mass-Assignment）的問題，是因為使用者透過 HTTP 請求傳入非法的參數，而且你沒想到這些參數可以更改你資料庫內的欄位。例如，惡意使用者可能會發送 `is_admin` 參數通過 HTTP 請求，然後對映到你模型中的 `create` 方法，這樣就可以讓使用者將自己升級為管理者了。
 
 所以，在開始之前，你應該定義那些模型屬性是你希望可以被批量賦值的。你可以在你的模型中使用 `$fillable` 屬性。例如，我們讓 `Flight` 模型中的 `name` 屬性給予批量賦值：
@@ -400,7 +399,7 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 	}
 
 <a name="querying-soft-deleted-models"></a>
-### 查詢軟刪除的模型
+### 查詢被軟刪除的模型
 
 #### 包含軟刪除的模型
 
