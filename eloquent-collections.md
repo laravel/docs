@@ -11,22 +11,22 @@ All multi-result sets returned by Eloquent are an instance of the `Illuminate\Da
 
 Of course, all collections also serve as iterators, allowing you to loop over them as if they were simple PHP arrays:
 
-	$users = App\User::where('active', 1)->get();
+    $users = App\User::where('active', 1)->get();
 
-	foreach ($users as $user) {
-		echo $user->name;
-	}
+    foreach ($users as $user) {
+        echo $user->name;
+    }
 
 However, collections are much more powerful than arrays and expose a variety of map / reduce operations using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:
 
-	$users = App\User::where('active', 1)->get();
+    $users = App\User::where('active', 1)->get();
 
-	$names = $users->reject(function ($user) {
-		return $user->active === false;
-	})
-	->map(function ($user) {
-		return $user->name;
-	});
+    $names = $users->reject(function ($user) {
+        return $user->active === false;
+    })
+    ->map(function ($user) {
+        return $user->name;
+    });
 
 <a name="available-methods"></a>
 ## Available Methods
@@ -36,14 +36,14 @@ However, collections are much more powerful than arrays and expose a variety of 
 All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections) object; therefore, they inherit all of the powerful methods provided by the base collection class:
 
 <style>
-	#collection-method-list > p {
-		column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-		column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
-	}
+    #collection-method-list > p {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
+    }
 
-	#collection-method-list a {
-		display: block;
-	}
+    #collection-method-list a {
+        display: block;
+    }
 </style>
 
 <div id="collection-method-list" markdown="1">
@@ -106,25 +106,25 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 
 If you need to use a custom `Collection` object with your own extension methods, you may override the `newCollection` method on your model:
 
-	<?php
+    <?php
 
-	namespace App;
+    namespace App;
 
-	use App\CustomCollection;
-	use Illuminate\Database\Eloquent\Model;
+    use App\CustomCollection;
+    use Illuminate\Database\Eloquent\Model;
 
-	class User extends Model
-	{
-		/**
-		 * Create a new Eloquent Collection instance.
-		 *
-		 * @param  array  $models
-		 * @return \Illuminate\Database\Eloquent\Collection
-		 */
-		public function newCollection(array $models = [])
-		{
-			return new CustomCollection($models);
-		}
-	}
+    class User extends Model
+    {
+        /**
+         * Create a new Eloquent Collection instance.
+         *
+         * @param  array  $models
+         * @return \Illuminate\Database\Eloquent\Collection
+         */
+        public function newCollection(array $models = [])
+        {
+            return new CustomCollection($models);
+        }
+    }
 
 Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent returns a `Collection` instance of that model. If you would like to use a custom collection for every model in your application, you should override the `newCollection` method on a model base class that is extended by all of your models.

@@ -36,12 +36,12 @@ Laravel 的 [facades](/docs/{{version}}/facades) 提供一個簡單的方法來�
 	class Repository
 	{
 		/**
-		 * 快取功能.
+		 * 快取功能。
 		 */
 		protected $cache;
 
 		/**
-		 * 建立一個新的倉庫實體
+		 * 建立一個新的倉庫實體。
 		 *
 		 * @param  \SomePackage\Cache\Memcached  $cache
 		 * @return void
@@ -52,14 +52,14 @@ Laravel 的 [facades](/docs/{{version}}/facades) 提供一個簡單的方法來�
 		}
 
 		/**
-		 * 藉由 ID 取得訂單資訊
+		 * 藉由 ID 取得訂單資訊。
 		 *
 		 * @param  int  $id
 		 * @return Order
 		 */
 		public function find($id)
 		{
-			if ($this->cache->has($id))	{
+			if ($this->cache->has($id))    {
 				//
 			}
 		}
