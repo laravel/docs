@@ -4,15 +4,15 @@
 - [Installation & Setup](#installation)
 - [Running Elixir](#running-elixir)
 - [Working With Stylesheets](#working-with-stylesheets)
-	- [Less](#less)
-	- [Sass](#sass)
-	- [Plain CSS](#plain-css)
-	- [Source Maps](#css-source-maps)
+    - [Less](#less)
+    - [Sass](#sass)
+    - [Plain CSS](#plain-css)
+    - [Source Maps](#css-source-maps)
 - [Working With Scripts](#working-with-scripts)
-	- [CoffeeScript](#coffeescript)
-	- [Browserify](#browserify)
-	- [Babel](#babel)
-	- [Scripts](#javascript)
+    - [CoffeeScript](#coffeescript)
+    - [Browserify](#browserify)
+    - [Babel](#babel)
+    - [Scripts](#javascript)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [Calling Existing Gulp Tasks](#calling-existing-gulp-tasks)
 - [Writing Elixir Extensions](#writing-elixir-extensions)
@@ -24,8 +24,8 @@ Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gul
 
 ```javascript
 elixir(function(mix) {
-	mix.sass('app.scss')
-	   .coffee('app.coffee');
+    mix.sass('app.scss')
+       .coffee('app.coffee');
 });
 ```
 
@@ -52,28 +52,28 @@ Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package:
 
 The only remaining step is to install Elixir! Within a fresh installation of Laravel, you'll find a `package.json` file in the root. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
 
-	npm install
+    npm install
 
 If you are developing on a Windows system, you may need to run the `npm install` command with the `--no-bin-links` switch enabled:
 
-	npm install --no-bin-links
+    npm install --no-bin-links
 
 <a name="running-elixir"></a>
 ## Running Elixir
 
 Elixir is built on top of [Gulp](http://gulpjs.com), so to run your Elixir tasks you only need to run the `gulp` command in your terminal. Adding the `--production` flag to the command will instruct Elixir to minify your CSS and JavaScript files:
 
-	// Run all tasks...
-	gulp
+    // Run all tasks...
+    gulp
 
-	// Run all tasks and minify all CSS and JavaScript...
-	gulp --production
+    // Run all tasks and minify all CSS and JavaScript...
+    gulp --production
 
 #### Watching Assets For Changes
 
 Since it is inconvenient to run the `gulp` command on your terminal after every change to your assets, you may use the `gulp watch` command. This command will continue running in your terminal and watch your assets for any changes. When changes occur, new files will automatically be compiled:
 
-	gulp watch
+    gulp watch
 
 <a name="working-with-stylesheets"></a>
 ## Working With Stylesheets
@@ -87,7 +87,7 @@ To compile [Less](http://lesscss.org/) into CSS, you may use the `less` method. 
 
 ```javascript
 elixir(function(mix) {
-	mix.less("app.less");
+    mix.less("app.less");
 });
 ```
 
@@ -95,10 +95,10 @@ You may also combine multiple Less files into a single CSS file. Again, the resu
 
 ```javascript
 elixir(function(mix) {
-	mix.less([
-		"app.less",
-		"controllers.less"
-	], "public/assets/css");
+    mix.less([
+        "app.less",
+        "controllers.less"
+    ], "public/assets/css");
 });
 ```
 
@@ -106,12 +106,12 @@ If you wish to customize the output location of the compiled CSS, you may pass a
 
 ```javascript
 elixir(function(mix) {
-	mix.less('app.less', 'public/stylesheets');
+    mix.less('app.less', 'public/stylesheets');
 });
 
 // Specifying a specific output filename...
 elixir(function(mix) {
-	mix.less('app.less', 'public/stylesheets/style.css');
+    mix.less('app.less', 'public/stylesheets/style.css');
 });
 ```
 
@@ -122,7 +122,7 @@ The `sass` method allows you to compile [Sass](http://sass-lang.com/) into CSS. 
 
 ```javascript
 elixir(function(mix) {
-	mix.sass("app.scss");
+    mix.sass("app.scss");
 });
 ```
 
@@ -130,10 +130,10 @@ Again, like the `less` method, you may compile multiple scripts into a single CS
 
 ```javascript
 elixir(function(mix) {
-	mix.sass([
-		"app.scss",
-		"controllers.scss"
-	], "public/assets/css");
+    mix.sass([
+        "app.scss",
+        "controllers.scss"
+    ], "public/assets/css");
 });
 ```
 
@@ -143,7 +143,7 @@ Under the hood, Elixir uses the LibSass library for compilation. In some instanc
 
 ```javascript
 elixir(function(mix) {
-	mix.rubySass("app.scss");
+    mix.rubySass("app.scss");
 });
 ```
 
@@ -154,10 +154,10 @@ If you would just like to combine some plain CSS stylesheets into a single file,
 
 ```javascript
 elixir(function(mix) {
-	mix.styles([
-		"normalize.css",
-		"main.css"
-	]);
+    mix.styles([
+        "normalize.css",
+        "main.css"
+    ]);
 });
 ```
 
@@ -165,10 +165,10 @@ Of course, you may also output the resulting file to a custom location by passin
 
 ```javascript
 elixir(function(mix) {
-	mix.styles([
-		"normalize.css",
-		"main.css"
-	], "public/assets/css");
+    mix.styles([
+        "normalize.css",
+        "main.css"
+    ], "public/assets/css");
 });
 ```
 
@@ -183,7 +183,7 @@ If you do not want source maps generated for your CSS, you may disable them usin
 elixir.config.sourcemaps = false;
 
 elixir(function(mix) {
-	mix.sass("app.scss");
+    mix.sass("app.scss");
 });
 ```
 
@@ -199,7 +199,7 @@ The `coffee` method may be used to compile [CoffeeScript](http://coffeescript.or
 
 ```javascript
 elixir(function(mix) {
-	mix.coffee(['app.coffee', 'controllers.coffee']);
+    mix.coffee(['app.coffee', 'controllers.coffee']);
 });
 ```
 
@@ -212,7 +212,7 @@ This task assumes that your scripts are stored in `resources/assets/js` and will
 
 ```javascript
 elixir(function(mix) {
-	mix.browserify('index.js');
+    mix.browserify('index.js');
 });
 ```
 
@@ -223,7 +223,7 @@ The `babel` method may be used to compile [EcmaScript 6 and 7](https://babeljs.i
 
 ```javascript
 elixir(function(mix) {
-	mix.babel([
+    mix.babel([
                 "order.js",
                 "product.js"
         ]);
@@ -242,10 +242,10 @@ The `scripts` method assumes all paths are relative to the `resources/assets/js`
 
 ```javascript
 elixir(function(mix) {
-	mix.scripts([
-		"jquery.js",
-		"app.js"
-	]);
+    mix.scripts([
+        "jquery.js",
+        "app.js"
+    ]);
 });
 ```
 
@@ -262,7 +262,7 @@ If you need to combine all of the scripts in a given directory, you may use the 
 
 ```javascript
 elixir(function(mix) {
-	mix.scriptsIn("public/js/some/directory");
+    mix.scriptsIn("public/js/some/directory");
 });
 ```
 
@@ -275,13 +275,13 @@ The `version` method accepts a file name relative to the `public` directory, and
 
 ```javascript
 elixir(function(mix) {
-	mix.version("css/all.css");
+    mix.version("css/all.css");
 });
 ```
 
 After generating the versioned file, you may use Laravel's global `elixir` PHP helper function within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `elixir` function will automatically determine the name of the hashed file:
 
-	<link rel="stylesheet" href="{{ elixir('css/all.css') }}">
+    <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 
 #### Versioning Multiple Files
 
@@ -289,15 +289,15 @@ You may pass an array to the `version` method to version multiple files:
 
 ```javascript
 elixir(function(mix) {
-	mix.version(["css/all.css", "js/app.js"]);
+    mix.version(["css/all.css", "js/app.js"]);
 });
 ```
 
 Once the files have been versioned, you may use the `elixir` helper function to generate links to the proper hashed files. Remember, you only need to pass the name of the un-hashed file to the `elixir` helper function. The helper will use the un-hashed name to determine the current hashed version of the file:
 
-	<link rel="stylesheet" href="{{ elixir('css/all.css') }}">
+    <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 
-	<script src="{{ elixir('js/app.js') }}"></script>
+    <script src="{{ elixir('js/app.js') }}"></script>
 
 <a name="calling-existing-gulp-tasks"></a>
 ## Calling Existing Gulp Tasks
@@ -306,9 +306,9 @@ If you need to call an existing Gulp task from Elixir, you may use the `task` me
 
 ```javascript
 gulp.task("speak", function() {
-	var message = "Tea...Earl Grey...Hot";
+    var message = "Tea...Earl Grey...Hot";
 
-	gulp.src("").pipe(shell("say " + message));
+    gulp.src("").pipe(shell("say " + message));
 });
 ```
 
@@ -344,11 +344,11 @@ var elixir = require("laravel-elixir");
 
 elixir.extend("speak", function(message) {
 
-	gulp.task("speak", function() {
-		gulp.src("").pipe(shell("say " + message));
-	});
+    gulp.task("speak", function() {
+        gulp.src("").pipe(shell("say " + message));
+    });
 
-	return this.queueTask("speak");
+    return this.queueTask("speak");
 
  });
 ```
@@ -363,7 +363,7 @@ var elixir = require("laravel-elixir");
 require("./elixir-extensions")
 
 elixir(function(mix) {
-	mix.speak("Tea, Earl Grey, Hot");
+    mix.speak("Tea, Earl Grey, Hot");
 });
 ```
 
