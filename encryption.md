@@ -1,21 +1,23 @@
 # Encryption
 
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
+- [Configurazione](#configurazione)
+- [Uso Base](#uso-base)
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-Before using Laravel's encrypter, you should set the `key` option of your `config/app.php` configuration file to a 32 character, random string. If this value is not properly set, all values encrypted by Laravel will be insecure.
+Prima di usare l'encrypter di Laravel, ricorda di impostare l'opzione _key_ del file `config/app.php` con una stringa di 32 caratteri. Meglio se a caso. 
 
-<a name="basic-usage"></a>
-## Basic Usage
+> Nota: se non imposti tale valore, tutti i valori criptati dalla tua applicazione **non saranno sicuri**.
 
-#### Encrypting A Value
+<a name="uso-base"></a>
+## Uso Base
 
-You may encrypt a value using the `Crypt` [facade](/docs/{{version}}/facades). All encrypted values are encrypted using the OpenSSL and the `AES-128-CBC` cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC) to detect any modifications to the encrypted string.
+#### Crittare un Valore
 
-For example, we may use the `encrypt` method to encrypt a secret and store it on an [Eloquent model](/docs/{{version}}/eloquent):
+Puoi crittare un valore usando la [facade](/docs/5.1/facade) apposita `Crypt`. Tutti i valori vengono trattati usando OpenSSL ed il cipher `AES-128-CBC`. Tutti i valori crittati, inoltre, vengono "firmati" con un MAC per individuare ogni tentativo di modifica del valore.
+
+Per crittare un valore puoi usare il metodo `encrypt`:
 
 	<?php namespace App\Http\Controllers;
 
@@ -42,9 +44,11 @@ For example, we may use the `encrypt` method to encrypt a secret and store it on
 		}
 	}
 
-#### Decrypting A Value
+In questo caso, abbiamo preso il valore di _$request->secret_ e lo stiamo memorizzando, crittato, in un'istanza di _User_.
 
-Of course, you may decrypt values using the `decrypt` method on the `Crypt` facade. If the value can not be properly decrypted, such as when the MAC is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:
+#### Decrittare un Valore
+
+Chiaramente è possibile anche l'operazione inversa: in questo caso, il metodo da usare sarà `decrypt` sempre della facade `Crypt`. In caso di problemi durante l'operazione, verrà lanciata un'eccezione di tipo `Illuminate\Contracts\Encryption\DecryptException`:
 
 	use Illuminate\Contracts\Encryption\DecryptException;
 
