@@ -48,10 +48,9 @@ Laravel 的結構生成器「Schema」，[facade](/docs/{{version}}/facades) 提
 「up」方法是在資料庫內添加新的表、欄位、或索引，而「down」方法則是簡單的反向執行「up」方法。
 
 在這兩個方法您必需使用 Laravel 建立出來的類別去創建跟修改表。
-要瞭解所有的方法，可在結構生成器「Schema」內查看[check out its documentation](#creating-tables)
 在此您可以使用這兩種方去讓 Laravel schema 結構生成器自動的創建或修改表。
-要瞭解所有的方法，可在結構生成器「Schema」內查看[check out its documentation](#creating-tables)
 例如 :  我們來產生一個 遷移 創建 `flights` 表 : 
+要瞭解所有的方法，可在結構生成器「Schema」內查看[check out its documentation](#creating-tables)
 
 	<?php
 
@@ -98,7 +97,7 @@ Laravel 的結構生成器「Schema」，[facade](/docs/{{version}}/facades) 提
 
 #### 正式機上強制運行遷移
 一些遷移的操作是有破壞性的，意思是它們可能會導致您失去資料。
-為了保護您在資料庫內的資訊，在正式機上執行這些命令之前將會提示您進行確認。
+為了保護您在資料庫內的資料，在正式機上執行這些命令之前將會提示您進行確認。
 要執行命令而沒有任何的提示的狀況下運行，可在後面加入 `--force` : 
 
 	php artisan migrate --force
