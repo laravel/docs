@@ -41,12 +41,12 @@ Laravel 原始碼託管在 Github 上面，並且每個 Laravel 的專案都有�
 
 **主要的**新功能應該都發送到 `master` 分支，它包含下一版的 Laravel 釋出內容。
 
-如果你不確定你的功能是主要的還是次要的，請在 `#laravel-dev` IRC 頻道 (Freenode) 詢問 Taylor Otwell。
+如果不確定你的功能是主要的還是次要的，請在 `#laravel-dev` IRC 頻道 (Freenode) 詢問 Taylor Otwell。
 
 <a name="security-vulnerabilities"></a>
 ## 安全漏洞
 
-如果你發現 Laravel 的安全漏洞，請寄電子郵件到 <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>給 Taylor Otwell。所有的安全漏洞，將會及時予以處理。
+如果你發現 Laravel 的安全漏洞，請寄電子郵件到 <a href="mailto:taylor@laravel.com">taylor@laravel.com</a> 給 Taylor Otwell。所有的安全漏洞，將會及時予以處理。
 
 <a name="coding-style"></a>
 ## 編碼風格
