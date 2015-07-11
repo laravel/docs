@@ -1,4 +1,4 @@
-# Database: Migrations
+# 資料庫: 遷移
 
 - [簡述](#introduction)
 - [產生 遷移](#generating-migrations)
