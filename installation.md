@@ -2,11 +2,11 @@
 
 - [安裝](#installation)
 - [設定](#configuration)
-	- [基本設定](#basic-configuration)
-	- [環境設定](#environment-configuration)
-	- [設定快取](#configuration-caching)
-	- [取得設定值](#accessing-configuration-values)
-	- [命名你的應用程式](#naming-your-application)
+    - [基本設定](#basic-configuration)
+    - [環境設定](#environment-configuration)
+    - [設定快取](#configuration-caching)
+    - [取得設定值](#accessing-configuration-values)
+    - [命名你的應用程式](#naming-your-application)
 - [維護模式](#maintenance-mode)
 
 <a name="installation"></a>
@@ -33,19 +33,19 @@ Laravel 使用 [Composer](http://getcomposer.org) 來管理相依性。所以，
 
 首先，使用 Composer 下載 Laravel 安裝包：
 
-	composer global require "laravel/installer=~1.1"
+    composer global require "laravel/installer=~1.1"
 
 請確定把 `~/.composer/vendor/bin` 路徑放置於你的 PATH 裡，這樣你的系統才能找到 `laravel` 執行檔。
 
 一旦安裝完成後，就可以使用 `laravel new` 指令在指定的目錄建立一份新安裝的 Laravel 專案，例如：`laravel new blog` 將會在當前目錄下建立一個叫 `blog` 的目錄，此目錄裡面存放著新安裝的 Laravel 和相依程式碼。這個安裝方法比透過 Composer 安裝速度快上許多：
 
-	laravel new blog
+    laravel new blog
 
 #### 透過 Composer Create-Project
 
 你也可以透過 Composer 在命令列執行 `create-project` 指令來安裝 Laravel：
 
-	composer create-project laravel/laravel --prefer-dist
+    composer create-project laravel/laravel --prefer-dist
 
 <a name="configuration"></a>
 ## 設定
@@ -84,20 +84,20 @@ Laravel 框架透過 `public/.htaccess` 檔案來讓網址中不需要 `index.ph
 
 假設 Laravel 附帶的 `.htaccess` 檔在 Apache 無法作用的話，請嘗試下方的做法：
 
-	Options +FollowSymLinks
-	RewriteEngine On
+    Options +FollowSymLinks
+    RewriteEngine On
 
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^ index.php [L]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
 
 **Nginx**
 
 若使用 Nginx ，可以在你的網站設定中增加下面的設定，以開啟「優雅連結」：
 
-	location / {
-		try_files $uri $uri/ /index.php?$query_string;
-	}
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
 
 當然，如果你使用 [Homestead](/docs/{{version}}/homestead) 的話，優雅鏈結會自動的幫你設定完成。
 
@@ -118,21 +118,21 @@ Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP
 
 應用程式的當前環境是由 `.env` 檔案中的 `APP_ENV` 變數所決定。你可以透過 `App` [facade](/docs/{{version}}/facades) 的 `environment` 方法取得該值：
 
-	$environment = App::environment();
+    $environment = App::environment();
 
 你也可以傳遞參數至 `environment` 方法中，來確認目前的環境是否與參數相符合：
 
-	if (App::environment('local')) {
-		// 環境是 local
-	}
+    if (App::environment('local')) {
+        // 環境是 local
+    }
 
-	if (App::environment('local', 'staging')) {
-		// 環境是 local 或 staging...
-	}
+    if (App::environment('local', 'staging')) {
+        // 環境是 local 或 staging...
+    }
 
 也能透過 `app` 輔助方法取得應用程式實例：
 
-	$environment = app()->environment();
+    $environment = app()->environment();
 
 <a name="configuration-caching"></a>
 ### 設定快取
@@ -146,11 +146,11 @@ Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP
 
 你可以很輕鬆的使用 `config` 輔助方法取得你的設定值。設定值可以透過「點」語法來取得，其中包含了檔案與選項的名稱。也可以指定預設值，當該設定選項不存在時就會回傳預設值：
 
-	$value = config('app.timezone');
+    $value = config('app.timezone');
 
 若要在執行期間修改設定值，請傳遞一個陣列至 `config` 輔助方法：
 
-	config(['app.timezone' => 'America/Chicago']);
+    config(['app.timezone' => 'America/Chicago']);
 
 <a name="naming-your-application"></a>
 ### 命名你的應用程式
@@ -159,7 +159,7 @@ Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP
 
 舉例來說，假設你的應用程式叫做「Horsefly」，你可以在安裝完的根目錄執行下方的指令：
 
-	php artisan app:name Horsefly
+    php artisan app:name Horsefly
 
 重新命名你的應用程式是完全自由的，如果你希望的話也可以保持命名空間為 `App`。
 
@@ -170,11 +170,11 @@ Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP
 
 啟用維護模式，只需要執行 Artisan 指令 `down`：
 
-	php artisan down
+    php artisan down
 
 關閉維護模式，請使用 Artisan 指令 `up`：
 
-	php artisan up
+    php artisan up
 
 ### 維護模式的回應模板
 

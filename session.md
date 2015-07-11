@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
 - [Basic Usage](#basic-usage)
-	- [Flash Data](#flash-data)
+    - [Flash Data](#flash-data)
 - [Adding Custom Session Drivers](#adding-custom-session-drivers)
 
 <a name="introduction"></a>
@@ -32,19 +32,19 @@ The session `driver` defines where session data will be stored for each request.
 
 When using the `database` session driver, you will need to setup a table to contain the session items. Below is an example `Schema` declaration for the table:
 
-	Schema::create('sessions', function ($table) {
-		$table->string('id')->unique();
-		$table->text('payload');
-		$table->integer('last_activity');
-	});
+    Schema::create('sessions', function ($table) {
+        $table->string('id')->unique();
+        $table->text('payload');
+        $table->integer('last_activity');
+    });
 
 You may use the `session:table` Artisan command to generate this migration for you!
 
-	php artisan session:table
+    php artisan session:table
 
-	composer dump-autoload
+    composer dump-autoload
 
-	php artisan migrate
+    php artisan migrate
 
 #### Redis
 
@@ -63,104 +63,104 @@ If you need all stored session data to be encrypted, set the `encrypt` configura
 
 First, let's access the session. We can access the session instance via the HTTP request, which can be type-hinted on a controller method. Remember, controller method dependencies are injected via the Laravel [service container](/docs/{{version}}/container):
 
-	<?php
+    <?php
 
-	namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-	use Illuminate\Http\Request;
-	use App\Http\Controllers\Controller;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
 
-	class UserController extends Controller
-	{
-		/**
-		 * Show the profile for the given user.
-		 *
-		 * @param  Request  $request
-		 * @param  int  $id
-		 * @return Response
-		 */
-		public function showProfile(Request $request, $id)
-		{
-			$value = $request->session()->get('key');
+    class UserController extends Controller
+    {
+        /**
+         * Show the profile for the given user.
+         *
+         * @param  Request  $request
+         * @param  int  $id
+         * @return Response
+         */
+        public function showProfile(Request $request, $id)
+        {
+            $value = $request->session()->get('key');
 
-			//
-		}
-	}
+            //
+        }
+    }
 
 When you retrieve a value from the session, you may also pass a default value as the second argument to the `get` method. This default value will be returned if the specified key does not exist in the session. If you pass a `Closure` as the default value to the `get` method, the `Closure` will be executed and its result returned:
 
-	$value = $request->session()->get('key', 'default');
+    $value = $request->session()->get('key', 'default');
 
-	$value = $request->session()->get('key', function() {
-		return 'default';
-	});
+    $value = $request->session()->get('key', function() {
+        return 'default';
+    });
 
 If you would like to retrieve all data from the session, you may use the `all` method:
 
-	$data = $request->session()->all();
+    $data = $request->session()->all();
 
 You may also use the global `session` PHP function to retrieve and store data in the session:
 
-	Route::get('home', function () {
-		// Retrieve a piece of data from the session...
-		$value = session('key');
+    Route::get('home', function () {
+        // Retrieve a piece of data from the session...
+        $value = session('key');
 
-		// Store a piece of data in the session...
-		session(['key' => 'value']);
-	});
+        // Store a piece of data in the session...
+        session(['key' => 'value']);
+    });
 
 #### Determining If An Item Exists In The Session
 
 The `has` method may be used to check if an item exists in the session. This method will return `true` if the item exists:
 
-	if ($request->session()->has('users')) {
-		//
-	}
+    if ($request->session()->has('users')) {
+        //
+    }
 
 #### Storing Data In The Session
 
 Once you have access to the session instance, you may call a variety of functions to interact with the underlying data. For example, the `put` method stores a new piece of data in the session:
 
-	$request->session()->put('key', 'value');
+    $request->session()->put('key', 'value');
 
 #### Pushing To Array Session Values
 
 The `push` method may be used to push a new value onto a session value that is an array. For example, if the `user.teams` key contains an array of team names, you may push a new value onto the array like so:
 
-	$request->session()->push('user.teams', 'developers');
+    $request->session()->push('user.teams', 'developers');
 
 #### Retrieving And Deleting An Item
 
 The `pull` method will retrieve and delete an item from the session:
 
-	$value = $request->session()->pull('key', 'default');
+    $value = $request->session()->pull('key', 'default');
 
 #### Deleting Items From The Session
 
 The `forget` method will remove a piece of data from the session. If you would like to remove all data from the session, you may use the `flush` method:
 
-	$request->session()->forget('key');
+    $request->session()->forget('key');
 
-	$request->session()->flush();
+    $request->session()->flush();
 
 #### Regenerating The Session ID
 
 If you need to regenerate the session ID, you may use the `regenerate` method:
 
-	$request->session()->regenerate();
+    $request->session()->regenerate();
 
 <a name="flash-data"></a>
 ### Flash Data
 
 Sometimes you may wish to store items in the session only for the next request. You may do so using the `flash` method. Method stored in the session using this method will only be available during the subsequent HTTP request, and then will be deleted. Flash data is primarily useful for short-lived status messages:
 
-	$request->session()->flash('status', 'Task was successful!');
+    $request->session()->flash('status', 'Task was successful!');
 
 If you need to keep your flash data around for even more requests, you may use the `reflash` method, which will keep all of the flash data around for an additional request. If you only need to keep specific flash data around, you may use the `keep` method:
 
-	$request->session()->reflash();
+    $request->session()->reflash();
 
-	$request->session()->keep(['username', 'email']);
+    $request->session()->keep(['username', 'email']);
 
 <a name="adding-custom-session-drivers"></a>
 ## Adding Custom Session Drivers
@@ -184,10 +184,10 @@ To add additional drivers to Laravel's session back-end, you may use the `extend
          */
         public function boot()
         {
-			Session::extend('mongo', function($app) {
-				// Return implementation of SessionHandlerInterface...
-				return new MongoSessionStore;
-			});
+            Session::extend('mongo', function($app) {
+                // Return implementation of SessionHandlerInterface...
+                return new MongoSessionStore;
+            });
         }
 
         /**
@@ -203,19 +203,19 @@ To add additional drivers to Laravel's session back-end, you may use the `extend
 
 Note that your custom session driver should implement the `SessionHandlerInterface`. This interface contains just a few simple methods we need to implement. A stubbed MongoDB implementation looks something like this:
 
-	<?php
+    <?php
 
-	namespace App\Extensions;
+    namespace App\Extensions;
 
-	class MongoHandler implements SessionHandlerInterface
-	{
-		public function open($savePath, $sessionName) {}
-		public function close() {}
-		public function read($sessionId) {}
-		public function write($sessionId, $data) {}
-		public function destroy($sessionId) {}
-		public function gc($lifetime) {}
-	}
+    class MongoHandler implements SessionHandlerInterface
+    {
+        public function open($savePath, $sessionName) {}
+        public function close() {}
+        public function read($sessionId) {}
+        public function write($sessionId, $data) {}
+        public function destroy($sessionId) {}
+        public function gc($lifetime) {}
+    }
 
 Since these methods are not as readily understandable as the cache `StoreInterface`, let's quickly cover what each of the methods do:
 
