@@ -14,6 +14,7 @@
     - [Lazy Eager Loading](#lazy-eager-loading)
 - [Inserting Related Models](#inserting-related-models)
     - [Many To Many Relationships](#inserting-many-to-many-relationships)
+    - [Touching Parent Timestamps](#touching-parent-timestamps)
 
 <a name="introduction"></a>
 ## Introduction
@@ -774,3 +775,40 @@ You may also use the `sync` method to construct many-to-many associations. The `
 You may also pass additional intermediate table values with the IDs:
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
+
+<a name="touching-parent-timestamps"></a>
+### Touching Parent Timestamps
+
+When a model `belongsTo` another model, such as a `Comment` which belongs to a `Post`, it is sometimes helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically "touch" the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Comment extends Model
+    {
+        /**
+         * All of the relationships to be touched.
+         *
+         * @var array
+         */
+        protected $touches = ['post'];
+
+        /**
+         * Get the post that the comment belongs to.
+         */
+        public function post()
+        {
+            return $this->belongsTo('App\Post');
+        }
+    }
+
+Now, when you update a `Comment`, the owning `Post` will have its `updated_at` column updated as well:
+
+    $comment = App\Comment::find(1);
+
+    $comment->text = 'Edit to this comment!';
+
+    $comment->save();
