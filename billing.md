@@ -190,6 +190,10 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
     // Subtract five to the subscription's current quantity...
     $user->subscription()->decrement(5);
 
+Alternatively, you may set a specific quantity using the `updateQuantity` method:
+
+    $user->subscription()->updateQuantity(10);
+
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/guides/subscriptions#setting-quantities).
 
 <a name="subscription-taxes"></a>
