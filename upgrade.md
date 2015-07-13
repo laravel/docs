@@ -26,7 +26,7 @@ Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`
     *
     !.gitignore
 
-This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
+This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php` and `services.json`.
 
 ### Add `BroadcastServiceProvider` Provider
 
