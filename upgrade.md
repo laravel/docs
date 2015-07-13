@@ -90,7 +90,7 @@ The date format is also now applied when serializing a model to an `array` or JS
 
 ### The Collection Class
 
-#### The `sortBy` method:
+#### The `sortBy` method
 
 The `sortBy` method now returns a fresh collection instance instead of modifying the existing collection:
 
