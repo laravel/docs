@@ -26,11 +26,11 @@ Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`
     *
     !.gitignore
 
-This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
+This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php` and `services.json`.
 
 ### Add `BroadcastServiceProvider` Provider
 
-Within your `config/app.php` configuration file , add `Illuminate\Broadcasting\BroadcastServiceProvider` to the `providers` array.
+Within your `config/app.php` configuration file, add `Illuminate\Broadcasting\BroadcastServiceProvider` to the `providers` array.
 
 ### Authentication
 
@@ -90,7 +90,7 @@ The date format is also now applied when serializing a model to an `array` or JS
 
 ### The Collection Class
 
-#### The `sortBy` method:
+#### The `sortBy` Method
 
 The `sortBy` method now returns a fresh collection instance instead of modifying the existing collection:
 
