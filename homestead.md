@@ -77,7 +77,7 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
 
 #### Setting Your Provider
 
-The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion` or `vmware_workstation`. You may set this to whichever provider you prefer:
+The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion`, or `vmware_workstation`. You may set this to whichever provider you prefer:
 
     provider: virtualbox
 
