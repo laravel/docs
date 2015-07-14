@@ -301,7 +301,7 @@ Within this file, you will find a list of commands in the `commands` property. T
 <a name="calling-commands-via-code"></a>
 ## Calling Commands Via Code
 
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from an route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts the name of the command as the first argument, and an array of command parameters as the second argument. The exit code will be returned:
+Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts the name of the command as the first argument, and an array of command parameters as the second argument. The exit code will be returned:
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
