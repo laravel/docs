@@ -354,7 +354,7 @@ Another option is to wrap every test case in a database transaction. Again, Lara
 
 When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using "factories". To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
 
-    $factory->define(App\User::class, function ($faker) {
+    $factory->define(App\User::class, function (Faker\Generator $faker) {
         return [
             'name' => $faker->name,
             'email' => $faker->email,
