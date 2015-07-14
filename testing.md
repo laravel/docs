@@ -358,7 +358,7 @@ When testing, it is common to need to insert a few records into your database be
         return [
             'name' => $faker->name,
             'email' => $faker->email,
-            'password' => str_random(10),
+            'password' => bcrypt(str_random(10)),
             'remember_token' => str_random(10),
         ];
     });
