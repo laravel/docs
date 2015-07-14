@@ -141,7 +141,7 @@ As noted above, if an exception occurs while the job is being processed, it will
 <a name="pushing-jobs-onto-the-queue"></a>
 ## Pushing Jobs Onto The Queue
 
-The default Laravel controller located in `app/Http/Controllers/Controller.php` uses a `DispatchesJob` trait. This trait provides several methods allowing you to conveniently push jobs onto the queue, such as the `dispatch` method:
+The default Laravel controller located in `app/Http/Controllers/Controller.php` uses a `DispatchesJobs` trait. This trait provides several methods allowing you to conveniently push jobs onto the queue, such as the `dispatch` method:
 
     <?php
 
