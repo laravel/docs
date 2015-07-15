@@ -107,7 +107,7 @@ As you can see, we simply pass the incoming HTTP request and desired validation 
 If your HTTP request contains "nested" parameters, you may specify them in your validation rules using "dot" syntax:
 
     $this->validate($request, [
-        'title' => 'required|unqiue:posts|max:255',
+        'title' => 'required|unique:posts|max:255',
         'author.name' => 'required',
         'author.description' => 'required',
     ]);
