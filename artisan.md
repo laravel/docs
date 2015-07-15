@@ -321,7 +321,7 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
         //
     });
 
-If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you may pass a booelan `true` or `false`:
+If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you may pass a boolean `true` or `false`:
 
     $exitCode = Artisan::call('migrate:refresh', [
         '--force' => true,
