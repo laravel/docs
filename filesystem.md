@@ -107,7 +107,7 @@ The `put` method may be used to store a file on disk. You may also pass a PHP `r
 
     Storage::put('file.jpg', $resource);
 
-The `copy` method may be used to move an existing file to a new location on the disk:
+The `copy` method may be used to copy an existing file to a new location on the disk:
 
     Storage::copy('old/file1.jpg', 'new/file1.jpg');
 
