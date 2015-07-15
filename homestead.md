@@ -151,13 +151,13 @@ To install Homestead directly into your project, require it using Composer:
 
 Once Homestead has been installed, use the `make` command to generate the `Vagrantfile` and `Homestead.yaml` file in your project root. The `make` command will automatically configure the `sites` and `folders` directives in the `Homestead.yaml` file.
 
-*nix users:
+Mac / Linux:
 
     php vendor/bin/homestead make
 
-Windows users:
+Windows:
 
-	vendor\bin\homestead make 
+	vendor\bin\homestead make
 
 Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.app` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
 
