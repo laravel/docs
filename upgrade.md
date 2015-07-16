@@ -301,6 +301,7 @@ use Authenticatable, CanResetPassword;
 如果你在 `start/global.php` 有任何的[服務容器](/docs/{{version}}/container)綁定，請將它們全部移至 `app/Providers/AppServiceProvider.php` 檔案的 `register` 方法。你可能需要引入 `App` facade。
 
 你也可以選擇將這些綁定，依照類別拆分到各別的服務提供者中。
+
 ### 視圖
 
 將你的視圖從 `app/views` 移到新的 `resources/views` 目錄。
