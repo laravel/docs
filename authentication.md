@@ -91,7 +91,7 @@ Though the authentication controllers are included with the framework, you will 
     <form method="POST" action="/auth/register">
         {!! csrf_field() !!}
 
-        <div class="col-md-6">
+        <div>
             Name
             <input type="text" name="name" value="{{ old('name') }}">
         </div>
@@ -106,7 +106,7 @@ Though the authentication controllers are included with the framework, you will 
             <input type="password" name="password">
         </div>
 
-        <div class="col-md-6">
+        <div>
             Confirm Password
             <input type="password" name="password_confirmation">
         </div>
