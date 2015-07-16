@@ -38,7 +38,7 @@ All of your Envoy tasks should be defined in an `Envoy.blade.php` file in the ro
     @servers(['web' => 'user@192.168.1.1'])
 
     @task('foo', ['on' => 'web'])
-        ls -la
+        ls -la;
     @endtask
 
 As you can see, an array of `@servers` is defined at the top of the file, allowing you to reference these servers in the `on` option of your task declarations. Within your `@task` declarations, you should place the Bash code that will be run on your server when the task is executed.
@@ -62,9 +62,9 @@ You may also use ```@include``` to include any outside PHP files:
 If you would like to be prompted for confirmation before running a given task on your servers, you may add the `confirm` directive to your task declaration:
 
     @task('deploy', ['on' => 'web', 'confirm' => true])
-        cd site
-        git pull origin {{ $branch }}
-        php artisan migrate
+        cd site;
+        git pull origin {{ $branch }};
+        php artisan migrate;
     @endtask
 
 <a name="task-variables"></a>
@@ -79,9 +79,9 @@ You may use the options in your tasks via Blade's "echo" syntax:
     @servers(['web' => '192.168.1.1'])
 
     @task('deploy', ['on' => 'web'])
-        cd site
-        git pull origin {{ $branch }}
-        php artisan migrate
+        cd site;
+        git pull origin {{ $branch }};
+        php artisan migrate;
     @endtask
 
 <a name="envoy-multiple-servers"></a>
@@ -92,9 +92,9 @@ You may easily run a task across multiple servers. First, add additional servers
     @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
     @task('deploy', ['on' => ['web-1', 'web-2']])
-        cd site
-        git pull origin {{ $branch }}
-        php artisan migrate
+        cd site;
+        git pull origin {{ $branch }};
+        php artisan migrate;
     @endtask
 
 By default, the task will be executed on each server serially. Meaning, the task will finish running on the first server before proceeding to execute on the next server.
@@ -106,9 +106,9 @@ If you would like to run a task across multiple servers in parallel, add the `pa
     @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
     @task('deploy', ['on' => ['web-1', 'web-2'], 'parallel' => true])
-        cd site
-        git pull origin {{ $branch }}
-        php artisan migrate
+        cd site;
+        git pull origin {{ $branch }};
+        php artisan migrate;
     @endtask
 
 <a name="envoy-task-macros"></a>
@@ -124,11 +124,11 @@ Macros allow you to define a set of tasks to be run in sequence using a single c
     @endmacro
 
     @task('git')
-        git pull origin master
+        git pull origin master;
     @endtask
 
     @task('composer')
-        composer install
+        composer install;
     @endtask
 
 Once the macro has been defined, you may run it via single, simple command:
@@ -154,7 +154,7 @@ After running a task, you may send a notification to your team's HipChat room us
     @servers(['web' => '192.168.1.1'])
 
     @task('foo', ['on' => 'web'])
-        ls -la
+        ls -la;
     @endtask
 
     @after
