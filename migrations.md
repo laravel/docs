@@ -223,7 +223,7 @@ In addition to the column types listed above, there are several other column "mo
         $table->string('email')->nullable();
     });
 
-Below is a list of all the available column modifiers. This list does not include the [index modifiers](#adding-indexes):
+Below is a list of all the available column modifiers. This list does not include the [index modifiers](#creating-indexes):
 
 Modifier  | Description
 ------------- | -------------
