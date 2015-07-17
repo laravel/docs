@@ -1,37 +1,37 @@
-# Errors & Logging
+# Errori & Logging
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [The Exception Handler](#the-exception-handler)
-	- [Report Method](#report-method)
-	- [Render Method](#render-method)
-- [HTTP Exceptions](#http-exceptions)
-	- [Custom HTTP Error Pages](#custom-http-error-pages)
+- [Introduzione](#introduzione)
+- [Configurazione](#configurazione)
+- [Gestire Gli Errori](#gestire-errori)
+	- [Metodo Report](#metodo-report)
+	- [Metodo Render](#metodo-render)
+- [HTTP Exception](#http-exceptions)
+	- [Pagine Di Errore HTTP Personalizzate](#pagine-errore-personalizzate)
 - [Logging](#logging)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-When you start a new Laravel project, error and exception handling is already configured for you. In addition, Laravel is integrated with the [Monolog](https://github.com/Seldaek/monolog) logging library, which provides support for a variety of powerful log handlers.
+Quando inizi un nuovo progetto con Laravel, la gestione degli errori e delle eccezioni è già configurata e pronta per l'uso. In aggiunta, Laravel integra la libreria di logging [Monolog](https://github.com/Seldaek/monolog), che ti offre supporto per il loggin con una serie di potenti handler.
 
-<a name="configuration"></a>
-## Configuration
+<a name="configurazione"></a>
+## Configurazione
 
-#### Error Detail
+#### Dettagli Errore
 
-The amount of error detail your application displays through the browser is controlled by the `debug` configuration option in your `config/app.php` configuration file. By default, this configuration option is set to respect the `APP_DEBUG` environment variable, which is stored in your `.env` file.
+I dettagli sull'errore che la tua applicazione visualizza nel browser sono controllati dall'opzione `debug` nel tuo file di configurazione `config/app.php`. Di default, questa opzione e impostata a seconda della variabile d'ambiente `APP_DEBUG`, memorizzata nel file `.env`.
 
-For local development, you should set the `APP_DEBUG` environment variable to `true`. In your production environment, this value should always be `false`.
+Per lo sviluppo locale, dovresti impostare questa variabile `APP_DEBUG` su `true`. Mentre nell'ambiente di produzione, questo valore dovrebbe essere sempre impostato su `false`.
 
-#### Log Modes
+#### Modalità Di Log
 
-Out of the box, Laravel supports `single`, `daily`, `syslog` and `errorlog` logging modes. For example, if you wish to use daily log files instead of a single file, you should simply set the `log` value in your `config/app.php` configuration file:
+Lavarel supporta le seguenti modalità di log: `single`, `daily`, `syslog` ed `errorlog`. Per esempio, se desideri usare il log gioranilero anziché usare un unico file, puoi impostare semplicemente il valore di `log` nel tuo file di configurazione `config/app.php` in questo modo:
 
 	'log' => 'daily'
 
-#### Custom Monolog Configuration
+#### Configurazione Monolog Personalizzata
 
-If you would like to have complete control over how Monolog is configured for your application, you may use the application's `configureMonologUsing` method. You should place a call to this method in your `bootstrap/app.php` file right before the `$app` variable is returned by the file:
+Se vuoi avere il completo controllo su come Monolog è configurato per la tua applicazione, puoi usare il metodo `configureMonologUsing`. Dovresti la chiamata a questo metodo nel tuo file  `bootstrap/app.php` prima che venga ritornata la variabile `$app`:
 
 	$app->configureMonologUsing(function($monolog) {
 		$monolog->pushHandler(...);
@@ -39,17 +39,17 @@ If you would like to have complete control over how Monolog is configured for yo
 
 	return $app;
 
-<a name="the-exception-handler"></a>
-## The Exception Handler
+<a name="gestire-errori"></a>
+## Gestire Gli Errori
 
-All exceptions are handled by the `App\Exceptions\Handler` class. This class contains two methods: `report` and `render`. We'll examine each of these methods in detail.
+Tutte le eccezioni sono gestite dalla classe `App\Exceptions\Handler`. Questa classe contiene due metodi: `report` e `render`. Esamineremo ognuno di questi metodi nel dettaglio.
 
-<a name="report-method"></a>
-### The Report Method
+<a name="metodo-report"></a>
+### Il Metodo Report
 
-The `report` method is used to log exceptions or send them to an external service like [BugSnag](https://bugsnag.com). By default, the `report` method simply passes the exception to the base class where the exception is logged. However, you are free to log exceptions however you wish.
+Il metodo `report` è usato per memorizzare le eccezioni sul file log o per inviarle ad un servizio esterno come [BugSnag](https://bugsnag.com). Di default, il metodo `report`passa l'eccezione all'implementazione di base della classe parent in cui l'eccezzione inserita nel log. In ogni caso, sei libero di memorizzare le eccezioni nel log come desideri. 
 
-For example, if you need to report different types of exceptions in different ways, you may use the PHP `instanceof` comparison operator:
+Se hai bisogno di eseguire il report di diversi tipi di eccezione in modi differenti, puoi usare l'operatore di comparazione PHP `instanceof`:
 
 	/**
 	 * Report or log an exception.
@@ -68,14 +68,14 @@ For example, if you need to report different types of exceptions in different wa
 		return parent::report($e);
 	}
 
-#### Ignoring Exceptions By Type
+#### Ignorare Eccessioni Per Tipo
 
-The `$dontReport` property of the exception handler contains an array of exception types that will not be logged. By default, exceptions resulting from 404 errors are not written to your log files. You may add other exception types to this array as needed.
+La proprietà `$dontReport`dell'handler delle eccezioni contiene un array di tipi di eccezioni che non saranno inserite nel log. Di default, le eccezioni risultanti da errori 404 non sono scritte sul tuo file di log. Puoi anche aggiungere altri tipi di eccezione a questo array se necessario.
 
-<a name="render-method"></a>
-### The Render Method
+<a name="metodo-render"></a>
+### Il Metodo Render
 
-The `render` method is responsible for converting a given exception into an HTTP response that should be sent back to the browser. By default, the exception is passed to the base class which generates a response for you. However, you are free to check the exception type or return your own custom response:
+Il metodo `render` è responsabile della conversione di una data eccezione in una risposta HTTP che dovrebbe essere ritornata al browser. Di default, l'eccezione è passata all'implementazione base della classe che genera per te una risposta. In ogni modo, sei libero di controllare il tipo di eccezione oppure ritornare una tua risposta personalizzata:
 
     /**
      * Render an exception into an HTTP response.
@@ -93,30 +93,30 @@ The `render` method is responsible for converting a given exception into an HTTP
         return parent::render($request, $e);
     }
 
-<a name="http-exceptions"></a>
-## HTTP Exceptions
+<a name="http-exception"></a>
+## HTTP Exception
 
-Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to generate such a response from anywhere in your application, use the following:
+Le eccezioni HTTP si riferiscono ad errori che potrebbero verificarsi durante una richiesta del client. Per esempio, può essere un errore di “pagina non trovata” (404), un errore di “non autorizzato” (401) oppure un errore generato da uno sviluppatore con codice 500. Per fare in modo di ritornare una tale risposta, usa la seguente sintassi: 
 
 	abort(404);
 
-The `abort` method will immediately raise an exception which will be rendered by the exception handler. Optionally, you may provide the response text:
+Il metodo `abort` lancerà immediatamente un eccezione la quale sarà renderizzata dalla classe handler delle eccezioni. Opzionalmente, puoi anche fornire un testo per la risposta:
 
 	abort(403, 'Unauthorized action.');
 
-This method may be used at any time during the request's lifecycle.
+Questo metodo può essere usato in qualsiasi momento durante il cilclo di vita della richiesta.
 
-<a name="custom-http-error-pages"></a>
-### Custom HTTP Error Pages
+<a name="pagine-errore-personalizzate"></a>
+### Pagine Di Errore HTTP Personalizzate
 
-Laravel makes it easy to return custom error pages for various HTTP status codes. For example, if you wish to customize the error page for 404 HTTP status codes, create a `resources/views/errors/404.blade.php`. This file will be served on all 404 errors generated by your application.
+Laravel ti rende la vita facile per ritornare delle pagine di errore personalizzate per i vari codici di stato HTTP. Per esempio, se vuoi personalizzare la pagina di errore con codice di stato HTTP 404, crea un file in `resources/views/errors/404.blade.php`. Questo file verrà utilizzato su tutti gli errori 404 generati dalla tua applicazione.
 
-The views within this directory should be named to match the HTTP status code they correspond to.
+Queste view all'interno di questa directory dovrebbero essere nominate in modo tale da conincidere con il codice di stato HTTP corrispondente.
 
 <a name="logging"></a>
 ## Logging
 
-The Laravel logging facilities provide a simple layer on top of the powerful [Monolog](http://github.com/seldaek/monolog) library. By default, Laravel is configured to create daily log files for your application which are stored in the `storage/logs` directory. You may write information to the logs using the `Log` [facade](/docs/{{version}}/facades):
+Il meccanismo di logging di Laravel è realizzato usando la potente libreria [Monolog](http://github.com/seldaek/monolog). Di default, Laravel è configurato per creare un log giornaliero per la tua applicazione che è memorizzato nella directory `storage/logs`. Puoi scrivere informazioni nei log usando la [facade](/docs/{{version}}/facades) `Log`:
 
 	<?php namespace App\Http\Controllers;
 
@@ -139,7 +139,7 @@ The Laravel logging facilities provide a simple layer on top of the powerful [Mo
 		}
 	}
 
-The logger provides the seven logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, and **alert**.
+Il sistema di logging fornisce sette livelli di log defini nello standard [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, e **alert**.
 
 	Log::debug($error);
 	Log::info($error);
@@ -149,14 +149,14 @@ The logger provides the seven logging levels defined in [RFC 5424](http://tools.
 	Log::critical($error);
 	Log::alert($error);
 
-#### Contextual Information
+#### Informazioni Contestuali
 
-An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
+Se hai bisogno di passare un array ai metodi della classe Log. Questi dati saranno formattati e visualizzati con il messaggio di log: 
 
 	Log::info('User failed to login.', ['id' => $user->id]);
 
-#### Accessing The Underlying Monolog Instance
+#### Accesso Ad Un Istanza Monolog
 
-Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
+Monolog possiede vari hanlder aggiuntivi che puoi usare per il logging. Se hai bisogno, puoi accedere ad un istanza Monolog usata da Laravel in questo modo:
 
 	$monolog = Log::getMonolog();
