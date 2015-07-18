@@ -31,7 +31,7 @@ The default server configuration should suffice for development. However, you ar
 
 The `cluster` option will tell the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
 
-Additinoally, you may define an `options` array value in your Redis connection definition, allowing you to specify a set Predis [client options](https://github.com/nrk/predis/wiki/Client-Options).
+Additionally, you may define an `options` array value in your Redis connection definition, allowing you to specify a set of Predis [client options](https://github.com/nrk/predis/wiki/Client-Options).
 
 If your Redis server requires authentication, you may supply a password by adding a `password` configuration item to your Redis server configuration array.
 
@@ -101,7 +101,7 @@ Pipelining should be used when you need to send many commands to the server in o
 
 Laravel also provides a convenient interface to the Redis `publish` and `subscribe` commands. These Redis commands allow you to listen for messages on a given "channel". You may publish messages to the channel from another application, or even using another programming language, allowing easy communication between applications / processes.
 
-First, let's setup a listener on a channel via Redis using the `subscribe` method. We will place this method call within an [Artisan command](/docs/{{version}}/commands) since calling the `subscribe` method begins a long-running process:
+First, let's setup a listener on a channel via Redis using the `subscribe` method. We will place this method call within an [Artisan command](/docs/{{version}}/artisan) since calling the `subscribe` method begins a long-running process:
 
     <?php
 

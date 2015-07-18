@@ -30,7 +30,7 @@ This directory should be writable, and will be used by the framework to store te
 
 ### Add `BroadcastServiceProvider` Provider
 
-Within your `config/app.php` configuration file , add `Illuminate\Broadcasting\BroadcastServiceProvider` to the `providers` array.
+Within your `config/app.php` configuration file, add `Illuminate\Broadcasting\BroadcastServiceProvider` to the `providers` array.
 
 ### Authentication
 
@@ -90,7 +90,7 @@ The date format is also now applied when serializing a model to an `array` or JS
 
 ### The Collection Class
 
-#### The `sortBy` method:
+#### The `sortBy` Method
 
 The `sortBy` method now returns a fresh collection instance instead of modifying the existing collection:
 

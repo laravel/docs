@@ -64,11 +64,12 @@ Laravel provides a very fluent API for making HTTP requests to your application,
         public function testBasicExample()
         {
             $this->visit('/')
-                 ->see('Laravel 5');
+                 ->see('Laravel 5')
+                 ->dontSee('Rails');
         }
     }
 
-The `visit` method makes a `GET` request into the application. The `see` method asserts that we should see the given text in the response returned by the application. This is the most basic application test available in Laravel.
+The `visit` method makes a `GET` request into the application. The `see` method asserts that we should see the given text in the response returned by the application. The `dontSee` method asserts that the given text is not returned in the application response. This is the most basic application test available in Laravel.
 
 <a name="interacting-with-your-application"></a>
 ### Interacting With Your Application
@@ -353,11 +354,11 @@ Another option is to wrap every test case in a database transaction. Again, Lara
 
 When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using "factories". To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
 
-    $factory->define(App\User::class, function ($faker) {
+    $factory->define(App\User::class, function (Faker\Generator $faker) {
         return [
             'name' => $faker->name,
             'email' => $faker->email,
-            'password' => str_random(10),
+            'password' => bcrypt(str_random(10)),
             'remember_token' => str_random(10),
         ];
     });

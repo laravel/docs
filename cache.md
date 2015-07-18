@@ -244,6 +244,7 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
         public function forever($key, $value) {}
         public function forget($key) {}
         public function flush() {}
+        public function getPrefix() {}
     }
 
 We just need to implement each of these methods using a MongoDB connection. Once our implementation is complete, we can finish our custom driver registration:

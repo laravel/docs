@@ -2,7 +2,12 @@
 
 - [Introduction](#introduction)
 - [Validation Quickstart](#validation-quickstart)
-- [Other Validation Approaches](#foo)
+    - [Defining The Routes](#quick-defining-the-routes)
+    - [Creating The Controller](#quick-creating-the-controller)
+    - [Writing The Validation Logic](#quick-writing-the-validation-logic)
+    - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
+    - [AJAX Requests & Validation](#quick-ajax-requests-and-validation)
+- [Other Validation Approaches](#other-validation-approaches)
     - [Manually Creating Validators](#manually-creating-validators)
     - [Form Request Validation](#form-request-validation)
 - [Working With Error Messages](#working-with-error-messages)
@@ -21,7 +26,8 @@ Laravel provides several different approaches to validate your application's inc
 
 To learn about Laravel's powerful validation features, let's look at a complete example of validating a form and displaying the error messages back to the user.
 
-#### Defining The Routes
+<a name="quick-defining-the-routes"></a>
+### Defining The Routes
 
 First, let's assume we have the following routes defined in our `app/Http/routes.php` file:
 
@@ -33,7 +39,8 @@ First, let's assume we have the following routes defined in our `app/Http/routes
 
 Of course, the `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
 
-#### Creating The Controller
+<a name="quick-creating-the-controller"></a>
+### Creating The Controller
 
 Next, let's take a look at a simple controller that handles these routes. We'll leave the `store` method empty for now:
 
@@ -68,7 +75,8 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
         }
     }
 
-#### Writing The Validation Logic
+<a name="quick-writing-the-validation-logic"></a>
+### Writing The Validation Logic
 
 Now we are ready to fill in our `store` method with the logic to validate the new blog post. If you examine your application's base controller (`App\Http\Controllers\Controller`) class, you will see that the class uses a `ValidatesRequests` trait. This trait provides a convenient `validate` method in all of your controllers.
 
@@ -94,7 +102,18 @@ To get a better understanding of the `validate` method, let's jump back into the
 
 As you can see, we simply pass the incoming HTTP request and desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
 
-#### Displaying The Validation Errors
+#### A Note On Nested Attributes
+
+If your HTTP request contains "nested" parameters, you may specify them in your validation rules using "dot" syntax:
+
+    $this->validate($request, [
+        'title' => 'required|unique:posts|max:255',
+        'author.name' => 'required',
+        'author.description' => 'required',
+    ]);
+
+<a name="quick-displaying-the-validation-errors"></a>
+### Displaying The Validation Errors
 
 So, what if the incoming request parameters do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors will automatically be [flashed to the session](/docs/{{version}}/session#flash-data).
 
@@ -118,6 +137,7 @@ So, in our example, the user will be redirected to our controller's `create` met
 
     <!-- Create Post Form -->
 
+<a name="quick-customizing-the-flashed-error-format"></a>
 #### Customizing The Flashed Error Format
 
 If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatValidationErrors` on your base controller. Don't forget to import the `Illuminate\Contracts\Validation\Validator` class at the top of the file:
@@ -144,6 +164,7 @@ If you wish to customize the format of the validation errors that are flashed to
         }
     }
 
+<a name="quick-ajax-requests-and-validation"></a>
 ### AJAX Requests & Validation
 
 In this example, we used a traditional form to send data to the application. However, many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
@@ -460,7 +481,13 @@ The field under validation must be a valid URL according to the `checkdnsrr` PHP
 <a name="rule-after"></a>
 #### after:_date_
 
-The field under validation must be a value after a given date. The dates will be passed into the `strtotime` PHP function.
+The field under validation must be a value after a given date. The dates will be passed into the `strtotime` PHP function:
+
+    'start_date' => 'required|date|after:tomorrow'
+
+Instead of passing a date string to be evaluated by `strtotime`, you may specify another field to compare against the date:
+
+    'finish_date' => 'required|date|after:start_date'
 
 <a name="rule-alpha"></a>
 #### alpha
@@ -510,7 +537,7 @@ The field under validation must be a valid date according to the `strtotime` PHP
 <a name="rule-date-format"></a>
 #### date_format:_format_
 
-The field under validation must match the given _format_. The format will be evaluated using the PHP `date_parse_from_format` function.
+The field under validation must match the given _format_. The format will be evaluated using the PHP `date_parse_from_format` function. You should use **either** `date` or `date_format` when validating a field, not both.
 
 <a name="rule-different"></a>
 #### different:_field_

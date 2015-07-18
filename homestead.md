@@ -50,7 +50,7 @@ Homestead is currently built and tested using Vagrant 1.7.
 
 Before launching your Homestead environment, you must install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) or [VMWare](http://www.vmware.com) as well as [Vagrant](http://www.vagrantup.com/downloads.html). All of these software packages provide easy-to-use visual installers for all popular operating systems.
 
-To use the VMware provider, you will need to purchase both VMware Fusion / Desktop and the [VMware Vagrant plug-in](http://www.vagrantup.com/vmware). VMware provides much faster shared folder performance out of the box.
+To use the VMware provider, you will need to purchase both VMware Fusion / Workstation and the [VMware Vagrant plug-in](http://www.vagrantup.com/vmware). VMware provides much faster shared folder performance out of the box.
 
 #### Installing The Homestead Vagrant Box
 
@@ -77,7 +77,7 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
 
 #### Setting Your Provider
 
-The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox` or `vmware_fusion`. You may set this to whichever provider you prefer:
+The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion`, or `vmware_workstation`. You may set this to whichever provider you prefer:
 
     provider: virtualbox
 
@@ -147,11 +147,17 @@ Instead of installing Homestead globally and sharing the same Homestead box acro
 
 To install Homestead directly into your project, require it using Composer:
 
-    composer require laravel/homestead
+    composer require laravel/homestead --dev
 
-Once Homestead has been installed, use the `make` command to generate the `Vagrantfile` and `Homestead.yaml` file in your project root. The `make` command will automatically configure the `sites` and `folders` directives in the `Homestead.yaml` file:
+Once Homestead has been installed, use the `make` command to generate the `Vagrantfile` and `Homestead.yaml` file in your project root. The `make` command will automatically configure the `sites` and `folders` directives in the `Homestead.yaml` file.
+
+Mac / Linux:
 
     php vendor/bin/homestead make
+
+Windows:
+
+	vendor\bin\homestead make
 
 Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.app` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
 

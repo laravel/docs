@@ -165,7 +165,7 @@ The Eloquent `all` method will return all of the results in the model's table. S
 
 #### Collections
 
-For Eloquent methods like `all` and `get` which retrieve multiple results, an instance of `Illuminate\Database\Eloquent\Collection` will be returned. The `Collection` class provides [a variety of helpful methods](/docs/{{version}}/eloquent-collections) for working with your Eloquent results. Of course, you may simply loop over this collection like an array:
+For Eloquent methods like `all` and `get` which retrieve multiple results, an instance of `Illuminate\Database\Eloquent\Collection` will be returned. The `Collection` class provides [a variety of helpful methods](/docs/{{version}}/eloquent-collections#available-methods) for working with your Eloquent results. Of course, you may simply loop over this collection like an array:
 
     foreach ($flights as $flight) {
         echo $flight->name;

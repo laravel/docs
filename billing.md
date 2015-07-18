@@ -190,6 +190,10 @@ Sometimes subscriptions are affected by "quantity". For example, your applicatio
     // Subtract five to the subscription's current quantity...
     $user->subscription()->decrement(5);
 
+Alternatively, you may set a specific quantity using the `updateQuantity` method:
+
+    $user->subscription()->updateQuantity(10);
+
 For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/guides/subscriptions#setting-quantities).
 
 <a name="subscription-taxes"></a>
@@ -273,7 +277,7 @@ If you have additional Stripe webhook events you would like to handle, simply ex
 <a name="single-charges"></a>
 ## Single Charges
 
-If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method on a billable model instance. The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**. So, for example, the example above will charge 100 cents, or $1.00, against the user's credit card:
+If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method on a billable model instance. The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**. So, for example, the example below will charge 100 cents, or $1.00, against the user's credit card:
 
     $user->charge(100);
 
