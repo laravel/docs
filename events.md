@@ -43,7 +43,7 @@ Of course, manually creating the files for each event and listener is cumbersome
 <a name="defining-events"></a>
 ## Defining Events
 
-An event class is simply a data container which holds the information related to the event. For example, let's assume our generated `PodcastWasPurchased` event receives a [Eloquent ORM](/docs/{{version}}/eloquent) object:
+An event class is simply a data container which holds the information related to the event. For example, let's assume our generated `PodcastWasPurchased` event receives an [Eloquent ORM](/docs/{{version}}/eloquent) object:
 
     <?php
 
