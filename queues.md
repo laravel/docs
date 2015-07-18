@@ -1,67 +1,67 @@
 # Queues
 
-- [Introduction](#introduction)
-- [Writing Job Classes](#writing-job-classes)
-	- [Generating Job Classes](#generating-job-classes)
-	- [Job Class Structure](#job-class-structure)
-- [Pushing Jobs Onto The Queue](#pushing-jobs-onto-the-queue)
-	- [Delayed Jobs](#delayed-jobs)
-	- [Dispatching Jobs From Requests](#dispatching-jobs-from-requests)
-- [Running The Queue Listener](#running-the-queue-listener)
-	- [Supervisor Configuration](#supervisor-configuration)
+- [Introduzione](#introduzione)
+	- [Configurazione](#configurazione)
+- [Scrivere le Classi Job](#scrivere-classi-job)
+	- [Generare le Classi Job](#generare-classi-job)
+	- [Struttura di una Classe Job](#struttura-classe-job)
+- [Mettere dei Job in Coda](#mettere-job-coda)
+	- [Job Dilazionati](#job-dilazionati)
+	- [Dispatch di un Job da una Richiesta](#dispatch-job-richiesta)
+- [Eseguire il Queue Listener](#eseguire-queue-listener)
+	- [Configurare Supervisor](#configurare-supervisor)
 	- [Daemon Queue Listener](#daemon-queue-listener)
-	- [Deploying With Daemon Queue Listeners](#deploying-with-daemon-queue-listeners)
-- [Dealing With Failed Jobs](#dealing-with-failed-jobs)
-	- [Failed Job Events](#failed-job-events)
-	- [Retrying Failed Jobs](#retrying-failed-jobs)
+	- [Deploy con Daemon Queue Listener](#deploy-daemon-queue-listener)
+- [Gestire i Job Falliti](#gestire-job-falliti)
+	- [Definire degli Eventi per Job Falliti](#eventi-job-falliti)
+	- [Riprovare ad Eseguire un Job Fallito](#riprovare-eseguire-job-fallito)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-The Laravel queue service provides a unified API across a variety of different queue back-ends. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time which drastically speeds up web requests to your application.
+Il servizio di code di Laravel fornisce un'API unificata per svariati servizi di code per backend. Le code ti permettono di eseguire in un secondo momento alcuni task specifici, come l'invio di email, in modo tale da non pesare troppo sulla richiesta corrente.
 
-<a name="configuration"></a>
-### Configuration
+<a name="configurazione"></a>
+### Configurazione
 
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io),  and synchronous (for local use) driver.
+Il file di configurazione per il sistema di coda è `config/queue.php`. In questo file potrai trovare i vari dettagli per le connessioni ai vari servizi di questa tipologia. Ci sono svariati driver già compresi nel framework: il classico "database", [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io) ed un driver "sincrono" per uso locale.
 
-A `null` queue driver is also included which simply discards queued jobs.
+Puoi anche selezionare, volendo, un _null_ driver che semplicemente prende e scarta ogni job.
 
-### Driver Prerequisites
+### Prerequisiti dei Driver
 
 #### Database
 
-In order to use the `database` queue driver, you will need a database table to hold the jobs. To generate a migration that creates this table, run the `queue:table` Artisan command. Once the migration is created, you may migrate your database using the `migrate` command:
+Per usare il driver _database_ avrai bisogno di una tabella dedicata sul database. Tranquillo, niente di complesso: esegui il comando `queue:table` che si occuperà di creare la migration adatta. A quel punto, esegui il comando `migrate`:
 
 	php artisan queue:table
-
 	php artisan migrate
 
-#### Other Queue Dependencies
+#### Altre Dipendenze
 
-The following dependencies are needed for the listed queue drivers:
+Ogni driver ha le sue specifiche dipendenze. In base a quello che vuoi usare, aggiungi il package corrispondente al file _composer.json_.
 
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~3.0`
 - IronMQ: `iron-io/iron_mq ~2.0`
 - Redis: `predis/predis ~1.0`
 
-<a name="writing-job-classes"></a>
-## Writing Job Classes
+<a name="scrivere-classi-job"></a>
+## Scrivere le Classi Job
 
-<a name="generating-job-classes"></a>
-### Generating Job Classes
+<a name="generare-classi-job"></a>
+### Generare le Classi Job
 
-By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. You may generate a new queued job using the Artisan CLI:
+Di default, tutti i vari job che si possono mettere in coda vengono memorizzati in _app/Jobs_. Puoi generare un nuovo job tramite il comando Artisan
 
 	php artisan make:job SendReminderEmail --queued
 
-This command will generate a new class in the `app/Jobs` directory, and the class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue instead of run synchronously.
+In questo caso specifico stiamo creando un job chiamato _SendReminderEmail_ che implementerà, inoltre, l'interfaccia `Illuminate\Contracts\Queue\ShouldQueue`, la quale indica che tale job verrà messo in coda e non eseguito in modo sincrono.
 
-<a name="job-class-structure"></a>
-### Job Class Structure
+<a name="struttura-classe-job"></a>
+### Struttura di una Classe Job
 
-Job classes are very simple, normally containing only a `handle` method which is called when the job is processed by the queue. To get started, let's take a look at an example job class:
+Una classe Job è davvero molto semplice. Normalmente contiene un metodo _handle_ che viene chiamato nel momento in cui il job viene processato dalla coda. Facciamo subito un primo esempio:
 
 	<?php namespace App\Jobs;
 
@@ -107,17 +107,19 @@ Job classes are very simple, normally containing only a `handle` method which is
 	    }
 	}
 
-In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models will be gracefully serialized and unserialized when the job is processing. If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
+In questo esempio, stiamo passando un [model Eloquent](/docs/5.1/eloquent) direttamente al costruttore del job. Grazie al trait _SerializesModels_, questo verrà automaticamente serializzato e poi deserializzato una volta in fase di processing. Nello specifico, nel caso in cui un tuo job dovesse accettare un model Eloquent nel costruttore, ad essere passato per la serializzazione in realtà sarà solo l'identificatore.
 
-The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
+In fase di esecuzione l'istanza vera e propria verrà ripresa e quindi processata all'interno del metodo _handle_. Comodo, e tutto trasparente per lo sviluppatore.
 
-#### When Things Go Wrong
+Tra l'altro, è possibile usare la method injection per il metodo _handle_! A tutto il resto ci penserà il [service container](/docs/5.1/container).
 
-If an exception is thrown while the job is being processed, it will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The number of maximum attempts is defined by the `--tries` switch used on the `queue:listen` or `queue:work` Artisan jobs. More information on running the queue listener [can be found below](#running-the-queue-listener).
+#### Quando le Cose non Vanno Bene
 
-#### Manually Releasing Jobs
+Se un qualsiasi job lancia un'eccezione di qualsiasi genere, il job viene preso e rimesso in coda, in modo tale da poter riprovarne l'esecuzione. È possibile definire un numero di tentativi massimi per i tuoi job in coda. Tramite un flag: precisamente, il flag _--tries__ che può essere passato a _queue:listen_ o _queue:work_. Se vuoi sapere di più riguardo il listener, [guarda qui](#eseguire-queue-listener).
 
-If you would like to `release` the job manually, the `InteractsWithQueue` trait, which is already included in your generated job class, provides access to the queue job `release` method. The `release` method accepts one argument: the number of seconds you wish to wait until the job is made available again:
+#### Rilasciare un Job Manualmente
+
+Nel caso in cui tu voglia _rilasciare_ un job manualemente, il trait `InteractsWithQueue` fa al caso tuo. Il metodo ad essere usato, in questo caso, è `release`. Tale metodo accetta un parametro: il numero di secondi da aspettare prima che il job in questione sia nuovamente disponibile.
 
 	public function handle(Mailer $mailer)
 	{
@@ -126,9 +128,9 @@ If you would like to `release` the job manually, the `InteractsWithQueue` trait,
 		}
 	}
 
-#### Checking The Number Of Run Attempts
+#### Controllare il Numero di Tentativi
 
-As noted above, if an exception occurs while the job is being processed, it will automatically be released back onto the queue. You may check the number of attempts that have been made to run the job using the `attempts` method:
+Come già detto poco fa, se viene lanciata un'eccezione durante l'esecuzione del job, questo verrà rilasciato nella queue. Potresti voler controllare a quale tentativo ci si trova: lo puoi fare tramite _attempts_.
 
 	public function handle(Mailer $mailer)
 	{
@@ -137,10 +139,10 @@ As noted above, if an exception occurs while the job is being processed, it will
 		}
 	}
 
-<a name="pushing-jobs-onto-the-queue"></a>
-## Pushing Jobs Onto The Queue
+<a name="mettere-job-coda"></a>
+## Mettere dei Job in Coda
 
-The default Laravel controller located in `app/Http/Controllers/Controller.php` uses a `DispatchesJob` trait. This trait provides several methods allowing you to conveniently push jobs onto the queue, such as the `dispatch` method:
+Il controller di default di Laravel in `app/Http/Controllers/Controller.php` usa un trait `DispatchesJob`. Tale trait permette di usare, dal controller, alcuni metodi dedicati ai job come ad esempio _dispatch_.
 
 	<?php namespace App\Http\Controllers;
 
@@ -166,7 +168,7 @@ The default Laravel controller located in `app/Http/Controllers/Controller.php` 
 		}
 	}
 
-Of course, sometimes you may wish to dispatch a job from somewhere in your application besides a route or controller. For that reason, you can include the `DispatchesJobs` trait on any of the classes in your application to gain access to its various dispatch methods. For example, here is a sample class that uses the trait:
+Ovviamente, potresti avere la necessità di eseguire altrove alcuni job e non solo in un controller o da una route. In tal caso, tutto quello che devi fare è includere il trait `DispatchesJobs` nella classe per la quale hai questo bisogno:
 
 	<?php namespace App;
 
@@ -177,11 +179,11 @@ Of course, sometimes you may wish to dispatch a job from somewhere in your appli
 		use DispatchesJobs;
 	}
 
-#### Specifying The Queue For A Job
+#### Specificare la Coda di un Job
 
-You may also specify the queue a job should be sent to.
+Puoi anche specificare in quale coda mettere un certo job.
 
-By pushing jobs to different queues, you may "categorize" your queued jobs, and even prioritize how many workers you assign to various queues. This does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method on the job instance. The `onQueue` method is provided by the base `App\Jobs\Job` class included with Laravel:
+Mettere i tuoi job in diverse code vuol dire anche categorizzare e diversificare i tuoi job, dando loro delle priorità anche in base ai vari worker che hai a disposizione. In questo caso, comunque, non parlo di varie connessioni: parlo proprio di varie code per la stessa connessione. Per specificare la coda nella quale "far finire" un certo job, usa _onQueue_.
 
 	<?php namespace App\Http\Controllers;
 
@@ -209,10 +211,10 @@ By pushing jobs to different queues, you may "categorize" your queued jobs, and 
 		}
 	}
 
-<a name="delayed-jobs"></a>
-### Delayed Jobs
+<a name="job-dilazionati"></a>
+### Job Dilazionati
 
-Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You may accomplish this using the `delay` method on your job class, which is provided by the `Illuminate\Bus\Queueable` trait:
+A volte potresti dilazionare nel tempo l'esecuzione di un certo job. Ad esempio, immagina un job che manda ad un cliente un email 15 minuti dopo l'iscrizione. Puoi facilmente implementare una richiesta del genere usando il metodo _delay_ sulla tua classe. Il trait contenente il metodo in questo caso è `Illuminate\Bus\Queueable`:
 
 	<?php namespace App\Http\Controllers;
 
@@ -240,14 +242,14 @@ Sometimes you may wish to delay the execution of a queued job. For instance, you
 		}
 	}
 
-In this example, we're specifying that the job should be delayed in the queue for 60 seconds before being made available to workers.
+In questo esempio stiamo specificando che il job dovrebbe essere ritardato di 60 secondi prima di diventare disponibile ai vari worker.
 
-> **Note:** The Amazon SQS service has a maximum delay time of 15 minutes.
+> **Nota:** il servizio SQS di Amazon ha un delay time massimo di 15 minuti.
 
-<a name="dispatching-jobs-from-requests"></a>
-### Dispatching Jobs From Requests
+<a name="dispatch-job-richiesta"></a>
+### Dispatch di un Job da una Richiesta
 
-It is very common to map HTTP request variables into jobs. So, instead of forcing you to do this manually for each request, Laravel provides some helper methods to make it a cinch. Let's take a look at the `dispatchFrom` method available on the `DispatchesJobs` trait. By default, this trait is included on the base Laravel controller class:
+Mappare alcune variabili di una richiesta HTTP in un job può essere piuttosto comune. Al posto di fare manualmente questa operazione per ogni richiesta, Laravel ha alcuni metodi di comodo da poter usare facilmente per lo scopo. Vediamo insieme il metodo _dispatchFrom_, disponibile nel trait _DispatchesJobs_.
 
 	<?php namespace App\Http\Controllers;
 
@@ -271,59 +273,61 @@ It is very common to map HTTP request variables into jobs. So, instead of forcin
 		}
 	}
 
-This method will examine the constructor of the given job class and extract variables from the HTTP request (or any other `ArrayAccess` object) to fill the needed constructor parameters of the job. So, if our job class accepts a `productId` variable in its constructor, the job bus will attempt to pull the `productId` parameter from the HTTP request.
+Tale metodo esaminerà il costruttore di un dato job, in modo tale da estrarne eventualmente le variabili dalla richiesta HTTP (o da un qualsiasi oggetto che implementa _ArrayAccess_) per "riempire" in modo coerente il costruttore del job stesso. Così, per fare un esempio, se il nostro job accetta una variabile detta _productId_, verrà cercata una variabile _productId_ nella richiesta.
 
-You may also pass an array as the third argument to the `dispatchFrom` method. This array will be used to fill any constructor parameters that are not available on the request:
+Puoi anche passare, come terzo argomento, un array al metodo `dispatchFrom`. Tale array viene usato per "riempire" tutti quei parametri che non sono stati riempiti con le variabili prese della richiesta.
 
 	$this->dispatchFrom('App\Jobs\ProcessOrder', $request, [
 		'taxPercentage' => 20,
 	]);
 
-<a name="running-the-queue-listener"></a>
-## Running The Queue Listener
+<a name="eseguire-queue-listener"></a>
+## Eseguire il Queue Listener
 
-#### Starting The Queue Listener
+#### Avviare il Queue Listener
 
-Laravel includes an Artisan command that will run new jobs as they are pushed onto the queue. You may run the listener using the `queue:listen` command:
+Laravel include un comando Artisan che esegue nuovi job così come vengono messi in coda. Puoi avviare il listener usando _queue:listen_.
 
 	php artisan queue:listen
 
-You may also specify which queue connection the listener should utilize:
+Puoi anche specificare quale connessione usare per l'operazione.
 
 	php artisan queue:listen connection
 
-Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
+Ricorda: una volta avviato, il listener non viene fermato fin quando non viene stoppato manualmente. Una buona idea, per sicurezza, potrebbe essere l'uso di [Supervisor](http://supervisord.org/) per fare in modo che il listener non si fermi in modo indesiderato.
 
-#### Queue Priorities
+#### Priorità delle Code
 
-You may pass a comma-delimited list of queue connections to the `listen` job to set queue priorities:
+Puoi passare una lista di connessioni al comando _queue:listen_ in modo tale da impostare le varie priorità.
 
 	php artisan queue:listen --queue=high,low
 
-In this example, jobs on the `high` queue will always be processed before moving onto jobs from the `low` queue.
+In questo esempio, i vari job sulla coda "high" verranno processati sempre prima dei vari job presenti sulla coda "low".
 
-#### Specifying The Job Timeout Parameter
+#### Specificare il Timeout di un Job
 
-You may also set the length of time (in seconds) each job should be allowed to run:
+Puoi anche impostare il timeout (in secondi) per ogni job da eseguire nel listener:
 
 	php artisan queue:listen --timeout=60
 
-#### Specifying Queue Sleep Duration
+#### Specificare la Durata dello Sleep
 
-In addition, you may specify the number of seconds to wait before polling for new jobs:
+In aggiunta, puoi specificare anche il numero di secondi di attesa prima di effettuare il polling alla ricerca di nuovi job.
 
 	php artisan queue:listen --sleep=5
 
-Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
+Ricorda: la coda "dorme" solo se non ci sono job. Se ci sono altri job la coda continuerà ad essere processata senza pausa.
 
-<a name="supervisor-configuration"></a>
-### Supervisor Configuration
+<a name="configurare-supervisor"></a>
+### Configurare Supervisor
 
-Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:listen` or `queue:work` commands if they fail. To install Supervisor on Ubuntu, you may use the following command:
+Supervisor è un process monitor per Linux, che riavvia automaticamente alcuni comandi (come _queue:listen_ o _queue:work_) se questi falliscono per qualche motivo.
+
+Installarlo è davvero semplice:
 
 	sudo apt-get install supervisor
 
-Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors a `queue:work` process:
+Il file di configurazione di Supervisor viene tendenzialmente memorizzato in `/etc/supervisor/conf.d`. In questa directory puoi creare a piacimento tanti file di configurazione quanti sono i processi da monitorare. Creiamo, ad esempio, un file per il monitoraggio della coda di Laravel che chiameremo `laravel-worker.conf`.
 
 	[program:laravel-worker]
 	process_name=%(program_name)s_%(process_num)02d
@@ -335,65 +339,59 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
 	redirect_stderr=true
 	stdout_logfile=/home/forge/app.com/worker.log
 
-In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
+In questo esempio, la direttiva `numprocs` "spiegherà" a supervisor di avviare 8 processi `queue:work` e monitorarli, riavviandoli automaticamente in caso di fallimento di qualsiasi genere. Una volta creato il file, ricarica i file di configurazione ed avvia i processi con i seguenti comandi.
 
 	sudo supervisorctl reread
-
 	sudo supervisorctl update
-
 	sudo supervisorctl start laravel-worker
 
-For more information on configuring and using Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html). Alternatively, you may use [Laravel Forge](https://forge.laravel.com) to automatically configure and manage your Supervisor configuration from a convenient web interface.
+Per maggiori informazioni su Supervisor, dai un'occhiata alla [documentazione sul sito ufficiale](http://supervisord.org/index.html).
 
 <a name="daemon-queue-listener"></a>
 ### Daemon Queue Listener
 
-The `queue:work` Artisan command includes a `--daemon` option for forcing the queue worker to continue processing jobs without ever re-booting the framework. This results in a significant reduction of CPU usage when compared to the `queue:listen` command:
+Il comando _queue:work_ di artisan include un'opzione _--daemon_ che forza il worker a continuare il processing dei vari job senza dover riavviare il framework. Il risultato, ovviamente, è una riduzione significativa dell'uso della CPU, se comparato al comando _queue:listen_.
 
-To start a queue worker in daemon mode, use the `--daemon` flag:
+Per avviare un worker in modalità demone, usa:
 
 	php artisan queue:work connection --daemon
-
 	php artisan queue:work connection --daemon --sleep=3
-
 	php artisan queue:work connection --daemon --sleep=3 --tries=3
 
-As you can see, the `queue:work` job supports most of the same options available to `queue:listen`. You may use the `php artisan help queue:work` job to view all of the available options.
+Le opzioni supportate sono le stesse viste per `queue:listen`.
 
-#### Coding Considerations For Daemon Queue Listeners
+#### Considerazioni per i Daemon Queue Listener
 
-Daemon queue workers do not restart the framework before processing each job. Therefore, you should be careful to free any heavy resources before your job finishes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
+I worker avviati come demoni non riavviano il framework prima di processare ogni lavoro. Tuttavia, il consiglio giusto è di fare tanta attenzione riguardo alle varie risorse da liberare prima di terminare un certo job. Ad esempio, se stai manipolando un'immagine con GD, ricorda di usare _imagedestroy_ prima di terminare le operazioni.
 
-Similarly, your database connection may disconnect when being used by long-running daemon. You may use the `DB::reconnect` method to ensure you have a fresh connection.
+Ricorda inoltre che le connessioni al database potrebbero interrompersi usando un demone long-running. Di conseguenza, usa _DB::reconnect_ per essere sicuro di avere una connessione sempre "fresca".
 
-<a name="deploying-with-daemon-queue-listeners"></a>
-### Deploying With Daemon Queue Listeners
+<a name="deploy-daemon-query-listener"></a>
+### Deploy con Daemon Query Listener
 
-Since daemon queue workers are long-lived processes, they will not pick up changes in your code without being restarted. So, the simplest way to deploy an application using daemon queue workers is to restart the workers during your deployment script. You may gracefully restart all of the workers by including the following command in your deployment script:
+Considerando che i daemon queue worker sono dei processi dalla vita piuttosto lunga, sicuramente non saranno capaci di accorgersi di eventuali cambiamenti nel tuo codice senza un riavvio. Per questo motivo, puoi tranquillamente effettuare il restart di tutti i tuoi worker attivi tramite il comando
 
 	php artisan queue:restart
 
-This command will gracefully instruct all queue workers to restart after they finish processing their current job so that no existing jobs are lost.
+nel tuo script di deploy. Interessante, inoltre, è sapere che tutti i vari job verranno eseguiti e portati a termine. Solo dopo l'esecuzione i vari worker verranno riavviati.
 
-> **Note:** This command relies on the cache system to schedule the restart. By default, APCu does not work for CLI jobs. If you are using APCu, add `apc.enable_cli=1` to your APCu configuration.
+> **Nota:** Questo comando usa il cache system per schedulare il riavvio. Di default APCu non è abilitato per i job via CLI. Se stai usando APCu, assicurati di aggiungere `apc.enable_cli=1` alla configurazione.
 
-<a name="dealing-with-failed-jobs"></a>
-## Dealing With Failed Jobs
+<a name="gestire-job-falliti"></a>
+## Gestire i Job Falliti
 
-Since things don't always go as planned, sometimes your queued jobs will fail. Don't worry, it happens to the best of us! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into a `failed_jobs` table. The name of the failed jobs can be configured via the `config/queue.php` configuration file.
-
-To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
+Le cose non vanno sempre come ti aspetti: a volte uno o più job in coda potrebbero fallire. Non ti preoccupare, succede a tutti! Anche ai migliori! Laravel include un sistema piuttosto conveniente che ti permette di specificare il numero massimo di tentativi per ogni job. Una volta superati questi tentativi, il job verrà messo in una tabella *failed_jobs* apposita. Tale tabella, il cui nome è variabile e deciso nel file _config/queue.php_, può essere creata con:
 
 	php artisan queue:failed-table
 
-When running your [queue listener](#running-the-queue-listener), you may specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:listen` command:
+Eseguendo il [listener](#eseguire-queue-listener) puoi specificare il numero massimo di tentativi per un job tramite l'opzione _--tries_.
 
 	php artisan queue:listen connection-name --tries=3
 
-<a name="failed-job-events"></a>
-### Failed Job Events
+<a name="eventi-job-falliti"></a>
+### Definire degli Eventi per Job Falliti
 
-If you would like to register an event that will be called when a queued job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via e-mail or [HipChat](https://www.hipchat.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+Se vuoi registrare un evento da richiamare nel momento in cui un job fallisce, puoi usare il metodo _Queue::failing_. Un esempio di uso pratico potrebbe essere l'invio di una notifica e-mail in caso di fallimento, o magari su [HipChat](https://www.hipchat.com). La callback potrebbe essere tranquillamente messa nel service provider `AppServiceProvider`:
 
 	<?php namespace App\Providers;
 
@@ -410,7 +408,7 @@ If you would like to register an event that will be called when a queued job fai
 		public function boot()
 		{
 			Queue::failing(function ($connection, $job, $data) {
-				// Notify team of failing job...
+				// Norifica al team...
 			});
 		}
 
@@ -425,9 +423,9 @@ If you would like to register an event that will be called when a queued job fai
 		}
 	}
 
-#### Failed Method On Job Classes
+#### Specificare un Comportamento direttamente nella Classe
 
-For more granular control, you may define a `failed` method directly on a queue job class, allowing you to perform job specific actions when a failure occurs:
+Se preferisci, puoi avere ancora più controllo sul fallimento dei job definendo un metodo _failed_ direttamente nella classe del job.
 
 	<?php namespace App\Jobs;
 
@@ -459,25 +457,27 @@ For more granular control, you may define a `failed` method directly on a queue 
 	     */
 		public function failed()
 		{
-			// Called when the job is failing...
+			// Richiamato quando il job fallisce...
 		}
 	}
 
-<a name="retrying-failed-jobs"></a>
-### Retrying Failed Jobs
+<a name="riprovare-eseguire-job-fallito"></a>
+### Riprovare ad Eseguire un Job Fallito
 
-To view all of your failed jobs that have been inserted into your `failed_jobs` database table, you may use the `queue:failed` Artisan command:
+Per visualizzare una lista di tutti i vari job che sono falliti, basta usare il comando Artisan _queue:failed_. 
 
 	php artisan queue:failed
 
-The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of 5, the following command should be issued:
+Tale comando elencherà i vari job includendo informazioni sull'id, la connessione, la coda relativa ed il momento in cui il job stesso è fallito. Avere a disposizione l'id può essere utile se si vuole riprovare ad eseguire un job specifico.
+
+In questo modo:
 
 	php artisan queue:retry 5
 
-If you would like to delete a failed job, you may use the `queue:forget` command:
+Per cancellare un job fallito, invece, usa `queue:forget`:
 
 	php artisan queue:forget 5
 
-To delete all of your failed jobs, you may use the `queue:flush` command:
+Infine, per rimuovere dalla tabella tutti i vari job falliti, usa `queue:flush`:
 
 	php artisan queue:flush
