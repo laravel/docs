@@ -424,6 +424,26 @@ You may also retrieve the owner of a polymorphic relation from the polymorphic m
 
 The `imageable` relation on the `Photo` model will return either a `Staff` or `Product` instance, depending on which type of model owns the photo.
 
+#### Custom owning model type
+
+You may specify a custom owning model type by defining a `morphClass` property on your model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Photo extends Model
+    {
+        /**
+         * The class name to be used in polymorphic relations.
+         *
+         * @var string
+         */
+        protected $morphClass = 'Photo';
+    }
+
 <a name="many-to-many-polymorphic-relations"></a>
 ### Many To Many Polymorphic Relations
 
