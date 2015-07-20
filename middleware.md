@@ -165,7 +165,7 @@ Middleware parameters may be specified when defining the route by separating the
 Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, define the middleware as "terminable" by adding a `terminate` method to the middleware:
 
     <?php
-    
+
     namespace Illuminate\Session\Middleware;
 
     use Closure;
@@ -185,4 +185,4 @@ Sometimes a middleware may need to do some work after the HTTP response has alre
 
 The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
 
-> **Note:** You must bind your middleware class to container as singleton if you want your `terminate` method to be called on the same instance as the `handle` method.
+When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method.
