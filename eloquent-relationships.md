@@ -73,7 +73,7 @@ Additionally, Eloquent assumes that the foreign key should have a value matching
 
 #### Defining The Inverse Of The Relation
 
-So, we can access the `Phone` model from our `User`. Now, let's define a relationship on the `Phone` model that will let us access the `User` the owns the phone. We can define the inverse of a `hasOne` relationship using the `belongsTo` method:
+So, we can access the `Phone` model from our `User`. Now, let's define a relationship on the `Phone` model that will let us access the `User` that owns the phone. We can define the inverse of a `hasOne` relationship using the `belongsTo` method:
 
     <?php
 
