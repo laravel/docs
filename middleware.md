@@ -184,3 +184,5 @@ Sometimes a middleware may need to do some work after the HTTP response has alre
     }
 
 The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
+
+> **Note:** You must bind your middleware class to container as singleton if you want your `terminate` method to be called on the same instance as the `handle` method.
