@@ -32,7 +32,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
     php artisan make:model User
 
-當你建立一個模型時，假設你想要產生一個[資料庫遷移](/docs/{{version}}/schema#database-migrations) ，可以使用 `--migration` 或者 `-m` 選項：
+當你建立一個模型時，假設你想要產生一個[資料庫遷移](/docs/{{version}}/schema#database-migrations)，可以使用 `--migration` 或者 `-m` 選項：
 
     php artisan make:model User --migration
 
@@ -81,7 +81,7 @@ Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定
 
 #### 時間戳記
 
-預設情況下，Eloquent 會維護在資料表的 `created_at` 和 `updated_at` 欄位。如果你不想讓 Eloquent 來自動維護這兩個欄位，在你的模型內將 `$timestamps` 屬性設定為 `false`：
+預設情況下，Eloquent 預期你的資料表會有 `created_at` 和 `updated_at` 欄位。如果你不想讓 Eloquent 來自動維護這兩個欄位，在你的模型內將 `$timestamps` 屬性設定為 `false`：
 
     <?php
 
@@ -99,7 +99,7 @@ Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定
         public $timestamps = false;
     }
 
-如果你想要自訂你的時間戳記格式，在你的模型內設定 `$dateFormat` 屬性。這個屬性確定日期如何在資料庫中儲存，以及當模型被序列化成陣列或是 JSON 時的格式：
+如果你想要自訂你的時間戳記格式，在你的模型內設定 `$dateFormat` 屬性。這個屬性決定日期如何在資料庫中儲存，以及當模型被序列化成陣列或是 JSON 時的格式：
 
     <?php
 
@@ -146,7 +146,7 @@ Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定
 
 #### 存取欄位的值
 
-假設你有一個 Eloquent 模型的實例，你可以從相對應的屬性透過模型來存取欄位的值。例如，讓我們遍歷查詢所返回的每個 `Flight` 實例，並且印出 `name` 欄位的值：
+假設你有一個 Eloquent 模型的實例，你可以透過相對應的屬性來存取模型的欄位值。例如，讓我們遍歷查詢所返回的每個 `Flight` 實例，並且印出 `name` 欄位的值：
 
     foreach ($flights as $flight) {
         echo $flight->name;
@@ -154,18 +154,18 @@ Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定
 
 #### 增加額外的限制
 
-Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每個 Eloquent 模型可以當作一個[查詢構造器](/docs/{{version}}/queries)，所以你可以在查詢中增加規則，然後透過 `get` 方法來取得結果：
+Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於每個 Eloquent 模型可以當作一個[查詢構造器](/docs/{{version}}/queries)，所以你可以在查詢中增加規則，然後透過 `get` 方法來取得結果：
 
     $flights = App\Flight::where('active', 1)
                    ->orderBy('name', 'desc')
                    ->take(10)
                    ->get();
 
-> **注意：** 由於 Eloquent 模型是查詢構造器，當你透過 Eloquent 查詢時，應該檢閱所有[查詢構造器](/docs/{{version}}/queries)中可用的方法。
+> **注意：** 由於 Eloquent 模型是查詢構造器，應該檢閱所有[查詢構造器](/docs/{{version}}/queries)可用的方法。你可以在你的 Eloquent 查詢中使用這其中的任何方法。
 
 #### 集合
 
-在 Eloquent 方法中，像是 `all` 以及 `get` 可以得到多筆的結果，在 `Illuminate\Database\Eloquent\Collection` 實例中將會回傳。`Collection` 類別提供[多樣的輔助方法](/docs/{{version}}/eloquent-collections#available-methods) 用來處理你的 Eloquent 結果。當然，你可以簡單的像陣列一樣遍歷你的集合：
+像是 `all` 以及 `get` 之類可以取回多筆結果的 Eloquent 方法，將會回傳一個 `Illuminate\Database\Eloquent\Collection` 實例。`Collection` 類別提供[多樣的輔助方法](/docs/{{version}}/eloquent-collections#available-methods) 用來處理你的 Eloquent 結果。當然，你也可以簡單地像陣列一樣遍歷你的集合：
 
     foreach ($flights as $flight) {
         echo $flight->name;
@@ -173,7 +173,7 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 
 #### 分塊結果
 
-如果你需要處理成千上萬的 Eloquent 記錄，可以使用 `chunk` 命令。`chunk` 方法將會取得一個 Eloquent 模型的「分塊」，將他們送到給定的 `閉包 (Closure)` 進行處理。當你在處理大量的結果時，使用 `chunk` 方法可以節省記憶體：
+如果你要處理非常多（數千筆）Eloquent 查詢結果，可以使用 `chunk` 命令。`chunk` 方法會取得一個 Eloquent 模型的「分塊」，將他們送到給定的 `閉包 (Closure)` 進行處理。當你在處理大量的結果時，使用 `chunk` 方法可以節省記憶體：
 
     Flight::chunk(200, function ($flights) {
         foreach ($flights as $flight) {
@@ -181,12 +181,12 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
         }
     });
 
-傳送到方法裡的第一個參數是表示接收每次「分塊」要取出的資料數量。第二個參數傳遞的閉包，將會從資料庫取得並回傳每個分塊。
+傳送到方法裡的第一個參數是表示接收每次「分塊」要取出的資料數量。第二個參數傳遞的閉包，會在每次取出資料時被呼叫。
 
 <a name="retrieving-single-models"></a>
 ## 取得單一模型／聚合
 
-當然，除了在給定的資料表中取得所有記錄，你還可以取得單一的記錄，透過 `find` 以及 `first` 取得。而這不是回傳模型的集合，這個方法回傳的是單一模型的實例：
+當然，除了在給定的資料表中取得所有記錄，你還可以透過 `find` 以及 `first` 取得單一的記錄。而這不是回傳模型的集合，這個方法回傳的是單一模型的實例：
 
     // Retrieve a model by its primary key...
     $flight = App\Flight::find(1);
@@ -196,13 +196,13 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 
 #### 未發現異常
 
-有時候你可能希望在找不到模型時拋出異常，這在路由或是控制器內是非常有幫助的。`findOrFail` 以及 `firstOrFail` 方法將會取得第一個查詢的結果。而如果沒有找到結果，將會拋出一個 `Illuminate\Database\Eloquent\ModelNotFoundException`：
+有時候你可能希望在找不到模型時拋出異常，這在路由或是控制器內是非常有幫助的。`findOrFail` 以及 `firstOrFail` 方法會取得第一個查詢的結果。而如果沒有找到結果，將會拋出一個 `Illuminate\Database\Eloquent\ModelNotFoundException`：
 
     $model = App\Flight::findOrFail(1);
 
     $model = App\Flight::where('legs', '>', 100)->firstOrFail();
 
-如果沒有取得異常，`404` HTTP 回應會自動的傳送給使用者，當使用這個方法時，沒有必要明確寫出回傳 `404` 回應確認：
+如果沒有取得異常，HTTP `404` 回應會自動的傳送給使用者，當使用這個方法時，沒有必要明確寫出回傳 `404` 回應確認：
 
     Route::get('/api/flights/{id}', function ($id) {
         return App\Flight::findOrFail($id);
@@ -223,7 +223,7 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 <a name="basic-inserts"></a>
 ### 基本新增
 
-只要建立一個新模型，並在模型內設定屬性，再調用 `save` 方法，就可新增到資料庫：
+如果要新增一筆記錄到資料庫，只要建立一個新模型，並在模型內設定屬性，再調用 `save` 方法，就可以新增到資料庫：
 
     <?php
 
@@ -253,7 +253,7 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
         }
     }
 
-在這個範例中，我們把通過 HTTP 傳入請求的 `name` 參數指定到 `App\Flight` 模型實例的 `name` 屬性。當我們使用 `save` 方法，就會在資料庫中新增一筆記錄。當調用 `save` 方法時，`created_at` 以及 `updated_at` 會自動設定時間戳記，所以不需要透過手動去設定。
+在這個範例中，我們從傳入的 HTTP 請求簡單的分配 `name` 參數到 `App\Flight` 模型實例的 `name` 屬性。當我們使用 `save` 方法，就會在資料庫中新增一筆記錄。當調用 `save` 方法時，`created_at` 以及 `updated_at` 會自動設定時間戳記，所以不需要透過手動去設定。
 
 <a name="basic-updates"></a>
 ### 基本更新
@@ -277,11 +277,11 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 <a name="mass-assignment"></a>
 ### 批量賦值
 
-你也可以在使用 `create` 方法來儲存新的模型。新增的模型實例會從你的方法中來回傳。然而，在這樣做之前，你需要指定一個 `fillable` 或 `guarded` 屬性在你的模型中，可以保護所有 Eloquent 模型防止被批量賦值（Mass-Assignment）。
+你也可以在使用 `create` 方法來儲存新的模型。新增的模型實例會從你的方法返回。然而，在這樣做之前，你需要指定一個 `fillable` 或 `guarded` 屬性在你的模型中，可以保護所有 Eloquent 模型防止被批量賦值（Mass-Assignment）。
 
-之所以會發生批量賦值（Mass-Assignment）的問題，是因為使用者透過 HTTP 請求傳入非法的參數，而且你沒想到這些參數可以更改你資料庫內的欄位。例如，惡意使用者可能會發送 `is_admin` 參數通過 HTTP 請求，然後對映到你模型中的 `create` 方法，這樣就可以讓使用者將自己升級為管理者了。
+之所以會發生批量賦值（Mass-Assignment）的問題，是因為使用者透過 HTTP 請求傳入非法的參數，而且你沒想到這些參數可以更改你資料庫內的欄位。例如，惡意使用者可能透過 HTTP 請求傳送 `is_admin` 參數，然後對映到你模型中的 `create` 方法，這樣就可以讓使用者將自己升級為管理者了。
 
-所以，在開始之前，你應該定義那些模型屬性是你希望可以被批量賦值的。你可以在你的模型中使用 `$fillable` 屬性。例如，我們讓 `Flight` 模型中的 `name` 屬性給予批量賦值：
+所以，在開始之前，你應該定義那些模型屬性是你希望可以被批量賦值的。你可以在你的模型中使用 `$fillable` 屬性。例如，我們讓 `Flight` 模型中的 `name` 屬性可以被批量賦值：
 
     <?php
 
@@ -303,7 +303,7 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 
     $flight = App\Flight::create(['name' => 'Flight 10']);
 
-雖然 `$fillable` 作為「白名單」的屬性可以被批量賦值，但你也可以選擇使用 `$guarded`。`$guarded` 屬性應該包含一個屬性的陣列，是你不想要被批量賦值的。並非所有的屬性在陣列中會被批量賦值。所以，`$guarded` 函式像是一個「黑名單」。當然，你應該使用 `$fillable` 或 `$guarded` - 而不是兩者：
+雖然 `$fillable` 被當作「白名單」的屬性可以被批量賦值，但你也可以選擇使用 `$guarded`。`$guarded` 屬性應該包含一個屬性的陣列，是你不想要被批量賦值的。並非所有的屬性在陣列中會被批量賦值。所以，`$guarded` 函式像是一個「黑名單」。當然，你應該使用 `$fillable` 或 `$guarded` - 而不是兩者：
 
     <?php
 
@@ -325,7 +325,7 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 
 #### 其他建立的方法
 
-透過批量賦值，你有兩種其他方法來建立你的模型： `firstOrCreate` 以及 `firstOrNew`。`firstOrCreate` 方法中使用給定的欄位／值對，來嘗試尋找資料庫中的記錄。如果在資料庫找不到模型，用給定的屬性來新增一筆記錄。
+透過批量賦值，你有兩種其他方法來建立你的模型： `firstOrCreate` 和 `firstOrNew`。`firstOrCreate` 方法中使用給定的欄位／值對，來嘗試尋找資料庫中的記錄。如果在資料庫找不到模型，用給定的屬性來新增一筆記錄。
 
 `firstOrNew` 方法類似 `firstOrCreate`，會嘗試使用給定的屬性並且在資料庫中搜尋。然而，假設找不到模型，會回傳一個新的模型實例。請注意 `firstOrnew` 回傳的模型還尚未保留到資料庫。你需要透過手動調用 `save` 方法來儲存它：
 
@@ -363,7 +363,7 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 <a name="soft-deleting"></a>
 ### 軟刪除
 
-除了實際從資料庫中移除記錄，Eloquent 還可以使用「軟刪除」模型。當模型通過軟刪除時，它不是真的從資料庫中被移除。相反，`deleted_at` 屬性在模型上被設定，以及被新增到資料庫。如果模型有一個非空值的 `deleted_at`，代表模型已經被軟刪除了。如果要在模型啟動軟刪除，在模型上使用 `Illuminate\Database\Eloquent\SoftDeletes` trait 以及新增 `deleted_at` 欄位到你的 `$dates` 屬性：
+除了實際從資料庫中移除記錄，Eloquent 還可以使用「軟刪除」模型。當模型通過軟刪除時，它不是真的從資料庫中被移除。相反地，`deleted_at` 屬性被設定在模型上，然後新增到資料庫。如果模型有一個非空值的 `deleted_at`，代表模型已經被軟刪除了。如果要在模型啟動軟刪除，在模型上使用 `Illuminate\Database\Eloquent\SoftDeletes` trait 以及新增 `deleted_at` 欄位到你的 `$dates` 屬性：
 
     <?php
 
@@ -384,7 +384,7 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
         protected $dates = ['deleted_at'];
     }
 
-你應該新增 `deleted_at` 欄位到你的資料表。Laravel [結構構造器](/docs/{{version}}/schema)包含了一個說明的方法來建立這個欄位：
+你應該新增 `deleted_at` 欄位到你的資料表。Laravel [結構構造器](/docs/{{version}}/schema)包含了一個輔助的方法用來建立這個欄位：
 
     Schema::table('flights', function ($table) {
         $table->softDeletes();
@@ -423,11 +423,11 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 
 #### 恢復軟刪除的模型
 
-有時候你可能希望「取消刪除」一個軟刪除模型。想要恢復一個軟刪除的模型為有效狀態，在你的模型實例中使用 `restore` 方法：
+有時候你可能希望「取消刪除」一個軟刪除模型。在你的模型實例中使用 `restore` 方法，來恢復你的軟刪除模型為有效狀態：
 
     $flight->restore();
 
-你也可以使用 `restore` 方法，在查詢的時候快速恢復多個模型：
+在查詢的時候使用 `restore` 方法可以快速恢復多個模型：
 
     App\Flight::withTrashed()
             ->where('airline_id', 1)
@@ -450,7 +450,7 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 <a name="query-scopes"></a>
 ## 查詢範圍
 
-範圍（Scopes）允許你定義共同的限制設定，你可以在應用程式中輕易地重複使用。例如，你可能需要頻繁的取得所有使用者，而且是最「受歡迎的」。如果要定義範圍，在 Eloquent 模型方法前面，加上前綴 `scope` 方法：
+範圍（Scopes）讓你定義共同的限制，讓你可以在你的應用程式輕鬆的重複使用。例如，你可能需要頻繁的取得最「受歡迎的」使用者。如果要定義範圍，在 Eloquent 模型方法前面，加上前綴 `scope`：
 
     <?php
 
@@ -483,13 +483,13 @@ Eloquent `all` 方法會回傳在模型資料表中所有的結果。由於每�
 
 #### 利用查詢範圍
 
-一旦定義了範圍，當你在查詢模型時，你可以調用範圍方法。然而，當你調用方法時，你不需要包含 `scope` 前綴。你能甚至調用連結到不同的範圍，例如:
+一旦定義了範圍，當你在查詢模型時，你可以調用範圍方法。然而，當你調用方法時，你不需要包含 `scope` 前綴。你甚至能調用連結到各個範圍，例如:
 
     $users = App\User::popular()->women()->orderBy('created_at')->get();
 
 #### 動態範圍
 
-有時候，你可能想要設定一個查詢範圍，只要在你的範圍增加額外的參數。範圍參數應該被定義在 `$query` 參數之後：
+有時候，你可能想要定義一個範圍，只要在你的 scope 後加上額外的參數。範圍參數應該被定義在 `$query` 參數之後：
 
     <?php
 
