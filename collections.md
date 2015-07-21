@@ -2,7 +2,7 @@
 
 - [簡介](#introduction)
 - [建立集合](#creating-collections)
-- [Available Methods](#available-methods)
+- [可用的方法](#available-methods)
 
 <a name="introduction"></a>
 ## 簡介
@@ -17,7 +17,7 @@
     });
 
 
-如你所見，`Collection` 類別允許你串接它的方法以對底層的陣列流暢地進行映射與刪減。一般來說，每一個 `Collection` 方法會回傳一個全新的 `Collection` 實例。
+如你所見，`Collection` 類別允許你鏈結它的方法以對底層的陣列流暢地進行映射與刪減。一般來說，每一個 `Collection` 方法會回傳一個全新的 `Collection` 實例。
 
 <a name="creating-collections"></a>
 ## 建立集合
@@ -29,11 +29,11 @@
 預設 [Eloquent](/docs/{{version}}/eloquent) 模型的集合總是以 `Collection` 實例回傳；然而，你可以任意在你應用程式適當的地方使用 `Collection` 類別。
 
 <a name="available-methods"></a>
-## Available Methods
+## 可用的方法
 
-For the remainder of this documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained for fluently manipulating the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary.
+在這份文件剩餘的部份，我們將會探討每一個 `Collection` 類別上可用的方法。要記得的是，所有方法都能被鏈結以流暢地操控底層的陣列。此外，幾乎是所有的方法都會回傳新的 `Collection` 實例，讓你保留原版的集合以備不時之需。
 
-You may select any method from this table to see an example of its usage:
+你可以從這張表格中選擇任一方法看使用的範例：
 
 <style>
     #collection-method-list > p {
@@ -102,7 +102,7 @@ You may select any method from this table to see an example of its usage:
 </div>
 
 <a name="method-listing"></a>
-## Method Listing
+## 方法清單
 
 <style>
     #collection-method code {
@@ -117,7 +117,7 @@ You may select any method from this table to see an example of its usage:
 <a name="method-all"></a>
 #### `all()` {#collection-method .first-collection-method}
 
-The `all` method simply returns the underlying array represented by the collection:
+`all` 方法單純地回傳該集合所代表的底層陣列：
 
     collect([1, 2, 3])->all();
 
@@ -126,7 +126,7 @@ The `all` method simply returns the underlying array represented by the collecti
 <a name="method-chunk"></a>
 #### `chunk()` {#collection-method}
 
-The `chunk` method breaks the collection into multiple, smaller collections of a given size:
+`chunk` 方法將集合拆成多個給定大小的較小集合：
 
     $collection = collect([1, 2, 3, 4, 5, 6, 7]);
 
@@ -136,7 +136,7 @@ The `chunk` method breaks the collection into multiple, smaller collections of a
 
     // [[1, 2, 3, 4], [5, 6, 7]]
 
-This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](http://getbootstrap.com/css/#grid). Imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
+這個方法在有用到如[Bootstrap](http://getbootstrap.com/css/#grid)之類網格系統的[視圖](/docs/{{version}}/views)內特別有用。想像你有一個 [Eloquent](/docs/{{version}}/eloquent) 模型的集合要顯示在一個網格內：
 
     @foreach ($products->chunk(3) as $chunk)
         <div class="row">
@@ -149,7 +149,7 @@ This method is especially useful in [views](/docs/{{version}}/views) when workin
 <a name="method-collapse"></a>
 #### `collapse()` {#collection-method}
 
-The `collapse` method collapses a collection of arrays into a flat collection:
+`collapse` 方法將多個陣列組成的集合折疊成單一陣列集合：
 
     $collection = collect([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
@@ -162,7 +162,7 @@ The `collapse` method collapses a collection of arrays into a flat collection:
 <a name="method-contains"></a>
 #### `contains()` {#collection-method}
 
-The `contains` method determines whether the collection contains a given item:
+`contains` 方法用來判斷該集合是否含有指定的項目：
 
     $collection = collect(['name' => 'Desk', 'price' => 100]);
 
@@ -174,7 +174,7 @@ The `contains` method determines whether the collection contains a given item:
 
     // false
 
-You may also pass a key / value pair to the `contains` method, which will determine if the given pair exists in the collection:
+你可以傳入 `contains` 方法一對鍵/值組合，用來判斷該組合是否存在於集合內：
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
@@ -185,7 +185,7 @@ You may also pass a key / value pair to the `contains` method, which will determ
 
     // false
 
-Finally, you may also pass a callback to the `contains` method to perform your own truth test:
+最後，你也可以傳入一個回呼函式到 `contains` 方法內執行你自己的判斷式：
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -198,7 +198,7 @@ Finally, you may also pass a callback to the `contains` method to perform your o
 <a name="method-count"></a>
 #### `count()` {#collection-method}
 
-The `count` method returns the total number of items in the collection:
+`count` 方法回傳該集合內的項目總數：
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -209,7 +209,7 @@ The `count` method returns the total number of items in the collection:
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
 
-The `diff` method compares the collection against another collection or a plain PHP `array`:
+`diff` 方法拿該集合與其他集合或純 PHP `陣列`進行比較：
 
     $collection = collect([1, 2, 3, 4, 5]);
 
