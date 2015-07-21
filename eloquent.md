@@ -1,6 +1,6 @@
 # Eloquent: 入門
 
-- [介紹](#introduction)
+- [簡介](#introduction)
 - [定義模型](#defining-models)
     - [Eloquent 模型規範](#eloquent-model-conventions)
 - [取得多個模型](#retrieving-multiple-models)
@@ -17,7 +17,7 @@
 - [事件](#events)
 
 <a name="introduction"></a>
-## 介紹
+## 簡介
 
 Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和資料庫互動。每個資料庫表會和一個對應的「模型」互動。你可以透過模型查詢資料表內的資料，以及新增記錄到資料表中。
 
@@ -450,7 +450,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 <a name="query-scopes"></a>
 ## 查詢範圍
 
-範圍（Scopes）讓你定義共同的限制，讓你可以在你的應用程式輕鬆的重複使用。例如，你可能需要頻繁的取得最「受歡迎的」使用者。如果要定義範圍，在 Eloquent 模型方法前面，加上前綴 `scope`：
+範圍（Scopes）讓你定義限制的共用集合，它可以輕鬆地在你的應用程式重複使用。例如，你可能需要頻繁地取得所有被認為是「受歡迎的」使用者。要定義範圍，必須簡單地在 Eloquent 模型方法前面加上前綴 `scope`：
 
     <?php
 
@@ -461,7 +461,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
     class User extends Model
     {
         /**
-         * Scope a query to only include popular users.
+         * 限制查詢只包括受歡迎的使用者。
          *
          * @return \Illuminate\Database\Eloquent\Builder
          */
@@ -471,7 +471,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
         }
 
         /**
-         * Scope a query to only include active users.
+         * 限制查詢只包括活躍的使用者。
          *
          * @return \Illuminate\Database\Eloquent\Builder
          */
@@ -483,13 +483,13 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 
 #### 利用查詢範圍
 
-一旦定義了範圍，當你在查詢模型時，你可以調用範圍方法。然而，當你調用方法時，你不需要包含 `scope` 前綴。你甚至能透過一連串的限制來調用不同的範圍，例如:
+一旦定義了範圍，你可以在查詢模型時呼叫範圍方法。然而，當你呼叫方法時，你不需要加上 `scope` 前綴。你甚至能串接不同的範圍呼叫，例如:
 
     $users = App\User::popular()->women()->orderBy('created_at')->get();
 
 #### 動態範圍
 
-有時候，你可能想要定義一個範圍，只要在你的 scope 後加上額外的參數。範圍參數應該被定義在 `$query` 參數之後：
+有時候，你可能希望定義一個接受參數的範圍。只要在你的範圍加上額外的參數即可。範圍參數應該被定義在 `$query` 參數之後：
 
     <?php
 
@@ -500,7 +500,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
     class User extends Model
     {
         /**
-         * Scope a query to only include users of a given type.
+         * 限制查詢只包括給定類型的使用者。
          *
          * @return \Illuminate\Database\Eloquent\Builder
          */
@@ -510,21 +510,21 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
         }
     }
 
-現在，當你調用範圍時可以傳遞參數：
+現在，你可以在呼叫範圍時傳遞參數：
 
     $users = App\User::ofType('admin')->get();
 
 <a name="events"></a>
 ## 事件
 
-Eloquent 模型有很多事件可以觸發，使用下面的方法，讓你可以操作模型的生命週期：`creating`、`created`、`updating`、`updated`、`saving`、`saved`、`deleting`、`deleted`、`restoring`、`restored`。事件讓你每次可以輕鬆的執行程式碼，而被指定的模型類別在資料庫會被儲存或者更新。
+Eloquent 模型會觸發許多事件，讓你可以藉由以下的方法，在模型的生命週期的多個時間點進行操作：`creating`、`created`、`updating`、`updated`、`saving`、`saved`、`deleting`、`deleted`、`restoring`、`restored`。事件讓你可以在每次特定的模型類別在資料庫被儲存或更新時，簡單地執行程式碼。
 
 <a name="basic-usage"></a>
 ### 基本用法
 
-當一個物件初次被儲存到資料庫，`creating` 以及 `created` 事件會被觸發。如果不是新物件而調用了 `save` 方法，`updating` 和 `updated` 事件將會被觸發。而兩者的 `saving` 和 `saved` 事件都會被觸發。
+當一個新模型初次被儲存，將會觸發 `creating` 以及 `created` 事件。如果一個模型已經存在於資料庫而且呼叫了 `save` 方法，將會觸發 `updating` 和 `updated` 事件。然而，在這兩個狀況下，都將會觸發 `saving` 和 `saved` 事件。
 
-例如，讓我們定義一個 Eloquent 事件監聽器在[服務提供者](/docs/{{version}}/providers)。在我們的事件監聽器，我們會調用 `isValid` 方法對給定的模型，如果模型不是有效的，將會回傳 `false`。Eloquent 事件監聽器回傳 `false`，會取消 `save` 和 `update` 的操作：
+例如，讓我們來在[服務提供者](/docs/{{version}}/providers)中定義一個 Eloquent 事件監聽器。在我們的事件監聽器中，我們會在給定的模型上呼叫 `isValid` 方法，並在模型無效的時候回傳 `false`。從 Eloquent 事件監聽器回傳 `false` 會取消 `save` 和 `update` 的操作：
 
     <?php
 
@@ -536,7 +536,7 @@ Eloquent 模型有很多事件可以觸發，使用下面的方法，讓你可�
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Bootstrap any application services.
+         * 啟動所有應用程式服務。
          *
          * @return void
          */
@@ -550,7 +550,7 @@ Eloquent 模型有很多事件可以觸發，使用下面的方法，讓你可�
         }
 
         /**
-         * Register the service provider.
+         * 註冊服務提供者。
          *
          * @return void
          */
