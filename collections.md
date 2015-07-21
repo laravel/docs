@@ -1,13 +1,13 @@
-# Collections
+# 集合
 
 - [簡介](#introduction)
-- [Creating Collections](#creating-collections)
+- [建立集合](#creating-collections)
 - [Available Methods](#available-methods)
 
 <a name="introduction"></a>
 ## 簡介
 
-`Illuminate\Support\Collection` 類別提供一個流暢、便利的封裝來操控陣列資料。舉個例子，查看下列的程式碼。我們將用 `collect` 輔助方法從陣列建立一個新的集合實例，並對每一個元素執行 `strtoupper` 涵式，然後移除所有的空元素：
+`Illuminate\Support\Collection` 類別提供一個流暢、便利的封裝來操控陣列資料。舉個例子，查看下列的程式碼。我們將用 `collect` 輔助方法從陣列建立一個新的集合實例，並對每一個元素執行 `strtoupper` 函式，然後移除所有的空元素：
 
     $collection = collect(['taylor', 'abigail', null])->map(function ($name) {
         return strtoupper($name);
@@ -17,16 +17,16 @@
     });
 
 
-As you can see, the `Collection` class allows you to chain its methods to perform fluent mapping and reducing of the underlying array. In general, every `Collection` method returns an entirely new `Collection` instance.
+如你所見，`Collection` 類別允許你串接它的方法以對底層的陣列流暢地進行映射與刪減。一般來說，每一個 `Collection` 方法會回傳一個全新的 `Collection` 實例。
 
 <a name="creating-collections"></a>
-## Creating Collections
+## 建立集合
 
-As mentioned above, the `collect` helper returns a new `Illuminate\Support\Collection` instance for the given array. So, creating a collection is as simple as:
+如上所述，`collect` 輔助方法會用傳入的陣列回傳一個新的 `Illuminate\Support\Collection` 實例。所以要建立一個集合就這麼簡單：
 
     $collection = collect([1, 2, 3]);
 
-By default, collections of [Eloquent](/docs/{{version}}/eloquent) models are always returned as `Collection` instances; however, feel free to use the `Collection` class wherever it is convenient for your application.
+預設 [Eloquent](/docs/{{version}}/eloquent) 模型的集合總是以 `Collection` 實例回傳；然而，你可以任意在你應用程式適當的地方使用 `Collection` 類別。
 
 <a name="available-methods"></a>
 ## Available Methods
