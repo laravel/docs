@@ -338,15 +338,15 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 <a name="deleting-models"></a>
 ## 刪除模型
 
-如果要刪除模型，在模型時實例中調用 `delete` 方法：
+要刪除模型，必須在模型實例上呼叫 `delete` 方法：
 
     $flight = App\Flight::find(1);
 
     $flight->delete();
 
-#### 透過鍵值來刪除現有的模型
+#### 透過鍵來刪除現有的模型
 
-在上面的範例中，我們在調用 `delete` 方法之前，從資料庫取得了模型。然而，假設你知道模型中的主鍵，你可以不需要透過查詢就可以直接刪除。如果要這麼做，請調用 `destroy` 方法：
+在上面的範例中，我們在呼叫 `delete` 方法之前，先從資料庫取得了模型。然而，如果你知道模型中的主鍵，你可以不取回模型就直接刪除它。如果要這麼做，請呼叫 `destroy` 方法：
 
     App\Flight::destroy(1);
 
@@ -356,14 +356,14 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 
 #### 透過查詢來刪除模型
 
-當然，你還可以在一個模型上執行刪除查詢。在這個範例，我們將會刪除所有被標記為非活動的航班：
+當然，你也可以在一組模型上執行刪除查詢。在這個範例中，我們將會刪除所有被標記為不活躍的航班：
 
     $deletedRows = App\Flight::where('active', 0)->delete();
 
 <a name="soft-deleting"></a>
 ### 軟刪除
 
-除了實際從資料庫中移除記錄，Eloquent 還可以使用「軟刪除」模型。當模型通過軟刪除時，它不是真的從資料庫中被移除。相反地，`deleted_at` 屬性被設定在模型上，然後新增到資料庫。如果模型有一個非空值的 `deleted_at`，代表模型已經被軟刪除了。如果要在模型啟動軟刪除，在模型上使用 `Illuminate\Database\Eloquent\SoftDeletes` trait 以及新增 `deleted_at` 欄位到你的 `$dates` 屬性：
+除了實際從資料庫中移除記錄，Eloquent 也可以「軟刪除」模型。當模型被軟刪除時，它們不是真的從資料庫中被移除。而是 `deleted_at` 屬性被設定在模型上並新增到資料庫。如果模型有一個非空值的 `deleted_at`，代表模型已經被軟刪除了。要在模型啟動軟刪除，必須在模型上使用 `Illuminate\Database\Eloquent\SoftDeletes` trait 並新增 `deleted_at` 欄位到你的 `$dates` 屬性：
 
     <?php
 
@@ -377,22 +377,22 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
         use SoftDeletes;
 
         /**
-         * The attributes that should be mutated to dates.
+         * 需要被轉換成日期的屬性。
          *
          * @var array
          */
         protected $dates = ['deleted_at'];
     }
 
-你應該新增 `deleted_at` 欄位到你的資料表。Laravel [結構構造器](/docs/{{version}}/schema)包含了一個輔助的方法用來建立這個欄位：
+當然，你應該添加 `deleted_at` 欄位到你的資料表。Laravel [結構構造器](/docs/{{version}}/schema)包含了一個輔助的方法用來建立這個欄位：
 
     Schema::table('flights', function ($table) {
         $table->softDeletes();
     });
 
-當你在模型中調用 `delete` 方法，`deleted_at` 欄位將會被設定成目前的日期和時間。而且，當使用軟刪除查詢模型時，軟刪除的模型將自動排除所有的查詢結果。
+現在，當你在模型上呼叫 `delete` 方法，`deleted_at` 欄位將會被設定成目前的日期和時間。而且，當查詢有啟用軟刪除的模型時，被軟刪除的模型將會自動從所有的查詢結果中排除。
 
-要確認給定的模型實例是否已經被軟刪除，使用 `trashed` 方法：
+要確認給定的模型實例是否已經被軟刪除，可以使用 `trashed` 方法：
 
     if ($flight->trashed()) {
         //
@@ -401,50 +401,50 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 <a name="querying-soft-deleted-models"></a>
 ### 查詢被軟刪除的模型
 
-#### 包含軟刪除的模型
+#### 包含被軟刪除的模型
 
-如上面所述，軟刪除的模型將自動排除所有的查詢結果。你可以在搜尋時設定 `withTrashed` 方法，強迫軟刪除顯示結果：
+如上面所述，被軟刪除的模型將會自動從所有的查詢結果中排除。然而，你可以藉由在查詢上呼叫 `withTrashed` 方法， 強迫被軟刪除的模型出現在查詢結果：
 
     $flights = App\Flight::withTrashed()
                     ->where('account_id', 1)
                     ->get();
 
-`withTrashed` 方法應該使用[關聯](/docs/{{version}}/eloquent-relationships)搜尋：
+`withTrashed` 方法也可以被用在[關聯](/docs/{{version}}/eloquent-relationships)查詢：
 
     $flight->history()->withTrashed()->get();
 
-#### 取得只有軟刪除的模型
+#### 只取得被軟刪除的模型
 
-`onlyTrashed` 方法會取得 **只有** 軟刪除的模型：
+`onlyTrashed` 方法會**只**取得被軟刪除的模型：
 
     $flights = App\Flight::onlyTrashed()
                     ->where('airline_id', 1)
                     ->get();
 
-#### 恢復軟刪除的模型
+#### 恢復被軟刪除的模型
 
-有時候你可能希望「取消刪除」一個軟刪除模型。在你的模型實例中使用 `restore` 方法，來恢復你的軟刪除模型為有效狀態：
+有時候你可能希望「取消刪除」一個被軟刪除的模型。要恢復一個被軟刪除的模型回到有效狀態，必須在模型實例上使用 `restore` 方法：
 
     $flight->restore();
 
-在查詢的時候使用 `restore` 方法可以快速恢復多個模型：
+你也可以在查詢上使用 `restore` 方法來快速地恢復多個模型：
 
     App\Flight::withTrashed()
             ->where('airline_id', 1)
             ->restore();
 
-類似 `withTrashed` 方法，`restore` 方法也可以使用在[關聯](/docs/{{version}}/eloquent-relationships):
+與 `withTrashed` 方法類似，`restore` 方法也可以被用在[關聯](/docs/{{version}}/eloquent-relationships):
 
     $flight->history()->restore();
 
-#### 永久刪除模型
+#### 永久地刪除模型
 
-假如你要從資料庫永久刪除軟模型，使用 `forceDelete` 方法：
+有時候你可能需要真正地從資料庫移除模型。要永久地從資料庫移除一個被軟刪除的模型，必須使用 `forceDelete` 方法：
 
-    // Force deleting a single model instance...
+    // 強制刪除單一模型實例...
     $flight->forceDelete();
 
-    // Force deleting all related models...
+    // 強制刪除所有相關模型...
     $flight->history()->forceDelete();
 
 <a name="query-scopes"></a>
@@ -483,7 +483,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 
 #### 利用查詢範圍
 
-一旦定義了範圍，你可以在查詢模型時呼叫範圍方法。然而，當你呼叫方法時，你不需要加上 `scope` 前綴。你甚至能串接不同的範圍呼叫，例如:
+一旦定義了範圍，你可以在查詢模型時呼叫範圍方法。然而，當你呼叫方法時，你不需要加上 `scope` 前綴。你甚至能串接不同的範圍呼叫，例如：
 
     $users = App\User::popular()->women()->orderBy('created_at')->get();
 
