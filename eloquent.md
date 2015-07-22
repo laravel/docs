@@ -19,7 +19,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和資料庫互動。每個資料庫表會和一個對應的「模型」互動。你可以透過模型查詢資料表內的資料，以及新增記錄到資料表中。
+Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和資料庫互動。每個資料庫表有一個對應的「模型」可以用來跟資料表互動。你可以透過模型查詢資料表內的資料，以及新增記錄到資料表中。
 
 在開始之前，請確認有設定你的資料庫連結在 `config/database.php` 檔案內。更多資料庫的設定資訊，請查看[資料庫設定](/docs/{{version}}/database#configuration)。
 
