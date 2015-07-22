@@ -223,7 +223,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 <a name="basic-inserts"></a>
 ### 基本新增
 
-如果要新增一筆記錄到資料庫，只要建立一個新模型，並在模型內設定屬性，再調用 `save` 方法，就可以新增到資料庫：
+要在資料庫中建立一筆新記錄，只要建立一個新模型實例，並在模型上設定屬性，再呼叫 `save` 方法：
 
     <?php
 
@@ -236,14 +236,14 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
     class FlightController extends Controller
     {
         /**
-         * Create a new flight instance.
+         * 建立一個新的航班實例。
          *
          * @param  Request  $request
          * @return Response
          */
         public function store(Request $request)
         {
-            // Validate the request...
+            // 驗證請求...
 
             $flight = new Flight;
 
@@ -253,12 +253,12 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
         }
     }
 
-在這個範例中，我們從傳入的 HTTP 請求簡單的分配 `name` 參數到 `App\Flight` 模型實例的 `name` 屬性。當我們使用 `save` 方法，就會在資料庫中新增一筆記錄。當調用 `save` 方法時，`created_at` 以及 `updated_at` 會自動設定時間戳記，所以不需要透過手動去設定。
+在這個範例中，我們把進來的 HTTP 請求的 `name` 參數簡單地指定給 `App\Flight` 模型實例的 `name` 屬性。當我們呼叫 `save` 方法，就會新增一筆記錄到資料庫中。當 `save` 方法被呼叫時，`created_at` 以及 `updated_at` 時間戳記將會自動被設定，所以不需要手動去設定它們。
 
 <a name="basic-updates"></a>
 ### 基本更新
 
-`save` 方法也可用於更新資料庫中已經存在的模型。如果要更新模型，你應該先取得模型，設定任何你希望更新的屬性，之後再透過 `save` 方法儲存。接著，`updated_at` 時間戳記會自動更新，所以不需要手動設定這個值：
+`save` 方法也可以用於更新資料庫中已經存在的模型。要更新模型，你必須先取回模型，設定任何你希望更新的屬性，接著呼叫 `save` 方法。同樣的，`updated_at` 時間戳記將會自動被更新，所以不需要手動設定它的值：
 
     $flight = App\Flight::find(1);
 
@@ -266,22 +266,22 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 
     $flight->save();
 
-此外可以對任意數量的模型給定匹配的查詢並且執行更新。在這個範例中，所有的航班包含有 `active` 以及 `destination` 為 `San Diego`，將會被標記為延遲；
+也可以針對符合給定查詢的任意數量模型執行更新。在這個範例中，所有 `active` 並且 `destination` 為 `San Diego` 的航班，將會被標記為延遲：
 
     App\Flight::where('active', 1)
               ->where('destination', 'San Diego')
               ->update(['delayed' => 1]);
 
-`update` 方法希望可以透過一個陣列的鍵值對，來更新需要的欄位。
+`update` 方法預期收到一個欄位與值成對的陣列，來代表應該被更新的欄位。
 
 <a name="mass-assignment"></a>
 ### 批量賦值
 
-你也可以在使用 `create` 方法來儲存新的模型。新增的模型實例會從你的方法返回。然而，在這樣做之前，你需要指定一個 `fillable` 或 `guarded` 屬性在你的模型中，可以保護所有 Eloquent 模型防止被批量賦值（Mass-Assignment）。
+你也可以使用 `create` 方法來在一行間儲存一個新的模型。被新增的模型實例將會從你的方法回傳。然而，在這樣做之前，你需要在你的模型上指定一個 `fillable` 或 `guarded` 屬性，因為所有的 Eloquent 模型有針對批量賦值（Mass-Assignment）做保護。
 
-之所以會發生批量賦值（Mass-Assignment）的問題，是因為使用者透過 HTTP 請求傳入非法的參數，而且你沒想到這些參數可以更改你資料庫內的欄位。例如，惡意使用者可能透過 HTTP 請求傳送 `is_admin` 參數，然後對映到你模型中的 `create` 方法，這樣就可以讓使用者將自己升級為管理者了。
+當使用者透過 HTTP 請求傳入非預期的參數，並接著這些參數更改了資料庫中你不打算要改的欄位，就發生了批量賦值（Mass-Assignment）的漏洞。例如，惡意使用者可能會透過 HTTP 請求傳送 `is_admin` 參數，然後對映到你模型的 `create` 方法，這讓該使用者把自己升級為一個管理者。
 
-所以，在開始之前，你應該定義那些模型屬性是你希望可以被批量賦值的。你可以在你的模型中使用 `$fillable` 屬性。例如，我們讓 `Flight` 模型中的 `name` 屬性可以被批量賦值：
+所以，在開始之前，你應該定義你希望哪些模型屬性是可以被批量賦值的。你可以在模型上藉由 `$fillable` 屬性達到這個。例如，讓我們來使 `Flight` 模型的 `name` 屬性可以被批量賦值：
 
     <?php
 
@@ -292,18 +292,18 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
     class Flight extends Model
     {
         /**
-         * The attributes that are mass assignable.
+         * 可以被批量賦值的屬性。
          *
          * @var array
          */
         protected $fillable = ['name'];
     }
 
-一旦我們取得了屬性的批量賦值，我們可以使用 `create` 方法來新增新的記錄到資料庫。`create` 方法回傳已經保存的模型實例：
+一旦我們已經設定屬性為可以被批量賦值的，我們可以使用 `create` 方法來新增一筆新記錄到資料庫。`create` 方法回傳已經被儲存的模型實例：
 
     $flight = App\Flight::create(['name' => 'Flight 10']);
 
-雖然 `$fillable` 被當作「白名單」的屬性可以被批量賦值，但你也可以選擇使用 `$guarded`。`$guarded` 屬性應該包含一個屬性的陣列，是你不想要被批量賦值的。並非所有的屬性在陣列中會被批量賦值。所以，`$guarded` 函式像是一個「黑名單」。當然，你應該使用 `$fillable` 或 `$guarded` - 而不是兩者：
+`$fillable` 作為一個可以被批量賦值的屬性的「白名單」，然而你也可以選擇使用 `$guarded`。`$guarded` 屬性應該包含一個屬性的陣列，是你不想要被批量賦值的。所有不在陣列裡面的其他屬性將會是可以被批量賦值的。所以，`$guarded` 的功能像是一個「黑名單」。當然，你應該使用 `$fillable` 或 `$guarded` - 而不是兩者：
 
     <?php
 
@@ -314,25 +314,25 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
     class Flight extends Model
     {
         /**
-         * The attributes that aren't mass assignable.
+         * 不可以被批量賦值的屬性。
          *
          * @var array
          */
         protected $guarded = ['price'];
     }
 
-在上面的範例當中，所有屬性 **除了 `price`** 以外，都會被批量賦值。
+在上面的範例當中，所有屬性**除了 `price`** 以外，都可以被批量賦值。
 
 #### 其他建立的方法
 
-透過批量賦值，你有兩種其他方法來建立你的模型： `firstOrCreate` 和 `firstOrNew`。`firstOrCreate` 方法中使用給定的欄位／值對，來嘗試尋找資料庫中的記錄。如果在資料庫找不到模型，用給定的屬性來新增一筆記錄。
+還有兩種其他方法，你可以用來透過屬性批量賦值建立你的模型：`firstOrCreate` 和 `firstOrNew`。`firstOrCreate` 方法將會使用給定的欄位／值對，來嘗試尋找資料庫中的記錄。如果在資料庫找不到模型，將會用給定的屬性來新增一筆記錄。
 
-`firstOrNew` 方法類似 `firstOrCreate`，會嘗試使用給定的屬性並且在資料庫中搜尋。然而，假設找不到模型，會回傳一個新的模型實例。請注意 `firstOrnew` 回傳的模型還尚未保留到資料庫。你需要透過手動調用 `save` 方法來儲存它：
+`firstOrNew` 方法類似 `firstOrCreate`，會嘗試使用給定的屬性在資料庫中尋找符合的紀錄。然而，假設找不到模型，將會回傳一個新的模型實例。請注意 `firstOrnew` 回傳的模型還尚未保存到資料庫。你需要透過手動呼叫 `save` 方法來保存它：
 
-    // Retrieve the flight by the attributes, or create it if it doesn't exist...
+    // 用屬性取回航班，或如果不存在則建立它...
     $flight = App\Flight::firstOrCreate(['name' => 'Flight 10']);
 
-    // Retrieve the flight by the attributes, or instantiate a new instance...
+    // 用屬性取回航班，或實例化一個新實例...
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
 
 <a name="deleting-models"></a>
