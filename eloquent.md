@@ -2,10 +2,10 @@
 
 - [簡介](#introduction)
 - [定義模型](#defining-models)
-    - [Eloquent 模型規範](#eloquent-model-conventions)
-- [取得多個模型](#retrieving-multiple-models)
-- [取得單一模型／聚合](#retrieving-single-models)
-    - [取得聚合查詢](#retrieving-aggregates)
+    - [Eloquent 模型慣例](#eloquent-model-conventions)
+- [取回多個模型](#retrieving-multiple-models)
+- [取回單一模型／集合](#retrieving-single-models)
+    - [取回集合](#retrieving-aggregates)
 - [新增和更新模型](#inserting-and-updating-models)
     - [基本新增](#basic-inserts)
     - [基本更新](#basic-updates)
@@ -21,27 +21,27 @@
 
 Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和資料庫互動。每個資料庫表會和一個對應的「模型」互動。你可以透過模型查詢資料表內的資料，以及新增記錄到資料表中。
 
-在開始之前，確認你的資料庫連結設定在 `config/database.php` 檔案內。更多資料庫的設定資訊，請參考[資料庫設定](/docs/{{version}}/database#configuration)。
+在開始之前，請確認有設定你的資料庫連結在 `config/database.php` 檔案內。更多資料庫的設定資訊，請查看[資料庫設定](/docs/{{version}}/database#configuration)。
 
 <a name="defining-models"></a>
 ## 定義模型
 
-開始之前，讓我們先建立一個 Eloquent 模型。模型通常放在 `app` 目錄，你可以自由的把他們放在任何可以透過你的 `composer.json` 自動載入的地方。所有的 Eloquent 模型都繼承 `Illuminate\Database\Eloquent\Model` 類別。
+開始之前，讓我們先建立一個 Eloquent 模型。模型通常放在 `app` 目錄，不過你可以自由地把他們放在任何可以透過你的 `composer.json` 自動載入的地方。所有的 Eloquent 模型都繼承 `Illuminate\Database\Eloquent\Model` 類別。
 
-建立模型實例的最簡單的方法是使用，`make:model` [Artisan 指令](/docs/{{version}}/artisan)：
+建立模型實例的最簡單的方法是使用 `make:model` [Artisan 指令](/docs/{{version}}/artisan)：
 
     php artisan make:model User
 
-當你建立一個模型時，假設你想要產生一個[資料庫遷移](/docs/{{version}}/schema#database-migrations)，可以使用 `--migration` 或者 `-m` 選項：
+當你生成一個模型時，假設你想要產生一個[資料庫遷移](/docs/{{version}}/schema#database-migrations)，可以使用 `--migration` 或者 `-m` 選項：
 
     php artisan make:model User --migration
 
     php artisan make:model User -m
 
 <a name="eloquent-model-conventions"></a>
-### Eloquent 模型規範
+### Eloquent 模型慣例
 
-現在，讓我們來看一個 `Flight` 模型類別的例子，我們會用它來從 `flights` 資料表取得與儲存資訊：
+現在，讓我們來看一個 `Flight` 模型類別的例子，我們將會用它來從 `flights` 資料表取回與儲存資訊：
 
     <?php
 
@@ -57,7 +57,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 #### 資料表名稱
 
-注意我們並沒有告訴 Eloquent `Flight` 模型該使用哪一張資料表。預設的規則是，類別的複數形式會拿來當作資料表的表單名稱，除非另外指定名稱。所以，Eloquent 會自動假設 `Flight` 模型儲存記錄在 `flights` 資料表。你可以在模型中定義一個 `table` 屬性，用來指定你自訂的資料表：
+請注意，我們並沒有告訴 Eloquent `Flight` 模型該使用哪一個資料表。除非明確地指定其他名稱，不然類別的小寫、底線、複數形式會拿來當作資料表的表單名稱。所以，這個案例中，Eloquent 將會假設 `Flight` 模型儲存記錄在 `flights` 資料表。你可以在模型上定義一個 `table` 屬性，用來指定自訂的資料表：
 
     <?php
 
@@ -68,7 +68,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
     class Flight extends Model
     {
         /**
-         * The table associated with the model.
+         * 與模型關聯的資料表。
          *
          * @var string
          */
@@ -77,11 +77,11 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
 #### 主鍵
 
-Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定義一個 `$primaryKey` 屬性來覆寫這個預設。
+Eloquent 也會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定義一個 `$primaryKey` 屬性來覆寫這個慣例。
 
 #### 時間戳記
 
-預設情況下，Eloquent 預期你的資料表會有 `created_at` 和 `updated_at` 欄位。如果你不想讓 Eloquent 來自動維護這兩個欄位，在你的模型內將 `$timestamps` 屬性設定為 `false`：
+預設情況下，Eloquent 預期你的資料表會有 `created_at` 和 `updated_at` 欄位。如果你不希望讓 Eloquent 來自動維護這兩個欄位，在你的模型內將 `$timestamps` 屬性設定為 `false`：
 
     <?php
 
@@ -92,14 +92,14 @@ Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定
     class Flight extends Model
     {
         /**
-         * Indicates if the model should be timestamped.
+         * 指定是否模型應該被戳記時間。
          *
          * @var bool
          */
         public $timestamps = false;
     }
 
-如果你想要自訂你的時間戳記格式，在你的模型內設定 `$dateFormat` 屬性。這個屬性決定日期如何在資料庫中儲存，以及當模型被序列化成陣列或是 JSON 時的格式：
+如果你需要客製化你的時間戳記格式，在你的模型內設定 `$dateFormat` 屬性。這個屬性決定日期如何在資料庫中儲存，以及當模型被序列化成陣列或是 JSON 時的格式：
 
     <?php
 
@@ -110,7 +110,7 @@ Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定
     class Flight extends Model
     {
         /**
-         * The storage format of the model's date columns.
+         * 模型的日期欄位的儲存格式。
          *
          * @var string
          */
@@ -118,9 +118,9 @@ Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定
     }
 
 <a name="retrieving-multiple-models"></a>
-## 取得多個模型
+## 取回多個模型
 
-一旦你建立了一個模型並且將模型[關連到資料表](/docs/{{version}}/schema)，你就可以從資料庫中取得資料。把每個 Eloquent 模型想像成強大的[查詢構造器](/docs/{{version}}/queries)，讓你可以輕鬆的查詢與模型關聯的資料表。例如：
+一旦你建立了一個模型並且將模型[關連到資料表](/docs/{{version}}/schema)，你就可以從資料庫中取得資料。把每個 Eloquent 模型想像成強大的[查詢構造器](/docs/{{version}}/queries)，讓你可以流暢地查詢與模型關聯的資料表。例如：
 
     <?php
 
@@ -132,7 +132,7 @@ Eloquent 會假設每個資料表有一個主鍵欄位叫做 `id`。你可以定
     class FlightController extends Controller
     {
         /**
-         * Show a list of all available flights.
+         * 顯示所有可以的航班清單。
          *
          * @return Response
          */
@@ -161,7 +161,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
                    ->take(10)
                    ->get();
 
-> **注意：** 由於 Eloquent 模型是查詢構造器，應該檢閱所有[查詢構造器](/docs/{{version}}/queries)可用的方法。你可以在你的 Eloquent 查詢中使用這其中的任何方法。
+> **注意：**由於 Eloquent 模型是查詢構造器，應該檢閱所有[查詢構造器](/docs/{{version}}/queries)可用的方法。你可以在你的 Eloquent 查詢中使用這其中的任何方法。
 
 #### 集合
 
@@ -173,7 +173,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 
 #### 分塊結果
 
-如果你要處理非常多（數千筆）Eloquent 查詢結果，可以使用 `chunk` 命令。`chunk` 方法會取得一個 Eloquent 模型的「分塊」，將他們送到給定的 `閉包 (Closure)` 進行處理。當你在處理大量的結果時，使用 `chunk` 方法可以節省記憶體：
+如果你需要處理上千筆 Eloquent 查詢結果，可以使用 `chunk` 命令。`chunk` 方法將會取得一個 Eloquent 模型的「分塊」，將它們送到給定的 `閉包 (Closure)` 進行處理。當你在處理大量的結果時，使用 `chunk` 方法可以節省記憶體：
 
     Flight::chunk(200, function ($flights) {
         foreach ($flights as $flight) {
@@ -181,37 +181,37 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
         }
     });
 
-傳送到方法裡的第一個參數是表示接收每次「分塊」要取出的資料數量。第二個參數傳遞的閉包，會在每次取出資料時被呼叫。
+傳遞到方法的第一個參數是表示你希望每次「分塊」要接收的資料數量。閉包則作為第二個參數傳遞，它會將會在每次從資料出取出分塊時被呼叫。
 
 <a name="retrieving-single-models"></a>
-## 取得單一模型／聚合
+## 取回單一模型／集合
 
-當然，除了在給定的資料表中取得所有記錄，你還可以透過 `find` 以及 `first` 取得單一的記錄。而這不是回傳模型的集合，這個方法回傳的是單一模型的實例：
+當然，除了從給定的資料表取回所有記錄，你也可以透過 `find` 和 `first` 取回單一的記錄。這些方法回傳單一模型的實例，而不是回傳模型的集合：
 
-    // Retrieve a model by its primary key...
+    // 藉由主鍵取回一個模型...
     $flight = App\Flight::find(1);
 
-    // Retrieve the first model matching the query constraints...
+    // 取回符合查詢限制的第一個模型 ...
     $flight = App\Flight::where('active', 1)->first();
 
-#### 未發現異常
+#### 找不到的例外
 
-有時候你可能希望在找不到模型時拋出異常，這在路由或是控制器內是非常有幫助的。`findOrFail` 以及 `firstOrFail` 方法會取得第一個查詢的結果。而如果沒有找到結果，將會拋出一個 `Illuminate\Database\Eloquent\ModelNotFoundException`：
+有時候你可能希望在找不到模型時拋出例外，這在路由或是控制器內特別有用。`findOrFail` 以及 `firstOrFail` 方法會取回查詢的第一個結果。而如果沒有找到結果，將會拋出一個 `Illuminate\Database\Eloquent\ModelNotFoundException`：
 
     $model = App\Flight::findOrFail(1);
 
     $model = App\Flight::where('legs', '>', 100)->firstOrFail();
 
-如果沒有取得異常，HTTP `404` 回應會自動的傳送給使用者，當使用這個方法時，沒有必要明確寫出回傳 `404` 回應確認：
+如果沒有捕捉到例外，會自動地送回 HTTP `404` 回應給使用者，所以當使用這些方法時，沒有必要明確的撰寫檢查以回傳 `404` 回應：
 
     Route::get('/api/flights/{id}', function ($id) {
         return App\Flight::findOrFail($id);
     });
 
 <a name="retrieving-aggregates"></a>
-### 取得聚合查詢
+### 取回集合
 
-當然，你也可以使用查詢構造器來聚合函式，像是 `count`、`sum`、`max`，和其他[查詢構造器](/docs/{{version}}/queries)提供的聚合函式。這些方法會回傳適當的純量值，而不是一個完整的模型實例：
+當然，你也可以使用查詢構造器的集合函式，像是 `count`、`sum`、`max`，和其他[查詢構造器](/docs/{{version}}/queries)提供的集合函式。這些方法會回傳適當的純量值，而不是一個完整的模型實例：
 
     $count = App\Flight::where('active', 1)->count();
 
