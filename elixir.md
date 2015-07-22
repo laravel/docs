@@ -87,7 +87,7 @@ To compile [Less](http://lesscss.org/) into CSS, you may use the `less` method. 
 
 ```javascript
 elixir(function(mix) {
-    mix.less("app.less");
+    mix.less('app.less');
 });
 ```
 
@@ -96,9 +96,9 @@ You may also combine multiple Less files into a single CSS file. Again, the resu
 ```javascript
 elixir(function(mix) {
     mix.less([
-        "app.less",
-        "controllers.less"
-    ], "public/assets/css");
+        'app.less',
+        'controllers.less'
+    ], 'public/assets/css');
 });
 ```
 
@@ -122,7 +122,7 @@ The `sass` method allows you to compile [Sass](http://sass-lang.com/) into CSS. 
 
 ```javascript
 elixir(function(mix) {
-    mix.sass("app.scss");
+    mix.sass('app.scss');
 });
 ```
 
@@ -131,9 +131,9 @@ Again, like the `less` method, you may compile multiple scripts into a single CS
 ```javascript
 elixir(function(mix) {
     mix.sass([
-        "app.scss",
-        "controllers.scss"
-    ], "public/assets/css");
+        'app.scss',
+        'controllers.scss'
+    ], 'public/assets/css');
 });
 ```
 
@@ -143,7 +143,7 @@ Under the hood, Elixir uses the LibSass library for compilation. In some instanc
 
 ```javascript
 elixir(function(mix) {
-    mix.rubySass("app.scss");
+    mix.rubySass('app.scss');
 });
 ```
 
@@ -155,8 +155,8 @@ If you would just like to combine some plain CSS stylesheets into a single file,
 ```javascript
 elixir(function(mix) {
     mix.styles([
-        "normalize.css",
-        "main.css"
+        'normalize.css',
+        'main.css'
     ]);
 });
 ```
@@ -166,9 +166,9 @@ Of course, you may also output the resulting file to a custom location by passin
 ```javascript
 elixir(function(mix) {
     mix.styles([
-        "normalize.css",
-        "main.css"
-    ], "public/assets/css");
+        'normalize.css',
+        'main.css'
+    ], 'public/assets/css');
 });
 ```
 
@@ -183,7 +183,7 @@ If you do not want source maps generated for your CSS, you may disable them usin
 elixir.config.sourcemaps = false;
 
 elixir(function(mix) {
-    mix.sass("app.scss");
+    mix.sass('app.scss');
 });
 ```
 
@@ -224,8 +224,8 @@ The `babel` method may be used to compile [EcmaScript 6 and 7](https://babeljs.i
 ```javascript
 elixir(function(mix) {
     mix.babel([
-                "order.js",
-                "product.js"
+                'order.js',
+                'product.js'
         ]);
 });
 ```
@@ -243,8 +243,8 @@ The `scripts` method assumes all paths are relative to the `resources/assets/js`
 ```javascript
 elixir(function(mix) {
     mix.scripts([
-        "jquery.js",
-        "app.js"
+        'jquery.js',
+        'app.js'
     ]);
 });
 ```
@@ -262,7 +262,7 @@ If you need to combine all of the scripts in a given directory, you may use the 
 
 ```javascript
 elixir(function(mix) {
-    mix.scriptsIn("public/js/some/directory");
+    mix.scriptsIn('public/js/some/directory');
 });
 ```
 
@@ -275,7 +275,7 @@ The `version` method accepts a file name relative to the `public` directory, and
 
 ```javascript
 elixir(function(mix) {
-    mix.version("css/all.css");
+    mix.version('css/all.css');
 });
 ```
 
@@ -289,7 +289,7 @@ You may pass an array to the `version` method to version multiple files:
 
 ```javascript
 elixir(function(mix) {
-    mix.version(["css/all.css", "js/app.js"]);
+    mix.version(['css/all.css', 'js/app.js']);
 });
 ```
 
@@ -305,10 +305,10 @@ Once the files have been versioned, you may use the `elixir` helper function to 
 If you need to call an existing Gulp task from Elixir, you may use the `task` method. As an example, imagine that you have a Gulp task that simply speaks a bit of text when called:
 
 ```javascript
-gulp.task("speak", function() {
-    var message = "Tea...Earl Grey...Hot";
+gulp.task('speak', function() {
+    var message = 'Tea...Earl Grey...Hot';
 
-    gulp.src("").pipe(shell("say " + message));
+    gulp.src('').pipe(shell('say ' + message));
 });
 ```
 
@@ -338,17 +338,17 @@ If you need more flexibility than Elixir's `task` method can provide, you may cr
 ```javascript
 // File: elixir-extensions.js
 
-var gulp = require("gulp");
-var shell = require("gulp-shell");
-var elixir = require("laravel-elixir");
+var gulp = require('gulp');
+var shell = require('gulp-shell');
+var elixir = require('laravel-elixir');
 
-elixir.extend("speak", function(message) {
+elixir.extend('speak', function(message) {
 
-    gulp.task("speak", function() {
-        gulp.src("").pipe(shell("say " + message));
+    gulp.task('speak', function() {
+        gulp.src('').pipe(shell('say ' + message));
     });
 
-    return this.queueTask("speak");
+    return this.queueTask('speak');
 
  });
 ```
@@ -358,12 +358,12 @@ That's it! You may either place this at the top of your Gulpfile, or instead ext
 ```javascript
 // File: Gulpfile.js
 
-var elixir = require("laravel-elixir");
+var elixir = require('laravel-elixir');
 
-require("./elixir-extensions")
+require('./elixir-extensions')
 
 elixir(function(mix) {
-    mix.speak("Tea, Earl Grey, Hot");
+    mix.speak('Tea, Earl Grey, Hot');
 });
 ```
 
@@ -372,7 +372,7 @@ elixir(function(mix) {
 If you would like your custom task to be re-triggered while running `gulp watch`, you may register a watcher:
 
 ```javascript
-this.registerWatcher("speak", "app/**/*.php");
+this.registerWatcher('speak', 'app/**/*.php');
 
-return this.queueTask("speak");
+return this.queueTask('speak');
 ```
