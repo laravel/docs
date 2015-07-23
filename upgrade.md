@@ -15,7 +15,7 @@
 
 ### 更新 `bootstrap/autoload.php`
 
-更新在 `bootstrap/autoload.php` 裡的 `$compiledPath` 變數為以下：
+將 `bootstrap/autoload.php` 裡的 `$compiledPath` 變數按照以下方式更新：
 
     $compiledPath = __DIR__.'/cache/compiled.php';
 
@@ -26,7 +26,7 @@
     *
     !.gitignore
 
-這個目錄必須為可寫入的，它將會被框架用來暫時存放最佳化檔案，例如：`compiled.php`、`routes.php`、`config.php` 和 `services.json`。
+這個目錄必須為可寫入的，框架會暫時存放如 `compiled.php`、`routes.php`、`config.php` 和 `services.json` 的最佳化檔案在此目錄。
 
 ### 添加 `BroadcastServiceProvider` 提供者
 
@@ -34,15 +34,15 @@
 
 ### 認證
 
-如果你有使用內建的 `AuthController`，他使用了 `AuthenticatesAndRegistersUsers` trait，你會需要 對新使用者如何建立跟驗證做一些修改。
+如果你有使用內建的 `AuthController`，他使用了 `AuthenticatesAndRegistersUsers` trait，你會需要對新使用者如何建立跟驗證做一些修改。
 
-首先，你不再需要傳遞 `Guard` 和 `Registrar` 實例到基底建構式。你可以完全地從控制器的建構式移除這些依賴。
+首先，你不再需要傳遞 `Guard` 和 `Registrar` 實例到基底建構子。你可以從控制器的建構子完全移除這些依賴。
 
-第二，已經不再需要 Laravel 5.0 中使用的 `App\Services\Registrar` 類別。你可以簡單的從這個類別直接複製貼上你的 `validator` 和 `create` 方法到你的 `AuthController`。這些方法不需要做其他修改。然而，你必須確定有在你的 `AuthController` 頂端引入 `Validator` facade 跟你的 `User` 模型。
+第二，已經不再需要 Laravel 5.0 中使用的 `App\Services\Registrar` 類別。你可以簡單的從這個類別直接複製你的 `validator` 和 `create` 方法貼上至你的 `AuthController`。這些方法不需要做其他修改。然而，你必須確定有在你的 `AuthController` 頂端引入 `Validator` facade 跟你的 `User` 模型。
 
 #### 密碼控制器
 
-內建的 `PasswordController` 的建構式不再需要任何依賴。你可以把 5.0 下需要的依賴都移除。
+內建的 `PasswordController` 的建構子不再需要任何依賴。你可以把 5.0 下需要的依賴都移除。
 
 ### 驗證
 
@@ -146,14 +146,14 @@ Eloquent 的 `create` 方法現在可以不帶任何參數呼叫。如果你有�
 以下的 Laravel 功能已經被棄用並將會在 2015 十二月釋出的 Laravel 5.2 中完全地移除：
 
 <div class="content-list" markdown="1">
-- 路由篩選器已經被棄用而偏好使用[中間件](/docs/{{version}}/middleware)。
-- `Illuminate\Contracts\Routing\Middleware` contract 已經被棄用。你的中間件上不需要任何 contract。此外，`TerminableMiddleware` contract 也已經被棄用。不要實作介面，簡單地定義一個 `terminate` 方法在你的中間件上就好。
+- 路由篩選器已經被棄用而偏好使用[中介層](/docs/{{version}}/middleware)。
+- `Illuminate\Contracts\Routing\Middleware` contract 已經被棄用。你的中介層上不需要任何 contract。此外，`TerminableMiddleware` contract 也已經被棄用。不要實作介面，簡單地定義一個 `terminate` 方法在你的中介層上就好。
 - `Illuminate\Contracts\Queue\ShouldBeQueued` contract 已經被棄用而用 `Illuminate\Contracts\Queue\ShouldQueue` 取代。
 - Iron.io 的「推送隊列」已經被棄用而用一般的 Iron.io 隊列和[隊列監聽者](/docs/{{version}}/queues#running-the-queue-listener)取代。
-- `Illuminate\Foundation\Bus\DispatchesCommands` trait 已經被棄用而改名成 `Illuminate\Foundation\Bus\DispatchesJobs`。
+- `Illuminate\Foundation\Bus\DispatchesCommands` trait 已經被棄用並改名成 `Illuminate\Foundation\Bus\DispatchesJobs`。
 - `Illuminate\Container\BindingResolutionException` 被移到 `Illuminate\Contracts\Container\BindingResolutionException`。
 - 服務容器的 `bindShared` 方法已經被棄用而用 `singleton` 方法取代。
-- Eloquent 和查詢產生器的 `pluck` 方法已經被棄用而改名成 `value`。
+- Eloquent 和查詢產生器的 `pluck` 方法已經被棄用並改名成 `value`。
 - 集合的 `fetch` 方法已經被棄用而用 `pluck` 方法取代。
 - `array_fetch` 輔助函式已經被棄用而用 `array_pluck` 方法取代。
 </div>
