@@ -125,7 +125,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
     protected $redirectPath = '/dashboard';
 
-When a user is not successfully authenticated, they will be redirected to the `/auth/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
+當使用者認證失敗，將會被重導到 `/auth/login` URI。你可以設定 `AuthController` 的 `loginPath` 屬性來自訂認證失敗後的重導位置：
 
     protected $loginPath = '/login';
 
