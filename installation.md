@@ -139,7 +139,8 @@ An application instance may also be accessed via the `app` helper method:
 
 To give your application a speed boost, you should cache all of your configuration files into a single file using the `config:cache` Artisan command. This will combine all of the configuration options for your application into a single file which can be loaded quickly by the framework.
 
-You should typically run the `config:cache` command as part of your deployment routine.
+You should typically run the `php artisan config:cache` command as part of your production deployment routine.
+During development it is however recommended to clear this with the `php artisan config:clear` command. It might save you hours of looking why your changes aren't reflected.
 
 <a name="accessing-configuration-values"></a>
 ### Accessing Configuration Values
