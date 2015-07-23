@@ -113,21 +113,21 @@ Laravel 也對 Redis 的 `publish` 及 `subscribe` 提供了方便的介面。�
     class RedisSubscribe extends Command
     {
         /**
-         * The name and signature of the console command.
+         * 主控台指令的識別名稱。
          *
          * @var string
          */
         protected $signature = 'redis:subscribe';
 
         /**
-         * The console command description.
+         * 主控台指令描述。
          *
          * @var string
          */
         protected $description = 'Subscribe to a Redis channel';
 
         /**
-         * Execute the console command.
+         * 執行主控台指令。
          *
          * @return mixed
          */
