@@ -7,7 +7,7 @@
     - [認證](#included-authenticating)
     - [取得已認證之使用者](#retrieving-the-authenticated-user)
     - [保護路由](#protecting-routes)
-    - [Authentication Throttling](#authentication-throttling)
+    - [認證節流](#authentication-throttling)
 - [手動認證使用者](#authenticating-users)
     - [記住使用者](#remembering-users)
     - [其他認證方法](#other-authentication-methods)
@@ -205,9 +205,9 @@ When a user is not successfully authenticated, they will be redirected to the `/
     }
 
 <a name="authentication-throttling"></a>
-### Authentication Throttling
+### 認證節流
 
-If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address:
+如果你使用 Laravel's 內建的 `AuthController` 類別，`Illuminate\Foundation\Auth\ThrottlesLogins` trait 可以在你的應用程式限制登入次數。預設情況下，如果使用者在幾次嘗試後仍不能提供正確的憑據，將在一分鐘內無法進行登入。節流是唯一使用者的使用者名稱和電子郵件以及他們的 IP 位置：
 
     <?php
 
