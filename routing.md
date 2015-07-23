@@ -22,7 +22,13 @@
 <a name="basic-routing"></a>
 ## Basic Routing
 
-You will define most of the routes for your application in the `app/Http/routes.php` file, which is loaded by the `App\Providers\RouteServiceProvider` class. The most basic Laravel routes simply accept a URI and a `Closure`:
+You will define most of the routes for your application in the `app/Http/routes.php` file, which is loaded by the `App\Providers\RouteServiceProvider` class. For most CRUD something similar to the following would suffice:
+
+    Route::resource('MyModel', 'MyModelController');
+
+This creates the common routes and can be seen with the `php artisan route:list` command.
+
+That said, the most basic Laravel routes simply accept a URI and a `Closure`:
 
     Route::get('/', function () {
         return 'Hello World';
