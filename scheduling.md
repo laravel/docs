@@ -1,31 +1,31 @@
-# Task Scheduling
+# Scheduling dei Task
 
-- [Introduction](#introduction)
-- [Defining Schedules](#defining-schedules)
-	- [Schedule Frequency Options](#schedule-frequency-options)
-	- [Preventing Task Overlaps](#preventing-task-overlaps)
-- [Task Output](#task-output)
-- [Post Task Hooks](#post-task-hooks)
+- [Introduzione](#introduzione)
+- [Definire i Task](#definire-task)
+	- [Opzioni di Frequenza per lo Scheduler](#opzioni-frequenza-scheduler)
+	- [Evitare l'Overlap dei Task](#evitare-overlap-task)
+- [Output dei Task](#output-task)
+- [Eventi dopo un Task](#eventi-dopo-task)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-In the past, developers have generated a Cron entry for each task they need to schedule. However, this is a headache. Your task schedule is no longer in source control, and you must SSH into your server to add the Cron entries. The Laravel command scheduler allows you to fluently and expressively define your command schedule within Laravel itself, and only a single Cron entry is needed on your server.
+Nel passato, gli sviluppatori dovevano generare un cron job per ogni task da eseguire in modo programmato. Un bel giramento di testa, ogni volta! Considerando anche che i task in questione non venivano certo salvati nella codebase. Il command scheduler di Laravel ti permette di creare in modo espressivo e semplice una serie di comandi in base alle tue necessità, impostando solamente un singolo cronjob sul tuo server.
 
-Your task schedule is defined in the `app/Console/Kernel.php` file's `schedule` method. To help you get started, a simple example is included with the method. You are free to add as many scheduled tasks as you wish to the `Schedule` object.
+La programmazione dei vari task è definita in `app/Console/Kernel.php`, nel metodo `schedule`. Per aiutarti ad iniziare, è stato già inserito un semplice task di esempio.
 
-### Starting The Scheduler
+### Avviare lo Scheduler
 
-Here is the only Cron entry you need to add to your server:
+Come già detto, devi comunque creare un singolo job di partenza sul tuo server.
 
 	* * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
 
-This Cron will call the Laravel command scheduler every minute. Then, Laravel evaluates your scheduled tasks and runs the tasks that are due.
+Tale cron richiamerà il Laravel command scheduler ogni singolo minuto. A quel punto, il framework stesso valuterà i vari task da avviare e quali tralasciare.
 
-<a name="defining-schedules"></a>
-## Defining Schedules
+<a name="definire-task"></a>
+## Definire i Task
 
-You may define all of your scheduled tasks in the `schedule` method of the `App\Console\Kernel` class. To get started, let's look at an example of scheduling a task. In this example, we will schedule a `Closure` to be called every day at midnight. Within the `Closure` we will execute a database query to clear a table:
+Puoi definire tutti i tuoi task programmati in _schedule_ della classe `App\Console\Kernel`. Iniziamo subito con un esempio, per capire meglio. Vedremo una chiamata ad una closure da eseguire ogni giorno a mezzanotte. Tale closure si occuperà di pulire il database con una query.
 
 	<?php namespace App\Console;
 
@@ -58,107 +58,106 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
 	    }
 	}
 
-In addition to scheduling `Closure` calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command:
+In aggiunta alla chiamata, puoi anche schedulare specifici [comandi Artisan](/docs/5.1/artisan) tramite _command_.
 
     $schedule->command('emails:send --force')->daily();
 
-The `exec` command may be used to issue a command to the operating system:
+Inoltre, tramite _exec_ puoi addirittura eseguire delle istruzioni sul server stesso.
 
     $schedule->exec('node /home/forge/script.js')->daily();
 
-<a name="schedule-frequency-options"></a>
-### Schedule Frequency Options
+<a name="opzioni-frequenza-scheduler"></a>
+### Opzioni di Frequenza per lo Scheduler
 
-Of course, there are a variety of schedules you may assign to your task:
+Per pesonalizzare il momento specifico in cui eseguire i tuoi task, lo scheduler ti mette a disposizione svariati metodi.
 
-Method  | Description
-------------- | -------------
-`->cron('* * * * *');`  |  Run the task on a custom Cron schedule
-`->everyMinute();`  |  Run the task every minute
-`->everyFiveMinutes();`  |  Run the task every five minutes
-`->everyTenMinutes();`  |  Run the task every ten minutes
-`->everyThirtyMinutes();`  |  Run the task every thirty minutes
-`->hourly();`  |  Run the task every hour
-`->daily();`  |  Run the task every day at midnight
-`->dailyAt('13:00');`  |  Run the task every day at 13:00
-`->twiceDaily();`  |  Run the task daily at 1:00 & 13:00
-`->weekly();`  |  Run the task every week
-`->monthly();`  |  Run the task every month
 
-These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, to schedule a command to run weekly on Monday:
+* `->cron('* * * * *');`  |  Avvia il task in base alla personalizzazione inserita;
+* `->everyMinute();`  |  Avvia il task ogni minuto;
+* `->everyFiveMinutes();`  |  Avvia il task ogni cinque minuti;
+* `->everyTenMinutes();`  |  Avvia il task ogni dieci minuti;
+* `->everyThirtyMinutes();`  |  Avvia il task ogni mezz'ora;
+* `->hourly();`  |  Avvia il task una volta ogni ora;
+* `->daily();`  |  Avvia il task ogni giorno, a mezzanotte;
+* `->dailyAt('13:00');`  |  Avvia il task ogni giorno, alle 13:00
+* `->twiceDaily();`  |  Avvia il task ogni giorno, alle 1:00 e alle 13:00
+* `->weekly();`  |  Avvia il task una volta a settimana;
+* `->monthly();`  |  Avvia il task una volta al mese;
+
+Questi metodi possono inoltre essere combinati con altre condizioni, in modo tale da rendere massima la personalizzazione. Ad esempio, per avviare un certo comando ogni settimana, di lunedì, basterà usare...
 
 	$schedule->call(function () {
-		// Runs once a week on Monday at 13:00...
+		// Comando avviato una volta a settimana, di lunedì, alle 13:00...
 	})->weekly()->mondays()->at('13:00');
 
-Below is a list of the additional schedule constraints:
+Ecco una lista di condizioni disponibili:
 
-Method  | Description
-------------- | -------------
-`->weekdays();`  |  Limit the task to weekdays
-`->sundays();`  |  Limit the task to Sunday
-`->mondays();`  |  Limit the task to Monday
-`->tuesdays();`  |  Limit the task to Tuesday
-`->wednesdays();`  |  Limit the task to Wednesday
-`->thursdays();`  |  Limit the task to Thursday
-`->fridays();`  |  Limit the task to Friday
-`->saturdays();`  |  Limit the task to Saturday
-`->when(Closure);`  |  Limit the task based on a truth test
+* `->weekdays();`  |  Il task viene eseguito tutti i giorni;
+* `->sundays();`  |  Il task viene eseguito solo di Domenica;
+* `->mondays();`  |  Il task viene eseguito solo di Lunedì
+* `->tuesdays();`  |  Il task viene eseguito solo di Martedì
+* `->wednesdays();`  |  Il task viene eseguito solo di Mercoledì;
+* `->thursdays();`  |  Il task viene eseguito solo di Giovedì;
+* `->fridays();`  |  Il task viene eseguito solo di Venerdì;
+* `->saturdays();`  |  Il task viene eseguito solo di Sabato;
+* `->when(Closure);`  |  Il task viene limitato secondo una certa condizione;
 
-#### Truth Test Constraints
+#### Condizione di Test
 
-The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given `Closure` return `true`, the task will execute as long as no other constraining conditions prevent the task from running:
+Usando il metodo _when_ puoi limitare l'esecuzione di un task in base ad un test di verità su una certa condizione. Fin quando tale test tornerà true, il task verrà eseguito.
 
 	$schedule->command('emails:send')->daily()->when(function () {
 		return true;
 	});
 
-<a name="preventing-task-overlaps"></a>
-### Preventing Task Overlaps
+<a name="evitare-overlap-task"></a>
+### Evitare l'Overlap dei Task
 
-By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use the `withoutOverlapping` method:
+Di default, un task schedulato verrà esegutio anche nel caso in cui una precedente istanza dello stesso task sia ancora in esecuzione. Per prevenire una cosa del genere, usa il metodo _withoutOverlapping_.
 
 	$schedule->command('emails:send')->withoutOverlapping();
 
-In this example, the `emails:send` [Artisan command](/docs/{{version}}/artisan) will be run every minute if it is not already running. The `withoutOverlapping` method is especially useful if you have tasks that vary drastically in their execution time, preventing you from predicting exactly how long a given task will take.
+Tale metodo è particolarmente utile quando i task da eseguire richiedono molto tempo.
 
-<a name="task-output"></a>
-## Task Output
+<a name="output-task"></a>
+## Output dei Task
 
-The Laravel scheduler provides several convenient methods for working with the output generated by scheduled tasks. First, using the `sendOutputTo` method, you may send the output to a file for later inspection:
+Lo scheduler di Laravel fornisce svariati metodi di comodo per lavorare con l'output generato dai task programmati. Ad esempio, puoi usare il metodo _sendOutputTo_ per inviare l'output ottenuto ad un file.
 
 	$schedule->command('emails:send')
 			 ->daily()
 			 ->sendOutputTo($filePath);
 
-Using the `emailOutputTo` method, you may e-mail the output to an e-mail address of your choice. Note that the output must first be sent to a file using the `sendOutputTo` method. Also, before e-mailing the output of a task, you should configure Laravel's [e-mail services](/docs/{{version}}/mail):
+Usando invece _emailOutputTo_ puoi inviare una mail ad in indirizzo a tua scelta. In questo caso l'output però deve essere prima inviato ad un file, quindi via mail tramite una chiamata a catena. Come questa nell'esempio:
 
 	$schedule->command('foo')
 			 ->daily()
 			 ->sendOutputTo($filePath)
 			 ->emailOutputTo('foo@example.com');
 
-> **Note:** The `emailOutputTo` and `sendOutputTo` methods are exclusive to the `command` method and are not supported for `call`.
+> **Nota:** ricorda di configurare il servizio di invio di email adeguatamente.
 
-<a name="post-task-hooks"></a>
-## Post Task Hooks
+<a name="eventi-dopo-task"></a>
+## Eventi dopo un Task
 
-Using the `then` method, you may specify code to be executed after the scheduled task is complete:
+Usando il metodo _then_ è possibile specificare del codice da eseguire dopo l'esecuzione di un task.
 
 	$schedule->command('emails:send')
 			 ->daily()
 			 ->then(function () {
-			 	// Task is complete...
+			 	// Task completato!
 			 });
 
-#### Pinging URLs
+#### Ping
 
-Using the `thenPing` method, the scheduler can automatically ping a given URL when a task is complete. This method is useful for notifying an external service, such as [Laravel Envoyer](https://envoyer.io), that your scheduled task is complete:
+Usando il metodo _thenPing_, lo scheduler può effettuare un ping verso uno specifico URL dopo l'esecuzione di un task. Tale metodo può essere particolarmente utile per inviare una notifica ad un servizio esterno, come [Laravel Envoyer](https://envoyer.io), ad esempio.
 
 	$schedule->command('emails:send')
 			 ->daily()
 			 ->thenPing($url);
 
-Using the `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project by adding the following line to your `composer.json` file:
+Se decidi di usare _thenPing($url)_ ricorda che hai bisogno di installare il package Guzzle HTTP. Aggiungi la seguente dipendenza al file _composer.json_ del tuo progetto:
 
 	"guzzlehttp/guzzle": "~5.3|~6.0"
+
+... ed avvia il comando _composer update_ per installarlo!
