@@ -1,129 +1,129 @@
-# Helper Functions
+# Funzioni Helper
 
-- [Introduction](#introduction)
-- [Available Methods](#available-methods)
+- [Introduzione](#introduzione)
+- [Metodi Disponibili](#metodi-disponibili)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Laravel includes a variety of "helper" PHP functions. Many of these functions are used by the framework itself; however, you are free to use them in your own applications if you find them convenient.
+Laravel include una serie di funzioni di "helper" PHP. Molte di queste funzioni sono usate dal framework stesso; tuttavia, sei libero di usarle nella tua applicazione se le trovi convenienti.
 
-<a name="available-methods"></a>
-## Available Methods
+<a name="metodi-disponibili"></a>
+## Metodi Disponibili
 
 <style>
-	.collection-method-list > p {
+	.collection-metodo-list > p {
 		column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
 		column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
 	}
 
-	.collection-method-list a {
+	.collection-metodo-list a {
 		display: block;
 	}
 </style>
 
-### Arrays
+### Array
 
-<div class="collection-method-list" markdown="1">
-[array_add](#method-array-add)
-[array_divide](#method-array-divide)
-[array_dot](#method-array-dot)
-[array_except](#method-array-except)
-[array_first](#method-array-first)
-[array_flatten](#method-array-flatten)
-[array_forget](#method-array-forget)
-[array_get](#method-array-get)
-[array_only](#method-array-only)
-[array_pluck](#method-array-pluck)
-[array_pull](#method-array-pull)
-[array_set](#method-array-set)
-[array_sort](#method-array-sort)
-[array_where](#method-array-where)
-[head](#method-head)
-[last](#method-last)
+<div class="collection-metodo-list" markdown="1">
+[array_add](#metodo-array-add)
+[array_divide](#metodo-array-divide)
+[array_dot](#metodo-array-dot)
+[array_except](#metodo-array-except)
+[array_first](#metodo-array-first)
+[array_flatten](#metodo-array-flatten)
+[array_forget](#metodo-array-forget)
+[array_get](#metodo-array-get)
+[array_only](#metodo-array-only)
+[array_pluck](#metodo-array-pluck)
+[array_pull](#metodo-array-pull)
+[array_set](#metodo-array-set)
+[array_sort](#metodo-array-sort)
+[array_where](#metodo-array-where)
+[head](#metodo-head)
+[last](#metodo-last)
 </div>
 
-### Paths
+### Percorsi
 
-<div class="collection-method-list" markdown="1">
-[app_path](#method-app-path)
-[base_path](#method-base-path)
-[config_path](#method-config-path)
-[database_path](#method-database-path)
-[public_path](#method-public-path)
-[storage_path](#method-storage-path)
+<div class="collection-metodo-list" markdown="1">
+[app_path](#metodo-app-path)
+[base_path](#metodo-base-path)
+[config_path](#metodo-config-path)
+[database_path](#metodo-database-path)
+[public_path](#metodo-public-path)
+[storage_path](#metodo-storage-path)
 </div>
 
-### Strings
+### Stringhe
 
-<div class="collection-method-list" markdown="1">
-[camel_case](#method-camel-case)
-[class_basename](#method-class-basename)
-[e](#method-e)
-[ends_with](#method-ends-with)
-[snake_case](#method-snake-case)
-[str_limit](#method-str-limit)
-[starts_with](#method-starts-with)
-[str_contains](#method-str-contains)
-[str_finish](#method-str-finish)
-[str_is](#method-str-is)
-[str_plural](#method-str-plural)
-[str_random](#method-str-random)
-[str_singular](#method-str-singular)
-[str_slug](#method-str-slug)
-[studly_case](#method-studly-case)
-[trans](#method-trans)
-[trans_choice](#method-trans-choice)
+<div class="collection-metodo-list" markdown="1">
+[camel_case](#metodo-camel-case)
+[class_basename](#metodo-class-basename)
+[e](#metodo-e)
+[ends_with](#metodo-ends-with)
+[snake_case](#metodo-snake-case)
+[str_limit](#metodo-str-limit)
+[starts_with](#metodo-starts-with)
+[str_contains](#metodo-str-contains)
+[str_finish](#metodo-str-finish)
+[str_is](#metodo-str-is)
+[str_plural](#metodo-str-plural)
+[str_random](#metodo-str-random)
+[str_singular](#metodo-str-singular)
+[str_slug](#metodo-str-slug)
+[studly_case](#metodo-studly-case)
+[trans](#metodo-trans)
+[trans_choice](#metodo-trans-choice)
 </div>
 
-### URLs
+### URL
 
-<div class="collection-method-list" markdown="1">
-[action](#method-action)
-[route](#method-route)
-[url](#method-url)
+<div class="collection-metodo-list" markdown="1">
+[action](#metodo-action)
+[route](#metodo-route)
+[url](#metodo-url)
 </div>
 
-### Miscellaneous
+### Varie
 
-<div class="collection-method-list" markdown="1">
-[csrf_token](#method-csrf-token)
-[dd](#method-dd)
-[elixir](#method-elixir)
-[env](#method-env)
-[event](#method-event)
-[response](#method-response)
-[value](#method-value)
-[view](#method-view)
-[with](#method-with)
+<div class="collection-metodo-list" markdown="1">
+[csrf_token](#metodo-csrf-token)
+[dd](#metodo-dd)
+[elixir](#metodo-elixir)
+[env](#metodo-env)
+[event](#metodo-event)
+[response](#metodo-response)
+[value](#metodo-value)
+[view](#metodo-view)
+[with](#metodo-with)
 </div>
 
-<a name="method-listing"></a>
-## Method Listing
+<a name="lista-metodi"></a>
+## Lista Metodi
 
 <style>
-	#collection-method code {
+	#collection-metodo code {
 		font-size: 14px;
 	}
 
-	#collection-method:not(.first-collection-method) {
+	#collection-metodo:not(.first-collection-metodo) {
 		margin-top: 50px;
 	}
 </style>
 
-<a name="method-array-add"></a>
-#### `array_add()` {#collection-method .first-collection-method}
+<a name="metodo-array-add"></a>
+#### `array_add()` {#collection-metodo .first-collection-metodo}
 
-The `array_add` function adds a given key / value pair to the array if the given key doesn't already exist in the array:
+La funzione `array_add` aggiunge una coppia chiave / valore all'array se la chiave data non esiste già nell'array:
 
 	$array = array_add(['name' => 'Desk'], 'price', 100);
 
 	// ['name' => 'Desk', 'price' => 100]
 
-<a name="method-array-divide"></a>
-#### `array_divide()` {#collection-method}
+<a name="metodo-array-divide"></a>
+#### `array_divide()` {#collection-metodo}
 
-The `array_divide` function returns two arrays, one containing the keys, and the other containing the values of the original array:
+La funzione `array_divide` ritorna due array, uno contenente le chiavi, e l'altro contentente i valori dell'array originale:
 
 	list($keys, $values) = array_divide(['name' => 'Desk']);
 
@@ -131,30 +131,29 @@ The `array_divide` function returns two arrays, one containing the keys, and the
 
 	// $values: ['Desk']
 
-<a name="method-array-dot"></a>
-#### `array_dot()` {#collection-method}
+<a name="metodo-array-dot"></a>
+#### `array_dot()` {#collection-metodo}
 
-The `array_dot` function flattens a multi-dimensional array into a single level array that uses "dot" notation to indicate depth:
+La funzione `array_dot` semplifica un array multi dimensionale restituendone uno singolo con la notazione "dot" per indicarne il livello di profondità:
 
 	$array = array_dot(['foo' => ['bar' => 'baz']]);
 
 	// ['foo.bar' => 'baz'];
 
-<a name="method-array-except"></a>
-#### `array_except()` {#collection-method}
+<a name="metodo-array-except"></a>
+#### `array_except()` {#collection-metodo}
 
-The `array_except` method removes the given key / value pairs from the array:
+Il metodo `array_except` rimuove una coppia chiave / valore dall'array:
 
 	$array = ['name' => 'Desk', 'price' => 100];
 
 	$array = array_except($array, ['price']);
 
 	// ['name' => 'Desk']
+<a name="metodo-array-first"></a>
+#### `array_first()` {#collection-metodo}
 
-<a name="method-array-first"></a>
-#### `array_first()` {#collection-method}
-
-The `array_first` method returns the first element of an array passing a given truth test:
+Il metodo `array_first` ritorna il primo elemento di un array se quest'ultimo passa un test:
 
 	$array = [100, 200, 300];
 
@@ -164,14 +163,14 @@ The `array_first` method returns the first element of an array passing a given t
 
 	// 200
 
-A default value may also be passed as the third parameter to the method. This value will be returned if no value passes the truth test:
+Al metodo può anche essere passato come terzo parametro un valore di default. Questo valore sarà ritornato se nessun valore passa il test:
 
 	$value = array_first($array, $callback, $default);
 
-<a name="method-array-flatten"></a>
-#### `array_flatten()` {#collection-method}
+<a name="metodo-array-flatten"></a>
+#### `array_flatten()` {#collection-metodo}
 
-The `array_flatten` method will flatten a multi-dimensional array into a single level.
+Il metodo `array_flatten` ridurrà un array multi dimensionale ad un singolo livello.
 
 	$array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
 
@@ -179,10 +178,10 @@ The `array_flatten` method will flatten a multi-dimensional array into a single 
 
 	// ['Joe', 'PHP', 'Ruby'];
 
-<a name="method-array-forget"></a>
-#### `array_forget()` {#collection-method}
+<a name="metodo-array-forget"></a>
+#### `array_forget()` {#collection-metodo}
 
-The `array_forget` method removes a given key / value pair from a deeply nested array using "dot" notation:
+Il metodo`array_forget` rimuove una coppia chiave / valore da un array complesso utilizzando la notazione "dot":
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -190,10 +189,10 @@ The `array_forget` method removes a given key / value pair from a deeply nested 
 
 	// ['products' => []]
 
-<a name="method-array-get"></a>
-#### `array_get()` {#collection-method}
+<a name="metodo-array-get"></a>
+#### `array_get()` {#collection-metodo}
 
-The `array_get` method retrieves a value from a deeply nested array using "dot" notation:
+Il metodo `array_get` recupererà una valore da un array complesso utilizzando la notazione "dot":
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -201,14 +200,14 @@ The `array_get` method retrieves a value from a deeply nested array using "dot" 
 
 	// ['price' => 100]
 
-The `array_get` function also accepts a default value, which will be returned if the specific key is not found:
+La funzione `array_get` accetta anche un valore di default, che sarà ritornato se la chiave specificata non viene trovata:
 
 	$value = array_get($array, 'names.john', 'default');
 
-<a name="method-array-only"></a>
-#### `array_only()` {#collection-method}
+<a name="metodo-array-only"></a>
+#### `array_only()` {#collection-metodo}
 
-The `array_only` method will return only the specified key / value pairs from the given array:
+Il metodo `array_only`recupererà solo le specifiche coppie chiave/valore dall'array:
 
 	$array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 
@@ -216,10 +215,10 @@ The `array_only` method will return only the specified key / value pairs from th
 
 	// ['name' => 'Desk', 'price' => 100]
 
-<a name="method-array-pluck"></a>
-#### `array_pluck()` {#collection-method}
+<a name="metodo-array-pluck"></a>
+#### `array_pluck()` {#collection-metodo}
 
-The `array_pluck` method will pluck a list of the given key / value pairs from the array:
+Il metodo`array_pluck` recupererà una lista delle specificate coppie chiave/valore dell’array:
 
 	$array = [
 		['developer' => ['name' => 'Taylor']],
@@ -230,10 +229,10 @@ The `array_pluck` method will pluck a list of the given key / value pairs from t
 
 	// ['Taylor', 'Abigail'];
 
-<a name="method-array-pull"></a>
-#### `array_pull()` {#collection-method}
+<a name="metodo-array-pull"></a>
+#### `array_pull()` {#collection-metodo}
 
-The `array_pull` method returns and removes a key / value pair from the array:
+Il metodo `array_pull` restituirà una specifica coppia chiave/valore dell’array, quindi la rimuoverà:
 
 	$array = ['name' => 'Desk', 'price' => 100];
 
@@ -243,10 +242,10 @@ The `array_pull` method returns and removes a key / value pair from the array:
 
 	// $array: ['price' => 100]
 
-<a name="method-array-set"></a>
-#### `array_set()` {#collection-method}
+<a name="metodo-array-set"></a>
+#### `array_set()` {#collection-metodo}
 
-The `array_set` method sets a value within a deeply nested array using "dot" notation:
+Il metodo `array_set` imposterà un valore dentro un array annidato utilizzando la notazione “dot”:
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -254,10 +253,10 @@ The `array_set` method sets a value within a deeply nested array using "dot" not
 
 	// ['products' => ['desk' => ['price' => 200]]]
 
-<a name="method-array-sort"></a>
-#### `array_sort()` {#collection-method}
+<a name="metodo-array-sort"></a>
+#### `array_sort()` {#collection-metodo}
 
-The `array_sort` method sorts the array by the results of the given Closure:
+Il metodo `array_sort` ordina l'array in base al risultato di una Closure:
 
 	$array = [
 		['name' => 'Desk'],
@@ -275,10 +274,10 @@ The `array_sort` method sorts the array by the results of the given Closure:
 		]
 	*/
 
-<a name="method-array-where"></a>
-#### `array_where()` {#collection-method}
+<a name="metodo-array-where"></a>
+#### `array_where()` {#collection-metodo}
 
-The `array_where` function filters the array using the given Closure:
+La funzione `array_where` filtra l'array usando una Closure:
 
 	$array = [100, '200', 300, '400', 500];
 
@@ -288,10 +287,10 @@ The `array_where` function filters the array using the given Closure:
 
 	// [1 => 200, 3 => 400]
 
-<a name="method-head"></a>
-#### `head()` {#collection-method}
+<a name="metodo-head"></a>
+#### `head()` {#collection-metodo}
 
-The `head` function simply returns the first element in the given array:
+La funzione `head` ritorna semplicemente il primo elemento dell'array:
 
 	$array = [100, 200, 300];
 
@@ -299,10 +298,10 @@ The `head` function simply returns the first element in the given array:
 
 	// 100
 
-<a name="method-last"></a>
-#### `last()` {#collection-method}
+<a name="metodo-last"></a>
+#### `last()` {#collection-metodo}
 
-The `last` function returns the last element in the given array:
+La funzione `last` ritorna l'ultimo elemento dell'array:
 
 	$array = [100, 200, 300];
 
@@ -310,149 +309,149 @@ The `last` function returns the last element in the given array:
 
 	// 300
 
-<a name="paths"></a>
-## Paths
+<a name="percorsi"></a>
+## Percorsi
 
-<a name="method-app-path"></a>
-#### `app_path()` {#collection-method}
+<a name="metodo-app-path"></a>
+#### `app_path()` {#collection-metodo}
 
-The `app_path` function returns the fully qualified path to the `app` directory:
+La funzione `app_path` Restituisce il percorso completo della directory `app`:
 
 	$path = app_path();
 
-You may also use the `app_path` function to generate a fully qualified path to a given file relative to the application directory:
+Puoi anche usare la funzione `app_path` per generare un percorso completo ad un file relativo alla directory dell'applicazione:
 
 	$path = app_path('Http/Controllers/Controller.php');
 
-<a name="method-base-path"></a>
-#### `base_path()` {#collection-method}
+<a name="metodo-base-path"></a>
+#### `base_path()` {#collection-metodo}
 
-The `base_path` function returns the fully qualified path to the project root:
+La funzione `base_path` restituisce il percorso completo alla root della tua applicazione:
 
 	$path = base_path();
 
-You may also use the `base_path` function to generate a fully qualified path to a given file relative to the application directory:
+Puoi usare la funzione `base_path` anche per generare un percorso completo ad una data directory relativa all'applicazione:
 
 	$path = base_path('vendor/bin');
 
-<a name="method-config-path"></a>
-#### `config_path()` {#collection-method}
+<a name="metodo-config-path"></a>
+#### `config_path()` {#collection-metodo}
 
-The `config_path` function returns the fully qualified path to the application configuration directory:
+La funzione `config_path` ritorna il percorso completo alla directory di configurazione dell'applicazione:
 
 	$path = config_path();
 
-<a name="method-database-path"></a>
-#### `database_path()` {#collection-method}
+<a name="metodo-database-path"></a>
+#### `database_path()` {#collection-metodo}
 
-The `database_path` function returns the fully qualified path to the application's database directory:
+La funzione `database_path` ritorna il percorso completo alla directory database dell'applicazione:
 
 	$path = database_path();
 
-<a name="method-public-path"></a>
-#### `public_path()` {#collection-method}
+<a name="metodo-public-path"></a>
+#### `public_path()` {#collection-metodo}
 
-The `public_path` function returns the fully qualified path to the `public` directory:
+La funzione `public_path` ritorna il percorso completo alla directory `public`:
 
 	$path = public_path();
 
-<a name="method-storage-path"></a>
-#### `storage_path()` {#collection-method}
+<a name="metodo-storage-path"></a>
+#### `storage_path()` {#collection-metodo}
 
-The `storage_path` function returns the fully qualified path to the `storage` directory:
+La funzione `storage_path` ritorna il percorso completo alla directory `storage`:
 
 	$path = storage_path();
 
-You may also use the `storage_path` function to generate a fully qualified path to a given file relative to the storage directory:
+Puoi anche usare la funzione `storage_path` per generare un percorso completo ad un dato file relativo alla directory storage:
 
 	$path = storage_path('app/file.txt');
 
-<a name="strings"></a>
-## Strings
+<a name="stringhe"></a>
+## Stringhe
 
-<a name="method-camel-case"></a>
-#### `camel_case()` {#collection-method}
+<a name="metodo-camel-case"></a>
+#### `camel_case()` {#collection-metodo}
 
-The `camel_case` function converts the given string to `camelCase`:
+La funzione `camel_case` converte una stringa nel formato `camelCase`:
 
 	$camel = camel_case('foo_bar');
 
 	// fooBar
 
-<a name="method-class-basename"></a>
-#### `class_basename()` {#collection-method}
+<a name="metodo-class-basename"></a>
+#### `class_basename()` {#collection-metodo}
 
-The `class_basename` returns the class name of the given class with the class' namespace removed:
+La funzione `class_basename` ritorna il nome della classe senza namespace:
 
 	$class = class_basename('Foo\Bar\Baz');
 
 	// Baz
 
-<a name="method-e"></a>
-#### `e()` {#collection-method}
+<a name="metodo-e"></a>
+#### `e()` {#collection-metodo}
 
-The `e` function runs `htmlentities` over the given string:
+La funzione `e` esegue `htmlentities` sulla stringa:
 
 	echo e('<html>foo</html>');
 
-<a name="method-ends-with"></a>
-#### `ends_with()` {#collection-method}
+<a name="metodo-ends-with"></a>
+#### `ends_with()` {#collection-metodo}
 
-The `ends_with` function determines if the given string ends with the given value:
+La funzione `ends_with` determina se una stringa termina con un dato valore:
 
 	$value = ends_with('This is my name', 'name');
 
 	// true
 
-<a name="method-snake-case"></a>
-#### `snake_case()` {#collection-method}
+<a name="metodo-snake-case"></a>
+#### `snake_case()` {#collection-metodo}
 
-The `snake_case` function converts the given string to `snake_case`:
+La funzione `snake_case` converte una stringa nel formato `snake_case`:
 
 	$snake = snake_case('fooBar');
 
 	// foo_bar
 
-<a name="method-str-limit"></a>
-#### `str_limit()` {#collection-method}
+<a name="metodo-str-limit"></a>
+#### `str_limit()` {#collection-metodo}
 
-The `str_limit` function limits the number of characters in a string. The function accepts a string as its first argument and the maximum number of resulting characters as its second argument:
+La funzione `str_limit` limita il numero di caratteri di una stringa. La funzione accetta una stringa come primo parametro e il massimo numero di caratteri risultanti come secondo parametro:
 
 	$value = str_limit('The PHP framework for web artisans.', 7);
 
 	// The PHP...
 
-<a name="method-starts-with"></a>
-#### `starts_with()` {#collection-method}
+<a name="metodo-starts-with"></a>
+#### `starts_with()` {#collection-metodo}
 
-The `starts_with` function determines if the given string begins with the given value:
+La funzione `starts_with` determina se una stringa inizia con un dato valore:
 
 	$value = starts_with('This is my name', 'This');
 
 	// true
 
-<a name="method-str-contains"></a>
-#### `str_contains()` {#collection-method}
+<a name="metodo-str-contains"></a>
+#### `str_contains()` {#collection-metodo}
 
-The `str_contains` function determines if the given string contains the given value:
+La funzione `str_contains` determina se la stringa contiene un dato valore:
 
 	$value = str_contains('This is my name', 'my');
 
 	// true
 
-<a name="method-str-finish"></a>
-#### `str_finish()` {#collection-method}
+<a name="metodo-str-finish"></a>
+#### `str_finish()` {#collection-metodo}
 
-The `str_finish` function adds a single instance of the given value to a string:
+La funzione `str_finish` aggiunge una singola istanza di un dato valore ad una stringa:
 
 	$string = str_finish('this/string', '/');
 
 	// this/string/
 
-<a name="method-str-is"></a>
-#### `str_is()` {#collection-method}
+<a name="metodo-str-is"></a>
+#### `str_is()` {#collection-metodo}
 
-The `str_is` function determines if a given string matches a given pattern. Asterisks may be used to indicate wildcards:
+La funzione `str_is` determina se una stringa è associabile ad un pattern. Può essere usato un asterisco per indicare una wildcard:
 
 	$value = str_is('foo*', 'foobar');
 
@@ -462,10 +461,10 @@ The `str_is` function determines if a given string matches a given pattern. Aste
 
 	// false
 
-<a name="method-str-plural"></a>
-#### `str_plural()` {#collection-method}
+<a name="metodo-str-plural"></a>
+#### `str_plural()` {#collection-metodo}
 
-The `str_plural` function converts a string to its plural form. This function currently only supports the English language:
+La funzione `str_plural` converte una stringa nella sua forma plurale. Questa funzione supporta solo la lingua Inglese:
 
 	$plural = str_plural('car');
 
@@ -475,155 +474,155 @@ The `str_plural` function converts a string to its plural form. This function cu
 
 	// children
 
-<a name="method-str-random"></a>
-#### `str_random()` {#collection-method}
+<a name="metodo-str-random"></a>
+#### `str_random()` {#collection-metodo}
 
-The `str_random` function generates a random string of the specified length:
+La funzione `str_random` Genera una stringa casuale con lunghezza determinata dal valore dato:
 
 	$string = str_random(40);
 
-<a name="method-str-singular"></a>
-#### `str_singular()` {#collection-method}
+<a name="metodo-str-singular"></a>
+#### `str_singular()` {#collection-metodo}
 
-The `str_singular` function converts a string to its singular form. This function currently only supports the English language:
+La funzione `str_singular` converte una stringa nella sua forma singolare. Questa funzione supporta solo la lingua Inglese:
 
 	$singular = str_singular('cars');
 
 	// car
 
-<a name="method-str-slug"></a>
-#### `str_slug()` {#collection-method}
+<a name="metodo-str-slug"></a>
+#### `str_slug()` {#collection-metodo}
 
-The `str_slug` function generates a URL friendly "slug" from the given string:
+La funzione `str_slug` genera un URL "slug" dalla stinga data:
 
 	$title = str_slug("Laravel 5 Framework", "-");
 
 	// laravel-5-framework
 
-<a name="method-studly-case"></a>
-#### `studly_case()` {#collection-method}
+<a name="metodo-studly-case"></a>
+#### `studly_case()` {#collection-metodo}
 
-The `studly_case` function converts the given string to `StudlyCase`:
+La funzione `studly_case` converte la stringa nel formato `StudlyCase`:
 
 	$value = studly_case('foo_bar');
 
 	// FooBar
 
-<a name="method-trans"></a>
-#### `trans()` {#collection-method}
+<a name="metodo-trans"></a>
+#### `trans()` {#collection-metodo}
 
-The `trans` function translates the given language line using your [localization files](/docs/{{version}}/localization):
+La funzione `trans` traduce la linea di linguaggio data usando i [File di localizzazione](/docs/{{version}}/localization):
 
 	echo trans('validation.required'):
 
-<a name="method-trans-choice"></a>
-#### `trans_choice()` {#collection-method}
+<a name="metodo-trans-choice"></a>
+#### `trans_choice()` {#collection-metodo}
 
-The `trans_choice` function translates the given language line with inflection:
+La funzione `trans_choice` traduce un testo con la sua inflessione:
 
 	$value = trans_choice('foo.bar', $count);
 
-<a name="urls"></a>
-## URLs
+<a name="url"></a>
+## URL
 
-<a name="method-action"></a>
-#### `action()` {#collection-method}
+<a name="metodo-action"></a>
+#### `action()` {#collection-metodo}
 
-The `action` function generates a URL for the given controller action. You do not need to pass the full namespace to the controller. Instead, pass the controller class name relative to the `App\Http\Controllers` namespace:
+La funzione `action` genera un URL per una data azione di un controller. Non hai bisogno di passare il namespace completo del controller. Invece, passa il nome della classe del controller relativo al namespace `App\Http\Controllers`:
 
 	$url = action('HomeController@getIndex');
 
-If the method accepts route parameters, you may them as the second argument to the method:
+Se il metodo accetta dei parametri dalla route, puoi passarli come secondo parametro del metodo:
 
 	$url = action('UserController@profile', ['id' => 1]);
 
-<a name="method-route"></a>
-#### `route()` {#collection-method}
+<a name="metodo-route"></a>
+#### `route()` {#collection-metodo}
 
-The `route` function generates a URL for the given named route:
+La funzione `route` genera un URL per una data route nominata:
 
 	$url = route('routeName');
 
-If the route accepts parameters, you may them as the second argument to the method:
+Se la route riceve dei parametri, puoi passarli come secondo parametro del metodo:
 
 	$url = route('routeName', ['id' => 1]);
 
-<a name="method-url"></a>
-#### `url()` {#collection-method}
+<a name="metodo-url"></a>
+#### `url()` {#collection-metodo}
 
-The `url` function generates a fully qualified URL to the given path:
+La funzione `url` genera un URL completo ad un dato percorso:
 
 	echo url('user/profile');
 
 	echo url('user/profile', [1]);
 
-<a name="miscellaneous"></a>
-## Miscellaneous
+<a name="varie"></a>
+## Varie
 
-<a name="method-csrf-token"></a>
-#### `csrf_token()` {#collection-method}
+<a name="metodo-csrf-token"></a>
+#### `csrf_token()` {#collection-metodo}
 
-The `csrf_token` function retrieves the value of the current CSRF token:
+La funzione `csrf_token` recupera il valore corrente del token CSRF:
 
 	$token = csrf_token();
 
-<a name="method-dd"></a>
-#### `dd()` {#collection-method}
+<a name="metodo-dd"></a>
+#### `dd()` {#collection-metodo}
 
-The `dd` function dumps the given variable and ends execution of the script:
+La funzione `dd` Effettua il dump della variabile data e termina l'esecuzione dello script:
 
 	dd($value);
 
-<a name="method-elixir"></a>
-#### `elixir()` {#collection-method}
+<a name="metodo-elixir"></a>
+#### `elixir()` {#collection-metodo}
 
-The `elixir` function gets the path to the versioned [Elixir](/docs/{{version}}/elixir) file:
+La funzione `elixir` ritorna il percorso al file [Elixir](/docs/{{version}}/elixir):
 
 	elixir($file);
 
-<a name="method-env"></a>
-#### `env()` {#collection-method}
+<a name="metodo-env"></a>
+#### `env()` {#collection-metodo}
 
-The `env` function gets the value of an environment variable or returns a default value:
+La funzione `env` recupera il valore di una variabile d'ambiente o ritorna un valore di default:
 
 	$env = env('APP_ENV');
 
 	// Return a default value if the variable doesn't exist...
 	$env = env('APP_ENV', 'production');
 
-<a name="method-event"></a>
-#### `event()` {#collection-method}
+<a name="metodo-event"></a>
+#### `event()` {#collection-metodo}
 
-The `event` function dispatches the given [event](/docs/{{version}}/events) to its listeners:
+La funzione `event` invia un dato [evento](/docs/{{version}}/events) ai suoi listener:
 
 	event(new UserRegistered($user));
 
-<a name="method-response"></a>
-#### `response()` {#collection-method}
+<a name="metodo-response"></a>
+#### `response()` {#collection-metodo}
 
-The `response` function creates a [response](/docs/{{version}}/responses) instance or obtains an instance of the response factory:
+La funzione `response` crea un istanza di [risposta](/docs/{{version}}/responses) oppure ottiene un istanza della response factory:
 
 	return response('Hello World', 200, $headers);
 
 	return response()->json(['foo' => 'bar'], 200, $headers);
 
-<a name="method-value"></a>
-#### `value()` {#collection-method}
+<a name="metodo-value"></a>
+#### `value()` {#collection-metodo}
 
-The `value` function's behavior will simply return the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed the its result will be returned:
+La funzione `value` ritornerà semplicemente il valore dato. Tuttavia, se passi una `Closure` alla funzione, la `Closure` sarà eseguita e sarà ritornato il suo valore:
 
 	$value = value(function() { return 'bar'; });
 
-<a name="method-view"></a>
-#### `view()` {#collection-method}
+<a name="metodo-view"></a>
+#### `view()` {#collection-metodo}
 
-The `view` function retrieves a [view](/docs/{{version}}/views) instance:
+La funzione `view` recupera un istanza di [view](/docs/{{version}}/views):
 
 	return view('auth.login');
 
-<a name="method-with"></a>
-#### `with()` {#collection-method}
+<a name="metodo-with"></a>
+#### `with()` {#collection-metodo}
 
-The `with` function return the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
+La funzione `with` ritorna il valore dato. Questa funzione è particolaremente utile per il concatenamento di metoti dove altrimenti sarebbe impossibile :
 
 	$value = with(new Foo)->work();
