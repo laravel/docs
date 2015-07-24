@@ -207,7 +207,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 <a name="authentication-throttling"></a>
 ### 認證節流
 
-如果你使用 Laravel's 內建的 `AuthController` 類別，可以透過 `Illuminate\Foundation\Auth\ThrottlesLogins` trait 在你的應用程式限制登入次數。預設情況下，如果使用者在幾次嘗試後仍不能提供正確的憑據，將在一分鐘內無法進行登入。節流是唯一使用者的使用者名稱和電子郵件以及他們的 IP 位置：
+如果你使用 Laravel's 內建的 `AuthController` 類別，可以透過 `Illuminate\Foundation\Auth\ThrottlesLogins` trait 在你的應用程式限制登入次數。預設情況下，如果使用者在幾次嘗試後仍不能提供正確的憑證，將在一分鐘內無法進行登入。節流是獨立使用者的使用者名稱和電子郵件以及他們的 IP 位置：
 
     <?php
 
