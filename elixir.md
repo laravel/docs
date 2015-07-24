@@ -224,9 +224,9 @@ The `babel` method may be used to compile [EcmaScript 6 and 7](https://babeljs.i
 ```javascript
 elixir(function(mix) {
     mix.babel([
-                'order.js',
-                'product.js'
-        ]);
+        'order.js',
+        'product.js'
+    ]);
 });
 ```
 
