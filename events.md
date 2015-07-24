@@ -1,27 +1,27 @@
-# Events
+oiu# Eventi
 
-- [Introduction](#introduction)
-- [Registering Events / Listeners](#registering-events-and-listeners)
-- [Defining Events](#defining-events)
-- [Defining Listeners](#defining-listeners)
-	- [Queued Event Listeners](#queued-event-listeners)
-- [Firing Events](#firing-events)
-- [Broadcasting Events](#broadcasting-events)
-	- [Configuration](#broadcast-configuration)
-	- [Marking Events For Broadcast](#marking-events-for-broadcast)
-	- [Broadcast Data](#broadcast-data)
+- [Introduzione](#introduzione)
+- [Registrare Eventi / Listener](#registrare-eventi-e-listener)
+- [Definire Gli Eventi](#definire-eventi)
+- [Definire I Listener](#definire-listeners)
+	- [Gestione Coda Eventi](#gestione-coda-eventi)
+- [Eseguire Eventi](#eseguire-eventi)
+- [Broadcasting Di Eventi](#broadcasting-eventi)
+	- [Configurazione](#configurazione-broadcast)
+	- [Segnare Eventi Per Il Broadcast](#segnare-eventi-per-broadcast)
+	- [Dati Broadcast](#dati-broadcast)
 	- [Consuming Event Broadcasts](#consuming-event-broadcasts)
-- [Event Subscribers](#event-subscribers)
+- [Event Subscriber](#event-subscriber)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Laravel's events provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their listeners are stored in `app/Listeners`.
+La classe Event fornisce una semplice implementazione di un observer, che permette di gestire la tua applicazione attraverso gli eventi. Le classi eventi sono normalmente salvate nella directory  `app/Events`, mentre i loro handlers sono salvati all'interno di `app/Listeners`.
 
-<a name="registering-events-and-listeners"></a>
-## Registering Events / Listeners
+<a name="registrare-eventi-e-listener"></a>
+## Registrare Eventi / Listener
 
-The `EventServiceProvider` included with your Laravel application provides a convenient place to register all event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). Of course, you may add as many events to this array as your application requires. For example, let's add our `PodcastWasPurchased` event:
+L'`EventServiceProvider` incluso in Laravel offre un modo conventiente per gestire tutti gli handler degli eventi. La proprietà `listen`contiene un array di tutti gli eventi (key) e i loro handler (value). Ovviamente, puoi aggiungere altri eventi a questo array se la tua applicazione ne richiede. Per esempio, aggiungiamo il nostro evento `PodcastWasPurchased`:
 
 	/**
 	 * The event listener mappings for the application.
@@ -34,16 +34,15 @@ The `EventServiceProvider` included with your Laravel application provides a con
 		],
 	];
 
-### Generating Event / Listener Classes
+### Generare Classi Di Event / Listener
 
-Of course, manually creating the files for each event and listener is cumbersome. Instead, simply add listeners and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or listeners that are listed in your `EventServiceProvider`. Of course, events and listeners that already exist will be left untouched:
+Naturalmente, create i file per ogni evento e listener ogni qual volta ne hai bisogno è scomodo. Invece, aggiungi i tuoi handler ed eventi al tuo `EventServiceProvider` ed usa il comando `event:generate`. Questo comando genererà qualsiasi evento o listener presente nel tuo `EventServiceProvider`. Ovviamente, gli eventi o listener già esistenti saranno ignorati:
 
 	php artisan event:generate
 
-<a name="defining-events"></a>
-## Defining Events
-
-An event class is simply a data container which holds the information related to the event. For example, let's assume our generated `PodcastWasPurchased` event receives a [Eloquent ORM](/docs/{{version}}/eloquent) object:
+<a name="definire-eventi"></a>
+## Definire Gli Eventi
+Una classe evento è semplicemente un container di dati che mantiene le informazioni relative ad un evento. Per esempio, assumiamo che il nostro evento `PodcastWasPurchased` riceva un oggetto [Eloquent ORM](/docs/{{version}}/eloquent):
 
 	<?php namespace App\Events;
 
@@ -69,12 +68,12 @@ An event class is simply a data container which holds the information related to
 	    }
 	}
 
-As you can see, this event class contains no special logic. It is simply a container for the `Podcast` object that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function.
+Come puoi vedere, questa classe contiene nessuna logica speciale. E' semplicemente un container per l'oggetto `Podcast` che viene acquistato. Il trait `SerializesModels` usato dall'evento serializzerà qualsiasi model Eloquent se l'oggetto evento è serializzato usando la funzione PHP `serialize`.
 
-<a name="defining-listeners"></a>
-## Defining Listeners
+<a name="definire-listener"></a>
+## Definire I Listener
 
-Next, let's take a look at the listener for our example event. Event listeners receive the event instance in their `handle` method. The `event:generate` command will automatically import the proper event class and type-hint the event on the `handle` method. Within the `handle` method, you may perform any logic necessary to respond to the event.
+Ora, diamo uno sguardo ai listener per il nostro evento di esempio. Gli event listener ricevono un istanza di un evento nel loro metodo `handle`. Il comando `event:generate` importerà automaticamente la giusta classe dell'evento ed eseguirà un type-hint nel metodo `handle`. All'interno del metodo `handle`, puoi eseguire qualsiasi logica necessaria in risposta all'evento.
 
 	<?php namespace App\Listeners;
 
@@ -106,7 +105,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
 	    }
 	}
 
-Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically:
+Il tuo event listener può anche ricevere qualsiasi dipendenza abbia bisogno eseguendo un type-hint nel costruttore. Tutti gli event listener sono risolti da Laravel tramite il [service container](/docs/{{version}}/container), in questo modo le dipendenza saranno iniettate automaticamente:
 
 	use Illuminate\Contracts\Mail\Mailer;
 
@@ -115,14 +114,14 @@ Your event listeners may also type-hint any dependencies they need on their cons
 		$this->mailer = $mailer;
 	}
 
-#### Stopping The Propagation Of An Event
+#### Fermare La Propagazione Di Un Evento
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your listener's `handle` method.
+In alcuni casi, puoi voler fermare la propagazione di un evento per altri listener. Puoi farlo ritornando `false` dal metodo `handle` del tuo listener.
 
-<a name="queued-event-listeners"></a>
-### Queued Event Listeners
+<a name="gestione-code-eventi"></a>
+### Gestione Coda Eventi
 
-Need to [queue](/docs/{{version}}/queues) an event listener? It couldn't be any easier. Simply add the `ShouldQueue` interface to the listener class. Listeners generated by the `event:generate` Artisan command already have this interface imported into the current namespace, so you can use it immediately:
+Hai bisogno di inserire un evento nella [queue](/docs/{{version}}/queues)? Non potrebbe essere più facile. Aggiungi semplicemente l'interfaccia `ShouldQueue` alla classe dell'evento. I Listener generati dal comando Artisan `event:generate` hanno già importata questa interfaccia nel namespace corrente, in questo modo puoi usarla immediatamente:
 
 	<?php namespace App\Listeners;
 
@@ -134,12 +133,11 @@ Need to [queue](/docs/{{version}}/queues) an event listener? It couldn't be any 
 	{
 		//
 	}
+Questo è tutto! Ora, quando questo listener verrà chiamato per un evento, sarà automaticamente messo in coda dal dispatcher degli eventi usando il [queue system](/docs/{{version}}/queues) di Laravel. Se non si verifica nessuna eccezione quando il listener viene esguito dalla coda, sarà la il sistema di gestione delle code a rimuovere automaticamente dalla coda il listener una volta processato.
 
-That's it! Now, when this listener is called for an event, it will be queued automatically by the event dispatcher using Laravel's [queue system](/docs/{{version}}/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has processed.
+#### Accesso Manuale alla Coda
 
-#### Manually Accessing The Queue
-
-If you need to access the underlying queue job's `delete` and `release` methods manually, you may do so. The `Illuminate\Queue\InteractsWithQueue` trait, which is imported by default on generated listeners, gives you access to these methods:
+Se hai bisogno di accedere manualmente ai metodi `delete` and `release` della queue,y puoi farlo in questo modo. Il trait `Illuminate\Queue\InteractsWithQueue`, che viene importato di default nei listener generati, ti permette di accedere a questi metodi:
 
 	<?php namespace App\Listeners;
 
@@ -159,10 +157,10 @@ If you need to access the underlying queue job's `delete` and `release` methods 
 		}
 	}
 
-<a name="firing-events"></a>
-## Firing Events
+<a name="lanciare-eventi"></a>
+## Lanciare Eventi
 
-To fire an event, you may use the `Event` [facade](/docs/{{version}}/facades), passing an instance of the event to the `fire` method. The `fire` method will dispatch the event to all of its registered listeners:
+Per lanciare un evento, puoi usare la [facade](/docs/{{version}}/facades) `Event`, passando un istanza dell'evento al metodo `fire`. Il metodo `fire` invierà l'evento a tutti i suoi listener registrati:
 
 	<?php namespace App\Http\Controllers;
 
@@ -190,30 +188,30 @@ To fire an event, you may use the `Event` [facade](/docs/{{version}}/facades), p
 		}
 	}
 
-Alternatively, you may use the global `event` helper function to fire events:
+Alternativamente, puoi usare la funzione helper globale `event` per lanciare gli eventi:
 
 	event(new PodcastWasPurchased($podcast));
 
-<a name="broadcasting-events"></a>
-## Broadcasting Events
+<a name="broadcasting-eventi"></a>
+##  Broadcasting Di Eventi
 
-In many modern web applications, web sockets are used to implement real-time, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a websocket connection to be handled by the client.
+In molte moderne applicazioni web, i seb socket sono usati per implementare interfacce utente real-time, live-updating. Quando qualche dato è aggiornato sul server, normalmente viene inviato un messaggio al websocket per essere gestito dal client.
 
-To assist you in building these types of applications, Laravel makes it easy to "broadcast" your events over a websocket connection. Broadcasting your Laravel events allows you to share the same event names between your server-side code and your client-side JavaScript framework.
+Per assisterti alla realizzazione di applicazioni di questo tipo, Laravel ti rende facile eseguire un "broadcast" dei tuoi eventi su una connessione websocket. Il Broadcasting dei tuoi eventi ti permette di condividere gli stessi nomi di eventi lato server con il tuo client JavaScript.
 
-<a name="broadcast-configuration"></a>
-### Configuration
+<a name="configurazione-broadcast"></a>
+### Configurazione
 
-All of the event broadcasting configuration options are stored in the `config/broadcasting.php` configuration file. Laravel supports several broadcast drivers out of the box: [Pusher](https://pusher.com), [Redis](/docs/{{version}}/redis), and a `log` driver for local development and debugging. A configuration example is included for each of these drivers.
+Tutte le opzioni per il broadcast degli eventi sono memorizzate nel file di configurazione `config/broadcasting.php`. Laravel supporta diversi driver per il broadcast: [Pusher](https://pusher.com), [Redis](/docs/{{version}}/redis), e il driver `log` per lo sviluppo in locale e per debugging. E' inclusa una configurazione di esempio per ognuno di questi driver.
 
-#### Queue Prerequisites
+#### Prerequisiti Coda
 
-Before broadcasting events, you will also need to configure and run a [queue listener](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected.
+Prima di eseguire il broadcast degli eventi, avrai bisogno di configurare ad eseguire la [queue listener](/docs/{{version}}/queues). Il broadcast degli eventi viene realzizato tramite coda in modo tale che il tempo di risposta della tua applicazione non ne risenta. 
 
-<a name="marking-events-for-broadcast"></a>
-### Marking Events For Broadcast
+<a name="segnare-eventi-per-broadcast"></a>
+### Segnare Eventi Per Il Broadcast
 
-To inform Laravel that a given event should be broadcast, implement the `Illuminate\Contracts\Broadcasting\ShouldBroadcast` interface on the event class. The `ShouldBroadcast` interface requires you to implement a single method: `broadcastOn`. The `broadcastOn` method should return an array of "channel" names that the event should be broadcast on:
+Per informare Laravel che un evento debba essere affetto da broadcast, implementa l'interfaccia `Illuminate\Contracts\Broadcasting\ShouldBroadcast` per la classe dell'evento. L'interfaccia `ShouldBroadcast` richiede di implementare un singolo metodo: `broadcastOn`. Il metodo `broadcastOn` ritorna u array di nomi di "canali" sui quali l'evento dovrebbe essere trasmesso:
 
 	<?php namespace App\Events;
 
@@ -249,12 +247,12 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
 	    }
 	}
 
-Then, you only need to [fire the event](#firing-events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
+Quindi, hai solo bisogno di [lanciare l'evento](#firing-events) come faresti normalmente. Una volta che l'evento viene eseguito, la [queued job](/docs/{{version}}/queues) trasmetterà automaticamente l'evento a seconda del driver specificato.
 
-<a name="broadcast-data"></a>
-### Broadcast Data
+<a name="dati-broadcast"></a>
+### Dati Broadcast
 
-When an event is broadcast, all of its `public` properties are automatically serialized and broadcast as the event's payload, allowing you to access any of its public data from your JavaScript application. So, for example, if your event has a single public `$user` property that contains an Eloquent model, the broadcast payload would be:
+Quando un evento è trasmesso, tutte le sue proprietà `pubbliche` vengono serializzate automaticamente come payload dell'evento, permettendoti di accedere a qualsiasi dato pubblico dalla tua applicazione JavaScript. Così, per esempio, se il tuo evento ha una proprietà pubblica `$user` che contiene un model Eloquent, i dati di payload dovrebbero essere:
 
 	{
 		"user": {
@@ -264,7 +262,7 @@ When an event is broadcast, all of its `public` properties are automatically ser
 		}
 	}
 
-However, if you wish to have even more fine-grained control over your broadcast payload, you may add a `broadcastWith` method to your event. This method should return the array of data that you wish to broadcast with the event:
+Tuttavia, se desideri avere un controllo più fine sui dati trasmessi, puoi aggiungere il metodo `broadcastWith` al tuo evento. Questo metodo dovrebbe ritornare un array di dati che tu desideri trasmettere assieme all'evento:
 
     /**
      * Get the data to broadcast.
@@ -277,11 +275,11 @@ However, if you wish to have even more fine-grained control over your broadcast 
     }
 
 <a name="consuming-event-broadcasts"></a>
-### Consuming Event Broadcasts
+### “Aggangiarsi” Al Broadcast di Eventi
 
 #### Pusher
 
-You may conveniently consume events broadcast using the [Pusher](https://pusher.com) driver using Pusher's JavaScript SDK. For example, let's consume the `App\Events\ServerCreated` event from our previous examples:
+Puoi “aggangiarti” in modo conveniente al broadcast degli eventi usando il driver [Pusher](https://pusher.com) usando gli SDK JavaScript di Pusher. Per esempio, “agganciamoci” all'evento `App\Events\ServerCreated` del nostro precedente esempio:
 
 	this.pusher = new Pusher('pusher-key');
 
@@ -293,9 +291,9 @@ You may conveniently consume events broadcast using the [Pusher](https://pusher.
 
 #### Redis
 
-If you are using the Redis broadcaster, you will need to write your own Redis pub/sub consumer to receive the messages and broadcast them using the websocket technology of your choice. For example, you may choose to use the popular [Socket.io](http://socket.io) library which is written in Node.
+Se stai usando Redis, avrai bisogno di scrivere il tuo personale metodo di "aggancio" per ricevere i messaggi ed inviarli usando la tecnolgia websocket. Per esempio, puoi scegliere di usare la popolare libreria [Socket.io](http://socket.io) scritta in Node.
 
-Using the `socket.io` and `ioredis` Node libraries, you can quickly write an event broadcaster to publish all events that are broadcast by your Laravel application:
+Usando le librerie Node `socket.io` e `ioredis`, puoi scrivere velocemente un evento da trasmettere per pubblicare tutti glie eventi che sono trasmessi dalla tua applicazione:
 
 	var app = require('http').createServer(handler);
 	var io = require('socket.io')(app);
@@ -328,7 +326,7 @@ Using the `socket.io` and `ioredis` Node libraries, you can quickly write an eve
 <a name="event-subscribers"></a>
 ## Event Subscribers
 
-Event subscribers are classes that may subscribe to multiple events from within the class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance:
+Gli Event subscribers sono classi che puoi registrare per eventi multipli dall’interno della classe stessa. I subscribers dovrebbero definire un metodo `subscribe`, che verrà passato all’istanza del dispatcher degli eventi:
 
 	<?php namespace App\Listeners;
 
@@ -365,9 +363,9 @@ Event subscribers are classes that may subscribe to multiple events from within 
 
 	}
 
-#### Registering An Event Subscriber
+#### Registrare Un Event Subscriber
 
-Once the subscriber has been defined, it may be registered with the event dispatcher. You may register subscribers using the `$subscribe` property on the `EventServiceProvider`. For example, let's add the `UserEventListener`.
+Una volta che il subscriber è stato definito, può essere registrato con il dispatcher dell'evento. Puoi registrare i tuoi subscriber usando la proprietà `$subscribe` in `EventServiceProvider`. Per esempio, aggiungiamo `UserEventListener`.
 
     <?php namespace App\Providers;
 
