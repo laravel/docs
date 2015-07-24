@@ -181,7 +181,7 @@ Laravel 允許你在[視圖](/docs/{{version}}/views)中存放電子郵件訊息
 
 #### 將郵件訊息加入隊列
 
-由於寄送電子郵件訊息會大幅延長應用程式的回應時間，許多開發者選擇將郵件訊息加入隊列並於背景發送。Laravel 使用其內建的 [unified queue API](/docs/{{version}}/queues)，讓你輕鬆地完成它。要將郵件訊息加入隊列，使用 `Mail` facade 的 `queue` 方法：
+由於寄送電子郵件訊息會大幅延長應用程式的回應時間，許多開發者選擇將郵件訊息加入隊列並於背景發送。Laravel 使用其內建的 [統一的隊列 API](/docs/{{version}}/queues)，讓你輕鬆地完成此工作。要將郵件訊息加入隊列，使用 `Mail` facade 的 `queue` 方法：
 
     Mail::queue('emails.welcome', $data, function ($message) {
         //
