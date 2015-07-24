@@ -1,34 +1,36 @@
-# Database: Getting Started
+# Database: Primi Passi
 
-- [Introduction](#introduction)
-- [Running Raw SQL Queries](#running-queries)
-	- [Listening For Query Events](#listening-for-query-events)
-- [Database Transactions](#database-transactions)
-- [Using Multiple Database Connections](#accessing-connections)
+- [Introduzione](#introduzione)
+	- [Configurazione](#configurazione)
+- [Eseguire le Query](#eseguire-query)
+	- ["Ascoltare" gli Eventi Relativi alle Query](#ascoltare-eventi-query)
+- [Transazioni sul Database](#transazioni-database)
+- [Usare una Connessione Specifica](#usare-connessione-specifica)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Laravel makes connecting with databases and running queries extremely simple across a variety of database back-ends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four database systems:
+Laravel rende semplice la connessione di un database (e successiva esecuzione delle query) attraverso una serie di strumenti, dal SQL grezzo fino ad [Eloquent ORM](/docs/5.1/eloquent), passando per il [query builder](/docs/5.1/queries).
+
+Di default, Laravel supporta out of the box quattro sistemi di database diversi.
 
 - MySQL
 - Postgres
 - SQLite
 - SQL Server
 
-<a name="configuration"></a>
-### Configuration
+<a name="configurazione"></a>
+### Configurazione
 
-Laravel makes connecting with databases and running queries extremely simple. The database configuration for your application is located at `config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
+Il file di configurazione relativo alla connessione verso il database è `config/database.php`. Al suo interno potrai definire tutte le connessioni di cui ahi bisogno, oltre a poter specificare quale usare di default. Per comodità, è stato riportato un esempio di connessione per ogni sistema supportato.
 
-By default, Laravel's sample [environment configuration](/docs/{{version}}/installation#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. Of course, you are free to modify this configuration as needed for your local database.
+Di default, il file di esempio di [configurazione](/docs/5.1/installation#environment-configuration) è già pronto per essere usato con il database presente su [Laravel Homestead](/docs/5.1/homestead), una macchina virtuale comodissima per lo sviluppo in locale. Chiaramente, sentiti libero di modificare come meglio credi tale file.
 
-<a name="read-write-connections"></a>
-#### Read / Write Connections
+#### Connessioni di Scrittura / Lettura
 
-Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
+A volte, potresti avere la necessità di usare una certa connessione per le operazioni di lettura, un'altra invece per quelle di scrittura. Laravel rende il processo molto semplice, permettendoti di specificare una connessione di lettura ed una di scrittura.
 
-To see how read / write connections should be configured, let's look at this example:
+Per lo scopo vengono usati gli elementi _read_ e _write_ dell'array contenente i dati di configurazione.
 
 	'mysql' => [
 		'read' => [
@@ -46,18 +48,16 @@ To see how read / write connections should be configured, let's look at this exa
 		'prefix'    => '',
 	],
 
-Note that two keys have been added to the configuration array: `read` and `write`. Both of these keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
+Nei due array vanno messe le opzioni che effettivamente sono diverse tra un'operazione e l'altra (_host_ in questo caso), mentre quelle in comune vengono registrate normalmente (_database_, o _driver_). Chiaramente le cose possono cambiare di situazione in situazione: se usi dei nomi diversi per lo stesso database, ma su due server diversi, assicurati di specificare il _database_ sia in _read_ che in _write_, e così via.
 
-So, we only need to place items in the `read` and `write` arrays if we wish to override the values in the main array. So, in this case, `192.168.1.1` will be used as the "read" connection, while `192.168.1.2` will be used as the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
+<a name="eseguire-query"></a>
+## Eseguire le Query
 
-<a name="running-queries"></a>
-## Running Raw SQL Queries
+Una volta configurato il database sei pronto ad eseguire le tue prime query. Puoi farlo, comodamente, tramite la Facade _DB_. Tale classe ti fornisce svariati metodi di comodo, come _select_, _update_, _insert_ e _statement_. Vediamoli.
 
-Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, and `statement`.
+#### Eseguire una Query di Select
 
-#### Running A Select Query
-
-To run a basic query, we can use the `select` method on the `DB` facade:
+Per eseguire una query di selezione semplice usa _select_.
 
 	<?php namespace App\Http\Controllers;
 
@@ -79,48 +79,52 @@ To run a basic query, we can use the `select` method on the `DB` facade:
 		}
 	}
 
-The first argument passed to the `select` method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
+Il primo argomento ad essere passato al metodo è la query "grezza", mentre il secondo è un array di parametri che verranno automaticamente usati, da Laravel, per costruire la query finale. Questo tipo di binding inoltre protegge il sistema da eventuali SQL Injection.
 
-The `select` method will always return an `array` of results. Each result within the array will be a PHP `StdClass` object, allowing you to access the values of the results:
+Il metodo _select_ ritorna un _array_ di risultati. Ogni risultato all'interno dell'array sarà di tipo _StdClass_, permettendoti di accedere ai singoli campi in questo modo.
 
 	foreach ($users as $user) {
 		echo $user->name;
 	}
 
-#### Using Named Bindings
+#### Definire i Binding tramite dei Nomi
 
-Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
+Al posto di usare _?_ per un binding, puoi assegnare ad un certo parametro un nome. Così:
 
 	$results = DB::select('select * from users where id = :id', ['id' => 1]);
 
-#### Running An Insert Statement
+#### Eseguire una Query di Inserimento
 
-To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument, and bindings as the second argument:
+Per eseguire una query di inserimento, usa il metodo _insert_ come segue. La sintassi è praticamente identica a quella vista in precedenza: il primo parametro è la query, il secondo l'array di parametri da passare a tale query.
 
 	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
-#### Running An Update Statement
+#### Eseguire una Query di Aggiornamento
 
-The `update` method should be used to update existing records in the database. The number of rows affected by the statement will be returned by the method:
+Il metodo _update_ viene usato per aggiornare dei record esistenti. Il numero di righe interessate da tale modifica verrà ritornato come risultato.
 
 	$affected = DB::update('update users set votes = 100 where name = ?', ['John']);
 
-#### Running A Delete Statement
+#### Eseguire una Query di Cancellazione
 
-The `delete` method should be used to delete records from the database. Like `update`, the number of rows deleted will be returned:
+Per cancellare dei record da un database, usa il metodo _delete_. Anche in questo caso verranno ritornate le righe interessate dalla modifica.
 
 	$deleted = DB::delete('delete from users');
 
-#### Running A General Statement
+#### Eseguire una Query Generica
 
-Some database statements should not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
+Alcune query non ritornano nessun valore. Per questo tipo di operazioni, usa _statement_.
 
 	DB::statement('drop table users');
 
-<a name="listening-for-query-events"></a>
-### Listening For Query Events
+<a name="ascoltare-eventi-query"></a>
+### "Ascoltare" gli Eventi Relativi alle Query
 
-If you would like to receive each SQL query executed by your application, you may use the `listen` method. This method is useful for logging queries or debugging. You may register your query listener in a [service provider](/docs/{{version}}/providers):
+A volte può essere molto utile loggare le query che vengono eseguite dalla propria applicazione. A tal proposito esistono i listener, che ci permettono di rimanere in "ascolto" ogni volta che viene eseguita una query e, di conseguenza, effettuare l'operazione di cui abbiamo bisogno.
+
+Il metodo da usare è _DB:listen_, che prende come unico parametro una _Closure_ che, a sua volta, ha come argomenti la query SQL eseguita, i binding speificati e il momento dell'esecuzione della query stessa.
+
+Il posto migliore per tale "registrazione" può essere un [service provider](/docs/5.1/providers):
 
 	<?php namespace App\Providers;
 
@@ -152,10 +156,10 @@ If you would like to receive each SQL query executed by your application, you ma
 		}
 	}
 
-<a name="database-transactions"></a>
-## Database Transactions
+<a name="transazioni-database"></a>
+## Transazioni sul Database
 
-To run a set of operations within a database transaction, you may use the `transaction` method on the `DB` facade. If an exception is thrown within the transaction `Closure`, the transaction will automatically be rolled back. If the `Closure` executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
+Per eseguire un set di operazioni su un database, nel contesto di una specifica transazione, puoi usare il metodo _transaction_ della facade _DB_. Nel momento in cui, per qualsiasi motivo, dovesse essere lanciata un'eccezione, tutte le modifiche verrebbero annullate. In caso contrario, la transazione verrebbe confermata definitivamente. Nessun rollback manuale, per capirci!
 
 	DB::transaction(function () {
 		DB::table('users')->update(['votes' => 1]);
@@ -163,29 +167,31 @@ To run a set of operations within a database transaction, you may use the `trans
 		DB::table('posts')->delete();
 	});
 
-#### Manually Using Transactions
+#### Uso Manuale delle Transazioni
 
-If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method on the `DB` facade:
+Se preferisci avere il controllo completo su tutto quello che succede in una transazione, puoi usare i metodi _beginTransaction_, per iniziare una transazione:
 
 	DB::beginTransaction();
 
-You can rollback the transaction via the `rollBack` method:
+... `rollBack`, per effettuare il rollback delle operazioni eseguite fino ad un punto specifico:
 
 	DB::rollBack();
 
-Lastly, you can commit a transaction via the `commit` method:
+... oppure _commit_, nel caso in cui sia andato tutto per il verso giusto.
 
 	DB::commit();
 
-> **Note:** Using the `DB` facade's transaction methods also controls transactions for the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+> **Nota:** usando la facade DB è possibile controllare, oltre alle query più "grezze", anche quelle eseguite dal [query builder](/docs/5.1/queries) e da [Eloquent](/docs/5.1/eloquent).
 
-<a name="accessing-connections"></a>
-## Using Multiple Database Connections
+<a name="usare-connessione-specifica"></a>
+## Usare una Connessione Specifica
 
-When using multiple connections, you may access each connection via the `connection` method on the `DB` facade. The `name` passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file:
+Quando usi più di una connessione nella stessa applicazione può essere comodo decidere dove usare una, e dove un'altra. Il metodo _connection_ della facade _DB_ è utile in tal senso. Tutto quello che bisogna passargli è il nome della connessione.
 
 	$users = DB::connection('foo')->select(...);
 
-You may also access the raw, underlying PDO instance using the `getPdo` method on a connection instance:
+Inoltre, se preferisci, da questo metodo puoi anche accedere all'istanza PDO sottostante tramite _getPDO_.
 
 	$pdo = DB::connection()->getPdo();
+
+> **Nota:** chiamando _connection_ senza nessun parametro, come nell'esempio appena visto, si usa la connessione di default.
