@@ -1,21 +1,21 @@
 # 加密
 
 - [設定](#configuration)
-- [基本使用](#basic-usage)
+- [基本用法](#basic-usage)
 
 <a name="configuration"></a>
 ## 設定
 
-在使用 Laravel 的加密前，你應該先設定 `config/app.php` 中的 `key` 值，該設定值需包含32個不規則字元組成（可為大寫、小寫字母與數字）。如果沒有設定這個值，所有被加密過的值都不安全。
+在使用 Laravel 的加密器前，你應該先設定 `config/app.php` 設定檔中的 `key` 選項，設定值需要是 32 個字元的隨機字串。如果沒有適當地設定這個值，所有被 Laravel 加密的值將是不安全的。
 
 <a name="basic-usage"></a>
-## 基本使用
+## 基本用法
 
-#### 加密
+#### 加密一個值
 
-你可以使用 `Crypt` [facade](/docs/{{version}}/facades) 加密一個值。所有被加密的值都會使用 OpenSSL 與 `AES-256-CBC` 規則。此外，所有加密過後的值都會被簽署驗證資訊（ MAC ），以確認加密值是否被竄改。
+你可以藉由 `Crypt` [facade](/docs/{{version}}/facades) 加密一個值。所有被加密的值都會使用 OpenSSL 與 `AES-256-CBC` 加密。此外，所有加密過後的值都會被簽署文件訊息鑑別碼 (MAC)，以偵測加密字串是否被竄改。
 
-在以下的例子中，我們使用 `Crypt` 中的 `encrypt` 方法，將加密過後的資料存入 [Eloquent ORM](/docs/{{version}}/eloquent)：
+例如，我們可以使用 `encrypt` 方法加密機密資訊，並把它儲存在 [Eloquent 模型](/docs/{{version}}/eloquent)中：
 
     <?php
 
@@ -29,7 +29,7 @@
     class UserController extends Controller
     {
         /**
-         * Store a secret message for the user.
+         * 儲存使用者的機密訊息。
          *
          * @param  Request  $request
          * @param  int  $id
@@ -45,9 +45,9 @@
         }
     }
 
-#### 解密
+#### 解密一個值
 
-當然，你可以用 `Crypt` 中的 `decrypt` 方法去解密。如果該資料無法被解密，像是驗證資訊（ MAC ）不合格等因素，將會擲出 `Illuminate\Contracts\Encryption\DecryptException`：
+當然，你可以使用 `Crypt` facade 上的 `decrypt` 方法來解密值。如果該值無法被適當地解密，像是文件訊息鑑別碼無效等因素，將會拋出一個 `Illuminate\Contracts\Encryption\DecryptException`：
 
     use Illuminate\Contracts\Encryption\DecryptException;
 
