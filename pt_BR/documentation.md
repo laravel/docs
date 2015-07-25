@@ -13,7 +13,7 @@
     - [Respostas](/docs/{{version}}/responses)
     - [Views](/docs/{{version}}/views)
     - [Templates Blade](/docs/{{version}}/blade)
-- Fundamentações da Arquitetura
+- Fundamentos da Arquitetura
     - [Ciclo de Vida Da Requisição](/docs/{{version}}/lifecycle)
     - [Estrutura da Aplicação](/docs/{{version}}/structure)
     - [Service Providers](/docs/{{version}}/providers)
