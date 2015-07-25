@@ -161,7 +161,7 @@ After running a task, you may send a notification to your team's HipChat room us
         @hipchat('token', 'room', 'Envoy')
     @endafter
 
-If you wish, you may also pas a custom message to send to the HipChat room. Any variables available to your Envoy tasks will also be available when constructing the message:
+If you wish, you may also pass a custom message to send to the HipChat room. Any variables available to your Envoy tasks will also be available when constructing the message:
 
     @after
         @hipchat('token', 'room', 'Envoy', "{$task} ran in the {$env} environment.")
