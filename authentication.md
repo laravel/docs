@@ -7,7 +7,7 @@
     - [認證](#included-authenticating)
     - [取得已認證之使用者](#retrieving-the-authenticated-user)
     - [保護路由](#protecting-routes)
-    - [Authentication Throttling](#authentication-throttling)
+    - [認證限制](#authentication-throttling)
 - [手動認證使用者](#authenticating-users)
     - [記住使用者](#remembering-users)
     - [其他認證方法](#other-authentication-methods)
@@ -125,7 +125,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
     protected $redirectPath = '/dashboard';
 
-When a user is not successfully authenticated, they will be redirected to the `/auth/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
+當使用者認證失敗，將會被重導到 `/auth/login` URI。你可以設定 `AuthController` 的 `loginPath` 屬性來自訂認證失敗後的重導位置：
 
     protected $loginPath = '/login';
 
@@ -205,9 +205,9 @@ When a user is not successfully authenticated, they will be redirected to the `/
     }
 
 <a name="authentication-throttling"></a>
-### Authentication Throttling
+### 認證限制
 
-If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address:
+如果你使用 Laravel's 內建的 `AuthController` 類別，可以透過 `Illuminate\Foundation\Auth\ThrottlesLogins` trait 在你的應用程式限制登入次數。預設情況下，如果使用者在幾次嘗試後仍不能提供正確的憑證，將在一分鐘內無法進行登入。這個限制會特別針對使用者的用戶名稱 / 郵件地址和他們的 IP 位址：
 
     <?php
 
