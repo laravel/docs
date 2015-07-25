@@ -222,13 +222,13 @@
 <a name="method-each"></a>
 #### `each()` {#collection-method}
 
-The `each` method iterates over the items in the collection and passes each item to a given callback:
+`each` 方法遍歷集合中的項目，並將之傳入給定的回呼函式：
 
     $collection = $collection->each(function ($item, $key) {
         //
     });
 
-Return `false` from your callback to break out of the loop:
+讓你的回呼函式回傳 `false` 以中斷迴圈：
 
     $collection = $collection->each(function ($item, $key) {
         if (/* some condition */) {
@@ -239,7 +239,7 @@ Return `false` from your callback to break out of the loop:
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
 
-The `filter` method filters the collection by a given callback, keeping only those items that pass a given truth test:
+`filter` 方法以給定的回呼函式篩選集合，只留下那些通過判斷測試的項目：
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -251,12 +251,12 @@ The `filter` method filters the collection by a given callback, keeping only tho
 
     // [3, 4]
 
-For the inverse of `filter`, see the [reject](#method-reject) method.
+與 `filter` 相對的方法可以檢視 [reject](#method-reject)。
 
 <a name="method-first"></a>
 #### `first()` {#collection-method}
 
-The `first` method returns the first element in the collection that passes a given truth test:
+`first` 方法回傳集合中，第一個通過給定測試的元素：
 
     collect([1, 2, 3, 4])->first(function ($key, $value) {
         return $value > 2;
@@ -264,7 +264,7 @@ The `first` method returns the first element in the collection that passes a giv
 
     // 3
 
-You may also call the `first` method with no arguments to get the first element in the collection. If the collection is empty, `null` is returned:
+你也可以不傳入參數使用 `first` 方法以取得集合中第一個元素。如果集合是空的，則會回傳 `null`：
 
     collect([1, 2, 3, 4])->first();
 
@@ -273,7 +273,7 @@ You may also call the `first` method with no arguments to get the first element 
 <a name="method-flatten"></a>
 #### `flatten()` {#collection-method}
 
-The `flatten` method flattens a multi-dimensional collection into a single dimension:
+`flatten` 方法將多維集合轉為一維集合：
 
     $collection = collect(['name' => 'taylor', 'languages' => ['php', 'javascript']]);
 
@@ -286,7 +286,7 @@ The `flatten` method flattens a multi-dimensional collection into a single dimen
 <a name="method-flip"></a>
 #### `flip()` {#collection-method}
 
-The `flip` method swaps the collection's keys with their corresponding values:
+`flip` 方法將集合中的鍵值和對應的數值進行互換：
 
     $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
 
@@ -299,7 +299,7 @@ The `flip` method swaps the collection's keys with their corresponding values:
 <a name="method-forget"></a>
 #### `forget()` {#collection-method}
 
-The `forget` method removes an item from the collection by its key:
+`forget` 方法以鍵值自集合移除掉一個項目：
 
     $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
 
@@ -309,12 +309,12 @@ The `forget` method removes an item from the collection by its key:
 
     // [framework' => 'laravel']
 
-> **Note:** Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
+> **注意：**與大多數其他集合的方法不同，`forget` 不會回傳修改過後的新集合；它會直接修改它被呼叫的集合。
 
 <a name="method-forpage"></a>
 #### `forPage()` {#collection-method}
 
-The `forPage` method returns a new collection containing the items that would be present on a given page number:
+`forPage` 方法回傳含有可以用來在給定頁碼顯示的項目的新集合：
 
     $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9])->forPage(2, 3);
 
@@ -322,12 +322,12 @@ The `forPage` method returns a new collection containing the items that would be
 
     // [4, 5, 6]
 
-The method requires the page number and the number of items to show per page, respectively.
+這個方法要求頁碼和每個頁面要顯示的項目數目。
 
 <a name="method-get"></a>
 #### `get()` {#collection-method}
 
-The `get` method returns the item at a given key. If the key does not exist, `null` is returned:
+`get` 方法回傳給定鍵值的項目。如果該鍵值不存在，則回傳 `null`：
 
     $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
 
@@ -335,7 +335,7 @@ The `get` method returns the item at a given key. If the key does not exist, `nu
 
     // taylor
 
-You may optionally pass a default value as the second argument:
+你可以選擇性地傳入一個預設值為第二個參數：
 
     $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
 
@@ -343,7 +343,7 @@ You may optionally pass a default value as the second argument:
 
     // default-value
 
-You may even pass a callback as the default value. The result of the callback will be returned if the specified key does not exist:
+你甚至可以傳入回呼函式當預設值。如果指定的鍵值不存在，就會回傳回呼函式的執行結果：
 
     $collection->get('email', function () {
         return 'default-value';
@@ -354,7 +354,7 @@ You may even pass a callback as the default value. The result of the callback wi
 <a name="method-groupby"></a>
 #### `groupBy()` {#collection-method}
 
-The `groupBy` method groups the collection's items by a given key:
+`groupBy` 方法根據給定的鍵值將集合內的項目進行分組：
 
     $collection = collect([
         ['account_id' => 'account-x10', 'product' => 'Chair'],
@@ -401,7 +401,7 @@ In addition to passing a string `key`, you may also pass a callback. The callbac
 <a name="method-has"></a>
 #### `has()` {#collection-method}
 
-The `has` method determines if a given key exists in the collection:
+`has` 方法用來確認集合中是否含有給定的鍵值：
 
     $collection = collect(['account_id' => 1, 'product' => 'Desk']);
 
@@ -412,9 +412,9 @@ The `has` method determines if a given key exists in the collection:
 <a name="method-implode"></a>
 #### `implode()` {#collection-method}
 
-The `implode` method joins the items in a collection. Its arguments depend on the type of items in the collection.
+`implode` 方法連接集合中的項目。它的參數依集合中的項目類型而定。
 
-If the collection contains arrays or objects, you should pass the key of the attributes you wish to join, and the "glue" string you wish to place between the values:
+假如集合含有陣列或物件，你應該傳入你希望連接的屬性的鍵值，以及你希望放在數值之間的「黏著」字串：
 
     $collection = collect([
         ['account_id' => 1, 'product' => 'Desk'],
@@ -425,7 +425,7 @@ If the collection contains arrays or objects, you should pass the key of the att
 
     // Desk, Chair
 
-If the collection contains simple strings or numeric values, simply pass the "glue" as the only argument to the method:
+假如集合只含有簡單的字串或數字，就只要傳入黏著字串作該方法唯一的參數：
 
     collect([1, 2, 3, 4, 5])->implode('-');
 
@@ -434,7 +434,7 @@ If the collection contains simple strings or numeric values, simply pass the "gl
 <a name="method-intersect"></a>
 #### `intersect()` {#collection-method}
 
-The `intersect` method removes any values that are not present in the given `array` or collection:
+`intersect` 方法移除任何給定`陣列`或集合內所沒有的數值：
 
     $collection = collect(['Desk', 'Sofa', 'Chair']);
 
@@ -444,12 +444,12 @@ The `intersect` method removes any values that are not present in the given `arr
 
     // [0 => 'Desk', 2 => 'Chair']
 
-As you can see, the resulting collection will preserve the original collection's keys.
+如你所見，最後出來的集合將會保留原始集合的鍵值。
 
 <a name="method-isempty"></a>
 #### `isEmpty()` {#collection-method}
 
-The `isEmpty` method returns `true` if the collection is empty; otherwise, `false` is returned:
+假如集合是空的，`isEmpty` 方法會回傳 `true`：否則回傳 `false`：
 
     collect([])->isEmpty();
 
@@ -497,7 +497,7 @@ You may also pass your own callback, which should return the value to key the co
 <a name="method-keys"></a>
 #### `keys()` {#collection-method}
 
-The `keys` method returns all of the collection's keys:
+`keys` 方法回傳該集合所有的鍵值：
 
     $collection = collect([
         'prod-100' => ['product_id' => 'prod-100', 'name' => 'Desk'],
@@ -513,7 +513,7 @@ The `keys` method returns all of the collection's keys:
 <a name="method-last"></a>
 #### `last()` {#collection-method}
 
-The `last` method returns the last element in the collection that passes a given truth test:
+`last` 方法回傳集合中，最後一個通過給定測試的元素：
 
     collect([1, 2, 3, 4])->last(function ($key, $value) {
         return $value < 3;
@@ -521,7 +521,7 @@ The `last` method returns the last element in the collection that passes a given
 
     // 2
 
-You may also call the `last` method with no arguments to get the last element in the collection. If the collection is empty, `null` is returned:
+你也可以不傳入參數使用 `last` 方法以取得集合中最後一個元素。如果集合是空的，則會回傳 `null`：
 
     collect([1, 2, 3, 4])->last();
 
@@ -530,7 +530,7 @@ You may also call the `last` method with no arguments to get the last element in
 <a name="method-map"></a>
 #### `map()` {#collection-method}
 
-The `map` method iterates through the collection and passes each value to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items:
+`map` 方法遍歷整個集合並將每一個數值傳入給定的回呼函式。回呼函式可以任意修改並回傳項目，於是形成修改過的項目組成的新集合：
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -542,7 +542,7 @@ The `map` method iterates through the collection and passes each value to the gi
 
     // [2, 4, 6, 8, 10]
 
-> **Note:** Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
+> **注意：**正如集合大多數其他的方法一樣，`map` 回傳一個新集合實例；它並沒有修改被呼叫的集合。假如你想改變原始的集合，得使用 [`transform`](#method-transform) 方法。
 
 <a name="method-merge"></a>
 #### `merge()` {#collection-method}
