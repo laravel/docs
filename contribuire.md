@@ -1,4 +1,4 @@
-# Guida Di Contribuzione
+# Contribuire
 
 - [Bug Reports](#bug-reports)
 - [Discussioni sullo Sviluppo del Core](#discussioni-sviluppo-core)
