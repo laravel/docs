@@ -306,11 +306,11 @@ Laravel [服務容器](/docs/{{version}}/container)用於解析所有的 Laravel
         }
     }
 
-若你的控制器方法也預期從路由參數獲得輸入值，只要在你其它的依賴之後列出路由參數即可。For example, if your route is defined like so:
+若你的控制器方法也預期從路由參數獲得輸入值，只要在你其它的依賴之後列出路由參數即可。例如，你可以像這樣定義你的路由：
 
     Route::put('user/{id}', 'UserController@update');
 
-You may still type-hint the `Illuminate\Http\Request` and access your route parameter `id` by defining your controller method like the following:
+你依然可以透過 `Illuminate\Http\Request` 型別提示來存取你的路由參數 `id`，你可以定義你的控制器方法類似以下：
 
     <?php
 
