@@ -1,11 +1,11 @@
-# Release Notes
+# Note di Rilascio
 
-- [Support Policy](#support-policy)
+- [Policy di Support](#policy-supporto)
 - [Laravel 5.1](#laravel-5.1)
 - [Laravel 5.0](#laravel-5.0)
 
-<a name="support-policy"></a>
-## Support Policy
+<a name="policy-supporto"></a>
+## Policy di Supporto
 
 Per le release LTS, come Laravel 5.1, il bug fixing verrà portato avanti per due anni, mentre le security fix per un tempo di tre anni. Tali release garantiranno una maggiore "finestra" temporale di supporto e manutenzione.
 
