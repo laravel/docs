@@ -14,13 +14,13 @@ Laravel 基於熱門的 [SwiftMailer](http://swiftmailer.org) 函式庫提供了
 
 ### 驅動前提
 
-基於 API 的驅動，例如 Mailgun 或 Mandrill，通常比 SMTP 伺服器更簡單快速。所有的 API 驅動都需要在應用程式中安裝 Guzzle HTTP 函式庫。你可在 `composer.json` 檔案中加入下面這一行，以便於專案中安裝 Guzzle：
+基於 API 的驅動，例如 Mailgun 或 Mandrill，通常比 SMTP 伺服器更簡單快速。所有的 API 驅動都需要在應用程式中安裝 Guzzle HTTP 函式庫。你可在 `composer.json` 檔案中加入下面這一行，以便於在專案中安裝 Guzzle：
 
     "guzzlehttp/guzzle": "~5.3|~6.0"
 
 #### Mailgun 驅動
 
-要使用 Mailgun 驅動，首先安裝 Guzzle，之後將 `config/mail.php` 設定檔中的 `driver` 選項設定為 `mailgun`。接下來，確認 `config/services.php` 設定檔包含下列選項：
+要使用 Mailgun 驅動，首先必須安裝 Guzzle，之後將 `config/mail.php` 設定檔中的 `driver` 選項設定為 `mailgun`。接下來，確認 `config/services.php` 設定檔包含下列選項：
 
     'mailgun' => [
         'domain' => 'your-mailgun-domain',
@@ -29,7 +29,7 @@ Laravel 基於熱門的 [SwiftMailer](http://swiftmailer.org) 函式庫提供了
 
 #### Mandrill 驅動
 
-要使用 Mandrill 驅動，首先安裝 Guzzle，之後將 `config/mail.php` 設定檔中的 `driver` 選項設定為 `mandrill`。接下來，確認 `config/services.php` 設定檔包含下列選項：
+要使用 Mandrill 驅動，首先必須安裝 Guzzle，之後將 `config/mail.php` 設定檔中的 `driver` 選項設定為 `mandrill`。接下來，確認 `config/services.php` 設定檔包含下列選項：
 
     'mandrill' => [
         'secret' => 'your-mandrill-key',
@@ -37,7 +37,7 @@ Laravel 基於熱門的 [SwiftMailer](http://swiftmailer.org) 函式庫提供了
 
 #### SES 驅動
 
-要使用 Amazon SES 驅動，安裝 Amazon AWS SDK for PHP。你可在 `composer.json` 檔案的 `require` 段落加入下面這一行以安裝此函式庫：
+要使用 Amazon SES 驅動，必須安裝 PHP 的 Amazon AWS SDK。你可在 `composer.json` 檔案的 `require` 段落加入下面這一行以安裝此函式庫：
 
     "aws/aws-sdk-php": "~3.0"
 
@@ -100,7 +100,7 @@ Laravel 允許你在[視圖](/docs/{{version}}/views)中存放電子郵件訊息
         $message->to('foo@example.com')->cc('bar@example.com');
     });
 
-這是一份在 `$message` 訊息建立者實例中可以使用的方法清單：
+這是一份在 `$message` 訊息產生器實例中可以使用的方法清單：
 
     $message->from($address, $name = null);
     $message->sender($address, $name = null);
@@ -122,7 +122,7 @@ Laravel 允許你在[視圖](/docs/{{version}}/views)中存放電子郵件訊息
 
 #### 寄送純文本
 
-傳給 `send` 方法的視圖，在預設情況下會假定它包含 HTML。然而除了 HTML 視圖外，藉由傳遞陣列作為 `send` 方法的第一個參數，你可以指定其傳送純文本視圖：
+傳給 `send` 方法的視圖，在預設情況下會假定它包含 HTML。然而，藉由傳遞陣列作為 `send` 方法的第一個參數，除了 HTML 視圖之外，你還可以同時指定傳送純文本視圖：
 
     Mail::send(['html.view', 'text.view'], $data, $callback);
 
@@ -181,7 +181,7 @@ Laravel 允許你在[視圖](/docs/{{version}}/views)中存放電子郵件訊息
 
 #### 將郵件訊息加入隊列
 
-由於寄送電子郵件訊息會大幅延長應用程式的回應時間，許多開發者選擇將郵件訊息加入隊列並於背景發送。Laravel 使用其內建的 [統一的隊列 API](/docs/{{version}}/queues)，讓你輕鬆地完成此工作。要將郵件訊息加入隊列，使用 `Mail` facade 的 `queue` 方法：
+由於寄送電子郵件訊息會大幅延長應用程式的回應時間，許多開發者選擇將郵件訊息加入隊列並於背景發送。Laravel 使用其內建的[統一的隊列 API](/docs/{{version}}/queues)，讓你輕鬆地完成此工作。要將郵件訊息加入隊列，使用 `Mail` facade 的 `queue` 方法：
 
     Mail::queue('emails.welcome', $data, function ($message) {
         //
@@ -189,7 +189,7 @@ Laravel 允許你在[視圖](/docs/{{version}}/views)中存放電子郵件訊息
 
 此方法會自動將工作加入隊列，以便在背景發送郵件訊息。當然，在使用此功能之前，你需要[設定你的隊列](/docs/{{version}}/queues)。
 
-#### 延遲訊息隊列
+#### 延遲的訊息隊列
 
 若你希望延遲遞送已加入隊列的電子郵件訊息，你可以使用 `later` 方法。要著手開始，只要將你想要延遲寄送訊息的秒數，作為第一個參數傳送給此方法：
 
@@ -212,7 +212,7 @@ Laravel 允許你在[視圖](/docs/{{version}}/views)中存放電子郵件訊息
 <a name="mail-and-local-development"></a>
 ## 郵件與本地端開發
 
-開發需要寄送電子郵件的應用程式時，可能不會想要將電子郵件寄到真正的郵件地址。Laravel 提供了幾種方法以「停止」將電子郵件訊息真正寄出。
+當開發需要寄送電子郵件的應用程式時，你有可能不想要實際地送出電子郵件到真正的郵件地址。Laravel 提供了幾種方法以「停止」將電子郵件訊息真正寄出。
 
 #### 日誌驅動
 
@@ -220,7 +220,7 @@ Laravel 允許你在[視圖](/docs/{{version}}/views)中存放電子郵件訊息
 
 #### 通用收件者
 
-另一個由 Lavavel 提供的解決方案，是對框架寄出的所有電子郵件，都設定一個通用的收件者。這樣，應用程式產生的所有電子郵件都會被送到一個特定的地址，而不是寄信時實際指定的收件人地址。這可以透過 `config/mail.php` 設定檔的 `to` 選項來完成：
+另一個由 Lavavel 提供的解決方案，是設定一個通用的收件者給框架寄出的所有電子郵件。這樣，應用程式產生的所有電子郵件都會被送到一個特定的地址，而不是寄信時實際指定的收件人地址。這可以透過 `config/mail.php` 設定檔的 `to` 選項來完成：
 
     'to' => [
         'address' => 'dev@domain.com',
