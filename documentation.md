@@ -21,7 +21,7 @@
     - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
 - 系统服务
-    - [认证](/docs/{{version}}/authentication)
+    - [登录认证](/docs/{{version}}/authentication)
     - [Artisan 命令行](/docs/{{version}}/artisan)
     - [交易](/docs/{{version}}/billing)
     - [缓存](/docs/{{version}}/cache)
