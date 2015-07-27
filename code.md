@@ -1,4 +1,4 @@
-# Queues
+# Code
 
 - [Introduzione](#introduzione)
 	- [Configurazione](#configurazione)
