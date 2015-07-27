@@ -11,105 +11,74 @@ Laravel include una serie di funzioni di "helper" PHP. Molte di queste funzioni 
 <a name="metodi-disponibili"></a>
 ## Metodi Disponibili
 
-<style>
-	.collection-metodo-list > p {
-		column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
-		column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
-	}
-
-	.collection-metodo-list a {
-		display: block;
-	}
-</style>
-
 ### Array
 
-<div class="collection-metodo-list" markdown="1">
-[array_add](#metodo-array-add)
-[array_divide](#metodo-array-divide)
-[array_dot](#metodo-array-dot)
-[array_except](#metodo-array-except)
-[array_first](#metodo-array-first)
-[array_flatten](#metodo-array-flatten)
-[array_forget](#metodo-array-forget)
-[array_get](#metodo-array-get)
-[array_only](#metodo-array-only)
-[array_pluck](#metodo-array-pluck)
-[array_pull](#metodo-array-pull)
-[array_set](#metodo-array-set)
-[array_sort](#metodo-array-sort)
-[array_where](#metodo-array-where)
-[head](#metodo-head)
-[last](#metodo-last)
-</div>
+* [array_add](#metodo-array-add)
+* [array_divide](#metodo-array-divide)
+* [array_dot](#metodo-array-dot)
+* [array_except](#metodo-array-except)
+* [array_first](#metodo-array-first)
+* [array_flatten](#metodo-array-flatten)
+* [array_forget](#metodo-array-forget)
+* [array_get](#metodo-array-get)
+* [array_only](#metodo-array-only)
+* [array_pluck](#metodo-array-pluck)
+* [array_pull](#metodo-array-pull)
+* [array_set](#metodo-array-set)
+* [array_sort](#metodo-array-sort)
+* [array_where](#metodo-array-where)
+* [head](#metodo-head)
+* [last](#metodo-last)
 
 ### Percorsi
 
-<div class="collection-metodo-list" markdown="1">
-[app_path](#metodo-app-path)
-[base_path](#metodo-base-path)
-[config_path](#metodo-config-path)
-[database_path](#metodo-database-path)
-[public_path](#metodo-public-path)
-[storage_path](#metodo-storage-path)
-</div>
+* [app_path](#metodo-app-path)
+* [base_path](#metodo-base-path)
+* [config_path](#metodo-config-path)
+* [database_path](#metodo-database-path)
+* [public_path](#metodo-public-path)
+* [storage_path](#metodo-storage-path)
 
 ### Stringhe
 
-<div class="collection-metodo-list" markdown="1">
-[camel_case](#metodo-camel-case)
-[class_basename](#metodo-class-basename)
-[e](#metodo-e)
-[ends_with](#metodo-ends-with)
-[snake_case](#metodo-snake-case)
-[str_limit](#metodo-str-limit)
-[starts_with](#metodo-starts-with)
-[str_contains](#metodo-str-contains)
-[str_finish](#metodo-str-finish)
-[str_is](#metodo-str-is)
-[str_plural](#metodo-str-plural)
-[str_random](#metodo-str-random)
-[str_singular](#metodo-str-singular)
-[str_slug](#metodo-str-slug)
-[studly_case](#metodo-studly-case)
-[trans](#metodo-trans)
-[trans_choice](#metodo-trans-choice)
-</div>
+* [camel_case](#metodo-camel-case)
+* [class_basename](#metodo-class-basename)
+* [e](#metodo-e)
+* [ends_with](#metodo-ends-with)
+* [snake_case](#metodo-snake-case)
+* [str_limit](#metodo-str-limit)
+* [starts_with](#metodo-starts-with)
+* [str_contains](#metodo-str-contains)
+* [str_finish](#metodo-str-finish)
+* [str_is](#metodo-str-is)
+* [str_plural](#metodo-str-plural)
+* [str_random](#metodo-str-random)
+* [str_singular](#metodo-str-singular)
+* [str_slug](#metodo-str-slug)
+* [studly_case](#metodo-studly-case)
+* [trans](#metodo-trans)
+* [trans_choice](#metodo-trans-choice)
 
 ### URL
 
-<div class="collection-metodo-list" markdown="1">
-[action](#metodo-action)
-[route](#metodo-route)
-[url](#metodo-url)
-</div>
+* [action](#metodo-action)
+* [route](#metodo-route)
+* [url](#metodo-url)
 
 ### Varie
 
-<div class="collection-metodo-list" markdown="1">
-[csrf_token](#metodo-csrf-token)
-[dd](#metodo-dd)
-[elixir](#metodo-elixir)
-[env](#metodo-env)
-[event](#metodo-event)
-[response](#metodo-response)
-[value](#metodo-value)
-[view](#metodo-view)
-[with](#metodo-with)
-</div>
+* [csrf_token](#metodo-csrf-token)
+* [dd](#metodo-dd)
+* [elixir](#metodo-elixir)
+* [env](#metodo-env)
+* [event](#metodo-event)
+* [response](#metodo-response)
+* [value](#metodo-value)
+* [view](#metodo-view)
+* [with](#metodo-with)
 
 <a name="lista-metodi"></a>
 ## Lista Metodi
-
-<style>
-	#collection-metodo code {
-		font-size: 14px;
-	}
-
-	#collection-metodo:not(.first-collection-metodo) {
-		margin-top: 50px;
-	}
-</style>
 
 <a name="metodo-array-add"></a>
 #### `array_add()` {#collection-metodo .first-collection-metodo}
