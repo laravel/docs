@@ -1,4 +1,4 @@
-# Eloquent: Come Iniziare
+# Eloquent: Primi Passi
 
 - [Introduzione](#introduzione)
 - [Definire i Model](#definire-model)
