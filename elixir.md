@@ -98,7 +98,7 @@ elixir(function(mix) {
     mix.less([
         'app.less',
         'controllers.less'
-    ], 'public/assets/css');
+    ]);
 });
 ```
 
@@ -134,16 +134,6 @@ elixir(function(mix) {
         'app.scss',
         'controllers.scss'
     ], 'public/assets/css');
-});
-```
-
-#### Ruby Sass
-
-Under the hood, Elixir uses the LibSass library for compilation. In some instances, it may be advantageous to leverage the Ruby version which, though slower, is more feature rich. Assuming that you have both Ruby and the Sass gem installed (`gem install sass`), you may use the Ruby compiler like so:
-
-```javascript
-elixir(function(mix) {
-    mix.rubySass('app.scss');
 });
 ```
 
@@ -195,7 +185,7 @@ Elixir also provides several functions to help you work with your JavaScript fil
 <a name="coffeescript"></a>
 ### CoffeeScript
 
-The `coffee` method may be used to compile [CoffeeScript](http://coffeescript.org/) into plain JavaScript. The `coffee` function accepts an array of CoffeeScript files relative to the `resources/assets/coffee` directory and generates a single `app.js` file in the `public/js` directory:
+The `coffee` method may be used to compile [CoffeeScript](http://coffeescript.org/) into plain JavaScript. The `coffee` function accepts a string or array of CoffeeScript files relative to the `resources/assets/coffee` directory and generates a single `app.js` file in the `public/js` directory:
 
 ```javascript
 elixir(function(mix) {
@@ -212,7 +202,24 @@ This task assumes that your scripts are stored in `resources/assets/js` and will
 
 ```javascript
 elixir(function(mix) {
-    mix.browserify('index.js');
+    mix.browserify('main.js');
+});
+```
+
+While Browserify ships with the Partialify and Babelify transformers, you're free to install and add more if you wish.
+
+```js
+npm install vueify --save-dev
+```
+
+```js
+elixir.config.js.browserify.transformers.push({
+    name: 'vueify',
+    options: {}
+});
+
+elixir(function(mix) {
+    mix.browserify('main.js');
 });
 ```
 
@@ -340,20 +347,22 @@ If you need more flexibility than Elixir's `task` method can provide, you may cr
 
 var gulp = require('gulp');
 var shell = require('gulp-shell');
-var elixir = require('laravel-elixir');
+var Elixir = require('laravel-elixir');
 
-elixir.extend('speak', function(message) {
+var Task = Elixir.Task;
 
-    gulp.task('speak', function() {
-        gulp.src('').pipe(shell('say ' + message));
+Elixir.extend('speak', function(message) {
+
+    new Task('speak', function() {
+        return gulp.src('').pipe(shell('say ' + message));
     });
 
-    return this.queueTask('speak');
+});
 
- });
+// mix.speak('Hello World');
 ```
 
-That's it! You may either place this at the top of your Gulpfile, or instead extract it to a custom tasks file. For example, if you place your extensions in `elixir-extensions.js`, you may require the file from your main `Gulpfile` like so:
+That's it! Notice that your Gulp-specific logic should be placed within the second argument to the `Task` constructor. You may either place this at the top of your Gulpfile, or instead extract it to a custom tasks file. For example, if you place your extensions in `elixir-extensions.js`, you may require the file from your main `Gulpfile` like so:
 
 ```javascript
 // File: Gulpfile.js
@@ -372,7 +381,8 @@ elixir(function(mix) {
 If you would like your custom task to be re-triggered while running `gulp watch`, you may register a watcher:
 
 ```javascript
-this.registerWatcher('speak', 'app/**/*.php');
-
-return this.queueTask('speak');
+new Task('speak', function() {
+    return gulp.src('').pipe(shell('say ' + message));
+})
+.watch('./app/**');
 ```
