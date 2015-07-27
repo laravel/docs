@@ -1,16 +1,16 @@
-# Localization
+# Localizzazione
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
-	- [Pluralization](#pluralization)
-- [Overriding Vendor Language Files](#overriding-package-language-files)
+- [Introduzione](#introduzione)
+- [Uso Base](#uso-base)
+	- [Pluralizzazione](#pluralizzazione)
+- [Sovrascrivere I Language File Di Un Package](#sovrascrivere-language-file)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Laravel's localization features provide a convenient way to retrieve strings in various languages, allowing you to easily support multiple languages within your application.
+La funzionalità di localizzazione di Laravel offre un modo conveniente per recuperare stringhe di testo in varie lingue, dandoti la possibilità di gestire facilmente più lingue con la tua applicazione.
 
-Language strings are stored in files within the `resources/lang` directory. Within this directory there should be a subdirectory for each language supported by the application:
+Le stringhe di testo sono memorizzate in file all'interno della directory `resources/lang`. All'interno di questa directory dovrebbero essere create delle sotto-cartelle per ogni linguaggio supportato dalla tua applicazione:
 
 	/resources
 		/lang
@@ -19,7 +19,7 @@ Language strings are stored in files within the `resources/lang` directory. With
 			/es
 				messages.php
 
-All language files simply return an array of keyed strings. For example:
+Tutti i file di lingua ritornano semplicemente un array associativo di stringhe. Per esempio:
 
 	<?php
 
@@ -27,9 +27,9 @@ All language files simply return an array of keyed strings. For example:
 		'welcome' => 'Welcome to our application'
 	];
 
-#### Configuring The Locale
+#### Configurare Il Locale
 
-The default language for your application is stored in the `config/app.php` configuration file. Of course, you may modify this value to suit the needs of your application. You may also change the active language at runtime using the `setLocale` method on the `App` facade:
+Il linguaggio di default della tua applicazione è memorizzato nel file `config/app.php`. Ovviamente, puoi modirficare questo valore a seconda delle esigenze della tua applicazione. Puoi anche cambiare la lingua in runtime usando il metodo `setLocale` della facade `App`:
 
 	Route::get('welcome/{locale}', function ($locale) {
 		App::setLocale($locale);
@@ -37,51 +37,50 @@ The default language for your application is stored in the `config/app.php` conf
 		//
 	});
 
-You may also configure a "fallback language", which will be used when the active language does not contain a given language line. Like the default language, the fallback language is also configured in the `config/app.php` configuration file:
+Puoi anche configurare un "fallback language", che sarà usato quando la lingua corrente non contiene una data stringa di testo. Come la lingua di default, il fallback language è configurato all'interno del file `config/app.php`:
 
 	'fallback_locale' => 'en',
 
-<a name="basic-usage"></a>
-## Basic Usage
-
-You may retrieve lines from language files using the `trans` helper function. The `trans` method accepts the file and key of the language line as its first argument. For example, let's retrieve the language line `welcome` in the `resources/lang/messages.php` language file:
+<a name="uso-base"></a>
+## Uso Base
+Puoi recuperare una linea da un file di lingua usando la funzione helper `trans`. Il metodo `trans`accetta il nome del file e la chiave della linea come suo primo parametro. Per esempio, recuperiamo la linea `welcome` nel file `resources/lang/messages.php`:
 
 	echo trans('messages.welcome');
 
-Of course if you are using the [Blade templating engine](/docs/{{version}}/views#blade-templating), you may use the `{{ }}` syntax to echo the language line:
+Ovviamente se stai usando [Blade](/docs/{{version}}/views#blade-templating), puoi usare la sintassi `{{ }}` per stampare la stringa:
 
 	{{ trans('messages.welcome') }}
 
-If the specified language line does not exist, the `trans` function will simply return the language line key. So, using the example above, the `trans` function would return `messages.welcome` if the language line does not exist.
+Se la linea di lingua non esiste, la funzione `trans` ritornerà il nome della chiave. In questo modo, seguendo l'esempio sopra, la funzione `trans` dovrebbe ritornare `messages.welcome` se la linea di lingua non esiste.
 
-#### Replacing Parameters In Language Lines
+#### Attivare Una Sostituzione Nella Linea
 
-If you wish, you may define place-holders in your language lines. All place-holders are prefixed with a `:`. For example, you may define a welcome message with a place-holder name:
+Se lo desideri, puoi definire dei place-holders nelle tue linee. Tutti i place-holder sono precedeuti da un `:`. Per esempio, puoi definire un messaggio di benvenuto con un place-holder per il nome dell'utente:
 
 	'welcome' => 'Welcome, :name',
 
-To replace the place-holders when retrieving a language line, pass an array of replacements as the second argument to the `trans` function:
+Per sostituire il place-holders quando si recupera una lina, passa un array come secondo parametro della funzione `trans`:
 
 	echo trans('messages.welcome', ['name' => 'Dayle']);
 
-<a name="pluralization"></a>
-### Pluralization
+<a name="pluralizzazione"></a>
+### Pluralizzazione
 
-Pluralization is a complex problem, as different languages have a variety of complex rules for pluralization. By using a "pipe" character, you may distinguish a singular and plural form of a string:
+La pluralizzazione è un problema complesso, differenti linguaggi hanno una varietà di regole complesse per la pluralizzazione. Puoi gestire facilmente questo aspetto nel tuo language file. Usando il carattere "pipe" puoi separare la forma singolare da quella plurale di una stringa:
 
 	'apples' => 'There is one apple|There are many apples',
 
-Then, you may then use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the language line is returned:
+Quindi, puoi usare la funzione `trans_choice` per recuperare la linea per un dato "count". In questo esempio, dato che il valore è maggiore di uno, sarà ritornata la forma plurale della linea:
 
 	echo trans_choice('messages.apples', 10);
 
-Since the Laravel translator is powered by the Symfony Translation component, you may create even more complex pluralization rules:
+Visto che il traduttore di Laravel è basato sul componente Translation di Symfony, puoi creare delle regole di pluralizzazione ancora più complesse:
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
 
-<a name="overriding-package-language-files"></a>
-## Overriding Package Language Files
+<a name="sovrascrivere-language-file"></a>
+## Sovrascrivere I Language File Di Un Package
 
-Some packages may ship with their own language files. Instead of hacking the package's core files to tweak these lines, you may override them by placing your own files in the `resources/lang/vendor/{package}/{locale}` directory.
+Alcuni package possono lavorare con dei propri file di lingua. Invece di hackerare il core di questi file per modificare queste linee, puoi sovrascriverle inserendo i tuoi file nella directory `resources/lang/vendor/{package}/{locale}`.
 
-So, for example, if you need to override the English language lines in `messages.php` for a package named `skyrim/hearthfire`, you would place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. In this file you should only define the language lines you wish to override. Any language lines you don't override will still be loaded from the package's original language files.
+Così, per esempio, se hai bisogno di sovrascrivere le linee della lingua Inglese in `messages.php` per un certo package chiamato `skyrim/hearthfire`, potresti memorizzare un file di lingua in: `resources/lang/vendor/hearthfire/en/messages.php`. In questo file dovresti definire soltanto le linee che desideri sovrascrivere. Qualsiasi linea non sovrascritta sarà caricata dai file di lingua originali del package.
