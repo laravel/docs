@@ -1,4 +1,4 @@
-Struttura dell'Applicazione
+# Struttura dell'Applicazione
 
 - [Introduzione](#introduzione)
 - [La Root Directory](#la-root-directory)
