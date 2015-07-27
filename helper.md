@@ -81,7 +81,7 @@ Laravel include una serie di funzioni di "helper" PHP. Molte di queste funzioni 
 ## Lista Metodi
 
 <a name="metodo-array-add"></a>
-#### `array_add()` {#collection-metodo .first-collection-metodo}
+#### `array_add()`
 
 La funzione `array_add` aggiunge una coppia chiave / valore all'array se la chiave data non esiste già nell'array:
 
@@ -90,7 +90,7 @@ La funzione `array_add` aggiunge una coppia chiave / valore all'array se la chia
 	// ['name' => 'Desk', 'price' => 100]
 
 <a name="metodo-array-divide"></a>
-#### `array_divide()` {#collection-metodo}
+#### `array_divide()`
 
 La funzione `array_divide` ritorna due array, uno contenente le chiavi, e l'altro contentente i valori dell'array originale:
 
@@ -101,7 +101,7 @@ La funzione `array_divide` ritorna due array, uno contenente le chiavi, e l'altr
 	// $values: ['Desk']
 
 <a name="metodo-array-dot"></a>
-#### `array_dot()` {#collection-metodo}
+#### `array_dot()`
 
 La funzione `array_dot` semplifica un array multi dimensionale restituendone uno singolo con la notazione "dot" per indicarne il livello di profondità:
 
@@ -110,7 +110,7 @@ La funzione `array_dot` semplifica un array multi dimensionale restituendone uno
 	// ['foo.bar' => 'baz'];
 
 <a name="metodo-array-except"></a>
-#### `array_except()` {#collection-metodo}
+#### `array_except()`
 
 Il metodo `array_except` rimuove una coppia chiave / valore dall'array:
 
@@ -119,8 +119,9 @@ Il metodo `array_except` rimuove una coppia chiave / valore dall'array:
 	$array = array_except($array, ['price']);
 
 	// ['name' => 'Desk']
+
 <a name="metodo-array-first"></a>
-#### `array_first()` {#collection-metodo}
+#### `array_first()`
 
 Il metodo `array_first` ritorna il primo elemento di un array se quest'ultimo passa un test:
 
@@ -137,7 +138,7 @@ Al metodo può anche essere passato come terzo parametro un valore di default. Q
 	$value = array_first($array, $callback, $default);
 
 <a name="metodo-array-flatten"></a>
-#### `array_flatten()` {#collection-metodo}
+#### `array_flatten()`
 
 Il metodo `array_flatten` ridurrà un array multi dimensionale ad un singolo livello.
 
@@ -148,7 +149,7 @@ Il metodo `array_flatten` ridurrà un array multi dimensionale ad un singolo liv
 	// ['Joe', 'PHP', 'Ruby'];
 
 <a name="metodo-array-forget"></a>
-#### `array_forget()` {#collection-metodo}
+#### `array_forget()`
 
 Il metodo`array_forget` rimuove una coppia chiave / valore da un array complesso utilizzando la notazione "dot":
 
@@ -159,7 +160,7 @@ Il metodo`array_forget` rimuove una coppia chiave / valore da un array complesso
 	// ['products' => []]
 
 <a name="metodo-array-get"></a>
-#### `array_get()` {#collection-metodo}
+#### `array_get()`
 
 Il metodo `array_get` recupererà una valore da un array complesso utilizzando la notazione "dot":
 
@@ -174,7 +175,7 @@ La funzione `array_get` accetta anche un valore di default, che sarà ritornato 
 	$value = array_get($array, 'names.john', 'default');
 
 <a name="metodo-array-only"></a>
-#### `array_only()` {#collection-metodo}
+#### `array_only()`
 
 Il metodo `array_only`recupererà solo le specifiche coppie chiave/valore dall'array:
 
@@ -185,7 +186,7 @@ Il metodo `array_only`recupererà solo le specifiche coppie chiave/valore dall'a
 	// ['name' => 'Desk', 'price' => 100]
 
 <a name="metodo-array-pluck"></a>
-#### `array_pluck()` {#collection-metodo}
+#### `array_pluck()`
 
 Il metodo`array_pluck` recupererà una lista delle specificate coppie chiave/valore dell’array:
 
@@ -199,7 +200,7 @@ Il metodo`array_pluck` recupererà una lista delle specificate coppie chiave/val
 	// ['Taylor', 'Abigail'];
 
 <a name="metodo-array-pull"></a>
-#### `array_pull()` {#collection-metodo}
+#### `array_pull()`
 
 Il metodo `array_pull` restituirà una specifica coppia chiave/valore dell’array, quindi la rimuoverà:
 
@@ -212,7 +213,7 @@ Il metodo `array_pull` restituirà una specifica coppia chiave/valore dell’arr
 	// $array: ['price' => 100]
 
 <a name="metodo-array-set"></a>
-#### `array_set()` {#collection-metodo}
+#### `array_set()`
 
 Il metodo `array_set` imposterà un valore dentro un array annidato utilizzando la notazione “dot”:
 
@@ -223,7 +224,7 @@ Il metodo `array_set` imposterà un valore dentro un array annidato utilizzando 
 	// ['products' => ['desk' => ['price' => 200]]]
 
 <a name="metodo-array-sort"></a>
-#### `array_sort()` {#collection-metodo}
+#### `array_sort()`
 
 Il metodo `array_sort` ordina l'array in base al risultato di una Closure:
 
@@ -244,7 +245,7 @@ Il metodo `array_sort` ordina l'array in base al risultato di una Closure:
 	*/
 
 <a name="metodo-array-where"></a>
-#### `array_where()` {#collection-metodo}
+#### `array_where()`
 
 La funzione `array_where` filtra l'array usando una Closure:
 
@@ -257,7 +258,7 @@ La funzione `array_where` filtra l'array usando una Closure:
 	// [1 => 200, 3 => 400]
 
 <a name="metodo-head"></a>
-#### `head()` {#collection-metodo}
+#### `head()`
 
 La funzione `head` ritorna semplicemente il primo elemento dell'array:
 
@@ -268,7 +269,7 @@ La funzione `head` ritorna semplicemente il primo elemento dell'array:
 	// 100
 
 <a name="metodo-last"></a>
-#### `last()` {#collection-metodo}
+#### `last()`
 
 La funzione `last` ritorna l'ultimo elemento dell'array:
 
@@ -282,7 +283,7 @@ La funzione `last` ritorna l'ultimo elemento dell'array:
 ## Percorsi
 
 <a name="metodo-app-path"></a>
-#### `app_path()` {#collection-metodo}
+#### `app_path()`
 
 La funzione `app_path` Restituisce il percorso completo della directory `app`:
 
@@ -293,7 +294,7 @@ Puoi anche usare la funzione `app_path` per generare un percorso completo ad un 
 	$path = app_path('Http/Controllers/Controller.php');
 
 <a name="metodo-base-path"></a>
-#### `base_path()` {#collection-metodo}
+#### `base_path()`
 
 La funzione `base_path` restituisce il percorso completo alla root della tua applicazione:
 
@@ -304,28 +305,28 @@ Puoi usare la funzione `base_path` anche per generare un percorso completo ad un
 	$path = base_path('vendor/bin');
 
 <a name="metodo-config-path"></a>
-#### `config_path()` {#collection-metodo}
+#### `config_path()`
 
 La funzione `config_path` ritorna il percorso completo alla directory di configurazione dell'applicazione:
 
 	$path = config_path();
 
 <a name="metodo-database-path"></a>
-#### `database_path()` {#collection-metodo}
+#### `database_path()`
 
 La funzione `database_path` ritorna il percorso completo alla directory database dell'applicazione:
 
 	$path = database_path();
 
 <a name="metodo-public-path"></a>
-#### `public_path()` {#collection-metodo}
+#### `public_path()`
 
 La funzione `public_path` ritorna il percorso completo alla directory `public`:
 
 	$path = public_path();
 
 <a name="metodo-storage-path"></a>
-#### `storage_path()` {#collection-metodo}
+#### `storage_path()`
 
 La funzione `storage_path` ritorna il percorso completo alla directory `storage`:
 
@@ -339,7 +340,7 @@ Puoi anche usare la funzione `storage_path` per generare un percorso completo ad
 ## Stringhe
 
 <a name="metodo-camel-case"></a>
-#### `camel_case()` {#collection-metodo}
+#### `camel_case()`
 
 La funzione `camel_case` converte una stringa nel formato `camelCase`:
 
@@ -348,7 +349,7 @@ La funzione `camel_case` converte una stringa nel formato `camelCase`:
 	// fooBar
 
 <a name="metodo-class-basename"></a>
-#### `class_basename()` {#collection-metodo}
+#### `class_basename()`
 
 La funzione `class_basename` ritorna il nome della classe senza namespace:
 
@@ -357,14 +358,14 @@ La funzione `class_basename` ritorna il nome della classe senza namespace:
 	// Baz
 
 <a name="metodo-e"></a>
-#### `e()` {#collection-metodo}
+#### `e()`
 
 La funzione `e` esegue `htmlentities` sulla stringa:
 
 	echo e('<html>foo</html>');
 
 <a name="metodo-ends-with"></a>
-#### `ends_with()` {#collection-metodo}
+#### `ends_with()`
 
 La funzione `ends_with` determina se una stringa termina con un dato valore:
 
@@ -373,7 +374,7 @@ La funzione `ends_with` determina se una stringa termina con un dato valore:
 	// true
 
 <a name="metodo-snake-case"></a>
-#### `snake_case()` {#collection-metodo}
+#### `snake_case()`
 
 La funzione `snake_case` converte una stringa nel formato `snake_case`:
 
@@ -382,7 +383,7 @@ La funzione `snake_case` converte una stringa nel formato `snake_case`:
 	// foo_bar
 
 <a name="metodo-str-limit"></a>
-#### `str_limit()` {#collection-metodo}
+#### `str_limit()`
 
 La funzione `str_limit` limita il numero di caratteri di una stringa. La funzione accetta una stringa come primo parametro e il massimo numero di caratteri risultanti come secondo parametro:
 
@@ -391,7 +392,7 @@ La funzione `str_limit` limita il numero di caratteri di una stringa. La funzion
 	// The PHP...
 
 <a name="metodo-starts-with"></a>
-#### `starts_with()` {#collection-metodo}
+#### `starts_with()`
 
 La funzione `starts_with` determina se una stringa inizia con un dato valore:
 
@@ -400,7 +401,7 @@ La funzione `starts_with` determina se una stringa inizia con un dato valore:
 	// true
 
 <a name="metodo-str-contains"></a>
-#### `str_contains()` {#collection-metodo}
+#### `str_contains()`
 
 La funzione `str_contains` determina se la stringa contiene un dato valore:
 
@@ -409,7 +410,7 @@ La funzione `str_contains` determina se la stringa contiene un dato valore:
 	// true
 
 <a name="metodo-str-finish"></a>
-#### `str_finish()` {#collection-metodo}
+#### `str_finish()`
 
 La funzione `str_finish` aggiunge una singola istanza di un dato valore ad una stringa:
 
@@ -418,7 +419,7 @@ La funzione `str_finish` aggiunge una singola istanza di un dato valore ad una s
 	// this/string/
 
 <a name="metodo-str-is"></a>
-#### `str_is()` {#collection-metodo}
+#### `str_is()`
 
 La funzione `str_is` determina se una stringa è associabile ad un pattern. Può essere usato un asterisco per indicare una wildcard:
 
@@ -431,7 +432,7 @@ La funzione `str_is` determina se una stringa è associabile ad un pattern. Può
 	// false
 
 <a name="metodo-str-plural"></a>
-#### `str_plural()` {#collection-metodo}
+#### `str_plural()`
 
 La funzione `str_plural` converte una stringa nella sua forma plurale. Questa funzione supporta solo la lingua Inglese:
 
@@ -444,14 +445,14 @@ La funzione `str_plural` converte una stringa nella sua forma plurale. Questa fu
 	// children
 
 <a name="metodo-str-random"></a>
-#### `str_random()` {#collection-metodo}
+#### `str_random()`
 
 La funzione `str_random` Genera una stringa casuale con lunghezza determinata dal valore dato:
 
 	$string = str_random(40);
 
 <a name="metodo-str-singular"></a>
-#### `str_singular()` {#collection-metodo}
+#### `str_singular()`
 
 La funzione `str_singular` converte una stringa nella sua forma singolare. Questa funzione supporta solo la lingua Inglese:
 
@@ -460,7 +461,7 @@ La funzione `str_singular` converte una stringa nella sua forma singolare. Quest
 	// car
 
 <a name="metodo-str-slug"></a>
-#### `str_slug()` {#collection-metodo}
+#### `str_slug()`
 
 La funzione `str_slug` genera un URL "slug" dalla stinga data:
 
@@ -469,7 +470,7 @@ La funzione `str_slug` genera un URL "slug" dalla stinga data:
 	// laravel-5-framework
 
 <a name="metodo-studly-case"></a>
-#### `studly_case()` {#collection-metodo}
+#### `studly_case()`
 
 La funzione `studly_case` converte la stringa nel formato `StudlyCase`:
 
@@ -478,14 +479,14 @@ La funzione `studly_case` converte la stringa nel formato `StudlyCase`:
 	// FooBar
 
 <a name="metodo-trans"></a>
-#### `trans()` {#collection-metodo}
+#### `trans()`
 
 La funzione `trans` traduce la linea di linguaggio data usando i [File di localizzazione](/docs/{{version}}/localization):
 
 	echo trans('validation.required'):
 
 <a name="metodo-trans-choice"></a>
-#### `trans_choice()` {#collection-metodo}
+#### `trans_choice()`
 
 La funzione `trans_choice` traduce un testo con la sua inflessione:
 
@@ -495,7 +496,7 @@ La funzione `trans_choice` traduce un testo con la sua inflessione:
 ## URL
 
 <a name="metodo-action"></a>
-#### `action()` {#collection-metodo}
+#### `action()`
 
 La funzione `action` genera un URL per una data azione di un controller. Non hai bisogno di passare il namespace completo del controller. Invece, passa il nome della classe del controller relativo al namespace `App\Http\Controllers`:
 
@@ -506,7 +507,7 @@ Se il metodo accetta dei parametri dalla route, puoi passarli come secondo param
 	$url = action('UserController@profile', ['id' => 1]);
 
 <a name="metodo-route"></a>
-#### `route()` {#collection-metodo}
+#### `route()`
 
 La funzione `route` genera un URL per una data route nominata:
 
@@ -517,7 +518,7 @@ Se la route riceve dei parametri, puoi passarli come secondo parametro del metod
 	$url = route('routeName', ['id' => 1]);
 
 <a name="metodo-url"></a>
-#### `url()` {#collection-metodo}
+#### `url()`
 
 La funzione `url` genera un URL completo ad un dato percorso:
 
@@ -529,28 +530,28 @@ La funzione `url` genera un URL completo ad un dato percorso:
 ## Varie
 
 <a name="metodo-csrf-token"></a>
-#### `csrf_token()` {#collection-metodo}
+#### `csrf_token()`
 
 La funzione `csrf_token` recupera il valore corrente del token CSRF:
 
 	$token = csrf_token();
 
 <a name="metodo-dd"></a>
-#### `dd()` {#collection-metodo}
+#### `dd()`
 
 La funzione `dd` Effettua il dump della variabile data e termina l'esecuzione dello script:
 
 	dd($value);
 
 <a name="metodo-elixir"></a>
-#### `elixir()` {#collection-metodo}
+#### `elixir()`
 
 La funzione `elixir` ritorna il percorso al file [Elixir](/docs/{{version}}/elixir):
 
 	elixir($file);
 
 <a name="metodo-env"></a>
-#### `env()` {#collection-metodo}
+#### `env()`
 
 La funzione `env` recupera il valore di una variabile d'ambiente o ritorna un valore di default:
 
@@ -560,14 +561,14 @@ La funzione `env` recupera il valore di una variabile d'ambiente o ritorna un va
 	$env = env('APP_ENV', 'production');
 
 <a name="metodo-event"></a>
-#### `event()` {#collection-metodo}
+#### `event()`
 
 La funzione `event` invia un dato [evento](/docs/{{version}}/events) ai suoi listener:
 
 	event(new UserRegistered($user));
 
 <a name="metodo-response"></a>
-#### `response()` {#collection-metodo}
+#### `response()`
 
 La funzione `response` crea un istanza di [risposta](/docs/{{version}}/responses) oppure ottiene un istanza della response factory:
 
@@ -576,21 +577,21 @@ La funzione `response` crea un istanza di [risposta](/docs/{{version}}/responses
 	return response()->json(['foo' => 'bar'], 200, $headers);
 
 <a name="metodo-value"></a>
-#### `value()` {#collection-metodo}
+#### `value()`
 
 La funzione `value` ritornerà semplicemente il valore dato. Tuttavia, se passi una `Closure` alla funzione, la `Closure` sarà eseguita e sarà ritornato il suo valore:
 
 	$value = value(function() { return 'bar'; });
 
 <a name="metodo-view"></a>
-#### `view()` {#collection-metodo}
+#### `view()`
 
 La funzione `view` recupera un istanza di [view](/docs/{{version}}/views):
 
 	return view('auth.login');
 
 <a name="metodo-with"></a>
-#### `with()` {#collection-metodo}
+#### `with()`
 
 La funzione `with` ritorna il valore dato. Questa funzione è particolaremente utile per il concatenamento di metoti dove altrimenti sarebbe impossibile :
 
