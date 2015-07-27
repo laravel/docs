@@ -1,4 +1,4 @@
-# Encryption
+# Crittografia
 
 - [Configurazione](#configurazione)
 - [Uso Base](#uso-base)
