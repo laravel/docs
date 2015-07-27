@@ -1,4 +1,4 @@
-# Validation
+# Validazione
 
 - [Introduzione](#introduzione)
 - [Primi Passi](#primi-passi)
