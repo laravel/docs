@@ -10,9 +10,9 @@
 <a name="support-policy"></a>
 ## 关于版本支持的约定
 
-支持 LTS 发布的版本, 如 Laravel 5.1, 自发布起两年的时间支持 Bug 修复, 3 年时间支持安全修复, LTS 版本是此项目能提供的最长时间维护版本. 
+LTS 的发行版本, 如 Laravel 5.1, 自发布起提供两年时间的 Bug 修复, 3 年时间的安全修复, LTS 版本是此项目能提供的最长时间维护版本. 
 
-一般版本的发布, 只提供 6 个月的 Bug 修复支持, 一年的安全修复支持. 
+一般的发行版本, 只提供 6 个月的 Bug 修复支持, 一年的安全修复支持. 
 
 <a name="laravel-5.1.4"></a>
 ## Laravel 5.1.4
@@ -22,7 +22,7 @@ Laravel 5.1.4 增加了登陆节流功能, 详见: [登录认证文档](/docs/{{
 <a name="laravel-5.1"></a>
 ## Laravel 5.1
 
-Laravel 5.1 在 5.0 的基础上, 提高了更好的对 PSR-2 的支持, 在功能上新添加了 事件广播, 中间件参数支持, 还有 Artisan 命令行优化等. 
+Laravel 5.1 在 5.0 的基础做了许多改善, 选用了 PSR-2 代码风格, 新增了 事件广播, 中间件参数支持等功能, 还有 Artisan 命令行优化等. 
 
 ### PHP 5.5.9+
 
@@ -30,13 +30,13 @@ Laravel 5.1 在 5.0 的基础上, 提高了更好的对 PSR-2 的支持, 在功�
 
 ### LTS
 
-Laravel 5.1 是 Laravel 社区发布的第一个 LTS 支持项目. 
+Laravel 5.1 是 Laravel 社区的第一个 LTS 发行版. 
 
-支持 LTS 发布的版本, 自发布起两年的时间支持 Bug 修复, 3 年时间支持安全修复, LTS 版本的支持周期, 很适合大企业用户. 
+LTS 的发行版, 自发布起提供两年时间的 Bug 修复, 3 年时间的安全修复, LTS 版本的支持周期, 很适合大企业用户. 
 
 ### PSR-2
 
-Laravel 框架默认支持 [PSR-2 代码标准指南](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md), 所有的代码产生器也同时支持 PSR-2.
+Laravel 选用 [PSR-2 代码标准指南](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) 作为框架默认代码风格指南, 所有的代码产生器也已更新，以生成 PSR-2 风格的代码.
 
 ### 文档优化
 
@@ -44,7 +44,7 @@ Laravel 框架默认支持 [PSR-2 代码标准指南](https://github.com/php-fig
 
 ### 事件广播
 
-在现代的 Web 应用程序中, Web Sockets 被用来实现实时更新, 单有数据发生变化的时候, 会把消息广播到所有的连接客户端. 
+在现代的 Web 应用程序中, Web Sockets 被用来实现实时更新, 当有数据发生变化的时候, 会把消息广播到所有连接的客户端. 
 
 为了支持此种类型的应用, Laravel 提供了一套更好的机制, 让对事件进行广播, 允许你在服务器和客户端 JS 框架同时使用同一个时间名称. 
 
