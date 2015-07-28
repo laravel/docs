@@ -206,7 +206,7 @@ elixir(function(mix) {
 });
 ```
 
-While Browserify ships with the Partialify and Babelify transformers, you're free to install and add more if you wish.
+While Browserify ships with the Partialify and Babelify transformers, you're free to install and add more if you wish:
 
 ```js
 npm install vueify --save-dev
@@ -362,7 +362,7 @@ Elixir.extend('speak', function(message) {
 // mix.speak('Hello World');
 ```
 
-That's it! Notice that your Gulp-specific logic should be placed within the second argument to the `Task` constructor. You may either place this at the top of your Gulpfile, or instead extract it to a custom tasks file. For example, if you place your extensions in `elixir-extensions.js`, you may require the file from your main `Gulpfile` like so:
+That's it! Notice that your Gulp-specific logic should be placed within the function passed as the second argument to the `Task` constructor. You may either place this at the top of your Gulpfile, or instead extract it to a custom tasks file. For example, if you place your extensions in `elixir-extensions.js`, you may require the file from your main `Gulpfile` like so:
 
 ```javascript
 // File: Gulpfile.js
