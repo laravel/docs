@@ -81,6 +81,8 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 
 <div class="collection-method-list" markdown="1">
 [action](#method-action)
+[asset](#method-asset)
+[secure_asset](#method-secure-asset)
 [route](#method-route)
 [url](#method-url)
 </div>
@@ -584,6 +586,20 @@ The `action` function generates a URL for the given controller action. You do no
 If the method accepts route parameters, you may pass them as the second argument to the method:
 
     $url = action('UserController@profile', ['id' => 1]);
+
+<a name="method-asset"></a>
+#### `asset()` {#collection-method}
+
+Generate a URL for an asset.
+
+	$url = asset('img/photo.jpg');
+
+<a name="method-secure-asset"></a>
+#### `secure_asset()` {#collection-method}
+
+Generate a URL for an asset using HTTPS.
+
+	echo secure_asset('foo/bar.zip', $title, $attributes = []);
 
 <a name="method-route"></a>
 #### `route()` {#collection-method}
