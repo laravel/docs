@@ -447,6 +447,7 @@ For more granular control, you may define a `failed` method directly on a queue 
     namespace App\Jobs;
 
     use App\Jobs\Job;
+    use Illuminate\Contracts\Mail\Mailer;
     use Illuminate\Queue\SerializesModels;
     use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Bus\SelfHandling;
