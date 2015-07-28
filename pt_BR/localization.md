@@ -8,7 +8,7 @@
 <a name="introduction"></a>
 ## Introdução
 
-O Laravel provê uma maneira conveniente de recuperar strings em vindas diferentes linguages, permitindo a você facilmente dar suporte a multiplas linguagens na sua aplicação.
+O Laravel provê uma maneira conveniente de recuperar strings vindas de diferentes linguages, permitindo a você facilmente dar suporte a múltiplas linguagens na sua aplicação.
 
 
 As strings de linguagem ficam armazenadas em arquivos dentro do diretório `resources/lang`. Dentro desse diretório deve haver um sub-diretório para cada linguagem que sua aplicação dará suporte.
@@ -31,7 +31,7 @@ Todos os arquivos simplesmente retornam um array associativo de strings. Por exe
 
 #### Configurando o Locale
 
-A linguagem padrão da sua aplicação está em no arquivo de configuração `config/app.php`. E é claro, você pode modificar esse valor para se adaptar às necessidades da sua aplicação. Você também pode alternar entre linguagens durante a execução da aplicação usando o método `setLocale` do facade `App`:
+A linguagem padrão da sua aplicação está no arquivo de configuração `config/app.php`. E é claro, você pode modificar esse valor para se adaptar às necessidades da sua aplicação. Você também pode alternar entre linguagens durante a execução da aplicação usando o método `setLocale` do facade `App`:
 
     Route::get('welcome/{locale}', function ($locale) {
         App::setLocale($locale);
@@ -50,16 +50,16 @@ Você pode obter linhas dos seus arquivos de linguagem usando a função utilit�
 
     echo trans('messages.welcome');
 
-E é claro, se você está usando o [templates Blade](/docs/{{version}}/blade), você pode usar a sintaxe `{{ }}` para "echo" (imprimir, exibir) a string:
+E é claro, se você está usando os [templates Blade](/docs/{{version}}/blade), você pode usar a sintaxe `{{ }}` para "echo" (imprimir, exibir) a string:
 
     {{ trans('messages.welcome') }}
 
 
-Se você especificou uma chave cujo a traduão não existe, a função `trans` irá retornar essa chave. Então, usando o exemplo anterior, a função `trans` retornaria `messages.welcome` se essa chave não existisse no arquivo `messages.php`.
+Se você especificou uma chave cujo a tradução não existe, a função `trans` irá retornar essa chave. Então, usando o exemplo anterior, a função `trans` retornaria `messages.welcome` se essa chave não existisse no arquivo `messages.php`.
 
 #### Sobrescrevendo Parâmetros
 
-Se você desejar, você pode definir place-holers nas suas linhas de linguagem. Todos os placeholers devem ser prefixados com `:`. Por exemplo, você pode definir uma mensagem de `welcome` com um nome de place-holder:
+Se você desejar, você pode definir place-holders nas suas strings de linguagem. Todos os place-holders devem ser prefixados com `:`. Por exemplo, você pode definir uma mensagem de `welcome` com um nome de place-holder:
 
     'welcome' => 'Welcome, :name',
 
@@ -74,7 +74,7 @@ Pluralização é um problema complexo, diferentes linguagens tem uma variedade 
 
     'apples' => 'There is one apple|There are many apples',
 
-Então, você pode usar a função `trans_choice` para recuperar essa linha baseado em uma "count" (quantidade). Neste exemplo, se o `count` for maior que um, a forma plural da string será retornada:
+Então, você pode usar a função `trans_choice` para recuperar essa linha baseado em uma "count" (quantidade). Neste exemplo, o `count` é maior que um, a forma plural da string será retornada:
 
     echo trans_choice('messages.apples', 10);
 
