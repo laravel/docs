@@ -590,7 +590,7 @@ If the method accepts route parameters, you may pass them as the second argument
 <a name="method-asset"></a>
 #### `asset()` {#collection-method}
 
-Generate a URL for an asset:
+Generate a URL for an asset using the current scheme of the request (HTTP or HTTPS):
 
 	$url = asset('img/photo.jpg');
 
