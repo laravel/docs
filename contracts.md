@@ -78,6 +78,11 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
     class Repository
     {
         /**
+         * The cache.
+         */
+        protected $cache;
+
+        /**
          * Create a new repository instance.
          *
          * @param  Cache  $cache
