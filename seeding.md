@@ -1,20 +1,20 @@
 # 資料庫: 資料填充
 
-- [導覽](#introduction)
+- [簡介](#introduction)
 - [撰寫 Seeders](#writing-seeders)
-	- [使用模型工廠](#using-model-factories)
-	- [呼叫其他的 Seeders](#calling-additional-seeders)
+    - [使用模型工廠](#using-model-factories)
+    - [呼叫其他的 Seeders](#calling-additional-seeders)
 - [執行 Seeders](#running-seeders)
 
 <a name="introduction"></a>
-## 導覽
+## 簡介
 
 Laravel 可以簡單的使用 seed 類別，填充測試用數據到資料庫。所有的 seed 類別放在 `database/seeds` 目錄下。你可以任意地為 Seed 類別命名，但是應該遵守某些大小寫規範，像是 `UserTableSeeder` 之類。預設已經有一個 `DatabaseSeeder` 類別。在這個類別裡，你可以使用 `call` 方法執行其他的 seed 類別，藉此控制資料填充的順序。
 
 <a name="writing-seeders"></a>
 ## 撰寫資料填充
 
-你可以透過`make:seeder` [Artisan 指令](/docs/{{version}}/artisan) 來生成一個 Seeder。所有透過框架生成的 Seeder 都將被放置在 `database/seeders` 路徑：
+你可以透過 `make:seeder` [Artisan 指令](/docs/{{version}}/artisan) 來生成一個 Seeder。所有透過框架生成的 Seeder 都將被放置在 `database/seeders` 路徑：
 
     php artisan make:seeder UserTableSeeder
 
