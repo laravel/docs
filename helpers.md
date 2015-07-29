@@ -708,7 +708,7 @@ The `method_field` function generates an HTML `hidden` input field containing th
 <a name="method-old"></a>
 #### `old()` {#collection-method}
 
-The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session.:
+The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session:
 
     $value = old('value');
 
