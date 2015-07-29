@@ -656,7 +656,7 @@ The `config` function gets the value of a configuration variable. The configurat
 
     $value = config('app.timezone', $default);
 
-It can also be used to set configuration variables at runtime. Pass an array with a key and a new value:
+The `config` helper may also be used to set configuration variables at runtime by passing an array of key / value pairs:
 
     config(['app.debug' => true]);
 
