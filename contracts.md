@@ -34,7 +34,7 @@ First, let's review some code that is tightly coupled to a cache implementation.
     class Repository
     {
         /**
-         * The cache.
+         * The cache instance.
          */
         protected $cache;
 
@@ -78,7 +78,7 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
     class Repository
     {
         /**
-         * The cache.
+         * The cache instance.
          */
         protected $cache;
 
