@@ -642,7 +642,7 @@ The `config` function gets the value of a configuration variable. The configurat
 
 It can also be used to set configuration variables at runtime. Pass an array with a key and a new value:
 
-    config(['app.debug' => 1]);
+    config(['app.debug' => true]);
 
 <a name="method-csrf-field"></a>
 #### `csrf_field()` {#collection-method}
