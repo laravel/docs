@@ -16,34 +16,34 @@ Laravel 可以簡單的使用 seed 類別，填充測試用數據到資料庫。
 
 你可以透過`make:seeder` [Artisan 指令](/docs/{{version}}/artisan) 來生成一個 Seeder。所有透過框架生成的 Seeder 都將被放置在 `database/seeders` 路徑：
 
-	php artisan make:seeder UserTableSeeder
+    php artisan make:seeder UserTableSeeder
 
 在 seeder 類別裡只會預設一個方法：`run`。當執行 `db:seed` [Artisan 指令](/docs/{{version}}/artisan) 時就會呼叫此方法。在 `run` 方法中，你可以新增任何想要的數據至你的資料庫中。你可使用 [查詢產生器](/docs/{{version}}/queries) 手動新增數據或你也可以使用 [Eloquent 模型工廠](/docs/{{version}}/testing#model-factories)。
 
 如同下面的範例，我們修改 Laravel 預先安裝好的 `DatabaseSeeder` 類別。我們在 `run` 方法中添加了一段在資料庫新增數據的語法：
 
-	<?php
+    <?php
 
-	use DB;
-	use Illuminate\Database\Seeder;
-	use Illuminate\Database\Eloquent\Model;
+    use DB;
+    use Illuminate\Database\Seeder;
+    use Illuminate\Database\Eloquent\Model;
 
-	class DatabaseSeeder extends Seeder
-	{
-	    /**
-	     * Run the database seeds.
-	     *
-	     * @return void
-	     */
-	    public function run()
-	    {
-	        DB::table('users')->insert([
-	        	'name' => str_random(10),
-	        	'email' => str_random(10).'@gmail.com',
-	        	'password' => bcrypt('secret'),
-	        ]);
-	    }
-	}
+    class DatabaseSeeder extends Seeder
+    {
+        /**
+         * Run the database seeds.
+         *
+         * @return void
+         */
+        public function run()
+        {
+            DB::table('users')->insert([
+                'name' => str_random(10),
+                'email' => str_random(10).'@gmail.com',
+                'password' => bcrypt('secret'),
+            ]);
+        }
+    }
 
 <a name="using-model-factories"></a>
 ### 使用模型工廠
@@ -60,7 +60,7 @@ Laravel 可以簡單的使用 seed 類別，填充測試用數據到資料庫。
     public function run()
     {
         factory('App\User', 50)->create()->each(function($u) {
-        	$u->posts()->save(factory('App\Post')->make());
+            $u->posts()->save(factory('App\Post')->make());
         });
     }
 
@@ -78,9 +78,9 @@ Laravel 可以簡單的使用 seed 類別，填充測試用數據到資料庫。
     {
         Model::unguard();
 
-        $this->call('UserTableSeeder');
-        $this->call('PostsTableSeeder');
-        $this->call('CommentsTableSeeder');
+        $this->call(UserTableSeeder::class);
+        $this->call(PostsTableSeeder::class);
+        $this->call(CommentsTableSeeder::class);
     }
 
 <a name="running-seeders"></a>
@@ -88,10 +88,10 @@ Laravel 可以簡單的使用 seed 類別，填充測試用數據到資料庫。
 
 一旦你撰寫完你的 seeder 類別，可以使用 `db:seed` Artisan 指令來對資料庫進行資料填充。在預設的情況下，`db:seed` 指令將運行 `DatabaseSeeder` 類別，並透過它來呼叫其他的 seed 類別。但是，你也可以使用 `--class` 選項來單獨運行一個特別指定的 seeder 類別：
 
-	php artisan db:seed
+    php artisan db:seed
 
-	php artisan db:seed --class=UserTableSeeder
+    php artisan db:seed --class=UserTableSeeder
 
 你也可以使用 `migrate:refresh` 指令來對資料庫進行資料填充，它會推回並再次執行所有遷移。在完全重建你的資料庫時這個指令是非常有用的：
 
-	php artisan migrate:refresh --seed
+    php artisan migrate:refresh --seed

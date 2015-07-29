@@ -55,6 +55,6 @@ The `Exceptions` directory contains your application's exception handler and is 
 
 As discussed above, the default application namespace is `App`; however, you may change this namespace to match the name of your application, which is easily done via the `app:name` Artisan command. For example, if your application is named "SocialNet", you would run the following command:
 
-	php artisan app:name SocialNet
+    php artisan app:name SocialNet
 
 Of course, you are free to simply use the `App` namespace.

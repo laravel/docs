@@ -7,6 +7,7 @@
     - [認證](#included-authenticating)
     - [取得已認證之使用者](#retrieving-the-authenticated-user)
     - [保護路由](#protecting-routes)
+    - [認證限制](#authentication-throttling)
 - [手動認證使用者](#authenticating-users)
     - [記住使用者](#remembering-users)
     - [其他認證方法](#other-authentication-methods)
@@ -124,6 +125,10 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
     protected $redirectPath = '/dashboard';
 
+當使用者認證失敗，將會被重導到 `/auth/login` URI。你可以設定 `AuthController` 的 `loginPath` 屬性來自訂認證失敗後的重導位置：
+
+    protected $loginPath = '/login';
+
 #### 客製化
 
 如果想要修改註冊時的表單欄位，或是客製化如何將新使用者的記錄寫入資料庫，你可以修改 `AuthController` 類別，這個類別負責驗證和創造新的使用者。
@@ -197,6 +202,28 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+<a name="authentication-throttling"></a>
+### 認證限制
+
+如果你使用 Laravel's 內建的 `AuthController` 類別，可以透過 `Illuminate\Foundation\Auth\ThrottlesLogins` trait 在你的應用程式限制登入次數。預設情況下，如果使用者在幾次嘗試後仍不能提供正確的憑證，將在一分鐘內無法進行登入。這個限制會特別針對使用者的用戶名稱 / 郵件地址和他們的 IP 位址：
+
+    <?php
+
+    namespace App\Http\Controllers\Auth;
+
+    use App\User;
+    use Validator;
+    use App\Http\Controllers\Controller;
+    use Illuminate\Foundation\Auth\ThrottlesLogins;
+    use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+
+    class AuthController extends Controller
+    {
+        use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+
+        // Rest of AuthController class...
     }
 
 <a name="authenticating-users"></a>
@@ -308,7 +335,9 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
 你可以使用 HTTP 基礎認證而不用在 session 中設定使用者認證用的 cookie，這個功能對 API 認證來說非常有用。為了達到這個目的，[定義一個中介層](/docs/{{version}}/middleware)並這個中介層會呼叫 `onceBasic` 方法。如果沒有任何回應從 `onceBasic` 方法返回的話，這個請求會直接傳進應用程式中：
 
-    <?php namespace Illuminate\Auth\Middleware;
+    <?php
+
+    namespace Illuminate\Auth\Middleware;
 
     use Auth;
     use Closure;
@@ -379,7 +408,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
         {!! csrf_field() !!}
 
         <div>
-        	Email
+            Email
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
 
@@ -584,7 +613,9 @@ Of course, you will need to define routes to your controller methods:
 
 讓我們來看看 `Illuminate\Contracts\Auth\UserProvider` contract：
 
-    <?php namespace Illuminate\Contracts\Auth;
+    <?php
+
+    namespace Illuminate\Contracts\Auth;
 
     interface UserProvider {
 
@@ -610,7 +641,9 @@ Of course, you will need to define routes to your controller methods:
 
 現在我們已經介紹了 `UserProvider` 的每個方法，讓我們看一下 `Authenticate`。記得，這個提供者需要 `retrieveById` 和 `retrieveByCredentials` 方法來回傳這個介面的實作：
 
-    <?php namespace Illuminate\Contracts\Auth;
+    <?php
+
+    namespace Illuminate\Contracts\Auth;
 
     interface Authenticatable {
 
