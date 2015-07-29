@@ -20,7 +20,7 @@ The session `driver` defines where session data will be stored for each request.
 - `file` - sessions are stored in `storage/framework/sessions`.
 - `cookie` - sessions are stored in secure, encrypted cookies.
 - `database` - sessions are stored in a database used by your application.
-- `memcached` / `redis` - sessions are stored in one of these fast, cached based stores.
+- `memcached` / `redis` - sessions are stored in one of these fast, cache based stores.
 - `array` - sessions are stored in a simple PHP array and will not be persisted across requests.
 </div>
 
