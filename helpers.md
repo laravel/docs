@@ -443,6 +443,8 @@ The `e` function runs `htmlentities` over the given string:
 
     echo e('<html>foo</html>');
 
+    // &lt;html&gt;foo&lt;/html&gt;
+
 <a name="method-ends-with"></a>
 #### `ends_with()` {#collection-method}
 
