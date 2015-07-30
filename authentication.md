@@ -538,7 +538,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
 
-Of course, you will need to define routes to your controller methods:
+當然，你需要定義路由到你的控制器方法：
 
     <?php
 
