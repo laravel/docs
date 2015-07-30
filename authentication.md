@@ -506,8 +506,8 @@ Next, you are ready to authenticate users! You will need two routes: one for red
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Routing\Controller;
     use Socialite;
+    use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
     {
