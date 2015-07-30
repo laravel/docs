@@ -208,11 +208,9 @@ elixir(function(mix) {
 
 While Browserify ships with the Partialify and Babelify transformers, you're free to install and add more if you wish:
 
-```js
-npm install vueify --save-dev
-```
+    npm install vueify --save-dev
 
-```js
+```javascript
 elixir.config.js.browserify.transformers.push({
     name: 'vueify',
     options: {}
