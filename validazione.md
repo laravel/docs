@@ -96,7 +96,7 @@ A questo punto ti starai chiedendo... "ok, ma come mostro gli errori?"
 
 #### Mostrare gli Errori di Validazione
 
-Supponiamo che la procedura di validazione sia andata male. L'utente ha inserito qualcosa di sbagliato ed il validatore ci ha preso e rimandati alla pagina precedente. Quello che non vedi, però, è che i dati relativi agli errori sono stati presi e ["flashati" in sessione](/docs/5.1/session#flash-data).
+Supponiamo che la procedura di validazione sia andata male. L'utente ha inserito qualcosa di sbagliato ed il validatore ci ha preso e rimandati alla pagina precedente. Quello che non vedi, però, è che i dati relativi agli errori sono stati presi e ["flashati" in sessione](/docs/5.1/sessioni#dati-flash).
 
 Probabilmente ti starai chiedendo perché non leggi da nessuna parte qualcosa che ricordi, anche vagamente, un bind esplicito degli errori con la view. Ecco svelata la soluzione: **Laravel, quando trova dei dati su errori flashati in sessione, li "aggancia" direttamente alla view**. Comodo, no? E saranno sempre utilizzabili come _$errors_. Più precisamente, _$errors_ sarà di tipo `Illuminate\Support\MessageBag` e potrà essere usata in questo modo:
 
@@ -116,7 +116,7 @@ Probabilmente ti starai chiedendo perché non leggi da nessuna parte qualcosa ch
 
 	<!-- Create Post Form -->
 
-Se vuoi saperne di più, guarda [questa parte della documentazione](#working-with-error-messages)
+Se vuoi saperne di più, guarda [questa parte della documentazione](#lavorare-messaggi-errore)
 
 #### Personalizzare il Formato degli Errori
 

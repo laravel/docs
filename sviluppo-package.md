@@ -102,7 +102,7 @@ Now, when users of your package execute Laravel's `vendor:publish` Artisan comma
 <a name="traduzioni"></a>
 ### Traduzioni
 
-Se il tuo package contiene dei [file di traduzione](/docs/5.1/localization), potrai usare il metodo `loadTranslationsFrom` per spiegare a Laravel dove trovare tali file. Ad esempio:
+Se il tuo package contiene dei [file di traduzione](/docs/5.1/localizzazione), potrai usare il metodo `loadTranslationsFrom` per spiegare a Laravel dove trovare tali file. Ad esempio:
 
 	/**
 	 * Perform post-registration booting of services.

@@ -57,7 +57,7 @@ Una profonda comprensione del service container di Laravel è essenziale per cre
 <a name="binding"></a>
 ## Binding
 
-Quasi tutti i binding vengono registrati all'interno dei [service provider](/docs/{{version}}/providers), sperciò tutti i seguenti esempi dimostrano come usare il container in quel contesto. In ogni modo, non hai alcun bisogno di eseguire il bind delle classi nel container the non dipendono da nessuna interfaccia. Il container non ha bisogno di essere istruito su come costruire questi oggetti, dal momento che può risolvere automaticamente come oggetti "concreti" tramite i servizi di riflessione di PHP.
+Quasi tutti i binding vengono registrati all'interno dei [service provider](/docs/5.1/providers), sperciò tutti i seguenti esempi dimostrano come usare il container in quel contesto. In ogni modo, non hai alcun bisogno di eseguire il bind delle classi nel container the non dipendono da nessuna interfaccia. Il container non ha bisogno di essere istruito su come costruire questi oggetti, dal momento che può risolvere automaticamente come oggetti "concreti" tramite i servizi di riflessione di PHP.
 
 All'interno del service provider, puoi sempre avere accesso al container tramite l'istanza `$this->app`. Puoi registrare un binding usando il metodo `bind`, passando il nome della classe o dell'interfaccia che vuoi registrare tramite una `Closure` che ritorna un istanza della classe:
 
@@ -154,7 +154,7 @@ ppure puoi accedere al container come se fosse un array, dal momento che impleme
 
 	$fooBar = $this->app['FooBar'];
 
-Infine, ma molto importante, puoi semplicemente fare il "type-hint" di una dipendenza nel costruttore di una classe risolta in automatico dal container, come i [controllers](/docs/{{version}}/controllers), gli [event listeners](/docs/{{version}}/events), i [queue jobs](/docs/{{version}}/queues), i [middleware](/docs/{{version}}/middleware) e altro ancora. In questo modo il container inietta automaticamente le dipendenze.
+Infine, ma molto importante, puoi semplicemente fare il "type-hint" di una dipendenza nel costruttore di una classe risolta in automatico dal container, come i [controllers](/docs/5.1/controller), gli [event listener](/docs/5.1/events), i [job in coda](/docs/5.1/coda), i [middleware](/docs/5.1/middleware) e altro ancora. In questo modo il container inietta automaticamente le dipendenze.
 
 Il contenitore inietterà automaticamente le dipendenze per le classi da risolvere. Ad esempio, puoi importare un repository definito per la tua applicazione nel costruttore di un controller. Il repository verrà automaticamente risolto e iniettato nella classe: 
 

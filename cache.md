@@ -31,7 +31,7 @@ Se usi il driver _database_ per la cache, dovrai creare una tabella dedicata all
 
 Se dovessi decidere di usare Memcached, sappi che richiede il [Memcached PECL package](http://pecl.php.net/package/memcached). Quindi, installalo.
 
-Di default, la [configurazione](#configuration) usa TCP/IP su [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php):
+Di default, la [configurazione](#configurazione) usa TCP/IP su [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php):
 
 	'memcached' => [
 		[
@@ -63,7 +63,7 @@ Per maggiori informazioni sulla configurazione, dai uno sguardo alla [pagina ad 
 <a name="ottenere-istanza-cache"></a>
 ### Ottenere un'Istanza della Cache
 
-I due [contract](/docs/5.1/contract) `Illuminate\Contracts\Cache\Factory` ed `Illuminate\Contracts\Cache\Repository` ti forniscono l'accesso ai servizi di Cache presenti in Laravel. Nello specifico, `Factory` ti da l'accesso a tutti i driver definiti per la tua applicazione. `Repository`, invece, è tipicamente l'implementazione del driver che hai specificato nel file di configurazione `cache`.
+I due [contract](/docs/5.1/contracts) `Illuminate\Contracts\Cache\Factory` ed `Illuminate\Contracts\Cache\Repository` ti forniscono l'accesso ai servizi di Cache presenti in Laravel. Nello specifico, `Factory` ti da l'accesso a tutti i driver definiti per la tua applicazione. `Repository`, invece, è tipicamente l'implementazione del driver che hai specificato nel file di configurazione `cache`.
 
 Per comodità potresti voler usare la Facade `Cache`, che è quella che poi useremo in questa documentazione. La Facade in oggetto fonisce a sua volta una sintassi semplice ed espressiva per l'accesso alle funzionalità sottostanti del sistema di cache.
 

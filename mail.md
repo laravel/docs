@@ -56,7 +56,7 @@ Subito dopo l'installazione imposta il `driver` in `config/mail.php` come `ses` 
 
 Laravel ti permette di memorizzare un messaggio e-mail in una [view](/docs/5.1/view) per maggiore praticità. Anche per una migliore organizzazione, infatti, date le circostanze potresti crearti una cartella _emails_ in `resources/views`.
 
-Per inviare un messaggio devi usare il metodo _send_ della [facade](/docs/5.1/facades) _Mail_. Tale metodo accetta tre parametri.
+Per inviare un messaggio devi usare il metodo _send_ della [facade](/docs/5.1/facade) _Mail_. Tale metodo accetta tre parametri.
 
 Il primo definisce il nome della view da usare. Il secondo, invece, un array di dati da passare a tale view. Il terzo, infine, una _Closure_ che riceve un'istanza del messaggio e permette di modificarne l'oggetto, i destinatari e così via.
 
@@ -186,13 +186,13 @@ Se hai già una stringa "grezza" che vuoi includere nel tuo messaggio, usa _embe
 
 #### Mettere in Coda un Messaggio
 
-Inviare messaggi di posta può rallentare, a volte anche di molto, la tua richiesta. Molti sviluppatori, per questo motivo, predispongono delle code per l'invio di messaggi in modo tale da svolgere tutto il più velocemente possibile. Laravel ha già un [API unificata per le Code](/docs/5.1/queues) ed è disponibile, nella facade _Mail_, il metodo _queue_:
+Inviare messaggi di posta può rallentare, a volte anche di molto, la tua richiesta. Molti sviluppatori, per questo motivo, predispongono delle code per l'invio di messaggi in modo tale da svolgere tutto il più velocemente possibile. Laravel ha già un [API unificata per le Code](/docs/5.1/code) ed è disponibile, nella facade _Mail_, il metodo _queue_:
 
 	Mail::queue('emails.welcome', $data, function ($message) {
 		//
 	});
 
-Questo metodo si occuperà di tutto automaticamente, creando il relativo job per il messaggio. Per usare un simile servizio dovrai, ovviamente, [configurare tutto in modo adeguato](/docs/5.1/queues) prima di poter usare una feature del genere.
+Questo metodo si occuperà di tutto automaticamente, creando il relativo job per il messaggio. Per usare un simile servizio dovrai, ovviamente, [configurare tutto in modo adeguato](/docs/5.1/code) prima di poter usare una feature del genere.
 
 #### Invio di Messaggi in Coda Dilazionati
 
@@ -219,6 +219,6 @@ Se vuoi inserire il job dell'invio di un messaggio in una coda specifica, usa _q
 
 Durante la fase di sviluppo di un'applicazione che fa uso delle funzionalità viste in questa parte della guida, probabilmente vuoi fare anche in modo che non partano invii non desiderati. Laravel, fortunatamente, ha vari meccanismi che puoi usare per disattivare l'invio senza incappare in errori.
 
-La prima soluzione è usare il driver _log_ per il sistema di mail. In questo modo, al posto di processare l'invio vero e proprio, tutti i dettagli relativi all'email verranno scritti sul file di log e nulla di più. A tal proposito dai uno sguardo al sistema di [configurazione per gli ambienti](/docs/5.1/installation#environment-configuration).
+La prima soluzione è usare il driver _log_ per il sistema di mail. In questo modo, al posto di processare l'invio vero e proprio, tutti i dettagli relativi all'email verranno scritti sul file di log e nulla di più. A tal proposito dai uno sguardo al sistema di [configurazione per gli ambienti](/docs/5.1/installazione#configurazione-ambiente).
 
 Un altro modo per risolvere il problema è usare servizi come [Mailtrap](https://mailtrap.io) insieme al driver `smtp`, mandando il messaggio ad una casella di posta dummy. Un simile approccio ha il beneficio di permetterti di vedere come effettivamente "arriva" il messaggio.

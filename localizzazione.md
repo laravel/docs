@@ -47,7 +47,7 @@ Puoi recuperare una linea da un file di lingua usando la funzione helper `trans`
 
 	echo trans('messages.welcome');
 
-Ovviamente se stai usando [Blade](/docs/{{version}}/views#blade-templating), puoi usare la sintassi `{{ }}` per stampare la stringa:
+Ovviamente se stai usando [Blade](/docs/5.1/blade), puoi usare la sintassi `{{ }}` per stampare la stringa:
 
 	{{ trans('messages.welcome') }}
 

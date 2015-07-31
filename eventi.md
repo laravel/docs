@@ -1,11 +1,11 @@
-oiu# Eventi
+# Eventi
 
 - [Introduzione](#introduzione)
 - [Registrare Eventi / Listener](#registrare-eventi-e-listener)
 - [Definire Gli Eventi](#definire-eventi)
 - [Definire I Listener](#definire-listeners)
 	- [Gestione Coda Eventi](#gestione-coda-eventi)
-- [Eseguire Eventi](#eseguire-eventi)
+- [Lanciare gli Eventi](#lanciare-eventi)
 - [Broadcasting Di Eventi](#broadcasting-eventi)
 	- [Configurazione](#configurazione-broadcast)
 	- [Segnare Eventi Per Il Broadcast](#segnare-eventi-per-broadcast)
@@ -42,7 +42,7 @@ Naturalmente, create i file per ogni evento e listener ogni qual volta ne hai bi
 
 <a name="definire-eventi"></a>
 ## Definire Gli Eventi
-Una classe evento è semplicemente un container di dati che mantiene le informazioni relative ad un evento. Per esempio, assumiamo che il nostro evento `PodcastWasPurchased` riceva un oggetto [Eloquent ORM](/docs/{{version}}/eloquent):
+Una classe evento è semplicemente un container di dati che mantiene le informazioni relative ad un evento. Per esempio, assumiamo che il nostro evento `PodcastWasPurchased` riceva un oggetto [Eloquent ORM](/docs/5.1/eloquent):
 
 	<?php namespace App\Events;
 
@@ -105,7 +105,7 @@ Ora, diamo uno sguardo ai listener per il nostro evento di esempio. Gli event li
 	    }
 	}
 
-Il tuo event listener può anche ricevere qualsiasi dipendenza abbia bisogno eseguendo un type-hint nel costruttore. Tutti gli event listener sono risolti da Laravel tramite il [service container](/docs/{{version}}/container), in questo modo le dipendenza saranno iniettate automaticamente:
+Il tuo event listener può anche ricevere qualsiasi dipendenza abbia bisogno eseguendo un type-hint nel costruttore. Tutti gli event listener sono risolti da Laravel tramite il [service container](/docs/5.1/container), in questo modo le dipendenza saranno iniettate automaticamente:
 
 	use Illuminate\Contracts\Mail\Mailer;
 
@@ -121,7 +121,7 @@ In alcuni casi, puoi voler fermare la propagazione di un evento per altri listen
 <a name="gestione-code-eventi"></a>
 ### Gestione Coda Eventi
 
-Hai bisogno di inserire un evento nella [queue](/docs/{{version}}/queues)? Non potrebbe essere più facile. Aggiungi semplicemente l'interfaccia `ShouldQueue` alla classe dell'evento. I Listener generati dal comando Artisan `event:generate` hanno già importata questa interfaccia nel namespace corrente, in questo modo puoi usarla immediatamente:
+Hai bisogno di inserire un evento nella [coda](/docs/5.1/code)? Non potrebbe essere più facile. Aggiungi semplicemente l'interfaccia `ShouldQueue` alla classe dell'evento. I Listener generati dal comando Artisan `event:generate` hanno già importata questa interfaccia nel namespace corrente, in questo modo puoi usarla immediatamente:
 
 	<?php namespace App\Listeners;
 
@@ -133,7 +133,7 @@ Hai bisogno di inserire un evento nella [queue](/docs/{{version}}/queues)? Non p
 	{
 		//
 	}
-Questo è tutto! Ora, quando questo listener verrà chiamato per un evento, sarà automaticamente messo in coda dal dispatcher degli eventi usando il [queue system](/docs/{{version}}/queues) di Laravel. Se non si verifica nessuna eccezione quando il listener viene esguito dalla coda, sarà la il sistema di gestione delle code a rimuovere automaticamente dalla coda il listener una volta processato.
+Questo è tutto! Ora, quando questo listener verrà chiamato per un evento, sarà automaticamente messo in coda dal dispatcher degli eventi usando il [queue system](/docs/5.1/code) di Laravel. Se non si verifica nessuna eccezione quando il listener viene esguito dalla coda, sarà la il sistema di gestione delle code a rimuovere automaticamente dalla coda il listener una volta processato.
 
 #### Accesso Manuale alla Coda
 
@@ -158,9 +158,9 @@ Se hai bisogno di accedere manualmente ai metodi `delete` and `release` della qu
 	}
 
 <a name="lanciare-eventi"></a>
-## Lanciare Eventi
+## Lanciare gli Eventi
 
-Per lanciare un evento, puoi usare la [facade](/docs/{{version}}/facades) `Event`, passando un istanza dell'evento al metodo `fire`. Il metodo `fire` invierà l'evento a tutti i suoi listener registrati:
+Per lanciare un evento, puoi usare la [facade](/docs/5.1/facade) `Event`, passando un istanza dell'evento al metodo `fire`. Il metodo `fire` invierà l'evento a tutti i suoi listener registrati:
 
 	<?php namespace App\Http\Controllers;
 
@@ -202,11 +202,11 @@ Per assisterti alla realizzazione di applicazioni di questo tipo, Laravel ti ren
 <a name="configurazione-broadcast"></a>
 ### Configurazione
 
-Tutte le opzioni per il broadcast degli eventi sono memorizzate nel file di configurazione `config/broadcasting.php`. Laravel supporta diversi driver per il broadcast: [Pusher](https://pusher.com), [Redis](/docs/{{version}}/redis), e il driver `log` per lo sviluppo in locale e per debugging. E' inclusa una configurazione di esempio per ognuno di questi driver.
+Tutte le opzioni per il broadcast degli eventi sono memorizzate nel file di configurazione `config/broadcasting.php`. Laravel supporta diversi driver per il broadcast: [Pusher](https://pusher.com), [Redis](/docs/5.1/redis), e il driver `log` per lo sviluppo in locale e per debugging. E' inclusa una configurazione di esempio per ognuno di questi driver.
 
 #### Prerequisiti Coda
 
-Prima di eseguire il broadcast degli eventi, avrai bisogno di configurare ad eseguire la [queue listener](/docs/{{version}}/queues). Il broadcast degli eventi viene realzizato tramite coda in modo tale che il tempo di risposta della tua applicazione non ne risenta. 
+Prima di eseguire il broadcast degli eventi, avrai bisogno di configurare ad eseguire la [queue listener](/docs/5.1/code). Il broadcast degli eventi viene realzizato tramite coda in modo tale che il tempo di risposta della tua applicazione non ne risenta. 
 
 <a name="segnare-eventi-per-broadcast"></a>
 ### Segnare Eventi Per Il Broadcast
@@ -247,7 +247,7 @@ Per informare Laravel che un evento debba essere affetto da broadcast, implement
 	    }
 	}
 
-Quindi, hai solo bisogno di [lanciare l'evento](#firing-events) come faresti normalmente. Una volta che l'evento viene eseguito, la [queued job](/docs/{{version}}/queues) trasmetterà automaticamente l'evento a seconda del driver specificato.
+Quindi, hai solo bisogno di [lanciare l'evento](#lanciare-eventi) come faresti normalmente. Una volta che l'evento viene eseguito, la [queued job](/docs/5.1/code) trasmetterà automaticamente l'evento a seconda del driver specificato.
 
 <a name="dati-broadcast"></a>
 ### Dati Broadcast

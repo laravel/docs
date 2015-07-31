@@ -20,7 +20,7 @@ Vediamo come creare un seeder. Per prima cosa, usa il [comando Artisan](/docs/5.
 
 	php artisan make:seeder UserTableSeeder
 
-La classe seeder generata conterrà un metodo _run_, che verrà poi richiamato nel momento in cui l'utente eseguirà il comando Artisan _db:seed_. In questo metodo _run_ quindi dovrai inserire tutte le istruzioni di popolamento delle tabelle con i dati appropriati. Qui puoi usare quello che vuoi, dal [query builder](/docs/5.1/queries) alle [factory di model Eloquent](/docs/5.1/testing#model-factories).
+La classe seeder generata conterrà un metodo _run_, che verrà poi richiamato nel momento in cui l'utente eseguirà il comando Artisan _db:seed_. In questo metodo _run_ quindi dovrai inserire tutte le istruzioni di popolamento delle tabelle con i dati appropriati. Qui puoi usare quello che vuoi, dal [query builder](/docs/5.1/database-query-builder) alle [factory di model Eloquent](/docs/5.1/testing#model-factory).
 
 Facciamo un esempio. Modifichiamo come segue la classe _DatabaseSeeder_ già inclusa in Laravel di default.
 
@@ -54,7 +54,7 @@ Fatto: adesso, quando eseguiremo le operazioni di seeding, nel database inserire
 
 Specificare i singoli attributi per ogni record da inserire, a volte, può essere davvero scomodo. Immagina di dover popolare una tabella _posts_ con dei dati di esempio... anche un 50 post di prova, per iniziare. Immagina che lavoraccio!
 
-Per fortuna, le [model factory](/docs/5.1/testing#model-factories) arrivano in tuo aiuto! Dopo averle definite adeguatamente, infatti, usarle nelle tue classi Seeder è davvero molto semplice.
+Per fortuna, le [model factory](/docs/5.1/testing#model-factory) arrivano in tuo aiuto! Dopo averle definite adeguatamente, infatti, usarle nelle tue classi Seeder è davvero molto semplice.
 
 Guarda questo esempio, in cui creiamo cinquanta utenti a cui associamo un post.
 

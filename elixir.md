@@ -234,7 +234,7 @@ Il metodo `version` accetta il nome del file della risorsa relativamente alla ca
 		mix.version("css/all.css");
 	});
 
-Dopo aver generato il file, puoi utilizzare all'interno delle [view](/docs/{{version}}/view) l'helper `elixir` che è una funzione globale di Laravel che automaticamente caricherà la risorsa corretta:
+Dopo aver generato il file, puoi utilizzare all'interno delle [view](/docs/5.1/view) l'helper `elixir` che è una funzione globale di Laravel che automaticamente caricherà la risorsa corretta:
 
 	<link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 

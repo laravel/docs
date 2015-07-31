@@ -45,12 +45,12 @@
     - [Testing](/documentazione/5.1/testing)
     - [Validazione](/documentazione/5.1/validazione)
 - Database
-    - [Primi Passi](/documentazione/5.1/database-primi-passi)
+    - [Primi Passi](/documentazione/5.1/database)
     - [Query Builder](/documentazione/5.1/database-query-builder)
     - [Migration](/documentazione/5.1/database-migration)
     - [Seeding](/documentazione/5.1/database-seeding)
 - Eloquent ORM
-    - [Primi Passi](/documentazione/5.1/eloquent-primi-passi)
+    - [Primi Passi](/documentazione/5.1/eloquent)
     - [Relazioni](/documentazione/5.1/eloquent-relazioni)
     - [Collection](/documentazione/5.1/eloquent-collection)
     - [Mutator](/documentazione/5.1/eloquent-mutator)

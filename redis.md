@@ -100,7 +100,7 @@ Il pipelining viene usato quando devi inviare, al server, un insieme di comandi 
 
 Laravel fornisce un'interfaccia piuttosto comoda ai comandi _publish_ e _subscribe_ di Redis. Questi comandi ti permettono di rimanere in ascolto per dei messaggi su specifici "canali". Puoi pubblicare tali messaggi anche da altre applicazioni, usando anche altri linguaggi, ed il risultato è una comunicazione comoda e funzionale tra processi vari ed eventuali.
 
-Innanzitutto, configuriamo un listener su un canale via Redis, usando il metodo _subscribe_. Piazzeremo questa chiamata in un [comando Artisan](/docs/5.1/commands), visto che stiamo iniziando un processo long-running.
+Innanzitutto, configuriamo un listener su un canale via Redis, usando il metodo _subscribe_. Piazzeremo questa chiamata in un [comando Artisan](/docs/5.1/artisan), visto che stiamo iniziando un processo long-running.
 
 	<?php namespace App\Console\Commands;
 

@@ -6,7 +6,7 @@
 <a name="introduzione"></a>
 ## Introduzione
 
-La [facade](/docs/{{version}}/facade) `Hash` di Laravel fornisce tramite l'utilizzo di Bcrypt un hashing sicuro per salvare le password degli utenti. Se stai utilizzando il controller `AuthController` incluso con l'installazione di Laravel, stai anche utilizzando automaticamente Bcrypt per la registrazione e l'autenticazione.
+La [facade](/docs/5.1/facade) `Hash` di Laravel fornisce tramite l'utilizzo di Bcrypt un hashing sicuro per salvare le password degli utenti. Se stai utilizzando il controller `AuthController` incluso con l'installazione di Laravel, stai anche utilizzando automaticamente Bcrypt per la registrazione e l'autenticazione.
 
 Bcrypt è una ottima soluzione per creare l'hash di una password perchè il suo "work factor" è modificabile, questo vuol dire che il tempo di generazione dell'hash può essere incrementato se si dispone di un hardware più potente.
 
@@ -48,7 +48,7 @@ In alternativa, puoi utilizzare anche l'helper `bcrypt` che è una funzione disp
 
 #### Verifica Di Una Password Con Il Suo Hash
 
-Il metodo `check` ti permette di verificare se il testo passato come primo argomento corrisponde all'hash passato come secondo argomento. Tuttavia, se utilizzi il controller `AuthController` [incluso in Laravel](/docs/{{version}}/autenticazione), non hai bisogno di richiamare direttamente questo metodo in quanto viene chiamato automaticamente dal controller:
+Il metodo `check` ti permette di verificare se il testo passato come primo argomento corrisponde all'hash passato come secondo argomento. Tuttavia, se utilizzi il controller `AuthController` [incluso in Laravel](/docs/5.1/autenticazione), non hai bisogno di richiamare direttamente questo metodo in quanto viene chiamato automaticamente dal controller:
 
 	if (Hash::check('password-in-chiaro', $hashedPassword)) {
 		// le password corrispondono...

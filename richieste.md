@@ -11,7 +11,7 @@
 <a name="accedere-alla-richiesta"></a>
 ## Accedere alla Richiesta
 
-Per ottenere un istanza di una richiesta HTTP tramite dependency injection, devi importare la classe `Illuminate\Http\Request` nel construttore o nel metodo del controller. L'istanza corrente sarà automaticamente iniettata dal [service container](/docs/{{version}}/container):
+Per ottenere un istanza di una richiesta HTTP tramite dependency injection, devi importare la classe `Illuminate\Http\Request` nel construttore o nel metodo del controller. L'istanza corrente sarà automaticamente iniettata dal [service container](/docs/5.1/container):
 
 	<?php namespace App\Http\Controllers;
 
@@ -152,12 +152,12 @@ Se hai bisogno di recuperare un sotto-insieme degli input della richiesta, puoi 
 <a name="input-precedente"></a>
 ### Input Precedente
 
-Laravel ti offre la possibilità di mantenere l'input di una richiesta durante una successiva richiesta. Per esempio, puoi ripopolare un form dopo aver controllato l'input per errori di validazione. Tuttavia, se stai usando la validazione inclusa di Laravel [validation services](/docs/{{version}}/validation), non sarà necessario usare manualmente questi metodi, perchè sarà il meccanismo built-in di Laravel a richiamarli automaticamente.
+Laravel ti offre la possibilità di mantenere l'input di una richiesta durante una successiva richiesta. Per esempio, puoi ripopolare un form dopo aver controllato l'input per errori di validazione. Tuttavia, se stai usando la validazione inclusa di Laravel [validation services](/docs/5.1/validazione), non sarà necessario usare manualmente questi metodi, perchè sarà il meccanismo built-in di Laravel a richiamarli automaticamente.
 
 #### Flashing Dell'Input Nella Sessione
 
 Il metodo `flash` sull'istanza `Illuminate\Http\Request`  memorizzerà gli input correnti nella
-[sessione](/docs/{{version}}/session) in modo da renderli disponibili, durante la richiesta successiva dell'utente, all'applicazione:
+[sessione](/docs/5.1/sessioni) in modo da renderli disponibili, durante la richiesta successiva dell'utente, all'applicazione:
 
 	$request->flash();
 
@@ -177,11 +177,11 @@ Dal momento che spesso si vuole memorizzare gli input in associazione con un red
 
 #### Recuperare I Dati Precedenti
 
-Per recuperare gli input memorizzati dalla precedente richiesta, usa il metodo `old` dell'istanza `Request`. Il metodo `old` offre un conveniente helper per recupare gli input fuori dalla [sessione](/docs/{{version}}/session):
+Per recuperare gli input memorizzati dalla precedente richiesta, usa il metodo `old` dell'istanza `Request`. Il metodo `old` offre un conveniente helper per recupare gli input fuori dalla [sessione](/docs/5.1/sessioni):
 
 	$username = $request->old('username');
 
-Laravel offre anche una funzione hepler `old` globale. Se stai visualizzando l'input precedente all'interno di un [template Blade](/docs/{{version}}/views), è più conveniente usare l'helper `old`:
+Laravel offre anche una funzione hepler `old` globale. Se stai visualizzando l'input precedente all'interno di un [template Blade](/docs/5.1/views), è più conveniente usare l'helper `old`:
 
 	{{ old('username') }}
 

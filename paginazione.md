@@ -19,7 +19,7 @@ In alcuni framework implementare la paginazione dei dati può essere davvero mol
 <a name="paginare-risultati-query-builder"></a>
 ### Paginare i Risultati del Query Builder
 
-Ci sono svariati modi di paginare degli elementi. Quello più semplice, sicuramente, è l'uso di _paginate_ del [query builder](/docs/5.1/queries) o di un [model Eloquent](/docs/5.1/eloquent). Il metodo `paginate` è presente out of the box in Laravel e fornisce tutto il necessario a creare i link adatti, partendo da un semplice parametro GET _?page_. Tale valore sarebbe automaticamente gestito da Laravel, che si occuperebbe di inserirlo nei vari link generati dal paginatore.
+Ci sono svariati modi di paginare degli elementi. Quello più semplice, sicuramente, è l'uso di _paginate_ del [query builder](/docs/5.1/database-query-builder) o di un [model Eloquent](/docs/5.1/eloquent). Il metodo `paginate` è presente out of the box in Laravel e fornisce tutto il necessario a creare i link adatti, partendo da un semplice parametro GET _?page_. Tale valore sarebbe automaticamente gestito da Laravel, che si occuperebbe di inserirlo nei vari link generati dal paginatore.
 
 Tuttavia, una cosa alla volta. Innanzitutto, vediamo come usare il metodo _paginate_ su una query. In questo esempio l'unico argomento passato è il numero di elementi da mostrare "per pagina". 
 

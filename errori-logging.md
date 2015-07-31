@@ -5,7 +5,7 @@
 - [Gestire Gli Errori](#gestire-errori)
 	- [Metodo Report](#metodo-report)
 	- [Metodo Render](#metodo-render)
-- [HTTP Exception](#http-exceptions)
+- [Eccezioni HTTP](#eccezioni-http)
 	- [Pagine Di Errore HTTP Personalizzate](#pagine-errore-personalizzate)
 - [Logging](#logging)
 
@@ -93,8 +93,8 @@ Il metodo `render` è responsabile della conversione di una data eccezione in un
         return parent::render($request, $e);
     }
 
-<a name="http-exception"></a>
-## HTTP Exception
+<a name="eccezioni-http"></a>
+## Eccezioni HTTP
 
 Le eccezioni HTTP si riferiscono ad errori che potrebbero verificarsi durante una richiesta del client. Per esempio, può essere un errore di “pagina non trovata” (404), un errore di “non autorizzato” (401) oppure un errore generato da uno sviluppatore con codice 500. Per fare in modo di ritornare una tale risposta, usa la seguente sintassi: 
 
@@ -116,7 +116,7 @@ Queste view all'interno di questa directory dovrebbero essere nominate in modo t
 <a name="logging"></a>
 ## Logging
 
-Il meccanismo di logging di Laravel è realizzato usando la potente libreria [Monolog](http://github.com/seldaek/monolog). Di default, Laravel è configurato per creare un log giornaliero per la tua applicazione che è memorizzato nella directory `storage/logs`. Puoi scrivere informazioni nei log usando la [facade](/docs/{{version}}/facades) `Log`:
+Il meccanismo di logging di Laravel è realizzato usando la potente libreria [Monolog](http://github.com/seldaek/monolog). Di default, Laravel è configurato per creare un log giornaliero per la tua applicazione che è memorizzato nella directory `storage/logs`. Puoi scrivere informazioni nei log usando la [facade](/docs/5.1/facade) `Log`:
 
 	<?php namespace App\Http\Controllers;
 

@@ -38,7 +38,7 @@ Al momento, Homestead usa Vagrant 1.7.
 - Redis
 - Memcached
 - Beanstalkd
-- [Laravel Envoy](/docs/{{version}}/envoy)
+- [Laravel Envoy](/docs/5.1/envoy)
 - [Blackfire Profiler](#blackfire-profiler)
 
 <a name="installazione-e-setup"></a>

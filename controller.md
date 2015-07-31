@@ -1,4 +1,4 @@
-# HTTP Controllers
+# Controller
 
 - [Introduzione](#introduzione)
 - [Controller Base](#controller-base)
@@ -67,7 +67,7 @@ Una volta assegnato il nome alla route, puoi generare con estrema semplicità l'
 <a name="middleware-controller"></a>
 ## Middleware nei Controller
 
-Se hai bisogno di assegnare un [Middleware](/docs/{{5.1}}/middleware) ad una route di un controller puoi fare così:
+Se hai bisogno di assegnare un [Middleware](/docs/5.1/middleware) ad una route di un controller puoi fare così:
 
 	Route::get('profile', [
 		'middleware' => 'auth',
