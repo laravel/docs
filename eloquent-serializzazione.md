@@ -15,13 +15,13 @@ Ti è mai capitato di costruire delle API JSON? Si? Beh, probabilmente avrai avu
 
 #### Da Model ad Array
 
-Per convertire un model e le sue eventuali [relazioni](/docs/5.1/eloquent-relazioni) in un array, puoi usare il metodo _toArray_. Il metodo è ricorsivo, quindi non dovrai preoccuparti dei vari sotto-elementi.
+Per convertire un model e le sue eventuali [relazioni](/documentazione/5.1/eloquent-relazioni) in un array, puoi usare il metodo _toArray_. Il metodo è ricorsivo, quindi non dovrai preoccuparti dei vari sotto-elementi.
 
 	$user = App\User::with('roles')->first();
 
 	return $user->toArray();
 
-Tale utility è disponibile anche per le [collection](/docs/5.1/eloquent-collection):
+Tale utility è disponibile anche per le [collection](/documentazione/5.1/eloquent-collection):
 
 	$users = App\User::all();
 
@@ -87,7 +87,7 @@ In alternativa puoi sempre usare la proprietà _visible_ per definire una white-
 <a name="aggiungere-attributi-json"></a>
 ## Aggiungere degli Attributi nel JSON
 
-Così come puoi togliere, puoi anche aggiungere. A volte potresti avere la necessità di aggiungere dei nuovi attributi al tuo JSON. Nessun problema: non devi fare altro che definire un [accessor](/docs/5.1/eloquent-mutator) per tale attributo.
+Così come puoi togliere, puoi anche aggiungere. A volte potresti avere la necessità di aggiungere dei nuovi attributi al tuo JSON. Nessun problema: non devi fare altro che definire un [accessor](/documentazione/5.1/eloquent-mutator) per tale attributo.
 
 	<?php namespace App;
 

@@ -481,7 +481,7 @@ La funzione `studly_case` converte la stringa nel formato `StudlyCase`:
 <a name="metodo-trans"></a>
 #### `trans()`
 
-La funzione `trans` traduce la linea di linguaggio data usando i [File di localizzazione](/docs/5.1/localizzazione):
+La funzione `trans` traduce la linea di linguaggio data usando i [File di localizzazione](/documentazione/5.1/localizzazione):
 
 	echo trans('validation.required'):
 
@@ -546,7 +546,7 @@ La funzione `dd` Effettua il dump della variabile data e termina l'esecuzione de
 <a name="metodo-elixir"></a>
 #### `elixir()`
 
-La funzione `elixir` ritorna il percorso al file [Elixir](/docs/5.1/elixir):
+La funzione `elixir` ritorna il percorso al file [Elixir](/documentazione/5.1/elixir):
 
 	elixir($file);
 
@@ -563,14 +563,14 @@ La funzione `env` recupera il valore di una variabile d'ambiente o ritorna un va
 <a name="metodo-event"></a>
 #### `event()`
 
-La funzione `event` invia un dato [evento](/docs/5.1/eventi) ai suoi listener:
+La funzione `event` invia un dato [evento](/documentazione/5.1/eventi) ai suoi listener:
 
 	event(new UserRegistered($user));
 
 <a name="metodo-response"></a>
 #### `response()`
 
-La funzione `response` crea un istanza di [risposta](/docs/5.1/risposte) oppure ottiene un istanza della response factory:
+La funzione `response` crea un istanza di [risposta](/documentazione/5.1/risposte) oppure ottiene un istanza della response factory:
 
 	return response('Hello World', 200, $headers);
 
@@ -586,7 +586,7 @@ La funzione `value` ritornerà semplicemente il valore dato. Tuttavia, se passi 
 <a name="metodo-view"></a>
 #### `view()`
 
-La funzione `view` recupera un istanza di [view](/docs/5.1/view):
+La funzione `view` recupera un istanza di [view](/documentazione/5.1/view):
 
 	return view('auth.login');
 

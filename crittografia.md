@@ -15,7 +15,7 @@ Prima di usare l'encrypter di Laravel, ricorda di impostare l'opzione _key_ del 
 
 #### Crittare un Valore
 
-Puoi crittare un valore usando la [facade](/docs/5.1/facade) apposita `Crypt`. Tutti i valori vengono trattati usando OpenSSL ed il cipher `AES-128-CBC`. Tutti i valori crittati, inoltre, vengono "firmati" con un MAC per individuare ogni tentativo di modifica del valore.
+Puoi crittare un valore usando la [facade](/documentazione/5.1/facade) apposita `Crypt`. Tutti i valori vengono trattati usando OpenSSL ed il cipher `AES-128-CBC`. Tutti i valori crittati, inoltre, vengono "firmati" con un MAC per individuare ogni tentativo di modifica del valore.
 
 Per crittare un valore puoi usare il metodo `encrypt`:
 

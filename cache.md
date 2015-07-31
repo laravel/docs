@@ -55,7 +55,7 @@ Potresti inoltre voler settare l'host da usare come UNIX Socket path. Puoi farlo
 
 Prima di usare Redis con Laravel, assicurati di aver installato il package `predis/predis` tramite Composer.
 
-Per maggiori informazioni sulla configurazione, dai uno sguardo alla [pagina ad esso dedicata](/docs/5.1/redis#configurazione).
+Per maggiori informazioni sulla configurazione, dai uno sguardo alla [pagina ad esso dedicata](/documentazione/5.1/redis#configurazione).
 
 <a name="uso-cache"></a>
 ## Uso della Cache
@@ -63,7 +63,7 @@ Per maggiori informazioni sulla configurazione, dai uno sguardo alla [pagina ad 
 <a name="ottenere-istanza-cache"></a>
 ### Ottenere un'Istanza della Cache
 
-I due [contract](/docs/5.1/contracts) `Illuminate\Contracts\Cache\Factory` ed `Illuminate\Contracts\Cache\Repository` ti forniscono l'accesso ai servizi di Cache presenti in Laravel. Nello specifico, `Factory` ti da l'accesso a tutti i driver definiti per la tua applicazione. `Repository`, invece, è tipicamente l'implementazione del driver che hai specificato nel file di configurazione `cache`.
+I due [contract](/documentazione/5.1/contracts) `Illuminate\Contracts\Cache\Factory` ed `Illuminate\Contracts\Cache\Repository` ti forniscono l'accesso ai servizi di Cache presenti in Laravel. Nello specifico, `Factory` ti da l'accesso a tutti i driver definiti per la tua applicazione. `Repository`, invece, è tipicamente l'implementazione del driver che hai specificato nel file di configurazione `cache`.
 
 Per comodità potresti voler usare la Facade `Cache`, che è quella che poi useremo in questa documentazione. La Facade in oggetto fonisce a sua volta una sintassi semplice ed espressiva per l'accesso alle funzionalità sottostanti del sistema di cache.
 
@@ -189,7 +189,7 @@ Per rimuovere un elemento dalla cache, usa il metodo _forget_.
 <a name="aggiungere-nuovi-driver"></a>
 ## Aggiungere Nuovi Driver
 
-Se preferisci, puoi estendere tu stesso le funzionalità di Laravel con altri sistemi di cache. Come? Semplicemente, creando dei nuovi driver compatibili e registrandoli tramite il resolver specifico. Normalmente una cosa del genere viene fatta con un [service provider](/docs/5.1/provider) apposito.
+Se preferisci, puoi estendere tu stesso le funzionalità di Laravel con altri sistemi di cache. Come? Semplicemente, creando dei nuovi driver compatibili e registrandoli tramite il resolver specifico. Normalmente una cosa del genere viene fatta con un [service provider](/documentazione/5.1/provider) apposito.
 
 Nell'esempio di seguito è stato creato un nuovo provider incaricato della registrazione di un nuovo driver per la Cache.
 
@@ -226,11 +226,11 @@ Nell'esempio di seguito è stato creato un nuovo provider incaricato della regis
 
 Il primo argomento passato al metodo _extend_ è il nome del driver. Tale nome corrisponderà all'opzione _driver_ in `config/cache.php`. 
 
-Il secondo argomento è invece una Closure, che dovrà ritornare un'istanza di `Illuminate\Cache\Repository`. A tale closure verrà passata un'istanza _$app_ del [service container](/docs/5.1/container).
+Il secondo argomento è invece una Closure, che dovrà ritornare un'istanza di `Illuminate\Cache\Repository`. A tale closure verrà passata un'istanza _$app_ del [service container](/documentazione/5.1/container).
 
 Il posto migliore per chiamare `Cache::extend` potrebbe essere il metodo `boot` della classe `App\Providers\AppServiceProvider` già presente in Laravel. Nulla ti vieta, ovviamente, di crearti un provider appositamente per lo scopo. A te la scelta!
 
-Passiamo adesso alla realizzazione. La prima cosa da fare è creare un'implementazione del [contract](/docs/5.1/contract) `Illuminate\Contracts\Cache\Store`. Qualcosa del genere:
+Passiamo adesso alla realizzazione. La prima cosa da fare è creare un'implementazione del [contract](/documentazione/5.1/contract) `Illuminate\Contracts\Cache\Store`. Qualcosa del genere:
 
 	<?php namespace App\Extensions;
 

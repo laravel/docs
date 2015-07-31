@@ -19,7 +19,7 @@ In alcuni framework implementare la paginazione dei dati può essere davvero mol
 <a name="paginare-risultati-query-builder"></a>
 ### Paginare i Risultati del Query Builder
 
-Ci sono svariati modi di paginare degli elementi. Quello più semplice, sicuramente, è l'uso di _paginate_ del [query builder](/docs/5.1/database-query-builder) o di un [model Eloquent](/docs/5.1/eloquent). Il metodo `paginate` è presente out of the box in Laravel e fornisce tutto il necessario a creare i link adatti, partendo da un semplice parametro GET _?page_. Tale valore sarebbe automaticamente gestito da Laravel, che si occuperebbe di inserirlo nei vari link generati dal paginatore.
+Ci sono svariati modi di paginare degli elementi. Quello più semplice, sicuramente, è l'uso di _paginate_ del [query builder](/documentazione/5.1/database-query-builder) o di un [model Eloquent](/documentazione/5.1/eloquent). Il metodo `paginate` è presente out of the box in Laravel e fornisce tutto il necessario a creare i link adatti, partendo da un semplice parametro GET _?page_. Tale valore sarebbe automaticamente gestito da Laravel, che si occuperebbe di inserirlo nei vari link generati dal paginatore.
 
 Tuttavia, una cosa alla volta. Innanzitutto, vediamo come usare il metodo _paginate_ su una query. In questo esempio l'unico argomento passato è il numero di elementi da mostrare "per pagina". 
 
@@ -54,7 +54,7 @@ Se vuoi mostrare solo dei semplici link _Precedenti_ e _Successivi_, puoi usare 
 <a name="paginare-risultati-eloquent"></a>
 ### Paginare i Risultati di Eloquent
 
-Puoi anche paginare i risultati ottenuti usando [Eloquent](/docs/5.1/eloquent). In questo esempio di seguito, pagineremo i risultati partendo dal model _User_. Precisamente, quindici risultati per pagina. La sintassi è praticamente identica.
+Puoi anche paginare i risultati ottenuti usando [Eloquent](/documentazione/5.1/eloquent). In questo esempio di seguito, pagineremo i risultati partendo dal model _User_. Precisamente, quindici risultati per pagina. La sintassi è praticamente identica.
 
 	$users = App\User::paginate(15);
 

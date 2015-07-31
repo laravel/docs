@@ -227,7 +227,7 @@ Ovviamente, un uso comune della sessione e per mantenere lo stato utente, come a
 <a name="disabilitare-i-middleware"></a>
 ### Disabilitare I Middleware
 
-Quando testi la tua applicazione, puoi trovare conveniente disabilitare i [middleware](/docs/5.1/middleware) per alcuni dei tuoi test. Questo ti permetterà di testare le tue route e controller in completo isolamento dai controlli dei middleware. Laravel include un semplice trait `WithoutMiddleware` che puoi usare per disabiltiare automaticamente tutti i middleware per la classe di test:
+Quando testi la tua applicazione, puoi trovare conveniente disabilitare i [middleware](/documentazione/5.1/middleware) per alcuni dei tuoi test. Questo ti permetterà di testare le tue route e controller in completo isolamento dai controlli dei middleware. Laravel include un semplice trait `WithoutMiddleware` che puoi usare per disabiltiare automaticamente tutti i middleware per la classe di test:
 
 	<?php
 
@@ -273,7 +273,7 @@ Se vuoi effettuare una richiesta HTTP personalizzata nella tua applicazione e pr
     	$this->assertEquals(200, $response->status());
     }
 
-Se stai effettuando delle richieste `POST`, `PUT`, o `PATCH` puoi passare un array di dati di input con la richiesta. Ovviamente, questi dati saranno disponibili nelle tue route e controller tramite l' [istanza Request](/docs/5.1/richieste):
+Se stai effettuando delle richieste `POST`, `PUT`, o `PATCH` puoi passare un array di dati di input con la richiesta. Ovviamente, questi dati saranno disponibili nelle tue route e controller tramite l' [istanza Request](/documentazione/5.1/richieste):
 
    	$response = $this->call('POST', '/user', ['name' => 'Taylor']);
 
@@ -351,7 +351,7 @@ Un altra opzione è di racchiudere ogni test case in una transazione database. A
 <a name="model-factory"></a>
 ### Model Factory
 
-Quando testi, è comune di aver bisogno di inserire alcuni record nel tuo database prima di eseguire il tuo test. Invece di specificare manualmente il valore di ogni colonna quando crei dei dati di test, Laravel di permette di definire un insieme di attributi di default per ogni [model Eloquent](/docs/5.1/eloquent) usando le "factories". Per iniziare, dai uno sguardo al file `database/factories/ModelFactory.php` nella tua applicazione. Questo file contiene la definizione di una factory:
+Quando testi, è comune di aver bisogno di inserire alcuni record nel tuo database prima di eseguire il tuo test. Invece di specificare manualmente il valore di ogni colonna quando crei dei dati di test, Laravel di permette di definire un insieme di attributi di default per ogni [model Eloquent](/documentazione/5.1/eloquent) usando le "factories". Per iniziare, dai uno sguardo al file `database/factories/ModelFactory.php` nella tua applicazione. Questo file contiene la definizione di una factory:
 
 	$factory->define('App\User', function ($faker) {
 	    return [
@@ -435,7 +435,7 @@ Ancora una volta, puoi sovrascrivere gli attributi nel model passando un array a
 
 #### Aggiungere Relazioni Ai Models
 
-Puoi avere anche multipli model persistenti nel database. In questo esempio, collegheremo una relazione ai model creati. Quando usi il metodo `create` per creare multipli model, viene ritornata una [istanza collection](/docs/5.1/eloquent-collection) di Eloquent, che ti permette di usare qualsiasi delle funzioni offerte dalle collection, come ad esempio `each`:
+Puoi avere anche multipli model persistenti nel database. In questo esempio, collegheremo una relazione ai model creati. Quando usi il metodo `create` per creare multipli model, viene ritornata una [istanza collection](/documentazione/5.1/eloquent-collection) di Eloquent, che ti permette di usare qualsiasi delle funzioni offerte dalle collection, come ad esempio `each`:
 
     $users = factory('App\User', 3)
                ->create()
@@ -502,7 +502,7 @@ Laravel fornisce un metodo conveniente `expectsJobs` che verificherò che i job 
 <a name="mocking-facades"></a>
 ### Mocking Facades
 
-In fase di testing, potresti spesso voler eseguire una finta chiamata alle [facade](/docs/5.1/facade) di Laravel. Per esempio, considera il la seguente action del controller:
+In fase di testing, potresti spesso voler eseguire una finta chiamata alle [facade](/documentazione/5.1/facade) di Laravel. Per esempio, considera il la seguente action del controller:
 
 	<?php namespace App\Http\Controllers;
 
@@ -524,7 +524,7 @@ In fase di testing, potresti spesso voler eseguire una finta chiamata alle [faca
 		}
 	}
 
-Possiamo fingere la chiamata alla facade `Cache` usando il metodo `shouldReceive`, che ritornerà un istanza mock di [Mockery](https://github.com/padraic/mockery). Dal momento che le facade sono risolte e gestite dal [service container](/docs/5.1/container) di Laravel, sono molto più testabili rispetto ad una tipica classe statica. Per esempio, eseguiamo una finta chiamata alla facade `Cache`:
+Possiamo fingere la chiamata alla facade `Cache` usando il metodo `shouldReceive`, che ritornerà un istanza mock di [Mockery](https://github.com/padraic/mockery). Dal momento che le facade sono risolte e gestite dal [service container](/documentazione/5.1/container) di Laravel, sono molto più testabili rispetto ad una tipica classe statica. Per esempio, eseguiamo una finta chiamata alla facade `Cache`:
 
 	<?php
 

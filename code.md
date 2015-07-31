@@ -107,11 +107,11 @@ Una classe Job è davvero molto semplice. Normalmente contiene un metodo _handle
 	    }
 	}
 
-In questo esempio, stiamo passando un [model Eloquent](/docs/5.1/eloquent) direttamente al costruttore del job. Grazie al trait _SerializesModels_, questo verrà automaticamente serializzato e poi deserializzato una volta in fase di processing. Nello specifico, nel caso in cui un tuo job dovesse accettare un model Eloquent nel costruttore, ad essere passato per la serializzazione in realtà sarà solo l'identificatore.
+In questo esempio, stiamo passando un [model Eloquent](/documentazione/5.1/eloquent) direttamente al costruttore del job. Grazie al trait _SerializesModels_, questo verrà automaticamente serializzato e poi deserializzato una volta in fase di processing. Nello specifico, nel caso in cui un tuo job dovesse accettare un model Eloquent nel costruttore, ad essere passato per la serializzazione in realtà sarà solo l'identificatore.
 
 In fase di esecuzione l'istanza vera e propria verrà ripresa e quindi processata all'interno del metodo _handle_. Comodo, e tutto trasparente per lo sviluppatore.
 
-Tra l'altro, è possibile usare la method injection per il metodo _handle_! A tutto il resto ci penserà il [service container](/docs/5.1/container).
+Tra l'altro, è possibile usare la method injection per il metodo _handle_! A tutto il resto ci penserà il [service container](/documentazione/5.1/container).
 
 #### Quando le Cose non Vanno Bene
 

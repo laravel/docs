@@ -28,7 +28,7 @@ Come visto poco fa, creare una collection è molto semplice: _collect_ ritorna u
 
 	$collection = collect([1, 2, 3]);
 
-Di default, quando lavori con [Eloquent](/docs/5.1/eloquent) ogni risultato è una _Collection_. Ad ogni modo, sentiti libero di usare una collection ogni volta che la tua applicazione lo richiede.
+Di default, quando lavori con [Eloquent](/documentazione/5.1/eloquent) ogni risultato è una _Collection_. Ad ogni modo, sentiti libero di usare una collection ogni volta che la tua applicazione lo richiede.
 
 <a name="metodi-disponibili"></a>
 ## Metodi Disponibili
@@ -112,7 +112,7 @@ Il metodo _chunk_ permette di "spezzare" una collection in altre collection più
 
 	// [[1, 2, 3, 4], [5, 6, 7]]
 
-Questo metodo può risultare particolarmente utile nelle [view](/docs/5.1/view), lavorando con [Bootstrap](http://getbootstrap.com/css/#grid). Immagina di avere una collection di model da mostrare in una grid.
+Questo metodo può risultare particolarmente utile nelle [view](/documentazione/5.1/view), lavorando con [Bootstrap](http://getbootstrap.com/css/#grid). Immagina di avere una collection di model da mostrare in una grid.
 
 	@foreach ($products->chunk(3) as $chunk)
 		<div class="row">
@@ -956,7 +956,7 @@ Puoi anche passare come parametro un numero negativo: in tal caso il conto verr�
 <a name="metodo-toarray"></a>
 #### `toArray()`
 
-Il metodo _toArray_ converte una collection in un semplice array PHP. Se la collection data è di model [Eloquent](/docs/5.1/eloquent), anche questi verranno automaticamente convertiti.
+Il metodo _toArray_ converte una collection in un semplice array PHP. Se la collection data è di model [Eloquent](/documentazione/5.1/eloquent), anche questi verranno automaticamente convertiti.
 
 	$collection = collect(['name' => 'Desk', 'price' => 200]);
 

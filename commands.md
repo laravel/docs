@@ -126,10 +126,10 @@ Sometimes you may wish to call other commands from your command. You may do so u
 
 #### Registering An Artisan Command
 
-Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/Console/Kernel.php` file. Within this file, you will find a list of commands in the `commands` property. To register your command, simply add it to this list. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.
+Once your command is finished, you need to register it with Artisan so it will be available for use. This is typically done in the `app/Console/Kernel.php` file. Within this file, you will find a list of commands in the `commands` property. To register your command, simply add it to this list. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/documentazione/{{version}}/container) and registered with Artisan.
 
 	protected $commands = [
 		'App\Console\Commands\FooCommand'
 	];
 
-When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.
+When Artisan boots, all the commands listed in this property will be resolved by the [service container](/documentazione/{{version}}/container) and registered with Artisan.

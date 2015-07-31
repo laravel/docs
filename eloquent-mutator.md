@@ -8,7 +8,7 @@
 <a name="introduzione"></a>
 ## Introduzione
 
-Gli accessor ed i mutator ti permettono di formattare (sia in input che in output) gli attributi del tuo model Eloquent. Ad esempio, immagina di voler usare l'[encrypter](/docs/5.1/crittografia) di Laravel per crittare una password quando viene salvata su database, e decrittarla automaticamente quando viene invece recuperata in un secondo momento. Sono due strumenti molto utili, che vedremo a breve.
+Gli accessor ed i mutator ti permettono di formattare (sia in input che in output) gli attributi del tuo model Eloquent. Ad esempio, immagina di voler usare l'[encrypter](/documentazione/5.1/crittografia) di Laravel per crittare una password quando viene salvata su database, e decrittarla automaticamente quando viene invece recuperata in un secondo momento. Sono due strumenti molto utili, che vedremo a breve.
 
 Inoltre, Eloquent permette di definire ancora più velocemente il casting dei vari attributi, che si tratti di date da convertire in istanze [Carbon](https://github.com/briannesbitt/Carbon) o addirittura da [campi di testo a JSON](#attribute-casting).
 

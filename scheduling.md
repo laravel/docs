@@ -58,7 +58,7 @@ Puoi definire tutti i tuoi task programmati in _schedule_ della classe `App\Cons
 	    }
 	}
 
-In aggiunta alla chiamata, puoi anche schedulare specifici [comandi Artisan](/docs/5.1/artisan) tramite _command_.
+In aggiunta alla chiamata, puoi anche schedulare specifici [comandi Artisan](/documentazione/5.1/artisan) tramite _command_.
 
     $schedule->command('emails:send --force')->daily();
 

@@ -7,7 +7,7 @@
 <a name="introduzione"></a>
 ## Introduzione
 
-Il sistema di Facade offre un interfaccia "statica" a tutte le classi disponibili attraverso il [service container](/docs/5.1/container). Laravel conta già diverse facade pronte all'uso, e probabilmente le hai usate senza neanche saperlo. Le Facade di Laravel fanno da proxy per le classi "sottostanti" presenti nell'IoC Container, dando allo sviluppatore la possibilità di usare una sintassi espressiva ma mantenendo, allo stesso tempo, la flessibilità e la testabilità che con un metodo statico non si può ottenere. 
+Il sistema di Facade offre un interfaccia "statica" a tutte le classi disponibili attraverso il [service container](/documentazione/5.1/container). Laravel conta già diverse facade pronte all'uso, e probabilmente le hai usate senza neanche saperlo. Le Facade di Laravel fanno da proxy per le classi "sottostanti" presenti nell'IoC Container, dando allo sviluppatore la possibilità di usare una sintassi espressiva ma mantenendo, allo stesso tempo, la flessibilità e la testabilità che con un metodo statico non si può ottenere. 
 
 <a name="uso-facade"></a>
 ## Uso di Facade
@@ -53,12 +53,12 @@ Se diamo uno sguardo alla classe `Illuminate\Support\Facades\Cache`, vedrai che 
 
 	}
 
-Invece, la facade `Cache` estende la classe base `Facade` e viene definito il metodo `getFacadeAccessor()`. Ricorda, la funzione di questo metodo è quella di ritornare il nome del binding dal service container. Quando un utente referenzia qualsiasi metodo statico sulla facade `Cache`, Laravel risolte il binding `cache` dal  [service container](/docs/5.1/container) ed esegue il metodo richiesto (in questo caso, `get`) di questo specifico oggetto.
+Invece, la facade `Cache` estende la classe base `Facade` e viene definito il metodo `getFacadeAccessor()`. Ricorda, la funzione di questo metodo è quella di ritornare il nome del binding dal service container. Quando un utente referenzia qualsiasi metodo statico sulla facade `Cache`, Laravel risolte il binding `cache` dal  [service container](/documentazione/5.1/container) ed esegue il metodo richiesto (in questo caso, `get`) di questo specifico oggetto.
 
 <a name="reference-classi-facade"></a>
 ## Reference Classi Facade
 
-Qui di seguito trovi le varie Facades e le classi sottostanti collegate. Può essere una buona reference in caso di problemi e, quindi, per poter sapere quale classe andare ad analizzare. E' inclusa anche la chiave del [binding del service container](/docs/5.1/container) dove applicabile.
+Qui di seguito trovi le varie Facades e le classi sottostanti collegate. Può essere una buona reference in caso di problemi e, quindi, per poter sapere quale classe andare ad analizzare. E' inclusa anche la chiave del [binding del service container](/documentazione/5.1/container) dove applicabile.
 
 La leggenda per leggere queste informazioni è, in sequenza:
 

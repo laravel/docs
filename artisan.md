@@ -42,7 +42,7 @@ Una volta che il tuo comando è stato generato, dovresti impostare le proprietà
 
 Il metodo `handle` sarà chiamato quando il tuo comando sarà eseguito. Puoi inserire qualsiasi logica del comando in questo metodo. Diamo un occhiata ad un esempio di comando.
 
-Nota che puoi iniettare qualsiasi dipendenza di cui hai bisogno nel costruttore del comando. Il [service container](/docs/5.1/container) di Laravel inietterà automaticamente tutte le dipendenze inserite nel costruttore. Per una maggiore ri-usabilità del codice, è una buona pratica mantenere i tuoi comandi “puliti” e fare in modo di rimandare ai servizi dell'applicazione il compito di completare i loro compiti.
+Nota che puoi iniettare qualsiasi dipendenza di cui hai bisogno nel costruttore del comando. Il [service container](/documentazione/5.1/container) di Laravel inietterà automaticamente tutte le dipendenze inserite nel costruttore. Per una maggiore ri-usabilità del codice, è una buona pratica mantenere i tuoi comandi “puliti” e fare in modo di rimandare ai servizi dell'applicazione il compito di completare i loro compiti.
 
     <?php namespace App\Console\Commands;
 
@@ -289,7 +289,7 @@ Per maggiori informazioni, controlla la [documentazione Symfony Progress Bar](ht
 
 Una volta completato il comando, hai bisogno di registrarlo con Artisan e quindi renderlo diposnibile all'utilizzo. Questo viene fatto all'interno del file `app/Console/Kernel.php`.
 
-All'interno di questo file, troverai una lista di comandi nella proprietà `commands`. Per registrare un comando, semplicemente aggiungi il nome della classe alla lista. Quando Artisan si avvia, tutti i comandi nella lista in questa proprietà verrano risolti dal [service container](/docs/5.1/container) e registrati con Artisan:
+All'interno di questo file, troverai una lista di comandi nella proprietà `commands`. Per registrare un comando, semplicemente aggiungi il nome della classe alla lista. Quando Artisan si avvia, tutti i comandi nella lista in questa proprietà verrano risolti dal [service container](/documentazione/5.1/container) e registrati con Artisan:
 
     protected $commands = [
         'App\Console\Commands\SendEmails'
@@ -308,7 +308,7 @@ In alcune situazioni puoi desiderare di eseguire un comando Artisan al di fuori 
         //
     });
 
-Usando il metodo `queue` della facade `Artisan`, puoi mettere sempre in coda i comandi Artisan in modo da essere eseguiti in background dalla tua [queue workers](/docs/5.1/code):
+Usando il metodo `queue` della facade `Artisan`, puoi mettere sempre in coda i comandi Artisan in modo da essere eseguiti in background dalla tua [queue workers](/documentazione/5.1/code):
 
     Route::get('/foo', function () {
         Artisan::queue('email:send', [

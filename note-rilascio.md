@@ -40,7 +40,7 @@ In molte applicazioni web moderne, l'uso di web socket per la creazione di inter
 
 Per darti una mano nella creazione di queste applicazioni, Laravel rende più semplice il "broadcasting" di un evento su una connessione websocket. In questo modo potrai, agevolmente, condividere i tuoi eventi con un framework javascript client-side.
 
-Per saperne di più, dai uno sguardo alla [sezione dedicata](/docs/5.1/eventi#broadcasting-eventi) della documentazione.
+Per saperne di più, dai uno sguardo alla [sezione dedicata](/documentazione/5.1/eventi#broadcasting-eventi) della documentazione.
 
 ### Parametri per i Middleware
 
@@ -79,7 +79,7 @@ I parametri per i Middleware possono essere specificati in fase di definizione d
 
 In caso di più parametri, basta separarli con una virgola.
 
-Se vuoi saperne di più, dai uno sguardo alla [pagina della documentazione dedicata](/docs/5.1/middleware).
+Se vuoi saperne di più, dai uno sguardo alla [pagina della documentazione dedicata](/documentazione/5.1/middleware).
 
 ### Testing Migliorato
 
@@ -96,11 +96,11 @@ Guarda questo esempio:
              ->seePageIs('/dashboard');
     }
 
-Per maggiori informazioni, guarda [la pagina del testing sulla documentazione](/docs/5.1/testing).
+Per maggiori informazioni, guarda [la pagina del testing sulla documentazione](/documentazione/5.1/testing).
 
 ### Model Factory
 
-Tramite le [Model Factory](/docs/5.1/testing#model-factory), testare un'applicazione diventa una passeggiata. Ti permettono, infatti, di definire in modo piuttosto veloce degli attributi di default per uno specifico model Eloquent e generare quindi svariate istanze (tramite anche l'uso di [Faker](https://github.com/fzaninotto/Faker), per i dati casuali).
+Tramite le [Model Factory](/documentazione/5.1/testing#model-factory), testare un'applicazione diventa una passeggiata. Ti permettono, infatti, di definire in modo piuttosto veloce degli attributi di default per uno specifico model Eloquent e generare quindi svariate istanze (tramite anche l'uso di [Faker](https://github.com/fzaninotto/Faker), per i dati casuali).
 
 	$factory->define('App\User', function ($faker) {
 	    return [
@@ -122,7 +122,7 @@ I comandi Artisan adesso possono essere definiti tramite una semplice segnatura 
      */
     protected $signature = 'email:send {user} {--force}';
 
-Se vuoi saperne di più, leggi la [pagina dedicata ad Artisan sulla documentazione](/docs/5.1/artisan).
+Se vuoi saperne di più, leggi la [pagina dedicata ad Artisan sulla documentazione](/documentazione/5.1/artisan).
 
 ### Struttura delle Cartelle
 
@@ -151,7 +151,7 @@ I file di lingua e delle view sono stati spostati, invece, in _resources_.
 
 Tutti i componenti più importanti del framework implementano delle interfacce, localizzate nel repository _illuminate/contracts_ che non presenta dipendenze esterne. Con un set centralizzato di interfacce, adesso, sarà più semplice creare alternative ai componenti che vorrai sostituire.
 
-Se vuoi maggiori informazioni a riguardo, dai un'occhiata alla [pagina dedicata](/docs/5.1/contratti).
+Se vuoi maggiori informazioni a riguardo, dai un'occhiata alla [pagina dedicata](/documentazione/5.1/contratti).
 
 ### Route Cache
 
@@ -161,7 +161,7 @@ Se la tua applicazione è composta interamente di controller route potresti vole
 
 Oltre ai filtri più "classici" visti in Laravel 4, la versione 5 supporta i middleware HTTP. Tutti i filtri esistenti, inoltre, sono stati convertiti in middleware. Un middleware permette di fornire una singola interfaccia consistente per sostituire definitivamente i filtri. Ti permette di analizzare (ed eventualmente rifiutare) una certa richiesta prima ancora di entrare nell'applicazione vera e propria.
 
-Per maggiori informazioni, dai un'occhiata [alla documentazione](/docs/5.1/middleware).
+Per maggiori informazioni, dai un'occhiata [alla documentazione](/documentazione/5.1/middleware).
 
 ### Controller Method Injection
 
@@ -206,7 +206,7 @@ Chiaramente, il tuo event handler corrispondente adesso riceverà un oggetto ver
 
 	}
 
-Se vuoi saperne di più, dai uno sguardo [alla documentazione](/docs/eventi).
+Se vuoi saperne di più, dai uno sguardo [alla documentazione](/documentazione/eventi).
 
 ### Comandi / Code
 

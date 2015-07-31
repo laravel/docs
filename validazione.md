@@ -96,7 +96,7 @@ A questo punto ti starai chiedendo... "ok, ma come mostro gli errori?"
 
 #### Mostrare gli Errori di Validazione
 
-Supponiamo che la procedura di validazione sia andata male. L'utente ha inserito qualcosa di sbagliato ed il validatore ci ha preso e rimandati alla pagina precedente. Quello che non vedi, però, è che i dati relativi agli errori sono stati presi e ["flashati" in sessione](/docs/5.1/sessioni#dati-flash).
+Supponiamo che la procedura di validazione sia andata male. L'utente ha inserito qualcosa di sbagliato ed il validatore ci ha preso e rimandati alla pagina precedente. Quello che non vedi, però, è che i dati relativi agli errori sono stati presi e ["flashati" in sessione](/documentazione/5.1/sessioni#dati-flash).
 
 Probabilmente ti starai chiedendo perché non leggi da nessuna parte qualcosa che ricordi, anche vagamente, un bind esplicito degli errori con la view. Ecco svelata la soluzione: **Laravel, quando trova dei dati su errori flashati in sessione, li "aggancia" direttamente alla view**. Comodo, no? E saranno sempre utilizzabili come _$errors_. Più precisamente, _$errors_ sarà di tipo `Illuminate\Support\MessageBag` e potrà essere usata in questo modo:
 
@@ -728,7 +728,7 @@ Il primo argomento passato sarà il nome del campo, _reason_ appunto. Il secondo
 
 Laravel fornisce, come hai potuto vedere, tantissime regole di validazione di ogni genere. Le vie del signore, però, sono infinite. Potresti facilmente ritrovarti a dovertene creare una tua. Per fortuna, puoi ovviare al problema molto facilmente tramite il metodo _extend_ della facade _Validator_.
 
-Una buona norma sarebbe quella di richiamare il metodo in un [service provider](/docs/5.1/provider).
+Una buona norma sarebbe quella di richiamare il metodo in un [service provider](/documentazione/5.1/provider).
 
 	<?php namespace App\Providers;
 
@@ -776,7 +776,7 @@ Per la tua regola avrai bisogno di registrare anche un messaggio di errore di de
 
     // The rest of the validation error messages...
 
-Quando crei una regola di validazione personalizzata, potresti voler definire un segnaposto di default per i messaggi di errore. Se è il tuo caso, tutto quello che devi fare è richiamare il metodo _replacer_ della facade _Validator_. Puoi farlo sempre all'interno del metodo _boot_ di un [service provider](/docs/5.1/provider):
+Quando crei una regola di validazione personalizzata, potresti voler definire un segnaposto di default per i messaggi di errore. Se è il tuo caso, tutto quello che devi fare è richiamare il metodo _replacer_ della facade _Validator_. Puoi farlo sempre all'interno del metodo _boot_ di un [service provider](/documentazione/5.1/provider):
 
     /**
      * Bootstrap any application services.

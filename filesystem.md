@@ -166,7 +166,7 @@ Infine, puoi usare il metodo `deleteDirectory` per eliminare una cartella e tutt
 
 L'integrazione di Laravel con Flysystem fornisce diversi "driver" senza bisogno di configurazione; tuttavia, Flysystem non è limitato a questi e possiede diversi adattori (adapters) per molti altri storage system. Puoi creare driver personalizzati se vuoi utilizzare uno di questi adapters all'interno della tua applicazione Laravel.
 
-Per creare un filesystem personalizzato devi per prima cosa creare un [service provider](/docs/5.1/provider) come ad esempio `DropboxServiceProvider`. Nel metodo `boot` del nuovo provider puoi usare la facade `Storage` e il metodo `extend` per definire il tuo filesystem:
+Per creare un filesystem personalizzato devi per prima cosa creare un [service provider](/documentazione/5.1/provider) come ad esempio `DropboxServiceProvider`. Nel metodo `boot` del nuovo provider puoi usare la facade `Storage` e il metodo `extend` per definire il tuo filesystem:
 
 	<?php namespace App\Providers;
 

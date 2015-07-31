@@ -34,7 +34,7 @@ Per prima cosa, aggiungi il package Cashier al tuo file `composer.json` ed esegu
 
 #### Service Provider
 
-Successivamente, registra il [service provider](/docs/5.1/provider) `Laravel\Cashier\CashierServiceProvider`  nel tuo file di configurazione `app`.
+Successivamente, registra il [service provider](/documentazione/5.1/provider) `Laravel\Cashier\CashierServiceProvider`  nel tuo file di configurazione `app`.
 
 #### Migration
 
@@ -115,7 +115,7 @@ Una volta che l'utente si è abbonato alla tua applicazione, puoi facilmente con
 		//
 	}
 
-Il metodo `subscribed` è un ottimo candidato per le [middleware](/docs/5.1/middleware), permettendoti di filtrare l'accesso a route o controller basati sullo stato dell'abbonamento:
+Il metodo `subscribed` è un ottimo candidato per le [middleware](/documentazione/5.1/middleware), permettendoti di filtrare l'accesso a route o controller basati sullo stato dell'abbonamento:
 
 	public function handle($request, Closure $next)
 	{
@@ -240,7 +240,7 @@ E se la carta di credito di un cliente scade? Nessun problema - Cashier include 
 
 Tutto qui! Tutti i pagamenti che falliranno saranno catturati e gestiti dal controller. Il controller cancellerà l'abbonamento dopo 3 tentativi di pagamento falliti. Non dimenticarti: avrai bisogno di configurare l'URI di webhook nel pannello di controllo di Stripe.
 
-Visto che lo webhook di Stripe ha bisogno di bypassare la  [verifica CSRF](/docs/5.1/routing#protezione-csrf) di Laravel, assicurati di includere l'URI come eccezione nel middleware `VerifyCsrfToken`:
+Visto che lo webhook di Stripe ha bisogno di bypassare la  [verifica CSRF](/documentazione/5.1/routing#protezione-csrf) di Laravel, assicurati di includere l'URI come eccezione nel middleware `VerifyCsrfToken`:
 
 	protected $except = [
 		'stripe/*',

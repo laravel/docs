@@ -25,7 +25,7 @@ La facade `Schema` offre una serie di funzionalità dedicate allo scopo, agnosti
 <a name="generare-migration"></a>
 ## Generare una Migration
 
-Per generare una migration, usa il [comando Artisan](/docs/5.1/artisan) `make:migration`:
+Per generare una migration, usa il [comando Artisan](/documentazione/5.1/artisan) `make:migration`:
 
 	php artisan make:migration create_users_table
 

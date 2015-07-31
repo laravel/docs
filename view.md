@@ -89,7 +89,7 @@ Qualche volta potresti aver bisogno di condividere alcuni dati tra tutte le view
 ## View Composer
 Le View composer sono delle callback o metodi di una classe che sono chiamati quando una view viene visualizzata. Se hai dei dati che vuoi rendere disponibili ogni volta che una view viene utilizzata le view composer sono il posto ideale dove scrivere tutta la logica.
 
-Andiamo a registrare le nostre view composer all'interno del [service provider](/docs/5.1/provider). Useremo l'helper `view` per accedere all'implementazione del contract `Illuminate\Contracts\View\Factory`. Ricordati, Laravel non include una directory di default per le view composer. Sei libero di organizzarle come meglio desideri. Per esempio, puoi crare una directory `App\Http\ViewComposers`:
+Andiamo a registrare le nostre view composer all'interno del [service provider](/documentazione/5.1/provider). Useremo l'helper `view` per accedere all'implementazione del contract `Illuminate\Contracts\View\Factory`. Ricordati, Laravel non include una directory di default per le view composer. Sei libero di organizzarle come meglio desideri. Per esempio, puoi crare una directory `App\Http\ViewComposers`:
 
 	<?php namespace App\Providers;
 
@@ -170,7 +170,7 @@ Ora che abbiamo registrato il composer, il metodo `ProfileComposer@compose` sar�
 
 Appena prima che la view venga visualizzata, il metodo del composer `compose` è richiamato con l'istanza di `Illuminate\Contracts\View\View`. Puoi usare il meteodo `with`per aggiungere dati alla view.
 
-> **Nota:** Tutte le view composer sono risolte tramite [service container](/docs/5.1/container), quindi puoi importare qualsiasi dipendenza tu abbia bisogno all'interno del construttore della classe composer creata.
+> **Nota:** Tutte le view composer sono risolte tramite [service container](/documentazione/5.1/container), quindi puoi importare qualsiasi dipendenza tu abbia bisogno all'interno del construttore della classe composer creata.
 
 #### Collegare Un Composer A Più View
 

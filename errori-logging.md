@@ -116,7 +116,7 @@ Queste view all'interno di questa directory dovrebbero essere nominate in modo t
 <a name="logging"></a>
 ## Logging
 
-Il meccanismo di logging di Laravel è realizzato usando la potente libreria [Monolog](http://github.com/seldaek/monolog). Di default, Laravel è configurato per creare un log giornaliero per la tua applicazione che è memorizzato nella directory `storage/logs`. Puoi scrivere informazioni nei log usando la [facade](/docs/5.1/facade) `Log`:
+Il meccanismo di logging di Laravel è realizzato usando la potente libreria [Monolog](http://github.com/seldaek/monolog). Di default, Laravel è configurato per creare un log giornaliero per la tua applicazione che è memorizzato nella directory `storage/logs`. Puoi scrivere informazioni nei log usando la [facade](/documentazione/5.1/facade) `Log`:
 
 	<?php namespace App\Http\Controllers;
 

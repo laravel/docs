@@ -10,7 +10,7 @@
 <a name="introduzione"></a>
 ## Introduzione
 
-Laravel rende semplice la connessione di un database (e successiva esecuzione delle query) attraverso una serie di strumenti, dal SQL grezzo fino ad [Eloquent ORM](/docs/5.1/eloquent), passando per il [query builder](/docs/5.1/database-query-builder).
+Laravel rende semplice la connessione di un database (e successiva esecuzione delle query) attraverso una serie di strumenti, dal SQL grezzo fino ad [Eloquent ORM](/documentazione/5.1/eloquent), passando per il [query builder](/documentazione/5.1/database-query-builder).
 
 Di default, Laravel supporta out of the box quattro sistemi di database diversi.
 
@@ -24,7 +24,7 @@ Di default, Laravel supporta out of the box quattro sistemi di database diversi.
 
 Il file di configurazione relativo alla connessione verso il database è `config/database.php`. Al suo interno potrai definire tutte le connessioni di cui ahi bisogno, oltre a poter specificare quale usare di default. Per comodità, è stato riportato un esempio di connessione per ogni sistema supportato.
 
-Di default, il file di esempio di [configurazione](/docs/5.1/installazione#configurazione-ambiente) è già pronto per essere usato con il database presente su [Laravel Homestead](/docs/5.1/homestead), una macchina virtuale comodissima per lo sviluppo in locale. Chiaramente, sentiti libero di modificare come meglio credi tale file.
+Di default, il file di esempio di [configurazione](/documentazione/5.1/installazione#configurazione-ambiente) è già pronto per essere usato con il database presente su [Laravel Homestead](/documentazione/5.1/homestead), una macchina virtuale comodissima per lo sviluppo in locale. Chiaramente, sentiti libero di modificare come meglio credi tale file.
 
 #### Connessioni di Scrittura / Lettura
 
@@ -124,7 +124,7 @@ A volte può essere molto utile loggare le query che vengono eseguite dalla prop
 
 Il metodo da usare è _DB:listen_, che prende come unico parametro una _Closure_ che, a sua volta, ha come argomenti la query SQL eseguita, i binding speificati e il momento dell'esecuzione della query stessa.
 
-Il posto migliore per tale "registrazione" può essere un [service provider](/docs/5.1/provider):
+Il posto migliore per tale "registrazione" può essere un [service provider](/documentazione/5.1/provider):
 
 	<?php namespace App\Providers;
 
@@ -181,7 +181,7 @@ Se preferisci avere il controllo completo su tutto quello che succede in una tra
 
 	DB::commit();
 
-> **Nota:** usando la facade DB è possibile controllare, oltre alle query più "grezze", anche quelle eseguite dal [query builder](/docs/5.1/database-query-builder) e da [Eloquent](/docs/5.1/eloquent).
+> **Nota:** usando la facade DB è possibile controllare, oltre alle query più "grezze", anche quelle eseguite dal [query builder](/documentazione/5.1/database-query-builder) e da [Eloquent](/documentazione/5.1/eloquent).
 
 <a name="usare-connessione-specifica"></a>
 ## Usare una Connessione Specifica

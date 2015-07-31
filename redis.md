@@ -41,7 +41,7 @@ Se il tuo server Redis richiede l'autenticazione, puoi specificare la password a
 <a name="uso-base"></a>
 ## Uso Base
 
-Puoi interagire con Redis richiamando i vari metodi messi a disposizione sulla [facade](/docs/5.1/facade). Puoi richiamare tutti i <a href="http://redis.io/commands" target="_blank">comandi disponibili</a> tramite dynamic method. Questi verranno passati direttamente al server. Ad esempio, proviamo a chiamare il comando GET usando il metodo `get`:
+Puoi interagire con Redis richiamando i vari metodi messi a disposizione sulla [facade](/documentazione/5.1/facade). Puoi richiamare tutti i <a href="http://redis.io/commands" target="_blank">comandi disponibili</a> tramite dynamic method. Questi verranno passati direttamente al server. Ad esempio, proviamo a chiamare il comando GET usando il metodo `get`:
 
 	<?php namespace App\Http\Controllers;
 
@@ -100,7 +100,7 @@ Il pipelining viene usato quando devi inviare, al server, un insieme di comandi 
 
 Laravel fornisce un'interfaccia piuttosto comoda ai comandi _publish_ e _subscribe_ di Redis. Questi comandi ti permettono di rimanere in ascolto per dei messaggi su specifici "canali". Puoi pubblicare tali messaggi anche da altre applicazioni, usando anche altri linguaggi, ed il risultato è una comunicazione comoda e funzionale tra processi vari ed eventuali.
 
-Innanzitutto, configuriamo un listener su un canale via Redis, usando il metodo _subscribe_. Piazzeremo questa chiamata in un [comando Artisan](/docs/5.1/artisan), visto che stiamo iniziando un processo long-running.
+Innanzitutto, configuriamo un listener su un canale via Redis, usando il metodo _subscribe_. Piazzeremo questa chiamata in un [comando Artisan](/documentazione/5.1/artisan), visto che stiamo iniziando un processo long-running.
 
 	<?php namespace App\Console\Commands;
 

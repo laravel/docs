@@ -197,7 +197,7 @@ Blade ti consente di scrivere dei commenti all'interno delle tue view. Tuttavia,
 <a name="service-injection"></a>
 ## Service Injection
 
-Tramite la direttiva _@inject_ puoi usare un qualsiasi servizio tramite [service container](/docs/5.1/container). Il primo parametro passato è il nome della variabile a cui verrà assegnata l'istanza, mentre il secondo è il nome della classe/interfaccia da risolvere.
+Tramite la direttiva _@inject_ puoi usare un qualsiasi servizio tramite [service container](/documentazione/5.1/container). Il primo parametro passato è il nome della variabile a cui verrà assegnata l'istanza, mentre il secondo è il nome della classe/interfaccia da risolvere.
 
 	@inject('metrics', 'App\Services\MetricsService')
 

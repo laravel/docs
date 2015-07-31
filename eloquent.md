@@ -22,18 +22,18 @@
 
 Eloquent ORM, la bellissima e comoda implementazione di Active Record fornite out of the box con Laravel, ti permette di lavorare con estrema facilità su ltuo database. Ogni tabella del database ha un suo "Model" corrispondente, che a sua volta viene usato appunto per comunicare e lavorare con tale tabella. I model ti permettono di effettuare delle query, così come le varie operazioni di inserimento, modifica e cancellazione.
 
-Prima di iniziare, assicurati di aver configurato correttamente la tua connessione in _config/database.php_. Per maggiori informazioni sulla configurazione del tuo database, dai uno sguardo a [questa pagina dedicata](/docs/5.1/database#configurazione).
+Prima di iniziare, assicurati di aver configurato correttamente la tua connessione in _config/database.php_. Per maggiori informazioni sulla configurazione del tuo database, dai uno sguardo a [questa pagina dedicata](/documentazione/5.1/database#configurazione).
 
 <a name="definire-model"></a>
 ## Definire i Model
 
 Iniziamo dalla creazione di un model Eloquent. Normalmente saranno piazzati nella directory _app_, ma puoi comunque decidere di metterli altrove, in base alle tue esigenze. In ogni caso, assicurati che le impostazioni nel tuo file _composer.json_ permettano l'autoloading in modo corretto. Tutti i model estendono la classe `Illuminate\Database\Eloquent\Model`.
 
-Il modo più semplice di creare un model è l'uso del comando `make:model` [di Artisan](/docs/5.1/artisan):
+Il modo più semplice di creare un model è l'uso del comando `make:model` [di Artisan](/documentazione/5.1/artisan):
 
 	php artisan make:model User
 
-Puoi anche generare una [migration per il database](/docs/5.1/schema#migration) per l'occasione. In tal caso usa l'opzione `--migration` o `-m`:
+Puoi anche generare una [migration per il database](/documentazione/5.1/schema#migration) per l'occasione. In tal caso usa l'opzione `--migration` o `-m`:
 
 	php artisan make:model User --migration
 
@@ -116,7 +116,7 @@ Puoi modificare il formato del tuo timestamp, se vuoi: basta usare la proprietà
 <a name="ricerca-piu-model"></a>
 ## Ricerca di Più Model
 
-Una volta creato il tuo model e la [tabella corrispondente su database](/docs/5.1/database-migration), sei pronto per iniziare a lavorare. Per capirci, puoi immaginare il tuo model come una versione avanzata del [query builder](/docs/5.1/database-query-builder) che hai visto prima. Ecco un primo esempio:
+Una volta creato il tuo model e la [tabella corrispondente su database](/documentazione/5.1/database-migration), sei pronto per iniziare a lavorare. Per capirci, puoi immaginare il tuo model come una versione avanzata del [query builder](/documentazione/5.1/database-query-builder) che hai visto prima. Ecco un primo esempio:
 
 	<?php namespace App\Http\Controllers;
 
@@ -155,11 +155,11 @@ Il metodo _all_ recupera tutti i risultati presenti sulla tabella del model. Tut
 				   ->take(10)
 				   ->get();
 
-> **Nota:** visto che i model Eloquent sono dei query builder, dai un'occhiata alla reference dei metodi del [query builder](/docs/5.1/database-query-builder). Puoi usarli tutti.
+> **Nota:** visto che i model Eloquent sono dei query builder, dai un'occhiata alla reference dei metodi del [query builder](/documentazione/5.1/database-query-builder). Puoi usarli tutti.
 
 #### Collezioni
 
-I metodi trigger _all_ e _get_ di Eloquent ritornano in genere un "array" di risultati, un insieme. È il momento di fare chiarezza: per essere precisi, viene ritornata un'istanza di `Illuminate\Database\Eloquent\Collection`. La classe _Collection_ [fornisce svariati metodi molto utili](/docs/5.1/eloquent-collection) per lavorare adeguatamente con i risultati delle proprie query. Come già visto prima, comunque, nulla ti vieta di iterare all'interno della collection come fosse un array. La semplicità prima di tutto:
+I metodi trigger _all_ e _get_ di Eloquent ritornano in genere un "array" di risultati, un insieme. È il momento di fare chiarezza: per essere precisi, viene ritornata un'istanza di `Illuminate\Database\Eloquent\Collection`. La classe _Collection_ [fornisce svariati metodi molto utili](/documentazione/5.1/eloquent-collection) per lavorare adeguatamente con i risultati delle proprie query. Come già visto prima, comunque, nulla ti vieta di iterare all'interno della collection come fosse un array. La semplicità prima di tutto:
 
 	foreach ($flights as $flight) {
 		echo $flight->name;
@@ -374,7 +374,7 @@ Per abilitare questa feature, usa il trait `Illuminate\Database\Eloquent\SoftDel
 		protected $dates = ['deleted_at'];
 	}
 
-Ovviamente devi aggiungere anche la colonna corrispondente al tuo database. Lo [schema builder](/docs/5.1/database-migration) di Laravel conta già un helper dedicato alla creazione di tale colonna:
+Ovviamente devi aggiungere anche la colonna corrispondente al tuo database. Lo [schema builder](/documentazione/5.1/database-migration) di Laravel conta già un helper dedicato alla creazione di tale colonna:
 
 	Schema::table('flights', function ($table) {
 		$table->softDeletes();
@@ -399,7 +399,7 @@ Come notato poco fa, Eloquent escluderà tutti i risultati che sono stati "cance
 					->where('account_id', 1)
 					->get();
 
-Il metodo _withTrashed_ può essere usato anche su una query di una [relazione](/docs/5.1/eloquent-relazioni):
+Il metodo _withTrashed_ può essere usato anche su una query di una [relazione](/documentazione/5.1/eloquent-relazioni):
 
 	$flight->history()->withTrashed()->get();
 
@@ -423,7 +423,7 @@ Esattamente come prima, inoltre, puoi usare il metodo _restore_ anche specifican
 			->where('airline_id', 1)
 			->restore();
 
-Inoltre, puoi usare _restore_ anche sulle [relazioni](/docs/5.1/eloquent-relazioni):
+Inoltre, puoi usare _restore_ anche sulle [relazioni](/documentazione/5.1/eloquent-relazioni):
 
 	$flight->history()->restore();
 
@@ -516,7 +516,7 @@ Vediamo come usarli.
 
 Ogni volta che un model viene salvato per la prima volta, gli eventi _creating_ e _created_ vengono scatenati. Se un model esiste già nel database e su di esso viene richiamato il metodo _save_, allora vengono scatenati gli eventi _updating_ ed _updated_. In entrambi i casi, inoltre, _saving_ e _saved_ vengono scatenati.
 
-Uno dei posti "adatti" per la gestione degli eventi può essere un [service provider](/docs/5.1/provider) apposito. Ecco un esempio in funzione: in questo caso stiamo gestendo l'evento _creating_ per la classe _User_. Alla creazione di una nuova istanza, prima del salvataggio (siamo in _creating_, non _created_) eseguiremo delle operazioni di validazione.
+Uno dei posti "adatti" per la gestione degli eventi può essere un [service provider](/documentazione/5.1/provider) apposito. Ecco un esempio in funzione: in questo caso stiamo gestendo l'evento _creating_ per la classe _User_. Alla creazione di una nuova istanza, prima del salvataggio (siamo in _creating_, non _created_) eseguiremo delle operazioni di validazione.
 
 Nota: in questo caso la gestione di questi eventi viene messa nel metodo _boot_. 
 

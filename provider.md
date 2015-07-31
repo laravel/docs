@@ -21,7 +21,7 @@ In questa visione generate imparerai come scrivere i tuoi service provider e reg
 <a name="scrivere-service-provider"></a>
 ## Scrivere Un Service Provider
 
-Tutti i service provider estendono la classe `Illuminate\Support\ServiceProvider`. Questa classe astratta richiede che tu definisca almeno un metodo nel tuo provider: `register`. All'interno del metodo `register`, dovrai **eseguire il bind nel [service container](/docs/5.1/container)**. Non dovrai mai tentare di registrare qualsiasi tra eventi, route o altre funzionalità nel metodo `register`.
+Tutti i service provider estendono la classe `Illuminate\Support\ServiceProvider`. Questa classe astratta richiede che tu definisca almeno un metodo nel tuo provider: `register`. All'interno del metodo `register`, dovrai **eseguire il bind nel [service container](/documentazione/5.1/container)**. Non dovrai mai tentare di registrare qualsiasi tra eventi, route o altre funzionalità nel metodo `register`.
 
 Puoi generare un nuovo provider tramite il comando Artisan `make:provider`:
 
@@ -30,7 +30,7 @@ Puoi generare un nuovo provider tramite il comando Artisan `make:provider`:
 <a name="il-metodo-register"></a>
 ### Il Metodo Register
 
-Come detto precedentemente, all'interno del  metodo `register`, dovrai eseguire il bind nel  [service container](/docs/5.1/container). Non dovrai mai tentare di registrare qualsiasi tra eventi, route o altre funzionalità all'interno del metodo `register`. Altrimenti, potresti accidentalmente usare un service provider che non è stato ancora caricato.
+Come detto precedentemente, all'interno del  metodo `register`, dovrai eseguire il bind nel  [service container](/documentazione/5.1/container). Non dovrai mai tentare di registrare qualsiasi tra eventi, route o altre funzionalità all'interno del metodo `register`. Altrimenti, potresti accidentalmente usare un service provider che non è stato ancora caricato.
 
 Ora, diamo uno squadro a questo semplice service provider:
 
@@ -54,7 +54,7 @@ Ora, diamo uno squadro a questo semplice service provider:
 		}
 	}
 
-Questo service provider definisce solo il metodo `register`, ed usa questo metodo per definire un implementazione di `Riak\Contracts\Connection` nel service container. Se non hai ancora capito come funziona il service container, dai un occhiata alla [sua documentazione](/docs/5.1/container).
+Questo service provider definisce solo il metodo `register`, ed usa questo metodo per definire un implementazione di `Riak\Contracts\Connection` nel service container. Se non hai ancora capito come funziona il service container, dai un occhiata alla [sua documentazione](/documentazione/5.1/container).
 
 <a name="il-metodo-boot"></a>
 ### Il Metodo Boot
@@ -92,7 +92,7 @@ Ora, di cosa abbiamo bisogno per registrare un evento all'interno del nostro ser
 
 #### Dependency Injection nel Metodo Boot
 
-Abbiamo la possibilità di inserire le dipendenze per il nostro metodo `boot`. Il [service container](/docs/5.1/container) inietterà automaticamente le dipendenze necessarie: 
+Abbiamo la possibilità di inserire le dipendenze per il nostro metodo `boot`. Il [service container](/documentazione/5.1/container) inietterà automaticamente le dipendenze necessarie: 
 
 	use Illuminate\Contracts\Routing\ResponseFactory;
 
@@ -119,7 +119,7 @@ Per registrare il tuo provider, aggiungilo all'array:
 <a name="provider-differiti"></a>
 ## Provider Differiti
 
-Se il tuo provider è registrato **solo**come binding nel [service container](/docs/5.1/container), puoi scegliere di differire la sua registrazione solo se il binding registrato è strettamente necessario. Differire il caricamento di un provider migliorerà le prestazioni della tua applicazione, dal momento che non viene caricato nel filesystem ad ogni richiesta.
+Se il tuo provider è registrato **solo**come binding nel [service container](/documentazione/5.1/container), puoi scegliere di differire la sua registrazione solo se il binding registrato è strettamente necessario. Differire il caricamento di un provider migliorerà le prestazioni della tua applicazione, dal momento che non viene caricato nel filesystem ad ogni richiesta.
 
 Per differire il caricamento di un provider, imposta la proprietà `defer` su `true` e definisci un metodo `provides`. Il metodo `provides`ritorna il binding del service container che il provider registra: 
 

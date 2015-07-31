@@ -22,16 +22,16 @@ Dall'altra parte puoi trovare dei package creati proprio per Laravel. Questi pac
 <a name="service-provider"></a>
 ## Service Provider
 
-I [service provider](/docs/5.1/provider) sono il punto di connessione tra un package e Laravel. Un service provider ha la responsabilità di effettuare i binding dei vari "oggetti" di un package nel [service container](/docs/5.1/container) ed informare Laravel come e dove caricare le diverse risorse, come view, file di configurazione e così via.
+I [service provider](/documentazione/5.1/provider) sono il punto di connessione tra un package e Laravel. Un service provider ha la responsabilità di effettuare i binding dei vari "oggetti" di un package nel [service container](/documentazione/5.1/container) ed informare Laravel come e dove caricare le diverse risorse, come view, file di configurazione e così via.
 
 Un service provider estende la classe `Illuminate\Support\ServiceProvider` e contiene due metodi: `register` e `boot`. La classe base `ServiceProvider` si trova nel package `illuminate/support`, che dovresti quindi aggiungere alle tue dipendenze nel caso in cui tu voglia creare un package tutto tuo.
 
-Se vuoi avere più informazioni sui service provider, dai uno sguardo alla [pagina dedicata qui sulla documentazione](/docs/5.1/provider).
+Se vuoi avere più informazioni sui service provider, dai uno sguardo alla [pagina dedicata qui sulla documentazione](/documentazione/5.1/provider).
 
 <a name="routing"></a>
 ## Routing
 
-Per definire le route del tuo package, tutto quello che devi fare è effettuare il _require_ del file dal metodo _boot_ del service provider. Dal route file in questione potresti continuare ad usare tranquillamente la facade _Route_ per [registrare le route](/docs/5.1/routing) di cui hai bisogno:
+Per definire le route del tuo package, tutto quello che devi fare è effettuare il _require_ del file dal metodo _boot_ del service provider. Dal route file in questione potresti continuare ad usare tranquillamente la facade _Route_ per [registrare le route](/documentazione/5.1/routing) di cui hai bisogno:
 
 	/**
 	 * Perform post-registration booting of services.
@@ -51,7 +51,7 @@ Per definire le route del tuo package, tutto quello che devi fare è effettuare 
 <a name="view"></a>
 ### View
 
-Per registrare le [view](/docs/5.1/view) del tuo package dovrai spiegare a Laravel dove cercare tali view. Nulla di complesso: basterà usare il metodo _loadViewsFrom_ del service provider. Il metodo accetta due argomenti: il path della cartella dove tieni le view ed il nome del package. Supponendo che il tuo package si chiami _courier_, ecco un esempio di istruzione da mettere nel metodo _boot_.
+Per registrare le [view](/documentazione/5.1/view) del tuo package dovrai spiegare a Laravel dove cercare tali view. Nulla di complesso: basterà usare il metodo _loadViewsFrom_ del service provider. Il metodo accetta due argomenti: il path della cartella dove tieni le view ed il nome del package. Supponendo che il tuo package si chiami _courier_, ecco un esempio di istruzione da mettere nel metodo _boot_.
 
 	/**
 	 * Perform post-registration booting of services.
@@ -102,7 +102,7 @@ Now, when users of your package execute Laravel's `vendor:publish` Artisan comma
 <a name="traduzioni"></a>
 ### Traduzioni
 
-Se il tuo package contiene dei [file di traduzione](/docs/5.1/localizzazione), potrai usare il metodo `loadTranslationsFrom` per spiegare a Laravel dove trovare tali file. Ad esempio:
+Se il tuo package contiene dei [file di traduzione](/documentazione/5.1/localizzazione), potrai usare il metodo `loadTranslationsFrom` per spiegare a Laravel dove trovare tali file. Ad esempio:
 
 	/**
 	 * Perform post-registration booting of services.

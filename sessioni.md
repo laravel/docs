@@ -22,7 +22,7 @@ Il _driver_ definisce quindi dove questi dati verranno memorizzati. Allo stato a
 * `memcached` / `redis` - i dati di sessione vengono memorizzati su questi due sistemi molto performanti;
 * `array` - le sessioni vengono salvate su un semplice array PHP, ma il loro ciclo di vita si esaurisce nel contesto della richiesta corrente;
 
-> **Nota:** come forse hai già immaginato, il driver _array_ è molto utile in fase di [testing](/docs/5.1/testing).
+> **Nota:** come forse hai già immaginato, il driver _array_ è molto utile in fase di [testing](/documentazione/5.1/testing).
 
 ### Prerequisiti dei Driver
 
@@ -159,7 +159,7 @@ Da questo momento in poi, _status_ sarà disponibile solo fino alla richiesta su
 <a name="creare-driver-personalizzato"></a>
 ## Creare un Driver Personalizzato
 
-In aggiunta a quelli già presenti, puoi creare un tuo driver per il sistema di sessioni in modo molto semplice. Tutto quello che devi fare, infatti, è usare il metodo _extend_ sulla facade _Session_. Il posto migliore per effettuare tale operazione è in un [service provider](/docs/5.1/provider), nel metodo _boot_:
+In aggiunta a quelli già presenti, puoi creare un tuo driver per il sistema di sessioni in modo molto semplice. Tutto quello che devi fare, infatti, è usare il metodo _extend_ sulla facade _Session_. Il posto migliore per effettuare tale operazione è in un [service provider](/documentazione/5.1/provider), nel metodo _boot_:
 
     <?php namespace App\Providers;
 

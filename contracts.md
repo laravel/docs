@@ -16,7 +16,7 @@ Tutti i contratti di Laravel possono essere analizzati facilmente sull'apposito 
 
 ### Contratti Vs. Facade
 
-Le [facade](/docs/5.1/facade) di Laravel offrono un semplice modo di utilizzare i servizi di Laravel senza importare e risolvere i contratti attraverso il service container. Comunque, l'uso  dei contratti ti permette di definire delle dipendenze esplicite per le tue classi. Per molte applicazioni, l'uso della facade e ancora ben visto. Tuttavia se hai veramente bisogno di loose coupling che i contratti offrono, continua a leggere!
+Le [facade](/documentazione/5.1/facade) di Laravel offrono un semplice modo di utilizzare i servizi di Laravel senza importare e risolvere i contratti attraverso il service container. Comunque, l'uso  dei contratti ti permette di definire delle dipendenze esplicite per le tue classi. Per molte applicazioni, l'uso della facade e ancora ben visto. Tuttavia se hai veramente bisogno di loose coupling che i contratti offrono, continua a leggere!
 
 <a name="perche-contratti"></a>
 ## Perchè I Contratti?
@@ -137,7 +137,7 @@ Ecco una reference di tutti i Contract di Laravel, con la loro Facade corrispond
 
 Ok, come ottenere un'implementazione di un contract? Piuttosto semplicemente, in realtà. 
 
-Molti tipi di classe in Laravel sono risolte tramite il [service container](/docs/5.1/container), inclusi controller, event listener, middleware, code ed addirittura le Closure. Tutto quello che devi fare per ottenere l'implementazione corrispondente di una certa interfaccia (o contratto) è specificare il contratto tramite type-hinting.
+Molti tipi di classe in Laravel sono risolte tramite il [service container](/documentazione/5.1/container), inclusi controller, event listener, middleware, code ed addirittura le Closure. Tutto quello che devi fare per ottenere l'implementazione corrispondente di una certa interfaccia (o contratto) è specificare il contratto tramite type-hinting.
 
 Per esempio, dai uno sguardo a questo event listener:
 
@@ -177,4 +177,4 @@ Per esempio, dai uno sguardo a questo event listener:
 		}
 	}
 
-Nel momento in cui l'event listener viene risolto, il service container legge il type-hint desiderato dal costruttore della classe, iniettando l'istanza corrispondente. Se il meccanismo non ti è ancora del tutto chiaro, dai uno sguardo [alla documentazione](/docs/5.1/container).
+Nel momento in cui l'event listener viene risolto, il service container legge il type-hint desiderato dal costruttore della classe, iniettando l'istanza corrispondente. Se il meccanismo non ti è ancora del tutto chiaro, dai uno sguardo [alla documentazione](/documentazione/5.1/container).

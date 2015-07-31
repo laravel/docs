@@ -14,7 +14,7 @@
 
 ### Requisiti Server
 
-Laravel richiede alcuni requisiti di sistema. Ovviamente, tutti questi requisiti sono soddisfatti dalla macchina virtuale di [Laravel Homestead](/docs/5.1/homestead):
+Laravel richiede alcuni requisiti di sistema. Ovviamente, tutti questi requisiti sono soddisfatti dalla macchina virtuale di [Laravel Homestead](/documentazione/5.1/homestead):
 
 <div class="content-list" markdown="1">
 - PHP >= 5.5.9
@@ -56,7 +56,7 @@ Tutti i file di configurazione di Laravel sono salvati nella directory `config`.
 
 #### Permessi Directory
 
-Dopo aver installato Laravel, devi configurare alcuni permessi. Le directory all'interno di `storage` e `bootstrap/cache` dovrebbero essere scrivibili da tuo web server. Se stai usando[Homestead](/docs/5.1/homestead), questi permessi sono già settati.
+Dopo aver installato Laravel, devi configurare alcuni permessi. Le directory all'interno di `storage` e `bootstrap/cache` dovrebbero essere scrivibili da tuo web server. Se stai usando[Homestead](/documentazione/5.1/homestead), questi permessi sono già settati.
 
 #### Chiave dell'Applicazione
 
@@ -68,11 +68,11 @@ Laravel non ha bisogno di altre configurazioni. Sei libero di iniziare a svilupp
 
 Puoi configurare inoltre alcuni componenti aggiuntivi di Laravel, come:
 
-- [Cache](/docs/5.1/cache#configurazione)
-- [Database](/docs/5.1/database#configurazione)
-- [Sessioni](/docs/5.1/sessioni#configurazione)
+- [Cache](/documentazione/5.1/cache#configurazione)
+- [Database](/documentazione/5.1/database#configurazione)
+- [Sessioni](/documentazione/5.1/sessioni#configurazione)
 
-Una volta installato Laravel, puoi anche [configurare il tuo ambiente in locale](/docs/5.1/installazione#configurazione-ambiente).
+Una volta installato Laravel, puoi anche [configurare il tuo ambiente in locale](/documentazione/5.1/installazione#configurazione-ambiente).
 
 <a name="riscrittura-url"></a>
 #### Riscrittura URL
@@ -98,7 +98,7 @@ Su Nginx, invece, puoi usare le seguenti direttive nel tuo file di configurazion
 		try_files $uri $uri/ /index.php?$query_string;
 	}
 
-Ovviamente, quando usi [Homestead](/docs/5.1/homestead), la riscrittura degli indirizzi è sarà configurata automaticamente.
+Ovviamente, quando usi [Homestead](/documentazione/5.1/homestead), la riscrittura degli indirizzi è sarà configurata automaticamente.
 
 <a name="configurazione-ambiente"></a>
 ### Configurazione Ambiente
@@ -181,4 +181,4 @@ Di default il template per la modalità di manutenzione si trova in `resources/v
 
 ### Modalità di Manutenzione & Code
 
-Mente la tua applicazione è in modalità di manutenzione, non verrà gestita nessuna [coda jobs](/docs/5.1/code). Le code ritorneranno ad essere gestite una volta che l'applicazione sarà uscita dalla modalità di manutenzione.
+Mente la tua applicazione è in modalità di manutenzione, non verrà gestita nessuna [coda jobs](/documentazione/5.1/code). Le code ritorneranno ad essere gestite una volta che l'applicazione sarà uscita dalla modalità di manutenzione.

@@ -32,7 +32,7 @@ Come? Tramite il supporto di tutte le relazioni tipiche (one to one, one to many
 <a name="definire-relazioni"></a>
 ## Definire le Relazioni
 
-Per definire una relazione con Eloquent basta aggiungere un metodo al tuo model, dove necessario. Tali metodi, quindi, possono essere riutilizzati dopo nel codice come dei [query builder](/docs/5.1/database-query-builder). Ecco un esempio per rendere subito l'idea:
+Per definire una relazione con Eloquent basta aggiungere un metodo al tuo model, dove necessario. Tali metodi, quindi, possono essere riutilizzati dopo nel codice come dei [query builder](/documentazione/5.1/database-query-builder). Ecco un esempio per rendere subito l'idea:
 
 	$user->posts()->where('active', 1)->get();
 
@@ -513,7 +513,7 @@ Per recuperare l'elemento "proprietario", invece, basta richiamare il metodo che
 <a name="interrogare-relazioni"></a>
 ## Interrogare le Relazioni
 
-Avrai sicuramente notato, a questo punto, che le relazioni in Eloquent vengono definite attraverso la definizione di metodi. Puoi accedere subito agli elementi interessati da questa relazione tramite proprietà dinamica, ma che succede se richiami il metodo normalmente? Ogni metodo di una relazione ritorna un'istanza di un [query builder](/docs/5.1/database-query-builder), che puoi usare per aggiungere ulteriori condizioni alla tua richiesta e renderla più specifica.
+Avrai sicuramente notato, a questo punto, che le relazioni in Eloquent vengono definite attraverso la definizione di metodi. Puoi accedere subito agli elementi interessati da questa relazione tramite proprietà dinamica, ma che succede se richiami il metodo normalmente? Ogni metodo di una relazione ritorna un'istanza di un [query builder](/documentazione/5.1/database-query-builder), che puoi usare per aggiungere ulteriori condizioni alla tua richiesta e renderla più specifica.
 
 Per esempio, immagina un blog in cui ogni _User_ ha uno o più _Post_ associati.
 
@@ -538,7 +538,7 @@ Puoi tranquillamente richiamare la relazione _posts_ aggiungendo ulteriori condi
 
 	$user->posts()->where('active', 1)->get();
 
-Nota bene che puoi usare ogni singolo metodo che il [query builder](/docs/5.1/database-query-builder) ti mette a disposizione!
+Nota bene che puoi usare ogni singolo metodo che il [query builder](/documentazione/5.1/database-query-builder) ti mette a disposizione!
 
 #### Metodi Vs. Proprietà Dinamiche
 
@@ -646,7 +646,7 @@ A volte potresti voler usare l'Eager Loading su una relazione, specificando in a
 
 	}])->get();
 
-In questo esempio, Eloquent effettua l'Eager Loading solo dei post il cui titolo contiene la parola "first". Ovviamente, puoi chiamare qualsiasi altro metodo del [query builder](/docs/5.1/database-query-builder).
+In questo esempio, Eloquent effettua l'Eager Loading solo dei post il cui titolo contiene la parola "first". Ovviamente, puoi chiamare qualsiasi altro metodo del [query builder](/documentazione/5.1/database-query-builder).
 
 	$users = App\User::with(['posts' => function ($query) {
 		$query->orderBy('created_at', 'desc');
@@ -710,7 +710,7 @@ In aggiunta a _save()_ e _saveMany()_, puoi anche usare il metodo _create()_, ch
 		'message' => 'A new comment.',
 	]);
 
-Nota: prima di usare il metodo _create()_, dai uno sguardo alle regole dell'[assegnamento di massa](/docs/5.1/eloquent#assegnamento-massa).
+Nota: prima di usare il metodo _create()_, dai uno sguardo alle regole dell'[assegnamento di massa](/documentazione/5.1/eloquent#assegnamento-massa).
 
 <a name="inserimenti-relazioni-molti-a-molti"></a>
 ### Inserimenti e Relazioni Molti a Molti

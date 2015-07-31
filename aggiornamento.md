@@ -116,10 +116,10 @@ Se stai usando il driver per la coda AWS SQS o il driver per l'email AWS SES, ri
 Le seguenti funzionalità di Laravel sono state deprecate e verranno rimosse completamente con la release di Laravel 5.2 a Dicembre 2015.
 
 <div class="content-list" markdown="1">
-- I filtri delle route sono stati deprecati in favore dei [middleware](/docs/5.1/middleware).
+- I filtri delle route sono stati deprecati in favore dei [middleware](/documentazione/5.1/middleware).
 - Il contract `Illuminate\Contracts\Routing\Middleware` è deprecato. Non è necessario nessun contract nei tuoi middleware. In aggiunta, anche il contract `TerminableMiddleware` è deprecato. Invece di implementare l'interfaccia, semplicemente definisci un metodo `terminate` nel tuo middleware.
 - Il contract `Illuminate\Contracts\Queue\ShouldBeQueued` è deprecato in favore di `Illuminate\Contracts\Queue\ShouldQueue`.
-- Iron.io “code push” è deprecato in favore del tipico Iron.io code e [queue listeners](/docs/5.1/code#eseguire-queue-listener).
+- Iron.io “code push” è deprecato in favore del tipico Iron.io code e [queue listeners](/documentazione/5.1/code#eseguire-queue-listener).
 - Il trait `Illuminate\Foundation\Bus\DispatchesCommands` è deprecato e rinominato in `Illuminate\Foundation\Bus\DispatchesJobs`.
 - `Illuminate\Container\BindingResolutionException` è stato spostato in `Illuminate\Contracts\Container\BindingResolutionException`.
 - Il metodo del service container `bindShared` è deprecato in favore del metodo `singleton`.
@@ -142,7 +142,7 @@ Nel tuo file `bootstrap/autoload.php` file, aggiorna la variabile `$compiledPath
 
 Il modo migliore di migrare un'applicazione creata con Laravel 4.2 è, innanzitutto, installare una nuova copia di un progetto vuoto con la 5.0. Quindi, in un secondo step, copiare i file dell'applicazione 4.2. Precisamente, i controller, le routes, model di Eloquent, comandi Artisan, asset e tutto ciò che è specifico dell'applicazione.
 
-Per iniziare, quindi, [installa una nuova applicazione con Laravel 5](/docs/5.1/installazione) in una nuova directory. Discuteremo nel dettaglio di ogni step necessario del processo di migrazione di seguito.
+Per iniziare, quindi, [installa una nuova applicazione con Laravel 5](/documentazione/5.1/installazione) in una nuova directory. Discuteremo nel dettaglio di ogni step necessario del processo di migrazione di seguito.
 
 ### Dipendenze Composer & Package
 
@@ -163,7 +163,7 @@ Copia il nuovo file .env.example in .env, che è appunto l'equivalente '5.0' del
 
 In aggiunta, copia qualsiasi valore personalizzato tu abbia nel vecchio file `.env.php` e ricopiali in `.env` (che userai per davvero) ed `.env.example` (un sample che userai con gli altri membri del tuo team).
 
-Per altre informazioni sulla configurazione degli ambienti, dai uno sguardo [alla documentazione](/docs/5.1/installazione#configurazione-ambiente).
+Per altre informazioni sulla configurazione degli ambienti, dai uno sguardo [alla documentazione](/documentazione/5.1/installazione#configurazione-ambiente).
 
 > **Nota:** Avrai bisogno di sistemare adeguatamente il file .env sul tuo server prima di effettuare il deploy!
 
@@ -196,7 +196,7 @@ I filtri non sono stati rimossi in Laravel 5. Puoi comunque usarli tramite `befo
 
 ### CSRF Globale
 
-Di default, la [protezione CSRF](/docs/5.1/routing#protezione-csrf) è abilitata su tutte le route. Se preferisci disabiltarla, o attivarla manualmente solo per alcune route, rimuovi questa linea dall'array del file `App\Http\Kernel`:
+Di default, la [protezione CSRF](/documentazione/5.1/routing#protezione-csrf) è abilitata su tutte le route. Se preferisci disabiltarla, o attivarla manualmente solo per alcune route, rimuovi questa linea dall'array del file `App\Http\Kernel`:
 
 	'App\Http\Middleware\VerifyCsrfToken',
 
@@ -204,7 +204,7 @@ Se vuoi usarlo altrove, aggiungi questa linea a `$routeMiddleware`:
 
 	'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
 
-Ora puoi aggiungere il middleware ad una singola route / controller usando `['middleware' => 'csrf']` sulla route. Per maggiori infomrazioni sui middleware, consulta la [documentazione ufficiale](/docs/5.1/middleware).
+Ora puoi aggiungere il middleware ad una singola route / controller usando `['middleware' => 'csrf']` sulla route. Per maggiori infomrazioni sui middleware, consulta la [documentazione ufficiale](/documentazione/5.1/middleware).
 
 ### Model Eloquent
 
@@ -214,7 +214,7 @@ Aggiorna i vari model che usano il trait `SoftDeletingTrait` in modo tale che us
 
 #### Eloquent Caching
 
-Eloquent non offre più il metodo `remember` per il caching delle query. Sei ora "responsabile" di tale operazione che dovrai effettuare manualmente usando la funzione `Cache::remember`. Per maggiori informazioni sul caching, consulta la [documentazione ufficiale](/docs/5.1/cache).
+Eloquent non offre più il metodo `remember` per il caching delle query. Sei ora "responsabile" di tale operazione che dovrai effettuare manualmente usando la funzione `Cache::remember`. Per maggiori informazioni sul caching, consulta la [documentazione ufficiale](/documentazione/5.1/cache).
 
 ### Model Per L'Autenticazione dell'Utente
 
@@ -254,7 +254,7 @@ use Authenticatable, CanResetPassword;
 
 ### Cambiamenti a User Cashier
 
-Il nome dei trait e delle interfacce usate da [Laravel Cashier](/docs/5.1/pagamenti) è cambiato. Anzichè usare `BillableTrait`, usa il trait `Laravel\Cashier\Billable`. E, al posto di `Laravel\Cashier\BillableInterface` implementa l'interfaccia `Laravel\Cashier\Contracts\Billable`. Non è richiesto nessuna altra modifica ai metodi.
+Il nome dei trait e delle interfacce usate da [Laravel Cashier](/documentazione/5.1/pagamenti) è cambiato. Anzichè usare `BillableTrait`, usa il trait `Laravel\Cashier\Billable`. E, al posto di `Laravel\Cashier\BillableInterface` implementa l'interfaccia `Laravel\Cashier\Contracts\Billable`. Non è richiesto nessuna altra modifica ai metodi.
 
 ### Comandi Artisan
 
@@ -269,7 +269,7 @@ Cancella le due migration incluse con Laravel 5.0, dato che dovresti già avere 
 Muovi tutte le classi da `app/database/migrations` a `database/migrations`. Tutti i tuoi seed, inoltre, dovrebbero essere spostati da `app/database/seeds` a `database/seeds`.
 
 ### Binding IoC Globali
-Se hai dei binding [service container](/docs/5.1/container) in `start/global.php`, occorre muoverli nel metodo `register` del file `app/Providers/AppServiceProvider.php`. Potresti avere bisogno inoltre di importare la Facade `App`.
+Se hai dei binding [service container](/documentazione/5.1/container) in `start/global.php`, occorre muoverli nel metodo `register` del file `app/Providers/AppServiceProvider.php`. Potresti avere bisogno inoltre di importare la Facade `App`.
 
 Se preferisci, puoi inoltre separare questi binding in più service provider in base alla categoria.
 
@@ -484,7 +484,7 @@ Se `app/controllers/BaseController.php` ha uno statement`use` all'inizio del fil
 ### Aggiornamento Recupero Password
 
 Il recupero password 
-Password reminders è stato revisionato per avere una maggiore flessibilità nell'utilizzo. Puoi controllare il nuovo stub di controller usando il comando Artisan `php artisan auth:reminders-controller`. Puoi anche visionare la [documentazione aggiornata](/docs/security#password-reminders-and-reset) ed aggiornare in modo opportuno la tua applicazione.
+Password reminders è stato revisionato per avere una maggiore flessibilità nell'utilizzo. Puoi controllare il nuovo stub di controller usando il comando Artisan `php artisan auth:reminders-controller`. Puoi anche visionare la [documentazione aggiornata](/documentazione/security#password-reminders-and-reset) ed aggiornare in modo opportuno la tua applicazione.
 
 Aggiorna i file di lingua `app/lang/en/reminders.php` in modo che sia corrispondente a [questo file aggiornato](https://github.com/laravel/laravel/blob/v4.1.0/app/lang/en/reminders.php).
 

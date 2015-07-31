@@ -270,7 +270,7 @@ L'HTML risultante generato è il seguente:
 
 	<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-Ovviamente puoi anche usare il [sistema di template Blade](/docs/5.1/blade), se vuoi:
+Ovviamente puoi anche usare il [sistema di template Blade](/documentazione/5.1/blade), se vuoi:
 
 	{!! csrf_field() !!}
 
@@ -338,4 +338,4 @@ Ci sono due diversi modi di lanciare un errore 404 da una route. Il primo, più 
 
 Altrimenti, se preferisci le cose più complesse, ti basta lanciare un'istanza di `Symfony\Component\HttpKernel\Exception\NotFoundHttpException`.
 
-Se vuoi avere più informazioni su come gestire le eccezioni di questo genere e, eventualmente, come personalizzare l'output relativo, dai uno sguardo alla [pagina dedicata su questa documentazione](/docs/5.1/errori#eccezioni-http).
+Se vuoi avere più informazioni su come gestire le eccezioni di questo genere e, eventualmente, come personalizzare l'output relativo, dai uno sguardo alla [pagina dedicata su questa documentazione](/documentazione/5.1/errori#eccezioni-http).

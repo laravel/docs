@@ -40,9 +40,9 @@ Il "cuore" della tua applicazione è in app. Di default, questa directory ha un 
 
 La cartella `app` contiene a sua volta svariate directory come `Console`, `Http` e `Providers`. Innanzitutto, immagina `Console` ed `Http` come un'interfaccia alla tua vera applicazione. Il protocollo HTTP e CLI sono entrambi dei meccanismi di interazione con un'applicazione, ma non contengono davvero una logica. Insomma: sono solo due modi di interagire con la stessa applicazione. La cartella `Console` contiene tutti i tuoi comandi Artisan, mentre la cartella `Http` contiene i tuoi controller, filtri e richieste.
 
-La cartella `Jobs`, ovviamente, ospita le [code di job](/docs/5.1/code) per la tua applicazione. I Job possono essere messi in coda dalla tua applicazione, così come possono essere eseguiti in modo sincroni con il ciclo di vita della richiesta corrente.
+La cartella `Jobs`, ovviamente, ospita le [code di job](/documentazione/5.1/code) per la tua applicazione. I Job possono essere messi in coda dalla tua applicazione, così come possono essere eseguiti in modo sincroni con il ciclo di vita della richiesta corrente.
 
-La cartella `Events`, come puoi aspettarti, ospita le [classi degli eventi](/docs/5.1/eventi). Gli eventi possono essere utilizzati per “allertare” altre parti della tua applicazione in seguito ad una determinata azione.
+La cartella `Events`, come puoi aspettarti, ospita le [classi degli eventi](/documentazione/5.1/eventi). Gli eventi possono essere utilizzati per “allertare” altre parti della tua applicazione in seguito ad una determinata azione.
 
 La cartella `Listeners` contiene le classi handler per gli eventi. Gli Handler ricevono un evento and ed eseguono una logica in risposta all'evento che è stato richiamato. Per esempio, un evento `UserRegistered` potrebbe essere gestito da un listener `SendWelcomeEmail`.
 

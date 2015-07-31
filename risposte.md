@@ -24,7 +24,7 @@ Ovviamente, tutte le route e tutti i controller dovrebbero ritornare qualche tip
 
 La stringa sarà automaticamente convertita dal framwork in una risposta HTTP.
 
-Tuttavia, per molte routes e per la azione di un controller, ti sarà restituita una istanza di `Illuminate\Http\Response` oppure una [view](/docs/5.1/view). Il ritorno di una istanza completa di `Response` ti permette di personalizzare il codice di stato e gli header di una risposta HTTP. Un'istanza `Response`eredita la classe `Symfony\Component\HttpFoundation\Response`, che offre una serie di metodi per costruire le richieste HTTP:
+Tuttavia, per molte routes e per la azione di un controller, ti sarà restituita una istanza di `Illuminate\Http\Response` oppure una [view](/documentazione/5.1/view). Il ritorno di una istanza completa di `Response` ti permette di personalizzare il codice di stato e gli header di una risposta HTTP. Un'istanza `Response`eredita la classe `Symfony\Component\HttpFoundation\Response`, che offre una serie di metodi per costruire le richieste HTTP:
 
 	use Illuminate\Http\Response;
 
@@ -78,12 +78,12 @@ Di default, tutti i cookie generati da Laravel sono criptati e segnati così non
 <a name="altri-tipi-di-risposte"></a>
 ## Altri Tipi di Risposte
 
-L'helper `response` può essere usato per comodità, per generare altri tipi di istanza di risposte. Quando l'helper `response` è chiamato senza parametris, viene ritornata un implementazione del  [contract](/docs/5.1/contracts) `Illuminate\Contracts\Routing\ResponseFactory`. Questo contract offre una serie di utili metodi per generare risposte.
+L'helper `response` può essere usato per comodità, per generare altri tipi di istanza di risposte. Quando l'helper `response` è chiamato senza parametris, viene ritornata un implementazione del  [contract](/documentazione/5.1/contracts) `Illuminate\Contracts\Routing\ResponseFactory`. Questo contract offre una serie di utili metodi per generare risposte.
 
 <a name="view-in-una-risposta"></a>
 #### View In Una Risposta
 
-Se hai bisogno di controllare lo stato e gli header della risposta, ma anche di ritornare una [view](/docs/5.1/view) come contenuto di una risposta, puoi usare il metodo `view`:
+Se hai bisogno di controllare lo stato e gli header della risposta, ma anche di ritornare una [view](/documentazione/5.1/view) come contenuto di una risposta, puoi usare il metodo `view`:
 
 	return response()->view('hello', $data)->header('Content-Type', $type);
 
@@ -149,7 +149,7 @@ Se stai reindirizzando ad una route con un parametro "ID" che viene popolato da 
 <a name="redirect-azione-controller"></a>
 #### Redirect Ad Un'Azione di un Controller
 
-Puoi anche generare redirect alle [azioni di un controller](/docs/5.1/controller). Per farlo, passa semplicemente il controller e il nome dell'azione al metodo `action`. Ricordati, non devi specificare il namespace completoo al controller dato che il provider `RouteServiceProvider` imposterà automaticamente il namespace di default del controller:
+Puoi anche generare redirect alle [azioni di un controller](/documentazione/5.1/controller). Per farlo, passa semplicemente il controller e il nome dell'azione al metodo `action`. Ricordati, non devi specificare il namespace completoo al controller dato che il provider `RouteServiceProvider` imposterà automaticamente il namespace di default del controller:
 
 	return redirect()->action('HomeController@index');
 
@@ -160,7 +160,7 @@ Ovviamente, se la route del tuo controller richiede paramaetri, puoi passarli co
 <a name="redirect-con-dati-memorizzati-sessione"></a>
 #### Redirect Con Dati Memorizzati nella Sessione
 
-Il redirect ad un nuovo URL e la [memorizzazione di dati nella sessione](/docs/5.1/sessioni) sono tipicamente eseguite nello stesso tempo. Cosi, per comodità, puoi creare un istanza `RedirectResponse` **e** memorizzare dati nella sessione in un singolo metodo concatenato. Questo è particolarmente utile per memorizzare messaggi di stato dopo un'azione:
+Il redirect ad un nuovo URL e la [memorizzazione di dati nella sessione](/documentazione/5.1/sessioni) sono tipicamente eseguite nello stesso tempo. Cosi, per comodità, puoi creare un istanza `RedirectResponse` **e** memorizzare dati nella sessione in un singolo metodo concatenato. Questo è particolarmente utile per memorizzare messaggi di stato dopo un'azione:
 
 	Route::post('user/profile', function () {
 		// Update the user's profile...
@@ -168,7 +168,7 @@ Il redirect ad un nuovo URL e la [memorizzazione di dati nella sessione](/docs/5
 		return redirect('dashboard')->with('status', 'Profile updated!');
 	});
 
-Ovviamente, dopo che l'utente è reindirizzato alla nuova pagina, puoi ritrovare e visualizzare il messaggio memorizzato nella [sessione](/docs/5.1/sessioni). Per esempio, usando la [sintassi Blade](/docs/5.1/blade):
+Ovviamente, dopo che l'utente è reindirizzato alla nuova pagina, puoi ritrovare e visualizzare il messaggio memorizzato nella [sessione](/documentazione/5.1/sessioni). Per esempio, usando la [sintassi Blade](/documentazione/5.1/blade):
 
 	@if (session('status'))
 		<div class="alert alert-success">
@@ -181,7 +181,7 @@ Ovviamente, dopo che l'utente è reindirizzato alla nuova pagina, puoi ritrovare
 
 Se preferisci definire una risposta personalizzata da ri-utilizzare nelle tue route o nei tuoi controller, puoi usare il metodo macro su un'implementazione del contract `Illuminate\Contracts\Routing\ResponseFactory`. 
 
-Per esempio, dal metodo `boot` di un [service provider](/docs/5.1/provider):
+Per esempio, dal metodo `boot` di un [service provider](/documentazione/5.1/provider):
 
 	<?php namespace App\Providers;
 

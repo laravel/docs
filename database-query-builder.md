@@ -73,7 +73,7 @@ Verrà ritornato direttamente l'indirizzo email di John.
 
 #### Chunking dei Risultati
 
-Nel caso in cui dovessi aver bisogno di lavorare con migliaia di record in una volta, considera l'uso del metodo _chunk_. Tale metodo recupera solo una parte dei risultati, e tale parte viene data in pasto ad una _Closure_ nella quale puoi decidere, successivamente, cosa farci. Può essere un ottimo strumento da usare, ad esempio, per un [comando Artisan](/docs/5.1/artisan) che processa migliaia di record alla volta.
+Nel caso in cui dovessi aver bisogno di lavorare con migliaia di record in una volta, considera l'uso del metodo _chunk_. Tale metodo recupera solo una parte dei risultati, e tale parte viene data in pasto ad una _Closure_ nella quale puoi decidere, successivamente, cosa farci. Può essere un ottimo strumento da usare, ad esempio, per un [comando Artisan](/documentazione/5.1/artisan) che processa migliaia di record alla volta.
 
 	DB::table('users')->chunk(100, function($users) {
 		foreach ($users as $user) {

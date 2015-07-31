@@ -67,7 +67,7 @@ Una volta assegnato il nome alla route, puoi generare con estrema semplicità l'
 <a name="middleware-controller"></a>
 ## Middleware nei Controller
 
-Se hai bisogno di assegnare un [Middleware](/docs/5.1/middleware) ad una route di un controller puoi fare così:
+Se hai bisogno di assegnare un [Middleware](/documentazione/5.1/middleware) ad una route di un controller puoi fare così:
 
 	Route::get('profile', [
 		'middleware' => 'auth',
@@ -228,7 +228,7 @@ Come puoi inoltre notare dall'esempio qui in alto, il metodo _index_ risponde al
 
 #### Assegnare i Nomi alle Route
 
-Nel caso in cui tu voglia [assegnare dei nomi](/docs/5.1/routing#route-rinominate) ad alcune delle route assegnate ad un controller implicito, puoi passare un array di nomi come terzo parametro del metodo _controller_.
+Nel caso in cui tu voglia [assegnare dei nomi](/documentazione/5.1/routing#route-rinominate) ad alcune delle route assegnate ad un controller implicito, puoi passare un array di nomi come terzo parametro del metodo _controller_.
 
 	Route::controller('users', 'UserController', [
 		'getShow' => 'user.show',
@@ -239,7 +239,7 @@ Nel caso in cui tu voglia [assegnare dei nomi](/docs/5.1/routing#route-rinominat
 
 #### Constructor Injection
 
-Il [service container](/docs/5.1/container) di Laravel viene usato per risolvere tutti i controller della tua applicazione. Di conseguenza, volendo puoi specificare delle dipendenze tramite type-hint come argomenti del costruttore. Le dipendenze verranno automaticamente risolte ed iniettate nell'istanza risultante:
+Il [service container](/documentazione/5.1/container) di Laravel viene usato per risolvere tutti i controller della tua applicazione. Di conseguenza, volendo puoi specificare delle dipendenze tramite type-hint come argomenti del costruttore. Le dipendenze verranno automaticamente risolte ed iniettate nell'istanza risultante:
 
 	<?php namespace App\Http\Controllers;
 
@@ -265,7 +265,7 @@ Il [service container](/docs/5.1/container) di Laravel viene usato per risolvere
 		}
 	}
 
-Ovviamente, puoi anche effettuare il type-hint di un [Laravel contract](/docs/5.1/contracts). Basta che il container sia capace di risolverlo.
+Ovviamente, puoi anche effettuare il type-hint di un [Laravel contract](/documentazione/5.1/contracts). Basta che il container sia capace di risolverlo.
 
 #### Method Injection
 
