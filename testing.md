@@ -1,36 +1,37 @@
 # Testing
 
-- [Introduction](#introduction)
-- [Application Testing](#application-testing)
-	- [Interacting With Your Application](#interacting-with-your-application)
-	- [Testing JSON APIs](#testing-json-apis)
-	- [Sessions / Authentication](#sessions-and-authentication)
-	- [Disabling Middleware](#disabling-middleware)
-	- [Custom HTTP Requests](#custom-http-requests)
-- [Working With Databases](#working-with-databases)
-	- [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
+- [Introduzione](#introduzione)
+- [Testing Dell'Applicazione](#testing-applicazione)
+	- [Interagire Con La Tua Applicazione](#interagire-con-la-tua-applicazione)
+	- [Testing API JSON](#testing-apis-json)
+	- [Sessioni / Autenticazione](#sessioni-e-autenticazione)
+	- [Disabilitare I Middleware](#disabilitare-i-middleware)
+	- [Richieste HTTP Personalizzate](#richieste-http-personalizzate)
+- [Lavorare Con I Database](#lavorare-con-database)
+	- [Resettare Il Database Dopo Ogni Test](#resettare-database-dopo-ogni-test)
 	- [Model Factories](#model-factories)
 - [Mocking](#mocking)
-	- [Mocking Events](#mocking-events)
-	- [Mocking Jobs](#mocking-jobs)
-	- [Mocking Facades](#mocking-facades)
+	- [Mocking Degli Eventi](#mocking-eventi)
+	- [Mocking Dei Job](#mocking-job)
+	- [Mocking Delle Facade](#mocking-facade)
 
-<a name="introduction"></a>
-## Introduction
+<a name="introduzione"></a>
+## Introduzione
 
-Laravel is built with testing in mind. In fact, support for testing with PHPUnit is included out of the box, and a `phpunit.xml` file is already setup for your application. The framework also ships with convenient helper methods allowing you to expressively test your applications.
+Laravel è nato con in mente lo unit testing. Il supporto per il testing con PHPUnit, infatti, è incluso nell’installazione base, e un file `phpunit.xml` è già pronto da usare per la tua applicazione. 
+Il framweork inoltre lavora con dei metodi helper convenienti che ti permettono di testare la tua applicazione in modo “espressivo”.
 
-An `ExampleTest.php` file is provided in the `tests` directory. After installing a new Laravel application, simply run `phpunit` on the command line to run your tests.
+Un esempio di file test è fornito nella directory `tests`. Dopo l'installazione di una nuova applicazione Laravel, basta eseguire semplicemente da terminale `phpunit` per eseguire i tuoi test.
 
-### Test Environment
+### Ambiente Di Test
 
-When running tests, Laravel will automatically set the configuration environment to `testing`. Laravel automatically configures the session and cache to the `array` driver while testing, meaning no session or cache data will be persisted while testing.
+Quando esegui gli unit test, Laravel imposterà automaticamente la configurazione d'ambiente su `testing`. Laravel configurerà autoamticamente la sessione la cache nell'`array` dei driver durante il test, questo significa che nessun dato di sessione o di cache verrà mantenuto durante il test.
 
-You are free to create other testing environment configurations as necessary. The `testing` environment variables may be configured in the `phpunit.xml` file.
+Sei libero di creare tutte le configurazioni per i test di cui hai bisogno. Le variabili d'ambiente di `test` possono essere configurate nel file `phpunit.xml`.
 
-### Defining & Running Tests
+### Definire & Eseguire I Test
 
-To create a test case, simply create a new test file in the `tests` directory. The test class should extend `TestCase`. You may then define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal:
+Per creare un nuovo test case, crea semplicemente un nuovo file nella directory `tests`. La classe test dovrebbe estendere `TestCase`. Puoi quindi definire dei metodi di test come normalmente faresti usando PHPUnit. Per eseguire i tuoi test, esegui semplicemente il comando `phpunit` dal tuo terminale:
 
 	<?php
 
@@ -42,12 +43,12 @@ To create a test case, simply create a new test file in the `tests` directory. T
 		}
 	}
 
-> **Note:** If you define your own `setUp` method within a test class, be sure to call `parent::setUp`.
+> **Nota:** Se definisci il tuo metodo `setUp`, assicurati di effettuare la chiamata a `parent::setUp`.
 
-<a name="application-testing"></a>
-## Application Testing
+<a name="testing-applicazione"></a>
+## Testing Dell'Applicazione
 
-Laravel provides a very fluent API for making HTTP requests to your application, examining the output, and even filling out forms. For example, take a look at the `ExampleTest.php` file included in your `tests` directory:
+Laravel ti offre un sistema fluente di API per effettuare richieste HTTP alla tua applicazione, esaminare l'output, e anche la compilazione di form. Per esempio, dai uno sguardo al file `ExampleTest.php` incluso nella directory `tests`:
 
 	<?php
 
@@ -68,20 +69,20 @@ Laravel provides a very fluent API for making HTTP requests to your application,
 	    }
 	}
 
-The `visit` method makes a `GET` request into the application. The `see` method asserts that we should see the given text in the response returned by the application. This is the most basic application test available in Laravel.
+Il metodo `visit` effettua una richiesta `GET` nella tua applicazione. Il metodo `see` asserisce che quello che dovremmo vedere sia il testo dato nella risposta ritornata dalla tua applicazione. Questo è il test più comune disponibile in Laravel.
 
-<a name="interacting-with-your-application"></a>
-### Interacting With Your Application
+<a name="interagire-con-la-tua-applicazione"></a>
+### Interagire Con La Tua Applicazione
 
-Of course, you can do much more than simply assert that text appears in a given response. Let's take a look at some examples of clicking links and filling out forms:
+Ovviamente, puoi fare molto di più rispetto ad un semplice assert di un testo che appare in una data risposta. Dai uno sguardo ad alcuni esempi di click di link e di completamento di form:
 
-#### Clicking Links
+#### Click Di Link
 
-In this test, we will make a request to the application, "click" a link in the returned response, and then assert that we landed on a given URI. For example, let's assume there is a link in our response that has a text value of "About Us":
+In questo test, effettueremo una richiesta all'applicazione, "cliccare" un link nella risposta ritornata, e quindi asserire di essere riportati su un dato URI. Per esempio, assumiamo di avere un link nella nostra risposta con un testo che ha il valore di "Chi Siamo":
 
-	<a href="/about-us">About Us</a>
+	<a href="/chi-siamo">Chi Siamo</a>
 
-Now, let's write a test that clicks the link and asserts the user lands on the correct page:
+Ora, scriviamo un test che clicchi sul link ed asserisce che l'utente venga riportato sulla pagina corretta:
 
     public function testBasicExample()
     {
@@ -90,9 +91,9 @@ Now, let's write a test that clicks the link and asserts the user lands on the c
              ->seePageIs('/about-us');
     }
 
-#### Working With Forms
+#### Lavorare Con I Form
 
-Laravel also provides several methods for testing forms. The `type`, `select`, `check`, `attach`, and `press` methods allow you to interact with all of your form's inputs. For example, let's imagine this form exists on the application's registration page:
+Laravel offre anche una serie di metodi per testare i form. I metodi `type`, `select`, `check`, `attach`, e `press` ti permettono di interagire con tutti gli input dei form. Per esempio, immaginiamo di avere un form nella pagina di registrazione della nostra applicazione:
 
 	<form action="/register" method="POST">
 		{!! csrf_field() !!}
@@ -110,7 +111,7 @@ Laravel also provides several methods for testing forms. The `type`, `select`, `
 		</div>
 	</form>
 
-We can write a test to complete this form and inspect the result:
+Possiamo scrivere un test per completare questo form e controllarne il risultato:
 
     public function testNewUserRegistration()
     {
@@ -121,7 +122,7 @@ We can write a test to complete this form and inspect the result:
              ->seePageIs('/dashboard');
     }
 
-Of course, if your form contains other inputs such as radio buttons or drop-down boxes, you may easily fill out those types of fields as well. Here is a list of each form manipulation method:
+Ovviamente, se il tuo form contiene altri input come pulsanti radio o box drop-down, puoi facilmente compilarli. Qui una lista dei metodi di manipolazione per i form:
 
 Method  | Description
 ------------- | -------------
@@ -131,9 +132,8 @@ Method  | Description
 `$this->attach($pathToFile, $elementName)`  |  "Attach" a file to the form.
 `$this->press($buttonTextOrElementName)`  |  "Press" a button with the given text or name.
 
-#### Working With Attachments
-
-If your form contains `file` input types, you may attach files to the form using the `attach` method:
+#### Lavorare Con Gli Allegati
+Se il tuo form contiene input di tipo `file`, puoi allegare i file al form usando il metodo `attach`:
 
     public function testPhotoCanBeUploaded()
     {
@@ -144,10 +144,10 @@ If your form contains `file` input types, you may attach files to the form using
              ->see('Upload Successful!');
     }
 
-<a name="testing-json-apis"></a>
-### Testing JSON APIs
+<a name="testing-apis-json"></a>
+### Testing API JSON
 
-Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `get`, `post`, `put`, `patch`, and `delete` methods may be used to issue requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that a given array was returned in JSON format:
+Laravel offre anche una serie di helper per il testing di API JSON e le loro risposte. Per esempio, i metodi `get`, `post`, `put`, `patch`, e `delete` possono essere usati per inviare richieste con vari verbi HTTP. Puoi anche facilmente passare dei dati e header a questi metodi. Per iniziare, scriviamo un test per effettuare una richiesta `POST` a `/user` e asseriamo che un dato array sia ritornato in formato JSON:
 
 	<?php
 
@@ -167,11 +167,11 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
 	    }
 	}
 
-The `seeJson` method converts the given array into JSON, and then verifies that the JSON fragment occurs **anywhere** within the entire JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
+Il metodo `seeJson` converte l'array dato in JSON, e quindi verifica che quel segmento JSON coincida **dovunque** con l'intera risposta JSON ritornata dall'applicazione. Così, se ci sono altre proprietà nella risposta JSON, questo test sarà ancora valido finchè il segmento dato è presente.
 
-#### Verify Exact JSON Match
+#### Verificare L'Esatta Corrispondenza JSON
 
-If you would like to verify that the given array is an **exact** match for the JSON returned by the application, you should use the `seeJsonEquals` method:
+Se vuoi verificare che un dato array sia un **esatta** corrispondenza per il JSON ritornato dall'applicazione, dovresti usare il metodo `seeJsonEquals`:
 
 	<?php
 
@@ -191,10 +191,10 @@ If you would like to verify that the given array is an **exact** match for the J
 	    }
 	}
 
-<a name="sessions-and-authentication"></a>
-### Sessions / Authentication
+<a name="sessioni-e-autenticazione"></a>
+### Sessioni / Autenticazione
 
-Laravel provides several helpers for working with the session during testing. First, you may set the session data to a given array using the `withSession` method. This is useful for loading the session with data before testing a request to your application:
+Laravel offre una serie di helper per lavorare con le sessioni durante i test. Per prima cosa, puoi impostare i dati di sessione in un array usando il metodo `withSession`. Questo è utile per caricare la sessione con dei dati prima di testare la richiesta della tua applicazione:
 
 	<?php
 
@@ -207,7 +207,7 @@ Laravel provides several helpers for working with the session during testing. Fi
 	    }
 	}
 
-Of course, one common use of the session is for maintaining user state, such as the authenticated user. The `actingAs` helper method provides a simple way to authenticate a given user as the current user. For example, we may use a [model factory](#model-factories) to generate and authenticate a user:
+Ovviamente, un uso comune della sessione e per mantenere lo stato utente, come ad esempio l'utente autenticato. L'helper `actingAs` offre un modo semplice di autenticare un dato utente come utente corrente. Per esempio, possiamo usare la [model factory](#model-factories) per generare ed autenticare un utente:
 
 	<?php
 
@@ -224,10 +224,10 @@ Of course, one common use of the session is for maintaining user state, such as 
 	    }
 	}
 
-<a name="disabling-middleware"></a>
-### Disabling Middleware
+<a name="disabilitare-i-middleware"></a>
+### Disabilitare I Middleware
 
-When testing your application, you may find it convenient to disable [middleware](/docs/{{version}}/middleware) for some of your tests. This will allow you to test your routes and controller in isolation from any middleware concerns. Laravel includes a simple `WithoutMiddleware` trait that you can use to automatically disable all middleware for the test class:
+Quando testi la tua applicazione, puoi trovare conveniente disabilitare i [middleware](/docs/{{version}}/middleware) per alcuni dei tuoi test. Questo ti permetterà di testare le tue route e controller in completo isolamento dai controlli dei middleware. Laravel include un semplice trait `WithoutMiddleware` che puoi usare per disabiltiare automaticamente tutti i middleware per la classe di test:
 
 	<?php
 
@@ -241,7 +241,7 @@ When testing your application, you may find it convenient to disable [middleware
 	    //
 	}
 
-If you would like to only disable middleware for a few test methods, you may call the `withoutMiddleware` method from within the test methods:
+Se preferisci solo disabilitare i middleware per alcuni metodi di test, puoi chiamare il metodo `withoutMiddleware` dall'interno di tali metodi:
 
 	<?php
 
@@ -261,10 +261,10 @@ If you would like to only disable middleware for a few test methods, you may cal
 	    }
 	}
 
-<a name="custom-http-requests"></a>
-### Custom HTTP Requests
+<a name="richieste-http-personalizzate"></a>
+### Richieste HTTP Personalizzate
 
-If you would like to make a custom HTTP request into your application and get the full `Illuminate\Http\Response` object, you may use the `call` method:
+Se vuoi effettuare una richiesta HTTP personalizzata nella tua applicazione e prelevare l'intero oggetto `Illuminate\Http\Response`, puoi usare il metodo `call`:
 
     public function testApplication()
     {
@@ -273,14 +273,14 @@ If you would like to make a custom HTTP request into your application and get th
     	$this->assertEquals(200, $response->status());
     }
 
-If you are making `POST`, `PUT`, or `PATCH` requests you may pass an array of input data with the request. Of course, this data will be available in your routes and controller via the [Request instance](/docs/{{version}}/requests):
+Se stai effettuando delle richieste `POST`, `PUT`, o `PATCH` puoi passare un array di dati di input con la richiesta. Ovviamente, questi dati saranno disponibili nelle tue route e controller tramite l' [istanza Request](/docs/{{version}}/requests):
 
    	$response = $this->call('POST', '/user', ['name' => 'Taylor']);
 
-<a name="working-with-databases"></a>
-## Working With Databases
+<a name="lavorare-con-database"></a>
+## Lavorare Con I Database
 
-Laravel also provides a variety of helpful tools to make it easier to test your database driven applications. First, you may use the `seeInDatabase` helper to assert that data exists in the database matching a given set of criteria. For example, if we would like to verify that there is a record in the `users` table with the `email` value of `sally@example.com`, we can do the following:
+Laravel offre anche una serie di utili strumenti per rendere più facili i test su applicazioni basate su database. Per prima cosa, puoi usare l'helper `seeInDatabase` per asserire che quel dato esiste nel database in base ad un dato criterio. Per esempio, se vuoi verificare l'esistenza di un record nella tabella `users` con il campo `email` uguale a `sally@example.com`, possiamo fare come segue:
 
     public function testDatabase()
     {
@@ -289,16 +289,16 @@ Laravel also provides a variety of helpful tools to make it easier to test your 
     	$this->seeInDatabase('users', ['email' => 'sally@foo.com']);
     }
 
-Of course, the `seeInDatabase` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
+Ovviamente, il metodo `seeInDatabase` e gli altri helper piacciono per la loro convenienza. Sei libero di usare qualsiasi metodo di asserzione built-in di PHPUnit per completare i tuoi test.
 
-<a name="resetting-the-database-after-each-test"></a>
-### Resetting The Database After Each Test
+<a name="resettare-database-dopo-ogni-test"></a>
+### Resettare Il Database Dopo Ogni Test
 
-It is often useful to reset your database after each test so that data from a previous test does not interfere with subsequent tests.
+Spesso è utile resettare il database dopo ogni test così che i dati precedenti di un precedente test non interferiranno con i test successivi.
 
-#### Using Migrations
+#### Usare Le Migration
 
-One option is to rollback the database after each test and migrate it before the next test. Laravel provides a simple `DatabaseMigrations` trait that will automatically handle this for you. Simply use the trait on your test class:
+Un'opzione è di eseguire un rollback del database dopo ogni test ed eseguire le migration prima del prossimo test. Laravel offre un semplice trait `DatabaseMigrations` che gestirà questo per te automaticamente. Usa semplicemente il trait nella tua classe test:
 
 	<?php
 
@@ -322,9 +322,9 @@ One option is to rollback the database after each test and migrate it before the
 	    }
 	}
 
-#### Using Transactions
+#### Usare Le Transazioni
 
-Another option is to wrap every test case in a database transaction. Again, Laravel provides a convenient `DatabaseTransactions` trait that will automatically handle this:
+Un altra opzione è di racchiudere ogni test case in una transazione database. Ancora una volta, Laravel offre un conveniente trait `DatabaseTransactions` che gestirà questo automaticamente:
 
 	<?php
 
@@ -351,7 +351,7 @@ Another option is to wrap every test case in a database transaction. Again, Lara
 <a name="model-factories"></a>
 ### Model Factories
 
-When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using "factories". To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
+Quando testi, è comune di aver bisogno di inserire alcuni record nel tuo database prima di eseguire il tuo test. Invece di specificare manualmente il valore di ogni colonna quando crei dei dati di test, Laravel di permette di definire un insieme di attributi di default per ogni [model Eloquent](/docs/{{version}}/eloquent) usando le "factories". Per iniziare, dai uno sguardo al file `database/factories/ModelFactory.php` nella tua applicazione. Questo file contiene la definizione di una factory:
 
 	$factory->define('App\User', function ($faker) {
 	    return [
@@ -362,13 +362,13 @@ When testing, it is common to need to insert a few records into your database be
 	    ];
 	});
 
-Within the Closure, which serves as the factory definition, you may return the default test values of all attributes on the model. The Closure will receive an instance of the [Faker](https://github.com/fzaninotto/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
+All'interno della Closure, che serve come definizione della factory, puoi ritornare i valori di test di default di tutti gli attributi del model. La Closure riceverà un istanza della libreria PHP [Faker](https://github.com/fzaninotto/Faker), che ti permette in modo conveniente di generare vari tipi di dati in modo casuale per i tuoi test.
 
-Of course, you are free to add your own additional factories to the `ModelFactory.php` file.
+Ovviamente, sei libero di aggiungere le tue factory aggiuntive nel file `ModelFactory.php`.
 
-#### Multiple Factory Types
+#### Multipli Tipi Di Factory
 
-Sometimes you may wish to have multiple factories for the same Eloquent model class. For example, perhaps you would like to have a factory for "Administrator" users in addition to normal users. You may define these factories using the `defineAs` method:
+Qualche volta puoi desiderare di avere factory multiple per la stessa classe di un model Eloquent. Per esempio, forse vorresti avere una factory per gli utenti "Administrator" in aggiunta ai normali utenti. Puoi definire queste factory usando il metodo `defineAs`:
 
 	$factory->defineAs('App\User', 'admin', function ($faker) {
 	    return [
@@ -380,7 +380,7 @@ Sometimes you may wish to have multiple factories for the same Eloquent model cl
 	    ];
 	});
 
-Instead of duplicating all of the attributes from your base user factory, you may use the `raw` method to retrieve the base attributes. Once you have the attributes, simply supplement them with any additional values you require:
+Invece di duplicare tutti gli attributi dalla tua factory user di base, puoi usare il metodo `raw` per recuperare gli attributi base. Una volta che hai ottenuto gli attributiOnce you have the attributes, integrali facilmente con qualsiasi altro valore aggiuntivo tu abbia bisogno:
 
 	$factory->defineAs('App\User', 'admin', function ($faker) use ($factory) {
 		$user = $factory->raw('App\User');
@@ -388,9 +388,9 @@ Instead of duplicating all of the attributes from your base user factory, you ma
 		return array_merge($user, ['admin' => true]);
 	});
 
-#### Using Factories In Tests
+#### Usare Le Factory Nei Test
 
-Once you have defined your factories, you may use them in your tests or database seed files to generate model instances using the global `factory` function. So, let's take a look at a few examples of creating models. First, we'll use the `make` method, which creates models but does not save them to the database:
+Una volta che hai definito le tue factory, puoi usarle nei tuoi test o nei file di seed per il database per generare istanze del model usando la funzione globale `factory`. Ora, diamo un occhiata ad alcuni esempi di creazione di model. Per prima cosa, useremo il metodo `make`, che crea i model ma non li salva nel database:
 
     public function testDatabase()
     {
@@ -399,13 +399,13 @@ Once you have defined your factories, you may use them in your tests or database
     	// Use model in tests...
     }
 
-If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified values will be replaced while the rest of the values remain set to their default values as specified by the factory:
+Se vuoi sovrascrivere qualche valore di default dei tuoi model, puoi passare un array di valori al metodo `make`. Verranno sovrascritti soltanto i valori specificati mentre i valori restanti saranno settati con i loro valori specificati dalla factory:
 
     $user = factory('App\User')->make([
     	'name' => 'Abigail',
    	]);
 
-You may also create a Collection of many models or create models of a given type:
+Puoi anche creare una Collection di model oppure creare model di un dato tipo:
 
 	// Create three App\User instances...
 	$users = factory('App\User', 3)->make();
@@ -416,9 +416,9 @@ You may also create a Collection of many models or create models of a given type
 	// Create three App\User "admin" instances...
 	$users = factory('App\User', 'admin', 3)->make();
 
-#### Persisting Factory Models
+#### Model Factory Persistenti
 
-The `create` method not only creates the model instances, but also saves them to the database using Eloquent's `save` method:
+Il metodo `create` non solo crea le istanze dei model, ma li salva anche  nel database usando il metodo `save` di Eloquent:
 
     public function testDatabase()
     {
@@ -427,15 +427,15 @@ The `create` method not only creates the model instances, but also saves them to
     	// Use model in tests...
     }
 
-Again, you may override attributes on the model by passing an array to the `create` method:
+Ancora una volta, puoi sovrascrivere gli attributi nel model passando un array al metodo `create`:
 
     $user = factory('App\User')->create([
     	'name' => 'Abigail',
    	]);
 
-#### Adding Relations To Models
+#### Aggiungere Relazioni Ai Models
 
-You may even persist multiple models to the database. In this example, we'll even attach a relation to the created models. When using the `create` method to create multiple models, an Eloquent [collection instance](/docs/{{version}}/eloquent-collections) is returned, allowing you to use any of the convenient functions provided by the collection, such as `each`:
+Puoi avere anche multipli model persistenti nel database. In questo esempio, collegheremo una relazione ai model creati. Quando usi il metodo `create` per creare multipli model, viene ritornata una [istanza collection](/docs/{{version}}/eloquent-collections) di Eloquent, che ti permette di usare qualsiasi delle funzioni offerte dalle collection, come ad esempio `each`:
 
     $users = factory('App\User', 3)
                ->create()
@@ -446,12 +446,11 @@ You may even persist multiple models to the database. In this example, we'll eve
 <a name="mocking"></a>
 ## Mocking
 
-<a name="mocking-events"></a>
-### Mocking Events
+<a name="mocking-eventi"></a>
+### Mocking Degli Eventi
+Se stai facendo un uso intensivo del sistema di Eventi di Laravel, potresti desiderare di “silenziare” oppure eseguire finte chiamate ad alcuni eventi durante i test. Per esempio, se stai testando la registrazione degli utenti, probabilmente non vorrai che vengano eseguiti tutti gli handler relativi a `UserRegistered`, dal momento che potrebbero inviare delle email di “benvenuto”, etc.
 
-If you are making heavy use of Laravel's event system, you may wish to silence or mock certain events while testing. For example, if you are testing user registration, you probably do not want all of a `UserRegistered` event's handlers firing, since these may send "welcome" e-mails, etc.
-
-Laravel provides a convenient `expectsEvents` method that verifies the expected events are fired, but prevents any handlers for those events from running:
+Laravel offre un conveniente metodo `expectsEvents` che verifica che gli eventi attesi siano eseguiti, ma previene l'esecuzioni di qualsiasi handler associato a questi eventi:
 
 	<?php
 
@@ -465,7 +464,7 @@ Laravel provides a convenient `expectsEvents` method that verifies the expected 
 	    }
 	}
 
-If you would like to prevent all event handlers from running, you may use the `withoutEvents` method:
+Se preferisci  prevenire l'esecuzione di tutti gli handler, puoi usare il metodo `withoutEvents`:
 
 	<?php
 
@@ -479,12 +478,12 @@ If you would like to prevent all event handlers from running, you may use the `w
 	    }
 	}
 
-<a name="mocking-jobs"></a>
-### Mocking Jobs
+<a name="mocking-job"></a>
+### Mocking Dei Job
 
-Sometimes, you may wish to simply test that specific jobs are dispatched by your controllers when making requests to your application. This allows you to test your routes / controllers in isolation - set apart from your job's logic. Of course, you can then test the job itself in a separate test class.
+Qualche volta, potresti voler testare che uno specifico job venga eseguito dai tuoi controller quando eseguono una richiesta alla tua applicazione. Questo ti permette di testare le tue route / controller in modo separato dalla logica del tuo job. Ovviamente, puoi quindi testare il job in una classe seprata.
 
-Laravel provides a convenient `expectsJobs` method that will verify that the expected jobs are dispatched, but the job itself will not be executed:
+Laravel fornisce un metodo conveniente `expectsJobs` che verificherò che i job attesi siano eseguiti, ma lo job stesso non verrà eseguito:
 
 	<?php
 
@@ -498,12 +497,12 @@ Laravel provides a convenient `expectsJobs` method that will verify that the exp
 	    }
 	}
 
-> **Note:** This method only detects jobs that are dispatched via the `DispatchesCommands` trait's dispatch methods. It does not detect jobs that are sent directly to `Queue::push`.
+> **Nota:** Questo metodo controlla solo i job che vengono inviati tramite i metodi di invio del trait `DispatchesCommands`. Non rileva i job che sono inviati direttamente a `Queue::push`.
 
 <a name="mocking-facades"></a>
 ### Mocking Facades
 
-When testing, you may often want to mock a call to a Laravel [facade](/docs/{{version}}/facades). For example, consider the following controller action:
+In fase di testing, potresti spesso voler eseguire una finta chiamata alle [facade](/docs/{{version}}/facades) di Laravel. Per esempio, considera il la seguente action del controller:
 
 	<?php namespace App\Http\Controllers;
 
@@ -525,7 +524,7 @@ When testing, you may often want to mock a call to a Laravel [facade](/docs/{{ve
 		}
 	}
 
-We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade:
+Possiamo fingere la chiamata alla facade `Cache` usando il metodo `shouldReceive`, che ritornerà un istanza mock di [Mockery](https://github.com/padraic/mockery). Dal momento che le facade sono risolte e gestite dal [service container](/docs/{{version}}/container) di Laravel, sono molto più testabili rispetto ad una tipica classe statica. Per esempio, eseguiamo una finta chiamata alla facade `Cache`:
 
 	<?php
 
@@ -542,4 +541,4 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
 		}
 	}
 
-> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the HTTP helper methods such as `call` and `post` when running your test.
+> **Nota:** Non dovresti eseguire il mock sulla facade `Request`. Invece, passa l'input all'interno del metodo `call` e `post` quando esegui il tuo test.
