@@ -151,7 +151,7 @@ I file di lingua e delle view sono stati spostati, invece, in _resources_.
 
 Tutti i componenti più importanti del framework implementano delle interfacce, localizzate nel repository _illuminate/contracts_ che non presenta dipendenze esterne. Con un set centralizzato di interfacce, adesso, sarà più semplice creare alternative ai componenti che vorrai sostituire.
 
-Se vuoi maggiori informazioni a riguardo, dai un'occhiata alla [pagina dedicata](docs/5.1/contratti).
+Se vuoi maggiori informazioni a riguardo, dai un'occhiata alla [pagina dedicata](/docs/5.1/contratti).
 
 ### Route Cache
 
@@ -161,7 +161,7 @@ Se la tua applicazione è composta interamente di controller route potresti vole
 
 Oltre ai filtri più "classici" visti in Laravel 4, la versione 5 supporta i middleware HTTP. Tutti i filtri esistenti, inoltre, sono stati convertiti in middleware. Un middleware permette di fornire una singola interfaccia consistente per sostituire definitivamente i filtri. Ti permette di analizzare (ed eventualmente rifiutare) una certa richiesta prima ancora di entrare nell'applicazione vera e propria.
 
-Per maggiori informazioni, dai un'occhiata [alla documentazione](docs/5.1/middleware).
+Per maggiori informazioni, dai un'occhiata [alla documentazione](/docs/5.1/middleware).
 
 ### Controller Method Injection
 
@@ -206,7 +206,7 @@ Chiaramente, il tuo event handler corrispondente adesso riceverà un oggetto ver
 
 	}
 
-Se vuoi saperne di più, dai uno sguardo [alla documentazione](docs/eventi).
+Se vuoi saperne di più, dai uno sguardo [alla documentazione](/docs/eventi).
 
 ### Comandi / Code
 
