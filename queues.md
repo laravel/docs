@@ -255,6 +255,8 @@ You may also define a `failed` method directly on a queue job class, allowing yo
 	{
 		// Called when the job is failing...
 	}
+	
+If your job is not self-handling and has a seperate handler class the `failed` method needs to be defined there instead.
 
 ### Retrying Failed Jobs
 
