@@ -275,17 +275,13 @@ elixir(function(mix) {
 <a name="copying-files-and-directories"></a>
 ## Copying Files & Directories
 
-#### Copy a File to a New Location
+The `copy` method may be used to copy files and directories to new locations. All operations are relative to the project's root directory:
 
 ```javascript
 elixir(function(mix) {
 	mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
 });
-```
 
-#### Copy an Entire Directory to a New Location
-
-```javascript
 elixir(function(mix) {
 	mix.copy('vendor/package/views', 'resources/views');
 });
