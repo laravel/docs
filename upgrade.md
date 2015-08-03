@@ -172,7 +172,7 @@ In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
 
 The recommended method of upgrading is to create a new Laravel `5.0` install and then to copy your `4.2` site's unique application files into the new application. This would include controllers, routes, Eloquent models, Artisan commands, assets, and other code specific to your application.
 
-To start, [install a new Laravel 5 application](/docs/{{version}}/installation) into a fresh directory in your local environment. We'll discuss each piece of the migration process in further detail below.
+To start, [install a new Laravel 5.0 application](/docs/5.0/installation) into a fresh directory in your local environment.  Do not install any versions newer than 5.0 yet, since we need to complete the migration steps for 5.0 first. We'll discuss each piece of the migration process in further detail below.
 
 ### Composer Dependencies & Packages
 
