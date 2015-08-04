@@ -32,7 +32,7 @@ Now you can install Laravel by issuing the following command from your terminal:
 
 This command will download and install a fresh copy of Laravel in a new `your-project-name` folder within your current directory.
 
-If you prefer, you can alternatively download a copy of the [Laravel repository from GitHub](https://github.com/laravel/laravel/archive/master.zip) manually. Next run the `composer install` command in the root of your manually created project directory. This command will download and install the framework's dependencies.
+If you prefer, you can alternatively download a copy of the [Laravel repository from GitHub](https://github.com/laravel/docs/archive/4.2.zip) manually. Next run the `composer install` command in the root of your manually created project directory. This command will download and install the framework's dependencies.
 
 ### Permissions
 
