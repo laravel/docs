@@ -346,7 +346,9 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/worker.log
 
-In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Make sure you edit the 'command' line if you are not using 'sqs' to: beanstalkd, redis, or whatever you are using. Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
+In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Of course, you should change the `queue:work sqs` portion of the `command` directive to reflect your chosen queue driver.
+
+Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
 
     sudo supervisorctl reread
 
