@@ -51,6 +51,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [base_path](#method-base-path)
 [config_path](#method-config-path)
 [database_path](#method-database-path)
+[elixir](#method-elixir)
 [public_path](#method-public-path)
 [storage_path](#method-storage-path)
 </div>
@@ -97,7 +98,6 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
-[elixir](#method-elixir)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
@@ -399,6 +399,13 @@ The `database_path` function returns the fully qualified path to the application
 
     $path = database_path();
 
+<a name="method-elixir"></a>
+#### `elixir()` {#collection-method}
+
+The `elixir` function gets the path to the versioned [Elixir](/docs/{{version}}/elixir) file:
+
+    elixir($file);
+
 <a name="method-public-path"></a>
 #### `public_path()` {#collection-method}
 
@@ -680,13 +687,6 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 The `dd` function dumps the given variable and ends execution of the script:
 
     dd($value);
-
-<a name="method-elixir"></a>
-#### `elixir()` {#collection-method}
-
-The `elixir` function gets the path to the versioned [Elixir](/docs/{{version}}/elixir) file:
-
-    elixir($file);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}
