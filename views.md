@@ -52,7 +52,7 @@ As you saw in the previous examples, you may easily pass an array of data to vie
 
     return view('greetings', ['name' => 'Victoria']);
 
-When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using it's corresponding key, such as `<?php echo $key; ?>`. As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view:
+When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using its corresponding key, such as `<?php echo $key; ?>`. As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view:
 
     $view = view('greeting')->with('name', 'Victoria');
 
