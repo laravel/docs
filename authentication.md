@@ -128,6 +128,8 @@ When a user is successfully authenticated, they will be redirected to the `/home
 When a user is not successfully authenticated, they will be redirected to the `/auth/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
 
     protected $loginPath = '/login';
+    
+> **Note:** This variable will not change where a user is bounced if they try to access a protected page. That is controlled by the middleware `App\Http\Middleware\Authenticate` in its `handle` method.
 
 #### Customizations
 
