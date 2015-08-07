@@ -243,6 +243,8 @@ Before modifying a column, be sure to add the `doctrine/dbal` dependency to your
 
 #### Updating Column Attributes
 
+> **Note:** Because of the way Doctrine works, trying to change `text` columns to `mediumText` or `longText` (or the other way around) will have no effect. Also changing to the column type `char` will result in an error as Doctrine does not recognize this column type.
+
 The `change` method allows you to modify an existing column to a new type, or modify the column's attributes. For example, you may wish to increase the size of a string column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
 
     Schema::table('users', function ($table) {
