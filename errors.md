@@ -12,26 +12,26 @@
 <a name="introduction"></a>
 ## 簡介
 
-當你開始一個新的 Laravel 專案時，Laravel 已經幫你設定好錯誤和例外的處理。另外，Laravel 也綜合了 [Monolog](https://github.com/Seldaek/monolog) 日誌函式庫，Monolog 支援和提供多種強大的日誌處理。
+當你開始一個新的 Laravel 專案時，Laravel 已經幫你設定好錯誤和例外的處理。另外，Laravel 也整合了 [Monolog](https://github.com/Seldaek/monolog) 日誌函式庫，Monolog 支援和提供多種強大的日誌處理。
 
 <a name="configuration"></a>
 ## 設定
 
 #### 錯誤細節
 
-你的應用程式透過`config/app.php` 設定檔中的 `debug` 設定選項來控制瀏覽器顯示錯誤的細節。預設情況下，這個設定選項是依照 `App_DEBUG` 環境變數，這個設定選項被儲存在 `.env` 檔案。
+你的應用程式透過 `config/app.php` 設定檔中的 `debug` 設定選項來控制瀏覽器顯示錯誤的細節。預設情況下，此設定選項是參照於儲存在 `.env` 檔案的 `App_DEBUG` 環境變數。
 
-在本機開發的時候，你應該將 `APP_DEBUG` 環境變數設定為 `true`。在你的生產環境下，這個變數應該為 `false`。
+在本機開發的時候，你應該將 `APP_DEBUG` 環境變數設定為 `true`。在你的上線環境中，這個值應該永遠為 `false`。
 
 #### 日誌模式
 
-Laravel 提供立即可用的 `single`、`daily`、`syslog` 和 `errorlog` 日誌模式。例如，如果你想要使用單一日誌檔，而不是每天一個日誌檔，你可以簡單地在 `config/app.php` 設定檔內設定 `log` 變數：
+Laravel 提供立即可用的 `single`、`daily`、`syslog` 和 `errorlog` 日誌模式。例如，如果你想要每天儲存一個日誌檔，而不是單一的檔案，你可以簡單地在 `config/app.php` 設定檔內設定 `log` 變數：
 
     'log' => 'daily'
 
 #### 自訂 Monolog 設定
 
-如果你想要完全控制 Monolog，你可以使用應用程式的 `configureMonologUsing` 方法設定你的應用程式。你應該先呼叫這個方法，在 `bootstrap/app.php` 檔案回傳 `$app` 變數之前：
+如果你想要完全控制 Monolog，你可以使用應用程式的 `configureMonologUsing` 方法設定你的應用程式。你應該在 `bootstrap/app.php` 檔案回傳 `$app` 變數之前呼叫這個方法：
 
     $app->configureMonologUsing(function($monolog) {
         $monolog->pushHandler(...);
@@ -42,12 +42,12 @@ Laravel 提供立即可用的 `single`、`daily`、`syslog` 和 `errorlog` 日�
 <a name="the-exception-handler"></a>
 ## 錯誤處理
 
-所有的例外處理都是透過 `App\Exceptions\Handler` 類別。這個類別包含了兩個方法： `report` 和 `render`。我們將研究這些方法的細節。
+所有的例外處理都是透過 `App\Exceptions\Handler` 類別。這個類別包含了兩個方法：`report` 和 `render`。我們將研究這些方法的細節。
 
 <a name="report-method"></a>
 ### 報告方法
 
-`report` 方法用來記錄例外或將它們發送到外部服務像是 [BugSnag](https://bugsnag.com)。預設情況下，當例外被記錄時，`report` 方法只是簡單的傳送例外到基底的類別。然而，你可以自由的記錄例外。
+`report` 方法用來記錄例外或將它們發送到像是 [BugSnag](https://bugsnag.com) 的外部服務。預設情況下，當例外被記錄時，`report` 方法只是簡單的傳送例外到基底的類別。然而，你可以自由的記錄例外。
 
 例如，如果你需要以不同的方式報告不同類型的例外，你可以使用 PHP `instanceof` 比較運算子：
 
