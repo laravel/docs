@@ -440,14 +440,17 @@ Here is a sample password reset form to get you started:
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div>
+            Email
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
 
         <div>
+            Password
             <input type="password" name="password">
         </div>
 
         <div>
+            Confirm Password
             <input type="password" name="password_confirmation">
         </div>
 
