@@ -228,6 +228,11 @@ If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foun
         // Rest of AuthController class...
     }
 
+You can custom the maximum number of login attempts and the lockout time by defining `maxLoginAttempts` and `lockoutTime` properties on the `AuthController`:
+
+    protected $maxLoginAttempts = 6;
+    protected $lockoutTime = 90;
+
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
 
