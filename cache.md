@@ -8,8 +8,8 @@
     - [Removing Items From The Cache](#removing-items-from-the-cache)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
 - [Cache Tags](#cache-tags)
-    - [Accessing A Tagged Cache](#accessing-a-tagged-cache)
-    - [Accessing Items In A Tagged Cache](#accessing-items-in-a-tagged-cache)
+    - [Storing Tagged Cache Items](#storing-tagged-cache-items)
+    - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
 - [Cache Events](#cache-events)
 
 <a name="configuration"></a>
@@ -266,53 +266,62 @@ If you're wondering where to put your custom cache driver code, consider making 
 
 > **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
 
-<a name="accessing-a-tagged-cache"></a>
-### Accessing A Tagged Cache
+<a name="storing-tagged-cache-items"></a>
+### Storing Tagged Cache Items
 
-Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method.
+Cache tags allow you to tag related items in the cache and then flush all cached values that assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
 
-You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names:
+	Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
 
-	Cache::tags('people', 'authors')->put('John', $john, $minutes);
+	Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
 
-	Cache::tags(['people', 'artists'])->put('Anne', $anne, $minutes);
+However, you are not limited to the `put` method. You may use any cache storage method while working with tags.
 
-You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`.
+<a name="accessing-tagged-cache-items"></a>
+### Accessing Tagged Cache Items
 
-<a name="accessing-items-in-a-tagged-cache"></a>
-### Accessing Items In A Tagged Cache
+To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method:
 
-To access a tagged cache, pass the same ordered list of tags used to save it.
+	$john = Cache::tags(['people', 'artists'])->get('John');
 
-	$anne = Cache::tags('people', 'artists')->get('Anne');
+    $anne = Cache::tags(['people', 'authors'])->get('Anne');
 
-	$john = Cache::tags(['people', 'authors'])->get('John');
+You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
 
-You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
+	Cache::tags(['people', 'authors'])->flush();
 
-	Cache::tags('people', 'authors')->flush();
-
-In contrast, this statement would remove only caches tagged with `authors`, so "John" would be removed, but not "Anne".
+In contrast, this statement would remove only caches tagged with `authors`, so `John` would be removed, but not `Anne`.
 
 	Cache::tags('authors')->flush();
-	
+
 <a name="cache-events"></a>
 ## Cache Events
 
-To execute code on every cache operation, you may listen for the events fired by the cache:
+To execute code on every cache operation, you may listen for the events fired by the cache. Typically, you would place these event handlers within the `boot` method of your `EventServiceProvider`:
 
-	Event::listen('cache.hit', function($key, $value) {
-		//
-	});
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
 
-	Event::listen('cache.missed', function($key) {
-		//
-	});
+        $events->listen('cache.hit', function ($key, $value) {
+            //
+        });
 
-	Event::listen('cache.write', function($key, $value, $minutes) {
-		//
-	});
+        $events->listen('cache.missed', function ($key) {
+            //
+        });
 
-	Event::listen('cache.delete', function($key) {
-		//
-	});
+        $events->listen('cache.write', function ($key, $value, $minutes) {
+            //
+        });
+
+        $events->listen('cache.delete', function ($key) {
+            //
+        });
+    }
