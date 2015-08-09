@@ -7,6 +7,10 @@
     - [Storing Items In The Cache](#storing-items-in-the-cache)
     - [Removing Items From The Cache](#removing-items-from-the-cache)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
+- [Cache Tags](#cache-tags)
+    - [Accessing A Tagged Cache](#accessing-a-tagged-cache)
+    - [Accessing Items In A Tagged Cache](#accessing-items-in-a-tagged-cache)
+- [Cache Events](#cache-events)
 
 <a name="configuration"></a>
 ## Configuration
@@ -256,3 +260,59 @@ We just need to implement each of these methods using a MongoDB connection. Once
 Once your extension is complete, simply update your `config/cache.php` configuration file's `driver` option to the name of your extension.
 
 If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+
+<a name="cache-tags"></a>
+## Cache Tags
+
+> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+
+<a name="accessing-a-tagged-cache"></a>
+### Accessing A Tagged Cache
+
+Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method.
+
+You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names:
+
+	Cache::tags('people', 'authors')->put('John', $john, $minutes);
+
+	Cache::tags(['people', 'artists'])->put('Anne', $anne, $minutes);
+
+You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`.
+
+<a name="accessing-items-in-a-tagged-cache"></a>
+### Accessing Items In A Tagged Cache
+
+To access a tagged cache, pass the same ordered list of tags used to save it.
+
+	$anne = Cache::tags('people', 'artists')->get('Anne');
+
+	$john = Cache::tags(['people', 'authors'])->get('John');
+
+You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
+
+	Cache::tags('people', 'authors')->flush();
+
+In contrast, this statement would remove only caches tagged with `authors`, so "John" would be removed, but not "Anne".
+
+	Cache::tags('authors')->flush();
+	
+<a name="cache-events"></a>
+## Cache Events
+
+To execute code on every cache operation, you may listen for the events fired by the cache:
+
+	Event::listen('cache.hit', function($key, $value) {
+		//
+	});
+
+	Event::listen('cache.missed', function($key) {
+		//
+	});
+
+	Event::listen('cache.write', function($key, $value, $minutes) {
+		//
+	});
+
+	Event::listen('cache.delete', function($key) {
+		//
+	});
