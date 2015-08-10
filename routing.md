@@ -183,7 +183,7 @@ If the route defines parameters, you may pass the parameters as the second argum
 <a name="route-groups"></a>
 ## Route Groups
 
-Route groups allow you to share route attributes, such as middleware or namespaces, across a large number of routes without needing to define those attributes on each individual routes. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
+Route groups allow you to share route attributes, such as middleware or namespaces, across a large number of routes without needing to define those attributes on each individual route. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
 
 To learn more about route groups, we'll walk through several common use-cases for the feature.
 
@@ -269,7 +269,7 @@ Of course, using the Blade [templating engine](/docs/{{version}}/blade):
 
     {!! csrf_field() !!}
 
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify token in the request input matches the token stored in the session.
+You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify that the token in the request input matches the token stored in the session.
 
 <a name="csrf-excluding-uris"></a>
 ### Excluding URIs From CSRF Protection
