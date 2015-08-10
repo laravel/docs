@@ -19,7 +19,7 @@
 
 #### 錯誤細節
 
-你的應用程式透過 `config/app.php` 設定檔中的 `debug` 設定選項來控制瀏覽器顯示錯誤的細節。預設情況下，此設定選項是參照於儲存在 `.env` 檔案的 `App_DEBUG` 環境變數。
+你的應用程式透過 `config/app.php` 設定檔中的 `debug` 設定選項來控制瀏覽器顯示錯誤的細節。預設情況下，此設定選項是參照於儲存在 `.env` 檔案的 `APP_DEBUG` 環境變數。
 
 在本機開發的時候，你應該將 `APP_DEBUG` 環境變數設定為 `true`。在你的上線環境中，這個值應該永遠為 `false`。
 
@@ -52,9 +52,9 @@ Laravel 提供立即可用的 `single`、`daily`、`syslog` 和 `errorlog` 日�
 例如，如果你需要以不同的方式報告不同類型的例外，你可以使用 PHP `instanceof` 比較運算子：
 
     /**
-     * 報告或記錄的例外。
+     * 報告或記錄一個例外。
      *
-     * 這裡有許多問題傳送到例外至 Sentry、Bugsnag 等等。
+     * 這裡是個把例外送至 Sentry、Bugsnag 等等的好地方。
      *
      * @param  \Exception  $e
      * @return void
@@ -68,7 +68,7 @@ Laravel 提供立即可用的 `single`、`daily`、`syslog` 和 `errorlog` 日�
         return parent::report($e);
     }
 
-#### 忽略例外的類型
+#### 藉由類型忽略例外
 
 例外處理中的 `$dontReport` 屬性是一個陣列，包含不需要被記錄的例外類型。預設情況下，由 404 錯誤導致的例外結果並不會被記錄到日誌檔案。你可以根據你的需求增加其他例外類型到這個陣列。
 
@@ -109,7 +109,7 @@ Laravel 提供立即可用的 `single`、`daily`、`syslog` 和 `errorlog` 日�
 <a name="custom-http-error-pages"></a>
 ### 客製化 HTTP 錯誤頁面
 
-Laravel 讓你可以簡單的對於各種不同的 HTTP 狀態碼回傳客製化的錯誤視圖。例如，如果你想要自訂 HTTP 404 狀態碼的錯誤視圖， 建立一個 `resources/views/errors/404.blade.php`。應用程式將會使用這個視圖處理所有發生的 404 錯誤。
+Laravel 讓你可以簡單的對於各種不同的 HTTP 狀態碼回傳客製化的錯誤視圖。例如，如果你想要自訂 HTTP 404 狀態碼的錯誤視圖，建立一個 `resources/views/errors/404.blade.php`。應用程式將會使用這個視圖處理所有發生的 404 錯誤。
 
 在這個目錄下的視圖，命名應該匹配對應到 HTTP 狀態碼。
 
@@ -129,7 +129,7 @@ Laravel 日誌工具在強大的 [Monolog](http://github.com/seldaek/monolog) �
     class UserController extends Controller
     {
         /**
-         * 顯示給定使用者的設定檔。
+         * 顯示給定使用者的個人資料。
          *
          * @param  int  $id
          * @return Response
