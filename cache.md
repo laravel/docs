@@ -290,7 +290,7 @@ You may flush all items that are assigned a tag or list of tags. For example, th
 
 	Cache::tags(['people', 'authors'])->flush();
 
-In contrast, this statement would remove only caches tagged with `authors`, so `John` would be removed, but not `Anne`.
+In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`.
 
 	Cache::tags('authors')->flush();
 
