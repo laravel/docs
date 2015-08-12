@@ -710,7 +710,7 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 
 The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/testing#model-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
 
-    $user = factory('App\User')->make();
+    $user = factory(App\User::class)->make();
 
 <a name="method-method-field"></a>
 #### `method_field()` {#collection-method}
