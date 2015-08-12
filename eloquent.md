@@ -211,7 +211,7 @@ If the exception is not caught, a `404` HTTP response is automatically sent back
 <a name="retrieving-aggregates"></a>
 ### Retrieving Aggregates
 
-Of course, you may also use the query builder aggregate functions such as `count`, `sum`, `max`, and the other aggregate functions provided by the [query builder](/docs/{{version}}/queries). These methods return the appropriate scalar value instead of a full model instance:
+Of course, you may also use `count`, `sum`, `max`, and other [aggregate functions](/docs/{{version}}/queries#aggregates) provided by the [query builder](/docs/{{version}}/queries). These methods return the appropriate scalar value instead of a full model instance:
 
     $count = App\Flight::where('active', 1)->count();
 
