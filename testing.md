@@ -216,7 +216,7 @@ Of course, one common use of the session is for maintaining user state, such as 
     {
         public function testApplication()
         {
-            $user = factory('App\User')->create();
+            $user = factory(App\User::class)->create();
 
             $this->actingAs($user)
                  ->withSession(['foo' => 'bar'])
