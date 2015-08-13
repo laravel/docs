@@ -153,11 +153,22 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
     }
 
-Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`:
 
     Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
         //
     }]);
+
+Multiple parameters should be delimited by commas and as PHP 5.6 using variable-length argument lists `...`, you can treat `$grantedRole` as array:
+
+    public function handle($request, Closure $next, ...$grantedRole)
+    {
+        if (! in_array($request->user()->getRole(), $grantedRole)) {
+            // Redirect...
+        }
+
+        return $next($request);
+    }
 
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
