@@ -130,7 +130,7 @@ You may also pass arguments to the `environment` method to check if the environm
         // The environment is either local OR staging...
     }
 
-An application instance may also be accessed via the `app` helper method:
+An environment instance may also be accessed via the `app` helper method:
 
     $environment = app()->environment();
 
