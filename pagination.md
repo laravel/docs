@@ -129,8 +129,8 @@ You may also access additional pagination information via the following methods 
 - `$results->hasMorePages()`
 - `$results->lastPage() (Not available when using simplePaginate)`
 - `$results->nextPageUrl()`
-- `$results->previousPageUrl()`
 - `$results->perPage()`
+- `$results->previousPageUrl()`
 - `$results->total() (Not available when using simplePaginate)`
 - `$results->url($page)`
 
