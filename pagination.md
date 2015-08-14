@@ -130,6 +130,7 @@ You may also access additional pagination information via the following methods 
 - `$results->lastPage() (Not available when using simplePaginate)`
 - `$results->nextPageUrl()`
 - `$results->perPage()`
+- `$results->previousPageUrl()`
 - `$results->total() (Not available when using simplePaginate)`
 - `$results->url($page)`
 
