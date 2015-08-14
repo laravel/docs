@@ -549,6 +549,10 @@ Of course, you will need to define routes to your controller methods:
         Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
         Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
+A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+
+    return Socialite::driver('google')
+                ->with(['hd' => 'example.com'])->redirect();
 
 #### Retrieving User Details
 
