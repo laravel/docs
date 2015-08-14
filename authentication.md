@@ -544,16 +544,15 @@ The `redirect` method takes care of sending the user to the OAuth provider, whil
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
 
-A number of OAuth2 providers also have support for optional parameters that are sent in the redirect request. To include any optional parameters in the redirect, set "parameters" with an associative array on the request using the parameter method:
-
-    return Socialite::driver('google')
-                ->parameters(['hd' => 'example.com'])->redirect();
-
 Of course, you will need to define routes to your controller methods:
 
         Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
         Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
+A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+
+    return Socialite::driver('google')
+                ->with(['hd' => 'example.com'])->redirect();
 
 #### Retrieving User Details
 
