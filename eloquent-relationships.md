@@ -546,7 +546,7 @@ You may query the `posts` relationship and add additional constraints to the rel
 
     $user->posts()->where('active', 1)->get();
 
-Note that you are able to use any of the [query builder](/docs/{{version}}/queries) on the relationship!
+Note that you are able to use any of the [query builder](/docs/{{version}}/queries) methods on the relationship!
 
 #### Relationship Methods Vs. Dynamic Properties
 
