@@ -819,7 +819,7 @@ The `sort` method sorts the collection:
 
     // [1, 2, 3, 4, 5]
 
-The sorted collection keeps the original array keys. In this example we used the [`values`](#method-values) method to reset the keys to consecutively numbered indexes.
+The sorted collection keeps the original array keys. In this example, we used the [`values`](#method-values) method to reset the keys to consecutively numbered indexes.
 
 For sorting a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.
 
@@ -848,7 +848,7 @@ The `sortBy` method sorts the collection by the given key:
         ]
     */
 
-The sorted collection keeps the original array keys. In this example we used the [`values`](#method-values) method to reset the keys to consecutively numbered indexes.
+The sorted collection keeps the original array keys. In this example, we used the [`values`](#method-values) method to reset the keys to consecutively numbered indexes.
 
 You can also pass your own callback to determine how to sort the collection values:
 
@@ -1037,7 +1037,7 @@ The `unique` method returns all of the unique items in the collection:
 
     // [1, 2, 3, 4]
 
-The returned collection keeps the original array keys. In this example we used the [`values`](#method-values) method to reset the keys to consecutively numbered indexes.
+The returned collection keeps the original array keys. In this example, we used the [`values`](#method-values) method to reset the keys to consecutively numbered indexes.
 
 When dealing with nested arrays or objects, you may specify the key used to determine uniqueness:
 

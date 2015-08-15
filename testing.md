@@ -419,7 +419,7 @@ You may also create a Collection of many models or create models of a given type
 
 #### Persisting Factory Models
 
-The `create` method not only creates the model instances, but also saves them to the database using Eloquent's `save` method:
+The `create` method not only creates the model instances but also saves them to the database using Eloquent's `save` method:
 
     public function testDatabase()
     {
@@ -452,7 +452,7 @@ You may even persist multiple models to the database. In this example, we'll eve
 
 If you are making heavy use of Laravel's event system, you may wish to silence or mock certain events while testing. For example, if you are testing user registration, you probably do not want all of a `UserRegistered` event's handlers firing, since these may send "welcome" e-mails, etc.
 
-Laravel provides a convenient `expectsEvents` method that verifies the expected events are fired, but prevents any handlers for those events from running:
+Laravel provides a convenient `expectsEvents` method that verifies the expected events are fired but prevents any handlers for those events from running:
 
     <?php
 

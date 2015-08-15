@@ -81,7 +81,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
 The `create` method will automatically create the Stripe subscription, as well as update your database with Stripe customer ID and other relevant billing information. If your plan has a trial configured in Stripe, the trial end date will also automatically be set on the user record.
 
-In you want to implement trial periods, but are managing the trials entirely within your application instead of defining them within Stripe, you must manually set the trial end date:
+In you want to implement trial periods but are managing the trials entirely within your application instead of defining them within Stripe, you must manually set the trial end date:
 
     $user->trial_ends_at = Carbon::now()->addDays(14);
 
@@ -146,7 +146,7 @@ To determine if the user was once an active subscriber, but has cancelled their 
         //
     }
 
-You may also determine if a user has cancelled their subscription, but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time.
+You may also determine if a user has cancelled their subscription but are still on their "grace period" until the subscription fully expires. For example, if a user cancels a subscription on March 5th that was originally scheduled to expire on March 10th, the user is on their "grace period" until March 10th. Note that the `subscribed` method still returns `true` during this time.
 
     if ($user->onGracePeriod()) {
         //
@@ -199,7 +199,7 @@ For more information on subscription quantities, consult the [Stripe documentati
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
 
-With Cashier, it's easy to provide the `tax_percent` value sent to Stripe. To specify the tax percentage a user pays on a subscription, implement the `getTaxPercent` method on your billable model, and return a numeric value between 0 and 100, with no more than 2 decimal places.
+With Cashier, it's easy to provide the `tax_percent` value sent to Stripe. To specify the tax percentage a user pays on a subscription, implement the `getTaxPercent` method on your billable model and return a numeric value between 0 and 100, with no more than 2 decimal places.
 
     public function getTaxPercent() {
         return 20;

@@ -10,7 +10,7 @@
 
 Laravel's localization features provide a convenient way to retrieve strings in various languages, allowing you to easily support multiple languages within your application.
 
-Language strings are stored in files within the `resources/lang` directory. Within this directory there should be a subdirectory for each language supported by the application:
+Language strings are stored in files within the `resources/lang` directory. Within this directory, there should be a subdirectory for each language supported by the application:
 
     /resources
         /lang
@@ -84,4 +84,4 @@ Since the Laravel translator is powered by the Symfony Translation component, yo
 
 Some packages may ship with their own language files. Instead of hacking the package's core files to tweak these lines, you may override them by placing your own files in the `resources/lang/vendor/{package}/{locale}` directory.
 
-So, for example, if you need to override the English language lines in `messages.php` for a package named `skyrim/hearthfire`, you would place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. In this file you should only define the language lines you wish to override. Any language lines you don't override will still be loaded from the package's original language files.
+So, for example, if you need to override the English language lines in `messages.php` for a package named `skyrim/hearthfire`, you would place a language file at: `resources/lang/vendor/hearthfire/en/messages.php`. In this file, you should only define the language lines you wish to override. Any language lines you don't override will still be loaded from the package's original language files.

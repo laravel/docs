@@ -378,7 +378,7 @@ To get started, verify that your `App\User` model implements the `Illuminate\Con
 
 #### Generating The Reset Token Table Migration
 
-Next, a table must be created to store the password reset tokens. The migration for this table is included with Laravel out of the box, and resides in the `database/migrations` directory. So, all you need to do is migrate:
+Next, a table must be created to store the password reset tokens. The migration for this table is included with Laravel out of the box and resides in the `database/migrations` directory. So, all you need to do is migrate:
 
     php artisan migrate
 
