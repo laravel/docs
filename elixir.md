@@ -197,7 +197,7 @@ elixir(function(mix) {
 <a name="browserify"></a>
 ### Browserify
 
-Elixir also ships with a `browserify` method, which gives you all the benefits of  requiring modules in the browser and using EcmaScript 6.
+Elixir also ships with a `browserify` method, which gives you all the benefits of requiring modules in the browser and using EcmaScript 6.
 
 This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/bundle.js`:
 
