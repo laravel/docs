@@ -314,7 +314,7 @@ elixir(function(mix) {
 });
 ```
 
-Once the files have been versioned, you may use the `elixir` helper function to generate links to the proper hashed files. Remember, you only need to pass the name of the un-hashed file to the `elixir` helper function. The helper will use the un-hashed name to determine the current hashed version of the file:
+Once the files have been versioned, you may use the `elixir` helper function to generate links to the proper hashed files. Remember, you only need to pass the name of the unhashed file to the `elixir` helper function. The helper will use the unhashed name to determine the current hashed version of the file:
 
     <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 

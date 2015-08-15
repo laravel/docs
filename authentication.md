@@ -475,7 +475,7 @@ After the password is reset, the user will automatically be logged into the appl
 <a name="social-authentication"></a>
 ## Social Authentication
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, LinkedIn, Google, GitHub and Bitbucket.
+In addition to typical, form-based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, LinkedIn, Google, GitHub and Bitbucket.
 
 To get started with Socialite, add to your `composer.json` file as a dependency:
 

@@ -56,11 +56,11 @@ If the specified language line does not exist, the `trans` function will simply 
 
 #### Replacing Parameters In Language Lines
 
-If you wish, you may define place-holders in your language lines. All place-holders are prefixed with a `:`. For example, you may define a welcome message with a place-holder name:
+If you wish, you may define placeholders in your language lines. All placeholders are prefixed with a `:`. For example, you may define a welcome message with a place-holder name:
 
     'welcome' => 'Welcome, :name',
 
-To replace the place-holders when retrieving a language line, pass an array of replacements as the second argument to the `trans` function:
+To replace the placeholders when retrieving a language line, pass an array of replacements as the second argument to the `trans` function:
 
     echo trans('messages.welcome', ['name' => 'Dayle']);
 

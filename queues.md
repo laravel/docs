@@ -18,7 +18,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-The Laravel queue service provides a unified API across a variety of different queue back-ends. Queues allow you to defer the processing of a time consuming task, such as sending an e-mail, until a later time which drastically speeds up web requests to your application.
+The Laravel queue service provides a unified API across a variety of different queue back-ends. Queues allow you to defer the processing of a time-consuming task, such as sending an e-mail, until a later time which drastically speeds up web requests to your application.
 
 <a name="configuration"></a>
 ### Configuration
@@ -361,7 +361,7 @@ For more information on configuring and using Supervisor, consult the [Superviso
 <a name="daemon-queue-listener"></a>
 ### Daemon Queue Listener
 
-The `queue:work` Artisan command includes a `--daemon` option for forcing the queue worker to continue processing jobs without ever re-booting the framework. This results in a significant reduction of CPU usage when compared to the `queue:listen` command:
+The `queue:work` Artisan command includes a `--daemon` option for forcing the queue worker to continue processing jobs without ever rebooting the framework. This results in a significant reduction of CPU usage when compared to the `queue:listen` command:
 
 To start a queue worker in daemon mode, use the `--daemon` flag:
 
@@ -442,7 +442,7 @@ If you would like to register an event that will be called when a queued job fai
 
 #### Failed Method On Job Classes
 
-For more granular control, you may define a `failed` method directly on a queue job class, allowing you to perform job specific actions when a failure occurs:
+For more granular control, you may define a `failed` method directly on a queue job class, allowing you to perform job-specific actions when a failure occurs:
 
     <?php
 

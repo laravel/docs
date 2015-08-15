@@ -39,7 +39,7 @@ Two of the primary benefits of using Blade are _template inheritance_ and _secti
         </body>
     </html>
 
-As you can see, this file contains typical HTML mark-up. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
+As you can see, this file contains typical HTML markup. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
 
 Now that we have defined a layout for our application, let's define a child page that inherits the layout.
 
@@ -124,7 +124,7 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmle
 <a name="control-structures"></a>
 ## Control Structures
 
-In addition to template inheritance and displaying data, Blade also provides convenient short-cuts for common PHP control structures, such as conditional statements and loops. These short-cuts provide a very clean, terse way of working with PHP control structures, while also remaining familiar to their PHP counterparts.
+In addition to template inheritance and displaying data, Blade also provides convenient shortcuts for common PHP control structures, such as conditional statements and loops. These shortcuts provide a very clean, terse way of working with PHP control structures while also remaining familiar to their PHP counterparts.
 
 #### If Statements
 
