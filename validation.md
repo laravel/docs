@@ -37,7 +37,7 @@ First, let's assume we have the following routes defined in our `app/Http/routes
     // Store a new blog post...
     Route::post('post', 'PostController@store');
 
-Of course, the `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
+Of course, the `GET` route will display a form for the user to create a new blog post while the `POST` route will store the new blog post in the database.
 
 <a name="quick-creating-the-controller"></a>
 ### Creating The Controller

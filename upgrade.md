@@ -292,7 +292,7 @@ Then, copy your list of Artisan commands from `start/artisan.php` into the `comm
 
 ### Database Migrations & Seeds
 
-Delete the two migrations included with Laravel 5.0, since you should already have the users table in your database.
+Delete the two migrations included with Laravel 5.0 since you should already have the users table in your database.
 
 Move all of your migration classes from the old `app/database/migrations` directory to the new `database/migrations`. All of your seeds should be moved from `app/database/seeds` to `database/seeds`.
 

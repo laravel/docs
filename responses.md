@@ -116,7 +116,7 @@ The `download` method may be used to generate a response that forces the user's 
 <a name="redirects"></a>
 ## Redirects
 
-Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL. There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the global `redirect` helper method:
+Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class and contain the proper headers needed to redirect the user to another URL. There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the global `redirect` helper method:
 
     Route::get('dashboard', function () {
         return redirect('home/dashboard');
@@ -207,6 +207,6 @@ For example, from a [service provider's](/docs/{{version}}/providers) `boot` met
         }
     }
 
-The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `ResponseFactory` implementation or the `response` helper:
+The `macro` function accepts a name as its first argument and a Closure as its second. The macro's Closure will be executed when calling the macro name from a `ResponseFactory` implementation or the `response` helper:
 
     return response()->caps('foo');
