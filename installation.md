@@ -30,9 +30,7 @@ You may also install Laravel by issuing the Composer `create-project` command in
 
 	composer create-project laravel/laravel {directory} "~5.0.0" --prefer-dist
 
-Once installed, you should upgrade to the latest packages. First, remove `{directory}/vendor/compiled.php` file.
-
-Then, change your current directory to `{directory}` and issue `composer update` command in your terminal.
+Once installed, you should upgrade to the latest packages. First, remove `{directory}/vendor/compiled.php` file then change your current directory to `{directory}` and issue `composer update` command.
 
 ### Scaffolding
 
