@@ -32,7 +32,7 @@ The easiest way to create a model instance is using the `make:model` [Artisan co
 
     php artisan make:model User
 
-If you would like to generate a [database migration](/docs/{{version}}/schema#database-migrations) when you generate the model, you may use the `--migration` or `-m` option:
+If you would like to generate a [database migration](/docs/{{version}}/migrations) when you generate the model, you may use the `--migration` or `-m` option:
 
     php artisan make:model User --migration
 
@@ -120,7 +120,7 @@ If you need to customize the format of your timestamps, set the `$dateFormat` pr
 <a name="retrieving-multiple-models"></a>
 ## Retrieving Multiple Models
 
-Once you have created a model and [its associated database table](/docs/{{version}}/schema), you are ready to start retrieving data from your database. Think of each Eloquent model as a powerful [query builder](/docs/{{version}}/queries) allowing you to fluently query the database table associated with the model. For example:
+Once you have created a model and [its associated database table](/docs/{{version}}/migrations#writing-migrations), you are ready to start retrieving data from your database. Think of each Eloquent model as a powerful [query builder](/docs/{{version}}/queries) allowing you to fluently query the database table associated with the model. For example:
 
     <?php
 
@@ -384,7 +384,7 @@ In addition to actually removing records from your database, Eloquent can also "
         protected $dates = ['deleted_at'];
     }
 
-Of course, you should add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/schema) contains a helper method to create this column:
+Of course, you should add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
     Schema::table('flights', function ($table) {
         $table->softDeletes();

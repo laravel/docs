@@ -43,7 +43,7 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
          * @var array
          */
         protected $commands = [
-            'App\Console\Commands\Inspire',
+            \App\Console\Commands\Inspire::class,
         ];
 
         /**
@@ -83,7 +83,7 @@ Method  | Description
 `->hourly();`  |  Run the task every hour
 `->daily();`  |  Run the task every day at midnight
 `->dailyAt('13:00');`  |  Run the task every day at 13:00
-`->twiceDaily();`  |  Run the task daily at 1:00 & 13:00
+`->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
 `->weekly();`  |  Run the task every week
 `->monthly();`  |  Run the task every month
 

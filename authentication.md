@@ -129,6 +129,8 @@ When a user is not successfully authenticated, they will be redirected to the `/
 
     protected $loginPath = '/login';
 
+The `loginPath` will not change where a user is bounced if they try to access a protected route. That is controlled by the `App\Http\Middleware\Authenticate` middleware's `handle` method.
+
 #### Customizations
 
 To modify the form fields that are required when a new user registers with your application, or to customize how new user records are inserted into your database, you may modify the `AuthController` class. This class is responsible for validating and creating new users of your application.
@@ -438,14 +440,17 @@ Here is a sample password reset form to get you started:
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div>
+            Email
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
 
         <div>
+            Password
             <input type="password" name="password">
         </div>
 
         <div>
+            Confirm Password
             <input type="password" name="password_confirmation">
         </div>
 
@@ -506,6 +511,7 @@ Next, you are ready to authenticate users! You will need two routes: one for red
 
     namespace App\Http\Controllers;
 
+    use Socialite;
     use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
@@ -540,11 +546,13 @@ The `redirect` method takes care of sending the user to the OAuth provider, whil
 
 Of course, you will need to define routes to your controller methods:
 
-    <?php
-
         Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
         Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
+A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+
+    return Socialite::driver('google')
+                ->with(['hd' => 'example.com'])->redirect();
 
 #### Retrieving User Details
 
@@ -631,15 +639,15 @@ The `retrieveById` function typically receives a key representing the user, such
 
 The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, stored in a field `remember_token`. As with the previous method, the `Authenticatable` implementation should be returned.
 
-The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. The new token can be either a fresh token, assigned on successful "remember me" login attempt, or a null when user is logged out.
+The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. The new token can be either a fresh token, assigned on a successful "remember me" login attempt, or a null when the user is logged out.
 
 The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to sign into an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition on `$credentials['username']`. The method should then return an implementation of `UserInterface`. **This method should not attempt to do any password validation or authentication.**
 
-The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`. This method should only validate the user's credentials and return boolean.
+The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`. This method should only validate the user's credentials and return a boolean.
 
 ### The Authenticatable Contract
 
-Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable`. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
+Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
 
     <?php
 

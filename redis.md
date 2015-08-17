@@ -73,7 +73,7 @@ Of course, as mentioned above, you may call any of the Redis commands on the `Re
 
 Alternatively, you may also pass commands to the server using the `command` method, which accepts the name of the command as its first argument, and an array of values as its second argument:
 
-    $values = Redis::command('lrange', [5, 10]);
+    $values = Redis::command('lrange', ['name', 5, 10]);
 
 #### Using Multiple Redis Connections
 

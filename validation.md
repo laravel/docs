@@ -448,6 +448,7 @@ Below is a list of all available validation rules and their function:
 - [In](#rule-in)
 - [Integer](#rule-integer)
 - [IP Address](#rule-ip)
+- [JSON](#rule-json)
 - [Max](#rule-max)
 - [MIME Types (File)](#rule-mimes)
 - [Min](#rule-min)
@@ -599,6 +600,11 @@ The field under validation must be an integer.
 #### ip
 
 The field under validation must be an IP address.
+
+<a name="rule-json"></a>
+#### json
+
+The field under validation must a valid JSON string.
 
 <a name="rule-max"></a>
 #### max:_value_

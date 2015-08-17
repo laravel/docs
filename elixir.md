@@ -13,6 +13,7 @@
     - [Browserify](#browserify)
     - [Babel](#babel)
     - [Scripts](#javascript)
+- [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [Calling Existing Gulp Tasks](#calling-existing-gulp-tasks)
 - [Writing Elixir Extensions](#writing-elixir-extensions)
@@ -98,7 +99,7 @@ elixir(function(mix) {
     mix.less([
         'app.less',
         'controllers.less'
-    ], 'public/assets/css');
+    ]);
 });
 ```
 
@@ -134,16 +135,6 @@ elixir(function(mix) {
         'app.scss',
         'controllers.scss'
     ], 'public/assets/css');
-});
-```
-
-#### Ruby Sass
-
-Under the hood, Elixir uses the LibSass library for compilation. In some instances, it may be advantageous to leverage the Ruby version which, though slower, is more feature rich. Assuming that you have both Ruby and the Sass gem installed (`gem install sass`), you may use the Ruby compiler like so:
-
-```javascript
-elixir(function(mix) {
-    mix.rubySass('app.scss');
 });
 ```
 
@@ -195,7 +186,7 @@ Elixir also provides several functions to help you work with your JavaScript fil
 <a name="coffeescript"></a>
 ### CoffeeScript
 
-The `coffee` method may be used to compile [CoffeeScript](http://coffeescript.org/) into plain JavaScript. The `coffee` function accepts an array of CoffeeScript files relative to the `resources/assets/coffee` directory and generates a single `app.js` file in the `public/js` directory:
+The `coffee` method may be used to compile [CoffeeScript](http://coffeescript.org/) into plain JavaScript. The `coffee` function accepts a string or array of CoffeeScript files relative to the `resources/assets/coffee` directory and generates a single `app.js` file in the `public/js` directory:
 
 ```javascript
 elixir(function(mix) {
@@ -206,20 +197,35 @@ elixir(function(mix) {
 <a name="browserify"></a>
 ### Browserify
 
-Elixir also ships with a `browserify` method, which gives you all the benefits of  requiring modules in the browser and using EcmaScript 6.
+Elixir also ships with a `browserify` method, which gives you all the benefits of requiring modules in the browser and using ECMAScript 6.
 
 This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/bundle.js`:
 
 ```javascript
 elixir(function(mix) {
-    mix.browserify('index.js');
+    mix.browserify('main.js');
+});
+```
+
+While Browserify ships with the Partialify and Babelify transformers, you're free to install and add more if you wish:
+
+    npm install vueify --save-dev
+
+```javascript
+elixir.config.js.browserify.transformers.push({
+    name: 'vueify',
+    options: {}
+});
+
+elixir(function(mix) {
+    mix.browserify('main.js');
 });
 ```
 
 <a name="babel"></a>
 ### Babel
 
-The `babel` method may be used to compile [EcmaScript 6 and 7](https://babeljs.io/docs/learn-es2015/) into plain JavaScript. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single `all.js` file in the `public/js` directory:
+The `babel` method may be used to compile [ECMAScript 6 and 7](https://babeljs.io/docs/learn-es2015/) into plain JavaScript. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single `all.js` file in the `public/js` directory:
 
 ```javascript
 elixir(function(mix) {
@@ -263,6 +269,21 @@ If you need to combine all of the scripts in a given directory, you may use the 
 ```javascript
 elixir(function(mix) {
     mix.scriptsIn('public/js/some/directory');
+});
+```
+
+<a name="copying-files-and-directories"></a>
+## Copying Files & Directories
+
+The `copy` method may be used to copy files and directories to new locations. All operations are relative to the project's root directory:
+
+```javascript
+elixir(function(mix) {
+	mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
+});
+
+elixir(function(mix) {
+	mix.copy('vendor/package/views', 'resources/views');
 });
 ```
 
@@ -340,20 +361,22 @@ If you need more flexibility than Elixir's `task` method can provide, you may cr
 
 var gulp = require('gulp');
 var shell = require('gulp-shell');
-var elixir = require('laravel-elixir');
+var Elixir = require('laravel-elixir');
 
-elixir.extend('speak', function(message) {
+var Task = Elixir.Task;
 
-    gulp.task('speak', function() {
-        gulp.src('').pipe(shell('say ' + message));
+Elixir.extend('speak', function(message) {
+
+    new Task('speak', function() {
+        return gulp.src('').pipe(shell('say ' + message));
     });
 
-    return this.queueTask('speak');
+});
 
- });
+// mix.speak('Hello World');
 ```
 
-That's it! You may either place this at the top of your Gulpfile, or instead extract it to a custom tasks file. For example, if you place your extensions in `elixir-extensions.js`, you may require the file from your main `Gulpfile` like so:
+That's it! Notice that your Gulp-specific logic should be placed within the function passed as the second argument to the `Task` constructor. You may either place this at the top of your Gulpfile, or instead extract it to a custom tasks file. For example, if you place your extensions in `elixir-extensions.js`, you may require the file from your main `Gulpfile` like so:
 
 ```javascript
 // File: Gulpfile.js
@@ -372,7 +395,8 @@ elixir(function(mix) {
 If you would like your custom task to be re-triggered while running `gulp watch`, you may register a watcher:
 
 ```javascript
-this.registerWatcher('speak', 'app/**/*.php');
-
-return this.queueTask('speak');
+new Task('speak', function() {
+    return gulp.src('').pipe(shell('say ' + message));
+})
+.watch('./app/**');
 ```
