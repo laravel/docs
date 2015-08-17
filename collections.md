@@ -236,6 +236,23 @@ Return `false` from your callback to break out of the loop:
         }
     });
 
+<a name="method-every"></a>
+#### `every()` {#collection-method}
+
+The `every` method creates a new collection consisting of every n-th element:
+
+    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+
+    $collection->every(4);
+
+    // ['a', 'e']
+
+You may optionally pass offset as the second argument:
+
+    $collection->every(4,1 );
+
+    // ['b', 'f']
+
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
 
