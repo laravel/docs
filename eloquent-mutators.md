@@ -1,23 +1,23 @@
-# Eloquent: Mutators
+# Eloquent：修改器
 
-- [Introduction](#introduction)
-- [Accessors & Mutators](#accessors-and-mutators)
-- [Date Mutators](#date-mutators)
-- [Attribute Casting](#attribute-casting)
+- [簡介](#introduction)
+- [存取器和修改器](#accessors-and-mutators)
+- [日期轉換器](#date-mutators)
+- [屬性型別轉換](#attribute-casting)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Accessors and mutators allow you to format Eloquent attributes when retrieving them from a model or setting their value. For example, you may want to use the [Laravel encrypter](/docs/{{version}}/encryption) to encrypt a value while it is stored in the database, and then automatically decrypt the attribute when you access it on an Eloquent model.
+當你從模型取得集合或是設定他們的值，存取器和修改器可以讓你格式化 Eloquent 屬性。例如，你可能想使用 [Laravel 加密](/docs/{{version}}/encryption)來加密一個值而同時儲存在資料庫中，然後當你從一個 Eloquent 模型存取時可以自動的解密該屬性。
 
-In addition to custom accessors and mutators, Eloquent can also automatically cast date fields to [Carbon](https://github.com/briannesbitt/Carbon) instances or even [cast text fields to JSON](#attribute-casting).
+除了在自訂的存取器和修改器外，Eloquent 會自動將日期欄位型別轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 實例或甚至可以將 [文字欄位型別轉換成 JSON](#attribute-casting)。
 
 <a name="accessors-and-mutators"></a>
-## Accessors & Mutators
+## 存取器和修改器
 
-#### Defining An Accessor
+#### 定義一個存取器
 
-To define an accessor, create a `getFooAttribute` method on your model where `Foo` is the "camel" cased name of the column you wish to access. In this example, we'll defined an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of `first_name`:
+若要定義一個存取器，在你的模型建立一個 `getFooAttribute` 方法，而且你希望存取的 `Foo` 欄位是一個「駝峰式」大小寫的命名。在這個範例中，我們將對 `first_name` 屬性定義一個存取器。當 Eloquent 嘗試取得 `first_name` 的數值時，存取器將會自動的被呼叫：
 
     <?php
 
@@ -39,15 +39,15 @@ To define an accessor, create a `getFooAttribute` method on your model where `Fo
         }
     }
 
-As you can see, the original value of the column is passed to the accessor, allowing you to manipulate and return the value. To access the value of the mutator, you may simply access the `first_name` attribute:
+如你所見的，原始欄位的值已經傳送給存取器，讓你可以操作和回傳數值。如果要存取被修改的值，你可以簡單的存取 `first_name` 屬性：
 
     $user = App\User::find(1);
 
     $firstName = $user->first_name;
 
-#### Defining A Mutator
+#### 定義一個修改器
 
-To define a mutator, define a `setFooAttribute` method on your model where `Foo` is the "camel" cased name of the column you wish to access. So, again, let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:
+若要定義一個修改器，在你的模型上定義一個 `setFooAttribute` 方法，而且你希望存取的 `Foo` 欄位是一個「駝峰式」大小寫的命名。所以，讓我們再一次定義 `first_name` 屬性的修改器。當我們嘗試在模型上設定 `first_name` 的數值時，修改器將會自動的被呼叫：
 
     <?php
 
@@ -69,20 +69,20 @@ To define a mutator, define a `setFooAttribute` method on your model where `Foo`
         }
     }
 
-The mutator will receive the value that is being set on the attribute, allowing you to manipulate the value and set the manipulated value on the Eloquent model's internal `$attributes` property. So, for example, if we attempt to set the `first_name` attribute to `Sally`:
+修改器會取得已經被設定的屬性數值，讓你可以在 Eloquent 模型內部操作和設定 `$attributes` 的屬性。所以，舉個例子，如果我們嘗試將 `first_name` 屬性設定成 `Sally`：
 
     $user = App\User::find(1);
 
     $user->first_name = 'Sally';
 
-In this example, the `setFirstNameAttribute` function will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its value in the internal `$attributes` array.
+在這個範例，`setFirstNameAttribute` 函式將會呼叫的值 `Sally`。修改器將會使用 `strtolower` 函式來命名數值以及設定數值到內部的 `$attributes` 陣列。
 
 <a name="date-mutators"></a>
-## Date Mutators
+## 日期轉換器
 
-By default, Eloquent will convert the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
+預設情況下，Eloquent 將會把 `created_at` 和 `updated_at` 欄位轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 的實例，提供了各式各樣的有效方法，和繼承了 PHP 原生 `DateTime` 的類別。
 
-You may customize which fields are automatically mutated, and even completely disable this mutation, by overriding the `$dates` property of your model:
+你可以在你的模型中自訂那些欄位可以自動地被修改，和甚至完全禁止被修改，只要覆寫 `$dates` 屬性：
 
     <?php
 
@@ -100,7 +100,7 @@ You may customize which fields are automatically mutated, and even completely di
         protected $dates = ['created_at', 'updated_at', 'disabled_at'];
     }
 
-When a column is considered a date, you may set its value to a UNIX timestamp, date string (`Y-m-d`), date-time string, and of course a `DateTime` / `Carbon` instance, and the date's value will automatically be correctly stored in your database:
+當某個欄位被認為是日期，你可以將數值設定成一個 UNIX 時間戳記、日期字串（`Y-m-d`）、日期時間（ date-time ）字串、當然還有 `DateTime` 或 `Carbon` 實例，然後日期數值會自動正確的儲存到你的資料庫中：
 
     $user = App\User::find(1);
 
@@ -108,13 +108,13 @@ When a column is considered a date, you may set its value to a UNIX timestamp, d
 
     $user->save();
 
-As noted above, when retrieving attributes that are listed in your `$dates` property, they will automatically be cast to [Carbon](https://github.com/briannesbitt/Carbon) instances, allowing you to use any of Carbon's methods on your attributes:
+如上面所述，在你的 `$dates` 屬性中列出取得的屬性，他們將自動轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 實例，讓你可以在你的屬性上使用任何的 Carbon 方法：
 
     $user = App\User::find(1);
 
     return $user->disabled_at->getTimestamp();
 
-If you need to customize the format of your timestamps, set the `$dateFormat` property on your model. This property determines how date attributes are stored in the database, as well as their format when the model is serialized to an array or JSON:
+如果你想要自訂你自己的時間戳記格式，在你的模型中設定 `$dateFormat` 屬性。這個屬性定義了時間屬性該如何被儲存到資料庫，以及模型被序列化成一個陣列或 JSON 時的格式：
 
     <?php
 
@@ -133,11 +133,11 @@ If you need to customize the format of your timestamps, set the `$dateFormat` pr
     }
 
 <a name="attribute-casting"></a>
-## Attribute Casting
+## 屬性型別轉換
 
-The `$casts` property on your model provides a convenient method of converting attributes to common data types. The `$casts` property should be an array where the key is the name of the attribute being cast, while the value is the type you wish to cast to the column to. The supported cast types are: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object` and `array`.
+`$casts` 屬性在你的模型中提供了方便的方法將屬性轉換為常見的資料類型。`$casts` 屬性應該是一個陣列，而且關鍵是在那些名稱需要被轉換，而這些數值類型是你想要轉換的欄位。支援的型別轉換的類型有：`integer`、`real`、`float`、`double`、`string`、`boolean`、`object` 和 `array`。
 
-For example, let's cast the `is_admin` attribute, which is stored in our database as an integer (`0` or `1`) to a boolean value:
+例如，讓我們轉換 `is_admin` 屬性，這是在我們的資料庫中儲存整數（0 或 1）為布林值：
 
     <?php
 
@@ -157,7 +157,7 @@ For example, let's cast the `is_admin` attribute, which is stored in our databas
         ];
     }
 
-Now the `is_admin` attribute will always be cast to a boolean when you access it, even if the underlying value is stored in the database as an integer:
+現在當你存取 `is_admin` 屬性將會被轉換成布林值，即使儲存在資料庫的底層數值是一個整數：
 
     $user = App\User::find(1);
 
@@ -165,9 +165,9 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
         //
     }
 
-#### Array Casting
+#### 陣列型別轉換
 
-The `array` cast type is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
+如果原本欄位是被儲存的為序列化的 JSON 時，那麼 `array` 型別轉換將會非常有用。例如，如果你的資料庫有一個 `TEXT` 類型包含了序列化的 JSON，當你存取你的 Eloquent 模型時，通過增加 `array` 型別轉換， 當取得這個屬性的時候會自動反序列化成 PHP 的陣列：
 
     <?php
 
@@ -187,7 +187,7 @@ The `array` cast type is particularly useful when working with columns that are 
         ];
     }
 
-Once the cast is defined, you may access the `options` attribute and it will automatically be deserialized from JSON into a PHP array. When you set the value of the `options` attribute, the given array will automatically be serialized back into JSON for storage:
+一旦型別轉換被定義，你可以存取 `options` 屬性而且它會自動地從 JSON 反序列化成一個 PHP 陣列。當你設定 `options` 屬性的值，給定的陣列將會自動的序列化變回成 JSON 再儲存：
 
     $user = App\User::find(1);
 
