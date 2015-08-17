@@ -236,6 +236,34 @@ Return `false` from your callback to break out of the loop:
         }
     });
 
+<a name="method-even"></a>
+#### `even()` {#collection-method}
+
+The `even` method creates a new collection consisting of the even elements:
+
+    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+
+    $collection->even();
+
+    // ['a', 'c', 'e']
+
+<a name="method-every"></a>
+#### `every()` {#collection-method}
+
+The `every` method creates a new collection consisting of every n-th element:
+
+    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+
+    $collection->every(4);
+
+    // ['a', 'e']
+
+You may optionally pass offset as the second argument:
+
+    $collection->every(4,1 );
+
+    // ['b', 'f']
+
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
 
@@ -566,6 +594,17 @@ If the given array's keys are numeric, the values will be appended to the end of
     $merged->all();
 
     // ['Desk', 'Chair', 'Bookcase', 'Door']
+
+<a name="method-odd"></a>
+#### `odd()` {#collection-method}
+
+The `odd` method creates a new method consisting of the odd elements:
+
+    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+
+    $collection->odd();
+
+    // ['b', 'd', 'f']
 
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
