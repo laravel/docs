@@ -249,7 +249,7 @@ The `every` method creates a new collection consisting of every n-th element:
 
 You may optionally pass offset as the second argument:
 
-    $collection->every(4,1 );
+    $collection->every(4, 1);
 
     // ['b', 'f']
 
