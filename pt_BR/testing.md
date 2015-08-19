@@ -451,9 +451,9 @@ Talvez você deseje persistir diversos models na base de dados. Neste exemplo n�
 <a name="mocking-events"></a>
 ### Mocking Events
 
-If you are making heavy use of Laravel's event system, you may wish to silence or mock certain events while testing. For example, if you are testing user registration, you probably do not want all of a `UserRegistered` event's handlers firing, since these may send "welcome" e-mails, etc.
+Se você está fazendo muito uso do sistema de evento do Laravel você pode desejar silenciar ou "falsificar" alguns eventos durante os testes. Por exemplo, se você está testando o cadastro de usuário você provavelmente não quer que todo os eventos de `UserRegistered` sejam acionados, como envio de emails, etc.
 
-Laravel provides a convenient `expectsEvents` method that verifies the expected events are fired, but prevents any handlers for those events from running:
+O Laravel contém um médoto chamado `expectsEvents` que verifica o acionamento do evento, mas impede qualquer execução deste evento durante os testes:
 
     <?php
 
@@ -467,7 +467,7 @@ Laravel provides a convenient `expectsEvents` method that verifies the expected 
         }
     }
 
-If you would like to prevent all event handlers from running, you may use the `withoutEvents` method:
+Se você deseja impedir todos os eventos de executarem você pode utilizar o médodo `wihoutEvents`:
 
     <?php
 
@@ -484,9 +484,9 @@ If you would like to prevent all event handlers from running, you may use the `w
 <a name="mocking-jobs"></a>
 ### Mocking Jobs
 
-Sometimes, you may wish to simply test that specific jobs are dispatched by your controllers when making requests to your application. This allows you to test your routes / controllers in isolation - set apart from your job's logic. Of course, you can then test the job itself in a separate test class.
+Algumas vezes você precisa em um simples teste verificar se um job foi executado pelos seus controller durante uma requisição da aplicação. Isso permite que você teste suas rotas / controllers isoladamente - separadamente da lógica do job. Claro que você pode testa-lo em uma classe de teste separada.
 
-Laravel provides a convenient `expectsJobs` method that will verify that the expected jobs are dispatched, but the job itself will not be executed:
+O Laravel contém um método chamado `expectsJobs` que irá verificar se aquele determinado job foi executado mas o job em si não será executado:
 
     <?php
 
@@ -500,12 +500,13 @@ Laravel provides a convenient `expectsJobs` method that will verify that the exp
         }
     }
 
-> **Note:** This method only detects jobs that are dispatched via the `DispatchesJobs` trait's dispatch methods. It does not detect jobs that are sent directly to `Queue::push`.
+> **Nota:** Este método somente detecta jobs que foram executados através dos métodos da trait `DispatchesJobs`. Ele não detecta jobs executados diretamente para `Queue::push`.
 
 <a name="mocking-facades"></a>
 ### Mocking Facades
 
-When testing, you may often want to mock a call to a Laravel [facade](/docs/{{version}}/facades). For example, consider the following controller action:
+Durante os testes você pode querer "falsificar" uma chamada para um 
+[facade](/docs/{{version}}/facades). Por exemplo, considerando o método do controller a seguir:
 
     <?php
 
@@ -529,7 +530,7 @@ When testing, you may often want to mock a call to a Laravel [facade](/docs/{{ve
         }
     }
 
-We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade:
+Nós podemos enganar a chamada para a facade `Cache` usando o método `shouldReceive` que irá retornar uma instância da classe [Mockery](https://github.com/padraic/mockery). Como as facades são atualmente resolvidas e gerenciadas pelo Laravel [service container](/docs/{{version}}/container) elas possuem muito mais testabilidade do que classes estáticas comuns. Por exemplo, vamos enganar uma chamada para a facade `Cache`:
 
     <?php
 
@@ -546,4 +547,4 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
         }
     }
 
-> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the HTTP helper methods such as `call` and `post` when running your test.
+> **Nota:** Você não deve enganar a facade `Request`. Ao invés, pode passar o que você deseja através dos helpers como `call` e `post` durante os testes.
