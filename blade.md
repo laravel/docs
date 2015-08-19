@@ -181,12 +181,18 @@ Blade's `@include` directive, allows you to easily include a Blade view from wit
 Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
 
     @include('view.name', ['some' => 'data'])
-    
-You can combine loops and includes into one directive with Blade's `@each`.
 
-    @each('view.name', $someCollection, 'variableNameForTheInclude', 'raw or view')
-    
-The first argument is the template to render. This will usually be a partial. The second one is the iterable dataset, in our case `$someCollection`. Third is the variable name the elements will use when being iterated upon. For example, in `foreach ($data as $element)`, this argument would be `element` (without the `$`). The fourth argument is an optional one – it’s the name of the template file which should be rendered when the second argument (`$data`) is empty, i.e. has nothing to iterate over. The fourth argument can optionally be a raw representation of what you want to display.  For example `raw|<tr><td>No results.</td></tr>`.
+#### Rendering Views For Collections
+
+You may combine loops and includes into one line with Blade's `@each` directive:
+
+    @each('view.name', $jobs, 'job')
+
+The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial.
+
+You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
+
+    @each('view.name', $jobs, 'job', 'view.empty')
 
 #### Comments
 
