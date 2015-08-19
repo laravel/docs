@@ -181,6 +181,12 @@ Blade's `@include` directive, allows you to easily include a Blade view from wit
 Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
 
     @include('view.name', ['some' => 'data'])
+    
+You can combine loops and includes into one directive with Blade's `@each`.
+
+    @each('view.name', $someCollection, 'variableNameForTheInclude', 'raw or view')
+    
+The first argument is the template to render. This will usually be a partial. The second one is the iterable dataset, in our case `$someCollection`. Third is the variable name the elements will use when being iterated upon. For example, in `foreach ($data as $element)`, this argument would be `element` (without the `$`). The fourth argument is an optional one – it’s the name of the template file which should be rendered when the second argument (`$data`) is empty, i.e. has nothing to iterate over. The fourth argument can optionally be a raw representation of what you want to display.  For example `raw|<tr><td>No results.</td></tr>`.
 
 #### Comments
 
