@@ -114,7 +114,7 @@ As noted above, when retrieving attributes that are listed in your `$dates` prop
 
     return $user->disabled_at->getTimestamp();
 
-If you need to customize the format of your timestamps, set the `$dateFormat` property on your model. This property determines how date attributes are stored in the database, as well as their format when the model is serialized to an array or JSON:
+By default, the returned timestamp is formatted as `'Y-m-d H:i:s'`. If you need to customize it, set the `$dateFormat` property on your model. This property determines how date attributes are stored in the database, as well as their format when the model is serialized to an array or JSON:
 
     <?php
 
