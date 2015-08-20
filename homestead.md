@@ -62,6 +62,10 @@ If this command fails, you may have an old version of Vagrant that requires the 
 
     vagrant box add laravel/homestead https://atlas.hashicorp.com/laravel/boxes/homestead
 
+if the above fails due to the SSL certificate problem, you may run vagrant without security check. Please note that this method is not secured.
+
+    vagrant box add laravel/homestead --insecure
+
 #### Cloning The Homestead Repository
 
 You may install Homestead by simply cloning the repository. Consider cloning the repository into a `Homestead` folder within your "home" directory, as the Homestead box will serve as the host to all of your Laravel projects:
