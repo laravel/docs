@@ -8,7 +8,7 @@
 <a name="introduction"></a>
 ## Introdução
 
-Na construção de API's JSON, muitas das vezes você vai precisar converter seus models e relacionamentos para arrays ou JSON. O Eloquent inclui métodos convenientes para fazer essas conversões, bem como controlar quais atributos são incluídos em suas serializações.
+Na construção de API's JSON, muitas das vezes você vai precisar converter seus models e relacionamentos para arrays ou JSON. O Eloquent inclui métodos convenientes para fazer essas conversões, bem como para controlar quais atributos são incluídos em suas serializações.
 
 <a name="basic-usage"></a>
 ## Uso Básico
@@ -17,7 +17,7 @@ Na construção de API's JSON, muitas das vezes você vai precisar converter seu
 
 To convert a model and its loaded [relationships](/docs/{{version}}/eloquent-relationships) to an array, you may use the `toArray` method. This method is recursive, so all attributes and all relations (including the relations of relations) will be converted to arrays:
 
-Para converter um modelo e seus relacionamentos carregado [] (/ docs / {{}} / versão eloquentes-relações) para uma matriz, você pode usar o método `toArray`. Este método é recursivo, então todos os atributos e todas as relações (incluindo as relações de relações) serão convertidas para matrizes:
+Para converter um model e seus [relacionamentos](/docs/{{version}}/eloquent-relationships) para um array, você pode usar o método `toArray`. Este método é recursivo, então todos os atributos e todos os relacionamentos (incluindo os relacionamentos dos relacionamentos) serão convertidas para arrays:
 
 	$user = App\User::with('roles')->first();
 
@@ -25,7 +25,7 @@ Para converter um modelo e seus relacionamentos carregado [] (/ docs / {{}} / ve
 
 You may also convert [collections](/docs/{{version}}/eloquent-collections) to arrays:
 
-Você também pode converter [coleções] (/ docs / {{}} / versão eloquentes-coleções) para matrizes:
+Você também pode converter [collections](/docs/{{version}}/eloquent-collections) para arrays:
 
 	$users = App\User::all();
 
@@ -35,7 +35,7 @@ Você também pode converter [coleções] (/ docs / {{}} / versão eloquentes-co
 
 To convert a model to JSON, you may use the `toJson` method. Like `toArray`, the `toJson` method is recursive, so all attributes and relations will be converted to JSON:
 
-Para converter um modelo para JSON, você pode usar o método `toJson`. Como `toArray`, o método` toJson` é recursivo, então todos os atributos e as relações serão convertidos em JSON:
+Para converter um model para JSON, você pode usar o método `toJson`. Assim como o `toArray`, o método` toJson` é recursivo também, então todos os atributos e os relacionamentos serão convertidos em JSON:
 
 	$user = App\User::find(1);
 
@@ -43,7 +43,7 @@ Para converter um modelo para JSON, você pode usar o método `toJson`. Como `to
 
 Alternatively, you may cast a model or collection to a string, which will automatically call the `toJson` method:
 
-Alternativamente, você pode lançar um modelo ou coleção para uma cadeia, que irá chamar automaticamente o método `toJson`:
+Alternativamente, você pode lançar um model ou collection para uma string, que irá chamar automaticamente o método `toJson`:
 
 	$user = App\User::find(1);
 
@@ -51,7 +51,7 @@ Alternativamente, você pode lançar um modelo ou coleção para uma cadeia, que
 
 Since models and collections are converted to JSON when cast to a string, you can return Eloquent objects directly from your application's routes or controllers:
 
-Como os modelos e coleções são convertidos em JSON quando convertido para uma seqüência de caracteres, você pode retornar Eloquent objetos diretamente de rotas ou controladores da sua aplicação:
+Como os models e collections são convertidos em JSON quando convertido para uma string, você pode retornar objetos Eloquent diretamente a partir das rotas ou controllers da sua aplicação:
 
 	Route::get('users', function () {
 		return App\User::all();
