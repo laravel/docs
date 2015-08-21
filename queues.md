@@ -278,7 +278,7 @@ It is very common to map HTTP request variables into jobs. So, instead of forcin
         {
             // Process the request...
 
-            $this->dispatchFrom('App\Jobs\ProcessOrder', $request);
+            $this->dispatchFrom(\App\Jobs\ProcessOrder::class, $request);
         }
     }
 
@@ -286,7 +286,7 @@ This method will examine the constructor of the given job class and extract vari
 
 You may also pass an array as the third argument to the `dispatchFrom` method. This array will be used to fill any constructor parameters that are not available on the request:
 
-    $this->dispatchFrom('App\Jobs\ProcessOrder', $request, [
+    $this->dispatchFrom(\App\Jobs\ProcessOrder::class, $request, [
         'taxPercentage' => 20,
     ]);
 
