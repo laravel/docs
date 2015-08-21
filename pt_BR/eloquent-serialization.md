@@ -25,7 +25,7 @@ Para converter um model e seus [relacionamentos](/docs/{{version}}/eloquent-rela
 
 You may also convert [collections](/docs/{{version}}/eloquent-collections) to arrays:
 
-Você também pode converter [collections](/docs/{{version}}/eloquent-collections) para arrays:
+Você também pode converter [collections](/docs/{{version}}/eloquent-collections) em arrays:
 
 	$users = App\User::all();
 
