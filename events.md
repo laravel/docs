@@ -29,8 +29,8 @@ The `EventServiceProvider` included with your Laravel application provides a con
      * @var array
      */
     protected $listen = [
-        'App\Events\PodcastWasPurchased' => [
-            'App\Listeners\EmailPurchaseConfirmation',
+        \App\Events\PodcastWasPurchased::class => [
+            \App\Listeners\EmailPurchaseConfirmation::class,
         ],
     ];
 
@@ -374,12 +374,12 @@ Event subscribers are classes that may subscribe to multiple events from within 
         public function subscribe($events)
         {
             $events->listen(
-                'App\Events\UserLoggedIn',
+                \App\Events\UserLoggedIn::class,
                 'App\Listeners\UserEventListener@onUserLogin'
             );
 
             $events->listen(
-                'App\Events\UserLoggedOut',
+                \App\Events\UserLoggedOut::class,
                 'App\Listeners\UserEventListener@onUserLogout'
             );
         }
@@ -414,6 +414,6 @@ Once the subscriber has been defined, it may be registered with the event dispat
          * @var array
          */
         protected $subscribe = [
-            'App\Listeners\UserEventListener',
+            \App\Listeners\UserEventListener::class,
         ];
     }
