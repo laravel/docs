@@ -62,7 +62,7 @@ Dado que os models e collections são convertidos em JSON quando transformados e
 
 Sometimes you may wish to limit the attributes, such as passwords, that are included in your model's array or JSON representation. To do so, add a `$hidden` property definition to your model:
 
-Às vezes você pode querer limitar os atributos, tais como senhas, que estejam inclusos na representação do seu model convertido em array ou JSON. Para fazer isso, adicione a propriedade `$hidden` em seu modelo:
+Às vezes você pode querer limitar os atributos, tais como senhas, que estejam inclusos na representação do seu model convertido em array ou JSON. Para fazer isso, adicione a propriedade `$hidden` em seu model:
 
 	<?php namespace App;
 
@@ -79,6 +79,7 @@ Sometimes you may wish to limit the attributes, such as passwords, that are incl
 	}
 
 > **Note:** When hiding relationships, use the relationship's **method** name, not its dynamic property name.
+
 > **Nota:** Ao ocultar relacionamentos, use o nome do **method** do relacionamento, e não o nome da sua propriedade dinâmica.
 
 Alternatively, you may use the `visible` property to define a white-list of attributes that should be included in your model's array and JSON representation:
