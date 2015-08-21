@@ -51,7 +51,7 @@ Alternativamente, você pode transformar um model ou collection em uma string, o
 
 Since models and collections are converted to JSON when cast to a string, you can return Eloquent objects directly from your application's routes or controllers:
 
-Dado que os models e collections são convertidos em JSON quando transformados em uma string, você pode retornar objetos Eloquent diretamente a partir das rotas ou controllers da sua aplicação:
+Dado que os models e collections são convertidos em JSON quando transformados em uma string, você pode retornar objetos Eloquent diretamente a partir das rotas ou controllers de sua aplicação:
 
 	Route::get('users', function () {
 		return App\User::all();
@@ -62,7 +62,7 @@ Dado que os models e collections são convertidos em JSON quando transformados e
 
 Sometimes you may wish to limit the attributes, such as passwords, that are included in your model's array or JSON representation. To do so, add a `$hidden` property definition to your model:
 
-Às vezes você pode querer limitar os atributos, tais como senhas, que estejam inclusos na representação do seu model convertido em array ou JSON. Para fazer isso, adicione a propriedade `$ hidden` em seu modelo:
+Às vezes você pode querer limitar os atributos, tais como senhas, que estejam inclusos na representação do seu model convertido em array ou JSON. Para fazer isso, adicione a propriedade `$hidden` em seu modelo:
 
 	<?php namespace App;
 
