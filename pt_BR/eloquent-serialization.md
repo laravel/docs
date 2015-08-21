@@ -1,9 +1,9 @@
 # Eloquent: Serialization
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
-- [Hiding Attributes From JSON](#hiding-attributes-from-json)
-- [Appending Values To JSON](#appending-values-to-json)
+- [Introdução](#introduction)
+- [Uso Básico](#basic-usage)
+- [Ocultando Atributos na saída JSON](#hiding-attributes-from-json)
+- [Acescentando Valores para a saída JSON](#appending-values-to-json)
 
 <a name="introduction"></a>
 ## Introduction
