@@ -17,7 +17,7 @@ Na construção de API's JSON, muitas das vezes você vai precisar converter seu
 
 To convert a model and its loaded [relationships](/docs/{{version}}/eloquent-relationships) to an array, you may use the `toArray` method. This method is recursive, so all attributes and all relations (including the relations of relations) will be converted to arrays:
 
-Para converter um model e seus [relacionamentos](/docs/{{version}}/eloquent-relationships) para um array, você pode usar o método `toArray`. Este método é recursivo, então todos os atributos e todos os relacionamentos (incluindo os relacionamentos dos relacionamentos) serão convertidas para arrays:
+Para converter um model e seus [relacionamentos](/docs/{{version}}/eloquent-relationships) para um array, você pode usar o método `toArray`. Este método é recursivo, logo todos os atributos e todos os relacionamentos (incluindo os relacionamentos dos relacionamentos) serão convertidas para arrays:
 
 	$user = App\User::with('roles')->first();
 
@@ -35,7 +35,7 @@ Você também pode converter [collections](/docs/{{version}}/eloquent-collection
 
 To convert a model to JSON, you may use the `toJson` method. Like `toArray`, the `toJson` method is recursive, so all attributes and relations will be converted to JSON:
 
-Para converter um model para JSON, você pode usar o método `toJson`. Assim como o `toArray`, o método` toJson` é recursivo também, então todos os atributos e os relacionamentos serão convertidos em JSON:
+Para converter um model para JSON, você pode usar o método `toJson`. Assim como o `toArray`, o método` toJson` também é recursivo, então todos os atributos e os relacionamentos serão convertidos em JSON:
 
 	$user = App\User::find(1);
 
@@ -43,7 +43,7 @@ Para converter um model para JSON, você pode usar o método `toJson`. Assim com
 
 Alternatively, you may cast a model or collection to a string, which will automatically call the `toJson` method:
 
-Alternativamente, você pode lançar um model ou collection para uma string, que irá chamar automaticamente o método `toJson`:
+Alternativamente, você pode transformar um model ou collection em uma string, o que irá chamar automaticamente o método `toJson`:
 
 	$user = App\User::find(1);
 
@@ -51,7 +51,7 @@ Alternativamente, você pode lançar um model ou collection para uma string, que
 
 Since models and collections are converted to JSON when cast to a string, you can return Eloquent objects directly from your application's routes or controllers:
 
-Como os models e collections são convertidos em JSON quando convertido para uma string, você pode retornar objetos Eloquent diretamente a partir das rotas ou controllers da sua aplicação:
+Dado que os models e collections são convertidos em JSON quando transformados em uma string, você pode retornar objetos Eloquent diretamente a partir das rotas ou controllers da sua aplicação:
 
 	Route::get('users', function () {
 		return App\User::all();
@@ -62,7 +62,7 @@ Como os models e collections são convertidos em JSON quando convertido para uma
 
 Sometimes you may wish to limit the attributes, such as passwords, that are included in your model's array or JSON representation. To do so, add a `$hidden` property definition to your model:
 
-Às vezes você pode querer limitar os atributos, tais como senhas, que estão incluídos no conjunto do seu modelo ou representação JSON. Para fazer isso, adicione um `definição de propriedade $ hidden` para o seu modelo:
+Às vezes você pode querer limitar os atributos, tais como senhas, que estejam inclusos na representação do seu model convertido em array ou JSON. Para fazer isso, adicione a propriedade `$ hidden` em seu modelo:
 
 	<?php namespace App;
 
@@ -79,11 +79,11 @@ Sometimes you may wish to limit the attributes, such as passwords, that are incl
 	}
 
 > **Note:** When hiding relationships, use the relationship's **method** name, not its dynamic property name.
-> ** Nota: ** Ao ocultar relações, use ** ** método nome, e não o seu nome propriedade dinâmica do relacionamento.
+> **Nota:** Ao ocultar relacionamentos, use o nome do **method** do relacionamento, e não o nome da sua propriedade dinâmica.
 
 Alternatively, you may use the `visible` property to define a white-list of attributes that should be included in your model's array and JSON representation:
 
-Alternativamente, você pode usar a propriedade `visible` para definir uma lista branca de atributos que devem ser incluídos na matriz do seu modelo e representação JSON:
+Alternativamente, você pode usar a propriedade `visible` para definir uma white-list de atributos que devem ser inclusos na representação do seu model, seja ela array ou JSON:
 
 	<?php namespace App;
 
@@ -104,7 +104,7 @@ Alternativamente, você pode usar a propriedade `visible` para definir uma lista
 
 Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, first define an [accessor](/docs/{{version}}/eloquent-mutators) for the value:
 
-Ocasionalmente, você pode precisar adicionar atributos de matriz que não têm uma coluna correspondente em seu banco de dados. Para fazer isso, primeiro definir um [assessor] (/ docs / {{}} / versão eloquentes-Mutators) para o valor:
+Ocasionalmente, você pode precisar adicionar um array de atributos que não possuam uma coluna correspondente em seu banco de dados. Para fazer isso, primeiro defina um [accessor](/docs/{{version}}/eloquent-mutators) para o valor:
 
 	<?php namespace App;
 
@@ -125,7 +125,7 @@ Ocasionalmente, você pode precisar adicionar atributos de matriz que não têm 
 
 Once you have created the accessor, add the attribute name to the `appends` property on the model:
 
-Depois de ter criado o acessor, adicione o nome do atributo para a propriedade `appends` no modelo:
+Depois de criado o accessor, adicione o nome do atributo à propriedade `appends` no model:
 
 	<?php namespace App;
 
@@ -143,4 +143,4 @@ Depois de ter criado o acessor, adicione o nome do atributo para a propriedade `
 
 Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms. Attributes in the `appends` array will also respect the `visible` and `hidden` settings configured on the model.
 
-Uma vez que o atributo foi adicionado à lista `appends`, ele será incluído na matriz e JSON ambas as formas do modelo. Atributos no `appends` matriz também irá respeitar o` `visible` e configurações hidden` configurado no modelo.
+Uma vez que o atributo foi adicionado à lista `appends`, ele será incluído em ambas as representações do model, seja array ou JSON. Os atributos contidos no array `appends` também irão respeitar as propriedades `visible` e `hidden` configuradas no model.
