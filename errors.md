@@ -87,7 +87,7 @@ The `render` method is responsible for converting a given exception into an HTTP
     public function render($request, Exception $e)
     {
         if ($e instanceof CustomException) {
-            return response()->view('errors.custom', [], 500);
+            return response()->view('errors.custom', [], \Illuminate\Http\Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return parent::render($request, $e);
@@ -98,11 +98,11 @@ The `render` method is responsible for converting a given exception into an HTTP
 
 Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to generate such a response from anywhere in your application, use the following:
 
-    abort(404);
+    abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
 
 The `abort` method will immediately raise an exception which will be rendered by the exception handler. Optionally, you may provide the response text:
 
-    abort(403, 'Unauthorized action.');
+    abort(\Illuminate\Http\Response::HTTP_FORBIDDEN, 'Unauthorized action.');
 
 This method may be used at any time during the request's lifecycle.
 
