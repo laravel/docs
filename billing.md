@@ -19,7 +19,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe.com)訂購交易服務介接。它幾乎處理了所有讓人退步三舍的訂購管理相關邏輯。除了基本的訂購管理，Cashier 還可以處理折價券，訂購轉換，管理訂購「數量」、取消緩衝期，甚至產生收據的 PDF。
+Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe.com)訂購交易服務介接。它幾乎處理了所有讓人退步三舍的訂購管理相關邏輯。除了基本的訂購管理，Cashier 還可以處理折價券，訂購轉換，管理訂購「數量」、取消寬限期，甚至產生收據的 PDF。
 
 <a name="configuration"></a>
 ### 設定
@@ -44,7 +44,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 
 #### 模型設定
 
-再來，將 `Billable` trait 和相關的日期欄位參數新增至你的模型定義中：
+再來，將 `Billable` trait 和適當的日期存取器新增至你的模型定義中：
 
     use Laravel\Cashier\Billable;
     use Laravel\Cashier\Contracts\Billable as BillableContract;
@@ -73,15 +73,15 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 <a name="creating-subscriptions"></a>
 ### 建立訂購
 
-要建立一個訂購，首先要取得你的交易模型的實例，這通常會是 `App\User` 的實例。一旦你取得了模型實例，你可以使用 `subscription` 方法來管理模型的訂購：
+要建立一個訂購，首先要取得可交易的模型實例，這通常會是 `App\User` 的實例。一旦你取得了模型實例，你可以使用 `subscription` 方法來管理模型的訂購：
 
     $user = User::find(1);
 
     $user->subscription('monthly')->create($creditCardToken);
 
-`create` 方法會自動建立與 Stripe 的交易，以及將 Stripe 自訂 ID 和其他相關帳款資訊更新到資料庫。如果你的方案有在 Stripe 設定試用期，試用到期日也會自動記錄起來。
+`create` 方法會自動建立與 Stripe 的交易，以及將 Stripe 客戶 ID 和其他相關帳款資訊更新到資料庫。如果你的方案有在 Stripe 設定試用期，試用到期日也會自動儲存至使用者的記錄。
 
-如果你的方案有試用期間，但是沒有在 Stripe 裡設定，你必須在處理訂購後手動儲存試用到期日：
+如果你想要實施試用期，但是你是完全用應用程式來管理試用期間，而不是在 Stripe 裡設定，則你必須手動設定試用到期日：
 
     $user->trial_ends_at = Carbon::now()->addDays(14);
 
@@ -95,7 +95,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
         'email' => $email, 'description' => '我們的第一個客戶'
     ]);
 
-想知道更多 Stripe 支援的額外欄位，瞧瞧 Stripe 的[使用者建立文件](https://stripe.com/docs/api#create_customer)。
+想知道更多 Stripe 支援的額外欄位，請查看 Stripe 的[創建顧客的文件](https://stripe.com/docs/api#create_customer)。
 
 #### 折價券
 
@@ -146,7 +146,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
         //
     }
 
-你可能想確認使用者是否已經取消訂購，但是還在他們訂購完全到期前的「緩衝期」。例如，如果使用者在三月五號取消了訂購，但是服務會到三月十號才過期。那麼使用者到三月十號前都是「緩衝期」。注意，`subscribed` 方法在過期前都會回傳 `true`。
+你可能想確認使用者是否已經取消訂購，但是還在他們訂購完全到期前的「寬限期」。例如，如果使用者在三月五號取消了訂購，但是服務會到三月十號才過期。那麼使用者到三月十號前都是「寬限期」。注意，`subscribed` 方法在這個期間仍然會回傳 `true`。
 
     if ($user->onGracePeriod()) {
         //
@@ -167,7 +167,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 
     $user->subscription('premium')->swap();
 
-如果使用者還在試用期間，試用服務會跟之前一樣可用。如果訂單有「數量」，也會和之前一樣。當改變方案時，你可以想要使用 `prorate` 方法以表示該費用是按照比例計算。此外，你可以使用 `swapAndInvoice` 方法馬上開發票給改變方案的使用者：
+如果使用者還在試用期間，試用服務會跟之前一樣可用。如果訂單有「數量」，也會和之前一樣。當改變方案時，你也可以使用 `prorate` 方法以表示該費用是按照比例計算。此外，你可以使用 `swapAndInvoice` 方法馬上開發票給改變方案的使用者：
 
     $user->subscription('premium')
                 ->prorate()
@@ -210,9 +210,9 @@ This enables you to apply a tax rate on a model-by-model basis, which may be hel
 
     $user->subscription()->cancel();
 
-當客戶取消訂購時，Cashier 會自動更新資料庫的 `subscription_ends_at` 欄位。這個欄位會被用來判斷 `subscribed` 方法是否該回傳 `false`。例如，如果顧客在三月一號取消訂購，但是服務可以使用到三月五號為止，那麼 `subscribed` 方法在三月五號前都會傳回 `true`。
+當訂購被取消時，Cashier 會自動更新資料庫的 `subscription_ends_at` 欄位。這個欄位會被用來判斷 `subscribed` 方法什麼時候該開始回傳  `false`。例如，如果顧客在三月一號取消訂購，但是服務可以使用到三月五號為止，那麼 `subscribed` 方法在三月五號前都會傳回 `true`。
 
-你可以能想確認使用者已經取消他們的訂購，但是還在他們的「緩衝期」間，可以使用 `onGracePeriod` 方法：
+你想確認使用者是否已經取消他們的訂購，但是還在他們的「寬限期」間，可以使用 `onGracePeriod` 方法：
 
     if ($user->onGracePeriod()) {
         //
@@ -225,7 +225,7 @@ This enables you to apply a tax rate on a model-by-model basis, which may be hel
 
     $user->subscription('monthly')->resume($creditCardToken);
 
-如果客戶取消訂購後，在服務過期前恢復，他們不用在當下付款。他們的服務會立刻重啟，而付款則會循平常的流程。
+如果客戶取消訂購後，且接著在服務完全過期前恢復訂購，他們將不會在當下被扣款。他們的訂購會被重新啟動，而付款則會依照平常的週期。
 
 <a name="handling-stripe-webhooks"></a>
 ## 處理 Stripe Webhooks
@@ -248,7 +248,7 @@ This enables you to apply a tax rate on a model-by-model basis, which may be hel
 <a name="handling-other-webhooks"></a>
 ### 其他 Webhooks
 
-如果你想要處理額外的 Stripe webhook 事件，只需要繼承 Webhook 控制器。你的方法名稱要對應到 Cashier 預設的名稱，尤其是方法名稱應該使用 `handle` 前綴，並使用「駝峰式大小寫」命名法，後面接著你想要處理的 Stripe webhook。例如，如果你想要處理 `invoice.payment_succeeded` webhook，你應該增加一個 `handleInvoicePaymentSucceeded` 方法到控制器。
+如果你想要處理額外的 Stripe webhook 事件，只需要繼承 Webhook 控制器。你的方法名稱要對應到 Cashier 預設的名稱，尤其是方法名稱應該使用 `handle` 前綴，並使用「駝峰式」命名法，後面接著你想要處理的 Stripe webhook。例如，如果你想要處理 `invoice.payment_succeeded` webhook，你應該增加一個 `handleInvoicePaymentSucceeded` 方法到控制器。
 
     <?php
 
@@ -273,7 +273,7 @@ This enables you to apply a tax rate on a model-by-model basis, which may be hel
 <a name="single-charges"></a>
 ## 一次性收費
 
-如果你想對一個已訂購客戶的信用卡進行「一次性」收費，你可以對一個交易模型實例使用 `charge` 方法。`charge` 方法接受你想收取**應用程式使用貨幣的最低單位**的金額。所以，舉例來說，下方的例子將會對使用者的新用卡收取 100 美分，或是 1 美元：
+如果你想對一個已訂購客戶的信用卡進行「一次性」收費，你可以對一個交易模型實例使用 `charge` 方法。`charge` 方法接受你想收取**應用程式使用貨幣的最低單位**的金額。所以，舉例來說，下方的例子將會對使用者的信用卡收取 100 美分，或是 1 美元：
 
     $user->charge(100);
 
