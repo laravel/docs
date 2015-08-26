@@ -114,7 +114,7 @@ Package translations are referenced using a double-colon `package::file.line` sy
 
 #### Publishing Translations
 
-If you would like to make your translations available for publishing to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package translation paths and their corresponding publish locations.
+If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their corresponding publish locations. For example, to the publish the translation files for our example `courier` package:
 
     /**
      * Perform post-registration booting of services.
@@ -130,7 +130,7 @@ If you would like to make your translations available for publishing to the appl
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your translation package's will be copied to the specified location.
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified location.
 
 <a name="configuration"></a>
 ### Configuration
