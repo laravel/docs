@@ -218,6 +218,10 @@ For convenience, if you simply want to verify that a column is equal to a given 
 
     $users = DB::table('users')->where('votes', 100)->get();
 
+or pass only the value to a dynamic `whereX` method, where X is the studly-caps name of a column to which `where` clause should be applied:
+
+    $users = DB::table('users')->whereVotes(100)->get();
+
 Of course, you may use a variety of other operators when writing a `where` clause:
 
     $users = DB::table('users')
