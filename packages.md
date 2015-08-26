@@ -112,6 +112,26 @@ Package translations are referenced using a double-colon `package::file.line` sy
 
     echo trans('courier::messages.welcome');
 
+#### Publishing Translations
+
+If you would like to make your translations available for publishing to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package translation paths and their corresponding publish locations.
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+
+        $this->publishes([
+            __DIR__.'/path/to/translations' => base_path('resources/lang/vendor/courier'),
+        ]);
+    }
+
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your translation package's will be copied to the specified location.
+
 <a name="configuration"></a>
 ### Configuration
 
