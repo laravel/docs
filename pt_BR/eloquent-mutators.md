@@ -6,7 +6,7 @@
 - [Convertendo Atributos](#attribute-casting)
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
 Accessors and mutators allow you to format Eloquent attributes when retrieving them from a model or setting their value. For example, you may want to use the [Laravel encrypter](/docs/{{version}}/encryption) to encrypt a value while it is stored in the database, and then automatically decrypt the attribute when you access it on an Eloquent model.
 
@@ -15,7 +15,7 @@ In addition to custom accessors and mutators, Eloquent can also automatically ca
 <a name="accessors-and-mutators"></a>
 ## Accessors e Mutators
 
-#### Defining An Accessor
+#### Definindo um Accessor
 
 To define an accessor, create a `getFooAttribute` method on your model where `Foo` is the "camel" cased name of the column you wish to access. In this example, we'll defined an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of `first_name`:
 
@@ -43,7 +43,7 @@ As you can see, the original value of the column is passed to the accessor, allo
 
 	$firstName = $user->first_name;
 
-#### Defining A Mutator
+#### Definindo um Mutator
 
 To define a mutator, define a `setFooAttribute` method on your model where `Foo` is the "camel" cased name of the column you wish to access. So, again, let's define a mutator for the `first_name` attribute. This mutator will be automatically called when we attempt to set the value of the `first_name` attribute on the model:
 
@@ -74,7 +74,7 @@ The mutator will receive the value that is being set on the attribute, allowing 
 In this example, the `setFirstNameAttribute` function will be called with the value `Sally`. The mutator will then apply the `strtolower` function to the name and set its value in the internal `$attributes` array.
 
 <a name="date-mutators"></a>
-## Date Mutators
+## Data Mutators
 
 By default, Eloquent will convert the `created_at` and `updated_at` columns to instances of [Carbon](https://github.com/briannesbitt/Carbon), which provides an assortment of helpful methods, and extends the native PHP `DateTime` class.
 
@@ -109,7 +109,7 @@ As noted above, when retrieving attributes that are listed in your `$dates` prop
 	return $user->disabled_at->getTimestamp();
 
 <a name="attribute-casting"></a>
-## Attribute Casting
+## Convertendo Atributos
 
 The `$casts` property on your model provides a convenient method of converting attributes to common data types. The `$casts` property should be an array where the key is the name of the attribute being cast, while the value is the type you wish to cast to the column to. The supported cast types are: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object` and `array`.
 
@@ -139,7 +139,7 @@ Now the `is_admin` attribute will always be cast to a boolean when you access it
 		//
 	}
 
-#### Array Casting
+#### Convertendo em Array
 
 The `array` cast type is particularly useful when working with columns that are stored as serialized JSON. For example, if your database has a `TEXT` field type that contains serialized JSON, adding the `array` cast to that attribute will automatically deserialize the attribute to a PHP array when you access it on your Eloquent model:
 
