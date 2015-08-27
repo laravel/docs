@@ -1,9 +1,9 @@
 # Eloquent: Mutators
 
-- [Introduction](#introduction)
-- [Accessors & Mutators](#accessors-and-mutators)
-- [Date Mutators](#date-mutators)
-- [Attribute Casting](#attribute-casting)
+- [Introdução](#introduction)
+- [Accessors e Mutators](#accessors-and-mutators)
+- [Data Mutators](#date-mutators)
+- [Convertendo Atributos](#attribute-casting)
 
 <a name="introduction"></a>
 ## Introduction
@@ -13,7 +13,7 @@ Accessors and mutators allow you to format Eloquent attributes when retrieving t
 In addition to custom accessors and mutators, Eloquent can also automatically cast date fields to [Carbon](https://github.com/briannesbitt/Carbon) instances or even [cast text fields to JSON](#attribute-casting).
 
 <a name="accessors-and-mutators"></a>
-## Accessors & Mutators
+## Accessors e Mutators
 
 #### Defining An Accessor
 
