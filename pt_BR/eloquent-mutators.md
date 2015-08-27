@@ -8,9 +8,9 @@
 <a name="introduction"></a>
 ## Introdução
 
-Accessors and mutators allow you to format Eloquent attributes when retrieving them from a model or setting their value. For example, you may want to use the [Laravel encrypter](/docs/{{version}}/encryption) to encrypt a value while it is stored in the database, and then automatically decrypt the attribute when you access it on an Eloquent model.
+Accessors e mutators permitem que você formate atributos Eloquent ao recuperar-los a partir de um model ou definir seu valor. Por exemplo, você pode querer usar o [Laravel encrypter](/docs/{{version}}/encryption) para criptografar um valor, enquanto ele é armazenado no banco de dados, e, em seguida, automaticamente descriptografar o atributo quando você acessá-lo em um model Eloquent.
 
-In addition to custom accessors and mutators, Eloquent can also automatically cast date fields to [Carbon](https://github.com/briannesbitt/Carbon) instances or even [cast text fields to JSON](#attribute-casting).
+Além de acessores e mutadores personalizados, Eloquent também pode converter automaticamente campos do tipo data para instâncias de [Carbon](https://github.com/briannesbitt/Carbon) ou mesmo [converter campos do tipo texto para JSON](#attribute-casting).
 
 <a name="accessors-and-mutators"></a>
 ## Accessors e Mutators
