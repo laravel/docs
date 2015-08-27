@@ -184,7 +184,7 @@ Of course, the schema builder contains a variety of column types that you may us
 
 Command  | Description
 ------------- | -------------
-`$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent.
+`$table->bigIncrements('id');`  |  Incrementing ID (primary key) using a "UNSIGNED BIG INTEGER" equivalent.
 `$table->bigInteger('votes');`  |  BIGINT equivalent for the database.
 `$table->binary('data');`  |  BLOB equivalent for the database.
 `$table->boolean('confirmed');`  |  BOOLEAN equivalent for the database.
@@ -195,7 +195,7 @@ Command  | Description
 `$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point.
 `$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent for the database.
 `$table->float('amount');`  |  FLOAT equivalent for the database.
-`$table->increments('id');`  |  Incrementing ID for the database (primary key).
+`$table->increments('id');`  |  Incrementing ID (primary key) using a "UNSIGNED INTEGER" equivalent.
 `$table->integer('votes');`  |  INTEGER equivalent for the database.
 `$table->json('options');`  |  JSON equivalent for the database.
 `$table->jsonb('options');`  |  JSONB equivalent for the database.
