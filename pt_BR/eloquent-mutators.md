@@ -2,7 +2,7 @@
 
 - [Introdução](#introduction)
 - [Accessors e Mutators](#accessors-and-mutators)
-- [Data Mutators](#date-mutators)
+- [Mutators para Datas](#date-mutators)
 - [Convertendo Atributos](#attribute-casting)
 
 <a name="introduction"></a>
@@ -17,7 +17,7 @@ Além de accessors e mutators personalizados, o Eloquent também pode converter 
 
 #### Definindo um Accessor
 
-Para definir um accessor, crie um método `getFooAttribute` em seu model onde `Foo` é o nome da coluna que você deseja acessar em "camelcase". Neste exemplo, vamos definir um accessor para o atributo `first_name`. O accessor será automaticamente chamado pelo Eloquent ao se tentar recuperar o valor de `first_name`:
+Para definir um accessor, crie um método `getFooAttribute` em seu model onde `Foo` é o nome da coluna que você deseja acessar em *"CamelCase"*. Neste exemplo, vamos definir um accessor para o atributo `first_name`. O accessor será automaticamente chamado pelo Eloquent ao se tentar recuperar o valor de `first_name`:
 
 	<?php namespace App;
 
