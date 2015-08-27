@@ -115,7 +115,7 @@ The `when` method may be used to limit the execution of a task based on the resu
         return true;
     });
 
-With chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
+When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
 
 <a name="preventing-task-overlaps"></a>
 ### Preventing Task Overlaps
