@@ -51,7 +51,7 @@ O próximo passo, você precisará instalar o [Gulp](http://gulpjs.com) como um 
 
 ### Laravel Elixir
 
-Por último, você deve instalar o Elixir. Dentro da sua instalação do Laravel você encontrará o arquivo `package.json` na pasta principal. Pense nesse arquivo como o `composer.json`, exeto que ele define as dependencias do Node, ao invés do PHP. Você deve instalar todas as dependências que ele referencia executando o seguinte comando:
+Por último, você deve instalar o Elixir. Dentro da sua instalação do Laravel você encontrará o arquivo `package.json` na pasta principal. Pense nesse arquivo como o `composer.json`, exceto que ele define as dependências do Node, ao invés do PHP. Você deve instalar todas as dependências que ele referencia executando o seguinte comando:
 
 	npm install
 
