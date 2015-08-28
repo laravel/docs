@@ -21,7 +21,7 @@
 <a name="introduction"></a>
 ## Introdução
 
-Laravel Elixir provê uma limpa e fluente API para definir tarefas Gulp básicas para sua aplicação. Elixir suporta os mais comuns pré-processadores CSS e Javasript, e também as ferramentas de teste. Usando metodos alinhandos, Elixir permite que você defina fluentemente o pipeline dos seus assets. Por exemplo:
+Laravel Elixir provê uma limpa e fluente API para definir tarefas Gulp básicas para sua aplicação. Elixir suporta os mais comuns pré-processadores CSS e Javasript, e também as ferramentas de teste. Usando métodos encadeados, elixir permite que você defina fluentemente o pipeline dos seus assets. Por exemplo:
 
 ```javascript
 elixir(function(mix) {
