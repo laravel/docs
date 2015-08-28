@@ -74,7 +74,7 @@ O mutator vai receber o valor que está sendo definido no atributo, o que lhe pe
 Neste exemplo, a função `setFirstNameAttribute` será chamada com o valor `Sally`. Então, o mutator aplica a função `strtolower` ao valor passado e atribui este valor ao array de `$atributos`.
 
 <a name="date-mutators"></a>
-## Data Mutators
+## Mutators para Datas
 
 Por padrão, o Eloquent irá converter as colunas  `updated_at` e `created_at` para instâncias de [Carbon](https://github.com/briannesbitt/Carbon), que fornecem uma variedade de métodos de helpful, e estende a classe nativa do PHP `DateTime`.
 
