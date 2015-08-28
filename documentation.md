@@ -2,6 +2,7 @@
     - [Release Notes](/docs/{{version}}/releases)
     - [Upgrade Guide](/docs/{{version}}/upgrade)
     - [Contribution Guide](/docs/{{version}}/contributions)
+    - [API Documentation](/api/{{version}})
 - Setup
     - [Installation](/docs/{{version}}/installation)
     - [Homestead](/docs/{{version}}/homestead)

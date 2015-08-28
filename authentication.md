@@ -7,6 +7,7 @@
     - [Authenticating](#included-authenticating)
     - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
     - [Protecting Routes](#protecting-routes)
+    - [Authentication Throttling](#authentication-throttling)
 - [Manually Authenticating Users](#authenticating-users)
     - [Remembering Users](#remembering-users)
     - [Other Authentication Methods](#other-authentication-methods)
@@ -90,7 +91,7 @@ Though the authentication controllers are included with the framework, you will 
     <form method="POST" action="/auth/register">
         {!! csrf_field() !!}
 
-        <div class="col-md-6">
+        <div>
             Name
             <input type="text" name="name" value="{{ old('name') }}">
         </div>
@@ -105,7 +106,7 @@ Though the authentication controllers are included with the framework, you will 
             <input type="password" name="password">
         </div>
 
-        <div class="col-md-6">
+        <div>
             Confirm Password
             <input type="password" name="password_confirmation">
         </div>
@@ -120,9 +121,13 @@ Though the authentication controllers are included with the framework, you will 
 
 Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application. You may simply access your defined routes in a browser. The authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI, which you will need to register a route to handle. You can customize the post-authentication redirect location by defining a `redirectTo` property on the `AuthController`:
+When a user is successfully authenticated, they will be redirected to the `/home` URI, which you will need to register a route to handle. You can customize the post-authentication redirect location by defining a `redirectPath` property on the `AuthController`:
 
-    protected $redirectTo = '/dashboard';
+    protected $redirectPath = '/dashboard';
+
+When a user is not successfully authenticated, they will be redirected to the `/auth/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
+
+    protected $loginPath = '/login';
 
 #### Customizations
 
@@ -141,7 +146,9 @@ You may access the authenticated user via the `Auth` facade:
 
 Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance:
 
-    <?php namespace App\Http\Controllers;
+    <?php
+
+    namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
     use Illuminate\Routing\Controller;
@@ -197,6 +204,28 @@ Of course, if you are using [controller classes](/docs/{{version}}/controllers),
         $this->middleware('auth');
     }
 
+<a name="authentication-throttling"></a>
+### Authentication Throttling
+
+If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address:
+
+    <?php
+
+    namespace App\Http\Controllers\Auth;
+
+    use App\User;
+    use Validator;
+    use App\Http\Controllers\Controller;
+    use Illuminate\Foundation\Auth\ThrottlesLogins;
+    use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+
+    class AuthController extends Controller
+    {
+        use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+
+        // Rest of AuthController class...
+    }
+
 <a name="authenticating-users"></a>
 ## Manually Authenticating Users
 
@@ -204,7 +233,9 @@ Of course, you are not required to use the authentication controllers included w
 
 We will access Laravel's authentication services via the `Auth` [facade](/docs/{{version}}/facades), so we'll need to make sure to import the `Auth` facade at the top of the class. Next, let's check out the `attempt` method:
 
-    <?php namespace App\Http\Controllers;
+    <?php
+
+    namespace App\Http\Controllers;
 
     use Auth;
     use Illuminate\Routing\Controller;
@@ -304,13 +335,14 @@ If you are using PHP FastCGI, HTTP Basic authentication may not work correctly o
 
 You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/{{version}}/middleware) that calls the `onceBasic` method. If no response is returned by the `onceBasic` method, the request may be passed further into the application:
 
-    <?php namespace Illuminate\Auth\Middleware;
+    <?php
+
+    namespace Illuminate\Auth\Middleware;
 
     use Auth;
     use Closure;
-    use Illuminate\Contracts\Routing\Middleware;
 
-    class AuthenticateOnceWithBasicAuth implements Middleware
+    class AuthenticateOnceWithBasicAuth
     {
         /**
          * Handle an incoming request.
@@ -376,7 +408,7 @@ You will need to provide an HTML view for the password reset request form. This 
         {!! csrf_field() !!}
 
         <div>
-        	Email
+            Email
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
 
@@ -438,7 +470,7 @@ After the password is reset, the user will automatically be logged into the appl
 <a name="social-authentication"></a>
 ## Social Authentication
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, Google, GitHub and Bitbucket.
+In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, LinkedIn, Google, GitHub and Bitbucket.
 
 To get started with Socialite, add to your `composer.json` file as a dependency:
 
@@ -451,14 +483,14 @@ After installing the Socialite library, register the `Laravel\Socialite\Socialit
     'providers' => [
         // Other service providers...
 
-        'Laravel\Socialite\SocialiteServiceProvider',
+        Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
 Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
 
-    'Socialite' => 'Laravel\Socialite\Facades\Socialite',
+    'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
-You will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `google`, or `github`, depending on the providers your application requires. For example:
+You will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `linkedin`, `google`, `github` or `bitbucket`, depending on the providers your application requires. For example:
 
     'github' => [
         'client_id' => 'your-github-app-id',
@@ -470,7 +502,9 @@ You will also need to add credentials for the OAuth services your application ut
 
 Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. We will access Socialite using the `Socialite` [facade](/docs/{{version}}/facades):
 
-    <?php namespace App\Http\Controllers;
+    <?php
+
+    namespace App\Http\Controllers;
 
     use Illuminate\Routing\Controller;
 
@@ -504,6 +538,14 @@ The `redirect` method takes care of sending the user to the OAuth provider, whil
     return Socialite::driver('github')
                 ->scopes(['scope1', 'scope2'])->redirect();
 
+Of course, you will need to define routes to your controller methods:
+
+    <?php
+
+        Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
+        Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
+
+
 #### Retrieving User Details
 
 Once you have a user instance, you can grab a few more details about the user:
@@ -529,7 +571,9 @@ Once you have a user instance, you can grab a few more details about the user:
 
 If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication driver. We will use the `extend` method on the `Auth` facade to define a custom driver. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers):
 
-    <?php namespace App\Providers;
+    <?php
+
+    namespace App\Providers;
 
     use Auth;
     use App\Extensions\RiakUserProvider;
@@ -569,7 +613,9 @@ The `Illuminate\Contracts\Auth\UserProvider` implementations are only responsibl
 
 Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 
-    <?php namespace Illuminate\Contracts\Auth;
+    <?php
+
+    namespace Illuminate\Contracts\Auth;
 
     interface UserProvider {
 
@@ -595,7 +641,9 @@ The `validateCredentials` method should compare the given `$user` with the `$cre
 
 Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable`. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
 
-    <?php namespace Illuminate\Contracts\Auth;
+    <?php
+
+    namespace Illuminate\Contracts\Auth;
 
     interface Authenticatable {
 
