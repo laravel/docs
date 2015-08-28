@@ -8,8 +8,7 @@
 <a name="introduction"></a>
 ## Introdução
 
-O Laravel provê uma maneira conveniente de recuperar strings vindas de diferentes linguages, permitindo a você facilmente dar suporte a múltiplas linguagens na sua aplicação.
-
+O Laravel provê uma maneira conveniente de recuperar strings baseadas em diferentes idiomas, permitindo a você facilmente dar suporte a múltiplos idiomas em sua aplicação.
 
 As strings de linguagem ficam armazenadas em arquivos dentro do diretório `resources/lang`. Dentro desse diretório deve haver um sub-diretório para cada linguagem que sua aplicação dará suporte.
 
