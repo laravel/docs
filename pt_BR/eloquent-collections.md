@@ -34,7 +34,7 @@ No entanto, as coleções são muito mais poderosas do que os arrays e expõe um
 
 ### A Coleção Básica
 
-Todas as coleções Eloquent estendem a base do objeto [Laravel collection](/docs/{{version}}/collections); portanto, elas herdam todos os métodos fortes fornecidos pela classe base de collection:
+Todas as coleções Eloquent estendem a base do objeto [Laravel collection](/docs/{{version}}/collections) portanto, elas herdam todos os métodos fortes fornecidos pela classe base de collection:
 
 <style>
 	#collection-method-list > p {
