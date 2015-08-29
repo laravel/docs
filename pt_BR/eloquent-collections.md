@@ -105,7 +105,7 @@ Todas as coleções Eloquent estendem a base do objeto [Laravel collection](/doc
 <a name="custom-collections"></a>
 ## Coleções Personalizadas
 
-Se você precisar usar um objeto `Collection` personalizado com seus próprios métodos de estensão, você pode sobrescrever o método` newCollection` em seu model:
+Se você precisar usar um objeto `Collection` personalizado com seus próprios métodos de estensão, você pode sobrescrever o método `newCollection` em seu model:
 
 
 	<?php namespace App;
