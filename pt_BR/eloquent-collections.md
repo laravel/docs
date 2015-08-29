@@ -7,9 +7,9 @@
 <a name="introduction"></a>
 ## Introdução
 
-Todos os múltiplos resultados retornados pelo Eloquent são uma instância do objeto `Illuminate\Database\Eloquent\Collection`, incluindo os resultados obtidos através do método `get` ou acessados por meio de um relacionamento. O objeto de coleção do Eloquent estende a [base collection](/docs/{{version}}/collections) do Laravel, por isso, naturalmente herda dezenas de métodos utilizados para trabalhar fluentemente com a arrays subjacentes de models Eloquent.
+Todos os múltiplos resultados retornados pelo Eloquent são uma instância do objeto `Illuminate\Database\Eloquent\Collection`, incluindo os resultados obtidos através do método `get` ou acessados por meio de um relacionamento. O objeto de coleção do Eloquent estende a [collection básica](/docs/{{version}}/collections) do Laravel, por isso, naturalmente herda dezenas de métodos utilizados para trabalhar fluentemente com a arrays subjacentes de models Eloquent.
 
-Claro que, todas as coleções (collections) também servem como iteradores, permitindo-lhe fazermos loop sobre eles como se fossem arrays PHP simples:
+Claro que, todas as coleções (collections) também servem como iteradores, permitindo fazermos loop sobre elas como se fossem arrays PHP simples:
 
 	$users = App\User::where('active', 1)->get();
 
