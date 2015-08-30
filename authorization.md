@@ -49,6 +49,12 @@ The simplest way to determine if a user may perform a given action is to define 
 	    }
 	}
 
+#### Class Based Abilities
+
+In addition to registering `Closures` as authorization callbacks, you may register class methods by passing a string containing the class name and the method. When needed, the class will be resolved via the [service container](/docs/{{version}}/container):
+
+    $gate->define('update-post', 'PostPolicy@update');
+
 <a name="checking-abilities"></a>
 ## Checking Abilities
 
@@ -234,6 +240,8 @@ Once the policy has been generated and registered, we can add methods for each a
 	}
 
 You may continue to define additional methods on the policy as needed for the various abilities it authorizes. For example, you might define `show`, `destroy`, or `addComment` methods to authorize various `Post` actions.
+
+> **Note:** All policies are resolved via the Laravel [service container](/docs/{{version}}/container), meaning you may type-hint any needed dependencies in the policy's constructor and they will be automatically injected.
 
 <a name="checking-policies"></a>
 ### Checking Policies
