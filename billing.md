@@ -201,7 +201,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
         return 20;
     }
 
-This enables you to apply a tax rate on a model-by-model basis, which may be helpful for a user base that spans multiple countries.
+這讓你基於個別模型去運用稅率，可能對橫跨多個國家的用戶群非常有幫助。
 
 <a name="cancelling-subscriptions"></a>
 ### 取消訂購
