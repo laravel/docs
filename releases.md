@@ -1,6 +1,7 @@
 # Release Notes
 
 - [Support Policy](#support-policy)
+- [Laravel 5.1.11](#laravel-5.1.11)
 - [Laravel 5.1.4](#laravel-5.1.4)
 - [Laravel 5.1](#laravel-5.1)
 - [Laravel 5.0](#laravel-5.0)
@@ -13,6 +14,13 @@
 For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance.
 
 For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+
+<a name="laravel-5.1.11"></a>
+## Laravel 5.1.11
+
+Laravel 5.1.11 introduces [authorization](/docs/{{version}}/authorization) support out of the box! Conveniently organize your application's authorization logic using simple callbacks or policy classes, and authorize actions using simple, expressive methods.
+
+For more information, please refer to the [authorization documentation](/docs/{{version}}/authorization).
 
 <a name="laravel-5.1.4"></a>
 ## Laravel 5.1.4
