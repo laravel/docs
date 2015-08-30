@@ -12,7 +12,7 @@
 <a name="installation"></a>
 ## Instalação
 
-### Requerimentos do Servidor
+### Requisitos do Servidor
 
 O framework Laravel pede alguns requerimentos no sistema. E é claro, todas esses requerimentos já vem configurados na máquina virtual [Laravel Homestead](/docs/{{version}}/homestead):
 
