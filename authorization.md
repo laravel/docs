@@ -181,7 +181,7 @@ You may also combine the `@can` directive with `@else` directive:
 <a name="within-form-requests"></a>
 ### Within Form Requests
 
-You may also choose to utilize your `Gate` defined abilities from a [form request's](/docs/{{version}}/validation#form-request-validation) `authorize` method. For example, you may simply defer to the `Gate` within the method:
+You may also choose to utilize your `Gate` defined abilities from a [form request's](/docs/{{version}}/validation#form-request-validation) `authorize` method. For example, you may simply defer to the `Gate` within the form request's `authorize` method:
 
     /**
      * Determine if the user is authorized to make this request.
