@@ -12,16 +12,16 @@
 <a name="installation"></a>
 ## Instalação
 
-### Requerimentos do Server
+### Requerimentos do Servidor
 
 O framework Laravel pede alguns requerimentos no sistema. E é claro, todas esses requerimentos já vem configurados na máquina virtual [Laravel Homestead](/docs/{{version}}/homestead):
 
 <div class="content-list" markdown="1">
 - PHP >= 5.5.9
-- Mcrypt
-- OpenSSL
-- Mbstring 
-- Tokenizer
+- Extensão PHP OpenSSL
+- Extensão PHP PDO
+- Extensão PHP Mbstring
+- Extensão PHP Tokenizer
 </div>
 
 <a name="install-laravel"></a>
@@ -29,7 +29,7 @@ O framework Laravel pede alguns requerimentos no sistema. E é claro, todas esse
 
 Laravel utiliza o [Composer](http://getcomposer.org) para gerenciar suas dependências. Então, antes de usar o Laravel, certifique-se de ter o Composer instalado na sua máquina.
 
-#### Instação pelo Instalador do Laravel
+#### Através do Instalador do Laravel
 
 Primeiro baixe o instalador usando o Composer:
 
