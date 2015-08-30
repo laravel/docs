@@ -48,7 +48,7 @@
     - [Iniciando](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)
     - [Migrations](/docs/{{version}}/migrations)
-    - [Alimentando o Banco de Dados](/docs/{{version}}/seeding)
+    - [Populando o Banco de Dados](/docs/{{version}}/seeding)
 - Eloquent ORM
     - [Iniciando](/docs/{{version}}/eloquent)
     - [Relacionamentos](/docs/{{version}}/eloquent-relationships)
