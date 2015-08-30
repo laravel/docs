@@ -6,6 +6,7 @@
 	- [Via The Gate Facade](#via-the-gate-facade)
 	- [Via The User Model](#via-the-user-model)
 	- [Within Blade Templates](#within-blade-templates)
+    - [Within Form Requests](#within-form-requests)
 - [Policies](#policies)
 	- [Creating Policies](#creating-policies)
 	- [Writing Policies](#writing-policies)
@@ -176,6 +177,23 @@ You may also combine the `@can` directive with `@else` directive:
 	@else
 		<!-- The Current User Can't Update The Post -->
 	@endcan
+
+<a name="within-form-requests"></a>
+### Within Form Requests
+
+You may also choose to utilize your `Gate` defined abilities from a [form request's](/docs/{{version}}/validation#form-request-validation) `authorize` method. For example, you may simply defer to the `Gate` within the method:
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        $postId = $this->route('post');
+
+        return Gate::check('update', Post::findOrFail($postId));
+    }
 
 <a name="policies"></a>
 ## Policies
