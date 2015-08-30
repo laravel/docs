@@ -192,7 +192,7 @@ You may also choose to utilize your `Gate` defined abilities from a [form reques
     {
         $postId = $this->route('post');
 
-        return Gate::check('update', Post::findOrFail($postId));
+        return Gate::allows('update', Post::findOrFail($postId));
     }
 
 <a name="policies"></a>
