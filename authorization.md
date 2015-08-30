@@ -49,6 +49,8 @@ The simplest way to determine if a user may perform a given action is to define 
 	    }
 	}
 
+Note that we did not check if the given `$user` is not `NULL`. The `Gate` will automatically return `false` for **all abilities** when there is not an authenticated user or a specific user has not been specified using the `forUser` method.
+
 #### Class Based Abilities
 
 In addition to registering `Closures` as authorization callbacks, you may register class methods by passing a string containing the class name and the method. When needed, the class will be resolved via the [service container](/docs/{{version}}/container):
