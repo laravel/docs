@@ -16,11 +16,11 @@ Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorizat
 
 > **Note:** These upgrades are **optional**, and ignoring them will not affect your application.
 
-#### Create Policies Directory
+#### Create The Policies Directory
 
 First, create an empty `app/Policies` directory within your application.
 
-#### Create / Register AuthServiceProvider & Gate Facade
+#### Create / Register The AuthServiceProvider & Gate Facade
 
 Create a `AuthServiceProvider` within your `app/Providers` directory. You may copy the contents of the default provider [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php). After creating the provider, be sure to register it in your `app.php` configuration file's `providers` array.
 
@@ -28,7 +28,7 @@ Also, you should register the `Gate` facade in your `app.php` configuration file
 
     'Gate' => Illuminate\Support\Facades\Gate::class,
 
-#### Update User Model
+#### Update The User Model
 
 Secondly, use the `Illuminate\Foundation\Auth\Access\Authorizable` trait and `Illuminate\Contracts\Auth\Access\Authorizable` contract on your `App\User` model:
 
@@ -51,7 +51,7 @@ Secondly, use the `Illuminate\Foundation\Auth\Access\Authorizable` trait and `Il
         use Authenticatable, Authorizable, CanResetPassword;
     }
 
-#### Update Base Controller
+#### Update The Base Controller
 
 Next, update your base `App\Http\Controllers\Controller` controller to use the `Illuminate\Foundation\Auth\Access\AuthorizesRequests` trait:
 
