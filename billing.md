@@ -60,12 +60,16 @@ Adding the columns to your model's `$dates` property will instruct Eloquent to r
 
 #### Stripe Key
 
-Finally, set your Stripe key in your `services.php` configuration file:
+Finally, in your `services.php` configuration file set it to read the Stripe key from your site's `.env` file:
 
     'stripe' => [
         'model'  => 'User',
         'secret' => env('STRIPE_API_SECRET'),
     ],
+
+and then define your Stripe secret key in your `.env` file:
+
+    STRIPE_API_SECRET=ABC12345DEF
 
 <a name="subscriptions"></a>
 ## Subscriptions
