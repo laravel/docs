@@ -12,7 +12,7 @@
 <a name="upgrade-5.1.11"></a>
 ## Upgrading To 5.1.11
 
-Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorization) and [policies](/docs/{{version}}/authorization). Incorporating these new features into your existing Laravel 5.1 applications is simple.
+Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorization) and [policies](/docs/{{version}}/authorization#policies). Incorporating these new features into your existing Laravel 5.1 applications is simple.
 
 > **Note:** These upgrades are **optional**, and ignoring them will not affect your application.
 
