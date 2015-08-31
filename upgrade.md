@@ -16,6 +16,8 @@ Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorizat
 
 > **Note:** These upgrades are **optional**, and ignoring them will not affect your application.
 
+> **Note:** Before proceeding be sure to run `composer update laravel/framework` first to install the dependencies for the following upgrades.
+
 #### Create The Policies Directory
 
 First, create an empty `app/Policies` directory within your application.
