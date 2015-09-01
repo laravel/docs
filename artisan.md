@@ -125,7 +125,7 @@ In this example, the command defines one **required** argument: `user`. You may 
     // Optional argument with default value...
     email:send {user=foo}
 
-Options, like arguments, also are a form of user input. However, they are prefixed by two hyphens (`--`) when they are specified on the command line. We can define options in the signature like so:
+Options, like arguments, are also a form of user input. However, they are prefixed by two hyphens (`--`) when they are specified on the command line. We can define options in the signature like so:
 
     /**
      * The name and signature of the console command.
@@ -187,11 +187,11 @@ To retrieve the value of an argument, use the `argument` method:
         //
     }
 
-If you need to retrieve all of the arguments as an `array`, call the `argument` with no parameters:
+If you need to retrieve all of the arguments as an `array`, call `argument` with no parameters:
 
     $arguments = $this->argument();
 
-Options may be retrieved just as easily as arguments using the `option` method. Like the `argument` method, you may call `option` without any arguments in order to retrieve all of the options as an `array`:
+Options may be retrieved just as easily as arguments using the `option` method. Like the `argument` method, you may call `option` without any parameters in order to retrieve all of the options as an `array`:
 
     // Retrieve a specific option...
     $queueName = $this->option('queue');
@@ -216,7 +216,7 @@ In addition to displaying output, you may also ask the user to provide input dur
         $name = $this->ask('What is your name?');
     }
 
-The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful for asking for sensitive information such as a password:
+The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful when asking for sensitive information such as a password:
 
     $password = $this->secret('What is the password?');
 
