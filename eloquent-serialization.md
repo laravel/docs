@@ -102,7 +102,7 @@
     class User extends Model
     {
         /**
-         * 為使用者取得管理者的權限
+         * 為使用者取得管理者的標記。
          *
          * @return bool
          */
@@ -123,7 +123,7 @@
     class User extends Model
     {
         /**
-         * The accessors to append to the model's array form.
+         * 存取器被附加到模型的陣列形式。
          *
          * @var array
          */
