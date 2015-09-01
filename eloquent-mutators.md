@@ -75,7 +75,7 @@
 
     $user->first_name = 'Sally';
 
-在這個範例，`setFirstNameAttribute` 函式將會呼叫的值 `Sally`。修改器將會使用 `strtolower` 函式來命名數值以及設定數值到內部的 `$attributes` 陣列。
+在這個範例，`setFirstNameAttribute` 的值為 `Sally` 而且函式將會被呼叫。修改器將會使用 `strtolower` 函式來命名數值以及設定數值到內部的 `$attributes` 陣列。
 
 <a name="date-mutators"></a>
 ## 日期轉換器
@@ -167,7 +167,7 @@
 
 #### 陣列型別轉換
 
-如果原本欄位是被儲存的為序列化的 JSON 時，那麼 `array` 型別轉換將會非常有用。例如，如果你的資料庫有一個 `TEXT` 類型包含了序列化的 JSON，當你存取你的 Eloquent 模型時，通過增加 `array` 型別轉換， 當取得這個屬性的時候會自動反序列化成 PHP 的陣列：
+如果原本欄位是被儲存的為序列化的 JSON 時，那麼 `array` 型別轉換將會非常有用。例如，如果你的資料庫有一個 `TEXT` 類型包含了序列化的 JSON，當你存取你的 Eloquent 模型時，通過增加 `array` 型別轉換，當取得這個屬性的時候會自動反序列化成 PHP 的陣列：
 
     <?php
 
