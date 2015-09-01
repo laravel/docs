@@ -361,7 +361,7 @@ The `authorize` method shares the same signature as the various other authorizat
         }
     }
 
-If the action is authorized, the controller will continue executing normally; however, if the `authorize` method determines that the action is not authorized, a `HttpException` will automatically be thrown which generates a HTTP response with a `403 Not Authorized` status code. As you can see, the `authorize` method is a convenient, fast way to authorize an action or throw an exception with a single linde of code.
+If the action is authorized, the controller will continue executing normally; however, if the `authorize` method determines that the action is not authorized, a `HttpException` will automatically be thrown which generates a HTTP response with a `403 Not Authorized` status code. As you can see, the `authorize` method is a convenient, fast way to authorize an action or throw an exception with a single line of code.
 
 The `AuthorizesRequests` trait also provides the `authorizeForUser` method to authorize an action on a user that is not the currently authenticated user:
 
