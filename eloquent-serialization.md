@@ -15,13 +15,13 @@
 
 #### 將模型轉換成一個陣列
 
-如果要將模型還有載入的[關聯](/docs/{{version}}/eloquent-relationships) 轉換成一個陣列，你可以使用 `toArray` 方法。這個方法是遞迴的，因此，所有屬性和所有關聯（包含關聯中的關聯）將會被轉換成陣列：
+如果要將模型還有載入的[關聯](/docs/{{version}}/eloquent-relationships)轉換成一個陣列，你可以使用 `toArray` 方法。這個方法是遞迴的，因此，所有屬性和所有關聯（包含關聯中的關聯）將會被轉換成陣列：
 
     $user = App\User::with('roles')->first();
 
     return $user->toArray();
 
-你還可以轉換[集合](/docs/{{version}}/eloquent-collections)成陣列：
+你還可以將[集合](/docs/{{version}}/eloquent-collections)轉換成陣列：
 
     $users = App\User::all();
 
@@ -29,7 +29,7 @@
 
 #### 將模型轉換成 JSON
 
-如果要將模型轉換成 JSON，你可以使用 `toJson` 方法。像是 `toArray`、`toJson` 方法是遞迴的，所以所有的屬性以及關聯都將被轉換成 JSON：
+如果要將模型轉換成 JSON，你可以使用 `toJson` 方法。像是 `toArray`、`toJson` 的方法是遞迴的，所以，所有的屬性以及關聯都將被轉換成 JSON：
 
     $user = App\User::find(1);
 
@@ -91,7 +91,7 @@
 <a name="appending-values-to-json"></a>
 ## 附加數值到 JSON
 
-有時候，你可能需要增加不存在的資料庫欄位的陣列屬性。首先定義一個 [存取器](/docs/{{version}}/eloquent-mutators) 的值：
+有時候，你可能需要增加不存在的資料庫欄位的陣列屬性。首先定義一個[存取器](/docs/{{version}}/eloquent-mutators)的值：
 
     <?php
 
