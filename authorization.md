@@ -56,7 +56,7 @@ Note that we did not check if the given `$user` is not `NULL`. The `Gate` will a
 
 In addition to registering `Closures` as authorization callbacks, you may register class methods by passing a string containing the class name and the method. When needed, the class will be resolved via the [service container](/docs/{{version}}/container):
 
-    $gate->define('update-post', 'PostPolicy@update');
+    $gate->define('update-post', 'Class@method');
 
 <a name="checking-abilities"></a>
 ## Checking Abilities
