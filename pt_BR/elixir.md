@@ -15,13 +15,13 @@
 	- [Scripts](#javascript)
 - [Versionando / Cache Busting](#versioning-and-cache-busting)
 - [Gulp - Chamando tarefas existentes](#calling-existing-gulp-tasks)
-- [Escrevendo extenções Elixir](#writing-elixir-extensions)
+- [Escrevendo extensões Elixir](#writing-elixir-extensions)
 - [Extras](#elixir-extras)
 
 <a name="introduction"></a>
 ## Introdução
 
-Laravel Elixir provê uma limpa e fluente API para definir tarefas Gulp básicas para sua aplicação. Elixir suporta os mais comuns pré-processadores CSS e Javasript, e também as ferramentas de teste. Usando métodos encadeados, elixir permite que você defina fluentemente o pipeline dos seus assets. Por exemplo:
+Laravel Elixir provê uma limpa e fluente API para definir tarefas Gulp básicas para sua aplicação. Elixir suporta os mais comuns pré-processadores CSS, Javasript e também as ferramentas de teste. Usando métodos encadeados, elixir permite que você defina fluentemente o pipeline dos seus assets. Por exemplo:
 
 ```javascript
 elixir(function(mix) {
@@ -316,9 +316,9 @@ elixir(function(mix) {
 ```
 
 <a name="writing-elixir-extensions"></a>
-## Escrevendo Extenções Elixir
+## Escrevendo Extensões Elixir
 
-Se você precisa de mais flexibilidade que a `task` do Elixir provê, você pode criar suas próprias extenções. Extenções Elixir permitem que você passe argumentos customizados para as tarefas. Por exemplo, pode poderia escrever uma extenção assim:
+Se você precisa de mais flexibilidade que a `task` do Elixir provê, você pode criar suas próprias extensões. Extensões Elixir permitem que você passe argumentos customizados para as tarefas. Por exemplo, pode poderia escrever uma extenção assim:
 
 ```javascript
 // Arquivo: elixir-extensions.js
