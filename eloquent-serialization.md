@@ -1,4 +1,4 @@
-# Eloquent: Serialization
+# Eloquent: 序列化
 
 - [簡介](#introduction)
 - [基本用法](#basic-usage)
@@ -8,7 +8,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-當建立一個 JSON APIs的時候，你經常需要將模型和關聯轉換成陣列或是 JSON。Eloquent 提供了方便的方法讓我們可以做這些轉換，以及包括在你的序列化中需要控制的屬性。
+當建立一個 JSON APIs 的時候，你經常需要將模型和關聯轉換成陣列或是 JSON。Eloquent 提供了方便的方法讓我們可以做這些轉換，以及包括在你的序列化中需要控制的屬性。
 
 <a name="basic-usage"></a>
 ## 基本用法
@@ -29,7 +29,7 @@
 
 #### 將模型轉換成 JSON
 
-如果要將模型轉換成 JSON，你可以使用 `toJson` 方法。像是 `toArray`、`toJson` 的方法是遞迴的，所以，所有的屬性以及關聯都將被轉換成 JSON：
+如果要將模型轉換成 JSON，你可以使用 `toJson` 方法。如同 `toArray`、`toJson` 的方法是遞迴的，所以，所有的屬性以及關聯都將被轉換成 JSON：
 
     $user = App\User::find(1);
 
@@ -68,7 +68,7 @@
         protected $hidden = ['password'];
     }
 
-> **注意：** 當你要隱藏關聯的資料，要使用關聯 **方法** 的名稱，而不是動態屬性的名稱。
+> **注意：**當你要隱藏關聯的資料，要使用關聯**方法**的名稱，而不是動態屬性的名稱。
 
 另外，你也可以使用 `visible` 屬性在你的模型陣列和 JSON 表達式中定義白名單：
 

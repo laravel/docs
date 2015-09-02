@@ -17,7 +17,7 @@
 
 #### 定義一個存取器
 
-若要定義一個存取器，在你的模型建立一個 `getFooAttribute` 方法，而且你希望存取的 `Foo` 欄位是一個「駝峰式」大小寫的命名。在這個範例中，我們將對 `first_name` 屬性定義一個存取器。當 Eloquent 嘗試取得 `first_name` 的數值時，存取器將會自動的被呼叫：
+若要定義一個存取器，在你的模型建立一個 `getFooAttribute` 方法，而且你希望存取的 `Foo` 欄位需使用「駝峰式」的方式命名。在這個範例中，我們將對 `first_name` 屬性定義一個存取器。當 Eloquent 嘗試取得 `first_name` 的數值時，存取器將會自動的被呼叫：
 
     <?php
 
@@ -47,7 +47,7 @@
 
 #### 定義一個修改器
 
-若要定義一個修改器，在你的模型上定義一個 `setFooAttribute` 方法，而且你希望存取的 `Foo` 欄位是一個「駝峰式」大小寫的命名。所以，讓我們再一次定義 `first_name` 屬性的修改器。當我們嘗試在模型上設定 `first_name` 的數值時，修改器將會自動的被呼叫：
+若要定義一個修改器，在你的模型上定義一個 `setFooAttribute` 方法，而且你希望存取的 `Foo` 欄位需使用「駝峰式」的方式命名。所以，讓我們再一次定義 `first_name` 屬性的修改器。當我們嘗試在模型上設定 `first_name` 的數值時，修改器將會自動的被呼叫：
 
     <?php
 
@@ -75,7 +75,7 @@
 
     $user->first_name = 'Sally';
 
-在這個範例，`setFirstNameAttribute` 的值為 `Sally` 而且函式將會被呼叫。修改器將會使用 `strtolower` 函式來命名數值以及設定數值到內部的 `$attributes` 陣列。
+在這個範例，`setFirstNameAttribute` 函式會被呼叫並將值 `Sally` 帶入。對該名字使用 `strtolower` 函式並將值設置於內部的 `$attributes` 陣列。
 
 <a name="date-mutators"></a>
 ## 日期轉換器
