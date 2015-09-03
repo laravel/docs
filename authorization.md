@@ -277,7 +277,7 @@ You may continue to define additional methods on the policy as needed for the va
 
 #### Intercepting All Checks
 
-Sometimes, you may wish to grant all abilities to a specific user on a policy. For this situation, define a `before` method on the policy. This method will be run before all other authorization checks for the policy:
+Sometimes, you may wish to grant all abilities to a specific user on a policy. For this situation, define a `before` method on the policy. This method will be run before all other authorization checks on the policy:
 
     public function before($user, $ability)
     {
