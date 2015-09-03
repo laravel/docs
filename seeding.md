@@ -24,7 +24,6 @@ As an example, let's modify the `DatabaseSeeder` class which is included with a 
 
     <?php
 
-    use DB;
     use Illuminate\Database\Seeder;
     use Illuminate\Database\Eloquent\Model;
 
