@@ -189,6 +189,12 @@ You may remove items from the cache using the `forget` method on the `Cache` fac
 
     Cache::forget('key');
 
+You can also clear the whole caching using the `flush` method:
+
+    Cache::flush();
+
+> **Note:** Flushing the cache **will not** respect the prefix and will remove all entries in the cache. Consider this when using e.g. Redis databases which may be shared with other application (Queueing, etc.).
+
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
 
