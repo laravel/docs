@@ -42,8 +42,7 @@ vendor 目錄包含你的 [Composer](https://getcomposer.org) 依賴模組。
 
 `Jobs` 目錄，當然，用於放置應用程式[可隊列的任務](/docs/{{version}}/queues)。任務可能被應用程式放到隊列中，以及可以在當前請求生命週期內同步執行。
 
-`Events` 目錄，如你所料，是用來放置[事件類別](/docs/{{version}}/events)。事件可以使用
-，提供很大的靈活性及減少耦合。事件可以被用於當指定的動作發生時，通知你應用程式的其他部分。
+`Events` 目錄，如你所料，是用來放置[事件類別](/docs/{{version}}/events)。事件可以被用於當指定的動作發生時，通知你應用程式的其他部分，提供很大的靈活性及減少耦合
 
 `Listeners` 目錄包含事件的處理類別。處理程序接收一個事件，並針對該事件執行邏輯。例如，`UserRegistered` 事件可能由 `SendWelcomeEmail` 監聽器處理。
 
