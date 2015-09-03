@@ -275,6 +275,19 @@ You may continue to define additional methods on the policy as needed for the va
 
 > **Note:** All policies are resolved via the Laravel [service container](/docs/{{version}}/container), meaning you may type-hint any needed dependencies in the policy's constructor and they will be automatically injected.
 
+#### Intercepting All Checks
+
+Sometimes, you may wish to grant all abilities to a specific user on a policy. For this situation, define a `before` method on the policy. This method will be run before all other authorization checks for the policy:
+
+    public function before($user, $ability)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    }
+
+If the `before` method returns a non-null result that result will be considered the result of the check.
+
 <a name="checking-policies"></a>
 ### Checking Policies
 
