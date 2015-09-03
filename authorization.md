@@ -58,6 +58,18 @@ In addition to registering `Closures` as authorization callbacks, you may regist
 
     $gate->define('update-post', 'Class@method');
 
+#### Intercepting All Checks
+
+Sometimes, you may wish to grant all abilities to a specific user. For this situation, use the `before` method to define a callback that is run before all other authorization checks:
+
+    $gate->before(function ($user, $ability) {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    });
+
+If the `before` callback returns a non-null result that result will be considered the result of the check.
+
 <a name="checking-abilities"></a>
 ## Checking Abilities
 
@@ -262,6 +274,19 @@ Once the policy has been generated and registered, we can add methods for each a
 You may continue to define additional methods on the policy as needed for the various abilities it authorizes. For example, you might define `show`, `destroy`, or `addComment` methods to authorize various `Post` actions.
 
 > **Note:** All policies are resolved via the Laravel [service container](/docs/{{version}}/container), meaning you may type-hint any needed dependencies in the policy's constructor and they will be automatically injected.
+
+#### Intercepting All Checks
+
+Sometimes, you may wish to grant all abilities to a specific user on a policy. For this situation, define a `before` method on the policy. This method will be run before all other authorization checks on the policy:
+
+    public function before($user, $ability)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    }
+
+If the `before` method returns a non-null result that result will be considered the result of the check.
 
 <a name="checking-policies"></a>
 ### Checking Policies
