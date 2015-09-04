@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## 簡介
 
- Laravel 使資料庫連接與執行查詢變得非常簡單，無論是使用原始 SQL[fluent query builder](/docs/{{version}}/queries)  ，或是目前的 [Eloquent ORM](/docs/{{version}}/eloquent)， Laravel 支援以下的資料庫系統:
+ Laravel 使資料庫連接與執行查詢變得非常簡單，無論是使用原始 SQL [fluent query builder](/docs/{{version}}/queries)  ，或是目前的 [Eloquent ORM](/docs/{{version}}/eloquent)， Laravel 支援以下的資料庫系統:
 
 - MySQL
 - Postgres
