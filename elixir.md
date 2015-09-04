@@ -333,6 +333,8 @@ gulp.task('speak', function() {
 });
 ```
 
+> **Note:** Since calling `gulp.src().pipe()...` etc returns a promise object, returning it will cause your task to be considered finished before the task itself can finish. Make sure you're not returning anything in this closure.
+
 If you wish to call this task from Elixir, use the `mix.task` method and pass the name of the task as the only argument to the method:
 
 ```javascript
