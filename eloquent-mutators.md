@@ -8,7 +8,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-當你從模型取得集合或是設定他們的值，存取器和修改器可以讓你格式化 Eloquent 屬性。例如，你可能想使用 [Laravel 加密](/docs/{{version}}/encryption)來加密一個值而同時儲存在資料庫中，然後當你從一個 Eloquent 模型存取時可以自動的解密該屬性。
+當你從模型取得 Eloquent 的屬性或是設定它們的值，存取器和修改器可以讓你格式化它們。例如，你可能想使用 [Laravel 加密器](/docs/{{version}}/encryption)來加密一個值而同時儲存在資料庫中，然後當你從一個 Eloquent 模型存取時可以自動的解密該屬性。
 
 除了在自訂的存取器和修改器外，Eloquent 會自動將日期欄位型別轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 實例或甚至可以將 [文字欄位型別轉換成 JSON](#attribute-casting)。
 
