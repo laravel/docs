@@ -8,9 +8,9 @@
 <a name="introduction"></a>
 ## 簡介
 
-當你從模型取得 Eloquent 的屬性或是設定它們的值，存取器和修改器可以讓你格式化它們。例如，你可能想使用 [Laravel 加密器](/docs/{{version}}/encryption)來加密一個值而同時儲存在資料庫中，然後當你從一個 Eloquent 模型存取時可以自動的解密該屬性。
+當你從模型取得 Eloquent 的屬性或是設定它們的值，存取器和修改器可以讓你格式化它們。例如，你可能想使用 [Laravel 加密器](/docs/{{version}}/encryption)來加密一個被儲存在資料庫中的值，然後當你從一個 Eloquent 模型存取該屬性時可以自動的解密它。
 
-除了在自訂的存取器和修改器外，Eloquent 會自動將日期欄位型別轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 實例或甚至可以將 [文字欄位型別轉換成 JSON](#attribute-casting)。
+除了在自訂的存取器和修改器外，Eloquent 也會自動將日期欄位型別轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 實例或甚至將[文字欄位型別轉換成 JSON](#attribute-casting)。
 
 <a name="accessors-and-mutators"></a>
 ## 存取器和修改器
@@ -28,7 +28,7 @@
     class User extends Model
     {
         /**
-         * Get the user's first name.
+         * 取得使用者的名字。
          *
          * @param  string  $value
          * @return string
@@ -39,7 +39,7 @@
         }
     }
 
-如你所見的，原始欄位的值已經傳送給存取器，讓你可以操作和回傳數值。如果要存取被修改的值，你可以簡單的存取 `first_name` 屬性：
+如你所見的，欄位原始的值被傳遞到存取器，讓你可以操作並回傳結果。如果要存取被修改的值，你可以簡單的存取 `first_name` 屬性：
 
     $user = App\User::find(1);
 
@@ -47,7 +47,7 @@
 
 #### 定義一個修改器
 
-若要定義一個修改器，在你的模型上定義一個 `setFooAttribute` 方法，而且你希望存取的 `Foo` 欄位需使用「駝峰式」的方式命名。所以，讓我們再一次定義 `first_name` 屬性的修改器。當我們嘗試在模型上設定 `first_name` 的數值時，修改器將會自動的被呼叫：
+若要定義一個修改器，在你的模型上定義一個 `setFooAttribute` 方法，而且你希望存取的 `Foo` 欄位需使用「駝峰式」的方式命名。所以，讓我們再一次定義 `first_name` 屬性的修改器。當我們嘗試在模型上設定 `first_name` 的值時，修改器將會自動的被呼叫：
 
     <?php
 
@@ -58,7 +58,7 @@
     class User extends Model
     {
         /**
-         * Set the user's first name.
+         * 設定使用者的名字。
          *
          * @param  string  $value
          * @return string
@@ -69,20 +69,20 @@
         }
     }
 
-修改器會取得已經被設定的屬性數值，讓你可以在 Eloquent 模型內部操作和設定 `$attributes` 的屬性。所以，舉個例子，如果我們嘗試將 `first_name` 屬性設定成 `Sally`：
+修改器會取得屬性已經被設定的值，讓你可以操作該值並設定到 Eloquent 模型內部的 `$attributes` 屬性。所以，舉個例子，如果我們嘗試將 `first_name` 屬性設定成 `Sally`：
 
     $user = App\User::find(1);
 
     $user->first_name = 'Sally';
 
-在這個範例，`setFirstNameAttribute` 函式會被呼叫並將值 `Sally` 帶入。對該名字使用 `strtolower` 函式並將值設置於內部的 `$attributes` 陣列。
+在這個範例中，`setFirstNameAttribute` 函式會使用 `Sally` 當參數呼叫。修改器會對該名字使用 `strtolower` 函式並將值設置於內部的 `$attributes` 陣列。
 
 <a name="date-mutators"></a>
 ## 日期轉換器
 
-預設情況下，Eloquent 將會把 `created_at` 和 `updated_at` 欄位轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 的實例，提供了各式各樣的有效方法，和繼承了 PHP 原生 `DateTime` 的類別。
+預設情況下，Eloquent 將會把 `created_at` 和 `updated_at` 欄位轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 的實例，它提供了各式各樣有用的方法，並繼承了 PHP 原生的 `DateTime` 類別。
 
-你可以在你的模型中自訂那些欄位可以自動地被修改，和甚至完全禁止被修改，只要覆寫 `$dates` 屬性：
+你可以在你的模型中自訂哪些欄位要自動地被修改，和甚至完全禁止被修改，只要藉由覆寫模型的 `$dates` 屬性：
 
     <?php
 
@@ -93,7 +93,7 @@
     class User extends Model
     {
         /**
-         * The attributes that should be mutated to dates.
+         *  應該應用日期轉換的屬性。
          *
          * @var array
          */
