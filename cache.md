@@ -189,6 +189,12 @@ You may remove items from the cache using the `forget` method on the `Cache` fac
 
     Cache::forget('key');
 
+You may clear the entire caching using the `flush` method:
+
+    Cache::flush();
+
+Flushing the cache **does not** respect the cache prefix and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
+
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
 
