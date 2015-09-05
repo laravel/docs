@@ -58,6 +58,7 @@ In addition to registering `Closures` as authorization callbacks, you may regist
 
     $gate->define('update-post', 'Class@method');
 
+<a name="intercepting-all-checks"></a>
 #### Intercepting All Checks
 
 Sometimes, you may wish to grant all abilities to a specific user. For this situation, use the `before` method to define a callback that is run before all other authorization checks:
