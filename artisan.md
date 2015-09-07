@@ -108,7 +108,7 @@ Note that we are able to inject any dependencies we need into the command's cons
 
 When writing console commands, it is common to gather input from the user through arguments or options. Laravel makes it very convenient to define the input you expect from the user using the `signature` property on your commands. The `signature` property allows you to define the name, arguments, and options for the command in a single, expressive, route-like syntax.
 
-All user supplied arguments and options are wrapped in curly braces. In the following example, the command defines one **required** argument: `user`.
+All user supplied arguments and options are wrapped in curly braces. In the following example, the command defines one **required** argument: `user`:
 
     /**
      * The name and signature of the console command.
