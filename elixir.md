@@ -199,7 +199,7 @@ elixir(function(mix) {
 
 Elixir also ships with a `browserify` method, which gives you all the benefits of requiring modules in the browser and using ECMAScript 6.
 
-This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/bundle.js`:
+This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/main.js`:
 
 ```javascript
 elixir(function(mix) {
