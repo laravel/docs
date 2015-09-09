@@ -30,13 +30,26 @@ You are free to create other testing environment configurations as necessary. Th
 
 ### Defining & Running Tests
 
-To create a test case, simply create a new test file in the `tests` directory. The test class should extend `TestCase`. You may then define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal:
+To create a new test case, use the `make:test` Artisan command:
+
+    php artisan make:test FooTest
+
+This command will place a new `FooTest` class within your `tests` directory. You may then define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal.
 
     <?php
 
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Illuminate\Foundation\Testing\DatabaseTransactions;
+
     class FooTest extends TestCase
     {
-        public function testSomethingIsTrue()
+        /**
+         * A basic test example.
+         *
+         * @return void
+         */
+        public function testExample()
         {
             $this->assertTrue(true);
         }
