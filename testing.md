@@ -32,9 +32,9 @@ You are free to create other testing environment configurations as necessary. Th
 
 To create a new test case, use the `make:test` Artisan command:
 
-    php artisan make:test FooTest
+    php artisan make:test UserTest
 
-This command will place a new `FooTest` class within your `tests` directory. You may then define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal.
+This command will place a new `UserTest` class within your `tests` directory. You may then define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal:
 
     <?php
 
@@ -42,7 +42,7 @@ This command will place a new `FooTest` class within your `tests` directory. You
     use Illuminate\Foundation\Testing\DatabaseMigrations;
     use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-    class FooTest extends TestCase
+    class UserTest extends TestCase
     {
         /**
          * A basic test example.
