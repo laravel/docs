@@ -119,6 +119,12 @@ Once the middleware has been defined in the HTTP kernel, you may use the `middle
         //
     }]);
 
+Use an array to assign multiple middleware to the route:
+
+    Route::get('/', ['middleware' => ['first', 'second'], function () {
+        //
+    }]);
+
 <a name="middleware-parameters"></a>
 ## Middleware Parameters
 
