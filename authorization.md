@@ -242,7 +242,7 @@ Once the policy exists, we need to register it with the `Gate` class. The `AuthS
 	    protected $policies = [
 	        Post::class => PostPolicy::class,
 	    ];
-	    
+
 	    /**
 	     * Register any application authentication / authorization services.
 	     *
@@ -253,7 +253,6 @@ Once the policy exists, we need to register it with the `Gate` class. The `AuthS
 	    {
 	        parent::registerPolicies($gate);
 	    }
-	    
 	}
 
 <a name="writing-policies"></a>
