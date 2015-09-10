@@ -123,6 +123,10 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
 
 By default, each site will be accessible by HTTP via port 8000 and HTTPS via port 44300.
 
+#### Bash Aliases
+
+To add Bash aliases to your Homestead box, simply add to the `aliases` file in the root of the `~/.homestead` directory.
+
 #### The Hosts File
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
