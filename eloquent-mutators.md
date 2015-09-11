@@ -125,7 +125,7 @@
     class Flight extends Model
     {
         /**
-         * The storage format of the model's date columns.
+         * 模型的資料欄位的儲存格式。
          *
          * @var string
          */
@@ -135,9 +135,9 @@
 <a name="attribute-casting"></a>
 ## 屬性型別轉換
 
-`$casts` 屬性在你的模型中提供了方便的方法將屬性轉換為常見的資料類型。`$casts` 屬性應該是一個陣列，而且關鍵是在那些名稱需要被轉換，而這些數值類型是你想要轉換的欄位。支援的型別轉換的類型有：`integer`、`real`、`float`、`double`、`string`、`boolean`、`object` 和 `array`。
+`$casts` 屬性在你的模型中提供了方便的方法將屬性轉換為常見的資料類型。`$casts` 屬性應該是一個陣列，而鍵是那些需要被轉換的屬性名稱，而值則是代表你想要把欄位轉換成什麼類型。支援的型別轉換的類型有：`integer`、`real`、`float`、`double`、`string`、`boolean`、`object` 和 `array`。
 
-例如，讓我們轉換 `is_admin` 屬性，這是在我們的資料庫中儲存整數（0 或 1）為布林值：
+例如，`is_admin` 屬性以整數（0 或 1）被儲存在我們的資料庫中，讓我們把它轉換為布林值：
 
     <?php
 
@@ -148,7 +148,7 @@
     class User extends Model
     {
         /**
-         * The attributes that should be casted to native types.
+         * 應該被轉換成原生型別的屬性。
          *
          * @var array
          */
@@ -157,7 +157,7 @@
         ];
     }
 
-現在當你存取 `is_admin` 屬性將會被轉換成布林值，即使儲存在資料庫的底層數值是一個整數：
+現在當你存取 `is_admin` 屬性時，它將會總是被轉換成布林值，即使儲存在資料庫裡面的值是一個整數：
 
     $user = App\User::find(1);
 
@@ -167,7 +167,7 @@
 
 #### 陣列型別轉換
 
-如果原本欄位是被儲存的為序列化的 JSON 時，那麼 `array` 型別轉換將會非常有用。例如，如果你的資料庫有一個 `TEXT` 類型包含了序列化的 JSON，當你存取你的 Eloquent 模型時，通過增加 `array` 型別轉換，當取得這個屬性的時候會自動反序列化成 PHP 的陣列：
+如果原本欄位儲存的為被序列化的 JSON 時，那麼 `array` 型別轉換將會特別的有用。例如，如果你的資料庫有一個 `TEXT` 欄位型別包含了被序列化的 JSON，而且對該屬性添加了 `array` 型別轉換，當你在 Eloquent 模型上存取該屬性時，它會自動被反序列化成一個 PHP 的陣列：
 
     <?php
 
@@ -178,7 +178,7 @@
     class User extends Model
     {
         /**
-         * The attributes that should be casted to native types.
+         * 應該被轉換成原生型別的屬性。
          *
          * @var array
          */
@@ -187,7 +187,7 @@
         ];
     }
 
-一旦型別轉換被定義，你可以存取 `options` 屬性而且它會自動地從 JSON 反序列化成一個 PHP 陣列。當你設定 `options` 屬性的值，給定的陣列將會自動的序列化變回成 JSON 再儲存：
+一旦型別轉換被定義，你可以存取 `options` 屬性而它會自動地從 JSON 反序列化成一個 PHP 陣列。當你設定 `options` 屬性的值，給定的陣列將會自動的被序列化變回成 JSON 以進行儲存：
 
     $user = App\User::find(1);
 
