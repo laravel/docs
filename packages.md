@@ -7,7 +7,7 @@
     - [視圖](#views)
     - [語言](#translations)
     - [設定檔](#configuration)
-- [公用資產](#public-assets)
+- [公用資源檔](#public-assets)
 - [發佈分類檔案](#publishing-file-groups)
 
 <a name="introduction"></a>
@@ -24,7 +24,7 @@
 
 [服務提供者](/docs/{{version}}/providers)是你的套件與 Laravel 連接的重點。服務提供者負責綁定一些東西至 Laravel 的[服務容器](/docs/{{version}}/container)並告知 Laravel 要從哪載入套件的資源，像是視圖，設定檔，與語言檔。
 
-服務提供者繼承了 `Illuminate\Support\ServiceProvider` 類別並包含了兩個方法：`register` 及 `boot`。基底的 `ServiceProvider` 類別被放置在 Composer 套件的 `illuminate/support`，你必須將它加入至你自己的套件的依賴。
+服務提供者繼承了 `Illuminate\Support\ServiceProvider` 類別並包含了兩個方法：`register` 及 `boot`。基底的 `ServiceProvider` 類別被放置在 Composer 的 `illuminate/support` 套件，你必須將它加入至你自己的套件的依賴。
 
 若要瞭解更多關於服務提供者的結構與用途，請查閱[它的文件](/docs/{{version}}/provider)。
 
@@ -34,7 +34,7 @@
 要為你的套件定義路由，只要簡單的在你套件的服務提供者的 `boot` 方法 `require` 路由檔案。在你的路由檔案中，你可以如同在一般的 Laravel 應用程式一樣使用 `Route` facade 來[註冊路由](/docs/{{version}}/routing)：
 
     /**
-     * Perform post-registration booting of services.
+     * 在註冊後進行服務的啟動。
      *
      * @return void
      */
@@ -54,7 +54,7 @@
 若要在 Laravel 中註冊你套件的[視圖](/docs/{{version}}/views)，你必須告訴 Laravel 你的視圖位置。你可以使用服務提供者的 `loadViewsFrom` 方法來達成。`loadViewsFrom` 方法允許兩個參數：你的視圖模板路徑與你的套件名稱。例如，如果你的套件名稱是「courier」，你可以按照以下方式新增至你的服務提供者的 `boot` 方法：
 
     /**
-     * Perform post-registration booting of services.
+     * 在註冊後進行服務的啟動。
      *
      * @return void
      */
@@ -78,7 +78,7 @@
 若要發佈套件的視圖至 `resources/views/vendor` 目錄，你必須使用服務提供者的 `publishes` 方法。`publishes` 方法允許一個包含套件視圖路徑及對應發佈路徑的陣列。
 
     /**
-     * Perform post-registration booting of services.
+     * 在註冊後進行服務的啟動。
      *
      * @return void
      */
@@ -96,10 +96,10 @@
 <a name="translations"></a>
 ### 語言
 
-如果你的套件包含[語言檔案](/docs/{{version}}/localization)，你可以使用 `loadTranslationsFrom` 方法來告知 Laravel 該如何載入它們。取個例子，如果你的套件名稱為「courier」，你可以按照以下方式新增至你服務提供者的 `boot` 方法：
+如果你的套件包含[語言檔案](/docs/{{version}}/localization)，你可以使用 `loadTranslationsFrom` 方法來告知 Laravel 該如何載入它們。舉個例子，如果你的套件名稱為「courier」，你可以按照以下方式新增至你服務提供者的 `boot` 方法：
 
     /**
-     * Perform post-registration booting of services.
+     * 在註冊後進行服務的啟動。
      *
      * @return void
      */
@@ -118,7 +118,7 @@
 基本上，你可能想要將你套件的設定檔發佈到應用程式本身的 `config` 目錄。這能夠讓你套件的使用者輕鬆的覆寫這些預設的設定選項。如果要發佈套件的設定檔，只需要在服務提供者裡的 `boot` 方法裡使用 `publishes` 方法：
 
     /**
-     * Perform post-registration booting of services.
+     * 在註冊後進行服務的啟動。
      *
      * @return void
      */
@@ -138,7 +138,7 @@
 你也可以選擇合併你的套件設定檔和應用程式裡的副本設定檔。這樣能夠讓你的使用者在已經發佈的副本設定檔裡只包含他們想要覆寫的設定選項。如果想要合併設定檔，可在服務提供者裡的 `register` 方法裡使用 `mergeConfigFrom` 方法：
 
     /**
-     * Register bindings in the container.
+     * 在容器中註冊綁定。
      *
      * @return void
      */
@@ -150,12 +150,12 @@
     }
 
 <a name="public-assets"></a>
-## 公用資產
+## 公用資源檔
 
 你的套件可能會有像是 JavaScript、CSS、及圖片的資源。如果要發布資產至應用程式的 `public` 目錄，只需要使用服務提供者的 `publishes` 方法。在這個例子中，我們也會增加一個 `public` 的資源分類標籤，可以被使用於發佈與分類關聯的資產：
 
     /**
-     * Perform post-registration booting of services.
+     * 在註冊後進行服務的啟動。
      *
      * @return void
      */
@@ -178,7 +178,7 @@
 你可能想要分別發佈分類的套件資產或是資源。舉例來說，你可能想讓使用者不需發佈套件的所有資產，只單獨發佈套件的設定檔。你可以在呼叫 `publishes` 方法時使用「標籤」來做到。例如，讓我們在套件的服務提供者中的 `boot` 方法定義兩個發佈群組：
 
     /**
-     * Perform post-registration booting of services.
+     * 在註冊後進行服務的啟動。
      *
      * @return void
      */
