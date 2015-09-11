@@ -152,7 +152,7 @@
 <a name="public-assets"></a>
 ## 公用資源檔
 
-你的套件可能會有像是 JavaScript、CSS、及圖片的資源。如果要發布資產至應用程式的 `public` 目錄，只需要使用服務提供者的 `publishes` 方法。在這個例子中，我們也會增加一個 `public` 的資源分類標籤，可以被使用於發佈與分類關聯的資產：
+你的套件可能會有像是 JavaScript、CSS、及圖片的資源。如果要發布資源檔至應用程式的 `public` 目錄，只需要使用服務提供者的 `publishes` 方法。在這個例子中，我們也會增加一個 `public` 的資源分類標籤，可以被使用於發佈與分類關聯的資源檔：
 
     /**
      * 在註冊後進行服務的啟動。
@@ -166,16 +166,16 @@
         ], 'public');
     }
 
-現在當你套件的使用者執行 `vendor:publish` 指令時，你的資產將會被複製到指定的位置。當每次套件更新需要覆寫資產時，你可以使用 `--force` 標記：
+現在當你套件的使用者執行 `vendor:publish` 指令時，你的資源檔將會被複製到指定的位置。當每次套件更新需要覆寫資源檔時，你可以使用 `--force` 標記：
 
     php artisan vendor:publish --tag=public --force
 
-如果你想要確保你的公用資產始終保持在最新的版本，可以將此指令加入你的 `composer.json` 檔案中的 `post-update-cmd` 列表。
+如果你想要確保你的公用資源檔始終保持在最新的版本，可以將此指令加入你的 `composer.json` 檔案中的 `post-update-cmd` 列表。
 
 <a name="publishing-file-groups"></a>
 ## 發佈分類檔案
 
-你可能想要分別發佈分類的套件資產或是資源。舉例來說，你可能想讓使用者不需發佈套件的所有資產，只單獨發佈套件的設定檔。你可以在呼叫 `publishes` 方法時使用「標籤」來做到。例如，讓我們在套件的服務提供者中的 `boot` 方法定義兩個發佈群組：
+你可能想要分別發佈分類的套件資源檔或是資源。舉例來說，你可能想讓使用者不需發佈套件的所有資源檔，只單獨發佈套件的設定檔。你可以在呼叫 `publishes` 方法時使用「標籤」來做到。例如，讓我們在套件的服務提供者中的 `boot` 方法定義兩個發佈群組：
 
     /**
      * 在註冊後進行服務的啟動。
@@ -193,6 +193,6 @@
         ], 'migrations');
     }
 
-現在當你的使用者使用 `vendor:publish` Artisan 指令時，可以透過標籤名稱分別發佈不同分類的資產：
+現在當你的使用者使用 `vendor:publish` Artisan 指令時，可以透過標籤名稱分別發佈不同分類的資源檔：
 
     php artisan vendor:publish --provider="Vendor\Providers\PackageServiceProvider" --tag="config"
