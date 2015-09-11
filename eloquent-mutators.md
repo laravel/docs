@@ -8,16 +8,16 @@
 <a name="introduction"></a>
 ## 簡介
 
-當你從模型取得 Eloquent 的屬性或是設定它們的值，存取器和修改器可以讓你格式化它們。例如，你可能想使用 [Laravel 加密器](/docs/{{version}}/encryption)來加密一個被儲存在資料庫中的值，然後當你從一個 Eloquent 模型存取該屬性時可以自動的解密它。
+當你從模型取得 Eloquent 的屬性或是設定它們的值，存取器和修改器可以讓你格式化它們。例如，你可能想要使用 [Laravel 加密器](/docs/{{version}}/encryption)來加密一個被儲存在資料庫中的值，而在你從 Eloquent 模型存取該屬性時可以自動的解密它。
 
-除了在自訂的存取器和修改器外，Eloquent 也會自動將日期欄位型別轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 實例或甚至將[文字欄位型別轉換成 JSON](#attribute-casting)。
+除了自訂的存取器和修改器外，Eloquent 也會自動將日期欄位型別轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 實例或甚至將[文字欄位型別轉換成 JSON](#attribute-casting)。
 
 <a name="accessors-and-mutators"></a>
 ## 存取器和修改器
 
 #### 定義一個存取器
 
-若要定義一個存取器，在你的模型建立一個 `getFooAttribute` 方法，而且你希望存取的 `Foo` 欄位需使用「駝峰式」的方式命名。在這個範例中，我們將對 `first_name` 屬性定義一個存取器。當 Eloquent 嘗試取得 `first_name` 的數值時，存取器將會自動的被呼叫：
+若要定義一個存取器，必須在你的模型上建立一個 `getFooAttribute` 方法，而且你希望存取的 `Foo` 欄位需使用「駝峰式」的方式命名。在這個範例中，我們將對 `first_name` 屬性定義一個存取器。當 Eloquent 嘗試取得 `first_name` 的值時，將會自動的呼叫存取器：
 
     <?php
 
@@ -47,7 +47,7 @@
 
 #### 定義一個修改器
 
-若要定義一個修改器，在你的模型上定義一個 `setFooAttribute` 方法，而且你希望存取的 `Foo` 欄位需使用「駝峰式」的方式命名。所以，讓我們再一次定義 `first_name` 屬性的修改器。當我們嘗試在模型上設定 `first_name` 的值時，修改器將會自動的被呼叫：
+若要定義一個修改器，必須在你的模型上定義一個 `setFooAttribute` 方法，而且你希望存取的 `Foo` 欄位需使用「駝峰式」的方式命名。所以，讓我們再一次定義 `first_name` 屬性的修改器。當我們嘗試在模型上設定 `first_name` 的值時，將會自動的呼叫修改器：
 
     <?php
 
@@ -82,7 +82,7 @@
 
 預設情況下，Eloquent 將會把 `created_at` 和 `updated_at` 欄位轉換成 [Carbon](https://github.com/briannesbitt/Carbon) 的實例，它提供了各式各樣有用的方法，並繼承了 PHP 原生的 `DateTime` 類別。
 
-你可以在你的模型中自訂哪些欄位要自動地被修改，和甚至完全禁止被修改，只要藉由覆寫模型的 `$dates` 屬性：
+你可以在你的模型中自訂哪些欄位要自動地被修改，或甚至完全禁止修改，只要藉由覆寫模型的 `$dates` 屬性：
 
     <?php
 
