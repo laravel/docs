@@ -30,15 +30,11 @@ Laravel 在建立時就已考慮到測試的部分。事實上，預設就支援
 
 ### 定義並執行測試
 
-<<<<<<< HEAD
-要建立一個測試案例，只需要在 `tests` 目錄下建立新的測試檔案。測試類別必須繼承 `TestCase`，接著就可以像平常使用 PHPUnit 一樣定義測試方法。要執行測試只需要在終端機上執行 `phpunit` 指令：
-=======
-To create a new test case, use the `make:test` Artisan command:
+要建立一個測試案例，使用 `make:test` Artisan 指令：
 
     php artisan make:test UserTest
 
-This command will place a new `UserTest` class within your `tests` directory. You may then define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal:
->>>>>>> upstream/5.1
+此指令會放置一個新的 `UserTest` 類別至你的 `tests` 目錄。接著就可以像平常使用 PHPUnit 一樣定義測試方法。要執行測試只需要在終端機上執行 `phpunit` 指令：
 
     <?php
 
