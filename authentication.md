@@ -129,7 +129,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
     protected $loginPath = '/login';
 
-The `loginPath` will not change where a user is bounced if they try to access a protected route. That is controlled by the `App\Http\Middleware\Authenticate` middleware's `handle` method.
+`loginPath` 並不會改變當使用者存取受保護的路由時所重導的路徑。該路徑是由 `App\Http\Middleware\Authenticate` 中介層的 `handle` 方法所控制。
 
 #### 客製化
 
@@ -549,7 +549,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
         Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
         Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
-A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+一些 OAuth 提供者支援在重導的請求中自訂參數。若要在請求中加入任何自訂參數，只要呼叫 `with` 方法並帶上一個關聯陣列：
 
     return Socialite::driver('google')
                 ->with(['hd' => 'example.com'])->redirect();
