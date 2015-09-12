@@ -190,7 +190,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
     // 減少 5 個訂購數量...
     $user->subscription()->decrement(5);
 
-Alternatively, you may set a specific quantity using the `updateQuantity` method:
+另外，你也可以使用 `updateQuantity` 方法來設置指定的數量：
 
     $user->subscription()->updateQuantity(10);
 
