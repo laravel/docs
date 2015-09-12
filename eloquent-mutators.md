@@ -17,7 +17,11 @@
 
 #### 定義一個存取器
 
+<<<<<<< HEAD
 若要定義一個存取器，必須在你的模型上建立一個 `getFooAttribute` 方法，而且你希望存取的 `Foo` 欄位需使用「駝峰式」的方式命名。在這個範例中，我們將對 `first_name` 屬性定義一個存取器。當 Eloquent 嘗試取得 `first_name` 的值時，將會自動的呼叫存取器：
+=======
+To define an accessor, create a `getFooAttribute` method on your model where `Foo` is the "camel" cased name of the column you wish to access. In this example, we'll define an accessor for the `first_name` attribute. The accessor will automatically be called by Eloquent when attempting to retrieve the value of `first_name`:
+>>>>>>> upstream/5.1
 
     <?php
 
@@ -114,7 +118,11 @@
 
     return $user->disabled_at->getTimestamp();
 
+<<<<<<< HEAD
 如果你想要自訂你自己的時間戳記格式，在你的模型中設定 `$dateFormat` 屬性。這個屬性定義了時間屬性該如何被儲存到資料庫，以及模型被序列化成一個陣列或 JSON 時的格式：
+=======
+By default, timestamps are formatted as `'Y-m-d H:i:s'`. If you need to customize the timestamp format, set the `$dateFormat` property on your model. This property determines how date attributes are stored in the database, as well as their format when the model is serialized to an array or JSON:
+>>>>>>> upstream/5.1
 
     <?php
 

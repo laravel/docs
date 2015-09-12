@@ -1,5 +1,6 @@
 # 升級導引
 
+<<<<<<< HEAD
 - [升級到 5.1.0](#upgrade-5.1.0)
 - [升級到 5.0.16](#upgrade-5.0.16)
 - [從 4.2 升級到 5.0](#upgrade-5.0)
@@ -7,6 +8,76 @@
 - [從 4.1.x 以前版本升級到 4.1.29](#upgrade-4.1.29)
 - [從 4.1.25 以前版本升級到 4.1.26](#upgrade-4.1.26)
 - [從 4.0 升級到 4.1](#upgrade-4.1)
+=======
+- [Upgrading To 5.1.11](#upgrade-5.1.11)
+- [Upgrading To 5.1.0](#upgrade-5.1.0)
+- [Upgrading To 5.0.16](#upgrade-5.0.16)
+- [Upgrading To 5.0 From 4.2](#upgrade-5.0)
+- [Upgrading To 4.2 From 4.1](#upgrade-4.2)
+- [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
+- [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
+- [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+>>>>>>> upstream/5.1
+
+<a name="upgrade-5.1.11"></a>
+## Upgrading To 5.1.11
+
+Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorization) and [policies](/docs/{{version}}/authorization#policies). Incorporating these new features into your existing Laravel 5.1 applications is simple.
+
+> **Note:** These upgrades are **optional**, and ignoring them will not affect your application.
+
+#### Create The Policies Directory
+
+First, create an empty `app/Policies` directory within your application.
+
+#### Create / Register The AuthServiceProvider & Gate Facade
+
+Create a `AuthServiceProvider` within your `app/Providers` directory. You may copy the contents of the default provider [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php). After creating the provider, be sure to register it in your `app.php` configuration file's `providers` array.
+
+Also, you should register the `Gate` facade in your `app.php` configuration file's `aliases` array:
+
+    'Gate' => Illuminate\Support\Facades\Gate::class,
+
+#### Update The User Model
+
+Secondly, use the `Illuminate\Foundation\Auth\Access\Authorizable` trait and `Illuminate\Contracts\Auth\Access\Authorizable` contract on your `App\User` model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Auth\Authenticatable;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Auth\Passwords\CanResetPassword;
+    use Illuminate\Foundation\Auth\Access\Authorizable;
+    use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+    use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+    use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+
+    class User extends Model implements AuthenticatableContract,
+                                        AuthorizableContract,
+                                        CanResetPasswordContract
+    {
+        use Authenticatable, Authorizable, CanResetPassword;
+    }
+
+#### Update The Base Controller
+
+Next, update your base `App\Http\Controllers\Controller` controller to use the `Illuminate\Foundation\Auth\Access\AuthorizesRequests` trait:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Foundation\Bus\DispatchesJobs;
+    use Illuminate\Routing\Controller as BaseController;
+    use Illuminate\Foundation\Validation\ValidatesRequests;
+    use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+    abstract class Controller extends BaseController
+    {
+        use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    }
 
 <a name="upgrade-5.1.0"></a>
 ## 升級到 5.1.0
@@ -30,7 +101,11 @@
 
 ### 添加 `BroadcastServiceProvider` 提供者
 
+<<<<<<< HEAD
 在你的 `config/app.php` 設定檔裡面，添加 `Illuminate\Broadcasting\BroadcastServiceProvider` 到 `providers` 陣列裡。
+=======
+Within your `config/app.php` configuration file, add `Illuminate\Broadcasting\BroadcastServiceProvider` to the `providers` array.
+>>>>>>> upstream/5.1
 
 ### 認證
 
@@ -90,7 +165,11 @@ Eloquent 的 `create` 方法現在可以不帶任何參數呼叫。如果你有�
 
 ### 集合類別
 
+<<<<<<< HEAD
 #### `sortBy` 方法
+=======
+#### The `sortBy` Method
+>>>>>>> upstream/5.1
 
 `sortBy` 方法現在回傳一個全新的集合實例而不會去改動到既有的集合：
 
@@ -170,9 +249,15 @@ Eloquent 的 `create` 方法現在可以不帶任何參數呼叫。如果你有�
 
 ### 全新安裝，然後遷移
 
+<<<<<<< HEAD
 推薦的升級方式是安裝一個全新的 Laravel `5.0` 專案，然後複製你 `4.2` 網站專有的應用程式檔案 到此新的應用程式。這將包含控制器、路由、Eloquent 模型、Artisan 命令、assets 和其他專屬於你的應用程式的程式碼。
 
 開始前，在你的本地環境中[安裝一個新的 Laravel 5 應用程式](/docs/{{version}}/installation)到 一個全新的目錄中。我們將會在後面詳細探討各部分的遷移過程。
+=======
+The recommended method of upgrading is to create a new Laravel `5.0` install and then to copy your `4.2` site's unique application files into the new application. This would include controllers, routes, Eloquent models, Artisan commands, assets, and other code specific files to your application.
+
+To start, [install a new Laravel 5.0 application](/docs/5.0/installation) into a fresh directory in your local environment.  Do not install any versions newer than 5.0 yet, since we need to complete the migration steps for 5.0 first. We'll discuss each piece of the migration process in further detail below.
+>>>>>>> upstream/5.1
 
 ### Composer 相依與套件
 

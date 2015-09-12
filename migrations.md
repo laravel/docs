@@ -201,6 +201,7 @@ schema 結構生成器包含許多欄位狀態，您能夠使用它們去創建�
 
 Command  | Description
 ------------- | -------------
+<<<<<<< HEAD
 `$table->bigIncrements('id');`  |  ID 使用遞增方式增加，其屬性相同於 "big integer"。
 `$table->bigInteger('votes');`  |  相當於 BIGINT 型態。
 `$table->binary('data');`  |  相當於 BLOB 型態。
@@ -236,12 +237,52 @@ Command  | Description
 
 除了上訴的欄位類型，還有其它一些的欄位修飾，它們能加入在欄位內。
 例如在欄位內加入 "nullable" 屬性:
+=======
+`$table->bigIncrements('id');`  |  Incrementing ID (primary key) using a "UNSIGNED BIG INTEGER" equivalent.
+`$table->bigInteger('votes');`  |  BIGINT equivalent for the database.
+`$table->binary('data');`  |  BLOB equivalent for the database.
+`$table->boolean('confirmed');`  |  BOOLEAN equivalent for the database.
+`$table->char('name', 4);`  |  CHAR equivalent with a length.
+`$table->date('created_at');`  |  DATE equivalent for the database.
+`$table->dateTime('created_at');`  |  DATETIME equivalent for the database.
+`$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale.
+`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point.
+`$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent for the database.
+`$table->float('amount');`  |  FLOAT equivalent for the database.
+`$table->increments('id');`  |  Incrementing ID (primary key) using a "UNSIGNED INTEGER" equivalent.
+`$table->integer('votes');`  |  INTEGER equivalent for the database.
+`$table->json('options');`  |  JSON equivalent for the database.
+`$table->jsonb('options');`  |  JSONB equivalent for the database.
+`$table->longText('description');`  |  LONGTEXT equivalent for the database.
+`$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent for the database.
+`$table->mediumText('description');`  |  MEDIUMTEXT equivalent for the database.
+`$table->morphs('taggable');`  |  Adds INTEGER `taggable_id` and STRING `taggable_type`.
+`$table->nullableTimestamps();`  |  Same as `timestamps()`, except allows NULLs.
+`$table->rememberToken();`  |  Adds `remember_token` as VARCHAR(100) NULL.
+`$table->smallInteger('votes');`  |  SMALLINT equivalent for the database.
+`$table->softDeletes();`  |  Adds `deleted_at` column for soft deletes.
+`$table->string('email');`  |  VARCHAR equivalent column.
+`$table->string('name', 100);`  |  VARCHAR equivalent with a length.
+`$table->text('description');`  |  TEXT equivalent for the database.
+`$table->time('sunrise');`  |  TIME equivalent for the database.
+`$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
+`$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
+`$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
+
+#### Column Modifiers
+
+In addition to the column types listed above, there are several other column "modifiers" which you may use while adding the column. For example, to make the column "nullable", you may use the `nullable` method:
+>>>>>>> upstream/5.1
 
     Schema::table('users', function ($table) {
         $table->string('email')->nullable();
     });
 
+<<<<<<< HEAD
 以下清單為欄位內可用的修飾方法，此列表不包括 [index modifiers](#adding-indexes):
+=======
+Below is a list of all the available column modifiers. This list does not include the [index modifiers](#creating-indexes):
+>>>>>>> upstream/5.1
 
 Modifier  | Description
 ------------- | -------------
@@ -333,7 +374,11 @@ Command  | Description
 <a name="dropping-indexes"></a>
 ### 移除索引
 
+<<<<<<< HEAD
 要移除索引您必須指定索引名稱，Laravel 默認有預設的索引名稱。簡單地連結這些資料表與索引的欄位名稱和型別。舉例如下:
+=======
+To drop an index, you must specify the index's name. By default, Laravel automatically assigns a reasonable name to the indexes. Simply concatenate the table name, the name of the indexed column, and the index type. Here are some examples:
+>>>>>>> upstream/5.1
 
 Command  | Description
 ------------- | -------------

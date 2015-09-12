@@ -183,7 +183,11 @@
 <a name="route-groups"></a>
 ## 路由群組
 
+<<<<<<< HEAD
 路由群組允許你共用路由屬性，例如：中介層、命名空間，你可以利用路由群組套用這些屬性到多個路由，而不需在每個路由都設定一次。共用屬性被指定為陣列格式，當作 `Route::group` 方法的第一個參數：
+=======
+Route groups allow you to share route attributes, such as middleware or namespaces, across a large number of routes without needing to define those attributes on each individual route. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
+>>>>>>> upstream/5.1
 
 為了了解更多路由群組相關內容，我們會看過去幾個常見的使用範例和功能。
 
@@ -270,7 +274,11 @@ Laravel 會自動產生了一個 CSRF token 給每個活動使用者受應用程
 
     {!! csrf_field() !!}
 
+<<<<<<< HEAD
 你不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。在 `VerifyCsrfToken` [HTTP 中介層](/docs/{{version}}/middleware) 將自動驗證請求與 Session 中的 token 是否相符。
+=======
+You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify that the token in the request input matches the token stored in the session.
+>>>>>>> upstream/5.1
 
 <a name="csrf-excluding-uris"></a>
 ### 不受 CSRF 保護的 URIs

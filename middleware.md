@@ -119,6 +119,12 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
         //
     }]);
 
+Use an array to assign multiple middleware to the route:
+
+    Route::get('/', ['middleware' => ['first', 'second'], function () {
+        //
+    }]);
+
 <a name="middleware-parameters"></a>
 ## 中介層參數
 
@@ -183,4 +189,10 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
         }
     }
 
+<<<<<<< HEAD
 如你所見，除了定義 handle 方法之外，TerminableMiddleware 定義一個 terminate 方法。這個方法接收請求和回應。一旦定義了 terminable 中介層，你需要將它增加到 HTTP kernel 檔案的全域中介層清單列表中。
+=======
+The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
+
+When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method.
+>>>>>>> upstream/5.1

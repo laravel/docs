@@ -31,7 +31,16 @@ Laravel 的 [facades](/docs/{{version}}/facades) 提供一個簡單的方法來�
 
 	<?php
 
+<<<<<<< HEAD
 	namespace App\Orders;
+=======
+    class Repository
+    {
+        /**
+         * The cache instance.
+         */
+        protected $cache;
+>>>>>>> upstream/5.1
 
 	class Repository
 	{
@@ -75,7 +84,28 @@ Laravel 的 [facades](/docs/{{version}}/facades) 提供一個簡單的方法來�
 
 	namespace App\Orders;
 
+<<<<<<< HEAD
 	use Illuminate\Contracts\Cache\Repository as Cache;
+=======
+    class Repository
+    {
+        /**
+         * The cache instance.
+         */
+        protected $cache;
+
+        /**
+         * Create a new repository instance.
+         *
+         * @param  Cache  $cache
+         * @return void
+         */
+        public function __construct(Cache $cache)
+        {
+            $this->cache = $cache;
+        }
+    }
+>>>>>>> upstream/5.1
 
 	class Repository
 	{

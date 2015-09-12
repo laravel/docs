@@ -18,7 +18,7 @@ Your task schedule is defined in the `app/Console/Kernel.php` file's `schedule` 
 
 Here is the only Cron entry you need to add to your server:
 
-    * * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1
+    * * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1
 
 This Cron will call the Laravel command scheduler every minute. Then, Laravel evaluates your scheduled tasks and runs the tasks that are due.
 
@@ -43,7 +43,7 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
          * @var array
          */
         protected $commands = [
-            'App\Console\Commands\Inspire',
+            \App\Console\Commands\Inspire::class,
         ];
 
         /**
@@ -83,7 +83,7 @@ Method  | Description
 `->hourly();`  |  Run the task every hour
 `->daily();`  |  Run the task every day at midnight
 `->dailyAt('13:00');`  |  Run the task every day at 13:00
-`->twiceDaily();`  |  Run the task daily at 1:00 & 13:00
+`->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
 `->weekly();`  |  Run the task every week
 `->monthly();`  |  Run the task every month
 

@@ -1,5 +1,6 @@
 # Laravel Homestead
 
+<<<<<<< HEAD
 - [簡介](#introduction)
 - [安裝與設定](#installation-and-setup)
 		- [前置動作](#first-steps)
@@ -11,6 +12,20 @@
 		- [連接資料庫](#connecting-to-databases)
 		- [增加更多網站](#adding-additional-sites)
 		- [連接埠](#ports)
+=======
+- [Introduction](#introduction)
+- [Installation & Setup](#installation-and-setup)
+    - [First Steps](#first-steps)
+    - [Configuring Homestead](#configuring-homestead)
+    - [Launching The Vagrant Box](#launching-the-vagrant-box)
+    - [Per Project Installation](#per-project-installation)
+- [Daily Usage](#daily-usage)
+    - [Connecting Via SSH](#connecting-via-ssh)
+    - [Connecting To Databases](#connecting-to-databases)
+    - [Adding Additional Sites](#adding-additional-sites)
+    - [Ports](#ports)
+    - [Bash Aliases](#bash-aliases)
+>>>>>>> upstream/5.1
 - [Blackfire Profiler](#blackfire-profiler)
 
 <a name="introduction"></a>
@@ -50,7 +65,11 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 在啟動你的 Homestead 環境之前，你必須先安裝 [VirtualBox](https://www.virtualbox.org/wiki/Downloads) 或 [VMWare](http://www.vmware.com) 以及 [Vagrant](http://www.vagrantup.com/downloads.html). 這些軟體在各平台都有提供易用的視覺化安裝程式。
 
+<<<<<<< HEAD
 若要使用 VMware provider，你需要同時購買 VMware Fusion / Desktop 及 [VMware Vagrant plug-in](http://www.vagrantup.com/vmware) 的軟體授權。使用 VMware 可以在共享資料夾上獲得較快的性能。
+=======
+To use the VMware provider, you will need to purchase both VMware Fusion / Workstation and the [VMware Vagrant plug-in](http://www.vagrantup.com/vmware). VMware provides much faster shared folder performance out of the box.
+>>>>>>> upstream/5.1
 
 #### 安裝 Homestead Vagrant box
 
@@ -77,7 +96,11 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 #### 設定你的 Provider
 
+<<<<<<< HEAD
 在 `Homestead.yaml` 檔案中的 `provider` 參數是用來設定你想要使用哪一個 Vagrant provider： `virtualbox` 或 `vmware_fusion` 。你可以根據你的喜好來決定 provider：
+=======
+The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion`, or `vmware_workstation`. You may set this to whichever provider you prefer:
+>>>>>>> upstream/5.1
 
 		provider: virtualbox
 
@@ -147,13 +170,29 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 你可以使用 Composer 將 Homestead 直接安裝至你的專案中：
 
+<<<<<<< HEAD
 		composer require laravel/homestead
 
 一旦 Homestead 安裝完畢，你可以使用 `make` 指令產生 `Vagrantfile` 與 `Homestead.yaml` 存放於專案的根目錄。這個 `make` 指令將會自動配置 `sites` 及 `folders` 於 `Homestead.yaml` ：
+=======
+    composer require laravel/homestead --dev
+
+Once Homestead has been installed, use the `make` command to generate the `Vagrantfile` and `Homestead.yaml` file in your project root. The `make` command will automatically configure the `sites` and `folders` directives in the `Homestead.yaml` file.
+
+Mac / Linux:
+>>>>>>> upstream/5.1
 
 		php vendor/bin/homestead make
 
+<<<<<<< HEAD
 接著，執行在終端機中執行 `vagrant up` 並透過網頁瀏覽器造訪 `http://homestead.app`。再次提醒，你仍然需要在 `/etc/hosts` 裡設定 `homestead.app` 或其他想要使用的網域。
+=======
+Windows:
+
+	vendor\bin\homestead make
+
+Next, run the `vagrant up` command in your terminal and access your project at `http://homestead.app` in your browser. Remember, you will still need to add an `/etc/hosts` file entry for `homestead.app` or the domain of your choice.
+>>>>>>> upstream/5.1
 
 <a name="daily-usage"></a>
 ## 常見用法
@@ -181,8 +220,11 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
 一旦 Homestead 環境配置完畢且運行後，你可能會想要為 Laravel 應用程式增加更多的 Nginx 網站。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。只要在 `Homestead.yaml` 檔中增加另一個網站設定後，接著在終端機中進入到你的 Homestead 目錄並執行 `vagrant provision` 指令，即可增加另一個網站。
 
+<<<<<<< HEAD
 > **注意：** 這個動作是具有破壞性的。當執行 `provision` 指令時，你現有的資料庫將會被摧毀並且重新建立。
 
+=======
+>>>>>>> upstream/5.1
 <a name="ports"></a>
 ### 連接埠
 
@@ -204,6 +246,11 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 				- send: 7777
 					to: 777
 					protocol: udp
+
+<a name="bash-aliases"></a>
+### Bash Aliases
+
+To add additional Bash aliases to your Homestead box, edit the `aliases` file in your Homestead directory. These aliases will automatically be defined on the Homestead box when it starts.
 
 <a name="blackfire-profiler"></a>
 ## Blackfire Profiler

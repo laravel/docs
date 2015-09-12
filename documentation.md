@@ -21,12 +21,22 @@
     - [服務容器](/docs/{{version}}/container)
     - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
+<<<<<<< HEAD
 - 系統服務
     - [認證](/docs/{{version}}/authentication)
     - [Artisan 命令列](/docs/{{version}}/artisan)
     - [交易](/docs/{{version}}/billing)
     - [快取](/docs/{{version}}/cache)
     - [集合](/docs/{{version}}/collections)
+=======
+- Services
+    - [Authentication](/docs/{{version}}/authentication)
+    - [Authorization](/docs/{{version}}/authorization)
+    - [Artisan Console](/docs/{{version}}/artisan)
+    - [Billing](/docs/{{version}}/billing)
+    - [Cache](/docs/{{version}}/cache)
+    - [Collections](/docs/{{version}}/collections)
+>>>>>>> upstream/5.1
     - [Elixir](/docs/{{version}}/elixir)
     - [加密](/docs/{{version}}/encryption)
     - [錯誤與日誌](/docs/{{version}}/errors)

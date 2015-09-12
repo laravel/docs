@@ -52,7 +52,11 @@
 
     return view('greetings', ['name' => 'Victoria']);
 
+<<<<<<< HEAD
 當你用上面這種方式傳遞資料時，`$data` 必須是一個鍵值對的陣列。在視圖中，你可以用相對應的鍵名取用值，如：`<?php echo $key; ?>`；你也可以用另一個替代的語法來傳遞一個資料陣列，在 `view` 輔助方法使用 `with` 來額外傳遞資料給視圖：
+=======
+When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using its corresponding key, such as `<?php echo $key; ?>`. As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view:
+>>>>>>> upstream/5.1
 
     $view = view('greeting')->with('name', 'Victoria');
 

@@ -81,7 +81,11 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 
 `create` 方法會自動建立與 Stripe 的交易，以及將 Stripe 客戶 ID 和其他相關帳款資訊更新到資料庫。如果你的方案有在 Stripe 設定試用期，試用到期日也會自動儲存至使用者的記錄。
 
+<<<<<<< HEAD
 如果你想要實施試用期，但是你是完全用應用程式來管理試用期間，而不是在 Stripe 裡設定，則你必須手動設定試用到期日：
+=======
+If you want to implement trial periods, but are managing the trials entirely within your application instead of defining them within Stripe, you must manually set the trial end date:
+>>>>>>> upstream/5.1
 
     $user->trial_ends_at = Carbon::now()->addDays(14);
 
@@ -89,7 +93,11 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 
 #### 額外使用者詳細資料
 
+<<<<<<< HEAD
 如果你想自定額外的顧客詳細資料，你可以將資料陣列作為 `create` 方法的第二個參數傳入：
+=======
+If you would like to specify additional customer details, you may do so by passing them as the second argument to the `create` method:
+>>>>>>> upstream/5.1
 
     $user->subscription('monthly')->create($creditCardToken, [
         'email' => $email, 'description' => '我們的第一個客戶'
@@ -108,7 +116,11 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 <a name="checking-subscription-status"></a>
 ### 確認訂購狀態
 
+<<<<<<< HEAD
 一旦使用者在你的應用程式訂購，你可以使用多種便捷的方法，很簡單的檢查他們的訂購狀態。首先，當使用者擁有有效訂購時，`subscribed` 方法會回傳 `true`，即使該訂購目前是試用期間：
+=======
+Once a user is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an active subscription, even if the subscription is currently within its trial period:
+>>>>>>> upstream/5.1
 
     if ($user->subscribed()) {
         //
@@ -190,7 +202,15 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
     // 減少 5 個訂購數量...
     $user->subscription()->decrement(5);
 
+<<<<<<< HEAD
 有關訂購數量的更多資料，請參閱 [Stripe 文件](https://stripe.com/docs/guides/subscriptions#setting-quantities)。
+=======
+Alternatively, you may set a specific quantity using the `updateQuantity` method:
+
+    $user->subscription()->updateQuantity(10);
+
+For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/guides/subscriptions#setting-quantities).
+>>>>>>> upstream/5.1
 
 <a name="subscription-taxes"></a>
 ### 訂購稅金
@@ -235,7 +255,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 
 如果顧客的信用卡過期了呢？無需擔心，Cashier 包含了 Webhook 控制器，可以幫你簡單的取消顧客的訂單。只要在路由註冊控制器：
 
-    Route::post('stripe/webhook', 'Laravel\Cashier\WebhookController@handleWebhook');
+    Route::post('stripe/webhook', '\Laravel\Cashier\WebhookController@handleWebhook');
 
 這樣就完成了！失敗的交易會經由控制器捕捉並進行處理。控制器在 Stripe 確認訂購已經失敗後 (通常在三次交易嘗試失敗後)，才會取消顧客的訂單。別忘了：你必須設定 Stripe 控制面板設定裡的 webhook URI。
 
@@ -273,7 +293,11 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 <a name="single-charges"></a>
 ## 一次性收費
 
+<<<<<<< HEAD
 如果你想對一個已訂購客戶的信用卡進行「一次性」收費，你可以對一個交易模型實例使用 `charge` 方法。`charge` 方法接受你想收取**應用程式使用貨幣的最低單位**的金額。所以，舉例來說，下方的例子將會對使用者的信用卡收取 100 美分，或是 1 美元：
+=======
+If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method on a billable model instance. The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**. So, for example, the example below will charge 100 cents, or $1.00, against the user's credit card:
+>>>>>>> upstream/5.1
 
     $user->charge(100);
 

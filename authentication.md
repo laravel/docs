@@ -91,7 +91,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
     <form method="POST" action="/auth/register">
         {!! csrf_field() !!}
 
-        <div class="col-md-6">
+        <div>
             Name
             <input type="text" name="name" value="{{ old('name') }}">
         </div>
@@ -106,7 +106,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
             <input type="password" name="password">
         </div>
 
-        <div class="col-md-6">
+        <div>
             Confirm Password
             <input type="password" name="password_confirmation">
         </div>
@@ -129,7 +129,13 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 
     protected $loginPath = '/login';
 
+<<<<<<< HEAD
 #### 客製化
+=======
+The `loginPath` will not change where a user is bounced if they try to access a protected route. That is controlled by the `App\Http\Middleware\Authenticate` middleware's `handle` method.
+
+#### Customizations
+>>>>>>> upstream/5.1
 
 如果想要修改註冊時的表單欄位，或是客製化如何將新使用者的記錄寫入資料庫，你可以修改 `AuthController` 類別，這個類別負責驗證和創造新的使用者。
 
@@ -438,14 +444,17 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div>
+            Email
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
 
         <div>
+            Password
             <input type="password" name="password">
         </div>
 
         <div>
+            Confirm Password
             <input type="password" name="password_confirmation">
         </div>
 
@@ -506,6 +515,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
     namespace App\Http\Controllers;
 
+    use Socialite;
     use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
@@ -540,11 +550,13 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
 當然，你需要定義路由到你的控制器方法：
 
-    <?php
-
         Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
         Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
+A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+
+    return Socialite::driver('google')
+                ->with(['hd' => 'example.com'])->redirect();
 
 #### 取得使用者細節
 
@@ -631,15 +643,27 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
 `retrieveByToken` 函式藉由使用者獨特的 `$identifier` 和「記住我」`$token` 取得使用者。如同之前的方法，`Authenticatable` 的實作應該被回傳。
 
+<<<<<<< HEAD
 `updateRememberToken` 方法使用新的 `$token` 更新了 `$user` 的 `remember_token` 欄位。這個新的標記可以是全新的標記（當使用者成功登入）或是 null (當使用者登出)。
+=======
+The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. The new token can be either a fresh token, assigned on a successful "remember me" login attempt, or a null when the user is logged out.
+>>>>>>> upstream/5.1
 
 `retrieveByCredentials` 方法取得了從 `Auth::attempt` 方法傳送過來的憑證陣列（當想要登入時）。這個方法應該要 「查詢」所使用的永久式儲存系統，來匹配這些憑證。通常，這個方法會執行一個帶著「where」`$credentials['username']` 條件的查詢。這個方法接著需要回傳一個 `UserInterface` 的實作。**這個方法不應該企圖做任何密碼的驗證或是認證。**
 
+<<<<<<< HEAD
 `validateCredentials` 方法應該要比較 `$user` 和 `$credentials` 來認證這個使用者。例如，這個方法可能會比較 `$user->getAuthPassword()` 字串及 `Hash::make` 後的 `$credentials['password']`。這個方法應該只驗證使用者的憑證和回傳布林值。
+=======
+The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`. This method should only validate the user's credentials and return a boolean.
+>>>>>>> upstream/5.1
 
 ### 可驗證之 Contract
 
+<<<<<<< HEAD
 現在我們已經介紹了 `UserProvider` 的每個方法，讓我們看一下 `Authenticate`。記得，這個提供者需要 `retrieveById` 和 `retrieveByCredentials` 方法來回傳這個介面的實作：
+=======
+Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
+>>>>>>> upstream/5.1
 
     <?php
 

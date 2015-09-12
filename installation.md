@@ -139,7 +139,11 @@ Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP
 
 為了讓你的的應用程式提升一些速度，你可以使用 Artisan 指令 `config:cache` 將所有的設定檔暫存到單一檔案。透過指令會將所有的設定選項合併成一個檔案，讓框架能夠快速載入。
 
+<<<<<<< HEAD
 你應該將執行 `config:cache` 指令作為部署工作的一部分。
+=======
+You should typically run the `php artisan config:cache` command as part of your production deployment routine. The command should not be run during local development as configuration options will frequently need to be changed during the course of your application's development.
+>>>>>>> upstream/5.1
 
 <a name="accessing-configuration-values"></a>
 ### 取得設定值

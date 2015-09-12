@@ -73,7 +73,7 @@
 
 另外，你也可以透過 `command` 方法傳遞指令至伺服器，它接受指令的名稱作為第一個參數，第二個參數則為值的陣列：
 
-    $values = Redis::command('lrange', [5, 10]);
+    $values = Redis::command('lrange', ['name', 5, 10]);
 
 #### 使用多個 Redis 連結
 

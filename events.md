@@ -43,7 +43,7 @@ Of course, manually creating the files for each event and listener is cumbersome
 <a name="defining-events"></a>
 ## Defining Events
 
-An event class is simply a data container which holds the information related to the event. For example, let's assume our generated `PodcastWasPurchased` event receives a [Eloquent ORM](/docs/{{version}}/eloquent) object:
+An event class is simply a data container which holds the information related to the event. For example, let's assume our generated `PodcastWasPurchased` event receives an [Eloquent ORM](/docs/{{version}}/eloquent) object:
 
     <?php
 
@@ -121,7 +121,7 @@ Your event listeners may also type-hint any dependencies they need on their cons
 
 #### Stopping The Propagation Of An Event
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so using by returning `false` from your listener's `handle` method.
+Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning `false` from your listener's `handle` method.
 
 <a name="queued-event-listeners"></a>
 ### Queued Event Listeners

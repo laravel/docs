@@ -48,7 +48,11 @@ Blade 是 Laravel 所提供的簡單且強大的模板引擎。相較於其它�
 
 當正在定義子頁面時，你可以使用 Blade 的 `@extends` 指令指定子頁面應該「繼承」哪一個佈局。當視圖 `@extends` Blade 的佈局之後，即可使用 `@section` 指令將內容注入於佈局的區塊中。切記，如上述範例所見，這些區塊的內容都會使用 `@yield` 顯示在佈局中：
 
+<<<<<<< HEAD
     <!-- 儲存於 resources/views/layouts/child.blade.php -->
+=======
+    <!-- Stored in resources/views/child.blade.php -->
+>>>>>>> upstream/5.1
 
     @extends('layouts.master')
 
@@ -182,7 +186,23 @@ Blade 的 `@include` 指令，允使你簡單地從一個已存在的視圖引�
 
     @include('view.name', ['some' => 'data'])
 
+<<<<<<< HEAD
 #### 註解
+=======
+#### Rendering Views For Collections
+
+You may combine loops and includes into one line with Blade's `@each` directive:
+
+    @each('view.name', $jobs, 'job')
+
+The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial.
+
+You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
+
+    @each('view.name', $jobs, 'job', 'view.empty')
+
+#### Comments
+>>>>>>> upstream/5.1
 
 Blade 也允許在頁面中定義註解。然而，有異於 HTML 的註解，Blade 的註解並不會被包含在應用程式回傳的 HTML 內：
 

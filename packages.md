@@ -91,7 +91,11 @@
         ]);
     }
 
+<<<<<<< HEAD
 現在當你套件的使用者執行 Laravel 的 `vendor:publish` Artisan 指令時，你套件的視圖將會被複製到指定的目錄。
+=======
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified location.
+>>>>>>> upstream/5.1
 
 <a name="translations"></a>
 ### 語言
@@ -111,6 +115,26 @@
 套件語言可以使用雙分號 `package::file.line` 語法參照它。所以，你可以按照以下方式載入 `courier` 套件中 `messages` 檔案的 `welcome` 語句：
 
     echo trans('courier::messages.welcome');
+
+#### Publishing Translations
+
+If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their corresponding publish locations. For example, to the publish the translation files for our example `courier` package:
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+
+        $this->publishes([
+            __DIR__.'/path/to/translations' => base_path('resources/lang/vendor/courier'),
+        ]);
+    }
+
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified location.
 
 <a name="configuration"></a>
 ### 設定檔
