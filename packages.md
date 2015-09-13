@@ -91,11 +91,7 @@
         ]);
     }
 
-<<<<<<< HEAD
-現在當你套件的使用者執行 Laravel 的 `vendor:publish` Artisan 指令時，你套件的視圖將會被複製到指定的目錄。
-=======
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified location.
->>>>>>> upstream/5.1
+現在，當你套件的使用者執行 Laravel 的 `vendor:publish` Artisan 指令時，你套件的視圖將會被複製到指定的位置。
 
 <a name="translations"></a>
 ### 語言
