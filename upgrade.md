@@ -10,27 +10,27 @@
 - [從 4.0 升級到 4.1](#upgrade-4.1)
 
 <a name="upgrade-5.1.11"></a>
-## Upgrading To 5.1.11
+## 升級到 5.1.11
 
-Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorization) and [policies](/docs/{{version}}/authorization#policies). Incorporating these new features into your existing Laravel 5.1 applications is simple.
+Laravel 5.1.11 包含了對於[授權](/docs/{{version}}/authorization)及[原則](/docs/{{version}}/authorization#policies)的支援。要將這些功能新增到你現有的 Laravel 5.1 應用程式是相當容易的。
 
-> **Note:** These upgrades are **optional**, and ignoring them will not affect your application.
+> **注意：**這些升級是**可選的**，忽略它們並不會影響你的應用程式。
 
-#### Create The Policies Directory
+#### 建立 Policies 目錄
 
-First, create an empty `app/Policies` directory within your application.
+首先，在你的應用程式建立一個空的 `app/Policies` 目錄。
 
-#### Create / Register The AuthServiceProvider & Gate Facade
+#### 建立並註冊 AuthServiceProvider 與 Gate Facade
 
-Create a `AuthServiceProvider` within your `app/Providers` directory. You may copy the contents of the default provider [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php). After creating the provider, be sure to register it in your `app.php` configuration file's `providers` array.
+在你的 `app/providers` 目錄建立一個 `AuthServiceProvider`。你可以複製[從 GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php) 提供的預設內容。在建立提供者之後，請務必在你的 `app.php` 設定檔的 `providers` 陣列註冊它。
 
-Also, you should register the `Gate` facade in your `app.php` configuration file's `aliases` array:
+同樣的，你必須在你的 `app.php` 設定檔的 `aliases` 陣列註冊 `Gate` facade：
 
     'Gate' => Illuminate\Support\Facades\Gate::class,
 
-#### Update The User Model
+#### 更新使用者模型
 
-Secondly, use the `Illuminate\Foundation\Auth\Access\Authorizable` trait and `Illuminate\Contracts\Auth\Access\Authorizable` contract on your `App\User` model:
+再來，在你的 `App\User` 模型使用 `Illuminate\Foundation\Auth\Access\Authorizable` trait 及 `Illuminate\Contracts\Auth\Access\Authorizable` contract：
 
     <?php
 
@@ -51,9 +51,9 @@ Secondly, use the `Illuminate\Foundation\Auth\Access\Authorizable` trait and `Il
         use Authenticatable, Authorizable, CanResetPassword;
     }
 
-#### Update The Base Controller
+#### 更新基礎控制器
 
-Next, update your base `App\Http\Controllers\Controller` controller to use the `Illuminate\Foundation\Auth\Access\AuthorizesRequests` trait:
+接著，更新你基礎的 `App\Http\Controllers\Controller` 控制器，讓它使用 `Illuminate\Foundation\Auth\Access\AuthorizesRequests` trait：
 
     <?php
 
