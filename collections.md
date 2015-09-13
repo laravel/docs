@@ -7,7 +7,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-`Illuminate\Support\Collection` 類別提供一個流暢、便利的封裝來操控陣列資料。舉個例子，查看下列的程式碼。我們將用 `collect` 輔助方法從陣列建立一個新的集合實例，並對每一個元素執行 `strtoupper` 函式，然後移除所有的空元素：
+`Illuminate\Support\Collection` 類別提供一個流暢、便利的封裝來操控陣列資料。舉個例子，查看下列的程式碼。我們將用 `collect` 輔助方法從陣列建立一個新的集合實例，對每一個元素執行 `strtoupper` 函式，然後移除所有的空元素：
 
     $collection = collect(['taylor', 'abigail', null])->map(function ($name) {
         return strtoupper($name);
@@ -26,14 +26,14 @@
 
     $collection = collect([1, 2, 3]);
 
-預設 [Eloquent](/docs/{{version}}/eloquent) 模型的集合總是以 `Collection` 實例回傳；然而，你可以任意在你應用程式適當的地方使用 `Collection` 類別。
+預設 [Eloquent](/docs/{{version}}/eloquent) 模型的集合總是以 `Collection` 實例回傳；然而，你可以任意在你應用程式任何適當的場合使用 `Collection` 類別。
 
 <a name="available-methods"></a>
 ## 可用的方法
 
-在這份文件剩餘的部份，我們將會探討每一個 `Collection` 類別上可用的方法。要記得的是，所有方法都能被鏈結以流暢地操控底層的陣列。此外，幾乎是所有的方法都會回傳新的 `Collection` 實例，讓你保留原版的集合以備不時之需。
+在這份文件剩餘的部份，我們將會探討每一個 `Collection` 類別上可用的方法。要記得的是，所有方法都能被鏈結以流暢地操控底層的陣列。此外，幾乎所有的方法都會回傳新的 `Collection` 實例，讓你保留原版的集合以備不時之需。
 
-你可以從這張表格中選擇任一方法看使用的範例：
+你可以從這張表格中選擇任一方法看使用範例：
 
 <style>
     #collection-method-list > p {
@@ -136,7 +136,7 @@
 
     // [[1, 2, 3, 4], [5, 6, 7]]
 
-這個方法在有用到如[Bootstrap](http://getbootstrap.com/css/#grid)之類網格系統的[視圖](/docs/{{version}}/views)內特別有用。想像你有一個 [Eloquent](/docs/{{version}}/eloquent) 模型的集合要顯示在一個網格內：
+這個方法在有用到網格系統如 [Bootstrap](http://getbootstrap.com/css/#grid) 的[視圖](/docs/{{version}}/views)內特別有用。想像你有一個 [Eloquent](/docs/{{version}}/eloquent) 模型的集合要顯示在一個網格內：
 
     @foreach ($products->chunk(3) as $chunk)
         <div class="row">
@@ -149,7 +149,7 @@
 <a name="method-collapse"></a>
 #### `collapse()` {#collection-method}
 
-`collapse` 方法將多個陣列組成的集合折疊成單一陣列集合：
+`collapse` 方法將多個陣列組成的集合折成單一陣列集合：
 
     $collection = collect([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
@@ -174,7 +174,7 @@
 
     // false
 
-你可以傳入 `contains` 方法一對鍵/值組合，用來判斷該組合是否存在於集合內：
+你可以將一對鍵/值傳入 `contains` 方法，用來判斷該組合是否存在於集合內：
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
@@ -286,7 +286,7 @@
 <a name="method-flip"></a>
 #### `flip()` {#collection-method}
 
-`flip` 方法將集合中的鍵值和對應的數值進行互換：
+`flip` 方法將集合中的鍵和對應的數值進行互換：
 
     $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
 
@@ -299,7 +299,7 @@
 <a name="method-forget"></a>
 #### `forget()` {#collection-method}
 
-`forget` 方法以鍵值自集合移除掉一個項目：
+`forget` 方法以鍵自集合移除掉一個項目：
 
     $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
 
@@ -327,7 +327,7 @@
 <a name="method-get"></a>
 #### `get()` {#collection-method}
 
-`get` 方法回傳給定鍵值的項目。如果該鍵值不存在，則回傳 `null`：
+`get` 方法回傳給定鍵的項目。如果該鍵不存在，則回傳 `null`：
 
     $collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
 
@@ -343,7 +343,7 @@
 
     // default-value
 
-你甚至可以傳入回呼函式當預設值。如果指定的鍵值不存在，就會回傳回呼函式的執行結果：
+你甚至可以傳入回呼函式當預設值。如果指定的鍵不存在，就會回傳回呼函式的執行結果：
 
     $collection->get('email', function () {
         return 'default-value';
@@ -354,7 +354,7 @@
 <a name="method-groupby"></a>
 #### `groupBy()` {#collection-method}
 
-`groupBy` 方法根據給定的鍵值將集合內的項目進行分組：
+`groupBy` 方法根據給定的鍵替集合內的項目分組：
 
     $collection = collect([
         ['account_id' => 'account-x10', 'product' => 'Chair'],
@@ -378,7 +378,7 @@
         ]
     */
 
-In addition to passing a string `key`, you may also pass a callback. The callback should return the value you wish to key the group by:
+除了傳入字串的`鍵`之外，你也可以傳入回呼函式。該函式應該回傳你希望用來分組的鍵的值。
 
     $grouped = $collection->groupBy(function ($item, $key) {
         return substr($item['account_id'], -3);
@@ -401,7 +401,7 @@ In addition to passing a string `key`, you may also pass a callback. The callbac
 <a name="method-has"></a>
 #### `has()` {#collection-method}
 
-`has` 方法用來確認集合中是否含有給定的鍵值：
+`has` 方法用來確認集合中是否含有給定的鍵：
 
     $collection = collect(['account_id' => 1, 'product' => 'Desk']);
 
@@ -414,7 +414,7 @@ In addition to passing a string `key`, you may also pass a callback. The callbac
 
 `implode` 方法連接集合中的項目。它的參數依集合中的項目類型而定。
 
-假如集合含有陣列或物件，你應該傳入你希望連接的屬性的鍵值，以及你希望放在數值之間的「黏著」字串：
+假如集合含有陣列或物件，你應該傳入你希望連接的屬性的鍵，以及你希望放在數值之間的「黏著」字串：
 
     $collection = collect([
         ['account_id' => 1, 'product' => 'Desk'],
@@ -444,7 +444,7 @@ In addition to passing a string `key`, you may also pass a callback. The callbac
 
     // [0 => 'Desk', 2 => 'Chair']
 
-如你所見，最後出來的集合將會保留原始集合的鍵值。
+如你所見，最後出來的集合將會保留原始集合的鍵。
 
 <a name="method-isempty"></a>
 #### `isEmpty()` {#collection-method}
@@ -458,7 +458,7 @@ In addition to passing a string `key`, you may also pass a callback. The callbac
 <a name="method-keyby"></a>
 #### `keyBy()` {#collection-method}
 
-Keys the collection by the given key:
+以給定鍵的值作為集合項目的鍵：
 
     $collection = collect([
         ['product_id' => 'prod-100', 'name' => 'desk'],
@@ -476,9 +476,9 @@ Keys the collection by the given key:
         ]
     */
 
-If multiple items have the same key, only the last one will appear in the new collection.
+如果多個項目有同樣的鍵，只有最後一個會出現在新的集合內。
 
-You may also pass your own callback, which should return the value to key the collection by:
+你也可以傳入自己的回呼函式，該函式應該回傳集合的鍵的值：
 
     $keyed = $collection->keyBy(function ($item) {
         return strtoupper($item['product_id']);
@@ -497,7 +497,7 @@ You may also pass your own callback, which should return the value to key the co
 <a name="method-keys"></a>
 #### `keys()` {#collection-method}
 
-`keys` 方法回傳該集合所有的鍵值：
+`keys` 方法回傳該集合所有的鍵：
 
     $collection = collect([
         'prod-100' => ['product_id' => 'prod-100', 'name' => 'Desk'],
@@ -547,7 +547,7 @@ You may also pass your own callback, which should return the value to key the co
 <a name="method-merge"></a>
 #### `merge()` {#collection-method}
 
-`merge` 方法將給定的陣列合併進集合。陣列字串鍵值與集合字串鍵值相同的將會覆蓋掉集合的數值：
+`merge` 方法將給定的陣列合併進集合。陣列字串鍵與集合字串鍵相同的將會覆蓋掉集合的數值：
 
     $collection = collect(['product_id' => 1, 'name' => 'Desk']);
 
@@ -557,7 +557,7 @@ You may also pass your own callback, which should return the value to key the co
 
     // ['product_id' => 1, 'name' => 'Desk', 'price' => 100, 'discount' => false]
 
-如果給定陣列的鍵值為數字，則數值將會附加在集合的後面：
+如果給定陣列的鍵為數字，則數值將會附加在集合的後面：
 
     $collection = collect(['Desk', 'Chair']);
 
@@ -570,7 +570,7 @@ You may also pass your own callback, which should return the value to key the co
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
 
-`pluck` 方法取得給定鍵值的所有集合數值：
+`pluck` 方法取得所有集合中給定鍵的值：
 
     $collection = collect([
         ['product_id' => 'prod-100', 'name' => 'Desk'],
@@ -583,7 +583,7 @@ You may also pass your own callback, which should return the value to key the co
 
     // ['Desk', 'Chair']
 
-You may also specify how you wish the resulting collection to be keyed:
+你也可以指定要怎麼給最後出來的集合分配鍵：
 
     $plucked = $collection->pluck('name', 'product_id');
 
@@ -622,7 +622,7 @@ You may also specify how you wish the resulting collection to be keyed:
 <a name="method-pull"></a>
 #### `pull()` {#collection-method}
 
-`pull` 方法以鍵值從集合中移除並回傳一個項目：
+`pull` 方法以鍵從集合中移除並回傳一個項目：
 
     $collection = collect(['product_id' => 'prod-100', 'name' => 'Desk']);
 
@@ -650,7 +650,7 @@ You may also specify how you wish the resulting collection to be keyed:
 <a name="method-put"></a>
 #### `put()` {#collection-method}
 
-`put` 在集合內設定一個給定鍵值和數值：
+`put` 在集合內設定一個給定鍵和數值：
 
     $collection = collect(['product_id' => 1, 'name' => 'Desk']);
 
@@ -682,8 +682,7 @@ You may also specify how you wish the resulting collection to be keyed:
 <a name="method-reduce"></a>
 #### `reduce()` {#collection-method}
 
-`reduce` 方法將集合縮減到單一數值，傳入迭代的結果到下次迭代：
-The `reduce` method reduces the collection to a single value, passing the result of each iteration into the subsequent iteration:
+`reduce` 方法將集合縮減到單一數值，該方法會將每次迭代的結果傳入到下一次迭代：
 
     $collection = collect([1, 2, 3]);
 
@@ -734,7 +733,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 <a name="method-search"></a>
 #### `search()` {#collection-method}
 
-`search` 方法在集合內搜尋給定的數值並回傳找到的鍵值。假如找不到項目，則回傳 `false`：
+`search` 方法在集合內搜尋給定的數值並回傳找到的鍵。假如找不到項目，則回傳 `false`：
 
     $collection = collect([2, 4, 6, 8]);
 
@@ -805,7 +804,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 
     // [5, 6]
 
-回傳的切片將會有以數字索引的新鍵值。假如你希望保留原始的鍵值，傳入 `true` 為方法的第三個參數。
+回傳的切片將會有以數字索引的新鍵。假如你希望保留原始的鍵，傳入 `true` 為方法的第三個參數。
 
 <a name="method-sort"></a>
 #### `sort()` {#collection-method}
@@ -820,7 +819,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 
     // [1, 2, 3, 4, 5]
 
-排序過的集合保有原來的陣列鍵值。在這個例子中我們用了 [`values`](#method-values) 方法重設鍵值為連續的數字索引。
+排序過的集合保有原來的陣列鍵。在這個例子中我們用了 [`values`](#method-values) 方法重設鍵為連續的數字索引。
 
 要排序內含陣列或物件的集合，見 [`sortBy`](#method-sortby) 和 [`sortByDesc`](#method-sortbydesc) 方法。
 
@@ -829,7 +828,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 <a name="method-sortby"></a>
 #### `sortBy()` {#collection-method}
 
-`sortBy` 方法以給定的鍵值排序集合：
+`sortBy` 方法以給定的鍵排序集合：
 
     $collection = collect([
         ['name' => 'Desk', 'price' => 200],
@@ -849,7 +848,7 @@ The `reduce` method reduces the collection to a single value, passing the result
         ]
     */
 
-排序過的集合保有原來的陣列鍵值。在這個例子中我們用了 [`values`](#method-values) 方法重設鍵值為連續的數字索引。
+排序過的集合保有原來的陣列鍵。在這個例子中我們用了 [`values`](#method-values) 方法重設鍵為連續的數字索引。
 
 你也可以傳入自己的回呼函式以決定如何排序集合數值：
 
@@ -932,7 +931,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 
     // 15
 
-如果集合包含陣列或物件，你應該傳入一個鍵值來確認要用哪些數值來計算總合：
+如果集合包含陣列或物件，你應該傳入一個鍵來確認要用哪些數值來計算總合：
 
     $collection = collect([
         ['name' => 'JavaScript: The Good Parts', 'pages' => 176],
@@ -1038,9 +1037,9 @@ The `reduce` method reduces the collection to a single value, passing the result
 
     // [1, 2, 3, 4]
 
-排序過的集合保有原來的陣列鍵值。在這個例子中我們用了 [`values`](#method-values) 方法重設鍵值為連續的數字索引。
+排序過的集合保有原來的陣列鍵。在這個例子中我們用了 [`values`](#method-values) 方法重設鍵為連續的數字索引。
 
-當處理內嵌的陣列或物件，你可以指定用來決定獨特性的鍵值：
+當處理內嵌的陣列或物件，你可以指定用來決定獨特性的鍵：
 
     $collection = collect([
         ['name' => 'iPhone 6', 'brand' => 'Apple', 'type' => 'phone'],
@@ -1081,7 +1080,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 <a name="method-values"></a>
 #### `values()` {#collection-method}
 
-`values` 方法回傳鍵值重設為連續整數的的新集合：
+`values` 方法回傳鍵重設為連續整數的的新集合：
 
     $collection = collect([
         10 => ['product' => 'Desk', 'price' => 200],
@@ -1101,7 +1100,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 <a name="method-where"></a>
 #### `where()` {#collection-method}
 
-`where` 方法以一對給定的鍵值／數值篩選集合：
+`where` 方法以一對給定的鍵／數值篩選集合：
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
@@ -1131,7 +1130,7 @@ The `reduce` method reduces the collection to a single value, passing the result
 <a name="method-zip"></a>
 #### `zip()` {#collection-method}
 
-The `zip` method merges together the values of the given array with the values of the collection at the corresponding index:
+`zip` 方法將集合與給定陣列同樣索引的值合併在一起：
 
     $collection = collect(['Chair', 'Desk']);
 
