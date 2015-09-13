@@ -8,7 +8,7 @@
 
 Laravel 透過 `Hash` [facade](/docs/{{version}}/facades) 提供 Bcrypt 加密來保存使用者密碼。如果你在目前的應用當中使用 `AuthController` 控制器，它將自動使用 Bcrypt 加密進行註冊跟驗證。
 
-由於 Bcrypt 的 「加密係數（word fator）」強度可以任意調整，使它成為最好的加密選擇。這代表每一次的加密都可以隨著硬體設備的升級而增強。
+由於 Bcrypt 的 「加密係數（word fator）」可以任意調整，使它成為最好的加密選擇。這代表每一次加密的時間可以隨著硬體設備的升級而加長。
 
 <a name="basic-usage"></a>
 ## 基本用法
