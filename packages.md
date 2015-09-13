@@ -112,12 +112,12 @@
 
     echo trans('courier::messages.welcome');
 
-#### Publishing Translations
+#### 發佈語言檔
 
-If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their corresponding publish locations. For example, to the publish the translation files for our example `courier` package:
+如果你想將套件的語言檔發佈至應用程式的 `resources/lang/vendor` 目錄，你可以使用服務提供者的 `publishes` 方法。`publishes` 方法接受一個包含套件路徑及對應發佈位置的陣列。例如，若要在我們的範例 `courier` 套件發佈語言檔：
 
     /**
-     * Perform post-registration booting of services.
+     * 在註冊後進行服務的啟動。
      *
      * @return void
      */
@@ -130,7 +130,7 @@ If you would like to publish your package's translations to the application's `r
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified location.
+現在，當你套件的使用者執行 Laravel 的 `vendor:publish` Artisan 指令時，你套件的語言檔將會被複製到指定的位置。
 
 <a name="configuration"></a>
 ### 設定檔
