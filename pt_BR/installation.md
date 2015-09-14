@@ -169,7 +169,7 @@ Renomear sua aplicação é completamente opcional, você pode mander o namespac
 <a name="maintenance-mode"></a>
 ## Modo de Manutenção
 
-Quando sua aplicação está em modo de manutenção, uma view será exibida para todos as requisições na sua aplicação. Isso torna fácil "desativar" sua aplicação enquanto esta atualizando ou quando você está fazendo alguma manutenção. O modo de manutenção é verificado num middleware padrão da sua aplicação. Se sua aplicação está no modo de manutenção, um `HttpException` srá exibida com o código 503.
+Quando sua aplicação está em modo de manutenção, uma view será exibida para todos as requisições na sua aplicação. Isso torna fácil "desativar" sua aplicação enquanto esta atualizando ou quando você está fazendo alguma manutenção. O modo de manutenção é verificado num middleware padrão da sua aplicação. Se sua aplicação está no modo de manutenção, um `HttpException` será exibida com o código 503.
 
 Para ativar o modo de manutenção, simplesmente execute o comando Artisan `down`:
 
