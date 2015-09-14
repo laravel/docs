@@ -11,7 +11,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-在其他的框架中，分頁是非常讓人苦惱的。而在 Laravel 中是很輕而易舉的。Laravel 可以快速產生基於當前頁面的智能「範圍」，並且產生的HTML兼容於[Bootstrap CSS 框架](http://getbootstrap.com/)。
+在其他的框架中，分頁是非常讓人苦惱的。而在 Laravel 中是很輕而易舉的。 Laravel 可以快速產生基於當前頁面的智能「範圍」，並且產生的 HTML 兼容於 [Bootstrap CSS 框架](http://getbootstrap.com/)。
 
 <a name="basic-usage"></a>
 ## 基本使用
@@ -19,7 +19,7 @@
 <a name="paginating-query-builder-results"></a>
 ### 對查詢產生器分頁
 
-有幾種方法對項目進行分頁。最簡單的是使用 `paginate` 方法在使用[查詢產生器](/docs/{{version}}/queries)或是[Eloquent 查詢](/docs/{{version}}/eloquent)時。由 Laravel 提供的 `paginate` 方法自動判定當前頁面正確的數量限制和偏移數。預設狀況下，當前頁數由 HTTP 請求所帶的 `?page` 參數來決定。當然，該值由 Laravel 自動檢測，並自動帶入由分頁程序產生的連結。
+有幾種方法對項目進行分頁。最簡單的是使用 `paginate` 方法在使用[查詢產生器](/docs/{{version}}/queries)或是 [Eloquent 查詢](/docs/{{version}}/eloquent)時。由 Laravel 提供的 `paginate` 方法自動判定當前頁面正確的數量限制和偏移數。預設狀況下，當前頁數由 HTTP 請求所帶的 `?page` 參數來決定。當然，該值由 Laravel 自動檢測，並自動帶入由分頁程序產生的連結。
 
 首先，讓我們來看看在資料庫查詢時使用 `paginate` 方法。在這個例子中，傳遞給 `paginate` 唯一的參數是您想在「每頁」顯示的資料數。在這個例子中，我們指定每頁顯示 `15` 筆資料：
 
@@ -45,7 +45,7 @@
         }
     }
 
-> **注意：** 目前， Laravel 的分頁無法有效操作含有 `groupBy` 語句。如果您需要對使用 `groupBy` 的結果做分頁，建議您查詢資料庫後再手動製作分頁。
+> **注意：**目前， Laravel 的分頁無法有效操作含有 `groupBy` 語句。如果您需要對使用 `groupBy` 的結果做分頁，建議您查詢資料庫後再手動製作分頁。
 
 #### 「簡易分頁」
 
@@ -71,20 +71,20 @@
 <a name="manually-creating-a-paginator"></a>
 ### 手動建立分頁
 
-有時候您可能會希望手動創建一個分頁實例，傳遞給它項目的陣列。您可以依據您的需求決定創建 `Illuminate\Pagination\Paginator` 或是 `Illuminate\Pagination\LengthAwarePaginator` 。
+有時候您可能會希望從項目的陣列中手動創建一個分頁實例。您可以依據您的需求決定創建 `Illuminate\Pagination\Paginator` 或是 `Illuminate\Pagination\LengthAwarePaginator` 。
 
-`Paginator` 不需要知道資料的總筆數，然而因為這點，它也無法提供取得最後一頁的方法。 `LengthAwarePaginator` 與 `Paginator` 的參數幾乎相同；但它需要得到資料的總筆數。
+`Paginator` 不需要知道資料的總筆數，然而因為這點，它也無法提供取得最後一頁的方法。 `LengthAwarePaginator` 與 `Paginator` 的參數幾乎相同，但它需要得到所有資料的總筆數。
 
 換句話說， `Paginator` 對應於查詢產生器和 Eloquent 的 `simplePaginate` 方法，而 `LengthAwarePaginator` 相等於 `paginate` 方法。
 
-當手動創建一個分頁程序實例，您應該手動「切割」傳遞給分頁程序的陣列。如果您不確定如何做到這一點，請查閱[array_slice](http://php.net/manual/en/function.array-slice.php) PHP 函數。
+當手動創建一個分頁程序實例時，您應該手動「切割」傳遞給分頁程序的陣列。如果您不確定如何做到這一點，請查閱 PHP 的 [array_slice](http://php.net/manual/en/function.array-slice.php) 函數。
 
 <a name="displaying-results-in-a-view"></a>
 ## 將分頁結果顯示在視圖中
 
-當在查詢產生器或 Eloquent 中使用 `simplePaginate` 方法或使用 `paginate`方法，您會得到一個分頁程序的實例。當使用 `paginate` 方法時，將得到 `Illuminate\Pagination\LengthAwarePaginator` 的實例。當使用 `simplePaginate` 方法時，會得到 `Illuminate\Pagination\Paginator` 的實例。這些對象提供幾種方法用來描述結果集。除了這些輔助方法，分頁程序的實例也是個迭代器，並且可以像陣列一樣使用迴圈取值。
+當在查詢產生器或 Eloquent 中使用 `simplePaginate` 方法或使用 `paginate` 方法，您會得到一個分頁程序的實例。當使用 `paginate` 方法時，將得到 `Illuminate\Pagination\LengthAwarePaginator` 的實例。當使用 `simplePaginate` 方法時，會得到 `Illuminate\Pagination\Paginator` 的實例。這些對象提供幾種方法用來描述結果集。除了這些輔助方法，分頁程序的實例也是個迭代器，並且可以像陣列一樣使用迴圈取值。
 
-總之，一旦您已經取得結果，您可以顯示結果，並使用[Blade 模板](/docs/{{version}}/blade)渲染頁面的連結：
+總之，一旦您已經取得結果，您可以顯示結果，並使用 [Blade 模板](/docs/{{version}}/blade)渲染頁面的連結：
 
     <div class="container">
         @foreach ($users as $user)
@@ -96,7 +96,7 @@
 
 `render` 方法將給予查詢結果中其他頁面的連結。每一個連結中都已經包含正確的 `?page` 查詢字符串變量。請記住，由 `render` 方法產生的 HTML 皆兼容於 [Bootstrap CSS 框架](https://getbootstrap.com)。
 
-> **注意：** 當在 Blade 模版中使用 `render` 方法時，一定要使用 `{！ ！}` ，否則 HTML 不會被轉譯。
+> **注意：**當在 Blade 模版中使用 `render` 方法時，一定要使用 `{！ ！}` ，否則 HTML 不會被轉譯。
 
 #### 自定義分頁程序的 URI
 
