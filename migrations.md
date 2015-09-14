@@ -43,59 +43,13 @@ Laravel 的結構生成器「Schema」，[facade](/docs/{{version}}/facades) 提
 If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The provided path should be relative to your application's base path.
 
 <a name="migration-structure"></a>
-<<<<<<< HEAD
-## 遷移 結構
-=======
+
 ## 遷移結構
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 
 遷移類包含兩個方法: 「up」和 「down」。
 「up」方法是在資料庫內添加新的表、欄位、或索引，而「down」方法則是簡單的反向執行「up」方法。
 
 在這兩個方法您必需使用 Laravel 建立出來的類別去創建跟修改表。
-<<<<<<< HEAD
-要瞭解所有的方法，可在結構生成器「Schema」內查看[check out its documentation](#creating-tables)
-在此您可以使用這兩種方去讓 Laravel schema 結構生成器自動的創建或修改表。
-要瞭解所有的方法，可在結構生成器「Schema」內查看[check out its documentation](#creating-tables)
-例如 :  我們來產生一個 遷移 創建 `flights` 表 : 
-
-	<?php
-
-	use Illuminate\Database\Schema\Blueprint;
-	use Illuminate\Database\Migrations\Migration;
-
-	class CreateFlightsTable extends Migration
-	{
-	    /**
-	     * Run the migrations.
-	     *
-	     * @return void
-	     */
-	    public function up()
-	    {
-	        Schema::create('flights', function (Blueprint $table) {
-	            $table->increments('id');
-	            $table->string('name');
-	            $table->string('airline');
-	            $table->timestamps();
-	        });
-	    }
-
-	    /**
-	     * Reverse the migrations.
-	     *
-	     * @return void
-	     */
-	    public function down()
-	    {
-	        Schema::drop('flights');
-	    }
-	}
-
-
-<a name="running-migrations"></a>
-## 運行 遷移
-=======
 在此您可以使用這兩種方去讓 Laravel schema 結構生成器自動的創建或修改表。
 例如 :  我們來產生一個 遷移 創建 `flights` 表 :
 要瞭解所有的方法，可在結構生成器「Schema」內查看[check out its documentation](#creating-tables)
@@ -137,36 +91,24 @@ If you would like to specify a custom output path for the generated migration, y
 <a name="running-migrations"></a>
 ## 執行遷移
 
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 要運行所有未遷移過的應用程式，在 Artisan 的命令提示字元內使用 `migrate `指令。
 如果您使用 [Homestead 虛擬主機](/docs/{{version}}/homestead)，只要執行下面的指令:
 
     php artisan migrate
 
 如果您執行時出現 "class not found" 的錯誤，請試試運行完 `composer dump-autoload` 後再次執行一次。
-<<<<<<< HEAD
-
-#### 正式機上強制運行遷移
-一些遷移的操作是有破壞性的，意思是它們可能會導致您失去資料。
-為了保護您在資料庫內的資訊，在正式機上執行這些命令之前將會提示您進行確認。
-要執行命令而沒有任何的提示的狀況下運行，可在後面加入 `--force` : 
-=======
 
 #### 正式機上強制執行遷移
 
 一些遷移的操作是有破壞性的，意思是它們可能會導致您失去資料。
 為了保護您在資料庫內的資料，在正式機上執行這些命令之前將會提示您進行確認。
 要執行命令而沒有任何的提示的狀況下運行，可在後面加入 `--force` :
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 
     php artisan migrate --force
 
 <a name="rolling-back-migrations"></a>
-<<<<<<< HEAD
-### 還原 遷移
-=======
+
 ### 還原遷移
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 
 要還原遷移至上一個操作，使用 `rollback` 指令。
 請注意，此還原是回復到上一次的"批次處理"，其中可能包括多筆的 遷移檔案:
@@ -177,12 +119,8 @@ If you would like to specify a custom output path for the generated migration, y
 
     php artisan migrate:reset
 
-<<<<<<< HEAD
-#### 在單個命令列內 還原 / 運行遷移
-=======
 #### 在單個命令列內還原 / 執行遷移
 
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 `migrate:refresh` 命令將會還原至最初時的遷移後，再運行 `migrate` 指令。
 此指令能有效的重新創建整個資料庫:
 
@@ -191,17 +129,10 @@ If you would like to specify a custom output path for the generated migration, y
     php artisan migrate:refresh --seed
 
 <a name="writing-migrations"></a>
-<<<<<<< HEAD
-## 寫作 遷移
-
-<a name="creating-tables"></a>
-### 創建 資料表
-=======
 ## 編寫遷移
 
 <a name="creating-tables"></a>
 ### 創建資料表
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 
 創建一個新的資料表， 使用 `Schema` 結構生成器類別內 `create`方法。
 `create`方法內需代入二個參數。
@@ -242,11 +173,7 @@ If you would like to specify a custom output path for the generated migration, y
     });
 
 <a name="renaming-and-dropping-tables"></a>
-<<<<<<< HEAD
-### 重新命名 / 刪除 資料表
-=======
 ### 重新命名 / 刪除資料表
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 
 重新命合資料表，使用 `rename` 方法:
 
@@ -259,11 +186,8 @@ If you would like to specify a custom output path for the generated migration, y
     Schema::dropIfExists('users');
 
 <a name="creating-columns"></a>
-<<<<<<< HEAD
-### 創建 欄位
-=======
+
 ### 創建欄位
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 
 更新資料表，我們將使用 `Schema` 結構生成器內的 `table`方法。
 
@@ -315,15 +239,9 @@ Command  | Description
 除了上訴的欄位類型，還有其它一些的欄位修飾，它們能加入在欄位內。
 例如在欄位內加入 "nullable" 屬性:
 
-<<<<<<< HEAD
-	Schema::table('users', function ($table) {
-		$table->string('email')->nullable();
-	});
-=======
     Schema::table('users', function ($table) {
         $table->string('email')->nullable();
     });
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 
 以下清單為欄位內可用的修飾方法，此列表不包括 [index modifiers](#adding-indexes):
 
@@ -341,11 +259,8 @@ Modifier  | Description
 
 #### 必要條件
 
-<<<<<<< HEAD
-在修正欄位之前, 在您的 `composer.json` 的檔案內必需先有 `doctrine/dbal` 套件。 
-=======
 在修正欄位之前, 在您的 `composer.json` 的檔案內必需先有 `doctrine/dbal` 套件。
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
+
 此套件是用來產出要修正欄位指定的 SQL 語句。
 
 #### 更新欄位屬性
@@ -365,10 +280,8 @@ Modifier  | Description
 
 <a name="renaming-columns"></a>
 #### 修改欄位名稱
-<<<<<<< HEAD
-=======
 
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
+
 要修改欄位名稱，可在結構生成器內使用 renameColumn 方法，請確認在修改前 composer.json 檔案內已經加入 doctrine/dbal:
 
     Schema::table('users', function ($table) {
@@ -396,24 +309,15 @@ Modifier  | Description
 
 <a name="creating-indexes"></a>
 ### 加入索引
-<<<<<<< HEAD
-結構生成器支援多種索引類型，首先下面的例子為在欄位內的值應該是唯一值。
-您可以在定義欄位時順便附加 `unique` 方法上去:
-=======
+
 
 結構生成器支援多種索引類型，首先下面的例子為在欄位內的值應該是唯一值。
 您可以在定義欄位時順便附加 `unique` 方法上去:
 
     $table->string('email')->unique();
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 
 您也可在創建完欄位後，另外加入。
 
-<<<<<<< HEAD
-您也可在創建完欄位後，另外加入。 
-
-=======
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 例如:
 
     $table->unique('email');
@@ -433,10 +337,7 @@ Command  | Description
 
 <a name="dropping-indexes"></a>
 ### 移除索引
-<<<<<<< HEAD
-=======
 
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 要移除索引您必須指定索引名稱，Laravel 默認有預設的索引名稱。簡單地連結這些資料表與索引的欄位名稱和型別。舉例如下:
 
 Command  | Description
@@ -448,13 +349,8 @@ Command  | Description
 <a name="foreign-key-constraints"></a>
 ### 外鍵約束
 
-<<<<<<< HEAD
-Laravel 也支援資料表的外鍵約束, 這是用在資料庫型別的強制約束. 例如, 
-在 `posts` 表內有一個 `user_id` 欄位要強制約束到 `users` 表的 `id` 欄位 : 
-=======
 Laravel 也支援資料表的外鍵約束, 這是用在資料庫型別的強制約束. 例如,
 在 `posts` 表內有一個 `user_id` 欄位要強制約束到 `users` 表的 `id` 欄位 :
->>>>>>> 28deb083a582249d879ffaec836b1582008ba418
 
     Schema::table('posts', function ($table) {
         $table->integer('user_id')->unsigned();
