@@ -22,7 +22,7 @@ Laravel 5.1.11 包含了對於[授權](/docs/{{version}}/authorization)及[原�
 
 #### 建立並註冊 AuthServiceProvider 與 Gate Facade
 
-在你的 `app/providers` 目錄建立一個 `AuthServiceProvider`。你可以複製[從 GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php) 提供的預設內容。在建立提供者之後，請務必在你的 `app.php` 設定檔的 `providers` 陣列註冊它。
+在你的 `app/Providers` 目錄建立一個 `AuthServiceProvider`。你可以複製[從 GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php) 提供的預設內容。在建立提供者之後，請務必在你的 `app.php` 設定檔的 `providers` 陣列註冊它。
 
 同樣的，你必須在你的 `app.php` 設定檔的 `aliases` 陣列註冊 `Gate` facade：
 
