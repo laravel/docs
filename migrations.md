@@ -18,6 +18,7 @@
 <a name="introduction"></a>
 ## 簡介
 
+遷移是一種資料庫的版本控制, 讓團隊能夠輕鬆的修改跟共享應用程式的資料庫模式。
 遷移通常是 Laravel 搭配的結構生成器，讓您可以輕鬆的建立應用程式的資料庫架構。
 
 Laravel 的結構生成器「Schema」，[facade](/docs/{{version}}/facades) 提供創建和操作表的資料庫相關支援，
@@ -43,7 +44,6 @@ Laravel 的結構生成器「Schema」，[facade](/docs/{{version}}/facades) 提
 If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The provided path should be relative to your application's base path.
 
 <a name="migration-structure"></a>
-
 ## 遷移結構
 
 遷移類包含兩個方法: 「up」和 「down」。
@@ -107,7 +107,6 @@ If you would like to specify a custom output path for the generated migration, y
     php artisan migrate --force
 
 <a name="rolling-back-migrations"></a>
-
 ### 還原遷移
 
 要還原遷移至上一個操作，使用 `rollback` 指令。
@@ -186,7 +185,6 @@ If you would like to specify a custom output path for the generated migration, y
     Schema::dropIfExists('users');
 
 <a name="creating-columns"></a>
-
 ### 創建欄位
 
 更新資料表，我們將使用 `Schema` 結構生成器內的 `table`方法。
@@ -260,7 +258,6 @@ Modifier  | Description
 #### 必要條件
 
 在修正欄位之前, 在您的 `composer.json` 的檔案內必需先有 `doctrine/dbal` 套件。
-
 此套件是用來產出要修正欄位指定的 SQL 語句。
 
 #### 更新欄位屬性
@@ -280,7 +277,6 @@ Modifier  | Description
 
 <a name="renaming-columns"></a>
 #### 修改欄位名稱
-
 
 要修改欄位名稱，可在結構生成器內使用 renameColumn 方法，請確認在修改前 composer.json 檔案內已經加入 doctrine/dbal:
 
@@ -309,7 +305,6 @@ Modifier  | Description
 
 <a name="creating-indexes"></a>
 ### 加入索引
-
 
 結構生成器支援多種索引類型，首先下面的例子為在欄位內的值應該是唯一值。
 您可以在定義欄位時順便附加 `unique` 方法上去:
