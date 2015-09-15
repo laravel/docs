@@ -216,6 +216,23 @@ By pushing jobs to different queues, you may "categorize" your queued jobs, and 
         }
     }
 
+#### Overriding the job queuing mechanism
+
+If your job class has a `queue` method, the dispatcher will call it with a resolved queue instance and the job instance as the parameters, instead of directly pushing or scheduling the job to the default connection.
+In body of `queue`, you can use the `Queue` facade to change the connection and `push()`/`later()`/`pushOn()`/`laterOn()` to the queue of your choice.
+
+    class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
+    {
+        //...
+
+        public function queue($queue, $job)
+        {
+            return \Queue::connection('redis')->push($job);
+        }
+
+        //...
+    }
+
 <a name="delayed-jobs"></a>
 ### Delayed Jobs
 
