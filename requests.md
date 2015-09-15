@@ -147,14 +147,14 @@ You may also retrieve all of the input data as an `array` using the `all` method
 
 #### Retrieving A Portion Of The Input Data
 
-If you need to retrieve a sub-set of the input data, you may use the `only` and `except` methods. Both of these methods will accept a single `array` as their only argument or a list of arguments:
+If you need to retrieve a sub-set of the input data, you may use the `only` and `except` methods. Both of these methods will accept a single `array` or a dynamic list of arguments:
 
     $input = $request->only(['username', 'password']);
-    
+
     $input = $request->only('username', 'password');
 
     $input = $request->except(['credit_card']);
-    
+
     $input = $request->except('credit_card');
 
 <a name="old-input"></a>
