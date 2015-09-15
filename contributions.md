@@ -41,7 +41,7 @@ Discussion regarding bugs, new features, and implementation of existing features
 
 **Major** new features should always be sent to the `master` branch, which contains the upcoming Laravel release.
 
-If you are unsure if your feature qualifies as a major or minor, please ask Taylor Otwell in the `#laravel-dev` IRC channel (Freenode).
+If you are unsure if your feature qualifies as a major or minor, please ask Taylor Otwell in the `#internals` channel of the [LaraChat](http://larachat.co) Slack team.
 
 <a name="security-vulnerabilities"></a>
 ## Security Vulnerabilities

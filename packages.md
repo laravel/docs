@@ -91,7 +91,7 @@ If you would like to make your views available for publishing to the application
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your views package's will be copied to the specified location.
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified location.
 
 <a name="translations"></a>
 ### Translations

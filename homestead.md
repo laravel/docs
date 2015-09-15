@@ -11,6 +11,7 @@
     - [Connecting To Databases](#connecting-to-databases)
     - [Adding Additional Sites](#adding-additional-sites)
     - [Ports](#ports)
+    - [Bash Aliases](#bash-aliases)
 - [Blackfire Profiler](#blackfire-profiler)
 
 <a name="introduction"></a>
@@ -208,6 +209,11 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
         - send: 7777
           to: 777
           protocol: udp
+
+<a name="bash-aliases"></a>
+### Bash Aliases
+
+To add additional Bash aliases to your Homestead box, edit the `aliases` file in your Homestead directory. These aliases will automatically be defined on the Homestead box when it starts.
 
 <a name="blackfire-profiler"></a>
 ## Blackfire Profiler
