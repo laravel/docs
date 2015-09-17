@@ -326,6 +326,14 @@ HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining 
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
     </form>
 
+To generate the hidden input field `_method`, you may also use the `method_field` helper function:
+
+    <?php echo method_field('PUT'); ?>
+
+Of course, using the Blade [templating engine](/docs/{{version}}/blade):
+
+    {!! method_field('PUT') !!}
+
 <a name="throwing-404-errors"></a>
 ## Throwing 404 Errors
 
