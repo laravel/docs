@@ -152,7 +152,7 @@ If you need to regenerate the session ID, you may use the `regenerate` method:
 <a name="flash-data"></a>
 ### Flash Data
 
-Sometimes you may wish to store items in the session only for the next request. You may do so using the `flash` method. Method stored in the session using this method will only be available during the subsequent HTTP request, and then will be deleted. Flash data is primarily useful for short-lived status messages:
+Sometimes you may wish to store items in the session only for the next request. You may do so using the `flash` method. Data stored in the session using this method will only be available during the subsequent HTTP request, and then will be deleted. Flash data is primarily useful for short-lived status messages:
 
     $request->session()->flash('status', 'Task was successful!');
 
