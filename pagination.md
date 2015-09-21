@@ -19,7 +19,7 @@
 <a name="paginating-query-builder-results"></a>
 ### 對查詢產生器分頁
 
-有幾種方法對項目進行分頁。最簡單的是使用 `paginate` 方法在使用[查詢產生器](/docs/{{version}}/queries)或是 [Eloquent 查詢](/docs/{{version}}/eloquent)時。由 Laravel 提供的 `paginate` 方法自動判定當前頁面正確的數量限制和偏移數。預設狀況下，當前頁數由 HTTP 請求所帶的 `?page` 參數來決定。當然，該值由 Laravel 自動檢測，並自動帶入由分頁程序產生的連結。
+有幾種方法對項目進行分頁。最簡單的是使用 `paginate` 方法在使用[查詢產生器](/docs/{{version}}/queries)或是 [Eloquent 查詢](/docs/{{version}}/eloquent)時。由 Laravel 提供的 `paginate` 方法自動判定當前頁面正確的數量限制和偏移數。預設狀況下，當前頁數由 HTTP 請求所帶的 `?page` 參數來決定。當然，該值由 Laravel 自動檢測，並自動帶入由分頁器產生的連結。
 
 首先，讓我們來看看在資料庫查詢時使用 `paginate` 方法。在這個例子中，傳遞給 `paginate` 唯一的參數是您想在「每頁」顯示的資料數。在這個例子中，我們指定每頁顯示 `15` 筆資料：
 
@@ -77,12 +77,12 @@
 
 換句話說， `Paginator` 對應於查詢產生器和 Eloquent 的 `simplePaginate` 方法，而 `LengthAwarePaginator` 相等於 `paginate` 方法。
 
-當手動創建一個分頁程序實例時，您應該手動「切割」傳遞給分頁程序的陣列。如果您不確定如何做到這一點，請查閱 PHP 的 [array_slice](http://php.net/manual/en/function.array-slice.php) 函數。
+當手動創建一個分頁器實例時，您應該手動「切割」傳遞給分頁器的陣列。如果您不確定如何做到這一點，請查閱 PHP 的 [array_slice](http://php.net/manual/en/function.array-slice.php) 函式。
 
 <a name="displaying-results-in-a-view"></a>
 ## 將分頁結果顯示在視圖中
 
-當在查詢產生器或 Eloquent 中使用 `simplePaginate` 方法或使用 `paginate` 方法，您會得到一個分頁程序的實例。當使用 `paginate` 方法時，將得到 `Illuminate\Pagination\LengthAwarePaginator` 的實例。當使用 `simplePaginate` 方法時，會得到 `Illuminate\Pagination\Paginator` 的實例。這些對象提供幾種方法用來描述結果集。除了這些輔助方法，分頁程序的實例也是個迭代器，並且可以像陣列一樣使用迴圈取值。
+當在查詢產生器或 Eloquent 中使用 `simplePaginate` 方法或使用 `paginate` 方法，您會得到一個分頁器的實例。當使用 `paginate` 方法時，將得到 `Illuminate\Pagination\LengthAwarePaginator` 的實例。當使用 `simplePaginate` 方法時，會得到 `Illuminate\Pagination\Paginator` 的實例。這些對象提供幾種方法用來描述結果集。除了這些輔助方法，分頁器的實例也是個迭代器，並且可以像陣列一樣使用迴圈取值。
 
 總之，一旦您已經取得結果，您可以顯示結果，並使用 [Blade 模板](/docs/{{version}}/blade)渲染頁面的連結：
 
@@ -96,11 +96,11 @@
 
 `render` 方法將給予查詢結果中其他頁面的連結。每一個連結中都已經包含正確的 `?page` 查詢字符串變量。請記住，由 `render` 方法產生的 HTML 皆兼容於 [Bootstrap CSS 框架](https://getbootstrap.com)。
 
-> **注意：**當在 Blade 模版中使用 `render` 方法時，一定要使用 `{！ ！}` ，否則 HTML 不會被轉譯。
+> **注意：**當在 Blade 模版中使用 `render` 方法時，一定要使用 `{！ ！}` ，否則 HTML 不會被跳脫。
 
-#### 自定義分頁程序的 URI
+#### 自定義分頁器的 URI
 
-`setPath` 方法允許您在產生連結時自定義 URI 。例如，如果您希望分頁程序產生像 `http://example.com/custom/url?page=N` ，您應該使用 `setPath` 方法將 `custom/url` 將加到分頁中：
+`setPath` 方法允許您在產生連結時自定義 URI 。例如，如果您希望分頁器產生像 `http://example.com/custom/url?page=N` ，您應該使用 `setPath` 方法將 `custom/url` 將加到分頁中：
 
     Route::get('users', function () {
         $users = App\User::paginate(15);
@@ -116,7 +116,7 @@
 
     {!! $users->appends(['sort' => 'votes'])->render() !!}
 
-如果您想加入一個有「雜湊片段」的分頁程序連結網址，您可以使用 `fragment` 方法。例如，要在每個分頁連結的最後加入 `#foo` ，應該這樣使用 `fragment` 方法：
+如果您想加入一個有「雜湊片段」的分頁器連結網址，您可以使用 `fragment` 方法。例如，要在每個分頁連結的最後加入 `#foo` ，應該這樣使用 `fragment` 方法：
 
     {!! $users->fragment('foo')->render() !!}
 
@@ -138,13 +138,13 @@
 
 Laravel 的分頁類別實現了 `Illuminate\Contracts\Support\JsonableInterface` 的 `toJson` 方法，所以很容易將您的分頁結果轉換成 JSON 。
 
-您可以將一個分頁程序實例轉換為 JSON ，只需要簡單地從一個路由或控制器中回傳它：
+您可以將一個分頁器實例轉換為 JSON ，只需要簡單地從一個路由或控制器中回傳它：
 
     Route::get('users', function () {
         return App\User::paginate();
     });
 
-分頁程序的 JSON 將包括分頁相關的資訊，如 `total` ， `current_page` ， `last_page` ，等等。該實例資料可透過 JSON 數組中的 `data` 鍵中取得。下面是從路由回傳分頁程序實例轉換成 JSON 的一個例子：
+分頁器的 JSON 將包括分頁相關的資訊，如 `total` ， `current_page` ， `last_page` ，等等。該實例資料可透過 JSON 陣列中的 `data` 鍵中取得。下方是從路由回傳的分頁器實例轉換成 JSON 的一個例子：
 
 #### 分頁結果轉為 JSON 的例子
 
