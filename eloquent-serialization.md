@@ -108,7 +108,7 @@ Occasionally, you may need to add array attributes that do not have a correspond
          */
         public function getIsAdminAttribute()
         {
-            return $this->attributes['admin'] == 'yes';
+            return $this->attributes['admin'] = 'yes';
         }
     }
 
