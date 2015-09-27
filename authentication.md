@@ -546,8 +546,8 @@ The `redirect` method takes care of sending the user to the OAuth provider, whil
 
 Of course, you will need to define routes to your controller methods:
 
-        Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
-        Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
+    Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
+    Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
 A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
 
