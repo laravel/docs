@@ -51,7 +51,7 @@ Laravel 透過 `Hash` [facade](/docs/{{version}}/facades) 提供 Bcrypt 加密�
 
 #### 根據雜湊值驗證密碼
 
-`check` 方法允許你透過一個給定的純字串跟雜湊值進行驗證。 如果你目前正使用 [Laravel 內含的](/docs/{{version}}/authentication) `AuthController`，你可能不需要直接使用該方法，它已經包含在控制器當中並且自動調用。
+`check` 方法允許你透過一個給定的純字串跟雜湊值進行驗證。如果你目前正使用 [Laravel 內含的](/docs/{{version}}/authentication) `AuthController`，你可能不需要直接使用該方法，它已經包含在控制器當中並且自動呼叫。
 
     if (Hash::check('plain-text', $hashedPassword)) {
         // The passwords match...
