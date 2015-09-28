@@ -774,3 +774,25 @@ The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 The `with` function return the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
 
     $value = with(new Foo)->work();
+
+<a name="method-session"></a>
+#### `session()` {#collection-method}
+
+The `session()` function gets / sets a session value. Passing nothing will return the current session object. Passing a key will return the value for that key:
+
+    session('key');
+
+If an array is passed as the key, we will assume you want to set an array of values:
+
+    $array = ['chairs' => 7, 'instruments' => 3];
+    session($array); //sets the session key / value pairs
+
+And you can again retrieve these by using:
+
+    session('chairs');
+    session('instruments');
+
+You can use the `session()` function as you would use the `Session` facade:
+
+    session()->put('user', auth()->user());
+    session()->get('user');
