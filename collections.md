@@ -133,7 +133,7 @@ The `avg` method returns the average of all items in the collection:
 
     // 3
 
-If the collection contains nested arrays or objects, you should pass a key to use for determining which values to sum:
+If the collection contains nested arrays or objects, you should pass a key to use for determining which values to calculate the average:
 
     $collection = collect([
         ['name' => 'JavaScript: The Good Parts', 'pages' => 176],
