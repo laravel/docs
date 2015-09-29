@@ -754,27 +754,6 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 
     return response()->json(['foo' => 'bar'], 200, $headers);
 
-<a name="method-value"></a>
-#### `value()` {#collection-method}
-
-The `value` function's behavior will simply return the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed then its result will be returned:
-
-    $value = value(function() { return 'bar'; });
-
-<a name="method-view"></a>
-#### `view()` {#collection-method}
-
-The `view` function retrieves a [view](/docs/{{version}}/views) instance:
-
-    return view('auth.login');
-
-<a name="method-with"></a>
-#### `with()` {#collection-method}
-
-The `with` function return the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
-
-    $value = with(new Foo)->work();
-
 <a name="method-session"></a>
 #### `session()` {#collection-method}
 
@@ -796,3 +775,24 @@ You can use the `session()` function as you would use the `Session` facade:
 
     session()->put('user', auth()->user());
     session()->get('user');
+
+<a name="method-value"></a>
+#### `value()` {#collection-method}
+
+The `value` function's behavior will simply return the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed then its result will be returned:
+
+    $value = value(function() { return 'bar'; });
+
+<a name="method-view"></a>
+#### `view()` {#collection-method}
+
+The `view` function retrieves a [view](/docs/{{version}}/views) instance:
+
+    return view('auth.login');
+
+<a name="method-with"></a>
+#### `with()` {#collection-method}
+
+The `with` function return the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
+
+    $value = with(new Foo)->work();
