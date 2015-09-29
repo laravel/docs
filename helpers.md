@@ -106,6 +106,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [redirect](#method-redirect)
 [request](#method-request)
 [response](#method-response)
+[session](#method-session)
 [value](#method-value)
 [view](#method-view)
 [with](#method-with)
