@@ -771,6 +771,6 @@ The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 <a name="method-with"></a>
 #### `with()` {#collection-method}
 
-The `with` function return the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
+The `with` function returns the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
 
     $value = with(new Foo)->work();
