@@ -13,8 +13,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-Laravel 所提供的強大檔案抽象層是基於 Frank de Jonge 的 [Flysystem](https://github.com/thephpleague/flysystem) 套件。該整合以各種驅動（driver）提供本地端磁碟系統、Amazon S3、以及 Rackspace 雲端儲存。並且能像使用 API 一般，輕易的切換這些儲存方式來面對各式系統。
-
+Laravel 強大的檔案抽象層得力於 Frank de Jonge 的 [Flysystem](https://github.com/thephpleague/flysystem) 套件。Laravel 的 flysystem 整合以各種驅動（driver）提供本地端磁碟系統、Amazon S3、以及 Rackspace 雲端儲存。並且能像使用 API 一般，輕易的切換這些儲存方式來面對各式系統。
 <a name="configuration"></a>
 ## 設定
 
@@ -41,7 +40,7 @@ Laravel 所提供的強大檔案抽象層是基於 Frank de Jonge 的 [Flysystem
 <a name="obtaining-disk-instances"></a>
 ### 獲得磁碟實體
 
-`Storage` facade 用於跟任何已設定的磁碟進行互動。舉例來說，你可以使用 facade 的 `put` 方法將一張頭像儲存到預設磁碟。當使用 `Storage` facade 呼叫任一方法而未先呼叫 `disk` 方法，預設磁碟將自動傳遞給該方法。
+`Storage` facade 用於對任何已設定的磁碟進行互動。舉例來說，你可以使用 facade 的 `put` 方法將一張頭像儲存到預設磁碟。當使用 `Storage` facade 呼叫任一方法而未先呼叫 `disk` 方法，預設磁碟將自動傳遞給該方法。
 
     <?php
 
