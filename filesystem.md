@@ -14,6 +14,7 @@
 ## 簡介
 
 Laravel 強大的檔案抽象層得力於 Frank de Jonge 的 [Flysystem](https://github.com/thephpleague/flysystem) 套件。Laravel 的 flysystem 整合以各種驅動（driver）提供本地端磁碟系統、Amazon S3、以及 Rackspace 雲端儲存。並且能像使用 API 一般，輕易的切換這些儲存方式來面對各式系統。
+
 <a name="configuration"></a>
 ## 設定
 
