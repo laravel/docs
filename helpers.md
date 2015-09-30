@@ -758,24 +758,19 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 <a name="method-session"></a>
 #### `session()` {#collection-method}
 
-The `session()` function gets / sets a session value. Passing nothing will return the current session object. Passing a key will return the value for that key:
+The `session` function may be used to get / set a session value:
 
-    session('key');
+    $value = session('key');
 
-If an array is passed as the key, we will assume you want to set an array of values:
+You may set values by passing an array of key / value pairs to the function:
 
-    $array = ['chairs' => 7, 'instruments' => 3];
-    session($array); //sets the session key / value pairs
+    session(['chairs' => 7, 'instruments' => 3]);
 
-And you can again retrieve these by using:
+The session store will be returned if no value is passed to the function:
 
-    session('chairs');
-    session('instruments');
+    $value = session()->get('key');
 
-You can use the `session()` function as you would use the `Session` facade:
-
-    session()->put('user', auth()->user());
-    session()->get('user');
+    session()->put('key', $value);
 
 <a name="method-value"></a>
 #### `value()` {#collection-method}
