@@ -210,6 +210,6 @@ Laravel 整合的 Flysystem 提供許多預設的驅動；然而 Flysystem 本�
         }
     }
 
-`extend` 方法的第一個參數是你的驅動名稱，第二個參數則是一個接受 `$app` 及 `$config` 變數的閉包。該閉包必須回傳 `League\Flysystem\Filesystem` 實體。`$config` 變數包含了定義在 `config/filesystems.php` 對指定磁碟的設定。
+`extend` 方法的第一個參數是你的驅動名稱，第二個參數則是一個接受 `$app` 及 `$config` 變數的閉包。該閉包必須回傳 `League\Flysystem\Filesystem` 實例。`$config` 變數包含了定義在 `config/filesystems.php` 對指定磁碟的設定。
 
 當你透過建立服務提供者註冊該擴展，你便能在 `config/filesystem.php` 設定檔中使用 `dropbox` 驅動。
