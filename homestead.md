@@ -71,7 +71,7 @@ You may install Homestead by simply cloning the repository. Consider cloning the
 
 If you would like to try the PHP 7.0 version of Homestead, clone the `php-7` branch of the repository:
 
-  git clone -b php-7 https://github.com/laravel/homestead.git Homestead
+    git clone -b php-7 https://github.com/laravel/homestead.git Homestead
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in your `~/.homestead` directory:
 
