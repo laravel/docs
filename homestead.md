@@ -84,7 +84,7 @@ If you are already using the PHP 5.x Homestead box, you may easily upgrade your 
 
     git clone -b php-7 https://github.com/laravel/homestead.git Homestead
 
-There is no need to run the `init.sh` script and overwrite your entire `Homestead.yaml` file. Instead, simply add the `box` directive to the top of the `Homestead.yaml` file:
+There is no need to run the `init.sh` script and overwrite your entire `Homestead.yaml` file. Instead, simply add the `box` directive to the top of your existing `Homestead.yaml` file:
 
     box: laravel/homestead-7
 
