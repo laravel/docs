@@ -141,6 +141,19 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
 
 By default, each site will be accessible by HTTP via port 8000 and HTTPS via port 44300.
 
+#### Configuring Cron for Task Scheduler
+
+In Laravel 5, your console jobs can be scheduled in the `app/Console/Kernel.php` file's schedule method. The `php artisan schedule:run` command should be added to your crontab to run every minute so Laravel can run your configured schedule.
+
+You can set any Homestead site to configure the [Task Scheduler](/docs/{{version}}/scheduling) for you by setting the `schedule` option to `true`:
+
+    sites:
+        - map: homestead.app
+          to: /home/vagrant/Code/Laravel/public
+          schedule: true
+
+The cron jobs will be set up inside the vagrant box `/etc/cron.d` folder when provisioned.
+
 #### The Hosts File
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
