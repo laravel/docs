@@ -393,7 +393,7 @@ This command will gracefully instruct all queue workers to restart after they fi
 <a name="dealing-with-failed-jobs"></a>
 ## Dealing With Failed Jobs
 
-Since things don't always go as planned, sometimes your queued jobs will fail. Don't worry, it happens to the best of us! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into a `failed_jobs` table. The name of the failed jobs can be configured via the `config/queue.php` configuration file.
+Since things don't always go as planned, sometimes your queued jobs will fail. Don't worry, it happens to the best of us! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into a `failed_jobs` table. The name of the table can be configured via the `config/queue.php` configuration file.
 
 To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
 
