@@ -31,14 +31,14 @@ Homestead is currently built and tested using Vagrant 1.7.
 ### Included Software
 
 - Ubuntu 14.04
-- PHP 5.6
+- PHP 5.6 / 7.0
 - HHVM
 - Nginx
 - MySQL
 - Postgres
 - Node (With PM2, Bower, Grunt, and Gulp)
 - Redis
-- Memcached
+- Memcached (PHP 5.x Only)
 - Beanstalkd
 - [Laravel Envoy](/docs/{{version}}/envoy)
 - [Blackfire Profiler](#blackfire-profiler)
@@ -69,9 +69,26 @@ You may install Homestead by simply cloning the repository. Consider cloning the
 
     git clone https://github.com/laravel/homestead.git Homestead
 
+If you would like to try the PHP 7.0 version of Homestead, clone the `php-7` branch of the repository:
+
+  git clone -b php-7 https://github.com/laravel/homestead.git Homestead
+
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in your `~/.homestead` directory:
 
     bash init.sh
+
+<a name="upgrading-to-php-7"></a>
+#### Upgrading To PHP 7.0
+
+If you are already using the PHP 5.x Homestead box, you may easily upgrade your installation to PHP 7.0. First, clone the `php-7` branch of the `laravel/homestead` repository into a new folder:
+
+  git clone -b php-7 https://github.com/laravel/homestead.git Homestead
+
+There is no need to run the `init.sh` script and overwrite your entire `Homestead.yaml` file. Instead, simply add the `box` directive to the top of the `Homestead.yaml` file:
+
+  box: laravel/homestead-7
+
+Next, you may run the `vagrant up` command from the directory that contains your clone of the `laravel/homestead` repository.
 
 <a name="configuring-homestead"></a>
 ### Configuring Homestead
