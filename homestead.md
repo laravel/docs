@@ -10,6 +10,7 @@
     - [Connecting Via SSH](#connecting-via-ssh)
     - [Connecting To Databases](#connecting-to-databases)
     - [Adding Additional Sites](#adding-additional-sites)
+    - [Configuration Cron Schedules](#configuring-cron-schedules)
     - [Ports](#ports)
     - [Bash Aliases](#bash-aliases)
 - [Blackfire Profiler](#blackfire-profiler)
@@ -141,19 +142,6 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
 
 By default, each site will be accessible by HTTP via port 8000 and HTTPS via port 44300.
 
-#### Configuring Cron for Task Scheduler
-
-In Laravel 5, your console jobs can be scheduled in the `app/Console/Kernel.php` file's schedule method. The `php artisan schedule:run` command should be added to your crontab to run every minute so Laravel can run your configured schedule.
-
-You can set any Homestead site to configure the [Task Scheduler](/docs/{{version}}/scheduling) for you by setting the `schedule` option to `true`:
-
-    sites:
-        - map: homestead.app
-          to: /home/vagrant/Code/Laravel/public
-          schedule: true
-
-The cron jobs will be set up inside the vagrant box `/etc/cron.d` folder when provisioned.
-
 #### The Hosts File
 
 Don't forget to add the "domains" for your Nginx sites to the `hosts` file on your machine! The `hosts` file will redirect your requests for the local domains into your Homestead environment. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:
@@ -217,6 +205,20 @@ To connect to your MySQL or Postgres database from your host machine via Navicat
 ### Adding Additional Sites
 
 Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `Homestead.yaml` file and then run the `vagrant provision` terminal command from your Homestead directory.
+
+<a name="configuring-cron-schedules"></a>
+### Configuring Cron Schedules
+
+Laravel provides a convenient way to [schedule Cron jobs](/docs/{{version}}/scheduling) by scheduling a single `schedule:run` command to be run every minute. The `schedule:run` will then examine your job scheduled defined in your `App\Console\Kernel` class to determine which jobs should be run.
+
+If you would like the `schedule:run` command to be run for a Homestead site, you may set the `schedule` option to `true` when defining the site:
+
+    sites:
+        - map: homestead.app
+          to: /home/vagrant/Code/Laravel/public
+          schedule: true
+
+The Cron job for the site will be defined in the `/etc/cron.d` folder of the virtual machine.
 
 <a name="ports"></a>
 ### Ports
