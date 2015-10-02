@@ -142,54 +142,54 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
         return DB::table('users')->get();
     });
 
-If the item does not exist in the cache, the `Closure` passed to the `remember` method will be executed and its result will be placed in the cache.
+如果那個項目不存在快取中，則回傳給 `remember` 方法的閉包將會被執行，而且閉包的執行結果將會被存放在快取中。
 
-You may also combine the `remember` and `forever` methods:
+你可能也會結合 `remember` 和 `forever` 這兩個方法:
 
     $value = Cache::rememberForever('users', function() {
         return DB::table('users')->get();
     });
 
-#### Retrieve And Delete
+#### 取出與刪除
 
-If you need to retrieve an item from the cache and then delete it, you may use the `pull` method. Like the `get` method, `null` will be returned if the item does not exist in the cache:
+如果你需要從快取中取出一個項目並刪除它，你可能會使用 `pull` 方法，與 `get` 相似，如果物件不存在快取中，`pull` 方法將會回傳 `null`:
 
     $value = Cache::pull('key');
 
 <a name="storing-items-in-the-cache"></a>
-### Storing Items In The Cache
+### 存放項目到快取中
 
-You may use the `put` method on the `Cache` facade to store items in the cache. When you place an item in the cache, you will need to specify the number of minutes for which the value should be cached:
+你可能會在 `Cache` facade 中使用 `put` 方法來存放項目到快取中，當你將一個項目放進快取時，你需要指定『幾分鐘』給將要存放的值:
 
     Cache::put('key', 'value', $minutes);
 
-Instead of passing the number of minutes until the item expires, you may also pass a PHP `DateTime` instance representing the expiration time of the cached item:
+如果不指定分鐘數直到存放的項目過期，你也可能傳遞一個 PHP 的 `DateTime` 實體來表示該快取項目過期的時間點:
 
     $expiresAt = Carbon::now()->addMinutes(10);
 
     Cache::put('key', 'value', $expiresAt);
 
-The `add` method will only add the item to the cache if it does not already exist in the cache store. The method will return `true` if the item is actually added to the cache. Otherwise, the method will return `false`:
+`add` 方法只會把還不存在快取中的項目放入快取，如果成功存放，會回傳 `true`，否回傳 `false`:
 
     Cache::add('key', 'value', $minutes);
 
-The `forever` method may be used to store an item in the cache permanently. These values must be manually removed from the cache using the `forget` method:
+`forever` 方法可以用來存放永久的項目到快取中，這些值必須被手動的刪除，這可以透過 `forget` 方法達成:
 
     Cache::forever('key', 'value');
 
 <a name="removing-items-from-the-cache"></a>
-### Removing Items From The Cache
+### 刪除快取中的項目
 
-You may remove items from the cache using the `forget` method on the `Cache` facade:
+你可能會使用 `forget` 方法在 `Cache` facade 下從快取中移除一個項目：
 
     Cache::forget('key');
 
 <a name="adding-custom-cache-drivers"></a>
-## Adding Custom Cache Drivers
+## 加入客製化的快取驅動
 
-To extend the Laravel cache with a custom driver, we will use the `extend` method on the `Cache` facade, which is used to bind a custom driver resolver to the manager. Typically, this is done within a [service provider](/docs/{{version}}/providers).
+為了要透過客製化的驅動來擴充 Laravel 快取，我們將會在 `Cache` facade 中使用 `extend` 方法，它被用來綁定(bind)一個客製化驅動的解析器(resolver)到管理者(manager)上，通常這可以透過[service provider](/docs/{{version}}/providers)來完成。
 
-For example, to register a new cache driver named "mongo":
+例如，要註冊一個名為 “mongo” 的快取驅動:
 
     <?php
 
@@ -224,11 +224,11 @@ For example, to register a new cache driver named "mongo":
         }
     }
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of the [service container](/docs/{{version}}/container).
+第一個傳給 `extend` 方法的參數是驅動的名稱，這個名稱要與你在 `config/cache.php` 設定檔中，`driver` 選項指定的名稱相同，第二個參數是一個應回傳一個 `Illuminate\Cache\Repository` 實體的閉包，這個閉包會被傳入一個 `$app` 實體，這個實體是屬於類別 [service container](/docs/{{version}}/container)。
 
-The call to `Cache::extend` could be done in the `boot` method of the default `App\Providers\AppServiceProvider` that ships with fresh Laravel applications, or you may create your own service provider to house the extension - just don't forget to register the provider in the `config/app.php` provider array.
+呼叫 `Cache::extend` 的工作可以在新加入的 Laravel 應用程式中預設的 `App\Providers\AppServiceProvider` 的 `boot` 方法中完成，或者你可以建立你自己的服務提供者(service provider)來管理擴充功能(只是請別忘了在 `config/app.php` 中的 provider array 註冊這個提供者)。
 
-To create our custom cache driver, we first need to implement the `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts) contract. So, our MongoDB cache implementation would look something like this:
+為了建立我們的客製化快取驅動，首先需要實作 `Illuminate\Contracts\Cache\Store` [contract](/docs/{{version}}/contracts) contract。因此我們的 MongoDB 快取實作大概會長這樣子:
 
     <?php
 
@@ -245,12 +245,12 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
         public function flush() {}
     }
 
-We just need to implement each of these methods using a MongoDB connection. Once our implementation is complete, we can finish our custom driver registration:
+我們只需要透過一個 MongoDB 的連線來實作這些方法，一旦我們完成實作，我們就可以接著完成註冊我們的客製化驅動:
 
     Cache::extend('mongo', function($app) {
         return Cache::repository(new MongoStore);
     });
 
-Once your extension is complete, simply update your `config/cache.php` configuration file's `driver` option to the name of your extension.
+一旦妳的擴充功能完成，你只需要簡單的更新 `config/cache.php` 設定檔中的 `driver` 選項為你的擴充功能名稱即可。
 
-If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+如果你不知道去哪裡編寫你的客製化款取驅動程式碼，你可以考慮讓它在 Packagist! 上被找到！或者你可以在你的 `app`目錄下建立一個 `Extension` 的命名空間，但是請記住，Laravel 沒有硬性規定的應用程式結構，你可以依照你的喜好任意組織你的應用程式。
