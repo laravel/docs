@@ -106,6 +106,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [redirect](#method-redirect)
 [request](#method-request)
 [response](#method-response)
+[session](#method-session)
 [value](#method-value)
 [view](#method-view)
 [with](#method-with)
@@ -754,6 +755,23 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 
     return response()->json(['foo' => 'bar'], 200, $headers);
 
+<a name="method-session"></a>
+#### `session()` {#collection-method}
+
+The `session` function may be used to get / set a session value:
+
+    $value = session('key');
+
+You may set values by passing an array of key / value pairs to the function:
+
+    session(['chairs' => 7, 'instruments' => 3]);
+
+The session store will be returned if no value is passed to the function:
+
+    $value = session()->get('key');
+
+    session()->put('key', $value);
+
 <a name="method-value"></a>
 #### `value()` {#collection-method}
 
@@ -771,6 +789,6 @@ The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 <a name="method-with"></a>
 #### `with()` {#collection-method}
 
-The `with` function return the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
+The `with` function returns the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
 
     $value = with(new Foo)->work();

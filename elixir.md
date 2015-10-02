@@ -55,7 +55,7 @@ The only remaining step is to install Elixir! Within a fresh installation of Lar
 
     npm install
 
-If you are developing on a Windows system, you may need to run the `npm install` command with the `--no-bin-links` switch enabled:
+If you are developing on a Windows system or you are running your VM on a Windows host system, you may need to run the `npm install` command with the `--no-bin-links` switch enabled:
 
     npm install --no-bin-links
 

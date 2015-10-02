@@ -10,6 +10,7 @@
     - [Connecting Via SSH](#connecting-via-ssh)
     - [Connecting To Databases](#connecting-to-databases)
     - [Adding Additional Sites](#adding-additional-sites)
+    - [Configuration Cron Schedules](#configuring-cron-schedules)
     - [Ports](#ports)
     - [Bash Aliases](#bash-aliases)
 - [Blackfire Profiler](#blackfire-profiler)
@@ -31,14 +32,14 @@ Homestead is currently built and tested using Vagrant 1.7.
 ### Included Software
 
 - Ubuntu 14.04
-- PHP 5.6
+- PHP 5.6 / 7.0
 - HHVM
 - Nginx
 - MySQL
 - Postgres
 - Node (With PM2, Bower, Grunt, and Gulp)
 - Redis
-- Memcached
+- Memcached (PHP 5.x Only)
 - Beanstalkd
 - [Laravel Envoy](/docs/{{version}}/envoy)
 - [Blackfire Profiler](#blackfire-profiler)
@@ -69,9 +70,26 @@ You may install Homestead by simply cloning the repository. Consider cloning the
 
     git clone https://github.com/laravel/homestead.git Homestead
 
+If you would like to try the PHP 7.0 version of Homestead, clone the `php-7` branch of the repository:
+
+    git clone -b php-7 https://github.com/laravel/homestead.git Homestead
+
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in your `~/.homestead` directory:
 
     bash init.sh
+
+<a name="upgrading-to-php-7"></a>
+#### Upgrading To PHP 7.0
+
+If you are already using the PHP 5.x Homestead box, you may easily upgrade your installation to PHP 7.0. First, clone the `php-7` branch of the `laravel/homestead` repository into a new folder:
+
+    git clone -b php-7 https://github.com/laravel/homestead.git Homestead
+
+There is no need to run the `init.sh` script and overwrite your entire `Homestead.yaml` file. Instead, simply add the `box` directive to the top of your existing `Homestead.yaml` file:
+
+    box: laravel/homestead-7
+
+Next, you may run the `vagrant up` command from the directory that contains your clone of the `laravel/homestead` repository.
 
 <a name="configuring-homestead"></a>
 ### Configuring Homestead
@@ -187,6 +205,20 @@ To connect to your MySQL or Postgres database from your host machine via Navicat
 ### Adding Additional Sites
 
 Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `Homestead.yaml` file and then run the `vagrant provision` terminal command from your Homestead directory.
+
+<a name="configuring-cron-schedules"></a>
+### Configuring Cron Schedules
+
+Laravel provides a convenient way to [schedule Cron jobs](/docs/{{version}}/scheduling) by scheduling a single `schedule:run` Artisan command to be run every minute. The `schedule:run` command will examine the job scheduled defined in your `App\Console\Kernel` class to determine which jobs should be run.
+
+If you would like the `schedule:run` command to be run for a Homestead site, you may set the `schedule` option to `true` when defining the site:
+
+    sites:
+        - map: homestead.app
+          to: /home/vagrant/Code/Laravel/public
+          schedule: true
+
+The Cron job for the site will be defined in the `/etc/cron.d` folder of the virtual machine.
 
 <a name="ports"></a>
 ### Ports
