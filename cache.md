@@ -1,25 +1,25 @@
-# Cache
+# 快取
 
-- [Configuration](#configuration)
-- [Cache Usage](#cache-usage)
-    - [Obtaining A Cache Instance](#obtaining-a-cache-instance)
-    - [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
-    - [Storing Items In The Cache](#storing-items-in-the-cache)
-    - [Removing Items From The Cache](#removing-items-from-the-cache)
-- [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
+- [設定](#configuration)
+- [快取的使用](#cache-usage)
+    - [取得一個快取的實體](#obtaining-a-cache-instance)
+    - [從快取中擷取項目](#retrieving-items-from-the-cache)
+    - [存放項目到快取中](#storing-items-in-the-cache)
+    - [刪除快取中的項目](#removing-items-from-the-cache)
+- [加入客製化的快取驅動](#adding-custom-cache-drivers)
 
 <a name="configuration"></a>
-## Configuration
+## 設定
 
-Laravel provides a unified API for various caching systems. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](http://memcached.org) and [Redis](http://redis.io) out of the box.
+Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的設定檔都放在 `config/cache.php` 中，在這個檔案中，你可以指定在你的應用程式中，你預設想用哪個快取驅動，Laravel 支援流行的快取後端，如 [Memcached](http://memcached.org) 和 [Redis](http://redis.io)。
 
-The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use an in-memory cache such as Memcached or APC. You may even configure multiple cache configurations for the same driver.
+快取設定檔還包含了其他的選項，你可以在檔案中找到這些選項，請確保你都有讀過這些選項上方的說明。Laravel 預設採用的快取驅動是 `file`，這個驅動儲存了序列化(serialized) 的快取物件在檔案系統中，對於大型應用程式而言，Laravel 比較建議你使用一個 in-memory 快取，例如 Memcached 或 APC， 你可能也會想為同一個驅動設定多個快取設定檔。
 
-### Cache Prerequisites
+### 快取預先需求
 
-#### Database
+#### 資料庫
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
+當使用 `database` 這個快取驅動，你需要設置一個表格來放置快取項目，你可以看一下範例 `Schema` 如何宣告這樣的表格:
 
     Schema::create('cache', function($table) {
         $table->string('key')->unique();
@@ -29,9 +29,9 @@ When using the `database` cache driver, you will need to setup a table to contai
 
 #### Memcached
 
-Using the Memcached cache requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.
+使用 Memcached 做快取需要先安裝 [Memcached PECL package](http://pecl.php.net/package/memcached)。
 
-The default [configuration](#configuration) uses TCP/IP based on [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php):
+預設的[設定檔](#configuration) 採用以 [Memcached::addServer](http://php.net/manual/en/memcached.addserver.php) 為基礎的 TCP/IP:
 
     'memcached' => [
         [
@@ -41,7 +41,7 @@ The default [configuration](#configuration) uses TCP/IP based on [Memcached::add
         ],
     ],
 
-You may also set the `host` option to a UNIX socket path. If you do this, the `port` option should be set to `0`:
+你可能也會設置 `host` 選項到 UNIX 的 socket 路徑中，如果你有這麼做，記得 `port` 選項要設為 `0`:
 
     'memcached' => [
         [
@@ -53,21 +53,21 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
 
 #### Redis
 
-Before using a Redis cache with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+在你選擇使用 Redis 作為 Laravel 的快取前，你需要透過 Composer 預先安裝 `predis/predis` 套件 (~1.0)。
 
-For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
+更多有關設定 Redis 的訊息，請參考 [Laravel documentation page](/docs/{{version}}/redis#configuration).
 
 <a name="cache-usage"></a>
-## Cache Usage
+## 快取的使用
 
 <a name="obtaining-a-cache-instance"></a>
-### Obtaining A Cache Instance
+### 取得一個快取的實體
 
-The `Illuminate\Contracts\Cache\Factory` and `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) provide access to Laravel's cache services. The `Factory` contract provides access to all cache drivers defined for your application. The `Repository` contract is typically an implementation of the default cache driver for your application as specified by your `cache` configuration file.
+`Illuminate\Contracts\Cache\Factory` 和 `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) 提供了存取 Laravel 快取服務的機制， 而`Factory` contract 則為你的應用程式提供了存取所有快取驅動的機制，`Repository` contract  是典型的快取驅動實作，它會依照你的快取設定檔變化。
 
-However, you may also use the `Cache` facade, which is what we will use throughout this documentation. The `Cache` facade provides convenient, terse access to the underlying implementations of the Laravel cache contracts.
+然而，你可能也需要使用 `Cache` facade，我們會在整份文件中使用它，`Cache` facade 提供了方便又簡潔的方法存取現行實作的 Laravel cache contracts。
 
-For example, let's import the `Cache` facade into a controller:
+例如，我們試著在一個控制器中引用 `Cache` facade:
 
     <?php
 
@@ -91,41 +91,40 @@ For example, let's import the `Cache` facade into a controller:
         }
     }
 
-#### Accessing Multiple Cache Stores
+#### 存取多個快取儲存
 
-Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:
+使用 `Cache` facade，你可能會透過 `store` 方法來存取多個快取儲存，傳入 `store` 方法的鍵值(key)應符合你在快取設定檔中的 `store` 設定項目指定的所有 store 列表其中一項:
 
     $value = Cache::store('file')->get('foo');
 
     Cache::store('redis')->put('bar', 'baz', 10);
 
 <a name="retrieving-items-from-the-cache"></a>
-### Retrieving Items From The Cache
+### 從快取中擷取項目
 
-The `get` method on the `Cache` facade is used to retrieve items from the cache. If the item does not exist in the cache, `null` will be returned. If you wish, you may pass a second argument to the `get` method specifying the custom default value you wish to be returned if the item doesn't exist:
+在 `Cache` facade 中，`get` 方法可以用來取出快取中的項目，如果要取出的項目不再快取中，`get`方法會回傳 `null` ，如果你想，你也可以傳入第二個參數給 `get` 方法來客製化找不到項目時的預回傳值設值:
 
     $value = Cache::get('key');
 
     $value = Cache::get('key', 'default');
 
-
-You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
+你甚至可能傳入一個閉包(`Closure`)作為預設值，當指定的項目不存在快取中十，閉包將會被回傳，傳入一個閉包讓你可以延後存資料庫或外部服務中取出預設值:
 
     $value = Cache::get('key', function() {
         return DB::table(...)->get();
     });
 
-#### Checking For Item Existence
+#### 確認項目存在
 
-The `has` method may be used to determine if an item exists in the cache:
+`has` 方法可以用來檢查一個項目是否存在於快取中:
 
     if (Cache::has('key')) {
         //
     }
 
-#### Incrementing / Decrementing Values
+#### 遞增/遞減值
 
-The `increment` and `decrement` methods may be used to adjust the value of integer items in the cache. Both of these methods optionally accept a second argument indicating the amount by which to increment or decrement the item's value:
+`increment` 和 `decrement` 方法可以用來調整快取中的整數項目值，這兩個方法都可以選擇性的傳入第二個參數，用來指示要遞增或遞減多少:
 
     Cache::increment('key');
 
@@ -135,9 +134,9 @@ The `increment` and `decrement` methods may be used to adjust the value of integ
 
     Cache::decrement('key', $amount);
 
-#### Retrieve Or Update
+#### 取出或更新
 
-Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
+有時候，你可能會想從快取中取出一個項目，但也想在取出的項目不存在時存入一個預設值，例如，你可能會想從快取中取出所有使用者，或者當找不到使用者時，從資料庫中將這些使用者取出並放入快取中，則擬將會使用 `Cache::remember` 方法達到目的:
 
     $value = Cache::remember('users', $minutes, function() {
         return DB::table('users')->get();
