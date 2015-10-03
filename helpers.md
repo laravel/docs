@@ -94,6 +94,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
+[collect](#method-collect)
 [config](#method-config)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
@@ -655,6 +656,13 @@ The `back()` function generates a redirect response to the user's previous locat
 The `bcrypt` function hashes the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
 
     $password = bcrypt('my-secret-password');
+
+<a name="method-collect"></a>
+#### `collect()` {#collection-method}
+
+The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the supplied items:
+
+    $collection = collect(['taylor', 'abigail']);
 
 <a name="method-config"></a>
 #### `config()` {#collection-method}
