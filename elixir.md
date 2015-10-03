@@ -15,6 +15,7 @@
     - [Scripts](#javascript)
 - [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
+    - [BrowserSync](#browsersync)
 - [Calling Existing Gulp Tasks](#calling-existing-gulp-tasks)
 - [Writing Elixir Extensions](#writing-elixir-extensions)
 
@@ -319,6 +320,29 @@ Once the files have been versioned, you may use the `elixir` helper function to 
     <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 
     <script src="{{ elixir('js/app.js') }}"></script>
+    
+<a name="browsersync"></a>
+#### BrowserSync
+BrowserSync allows you to make edits and instantly see the BrowserUpdate inline without needing to refresh. This is a huge timesaver when working with css and frontend code in generel.
+
+You can use the `browserSync`method to start a BrowserSync server when you run `gulp watch`.
+
+```javascript
+elixir(function(mix) {
+    mix.browserSync();
+});
+```
+To enable syncing in your browser use port 3000 `http://homestead.app:3000`.
+
+If you're using a different domain for your app, you can pass an array of [options](http://www.browsersync.io/docs/options/) as the first argument.
+
+```javascript
+elixir(function(mix) {
+    mix.browserSync({
+    	proxy: 'project.app'
+    });
+});
+```
 
 <a name="calling-existing-gulp-tasks"></a>
 ## Calling Existing Gulp Tasks
