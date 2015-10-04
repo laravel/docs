@@ -40,5 +40,7 @@ Service providers são responsáveis pela inicialização/bootstrapping de vári
 
 #### Expedição da Requisição
 
+Uma vez que o aplicativo foi inicializado e todos os services providers tenham sido registradas, o `request` será transferido para o router que irá fazer a expedição. O router irá enviar a solicitação para uma rota ou controller, bem como executar qualquer middleware específico a rota.
+
 <a name="foco-no-service-providers"></a>
 ## Foco no Service Providers
