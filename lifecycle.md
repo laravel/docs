@@ -34,6 +34,10 @@ O entendimento do método `handle` do kernel HTTP é bastante simples: receber u
 
 #### Service Providers
 
+Uma das mais importantes ações de kernel bootstrapping é de carregar os [service providers](/docs/{{version}}/providers) para sua aplicação. Todos os service providers da aplicação são configurados em `config/app.php` no array `providers`. Primeiro, o método `register` será chamado, e em seguida todos os providers, uma vez que todos os providers foram registrado, o método `boot` será chamado.
+
+Service providers são responsáveis pela inicialização/bootstrapping de vários componentes do Framework, como os componentes de banco de dados, filas, de validação e de roteamento. Uma vez que ele inicializado será configurado todos os recursos oferecidos pelo Framework, os service providers são o aspecto mais importante de todo o processo de inicialização do Laravel.
+
 #### Expedição da Requisição
 
 <a name="foco-no-service-providers"></a>
