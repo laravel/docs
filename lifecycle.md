@@ -18,6 +18,10 @@ Se você não entender todos os termos imediatamente, não desanime! Basta tenta
 
 ### Primeiros Passos
 
+O ponto de entrada de todas as solicitações para um aplicativo em Laravel é o arquivo `public/index.php`. Todos os pedidos/requests são encaminhados para este arquivo de configuração do seu servidor web (Apache/Nginx). O arquivo `index.php` não contém muito código. Pelo contrário, é um simplesmente  ponto de partida para carregar o resto do Framework.
+
+O arquivo `index.php` carrega o arquivo de autoload gerado pelo Composer, e em seguida, recupera uma instância da aplicação Laravel em `bootstrap/app.php`. A primeira medida tomada por si só da aplicação em Laravel é criar uma instância do [service container](/docs/{{version}}/container).
+
 ### HTTP / Console Kernels
 
 #### Service Providers
