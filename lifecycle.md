@@ -44,3 +44,9 @@ Uma vez que o aplicativo foi inicializado e todos os services providers tenham s
 
 <a name="foco-no-service-providers"></a>
 ## Foco no Service Providers
+
+Os services providers são realmente a chave para bootstrapping de um aplicativo em Laravel. A instância do aplicativo é criado, os services providers são registrados, e o request é entregue ao aplicativo bootstrap. É realmente muito simples!
+
+É muito valiso ter fixado de como uma aplicação em Laravel é construída e inicializada via services providers. Claro, os services providers padrão do aplicativo são armazenadas no diretório `app/Providers`.
+
+Por padrão, o `AppServiceProvider` é bastante vazio. Este provider é um ótimo lugar para adicionar próprios bootstrapping e service container do seu aplicativo. Claro que, para aplicações de grande porte, você pode querer criar vários services providers, cada um com um tipo mais granular de bootstrapping.
