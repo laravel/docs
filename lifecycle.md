@@ -24,6 +24,14 @@ O arquivo `index.php` carrega o arquivo de autoload gerado pelo Composer, e em s
 
 ### HTTP / Console Kernels
 
+Em seguida, o request pode ser enviado para o kernel HTTP ou para o kernel console, dependendo do tipo de request que está entrando na aplicação. Estes dois kernels são responsaveis e são a central de todo o fluxo do request. Por enquanto, vamos apenas focar no kernel HTTP, que está localizado em `app/HTTP/Kernel.php`.
+
+O kernel HTTP estende a classe `Illuminate\Foundation\Http\Kernel`, que define uma série de `bootstrappers` que será executado antes que o request seja executado. Estes bootstrappers configuram manipulações de erro, configuram logs, [detecta o ambiente de aplicação](/docs/{{version}}/installation#environment-configuration), e executar outras tarefas que precisam ser feitas antes do request realmente ser tratado.
+
+O kernel HTTP também define uma lista de [middlewares](/docs/{{version}}/middleware) HTTP, que todos os requests devem passar antes de serem manuseados pelo aplicativo. Estes middlewares podem fazer leitura e escrita de [sessão HTTP](/docs/{{version}}/session), determinar se a aplicação está no modo de manutenção, [verificar o token CSRF](/docs/{{version}}/routing#csrf-protection), e muito mais.
+
+O entendimento do método `handle` do kernel HTTP é bastante simples: receber um `Request` e retornar um `Response`. Pense no Kernel como sendo uma grande caixa preta que representa todo o seu aplicativo. Alimentá-lo com request HTTP ele irá retornar um response HTTP.
+
 #### Service Providers
 
 #### Expedição da Requisição
