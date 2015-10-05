@@ -408,11 +408,13 @@ You will need to provide an HTML view for the password reset request form. This 
 
     <form method="POST" action="/password/email">
         {!! csrf_field() !!}
-        
-        @if ($errors->has())
-            @foreach ($errors->all() as $error)
-                <p>{{ $error }}</p>
-            @endforeach
+
+        @if (count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         @endif
 
         <div>
@@ -444,13 +446,15 @@ Here is a sample password reset form to get you started:
     <form method="POST" action="/password/reset">
         {!! csrf_field() !!}
         <input type="hidden" name="token" value="{{ $token }}">
-        
-        @if ($errors->has())
-            @foreach ($errors->all() as $error)
-                <p>{{ $error }}</p>
-            @endforeach
+
+        @if (count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         @endif
-        
+
         <div>
             Email
             <input type="email" name="email" value="{{ old('email') }}">
