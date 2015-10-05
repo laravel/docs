@@ -94,6 +94,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
+[collect](#method-collect)
 [config](#method-config)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
@@ -638,7 +639,7 @@ The `url` function generates a fully qualified URL to the given path:
 <a name="method-auth"></a>
 #### `auth()` {#collection-method}
 
-The `auth` function return an authenticator instance. You may use it instead of the `Auth` facade for convenience:
+The `auth` function returns an authenticator instance. You may use it instead of the `Auth` facade for convenience:
 
     $user = auth()->user();
 
@@ -655,6 +656,13 @@ The `back()` function generates a redirect response to the user's previous locat
 The `bcrypt` function hashes the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
 
     $password = bcrypt('my-secret-password');
+
+<a name="method-collect"></a>
+#### `collect()` {#collection-method}
+
+The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the supplied items:
+
+    $collection = collect(['taylor', 'abigail']);
 
 <a name="method-config"></a>
 #### `config()` {#collection-method}
@@ -733,7 +741,7 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an o
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
 
-The `redirect` function return an instance of the redirector to do [redirects](/docs/{{version}}/responses#redirects):
+The `redirect` function returns an instance of the redirector to do [redirects](/docs/{{version}}/responses#redirects):
 
     return redirect('/home');
 
