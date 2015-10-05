@@ -38,7 +38,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_pull](#method-array-pull)
 [array_set](#method-array-set)
 [array_sort](#method-array-sort)
-[array_sort_recursive](#method-array-recursive)
+[array_sort_recursive](#method-array-sort-recursive)
 [array_where](#method-array-where)
 [head](#method-head)
 [last](#method-last)
@@ -649,7 +649,7 @@ The `back()` function generates a redirect response to the user's previous locat
 
     return back();
 
-<a href="method-bcrypt"></a>
+<a name="method-bcrypt"></a>
 #### `bcrypt()` {#collection-method}
 
 The `bcrypt` function hashes the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
