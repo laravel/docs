@@ -127,7 +127,7 @@ elixir(function(mix) {
 });
 ```
 
-Again, like the `less` method, you may compile multiple scripts into a single CSS file, and even customize the output directory of the resulting CSS:
+Again, like the `less` method, you may compile multiple Sass files into a single CSS file, and even customize the output directory of the resulting CSS:
 
 ```javascript
 elixir(function(mix) {
