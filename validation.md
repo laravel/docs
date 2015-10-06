@@ -713,7 +713,7 @@ Sometimes, you may wish to ignore a given ID during the unique check. For exampl
 
     'email' => 'unique:users,email_address,'.$user->id
 
-If your table uses a custom ID column name, you may specify it as the fourth parameter:
+If your table uses a primary key column name other than `id`, you may specify it as the fourth parameter:
 
     'email' => 'unique:users,email_address,'.$user->id.',user_id'
 
