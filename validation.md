@@ -620,7 +620,9 @@ The file under validation must have a MIME type corresponding to one of the list
 
     'photo' => 'mimes:jpeg,bmp,png'
 
-_Note: this rule does in fact validate against a file's mimetype (not its extension), but the way mimetypes are designated is by providing an extenstion that is then mapped to the full mimetype. See [http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types) for a full list of mappings._
+Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
+
+A full listing of MIME types and their corresponding extensions may be found at the following location: [http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
 <a name="rule-min"></a>
 #### min:_value_
