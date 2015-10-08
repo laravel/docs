@@ -789,7 +789,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
          */
         public function boot()
         {
-            Validator::extend('foo', function($attribute, $value, $parameters) {
+            Validator::extend('foo', function($attribute, $value, $parameters, $validator) {
                 return $value == 'foo';
             });
         }
@@ -805,7 +805,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
         }
     }
 
-The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
+The custom validator Closure receives four arguments: the name of the `$attribute` being validated, the `$value` of the attribute, an array of `$parameters` passed to the rule, and the `$validator` instance that calls it.
 
 You may also pass a class and method to the `extend` method instead of a Closure:
 
