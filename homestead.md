@@ -81,15 +81,17 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
 <a name="upgrading-to-php-7"></a>
 #### Upgrading To PHP 7.0
 
-If you are already using the PHP 5.x Homestead box, you may easily upgrade your installation to PHP 7.0. First, clone the `php-7` branch of the `laravel/homestead` repository into a new folder, e.g.:
+If you are already using the PHP 5.x Homestead box, you may easily upgrade your installation to PHP 7.0. First, clone the `php-7` branch of the `laravel/homestead` repository into a new folder:
 
-    git clone -b php-7 https://github.com/laravel/homestead.git Homestead_PHP_7
+    git clone -b php-7 https://github.com/laravel/homestead.git Homestead7
 
-If you already have `Homestead.yaml` in your `~/.homestead` directory, there is no need to run the `init.sh` script, otherwise you might need to run `bash init.sh` from your new clone directory first and then copy your existing `Homestead.yaml` into  `~/.homestead` directory (overwriting thus the one genereted by `init.sh`). In both cases, add then the `box` directive to the top of your `~/.homestead/Homestead.yaml` file (on a new line after `---` mark):
+If you already have a `Homestead.yaml` file in your `~/.homestead` directory, there is no need to run the `init.sh` script. However, if this is the first and only Homestead installation on your machine, you should run `bash init.sh` from your new Homestead directory.
+
+Next, add then the `box` directive to the top of your `~/.homestead/Homestead.yaml` file (on a new line after `---` mark):
 
     box: laravel/homestead-7
 
-Next, you may run the `vagrant up` command from the directory that contains your new clone of the `laravel/homestead` repository.
+Finally, you may run the `vagrant up` command from the directory that contains your new clone of the `laravel/homestead` repository.
 
 <a name="configuring-homestead"></a>
 ### Configuring Homestead
