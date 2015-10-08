@@ -63,6 +63,8 @@ Like Closure routes, you may specify names on controller routes:
 
     Route::get('foo', ['uses' => 'FooController@method', 'as' => 'name']);
 
+#### URLs To Controller Actions
+
 Once you have assigned a name to the controller route, you can easily generate URLs to the action. To generate a URL to a controller action, use the `action` helper method. Again, we only need to specify the part of the controller class name that comes after the base `App\Http\Controllers` namespace:
 
     $url = action('FooController@method');
@@ -70,6 +72,16 @@ Once you have assigned a name to the controller route, you can easily generate U
 You may also use the `route` helper to generate a URL to a named controller route:
 
     $url = route('name');
+
+If you wish to generate a URL to a controller action while using only the portion of the class name relative to your controller namespace, register the root controller namespace with the URL generator:
+
+	URL::setRootControllerNamespace('App\Http\Controllers');
+
+	$url = action('FooController@method');
+
+You may access the name of the controller action being run using the `currentRouteAction` method:
+
+	$action = Route::currentRouteAction();
 
 <a name="controller-middleware"></a>
 ## Controller Middleware
