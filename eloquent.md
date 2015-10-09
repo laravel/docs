@@ -547,6 +547,8 @@ For example, let's define an Eloquent event listener in a [service provider](/do
                     return false;
                 }
             });
+            
+            parent::boot();
         }
 
         /**
