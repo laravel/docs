@@ -295,6 +295,19 @@ However, if you wish to have even more fine-grained control over your broadcast 
         return ['user' => $this->user->id];
     }
 
+#### Overriding the default broadcast event name
+By default, the broadcast event name will be the full qualified name of our event, for example `App\Events\ServerCreated`. You can change it to whatever you want just by adding the `broadcastAs` method:
+
+    /**
+     * Get the broadcast event name.
+     *
+     * @return array
+     */
+    public function broadcastAs()
+    {
+        return ['app.server-created'];
+    }
+
 <a name="consuming-event-broadcasts"></a>
 ### Consuming Event Broadcasts
 
