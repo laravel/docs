@@ -88,9 +88,11 @@ You may stop further chunks from being processed by returning `false` from the `
 
 #### Retrieving A List Of Column Values
 
+> **Note:** Starting with the 5.1 method lists () returns an object. To back array(), using a method all() or toArray()
+
 If you would like to retrieve an array containing the values of a single column, you may use the `lists` method. In this example, we'll retrieve an array of role titles:
 
-    $titles = DB::table('roles')->lists('title');
+    $titles = DB::table('roles')->lists('title')->all();
 
     foreach ($titles as $title) {
         echo $title;
@@ -98,7 +100,7 @@ If you would like to retrieve an array containing the values of a single column,
 
  You may also specify a custom key column for the returned array:
 
-    $roles = DB::table('roles')->lists('title', 'name');
+    $roles = DB::table('roles')->lists('title', 'name')->all();
 
     foreach ($roles as $name => $title) {
         echo $title;
