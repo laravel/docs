@@ -620,6 +620,10 @@ The file under validation must have a MIME type corresponding to one of the list
 
     'photo' => 'mimes:jpeg,bmp,png'
 
+Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
+
+A full listing of MIME types and their corresponding extensions may be found at the following location: [http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+
 <a name="rule-min"></a>
 #### min:_value_
 
@@ -645,7 +649,12 @@ The field under validation must match the given regular expression.
 <a name="rule-required"></a>
 #### required
 
-The field under validation must be present in the input data.
+The field under validation must be present in the input data and not empty. A field is considered "empty" is one of the following conditions are true:
+
+- The value is `null`.
+- The value is an empty string.
+- The value is an empty array or empty `Countable` object.
+- The value is an uploaded file with no path.
 
 <a name="rule-required-if"></a>
 #### required_if:_anotherfield_,_value_,...
@@ -712,6 +721,10 @@ Occasionally, you may need to set a custom connection for database queries made 
 Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address. You only want to throw a validation error if the user provides an e-mail address that is already used by a different user. To tell the unique rule to ignore the user's ID, you may pass the ID as the third parameter:
 
     'email' => 'unique:users,email_address,'.$user->id
+
+If your table uses a primary key column name other than `id`, you may specify it as the fourth parameter:
+
+    'email' => 'unique:users,email_address,'.$user->id.',user_id'
 
 **Adding Additional Where Clauses:**
 
@@ -781,7 +794,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
          */
         public function boot()
         {
-            Validator::extend('foo', function($attribute, $value, $parameters) {
+            Validator::extend('foo', function($attribute, $value, $parameters, $validator) {
                 return $value == 'foo';
             });
         }
@@ -797,7 +810,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
         }
     }
 
-The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
+The custom validator Closure receives four arguments: the name of the `$attribute` being validated, the `$value` of the attribute, an array of `$parameters` passed to the rule, and the `Validator` instance.
 
 You may also pass a class and method to the `extend` method instead of a Closure:
 
@@ -828,3 +841,21 @@ When creating a custom validation rule, you may sometimes need to define custom 
             return str_replace(...);
         });
     }
+
+#### Implicit Extensions
+
+By default, when an attribute being validated is not present or contains an empty value as defined by the [`required`](#rule-required) rule, normal validation rules, including custom extensions, are not run. For example, the [`integer`](#rule-integer) rule will not be run against a `null` value:
+
+    $rules = ['count' => 'integer'];
+
+    $input = ['count' => null];
+
+    Validator::make($input, $rules)->passes(); // true
+
+For a rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create such an "implicit" extension, use the `Validator::extendImplicit()` method:
+
+    Validator::extendImplicit('foo', function($attribute, $value, $parameters, $validator) {
+        return $value == 'foo';
+    });
+
+> **Note:** An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.

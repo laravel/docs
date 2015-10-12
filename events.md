@@ -270,6 +270,20 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
 
 Then, you only need to [fire the event](#firing-events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
 
+#### Overriding Broadcast Event Name
+
+By default, the broadcast event name will be the fully qualified class name of the event. Using the example class above, the broadcast event would be `App\Events\ServerCreated`. You can customize this broadcast event name to whatever you want using the `broadcastAs` method:
+
+    /**
+     * Get the broadcast event name.
+     *
+     * @return array
+     */
+    public function broadcastAs()
+    {
+        return ['app.server-created'];
+    }
+
 <a name="broadcast-data"></a>
 ### Broadcast Data
 

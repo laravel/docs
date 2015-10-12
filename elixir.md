@@ -15,6 +15,7 @@
     - [Scripts](#javascript)
 - [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
+- [BrowserSync](#browser-sync)
 - [Calling Existing Gulp Tasks](#calling-existing-gulp-tasks)
 - [Writing Elixir Extensions](#writing-elixir-extensions)
 
@@ -127,7 +128,7 @@ elixir(function(mix) {
 });
 ```
 
-Again, like the `less` method, you may compile multiple scripts into a single CSS file, and even customize the output directory of the resulting CSS:
+Again, like the `less` method, you may compile multiple Sass files into a single CSS file, and even customize the output directory of the resulting CSS:
 
 ```javascript
 elixir(function(mix) {
@@ -319,6 +320,27 @@ Once the files have been versioned, you may use the `elixir` helper function to 
     <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 
     <script src="{{ elixir('js/app.js') }}"></script>
+
+<a name="browser-sync"></a>
+## BrowserSync
+
+BrowserSync automatically refreshes your web browser after you make changes to your front-end resources. You can use the `browserSync` method to instruct Elixir to start a BrowserSync server when you run the `gulp watch` command:
+
+```javascript
+elixir(function(mix) {
+    mix.browserSync();
+});
+```
+
+Once you run `gulp watch`, access your web application using port 3000 to enable browser syncing: `http://homestead.app:3000`. If you're using a domain other than `homestead.app` for local development, you may pass an array of [options](http://www.browsersync.io/docs/options/) as the first argument to the `browserSync` method:
+
+```javascript
+elixir(function(mix) {
+    mix.browserSync({
+    	proxy: 'project.app'
+    });
+});
+```
 
 <a name="calling-existing-gulp-tasks"></a>
 ## Calling Existing Gulp Tasks
