@@ -2,7 +2,7 @@
 
 - [設定](#configuration)
 - [快取的使用](#cache-usage)
-    - [取得一個快取的實體](#obtaining-a-cache-instance)
+    - [取得一個快取的實例](#obtaining-a-cache-instance)
     - [從快取中擷取項目](#retrieving-items-from-the-cache)
     - [存放項目到快取中](#storing-items-in-the-cache)
     - [刪除快取中的項目](#removing-items-from-the-cache)
@@ -61,7 +61,7 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
 ## 快取的使用
 
 <a name="obtaining-a-cache-instance"></a>
-### 取得一個快取的實體
+### 取得一個快取的實
 
 `Illuminate\Contracts\Cache\Factory` 和 `Illuminate\Contracts\Cache\Repository` [contracts](/docs/{{version}}/contracts) 提供了存取 Laravel 快取服務的機制， 而`Factory` contract 則為你的應用程式提供了存取所有快取驅動的機制，`Repository` contract  是典型的快取驅動實作，它會依照你的快取設定檔變化。
 
@@ -107,6 +107,7 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
     $value = Cache::get('key');
 
     $value = Cache::get('key', 'default');
+
 
 你甚至可能傳入一個閉包(`Closure`)作為預設值，當指定的項目不存在快取中十，閉包將會被回傳，傳入一個閉包讓你可以延後存資料庫或外部服務中取出預設值:
 
@@ -163,7 +164,7 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
 
     Cache::put('key', 'value', $minutes);
 
-如果不指定分鐘數直到存放的項目過期，你也可能傳遞一個 PHP 的 `DateTime` 實體來表示該快取項目過期的時間點:
+如果不指定分鐘數直到存放的項目過期，你也可能傳遞一個 PHP 的 `DateTime` 實來表示該快取項目過期的時間點:
 
     $expiresAt = Carbon::now()->addMinutes(10);
 
@@ -224,7 +225,7 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
         }
     }
 
-第一個傳給 `extend` 方法的參數是驅動的名稱，這個名稱要與你在 `config/cache.php` 設定檔中，`driver` 選項指定的名稱相同，第二個參數是一個應回傳一個 `Illuminate\Cache\Repository` 實體的閉包，這個閉包會被傳入一個 `$app` 實體，這個實體是屬於類別 [service container](/docs/{{version}}/container)。
+第一個傳給 `extend` 方法的參數是驅動的名稱，這個名稱要與你在 `config/cache.php` 設定檔中，`driver` 選項指定的名稱相同，第二個參數是一個應回傳一個 `Illuminate\Cache\Repository` 實的閉包，這個閉包會被傳入一個 `$app` 實，這個實是屬於類別 [service container](/docs/{{version}}/container)。
 
 呼叫 `Cache::extend` 的工作可以在新加入的 Laravel 應用程式中預設的 `App\Providers\AppServiceProvider` 的 `boot` 方法中完成，或者你可以建立你自己的服務提供者(service provider)來管理擴充功能(只是請別忘了在 `config/app.php` 中的 provider array 註冊這個提供者)。
 
@@ -251,6 +252,6 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
         return Cache::repository(new MongoStore);
     });
 
-一旦妳的擴充功能完成，你只需要簡單的更新 `config/cache.php` 設定檔中的 `driver` 選項為你的擴充功能名稱即可。
+一旦你的擴充功能完成，你只需要簡單的更新 `config/cache.php` 設定檔中的 `driver` 選項為你的擴充功能名稱即可。
 
-如果你不知道去哪裡編寫你的客製化款取驅動程式碼，你可以考慮讓它在 Packagist! 上被找到！或者你可以在你的 `app`目錄下建立一個 `Extension` 的命名空間，但是請記住，Laravel 沒有硬性規定的應用程式結構，你可以依照你的喜好任意組織你的應用程式。
+如果你不知道要將你的客製化快取驅動程式碼放置在何處，可以考慮將它放在 Packagist 上！或者你可以在你的 `app` 目錄下建立一個 `Extension` 的命名空間，但是請記住，Laravel 沒有硬性規定的應用程式結構，你可以依照你的喜好任意組織你的應用程式。
