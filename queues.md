@@ -7,13 +7,13 @@
 - [Pushing Jobs Onto The Queue](#pushing-jobs-onto-the-queue)
     - [Delayed Jobs](#delayed-jobs)
     - [Dispatching Jobs From Requests](#dispatching-jobs-from-requests)
+    - [Completed Job Events](#completed-job-events)
 - [Running The Queue Listener](#running-the-queue-listener)
     - [Supervisor Configuration](#supervisor-configuration)
     - [Daemon Queue Listener](#daemon-queue-listener)
     - [Deploying With Daemon Queue Listeners](#deploying-with-daemon-queue-listeners)
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
     - [Failed Job Events](#failed-job-events)
-    - [Completed Job Events](#completed-job-events)
     - [Retrying Failed Jobs](#retrying-failed-jobs)
 
 <a name="introduction"></a>
@@ -290,6 +290,43 @@ You may also pass an array as the third argument to the `dispatchFrom` method. T
     $this->dispatchFrom('App\Jobs\ProcessOrder', $request, [
         'taxPercentage' => 20,
     ]);
+    
+<a name="completed-job-events"></a>
+### Completed Job Events
+
+If you would like to register an event that will be called when a queued job completes successfully, you may use the `Queue::after` method. This event is a great opportunity to add additional logging, queue a subsequent job, or increment stats for a dashboard. For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Queue;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Queue::after(function ($connection, $job, $data) {
+                // Log job completed or increment stats service
+            });
+        }
+
+        /**
+         * Register the service provider.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+    }
 
 <a name="running-the-queue-listener"></a>
 ## Running The Queue Listener
@@ -390,43 +427,6 @@ Since daemon queue workers are long-lived processes, they will not pick up chang
 This command will gracefully instruct all queue workers to restart after they finish processing their current job so that no existing jobs are lost.
 
 > **Note:** This command relies on the cache system to schedule the restart. By default, APCu does not work for CLI jobs. If you are using APCu, add `apc.enable_cli=1` to your APCu configuration.
-
-<a name="completed-job-events"></a>
-### Completed Job Events
-
-If you would like to register an event that will be called when a queued job completes successfully, you may use the `Queue::after` method. This event is a great opportunity to add additional logging, queue a subsequent job, or increment stats for a dashboard. For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
-
-    <?php
-
-    namespace App\Providers;
-
-    use Queue;
-    use Illuminate\Support\ServiceProvider;
-
-    class AppServiceProvider extends ServiceProvider
-    {
-        /**
-         * Bootstrap any application services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            Queue::after(function ($connection, $job, $data) {
-                // Log job completed or increment stats service
-            });
-        }
-
-        /**
-         * Register the service provider.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
-        }
-    }
 
 <a name="dealing-with-failed-jobs"></a>
 ## Dealing With Failed Jobs
