@@ -135,6 +135,12 @@ The Laravel scheduler provides several convenient methods for working with the o
              ->daily()
              ->sendOutputTo($filePath);
 
+If you would like to append the output to a given file, you may use the `appendOutputTo` method:
+
+    $schedule->command('emails:send')
+             ->daily()
+             ->appendOutputTo($filePath);
+
 Using the `emailOutputTo` method, you may e-mail the output to an e-mail address of your choice. Note that the output must first be sent to a file using the `sendOutputTo` method. Also, before e-mailing the output of a task, you should configure Laravel's [e-mail services](/docs/{{version}}/mail):
 
     $schedule->command('foo')

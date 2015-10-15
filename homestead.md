@@ -157,7 +157,7 @@ Make sure the IP address listed is the one you set in your `Homestead.yaml` file
 <a name="launching-the-vagrant-box"></a>
 ### Launching The Vagrant Box
 
-Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from your Homestead directory. Vagrant will boot the virtual machine and automatically configure your shared folders and Nginx sites automatically.
+Once you have edited the `Homestead.yaml` to your liking, run the `vagrant up` command from your Homestead directory. Vagrant will boot the virtual machine and automatically configure your shared folders and Nginx sites.
 
 To destroy the machine, you may use the `vagrant destroy --force` command.
 
