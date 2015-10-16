@@ -4,6 +4,7 @@
     - [Passing Data To Views](#passing-data-to-views)
     - [Sharing Data With All Views](#sharing-data-with-all-views)
 - [View Composers](#view-composers)
+- [View Events](#view-events)
 
 <a name="basic-usage"></a>
 ## Basic Usage
@@ -200,3 +201,31 @@ The `composer` method accepts the `*` character as a wildcard, allowing you to a
 View **creators** are very similar to view composers; however, they are fired immediately when the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
 
     view()->creator('profile', 'App\Http\ViewCreators\ProfileCreator');
+
+
+<a name="view-events"></a>
+## View Events
+
+Laravel fires [events](/docs/{{version}}/events) every time a view is created or composed. To execute your own code every time a particular view is presented you may listen for these events. 
+
+Typically, you would place these event handlers within the `boot` method of your `EventServiceProvider`:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        $events->listen('composing:index', function ($view) {
+            //
+        });
+
+        $events->listen('creating:login', function ($view) {
+            //
+        });
+
+    }

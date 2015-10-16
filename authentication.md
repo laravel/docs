@@ -20,6 +20,7 @@
     - [After Resetting Passwords](#after-resetting-passwords)
 - [Social Authentication](#social-authentication)
 - [Adding Custom Authentication Drivers](#adding-custom-authentication-drivers)
+- [Authentication Events](#authentication-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -680,3 +681,36 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
     }
 
 This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
+
+<a name="authentication-events"></a>
+## Authentication Events
+
+To execute code on every authentication operation, you may listen for the [events](/docs/{{version}}/events) fired by Laravel. Typically, you would place these event handlers within the `boot` method of your `EventServiceProvider`:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        // listen for every login attempt
+        $events->listen('auth.attempt', function ($credentials, $remember, $login) {
+            //
+        });
+
+        // listen for successful logins
+        $events->listen('auth.login', function ($user, $remember) {
+            //
+        });
+
+        //listen for logouts
+        $events->listen('auth.logout', function ($user) {
+            //
+        });
+
+    }
+

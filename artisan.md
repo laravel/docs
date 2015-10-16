@@ -10,6 +10,7 @@
     - [Writing Output](#writing-output)
 - [Registering Commands](#registering-commands)
 - [Calling Commands Via Code](#calling-commands-via-code)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -350,3 +351,7 @@ If you would like to call another console command and suppress all of its output
     $this->callSilent('email:send', [
         'user' => 1, '--queue' => 'default'
     ]);
+
+<a name="events"></a>
+##Events
+When you execute an artisan command, Laravel fires the `artisan.start` [event](/docs/{{version}}/events). You can listen for this event to take your own custom actions including logging, authentication, or executing another command first.

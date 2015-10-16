@@ -303,7 +303,7 @@ In contrast, this statement would remove only caches tagged with `authors`, so `
 <a name="cache-events"></a>
 ## Cache Events
 
-To execute code on every cache operation, you may listen for the events fired by the cache. Typically, you would place these event handlers within the `boot` method of your `EventServiceProvider`:
+To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you would place these event handlers within the `boot` method of your `EventServiceProvider`:
 
     /**
      * Register any other events for your application.

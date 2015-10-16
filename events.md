@@ -12,6 +12,7 @@
     - [Broadcast Data](#broadcast-data)
     - [Consuming Event Broadcasts](#consuming-event-broadcasts)
 - [Event Subscribers](#event-subscribers)
+- [Built-in Events](#built-in-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -431,3 +432,29 @@ Once the subscriber has been defined, it may be registered with the event dispat
             'App\Listeners\UserEventListener',
         ];
     }
+<a name="built-in-events"></a>
+## Built-in Events
+
+Laravel provides many built-in events for actions performed by the framework. You can subscribe to them in the same way that you subscribe to your own custom events.
+
+Event  |  Parameter(s)  
+------------- | -----------
+artisan.start | $application
+auth.attempt | $credentials, $remember, $login
+auth.login | $user, $remember
+auth.logout | $user
+cache.missed | $key
+cache.hit | $key, $value
+cache.write | $key, $value, $minutes
+cache.delete | $key
+connection.{name}.beginTransaction | $connection
+connection.{name}.committed | $connection
+connection.{name}.rollingBack | $connection
+illuminate.query | $query, $bindings, $time, $connectionName
+illuminate.queue.after | $connection, $job, $data
+illuminate.queue.failed | $connection, $job, $data
+illuminate.queue.stopping | null
+mailer.sending | $message
+router.matched | $route, $request
+composing:{view name} | $view
+creating:{view name} | $view

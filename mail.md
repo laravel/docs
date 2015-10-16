@@ -5,6 +5,7 @@
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
     - [Queueing Mail](#queueing-mail)
+    - [Mail Events](#mail-events)
 - [Mail & Local Development](#mail-and-local-development)
 
 <a name="introduction"></a>
@@ -208,6 +209,12 @@ If you wish to specify a specific queue on which to push the message, you may do
     Mail::laterOn('queue-name', 5, 'emails.welcome', $data, function ($message) {
         //
     });
+
+<a name="mail-events"></a>
+### Mail Events
+
+Laravel fires the `mailer.sending` event just before sending mail. Note that the event is fired when the mail is *sent* not when it is queued and that the event is fired even when `pretend` is set to true in the `config\mail.php` file.
+
 
 <a name="mail-and-local-development"></a>
 ## Mail & Local Development
