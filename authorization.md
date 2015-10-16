@@ -42,7 +42,7 @@ The simplest way to determine if a user may perform a given action is to define 
 	     */
 	    public function boot(GateContract $gate)
 	    {
-	        parent::registerPolicies($gate);
+	        $this->registerPolicies($gate);
 
 	        $gate->define('update-post', function ($user, $post) {
 	        	return $user->id === $post->user_id;
@@ -251,7 +251,7 @@ Once the policy exists, we need to register it with the `Gate` class. The `AuthS
 	     */
 	    public function boot(GateContract $gate)
 	    {
-	        parent::registerPolicies($gate);
+	        $this->registerPolicies($gate);
 	    }
 	}
 
