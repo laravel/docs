@@ -7,6 +7,7 @@
 - [Pushing Jobs Onto The Queue](#pushing-jobs-onto-the-queue)
     - [Delayed Jobs](#delayed-jobs)
     - [Dispatching Jobs From Requests](#dispatching-jobs-from-requests)
+    - [Completed Job Events](#completed-job-events)
 - [Running The Queue Listener](#running-the-queue-listener)
     - [Supervisor Configuration](#supervisor-configuration)
     - [Daemon Queue Listener](#daemon-queue-listener)
@@ -289,6 +290,43 @@ You may also pass an array as the third argument to the `dispatchFrom` method. T
     $this->dispatchFrom('App\Jobs\ProcessOrder', $request, [
         'taxPercentage' => 20,
     ]);
+    
+<a name="completed-job-events"></a>
+### Completed Job Events
+
+If you would like to register an event that will be called when a queued job completes successfully, you may use the `Queue::after` method. This event is a great opportunity to add additional logging, queue a subsequent job, or increment stats for a dashboard. For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Queue;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Queue::after(function ($connection, $job, $data) {
+                // Log job completed or increment stats service
+            });
+        }
+
+        /**
+         * Register the service provider.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+    }
 
 <a name="running-the-queue-listener"></a>
 ## Running The Queue Listener
