@@ -251,7 +251,7 @@ Once the policy exists, we need to register it with the `Gate` class. The `AuthS
 	     */
 	    public function boot(GateContract $gate)
 	    {
-	        parent::registerPolicies($gate);
+	        $this->registerPolicies($gate);
 	    }
 	}
 
