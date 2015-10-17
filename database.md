@@ -19,7 +19,7 @@
 <a name="configuration"></a>
 ### 設定
 
-Laravel 使資料庫連線與執行查詢變得非常簡單。資料庫的設定檔存放在 `config/database.php` 。在這個設定檔內你可以定義所有關於你的資料庫連線，以及可以指定哪個連線成爲預設值。在這個檔案內提供了所有資料庫系統的設定檔範例。
+Laravel 使資料庫連線與執行查詢變得非常簡單。資料庫的設定檔存放在 `config/database.php`。在這個設定檔內你可以定義所有關於你的資料庫連線，以及可以指定哪個連線成爲預設值。在這個檔案內提供了所有資料庫系統的設定檔範例。
 
  Laravel 預設環境 [environment configuration](/docs/{{version}}/installation#environment-configuration) 是使用 [Laravel Homestead](/docs/{{version}}/homestead) 作為預設，在開發 Laravel 時，這是相當便利的本地虛擬機。當然，你可以因應需求隨時修改你本地端的資料庫設定。
 
