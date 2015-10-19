@@ -362,6 +362,8 @@ Another option is to wrap every test case in a database transaction. Again, Lara
         }
     }
 
+> **Note:** This trait will only wrap the default database in a transaction.
+
 <a name="model-factories"></a>
 ### Model Factories
 
