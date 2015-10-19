@@ -19,10 +19,10 @@ Laravel 包裝了幾個後端驅動 :
 
 <div class="content-list" markdown="1">
 - `file` - 將 sessions 儲存在 `storage/framework/sessions`。
-	- `cookie` - 將 sessions 儲存在安全，加密後的 cookies。
-	- `database` - 將 sessions 儲存在 應用程式使用的資料庫中。
-	- `memcached` / `redis` - 將 sessions 儲存在 `memcached` / `redis`高速快取的系統中。
-	- `array` - 將 sessions 儲存在PHP的 `array` 格式，只存活在當次請求。
+- `cookie` - 將 sessions 儲存在安全，加密後的 cookies。
+- `database` - 將 sessions 儲存在 應用程式使用的資料庫中。
+- `memcached` / `redis` - 將 sessions 儲存在 `memcached` / `redis`高速快取的系統中。
+- `array` - 將 sessions 儲存在PHP的 `array` 格式，只存活在當次請求。
 </div>
 
 > **注意:** array 驅動典型應用在 [tests](/docs/{{version}}/testing) 環境下，所以不會留下任何 session 資料。
@@ -62,8 +62,7 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該
 
 #### 訪問 Session
 
-首先，我們可在控制器方法內，實作 HTTP 請求訪問 Session。 
-請記得，控制器方法相依需從 Laravel 注入 [service container](/docs/{{version}}/container): 
+首先，我們可在控制器方法內，實作 HTTP 請求訪問 Session。 請記得，控制器方法相依需從 Laravel 注入 [service container](/docs/{{version}}/container): 
 
     <?php
 
@@ -89,8 +88,7 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該
         }
     }
 
-當你從 session 取出值，你可以在 `get` 方法中的第二個參數內設定一個默認值。
-如果指定的鍵名不存在時，將會回傳設定的默認值。如果你輸入一個 `Closure` Function 在默認參數中，該`Closure`將被執行並返回它的結果 : 
+當你從 session 取出值，你可以在 `get` 方法中的第二個參數內設定一個默認值。如果指定的鍵名不存在時，將會回傳設定的默認值。如果你輸入一個 `Closure` Function 在默認參數中，該`Closure`將被執行並返回它的結果 : 
 
     $value = $request->session()->get('key', 'default');
 
