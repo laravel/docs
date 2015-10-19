@@ -154,13 +154,11 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該
 <a name="flash-data"></a>
 ### 閃存資料 (Flash Data)
 
-有時候你想存入一筆暫存的資料，讓它只有在下一次的請求內有效，你可以使用 `flash` 方法。用這個方法儲存，只能將資料保留到下個 HTTP 的請求出現，然後就會自動刪除。
-閃存資料在短期的狀態中很有用 : 
+有時候你想存入一筆暫存的資料，讓它只有在下一次的請求內有效，你可以使用 `flash` 方法。用這個方法儲存，只能將資料保留到下個 HTTP 的請求出現，然後就會自動刪除。閃存資料在短期的狀態中很有用 : 
 
     $request->session()->flash('status', 'Task was successful!');
 
-如果需要保持住閃存資料給其它的請求，可以使用 `reflash`方法，這將會保持住所有的閃存資料給其它的請求。
-如果只想保持住一個特定的快內資料，你可以使用 `keep` 方法 : 
+如果需要保持住閃存資料給其它的請求，可以使用 `reflash`方法，這將會保持住所有的閃存資料給其它的請求。如果只想保持住一個特定的快內資料，你可以使用 `keep` 方法 : 
 
     $request->session()->reflash();
 
@@ -169,8 +167,7 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該
 <a name="adding-custom-session-drivers"></a>
 ## 加入自定 Session 驅動
 
-要加入特定的 session 驅動，可以使用 `extend` [facade](/docs/{{version}}/session).
-可以在 `boot` 方法內呼叫 `extend`[service provider](/docs/{{version}}/providers):
+要加入特定的 session 驅動，可以使用 `extend` [facade](/docs/{{version}}/session)。可以在 `boot` 方法內呼叫 `extend`[service provider](/docs/{{version}}/providers):
 
     <?php
 
@@ -206,8 +203,7 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵值，所以應該
         }
     }
 
-**注意:** 在自定義 session 驅動必需先繼承 `SessionHandlerInterface`。
-這個介面包含了一些必要的實作。例如使用 MongoDB 驅動看起來像 :
+**注意:** 在自定義 session 驅動必需先繼承 `SessionHandlerInterface`。這個介面包含了一些必要的實作。例如使用 MongoDB 驅動看起來像 :
 
     <?php
 
