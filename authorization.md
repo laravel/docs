@@ -71,6 +71,19 @@ Sometimes, you may wish to grant all abilities to a specific user. For this situ
 
 If the `before` callback returns a non-null result that result will be considered the result of the check.
 
+<a name="intercepting-check-results"></a>
+#### Intercepting Check Results
+
+Sometimes, you need to catch all check results. Use the `after` method to define a callback that is run after authorization checks:
+
+    $gate->after(function ($user, $ability, $arguments, $result) {
+        if ($result) {
+            // Do some action if check succeed, e. g. log the action
+        }
+    });
+
+Note that result cannot be overwritten in after callbacks.
+
 <a name="checking-abilities"></a>
 ## Checking Abilities
 
