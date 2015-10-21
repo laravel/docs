@@ -726,7 +726,7 @@ Instead of using Closure callbacks to extend the Validator, you may also extend 
 
 	<?php
 
-	class CustomValidator extends Illuminate\Validation\Validator {
+	class CustomValidator extends \Illuminate\Validation\Validator {
 
 		public function validateFoo($attribute, $value, $parameters)
 		{
