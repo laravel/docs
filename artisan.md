@@ -51,9 +51,8 @@ Note that we are able to inject any dependencies we need into the command's cons
     use App\User;
     use App\DripEmailer;
     use Illuminate\Console\Command;
-    use Illuminate\Foundation\Inspiring;
 
-    class Inspire extends Command
+    class SendEmails extends Command
     {
         /**
          * The name and signature of the console command.
