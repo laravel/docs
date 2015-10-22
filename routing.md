@@ -154,7 +154,7 @@ You may also specify route names for controller actions:
         'as' => 'profile', 'uses' => 'UserController@showProfile'
     ]);
 
-Instead of option you may use a chained method `name`:
+Instead of specifying the route name in the route array definition, you may chain the `name` method onto the end of the route definition:
 
     Route::get('user/profile', 'UserController@showProfile')->name('profile');
 
