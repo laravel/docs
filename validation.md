@@ -325,6 +325,23 @@ If you wish to customize the format of the validation errors that are flashed to
         return $validator->errors()->all();
     }
 
+#### Customizing The Error Messages
+
+You may customize the error messages used by the form request by overriding the `messages` method. This method should return an array of attribute / rule pairs and their corresponding error messages:
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => 'A title is required',
+            'body.required'  => 'A message is required',
+        ];
+    }
+
 <a name="working-with-error-messages"></a>
 ## Working With Error Messages
 
