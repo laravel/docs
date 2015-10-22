@@ -263,6 +263,21 @@ The generated class will be placed in the `app/Http/Requests` directory. Let's a
         ];
     }
 
+If we want to show custom error messages, we can do so by simply overwriting the message method:
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => 'A title is required',
+            'body.required'  => 'A message is required',
+        ];
+    }
+
 So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
 
     /**
