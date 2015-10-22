@@ -125,6 +125,12 @@ Use an array to assign multiple middleware to the route:
         //
     }]);
 
+Instead of option you may use `middleware` method:
+
+    Route::get('/', function () {
+        //
+    }])->middleware(['first', 'second']);
+
 <a name="middleware-parameters"></a>
 ## Middleware Parameters
 
