@@ -102,6 +102,8 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [zip](/docs/{{version}}/collections#method-zip)
 </div>
 
+> **Note:** `pluck`, `keys`, `zip`, `collapse`, `flatten` and `flip` methods return base colletion instance.
+
 <a name="custom-collections"></a>
 ## Custom Collections
 
