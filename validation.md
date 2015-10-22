@@ -594,9 +594,15 @@ You may also specify more conditions that will be added as "where" clauses to th
 
     'email' => 'exists:staff,email,account_id,1'
 
-Passing `NULL` as a "where" clause value will add a check for a `NULL` database value:
+These conditions may be negated using the `!` sign:
+
+    'email' => 'exists:staff,email,role,!admin'
+
+You may also pass `NULL` or `NOT_NULL` to the "where" clause:
 
     'email' => 'exists:staff,email,deleted_at,NULL'
+
+    'email' => 'exists:staff,email,deleted_at,NOT_NULL'
 
 <a name="rule-image"></a>
 #### image
