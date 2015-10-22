@@ -594,6 +594,10 @@ You may also specify more conditions that will be added as "where" clauses to th
 
     'email' => 'exists:staff,email,account_id,1'
 
+These conditions may be negated using the `!` sign:
+
+    'email' => 'exists:staff,email,role,!admin'
+
 You may also pass `NULL` or `NOT_NULL` to the "where" clause:
 
     'email' => 'exists:staff,email,deleted_at,NULL'
