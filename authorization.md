@@ -59,7 +59,8 @@ In addition to registering `Closures` as authorization callbacks, you may regist
     $gate->define('update-post', 'Class@method');
 
 <a name="intercepting-all-checks"></a>
-#### Intercepting All Checks
+<a name="intercepting-authorization-checks"></a>
+#### Intercepting Authorization Checks
 
 Sometimes, you may wish to grant all abilities to a specific user. For this situation, use the `before` method to define a callback that is run before all other authorization checks:
 
@@ -71,18 +72,11 @@ Sometimes, you may wish to grant all abilities to a specific user. For this situ
 
 If the `before` callback returns a non-null result that result will be considered the result of the check.
 
-<a name="intercepting-check-results"></a>
-#### Intercepting Check Results
+You may use the `after` method to define a callback to be executed after every authorization check. However, you may not modify the result of the authorization check from an `after` callback:
 
-Sometimes, you need to catch all check results. Use the `after` method to define a callback that is run after authorization checks:
-
-    $gate->after(function ($user, $ability, $arguments, $result) {
-        if ($result) {
-            // Do some action if check succeed, e. g. log the action
-        }
+    $gate->after(function ($user, $ability, $result, $arguments) {
+        //
     });
-
-Note that result cannot be overwritten in after callbacks.
 
 <a name="checking-abilities"></a>
 ## Checking Abilities
