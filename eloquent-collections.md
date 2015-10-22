@@ -28,6 +28,8 @@ However, collections are much more powerful than arrays and expose a variety of 
         return $user->name;
     });
 
+> **Note:** While most Eloquent collection methods return a new instance of an Eloquent collection, the `pluck`, `keys`, `zip`, `collapse`, `flatten` and `flip` methods return a [base collection](/docs/{{version}}/collections) instance.
+
 <a name="available-methods"></a>
 ## Available Methods
 
@@ -101,8 +103,6 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [whereLoose](/docs/{{version}}/collections#method-whereloose)
 [zip](/docs/{{version}}/collections#method-zip)
 </div>
-
-> **Note:** `pluck`, `keys`, `zip`, `collapse`, `flatten` and `flip` methods return base colletion instance.
 
 <a name="custom-collections"></a>
 ## Custom Collections
