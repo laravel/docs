@@ -94,6 +94,10 @@ Occasionally you may need to specify a route parameter, but make the presence of
     Route::get('user/{name?}', function ($name = 'John') {
         return $name;
     });
+    
+    Route::get('user/{name?}', function ($name) {
+        return $name;
+    })->defaults('name', 'John');
 
 <a name="parameters-regular-expression-constraints"></a>
 ### Regular Expression Constraints
