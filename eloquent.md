@@ -450,7 +450,9 @@ Sometimes you may need to truly remove a model from your database. To permanentl
 <a name="query-scopes"></a>
 ## Query Scopes
 
-Scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`:
+Scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`.
+
+Scopes should always return a query builder instance:
 
     <?php
 
@@ -480,8 +482,6 @@ Scopes allow you to define common sets of constraints that you may easily re-use
             return $query->where('active', 1);
         }
     }
-
-> **Note:** A query scope always needs to return a [query builder](/docs/{{version}}/queries) object.
 
 #### Utilizing A Query Scope
 
