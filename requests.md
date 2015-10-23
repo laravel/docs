@@ -119,9 +119,13 @@ If you return a PSR-7 response instance from a route or controller, it will auto
 
 #### Retrieving An Input Value
 
-Using a few simple methods, you may access all user input from your `Illuminate\Http\Request` instance. You do not need to worry about the HTTP verb used for the request, as input is accessed in the same way for all verbs.
+Using a few simple methods, you may access all user input from your `Illuminate\Http\Request` instance. You do not need to worry about the HTTP verb used for the request, as input is accessed in the same way for all verbs:
 
     $name = $request->input('name');
+
+Alternatively, you may access user input using the properties of the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the posted field like so:
+
+    $name = $request->name;
 
 You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:
 
