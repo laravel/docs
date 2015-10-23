@@ -236,8 +236,7 @@ You may also determine if a file is present on the request using the `hasFile` m
 
 In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:
 
-    if ($request->file('photo')->isValid())
-    {
+    if ($request->file('photo')->isValid()) {
         //
     }
 
