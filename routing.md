@@ -154,6 +154,10 @@ You may also specify route names for controller actions:
         'as' => 'profile', 'uses' => 'UserController@showProfile'
     ]);
 
+Instead of specifying the route name in the route array definition, you may chain the `name` method onto the end of the route definition:
+
+    Route::get('user/profile', 'UserController@showProfile')->name('profile');
+
 #### Route Groups & Named Routes
 
 If you are using [route groups](#route-groups), you may specify an `as` keyword in the route group attribute array, allowing you to set a common route name prefix for all routes within the group:
