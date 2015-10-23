@@ -154,7 +154,7 @@ You may also assign default values to options:
 
     email:send {user} {--queue=default}
 
-To assign a shortcut when defining an option, you can specify it before the option name and use a | delimiter to separate the values:
+To assign a shortcut when defining an option, you may specify it before the option name and use a | delimiter to separate the shortcut from the full option name:
 
     email:send {user} {--Q|queue}
 
