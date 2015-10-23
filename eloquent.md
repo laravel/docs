@@ -481,6 +481,8 @@ Scopes allow you to define common sets of constraints that you may easily re-use
         }
     }
 
+> **Note:** A query scope always needs to return a [query builder](/docs/{{version}}/queries) object.
+
 #### Utilizing A Query Scope
 
 Once the scope has been defined, you may call the scope methods when querying the model. However, you do not need to include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
