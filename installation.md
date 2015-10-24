@@ -35,8 +35,7 @@ First, download the Laravel installer using Composer:
 
     composer global require "laravel/installer=~1.1"
 
-Second,
-Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
+Second, Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
 
 For windows users make sure to add `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin` to your `path` Environment variable.
 
