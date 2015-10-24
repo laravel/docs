@@ -35,29 +35,10 @@ First, download the Laravel installer using Composer:
 
     composer global require "laravel/installer=~1.1"
 
+Second, 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
 
-Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed. This method of installation is much faster than installing via Composer:
-
-    laravel new blog
-
-#### Via Composer Create-Project
-
-You may also install Laravel by issuing the Composer `create-project` command in your terminal:
-
-    composer create-project laravel/laravel --prefer-dist
-
-<a name="configuration"></a>
-## Configuration
-
-<a name="basic-configuration"></a>
-### Basic Configuration
-
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
-
-#### Directory Permissions
-
-After installing Laravel, you may need to configure some permissions. Directories within the `storage` and the `bootstrap/cache` directories should be writable by your web server. If you are using the [Homestead](/docs/{{version}}/homestead) virtual machine, these permissions should already be set.
+For windows users make sure to add `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin` to your `path` Environment variable
 
 #### Application Key
 
