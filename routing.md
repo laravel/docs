@@ -11,6 +11,7 @@
     - [Namespaces](#route-group-namespaces)
     - [Sub-Domain Routing](#route-group-sub-domain-routing)
     - [Route Prefixes](#route-group-prefixes)
+- [Route Model Binding](#route-model-binding)
 - [CSRF Protection](#csrf-protection)
     - [Introduction](#csrf-introduction)
     - [Excluding URIs](#csrf-excluding-uris)
@@ -252,6 +253,47 @@ You may also use the `prefix` parameter to specify common parameters for your gr
             // Matches The accounts/{account_id}/detail URL
         });
     });
+
+<a name="route-model-binding"></a>
+## Route Model Binding
+
+Laravel model binding provides a convenient way to inject class instances into your routes. For example, instead of injecting a user's ID, you can inject the entire User class instance that matches the given ID.
+
+First, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::boot` method:
+
+#### Binding A Parameter To A Model
+
+	public function boot(Router $router)
+	{
+		parent::boot($router);
+
+		$router->model('user', 'App\User');
+	}
+
+Next, define a route that contains a `{user}` parameter:
+
+	Route::get('profile/{user}', function(App\User $user)
+	{
+		//
+	});
+
+Since we have bound the `{user}` parameter to the `App\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance which has an ID of 1.
+
+> **Note:** If a matching model instance is not found in the database, a 404 error will be thrown.
+
+If you wish to specify your own "not found" behavior, pass a Closure as the third argument to the `model` method:
+
+	Route::model('user', 'User', function()
+	{
+		throw new NotFoundHttpException;
+	});
+
+If you wish to use your own resolution logic, you should use the `Route::bind` method. The Closure you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
+
+	Route::bind('user', function($value)
+	{
+		return User::where('name', $value)->first();
+	});
 
 <a name="csrf-protection"></a>
 ## CSRF Protection
