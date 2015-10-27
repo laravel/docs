@@ -244,7 +244,7 @@ If you need to give the user a predefined set of choices, you may use the `choic
 <a name="writing-output"></a>
 ### Writing Output
 
-To send output to the console, use the `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
+To send output to the console, use the `line`, `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
 
 To display an information message to the user, use the `info` method. Typically, this will display in the console as green text:
 
@@ -261,6 +261,10 @@ To display an information message to the user, use the `info` method. Typically,
 To display an error message, use the `error` method. Error message text is typically displayed in red:
 
     $this->error('Something went wrong!');
+
+If you want to display plain console output, use the `line` method. The `line` method does not receive any unique coloration:
+
+    $this->line('Display this on the screen');
 
 #### Table Layouts
 
