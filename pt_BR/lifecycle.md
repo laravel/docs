@@ -2,7 +2,7 @@
 
 - [Introdução](#introducao)
 - [Ciclo de Vida da Requisição](#ciclo-de-vida)
-- [Foco nos Service Providers](#foco-no-service-providers)
+- [Foco nos Service Providers](#foco-nos-service-providers)
 
 <a name="introducao"></a>
 ## Introdução
@@ -42,8 +42,8 @@ Service providers são responsáveis pela inicialização de vários componentes
 
 Uma vez que a aplicação tenha sido inicializada e todos os service providers tenham sido registrados, o `request` será transferido para o router que irá fazer a expedição. O router irá enviar a solicitação para uma rota ou controller, bem como executar qualquer middleware específico para a rota.
 
-<a name="foco-no-service-providers"></a>
-## Foco no Service Providers
+<a name="foco-nos-service-providers"></a>
+## Foco nos Service Providers
 
 Os services providers são realmente a chave para a inicialização de uma aplicação Laravel. A instância da aplicação é criada, os service providers são registrados, e a requisição é entregue ao aplicativo bootstrap. É realmente muito simples!
 
