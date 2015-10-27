@@ -111,7 +111,7 @@ The `copy` method may be used to copy an existing file to a new location on the 
 
     Storage::copy('old/file1.jpg', 'new/file1.jpg');
 
-The `move` method may be used to move an existing file to a new location:
+The `move` method may be used to rename or move an existing file to a new location:
 
     Storage::move('old/file1.jpg', 'new/file1.jpg');
 
