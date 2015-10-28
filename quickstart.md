@@ -250,10 +250,6 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 		</div>
 
 		<!-- TODO: Current Tasks -->
-		@if (count($tasks) > 0)
-
-		@endif
-
 	@endsection
 
 #### A Few Notes Of Explanation
@@ -402,7 +398,7 @@ Once the data is passed, we can spin through the tasks in our `tasks.blade.php` 
         @endif
 	@endsection
 
-Our task application is almost complete. But, we have no way to delete our existing tasks when their done. Let's add that next!
+Our task application is almost complete. But, we have no way to delete our existing tasks when they're done. Let's add that next!
 
 <a name="deleting-tasks"></a>
 ## Deleting Tasks
@@ -420,7 +416,7 @@ We left a "TODO" note in our code where our delete button is supposed to be. So,
 
         <!-- Delete Button -->
         <td>
-            <form action="/task" method="POST">
+            <form action="/task/{{ $task->id }}" method="POST">
                 {{ csrf_field() }}
                 {{ method_field('DELETE') }}
 
