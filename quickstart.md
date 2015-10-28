@@ -134,7 +134,7 @@ For this application, we know we will need at least three routes: a route to dis
 	use Illuminate\Http\Request;
 
 	/**
-	 * Dislay All Tasks
+	 * Display All Tasks
 	 */
 	Route::get('/', function () {
 		//
