@@ -311,7 +311,7 @@ This application only has a single view which contains a form for adding new tas
 <a name="defining-the-layout"></a>
 ### Defining The Layout
 
-Almost all web applications share the same layout across pages. For example, this application has a top navigation bar that would be typically be present on every page (if we had more than one). Laravel makes it easy to share these common features across every page using Blade **layouts**.
+Almost all web applications share the same layout across pages. For example, this application has a top navigation bar that would be typically present on every page (if we had more than one). Laravel makes it easy to share these common features across every page using Blade **layouts**.
 
 As we discussed earlier, all Laravel views are stored in `resources/views`. So, let's define a new layout view in `resources/views/layouts/app.blade.php`. The `.blade.php` extension instructs the framework to use the [Blade templating engine](/docs/{{version}}/blade) to render the view. Of course, you may use plain PHP templates with Laravel. However, Blade provides convenient short-cuts for writing cleaner, terse templates.
 
@@ -338,7 +338,7 @@ Our `app.blade.php` view should look like the following:
 		</body>
 	</html>
 
-Note the `@yield('content')` portion of the layout. This is a special Blade directive that specifies where all child pages that extend the layout can inject their own content. Next, let's define the child view that will use this layout and provide it's primary content.
+Note the `@yield('content')` portion of the layout. This is a special Blade directive that specifies where all child pages that extend the layout can inject their own content. Next, let's define the child view that will use this layout and provide its primary content.
 
 <a name="defining-the-child-view"></a>
 ### Defining The Child View
@@ -788,7 +788,7 @@ Now that our policy is written, let's use it in our `destroy` method. All Larave
 
 Let's examine this method call for a moment. The first argument passed to the `authorize` method is the name of the policy method we wish to call. The second argument is the model instance that is our current concern. Remember, we recently told Laravel that our `Task` model corresponds to our `TaskPolicy`, so the framework knows on which policy to to fire the `destroy` method. The current user will automatically be sent to the policy method, so we do not need to manually pass it here.
 
-IF the action is authorized, our code will continue executing normally. However, if the action is not authorized (meaning the policy's `destroy` method returned `false`), a 403 exception will be thrown and an error page will be displayed to the user.
+If the action is authorized, our code will continue executing normally. However, if the action is not authorized (meaning the policy's `destroy` method returned `false`), a 403 exception will be thrown and an error page will be displayed to the user.
 
 > **Note:** There are several other ways to interact with the authorization services Laravel provides. Be sure to browse the complete [authorization documentation](/docs/{{version}}/authorization).
 
