@@ -250,10 +250,6 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 		</div>
 
 		<!-- TODO: Current Tasks -->
-		@if (count($tasks) > 0)
-
-		@endif
-
 	@endsection
 
 #### A Few Notes Of Explanation
@@ -420,7 +416,7 @@ We left a "TODO" note in our code where our delete button is supposed to be. So,
 
         <!-- Delete Button -->
         <td>
-            <form action="/task" method="POST">
+            <form action="/task/{{ $task->id }}" method="POST">
                 {{ csrf_field() }}
                 {{ method_field('DELETE') }}
 
