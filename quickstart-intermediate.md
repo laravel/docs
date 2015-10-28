@@ -157,7 +157,7 @@ Now that our models are defined, we need to link them. For example, our `User` c
 
 #### The `tasks` Relationship
 
-First, let's define the `tasks` relationship on our `User` model. Eloquent relationships are defined as methods on models. Eloquent supports several different type sof relationships, so be sure to consult the [full Eloquent documentation](/docs/{{version}}/eloquent-relationships) for more information. In this case, we will define a `tasks` function on the `User` model which calls the `hasMany` method provided by Eloquent:
+First, let's define the `tasks` relationship on our `User` model. Eloquent relationships are defined as methods on models. Eloquent supports several different type soft relationships, so be sure to consult the [full Eloquent documentation](/docs/{{version}}/eloquent-relationships) for more information. In this case, we will define a `tasks` function on the `User` model which calls the `hasMany` method provided by Eloquent:
 
 	<?php
 
@@ -465,7 +465,7 @@ Remember that we used the `@include('common.errors')` directive within our view 
 
 Now that input validation is handled, let's actually create a new task by continuing to fill out our route. Once the new task has been created, we will redirect the user back to the `/tasks` URL. To create the task, we are going to leverage the power of Eloquent's relationships.
 
-Most of Laravel's relatinships expose a `save` method, which accepts a related model instance and will automatically set the foreign key value on the related model before storing it in the database. In this case, the `save` method will automatically set the `user_id` property of the given task to the ID of the currently authenticated user, which we are accessing using `$request->user()`:
+Most of Laravel's relationships expose a `save` method, which accepts a related model instance and will automatically set the foreign key value on the related model before storing it in the database. In this case, the `save` method will automatically set the `user_id` property of the given task to the ID of the currently authenticated user, which we are accessing using `$request->user()`:
 
     /**
      * Create a new task.
@@ -698,7 +698,7 @@ Without adding any additional code, Laravel would inject the given task ID into 
 		//
 	}
 
-However, the very first thing we will need to do in this method is retrieve the `Task` instance from the databsae using the given ID. So, wouldn't it be nice if Laravel could just inject the `Task` instance that matches the ID in the first place? Let's make it happen!
+However, the very first thing we will need to do in this method is retrieve the `Task` instance from the database using the given ID. So, wouldn't it be nice if Laravel could just inject the `Task` instance that matches the ID in the first place? Let's make it happen!
 
 In your `app/Providers/RouteServiceProvider.php` file's `boot` method, let's add the following line of code:
 
