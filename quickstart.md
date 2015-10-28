@@ -1,4 +1,4 @@
-# Quickstart - Basic Task List
+# Basic Task List
 
 - [Introduction](#introduction)
 - [Installation](#installation)

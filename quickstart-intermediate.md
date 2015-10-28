@@ -1,4 +1,4 @@
-# Quickstart - Intermediate Tasks
+# Intermediate Task List
 
 - [Introduction](#introduction)
 - [Installation](#installation)
