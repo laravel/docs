@@ -22,7 +22,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-This quickstart guide provides a basic introduction to the Laravel framework and includes content on databse migrations, the Eloquent ORM, routing, validation, views, and Blade templates. This is a great starting point if you are brand new to the Laravel framework or PHP frameworks in general. If you have already used Laravel or other PHP frameworks, you may wish to consult one of our more advanced quickstarts.
+This quickstart guide provides a basic introduction to the Laravel framework and includes content on database migrations, the Eloquent ORM, routing, validation, views, and Blade templates. This is a great starting point if you are brand new to the Laravel framework or PHP frameworks in general. If you have already used Laravel or other PHP frameworks, you may wish to consult one of our more advanced quickstarts.
 
 To sample a basic selection of Laravel features, we will build a simple task list we can use to track all of the tasks we want to accomplish (the typical "to-do list" example). The complete, finished source code for this project is [available on GitHub](http://github.com/laravel/quickstart-basic).
 
@@ -99,7 +99,7 @@ This command will create all of our database tables. If you inspect the database
 
 [Eloquent](/docs/{{version}}/eloquent) is Laravel's default ORM (object-relational mapper). Eloquent makes it painless to retrieve and store data in your database using clearly defined "models". Usually, each Eloquent model corresponds directly with a single database table.
 
-So, let's define a `Task` model that corresponds to our `tasks` database table we just created. Again, we can use an Artisan command to genreate this model. In this case, we'll use the `make:model` command:
+So, let's define a `Task` model that corresponds to our `tasks` database table we just created. Again, we can use an Artisan command to generate this model. In this case, we'll use the `make:model` command:
 
 	php artisan make:model Task
 
@@ -134,7 +134,7 @@ For this application, we know we will need at least three routes: a route to dis
 	use Illuminate\Http\Request;
 
 	/**
-	 * Dislay All Tables
+	 * Dislay All Tasks
 	 */
 	Route::get('/', function () {
 		//
@@ -258,7 +258,7 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
 #### A Few Notes Of Explanation
 
-Before moving on, let's talk about this template a bit. First, the `@extends` directive informs Blade that we are using the layout we defined at `resources/layouts/app.blade.php`. All of the content between `@section('content')` and `@endsection` will be injected into the location of the `@yield('contents')` directive within the `app.blade.php` layout.
+Before moving on, let's talk about this template a bit. First, the `@extends` directive informs Blade that we are using the layout we defined at `resources/views/layouts/app.blade.php`. All of the content between `@section('content')` and `@endsection` will be injected into the location of the `@yield('contents')` directive within the `app.blade.php` layout.
 
 Now we have defined a basic layout and view for our application. Remember, we are returning this view from our `/` route like so:
 
@@ -268,7 +268,7 @@ Now we have defined a basic layout and view for our application. Remember, we ar
 
 Next, we're ready to add code to our `POST /task` route to handle the incoming form input and add a new task to the database.
 
-> **Note:** The `@include('common.errors')` directive will load the template located at `resources/common/errors.blade.php`. We haven't defined this template, but we will soon!
+> **Note:** The `@include('common.errors')` directive will load the template located at `resources/views/common/errors.blade.php`. We haven't defined this template, but we will soon!
 
 <a name="adding-tasks"></a>
 ## Adding Tasks

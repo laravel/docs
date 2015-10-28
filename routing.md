@@ -16,6 +16,7 @@
     - [Excluding URIs](#csrf-excluding-uris)
     - [X-CSRF-Token](#csrf-x-csrf-token)
     - [X-XSRF-Token](#csrf-x-xsrf-token)
+- [Route Model Binding](#route-model-binding)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Throwing 404 Errors](#throwing-404-errors)
 
@@ -319,6 +320,44 @@ Once you have created the `meta` tag, you can instruct a library like jQuery to 
 ### X-XSRF-TOKEN
 
 Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some JavaScript frameworks, like Angular, do this automatically for you. It is unlikely that you will need to use this value manually.
+
+<a name="route-model-binding"></a>
+## Route Model Binding
+
+Laravel route model binding provides a convenient way to inject class instances into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` class instance that matches the given ID.
+
+First, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::boot` method:
+
+#### Binding A Parameter To A Model
+
+    public function boot(Router $router)
+    {
+        parent::boot($router);
+
+        $router->model('user', 'App\User');
+    }
+
+Next, define a route that contains a `{user}` parameter:
+
+    $router->get('profile/{user}', function(App\User $user) {
+        //
+    });
+
+Since we have bound the `{user}` parameter to the `App\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance which has an ID of 1.
+
+> **Note:** If a matching model instance is not found in the database, a 404 exception will be thrown automatically.
+
+If you wish to specify your own "not found" behavior, pass a Closure as the third argument to the `model` method:
+
+    $router->model('user', 'App\User', function() {
+        throw new NotFoundHttpException;
+    });
+
+If you wish to use your own resolution logic, you should use the `Route::bind` method. The Closure you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
+
+    $router->bind('user', function($value) {
+        return App\User::where('name', $value)->first();
+    });
 
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
