@@ -177,7 +177,7 @@ This application only has a single view which contains a form for adding new tas
 <a name="defining-the-layout"></a>
 ### Defining The Layout
 
-Almost all web applications share the same layout across pages. For example, this application has a top navigation bar that would be typically be present on every page (if we had more than one). Laravel makes it easy to share these common features across every page using Blade **layouts**.
+Almost all web applications share the same layout across pages. For example, this application has a top navigation bar that would be typically present on every page (if we had more than one). Laravel makes it easy to share these common features across every page using Blade **layouts**.
 
 As we discussed earlier, all Laravel views are stored in `resources/views`. So, let's define a new layout view in `resources/views/layouts/app.blade.php`. The `.blade.php` extension instructs the framework to use the [Blade templating engine](/docs/{{version}}/blade) to render the view. Of course, you may use plain PHP templates with Laravel. However, Blade provides convenient short-cuts for writing cleaner, terse templates.
 
