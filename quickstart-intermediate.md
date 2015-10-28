@@ -702,7 +702,7 @@ However, the very first thing we will need to do in this method is retrieve the 
 
 In your `app/Providers/RouteServiceProvider.php` file's `boot` method, let's add the following line of code:
 
-	$router->bind('task', 'App\Task');
+	$router->model('task', 'App\Task');
 
 This small line of code will instruct Laravel to retrieve the `Task` model that corresponds to a given ID whenever it sees `{task}` in a route declaration. Now we can define our destroy method like so:
 
