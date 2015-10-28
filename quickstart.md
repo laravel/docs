@@ -99,7 +99,7 @@ This command will create all of our database tables. If you inspect the database
 
 [Eloquent](/docs/{{version}}/eloquent) is Laravel's default ORM (object-relational mapper). Eloquent makes it painless to retrieve and store data in your database using clearly defined "models". Usually, each Eloquent model corresponds directly with a single database table.
 
-So, let's define a `Task` model that corresponds to our `tasks` database table we just created. Again, we can use an Artisan command to genreate this model. In this case, we'll use the `make:model` command:
+So, let's define a `Task` model that corresponds to our `tasks` database table we just created. Again, we can use an Artisan command to generate this model. In this case, we'll use the `make:model` command:
 
 	php artisan make:model Task
 
