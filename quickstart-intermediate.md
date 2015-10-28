@@ -338,7 +338,7 @@ Our `app.blade.php` view should look like the following:
 		</body>
 	</html>
 
-Note the `@yield('content')` portion of the layout. This is a special Blade directive that specifies where all child pages that extend the layout can inject their own content. Next, let's define the child view that will use this layout and provide it's primary content.
+Note the `@yield('content')` portion of the layout. This is a special Blade directive that specifies where all child pages that extend the layout can inject their own content. Next, let's define the child view that will use this layout and provide its primary content.
 
 <a name="defining-the-child-view"></a>
 ### Defining The Child View
