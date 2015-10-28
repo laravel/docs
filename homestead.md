@@ -12,8 +12,8 @@
     - [連接資料庫](#connecting-to-databases)
     - [增加更多網站](#adding-additional-sites)
     - [連接埠](#ports)
-    - [Bash Aliases](#bash-aliases)
-- [Blackfire Profiler](#blackfire-profiler)
+    - [Bash 別名](#bash-aliases)
+- [Blackfire 分析器](#blackfire-profiler)
 
 <a name="introduction"></a>
 ## 簡介
@@ -212,12 +212,12 @@ Windows:
 					protocol: udp
 
 <a name="bash-aliases"></a>
-### Bash Aliases
+### Bash 別名
 
-To add additional Bash aliases to your Homestead box, edit the `aliases` file in your Homestead directory. These aliases will automatically be defined on the Homestead box when it starts.
+若要增加 Bash 別名至你的 Homestead box，只需要編輯 Homestead 目錄中的 `aliases` 檔案。這些別名會在 Homestead box 啟動時自動定義。
 
 <a name="blackfire-profiler"></a>
-## Blackfire Profiler
+## Blackfire 分析器
 
 由 SensioLabs 推出的 [Blackfire 分析器](https://blackfire.io) 能協助你自動收集程式運行時的相關數據，像是 RAM、CPU time 及 disk I/O。若想在 Homestead 中替你的應用程式使用這個分析器是非常容易的。
 
