@@ -17,7 +17,7 @@
 	- [Validation](#validation)
 	- [Creating The Task](#creating-the-task)
 - [Displaying Existing Tasks](#displaying-existing-tasks)
-	- [Dependency Injection](#dependnecy-injection)
+	- [Dependency Injection](#dependency-injection)
 	- [Displaying The Tasks](#displaying-the-tasks)
 - [Deleting Tasks](#deleting-tasks)
 	- [Adding The Delete Button](#adding-the-delete-button)
