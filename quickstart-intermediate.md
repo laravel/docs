@@ -750,7 +750,7 @@ Next, let's add a `destroy` method to the policy. This method will receive a `Us
 	     * @param  Task  $task
 	     * @return bool
 	     */
-	    public function delete(User $user, Task $task)
+	    public function destroy(User $user, Task $task)
 	    {
 	        return $user->id === $task->user_id;
 	    }
