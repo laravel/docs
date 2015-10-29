@@ -6,6 +6,9 @@
 - Setup
     - [Installation](/docs/{{version}}/installation)
     - [Homestead](/docs/{{version}}/homestead)
+- Tutorials
+    - [Beginner Task List](/docs/{{version}}/quickstart)
+    - [Intermediate Task List](/docs/{{version}}/quickstart-intermediate)
 - The Basics
     - [Routing](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)

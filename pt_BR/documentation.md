@@ -5,6 +5,9 @@
 - Configuração
     - [Instalação](/docs/{{version}}/installation)
     - [Homestead](/docs/{{version}}/homestead)
+- Tutoriais
+    - [Lista de Tarefas - Iniciante](/docs/{{version}}/quickstart)
+    - [Lista de Tarefas - Intermediária](/docs/{{version}}/quickstart-intermediate)
 - O Básico
     - [Rotas](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
