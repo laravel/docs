@@ -277,11 +277,11 @@ By default, the broadcast event name will be the fully qualified class name of t
     /**
      * Get the broadcast event name.
      *
-     * @return array
+     * @return string
      */
     public function broadcastAs()
     {
-        return ['app.server-created'];
+        return 'app.server-created';
     }
 
 <a name="broadcast-data"></a>
