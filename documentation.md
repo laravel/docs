@@ -6,7 +6,7 @@
 - Setup
     - [Installation](/docs/{{version}}/installation)
     - [Homestead](/docs/{{version}}/homestead)
-- Quickstarts
+- Tutorials
     - [Beginner Task List](/docs/{{version}}/quickstart)
     - [Intermediate Task List](/docs/{{version}}/quickstart-intermediate)
 - The Basics
