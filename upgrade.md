@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [Upgrading To 5.2](#upgrade-5.2)
 - [Upgrading To 5.1.11](#upgrade-5.1.11)
 - [Upgrading To 5.1.0](#upgrade-5.1.0)
 - [Upgrading To 5.0.16](#upgrade-5.0.16)
@@ -8,6 +9,13 @@
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-5.2"></a>
+## Upgrading To 5.2
+
+#### Make sure you don't rely on leading backslash in a service name
+
+Leading backslash in service name is treated as insignificant and is trimmed whenever you pass a service name to a container, so it's not possible to have 2 different services with and without a leading backslash anymore ([#10507](https://github.com/laravel/framework/issues/10507)).
 
 <a name="upgrade-5.1.11"></a>
 ## Upgrading To 5.1.11
