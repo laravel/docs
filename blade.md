@@ -48,11 +48,7 @@ Blade 是 Laravel 所提供的簡單且強大的模板引擎。相較於其它�
 
 當正在定義子頁面時，你可以使用 Blade 的 `@extends` 指令指定子頁面應該「繼承」哪一個佈局。當視圖 `@extends` Blade 的佈局之後，即可使用 `@section` 指令將內容注入於佈局的區塊中。切記，如上述範例所見，這些區塊的內容都會使用 `@yield` 顯示在佈局中：
 
-<<<<<<< HEAD
-    <!-- 儲存於 resources/views/layouts/child.blade.php -->
-=======
-    <!-- Stored in resources/views/child.blade.php -->
->>>>>>> upstream/5.1
+    <!-- 儲存於 resources/views/child.blade.php -->
 
     @extends('layouts.master')
 
@@ -186,23 +182,19 @@ Blade 的 `@include` 指令，允使你簡單地從一個已存在的視圖引�
 
     @include('view.name', ['some' => 'data'])
 
-<<<<<<< HEAD
-#### 註解
-=======
-#### Rendering Views For Collections
+#### 為集合渲染視圖
 
-You may combine loops and includes into one line with Blade's `@each` directive:
+你可以使用 Blade 的 `@each` 指令將迴圈及引入結合成一行：
 
     @each('view.name', $jobs, 'job')
 
-The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial.
+第一個參數為對陣列或集合的每個元素渲染的局部視圖。第二個參數為你要迭代的陣列或集合，而第三個參數為迭代時被分配至視圖中的變數名稱。所以，舉例來說，如果你迭代一個 `jobs` 陣列，通常你會希望在局部視圖中透過 `job` 變數存取每一個 job。
 
-You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
+你也可以傳遞第四個參數至 `@each` 指令。此參數為當給定的陣列為空時，將會被渲染的視圖。
 
     @each('view.name', $jobs, 'job', 'view.empty')
 
-#### Comments
->>>>>>> upstream/5.1
+#### 註解
 
 Blade 也允許在頁面中定義註解。然而，有異於 HTML 的註解，Blade 的註解並不會被包含在應用程式回傳的 HTML 內：
 
