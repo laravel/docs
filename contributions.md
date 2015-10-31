@@ -41,11 +41,7 @@ Laravel 原始碼託管在 Github 上面，並且每個 Laravel 的專案都有�
 
 **主要的**新功能應該都發送到 `master` 分支，它包含下一版的 Laravel 釋出內容。
 
-<<<<<<< HEAD
-如果不確定你的功能是主要的還是次要的，請在 `#laravel-dev` IRC 頻道 (Freenode) 詢問 Taylor Otwell。
-=======
-If you are unsure if your feature qualifies as a major or minor, please ask Taylor Otwell in the `#internals` channel of the [LaraChat](http://larachat.co) Slack team.
->>>>>>> upstream/5.1
+如果不確定你的功能是主要的還是次要的，請在 [LaraChat](http://larachat.co) Slack 團隊的 `#internals` 頻道詢問 Taylor Otwell。
 
 <a name="security-vulnerabilities"></a>
 ## 安全漏洞
