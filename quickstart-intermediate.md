@@ -236,7 +236,7 @@ Of course, we need to actually define this view. We'll do that in a bit!
 
 Remember, we also need to let users create accounts and login to our application. Typically, it can be a tedious task to build an entire authentication layer into a web application. However, since it is such a common need, Laravel attempts to make this procedure totally painless.
 
-First, notice that there is already a `app/Http/Controllers/AuthController` included in your Laravel application. This controller uses a special `AuthenticatesAndRegistersUsers` trait which contains all of the necessary logic create and authenticate users.
+First, notice that there is already a `app/Http/Controllers/AuthController` included in your Laravel application. This controller uses a special `AuthenticatesAndRegistersUsers` trait which contains all of the necessary logic to create and authenticate users.
 
 #### Authentication Routes
 
