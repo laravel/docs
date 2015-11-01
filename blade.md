@@ -93,7 +93,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 
 #### Blade & JavaScript Frameworks
 
-Since many JavaScript frameworks also use "curly" braces to indicate a given expression  should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
+Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
 
     <h1>Laravel</h1>
 
@@ -167,6 +167,8 @@ In addition to conditional statements, Blade provides simple directives for work
     @endwhile
 
 #### Including Sub-Views
+
+> **Note:** Because Blade views are compiled and cached, the `__FILE__` and `__DIR__` magic constants will not correspond to the original view's values, but to the cached view's path and directory. Avoid using these constants in certain situations, such as within `@include` to include another view relative to the current view.
 
 Blade's `@include` directive, allows you to easily include a Blade view from within an existing view. All variables that are available to the parent view will be made available to the included view:
 
