@@ -157,7 +157,7 @@ Now that our models are defined, we need to link them. For example, our `User` c
 
 #### The `tasks` Relationship
 
-First, let's define the `tasks` relationship on our `User` model. Eloquent relationships are defined as methods on models. Eloquent supports several different type soft relationships, so be sure to consult the [full Eloquent documentation](/docs/{{version}}/eloquent-relationships) for more information. In this case, we will define a `tasks` function on the `User` model which calls the `hasMany` method provided by Eloquent:
+First, let's define the `tasks` relationship on our `User` model. Eloquent relationships are defined as methods on models. Eloquent supports several different types of relationships, so be sure to consult the [full Eloquent documentation](/docs/{{version}}/eloquent-relationships) for more information. In this case, we will define a `tasks` function on the `User` model which calls the `hasMany` method provided by Eloquent:
 
 	<?php
 
