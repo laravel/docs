@@ -191,4 +191,4 @@ Use an array to assign multiple middleware to the route:
 
 `terminate` 方法必須接收請求及回應。一旦定義了 terminable 中介層，你需要將它增加到 HTTP kernel 檔案的全域中介層清單列表中。
 
-當在你的中介層呼叫 `terminate` 方法時，Laravel 會從[服務容器](/docs/{{version}}/container)的中介層解析一個全新的實例。如果你希望在 `handle` 及 `terminate` 方法被呼叫使用一致的中介層實例，只需在容器中使用容器的 `singleton` 方法註冊中介層。
+當在你的中介層呼叫 `terminate` 方法時，Laravel 會從[服務容器](/docs/{{version}}/container)解析一個全新的中介層實例。如果你希望在 `handle` 及 `terminate` 方法被呼叫使用一致的中介層實例，只需在容器中使用容器的 `singleton` 方法註冊中介層。
