@@ -12,6 +12,7 @@
     - [Broadcast Data](#broadcast-data)
     - [Consuming Event Broadcasts](#consuming-event-broadcasts)
 - [Event Subscribers](#event-subscribers)
+- [Advanced Event Usage](#advanced-event-usage)
 
 <a name="introduction"></a>
 ## Introduction
@@ -270,6 +271,7 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
 
 Then, you only need to [fire the event](#firing-events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
 
+<a name="overriding-broadcast-event-name"></a>
 #### Overriding Broadcast Event Name
 
 By default, the broadcast event name will be the fully qualified class name of the event. Using the example class above, the broadcast event would be `App\Events\ServerCreated`. You can customize this broadcast event name to whatever you want using the `broadcastAs` method:
@@ -431,3 +433,21 @@ Once the subscriber has been defined, it may be registered with the event dispat
             'App\Listeners\UserEventListener',
         ];
     }
+
+<a name="advanced-event-usage"></a>
+## Advanced event usage
+
+As has already been outlined in [Overriding Broadcast Event Name](#overriding-broadcast-event-name), you can use `broadcastAs` to register the event under any name you like, not just default to its class name.
+
+The underlying implementation is in fact quite flexible and using class names is just a convenient default. You can also fire an event with a custom name and a custom payload, without requiring any class.
+
+On top of that, you can also use wildcards when listening for events:
+
+    <?php
+    
+    Event::fire('any.name.you.like', 'any payload you want');
+    
+    Event::listen('any.*', function ($payload) {
+        // your code
+    });
+
