@@ -1,12 +1,12 @@
 # Session
 
-- [簡述](#introduction)
+- [簡介](#introduction)
 - [基本用法](#basic-usage)
-    - [暫存資料](#flash-data)
+    - [快閃資料](#flash-data)
 - [增加 Session 驅動](#adding-custom-session-drivers)
 
 <a name="introduction"></a>
-## 簡述
+## 簡介
 
 由於 HTTP 協定是無狀態的，所以 session 提供一種儲存用戶資料的方法。Laravel 附帶支援了多種 session 後端驅動，並透過統一的 API 進行使用。也內建支援像是 [Memcached](http://memcached.org)、[Redis](http://redis.io) 和資料庫的後端驅動。
 
