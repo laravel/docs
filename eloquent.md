@@ -410,7 +410,7 @@ Which will produce the following SQL:
 
     select * from `users` where `users`.`deleted_at` is null and (`name` = 'John' or `votes` > 100)
 
-Otherwise, if `orWhere` method not used with closure as above, it will produce the following SQL and will contain the trashed object models as well, which is not the intended behavior.
+Otherwise, if `orWhere` method is not used with closure as above, it will produce the following SQL and will contain trashed records as well, which is not the intended behavior.
     
     select * from `users` where `users`.`deleted_at` is null and `name` = 'John' or `votes` > 100
 
