@@ -182,7 +182,7 @@ Even though the included view will inherit all data available in the parent view
 
     @include('view.name', ['some' => 'data'])
 
-> **Note:** Because Blade views are compiled and cached, the `__FILE__` and `__DIR__` magic constants will refer to the cached view's path and directory, so you should avoid using these constants.
+> **Note:** You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
 
 #### Rendering Views For Collections
 
