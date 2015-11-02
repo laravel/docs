@@ -398,6 +398,22 @@ To determine if a given model instance has been soft deleted, use the `trashed` 
         //
     }
 
+Once soft delete is enabled in a model, be aware of using `orWhere` method in your queries. Always use [advance where clauses](http://laravel.com/docs/5.1/queries#advanced-where-clauses) to group `WHERE` clauses as follow:
+
+    User::where(function($query) {
+          	$query->where('name', '=', 'John')
+                  ->orWhere('votes', '>', 100);
+      		})
+      		->get();
+
+Which will produce the following SQL:
+
+    select * from `users` where `users`.`deleted_at` is null and (`name` = 'John' or `votes` > 100)
+
+Otherwise, if `orWhere` method is not used with closure as above, it will produce the following SQL and will contain trashed records as well, which is not the intended behavior.
+    
+    select * from `users` where `users`.`deleted_at` is null and `name` = 'John' or `votes` > 100
+
 <a name="querying-soft-deleted-models"></a>
 ### Querying Soft Deleted Models
 
