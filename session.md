@@ -102,10 +102,10 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵，所以應該避
 你也可使用全域的 `session` PHP 函式取得 session 中儲存的資料：
 
     Route::get('home', function () {
-        // Retrieve a piece of data from the session...
+        // 取得 session 中的一筆資料...
         $value = session('key');
 
-        // Store a piece of data in the session...
+        // 寫入一筆資料至 session 中...
         session(['key' => 'value']);
     });
 
@@ -137,7 +137,7 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵，所以應該避
 
 #### 從 Session 中移除資料
 
-`forget` 方法可以從 session 內刪除一部份資料。如果你想刪除 session 內所有的資料，可以使用 `flush` 方法：
+`forget` 方法可以從 session 內刪除一筆資料。如果你想刪除 session 內所有的資料，可以使用 `flush` 方法：
 
     $request->session()->forget('key');
 
@@ -178,7 +178,7 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵，所以應該避
     class SessionServiceProvider extends ServiceProvider
     {
         /**
-         * Perform post-registration booting of services.
+         * 提供註冊後執行的服務。
          *
          * @return void
          */
@@ -191,7 +191,7 @@ Laravel 框架在內部有使用 `flash` 作為 session 的鍵，所以應該避
         }
 
         /**
-         * Register bindings in the container.
+         * 在容器中註冊綁定。
          *
          * @return void
          */
