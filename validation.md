@@ -474,6 +474,7 @@ Below is a list of all available validation rules and their function:
 [Regular Expression](#rule-regex)
 [Required](#rule-required)
 [Required If](#rule-required-if)
+[Required Unless](#rule-required-unless)
 [Required With](#rule-required-with)
 [Required With All](#rule-required-with-all)
 [Required Without](#rule-required-without)
@@ -683,6 +684,11 @@ The field under validation must be present in the input data and not empty. A fi
 #### required_if:_anotherfield_,_value_,...
 
 The field under validation must be present if the _anotherfield_ field is equal to any _value_.
+
+<a name="rule-required-unless"></a>
+#### required_unless:_anotherfield_,_value_,...
+
+The field under validation must be present unless the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...

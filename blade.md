@@ -93,7 +93,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 
 #### Blade & JavaScript Frameworks
 
-Since many JavaScript frameworks also use "curly" braces to indicate a given expression  should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
+Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
 
     <h1>Laravel</h1>
 
@@ -181,6 +181,8 @@ Blade's `@include` directive, allows you to easily include a Blade view from wit
 Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
 
     @include('view.name', ['some' => 'data'])
+
+> **Note:** You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
 
 #### Rendering Views For Collections
 
