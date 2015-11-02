@@ -398,22 +398,6 @@ To determine if a given model instance has been soft deleted, use the `trashed` 
         //
     }
 
-Once soft delete is enabled in a model, be aware of using `orWhere` method in your queries. Always use [advance where clauses](http://laravel.com/docs/5.1/queries#advanced-where-clauses) to group `WHERE` clauses as follow:
-
-    User::where(function($query) {
-          	$query->where('name', '=', 'John')
-                  ->orWhere('votes', '>', 100);
-      		})
-      		->get();
-
-Which will produce the following SQL:
-
-    select * from `users` where `users`.`deleted_at` is null and (`name` = 'John' or `votes` > 100)
-
-Otherwise, if `orWhere` method is not used with closure as above, it will produce the following SQL and will contain trashed records as well, which is not the intended behavior.
-    
-    select * from `users` where `users`.`deleted_at` is null and `name` = 'John' or `votes` > 100
-
 <a name="querying-soft-deleted-models"></a>
 ### Querying Soft Deleted Models
 
@@ -428,6 +412,24 @@ As noted above, soft deleted models will automatically be excluded from query re
 The `withTrashed` method may also be used on a [relationship](/docs/{{version}}/eloquent-relationships) query:
 
     $flight->history()->withTrashed()->get();
+
+#### Where Clause Caveats
+
+When adding `orWhere` clauses to your queries on soft deleted models, always use [advance where clauses](http://laravel.com/docs/5.1/queries#advanced-where-clauses) to logically group the `WHERE` clauses. For example:
+
+    User::where(function($query) {
+            $query->where('name', '=', 'John')
+                  ->orWhere('votes', '>', 100);
+            })
+            ->get();
+
+This will produce the following SQL:
+
+    select * from `users` where `users`.`deleted_at` is null and (`name` = 'John' or `votes` > 100)
+
+If the `orWhere` clause is not grouped, it will produce the following SQL which will contain soft deleted records:
+
+    select * from `users` where `users`.`deleted_at` is null and `name` = 'John' or `votes` > 100
 
 #### Retrieving Only Soft Deleted Models
 
