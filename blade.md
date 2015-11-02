@@ -168,8 +168,6 @@ In addition to conditional statements, Blade provides simple directives for work
 
 #### Including Sub-Views
 
-> **Note:** Because Blade views are compiled and cached, the `__FILE__` and `__DIR__` magic constants will not correspond to the original view's values, but to the cached view's path and directory. Avoid using these constants in certain situations, such as within `@include` to include another view relative to the current view.
-
 Blade's `@include` directive, allows you to easily include a Blade view from within an existing view. All variables that are available to the parent view will be made available to the included view:
 
     <div>
@@ -183,6 +181,8 @@ Blade's `@include` directive, allows you to easily include a Blade view from wit
 Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
 
     @include('view.name', ['some' => 'data'])
+
+> **Note:** Because Blade views are compiled and cached, the `__FILE__` and `__DIR__` magic constants will refer to the cached view's path and directory, so you should avoid using these constants.
 
 #### Rendering Views For Collections
 
