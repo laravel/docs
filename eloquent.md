@@ -398,7 +398,7 @@ To determine if a given model instance has been soft deleted, use the `trashed` 
         //
     }
 
-Once soft delete is enabled in a model, beaware of using `orWhere` method in your queries. Always use [advance where clauses](http://laravel.com/docs/5.1/queries#advanced-where-clauses) to group `WHERE` clauses as follow:
+Once soft delete is enabled in a model, be aware of using `orWhere` method in your queries. Always use [advance where clauses](http://laravel.com/docs/5.1/queries#advanced-where-clauses) to group `WHERE` clauses as follow:
 
     User::where(function($query) {
           	$query->where('name', '=', 'John')
