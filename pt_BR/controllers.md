@@ -184,7 +184,7 @@ Se for necessário adicionar rotas ao seu recurso controller além das rotas pad
 <a name="implicit-controllers"></a>
 ## Controllers Implícitos
 
-O Laravel permite que você defina facilmente rotas úcias para lidar com cada método no controller. Primeiro, defina a rota usando `Route::controller`, esse método aceita dois argumentos, o primeiro é a URI, enquanto o segunto é o nome da classe do controller:
+O Laravel permite que você defina facilmente rotas únicas para lidar com cada método no controller. Primeiro, defina a rota usando `Route::controller`, esse método aceita dois argumentos, o primeiro é a URI, enquanto o segundo é o nome da classe do controller:
 
 	Route::controller('users', 'UserController');
 
@@ -227,11 +227,11 @@ Em seguida, simplesmente adicione métodos ao seu controller. O nome dos método
 		}
 	}
 
-Como pode ver no exemplo acima, o método `index` responderá a URI principal do controller, que nesse casó é `users`. Observe também que o camel-case "AdminProfile" se tornará "admin-profile" e ficará disponível, nesse caso, como "/users/admin-profile".
+Como pode ver no exemplo acima, o método `index` responderá a URI principal do controller, que nesse caso é `users`. Observe também que o camel-case "AdminProfile" se tornará "admin-profile" e ficará disponível, nesse caso, como "/users/admin-profile".
 
 #### Atribuindo rotas nomeadas
 
-Se vocÊ gostaria de [nomear](/docs/{{version}}/routing#named-routes) algumas das suas rotas para controller, você pode passar um array de nomes como terceiro arguemnto ao método `controller`:
+Se você gostaria de [nomear](/docs/{{version}}/routing#named-routes) algumas das suas rotas para controller, você pode passar um array de nomes como terceiro arguemnto ao método `controller`:
 
 	Route::controller('users', 'UserController', [
 		'getShow' => 'user.show',
@@ -242,7 +242,7 @@ Se vocÊ gostaria de [nomear](/docs/{{version}}/routing#named-routes) algumas da
 
 #### Injeção no Construtor
 
-O  [service container](/docs/{{version}}/container) do Laravel é usado para resolver todas os controllers do Laravel. Como resultado, você pode indicar o tipo (type-hint) de qualquer dependência que seu controller possa precisar. As dependências serão automáticamente resolvidas e injetadas na instância do construtor:
+O  [service container](/docs/{{version}}/container) do Laravel é usado para resolver todos os controllers do Laravel. Como resultado, você pode indicar o tipo (type-hint) de qualquer dependência que seu controller possa precisar. As dependências serão automáticamente resolvidas e injetadas na instância do construtor:
 
 	<?php namespace App\Http\Controllers;
 
@@ -273,7 +273,7 @@ E é claro, você também pode indicar o tipo de qualquer [contrato do Laravel](
 
 #### Injeção no Método
 
-Você também pode injetar dependências métodos das ações dos seus controllers. Por exemplo, vamos indicar o tipo `Illuminate\Http\Request` em um dos nossos métodos:
+Você também pode injetar dependências nos métodos das ações dos seus controllers. Por exemplo, vamos indicar o tipo `Illuminate\Http\Request` em um dos nossos métodos:
 
 	<?php namespace App\Http\Controllers;
 
@@ -321,7 +321,7 @@ Se o método do seu controller também espera parâmetros da rota, simplesmente 
 <a name="route-caching"></a>
 ## Fazendo Cache das Rotas
 
-Se sua aplicação é está usando exclusivamente rotas baseadas em controllers, você pode usar o cache de rotas do Laravel. Usando o cache você reduz drásticamente o tempo gasto para registrar todas as rotas da sua aplicação. Em alguns casos, o registro das suas rotas pode sr 100x mais rápido! Para gerar o cache das rotas, basta executar o comando Artisan `route:cache`:
+Se sua aplicação é está usando exclusivamente rotas baseadas em controllers, você pode usar o cache de rotas do Laravel. Usando o cache você reduz drásticamente o tempo gasto para registrar todas as rotas da sua aplicação. Em alguns casos, o registro das suas rotas pode ser 100x mais rápido! Para gerar o cache das rotas, basta executar o comando Artisan `route:cache`:
 
 	php artisan route:cache
 
