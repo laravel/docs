@@ -12,7 +12,6 @@
     - [Broadcast Data](#broadcast-data)
     - [Consuming Event Broadcasts](#consuming-event-broadcasts)
 - [Event Subscribers](#event-subscribers)
-- [Advanced Event Usage](#advanced-event-usage)
 
 <a name="introduction"></a>
 ## Introduction
@@ -40,6 +39,33 @@ The `EventServiceProvider` included with your Laravel application provides a con
 Of course, manually creating the files for each event and listener is cumbersome. Instead, simply add listeners and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or listeners that are listed in your `EventServiceProvider`. Of course, events and listeners that already exist will be left untouched:
 
     php artisan event:generate
+
+### Registering Events Manually
+
+Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register events manually with the event dispatcher using either the `Event` facade or the `Illuminate\Contracts\Events\Dispatcher` contract implementation:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        $events->listen('event.name', function ($foo, $bar) {
+            //
+        });
+    }
+
+#### Wildcard Event Listeners
+
+You may even register listeners using the `*` as a wildcard, allowing you to catch multiple events on the same listener. Wildcard listeners receive the entire event data array as a single argument:
+
+    $events->listen('event.*', function (array $data) {
+        //
+    });
 
 <a name="defining-events"></a>
 ## Defining Events
@@ -433,21 +459,4 @@ Once the subscriber has been defined, it may be registered with the event dispat
             'App\Listeners\UserEventListener',
         ];
     }
-
-<a name="advanced-event-usage"></a>
-## Advanced event usage
-
-As has already been outlined in [Overriding Broadcast Event Name](#overriding-broadcast-event-name), you can use `broadcastAs` to register the event under any name you like, not just default to its class name.
-
-The underlying implementation is in fact quite flexible and using class names is just a convenient default. You can also fire an event with a custom name and a custom payload, without requiring any class.
-
-On top of that, you can also use wildcards when listening for events:
-
-    <?php
-    
-    Event::fire('any.name.you.like', 'any payload you want');
-    
-    Event::listen('any.*', function ($payload) {
-        // your code
-    });
 
