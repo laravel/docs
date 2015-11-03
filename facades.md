@@ -7,7 +7,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-Facades 提供一個「靜態」介面讓應用程式的[服務容器](/docs/{{version}}/container)可以取用類別。Laravel 附帶許多 facades，甚至你可能在不知情的狀況下已經使用他們！Laravel 「facades」作為在服務容器內基底類別的「靜態代理」，提供了一個簡潔、易表達的語法優點，同時維持比傳統的靜態方法更高的可測試性和彈性。
+Facades 為應用程式的[服務容器](/docs/{{version}}/container)中可用的類別提供一個「靜態」介面。Laravel 附帶許多 facades，甚至你可能在不知情的狀況下已經使用他們！Laravel 「facades」作為在服務容器內基底類別的「靜態代理」，提供了一個簡潔、易表達的語法優點，同時維持比傳統的靜態方法更高的可測試性和彈性。
 
 <a name="using-facades"></a>
 ## 使用 Facades
