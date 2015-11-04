@@ -256,7 +256,7 @@ If you have additional Stripe webhook events you would like to handle, simply ex
 
     <?php
 
-    namespace App\Http\Controller;
+    namespace App\Http\Controllers;
 
     use Laravel\Cashier\WebhookController as BaseController;
 
