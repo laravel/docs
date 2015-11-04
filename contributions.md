@@ -53,9 +53,37 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
 
+### Additional requirements
+
+Short definition syntax for arrays is prefered.
+
+    $array = ['one', 'two', 'three']; //Good
+    $array = array('one', 'two', 'three'); //Bad
+
+When using class names as strings, import these classes and use `::class` keyword.
+
+    use Illuminate\Http\Request;
+    
+    $className = Request::class; //Good
+    $className = \Illuminate\Http\Request::class; //Bad
+    $className = 'Illuminate\Http\Request'; //Bad
+
+All imported classes and namespaces should be ordered by length.
+
+    namespace Illuminate\Foo;
+    
+    use Illuminate\Support\Str;
+    use Illuminate\Support\Manager;
+    use JohnDoe\ExternalLibrary\OneClass;
+    use JohnDoe\ExternalLibrary\TwoClass;
+    use Illuminate\Database\Eloquent\Model;
+    use JohnDoe\ExternalLibrary\Model as JohnDoeModel;
+
 ### DocBlocks
 
 `@param` tags should **not be aligned** and arguments should be separated by **2 spaces**. 
+
+Class hints should use fully qualified names and leading `\`.
 
 Here's an example block:
 
