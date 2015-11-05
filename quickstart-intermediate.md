@@ -641,7 +641,7 @@ Once the data is passed, we can spin through the tasks in our `tasks/index.blade
         @endif
 	@endsection
 
-Our task application is almost complete. But, we have no way to delete our existing tasks when their done. Let's add that next!
+Our task application is almost complete. But, we have no way to delete our existing tasks when they're done. Let's add that next!
 
 <a name="deleting-tasks"></a>
 ## Deleting Tasks
