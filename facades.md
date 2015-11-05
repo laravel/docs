@@ -16,7 +16,7 @@ Facades 為應用程式的[服務容器](/docs/{{version}}/container)中可用�
 
 facade 類別只需要去實作一個方法：`getFacadeAccessor`。`getFacadeAccessor` 方法的工作定義是從容器中解析出什麼。`Facade` 基底類別利用 `__callStatic()` 魔術方法從你的 facade 延遲呼叫來解析物件。
 
-在下面的範例，呼叫了 Laravel 的快取系統。看了一下這個程式碼，或許有人以為，`get` 靜態方法是被 `Cache` 類別呼叫的：
+在下面的範例，呼叫了 Laravel 的快取系統。看了一下這個程式碼，或許有人認為 `get` 是被 `Cache` 類別呼叫的：
 
     <?php
 
@@ -43,7 +43,7 @@ facade 類別只需要去實作一個方法：`getFacadeAccessor`。`getFacadeAc
 
 注意在檔案的上方，我們「導入」`Cache` facade。這個 facade 做為存取底層實作 `Illuminate\Contracts\Cache\Factory` 介面的代理。我們使用 facade 的任何呼叫將會傳送給 Laravel 快取服務的底層實例。
 
-如果我們查看 `Illuminate\Support\Facades\Cache` 類別，你會發現沒有 `get` 靜態方法：
+如果我們查看 `Illuminate\Support\Facades\Cache` 類別，你會發現沒有靜態方法 `get`：
 
     class Cache extends Facade
     {
@@ -55,12 +55,12 @@ facade 類別只需要去實作一個方法：`getFacadeAccessor`。`getFacadeAc
         protected static function getFacadeAccessor() { return 'cache'; }
     }
 
-相反的，`Cache` facade 繼承了基底 `Facade` 類別以及定義了 `getFacadeAccessor()` 方法。記住，這個方法的工作是回傳服務容器綁定的名稱。當使用者在 `Cache` facade 上參考任何的靜態方法，Laravel 會從[服務容器](/docs/{{version}}/container) 解析被綁定的 `cache` 以及針對物件執行請求的方法（在這個範例中是 `get`）。
+相反的，`Cache` facade 繼承了基底 `Facade` 類別以及定義了 `getFacadeAccessor()` 方法。記住，這個方法的工作是回傳服務容器綁定的名稱。當使用者在 `Cache` facade 上參考任何的靜態方法，Laravel 會從[服務容器](/docs/{{version}}/container)解析被綁定的 `cache` 以及針對物件執行請求的方法（在這個範例中是 `get`）。
 
 <a name="facade-class-reference"></a>
 ## Facade 類別參考
 
-這是個可以從一個給定的 facade 根源快速地深入 API 文件的有用工具。可應用的[服務容器綁定](/docs/{{version}}/container) 關鍵字也包含在裡面。
+在下方你可以找到每個 facade 及其底層的類別。這個工具對於透過給定 facade 的來源快速尋找 API 文件相當有用。可應用的[服務容器綁定](/docs/{{version}}/container)關鍵字也包含在裡面。
 
 Facade  |  Class  |  Service Container Binding
 ------------- | ------------- | -------------
