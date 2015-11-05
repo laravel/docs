@@ -375,7 +375,7 @@ To generate the hidden input field `_method`, you may also use the `method_field
 
 Of course, using the Blade [templating engine](/docs/{{version}}/blade):
 
-    {!! method_field('PUT') !!}
+    {{ method_field('PUT') }}
 
 <a name="throwing-404-errors"></a>
 ## Throwing 404 Errors
