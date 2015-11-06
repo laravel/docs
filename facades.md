@@ -16,7 +16,7 @@ Facades 為應用程式的[服務容器](/docs/{{version}}/container)中可用�
 
 facade 類別只需要去實作一個方法：`getFacadeAccessor`。`getFacadeAccessor` 方法的工作定義是從容器中解析出什麼。`Facade` 基底類別利用 `__callStatic()` 魔術方法從你的 facade 延遲呼叫來解析物件。
 
-在下面的範例，呼叫了 Laravel 的快取系統。看了一下這個程式碼，或許有人認為 `get` 是被 `Cache` 類別呼叫的：
+在下面的範例，呼叫了 Laravel 的快取系統。看了一下這個程式碼，或許有人認為靜態方法 `get` 是被 `Cache` 類別呼叫的：
 
     <?php
 
