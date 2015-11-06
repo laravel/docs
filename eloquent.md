@@ -202,7 +202,7 @@ Sometimes you may wish to throw an exception if a model is not found. This is pa
 
     $model = App\Flight::where('legs', '>', 100)->firstOrFail();
 
-If the exception is not caught, a `404` HTTP response is automatically sent back to the user, so it is not necessary to write explicit checks to return `404` responses when using these methods:
+If the exception is not caught, you can configure a [handler](/docs/{{version}}/errors#render-method) to automatically send a `404` HTTP response back to the user, so it is not necessary to write explicit checks to return `404` responses when using these methods:
 
     Route::get('/api/flights/{id}', function ($id) {
         return App\Flight::findOrFail($id);
