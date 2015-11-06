@@ -5,6 +5,7 @@
 - [Which Branch?](#which-branch)
 - [Security Vulnerabilities](#security-vulnerabilities)
 - [Coding Style](#coding-style)
+- [Fixing Style](#fixing-style)
 
 <a name="bug-reports"></a>
 ## Bug Reports
@@ -72,3 +73,12 @@ Here's an example block:
         // …
     }
 
+<a name="fixing-style"></a>
+## Fixing Style
+
+You can use [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to fix your code style before committing.
+Install it [globally](https://github.com/FriendsOfPHP/PHP-CS-Fixer#globally-manual) and check the code style using the command line:
+
+```sh
+php-cs-fixer fix
+```
