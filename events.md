@@ -411,7 +411,6 @@ Event subscribers are classes that may subscribe to multiple events from within 
          * Register the listeners for the subscriber.
          *
          * @param  Illuminate\Events\Dispatcher  $events
-         * @return array
          */
         public function subscribe($events)
         {
