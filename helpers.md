@@ -525,13 +525,17 @@ The `str_is` function determines if a given string matches a given pattern. Aste
 <a name="method-str-plural"></a>
 #### `str_plural()` {#collection-method}
 
-The `str_plural` function converts a string to its plural form. This function currently only supports the English language:
+The `str_plural` function converts a string to its plural form. You can optionally provide a count as a second argument and the function will return the proper singular or plural form of the string. This function currently only supports the English language:
 
     $plural = str_plural('car');
 
     // cars
 
     $plural = str_plural('child');
+
+    // children
+    
+    $plural = str_plural('child', 2);
 
     // children
 
