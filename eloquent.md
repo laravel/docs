@@ -117,6 +117,26 @@ If you need to customize the format of your timestamps, set the `$dateFormat` pr
         protected $dateFormat = 'U';
     }
 
+#### Database Connection
+
+By default, all Eloquent models will use the default database connection configured for your application. If you would like to specify a different connection for the model, use the `$connection` property:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Flight extends Model
+    {
+        /**
+         * The connection name for the model.
+         *
+         * @var string
+         */
+        protected $connection = 'connection-name';
+    }
+
 <a name="retrieving-multiple-models"></a>
 ## Retrieving Multiple Models
 

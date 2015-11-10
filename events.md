@@ -40,6 +40,33 @@ Of course, manually creating the files for each event and listener is cumbersome
 
     php artisan event:generate
 
+### Registering Events Manually
+
+Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register events manually with the event dispatcher using either the `Event` facade or the `Illuminate\Contracts\Events\Dispatcher` contract implementation:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        $events->listen('event.name', function ($foo, $bar) {
+            //
+        });
+    }
+
+#### Wildcard Event Listeners
+
+You may even register listeners using the `*` as a wildcard, allowing you to catch multiple events on the same listener. Wildcard listeners receive the entire event data array as a single argument:
+
+    $events->listen('event.*', function (array $data) {
+        //
+    });
+
 <a name="defining-events"></a>
 ## Defining Events
 
@@ -270,6 +297,7 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
 
 Then, you only need to [fire the event](#firing-events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
 
+<a name="overriding-broadcast-event-name"></a>
 #### Overriding Broadcast Event Name
 
 By default, the broadcast event name will be the fully qualified class name of the event. Using the example class above, the broadcast event would be `App\Events\ServerCreated`. You can customize this broadcast event name to whatever you want using the `broadcastAs` method:
@@ -383,7 +411,6 @@ Event subscribers are classes that may subscribe to multiple events from within 
          * Register the listeners for the subscriber.
          *
          * @param  Illuminate\Events\Dispatcher  $events
-         * @return array
          */
         public function subscribe($events)
         {
@@ -431,3 +458,4 @@ Once the subscriber has been defined, it may be registered with the event dispat
             'App\Listeners\UserEventListener',
         ];
     }
+

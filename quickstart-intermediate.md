@@ -388,7 +388,7 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
 #### A Few Notes Of Explanation
 
-Before moving on, let's talk about this template a bit. First, the `@extends` directive informs Blade that we are using the layout we defined at `resources/views/layouts/app.blade.php`. All of the content between `@section('content')` and `@endsection` will be injected into the location of the `@yield('contents')` directive within the `app.blade.php` layout.
+Before moving on, let's talk about this template a bit. First, the `@extends` directive informs Blade that we are using the layout we defined at `resources/views/layouts/app.blade.php`. All of the content between `@section('content')` and `@endsection` will be injected into the location of the `@yield('content')` directive within the `app.blade.php` layout.
 
 Now we have defined a basic layout and view for our application. Let's go ahead and return this view from the `index` method of our `TaskController`:
 
@@ -641,7 +641,7 @@ Once the data is passed, we can spin through the tasks in our `tasks/index.blade
         @endif
 	@endsection
 
-Our task application is almost complete. But, we have no way to delete our existing tasks when their done. Let's add that next!
+Our task application is almost complete. But, we have no way to delete our existing tasks when they're done. Let's add that next!
 
 <a name="deleting-tasks"></a>
 ## Deleting Tasks
@@ -764,7 +764,7 @@ Finally, we need to associate our `Task` model with our `TaskPolicy`. We can do 
      * @var array
      */
     protected $policies = [
-        'App\Task' => 'App\Policies\TaskPolicy',
+        Task::class => TaskPolicy::class,
     ];
 
 

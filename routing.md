@@ -272,7 +272,7 @@ The `csrf_field` helper function generates the following HTML:
 
 Of course, using the Blade [templating engine](/docs/{{version}}/blade):
 
-    {!! csrf_field() !!}
+    {{ csrf_field() }}
 
 You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify that the token in the request input matches the token stored in the session.
 
@@ -375,7 +375,7 @@ To generate the hidden input field `_method`, you may also use the `method_field
 
 Of course, using the Blade [templating engine](/docs/{{version}}/blade):
 
-    {!! method_field('PUT') !!}
+    {{ method_field('PUT') }}
 
 <a name="throwing-404-errors"></a>
 ## Throwing 404 Errors

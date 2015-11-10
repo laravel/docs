@@ -537,6 +537,16 @@ The `str_plural` function converts a string to its plural form. This function cu
 
     // children
 
+You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
+
+    $plural = str_plural('child', 2);
+
+    // children
+
+    $plural = str_plural('child', 1);
+
+    // child
+
 <a name="method-str-random"></a>
 #### `str_random()` {#collection-method}
 

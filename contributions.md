@@ -5,6 +5,7 @@
 - [Which Branch?](#which-branch)
 - [Security Vulnerabilities](#security-vulnerabilities)
 - [Coding Style](#coding-style)
+    - [Code Style Fixer](#code-style-fixer)
 
 <a name="bug-reports"></a>
 ## Bug Reports
@@ -55,7 +56,7 @@ Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master
 
 ### DocBlocks
 
-`@param` tags should **not be aligned** and arguments should be separated by **2 spaces**. 
+`@param` tags should **not be aligned** and arguments should be separated by **2 spaces**.
 
 Here's an example block:
 
@@ -69,6 +70,16 @@ Here's an example block:
      */
     public function bind($abstract, $concrete = null, $shared = false)
     {
-        // …
+        //
     }
 
+<a name="code-style-fixer"></a>
+### Code Style Fixer
+
+You may use the [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to fix your code style before committing.
+
+To get started, [install the tool globally](https://github.com/FriendsOfPHP/PHP-CS-Fixer#globally-manual) and check the code style by issuing the following terminal command from your project's root directory:
+
+```sh
+php-cs-fixer fix
+```
