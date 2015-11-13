@@ -215,6 +215,8 @@ Command  | Description
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
 `$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
 
+> **Note:** Using the JSON fields is fully supported only in PostgreSQL and MySQL 5.7+. If you are using earlier version of MySQL, use text fields instead. All other connectors will automatically fallback to text.
+
 #### Column Modifiers
 
 In addition to the column types listed above, there are several other column "modifiers" which you may use while adding the column. For example, to make the column "nullable", you may use the `nullable` method:
