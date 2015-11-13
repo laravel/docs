@@ -213,10 +213,7 @@ While Browserify ships with the Partialify and Babelify transformers, you're fre
     npm install vueify --save-dev
 
 ```javascript
-elixir.config.js.browserify.transformers.push({
-    name: 'vueify',
-    options: {}
-});
+
 
 elixir(function(mix) {
     mix.browserify('main.js');
