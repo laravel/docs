@@ -688,27 +688,20 @@ This interface is simple. The `getAuthIdentifier` method should return the "prim
 Laravel raises a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
 
     /**
-     * Register any other events for your application.
+     * The event listener mappings for the application.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
-     * @return void
+     * @var array
      */
-    public function boot(DispatcherContract $events)
-    {
-        parent::boot($events);
+    protected $listen = [
+        'Illuminate\Auth\Events\Attempting' => [
+            'App\Listeners\LogAuthenticationAttempt',
+        ],
 
-        // Fired on each authentication attempt...
-        $events->listen('auth.attempt', function ($credentials, $remember, $login) {
-            //
-        });
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\LogSuccessfulLogin',
+        ],
 
-        // Fired on successful logins...
-        $events->listen('auth.login', function ($user, $remember) {
-            //
-        });
-
-        // Fired on logouts...
-        $events->listen('auth.logout', function ($user) {
-            //
-        });
-    }
+        'Illuminate\Auth\Events\Logout' => [
+            'App\Listeners\LogSuccessfulLogout',
+        ],
+    ];

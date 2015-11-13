@@ -238,17 +238,13 @@ Finally, you may use a service like [Mailtrap](https://mailtrap.io) and the `smt
 Laravel fires the `mailer.sending` event just before sending mail messages. Remember, t this event is fired when the mail is *sent*, not when it is queued. You may register an event listener in your `EventServiceProvider`:
 
     /**
-     * Register any other events for your application.
+     * The event listener mappings for the application.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
-     * @return void
+     * @var array
      */
-    public function boot(DispatcherContract $events)
-    {
-        parent::boot($events);
-
-        $events->listen('mailer.sending', function ($message) {
-            //
-        });
-    }
+    protected $listen = [
+        'Illuminate\Mail\Events\MessageSending' => [
+            'App\Listeners\LogSentMessage',
+        ],
+    ];
 

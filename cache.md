@@ -10,7 +10,7 @@
 - [Cache Tags](#cache-tags)
     - [Storing Tagged Cache Items](#storing-tagged-cache-items)
     - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
-- [Cache Events](#cache-events)
+- [Events](#cache-events)
 
 <a name="configuration"></a>
 ## Configuration
@@ -300,34 +300,30 @@ In contrast, this statement would remove only caches tagged with `authors`, so `
 
 	Cache::tags('authors')->flush();
 
-<a name="cache-events"></a>
-## Cache Events
+<a name="events"></a>
+## Events
 
-To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within the `boot` method of your `EventServiceProvider`:
+To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within your `EventServiceProvider`:
 
     /**
-     * Register any other events for your application.
+     * The event listener mappings for the application.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
-     * @return void
+     * @var array
      */
-    public function boot(DispatcherContract $events)
-    {
-        parent::boot($events);
+    protected $listen = [
+        'Illuminate\Cache\Events\CacheHit' => [
+            'App\Listeners\LogCacheHit',
+        ],
 
-        $events->listen('cache.hit', function ($key, $value) {
-            //
-        });
+        'Illuminate\Cache\Events\CacheMissed' => [
+            'App\Listeners\LogCacheMissed',
+        ],
 
-        $events->listen('cache.missed', function ($key) {
-            //
-        });
+        'Illuminate\Cache\Events\KeyForgotten' => [
+            'App\Listeners\LogKeyForgotten',
+        ],
 
-        $events->listen('cache.write', function ($key, $value, $minutes) {
-            //
-        });
-
-        $events->listen('cache.delete', function ($key) {
-            //
-        });
-    }
+        'Illuminate\Cache\Events\KeyWritten' => [
+            'App\Listeners\LogKeyWritten',
+        ],
+    ];
