@@ -55,6 +55,7 @@ You may select any method from this table to see an example of its usage:
 [count](#method-count)
 [diff](#method-diff)
 [each](#method-each)
+[every](#method-every)
 [filter](#method-filter)
 [first](#method-first)
 [flatten](#method-flatten)
