@@ -81,6 +81,7 @@ To send a message, use the `send` method on the `Mail` [facade](/docs/{{version}
 
             Mail::send('emails.reminder', ['user' => $user], function ($m) use ($user) {
                 $m->to($user->email, $user->name)->subject('Your Reminder!');
+                $m->from('no-reply@mydomain.com', 'My Domain Sender');
             });
         }
     }
