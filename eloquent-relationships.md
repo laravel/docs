@@ -18,7 +18,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-資料表通常會互相關聯。例如，一篇部落格文章可能有很多評論，或是一張訂單與下單的客戶相關聯。 Eloquent 讓管理和處理這些關聯變得很容易，並支援多種類型的關聯：
+資料表通常會互相關聯。例如，一篇部落格文章可能有很多評論，或是一張訂單與下單的客戶相關聯。Eloquent 讓管理和處理這些關聯變得很容易，並支援多種類型的關聯：
 
 - [一對一](#one-to-one)
 - [一對多](#one-to-many)
@@ -30,7 +30,7 @@
 <a name="defining-relationships"></a>
 ## 定義關聯
 
-你會在你的 Eloquent 模型類別內將 Eloquent 關聯定義為函式。因為像 Eloquent 模型本身，關聯也可以作為強大的[查詢產生器](/docs/{{version}}/queries)，定義關聯為函式提供了強而有力的方法鏈結及查詢功能。例如：
+你會在你的 Eloquent 模型類別內將 Eloquent 關聯定義為函式。因為關聯像 Eloquent 模型一樣也可以作為強大的[查詢產生器](/docs/{{version}}/queries)，定義關聯為函式提供了強而有力的方法鏈結及查詢功能。例如：
 
     $user->posts()->where('active', 1)->get();
 
@@ -39,7 +39,7 @@
 <a name="one-to-one"></a>
 ### 一對一
 
-一對一關聯是很基本的關聯。例如一個 `User` 模型會對應到一個 `Phone`。要定義這種關聯，我們將 `phone` 方法置於 `User` 模型。`phone` 方法會回傳自身 Eloquent 模型類別上 `hasOne` 方法的結果：
+一對一關聯是很基本的關聯。例如一個 `User` 模型也許會對應到一個 `Phone`。要定義這種關聯，我們必須將 `phone` 方法放置於 `User` 模型上。`phone` 方法應該要回傳基底 Eloquent 模型類別上 `hasOne` 方法的結果：
 
     <?php
 
@@ -58,11 +58,11 @@
         }
     }
 
-傳到 hasOne 方法裡的第一個參數是關聯模型的類別名稱。定義好關聯之後，我們就可以使用 Eloquent 的[動態屬性](#dynamic-properties)取得關聯紀錄。動態屬性能夠讓你存取關聯函式，就像他們是在模型中定義的屬性：
+傳到 hasOne 方法裡的第一個參數是關聯模型的類別名稱。定義好關聯之後，我們就可以使用 Eloquent 的[動態屬性](#dynamic-properties)來取得關聯紀錄。動態屬性讓你能夠存取關聯函式，就像他們是在模型中定義的屬性：
 
     $phone = User::find(1)->phone;
 
-Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這個例子裡，預設 `Phone` 模型資料表會以 `user_id` 作為外鍵。如果你想要複寫這個慣例，可以傳入第二個參數到 `hasOne` 方法裡。
+Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這個例子裡，它會自動假設 `Phone` 模型擁有 `user_id` 外鍵。如果你想要複寫這個慣例，可以傳入第二個參數到 `hasOne` 方法裡。
 
     return $this->hasOne('App\Phone', 'foreign_key');
 
