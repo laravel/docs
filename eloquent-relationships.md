@@ -114,7 +114,7 @@ Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這�
 <a name="one-to-many"></a>
 ### 一對多
 
-一個「一對多」關聯使用於定義單一模型擁有其他模型任意數量的關聯。例如，一篇部落格文章可能有無限多筆評論。就像其他的 Eloquent 關聯，一對多關聯的定義是放置一個函式至你的 Eloquent 模型：
+一個「一對多」關聯使用於定義單一模型擁有任意數量的其他關聯模型。例如，一篇部落格文章可能有無限多筆評論。就像其他的 Eloquent 關聯一樣，可以藉由放置一個函式至你的 Eloquent 模型來定義一對多關聯：
 
     <?php
 
@@ -143,7 +143,7 @@ Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這�
         //
     }
 
-當然，因為所有的關聯也提供查詢產生器的服務，你可以對取得的評論進一步增加條件，透過呼叫 `comments` 方法，接著在該查詢的後方鏈結上條件：
+當然，因為所有的關聯也提供查詢產生器的功能，你可以對取得的評論進一步增加條件，透過呼叫 `comments` 方法，接著在該查詢的後方鏈結上條件：
 
     $comments = App\Post::find(1)->comments()->where('title', 'foo')->first();
 
@@ -236,7 +236,7 @@ Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這�
 
     $roles = App\User::find(1)->roles()->orderBy('name')->get();
 
-如前文所提，若要判斷關聯合併的資料表名稱，Eloquent 會合併兩個關聯模型的名稱並依照字母順序命名。當然你可以很自由的複寫這個慣例。你可以透過傳遞第二個參數至 `belongsToMany` 方法來達成：
+如前文所提，若要判斷關聯合併的資料表名稱，Eloquent 會合併兩個關聯模型的名稱並依照字母順序命名。當然你可以自由的複寫這個慣例。你可以透過傳遞第二個參數至 `belongsToMany` 方法來達成：
 
     return $this->belongsToMany('App\Role', 'user_roles');
 
@@ -265,7 +265,7 @@ Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這�
         }
     }
 
-如你所見，此定義除了簡單的參考 `App\User` 模型外，與 `User` 的對應完全相同。因為我們重新使用了 `belongsToMany` 方法，當定義相對於多對多的關聯時，所有常用的自定資料表與鍵的選項都是可用的。
+如你所見，此定義除了簡單的參考 `App\User` 模型外，與 `User` 的對應完全相同。因為我們重複使用了 `belongsToMany` 方法，當定義相對於多對多的關聯時，所有常用的自定資料表與鍵的選項都是可用的。
 
 #### 取得中介表欄位
 
@@ -306,7 +306,7 @@ Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這�
         user_id - integer
         title - string
 
-雖然 `posts` 本身不包含 `country_id` 欄位，但 `hasManyThrough` 關聯透過 `$country->posts` 來提供我們存取一個城市的文章。要執行此查詢，Eloquent 會檢查中介表 `users` 的 `country_id`。在找到匹配的使用者 IDs 後，就會在 `posts` 資料表使用它們來查詢。
+雖然 `posts` 本身不包含 `country_id` 欄位，但 `hasManyThrough` 關聯透過 `$country->posts` 來提供我們存取一個國家的文章。要執行此查詢，Eloquent 會檢查中介表 `users` 的 `country_id`。在找到匹配的使用者 IDs 後，就會在 `posts` 資料表使用它們來查詢。
 
 現在我們已經檢查了關聯的資料表結構，讓我們將它定義在 `Country` 模型：
 
@@ -319,7 +319,7 @@ Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這�
     class Country extends Model
     {
         /**
-         * 取得該城市的所有文章。
+         * 取得該國家的所有文章。
          */
         public function posts()
         {
@@ -360,7 +360,7 @@ Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這�
         imageable_id - integer
         imageable_type - string
 
-要注意的重點是 `photos` 資料表的 `imageable_id` 和 `imageable_type` 欄位。`imageable_id` 欄位會包含所屬的工作人員或產品的 ID 值，而 `imageable_type` 欄位會包含所屬的模型類別名稱。當存取 `imageable` 關聯時，`imageable_type` 欄位會被 ORM 用於判斷所屬的模型是哪個「類型」。
+有兩個要注意的重要欄位是 `photos` 資料表的 `imageable_id` 和 `imageable_type` 欄位。`imageable_id` 欄位會包含所屬的工作人員或產品的 ID 值，而 `imageable_type` 欄位會包含所屬的模型類別名稱。當存取 `imageable` 關聯時，`imageable_type` 欄位會被 ORM 用於判斷所屬的模型是哪個「類型」。
 
 #### 模型結構
 
@@ -518,7 +518,7 @@ Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這�
 <a name="querying-relations"></a>
 ## 查詢關聯
 
-因為所有類型的 Eloquent 關聯都是透過函式定義，你可以呼叫這些函式獲得關聯的一個實例，並不需要實際執行關聯的查詢。此外，所有類型的 Eloquent 關聯也提供了[查詢產生器](/docs/{{version}}/queries)的服務，讓你能夠在你對你的資料庫執行該 SQL 前，在關聯查詢接著鏈結上條件。
+因為所有類型的 Eloquent 關聯都是透過函式定義，你可以呼叫這些函式獲得關聯的一個實例，並不需要實際執行關聯的查詢。此外，所有類型的 Eloquent 關聯也提供了[查詢產生器](/docs/{{version}}/queries)的功能，讓你能夠在你對你的資料庫執行該 SQL 前，在關聯查詢接著鏈結上條件。
 
 例如，假設有一個部落格系統，其中 `User` 模型擁有許多關聯的 `Post` 模型：
 
@@ -578,7 +578,7 @@ Eloquent 會假設對應的關聯的外鍵名稱是基於模型名稱。在這�
 
 如果你想要更進階的用法，可以使用 `whereHas` 和 `orWhereHas` 方法，在 `has` 查詢裡設定「where」條件。此方法可以讓你增加自訂的條件至關聯條件中，像是檢查評論的內容：
 
-    // 取得所有至少有一篇評論相似於 foo% 的文章Retrieve all posts with at least one comment containing words like foo%
+    // 取得所有至少有一篇評論相似於 foo% 的文章
     $posts = Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
