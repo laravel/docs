@@ -83,6 +83,7 @@ To send a message, use the `send` method on the `Mail` [facade](/docs/{{version}
                 $m->from('hello@app.com', 'Your Application');
 
                 $m->to($user->email, $user->name)->subject('Your Reminder!');
+                $m->from('no-reply@mydomain.com', 'My Domain Sender');
             });
         }
     }
