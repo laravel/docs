@@ -372,9 +372,11 @@ The `forget` method removes an item from the collection by its key:
 
 The `forPage` method returns a new collection containing the items that would be present on a given page number:
 
-    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9])->forPage(2, 3);
+    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-    $collection->all();
+    $chunk = $collection->forPage(2, 3);
+
+    $chunk->all();
 
     // [4, 5, 6]
 
