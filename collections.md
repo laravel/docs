@@ -55,6 +55,8 @@ You may select any method from this table to see an example of its usage:
 [count](#method-count)
 [diff](#method-diff)
 [each](#method-each)
+[every](#method-every)
+[except](#method-except)
 [filter](#method-filter)
 [first](#method-first)
 [flatten](#method-flatten)
@@ -72,6 +74,7 @@ You may select any method from this table to see an example of its usage:
 [last](#method-last)
 [map](#method-map)
 [merge](#method-merge)
+[only](#method-only)
 [pluck](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
@@ -274,6 +277,21 @@ You may optionally pass offset as the second argument:
 
     // ['b', 'f']
 
+<a name="method-except"></a>
+#### `except()` {#collection-method}
+
+The `except` method returns all items in the collection except for those with the specified keys:
+
+    $collection = collect(['product_id' => 1, 'name' => 'Desk', 'price' => 100, 'discount' => false]);
+
+    $filtered = $collection->except(['price', 'discount']);
+
+    $filtered->all();
+
+    // ['product_id' => 1, 'name' => 'Desk']
+
+For the inverse of `except`, see the [only](#method-only) method.
+
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
 
@@ -354,9 +372,11 @@ The `forget` method removes an item from the collection by its key:
 
 The `forPage` method returns a new collection containing the items that would be present on a given page number:
 
-    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9])->forPage(2, 3);
+    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-    $collection->all();
+    $chunk = $collection->forPage(2, 3);
+
+    $chunk->all();
 
     // [4, 5, 6]
 
@@ -604,6 +624,21 @@ If the given array's keys are numeric, the values will be appended to the end of
     $merged->all();
 
     // ['Desk', 'Chair', 'Bookcase', 'Door']
+
+<a name="method-only"></a>
+#### `only()` {#collection-method}
+
+The `only` method returns the items in the collection with the specified keys:
+
+    $collection = collect(['product_id' => 1, 'name' => 'Desk', 'price' => 100, 'discount' => false]);
+
+    $filtered = $collection->only(['product_id', 'name']);
+
+    $filtered->all();
+
+    // ['product_id' => 1, 'name' => 'Desk']
+
+For the inverse of `only`, see the [except](#method-except) method.
 
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
