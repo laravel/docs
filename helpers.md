@@ -145,7 +145,7 @@ The `array_add` function adds a given key / value pair to the array if the given
 
 The `array_build` function build a new array using a callback:
 
-    $array = array_build([1, 2, 3, 4, 5], function($key, $value){
+    $array = array_build([1, 2, 3, 4, 5], function($key, $value) {
     	return [$key, $value + 1];
     });
 
