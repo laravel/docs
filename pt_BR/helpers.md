@@ -26,6 +26,7 @@ Laravel inclui uma variedade de funções "helper". Muitas dessas funções são
 
 <div class="collection-method-list" markdown="1">
 [array_add](#method-array-add)
+[array_collapse](#method-array-collapse)
 [array_divide](#method-array-divide)
 [array_dot](#method-array-dot)
 [array_except](#method-array-except)
@@ -119,6 +120,15 @@ A função `array_add` adiciona um item chave / valor para o array se a chave ai
 	$array = array_add(['name' => 'Desk'], 'price', 100);
 
 	// ['name' => 'Desk', 'price' => 100]
+	
+<a name="method-array-collapse"></a>
+#### `array_collapse()` {#collection-method}
+
+A função `array_collapse` converte um array de arrays em um único array:
+
+	$array = array_collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+	
+	// [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 <a name="method-array-divide"></a>
 #### `array_divide()` {#collection-method}
