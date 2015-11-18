@@ -32,6 +32,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_except](#method-array-except)
 [array_first](#method-array-first)
 [array_flatten](#method-array-flatten)
+[array_flatmap](#method-array-flatmap)
 [array_forget](#method-array-forget)
 [array_get](#method-array-get)
 [array_only](#method-array-only)
@@ -206,6 +207,20 @@ The `array_flatten` method will flatten a multi-dimensional array into a single 
     $array = array_flatten($array);
 
     // ['Joe', 'PHP', 'Ruby'];
+    
+<a name="method-array-flatmap"></a>
+#### `array_flatmap()` {#collection-method}
+
+The `array_flatmap` method map an array and flatten the result by a single level.
+
+    $array = [
+        ['name' => 'taylor', 'hobbies' => ['programming', 'basketball']],
+        ['name' => 'adam', 'hobbies' => ['music', 'powerlifting']],
+    ];
+    
+    $array = array_flatmap($array);
+
+    // ['programming', 'basketball', 'music', 'powerlifting'];
 
 <a name="method-array-forget"></a>
 #### `array_forget()` {#collection-method}
