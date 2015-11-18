@@ -26,6 +26,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 
 <div class="collection-method-list" markdown="1">
 [array_add](#method-array-add)
+[array_build](#method-array-build)
 [array_collapse](#method-array-collapse)
 [array_divide](#method-array-divide)
 [array_dot](#method-array-dot)
@@ -138,6 +139,17 @@ The `array_add` function adds a given key / value pair to the array if the given
     $array = array_add(['name' => 'Desk'], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
+    
+<a name="method-array-build"></a>
+#### `array_build()` {#collection-method}
+
+The `array_build` function build a new array using a callback:
+
+    $array = array_build([1, 2, 3, 4, 5], function($key, $value) {
+    	return [$key, $value + 1];
+    });
+
+    // [2, 3, 4, 5, 6]
     
 <a name="method-array-collapse"></a>
 #### `array_collapse()` {#collection-method}
