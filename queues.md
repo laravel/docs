@@ -187,7 +187,7 @@ Of course, sometimes you may wish to dispatch a job from somewhere in your appli
 
 You may also specify the queue a job should be sent to.
 
-By pushing jobs to different queues, you may "categorize" your queued jobs, and even prioritize how many workers you assign to various queues. This does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method on the job instance. The `onQueue` method is provided by the `Illuminate\Bus\Queueable` trait which is already added to the `App\Jobs\Job` base class created by Laravel for you to extend:
+By pushing jobs to different queues, you may "categorize" your queued jobs, and even prioritize how many workers you assign to various queues. This does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method on the job instance. The `onQueue` method is provided by the `Illuminate\Bus\Queueable` trait, which is already included on the `App\Jobs\Job` base class:
 
     <?php
 
@@ -531,7 +531,7 @@ To view all of your failed jobs that have been inserted into your `failed_jobs` 
 The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of 5, the following command should be issued:
 
     php artisan queue:retry 5
-    
+
 To retry all of your failed jobs, use `queue:retry` with `all` as the ID:
 
     php artisan queue:retry all
