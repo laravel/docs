@@ -189,7 +189,7 @@ You may remove items from the cache using the `forget` method on the `Cache` fac
 
     Cache::forget('key');
 
-You may clear the entire caching using the `flush` method:
+You may clear the entire cache using the `flush` method:
 
     Cache::flush();
 
