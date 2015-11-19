@@ -485,7 +485,7 @@ Once you have defined the routes and views to reset your user's passwords, you m
 
 After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post password reset redirect location by defining a `redirectTo` property on the `PasswordController`:
 
-    protected $redirectTo = '/dashboard';
+    protected $redirectPath = '/dashboard';
 
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option in your `config/auth.php` file.
 
