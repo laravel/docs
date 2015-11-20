@@ -139,7 +139,7 @@ The `array_add` function adds a given key / value pair to the array if the given
     $array = array_add(['name' => 'Desk'], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
-    
+
 <a name="method-array-collapse"></a>
 #### `array_collapse()` {#collection-method}
 
@@ -237,11 +237,11 @@ The `array_get` function also accepts a default value, which will be returned if
 <a name="method-array-has"></a>
 #### `array_has()` {#collection-method}
 
-The `array_has` function can check given item is exists in an array using "dot" notation:
+The `array_has` function checks that a given item exists in an array using "dot" notation:
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    $desk = array_has($array, ['products.desk']);
+    $hasDesk = array_has($array, ['products.desk']);
 
     // true
 
