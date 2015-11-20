@@ -73,7 +73,9 @@ You may select any method from this table to see an example of its usage:
 [keys](#method-keys)
 [last](#method-last)
 [map](#method-map)
+[max](#method-max)
 [merge](#method-merge)
+[min](#method-min)
 [only](#method-only)
 [pluck](#method-pluck)
 [pop](#method-pop)
@@ -602,6 +604,19 @@ The `map` method iterates through the collection and passes each value to the gi
 
 > **Note:** Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
 
+<a name="method-max"></a>
+#### `max()` {#collection-method}
+
+The `max` method return the maximum value of a given key:
+    
+    $max = collect([['foo' => 10], ['foo' => 20]])->max('foo');
+
+    // 20
+
+    $max = collect([1, 2, 3, 4, 5])->max();
+
+    // 5
+
 <a name="method-merge"></a>
 #### `merge()` {#collection-method}
 
@@ -624,6 +639,19 @@ If the given array's keys are numeric, the values will be appended to the end of
     $merged->all();
 
     // ['Desk', 'Chair', 'Bookcase', 'Door']
+
+<a name="method-min"></a>
+#### `min()` {#collection-method}
+
+The `min` method return the minimum value of a given key:
+    
+    $max = collect([['foo' => 10], ['foo' => 20]])->max('foo');
+
+    // 10
+
+    $max = collect([1, 2, 3, 4, 5])->max();
+
+    // 1
 
 <a name="method-only"></a>
 #### `only()` {#collection-method}
