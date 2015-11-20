@@ -172,7 +172,7 @@ The `array_dot` function flattens a multi-dimensional array into a single level 
 <a name="method-array-except"></a>
 #### `array_except()` {#collection-method}
 
-The `array_except` method removes the given key / value pairs from the array:
+The `array_except` function removes the given key / value pairs from the array:
 
     $array = ['name' => 'Desk', 'price' => 100];
 
@@ -183,7 +183,7 @@ The `array_except` method removes the given key / value pairs from the array:
 <a name="method-array-first"></a>
 #### `array_first()` {#collection-method}
 
-The `array_first` method returns the first element of an array passing a given truth test:
+The `array_first` function returns the first element of an array passing a given truth test:
 
     $array = [100, 200, 300];
 
@@ -200,7 +200,7 @@ A default value may also be passed as the third parameter to the method. This va
 <a name="method-array-flatten"></a>
 #### `array_flatten()` {#collection-method}
 
-The `array_flatten` method will flatten a multi-dimensional array into a single level.
+The `array_flatten` function will flatten a multi-dimensional array into a single level.
 
     $array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
 
@@ -211,7 +211,7 @@ The `array_flatten` method will flatten a multi-dimensional array into a single 
 <a name="method-array-forget"></a>
 #### `array_forget()` {#collection-method}
 
-The `array_forget` method removes a given key / value pair from a deeply nested array using "dot" notation:
+The `array_forget` function removes a given key / value pair from a deeply nested array using "dot" notation:
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -222,7 +222,7 @@ The `array_forget` method removes a given key / value pair from a deeply nested 
 <a name="method-array-get"></a>
 #### `array_get()` {#collection-method}
 
-The `array_get` method retrieves a value from a deeply nested array using "dot" notation:
+The `array_get` function retrieves a value from a deeply nested array using "dot" notation:
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -248,7 +248,7 @@ The `array_has` function can check given item is exists in an array using "dot" 
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
 
-The `array_only` method will return only the specified key / value pairs from the given array:
+The `array_only` function will return only the specified key / value pairs from the given array:
 
     $array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 
@@ -259,7 +259,7 @@ The `array_only` method will return only the specified key / value pairs from th
 <a name="method-array-pluck"></a>
 #### `array_pluck()` {#collection-method}
 
-The `array_pluck` method will pluck a list of the given key / value pairs from the array:
+The `array_pluck` function will pluck a list of the given key / value pairs from the array:
 
     $array = [
         ['developer' => ['name' => 'Taylor']],
@@ -273,7 +273,7 @@ The `array_pluck` method will pluck a list of the given key / value pairs from t
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
 
-The `array_pull` method returns and removes a key / value pair from the array:
+The `array_pull` function returns and removes a key / value pair from the array:
 
     $array = ['name' => 'Desk', 'price' => 100];
 
@@ -286,7 +286,7 @@ The `array_pull` method returns and removes a key / value pair from the array:
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
-The `array_set` method sets a value within a deeply nested array using "dot" notation:
+The `array_set` function sets a value within a deeply nested array using "dot" notation:
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -297,7 +297,7 @@ The `array_set` method sets a value within a deeply nested array using "dot" not
 <a name="method-array-sort"></a>
 #### `array_sort()` {#collection-method}
 
-The `array_sort` method sorts the array by the results of the given Closure:
+The `array_sort` function sorts the array by the results of the given Closure:
 
     $array = [
         ['name' => 'Desk'],
