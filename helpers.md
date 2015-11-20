@@ -34,6 +34,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_flatten](#method-array-flatten)
 [array_forget](#method-array-forget)
 [array_get](#method-array-get)
+[array_has](#method-array-has)
 [array_only](#method-array-only)
 [array_pluck](#method-array-pluck)
 [array_pull](#method-array-pull)
@@ -232,6 +233,17 @@ The `array_get` method retrieves a value from a deeply nested array using "dot" 
 The `array_get` function also accepts a default value, which will be returned if the specific key is not found:
 
     $value = array_get($array, 'names.john', 'default');
+
+<a name="method-array-has"></a>
+#### `array_has()` {#collection-method}
+
+The `array_has` function can check given item is exists in an array using "dot" notation:
+
+    $array = ['products' => ['desk' => ['price' => 100]]];
+
+    $desk = array_has($array, ['products.desk']);
+
+    // true
 
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
