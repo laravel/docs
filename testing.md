@@ -307,7 +307,7 @@ Method  | Description
 `->assertRedirectedTo($uri, $with = []);`  |  Assert whether the client was redirected to a given URI.
 `->assertRedirectedToRoute($name, $parameters = [], $with = []);`  |  Assert whether the client was redirected to a given route.
 `->assertRedirectedToAction($name, $parameters = [], $with = []);`  |  Assert whether the client was redirected to a given action.
-`->assertSessionHas($key, $value = null);`  |  Assert that the session has a given list of values.
+`->assertSessionHas($key, $value = null);`  |  Assert that the session has a given value.
 `->assertSessionHasAll(array $bindings);`  |  Assert that the session has a given list of values.
 `->assertSessionHasErrors($bindings = [], $format = null);`  |  Assert that the session has errors bound.
 `->assertHasOldInput();`  |  Assert that the session has old input.
