@@ -262,13 +262,19 @@ The `array_only` function will return only the specified key / value pairs from 
 The `array_pluck` function will pluck a list of the given key / value pairs from the array:
 
     $array = [
-        ['developer' => ['name' => 'Taylor']],
-        ['developer' => ['name' => 'Abigail']]
+        ['developer' => ['id' => 1, 'name' => 'Taylor']],
+        ['developer' => ['id' => 2, 'name' => 'Abigail']],
     ];
 
     $array = array_pluck($array, 'developer.name');
 
     // ['Taylor', 'Abigail'];
+    
+You may also specify how you wish the resulting list to be keyed:
+
+    $array = array_pluck($array, 'developer.name', 'developer.id');
+
+    // [1 => 'Taylor', 2 => 'Abigail'];
 
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
