@@ -263,7 +263,7 @@ The `array_pluck` function will pluck a list of the given key / value pairs from
 
     $array = [
         ['developer' => ['name' => 'Taylor']],
-        ['developer' => ['name' => 'Abigail']]
+        ['developer' => ['name' => 'Abigail']],
     ];
 
     $array = array_pluck($array, 'developer.name');
