@@ -302,7 +302,7 @@ Once your command is finished, you need to register it with Artisan so it will b
 Within this file, you will find a list of commands in the `commands` property. To register your command, simply add the class name to the list. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:
 
     protected $commands = [
-        'App\Console\Commands\SendEmails'
+        Commands\SendEmails::class
     ];
 
 <a name="calling-commands-via-code"></a>
