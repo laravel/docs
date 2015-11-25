@@ -52,7 +52,7 @@ If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that the
          *
          * @return string
          */
-        protected static function getFacadeAccessor() { return 'cache'; }
+        protected static function getFacadeAccessor() { return cache::class; }
     }
 
 Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. Remember, this method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
