@@ -34,6 +34,7 @@ Laravel inclui uma variedade de funções "helper". Muitas dessas funções são
 [array_flatten](#method-array-flatten)
 [array_forget](#method-array-forget)
 [array_get](#method-array-get)
+[array_has](#method-array-has)
 [array_only](#method-array-only)
 [array_pluck](#method-array-pluck)
 [array_pull](#method-array-pull)
@@ -153,7 +154,7 @@ A função `array_dot` nivela um array multi-dimensional em um único nível que
 <a name="method-array-except"></a>
 #### `array_except()` {#collection-method}
 
-O método `array_except` remove os itens chave / valor do array:
+A função `array_except` remove os itens chave / valor do array:
 
 	$array = ['name' => 'Desk', 'price' => 100];
 
@@ -164,7 +165,7 @@ O método `array_except` remove os itens chave / valor do array:
 <a name="method-array-first"></a>
 #### `array_first()` {#collection-method}
 
-O método `array_first` retorna o primeiro elemento de um array que passar por um determinado teste da verdade:
+A função `array_first` retorna o primeiro elemento de um array que passar por um determinado teste da verdade:
 
 	$array = [100, 200, 300];
 
@@ -181,7 +182,7 @@ O valor padrão também pode ser passado como terceiro parâmetro do método. Es
 <a name="method-array-flatten"></a>
 #### `array_flatten()` {#collection-method}
 
-O método `array_flatten` nivelará um array multi-dimensional num único nível.
+A função `array_flatten` nivelará um array multi-dimensional num único nível.
 
 	$array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
 
@@ -192,7 +193,7 @@ O método `array_flatten` nivelará um array multi-dimensional num único nível
 <a name="method-array-forget"></a>
 #### `array_forget()` {#collection-method}
 
-O método `array_forget` remove um item chave / valor de um array que usa um "." para indicar a profundidade:
+A função `array_forget` remove um item chave / valor de um array que usa um "." para indicar a profundidade:
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -203,7 +204,7 @@ O método `array_forget` remove um item chave / valor de um array que usa um "."
 <a name="method-array-get"></a>
 #### `array_get()` {#collection-method}
 
-O método `array_get` recupera um valor de um array usando o "." para indicar a profundidade:
+A função `array_get` recupera um valor de um array usando o "." para indicar a profundidade:
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -214,11 +215,23 @@ O método `array_get` recupera um valor de um array usando o "." para indicar a 
 A função `array_get` também aceita um valor padrão que será retornado caso a chave especificada não exista:
 
 	$value = array_get($array, 'names.john', 'default');
+	
+<a name="method-array-has"></a>
+#### `array_has()` {#collection-method}
+
+A função `array_has` verifica se um determinado item existe em uma matriz usando a notação "ponto":
+
+	$array = ['products' => ['desk' => ['price' => 100]]];
+	
+	$hasDesk = array_has($array, ['products.desk']);
+	
+	// true
+
 
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
 
-O método `array_only` retornará somente os itens chave / valor do array dado:
+A função `array_only` retornará somente os itens chave / valor do array dado:
 
 	$array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 
@@ -229,7 +242,7 @@ O método `array_only` retornará somente os itens chave / valor do array dado:
 <a name="method-array-pluck"></a>
 #### `array_pluck()` {#collection-method}
 
-O método `array_pluck` arrancará uma lista dos itens chave / valor do array:
+A função `array_pluck` arrancará uma lista dos itens chave / valor do array:
 
 	$array = [
 		['developer' => ['name' => 'Taylor']],
@@ -249,7 +262,7 @@ Você também pode especificar como você deseja que a lista resultante seja inf
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
 
-O método `array_pull` retornará e removerá um item chave / valor do array:
+A função `array_pull` retornará e removerá um item chave / valor do array:
 
 	$array = ['name' => 'Desk', 'price' => 100];
 
@@ -262,7 +275,7 @@ O método `array_pull` retornará e removerá um item chave / valor do array:
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
-O método `array_set` seta um valor dentro de um array usando o "." para indicar profundidade:
+A função `array_set` seta um valor dentro de um array usando o "." para indicar profundidade:
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -273,7 +286,7 @@ O método `array_set` seta um valor dentro de um array usando o "." para indicar
 <a name="method-array-sort"></a>
 #### `array_sort()` {#collection-method}
 
-O método `array_sort` sorteia o array através dos resultados da Closure passada:
+A função `array_sort` sorteia o array através dos resultados da Closure passada:
 
 	$array = [
 		['name' => 'Desk'],
