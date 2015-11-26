@@ -239,6 +239,12 @@ O método `array_pluck` arrancará uma lista dos itens chave / valor do array:
 	$array = array_pluck($array, 'developer.name');
 
 	// ['Taylor', 'Abigail'];
+	
+Você também pode especificar como você deseja que a lista resultante seja informada:
+
+	$array = array_pluck($array, 'developer.name', 'developer.id');
+	
+	// [1 => 'Taylor', 2 => 'Abigail'];
 
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
