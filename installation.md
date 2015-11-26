@@ -33,7 +33,7 @@ Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. 
 
 First, download the Laravel installer using Composer:
 
-    composer global require "laravel/installer=~1.1"
+    composer global require "laravel/installer"
 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
 
