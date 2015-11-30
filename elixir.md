@@ -44,6 +44,12 @@ Before triggering Elixir, you must first ensure that Node.js is installed on you
 
 By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install Node by visiting [their download page](http://nodejs.org/download/).
 
+### NPM
+
+`npm@^3.0.0` is required to run `laravel-elixir@^4.0.0`. There is no need to update `node`, you can simply update `npm` globally.
+
+    npm update --global npm
+
 ### Gulp
 
 Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package:
