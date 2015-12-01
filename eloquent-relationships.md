@@ -687,7 +687,7 @@ Eloquent provides convenient methods for adding new models to relationships. For
 
     $post = App\Post::find(1);
 
-    $comment = $post->comments()->save($comment);
+    $post->comments()->save($comment);
 
 Notice that we did not access the `comments` relationship as a dynamic property. Instead, we called the `comments` method to obtain an instance of the relationship. The `save` method will automatically add the appropriate `post_id` value to the new `Comment` model.
 
