@@ -194,6 +194,8 @@ If it becomes necessary to add additional routes to a resource controller beyond
 <a name="implicit-controllers"></a>
 ## Implicit Controllers
 
+> **Warning:** This type of routes definition is deprecated and will be removed in future releaes.
+
 Laravel allows you to easily define a single route to handle every action in a controller class. First, define the route using the `Route::controller` method. The `controller` method accepts two arguments. The first is the base URI the controller handles, while the second is the class name of the controller:
 
     Route::controller('users', 'UserController');
