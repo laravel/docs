@@ -89,7 +89,7 @@ Command  | Description
 `$table->text('description');`  |  TEXT equivalent to the table
 `$table->time('sunrise');`  |  TIME equivalent to the table
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent to the table
-`$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
+`$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns. Not supported in MySQL 5.7; use `nullableTimestamps()`
 `$table->rememberToken();`  |  Adds `remember_token` as VARCHAR(100) NULL
 `->nullable()`  |  Designate that the column allows NULL values
 `->default($value)`  |  Declare a default value for a column
