@@ -1,6 +1,7 @@
 # Authentication
 
 - [Introduction](#introduction)
+    - [Database Considerations](#introduction-database-considerations)
 - [Authentication Quickstart](#authentication-quickstart)
     - [Routing](#included-routing)
     - [Views](#included-views)
@@ -12,7 +13,7 @@
     - [Remembering Users](#remembering-users)
     - [Other Authentication Methods](#other-authentication-methods)
 - [HTTP Basic Authentication](#http-basic-authentication)
-     - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
+    - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
 - [Resetting Passwords](#resetting-passwords)
     - [Database Considerations](#resetting-database)
     - [Routing](#resetting-routing)
@@ -27,6 +28,7 @@
 
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
 
+<a name="introduction-database-considerations"></a>
 ### Database Considerations
 
 By default, Laravel includes an `App\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app` directory. This model may be used with the default Eloquent authentication driver. If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
@@ -278,7 +280,7 @@ To log users out of your application, you may use the `logout` method on the `Au
 > **Note:** In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
 
 <a name="remembering-users"></a>
-## Remembering Users
+### Remembering Users
 
 If you would like to provide "remember me" functionality in your application, you may pass a boolean value as the second argument to the `attempt` method, which will keep the user authenticated indefinitely, or until they manually logout. Of course, your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
 
