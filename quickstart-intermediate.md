@@ -501,7 +501,7 @@ First, we need to edit our `TaskController@index` method to pass all of the exis
      */
     public function index(Request $request)
     {
-    	$tasks = Task::where('user_id', $request->user()->id->get();
+    	$tasks = Task::where('user_id', $request->user()->id)->get();
 
         return view('tasks.index', [
             'tasks' => $tasks,
