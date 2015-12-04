@@ -1,4 +1,4 @@
-# Basic Task List
+# Lista de Tarefas - Básico
 
 - [Introdução](#introduction)
 - [Instalação](#installation)
@@ -29,7 +29,7 @@ Para exemplificar um uso básico das funcionalidades do Laravel, construiremos u
 <a name="installation"></a>
 ## Instalação
 
-Primeirio você precisará de uma nova instalação do Laravel. Você pode utilizar a [virtual machine Homestead](/docs/{{version}}/homestead) ou o ambiente PHP de sua preferência para executar o framework. Uma vez que seu ambiente esteja pronto, você pode instalar o framework Laravel utilizando o Composer:
+Primeiro você precisará de uma nova instalação do Laravel. Você pode utilizar a [virtual machine Homestead](/docs/{{version}}/homestead) ou o ambiente PHP de sua preferência para executar o framework. Uma vez que seu ambiente esteja pronto, você pode instalar o framework Laravel utilizando o Composer:
 
 	composer create-project laravel/laravel quickstart --prefer-dist
 
@@ -124,9 +124,9 @@ Iremos aprender mais sobre como utilizar os modelos Eloquent à medida que criam
 <a name="stubbing-the-routes"></a>
 ### Rotas
 
-Estamos prontos para adicionar algumas rotas a nossa aplicação. Rotas são usadas para atrelar** URLs à controladores ou funções anônimas que devem ser executadas quando um usuário acessar a referida página. Por padrão, todas as rotas são definidas no arquivo `app/Http/routes.php`. Este arquivo esta presente em todo novo projeto.
+Estamos prontos para adicionar algumas rotas a nossa aplicação. Rotas são usadas para associar URLs à controladores ou funções anônimas que devem ser executadas quando um usuário acessar a referida página. Por padrão, todas as rotas são definidas no arquivo `app/Http/routes.php`. Este arquivo esta presente em todo novo projeto.
 
-Para esta aplicação, nós sabemos que iremos precisar de ao menos três rotas: um rota para exibir uma lista de todas as nossas tarefas, uma rota para criar uma nova tarefa e uma rota para excluir uma tarefa existente. Vamos criar** estas três rotas no arquivo `app/Http/routes.php`:
+Para esta aplicação, nós sabemos que iremos precisar de ao menos três rotas: um rota para exibir uma lista de todas as nossas tarefas, uma rota para criar uma nova tarefa e uma rota para excluir uma tarefa existente. Vamos criar estas três rotas no arquivo `app/Http/routes.php`:
 
 	<?php
 
