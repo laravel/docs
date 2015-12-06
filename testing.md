@@ -321,7 +321,7 @@ Laravel also provides a variety of helpful tools to make it easier to test your 
     {
         // Make call to application...
 
-        $this->seeInDatabase('users', ['email' => 'sally@foo.com']);
+        $this->seeInDatabase('users', ['email' => 'sally@example.com']);
     }
 
 Of course, the `seeInDatabase` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
