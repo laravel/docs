@@ -10,7 +10,7 @@
     - [Connecting Via SSH](#connecting-via-ssh)
     - [Connecting To Databases](#connecting-to-databases)
     - [Adding Additional Sites](#adding-additional-sites)
-    - [Configuration Cron Schedules](#configuring-cron-schedules)
+    - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Ports](#ports)
     - [Bash Aliases](#bash-aliases)
 - [Blackfire Profiler](#blackfire-profiler)
