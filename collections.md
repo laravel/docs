@@ -789,6 +789,10 @@ You may optionally pass an integer to `random`. If that integer is more than `1`
     $random->all();
 
     // [2, 4, 5] - (retrieved randomly)
+    
+See also:
+
+[`shuffle`](#method-shuffle) - randomly shuffles the items in the collection
 
 <a name="method-reduce"></a>
 #### `reduce()` {#collection-method}
