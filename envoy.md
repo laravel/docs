@@ -13,7 +13,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-[Laravel Envoy](https://github.com/laravel/envoy)提供了簡潔、輕量的語法，定義在遠端伺服器執行的共同任務。使用 Blade 風格的語法，你可以簡單的設置部署任務，執行 Artisan 指令或是更多。目前，Envoy 只支援 Mac 及 Linux 作業系統。
+[Laravel Envoy](https://github.com/laravel/envoy) 提供了簡潔、輕量的語法，定義在遠端伺服器執行的共同任務。使用 Blade 風格的語法，你可以簡單的設置部署任務，執行 Artisan 指令或是更多。目前，Envoy 只支援 Mac 及 Linux 作業系統。
 
 <a name="envoy-installation"></a>
 ### 安裝
