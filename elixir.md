@@ -238,6 +238,7 @@ elixir(function(mix) {
 
 若要選擇不同的輸出位置，只需簡單的指定你希望的路徑作為第二個參數。該方法除了 Babel 的編譯外，特色與功能同等於 `mix.scripts()`。
 
+
 <a name="javascript"></a>
 ### Scripts
 
