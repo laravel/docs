@@ -23,7 +23,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
 <a name="configuration"></a>
 ### 設定
 
-隊列的設定檔被儲存在 `config/queue.php`。在這個檔案裡你可以找到包含在 Laravel 框架中，每一種隊列驅動的連結設定。它們包含了資料庫、 [Beanstalkd](http://kr.github.com/beanstalkd) 、 [IronMQ](http://iron.io) 、 [Amazon SQS](http://aws.amazon.com/sqs) 、 [Redis](http://redis.io) 以及提供本機使用的 synchronous 驅動。
+隊列的設定檔被儲存在 `config/queue.php`。在這個檔案裡你可以找到包含在 Laravel 框架中，每一種隊列驅動的連結設定。它們包含了資料庫、[Beanstalkd](http://kr.github.com/beanstalkd)、[IronMQ](http://iron.io)、[Amazon SQS](http://aws.amazon.com/sqs)、[Redis](http://redis.io) 以及提供本機使用的 synchronous 驅動。
 
 另外框架也提供了 `null` 這個隊列驅動，用來丟棄隊列任務。
 
@@ -41,10 +41,10 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
 
 要使用列表裡的隊列服務前，必須安裝以下的相依套件：
 
-- Amazon SQS: `aws/aws-sdk-php ~3.0`
-- Beanstalkd: `pda/pheanstalk ~3.0`
-- IronMQ: `iron-io/iron_mq ~2.0`
-- Redis: `predis/predis ~1.0`
+- Amazon SQS：`aws/aws-sdk-php ~3.0`
+- Beanstalkd：`pda/pheanstalk ~3.0`
+- IronMQ：`iron-io/iron_mq ~2.0`
+- Redis：`predis/predis ~1.0`
 
 <a name="writing-job-classes"></a>
 ## 撰寫任務類別
@@ -82,7 +82,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
         protected $user;
 
         /**
-         * Create a new job instance.
+         * 建立一個新的任務實例。
          *
          * @param  User  $user
          * @return void
@@ -93,7 +93,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
         }
 
         /**
-         * Execute the job.
+         * 執行任務。
          *
          * @param  Mailer  $mailer
          * @return void
@@ -108,17 +108,17 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
         }
     }
 
-注意，在這個例子裡我們在任務類別的建構子中直接傳遞了一個 [Eloquent 模型](/docs/{{version}}/eloquent) 。因為我們在任務類別裡引用了 `SerializesModels` 這個 trait ，使得 Eloquent 模型在處理任務的時候可以被優雅地序列化和反序列化。如果你的隊列任務類別在建構子接受一個 Eloquent 模型，那麼只有可識別出該模型的屬性會被序列化至隊列裡。當任務實際被執行時，隊列系統會自動從資料庫中重新取回完整的模型。整個過程對你的應用程式來說是透明的，這樣可以避免序列化完整的 Eloquent 的模式實例所帶來的問題。
+注意，在這個例子裡我們在任務類別的建構子中直接傳遞了一個 [Eloquent 模型](/docs/{{version}}/eloquent)。因為我們在任務類別裡引用了 `SerializesModels` 這個 trait，使得 Eloquent 模型在處理任務的時候可以被優雅地序列化和反序列化。如果你的隊列任務類別在建構子接受一個 Eloquent 模型，那麼只有可識別出該模型的屬性會被序列化至隊列裡。當任務實際被執行時，隊列系統會自動從資料庫中重新取回完整的模型。整個過程對你的應用程式來說是透明的，這樣可以避免序列化完整的 Eloquent 的模式實例所帶來的問題。
 
-在隊列處理任務時，會呼叫 `handle` 方法，而這裡我們也可以透過 `handle` 方法的參數型別提示，來讓 Laravel 的 [service container](/docs/{{version}}/container) 自動注入相依物件。
+在隊列處理任務時，會呼叫 `handle` 方法，而這裡我們也可以透過 `handle` 方法的參數型別提示，讓 Laravel 的[服務容器](/docs/{{version}}/container)自動注入相依物件。
 
 #### 當發生錯誤的時候
 
-如果在任務處理時拋出了一個異常，它會自動被釋放回隊列裡再次嘗試執行。當該任務一直出錯時，它會不斷被釋出再重試，直到超過你的應用程式所允許的最大重試值。最大重試值可以在執行 `queue:listen` 或 `queue:work` 指令時，用 `--tries` 選項來設定；執行隊列監聽器的更多資訊在稍後會有[詳細說明](#running-the-queue-listener)。
+如果在任務處理時拋出了一個例外，它會自動被釋放回隊列裡再次嘗試執行。當該任務一直出錯時，它會不斷被釋出再重試，直到超過你的應用程式所允許的最大重試值。最大重試值可以在執行 `queue:listen` 或 `queue:work` 指令時，用 `--tries` 選項來設定；執行隊列監聽器的更多資訊在稍後會有[詳細說明](#running-the-queue-listener)。
 
 #### 手動釋放任務
 
-如果你想手動釋放任務，那麼在產生出來的任務類別已經引用了 `InteractsWithQueue` 這個 Trait ，它提供了 `release` 方法讓我們可以釋放任務。在 `release` 方法中接受一個數值參數，它表示直到這個任務可以被重新執行之前，你願意等待的秒數。
+如果你想手動釋放任務，那麼在產生出來的任務類別已經引用了 `InteractsWithQueue` 這個 trait，它提供了 `release` 方法讓我們可以釋放任務。在 `release` 方法中接受一個數值參數，它表示直到這個任務可以被重新執行之前，你願意等待的秒數。
 
     public function handle(Mailer $mailer)
     {
@@ -129,7 +129,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
 
 #### 檢查重試次數
 
-如同前面提到的，當任務被處理時發生了一個異常，它會自動被釋放回隊列中。這時候你可以用 `attempt` 方法來檢查已經重試的次數：
+如同前面提到的，當任務被處理時發生了一個例外，它會自動被釋放回隊列中。這時候你可以用 `attempt` 方法來檢查已經重試的次數：
 
     public function handle(Mailer $mailer)
     {
@@ -141,7 +141,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
 <a name="pushing-jobs-onto-the-queue"></a>
 ## 將任務推送到隊列上
 
-在 `app/Http/Controllers/Controller.php` 中 Laravel 定義了一個預設控制器，它引用了 `DispatchesJob` 這個 Trait ；而這個 Trait 提供了數個可以讓你方便推送任務到隊列的方法，例如 `dispatch` 方法：
+在 `app/Http/Controllers/Controller.php` 中 Laravel 定義了一個預設控制器，它引用了 `DispatchesJob` 這個 trait；而這個 trait 提供了數個可以讓你方便推送任務到隊列的方法，例如 `dispatch` 方法：
 
     <?php
 
@@ -155,7 +155,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
     class UserController extends Controller
     {
         /**
-         * Send a reminder e-mail to a given user.
+         * 寄送提醒的 e-mail 給指定使用者。
          *
          * @param  Request  $request
          * @param  int  $id
@@ -200,7 +200,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
     class UserController extends Controller
     {
         /**
-         * Send a reminder e-mail to a given user.
+         * 寄送提醒的 e-mail 給指定使用者。
          *
          * @param  Request  $request
          * @param  int  $id
@@ -233,7 +233,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
     class UserController extends Controller
     {
         /**
-         * Send a reminder e-mail to a given user.
+         * 寄送提醒的 e-mail 給指定使用者。
          *
          * @param  Request  $request
          * @param  int  $id
@@ -251,12 +251,12 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
 
 在這個範例裡，我們指定該任務要在交給 workers 執行前先延遲 60 秒。
 
-> **註：** Amazon 的 SQS 服務最大延遲時間是 15 分鐘。
+> **注意：**Amazon 的 SQS 服務最大延遲時間是 15 分鐘。
 
 <a name="dispatching-jobs-from-requests"></a>
 ### 從請求中派送任務
 
-在任務中對應到 HTTP 請求的變數是很常見的，所以與其強制你手動去對每個請求做這件事， Laravel 直接提供了一些輔助方法讓你更容易做到它；像是在 `DispatchesJobs` 這個 trait 就提供了 `dispatchFrom` 方法，而 Laravel 基礎控制器就預設引入了這個 trait ：
+在任務中對應到 HTTP 請求的變數是很常見的，所以與其強制你手動去對每個請求做這件事，Laravel 直接提供了一些輔助方法讓你更容易做到它；像是在 `DispatchesJobs` 這個 trait 就提供了 `dispatchFrom` 方法，而 Laravel 基礎控制器就預設引入了這個 trait：
 
     <?php
 
@@ -268,7 +268,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
     class CommerceController extends Controller
     {
         /**
-         * Process the given order.
+         * 處理指定的訂單。
          *
          * @param  Request  $request
          * @param  int  $id
@@ -276,7 +276,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
          */
         public function processOrder(Request $request, $id)
         {
-            // Process the request...
+            // 處理該請求...
 
             $this->dispatchFrom('App\Jobs\ProcessOrder', $request);
         }
@@ -330,7 +330,7 @@ Laravel 引入了一個 Artisan 指令，用來執行被推送到隊列裡的任
 <a name="supervisor-configuration"></a>
 ### Supervisor 設定
 
-Supervisor 是一個在 Linux 作業系統上的行程監控軟體，它會在 `queue:listen` 或 `queue:work` 指令發生失敗後自動重啟它們。要在 Ubuntu 安裝 Supervisor ，可以用以下指令：
+Supervisor 是一個在 Linux 作業系統上的行程監控軟體，它會在 `queue:listen` 或 `queue:work` 指令發生失敗後自動重啟它們。要在 Ubuntu 安裝 Supervisor，可以用以下指令：
 
     sudo apt-get install supervisor
 
@@ -356,14 +356,14 @@ Supervisor 的設定檔一般是放在 `/etc/supervisor/conf.d` 目錄下，在�
 
     sudo supervisorctl start laravel-worker:*
 
-更多有關 Supervisor 的設定與使用，請參考 [Supervisor 官方文件](http://supervisord.org/index.html) 。或是你可以使用 [Laravel Forge](https://forge.laravel.com) 所提供的 Web 介面，來自動設定與管理你的 Supervisor 設定。
+更多有關 Supervisor 的設定與使用，請參考 [Supervisor 官方文件](http://supervisord.org/index.html)。或是你可以使用 [Laravel Forge](https://forge.laravel.com) 所提供的 Web 介面，來自動設定與管理你的 Supervisor 設定。
 
 <a name="daemon-queue-listener"></a>
 ### 將任務監聽器設為背景服務
 
-在 `queue:work` Artisan 指令裡包含了 `--daemon` 選項，強迫隊列 worker 持續處理任務，而不需要重新啟動整個 framework 。比起 `queue:listen` 指令，這會顯著減少 CPU 的用量。
+在 `queue:work` Artisan 指令裡包含了 `--daemon` 選項，強迫隊列 worker 持續處理任務，而不需要重新啟動整個框架。比起 `queue:listen` 指令，這會顯著減少 CPU 的用量。
 
-用 `--daemon` 旗標在背景服務模式下啟動隊列 worker ：
+用 `--daemon` 旗標在背景服務模式下啟動隊列 worker：
 
     php artisan queue:work connection --daemon
 
@@ -371,29 +371,29 @@ Supervisor 的設定檔一般是放在 `/etc/supervisor/conf.d` 目錄下，在�
 
     php artisan queue:work connection --daemon --sleep=3 --tries=3
 
-如你所見， `queue:work` 指令提供了多數和 `queue:listen` 指令相同的選項；你可以用 `php artisan help queue:work` 指令來查看所有可用的選項。
+如你所見，`queue:work` 指令提供了多數和 `queue:listen` 指令相同的選項；你可以用 `php artisan help queue:work` 指令來查看所有可用的選項。
 
 ### 在背景服務的隊列監聽器中開發所要考量的事項
 
-在背景執行的隊列監聽器在處理完每個任務前，不會重新啟動 framework ；因此你應該在任務執行完成前，謹慎地釋放任何佔用記憶體較重的資源。例如你利用 GD 函式庫處理影像，就要在結束前用 `imagedestroy` 來釋放記憶體。
+在背景執行的隊列監聽器在處理完每個任務前，不會重新啟動框架；因此你應該在任務執行完成前，謹慎地釋放任何佔用記憶體較重的資源。例如你利用 GD 函式庫處理影像，就要在結束前用 `imagedestroy` 來釋放記憶體。
 
 相同地，你的資料庫連結也要在使用完後關閉連線；你可以用 `DB::reconnect` 方法來確保有新的資料庫連線。
 
 <a name="deploying-with-daemon-queue-listeners"></a>
 ### 隨著在背景服務的任務監聽器進行佈署
 
-從背景服務的隊列 worker 是長時間執行的行程來看，除非重新啟動，否則它們將不會理會任何程式碼上的變更。所以要佈署一個有用到背景服務的隊列 worker 的應用程式，最簡單的方法就是在佈署指令稿中重新啟動 worker 。你可以在你的佈署指令裡加上以下指令，來優雅地重新啟動所有 worker ：
+從背景服務的隊列 worker 是長時間執行的行程來看，除非重新啟動，否則它們將不會理會任何程式碼上的變更。所以要佈署一個有用到背景服務的隊列 worker 的應用程式，最簡單的方法就是在佈署指令稿中重新啟動 worker。你可以在你的佈署指令裡加上以下指令，來優雅地重新啟動所有 worker：
 
     php artisan queue:restart
 
-這個指令會優雅地告知所有隊列 worker ，在它們完成處理目前任務後重新啟動，所以就不會任務遺失的問題。
+這個指令會優雅地告知所有隊列 worker，在它們完成處理目前任務後重新啟動，所以就不會任務遺失的問題。
 
-> **注意：**這個指令依靠快取系統來安排重新啟動；預設狀況下， APCu 無法在 CLI 的任務上運作；如果你正在使用 APCu 的話，要把 `apc.enable_cli=1` 加到你的 APCu 設定裡。
+> **注意：**這個指令依靠快取系統來安排重新啟動；預設狀況下，APCu 無法在 CLI 的任務上運作；如果你正在使用 APCu 的話，要把 `apc.enable_cli=1` 加到你的 APCu 設定裡。
 
 <a name="dealing-with-failed-jobs"></a>
 ## 處理失敗的任務
 
-計劃永遠跟不上變化，有時候你的隊列任務就是會失敗。不過別擔心，我們有準備好它發生時的應付方法。 Laravel 有個便利的方式可以指定任務的最大重試次數，如果超過了這個重試次數，它就會被插入 `failed_jobs` 這個資料表。而失敗任務的名稱可以在 `config/queue.php` 這個設定檔中設定。
+計劃永遠跟不上變化，有時候你的隊列任務就是會失敗。不過別擔心，我們有準備好它發生時的應付方法。Laravel 有個便利的方式可以指定任務的最大重試次數，如果超過了這個重試次數，它就會被插入 `failed_jobs` 這個資料表。而失敗任務的名稱可以在 `config/queue.php` 這個設定檔中設定。
 
 要建立 `failed_jobs` 資料表的遷移類別，你可以用 `queue:failed-table` 指令：
 
@@ -418,19 +418,19 @@ Supervisor 的設定檔一般是放在 `/etc/supervisor/conf.d` 目錄下，在�
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Bootstrap any application services.
+         * 啟動任何應用程式的服務。
          *
          * @return void
          */
         public function boot()
         {
             Queue::failing(function ($connection, $job, $data) {
-                // Notify team of failing job...
+                // 通知團隊失敗的任務...
             });
         }
 
         /**
-         * Register the service provider.
+         * 註冊服務容器。
          *
          * @return void
          */
@@ -460,7 +460,7 @@ Supervisor 的設定檔一般是放在 `/etc/supervisor/conf.d` 目錄下，在�
         use InteractsWithQueue, SerializesModels;
 
         /**
-         * Execute the job.
+         * 執行任務。
          *
          * @param  Mailer  $mailer
          * @return void
@@ -471,13 +471,13 @@ Supervisor 的設定檔一般是放在 `/etc/supervisor/conf.d` 目錄下，在�
         }
 
         /**
-         * Handle a job failure.
+         * 處理一個失敗的任務
          *
          * @return void
          */
         public function failed()
         {
-            // Called when the job is failing...
+            // 當任務失敗時會被呼叫...
         }
     }
 
