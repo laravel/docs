@@ -45,7 +45,6 @@ elixir(function(mix) {
 
 ### Gulp
 
-Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package:
 接著，你需要全域安裝 [Gulp](http://gulpjs.com) 的 NPM 安裝包：
 
     npm install --global gulp
