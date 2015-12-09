@@ -180,7 +180,7 @@
 
     https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYYY/XXXXXXXXXXXXXXX
 
-你可以為 channel 參數提供下方的其中一種：
+你可以提供下方的其中一種作為 channel 參數：
 
 - 如果要發送通知至一個頻道：`#channel`
 - 如果要發送通知給一位使用者：`@user`
