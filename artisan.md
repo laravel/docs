@@ -108,11 +108,7 @@ Artisan 是 Laravel 裡的一個命令列介面的名稱。當你在開發你的
 
 當撰寫命令列時，從參數或是選擇來得到使用者的輸入是一種普遍的做法。藉由使用命令的 `signature` 屬性 Laravel 讓你很方便的定義希望從使用者得到的輸入， `signature` 屬性允許你用單獨、具表現力、與路由相似的語法，並用以定義命令的名字、參數及選擇。
 
-<<<<<<< HEAD
-所有提供給使用者的參數及選擇都在包在大括號中，例如:
-=======
-All user supplied arguments and options are wrapped in curly braces. In the following example, the command defines one **required** argument: `user`:
->>>>>>> upstream/5.1
+所有提供給使用者的參數及選擇都在包在大括號中。如下方範例，此指令定義一個**必須的**參數：`user`：
 
     /**
      * 命令列的名字及署名
@@ -121,11 +117,7 @@ All user supplied arguments and options are wrapped in curly braces. In the foll
      */
     protected $signature = 'email:send {user}';
 
-<<<<<<< HEAD
-在這個例子中，命令定義了一個 **一定要的** 參數: `user` 。你也可以使用選擇性的參數和定義預設的值給選擇性的參數:
-=======
-You may also make arguments optional and define default values for optional arguments:
->>>>>>> upstream/5.1
+你也可以使用選擇性的參數和定義預設的值給選擇性的參數:
 
     // 選擇性的參數...
     email:send {user?}
@@ -133,11 +125,7 @@ You may also make arguments optional and define default values for optional argu
     // 選擇性的參數及預設的值...
     email:send {user=foo}
 
-<<<<<<< HEAD
 選擇，就跟參數一樣，同樣是使用者輸入的一種格式，不過當使用選擇時，需要加入兩個連字符 (`--`) 在命令列，我們可以像這樣子在署名中定義選擇:
-=======
-Options, like arguments, are also a form of user input. However, they are prefixed by two hyphens (`--`) when they are specified on the command line. We can define options in the signature like so:
->>>>>>> upstream/5.1
 
     /**
      * 命令列的名字及署名
@@ -199,20 +187,12 @@ Options, like arguments, are also a form of user input. However, they are prefix
         //
     }
 
-<<<<<<< HEAD
 如果你需要將所有的參數匯聚成一個陣列，只要簡單的呼叫 `argument` 即可，不需要加入任何輸入:
 
     $arguments = $this->argument();
 
-而選擇的抽取就跟參數一樣簡單，除了使用的方法變為 `option` 。就像 `argument` 方法一樣，只要不加入任何輸入，即可抽取所有的
+而選擇的抽取就跟參數一樣簡單，除了使用的方法變為 `option` 。就像 `argument` 方法一樣，你可以呼叫 `option` 不加入任何輸入，即可抽取所有的
 選擇並將之轉為一個 `array` :
-=======
-If you need to retrieve all of the arguments as an `array`, call `argument` with no parameters:
-
-    $arguments = $this->argument();
-
-Options may be retrieved just as easily as arguments using the `option` method. Like the `argument` method, you may call `option` without any parameters in order to retrieve all of the options as an `array`:
->>>>>>> upstream/5.1
 
     // 抽取特定的選擇
     $queueName = $this->option('queue');
@@ -237,11 +217,7 @@ Options may be retrieved just as easily as arguments using the `option` method. 
         $name = $this->ask('你是名字是?');
     }
 
-<<<<<<< HEAD
 `secret` 方法就如同 `ask` 方法一般，但是使用者的輸入將不會顯示在命令列。這個方法適合的場景是輸入的值是敏感的資訊，例如密碼:
-=======
-The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful when asking for sensitive information such as a password:
->>>>>>> upstream/5.1
 
     $password = $this->secret('密碼是？');
 
@@ -328,11 +304,7 @@ The `secret` method is similar to `ask`, but the user's input will not be visibl
 <a name="calling-commands-via-code"></a>
 ## 使用程式碼呼叫命令
 
-<<<<<<< HEAD
-有時候你想在命令列介面外執行 Artisan 命令，例如，你希望在路由或控制器觸發 Artisan 命令。你只要在 `Artisan` facade 使用 `call` 方法來觸發。 `call` 方法的第一個參數為命令的名稱，第二個參數為陣列型態的命令輸入:
-=======
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts the name of the command as the first argument, and an array of command parameters as the second argument. The exit code will be returned:
->>>>>>> upstream/5.1
+有時候你想在命令列介面外執行 Artisan 命令。例如，你希望在路由或控制器觸發 Artisan 命令。你只要在 `Artisan` facade 使用 `call` 方法來觸發。 `call` 方法的第一個參數為命令的名稱，第二個參數為陣列型態的命令輸入。退出碼將會被回傳：
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
