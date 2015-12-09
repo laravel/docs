@@ -141,7 +141,7 @@ As noted above, if an exception occurs while the job is being processed, it will
 <a name="pushing-jobs-onto-the-queue"></a>
 ## Pushing Jobs Onto The Queue
 
-The default Laravel controller located in `app/Http/Controllers/Controller.php` uses a `DispatchesJob` trait. This trait provides several methods allowing you to conveniently push jobs onto the queue, such as the `dispatch` method:
+The default Laravel controller located in `app/Http/Controllers/Controller.php` uses a `DispatchesJobs` trait. This trait provides several methods allowing you to conveniently push jobs onto the queue, such as the `dispatch` method:
 
     <?php
 
@@ -346,7 +346,9 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/worker.log
 
-In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
+In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Of course, you should change the `queue:work sqs` portion of the `command` directive to reflect your chosen queue driver.
+
+Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
 
     sudo supervisorctl reread
 
@@ -375,7 +377,7 @@ As you can see, the `queue:work` job supports most of the same options available
 
 Daemon queue workers do not restart the framework before processing each job. Therefore, you should be careful to free any heavy resources before your job finishes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
 
-Similarly, your database connection may disconnect when being used by long-running daemon. You may use the `DB::reconnect` method to ensure you have a fresh connection.
+Similarly, your database connection may disconnect when being used by a long-running daemon. You may use the `DB::reconnect` method to ensure you have a fresh connection.
 
 <a name="deploying-with-daemon-queue-listeners"></a>
 ### Deploying With Daemon Queue Listeners
@@ -447,6 +449,7 @@ For more granular control, you may define a `failed` method directly on a queue 
     namespace App\Jobs;
 
     use App\Jobs\Job;
+    use Illuminate\Contracts\Mail\Mailer;
     use Illuminate\Queue\SerializesModels;
     use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Bus\SelfHandling;

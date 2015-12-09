@@ -117,7 +117,7 @@ Artisan 命令列介面可以很容易地透過 `make:provider` 指令產生新�
     'providers' => [
         // 其他的服務提供者
 
-        'App\Providers\AppServiceProvider',
+        App\Providers\AppServiceProvider::class,
     ],
 
 <a name="deferred-providers"></a>

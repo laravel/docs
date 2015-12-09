@@ -270,7 +270,7 @@ Laravel 會自動產生了一個 CSRF token 給每個活動使用者受應用程
 
     {!! csrf_field() !!}
 
-你不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。在 `VerifyCsrfToken` [HTTP 中介層](/docs/{{version}}/middleware) 將自動驗證請求與 Session 中的 token 是否相符。
+你不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。在 `VerifyCsrfToken` [HTTP 中介層](/docs/{{version}}/middleware) 將自動驗證請求與 session 中的 token 是否相符。
 
 <a name="csrf-excluding-uris"></a>
 ### 不受 CSRF 保護的 URIs

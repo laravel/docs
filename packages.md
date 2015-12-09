@@ -91,7 +91,7 @@
         ]);
     }
 
-現在當你套件的使用者執行 Laravel 的 `vendor:publish` Artisan 指令時，你套件的視圖將會被複製到指定的目錄。
+現在，當你套件的使用者執行 Laravel 的 `vendor:publish` Artisan 指令時，你套件的視圖將會被複製到指定的位置。
 
 <a name="translations"></a>
 ### 語言
@@ -111,6 +111,26 @@
 套件語言可以使用雙分號 `package::file.line` 語法參照它。所以，你可以按照以下方式載入 `courier` 套件中 `messages` 檔案的 `welcome` 語句：
 
     echo trans('courier::messages.welcome');
+
+#### 發佈語言檔
+
+如果你想將套件的語言檔發佈至應用程式的 `resources/lang/vendor` 目錄，你可以使用服務提供者的 `publishes` 方法。`publishes` 方法接受一個包含套件路徑及對應發佈位置的陣列。例如，若要在我們的範例 `courier` 套件發佈語言檔：
+
+    /**
+     * 在註冊後進行服務的啟動。
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+
+        $this->publishes([
+            __DIR__.'/path/to/translations' => base_path('resources/lang/vendor/courier'),
+        ]);
+    }
+
+現在，當你套件的使用者執行 Laravel 的 `vendor:publish` Artisan 指令時，你套件的語言檔將會被複製到指定的位置。
 
 <a name="configuration"></a>
 ### 設定檔

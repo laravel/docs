@@ -73,7 +73,7 @@
 
 有時候您可能會希望從項目的陣列中手動創建一個分頁實例。您可以依據您的需求決定創建 `Illuminate\Pagination\Paginator` 或是 `Illuminate\Pagination\LengthAwarePaginator` 。
 
-`Paginator` 不需要知道資料的總筆數，然而因為這點，它也無法提供取得最後一頁的方法。 `LengthAwarePaginator` 與 `Paginator` 的參數幾乎相同，但它需要得到所有資料的總筆數。
+`Paginator` 類別不需要知道資料的總筆數；然而因為這點，它也無法提供取得最後一頁的方法。`LengthAwarePaginator` 與 `Paginator` 的參數幾乎相同；但是它需要資料的總筆數。
 
 換句話說， `Paginator` 對應於查詢產生器和 Eloquent 的 `simplePaginate` 方法，而 `LengthAwarePaginator` 相等於 `paginate` 方法。
 
@@ -96,7 +96,7 @@
 
 `render` 方法將給予查詢結果中其他頁面的連結。每一個連結中都已經包含正確的 `?page` 查詢字符串變量。請記住，由 `render` 方法產生的 HTML 皆兼容於 [Bootstrap CSS 框架](https://getbootstrap.com)。
 
-> **注意：**當在 Blade 模版中使用 `render` 方法時，一定要使用 `{！ ！}` ，否則 HTML 不會被跳脫。
+> **注意：**當在 Blade 模版中使用 `render` 方法時，一定要使用 `{！ ！}` 語法，HTML 連結才不會被跳脫。
 
 #### 自定義分頁器的 URI
 
@@ -130,7 +130,8 @@
 - `$results->lastPage() (在 simplePaginate 中無法使用)`
 - `$results->nextPageUrl()`
 - `$results->perPage()`
-- `$results->total() (在 simplePaginate 中無法使用)`
+- `$results->previousPageUrl()`
+- `$results->total()（在 simplePaginate 中無法使用）`
 - `$results->url($page)`
 
 <a name="converting-results-to-json"></a>

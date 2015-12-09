@@ -14,6 +14,7 @@
     - [延遲預載入](#lazy-eager-loading)
 - [寫入關聯模型](#inserting-related-models)
     - [多對多關聯](#inserting-many-to-many-relationships)
+    - [Touching Parent Timestamps](#touching-parent-timestamps)
 
 <a name="introduction"></a>
 ## 簡介
@@ -58,7 +59,7 @@
         }
     }
 
-傳到 hasOne 方法裡的第一個參數是關聯模型的類別名稱。定義好關聯之後，我們就可以使用 Eloquent 的[動態屬性](#dynamic-properties)來取得關聯紀錄。動態屬性讓你能夠存取關聯函式，就像他們是在模型中定義的屬性：
+傳到 hasOne 方法裡的第一個參數是關聯模型的類別名稱。定義好關聯之後，我們就可以使用 Eloquent 的動態屬性來取得關聯紀錄。動態屬性讓你能夠存取關聯函式，就像他們是在模型中定義的屬性：
 
     $phone = User::find(1)->phone;
 
@@ -774,3 +775,40 @@ Eloquent 提供了方便的方法來增加新的模型至關聯中。例如，�
 你也可以傳遞中介表上該 IDs 額外的值：
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
+
+<a name="touching-parent-timestamps"></a>
+### Touching Parent Timestamps
+
+When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` which belongs to a `Post`, it is sometimes helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically "touch" the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Comment extends Model
+    {
+        /**
+         * All of the relationships to be touched.
+         *
+         * @var array
+         */
+        protected $touches = ['post'];
+
+        /**
+         * Get the post that the comment belongs to.
+         */
+        public function post()
+        {
+            return $this->belongsTo('App\Post');
+        }
+    }
+
+Now, when you update a `Comment`, the owning `Post` will have its `updated_at` column updated as well:
+
+    $comment = App\Comment::find(1);
+
+    $comment->text = 'Edit to this comment!';
+
+    $comment->save();

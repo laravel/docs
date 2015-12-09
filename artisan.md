@@ -108,7 +108,7 @@ Artisan 是 Laravel 裡的一個命令列介面的名稱。當你在開發你的
 
 當撰寫命令列時，從參數或是選擇來得到使用者的輸入是一種普遍的做法。藉由使用命令的 `signature` 屬性 Laravel 讓你很方便的定義希望從使用者得到的輸入， `signature` 屬性允許你用單獨、具表現力、與路由相似的語法，並用以定義命令的名字、參數及選擇。
 
-所有提供給使用者的參數及選擇都在包在大括號中，例如:
+所有提供給使用者的參數及選擇都在包在大括號中。如下方範例，此指令定義一個**必須的**參數：`user`：
 
     /**
      * 命令列的名字及署名
@@ -117,7 +117,7 @@ Artisan 是 Laravel 裡的一個命令列介面的名稱。當你在開發你的
      */
     protected $signature = 'email:send {user}';
 
-在這個例子中，命令定義了一個 **一定要的** 參數: `user` 。你也可以使用選擇性的參數和定義預設的值給選擇性的參數:
+你也可以使用選擇性的參數和定義預設的值給選擇性的參數:
 
     // 選擇性的參數...
     email:send {user?}
@@ -191,7 +191,7 @@ Artisan 是 Laravel 裡的一個命令列介面的名稱。當你在開發你的
 
     $arguments = $this->argument();
 
-而選擇的抽取就跟參數一樣簡單，除了使用的方法變為 `option` 。就像 `argument` 方法一樣，只要不加入任何輸入，即可抽取所有的
+而選擇的抽取就跟參數一樣簡單，除了使用的方法變為 `option` 。就像 `argument` 方法一樣，你可以呼叫 `option` 不加入任何輸入，即可抽取所有的
 選擇並將之轉為一個 `array` :
 
     // 抽取特定的選擇
@@ -276,15 +276,15 @@ Artisan 是 Laravel 裡的一個命令列介面的名稱。當你在開發你的
 
     $users = App\User::all();
 
-    $this->output->progressStart(count($users));
+    $bar = $this->output->createProgressBar(count($users));
 
     foreach ($users as $user) {
         $this->performTask($user);
 
-        $this->output->progressAdvance();
+        $bar->advance();
     }
 
-    $this->output->progressFinish();
+    $bar->finish();
 
 
 想得到更多資訊，請看看 [Symfony Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
@@ -304,7 +304,7 @@ Artisan 是 Laravel 裡的一個命令列介面的名稱。當你在開發你的
 <a name="calling-commands-via-code"></a>
 ## 使用程式碼呼叫命令
 
-有時候你想在命令列介面外執行 Artisan 命令，例如，你希望在路由或控制器觸發 Artisan 命令。你只要在 `Artisan` facade 使用 `call` 方法來觸發。 `call` 方法的第一個參數為命令的名稱，第二個參數為陣列型態的命令輸入:
+有時候你想在命令列介面外執行 Artisan 命令。例如，你希望在路由或控制器觸發 Artisan 命令。你只要在 `Artisan` facade 使用 `call` 方法來觸發。 `call` 方法的第一個參數為命令的名稱，第二個參數為陣列型態的命令輸入。退出碼將會被回傳：
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
@@ -324,7 +324,7 @@ Artisan 是 Laravel 裡的一個命令列介面的名稱。當你在開發你的
         //
     });
 
-If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you may pass a booelan `true` or `false`:
+If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you may pass a boolean `true` or `false`:
 
     $exitCode = Artisan::call('migrate:refresh', [
         '--force' => true,

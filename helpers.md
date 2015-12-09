@@ -51,6 +51,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [base_path](#method-base-path)
 [config_path](#method-config-path)
 [database_path](#method-database-path)
+[elixir](#method-elixir)
 [public_path](#method-public-path)
 [storage_path](#method-storage-path)
 </div>
@@ -81,6 +82,8 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 
 <div class="collection-method-list" markdown="1">
 [action](#method-action)
+[asset](#method-asset)
+[secure_asset](#method-secure-asset)
 [route](#method-route)
 [url](#method-url)
 </div>
@@ -95,7 +98,6 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
-[elixir](#method-elixir)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
@@ -397,6 +399,13 @@ The `database_path` function returns the fully qualified path to the application
 
     $path = database_path();
 
+<a name="method-elixir"></a>
+#### `elixir()` {#collection-method}
+
+The `elixir` function gets the path to the versioned [Elixir](/docs/{{version}}/elixir) file:
+
+    elixir($file);
+
 <a name="method-public-path"></a>
 #### `public_path()` {#collection-method}
 
@@ -442,6 +451,8 @@ The `class_basename` returns the class name of the given class with the class' n
 The `e` function runs `htmlentities` over the given string:
 
     echo e('<html>foo</html>');
+
+    // &lt;html&gt;foo&lt;/html&gt;
 
 <a name="method-ends-with"></a>
 #### `ends_with()` {#collection-method}
@@ -585,6 +596,20 @@ If the method accepts route parameters, you may pass them as the second argument
 
     $url = action('UserController@profile', ['id' => 1]);
 
+<a name="method-asset"></a>
+#### `asset()` {#collection-method}
+
+Generate a URL for an asset using the current scheme of the request (HTTP or HTTPS):
+
+	$url = asset('img/photo.jpg');
+
+<a name="method-secure-asset"></a>
+#### `secure_asset()` {#collection-method}
+
+Generate a URL for an asset using HTTPS:
+
+	echo secure_asset('foo/bar.zip', $title, $attributes = []);
+
 <a name="method-route"></a>
 #### `route()` {#collection-method}
 
@@ -638,6 +663,10 @@ The `config` function gets the value of a configuration variable. The configurat
 
     $value = config('app.timezone', $default);
 
+The `config` helper may also be used to set configuration variables at runtime by passing an array of key / value pairs:
+
+    config(['app.debug' => true]);
+
 <a name="method-csrf-field"></a>
 #### `csrf_field()` {#collection-method}
 
@@ -658,13 +687,6 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 The `dd` function dumps the given variable and ends execution of the script:
 
     dd($value);
-
-<a name="method-elixir"></a>
-#### `elixir()` {#collection-method}
-
-The `elixir` function gets the path to the versioned [Elixir](/docs/{{version}}/elixir) file:
-
-    elixir($file);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}
@@ -688,7 +710,7 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 
 The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/testing#model-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
 
-    $user = factory('App\User')->make();
+    $user = factory(App\User::class)->make();
 
 <a name="method-method-field"></a>
 #### `method_field()` {#collection-method}
@@ -702,7 +724,7 @@ The `method_field` function generates an HTML `hidden` input field containing th
 <a name="method-old"></a>
 #### `old()` {#collection-method}
 
-The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session.:
+The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session:
 
     $value = old('value');
 

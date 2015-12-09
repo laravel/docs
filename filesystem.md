@@ -107,7 +107,7 @@ Laravel 強大的檔案抽象層得力於 Frank de Jonge 的 [Flysystem](https:/
 
     Storage::put('file.jpg', $resource);
 
-`copy` 方法複製一個存在的檔案到目前磁碟的新位置。
+`copy` 方法用於複製一個存在的檔案到磁碟的新位置。
 
     Storage::copy('old/file1.jpg', 'new/file1.jpg');
 

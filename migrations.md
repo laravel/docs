@@ -201,7 +201,7 @@ schema 結構生成器包含許多欄位狀態，您能夠使用它們去創建�
 
 Command  | Description
 ------------- | -------------
-`$table->bigIncrements('id');`  |  ID 使用遞增方式增加，其屬性相同於 "big integer"。
+`$table->bigIncrements('id');`  |  遞增的 ID（主鍵），使用相當於「UNSIGNED BIG INTEGER」的型態。
 `$table->bigInteger('votes');`  |  相當於 BIGINT 型態。
 `$table->binary('data');`  |  相當於 BLOB 型態。
 `$table->boolean('confirmed');`  | 相當於 BOOLEAN 型態。
@@ -212,36 +212,35 @@ Command  | Description
 `$table->double('column', 15, 8);`  |  相當於 DOUBLE 型態，總共有 15 位數，在小數點後面有 8 位數。
 `$table->enum('choices', ['foo', 'bar']);` | 相當於 ENUM 型態。
 `$table->float('amount');`  |  相當於 FLOAT 型態。
-`$table->increments('id');`  |  相當於 Incrementing 型態 (資料表主鍵)。
+`$table->increments('id');`  |  遞增的 ID (主鍵)，使用相當於「UNSIGNED INTEGER」的型態。
 `$table->integer('votes');`  |  相當於 INTEGER 型態。
 `$table->json('options');`  |  相當於 JSON 型態。
 `$table->jsonb('options');`  |  相當於 JSONB 型態。
 `$table->longText('description');`  |  相當於 LONGTEXT 型態。
 `$table->mediumInteger('numbers');`  |  相當於 MEDIUMINT 型態。
 `$table->mediumText('description');`  |  相當於 MEDIUMTEXT 型態。
-`$table->morphs('taggable');`  |  加入整數 taggable_id 與字串 taggable_type。
-`$table->nullableTimestamps();`  |  與 timestamps() 相同，但允許 NULL。
-`$table->rememberToken();`  |  加入 remember_token 使用 VARCHAR(100) NULL。
+`$table->morphs('taggable');`  |  加入整數 `taggable_id` 與字串 `taggable_type`。
+`$table->nullableTimestamps();`  |  與 `timestamps()` 相同，但允許 NULL。
+`$table->rememberToken();`  |  加入 `remember_token` 使用 VARCHAR(100) NULL。
 `$table->smallInteger('votes');`  |  相當於 SMALLINT 型態。
-`$table->softDeletes();`  |  加入 deleted_at 欄位於軟刪除使用。
+`$table->softDeletes();`  |  加入 `deleted_at` 欄位於軟刪除使用。
 `$table->string('email');`  |  相當於 VARCHAR 型態。
-`$table->string('name', 100);`  |  相當於 VARCHAR 型態，並指定長度為100。
+`$table->string('name', 100);`  |  相當於 VARCHAR 型態，並帶有長度。
 `$table->text('description');`  |  相當於 TEXT 型態。
 `$table->time('sunrise');`  |  相當於 TIME 型態。
 `$table->tinyInteger('numbers');`  |  相當於 TINYINT 型態。
 `$table->timestamp('added_on');`  |  相當於 TIMESTAMP 型態。
-`$table->timestamps();`  |  加入 created_at 和 updated_at 欄位。
+`$table->timestamps();`  |  加入 `created_at` 和 `pdated_at` 欄位。
 
 #### 欄位修飾
 
-除了上訴的欄位類型，還有其它一些的欄位修飾，它們能加入在欄位內。
-例如在欄位內加入 "nullable" 屬性:
+除了上述的欄位類型，還有其它一些的欄位「修飾」，它們能增加至欄位。例如，若要在欄位增加「nullable」屬性，你可以使用 `nullable` 方法：
 
     Schema::table('users', function ($table) {
         $table->string('email')->nullable();
     });
 
-以下清單為欄位內可用的修飾方法，此列表不包括 [index modifiers](#adding-indexes):
+以下清單為欄位內可用的修飾方法，此列表不包括[索引修飾](#creating-indexes)：
 
 Modifier  | Description
 ------------- | -------------
@@ -333,7 +332,7 @@ Command  | Description
 <a name="dropping-indexes"></a>
 ### 移除索引
 
-要移除索引您必須指定索引名稱，Laravel 默認有預設的索引名稱。簡單地連結這些資料表與索引的欄位名稱和型別。舉例如下:
+若要移除索引，你必須指定索引名稱。預設中，Laravel 自動分配合理的名稱至索引。簡單地連結這些資料表名稱，索引的欄位名稱，及索引型別。舉例如下：
 
 Command  | Description
 ------------- | -------------
