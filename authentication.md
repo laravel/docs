@@ -91,7 +91,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
     <form method="POST" action="/auth/register">
         {!! csrf_field() !!}
 
-        <div class="col-md-6">
+        <div>
             Name
             <input type="text" name="name" value="{{ old('name') }}">
         </div>
@@ -106,7 +106,7 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
             <input type="password" name="password">
         </div>
 
-        <div class="col-md-6">
+        <div>
             Confirm Password
             <input type="password" name="password_confirmation">
         </div>
@@ -128,6 +128,8 @@ Laravel 帶有兩種認證控制器，它們被放置在 `App\Http\Controllers\A
 當使用者認證失敗，將會被重導到 `/auth/login` URI。你可以設定 `AuthController` 的 `loginPath` 屬性來自訂認證失敗後的重導位置：
 
     protected $loginPath = '/login';
+
+`loginPath` 並不會改變當使用者存取受保護的路由時所重導的路徑。該路徑是由 `App\Http\Middleware\Authenticate` 中介層的 `handle` 方法所控制。
 
 #### 客製化
 
@@ -438,14 +440,17 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div>
+            Email
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
 
         <div>
+            Password
             <input type="password" name="password">
         </div>
 
         <div>
+            Confirm Password
             <input type="password" name="password_confirmation">
         </div>
 
@@ -506,6 +511,7 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
     namespace App\Http\Controllers;
 
+    use Socialite;
     use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
@@ -540,11 +546,13 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
 當然，你需要定義路由到你的控制器方法：
 
-    <?php
-
         Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
         Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
+一些 OAuth 提供者支援在重導的請求中自訂參數。若要在請求中加入任何自訂參數，只要呼叫 `with` 方法並帶上一個關聯陣列：
+
+    return Socialite::driver('google')
+                ->with(['hd' => 'example.com'])->redirect();
 
 #### 取得使用者細節
 
@@ -631,15 +639,15 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
 `retrieveByToken` 函式藉由使用者獨特的 `$identifier` 和「記住我」`$token` 取得使用者。如同之前的方法，`Authenticatable` 的實作應該被回傳。
 
-`updateRememberToken` 方法使用新的 `$token` 更新了 `$user` 的 `remember_token` 欄位。這個新的標記可以是全新的標記（當使用者成功登入）或是 null (當使用者登出)。
+`updateRememberToken` 方法使用新的 `$token` 更新了 `$user` 的 `remember_token` 欄位。這個新的標記可以是全新的標記（當使用「記住我」嘗試登入成功時），或是 null（當使用者登出時）。
 
 `retrieveByCredentials` 方法取得了從 `Auth::attempt` 方法傳送過來的憑證陣列（當想要登入時）。這個方法應該要 「查詢」所使用的永久式儲存系統，來匹配這些憑證。通常，這個方法會執行一個帶著「where」`$credentials['username']` 條件的查詢。這個方法接著需要回傳一個 `UserInterface` 的實作。**這個方法不應該企圖做任何密碼的驗證或是認證。**
 
-`validateCredentials` 方法應該要比較 `$user` 和 `$credentials` 來認證這個使用者。例如，這個方法可能會比較 `$user->getAuthPassword()` 字串及 `Hash::make` 後的 `$credentials['password']`。這個方法應該只驗證使用者的憑證和回傳布林值。
+`validateCredentials` 方法應該要比較 `$user` 和 `$credentials` 來認證這個使用者。例如，這個方法可能會比較 `$user->getAuthPassword()` 字串及 `Hash::make` 後的 `$credentials['password']`。這個方法應該只驗證使用者的憑證並回傳一個布林值。
 
 ### 可驗證之 Contract
 
-現在我們已經介紹了 `UserProvider` 的每個方法，讓我們看一下 `Authenticate`。記得，這個提供者需要 `retrieveById` 和 `retrieveByCredentials` 方法來回傳這個介面的實作：
+現在我們已經介紹了 `UserProvider` 的每個方法，讓我們看一下 `Authenticate` contract。記得，這個提供者需要 `retrieveById` 和 `retrieveByCredentials` 方法來回傳這個介面的實作：
 
     <?php
 

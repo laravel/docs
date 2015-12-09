@@ -206,7 +206,7 @@ The service container fires an event each time it resolves an object. You may li
         // Called when container resolves object of any type...
     });
 
-    $this->app->resolving(function (FooBar $fooBar, $app) {
+    $this->app->resolving(FooBar::class, function (FooBar $fooBar, $app) {
         // Called when container resolves objects of type "FooBar"...
     });
 

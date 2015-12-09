@@ -24,7 +24,6 @@ Laravel 可以簡單的使用 seed 類別，填充測試用數據到資料庫。
 
     <?php
 
-    use DB;
     use Illuminate\Database\Seeder;
     use Illuminate\Database\Eloquent\Model;
 
@@ -59,8 +58,8 @@ Laravel 可以簡單的使用 seed 類別，填充測試用數據到資料庫。
      */
     public function run()
     {
-        factory('App\User', 50)->create()->each(function($u) {
-            $u->posts()->save(factory('App\Post')->make());
+        factory(App\User::class, 50)->create()->each(function($u) {
+            $u->posts()->save(factory(App\Post::class)->make());
         });
     }
 

@@ -1,5 +1,6 @@
 # 升級導引
 
+- [升級到 5.1.11](#upgrade-5.1.11)
 - [升級到 5.1.0](#upgrade-5.1.0)
 - [升級到 5.0.16](#upgrade-5.0.16)
 - [從 4.2 升級到 5.0](#upgrade-5.0)
@@ -7,6 +8,66 @@
 - [從 4.1.x 以前版本升級到 4.1.29](#upgrade-4.1.29)
 - [從 4.1.25 以前版本升級到 4.1.26](#upgrade-4.1.26)
 - [從 4.0 升級到 4.1](#upgrade-4.1)
+
+<a name="upgrade-5.1.11"></a>
+## 升級到 5.1.11
+
+Laravel 5.1.11 包含了對於[授權](/docs/{{version}}/authorization)及[原則](/docs/{{version}}/authorization#policies)的支援。要將這些功能新增到你現有的 Laravel 5.1 應用程式是相當容易的。
+
+> **注意：**這些升級是**可選的**，忽略它們並不會影響你的應用程式。
+
+#### 建立 Policies 目錄
+
+首先，在你的應用程式建立一個空的 `app/Policies` 目錄。
+
+#### 建立並註冊 AuthServiceProvider 與 Gate Facade
+
+在你的 `app/Providers` 目錄建立一個 `AuthServiceProvider`。你可以複製[從 GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php) 提供的預設內容。在建立提供者之後，請務必在你的 `app.php` 設定檔的 `providers` 陣列註冊它。
+
+同樣的，你必須在你的 `app.php` 設定檔的 `aliases` 陣列註冊 `Gate` facade：
+
+    'Gate' => Illuminate\Support\Facades\Gate::class,
+
+#### 更新使用者模型
+
+再來，在你的 `App\User` 模型使用 `Illuminate\Foundation\Auth\Access\Authorizable` trait 及 `Illuminate\Contracts\Auth\Access\Authorizable` contract：
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Auth\Authenticatable;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Auth\Passwords\CanResetPassword;
+    use Illuminate\Foundation\Auth\Access\Authorizable;
+    use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+    use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+    use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+
+    class User extends Model implements AuthenticatableContract,
+                                        AuthorizableContract,
+                                        CanResetPasswordContract
+    {
+        use Authenticatable, Authorizable, CanResetPassword;
+    }
+
+#### 更新基礎控制器
+
+接著，更新你基礎的 `App\Http\Controllers\Controller` 控制器，讓它使用 `Illuminate\Foundation\Auth\Access\AuthorizesRequests` trait：
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Foundation\Bus\DispatchesJobs;
+    use Illuminate\Routing\Controller as BaseController;
+    use Illuminate\Foundation\Validation\ValidatesRequests;
+    use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+    abstract class Controller extends BaseController
+    {
+        use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    }
 
 <a name="upgrade-5.1.0"></a>
 ## 升級到 5.1.0
@@ -30,7 +91,7 @@
 
 ### 添加 `BroadcastServiceProvider` 提供者
 
-在你的 `config/app.php` 設定檔裡面，添加 `Illuminate\Broadcasting\BroadcastServiceProvider` 到 `providers` 陣列裡。
+在你的 `config/app.php` 設定檔裡面，增加 `Illuminate\Broadcasting\BroadcastServiceProvider` 到 `providers` 陣列裡。
 
 ### 認證
 
@@ -170,9 +231,9 @@ Eloquent 的 `create` 方法現在可以不帶任何參數呼叫。如果你有�
 
 ### 全新安裝，然後遷移
 
-推薦的升級方式是安裝一個全新的 Laravel `5.0` 專案，然後複製你 `4.2` 網站專有的應用程式檔案 到此新的應用程式。這將包含控制器、路由、Eloquent 模型、Artisan 命令、assets 和其他專屬於你的應用程式的程式碼。
+推薦的升級方式是建立一個全新的 Laravel `5.0` 專案，然後複製你 `4.2` 網站特定的應用程式檔案到此新的應用程式。這將包含控制器、路由、Eloquent 模型、Artisan 指令、資源檔，和其他專屬於你的應用程式的程式碼。
 
-開始前，在你的本地環境中[安裝一個新的 Laravel 5 應用程式](/docs/{{version}}/installation)到 一個全新的目錄中。我們將會在後面詳細探討各部分的遷移過程。
+開始前，在你的本地環境中[安裝一個新的 Laravel 5 應用程式](/docs/{{version}}/installation)到一個全新的目錄中。不要安裝超過 5.0 的任何版本，因為我們需要先完成遷移至 5.0 的步驟。我們將會在後面詳細探討各部分的遷移過程。
 
 ### Composer 相依與套件
 

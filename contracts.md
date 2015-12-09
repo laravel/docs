@@ -29,41 +29,41 @@ Laravel 的 [facades](/docs/{{version}}/facades) 提供一個簡單的方法來�
 
 首先，讓我們來檢視這一段和快取功能有高耦合的程式碼，如下：
 
-	<?php
+    <?php
 
-	namespace App\Orders;
+    namespace App\Orders;
 
-	class Repository
-	{
-		/**
-		 * 快取功能。
-		 */
-		protected $cache;
+    class Repository
+    {
+        /**
+         * 快取實例。
+         */
+        protected $cache;
 
-		/**
-		 * 建立一個新的倉庫實體。
-		 *
-		 * @param  \SomePackage\Cache\Memcached  $cache
-		 * @return void
-		 */
-		public function __construct(\SomePackage\Cache\Memcached $cache)
-		{
-			$this->cache = $cache;
-		}
+        /**
+         * 建立一個新的倉庫實例。
+         *
+         * @param  \SomePackage\Cache\Memcached  $cache
+         * @return void
+         */
+        public function __construct(\SomePackage\Cache\Memcached $cache)
+        {
+            $this->cache = $cache;
+        }
 
-		/**
-		 * 藉由 ID 取得訂單資訊。
-		 *
-		 * @param  int  $id
-		 * @return Order
-		 */
-		public function find($id)
-		{
-			if ($this->cache->has($id))    {
-				//
-			}
-		}
-	}
+        /**
+         * 藉由 ID 取得訂單資訊。
+         *
+         * @param  int  $id
+         * @return Order
+         */
+        public function find($id)
+        {
+            if ($this->cache->has($id))    {
+                //
+            }
+        }
+    }
 
 在此類別中，程式和快取實作之間是高耦合。因為它是依賴於套件庫的特定快取類別。一旦這個套件的 API 更改了，我們的程式碼也要跟著改變。
 
@@ -71,25 +71,30 @@ Laravel 的 [facades](/docs/{{version}}/facades) 提供一個簡單的方法來�
 
 **比起上面的做法，我們可以改用一個簡單、和套件無關的介面來改進程式碼：**
 
-	<?php
+    <?php
 
-	namespace App\Orders;
+    namespace App\Orders;
 
-	use Illuminate\Contracts\Cache\Repository as Cache;
+    use Illuminate\Contracts\Cache\Repository as Cache;
 
-	class Repository
-	{
-		/**
-		 * 建立一個新的倉庫實體
-		 *
-		 * @param  Cache  $cache
-		 * @return void
-		 */
-		public function __construct(Cache $cache)
-		{
-			$this->cache = $cache;
-		}
-	}
+    class Repository
+    {
+        /**
+         * 快取實例。
+         */
+        protected $cache;
+
+        /**
+         * 建立一個新的倉庫實例。
+         *
+         * @param  Cache  $cache
+         * @return void
+         */
+        public function __construct(Cache $cache)
+        {
+            $this->cache = $cache;
+        }
+    }
 
 現在上面的程式碼沒有跟任何套件耦合，甚至是 Laravel。既然 contracts 套件沒有包含實作和任何依賴，你可以很簡單的對任何 contract 進行實作，你可以很簡單的寫一個替換的實作，甚至是替換 contracts，讓你可以替換快取實作而不用修改任何用到快取的程式碼。
 
@@ -149,42 +154,42 @@ Contract  |  對應的 Facade
 
 例如，我們來看看這個事件監聽程式：
 
-	<?php
+    <?php
 
-	namespace App\Listeners;
+    namespace App\Listeners;
 
-	use App\User;
-	use App\Events\NewUserRegistered;
-	use Illuminate\Contracts\Redis\Database;
+    use App\User;
+    use App\Events\NewUserRegistered;
+    use Illuminate\Contracts\Redis\Database;
 
-	class CacheUserInformation
-	{
-		/**
-		 * 實作 Redis 資料庫
-		 */
-		protected $redis;
+    class CacheUserInformation
+    {
+        /**
+         * 實作 Redis 資料庫
+         */
+        protected $redis;
 
-		/**
-		 * 建立一個新的事件處理物件
-		 *
-		 * @param  Database  $redis
-		 * @return void
-		 */
-		public function __construct(Database $redis)
-		{
-			$this->redis = $redis;
-		}
+        /**
+         * 建立一個新的事件處理物件
+         *
+         * @param  Database  $redis
+         * @return void
+         */
+        public function __construct(Database $redis)
+        {
+            $this->redis = $redis;
+        }
 
-		/**
-		 * 處理事件
-		 *
-		 * @param  NewUserRegistered  $event
-		 * @return void
-		 */
-		public function handle(NewUserRegistered $event)
-		{
-			//
-		}
-	}
+        /**
+         * 處理事件
+         *
+         * @param  NewUserRegistered  $event
+         * @return void
+         */
+        public function handle(NewUserRegistered $event)
+        {
+            //
+        }
+    }
 
 當事件監聽被解析時，服務容器會經由類別建構子參數的型別提示，注入適當的值。要知道怎麼註冊更多服務容器，參考[這份文件](/docs/{{version}}/container).

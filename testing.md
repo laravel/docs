@@ -30,13 +30,26 @@ Laravel 在建立時就已考慮到測試的部分。事實上，預設就支援
 
 ### 定義並執行測試
 
-要建立一個測試案例，只需要在 `tests` 目錄下建立新的測試檔案。測試類別必須繼承 `TestCase`，接著就可以像平常使用 PHPUnit 一樣定義測試方法。要執行測試只需要在終端機上執行 `phpunit` 指令：
+要建立一個測試案例，使用 `make:test` Artisan 指令：
+
+    php artisan make:test UserTest
+
+此指令會放置一個新的 `UserTest` 類別至你的 `tests` 目錄。接著就可以像平常使用 PHPUnit 一樣定義測試方法。要執行測試只需要在終端機上執行 `phpunit` 指令：
 
     <?php
 
-    class FooTest extends TestCase
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+    class UserTest extends TestCase
     {
-        public function testSomethingIsTrue()
+        /**
+         * A basic test example.
+         *
+         * @return void
+         */
+        public function testExample()
         {
             $this->assertTrue(true);
         }
@@ -216,7 +229,7 @@ Laravel 提供了幾個輔助方法在測試時使用 Session。首先，你需�
     {
         public function testApplication()
         {
-            $user = factory('App\User')->create();
+            $user = factory(App\User::class)->create();
 
             $this->actingAs($user)
                  ->withSession(['foo' => 'bar'])
@@ -354,11 +367,11 @@ Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫
 
 測試時，常常需要在執行測試之前寫入一些資料到資料庫中。建立測試資料時，除了手動設定每個欄位的值，Laravel 讓你可以使用 [Eloquent 模型](/docs/{{version}}/eloquent)的「工廠」設定每個屬性的預設值。開始之前，你可以查看應用程式的 `database/factories/ModelFactory.php` 檔案。此檔案包含一個現成的工廠定義：
 
-    $factory->define(App\User::class, function ($faker) {
+    $factory->define(App\User::class, function (Faker\Generator $faker) {
         return [
             'name' => $faker->name,
             'email' => $faker->email,
-            'password' => str_random(10),
+            'password' => bcrypt(str_random(10)),
             'remember_token' => str_random(10),
         ];
     });

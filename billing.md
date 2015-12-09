@@ -81,7 +81,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 
 `create` 方法會自動建立與 Stripe 的交易，以及將 Stripe 客戶 ID 和其他相關帳款資訊更新到資料庫。如果你的方案有在 Stripe 設定試用期，試用到期日也會自動儲存至使用者的記錄。
 
-如果你想要實施試用期，但是你是完全用應用程式來管理試用期間，而不是在 Stripe 裡設定，則你必須手動設定試用到期日：
+如果你想要實施試用期，但是你完全用應用程式來管理試用期，而不是在 Stripe 裡設定，那麼你必須手動設定試用到期日：
 
     $user->trial_ends_at = Carbon::now()->addDays(14);
 
@@ -108,7 +108,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 <a name="checking-subscription-status"></a>
 ### 確認訂購狀態
 
-一旦使用者在你的應用程式訂購，你可以使用多種便捷的方法，很簡單的檢查他們的訂購狀態。首先，當使用者擁有有效訂購時，`subscribed` 方法會回傳 `true`，即使該訂購目前是試用期間：
+一旦使用者在你的應用程式訂購，你可以使用多種便捷的方法，很簡單的檢查他們的訂購狀態。首先，當使用者擁有有效訂購時，`subscribed` 方法會回傳 `true`，即使該訂購目前在試用期間：
 
     if ($user->subscribed()) {
         //
@@ -190,6 +190,10 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
     // 減少 5 個訂購數量...
     $user->subscription()->decrement(5);
 
+另外，你也可以使用 `updateQuantity` 方法來設置指定的數量：
+
+    $user->subscription()->updateQuantity(10);
+
 有關訂購數量的更多資料，請參閱 [Stripe 文件](https://stripe.com/docs/guides/subscriptions#setting-quantities)。
 
 <a name="subscription-taxes"></a>
@@ -235,7 +239,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 
 如果顧客的信用卡過期了呢？無需擔心，Cashier 包含了 Webhook 控制器，可以幫你簡單的取消顧客的訂單。只要在路由註冊控制器：
 
-    Route::post('stripe/webhook', 'Laravel\Cashier\WebhookController@handleWebhook');
+    Route::post('stripe/webhook', '\Laravel\Cashier\WebhookController@handleWebhook');
 
 這樣就完成了！失敗的交易會經由控制器捕捉並進行處理。控制器在 Stripe 確認訂購已經失敗後 (通常在三次交易嘗試失敗後)，才會取消顧客的訂單。別忘了：你必須設定 Stripe 控制面板設定裡的 webhook URI。
 

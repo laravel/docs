@@ -7,6 +7,10 @@
     - [存放項目到快取中](#storing-items-in-the-cache)
     - [刪除快取中的項目](#removing-items-from-the-cache)
 - [加入客製化的快取驅動](#adding-custom-cache-drivers)
+- [Cache Tags](#cache-tags)
+    - [Storing Tagged Cache Items](#storing-tagged-cache-items)
+    - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
+- [Cache Events](#cache-events)
 
 <a name="configuration"></a>
 ## 設定
@@ -185,6 +189,12 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
 
     Cache::forget('key');
 
+You may clear the entire caching using the `flush` method:
+
+    Cache::flush();
+
+Flushing the cache **does not** respect the cache prefix and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
+
 <a name="adding-custom-cache-drivers"></a>
 ## 加入客製化的快取驅動
 
@@ -244,6 +254,7 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
         public function forever($key, $value) {}
         public function forget($key) {}
         public function flush() {}
+        public function getPrefix() {}
     }
 
 我們只需要透過一個 MongoDB 的連線來實作這些方法，一旦我們完成實作，我們就可以接著完成註冊我們的客製化驅動：
@@ -254,4 +265,69 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
 
 一旦你的擴充功能完成，你只需要簡單的更新 `config/cache.php` 設定檔中的 `driver` 選項為你的擴充功能名稱即可。
 
-如果你不知道要將你的客製化快取驅動程式碼放置在何處，可以考慮將它放在 Packagist 上！或者你可以在你的 `app` 目錄下建立一個 `Extension` 的命名空間，但是請記住，Laravel 沒有硬性規定的應用程式結構，你可以依照你的喜好任意組織你的應用程式。
+如果你不知道要將你的客製化快取驅動程式碼放置在何處，可以考慮將它放在 Packagist 上！或者你可以在你的 `app` 目錄下建立一個 `Extension` 的命名空間。但是請記住，Laravel 沒有硬性規定的應用程式結構，你可以依照你的喜好任意組織你的應用程式。
+
+<a name="cache-tags"></a>
+## Cache Tags
+
+> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+
+<a name="storing-tagged-cache-items"></a>
+### Storing Tagged Cache Items
+
+Cache tags allow you to tag related items in the cache and then flush all cached values that assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
+
+	Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
+
+	Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
+
+However, you are not limited to the `put` method. You may use any cache storage method while working with tags.
+
+<a name="accessing-tagged-cache-items"></a>
+### Accessing Tagged Cache Items
+
+To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method:
+
+	$john = Cache::tags(['people', 'artists'])->get('John');
+
+    $anne = Cache::tags(['people', 'authors'])->get('Anne');
+
+You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
+
+	Cache::tags(['people', 'authors'])->flush();
+
+In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`.
+
+	Cache::tags('authors')->flush();
+
+<a name="cache-events"></a>
+## Cache Events
+
+To execute code on every cache operation, you may listen for the events fired by the cache. Typically, you would place these event handlers within the `boot` method of your `EventServiceProvider`:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        $events->listen('cache.hit', function ($key, $value) {
+            //
+        });
+
+        $events->listen('cache.missed', function ($key) {
+            //
+        });
+
+        $events->listen('cache.write', function ($key, $value, $minutes) {
+            //
+        });
+
+        $events->listen('cache.delete', function ($key) {
+            //
+        });
+    }

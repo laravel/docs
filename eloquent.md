@@ -32,7 +32,7 @@ Laravel 的 Eloquent ORM 提供了漂亮、簡潔的 ActiveRecord 實作來和�
 
     php artisan make:model User
 
-當你生成一個模型時，假設你想要產生一個[資料庫遷移](/docs/{{version}}/schema#database-migrations)，可以使用 `--migration` 或者 `-m` 選項：
+假設當你生成一個模型時，想要產生一個[資料庫遷移](/docs/{{version}}/schema#database-migrations)，可以使用 `--migration` 或 `-m` 選項：
 
     php artisan make:model User --migration
 
@@ -120,7 +120,7 @@ Eloquent 也會假設每個資料表有一個主鍵欄位叫做 `id`。你可以
 <a name="retrieving-multiple-models"></a>
 ## 取回多個模型
 
-一旦你建立了一個模型並且將模型[關連到資料表](/docs/{{version}}/schema)，你就可以從資料庫中取得資料。把每個 Eloquent 模型想像成強大的[查詢構造器](/docs/{{version}}/queries)，讓你可以流暢地查詢與模型關聯的資料表。例如：
+一旦你建立了一個模型並且將模型[關連到資料表](/docs/{{version}}/schema)，你就可以從資料庫中取得資料。把每個 Eloquent 模型想像成強大的[查詢產生器](/docs/{{version}}/queries)，讓你可以流暢地查詢與模型關聯的資料表。例如：
 
     <?php
 
@@ -154,14 +154,14 @@ Eloquent 也會假設每個資料表有一個主鍵欄位叫做 `id`。你可以
 
 #### 增加額外的限制
 
-Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於每個 Eloquent 模型可以當作一個[查詢構造器](/docs/{{version}}/queries)，所以你可以在查詢中增加規則，然後透過 `get` 方法來取得結果：
+Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於每個 Eloquent 模型可以當作一個[查詢產生器](/docs/{{version}}/queries)，所以你可以在查詢中增加規則，然後透過 `get` 方法來取得結果：
 
     $flights = App\Flight::where('active', 1)
                    ->orderBy('name', 'desc')
                    ->take(10)
                    ->get();
 
-> **注意：**由於 Eloquent 模型是查詢構造器，應該檢閱所有[查詢構造器](/docs/{{version}}/queries)可用的方法。你可以在你的 Eloquent 查詢中使用這其中的任何方法。
+> **注意：**由於 Eloquent 模型是查詢產生器，應該檢閱所有[查詢產生器](/docs/{{version}}/queries)可用的方法。你可以在你的 Eloquent 查詢中使用這其中的任何方法。
 
 #### 集合
 
@@ -211,7 +211,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 <a name="retrieving-aggregates"></a>
 ### 取回集合
 
-當然，你也可以使用查詢構造器的集合函式，像是 `count`、`sum`、`max`，和其他[查詢構造器](/docs/{{version}}/queries)提供的集合函式。這些方法會回傳適當的純量值，而不是一個完整的模型實例：
+當然，你也可以使用 `count`、`sum`、`max`，和其他[查詢產生器](/docs/{{version}}/queries)提供的[聚合函式](/docs/{{version}}/queries#aggregates)。這些方法會回傳適當的純量值，而不是一個完整的模型實例：
 
     $count = App\Flight::where('active', 1)->count();
 
@@ -279,7 +279,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 
 你也可以使用 `create` 方法來在一行間儲存一個新的模型。被新增的模型實例將會從你的方法回傳。然而，在這樣做之前，你需要在你的模型上指定一個 `fillable` 或 `guarded` 屬性，因為所有的 Eloquent 模型有針對批量賦值（Mass-Assignment）做保護。
 
-當使用者透過 HTTP 請求傳入非預期的參數，並接著這些參數更改了資料庫中你不打算要改的欄位，就發生了批量賦值（Mass-Assignment）的漏洞。例如，惡意使用者可能會透過 HTTP 請求傳送 `is_admin` 參數，然後對映到你模型的 `create` 方法，這讓該使用者把自己升級為一個管理者。
+當使用者透過 HTTP 請求傳入非預期的參數，並接著這些參數更改了資料庫中你不打算要改的欄位，就發生了批量賦值（Mass-Assignment）的漏洞。例如，惡意使用者可能會透過 HTTP 請求傳送 `is_admin` 參數，然後對應到你模型的 `create` 方法，這讓該使用者把自己升級為一個管理者。
 
 所以，在開始之前，你應該定義你希望哪些模型屬性是可以被批量賦值的。你可以在模型上藉由 `$fillable` 屬性達到這個。例如，讓我們來使 `Flight` 模型的 `name` 屬性可以被批量賦值：
 
@@ -384,7 +384,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
         protected $dates = ['deleted_at'];
     }
 
-當然，你應該添加 `deleted_at` 欄位到你的資料表。Laravel [結構構造器](/docs/{{version}}/schema)包含了一個輔助的方法用來建立這個欄位：
+當然，你應該添加 `deleted_at` 欄位到你的資料表。Laravel [結構產生器](/docs/{{version}}/migrations)包含了一個輔助的方法用來建立這個欄位：
 
     Schema::table('flights', function ($table) {
         $table->softDeletes();
@@ -485,7 +485,7 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 
 一旦定義了範圍，你可以在查詢模型時呼叫範圍方法。然而，當你呼叫方法時，你不需要加上 `scope` 前綴。你甚至能串接不同的範圍呼叫，例如：
 
-    $users = App\User::popular()->women()->orderBy('created_at')->get();
+    $users = App\User::popular()->active()->orderBy('created_at')->get();
 
 #### 動態範圍
 

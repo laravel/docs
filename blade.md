@@ -48,7 +48,7 @@ Blade 是 Laravel 所提供的簡單且強大的模板引擎。相較於其它�
 
 當正在定義子頁面時，你可以使用 Blade 的 `@extends` 指令指定子頁面應該「繼承」哪一個佈局。當視圖 `@extends` Blade 的佈局之後，即可使用 `@section` 指令將內容注入於佈局的區塊中。切記，如上述範例所見，這些區塊的內容都會使用 `@yield` 顯示在佈局中：
 
-    <!-- 儲存於 resources/views/layouts/child.blade.php -->
+    <!-- 儲存於 resources/views/child.blade.php -->
 
     @extends('layouts.master')
 
@@ -181,6 +181,18 @@ Blade 的 `@include` 指令，允使你簡單地從一個已存在的視圖引�
 儘管被引入的視圖會繼承父視圖中的所有資料，你也可以傳遞額外資料的陣列至被引入的頁面：
 
     @include('view.name', ['some' => 'data'])
+
+#### 為集合渲染視圖
+
+你可以使用 Blade 的 `@each` 指令將迴圈及引入結合成一行：
+
+    @each('view.name', $jobs, 'job')
+
+第一個參數為對陣列或集合的每個元素渲染的局部視圖。第二個參數為你要迭代的陣列或集合，而第三個參數為迭代時被分配至視圖中的變數名稱。所以，舉例來說，如果你迭代一個 `jobs` 陣列，通常你會希望在局部視圖中透過 `job` 變數存取每一個 job。
+
+你也可以傳遞第四個參數至 `@each` 指令。此參數為當給定的陣列為空時，將會被渲染的視圖。
+
+    @each('view.name', $jobs, 'job', 'view.empty')
 
 #### 註解
 
