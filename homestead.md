@@ -1,6 +1,5 @@
 # Laravel Homestead
 
-<<<<<<< HEAD
 - [簡介](#introduction)
 - [安裝與設定](#installation-and-setup)
     - [前置動作](#first-steps)
