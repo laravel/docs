@@ -239,7 +239,7 @@
 <a name="method-every"></a>
 #### `every()` {#collection-method}
 
-The `every` method creates a new collection consisting of every n-th element:
+`every` 方法會建立一個包含每第 n 個元素的新集合：
 
     $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
 
@@ -247,7 +247,7 @@ The `every` method creates a new collection consisting of every n-th element:
 
     // ['a', 'e']
 
-You may optionally pass offset as the second argument:
+你可以選擇性的傳遞偏移值作為第二個參數：
 
     $collection->every(4, 1);
 
