@@ -119,7 +119,7 @@ HTTP 請求在實際碰觸到應用程式之前，最好是可以層層通過許
         //
     }]);
 
-Use an array to assign multiple middleware to the route:
+使用一組陣列為路由指派多個中介層：
 
     Route::get('/', ['middleware' => ['first', 'second'], function () {
         //
