@@ -7,10 +7,10 @@
     - [存放項目到快取中](#storing-items-in-the-cache)
     - [刪除快取中的項目](#removing-items-from-the-cache)
 - [加入客製化的快取驅動](#adding-custom-cache-drivers)
-- [Cache Tags](#cache-tags)
-    - [Storing Tagged Cache Items](#storing-tagged-cache-items)
-    - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
-- [Cache Events](#cache-events)
+- [快取標籤](#cache-tags)
+    - [寫入被標記的快取項目](#storing-tagged-cache-items)
+    - [取得被標記的快取項目](#accessing-tagged-cache-items)
+- [快取事件](#cache-events)
 
 <a name="configuration"></a>
 ## 設定
@@ -268,45 +268,45 @@ Flushing the cache **does not** respect the cache prefix and will remove all ent
 如果你不知道要將你的客製化快取驅動程式碼放置在何處，可以考慮將它放在 Packagist 上！或者你可以在你的 `app` 目錄下建立一個 `Extension` 的命名空間。但是請記住，Laravel 沒有硬性規定的應用程式結構，你可以依照你的喜好任意組織你的應用程式。
 
 <a name="cache-tags"></a>
-## Cache Tags
+## 快取標籤
 
-> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+> **注意：**快取標籤並不支援使用 `file` 或 `dababase` 的快取驅動。此外，當在快取使用多個標籤並「永久」寫入時，像是 `memcached` 的驅動效能會是最佳的，且會自動清除舊的紀錄。
 
 <a name="storing-tagged-cache-items"></a>
-### Storing Tagged Cache Items
+### 寫入被標記的快取項目
 
-Cache tags allow you to tag related items in the cache and then flush all cached values that assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
+快取標籤允許你在快取中標記關聯的項目，並刷新所有已分配指定標籤的快取值。你可以透過傳遞一組標籤名稱的有序陣列，以存取被標記的快取。舉例來說，讓我們存取一個被標記的快取並 `put` 值給它：
 
 	Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
 
 	Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
 
-However, you are not limited to the `put` method. You may use any cache storage method while working with tags.
+當然，你不必限制於 `put` 方法。你可以在利用標籤時使用任何快取儲存系統的方法。
 
 <a name="accessing-tagged-cache-items"></a>
-### Accessing Tagged Cache Items
+### 取得被標記的快取項目
 
-To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method:
+若要取得一個被標記的快取項目，只要傳遞一樣的標籤有序列表至 `tags` 方法：
 
 	$john = Cache::tags(['people', 'artists'])->get('John');
 
     $anne = Cache::tags(['people', 'authors'])->get('Anne');
 
-You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
+你可以刷新已分配單一標籤或是一組標籤列表中的所有項目。例如，下方的語法會將被標記 `people`、`authors`，或兩者的快取給移除。所以，`Anne` 與 `John` 都從快取中被移除：
 
 	Cache::tags(['people', 'authors'])->flush();
 
-In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`.
+相反的，下方的語法只會刪除被標記為 `authors` 的快取，所以 `Anne` 會被移除，但 `John` 不會。
 
 	Cache::tags('authors')->flush();
 
 <a name="cache-events"></a>
-## Cache Events
+## 快取事件
 
-To execute code on every cache operation, you may listen for the events fired by the cache. Typically, you would place these event handlers within the `boot` method of your `EventServiceProvider`:
+如果要在每次操作快取時執行程式，你可以為快取觸發事件進行監聽。一般來說，你會將事件處理放置在 `EventServiceProvider` 的 `boot` 方法中：
 
     /**
-     * Register any other events for your application.
+     * 為你的應用程式註冊任何其它事件。
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
