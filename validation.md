@@ -7,7 +7,7 @@
     - [撰寫驗證邏輯](#quick-writing-the-validation-logic)
     - [顯示驗證錯誤](#quick-displaying-the-validation-errors)
     - [AJAX 請求和驗證](#quick-ajax-requests-and-validation)
-- [其他驗證的處理](#foo)
+- [其他驗證的處理](#other-validation-approaches)
     - [手動建立驗證程式](#manually-creating-validators)
     - [表單要求驗證](#form-request-validation)
 - [處理錯誤訊息](#working-with-error-messages)
