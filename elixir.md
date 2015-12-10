@@ -45,13 +45,13 @@ elixir(function(mix) {
 
 ### Gulp
 
-接著，你需要全域安裝 [Gulp](http://gulpjs.com) 的 NPM 安裝包：
+接著，你需要全域安裝 [Gulp](http://gulpjs.com) 的 NPM 套件：
 
     npm install --global gulp
 
 ### Laravel Elixir
 
-最後的步驟就是安裝 Elixir！伴隨著新安裝的 Laravel，你會發現根目錄有個名為 `package.json` 的檔案。想像它就如同你的 `composer.json` 檔案，只是它定義的是 Node 的依賴，而不是 PHP。你可以使用以下的指令進行安裝依賴的動作：
+最後的步驟就是安裝 Elixir！伴隨著新安裝的 Laravel，你會發現根目錄有個名為 `package.json` 的檔案。想像它就如同你的 `composer.json` 檔案，只是它定義的是 Node 的依賴套件，而不是 PHP 的。你可以使用以下的指令安裝依賴套件：
 
     npm install
 
@@ -166,7 +166,7 @@ elixir(function(mix) {
 <a name="css-source-maps"></a>
 ### Source Maps
 
-Source maps 在預設情況下是開啟的。因此，在每個被編譯的檔案，同目錄內都會伴隨著一個 `*.css.map` 檔案。這個檔案能夠讓你在瀏覽器除錯時，可以追蹤編譯後的樣式選擇器至原始的 Sass 或 Less 位置。
+Source maps 在預設情況下是開啟的。因此，針對每個被編譯的檔案，同目錄內都會伴隨著一個 `*.css.map` 檔案。這個檔案能夠讓你在瀏覽器除錯時，可以追蹤編譯後的樣式選擇器至原始的 Sass 或 Less 位置。
 
 如果你不想為你的 CSS 產生 source maps，你可以使用一個簡單的設定選項關閉它們：
 
@@ -186,7 +186,7 @@ Elixir 也提供了一些函式來幫助你使用 JavaScript 檔案，像是編�
 <a name="coffeescript"></a>
 ### CoffeeScript
 
-`coffee` 方法可以用於編譯 [CoffeeScript](http://coffeescript.org/) 至純 JavaScript。`coffee` 函式接收一個字串或陣列的 CoffeeScript 檔案，並相對於 `resources/assets/coffee` 目錄，接著在 `public/js` 目錄產生單一的 `app.js` 檔案：
+`coffee` 方法可以用於編譯 [CoffeeScript](http://coffeescript.org/) 至純 JavaScript。`coffee` 函式接收一個相對於 `resources/assets/coffee` 目錄的 CoffeeScript 檔案字串或陣列，接著在 `public/js` 目錄產生單一的 `app.js` 檔案：
 
 ```javascript
 elixir(function(mix) {
@@ -225,7 +225,7 @@ elixir(function(mix) {
 <a name="babel"></a>
 ### Babel
 
-`babel` 方法可被用於編譯 [ECMAScript 6 與 7](https://babeljs.io/docs/learn-es2015/) 至純 JavaScript。此函式接收一個陣列的檔案並相對於 `resources/assets/js` 目錄，接著在 `public/js` 目錄產生單一的 `all.js` 檔案：
+`babel` 方法可被用於編譯 [ECMAScript 6 與 7](https://babeljs.io/docs/learn-es2015/) 至純 JavaScript。此函式接收一個相對於 `resources/assets/js` 目錄的檔案陣列，接著在 `public/js` 目錄產生單一的 `all.js` 檔案：
 
 ```javascript
 elixir(function(mix) {
