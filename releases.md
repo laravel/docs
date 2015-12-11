@@ -426,8 +426,7 @@ Laravel 4.2 為 `Mail` 函式採用了新的 Mailgun 和 Mandrill API 驅動。�
 
 ### 軟刪除 Traits
 
-對於軟刪除和全作用域更簡潔的方案
-PHP 5.4 的 `traits` 提供了一個更加簡潔的軟刪除架構和全局作用域，這些新架構為框架提供了更有擴展性的功能，並且讓框架更加簡潔。
+對於軟刪除和全作用域更簡潔的方案，PHP 5.4 的 `traits` 提供了一個更加簡潔的軟刪除架構和全局作用域，這些新架構為框架提供了更有擴展性的功能，並且讓框架更加簡潔。
 
 更多關於軟刪除的文檔請見: [Eloquent documentation](/docs/eloquent#soft-deleting).
 
