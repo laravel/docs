@@ -14,7 +14,7 @@
     - [延遲預載入](#lazy-eager-loading)
 - [寫入關聯模型](#inserting-related-models)
     - [多對多關聯](#inserting-many-to-many-relationships)
-    - [Touching Parent Timestamps](#touching-parent-timestamps)
+    - [連動上層時間戳記](#touching-parent-timestamps)
 
 <a name="introduction"></a>
 ## 簡介
@@ -777,9 +777,9 @@ Eloquent 提供了方便的方法來增加新的模型至關聯中。例如，�
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
 
 <a name="touching-parent-timestamps"></a>
-### Touching Parent Timestamps
+### 連動上層時間戳記
 
-When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` which belongs to a `Post`, it is sometimes helpful to update the parent's timestamp when the child model is updated. For example, when a `Comment` model is updated, you may want to automatically "touch" the `updated_at` timestamp of the owning `Post`. Eloquent makes it easy. Just add a `touches` property containing the names of the relationships to the child model:
+當一個模型 `belongsTo` 或 `belongsToMany` 另一個模型時，像是一個 `Comment` 屬於一個 `Post`，對於下層模型被更新時，欲更新上層的時間戳記相當有幫助。舉例來說，當一個 `Commnet` 模型被更新，你可能想要自動的「連動」所屬 `Post` 的 `updated_at` 時間戳記。Eloquent 使得此事相當容易。只要在關聯的下層模型增加一個包含名稱的 `touches` 屬性即可：
 
     <?php
 
@@ -790,14 +790,14 @@ When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` w
     class Comment extends Model
     {
         /**
-         * All of the relationships to be touched.
+         * 所有的關聯將會被連動。
          *
          * @var array
          */
         protected $touches = ['post'];
 
         /**
-         * Get the post that the comment belongs to.
+         * 取得擁有此評論的文章。
          */
         public function post()
         {
@@ -805,10 +805,10 @@ When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` w
         }
     }
 
-Now, when you update a `Comment`, the owning `Post` will have its `updated_at` column updated as well:
+現在，當你更新一個 `Comment`，它所屬的 `Post` 擁有的 `updated_at` 欄位也會同時更新：
 
     $comment = App\Comment::find(1);
 
-    $comment->text = 'Edit to this comment!';
+    $comment->text = '編輯此評論！';
 
     $comment->save();
