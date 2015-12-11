@@ -11,54 +11,53 @@
 <a name="support-policy"></a>
 ## 發行說明
 
-For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance.
+對於像是 Laravel 5.1 的 LTS 版本，會提供兩年的臭蟲修復及三年的安全性修復。這些版本為支援及維護提供了長時間的窗口。
 
-For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+對於一般的版本，會提供六個月的臭蟲修復及一年的安全性修復。
 
 <a name="laravel-5.1.11"></a>
 ## Laravel 5.1.11
 
-Laravel 5.1.11 introduces [authorization](/docs/{{version}}/authorization) support out of the box! Conveniently organize your application's authorization logic using simple callbacks or policy classes, and authorize actions using simple, expressive methods.
+Laravel 5.1.11 推出了內建的[授權](/docs/{{version}}/authorization)支援！透過回呼或原則類別方便的組織你應用程式的授權邏輯，使用簡單明瞭的方法對行為進行授權。
 
-For more information, please refer to the [authorization documentation](/docs/{{version}}/authorization).
+更多的資訊請參考[授權的文件](/docs/{{version}}/authorization)。
 
 <a name="laravel-5.1.4"></a>
 ## Laravel 5.1.4
 
-Laravel 5.1.4 introduces simple login throttling to the framework. Consult the [authentication documentation](/docs/{{version}}/authentication#authentication-throttling) for more information.
+Laravel 5.1.4 為框架推出了簡單的登入限制。查閱[認證的文件](/docs/{{version}}/authentication#authentication-throttling)以取得更多資訊。
 
 <a name="laravel-5.1"></a>
 ## Laravel 5.1
 
-Laravel 5.1 continues the improvements made in Laravel 5.0 by adopting PSR-2 and adding event broadcasting, middleware parameters, Artisan improvements, and more.
+Laravel 5.1 繼續以 Laravel 5.0 改進而成，透過採用 PSR-2 及新增事件廣播、中介層參數、Artisan 的改進及其他等等。
 
 ### PHP 5.5.9+
 
-Since PHP 5.4 will enter "end of life" in September and will no longer receive security updates from the PHP development team, Laravel 5.1 requires PHP 5.5.9 or greater. PHP 5.5.9 allows compatibility with the latest versions of popular PHP libraries such as Guzzle and the AWS SDK.
+由於 PHP 5.4 將在九月「結束壽命」，不再接收來自 PHP 開發團隊的安全性更新，Laravel 需要 PHP 5.5.9 或更高的版本。PHP 5.5.9 可以相容最新版本的 PHP 函式庫，像是 Guzzle 及 AWS SDK。
 
 ### LTS
 
- Laravel 5.1 is the first release of Laravel to receive **long term support**. Laravel 5.1 will receive bug fixes for 2 years and security fixes for 3 years. This support window is the largest ever provided for Laravel and provides stability and peace of mind for larger, enterprise clients and customers.
-
+Laravel 5.1 是 Laravel 獲得**長期支援**的第一個版本。Laravel 5.1 會獲得兩年的臭蟲修復及三年的安全性修復。此支援窗口是 Laravel 有史以來最大的提供，為較大型的企業客戶及消費者提供了穩定性及安心。
 ### PSR-2
 
-The [PSR-2 coding style guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) has been adopted as the default style guide for the Laravel framework. Additionally, all generators have been updated to generate PSR-2 compatible syntax.
+[PSR-2 程式碼風格指南](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)已經被 Laravel 框架採用為預設的風格指南。此外，所以的產生器都已進行更新，以產生 PSR-2 相容的語法。
 
-### Documentation
+### 文件
 
-Every page of the Laravel documentation has been meticulously reviewed and dramatically improved. All code examples have also been reviewed and expanded to provide more relevance and context.
+Laravel 文件的每一頁已被精心審查，並得到顯著的改善。所有的程式碼範例也進行了審查，並擴增以提供更多的關聯性與情境。
 
-### Event Broadcasting
+### 事件廣播
 
-In many modern web applications, web sockets are used to implement real-time, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a websocket connection to be handled by the client.
+在許多現代的 web 應用程式，web sockets 都用在實現即時，即時更新使用者介面。當在伺服器上更新一些資料，websocket 連線通常傳送一個訊息透過客戶端處理。
 
-To assist you in building these types of applications, Laravel makes it easy to "broadcast" your events over a websocket connection. Broadcasting your Laravel events allows you to share the same event names between your server-side code and your client-side JavaScript framework.
+為了協助你建立這些類型的應用程式，Laravel 讓你可以簡單的經由 websocket 連線來「廣播」你的事件。廣播你的 Laravel 事件讓你能夠在你的伺服器端程式碼和你的客戶端 JavaScript 框架間分享相同的事件名稱。
 
-To learn more about event broadcasting, check out the [event documentation](/docs/{{version}}/events#broadcasting-events).
+欲瞭解更多關於事件廣播，請查閱[事件的文件](/docs/{{version}}/events#broadcasting-events)。
 
-### Middleware Parameters
+### 中介層參數
 
-Middleware can now receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create a `RoleMiddleware` that receives a role name as an additional argument:
+中介層也可以額外接受自訂參數，例如，如果應用程式要在執行特定操作之前，檢查通過驗證的使用者是否具備該操作的「角色」，可以建立 `RoleMiddleware` 來接收角色名稱作為額外的參數。
 
     <?php
 
@@ -69,7 +68,7 @@ Middleware can now receive additional custom parameters. For example, if your ap
     class RoleMiddleware
     {
         /**
-         * Run the request filter.
+         * 執行請求過濾。
          *
          * @param  \Illuminate\Http\Request  $request
          * @param  \Closure  $next
@@ -79,7 +78,7 @@ Middleware can now receive additional custom parameters. For example, if your ap
         public function handle($request, Closure $next, $role)
         {
             if (! $request->user()->hasRole($role)) {
-                // Redirect...
+                // 重導...
             }
 
             return $next($request);
@@ -87,17 +86,17 @@ Middleware can now receive additional custom parameters. For example, if your ap
 
     }
 
-Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+在路由中可使用冒號 `:` 來區隔中介層名稱與指派參數，多筆參數可使用逗號作為分隔：
 
     Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
         //
     }]);
 
-For more information on middleware, check out the [middleware documentation](/docs/{{version}}/middleware).
+關於中介層的更多訊息，請查閱[中介層的文件](/docs/{{version}}/middleware)。
 
-### Testing Overhaul
+### 測試翻修
 
-The built-in testing capabilities of Laravel have been dramatically improved. A variety of new methods provide a fluent, expressive interface for interacting with your application and examining its responses. For example, check out the following test:
+Laravel 內建的測試功能已得到顯著的改善。各種新的方法提供了流暢、簡明的介面與應用程式進行互動，並檢查回應。例如，查看下方的測試：
 
     public function testNewUserRegistration()
     {
@@ -108,11 +107,11 @@ The built-in testing capabilities of Laravel have been dramatically improved. A 
              ->seePageIs('/dashboard');
     }
 
-For more information on testing, check out the [testing documentation](/docs/{{version}}/testing).
+關於測試的更多訊息，請查閱[測試的文件](/docs/{{version}}/testing)。
 
-### Model Factories
+### 模型工廠
 
-Laravel now ships with an easy way to create stub Eloquent models using [model factories](/docs/{{version}}/testing#model-factories). Model factories allow you to easily define a set of "default" attributes for your Eloquent model, and then generate test model instances for your tests or database seeds. Model factories also take advantage of the powerful [Faker](https://github.com/fzaninotto/Faker) PHP library for generating random attribute data:
+Laravel 現在提供一個簡單的方式建立模擬的 Eloquent 模型，使用[模型工廠](/docs/{{version}}/testing#model-factories)。模型工廠讓你簡單的為 Eloquent 模型定義一組「預設」的屬性，並為你的測試或資料填充產生測試模型實例。模型工廠也使用進階的 [Faker](https://github.com/fzaninotto/Faker) PHP 函式庫來產生隨機屬性的資料：
 
     $factory->define(App\User::class, function ($faker) {
         return [
@@ -123,33 +122,33 @@ Laravel now ships with an easy way to create stub Eloquent models using [model f
         ];
     });
 
-For more information on model factories, check out [the documentation](/docs/{{version}}/testing#model-factories).
+更多關於模型工廠的訊息，請查閱[它的文件](/docs/{{version}}/testing#model-factories)。
 
-### Artisan Improvements
+### Artisan 的改進
 
-Artisan commands may now be defined using a simple, route-like "signature", which provides an extremely simple interface for defining command line arguments and options. For example, you may define a simple command and its options like so:
+Artisan 指令現在可以使用簡單的方式定義，相似於路由的「署名」，提供了一個非常簡單的介面來定義指令列的參數及選項。舉個例子，你可以定義一個簡單的指令及它的選項，如下：
 
     /**
-     * The name and signature of the console command.
+     * 指令列的名字及署名。
      *
      * @var string
      */
     protected $signature = 'email:send {user} {--force}';
 
-For more information on defining Artisan commands, consult the [Artisan documentation](/docs/{{version}}/artisan).
+更多關於定義 Artisan 指令的訊息，請參考 [Artisan 的文件](/docs/{{version}}/artisan)。
 
-### Folder Structure
+### 資料夾結構
 
-To better express intent, the `app/Commands` directory has been renamed to `app/Jobs`. Additionally, the `app/Handlers` directory has been consolidated into a single `app/Listeners` directory which simply contains event listeners. However, this is not a breaking change and you are not required to update to the new folder structure to use Laravel 5.1.
+為了更好地表明目的，`app/Commands` 目錄已經被更名為 `app/Jobs`。此外，`app/Handler` 目錄已經被合併成一個只包含事件監聽器的 `app/Listeners` 目錄。但是，這不是一個重大的改變，你不必更新成新的資料夾結構也能使用 Laravel 5.1。
 
-### Encryption
+### 加密
 
-In previous versions of Laravel, encryption was handled by the `mcrypt` PHP extension. However, beginning in Laravel 5.1, encryption is handled by the `openssl` extension, which is more actively maintained.
+在 Laravel 之前的版本，加密是透過 `mcrypt` PHP 擴充功能進行處理。不過，從 Laravel 5.1 起，加密透過更積極維護的 `openssl` 擴充功能進行處理。
 
 <a name="laravel-5.0"></a>
 ## Laravel 5.0
 
-Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架構提供了更好的基礎在 Laravel 中建立強健的應用程式，以及在應用程式中全面採用新的自動載入標準（ PSR-4 ）。首先，來檢視一些主要更動：
+Laravel 5.0 在預設的專案上引進了新的應用程式架構。新的架構提供了更好的基礎在 Laravel 中建立強健的應用程式，以及在應用程式中全面採用新的自動載入標準（PSR-4）。首先，來檢視一些主要更動：
 
 ### 新的目錄結構
 
