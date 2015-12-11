@@ -68,7 +68,7 @@
 
     $email = DB::table('users')->where('name', 'John')->value('email');
 
-#### 從資料表中將結果切塊（chunking）
+#### 從資料表中將結果切塊
 
 若你需要操作數千筆資料庫記錄，可考慮使用 `chunk` 方法。這個方法一次取出一小「塊」結果，並將每個區塊餵給一個`閉包`處理。這個方法對編寫要處理數千筆記錄的 [Artisan 指令](/docs/{{version}}/artisan)非常有用。例如，讓我們將整個 `user` 資料表切塊，一次處理 100 筆記錄：
 
