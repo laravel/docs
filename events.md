@@ -1,30 +1,30 @@
-# Events
+# 事件
 
-- [Introduction](#introduction)
-- [Registering Events / Listeners](#registering-events-and-listeners)
-- [Defining Events](#defining-events)
-- [Defining Listeners](#defining-listeners)
-    - [Queued Event Listeners](#queued-event-listeners)
-- [Firing Events](#firing-events)
-- [Broadcasting Events](#broadcasting-events)
-    - [Configuration](#broadcast-configuration)
-    - [Marking Events For Broadcast](#marking-events-for-broadcast)
-    - [Broadcast Data](#broadcast-data)
-    - [Consuming Event Broadcasts](#consuming-event-broadcasts)
-- [Event Subscribers](#event-subscribers)
+- [簡介](#introduction)
+- [註冊事件或監聽器](#registering-events-and-listeners)
+- [定義事件](#defining-events)
+- [定義監聽器](#defining-listeners)
+    - [隊列事件的監聽器](#queued-event-listeners)
+- [觸發事件](#firing-events)
+- [廣播事件](#broadcasting-events)
+    - [設定](#broadcast-configuration)
+    - [將事件標記為廣播](#marking-events-for-broadcast)
+    - [廣播資料](#broadcast-data)
+    - [消耗事件廣播](#consuming-event-broadcasts)
+- [事件訂閱器](#event-subscribers)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Laravel's events provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their listeners are stored in `app/Listeners`.
+Laravel 事件提供了一個簡單的監聽器實作，允許你在應用程式可以訂閱和監聽事件。事件類別通常被儲存在 `app/Events` 目錄下，而它們的監聽器儲存在 `app/Listeners` 目錄下。
 
 <a name="registering-events-and-listeners"></a>
-## Registering Events / Listeners
+## 註冊事件或監聽器
 
-The `EventServiceProvider` included with your Laravel application provides a convenient place to register all event listeners. The `listen` property contains an array of all events (keys) and their listeners (values). Of course, you may add as many events to this array as your application requires. For example, let's add our `PodcastWasPurchased` event:
+Laravel 應用程式包含了 `EventServiceProvider` 提供一個方便的位置來註冊所有的事件監聽器。`listen` 屬性包含一個所有事件（鍵）以及他們的監聽器（值）的陣列。當然，你也可以在應用程式根據需求增加許多事件到這個陣列。例如：讓我們增加 `PodcastWasPurchased` 事件：
 
     /**
-     * The event listener mappings for the application.
+     * 應用程式的事件監聽器對映。
      *
      * @var array
      */
@@ -34,16 +34,16 @@ The `EventServiceProvider` included with your Laravel application provides a con
         ],
     ];
 
-### Generating Event / Listener Classes
+### 產生事件或監聽器類別
 
-Of course, manually creating the files for each event and listener is cumbersome. Instead, simply add listeners and events to your `EventServiceProvider` and use the `event:generate` command. This command will generate any events or listeners that are listed in your `EventServiceProvider`. Of course, events and listeners that already exist will be left untouched:
+當然，手動建立每個事件以及監聽器檔案是相當麻煩的。相反的，只要增加監聽器和事件到你的 `EventServiceProvider` 以及使用 `event:generate` 指令即可。這個指令會產生所有列出在 `EventServiceProvider` 的事件和監聽器。當然，已經存在的事件和監聽器將保持不變：
 
     php artisan event:generate
 
 <a name="defining-events"></a>
-## Defining Events
+## 定義事件
 
-An event class is simply a data container which holds the information related to the event. For example, let's assume our generated `PodcastWasPurchased` event receives an [Eloquent ORM](/docs/{{version}}/eloquent) object:
+一個事件類別只是一個資料容器包含了相關的事件資訊。例如，假設我們產生了 `PodcastWasPurchased` 事件來接收一個 [Eloquent ORM](/docs/{{version}}/eloquent) 物件：
 
     <?php
 
@@ -60,7 +60,7 @@ An event class is simply a data container which holds the information related to
         public $podcast;
 
         /**
-         * Create a new event instance.
+         * 建立一個新的事件實例。
          *
          * @param  Podcast  $podcast
          * @return void
@@ -71,12 +71,12 @@ An event class is simply a data container which holds the information related to
         }
     }
 
-As you can see, this event class contains no special logic. It is simply a container for the `Podcast` object that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function.
+正如你所見的，這個事件類別沒有包含特別的邏輯。它只是一個當 `Podcast` 物件被購買時的容器。如果事件物件是使用 PHP 的 `serialized` 函式進行序列化，那麼事件所使用的 `SerializesModels` trait 將會優雅的序列化任何的 Eloquent 模型。
 
 <a name="defining-listeners"></a>
-## Defining Listeners
+## 定義監聽器
 
-Next, let's take a look at the listener for our example event. Event listeners receive the event instance in their `handle` method. The `event:generate` command will automatically import the proper event class and type-hint the event on the `handle` method. Within the `handle` method, you may perform any logic necessary to respond to the event.
+接下來，讓我們看一下範例事件的監聽器。事件監聽器的 `handle` 方法接收了事件實例。`event:generate` 指令將會在事件的 `handle` 方法自動載入正確的事件類別和類型提示。在 `handle` 方法內，你可以執行任何必要回應該事件的邏輯。
 
     <?php
 
@@ -89,7 +89,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
     class EmailPurchaseConfirmation
     {
         /**
-         * Create the event listener.
+         * 建立事件監聽器。
          *
          * @return void
          */
@@ -99,18 +99,18 @@ Next, let's take a look at the listener for our example event. Event listeners r
         }
 
         /**
-         * Handle the event.
+         * 處理事件。
          *
          * @param  PodcastWasPurchased  $event
          * @return void
          */
         public function handle(PodcastWasPurchased $event)
         {
-            // Access the podcast using $event->podcast...
+            // 使用 $event->podcast 存取播客（podcast）...
         }
     }
 
-Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically:
+你的事件監聽器也可以在建構子內對任何依賴使用型別提示。所有事件監聽器經由 Laravel [服務容器](/docs/{{version}}/container)做解析，所以依賴將會自動的被注入：
 
     use Illuminate\Contracts\Mail\Mailer;
 
@@ -119,14 +119,14 @@ Your event listeners may also type-hint any dependencies they need on their cons
         $this->mailer = $mailer;
     }
 
-#### Stopping The Propagation Of An Event
+#### 停止一個事件的傳播
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning `false` from your listener's `handle` method.
+有時候，你可能希望停止一個事件的傳播到其他的監聽器。你可以在監聽器的 `handle` 方法回傳 `false` 達到這項目的。
 
 <a name="queued-event-listeners"></a>
-### Queued Event Listeners
+### 隊列事件的監聽器
 
-Need to [queue](/docs/{{version}}/queues) an event listener? It couldn't be any easier. Simply add the `ShouldQueue` interface to the listener class. Listeners generated by the `event:generate` Artisan command already have this interface imported into the current namespace, so you can use it immediately:
+需要一個[隊列](/docs/{{version}}/queues)事件監聽器嗎？它是再容易不過了。只要增加 `ShouldQueue` 介面到你的監聽器類別。由 `event:generate` Artisan 指令產生的監聽器已經將目前存在的介面載入到命名空間，所以你可以立即的使用它：
 
     <?php
 
@@ -141,11 +141,11 @@ Need to [queue](/docs/{{version}}/queues) an event listener? It couldn't be any 
         //
     }
 
-That's it! Now, when this listener is called for an event, it will be queued automatically by the event dispatcher using Laravel's [queue system](/docs/{{version}}/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has processed.
+如此而已！現在，當這個監聽器呼叫事件時，事件發送器會使用 Laravel 的[隊列系統](/docs/{{version}}/queues)自動的進行隊列。如果監聽器是透過隊列執行而沒有拋出任何異常，已處理的隊列任務將自動的被刪除。
 
-#### Manually Accessing The Queue
+#### 手動存取隊列
 
-If you need to access the underlying queue job's `delete` and `release` methods manually, you may do so. The `Illuminate\Queue\InteractsWithQueue` trait, which is imported by default on generated listeners, gives you access to these methods:
+如果你需要手動存取底層隊列任務的 `delete` 和 `release` 方法，你可以這麼做。在預設產生的監聽器會載入 `Illuminate\Queue\InteractsWithQueue` trait，讓你可以存取這些方法：
 
     <?php
 
@@ -168,9 +168,9 @@ If you need to access the underlying queue job's `delete` and `release` methods 
     }
 
 <a name="firing-events"></a>
-## Firing Events
+## 觸發事件
 
-To fire an event, you may use the `Event` [facade](/docs/{{version}}/facades), passing an instance of the event to the `fire` method. The `fire` method will dispatch the event to all of its registered listeners:
+如果要觸發一件事件，你可以使用 `Event` [facade](/docs/{{version}}/facades)，傳送一個事件的實例到 `fire` 方法。`fire` 方法將會發送事件到所有已經註冊的監聽器：
 
     <?php
 
@@ -184,7 +184,7 @@ To fire an event, you may use the `Event` [facade](/docs/{{version}}/facades), p
     class UserController extends Controller
     {
         /**
-         * Show the profile for the given user.
+         * 顯示給定使用者的基本資料
          *
          * @param  int  $userId
          * @param  int  $podcastId
@@ -194,43 +194,43 @@ To fire an event, you may use the `Event` [facade](/docs/{{version}}/facades), p
         {
             $podcast = Podcast::findOrFail($podcastId);
 
-            // Purchase podcast logic...
+            // 購買播客（podcast）邏輯...
 
             Event::fire(new PodcastWasPurchased($podcast));
         }
     }
 
-Alternatively, you may use the global `event` helper function to fire events:
+另外，你也可以使用全域 `event` 輔助函式來觸發事件：
 
     event(new PodcastWasPurchased($podcast));
 
 <a name="broadcasting-events"></a>
-## Broadcasting Events
+## 廣播事件
 
-In many modern web applications, web sockets are used to implement real-time, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a websocket connection to be handled by the client.
+在許多現代的 web 應用程式，web sockets 都用在實現即時，即時更新使用者介面。當在伺服器上更新一些資料，websocket 連線通常傳送一個訊息透過客戶端處理。
 
-To assist you in building these types of applications, Laravel makes it easy to "broadcast" your events over a websocket connection. Broadcasting your Laravel events allows you to share the same event names between your server-side code and your client-side JavaScript framework.
+為了協助你建立這些類型的應用程式，Laravel 讓你可以簡單的經由 websocket 連線來「廣播」你的事件。廣播你的 Laravel 事件讓你能夠在你的伺服器端程式碼和你的客戶端 JavaScript 框架間分享相同的事件名稱。
 
 <a name="broadcast-configuration"></a>
-### Configuration
+### 設定
 
-All of the event broadcasting configuration options are stored in the `config/broadcasting.php` configuration file. Laravel supports several broadcast drivers out of the box: [Pusher](https://pusher.com), [Redis](/docs/{{version}}/redis), and a `log` driver for local development and debugging. A configuration example is included for each of these drivers.
+所有的事件廣播設定選項都儲存在 `config/broadcasting.php` 設定檔內。Laravel 內建支援多種廣播驅動：[Pusher](https://pusher.com)、[Redis](/docs/{{version}}/redis)，和一個用於本機開發和除錯的 `log` 驅動程式。設定檔範例包含了每個驅動程式。
 
-#### Broadcast Prerequisites
+#### 廣播先決條件
 
-The following dependencies are needed for event broadcasting:
+事件廣播需要以下的依賴：
 
 - Pusher: `pusher/pusher-php-server ~2.0`
 - Redis: `predis/predis ~1.0`
 
-#### Queue Prerequisites
+#### 隊列先決條件
 
-Before broadcasting events, you will also need to configure and run a [queue listener](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected.
+在廣播事件之前，你還需要設定和執行[隊列監聽器](/docs/{{version}}/queues)。所有事件廣播經由隊列任務完成，因此你的應用程式回應時間不會有嚴重影響。
 
 <a name="marking-events-for-broadcast"></a>
-### Marking Events For Broadcast
+### 將事件標記為廣播
 
-To inform Laravel that a given event should be broadcast, implement the `Illuminate\Contracts\Broadcasting\ShouldBroadcast` interface on the event class. The `ShouldBroadcast` interface requires you to implement a single method: `broadcastOn`. The `broadcastOn` method should return an array of "channel" names that the event should be broadcast on:
+為了通知 Laravel 應該廣播一個特定事件，在你的事件類別實作 `Illuminate\Contracts\Broadcasting\ShouldBroadcast`。`ShouldBroadcast` 要求你實作單一方法：`broadcastOn`。`broadcastOn` 方法應該回傳一個必須被廣播的「頻道」名稱陣列：
 
     <?php
 
@@ -248,7 +248,7 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
         public $user;
 
         /**
-         * Create a new event instance.
+         * 建立一個新的事件實例。
          *
          * @return void
          */
@@ -258,7 +258,7 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
         }
 
         /**
-         * Get the channels the event should be broadcast on.
+         * 取得事件應該被廣播的頻道。
          *
          * @return array
          */
@@ -268,12 +268,12 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
         }
     }
 
-Then, you only need to [fire the event](#firing-events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
+接著，你只需要像往常的[觸發事件](#firing-events)。一旦事件被觸發之後，[隊列任務](/docs/{{version}}/queues)將會自動的廣播事件到你指定的廣播驅動。
 
 <a name="broadcast-data"></a>
-### Broadcast Data
+### 廣播資料
 
-When an event is broadcast, all of its `public` properties are automatically serialized and broadcast as the event's payload, allowing you to access any of its public data from your JavaScript application. So, for example, if your event has a single public `$user` property that contains an Eloquent model, the broadcast payload would be:
+當事件被廣播時，所有的 `public` 屬性都自動的被序列化和廣播作為事件的有效資料，允許你可以從你的 JavaScript 應用程式中存取任何公開的資料。所以，在這個範例中，假設事件有一個單一公開的 `$user` 屬性且包含了一個 Eloquent 模型，廣播資料將會是：
 
     {
         "user": {
@@ -283,10 +283,10 @@ When an event is broadcast, all of its `public` properties are automatically ser
         }
     }
 
-However, if you wish to have even more fine-grained control over your broadcast payload, you may add a `broadcastWith` method to your event. This method should return the array of data that you wish to broadcast with the event:
+然而，如果你希望有更多精確的控制在你的廣播資料，你可以增加 `broadcastWith` 方法到你的事件。這個方法應該回傳一個你希望廣播的事件資料陣列：
 
     /**
-     * Get the data to broadcast.
+     * 取得廣播資料。
      *
      * @return array
      */
@@ -296,11 +296,11 @@ However, if you wish to have even more fine-grained control over your broadcast 
     }
 
 <a name="consuming-event-broadcasts"></a>
-### Consuming Event Broadcasts
+### 消耗事件廣播
 
 #### Pusher
 
-You may conveniently consume events broadcast using the [Pusher](https://pusher.com) driver using Pusher's JavaScript SDK. For example, let's consume the `App\Events\ServerCreated` event from our previous examples:
+透過 [Pusher](https://pusher.com) 驅動，你可以使用 Pusher 的 JavaScript SDK 方便的消耗事件廣播。例如，讓我們從先前的範例消耗 `App\Events\ServerCreated` 事件：
 
     this.pusher = new Pusher('pusher-key');
 
@@ -312,9 +312,9 @@ You may conveniently consume events broadcast using the [Pusher](https://pusher.
 
 #### Redis
 
-If you are using the Redis broadcaster, you will need to write your own Redis pub/sub consumer to receive the messages and broadcast them using the websocket technology of your choice. For example, you may choose to use the popular [Socket.io](http://socket.io) library which is written in Node.
+如果你使用 Redis 廣播器，你需要撰寫自己的 Redis pub/sub 消耗器來接收訊息和廣播，並使用你選擇的 websocket 技術。例如，你可能選擇使用 Node 撰寫，很受歡迎的 [Socket.io](http://socket.io) 函式庫。
 
-Using the `socket.io` and `ioredis` Node libraries, you can quickly write an event broadcaster to publish all events that are broadcast by your Laravel application:
+使用 `socket.io` 和 `ioredis` Node 函式庫，你可以快速的撰寫一個事件廣播器，在你的 Laravel 應用程式發布所有事件的廣播：
 
     var app = require('http').createServer(handler);
     var io = require('socket.io')(app);
@@ -345,9 +345,9 @@ Using the `socket.io` and `ioredis` Node libraries, you can quickly write an eve
     });
 
 <a name="event-subscribers"></a>
-## Event Subscribers
+## 事件訂閱器
 
-Event subscribers are classes that may subscribe to multiple events from within the class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance:
+事件訂閱器是一個類別，讓你可以在該類別內訂閱多個事件，允許你從單一類別內定義多個事件的操作。訂閱器應該定義一個 `subscribe` 方法，可以傳送一個事件發送器實例：
 
     <?php
 
@@ -356,17 +356,17 @@ Event subscribers are classes that may subscribe to multiple events from within 
     class UserEventListener
     {
         /**
-         * Handle user login events.
+         * 處理使用者登入事件。
          */
         public function onUserLogin($event) {}
 
         /**
-         * Handle user logout events.
+         * 處理使用者登出事件。
          */
         public function onUserLogout($event) {}
 
         /**
-         * Register the listeners for the subscriber.
+         * 註冊監聽器的訂閱者。
          *
          * @param  Illuminate\Events\Dispatcher  $events
          * @return array
@@ -386,9 +386,9 @@ Event subscribers are classes that may subscribe to multiple events from within 
 
     }
 
-#### Registering An Event Subscriber
+#### 註冊事件訂閱器
 
-Once the subscriber has been defined, it may be registered with the event dispatcher. You may register subscribers using the `$subscribe` property on the `EventServiceProvider`. For example, let's add the `UserEventListener`.
+一旦訂閱器被定義，它可以被註冊到事件發送器。你可以在 `EventServiceProvider` 中使用 `$subscribe` 屬性註冊訂閱器。例如，讓我們增加 `UserEventListener`。
 
     <?php
 
@@ -400,7 +400,7 @@ Once the subscriber has been defined, it may be registered with the event dispat
     class EventServiceProvider extends ServiceProvider
     {
         /**
-         * The event listener mappings for the application.
+         * 事件監聽器對映到應用程式。
          *
          * @var array
          */
@@ -409,7 +409,7 @@ Once the subscriber has been defined, it may be registered with the event dispat
         ];
 
         /**
-         * The subscriber classes to register.
+         * 訂閱者類別進行註冊。
          *
          * @var array
          */
