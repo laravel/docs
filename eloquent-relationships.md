@@ -687,7 +687,7 @@ Eloquent 提供了方便的方法來增加新的模型至關聯中。例如，�
 
     $post = App\Post::find(1);
 
-    $comment = $post->comments()->save($comment);
+    $post->comments()->save($comment);
 
 注意我們並沒有使用動態屬性存取 `comments` 關聯。相反地，我們呼叫 `comments` 方法取得關聯的實例。`save` 方法會自動在新的 `Comment` 模型增加正確的 `post_id` 值。
 

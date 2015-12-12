@@ -38,7 +38,7 @@ vendor 目錄包含你的 [Composer](https://getcomposer.org) 依賴模組。
 
 應用程式的「內容」存在於 `app` 目錄中。預設情況下，這個目錄在 `App` 命名空間下並藉由 Composer 使用 [PSR-4 自動載入標準](http://www.php-fig.org/psr/psr-4/)自動載入。**你可以使用 `app:name` Artisan 指令變更這個命名空間**。
 
-`app` 目錄附帶許多個額外的目錄，例如：`Console`、`Http` 和 `Providers`。試想 `Console` 和 `Http` 目錄作為提供 API 進入應用程式的「核心」。HTTP 協定和 CLI 都是跟應用程式互動的機制，但實際上並不包含應用程式邏輯。換句話說，它們是兩種簡單地發布命令給應用程式的方法。`Console` 目錄包含你全部的 Artisan 指令，而 `Http` 目錄包含你的控制器、過濾器和請求。
+`app` 目錄附帶許多個額外的目錄，例如：`Console`、`Http` 和 `Providers`。試想 `Console` 和 `Http` 目錄作為提供 API 進入應用程式的「核心」。HTTP 協定和 CLI 都是跟應用程式互動的機制，但實際上並不包含應用程式邏輯。換句話說，它們是兩種簡單地發布命令給應用程式的方法。`Console` 目錄包含你全部的 Artisan 指令，而 `Http` 目錄包含你的控制器、中介層和請求。
 
 `Jobs` 目錄，當然，用於放置應用程式[可隊列的任務](/docs/{{version}}/queues)。任務可能被應用程式放到隊列中，以及可以在當前請求生命週期內同步執行。
 

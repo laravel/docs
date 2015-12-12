@@ -16,6 +16,7 @@
     - [例外 URIs](#csrf-excluding-uris)
     - [X-CSRF-Token](#csrf-x-csrf-token)
     - [X-XSRF-Token](#csrf-x-xsrf-token)
+- [路由模型綁定](#route-model-binding)
 - [表單方法欺騙](#form-method-spoofing)
 - [拋出 404 錯誤](#throwing-404-errors)
 
@@ -154,6 +155,10 @@
         'as' => 'profile', 'uses' => 'UserController@showProfile'
     ]);
 
+Instead of specifying the route name in the route array definition, you may chain the `name` method onto the end of the route definition:
+
+    Route::get('user/profile', 'UserController@showProfile')->name('profile');
+
 #### 路由群組和命名路由
 
 假設你使用 [路由群組](#route-groups)，你可以指定一個 `as` 關鍵字在你的路由群組的屬性陣列，也允許你設定所有路由群組中共同的路由名稱前綴：
@@ -268,7 +273,7 @@ Laravel 會自動產生了一個 CSRF token 給每個活動使用者受應用程
 
 當然，也可以在 Blade [模板引擎](/docs/{{version}}/blade) 中使用：
 
-    {!! csrf_field() !!}
+    {{ csrf_field() }}
 
 你不需要手動驗證 POST、PUT 或 DELETE 請求的 CSRF token。在 `VerifyCsrfToken` [HTTP 中介層](/docs/{{version}}/middleware) 將自動驗證請求與 session 中的 token 是否相符。
 
@@ -317,6 +322,44 @@ Laravel 會自動產生了一個 CSRF token 給每個活動使用者受應用程
 
 Laravel 也會在 `XSRF-TOKEN` cookie 中儲存 CSRF token。你也可以使用 cookie 的值來設定 `X-XSRF-TOKEN` 請求標頭。一些 JavaScript 框架會自動幫你處理，例如：Angular。你不太可能會需要手動去設定這個值。
 
+<a name="route-model-binding"></a>
+## Route Model Binding
+
+Laravel route model binding provides a convenient way to inject class instances into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` class instance that matches the given ID.
+
+First, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::boot` method:
+
+#### Binding A Parameter To A Model
+
+    public function boot(Router $router)
+    {
+        parent::boot($router);
+
+        $router->model('user', 'App\User');
+    }
+
+Next, define a route that contains a `{user}` parameter:
+
+    $router->get('profile/{user}', function(App\User $user) {
+        //
+    });
+
+Since we have bound the `{user}` parameter to the `App\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance which has an ID of 1.
+
+> **Note:** If a matching model instance is not found in the database, a 404 exception will be thrown automatically.
+
+If you wish to specify your own "not found" behavior, pass a Closure as the third argument to the `model` method:
+
+    $router->model('user', 'App\User', function() {
+        throw new NotFoundHttpException;
+    });
+
+If you wish to use your own resolution logic, you should use the `Route::bind` method. The Closure you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
+
+    $router->bind('user', function($value) {
+        return App\User::where('name', $value)->first();
+    });
+
 <a name="form-method-spoofing"></a>
 ## 表單方法欺騙
 
@@ -326,6 +369,14 @@ HTML 表單沒有支援 `PUT`、`PATCH` 或 `DELETE` 動作。所以在定義 `P
         <input type="hidden" name="_method" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
     </form>
+
+To generate the hidden input field `_method`, you may also use the `method_field` helper function:
+
+    <?php echo method_field('PUT'); ?>
+
+Of course, using the Blade [templating engine](/docs/{{version}}/blade):
+
+    {{ method_field('PUT') }}
 
 <a name="throwing-404-errors"></a>
 ## 拋出 404 錯誤

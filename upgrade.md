@@ -22,7 +22,7 @@ Laravel 5.1.11 包含了對於[授權](/docs/{{version}}/authorization)及[原�
 
 #### 建立並註冊 AuthServiceProvider 與 Gate Facade
 
-在你的 `app/Providers` 目錄建立一個 `AuthServiceProvider`。你可以複製[從 GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php) 提供的預設內容。在建立提供者之後，請務必在你的 `app.php` 設定檔的 `providers` 陣列註冊它。
+在你的 `app/Providers` 目錄建立一個 `AuthServiceProvider`。你可以複製[從 GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php) 提供的預設內容。切記，如果你的應用程式使用自定的命名空間，請修改提供者的命名空間。在建立提供者之後，請務必在你的 `app.php` 設定檔的 `providers` 陣列註冊它。
 
 同樣的，你必須在你的 `app.php` 設定檔的 `aliases` 陣列註冊 `Gate` facade：
 
@@ -150,6 +150,12 @@ Eloquent 的 `create` 方法現在可以不帶任何參數呼叫。如果你有�
 當序列化模型成 `array` 或 JSON 時，也會採用該日期格式。當從 Laravel 5.0 遷移到 5.1 時，這可能會改變你的 JSON 序列化的日期欄位格式。要針對序列化模型設定特定的日期格式，你可以在你的模型上覆寫 `serializeDate(DateTime $date)` 方法。這個方法讓你可以在不改變日期欄位儲存格式的情況下，精細的控制 Eloquent 序列化格式。
 
 ### 集合類別
+
+#### The `sort` Method
+
+The `sort` method now returns a fresh collection instance instead of modifying the existing collection:
+
+    $collection = $collection->sort($callback);
 
 #### `sortBy` 方法
 

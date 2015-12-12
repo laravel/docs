@@ -7,6 +7,7 @@
 - [將任務推送到隊列上](#pushing-jobs-onto-the-queue)
     - [延遲性任務](#delayed-jobs)
     - [從請求中派送任務](#dispatching-jobs-from-requests)
+    - [任務事件](#job-events)
 - [執行隊列監聽器](#running-the-queue-listener)
     - [Supervisor 設定](#supervisor-configuration)
     - [將任務監聽器設為背景服務](#daemon-queue-listener)
@@ -43,7 +44,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
 
 - Amazon SQS：`aws/aws-sdk-php ~3.0`
 - Beanstalkd：`pda/pheanstalk ~3.0`
-- IronMQ：`iron-io/iron_mq ~2.0`
+- IronMQ：`iron-io/iron_mq ~2.0|~4.0`
 - Redis：`predis/predis ~1.0`
 
 <a name="writing-job-classes"></a>
@@ -186,7 +187,7 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
 
 你可以指定任務應該要送到哪一個隊列。
 
-要推送任務到不同的隊列上，你要將任務先分類，甚至可能要排定每個隊列能有多少 woker 可以執行任務。這並不是指任務會推送到你在設定檔所定義的不同隊列連結裡，而是推送到某個有單一連結的隊列。要指定任務執行的隊列，可以用任務實體的 `onQueue` 方法，這個方法是定義在 Laravel 內建的 `App\Jobs\Job` 類別裡：
+要推送任務到不同的隊列上，你要將任務先「分類」，甚至可能要排定每個隊列能有多少作業器可以執行任務。這並不是指任務會推送到你在設定檔所定義的不同隊列連結裡，而是推送到某個有單一連結的隊列。要指定任務執行的隊列，可以用任務實例的 `onQueue` 方法。`onQueue` 是 `Illuminate\Bus\Queueable` trait 所提供的方法，而它已經包含在 `App\Jobs\Job` 基底類別中：
 
     <?php
 
@@ -289,6 +290,45 @@ Laravel 的隊列服務為不同的隊列後端系統提供一個統一的 API �
     $this->dispatchFrom('App\Jobs\ProcessOrder', $request, [
         'taxPercentage' => 20,
     ]);
+
+<a name="job-events"></a>
+### Job Events
+
+#### Job Completion Event
+
+The `Queue::after` method allows you to register a callback to be executed when a queued job executes successfully. This callback is a great opportunity to perform additional logging, queue a subsequent job, or increment statistics for a dashboard. For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Queue;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Queue::after(function ($connection, $job, $data) {
+                //
+            });
+        }
+
+        /**
+         * Register the service provider.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+    }
 
 <a name="running-the-queue-listener"></a>
 ## 執行隊列監聽器
@@ -393,7 +433,7 @@ Supervisor 的設定檔一般是放在 `/etc/supervisor/conf.d` 目錄下，在�
 <a name="dealing-with-failed-jobs"></a>
 ## 處理失敗的任務
 
-計劃永遠跟不上變化，有時候你的隊列任務就是會失敗。不過別擔心，我們有準備好它發生時的應付方法。Laravel 有個便利的方式可以指定任務的最大重試次數，如果超過了這個重試次數，它就會被插入 `failed_jobs` 這個資料表。而失敗任務的名稱可以在 `config/queue.php` 這個設定檔中設定。
+計劃永遠跟不上變化，有時候你的隊列任務就是會失敗。不過別擔心，我們有準備好它發生時的應付方法。Laravel 有個便利的方式可以指定任務的最大重試次數。當任務執行超過該重試次數，它就會被寫入至 `failed_jobs` 這個資料表。而失敗任務的名稱可以在 `config/queue.php` 這個設定檔中設定。
 
 要建立 `failed_jobs` 資料表的遷移類別，你可以用 `queue:failed-table` 指令：
 
@@ -491,6 +531,10 @@ Supervisor 的設定檔一般是放在 `/etc/supervisor/conf.d` 目錄下，在�
 `queue:failed` 指令會列出所有任務編號、連結、隊列以及失敗時間，任務編號會用在重試失敗的任務。例如要重試一個編號為 5 的失敗任務，其指令如下：
 
     php artisan queue:retry 5
+
+To retry all of your failed jobs, use `queue:retry` with `all` as the ID:
+
+    php artisan queue:retry all
 
 如果你想刪除掉一個失敗任務，可以用 `queue:forget` 指令：
 

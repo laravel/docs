@@ -137,7 +137,7 @@ If you would like to specify a custom output path for the generated migration, y
 `create`方法內需代入二個參數。
 第一個參數代表資料表名稱，第二個參數代表一個 `Closure` 它接收一個 `Blueprint` 對象用來定義新的資料表:
 
-    Schema::create('users', function ($table) {
+    Schema::create('users', function (Blueprint $table) {
         $table->increments('id');
     });
 
@@ -231,6 +231,7 @@ Command  | Description
 `$table->tinyInteger('numbers');`  |  相當於 TINYINT 型態。
 `$table->timestamp('added_on');`  |  相當於 TIMESTAMP 型態。
 `$table->timestamps();`  |  加入 `created_at` 和 `pdated_at` 欄位。
+`$table->uuid('id');`  |  相當於 UUID 型態。
 
 #### 欄位修飾
 
@@ -301,6 +302,8 @@ Modifier  | Description
     });
 
 > **注意:** 請確認在移除前 composer.json 檔案內已經加入 doctrine/dbal.
+
+> **Note:** Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
 
 <a name="creating-indexes"></a>
 ### 加入索引

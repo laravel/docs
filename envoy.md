@@ -55,7 +55,7 @@
 
 你也可以使用 ```@include``` 來引入任何外部 PHP 檔案：
 
-    @include('vendor/autoload.php');
+    @include('vendor/autoload.php')
 
 #### 任務確認
 

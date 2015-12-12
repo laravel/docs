@@ -5,7 +5,8 @@
     - [附件](#attachments)
     - [內部附件](#inline-attachments)
     - [隊列郵件](#queueing-mail)
-- [郵件與本地端開發](#mail-and-local-development)
+- [郵件與本機端開發](#mail-and-local-development)
+- [事件](#events)
 
 <a name="introduction"></a>
 ## 簡介
@@ -79,6 +80,8 @@ Laravel 允許你在[視圖](/docs/{{version}}/views)中存放電子郵件訊息
             $user = User::findOrFail($id);
 
             Mail::send('emails.reminder', ['user' => $user], function ($m) use ($user) {
+                $m->from('hello@app.com', 'Your Application');
+
                 $m->to($user->email, $user->name)->subject('Your Reminder!');
             });
         }
@@ -230,3 +233,24 @@ Laravel 允許你在[視圖](/docs/{{version}}/views)中存放電子郵件訊息
 #### Mailtrap
 
 最後，你可以使用像 [Mailtrap](https://mailtrap.io) 這樣的服務以及 `smtp` 驅動來將你的郵件訊息寄到一個「假的」郵箱，而你可以在一個真的郵件客戶端檢視它們。這個方法的好處是讓你可以在 Mailtrap 的訊息檢閱器中實際查看最終的電子郵件。
+
+<a name="events"></a>
+## Events
+
+Laravel fires the `mailer.sending` event just before sending mail messages. Remember, this event is fired when the mail is *sent*, not when it is queued. You may register an event listener in your `EventServiceProvider`:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        $events->listen('mailer.sending', function ($message) {
+            //
+        });
+    }
+

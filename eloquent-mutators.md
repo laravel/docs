@@ -135,7 +135,7 @@
 <a name="attribute-casting"></a>
 ## 屬性型別轉換
 
-`$casts` 屬性在你的模型中提供了方便的方法將屬性轉換為常見的資料類型。`$casts` 屬性應該是一個陣列，而鍵是那些需要被轉換的屬性名稱，而值則是代表你想要把欄位轉換成什麼類型。支援的型別轉換的類型有：`integer`、`real`、`float`、`double`、`string`、`boolean`、`object` 和 `array`。
+`$casts` 屬性在你的模型中提供了方便的方法將屬性轉換為常見的資料類型。`$casts` 屬性應該是一個陣列，而鍵是那些需要被轉換的屬性名稱，而值則是代表你想要把欄位轉換成什麼類型。支援的型別轉換的類型有：`integer`、`real`、`float`、`double`、`string`、`boolean`、`object`、`array`、`collection`、`date` 及 `datetime`。
 
 例如，`is_admin` 屬性以整數（0 或 1）被儲存在我們的資料庫中，讓我們把它轉換為布林值：
 

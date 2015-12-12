@@ -33,7 +33,7 @@ Laravel 使用 [Composer](http://getcomposer.org) 來管理相依性。所以，
 
 首先，使用 Composer 下載 Laravel 安裝包：
 
-    composer global require "laravel/installer=~1.1"
+    composer global require "laravel/installer"
 
 請確定把 `~/.composer/vendor/bin` 路徑放置於你的 PATH 裡，這樣你的系統才能找到 `laravel` 執行檔。
 

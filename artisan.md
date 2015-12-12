@@ -51,9 +51,8 @@ Artisan 是 Laravel 裡的一個指令列介面的名稱。當你在開發你的
     use App\User;
     use App\DripEmailer;
     use Illuminate\Console\Command;
-    use Illuminate\Foundation\Inspiring;
 
-    class Inspire extends Command
+    class SendEmails extends Command
     {
         /**
          * 指令列的名稱及署名。
@@ -155,6 +154,10 @@ Artisan 是 Laravel 裡的一個指令列介面的名稱。當你在開發你的
 
     email:send {user} {--queue=default}
 
+To assign a shortcut when defining an option, you may specify it before the option name and use a | delimiter to separate the shortcut from the full option name:
+
+    email:send {user} {--Q|queue}
+
 #### 輸入的敘述
 
 藉由加入冒號及敘述，你也可以為輸入參數及選擇加上敘述：
@@ -242,7 +245,7 @@ Artisan 是 Laravel 裡的一個指令列介面的名稱。當你在開發你的
 <a name="writing-output"></a>
 ### 撰寫輸出
 
-使用 `info` 、 `comment` 、 `question` 和 `error` 方法來傳送輸出到終端。每個方法都有適當的 ANSI 顏色來表達它們的目的。
+使用 `line`、`info`、`comment`、`question` 和 `error` 方法來傳送輸出到終端。每個方法都有適當的 ANSI 顏色來表達它們的目的。
 
 使用 `info` 方法來傳送資訊訊息給使用者，並以綠色呈現在終端。
 
@@ -259,6 +262,10 @@ Artisan 是 Laravel 裡的一個指令列介面的名稱。當你在開發你的
 使用 `error` 方法來傳送錯誤訊息給使用者，並以紅色呈現在終端。
 
     $this->error('有東西出問題了！');
+
+If you want to display plain console output, use the `line` method. The `line` method does not receive any unique coloration:
+
+    $this->line('Display this on the screen');
 
 #### 表格佈局
 
@@ -298,7 +305,7 @@ Artisan 是 Laravel 裡的一個指令列介面的名稱。當你在開發你的
 屬性的指令，都會被[服務容器](/docs/{{version}}/container)解析並向 Artisan 註冊：
 
     protected $commands = [
-        'App\Console\Commands\SendEmails'
+        Commands\SendEmails::class
     ];
 
 <a name="calling-commands-via-code"></a>

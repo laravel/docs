@@ -48,12 +48,15 @@
 
 <div id="collection-method-list" markdown="1">
 [all](#method-all)
+[avg](#method-avg)
 [chunk](#method-chunk)
 [collapse](#method-collapse)
 [contains](#method-contains)
 [count](#method-count)
 [diff](#method-diff)
 [each](#method-each)
+[every](#method-every)
+[except](#method-except)
 [filter](#method-filter)
 [first](#method-first)
 [flatten](#method-flatten)
@@ -70,7 +73,10 @@
 [keys](#method-keys)
 [last](#method-last)
 [map](#method-map)
+[max](#method-max)
 [merge](#method-merge)
+[min](#method-min)
+[only](#method-only)
 [pluck](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
@@ -122,6 +128,26 @@
     collect([1, 2, 3])->all();
 
     // [1, 2, 3]
+
+<a name="method-avg"></a>
+#### `avg()` {#collection-method}
+
+The `avg` method returns the average of all items in the collection:
+
+    collect([1, 2, 3, 4, 5])->avg();
+
+    // 3
+
+If the collection contains nested arrays or objects, you should pass a key to use for determining which values to calculate the average:
+
+    $collection = collect([
+        ['name' => 'JavaScript: The Good Parts', 'pages' => 176],
+        ['name' => 'JavaScript: The Definitive Guide', 'pages' => 1096],
+    ]);
+
+    $collection->avg('pages');
+
+    // 636
 
 <a name="method-chunk"></a>
 #### `chunk()` {#collection-method}
@@ -253,6 +279,21 @@
 
     // ['b', 'f']
 
+<a name="method-except"></a>
+#### `except()` {#collection-method}
+
+The `except` method returns all items in the collection except for those with the specified keys:
+
+    $collection = collect(['product_id' => 1, 'name' => 'Desk', 'price' => 100, 'discount' => false]);
+
+    $filtered = $collection->except(['price', 'discount']);
+
+    $filtered->all();
+
+    // ['product_id' => 1, 'name' => 'Desk']
+
+For the inverse of `except`, see the [only](#method-only) method.
+
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
 
@@ -333,9 +374,11 @@
 
 `forPage` 方法回傳含有可以用來在給定頁碼顯示的項目的新集合：
 
-    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9])->forPage(2, 3);
+    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-    $collection->all();
+    $chunk = $collection->forPage(2, 3);
+
+    $chunk->all();
 
     // [4, 5, 6]
 
@@ -561,6 +604,19 @@
 
 > **注意：**正如集合大多數其他的方法一樣，`map` 回傳一個新集合實例；它並沒有修改被呼叫的集合。假如你想改變原始的集合，得使用 [`transform`](#method-transform) 方法。
 
+<a name="method-max"></a>
+#### `max()` {#collection-method}
+
+The `max` method return the maximum value of a given key:
+
+    $max = collect([['foo' => 10], ['foo' => 20]])->max('foo');
+
+    // 20
+
+    $max = collect([1, 2, 3, 4, 5])->max();
+
+    // 5
+
 <a name="method-merge"></a>
 #### `merge()` {#collection-method}
 
@@ -583,6 +639,34 @@
     $merged->all();
 
     // ['Desk', 'Chair', 'Bookcase', 'Door']
+
+<a name="method-min"></a>
+#### `min()` {#collection-method}
+
+The `min` method return the minimum value of a given key:
+
+    $min = collect([['foo' => 10], ['foo' => 20]])->min('foo');
+
+    // 10
+
+    $min = collect([1, 2, 3, 4, 5])->min();
+
+    // 1
+
+<a name="method-only"></a>
+#### `only()` {#collection-method}
+
+The `only` method returns the items in the collection with the specified keys:
+
+    $collection = collect(['product_id' => 1, 'name' => 'Desk', 'price' => 100, 'discount' => false]);
+
+    $filtered = $collection->only(['product_id', 'name']);
+
+    $filtered->all();
+
+    // ['product_id' => 1, 'name' => 'Desk']
+
+For the inverse of `only`, see the [except](#method-except) method.
 
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
@@ -635,6 +719,16 @@
     $collection->all();
 
     // [0, 1, 2, 3, 4, 5]
+
+You can optionally pass a second argument to set the key of the prepended item:
+
+    $collection = collect(['one' => 1, 'two', => 2]);
+
+    $collection->prepend(0, 'zero');
+
+    $collection->all();
+
+    // ['zero' => 0, 'one' => 1, 'two', => 2]
 
 <a name="method-pull"></a>
 #### `pull()` {#collection-method}
