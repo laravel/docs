@@ -182,7 +182,7 @@ Blade 的 `@include` 指令，允使你簡單地從一個已存在的視圖引�
 
     @include('view.name', ['some' => 'data'])
 
-> **Note:** You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
+> **注意：**你必須在 Blade 視圖中避免使用 `__DIR__` 及 `__FILE__` 常數，因為他們會引用視圖被快取的位置。
 
 #### 為集合渲染視圖
 
