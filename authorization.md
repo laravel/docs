@@ -228,7 +228,6 @@ You may use the `after` method to define a callback to be executed after every a
 
 #### 註冊原則
 
-Once the policy exists, we need to register it with the `Gate` class. The `AuthServiceProvider` contains a `policies` property which maps various entities to the policies that manage them. So, we will specify that the `Post` model's policy is the `PostPolicy` class:
 一旦該原則存在，我們需要將它與 `Gate` 類別進行註冊。`AuthServiceProvider` 包含了一個 `policies` 屬性，將各種實體對應至管理它們的原則。所以，我們需要指定 `Post` 模型的原則是 `PostPilicy` 類別：
 
 	<?php
@@ -375,8 +374,7 @@ Once the policy exists, we need to register it with the `Gate` class. The `AuthS
 <a name="controller-authorization"></a>
 ## 控制器授權
 
-預設中，基底的 `App\Http\Controllers\Controller` 類別包含了 Laravel 使用的 `AuthorizesRequests` trait。
-此 trait 提供了 `authorize` 方法，它可以被用於快速授權一個給定的行為，當無權限執行該行為時會拋出 `HttpException`。
+預設中，基底的 `App\Http\Controllers\Controller` 類別包含了 Laravel 使用的 `AuthorizesRequests` trait。此 trait 提供了 `authorize` 方法，它可以被用於快速授權一個給定的行為，當無權限執行該行為時會拋出 `HttpException`。
 
 `authorize` 方法與其他授權方法共用了同樣的特徵，像是 `Gate::allows` 與 `$user->can()`。所以，讓我們使用 `authorize` 方法來快速授權一個請求以更新一筆 `Post`：
 
