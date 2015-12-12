@@ -685,12 +685,12 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 這個介面很簡單。`getAuthIdentifier` 方法需要回傳使用者的「主鍵」。在 MySQL，這個主鍵是指自動增加的主鍵。而 `getAuthPassword` 應該要回傳使用者雜湊後的密碼。這個介面允許認證系統和任何使用者類別運作，不用管你在使用何種 ORM 或是儲存抽象層。預設上，Laravel 的 `app` 資料夾中包含了 `User` 類別，它實作了這個介面，所以你可以觀察這個類別作為實作的範例。
 
 <a name="events"></a>
-## Events
+## 事件
 
-Laravel raises a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
+Laravel 提供了在認證過程中的各種[事件](/docs/{{version}}/events)。你可以在 `EventServiceProvider` 為這些事件連接監聽器：
 
     /**
-     * Register any other events for your application.
+     * 為你的應用程式註冊任何事件。
      *
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
@@ -699,17 +699,17 @@ Laravel raises a variety of [events](/docs/{{version}}/events) during the authen
     {
         parent::boot($events);
 
-        // Fired on each authentication attempt...
+        // 在每次嘗試認證時觸發...
         $events->listen('auth.attempt', function ($credentials, $remember, $login) {
             //
         });
 
-        // Fired on successful logins...
+        // 登入成功時觸發...
         $events->listen('auth.login', function ($user, $remember) {
             //
         });
 
-        // Fired on logouts...
+        // 登出時觸發...
         $events->listen('auth.logout', function ($user) {
             //
         });
