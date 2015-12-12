@@ -256,7 +256,7 @@ Laravel Cashier 提供口語化，流暢的介面與 [Stripe 的](https://stripe
 
     <?php
 
-    namespace App\Http\Controller;
+    namespace App\Http\Controllers;
 
     use Laravel\Cashier\WebhookController as BaseController;
 

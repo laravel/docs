@@ -182,6 +182,8 @@ Blade 的 `@include` 指令，允使你簡單地從一個已存在的視圖引�
 
     @include('view.name', ['some' => 'data'])
 
+> **Note:** You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
+
 #### 為集合渲染視圖
 
 你可以使用 Blade 的 `@each` 指令將迴圈及引入結合成一行：

@@ -9,14 +9,14 @@
 <a name="introduction"></a>
 ## 簡介
 
-Laravel 可以簡單的使用 seed 類別，填充測試用數據到資料庫。所有的 seed 類別放在 `database/seeds` 目錄下。你可以任意地為 Seed 類別命名，但是應該遵守某些大小寫規範，像是 `UserTableSeeder` 之類。預設已經有一個 `DatabaseSeeder` 類別。在這個類別裡，你可以使用 `call` 方法執行其他的 seed 類別，藉此控制資料填充的順序。
+Laravel 可以簡單的使用 seed 類別，填充測試用的資料至資料庫。所有的 seed 類別放在 `database/seeds` 目錄下。你可以任意地為 Seed 類別命名，但是應該遵守某些大小寫規範，像是 `UserTableSeeder` 之類。預設已經為你定義了一個 `DatabaseSeeder` 類別。在這個類別裡，你可以使用 `call` 方法執行其他的 seed 類別，藉此控制資料填充的順序。
 
 <a name="writing-seeders"></a>
 ## 撰寫資料填充
 
 你可以透過 `make:seeder` [Artisan 指令](/docs/{{version}}/artisan) 來生成一個 Seeder。所有透過框架生成的 Seeder 都將被放置在 `database/seeders` 路徑：
 
-    php artisan make:seeder UserTableSeeder
+    php artisan make:seeder UsersTableSeeder
 
 在 seeder 類別裡只會預設一個方法：`run`。當執行 `db:seed` [Artisan 指令](/docs/{{version}}/artisan) 時就會呼叫此方法。在 `run` 方法中，你可以新增任何想要的數據至你的資料庫中。你可使用 [查詢產生器](/docs/{{version}}/queries) 手動新增數據或你也可以使用 [Eloquent 模型工廠](/docs/{{version}}/testing#model-factories)。
 
@@ -77,9 +77,11 @@ Laravel 可以簡單的使用 seed 類別，填充測試用數據到資料庫。
     {
         Model::unguard();
 
-        $this->call(UserTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
         $this->call(PostsTableSeeder::class);
         $this->call(CommentsTableSeeder::class);
+
+        Model::reguard();
     }
 
 <a name="running-seeders"></a>

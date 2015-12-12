@@ -325,6 +325,23 @@ Laravel 提供了各種不同的處理方法來驗證應用程式傳入進來的
         return $validator->errors()->all();
     }
 
+#### Customizing The Error Messages
+
+You may customize the error messages used by the form request by overriding the `messages` method. This method should return an array of attribute / rule pairs and their corresponding error messages:
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => 'A title is required',
+            'body.required'  => 'A message is required',
+        ];
+    }
+
 <a name="working-with-error-messages"></a>
 ## 處理錯誤訊息
 
@@ -415,7 +432,7 @@ Laravel 提供了各種不同的處理方法來驗證應用程式傳入進來的
 以下是所有可用的驗證規則清單與功能：
 
 <style>
-    .collection-method-list {
+    .collection-method-list > p {
         column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
         column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
     }
@@ -426,47 +443,48 @@ Laravel 提供了各種不同的處理方法來驗證應用程式傳入進來的
 </style>
 
 <div class="collection-method-list" markdown="1">
-- [Accepted](#rule-accepted)
-- [Active URL](#rule-active-url)
-- [After (Date)](#rule-after)
-- [Alpha](#rule-alpha)
-- [Alpha Dash](#rule-alpha-dash)
-- [Alpha Numeric](#rule-alpha-num)
-- [Array](#rule-array)
-- [Before (Date)](#rule-before)
-- [Between](#rule-between)
-- [Boolean](#rule-boolean)
-- [Confirmed](#rule-confirmed)
-- [Date](#rule-date)
-- [Date Format](#rule-date-format)
-- [Different](#rule-different)
-- [Digits](#rule-digits)
-- [Digits Between](#rule-digits-between)
-- [E-Mail](#rule-email)
-- [Exists (Database)](#rule-exists)
-- [Image (File)](#rule-image)
-- [In](#rule-in)
-- [Integer](#rule-integer)
-- [IP Address](#rule-ip)
-- [JSON](#rule-json)
-- [Max](#rule-max)
-- [MIME Types (File)](#rule-mimes)
-- [Min](#rule-min)
-- [Not In](#rule-not-in)
-- [Numeric](#rule-numeric)
-- [Regular Expression](#rule-regex)
-- [Required](#rule-required)
-- [Required If](#rule-required-if)
-- [Required With](#rule-required-with)
-- [Required With All](#rule-required-with-all)
-- [Required Without](#rule-required-without)
-- [Required Without All](#rule-required-without-all)
-- [Same](#rule-same)
-- [Size](#rule-size)
-- [String](#rule-string)
-- [Timezone](#rule-timezone)
-- [Unique (Database)](#rule-unique)
-- [URL](#rule-url)
+[Accepted](#rule-accepted)
+[Active URL](#rule-active-url)
+[After (Date)](#rule-after)
+[Alpha](#rule-alpha)
+[Alpha Dash](#rule-alpha-dash)
+[Alpha Numeric](#rule-alpha-num)
+[Array](#rule-array)
+[Before (Date)](#rule-before)
+[Between](#rule-between)
+[Boolean](#rule-boolean)
+[Confirmed](#rule-confirmed)
+[Date](#rule-date)
+[Date Format](#rule-date-format)
+[Different](#rule-different)
+[Digits](#rule-digits)
+[Digits Between](#rule-digits-between)
+[E-Mail](#rule-email)
+[Exists (Database)](#rule-exists)
+[Image (File)](#rule-image)
+[In](#rule-in)
+[Integer](#rule-integer)
+[IP Address](#rule-ip)
+[JSON](#rule-json)
+[Max](#rule-max)
+[MIME Types (File)](#rule-mimes)
+[Min](#rule-min)
+[Not In](#rule-not-in)
+[Numeric](#rule-numeric)
+[Regular Expression](#rule-regex)
+[Required](#rule-required)
+[Required If](#rule-required-if)
+[Required Unless](#rule-required-unless)
+[Required With](#rule-required-with)
+[Required With All](#rule-required-with-all)
+[Required Without](#rule-required-without)
+[Required Without All](#rule-required-without-all)
+[Same](#rule-same)
+[Size](#rule-size)
+[String](#rule-string)
+[Timezone](#rule-timezone)
+[Unique (Database)](#rule-unique)
+[URL](#rule-url)
 </div>
 
 <a name="rule-accepted"></a>
@@ -577,9 +595,11 @@ Instead of passing a date string to be evaluated by `strtotime`, you may specify
 
     'email' => 'exists:staff,email,account_id,1'
 
-如果傳入 "where" 語句的查詢值是 `NULL` ，會確認查詢條件的值是否為 `NULL`：
+你也可以傳遞 `NULL` 或 `NOT_NULL` 至「Where」語句：
 
     'email' => 'exists:staff,email,deleted_at,NULL'
+
+    'email' => 'exists:staff,email,deleted_at,NOT_NULL'
 
 <a name="rule-image"></a>
 #### image
@@ -620,6 +640,10 @@ The field under validation must a valid JSON string.
 
     'photo' => 'mimes:jpeg,bmp,png'
 
+Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
+
+A full listing of MIME types and their corresponding extensions may be found at the following location: [http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+
 <a name="rule-min"></a>
 #### min:_value_
 
@@ -645,12 +669,22 @@ The field under validation must a valid JSON string.
 <a name="rule-required"></a>
 #### required
 
-驗證輸入資料裏有此欄位。
+The field under validation must be present in the input data and not empty. A field is considered "empty" is one of the following conditions are true:
+
+- The value is `null`.
+- The value is an empty string.
+- The value is an empty array or empty `Countable` object.
+- The value is an uploaded file with no path.
 
 <a name="rule-required-if"></a>
 #### required_if:_field_,_value_,...
 
 如果指定 _欄位（ field ）_ 的等於任何一個 _value_，則此欄位為必填。
+
+<a name="rule-required-unless"></a>
+#### required_unless:_anotherfield_,_value_,...
+
+The field under validation must be present unless the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
@@ -713,7 +747,11 @@ The field under validation must a valid JSON string.
 
     'email' => 'unique:users,email_address,'.$user->id
 
-**增加額外的 Where 查詢：**
+If your table uses a primary key column name other than `id`, you may specify it as the fourth parameter:
+
+    'email' => 'unique:users,email_address,'.$user->id.',user_id'
+
+**增加額外的 Where 語句：**
 
 也可以指定更多的條件到 "where" 查詢語句：
 
@@ -781,7 +819,7 @@ Laravel 提供了很多有用的驗證規則；但是，你可能希望自訂一
          */
         public function boot()
         {
-            Validator::extend('foo', function($attribute, $value, $parameters) {
+            Validator::extend('foo', function($attribute, $value, $parameters, $validator) {
                 return $value == 'foo';
             });
         }
@@ -797,7 +835,7 @@ Laravel 提供了很多有用的驗證規則；但是，你可能希望自訂一
         }
     }
 
-自訂的驗證閉包接收三個參數：要被驗證的屬性名稱 `$attribute`，屬性的值 `$value`，傳入驗證規則的參數陣列 `$parameters`。
+自訂的驗證閉包接收四個參數：要被驗證的屬性名稱 `$attribute`，屬性的值 `$value`，傳入驗證規則的參數陣列 `$parameters`，及 `Validator` 實例。
 
 除了使用閉包，你也可以傳入類別和方法到 `extend` 方法中：
 
@@ -828,3 +866,21 @@ Laravel 提供了很多有用的驗證規則；但是，你可能希望自訂一
             return str_replace(...);
         });
     }
+
+#### Implicit Extensions
+
+By default, when an attribute being validated is not present or contains an empty value as defined by the [`required`](#rule-required) rule, normal validation rules, including custom extensions, are not run. For example, the [`integer`](#rule-integer) rule will not be run against a `null` value:
+
+    $rules = ['count' => 'integer'];
+
+    $input = ['count' => null];
+
+    Validator::make($input, $rules)->passes(); // true
+
+For a rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create such an "implicit" extension, use the `Validator::extendImplicit()` method:
+
+    Validator::extendImplicit('foo', function($attribute, $value, $parameters, $validator) {
+        return $value == 'foo';
+    });
+
+> **Note:** An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.

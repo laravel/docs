@@ -14,6 +14,9 @@
     - [回應](/docs/{{version}}/responses)
     - [視圖](/docs/{{version}}/views)
     - [Blade 模板](/docs/{{version}}/blade)
+- 教學
+    - [初級任務清單](/docs/{{version}}/quickstart)
+    - [中級任務清單](/docs/{{version}}/quickstart-intermediate)
 - 系統架構
     - [請求的生命週期](/docs/{{version}}/lifecycle)
     - [應用程式結構](/docs/{{version}}/structure)

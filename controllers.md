@@ -64,13 +64,19 @@
 
     Route::get('foo', ['uses' => 'FooController@method', 'as' => 'name']);
 
-一旦你指定了控制器路由的名稱，你可以很容易地產生能達成該行為的 URL。要產生指向控制器行為的 URL，請使用 `action` 輔助方法。同樣地，我們只需指定基底命名空間 `App\Http\Controllers` 之後的部分控制器類別名稱就可以了：
-
-    $url = action('FooController@method');
+#### 控制器行為的 URLs
 
 您也可以使用 `route` 輔助方法，產生命名控制器路由的 URL：
 
     $url = route('name');
+
+一旦你指定了控制器路由的名稱，你可以很容易地產生能達成該行為的 URL。你也可以使用 `action` 輔助方法產生指向控制器行為的 URL。同樣地，我們只需指定基底命名空間 `App\Http\Controllers` 之後的部分控制器類別名稱就可以了：
+
+    $url = action('FooController@method');
+
+You may access the name of the controller action being run using the `currentRouteAction` method on the `Route` facade:
+
+	$action = Route::currentRouteAction();
 
 <a name="controller-middleware"></a>
 ## 控制器中介層
@@ -336,6 +342,8 @@ Laravel [服務容器](/docs/{{version}}/container)用於解析所有的 Laravel
 
 <a name="route-caching"></a>
 ## 路由快取
+
+> **Note:** Route caching does not work with Closure based routes. To use route caching, you must convert any Closure routes to use controller classes.
 
 若您的應用程式完全透過控制器使用路由，您可以利用 Laravel 的路由快取。使用路由快取可以大幅降低註冊您應用程式全部的路由所需的時間。在某些情況下，您的路由註冊甚至可以快上一百倍！要產生路由快取，只要執行 `route:cache` 此 Artisan 指令：
 

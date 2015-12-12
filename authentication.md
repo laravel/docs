@@ -1,6 +1,7 @@
 # 認證
 
 - [介紹](#introduction)
+    - [資料庫注意事項](#introduction-database-considerations)
 - [認證快速入門](#authentication-quickstart)
     - [路由](#included-routing)
     - [視圖](#included-views)
@@ -20,12 +21,14 @@
     - [重設密碼後](#after-resetting-passwords)
 - [社交認證](#social-authentication)
 - [新增客製化認證驅動](#adding-custom-authentication-drivers)
+- [事件](#events)
 
 <a name="introduction"></a>
 ## 介紹
 
 Laravel 讓實作認證變得非常簡單。事實上，幾乎所有東西都是可以藉由設定來直接使用。認證設定檔被放在 `config/auth.php`，其中包含了幾個有良好文件的選項，以此來調整認證服務的行為。
 
+<a name="introduction-database-considerations"></a>
 ### 資料庫注意事項
 
 預設的 Laravel 在你的 `app` 資料夾中含有 `App\User` [Eloquent 模型](/docs/{{version}}/eloquent)。這個模型使用預設的 Eloquent 認證來驅動。如果你的應用程式沒有使用 Eloquent，你可以使用 Laravel 查詢生成器的 `database` 認證驅動。
@@ -409,6 +412,14 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
     <form method="POST" action="/password/email">
         {!! csrf_field() !!}
 
+        @if (count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+
         <div>
             Email
             <input type="email" name="email" value="{{ old('email') }}">
@@ -438,6 +449,14 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
     <form method="POST" action="/password/reset">
         {!! csrf_field() !!}
         <input type="hidden" name="token" value="{{ $token }}">
+
+        @if (count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
 
         <div>
             Email
@@ -546,8 +565,8 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
 
 當然，你需要定義路由到你的控制器方法：
 
-        Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
-        Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
+    Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
+    Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
 一些 OAuth 提供者支援在重導的請求中自訂參數。若要在請求中加入任何自訂參數，只要呼叫 `with` 方法並帶上一個關聯陣列：
 
@@ -664,3 +683,34 @@ Laravel 包含了 `Auth\PasswordController`，而它含有所有重置使用者�
     }
 
 這個介面很簡單。`getAuthIdentifier` 方法需要回傳使用者的「主鍵」。在 MySQL，這個主鍵是指自動增加的主鍵。而 `getAuthPassword` 應該要回傳使用者雜湊後的密碼。這個介面允許認證系統和任何使用者類別運作，不用管你在使用何種 ORM 或是儲存抽象層。預設上，Laravel 的 `app` 資料夾中包含了 `User` 類別，它實作了這個介面，所以你可以觀察這個類別作為實作的範例。
+
+<a name="events"></a>
+## Events
+
+Laravel raises a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        // Fired on each authentication attempt...
+        $events->listen('auth.attempt', function ($credentials, $remember, $login) {
+            //
+        });
+
+        // Fired on successful logins...
+        $events->listen('auth.login', function ($user, $remember) {
+            //
+        });
+
+        // Fired on logouts...
+        $events->listen('auth.logout', function ($user) {
+            //
+        });
+    }

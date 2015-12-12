@@ -303,7 +303,7 @@ Laravel 提供了一套統一的 API 給各種不同的快取系統，快取的�
 <a name="cache-events"></a>
 ## 快取事件
 
-如果要在每次操作快取時執行程式，你可以為快取觸發事件進行監聽。一般來說，你會將事件處理放置在 `EventServiceProvider` 的 `boot` 方法中：
+如果要在每次操作快取時執行程式，你可以為快取觸發[事件](/docs/{{version}}/events)進行監聽。一般來說，你必須將事件監聽器放置在 `EventServiceProvider` 的 `boot` 方法中：
 
     /**
      * 為你的應用程式註冊任何其它事件。

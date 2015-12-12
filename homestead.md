@@ -10,6 +10,7 @@
     - [透過 SSH 連接](#connecting-via-ssh)
     - [連接資料庫](#connecting-to-databases)
     - [增加更多網站](#adding-additional-sites)
+    - [設定 Cron 排程器](#configuring-cron-schedules)
     - [連接埠](#ports)
     - [Bash 別名](#bash-aliases)
 - [Blackfire 分析器](#blackfire-profiler)
@@ -31,14 +32,18 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 ### 內建軟體
 
 - Ubuntu 14.04
-- PHP 5.6
+- Git
+- PHP 5.6 / 7.0
+- Xdebug
 - HHVM
 - Nginx
 - MySQL
+- Sqlite3
 - Postgres
+- Composer
 - Node (With PM2, Bower, Grunt, and Gulp)
 - Redis
-- Memcached
+- Memcached (PHP 5.x Only)
 - Beanstalkd
 - [Laravel Envoy](/docs/{{version}}/envoy)
 - [Blackfire Profiler](#blackfire-profiler)
@@ -49,7 +54,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 <a name="first-steps"></a>
 ### 前置動作
 
-在啟動你的 Homestead 環境之前，你必須先安裝 [VirtualBox](https://www.virtualbox.org/wiki/Downloads) 或 [VMWare](http://www.vmware.com) 以及 [Vagrant](http://www.vagrantup.com/downloads.html). 這些軟體在各平台都有提供易用的視覺化安裝程式。
+在啟動你的 Homestead 環境之前，你必須先安裝 [VirtualBox 5.x](https://www.virtualbox.org/wiki/Downloads) 或 [VMWare](http://www.vmware.com) 以及 [Vagrant](http://www.vagrantup.com/downloads.html)。這些軟體在各個常用的平台都有提供易用的視覺化安裝程式。
 
 若要使用 VMware provider，你需要同時購買 VMware Fusion / Workstation 及 [VMware Vagrant plug-in](http://www.vagrantup.com/vmware) 的軟體授權。使用 VMware 可以在共享資料夾上獲得較快的性能。
 
@@ -69,9 +74,28 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 
     git clone https://github.com/laravel/homestead.git Homestead
 
-一旦你克隆完 Homestead 資源庫，即可在 Homestead 目錄中執行 `bash init.sh` 指令來創建 `Homestead.yaml` 設定檔。 `Homestead.yaml` 這個檔案將會被放置在你的 `~/.homestead` 目錄中：
+If you would like to try the PHP 7.0 version of Homestead, clone the `php-7` branch of the repository:
+
+    git clone -b php-7 https://github.com/laravel/homestead.git Homestead
+
+一旦你克隆完 Homestead 資源庫，即可在 Homestead 目錄中執行 `bash init.sh` 指令來創建 `Homestead.yaml` 設定檔。`Homestead.yaml` 檔案將會被放置在你的 `~/.homestead` 目錄中：
 
     bash init.sh
+
+<a name="upgrading-to-php-7"></a>
+#### Upgrading To PHP 7.0
+
+If you are already using the PHP 5.x Homestead box, you may easily upgrade your installation to PHP 7.0. First, clone the `php-7` branch of the `laravel/homestead` repository into a new folder:
+
+    git clone -b php-7 https://github.com/laravel/homestead.git Homestead7
+
+If you already have a `Homestead.yaml` file in your `~/.homestead` directory, there is no need to run the `init.sh` script. However, if this is the first and only Homestead installation on your machine, you should run `bash init.sh` from your new Homestead directory.
+
+Next, add then the `box` directive to the top of your `~/.homestead/Homestead.yaml` file (on a new line after `---` mark):
+
+    box: laravel/homestead-7
+
+Finally, you may run the `vagrant up` command from the directory that contains your new clone of the `laravel/homestead` repository.
 
 <a name="configuring-homestead"></a>
 ### 配置 Homestead
@@ -137,7 +161,7 @@ Homestead 目前是建置且測試於 Vagrant 1.7。
 <a name="launching-the-vagrant-box"></a>
 ### 啟動 Vagrant box
 
-當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機裡進入你的 Homestead 目錄並執行 `vagrant up` 指令。Vagrant 就會將虛擬主機啟動並自動設定你的共享資料夾和 Nginx 網站。
+當你根據你的喜好編輯完 `Homestead.yaml` 後，在終端機裡進入你的 Homestead 目錄並執行 `vagrant up` 指令。Vagrant 就會自將虛擬主機啟動並自動設定你的共享資料夾和 Nginx 網站。
 
 如果要移除虛擬機器，可以使用 `vagrant destroy --force` 指令。
 
@@ -187,6 +211,20 @@ Windows:
 ### 增加更多網站
 
 一旦 Homestead 環境配置完畢且運行後，你可能會想要為 Laravel 應用程式增加更多的 Nginx 網站。你可以在單一個 Homestead 環境中運行非常多 Laravel 安裝程式。只要在 `Homestead.yaml` 檔中增加另一個網站設定後，接著在終端機中進入到你的 Homestead 目錄並執行 `vagrant provision` 指令，即可增加另一個網站。
+
+<a name="configuring-cron-schedules"></a>
+### Configuring Cron Schedules
+
+Laravel provides a convenient way to [schedule Cron jobs](/docs/{{version}}/scheduling) by scheduling a single `schedule:run` Artisan command to be run every minute. The `schedule:run` command will examine the job scheduled defined in your `App\Console\Kernel` class to determine which jobs should be run.
+
+If you would like the `schedule:run` command to be run for a Homestead site, you may set the `schedule` option to `true` when defining the site:
+
+    sites:
+        - map: homestead.app
+          to: /home/vagrant/Code/Laravel/public
+          schedule: true
+
+The Cron job for the site will be defined in the `/etc/cron.d` folder of the virtual machine.
 
 <a name="ports"></a>
 ### 連接埠

@@ -4,7 +4,8 @@
 - [核心開發討論](#core-development-discussion)
 - [選擇分支](#which-branch)
 - [安全漏洞](#security-vulnerabilities)
-- [編碼風格](#coding-style)
+- [程式碼風格](#coding-style)
+    - [程式碼風格修復器](#code-style-fixer)
 
 <a name="bug-reports"></a>
 ## 錯誤回報
@@ -52,3 +53,33 @@ Laravel 原始碼託管在 Github 上面，並且每個 Laravel 的專案都有�
 ## 編碼風格
 
 Laravel 遵守 [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) 編碼規範和 [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) 自動載入規範。
+
+### DocBlocks
+
+`@param` tags should **not be aligned** and arguments should be separated by **2 spaces**.
+
+Here's an example block:
+
+    /**
+     * Register a binding with the container.
+     *
+     * @param  string|array  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @param  bool  $shared
+     * @return void
+     */
+    public function bind($abstract, $concrete = null, $shared = false)
+    {
+        //
+    }
+
+<a name="code-style-fixer"></a>
+### Code Style Fixer
+
+You may use the [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to fix your code style before committing.
+
+To get started, [install the tool globally](https://github.com/FriendsOfPHP/PHP-CS-Fixer#globally-manual) and check the code style by issuing the following terminal command from your project's root directory:
+
+```sh
+php-cs-fixer fix
+```

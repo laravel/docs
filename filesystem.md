@@ -84,9 +84,9 @@ Laravel 強大的檔案抽象層得力於 Frank de Jonge 的 [Flysystem](https:/
 
     $contents = Storage::get('file.jpg');
 
-`exists` 方法判定給定的檔案是否存於磁碟上：
+`has` 方法可以用於判定給定的檔案是否存於磁碟上：
 
-    $exists = Storage::disk('s3')->exists('file.jpg');
+    $exists = Storage::disk('s3')->has('file.jpg');
 
 #### 檔案資訊
 
@@ -111,7 +111,7 @@ Laravel 強大的檔案抽象層得力於 Frank de Jonge 的 [Flysystem](https:/
 
     Storage::copy('old/file1.jpg', 'new/file1.jpg');
 
-`move` 方法移動一個存在的檔案到新位置。
+`move` 方法被用於重新命名或是移動一個存在的檔案到新位置。
 
     Storage::move('old/file1.jpg', 'new/file1.jpg');
 

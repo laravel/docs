@@ -7,6 +7,7 @@
     - [Sessions 和認證](#sessions-and-authentication)
     - [停用中介層](#disabling-middleware)
     - [自訂 HTTP 請求](#custom-http-requests)
+    - [PHPUnit Assertions](#phpunit-assertions)
 - [使用資料庫](#working-with-databases)
     - [每次測試結束後重置資料庫](#resetting-the-database-after-each-test)
     - [模型工廠](#model-factories)
@@ -291,6 +292,26 @@ Laravel 提供了幾個輔助方法在測試時使用 Session。首先，你需�
 
        $response = $this->call('POST', '/user', ['name' => 'Taylor']);
 
+<a name="phpunit-assertions"></a>
+### PHPUnit Assertions
+
+Laravel provides several additional assertion methods for [PHPUnit](https://phpunit.de/) tests:
+
+Method  | Description
+------------- | -------------
+`->assertResponseOk();`  |  Assert that the client response has an OK status code.
+`->assertResponseStatus($code);`  |  Assert that the client response has a given code.
+`->assertViewHas($key, $value = null);`  |  Assert that the response view has a given piece of bound data.
+`->assertViewHasAll(array $bindings);`  |  Assert that the view has a given list of bound data.
+`->assertViewMissing($key);`  |  Assert that the response view is missing a piece of bound data.
+`->assertRedirectedTo($uri, $with = []);`  |  Assert whether the client was redirected to a given URI.
+`->assertRedirectedToRoute($name, $parameters = [], $with = []);`  |  Assert whether the client was redirected to a given route.
+`->assertRedirectedToAction($name, $parameters = [], $with = []);`  |  Assert whether the client was redirected to a given action.
+`->assertSessionHas($key, $value = null);`  |  Assert that the session has a given value.
+`->assertSessionHasAll(array $bindings);`  |  Assert that the session has a given list of values.
+`->assertSessionHasErrors($bindings = [], $format = null);`  |  Assert that the session has errors bound.
+`->assertHasOldInput();`  |  Assert that the session has old input.
+
 <a name="working-with-databases"></a>
 ## 使用資料庫
 
@@ -300,7 +321,7 @@ Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫
     {
         // 建立呼叫至應用程式...
 
-        $this->seeInDatabase('users', ['email' => 'sally@foo.com']);
+        $this->seeInDatabase('users', ['email' => 'sally@example.com']);
     }
 
 當然，使用 `seeInDatabase` 方法及其他的輔助方法只是基於方便。你可以自由使用任何 PHPUnit 內建的斷言方法來擴充你的測試。
@@ -361,6 +382,8 @@ Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫
                  ->see('Laravel 5');
         }
     }
+
+> **Note:** This trait will only wrap the default database connection in a transaction.
 
 <a name="model-factories"></a>
 ### 模型工廠

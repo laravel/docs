@@ -75,7 +75,7 @@ Of course, there are a variety of schedules you may assign to your task:
 
 Method  | Description
 ------------- | -------------
-`->cron('* * * * *');`  |  Run the task on a custom Cron schedule
+`->cron('* * * * * *');`  |  Run the task on a custom Cron schedule
 `->everyMinute();`  |  Run the task every minute
 `->everyFiveMinutes();`  |  Run the task every five minutes
 `->everyTenMinutes();`  |  Run the task every ten minutes
@@ -86,6 +86,7 @@ Method  | Description
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
 `->weekly();`  |  Run the task every week
 `->monthly();`  |  Run the task every month
+`->yearly();`  |  Run the task every year
 
 These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, to schedule a command to run weekly on Monday:
 
@@ -109,11 +110,13 @@ Method  | Description
 
 #### Truth Test Constraints
 
-The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given `Closure` return `true`, the task will execute as long as no other constraining conditions prevent the task from running:
+The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given `Closure` returns `true`, the task will execute as long as no other constraining conditions prevent the task from running:
 
     $schedule->command('emails:send')->daily()->when(function () {
         return true;
     });
+
+When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
 
 <a name="preventing-task-overlaps"></a>
 ### Preventing Task Overlaps
@@ -132,6 +135,12 @@ The Laravel scheduler provides several convenient methods for working with the o
     $schedule->command('emails:send')
              ->daily()
              ->sendOutputTo($filePath);
+
+If you would like to append the output to a given file, you may use the `appendOutputTo` method:
+
+    $schedule->command('emails:send')
+             ->daily()
+             ->appendOutputTo($filePath);
 
 Using the `emailOutputTo` method, you may e-mail the output to an e-mail address of your choice. Note that the output must first be sent to a file using the `sendOutputTo` method. Also, before e-mailing the output of a task, you should configure Laravel's [e-mail services](/docs/{{version}}/mail):
 

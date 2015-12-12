@@ -123,6 +123,10 @@ PSR-7 標準制定的 HTTP 訊息介面包含了請求及回應。如果你想�
 
     $name = $request->input('name');
 
+Alternatively, you may access user input using the properties of the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the posted field like so:
+
+    $name = $request->name;
+
 你可以在 `input` 方法的第二個參數傳入一個預設值。當請求的輸入資料不存在於當次請求，就會回傳預設值：
 
     $name = $request->input('name', 'Sally');
@@ -147,9 +151,13 @@ PSR-7 標準制定的 HTTP 訊息介面包含了請求及回應。如果你想�
 
 #### 取得部分輸入資料
 
-如果你想取得輸入資料的子集，你可以使用 `only` 及 `except` 方法。這兩個方法都接受單一`陣列`作為唯一的參數：
+如果你想取得輸入資料的子集，你可以使用 `only` 及 `except` 方法。這兩個方法都接受單一`陣列`或是動態列表作為參數：
+
+    $input = $request->only(['username', 'password']);
 
     $input = $request->only('username', 'password');
+
+    $input = $request->except(['credit_card']);
 
     $input = $request->except('credit_card');
 
@@ -232,8 +240,7 @@ Laravel 提供了全域輔助方法 `cookie`，透過簡易的工廠來產生新
 
 除了檢查上傳的檔案是否存在外，你也可以透過 `isValid` 方法驗證上傳的檔案是否有效：
 
-    if ($request->file('photo')->isValid())
-    {
+    if ($request->file('photo')->isValid()) {
         //
     }
 

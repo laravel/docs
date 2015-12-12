@@ -117,6 +117,26 @@ Eloquent 也會假設每個資料表有一個主鍵欄位叫做 `id`。你可以
         protected $dateFormat = 'U';
     }
 
+#### Database Connection
+
+By default, all Eloquent models will use the default database connection configured for your application. If you would like to specify a different connection for the model, use the `$connection` property:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Flight extends Model
+    {
+        /**
+         * The connection name for the model.
+         *
+         * @var string
+         */
+        protected $connection = 'connection-name';
+    }
+
 <a name="retrieving-multiple-models"></a>
 ## 取回多個模型
 
@@ -413,6 +433,24 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 
     $flight->history()->withTrashed()->get();
 
+#### Where Clause Caveats
+
+When adding `orWhere` clauses to your queries on soft deleted models, always use [advance where clauses](http://laravel.com/docs/5.1/queries#advanced-where-clauses) to logically group the `WHERE` clauses. For example:
+
+    User::where(function($query) {
+            $query->where('name', '=', 'John')
+                  ->orWhere('votes', '>', 100);
+            })
+            ->get();
+
+This will produce the following SQL:
+
+    select * from `users` where `users`.`deleted_at` is null and (`name` = 'John' or `votes` > 100)
+
+If the `orWhere` clause is not grouped, it will produce the following SQL which will contain soft deleted records:
+
+    select * from `users` where `users`.`deleted_at` is null and `name` = 'John' or `votes` > 100
+
 #### 只取得被軟刪除的模型
 
 `onlyTrashed` 方法會**只**取得被軟刪除的模型：
@@ -451,6 +489,8 @@ Eloquent 的 `all` 方法會回傳在模型資料表中所有的結果。由於�
 ## 查詢範圍
 
 範圍（Scopes）讓你定義限制的共用集合，它可以輕鬆地在你的應用程式重複使用。例如，你可能需要頻繁地取得所有被認為是「受歡迎的」使用者。要定義範圍，必須簡單地在 Eloquent 模型方法前面加上前綴 `scope`：
+
+Scopes should always return a query builder instance:
 
     <?php
 

@@ -15,6 +15,7 @@
     - [Scripts](#javascript)
 - [複製檔案與目錄](#copying-files-and-directories)
 - [版本與暫存清除](#versioning-and-cache-busting)
+- [BrowserSync](#browser-sync)
 - [呼叫既有的 Gulp 任務](#calling-existing-gulp-tasks)
 - [撰寫 Elixir 擴充功能](#writing-elixir-extensions)
 
@@ -55,7 +56,7 @@ elixir(function(mix) {
 
     npm install
 
-如果你是在 Windows 系統上開發，你需要在執行 `npm install` 指令時將 `--no-bin-links` 開啟：
+如果你是在 Windows 系統上或在 Windows 主機系統上執行 VM 進行開發，你需要在執行 `npm install` 指令時將 `--no-bin-links` 開啟：
 
     npm install --no-bin-links
 
@@ -127,7 +128,7 @@ elixir(function(mix) {
 });
 ```
 
-同樣的，如同 `less` 方法，你可以編譯多個腳本至單一的 CSS 檔案，甚至可以自定產生的 CSS 的輸出目錄：
+同樣的，如同 `less` 方法，你可以編譯多個 Sass 檔案至單一的 CSS 檔案，甚至可以自定產生的 CSS 的輸出目錄：
 
 ```javascript
 elixir(function(mix) {
@@ -209,11 +210,11 @@ elixir(function(mix) {
 
 雖然 Browserify 附帶了 Partialify 及 Babelify 轉換器，但是如果你希望，你可以自由地安裝並增加更多的轉換器：
 
-    npm install vueify --save-dev
+    npm install aliasify --save-dev
 
 ```javascript
 elixir.config.js.browserify.transformers.push({
-    name: 'vueify',
+    name: 'aliasify',
     options: {}
 });
 
@@ -319,6 +320,27 @@ elixir(function(mix) {
     <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 
     <script src="{{ elixir('js/app.js') }}"></script>
+
+<a name="browser-sync"></a>
+## BrowserSync
+
+BrowserSync automatically refreshes your web browser after you make changes to your front-end resources. You can use the `browserSync` method to instruct Elixir to start a BrowserSync server when you run the `gulp watch` command:
+
+```javascript
+elixir(function(mix) {
+    mix.browserSync();
+});
+```
+
+Once you run `gulp watch`, access your web application using port 3000 to enable browser syncing: `http://homestead.app:3000`. If you're using a domain other than `homestead.app` for local development, you may pass an array of [options](http://www.browsersync.io/docs/options/) as the first argument to the `browserSync` method:
+
+```javascript
+elixir(function(mix) {
+    mix.browserSync({
+    	proxy: 'project.app'
+    });
+});
+```
 
 <a name="calling-existing-gulp-tasks"></a>
 ## 呼叫既有的 Gulp 任務

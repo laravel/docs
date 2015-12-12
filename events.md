@@ -11,7 +11,8 @@
     - [將事件標記為廣播](#marking-events-for-broadcast)
     - [廣播資料](#broadcast-data)
     - [消耗事件廣播](#consuming-event-broadcasts)
-- [事件訂閱器](#event-subscribers)
+- [事件訂閱器](#event-subscribers))
+- [框架事件](#framework-events)
 
 <a name="introduction"></a>
 ## 簡介
@@ -39,6 +40,33 @@ Laravel 應用程式包含了 `EventServiceProvider` 提供一個方便的位置
 當然，手動建立每個事件以及監聽器檔案是相當麻煩的。相反的，只要增加監聽器和事件到你的 `EventServiceProvider` 以及使用 `event:generate` 指令即可。這個指令會產生所有列出在 `EventServiceProvider` 的事件和監聽器。當然，已經存在的事件和監聽器將保持不變：
 
     php artisan event:generate
+
+### Registering Events Manually
+
+Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register events manually with the event dispatcher using either the `Event` facade or the `Illuminate\Contracts\Events\Dispatcher` contract implementation:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        $events->listen('event.name', function ($foo, $bar) {
+            //
+        });
+    }
+
+#### Wildcard Event Listeners
+
+You may even register listeners using the `*` as a wildcard, allowing you to catch multiple events on the same listener. Wildcard listeners receive the entire event data array as a single argument:
+
+    $events->listen('event.*', function (array $data) {
+        //
+    });
 
 <a name="defining-events"></a>
 ## 定義事件
@@ -270,6 +298,21 @@ Laravel 應用程式包含了 `EventServiceProvider` 提供一個方便的位置
 
 接著，你只需要像往常的[觸發事件](#firing-events)。一旦事件被觸發之後，[隊列任務](/docs/{{version}}/queues)將會自動的廣播事件到你指定的廣播驅動。
 
+<a name="overriding-broadcast-event-name"></a>
+#### Overriding Broadcast Event Name
+
+By default, the broadcast event name will be the fully qualified class name of the event. Using the example class above, the broadcast event would be `App\Events\ServerCreated`. You can customize this broadcast event name to whatever you want using the `broadcastAs` method:
+
+    /**
+     * Get the broadcast event name.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'app.server-created';
+    }
+
 <a name="broadcast-data"></a>
 ### 廣播資料
 
@@ -369,7 +412,6 @@ Laravel 應用程式包含了 `EventServiceProvider` 提供一個方便的位置
          * 註冊監聽器的訂閱者。
          *
          * @param  Illuminate\Events\Dispatcher  $events
-         * @return array
          */
         public function subscribe($events)
         {
@@ -417,3 +459,30 @@ Laravel 應用程式包含了 `EventServiceProvider` 提供一個方便的位置
             'App\Listeners\UserEventListener',
         ];
     }
+
+<a name="framework-events"></a>
+## Framework Events
+
+Laravel provides a variety of "core" events for actions performed by the framework. You can subscribe to them in the same way that you subscribe to your own custom events:
+
+Event  |  Parameter(s)
+------------- | -----------
+artisan.start | $application
+auth.attempt | $credentials, $remember, $login
+auth.login | $user, $remember
+auth.logout | $user
+cache.missed | $key
+cache.hit | $key, $value
+cache.write | $key, $value, $minutes
+cache.delete | $key
+connection.{name}.beginTransaction | $connection
+connection.{name}.committed | $connection
+connection.{name}.rollingBack | $connection
+illuminate.query | $query, $bindings, $time, $connectionName
+illuminate.queue.after | $connection, $job, $data
+illuminate.queue.failed | $connection, $job, $data
+illuminate.queue.stopping | null
+mailer.sending | $message
+router.matched | $route, $request
+composing:{view name} | $view
+creating:{view name} | $view
