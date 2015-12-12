@@ -154,7 +154,7 @@ Artisan 是 Laravel 裡的一個指令列介面的名稱。當你在開發你的
 
     email:send {user} {--queue=default}
 
-To assign a shortcut when defining an option, you may specify it before the option name and use a | delimiter to separate the shortcut from the full option name:
+如果要在定義選擇時給予簡寫，你可以在選擇名稱之前指定簡寫，並使用 | 分隔符號將它與完整的選擇名稱隔開：
 
     email:send {user} {--Q|queue}
 
@@ -263,7 +263,7 @@ To assign a shortcut when defining an option, you may specify it before the opti
 
     $this->error('有東西出問題了！');
 
-If you want to display plain console output, use the `line` method. The `line` method does not receive any unique coloration:
+如果你想顯示原本的控制列輸出，可以使用 `line` 方法。`line` 方法不會接收任何特殊的顏色：
 
     $this->line('Display this on the screen');
 
