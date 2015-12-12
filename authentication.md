@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 認證
 
 - [介紹](#introduction)
