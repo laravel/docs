@@ -58,6 +58,7 @@
 
     $gate->define('update-post', 'Class@method');
 
+<a name="intercepting-all-checks"></a>
 <a name="intercepting-authorization-checks"></a>
 #### 攔截授權檢查
 
