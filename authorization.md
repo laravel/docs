@@ -1,8 +1,8 @@
 # 授權
 
 - [簡介](#introduction)
-- [定義能力](#defining-abilities)
-- [檢查能力](#checking-abilities)
+- [定義權限](#defining-abilities)
+- [檢查權限](#checking-abilities)
 	- [透過 Gate Facade](#via-the-gate-facade)
 	- [透過使用者模型](#via-the-user-model)
 	- [使用 Blade 模板](#within-blade-templates)
@@ -21,9 +21,9 @@
 > **注意：**授權已經在 Laravel 5.1.11 被加入，請在整合這些功能到應用程式前參考[升級導引](/docs/{{version}}/upgrade)。
 
 <a name="defining-abilities"></a>
-## 定義能力
+## 定義權限
 
-判斷一個使用者是否可以執行特定行為，最簡單的方式就是使用 `Illuminate\Auth\Access\Gate` 類別定義「能力」。`AuthServiceProvider` 是 Laravel 提供的一個方便位置，以定義你應用程式中的所有能力。舉個例子，讓我們定義一個 `update-post` 的能力，以取得目前的 `User` 及 `Post` [模型](/docs/{{version}}/eloquent)。在我們的能力中，我們會判斷使用者的 `id` 與文章的 `user_id` 是否相符：
+判斷一個使用者是否可以執行特定行為，最簡單的方式就是使用 `Illuminate\Auth\Access\Gate` 類別定義「權限」。`AuthServiceProvider` 是 Laravel 提供的一個方便位置，以定義你應用程式中的所有權限。舉個例子，讓我們定義一個 `update-post` 的權限，以取得目前的 `User` 及 `Post` [模型](/docs/{{version}}/eloquent)。在我們的權限中，我們會判斷使用者的 `id` 與文章的 `user_id` 是否相符：
 
 	<?php
 
@@ -50,9 +50,9 @@
 	    }
 	}
 
-注意，我們並不會檢查當給定的 `$user` 不是 `NULL`。當沒有經過認證的使用者或是特定的使用者沒有透過 `forUser` 方法指定，那麼 `Gate` 會自動為**所有能力**回傳 `false`。
+注意，我們並不會檢查當給定的 `$user` 不是 `NULL`。當沒有經過認證的使用者或是特定的使用者沒有透過 `forUser` 方法指定，那麼 `Gate` 會自動為**所有權限**回傳 `false`。
 
-#### 基於類別的能力
+#### 基於類別的權限
 
 除了註冊`閉包`作為授權的回呼，你可以透過傳遞包含類別名稱及方法的字串來註冊類別的方法。當需要時，該類別會透過[服務容器](/docs/{{version}}/container)被解析：
 
@@ -62,7 +62,7 @@
 <a name="intercepting-authorization-checks"></a>
 #### 攔截授權檢查
 
-有時，你可能希望賦予所有能力給指定使用者。對於這種情況，使用 `before` 方法來定義當其他所有授權檢查前會被執行的回呼：
+有時，你可能希望賦予所有權限給指定使用者。對於這種情況，使用 `before` 方法來定義當其他所有授權檢查前會被執行的回呼：
 
     $gate->before(function ($user, $ability) {
         if ($user->isSuperAdmin()) {
@@ -79,12 +79,12 @@ You may use the `after` method to define a callback to be executed after every a
     });
 
 <a name="checking-abilities"></a>
-## 檢查能力
+## 檢查權限
 
 <a name="via-the-gate-facade"></a>
 ### 透過 Gate Facade
 
-一旦能力被定義後，我們可以透過不同方式「檢查」。首先，我們可以使用 `Gate` [facade](/docs/{{version}}/facades) 的 `check`、`allows` 或 `denies` 方法。這些所有方法會取得能力的名稱及參數，並會被傳遞至能力的回呼中。你**不**需要傳遞目前的使用者至該方法，因為 `Gate` 會自動在回呼參數的前方加上目前的使用者。所以，當透過我們前面定義的 `update-post` 能力進行檢查時，我們只需傳遞一個 `Post` 實例至 `denies` 方法：
+一旦權限被定義後，我們可以透過不同方式「檢查」。首先，我們可以使用 `Gate` [facade](/docs/{{version}}/facades) 的 `check`、`allows` 或 `denies` 方法。這些所有方法會取得權限的名稱及參數，並會被傳遞至權限的回呼中。你**不**需要傳遞目前的使用者至該方法，因為 `Gate` 會自動在回呼參數的前方加上目前的使用者。所以，當透過我們前面定義的 `update-post` 權限進行檢查時，我們只需傳遞一個 `Post` 實例至 `denies` 方法：
 
     <?php
 
@@ -117,9 +117,9 @@ You may use the `after` method to define a callback to be executed after every a
 
 當然，`allows` 方法只是簡單的將 `denies` 方法給顛倒過來，當行為被授權時會回傳 `true`。`check` 方法則是 `allows` 方法的別名。
 
-#### 檢查指定使用者的能力
+#### 檢查指定使用者的權限
 
-如果你想使用 `Gate` facade 檢查當**目前被驗證的使用者外的其他**使用者有給定的能力，你可以使用 `forUser` 方法：
+如果你想使用 `Gate` facade 檢查當**目前被驗證的使用者外的其他**使用者有給定的權限，你可以使用 `forUser` 方法：
 
 	if (Gate::forUser($user)->allows('update-post', $post)) {
 		//
@@ -127,13 +127,13 @@ You may use the `after` method to define a callback to be executed after every a
 
 #### 傳遞多個參數
 
-當然，能力的回呼可以取得多個參數：
+當然，權限的回呼可以取得多個參數：
 
 	Gate::define('delete-comment', function ($user, $post, $comment) {
 		//
 	});
 
-如果你的能力需要多個參數，只要簡單的傳遞一個陣列作為 `Gate` 方法的參數：
+如果你的權限需要多個參數，只要簡單的傳遞一個陣列作為 `Gate` 方法的參數：
 
 	if (Gate::allows('delete-comment', [$post, $comment])) {
 		//
@@ -142,7 +142,7 @@ You may use the `after` method to define a callback to be executed after every a
 <a name="via-the-user-model"></a>
 ### 透過使用者模型
 
-另外，你也可以透過 `User` 模型的實例檢查能力。預設來說，Laravel 的 `App\User` 模型使用了 `Authorizable` trait，它提供了兩個方法：`can` 及 `cannot`。這些方法使用起來相似於 `Gate` facade 提供的 `allows` 與 `denies` 方法。所以，使用我們之前的例子，我們可以將程式碼改成如下：
+另外，你也可以透過 `User` 模型的實例檢查權限。預設來說，Laravel 的 `App\User` 模型使用了 `Authorizable` trait，它提供了兩個方法：`can` 及 `cannot`。這些方法使用起來相似於 `Gate` facade 提供的 `allows` 與 `denies` 方法。所以，使用我們之前的例子，我們可以將程式碼改成如下：
 
     <?php
 
@@ -182,7 +182,7 @@ You may use the `after` method to define a callback to be executed after every a
 <a name="within-blade-templates"></a>
 ### 使用 Blade 模板
 
-為了方便，Laravel 提供了 `@can` Blade 指令來快速的檢查，當目前認證的使用者擁有給定的能力。例如：
+為了方便，Laravel 提供了 `@can` Blade 指令來快速的檢查，當目前認證的使用者擁有給定的權限。例如：
 
 	<a href="/post/{{ $post->id }}">View Post</a>
 
@@ -201,7 +201,7 @@ You may use the `after` method to define a callback to be executed after every a
 <a name="within-form-requests"></a>
 ### 使用表單請求
 
-你也可以選擇從[表單請求的](/docs/{{version}}/validation#form-request-validation) `authorize` 方法採用你的 `Gate` 定義的能力。舉個例子：
+你也可以選擇從[表單請求的](/docs/{{version}}/validation#form-request-validation) `authorize` 方法採用你的 `Gate` 定義的權限。舉個例子：
 
     /**
      * 判斷當使用者已被授權並發送此請求。
@@ -265,7 +265,7 @@ You may use the `after` method to define a callback to be executed after every a
 <a name="writing-policies"></a>
 ### 撰寫原則
 
-一旦原則被產生且註冊，我們可以為每個能力的授權增加方法。例如，讓我們在 `PostPolicy` 中定義一個 `update` 方法，它會判斷給定的 `User` 是否可以「更新」一筆 `Post`：
+一旦原則被產生且註冊，我們可以為每個權限的授權增加方法。例如，讓我們在 `PostPolicy` 中定義一個 `update` 方法，它會判斷給定的 `User` 是否可以「更新」一筆 `Post`：
 
 	<?php
 
@@ -289,13 +289,13 @@ You may use the `after` method to define a callback to be executed after every a
 	    }
 	}
 
-你可以接著在此原則定義額外的方法，作為各種能力需要的授權。例如，你可以定義 `show`、`destroy` 或 `addComment` 方法來授權 `Post` 的多種行為。
+你可以接著在此原則定義額外的方法，作為各種權限需要的授權。例如，你可以定義 `show`、`destroy` 或 `addComment` 方法來授權 `Post` 的多種行為。
 
 > **注意：**所有原則會透過 Laravel [服務容器](/docs/{{version}}/container)解析，意指你可以在原則的建構子對任何需要的依賴使用型別提示，它們將會被自動注入。
 
 #### 攔截所有檢查
 
-有時，你可能希望在原則賦予所有能力給指定使用者。對於這種情況，只要在原則中定義一個 `before` 方法。原則的此方法會在其他所有授權檢查前被執行：
+有時，你可能希望在原則賦予所有權限給指定使用者。對於這種情況，只要在原則中定義一個 `before` 方法。原則的此方法會在其他所有授權檢查前被執行：
 
     public function before($user, $ability)
     {
@@ -414,7 +414,7 @@ You may use the `after` method to define a callback to be executed after every a
 
 通常，一個原則的方法會對應至一個控制器方法。以下方的 `update` 方法為例，控制器方法及原則方法會共用相同的名稱：`update`。
 
-因此，Laravel 讓你能夠簡單的傳遞實例參數至 `authorize` 方法，基於被呼叫的函式名稱，自動判斷出該授權的能力。在本例中，因為 `authorize` 被控制器的 `update` 方法呼叫，所以也會呼叫 `PostPolicy` 中的 `update` 方法：
+因此，Laravel 讓你能夠簡單的傳遞實例參數至 `authorize` 方法，基於被呼叫的函式名稱，自動判斷出應該授權的權限。在本例中，因為 `authorize` 被控制器的 `update` 方法呼叫，所以也會呼叫 `PostPolicy` 中的 `update` 方法：
 
     /**
      * 更新給定的文章。
