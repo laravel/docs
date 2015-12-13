@@ -72,7 +72,7 @@
 
 如果 `before` 的回呼回傳一個非 null 的結果，則該結果會被作為檢查的結果。
 
-You may use the `after` method to define a callback to be executed after every authorization check. However, you may not modify the result of the authorization check from an `after` callback:
+你可以使用 `after` 方法定義一個當所有授權檢查後會被執行的回呼。但是，你不應該修改 `after` 回呼中授權檢查的結果：
 
     $gate->after(function ($user, $ability, $result, $arguments) {
         //
