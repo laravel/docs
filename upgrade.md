@@ -25,7 +25,7 @@ Add `symfony/dom-crawler ~3.0` and `symfony/css-selector ~3.0` to the `require-d
 
 ### Authentication
 
-If you are implementing the `Illuminate\Contracts\Auth\Authenticatable` contract but are **not** using the `Autheticatable` trait, you should add a new `getAuthIdentifierName` method to your contract implementation. Typically, this method will return the column name of the "primary key" of your authenticatable entity. For example: `id`.
+If you are implementing the `Illuminate\Contracts\Auth\Authenticatable` contract but are **not** using the `Authenticatable` trait, you should add a new `getAuthIdentifierName` method to your contract implementation. Typically, this method will return the column name of the "primary key" of your authenticatable entity. For example: `id`.
 
 This is unlikely to affect your application unless you were manually implementing this interface.
 
