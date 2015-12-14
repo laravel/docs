@@ -1,6 +1,7 @@
 # Release Notes
 
 - [Support Policy](#support-policy)
+- [Laravel 5.2](#laravel-5.2)
 - [Laravel 5.1.11](#laravel-5.1.11)
 - [Laravel 5.1.4](#laravel-5.1.4)
 - [Laravel 5.1](#laravel-5.1)
@@ -14,6 +15,94 @@
 For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance.
 
 For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+
+<a name="laravel-5.2"></a>
+## Laravel 5.2
+
+Laravel 5.1 continues the improvements made in Laravel 5.1 by adding multiple authentication driver support, implicit model binding, simplified Eloquent global scopes, opt-in authentication scaffolding, middleware groups, rate limiting middleware, array validation improvements, and more.
+
+### Implicit Model Binding
+
+Implicit model binding makes it painless to inject relevant models directly into your routes and controllers. For example, assume you have a route defined like the following:
+
+    use App\User;
+
+    Route::get('/user/{user}', function (User $user) {
+        return $user;
+    });
+
+In Laravel 5.1, you would typically need to use the `Route::model` method to instruct Laravel to inject the `App\User` instance that matches the `{user}` parameter in your route definition. However, in Laravel 5.2, the framework will **automatically** inject this model based on the URI segment, allowing you to quickly gain access to the model instances you need.
+
+Laravel will automatically inject the model when the route parameter segment (`{user}`) matches the route Closure or controller method's corresponding variable name (`$user`) and the variable is type-hinting an Eloquent model class.
+
+### Authentication Drivers / "Multi-Auth"
+
+In previous versions of Laravel, only the default, session-based authentication driver was supported out of the box, and you could not have more than one authenticatable model instance per application.
+
+However, in Laravel 5.2, you may define additional authentication drivers as well define multiple authenticatable models or user tables, and control their authentication process separately from each other. For example, if your application has one database table for "admin" users and one database table for "student" users, you may now use the `Auth` methods to authenticate against each of these tables separately.
+
+### Authentication Scaffolding
+
+Laravel already makes it easy to handle authentication on the back-end; however, Laravel 5.2 provides a convenient, lightning-fast way to scaffold the authentication views for your front-end. Simply execute the `make:auth` command on your terminal:
+
+    php artisan make:auth
+
+This command will generate plain, Bootstrap compatible views for user login, registration, and password reset. The command will also update your routes file with the appropriate routes.
+
+### Middleware Groups
+
+Middleware groups allow you to group several route middleware under a single, convenient key, allowing you to assign several middleware to a route at once. For example, this can be useful when building a web UI and an API within the same application. You may group the session and CSRF routes into a `web` group, and perhaps the rate limiter in the `api` group.
+
+In fact, the default Laravel 5.2 application structure takes exactly this approach. For example, in the `App\Http\Kernel.php` file:
+
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'web' => [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+        ],
+
+        'api' => [
+            'throttle:60,1',
+        ],
+    ];
+
+Then, the `web` group may be assigned to routes like so:
+
+    Route::group(['middleware' => ['web']], function () {
+        //
+    });
+
+### Rate Limiting
+
+A new rate limiter middleware is now included with the framework, allowing you to easily limit the number of requests that a given IP address can make to a route over a specified number of minutes. For example, to limit a route to 60 requests every minute from a single IP address, you may do the following:
+
+    Route::get('/api/users', ['middleware' => 'throttle:60,1', function () {
+        //
+    }]);
+
+### Array Validation
+
+Validating array form input fields is much easier in Laravel 5.2. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
+
+    $validator = Validator::make($request->all(), [
+        'person.*.email' => 'email|unique:users'
+    ]);
+
+Likewise, you may use the `*` character when specifying your validation messages in your language files:
+
+    'custom' => [
+        'person.*.email' => [
+            'unique' => 'Each person must have a unique e-mail address',
+        ]
+    ],
 
 <a name="laravel-5.1.11"></a>
 ## Laravel 5.1.11
