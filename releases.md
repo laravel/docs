@@ -19,7 +19,7 @@ For general releases, bug fixes are provided for 6 months and security fixes are
 <a name="laravel-5.2"></a>
 ## Laravel 5.2
 
-Laravel 5.1 continues the improvements made in Laravel 5.1 by adding multiple authentication driver support, implicit model binding, simplified Eloquent global scopes, opt-in authentication scaffolding, middleware groups, rate limiting middleware, array validation improvements, and more.
+Laravel 5.2 continues the improvements made in Laravel 5.1 by adding multiple authentication driver support, implicit model binding, simplified Eloquent global scopes, opt-in authentication scaffolding, middleware groups, rate limiting middleware, array validation improvements, and more.
 
 ### Implicit Model Binding
 
