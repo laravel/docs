@@ -11,7 +11,7 @@
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
 
 <a name="upgrade-5.2.0"></a>
-## Upgrading To 5.2.0
+## Upgrading To 5.2.0 From 5.1
 
 #### Estimated Upgrade Time: Less Than 1 Hour
 
