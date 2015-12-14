@@ -73,7 +73,7 @@ If you are calling `env` from within your application, it is strongly recommende
 
 ### CSRF Verification
 
-CSRF verification is no longer performed when running unit tests.
+CSRF verification is no longer automatically performed when running unit tests.
 
 ### Elixir
 
