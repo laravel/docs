@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [Upgrading To 5.2.0](#upgrade-5.2.0)
 - [Upgrading To 5.1.11](#upgrade-5.1.11)
 - [Upgrading To 5.1.0](#upgrade-5.1.0)
 - [Upgrading To 5.0.16](#upgrade-5.0.16)
@@ -8,6 +9,190 @@
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-5.2.0"></a>
+## Upgrading To 5.2.0
+
+#### Estimated Upgrade Time: Less Than 1 Hour
+
+> **Note:** We attempt to provide a very comprehensive listing of every possible breaking change made to the framework. However, many of these changes may not apply to your own application.
+
+### Updating Dependencies
+
+Update your `composer.json` file to point to `laravel/framework 5.2.*`.
+
+Add `symfony/dom-crawler ~3.0` and `symfony/css-selector ~3.0` to the `require-dev` section of your `composer.json` file.
+
+### Authentication
+
+If you are implementing the `Illuminate\Contracts\Auth\Authenticatable` contract but are **not** using the `Autheticatable` trait, you should add a new `getAuthIdentifierName` method to your contract implementation. Typically, this method will return the column name of the "primary key" of your authenticatable entity. For example: `id`.
+
+### Authorization
+
+The `Illuminate\Auth\Access\UnauthorizedException` has been renamed to `Illuminate\Auth\Access\AuthorizationException`.
+
+### Collections
+
+#### Eloquent Base Collections
+
+The Eloquent collection instance now returns a base Collection (`Illuminate\Support\Collection`) for the following methods: `pluck`, `keys`, `zip`, `collapse`, `flatten`, `flip`.
+
+#### Key Preservation
+
+The `slice`, `chunk`, and `reverse` methods now preserve keys on the collection. If you do not want these methods to preserve keys, use the `values` method on the `Collection` instance.
+
+### Composer Class
+
+The `Illuminate\Foundation\Support\Composer` class has been moved to `Illuminate\Support\Composer`.
+
+### Commands And Handlers
+
+#### Self-Handling Commands
+
+You no longer need to implement the `SelfHandling` contract on your jobs / commands. All jobs are now self-handling by default, so you can remove this interface from your classes.
+
+#### Separate Commands & Handlers
+
+The Laravel 5.2 command bus now only supports self-handling commands and no longer supports separate commands and handlers.
+
+If you would like to continue using separate commands and handlers, you may install a Laravel Collective package which provides backwards-compatible support for this: [https://github.com/LaravelCollective/bus](https://github.com/laravelcollective/bus)
+
+### Configuration
+
+#### Environment Value
+
+Add an `env` configuration option to your `app.php` configuration file that looks like the following:
+
+'env' => env('APP_ENV', 'production'),
+
+#### Caching And Env
+
+If you are using the `config:cache` command during deployment, you **must** make sure that you are only calling the `env` function from within your configuration files, and not from anywhere else in your application.
+
+If you are calling `env` from within your application, it is strongly recommended you add proper configuration values to your configuration files and call `env` from that location instead, allowing you to convert your `env` calls to `config` calls.
+
+### CSRF Verification
+
+CSRF verification is no longer performed when running unit tests.
+
+### Elixir
+
+The `elixir` PHP function now returns a fully-qualified URL instead of a relative URL.
+
+### Eloquent
+
+#### Date Casts
+
+Any attributes that have been added to your `$casts` property as `date` or `datetime` will now be converted to a string when `toArray` is called on the model or collection of models. This makes the date casting conversion consistent with dates specified in your `$dates` array.
+
+#### Global Scopes
+
+The global scopes implementation has been re-written to much easier to use. Your global scopes no longer need a `remove` method, so it may be removed from any global scopes you have written.
+
+If you were calling the `remove` method directly for any reason, you should change this call to `$eloquentBuilder->withoutGlobalScope($scope)`.
+
+New methods `withoutGlobalScope` and `withoutGlobalScopes` have been added to the Eloquent query builder. Any calls to `$model->removeGlobalScopes($builder)` may be changed to simply `$builder->withoutGlobalScopes()`.
+
+### Events
+
+#### Core Event Objects
+
+Some of the core events fired by Laravel now use event objects instead of string event names and dynamic parameters. Below is a list of the old event names and their new object based counterparts:
+
+Old  | New
+------------- | -------------
+`auth.attempting`  |  `Illuminate\Auth\Events\Attempting`
+`auth.login`  |  `Illuminate\Auth\Events\Login`
+`auth.logout`  |  `Illuminate\Auth\Events\Logout`
+`cache.missed`  |  `Illuminate\Cache\Events\CacheMissed`
+`cache.hit`  |  `Illuminate\Cache\Events\CacheHit`
+`cache.write`  |  `Illuminate\Cache\Events\KeyWritten`
+`cache.delete`  |  `Illuminate\Cache\Events\KeyForgotten`
+`connection.{name}.beginTransaction`  |  `Illuminate\Database\Events\TransactionBeginning`
+`connection.{name}.committed`  |  `Illuminate\Database\Events\TransactionCommitted`
+`connection.{name}.rollingBack`  |  `Illuminate\Database\Events\TransactionRolledBack`
+`illuminate.query`  |  `Illuminate\Database\Events\QueryExecuted`
+`illuminate.queue.after`  |  `Illuminate\Queue\Events\JobProcessed`
+`illuminate.queue.failed`  |  `Illuminate\Queue\Events\JobFailed`
+`illuminate.queue.stopping`  |  `Illuminate\Queue\Events\WorkerStopping`
+`mailer.sending`  |  `Illuminate\Mail\Events\MessageSending`
+`router.matched`  |  `Illuminate\Routing\Events\RouteMatched`
+
+Each of these event objects contains **exactly** the same parameters that were passed to the event handler in Laravel 5.1. For example, if you were using `DB::listen` in 5.1.*, you may update your code like so for 5.2.*:
+
+    DB::listen(function ($event) {
+        dump($event->sql);
+        dump($event->bindings);
+    });
+
+You may check out each of the new event object classes to see their public properties.
+
+### Exception Handling
+
+Your `App\Exceptions\Handler` class' `$dontReport` property should be updated to include at least the following exception types:
+
+    use Illuminate\Auth\Access\AuthorizationException;
+    use Illuminate\Database\Eloquent\ModelNotFoundException;
+    use Symfony\Component\HttpKernel\Exception\HttpException;
+    use Illuminate\Foundation\Validation\ValidationException;
+
+    /**
+     * A list of the exception types that should not be reported.
+     *
+     * @var array
+     */
+    protected $dontReport = [
+        AuthorizationException::class,
+        HttpException::class,
+        ModelNotFoundException::class,
+        ValidationException::class,
+    ];
+
+### Implicit Model Binding
+
+Laravel 5.2 includes "implicit model binding", a convenient new feature to automatically inject model instances into routes and controllers based on the identifier present in the URI. However, this does change the behavior of routes and controllers that type-hint model instances.
+
+If you were type-hinting a model instance in your route or controller and were expecting an **empty** model instance to be injected, you should remove this type-hint and create an empty model instance directly within your route or controller; otherwise, Laravel will attempt to retrieve an existing model instance from the database based on the identifier present in the route's URI.
+
+### IronMQ
+
+The IronMQ queue driver has been moved into it's own package and is no longer shipped with the core framework.
+
+[http://github.com/LaravelCollective/iron-queue](http://github.com/laravelcollective/iron-queue)
+
+### Jobs / Queue
+
+The `php artisan make:job` command now creates a "queued" job class definition by default. If you would like to create a "sync" job, use the `--sync` option when issuing the command.
+
+### Mail
+
+The `pretend` mail configuration option has been removed. Instead, use the `log` mail driver, which performs the same function as `pretend` and logs even more information about the mail message.
+
+### Pagination
+
+To be consistent with other URLs generated by the framework, the paginator URLs no longer contain a trailing slash.
+
+### Service Providers
+
+The `Illuminate\Foundation\Providers\ArtisanServiceProvider` may be removed from your service provider list in your `app.php` configuration file.
+
+The `Illuminate\Routing\ControllerServiceProvider` may be removed from your service provider list in your `app.php` configuration file.
+
+### Sessions
+
+#### Database Session Driver
+
+A new `database` session driver has been written for the framework which includes more information about the user such as their user ID, IP address, and user-agent. If you would like to continue using the old driver you may specify the `legacy-database` driver in your `session.php` configuration file.
+
+If you would like to use the new driver, you should add the `user_id (nullable integer)`, `ip_address (nullable string)`, and `user_agent (text)` columns to your session database table.
+
+### Stringy
+
+The "Stringy" library is no longer included with the framework. You may install it manually via Composer if you wish to use it in your application.
+
+### Validation
+
+The `ValidatesRequests` trait now throws an instance of `Illuminate\Foundation\Validation\ValidationException` instead of throwing an instance of `Illuminate\Http\Exception\HttpResponseException`.
 
 <a name="upgrade-5.1.11"></a>
 ## Upgrading To 5.1.11
