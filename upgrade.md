@@ -158,7 +158,7 @@ If you were type-hinting a model instance in your route or controller and were e
 
 ### IronMQ
 
-The IronMQ queue driver has been moved into it's own package and is no longer shipped with the core framework.
+The IronMQ queue driver has been moved into its own package and is no longer shipped with the core framework.
 
 [http://github.com/LaravelCollective/iron-queue](http://github.com/laravelcollective/iron-queue)
 
