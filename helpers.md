@@ -26,6 +26,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 
 <div class="collection-method-list" markdown="1">
 [array_add](#method-array-add)
+[array_collapse](#method-array-collapse)
 [array_divide](#method-array-divide)
 [array_dot](#method-array-dot)
 [array_except](#method-array-except)
@@ -33,6 +34,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_flatten](#method-array-flatten)
 [array_forget](#method-array-forget)
 [array_get](#method-array-get)
+[array_has](#method-array-has)
 [array_only](#method-array-only)
 [array_pluck](#method-array-pluck)
 [array_pull](#method-array-pull)
@@ -138,6 +140,15 @@ The `array_add` function adds a given key / value pair to the array if the given
 
     // ['name' => 'Desk', 'price' => 100]
 
+<a name="method-array-collapse"></a>
+#### `array_collapse()` {#collection-method}
+
+The `array_collapse` function collapse an array of arrays into a single array:
+
+    $array = array_collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+
+    // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 <a name="method-array-divide"></a>
 #### `array_divide()` {#collection-method}
 
@@ -161,7 +172,7 @@ The `array_dot` function flattens a multi-dimensional array into a single level 
 <a name="method-array-except"></a>
 #### `array_except()` {#collection-method}
 
-The `array_except` method removes the given key / value pairs from the array:
+The `array_except` function removes the given key / value pairs from the array:
 
     $array = ['name' => 'Desk', 'price' => 100];
 
@@ -172,7 +183,7 @@ The `array_except` method removes the given key / value pairs from the array:
 <a name="method-array-first"></a>
 #### `array_first()` {#collection-method}
 
-The `array_first` method returns the first element of an array passing a given truth test:
+The `array_first` function returns the first element of an array passing a given truth test:
 
     $array = [100, 200, 300];
 
@@ -189,7 +200,7 @@ A default value may also be passed as the third parameter to the method. This va
 <a name="method-array-flatten"></a>
 #### `array_flatten()` {#collection-method}
 
-The `array_flatten` method will flatten a multi-dimensional array into a single level.
+The `array_flatten` function will flatten a multi-dimensional array into a single level.
 
     $array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
 
@@ -200,7 +211,7 @@ The `array_flatten` method will flatten a multi-dimensional array into a single 
 <a name="method-array-forget"></a>
 #### `array_forget()` {#collection-method}
 
-The `array_forget` method removes a given key / value pair from a deeply nested array using "dot" notation:
+The `array_forget` function removes a given key / value pair from a deeply nested array using "dot" notation:
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -211,7 +222,7 @@ The `array_forget` method removes a given key / value pair from a deeply nested 
 <a name="method-array-get"></a>
 #### `array_get()` {#collection-method}
 
-The `array_get` method retrieves a value from a deeply nested array using "dot" notation:
+The `array_get` function retrieves a value from a deeply nested array using "dot" notation:
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -223,10 +234,21 @@ The `array_get` function also accepts a default value, which will be returned if
 
     $value = array_get($array, 'names.john', 'default');
 
+<a name="method-array-has"></a>
+#### `array_has()` {#collection-method}
+
+The `array_has` function checks that a given item exists in an array using "dot" notation:
+
+    $array = ['products' => ['desk' => ['price' => 100]]];
+
+    $hasDesk = array_has($array, ['products.desk']);
+
+    // true
+
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
 
-The `array_only` method will return only the specified key / value pairs from the given array:
+The `array_only` function will return only the specified key / value pairs from the given array:
 
     $array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 
@@ -237,21 +259,27 @@ The `array_only` method will return only the specified key / value pairs from th
 <a name="method-array-pluck"></a>
 #### `array_pluck()` {#collection-method}
 
-The `array_pluck` method will pluck a list of the given key / value pairs from the array:
+The `array_pluck` function will pluck a list of the given key / value pairs from the array:
 
     $array = [
-        ['developer' => ['name' => 'Taylor']],
-        ['developer' => ['name' => 'Abigail']]
+        ['developer' => ['id' => 1, 'name' => 'Taylor']],
+        ['developer' => ['id' => 2, 'name' => 'Abigail']],
     ];
 
     $array = array_pluck($array, 'developer.name');
 
     // ['Taylor', 'Abigail'];
+    
+You may also specify how you wish the resulting list to be keyed:
+
+    $array = array_pluck($array, 'developer.name', 'developer.id');
+
+    // [1 => 'Taylor', 2 => 'Abigail'];
 
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
 
-The `array_pull` method returns and removes a key / value pair from the array:
+The `array_pull` function returns and removes a key / value pair from the array:
 
     $array = ['name' => 'Desk', 'price' => 100];
 
@@ -264,7 +292,7 @@ The `array_pull` method returns and removes a key / value pair from the array:
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
-The `array_set` method sets a value within a deeply nested array using "dot" notation:
+The `array_set` function sets a value within a deeply nested array using "dot" notation:
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -275,7 +303,7 @@ The `array_set` method sets a value within a deeply nested array using "dot" not
 <a name="method-array-sort"></a>
 #### `array_sort()` {#collection-method}
 
-The `array_sort` method sorts the array by the results of the given Closure:
+The `array_sort` function sorts the array by the results of the given Closure:
 
     $array = [
         ['name' => 'Desk'],
