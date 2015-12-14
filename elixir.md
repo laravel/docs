@@ -324,7 +324,7 @@ elixir(function(mix) {
 <a name="browser-sync"></a>
 ## BrowserSync
 
-BrowserSync automatically refreshes your web browser after you make changes to your front-end resources. You can use the `browserSync` method to instruct Elixir to start a BrowserSync server when you run the `gulp watch` command:
+當你對前端資源進行修改後，BrowserSync 會自動重新整理你的網頁瀏覽器。你可以使用 `browserSync` 方法來告知 Elixir，當你執行 `gulp watch` 指令時啟動 BrowserSync 伺服器：
 
 ```javascript
 elixir(function(mix) {
@@ -332,7 +332,7 @@ elixir(function(mix) {
 });
 ```
 
-Once you run `gulp watch`, access your web application using port 3000 to enable browser syncing: `http://homestead.app:3000`. If you're using a domain other than `homestead.app` for local development, you may pass an array of [options](http://www.browsersync.io/docs/options/) as the first argument to the `browserSync` method:
+一旦你執行 `gulp watch`，就可以使用連接埠 3000 啟用瀏覽器同步並存取你的網頁應用程式：`http://homestead.app:3000`。如果你在本機開發所使用的域名不是 `homestead.app`，那麼你可以傳遞一個[選項](http://www.browsersync.io/docs/options/)的陣列作為 `browserSync` 方法的第一個參數：
 
 ```javascript
 elixir(function(mix) {
