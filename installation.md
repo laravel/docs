@@ -1,20 +1,20 @@
-# Installation
+# 安裝
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-    - [Basic Configuration](#basic-configuration)
-    - [Environment Configuration](#environment-configuration)
-    - [Configuration Caching](#configuration-caching)
-    - [Accessing Configuration Values](#accessing-configuration-values)
-    - [Naming Your Application](#naming-your-application)
-- [Maintenance Mode](#maintenance-mode)
+- [安裝](#installation)
+- [設定](#configuration)
+    - [基本設定](#basic-configuration)
+    - [環境設定](#environment-configuration)
+    - [設定快取](#configuration-caching)
+    - [取得設定值](#accessing-configuration-values)
+    - [命名你的應用程式](#naming-your-application)
+- [維護模式](#maintenance-mode)
 
 <a name="installation"></a>
-## Installation
+## 安裝
 
-### Server Requirements
+### 伺服器需求
 
-The Laravel framework has a few system requirements. Of course, all of these requirements are satisfied by the [Laravel Homestead](/docs/{{version}}/homestead) virtual machine:
+Laravel 框架有一些系統上的需求。當然，[Laravel Homestead](/docs/{{version}}/homestead) 虛擬機器都能滿足這些需求：
 
 <div class="content-list" markdown="1">
 - PHP >= 5.5.9
@@ -25,64 +25,64 @@ The Laravel framework has a few system requirements. Of course, all of these req
 </div>
 
 <a name="install-laravel"></a>
-### Installing Laravel
+### 安裝 Laravel
 
-Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. So, before using Laravel, make sure you have Composer installed on your machine.
+Laravel 使用 [Composer](http://getcomposer.org) 來管理相依性。所以，在使用 Laravel 之前，你必須確認電腦上是否安裝了 Composer。
 
-#### Via Laravel Installer
+#### 透過 Laravel 安裝工具
 
-First, download the Laravel installer using Composer:
+首先，使用 Composer 下載 Laravel 安裝包：
 
     composer global require "laravel/installer"
 
-Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
+請確定把 `~/.composer/vendor/bin` 路徑放置於你的 PATH 裡，這樣你的系統才能找到 `laravel` 執行檔。
 
-Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed. This method of installation is much faster than installing via Composer:
+一旦安裝完成後，就可以使用 `laravel new` 指令在指定的目錄建立一份新安裝的 Laravel 專案，例如：`laravel new blog` 將會在當前目錄下建立一個叫 `blog` 的目錄，此目錄裡面存放著新安裝的 Laravel 和相依程式碼。這個安裝方法比透過 Composer 安裝速度快上許多：
 
     laravel new blog
 
-#### Via Composer Create-Project
+#### 透過 Composer Create-Project
 
-You may also install Laravel by issuing the Composer `create-project` command in your terminal:
+你也可以透過 Composer 在命令列執行 `create-project` 指令來安裝 Laravel：
 
     composer create-project laravel/laravel --prefer-dist
 
 <a name="configuration"></a>
-## Configuration
+## 設定
 
 <a name="basic-configuration"></a>
-### Basic Configuration
+### 基本設定
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+所有 Laravel 框架的設定檔案都放置在 `config` 目錄下。每個選項都有說明，因此你可以輕鬆地瀏覽這些文件，並且熟悉這些選項配置。
 
-#### Directory Permissions
+#### 目錄權限
 
-After installing Laravel, you may need to configure some permissions. Directories within the `storage` and the `bootstrap/cache` directories should be writable by your web server. If you are using the [Homestead](/docs/{{version}}/homestead) virtual machine, these permissions should already be set.
+安裝 Laravel 之後，你必須設定一些權限。`storage` 和 `bootstrap/cache` 目錄必須讓伺服器有寫入權限。如果你使用 [Homestead](/docs/{{version}}/homestead) 虛擬機器，那麼這些權限應該已經被設定完成。
 
-#### Application Key
+#### 應用程式金鑰
 
-The next thing you should do after installing Laravel is set your application key to a random string. If you installed Laravel via Composer or the Laravel installer, this key has already been set for you by the `key:generate` command. Typically, this string should be 32 characters long. The key can be set in the `.env` environment file. If you have not renamed the `.env.example` file to `.env`, you should do that now. **If the application key is not set, your user sessions and other encrypted data will not be secure!**
+在你安裝完 Laravel 後，首先需要做的事情是設定一個隨機字串到應用程式金鑰。假設你是透過 Composer 或是 Laravel 安裝工具安裝 Laravel，那麼這個金鑰已經透過 `key:generate` 指令幫你設定完成。通常這個金鑰應該有 32 字元長。這個金鑰可以被設定在 `.env` 環境檔案中。如果你還沒將 `.env.example` 檔案重新命名為 `.env`，那麼你應該現在開始。**如果應用程式金鑰沒有被設定的話，你的使用者 Sessions 和其他的加密資料都是不安全的！**
 
-#### Additional Configuration
+#### 其他設定
 
-Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+Laravel 幾乎不需設定就可以馬上使用，你可以自由的開始開發！當然，你可以瀏覽 `config/app.php` 檔案和對應的文件。它包含數個選項，如`時區`和`語言環境`，你不仿根據你的應用程式來做修改。
 
-You may also want to configure a few additional components of Laravel, such as:
+你也可以設定 Laravel 的幾個附加元件，像是：
 
-- [Cache](/docs/{{version}}/cache#configuration)
-- [Database](/docs/{{version}}/database#configuration)
+- [快取](/docs/{{version}}/cache#configuration)
+- [資料庫](/docs/{{version}}/database#configuration)
 - [Session](/docs/{{version}}/session#configuration)
 
-Once Laravel is installed, you should also [configure your local environment](/docs/{{version}}/installation#environment-configuration).
+一旦 Laravel 安裝完成，你應該同時[設定本機環境](/docs/{{version}}/installation#environment-configuration)。
 
 <a name="pretty-urls"></a>
-#### Pretty URLs
+#### 優雅鏈結
 
 **Apache**
 
-The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, be sure to enable the `mod_rewrite` module.
+Laravel 框架透過 `public/.htaccess` 檔案來讓網址中不需要 `index.php`。如果你的伺服器是使用 Apache，請確認是否有開啟 `mod_rewrite` 模組。
 
-If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
+假設 Laravel 附帶的 `.htaccess` 檔在 Apache 無法作用的話，請嘗試下方的做法：
 
     Options +FollowSymLinks
     RewriteEngine On
@@ -93,93 +93,93 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 
 **Nginx**
 
-On Nginx, the following directive in your site configuration will allow "pretty" URLs:
+若使用 Nginx ，可以在你的網站設定中增加下面的設定，以開啟「優雅連結」：
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
+當然，如果你使用 [Homestead](/docs/{{version}}/homestead) 的話，優雅鏈結會自動的幫你設定完成。
 
 <a name="environment-configuration"></a>
-### Environment Configuration
+### 環境設定
 
-It is often helpful to have different configuration values based on the environment the application is running in. For example, you may wish to use a different cache driver locally than you do on your production server. It's easy using environment based configuration.
+通常應用程式常常需要根據不同的執行環境而有不同的設定值。例如，你會希望在你的本機開發環境上會有與正式環境不同的暫存驅動。只要透過設定檔案，就可以輕鬆完成。
 
-To make this a cinch, Laravel utilizes the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vance Lucas. In a fresh Laravel installation, the root directory of your application will contain a `.env.example` file. If you install Laravel via Composer, this file will automatically be renamed to `.env`. Otherwise, you should rename the file manually.
+Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP 函式庫來達到這項需求。在全新安裝好的 Laravel 裡，你的應用程式的根目錄下會包含一個 `.env.example` 檔案。如果你透過 Composer 安裝 Laravel，這個檔案將自動被更名為 `.env`，不然你應該手動更改檔名。
 
-All of the variables listed in this file will be loaded into the `$_ENV` PHP super-global when your application receives a request. You may use the `env` helper to retrieve values from these variables. In fact, if you review the Laravel configuration files, you will notice several of the options already using this helper!
+當你的應用程式收到請求時，這個檔案所有的變數會被載入到 PHP 超級全域變數 `$_ENV` 裡。你可以使用輔助方法 `env` 來取得這些變數的值。事實上，如果你檢閱過 Laravel 的設定檔案，你會注意到有幾個選項已經在使用這個輔助方法！
 
-Feel free to modify your environment variables as needed for your own local server, as well as your production environment. However, your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration.
+根據你的本機伺服器或者正式環境需求，你可以自由的修改你的環境變數。但是，你的 `.env` 檔案不應該被提交到應用程式的版本控制系統，因為每個開發人員或伺服器在使用你的應用程式時，可能需要不同的環境設定。
 
-If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting place-holder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
+如果你是一個團隊的開發者，不妨將 `.env.example` 檔案放進你的應用程式。透過範例設定檔裡的預留值，你的團隊中其他開發人員可以清楚地看到，在執行你的應用程式時，有哪些環境變數是必須的。
 
-#### Accessing The Current Application Environment
+#### 取得目前應用程式的環境
 
-The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
+應用程式的當前環境是由 `.env` 檔案中的 `APP_ENV` 變數所決定。你可以透過 `App` [facade](/docs/{{version}}/facades) 的 `environment` 方法取得該值：
 
     $environment = App::environment();
 
-You may also pass arguments to the `environment` method to check if the environment matches a given value. You may even pass multiple values if necessary:
+你也可以傳遞參數至 `environment` 方法中，來確認目前的環境是否與參數相符合：
 
     if (App::environment('local')) {
-        // The environment is local
+        // 環境是 local
     }
 
     if (App::environment('local', 'staging')) {
-        // The environment is either local OR staging...
+        // 環境是 local 或 staging...
     }
 
-An application instance may also be accessed via the `app` helper method:
+也能透過 `app` 輔助方法取得應用程式實例：
 
     $environment = app()->environment();
 
 <a name="configuration-caching"></a>
-### Configuration Caching
+### 設定快取
 
-To give your application a speed boost, you should cache all of your configuration files into a single file using the `config:cache` Artisan command. This will combine all of the configuration options for your application into a single file which can be loaded quickly by the framework.
+為了讓你的的應用程式提升一些速度，你可以使用 Artisan 指令 `config:cache` 將所有的設定檔暫存到單一檔案。透過指令會將所有的設定選項合併成一個檔案，讓框架能夠快速載入。
 
-You should typically run the `php artisan config:cache` command as part of your production deployment routine. The command should not be run during local development as configuration options will frequently need to be changed during the course of your application's development.
+你應該將執行 `php artisan config:cache` 指令作為部署工作的一部分。此指令不應該在本機開發的時候執行，因為設定選項需要根據你應用程式的開發而經常變動。
 
 <a name="accessing-configuration-values"></a>
-### Accessing Configuration Values
+### 取得設定值
 
-You may easily access your configuration values using the global `config` helper function. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
+你可以很輕鬆的使用 `config` 輔助方法取得你的設定值。設定值可以透過「點」語法來取得，其中包含了檔案與選項的名稱。也可以指定預設值，當該設定選項不存在時就會回傳預設值：
 
     $value = config('app.timezone');
 
-To set configuration values at runtime, pass an array to the `config` helper:
+若要在執行期間修改設定值，請傳遞一個陣列至 `config` 輔助方法：
 
     config(['app.timezone' => 'America/Chicago']);
 
 <a name="naming-your-application"></a>
-### Naming Your Application
+### 命名你的應用程式
 
-After installing Laravel, you may wish to "name" your application. By default, the `app` directory is namespaced under `App`, and autoloaded by Composer using the [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). However, you may change the namespace to match the name of your application, which you can easily do via the `app:name` Artisan command.
+在安裝完成 Laravel 後，你可以「命名」你的應用程式。預設情況下，`app` 的目錄的命名空間是 `App`，然後會透過 Composer 使用 [PSR-4 自動載入標準](http://www.php-fig.org/psr/psr-4/) 來自動載入。不過，你可以輕鬆地透過 Artisan 指令 `app:name` 來修改命名空間，以配合你的應用程式名稱。
 
-For example, if your application is named "Horsefly", you could run the following command from the root of your installation:
+舉例來說，假設你的應用程式叫做「Horsefly」，你可以在安裝完的根目錄執行下方的指令：
 
     php artisan app:name Horsefly
 
-Renaming your application is entirely optional, and you are free to keep the `App` namespace if you wish.
+重新命名你的應用程式是完全自由的，如果你希望的話也可以保持命名空間為 `App`。
 
 <a name="maintenance-mode"></a>
-## Maintenance Mode
+## 維護模式
 
-When your application is in maintenance mode, a custom view will be displayed for all requests into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, an `HttpException` will be thrown with a status code of 503.
+當你的應用程式處於維護模式時，所有的傳遞至應用程式的請求都會顯示一個自定的視圖。在你要更新或進行維護作業時，這麼做可以很輕鬆的「關閉」整個應用程式。維護模式會檢查包含在應用程式的預設中介層堆疊。如果應用程式處於維護模式，`HttpException` 會拋出 503 的狀態碼。
 
-To enable maintenance mode, simply execute the `down` Artisan command:
+啟用維護模式，只需要執行 Artisan 指令 `down`：
 
     php artisan down
 
-To disable maintenance mode, use the `up` command:
+關閉維護模式，請使用 Artisan 指令 `up`：
 
     php artisan up
 
-### Maintenance Mode Response Template
+### 維護模式的回應模板
 
-The default template for maintenance mode responses is located in `resources/views/errors/503.blade.php`.
+維護模式回應的預設模板放在 `resources/views/errors/503.blade.php`。
 
-### Maintenance Mode & Queues
+### 維護模式與隊列
 
-While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+當應用程式處於維護模式中，將不會處理任何[隊列工作](/docs/{{version}}/queues)。所有的隊列工作將會在應用程式離開維護模式後繼續被進行。

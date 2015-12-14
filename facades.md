@@ -1,22 +1,22 @@
 # Facades
 
-- [Introduction](#introduction)
-- [Using Facades](#using-facades)
-- [Facade Class Reference](#facade-class-reference)
+- [簡介](#introduction)
+- [使用 Facades](#using-facades)
+- [Facade 類別參考](#facade-class-reference)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Facades provide a "static" interface to classes that are available in the application's [service container](/docs/{{version}}/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+Facades 為應用程式的[服務容器](/docs/{{version}}/container)中可用的類別提供一個「靜態」介面。Laravel 附帶許多 facades，甚至你可能在不知情的狀況下已經使用他們！Laravel 「facades」作為在服務容器內基底類別的「靜態代理」，提供了一個簡潔、易表達的語法優點，同時維持比傳統的靜態方法更高的可測試性和彈性。
 
 <a name="using-facades"></a>
-## Using Facades
+## 使用 Facades
 
-In the context of a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Illuminate\Support\Facades\Facade` class.
+在 Laravel 應用程式環境（Context）中，facade 是個提供從容器存取物件的類別。`Facade` 類別是讓這個機制可以運作的原因。Laravel 的 facades，以及任何你建立的客製化 facades，會繼承基底 `Illuminate\Support\Facades\Facade` 類別。
 
-A facade class only needs to implement a single method: `getFacadeAccessor`. It's the `getFacadeAccessor` method's job to define what to resolve from the container. The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to the resolved object.
+facade 類別只需要去實作一個方法：`getFacadeAccessor`。`getFacadeAccessor` 方法的工作定義是從容器中解析出什麼。`Facade` 基底類別利用 `__callStatic()` 魔術方法從你的 facade 延遲呼叫來解析物件。
 
-In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class:
+在下面的範例，呼叫了 Laravel 的快取系統。看了一下這個程式碼，或許有人認為靜態方法 `get` 是被 `Cache` 類別呼叫的：
 
     <?php
 
@@ -28,7 +28,7 @@ In the example below, a call is made to the Laravel cache system. By glancing at
     class UserController extends Controller
     {
         /**
-         * Show the profile for the given user.
+         * 顯示給定使用者的個人資料。
          *
          * @param  int  $id
          * @return Response
@@ -41,26 +41,26 @@ In the example below, a call is made to the Laravel cache system. By glancing at
         }
     }
 
-Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy to accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service.
+注意在檔案的上方，我們「導入」`Cache` facade。這個 facade 做為存取底層實作 `Illuminate\Contracts\Cache\Factory` 介面的代理。我們使用 facade 的任何呼叫將會傳送給 Laravel 快取服務的底層實例。
 
-If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
+如果我們查看 `Illuminate\Support\Facades\Cache` 類別，你會發現沒有靜態方法 `get`：
 
     class Cache extends Facade
     {
         /**
-         * Get the registered name of the component.
+         * 取得元件的註冊名稱。
          *
          * @return string
          */
         protected static function getFacadeAccessor() { return 'cache'; }
     }
 
-Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. Remember, this method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
+相反的，`Cache` facade 繼承了基底 `Facade` 類別以及定義了 `getFacadeAccessor()` 方法。記住，這個方法的工作是回傳服務容器綁定的名稱。當使用者在 `Cache` facade 上參考任何的靜態方法，Laravel 會從[服務容器](/docs/{{version}}/container)解析被綁定的 `cache` 以及針對物件執行請求的方法（在這個範例中是 `get`）。
 
 <a name="facade-class-reference"></a>
-## Facade Class Reference
+## Facade 類別參考
 
-Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [service container binding](/docs/{{version}}/container) key is also included where applicable.
+在下方你可以找到每個 facade 及其底層的類別。這個工具對於透過給定 facade 的來源快速尋找 API 文件相當有用。可應用的[服務容器綁定](/docs/{{version}}/container)關鍵字也包含在裡面。
 
 Facade  |  Class  |  Service Container Binding
 ------------- | ------------- | -------------

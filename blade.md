@@ -1,36 +1,36 @@
-# Blade Templates
+# Blade 模板
 
-- [Introduction](#introduction)
-- [Template Inheritance](#template-inheritance)
-    - [Defining A Layout](#defining-a-layout)
-    - [Extending A Layout](#extending-a-layout)
-- [Displaying Data](#displaying-data)
-- [Control Structures](#control-structures)
-- [Service Injection](#service-injection)
-- [Extending Blade](#extending-blade)
+- [簡介](#introduction)
+- [模板繼承](#template-inheritance)
+    - [定義頁面佈局](#defining-a-layout)
+    - [繼承頁面佈局](#extending-a-layout)
+- [顯示資料](#displaying-data)
+- [控制結構](#control-structures)
+- [服務注入](#service-injection)
+- [擴充 Blade](#extending-blade)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. All Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
+Blade 是 Laravel 所提供的簡單且強大的模板引擎。相較於其它知名的 PHP 模板引擎，Blade 並不會限制你必須在視圖中使用 PHP 程式碼。所有 Blade 視圖會被編譯成一般的 PHP 程式碼並快取直到它們被更動為止，這代表著基本上 Blade 不會對你的應用程式產生負擔。Blade 視圖檔案使用 `.blade.php` 做為副檔名，且通常儲存於 `resources/views` 資料夾。
 
 <a name="template-inheritance"></a>
-## Template Inheritance
+## 模板繼承
 
 <a name="defining-a-layout"></a>
-### Defining A Layout
+### 定義頁面佈局
 
-Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a "master" page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
+使用 Blade 模板的兩個主要優點為_模板繼承_與_區塊_。讓我們先看一個簡單的範例來上手。首先，我們確認一下「主要的」頁面佈局。由於大多數的網頁應用程式在不同頁面都保持著相同的佈局方式，這便於定義這個佈局為單一的 Blade 視圖：
 
-    <!-- Stored in resources/views/layouts/master.blade.php -->
+    <!-- 檔案儲存於 resources/views/layouts/master.blade.php -->
 
     <html>
         <head>
-            <title>App Name - @yield('title')</title>
+            <title>應用程式名稱 - @yield('title')</title>
         </head>
         <body>
             @section('sidebar')
-                This is the master sidebar.
+                這是主要的側邊欄。
             @show
 
             <div class="container">
@@ -39,186 +39,186 @@ Two of the primary benefits of using Blade are _template inheritance_ and _secti
         </body>
     </html>
 
-As you can see, this file contains typical HTML mark-up. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
+如你所見，這個檔案包含了傳統的 HTML 語法。不過，請注意 `@section` 與 `@yield` 指令。正如其名，`@section` 指令定義一個內容區塊，而 `@yield` 指令被用來顯示給定區塊的內容。
 
-Now that we have defined a layout for our application, let's define a child page that inherits the layout.
+現在，我們已經定義了這個應用程式的佈局，讓我們來定義一個繼承此佈局的子頁面。
 
 <a name="extending-a-layout"></a>
-### Extending A Layout
+### 繼承頁面佈局
 
-When defining a child page, you may use the Blade `@extends` directive to specify which layout the child page should "inherit". Views which `@extends` a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
+當正在定義子頁面時，你可以使用 Blade 的 `@extends` 指令指定子頁面應該「繼承」哪一個佈局。當視圖 `@extends` Blade 的佈局之後，即可使用 `@section` 指令將內容注入於佈局的區塊中。切記，如上述範例所見，這些區塊的內容都會使用 `@yield` 顯示在佈局中：
 
-    <!-- Stored in resources/views/child.blade.php -->
+    <!-- 儲存於 resources/views/child.blade.php -->
 
     @extends('layouts.master')
 
-    @section('title', 'Page Title')
+    @section('title', '頁面標題')
 
     @section('sidebar')
         @@parent
 
-        <p>This is appended to the master sidebar.</p>
+        <p>這邊會附加在主要的側邊欄。</p>
     @endsection
 
     @section('content')
-        <p>This is my body content.</p>
+        <p>這是我的主要內容。</p>
     @endsection
 
-In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
+在這個範例中，`sidebar` 區塊利用了 `@@parent` 指令增加（而不是覆蓋）內容至佈局的側邊欄。`@@parent` 指令會在視圖輸出時被置換成佈局的內容。
 
-Of course, just like plain PHP views, Blade views may be returned from routes using the global `view` helper function:
+當然，就像一般的 PHP 視圖，可以在路由中使用全域的 `view` 輔助函式回傳 Blade 視圖：
 
     Route::get('blade', function () {
         return view('child');
     });
 
 <a name="displaying-data"></a>
-## Displaying Data
+## 顯示資料
 
-You may display data passed to your Blade views by wrapping the variable in "curly" braces. For example, given the following route:
+你可以使用「大」括號包住變數以顯示傳遞至 Blade 視圖的資料。舉例而言，就像以下的路由設定：
 
     Route::get('greeting', function () {
         return view('welcome', ['name' => 'Samantha']);
     });
 
-You may display the contents of the `name` variable like so:
+你可以像這樣顯示 `name` 變數的內容：
 
     Hello, {{ $name }}.
 
-Of course, you are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
+當然，也不是一定只能顯示傳遞至視圖的變數內容。你也可以顯示 PHP 函式的結果。實際上，你可以放置任何你需要的 PHP 程式碼到 Blade 顯示語法裡面：
 
-    The current UNIX timestamp is {{ time() }}.
+    目前的 UNIX 時間戳記為 {{ time() }}。
 
-> **Note:** Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks.
+> **注意：**Blade 的 `{{ }}` 語法已經自動以 PHP 既有的 `htmlentites` 函式防禦 XSS 攻擊。
 
-#### Blade & JavaScript Frameworks
+#### Blade 與 JavaScript 框架
 
-Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
+由於許多 JavaScript 框架也使用「大」括號在瀏覽器中顯示給定的表達式，你可以使用 `@` 符號來告知 Blade 渲染引擎該表達式應該維持原樣。舉個例子：
 
     <h1>Laravel</h1>
 
     Hello, @{{ name }}.
 
-In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
+在這個範例中，`@` 符號會被 Blade 移除。而且，Blade 引擎會保留 `{{ name }}` 表達式，如此一來便可讓其它 JavaScript 框架所應用。
 
-#### Echoing Data If It Exists
+#### 當資料存在時印出
 
-Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. We can express this in verbose PHP code like so:
+有時候你想要印出一個變數，但你並不確定這個變數是否已被設定。我們可以用像這樣的冗長 PHP 程式碼表達：
 
     {{ isset($name) ? $name : 'Default' }}
 
-However, instead of writing a ternary statement, Blade provides you with the following convenient short-cut:
+不過，Blade 提供了較方便的縮寫來替代寫三元運算子表示式：
 
     {{ $name or 'Default' }}
 
-In this example, if the `$name` variable exists, its value will be displayed. However, if it does not exist, the word `Default` will be displayed.
+在這個範例中，如果 `$name` 變數存在，它的值將會被顯示出來。但是，如果這個變數不存在，便會顯示 `Default`。
 
-#### Displaying Unescaped Data
+#### 顯示未跳脫的資料
 
-By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
+在預設情況下，Blade 模板中的 `{{ }}` 表達式將會自動套用 PHP 的 `htmlentities` 函式，以避免 XSS 攻擊。如果你不希望你的資料被跳脫，可以使用下列的語法：
 
     Hello, {!! $name !!}.
 
-> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the double curly brace syntax to escape any HTML entities in the content.
+> **注意：**要非常小心處理任何應用程式使用者提供的字串。請總是使用雙大括號語法來跳脫內容中的 HTML 元素。
 
 <a name="control-structures"></a>
-## Control Structures
+## 控制結構
 
-In addition to template inheritance and displaying data, Blade also provides convenient short-cuts for common PHP control structures, such as conditional statements and loops. These short-cuts provide a very clean, terse way of working with PHP control structures, while also remaining familiar to their PHP counterparts.
+除了模板繼承與顯示資料功能以外，Blade 也提供了方便的縮寫給一般的 PHP 控制敘述，像是條件陳述式和迴圈。這些縮寫提供了乾淨、簡潔的方式來使用 PHP 的控制結構，同時還保留對應在 PHP 中熟悉且同樣的語法。
 
-#### If Statements
+#### If 陳述式
 
-You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@endif` directives. These directives function identically to their PHP counterparts:
+你可以使用 `@if`、`@elseif`、`@else` 及 `@endif` 指令建構 `if` 陳述式。這些指令的功能等同於在 PHP 中的語法：
 
     @if (count($records) === 1)
-        I have one record!
+        我有一條記錄！
     @elseif (count($records) > 1)
-        I have multiple records!
+        我有多條記錄！
     @else
-        I don't have any records!
+        我沒有任何記錄！
     @endif
 
-For convenience, Blade also provides an `@unless` directive:
+為了方便，Blade 也提供了 `@unless` 指令：
 
     @unless (Auth::check())
-        You are not signed in.
+        你尚未登入。
     @endunless
 
-#### Loops
+#### 迴圈
 
-In addition to conditional statements, Blade provides simple directives for working with PHP's supported loop structures. Again, each of these directives functions identically to their PHP counterparts:
+除了條件陳述式外，Blade 也提供了簡易指令使用 PHP 支援的迴圈結構。再次提及，這每個指令函式等同於他們 PHP 中的語法：
 
     @for ($i = 0; $i < 10; $i++)
-        The current value is {{ $i }}
+        目前的值為 {{ $i }}
     @endfor
 
     @foreach ($users as $user)
-        <p>This is user {{ $user->id }}</p>
+        <p>此使用者為 {{ $user->id }}</p>
     @endforeach
 
     @forelse ($users as $user)
         <li>{{ $user->name }}</li>
     @empty
-        <p>No users</p>
+        <p>沒有使用者</p>
     @endforelse
 
     @while (true)
-        <p>I'm looping forever.</p>
+        <p>我永遠都在跑迴圈。</p>
     @endwhile
 
-#### Including Sub-Views
+#### 引入子視圖
 
-Blade's `@include` directive, allows you to easily include a Blade view from within an existing view. All variables that are available to the parent view will be made available to the included view:
+Blade 的 `@include` 指令，允使你簡單地從一個已存在的視圖引入 Blade 視圖。所有在父視圖的可用變數在被引入的視圖中都是可用的。
 
     <div>
         @include('shared.errors')
 
         <form>
-            <!-- Form Contents -->
+            <!-- 表單內容 -->
         </form>
     </div>
 
-Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
+儘管被引入的視圖會繼承父視圖中的所有資料，你也可以傳遞額外資料的陣列至被引入的頁面：
 
     @include('view.name', ['some' => 'data'])
 
-> **Note:** You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
+> **注意：**你必須在 Blade 視圖中避免使用 `__DIR__` 及 `__FILE__` 常數，因為他們會引用視圖被快取的位置。
 
-#### Rendering Views For Collections
+#### 為集合渲染視圖
 
-You may combine loops and includes into one line with Blade's `@each` directive:
+你可以使用 Blade 的 `@each` 指令將迴圈及引入結合成一行：
 
     @each('view.name', $jobs, 'job')
 
-The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial.
+第一個參數為對陣列或集合的每個元素渲染的局部視圖。第二個參數為你要迭代的陣列或集合，而第三個參數為迭代時被分配至視圖中的變數名稱。所以，舉例來說，如果你迭代一個 `jobs` 陣列，通常你會希望在局部視圖中透過 `job` 變數存取每一個 job。
 
-You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
+你也可以傳遞第四個參數至 `@each` 指令。此參數為當給定的陣列為空時，將會被渲染的視圖。
 
     @each('view.name', $jobs, 'job', 'view.empty')
 
-#### Comments
+#### 註解
 
-Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
+Blade 也允許在頁面中定義註解。然而，有異於 HTML 的註解，Blade 的註解並不會被包含在應用程式回傳的 HTML 內：
 
-    {{-- This comment will not be present in the rendered HTML --}}
+    {{-- 此註解將不會出現在渲染後的 HTML --}}
 
 <a name="service-injection"></a>
-## Service Injection
+## 服務注入
 
-The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class / interface name of the service you wish to resolve:
+`@inject` 指令可以取出 Laravel [服務容器](/docs/{{version}}/container)中的服務。傳遞給 `@inject` 的第一個參數為置放該服務的變數名稱，而第二個參數為你想要解析的服務的類別或是介面的名稱：
 
     @inject('metrics', 'App\Services\MetricsService')
 
     <div>
-        Monthly Revenue: {{ $metrics->monthlyRevenue() }}.
+        每月收入：{{ $metrics->monthlyRevenue() }}。
     </div>
 
 <a name="extending-blade"></a>
-## Extending Blade
+## 擴充 Blade
 
-Blade even allows you to define your own custom directives. You can use the `directive` method to register a directive. When the Blade compiler encounters the directive, it calls the provided callback with its parameter.
+Blade 甚至允許你定義客製化的指令。你可以使用 `directive` 方法註冊指令。當 Blade 編譯器遇到該指令時，它將會帶參數呼叫提供的回呼函式。
 
-The following example creates a `@datetime($var)` directive which formats a given `$var`:
+以下範例建立一個把給定的 `$var` 格式化的 `@datetime($var)` 指令：
 
     <?php
 
@@ -230,7 +230,7 @@ The following example creates a `@datetime($var)` directive which formats a give
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Perform post-registration booting of services.
+         * 執行服務註冊後的啟動程序。
          *
          * @return void
          */
@@ -242,7 +242,7 @@ The following example creates a `@datetime($var)` directive which formats a give
         }
 
         /**
-         * Register bindings in the container.
+         * 在容器註冊綁定。
          *
          * @return void
          */
@@ -252,7 +252,7 @@ The following example creates a `@datetime($var)` directive which formats a give
         }
     }
 
-As you can see, Laravel's `with` helper function was used in this directive. The `with` helper simply returns the object / value it is given, allowing for convenient method chaining. The final PHP generated by this directive will be:
+如你所見，Laravel 的 `with` 輔助函式被用在這個指令中。`with` 輔助函式會簡單地回傳給定的物件或值，並允許使用便利的方法鏈結。最後此指令產生的 PHP 會是：
 
     <?php echo with($var)->format('m/d/Y H:i'); ?>
 

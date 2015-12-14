@@ -1,41 +1,41 @@
-# Testing
+# 測試
 
-- [Introduction](#introduction)
-- [Application Testing](#application-testing)
-    - [Interacting With Your Application](#interacting-with-your-application)
-    - [Testing JSON APIs](#testing-json-apis)
-    - [Sessions / Authentication](#sessions-and-authentication)
-    - [Disabling Middleware](#disabling-middleware)
-    - [Custom HTTP Requests](#custom-http-requests)
+- [簡介](#introduction)
+- [測試應用程式](#application-testing)
+    - [與你的應用程式進行互動](#interacting-with-your-application)
+    - [測試 JSON APIs](#testing-json-apis)
+    - [Sessions 和認證](#sessions-and-authentication)
+    - [停用中介層](#disabling-middleware)
+    - [自訂 HTTP 請求](#custom-http-requests)
     - [PHPUnit Assertions](#phpunit-assertions)
-- [Working With Databases](#working-with-databases)
-    - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
-    - [Model Factories](#model-factories)
-- [Mocking](#mocking)
-    - [Mocking Events](#mocking-events)
-    - [Mocking Jobs](#mocking-jobs)
-    - [Mocking Facades](#mocking-facades)
+- [使用資料庫](#working-with-databases)
+    - [每次測試結束後重置資料庫](#resetting-the-database-after-each-test)
+    - [模型工廠](#model-factories)
+- [模擬](#mocking)
+    - [模擬事件](#mocking-events)
+    - [模擬任務](#mocking-jobs)
+    - [模擬 Facades](#mocking-facades)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Laravel is built with testing in mind. In fact, support for testing with PHPUnit is included out of the box, and a `phpunit.xml` file is already setup for your application. The framework also ships with convenient helper methods allowing you to expressively test your applications.
+Laravel 在建立時就已考慮到測試的部分。事實上，預設就支援以 PHPUnit 做測試，而且已經為你的應用程式建立了 `phpunit.xml` 檔案。框架還提供了一些便利的輔助方法，讓你更直觀的測試你的應用程式。
 
-An `ExampleTest.php` file is provided in the `tests` directory. After installing a new Laravel application, simply run `phpunit` on the command line to run your tests.
+在 `tests` 目錄中有提供一個 `ExampleTest.php` 的範例檔案。安裝新的 Laravel 應用程式之後，只要在命令列上執行 `phpunit`，就可以進行測試。
 
-### Test Environment
+### 測試環境
 
-When running tests, Laravel will automatically set the configuration environment to `testing`. Laravel automatically configures the session and cache to the `array` driver while testing, meaning no session or cache data will be persisted while testing.
+在執行測試時，Laravel 會自動將環境變數設定為 `testing`，並將 Session 及快取存入`陣列`形式，也就是說在測試時不會有任何 Session 或快取資料被儲存。
 
-You are free to create other testing environment configurations as necessary. The `testing` environment variables may be configured in the `phpunit.xml` file.
+你可以自由建立其他必要的測試環境設定。`testing` 的環境變數可以在 `phpunit.xml` 檔案中做修改。
 
-### Defining & Running Tests
+### 定義並執行測試
 
-To create a new test case, use the `make:test` Artisan command:
+要建立一個測試案例，使用 `make:test` Artisan 指令：
 
     php artisan make:test UserTest
 
-This command will place a new `UserTest` class within your `tests` directory. You may then define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal:
+此指令會放置一個新的 `UserTest` 類別至你的 `tests` 目錄。接著就可以像平常使用 PHPUnit 一樣定義測試方法。要執行測試只需要在終端機上執行 `phpunit` 指令：
 
     <?php
 
@@ -56,12 +56,12 @@ This command will place a new `UserTest` class within your `tests` directory. Yo
         }
     }
 
-> **Note:** If you define your own `setUp` method within a test class, be sure to call `parent::setUp`.
+> **注意：** 如果你要在你的類別定義自己的 `setUp` 方法，請確定有呼叫 `parent::setUp`。
 
 <a name="application-testing"></a>
-## Application Testing
+## 測試應用程式
 
-Laravel provides a very fluent API for making HTTP requests to your application, examining the output, and even filling out forms. For example, take a look at the `ExampleTest.php` file included in your `tests` directory:
+Laravel 對於產生 HTTP 請求並送至應用程式，檢查輸出，甚至填寫表單，都提供了非常流利的 API。 舉例來說，你可以看看 `tests` 目錄中的 `ExampleTest.php` 檔案：
 
     <?php
 
@@ -83,20 +83,20 @@ Laravel provides a very fluent API for making HTTP requests to your application,
         }
     }
 
-The `visit` method makes a `GET` request into the application. The `see` method asserts that we should see the given text in the response returned by the application. The `dontSee` method asserts that the given text is not returned in the application response. This is the most basic application test available in Laravel.
+`visit` 方法會製造 `GET` 請求至應用程式，`see` 方法則斷言在應用程式回傳的回應中，有指定的文字。The `dontSee` method asserts that the given text is not returned in the application response.這是 Laravel 所提供最基本的應用程式測試。
 
 <a name="interacting-with-your-application"></a>
-### Interacting With Your Application
+### 與你的應用程式進行互動
 
-Of course, you can do much more than simply assert that text appears in a given response. Let's take a look at some examples of clicking links and filling out forms:
+當然，除了斷言文字是否存在於一個給定的回應，你可以做更多的互動。讓我們看看點擊連結及填寫表單的範例：
 
-#### Clicking Links
+#### 點擊連結
 
-In this test, we will make a request to the application, "click" a link in the returned response, and then assert that we landed on a given URI. For example, let's assume there is a link in our response that has a text value of "About Us":
+在這個測試中，我們會產生一個請求送到應用程式，並「點擊」回傳回應中的連結，接著斷言我們會停留在指定的 URI。舉個例子，假設在回應中有個連結，並寫著「About Us」：
 
     <a href="/about-us">About Us</a>
 
-Now, let's write a test that clicks the link and asserts the user lands on the correct page:
+現在，我們撰寫一個測試，點擊連結並斷言使用者會停留在正確的頁面：
 
     public function testBasicExample()
     {
@@ -105,9 +105,9 @@ Now, let's write a test that clicks the link and asserts the user lands on the c
              ->seePageIs('/about-us');
     }
 
-#### Working With Forms
+#### 使用表單
 
-Laravel also provides several methods for testing forms. The `type`, `select`, `check`, `attach`, and `press` methods allow you to interact with all of your form's inputs. For example, let's imagine this form exists on the application's registration page:
+Laravel 還提供了幾種用於測試表單的方法。透過 `type`、`select`、`check`、`attach` 及 `press` 方法讓你與表單所有的輸入欄進行互動。舉個例子，讓我們想像一下有個表單在應用程式的註冊頁面：
 
     <form action="/register" method="POST">
         {!! csrf_field() !!}
@@ -125,7 +125,7 @@ Laravel also provides several methods for testing forms. The `type`, `select`, `
         </div>
     </form>
 
-We can write a test to complete this form and inspect the result:
+我們可以撰寫一個測試來填寫此表單，並檢查結果：
 
     public function testNewUserRegistration()
     {
@@ -136,19 +136,19 @@ We can write a test to complete this form and inspect the result:
              ->seePageIs('/dashboard');
     }
 
-Of course, if your form contains other inputs such as radio buttons or drop-down boxes, you may easily fill out those types of fields as well. Here is a list of each form manipulation method:
+當然，如果你的表單包含像是單選欄或下拉式選單的其他輸入欄，你也可以很輕鬆的填入這些類型的區域。以下是每個表單操作方法的列表：
 
-Method  | Description
+方法  | 說明
 ------------- | -------------
-`$this->type($text, $elementName)`  |  "Type" text into a given field.
-`$this->select($value, $elementName)`  |  "Select" a radio button or drop-down field.
-`$this->check($elementName)`  |  "Check" a checkbox field.
-`$this->attach($pathToFile, $elementName)`  |  "Attach" a file to the form.
-`$this->press($buttonTextOrElementName)`  |  "Press" a button with the given text or name.
+`$this->type($text, $elementName)`  |  「輸入（type）」文字在一個給定的區域
+`$this->select($value, $elementName)`  |  「選擇（select）」一個單選欄或下拉式選單的區域
+`$this->check($elementName)`  |  「勾選（Check）」一個複選欄的區域
+`$this->attach($pathToFile, $elementName)`  |  「附上（Attach）」一個檔案至表單
+`$this->press($buttonTextOrElementName)`  |  「按下（Press）」一個指定文字或名稱的按鈕
 
-#### Working With Attachments
+#### 使用附件
 
-If your form contains `file` input types, you may attach files to the form using the `attach` method:
+如果你的表單包含 `file` 的輸入欄類型，可以使用 `attach` 方法附上檔案：
 
     public function testPhotoCanBeUploaded()
     {
@@ -160,9 +160,9 @@ If your form contains `file` input types, you may attach files to the form using
     }
 
 <a name="testing-json-apis"></a>
-### Testing JSON APIs
+### 測試 JSON APIs
 
-Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `get`, `post`, `put`, `patch`, and `delete` methods may be used to issue requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that a given array was returned in JSON format:
+Laravel 也提供了幾個輔助方法測試 JSON APIs 及其回應。舉例來說，`get`、`post`、`put`、`patch` 及 `delete` 方法可以用於發出各種 HTTP 動詞的請求。你也可以很輕鬆的傳入資料或是標頭到這些方法。首先，我們撰寫一個測試，發出 `POST` 請求至 `/user` ，並斷言會回傳JSON 格式的指定陣列：
 
     <?php
 
@@ -182,11 +182,11 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
         }
     }
 
-The `seeJson` method converts the given array into JSON, and then verifies that the JSON fragment occurs **anywhere** within the entire JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
+`seeJson` 方法會將傳入的陣列轉換成 JSON，並驗證該 JSON 片段是否存在於應用程式回傳的 JSON 回應中的**任何位置**。也就是說，即使有其他的屬性在 JSON 回應中，但是只要給定的片段存在，此測試仍然會通過。
 
-#### Verify Exact JSON Match
+#### 驗證 JSON 完全匹配
 
-If you would like to verify that the given array is an **exact** match for the JSON returned by the application, you should use the `seeJsonEquals` method:
+如果你想驗證傳入的陣列要與應用程式回傳的 JSON **完全**匹配，可以使用 `seeJsonEquals` 方法：
 
     <?php
 
@@ -207,9 +207,9 @@ If you would like to verify that the given array is an **exact** match for the J
     }
 
 <a name="sessions-and-authentication"></a>
-### Sessions / Authentication
+### Sessions 和認證
 
-Laravel provides several helpers for working with the session during testing. First, you may set the session data to a given array using the `withSession` method. This is useful for loading the session with data before testing a request to your application:
+Laravel 提供了幾個輔助方法在測試時使用 Session。首先，你需要設定 Session 資料至給定的陣列，並使用 `withSession` 方法。對於要測試送到應用程式的請求之前，先將資料載入 session 上相當有用：
 
     <?php
 
@@ -222,7 +222,7 @@ Laravel provides several helpers for working with the session during testing. Fi
         }
     }
 
-Of course, one common use of the session is for maintaining user state, such as the authenticated user. The `actingAs` helper method provides a simple way to authenticate a given user as the current user. For example, we may use a [model factory](#model-factories) to generate and authenticate a user:
+當然，一般使用 Session 時都是用於保持使用者的狀態，像是認證使用者。`actingAs`  輔助方法提供了簡單的方式，讓指定的使用者認證為當前的使用者。舉個例子，我們可以使用[模型工廠](#model-factories)來產生並認證使用者：
 
     <?php
 
@@ -240,9 +240,9 @@ Of course, one common use of the session is for maintaining user state, such as 
     }
 
 <a name="disabling-middleware"></a>
-### Disabling Middleware
+### 停用中介層
 
-When testing your application, you may find it convenient to disable [middleware](/docs/{{version}}/middleware) for some of your tests. This will allow you to test your routes and controller in isolation from any middleware concerns. Laravel includes a simple `WithoutMiddleware` trait that you can use to automatically disable all middleware for the test class:
+測試應用程式時，你會發現，在某些測試中停用[中介層](/docs/{{version}}/middleware)是很方便的。讓你可以隔離任何中介層的影響，來測試路由及控制器。Laravel 包含一個簡潔的 `WithoutMiddleware` trait，你能夠使用它自動在測試類別中停用所有的中介層：
 
     <?php
 
@@ -256,7 +256,7 @@ When testing your application, you may find it convenient to disable [middleware
         //
     }
 
-If you would like to only disable middleware for a few test methods, you may call the `withoutMiddleware` method from within the test methods:
+如果你只想要在某幾個測試方法中停用中介層，你可以在測試方法中呼叫 `withoutMiddleware` 方法：
 
     <?php
 
@@ -277,9 +277,9 @@ If you would like to only disable middleware for a few test methods, you may cal
     }
 
 <a name="custom-http-requests"></a>
-### Custom HTTP Requests
+### 自訂 HTTP 請求
 
-If you would like to make a custom HTTP request into your application and get the full `Illuminate\Http\Response` object, you may use the `call` method:
+如果你想要建立一個自訂的 HTTP 請求至你的應用程式，並取得完整的 `Illuminate\Http\Response` 物件，你可以使用 `call` 方法：
 
     public function testApplication()
     {
@@ -288,7 +288,7 @@ If you would like to make a custom HTTP request into your application and get th
         $this->assertEquals(200, $response->status());
     }
 
-If you are making `POST`, `PUT`, or `PATCH` requests you may pass an array of input data with the request. Of course, this data will be available in your routes and controller via the [Request instance](/docs/{{version}}/requests):
+如果你建立的是 `POST`、`PUT`、或是 `PATCH` 請求，你可以在請求時傳入一個陣列作為輸入資料。當然，你可在你的路由及控制器中透過[請求實例](/docs/{{version}}/requests)取用這些資料：
 
        $response = $this->call('POST', '/user', ['name' => 'Taylor']);
 
@@ -313,27 +313,27 @@ Method  | Description
 `->assertHasOldInput();`  |  Assert that the session has old input.
 
 <a name="working-with-databases"></a>
-## Working With Databases
+## 使用資料庫
 
-Laravel also provides a variety of helpful tools to make it easier to test your database driven applications. First, you may use the `seeInDatabase` helper to assert that data exists in the database matching a given set of criteria. For example, if we would like to verify that there is a record in the `users` table with the `email` value of `sally@example.com`, we can do the following:
+Laravel 也提供了多種有用的工具，讓你更容易測試使用資料庫的應用程式。首先，你可以使用 `seeInDatabase` 輔助方法，來斷言資料庫中是否存在與指定條件互相匹配的資料。舉例來說，如果我們想驗證 `users` 資料表中是否存在 `email` 值為 `sally@example.com` 的資料，我們可以按照以下的方式：
 
     public function testDatabase()
     {
-        // Make call to application...
+        // 建立呼叫至應用程式...
 
         $this->seeInDatabase('users', ['email' => 'sally@example.com']);
     }
 
-Of course, the `seeInDatabase` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
+當然，使用 `seeInDatabase` 方法及其他的輔助方法只是基於方便。你可以自由使用任何 PHPUnit 內建的斷言方法來擴充你的測試。
 
 <a name="resetting-the-database-after-each-test"></a>
-### Resetting The Database After Each Test
+### 每次測試結束後重置資料庫
 
-It is often useful to reset your database after each test so that data from a previous test does not interfere with subsequent tests.
+在每次測試結束後都重置你的資料是相當有用的，這樣前次的測試資料就不會干擾之後的測試。
 
-#### Using Migrations
+#### 使用遷移
 
-One option is to rollback the database after each test and migrate it before the next test. Laravel provides a simple `DatabaseMigrations` trait that will automatically handle this for you. Simply use the trait on your test class:
+其中一種方式就是在每次測試後都還原資料庫，並在下次測試前進行遷移。Laravel 提供了簡潔的 `DatabaseMigrations` trait，它會自動幫你處理這些操作。你只需要在測試類別中使用此 trait：
 
     <?php
 
@@ -357,9 +357,9 @@ One option is to rollback the database after each test and migrate it before the
         }
     }
 
-#### Using Transactions
+#### 使用交易
 
-Another option is to wrap every test case in a database transaction. Again, Laravel provides a convenient `DatabaseTransactions` trait that will automatically handle this:
+另一個方式，就是將每個測試案例包裝在資料庫交易中。當然，Laravel 提供了一個簡潔的 `DatabaseTransactions` trait，它會自動幫你處理這些操作：
 
     <?php
 
@@ -386,9 +386,9 @@ Another option is to wrap every test case in a database transaction. Again, Lara
 > **Note:** This trait will only wrap the default database connection in a transaction.
 
 <a name="model-factories"></a>
-### Model Factories
+### 模型工廠
 
-When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using "factories". To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
+測試時，常常需要在執行測試之前寫入一些資料到資料庫中。建立測試資料時，除了手動設定每個欄位的值，Laravel 讓你可以使用 [Eloquent 模型](/docs/{{version}}/eloquent)的「工廠」設定每個屬性的預設值。開始之前，你可以查看應用程式的 `database/factories/ModelFactory.php` 檔案。此檔案包含一個現成的工廠定義：
 
     $factory->define(App\User::class, function (Faker\Generator $faker) {
         return [
@@ -399,13 +399,13 @@ When testing, it is common to need to insert a few records into your database be
         ];
     });
 
-Within the Closure, which serves as the factory definition, you may return the default test values of all attributes on the model. The Closure will receive an instance of the [Faker](https://github.com/fzaninotto/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
+閉包內為工廠的定義，你可以回傳模型所有屬性的預設測試值。該閉包內會接收到 [Faker](https://github.com/fzaninotto/Faker) PHP 函式庫的實例，它可以讓你方便的產生各種隨機的資料以進行測試。
 
-Of course, you are free to add your own additional factories to the `ModelFactory.php` file.
+當然，你可以自由的增加自己額外的工廠至 `ModelFactory.php` 檔案。
 
-#### Multiple Factory Types
+#### 多個工廠類型
 
-Sometimes you may wish to have multiple factories for the same Eloquent model class. For example, perhaps you would like to have a factory for "Administrator" users in addition to normal users. You may define these factories using the `defineAs` method:
+有時你可能希望針對同一個 Eloquent 模型類別，能建立多個工廠。例如，除了一般使用者的工廠之外，還有「管理員」的工廠。你可以使用 `defineAs` 方法定義這個工廠：
 
     $factory->defineAs(App\User::class, 'admin', function ($faker) {
         return [
@@ -417,7 +417,7 @@ Sometimes you may wish to have multiple factories for the same Eloquent model cl
         ];
     });
 
-Instead of duplicating all of the attributes from your base user factory, you may use the `raw` method to retrieve the base attributes. Once you have the attributes, simply supplement them with any additional values you require:
+除了從一般使用者工廠複製所有基底屬性，你也可以使用 `raw` 方法來取得基底屬性。一旦你取得這些屬性，就可以輕鬆的增加額外任何你需要的值：
 
     $factory->defineAs(App\User::class, 'admin', function ($faker) use ($factory) {
         $user = $factory->raw(App\User::class);
@@ -425,54 +425,54 @@ Instead of duplicating all of the attributes from your base user factory, you ma
         return array_merge($user, ['admin' => true]);
     });
 
-#### Using Factories In Tests
+#### 在測試中使用工廠
 
-Once you have defined your factories, you may use them in your tests or database seed files to generate model instances using the global `factory` function. So, let's take a look at a few examples of creating models. First, we'll use the `make` method, which creates models but does not save them to the database:
+定義工廠後，就可以在測試或是資料庫填充檔案中，透過全域 `factory` 函式產生模型實例。那麼讓我們來看看幾個建立模型的例子。首先我們會使用 `make` 方法建立模型，但是不將它們儲存至資料庫：
 
     public function testDatabase()
     {
         $user = factory(App\User::class)->make();
 
-        // Use model in tests...
+        // 在測試中使用模型...
     }
 
-If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified values will be replaced while the rest of the values remain set to their default values as specified by the factory:
+如果你想覆寫模型中的某些預設值，你可以傳遞一個包含數值的陣列至 `make` 方法。只有指定的數值會被替換，其它剩餘的數值則會按照工廠指定的預設值設定：
 
     $user = factory(App\User::class)->make([
         'name' => 'Abigail',
        ]);
 
-You may also create a Collection of many models or create models of a given type:
+你也可以建立一個含有多個模型的集合，或建立一個給定類型的模型：
 
-    // Create three App\User instances...
+    // 建立三個 App\User 實例...
     $users = factory(App\User::class, 3)->make();
 
-    // Create an App\User "admin" instance...
+    // 建立一個 App\User「管理員」實例...
     $user = factory(App\User::class, 'admin')->make();
 
-    // Create three App\User "admin" instances...
+    // 建立三個 App\User「管理員」實例...
     $users = factory(App\User::class, 'admin', 3)->make();
 
-#### Persisting Factory Models
+#### 保存工廠模型
 
-The `create` method not only creates the model instances, but also saves them to the database using Eloquent's `save` method:
+`create` 方法不僅建立模型實例，也可以使用 Eloquent 的 `save` 方法將它們儲存至資料庫：
 
     public function testDatabase()
     {
         $user = factory(App\User::class)->create();
 
-        // Use model in tests...
+        // 在測試中使用模型...
     }
 
-Again, you may override attributes on the model by passing an array to the `create` method:
+同樣的，你可以在傳遞陣列至 `create` 方法時覆寫模型的屬性：
 
     $user = factory(App\User::class)->create([
         'name' => 'Abigail',
        ]);
 
-#### Adding Relations To Models
+#### 增加關聯至模型
 
-You may even persist multiple models to the database. In this example, we'll even attach a relation to the created models. When using the `create` method to create multiple models, an Eloquent [collection instance](/docs/{{version}}/eloquent-collections) is returned, allowing you to use any of the convenient functions provided by the collection, such as `each`:
+你甚至能保存多個模型至資料庫。在本例中，我們還會增加關聯至我們建立的模型。當使用 `create` 方法建立多個模型時，它會回傳一個 Eloquent [集合實例](/docs/{{version}}/eloquent-collections)，讓你能夠使用集合所提供的方便函式，像是 `each`：
 
     $users = factory(App\User::class, 3)
                ->create()
@@ -480,15 +480,16 @@ You may even persist multiple models to the database. In this example, we'll eve
                     $u->posts()->save(factory(App\Post::class)->make());
                 });
 
+
 <a name="mocking"></a>
-## Mocking
+## 模擬
 
 <a name="mocking-events"></a>
-### Mocking Events
+### 模擬事件
 
-If you are making heavy use of Laravel's event system, you may wish to silence or mock certain events while testing. For example, if you are testing user registration, you probably do not want all of a `UserRegistered` event's handlers firing, since these may send "welcome" e-mails, etc.
+如果你正在頻繁地使用 Laravel 的事件系統，你可能希望在測試時停止或是模擬某些事件。舉例來說，如果你正在測試使用者註冊功能，你可能不希望所有 `UserRegistered` 事件的處理程序被執行，因為它們會發送「歡迎」的電子郵件等等。
 
-Laravel provides a convenient `expectsEvents` method that verifies the expected events are fired, but prevents any handlers for those events from running:
+Laravel 提供了簡潔的 `expectsEvents` 方法，驗證預期的事件有被執行，但是防止該事件的任何處理程序被執行：
 
     <?php
 
@@ -498,11 +499,11 @@ Laravel provides a convenient `expectsEvents` method that verifies the expected 
         {
             $this->expectsEvents(App\Events\UserRegistered::class);
 
-            // Test user registration code...
+            // 測試使用者註冊的程式碼...
         }
     }
 
-If you would like to prevent all event handlers from running, you may use the `withoutEvents` method:
+如果你希望防止所有事件的處理程序被執行，你可以使用 `withoutEvents` 方法：
 
     <?php
 
@@ -512,16 +513,16 @@ If you would like to prevent all event handlers from running, you may use the `w
         {
             $this->withoutEvents();
 
-            // Test user registration code...
+            // 測試使用者註冊的程式碼...
         }
     }
 
 <a name="mocking-jobs"></a>
-### Mocking Jobs
+### 模擬任務
 
-Sometimes, you may wish to simply test that specific jobs are dispatched by your controllers when making requests to your application. This allows you to test your routes / controllers in isolation - set apart from your job's logic. Of course, you can then test the job itself in a separate test class.
+有時你可能希望當發出請求至你的應用程式時，簡單的測試由你的控制器所派送的任務。這麼做能夠使你隔離並測試你的路由或控制器－設定除了任務以外的邏輯。當然，你之後可以在一個單獨的測試案例測試該任務。
 
-Laravel provides a convenient `expectsJobs` method that will verify that the expected jobs are dispatched, but the job itself will not be executed:
+Laravel 提供了一個簡潔的 `expectsJobs` 方法，驗證預期的任務有被派送，但是任務本身不會被執行：
 
     <?php
 
@@ -531,16 +532,16 @@ Laravel provides a convenient `expectsJobs` method that will verify that the exp
         {
             $this->expectsJobs(App\Jobs\PurchasePodcast::class);
 
-            // Test purchase podcast code...
+            // 測試購買 podcast 的程式碼...
         }
     }
 
-> **Note:** This method only detects jobs that are dispatched via the `DispatchesJobs` trait's dispatch methods. It does not detect jobs that are sent directly to `Queue::push`.
+> **注意：** 此方法只檢測被 `DispatchesJobs` trait 的派送方法所派送的任務。它並不會檢測直接發送到 `Queue::push` 的任務。
 
 <a name="mocking-facades"></a>
-### Mocking Facades
+### 模擬 Facades
 
-When testing, you may often want to mock a call to a Laravel [facade](/docs/{{version}}/facades). For example, consider the following controller action:
+測試時，你可能時常需要模擬呼叫一個 Laravel [facade](/docs/{{version}}/facades)。舉個例子，參考下方的控制器行為：
 
     <?php
 
@@ -552,7 +553,7 @@ When testing, you may often want to mock a call to a Laravel [facade](/docs/{{ve
     class UserController extends Controller
     {
         /**
-         * Show a list of all users of the application.
+         * 顯示應用程式所有使用者的列表。
          *
          * @return Response
          */
@@ -564,7 +565,7 @@ When testing, you may often want to mock a call to a Laravel [facade](/docs/{{ve
         }
     }
 
-We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade:
+我們可以透過 `shouldReceive` 方法模擬呼叫 `Cache` facade，它會回傳一個 [Mockery](https://github.com/padraic/mockery) 模擬的實例。因為 facades 實際上已經被 Laravel [服務容器](/docs/{{version}}/container)解決及管理，它們比起一般的靜態類別更有可測試性。舉個例子，讓我們模擬我們呼叫 `Cache` facade：
 
     <?php
 
@@ -581,4 +582,4 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
         }
     }
 
-> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the HTTP helper methods such as `call` and `post` when running your test.
+> **注意：** 你不應該模擬 `Request` facade。應該在測試時使用像是 `call` 及 `post` 的 HTTP 輔助方法來傳遞你想要的資料。
