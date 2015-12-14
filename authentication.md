@@ -19,7 +19,7 @@
     - [路由](#resetting-routing)
     - [視圖](#resetting-views)
     - [重設密碼後](#after-resetting-passwords)
-- [社交認證](#social-authentication)
+- [社群認證](#social-authentication)
 - [新增客製化認證驅動](#adding-custom-authentication-drivers)
 - [事件](#events)
 
