@@ -53,7 +53,7 @@ This command will generate plain, Bootstrap compatible views for user login, reg
 
 Middleware groups allow you to group several route middleware under a single, convenient key, allowing you to assign several middleware to a route at once. For example, this can be useful when building a web UI and an API within the same application. You may group the session and CSRF routes into a `web` group, and perhaps the rate limiter in the `api` group.
 
-In fact, the default Laravel 5.2 application structure takes exactly this approach. For example, in the `App\Http\Kernel.php` file:
+In fact, the default Laravel 5.2 application structure takes exactly this approach. For example, in the default `App\Http\Kernel.php` file you will find the following:
 
     /**
      * The application's route middleware groups.
@@ -96,7 +96,7 @@ Validating array form input fields is much easier in Laravel 5.2. For example, t
         'person.*.email' => 'email|unique:users'
     ]);
 
-Likewise, you may use the `*` character when specifying your validation messages in your language files:
+Likewise, you may use the `*` character when specifying your validation messages in your language files, making it a breeze to use a single validation message for array based fields:
 
     'custom' => [
         'person.*.email' => [
