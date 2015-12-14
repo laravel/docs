@@ -51,7 +51,7 @@
     - [驗證](/docs/{{version}}/validation)
 - 資料庫
     - [入門](/docs/{{version}}/database)
-    - [查詢生成器](/docs/{{version}}/queries)
+    - [查詢建構器](/docs/{{version}}/queries)
     - [遷移](/docs/{{version}}/migrations)
     - [資料填充](/docs/{{version}}/seeding)
 - Eloquent ORM
