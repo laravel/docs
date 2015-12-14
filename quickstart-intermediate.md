@@ -465,7 +465,7 @@ Remember that we used the `@include('common.errors')` directive within our view 
 
 Now that input validation is handled, let's actually create a new task by continuing to fill out our route. Once the new task has been created, we will redirect the user back to the `/tasks` URL. To create the task, we are going to leverage the power of Eloquent's relationships.
 
-Most of Laravel's relationships expose a `save` method, which accepts a related model instance and will automatically set the foreign key value on the related model before storing it in the database. In this case, the `save` method will automatically set the `user_id` property of the given task to the ID of the currently authenticated user, which we are accessing using `$request->user()`:
+Most of Laravel's relationships expose a `create` method, which accepts an array of attributes and will automatically set the foreign key value on the related model before storing it in the database. In this case, the `create` method will automatically set the `user_id` property of the given task to the ID of the currently authenticated user, which we are accessing using `$request->user()`:
 
     /**
      * Create a new task.
