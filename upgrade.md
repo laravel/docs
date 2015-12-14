@@ -63,7 +63,7 @@ If you would like to continue using separate commands and handlers, you may inst
 
 Add an `env` configuration option to your `app.php` configuration file that looks like the following:
 
-'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'production'),
 
 #### Caching And Env
 
