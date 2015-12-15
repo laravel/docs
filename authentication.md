@@ -19,6 +19,7 @@
     - [Routing](#resetting-routing)
     - [Views](#resetting-views)
     - [After Resetting Passwords](#after-resetting-passwords)
+- [API Authentication](#api-authentication)
 - [Social Authentication](#social-authentication)
 - [Adding Custom Authentication Drivers](#adding-custom-authentication-drivers)
 - [Events](#events)
@@ -27,6 +28,10 @@
 ## Introduction
 
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
+
+At its core, Laravel's authentication facilities are made up of "guards" and "providers". Guards define how user's are authenticated for each request. For example, Laravel ships with a `session` guard which maintains state using session storage and cookies and a `token` guard, which authenticates users using a "API token" that is passed with each request.
+
+"Providers" define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using Eloquent and the database query builder. However, you are free to define additional providers as needed for your application.
 
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
@@ -461,7 +466,7 @@ Once you have a user instance, you can grab a few more details about the user:
 <a name="adding-custom-authentication-drivers"></a>
 ## Adding Custom Authentication Drivers
 
-### Custom User Providers / Sources
+### Custom User Providers
 
 If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication user provider. We will use the `provider` method on the `Auth` facade to define a custom user provider. You should place this call to `provider` within a [service provider](/docs/{{version}}/providers):
 
@@ -499,20 +504,20 @@ If you are not using a traditional relational database to store your users, you 
         }
     }
 
-After you have registered the provider with the `provider` method, you may switch to the new user provider in your `config/auth.php` configuration file. First, define a `source` that uses your new driver:
+After you have registered the provider with the `provider` method, you may switch to the new user provider in your `config/auth.php` configuration file. First, define a `provider` that uses your new driver:
 
-    'sources' => [
+    'providers' => [
         'users' => [
             'driver' => 'riak',
         ],
     ],
 
-Then, you may use this source in your `guards` configuration:
+Then, you may use this provider in your `guards` configuration:
 
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'source' => 'users',
+            'provider' => 'users',
         ],
     ],
 
