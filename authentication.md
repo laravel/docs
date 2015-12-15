@@ -516,7 +516,7 @@ You may define your own authentication guards using the `extend` method on the `
 
 As you can see in the example above, the callback passed to the `extend` method should return an implementation of `Illuminate\Contracts\Auth\Guard`. This interface contains a few methods you will need to implement to define a custom guard.
 
-Then, you may use this guard in your `guards` configuration:
+Once your custom guard has been defined, you may use the guard in your `guards` configuration:
 
     'guards' => [
         'api' => [
