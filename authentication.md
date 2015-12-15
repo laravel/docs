@@ -31,7 +31,7 @@ Laravel makes implementing authentication very simple. In fact, almost everythin
 
 At its core, Laravel's authentication facilities are made up of "guards" and "providers". Guards define how user's are authenticated for each request. For example, Laravel ships with a `session` guard which maintains state using session storage and cookies and a `token` guard, which authenticates users using a "API token" that is passed with each request.
 
-"Providers" define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using Eloquent and the database query builder. However, you are free to define additional providers as needed for your application.
+Providers define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using Eloquent and the database query builder. However, you are free to define additional providers as needed for your application.
 
 Don't worry if this all sounds confusing now! Most applications will never need to modify the default authentication configuration.
 
