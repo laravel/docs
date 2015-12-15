@@ -39,7 +39,7 @@ This is unlikely to affect your application unless you were manually implementin
 
 #### Custom Drivers
 
-If you are using the `Auth::extend` method to define a custom method of retrieving users. You should now use `Auth::provider` to define your custom user provider. Once you have defined the custom provider, you may configure it in the `providers` array of your new `auth.php` configuration file.
+If you are using the `Auth::extend` method to define a custom method of retrieving users, you should now use `Auth::provider` to define your custom user provider. Once you have defined the custom provider, you may configure it in the `providers` array of your new `auth.php` configuration file.
 
 For more information on custom authentication providers, consult the [full authentication documentation](/docs/{{version}}/authentication).
 
