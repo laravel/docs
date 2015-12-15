@@ -166,6 +166,8 @@ When attaching the `auth` middleware to a route, you may also specify which "gua
         'uses' => 'ProfileController@show'
     ]);
 
+The guard specified should correspond to one of the keys in the `guards` array of your `auth.php` configuration file.
+
 <a name="authentication-throttling"></a>
 ### Authentication Throttling
 
