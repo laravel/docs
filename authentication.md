@@ -461,7 +461,9 @@ Once you have a user instance, you can grab a few more details about the user:
 <a name="adding-custom-authentication-drivers"></a>
 ## Adding Custom Authentication Drivers
 
-If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication driver. We will use the `extend` method on the `Auth` facade to define a custom driver. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers):
+### Custom User Providers / Sources
+
+If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication user provider. We will use the `provider` method on the `Auth` facade to define a custom user provider. You should place this call to `provider` within a [service provider](/docs/{{version}}/providers):
 
     <?php
 
@@ -480,7 +482,7 @@ If you are not using a traditional relational database to store your users, you 
          */
         public function boot()
         {
-            Auth::extend('riak', function($app) {
+            Auth::provider('riak', function($app, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\UserProvider...
                 return new RiakUserProvider($app['riak.connection']);
             });
@@ -497,7 +499,22 @@ If you are not using a traditional relational database to store your users, you 
         }
     }
 
-After you have registered the driver with the `extend` method, you may switch to the new driver in your `config/auth.php` configuration file.
+After you have registered the provider with the `provider` method, you may switch to the new user provider in your `config/auth.php` configuration file. First, define a `source` that uses your new driver:
+
+    'sources' => [
+        'users' => [
+            'driver' => 'riak',
+        ],
+    ],
+
+Then, you may use this source in your `guards` configuration:
+
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'source' => 'riak',
+        ],
+    ],
 
 ### The User Provider Contract
 
