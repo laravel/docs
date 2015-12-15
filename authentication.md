@@ -49,7 +49,7 @@ Laravel provides a quick way to scaffold all of the routes and views you need fo
 
     php artisan make:auth
 
-This command should be used on fresh applications and will install registration and login views, as well as routes for all authentication end-points.
+This command should be used on fresh applications and will install registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated, which serves post-login requests to your application's dashboard. However, you are free to customize or even remove this controller based on the needs of your application.
 
 <a name="included-views"></a>
 ### Views
@@ -63,7 +63,7 @@ The `make:auth` command will also create a `resources/views/layouts` directory c
 
 Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application. You may simply access your defined routes in a browser. The authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI, which you will need to register a route to handle. You can customize the post-authentication redirect location by defining a `redirectPath` property on the `AuthController`:
+When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect location by defining a `redirectPath` property on the `AuthController`:
 
     protected $redirectPath = '/dashboard';
 
@@ -148,7 +148,7 @@ Of course, if you are using [controller classes](/docs/{{version}}/controllers),
         $this->middleware('auth');
     }
 
-#### Specifying A Custom Guard
+#### Specifying A Guard
 
 When attaching the `auth` middleware to a route, you may also specify which "guard" should be used to perform the authentication:
 
@@ -343,7 +343,7 @@ Laravel includes an `Auth\PasswordController` that contains the logic necessary 
 <a name="resetting-views"></a>
 ### Views
 
-Again, Laravel will generate all of the necessary views for password reset when the `make:auth` command is issued. These views are placed in `resources/views/auth/passwords`. You are free to customize them as needed for your application.
+Again, Laravel will generate all of the necessary views for password reset when the `make:auth` command is executed. These views are placed in `resources/views/auth/passwords`. You are free to customize them as needed for your application.
 
 <a name="after-resetting-passwords"></a>
 ### After Resetting Passwords
@@ -354,7 +354,7 @@ After the password is reset, the user will automatically be logged into the appl
 
     protected $redirectTo = '/dashboard';
 
-> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option in your `config/auth.php` file.
+> **Note:** By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
 
 <a name="social-authentication"></a>
 ## Social Authentication
