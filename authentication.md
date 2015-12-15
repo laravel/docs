@@ -82,7 +82,7 @@ When a user is not successfully authenticated, they will be redirected to the `/
 
 The `loginPath` will not change where a user is bounced if they try to access a protected route. That is controlled by the `App\Http\Middleware\Authenticate` middleware's `handle` method.
 
-#### Validation / Storage Customizations
+#### Validation / Storage Customization
 
 To modify the form fields that are required when a new user registers with your application, or to customize how new user records are inserted into your database, you may modify the `AuthController` class. This class is responsible for validating and creating new users of your application.
 
