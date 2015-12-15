@@ -45,79 +45,18 @@ Laravel ships with two authentication controllers out of the box, which are loca
 <a name="included-routing"></a>
 ### Routing
 
-By default, no [routes](/docs/{{version}}/routing) are included to point requests to the authentication controllers. You may manually add them to your `app/Http/routes.php` file:
+Laravel provides a quick way to scaffold all of the routes and views you need for authentication using one simple command:
 
-    // Authentication routes...
-    Route::get('auth/login', 'Auth\AuthController@getLogin');
-    Route::post('auth/login', 'Auth\AuthController@postLogin');
-    Route::get('auth/logout', 'Auth\AuthController@getLogout');
+    php artisan make:auth
 
-    // Registration routes...
-    Route::get('auth/register', 'Auth\AuthController@getRegister');
-    Route::post('auth/register', 'Auth\AuthController@postRegister');
+This command should be used on fresh applications and will install registration and login views, as well as routes for all authentication end-points.
 
 <a name="included-views"></a>
 ### Views
 
-Though the authentication controllers are included with the framework, you will need to provide [views](/docs/{{version}}/views) that these controllers can render. The views should be placed in the `resources/views/auth` directory. You are free to customize these views however you wish. The login view should be placed at `resources/views/auth/login.blade.php`, and the registration view should be placed at `resources/views/auth/register.blade.php`.
+As mentioned in the previous section, the `php artisan make:auth` command will create all of the views you need for authentication and place them in the `resources/views/auth` directory.
 
-#### Sample Authentication Form
-
-    <!-- resources/views/auth/login.blade.php -->
-
-    <form method="POST" action="/auth/login">
-        {!! csrf_field() !!}
-
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
-        </div>
-
-        <div>
-            Password
-            <input type="password" name="password" id="password">
-        </div>
-
-        <div>
-            <input type="checkbox" name="remember"> Remember Me
-        </div>
-
-        <div>
-            <button type="submit">Login</button>
-        </div>
-    </form>
-
-#### Sample Registration Form
-
-    <!-- resources/views/auth/register.blade.php -->
-
-    <form method="POST" action="/auth/register">
-        {!! csrf_field() !!}
-
-        <div>
-            Name
-            <input type="text" name="name" value="{{ old('name') }}">
-        </div>
-
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
-        </div>
-
-        <div>
-            Password
-            <input type="password" name="password">
-        </div>
-
-        <div>
-            Confirm Password
-            <input type="password" name="password_confirmation">
-        </div>
-
-        <div>
-            <button type="submit">Register</button>
-        </div>
-    </form>
+The `make:auth` command will also create a `resources/views/layouts` directory containing a base layout for your application. All of these views use the Bootstrap CSS framework, but you are free to customize them however you wish.
 
 <a name="included-authenticating"></a>
 ### Authenticating
@@ -128,7 +67,7 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
     protected $redirectPath = '/dashboard';
 
-When a user is not successfully authenticated, they will be redirected to the `/auth/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
+When a user is not successfully authenticated, they will be redirected to the `/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
 
     protected $loginPath = '/login';
 
@@ -208,6 +147,15 @@ Of course, if you are using [controller classes](/docs/{{version}}/controllers),
     {
         $this->middleware('auth');
     }
+
+#### Specifying A Custom Guard
+
+When attaching the `auth` middleware to a route, you may also specify which "guard" should be used to perform the authentication:
+
+    Route::get('profile', [
+        'middleware' => 'auth:api',
+        'uses' => 'ProfileController@show'
+    ]);
 
 <a name="authentication-throttling"></a>
 ### Authentication Throttling
@@ -388,102 +336,19 @@ Next, a table must be created to store the password reset tokens. The migration 
 <a name="resetting-routing"></a>
 ### Routing
 
-Laravel includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords. However, you will need to define routes to point requests to this controller:
+Laravel includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords. All of the routes needed to perform password resets may be generated using the `make:auth` Artisan command:
 
-    // Password reset link request routes...
-    Route::get('password/email', 'Auth\PasswordController@getEmail');
-    Route::post('password/email', 'Auth\PasswordController@postEmail');
-
-    // Password reset routes...
-    Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
-    Route::post('password/reset', 'Auth\PasswordController@postReset');
+    php artisan make:auth
 
 <a name="resetting-views"></a>
 ### Views
 
-In addition to defining the routes for the `PasswordController`, you will need to provide views that can be returned by this controller. Don't worry, we will provide sample views to help you get started. Of course, you are free to style your forms however you wish.
-
-#### Sample Password Reset Link Request Form
-
-You will need to provide an HTML view for the password reset request form. This view should be placed at `resources/views/auth/password.blade.php`. This form provides a single field for the user's e-mail address, allowing them to request a password reset link:
-
-    <!-- resources/views/auth/password.blade.php -->
-
-    <form method="POST" action="/password/email">
-        {!! csrf_field() !!}
-
-        @if (count($errors) > 0)
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
-        </div>
-
-        <div>
-            <button type="submit">
-                Send Password Reset Link
-            </button>
-        </div>
-    </form>
-
-When a user submits a request to reset their password, they will receive an e-mail with a link that points to the `getReset` method (typically routed at `/password/reset`) of the `PasswordController`. You will need to create a view for this e-mail at `resources/views/emails/password.blade.php`. The view will receive the `$token` variable which contains the password reset token to match the user to the password reset request. Here is an example e-mail view to get you started:
-
-    <!-- resources/views/emails/password.blade.php -->
-
-    Click here to reset your password: {{ url('password/reset/'.$token) }}
-
-#### Sample Password Reset Form
-
-When the user clicks the e-mailed link to reset their password, they will be presented with a password reset form. This view should be placed at `resources/views/auth/reset.blade.php`.
-
-Here is a sample password reset form to get you started:
-
-    <!-- resources/views/auth/reset.blade.php -->
-
-    <form method="POST" action="/password/reset">
-        {!! csrf_field() !!}
-        <input type="hidden" name="token" value="{{ $token }}">
-
-        @if (count($errors) > 0)
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
-        </div>
-
-        <div>
-            Password
-            <input type="password" name="password">
-        </div>
-
-        <div>
-            Confirm Password
-            <input type="password" name="password_confirmation">
-        </div>
-
-        <div>
-            <button type="submit">
-                Reset Password
-            </button>
-        </div>
-    </form>
+Again, Laravel will generate all of the necessary views for password reset when the `make:auth` command is issued. These views are placed in `resources/views/auth/passwords`. You are free to customize them as needed for your application.
 
 <a name="after-resetting-passwords"></a>
 ### After Resetting Passwords
 
-Once you have defined the routes and views to reset your user's passwords, you may simply access the routes in your browser. The `PasswordController` included with the framework already includes the logic to send the password reset link e-mails as well as update passwords in the database.
+Once you have defined the routes and views to reset your user's passwords, you may simply access the routes in your browser at `/password/reset`. The `PasswordController` included with the framework already includes the logic to send the password reset link e-mails as well as update passwords in the database.
 
 After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post password reset redirect location by defining a `redirectTo` property on the `PasswordController`:
 
