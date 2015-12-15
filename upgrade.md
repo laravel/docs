@@ -37,6 +37,12 @@ If you are implementing the `Illuminate\Contracts\Auth\Authenticatable` contract
 
 This is unlikely to affect your application unless you were manually implementing this interface.
 
+#### Custom Drivers
+
+If you are using the `Auth::extend` method to define a custom method of retrieving users. You should now use `Auth::provider` to define your custom user provider. Once you have defined the custom provider, you may configure it in the `providers` array of your new `auth.php` configuration file.
+
+For more information on custom authentication providers, consult the [full authentication documentation](/docs/{{version}}/authentication).
+
 ### Authorization
 
 The `Illuminate\Auth\Access\UnauthorizedException` has been renamed to `Illuminate\Auth\Access\AuthorizationException`. The is unlikely to affect your application if you are not manually catching this exception.
