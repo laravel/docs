@@ -359,7 +359,7 @@ Again, Laravel will generate all of the necessary views for password reset when 
 <a name="after-resetting-passwords"></a>
 ### After Resetting Passwords
 
-Once you have defined the routes and views to reset your user's passwords, you may simply access the routes in your browser at `/password/reset`. The `PasswordController` included with the framework already includes the logic to send the password reset link e-mails as well as update passwords in the database.
+Once you have defined the routes and views to reset your user's passwords, you may simply access the route in your browser at `/password/reset`. The `PasswordController` included with the framework already includes the logic to send the password reset link e-mails as well as update passwords in the database.
 
 After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post password reset redirect location by defining a `redirectTo` property on the `PasswordController`:
 
