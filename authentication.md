@@ -68,7 +68,9 @@ The `make:auth` command will also create a `resources/views/layouts` directory c
 <a name="included-authenticating"></a>
 ### Authenticating
 
-Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application. You may simply access your defined routes in a browser. The authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
+Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application. You may simply access your application in a browser. The authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
+
+#### Path Customization
 
 When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect location by defining a `redirectPath` property on the `AuthController`:
 
@@ -80,7 +82,7 @@ When a user is not successfully authenticated, they will be redirected to the `/
 
 The `loginPath` will not change where a user is bounced if they try to access a protected route. That is controlled by the `App\Http\Middleware\Authenticate` middleware's `handle` method.
 
-#### Customizations
+#### Validation / Storage Customizations
 
 To modify the form fields that are required when a new user registers with your application, or to customize how new user records are inserted into your database, you may modify the `AuthController` class. This class is responsible for validating and creating new users of your application.
 
