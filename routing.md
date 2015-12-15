@@ -326,7 +326,33 @@ Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the coo
 
 Laravel route model binding provides a convenient way to inject class instances into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` class instance that matches the given ID.
 
-First, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::boot` method:
+### Implicit Binding
+
+Laravel will automatically resolve type-hinted Eloquent model's defined in routes or controller actions whose variable name's match a route segment name. For example:
+
+    Route::get('/api/users/{user}', function (App\User $user) {
+        return $user->email;
+    });
+
+In this example, since the Eloquent type-hinted `$user` variable defined on the route matches the `{user}` segment in the route's URI, Laravel will automatically inject the model instance that has an ID matching the corresponding value in the request URI.
+
+If you would like the implicit model binding to use a database column other than `id` when retrieving models, you may override the `getRouteKeyName` method on your Eloquent model:
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+> **Note:** If a matching model instance is not found in the database, a 404 exception will be thrown automatically.
+
+### Explicit Binding
+
+To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::boot` method:
 
 #### Binding A Parameter To A Model
 
