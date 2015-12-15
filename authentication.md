@@ -512,7 +512,7 @@ Then, you may use this source in your `guards` configuration:
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'source' => 'riak',
+            'source' => 'users',
         ],
     ],
 
