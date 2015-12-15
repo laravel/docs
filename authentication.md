@@ -21,7 +21,8 @@
     - [After Resetting Passwords](#after-resetting-passwords)
 - [API Authentication](#api-authentication)
 - [Social Authentication](#social-authentication)
-- [Adding Custom Authentication Drivers](#adding-custom-authentication-drivers)
+- [Adding Custom Guards](#adding-custom-guards)
+- [Adding Custom User Providers](#adding-custom-user-providers)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -473,10 +474,59 @@ Once you have a user instance, you can grab a few more details about the user:
     $user->getEmail();
     $user->getAvatar();
 
-<a name="adding-custom-authentication-drivers"></a>
-## Adding Custom Authentication Drivers
+<a name="adding-custom-guards"></a>
+## Adding Custom Guards
 
-### Custom User Providers
+You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place this call to `provider` within a [service provider](/docs/{{version}}/providers):
+
+    <?php
+
+    namespace App\Providers;
+
+    use Auth;
+    use App\Services\Auth\JwtGuard;
+    use Illuminate\Support\ServiceProvider;
+
+    class AuthServiceProvider extends ServiceProvider
+    {
+        /**
+         * Perform post-registration booting of services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Auth::extend('jwt', function($app, $name, array $config) {
+                // Return an instance of Illuminate\Contracts\Auth\Guard...
+
+                return new JwtGuard(Auth::createProvider($config['provider']));
+            });
+        }
+
+        /**
+         * Register bindings in the container.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+    }
+
+As you can see in the example above, the callback passed to the `extend` method should return an implementation of `Illuminate\Contracts\Auth\Guard`. This interface contains a few methods you will need to implement to define a custom guard.
+
+Then, you may use this guard in your `guards` configuration:
+
+    'guards' => [
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+    ],
+
+<a name="adding-custom-user-providers"></a>
+## Adding Custom User Providers
 
 If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication user provider. We will use the `provider` method on the `Auth` facade to define a custom user provider. You should place this call to `provider` within a [service provider](/docs/{{version}}/providers):
 
