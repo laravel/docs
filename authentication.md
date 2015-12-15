@@ -33,6 +33,8 @@ At its core, Laravel's authentication facilities are made up of "guards" and "pr
 
 "Providers" define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using Eloquent and the database query builder. However, you are free to define additional providers as needed for your application.
 
+Don't worry if this all sounds confusing now! Most applications will never need to modify the default authentication configuration.
+
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
 
