@@ -7,6 +7,7 @@
     - [Writing The Validation Logic](#quick-writing-the-validation-logic)
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
     - [AJAX Requests & Validation](#quick-ajax-requests-and-validation)
+    - [Validating Arrays](#validating-arrays)
 - [Other Validation Approaches](#other-validation-approaches)
     - [Manually Creating Validators](#manually-creating-validators)
     - [Form Request Validation](#form-request-validation)
@@ -168,6 +169,23 @@ If you wish to customize the format of the validation errors that are flashed to
 ### AJAX Requests & Validation
 
 In this example, we used a traditional form to send data to the application. However, many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
+
+<a name="validating-arrays"></a>
+### Validating Arrays
+
+Validating array form input fields doesn't have to be a pain. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
+
+    $validator = Validator::make($request->all(), [
+        'person.*.email' => 'email|unique:users'
+    ]);
+
+Likewise, you may use the `*` character when specifying your validation messages in your language files, making it a breeze to use a single validation message for array based fields:
+
+    'custom' => [
+        'person.*.email' => [
+            'unique' => 'Each person must have a unique e-mail address',
+        ]
+    ],
 
 <a name="other-validation-approaches"></a>
 ## Other Validation Approaches
