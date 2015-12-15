@@ -3,6 +3,9 @@
 - [Introduction](#introduction)
 - [Defining Middleware](#defining-middleware)
 - [Registering Middleware](#registering-middleware)
+    - [Global Middleware](#global-middleware)
+    - [Assigning Middleware To Routes](#assigning-middleware-to-routes)
+    - [Middleware Groups](#middleware-groups)
 - [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
 
@@ -97,10 +100,12 @@ However, this middleware would perform its task **after** the request is handled
 <a name="registering-middleware"></a>
 ## Registering Middleware
 
+<a name="global-middleware"></a>
 ### Global Middleware
 
 If you want a middleware to be run during every HTTP request to your application, simply list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
 
+<a name="assigning-middleware-to-routes"></a>
 ### Assigning Middleware To Routes
 
 If you would like to assign middleware to specific routes, you should first assign the middleware a short-hand key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing. For example:
@@ -130,6 +135,39 @@ Instead of using an array, you may also chain the `middleware` method onto the r
     Route::get('/', function () {
         //
     }])->middleware(['first', 'second']);
+
+<a name="middleware-groups"></a>
+### Middleware Groups
+
+Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may do this using the `$middlewareGroup` property in your HTTP kernel.
+
+Out of the box, Laravel comes with a `web` and `api` middleware group that contains common middleware you may want to apply to web UI and your API routes:
+
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'web' => [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+        ],
+
+        'api' => [
+            'throttle:60,1',
+            'auth:api',
+        ],
+    ];
+
+Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware:
+
+    Route::group(['middleware' => ['web']], function () {
+        //
+    });
 
 <a name="middleware-parameters"></a>
 ## Middleware Parameters
