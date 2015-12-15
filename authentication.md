@@ -226,11 +226,15 @@ The `attempt` method will return `true` if authentication was successful. Otherw
 
 The `intended` method on the redirector will redirect the user to the URL they were attempting to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
 
+#### Specifying Additional Conditions
+
 If you wish, you also may add extra conditions to the authentication query in addition to the user's e-mail and password. For example, we may verify that user is marked as "active":
 
     if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
         // The user is active, not suspended, and exists.
     }
+
+#### Logging Out
 
 To log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session:
 
