@@ -167,9 +167,9 @@ First, let's define the `tasks` relationship on our `User` model. Eloquent relat
 
 	namespace App;
 
-	use Illuminate\Foundation\Auth\User as BaseUser;
+	use Illuminate\Foundation\Auth\User as Authenticatable;
 
-	class User extends BaseUser
+	class User extends Authenticatable
 	{
 	    // Other Eloquent Properties...
 
