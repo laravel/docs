@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Accessing Configuration Values](#accessing-configuration-values)
 - [Environment Configuration](#environment-configuration)
-    - [Accessing The Current Environment](#accessing-the-current-environment)
+    - [Determining The Current Environment](#determining-the-current-environment)
 - [Configuration Caching](#configuration-caching)
 - [Maintenance Mode](#maintenance-mode)
 
@@ -40,8 +40,8 @@ Your `.env` file should not be committed to your application's source control, s
 
 If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting place-holder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
-<a name="accessing-the-current-environment"></a>
-### Accessing The Current Environment
+<a name="determining-the-current-environment"></a>
+### Determining The Current Environment
 
 The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
 
