@@ -49,6 +49,7 @@
     - [SSH Tasks](/docs/{{version}}/envoy)
     - [Task Scheduling](/docs/{{version}}/scheduling)
     - [Testing](/docs/{{version}}/testing)
+    - [URLs](/docs/{{version}}/urls)
     - [Validation](/docs/{{version}}/validation)
 - Database
     - [Getting Started](/docs/{{version}}/database)
