@@ -30,14 +30,18 @@
 
 This quickstart guide provides an intermediate introduction to the Laravel framework and includes content on database migrations, the Eloquent ORM, routing, authentication, authorization, dependency injection, validation, views, and Blade templates. This is a great starting point if you are familiar with the basics of the Laravel framework or PHP frameworks in general.
 
-To sample a basic selection of Laravel features, we will build a task list we can use to track all of the tasks we want to accomplish (the typical "to-do list" example). In contrast to the "basic" quickstart, this tutorial will allow users to create accounts and authenticate with the application. The complete, finished source code for this project is [available on GitHub](http://github.com/laravel/quickstart-intermediate).
+To sample a basic selection of Laravel features, we will build a task list we can use to track all of the tasks we want to accomplish. In other words, the typical "to-do" list example. In contrast to the "basic" quickstart, this tutorial will allow users to create accounts and authenticate with the application. The complete, finished source code for this project is [available on GitHub](http://github.com/laravel/quickstart-intermediate).
 
 <a name="installation"></a>
 ## Installation
 
+#### Installing Laravel
+
 Of course, first you will need a fresh installation of the Laravel framework. You may use the [Homestead virtual machine](/docs/{{version}}/homestead) or the local PHP environment of your choice to run the framework. Once your local environment is ready, you may install the Laravel framework using Composer:
 
 	composer create-project laravel/laravel quickstart --prefer-dist
+
+#### Installing The Quickstart (Optional)
 
 You're free to just read along for the remainder of this quickstart; however, if you would like to download the source code for this quickstart and run it on your local machine, you may clone its Git repository and install its dependencies:
 
@@ -124,7 +128,7 @@ So, let's define a `Task` model that corresponds to our `tasks` database table w
 
 The model will be placed in the `app` directory of your application. By default, the model class is empty. We do not have to explicitly tell the Eloquent model which table it corresponds to because it will assume the database table is the plural form of the model name. So, in this case, the `Task` model is assumed to correspond with the `tasks` database table.
 
-Let's add a few things to this model. First, we will state that the `name` attribute on the model should be "mass-assignable":
+Let's add a few things to this model. First, we will state that the `name` attribute on the model should be "mass-assignable". This will allow us to fill the `name` attribute when using Eloquent's `create` method:
 
 	<?php
 
@@ -147,7 +151,7 @@ We'll learn more about how to use Eloquent models as we add routes to our applic
 <a name="eloquent-relationships"></a>
 ### Eloquent Relationships
 
-Now that our models are defined, we need to link them. For example, our `User` can have many `Task` instances, while a `Task` is assigned to one `User`. Defining a relationship will allow us to fluently walk through our relations like so:
+Now that our models are defined, we need to link them. For example, our `User` can have many `Task` instances, while a `Task` is assigned to a single `User`. Defining a relationship will allow us to fluently walk through our relations like so:
 
 	$user = App\User::find(1);
 
@@ -163,14 +167,10 @@ First, let's define the `tasks` relationship on our `User` model. Eloquent relat
 
 	namespace App;
 
-	// Namespace Imports...
+	use Illuminate\Foundation\Auth\User as BaseUser;
 
-	class User extends Model implements AuthenticatableContract,
-	                                    AuthorizableContract,
-	                                    CanResetPasswordContract
+	class User extends BaseUser
 	{
-	    use Authenticatable, Authorizable, CanResetPassword;
-
 	    // Other Eloquent Properties...
 
 	    /**
@@ -294,7 +294,7 @@ To require an authenticated users for all actions on the controller, we can add 
 <a name="building-layouts-and-views"></a>
 ## Building Layouts & Views
 
-This application only has a single view which contains a form for adding new tasks as well as a listing of all current tasks. To help you visualize the view, here is a screenshot of the finished application with basic Bootstrap CSS styling applied:
+The primary part of this application only has a single view which contains a form for adding new tasks as well as a listing of all current tasks. To help you visualize the view, here is a screenshot of the finished application with basic Bootstrap CSS styling applied:
 
 ![Application Image](http://laravel.com/assets/img/quickstart/basic-overview.png)
 
@@ -380,6 +380,8 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
 Before moving on, let's talk about this template a bit. First, the `@extends` directive informs Blade that we are using the layout we defined at `resources/views/layouts/app.blade.php`. All of the content between `@section('content')` and `@endsection` will be injected into the location of the `@yield('content')` directive within the `app.blade.php` layout.
 
+The `@include('common.errors')` directive will load the template located at `resources/views/common/errors.blade.php`. We haven't defined this template, but we will soon!
+
 Now we have defined a basic layout and view for our application. Let's go ahead and return this view from the `index` method of our `TaskController`:
 
     /**
@@ -394,8 +396,6 @@ Now we have defined a basic layout and view for our application. Let's go ahead 
 	}
 
 Next, we're ready to add code to our `POST /task` route's controller method to handle the incoming form input and add a new task to the database.
-
-> **Note:** The `@include('common.errors')` directive will load the template located at `resources/views/common/errors.blade.php`. We haven't defined this template, but we will soon!
 
 <a name="adding-tasks"></a>
 ## Adding Tasks
@@ -670,31 +670,9 @@ We can spoof a `DELETE` request by outputting the results of the `method_field('
 <a name="route-model-binding"></a>
 ### Route Model Binding
 
-Now, we're almost ready to define the `destroy` method on our `TaskController`. But, first, let's revisit our route declaration for this route:
+Now, we're almost ready to define the `destroy` method on our `TaskController`. But, first, let's revisit our route declaration and controller method for this route:
 
 	Route::delete('/task/{task}', 'TaskController@destroy');
-
-Without adding any additional code, Laravel would inject the given task ID into the `TaskController@destroy` method, like so:
-
-    /**
-     * Destroy the given task.
-     *
-     * @param  Request  $request
-     * @param  string  $taskId
-     * @return Response
-     */
-	public function destroy(Request $request, $taskId)
-	{
-		//
-	}
-
-However, the very first thing we will need to do in this method is retrieve the `Task` instance from the database using the given ID. So, wouldn't it be nice if Laravel could just inject the `Task` instance that matches the ID in the first place? Let's make it happen!
-
-In your `app/Providers/RouteServiceProvider.php` file's `boot` method, let's add the following line of code:
-
-	$router->model('task', 'App\Task');
-
-This small line of code will instruct Laravel to retrieve the `Task` model that corresponds to a given ID whenever it sees `{task}` in a route declaration. Now we can define our destroy method like so:
 
     /**
      * Destroy the given task.
@@ -703,10 +681,12 @@ This small line of code will instruct Laravel to retrieve the `Task` model that 
      * @param  Task  $task
      * @return Response
      */
-    public function destroy(Request $request, Task $task)
-    {
-        //
-    }
+	public function destroy(Request $request, Task $task)
+	{
+		//
+	}
+
+Since the `{task}` variable in our route matches the `$task` variable defined in our controller method, Laravel's [implicit model binding](/docs/{{version}}/routing#route-model-binding) will automatically inject the corresponding Task model instance.
 
 <a name="authorization"></a>
 ### Authorization
