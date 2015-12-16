@@ -31,7 +31,7 @@ You will define all of the routes for your application in the `app/Http/routes.p
         //
     });
 
-By default, the `routes.php` file contains a single route as well as a [route group](#route-groups) that applies the `web` middleware group to all routes it contains. This middleware group provides session state and CSRF protection to routes. Typically, you will place most of your routes within this group.
+By default, the `routes.php` file contains a single route as well as a [route group](#route-groups) that applies the `web` middleware group to all routes it contains. This middleware group provides session state and CSRF protection to routes. **Typically, you will place most of your routes within this group.**
 
 #### Available Router Methods
 
