@@ -5,6 +5,7 @@
     - [API Documentation](/api/{{version}})
 - Setup
     - [Installation](/docs/{{version}}/installation)
+    - [Configuration](/docs/{{version}}/configuration)
     - [Homestead](/docs/{{version}}/homestead)
 - Tutorials
     - [Beginner Task List](/docs/{{version}}/quickstart)
