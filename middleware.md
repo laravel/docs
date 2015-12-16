@@ -116,6 +116,7 @@ If you would like to assign middleware to specific routes, you should first assi
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];
 
 Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:
@@ -139,9 +140,9 @@ Instead of using an array, you may also chain the `middleware` method onto the r
 <a name="middleware-groups"></a>
 ### Middleware Groups
 
-Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may do this using the `$middlewareGroup` property in your HTTP kernel.
+Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may do this using the `$middlewareGroups` property of your HTTP kernel.
 
-Out of the box, Laravel comes with a `web` and `api` middleware group that contains common middleware you may want to apply to web UI and your API routes:
+Out of the box, Laravel comes with `web` and `api` middleware groups that contains common middleware you may want to apply to web UI and your API routes:
 
     /**
      * The application's route middleware groups.
@@ -163,7 +164,7 @@ Out of the box, Laravel comes with a `web` and `api` middleware group that conta
         ],
     ];
 
-Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware:
+Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware. Again, middleware groups simply make it more convenient to assign many middleware to a route at once:
 
     Route::group(['middleware' => ['web']], function () {
         //
