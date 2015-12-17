@@ -124,6 +124,14 @@ You may even pass a Closure to the `give` method:
                       // Resolve dependency...
                   });
 
+#### Binding Primitives
+
+Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:
+
+    $this->app->when('App\Handlers\Commands\CreateOrderHandler')
+              ->needs('$maxOrderCount')
+              ->give(10);
+
 <a name="tagging"></a>
 ### Tagging
 
