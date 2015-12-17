@@ -160,7 +160,7 @@ Of course, if you are using [controller classes](/docs/{{version}}/controllers),
 
 #### Specifying A Guard
 
-When attaching the `auth` middleware to a route, you may also specify which "guard" should be used to perform the authentication:
+When attaching the `auth` middleware to a route, you may also specify which guard should be used to perform the authentication:
 
     Route::get('profile', [
         'middleware' => 'auth:api',
