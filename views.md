@@ -22,11 +22,11 @@ A simple view might look something like this:
 
 Since this view is stored at `resources/views/greeting.php`, we may return it using the global `view` helper function like so:
 
-    Route::get('/', function ()    {
+    Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
     });
 
-As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument passed to helper is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view by simply executing `echo` on the variable.
+As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument passed to helper is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view by executing `echo` on the variable.
 
 Of course, views may also be nested within sub-directories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.php`, you may reference it like so:
 
@@ -54,12 +54,12 @@ As you saw in the previous examples, you may easily pass an array of data to vie
 
 When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using its corresponding key, such as `<?php echo $key; ?>`. As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view:
 
-    $view = view('greeting')->with('name', 'Victoria');
+    return view('greeting')->with('name', 'Victoria');
 
 <a name="sharing-data-with-all-views"></a>
 #### Sharing Data With All Views
 
-Occasionally, you may need to share a piece of data with all views that are rendered by your application. You may do so using the view factory's `share` method. Typically, you would place calls to `share` within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them:
+Occasionally, you may need to share a piece of data with all views that are rendered by your application. You may do so using the view factory's `share` method. Typically, you should place calls to `share` within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them:
 
     <?php
 
@@ -117,7 +117,7 @@ Let's register our view composers within a [service provider](/docs/{{version}}/
 
             // Using Closure based composers...
             view()->composer('dashboard', function ($view) {
-
+                //
             });
         }
 
@@ -140,7 +140,7 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
 
     namespace App\Http\ViewComposers;
 
-    use Illuminate\Contracts\View\View;
+    use Illuminate\View\View;
     use Illuminate\Users\Repository as UserRepository;
 
     class ProfileComposer
@@ -176,7 +176,7 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
         }
     }
 
-Just before the view is rendered, the composer's `compose` method is called with the `Illuminate\Contracts\View\View` instance. You may use the `with` method to bind data to the view.
+Just before the view is rendered, the composer's `compose` method is called with the `Illuminate\View\View` instance. You may use the `with` method to bind data to the view.
 
 > **Note:** All view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor.
 
