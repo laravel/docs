@@ -18,8 +18,6 @@
 
 In addition to providing [authentication](/docs/{{version}}/authentication) services out of the box, Laravel also provides a simple way to organize authorization logic and control access to resources. There are a variety of methods and helpers to assist you in organizing your authorization logic, and we'll cover each of them in this document.
 
-> **Note:** Authorization was added in Laravel 5.1.11, please refer to the [upgrade guide](/docs/{{version}}/upgrade) before integrating these features into your application.
-
 <a name="defining-abilities"></a>
 ## Defining Abilities
 
