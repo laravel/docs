@@ -23,7 +23,6 @@
     - [Application Structure](/docs/{{version}}/structure)
     - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
-    - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
 - Services
     - [Authentication](/docs/{{version}}/authentication)
