@@ -103,7 +103,7 @@ Any attributes that have been added to your `$casts` property as `date` or `date
 
 #### Global Scopes
 
-The global scopes implementation has been re-written to much easier to use. Your global scopes no longer need a `remove` method, so it may be removed from any global scopes you have written.
+The global scopes implementation has been re-written to be much easier to use. Your global scopes no longer need a `remove` method, so it may be removed from any global scopes you have written.
 
 If you were calling the `remove` method directly for any reason, you should change this call to `$eloquentBuilder->withoutGlobalScope($scope)`.
 
