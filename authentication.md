@@ -235,13 +235,23 @@ If you wish, you also may add extra conditions to the authentication query in ad
         // The user is active, not suspended, and exists.
     }
 
+> **Note:** In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
+
+#### Accessing Specific Guard Instances
+
+You may specify which guard instance you would like to utilize using the `guard` method on the `Auth` facade. This allows you to manage authentication for seperate parts of your application using entirely separate authenticatable models or user tables.
+
+The guard name passed to the `guard` method should correspond to one of the guards configured in your `auth.php` configuration file:
+
+    if (Auth::guard('admin')->attempt($credentials)) {
+        //
+    }
+
 #### Logging Out
 
 To log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session:
 
     Auth::logout();
-
-> **Note:** In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
 
 <a name="remembering-users"></a>
 ### Remembering Users
