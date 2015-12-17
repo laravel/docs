@@ -43,9 +43,9 @@ Once installed, the simple `laravel new` command will create a fresh Laravel ins
 
 #### Via Composer Create-Project
 
-You may also install Laravel by issuing the Composer `create-project` command in your terminal:
+Alternatively, you may also install Laravel by issuing the Composer `create-project` command in your terminal:
 
-    composer create-project laravel/laravel --prefer-dist
+    composer create-project laravel/laravel --prefer-dist blog
 
 <a name="configuration"></a>
 ## Configuration
