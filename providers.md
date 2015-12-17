@@ -50,13 +50,13 @@ Now, let's take a look at a basic service provider:
          */
         public function register()
         {
-            $this->app->singleton('Riak\Contracts\Connection', function ($app) {
+            $this->app->singleton(Connection::class, function ($app) {
                 return new Connection(config('riak'));
             });
         }
     }
 
-This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Contracts\Connection` in the service container. If you don't understand how the service container works, check out [its documentation](/docs/{{version}}/container).
+This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Connection` in the service container. If you don't understand how the service container works, check out [its documentation](/docs/{{version}}/container).
 
 <a name="the-boot-method"></a>
 ### The Boot Method
@@ -67,36 +67,32 @@ So, what if we need to register a view composer within our service provider? Thi
 
     namespace App\Providers;
 
-    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
+    use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
     class EventServiceProvider extends ServiceProvider
     {
+        // Other Service Provider Properties...
+
         /**
-         * Perform post-registration booting of services.
+         * Register any other events for your application.
          *
+         * @param  \Illuminate\Contracts\Events\Dispatcher  $events
          * @return void
          */
-        public function boot()
+        public function boot(DispatcherContract $events)
         {
+            parent::boot($events);
+
             view()->composer('view', function () {
                 //
             });
-        }
-
-        /**
-         * Register bindings in the container.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 
 #### Boot Method Dependency Injection
 
-We are able to type-hint dependencies for our `boot` method. The [service container](/docs/{{version}}/container) will automatically inject any dependencies you need:
+You are able to type-hint dependencies for your service provider's `boot` method. The [service container](/docs/{{version}}/container) will automatically inject any dependencies you need:
 
     use Illuminate\Contracts\Routing\ResponseFactory;
 
@@ -150,7 +146,7 @@ To defer the loading of a provider, set the `defer` property to `true` and defin
          */
         public function register()
         {
-            $this->app->singleton('Riak\Contracts\Connection', function ($app) {
+            $this->app->singleton(Connection::class, function ($app) {
                 return new Connection($app['config']['riak']);
             });
         }
@@ -162,7 +158,7 @@ To defer the loading of a provider, set the `defer` property to `true` and defin
          */
         public function provides()
         {
-            return ['Riak\Contracts\Connection'];
+            return [Connection::class];
         }
 
     }
