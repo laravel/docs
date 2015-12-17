@@ -40,7 +40,7 @@ The "meat" of your application lives in the `app` directory. By default, this di
 
 The `app` directory ships with a variety of additional directories such as `Console`, `Http`, and `Providers`. Think of the `Console` and `Http` directories as providing an API into the "core" of your application. The HTTP protocol and CLI are both mechanisms to interact with your application, but do not actually contain application logic. In other words, they are simply two ways of issuing commands to your application. The `Console` directory contains all of your Artisan commands, while the `Http` directory contains your controllers, middleware, and requests.
 
-The `Jobs` directory, of course, houses the [queueable jobs](/docs/{{version}}/queues) for your application. Jobs may be queued by your application, as well as be run synchronously within the current request lifecycle.
+The `Jobs` directory, of course, houses the [queueable jobs](/docs/{{version}}/queues) for your application. Jobs may be queued by your application or run synchronously within the current request lifecycle.
 
 The `Events` directory, as you might expect, houses [event classes](/docs/{{version}}/events). Events may be used to alert other parts of your application that a given action has occurred, providing a great deal of flexibility and decoupling.
 
