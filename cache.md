@@ -6,10 +6,10 @@
     - [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
     - [Storing Items In The Cache](#storing-items-in-the-cache)
     - [Removing Items From The Cache](#removing-items-from-the-cache)
-- [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
 - [Cache Tags](#cache-tags)
     - [Storing Tagged Cache Items](#storing-tagged-cache-items)
     - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
+- [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
 - [Events](#cache-events)
 
 <a name="configuration"></a>
@@ -195,6 +195,39 @@ You may clear the entire cache using the `flush` method:
 
 Flushing the cache **does not** respect the cache prefix and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
 
+<a name="cache-tags"></a>
+## Cache Tags
+
+> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+
+<a name="storing-tagged-cache-items"></a>
+### Storing Tagged Cache Items
+
+Cache tags allow you to tag related items in the cache and then flush all cached values that assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
+
+	Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
+
+	Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
+
+However, you are not limited to the `put` method. You may use any cache storage method while working with tags.
+
+<a name="accessing-tagged-cache-items"></a>
+### Accessing Tagged Cache Items
+
+To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method:
+
+	$john = Cache::tags(['people', 'artists'])->get('John');
+
+    $anne = Cache::tags(['people', 'authors'])->get('Anne');
+
+You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
+
+	Cache::tags(['people', 'authors'])->flush();
+
+In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`.
+
+	Cache::tags('authors')->flush();
+
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
 
@@ -266,39 +299,6 @@ We just need to implement each of these methods using a MongoDB connection. Once
 Once your extension is complete, simply update your `config/cache.php` configuration file's `driver` option to the name of your extension.
 
 If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
-
-<a name="cache-tags"></a>
-## Cache Tags
-
-> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
-
-<a name="storing-tagged-cache-items"></a>
-### Storing Tagged Cache Items
-
-Cache tags allow you to tag related items in the cache and then flush all cached values that assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
-
-	Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
-
-	Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
-
-However, you are not limited to the `put` method. You may use any cache storage method while working with tags.
-
-<a name="accessing-tagged-cache-items"></a>
-### Accessing Tagged Cache Items
-
-To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method:
-
-	$john = Cache::tags(['people', 'artists'])->get('John');
-
-    $anne = Cache::tags(['people', 'authors'])->get('Anne');
-
-You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
-
-	Cache::tags(['people', 'authors'])->flush();
-
-In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`.
-
-	Cache::tags('authors')->flush();
 
 <a name="events"></a>
 ## Events
