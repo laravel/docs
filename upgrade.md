@@ -29,7 +29,7 @@ Add `symfony/dom-crawler ~3.0` and `symfony/css-selector ~3.0` to the `require-d
 
 #### Configuration File
 
-You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/master/config/auth.php](https://github.com/laravel/laravel/blob/master/config/auth.php)
+You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/develop/config/auth.php](https://github.com/laravel/laravel/blob/master/config/auth.php)
 
 Once you have updated the file with a fresh copy, set your authentication configuration options to their desired value based on your old configuration file. If you were using the typical, Eloquent based authentication services available in Laravel 5.1, you most likely do not need to change any values.
 
@@ -105,7 +105,7 @@ Any attributes that have been added to your `$casts` property as `date` or `date
 
 #### Global Scopes
 
-The global scopes implementation has been re-written to much easier to use. Your global scopes no longer need a `remove` method, so it may be removed from any global scopes you have written.
+The global scopes implementation has been re-written to be much easier to use. Your global scopes no longer need a `remove` method, so it may be removed from any global scopes you have written.
 
 If you were calling the `remove` method directly for any reason, you should change this call to `$eloquentBuilder->withoutGlobalScope($scope)`.
 
