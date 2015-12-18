@@ -87,7 +87,7 @@ If you would like to make your views available for publishing to the application
         $this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
 
         $this->publishes([
-            __DIR__.'/path/to/views' => base_path('resources/views/vendor/courier'),
+            __DIR__.'/path/to/views' => resource_path('views/vendor/courier'),
         ]);
     }
 
@@ -126,7 +126,7 @@ If you would like to publish your package's translations to the application's `r
         $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
 
         $this->publishes([
-            __DIR__.'/path/to/translations' => base_path('resources/lang/vendor/courier'),
+            __DIR__.'/path/to/translations' => resource_path('lang/vendor/courier'),
         ]);
     }
 
