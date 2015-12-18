@@ -24,7 +24,7 @@ The Laravel queue service provides a unified API across a variety of different q
 <a name="configuration"></a>
 ### Configuration
 
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io),  and synchronous (for local use) driver.
+The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io),  and synchronous (for local use) driver.
 
 A `null` queue driver is also included which simply discards queued jobs.
 
@@ -44,7 +44,6 @@ The following dependencies are needed for the listed queue drivers:
 
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~3.0`
-- IronMQ: `iron-io/iron_mq ~2.0|~4.0`
 - Redis: `predis/predis ~1.0`
 
 <a name="writing-job-classes"></a>
@@ -169,6 +168,8 @@ The default Laravel controller located in `app/Http/Controllers/Controller.php` 
         }
     }
 
+#### The `DispatchesJobs` Trait
+
 Of course, sometimes you may wish to dispatch a job from somewhere in your application besides a route or controller. For that reason, you can include the `DispatchesJobs` trait on any of the classes in your application to gain access to its various dispatch methods. For example, here is a sample class that uses the trait:
 
     <?php
@@ -181,6 +182,16 @@ Of course, sometimes you may wish to dispatch a job from somewhere in your appli
     {
         use DispatchesJobs;
     }
+
+#### The `dispatch` Function
+
+Or, you may use the `dispatch` global function:
+
+    Route::get('/job', function () {
+        dispatch(new App\Jobs\PerformTask);
+
+        return 'Done!';
+    });
 
 #### Specifying The Queue For A Job
 
@@ -219,7 +230,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs, and 
 <a name="delayed-jobs"></a>
 ### Delayed Jobs
 
-Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You may accomplish this using the `delay` method on your job class, which is provided by the `Illuminate\Bus\Queueable` trait:
+Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 5 minutes after sign-up. You may accomplish this using the `delay` method on your job class, which is provided by the `Illuminate\Bus\Queueable` trait:
 
     <?php
 
@@ -243,13 +254,13 @@ Sometimes you may wish to delay the execution of a queued job. For instance, you
         {
             $user = User::findOrFail($id);
 
-            $job = (new SendReminderEmail($user))->delay(60);
+            $job = (new SendReminderEmail($user))->delay(60 * 5);
 
             $this->dispatch($job);
         }
     }
 
-In this example, we're specifying that the job should be delayed in the queue for 60 seconds before being made available to workers.
+In this example, we're specifying that the job should be delayed in the queue for 5 minutes before being made available to workers.
 
 > **Note:** The Amazon SQS service has a maximum delay time of 15 minutes.
 
