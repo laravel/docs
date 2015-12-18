@@ -101,6 +101,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
+[dispatch](#method-dispatch)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
@@ -269,7 +270,7 @@ The `array_pluck` function will pluck a list of the given key / value pairs from
     $array = array_pluck($array, 'developer.name');
 
     // ['Taylor', 'Abigail'];
-    
+
 You may also specify how you wish the resulting list to be keyed:
 
     $array = array_pluck($array, 'developer.name', 'developer.id');
@@ -735,6 +736,13 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 The `dd` function dumps the given variable and ends execution of the script:
 
     dd($value);
+
+<a name="method-dispatch"></a>
+#### `dispatch()` {#collection-method}
+
+The `dispatch` function pushes a new job onto the Laravel [job queue](/docs/{{version}}/queues):
+
+    dispatch(new App\Jobs\SendEmails);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}
