@@ -12,7 +12,6 @@
     - [Broadcast Data](#broadcast-data)
     - [Consuming Event Broadcasts](#consuming-event-broadcasts)
 - [Event Subscribers](#event-subscribers)
-- [Framework Events](#framework-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -99,7 +98,7 @@ An event class is simply a data container which holds the information related to
         }
     }
 
-As you can see, this event class contains no special logic. It is simply a container for the `Podcast` object that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function.
+As you can see, this event class contains no logic. It is simply a container for the `Podcast` object that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function.
 
 <a name="defining-listeners"></a>
 ## Defining Listeners
@@ -459,30 +458,3 @@ Once the subscriber has been defined, it may be registered with the event dispat
             'App\Listeners\UserEventListener',
         ];
     }
-
-<a name="framework-events"></a>
-## Framework Events
-
-Laravel provides a variety of "core" events for actions performed by the framework. You can subscribe to them in the same way that you subscribe to your own custom events:
-
-Event  |  Parameter(s)
-------------- | -----------
-artisan.start | $application
-auth.attempt | $credentials, $remember, $login
-auth.login | $user, $remember
-auth.logout | $user
-cache.missed | $key
-cache.hit | $key, $value
-cache.write | $key, $value, $minutes
-cache.delete | $key
-connection.{name}.beginTransaction | $connection
-connection.{name}.committed | $connection
-connection.{name}.rollingBack | $connection
-illuminate.query | $query, $bindings, $time, $connectionName
-illuminate.queue.after | $connection, $job, $data
-illuminate.queue.failed | $connection, $job, $data
-illuminate.queue.stopping | null
-mailer.sending | $message
-router.matched | $route, $request
-composing:{view name} | $view
-creating:{view name} | $view
