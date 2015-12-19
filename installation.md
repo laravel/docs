@@ -3,7 +3,7 @@
 - [Installation](#installation)
     - [Server Requirements](#server-requirements)
     - [Installing Laravel](#installing-laravel)
-    - [Configuration](#confiugration)
+    - [Configuration](#configuration)
 
 <a name="installation"></a>
 ## Installation
