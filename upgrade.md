@@ -31,7 +31,9 @@ Add `symfony/dom-crawler ~3.0` and `symfony/css-selector ~3.0` to the `require-d
 
 You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/develop/config/auth.php](https://github.com/laravel/laravel/blob/master/config/auth.php)
 
-Once you have updated the file with a fresh copy, set your authentication configuration options to their desired value based on your old configuration file. If you were using the typical, Eloquent based authentication services available in Laravel 5.1, you most likely do not need to change any values.
+Once you have updated the file with a fresh copy, set your authentication configuration options to their desired value based on your old configuration file. If you were using the typical, Eloquent based authentication services available in Laravel 5.1, most values should remain the same.
+
+Take special note of the `passwords.users.email` configuration option in the new `auth.php` configuration file and verify that the view path matches the actual view path for your application, as the default path to this view was changed in Laravel 5.2. If the default value in the new configuration file does not match your existing view, update the configuration option.
 
 #### Contracts
 
@@ -211,6 +213,18 @@ The "Stringy" library is no longer included with the framework. You may install 
 ### Validation
 
 The `ValidatesRequests` trait now throws an instance of `Illuminate\Foundation\Validation\ValidationException` instead of throwing an instance of `Illuminate\Http\Exception\HttpResponseException`. This is unlikely to affect your application unless you were manually catching this exception.
+
+### Deprecations
+
+THe following features are deprecated in 5.2 and will be removed in the 5.3 release in June 2016:
+
+- `Illuminate\Contracts\Bus\SelfHandling` contract. Can be removed from jobs.
+- The `lists` method on the Collection, query builder and Eloquent query builder objects has been reanmed to `pluck`. The method signature remains the same.
+- Implicit controller routes using `Route::controller` have been deprecated. Please use explicit route registration in your routes file. This will likely be extracted into a package.
+- The `database` session driver from 5.1 has been renamed to `legacy-database` and will be removed. Consult notes on the "database session driver" above for more information.
+- The `Str::randomBytes` function has been deprecated in favor of the `random_bytes` native PHP function.
+- The `Str::equals` function has been deprecated in favor of the `hash_equals` native PHP function.
+- `Illuminate\View\Expression` has been deprecated in favor of `Illuminate\Support\HtmlString`.
 
 <a name="upgrade-5.1.11"></a>
 ## Upgrading To 5.1.11

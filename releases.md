@@ -49,6 +49,8 @@ Laravel already makes it easy to handle authentication on the back-end; however,
 
 This command will generate plain, Bootstrap compatible views for user login, registration, and password reset. The command will also update your routes file with the appropriate routes.
 
+> **Note:** This feature is only meant to be used on new applications, not during application upgrades.
+
 ### Middleware Groups
 
 Middleware groups allow you to group several route middleware under a single, convenient key, allowing you to assign several middleware to a route at once. For example, this can be useful when building a web UI and an API within the same application. You may group the session and CSRF routes into a `web` group, and perhaps the rate limiter in the `api` group.
@@ -103,6 +105,12 @@ Likewise, you may use the `*` character when specifying your validation messages
             'unique' => 'Each person must have a unique e-mail address',
         ]
     ],
+
+### Eloquent Global Scope Improvements
+
+In previous versions of Laravel, global Eloquent scopes were complicated and error-prone to implement; however, in Laravel 5.2, global query scopes only require you to implement a single, simple method: `apply`.
+
+For more information on writing global scopes, check out the full [Eloquent documentation](/docs/{{version}}/eloquent#global-scopes.
 
 <a name="laravel-5.1.11"></a>
 ## Laravel 5.1.11
