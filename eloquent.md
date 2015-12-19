@@ -14,6 +14,8 @@
     - [Soft Deleting](#soft-deleting)
     - [Querying Soft Deleted Models](#querying-soft-deleted-models)
 - [Query Scopes](#query-scopes)
+    - [Global Scopes](#global-scopes)
+    - [Local Scopes](#local-scopes)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -488,7 +490,70 @@ Sometimes you may need to truly remove a model from your database. To permanentl
 <a name="query-scopes"></a>
 ## Query Scopes
 
-Scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`.
+<a name="global-scopes"></a>
+### Global Scopes
+
+Global scopes allow you to add constraints to **all** queries for a given model. Laravel's own [soft deleting](#soft-deleting) functionality utilizes global scopes to only pull "non-deleted" models from the database. Writing your own global scopes can provide a convenient, easy way to make sure every query for a given model receives certain constraints.
+
+#### Writing Global Scopes
+
+Writing a global scope is simple. Define a class that implements the `Illuminate\Database\Eloquent\Scope` interface. This interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints to the query as needed:
+
+    <?php
+
+    namespace App\Scopes;
+
+    use Illuminate\Database\Eloquent\Scope;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Builder;
+
+    class OldScope implements Scope
+    {
+        /**
+         * Apply the scope to a given Eloquent query builder.
+         *
+         * @param  \Illuminate\Database\Eloquent\Builder  $builder
+         * @param  \Illuminate\Database\Eloquent\Model  $model
+         * @return void
+         */
+        public function apply(Builder $builder, Model $model)
+        {
+            return $builder->where('age', '>', 200);
+        }
+    }
+
+There is not a predefined folder for scopes in a default Laravel application, so feel free to make your own `Scopes` folder within your Laravel application's `app` directory.
+
+#### Applying Global Scopes
+
+To assign a global scope to a model, you should override a given model's `boot` method and use the `addGlobalScope` method:
+
+    <?php
+
+    namespace App;
+
+    use App\Scopes\OldScope;
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        /**
+         * The "booting" method of the model.
+         *
+         * @return void
+         */
+        protected static function boot()
+        {
+            parent::boot();
+
+            static::addGlobalScope(new OldScope);
+        }
+    }
+
+<a name="local-scopes"></a>
+### Local Scopes
+
+Local scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`.
 
 Scopes should always return a query builder instance:
 
