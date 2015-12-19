@@ -158,6 +158,12 @@ To assign a shortcut when defining an option, you may specify it before the opti
 
     email:send {user} {--Q|queue}
 
+If you would like to define arguments or options to expect array inputs, you may use the `*` character:
+
+    email:send {user*}
+
+    email:send {user} {--id=*}
+
 #### Input Descriptions
 
 You may assign descriptions to input arguments and options by separating the parameter from the description using a colon:
