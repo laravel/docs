@@ -214,6 +214,18 @@ The "Stringy" library is no longer included with the framework. You may install 
 
 The `ValidatesRequests` trait now throws an instance of `Illuminate\Foundation\Validation\ValidationException` instead of throwing an instance of `Illuminate\Http\Exception\HttpResponseException`. This is unlikely to affect your application unless you were manually catching this exception.
 
+### Deprecations
+
+THe following features are deprecated in 5.2 and will be removed in the 5.3 release in June 2016:
+
+- `Illuminate\Contracts\Bus\SelfHandling` contract. Can be removed from jobs.
+- The `lists` method on the Collection, query builder and Eloquent query builder objects has been reanmed to `pluck`. The method signature remains the same.
+- Implicit controller routes using `Route::controller` have been deprecated. Please use explicit route registration in your routes file. This will likely be extracted into a package.
+- The `database` session driver from 5.1 has been renamed to `legacy-database` and will be removed. Consult notes on the "database session driver" above for more information.
+- The `Str::randomBytes` function has been deprecated in favor of the `random_bytes` native PHP function.
+- The `Str::equals` function has been deprecated in favor of the `hash_equals` native PHP function.
+- `Illuminate\View\Expression` has been deprecated in favor of `Illuminate\Support\HtmlString`.
+
 <a name="upgrade-5.1.11"></a>
 ## Upgrading To 5.1.11
 
