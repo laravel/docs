@@ -110,7 +110,7 @@ Likewise, you may use the `*` character when specifying your validation messages
 
 In previous versions of Laravel, global Eloquent scopes were complicated and error-prone to implement; however, in Laravel 5.2, global query scopes only require you to implement a single, simple method: `apply`.
 
-For more information on writing global scopes, check out the full [Eloquent documentation](/docs/{{version}}/eloquent#global-scopes.
+For more information on writing global scopes, check out the full [Eloquent documentation](/docs/{{version}}/eloquent#global-scopes).
 
 <a name="laravel-5.1.11"></a>
 ## Laravel 5.1.11
