@@ -116,6 +116,12 @@ The `when` method may be used to limit the execution of a task based on the resu
         return true;
     });
 
+The `reject` method may be seen as the inverse of `when`. If the `reject` method returns `true`, the scheduled task will not be executed:
+
+    $schedule->command('emails:send')->daily()->reject(function () {
+        return true;
+    });
+
 When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
 
 <a name="preventing-task-overlaps"></a>
