@@ -219,7 +219,7 @@ The `ValidatesRequests` trait now throws an instance of `Illuminate\Foundation\V
 THe following features are deprecated in 5.2 and will be removed in the 5.3 release in June 2016:
 
 - `Illuminate\Contracts\Bus\SelfHandling` contract. Can be removed from jobs.
-- The `lists` method on the Collection, query builder and Eloquent query builder objects has been reanmed to `pluck`. The method signature remains the same.
+- The `lists` method on the Collection, query builder and Eloquent query builder objects has been renamed to `pluck`. The method signature remains the same.
 - Implicit controller routes using `Route::controller` have been deprecated. Please use explicit route registration in your routes file. This will likely be extracted into a package.
 - The `database` session driver from 5.1 has been renamed to `legacy-database` and will be removed. Consult notes on the "database session driver" above for more information.
 - The `Str::randomBytes` function has been deprecated in favor of the `random_bytes` native PHP function.
