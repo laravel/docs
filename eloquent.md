@@ -550,6 +550,10 @@ To assign a global scope to a model, you should override a given model's `boot` 
         }
     }
 
+Now the query `User::all()` will produce the following SQL query:
+
+    select * from `users` where `age` > 200
+    
 <a name="local-scopes"></a>
 ### Local Scopes
 
