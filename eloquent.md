@@ -554,23 +554,9 @@ After adding the scope, a query to `User::all()` will produce the following SQL:
 
     select * from `users` where `age` > 200
 
-#### Removing Global Scopes
-
-If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method:
-
-    User::withoutGlobalScope(OldScope::class)->get();
-
-If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
-
-    User::withoutGlobalScopes()->get();
-
-    User::withoutGlobalScopes([FirstScope::class, SecondScope::class])->get();
-    
 #### Anonymous Global Scopes
 
-Eloquent also offers anonymous global scopes which are particularly usefull for simple scopes that do not warrant creating a seperate class.
-
-Anonymous global scope can be assigned to your model using a simple `Closure`:
+Eloquent also allows you to define global scopes using Closures, which is particularly useful for simple scopes that do not warrant a separate class:
 
     <?php
 
@@ -596,9 +582,21 @@ Anonymous global scope can be assigned to your model using a simple `Closure`:
         }
     }
 
-Note that the first attribute of the `addGlobalScope()` method is optional and only serves as an identifier to remove the scope by:
+The first argument of the `addGlobalScope()` serves as an identifier to remove the scope:
 
     User::withoutGlobalScope('old')->get();
+
+#### Removing Global Scopes
+
+If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method:
+
+    User::withoutGlobalScope(OldScope::class)->get();
+
+If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
+
+    User::withoutGlobalScopes()->get();
+
+    User::withoutGlobalScopes([FirstScope::class, SecondScope::class])->get();
 
 <a name="local-scopes"></a>
 ### Local Scopes
