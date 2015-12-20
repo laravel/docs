@@ -565,6 +565,40 @@ If you would like to remove several or even all of the global scopes, you may us
     User::withoutGlobalScopes()->get();
 
     User::withoutGlobalScopes([FirstScope::class, SecondScope::class])->get();
+    
+#### Anonymous Global Scopes
+
+Eloquent also offers anonymous global scopes which are particularly usefull for simple scopes that do not warrant creating a seperate class.
+
+Anonymous global scope can be assigned to your model using a simple `Closure`:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Builder;
+
+    class User extends Model
+    {
+        /**
+         * The "booting" method of the model.
+         *
+         * @return void
+         */
+        protected static function boot()
+        {
+            parent::boot();
+
+            static::addGlobalScope('old', function(Builder $builder) {
+                $builder->where('age', '>', 200)
+            });
+        }
+    }
+
+Note that the first attribute of the `addGlobalScope()` method is optional and only serves as an identifier to remove the scope by:
+
+    User::withoutGlobalScope('old')->get();
 
 <a name="local-scopes"></a>
 ### Local Scopes
