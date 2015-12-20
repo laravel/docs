@@ -554,6 +554,16 @@ After adding the scope, a query to `User::all()` will produce the following SQL:
 
     select * from `users` where `age` > 200
 
+#### Ignoring Global Scopes
+
+In order to ignore an applied global scope while querying, you can use `withoutGlobalScope` function and passing it the intended scope. For example:
+
+    User::withoutGlobalScope(new OldScope)->get(); 
+
+If you wanted to ignore all of the applied global scopes, do as follow:
+
+    User::withoutGlobalScopes()->get();
+    
 <a name="local-scopes"></a>
 ### Local Scopes
 
