@@ -550,6 +550,54 @@ To assign a global scope to a model, you should override a given model's `boot` 
         }
     }
 
+After adding the scope, a query to `User::all()` will produce the following SQL:
+
+    select * from `users` where `age` > 200
+
+#### Anonymous Global Scopes
+
+Eloquent also allows you to define global scopes using Closures, which is particularly useful for simple scopes that do not warrant a separate class:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Builder;
+
+    class User extends Model
+    {
+        /**
+         * The "booting" method of the model.
+         *
+         * @return void
+         */
+        protected static function boot()
+        {
+            parent::boot();
+
+            static::addGlobalScope('old', function(Builder $builder) {
+                $builder->where('age', '>', 200)
+            });
+        }
+    }
+
+The first argument of the `addGlobalScope()` serves as an identifier to remove the scope:
+
+    User::withoutGlobalScope('old')->get();
+
+#### Removing Global Scopes
+
+If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method:
+
+    User::withoutGlobalScope(OldScope::class)->get();
+
+If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
+
+    User::withoutGlobalScopes()->get();
+
+    User::withoutGlobalScopes([FirstScope::class, SecondScope::class])->get();
+
 <a name="local-scopes"></a>
 ### Local Scopes
 
