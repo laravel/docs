@@ -69,4 +69,4 @@ You may also want to configure a few additional components of Laravel, such as:
 - [Database](/docs/{{version}}/database#configuration)
 - [Session](/docs/{{version}}/session#configuration)
 
-Once Laravel is installed, you should also [configure your local environment](/docs/{{version}}/installation#environment-configuration).
+Once Laravel is installed, you should also [configure your local environment](/docs/{{version}}/configuration#environment-configuration).
