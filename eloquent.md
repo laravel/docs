@@ -435,24 +435,6 @@ The `withTrashed` method may also be used on a [relationship](/docs/{{version}}/
 
     $flight->history()->withTrashed()->get();
 
-#### Where Clause Caveats
-
-When adding `orWhere` clauses to your queries on soft deleted models, always use [advance where clauses](http://laravel.com/docs/5.1/queries#advanced-where-clauses) to logically group the `WHERE` clauses. For example:
-
-    User::where(function($query) {
-            $query->where('name', '=', 'John')
-                  ->orWhere('votes', '>', 100);
-            })
-            ->get();
-
-This will produce the following SQL:
-
-    select * from `users` where `users`.`deleted_at` is null and (`name` = 'John' or `votes` > 100)
-
-If the `orWhere` clause is not grouped, it will produce the following SQL which will contain soft deleted records:
-
-    select * from `users` where `users`.`deleted_at` is null and `name` = 'John' or `votes` > 100
-
 #### Retrieving Only Soft Deleted Models
 
 The `onlyTrashed` method will retrieve **only** soft deleted models:
