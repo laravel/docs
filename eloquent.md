@@ -489,7 +489,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Builder;
 
-    class OldScope implements Scope
+    class AgeScope implements Scope
     {
         /**
          * Apply the scope to a given Eloquent query builder.
@@ -514,7 +514,7 @@ To assign a global scope to a model, you should override a given model's `boot` 
 
     namespace App;
 
-    use App\Scopes\OldScope;
+    use App\Scopes\AgeScope;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -528,7 +528,7 @@ To assign a global scope to a model, you should override a given model's `boot` 
         {
             parent::boot();
 
-            static::addGlobalScope(new OldScope);
+            static::addGlobalScope(new AgeScope);
         }
     }
 
@@ -558,7 +558,7 @@ Eloquent also allows you to define global scopes using Closures, which is partic
         {
             parent::boot();
 
-            static::addGlobalScope('old', function(Builder $builder) {
+            static::addGlobalScope('age', function(Builder $builder) {
                 $builder->where('age', '>', 200)
             });
         }
@@ -566,13 +566,13 @@ Eloquent also allows you to define global scopes using Closures, which is partic
 
 The first argument of the `addGlobalScope()` serves as an identifier to remove the scope:
 
-    User::withoutGlobalScope('old')->get();
+    User::withoutGlobalScope('age')->get();
 
 #### Removing Global Scopes
 
 If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method:
 
-    User::withoutGlobalScope(OldScope::class)->get();
+    User::withoutGlobalScope(AgeScope::class)->get();
 
 If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
 
