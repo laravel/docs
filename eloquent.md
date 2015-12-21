@@ -489,7 +489,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Builder;
 
-    class OldScope implements Scope
+    class AgeScope implements Scope
     {
         /**
          * Apply the scope to a given Eloquent query builder.
@@ -514,7 +514,7 @@ To assign a global scope to a model, you should override a given model's `boot` 
 
     namespace App;
 
-    use App\Scopes\OldScope;
+    use App\Scopes\AgeScope;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -528,7 +528,7 @@ To assign a global scope to a model, you should override a given model's `boot` 
         {
             parent::boot();
 
-            static::addGlobalScope(new OldScope);
+            static::addGlobalScope(new AgeScope);
         }
     }
 
