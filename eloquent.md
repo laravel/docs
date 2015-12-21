@@ -500,7 +500,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
          */
         public function apply(Builder $builder, Model $model)
         {
-            return $builder->where('age', '>', 200);
+            $builder->where('age', '>', 200);
         }
     }
 
