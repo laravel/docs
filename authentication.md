@@ -19,7 +19,6 @@
     - [Routing](#resetting-routing)
     - [Views](#resetting-views)
     - [After Resetting Passwords](#after-resetting-passwords)
-- [API Authentication](#api-authentication)
 - [Social Authentication](#social-authentication)
 - [Adding Custom Guards](#adding-custom-guards)
 - [Adding Custom User Providers](#adding-custom-user-providers)
