@@ -485,11 +485,11 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
 
     namespace App\Scopes;
 
-    use Illuminate\Database\Eloquent\Scope;
+    use Illuminate\Database\Eloquent\ScopeInterface;
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Builder;
 
-    class OldScope implements Scope
+    class OldScope implements ScopeInterface
     {
         /**
          * Apply the scope to a given Eloquent query builder.
