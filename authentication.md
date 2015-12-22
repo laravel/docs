@@ -509,7 +509,7 @@ You may define your own authentication guards using the `extend` method on the `
             Auth::extend('jwt', function($app, $name, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\Guard...
 
-                return new JwtGuard(Auth::createProvider($config['provider']));
+                return new JwtGuard(Auth::createUserProvider($config['provider']));
             });
         }
 
