@@ -18,7 +18,6 @@ To obtain an instance of the current HTTP request via dependency injection, you 
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
-    use Illuminate\Routing\Controller;
 
     class UserController extends Controller
     {
@@ -47,7 +46,6 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
-    use Illuminate\Routing\Controller;
 
     class UserController extends Controller
     {
