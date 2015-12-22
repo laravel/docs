@@ -122,7 +122,7 @@ The `migrate:refresh` command will first roll back all of your database migratio
 
 To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments. The first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object used to define the new table:
 
-    Schema::create('users', function ($table) {
+    Schema::create('users', function (Blueprint $table) {
         $table->increments('id');
     });
 
@@ -184,7 +184,7 @@ Of course, the schema builder contains a variety of column types that you may us
 
 Command  | Description
 ------------- | -------------
-`$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent.
+`$table->bigIncrements('id');`  |  Incrementing ID (primary key) using a "UNSIGNED BIG INTEGER" equivalent.
 `$table->bigInteger('votes');`  |  BIGINT equivalent for the database.
 `$table->binary('data');`  |  BLOB equivalent for the database.
 `$table->boolean('confirmed');`  |  BOOLEAN equivalent for the database.
@@ -195,7 +195,7 @@ Command  | Description
 `$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point.
 `$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent for the database.
 `$table->float('amount');`  |  FLOAT equivalent for the database.
-`$table->increments('id');`  |  Incrementing ID for the database (primary key).
+`$table->increments('id');`  |  Incrementing ID (primary key) using a "UNSIGNED INTEGER" equivalent.
 `$table->integer('votes');`  |  INTEGER equivalent for the database.
 `$table->json('options');`  |  JSON equivalent for the database.
 `$table->jsonb('options');`  |  JSONB equivalent for the database.
@@ -214,6 +214,7 @@ Command  | Description
 `$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
 `$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
+`$table->uuid('id');`  |  UUID equivalent for the database.
 
 #### Column Modifiers
 
@@ -283,6 +284,8 @@ You may drop multiple columns from a table by passing an array of column names t
 
 > **Note:** Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
 
+> **Note:** Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
+
 <a name="creating-indexes"></a>
 ### Creating Indexes
 
@@ -310,7 +313,7 @@ Command  | Description
 <a name="dropping-indexes"></a>
 ### Dropping Indexes
 
-To drop an index, you must specify the index's name. By default, Laravel automatically assigns a reasonable name to the indexes. Simply concatenate the table name, the names of the column in the index, and the index type. Here are some examples:
+To drop an index, you must specify the index's name. By default, Laravel automatically assigns a reasonable name to the indexes. Simply concatenate the table name, the name of the indexed column, and the index type. Here are some examples:
 
 Command  | Description
 ------------- | -------------

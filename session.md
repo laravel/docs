@@ -20,7 +20,7 @@ The session `driver` defines where session data will be stored for each request.
 - `file` - sessions are stored in `storage/framework/sessions`.
 - `cookie` - sessions are stored in secure, encrypted cookies.
 - `database` - sessions are stored in a database used by your application.
-- `memcached` / `redis` - sessions are stored in one of these fast, cached based stores.
+- `memcached` / `redis` - sessions are stored in one of these fast, cache based stores.
 - `array` - sessions are stored in a simple PHP array and will not be persisted across requests.
 </div>
 
@@ -152,7 +152,7 @@ If you need to regenerate the session ID, you may use the `regenerate` method:
 <a name="flash-data"></a>
 ### Flash Data
 
-Sometimes you may wish to store items in the session only for the next request. You may do so using the `flash` method. Method stored in the session using this method will only be available during the subsequent HTTP request, and then will be deleted. Flash data is primarily useful for short-lived status messages:
+Sometimes you may wish to store items in the session only for the next request. You may do so using the `flash` method. Data stored in the session using this method will only be available during the subsequent HTTP request, and then will be deleted. Flash data is primarily useful for short-lived status messages:
 
     $request->session()->flash('status', 'Task was successful!');
 

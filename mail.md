@@ -6,6 +6,7 @@
     - [Inline Attachments](#inline-attachments)
     - [Queueing Mail](#queueing-mail)
 - [Mail & Local Development](#mail-and-local-development)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -79,6 +80,8 @@ To send a message, use the `send` method on the `Mail` [facade](/docs/{{version}
             $user = User::findOrFail($id);
 
             Mail::send('emails.reminder', ['user' => $user], function ($m) use ($user) {
+                $m->from('hello@app.com', 'Your Application');
+
                 $m->to($user->email, $user->name)->subject('Your Reminder!');
             });
         }
@@ -230,3 +233,24 @@ Another solution provided by Laravel is to set a universal recipient of all e-ma
 #### Mailtrap
 
 Finally, you may use a service like [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your e-mail messages to a "dummy" mailbox where you may view them in a true e-mail client. This approach has the benefit of allowing you to actually inspect the final e-mails in Mailtrap's message viewer.
+
+<a name="events"></a>
+## Events
+
+Laravel fires the `mailer.sending` event just before sending mail messages. Remember, this event is fired when the mail is *sent*, not when it is queued. You may register an event listener in your `EventServiceProvider`:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        $events->listen('mailer.sending', function ($message) {
+            //
+        });
+    }
+

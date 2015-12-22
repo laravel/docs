@@ -48,7 +48,7 @@ Now that we have defined a layout for our application, let's define a child page
 
 When defining a child page, you may use the Blade `@extends` directive to specify which layout the child page should "inherit". Views which `@extends` a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
-    <!-- Stored in resources/views/layouts/child.blade.php -->
+    <!-- Stored in resources/views/child.blade.php -->
 
     @extends('layouts.master')
 
@@ -93,7 +93,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 
 #### Blade & JavaScript Frameworks
 
-Since many JavaScript frameworks also use "curly" braces to indicate a given expression  should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
+Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
 
     <h1>Laravel</h1>
 
@@ -181,6 +181,20 @@ Blade's `@include` directive, allows you to easily include a Blade view from wit
 Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
 
     @include('view.name', ['some' => 'data'])
+
+> **Note:** You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
+
+#### Rendering Views For Collections
+
+You may combine loops and includes into one line with Blade's `@each` directive:
+
+    @each('view.name', $jobs, 'job')
+
+The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial.
+
+You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
+
+    @each('view.name', $jobs, 'job', 'view.empty')
 
 #### Comments
 

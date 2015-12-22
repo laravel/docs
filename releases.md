@@ -1,6 +1,7 @@
 # Release Notes
 
 - [Support Policy](#support-policy)
+- [Laravel 5.1.11](#laravel-5.1.11)
 - [Laravel 5.1.4](#laravel-5.1.4)
 - [Laravel 5.1](#laravel-5.1)
 - [Laravel 5.0](#laravel-5.0)
@@ -13,6 +14,13 @@
 For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance.
 
 For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+
+<a name="laravel-5.1.11"></a>
+## Laravel 5.1.11
+
+Laravel 5.1.11 introduces [authorization](/docs/{{version}}/authorization) support out of the box! Conveniently organize your application's authorization logic using simple callbacks or policy classes, and authorize actions using simple, expressive methods.
+
+For more information, please refer to the [authorization documentation](/docs/{{version}}/authorization).
 
 <a name="laravel-5.1.4"></a>
 ## Laravel 5.1.4
@@ -106,7 +114,7 @@ For more information on testing, check out the [testing documentation](/docs/{{v
 
 Laravel now ships with an easy way to create stub Eloquent models using [model factories](/docs/{{version}}/testing#model-factories). Model factories allow you to easily define a set of "default" attributes for your Eloquent model, and then generate test model instances for your tests or database seeds. Model factories also take advantage of the powerful [Faker](https://github.com/fzaninotto/Faker) PHP library for generating random attribute data:
 
-    $factory->define('App\User', function ($faker) {
+    $factory->define(App\User::class, function ($faker) {
         return [
             'name' => $faker->name,
             'email' => $faker->email,
