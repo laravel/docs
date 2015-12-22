@@ -313,7 +313,7 @@ When listing the invoices for the customer, you may use the invoice's helper met
         @foreach ($invoices as $invoice)
             <tr>
                 <td>{{ $invoice->date()->toFormattedDateString() }}</td>
-                <td>{{ $invoice->dollars() }}</td>
+                <td>{{ $invoice->total() }}</td>
                 <td><a href="/user/invoice/{{ $invoice->id }}">Download</a></td>
             </tr>
         @endforeach
