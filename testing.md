@@ -547,7 +547,6 @@ When testing, you may often want to mock a call to a Laravel [facade](/docs/{{ve
     namespace App\Http\Controllers;
 
     use Cache;
-    use Illuminate\Routing\Controller;
 
     class UserController extends Controller
     {

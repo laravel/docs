@@ -172,7 +172,6 @@ The container will automatically inject dependencies for the classes it resolves
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Routing\Controller;
     use App\Users\Repository as UserRepository;
 
     class UserController extends Controller

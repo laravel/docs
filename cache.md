@@ -78,7 +78,6 @@ For example, let's import the `Cache` facade into a controller:
     namespace App\Http\Controllers;
 
     use Cache;
-    use Illuminate\Routing\Controller;
 
     class UserController extends Controller
     {

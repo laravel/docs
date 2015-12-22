@@ -104,7 +104,6 @@ Alternatively, once a user is authenticated, you may access the authenticated us
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
-    use Illuminate\Routing\Controller;
 
     class ProfileController extends Controller
     {
@@ -202,7 +201,6 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
     namespace App\Http\Controllers;
 
     use Auth;
-    use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
     {
@@ -421,7 +419,6 @@ Next, you are ready to authenticate users! You will need two routes: one for red
     namespace App\Http\Controllers;
 
     use Socialite;
-    use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
     {
