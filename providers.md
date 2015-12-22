@@ -117,7 +117,7 @@ To register your provider, simply add it to the array:
     'providers' => [
         // Other Service Providers
 
-        'App\Providers\AppServiceProvider',
+        App\Providers\AppServiceProvider::class,
     ],
 
 <a name="deferred-providers"></a>

@@ -91,7 +91,7 @@ If you would like to make your views available for publishing to the application
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your views package's will be copied to the specified location.
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified location.
 
 <a name="translations"></a>
 ### Translations
@@ -111,6 +111,26 @@ If your package contains [translation files](/docs/{{version}}/localization), yo
 Package translations are referenced using a double-colon `package::file.line` syntax. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
 
     echo trans('courier::messages.welcome');
+
+#### Publishing Translations
+
+If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their corresponding publish locations. For example, to the publish the translation files for our example `courier` package:
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+
+        $this->publishes([
+            __DIR__.'/path/to/translations' => base_path('resources/lang/vendor/courier'),
+        ]);
+    }
+
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified location.
 
 <a name="configuration"></a>
 ### Configuration

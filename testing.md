@@ -7,6 +7,7 @@
     - [Sessions / Authentication](#sessions-and-authentication)
     - [Disabling Middleware](#disabling-middleware)
     - [Custom HTTP Requests](#custom-http-requests)
+    - [PHPUnit Assertions](#phpunit-assertions)
 - [Working With Databases](#working-with-databases)
     - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
     - [Model Factories](#model-factories)
@@ -30,13 +31,26 @@ You are free to create other testing environment configurations as necessary. Th
 
 ### Defining & Running Tests
 
-To create a test case, simply create a new test file in the `tests` directory. The test class should extend `TestCase`. You may then define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal:
+To create a new test case, use the `make:test` Artisan command:
+
+    php artisan make:test UserTest
+
+This command will place a new `UserTest` class within your `tests` directory. You may then define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal:
 
     <?php
 
-    class FooTest extends TestCase
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+    class UserTest extends TestCase
     {
-        public function testSomethingIsTrue()
+        /**
+         * A basic test example.
+         *
+         * @return void
+         */
+        public function testExample()
         {
             $this->assertTrue(true);
         }
@@ -216,7 +230,7 @@ Of course, one common use of the session is for maintaining user state, such as 
     {
         public function testApplication()
         {
-            $user = factory('App\User')->create();
+            $user = factory(App\User::class)->create();
 
             $this->actingAs($user)
                  ->withSession(['foo' => 'bar'])
@@ -278,6 +292,26 @@ If you are making `POST`, `PUT`, or `PATCH` requests you may pass an array of in
 
        $response = $this->call('POST', '/user', ['name' => 'Taylor']);
 
+<a name="phpunit-assertions"></a>
+### PHPUnit Assertions
+
+Laravel provides several additional assertion methods for [PHPUnit](https://phpunit.de/) tests:
+
+Method  | Description
+------------- | -------------
+`->assertResponseOk();`  |  Assert that the client response has an OK status code.
+`->assertResponseStatus($code);`  |  Assert that the client response has a given code.
+`->assertViewHas($key, $value = null);`  |  Assert that the response view has a given piece of bound data.
+`->assertViewHasAll(array $bindings);`  |  Assert that the view has a given list of bound data.
+`->assertViewMissing($key);`  |  Assert that the response view is missing a piece of bound data.
+`->assertRedirectedTo($uri, $with = []);`  |  Assert whether the client was redirected to a given URI.
+`->assertRedirectedToRoute($name, $parameters = [], $with = []);`  |  Assert whether the client was redirected to a given route.
+`->assertRedirectedToAction($name, $parameters = [], $with = []);`  |  Assert whether the client was redirected to a given action.
+`->assertSessionHas($key, $value = null);`  |  Assert that the session has a given value.
+`->assertSessionHasAll(array $bindings);`  |  Assert that the session has a given list of values.
+`->assertSessionHasErrors($bindings = [], $format = null);`  |  Assert that the session has errors bound.
+`->assertHasOldInput();`  |  Assert that the session has old input.
+
 <a name="working-with-databases"></a>
 ## Working With Databases
 
@@ -287,7 +321,7 @@ Laravel also provides a variety of helpful tools to make it easier to test your 
     {
         // Make call to application...
 
-        $this->seeInDatabase('users', ['email' => 'sally@foo.com']);
+        $this->seeInDatabase('users', ['email' => 'sally@example.com']);
     }
 
 Of course, the `seeInDatabase` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
@@ -348,6 +382,8 @@ Another option is to wrap every test case in a database transaction. Again, Lara
                  ->see('Laravel 5');
         }
     }
+
+> **Note:** This trait will only wrap the default database connection in a transaction.
 
 <a name="model-factories"></a>
 ### Model Factories

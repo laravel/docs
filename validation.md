@@ -325,6 +325,23 @@ If you wish to customize the format of the validation errors that are flashed to
         return $validator->errors()->all();
     }
 
+#### Customizing The Error Messages
+
+You may customize the error messages used by the form request by overriding the `messages` method. This method should return an array of attribute / rule pairs and their corresponding error messages:
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => 'A title is required',
+            'body.required'  => 'A message is required',
+        ];
+    }
+
 <a name="working-with-error-messages"></a>
 ## Working With Error Messages
 
@@ -415,7 +432,7 @@ In many cases, you may wish to specify your attribute specific custom messages i
 Below is a list of all available validation rules and their function:
 
 <style>
-    .collection-method-list {
+    .collection-method-list > p {
         column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
         column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
     }
@@ -426,46 +443,48 @@ Below is a list of all available validation rules and their function:
 </style>
 
 <div class="collection-method-list" markdown="1">
-- [Accepted](#rule-accepted)
-- [Active URL](#rule-active-url)
-- [After (Date)](#rule-after)
-- [Alpha](#rule-alpha)
-- [Alpha Dash](#rule-alpha-dash)
-- [Alpha Numeric](#rule-alpha-num)
-- [Array](#rule-array)
-- [Before (Date)](#rule-before)
-- [Between](#rule-between)
-- [Boolean](#rule-boolean)
-- [Confirmed](#rule-confirmed)
-- [Date](#rule-date)
-- [Date Format](#rule-date-format)
-- [Different](#rule-different)
-- [Digits](#rule-digits)
-- [Digits Between](#rule-digits-between)
-- [E-Mail](#rule-email)
-- [Exists (Database)](#rule-exists)
-- [Image (File)](#rule-image)
-- [In](#rule-in)
-- [Integer](#rule-integer)
-- [IP Address](#rule-ip)
-- [Max](#rule-max)
-- [MIME Types (File)](#rule-mimes)
-- [Min](#rule-min)
-- [Not In](#rule-not-in)
-- [Numeric](#rule-numeric)
-- [Regular Expression](#rule-regex)
-- [Required](#rule-required)
-- [Required If](#rule-required-if)
-- [Required With](#rule-required-with)
-- [Required With All](#rule-required-with-all)
-- [Required Without](#rule-required-without)
-- [Required Without All](#rule-required-without-all)
-- [Same](#rule-same)
-- [Size](#rule-size)
-- [String](#rule-string)
-- [Timezone](#rule-timezone)
-- [Unique (Database)](#rule-unique)
-- [URL](#rule-url)
+[Accepted](#rule-accepted)
+[Active URL](#rule-active-url)
+[After (Date)](#rule-after)
+[Alpha](#rule-alpha)
+[Alpha Dash](#rule-alpha-dash)
+[Alpha Numeric](#rule-alpha-num)
+[Array](#rule-array)
+[Before (Date)](#rule-before)
+[Between](#rule-between)
+[Boolean](#rule-boolean)
+[Confirmed](#rule-confirmed)
+[Date](#rule-date)
+[Date Format](#rule-date-format)
+[Different](#rule-different)
+[Digits](#rule-digits)
+[Digits Between](#rule-digits-between)
+[E-Mail](#rule-email)
+[Exists (Database)](#rule-exists)
+[Image (File)](#rule-image)
+[In](#rule-in)
+[Integer](#rule-integer)
+[IP Address](#rule-ip)
+[JSON](#rule-json)
+[Max](#rule-max)
+[MIME Types (File)](#rule-mimes)
+[Min](#rule-min)
+[Not In](#rule-not-in)
+[Numeric](#rule-numeric)
+[Regular Expression](#rule-regex)
+[Required](#rule-required)
+[Required If](#rule-required-if)
+[Required Unless](#rule-required-unless)
+[Required With](#rule-required-with)
+[Required With All](#rule-required-with-all)
+[Required Without](#rule-required-without)
+[Required Without All](#rule-required-without-all)
+[Same](#rule-same)
+[Size](#rule-size)
+[String](#rule-string)
+[Timezone](#rule-timezone)
+[Unique (Database)](#rule-unique)
+[URL](#rule-url)
 </div>
 
 <a name="rule-accepted"></a>
@@ -576,9 +595,11 @@ You may also specify more conditions that will be added as "where" clauses to th
 
     'email' => 'exists:staff,email,account_id,1'
 
-Passing `NULL` as a "where" clause value will add a check for a `NULL` database value:
+You may also pass `NULL` or `NOT_NULL` to the "where" clause:
 
     'email' => 'exists:staff,email,deleted_at,NULL'
+
+    'email' => 'exists:staff,email,deleted_at,NOT_NULL'
 
 <a name="rule-image"></a>
 #### image
@@ -600,6 +621,11 @@ The field under validation must be an integer.
 
 The field under validation must be an IP address.
 
+<a name="rule-json"></a>
+#### json
+
+The field under validation must a valid JSON string.
+
 <a name="rule-max"></a>
 #### max:_value_
 
@@ -613,6 +639,10 @@ The file under validation must have a MIME type corresponding to one of the list
 #### Basic Usage Of MIME Rule
 
     'photo' => 'mimes:jpeg,bmp,png'
+
+Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
+
+A full listing of MIME types and their corresponding extensions may be found at the following location: [http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
 <a name="rule-min"></a>
 #### min:_value_
@@ -639,12 +669,22 @@ The field under validation must match the given regular expression.
 <a name="rule-required"></a>
 #### required
 
-The field under validation must be present in the input data.
+The field under validation must be present in the input data and not empty. A field is considered "empty" is one of the following conditions are true:
+
+- The value is `null`.
+- The value is an empty string.
+- The value is an empty array or empty `Countable` object.
+- The value is an uploaded file with no path.
 
 <a name="rule-required-if"></a>
 #### required_if:_anotherfield_,_value_,...
 
 The field under validation must be present if the _anotherfield_ field is equal to any _value_.
+
+<a name="rule-required-unless"></a>
+#### required_unless:_anotherfield_,_value_,...
+
+The field under validation must be present unless the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
@@ -706,6 +746,10 @@ Occasionally, you may need to set a custom connection for database queries made 
 Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address. You only want to throw a validation error if the user provides an e-mail address that is already used by a different user. To tell the unique rule to ignore the user's ID, you may pass the ID as the third parameter:
 
     'email' => 'unique:users,email_address,'.$user->id
+
+If your table uses a primary key column name other than `id`, you may specify it as the fourth parameter:
+
+    'email' => 'unique:users,email_address,'.$user->id.',user_id'
 
 **Adding Additional Where Clauses:**
 
@@ -775,7 +819,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
          */
         public function boot()
         {
-            Validator::extend('foo', function($attribute, $value, $parameters) {
+            Validator::extend('foo', function($attribute, $value, $parameters, $validator) {
                 return $value == 'foo';
             });
         }
@@ -791,7 +835,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
         }
     }
 
-The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
+The custom validator Closure receives four arguments: the name of the `$attribute` being validated, the `$value` of the attribute, an array of `$parameters` passed to the rule, and the `Validator` instance.
 
 You may also pass a class and method to the `extend` method instead of a Closure:
 
@@ -822,3 +866,21 @@ When creating a custom validation rule, you may sometimes need to define custom 
             return str_replace(...);
         });
     }
+
+#### Implicit Extensions
+
+By default, when an attribute being validated is not present or contains an empty value as defined by the [`required`](#rule-required) rule, normal validation rules, including custom extensions, are not run. For example, the [`integer`](#rule-integer) rule will not be run against a `null` value:
+
+    $rules = ['count' => 'integer'];
+
+    $input = ['count' => null];
+
+    Validator::make($input, $rules)->passes(); // true
+
+For a rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create such an "implicit" extension, use the `Validator::extendImplicit()` method:
+
+    Validator::extendImplicit('foo', function($attribute, $value, $parameters, $validator) {
+        return $value == 'foo';
+    });
+
+> **Note:** An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.

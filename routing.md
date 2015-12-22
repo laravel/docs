@@ -16,6 +16,7 @@
     - [Excluding URIs](#csrf-excluding-uris)
     - [X-CSRF-Token](#csrf-x-csrf-token)
     - [X-XSRF-Token](#csrf-x-xsrf-token)
+- [Route Model Binding](#route-model-binding)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Throwing 404 Errors](#throwing-404-errors)
 
@@ -154,6 +155,10 @@ You may also specify route names for controller actions:
         'as' => 'profile', 'uses' => 'UserController@showProfile'
     ]);
 
+Instead of specifying the route name in the route array definition, you may chain the `name` method onto the end of the route definition:
+
+    Route::get('user/profile', 'UserController@showProfile')->name('profile');
+
 #### Route Groups & Named Routes
 
 If you are using [route groups](#route-groups), you may specify an `as` keyword in the route group attribute array, allowing you to set a common route name prefix for all routes within the group:
@@ -183,7 +188,7 @@ If the route defines parameters, you may pass the parameters as the second argum
 <a name="route-groups"></a>
 ## Route Groups
 
-Route groups allow you to share route attributes, such as middleware or namespaces, across a large number of routes without needing to define those attributes on each individual routes. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
+Route groups allow you to share route attributes, such as middleware or namespaces, across a large number of routes without needing to define those attributes on each individual route. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
 
 To learn more about route groups, we'll walk through several common use-cases for the feature.
 
@@ -267,9 +272,9 @@ The `csrf_field` helper function generates the following HTML:
 
 Of course, using the Blade [templating engine](/docs/{{version}}/blade):
 
-    {!! csrf_field() !!}
+    {{ csrf_field() }}
 
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify token in the request input matches the token stored in the session.
+You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [HTTP middleware](/docs/{{version}}/middleware) will verify that the token in the request input matches the token stored in the session.
 
 <a name="csrf-excluding-uris"></a>
 ### Excluding URIs From CSRF Protection
@@ -316,6 +321,44 @@ Once you have created the `meta` tag, you can instruct a library like jQuery to 
 
 Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some JavaScript frameworks, like Angular, do this automatically for you. It is unlikely that you will need to use this value manually.
 
+<a name="route-model-binding"></a>
+## Route Model Binding
+
+Laravel route model binding provides a convenient way to inject class instances into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` class instance that matches the given ID.
+
+First, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::boot` method:
+
+#### Binding A Parameter To A Model
+
+    public function boot(Router $router)
+    {
+        parent::boot($router);
+
+        $router->model('user', 'App\User');
+    }
+
+Next, define a route that contains a `{user}` parameter:
+
+    $router->get('profile/{user}', function(App\User $user) {
+        //
+    });
+
+Since we have bound the `{user}` parameter to the `App\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance which has an ID of 1.
+
+> **Note:** If a matching model instance is not found in the database, a 404 exception will be thrown automatically.
+
+If you wish to specify your own "not found" behavior, pass a Closure as the third argument to the `model` method:
+
+    $router->model('user', 'App\User', function() {
+        throw new NotFoundHttpException;
+    });
+
+If you wish to use your own resolution logic, you should use the `Route::bind` method. The Closure you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
+
+    $router->bind('user', function($value) {
+        return App\User::where('name', $value)->first();
+    });
+
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
 
@@ -325,6 +368,14 @@ HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining 
         <input type="hidden" name="_method" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
     </form>
+
+To generate the hidden input field `_method`, you may also use the `method_field` helper function:
+
+    <?php echo method_field('PUT'); ?>
+
+Of course, using the Blade [templating engine](/docs/{{version}}/blade):
+
+    {{ method_field('PUT') }}
 
 <a name="throwing-404-errors"></a>
 ## Throwing 404 Errors

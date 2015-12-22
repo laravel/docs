@@ -84,9 +84,9 @@ The `get` method may be used to retrieve the contents of a given file. The raw s
 
     $contents = Storage::get('file.jpg');
 
-The `exists` method may be used to determine if a given file exists on the disk:
+The `has` method may be used to determine if a given file exists on the disk:
 
-    $exists = Storage::disk('s3')->exists('file.jpg');
+    $exists = Storage::disk('s3')->has('file.jpg');
 
 #### File Meta Information
 
@@ -111,7 +111,7 @@ The `copy` method may be used to copy an existing file to a new location on the 
 
     Storage::copy('old/file1.jpg', 'new/file1.jpg');
 
-The `move` method may be used to move an existing file to a new location:
+The `move` method may be used to rename or move an existing file to a new location:
 
     Storage::move('old/file1.jpg', 'new/file1.jpg');
 

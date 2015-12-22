@@ -55,7 +55,7 @@ Sometimes, you may need to execute some PHP code before evaluating your Envoy ta
 
 You may also use ```@include``` to include any outside PHP files:
 
-    @include('vendor/autoload.php');
+    @include('vendor/autoload.php')
 
 #### Confirming Tasks
 

@@ -1,6 +1,7 @@
 # Authentication
 
 - [Introduction](#introduction)
+    - [Database Considerations](#introduction-database-considerations)
 - [Authentication Quickstart](#authentication-quickstart)
     - [Routing](#included-routing)
     - [Views](#included-views)
@@ -12,7 +13,7 @@
     - [Remembering Users](#remembering-users)
     - [Other Authentication Methods](#other-authentication-methods)
 - [HTTP Basic Authentication](#http-basic-authentication)
-     - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
+    - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
 - [Resetting Passwords](#resetting-passwords)
     - [Database Considerations](#resetting-database)
     - [Routing](#resetting-routing)
@@ -20,12 +21,14 @@
     - [After Resetting Passwords](#after-resetting-passwords)
 - [Social Authentication](#social-authentication)
 - [Adding Custom Authentication Drivers](#adding-custom-authentication-drivers)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
 
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
 
+<a name="introduction-database-considerations"></a>
 ### Database Considerations
 
 By default, Laravel includes an `App\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app` directory. This model may be used with the default Eloquent authentication driver. If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
@@ -128,6 +131,8 @@ When a user is successfully authenticated, they will be redirected to the `/home
 When a user is not successfully authenticated, they will be redirected to the `/auth/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
 
     protected $loginPath = '/login';
+
+The `loginPath` will not change where a user is bounced if they try to access a protected route. That is controlled by the `App\Http\Middleware\Authenticate` middleware's `handle` method.
 
 #### Customizations
 
@@ -275,7 +280,7 @@ To log users out of your application, you may use the `logout` method on the `Au
 > **Note:** In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
 
 <a name="remembering-users"></a>
-## Remembering Users
+### Remembering Users
 
 If you would like to provide "remember me" functionality in your application, you may pass a boolean value as the second argument to the `attempt` method, which will keep the user authenticated indefinitely, or until they manually logout. Of course, your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
 
@@ -407,6 +412,14 @@ You will need to provide an HTML view for the password reset request form. This 
     <form method="POST" action="/password/email">
         {!! csrf_field() !!}
 
+        @if (count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+
         <div>
             Email
             <input type="email" name="email" value="{{ old('email') }}">
@@ -437,15 +450,26 @@ Here is a sample password reset form to get you started:
         {!! csrf_field() !!}
         <input type="hidden" name="token" value="{{ $token }}">
 
+        @if (count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+
         <div>
+            Email
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
 
         <div>
+            Password
             <input type="password" name="password">
         </div>
 
         <div>
+            Confirm Password
             <input type="password" name="password_confirmation">
         </div>
 
@@ -506,6 +530,7 @@ Next, you are ready to authenticate users! You will need two routes: one for red
 
     namespace App\Http\Controllers;
 
+    use Socialite;
     use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
@@ -540,11 +565,13 @@ The `redirect` method takes care of sending the user to the OAuth provider, whil
 
 Of course, you will need to define routes to your controller methods:
 
-    <?php
+    Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
+    Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
-        Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
-        Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
+A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
 
+    return Socialite::driver('google')
+                ->with(['hd' => 'example.com'])->redirect();
 
 #### Retrieving User Details
 
@@ -631,15 +658,15 @@ The `retrieveById` function typically receives a key representing the user, such
 
 The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, stored in a field `remember_token`. As with the previous method, the `Authenticatable` implementation should be returned.
 
-The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. The new token can be either a fresh token, assigned on successful "remember me" login attempt, or a null when user is logged out.
+The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. The new token can be either a fresh token, assigned on a successful "remember me" login attempt, or a null when the user is logged out.
 
 The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to sign into an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition on `$credentials['username']`. The method should then return an implementation of `UserInterface`. **This method should not attempt to do any password validation or authentication.**
 
-The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`. This method should only validate the user's credentials and return boolean.
+The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method might compare the `$user->getAuthPassword()` string to a `Hash::make` of `$credentials['password']`. This method should only validate the user's credentials and return a boolean.
 
 ### The Authenticatable Contract
 
-Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable`. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
+Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, the provider should return implementations of this interface from the `retrieveById` and `retrieveByCredentials` methods:
 
     <?php
 
@@ -656,3 +683,34 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
     }
 
 This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
+
+<a name="events"></a>
+## Events
+
+Laravel raises a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        // Fired on each authentication attempt...
+        $events->listen('auth.attempt', function ($credentials, $remember, $login) {
+            //
+        });
+
+        // Fired on successful logins...
+        $events->listen('auth.login', function ($user, $remember) {
+            //
+        });
+
+        // Fired on logouts...
+        $events->listen('auth.logout', function ($user) {
+            //
+        });
+    }

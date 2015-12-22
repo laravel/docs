@@ -48,12 +48,15 @@ You may select any method from this table to see an example of its usage:
 
 <div id="collection-method-list" markdown="1">
 [all](#method-all)
+[avg](#method-avg)
 [chunk](#method-chunk)
 [collapse](#method-collapse)
 [contains](#method-contains)
 [count](#method-count)
 [diff](#method-diff)
 [each](#method-each)
+[every](#method-every)
+[except](#method-except)
 [filter](#method-filter)
 [first](#method-first)
 [flatten](#method-flatten)
@@ -70,7 +73,10 @@ You may select any method from this table to see an example of its usage:
 [keys](#method-keys)
 [last](#method-last)
 [map](#method-map)
+[max](#method-max)
 [merge](#method-merge)
+[min](#method-min)
+[only](#method-only)
 [pluck](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
@@ -122,6 +128,26 @@ The `all` method simply returns the underlying array represented by the collecti
     collect([1, 2, 3])->all();
 
     // [1, 2, 3]
+
+<a name="method-avg"></a>
+#### `avg()` {#collection-method}
+
+The `avg` method returns the average of all items in the collection:
+
+    collect([1, 2, 3, 4, 5])->avg();
+
+    // 3
+
+If the collection contains nested arrays or objects, you should pass a key to use for determining which values to calculate the average:
+
+    $collection = collect([
+        ['name' => 'JavaScript: The Good Parts', 'pages' => 176],
+        ['name' => 'JavaScript: The Definitive Guide', 'pages' => 1096],
+    ]);
+
+    $collection->avg('pages');
+
+    // 636
 
 <a name="method-chunk"></a>
 #### `chunk()` {#collection-method}
@@ -236,6 +262,38 @@ Return `false` from your callback to break out of the loop:
         }
     });
 
+<a name="method-every"></a>
+#### `every()` {#collection-method}
+
+The `every` method creates a new collection consisting of every n-th element:
+
+    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+
+    $collection->every(4);
+
+    // ['a', 'e']
+
+You may optionally pass offset as the second argument:
+
+    $collection->every(4, 1);
+
+    // ['b', 'f']
+
+<a name="method-except"></a>
+#### `except()` {#collection-method}
+
+The `except` method returns all items in the collection except for those with the specified keys:
+
+    $collection = collect(['product_id' => 1, 'name' => 'Desk', 'price' => 100, 'discount' => false]);
+
+    $filtered = $collection->except(['price', 'discount']);
+
+    $filtered->all();
+
+    // ['product_id' => 1, 'name' => 'Desk']
+
+For the inverse of `except`, see the [only](#method-only) method.
+
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
 
@@ -316,9 +374,11 @@ The `forget` method removes an item from the collection by its key:
 
 The `forPage` method returns a new collection containing the items that would be present on a given page number:
 
-    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9])->forPage(2, 3);
+    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-    $collection->all();
+    $chunk = $collection->forPage(2, 3);
+
+    $chunk->all();
 
     // [4, 5, 6]
 
@@ -544,6 +604,19 @@ The `map` method iterates through the collection and passes each value to the gi
 
 > **Note:** Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
 
+<a name="method-max"></a>
+#### `max()` {#collection-method}
+
+The `max` method return the maximum value of a given key:
+
+    $max = collect([['foo' => 10], ['foo' => 20]])->max('foo');
+
+    // 20
+
+    $max = collect([1, 2, 3, 4, 5])->max();
+
+    // 5
+
 <a name="method-merge"></a>
 #### `merge()` {#collection-method}
 
@@ -566,6 +639,34 @@ If the given array's keys are numeric, the values will be appended to the end of
     $merged->all();
 
     // ['Desk', 'Chair', 'Bookcase', 'Door']
+
+<a name="method-min"></a>
+#### `min()` {#collection-method}
+
+The `min` method return the minimum value of a given key:
+
+    $min = collect([['foo' => 10], ['foo' => 20]])->min('foo');
+
+    // 10
+
+    $min = collect([1, 2, 3, 4, 5])->min();
+
+    // 1
+
+<a name="method-only"></a>
+#### `only()` {#collection-method}
+
+The `only` method returns the items in the collection with the specified keys:
+
+    $collection = collect(['product_id' => 1, 'name' => 'Desk', 'price' => 100, 'discount' => false]);
+
+    $filtered = $collection->only(['product_id', 'name']);
+
+    $filtered->all();
+
+    // ['product_id' => 1, 'name' => 'Desk']
+
+For the inverse of `only`, see the [except](#method-except) method.
 
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
@@ -618,6 +719,16 @@ The `prepend` method adds an item to the beginning of the collection:
     $collection->all();
 
     // [0, 1, 2, 3, 4, 5]
+
+You can optionally pass a second argument to set the key of the prepended item:
+
+    $collection = collect(['one' => 1, 'two', => 2]);
+
+    $collection->prepend(0, 'zero');
+
+    $collection->all();
+
+    // ['zero' => 0, 'one' => 1, 'two', => 2]
 
 <a name="method-pull"></a>
 #### `pull()` {#collection-method}

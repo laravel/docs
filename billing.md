@@ -81,7 +81,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
 The `create` method will automatically create the Stripe subscription, as well as update your database with Stripe customer ID and other relevant billing information. If your plan has a trial configured in Stripe, the trial end date will also automatically be set on the user record.
 
-In you want to implement trial periods, but are managing the trials entirely within your application instead of defining them within Stripe, you must manually set the trial end date:
+If you want to implement trial periods, but are managing the trials entirely within your application instead of defining them within Stripe, you must manually set the trial end date:
 
     $user->trial_ends_at = Carbon::now()->addDays(14);
 
@@ -89,7 +89,7 @@ In you want to implement trial periods, but are managing the trials entirely wit
 
 #### Additional User Details
 
-If you would like to specify additional customer details, you may do so by passing them as second argument to the `create` method:
+If you would like to specify additional customer details, you may do so by passing them as the second argument to the `create` method:
 
     $user->subscription('monthly')->create($creditCardToken, [
         'email' => $email, 'description' => 'Our First Customer'
@@ -108,7 +108,7 @@ If you would like to apply a coupon when creating the subscription, you may use 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
 
-Once a user is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an active subscription, even if the subscription is currently within its trial period:s
+Once a user is subscribed to your application, you may easily check their subscription status using a variety of convenient methods. First, the `subscribed` method returns `true` if the user has an active subscription, even if the subscription is currently within its trial period:
 
     if ($user->subscribed()) {
         //
@@ -239,11 +239,11 @@ If the user cancels a subscription and then resumes that subscription before the
 
 What if a customer's credit card expires? No worries - Cashier includes a Webhook controller that can easily cancel the customer's subscription for you. Just point a route to the controller:
 
-    Route::post('stripe/webhook', 'Laravel\Cashier\WebhookController@handleWebhook');
+    Route::post('stripe/webhook', '\Laravel\Cashier\WebhookController@handleWebhook');
 
 That's it! Failed payments will be captured and handled by the controller. The controller will cancel the customer's subscription when Stripe determines the subscription has failed (normally after three failed payment attempts). Don't forget: you will need to configure the webhook URI in your Stripe control panel settings.
 
-Since Stripe webhooks need to bypass Laravel's [CSRF verification](/docs/{{version}}/routing#csrf-protection), be sure to list the URI an exception in your `VerifyCsrfToken` middleware:
+Since Stripe webhooks need to bypass Laravel's [CSRF verification](/docs/{{version}}/routing#csrf-protection), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware:
 
     protected $except = [
         'stripe/*',
@@ -256,7 +256,7 @@ If you have additional Stripe webhook events you would like to handle, simply ex
 
     <?php
 
-    namespace App\Http\Controller;
+    namespace App\Http\Controllers;
 
     use Laravel\Cashier\WebhookController as BaseController;
 

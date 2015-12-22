@@ -254,7 +254,11 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
 #### A Few Notes Of Explanation
 
+<<<<<<< HEAD
 Before moving on, let's talk about this template a bit. First, the `@extends` directive informs Blade that we are using the layout we defined at `resources/views/layouts/app.blade.php`. All of the content between `@section('content')` and `@endsection` will be injected into the location of the `@yield('contents')` directive within the `app.blade.php` layout.
+=======
+Before moving on, let's talk about this template a bit. First, the `@extends` directive informs Blade that we are using the layout we defined at `resources/views/layouts/app.blade.php`. All of the content between `@section('content')` and `@endsection` will be injected into the location of the `@yield('content')` directive within the `app.blade.php` layout.
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
 Now we have defined a basic layout and view for our application. Remember, we are returning this view from our `/` route like so:
 
@@ -444,4 +448,7 @@ Finally, let's add logic to our route to actually delete the given task. We can 
 
 		return redirect('/');
 	});
+<<<<<<< HEAD
     
+=======
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415

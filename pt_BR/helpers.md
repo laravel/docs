@@ -6,7 +6,7 @@
 <a name="introduction"></a>
 ## Introdução
 
-Laravel inclui uma variedade de funções "helper". Muitas dessas funções são usadas pelo framework em si; Contudo, você é livre para usá-las em suas aplicações se você achar conveniente.
+Laravel inclui uma variedade de funções "helper". Muitas destas funções são usadas pelo próprio framework; contudo, você está livre para usá-las em suas aplicações se você achar conveniente.
 
 <a name="available-methods"></a>
 ## Métodos Disponíveis
@@ -40,6 +40,7 @@ Laravel inclui uma variedade de funções "helper". Muitas dessas funções são
 [array_pull](#method-array-pull)
 [array_set](#method-array-set)
 [array_sort](#method-array-sort)
+[array_sort_recursive](#method-array-sort-recursive)
 [array_where](#method-array-where)
 [head](#method-head)
 [last](#method-last)
@@ -52,6 +53,7 @@ Laravel inclui uma variedade de funções "helper". Muitas dessas funções são
 [base_path](#method-base-path)
 [config_path](#method-config-path)
 [database_path](#method-database-path)
+[elixir](#method-elixir)
 [public_path](#method-public-path)
 [storage_path](#method-storage-path)
 </div>
@@ -82,26 +84,39 @@ Laravel inclui uma variedade de funções "helper". Muitas dessas funções são
 
 <div class="collection-method-list" markdown="1">
 [action](#method-action)
+[asset](#method-asset)
+[secure_asset](#method-secure-asset)
 [route](#method-route)
 [url](#method-url)
 </div>
 
-### Miscellaneous
+### Diversas
 
 <div class="collection-method-list" markdown="1">
+[auth](#method-auth)
+[back](#method-back)
+[bcrypt](#method-bcrypt)
+[collect](#method-collect)
+[config](#method-config)
+[csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
-[elixir](#method-elixir)
 [env](#method-env)
 [event](#method-event)
+[factory](#method-factory)
+[method_field](#method-method-field)
+[old](#method-old)
+[redirect](#method-redirect)
+[request](#method-request)
 [response](#method-response)
+[session](#method-session)
 [value](#method-value)
 [view](#method-view)
 [with](#method-with)
 </div>
 
 <a name="method-listing"></a>
-## Listando os Métodos
+## Listagem dos Métodos
 
 <style>
 	#collection-method code {
@@ -116,7 +131,7 @@ Laravel inclui uma variedade de funções "helper". Muitas dessas funções são
 <a name="method-array-add"></a>
 #### `array_add()` {#collection-method .first-collection-method}
 
-A função `array_add` adiciona um item chave / valor para o array se a chave ainda não existir no array:
+A função `array_add` adiciona um dado par chave / valor para o array se a chave especificada ainda não existir no array:
 
 	$array = array_add(['name' => 'Desk'], 'price', 100);
 
@@ -125,7 +140,7 @@ A função `array_add` adiciona um item chave / valor para o array se a chave ai
 <a name="method-array-collapse"></a>
 #### `array_collapse()` {#collection-method}
 
-A função `array_collapse` converte um array de arrays em um único array:
+A função `array_collapse` quebra um array de arrays em um único array:
 
 	$array = array_collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 	
@@ -134,7 +149,7 @@ A função `array_collapse` converte um array de arrays em um único array:
 <a name="method-array-divide"></a>
 #### `array_divide()` {#collection-method}
 
-A função `array_divide` retorna 2 arrays, um contendo as chaves e outro contendo os valores do array original:
+A função `array_divide` retorna dois arrays, um contendo as chaves e outro contendo os valores do array original:
 
 	list($keys, $values) = array_divide(['name' => 'Desk']);
 
@@ -145,7 +160,7 @@ A função `array_divide` retorna 2 arrays, um contendo as chaves e outro conten
 <a name="method-array-dot"></a>
 #### `array_dot()` {#collection-method}
 
-A função `array_dot` nivela um array multi-dimensional em um único nível que usa um "." para indicar a profundidade:
+A função `array_dot` nivela um array multi-dimensional em um único nível que usa notação "." para indicar profundidade:
 
 	$array = array_dot(['foo' => ['bar' => 'baz']]);
 
@@ -154,7 +169,7 @@ A função `array_dot` nivela um array multi-dimensional em um único nível que
 <a name="method-array-except"></a>
 #### `array_except()` {#collection-method}
 
-A função `array_except` remove os itens chave / valor do array:
+A função `array_except` remove um dado par chave / valor do array:
 
 	$array = ['name' => 'Desk', 'price' => 100];
 
@@ -165,7 +180,7 @@ A função `array_except` remove os itens chave / valor do array:
 <a name="method-array-first"></a>
 #### `array_first()` {#collection-method}
 
-A função `array_first` retorna o primeiro elemento de um array que passar por um determinado teste da verdade:
+A função `array_first` retorna o primeiro elemento de um array que passar por um determinado teste verdade:
 
 	$array = [100, 200, 300];
 
@@ -175,7 +190,7 @@ A função `array_first` retorna o primeiro elemento de um array que passar por 
 
 	// 200
 
-O valor padrão também pode ser passado como terceiro parâmetro do método. Este valor será retornado se nenhum valor passar no teste da verdade.
+O valor padrão também pode ser passado como terceiro parâmetro ao método. Este valor será retornado se nenhum valor passar no teste verdade.
 
 	$value = array_first($array, $callback, $default);
 
@@ -193,7 +208,7 @@ A função `array_flatten` nivelará um array multi-dimensional num único níve
 <a name="method-array-forget"></a>
 #### `array_forget()` {#collection-method}
 
-A função `array_forget` remove um item chave / valor de um array que usa um "." para indicar a profundidade:
+A função `array_forget` remove um dado par chave / valor de um array aninhado em profundidade utilizando notação ".":
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -204,7 +219,7 @@ A função `array_forget` remove um item chave / valor de um array que usa um ".
 <a name="method-array-get"></a>
 #### `array_get()` {#collection-method}
 
-A função `array_get` recupera um valor de um array usando o "." para indicar a profundidade:
+A função `array_get` recupera um valor de um array aninhado em profundidade utilizando notação ".":
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -212,14 +227,14 @@ A função `array_get` recupera um valor de um array usando o "." para indicar a
 
 	// ['price' => 100]
 
-A função `array_get` também aceita um valor padrão que será retornado caso a chave especificada não exista:
+A função `array_get` também aceita um valor padrão que será retornado no caso de a chave especificada não ser encontrada:
 
 	$value = array_get($array, 'names.john', 'default');
 	
 <a name="method-array-has"></a>
 #### `array_has()` {#collection-method}
 
-A função `array_has` verifica se um determinado item existe em uma matriz usando a notação "ponto":
+A função `array_has` verifica se um determinado item existe em um dado array utilizando a notação ".":
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 	
@@ -231,7 +246,7 @@ A função `array_has` verifica se um determinado item existe em uma matriz usan
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
 
-A função `array_only` retornará somente os itens chave / valor do array dado:
+A função `array_only` retornará somente o par chave / valor especificado do array dado:
 
 	$array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 
@@ -242,18 +257,18 @@ A função `array_only` retornará somente os itens chave / valor do array dado:
 <a name="method-array-pluck"></a>
 #### `array_pluck()` {#collection-method}
 
-A função `array_pluck` arrancará uma lista dos itens chave / valor do array:
+A função `array_pluck` extrairá uma lista a partir de um par chave / valor do array:
 
 	$array = [
-		['developer' => ['name' => 'Taylor']],
-		['developer' => ['name' => 'Abigail']]
+		['developer' => ['id' => 1, 'name' => 'Taylor']],
+		['developer' => ['id' => 2, 'name' => 'Abigail']]
 	];
 
 	$array = array_pluck($array, 'developer.name');
 
 	// ['Taylor', 'Abigail'];
 	
-Você também pode especificar como você deseja que a lista resultante seja informada:
+Você também pode especificar como deseja que a lista resultante seja chaveada:
 
 	$array = array_pluck($array, 'developer.name', 'developer.id');
 	
@@ -262,7 +277,7 @@ Você também pode especificar como você deseja que a lista resultante seja inf
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
 
-A função `array_pull` retornará e removerá um item chave / valor do array:
+A função `array_pull` retorna e remove um par chave / valor do array:
 
 	$array = ['name' => 'Desk', 'price' => 100];
 
@@ -275,7 +290,7 @@ A função `array_pull` retornará e removerá um item chave / valor do array:
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
-A função `array_set` seta um valor dentro de um array usando o "." para indicar profundidade:
+A função `array_set` define um valor dentro de um array utilizando a notação ".":
 
 	$array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -286,7 +301,7 @@ A função `array_set` seta um valor dentro de um array usando o "." para indica
 <a name="method-array-sort"></a>
 #### `array_sort()` {#collection-method}
 
-A função `array_sort` sorteia o array através dos resultados da Closure passada:
+A função `array_sort` ordena o array através dos resultados de uma dada Closure:
 
 	$array = [
 		['name' => 'Desk'],
