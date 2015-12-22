@@ -212,7 +212,13 @@ The "Stringy" library is no longer included with the framework. You may install 
 
 ### Validation
 
+#### Exception Types
+
 The `ValidatesRequests` trait now throws an instance of `Illuminate\Foundation\Validation\ValidationException` instead of throwing an instance of `Illuminate\Http\Exception\HttpResponseException`. This is unlikely to affect your application unless you were manually catching this exception.
+
+#### Implicit Rules
+
+The `array`, `string`, `boolean`, `numeric`, and `integer` validation rules are now implicit. This means that if you pass a value for one of these rules, the value **must** match the type specified. So, you may not provide a `null` value for an attribute with a `integer` validation rule assigned to it.
 
 ### Deprecations
 
