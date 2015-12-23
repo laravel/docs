@@ -83,6 +83,10 @@ Add an `env` configuration option to your `app.php` configuration file that look
 
     'env' => env('APP_ENV', 'production'),
 
+#### Service Providers
+
+Remove `Illuminate\Routing\ControllerServiceProvider::class` from the `providers` list of your `app.php`, this service provider is not needed anymore.
+
 #### Caching And Env
 
 If you are using the `config:cache` command during deployment, you **must** make sure that you are only calling the `env` function from within your configuration files, and not from anywhere else in your application.
