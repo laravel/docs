@@ -475,7 +475,7 @@ cache.missed | $key
 cache.hit | $key, $value
 cache.write | $key, $value, $minutes
 cache.delete | $key
-connection.{name}.beginTransaction | $connection
+connection.{name}.beganTransaction | $connection
 connection.{name}.committed | $connection
 connection.{name}.rollingBack | $connection
 illuminate.query | $query, $bindings, $time, $connectionName
