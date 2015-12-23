@@ -782,7 +782,9 @@ The `method_field` function generates an HTML `hidden` input field containing th
 
 The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session:
 
-    $value = old('value', $default = null);
+    $value = old('value');
+
+    $value = old('value', 'default');
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
