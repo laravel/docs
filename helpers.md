@@ -269,7 +269,7 @@ The `array_pluck` function will pluck a list of the given key / value pairs from
     $array = array_pluck($array, 'developer.name');
 
     // ['Taylor', 'Abigail'];
-    
+
 You may also specify how you wish the resulting list to be keyed:
 
     $array = array_pluck($array, 'developer.name', 'developer.id');
@@ -774,7 +774,7 @@ The `method_field` function generates an HTML `hidden` input field containing th
 
 The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session:
 
-    $value = old('value');
+    $value = old('value', $default = null);
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
