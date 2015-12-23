@@ -672,6 +672,12 @@ The `url` function generates a fully qualified URL to the given path:
 
     echo url('user/profile', [1]);
 
+If no path is provided, it returns a `Illuminate\Routing\UrlGenerator` instance:
+
+    echo url()->current();
+    echo url()->full();
+    echo url()->previous();
+
 <a name="miscellaneous"></a>
 ## Miscellaneous
 
