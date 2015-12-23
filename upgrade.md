@@ -65,6 +65,10 @@ The `Illuminate\Foundation\Support\Composer` class has been moved to `Illuminate
 
 ### Commands And Handlers
 
+#### Dispatchers
+
+The `dispatchFrom` and `dispatchFromArray` methods are removed from `Illuminate\Foundation\Bus\DispatchesJobs` trait and `'Illuminate\Contracts\Bus\Dispatcher` class. Call `dispatch` instead.
+
 #### Self-Handling Commands
 
 You no longer need to implement the `SelfHandling` contract on your jobs / commands. All jobs are now self-handling by default, so you can remove this interface from your classes.
