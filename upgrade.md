@@ -218,7 +218,7 @@ The `ValidatesRequests` trait now throws an instance of `Illuminate\Foundation\V
 
 ### Deprecations
 
-THe following features are deprecated in 5.2 and will be removed in the 5.3 release in June 2016:
+The following features are deprecated in 5.2 and will be removed in the 5.3 release in June 2016:
 
 - `Illuminate\Contracts\Bus\SelfHandling` contract. Can be removed from jobs.
 - The `lists` method on the Collection, query builder and Eloquent query builder objects has been renamed to `pluck`. The method signature remains the same.
