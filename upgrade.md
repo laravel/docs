@@ -27,6 +27,8 @@ Add `symfony/dom-crawler ~3.0` and `symfony/css-selector ~3.0` to the `require-d
 
 ### Authentication
 
+loginPath() has been removed from `Illuminate\Foundation\Auth\AuthenticatesUsers` and placing a $loginPath in your AuthController no longer has effect.
+
 #### Configuration File
 
 You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/develop/config/auth.php](https://github.com/laravel/laravel/blob/master/config/auth.php)
