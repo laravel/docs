@@ -168,6 +168,10 @@ Your `App\Exceptions\Handler` class' `$dontReport` property should be updated to
         ValidationException::class,
     ];
 
+### Helper Functions
+
+The `url()` helper function now returns a `Illuminate\Routing\UrlGenerator` instance when no path is provided.
+
 ### Implicit Model Binding
 
 Laravel 5.2 includes "implicit model binding", a convenient new feature to automatically inject model instances into routes and controllers based on the identifier present in the URI. However, this does change the behavior of routes and controllers that type-hint model instances.
