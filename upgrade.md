@@ -25,8 +25,6 @@ Add `symfony/dom-crawler ~3.0` and `symfony/css-selector ~3.0` to the `require-d
 
 ### Authentication
 
-loginPath() has been removed from `Illuminate\Foundation\Auth\AuthenticatesUsers` and placing a $loginPath in your AuthController no longer has effect.
-
 #### Configuration File
 
 You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/develop/config/auth.php](https://github.com/laravel/laravel/blob/master/config/auth.php)
@@ -46,6 +44,10 @@ This is unlikely to affect your application unless you were manually implementin
 If you are using the `Auth::extend` method to define a custom method of retrieving users, you should now use `Auth::provider` to define your custom user provider. Once you have defined the custom provider, you may configure it in the `providers` array of your new `auth.php` configuration file.
 
 For more information on custom authentication providers, consult the [full authentication documentation](/docs/{{version}}/authentication).
+
+#### Redirection
+
+The `loginPath()` method has been removed from `Illuminate\Foundation\Auth\AuthenticatesUsers`, so placing a `$loginPath` variable in your `AuthController` is no longer required. By default, the trait will always redirect users back to their previous location on authentication errors.
 
 ### Authorization
 
