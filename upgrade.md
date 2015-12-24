@@ -21,7 +21,7 @@
 
 Update your `composer.json` file to point to `laravel/framework 5.2.*`.
 
-Add `symfony/dom-crawler ~3.0` and `symfony/css-selector ~3.0` to the `require-dev` section of your `composer.json` file.
+Add `"symfony/dom-crawler": "~3.0"` and `"symfony/css-selector": "~3.0"` to the `require-dev` section of your `composer.json` file.
 
 ### Authentication
 
