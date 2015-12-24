@@ -6,7 +6,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel includes a variety of "helper" PHP functions. Many of these functions are used by the framework itself; however, you are free to use them in your own applications if you find them convenient.
+Laravel includes a variety of "helper" PHP functions. Many of these functions are used by the framework itself; however, you are free to use them in your own applications if you find them convenient. Each "helper" PHP function performs one specific task, with no dependence on other helper functions.
 
 <a name="available-methods"></a>
 ## Available Methods
