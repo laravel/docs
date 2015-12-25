@@ -19,11 +19,9 @@
 
 ### Updating Dependencies
 
-If you are installing a beta release of Laravel 5.2, add `"minimum-stability": "beta"` to your `composer.json` file.
-
 Update your `composer.json` file to point to `laravel/framework 5.2.*`.
 
-Add `symfony/dom-crawler ~3.0` and `symfony/css-selector ~3.0` to the `require-dev` section of your `composer.json` file.
+Add `"symfony/dom-crawler": "~3.0"` and `"symfony/css-selector": "~3.0"` to the `require-dev` section of your `composer.json` file.
 
 ### Authentication
 
@@ -46,6 +44,10 @@ This is unlikely to affect your application unless you were manually implementin
 If you are using the `Auth::extend` method to define a custom method of retrieving users, you should now use `Auth::provider` to define your custom user provider. Once you have defined the custom provider, you may configure it in the `providers` array of your new `auth.php` configuration file.
 
 For more information on custom authentication providers, consult the [full authentication documentation](/docs/{{version}}/authentication).
+
+#### Redirection
+
+The `loginPath()` method has been removed from `Illuminate\Foundation\Auth\AuthenticatesUsers`, so placing a `$loginPath` variable in your `AuthController` is no longer required. By default, the trait will always redirect users back to their previous location on authentication errors.
 
 ### Authorization
 
@@ -170,6 +172,10 @@ Your `App\Exceptions\Handler` class' `$dontReport` property should be updated to
         ValidationException::class,
     ];
 
+### Helper Functions
+
+The `url()` helper function now returns a `Illuminate\Routing\UrlGenerator` instance when no path is provided.
+
 ### Implicit Model Binding
 
 Laravel 5.2 includes "implicit model binding", a convenient new feature to automatically inject model instances into routes and controllers based on the identifier present in the URI. However, this does change the behavior of routes and controllers that type-hint model instances.
@@ -213,6 +219,8 @@ If you would like to use the new driver, you should add the `user_id (nullable i
 The "Stringy" library is no longer included with the framework. You may install it manually via Composer if you wish to use it in your application.
 
 ### Validation
+
+#### Exception Types
 
 The `ValidatesRequests` trait now throws an instance of `Illuminate\Foundation\Validation\ValidationException` instead of throwing an instance of `Illuminate\Http\Exception\HttpResponseException`. This is unlikely to affect your application unless you were manually catching this exception.
 

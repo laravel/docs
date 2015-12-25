@@ -672,6 +672,12 @@ The `url` function generates a fully qualified URL to the given path:
 
     echo url('user/profile', [1]);
 
+If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned:
+
+    echo url()->current();
+    echo url()->full();
+    echo url()->previous();
+
 <a name="miscellaneous"></a>
 ## Miscellaneous
 
@@ -783,6 +789,8 @@ The `method_field` function generates an HTML `hidden` input field containing th
 The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session:
 
     $value = old('value');
+
+    $value = old('value', 'default');
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}

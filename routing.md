@@ -21,17 +21,21 @@
 <a name="basic-routing"></a>
 ## Basic Routing
 
-You will define all of the routes for your application in the `app/Http/routes.php` file, which is loaded by the `App\Providers\RouteServiceProvider` class. The most basic Laravel routes simply accept a URI and a `Closure`:
+All Laravel routes are defined in the `app/Http/routes.php` file, which is automatically by the framework. The most basic Laravel routes simply accept a URI and a `Closure`, providing a very simple and expressive method of defining routes:
 
     Route::get('foo', function () {
         return 'Hello World';
     });
 
-    Route::post('foo', function () {
+#### The Default Routes File
+
+By default, the `routes.php` file contains a single route as well as a [route group](#route-groups) that applies the `web` middleware group to all routes it contains. This middleware group provides session state and CSRF protection to routes.
+
+Any routes not placed within the `web` middleware group will not have access to sessions and CSRF protection, so make sure any routes that need these features are placed within the group. Typically, you will place most of your routes within this group:
+
+    Route::group(['middleware' => ['web']], function () {
         //
     });
-
-By default, the `routes.php` file contains a single route as well as a [route group](#route-groups) that applies the `web` middleware group to all routes it contains. This middleware group provides session state and CSRF protection to routes. **Typically, you will place most of your routes within this group.**
 
 #### Available Router Methods
 

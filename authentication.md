@@ -19,8 +19,7 @@
     - [Routing](#resetting-routing)
     - [Views](#resetting-views)
     - [After Resetting Passwords](#after-resetting-passwords)
-- [API Authentication](#api-authentication)
-- [Social Authentication](#social-authentication)
+- [Social Authentication](https://github.com/laravel/socialite)
 - [Adding Custom Guards](#adding-custom-guards)
 - [Adding Custom User Providers](#adding-custom-user-providers)
 - [Events](#events)
@@ -73,15 +72,11 @@ Now that you have routes and views setup for the included authentication control
 
 #### Path Customization
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect location by defining a `redirectPath` property on the `AuthController`:
+When a user is successfully authenticated, they will be redirected to the `/` URI. You can customize the post-authentication redirect location by defining a `redirectTo` property on the `AuthController`:
 
-    protected $redirectPath = '/dashboard';
+    protected $redirectTo = '/home';
 
-When a user is not successfully authenticated, they will be redirected to the `/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
-
-    protected $loginPath = '/login';
-
-The `loginPath` will not change where a user is bounced if they try to access a protected route. That is controlled by the `App\Http\Middleware\Authenticate` middleware's `handle` method.
+When a user is not successfully authenticated, they will be redirected back to the login form location automatically.
 
 #### Validation / Storage Customization
 
@@ -105,7 +100,6 @@ Alternatively, once a user is authenticated, you may access the authenticated us
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
-    use Illuminate\Routing\Controller;
 
     class ProfileController extends Controller
     {
@@ -203,7 +197,6 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
     namespace App\Http\Controllers;
 
     use Auth;
-    use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
     {
@@ -381,108 +374,6 @@ After the password is reset, the user will automatically be logged into the appl
     protected $redirectTo = '/dashboard';
 
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
-
-<a name="social-authentication"></a>
-## Social Authentication
-
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, LinkedIn, Google, GitHub and Bitbucket.
-
-To get started with Socialite, add to your `composer.json` file as a dependency:
-
-    composer require laravel/socialite
-
-### Configuration
-
-After installing the Socialite library, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file:
-
-    'providers' => [
-        // Other service providers...
-
-        Laravel\Socialite\SocialiteServiceProvider::class,
-    ],
-
-Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
-
-    'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-
-You will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `linkedin`, `google`, `github` or `bitbucket`, depending on the providers your application requires. For example:
-
-    'github' => [
-        'client_id' => 'your-github-app-id',
-        'client_secret' => 'your-github-app-secret',
-        'redirect' => 'http://your-callback-url',
-    ],
-
-### Basic Usage
-
-Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. We will access Socialite using the `Socialite` [facade](/docs/{{version}}/facades):
-
-    <?php
-
-    namespace App\Http\Controllers;
-
-    use Socialite;
-    use Illuminate\Routing\Controller;
-
-    class AuthController extends Controller
-    {
-        /**
-         * Redirect the user to the GitHub authentication page.
-         *
-         * @return Response
-         */
-        public function redirectToProvider()
-        {
-            return Socialite::driver('github')->redirect();
-        }
-
-        /**
-         * Obtain the user information from GitHub.
-         *
-         * @return Response
-         */
-        public function handleProviderCallback()
-        {
-            $user = Socialite::driver('github')->user();
-
-            // $user->token;
-        }
-    }
-
-The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Before redirecting the user, you may also set "scopes" on the request using the `scope` method. This method will overwrite all existing scopes:
-
-    return Socialite::driver('github')
-                ->scopes(['scope1', 'scope2'])->redirect();
-
-Of course, you will need to define routes to your controller methods:
-
-    Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
-    Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
-
-A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
-
-    return Socialite::driver('google')
-                ->with(['hd' => 'example.com'])->redirect();
-
-#### Retrieving User Details
-
-Once you have a user instance, you can grab a few more details about the user:
-
-    $user = Socialite::driver('github')->user();
-
-    // OAuth Two Providers
-    $token = $user->token;
-
-    // OAuth One Providers
-    $token = $user->token;
-    $tokenSecret = $user->tokenSecret;
-
-    // All Providers
-    $user->getId();
-    $user->getNickname();
-    $user->getName();
-    $user->getEmail();
-    $user->getAvatar();
 
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards
