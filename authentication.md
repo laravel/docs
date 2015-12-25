@@ -72,15 +72,11 @@ Now that you have routes and views setup for the included authentication control
 
 #### Path Customization
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect location by defining a `redirectPath` property on the `AuthController`:
+When a user is successfully authenticated, they will be redirected to the `/` URI. You can customize the post-authentication redirect location by defining a `redirectTo` property on the `AuthController`:
 
-    protected $redirectPath = '/dashboard';
+    protected $redirectTo = '/home';
 
-When a user is not successfully authenticated, they will be redirected to the `/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
-
-    protected $loginPath = '/login';
-
-The `loginPath` will not change where a user is bounced if they try to access a protected route. That is controlled by the `App\Http\Middleware\Authenticate` middleware's `handle` method.
+When a user is not successfully authenticated, they will be redirected back to the login form location automatically.
 
 #### Validation / Storage Customization
 
