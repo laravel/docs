@@ -97,10 +97,6 @@ If you are calling `env` from within your application, it is strongly recommende
 
 CSRF verification is no longer automatically performed when running unit tests. This is unlikely to affect your application.
 
-### Elixir
-
-The `elixir` PHP function now returns a fully-qualified URL instead of a relative URL. This is unlikely to affect your application unless you were manually transforming these URLs into fully-qualified URLs.
-
 ### Eloquent
 
 #### Date Casts
