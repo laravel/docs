@@ -99,6 +99,16 @@ CSRF verification is no longer automatically performed when running unit tests. 
 
 ### Database
 
+#### MySQL Dates
+
+Starting with MySQL 5.7, `0000-00-00 00:00:00` is no longer considered a valid date, since `strict` mode is enabled by default. All timestamp columns should receive a valid default value when you insert records into your database. You may use the `useCurrent` method in your migrations to default the timestamp columns to the current timestamps, or you may make the timestamps `nullable` to allow `null` values:
+
+    $table->timestamp('foo')->nullable();
+
+    $table->timestamp('foo')->useCurrent();
+
+    $table->nullableTimestamps();
+
 #### MySQL JSON Column Type
 
 The `json` column type now creates actual JSON columns when used by the MySQL driver. If you are not running MySQL 5.7 or above, this column type will not be available to you. Instead, use the `text` column type in your migration.
