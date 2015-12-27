@@ -54,7 +54,7 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
     class PostController extends Controller
     {
         /**
-         * Show the form the create a new blog post.
+         * Show the form to create a new blog post.
          *
          * @return Response
          */
