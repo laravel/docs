@@ -9,6 +9,8 @@
 - [Broadcasting Events](#broadcasting-events)
     - [Configuration](#broadcast-configuration)
     - [Marking Events For Broadcast](#marking-events-for-broadcast)
+    - [Overriding Broadcast Event Name](#overriding-broadcast-event-name)
+    - [Overriding Broadcast Queue Name](#overriding-broadcast-queue-name)
     - [Broadcast Data](#broadcast-data)
     - [Consuming Event Broadcasts](#consuming-event-broadcasts)
 - [Event Subscribers](#event-subscribers)
@@ -311,6 +313,24 @@ By default, the broadcast event name will be the fully qualified class name of t
     public function broadcastAs()
     {
         return 'app.server-created';
+    }
+
+<a name="overriding-broadcast-queue-name"></a>
+#### Overriding Broadcast Queue Name
+
+By default, each event to be broadcast is placed on the queue named in the `queue.php` config file. As there may be other jobs already on this queue, the broadcast event may get held up until those other jobs have been processed.
+
+Therefore you may customize the queue name that broadcast events are placed on, by adding an `onQueue` method to your event class. This method should return the name of the queue you wish to use, as a string.
+
+
+     /**
+     * Set the name of the queue the event should be placed on.
+     *
+     * @return string
+     */
+    public function onQueue()
+    {
+        return 'your-queue-name';
     }
 
 <a name="broadcast-data"></a>
