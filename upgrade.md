@@ -97,6 +97,12 @@ If you are calling `env` from within your application, it is strongly recommende
 
 CSRF verification is no longer automatically performed when running unit tests. This is unlikely to affect your application.
 
+### Database
+
+#### MySQL JSON Column Type
+
+The `json` column type now creates actual JSON columns when used by the MySQL driver. If you are not running MySQL 5.7 or above, this column type will not be available to you. Instead, use the `text` column type in your migration.
+
 ### Eloquent
 
 #### Date Casts
