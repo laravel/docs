@@ -471,6 +471,14 @@ In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
 
     $compiledPath = __DIR__.'/../vendor/compiled.php';
 
+
+### Service Providers
+
+The `App\Providers\BusServiceProvider` may be removed from your service provider list in your `app.php` configuration file.
+
+The `App\Providers\ConfigServiceProvider` may be removed from your service provider list in your `app.php` configuration file.
+
+
 <a name="upgrade-5.0"></a>
 ## Upgrading To 5.0 From 4.2
 
