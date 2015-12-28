@@ -97,6 +97,22 @@ If you are calling `env` from within your application, it is strongly recommende
 
 CSRF verification is no longer automatically performed when running unit tests. This is unlikely to affect your application.
 
+### Database
+
+#### MySQL Dates
+
+Starting with MySQL 5.7, `0000-00-00 00:00:00` is no longer considered a valid date, since `strict` mode is enabled by default. All timestamp columns should receive a valid default value when you insert records into your database. You may use the `useCurrent` method in your migrations to default the timestamp columns to the current timestamps, or you may make the timestamps `nullable` to allow `null` values:
+
+    $table->timestamp('foo')->nullable();
+
+    $table->timestamp('foo')->useCurrent();
+
+    $table->nullableTimestamps();
+
+#### MySQL JSON Column Type
+
+The `json` column type now creates actual JSON columns when used by the MySQL driver. If you are not running MySQL 5.7 or above, this column type will not be available to you. Instead, use the `text` column type in your migration.
+
 ### Eloquent
 
 #### Date Casts
@@ -454,6 +470,14 @@ The following Laravel features have been deprecated and will be removed entirely
 In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
 
     $compiledPath = __DIR__.'/../vendor/compiled.php';
+
+
+### Service Providers
+
+The `App\Providers\BusServiceProvider` may be removed from your service provider list in your `app.php` configuration file.
+
+The `App\Providers\ConfigServiceProvider` may be removed from your service provider list in your `app.php` configuration file.
+
 
 <a name="upgrade-5.0"></a>
 ## Upgrading To 5.0 From 4.2
