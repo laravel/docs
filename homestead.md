@@ -33,7 +33,6 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Git
 - PHP 7.0
 - HHVM
-- Xdebug
 - Nginx
 - MySQL
 - Sqlite3
