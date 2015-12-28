@@ -81,6 +81,8 @@ Note that we did not tell Eloquent which table to use for our `Flight` model. Th
 
 Eloquent will also assume that each table has a primary key column named `id`. You may define a `$primaryKey` property to override this convention.
 
+By default, Eloquent assumes that the primary key is an incrementing integer value. If you wish to use a non-integer primary key, you must set the `$incrementing` property on your model to false.
+
 #### Timestamps
 
 By default, Eloquent expects `created_at` and `updated_at` columns to exist on your tables.  If you do not wish to have these columns automatically managed by Eloquent, set the `$timestamps` property on your model to `false`:
