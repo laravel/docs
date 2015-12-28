@@ -9,9 +9,8 @@
 - [Broadcasting Events](#broadcasting-events)
     - [Configuration](#broadcast-configuration)
     - [Marking Events For Broadcast](#marking-events-for-broadcast)
-    - [Overriding Broadcast Event Name](#overriding-broadcast-event-name)
-    - [Overriding Broadcast Queue Name](#overriding-broadcast-queue-name)
     - [Broadcast Data](#broadcast-data)
+    - [Event Broadcasting Customizations](#event-broadcasting-customizations)
     - [Consuming Event Broadcasts](#consuming-event-broadcasts)
 - [Event Subscribers](#event-subscribers)
 - [Framework Events](#framework-events)
@@ -300,39 +299,6 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
 
 Then, you only need to [fire the event](#firing-events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
 
-<a name="overriding-broadcast-event-name"></a>
-#### Overriding Broadcast Event Name
-
-By default, the broadcast event name will be the fully qualified class name of the event. Using the example class above, the broadcast event would be `App\Events\ServerCreated`. You can customize this broadcast event name to whatever you want using the `broadcastAs` method:
-
-    /**
-     * Get the broadcast event name.
-     *
-     * @return string
-     */
-    public function broadcastAs()
-    {
-        return 'app.server-created';
-    }
-
-<a name="overriding-broadcast-queue-name"></a>
-#### Overriding Broadcast Queue Name
-
-By default, each event to be broadcast is placed on the queue named in the `queue.php` config file. As there may be other jobs already on this queue, the broadcast event may get held up until those other jobs have been processed.
-
-Therefore you may customize the queue name that broadcast events are placed on, by adding an `onQueue` method to your event class. This method should return the name of the queue you wish to use, as a string.
-
-
-     /**
-     * Set the name of the queue the event should be placed on.
-     *
-     * @return string
-     */
-    public function onQueue()
-    {
-        return 'your-queue-name';
-    }
-
 <a name="broadcast-data"></a>
 ### Broadcast Data
 
@@ -356,6 +322,37 @@ However, if you wish to have even more fine-grained control over your broadcast 
     public function broadcastWith()
     {
         return ['user' => $this->user->id];
+    }
+
+<a name="event-broadcasting-customizations"></a>
+### Event Broadcasting Customizations
+
+#### Customizing The Event Name
+
+By default, the broadcast event name will be the fully qualified class name of the event. So, if the event's class name is `App\Events\ServerCreated`, the broadcast event would be `App\Events\ServerCreated`. You can customize this broadcast event name using by defining a `broadcastAs` method on your event class:
+
+    /**
+     * Get the broadcast event name.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'app.server-created';
+    }
+
+#### Customizing The Queue
+
+By default, each event to be broadcast is placed on the default queue for the default queue connection in your `queue.php` configuration file. You may customize the queue used by the event broadcaster by adding an `onQueue` method to your event class. This method should return the name of the queue you wish to use:
+
+     /**
+     * Set the name of the queue the event should be placed on.
+     *
+     * @return string
+     */
+    public function onQueue()
+    {
+        return 'your-queue-name';
     }
 
 <a name="consuming-event-broadcasts"></a>
