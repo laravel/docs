@@ -163,6 +163,10 @@ Each of these event objects contains **exactly** the same parameters that were p
 
 You may check out each of the new event object classes to see their public properties.
 
+### Cookies Encryption
+
+Add the new `app/Http/Middleware/EncryptCookies.php` file [from the repository](https://github.com/laravel/laravel/blob/v5.2.0/app/Http/Middleware/EncryptCookies.php).
+
 ### Exception Handling
 
 Your `App\Exceptions\Handler` class' `$dontReport` property should be updated to include at least the following exception types:
