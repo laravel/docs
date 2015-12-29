@@ -117,9 +117,14 @@ The `json` column type now creates actual JSON columns when used by the MySQL dr
 
 #### Primary keys
 
-By default, Eloquent assumes your primary keys are integers and mutates them accordingly. For any primary key that is not integer you should override the following property in Eloquent model.
+By default, Eloquent assumes your primary keys are integers and will automatically cast them to integers. For any primary key that is not an integer you should override the `$incrementing` property on your Eloquent model to `false`:
 
-     public $incrementing = false;
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
 
 #### Date Casts
 
