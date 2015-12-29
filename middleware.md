@@ -129,7 +129,7 @@ Instead of using an array, you may also chain the `middleware` method onto the r
 
     Route::get('/', function () {
         //
-    }])->middleware(['first', 'second']);
+    })->middleware(['first', 'second']);
 
 <a name="middleware-parameters"></a>
 ## Middleware Parameters
