@@ -556,7 +556,7 @@ Eloquent also allows you to define global scopes using Closures, which is partic
          *
          * @return void
          */
-        protected static function boot()
+        public static function boot()
         {
             parent::boot();
 
