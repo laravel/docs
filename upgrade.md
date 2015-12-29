@@ -115,6 +115,12 @@ The `json` column type now creates actual JSON columns when used by the MySQL dr
 
 ### Eloquent
 
+#### Primary keys
+
+By default, Eloquent assumes your primary keys are integers and mutates them accordingly. For any primary key that is not integer you should override the following property in Eloquent model.
+
+     public $incrementing = false;
+
 #### Date Casts
 
 Any attributes that have been added to your `$casts` property as `date` or `datetime` will now be converted to a string when `toArray` is called on the model or collection of models. This makes the date casting conversion consistent with dates specified in your `$dates` array.
