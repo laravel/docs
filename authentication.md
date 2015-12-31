@@ -78,6 +78,14 @@ When a user is successfully authenticated, they will be redirected to the `/` UR
 
 When a user is not successfully authenticated, they will be redirected back to the login form location automatically.
 
+#### Guard specification
+
+To specify the guard which is used to perform the authentication, you may define the `guard` property on the `AuthController`:
+
+    protected $guard = 'admin';
+
+The guard specified should correspond to one of the keys in the `guards` array of your `auth.php` configuration file.
+
 #### Validation / Storage Customization
 
 To modify the form fields that are required when a new user registers with your application, or to customize how new user records are inserted into your database, you may modify the `AuthController` class. This class is responsible for validating and creating new users of your application.
