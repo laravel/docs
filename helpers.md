@@ -277,6 +277,17 @@ You may also specify how you wish the resulting list to be keyed:
 
     // [1 => 'Taylor', 2 => 'Abigail'];
 
+<a name="method-array-prepend"></a>
+#### `array_prepend()` {#collection-method}
+
+The `array_prepend` function will push an item onto the beginning of an array:
+
+    $array = ['one', 'two', 'three', 'four'];
+
+    $array = array_prepend($array, 'zero');
+
+    // $array: ['zero', 'one', 'two', 'three', 'four']
+
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
 
