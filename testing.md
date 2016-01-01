@@ -239,6 +239,10 @@ Of course, one common use of the session is for maintaining user state, such as 
         }
     }
 
+You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:
+
+    $this->actingAs($user, 'backend')
+
 <a name="disabling-middleware"></a>
 ### Disabling Middleware
 
