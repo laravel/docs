@@ -301,7 +301,7 @@ You may even pass an array of columns to an index method to create a compound in
 
     $table->index(['account_id', 'created_at']);
 
-Laravel is smart enough to auto generate the index name, but you may optionally pass a second argument to the method to change it:
+Laravel will automatically generate a reasonable index name, but you may pass a second argument to the method to specify the name yourself:
 
     $table->index('email', 'my_index_name');
 
