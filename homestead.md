@@ -13,7 +13,6 @@
     - [Adding Additional Sites](#adding-additional-sites)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Ports](#ports)
-- [Blackfire Profiler](#blackfire-profiler)
 
 <a name="introduction"></a>
 ## Introduction
@@ -219,18 +218,3 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
         - send: 7777
           to: 777
           protocol: udp
-
-<a name="blackfire-profiler"></a>
-## Blackfire Profiler
-
-[Blackfire Profiler](https://blackfire.io) by SensioLabs automatically gathers data about your code's execution, such as RAM, CPU time, and disk I/O. Homestead makes it a breeze to use this profiler for your own applications.
-
-All of the proper packages have already been installed on your Homestead box, you simply need to set a Blackfire **Server** ID and token in your `Homestead.yaml` file:
-
-    blackfire:
-        - id: your-server-id
-          token: your-server-token
-          client-id: your-client-id
-          client-token: your-client-token
-
-Once you have configured your Blackfire credentials, re-provision the box using `vagrant provision` from your Homestead directory. Of course, be sure to review the [Blackfire documentation](https://blackfire.io/getting-started) to learn how to install the Blackfire companion extension for your web browser.

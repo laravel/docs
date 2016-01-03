@@ -301,6 +301,10 @@ You may even pass an array of columns to an index method to create a compound in
 
     $table->index(['account_id', 'created_at']);
 
+Laravel will automatically generate a reasonable index name, but you may pass a second argument to the method to specify the name yourself:
+
+    $table->index('email', 'my_index_name');
+
 #### Available Index Types
 
 Command  | Description
@@ -308,6 +312,7 @@ Command  | Description
 `$table->primary('id');`  |  Add a primary key.
 `$table->primary(['first', 'last']);`  |  Add composite keys.
 `$table->unique('email');`  |  Add a unique index.
+`$table->unique('state', 'my_index_name');`  |  Add a custom index name.
 `$table->index('state');`  |  Add a basic index.
 
 <a name="dropping-indexes"></a>

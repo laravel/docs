@@ -322,6 +322,10 @@ When listing the invoices for the customer, you may use the invoice's helper met
 <a name="generating-invoice-pdfs"></a>
 #### Generating Invoice PDFs
 
+Before generating invoice PDFs, you need to install the `dompdf` PHP library:
+
+    composer require dompdf/dompdf
+
 From within a route or controller, use the `downloadInvoice` method to generate a PDF download of the invoice. This method will automatically generate the proper HTTP response to send the download to the browser:
 
     Route::get('user/invoice/{invoice}', function ($invoiceId) {
