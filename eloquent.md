@@ -561,7 +561,7 @@ Eloquent also allows you to define global scopes using Closures, which is partic
             parent::boot();
 
             static::addGlobalScope('age', function(Builder $builder) {
-                $builder->where('age', '>', 200)
+                $builder->where('age', '>', 200);
             });
         }
     }
