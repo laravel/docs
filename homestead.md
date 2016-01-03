@@ -44,6 +44,8 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Beanstalkd
 - [Blackfire Profiler](#blackfire-profiler)
 
+> **Note:** Currently Blackfire is not available for PHP7. If you are using a Homestead version with PHP7 then Blackfire is not included at this point in time.
+
 <a name="installation-and-setup"></a>
 ## Installation & Setup
 
@@ -224,6 +226,8 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
 ## Blackfire Profiler
 
 [Blackfire Profiler](https://blackfire.io) by SensioLabs automatically gathers data about your code's execution, such as RAM, CPU time, and disk I/O. Homestead makes it a breeze to use this profiler for your own applications.
+
+> **Note:** Currently Blackfire is not available for PHP7. If you are using a Homestead version with PHP7 then you cannot try to configre Blackfire.
 
 All of the proper packages have already been installed on your Homestead box, you simply need to set a Blackfire **Server** ID and token in your `Homestead.yaml` file:
 
