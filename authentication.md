@@ -238,7 +238,7 @@ If you wish, you also may add extra conditions to the authentication query in ad
 
 #### Accessing Specific Guard Instances
 
-You may specify which guard instance you would like to utilize using the `guard` method on the `Auth` facade. This allows you to manage authentication for seperate parts of your application using entirely separate authenticatable models or user tables.
+You may specify which guard instance you would like to utilize using the `guard` method on the `Auth` facade. This allows you to manage authentication for separate parts of your application using entirely separate authenticatable models or user tables.
 
 The guard name passed to the `guard` method should correspond to one of the guards configured in your `auth.php` configuration file:
 
