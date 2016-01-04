@@ -6,6 +6,7 @@
     - [Extending A Layout](#extending-a-layout)
 - [Displaying Data](#displaying-data)
 - [Control Structures](#control-structures)
+- [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Extending Blade](#extending-blade)
 
@@ -121,18 +122,6 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmle
 
 > **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the double curly brace syntax to escape any HTML entities in the content.
 
-#### Stacks
-
-Blade allows for pushing to named stacks which can be rendered at some arbitrary point in a view or layout:
-
-    @push('scripts')
-    <script src="..."></script>
-    @endpush
-    
-This can be called any number of times, from any view. Finally, to render a stack, use the `@stack` syntax:
-
-    @stack('scripts')
-
 <a name="control-structures"></a>
 ## Control Structures
 
@@ -213,6 +202,23 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
 Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
 
     {{-- This comment will not be present in the rendered HTML --}}
+
+<a name="stacks"></a>
+## Stacks
+
+Blade also allows you to push to named stacks which can be rendered somewhere else in another view or layout:
+
+    @push('scripts')
+        <script src="/example.js"></script>
+    @endpush
+
+You may push to the same stack as many times as needed. To render a stack, use the `@stack` syntax:
+
+    <head>
+        <!-- Head Contents -->
+
+        @stack('scripts')
+    </head>
 
 <a name="service-injection"></a>
 ## Service Injection
