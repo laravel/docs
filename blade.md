@@ -121,6 +121,18 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmle
 
 > **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the double curly brace syntax to escape any HTML entities in the content.
 
+#### Stacks
+
+Blade allows for pushing to named stacks which can be rendered at some arbitrary point in a view or layout:
+
+    @push('scripts')
+    <script src="..."></script>
+    @endpush
+    
+This can be called any number of times, from any view. Finally, to render a stack, use the `@stack` syntax:
+
+    @stack('scripts')
+
 <a name="control-structures"></a>
 ## Control Structures
 
