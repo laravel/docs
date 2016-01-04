@@ -237,6 +237,9 @@ A new `database` session driver has been written for the framework which include
 
 If you would like to use the new driver, you should add the `user_id (nullable integer)`, `ip_address (nullable string)`, and `user_agent (text)` columns to your session database table.
 
+#### Session compatibility
+Because of the implementation of Authentication Guards, your existing sessions will be invalid.
+
 ### Stringy
 
 The "Stringy" library is no longer included with the framework. You may install it manually via Composer if you wish to use it in your application.
