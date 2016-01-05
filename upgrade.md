@@ -65,7 +65,7 @@ The `slice`, `chunk`, and `reverse` methods now preserve keys on the collection.
 
 ### Composer Class
 
-The `Illuminate\Foundation\Support\Composer` class has been moved to `Illuminate\Support\Composer`. This is unlikely to affect your application if you were not manually using this class.
+The `Illuminate\Foundation\Composer` class has been moved to `Illuminate\Support\Composer`. This is unlikely to affect your application if you were not manually using this class.
 
 ### Commands And Handlers
 
