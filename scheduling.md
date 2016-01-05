@@ -86,8 +86,8 @@ Method  | Description
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
 `->weekly();`  |  Run the task every week
 `->monthly();`  |  Run the task every month
+`->quarterly();` |  Run the task every quarter
 `->yearly();`  |  Run the task every year
-`->quarterly();` |  Run the task every quarter of the year
 
 These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, to schedule a command to run weekly on Monday:
 
