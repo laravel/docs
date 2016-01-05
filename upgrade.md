@@ -256,7 +256,7 @@ The following features are deprecated in 5.2 and will be removed in the 5.3 rele
 - `Illuminate\Contracts\Bus\SelfHandling` contract. Can be removed from jobs.
 - The `lists` method on the Collection, query builder and Eloquent query builder objects has been renamed to `pluck`. The method signature remains the same.
 - Implicit controller routes using `Route::controller` have been deprecated. Please use explicit route registration in your routes file. This will likely be extracted into a package.
-- The `get`, `post`, and other route helper function have been removed. You may use the `Route` facade instead.
+- The `get`, `post`, and other route helper functions have been removed. You may use the `Route` facade instead.
 - The `database` session driver from 5.1 has been renamed to `legacy-database` and will be removed. Consult notes on the "database session driver" above for more information.
 - The `Str::randomBytes` function has been deprecated in favor of the `random_bytes` native PHP function.
 - The `Str::equals` function has been deprecated in favor of the `hash_equals` native PHP function.
