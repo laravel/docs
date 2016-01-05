@@ -135,6 +135,12 @@ When working on forms with array inputs, you may use "dot" notation to access th
 
     $names = $request->input('products.*.name');
 
+Alternatively, you may access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the posted field like so:
+
+    $name = $request->name;
+    
+**Note:** The dynamic properties on `Illuminate\Http\Request` will check the input sources for a matching key first. If it does not find one it will fallback to trying to return a route parameter with that name.
+
 #### Determining If An Input Value Is Present
 
 To determine if a value is present on the request, you may use the `has` method. The `has` method returns `true` if the value is present **and** is not an empty string:
