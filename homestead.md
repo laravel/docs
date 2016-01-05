@@ -41,7 +41,6 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Redis
 - Memcached
 - Beanstalkd
-- [Blackfire Profiler](#blackfire-profiler)
 
 <a name="installation-and-setup"></a>
 ## Installation & Setup
