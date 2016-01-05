@@ -125,10 +125,6 @@ Using a few simple methods, you may access all user input from your `Illuminate\
 
     $name = $request->input('name');
 
-Alternatively, you may access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the posted field like so:
-
-    $name = $request->name;
-
 You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:
 
     $name = $request->input('name', 'Sally');
@@ -138,6 +134,12 @@ When working on forms with array inputs, you may use "dot" notation to access th
     $name = $request->input('products.0.name');
 
     $names = $request->input('products.*.name');
+
+Alternatively, you may access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the posted field like so:
+
+    $name = $request->name;
+    
+**Note:** The dynamic properties on `Illuminate\Http\Request` will check the input sources for a matching key first. If it does not find one it will fallback to trying to return a route parameter with that name.
 
 #### Determining If An Input Value Is Present
 
