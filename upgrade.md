@@ -49,6 +49,10 @@ For more information on custom authentication providers, consult the [full authe
 
 The `loginPath()` method has been removed from `Illuminate\Foundation\Auth\AuthenticatesUsers`, so placing a `$loginPath` variable in your `AuthController` is no longer required. By default, the trait will always redirect users back to their previous location on authentication errors.
 
+#### Scaffolding
+
+Running the `php artisan make:auth` command after upgrading assumes that your `app/Http/Kernel.php` matches the one shown at [https://github.com/laravel/laravel/blob/master/app/Http/Kernel.php](https://github.com/laravel/laravel/blob/master/app/Http/Kernel.php). Specifically, the `$middlewareGroups` array now contains a `web` and `api` configuration by default. This is only required when using the default `web` middleware group that is inserted into the routes file by the command; you are of course free to alter it as you see fit.
+
 ### Authorization
 
 The `Illuminate\Auth\Access\UnauthorizedException` has been renamed to `Illuminate\Auth\Access\AuthorizationException`. The is unlikely to affect your application if you are not manually catching this exception.
