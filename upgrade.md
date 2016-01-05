@@ -231,15 +231,13 @@ The `Illuminate\Routing\ControllerServiceProvider` may be removed from your serv
 
 ### Sessions
 
+Because of changes to the authentication system, any existing sessions will be invalidated when you upgrade to Laravel 5.2.
+
 #### Database Session Driver
 
 A new `database` session driver has been written for the framework which includes more information about the user such as their user ID, IP address, and user-agent. If you would like to continue using the old driver you may specify the `legacy-database` driver in your `session.php` configuration file.
 
 If you would like to use the new driver, you should add the `user_id (nullable integer)`, `ip_address (nullable string)`, and `user_agent (text)` columns to your session database table.
-
-#### Session compatibility
-
-Because of the implementation of Authentication Guards, your existing sessions will be invalid.
 
 ### Stringy
 
