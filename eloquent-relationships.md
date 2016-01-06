@@ -345,23 +345,24 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 
 #### Table Structure
 
-Polymorphic relations allow a model to belong to more than one other model on a single association. For example, imagine you want to store photos for your staff members and for your products. Using polymorphic relationships, you can use a single `photos` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
+Polymorphic relations allow a model to belong to more than one other model on a single association. For example, imagine users of your application can "like" both posts and comments. Using polymorphic relationships, you can use a single `likes` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
 
-    staff
+    posts
         id - integer
-        name - string
+        title - string
+        body - text
 
-    products
+    comments
         id - integer
-        price - integer
+        post_id - integer
+        body - text
 
-    photos
+    likes
         id - integer
-        path - string
-        imageable_id - integer
-        imageable_type - string
+        likeable_id - integer
+        likeable_type - string
 
-Two important columns to note are the `imageable_id` and `imageable_type` columns on the `photos` table. The `imageable_id` column will contain the ID value of the owning staff or product, while the `imageable_type` column will contain the class name of the owning model. The `imageable_type` column is how the ORM determines which "type" of owning model to return when accessing the `imageable` relation.
+Two important columns to note are the `likeable_id` and `likeable_type` columns on the `likes` table. The `likeable_id` column will contain the ID value of the post or comment, while the `likeable_type` column will contain the class name of the owning model. The `likeable_type` column is how the ORM determines which "type" of owning model to return when accessing the `likeable` relation.
 
 #### Model Structure
 
@@ -373,56 +374,56 @@ Next, let's examine the model definitions needed to build this relationship:
 
     use Illuminate\Database\Eloquent\Model;
 
-    class Photo extends Model
+    class Like extends Model
     {
         /**
-         * Get all of the owning imageable models.
+         * Get all of the owning likeable models.
          */
-        public function imageable()
+        public function likeable()
         {
             return $this->morphTo();
         }
     }
 
-    class Staff extends Model
+    class Post extends Model
     {
         /**
-         * Get all of the staff member's photos.
+         * Get all of the product's likes.
          */
-        public function photos()
+        public function likes()
         {
-            return $this->morphMany('App\Photo', 'imageable');
+            return $this->morphMany('App\Like', 'likeable');
         }
     }
 
-    class Product extends Model
+    class Comment extends Model
     {
         /**
-         * Get all of the product's photos.
+         * Get all of the comment's likes.
          */
-        public function photos()
+        public function likes()
         {
-            return $this->morphMany('App\Photo', 'imageable');
+            return $this->morphMany('App\Like', 'likeable');
         }
     }
 
 #### Retrieving Polymorphic Relations
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the photos for a staff member, we can simply use the `photos` dynamic property:
+Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the likes for a post, we can simply use the `likes` dynamic property:
 
-    $staff = App\Staff::find(1);
+    $post = App\Post::find(1);
 
-    foreach ($staff->photos as $photo) {
+    foreach ($post->likes as $like) {
         //
     }
 
-You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `imageable` method on the `Photo` model. So, we will access that method as a dynamic property:
+You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `likeable` method on the `Like` model. So, we will access that method as a dynamic property:
 
-    $photo = App\Photo::find(1);
+    $like = App\Like::find(1);
 
-    $imageable = $photo->imageable;
+    $likeable = $like->likeable;
 
-The `imageable` relation on the `Photo` model will return either a `Staff` or `Product` instance, depending on which type of model owns the photo.
+The `imageable` relation on the `Photo` model will return either a `Post` or `Comment` instance, depending on which type of model owns the photo.
 
 <a name="many-to-many-polymorphic-relations"></a>
 ### Many To Many Polymorphic Relations
