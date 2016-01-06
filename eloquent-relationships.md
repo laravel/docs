@@ -423,7 +423,7 @@ You may also retrieve the owner of a polymorphic relation from the polymorphic m
 
     $likeable = $like->likeable;
 
-The `imageable` relation on the `Photo` model will return either a `Post` or `Comment` instance, depending on which type of model owns the photo.
+The `likeable` relation on the `Like` model will return either a `Post` or `Comment` instance, depending on which type of model owns the like.
 
 <a name="many-to-many-polymorphic-relations"></a>
 ### Many To Many Polymorphic Relations
