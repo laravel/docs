@@ -115,7 +115,7 @@ The `json` column type now creates actual JSON columns when used by the MySQL dr
 
 #### Seeding
 
-When runnning database seeders, all Eloquent models will now be unguarded by default. Previously a call to `Model::unguard()` was required. You can call `Model::reguard()` where this behaviour isn't desired.
+When runnning database seeds, all Eloquent models are now unguarded by default. Previously a call to `Model::unguard()` was required. You can call `Model::reguard()` at the top of your `DatabaseSeeder` class if you would like models to be guarded during seeding.
 
 ### Eloquent
 
