@@ -113,6 +113,10 @@ Starting with MySQL 5.7, `0000-00-00 00:00:00` is no longer considered a valid d
 
 The `json` column type now creates actual JSON columns when used by the MySQL driver. If you are not running MySQL 5.7 or above, this column type will not be available to you. Instead, use the `text` column type in your migration.
 
+#### Seeding
+
+When runnning database seeders, all Eloquent models will now be unguarded by default. Previously a call to `Model::unguard()` was required. You can call `Model::reguard()` where this behaviour isn't desired.
+
 ### Eloquent
 
 #### Date Casts
