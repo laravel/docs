@@ -121,6 +121,8 @@ If you are using [route groups](#route-groups), you may specify an `as` keyword 
             // Route named "admin::dashboard"
         }]);
     });
+    
+> **Note:** When using [RESTful Resource Controllers](/docs/{{version}}/controllers#restful-resource-controllers) inside [route groups](#route-groups), both the `as` and `prefix` keyword in the route group attribute array are considered for the route names of the REST actions belonging to the RESTful resource.
 
 #### Generating URLs To Named Routes
 
