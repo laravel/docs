@@ -51,7 +51,7 @@ The `loginPath()` method has been removed from `Illuminate\Foundation\Auth\Authe
 
 ### Authorization
 
-The `Illuminate\Auth\Access\UnauthorizedException` has been renamed to `Illuminate\Auth\Access\AuthorizationException`. The is unlikely to affect your application if you are not manually catching this exception.
+The `Illuminate\Auth\Access\UnauthorizedException` has been renamed to `Illuminate\Auth\Access\AuthorizationException`. This is unlikely to affect your application if you are not manually catching this exception.
 
 ### Collections
 
