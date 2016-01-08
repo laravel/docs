@@ -309,7 +309,7 @@ The `filter` method filters the collection by a given callback, keeping only tho
 
     // [3, 4]
 
-For the inverse of `filter`, see the [reject](#method-reject) method.
+An item's key can be added as an optional secondary parameter in the callback. For the inverse of `filter`, see the [reject](#method-reject) method.
 
 <a name="method-first"></a>
 #### `first()` {#collection-method}
@@ -826,7 +826,7 @@ The `reject` method filters the collection using the given callback. The callbac
 
     // [1, 2]
 
-For the inverse of the `reject` method, see the [`filter`](#method-filter) method.
+An item's key can be added as an optional secondary parameter in the callback. For the inverse of the `reject` method, see the [`filter`](#method-filter) method.
 
 <a name="method-reverse"></a>
 #### `reverse()` {#collection-method}
