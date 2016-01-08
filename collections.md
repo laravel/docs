@@ -301,15 +301,15 @@ The `filter` method filters the collection by a given callback, keeping only tho
 
     $collection = collect([1, 2, 3, 4]);
 
-    $filtered = $collection->filter(function ($item) {
-        return $item > 2;
+    $filtered = $collection->filter(function ($value, $key) {
+        return $value > 2;
     });
 
     $filtered->all();
 
     // [3, 4]
 
-An item's key can be added as an optional secondary parameter in the callback. For the inverse of `filter`, see the [reject](#method-reject) method.
+For the inverse of `filter`, see the [reject](#method-reject) method.
 
 <a name="method-first"></a>
 #### `first()` {#collection-method}
@@ -818,15 +818,15 @@ The `reject` method filters the collection using the given callback. The callbac
 
     $collection = collect([1, 2, 3, 4]);
 
-    $filtered = $collection->reject(function ($item) {
-        return $item > 2;
+    $filtered = $collection->reject(function ($value, $key) {
+        return $value > 2;
     });
 
     $filtered->all();
 
     // [1, 2]
 
-An item's key can be added as an optional secondary parameter in the callback. For the inverse of the `reject` method, see the [`filter`](#method-filter) method.
+For the inverse of the `reject` method, see the [`filter`](#method-filter) method.
 
 <a name="method-reverse"></a>
 #### `reverse()` {#collection-method}
