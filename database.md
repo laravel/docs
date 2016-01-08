@@ -140,8 +140,10 @@ If you would like to receive each SQL query executed by your application, you ma
          */
         public function boot()
         {
-            DB::listen(function($sql, $bindings, $time) {
-                //
+            DB::listen(function($query) {
+                // $query->sql
+                // $query->bindings
+                // $query->time
             });
         }
 
