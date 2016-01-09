@@ -124,7 +124,9 @@ You may also access additional pagination information via the following methods 
 
 - `$results->count()`
 - `$results->currentPage()`
+- `$results->firstItem()`
 - `$results->hasMorePages()`
+- `$results->lastItem()`
 - `$results->lastPage() (Not available when using simplePaginate)`
 - `$results->nextPageUrl()`
 - `$results->perPage()`
