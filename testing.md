@@ -143,6 +143,7 @@ Method  | Description
 `$this->type($text, $elementName)`  |  "Type" text into a given field.
 `$this->select($value, $elementName)`  |  "Select" a radio button or drop-down field.
 `$this->check($elementName)`  |  "Check" a checkbox field.
+`$this->uncheck($elementName)`  |  "Uncheck" a checkbox field.
 `$this->attach($pathToFile, $elementName)`  |  "Attach" a file to the form.
 `$this->press($buttonTextOrElementName)`  |  "Press" a button with the given text or name.
 
