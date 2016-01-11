@@ -693,7 +693,7 @@ The field under validation must match the given regular expression.
 <a name="rule-required"></a>
 #### required
 
-The field under validation must be present in the input data and not empty. A field is considered "empty" is one of the following conditions are true:
+The field under validation must be present in the input data and not empty. A field is considered "empty" if one of the following conditions are true:
 
 - The value is `null`.
 - The value is an empty string.
