@@ -93,6 +93,15 @@ If you are using the `config:cache` command during deployment, you **must** make
 
 If you are calling `env` from within your application, it is strongly recommended you add proper configuration values to your configuration files and call `env` from that location instead, allowing you to convert your `env` calls to `config` calls.
 
+#### Compliled Classes
+
+If present, remove the following lines from `config/compile.php` in the `files` array:
+
+    realpath(__DIR__.'/../app/Providers/BusServiceProvider.php'),
+    realpath(__DIR__.'/../app/Providers/ConfigServiceProvider.php'),
+
+Not doing so can trigger an error when running `php artisan optimize` if the service providers listed here do not exist.
+
 ### CSRF Verification
 
 CSRF verification is no longer automatically performed when running unit tests. This is unlikely to affect your application.
