@@ -232,13 +232,12 @@ Of course, you may use a variety of other operators when writing a `where` claus
                     ->where('name', 'like', 'T%')
                     ->get();
 
-You can also pass conditions to where function as an array:
+You may also pass an array of conditions to the `where` function:
 
     $users = DB::table('users')->where([
         ['status','1'],
         ['subscribed','<>','1'],
     ])->get();
-
 
 #### Or Statements
 
