@@ -232,6 +232,14 @@ Of course, you may use a variety of other operators when writing a `where` claus
                     ->where('name', 'like', 'T%')
                     ->get();
 
+You can also pass conditions to where function as an array:
+
+    $users = DB::table('users')->where([
+        ['status','1'],
+        ['subscribed','<>','1'],
+    ])->get();
+
+
 #### Or Statements
 
 You may chain where constraints together, as well as add `or` clauses to the query. The `orWhere` method accepts the same arguments as the `where` method:
