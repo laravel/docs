@@ -350,7 +350,7 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 			@include('common.errors')
 
 			<!-- New Task Form -->
-			<form action="/task" method="POST" class="form-horizontal">
+			<form action="{{ url('task') }}" method="POST" class="form-horizontal">
 				{{ csrf_field() }}
 
                 <!-- Task Name -->
@@ -649,7 +649,7 @@ We left a "TODO" note in our code where our delete button is supposed to be. So,
 
         <!-- Delete Button -->
         <td>
-            <form action="/task/{{ $task->id }}" method="POST">
+            <form action="{{ url('task/'.$task->id) }}" method="POST">
                 {{ csrf_field() }}
                 {{ method_field('DELETE') }}
 
