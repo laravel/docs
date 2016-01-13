@@ -19,6 +19,7 @@
     - [Routing](#resetting-routing)
     - [Views](#resetting-views)
     - [After Resetting Passwords](#after-resetting-passwords)
+    - [Customization](#password-customization)
 - [Social Authentication](https://github.com/laravel/socialite)
 - [Adding Custom Guards](#adding-custom-guards)
 - [Adding Custom User Providers](#adding-custom-user-providers)
@@ -365,14 +366,6 @@ Laravel includes an `Auth\PasswordController` that contains the logic necessary 
 
     php artisan make:auth
 
-### Broker Customization
-
-You can customize the password reset configuration by specifying a `broker` property on the `PasswordController`:
-
-    protected $broker = 'admins';
-
-The value of this property should correspond with one of the passwords configured in your auth.php configuration file
-
 <a name="resetting-views"></a>
 ### Views
 
@@ -383,13 +376,36 @@ Again, Laravel will generate all of the necessary views for password reset when 
 
 Once you have defined the routes and views to reset your user's passwords, you may simply access the route in your browser at `/password/reset`. The `PasswordController` included with the framework already includes the logic to send the password reset link e-mails as well as update passwords in the database.
 
-After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the "guard" and the post password reset redirect location by defining `guard` and `redirectTo` properties on the `PasswordController`:
-
-    protected $guard = 'admin';
+After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post password reset redirect location by defining a `redirectTo` property on the `PasswordController`:
 
     protected $redirectTo = '/dashboard';
 
 > **Note:** By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
+
+<a name="password-customization"></a>
+### Customization
+
+#### Authentication Guard Customization
+
+In your `auth.php` configuration file, you may configure multiple "guards", which may be used to define authentication behavior for multiple user tables. You can customize the included `PasswordController` to use the guard of your choice by adding a `$guard` property to the controller:
+
+    /**
+     * The authentication guard that should be used.
+     *
+     * @var string
+     */
+    protected $guard = 'admins';
+
+#### Password Broker Customization
+
+In your `auth.php` configuration file, you may configure multiple password "brokers", which may be used to reset passwords on multiple user tables. You can customize the included `PasswordController` to use the broker of your choice by adding a `$broker` property to the controller:
+
+    /**
+     * The password broker that should be used.
+     *
+     * @var string
+     */
+    protected $broker = 'admins';
 
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards
