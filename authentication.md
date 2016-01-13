@@ -365,6 +365,14 @@ Laravel includes an `Auth\PasswordController` that contains the logic necessary 
 
     php artisan make:auth
 
+### Broker Customization
+
+You can customize the password reset configuration by specifying a `broker` property on the `PasswordController`:
+
+    protected $broker = 'admins';
+
+The value of this property should correspond with one of the passwords configured in your auth.php configuration file
+
 <a name="resetting-views"></a>
 ### Views
 
@@ -375,7 +383,9 @@ Again, Laravel will generate all of the necessary views for password reset when 
 
 Once you have defined the routes and views to reset your user's passwords, you may simply access the route in your browser at `/password/reset`. The `PasswordController` included with the framework already includes the logic to send the password reset link e-mails as well as update passwords in the database.
 
-After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post password reset redirect location by defining a `redirectTo` property on the `PasswordController`:
+After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the "guard" and the post password reset redirect location by defining `guard` and `redirectTo` properties on the `PasswordController`:
+
+    protected $guard = 'admin';
 
     protected $redirectTo = '/dashboard';
 
