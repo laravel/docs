@@ -536,6 +536,22 @@ Laravel provides a convenient `expectsEvents` method that verifies the expected 
         }
     }
 
+There is also a `doesntExpectEvents` method that verifies that some events are not fired, and it can be used along with `expectsEvents` too.
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        public function testPodcastPurchase()
+        {
+            $this->expectsEvents(App\Events\PodcastWasPurchased::class);
+
+            $this->doesntExpectEvents(App\Events\PaymentWasDeclined::class);
+
+            // Test podcast puchase code...
+        }
+    }
+
 If you would like to prevent all event handlers from running, you may use the `withoutEvents` method:
 
     <?php
