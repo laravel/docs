@@ -207,11 +207,11 @@ If you would like to verify that the given array is an **exact** match for the J
                  ]);
         }
     }
-    
+
 <a name="verify-structural-json-match"></a>
 #### Verify Structural JSON Match
 
-It is also possible to verify that the response adheres to a specific structure. For this, you should use the `seeJsonStructure` method and pass it a list of (nested) keys:
+It is also possible to verify that a JSON response adheres to a specific structure. For this, you should use the `seeJsonStructure` method and pass it a list of (nested) keys:
 
     <?php
 
@@ -226,7 +226,7 @@ It is also possible to verify that the response adheres to a specific structure.
         {
             $this->get('/user/1')
                  ->seeJsonStructure([
-                     'name', 
+                     'name',
                      'pet' => [
                          'name', 'age'
                      ]
@@ -234,7 +234,7 @@ It is also possible to verify that the response adheres to a specific structure.
         }
     }
 
-The above example illustrates an expectation of receiving a `name` of the `user` and a nested `pet` object with its own `name` and `age`. `seeJsonStructure` will only verify the structure as passed as the argument; if the `pet` would also have a `weight`, the test case will still pass.
+The above example illustrates an expectation of receiving a `name` and a nested `pet` object with its own `name` and `age`. `seeJsonStructure` will not fail if additional keys are present in the response. For example, the test would still pass if the `pet` had a `weight` attribute.
 
 <a name="sessions-and-authentication"></a>
 ### Sessions / Authentication
