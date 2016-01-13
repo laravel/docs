@@ -256,7 +256,7 @@ Now, all we have to do is add the authentication routes to our routes file. We c
 
 Since we know we're going to need to retrieve and store tasks, let's create a `TaskController` using the Artisan CLI, which will place the new controller in the `app/Http/Controllers` directory:
 
-	php artisan make:controller TaskController --plain
+	php artisan make:controller TaskController
 
 Now that the controller has been generated, let's go ahead and stub out some routes in our `app/Http/routes.php` file to point to the controller:
 
