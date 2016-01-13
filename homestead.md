@@ -110,6 +110,21 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
         - map: homestead.app
           to: /home/vagrant/Code/Laravel/public
           hhvm: true
+          
+#### Apache2
+
+Homestead can also run Apache2.  
+If you enable this option however, all sites will be handled by Apache2. It will not be possible to enable NginX nor HHVM for any site.
+
+To enable Apache2, just set  `use_apache: 1` in `~/.homestead/Homestead.yaml`.  
+Set it back to `use_apache: 0` or remove the line to disable (this will stop Apache2, not uninstall it, and start NginX).
+
+Then proceed as always: `vagrant up`.  
+This will stop NginX (not remove it) and install Apache2.
+
+After some basic configuration (fqdn, charset, mod_rewrite, ssl), the script will create a VirtualHost (:80 & :443) and add a line to the ´/etc/hosts´ file for every site.
+
+All you have to do now is add the sites to the host's `/etc/hosts` file, just like you would when working with NginX, and launch a browser to access your sites.
 
 #### The Hosts File
 
