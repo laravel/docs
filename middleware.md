@@ -23,9 +23,9 @@ There are several middleware included in the Laravel framework, including middle
 
 To create a new middleware, use the `make:middleware` Artisan command:
 
-    php artisan make:middleware OldMiddleware
+    php artisan make:middleware AgeMiddleware
 
-This command will place a new `OldMiddleware` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the "home" URI.
+This command will place a new `AgeMiddleware` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the "home" URI.
 
     <?php
 
@@ -33,7 +33,7 @@ This command will place a new `OldMiddleware` class within your `app/Http/Middle
 
     use Closure;
 
-    class OldMiddleware
+    class AgeMiddleware
     {
         /**
          * Run the request filter.
