@@ -140,6 +140,12 @@ You may easily check for the existence of a table or column using the `hasTable`
         //
     }
 
+#### Checking For Column Type
+
+You can also check for a column type using `getColumnType($table, $column)` method. Suppose we have `age` column of type integer in our `users` table, so a call to the following method will return a string `integer`:
+
+    Schema::getColumnType('users', 'age');
+    
 #### Connection & Storage Engine
 
 If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
