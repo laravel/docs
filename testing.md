@@ -532,11 +532,11 @@ Laravel provides a convenient `expectsEvents` method that verifies the expected 
         {
             $this->expectsEvents(App\Events\UserRegistered::class);
 
-            // Test user registration code...
+            // Test user registration...
         }
     }
 
-There is also a `doesntExpectEvents` method that verifies that some events are not fired, and it can be used along with `expectsEvents` too.
+You may use the `doesntExpectEvents` method to verify that the given events are **not** fired:
 
     <?php
 
@@ -548,7 +548,7 @@ There is also a `doesntExpectEvents` method that verifies that some events are n
 
             $this->doesntExpectEvents(App\Events\PaymentWasDeclined::class);
 
-            // Test podcast puchase code...
+            // Test purchasing podcast...
         }
     }
 
