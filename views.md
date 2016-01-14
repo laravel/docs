@@ -55,6 +55,10 @@ As you saw in the previous examples, you may easily pass an array of data to vie
 When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using its corresponding key, such as `<?php echo $key; ?>`. As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view:
 
     return view('greeting')->with('name', 'Victoria');
+    
+You may also neatly pass [Eloquent collections](/docs/{{version}}/eloquent-collections) to your views, utilising PHP's `compact` function:
+
+    return view('admin.profile', compact('data');
 
 <a name="sharing-data-with-all-views"></a>
 #### Sharing Data With All Views
