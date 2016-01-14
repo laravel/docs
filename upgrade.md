@@ -93,7 +93,7 @@ If you are using the `config:cache` command during deployment, you **must** make
 
 If you are calling `env` from within your application, it is strongly recommended you add proper configuration values to your configuration files and call `env` from that location instead, allowing you to convert your `env` calls to `config` calls.
 
-#### Compliled Classes
+#### Compiled Classes
 
 If present, remove the following lines from `config/compile.php` in the `files` array:
 
