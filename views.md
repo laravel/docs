@@ -58,7 +58,7 @@ When passing information in this manner, `$data` should be an array with key/val
     
 You may also neatly pass [Eloquent collections](/docs/{{version}}/eloquent-collections) to your views, utilising PHP's `compact` function:
 
-    return view('admin.profile', compact('data');
+    return view('admin.profile', compact('data'));
 
 <a name="sharing-data-with-all-views"></a>
 #### Sharing Data With All Views
