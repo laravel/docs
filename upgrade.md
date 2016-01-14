@@ -93,7 +93,7 @@ If you are using the `config:cache` command during deployment, you **must** make
 
 If you are calling `env` from within your application, it is strongly recommended you add proper configuration values to your configuration files and call `env` from that location instead, allowing you to convert your `env` calls to `config` calls.
 
-#### Compliled Classes
+#### Compiled Classes
 
 If present, remove the following lines from `config/compile.php` in the `files` array:
 
@@ -136,7 +136,7 @@ Any attributes that have been added to your `$casts` property as `date` or `date
 
 The global scopes implementation has been re-written to be much easier to use. Your global scopes no longer need a `remove` method, so it may be removed from any global scopes you have written.
 
-If we were calling `getQuery` on an Eloquent query builder to access the underlying query builder instance, you should now call `toBase`.
+If you were calling `getQuery` on an Eloquent query builder to access the underlying query builder instance, you should now call `toBase`.
 
 If you were calling the `remove` method directly for any reason, you should change this call to `$eloquentBuilder->withoutGlobalScope($scope)`.
 
