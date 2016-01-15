@@ -777,6 +777,13 @@ You may also pass additional intermediate table values with the IDs:
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
 
+Additionally, `sync` has a second parameter, `detach = true`. If this is set to false, it will not only *not* detach existing records, but will only add *new* ones:
+
+    $user->roles()->sync([1,2]);
+    $user->roles()->sync([2, 3], false); 
+
+will give a result of 1, 2, 3 without the duplicate value 2 that you would get by using `attach`.
+
 <a name="touching-parent-timestamps"></a>
 ### Touching Parent Timestamps
 
