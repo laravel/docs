@@ -17,6 +17,7 @@
     - [X-XSRF-Token](#csrf-x-xsrf-token)
 - [Route Model Binding](#route-model-binding)
 - [Form Method Spoofing](#form-method-spoofing)
+- [Current Route](#current-route)
 
 <a name="basic-routing"></a>
 ## Basic Routing
@@ -364,3 +365,22 @@ To generate the hidden input field `_method`, you may also use the `method_field
 Of course, using the Blade [templating engine](/docs/{{version}}/blade):
 
     {{ method_field('PUT') }}
+
+<a name="current-route"></a>
+## Current Route
+
+In case you want to work with the route currently being serviced by your application, you can retrieve the applicable `Illuminate\Routing\Route` instance for the current route as follows:
+
+    $currentRoute = Route::current();
+    
+The `Illuminate\Routing\Route` instance returned, has a myriad of helper functions to retrieve data you might be interested in:
+
+    $currentRoute->getName();
+    $currentRoute->getActionName();
+    
+Without first obtaining the `Illuminate\Routing\Route` instance, you can also access properties of the current route via the `Route` facade its helper methods:
+
+    Route::currentRouteName();
+    Route::currentRouteAction();
+    
+Please refer to the API documentation for both the [underlying class of the Route facade](http://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) and [Route instance](http://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) to get insight into all accessible methods.
