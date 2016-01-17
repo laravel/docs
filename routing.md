@@ -17,7 +17,7 @@
     - [X-XSRF-Token](#csrf-x-xsrf-token)
 - [Route Model Binding](#route-model-binding)
 - [Form Method Spoofing](#form-method-spoofing)
-- [Current Route](#current-route)
+- [Accessing The Current Route](#accessing-the-current-route)
 
 <a name="basic-routing"></a>
 ## Basic Routing
@@ -366,21 +366,21 @@ Of course, using the Blade [templating engine](/docs/{{version}}/blade):
 
     {{ method_field('PUT') }}
 
-<a name="current-route"></a>
-## Current Route
+<a name="accessing-the-current-route"></a>
+## Accessing The Current Route
 
-In case you want to work with the route currently being serviced by your application, you can retrieve the applicable `Illuminate\Routing\Route` instance for the current route as follows:
+The `Route::current()` method will return the route handling the current HTTP request, allowing you to inspect the full `Illuminate\Routing\Route` instance:
 
-    $currentRoute = Route::current();
-    
-The `Illuminate\Routing\Route` instance returned, has a myriad of helper functions to retrieve data you might be interested in:
+    $route = Route::current();
 
-    $currentRoute->getName();
-    $currentRoute->getActionName();
-    
-Without first obtaining the `Illuminate\Routing\Route` instance, you can also access properties of the current route via the `Route` facade its helper methods:
+    $name = $route->getName();
 
-    Route::currentRouteName();
-    Route::currentRouteAction();
-    
-Please refer to the API documentation for both the [underlying class of the Route facade](http://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) and [Route instance](http://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) to get insight into all accessible methods.
+    $actionName = $route->getActionName();
+
+You may also use the `currentRouteName` and `currentRouteAction` helper methods on the `Route` facade to access the current route's name or action:
+
+    $name = Route::currentRouteName();
+
+    $action = Route::currentRouteAction();
+
+Please refer to the API documentation for both the [underlying class of the Route facade](http://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) and [Route instance](http://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) to review all accessible methods.
