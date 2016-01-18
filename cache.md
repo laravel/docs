@@ -10,7 +10,7 @@
     - [Storing Tagged Cache Items](#storing-tagged-cache-items)
     - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
-- [Events](#cache-events)
+- [Events](#events)
 
 <a name="configuration"></a>
 ## Configuration
