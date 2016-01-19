@@ -624,7 +624,7 @@ The field under validation must be an IP address.
 <a name="rule-json"></a>
 #### json
 
-The field under validation must a valid JSON string.
+The field under validation must be a valid JSON string.
 
 <a name="rule-max"></a>
 #### max:_value_
