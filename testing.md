@@ -154,7 +154,7 @@ If your form contains `file` input types, you may attach files to the form using
     public function testPhotoCanBeUploaded()
     {
         $this->visit('/upload')
-             ->name('File Name', 'name')
+             ->type('File Name', 'name')
              ->attach($absolutePathToFile, 'photo')
              ->press('Upload')
              ->see('Upload Successful!');
