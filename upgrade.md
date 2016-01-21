@@ -194,7 +194,7 @@ Your `App\Exceptions\Handler` class' `$dontReport` property should be updated to
     use Illuminate\Auth\Access\AuthorizationException;
     use Illuminate\Database\Eloquent\ModelNotFoundException;
     use Symfony\Component\HttpKernel\Exception\HttpException;
-    use Illuminate\Foundation\Validation\ValidationException;
+    use Illuminate\Validation\ValidationException;
 
     /**
      * A list of the exception types that should not be reported.
