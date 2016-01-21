@@ -191,10 +191,10 @@ You may check out each of the new event object classes to see their public prope
 
 Your `App\Exceptions\Handler` class' `$dontReport` property should be updated to include at least the following exception types:
 
+    use Illuminate\Validation\ValidationException;
     use Illuminate\Auth\Access\AuthorizationException;
     use Illuminate\Database\Eloquent\ModelNotFoundException;
     use Symfony\Component\HttpKernel\Exception\HttpException;
-    use Illuminate\Validation\ValidationException;
 
     /**
      * A list of the exception types that should not be reported.
