@@ -236,6 +236,56 @@ It is also possible to verify that a JSON response adheres to a specific structu
 
 The above example illustrates an expectation of receiving a `name` and a nested `pet` object with its own `name` and `age`. `seeJsonStructure` will not fail if additional keys are present in the response. For example, the test would still pass if the `pet` had a `weight` attribute.
 
+You may use the `*` as a key paired with a value consisting of a set of keys to assert that a structure has a list with each list item having at least the attributes found in the set of keys:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            // Assert that each user in the list has at least an id, name and email attribute.
+            $this->get('/users')
+                 ->seeJsonStructure([
+                     '*' => [
+                         'id', 'name', 'email'
+                     ]
+                 ]);
+        }
+    }
+
+You may also nest the `*` notation:
+
+    // Additionally assert that each user in the list has many pets with at least a name and age attribute.
+    $this->get('/users')
+         ->seeJsonStructure([
+             '*' => [
+                 'id', 'name', 'email', `pets` => [
+                     '*' => [
+                         'name', 'age'
+                     ]
+                 ]
+             ]
+         ]);
+
+Or use it combination with a regular structure:
+
+    // Assert that when retrieving a single user it has a name attribute and many pets with at least a name and age attribute.
+    $this->get('/user/1')
+         ->seeJsonStructure([
+             'name',
+             'pets' => [
+                 '*' => [
+                     'name', 'age'
+                 ]
+             ]
+         ]);
+
 <a name="sessions-and-authentication"></a>
 ### Sessions / Authentication
 
