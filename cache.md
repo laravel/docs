@@ -202,7 +202,7 @@ Flushing the cache **does not** respect the cache prefix and will remove all ent
 <a name="storing-tagged-cache-items"></a>
 ### Storing Tagged Cache Items
 
-Cache tags allow you to tag related items in the cache and then flush all cached values that assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
+Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
 
 	Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
 
