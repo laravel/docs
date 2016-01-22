@@ -236,7 +236,7 @@ It is also possible to verify that a JSON response adheres to a specific structu
 
 The above example illustrates an expectation of receiving a `name` and a nested `pet` object with its own `name` and `age`. `seeJsonStructure` will not fail if additional keys are present in the response. For example, the test would still pass if the `pet` had a `weight` attribute.
 
-You may use the `*` as a key paired with a value consisting of a set of keys to assert that a structure has a list with each list item having at least the attributes found in the set of keys:
+You may use the `*` to assert that the returned JSON structure has a list where each list item contains at least the attributes found in the set of values:
 
     <?php
 
