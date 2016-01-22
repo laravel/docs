@@ -259,9 +259,8 @@ You may use the `*` to assert that the returned JSON structure has a list where 
         }
     }
 
-You may also nest the `*` notation:
+You may also nest the `*` notation. In this case, we will assert that each user in the JSON response contains a given set of attributes and that each pet on each user also contains a given set of attributes:
 
-    // Additionally assert that each user in the list has many pets with at least a name and age attribute.
     $this->get('/users')
          ->seeJsonStructure([
              '*' => [
@@ -269,19 +268,6 @@ You may also nest the `*` notation:
                      '*' => [
                          'name', 'age'
                      ]
-                 ]
-             ]
-         ]);
-
-Or use it combination with a regular structure:
-
-    // Assert that when retrieving a single user it has a name attribute and many pets with at least a name and age attribute.
-    $this->get('/user/1')
-         ->seeJsonStructure([
-             'name',
-             'pets' => [
-                 '*' => [
-                     'name', 'age'
                  ]
              ]
          ]);
