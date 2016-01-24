@@ -11,7 +11,7 @@ Before using Laravel's encrypter, you should set the `key` option of your `confi
 <a name="basic-usage"></a>
 ## Basic Usage
 
-**Note:** Values to be encrypted are passed through `serialize` upon encryption, and subsequently passed through `unserialize` upon decryption. Thus, non-Laravel clients receiving encrypted values will need to `unserialize` the data.
+**Note:** Values to be encrypted are passed through `serialize` upon encryption, and subsequently passed through `unserialize` upon decryption. Thus, non-PHP clients receiving encrypted values will need to `unserialize` the data.
 
 #### Encrypting A Value
 
