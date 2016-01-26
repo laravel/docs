@@ -103,6 +103,17 @@ To get a better understanding of the `validate` method, let's jump back into the
 
 As you can see, we simply pass the incoming HTTP request and desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
 
+#### Stopping On First Validation Failure
+
+Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `fail_once` rule to the attribute:
+
+    $this->validate($request, [
+        'title' => 'fail_once|required|unique:posts|max:255',
+        'body' => 'required',
+    ]);
+
+In this example, if the `required` rule on the `title` attribute fails, the `unique` rule will not be checked.
+
 #### A Note On Nested Attributes
 
 If your HTTP request contains "nested" parameters, you may specify them in your validation rules using "dot" syntax:
