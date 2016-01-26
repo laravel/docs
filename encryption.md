@@ -11,8 +11,6 @@ Before using Laravel's encrypter, you should set the `key` option of your `confi
 <a name="basic-usage"></a>
 ## Basic Usage
 
-**Note:** Values to be encrypted are passed through `serialize` upon encryption, and subsequently passed through `unserialize` upon decryption. Thus, non-PHP clients receiving encrypted values will need to `unserialize` the data.
-
 #### Encrypting A Value
 
 You may encrypt a value using the `Crypt` [facade](/docs/{{version}}/facades). All encrypted values are encrypted using OpenSSL and the `AES-256-CBC` cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC) to detect any modifications to the encrypted string.
@@ -46,6 +44,8 @@ For example, we may use the `encrypt` method to encrypt a secret and store it on
             ])->save();
         }
     }
+
+> **Note:** Encrypted values are passed through `serialize` during encryption, which allows for "encryption" of objects and arrays. Thus, non-PHP clients receiving encrypted values will need to `unserialize` the data.
 
 #### Decrypting A Value
 
