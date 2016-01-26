@@ -105,10 +105,10 @@ As you can see, we simply pass the incoming HTTP request and desired validation 
 
 #### Stopping On First Validation Failure
 
-Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `fail_once` rule to the attribute:
+Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
 
     $this->validate($request, [
-        'title' => 'fail_once|required|unique:posts|max:255',
+        'title' => 'bail|required|unique:posts|max:255',
         'body' => 'required',
     ]);
 
