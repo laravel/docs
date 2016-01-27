@@ -586,4 +586,8 @@ Laravel raises a variety of [events](/docs/{{version}}/events) during the authen
         'Illuminate\Auth\Events\Logout' => [
             'App\Listeners\LogSuccessfulLogout',
         ],
+        
+        'Illuminate\Auth\Events\Lockout' => [
+            'App\Listeners\LogAuthLockout',
+        ],
     ];
