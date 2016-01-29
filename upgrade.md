@@ -177,6 +177,7 @@ Old  | New
 `illuminate.queue.stopping`  |  `Illuminate\Queue\Events\WorkerStopping`
 `mailer.sending`  |  `Illuminate\Mail\Events\MessageSending`
 `router.matched`  |  `Illuminate\Routing\Events\RouteMatched`
+`artisan.start`  |  `Illuminate\Console\Events\ArtisanStarting`
 
 Each of these event objects contains **exactly** the same parameters that were passed to the event handler in Laravel 5.1. For example, if you were using `DB::listen` in 5.1.*, you may update your code like so for 5.2.*:
 
