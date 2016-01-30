@@ -161,6 +161,7 @@ Some of the core events fired by Laravel now use event objects instead of string
 
 Old  | New
 ------------- | -------------
+`artisan.start`  |  `Illuminate\Console\Events\ArtisanStarting`
 `auth.attempting`  |  `Illuminate\Auth\Events\Attempting`
 `auth.login`  |  `Illuminate\Auth\Events\Login`
 `auth.logout`  |  `Illuminate\Auth\Events\Logout`
