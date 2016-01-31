@@ -71,11 +71,15 @@ You should typically run the `php artisan config:cache` command as part of your 
 <a name="maintenance-mode"></a>
 ## Maintenance Mode
 
-When your application is in maintenance mode, a custom view will be displayed for all requests into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, an `HttpException` will be thrown with a status code of 503.
+When your application is in maintenance mode, a custom view will be displayed for all requests into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, a `MaintenanceModeException` will be thrown with a status code of 503.
 
 To enable maintenance mode, simply execute the `down` Artisan command:
 
     php artisan down
+
+You may also provide the `message` and `retry` options to the `down` command. The `message` value can be for purposes such as by being displayed in a custom error view and the `retry` value sets the `Retry-After` HTTP header:
+
+    php artisan down --message='Down for maintenance - be back soon!' --retry=60
 
 To disable maintenance mode, use the `up` command:
 
