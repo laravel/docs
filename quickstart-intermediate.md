@@ -30,7 +30,7 @@
 
 This quickstart guide provides an intermediate introduction to the Laravel framework and includes content on database migrations, the Eloquent ORM, routing, authentication, authorization, dependency injection, validation, views, and Blade templates. This is a great starting point if you are familiar with the basics of the Laravel framework or PHP frameworks in general.
 
-To sample a basic selection of Laravel features, we will build a task list we can use to track all of the tasks we want to accomplish. In other words, the typical "to-do" list example. In contrast to the "basic" quickstart, this tutorial will allow users to create accounts and authenticate with the application. The complete, finished source code for this project is [available on GitHub](http://github.com/laravel/quickstart-intermediate).
+To sample a basic selection of Laravel features, we will build a task list we can use to track all of the tasks we want to accomplish. In other words, the typical "to-do" list example. In contrast to the "basic" quickstart, this tutorial will allow users to create accounts and authenticate with the application. The complete, finished source code for this project is [available on GitHub](https://github.com/laravel/quickstart-intermediate).
 
 <a name="installation"></a>
 ## Installation
@@ -256,7 +256,7 @@ Now, all we have to do is add the authentication routes to our routes file. We c
 
 Since we know we're going to need to retrieve and store tasks, let's create a `TaskController` using the Artisan CLI, which will place the new controller in the `app/Http/Controllers` directory:
 
-	php artisan make:controller TaskController --plain
+	php artisan make:controller TaskController
 
 Now that the controller has been generated, let's go ahead and stub out some routes in our `app/Http/routes.php` file to point to the controller:
 
@@ -351,7 +351,7 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
 			<!-- New Task Form -->
 			<form action="{{ url('task') }}" method="POST" class="form-horizontal">
-				{{ csrf_field() }}
+				{!! csrf_field() !!}
 
                 <!-- Task Name -->
 				<div class="form-group">
@@ -650,8 +650,8 @@ We left a "TODO" note in our code where our delete button is supposed to be. So,
         <!-- Delete Button -->
         <td>
             <form action="{{ url('task/'.$task->id) }}" method="POST">
-                {{ csrf_field() }}
-                {{ method_field('DELETE') }}
+                {!! csrf_field() !!}
+                {!! method_field('DELETE') !!}
 
                 <button>Delete Task</button>
             </form>

@@ -24,7 +24,7 @@
 
 This quickstart guide provides a basic introduction to the Laravel framework and includes content on database migrations, the Eloquent ORM, routing, validation, views, and Blade templates. This is a great starting point if you are brand new to the Laravel framework or PHP frameworks in general. If you have already used Laravel or other PHP frameworks, you may wish to consult one of our more advanced quickstarts.
 
-To sample a basic selection of Laravel features, we will build a simple task list we can use to track all of the tasks we want to accomplish. In other words, the typical "to-do" list example. The complete, finished source code for this project is [available on GitHub](http://github.com/laravel/quickstart-basic).
+To sample a basic selection of Laravel features, we will build a simple task list we can use to track all of the tasks we want to accomplish. In other words, the typical "to-do" list example. The complete, finished source code for this project is [available on GitHub](https://github.com/laravel/quickstart-basic).
 
 <a name="installation"></a>
 ## Installation
@@ -180,7 +180,7 @@ Passing `tasks` to the `view` function will create a View object instance that c
 
 This application only has a single view which contains a form for adding new tasks as well as a listing of all current tasks. To help you visualize the view, here is a screenshot of the finished application with basic Bootstrap CSS styling applied:
 
-![Application Image](http://laravel.com/assets/img/quickstart/basic-overview.png)
+![Application Image](https://laravel.com/assets/img/quickstart/basic-overview.png)
 
 <a name="defining-the-layout"></a>
 ### Defining The Layout
@@ -235,7 +235,7 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
 			<!-- New Task Form -->
 			<form action="{{ url('task') }}" method="POST" class="form-horizontal">
-				{{ csrf_field() }}
+				{!! csrf_field() !!}
 
                 <!-- Task Name -->
 				<div class="form-group">
@@ -425,8 +425,8 @@ We left a "TODO" note in our code where our delete button is supposed to be. So,
         <!-- Delete Button -->
         <td>
             <form action="{{ url('task/'.$task->id) }}" method="POST">
-                {{ csrf_field() }}
-                {{ method_field('DELETE') }}
+                {!! csrf_field() !!}
+                {!! method_field('DELETE') !!}
 
                 <button>Delete Task</button>
             </form>

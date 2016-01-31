@@ -104,6 +104,8 @@ You may select any method from this table to see an example of its usage:
 [values](#method-values)
 [where](#method-where)
 [whereLoose](#method-whereloose)
+[whereIn](#method-wherein)
+[whereInLoose](#method-whereinloose)
 [zip](#method-zip)
 </div>
 
@@ -1231,12 +1233,42 @@ The `where` method filters the collection by a given key / value pair:
     ]
     */
 
-The `where` method uses strict comparisons when checking item values. Use the [`whereLoose`](#where-loose) method to filter using "loose" comparisons.
+The `where` method uses strict comparisons when checking item values. Use the [`whereLoose`](#method-whereloose) method to filter using "loose" comparisons.
 
 <a name="method-whereloose"></a>
 #### `whereLoose()` {#collection-method}
 
 This method has the same signature as the [`where`](#method-where) method; however, all values are compared using "loose" comparisons.
+
+<a name="method-wherein"></a>
+#### `whereIn()` {#collection-method}
+
+The `whereIn` method filters the collection by a given key / value contained within the given array.
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 100],
+        ['product' => 'Bookcase', 'price' => 150],
+        ['product' => 'Door', 'price' => 100],
+    ]);
+
+    $filtered = $collection->whereIn('price', [150, 200]);
+
+    $filtered->all();
+
+    /*
+    [
+        ['product' => 'Bookcase', 'price' => 150],
+        ['product' => 'Desk', 'price' => 200],
+    ]
+    */
+
+The `whereIn` method uses strict comparisons when checking item values. Use the [`whereInLoose`](#method-whereinloose) method to filter using "loose" comparisons.
+
+<a name="method-whereinloose"></a>
+#### `whereInLoose()` {#collection-method}
+
+This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using "loose" comparisons.
 
 <a name="method-zip"></a>
 #### `zip()` {#collection-method}

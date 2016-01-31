@@ -45,6 +45,8 @@ For example, we may use the `encrypt` method to encrypt a secret and store it on
         }
     }
 
+> **Note:** Encrypted values are passed through `serialize` during encryption, which allows for "encryption" of objects and arrays. Thus, non-PHP clients receiving encrypted values will need to `unserialize` the data.
+
 #### Decrypting A Value
 
 Of course, you may decrypt values using the `decrypt` method on the `Crypt` facade. If the value can not be properly decrypted, such as when the MAC is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:

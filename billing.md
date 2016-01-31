@@ -215,7 +215,7 @@ To cancel a subscription, simply call the `cancel` method on the user's subscrip
 
     $user->subscription('main')->cancel();
 
-When a subscription is cancelled, Cashier will automatically set the `subscription_ends_at` column in your database. This column is used to know when the `subscribed` method should begin returning `false`. For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th.
+When a subscription is cancelled, Cashier will automatically set the `ends_at` column in your database. This column is used to know when the `subscribed` method should begin returning `false`. For example, if a customer cancels a subscription on March 1st, but the subscription was not scheduled to end until March 5th, the `subscribed` method will continue to return `true` until March 5th.
 
 You may determine if a user has cancelled their subscription but are still on their "grace period" using the `onGracePeriod` method:
 
