@@ -88,6 +88,7 @@ Method  | Description
 `->monthly();`  |  Run the task every month
 `->quarterly();` |  Run the task every quarter
 `->yearly();`  |  Run the task every year
+`->timezone('America/New_York');` | Set the timezone 
 
 These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, to schedule a command to run weekly on Monday:
 
