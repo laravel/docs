@@ -91,7 +91,7 @@ Once you have written your seeder classes, you may use the `db:seed` Artisan com
 
     php artisan db:seed
 
-    php artisan db:seed --class=UserTableSeeder
+    php artisan db:seed --class=UsersTableSeeder
 
 You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations. This command is useful for completely re-building your database:
 
