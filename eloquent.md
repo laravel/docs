@@ -218,10 +218,9 @@ Of course, in addition to retrieving all of the records for a given table, you m
     // Retrieve the first model matching the query constraints...
     $flight = App\Flight::where('active', 1)->first();
 
-You can also call the `find` method and pass in an array of primary keys. The return will be a collection containing all of the matching records for the supplied primary keys. For example:
+You may also call the `find` method with an array of primary keys, which will return a collection of the matching records:
 
-    // Find the flights with primary keys 1, 10 and 50...
-    $flight = App\Flight::find([1, 10, 50]);
+    $flights = App\Flight::find([1, 2, 3]);
 
 #### Not Found Exceptions
 
