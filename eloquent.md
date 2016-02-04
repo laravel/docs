@@ -218,6 +218,11 @@ Of course, in addition to retrieving all of the records for a given table, you m
     // Retrieve the first model matching the query constraints...
     $flight = App\Flight::where('active', 1)->first();
 
+You can also call the `find` method and pass in an array of primary keys. The return will be a collection containing all of the matching records for the supplied primary keys. For example:
+
+    // Find the flights with primary keys 1, 10 and 50...
+    $flight = App\Flight::find([1, 10, 50]);
+
 #### Not Found Exceptions
 
 Sometimes you may wish to throw an exception if a model is not found. This is particularly useful in routes or controllers. The `findOrFail` and `firstOrFail` methods will retrieve the first result of the query. However, if no result is found, a `Illuminate\Database\Eloquent\ModelNotFoundException` will be thrown:
