@@ -107,7 +107,6 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [method_field](#method-method-field)
 [old](#method-old)
 [redirect](#method-redirect)
-[request](#method-request)
 [response](#method-response)
 [session](#method-session)
 [value](#method-value)
@@ -782,15 +781,6 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an o
 The `redirect` function returns an instance of the redirector to do [redirects](/docs/{{version}}/responses#redirects):
 
     return redirect('/home');
-
-<a name="method-request"></a>
-#### `request()` {#collection-method}
-
-The `request` function returns the current [request](/docs/{{version}}/requests) instance or obtains an input item:
-
-    $request = request();
-
-    $value = request('key', $default = null)
 
 <a name="method-response"></a>
 #### `response()` {#collection-method}
