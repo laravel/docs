@@ -237,7 +237,7 @@ If you need to ask the user for a simple confirmation, you may use the `confirm`
 
 #### Giving The User A Choice
 
-The `anticipate` method can be used to provided autocompletion for possible choices. The user can still choose any answer, regardless of the auto-completion hints:
+The `anticipate` method can be used to provide autocompletion for possible choices. The user can still choose any answer, regardless of the auto-completion hints:
 
     $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 
