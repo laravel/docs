@@ -57,7 +57,7 @@ Laravel provides a quick way to scaffold all of the routes and views you need fo
 
     php artisan make:auth
 
-This command should be used on fresh applications and will install registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated, which serves post-login requests to your application's dashboard. However, you are free to customize or even remove this controller based on the needs of your application.
+This command should be used for fresh applications and will install registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated, which serves post-login requests to your application's dashboard. However, you are free to customize or even remove this controller based on the needs of your application.
 
 <a name="included-views"></a>
 ### Views
@@ -91,7 +91,7 @@ To modify the form fields that are required when a new user registers with your 
 
 The `validator` method of the `AuthController` contains the validation rules for new users of the application. You are free to modify this method as you wish.
 
-The `create` method of the `AuthController` is responsible for creating new `App\User` records in your database using the [Eloquent ORM](/docs/{{version}}/eloquent). You are free to modify this method according to the needs of your database.
+The `create` method of the `AuthController` is responsible for creating new `App\User` records in your database using the [Eloquent ORM](/docs/{{version}}/eloquent). You are free to modify this method, according to the needs of your database.
 
 <a name="retrieving-the-authenticated-user"></a>
 ### Retrieving The Authenticated User
@@ -173,7 +173,7 @@ The guard specified should correspond to one of the keys in the `guards` array o
 <a name="authentication-throttling"></a>
 ### Authentication Throttling
 
-If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address:
+If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait may be used to throttle login attempts to your application. By default, the user will not be able to log in for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address:
 
     <?php
 
@@ -221,7 +221,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
         }
     }
 
-The `attempt` method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match an authenticated session will be started for the user.
+The `attempt` method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved from the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the hashed `password` value passed to the method via the array. If the two hashed passwords match an authenticated session will be started for the user.
 
 The `attempt` method will return `true` if authentication was successful. Otherwise, `false` will be returned.
 
@@ -380,7 +380,7 @@ After the password is reset, the user will automatically be logged into the appl
 
     protected $redirectTo = '/dashboard';
 
-> **Note:** By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
+> **Note:** By default, password resets tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
 
 <a name="password-customization"></a>
 ### Customization

@@ -25,7 +25,7 @@ Every command also includes a "help" screen which displays and describes the com
 <a name="writing-commands"></a>
 ## Writing Commands
 
-In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
+In addition to the commands provided by Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
 
 To create a new command, you may use the `make:console` Artisan command, which will generate a command stub to help you get started:
 
@@ -237,7 +237,7 @@ If you need to ask the user for a simple confirmation, you may use the `confirm`
 
 #### Giving The User A Choice
 
-The `anticipate` method can be used to provided autocompletion for possible choices. The user can still choose any answer, regardless of the auto-completion hints:
+The `anticipate` method can be used to provide autocompletion for possible choices. The user can still choose any answer, regardless of the auto-completion hints:
 
     $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 
@@ -248,7 +248,7 @@ If you need to give the user a predefined set of choices, you may use the `choic
 <a name="writing-output"></a>
 ### Writing Output
 
-To send output to the console, use the `line`, `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
+To send output to the console, use the `line`, `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purposes.
 
 To display an information message to the user, use the `info` method. Typically, this will display in the console as green text:
 
