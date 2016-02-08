@@ -25,7 +25,7 @@ Every command also includes a "help" screen which displays and describes the com
 <a name="writing-commands"></a>
 ## Writing Commands
 
-In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
+In addition to the commands provided by Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
 
 To create a new command, you may use the `make:console` Artisan command, which will generate a command stub to help you get started:
 
