@@ -57,7 +57,7 @@ Laravel provides a quick way to scaffold all of the routes and views you need fo
 
     php artisan make:auth
 
-This command should be used on fresh applications and will install registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated, which serves post-login requests to your application's dashboard. However, you are free to customize or even remove this controller based on the needs of your application.
+This command should be used for fresh applications and will install registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated, which serves post-login requests to your application's dashboard. However, you are free to customize or even remove this controller based on the needs of your application.
 
 <a name="included-views"></a>
 ### Views
