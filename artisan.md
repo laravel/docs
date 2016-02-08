@@ -248,7 +248,7 @@ If you need to give the user a predefined set of choices, you may use the `choic
 <a name="writing-output"></a>
 ### Writing Output
 
-To send output to the console, use the `line`, `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purpose.
+To send output to the console, use the `line`, `info`, `comment`, `question` and `error` methods. Each of these methods will use the appropriate ANSI colors for their purposes.
 
 To display an information message to the user, use the `info` method. Typically, this will display in the console as green text:
 
