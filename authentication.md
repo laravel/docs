@@ -380,7 +380,7 @@ After the password is reset, the user will automatically be logged into the appl
 
     protected $redirectTo = '/dashboard';
 
-> **Note:** By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
+> **Note:** By default, password resets tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
 
 <a name="password-customization"></a>
 ### Customization
