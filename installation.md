@@ -43,7 +43,7 @@ Laravel ships with scaffolding for user registration and authentication. If you 
 
 The Laravel framework has a few system requirements:
 
-- PHP >= 5.4
+- PHP >= 5.4, PHP < 7
 - Mcrypt PHP Extension
 - OpenSSL PHP Extension
 - Mbstring PHP Extension
