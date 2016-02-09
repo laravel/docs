@@ -50,13 +50,11 @@ Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package:
 
     npm install --global gulp
 
-### Dependencies management
-
-If you use a version control system, make sure to lock your NPM requirements:
+If you use a version control system, you may wish to run the `npm shrinkwrap` to lock your NPM requirements:
 
      npm shrinkwrap
 
-Once this command executed, feel free to commit [npm-shrinkwrap.json]`https://docs.npmjs.com/cli/shrinkwrap`.
+Once you have run this command, feel free to commit the [npm-shrinkwrap.json]`https://docs.npmjs.com/cli/shrinkwrap` into source control.
 
 ### Laravel Elixir
 
