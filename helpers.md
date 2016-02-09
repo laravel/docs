@@ -242,7 +242,7 @@ The `array_has` function checks that a given item exists in an array using "dot"
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    $hasDesk = array_has($array, ['products.desk']);
+    $hasDesk = array_has($array, 'products.desk');
 
     // true
 

@@ -767,6 +767,14 @@ For convenience, `attach` and `detach` also accept arrays of IDs as input:
 
     $user->roles()->attach([1 => ['expires' => $expires], 2, 3]);
 
+#### Updating A Record On A Pivot Table
+
+If you need to update an existing row in your pivot table, you may use `updateExistingPivot` method:
+
+    $user = App\User::find(1);
+
+	$user->roles()->updateExistingPivot($roleId, $attributes);
+
 #### Syncing For Convenience
 
 You may also use the `sync` method to construct many-to-many associations. The `sync` method accepts an array of IDs to place on the intermediate table. Any IDs that are not in the given array will be removed from the intermediate table. So, after this operation is complete, only the IDs in the array will exist in the intermediate table:
