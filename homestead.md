@@ -111,7 +111,7 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
           to: /home/vagrant/Code/Laravel/public
           hhvm: true
 
-Note that whenever the `sites` property is altered it may be necessary to run `vagrant reload --provision` in order for the Homestead environment, or in particular the Nginx configuration file in `/etc/nginx/sites-enabled`, to be refreshed accordingly.
+If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
 
 #### The Hosts File
 
