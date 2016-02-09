@@ -50,6 +50,14 @@ Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package:
 
     npm install --global gulp
 
+### Dependencies management
+
+If you use a version control system, make sure to lock your NPM requirements:
+
+     npm shrinkwrap
+
+Once this command executed, feel free to commit [npm-shrinkwrap.json]`https://docs.npmjs.com/cli/shrinkwrap`.
+
 ### Laravel Elixir
 
 The only remaining step is to install Elixir! Within a fresh installation of Laravel, you'll find a `package.json` file in the root. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
