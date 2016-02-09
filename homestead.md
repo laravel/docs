@@ -111,6 +111,8 @@ You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm
           to: /home/vagrant/Code/Laravel/public
           hhvm: true
 
+If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
+
 #### The Hosts File
 
 You must add the "domains" for your Nginx sites to the `hosts` file on your machine. The `hosts` file will redirect requests for your Homestead sites into your Homestead machine. On Mac and Linux, this file is located at `/etc/hosts`. On Windows, it is located at `C:\Windows\System32\drivers\etc\hosts`. The lines you add to this file will look like the following:

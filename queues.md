@@ -6,7 +6,6 @@
     - [Job Class Structure](#job-class-structure)
 - [Pushing Jobs Onto The Queue](#pushing-jobs-onto-the-queue)
     - [Delayed Jobs](#delayed-jobs)
-    - [Dispatching Jobs From Requests](#dispatching-jobs-from-requests)
     - [Job Events](#job-events)
 - [Running The Queue Listener](#running-the-queue-listener)
     - [Supervisor Configuration](#supervisor-configuration)
