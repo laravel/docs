@@ -137,6 +137,14 @@ Instead of using an array, you may also chain the `middleware` method onto the r
         //
     })->middleware(['first', 'second']);
 
+Though convenient, you are not required to assign the middleware a short-hand key in `app/Http/Kernel.php` and can directly use its class name:
+
+    use App\Http\Middleware\SomeMiddleware;
+
+    Route::get('admin/profile', ['middleware' => SomeMiddleware::class, function () {
+        //
+    }]);
+
 <a name="middleware-groups"></a>
 ### Middleware Groups
 
