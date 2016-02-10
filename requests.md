@@ -169,6 +169,8 @@ You may also access user input using dynamic properties on the `Illuminate\Http\
 
 When using dynamic properties, Laravel will first look for the parameter's value in the request payload and then in the route parameters.
 
+> **Note:** Some JavaScript libraries may send input to the application as JSON. If the request's `Content-Type` header is set properly, you may access this data via the request instance methods as normal.
+
 <a name="old-input"></a>
 ### Old Input
 
