@@ -135,6 +135,12 @@ When working on forms with array inputs, you may use "dot" notation to access th
 
     $names = $request->input('products.*.name');
 
+#### Retrieving JSON Input Values
+
+When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to dig deeper into JSON arrays:
+
+    $name = $request->input('user.name');
+
 #### Determining If An Input Value Is Present
 
 To determine if a value is present on the request, you may use the `has` method. The `has` method returns `true` if the value is present **and** is not an empty string:
@@ -168,8 +174,6 @@ You may also access user input using dynamic properties on the `Illuminate\Http\
     $name = $request->name;
 
 When using dynamic properties, Laravel will first look for the parameter's value in the request payload and then in the route parameters.
-
-> **Note:** Some JavaScript libraries may send input to the application as JSON. If the request's `Content-Type` header is set properly, you may access this data via the request instance methods as normal.
 
 <a name="old-input"></a>
 ### Old Input
