@@ -176,7 +176,7 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
          */
         public function testBasicExample()
         {
-            $this->post('/user', ['name' => 'Sally'])
+            $this->json('POST', '/user', ['name' => 'Sally'])
                  ->seeJson([
                      'created' => true,
                  ]);
@@ -201,7 +201,7 @@ If you would like to verify that the given array is an **exact** match for the J
          */
         public function testBasicExample()
         {
-            $this->post('/user', ['name' => 'Sally'])
+            $this->json('POST', '/user', ['name' => 'Sally'])
                  ->seeJsonEquals([
                      'created' => true,
                  ]);

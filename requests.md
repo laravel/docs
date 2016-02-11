@@ -135,6 +135,12 @@ When working on forms with array inputs, you may use "dot" notation to access th
 
     $names = $request->input('products.*.name');
 
+#### Retrieving JSON Input Values
+
+When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to dig deeper into JSON arrays:
+
+    $name = $request->input('user.name');
+
 #### Determining If An Input Value Is Present
 
 To determine if a value is present on the request, you may use the `has` method. The `has` method returns `true` if the value is present **and** is not an empty string:

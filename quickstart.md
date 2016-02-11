@@ -191,7 +191,7 @@ As we discussed earlier, all Laravel views are stored in `resources/views`. So, 
 
 Our `app.blade.php` view should look like the following:
 
-    // resources/views/layouts/app.blade.php
+    <!-- resources/views/layouts/app.blade.php -->
 
 	<!DOCTYPE html>
 	<html lang="en">
@@ -221,7 +221,7 @@ Next, we need to define a view that contains a form to create a new task as well
 
 We'll skip over some of the Bootstrap CSS boilerplate and only focus on the things that matter. Remember, you can download the full source for this application on [GitHub](https://github.com/laravel/quickstart-basic):
 
-    // resources/views/tasks.blade.php
+    <!-- resources/views/tasks.blade.php -->
 
 	@extends('layouts.app')
 
@@ -304,7 +304,7 @@ Let's take a break for a moment to talk about the `->withErrors($validator)` por
 
 Remember that we used the `@include('common.errors')` directive within our view to render the form's validation errors. The `common.errors` will allow us to easily show validation errors in the same format across all of our pages. Let's define the contents of this view now:
 
-    // resources/views/common/errors.blade.php
+    <!-- resources/views/common/errors.blade.php -->
 
     @if (count($errors) > 0)
         <!-- Form Error List -->
@@ -428,7 +428,9 @@ We left a "TODO" note in our code where our delete button is supposed to be. So,
                 {!! csrf_field() !!}
                 {!! method_field('DELETE') !!}
 
-                <button>Delete Task</button>
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
             </form>
         </td>
     </tr>
