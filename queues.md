@@ -288,9 +288,9 @@ The `Queue::after` method allows you to register a callback to be executed when 
         public function boot()
         {
             Queue::after(function (JobProcessed $event) {
-                // $event->connection
-                // $event->$job
-                // $event->$data
+                // $event->connectionName
+                // $event->job
+                // $event->data
             });
         }
 
@@ -441,9 +441,9 @@ If you would like to register an event that will be called when a queued job fai
         public function boot()
         {
             Queue::failing(function (JobFailed $event) {
-                // $event->connection
-                // $event->$job
-                // $event->$data
+                // $event->connectionName
+                // $event->job
+                // $event->data
             });
         }
 
