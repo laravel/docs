@@ -308,7 +308,7 @@ Sometimes you may need to make a one-time charge but also generate an invoice fo
 
     $user->invoiceFor('One Time Fee', 500);
 
-THe invoice will be charged immediately against the user's credit card. The `invoiceFor` method also accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe invoice item creation:
+The invoice will be charged immediately against the user's credit card. The `invoiceFor` method also accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe invoice item creation:
 
     $user->invoiceFor('One Time Fee', 500, [
         'discountable' => false,
