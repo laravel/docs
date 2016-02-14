@@ -6,7 +6,7 @@
 
 2) Se pretender traduzir um arquivo todo, por favor, verifique nas issues se a tradução do arquivo em questão já não está a cargo de outra pessoa.
 
-3) Se pretende traduzir um arquivo todo, e o mesmo ainda não está a cargo de outro usuário, envie uma issue nesse repositório informado o mesmo, no título da issue, mantenha apenas o nome do arquivo a ser traduzido, na descrição da issue, forneca seu nome.
+3) Se pretende traduzir um arquivo todo, e o mesmo ainda não está a cargo de outro usuário, envie uma issue nesse repositório informado o mesmo, no título da issue, mantenha apenas a versão da tradução e o nome do arquivo a ser traduzido (exemplo: "[5.1] databases.md").
 
 4) Se deseja contribuir apenas com algumas linhas de tradução, por favor, coordene juntamente ao responsável pelo arquivo nas issues. vamos evitar que esse repositório vire um inferno de merges, como provavelmente eu iriei fazer os merges, por favor, não faça minha vida um inferno.
 
