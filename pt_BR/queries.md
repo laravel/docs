@@ -2,7 +2,7 @@
 
 - [Introdução](#introduction)
 - [Recuperando Resultados](#retrieving-results)
-    - [Aggregates](#aggregates)
+    - [Métodos Agregados](#aggregates)
 - [Selects](#selects)
 - [Joins](#joins)
 - [Unions](#unions)
@@ -17,16 +17,16 @@
 <a name="introduction"></a>
 ## Introdução
 
-O query builder provê uma interface fluente para criar e executar instruções de banco de dados. Ele pode ser usado para realizar vários tipos de operações de base de dados na sua aplicação, funcionando em todos os bancos suportados.
+A query builder provê uma interface fluente para criar e executar instruções de banco de dados. Ela pode ser usada para realizar vários tipos de operações na base de dados da sua aplicação, funcionando em todos os bancos suportados.
 
-> **Nota:** O query builder do Laravel utiliza PDO parameter binding para proteger sua aplicação contra ataques de SQL injection. Não há necessidade de filtrar strings para passá-las como parâmetros.
+> **Nota:** A query builder do Laravel utiliza PDO parameter binding para proteger sua aplicação contra ataques de SQL injection. Não há necessidade de filtrar strings para passá-las como parâmetros.
 
 <a name="retrieving-results"></a>
 ## Recuperando Resultados
 
 #### Recuperando Todos Os Registros De Uma Tabela
 
-Ao começar uma query, utilize o método `table` da facade `DB`. O método `table` retorna uma instância de query builder fluente para a tabela solicitada, possibilitando que você adicione mais regras a query antes de obter o resultado final. Neste exemplo vamos utilizar o `get` para recuperar todos os registros da tabela:
+Para começar uma consulta utilize o método `table` do facade `DB`. O método `table` retorna uma instância de query builder fluente para a tabela solicitada, possibilitando que você adicione mais regras a consulta antes de obter o resultado final. Neste exemplo vamos utilizar o `get` para recuperar todos os registros da tabela:
 
     <?php
 
@@ -50,7 +50,7 @@ Ao começar uma query, utilize o método `table` da facade `DB`. O método `tabl
         }
     }
 
-Assim como utilizar [SQL puro](/docs/{{version}}/database), o método `get` retorna um`array` de resultados onde cada um é um objeto da classe PHP `StdClass`. Você pode acessar o valor de cada coluna da tabela como uma propriedade do objeto, que possui o mesmo nome da coluna:
+Assim como utilizar [SQL puro](/docs/{{version}}/database), o método `get` retorna um `array` de resultados onde cada um é um objeto da classe PHP `StdClass`. Você pode acessar o valor de cada coluna da tabela como uma propriedade do objeto, que possui o mesmo nome da coluna:
 
     foreach ($users as $user) {
         echo $user->name;
@@ -58,19 +58,19 @@ Assim como utilizar [SQL puro](/docs/{{version}}/database), o método `get` reto
 
 #### Recuperando Um Único Registro / Coluna De Uma Tabela
 
-Se você somente precisar recuperar um único registro de uma tabela do banco, você pode utilizar o método `first` . Este método irá retornar um único objeto `StdClass`:
+Se você precisar recuperar um único registro de uma tabela do banco, você pode utilizar o método `first` . Este método irá retornar um único objeto `StdClass`:
 
     $user = DB::table('users')->where('name', 'John')->first();
 
     echo $user->name;
 
-Se você não precisa utilizar todas as colunas de um registro, você pode extrair uma única coluna utilizando o método value. Este método irá retornar o valor da coluna diretamente:
+Se você não precisa utilizar todas as colunas de um registro, você pode extrair uma única coluna utilizando o método `value`. Este método irá retornar o valor da coluna diretamente:
 
     $email = DB::table('users')->where('name', 'John')->value('email');
 
 #### Recuperando parte dos resultados de uma tabela
 
-Se você precisa trabalhar com uma tabela  que possui milhares de registros, considere a hipótese de utilizar o método `chunk`. Este método recupera uma pequena "parcela" dos resultados de cada vez, e coloca cada parcela dentro de uma `Closure` para ser processada. Este método é muito útil para escrever [comandos do Artisan](/docs/{{version}}/artisan) que processam milhares de registros. Por exemplo, vamos usar a tabela `users` separada em partes de 100 registros por vez:
+Se você precisar trabalhar com uma tabela  que possui milhares de registros, considere a hipótese de utilizar o método `chunk`. Este método recupera uma pequena "parcela" dos resultados de cada vez, colocando cada parcela dentro de uma `Closure` para ser processada. Este método é muito útil para escrever [comandos do Artisan](/docs/{{version}}/artisan) que processam milhares de registros. Por exemplo, vamos usar a tabela `users` separada em partes de 100 registros por vez:
 
     DB::table('users')->chunk(100, function($users) {
         foreach ($users as $user) {
@@ -215,7 +215,7 @@ Por exemplo, aqui temos uma consulta que verifica se o valor da coluna "votes" �
 
     $users = DB::table('users')->where('votes', '=', 100)->get();
 
-Por conveniência, se você quer simplesmente verificar se uma coluna é igual a um valor , pode passar o valor diretamente no segundo parâmetro do método where `where`, suprimindo o operador:
+Por conveniência, se você quer simplesmente verificar se uma coluna é igual a um valor , pode passar o valor diretamente no segundo parâmetro do método `where`, suprimindo o operador:
 
     $users = DB::table('users')->where('votes', 100)->get();
 
@@ -288,11 +288,11 @@ O método `whereNotNull` verifica se o valor da coluna informada **not** é `NUL
                         ->get();
 
 <a name="advanced-where-clauses"></a>
-## Advanced Where Clauses
+## Cláusulas Where Avançadas
 
-#### Parameter Grouping
+#### Agrupando Parâmetros
 
-Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well. To get started, let's look at an example of grouping constraints within parenthesis:
+Algumas vezes você precisa criar cláusulas where mais avançadas como "where exists" ou grupos de parâmetros alinhados. A query builder do Laravel pode lidar com esses casos. Para iniciar, vamos dar uma olhada em um exemplo de como agrupar regras dentro de parênteses:
 
     DB::table('users')
                 ->where('name', '=', 'John')
@@ -302,13 +302,13 @@ Sometimes you may need to create more advanced where clauses such as "where exis
                 })
                 ->get();
 
-As you can see, passing `Closure` into the `orWhere` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
+Como pode ver, passar uma `Closure` dentro do método `orWhere`  diz a query builder para iniciar um grupo de regras. A `Closure` irá receber uma instância da query builder onde você pode colocar as regras que ficariam dentro dos parênteses. O exemplo abaixo irá produzir o seguinte código SQL:
 
     select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
-#### Exists Statements
+#### Cláusulas Exists
 
-The `whereExists` method allows you to write `where exist` SQL clauses. The `whereExists` method accepts a `Closure` argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
+O método `whereExists` possibilita que você escreva cláusulas SQL `where exist`. O método `whereExists` aceita uma `Closure` como argumento, que irá receber uma instância da query builder possibilitando que você defina a consulta que deve ser passada dentro da cláusula "exists":
 
     DB::table('users')
                 ->whereExists(function ($query) {
@@ -318,7 +318,7 @@ The `whereExists` method allows you to write `where exist` SQL clauses. The `whe
                 })
                 ->get();
 
-The query above will produce the following SQL:
+A consulta abaixo produzirá o seguinte código SQL:
 
     select * from users
     where exists (
@@ -326,11 +326,11 @@ The query above will produce the following SQL:
     )
 
 <a name="ordering-grouping-limit-and-offset"></a>
-## Ordering, Grouping, Limit, & Offset
+## Ordenando, Agrupando, usando Limit e Offset
 
 #### orderBy
 
-The `orderBy` method allows you to sort the result of the query by a given column. The first argument to the `orderBy` method should be the column you wish to sort by, while the second argument controls the direction of the sort and may be either `asc` or `desc`:
+O método `orderBy` possibilita que você ordene o resultado da consulta por uma coluna específica. O primeiro argumento para o método `orderBy` precisa ser o nome da coluna que será ordenada, enquanto o segundo parâmetro controla o tipo de ordenação, `asc` ou `desc`:
 
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
@@ -338,14 +338,14 @@ The `orderBy` method allows you to sort the result of the query by a given colum
 
 #### groupBy / having / havingRaw
 
-The `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
+Os métodos `groupBy` e `having` podem ser usados para agrupar resultados da consulta. O uso do método `having` é muito similar ao método `where`:
 
     $users = DB::table('users')
                     ->groupBy('account_id')
                     ->having('account_id', '>', 100)
                     ->get();
 
-The `havingRaw` method may be used to set a raw string as the value of the `having` clause. For example, we can find all of the departments with sales greater than $2,500:
+O método `havingRaw` pode ser usado para executar um comando SQL passando-o como parâmetro da cláusula `having`. Por exemplo, nós podemos recuperar todos os departamentos com vendas maiores que $2,500:
 
     $users = DB::table('orders')
                     ->select('department', DB::raw('SUM(price) as total_sales'))
@@ -355,40 +355,40 @@ The `havingRaw` method may be used to set a raw string as the value of the `havi
 
 #### skip / take
 
-To limit the number of results returned from the query, or to skip a given number of results in the query (`OFFSET`), you may use the `skip` and `take` methods:
+Para limitar o número de resultados retornados pela consulta ou para pular um determinado número de registros da consulta (`OFFSET`), você pode utilizar os métodos `skip` and `take`:
 
     $users = DB::table('users')->skip(10)->take(5)->get();
 
 <a name="inserts"></a>
 ## Inserts
 
-The query builder also provides an `insert` method for inserting records into the database table. The `insert` method accepts an array of column names and values to insert:
+A query builder possui o método `insert` para inserir registros em uma tabela. Este método aceita um array de nomes de coluna e valores a serem inseridos:
 
     DB::table('users')->insert(
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-You may even insert several records into the table with a single call to `insert` by passing an array of arrays. Each array represents a row to be inserted into the table:
+Se precisar inserir muitos registros em uma tabela você pode chamar o método `insert` uma única vez, passando como argumento um array de arrays. Cada array representa um registro que será inserido na tabela:
 
     DB::table('users')->insert([
         ['email' => 'taylor@example.com', 'votes' => 0],
         ['email' => 'dayle@example.com', 'votes' => 0]
     ]);
 
-#### Auto-Incrementing IDs
+#### IDs com Incremento Automático
 
-If the table has an auto-incrementing id, use the `insertGetId` method to insert a record and then retrieve the ID:
+Se a tabela possuir uma coluna id auto-increment, utilize o método `insertGetId` para inserir um registro e recuperar o id:
 
     $id = DB::table('users')->insertGetId(
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
+> **Nota:** Ao utilizar PostgreSQL o método insertGetId espera que a coluna com nome `id` seja auto increment. If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
 
 <a name="updates"></a>
 ## Updates
 
-Of course, in addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated. You may constrain the `update` query using `where` clauses:
+Assim como inserir dados no banco, a query builder também pode atualizar registros usando o método `update`. O método `update`, assim como o método `insert`, aceita um array de colunas e valores a serem atualizados. Você pode criar regras em consultas `update` usando cláusulas `where`:
 
     DB::table('users')
                 ->where('id', 1)
@@ -396,9 +396,9 @@ Of course, in addition to inserting records into the database, the query builder
 
 #### Increment / Decrement
 
-The query builder also provides convenient methods for incrementing or decrementing the value of a given column. This is simply a short-cut, providing a more expressive and terse interface compared to manually writing the `update` statement.
+A query builder fornece muitos métodos para aumentar ou diminuir o valor de uma determinada coluna. Isto é simplesmente um atalho, provendo uma interface mais espressiva comparada a escrever manualmente uma condição `update`.
 
-Both of these methods accept at least one argument: the column to modify. A second argument may optionally be passed to control the amount by which the column should be incremented / decremented.
+Ambos os métodos precisam de um argumento: a coluna a ser modificada. O segundo parâmetro é opcional e controla a quantia que a coluna será acrescida / diminuída.
 
     DB::table('users')->increment('votes');
 
@@ -408,32 +408,32 @@ Both of these methods accept at least one argument: the column to modify. A seco
 
     DB::table('users')->decrement('votes', 5);
 
-You may also specify additional columns to update during the operation:
+Você pode também especificar colunas adicionais a serem atualizadas durante a operação:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
 <a name="deletes"></a>
 ## Deletes
 
-Of course, the query builder may also be used to delete records from the table via the `delete` method:
+A query builder também pode ser usada para deletar registros de uma tabela através do método `delete`:
 
     DB::table('users')->delete();
 
-You may constrain `delete` statements by adding `where` clauses before calling the `delete` method:
+Você pode customizar as regras do `delete` acrescentando cláusulas `where` antes de chamar o método `delete`:
 
     DB::table('users')->where('votes', '<', 100)->delete();
 
-If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to zero, you may use the `truncate` method:
+Se precisar truncar uma tabela, remover todos os registros e resetar as colunas ID auto-increment para zero, você pode utilizar o método `truncate`:
 
     DB::table('users')->truncate();
 
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
 
-The query builder also includes a few functions to help you do "pessimistic locking" on your `select` statements. To run the statement with a "shared lock", you may use the `sharedLock` method on a query. A shared lock prevents the selected rows from being modified until your transaction commits:
+A query builder inclui também algumas funções para ajudá-lo a "pessimistic locking" nas suas cláusulas `select`. Para executar uma cláusula com "shared lock" você pode utilizar o método `sharedLock` na consulta. A shared lock previne que os registros selecionados sejam modificados until your transaction commits:
 
     DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 
-Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the rows from being modified or from being selected with another shared lock:
+Alternativamente, você pode utilizar o método `lockForUpdate`. A "for update" lock previne que registros sejam modificados ou sejam selecionados em outra shared lock:
 
     DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
