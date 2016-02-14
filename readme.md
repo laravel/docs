@@ -2,7 +2,7 @@
 
 ## Guia de Contribuição
 
-1) Traduza e Envie suas contribuições para a branch `master` que é relativa a versão 5.1. Outras versões serão traduzidas em uma segunda etapa.
+1) Traduza e Envie suas contribuições para a branch correspondente a versão que você traduziu.
 
 2) Se pretender traduzir um arquivo todo, por favor, verifique nas issues se a tradução do arquivo em questão já não está a cargo de outra pessoa.
 
