@@ -35,7 +35,7 @@ Discussões sobre bugs, novas funcionalidades e implementação de funcionalidad
 <a name="which-branch"></a>
 ## Quais Branch?
 
-**Todas** as correções de bugs devem ser enviadas para o último branch estável. As Correções de bugs **nunca** devem ser enviadas para o branch `master` a menos que a correção seja de funcionalidades que existam apenas na próxima versão.
+**Todas** as correções de bugs devem ser enviadas para o branch estável mais antigo onde a correção é aplicável. As Correções de bugs **nunca** devem ser enviadas para o branch `master` a menos que a correção seja de funcionalidades que existam apenas na próxima versão.
 
 As funcionalidades qualificadas como **Minor**, **totalmente compatíveis** com a versão atual do Laravel podem ser enviadas para o último branch estável.
 
