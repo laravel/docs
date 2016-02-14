@@ -6,7 +6,6 @@
     - [Job Class Structure](#job-class-structure)
 - [Pushing Jobs Onto The Queue](#pushing-jobs-onto-the-queue)
     - [Delayed Jobs](#delayed-jobs)
-    - [Dispatching Jobs From Requests](#dispatching-jobs-from-requests)
     - [Job Events](#job-events)
 - [Running The Queue Listener](#running-the-queue-listener)
     - [Supervisor Configuration](#supervisor-configuration)
@@ -24,7 +23,7 @@ The Laravel queue service provides a unified API across a variety of different q
 <a name="configuration"></a>
 ### Configuration
 
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [IronMQ](http://iron.io), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io),  and synchronous (for local use) driver.
+The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](http://kr.github.com/beanstalkd), [Amazon SQS](http://aws.amazon.com/sqs), [Redis](http://redis.io),  and synchronous (for local use) driver.
 
 A `null` queue driver is also included which simply discards queued jobs.
 
@@ -44,7 +43,6 @@ The following dependencies are needed for the listed queue drivers:
 
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
 - Beanstalkd: `pda/pheanstalk ~3.0`
-- IronMQ: `iron-io/iron_mq ~2.0|~4.0`
 - Redis: `predis/predis ~1.0`
 
 <a name="writing-job-classes"></a>
@@ -55,7 +53,7 @@ The following dependencies are needed for the listed queue drivers:
 
 By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. You may generate a new queued job using the Artisan CLI:
 
-    php artisan make:job SendReminderEmail --queued
+    php artisan make:job SendReminderEmail
 
 This command will generate a new class in the `app/Jobs` directory, and the class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue instead of run synchronously.
 
@@ -73,10 +71,9 @@ Job classes are very simple, normally containing only a `handle` method which is
     use Illuminate\Contracts\Mail\Mailer;
     use Illuminate\Queue\SerializesModels;
     use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Contracts\Bus\SelfHandling;
     use Illuminate\Contracts\Queue\ShouldQueue;
 
-    class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
+    class SendReminderEmail extends Job implements ShouldQueue
     {
         use InteractsWithQueue, SerializesModels;
 
@@ -170,6 +167,8 @@ The default Laravel controller located in `app/Http/Controllers/Controller.php` 
         }
     }
 
+#### The `DispatchesJobs` Trait
+
 Of course, sometimes you may wish to dispatch a job from somewhere in your application besides a route or controller. For that reason, you can include the `DispatchesJobs` trait on any of the classes in your application to gain access to its various dispatch methods. For example, here is a sample class that uses the trait:
 
     <?php
@@ -182,6 +181,16 @@ Of course, sometimes you may wish to dispatch a job from somewhere in your appli
     {
         use DispatchesJobs;
     }
+
+#### The `dispatch` Function
+
+Or, you may use the `dispatch` global function:
+
+    Route::get('/job', function () {
+        dispatch(new App\Jobs\PerformTask);
+
+        return 'Done!';
+    });
 
 #### Specifying The Queue For A Job
 
@@ -220,7 +229,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs, and 
 <a name="delayed-jobs"></a>
 ### Delayed Jobs
 
-Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 15 minutes after sign-up. You may accomplish this using the `delay` method on your job class, which is provided by the `Illuminate\Bus\Queueable` trait:
+Sometimes you may wish to delay the execution of a queued job. For instance, you may wish to queue a job that sends a customer a reminder e-mail 5 minutes after sign-up. You may accomplish this using the `delay` method on your job class, which is provided by the `Illuminate\Bus\Queueable` trait:
 
     <?php
 
@@ -244,52 +253,15 @@ Sometimes you may wish to delay the execution of a queued job. For instance, you
         {
             $user = User::findOrFail($id);
 
-            $job = (new SendReminderEmail($user))->delay(60);
+            $job = (new SendReminderEmail($user))->delay(60 * 5);
 
             $this->dispatch($job);
         }
     }
 
-In this example, we're specifying that the job should be delayed in the queue for 60 seconds before being made available to workers.
+In this example, we're specifying that the job should be delayed in the queue for 5 minutes before being made available to workers.
 
 > **Note:** The Amazon SQS service has a maximum delay time of 15 minutes.
-
-<a name="dispatching-jobs-from-requests"></a>
-### Dispatching Jobs From Requests
-
-It is very common to map HTTP request variables into jobs. So, instead of forcing you to do this manually for each request, Laravel provides some helper methods to make it a cinch. Let's take a look at the `dispatchFrom` method available on the `DispatchesJobs` trait. By default, this trait is included on the base Laravel controller class:
-
-    <?php
-
-    namespace App\Http\Controllers;
-
-    use Illuminate\Http\Request;
-    use App\Http\Controllers\Controller;
-
-    class CommerceController extends Controller
-    {
-        /**
-         * Process the given order.
-         *
-         * @param  Request  $request
-         * @param  int  $id
-         * @return Response
-         */
-        public function processOrder(Request $request, $id)
-        {
-            // Process the request...
-
-            $this->dispatchFrom('App\Jobs\ProcessOrder', $request);
-        }
-    }
-
-This method will examine the constructor of the given job class and extract variables from the HTTP request (or any other `ArrayAccess` object) to fill the needed constructor parameters of the job. So, if our job class accepts a `productId` variable in its constructor, the job bus will attempt to pull the `productId` parameter from the HTTP request.
-
-You may also pass an array as the third argument to the `dispatchFrom` method. This array will be used to fill any constructor parameters that are not available on the request:
-
-    $this->dispatchFrom('App\Jobs\ProcessOrder', $request, [
-        'taxPercentage' => 20,
-    ]);
 
 <a name="job-events"></a>
 ### Job Events
@@ -304,6 +276,7 @@ The `Queue::after` method allows you to register a callback to be executed when 
 
     use Queue;
     use Illuminate\Support\ServiceProvider;
+    use Illuminate\Queue\Events\JobProcessed;
 
     class AppServiceProvider extends ServiceProvider
     {
@@ -314,8 +287,10 @@ The `Queue::after` method allows you to register a callback to be executed when 
          */
         public function boot()
         {
-            Queue::after(function ($connection, $job, $data) {
-                //
+            Queue::after(function (JobProcessed $event) {
+                // $event->connection
+                // $event->$job
+                // $event->$data
             });
         }
 
@@ -453,6 +428,7 @@ If you would like to register an event that will be called when a queued job fai
     namespace App\Providers;
 
     use Queue;
+    use Illuminate\Queue\Events\JobFailed;
     use Illuminate\Support\ServiceProvider;
 
     class AppServiceProvider extends ServiceProvider
@@ -464,8 +440,10 @@ If you would like to register an event that will be called when a queued job fai
          */
         public function boot()
         {
-            Queue::failing(function ($connection, $job, $data) {
-                // Notify team of failing job...
+            Queue::failing(function (JobFailed $event) {
+                // $event->connection
+                // $event->$job
+                // $event->$data
             });
         }
 
@@ -492,10 +470,9 @@ For more granular control, you may define a `failed` method directly on a queue 
     use Illuminate\Contracts\Mail\Mailer;
     use Illuminate\Queue\SerializesModels;
     use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Contracts\Bus\SelfHandling;
     use Illuminate\Contracts\Queue\ShouldQueue;
 
-    class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
+    class SendReminderEmail extends Job implements ShouldQueue
     {
         use InteractsWithQueue, SerializesModels;
 

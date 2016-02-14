@@ -19,14 +19,22 @@
     - [Routing](#resetting-routing)
     - [Views](#resetting-views)
     - [After Resetting Passwords](#after-resetting-passwords)
-- [Social Authentication](#social-authentication)
-- [Adding Custom Authentication Drivers](#adding-custom-authentication-drivers)
+    - [Customization](#password-customization)
+- [Social Authentication](https://github.com/laravel/socialite)
+- [Adding Custom Guards](#adding-custom-guards)
+- [Adding Custom User Providers](#adding-custom-user-providers)
 - [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
 
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
+
+At its core, Laravel's authentication facilities are made up of "guards" and "providers". Guards define how user's are authenticated for each request. For example, Laravel ships with a `session` guard which maintains state using session storage and cookies and a `token` guard, which authenticates users using a "API token" that is passed with each request.
+
+Providers define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using Eloquent and the database query builder. However, you are free to define additional providers as needed for your application.
+
+Don't worry if this all sounds confusing now! Most applications will never need to modify the default authentication configuration.
 
 <a name="introduction-database-considerations"></a>
 ### Database Considerations
@@ -45,96 +53,39 @@ Laravel ships with two authentication controllers out of the box, which are loca
 <a name="included-routing"></a>
 ### Routing
 
-By default, no [routes](/docs/{{version}}/routing) are included to point requests to the authentication controllers. You may manually add them to your `app/Http/routes.php` file:
+Laravel provides a quick way to scaffold all of the routes and views you need for authentication using one simple command:
 
-    // Authentication routes...
-    Route::get('auth/login', 'Auth\AuthController@getLogin');
-    Route::post('auth/login', 'Auth\AuthController@postLogin');
-    Route::get('auth/logout', 'Auth\AuthController@getLogout');
+    php artisan make:auth
 
-    // Registration routes...
-    Route::get('auth/register', 'Auth\AuthController@getRegister');
-    Route::post('auth/register', 'Auth\AuthController@postRegister');
+This command should be used on fresh applications and will install registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated, which serves post-login requests to your application's dashboard. However, you are free to customize or even remove this controller based on the needs of your application.
 
 <a name="included-views"></a>
 ### Views
 
-Though the authentication controllers are included with the framework, you will need to provide [views](/docs/{{version}}/views) that these controllers can render. The views should be placed in the `resources/views/auth` directory. You are free to customize these views however you wish. The login view should be placed at `resources/views/auth/login.blade.php`, and the registration view should be placed at `resources/views/auth/register.blade.php`.
+As mentioned in the previous section, the `php artisan make:auth` command will create all of the views you need for authentication and place them in the `resources/views/auth` directory.
 
-#### Sample Authentication Form
-
-    <!-- resources/views/auth/login.blade.php -->
-
-    <form method="POST" action="/auth/login">
-        {!! csrf_field() !!}
-
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
-        </div>
-
-        <div>
-            Password
-            <input type="password" name="password" id="password">
-        </div>
-
-        <div>
-            <input type="checkbox" name="remember"> Remember Me
-        </div>
-
-        <div>
-            <button type="submit">Login</button>
-        </div>
-    </form>
-
-#### Sample Registration Form
-
-    <!-- resources/views/auth/register.blade.php -->
-
-    <form method="POST" action="/auth/register">
-        {!! csrf_field() !!}
-
-        <div>
-            Name
-            <input type="text" name="name" value="{{ old('name') }}">
-        </div>
-
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
-        </div>
-
-        <div>
-            Password
-            <input type="password" name="password">
-        </div>
-
-        <div>
-            Confirm Password
-            <input type="password" name="password_confirmation">
-        </div>
-
-        <div>
-            <button type="submit">Register</button>
-        </div>
-    </form>
+The `make:auth` command will also create a `resources/views/layouts` directory containing a base layout for your application. All of these views use the Bootstrap CSS framework, but you are free to customize them however you wish.
 
 <a name="included-authenticating"></a>
 ### Authenticating
 
-Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application. You may simply access your defined routes in a browser. The authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
+Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application! You may simply access your application in a browser. The authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI, which you will need to register a route to handle. You can customize the post-authentication redirect location by defining a `redirectPath` property on the `AuthController`:
+#### Path Customization
 
-    protected $redirectPath = '/dashboard';
+When a user is successfully authenticated, they will be redirected to the `/` URI. You can customize the post-authentication redirect location by defining a `redirectTo` property on the `AuthController`:
 
-When a user is not successfully authenticated, they will be redirected to the `/auth/login` URI. You can customize the failed post-authentication redirect location by defining a `loginPath` property on the `AuthController`:
+    protected $redirectTo = '/home';
 
-    protected $loginPath = '/login';
+When a user is not successfully authenticated, they will be redirected back to the login form location automatically.
 
-The `loginPath` will not change where a user is bounced if they try to access a protected route. That is controlled by the `App\Http\Middleware\Authenticate` middleware's `handle` method.
+#### Guard Customization
 
-#### Customizations
+You may also customize the "guard" that is used to authenticate users. To get started, define a `guard` property on your `AuthController`. The value of this property should correspond with one of the guards configured in your `auth.php` configuration file:
+
+    protected $guard = 'admin';
+
+#### Validation / Storage Customization
 
 To modify the form fields that are required when a new user registers with your application, or to customize how new user records are inserted into your database, you may modify the `AuthController` class. This class is responsible for validating and creating new users of your application.
 
@@ -149,14 +100,13 @@ You may access the authenticated user via the `Auth` facade:
 
     $user = Auth::user();
 
-Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance:
+Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods:
 
     <?php
 
     namespace App\Http\Controllers;
 
     use Illuminate\Http\Request;
-    use Illuminate\Routing\Controller;
 
     class ProfileController extends Controller
     {
@@ -209,6 +159,17 @@ Of course, if you are using [controller classes](/docs/{{version}}/controllers),
         $this->middleware('auth');
     }
 
+#### Specifying A Guard
+
+When attaching the `auth` middleware to a route, you may also specify which guard should be used to perform the authentication:
+
+    Route::get('profile', [
+        'middleware' => 'auth:api',
+        'uses' => 'ProfileController@show'
+    ]);
+
+The guard specified should correspond to one of the keys in the `guards` array of your `auth.php` configuration file.
+
 <a name="authentication-throttling"></a>
 ### Authentication Throttling
 
@@ -243,7 +204,6 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
     namespace App\Http\Controllers;
 
     use Auth;
-    use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
     {
@@ -267,17 +227,31 @@ The `attempt` method will return `true` if authentication was successful. Otherw
 
 The `intended` method on the redirector will redirect the user to the URL they were attempting to access before being caught by the authentication filter. A fallback URI may be given to this method in case the intended destination is not available.
 
+#### Specifying Additional Conditions
+
 If you wish, you also may add extra conditions to the authentication query in addition to the user's e-mail and password. For example, we may verify that user is marked as "active":
 
     if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
         // The user is active, not suspended, and exists.
     }
 
+> **Note:** In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
+
+#### Accessing Specific Guard Instances
+
+You may specify which guard instance you would like to utilize using the `guard` method on the `Auth` facade. This allows you to manage authentication for separate parts of your application using entirely separate authenticatable models or user tables.
+
+The guard name passed to the `guard` method should correspond to one of the guards configured in your `auth.php` configuration file:
+
+    if (Auth::guard('admin')->attempt($credentials)) {
+        //
+    }
+
+#### Logging Out
+
 To log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session:
 
     Auth::logout();
-
-> **Note:** In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
 
 <a name="remembering-users"></a>
 ### Remembering Users
@@ -388,215 +362,106 @@ Next, a table must be created to store the password reset tokens. The migration 
 <a name="resetting-routing"></a>
 ### Routing
 
-Laravel includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords. However, you will need to define routes to point requests to this controller:
+Laravel includes an `Auth\PasswordController` that contains the logic necessary to reset user passwords. All of the routes needed to perform password resets may be generated using the `make:auth` Artisan command:
 
-    // Password reset link request routes...
-    Route::get('password/email', 'Auth\PasswordController@getEmail');
-    Route::post('password/email', 'Auth\PasswordController@postEmail');
-
-    // Password reset routes...
-    Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
-    Route::post('password/reset', 'Auth\PasswordController@postReset');
+    php artisan make:auth
 
 <a name="resetting-views"></a>
 ### Views
 
-In addition to defining the routes for the `PasswordController`, you will need to provide views that can be returned by this controller. Don't worry, we will provide sample views to help you get started. Of course, you are free to style your forms however you wish.
-
-#### Sample Password Reset Link Request Form
-
-You will need to provide an HTML view for the password reset request form. This view should be placed at `resources/views/auth/password.blade.php`. This form provides a single field for the user's e-mail address, allowing them to request a password reset link:
-
-    <!-- resources/views/auth/password.blade.php -->
-
-    <form method="POST" action="/password/email">
-        {!! csrf_field() !!}
-
-        @if (count($errors) > 0)
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
-        </div>
-
-        <div>
-            <button type="submit">
-                Send Password Reset Link
-            </button>
-        </div>
-    </form>
-
-When a user submits a request to reset their password, they will receive an e-mail with a link that points to the `getReset` method (typically routed at `/password/reset`) of the `PasswordController`. You will need to create a view for this e-mail at `resources/views/emails/password.blade.php`. The view will receive the `$token` variable which contains the password reset token to match the user to the password reset request. Here is an example e-mail view to get you started:
-
-    <!-- resources/views/emails/password.blade.php -->
-
-    Click here to reset your password: {{ url('password/reset/'.$token) }}
-
-#### Sample Password Reset Form
-
-When the user clicks the e-mailed link to reset their password, they will be presented with a password reset form. This view should be placed at `resources/views/auth/reset.blade.php`.
-
-Here is a sample password reset form to get you started:
-
-    <!-- resources/views/auth/reset.blade.php -->
-
-    <form method="POST" action="/password/reset">
-        {!! csrf_field() !!}
-        <input type="hidden" name="token" value="{{ $token }}">
-
-        @if (count($errors) > 0)
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-
-        <div>
-            Email
-            <input type="email" name="email" value="{{ old('email') }}">
-        </div>
-
-        <div>
-            Password
-            <input type="password" name="password">
-        </div>
-
-        <div>
-            Confirm Password
-            <input type="password" name="password_confirmation">
-        </div>
-
-        <div>
-            <button type="submit">
-                Reset Password
-            </button>
-        </div>
-    </form>
+Again, Laravel will generate all of the necessary views for password reset when the `make:auth` command is executed. These views are placed in `resources/views/auth/passwords`. You are free to customize them as needed for your application.
 
 <a name="after-resetting-passwords"></a>
 ### After Resetting Passwords
 
-Once you have defined the routes and views to reset your user's passwords, you may simply access the routes in your browser. The `PasswordController` included with the framework already includes the logic to send the password reset link e-mails as well as update passwords in the database.
+Once you have defined the routes and views to reset your user's passwords, you may simply access the route in your browser at `/password/reset`. The `PasswordController` included with the framework already includes the logic to send the password reset link e-mails as well as update passwords in the database.
 
 After the password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post password reset redirect location by defining a `redirectTo` property on the `PasswordController`:
 
     protected $redirectTo = '/dashboard';
 
-> **Note:** By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option in your `config/auth.php` file.
+> **Note:** By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
 
-<a name="social-authentication"></a>
-## Social Authentication
+<a name="password-customization"></a>
+### Customization
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, LinkedIn, Google, GitHub and Bitbucket.
+#### Authentication Guard Customization
 
-To get started with Socialite, add to your `composer.json` file as a dependency:
+In your `auth.php` configuration file, you may configure multiple "guards", which may be used to define authentication behavior for multiple user tables. You can customize the included `PasswordController` to use the guard of your choice by adding a `$guard` property to the controller:
 
-    composer require laravel/socialite
+    /**
+     * The authentication guard that should be used.
+     *
+     * @var string
+     */
+    protected $guard = 'admins';
 
-### Configuration
+#### Password Broker Customization
 
-After installing the Socialite library, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file:
+In your `auth.php` configuration file, you may configure multiple password "brokers", which may be used to reset passwords on multiple user tables. You can customize the included `PasswordController` to use the broker of your choice by adding a `$broker` property to the controller:
 
-    'providers' => [
-        // Other service providers...
+    /**
+     * The password broker that should be used.
+     *
+     * @var string
+     */
+    protected $broker = 'admins';
 
-        Laravel\Socialite\SocialiteServiceProvider::class,
-    ],
+<a name="adding-custom-guards"></a>
+## Adding Custom Guards
 
-Also, add the `Socialite` facade to the `aliases` array in your `app` configuration file:
-
-    'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-
-You will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `linkedin`, `google`, `github` or `bitbucket`, depending on the providers your application requires. For example:
-
-    'github' => [
-        'client_id' => 'your-github-app-id',
-        'client_secret' => 'your-github-app-secret',
-        'redirect' => 'http://your-callback-url',
-    ],
-
-### Basic Usage
-
-Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. We will access Socialite using the `Socialite` [facade](/docs/{{version}}/facades):
+You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place this call to `provider` within a [service provider](/docs/{{version}}/providers):
 
     <?php
 
-    namespace App\Http\Controllers;
+    namespace App\Providers;
 
-    use Socialite;
-    use Illuminate\Routing\Controller;
+    use Auth;
+    use App\Services\Auth\JwtGuard;
+    use Illuminate\Support\ServiceProvider;
 
-    class AuthController extends Controller
+    class AuthServiceProvider extends ServiceProvider
     {
         /**
-         * Redirect the user to the GitHub authentication page.
+         * Perform post-registration booting of services.
          *
-         * @return Response
+         * @return void
          */
-        public function redirectToProvider()
+        public function boot()
         {
-            return Socialite::driver('github')->redirect();
+            Auth::extend('jwt', function($app, $name, array $config) {
+                // Return an instance of Illuminate\Contracts\Auth\Guard...
+
+                return new JwtGuard(Auth::createUserProvider($config['provider']));
+            });
         }
 
         /**
-         * Obtain the user information from GitHub.
+         * Register bindings in the container.
          *
-         * @return Response
+         * @return void
          */
-        public function handleProviderCallback()
+        public function register()
         {
-            $user = Socialite::driver('github')->user();
-
-            // $user->token;
+            //
         }
     }
 
-The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Before redirecting the user, you may also set "scopes" on the request using the `scope` method. This method will overwrite all existing scopes:
+As you can see in the example above, the callback passed to the `extend` method should return an implementation of `Illuminate\Contracts\Auth\Guard`. This interface contains a few methods you will need to implement to define a custom guard.
 
-    return Socialite::driver('github')
-                ->scopes(['scope1', 'scope2'])->redirect();
+Once your custom guard has been defined, you may use the guard in your `guards` configuration:
 
-Of course, you will need to define routes to your controller methods:
+    'guards' => [
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+    ],
 
-    Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
-    Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
+<a name="adding-custom-user-providers"></a>
+## Adding Custom User Providers
 
-A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
-
-    return Socialite::driver('google')
-                ->with(['hd' => 'example.com'])->redirect();
-
-#### Retrieving User Details
-
-Once you have a user instance, you can grab a few more details about the user:
-
-    $user = Socialite::driver('github')->user();
-
-    // OAuth Two Providers
-    $token = $user->token;
-
-    // OAuth One Providers
-    $token = $user->token;
-    $tokenSecret = $user->tokenSecret;
-
-    // All Providers
-    $user->getId();
-    $user->getNickname();
-    $user->getName();
-    $user->getEmail();
-    $user->getAvatar();
-
-<a name="adding-custom-authentication-drivers"></a>
-## Adding Custom Authentication Drivers
-
-If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication driver. We will use the `extend` method on the `Auth` facade to define a custom driver. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers):
+If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication user provider. We will use the `provider` method on the `Auth` facade to define a custom user provider. You should place this call to `provider` within a [service provider](/docs/{{version}}/providers):
 
     <?php
 
@@ -615,7 +480,7 @@ If you are not using a traditional relational database to store your users, you 
          */
         public function boot()
         {
-            Auth::extend('riak', function($app) {
+            Auth::provider('riak', function($app, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\UserProvider...
                 return new RiakUserProvider($app['riak.connection']);
             });
@@ -632,7 +497,22 @@ If you are not using a traditional relational database to store your users, you 
         }
     }
 
-After you have registered the driver with the `extend` method, you may switch to the new driver in your `config/auth.php` configuration file.
+After you have registered the provider with the `provider` method, you may switch to the new user provider in your `config/auth.php` configuration file. First, define a `provider` that uses your new driver:
+
+    'providers' => [
+        'users' => [
+            'driver' => 'riak',
+        ],
+    ],
+
+Then, you may use this provider in your `guards` configuration:
+
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+    ],
 
 ### The User Provider Contract
 
@@ -690,27 +570,24 @@ This interface is simple. The `getAuthIdentifier` method should return the "prim
 Laravel raises a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
 
     /**
-     * Register any other events for your application.
+     * The event listener mappings for the application.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
-     * @return void
+     * @var array
      */
-    public function boot(DispatcherContract $events)
-    {
-        parent::boot($events);
+    protected $listen = [
+        'Illuminate\Auth\Events\Attempting' => [
+            'App\Listeners\LogAuthenticationAttempt',
+        ],
 
-        // Fired on each authentication attempt...
-        $events->listen('auth.attempt', function ($credentials, $remember, $login) {
-            //
-        });
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\LogSuccessfulLogin',
+        ],
 
-        // Fired on successful logins...
-        $events->listen('auth.login', function ($user, $remember) {
-            //
-        });
+        'Illuminate\Auth\Events\Logout' => [
+            'App\Listeners\LogSuccessfulLogout',
+        ],
 
-        // Fired on logouts...
-        $events->listen('auth.logout', function ($user) {
-            //
-        });
-    }
+        'Illuminate\Auth\Events\Lockout' => [
+            'App\Listeners\LogLockout',
+        ],
+    ];

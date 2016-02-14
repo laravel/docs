@@ -36,7 +36,7 @@ Discussion regarding bugs, new features, and implementation of existing features
 <a name="which-branch"></a>
 ## Which Branch?
 
-**All** bug fixes should be sent to the oldest stable branch where the fix is applicable. Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest stable branch. Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
 **Minor** features that are **fully backwards compatible** with the current Laravel release may be sent to the latest stable branch.
 

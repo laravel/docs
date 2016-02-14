@@ -158,6 +158,12 @@ To assign a shortcut when defining an option, you may specify it before the opti
 
     email:send {user} {--Q|queue}
 
+If you would like to define arguments or options to expect array inputs, you may use the `*` character:
+
+    email:send {user*}
+
+    email:send {user} {--id=*}
+
 #### Input Descriptions
 
 You may assign descriptions to input arguments and options by separating the parameter from the description using a colon:
@@ -175,8 +181,6 @@ You may assign descriptions to input arguments and options by separating the par
 ### Retrieving Input
 
 While your command is executing, you will obviously need to access the values for the arguments and options accepted by your command. To do so, you may use the `argument` and `option` methods:
-
-To retrieve the value of an argument, use the `argument` method:
 
     /**
      * Execute the console command.
@@ -233,13 +237,13 @@ If you need to ask the user for a simple confirmation, you may use the `confirm`
 
 #### Giving The User A Choice
 
-The `anticipate` method can be used to provided autocompletion for possible choices. The user can still choose any answer, regardless of the choices.
+The `anticipate` method can be used to provide autocompletion for possible choices. The user can still choose any answer, regardless of the auto-completion hints:
 
     $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 
 If you need to give the user a predefined set of choices, you may use the `choice` method. The user chooses the index of the answer, but the value of the answer will be returned to you. You may set the default value to be returned if nothing is chosen:
 
-    $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], false);
+    $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], $default);
 
 <a name="writing-output"></a>
 ### Writing Output

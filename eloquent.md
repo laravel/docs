@@ -14,6 +14,8 @@
     - [Soft Deleting](#soft-deleting)
     - [Querying Soft Deleted Models](#querying-soft-deleted-models)
 - [Query Scopes](#query-scopes)
+    - [Global Scopes](#global-scopes)
+    - [Local Scopes](#local-scopes)
 - [Events](#events)
 
 <a name="introduction"></a>
@@ -78,6 +80,8 @@ Note that we did not tell Eloquent which table to use for our `Flight` model. Th
 #### Primary Keys
 
 Eloquent will also assume that each table has a primary key column named `id`. You may define a `$primaryKey` property to override this convention.
+
+In addition, Eloquent assumes that the primary key is an incrementing integer value. If you wish to use a non-incrementing primary key, you must set the `$incrementing` property on your model to `false`.
 
 #### Timestamps
 
@@ -213,6 +217,10 @@ Of course, in addition to retrieving all of the records for a given table, you m
 
     // Retrieve the first model matching the query constraints...
     $flight = App\Flight::where('active', 1)->first();
+
+You may also call the `find` method with an array of primary keys, which will return a collection of the matching records:
+
+    $flights = App\Flight::find([1, 2, 3]);
 
 #### Not Found Exceptions
 
@@ -433,24 +441,6 @@ The `withTrashed` method may also be used on a [relationship](/docs/{{version}}/
 
     $flight->history()->withTrashed()->get();
 
-#### Where Clause Caveats
-
-When adding `orWhere` clauses to your queries on soft deleted models, always use [advance where clauses](http://laravel.com/docs/5.1/queries#advanced-where-clauses) to logically group the `WHERE` clauses. For example:
-
-    User::where(function($query) {
-            $query->where('name', '=', 'John')
-                  ->orWhere('votes', '>', 100);
-            })
-            ->get();
-
-This will produce the following SQL:
-
-    select * from `users` where `users`.`deleted_at` is null and (`name` = 'John' or `votes` > 100)
-
-If the `orWhere` clause is not grouped, it will produce the following SQL which will contain soft deleted records:
-
-    select * from `users` where `users`.`deleted_at` is null and `name` = 'John' or `votes` > 100
-
 #### Retrieving Only Soft Deleted Models
 
 The `onlyTrashed` method will retrieve **only** soft deleted models:
@@ -488,7 +478,118 @@ Sometimes you may need to truly remove a model from your database. To permanentl
 <a name="query-scopes"></a>
 ## Query Scopes
 
-Scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`.
+<a name="global-scopes"></a>
+### Global Scopes
+
+Global scopes allow you to add constraints to **all** queries for a given model. Laravel's own [soft deleting](#soft-deleting) functionality utilizes global scopes to only pull "non-deleted" models from the database. Writing your own global scopes can provide a convenient, easy way to make sure every query for a given model receives certain constraints.
+
+#### Writing Global Scopes
+
+Writing a global scope is simple. Define a class that implements the `Illuminate\Database\Eloquent\Scope` interface. This interface requires you to implement one method: `apply`. The `apply` method may add `where` constraints to the query as needed:
+
+    <?php
+
+    namespace App\Scopes;
+
+    use Illuminate\Database\Eloquent\Scope;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Builder;
+
+    class AgeScope implements Scope
+    {
+        /**
+         * Apply the scope to a given Eloquent query builder.
+         *
+         * @param  \Illuminate\Database\Eloquent\Builder  $builder
+         * @param  \Illuminate\Database\Eloquent\Model  $model
+         * @return void
+         */
+        public function apply(Builder $builder, Model $model)
+        {
+            return $builder->where('age', '>', 200);
+        }
+    }
+
+There is not a predefined folder for scopes in a default Laravel application, so feel free to make your own `Scopes` folder within your Laravel application's `app` directory.
+
+#### Applying Global Scopes
+
+To assign a global scope to a model, you should override a given model's `boot` method and use the `addGlobalScope` method:
+
+    <?php
+
+    namespace App;
+
+    use App\Scopes\AgeScope;
+    use Illuminate\Database\Eloquent\Model;
+
+    class User extends Model
+    {
+        /**
+         * The "booting" method of the model.
+         *
+         * @return void
+         */
+        protected static function boot()
+        {
+            parent::boot();
+
+            static::addGlobalScope(new AgeScope);
+        }
+    }
+
+After adding the scope, a query to `User::all()` will produce the following SQL:
+
+    select * from `users` where `age` > 200
+
+#### Anonymous Global Scopes
+
+Eloquent also allows you to define global scopes using Closures, which is particularly useful for simple scopes that do not warrant a separate class:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Builder;
+
+    class User extends Model
+    {
+        /**
+         * The "booting" method of the model.
+         *
+         * @return void
+         */
+        protected static function boot()
+        {
+            parent::boot();
+
+            static::addGlobalScope('age', function(Builder $builder) {
+                $builder->where('age', '>', 200);
+            });
+        }
+    }
+
+The first argument of the `addGlobalScope()` serves as an identifier to remove the scope:
+
+    User::withoutGlobalScope('age')->get();
+
+#### Removing Global Scopes
+
+If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method:
+
+    User::withoutGlobalScope(AgeScope::class)->get();
+
+If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
+
+    User::withoutGlobalScopes()->get();
+
+    User::withoutGlobalScopes([FirstScope::class, SecondScope::class])->get();
+
+<a name="local-scopes"></a>
+### Local Scopes
+
+Local scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`.
 
 Scopes should always return a query builder instance:
 

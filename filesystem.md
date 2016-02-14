@@ -84,9 +84,9 @@ The `get` method may be used to retrieve the contents of a given file. The raw s
 
     $contents = Storage::get('file.jpg');
 
-The `has` method may be used to determine if a given file exists on the disk:
+The `exists` method may be used to determine if a given file exists on the disk:
 
-    $exists = Storage::disk('s3')->has('file.jpg');
+    $exists = Storage::disk('s3')->exists('file.jpg');
 
 #### File Meta Information
 

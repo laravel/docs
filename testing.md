@@ -143,6 +143,7 @@ Method  | Description
 `$this->type($text, $elementName)`  |  "Type" text into a given field.
 `$this->select($value, $elementName)`  |  "Select" a radio button or drop-down field.
 `$this->check($elementName)`  |  "Check" a checkbox field.
+`$this->uncheck($elementName)`  |  "Uncheck" a checkbox field.
 `$this->attach($pathToFile, $elementName)`  |  "Attach" a file to the form.
 `$this->press($buttonTextOrElementName)`  |  "Press" a button with the given text or name.
 
@@ -153,7 +154,7 @@ If your form contains `file` input types, you may attach files to the form using
     public function testPhotoCanBeUploaded()
     {
         $this->visit('/upload')
-             ->name('File Name', 'name')
+             ->type('File Name', 'name')
              ->attach($absolutePathToFile, 'photo')
              ->press('Upload')
              ->see('Upload Successful!');
@@ -184,6 +185,7 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
 
 The `seeJson` method converts the given array into JSON, and then verifies that the JSON fragment occurs **anywhere** within the entire JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
+<a name="verify-exact-json-match"></a>
 #### Verify Exact JSON Match
 
 If you would like to verify that the given array is an **exact** match for the JSON returned by the application, you should use the `seeJsonEquals` method:
@@ -205,6 +207,70 @@ If you would like to verify that the given array is an **exact** match for the J
                  ]);
         }
     }
+
+<a name="verify-structural-json-match"></a>
+#### Verify Structural JSON Match
+
+It is also possible to verify that a JSON response adheres to a specific structure. For this, you should use the `seeJsonStructure` method and pass it a list of (nested) keys:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $this->get('/user/1')
+                 ->seeJsonStructure([
+                     'name',
+                     'pet' => [
+                         'name', 'age'
+                     ]
+                 ]);
+        }
+    }
+
+The above example illustrates an expectation of receiving a `name` and a nested `pet` object with its own `name` and `age`. `seeJsonStructure` will not fail if additional keys are present in the response. For example, the test would still pass if the `pet` had a `weight` attribute.
+
+You may use the `*` to assert that the returned JSON structure has a list where each list item contains at least the attributes found in the set of values:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            // Assert that each user in the list has at least an id, name and email attribute.
+            $this->get('/users')
+                 ->seeJsonStructure([
+                     '*' => [
+                         'id', 'name', 'email'
+                     ]
+                 ]);
+        }
+    }
+
+You may also nest the `*` notation. In this case, we will assert that each user in the JSON response contains a given set of attributes and that each pet on each user also contains a given set of attributes:
+
+    $this->get('/users')
+         ->seeJsonStructure([
+             '*' => [
+                 'id', 'name', 'email', `pets` => [
+                     '*' => [
+                         'name', 'age'
+                     ]
+                 ]
+             ]
+         ]);
 
 <a name="sessions-and-authentication"></a>
 ### Sessions / Authentication
@@ -238,6 +304,10 @@ Of course, one common use of the session is for maintaining user state, such as 
                  ->see('Hello, '.$user->name);
         }
     }
+
+You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method:
+
+    $this->actingAs($user, 'backend')
 
 <a name="disabling-middleware"></a>
 ### Disabling Middleware
@@ -498,7 +568,23 @@ Laravel provides a convenient `expectsEvents` method that verifies the expected 
         {
             $this->expectsEvents(App\Events\UserRegistered::class);
 
-            // Test user registration code...
+            // Test user registration...
+        }
+    }
+
+You may use the `doesntExpectEvents` method to verify that the given events are **not** fired:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        public function testPodcastPurchase()
+        {
+            $this->expectsEvents(App\Events\PodcastWasPurchased::class);
+
+            $this->doesntExpectEvents(App\Events\PaymentWasDeclined::class);
+
+            // Test purchasing podcast...
         }
     }
 
@@ -535,7 +621,7 @@ Laravel provides a convenient `expectsJobs` method that will verify that the exp
         }
     }
 
-> **Note:** This method only detects jobs that are dispatched via the `DispatchesJobs` trait's dispatch methods. It does not detect jobs that are sent directly to `Queue::push`.
+> **Note:** This method only detects jobs that are dispatched via the `DispatchesJobs` trait's dispatch methods or the `dispatch` helper function. It does not detect jobs that are sent directly to `Queue::push`.
 
 <a name="mocking-facades"></a>
 ### Mocking Facades
@@ -547,7 +633,6 @@ When testing, you may often want to mock a call to a Laravel [facade](/docs/{{ve
     namespace App\Http\Controllers;
 
     use Cache;
-    use Illuminate\Routing\Controller;
 
     class UserController extends Controller
     {

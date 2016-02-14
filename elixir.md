@@ -50,6 +50,12 @@ Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package:
 
     npm install --global gulp
 
+If you use a version control system, you may wish to run the `npm shrinkwrap` to lock your NPM requirements:
+
+     npm shrinkwrap
+
+Once you have run this command, feel free to commit the [npm-shrinkwrap.json]`https://docs.npmjs.com/cli/shrinkwrap` into source control.
+
 ### Laravel Elixir
 
 The only remaining step is to install Elixir! Within a fresh installation of Laravel, you'll find a `package.json` file in the root. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
@@ -198,7 +204,7 @@ elixir(function(mix) {
 <a name="browserify"></a>
 ### Browserify
 
-Elixir also ships with a `browserify` method, which gives you all the benefits of requiring modules in the browser and using ECMAScript 6.
+Elixir also ships with a `browserify` method, which gives you all the benefits of requiring modules in the browser and using ECMAScript 6 and JSX.
 
 This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/main.js`:
 
@@ -226,13 +232,14 @@ elixir(function(mix) {
 <a name="babel"></a>
 ### Babel
 
-The `babel` method may be used to compile [ECMAScript 6 and 7](https://babeljs.io/docs/learn-es2015/) into plain JavaScript. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single `all.js` file in the `public/js` directory:
+The `babel` method may be used to compile [ECMAScript 6 and 7](https://babeljs.io/docs/learn-es2015/) and [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) into plain JavaScript. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single `all.js` file in the `public/js` directory:
 
 ```javascript
 elixir(function(mix) {
     mix.babel([
         'order.js',
-        'product.js'
+        'product.js',
+        'react-component.jsx'
     ]);
 });
 ```

@@ -86,7 +86,9 @@ Method  | Description
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
 `->weekly();`  |  Run the task every week
 `->monthly();`  |  Run the task every month
+`->quarterly();` |  Run the task every quarter
 `->yearly();`  |  Run the task every year
+`->timezone('America/New_York');` | Set the timezone 
 
 These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, to schedule a command to run weekly on Monday:
 
@@ -113,6 +115,12 @@ Method  | Description
 The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given `Closure` returns `true`, the task will execute as long as no other constraining conditions prevent the task from running:
 
     $schedule->command('emails:send')->daily()->when(function () {
+        return true;
+    });
+
+The `reject` method may be seen as the inverse of `when`. If the `reject` method returns `true`, the scheduled task will not be executed:
+
+    $schedule->command('emails:send')->daily()->reject(function () {
         return true;
     });
 

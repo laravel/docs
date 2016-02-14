@@ -101,6 +101,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
+[dispatch](#method-dispatch)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
@@ -241,7 +242,7 @@ The `array_has` function checks that a given item exists in an array using "dot"
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    $hasDesk = array_has($array, ['products.desk']);
+    $hasDesk = array_has($array, 'products.desk');
 
     // true
 
@@ -269,12 +270,23 @@ The `array_pluck` function will pluck a list of the given key / value pairs from
     $array = array_pluck($array, 'developer.name');
 
     // ['Taylor', 'Abigail'];
-    
+
 You may also specify how you wish the resulting list to be keyed:
 
     $array = array_pluck($array, 'developer.name', 'developer.id');
 
     // [1 => 'Taylor', 2 => 'Abigail'];
+
+<a name="method-array-prepend"></a>
+#### `array_prepend()` {#collection-method}
+
+The `array_prepend` function will push an item onto the beginning of an array:
+
+    $array = ['one', 'two', 'three', 'four'];
+
+    $array = array_prepend($array, 'zero');
+
+    // $array: ['zero', 'one', 'two', 'three', 'four']
 
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
@@ -671,6 +683,12 @@ The `url` function generates a fully qualified URL to the given path:
 
     echo url('user/profile', [1]);
 
+If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned:
+
+    echo url()->current();
+    echo url()->full();
+    echo url()->previous();
+
 <a name="miscellaneous"></a>
 ## Miscellaneous
 
@@ -736,6 +754,13 @@ The `dd` function dumps the given variable and ends execution of the script:
 
     dd($value);
 
+<a name="method-dispatch"></a>
+#### `dispatch()` {#collection-method}
+
+The `dispatch` function pushes a new job onto the Laravel [job queue](/docs/{{version}}/queues):
+
+    dispatch(new App\Jobs\SendEmails);
+
 <a name="method-env"></a>
 #### `env()` {#collection-method}
 
@@ -775,6 +800,8 @@ The `method_field` function generates an HTML `hidden` input field containing th
 The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an old input value flashed into the session:
 
     $value = old('value');
+
+    $value = old('value', 'default');
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}

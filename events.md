@@ -10,9 +10,9 @@
     - [Configuration](#broadcast-configuration)
     - [Marking Events For Broadcast](#marking-events-for-broadcast)
     - [Broadcast Data](#broadcast-data)
+    - [Event Broadcasting Customizations](#event-broadcasting-customizations)
     - [Consuming Event Broadcasts](#consuming-event-broadcasts)
 - [Event Subscribers](#event-subscribers)
-- [Framework Events](#framework-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -99,7 +99,7 @@ An event class is simply a data container which holds the information related to
         }
     }
 
-As you can see, this event class contains no special logic. It is simply a container for the `Podcast` object that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function.
+As you can see, this event class contains no logic. It is simply a container for the `Podcast` object that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function.
 
 <a name="defining-listeners"></a>
 ## Defining Listeners
@@ -298,21 +298,6 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
 
 Then, you only need to [fire the event](#firing-events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
 
-<a name="overriding-broadcast-event-name"></a>
-#### Overriding Broadcast Event Name
-
-By default, the broadcast event name will be the fully qualified class name of the event. Using the example class above, the broadcast event would be `App\Events\ServerCreated`. You can customize this broadcast event name to whatever you want using the `broadcastAs` method:
-
-    /**
-     * Get the broadcast event name.
-     *
-     * @return string
-     */
-    public function broadcastAs()
-    {
-        return 'app.server-created';
-    }
-
 <a name="broadcast-data"></a>
 ### Broadcast Data
 
@@ -336,6 +321,37 @@ However, if you wish to have even more fine-grained control over your broadcast 
     public function broadcastWith()
     {
         return ['user' => $this->user->id];
+    }
+
+<a name="event-broadcasting-customizations"></a>
+### Event Broadcasting Customizations
+
+#### Customizing The Event Name
+
+By default, the broadcast event name will be the fully qualified class name of the event. So, if the event's class name is `App\Events\ServerCreated`, the broadcast event would be `App\Events\ServerCreated`. You can customize this broadcast event name using by defining a `broadcastAs` method on your event class:
+
+    /**
+     * Get the broadcast event name.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'app.server-created';
+    }
+
+#### Customizing The Queue
+
+By default, each event to be broadcast is placed on the default queue for the default queue connection in your `queue.php` configuration file. You may customize the queue used by the event broadcaster by adding an `onQueue` method to your event class. This method should return the name of the queue you wish to use:
+
+     /**
+     * Set the name of the queue the event should be placed on.
+     *
+     * @return string
+     */
+    public function onQueue()
+    {
+        return 'your-queue-name';
     }
 
 <a name="consuming-event-broadcasts"></a>
@@ -459,30 +475,3 @@ Once the subscriber has been defined, it may be registered with the event dispat
             'App\Listeners\UserEventListener',
         ];
     }
-
-<a name="framework-events"></a>
-## Framework Events
-
-Laravel provides a variety of "core" events for actions performed by the framework. You can subscribe to them in the same way that you subscribe to your own custom events:
-
-Event  |  Parameter(s)
-------------- | -----------
-artisan.start | $application
-auth.attempt | $credentials, $remember, $login
-auth.login | $user, $remember
-auth.logout | $user
-cache.missed | $key
-cache.hit | $key, $value
-cache.write | $key, $value, $minutes
-cache.delete | $key
-connection.{name}.beganTransaction | $connection
-connection.{name}.committed | $connection
-connection.{name}.rollingBack | $connection
-illuminate.query | $query, $bindings, $time, $connectionName
-illuminate.queue.after | $connection, $job, $data
-illuminate.queue.failed | $connection, $job, $data
-illuminate.queue.stopping | null
-mailer.sending | $message
-router.matched | $route, $request
-composing:{view name} | $view
-creating:{view name} | $view

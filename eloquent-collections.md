@@ -17,7 +17,7 @@ Of course, all collections also serve as iterators, allowing you to loop over th
         echo $user->name;
     }
 
-However, collections are much more powerful than arrays and expose a variety of map / reduce operations using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:
+However, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:
 
     $users = App\User::where('active', 1)->get();
 
@@ -27,6 +27,8 @@ However, collections are much more powerful than arrays and expose a variety of 
     ->map(function ($user) {
         return $user->name;
     });
+
+> **Note:** While most Eloquent collection methods return a new instance of an Eloquent collection, the `pluck`, `keys`, `zip`, `collapse`, `flatten` and `flip` methods return a [base collection](/docs/{{version}}/collections) instance.
 
 <a name="available-methods"></a>
 ## Available Methods

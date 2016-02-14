@@ -7,6 +7,7 @@
     - [Writing The Validation Logic](#quick-writing-the-validation-logic)
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
     - [AJAX Requests & Validation](#quick-ajax-requests-and-validation)
+    - [Validating Arrays](#validating-arrays)
 - [Other Validation Approaches](#other-validation-approaches)
     - [Manually Creating Validators](#manually-creating-validators)
     - [Form Request Validation](#form-request-validation)
@@ -102,6 +103,17 @@ To get a better understanding of the `validate` method, let's jump back into the
 
 As you can see, we simply pass the incoming HTTP request and desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
 
+#### Stopping On First Validation Failure
+
+Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
+
+    $this->validate($request, [
+        'title' => 'bail|required|unique:posts|max:255',
+        'body' => 'required',
+    ]);
+
+In this example, if the `required` rule on the `title` attribute fails, the `unique` rule will not be checked. Rules will be validated in the order they are assigned.
+
 #### A Note On Nested Attributes
 
 If your HTTP request contains "nested" parameters, you may specify them in your validation rules using "dot" syntax:
@@ -117,7 +129,9 @@ If your HTTP request contains "nested" parameters, you may specify them in your 
 
 So, what if the incoming request parameters do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors will automatically be [flashed to the session](/docs/{{version}}/session#flash-data).
 
-Again, notice that we did not have to explicitly bind the error messages to the view in our `GET` route. This is because Laravel will always check for errors in the session data, and automatically bind them to the view if they are available. **So, it is important to note that an `$errors` variable will always be available in all of your views on every request**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
+Again, notice that we did not have to explicitly bind the error messages to the view in our `GET` route. This is because Laravel will check for errors in the session data, and automatically bind them to the view if they are available. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
+
+> **Note:** The `$errors` variable is bound to the view by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. **When this middleware is applied an `$errors` variable will always be available in your views**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used.
 
 So, in our example, the user will be redirected to our controller's `create` method when validation fails, allowing us to display the error messages in the view:
 
@@ -168,6 +182,23 @@ If you wish to customize the format of the validation errors that are flashed to
 ### AJAX Requests & Validation
 
 In this example, we used a traditional form to send data to the application. However, many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
+
+<a name="validating-arrays"></a>
+### Validating Arrays
+
+Validating array form input fields doesn't have to be a pain. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
+
+    $validator = Validator::make($request->all(), [
+        'person.*.email' => 'email|unique:users'
+    ]);
+
+Likewise, you may use the `*` character when specifying your validation messages in your language files, making it a breeze to use a single validation message for array based fields:
+
+    'custom' => [
+        'person.*.email' => [
+            'unique' => 'Each person must have a unique e-mail address',
+        ]
+    ],
 
 <a name="other-validation-approaches"></a>
 ## Other Validation Approaches
@@ -595,6 +626,10 @@ You may also specify more conditions that will be added as "where" clauses to th
 
     'email' => 'exists:staff,email,account_id,1'
 
+These conditions may be negated using the `!` sign:
+
+    'email' => 'exists:staff,email,role,!admin'
+
 You may also pass `NULL` or `NOT_NULL` to the "where" clause:
 
     'email' => 'exists:staff,email,deleted_at,NULL'
@@ -624,7 +659,7 @@ The field under validation must be an IP address.
 <a name="rule-json"></a>
 #### json
 
-The field under validation must be a valid JSON string.
+The field under validation must a valid JSON string.
 
 <a name="rule-max"></a>
 #### max:_value_
@@ -669,7 +704,7 @@ The field under validation must match the given regular expression.
 <a name="rule-required"></a>
 #### required
 
-The field under validation must be present in the input data and not empty. A field is considered "empty" is one of the following conditions are true:
+The field under validation must be present in the input data and not empty. A field is considered "empty" if one of the following conditions are true:
 
 - The value is `null`.
 - The value is an empty string.
@@ -869,11 +904,11 @@ When creating a custom validation rule, you may sometimes need to define custom 
 
 #### Implicit Extensions
 
-By default, when an attribute being validated is not present or contains an empty value as defined by the [`required`](#rule-required) rule, normal validation rules, including custom extensions, are not run. For example, the [`integer`](#rule-integer) rule will not be run against a `null` value:
+By default, when an attribute being validated is not present or contains an empty value as defined by the [`required`](#rule-required) rule, normal validation rules, including custom extensions, are not run. For example, the [`unique`](#rule-unique) rule will not be run against a `null` value:
 
-    $rules = ['count' => 'integer'];
+    $rules = ['name' => 'unique'];
 
-    $input = ['count' => null];
+    $input = ['name' => null];
 
     Validator::make($input, $rules)->passes(); // true
 
