@@ -112,6 +112,18 @@ Uma vez que o middleware esteja definido no HTTP kernel, você deve usar a chave
 	Route::get('admin/profile', ['middleware' => 'auth', function () {
 		//
 	}]);
+	
+Utilize um array para especificar múltiplos middlewares para uma mesma rota:
+
+    Route::get('/', ['middleware' => ['first', 'second'], function () {
+        //
+    }]);
+
+Caso prefira, você também pode utilizar o método `middleware` na definição da rota:
+
+    Route::get('/', function () {
+        //
+    })->middleware(['first', 'second']);	
 
 <a name="middleware-parameters"></a>
 ## Parâmetros do Middleware
