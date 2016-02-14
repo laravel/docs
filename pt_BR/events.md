@@ -411,3 +411,30 @@ Uma vez que o assinante foi definido, você deve registrar com o disparador de e
             'App\Listeners\UserEventListener',
         ];
     }
+
+<a name="framework-events"></a>
+## Eventos do Framework
+
+O Laravel provê uma variedade de eventos principais para ações realizadas pelo framework. Você pode se inscrever para eles da mesma forma que você assina os seus próprios eventos:
+
+Event  |  Parameter(s)
+------------- | -----------
+artisan.start | $application
+auth.attempt | $credentials, $remember, $login
+auth.login | $user, $remember
+auth.logout | $user
+cache.missed | $key
+cache.hit | $key, $value
+cache.write | $key, $value, $minutes
+cache.delete | $key
+connection.{name}.beganTransaction | $connection
+connection.{name}.committed | $connection
+connection.{name}.rollingBack | $connection
+illuminate.query | $query, $bindings, $time, $connectionName
+illuminate.queue.after | $connection, $job, $data
+illuminate.queue.failed | $connection, $job, $data
+illuminate.queue.stopping | null
+mailer.sending | $message
+router.matched | $route, $request
+composing:{view name} | $view
+creating:{view name} | $view
