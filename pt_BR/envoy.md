@@ -164,7 +164,7 @@ Depois de executar uma tarefa, você pode enviar uma notificação à sua equipe
 Se você desejar, você pode também passar uma mensagem customizada para a sala do HipChat. Qualquer variável disponível para suas tarefas do Envoy também estarão disponíveis enquanto você constrói sua mensagem:
 
 	@after
-		@hipchat('token', 'room', 'Envoy', "{$task} ran in the {$env} environment.")
+		@hipchat('token', 'room', 'Envoy', "{{ $task }} ran in the {{ $env }} environment.")
 	@endafter
 
 <a name="slack"></a>
