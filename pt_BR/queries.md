@@ -26,7 +26,7 @@ A query builder provê uma interface fluente para criar e executar instruções 
 
 #### Recuperando Todos Os Registros De Uma Tabela
 
-Para começar uma consulta utilize o método `table` da facade `DB`. O método `table` retorna uma instância de query builder fluente para a tabela solicitada, possibilitando que você adicione mais regras a consulta antes de obter o resultado final. Neste exemplo vamos utilizar o `get` para recuperar todos os registros da tabela:
+Para começar uma consulta utilize o método `table` do facade `DB`. O método `table` retorna uma instância de query builder fluente para a tabela solicitada, possibilitando que você adicione mais regras a consulta antes de obter o resultado final. Neste exemplo vamos utilizar o `get` para recuperar todos os registros da tabela:
 
     <?php
 
@@ -50,7 +50,7 @@ Para começar uma consulta utilize o método `table` da facade `DB`. O método `
         }
     }
 
-Assim como utilizar [SQL puro](/docs/{{version}}/database), o método `get` retorna um`array` de resultados onde cada um é um objeto da classe PHP `StdClass`. Você pode acessar o valor de cada coluna da tabela como uma propriedade do objeto, que possui o mesmo nome da coluna:
+Assim como utilizar [SQL puro](/docs/{{version}}/database), o método `get` retorna um `array` de resultados onde cada um é um objeto da classe PHP `StdClass`. Você pode acessar o valor de cada coluna da tabela como uma propriedade do objeto, que possui o mesmo nome da coluna:
 
     foreach ($users as $user) {
         echo $user->name;
@@ -215,7 +215,7 @@ Por exemplo, aqui temos uma consulta que verifica se o valor da coluna "votes" �
 
     $users = DB::table('users')->where('votes', '=', 100)->get();
 
-Por conveniência, se você quer simplesmente verificar se uma coluna é igual a um valor , pode passar o valor diretamente no segundo parâmetro do método where `where`, suprimindo o operador:
+Por conveniência, se você quer simplesmente verificar se uma coluna é igual a um valor , pode passar o valor diretamente no segundo parâmetro do método `where`, suprimindo o operador:
 
     $users = DB::table('users')->where('votes', 100)->get();
 
@@ -396,9 +396,9 @@ Assim como inserir dados no banco, a query builder também pode atualizar regist
 
 #### Increment / Decrement
 
-A query builder fornece muitos métodos para aumentar ou diminuir o valor de uma determinada coluna. Isto é simplesmente um atalho, provendo uma interface mais espressiva, provendo providing a more expressive and terse interface, providing a more expressive and terse interface compared to manually writing the `update` statement.
+A query builder fornece muitos métodos para aumentar ou diminuir o valor de uma determinada coluna. Isto é simplesmente um atalho, provendo uma interface mais espressiva comparada a escrever manualmente uma condição `update`.
 
-Both of these methods accept at least one argument: the column to modify. A second argument may optionally be passed to control the amount by which the column should be incremented / decremented.
+Ambos os métodos precisam de um argumento: a coluna a ser modificada. O segundo parâmetro é opcional e controla a quantia que a coluna será acrescida / diminuída.
 
     DB::table('users')->increment('votes');
 
@@ -408,32 +408,32 @@ Both of these methods accept at least one argument: the column to modify. A seco
 
     DB::table('users')->decrement('votes', 5);
 
-You may also specify additional columns to update during the operation:
+Você pode também especificar colunas adicionais a serem atualizadas durante a operação:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
 <a name="deletes"></a>
 ## Deletes
 
-Of course, the query builder may also be used to delete records from the table via the `delete` method:
+A query builder também pode ser usada para deletar registros de uma tabela através do método `delete`:
 
     DB::table('users')->delete();
 
-You may constrain `delete` statements by adding `where` clauses before calling the `delete` method:
+Você pode customizar as regras do `delete` acrescentando cláusulas `where` antes de chamar o método `delete`:
 
     DB::table('users')->where('votes', '<', 100)->delete();
 
-If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to zero, you may use the `truncate` method:
+Se precisar truncar uma tabela, remover todos os registros e resetar as colunas ID auto-increment para zero, você pode utilizar o método `truncate`:
 
     DB::table('users')->truncate();
 
 <a name="pessimistic-locking"></a>
 ## Pessimistic Locking
 
-The query builder also includes a few functions to help you do "pessimistic locking" on your `select` statements. To run the statement with a "shared lock", you may use the `sharedLock` method on a query. A shared lock prevents the selected rows from being modified until your transaction commits:
+A query builder inclui também algumas funções para ajudá-lo a "pessimistic locking" nas suas cláusulas `select`. Para executar uma cláusula com "shared lock" você pode utilizar o método `sharedLock` na consulta. A shared lock previne que os registros selecionados sejam modificados until your transaction commits:
 
     DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 
-Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the rows from being modified or from being selected with another shared lock:
+Alternativamente, você pode utilizar o método `lockForUpdate`. A "for update" lock previne que registros sejam modificados ou sejam selecionados em outra shared lock:
 
     DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
