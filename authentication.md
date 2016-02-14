@@ -30,7 +30,7 @@
 
 Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
 
-At its core, Laravel's authentication facilities are made up of "guards" and "providers". Guards define how user's are authenticated for each request. For example, Laravel ships with a `session` guard which maintains state using session storage and cookies and a `token` guard, which authenticates users using a "API token" that is passed with each request.
+At its core, Laravel's authentication facilities are made up of "guards" and "providers". Guards define how users are authenticated for each request. For example, Laravel ships with a `session` guard which maintains state using session storage and cookies and a `token` guard, which authenticates users using a "API token" that is passed with each request.
 
 Providers define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using Eloquent and the database query builder. However, you are free to define additional providers as needed for your application.
 
