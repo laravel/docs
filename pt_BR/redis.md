@@ -81,14 +81,14 @@ Você pode receber uma instância do Redis usando o método `Redis::connection`:
 
     $redis = Redis::connection();
 
-Ele irá retornar uma instância do servidor Redis padrão para você. Se você não estiver utilizando clusts, você pode passar o nome do servidor como um argumento no método `connection` para receber uma instância de um servidor específico como definido no seu arquivo de configuração do Redis:
+Ele irá retornar uma instância do servidor Redis padrão para você. Se não estiver utilizando clusters, você pode passar o nome do servidor como um argumento no método `connection` para receber uma instância de um servidor específico como definido no seu arquivo de configuração do Redis:
 
     $redis = Redis::connection('other');
 
 <a name="pipelining-commands"></a>
 ### Múltiplos Comandos
 
-Múltiplos comandos podem enviados para o servidor em uma única operação. O método `pipeline` aceita um argumento: uma `Closure` que receberá uma instância do Redis. Você pode informar todos os seus comandos para esta instância Redis e todos eles serão executados dentro de uma única operação :
+Múltiplos comandos podem enviados para o servidor em uma única operação. O método `pipeline` aceita como argumento uma `Closure` que receberá uma instância do Redis. Você pode informar todos os seus comandos para esta instância Redis e todos eles serão executados dentro de uma única operação :
 
     Redis::pipeline(function ($pipe) {
         for ($i = 0; $i < 1000; $i++) {
