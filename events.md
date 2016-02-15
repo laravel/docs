@@ -17,7 +17,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel's events provides a simple observer implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their listeners are stored in `app/Listeners`.
+Laravel's events provides a simple mediator implementation, allowing you to subscribe and listen for events in your application. Event classes are typically stored in the `app/Events` directory, while their listeners are stored in `app/Listeners`.
 
 <a name="registering-events-and-listeners"></a>
 ## Registering Events / Listeners
