@@ -155,7 +155,7 @@ Next, run the `vagrant up` command in your terminal and access your project at `
 <a name="installing-mariadb"></a>
 ### Installing MariaDB
 
-If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option to your `Homestead.yaml` file:
+If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option to your `Homestead.yaml` file. This option will remove MySQL and install MariaDB. MariaDB serves as a drop-in replacement for MySQL so you should still use the `mysql` database driver in your application's database configuration:
 
     box: laravel/homestead
     ip: "192.168.20.20"
