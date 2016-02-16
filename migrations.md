@@ -326,6 +326,12 @@ Command  | Description
 `$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
 `$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
 
+If you pass an array with columns as argument, the key name will be generated based on the table name, columns and key type. 
+
+    Schema::table('geo', function ($table) {
+        $table->dropIndex(['state']); // Drops index 'geo_state_index'
+    });
+
 <a name="foreign-key-constraints"></a>
 ### Foreign Key Constraints
 
@@ -346,3 +352,7 @@ You may also specify the desired action for the "on delete" and "on update" prop
 To drop a foreign key, you may use the `dropForeign` method. Foreign key constraints use the same naming convention as indexes. So, we will concatenate the table name and the columns in the constraint then suffix the name with "_foreign":
 
     $table->dropForeign('posts_user_id_foreign');
+
+Or using the array syntax to generate the key name:
+
+    $table->dropForeign(['user_id']);
