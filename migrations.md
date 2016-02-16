@@ -326,7 +326,7 @@ Command  | Description
 `$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
 `$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
 
-If you pass an array with columns as argument, the key name will be generated based on the table name, columns and key type. 
+If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type.
 
     Schema::table('geo', function ($table) {
         $table->dropIndex(['state']); // Drops index 'geo_state_index'
@@ -353,6 +353,6 @@ To drop a foreign key, you may use the `dropForeign` method. Foreign key constra
 
     $table->dropForeign('posts_user_id_foreign');
 
-Or using the array syntax to generate the key name:
+Or you may pass an array value which will automatically use the conventional constraint name when dropping:
 
     $table->dropForeign(['user_id']);
