@@ -550,9 +550,9 @@ You may even persist multiple models to the database. In this example, we'll eve
                     $u->posts()->save(factory(App\Post::class)->make());
                 });
 
-#### Defining relationships within Factory Models
+#### Relations & Attribute Closures
 
-You can clearly define relationships inside a Factory Model definition. In order to avoid undesired duplication when defining such a relationship you'd better do it within a Closure as follow:
+You may also attach relationships to models using Closure attributes in your factory definitions. For example, if you would like to create a new `User` instance when creating a `Post`, you may do the following:
 
     $factory->define(App\Post::class, function ($faker) {
         return [
@@ -564,7 +564,7 @@ You can clearly define relationships inside a Factory Model definition. In order
         ];
     });
 
-Closures will be evaluated only after having merged any attributes passed when creating the model. Moreover, an array of already evaluated definitions is passed to the Closures in order to define complex relationships:
+These Closures also receive the evaluated attribute array of the factory that contains them:
 
     $factory->define(App\Post::class, function ($faker) {
         return [
@@ -573,8 +573,8 @@ Closures will be evaluated only after having merged any attributes passed when c
             'user_id' => function () {
                 return factory(App\User::class)->create()->id;
             },
-            'user_type' => function (array $evaluated) {
-                return App\User::find($evaluated['user_id'])->type;
+            'user_type' => function (array $post) {
+                return App\User::find($post['user_id'])->type;
             }
         ];
     });
