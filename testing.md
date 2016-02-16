@@ -550,6 +550,35 @@ You may even persist multiple models to the database. In this example, we'll eve
                     $u->posts()->save(factory(App\Post::class)->make());
                 });
 
+#### Defining relationships within Factory Models
+
+You can clearly define relationships inside a Factory Model definition. In order to avoid undesired duplication when defining such a relationship you'd better do it within a Closure as follow:
+
+    $factory->define(App\Post::class, function ($faker) {
+        return [
+            'title' => $faker->title,
+            'content' => $faker->paragraph,
+            'user_id' => function () {
+                return factory(App\User::class)->create()->id;
+            }
+        ];
+    });
+
+Closures will be evaluated only after having merged any attributes passed when creating the model. Moreover, an array of already evaluated definitions is passed to the Closures in order to define complex relationships:
+
+    $factory->define(App\Post::class, function ($faker) {
+        return [
+            'title' => $faker->title,
+            'content' => $faker->paragraph,
+            'user_id' => function () {
+                return factory(App\User::class)->create()->id;
+            },
+            'user_type' => function (array $evaluated) {
+                return App\User::find($evaluated['user_id'])->type;
+            }
+        ];
+    });
+
 <a name="mocking"></a>
 ## Mocking
 
