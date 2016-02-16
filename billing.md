@@ -281,6 +281,8 @@ If you have additional Stripe webhook events you would like to handle, simply ex
 <a name="single-charges"></a>
 ## Single Charges
 
+### Simple Charge
+
 If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method on a billable model instance. The `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**. So, for example, the example below will charge 100 cents, or $1.00, against the user's credit card:
 
     $user->charge(100);
@@ -299,6 +301,18 @@ The `charge` method will return `false` if the charge fails. This typically indi
     }
 
 If the charge is successful, the full Stripe response will be returned from the method.
+
+### Charge With Invoice
+
+Sometimes you may need to make a one-time charge but also generate an invoice for the charge so that you may offer a PDF receipt to your customer. The `invoiceFor` method lets you do just that. For example, let's invoice the customer $5.00 for a "One Time Fee":
+
+    $user->invoiceFor('One Time Fee', 500);
+
+The invoice will be charged immediately against the user's credit card. The `invoiceFor` method also accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe invoice item creation:
+
+    $user->invoiceFor('One Time Fee', 500, [
+        'discountable' => false,
+    ]);
 
 <a name="invoices"></a>
 ## Invoices

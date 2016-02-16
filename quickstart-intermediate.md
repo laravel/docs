@@ -251,6 +251,10 @@ Now, all we have to do is add the authentication routes to our routes file. We c
 	// Authentication Routes...
 	Route::auth();
 
+Once the `auth` routes are registered, verify that the `$redirectTo` property on the `app/Http/Controllers/Auth/AuthController` controller is set to '/tasks':
+
+	protected $redirectTo = 'tasks';
+
 <a name="the-task-controller"></a>
 ### The Task Controller
 
@@ -307,7 +311,7 @@ As we discussed earlier, all Laravel views are stored in `resources/views`. So, 
 
 Our `app.blade.php` view should look like the following:
 
-    // resources/views/layouts/app.blade.php
+    <!-- resources/views/layouts/app.blade.php ->
 
 	<!DOCTYPE html>
 	<html lang="en">
@@ -337,7 +341,7 @@ Great, our application layout is finished. Next, we need to define a view that c
 
 We'll skip over some of the Bootstrap CSS boilerplate and only focus on the things that matter. Remember, you can download the full source for this application on [GitHub](https://github.com/laravel/quickstart-intermediate):
 
-    // resources/views/tasks/index.blade.php
+    <!-- resources/views/tasks/index.blade.php -->
 
 	@extends('layouts.app')
 
@@ -430,7 +434,7 @@ We don't even have to manually determine if the validation failed or do manual r
 
 Remember that we used the `@include('common.errors')` directive within our view to render the form's validation errors. The `common.errors` will allow us to easily show validation errors in the same format across all of our pages. Let's define the contents of this view now:
 
-    // resources/views/common/errors.blade.php
+    <!-- resources/views/common/errors.blade.php -->
 
     @if (count($errors) > 0)
         <!-- Form Error List -->
@@ -653,7 +657,9 @@ We left a "TODO" note in our code where our delete button is supposed to be. So,
                 {!! csrf_field() !!}
                 {!! method_field('DELETE') !!}
 
-                <button>Delete Task</button>
+                <button type="submit" id="delete-task-{{ $task->id }}" class="btn btn-danger">
+                    <i class="fa fa-btn fa-trash"></i>Delete
+                </button>
             </form>
         </td>
     </tr>

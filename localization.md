@@ -62,7 +62,13 @@ If you wish, you may define place-holders in your language lines. All place-hold
 
 To replace the place-holders when retrieving a language line, pass an array of replacements as the second argument to the `trans` function:
 
-    echo trans('messages.welcome', ['name' => 'Dayle']);
+    echo trans('messages.welcome', ['name' => 'dayle']);
+
+If your place-holder contains all capital letters, or only has its first letter capitalized, the translated value will be capitalized accordingly:
+
+    'welcome' => 'Welcome, :NAME', // Welcome, DAYLE
+    'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle
+
 
 <a name="pluralization"></a>
 ### Pluralization
