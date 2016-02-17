@@ -652,6 +652,24 @@ Laravel provides a convenient `expectsJobs` method that will verify that the exp
 
 > **Note:** This method only detects jobs that are dispatched via the `DispatchesJobs` trait's dispatch methods or the `dispatch` helper function. It does not detect jobs that are sent directly to `Queue::push`.
 
+You can define a return value when a job is dispatched. You can do this by passing the job as an array, containing the job name as first argument and your desired return value as second argument:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        public function testPurchasePodcast()
+        {
+            $returnObject = Mockery::mock(App\Podcast::class);
+
+            $this->expectsJobs([
+                [App\Jobs\PurchasePodcast::class, $returnObject]
+            ]);
+
+            // Test purchase podcast code...
+        }
+    }
+
 <a name="mocking-facades"></a>
 ### Mocking Facades
 
