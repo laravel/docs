@@ -49,6 +49,10 @@ For more information on custom authentication providers, consult the [full authe
 
 The `loginPath()` method has been removed from `Illuminate\Foundation\Auth\AuthenticatesUsers`, so placing a `$loginPath` variable in your `AuthController` is no longer required. By default, the trait will always redirect users back to their previous location on authentication errors.
 
+#### Controller Middleware
+
+If you are using the builtin `AuthController`, you'll need to update the `except` parameter for the guest middleware. In the `__construct()` method in `app/Http/Controllers/Auth/AuthController.php` change `$this->middleware('guest', ['except' => 'getLogout']);` to `$this->middleware('guest', ['except' => 'logout']);`
+
 ### Authorization
 
 The `Illuminate\Auth\Access\UnauthorizedException` has been renamed to `Illuminate\Auth\Access\AuthorizationException`. This is unlikely to affect your application if you are not manually catching this exception.
