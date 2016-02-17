@@ -289,8 +289,8 @@ The `Queue::after` method allows you to register a callback to be executed when 
         {
             Queue::after(function (JobProcessed $event) {
                 // $event->connection
-                // $event->$job
-                // $event->$data
+                // $event->job
+                // $event->data
             });
         }
 
