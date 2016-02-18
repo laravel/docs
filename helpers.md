@@ -753,6 +753,9 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 The `dd` function dumps the given variable and ends execution of the script:
 
     dd($value);
+    
+If you do not want to halt the execution of your script, try use the `dump` function included from Symfony instead. 
+
 
 <a name="method-dispatch"></a>
 #### `dispatch()` {#collection-method}
