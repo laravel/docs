@@ -342,6 +342,12 @@ In addition, you may specify the number of seconds to wait before polling for ne
 
 Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
 
+#### Processing The First Job On The Queue
+
+To process only the first job on the queue, you may use the `queue:work` command:
+
+	php artisan queue:work
+
 <a name="supervisor-configuration"></a>
 ### Supervisor Configuration
 
