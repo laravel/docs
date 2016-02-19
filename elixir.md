@@ -54,7 +54,7 @@ If you use a version control system, you may wish to run the `npm shrinkwrap` to
 
      npm shrinkwrap
 
-Once you have run this command, feel free to commit the [npm-shrinkwrap.json]`https://docs.npmjs.com/cli/shrinkwrap` into source control.
+Once you have run this command, feel free to commit the [npm-shrinkwrap.json](https://docs.npmjs.com/cli/shrinkwrap) into source control.
 
 ### Laravel Elixir
 
