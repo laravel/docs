@@ -3,27 +3,27 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Prepping The Database](#prepping-the-database)
-	- [Database Migrations](#database-migrations)
-	- [Eloquent Models](#eloquent-models)
-	- [Eloquent Relationships](#eloquent-relationships)
+    - [Database Migrations](#database-migrations)
+    - [Eloquent Models](#eloquent-models)
+    - [Eloquent Relationships](#eloquent-relationships)
 - [Routing](#routing)
-	- [Displaying A View](#displaying-a-view)
-	- [Authentication](#authentication-routing)
-	- [The Task Controller](#the-task-controller)
+    - [Displaying A View](#displaying-a-view)
+    - [Authentication](#authentication-routing)
+    - [The Task Controller](#the-task-controller)
 - [Building Layouts & Views](#building-layouts-and-views)
-	- [Defining The Layout](#defining-the-layout)
-	- [Defining The Child View](#defining-the-child-view)
+    - [Defining The Layout](#defining-the-layout)
+    - [Defining The Child View](#defining-the-child-view)
 - [Adding Tasks](#adding-tasks)
-	- [Validation](#validation)
-	- [Creating The Task](#creating-the-task)
+    - [Validation](#validation)
+    - [Creating The Task](#creating-the-task)
 - [Displaying Existing Tasks](#displaying-existing-tasks)
-	- [Dependency Injection](#dependency-injection)
-	- [Displaying The Tasks](#displaying-the-tasks)
+    - [Dependency Injection](#dependency-injection)
+    - [Displaying The Tasks](#displaying-the-tasks)
 - [Deleting Tasks](#deleting-tasks)
-	- [Adding The Delete Button](#adding-the-delete-button)
-	- [Route Model Binding](#route-model-binding)
-	- [Authorization](#authorization)
-	- [Deleting The Task](#deleting-the-task)
+    - [Adding The Delete Button](#adding-the-delete-button)
+    - [Route Model Binding](#route-model-binding)
+    - [Authorization](#authorization)
+    - [Deleting The Task](#deleting-the-task)
 
 <a name="introduction"></a>
 ## Introduction
@@ -39,16 +39,16 @@ To sample a basic selection of Laravel features, we will build a task list we ca
 
 Of course, first you will need a fresh installation of the Laravel framework. You may use the [Homestead virtual machine](/docs/{{version}}/homestead) or the local PHP environment of your choice to run the framework. Once your local environment is ready, you may install the Laravel framework using Composer:
 
-	composer create-project laravel/laravel quickstart --prefer-dist
+    composer create-project laravel/laravel quickstart --prefer-dist
 
 #### Installing The Quickstart (Optional)
 
 You're free to just read along for the remainder of this quickstart; however, if you would like to download the source code for this quickstart and run it on your local machine, you may clone its Git repository and install its dependencies:
 
-	git clone https://github.com/laravel/quickstart-intermediate quickstart
-	cd quickstart
-	composer install
-	php artisan migrate
+    git clone https://github.com/laravel/quickstart-intermediate quickstart
+    cd quickstart
+    composer install
+    php artisan migrate
 
 For more complete documentation on building a local Laravel development environment, check out the full [Homestead](/docs/{{version}}/homestead) and [installation](/docs/{{version}}/installation) documentation.
 
@@ -68,46 +68,46 @@ Since we are going to allow users to create their accounts within the applicatio
 
 Next, let's build a database table that will hold all of our tasks. The [Artisan CLI](/docs/{{version}}/artisan) can be used to generate a variety of classes and will save you a lot of typing as you build your Laravel projects. In this case, let's use the `make:migration` command to generate a new database migration for our `tasks` table:
 
-	php artisan make:migration create_tasks_table --create=tasks
+    php artisan make:migration create_tasks_table --create=tasks
 
 The migration will be placed in the `database/migrations` directory of your project. As you may have noticed, the `make:migration` command already added an auto-incrementing ID and timestamps to the migration file. Let's edit this file and add an additional `string` column for the name of our tasks, as well as a `user_id` column which will link our `tasks` and `users` tables:
 
-	<?php
+    <?php
 
-	use Illuminate\Database\Schema\Blueprint;
-	use Illuminate\Database\Migrations\Migration;
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Database\Migrations\Migration;
 
-	class CreateTasksTable extends Migration
-	{
-	    /**
-	     * Run the migrations.
-	     *
-	     * @return void
-	     */
-	    public function up()
-	    {
-	        Schema::create('tasks', function (Blueprint $table) {
-	            $table->increments('id');
-	            $table->integer('user_id')->index();
-	            $table->string('name');
-	            $table->timestamps();
-	        });
-	    }
+    class CreateTasksTable extends Migration
+    {
+        /**
+         * Run the migrations.
+         *
+         * @return void
+         */
+        public function up()
+        {
+            Schema::create('tasks', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('user_id')->index();
+                $table->string('name');
+                $table->timestamps();
+            });
+        }
 
-	    /**
-	     * Reverse the migrations.
-	     *
-	     * @return void
-	     */
-	    public function down()
-	    {
-	        Schema::drop('tasks');
-	    }
-	}
+        /**
+         * Reverse the migrations.
+         *
+         * @return void
+         */
+        public function down()
+        {
+            Schema::drop('tasks');
+        }
+    }
 
 To run our migrations, we will use the `migrate` Artisan command. If you are using Homestead, you should run this command from within your virtual machine, since your host machine will not have direct access to the database:
 
-	php artisan migrate
+    php artisan migrate
 
 This command will create all of our database tables. If you inspect the database tables using the database client of your choice, you should see new `tasks` and `users` tables which contains the columns defined in our migration. Next, we're ready to define our Eloquent ORM models!
 
@@ -124,27 +124,27 @@ First, we need a model that corresponds to our `users` database table. However, 
 
 So, let's define a `Task` model that corresponds to our `tasks` database table we just created. Again, we can use an Artisan command to generate this model. In this case, we'll use the `make:model` command:
 
-	php artisan make:model Task
+    php artisan make:model Task
 
 The model will be placed in the `app` directory of your application. By default, the model class is empty. We do not have to explicitly tell the Eloquent model which table it corresponds to because it will assume the database table is the plural form of the model name. So, in this case, the `Task` model is assumed to correspond with the `tasks` database table.
 
 Let's add a few things to this model. First, we will state that the `name` attribute on the model should be "mass-assignable". This will allow us to fill the `name` attribute when using Eloquent's `create` method:
 
-	<?php
+    <?php
 
-	namespace App;
+    namespace App;
 
-	use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Model;
 
-	class Task extends Model
-	{
-	    /**
-	     * The attributes that are mass assignable.
-	     *
-	     * @var array
-	     */
-	    protected $fillable = ['name'];
-	}
+    class Task extends Model
+    {
+        /**
+         * The attributes that are mass assignable.
+         *
+         * @var array
+         */
+        protected $fillable = ['name'];
+    }
 
 We'll learn more about how to use Eloquent models as we add routes to our application. Of course, feel free to consult the [complete Eloquent documentation](/docs/{{version}}/eloquent) for more information.
 
@@ -153,63 +153,63 @@ We'll learn more about how to use Eloquent models as we add routes to our applic
 
 Now that our models are defined, we need to link them. For example, our `User` can have many `Task` instances, while a `Task` is assigned to a single `User`. Defining a relationship will allow us to fluently walk through our relations like so:
 
-	$user = App\User::find(1);
+    $user = App\User::find(1);
 
-	foreach ($user->tasks as $task) {
-		echo $task->name;
-	}
+    foreach ($user->tasks as $task) {
+        echo $task->name;
+    }
 
 #### The `tasks` Relationship
 
 First, let's define the `tasks` relationship on our `User` model. Eloquent relationships are defined as methods on models. Eloquent supports several different types of relationships, so be sure to consult the [full Eloquent documentation](/docs/{{version}}/eloquent-relationships) for more information. In this case, we will define a `tasks` function on the `User` model which calls the `hasMany` method provided by Eloquent:
 
-	<?php
+    <?php
 
-	namespace App;
+    namespace App;
 
-	use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
 
-	class User extends Authenticatable
-	{
-	    // Other Eloquent Properties...
+    class User extends Authenticatable
+    {
+        // Other Eloquent Properties...
 
-	    /**
-	     * Get all of the tasks for the user.
-	     */
-	    public function tasks()
-	    {
-	        return $this->hasMany(Task::class);
-	    }
-	}
+        /**
+         * Get all of the tasks for the user.
+         */
+        public function tasks()
+        {
+            return $this->hasMany(Task::class);
+        }
+    }
 
 #### The `user` Relationship
 
 Next, let's define the `user` relationship on the `Task` model. Again, we will define the relationship as a method on the model. In this case, we will use the `belongsTo` method provided by Eloquent to define the relationship:
 
-	<?php
+    <?php
 
-	namespace App;
+    namespace App;
 
-	use App\User;
-	use Illuminate\Database\Eloquent\Model;
+    use App\User;
+    use Illuminate\Database\Eloquent\Model;
 
-	class Task extends Model
-	{
-	    /**
-	     * The attributes that are mass assignable.
-	     *
-	     * @var array
-	     */
-	    protected $fillable = ['name'];
+    class Task extends Model
+    {
+        /**
+         * The attributes that are mass assignable.
+         *
+         * @var array
+         */
+        protected $fillable = ['name'];
 
-	    /**
-	     * Get the user that owns the task.
-	     */
-	    public function user()
-	    {
-	        return $this->belongsTo(User::class);
-	    }
-	}
+        /**
+         * Get the user that owns the task.
+         */
+        public function user()
+        {
+            return $this->belongsTo(User::class);
+        }
+    }
 
 Wonderful! Now that our relationships are defined, we can start building our controllers!
 
@@ -225,9 +225,9 @@ We will have a single route that uses a Closure: our `/` route, which will simpl
 
 In Laravel, all HTML templates are stored in the `resources/views` directory, and we can use the `view` helper to return one of these templates from our route:
 
-	Route::get('/', function () {
-		return view('welcome');
-	});
+    Route::get('/', function () {
+        return view('welcome');
+    });
 
 Of course, we need to actually define this view. We'll do that in a bit!
 
@@ -242,31 +242,35 @@ First, notice that there is already a `app/Http/Controllers/Auth/AuthController`
 
 So, what's left for us to do? Well, we still need to create the registration and login templates as well as define the routes to point to the authentication controller. We can do all of this using the `make:auth` Artisan command:
 
-	php artisan make:auth --views
+    php artisan make:auth --views
 
 > **Note:** If you would like to view complete examples for these views, remember that the entire application's source code is [available on GitHub](https://github.com/laravel/quickstart-intermediate).
 
 Now, all we have to do is add the authentication routes to our routes file. We can do this using the `auth` method on the `Route` facade, which will register all of the routes we need for registration, login, and password reset:
 
-	// Authentication Routes...
-	Route::auth();
+    // Authentication Routes...
+    Route::auth();
 
 Once the `auth` routes are registered, verify that the `$redirectTo` property on the `app/Http/Controllers/Auth/AuthController` controller is set to '/tasks':
 
-	protected $redirectTo = 'tasks';
+    protected $redirectTo = '/tasks';
+
+It is also necessary to update `app/Middleware/RedirectIfAuthenticated.php`
+
+    return redirect('/tasks');
 
 <a name="the-task-controller"></a>
 ### The Task Controller
 
 Since we know we're going to need to retrieve and store tasks, let's create a `TaskController` using the Artisan CLI, which will place the new controller in the `app/Http/Controllers` directory:
 
-	php artisan make:controller TaskController
+    php artisan make:controller TaskController
 
 Now that the controller has been generated, let's go ahead and stub out some routes in our `app/Http/routes.php` file to point to the controller:
 
-	Route::get('/tasks', 'TaskController@index');
-	Route::post('/task', 'TaskController@store');
-	Route::delete('/task/{task}', 'TaskController@destroy');
+    Route::get('/tasks', 'TaskController@index');
+    Route::post('/task', 'TaskController@store');
+    Route::delete('/task/{task}', 'TaskController@destroy');
 
 #### Authenticating All Task Routes
 
@@ -274,26 +278,26 @@ For this application, we want all of our task routes to require an authenticated
 
 To require an authenticated users for all actions on the controller, we can add a call to the `middleware` method from the controller's constructor. All available route middleware are defined in the `app/Http/Kernel.php` file. In this case, we want to assign the `auth` middleware to all actions on the controller:
 
-	<?php
+    <?php
 
-	namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-	use App\Http\Requests;
-	use Illuminate\Http\Request;
-	use App\Http\Controllers\Controller;
+    use App\Http\Requests;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
 
-	class TaskController extends Controller
-	{
-	    /**
-	     * Create a new controller instance.
-	     *
-	     * @return void
-	     */
-	    public function __construct()
-	    {
-	        $this->middleware('auth');
-	    }
-	}
+    class TaskController extends Controller
+    {
+        /**
+         * Create a new controller instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            $this->middleware('auth');
+        }
+    }
 
 <a name="building-layouts-and-views"></a>
 ## Building Layouts & Views
@@ -313,24 +317,24 @@ Our `app.blade.php` view should look like the following:
 
     <!-- resources/views/layouts/app.blade.php ->
 
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<title>Laravel Quickstart - Intermediate</title>
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <title>Laravel Quickstart - Intermediate</title>
 
-			<!-- CSS And JavaScript -->
-		</head>
+            <!-- CSS And JavaScript -->
+        </head>
 
-		<body>
-			<div class="container">
-				<nav class="navbar navbar-default">
-					<!-- Navbar Contents -->
-				</nav>
-			</div>
+        <body>
+            <div class="container">
+                <nav class="navbar navbar-default">
+                    <!-- Navbar Contents -->
+                </nav>
+            </div>
 
-			@yield('content')
-		</body>
-	</html>
+            @yield('content')
+        </body>
+    </html>
 
 Note the `@yield('content')` portion of the layout. This is a special Blade directive that specifies where all child pages that extend the layout can inject their own content. Next, let's define the child view that will use this layout and provide its primary content.
 
@@ -343,42 +347,42 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
     <!-- resources/views/tasks/index.blade.php -->
 
-	@extends('layouts.app')
+    @extends('layouts.app')
 
-	@section('content')
+    @section('content')
 
         <!-- Bootstrap Boilerplate... -->
 
-		<div class="panel-body">
+        <div class="panel-body">
             <!-- Display Validation Errors -->
-			@include('common.errors')
+            @include('common.errors')
 
-			<!-- New Task Form -->
-			<form action="{{ url('task') }}" method="POST" class="form-horizontal">
-				{!! csrf_field() !!}
+            <!-- New Task Form -->
+            <form action="{{ url('task') }}" method="POST" class="form-horizontal">
+                {!! csrf_field() !!}
 
                 <!-- Task Name -->
-				<div class="form-group">
-					<label for="task-name" class="col-sm-3 control-label">Task</label>
+                <div class="form-group">
+                    <label for="task-name" class="col-sm-3 control-label">Task</label>
 
-					<div class="col-sm-6">
-						<input type="text" name="name" id="task-name" class="form-control">
-					</div>
-				</div>
+                    <div class="col-sm-6">
+                        <input type="text" name="name" id="task-name" class="form-control">
+                    </div>
+                </div>
 
                 <!-- Add Task Button -->
-				<div class="form-group">
-					<div class="col-sm-offset-3 col-sm-6">
-						<button type="submit" class="btn btn-default">
-							<i class="fa fa-plus"></i> Add Task
-						</button>
-					</div>
-				</div>
-			</form>
-		</div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-6">
+                        <button type="submit" class="btn btn-default">
+                            <i class="fa fa-plus"></i> Add Task
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
-		<!-- TODO: Current Tasks -->
-	@endsection
+        <!-- TODO: Current Tasks -->
+    @endsection
 
 #### A Few Notes Of Explanation
 
@@ -394,10 +398,10 @@ Now we have defined a basic layout and view for our application. Let's go ahead 
      * @param  Request  $request
      * @return Response
      */
-	public function index(Request $request)
-	{
-		return view('tasks.index');
-	}
+    public function index(Request $request)
+    {
+        return view('tasks.index');
+    }
 
 Next, we're ready to add code to our `POST /task` route's controller method to handle the incoming form input and add a new task to the database.
 
@@ -417,14 +421,14 @@ For this form, we will make the `name` field required and state that it must con
      * @param  Request  $request
      * @return Response
      */
-	public function store(Request $request)
-	{
-		$this->validate($request, [
-			'name' => 'required|max:255',
-		]);
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:255',
+        ]);
 
-		// Create The Task...
-	}
+        // Create The Task...
+    }
 
 If you followed along with the [basic quickstart](/docs/{{version}}/quickstart), you'll notice this validation code looks quite a bit different! Since we are in a controller, we can leverage the convenience of the `ValidatesRequests` trait that is included in the base Laravel controller. This trait exposes a simple `validate` method which accepts a request and an array of validation rules.
 
@@ -495,7 +499,7 @@ First, we need to edit our `TaskController@index` method to pass all of the exis
      */
     public function index(Request $request)
     {
-    	$tasks = Task::where('user_id', $request->user()->id)->get();
+        $tasks = Task::where('user_id', $request->user()->id)->get();
 
         return view('tasks.index', [
             'tasks' => $tasks,
@@ -515,87 +519,87 @@ As we mentioned earlier, we want to define a `TaskRepository` that holds all of 
 
 So, let's create an `app/Repositories` directory and add a `TaskRepository` class. Remember, all Laravel `app` folders are auto-loaded using the PSR-4 auto-loading standard, so you are free to create as many extra directories as needed:
 
-	<?php
+    <?php
 
-	namespace App\Repositories;
+    namespace App\Repositories;
 
-	use App\User;
-	use App\Task;
+    use App\User;
+    use App\Task;
 
-	class TaskRepository
-	{
-	    /**
-	     * Get all of the tasks for a given user.
-	     *
-	     * @param  User  $user
-	     * @return Collection
-	     */
-	    public function forUser(User $user)
-	    {
-	        return Task::where('user_id', $user->id)
-	                    ->orderBy('created_at', 'asc')
-	                    ->get();
-	    }
-	}
+    class TaskRepository
+    {
+        /**
+         * Get all of the tasks for a given user.
+         *
+         * @param  User  $user
+         * @return Collection
+         */
+        public function forUser(User $user)
+        {
+            return Task::where('user_id', $user->id)
+                        ->orderBy('created_at', 'asc')
+                        ->get();
+        }
+    }
 
 #### Injecting The Repository
 
 Once our repository is defined, we can simply "type-hint" it in the constructor of our `TaskController` and utilize it within our `index` route. Since Laravel uses the container to resolve all controllers, our dependencies will automatically be injected into the controller instance:
 
-	<?php
+    <?php
 
-	namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-	use App\Task;
-	use App\Http\Requests;
-	use Illuminate\Http\Request;
-	use App\Http\Controllers\Controller;
-	use App\Repositories\TaskRepository;
+    use App\Task;
+    use App\Http\Requests;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
+    use App\Repositories\TaskRepository;
 
-	class TaskController extends Controller
-	{
-	    /**
-	     * The task repository instance.
-	     *
-	     * @var TaskRepository
-	     */
-	    protected $tasks;
+    class TaskController extends Controller
+    {
+        /**
+         * The task repository instance.
+         *
+         * @var TaskRepository
+         */
+        protected $tasks;
 
-	    /**
-	     * Create a new controller instance.
-	     *
-	     * @param  TaskRepository  $tasks
-	     * @return void
-	     */
-	    public function __construct(TaskRepository $tasks)
-	    {
-	        $this->middleware('auth');
+        /**
+         * Create a new controller instance.
+         *
+         * @param  TaskRepository  $tasks
+         * @return void
+         */
+        public function __construct(TaskRepository $tasks)
+        {
+            $this->middleware('auth');
 
-	        $this->tasks = $tasks;
-	    }
+            $this->tasks = $tasks;
+        }
 
-	    /**
-	     * Display a list of all of the user's task.
-	     *
-	     * @param  Request  $request
-	     * @return Response
-	     */
-	    public function index(Request $request)
-	    {
-	        return view('tasks.index', [
-	            'tasks' => $this->tasks->forUser($request->user()),
-	        ]);
-	    }
-	}
+        /**
+         * Display a list of all of the user's task.
+         *
+         * @param  Request  $request
+         * @return Response
+         */
+        public function index(Request $request)
+        {
+            return view('tasks.index', [
+                'tasks' => $this->tasks->forUser($request->user()),
+            ]);
+        }
+    }
 
 <a name="displaying-the-tasks"></a>
 ### Displaying The Tasks
 
 Once the data is passed, we can spin through the tasks in our `tasks/index.blade.php` view and display them in a table. The `@foreach` Blade construct allows us to write concise loops that compile down into blazing fast plain PHP code:
 
-	@extends('layouts.app')
+    @extends('layouts.app')
 
-	@section('content')
+    @section('content')
         <!-- Create Task Form... -->
 
         <!-- Current Tasks -->
@@ -633,7 +637,7 @@ Once the data is passed, we can spin through the tasks in our `tasks/index.blade
                 </div>
             </div>
         @endif
-	@endsection
+    @endsection
 
 Our task application is almost complete. But, we have no way to delete our existing tasks when they're done. Let's add that next!
 
@@ -671,14 +675,14 @@ Note that the delete button's form `method` is listed as `POST`, even though we 
 
 We can spoof a `DELETE` request by outputting the results of the `method_field('DELETE')` function within our form. This function generates a hidden form input that Laravel recognizes and will use to override the actual HTTP request method. The generated field will look like the following:
 
-	<input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_method" value="DELETE">
 
 <a name="route-model-binding"></a>
 ### Route Model Binding
 
 Now, we're almost ready to define the `destroy` method on our `TaskController`. But, first, let's revisit our route declaration and controller method for this route:
 
-	Route::delete('/task/{task}', 'TaskController@destroy');
+    Route::delete('/task/{task}', 'TaskController@destroy');
 
     /**
      * Destroy the given task.
@@ -687,10 +691,10 @@ Now, we're almost ready to define the `destroy` method on our `TaskController`. 
      * @param  Task  $task
      * @return Response
      */
-	public function destroy(Request $request, Task $task)
-	{
-		//
-	}
+    public function destroy(Request $request, Task $task)
+    {
+        //
+    }
 
 Since the `{task}` variable in our route matches the `$task` variable defined in our controller method, Laravel's [implicit model binding](/docs/{{version}}/routing#route-model-binding) will automatically inject the corresponding Task model instance.
 
@@ -703,34 +707,34 @@ Now, we have a `Task` instance injected into our `destroy` method; however, we h
 
 Laravel uses "policies" to organize authorization logic into simple, small classes. Typically, each policy corresponds to a model. So, let's create a `TaskPolicy` using the Artisan CLI, which will place the generated file in `app/Policies/TaskPolicy.php`:
 
-	php artisan make:policy TaskPolicy
+    php artisan make:policy TaskPolicy
 
 Next, let's add a `destroy` method to the policy. This method will receive a `User` instance and a `Task` instance. The method should simply check if the user's ID matches the `user_id` on the task. In fact, all policy methods should either return `true` or `false`:
 
-	<?php
+    <?php
 
-	namespace App\Policies;
+    namespace App\Policies;
 
-	use App\User;
-	use App\Task;
-	use Illuminate\Auth\Access\HandlesAuthorization;
+    use App\User;
+    use App\Task;
+    use Illuminate\Auth\Access\HandlesAuthorization;
 
-	class TaskPolicy
-	{
-	    use HandlesAuthorization;
+    class TaskPolicy
+    {
+        use HandlesAuthorization;
 
-	    /**
-	     * Determine if the given user can delete the given task.
-	     *
-	     * @param  User  $user
-	     * @param  Task  $task
-	     * @return bool
-	     */
-	    public function destroy(User $user, Task $task)
-	    {
-	        return $user->id === $task->user_id;
-	    }
-	}
+        /**
+         * Determine if the given user can delete the given task.
+         *
+         * @param  User  $user
+         * @param  Task  $task
+         * @return bool
+         */
+        public function destroy(User $user, Task $task)
+        {
+            return $user->id === $task->user_id;
+        }
+    }
 
 Finally, we need to associate our `Task` model with our `TaskPolicy`. We can do this by adding a line in the `app/Providers/AuthServiceProvider.php` file's `$policies` property. This will inform Laravel which policy should be used whenever we try to authorize an action on a `Task` instance:
 
