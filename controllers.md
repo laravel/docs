@@ -6,6 +6,7 @@
 - [RESTful Resource Controllers](#restful-resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
     - [Naming Resource Routes](#restful-naming-resource-routes)
+    - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
     - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
 - [Route Caching](#route-caching)
@@ -148,6 +149,36 @@ By default, all resource controller actions have a route name; however, you can 
     Route::resource('photo', 'PhotoController', ['names' => [
         'create' => 'photo.build'
     ]]);
+
+<a name="restful-naming-resource-route-parameters"></a>
+#### Naming Resource Route Parameters
+
+By default, `Route::resource` will create the route parameters for your resource routes based on the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. You may use an associative array of resource names to parameter names or the word 'singular' which will make the parameter names singular.
+
+    Route::resource('foos' 'FooController', ['parameters' => [
+        'foos' => 'bar'
+    ]]);
+
+    Route::resource('users.photos', 'PhotoController', ['parameters' => 'singular']);
+
+This will generate the following URIs for the `show` routes for those resources.
+
+    /foos/{bar}
+    /users/{user}/photos/{photo}
+
+You may also set your resource route parameters to be singular globally, as well as set a global map for your resource names to parameter names.
+
+    Route::singularResourceParameters();
+
+    Route::resourceParameters([
+        'users' => 'person', 'photos' => 'image'
+    ]);
+
+Parameter naming priority:
+1. Parameters passed to `Route::resource`.
+2. Global resource parameter mapping set via `Route::resourceParameters`.
+3. Singular setting, passed via the options array to `Route::resource` or set via `Route::singularResourceParameters`.
+4. Resource name. (Default behavior)
 
 <a name="restful-supplementing-resource-controllers"></a>
 #### Supplementing Resource Controllers
