@@ -424,6 +424,24 @@ You may also retrieve the owner of a polymorphic relation from the polymorphic m
 
 The `imageable` relation on the `Photo` model will return either a `Staff` or `Product` instance, depending on which type of model owns the photo.
 
+#### Custom Polymorphic Types
+
+By default, Laravel will use the fully qualified class name to store the type of the related model. For instance, given the above exmaple where a `like` may belong to a `Post` or a `Comment`, the default `likable_type` would be either `App\Post` or `App\Comment`, respectively. However, you may wish to decouple your database from your application's internal structure. In that case, you can use the relationship morph map to have Eloquent use the table name associated with each model:
+
+    Relation::morphMap([
+        App\Post::class,
+        App\Comment::class,
+    ]);
+    
+Alternatively, you may also specify a string to associate with each model.
+
+    Relation::morphMap([
+        'posts' => App\Post::class,
+        'likes' => App\Like::class,
+    ]);
+    
+You may register the `morphMap` in your `AppServiceProvider` or create a separate service provider for them.
+
 <a name="many-to-many-polymorphic-relations"></a>
 ### Many To Many Polymorphic Relations
 
