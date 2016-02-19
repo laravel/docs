@@ -131,7 +131,7 @@ The `download` method may be used to generate a response that forces the user's 
 <a name="file-responses"></a>
 #### File Responses
 
-The `file` method can be used to display the raw contents of a file in the user's browser, such as an image file, or a PDF. This method takes the path to the file as its first argument, and allows for you to pass through an array of HTTP headers for the second argument:
+The `file` method can be used to display the a file, such as an image or PDF, directly in the user's browser instead of initiating a download. This method accepts the path to the file as its first argument and an array of headers as its second argument:
 
     return response()->file($pathToFile);
 
