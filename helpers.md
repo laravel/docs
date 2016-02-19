@@ -754,7 +754,7 @@ The `dd` function dumps the given variable and ends execution of the script:
 
     dd($value);
     
-If you do not want to halt the execution of your script, try use the `dump` function included from Symfony instead. 
+If you do not want to halt the execution of your script, try using the `dump` function included with Symfony instead.
 
 
 <a name="method-dispatch"></a>
