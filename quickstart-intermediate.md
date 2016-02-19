@@ -253,7 +253,7 @@ Now, all we have to do is add the authentication routes to our routes file. We c
 
 Once the `auth` routes are registered, verify that the `$redirectTo` property on the `app/Http/Controllers/Auth/AuthController` controller is set to '/tasks':
 
-	protected $redirectTo = 'tasks';
+	protected $redirectTo = '/tasks';
 
 <a name="the-task-controller"></a>
 ### The Task Controller
