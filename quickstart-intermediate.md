@@ -255,6 +255,10 @@ Once the `auth` routes are registered, verify that the `$redirectTo` property on
 
 	protected $redirectTo = '/tasks';
 
+It is also necessary to update `app/Middleware/RedirectIfAuthenticated.php`
+
+	return redirect('/tasks');
+
 <a name="the-task-controller"></a>
 ### The Task Controller
 
