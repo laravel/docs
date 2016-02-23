@@ -189,7 +189,8 @@ In this example, we used a traditional form to send data to the application. How
 Validating array form input fields doesn't have to be a pain. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
 
     $validator = Validator::make($request->all(), [
-        'person.*.email' => 'email|unique:users'
+        'person.*.email' => 'email|unique:users',
+        'person.*.first_name' => 'required_with:person.*.last_name',
     ]);
 
 Likewise, you may use the `*` character when specifying your validation messages in your language files, making it a breeze to use a single validation message for array based fields:
