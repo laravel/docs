@@ -30,6 +30,9 @@ When using the `database` cache driver, you will need to setup a table to contai
         $table->text('value');
         $table->integer('expiration');
     });
+    
+    
+You can also use the `php artisan cache:table` command to generate the schema.
 
 #### Memcached
 
