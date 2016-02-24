@@ -49,6 +49,10 @@ For more information on custom authentication providers, consult the [full authe
 
 The `loginPath()` method has been removed from `Illuminate\Foundation\Auth\AuthenticatesUsers`, so placing a `$loginPath` variable in your `AuthController` is no longer required. By default, the trait will always redirect users back to their previous location on authentication errors.
 
+#### Middlewares
+
+Authentication default middlewares have been updated. Replace `App\Http\Middleware\Authenticate` and `App\Http\Middleware\RedirectIfAuthenticated` with [App\Http\Middleware\Authenticate.php](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/Authenticate.php) and [App\Http\Middleware\RedirectIfAuthenticated](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/RedirectIfAuthenticated.php).
+
 ### Authorization
 
 The `Illuminate\Auth\Access\UnauthorizedException` has been renamed to `Illuminate\Auth\Access\AuthorizationException`. This is unlikely to affect your application if you are not manually catching this exception.
