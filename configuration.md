@@ -40,6 +40,8 @@ Your `.env` file should not be committed to your application's source control, s
 
 If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting place-holder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
+> **Note:** If you find that changing your `APP_ENV` and `APP_DEBUG` settings in your .env file seemingly have no effect, know that when using [Homestead](/docs/{{version}}/homestead) these two settings are also configured in the file `/etc/php/7.0/fpm/php-fpm.conf` on your Homestead box and is used instead of the corresponding settings in your .env file.
+
 <a name="determining-the-current-environment"></a>
 ### Determining The Current Environment
 
