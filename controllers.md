@@ -153,32 +153,38 @@ By default, all resource controller actions have a route name; however, you can 
 <a name="restful-naming-resource-route-parameters"></a>
 #### Naming Resource Route Parameters
 
-By default, `Route::resource` will create the route parameters for your resource routes based on the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. You may use an associative array of resource names to parameter names or the word 'singular' which will make the parameter names singular.
+By default, `Route::resource` will create the route parameters for your resource routes based on the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. The `parameters` array should be an associative array of resource names and parameter names:
 
-    Route::resource('foos' 'FooController', ['parameters' => [
-        'foos' => 'bar'
+    Route::resource('user' 'AdminUserController', ['parameters' => [
+        'user' => 'admin_user'
     ]]);
 
-    Route::resource('users.photos', 'PhotoController', ['parameters' => 'singular']);
+ The example above generates the following URIs for the resource's `show` route:
 
-This will generate the following URIs for the `show` routes for those resources.
+    /user/{admin_user}
 
-    /foos/{bar}
-    /users/{user}/photos/{photo}
+Instead of passing an array of parameter names, you may also simply pass the word `singular` to instruct Laravel to use the default parameter names, but "singularize" them:
 
-You may also set your resource route parameters to be singular globally, as well as set a global map for your resource names to parameter names.
+    Route::resource('users.photos', 'PhotoController', [
+        'parameters' => 'singular'
+    ]);
+
+    // /users/{user}/photos/{photo}
+
+Alternatively, you may set your resource route parameters to be globally singular or set a global mapping for your resource parameter names:
 
     Route::singularResourceParameters();
 
     Route::resourceParameters([
-        'users' => 'person', 'photos' => 'image'
+        'user' => 'person', 'photo' => 'image'
     ]);
 
-Parameter naming priority:
-1. Parameters passed to `Route::resource`.
-2. Global resource parameter mapping set via `Route::resourceParameters`.
-3. Singular setting, passed via the options array to `Route::resource` or set via `Route::singularResourceParameters`.
-4. Resource name. (Default behavior)
+When customizing resource parameters, it's important to keep the naming priority in mind:
+
+1. The parameters explicitly passed to `Route::resource`.
+2. The global parameter mappings set via `Route::resourceParameters`.
+3. The `singular` setting passed via the `parameters` array to `Route::resource` or set via `Route::singularResourceParameters`.
+4. The default behavior.
 
 <a name="restful-supplementing-resource-controllers"></a>
 #### Supplementing Resource Controllers
