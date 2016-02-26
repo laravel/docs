@@ -642,7 +642,7 @@ You may also pass `NULL` or `NOT_NULL` to the "where" clause:
 <a name="rule-filled"></a>
 #### filled
 
-The field under validation must be not empty only if it is present.
+The field under validation must not be empty when it is present.
 
 <a name="rule-image"></a>
 #### image
