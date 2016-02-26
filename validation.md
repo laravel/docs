@@ -504,6 +504,8 @@ Below is a list of all available validation rules and their function:
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
 [Regular Expression](#rule-regex)
+[Present](#rule-present)
+[Filled](#rule-filled)
 [Required](#rule-required)
 [Required If](#rule-required-if)
 [Required Unless](#rule-required-unless)
@@ -701,6 +703,16 @@ The field under validation must be numeric.
 The field under validation must match the given regular expression.
 
 **Note:** When using the `regex` pattern, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
+
+<a name="rule-present"></a>
+#### Present
+
+The field under validation must be present in the input data but can be empty.
+
+<a name="rule-filled"></a>
+#### Filled
+
+The field under validation must be not empty only if it is present.
 
 <a name="rule-required"></a>
 #### required
