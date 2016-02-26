@@ -420,7 +420,7 @@ Você também pode criar uma Collection de vários models ou criar models de um 
 
 #### Persistindo Factory Models
 
-O método `create` não cria somente instância do model, mas també msalva eles na basededados usando o método `save` do Eloquent:
+O método `create` não cria somente instância do model, mas também salva eles na base de dados usando o método `save` do Eloquent:
 
     public function testDatabase()
     {
