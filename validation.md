@@ -491,6 +491,7 @@ Below is a list of all available validation rules and their function:
 [Different](#rule-different)
 [Digits](#rule-digits)
 [Digits Between](#rule-digits-between)
+[Distinct](#rule-distinct)
 [E-Mail](#rule-email)
 [Exists (Database)](#rule-exists)
 [Filled](#rule-filled)
@@ -606,6 +607,13 @@ The field under validation must be _numeric_ and must have an exact length of _v
 #### digits_between:_min_,_max_
 
 The field under validation must have a length between the given _min_ and _max_.
+
+<a name="rule-distinct"></a>
+#### distinct
+
+When working with arrays, the field under validation must have unique values.
+
+    'foo.*.id' => 'distinct'
 
 <a name="rule-email"></a>
 #### email
