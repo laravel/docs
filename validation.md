@@ -493,6 +493,7 @@ Below is a list of all available validation rules and their function:
 [Digits Between](#rule-digits-between)
 [E-Mail](#rule-email)
 [Exists (Database)](#rule-exists)
+[Filled](#rule-filled)
 [Image (File)](#rule-image)
 [In](#rule-in)
 [Integer](#rule-integer)
@@ -503,9 +504,8 @@ Below is a list of all available validation rules and their function:
 [Min](#rule-min)
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
-[Regular Expression](#rule-regex)
 [Present](#rule-present)
-[Filled](#rule-filled)
+[Regular Expression](#rule-regex)
 [Required](#rule-required)
 [Required If](#rule-required-if)
 [Required Unless](#rule-required-unless)
@@ -639,6 +639,11 @@ You may also pass `NULL` or `NOT_NULL` to the "where" clause:
 
     'email' => 'exists:staff,email,deleted_at,NOT_NULL'
 
+<a name="rule-filled"></a>
+#### filled
+
+The field under validation must be not empty only if it is present.
+
 <a name="rule-image"></a>
 #### image
 
@@ -697,22 +702,17 @@ The field under validation must not be included in the given list of values.
 
 The field under validation must be numeric.
 
+<a name="rule-present"></a>
+#### present
+
+The field under validation must be present in the input data but can be empty.
+
 <a name="rule-regex"></a>
 #### regex:_pattern_
 
 The field under validation must match the given regular expression.
 
 **Note:** When using the `regex` pattern, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
-
-<a name="rule-present"></a>
-#### present
-
-The field under validation must be present in the input data but can be empty.
-
-<a name="rule-filled"></a>
-#### filled
-
-The field under validation must be not empty only if it is present.
 
 <a name="rule-required"></a>
 #### required
