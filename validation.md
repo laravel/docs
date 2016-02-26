@@ -705,12 +705,12 @@ The field under validation must match the given regular expression.
 **Note:** When using the `regex` pattern, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
 
 <a name="rule-present"></a>
-#### Present
+#### present
 
 The field under validation must be present in the input data but can be empty.
 
 <a name="rule-filled"></a>
-#### Filled
+#### filled
 
 The field under validation must be not empty only if it is present.
 
