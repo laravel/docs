@@ -611,7 +611,7 @@ The field under validation must have a length between the given _min_ and _max_.
 <a name="rule-distinct"></a>
 #### distinct
 
-When working with arrays, the field under validation must have unique values.
+When working with arrays, the field under validation must not have any duplicate values.
 
     'foo.*.id' => 'distinct'
 
