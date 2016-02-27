@@ -326,7 +326,7 @@ A query acima produzirá o seguinte SQL:
     )
 
 <a name="ordering-grouping-limit-and-offset"></a>
-## Ordenar, Agrupar, Limitar, & Deslocamento (Offset)
+## Ordenando, Agrupando, usando Limit e Offset
 
 #### orderBy
 
