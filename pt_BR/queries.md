@@ -12,7 +12,7 @@
 - [Inserts](#inserts)
 - [Updates](#updates)
 - [Deletes](#deletes)
-- [Pessimistic Locking](#pessimistic-locking)
+- [Bloqueio Pessimista](#pessimistic-locking)
 
 <a name="introduction"></a>
 ## Introdução
@@ -50,7 +50,7 @@ Para começar uma consulta utilize o método `table` do facade `DB`. O método `
         }
     }
 
-Assim como utilizar [SQL puro](/docs/{{version}}/database), o método `get` retorna um `array` de resultados onde cada um é um objeto da classe PHP `StdClass`. Você pode acessar o valor de cada coluna da tabela como uma propriedade do objeto, que possui o mesmo nome da coluna:
+Da mesma forma de quando se utiliza [SQL puro](/docs/{{version}}/database), o método `get` retorna um `array` de resultados onde cada resultado é uma instância da classe PHP `StdClass`. Você pode acessar o valor de cada coluna através da propriedade do objeto, que possui o mesmo nome da coluna:
 
     foreach ($users as $user) {
         echo $user->name;
@@ -58,7 +58,7 @@ Assim como utilizar [SQL puro](/docs/{{version}}/database), o método `get` reto
 
 #### Recuperando Um Único Registro / Coluna De Uma Tabela
 
-Se você precisar recuperar um único registro de uma tabela do banco, você pode utilizar o método `first` . Este método irá retornar um único objeto `StdClass`:
+Se você precisar recuperar um único registro de uma tabela do banco de dados, você pode utilizar o método `first` . Este método irá retornar um único objeto `StdClass`:
 
     $user = DB::table('users')->where('name', 'John')->first();
 
@@ -129,7 +129,7 @@ Você nem sempre precisará recuperar todas as colunas de sua tabela. Usando o m
 
     $users = DB::table('users')->select('name', 'email as user_email')->get();
 
-O método `distinct` possibilita que você obrigue a query a retornar resultados distintos:
+O método `distinct` possibilita que você obrigue a query a retornar apenas resultados distintos:
 
     $users = DB::table('users')->distinct()->get();
 
@@ -215,7 +215,7 @@ Por exemplo, aqui temos uma consulta que verifica se o valor da coluna "votes" �
 
     $users = DB::table('users')->where('votes', '=', 100)->get();
 
-Por conveniência, se você quer simplesmente verificar se uma coluna é igual a um valor , pode passar o valor diretamente no segundo parâmetro do método `where`, suprimindo o operador:
+Por conveniência, se você quer simplesmente verificar se uma coluna é igual a um valor, pode passar o valor diretamente no segundo parâmetro do método `where`, suprimindo o operador:
 
     $users = DB::table('users')->where('votes', 100)->get();
 
@@ -281,7 +281,7 @@ O método `whereNull` verifica se o valor da coluna informada é `NULL`:
                         ->whereNull('updated_at')
                         ->get();
 
-O método `whereNotNull` verifica se o valor da coluna informada **not** é `NULL`:
+O método `whereNotNull` verifica se o valor da coluna informada **não** é `NULL`:
 
     $users = DB::table('users')
                         ->whereNotNull('updated_at')
@@ -345,7 +345,7 @@ Os métodos `groupBy` e `having` podem ser usados para agrupar resultados da con
                     ->having('account_id', '>', 100)
                     ->get();
 
-O método `havingRaw` pode ser usado para executar um comando SQL passando-o como parâmetro da cláusula `having`. Por exemplo, nós podemos recuperar todos os departamentos com vendas maiores que $2,500:
+O método `havingRaw` pode ser usado para executar um comando SQL passando-o como parâmetro da cláusula `having`. Por exemplo, nós podemos recuperar todos os departamentos com vendas maiores que $2.500:
 
     $users = DB::table('orders')
                     ->select('department', DB::raw('SUM(price) as total_sales'))
@@ -377,18 +377,18 @@ Se precisar inserir muitos registros em uma tabela você pode chamar o método `
 
 #### IDs com Incremento Automático
 
-Se a tabela possuir uma coluna id auto-increment, utilize o método `insertGetId` para inserir um registro e recuperar o id:
+Se a tabela possuir uma coluna id auto-incrementada, utilize o método `insertGetId` para inserir um registro e recuperar o id:
 
     $id = DB::table('users')->insertGetId(
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-> **Nota:** Ao utilizar PostgreSQL o método insertGetId espera que a coluna com nome `id` seja auto increment. If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
+> **Nota:** Ao utilizar PostgreSQL o método insertGetId espera que a coluna com auto incremento seja chamada `id`. Se você gostaria de recuperar a ID de uma "sequência" diferente, você deverá passar o nome da sequência como o segundo parâmetro para o método `insertGetId`.
 
 <a name="updates"></a>
 ## Updates
 
-Assim como inserir dados no banco, a query builder também pode atualizar registros usando o método `update`. O método `update`, assim como o método `insert`, aceita um array de colunas e valores a serem atualizados. Você pode criar regras em consultas `update` usando cláusulas `where`:
+Assim como inserir dados no banco, a query builder também pode atualizar registros usando o método `update`. O método `update`, assim como o método `insert`, aceita um array de colunas e valores a serem atualizados. Você pode criar restringir a query `update` usando cláusulas `where`:
 
     DB::table('users')
                 ->where('id', 1)
@@ -396,9 +396,10 @@ Assim como inserir dados no banco, a query builder também pode atualizar regist
 
 #### Increment / Decrement
 
-A query builder fornece muitos métodos para aumentar ou diminuir o valor de uma determinada coluna. Isto é simplesmente um atalho, provendo uma interface mais espressiva comparada a escrever manualmente uma condição `update`.
+A query builder também provê métodos convenientes para incrementar e decrementar o valor de uma determinada coluna. Isso é apenas um atalho, fornecendo uma interface mais expressiva e concisa quando comparada a manualmente escrever uma cláusula `update`.
 
-Ambos os métodos precisam de um argumento: a coluna a ser modificada. O segundo parâmetro é opcional e controla a quantia que a coluna será acrescida / diminuída.
+Ambos os métodos aceitam pelo menos um argumento: a coluna que se deseja modificar. Um segundo argumento pode ser passado opcionalmente para se informar o valor com o qual a coluna deverá ser incrementada / decrementada.
+
 
     DB::table('users')->increment('votes');
 
@@ -419,7 +420,7 @@ A query builder também pode ser usada para deletar registros de uma tabela atra
 
     DB::table('users')->delete();
 
-Você pode customizar as regras do `delete` acrescentando cláusulas `where` antes de chamar o método `delete`:
+Você pode especificar as regras do `delete` acrescentando cláusulas `where` antes de chamar o método `delete`:
 
     DB::table('users')->where('votes', '<', 100)->delete();
 
@@ -428,12 +429,12 @@ Se precisar truncar uma tabela, remover todos os registros e resetar as colunas 
     DB::table('users')->truncate();
 
 <a name="pessimistic-locking"></a>
-## Pessimistic Locking
+## Bloqueio Pessimista
 
-A query builder inclui também algumas funções para ajudá-lo a "pessimistic locking" nas suas cláusulas `select`. Para executar uma cláusula com "shared lock" você pode utilizar o método `sharedLock` na consulta. A shared lock previne que os registros selecionados sejam modificados until your transaction commits:
+A query builder também inclui algumas funções para lhe ajudar a realizar um "bloqueio pessimista" nas suas declarações `select`. Para executar uma sentença com um "bloqueio compartilhado", você pode usar o método `sharedLock` na consulta. Um bloqueio compartilhado previne que as linhas selecionadas sejam modificadas até que a sua transação seja efetivada (commited):
 
     DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 
-Alternativamente, você pode utilizar o método `lockForUpdate`. A "for update" lock previne que registros sejam modificados ou sejam selecionados em outra shared lock:
+Alternativamente, você pode utilizar o método `lockForUpdate`. Um bloqueio "para atualização" previne que as linhas sejam modificadas ou de serem selecionadas através de outro bloqueio compartilhado:
 
     DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
