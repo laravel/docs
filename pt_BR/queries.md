@@ -12,7 +12,7 @@
 - [Inserts](#inserts)
 - [Updates](#updates)
 - [Deletes](#deletes)
-- [Pessimistic Locking](#pessimistic-locking)
+- [Bloqueio Pessimista](#pessimistic-locking)
 
 <a name="introduction"></a>
 ## Introdução
@@ -288,11 +288,11 @@ O método `whereNotNull` verifica se o valor da coluna informada **not** é `NUL
                         ->get();
 
 <a name="advanced-where-clauses"></a>
-## Advanced Where Clauses
+## Cláusulas Where Avançadas
 
-#### Parameter Grouping
+#### Agrupar parâmetros
 
-Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well. To get started, let's look at an example of grouping constraints within parenthesis:
+Algumas vezes você pode precisar criar cláusulas where mais avançadas, como as "where exists", ou o criar agrupamentos de parâmetros. O Laravel query builder tem a capacidade de realizar isso também. Para iniciar, vamos ver um exemplo de agrupamento de restrições dentro de parênteses:
 
     DB::table('users')
                 ->where('name', '=', 'John')
@@ -302,13 +302,13 @@ Sometimes you may need to create more advanced where clauses such as "where exis
                 })
                 ->get();
 
-As you can see, passing `Closure` into the `orWhere` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
+Como você pode ver, passando uma `Closure` para o método `orWhere` instrui o query builder a iniciar um agrupamento de restrições de restrições. A `Closure` receberá uma instância da query builder a qual você poderá utilizar para definir as restrições que deverão estar contidas no agrupamento entre parênteses. O exemplo acima produzirá a seguinte comando SQL:
 
     select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
-#### Exists Statements
+#### Sentença Exists 
 
-The `whereExists` method allows you to write `where exist` SQL clauses. The `whereExists` method accepts a `Closure` argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
+O método `whereExists` permite que você escreva uma cláusula SQL `where exist`. O método `whereExists` aceita um argumento `Closure`, que receberá uma instância de query builder, permitindo que você defina a query que deverá ser colocada dentro da cláusula "exists":
 
     DB::table('users')
                 ->whereExists(function ($query) {
@@ -318,7 +318,7 @@ The `whereExists` method allows you to write `where exist` SQL clauses. The `whe
                 })
                 ->get();
 
-The query above will produce the following SQL:
+A query acima produzirá o seguinte SQL:
 
     select * from users
     where exists (
@@ -326,11 +326,11 @@ The query above will produce the following SQL:
     )
 
 <a name="ordering-grouping-limit-and-offset"></a>
-## Ordering, Grouping, Limit, & Offset
+## Ordenar, Agrupar, Limitar, & Deslocamento (Offset)
 
 #### orderBy
 
-The `orderBy` method allows you to sort the result of the query by a given column. The first argument to the `orderBy` method should be the column you wish to sort by, while the second argument controls the direction of the sort and may be either `asc` or `desc`:
+O método `orderBy` permite que você ordene o resultado de uma query por uma determinada coluna. O primeiro argumento para o método `orderBy` deverá ser a coluna que você deseja que seja utilizada para ordenar, enquanto que o segundo argumento controlará a direção da ordem e pode ser `asc` ou `desc`:
 
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
@@ -338,14 +338,15 @@ The `orderBy` method allows you to sort the result of the query by a given colum
 
 #### groupBy / having / havingRaw
 
-The `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
+Os métodos `groupBy` e `having` podem ser utilizados para agrupar os resultados da query. A assinatura do método `having` é similar ao do método `where`:
 
     $users = DB::table('users')
                     ->groupBy('account_id')
                     ->having('account_id', '>', 100)
                     ->get();
 
-The `havingRaw` method may be used to set a raw string as the value of the `having` clause. For example, we can find all of the departments with sales greater than $2,500:
+
+O métod `havingRaw` pode ser utilizado para definir um texto puro como um valor para a cláusula `having`. Por exemplo, nóes podemos encontrar todos os departamentos com vendas acima de $2.500:
 
     $users = DB::table('orders')
                     ->select('department', DB::raw('SUM(price) as total_sales'))
@@ -355,50 +356,50 @@ The `havingRaw` method may be used to set a raw string as the value of the `havi
 
 #### skip / take
 
-To limit the number of results returned from the query, or to skip a given number of results in the query (`OFFSET`), you may use the `skip` and `take` methods:
+Para limitar o número de resultados retornados da query, ou para saltar uma quantidade definida de resultados na query (`OFFSET`), você pode ustilizar os métodos `skip` e `take`:
 
     $users = DB::table('users')->skip(10)->take(5)->get();
 
 <a name="inserts"></a>
 ## Inserts
 
-The query builder also provides an `insert` method for inserting records into the database table. The `insert` method accepts an array of column names and values to insert:
+A query builder também provê um método `insert` para adicionar registros à tabela do banco de dados. O método `insert` aceita um array de nomes de colunas e valores a inserir:
 
     DB::table('users')->insert(
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-You may even insert several records into the table with a single call to `insert` by passing an array of arrays. Each array represents a row to be inserted into the table:
+Voce pode até inserir vários registros na tabela com uma única chamada ao método `insert` passando um array de arrays. Cada array representa uma linha a ser inserida na tabela:
 
     DB::table('users')->insert([
         ['email' => 'taylor@example.com', 'votes' => 0],
         ['email' => 'dayle@example.com', 'votes' => 0]
     ]);
 
-#### Auto-Incrementing IDs
+#### IDs auto-incrementadas
 
-If the table has an auto-incrementing id, use the `insertGetId` method to insert a record and then retrieve the ID:
+Se a tabela possui uma id auto-incrementada, utilize o método `insertGetId` para inserir o registro e então extraia a ID:
 
     $id = DB::table('users')->insertGetId(
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
+> **Nota:** Quando estiver usando o PostgreSQL o método `insertGetId` espera uma coluna auto-incrementada com o nome `id`. Se você gostaria de recuperar a ID de uma "sequence" diferente, você deve passar o nome da "sequence" como o segundo parâmetro do método `insertGetId`.
 
 <a name="updates"></a>
 ## Updates
 
-Of course, in addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs containing the columns to be updated. You may constrain the `update` query using `where` clauses:
+Claro, adicionalmente à inserção de registros no banco de dados, a query builder pode também atualizar registros existentes utilizando o método `update`. O método `update`, da mesma forma que o método `insert`, aceita um array de pares de colunas e valores contendo as colunas a serem atualizadas. Você pode restringir a query de `update` utilizando uma cláusula `where`:
 
     DB::table('users')
                 ->where('id', 1)
                 ->update(['votes' => 1]);
 
-#### Increment / Decrement
+#### Incremento / Decremento
 
-The query builder also provides convenient methods for incrementing or decrementing the value of a given column. This is simply a short-cut, providing a more expressive and terse interface compared to manually writing the `update` statement.
+A query builder também provê métodos convenientes para incrementar e decrementar o valor de uma determinada coluna. Isso é apenas um atalho, fornecendo uma interface mais expressiva e concisa quando comparada a manualmente escrever uma cláusula `update`.
 
-Both of these methods accept at least one argument: the column to modify. A second argument may optionally be passed to control the amount by which the column should be incremented / decremented.
+Ambos os métodos aceitam pelo menos um argumento: a coluna que se deseja modificar. Um segundo argumento pode ser passado opcionalmente para se informar o valor com o qual a coluna deverá ser incrementada / decrementada.
 
     DB::table('users')->increment('votes');
 
@@ -408,32 +409,32 @@ Both of these methods accept at least one argument: the column to modify. A seco
 
     DB::table('users')->decrement('votes', 5);
 
-You may also specify additional columns to update during the operation:
+Você pode também especificar colunas adicionais para serem atualizadas durante a operação:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
 <a name="deletes"></a>
-## Deletes
+## Exclusões
 
-Of course, the query builder may also be used to delete records from the table via the `delete` method:
+Naturalmente, a query builder pode também ser utilizada para excluir registros de uma tabela através do método `delete`:
 
     DB::table('users')->delete();
 
-You may constrain `delete` statements by adding `where` clauses before calling the `delete` method:
+Você pode restringir as sentenças `delete` adicionando cláusulas `where` antes de chamar o método `delete`:
 
     DB::table('users')->where('votes', '<', 100)->delete();
 
-If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to zero, you may use the `truncate` method:
+Se você deseja truncar a tabela inteira, o que removerá todas as linhas e reinicializará a ID auto-incrementada para zero, você poderá utilizar o método `truncate`:
 
     DB::table('users')->truncate();
 
 <a name="pessimistic-locking"></a>
-## Pessimistic Locking
+## Bloqueio Pessimista
 
-The query builder also includes a few functions to help you do "pessimistic locking" on your `select` statements. To run the statement with a "shared lock", you may use the `sharedLock` method on a query. A shared lock prevents the selected rows from being modified until your transaction commits:
+A query builder também inclui algumas funções para lhe ajudar a realizar um "bloqueio pessimista" nas suas declarações `select`. Para executar uma sentença com um "bloqueio compartilhado", você pode usar o método `sharedLock` na query. Um bloqueio compartilhado previne que as linhas selecionadas sejam modificadas até que a sua transação seja efetivada (commited):
 
     DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 
-Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the rows from being modified or from being selected with another shared lock:
+Alternativamente, você pode utilizar o método `lockForUpdate`. Um bloqueio "para atualização" previne que as linhas sejam modificadas ou de serem selecionadas através de outro bloqueio compartilhado:
 
     DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
