@@ -2,7 +2,7 @@
 
 - [Relatórios de Bug](#bug-reports)
 - [Discussões de Desenvolvimento do Core](#core-development-discussion)
-- [Quais Branches?](#which-branch)
+- [Qual Branch?](#which-branch)
 - [Vunerabilidades de Segurança](#security-vulnerabilities)
 - [Estilo de Código](#coding-style)
 
