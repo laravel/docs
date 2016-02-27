@@ -338,7 +338,7 @@ O método `orderBy` permite que você ordene o resultado de uma query por uma de
 
 #### groupBy / having / havingRaw
 
-Os métodos `groupBy` e `having` podem ser utilizados para agrupar os resultados da query. A assinatura do método `having` é similar ao do método `where`:
+Os métodos `groupBy` e `having` podem ser utilizados para agrupar os resultados da query. A assinatura do método `having` é similar à do método `where`:
 
     $users = DB::table('users')
                     ->groupBy('account_id')
@@ -346,7 +346,7 @@ Os métodos `groupBy` e `having` podem ser utilizados para agrupar os resultados
                     ->get();
 
 
-O métod `havingRaw` pode ser utilizado para definir um texto puro como um valor para a cláusula `having`. Por exemplo, nóes podemos encontrar todos os departamentos com vendas acima de $2.500:
+O método `havingRaw` pode ser utilizado para definir um texto puro como um valor para a cláusula `having`. Por exemplo, nós podemos encontrar todos os departamentos com vendas acima de $2.500:
 
     $users = DB::table('orders')
                     ->select('department', DB::raw('SUM(price) as total_sales'))
@@ -356,20 +356,20 @@ O métod `havingRaw` pode ser utilizado para definir um texto puro como um valor
 
 #### skip / take
 
-Para limitar o número de resultados retornados da query, ou para saltar uma quantidade definida de resultados na query (`OFFSET`), você pode ustilizar os métodos `skip` e `take`:
+Para limitar o número de resultados retornados da query, ou para saltar uma quantidade definida de resultados na query (`OFFSET`), você pode utilizar os métodos `skip` e `take`:
 
     $users = DB::table('users')->skip(10)->take(5)->get();
 
 <a name="inserts"></a>
 ## Inserts
 
-A query builder também provê um método `insert` para adicionar registros à tabela do banco de dados. O método `insert` aceita um array de nomes de colunas e valores a inserir:
+A query builder também provê um método `insert` para adicionar registros à tabela do banco de dados. O método `insert` aceita um array de nomes de colunas e valores que desejamos incluir:
 
     DB::table('users')->insert(
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-Voce pode até inserir vários registros na tabela com uma única chamada ao método `insert` passando um array de arrays. Cada array representa uma linha a ser inserida na tabela:
+Você pode até inserir vários registros na tabela com uma única chamada ao método `insert` passando um array de arrays. Cada array representa uma linha a ser incluída na tabela:
 
     DB::table('users')->insert([
         ['email' => 'taylor@example.com', 'votes' => 0],
@@ -378,7 +378,7 @@ Voce pode até inserir vários registros na tabela com uma única chamada ao mé
 
 #### IDs auto-incrementadas
 
-Se a tabela possui uma id auto-incrementada, utilize o método `insertGetId` para inserir o registro e então extraia a ID:
+Se a tabela possui uma id auto-incrementada, utilize o método `insertGetId` para inserir o registro e então retornar a ID:
 
     $id = DB::table('users')->insertGetId(
         ['email' => 'john@example.com', 'votes' => 0]
@@ -389,7 +389,7 @@ Se a tabela possui uma id auto-incrementada, utilize o método `insertGetId` par
 <a name="updates"></a>
 ## Updates
 
-Claro, adicionalmente à inserção de registros no banco de dados, a query builder pode também atualizar registros existentes utilizando o método `update`. O método `update`, da mesma forma que o método `insert`, aceita um array de pares de colunas e valores contendo as colunas a serem atualizadas. Você pode restringir a query de `update` utilizando uma cláusula `where`:
+Claro, complementarmente à inserção de registros no banco de dados, a query builder também pode atualizar registros existentes com o método `update`. O método `update`, da mesma forma que o método `insert`, aceita um array de pares de colunas e valores contendo as colunas a serem atualizadas. Você pode restringir a query de `update` utilizando uma cláusula `where`:
 
     DB::table('users')
                 ->where('id', 1)
