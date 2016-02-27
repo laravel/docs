@@ -330,7 +330,7 @@ A query acima produzirá o seguinte SQL:
 
 #### orderBy
 
-O método `orderBy` permite que você ordene o resultado de uma query por uma determinada coluna. O primeiro argumento para o método `orderBy` deverá ser a coluna que você deseja que seja utilizada para ordenar, enquanto que o segundo argumento controlará a direção da ordem e pode ser `asc` ou `desc`:
+O método `orderBy` permite que você ordene o resultado de uma query por uma determinada coluna. O primeiro argumento para o método `orderBy` será a coluna que você utilizará para ordenar, enquanto que o segundo argumento controlará a direção da ordem e pode ser `asc` ou `desc`:
 
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
