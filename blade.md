@@ -173,9 +173,9 @@ When using loops you might need to end the loop or skip the current iteration:
         @if($user->type == 1)
             @continue
         @endif
-        
+
         <li>{{ $user->name }}</li>
-        
+
         @if($user->number == 5)
             @break
         @endif
@@ -183,9 +183,13 @@ When using loops you might need to end the loop or skip the current iteration:
 
 You may also include the condition with the directive declaration in one line:
 
-    @continue($user->type == 1)
-    
-    @break($user->number == 5)
+    @foreach ($users as $user)
+        @continue($user->type == 1)
+
+        <li>{{ $user->name }}</li>
+
+        @break($user->number == 5)
+    @endforeach
 
 #### Including Sub-Views
 
