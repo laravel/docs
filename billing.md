@@ -75,7 +75,7 @@ Finally, set your Stripe key in your `services.php` configuration file:
 
     'stripe' => [
         'model'  => App\User::class,
-        'secret' => env('STRIPE_API_SECRET'),
+        'secret' => env('STRIPE_SECRET'),
     ],
 
 <a name="subscriptions"></a>
