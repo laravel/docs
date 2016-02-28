@@ -285,7 +285,7 @@ Laravel route model binding provides a convenient way to inject model instances 
 
 ### Implicit Binding
 
-Laravel will automatically resolve type-hinted Eloquent model's defined in routes or controller actions whose variable names match a route segment name. For example:
+Laravel will automatically resolve type-hinted Eloquent models defined in routes or controller actions whose variable names match a route segment name. For example:
 
     Route::get('api/users/{user}', function (App\User $user) {
         return $user->email;
