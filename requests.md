@@ -87,6 +87,10 @@ To get the full URL, not just the path info, you may use the `url` or `fullUrl` 
     // With Query String...
     $url = $request->fullUrl();
 
+You may also get the full URL after appending query parameters, so if the request is targeted at `http://domain.com/foo`, the following method will return `http://domain.com/foo?bar=baz`:
+
+    $url = $request->fullUrlWithQuery(['bar' => 'baz']);
+
 #### Retrieving The Request Method
 
 The `method` method will return the HTTP verb for the request. You may also use the `isMethod` method to verify that the HTTP verb matches a given string:
