@@ -378,6 +378,10 @@ If you are overriding the `formatValidationErrors` method on your base controlle
 
 Likewise, if you are overriding the `formatErrors` method on the base form request class, you should now type-hint `Illuminate\Contracts\Validation\Validator` contract instead of the concrete `Illuminate\Validation\Validator` instance.
 
+### Migrations
+
+If you have any migrations that rename a column or any migrations that drop columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
+
 ### Eloquent
 
 #### The `create` Method
