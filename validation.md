@@ -497,6 +497,7 @@ Below is a list of all available validation rules and their function:
 [Filled](#rule-filled)
 [Image (File)](#rule-image)
 [In](#rule-in)
+[In Array](#rule-in-array)
 [Integer](#rule-integer)
 [IP Address](#rule-ip)
 [JSON](#rule-json)
@@ -661,6 +662,11 @@ The file under validation must be an image (jpeg, png, bmp, gif, or svg)
 #### in:_foo_,_bar_,...
 
 The field under validation must be included in the given list of values.
+
+<a name="rule-in-array"></a>
+#### in_array:_anotherfield_
+
+The field under validation must exist in _anotherfield_'s values.
 
 <a name="rule-integer"></a>
 #### integer
