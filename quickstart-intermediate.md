@@ -366,7 +366,7 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
                     <label for="task-name" class="col-sm-3 control-label">Task</label>
 
                     <div class="col-sm-6">
-                        <input type="text" name="name" id="task-name" class="form-control">
+                        <input type="text" name="name" id="task-name" class="form-control" value="{{ old('name') }}">
                     </div>
                 </div>
 
@@ -481,7 +481,7 @@ Most of Laravel's relationships expose a `create` method, which accepts an array
             'name' => $request->name,
         ]);
 
-        return redirect('/tasks');
+        return redirect('/tasks')->withInput();
     }
 
 Great! We can now successfully create tasks. Next, let's continue adding to our view by building a list of all existing tasks.
