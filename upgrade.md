@@ -275,6 +275,7 @@ The following features are deprecated in 5.2 and will be removed in the 5.3 rele
 - The `Str::randomBytes` function has been deprecated in favor of the `random_bytes` native PHP function.
 - The `Str::equals` function has been deprecated in favor of the `hash_equals` native PHP function.
 - `Illuminate\View\Expression` has been deprecated in favor of `Illuminate\Support\HtmlString`.
+- `WincacheStore` has been removed as an available Cache driver
 
 <a name="upgrade-5.1.11"></a>
 ## Upgrading To 5.1.11
