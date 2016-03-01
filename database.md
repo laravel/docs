@@ -23,6 +23,20 @@ Laravel makes connecting with databases and running queries extremely simple. Th
 
 By default, Laravel's sample [environment configuration](/docs/{{version}}/installation#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. Of course, you are free to modify this configuration as needed for your local database.
 
+#### SQL Server Configuration
+
+Laravel supports SQL Server out of the box; however, you will need to add the connection configuration for the database:
+
+    'sqlsrv' => [
+        'driver' => 'sqlsrv',
+        'host' => env('DB_HOST', 'localhost'),
+        'database' => env('DB_DATABASE', 'forge'),
+        'username' => env('DB_USERNAME', 'forge'),
+        'password' => env('DB_PASSWORD', ''),
+        'charset' => 'utf8',
+        'prefix' => '',
+    ],
+
 <a name="read-write-connections"></a>
 #### Read / Write Connections
 
