@@ -298,4 +298,4 @@ As you can see, Laravel's `with` helper function was used in this directive. The
 
     <?php echo with($var)->format('m/d/Y H:i'); ?>
 
-> **Note:** On directive change, *cached views* **do not** update. To update them with new directive interpretations run `php artisan view:clear` in your *command-line*. You can also delete existing cashed views manually by removing them from your cache folder. The default one is in `storage/framework/views`.
+After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
