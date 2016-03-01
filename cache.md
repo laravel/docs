@@ -265,6 +265,9 @@ We just need to implement each of these methods using a MongoDB connection. Once
 
 Once your extension is complete, simply update your `config/cache.php` configuration file's `driver` option to the name of your extension.
 
+<<<<<<< HEAD
+If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+=======
 If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your `app` directory. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
 
 <a name="cache-tags"></a>
@@ -331,3 +334,4 @@ To execute code on every cache operation, you may listen for the [events](/docs/
             //
         });
     }
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415

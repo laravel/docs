@@ -157,7 +157,11 @@ Now that our models are defined, we need to link them. For example, our `User` c
 
 #### The `tasks` Relationship
 
+<<<<<<< HEAD
+First, let's define the `tasks` relationship on our `User` model. Eloquent relationships are defined as methods on models. Eloquent supports several different type soft relationships, so be sure to consult the [full Eloquent documentation](/docs/{{version}}/eloquent-relationships) for more information. In this case, we will define a `tasks` function on the `User` model which calls the `hasMany` method provided by Eloquent:
+=======
 First, let's define the `tasks` relationship on our `User` model. Eloquent relationships are defined as methods on models. Eloquent supports several different types of relationships, so be sure to consult the [full Eloquent documentation](/docs/{{version}}/eloquent-relationships) for more information. In this case, we will define a `tasks` function on the `User` model which calls the `hasMany` method provided by Eloquent:
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
 	<?php
 
@@ -236,7 +240,11 @@ Of course, we need to actually define this view. We'll do that in a bit!
 
 Remember, we also need to let users create accounts and login to our application. Typically, it can be a tedious task to build an entire authentication layer into a web application. However, since it is such a common need, Laravel attempts to make this procedure totally painless.
 
+<<<<<<< HEAD
+First, notice that there is already a `app/Http/Controllers/AuthController` included in your Laravel application. This controller uses a special `AuthenticatesAndRegistersUsers` trait which contains all of the necessary logic create and authenticate users.
+=======
 First, notice that there is already a `app/Http/Controllers/Auth/AuthController` included in your Laravel application. This controller uses a special `AuthenticatesAndRegistersUsers` trait which contains all of the necessary logic to create and authenticate users.
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
 #### Authentication Routes
 
@@ -255,7 +263,11 @@ So, what's left for us to do? Well, we still need to create the registration and
 
 Authentication requires us to create `login.blade.php` and `register.blade.php` within the `resources/views/auth` directory. Of course, the design and styling of these views is unimportant; however, they should at least contain some basic fields.
 
+<<<<<<< HEAD
+The `registration.blade.php` file should contain a form that includes `name`, `email`, `password`, and `password_confirmation` fields and makes a `POST` request to the `/auth/register` route.
+=======
 The `register.blade.php` file should contain a form that includes `name`, `email`, `password`, and `password_confirmation` fields and makes a `POST` request to the `/auth/register` route.
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
 The `login.blade.php` file should contain a form that includes `email` and `password` fields and makes a `POST` request to `/auth/login`.
 
@@ -322,7 +334,11 @@ Our `app.blade.php` view should look like the following:
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
+<<<<<<< HEAD
+			<title>Laravel Quickstart - Basic</title>
+=======
 			<title>Laravel Quickstart - Intermediate</title>
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
 			<!-- CSS And JavaScript -->
 		</head>
@@ -345,7 +361,11 @@ Note the `@yield('content')` portion of the layout. This is a special Blade dire
 
 Great, our application layout is finished. Next, we need to define a view that contains a form to create a new task as well as a table that lists all existing tasks. Let's define this view in `resources/views/tasks/index.blade.php`, which will correspond to the `index` method in our `TaskController`.
 
+<<<<<<< HEAD
+We'll skip over some of the Bootstrap CSS boilerplate and only focus on the things that matter. Remember, you can download the full source for this application on [GitHub](https://github.com/laravel/quickstart-basic):
+=======
 We'll skip over some of the Bootstrap CSS boilerplate and only focus on the things that matter. Remember, you can download the full source for this application on [GitHub](https://github.com/laravel/quickstart-intermediate):
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
     // resources/views/tasks/index.blade.php
 
@@ -365,7 +385,11 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
                 <!-- Task Name -->
 				<div class="form-group">
+<<<<<<< HEAD
+					<label for="task" class="col-sm-3 control-label">Task</label>
+=======
 					<label for="task-name" class="col-sm-3 control-label">Task</label>
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
 					<div class="col-sm-6">
 						<input type="text" name="name" id="task-name" class="form-control">
@@ -388,7 +412,11 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
 #### A Few Notes Of Explanation
 
+<<<<<<< HEAD
+Before moving on, let's talk about this template a bit. First, the `@extends` directive informs Blade that we are using the layout we defined at `resources/views/layouts/app.blade.php`. All of the content between `@section('content')` and `@endsection` will be injected into the location of the `@yield('contents')` directive within the `app.blade.php` layout.
+=======
 Before moving on, let's talk about this template a bit. First, the `@extends` directive informs Blade that we are using the layout we defined at `resources/views/layouts/app.blade.php`. All of the content between `@section('content')` and `@endsection` will be injected into the location of the `@yield('content')` directive within the `app.blade.php` layout.
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
 Now we have defined a basic layout and view for our application. Let's go ahead and return this view from the `index` method of our `TaskController`:
 
@@ -465,7 +493,11 @@ Remember that we used the `@include('common.errors')` directive within our view 
 
 Now that input validation is handled, let's actually create a new task by continuing to fill out our route. Once the new task has been created, we will redirect the user back to the `/tasks` URL. To create the task, we are going to leverage the power of Eloquent's relationships.
 
+<<<<<<< HEAD
+Most of Laravel's relationships expose a `save` method, which accepts a related model instance and will automatically set the foreign key value on the related model before storing it in the database. In this case, the `save` method will automatically set the `user_id` property of the given task to the ID of the currently authenticated user, which we are accessing using `$request->user()`:
+=======
 Most of Laravel's relationships expose a `create` method, which accepts an array of attributes and will automatically set the foreign key value on the related model before storing it in the database. In this case, the `create` method will automatically set the `user_id` property of the given task to the ID of the currently authenticated user, which we are accessing using `$request->user()`:
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
     /**
      * Create a new task.
@@ -641,7 +673,11 @@ Once the data is passed, we can spin through the tasks in our `tasks/index.blade
         @endif
 	@endsection
 
+<<<<<<< HEAD
+Our task application is almost complete. But, we have no way to delete our existing tasks when their done. Let's add that next!
+=======
 Our task application is almost complete. But, we have no way to delete our existing tasks when they're done. Let's add that next!
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
 <a name="deleting-tasks"></a>
 ## Deleting Tasks
@@ -764,7 +800,11 @@ Finally, we need to associate our `Task` model with our `TaskPolicy`. We can do 
      * @var array
      */
     protected $policies = [
+<<<<<<< HEAD
+        'App\Task' => 'App\Policies\TaskPolicy',
+=======
         Task::class => TaskPolicy::class,
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
     ];
 
 
@@ -786,7 +826,11 @@ Now that our policy is written, let's use it in our `destroy` method. All Larave
         // Delete The Task...
     }
 
+<<<<<<< HEAD
+Let's examine this method call for a moment. The first argument passed to the `authorize` method is the name of the policy method we wish to call. The second argument is the model instance that is our current concern. Remember, we recently told Laravel that our `Task` model corresponds to our `TaskPolicy`, so the framework knows on which policy to to fire the `destroy` method. The current user will automatically be sent to the policy method, so we do not need to manually pass it here.
+=======
 Let's examine this method call for a moment. The first argument passed to the `authorize` method is the name of the policy method we wish to call. The second argument is the model instance that is our current concern. Remember, we recently told Laravel that our `Task` model corresponds to our `TaskPolicy`, so the framework knows on which policy to fire the `destroy` method. The current user will automatically be sent to the policy method, so we do not need to manually pass it here.
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
 
 If the action is authorized, our code will continue executing normally. However, if the action is not authorized (meaning the policy's `destroy` method returned `false`), a 403 exception will be thrown and an error page will be displayed to the user.
 
@@ -811,4 +855,8 @@ Finally, let's finish adding the logic to our `destroy` method to actually delet
         $task->delete();
 
         return redirect('/tasks');
+<<<<<<< HEAD
     }
+=======
+    }
+>>>>>>> dea65ed139b47a15574ab7a6f474a8a1322c1415
