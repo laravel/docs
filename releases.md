@@ -16,15 +16,6 @@ For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and se
 
 For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
 
-<a name="laravel-5.3"></a>
-## Laravel 5.3
-
-Laravel 5.3 continues the improvements made in Laravel 5.2.
-
-### PHP 5.6.4+
-
-Since PHP 5.5 will enter "end of life" in June and will no longer receive security updates from the PHP development team, Laravel 5.3 requires PHP 5.6.4 or greater. If you require PHP 5.5 support, please see our 5.1 LTS series.
-
 <a name="laravel-5.2"></a>
 ## Laravel 5.2
 
@@ -117,14 +108,11 @@ Likewise, you may use the `*` character when specifying your validation messages
 
 ### Bail Validation Rule
 
-A new validation rule called `bail` added in Laravel 5.2 validator class, allowing you to avoid unexpected errors while using using multiple validation rules. With the new `bail` rule you can stop running validation rules on an attribute after the first validation failure.
-
-For example if you are using `unique` validation which may throw a DB error if the given value is not an integer, you will assign `integer` rule too. But still Laravel will validate both rules and that will will throw DB error with `unique` validation. In this case you can assign `bail` rule to the attribute. So that `unique` rule will not be validated if the `integer` rule is a failure.
+A new `bail` validation rule has been added, which instructs the validator to stop validating after the first validation failure for a given rule. For example, you may now prevent the validator from running a `unique` check if an attribute fails an `integer` check:
 
 $this->validate($request, [
     'user_id' => 'bail|integer|unique:users'
 ]);
-
 
 ### Eloquent Global Scope Improvements
 
