@@ -502,7 +502,8 @@ Below is a list of all available validation rules and their function:
 [IP Address](#rule-ip)
 [JSON](#rule-json)
 [Max](#rule-max)
-[MIME Types (File)](#rule-mimes)
+[MIME (File)](#rule-mimes)
+[MIME Types (File)](#rule-mimetypes)
 [Min](#rule-min)
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
@@ -691,13 +692,16 @@ The field under validation must be less than or equal to a maximum _value_. Stri
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
 
+The file under validation must have a file extension corresponding to one of the listed extensions.
+
+    'file' => 'mimes:docx,pdf'
+
+<a name="rule-mimetypes"></a>
+#### mimetypes:_foo_,_bar_,...
+
 The file under validation must have a MIME type corresponding to one of the listed extensions.
 
-#### Basic Usage Of MIME Rule
-
-    'photo' => 'mimes:jpeg,bmp,png'
-
-Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
+    'file' => 'mimes:application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 
 A full listing of MIME types and their corresponding extensions may be found at the following location: [http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
