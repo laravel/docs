@@ -214,6 +214,14 @@ elixir(function(mix) {
 });
 ```
 
+You may also pass a second argument to the `browserify` method to specify an alternate file location and/or name:
+
+```javascript
+elixir(function(mix) {
+    mix.browserify('main.js', 'public/assets/js/bundle.js');
+});
+```
+
 While Browserify ships with the Partialify and Babelify transformers, you're free to install and add more if you wish:
 
     npm install aliasify --save-dev
