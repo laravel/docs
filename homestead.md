@@ -14,6 +14,7 @@
     - [Adding Additional Sites](#adding-additional-sites)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Ports](#ports)
+    - [Vagrant Hostsupdater](#vagrant-hostsupdater)
 
 <a name="introduction"></a>
 ## Introduction
@@ -232,3 +233,13 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
         - send: 7777
           to: 777
           protocol: udp
+
+
+#### Vagrant Hostsupdater
+
+There is a useful utility you can install as a vagrant plugin, removing the need to update the hosts file manually before launching the homestead instance. It's not much work that it saves, but every little bit of time not spent in various config files, is more time to develop awesome things.
+
+    hostname: homestead.app
+
+
+https://github.com/cogitatio/vagrant-hostsupdater has the links to the official documentation by the plugin authors. There are also other plugins with similar goals.
