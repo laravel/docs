@@ -23,7 +23,7 @@ Claro, todas as rotas e controllers devem retornar algum tipo de resposta para s
         return 'Hello World';
     });
 
-A string fornecida será automaticamente convertida em uma resposta HTTP pelo frameeork.
+A string fornecida será automaticamente convertida em uma resposta HTTP pelo framework.
 
 No entando, para a maioria das rotas e ações de controllers, você estará retornando uma instância de `Illuminate\Http\Response` ou uma [view](/docs/{{version}}/views). Retornar uma instância de `Response` permite a você customizar códigos de resposta HTTP e cabeçalhos. A instância de `Response` herda da classe `Symfony\Component\HttpFoundation\Response`, provendo uma variedade de métodos para construir respostas HTTP:
 
