@@ -227,7 +227,7 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
 Laravel provides a global `cookie` helper function which serves as a simple factory for generating new `Symfony\Component\HttpFoundation\Cookie` instances. The cookies may be attached to a `Illuminate\Http\Response` instance using the `withCookie` method:
 
-    $response = new Illuminate\Http\Response('Hello World');
+    $response = new \Illuminate\Http\Response('Hello World');
 
     $response->withCookie('name', 'value', $minutes);
 
