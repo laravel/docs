@@ -115,6 +115,17 @@ Likewise, you may use the `*` character when specifying your validation messages
         ]
     ],
 
+### Bail Validation Rule
+
+A new validation rule called `bail` added in Laravel 5.2 validator class, allowing you to avoid unexpected errors while using using multiple validation rules. With the new `bail` rule you can stop running validation rules on an attribute after the first validation failure.
+
+For example if you are using `unique` validation which may throw a DB error if the given value is not an integer, you will assign `integer` rule too. But still Laravel will validate both rules and that will will throw DB error with `unique` validation. In this case you can assign `bail` rule to the attribute. So that `unique` rule will not be validated if the `integer` rule is a failure.
+
+$this->validate($request, [
+    'user_id' => 'bail|integer|unique:users'
+]);
+
+
 ### Eloquent Global Scope Improvements
 
 In previous versions of Laravel, global Eloquent scopes were complicated and error-prone to implement; however, in Laravel 5.2, global query scopes only require you to implement a single, simple method: `apply`.
