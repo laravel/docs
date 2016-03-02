@@ -206,17 +206,13 @@ elixir(function(mix) {
 
 Elixir also ships with a `browserify` method, which gives you all the benefits of requiring modules in the browser and using ECMAScript 6 and JSX.
 
-This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/main.js`:
+This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/main.js`. You may pass a custom output location as an optional second argument:
 
 ```javascript
 elixir(function(mix) {
     mix.browserify('main.js');
 });
-```
 
-You may also pass a second argument to the `browserify` method to specify an alternate file location and/or name:
-
-```javascript
 elixir(function(mix) {
     mix.browserify('main.js', 'public/assets/js/bundle.js');
 });
