@@ -213,8 +213,9 @@ elixir(function(mix) {
     mix.browserify('main.js');
 });
 
+// Specifying a specific output filename...
 elixir(function(mix) {
-    mix.browserify('main.js', 'public/assets/js/bundle.js');
+    mix.browserify('main.js', 'public/javascripts/script.js');
 });
 ```
 
