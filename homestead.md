@@ -14,6 +14,7 @@
     - [Adding Additional Sites](#adding-additional-sites)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Ports](#ports)
+- [Network Interfaces](#network-interfaces)
 
 <a name="introduction"></a>
 ## Introduction
@@ -96,27 +97,6 @@ To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add 
         - map: ~/Code
           to: /home/vagrant/Code
           type: "nfs"
-
-#### Configuring Network Interfaces
-
-The `networks` property of the `Homestead.yaml` allows you to easily add network interfaces to your Homestead environment. You may configure as many interfaces as necessary:
-
-    networks:
-        - type: "private_network"
-          ip: "192.168.10.20"
-
-To enable a [BRIDGED](https://www.vagrantup.com/docs/networking/public_network.html) interface, simply add a `bridge` flag and change the type to `public_network` in your `networks` configuration:
-
-    networks:
-        - type: "public_network"
-          ip: "192.168.10.20"
-          bridge: "en1: Wi-Fi (AirPort)"
-
-To enable [DHCP](https://www.vagrantup.com/docs/networking/public_network.html), just remove the `ip` flag:
-    
-    networks:
-        - type: "public_network"
-          bridge: "en1: Wi-Fi (AirPort)"
 
 #### Configuring Nginx Sites
 
@@ -253,3 +233,25 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
         - send: 7777
           to: 777
           protocol: udp
+
+<a name="network-interfaces"></a>
+## Network Interfaces
+
+The `networks` property of the `Homestead.yaml` configures network interfaces for your Homestead environment. You may configure as many interfaces as necessary:
+
+    networks:
+        - type: "private_network"
+          ip: "192.168.10.20"
+
+To enable a [bridged](https://www.vagrantup.com/docs/networking/public_network.html) interface, configure a `bridge` setting and change the network type to `public_network`:
+
+    networks:
+        - type: "public_network"
+          ip: "192.168.10.20"
+          bridge: "en1: Wi-Fi (AirPort)"
+
+To enable [DHCP](https://www.vagrantup.com/docs/networking/public_network.html), just remove the `ip` option from your configuration:
+
+    networks:
+        - type: "public_network"
+          bridge: "en1: Wi-Fi (AirPort)"
