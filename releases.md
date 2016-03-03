@@ -110,9 +110,9 @@ Likewise, you may use the `*` character when specifying your validation messages
 
 A new `bail` validation rule has been added, which instructs the validator to stop validating after the first validation failure for a given rule. For example, you may now prevent the validator from running a `unique` check if an attribute fails an `integer` check:
 
-$this->validate($request, [
-    'user_id' => 'bail|integer|unique:users'
-]);
+    $this->validate($request, [
+        'user_id' => 'bail|integer|unique:users'
+    ]);
 
 ### Eloquent Global Scope Improvements
 
