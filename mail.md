@@ -245,8 +245,8 @@ Laravel fires an event just before sending mail messages. Remember, this event i
      * @var array
      */
     protected $listen = [
-        'Illuminate\Mail\Events\MessageSending' => [
-            'App\Listeners\LogSentMessage',
+        Illuminate\Mail\Events\MessageSending::class => [
+            App\Listeners\LogSentMessage::class,
         ],
     ];
 

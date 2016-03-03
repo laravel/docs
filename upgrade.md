@@ -573,11 +573,11 @@ Filters are not removed in Laravel 5. You can still bind and use your own custom
 
 By default, [CSRF protection](/docs/{{version}}/routing#csrf-protection) is enabled on all routes. If you'd like to disable this, or only manually enable it on certain routes, remove this line from `App\Http\Kernel`'s `middleware` array:
 
-    'App\Http\Middleware\VerifyCsrfToken',
+    App\Http\Middleware\VerifyCsrfToken::class,
 
 If you want to use it elsewhere, add this line to `$routeMiddleware`:
 
-    'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
+    'csrf' => App\Http\Middleware\VerifyCsrfToken::class,
 
 Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/{{version}}/middleware).
 
@@ -693,12 +693,12 @@ For example, you may add `"laravelcollective/html": "~5.0"` to your `composer.js
 
 You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php` and add this line to the 'providers' array:
 
-    'Collective\Html\HtmlServiceProvider',
+    Collective\Html\HtmlServiceProvider::class,
 
 Next, add these lines to the 'aliases' array:
 
-    'Form' => 'Collective\Html\FormFacade',
-    'Html' => 'Collective\Html\HtmlFacade',
+    'Form' => Collective\Html\FormFacade::class,
+    'Html' => Collective\Html\HtmlFacade::class,
 
 ### CacheManager
 
