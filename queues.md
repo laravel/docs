@@ -268,7 +268,7 @@ In this example, we're specifying that the job should be delayed in the queue fo
 
 #### Job Completion Event
 
-The `Queue::after` method allows you to register a callback to be executed when a queued job executes successfully. This callback is a great opportunity to perform additional logging, queue a subsequent job, or increment statistics for a dashboard. For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+The `Queue::before` and `Queue::after` methods allows you to register a callback to be executed when a queued job is started or executes successfully. This callback is a great opportunity to perform additional logging, queue a subsequent job, or increment statistics for a dashboard. For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
 
     <?php
 

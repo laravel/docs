@@ -173,6 +173,7 @@ Old  | New
 `connection.{name}.committed`  |  `Illuminate\Database\Events\TransactionCommitted`
 `connection.{name}.rollingBack`  |  `Illuminate\Database\Events\TransactionRolledBack`
 `illuminate.query`  |  `Illuminate\Database\Events\QueryExecuted`
+`illuminate.queue.before`  |  `Illuminate\Queue\Events\JobProcessing`
 `illuminate.queue.after`  |  `Illuminate\Queue\Events\JobProcessed`
 `illuminate.queue.failed`  |  `Illuminate\Queue\Events\JobFailed`
 `illuminate.queue.stopping`  |  `Illuminate\Queue\Events\WorkerStopping`
