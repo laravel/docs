@@ -319,7 +319,7 @@ To register an explicit binding, use the router's `model` method to specify the 
     {
         parent::boot($router);
 
-        $router->model('user', 'App\User');
+        $router->model('user', App\User::class);
     }
 
 Next, define a route that contains a `{user}` parameter:
@@ -344,7 +344,7 @@ If you wish to use your own resolution logic, you should use the `Route::bind` m
 
 If you wish to specify your own "not found" behavior, pass a Closure as the third argument to the `model` method:
 
-    $router->model('user', 'App\User', function() {
+    $router->model('user', App\User::class, function() {
         throw new NotFoundHttpException;
     });
 

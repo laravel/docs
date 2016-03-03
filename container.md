@@ -90,7 +90,7 @@ You may also bind an existing object instance into the container using the `inst
 
 A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, let's assume we have an `EventPusher` interface and a `RedisEventPusher` implementation. Once we have coded our `RedisEventPusher` implementation of this interface, we can register it with the service container like so:
 
-    $this->app->bind('App\Contracts\EventPusher', 'App\Services\RedisEventPusher');
+    $this->app->bind(App\Contracts\EventPusher::class, App\Services\RedisEventPusher::class);
 
 This tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in a constructor, or any other location where dependencies are injected by the service container:
 
@@ -112,14 +112,14 @@ This tells the container that it should inject the `RedisEventPusher` when a cla
 
 Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, when our system receives a new Order, we may want to send an event via [PubNub](http://www.pubnub.com/) rather than Pusher. Laravel provides a simple, fluent interface for defining this behavior:
 
-    $this->app->when('App\Handlers\Commands\CreateOrderHandler')
-              ->needs('App\Contracts\EventPusher')
-              ->give('App\Services\PubNubEventPusher');
+    $this->app->when(App\Handlers\Commands\CreateOrderHandler::class)
+              ->needs(App\Contracts\EventPusher::class)
+              ->give(App\Services\PubNubEventPusher::class);
 
 You may even pass a Closure to the `give` method:
 
-    $this->app->when('App\Handlers\Commands\CreateOrderHandler')
-              ->needs('App\Contracts\EventPusher')
+    $this->app->when(App\Handlers\Commands\CreateOrderHandler::class)
+              ->needs(App\Contracts\EventPusher::class)
               ->give(function () {
                       // Resolve dependency...
                   });
@@ -128,7 +128,7 @@ You may even pass a Closure to the `give` method:
 
 Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:
 
-    $this->app->when('App\Handlers\Commands\CreateOrderHandler')
+    $this->app->when(App\Handlers\Commands\CreateOrderHandler::class)
               ->needs('$maxOrderCount')
               ->give(10);
 

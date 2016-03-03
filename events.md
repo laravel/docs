@@ -30,8 +30,8 @@ The `EventServiceProvider` included with your Laravel application provides a con
      * @var array
      */
     protected $listen = [
-        'App\Events\PodcastWasPurchased' => [
-            'App\Listeners\EmailPurchaseConfirmation',
+        App\Events\PodcastWasPurchased::class => [
+            App\Listeners\EmailPurchaseConfirmation::class,
         ],
     ];
 
@@ -365,7 +365,7 @@ You may conveniently consume events broadcast using the [Pusher](https://pusher.
 
     this.pusherChannel = this.pusher.subscribe('user.' + USER_ID);
 
-    this.pusherChannel.bind('App\\Events\\ServerCreated', function(message) {
+    this.pusherChannel.bind(App\\Events\\ServerCreated::class, function(message) {
         console.log(message.user);
     });
 
@@ -432,13 +432,13 @@ Event subscribers are classes that may subscribe to multiple events from within 
         public function subscribe($events)
         {
             $events->listen(
-                'App\Events\UserLoggedIn',
-                'App\Listeners\UserEventListener@onUserLogin'
+                App\Events\UserLoggedIn::class,
+                App\Listeners\UserEventListener@onUserLogin::class
             );
 
             $events->listen(
-                'App\Events\UserLoggedOut',
-                'App\Listeners\UserEventListener@onUserLogout'
+                App\Events\UserLoggedOut::class,
+                App\Listeners\UserEventListener@onUserLogout::class
             );
         }
 
@@ -472,6 +472,6 @@ Once the subscriber has been defined, it may be registered with the event dispat
          * @var array
          */
         protected $subscribe = [
-            'App\Listeners\UserEventListener',
+            App\Listeners\UserEventListener::class,
         ];
     }

@@ -744,7 +744,7 @@ Finally, we need to associate our `Task` model with our `TaskPolicy`. We can do 
      * @var array
      */
     protected $policies = [
-        'App\Task' => 'App\Policies\TaskPolicy',
+        App\Task' => 'App\Policies\TaskPolicy::class,
     ];
 
 
