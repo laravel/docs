@@ -36,6 +36,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - HHVM
 - Nginx
 - MySQL
+- MariaDB
 - Sqlite3
 - Postgres
 - Composer
