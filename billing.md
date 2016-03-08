@@ -9,6 +9,9 @@
     - [Subscription Taxes](#subscription-taxes)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
     - [Resuming Subscriptions](#resuming-subscriptions)
+- [Subscription Trials](#subscription-trials)
+    - [With Credit Card Up Front](#with-credit-card-up-front)
+    - [Without Credit Card Up Front](#without-credit-card-up-front)
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Failed Subscriptions](#handling-failed-subscriptions)
     - [Other Webhooks](#handling-other-webhooks)
@@ -59,6 +62,7 @@ Before using Cashier, we'll need to prepare the database. We need to add several
         $table->string('stripe_id')->nullable();
         $table->string('card_brand')->nullable();
         $table->string('card_last_four')->nullable();
+        $table->timestamp('trial_ends_at')->nullable();
     });
 
     Schema::create('subscriptions', function ($table) {
@@ -82,6 +86,7 @@ Once the migrations have been created, simply run the `migrate` command.
         $table->string('paypal_email')->nullable();
         $table->string('card_brand')->nullable();
         $table->string('card_last_four')->nullable();
+        $table->timestamp('trial_ends_at')->nullable();
     });
 
     Schema::create('subscriptions', function ($table) {
@@ -227,6 +232,12 @@ If the user is on trial, the trial period will be maintained. Also, if a "quanti
 
     $user->subscription('main')->swap('provider-plan-id');
 
+If you would like to swap plans but skip the trial period on the plan you are swapping to, you may use the `skipTrial` method:
+
+    $user->subscription('main')
+            ->skipTrial()
+            ->swap('provider-plan-id');
+
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
 
@@ -286,6 +297,62 @@ If a user has cancelled their subscription and you wish to resume it, use the `r
     $user->subscription('main')->resume();
 
 If the user cancels a subscription and then resumes that subscription before the subscription has fully expired, they will not be billed immediately. Instead, their subscription will simply be re-activated, and they will be billed on the original billing cycle.
+
+<a name="subscription-trials"></a>
+## Subscription Trials
+
+<a name="with-credit-card-up-front"></a>
+### With Credit Card Up Front
+
+If you would like to offer trial periods to your customers while still collecting payment method information up front, You should use the `trialDays` method when creating your subscriptions:
+
+    $user = User::find(1);
+
+    $user->newSubscription('main', 'monthly')
+                ->trialDays(10)
+                ->create($creditCardToken);
+
+This method will set the trial period ending date on the subscription record within the database, as well as instruct Stripe / Braintree to not begin billing the customer until after this date.
+
+> **Note:** If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should notify your users of their trial ending date.
+
+You may determine if the user is within their trial period using either the `onTrial` method of the user instance, or the `onTrial` method of the subscription instance. The two examples below are essentially identical in purpose:
+
+    if ($user->onTrial('main')) {
+        //
+    }
+
+    if ($user->subscription('main')->onTrial()) {
+        //
+    }
+
+<a name="without-credit-card-up-front"></a>
+### Without Credit Card Up Front
+
+If you would like to offer trial periods without collecting the user's payment method information up front, you may simply set the `trial_ends_at` column on the user record to your desired trial ending date. For example, this is typically done during user registration:
+
+    $user = User::create([
+        // Populate other user properties...
+        'trial_ends_at' => Carbon::now()->addDays(10),
+    ]);
+
+Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the `User` instance will return `true` if the current date is not past the value of `trial_ends_at`:
+
+    if ($user->onTrial()) {
+        // User is within their trial period...
+    }
+
+You may also use the `onGenericTrial` method if you wish to know specifically that the user is within their "generic" trial period and has not created an actual subscription yet:
+
+    if ($user->onGenericTrial()) {
+        // User is within their "generic" trial period...
+    }
+
+Once you are ready to create an actual subscription for the user, you may use the `newSubscription` method as usual:
+
+    $user = User::find(1);
+
+    $user->newSubscription('main', 'monthly')->create($creditCardToken);
 
 <a name="handling-stripe-webhooks"></a>
 ## Handling Stripe Webhooks
