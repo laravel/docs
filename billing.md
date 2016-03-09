@@ -104,7 +104,7 @@ For many operations, the Stripe and Braintree implementations of Cashier functio
 
 First, add the Cashier package for Braintree to your `composer.json` file and run the `composer update` command:
 
-    "laravel/cashier-braintree": "~6.0"
+    "laravel/cashier-braintree": "~1.0"
 
 > **Note:** The Braintree edition of Cashier is currently in "beta". You will need to adjust your `composer.json` file's `minimum-stability` setting to `dev` in order to install the repository.
 
