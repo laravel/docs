@@ -429,14 +429,18 @@ The `likeable` relation on the `Like` model will return either a `Post` or `Comm
 
 By default, Laravel will use the fully qualified class name to store the type of the related model. For instance, given the example above where a `Like` may belong to a `Post` or a `Comment`, the default `likable_type` would be either `App\Post` or `App\Comment`, respectively. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a relationship "morph map" to instruct Eloquent to use the table name associated with each model instead of the class name:
 
-    Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+    use Illuminate\Database\Eloquent\Relations\Relation;
+
+    Relation::morphMap([
         App\Post::class,
         App\Comment::class,
     ]);
 
 Or, you may specify a custom string to associate with each model:
 
-    Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+    use Illuminate\Database\Eloquent\Relations\Relation;
+
+    Relation::morphMap([
         'posts' => App\Post::class,
         'likes' => App\Like::class,
     ]);
