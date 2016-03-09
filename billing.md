@@ -1,6 +1,8 @@
 # Laravel Cashier
 
 - [Introduction](#introduction)
+- [Stripe Configuration](#stripe-configuration)
+- [Braintree Configuration](#braintree-configuration)
 - [Subscriptions](#subscriptions)
     - [Creating Subscriptions](#creating-subscriptions)
     - [Checking Subscription Status](#checking-subscription-status)
@@ -27,34 +29,20 @@
 
 Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) and [Braintree's](https://braintreepayments.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
 
-<a name="braintree-considerations"></a>
-### Braintree Considerations
-
-For many operations, the Stripe and Braintree implementations of Cashier function the same. Both services provide subscription billing with credit cards but Braintree also supports payments via PayPal. However, Braintree also lacks some features that are supported by Stripe. You should keep the following in mind when decided to use Stripe or Braintree:
-
-<div class="content-list" markdown="1">
-- Braintree supports PayPal while Stripe does not.
-- Braintree does not support the `increment` and `decrement` methods on subscriptions. This is a Braintree limitation, not a Cashier limitation.
-- Braintree does not support percentage based discounts. This is a Braintree limitation, not a Cashier limitation.
-</div>
-
-<a name="configuration"></a>
-### Configuration
+<a name="stripe-configuration"></a>
+## Stripe Configuration
 
 #### Composer
 
-First, add the Cashier package for Stripe or Braintree to your `composer.json` file and run the `composer update` command:
+First, add the Cashier package for Stripe to your `composer.json` file and run the `composer update` command:
 
-    "laravel/cashier": "~6.0" // For Stripe
-    "laravel/cashier-braintree": "~1.0" // For Braintree
-
-> **Note:** The Braintree edition of Cashier is currently in "beta". You will need to adjust your `composer.json` file's `minimum-stability` setting to `dev` in order to install the repository.
+    "laravel/cashier": "~6.0"
 
 #### Service Provider
 
 Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/docs/{{version}}/providers) in your `app` configuration file.
 
-#### Stripe Configuration
+#### Database Migrations
 
 Before using Cashier, we'll also need to prepare the database. We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
 
@@ -79,9 +67,56 @@ Before using Cashier, we'll also need to prepare the database. We need to add se
 
 Once the migrations have been created, simply run the `migrate` Artisan command.
 
-#### Braintree Configuration
+#### Model Setup
+
+Next, add the `Billable` trait to your model definition:
+
+    use Laravel\Cashier\Billable;
+
+    class User extends Authenticatable
+    {
+        use Billable;
+    }
+
+#### Provider Keys
+
+Next, you should configure your Stripe key in your `services.php` configuration file:
+
+    'stripe' => [
+        'model'  => App\User::class,
+        'secret' => env('STRIPE_SECRET'),
+    ],
+
+<a name="braintree-configuration"></a>
+## Braintree Configuration
+
+#### Braintree Caveats
+
+For many operations, the Stripe and Braintree implementations of Cashier function the same. Both services provide subscription billing with credit cards but Braintree also supports payments via PayPal. However, Braintree also lacks some features that are supported by Stripe. You should keep the following in mind when decided to use Stripe or Braintree:
+
+<div class="content-list" markdown="1">
+- Braintree supports PayPal while Stripe does not.
+- Braintree does not support the `increment` and `decrement` methods on subscriptions. This is a Braintree limitation, not a Cashier limitation.
+- Braintree does not support percentage based discounts. This is a Braintree limitation, not a Cashier limitation.
+</div>
+
+#### Composer
+
+First, add the Cashier package for Braintree to your `composer.json` file and run the `composer update` command:
+
+    "laravel/cashier-braintree": "~6.0"
+
+> **Note:** The Braintree edition of Cashier is currently in "beta". You will need to adjust your `composer.json` file's `minimum-stability` setting to `dev` in order to install the repository.
+
+#### Service Provider
+
+Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/docs/{{version}}/providers) in your `app` configuration file.
+
+#### Plan Credit Coupon
 
 Before using Cashier with Braintree, you will need to define a `plan-credit` discount in your Braintree control panel. This discount will be used to properly prorate subscriptions that change from yearly to monthly billing, or from monthly to yearly billing. The discount amount configured in the Braintree control panel can be any value you wish, as Cashier will simply override the defined amount with our own custom amount each time we apply the coupon.
+
+#### Database Migrations
 
 Before using Cashier, we'll also need to prepare the database. We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
 
@@ -120,14 +155,7 @@ Next, add the `Billable` trait to your model definition:
 
 #### Provider Keys
 
-If you are using Stripe, you should configure your Stripe key in your `services.php` configuration file:
-
-    'stripe' => [
-        'model'  => App\User::class,
-        'secret' => env('STRIPE_SECRET'),
-    ],
-
-If you are using Braintree, you should configure the following options in your `services.php` file:
+Next, You should configure the following options in your `services.php` file:
 
     'braintree' => [
         'model'  => App\User::class,
@@ -137,7 +165,7 @@ If you are using Braintree, you should configure the following options in your `
         'private_key' => env('BRAINTREE_PRIVATE_KEY'),
     ],
 
-Then, when using Braintree, you should add the following Braintree SDK calls to your `AppServiceProvider` service provider's `boot` method:
+Then you should add the following Braintree SDK calls to your `AppServiceProvider` service provider's `boot` method:
 
     Braintree_Configuration::environment(env('BRAINTREE_ENV'));
     Braintree_Configuration::merchantId(env('BRAINTREE_MERCHANT_ID'));
