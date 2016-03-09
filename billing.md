@@ -54,9 +54,9 @@ First, add the Cashier package for Stripe or Braintree to your `composer.json` f
 
 Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/docs/{{version}}/providers) in your `app` configuration file.
 
-#### Stripe Migration
+#### Stripe Configuration
 
-Before using Cashier, we'll need to prepare the database. We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions. The example below contains a sample migration for the Stripe edition of Cashier. If you need the Braintree example, keep scrolling a little further:
+Before using Cashier, we'll also need to prepare the database. We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
 
     Schema::table('users', function ($table) {
         $table->string('stripe_id')->nullable();
@@ -77,9 +77,13 @@ Before using Cashier, we'll need to prepare the database. We need to add several
         $table->timestamps();
     });
 
-Once the migrations have been created, simply run the `migrate` command.
+Once the migrations have been created, simply run the `migrate` Artisan command.
 
-#### Braintree Migration
+#### Braintree Configuration
+
+Before using Cashier with Braintree, you will need to define a `plan-credit` discount in your Braintree control panel. This discount will be used to properly prorate subscriptions that change from yearly to monthly billing, or from monthly to yearly billing. The discount amount configured in the Braintree control panel can be any value you wish, as Cashier will simply override the defined amount with our own custom amount each time we apply the coupon.
+
+Before using Cashier, we'll also need to prepare the database. We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
 
     Schema::table('users', function ($table) {
         $table->string('braintree_id')->nullable();
@@ -100,6 +104,8 @@ Once the migrations have been created, simply run the `migrate` command.
         $table->timestamp('ends_at')->nullable();
         $table->timestamps();
     });
+
+Once the migrations have been created, simply run the `migrate` Artisan command.
 
 #### Model Setup
 
