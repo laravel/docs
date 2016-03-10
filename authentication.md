@@ -276,6 +276,10 @@ If you are "remembering" users, you may use the `viaRemember` method to determin
 If you need to log an existing user instance into your application, you may call the `login` method with the user instance. The given object must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). Of course, the `App\User` model included with Laravel already implements this interface:
 
     Auth::login($user);
+    
+You may also specify which guard instance you would like to utilize:
+
+    Auth::guard('admin')->login($user);
 
 #### Authenticate A User By ID
 
