@@ -554,6 +554,7 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
 
     interface Authenticatable {
 
+        public function getAuthIdentifierName();
         public function getAuthIdentifier();
         public function getAuthPassword();
         public function getRememberToken();
@@ -562,7 +563,7 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
 
     }
 
-This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
+This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" field of the user and the `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
 
 <a name="events"></a>
 ## Events
