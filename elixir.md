@@ -54,7 +54,7 @@ If you use a version control system, you may wish to run the `npm shrinkwrap` to
 
      npm shrinkwrap
 
-Once you have run this command, feel free to commit the [npm-shrinkwrap.json]`https://docs.npmjs.com/cli/shrinkwrap` into source control.
+Once you have run this command, feel free to commit the [npm-shrinkwrap.json](https://docs.npmjs.com/cli/shrinkwrap) into source control.
 
 ### Laravel Elixir
 
@@ -206,11 +206,16 @@ elixir(function(mix) {
 
 Elixir also ships with a `browserify` method, which gives you all the benefits of requiring modules in the browser and using ECMAScript 6 and JSX.
 
-This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/main.js`:
+This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/main.js`. You may pass a custom output location as an optional second argument:
 
 ```javascript
 elixir(function(mix) {
     mix.browserify('main.js');
+});
+
+// Specifying a specific output filename...
+elixir(function(mix) {
+    mix.browserify('main.js', 'public/javascripts/main.js');
 });
 ```
 

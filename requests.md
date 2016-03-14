@@ -87,6 +87,10 @@ To get the full URL, not just the path info, you may use the `url` or `fullUrl` 
     // With Query String...
     $url = $request->fullUrl();
 
+You may also get the full URL and append query parameters. For example, if the request is targeted at `http://domain.com/foo`, the following method will return `http://domain.com/foo?bar=baz`:
+
+    $url = $request->fullUrlWithQuery(['bar' => 'baz']);
+
 #### Retrieving The Request Method
 
 The `method` method will return the HTTP verb for the request. You may also use the `isMethod` method to verify that the HTTP verb matches a given string:
@@ -134,6 +138,12 @@ When working on forms with array inputs, you may use "dot" notation to access th
     $name = $request->input('products.0.name');
 
     $names = $request->input('products.*.name');
+
+#### Retrieving JSON Input Values
+
+When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to dig deeper into JSON arrays:
+
+    $name = $request->input('user.name');
 
 #### Determining If An Input Value Is Present
 

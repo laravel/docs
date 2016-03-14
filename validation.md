@@ -189,7 +189,8 @@ In this example, we used a traditional form to send data to the application. How
 Validating array form input fields doesn't have to be a pain. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
 
     $validator = Validator::make($request->all(), [
-        'person.*.email' => 'email|unique:users'
+        'person.*.email' => 'email|unique:users',
+        'person.*.first_name' => 'required_with:person.*.last_name',
     ]);
 
 Likewise, you may use the `*` character when specifying your validation messages in your language files, making it a breeze to use a single validation message for array based fields:
@@ -490,10 +491,13 @@ Below is a list of all available validation rules and their function:
 [Different](#rule-different)
 [Digits](#rule-digits)
 [Digits Between](#rule-digits-between)
+[Distinct](#rule-distinct)
 [E-Mail](#rule-email)
 [Exists (Database)](#rule-exists)
+[Filled](#rule-filled)
 [Image (File)](#rule-image)
 [In](#rule-in)
+[In Array](#rule-in-array)
 [Integer](#rule-integer)
 [IP Address](#rule-ip)
 [JSON](#rule-json)
@@ -502,6 +506,7 @@ Below is a list of all available validation rules and their function:
 [Min](#rule-min)
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
+[Present](#rule-present)
 [Regular Expression](#rule-regex)
 [Required](#rule-required)
 [Required If](#rule-required-if)
@@ -604,6 +609,13 @@ The field under validation must be _numeric_ and must have an exact length of _v
 
 The field under validation must have a length between the given _min_ and _max_.
 
+<a name="rule-distinct"></a>
+#### distinct
+
+When working with arrays, the field under validation must not have any duplicate values.
+
+    'foo.*.id' => 'distinct'
+
 <a name="rule-email"></a>
 #### email
 
@@ -636,6 +648,11 @@ You may also pass `NULL` or `NOT_NULL` to the "where" clause:
 
     'email' => 'exists:staff,email,deleted_at,NOT_NULL'
 
+<a name="rule-filled"></a>
+#### filled
+
+The field under validation must not be empty when it is present.
+
 <a name="rule-image"></a>
 #### image
 
@@ -645,6 +662,11 @@ The file under validation must be an image (jpeg, png, bmp, gif, or svg)
 #### in:_foo_,_bar_,...
 
 The field under validation must be included in the given list of values.
+
+<a name="rule-in-array"></a>
+#### in_array:_anotherfield_
+
+The field under validation must exist in _anotherfield_'s values.
 
 <a name="rule-integer"></a>
 #### integer
@@ -693,6 +715,11 @@ The field under validation must not be included in the given list of values.
 #### numeric
 
 The field under validation must be numeric.
+
+<a name="rule-present"></a>
+#### present
+
+The field under validation must be present in the input data but can be empty.
 
 <a name="rule-regex"></a>
 #### regex:_pattern_

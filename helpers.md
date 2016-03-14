@@ -754,6 +754,10 @@ The `dd` function dumps the given variable and ends execution of the script:
 
     dd($value);
 
+If you do not want to halt the execution of your script, use the `dump` function instead:
+
+    dump($value);
+
 <a name="method-dispatch"></a>
 #### `dispatch()` {#collection-method}
 

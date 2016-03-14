@@ -137,6 +137,14 @@ Instead of using an array, you may also chain the `middleware` method onto the r
         //
     })->middleware(['first', 'second']);
 
+When assigning middleware, you may also pass the fully qualified class name:
+
+    use App\Http\Middleware\FooMiddleware;
+
+    Route::get('admin/profile', ['middleware' => FooMiddleware::class, function () {
+        //
+    }]);
+
 <a name="middleware-groups"></a>
 ### Middleware Groups
 

@@ -31,6 +31,8 @@ When using the `database` cache driver, you will need to setup a table to contai
         $table->integer('expiration');
     });
 
+You may also use the `php artisan cache:table` Artisan command to generate a migration with the proper schema.
+
 #### Memcached
 
 Using the Memcached cache requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed.

@@ -7,6 +7,7 @@
     - [View Responses](#view-responses)
     - [JSON Responses](#json-responses)
     - [File Downloads](#file-downloads)
+    - [File Responses](#file-responses)
 - [Redirects](#redirects)
     - [Redirecting To Named Routes](#redirecting-named-routes)
     - [Redirecting To Controller Actions](#redirecting-controller-actions)
@@ -126,6 +127,15 @@ The `download` method may be used to generate a response that forces the user's 
     return response()->download($pathToFile, $name, $headers);
 
 > **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
+
+<a name="file-responses"></a>
+#### File Responses
+
+The `file` method can be used to display a file, such as an image or PDF, directly in the user's browser instead of initiating a download. This method accepts the path to the file as its first argument and an array of headers as its second argument:
+
+    return response()->file($pathToFile);
+
+    return response()->file($pathToFile, $headers);
 
 <a name="redirects"></a>
 ## Redirects

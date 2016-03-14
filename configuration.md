@@ -40,6 +40,8 @@ Your `.env` file should not be committed to your application's source control, s
 
 If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting place-holder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
 
+If the `APP_ENV` environment variable is set before bootstrapping the application, Laravel will attempt to load a file that matches the environment. For example, if the PHPUnit configuration file sets the `APP_ENV` variable to `testing`, Laravel will attempt to load an `.env.testing` environment file. If the file does not exist, the default `.env` file is loaded.
+
 <a name="determining-the-current-environment"></a>
 ### Determining The Current Environment
 

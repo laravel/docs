@@ -99,13 +99,13 @@ Occasionally you may need to specify a route parameter, but make the presence of
 
 Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route using the `as` array key when defining the route:
 
-    Route::get('profile', ['as' => 'profile', function () {
+    Route::get('user/profile', ['as' => 'profile', function () {
         //
     }]);
 
 You may also specify route names for controller actions:
 
-    Route::get('profile', [
+    Route::get('user/profile', [
         'as' => 'profile', 'uses' => 'UserController@showProfile'
     ]);
 
@@ -285,7 +285,7 @@ Laravel route model binding provides a convenient way to inject model instances 
 
 ### Implicit Binding
 
-Laravel will automatically resolve type-hinted Eloquent model's defined in routes or controller actions whose variable names match a route segment name. For example:
+Laravel will automatically resolve type-hinted Eloquent models defined in routes or controller actions whose variable names match a route segment name. For example:
 
     Route::get('api/users/{user}', function (App\User $user) {
         return $user->email;
@@ -334,17 +334,17 @@ If a matching model instance is not found in the database, a 404 HTTP response w
 
 #### Customizing The Resolution Logic
 
-If you wish to use your own resolution logic, you should use the `Route::bind` method. The Closure you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
+If you wish to use your own resolution logic, you should use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
 
-    $router->bind('user', function($value) {
+    $router->bind('user', function ($value) {
         return App\User::where('name', $value)->first();
     });
 
 #### Customizing The "Not Found" Behavior
 
-If you wish to specify your own "not found" behavior, pass a Closure as the third argument to the `model` method:
+If you wish to specify your own "not found" behavior, pass a `Closure` as the third argument to the `model` method:
 
-    $router->model('user', 'App\User', function() {
+    $router->model('user', 'App\User', function () {
         throw new NotFoundHttpException;
     });
 

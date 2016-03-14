@@ -173,6 +173,7 @@ Old  | New
 `connection.{name}.committed`  |  `Illuminate\Database\Events\TransactionCommitted`
 `connection.{name}.rollingBack`  |  `Illuminate\Database\Events\TransactionRolledBack`
 `illuminate.query`  |  `Illuminate\Database\Events\QueryExecuted`
+`illuminate.queue.before`  |  `Illuminate\Queue\Events\JobProcessing`
 `illuminate.queue.after`  |  `Illuminate\Queue\Events\JobProcessed`
 `illuminate.queue.failed`  |  `Illuminate\Queue\Events\JobFailed`
 `illuminate.queue.stopping`  |  `Illuminate\Queue\Events\WorkerStopping`
@@ -275,6 +276,7 @@ The following features are deprecated in 5.2 and will be removed in the 5.3 rele
 - The `Str::randomBytes` function has been deprecated in favor of the `random_bytes` native PHP function.
 - The `Str::equals` function has been deprecated in favor of the `hash_equals` native PHP function.
 - `Illuminate\View\Expression` has been deprecated in favor of `Illuminate\Support\HtmlString`.
+- The `WincacheStore` cache driver has been removed.
 
 <a name="upgrade-5.1.11"></a>
 ## Upgrading To 5.1.11
@@ -377,6 +379,10 @@ The included `PasswordController` no longer requires any dependencies in its con
 If you are overriding the `formatValidationErrors` method on your base controller class, you should now type-hint the `Illuminate\Contracts\Validation\Validator` contract instead of the concrete `Illuminate\Validation\Validator` instance.
 
 Likewise, if you are overriding the `formatErrors` method on the base form request class, you should now type-hint `Illuminate\Contracts\Validation\Validator` contract instead of the concrete `Illuminate\Validation\Validator` instance.
+
+### Migrations
+
+If you have any migrations that rename a column or any migrations that drop columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
 
 ### Eloquent
 

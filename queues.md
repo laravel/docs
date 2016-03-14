@@ -266,9 +266,9 @@ In this example, we're specifying that the job should be delayed in the queue fo
 <a name="job-events"></a>
 ### Job Events
 
-#### Job Completion Event
+#### Job Lifecycle Events
 
-The `Queue::after` method allows you to register a callback to be executed when a queued job executes successfully. This callback is a great opportunity to perform additional logging, queue a subsequent job, or increment statistics for a dashboard. For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+The `Queue::before` and `Queue::after` methods allow you to register a callback to be executed before a queued job is started or when it executes successfully. The callbacks are great opportunity to perform additional logging, queue a subsequent job, or increment statistics for a dashboard. For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
 
     <?php
 
@@ -288,7 +288,7 @@ The `Queue::after` method allows you to register a callback to be executed when 
         public function boot()
         {
             Queue::after(function (JobProcessed $event) {
-                // $event->connection
+                // $event->connectionName
                 // $event->job
                 // $event->data
             });
@@ -341,6 +341,12 @@ In addition, you may specify the number of seconds to wait before polling for ne
     php artisan queue:listen --sleep=5
 
 Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
+
+#### Processing The First Job On The Queue
+
+To process only the first job on the queue, you may use the `queue:work` command:
+
+	php artisan queue:work
 
 <a name="supervisor-configuration"></a>
 ### Supervisor Configuration
@@ -441,9 +447,9 @@ If you would like to register an event that will be called when a queued job fai
         public function boot()
         {
             Queue::failing(function (JobFailed $event) {
-                // $event->connection
-                // $event->$job
-                // $event->$data
+                // $event->connectionName
+                // $event->job
+                // $event->data
             });
         }
 

@@ -86,6 +86,7 @@ Method  | Description
 `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00
 `->weekly();`  |  Run the task every week
 `->monthly();`  |  Run the task every month
+`->monthlyOn(4, '15:00');`  |  Run the task every month on the 4th at 15:00
 `->quarterly();` |  Run the task every quarter
 `->yearly();`  |  Run the task every year
 `->timezone('America/New_York');` | Set the timezone 

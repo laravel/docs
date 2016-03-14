@@ -176,7 +176,7 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
          */
         public function testBasicExample()
         {
-            $this->post('/user', ['name' => 'Sally'])
+            $this->json('POST', '/user', ['name' => 'Sally'])
                  ->seeJson([
                      'created' => true,
                  ]);
@@ -201,7 +201,7 @@ If you would like to verify that the given array is an **exact** match for the J
          */
         public function testBasicExample()
         {
-            $this->post('/user', ['name' => 'Sally'])
+            $this->json('POST', '/user', ['name' => 'Sally'])
                  ->seeJsonEquals([
                      'created' => true,
                  ]);
@@ -549,6 +549,35 @@ You may even persist multiple models to the database. In this example, we'll eve
                ->each(function($u) {
                     $u->posts()->save(factory(App\Post::class)->make());
                 });
+
+#### Relations & Attribute Closures
+
+You may also attach relationships to models using Closure attributes in your factory definitions. For example, if you would like to create a new `User` instance when creating a `Post`, you may do the following:
+
+    $factory->define(App\Post::class, function ($faker) {
+        return [
+            'title' => $faker->title,
+            'content' => $faker->paragraph,
+            'user_id' => function () {
+                return factory(App\User::class)->create()->id;
+            }
+        ];
+    });
+
+These Closures also receive the evaluated attribute array of the factory that contains them:
+
+    $factory->define(App\Post::class, function ($faker) {
+        return [
+            'title' => $faker->title,
+            'content' => $faker->paragraph,
+            'user_id' => function () {
+                return factory(App\User::class)->create()->id;
+            },
+            'user_type' => function (array $post) {
+                return App\User::find($post['user_id'])->type;
+            }
+        ];
+    });
 
 <a name="mocking"></a>
 ## Mocking

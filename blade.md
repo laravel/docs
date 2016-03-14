@@ -167,6 +167,30 @@ In addition to conditional statements, Blade provides simple directives for work
         <p>I'm looping forever.</p>
     @endwhile
 
+When using loops you might need to end the loop or skip the current iteration:
+
+    @foreach ($users as $user)
+        @if($user->type == 1)
+            @continue
+        @endif
+
+        <li>{{ $user->name }}</li>
+
+        @if($user->number == 5)
+            @break
+        @endif
+    @endforeach
+
+You may also include the condition with the directive declaration in one line:
+
+    @foreach ($users as $user)
+        @continue($user->type == 1)
+
+        <li>{{ $user->name }}</li>
+
+        @break($user->number == 5)
+    @endforeach
+
 #### Including Sub-Views
 
 Blade's `@include` directive, allows you to easily include a Blade view from within an existing view. All variables that are available to the parent view will be made available to the included view:
@@ -274,4 +298,4 @@ As you can see, Laravel's `with` helper function was used in this directive. The
 
     <?php echo with($var)->format('m/d/Y H:i'); ?>
 
-
+After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
