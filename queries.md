@@ -8,7 +8,7 @@
 - [Unions](#unions)
 - [Where Clauses](#where-clauses)
     - [Advanced Where Clauses](#advanced-where-clauses)
-        - [JSON Where Clause](#json-where-clause)
+    - [JSON Where Clauses](#json-where-clauses)
 - [Ordering, Grouping, Limit, & Offset](#ordering-grouping-limit-and-offset)
 - [Inserts](#inserts)
 - [Updates](#updates)
@@ -240,30 +240,6 @@ You may also pass an array of conditions to the `where` function:
         ['subscribed','<>','1'],
     ])->get();
 
-<a name="json-where-clause"></a>
-##### JSON where clause (5.2.23+)
-
-Let's say you have a `users` table with a `details` column of type `JSON`, the column has the following value:
-
-    {
-        "title": "Mrs.",
-        "language": "en",
-        "favourites": {
-            "food": "burger",
-            "drink": "tea"
-        }
-    }
-
-To get JSON values, you can do this:
-
-    $users = DB::table('users')
-                    ->where('datails->language', 'en')
-                    ->get();
-
-    $users = DB::table('users')
-                    ->where('datails->favourites->food', 'burger')
-                    ->get();
-
 #### Or Statements
 
 You may chain where constraints together, as well as add `or` clauses to the query. The `orWhere` method accepts the same arguments as the `where` method:
@@ -355,6 +331,19 @@ The query above will produce the following SQL:
     where exists (
         select 1 from orders where orders.user_id = users.id
     )
+
+<a name="json-where-clauses"></a>
+## JSON Where Clauses
+
+Laravel supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7 and Postgres. To query a JSON column, use the `->` operator:
+
+    $users = DB::table('users')
+                    ->where('options->language', 'en')
+                    ->get();
+
+    $users = DB::table('users')
+                    ->where('preferences->dining->meal', 'salad')
+                    ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit, & Offset
