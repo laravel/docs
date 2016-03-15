@@ -9,6 +9,7 @@
     - [Configuration](#configuration)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
+- [Sample Workflow](#sample-workflow)
 
 <a name="introduction"></a>
 ## Introduction
@@ -216,3 +217,76 @@ You may want to publish groups of package assets and resources separately. For i
 Now your users may publish these groups separately by referencing their tag name when using the `vendor:publish` Artisan command:
 
     php artisan vendor:publish --provider="Vendor\Providers\PackageServiceProvider" --tag="config"
+
+<a name="sample-workflow"></a>
+## Sample Workflow
+
+When creating your own packages it's a good idea to set the foundation for greatness. In the root of your Laravel project create a `packages` directory. Inside this directory create a folder for your vendor name. This would be the location where your packages would be stored as well as guide your namespacing.
+
+The folder structure would look like the following:
+
+- packages
+    - vendor_name
+        - package_name
+
+Inside the root of your `package_name` folder the following structure could be a starting point:
+
+- src
+    - your package specific files
+    - PackageServiceProvider
+- .gitignore
+- composer.json
+- README.md
+- LICENCE.md
+- CONTRIBUTING.md
+- CONDUCT.md
+- CHANGELOG.md
+
+An example of your `composer.json` file:
+
+        {
+            "name": "vendor_name/package_name",
+            "type": "library",
+            "description": "Description of your package",
+            "keywords": [
+                "laravel"
+            ],
+            "homepage": "https://github.com/vendor_name/package_name",
+            "license": "MIT",
+            "authors": [
+                {
+                    "name": "Author",
+                    "email": "author@email.com",
+                    "role": "Developer"
+                }
+            ],
+            "require": {
+                "illuminate/support": "~5.1",
+                "php" : "~5.5|~7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit" : "4.*"
+            },
+            "autoload": {
+                "psr-4": {
+                    "package_name\\vendor_name\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "package_name\\vendor_name\\": "tests"
+                }
+            },
+            "scripts": {
+                "test": "phpunit"
+            },
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            }
+        }
+
+Remember to add your package service provider to `config/app.php` and to autoload your new package in the root of your Laravel project's `composer.json` file:
+
+    "vendor_name\\package_name\\": "packages/vendor_name/package_name/src"
