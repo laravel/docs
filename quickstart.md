@@ -272,6 +272,12 @@ Now we have defined a basic layout and view for our application. Remember, we ar
 		return view('tasks');
 	});
 
+Now that we have a task view set up, we should be able to see it in the browser to make sure we've set everything up correctly thus far. To do so, return to your console and enter:
+
+	php artisan serve
+
+Navigate to `localhost:8000` in your browser, and if everything's working, you should see the form we built in the previous step.
+
 Next, we're ready to add code to our `POST /task` route to handle the incoming form input and add a new task to the database.
 
 <a name="adding-tasks"></a>
