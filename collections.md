@@ -60,6 +60,7 @@ You may select any method from this table to see an example of its usage:
 [except](#method-except)
 [filter](#method-filter)
 [first](#method-first)
+[flatMap](#method-flatmap)
 [flatten](#method-flatten)
 [flip](#method-flip)
 [forget](#method-forget)
@@ -355,6 +356,21 @@ You may also call the `first` method with no arguments to get the first element 
     collect([1, 2, 3, 4])->first();
 
     // 1
+    
+<a name="method-flatten"></a>
+#### `flatMap()` {#collection-method}
+
+The `flatMap` method maps the given callback to the collection and then flattens the result by a level:
+
+    $collection = collect(['name' => 'joe'], ['school' => 'Georgia tech'], ['sex' => 'male']]);
+
+    $flattened = $collection->flatMap(function ($values) {
+        return ucwords($values);
+    });
+
+    $flattened->all();
+
+    // ['name' => 'Joe', 'school' => 'Georgia Tech', 'sex' => 'Male'];
 
 <a name="method-flatten"></a>
 #### `flatten()` {#collection-method}
