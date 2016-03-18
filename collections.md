@@ -51,6 +51,7 @@ You may select any method from this table to see an example of its usage:
 [avg](#method-avg)
 [chunk](#method-chunk)
 [collapse](#method-collapse)
+[combine](#method-combine)
 [contains](#method-contains)
 [count](#method-count)
 [diff](#method-diff)
@@ -186,6 +187,31 @@ The `collapse` method collapses a collection of arrays into a flat collection:
     $collapsed->all();
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+<a name="method-collapse"></a>
+#### `combine()` {#collection-method}
+
+The `combine` method combines the collection as keys together with the given array as values:
+
+    $collection = collect(['name', 'status']);
+
+    $combined = $collection->combine(['George', 'Single']);
+
+    $combined->all();
+
+    // ['name' => 'George', 'status' => 'Single']
+    
+You may also pass a collection to the `combine` method instead of a plain array:
+
+    $collection = collect(['name', 'status']);
+    
+    $values = collect(['George', 'Single']);
+    
+    $combined = $collection->combine($values);
+
+    $combined->all();
+
+    // ['name' => 'George', 'status' => 'Single']
 
 <a name="method-contains"></a>
 #### `contains()` {#collection-method}
