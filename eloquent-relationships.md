@@ -46,6 +46,7 @@ A one-to-one relationship is a very basic relation. For example, a `User` model 
 
     namespace App;
 
+    use App\Phone;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -55,21 +56,21 @@ A one-to-one relationship is a very basic relation. For example, a `User` model 
          */
         public function phone()
         {
-            return $this->hasOne('App\Phone');
+            return $this->hasOne(Phone::class);
         }
     }
 
 The first argument passed to the `hasOne` method is the name of the related model. Once the relationship is defined, we may retrieve the related record using Eloquent's dynamic properties. Dynamic properties allow you to access relationship functions as if they were properties defined on the model:
 
-    $phone = User::find(1)->phone;
+    $phone = App\User::find(1)->phone;
 
 Eloquent assumes the foreign key of the relationship based on the model name. In this case, the `Phone` model is automatically assumed to have a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
 
-    return $this->hasOne('App\Phone', 'foreign_key');
+    return $this->hasOne(App\Phone::class, 'foreign_key');
 
 Additionally, Eloquent assumes that the foreign key should have a value matching the `id` column of the parent. In other words, Eloquent will look for the value of the user's `id` column in the `user_id` column of the `Phone` record. If you would like the relationship to use a value other than `id`, you may pass a third argument to the `hasOne` method specifying your custom key:
 
-    return $this->hasOne('App\Phone', 'foreign_key', 'local_key');
+    return $this->hasOne(App\Phone::class, 'foreign_key', 'local_key');
 
 #### Defining The Inverse Of The Relation
 
@@ -79,6 +80,7 @@ So, we can access the `Phone` model from our `User`. Now, let's define a relatio
 
     namespace App;
 
+    use App\User;
     use Illuminate\Database\Eloquent\Model;
 
     class Phone extends Model
@@ -88,7 +90,7 @@ So, we can access the `Phone` model from our `User`. Now, let's define a relatio
          */
         public function user()
         {
-            return $this->belongsTo('App\User');
+            return $this->belongsTo(User::class);
         }
     }
 
@@ -99,7 +101,7 @@ In the example above, Eloquent will try to match the `user_id` from the `Phone` 
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'foreign_key');
+        return $this->belongsTo(App\User::class, 'foreign_key');
     }
 
 If your parent model does not use `id` as its primary key, or you wish to join the child model to a different column, you may pass a third argument to the `belongsTo` method specifying your parent table's custom key:
@@ -109,7 +111,7 @@ If your parent model does not use `id` as its primary key, or you wish to join t
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'foreign_key', 'other_key');
+        return $this->belongsTo(App\User::class, 'foreign_key', 'other_key');
     }
 
 <a name="one-to-many"></a>
@@ -121,6 +123,7 @@ A "one-to-many" relationship is used to define relationships where a single mode
 
     namespace App;
 
+    use App\Comment;
     use Illuminate\Database\Eloquent\Model;
 
     class Post extends Model
@@ -130,7 +133,7 @@ A "one-to-many" relationship is used to define relationships where a single mode
          */
         public function comments()
         {
-            return $this->hasMany('App\Comment');
+            return $this->hasMany(Comment::class);
         }
     }
 
@@ -150,9 +153,9 @@ Of course, since all relationships also serve as query builders, you can add fur
 
 Like the `hasOne` method, you may also override the foreign and local keys by passing additional arguments to the `hasMany` method:
 
-    return $this->hasMany('App\Comment', 'foreign_key');
+    return $this->hasMany(App\Comment::class, 'foreign_key');
 
-    return $this->hasMany('App\Comment', 'foreign_key', 'local_key');
+    return $this->hasMany(App\Comment::class, 'foreign_key', 'local_key');
 
 #### Defining The Inverse Of The Relation
 
@@ -162,6 +165,7 @@ Now that we can access all of a post's comments, let's define a relationship to 
 
     namespace App;
 
+    use App\Post;
     use Illuminate\Database\Eloquent\Model;
 
     class Comment extends Model
@@ -171,7 +175,7 @@ Now that we can access all of a post's comments, let's define a relationship to 
          */
         public function post()
         {
-            return $this->belongsTo('App\Post');
+            return $this->belongsTo(Post::class);
         }
     }
 
@@ -188,7 +192,7 @@ In the example above, Eloquent will try to match the `post_id` from the `Comment
      */
     public function post()
     {
-        return $this->belongsTo('App\Post', 'foreign_key');
+        return $this->belongsTo(App\Post::class, 'foreign_key');
     }
 
 If your parent model does not use `id` as its primary key, or you wish to join the child model to a different column, you may pass a third argument to the `belongsTo` method specifying your parent table's custom key:
@@ -198,7 +202,7 @@ If your parent model does not use `id` as its primary key, or you wish to join t
      */
     public function post()
     {
-        return $this->belongsTo('App\Post', 'foreign_key', 'other_key');
+        return $this->belongsTo(App\Post::class, 'foreign_key', 'other_key');
     }
 
 <a name="many-to-many"></a>
@@ -212,6 +216,7 @@ Many-to-many relationships are defined by writing a method that calls the `belon
 
     namespace App;
 
+    use App\Role;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -221,7 +226,7 @@ Many-to-many relationships are defined by writing a method that calls the `belon
          */
         public function roles()
         {
-            return $this->belongsToMany('App\Role');
+            return $this->belongsToMany(Role::class);
         }
     }
 
@@ -239,11 +244,11 @@ Of course, like all other relationship types, you may call the `roles` method to
 
 As mentioned previously, to determine the table name of the relationship's joining table, Eloquent will join the two related model names in alphabetical order. However, you are free to override this convention. You may do so by passing a second argument to the `belongsToMany` method:
 
-    return $this->belongsToMany('App\Role', 'user_roles');
+    return $this->belongsToMany(App\Role::class, 'user_roles');
 
 In addition to customizing the name of the joining table, you may also customize the column names of the keys on the table by passing additional arguments to the `belongsToMany` method. The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:
 
-    return $this->belongsToMany('App\Role', 'user_roles', 'user_id', 'role_id');
+    return $this->belongsToMany(App\Role::class, 'user_roles', 'user_id', 'role_id');
 
 #### Defining The Inverse Of The Relationship
 
@@ -253,6 +258,7 @@ To define the inverse of a many-to-many relationship, you simply place another c
 
     namespace App;
 
+    use App\User;
     use Illuminate\Database\Eloquent\Model;
 
     class Role extends Model
@@ -262,7 +268,7 @@ To define the inverse of a many-to-many relationship, you simply place another c
          */
         public function users()
         {
-            return $this->belongsToMany('App\User');
+            return $this->belongsToMany(User::class);
         }
     }
 
@@ -282,11 +288,11 @@ Notice that each `Role` model we retrieve is automatically assigned a `pivot` at
 
 By default, only the model keys will be present on the `pivot` object. If your pivot table contains extra attributes, you must specify them when defining the relationship:
 
-    return $this->belongsToMany('App\Role')->withPivot('column1', 'column2');
+    return $this->belongsToMany(App\Role::class)->withPivot('column1', 'column2');
 
 If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
 
-    return $this->belongsToMany('App\Role')->withTimestamps();
+    return $this->belongsToMany(App\Role::class)->withTimestamps();
 
 <a name="has-many-through"></a>
 ### Has Many Through
@@ -315,6 +321,8 @@ Now that we have examined the table structure for the relationship, let's define
 
     namespace App;
 
+    use App\Post;
+    use App\User;
     use Illuminate\Database\Eloquent\Model;
 
     class Country extends Model
@@ -324,7 +332,7 @@ Now that we have examined the table structure for the relationship, let's define
          */
         public function posts()
         {
-            return $this->hasManyThrough('App\Post', 'App\User');
+            return $this->hasManyThrough(Post::class, User::class);
         }
     }
 
@@ -336,7 +344,7 @@ Typical Eloquent foreign key conventions will be used when performing the relati
     {
         public function posts()
         {
-            return $this->hasManyThrough('App\Post', 'App\User', 'country_id', 'user_id');
+            return $this->hasManyThrough(App\Post::class, User:class, 'country_id', 'user_id');
         }
     }
 
@@ -372,6 +380,7 @@ Next, let's examine the model definitions needed to build this relationship:
 
     namespace App;
 
+    use App\Like;
     use Illuminate\Database\Eloquent\Model;
 
     class Like extends Model
@@ -392,7 +401,7 @@ Next, let's examine the model definitions needed to build this relationship:
          */
         public function likes()
         {
-            return $this->morphMany('App\Like', 'likeable');
+            return $this->morphMany(Like::class, 'likeable');
         }
     }
 
@@ -403,7 +412,7 @@ Next, let's examine the model definitions needed to build this relationship:
          */
         public function likes()
         {
-            return $this->morphMany('App\Like', 'likeable');
+            return $this->morphMany(Like::class, 'likeable');
         }
     }
 
@@ -429,20 +438,24 @@ The `likeable` relation on the `Like` model will return either a `Post` or `Comm
 
 By default, Laravel will use the fully qualified class name to store the type of the related model. For instance, given the example above where a `Like` may belong to a `Post` or a `Comment`, the default `likable_type` would be either `App\Post` or `App\Comment`, respectively. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a relationship "morph map" to instruct Eloquent to use the table name associated with each model instead of the class name:
 
+    use App\Post;
+    use App\Comment;
     use Illuminate\Database\Eloquent\Relations\Relation;
 
     Relation::morphMap([
-        App\Post::class,
-        App\Comment::class,
+        Post::class,
+        Comment::class,
     ]);
 
 Or, you may specify a custom string to associate with each model:
 
+    use App\Like;
+    use App\Post;
     use Illuminate\Database\Eloquent\Relations\Relation;
 
     Relation::morphMap([
-        'posts' => App\Post::class,
-        'likes' => App\Like::class,
+        'posts' => Post::class,
+        'likes' => Like::class,
     ]);
 
 You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
@@ -479,6 +492,7 @@ Next, we're ready to define the relationships on the model. The `Post` and `Vide
 
     namespace App;
 
+    use App\Tag;
     use Illuminate\Database\Eloquent\Model;
 
     class Post extends Model
@@ -488,7 +502,7 @@ Next, we're ready to define the relationships on the model. The `Post` and `Vide
          */
         public function tags()
         {
-            return $this->morphToMany('App\Tag', 'taggable');
+            return $this->morphToMany(Tag::class, 'taggable');
         }
     }
 
@@ -500,6 +514,8 @@ Next, on the `Tag` model, you should define a method for each of its related mod
 
     namespace App;
 
+    use App\Post;
+    use App\Video;
     use Illuminate\Database\Eloquent\Model;
 
     class Tag extends Model
@@ -509,7 +525,7 @@ Next, on the `Tag` model, you should define a method for each of its related mod
          */
         public function posts()
         {
-            return $this->morphedByMany('App\Post', 'taggable');
+            return $this->morphedByMany(Post::class, 'taggable');
         }
 
         /**
@@ -517,7 +533,7 @@ Next, on the `Tag` model, you should define a method for each of its related mod
          */
         public function videos()
         {
-            return $this->morphedByMany('App\Video', 'taggable');
+            return $this->morphedByMany(Video::class, 'taggable');
         }
     }
 
@@ -550,6 +566,7 @@ For example, imagine a blog system in which a `User` model has many associated `
 
     namespace App;
 
+    use App\Post;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model
@@ -559,7 +576,7 @@ For example, imagine a blog system in which a `User` model has many associated `
          */
         public function posts()
         {
-            return $this->hasMany('App\Post');
+            return $this->hasMany(Post::class);
         }
     }
 
@@ -593,17 +610,17 @@ When accessing the records for a model, you may wish to limit your results based
 You may also specify an operator and count to further customize the query:
 
     // Retrieve all posts that have three or more comments...
-    $posts = Post::has('comments', '>=', 3)->get();
+    $posts = App\Post::has('comments', '>=', 3)->get();
 
 Nested `has` statements may also be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment and vote:
 
     // Retrieve all posts that have at least one comment with votes...
-    $posts = Post::has('comments.votes')->get();
+    $posts = App\Post::has('comments.votes')->get();
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
     // Retrieve all posts with at least one comment containing words like foo%
-    $posts = Post::whereHas('comments', function ($query) {
+    $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
@@ -616,6 +633,7 @@ When accessing Eloquent relationships as properties, the relationship data is "l
 
     namespace App;
 
+    use App\Author;
     use Illuminate\Database\Eloquent\Model;
 
     class Book extends Model
@@ -625,7 +643,7 @@ When accessing Eloquent relationships as properties, the relationship data is "l
          */
         public function author()
         {
-            return $this->belongsTo('App\Author');
+            return $this->belongsTo(Author::class);
         }
     }
 
@@ -672,14 +690,12 @@ Sometimes you may wish to eager load a relationship, but also specify additional
 
     $users = App\User::with(['posts' => function ($query) {
         $query->where('title', 'like', '%first%');
-
     }])->get();
 
 In this example, Eloquent will only eager load posts where the post's `title` column contains the word `first`. Of course, you may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
 
     $users = App\User::with(['posts' => function ($query) {
         $query->orderBy('created_at', 'desc');
-
     }])->get();
 
 <a name="lazy-eager-loading"></a>
@@ -795,7 +811,7 @@ If you need to update an existing row in your pivot table, you may use `updateEx
 
     $user = App\User::find(1);
 
-	$user->roles()->updateExistingPivot($roleId, $attributes);
+    $user->roles()->updateExistingPivot($roleId, $attributes);
 
 #### Syncing For Convenience
 
@@ -816,6 +832,7 @@ When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` w
 
     namespace App;
 
+    use App\Post;
     use Illuminate\Database\Eloquent\Model;
 
     class Comment extends Model
@@ -832,7 +849,7 @@ When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` w
          */
         public function post()
         {
-            return $this->belongsTo('App\Post');
+            return $this->belongsTo(Post::class);
         }
     }
 
