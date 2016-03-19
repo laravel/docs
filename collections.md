@@ -192,27 +192,15 @@ The `collapse` method collapses a collection of arrays into a flat collection:
 <a name="method-collapse"></a>
 #### `combine()` {#collection-method}
 
-The `combine` method combines the collection as keys together with the given array as values:
+The `combine` method combines the keys of the collection with the values of another array or collection:
 
-    $collection = collect(['name', 'status']);
+    $collection = collect(['name', 'age']);
 
-    $combined = $collection->combine(['George', 'Single']);
-
-    $combined->all();
-
-    // ['name' => 'George', 'status' => 'Single']
-    
-You may also pass a collection to the `combine` method instead of a plain array:
-
-    $collection = collect(['name', 'status']);
-    
-    $values = collect(['George', 'Single']);
-    
-    $combined = $collection->combine($values);
+    $combined = $collection->combine(['George', 29]);
 
     $combined->all();
 
-    // ['name' => 'George', 'status' => 'Single']
+    // ['name' => 'George', 'age' => 29]
 
 <a name="method-contains"></a>
 #### `contains()` {#collection-method}
@@ -356,21 +344,25 @@ You may also call the `first` method with no arguments to get the first element 
     collect([1, 2, 3, 4])->first();
 
     // 1
-    
+
 <a name="method-flatten"></a>
 #### `flatMap()` {#collection-method}
 
-The `flatMap` method maps the given callback to the collection and then flattens the result by a level:
+The `flatMap` method iterates through the collection and passes each value to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items. Then, the array is flattened by a level:
 
-    $collection = collect(['name' => 'joe'], ['school' => 'Georgia tech'], ['sex' => 'male']]);
+    $collection = collect(
+        ['name' => 'Sally'],
+        ['school' => 'Arkansas'],
+        ['age' => 28]
+    ]);
 
     $flattened = $collection->flatMap(function ($values) {
-        return ucwords($values);
+        return strtoupper($values);
     });
 
     $flattened->all();
 
-    // ['name' => 'Joe', 'school' => 'Georgia Tech', 'sex' => 'Male'];
+    // ['name' => 'SALLY', 'school' => 'ARKANSAS', 'age' => 28];
 
 <a name="method-flatten"></a>
 #### `flatten()` {#collection-method}
