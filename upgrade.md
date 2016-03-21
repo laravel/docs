@@ -81,6 +81,12 @@ If you would like to continue using separate commands and handlers, you may inst
 
 ### Configuration
 
+#### Environment File
+
+Within your `.env` file you must make sure that any environment values containing spaces are surrounded with double quotes.
+
+The difference in behaviour is due to the later version of `vlucas/phpdotenv` which specifically throws an [exception](https://github.com/vlucas/phpdotenv/blob/master/src/Loader.php#L228) during application boot.
+
 #### Environment Value
 
 Add an `env` configuration option to your `app.php` configuration file that looks like the following:
