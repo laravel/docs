@@ -316,7 +316,7 @@ Laravel includes an Artisan command that will run new jobs as they are pushed on
 
 You may also specify which queue connection the listener should utilize:
 
-    php artisan queue:listen connection
+    php artisan queue:listen connection-name
 
 Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
 
@@ -386,11 +386,11 @@ The `queue:work` Artisan command includes a `--daemon` option for forcing the qu
 
 To start a queue worker in daemon mode, use the `--daemon` flag:
 
-    php artisan queue:work connection --daemon
+    php artisan queue:work connection-name --daemon
 
-    php artisan queue:work connection --daemon --sleep=3
+    php artisan queue:work connection-name --daemon --sleep=3
 
-    php artisan queue:work connection --daemon --sleep=3 --tries=3
+    php artisan queue:work connection-name --daemon --sleep=3 --tries=3
 
 As you can see, the `queue:work` job supports most of the same options available to `queue:listen`. You may use the `php artisan help queue:work` job to view all of the available options.
 
