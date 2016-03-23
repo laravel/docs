@@ -255,7 +255,7 @@ Once the `auth` routes are registered, verify that the `$redirectTo` property on
 
     protected $redirectTo = '/tasks';
 
-It is also necessary to update the `app/Middleware/RedirectIfAuthenticated.php` with the proper redirect path:
+It is also necessary to update the `app/Http/Middleware/RedirectIfAuthenticated.php` file with the proper redirect path:
 
     return redirect('/tasks');
 
@@ -436,7 +436,7 @@ We don't even have to manually determine if the validation failed or do manual r
 
 #### The `$errors` Variable
 
-Remember that we used the `@include('common.errors')` directive within our view to render the form's validation errors. The `common.errors` will allow us to easily show validation errors in the same format across all of our pages. Let's define the contents of this view now:
+Remember that we used the `@include('common.errors')` directive within our view to render the form's validation errors. The `common.errors` view will allow us to easily show validation errors in the same format across all of our pages. Let's define the contents of this view now:
 
     <!-- resources/views/common/errors.blade.php -->
 

@@ -51,6 +51,7 @@ You may select any method from this table to see an example of its usage:
 [avg](#method-avg)
 [chunk](#method-chunk)
 [collapse](#method-collapse)
+[combine](#method-combine)
 [contains](#method-contains)
 [count](#method-count)
 [diff](#method-diff)
@@ -59,6 +60,7 @@ You may select any method from this table to see an example of its usage:
 [except](#method-except)
 [filter](#method-filter)
 [first](#method-first)
+[flatMap](#method-flatmap)
 [flatten](#method-flatten)
 [flip](#method-flip)
 [forget](#method-forget)
@@ -186,6 +188,19 @@ The `collapse` method collapses a collection of arrays into a flat collection:
     $collapsed->all();
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+<a name="method-collapse"></a>
+#### `combine()` {#collection-method}
+
+The `combine` method combines the keys of the collection with the values of another array or collection:
+
+    $collection = collect(['name', 'age']);
+
+    $combined = $collection->combine(['George', 29]);
+
+    $combined->all();
+
+    // ['name' => 'George', 'age' => 29]
 
 <a name="method-contains"></a>
 #### `contains()` {#collection-method}
@@ -329,6 +344,25 @@ You may also call the `first` method with no arguments to get the first element 
     collect([1, 2, 3, 4])->first();
 
     // 1
+
+<a name="method-flatten"></a>
+#### `flatMap()` {#collection-method}
+
+The `flatMap` method iterates through the collection and passes each value to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items. Then, the array is flattened by a level:
+
+    $collection = collect(
+        ['name' => 'Sally'],
+        ['school' => 'Arkansas'],
+        ['age' => 28]
+    ]);
+
+    $flattened = $collection->flatMap(function ($values) {
+        return strtoupper($values);
+    });
+
+    $flattened->all();
+
+    // ['name' => 'SALLY', 'school' => 'ARKANSAS', 'age' => 28];
 
 <a name="method-flatten"></a>
 #### `flatten()` {#collection-method}

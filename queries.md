@@ -8,6 +8,7 @@
 - [Unions](#unions)
 - [Where Clauses](#where-clauses)
     - [Advanced Where Clauses](#advanced-where-clauses)
+    - [JSON Where Clauses](#json-where-clauses)
 - [Ordering, Grouping, Limit, & Offset](#ordering-grouping-limit-and-offset)
 - [Inserts](#inserts)
 - [Updates](#updates)
@@ -330,6 +331,19 @@ The query above will produce the following SQL:
     where exists (
         select 1 from orders where orders.user_id = users.id
     )
+
+<a name="json-where-clauses"></a>
+## JSON Where Clauses
+
+Laravel supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7 and Postgres. To query a JSON column, use the `->` operator:
+
+    $users = DB::table('users')
+                    ->where('options->language', 'en')
+                    ->get();
+
+    $users = DB::table('users')
+                    ->where('preferences->dining->meal', 'salad')
+                    ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit, & Offset
