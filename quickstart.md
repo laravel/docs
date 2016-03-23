@@ -161,6 +161,7 @@ For this application, we know we will need at least three routes: a route to dis
 		});
 	});
 
+> **Note**: If your copy of Laravel has a `RouteServiceProvider` that already includes the default routes file within the `web` middleware group, you do not need to manually add the group to your `routes.php` file.
 
 <a name="displaying-a-view"></a>
 ### Displaying A View

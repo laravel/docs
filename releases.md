@@ -82,6 +82,8 @@ Then, the `web` group may be assigned to routes like so:
         //
     });
 
+However, keep in mind the `web` middleware group is *already* applied to your routes by default since the `RouteServiceProvider` includes it in the default middleware group.
+
 ### Rate Limiting
 
 A new rate limiter middleware is now included with the framework, allowing you to easily limit the number of requests that a given IP address can make to a route over a specified number of minutes. For example, to limit a route to 60 requests every minute from a single IP address, you may do the following:
