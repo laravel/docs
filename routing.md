@@ -31,13 +31,7 @@ All Laravel routes are defined in the `app/Http/routes.php` file, which is autom
 
 #### The Default Routes File
 
-By default, the `routes.php` file contains a single route as well as a [route group](#route-groups) that applies the `web` middleware group to all routes it contains. This middleware group provides session state and CSRF protection to routes.
-
-Any routes not placed within the `web` middleware group will not have access to sessions and CSRF protection, so make sure any routes that need these features are placed within the group. Typically, you will place most of your routes within this group:
-
-    Route::group(['middleware' => ['web']], function () {
-        //
-    });
+The default `routes.php` file is loaded by the `RouteServiceProvider` and is automatically included in the `web` middleware group, which provides access to session state and CSRF protection. Most of the routes for your application will be defined within this file.
 
 #### Available Router Methods
 
