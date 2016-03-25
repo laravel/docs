@@ -73,7 +73,7 @@ If you don't even need an entire row, you may extract a single value from a reco
 
 If you need to work with thousands of database records, consider using the `chunk` method. This method retrieves a small "chunk" of the results at a time, and feeds each chunk into a `Closure` for processing. This method is very useful for writing [Artisan commands](/docs/{{version}}/artisan) that process thousands of records. For example, let's work with the entire `users` table in chunks of 100 records at a time:
 
-    DB::table('users')->chunk(100, function($users) {
+    DB::table('users')->orderBy('id')->chunk(100, function($users) {
         foreach ($users as $user) {
             //
         }
@@ -81,7 +81,7 @@ If you need to work with thousands of database records, consider using the `chun
 
 You may stop further chunks from being processed by returning `false` from the `Closure`:
 
-    DB::table('users')->chunk(100, function($users) {
+    DB::table('users')->orderBy('id')->chunk(100, function($users) {
         // Process the records...
 
         return false;

@@ -106,8 +106,6 @@ First, add the Cashier package for Braintree to your `composer.json` file and ru
 
     "laravel/cashier-braintree": "~1.0"
 
-> **Note:** The Braintree edition of Cashier is currently in "beta". You will need to adjust your `composer.json` file's `minimum-stability` setting to `dev` in order to install the repository.
-
 #### Service Provider
 
 Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/docs/{{version}}/providers) in your `app` configuration file.
