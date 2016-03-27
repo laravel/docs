@@ -29,6 +29,8 @@ When running tests, Laravel will automatically set the configuration environment
 
 You are free to create other testing environment configurations as necessary. The `testing` environment variables may be configured in the `phpunit.xml` file.
 
+> **Note:** Be sure to clear the configuration cache before running the tests, otherwise your testing environment variables won't be loaded.
+
 ### Defining & Running Tests
 
 To create a new test case, use the `make:test` Artisan command:
