@@ -381,18 +381,20 @@ To limit the number of results returned from the query, or to skip a given numbe
     $users = DB::table('users')->skip(10)->take(5)->get();
 
 <a name="conditional-statements"></a>
-## Conditional Statments
+## Conditional Statements
 
-In certain situations you may only want certain statements to apply to a query when something else is true. For instance you may only want to apply an `orderBy` statement if the url specified a column to sort on. To do that you would use the `when` method on your query:
+Sometimes you may want statements to apply to a query only when something else is true. For instance you may only want to apply a `where` statement if a given input value is present on the incoming request. You may accomplish this using the `when` method:
+
+    $role = $request->input('role');
 
     $users = DB::table('users')
-                    ->when(request()->input('role'), function($query) {
-                        return $query->where('role_id', request()->input('role'));
+                    ->when($role, function ($query) {
+                        return $query->where('role_id', $role);
                     })
                     ->get();
-            
 
-The `when` method only applies the changes in the closure when the first parameter evaluates to true. If it evaluates to false, the query continues on without those changes like they don't exist.
+
+The `when` method only executes the given Closure when the first parameter is `true`. If the first parameter is `false`, the Closure will not be executed.
 
 <a name="inserts"></a>
 ## Inserts
