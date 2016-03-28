@@ -144,6 +144,16 @@ For convenience, Blade also provides an `@unless` directive:
     @unless (Auth::check())
         You are not signed in.
     @endunless
+    
+You may want to check whether a section has content set. To do this the `@hasSection` can be used.
+
+    <title>
+        @hasSection('title')
+            @yield('title') - App Name
+        @else
+            App Name
+        @endif
+    </title>
 
 #### Loops
 
