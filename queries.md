@@ -10,6 +10,7 @@
     - [Advanced Where Clauses](#advanced-where-clauses)
     - [JSON Where Clauses](#json-where-clauses)
 - [Ordering, Grouping, Limit, & Offset](#ordering-grouping-limit-and-offset)
+- [Conditional Statements](#conditional-statements)
 - [Inserts](#inserts)
 - [Updates](#updates)
 - [Deletes](#deletes)
@@ -378,6 +379,20 @@ The `havingRaw` method may be used to set a raw string as the value of the `havi
 To limit the number of results returned from the query, or to skip a given number of results in the query (`OFFSET`), you may use the `skip` and `take` methods:
 
     $users = DB::table('users')->skip(10)->take(5)->get();
+
+<a name="conditional-statements"></a>
+## Conditional Statments
+
+In certain situations you may only want certain statements to apply to a query when something else is true. For instance you may only want to apply an `orderBy` statement if the url specified a column to sort on. To do that you would use the `when` method on your query:
+
+    $users = DB::table('users')
+                    ->when(request()->input('role'), function($query) {
+                        return $query->where('role_id', request()->input('role'));
+                    })
+                    ->get();
+            
+
+The `when` method only applies the changes in the closure when the first parameter evaluates to true. If it evaluates to false, the query continues on without those changes like they don't exist.
 
 <a name="inserts"></a>
 ## Inserts
