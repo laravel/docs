@@ -111,8 +111,6 @@ Next, let's take a look at the listener for our example event. Event listeners r
     namespace App\Listeners;
 
     use App\Events\PodcastWasPurchased;
-    use Illuminate\Queue\InteractsWithQueue;
-    use Illuminate\Contracts\Queue\ShouldQueue;
 
     class EmailPurchaseConfirmation
     {
@@ -161,7 +159,6 @@ Need to [queue](/docs/{{version}}/queues) an event listener? It couldn't be any 
     namespace App\Listeners;
 
     use App\Events\PodcastWasPurchased;
-    use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
 
     class EmailPurchaseConfirmation implements ShouldQueue
