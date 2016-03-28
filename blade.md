@@ -144,8 +144,8 @@ For convenience, Blade also provides an `@unless` directive:
     @unless (Auth::check())
         You are not signed in.
     @endunless
-    
-You may want to check whether a section has content set. To do this the `@hasSection` can be used.
+
+You may also determine if a given layout section has any content using the `@hasSection` directive:
 
     <title>
         @hasSection('title')
