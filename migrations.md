@@ -169,6 +169,8 @@ To drop an existing table, you may use the `drop` or `dropIfExists` methods:
 
     Schema::dropIfExists('users');
 
+> **Note:** Before renaming a table, you will need to drop any existing foreign keys. After the table has been renamed, you will need to add them back on the new table name.
+
 <a name="creating-columns"></a>
 ### Creating Columns
 
