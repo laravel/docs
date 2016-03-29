@@ -215,6 +215,8 @@ Command  | Description
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
 `$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
 `$table->uuid('id');`  |  UUID equivalent for the database.
+`$table->ipAddress('visitor');`  |  IP address equivalent for the database.
+`$table->macAddress('device');`  |  MAC address equivalent for the database.
 
 #### Column Modifiers
 
