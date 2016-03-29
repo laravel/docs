@@ -10,6 +10,8 @@ The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt ha
 
 Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases.
 
+> **Note:** Bcrypt truncates the string after the first 72 characters. A `LengthException` will be thrown for strings longer than 72 characters, unless the `ignore_password_length` option is passed to the `Hash::make()` method.
+
 <a name="basic-usage"></a>
 ## Basic Usage
 
