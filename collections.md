@@ -54,6 +54,7 @@ You may select any method from this table to see an example of its usage:
 [combine](#method-combine)
 [contains](#method-contains)
 [count](#method-count)
+[countPages](#method-countpages)
 [diff](#method-diff)
 [each](#method-each)
 [every](#method-every)
@@ -248,6 +249,19 @@ The `count` method returns the total number of items in the collection:
     $collection->count();
 
     // 4
+
+<a name="method-countpages"></a>
+#### `countPages()` {#collection-method}
+
+The `countPages` method counts the number of pages that would be produced when "paginating" the collection:
+
+    $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+    $collection->countPages(3);
+
+    // 3
+
+The method requires the number of items to show per page.
 
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
