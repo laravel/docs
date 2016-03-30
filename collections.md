@@ -345,7 +345,7 @@ You may also call the `first` method with no arguments to get the first element 
 
     // 1
 
-<a name="method-flatten"></a>
+<a name="method-flatmap"></a>
 #### `flatMap()` {#collection-method}
 
 The `flatMap` method iterates through the collection and passes each value to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items. Then, the array is flattened by a level:
