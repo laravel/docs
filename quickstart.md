@@ -130,35 +130,32 @@ We'll learn more about how to use Eloquent models as we add routes to our applic
 
 Next, we're ready to add a few routes to our application. Routes are used to point URLs to controllers or anonymous functions that should be executed when a user accesses a given page. By default, all Laravel routes are defined in the `app/Http/routes.php` file that is included in every new project.
 
-For this application, we know we will need at least three routes: a route to display a list of all of our tasks, a route to add new tasks, and a route to delete existing tasks. We'll wrap all of these routes in the `web` middleware so they have session state and CSRF protection. So, let's stub all of these routes in the `app/Http/routes.php` file:
+For this application, we know we will need at least three routes: a route to display a list of all of our tasks, a route to add new tasks, and a route to delete existing tasks. So, let's stub all of these routes in the `app/Http/routes.php` file:
 
 	<?php
 
 	use App\Task;
 	use Illuminate\Http\Request;
 
-	Route::group(['middleware' => 'web'], function () {
+	/**
+	 * Show Task Dashboard
+	 */
+	Route::get('/', function () {
+		//
+	});
 
-		/**
-		 * Show Task Dashboard
-		 */
-		Route::get('/', function () {
-			//
-		});
+	/**
+	 * Add New Task
+	 */
+	Route::post('/task', function (Request $request) {
+		//
+	});
 
-		/**
-		 * Add New Task
-		 */
-		Route::post('/task', function (Request $request) {
-			//
-		});
-
-		/**
-		 * Delete Task
-		 */
-		Route::delete('/task/{task}', function (Task $task) {
-			//
-		});
+	/**
+	 * Delete Task
+	 */
+	Route::delete('/task/{task}', function (Task $task) {
+		//
 	});
 
 > **Note**: If your copy of Laravel has a `RouteServiceProvider` that already includes the default routes file within the `web` middleware group, you do not need to manually add the group to your `routes.php` file.
