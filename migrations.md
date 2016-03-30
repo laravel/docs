@@ -197,9 +197,11 @@ Command  | Description
 `$table->float('amount');`  |  FLOAT equivalent for the database.
 `$table->increments('id');`  |  Incrementing ID (primary key) using a "UNSIGNED INTEGER" equivalent.
 `$table->integer('votes');`  |  INTEGER equivalent for the database.
+`$table->ipAddress('visitor');`  |  IP address equivalent for the database.
 `$table->json('options');`  |  JSON equivalent for the database.
 `$table->jsonb('options');`  |  JSONB equivalent for the database.
 `$table->longText('description');`  |  LONGTEXT equivalent for the database.
+`$table->macAddress('device');`  |  MAC address equivalent for the database.
 `$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent for the database.
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent for the database.
 `$table->morphs('taggable');`  |  Adds INTEGER `taggable_id` and STRING `taggable_type`.
