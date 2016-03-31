@@ -5,7 +5,8 @@
 - [Which Branch?](#which-branch)
 - [Security Vulnerabilities](#security-vulnerabilities)
 - [Coding Style](#coding-style)
-    - [Code Style Fixer](#code-style-fixer)
+    - [PHPDoc](#phpdoc)
+    - [StyleCI](#styleci)
 
 <a name="bug-reports"></a>
 ## Bug Reports
@@ -38,7 +39,7 @@ Informal discussion regarding bugs, new features, and implementation of existing
 <a name="which-branch"></a>
 ## Which Branch?
 
-**All** bug fixes should be sent to the latest stable branch. Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest stable branch, or to the current LTS banch (5.1). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
 **Minor** features that are **fully backwards compatible** with the current Laravel release may be sent to the latest stable branch.
 
@@ -56,7 +57,8 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
 
-### DocBlocks
+<a name="phpdoc"></a>
+### PHPDoc
 
 `@param` tags should **not be aligned** and arguments should be separated by **2 spaces**.
 
@@ -75,13 +77,7 @@ Here's an example block:
         //
     }
 
-<a name="code-style-fixer"></a>
-### Code Style Fixer
+<a name="styleci"></a>
+### StyleCI
 
-You may use the [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to fix your code style before committing.
-
-To get started, [install the tool globally](https://github.com/FriendsOfPHP/PHP-CS-Fixer#globally-manual) and check the code style by issuing the following terminal command from your project's root directory:
-
-```sh
-php-cs-fixer fix
-```
+Don't worry about getting your code style perfect, since [StyleCI](https://styleci.io/) will automatically merge any fixes into our codebase after we merge external contributions. This way, we can focus on the content of the contribution, and not the code style.
