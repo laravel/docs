@@ -39,7 +39,7 @@ Informal discussion regarding bugs, new features, and implementation of existing
 <a name="which-branch"></a>
 ## Which Branch?
 
-**All** bug fixes should be sent to the latest stable branch, or to the current LTS banch (5.1). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**All** bug fixes should be sent to the latest stable branch or to the current LTS branch (5.1). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
 
 **Minor** features that are **fully backwards compatible** with the current Laravel release may be sent to the latest stable branch.
 
@@ -60,9 +60,7 @@ Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master
 <a name="phpdoc"></a>
 ### PHPDoc
 
-`@param` tags should **not be aligned** and arguments should be separated by **2 spaces**.
-
-Here's an example block:
+Below is an example of a valid Laravel documentation block. Note that the `@param` attribtue is followed by two spaces, the argument type, two more spaces, and finally the variable name:
 
     /**
      * Register a binding with the container.
@@ -80,4 +78,4 @@ Here's an example block:
 <a name="styleci"></a>
 ### StyleCI
 
-Don't worry about getting your code style perfect, since [StyleCI](https://styleci.io/) will automatically merge any fixes into our codebase after we merge external contributions. This way, we can focus on the content of the contribution, and not the code style.
+If you're code style isn't perfect, don't worry! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after any pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
