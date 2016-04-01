@@ -169,7 +169,9 @@ To drop an existing table, you may use the `drop` or `dropIfExists` methods:
 
     Schema::dropIfExists('users');
 
-> **Note:** Before renaming a table, you will need to drop any existing foreign keys. After the table has been renamed, you will need to add them back on the new table name.
+#### Renaming Tables With Foreign Keys
+
+Before renaming a table, you should verify that any foreign key constraints on the table have an explicit name in your migration files instead of letting Laravel assign a convention based name. Otherwise, the foreign key constraint name will refer to the old table name.
 
 <a name="creating-columns"></a>
 ### Creating Columns
