@@ -10,6 +10,15 @@
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
 
+<a name="upgrade-5.3.0"></a>
+## Upgrading To 5.3.0 From 5.2
+
+### Database
+
+#### Eloquent Scopes
+
+Eloquent scopes now respect the leading boolean of scope constraints. If you start your scope with an ``orWhere`` constraint it will not be automatically changed to normal ``where`` any more. If you were relying on this feature (e.g. adding multiple ``orWhere`` constraints in a loop) you should make sure that the first condition is a normal ``where`` to avoid any issues with the logical order.
+
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
 
