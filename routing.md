@@ -264,7 +264,7 @@ Anytime you define a HTML form in your application, you should include a hidden 
     <?php echo csrf_field(); ?>
 
     // Blade Template Syntax
-    {{ csrf_field() }}
+    {!! csrf_field() !!}
 
 The `csrf_field` helper function generates the following HTML:
 
