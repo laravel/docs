@@ -60,7 +60,7 @@ Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master
 <a name="phpdoc"></a>
 ### PHPDoc
 
-Below is an example of a valid Laravel documentation block. Note that the `@param` attribtue is followed by two spaces, the argument type, two more spaces, and finally the variable name:
+Below is an example of a valid Laravel documentation block. Note that the `@param` attribute is followed by two spaces, the argument type, two more spaces, and finally the variable name:
 
     /**
      * Register a binding with the container.
