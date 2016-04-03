@@ -189,7 +189,7 @@ The `collapse` method collapses a collection of arrays into a flat collection:
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-<a name="method-collapse"></a>
+<a name="method-combine"></a>
 #### `combine()` {#collection-method}
 
 The `combine` method combines the keys of the collection with the values of another array or collection:
