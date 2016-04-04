@@ -36,6 +36,14 @@ To use the Mandrill driver, first install Guzzle, then set the `driver` option i
         'secret' => 'your-mandrill-key',
     ],
 
+#### SparkPost Driver
+
+To use the SparkPost driver, first install Guzzle, then set the `driver` option in your `config/mail.php` configuration file to `sparkpost`. Next, verify that your `config/services.php` configuration file contains the following options:
+
+    'sparkpost' => [
+        'secret' => 'your-sparkpost-key',
+    ],
+
 #### SES Driver
 
 To use the Amazon SES driver, install the Amazon AWS SDK for PHP. You may install this library by adding the following line to your `composer.json` file's `require` section:
