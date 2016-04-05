@@ -41,7 +41,7 @@ You may also configure a "fallback language", which will be used when the active
 
     'fallback_locale' => 'en',
 
-You check which locale is currently being used by calling the `isLocale` method on the `App` [facade](/docs/{{version}}/facades):
+You may check if a given locale is currently being used by calling the `isLocale` method on the `App` [facade](/docs/{{version}}/facades):
 
     if (App::isLocale('en')) {
         //
