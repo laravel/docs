@@ -171,6 +171,14 @@ If you would like to perform a "left join" instead of an "inner join", use the `
                 ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
                 ->get();
 
+#### Cross Join Statement
+
+To perform a "cross join" use the `crossJoin` method. The argument passed to the `crossJoin` method is the name of the table you wish to cross join to. Cross joins generate a cartesian product between the first table and the joined table:
+
+    $users = DB::table('sizes')
+                ->crossJoin('colours')
+                ->get();
+
 #### Advanced Join Statements
 
 You may also specify more advanced join clauses. To get started, pass a `Closure` as the second argument into the `join` method. The `Closure` will receive a `JoinClause` object which allows you to specify constraints on the `join` clause:
