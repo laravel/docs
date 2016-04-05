@@ -67,6 +67,13 @@ Laravel's Flysystem integrations works great with Rackspace; however, a sample c
         'url_type'  => 'publicURL',
     ],
 
+#### Default Cloud Filesystem Disk
+
+Many applications store files both locally and in the cloud. For this reason, you may specify a default "cloud" driver. By default, this value is set to the 's3' driver. Therefore, the following methods would store a file in the local and cloud storage, respectively:
+
+    Storage::disk('local')->put('file.txt', 'Contents');
+    Storage::cloud()->put('file.txt', 'Contents');
+
 <a name="basic-usage"></a>
 ## Basic Usage
 
