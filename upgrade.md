@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [Upgrading To 5.3.0 From 5.2](#upgrade-5.3.0)
 - [Upgrading To 5.2.0 From 5.1](#upgrade-5.2.0)
 - [Upgrading To 5.1.11](#upgrade-5.1.11)
 - [Upgrading To 5.1.0](#upgrade-5.1.0)
@@ -17,7 +18,11 @@
 
 #### Eloquent Scopes
 
-Eloquent scopes now respect the leading boolean of scope constraints. If you start your scope with an ``orWhere`` constraint it will not be automatically changed to normal ``where`` any more. If you were relying on this feature (e.g. adding multiple ``orWhere`` constraints in a loop) you should make sure that the first condition is a normal ``where`` to avoid any issues with the logical order.
+Eloquent scopes now respect the leading boolean of scope constraints. For example, if you are starting your scope with an `orWhere` constraint it will no longer be converted to normal `where`. If you were relying on this feature (e.g. adding multiple `orWhere` constraints within a loop), you should make verify that the first condition is a normal `where` to avoid any boolean logic issues.
+
+If your scopes begin with `where` constraints no action is required. Remember, you can verify your query SQL using the `toSql` method of a query:
+
+    User::where('foo', 'bar')->toSql();
 
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
