@@ -22,7 +22,7 @@ The filesystem configuration file is located at `config/filesystems.php`. Within
 
 Of course, you may configure as many disks as you like, and may even have multiple disks that use the same driver.
 
-#### The Local Driver
+#### Local Driver
 
 When using the `local` driver, note that all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
@@ -66,6 +66,13 @@ Laravel's Flysystem integrations work great with Rackspace. A sample configurati
         'region'    => 'IAD',
         'url_type'  => 'publicURL',
     ],
+
+#### Default Cloud Filesystem Disk
+
+Many applications store files both locally and in the cloud. For this reason, you may specify a default "cloud" driver. By default, this value is set to the 's3' driver. Therefore, the following methods would store a file in the local and cloud storage, respectively:
+
+    Storage::disk('local')->put('file.txt', 'Contents');
+    Storage::cloud()->put('file.txt', 'Contents');
 
 <a name="basic-usage"></a>
 ## Basic Usage
