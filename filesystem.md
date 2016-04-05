@@ -37,7 +37,7 @@ Before using the S3 or Rackspace drivers, you will need to install the appropria
 
 #### FTP Driver Configuration
 
-Laravel's Flysystem integrations works great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a FTP filesystem, you may use the example configuration below:
+Laravel's Flysystem integrations work great with FTP. A sample configuration is already included with the framework's default `filesystems.php` configuration file:
 
     'ftp' => [
         'driver'   => 'ftp',
@@ -55,7 +55,7 @@ Laravel's Flysystem integrations works great with FTP; however, a sample configu
 
 #### Rackspace Driver Configuration
 
-Laravel's Flysystem integrations works great with Rackspace; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a Rackspace filesystem, you may use the example configuration below:
+Laravel's Flysystem integrations work great with Rackspace. A sample configuration is already included with the framework's default `filesystems.php` configuration file:
 
     'rackspace' => [
         'driver'    => 'rackspace',
