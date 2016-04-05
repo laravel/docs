@@ -127,6 +127,12 @@ The `exists` method may be used to determine if a given file exists on the disk:
 
     $exists = Storage::disk('s3')->exists('file.jpg');
 
+### Linking files
+
+The `url` method may be used to get the URL for the file at the given path.
+
+    $url = Storage::url('file1.jpg');
+
 #### File Meta Information
 
 The `size` method may be used to get the size of the file in bytes:
