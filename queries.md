@@ -10,6 +10,7 @@
     - [Advanced Where Clauses](#advanced-where-clauses)
     - [JSON Where Clauses](#json-where-clauses)
 - [Ordering, Grouping, Limit, & Offset](#ordering-grouping-limit-and-offset)
+- [Conditional Statements](#conditional-statements)
 - [Inserts](#inserts)
 - [Updates](#updates)
 - [Deletes](#deletes)
@@ -168,6 +169,14 @@ If you would like to perform a "left join" instead of an "inner join", use the `
 
     $users = DB::table('users')
                 ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+                ->get();
+
+#### Cross Join Statement
+
+To perform a "cross join" use the `crossJoin` method with the name of the table you wish to cross join to. Cross joins generate a cartesian product between the first table and the joined table:
+
+    $users = DB::table('sizes')
+                ->crossJoin('colours')
                 ->get();
 
 #### Advanced Join Statements
@@ -378,6 +387,22 @@ The `havingRaw` method may be used to set a raw string as the value of the `havi
 To limit the number of results returned from the query, or to skip a given number of results in the query (`OFFSET`), you may use the `skip` and `take` methods:
 
     $users = DB::table('users')->skip(10)->take(5)->get();
+
+<a name="conditional-statements"></a>
+## Conditional Statements
+
+Sometimes you may want statements to apply to a query only when something else is true. For instance you may only want to apply a `where` statement if a given input value is present on the incoming request. You may accomplish this using the `when` method:
+
+    $role = $request->input('role');
+
+    $users = DB::table('users')
+                    ->when($role, function ($query) {
+                        return $query->where('role_id', $role);
+                    })
+                    ->get();
+
+
+The `when` method only executes the given Closure when the first parameter is `true`. If the first parameter is `false`, the Closure will not be executed.
 
 <a name="inserts"></a>
 ## Inserts

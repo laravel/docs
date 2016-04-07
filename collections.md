@@ -189,7 +189,7 @@ The `collapse` method collapses a collection of arrays into a flat collection:
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-<a name="method-collapse"></a>
+<a name="method-combine"></a>
 #### `combine()` {#collection-method}
 
 The `combine` method combines the keys of the collection with the values of another array or collection:
@@ -345,7 +345,7 @@ You may also call the `first` method with no arguments to get the first element 
 
     // 1
 
-<a name="method-flatten"></a>
+<a name="method-flatmap"></a>
 #### `flatMap()` {#collection-method}
 
 The `flatMap` method iterates through the collection and passes each value to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items. Then, the array is flattened by a level:
@@ -401,7 +401,7 @@ The `forget` method removes an item from the collection by its key:
 
     $collection->all();
 
-    // [framework' => 'laravel']
+    // ['framework' => 'laravel']
 
 > **Note:** Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
 

@@ -145,6 +145,16 @@ For convenience, Blade also provides an `@unless` directive:
         You are not signed in.
     @endunless
 
+You may also determine if a given layout section has any content using the `@hasSection` directive:
+
+    <title>
+        @hasSection('title')
+            @yield('title') - App Name
+        @else
+            App Name
+        @endif
+    </title>
+
 #### Loops
 
 In addition to conditional statements, Blade provides simple directives for working with PHP's supported loop structures. Again, each of these directives functions identically to their PHP counterparts:
