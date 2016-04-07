@@ -75,13 +75,9 @@ Within the `DatabaseSeeder` class, you may use the `call` method to execute addi
      */
     public function run()
     {
-        Model::unguard();
-
         $this->call(UsersTableSeeder::class);
         $this->call(PostsTableSeeder::class);
         $this->call(CommentsTableSeeder::class);
-        
-        Model::reguard();
     }
 
 <a name="running-seeders"></a>
