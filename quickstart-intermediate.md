@@ -242,7 +242,7 @@ First, notice that there is already a `app/Http/Controllers/Auth/AuthController`
 
 So, what's left for us to do? Well, we still need to create the registration and login templates as well as define the routes to point to the authentication controller. We can do all of this using the `make:auth` Artisan command:
 
-    php artisan make:auth --views
+    php artisan make:auth
 
 > **Note:** If you would like to view complete examples for these views, remember that the entire application's source code is [available on GitHub](https://github.com/laravel/quickstart-intermediate).
 
