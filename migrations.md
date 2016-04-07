@@ -321,6 +321,12 @@ Command  | Description
 `$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
 `$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
 
+If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type.
+
+    Schema::table('geo', function ($table) {
+        $table->dropIndex(['state']); // Drops index 'geo_state_index'
+    });
+
 <a name="foreign-key-constraints"></a>
 ### Foreign Key Constraints
 
