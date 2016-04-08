@@ -436,8 +436,8 @@ By default, Laravel will use the fully qualified class name to store the type of
 Or, you may specify a custom string to associate with each model:
 
     Relation::morphMap([
-        'posts' => App\Post::class,
-        'likes' => App\Like::class,
+        'Post' => App\Post::class,
+        'Comment' => App\Comment::class,
     ]);
 
 You may register the `morphMap` in your `AppServiceProvider` or create a separate service provider if you wish.
