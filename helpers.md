@@ -144,7 +144,7 @@ The `array_add` function adds a given key / value pair to the array if the given
 <a name="method-array-collapse"></a>
 #### `array_collapse()` {#collection-method}
 
-The `array_collapse` function collapse an array of arrays into a single array:
+The `array_collapse` function collapses an array of arrays into a single array:
 
     $array = array_collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
