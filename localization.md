@@ -83,7 +83,7 @@ Pluralization is a complex problem, as different languages have a variety of com
 
     'apples' => 'There is one apple|There are many apples',
 
-Then, you may then use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the language line is returned:
+Then, you may use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the language line is returned:
 
     echo trans_choice('messages.apples', 10);
 
