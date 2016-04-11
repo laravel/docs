@@ -114,7 +114,7 @@ Package translations are referenced using a double-colon `package::file.line` sy
 
 #### Publishing Translations
 
-If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their corresponding publish locations. For example, to the publish the translation files for our example `courier` package:
+If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their corresponding publish locations. For example, to publish the translation files for our example `courier` package:
 
     /**
      * Perform post-registration booting of services.
