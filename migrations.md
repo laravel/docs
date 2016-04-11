@@ -318,7 +318,6 @@ Laravel will automatically generate a reasonable index name, but you may pass a 
 Command  | Description
 ------------- | -------------
 `$table->primary('id');`  |  Add a primary key.
-`$table->primary(['first', 'last']);`  |  Add composite keys.
 `$table->unique('email');`  |  Add a unique index.
 `$table->unique('state', 'my_index_name');`  |  Add a custom index name.
 `$table->index('state');`  |  Add a basic index.
