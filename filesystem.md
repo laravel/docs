@@ -22,7 +22,7 @@ The filesystem configuration file is located at `config/filesystems.php`. Within
 
 Of course, you may configure as many disks as you like, and may even have multiple disks that use the same driver.
 
-#### The Local Driver
+#### Local Driver
 
 When using the `local` driver, note that all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
@@ -37,7 +37,7 @@ Before using the S3 or Rackspace drivers, you will need to install the appropria
 
 #### FTP Driver Configuration
 
-Laravel's Flysystem integrations works great with FTP; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a FTP filesystem, you may use the example configuration below:
+Laravel's Flysystem integrations work great with FTP. A sample configuration is already included with the framework's default `filesystems.php` configuration file:
 
     'ftp' => [
         'driver'   => 'ftp',
@@ -55,7 +55,7 @@ Laravel's Flysystem integrations works great with FTP; however, a sample configu
 
 #### Rackspace Driver Configuration
 
-Laravel's Flysystem integrations works great with Rackspace; however, a sample configuration is not included with the framework's default `filesystems.php` configuration file. If you need to configure a Rackspace filesystem, you may use the example configuration below:
+Laravel's Flysystem integrations work great with Rackspace. A sample configuration is already included with the framework's default `filesystems.php` configuration file:
 
     'rackspace' => [
         'driver'    => 'rackspace',
@@ -66,6 +66,13 @@ Laravel's Flysystem integrations works great with Rackspace; however, a sample c
         'region'    => 'IAD',
         'url_type'  => 'publicURL',
     ],
+
+#### Default Cloud Filesystem Disk
+
+Many applications store files both locally and in the cloud. For this reason, you may specify a default "cloud" driver. By default, this value is set to the 's3' driver. Therefore, the following methods would store a file in the local and cloud storage, respectively:
+
+    Storage::disk('local')->put('file.txt', 'Contents');
+    Storage::cloud()->put('file.txt', 'Contents');
 
 <a name="basic-usage"></a>
 ## Basic Usage
@@ -119,6 +126,12 @@ The `get` method may be used to retrieve the contents of a given file. The raw s
 The `exists` method may be used to determine if a given file exists on the disk:
 
     $exists = Storage::disk('s3')->exists('file.jpg');
+
+### Linking files
+
+The `url` method may be used to get the URL for the file at the given path.
+
+    $url = Storage::url('file1.jpg');
 
 #### File Meta Information
 
