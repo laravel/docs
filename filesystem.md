@@ -22,22 +22,20 @@ The filesystem configuration file is located at `config/filesystems.php`. Within
 
 Of course, you may configure as many disks as you like, and may even have multiple disks that use the same driver.
 
+#### The Public Disk
+
+The `public` disk is meant for files that are going to be publicly accessible. By default, the `public` disk uses the `local` driver and stores these files in `storage/app/public`. To make them accessible from the web, you should create a symbolic link from `public/storage` to `storage/app/public`. This convention will keep your publicly accessible files in one directory that can be easily shared across deployments when using zero down-time deployment systems like [Envoyer](https://envoyer.io).
+
+Of course, once a file has been stored and the symbolic link has been created, you can create an URL to the files using the `asset` helper:
+
+    echo asset('storage/file.txt');
+
 #### The Local Driver
 
 When using the `local` driver, note that all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
     Storage::disk('local')->put('file.txt', 'Contents');
 
-#### The Public Driver
-
-The `public` driver is similar to the `local` driver, but is meant for files that are publicly accessible. By default, these files reside in `storage/app/public`. To make them accessible from the web, it is recommended that you create a symlink from `public/storage` to `storage/app/public`. This will keep your writeable/shared files neatly in 1 folder.
-
-    Storage::disk('public')->put('file.txt', 'Contents')
-
-You can create an url to the files, just like regular public files.
-
-    $url = asset('storage/file.txt');
-    
 #### Other Driver Prerequisites
 
 Before using the S3 or Rackspace drivers, you will need to install the appropriate package via Composer:
