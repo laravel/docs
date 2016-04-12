@@ -287,7 +287,16 @@ By default, only the model keys will be present on the `pivot` object. If your p
 If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
 
     return $this->belongsToMany('App\Role')->withTimestamps();
+#### Filtering Results Via Intermidiate Table Columns
 
+You can also filter the results returned by `belongsToMany()` using `wherePivot()`:
+
+    return $this->belongsToMany('App\Role')->wherePivot('approved', 1);
+
+and `wherePivotIn()` with arrays:
+
+    return $this->belongsToMany('App\Role')->wherePivotIn('approved', array(1,2));
+    
 <a name="has-many-through"></a>
 ### Has Many Through
 
