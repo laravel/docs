@@ -318,13 +318,13 @@ Sometimes you may need to create more advanced where clauses such as "where exis
                 })
                 ->get();
 
-As you can see, passing `Closure` into the `orWhere` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
+As you can see, passing a `Closure` into the `orWhere` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
 
     select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
 #### Exists Statements
 
-The `whereExists` method allows you to write `where exist` SQL clauses. The `whereExists` method accepts a `Closure` argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
+The `whereExists` method allows you to write `where exists` SQL clauses. The `whereExists` method accepts a `Closure` argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
 
     DB::table('users')
                 ->whereExists(function ($query) {
@@ -466,7 +466,7 @@ Of course, the query builder may also be used to delete records from the table v
 
 You may constrain `delete` statements by adding `where` clauses before calling the `delete` method:
 
-    DB::table('users')->where('votes', '<', 100)->delete();
+    DB::table('users')->where('votes', '>', 100)->delete();
 
 If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to zero, you may use the `truncate` method:
 
