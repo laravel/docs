@@ -13,6 +13,7 @@
     - [Browserify](#browserify)
     - [Babel](#babel)
     - [Scripts](#javascript)
+    - [Source Maps](#javascript-source-maps)
 - [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [BrowserSync](#browser-sync)
@@ -284,6 +285,11 @@ elixir(function(mix) {
     mix.scriptsIn('public/js/some/directory');
 });
 ```
+
+<a name="javascript-source-maps"></a>
+### Source Maps
+
+Source maps are enabled out of the box. So, for each file that is compiled you will find a companion `*.js.map` file in the same directory. As with CSS, you may disable them.
 
 <a name="copying-files-and-directories"></a>
 ## Copying Files & Directories
