@@ -174,7 +174,15 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
 
 Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this by adding a simple Bash alias to your Bash profile. This alias will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
 
-    alias homestead='function __homestead() { (cd ~/Homestead && vagrant $*); unset -f __homestead; }; __homestead'
+```
+alias homestead='function __homestead() {
+    if [[ $@ == "edit" ]]; then
+        command open ~/.homestead/Homestead.yaml
+    else
+        (cd ~/Homestead && vagrant $*);
+    fi
+}; __homestead'
+```
 
 Make sure to tweak the `~/Homestead` path in the alias to the location of your actual Homestead installation. Once the alias is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
 
@@ -198,6 +206,8 @@ To connect to your MySQL or Postgres database from your host machine via Navicat
 ### Adding Additional Sites
 
 Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `~/.homestead/Homestead.yaml` file and then run the `vagrant provision` terminal command from your Homestead directory.
+
+Since you may be needing to edit this file frequently, the previously defined alias provides a means to easily open your configuration file through the terminal via the `homestead edit` command.
 
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules
