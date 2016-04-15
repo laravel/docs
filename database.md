@@ -23,6 +23,17 @@ Laravel makes connecting with databases and running queries extremely simple. Th
 
 By default, Laravel's sample [environment configuration](/docs/{{version}}/installation#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. Of course, you are free to modify this configuration as needed for your local database.
 
+#### SQLite Configuration
+
+You can quickly create a new `.sqlite` file by executing: `$ touch database/database.sqlite`.
+
+Configuring your application to use the newly created SQLite file is easy and can be done quickly by editing the environment configuration file (`.env`).
+
+```
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/database.sqlite
+``` 
+
 #### SQL Server Configuration
 
 Laravel supports SQL Server out of the box; however, you will need to add the connection configuration for the database:
