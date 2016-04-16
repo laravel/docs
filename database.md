@@ -25,14 +25,10 @@ By default, Laravel's sample [environment configuration](/docs/{{version}}/insta
 
 #### SQLite Configuration
 
-You can quickly create a new `.sqlite` file by executing: `$ touch database/database.sqlite`.
+After creating a new SQLite database using a command such as `touch database/database.sqlite`, you can easily configure your enviornment variables to point to this newly created database by using the database's absolute path:
 
-Configuring your application to use the newly created SQLite file is easy and can be done quickly by editing the environment configuration file (`.env`).
-
-```
-DB_CONNECTION=sqlite
-DB_DATABASE=/absolute/path/to/database.sqlite
-``` 
+    DB_CONNECTION=sqlite
+    DB_DATABASE=/absolute/path/to/database.sqlite
 
 #### SQL Server Configuration
 
