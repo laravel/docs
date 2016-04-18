@@ -119,9 +119,9 @@ The `when` method may be used to limit the execution of a task based on the resu
         return true;
     });
 
-The `reject` method may be seen as the inverse of `when`. If the `reject` method returns `true`, the scheduled task will not be executed:
+The `skip` method may be seen as the inverse of `when`. If the `skip` method returns `true`, the scheduled task will not be executed:
 
-    $schedule->command('emails:send')->daily()->reject(function () {
+    $schedule->command('emails:send')->daily()->skip(function () {
         return true;
     });
 
