@@ -288,6 +288,14 @@ If you want your pivot table to have automatically maintained `created_at` and `
 
     return $this->belongsToMany('App\Role')->withTimestamps();
 
+#### Filtering Relationships Via Intermediate Table Columns
+
+You can also filter the results returned by `belongsToMany` using the `wherePivot` and `wherePivotIn` methods when defining the relationship:
+
+    return $this->belongsToMany('App\Role')->wherePivot('approved', 1);
+
+    return $this->belongsToMany('App\Role')->wherePivotIn('approved', [1, 2]);
+
 <a name="has-many-through"></a>
 ### Has Many Through
 
