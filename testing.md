@@ -14,7 +14,12 @@
 
 Laravel is built with unit testing in mind. In fact, support for testing with PHPUnit is included out of the box, and a `phpunit.xml` file is already setup for your application. In addition to PHPUnit, Laravel also utilizes the Symfony HttpKernel, DomCrawler, and BrowserKit components to allow you to inspect and manipulate your views while testing, allowing to simulate a web browser.
 
-An example test file is provided in the `app/tests` directory. After installing a new Laravel application, simply run `phpunit` on the command line to run your tests.
+An example test file is provided in the `app/tests` directory. After installing a new Laravel application and assuming you installed PHPUnit globally, simply run `phpunit` on the command line to run your tests.
+
+Alternatively you may run PHPUnit by providing the full path `vendor\bin\phpunit`. There is also the option to install it globally using `composer`:
+
+	composer global require phpunit/phpunit
+	composer global require phpunit/dbunit
 
 <a name="defining-and-running-tests"></a>
 ## Defining & Running Tests
