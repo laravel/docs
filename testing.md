@@ -23,6 +23,11 @@ Laravel is built with testing in mind. In fact, support for testing with PHPUnit
 
 An `ExampleTest.php` file is provided in the `tests` directory. After installing a new Laravel application, simply run `phpunit` on the command line to run your tests.
 
+If you did not install PHPUnit globally, you may specify the full path to the binary `vendor/bin/phpunit` or run the following `composer` commands to make it available system wide:
+
+    composer global require phpunit/phpunit
+    composer global require phpunit/dbunit
+
 ### Test Environment
 
 When running tests, Laravel will automatically set the configuration environment to `testing`. Laravel automatically configures the session and cache to the `array` driver while testing, meaning no session or cache data will be persisted while testing.
