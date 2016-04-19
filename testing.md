@@ -23,10 +23,7 @@ Laravel is built with testing in mind. In fact, support for testing with PHPUnit
 
 An `ExampleTest.php` file is provided in the `tests` directory. After installing a new Laravel application, simply run `phpunit` on the command line to run your tests.
 
-If you did not install PHPUnit globally, you may specify the full path to the binary `vendor/bin/phpunit` or run the following `composer` commands to make it available system wide:
-
-    composer global require phpunit/phpunit
-    composer global require phpunit/dbunit
+> **Note:** Often times phpunit is not part of the path variable resulting in a command not found error. Use the full path `vendor/bin/phpunit` instead.
 
 ### Test Environment
 
