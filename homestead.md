@@ -83,6 +83,18 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
 The `provider` key in your `~/.homestead/Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion`, or `vmware_workstation`. You may set this to the provider you prefer:
 
     provider: virtualbox
+    
+### Set Your SSH Key
+
+Next, you should edit the `Homestead.yaml` file. In this file, you can configure the path to your public SSH key, as well as the folders you wish to be shared between your main machine and the Homestead virtual machine.
+
+Don't have an SSH key? On Mac and Linux, you can generally create an SSH key pair using the following command:
+
+	ssh-keygen -t rsa -C "you@homestead"
+
+On Windows, you may install [Git](http://git-scm.com/) and use the `Git Bash` shell included with Git to issue the command above. Alternatively, you may use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [PuTTYgen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
+
+Once you have created a SSH key, specify the key's path in the `authorize` property of your `Homestead.yaml` file.
 
 #### Configuring Shared Folders
 
