@@ -239,7 +239,7 @@ Modifier  | Description
 `->nullable()`  |  Allow NULL values to be inserted into the column
 `->default($value)`  |  Specify a "default" value for the column
 `->unsigned()`  |  Set `integer` columns to `UNSIGNED`
-`->comment('my comment')`  |  Add a comment in a column
+`->comment('my comment')`  |  Add a comment to a column
 
 <a name="changing-columns"></a>
 <a name="modifying-columns"></a>
