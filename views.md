@@ -141,24 +141,24 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
     namespace App\Http\ViewComposers;
 
     use Illuminate\View\View;
-    use Illuminate\Users\Repository as UserRepository;
+    use Illuminate\Foundation\Auth\User;
 
     class ProfileComposer
     {
         /**
-         * The user repository implementation.
+         * The user implementation.
          *
-         * @var UserRepository
+         * @var User
          */
         protected $users;
 
         /**
          * Create a new profile composer.
          *
-         * @param  UserRepository  $users
+         * @param  User  $users
          * @return void
          */
-        public function __construct(UserRepository $users)
+        public function __construct(User $users)
         {
             // Dependencies automatically resolved by service container...
             $this->users = $users;
