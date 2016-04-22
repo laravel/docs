@@ -398,8 +398,6 @@ As you can see, the `queue:work` job supports most of the same options available
 
 Daemon queue workers do not restart the framework before processing each job. Therefore, you should be careful to free any heavy resources before your job finishes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
 
-Similarly, your database connection may disconnect when being used by a long-running daemon. You may use the `DB::reconnect` method to ensure you have a fresh connection.
-
 <a name="deploying-with-daemon-queue-listeners"></a>
 ### Deploying With Daemon Queue Listeners
 
