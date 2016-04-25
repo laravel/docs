@@ -503,7 +503,7 @@ Below is a list of all available validation rules and their function:
 [JSON](#rule-json)
 [Max](#rule-max)
 [MIME Types](#rule-mimetypes)
-[MIME Types (Extension)](#rule-mimes)
+[MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
@@ -692,13 +692,11 @@ The field under validation must be less than or equal to a maximum _value_. Stri
 <a name="rule-mimetypes"></a>
 #### mimetypes:_text/plain_,...
 
-The file under validation must much a MIME type listed under the MIME types to accept extensions.
-
-#### Basic Usage Of MIME Types Rule
+The file under validation must match one of the given MIME types:
 
     'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
 
-This is similar to the extension 'mime' rule, however, it does not attempt to guess the file's extension, giving some more flexibility to how MIME types are validated.
+To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client provided MIME type.
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
