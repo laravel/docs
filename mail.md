@@ -258,3 +258,6 @@ Laravel fires an event just before sending mail messages. Remember, this event i
         ],
     ];
 
+### Logging
+
+[SwiftMailer](http://swiftmailer.org) library provides [Logger plugin](http://swiftmailer.org/docs/plugins.html#logger-plugin) for all the interactions with the underlying Transport being used. You may use [Mail Logger Package](https://github.com/oprudkyi/laravel-mail-logger) to redirect all internal iteractions into your log files. 
