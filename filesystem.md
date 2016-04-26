@@ -75,6 +75,13 @@ Laravel's Flysystem integrations works great with Rackspace; however, a sample c
         'url_type'  => 'publicURL',
     ],
 
+#### Default Cloud Filesystem Disk
+
+Many applications store files both locally and in the cloud. For this reason, you may specify a default "cloud" driver. By default, this value is set to the 's3' driver. Therefore, the following methods would store a file in the local and cloud storage, respectively:
+
+    Storage::disk('local')->put('file.txt', 'Contents');
+    Storage::cloud()->put('file.txt', 'Contents');
+
 <a name="basic-usage"></a>
 ## Basic Usage
 
@@ -127,6 +134,12 @@ The `get` method may be used to retrieve the contents of a given file. The raw s
 The `exists` method may be used to determine if a given file exists on the disk:
 
     $exists = Storage::disk('s3')->exists('file.jpg');
+
+### Linking files
+
+The `url` method may be used to get the URL for the file at the given path.
+
+    $url = Storage::url('file1.jpg');
 
 #### File Meta Information
 
