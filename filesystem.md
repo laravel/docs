@@ -7,6 +7,7 @@
     - [Retrieving Files](#retrieving-files)
     - [Storing Files](#storing-files)
     - [Deleting Files](#deleting-files)
+    - [File Visibility](#file-visibility)
     - [Directories](#directories)
 - [Custom Filesystems](#custom-filesystems)
 
@@ -180,6 +181,21 @@ The `delete` method accepts a single filename or an array of files to remove fro
     Storage::delete('file.jpg');
 
     Storage::delete(['file1.jpg', 'file2.jpg']);
+    
+<a name="file-visibility"></a>
+### File Visibility
+
+File visibility can be obtained and set via the `getVisibility` and `setVisibility` methods:
+
+    Storage::getVisibility('file.jpg');
+    
+    Storage::setVisibility('file.jpg', 'public')
+    
+Additionally, you can set the visibility when setting the file via the `put` method.
+
+    Storage::put('file.jpg', $contents, 'public');
+    
+The valid values for visibility are `public` and `private`. There are constants in the `Filesystem` interface that corrolate to these values.
 
 <a name="directories"></a>
 ### Directories
