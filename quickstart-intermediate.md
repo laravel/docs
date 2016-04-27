@@ -499,7 +499,7 @@ First, we need to edit our `TaskController@index` method to pass all of the exis
      */
     public function index(Request $request)
     {
-        $tasks = Task::where('user_id', $request->user()->id)->get();
+        $tasks = $request->user()->tasks()->get();
 
         return view('tasks.index', [
             'tasks' => $tasks,
@@ -524,7 +524,6 @@ So, let's create an `app/Repositories` directory and add a `TaskRepository` clas
     namespace App\Repositories;
 
     use App\User;
-    use App\Task;
 
     class TaskRepository
     {
@@ -536,7 +535,7 @@ So, let's create an `app/Repositories` directory and add a `TaskRepository` clas
          */
         public function forUser(User $user)
         {
-            return Task::where('user_id', $user->id)
+            return $user->tasks()
                         ->orderBy('created_at', 'asc')
                         ->get();
         }
