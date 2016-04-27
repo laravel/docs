@@ -386,7 +386,7 @@ Method  | Description
 <a name="service-providers"></a>
 ### Testing ServiceProviders
 
-Testing a service provider is not done the same way as any other class in your App\. To instanciate a ServiceProvider within the TestCase you must use:
+Testing a service provider is not done the same way as any other class in your App\. You cannot use the container to make ServiceProviders. To instanciate a ServiceProvider within the TestCase you must new it and pass the app instance provided by the TestCase:
 
     public function testServiceProvider()
     {
