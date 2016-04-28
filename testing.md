@@ -8,6 +8,7 @@
     - [Disabling Middleware](#disabling-middleware)
     - [Custom HTTP Requests](#custom-http-requests)
     - [PHPUnit Assertions](#phpunit-assertions)
+    - [Testing ServiceProviders](#service-providers)
 - [Working With Databases](#working-with-databases)
     - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
     - [Model Factories](#model-factories)
@@ -381,6 +382,18 @@ Method  | Description
 `->assertSessionHasAll(array $bindings);`  |  Assert that the session has a given list of values.
 `->assertSessionHasErrors($bindings = [], $format = null);`  |  Assert that the session has errors bound.
 `->assertHasOldInput();`  |  Assert that the session has old input.
+
+<a name="service-providers"></a>
+### Testing ServiceProviders
+
+Testing a service provider is not done the same way as any other class in your App\. You cannot use the container to make ServiceProviders. To instanciate a ServiceProvider within the TestCase you must new it and pass the app instance provided by the TestCase:
+
+    public function testServiceProvider()
+    {
+        $serviceProvider = new App\ServiceProviders\MyServiceProvider($this->app);
+
+        $this->assertEquals(200, $serviceProvider->doSomething());
+    }
 
 <a name="working-with-databases"></a>
 ## Working With Databases
