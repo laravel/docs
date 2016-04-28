@@ -6,8 +6,8 @@
     - [Obtaining Disk Instances](#obtaining-disk-instances)
     - [Retrieving Files](#retrieving-files)
     - [Storing Files](#storing-files)
-    - [Deleting Files](#deleting-files)
     - [File Visibility](#file-visibility)
+    - [Deleting Files](#deleting-files)
     - [Directories](#directories)
 - [Custom Filesystems](#custom-filesystems)
 
@@ -173,6 +173,19 @@ The `prepend` and `append` methods allow you to easily insert content at the beg
 
     Storage::append('file.log', 'Appended Text');
 
+<a name="file-visibility"></a>
+### File Visibility
+
+File visibility can be retrieved and set via the `getVisibility` and `setVisibility` methods. Visibility is the abstraction of file permissions across multiple platforms:
+
+    Storage::getVisibility('file.jpg');
+
+    Storage::setVisibility('file.jpg', 'public')
+
+Additionally, you can set the visibility when setting the file via the `put` method. The valid visibility values are `public` and `private`:
+
+    Storage::put('file.jpg', $contents, 'public');
+
 <a name="deleting-files"></a>
 ### Deleting Files
 
@@ -181,21 +194,6 @@ The `delete` method accepts a single filename or an array of files to remove fro
     Storage::delete('file.jpg');
 
     Storage::delete(['file1.jpg', 'file2.jpg']);
-    
-<a name="file-visibility"></a>
-### File Visibility
-
-File visibility can be obtained and set via the `getVisibility` and `setVisibility` methods:
-
-    Storage::getVisibility('file.jpg');
-    
-    Storage::setVisibility('file.jpg', 'public')
-    
-Additionally, you can set the visibility when setting the file via the `put` method.
-
-    Storage::put('file.jpg', $contents, 'public');
-    
-The valid values for visibility are `public` and `private`. There are constants in the `Filesystem` interface that corrolate to these values.
 
 <a name="directories"></a>
 ### Directories
