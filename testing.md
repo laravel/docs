@@ -379,9 +379,9 @@ Method  | Description
 `->assertRedirectedToAction($name, $parameters = [], $with = []);`  |  Assert whether the client was redirected to a given action.
 `->assertSessionHas($key, $value = null);`  |  Assert that the session has a given value.
 `->assertSessionHasAll(array $bindings);`  |  Assert that the session has a given list of values.
-`->assertSessionMissing($key);`  |  Assert that the session is missing a given key. 
 `->assertSessionHasErrors($bindings = [], $format = null);`  |  Assert that the session has errors bound.
 `->assertHasOldInput();`  |  Assert that the session has old input.
+`->assertSessionMissing($key);`  |  Assert that the session is missing a given key.
 
 <a name="working-with-databases"></a>
 ## Working With Databases
