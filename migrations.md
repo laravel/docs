@@ -366,10 +366,8 @@ Or you may pass an array value which will automatically use the conventional con
 
     $table->dropForeign(['user_id']);
 
-You can also enable or disable foreign key constraints within your migrations:
+You may enable or disable foreign key constraints within your migrations using the following methods:
 
-    // Enable foreign key constraints
     Schema::enableForeignKeyConstraints();
 
-    // Disable foreign key constraints
     Schema::disableForeignKeyConstraints();
