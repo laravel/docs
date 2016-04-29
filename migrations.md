@@ -365,3 +365,11 @@ To drop a foreign key, you may use the `dropForeign` method. Foreign key constra
 Or you may pass an array value which will automatically use the conventional constraint name when dropping:
 
     $table->dropForeign(['user_id']);
+
+You can also enable or disable foreign key constraints within your migrations:
+
+    // Enable foreign key constraints
+    Schema::enableForeignKeyConstraints();
+
+    // Disable foreign key constraints
+    Schema::disableForeignKeyConstraints();
