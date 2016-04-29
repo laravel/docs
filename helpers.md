@@ -35,6 +35,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_forget](#method-array-forget)
 [array_get](#method-array-get)
 [array_has](#method-array-has)
+[array_key](#method-array-key)
 [array_only](#method-array-only)
 [array_pluck](#method-array-pluck)
 [array_pull](#method-array-pull)
@@ -245,6 +246,17 @@ The `array_has` function checks that a given item exists in an array using "dot"
     $hasDesk = array_has($array, 'products.desk');
 
     // true
+
+<a name="method-array-key"></a>
+#### `array_key()` {#collection-method}
+
+The `array_key` function get an array key for a given value:
+
+    $array = ['products' => 'desk', 'person' => 'Jane'];
+
+    $key = array_key($array, 'Jane');
+
+    // 'person'
 
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
