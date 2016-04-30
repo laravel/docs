@@ -2,7 +2,7 @@
 
 - [Introdução](#introduction)
 - [Rodando SQL puro](#running-queries)
-	- [Listening For Query Events](#listening-for-query-events)
+	- [Escutando eventos de consulta (Query Events)](#listening-for-query-events)
 - [Transações](#database-transactions)
 - [Usando conexões múltiplas](#accessing-connections)
 
@@ -22,9 +22,9 @@ Atualmente, Laravel contém suporte a quatro sistema de banco de dados:
 ### Configuração
 
 A configuração do banco de dados para sua aplicação está localizada em `config/database.php`. 
-Neste arquivo você define todas as suas conexões de banco de dados e especificar qual a sua conexão padrão. Exemplos para todos os banco de dados suportados estão nesse arquivo.
+Neste arquivo você define todas as suas conexões de banco de dados e especificar qual a sua conexão padrão. Exemplos para todos os bancos de dados suportados estão nesse arquivo.
 
-Por padrão, Laravel's sample [environment configuration](/docs/{{version}}/installation#environment-configuration) vem pronto para uso com [Laravel Homestead](/docs/{{version}}/homestead), que é uma máquina virtual para desenvolvimento local com laravel. É claro, que você é livre para modificar a configuração para atender suas necessidades.
+Por padrão, um exemplo [environment configuration](/docs/{{version}}/installation#environment-configuration) vem pronto para uso com [Laravel Homestead](/docs/{{version}}/homestead), que é uma máquina virtual para desenvolvimento local com laravel. É claro, que você é livre para modificar a configuração para atender suas necessidades.
 
 <a name="read-write-connections"></a>
 #### Conexões para Leitura / Escrita
@@ -32,7 +32,7 @@ Por padrão, Laravel's sample [environment configuration](/docs/{{version}}/inst
 As vezes você pode querer usar um conexão para instruções SELECT, outra para insert, update e delete.
 Laravel torna isso suave, as conexões apropriadas são chamadas quando você utiliza SQL puro, query builder ou o Eloquent ORM.
 
-Para entender como são configuradas as  conexões  read / write, vamos a um exemplo:
+Para entender como são configuradas as conexões de leitura / escrita, vamos a um exemplo:
 
 	'mysql' => [
 		'read' => [
@@ -50,18 +50,18 @@ Para entender como são configuradas as  conexões  read / write, vamos a um exe
 		'prefix'    => '',
 	],
 
-Veja que temos duas chave adicionada ao nosso array: `read` e `write`. Ambas contém uma chave com o nome: `host`. Os demais dados para a conexão serão mesclados com array principal `mysql`.
+Veja que temos duas chaves adicionadas ao nosso array: `read` e `write`. Ambas contém uma chave com o nome: `host`. Os demais dados para a conexão serão mesclados com array principal `mysql`.
 
-Então, só precisamos adicionar as chaves, `read` e `write` se queremos substituir os dados da matriz(array) principal. Dessa forma, neste caso, `192.168.1.1` é usado para conexçoes de leitura(read), enquanto `192.168.1.2` é usado para conexões de escrita(write). As credenciais do banco de dados, prefixo, character set, e todas as outras opções da matriz(array) `mysql` serão compartilhadas entre as duas conexões.
+Então, só precisamos adicionar as chaves, `read` e `write` se queremos substituir os dados da matriz (array) principal. Dessa forma, neste caso, `192.168.1.1` é usado para conexões de leitura (read), enquanto `192.168.1.2` é usado para conexões de escrita (write). As credenciais do banco de dados, prefixo, character set, e todas as outras opções da matriz (array) `mysql` serão compartilhadas entre as duas conexões.
 
 <a name="running-queries"></a>
-## Rodando SQL puras
+## Rodando instruções puras
 
-Depois da sua conexão estiver configurada, você pode executar consultas usando facade `DB`. O `DB` facade fornece métodos para cada tipo de consulta: `select`, `update`, `insert` e `statement`.
+Depois da sua conexão estiver configurada, você pode executar consultas usando a fachada `DB`. A fachada `DB` fornece métodos para cada tipo de consulta: `select`, `update`, `insert` e `statement`.
 
-#### Rodando uma query SQL
+#### Rodando uma consulta SQL
 
-Para rodar uma query básica, nós podemos usar o método `select` do facade `DB`:
+Para rodar uma consulta básica, nós podemos usar o método `select` na fachada `DB`:
 
 	<?php namespace App\Http\Controllers;
 
@@ -71,7 +71,7 @@ Para rodar uma query básica, nós podemos usar o método `select` do facade `DB
 	class UserController extends Controller
 	{
 		/**
-		 * Show a list of all of the application's users.
+		 * Exibir uma lista de todos os usuários da aplicação.
 		 *
 		 * @return Response
 		 */
@@ -83,9 +83,9 @@ Para rodar uma query básica, nós podemos usar o método `select` do facade `DB
 		}
 	}
 
-O primeiro argumento passado para o método `select` é o sql puro, enquanto o segundo argumento é uma matriz de valores a serem ligados com o SQL. Normalmente esses valores são restrições da cláusula `where`. Parâmetros linkados com a query são protegidos contra SQL Injection.
+O primeiro argumento passado para o método `select` é a consulta pura, enquanto o segundo argumento é uma matriz de valores a serem ligados com o SQL. Normalmente esses valores são restrições da cláusula `where`. Parâmetros linkados com a query são protegidos contra `SQL Injection`.
 
-O método `select` sempre retorna uma matriz(array) de resultados. Cada resultado dentro da matriz(array) será um objeto da classe PHP `StdClass`, permitindo que você acesse o resultado dos valores:
+O método `select` sempre retorna uma matriz (array) de resultados. Cada resultado dentro da matriz (array) será um objeto da classe PHP `StdClass`, permitindo que você acesse o resultado dos valores:
 
 	foreach ($users as $user) {
 		echo $user->name;
@@ -93,38 +93,38 @@ O método `select` sempre retorna uma matriz(array) de resultados. Cada resultad
 
 #### Usando nomes de link
 
-Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
+Ao invés de utilizar `?` para representar sua ligação de parâmetros, você pode executar a consulta usando uma ligação por nome.
 
 	$results = DB::select('select * from users where id = :id', ['id' => 1]);
 
-#### Running An Insert Statement
+#### Inserindo dados
 
-To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument, and bindings as the second argument:
+Para executar um `insert`, você pode usar o método `insert` existente na fachada `DB`. Assim como o `select`, este método pega o SQL puro como seu primeiro parâmetro e ligações como segundo parâmetro. 
 
 	DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
-#### Running An Update Statement
+#### Atualizando dados
 
-The `update` method should be used to update existing records in the database. The number of rows affected by the statement will be returned by the method:
+O método `update` deve ser utilizado para atualizar registros existentes no banco de dados. O número de linhas afetadas pela `query` será retornado pelo método:
 
 	$affected = DB::update('update users set votes = 100 where name = ?', ['John']);
 
-#### Running A Delete Statement
+#### Removendo dados
 
-The `delete` method should be used to delete records from the database. Like `update`, the number of rows deleted will be returned:
+O método `delete` deve ser usado para remover registros do banco de dados. Assim com o `update`, o número de linhas deletadas será retornado pelo método:
 
 	$deleted = DB::delete('delete from users');
 
-#### Running A General Statement
+#### Executando instruções genéricas
 
-Some database statements should not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
+Algumas instruções no banco de dados não devem retornar nenhum valor. Para esse tipo de operação, você pode utilizar o método `statement` na fachada `DB`:
 
 	DB::statement('drop table users');
 
 <a name="listening-for-query-events"></a>
-### Listening For Query Events
+### Escutando eventos de consulta (Query Events)
 
-If you would like to receive each SQL query executed by your application, you may use the `listen` method. This method is useful for logging queries or debugging. You may register your query listener in a [service provider](/docs/{{version}}/providers):
+Se você gostaria de receber cada consulta SQL executada pela sua aplicação, você pode usar o método `listen`. Este método é útil para logar as consultas ou debuga-las. Você pode registrar sua escuta de eventos em um [service provider](/docs/{{version}}/providers):
 
 	<?php namespace App\Providers;
 
@@ -133,11 +133,11 @@ If you would like to receive each SQL query executed by your application, you ma
 
 	class AppServiceProvider extends ServiceProvider
 	{
-	    /**
-	     * Bootstrap any application services.
-	     *
-	     * @return void
-	     */
+		/**
+		 * Bootstrap any application services.
+		 *
+		 * @return void
+		 */
 		public function boot()
 		{
 			DB::listen(function($sql, $bindings, $time) {
@@ -159,7 +159,7 @@ If you would like to receive each SQL query executed by your application, you ma
 <a name="database-transactions"></a>
 ## Transações 
 
-To run a set of operations within a database transaction, you may use the `transaction` method on the `DB` facade. If an exception is thrown within the transaction `Closure`, the transaction will automatically be rolled back. If the `Closure` executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
+Para executar um conjunto de operações dentro de uma transação com o banco de dados, você pode utilizar o método `transaction` na fachada `DB`. Se uma `exception` for gerada dentro de uma transação `Closure`, a transação será automaticamente revertida. Você não precisa se preocupar em fazer a reversão (rollback) ou a confirmação (commit) manualmente enquanto estiver usando o método `transaction`.
 
 	DB::transaction(function () {
 		DB::table('users')->update(['votes' => 1]);
@@ -167,29 +167,29 @@ To run a set of operations within a database transaction, you may use the `trans
 		DB::table('posts')->delete();
 	});
 
-#### Manually Using Transactions
+#### Usando Transações Manualmente
 
-If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method on the `DB` facade:
+Se você gostaria de começar uma transação manualmente e ter controle completo sobre as reversões (rollbacks) e confirmações (commits), você pode utilizar o método `beginTransaction` na fachada `DB`:
 
 	DB::beginTransaction();
 
-You can rollback the transaction via the `rollBack` method:
+Você pode reverter a transação pelo método de `rollBack`:
 
 	DB::rollBack();
 
-Lastly, you can commit a transaction via the `commit` method:
+Por último, você pode confirmar a transação pelo método de `commit`:
 
 	DB::commit();
 
-> **Note:** Using the `DB` facade's transaction methods also controls transactions for the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+> **Observação:** Os métodos de transação da fachada `DB` também controlam as transações do [query builder](/docs/{{version}}/queries) e do [Eloquent ORM](/docs/{{version}}/eloquent).
 
 <a name="accessing-connections"></a>
-## Usando Multiplas conexões
+## Usando Múltiplas conexões
 
-When using multiple connections, you may access each connection via the `connection` method on the `DB` facade. The `name` passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file:
+Quando estiver utilizando múltiplas conexões, você poderá acessar cada conexão pelo método `connection` na fachada `DB`. O `name` passado para a o método `connection` deve ser correspondente a um que esteja listado em seu arquivo de configurações `config/database.php`:
 
 	$users = DB::connection('foo')->select(...);
 
-You may also access the raw, underlying PDO instance using the `getPdo` method on a connection instance:
+Você pode também acessar a instância subjacente crua do PDO utilizando o método `getPdo` na sua instância de conexão:
 
 	$pdo = DB::connection()->getPdo();
