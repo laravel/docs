@@ -407,6 +407,8 @@ Since daemon queue workers are long-lived processes, they will not pick up chang
 
 This command will gracefully instruct all queue workers to restart after they finish processing their current job so that no existing jobs are lost.
 
+> **Note:** This command actually *stops* the daemon process. You should rely on tools such as supervisord to make sure the listener command keeps running and starts again after this command stops it
+
 > **Note:** This command relies on the cache system to schedule the restart. By default, APCu does not work for CLI jobs. If you are using APCu, add `apc.enable_cli=1` to your APCu configuration.
 
 <a name="dealing-with-failed-jobs"></a>
