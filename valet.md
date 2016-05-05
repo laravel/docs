@@ -20,7 +20,17 @@ Laravel Valet configures your Mac to always run PHP's built-in web server in the
 
 In other words, a blazing fast Laravel development environment that uses roughly 7mb of RAM. Valet isn't a complete replacement for Vagrant or Homestead, but provides a great alternative if you want flexible basics, prefer extreme speed, or are working on a machine with a limited amount of RAM.
 
-Out of the box, Valet supports [Laravel](https://laravel.com), [Lumen](https://lumen.laravel.com), and [Statamic](https://statamic.com/). However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).
+Out of the box, Valet supports:
+
+<div class="content-list" markdown="1">
+- [Laravel](https://laravel.com)
+- [Lumen](https://lumen.laravel.com)
+- [Statamic](https://statamic.com)
+- [Jigsaw](http://jigsaw.tighten.co)
+- Static HTML
+</div>
+
+However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).
 
 <a name="valet-or-homestead"></a>
 ### Valet Or Homestead
@@ -95,7 +105,7 @@ If you would like to stream all of the logs for all of your sites to your termin
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
 
-Out of the box, Valet supports Laravel, Lumen, and Statamic. However, you can write your own Valet "driver" to serve PHP applications running on another framework or CMS. When you install Valet, a `~/.valet/Drivers` directory is created which contains a `SampleValetDriver.php` file. This file contains a sample driver implementation to demonstrate how to write a custom driver. Writing a driver only requires you to implement three methods: `serves`, `isStaticFile`, and `frontControllerPath`.
+You can write your own Valet "driver" to serve PHP applications running on another framework or CMS that is not natively supported by Valet. When you install Valet, a `~/.valet/Drivers` directory is created which contains a `SampleValetDriver.php` file. This file contains a sample driver implementation to demonstrate how to write a custom driver. Writing a driver only requires you to implement three methods: `serves`, `isStaticFile`, and `frontControllerPath`.
 
 All three methods receive the `$sitePath`, `$siteName`, and `$uri` values as their arguments. The `$sitePath` is the fully qualified path to the site being served on your machine, such as `/Users/Lisa/Sites/my-project`. The `$siteName` is the "host" / "site name" portion of the domain (`my-project`). The `$uri` is the incoming request URI (`/foo/bar`).
 
