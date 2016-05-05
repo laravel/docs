@@ -36,11 +36,13 @@ Both Valet and Homestead are great choices for configuring your Laravel developm
 
 **Valet requires the Mac operating system and [Homebrew](http://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.**
 
-1. Install or update [Homebrew](http://brew.sh/) to the latest version using `brew update`.
-2. Make sure `brew services` is available by running `brew services list` and making sure you get valid output. If it is not available, [add it](https://github.com/Homebrew/homebrew-services).
-3. Install PHP 7.0 via Homebrew via `brew install php70`.
-4. Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/bin` directory is in your system's "PATH".
-5. Run the `valet install` command. This will configure and install Valet and DnsMasq, and register Valet's daemon to launch when your system starts.
+<div class="content-list" markdown="1">
+- Install or update [Homebrew](http://brew.sh/) to the latest version using `brew update`.
+- Make sure `brew services` is available by running `brew services list` and making sure you get valid output. If it is not available, [add it](https://github.com/Homebrew/homebrew-services).
+- Install PHP 7.0 via Homebrew via `brew install php70`.
+- Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/bin` directory is in your system's "PATH".
+- Run the `valet install` command. This will configure and install Valet and DnsMasq, and register Valet's daemon to launch when your system starts.
+</div>
 
 Once Valet is installed, try pinging any `*.dev` domain on your terminal using a command such as `ping foobar.dev`. If Valet is installed correctly you should see this domain responding on `127.0.0.1`.
 
@@ -58,9 +60,11 @@ Once Valet is installed, you're ready to start serving sites. Valet provides two
 <a name="the-park-command"></a>
 **The `park` Command**
 
+<div class="content-list" markdown="1">
 - Create a new directory on your Mac by running something like `mkdir ~/Sites`. Next, `cd ~/Sites` and run `valet park`. This command will register your current working directory as a path that Valet should search for sites.
 - Next, create a new Laravel site within this directory: `laravel new blog`.
 - Open `http://blog.dev` in your browser.
+</div>
 
 **That's all there is to it.** Now, any Laravel project you create within your "parked" directory will automatically be served using the `http://folder-name.dev` convention.
 
