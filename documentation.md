@@ -7,6 +7,7 @@
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
     - [Homestead](/docs/{{version}}/homestead)
+    - [Valet](/docs/{{version}}/valet)
 - Tutorials
     - [Basic Task List](/docs/{{version}}/quickstart)
     - [Intermediate Task List](/docs/{{version}}/quickstart-intermediate)
