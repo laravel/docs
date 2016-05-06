@@ -141,7 +141,7 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
     namespace App\Http\ViewComposers;
 
     use Illuminate\View\View;
-    use Illuminate\Users\Repository as UserRepository;
+    use App\Repositories\UserRepository;
 
     class ProfileComposer
     {

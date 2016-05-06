@@ -47,6 +47,10 @@ You may check if a given locale is currently being used by calling the `isLocale
         //
     }
 
+To retrieve the current application locale, call the `getLocale` method on the `App` [facade](/docs/{{version}}/facades):
+
+    return App::getLocale();
+
 <a name="basic-usage"></a>
 ## Basic Usage
 

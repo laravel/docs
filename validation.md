@@ -502,7 +502,8 @@ Below is a list of all available validation rules and their function:
 [IP Address](#rule-ip)
 [JSON](#rule-json)
 [Max](#rule-max)
-[MIME Types (File)](#rule-mimes)
+[MIME Types](#rule-mimetypes)
+[MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
@@ -687,6 +688,15 @@ The field under validation must be a valid JSON string.
 #### max:_value_
 
 The field under validation must be less than or equal to a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+
+<a name="rule-mimetypes"></a>
+#### mimetypes:_text/plain_,...
+
+The file under validation must match one of the given MIME types:
+
+    'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
+
+To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client provided MIME type.
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...

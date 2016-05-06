@@ -381,6 +381,7 @@ Method  | Description
 `->assertSessionHasAll(array $bindings);`  |  Assert that the session has a given list of values.
 `->assertSessionHasErrors($bindings = [], $format = null);`  |  Assert that the session has errors bound.
 `->assertHasOldInput();`  |  Assert that the session has old input.
+`->assertSessionMissing($key);`  |  Assert that the session is missing a given key.
 
 <a name="working-with-databases"></a>
 ## Working With Databases

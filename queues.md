@@ -398,8 +398,6 @@ As you can see, the `queue:work` job supports most of the same options available
 
 Daemon queue workers do not restart the framework before processing each job. Therefore, you should be careful to free any heavy resources before your job finishes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
 
-Similarly, your database connection may disconnect when being used by a long-running daemon. You may use the `DB::reconnect` method to ensure you have a fresh connection.
-
 <a name="deploying-with-daemon-queue-listeners"></a>
 ### Deploying With Daemon Queue Listeners
 
@@ -407,7 +405,7 @@ Since daemon queue workers are long-lived processes, they will not pick up chang
 
     php artisan queue:restart
 
-This command will gracefully instruct all queue workers to restart after they finish processing their current job so that no existing jobs are lost.
+This command will gracefully instruct all queue workers to "die" after they finish processing their current job so that no existing jobs are lost. Remember, the queue workers will die when the `queue:restart` command is executed, so you should be running a process manager such as Supervisor which automatically restarts the queue workers.
 
 > **Note:** This command relies on the cache system to schedule the restart. By default, APCu does not work for CLI jobs. If you are using APCu, add `apc.enable_cli=1` to your APCu configuration.
 

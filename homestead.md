@@ -172,18 +172,21 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
 <a name="accessing-homestead-globally"></a>
 ### Accessing Homestead Globally
 
-Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this by adding a simple Bash alias to your Bash profile. This alias will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
+Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this by adding a simple Bash function to your Bash profile. This function will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
 
-    alias homestead='function __homestead() { (cd ~/Homestead && vagrant $*); unset -f __homestead; }; __homestead'
+    function homestead() {
+        cd ~/Homestead
+        vagrant $*
+    }
 
-Make sure to tweak the `~/Homestead` path in the alias to the location of your actual Homestead installation. Once the alias is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
+Make sure to tweak the `~/Homestead` path in the function to the location of your actual Homestead installation. Once the function is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
 
 <a name="connecting-via-ssh"></a>
 ### Connecting Via SSH
 
 You can SSH into your virtual machine by issuing the `vagrant ssh` terminal command from your Homestead directory.
 
-But, since you will probably need to SSH into your Homestead machine frequently, consider adding the "alias" described above to your host machine to quickly SSH into the Homestead box.
+But, since you will probably need to SSH into your Homestead machine frequently, consider adding the "function" described above to your host machine to quickly SSH into the Homestead box.
 
 <a name="connecting-to-databases"></a>
 ### Connecting To Databases
