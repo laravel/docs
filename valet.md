@@ -26,6 +26,8 @@ Out of the box, Valet supports:
 - [Laravel](https://laravel.com)
 - [Lumen](https://lumen.laravel.com)
 - [Statamic](https://statamic.com)
+- [Craft](https://craftcms.com)
+- [WordPress](https://wordpress.org)
 - [Jigsaw](http://jigsaw.tighten.co)
 - Static HTML
 </div>
