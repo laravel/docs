@@ -85,8 +85,10 @@ Once Valet is installed, you're ready to start serving sites. Valet provides two
 
 The `link` command may also be used to serve your Laravel sites. This command is useful if you want to serve a single site in a directory and not the entire directory.
 
+<div class="content-list" markdown="1">
 - To use the command, navigate to one of your projects and run `valet link app-name` in your terminal. Valet will create a symbolic link in `~/.valet/Sites` which points to your current working directory.
 - After running the `link` command, you can access the site in your browser at `http://app-name.dev`.
+</div>
 
 To see a listing of all of your linked directories, run the `valet links` command. You may use `valet unlink app-name` to destroy the symbolic link.
 
