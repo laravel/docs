@@ -11,7 +11,7 @@
 - [Custom Valet Drivers](#custom-valet-drivers)
 - [Other Valet Commands](#other-valet-commands)
 
-<a name="what-is-it"></a>
+<a name="introduction"></a>
 ## Introduction
 
 Valet is a Laravel development environment for Mac minimalists. No Vagrant, No Apache, No Nginx, No `/etc/hosts` file. You can even share your sites publicly using local tunnels. _Yeah, we like it too._
