@@ -102,6 +102,7 @@ You may select any method from this table to see an example of its usage:
 [toArray](#method-toarray)
 [toJson](#method-tojson)
 [transform](#method-transform)
+[union](#method-union)
 [unique](#method-unique)
 [values](#method-values)
 [where](#method-where)
@@ -1170,6 +1171,19 @@ The `transform` method iterates over the collection and calls the given callback
     // [2, 4, 6, 8, 10]
 
 > **Note:** Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
+
+<a name="method-union"></a>
+#### `union()` {#collection-method}
+
+The `union` method adds given array to the collection. For keys that already exist in both collection and array, the matching elements from the array will be ignored.
+
+    $collection = collect([1 => ['a'], 2 => ['b']]);
+
+    $union = $collection->union([3 => ['c'], 1 => ['b']]);
+
+    $union->all();
+
+    // [1 => ['a'], 2 => ['b'], [3 => ['c']]
 
 <a name="method-unique"></a>
 #### `unique()` {#collection-method}
