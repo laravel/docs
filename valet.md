@@ -60,6 +60,12 @@ Once Valet is installed, try pinging any `*.dev` domain on your terminal using a
 
 Valet will automatically start its daemon each time your machine boots. There is no need to run `valet start` or `valet install` ever again once the initial Valet installation is complete.
 
+#### Using Another Domain
+
+By default, Valet serves your projects using the `.dev` TLD. If you'd like to use another domain, you can do so using the `valet domain tld-name` command.
+
+For example, if you'd like to use `.local` instead of `.dev`, run `valet domain local` and Valet will start serving your projects at `*.local` automatically.
+
 #### Database
 
 If you need a database, try MariaDB by running `brew install mariadb` on your command line. You can connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
