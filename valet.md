@@ -75,7 +75,7 @@ If you need a database, try MariaDB by running `brew install mariadb` on your co
 
 ### Version 1.1.0
 
-The 1.1.0 release of Valet brings a variety of great improvements. First, the built-in PHP server has been replaced with [Caddy](https://caddyserver.com/) for serving incoming HTTP requests. Introducing Caddy allows for a variety of future improvements such as HTTP2 and TLS support, as well as allows Valet sites to make HTTP requests to other Valet sites without blocking the built-in PHP server.
+The 1.1.0 release of Valet brings a variety of great improvements. First, the built-in PHP server has been replaced with [Caddy](https://caddyserver.com/) for serving incoming HTTP requests. Introducing Caddy allows for a variety of future improvements and allows Valet sites to make HTTP requests to other Valet sites without blocking the built-in PHP server.
 
 #### Upgrade Instructions
 
