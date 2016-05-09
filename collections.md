@@ -1175,7 +1175,7 @@ The `transform` method iterates over the collection and calls the given callback
 <a name="method-union"></a>
 #### `union()` {#collection-method}
 
-The `union` method adds given array to the collection. For keys that already exist in both collection and array, the matching elements from the array will be ignored.
+The `union` method adds the given array to the collection. If the given array contains keys that are already in the collection, the collection's values will be preferred:
 
     $collection = collect([1 => ['a'], 2 => ['b']]);
 
