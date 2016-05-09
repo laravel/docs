@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Valet Or Homestead](#valet-or-homestead)
 - [Installation](#installation)
+- [Release Notes](#release-notes)
 - [Serving Sites](#serving-sites)
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
@@ -68,6 +69,17 @@ For example, if you'd like to use `.local` instead of `.dev`, run `valet domain 
 #### Database
 
 If you need a database, try MariaDB by running `brew install mariadb` on your command line. You can connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
+
+<a name="release-notes"></a>
+## Release Notes
+
+### Version 1.1.0
+
+The 1.1.0 release of Valet brings a variety of great improvements. First, the built-in PHP server has been replaced with [Caddy](https://caddyserver.com/) for serving incoming HTTP requests. Introducing Caddy allows for a variety of future improvements such as HTTP2 and TLS support, as well as allows Valet sites to make HTTP requests to other Valet sites without blocking the built-in PHP server.
+
+#### Upgrade Instructions
+
+After updating your Valet installation using `composer global update`, you should run the `valet install` command in your terminal to create the new Caddy daemon file on your system.
 
 <a name="serving-sites"></a>
 ## Serving Sites
