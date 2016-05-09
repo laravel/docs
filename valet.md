@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Valet Or Homestead](#valet-or-homestead)
 - [Installation](#installation)
+- [Release Notes](#release-notes)
 - [Serving Sites](#serving-sites)
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
@@ -11,7 +12,7 @@
 - [Custom Valet Drivers](#custom-valet-drivers)
 - [Other Valet Commands](#other-valet-commands)
 
-<a name="what-is-it"></a>
+<a name="introduction"></a>
 ## Introduction
 
 Valet is a Laravel development environment for Mac minimalists. No Vagrant, No Apache, No Nginx, No `/etc/hosts` file. You can even share your sites publicly using local tunnels. _Yeah, we like it too._
@@ -50,8 +51,7 @@ Both Valet and Homestead are great choices for configuring your Laravel developm
 
 <div class="content-list" markdown="1">
 - Install or update [Homebrew](http://brew.sh/) to the latest version using `brew update`.
-- Make sure `brew services` is available by running `brew services list` and making sure you get valid output. If it is not available, [add it](https://github.com/Homebrew/homebrew-services).
-- Install PHP 7.0 via Homebrew via `brew install php70`. You may need to [tap the PHP Homebrew formulas](https://github.com/Homebrew/homebrew-php).
+- Install PHP 7.0 using Homebrew via `brew install homebrew/php/php70`.
 - Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/vendor/bin` directory is in your system's "PATH".
 - Run the `valet install` command. This will configure and install Valet and DnsMasq, and register Valet's daemon to launch when your system starts.
 </div>
@@ -60,9 +60,26 @@ Once Valet is installed, try pinging any `*.dev` domain on your terminal using a
 
 Valet will automatically start its daemon each time your machine boots. There is no need to run `valet start` or `valet install` ever again once the initial Valet installation is complete.
 
+#### Using Another Domain
+
+By default, Valet serves your projects using the `.dev` TLD. If you'd like to use another domain, you can do so using the `valet domain tld-name` command.
+
+For example, if you'd like to use `.local` instead of `.dev`, run `valet domain local` and Valet will start serving your projects at `*.local` automatically.
+
 #### Database
 
 If you need a database, try MariaDB by running `brew install mariadb` on your command line. You can connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
+
+<a name="release-notes"></a>
+## Release Notes
+
+### Version 1.1.0
+
+The 1.1.0 release of Valet brings a variety of great improvements. First, the built-in PHP server has been replaced with [Caddy](https://caddyserver.com/) for serving incoming HTTP requests. Introducing Caddy allows for a variety of future improvements such as HTTP2 and TLS support, as well as allows Valet sites to make HTTP requests to other Valet sites without blocking the built-in PHP server.
+
+#### Upgrade Instructions
+
+After updating your Valet installation using `composer global update`, you should run the `valet install` command in your terminal to create the new Caddy daemon file on your system.
 
 <a name="serving-sites"></a>
 ## Serving Sites
