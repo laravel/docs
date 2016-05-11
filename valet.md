@@ -26,9 +26,12 @@ Out of the box, Valet supports:
 <div class="content-list" markdown="1">
 - [Laravel](https://laravel.com)
 - [Lumen](https://lumen.laravel.com)
-- [Statamic](https://statamic.com)
-- [Craft](https://craftcms.com)
+- [Symfony](https://symfony.com)
+- [Zend](http://framework.zend.com)
+- [CakePHP 3](http://cakephp.org)
 - [WordPress](https://wordpress.org)
+- [Craft](https://craftcms.com)
+- [Statamic](https://statamic.com)
 - [Jigsaw](http://jigsaw.tighten.co)
 - Static HTML
 </div>
