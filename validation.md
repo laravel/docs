@@ -491,6 +491,7 @@ Below is a list of all available validation rules and their function:
 [Different](#rule-different)
 [Digits](#rule-digits)
 [Digits Between](#rule-digits-between)
+[Dimensions (Image Files)](#dimensions)
 [Distinct](#rule-distinct)
 [E-Mail](#rule-email)
 [Exists (Database)](#rule-exists)
@@ -609,6 +610,15 @@ The field under validation must be _numeric_ and must have an exact length of _v
 #### digits_between:_min_,_max_
 
 The field under validation must have a length between the given _min_ and _max_.
+
+<a name="rule-dimensions"></a>
+#### Dimensions
+
+The file under validation must be an image meeting the dimension constraints as specified by the rule's parameters:
+
+    'avatar' => 'dimensions:min_width=100,min_height=200'
+
+Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
 
 <a name="rule-distinct"></a>
 #### distinct
