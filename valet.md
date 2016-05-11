@@ -76,6 +76,14 @@ If you need a database, try MariaDB by running `brew install mariadb` on your co
 <a name="release-notes"></a>
 ## Release Notes
 
+### Version 1.1.5
+
+The 1.1.5 release of Valet brings a variety of internal improvements.
+
+#### Upgrade Instructions
+
+After updating your Valet installation using `composer global update`, you should run the `valet install` command in your terminal.
+
 ### Version 1.1.0
 
 The 1.1.0 release of Valet brings a variety of great improvements. The built-in PHP server has been replaced with [Caddy](https://caddyserver.com/) for serving incoming HTTP requests. Introducing Caddy allows for a variety of future improvements and allows Valet sites to make HTTP requests to other Valet sites without blocking the built-in PHP server.
