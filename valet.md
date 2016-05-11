@@ -21,7 +21,7 @@ Laravel Valet configures your Mac to always run PHP's built-in web server in the
 
 In other words, a blazing fast Laravel development environment that uses roughly 7mb of RAM. Valet isn't a complete replacement for Vagrant or Homestead, but provides a great alternative if you want flexible basics, prefer extreme speed, or are working on a machine with a limited amount of RAM.
 
-Out of the box, Valet supports:
+Out of the box, Valet supports includes, but is not limited to:
 
 <div class="content-list" markdown="1">
 - [Laravel](https://laravel.com)
