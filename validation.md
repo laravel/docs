@@ -614,11 +614,11 @@ The field under validation must have a length between the given _min_ and _max_.
 <a name="rule-dimensions"></a>
 #### Dimensions
 
-The file under validation must be an image with dimension constraints as specified by the given rule parameters.
+The file under validation must be an image meeting the dimension constraints as specified by the rule's parameters:
 
     'avatar' => 'dimensions:min_width=100,min_height=200'
 
-Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_. 
+Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
 
 <a name="rule-distinct"></a>
 #### distinct
