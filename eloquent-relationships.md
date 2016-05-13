@@ -399,7 +399,7 @@ Next, let's examine the model definitions needed to build this relationship:
     class Post extends Model
     {
         /**
-         * Get all of the product's likes.
+         * Get all of the post's likes.
          */
         public function likes()
         {
