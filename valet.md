@@ -7,6 +7,7 @@
 - [Serving Sites](#serving-sites)
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
+    - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
 - [Viewing Logs](#viewing-logs)
 - [Custom Valet Drivers](#custom-valet-drivers)
@@ -30,6 +31,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [Zend](http://framework.zend.com)
 - [CakePHP 3](http://cakephp.org)
 - [WordPress](https://wordpress.org)
+- [Bedrock](https://roots.io/bedrock)
 - [Craft](https://craftcms.com)
 - [Statamic](https://statamic.com)
 - [Jigsaw](http://jigsaw.tighten.co)
@@ -119,6 +121,17 @@ The `link` command may also be used to serve your Laravel sites. This command is
 </div>
 
 To see a listing of all of your linked directories, run the `valet links` command. You may use `valet unlink app-name` to destroy the symbolic link.
+
+<a name="securing-sites"></a>
+**Securing Sites With TLS**
+
+By default, Valet serves sites over plain HTTP. However, if you would like to serve a site over encrypted TLS using HTTP2, use the `secure` command. For example, if your site is being served by Valet on the `laravel.dev` domain, you should run the following command to secure it:
+
+    valet secure laravel
+
+To "unsecure" a site and revert back to serving its traffic over plain HTTP, use the `unsecure` command. Like the `secure` command, this command accepts the host name that you wish to unsecure:
+
+    valet unsecure laravel
 
 <a name="sharing-sites"></a>
 ## Sharing Sites
