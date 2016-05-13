@@ -129,7 +129,7 @@ By default, Valet serves sites over plain HTTP. However, if you would like to se
 
     valet secure laravel
 
-To "unsecure" a site and revert back to serving its traffic over plain HTTP, use the `unsecure` command:
+To "unsecure" a site and revert back to serving its traffic over plain HTTP, use the `unsecure` command. Like the `secure` command, this command accepts the host name that you wish to unsecure:
 
     valet unsecure laravel
 
