@@ -31,6 +31,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [Zend](http://framework.zend.com)
 - [CakePHP 3](http://cakephp.org)
 - [WordPress](https://wordpress.org)
+- [Bedrock](https://roots.io/bedrock)
 - [Craft](https://craftcms.com)
 - [Statamic](https://statamic.com)
 - [Jigsaw](http://jigsaw.tighten.co)
