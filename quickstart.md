@@ -233,7 +233,7 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
 			<!-- New Task Form -->
 			<form action="{{ url('task') }}" method="POST" class="form-horizontal">
-				{!! csrf_field() !!}
+				{{ csrf_field() }}
 
                 <!-- Task Name -->
 				<div class="form-group">
@@ -423,8 +423,8 @@ We left a "TODO" note in our code where our delete button is supposed to be. So,
         <!-- Delete Button -->
         <td>
             <form action="{{ url('task/'.$task->id) }}" method="POST">
-                {!! csrf_field() !!}
-                {!! method_field('DELETE') !!}
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
 
                 <button type="submit" class="btn btn-danger">
                     <i class="fa fa-trash"></i> Delete
