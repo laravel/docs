@@ -19,6 +19,8 @@ The API based drivers such as Mailgun and Mandrill are often simpler and faster 
 
     "guzzlehttp/guzzle": "~5.3|~6.0"
 
+and then run the `composer update` command.
+
 #### Mailgun Driver
 
 To use the Mailgun driver, first install Guzzle, then set the `driver` option in your `config/mail.php` configuration file to `mailgun`. Next, verify that your `config/services.php` configuration file contains the following options:
