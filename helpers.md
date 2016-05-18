@@ -738,7 +738,7 @@ The `config` helper may also be used to set configuration variables at runtime b
 
 The `csrf_field` function generates an HTML `hidden` input field containing the value of the CSRF token. For example, using [Blade syntax](/docs/{{version}}/blade):
 
-    {!! csrf_field() !!}
+    {{ csrf_field() }}
 
 <a name="method-csrf-token"></a>
 #### `csrf_token()` {#collection-method}
@@ -795,7 +795,7 @@ The `factory` function creates a model factory builder for a given class, name, 
 The `method_field` function generates an HTML `hidden` input field containing the spoofed value of the form's HTTP verb. For example, using [Blade syntax](/docs/{{version}}/blade):
 
     <form method="POST">
-        {!! method_field('delete') !!}
+        {{ method_field('DELETE') }}
     </form>
 
 <a name="method-old"></a>
