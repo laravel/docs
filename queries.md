@@ -305,23 +305,23 @@ The `whereNotNull` method verifies that the column's value is **not** `NULL`:
 
 **whereColumn**
 
-The `whereColumn` method verifies two columns are equal:
+The `whereColumn` method may be used to verify that two columns are equal:
 
     $users = DB::table('users')
-                        ->whereColumn('first_name', 'last_name');
+                    ->whereColumn('first_name', 'last_name');
 
-The `whereColumn` method can be passed an operator:
-
-    $users = DB::table('users')
-                        ->whereColumn('updated_at', '>', created_at');
-
-The `whereColumn` method can also be passed multiple conditions:
+You may also pass a comparison operator to the method:
 
     $users = DB::table('users')
-                        ->whereColumn([
-                            ['first_name', 'last_name'],
-                            ['updated_at', '>', 'created_at']
-                        ]);
+                    ->whereColumn('updated_at', '>', created_at');
+
+The `whereColumn` method can also be passed an array of multiple conditions. These conditions will be joined using the `and` operator:
+
+    $users = DB::table('users')
+                    ->whereColumn([
+                        ['first_name', 'last_name'],
+                        ['updated_at', '>', 'created_at']
+                    ]);
 
 <a name="advanced-where-clauses"></a>
 ## Advanced Where Clauses
