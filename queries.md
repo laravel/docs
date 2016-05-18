@@ -303,6 +303,22 @@ The `whereNotNull` method verifies that the column's value is **not** `NULL`:
                         ->whereNotNull('updated_at')
                         ->get();
 
+**whereColumn**
+
+The `whereColumn` method compares the values for given columns:
+
+    $users = DB::table('users')
+                        ->whereColumn('first_name', 'last_name')
+                        ->get();
+                                 
+You can also pass an array of conditions to the `whereColumn` function:
+
+    $users = DB::table('users')
+                        ->whereColumn([
+                              ['first_name', 'last_name'],
+                              ['updated_at', '>', 'created_at']
+                        ])->get();                        
+
 <a name="advanced-where-clauses"></a>
 ## Advanced Where Clauses
 
