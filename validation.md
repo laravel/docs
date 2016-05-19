@@ -658,6 +658,12 @@ You may also pass `NULL` or `NOT_NULL` to the "where" clause:
     'email' => 'exists:staff,email,deleted_at,NULL'
 
     'email' => 'exists:staff,email,deleted_at,NOT_NULL'
+    
+**Custom Database Connection**
+
+Occasionally, you may need to set a custom connection for database queries made by the Validator. As seen above, setting `exists:staff` as a validation rule will use the default database connection to query the database. To override this, specify the connection followed by the table name using "dot" syntax:
+
+    'email' => 'exists:connection.staff,email'
 
 <a name="rule-filled"></a>
 #### filled
