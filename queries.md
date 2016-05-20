@@ -416,7 +416,7 @@ Sometimes you may want statements to apply to a query only when something else i
     $role = $request->input('role');
 
     $users = DB::table('users')
-                    ->when($role, function ($query) {
+                    ->when($role, function ($query) use ($role) {
                         return $query->where('role_id', $role);
                     })
                     ->get();
