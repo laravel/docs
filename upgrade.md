@@ -23,16 +23,16 @@ Eloquent scopes now respect the leading boolean of scope constraints. For exampl
 If your scopes begin with `where` constraints no action is required. Remember, you can verify your query SQL using the `toSql` method of a query:
 
     User::where('foo', 'bar')->toSql();
-    
+
 #### Join Clause
 
-In 5.3 the ``JoinClause`` was rewritten to offer a unified syntax with the query builder. There were a few minor changes in the public interface of the advanced join clause builder as well. The ``$where`` boolean parameter of the ``on`` clause was removed. Where conditions should now always be called explicitly using one of the ``where`` methods offered by the [query builder](/docs/{{version}}/queries#where-clauses):
+The `JoinClause` class has been rewritten to unify its syntax with the query builder. The optional `$where` parameter of the `on` clause has been removed. To add a "where" conditions you should explicitly use one of the `where` methods offered by the [query builder](/docs/{{version}}/queries#where-clauses):
 
     $query->join('table', function($join) {
         $join->on('foo', 'bar')->where('bar', 'baz');
     });
-    
-``$bindings`` public property was removed as well. To manipulate join bindings dinamically, you can now use the ``addBinding`` method:
+
+The `$bindings` property was also removed. To manipulate join bindings directly you may use the `addBinding` method:
 
     $query->join(DB::raw('('.$subquery->toSql().') table'), function($join) use ($subquery) {
         $join->addBinding($subquery->getBindings(), 'join');
