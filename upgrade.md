@@ -18,11 +18,25 @@
 
 #### Eloquent Scopes
 
-Eloquent scopes now respect the leading boolean of scope constraints. For example, if you are starting your scope with an `orWhere` constraint it will no longer be converted to normal `where`. If you were relying on this feature (e.g. adding multiple `orWhere` constraints within a loop), you should make verify that the first condition is a normal `where` to avoid any boolean logic issues.
+Eloquent scopes now respect the leading boolean of scope constraints. For example, if you are starting your scope with an `orWhere` constraint it will no longer be converted to normal `where`. If you were relying on this feature (e.g. adding multiple `orWhere` constraints within a loop), you should verify that the first condition is a normal `where` to avoid any boolean logic issues.
 
 If your scopes begin with `where` constraints no action is required. Remember, you can verify your query SQL using the `toSql` method of a query:
 
     User::where('foo', 'bar')->toSql();
+    
+#### Join Clause
+
+In 5.3 the ``JoinClause`` was rewritten to offer a unified syntax with the query builder. There were a few minor changes in the public interface of the advanced join clause builder as well. The ``$where`` boolean parameter of the ``on`` clause was removed. Where conditions should now always be called explicitly using one of the ``where`` methods offered by the [query builder](/docs/{{version}}/queries#where-clauses):
+
+    $query->join('table', function($join) {
+        $join->on('foo', 'bar')->where('bar', 'baz');
+    });
+    
+``$bindings`` public property was removed as well. To manipulate join bindings dinamically, you can now use the ``addBinding`` method:
+
+    $query->join(DB::raw('('.$subquery->toSql().') table'), function($join) use ($subquery) {
+        $join->addBinding($subquery->getBindings(), 'join');
+    });
 
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
