@@ -254,7 +254,7 @@ The `count` method returns the total number of items in the collection:
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
 
-The `diff` method compares the collection against another collection or a plain PHP `array` based on it's values:
+The `diff` method compares the collection against another collection or a plain PHP `array` based on its values:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -267,7 +267,7 @@ The `diff` method compares the collection against another collection or a plain 
 <a name="method-diffkeys"></a>
 #### `diffKeys()` {#collection-method}
 
-The `diffKeys` method compares the collection against another collection or a plain PHP `array` based on it's keys:
+The `diffKeys` method compares the collection against another collection or a plain PHP `array` based on its keys:
 
     $collection = collect([
         'one' => 10,
