@@ -62,6 +62,10 @@ Of course if you are using the [Blade templating engine](/docs/{{version}}/blade
 
     {{ trans('messages.welcome') }}
 
+or use the Blade shorthand:
+
+    @lang('messages.welcome')
+
 If the specified language line does not exist, the `trans` function will simply return the language line key. So, using the example above, the `trans` function would return `messages.welcome` if the language line does not exist.
 
 #### Replacing Parameters In Language Lines
