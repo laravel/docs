@@ -128,6 +128,8 @@ GET       | `/photo/{photo}/edit` | edit         | photo.edit
 PUT/PATCH | `/photo/{photo}`      | update       | photo.update
 DELETE    | `/photo/{photo}`      | destroy      | photo.destroy
 
+If you are using resource controllers with HTML forms you have to add the PUT, PATCH and DELETE methods as a hidden input field, otherwise Laravel will throw a methodNotAllowed exception. Example: `<input type="hidden" name="_method" value="PUT">`
+
 <a name="restful-partial-resource-routes"></a>
 #### Partial Resource Routes
 
