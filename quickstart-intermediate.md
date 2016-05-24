@@ -315,7 +315,7 @@ As we discussed earlier, all Laravel views are stored in `resources/views`. So, 
 
 Our `app.blade.php` view should look like the following:
 
-    <!-- resources/views/layouts/app.blade.php ->
+    <!-- resources/views/layouts/app.blade.php -->
 
     <!DOCTYPE html>
     <html lang="en">
