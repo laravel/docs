@@ -387,12 +387,11 @@ The `orderBy` method allows you to sort the result of the query by a given colum
 
 #### inRandomOrder
 
-The `inRandomOrder` method may be used to sort the query results in a random order. For example we want to fetch a random user:
+The `inRandomOrder` method may be used to sort the query results randomly. For example, you may use this method to fetch a random user:
 
     $randomUser = DB::table('users')
                     ->inRandomOrder()
-                    ->take(1)
-                    ->get();
+                    ->first();
 
 #### groupBy / having / havingRaw
 
