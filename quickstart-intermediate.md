@@ -359,7 +359,7 @@ We'll skip over some of the Bootstrap CSS boilerplate and only focus on the thin
 
             <!-- New Task Form -->
             <form action="{{ url('task') }}" method="POST" class="form-horizontal">
-                {!! csrf_field() !!}
+                {{ csrf_field() }}
 
                 <!-- Task Name -->
                 <div class="form-group">
@@ -499,7 +499,7 @@ First, we need to edit our `TaskController@index` method to pass all of the exis
      */
     public function index(Request $request)
     {
-        $tasks = Task::where('user_id', $request->user()->id)->get();
+        $tasks = $request->user()->tasks()->get();
 
         return view('tasks.index', [
             'tasks' => $tasks,
@@ -524,7 +524,6 @@ So, let's create an `app/Repositories` directory and add a `TaskRepository` clas
     namespace App\Repositories;
 
     use App\User;
-    use App\Task;
 
     class TaskRepository
     {
@@ -536,7 +535,7 @@ So, let's create an `app/Repositories` directory and add a `TaskRepository` clas
          */
         public function forUser(User $user)
         {
-            return Task::where('user_id', $user->id)
+            return $user->tasks()
                         ->orderBy('created_at', 'asc')
                         ->get();
         }
@@ -658,8 +657,8 @@ We left a "TODO" note in our code where our delete button is supposed to be. So,
         <!-- Delete Button -->
         <td>
             <form action="{{ url('task/'.$task->id) }}" method="POST">
-                {!! csrf_field() !!}
-                {!! method_field('DELETE') !!}
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
 
                 <button type="submit" id="delete-task-{{ $task->id }}" class="btn btn-danger">
                     <i class="fa fa-btn fa-trash"></i>Delete

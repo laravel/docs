@@ -288,6 +288,14 @@ If you want your pivot table to have automatically maintained `created_at` and `
 
     return $this->belongsToMany('App\Role')->withTimestamps();
 
+#### Filtering Relationships Via Intermediate Table Columns
+
+You can also filter the results returned by `belongsToMany` using the `wherePivot` and `wherePivotIn` methods when defining the relationship:
+
+    return $this->belongsToMany('App\Role')->wherePivot('approved', 1);
+
+    return $this->belongsToMany('App\Role')->wherePivotIn('approved', [1, 2]);
+
 <a name="has-many-through"></a>
 ### Has Many Through
 
@@ -330,13 +338,16 @@ Now that we have examined the table structure for the relationship, let's define
 
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
-Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model, while the fourth argument is the name of the foreign key on the final model.
+Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model, the fourth argument is the name of the foreign key on the final model, and the fifth argument is the local key:
 
     class Country extends Model
     {
         public function posts()
         {
-            return $this->hasManyThrough('App\Post', 'App\User', 'country_id', 'user_id');
+            return $this->hasManyThrough(
+                'App\Post', 'App\User',
+                'country_id', 'user_id', 'id'
+            );
         }
     }
 
@@ -388,7 +399,7 @@ Next, let's examine the model definitions needed to build this relationship:
     class Post extends Model
     {
         /**
-         * Get all of the product's likes.
+         * Get all of the post's likes.
          */
         public function likes()
         {

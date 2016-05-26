@@ -55,6 +55,7 @@ You may select any method from this table to see an example of its usage:
 [contains](#method-contains)
 [count](#method-count)
 [diff](#method-diff)
+[diffKeys](#method-diffkeys)
 [each](#method-each)
 [every](#method-every)
 [except](#method-except)
@@ -102,6 +103,7 @@ You may select any method from this table to see an example of its usage:
 [toArray](#method-toarray)
 [toJson](#method-tojson)
 [transform](#method-transform)
+[union](#method-union)
 [unique](#method-unique)
 [values](#method-values)
 [where](#method-where)
@@ -252,7 +254,7 @@ The `count` method returns the total number of items in the collection:
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
 
-The `diff` method compares the collection against another collection or a plain PHP `array`:
+The `diff` method compares the collection against another collection or a plain PHP `array` based on it's values:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -261,6 +263,30 @@ The `diff` method compares the collection against another collection or a plain 
     $diff->all();
 
     // [1, 3, 5]
+
+<a name="method-diffkeys"></a>
+#### `diffKeys()` {#collection-method}
+
+The `diffKeys` method compares the collection against another collection or a plain PHP `array` based on it's keys:
+
+    $collection = collect([
+        'one' => 10,
+        'two' => 20,
+        'three' => 30,
+        'four' => 40,
+        'five' => 50,
+    ]);
+
+    $diff = $collection->diffKeys([
+        'two' => 2,
+        'four' => 4,
+        'six' => 6,
+        'eight' => 8,
+    ]);
+
+    $diff->all();
+
+    // ['one' => 10, 'three' => 30, 'five' => 50]
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}
@@ -1170,6 +1196,19 @@ The `transform` method iterates over the collection and calls the given callback
     // [2, 4, 6, 8, 10]
 
 > **Note:** Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
+
+<a name="method-union"></a>
+#### `union()` {#collection-method}
+
+The `union` method adds the given array to the collection. If the given array contains keys that are already in the collection, the collection's values will be preferred:
+
+    $collection = collect([1 => ['a'], 2 => ['b']]);
+
+    $union = $collection->union([3 => ['c'], 1 => ['b']]);
+
+    $union->all();
+
+    // [1 => ['a'], 2 => ['b'], [3 => ['c']]
 
 <a name="method-unique"></a>
 #### `unique()` {#collection-method}

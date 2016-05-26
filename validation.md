@@ -491,6 +491,7 @@ Below is a list of all available validation rules and their function:
 [Different](#rule-different)
 [Digits](#rule-digits)
 [Digits Between](#rule-digits-between)
+[Dimensions (Image Files)](#rule-dimensions)
 [Distinct](#rule-distinct)
 [E-Mail](#rule-email)
 [Exists (Database)](#rule-exists)
@@ -502,7 +503,8 @@ Below is a list of all available validation rules and their function:
 [IP Address](#rule-ip)
 [JSON](#rule-json)
 [Max](#rule-max)
-[MIME Types (File)](#rule-mimes)
+[MIME Types](#rule-mimetypes)
+[MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
@@ -609,6 +611,15 @@ The field under validation must be _numeric_ and must have an exact length of _v
 
 The field under validation must have a length between the given _min_ and _max_.
 
+<a name="rule-dimensions"></a>
+#### dimensions
+
+The file under validation must be an image meeting the dimension constraints as specified by the rule's parameters:
+
+    'avatar' => 'dimensions:min_width=100,min_height=200'
+
+Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
+
 <a name="rule-distinct"></a>
 #### distinct
 
@@ -647,6 +658,10 @@ You may also pass `NULL` or `NOT_NULL` to the "where" clause:
     'email' => 'exists:staff,email,deleted_at,NULL'
 
     'email' => 'exists:staff,email,deleted_at,NOT_NULL'
+
+Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name using "dot" syntax:
+
+    'email' => 'exists:connection.staff,email'
 
 <a name="rule-filled"></a>
 #### filled
@@ -687,6 +702,15 @@ The field under validation must be a valid JSON string.
 #### max:_value_
 
 The field under validation must be less than or equal to a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+
+<a name="rule-mimetypes"></a>
+#### mimetypes:_text/plain_,...
+
+The file under validation must match one of the given MIME types:
+
+    'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
+
+To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client provided MIME type.
 
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...

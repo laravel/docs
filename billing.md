@@ -524,6 +524,8 @@ The invoice will be charged immediately against the user's credit card. The `inv
         'custom-option' => $value,
     ]);
 
+> **Note:** The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
+
 <a name="invoices"></a>
 ## Invoices
 

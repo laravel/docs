@@ -110,7 +110,7 @@ Now, let's write a test that clicks the link and asserts the user lands on the c
 Laravel also provides several methods for testing forms. The `type`, `select`, `check`, `attach`, and `press` methods allow you to interact with all of your form's inputs. For example, let's imagine this form exists on the application's registration page:
 
     <form action="/register" method="POST">
-        {!! csrf_field() !!}
+        {{ csrf_field() }}
 
         <div>
             Name: <input type="text" name="name">
@@ -381,6 +381,7 @@ Method  | Description
 `->assertSessionHasAll(array $bindings);`  |  Assert that the session has a given list of values.
 `->assertSessionHasErrors($bindings = [], $format = null);`  |  Assert that the session has errors bound.
 `->assertHasOldInput();`  |  Assert that the session has old input.
+`->assertSessionMissing($key);`  |  Assert that the session is missing a given key.
 
 <a name="working-with-databases"></a>
 ## Working With Databases

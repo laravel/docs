@@ -303,6 +303,26 @@ The `whereNotNull` method verifies that the column's value is **not** `NULL`:
                         ->whereNotNull('updated_at')
                         ->get();
 
+**whereColumn**
+
+The `whereColumn` method may be used to verify that two columns are equal:
+
+    $users = DB::table('users')
+                    ->whereColumn('first_name', 'last_name');
+
+You may also pass a comparison operator to the method:
+
+    $users = DB::table('users')
+                    ->whereColumn('updated_at', '>', created_at');
+
+The `whereColumn` method can also be passed an array of multiple conditions. These conditions will be joined using the `and` operator:
+
+    $users = DB::table('users')
+                    ->whereColumn([
+                        ['first_name', 'last_name'],
+                        ['updated_at', '>', 'created_at']
+                    ]);
+
 <a name="advanced-where-clauses"></a>
 ## Advanced Where Clauses
 
@@ -318,13 +338,13 @@ Sometimes you may need to create more advanced where clauses such as "where exis
                 })
                 ->get();
 
-As you can see, passing `Closure` into the `orWhere` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
+As you can see, passing a `Closure` into the `orWhere` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
 
     select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
 #### Exists Statements
 
-The `whereExists` method allows you to write `where exist` SQL clauses. The `whereExists` method accepts a `Closure` argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
+The `whereExists` method allows you to write `where exists` SQL clauses. The `whereExists` method accepts a `Closure` argument, which will receive a query builder instance allowing you to define the query that should be placed inside of the "exists" clause:
 
     DB::table('users')
                 ->whereExists(function ($query) {
@@ -396,7 +416,7 @@ Sometimes you may want statements to apply to a query only when something else i
     $role = $request->input('role');
 
     $users = DB::table('users')
-                    ->when($role, function ($query) {
+                    ->when($role, function ($query) use ($role) {
                         return $query->where('role_id', $role);
                     })
                     ->get();
@@ -466,7 +486,7 @@ Of course, the query builder may also be used to delete records from the table v
 
 You may constrain `delete` statements by adding `where` clauses before calling the `delete` method:
 
-    DB::table('users')->where('votes', '<', 100)->delete();
+    DB::table('users')->where('votes', '>', 100)->delete();
 
 If you wish to truncate the entire table, which will remove all rows and reset the auto-incrementing ID to zero, you may use the `truncate` method:
 

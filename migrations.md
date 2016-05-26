@@ -239,6 +239,7 @@ Modifier  | Description
 `->nullable()`  |  Allow NULL values to be inserted into the column
 `->default($value)`  |  Specify a "default" value for the column
 `->unsigned()`  |  Set `integer` columns to `UNSIGNED`
+`->comment('my comment')`  |  Add a comment to a column
 
 <a name="changing-columns"></a>
 <a name="modifying-columns"></a>
@@ -364,3 +365,9 @@ To drop a foreign key, you may use the `dropForeign` method. Foreign key constra
 Or you may pass an array value which will automatically use the conventional constraint name when dropping:
 
     $table->dropForeign(['user_id']);
+
+You may enable or disable foreign key constraints within your migrations by using the following methods:
+
+    Schema::enableForeignKeyConstraints();
+
+    Schema::disableForeignKeyConstraints();
