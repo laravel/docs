@@ -620,7 +620,7 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 
 #### Counting Relationship Results
 
-If you want to count the number of results from a relationship without actually loading them, you can add an attribute with just the coung by using the `withCount` method:
+If you want to count the number of results from a relationship without actually loading them, you can add an attribute with just the count by using the `withCount` method:
 
     // Retrieve the number of comments each Post has, as 'comments_count' attribute
     $posts = App\Post::withCount('comments')->get();
