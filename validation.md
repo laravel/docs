@@ -659,6 +659,10 @@ You may also pass `NULL` or `NOT_NULL` to the "where" clause:
 
     'email' => 'exists:staff,email,deleted_at,NOT_NULL'
 
+Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name using "dot" syntax:
+
+    'email' => 'exists:connection.staff,email'
+
 <a name="rule-filled"></a>
 #### filled
 

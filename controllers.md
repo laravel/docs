@@ -128,6 +128,10 @@ GET       | `/photo/{photo}/edit` | edit         | photo.edit
 PUT/PATCH | `/photo/{photo}`      | update       | photo.update
 DELETE    | `/photo/{photo}`      | destroy      | photo.destroy
 
+Remember, since HTML forms can't make PUT, PATCH, or DELETE requests, you will need to add a hidden `_method` field to spoof these HTTP verbs:
+
+    <input type="hidden" name="_method" value="PUT">
+
 <a name="restful-partial-resource-routes"></a>
 #### Partial Resource Routes
 

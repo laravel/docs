@@ -55,6 +55,7 @@ You may select any method from this table to see an example of its usage:
 [contains](#method-contains)
 [count](#method-count)
 [diff](#method-diff)
+[diffKeys](#method-diffkeys)
 [each](#method-each)
 [every](#method-every)
 [except](#method-except)
@@ -253,7 +254,7 @@ The `count` method returns the total number of items in the collection:
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
 
-The `diff` method compares the collection against another collection or a plain PHP `array`:
+The `diff` method compares the collection against another collection or a plain PHP `array` based on its values:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -262,6 +263,30 @@ The `diff` method compares the collection against another collection or a plain 
     $diff->all();
 
     // [1, 3, 5]
+
+<a name="method-diffkeys"></a>
+#### `diffKeys()` {#collection-method}
+
+The `diffKeys` method compares the collection against another collection or a plain PHP `array` based on its keys:
+
+    $collection = collect([
+        'one' => 10,
+        'two' => 20,
+        'three' => 30,
+        'four' => 40,
+        'five' => 50,
+    ]);
+
+    $diff = $collection->diffKeys([
+        'two' => 2,
+        'four' => 4,
+        'six' => 6,
+        'eight' => 8,
+    ]);
+
+    $diff->all();
+
+    // ['one' => 10, 'three' => 30, 'five' => 50]
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}

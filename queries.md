@@ -385,6 +385,14 @@ The `orderBy` method allows you to sort the result of the query by a given colum
                     ->orderBy('name', 'desc')
                     ->get();
 
+#### inRandomOrder
+
+The `inRandomOrder` method may be used to sort the query results randomly. For example, you may use this method to fetch a random user:
+
+    $randomUser = DB::table('users')
+                    ->inRandomOrder()
+                    ->first();
+
 #### groupBy / having / havingRaw
 
 The `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
@@ -416,7 +424,7 @@ Sometimes you may want statements to apply to a query only when something else i
     $role = $request->input('role');
 
     $users = DB::table('users')
-                    ->when($role, function ($query) {
+                    ->when($role, function ($query) use ($role) {
                         return $query->where('role_id', $role);
                     })
                     ->get();

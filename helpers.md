@@ -608,7 +608,7 @@ The `str_singular` function converts a string to its singular form. This functio
 
 The `str_slug` function generates a URL friendly "slug" from the given string:
 
-    $title = str_slug("Laravel 5 Framework", "-");
+    $title = str_slug('Laravel 5 Framework', '-');
 
     // laravel-5-framework
 
