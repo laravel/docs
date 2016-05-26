@@ -402,6 +402,22 @@ The `flatten` method flattens a multi-dimensional collection into a single dimen
     $flattened->all();
 
     // ['taylor', 'php', 'javascript'];
+    
+You may optionally pass depth as an argument to set the number of dimensions to flatten:
+
+    $collection = collect([
+        'name' => 'taylor', 
+        'languages' => [
+            'php' => ['4', '5', '6'],
+            'javascript' => ['1.5', '1.6', '1.7', '1.8.2']
+        ]
+    ]);
+    
+    $flattened = $collection->flatten(1);
+
+    $flattened->all();
+    
+    //  [ "taylor", "php"=> ["4", "5", "6"], "javascript" => ["1.5", "1.6", "1.7", "1.8.2" ] ];
 
 <a name="method-flip"></a>
 #### `flip()` {#collection-method}
