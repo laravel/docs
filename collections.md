@@ -403,7 +403,7 @@ The `flatten` method flattens a multi-dimensional collection into a single dimen
 
     // ['taylor', 'php', 'javascript'];
 
-You may optionally pass it the depth you want flattend:
+You may optionally pass the function a "depth" argument:
 
     $collection = collect([
         'Apple' => [
