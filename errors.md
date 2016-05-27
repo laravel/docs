@@ -28,12 +28,10 @@ For local development, you should set the `APP_DEBUG` environment variable to `t
 Out of the box, Laravel supports `single`, `daily`, `syslog` and `errorlog` logging modes. For example, if you wish to use daily log files instead of a single file, you should simply set the `log` value in your `config/app.php` configuration file:
 
     'log' => 'daily'
-    
-By default, Laravel will keep a maximum of 5 log files - 5 days. If you want to change this, you can add an optional `log_max_files` config value to your `config.app.php` configuration file:
+
+When using the `daily` log mode, Laravel will only retain five days of log files by default. If you want to adjust the number of retained files, you may add an optional `log_max_files` configuration value to your `app.php` configuration file:
 
     'log_max_files' => 30
-
-This will keep 30 daily log files.
 
 #### Custom Monolog Configuration
 
