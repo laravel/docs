@@ -403,6 +403,30 @@ The `flatten` method flattens a multi-dimensional collection into a single dimen
 
     // ['taylor', 'php', 'javascript'];
 
+You may optionally pass it the depth you want flattend:
+
+    $collection = collect([
+        'Apple' => [
+            ['name' => 'iPhone 6S', 'brand' => 'Apple'],
+        ],
+        'Samsung' => [
+            ['name' => 'Galaxy S7', 'brand' => 'Samsung']
+        ],
+    ]);
+
+    $products = $collection->flatten(1);
+
+    $products->values()->all();
+
+    /*
+        [
+            ['name' => 'iPhone 6S', 'brand' => 'Apple'],
+            ['name' => 'Galaxy S7', 'brand' => 'Samsung'],
+        ]
+    */
+
+Here, calling `flatten` without providing the depth would have also flattened the nested arrays, resulting in `['iPhone 6S', 'Apple', 'Galaxy S7', 'Samsung']`. Providing a depth allows you to restrict the levels of nested arrays that will be flattened.
+
 <a name="method-flip"></a>
 #### `flip()` {#collection-method}
 
