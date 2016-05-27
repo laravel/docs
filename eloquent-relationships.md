@@ -618,6 +618,25 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
         $query->where('content', 'like', 'foo%');
     })->get();
 
+#### Counting Relationship Results
+
+If you want to count the number of results from a relationship without actually loading them you may use the `withCount` method, which will place a `{relation}-count` column on your resulting models. For example:
+
+    $posts = App\Post::withCount('comments')->get();
+
+    foreach ($posts as $post) {
+        echo $post->comments_count;
+    }
+
+You may add retrieve the "counts" for multiple relations as well as add constraints to the queries:
+
+    $posts = Post::withCount(['votes', 'comments' => function ($query) {
+        $query->where('content', 'like', 'foo%');
+    }])->get();
+
+    echo $posts[0]->votes_count;
+    echo $posts[0]->comments_count;
+
 <a name="eager-loading"></a>
 ### Eager Loading
 

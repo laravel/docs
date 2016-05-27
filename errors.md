@@ -29,6 +29,10 @@ Out of the box, Laravel supports `single`, `daily`, `syslog` and `errorlog` logg
 
     'log' => 'daily'
 
+When using the `daily` log mode, Laravel will only retain five days of log files by default. If you want to adjust the number of retained files, you may add an optional `log_max_files` configuration value to your `app.php` configuration file:
+
+    'log_max_files' => 30
+
 #### Custom Monolog Configuration
 
 If you would like to have complete control over how Monolog is configured for your application, you may use the application's `configureMonologUsing` method. You should place a call to this method in your `bootstrap/app.php` file right before the `$app` variable is returned by the file:
