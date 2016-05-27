@@ -195,6 +195,7 @@ Command  | Description
 `$table->char('name', 4);`  |  CHAR equivalent with a length.
 `$table->date('created_at');`  |  DATE equivalent for the database.
 `$table->dateTime('created_at');`  |  DATETIME equivalent for the database.
+`$table->dateTimeTz('created_at');`  |  DATETIME (with timezone) equivalent for the database.
 `$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale.
 `$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point.
 `$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent for the database.
@@ -217,8 +218,10 @@ Command  | Description
 `$table->string('name', 100);`  |  VARCHAR equivalent with a length.
 `$table->text('description');`  |  TEXT equivalent for the database.
 `$table->time('sunrise');`  |  TIME equivalent for the database.
+`$table->timeTz('sunrise');`  |  TIME (with timezone) equivalent for the database.
 `$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
+`$table->timestampTz('added_on');`  |  TIMESTAMP equivalent for the database.
 `$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
 `$table->uuid('id');`  |  UUID equivalent for the database.
 
