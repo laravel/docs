@@ -61,7 +61,7 @@ To define a mutator, define a `setFooAttribute` method on your model where `Foo`
          * Set the user's first name.
          *
          * @param  string  $value
-         * @return string
+         * @return void
          */
         public function setFirstNameAttribute($value)
         {
