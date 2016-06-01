@@ -277,6 +277,9 @@ If you need to log an existing user instance into your application, you may call
 
     Auth::login($user);
 
+    // Login and "remember" the given user...
+    Auth::login($user, true);
+
 Of course, you may specify the guard instance you would like to use:
 
     Auth::guard('admin')->login($user);
@@ -286,6 +289,9 @@ Of course, you may specify the guard instance you would like to use:
 To log a user into the application by their ID, you may use the `loginUsingId` method. This method simply accepts the primary key of the user you wish to authenticate:
 
     Auth::loginUsingId(1);
+
+    // Login and "remember" the given user...
+    Auth::loginUsingId(1, true);
 
 #### Authenticate A User Once
 
