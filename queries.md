@@ -313,7 +313,7 @@ The `whereColumn` method may be used to verify that two columns are equal:
 You may also pass a comparison operator to the method:
 
     $users = DB::table('users')
-                    ->whereColumn('updated_at', '>', created_at');
+                    ->whereColumn('updated_at', '>', 'created_at');
 
 The `whereColumn` method can also be passed an array of multiple conditions. These conditions will be joined using the `and` operator:
 
