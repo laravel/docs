@@ -98,7 +98,7 @@ Alternatively, you may use the `queue` method on the `Cookie` [facade](/docs/{{v
         {
             Cookie::queue('saw_dashboard', true, 15);
 
-            Event::fire(new PodcastWasPurchased($podcast));
+            return view('dashboard');
         }
     }
 
