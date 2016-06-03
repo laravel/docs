@@ -84,7 +84,7 @@ Alternatively, you may use the `queue` method on the `Cookie` [facade](/docs/{{v
 
     namespace App\Http\Controllers;
 
-    use Cookie
+    use Cookie;
     use App\Http\Controllers\Controller;
 
     class DashboardController extends Controller
