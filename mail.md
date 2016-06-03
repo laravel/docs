@@ -164,6 +164,12 @@ When attaching files to a message, you may also specify the display name and / o
 
     $message->attach($pathToFile, ['as' => $display, 'mime' => $mime]);
 
+The `attachData` method may be used to attach a raw string of bytes as an attachment. For example, you might use this method if you have generated a PDF in memory and want to attach it to the e-mail without writing it to disk:
+
+    $message->attachData($pdf, 'invoice.pdf');
+
+    $message->attachData($pdf, 'invoice.pdf', ['mime' => $mime]);
+
 <a name="inline-attachments"></a>
 ### Inline Attachments
 
