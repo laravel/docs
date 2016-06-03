@@ -94,7 +94,7 @@ Alternatively, you may use the `queue` method on the `Cookie` [facade](/docs/{{v
          *
          * @return Response
          */
-        public function purchasePodcast($userId, $podcastId)
+        public function index()
         {
             Cookie::queue('saw_dashboard', true, 15);
 
