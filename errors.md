@@ -43,6 +43,10 @@ If you would like to have complete control over how Monolog is configured for yo
 
     return $app;
 
+By default, Laravel writes all log levels. In your production environment, you may wish to configure the default log level by adding the `log_level` option to your `app.php` configuration file. Laravel will then log all levels greater than or equal to the specified severity level. For example, a default `log_level` of `error` will log **error**, **critical**, **alert**, and **emergency** messages:
+
+    'log_level' => app_env('APP_LOG_LEVEL', 'debug'),
+
 <a name="the-exception-handler"></a>
 ## The Exception Handler
 
@@ -168,11 +172,3 @@ An array of contextual data may also be passed to the log methods. This contextu
 Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
 
     $monolog = Log::getMonolog();
-
-#### Configuring the default log level
-
-By default, Laravel will write out all log levels to the log file. On your production environment, this may be considered too much noise, so you can configure the default log level by adding the `log_level` key to your `app.php` configuration file. Laravel will continue to log all levels greater than or equal to the nominated severity level.
-
-For example, if in your production environment, you were to set the log level to **error**, Laravel will continue to log **error**, **critical**, **alert**, and **emergency** messages to the log file.
-
-    'log_level' => app_env('APP_LOG_FILE', 'debug'),
