@@ -188,6 +188,10 @@ If you are using Laravel's built-in `AuthController` class, the `Illuminate\Foun
     class AuthController extends Controller
     {
         use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+        
+        // You may set your custom values with these properties
+        protected $maxLoginAttempts=5;
+        protected $lockoutTime=60;
 
         // Rest of AuthController class...
     }
