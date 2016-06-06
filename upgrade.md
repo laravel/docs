@@ -11,6 +11,8 @@
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
 
+> **Note:** While we provide the Upgrade Guide to help upgrade your applications manually, you can automate the upgrade process with the community-driven service [Laravel Shift](https://laravelshift.com). Laravel Shift supports upgrading to the latest version starting from version 4.2.
+
 <a name="upgrade-5.3.0"></a>
 ## Upgrading To 5.3.0 From 5.2
 
