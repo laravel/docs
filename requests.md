@@ -153,6 +153,12 @@ To determine if a value is present on the request, you may use the `has` method.
         //
     }
 
+To determine if a value is present on the request, irrespective of its value, you may use the `exists` method. The `exists` method returns `true` if the value is present:
+
+    if ($request->exists('name')) {
+        //
+    }
+
 #### Retrieving All Input Data
 
 You may also retrieve all of the input data as an `array` using the `all` method:
