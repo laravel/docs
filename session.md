@@ -10,7 +10,7 @@
 
 Since HTTP driven applications are stateless, sessions provide a way to store information about the user across requests. Laravel ships with a variety of session back-ends available for use through a clean, unified API. Support for popular back-ends such as [Memcached](http://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
 
-<a name="configuration"></a> 
+<a name="configuration"></a>
 ### Configuration
 
 The session configuration file is stored at `config/session.php`. Be sure to review the well documented options available to you in this file. By default, Laravel is configured to use the `file` session driver, which will work well for many applications. In production applications, you may consider using the `memcached` or `redis` drivers for even faster session performance.
@@ -115,13 +115,13 @@ You may also use the global `session` PHP function to retrieve and store data in
 
 #### Determining If An Item Exists In The Session
 
-To determine if a value is present in the session, you may use the `has` method. The `has` method returns `true` if the value is present **and** not `null`:
+To determine if a value is present in the session, you may use the `has` method. The `has` method returns `true` if the value is present and is not `null`:
 
     if ($request->session()->has('users')) {
         //
     }
 
-To determine if a value is present in the session, irrespective of its value, you may use the `exists` method. The `exists` method returns `true` if the value is present:
+To determine if a value is present in the session, regardless of its value, you may use the `exists` method. The `exists` method returns `true` if the value is present:
 
     if ($request->session()->exists('users')) {
         //
