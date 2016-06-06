@@ -5,6 +5,8 @@
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
 
+> **Note:** While we provide the Upgrade Guide to help you upgrade your applications by hand, you may also get a head start on the upgrade process using the community-maintained [Laravel Shift](https://laravelshift.com) service.
+
 <a name="upgrade-4.2"></a>
 ## Upgrading To 4.2 From 4.1
 
