@@ -94,6 +94,12 @@ If you would like to make some typically hidden attributes visible on a given mo
 
     return $user->makeVisible('attribute')->toArray();
 
+#### Temporarily Hiding Visible Properties
+
+If you would like to make some typically visible attributes hidden on a given model instance, you may use the `makeHidden` method. 
+
+    return $user->makeHidden('attribute')->toArray();
+
 <a name="appending-values-to-json"></a>
 ## Appending Values To JSON
 
