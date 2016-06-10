@@ -102,6 +102,10 @@ To rollback the latest migration "operation", you may use the `rollback` command
 
     php artisan migrate:rollback
 
+You can also rollback specific number of migrations by providing a `step` option to the `rollback` command. For example, the following command will rollback the last 5 migrations:
+
+    php artisan migrate:rollback --step=5
+
 The `migrate:reset` command will roll back all of your application's migrations:
 
     php artisan migrate:reset
