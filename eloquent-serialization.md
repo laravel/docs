@@ -88,15 +88,13 @@ Alternatively, you may use the `visible` property to define a white-list of attr
         protected $visible = ['first_name', 'last_name'];
     }
 
-#### Temporarily Exposing Hidden Properties
+#### Temporarily Modifying Property Visibility
 
 If you would like to make some typically hidden attributes visible on a given model instance, you may use the `makeVisible` method. The `makeVisible` method returns the model instance for convenient method chaining:
 
     return $user->makeVisible('attribute')->toArray();
 
-#### Temporarily Hiding Visible Properties
-
-If you would like to make some typically visible attributes hidden on a given model instance, you may use the `makeHidden` method. 
+Likewise, if you would like to make some typically visible attributes hidden on a given model instance, you may use the `makeHidden` method.
 
     return $user->makeHidden('attribute')->toArray();
 
