@@ -376,19 +376,19 @@ You may also call the `first` method with no arguments to get the first element 
 
 The `flatMap` method iterates through the collection and passes each value to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items. Then, the array is flattened by a level:
 
-    $collection = collect(
+    $collection = collect([
         ['name' => 'Sally'],
         ['school' => 'Arkansas'],
         ['age' => 28]
     ]);
 
     $flattened = $collection->flatMap(function ($values) {
-        return strtoupper($values);
+        return array_map('strtoupper', $values);
     });
 
     $flattened->all();
 
-    // ['name' => 'SALLY', 'school' => 'ARKANSAS', 'age' => 28];
+    // ['name' => 'SALLY', 'school' => 'ARKANSAS', 'age' => '28'];
 
 <a name="method-flatten"></a>
 #### `flatten()` {#collection-method}
