@@ -89,3 +89,12 @@ On Nginx, the following directive in your site configuration will allow "pretty"
     location / {
         try_files $uri $uri/ /index.php?$query_string;
     }
+
+### Caddy
+
+On Caddy, the following directive in your site configuration will allow "pretty" URLs:
+
+    rewrite {
+        to {path} {path}/ /index.php?{query}
+    }
+
