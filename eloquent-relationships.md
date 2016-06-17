@@ -620,7 +620,7 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 
 #### Counting Relationship Results
 
-If you want to count the number of results from a relationship without actually loading them you may use the `withCount` method, which will place a `{relation}-count` column on your resulting models. For example:
+If you want to count the number of results from a relationship without actually loading them you may use the `withCount` method, which will place a `{relation}_count` column on your resulting models. For example:
 
     $posts = App\Post::withCount('comments')->get();
 

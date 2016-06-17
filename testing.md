@@ -472,7 +472,7 @@ When testing, it is common to need to insert a few records into your database be
 
 Within the Closure, which serves as the factory definition, you may return the default test values of all attributes on the model. The Closure will receive an instance of the [Faker](https://github.com/fzaninotto/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing.
 
-Of course, you are free to add your own additional factories to the `ModelFactory.php` file.
+Of course, you are free to add your own additional factories to the `ModelFactory.php` file. You may also create additional factory files for each model for better organization. For example, you could create `UserFactory.php` and `CommentFactory.php` files within your `database/factories` directory.
 
 #### Multiple Factory Types
 
