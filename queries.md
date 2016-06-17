@@ -323,6 +323,28 @@ The `whereColumn` method can also be passed an array of multiple conditions. The
                         ['updated_at', '>', 'created_at']
                     ]);
 
+**whereDate / whereMonth / whereDay / whereYear**
+
+The `whereDate` method may be used compare a column's value against a date.
+
+    $users = DB::table('users')
+                    ->whereDate('created_at', '2016-10-10');     
+
+The `whereMonth` method may be used compare a column's value against a specific month of an year.
+
+    $users = DB::table('users')
+                    ->whereMonth('created_at', '10');
+
+The `whereDay` method may be used compare a column's value against a specific day of a month.
+
+    $users = DB::table('users')
+                    ->whereDay('created_at', '10');
+
+The `whereYear` method may be used compare a column's value against a specific year.
+
+    $users = DB::table('users')
+                    ->whereYear('created_at', '2016');
+
 <a name="advanced-where-clauses"></a>
 ## Advanced Where Clauses
 
