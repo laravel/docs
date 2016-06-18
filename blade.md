@@ -231,6 +231,8 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
 
     @each('view.name', $jobs, 'job', 'view.empty')
 
+The current key for the iteration will be available as the `key` variable within your view partial.
+
 #### Comments
 
 Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
