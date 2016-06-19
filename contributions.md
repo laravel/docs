@@ -57,6 +57,8 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
 
+Please note that we do order our imports by length, rather than alphabetically.
+
 <a name="phpdoc"></a>
 ### PHPDoc
 
