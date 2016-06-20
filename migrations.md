@@ -148,13 +148,13 @@ You may easily check for the existence of a table or column using the `hasTable`
 
 If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
 
-    Schema::connection('foo')->create('users', function ($table) {
+    Schema::connection('foo')->create('users', function (Blueprint $table) {
         $table->increments('id');
     });
 
 To set the storage engine for a table, set the `engine` property on the schema builder:
 
-    Schema::create('users', function ($table) {
+    Schema::create('users', function (Blueprint $table) {
         $table->engine = 'InnoDB';
 
         $table->increments('id');
@@ -182,7 +182,7 @@ Before renaming a table, you should verify that any foreign key constraints on t
 
 To update an existing table, we will use the `table` method on the `Schema` facade. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance we can use to add columns to the table:
 
-    Schema::table('users', function ($table) {
+    Schema::table('users', function (Blueprint $table) {
         $table->string('email');
     });
 
@@ -233,7 +233,7 @@ Command  | Description
 
 In addition to the column types listed above, there are several other column "modifiers" which you may use while adding the column. For example, to make the column "nullable", you may use the `nullable` method:
 
-    Schema::table('users', function ($table) {
+    Schema::table('users', function (Blueprint $table) {
         $table->string('email')->nullable();
     });
 
@@ -260,13 +260,13 @@ Before modifying a column, be sure to add the `doctrine/dbal` dependency to your
 
 The `change` method allows you to modify an existing column to a new type, or modify the column's attributes. For example, you may wish to increase the size of a string column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
 
-    Schema::table('users', function ($table) {
+    Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->change();
     });
 
 We could also modify a column to be nullable:
 
-    Schema::table('users', function ($table) {
+    Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->nullable()->change();
     });
 
@@ -277,7 +277,7 @@ We could also modify a column to be nullable:
 
 To rename a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file:
 
-    Schema::table('users', function ($table) {
+    Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
     });
 
@@ -288,13 +288,13 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
 
 To drop a column, use the `dropColumn` method on the Schema builder:
 
-    Schema::table('users', function ($table) {
+    Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
     });
 
 You may drop multiple columns from a table by passing an array of column names to the `dropColumn` method:
 
-    Schema::table('users', function ($table) {
+    Schema::table('users', function (Blueprint $table) {
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
@@ -344,7 +344,7 @@ Command  | Description
 
 If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type.
 
-    Schema::table('geo', function ($table) {
+    Schema::table('geo', function (Blueprint $table) {
         $table->dropIndex(['state']); // Drops index 'geo_state_index'
     });
 
@@ -353,7 +353,7 @@ If you pass an array of columns into a method that drops indexes, the convention
 
 Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
 
-    Schema::table('posts', function ($table) {
+    Schema::table('posts', function (Blueprint $table) {
         $table->integer('user_id')->unsigned();
 
         $table->foreign('user_id')->references('id')->on('users');
