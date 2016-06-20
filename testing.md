@@ -264,7 +264,7 @@ You may also nest the `*` notation. In this case, we will assert that each user 
     $this->get('/users')
          ->seeJsonStructure([
              '*' => [
-                 'id', 'name', 'email', `pets` => [
+                 'id', 'name', 'email', 'pets' => [
                      '*' => [
                          'name', 'age'
                      ]
