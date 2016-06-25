@@ -466,7 +466,7 @@ The `resource_path` function returns the fully qualified path to the `resources`
 
 You may also use the `resource_path` function to generate a fully qualified path to a given file relative to the storage directory:
 
-    $path = storage_path('assets/sass/app.scss');
+    $path = resource_path('assets/sass/app.scss');
     
 <a name="method-storage-path"></a>
 #### `storage_path()` {#collection-method}
