@@ -225,12 +225,12 @@ By pushing jobs to different queues, you may "categorize" your queued jobs, and 
             $this->dispatch($job);
         }
     }
-    
-> **Note:** The `DispatchesJobs` trait pushes jobs to queues within the default queue connection. 
+
+> **Note:** The `DispatchesJobs` trait pushes jobs to queues within the default queue connection.
 
 #### Specifying The Queue Connection For A Job
 
-If you are working with multiple queue connections, you can also specify which connection to push a job to. To specify the connection, use the `onConnection` method on the job instance. The `onConnection` method is provided by the `Illuminate\Bus\Queueable` trait, which is already included on the `App\Jobs\Job` base class:
+If you are working with multiple queue connections, you may specify which connection to push a job to. To specify the connection, use the `onConnection` method on the job instance. The `onConnection` method is provided by the `Illuminate\Bus\Queueable` trait, which is already included on the `App\Jobs\Job` base class:
 
     <?php
 
@@ -254,22 +254,24 @@ If you are working with multiple queue connections, you can also specify which c
         {
             $user = User::findOrFail($id);
 
-            $job = (new SendReminderEmail($user))->onConnection('redis-alternate');
+            $job = (new SendReminderEmail($user))->onConnection('alternate');
 
             $this->dispatch($job);
         }
     }
-    
+
 Of course, you can also chain the `onConnection` and `onQueue` methods to specify the connection and the queue for a job:
 
     public function sendReminderEmail(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        
-        $job = (new SendReminderEmail($user))->onConnection('redis-alternate')->onQueue('emails');
-        
+
+        $job = (new SendReminderEmail($user))
+                        ->onConnection('alternate')
+                        ->onQueue('emails');
+
         $this->dispatch($job);
-        
+
     }
 
 <a name="delayed-jobs"></a>
