@@ -55,6 +55,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [database_path](#method-database-path)
 [elixir](#method-elixir)
 [public_path](#method-public-path)
+[resource_path](#method-resource_path)
 [storage_path](#method-storage-path)
 </div>
 
@@ -456,6 +457,17 @@ The `public_path` function returns the fully qualified path to the `public` dire
 
     $path = public_path();
 
+<a name="method-resource-path"></a>
+#### `resource_path()` {#collection-method}
+
+The `resource_path` function returns the fully qualified path to the `resources` directory:
+
+    $path = resource_path();
+
+You may also use the `resource_path` function to generate a fully qualified path to a given file relative to the storage directory:
+
+    $path = resource_path('assets/sass/app.scss');
+    
 <a name="method-storage-path"></a>
 #### `storage_path()` {#collection-method}
 
@@ -466,7 +478,7 @@ The `storage_path` function returns the fully qualified path to the `storage` di
 You may also use the `storage_path` function to generate a fully qualified path to a given file relative to the storage directory:
 
     $path = storage_path('app/file.txt');
-
+    
 <a name="strings"></a>
 ## Strings
 
