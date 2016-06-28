@@ -201,10 +201,9 @@ View **creators** are very similar to view composers; however, they are fired im
 
     view()->creator('profile', 'App\Http\ViewCreators\ProfileCreator');
 
-### Adding Extensions and Assigning a View Engine
+### Adding New View File Extensions
 
 Laravel supports both `.blade.php` and `.php` view file extensions by default. Additional extensions can be added using the `view()->addExtension('extension', 'engine')` method. This can be used for including view files via Laravel's standard means, while retaining a file extension that is more useful to your editor/IDE. You must supply the desired extension and the view engine to handle it. Out of the box, Laravel supports the `blade` and `php` rendering engines.
-
 
 #### Examples
 
