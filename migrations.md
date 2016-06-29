@@ -118,6 +118,10 @@ The `migrate:refresh` command will first roll back all of your database migratio
 
     php artisan migrate:refresh --seed
 
+You may rollback & remigrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will rollback & remigrate the last 5 migrations:
+
+    php artisan migrate:refresh --step=5
+
 <a name="writing-migrations"></a>
 ## Writing Migrations
 
