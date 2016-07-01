@@ -496,6 +496,7 @@ Below is a list of all available validation rules and their function:
 [Distinct](#rule-distinct)
 [E-Mail](#rule-email)
 [Exists (Database)](#rule-exists)
+[File](#rule-file)
 [Filled](#rule-filled)
 [Image (File)](#rule-image)
 [In](#rule-in)
@@ -664,6 +665,11 @@ You may also pass `NULL` or `NOT_NULL` to the "where" clause:
 Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name using "dot" syntax:
 
     'email' => 'exists:connection.staff,email'
+
+<a name="rule-file"></a>
+#### file
+
+The field under validation must be a successfully uploaded file
 
 <a name="rule-filled"></a>
 #### filled
