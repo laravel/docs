@@ -669,7 +669,7 @@ Occasionally, you may need to specify a specific database connection to be used 
 <a name="rule-file"></a>
 #### file
 
-The field under validation must be a successfully uploaded file
+The field under validation must be a successfully uploaded file.
 
 <a name="rule-filled"></a>
 #### filled
