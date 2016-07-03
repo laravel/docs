@@ -30,7 +30,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 <a name="included-software"></a>
 ### Included Software
 
-- Ubuntu 14.04
+- Ubuntu 16.04
 - Git
 - PHP 7.0
 - HHVM
