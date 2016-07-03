@@ -856,7 +856,7 @@ In the rule above, only rows with an `account_id` of `1` would be included in th
 <a name="rule-url"></a>
 #### url
 
-The field under validation must be a valid URL according to PHP's `filter_var` function.
+The field under validation must be a valid URL.
 
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules
