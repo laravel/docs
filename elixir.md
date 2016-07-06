@@ -42,7 +42,7 @@ Before triggering Elixir, you must first ensure that Node.js is installed on you
 
     node -v
 
-By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install Node by visiting [their download page](http://nodejs.org/download/).
+By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install Node by visiting [their download page](http://nodejs.org/en/download/).
 
 ### Gulp
 
