@@ -49,6 +49,8 @@ Alternatively, you may also install Laravel by issuing the Composer `create-proj
 <a name="configuration"></a>
 ### Configuration
 
+After installation, you should configure your application's document / web root to the `public` directory.
+
 All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
 
 #### Directory Permissions
