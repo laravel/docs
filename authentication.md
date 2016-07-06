@@ -79,11 +79,11 @@ When a user is successfully authenticated, they will be redirected to the `/` UR
 
 When a user is not successfully authenticated, they will be redirected back to the login form location automatically.
 
-If you want to customize where a user is redirected after a logout, you can define a `redirectAfterLogout` property on the `AuthController`:
+To customize where a user is redirected after logging out of the application, you may define a `redirectAfterLogout` property on the `AuthController`:
 
     protected $redirectAfterLogout = '/login';
 
-If this property is not present, they will be redirected to the `/` URI.
+If this property is not present, the user will be redirected to the `/` URI.
 
 #### Guard Customization
 
