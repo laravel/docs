@@ -547,7 +547,7 @@ You may even persist multiple models to the database. In this example, we'll eve
 
     $users = factory(App\User::class, 3)
                ->create()
-               ->each(function($u) {
+               ->each(function ($u) {
                     $u->posts()->save(factory(App\Post::class)->make());
                 });
 
