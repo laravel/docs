@@ -7,6 +7,7 @@
     - [Launching The Vagrant Box](#launching-the-vagrant-box)
     - [Per Project Installation](#per-project-installation)
     - [Installing MariaDB](#installing-mariadb)
+    - [Setting Timezone](#setting-timezone)
 - [Daily Usage](#daily-usage)
     - [Accessing Homestead Globally](#accessing-homestead-globally)
     - [Connecting Via SSH](#connecting-via-ssh)
@@ -165,6 +166,15 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
     cpus: 4
     provider: virtualbox
     mariadb: true
+
+<a name="setting-timezone"></a>
+### Setting Timezone
+
+Setting the timezone can be done without touching the files yourself by ssh into the vagrant box and run:
+
+    sudo dpkg-reconfigure tzdata
+
+After that you can follow the steps to set your local timezone.
 
 <a name="daily-usage"></a>
 ## Daily Usage
