@@ -148,7 +148,7 @@ For convenience, Blade also provides an `@unless` directive:
 You may also determine if a given layout section has any content using the `@hasSection` directive:
 
     <title>
-        @hasSection('title')
+        @hasSection ('title')
             @yield('title') - App Name
         @else
             App Name
@@ -180,13 +180,13 @@ In addition to conditional statements, Blade provides simple directives for work
 When using loops you might need to end the loop or skip the current iteration:
 
     @foreach ($users as $user)
-        @if($user->type == 1)
+        @if ($user->type == 1)
             @continue
         @endif
 
         <li>{{ $user->name }}</li>
 
-        @if($user->number == 5)
+        @if ($user->number == 5)
             @break
         @endif
     @endforeach
