@@ -165,10 +165,10 @@ Next, You should configure the following options in your `services.php` file:
 
 Then you should add the following Braintree SDK calls to your `AppServiceProvider` service provider's `boot` method:
 
-    Braintree_Configuration::environment(env('BRAINTREE_ENV'));
-    Braintree_Configuration::merchantId(env('BRAINTREE_MERCHANT_ID'));
-    Braintree_Configuration::publicKey(env('BRAINTREE_PUBLIC_KEY'));
-    Braintree_Configuration::privateKey(env('BRAINTREE_PRIVATE_KEY'));
+    \Braintree_Configuration::environment(env('BRAINTREE_ENV'));
+    \Braintree_Configuration::merchantId(env('BRAINTREE_MERCHANT_ID'));
+    \Braintree_Configuration::publicKey(env('BRAINTREE_PUBLIC_KEY'));
+    \Braintree_Configuration::privateKey(env('BRAINTREE_PRIVATE_KEY'));
 
 <a name="subscriptions"></a>
 ## Subscriptions
