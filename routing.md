@@ -260,7 +260,7 @@ Laravel automatically generates a CSRF "token" for each active user session mana
 
 Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that the CSRF protection middleware will be able to validate the request. To generate a hidden input field `_token` containing the CSRF token, you may use the `csrf_field` helper function:
 
-    // Vanilla PHP
+    // Vanilla PHP Syntax
     <?php echo csrf_field(); ?>
 
     // Blade Template Syntax

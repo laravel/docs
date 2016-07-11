@@ -52,7 +52,7 @@ Both Valet and Homestead are great choices for configuring your Laravel developm
 <a name="installation"></a>
 ## Installation
 
-**Valet requires the Mac operating system and [Homebrew](http://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.**
+**Valet requires macOS and [Homebrew](http://brew.sh/). Before installation, you should make sure that no other programs such as Apache or Nginx are binding to your local machine's port 80.**
 
 <div class="content-list" markdown="1">
 - Install or update [Homebrew](http://brew.sh/) to the latest version using `brew update`.
