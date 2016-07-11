@@ -108,7 +108,7 @@ You may select any method from this table to see an example of its usage:
 [unique](#method-unique)
 [values](#method-values)
 [where](#method-where)
-[whereLoose](#method-whereloose)
+[whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
 [whereInLoose](#method-whereinloose)
 [zip](#method-zip)
@@ -236,7 +236,7 @@ Finally, you may also pass a callback to the `contains` method to perform your o
 
     $collection = collect([1, 2, 3, 4, 5]);
 
-    $collection->contains(function ($key, $value) {
+    $collection->contains(function ($value, $key) {
         return $value > 5;
     });
 
@@ -361,7 +361,7 @@ For the inverse of `filter`, see the [reject](#method-reject) method.
 
 The `first` method returns the first element in the collection that passes a given truth test:
 
-    collect([1, 2, 3, 4])->first(function ($key, $value) {
+    collect([1, 2, 3, 4])->first(function ($value, $key) {
         return $value > 2;
     });
 
@@ -663,7 +663,7 @@ The `keys` method returns all of the collection's keys:
 
 The `last` method returns the last element in the collection that passes a given truth test:
 
-    collect([1, 2, 3, 4])->last(function ($key, $value) {
+    collect([1, 2, 3, 4])->last(function ($value, $key) {
         return $value < 3;
     });
 
@@ -1332,12 +1332,12 @@ The `where` method filters the collection by a given key / value pair:
     ]
     */
 
-The `where` method uses strict comparisons when checking item values. Use the [`whereLoose`](#method-whereloose) method to filter using "loose" comparisons.
+The `where` method uses loose comparisons when checking item values. Use the [`whereStrict`](#method-wherestrict) method to filter using "strict" comparisons.
 
-<a name="method-whereloose"></a>
-#### `whereLoose()` {#collection-method}
+<a name="method-wherestrict"></a>
+#### `whereStrict()` {#collection-method}
 
-This method has the same signature as the [`where`](#method-where) method; however, all values are compared using "loose" comparisons.
+This method has the same signature as the [`where`](#method-where) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-wherein"></a>
 #### `whereIn()` {#collection-method}

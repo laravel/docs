@@ -112,7 +112,7 @@ The Artisan command will generate a controller file at `app/Http/Controllers/Pho
 
 Next, you may register a resourceful route to the controller:
 
-    Route::resource('photo', 'PhotoController');
+    Route::resource('photos', 'PhotoController');
 
 This single route declaration creates multiple routes to handle a variety of RESTful actions on the photo resource. Likewise, the generated controller will already have methods stubbed for each of these actions, including notes informing you which URIs and verbs they handle.
 
@@ -120,13 +120,13 @@ This single route declaration creates multiple routes to handle a variety of RES
 
 Verb      | Path                  | Action       | Route Name
 ----------|-----------------------|--------------|---------------------
-GET       | `/photo`              | index        | photo.index
-GET       | `/photo/create`       | create       | photo.create
-POST      | `/photo`              | store        | photo.store
-GET       | `/photo/{photo}`      | show         | photo.show
-GET       | `/photo/{photo}/edit` | edit         | photo.edit
-PUT/PATCH | `/photo/{photo}`      | update       | photo.update
-DELETE    | `/photo/{photo}`      | destroy      | photo.destroy
+GET       | `/photos`              | index        | photos.index
+GET       | `/photos/create`       | create       | photos.create
+POST      | `/photos`              | store        | photos.store
+GET       | `/photos/{photo}`      | show         | photos.show
+GET       | `/photos/{photo}/edit` | edit         | photos.edit
+PUT/PATCH | `/photos/{photo}`      | update       | photos.update
+DELETE    | `/photos/{photo}`      | destroy      | photos.destroy
 
 Remember, since HTML forms can't make PUT, PATCH, or DELETE requests, you will need to add a hidden `_method` field to spoof these HTTP verbs:
 
@@ -157,7 +157,7 @@ By default, all resource controller actions have a route name; however, you can 
 <a name="restful-naming-resource-route-parameters"></a>
 #### Naming Resource Route Parameters
 
-By default, `Route::resource` will create the route parameters for your resource routes based on the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. The `parameters` array should be an associative array of resource names and parameter names:
+By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. The `parameters` array should be an associative array of resource names and parameter names:
 
     Route::resource('user', 'AdminUserController', ['parameters' => [
         'user' => 'admin_user'
@@ -167,28 +167,11 @@ By default, `Route::resource` will create the route parameters for your resource
 
     /user/{admin_user}
 
-Instead of passing an array of parameter names, you may also simply pass the word `singular` to instruct Laravel to use the default parameter names, but "singularize" them:
-
-    Route::resource('users.photos', 'PhotoController', [
-        'parameters' => 'singular'
-    ]);
-
-    // /users/{user}/photos/{photo}
-
-Alternatively, you may set your resource route parameters to be globally singular or set a global mapping for your resource parameter names:
-
-    Route::singularResourceParameters();
-
-    Route::resourceParameters([
-        'user' => 'person', 'photo' => 'image'
-    ]);
-
 When customizing resource parameters, it's important to keep the naming priority in mind:
 
 1. The parameters explicitly passed to `Route::resource`.
 2. The global parameter mappings set via `Route::resourceParameters`.
-3. The `singular` setting passed via the `parameters` array to `Route::resource` or set via `Route::singularResourceParameters`.
-4. The default behavior.
+3. The default behavior.
 
 <a name="restful-supplementing-resource-controllers"></a>
 #### Supplementing Resource Controllers

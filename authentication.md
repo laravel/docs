@@ -362,6 +362,8 @@ Next, [register the route middleware](/docs/{{version}}/middleware#registering-m
 <a name="resetting-passwords"></a>
 ## Resetting Passwords
 
+> **Note:** Before using the password reset features of Laravel, your user must use the `Illuminate\Notifications\Notifiable` trait.
+
 <a name="resetting-database"></a>
 ### Database Considerations
 
@@ -414,14 +416,17 @@ In your `auth.php` configuration file, you may configure multiple "guards", whic
 
 #### Password Broker Customization
 
-In your `auth.php` configuration file, you may configure multiple password "brokers", which may be used to reset passwords on multiple user tables. You can customize the included `PasswordController` to use the broker of your choice by adding a `$broker` property to the controller:
+In your `auth.php` configuration file, you may configure multiple password "brokers", which may be used to reset passwords on multiple user tables. You can customize the included `PasswordController` to use the broker of your choice by overriding the `broker` method:
 
     /**
-     * The password broker that should be used.
+     * Get the broker to be used during password reset.
      *
-     * @var string
+     * @return PasswordBroker
      */
-    protected $broker = 'admins';
+    protected function broker()
+    {
+        return Password::broker('name');
+    }
 
 <a name="adding-custom-guards"></a>
 ## Adding Custom Guards

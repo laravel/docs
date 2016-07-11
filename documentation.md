@@ -13,6 +13,7 @@
     - [Intermediate Task List](/docs/{{version}}/quickstart-intermediate)
 - The Basics
     - [Routing](/docs/{{version}}/routing)
+    - [CSRF Protection](/docs/{{version}}/csrf)
     - [Middleware](/docs/{{version}}/middleware)
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)

@@ -287,7 +287,22 @@ Once the policy has been generated and registered, we can add methods for each a
 	    }
 	}
 
-You may continue to define additional methods on the policy as needed for the various abilities it authorizes. For example, you might define `show`, `destroy`, or `addComment` methods to authorize various `Post` actions.
+You may continue to define additional methods on the policy as needed for the various abilities it authorizes. For example, you might define `view` or `delete` methods to authorize various `Post` actions.
+
+When defining policy methods that will not receive any model instance, such as a `create` method, you should suffix the methods with `Any` like so:
+
+    /**
+     * Determine if the given user can create posts.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function createAny(User $user)
+    {
+        //
+    }
+
+This convention will be respected by the Gate when [checking policy methods](#checking-policies).
 
 > **Note:** All policies are resolved via the Laravel [service container](/docs/{{version}}/container), meaning you may type-hint any needed dependencies in the policy's constructor and they will be automatically injected.
 
@@ -341,6 +356,12 @@ The `Gate` will automatically determine which policy to use by examining the cla
         	// Update Post...
         }
     }
+
+When checking policy methods that do not receive a model, such as a `view` method. You should pass the model name to the `check` method:
+
+    Gate::check('view', Post::class);
+
+When a model class name is passed to the Gate instead of a model instance, the Gate will suffix the ability being checked with `Any`. So, in the example above, the Gate will call the `viewAny` method of the policy.
 
 #### Via The User Model
 
@@ -402,7 +423,7 @@ The `authorize` method shares the same signature as the various other authorizat
         }
     }
 
-If the action is authorized, the controller will continue executing normally; however, if the `authorize` method determines that the action is not authorized, a `AuthorizationException` will automatically be thrown which generates a HTTP response with a `403 Not Authorized` status code. As you can see, the `authorize` method is a convenient, fast way to authorize an action or throw an exception with a single line of code.
+If the action is authorized, the controller will continue executing normally; however, if the `authorize` method determines that the action is not authorized, an `AuthorizationException` will automatically be thrown which generates a HTTP response with a `403 Not Authorized` status code. As you can see, the `authorize` method is a convenient, fast way to authorize an action or throw an exception with a single line of code.
 
 The `AuthorizesRequests` trait also provides the `authorizeForUser` method to authorize an action on a user that is not the currently authenticated user:
 
@@ -427,4 +448,31 @@ For this reason, Laravel allows you to simply pass the instance arguments to the
     	$this->authorize($post);
 
     	// Update Post...
+    }
+
+Remember, for resource controller methods that do not relate to a particular model instance, such as `create`, the `Any` version of the policy method would be called. For example:
+
+    /**
+     * Show the form to create a new post.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        $this->authorize();
+
+        // Show Create Post Form...
+    }
+
+In this example, the `createAny` method would be called on the policy:
+
+    /**
+     * Determine if the given user can create posts.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function createAny(User $user)
+    {
+        //
     }
