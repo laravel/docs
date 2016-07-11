@@ -289,15 +289,15 @@ Once the policy has been generated and registered, we can add methods for each a
 
 You may continue to define additional methods on the policy as needed for the various abilities it authorizes. For example, you might define `view` or `delete` methods to authorize various `Post` actions.
 
-When defining policy methods that will not receive any model instance, such as a `view` method, you should suffix the methods with `Any` like so:
+When defining policy methods that will not receive any model instance, such as a `create` method, you should suffix the methods with `Any` like so:
 
     /**
-     * Determine if the given user can view posts.
+     * Determine if the given user can create posts.
      *
      * @param  \App\User  $user
      * @return bool
      */
-    public function viewAny(User $user)
+    public function createAny(User $user)
     {
         //
     }
