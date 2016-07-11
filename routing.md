@@ -10,11 +10,6 @@
     - [Namespaces](#route-group-namespaces)
     - [Sub-Domain Routing](#route-group-sub-domain-routing)
     - [Route Prefixes](#route-group-prefixes)
-- [CSRF Protection](#csrf-protection)
-    - [Introduction](#csrf-introduction)
-    - [Excluding URIs](#csrf-excluding-uris)
-    - [X-CSRF-Token](#csrf-x-csrf-token)
-    - [X-XSRF-Token](#csrf-x-xsrf-token)
 - [Route Model Binding](#route-model-binding)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing The Current Route](#accessing-the-current-route)
@@ -172,95 +167,24 @@ The `prefix` group attribute may be used to prefix each route in the group with 
         });
     });
 
-<a name="csrf-protection"></a>
-## CSRF Protection
-
-<a name="csrf-introduction"></a>
-### Introduction
-
-Laravel makes it easy to protect your application from [cross-site request forgery](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) attacks. Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of an authenticated user.
-
-Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
-
-Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that the CSRF protection middleware will be able to validate the request. To generate a hidden input field `_token` containing the CSRF token, you may use the `csrf_field` helper function:
-
-    // Vanilla PHP Syntax
-    <?php echo csrf_field(); ?>
-
-    // Blade Template Syntax
-    {{ csrf_field() }}
-
-The `csrf_field` helper function generates the following HTML:
-
-    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-
-You do not need to manually verify the CSRF token on POST, PUT, or DELETE requests. The `VerifyCsrfToken` [middleware](/docs/{{version}}/middleware), which is included in the `web` middleware group, will automatically verify that the token in the request input matches the token stored in the session.
-
-<a name="csrf-excluding-uris"></a>
-### Excluding URIs From CSRF Protection
-
-Sometimes you may wish to exclude a set of URIs from CSRF protection. For example, if you are using [Stripe](https://stripe.com) to process payments and are utilizing their webhook system, you will need to exclude your webhook handler route from Laravel's CSRF protection.
-
-You may exclude URIs by defining their routes outside of the `web` middleware group that is included in the default `routes.php` file, or by adding the URIs to the `$except` property of the `VerifyCsrfToken` middleware:
-
-    <?php
-
-    namespace App\Http\Middleware;
-
-    use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
-
-    class VerifyCsrfToken extends BaseVerifier
-    {
-        /**
-         * The URIs that should be excluded from CSRF verification.
-         *
-         * @var array
-         */
-        protected $except = [
-            'stripe/*',
-        ];
-    }
-
-<a name="csrf-x-csrf-token"></a>
-### X-CSRF-TOKEN
-
-In addition to checking for the CSRF token as a POST parameter, the Laravel `VerifyCsrfToken` middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in a "meta" tag:
-
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-Once you have created the `meta` tag, you can instruct a library like jQuery to add the token to all request headers. This provides simple, convenient CSRF protection for your AJAX based applications:
-
-    $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
-
-<a name="csrf-x-xsrf-token"></a>
-### X-XSRF-TOKEN
-
-Laravel also stores the CSRF token in a `XSRF-TOKEN` cookie. You can use the cookie value to set the `X-XSRF-TOKEN` request header. Some JavaScript frameworks, like Angular, do this automatically for you. It is unlikely that you will need to use this value manually.
-
 <a name="route-model-binding"></a>
 ## Route Model Binding
 
-Laravel route model binding provides a convenient way to inject model instances into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID.
+When injecting a model ID to a route or controller action, you will often query to retrieve the model that corresponds to that ID. Laravel route model binding provides a convenient way to automatically inject the model instances directly into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID.
 
 ### Implicit Binding
 
-Laravel will automatically resolve type-hinted Eloquent models defined in routes or controller actions whose variable names match a route segment name. For example:
+Laravel automatically resolves type-hinted Eloquent models defined in routes or controller actions whose variable names match a route segment name. For example:
 
     Route::get('api/users/{user}', function (App\User $user) {
         return $user->email;
     });
 
-In this example, since the Eloquent type-hinted `$user` variable defined on the route matches the `{user}` segment in the route's URI, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI.
-
-If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
+In this example, since the Eloquent type-hinted `$user` variable defined on the route matches the `{user}` segment in the route's URI, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
 #### Customizing The Key Name
 
-If you would like the implicit model binding to use a database column other than `id` when retrieving models, you may override the `getRouteKeyName` method on your Eloquent model:
+If you would like an implicit model binding to use a database column other than `id` when retrieving models, you may override the `getRouteKeyName` method on your Eloquent model:
 
     /**
      * Get the route key for the model.
@@ -274,15 +198,13 @@ If you would like the implicit model binding to use a database column other than
 
 ### Explicit Binding
 
-To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your model bindings in the `RouteServiceProvider::boot` method:
+To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings in the `boot` method of the `RouteServiceProvider` class:
 
-#### Binding A Parameter To A Model
-
-    public function boot(Router $router)
+    public function boot()
     {
-        parent::boot($router);
+        parent::boot();
 
-        $router->model('user', 'App\User');
+        Route::model('user', 'App\User');
     }
 
 Next, define a route that contains a `{user}` parameter:
@@ -291,24 +213,16 @@ Next, define a route that contains a `{user}` parameter:
         //
     });
 
-Since we have bound the `{user}` parameter to the `App\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance which has an ID of 1.
+Since we have bound all `{user}` parameters to the `App\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance from the database which has an ID of `1`.
 
 If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
 #### Customizing The Resolution Logic
 
-If you wish to use your own resolution logic, you should use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment, and should return an instance of the class you want to be injected into the route:
+If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
 
     $router->bind('user', function ($value) {
         return App\User::where('name', $value)->first();
-    });
-
-#### Customizing The "Not Found" Behavior
-
-If you wish to specify your own "not found" behavior, pass a `Closure` as the third argument to the `model` method:
-
-    $router->model('user', 'App\User', function () {
-        throw new NotFoundHttpException;
     });
 
 <a name="form-method-spoofing"></a>
@@ -321,29 +235,19 @@ HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining 
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
     </form>
 
-To generate the hidden input field `_method`, you may also use the `method_field` helper function:
-
-    <?php echo method_field('PUT'); ?>
-
-Of course, using the Blade [templating engine](/docs/{{version}}/blade):
+You may use the `method_field` helper to generate the `_method` input:
 
     {{ method_field('PUT') }}
 
 <a name="accessing-the-current-route"></a>
 ## Accessing The Current Route
 
-The `Route::current()` method will return the route handling the current HTTP request, allowing you to inspect the full `Illuminate\Routing\Route` instance:
+You may use the `current`, `currentRouteName`, and `currentRouteAction` methods on the `Route` facade to access information about the route handling the incoming request:
 
     $route = Route::current();
-
-    $name = $route->getName();
-
-    $actionName = $route->getActionName();
-
-You may also use the `currentRouteName` and `currentRouteAction` helper methods on the `Route` facade to access the current route's name or action:
 
     $name = Route::currentRouteName();
 
     $action = Route::currentRouteAction();
 
-Please refer to the API documentation for both the [underlying class of the Route facade](http://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) and [Route instance](http://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) to review all accessible methods.
+Refer to the API documentation for both the [underlying class of the Route facade](http://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) and [Route instance](http://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) to review all accessible methods.
