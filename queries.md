@@ -52,7 +52,7 @@ To begin a fluent query, use the `table` method on the `DB` facade. The `table` 
         }
     }
 
-Like [raw queries](/docs/{{version}}/database), the `get` method returns an `array` of results where each result is an instance of the PHP `StdClass` object. You may access each column's value by accessing the column as a property of the object:
+Like [raw queries](/docs/{{version}}/database), the `get` method returns an `Illuminate\Support\Collection` containing the results where each result is an instance of the PHP `StdClass` object. You may access each column's value by accessing the column as a property of the object:
 
     foreach ($users as $user) {
         echo $user->name;
@@ -488,6 +488,14 @@ Of course, in addition to inserting records into the database, the query builder
     DB::table('users')
                 ->where('id', 1)
                 ->update(['votes' => 1]);
+
+#### Updating JSON Columns
+
+When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object:
+
+    DB::table('users')
+                ->where('id', 1)
+                ->update(['options->enabled' => true]);
 
 #### Increment / Decrement
 

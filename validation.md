@@ -508,6 +508,7 @@ Below is a list of all available validation rules and their function:
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
+[Nullable](#rule-nullable)
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
 [Present](#rule-present)
@@ -738,6 +739,11 @@ A full listing of MIME types and their corresponding extensions may be found at 
 
 The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
+<a name="rule-nullable"></a>
+#### nullable
+
+The field under validation may be `null`. This is particularly useful when validating primitive such as strings and integers that can contain `null` values.
+
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
 
@@ -813,7 +819,7 @@ The field under validation must have a size matching the given _value_. For stri
 <a name="rule-string"></a>
 #### string
 
-The field under validation must be a string.
+The field under validation must be a string. If you would like to allow the field to also be `null`, you should assign the `nullable` rule to the field.
 
 <a name="rule-timezone"></a>
 #### timezone
