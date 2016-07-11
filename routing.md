@@ -4,7 +4,6 @@
 - [Route Parameters](#route-parameters)
     - [Required Parameters](#required-parameters)
     - [Optional Parameters](#parameters-optional-parameters)
-    - [Regular Expression Constraints](#parameters-regular-expression-constraints)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
     - [Middleware](#route-group-middleware)
@@ -72,7 +71,7 @@ You may define as many route parameters as required by your route:
         //
     });
 
-Route parameters are always encased within "curly" braces. The parameters will be passed into your route's `Closure` when the route is executed.
+Route parameters are always encased within "curly" braces and will be passed into your route's `Closure` when the route is executed.
 
 > **Note:** Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
 
@@ -89,78 +88,18 @@ Occasionally you may need to specify a route parameter, but make the presence of
         return $name;
     });
 
-<a name="parameters-regular-expression-constraints"></a>
-### Regular Expression Constraints
-
-You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
-
-    Route::get('user/{name}', function ($name) {
-        //
-    })
-    ->where('name', '[A-Za-z]+');
-
-    Route::get('user/{id}', function ($id) {
-        //
-    })
-    ->where('id', '[0-9]+');
-
-    Route::get('user/{id}/{name}', function ($id, $name) {
-        //
-    })
-    ->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
-
-<a name="parameters-global-constraints"></a>
-#### Global Constraints
-
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
-
-    /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @param  \Illuminate\Routing\Router  $router
-     * @return void
-     */
-    public function boot(Router $router)
-    {
-        $router->pattern('id', '[0-9]+');
-
-        parent::boot($router);
-    }
-
-Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
-
-    Route::get('user/{id}', function ($id) {
-        // Only called if {id} is numeric.
-    });
-
 <a name="named-routes"></a>
 ## Named Routes
 
-Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route using the `as` array key when defining the route:
+Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route by chaining the `name` method onto the route definition:
 
-    Route::get('user/profile', ['as' => 'profile', function () {
+    Route::get('user/profile', function () {
         //
-    }]);
+    })->name('profile');
 
 You may also specify route names for controller actions:
 
-    Route::get('user/profile', [
-        'as' => 'profile', 'uses' => 'UserController@showProfile'
-    ]);
-
-Alternatively, instead of specifying the route name in the route array definition, you may chain the `name` method onto the end of the route definition:
-
     Route::get('user/profile', 'UserController@showProfile')->name('profile');
-
-#### Route Groups & Named Routes
-
-If you are using [route groups](#route-groups), you may specify an `as` keyword in the route group attribute array, allowing you to set a common route name prefix for all routes within the group:
-
-    Route::group(['as' => 'admin::'], function () {
-        Route::get('dashboard', ['as' => 'dashboard', function () {
-            // Route named "admin::dashboard"
-        }]);
-    });
 
 #### Generating URLs To Named Routes
 
@@ -174,9 +113,9 @@ Once you have assigned a name to a given route, you may use the route's name whe
 
 If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the URL in their correct positions:
 
-    Route::get('user/{id}/profile', ['as' => 'profile', function ($id) {
+    Route::get('user/{id}/profile', function ($id) {
         //
-    }]);
+    })->name('profile');
 
     $url = route('profile', ['id' => 1]);
 
@@ -185,12 +124,10 @@ If the named route defines parameters, you may pass the parameters as the second
 
 Route groups allow you to share route attributes, such as middleware or namespaces, across a large number of routes without needing to define those attributes on each individual route. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
 
-To learn more about route groups, we'll walk through several common use-cases for the feature.
-
 <a name="route-group-middleware"></a>
 ### Middleware
 
-To assign middleware to all routes within a group, you may use the `middleware` key in the group attribute array. Middleware will be executed in the order you define this array:
+To assign middleware to all routes within a group, you may use the `middleware` key in the group attribute array. Middleware are executed in the order they are listed in the array:
 
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/', function ()    {
@@ -205,23 +142,18 @@ To assign middleware to all routes within a group, you may use the `middleware` 
 <a name="route-group-namespaces"></a>
 ### Namespaces
 
-Another common use-case for route groups is assigning the same PHP namespace to a group of controllers. You may use the `namespace` parameter in your group attribute array to specify the namespace for all controllers within the group:
+Another common use-case for route groups is assigning the same PHP namespace to a group of controllers using the `namespace` parameter in the group array:
 
-    Route::group(['namespace' => 'Admin'], function()
-    {
+    Route::group(['namespace' => 'Admin'], function() {
         // Controllers Within The "App\Http\Controllers\Admin" Namespace
-
-        Route::group(['namespace' => 'User'], function() {
-            // Controllers Within The "App\Http\Controllers\Admin\User" Namespace
-        });
     });
 
-Remember, by default, the `RouteServiceProvider` includes your `routes.php` file within a namespace group, allowing you to register controller routes without specifying the full `App\Http\Controllers` namespace prefix. So, we only need to specify the portion of the namespace that comes after the base `App\Http\Controllers` namespace.
+Remember, by default, the `RouteServiceProvider` includes your `routes.php` file within a namespace group, allowing you to register controller routes without specifying the full `App\Http\Controllers` namespace prefix. So, you only need to specify the portion of the namespace that comes after the base `App\Http\Controllers` namespace.
 
 <a name="route-group-sub-domain-routing"></a>
 ### Sub-Domain Routing
 
-Route groups may also be used to route wildcard sub-domains. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified using the `domain` key on the group attribute array:
+Route groups may also be used to handle sub-domain routing. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified using the `domain` key on the group attribute array:
 
     Route::group(['domain' => '{account}.myapp.com'], function () {
         Route::get('user/{id}', function ($account, $id) {
@@ -237,14 +169,6 @@ The `prefix` group attribute may be used to prefix each route in the group with 
     Route::group(['prefix' => 'admin'], function () {
         Route::get('users', function ()    {
             // Matches The "/admin/users" URL
-        });
-    });
-
-You may also use the `prefix` parameter to specify common parameters for your grouped routes:
-
-    Route::group(['prefix' => 'accounts/{account_id}'], function () {
-        Route::get('detail', function ($accountId)    {
-            // Matches The "/accounts/{account_id}/detail" URL
         });
     });
 
