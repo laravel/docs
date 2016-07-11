@@ -773,32 +773,32 @@ The field under validation must be present in the input data and not empty. A fi
 <a name="rule-required-if"></a>
 #### required_if:_anotherfield_,_value_,...
 
-The field under validation must be present if the _anotherfield_ field is equal to any _value_.
+The field under validation must be present and not empty if the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
 
-The field under validation must be present unless the _anotherfield_ field is equal to any _value_.
+The field under validation must be present and not empty unless the _anotherfield_ field is equal to any _value_.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
 
-The field under validation must be present _only if_ any of the other specified fields are present.
+The field under validation must be present and not empty _only if_ any of the other specified fields are present.
 
 <a name="rule-required-with-all"></a>
 #### required_with_all:_foo_,_bar_,...
 
-The field under validation must be present _only if_ all of the other specified fields are present.
+The field under validation must be present and not empty _only if_ all of the other specified fields are present.
 
 <a name="rule-required-without"></a>
 #### required_without:_foo_,_bar_,...
 
-The field under validation must be present _only when_ any of the other specified fields are not present.
+The field under validation must be present and not empty _only when_ any of the other specified fields are not present.
 
 <a name="rule-required-without-all"></a>
 #### required_without_all:_foo_,_bar_,...
 
-The field under validation must be present _only when_ all of the other specified fields are not present.
+The field under validation must be present and not empty _only when_ all of the other specified fields are not present.
 
 <a name="rule-same"></a>
 #### same:_field_
