@@ -44,7 +44,7 @@ For convenience, you may also use the `response` helper:
                       ->header('Content-Type', $value);
     });
 
-> **Note:** For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/master/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/3.0/Symfony/Component/HttpFoundation/Response.html).
+> {note} For a full list of available `Response` methods, check out its [API documentation](http://laravel.com/api/master/Illuminate/Http/Response.html) and the [Symfony API documentation](http://api.symfony.com/3.0/Symfony/Component/HttpFoundation/Response.html).
 
 <a name="attaching-headers-to-responses"></a>
 #### Attaching Headers To Responses
@@ -155,7 +155,7 @@ The `download` method may be used to generate a response that forces the user's 
 
     return response()->download($pathToFile, $name, $headers);
 
-> **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
+> {note} Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
 
 <a name="file-responses"></a>
 #### File Responses

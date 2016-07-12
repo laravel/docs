@@ -241,7 +241,7 @@ If you wish, you also may add extra conditions to the authentication query in ad
         // The user is active, not suspended, and exists.
     }
 
-> **Note:** In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
+> {note} In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
 
 #### Accessing Specific Guard Instances
 
@@ -362,7 +362,7 @@ Next, [register the route middleware](/docs/{{version}}/middleware#registering-m
 <a name="resetting-passwords"></a>
 ## Resetting Passwords
 
-> **Note:** Before using the password reset features of Laravel, your user must use the `Illuminate\Notifications\Notifiable` trait.
+> {note} Before using the password reset features of Laravel, your user must use the `Illuminate\Notifications\Notifiable` trait.
 
 <a name="resetting-database"></a>
 ### Database Considerations
@@ -398,7 +398,7 @@ After the password is reset, the user will automatically be logged into the appl
 
     protected $redirectTo = '/dashboard';
 
-> **Note:** By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
+> {note} By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
 
 <a name="password-customization"></a>
 ### Customization

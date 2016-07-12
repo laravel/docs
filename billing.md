@@ -273,7 +273,7 @@ If you would like to swap plans but skip the trial period on the plan you are sw
 <a name="subscription-quantity"></a>
 ### Subscription Quantity
 
-> **Note:** Subscription quantities are only supported by the Stripe edition of Cashier. Braintree does not have an equivalent to Stripe's "quantity".
+> {note} Subscription quantities are only supported by the Stripe edition of Cashier. Braintree does not have an equivalent to Stripe's "quantity".
 
 Sometimes subscriptions are affected by "quantity". For example, your application might charge $10 per month **per user** on an account. To easily increment or decrement your subscription quantity, use the `incrementQuantity` and `decrementQuantity` methods:
 
@@ -346,7 +346,7 @@ If you would like to offer trial periods to your customers while still collectin
 
 This method will set the trial period ending date on the subscription record within the database, as well as instruct Stripe / Braintree to not begin billing the customer until after this date.
 
-> **Note:** If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should notify your users of their trial ending date.
+> {note} If the customer's subscription is not cancelled before the trial ending date they will be charged as soon as the trial expires, so you should notify your users of their trial ending date.
 
 You may determine if the user is within their trial period using either the `onTrial` method of the user instance, or the `onTrial` method of the subscription instance. The two examples below are essentially identical in purpose:
 
@@ -484,7 +484,7 @@ If you have additional Braintree webhook events you would like to handle, simply
 
 ### Simple Charge
 
-> **Note:** When using Stripe, the `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**. However, when using Braintree, you should pass the full dollar amount to the `charge` method:
+> {note} When using Stripe, the `charge` method accepts the amount you would like to charge in the **lowest denominator of the currency used by your application**. However, when using Braintree, you should pass the full dollar amount to the `charge` method:
 
 If you would like to make a "one off" charge against a subscribed customer's credit card, you may use the `charge` method on a billable model instance.
 
@@ -524,7 +524,7 @@ The invoice will be charged immediately against the user's credit card. The `inv
         'custom-option' => $value,
     ]);
 
-> **Note:** The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
+> {note} The `invoiceFor` method will create a Stripe invoice which will retry failed billing attempts. If you do not want invoices to retry failed charges, you will need to close them using the Stripe API after the first failed charge.
 
 <a name="invoices"></a>
 ## Invoices

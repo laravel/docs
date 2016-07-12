@@ -199,7 +199,7 @@ Flushing the cache **does not** respect the cache prefix and will remove all ent
 <a name="cache-tags"></a>
 ## Cache Tags
 
-> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+> {note} Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
 
 <a name="storing-tagged-cache-items"></a>
 ### Storing Tagged Cache Items

@@ -185,7 +185,7 @@ The Eloquent `all` method will return all of the results in the model's table. S
                    ->take(10)
                    ->get();
 
-> **Note:** Since Eloquent models are query builders, you should review all of the methods available on the [query builder](/docs/{{version}}/queries). You may use any of these methods in your Eloquent queries.
+> {note} Since Eloquent models are query builders, you should review all of the methods available on the [query builder](/docs/{{version}}/queries). You may use any of these methods in your Eloquent queries.
 
 #### Collections
 

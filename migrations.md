@@ -274,7 +274,7 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> **Note:** Modifying any column in a table that also has a column of type `enum` is not currently supported.
+> {note} Modifying any column in a table that also has a column of type `enum` is not currently supported.
 
 <a name="renaming-columns"></a>
 #### Renaming Columns
@@ -285,7 +285,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
         $table->renameColumn('from', 'to');
     });
 
-> **Note:** Renaming any column in a table that also has a column of type `enum` is not currently supported.
+> {note} Renaming any column in a table that also has a column of type `enum` is not currently supported.
 
 <a name="dropping-columns"></a>
 ### Dropping Columns
@@ -302,9 +302,9 @@ You may drop multiple columns from a table by passing an array of column names t
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> **Note:** Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
+> {note} Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
 
-> **Note:** Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
+> {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
 
 <a name="creating-indexes"></a>
 ### Creating Indexes

@@ -198,7 +198,7 @@ The `isStaticFile` should determine if the incoming request is for a file that i
         return false;
     }
 
-> **Note:** The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
+> {note} The `isStaticFile` method will only be called if the `serves` method returns `true` for the incoming request and the request URI is not `/`.
 
 #### The `frontControllerPath` Method
 

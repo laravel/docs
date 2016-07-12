@@ -304,7 +304,7 @@ When defining policy methods that will not receive any model instance, such as a
 
 This convention will be respected by the Gate when [checking policy methods](#checking-policies).
 
-> **Note:** All policies are resolved via the Laravel [service container](/docs/{{version}}/container), meaning you may type-hint any needed dependencies in the policy's constructor and they will be automatically injected.
+> {note} All policies are resolved via the Laravel [service container](/docs/{{version}}/container), meaning you may type-hint any needed dependencies in the policy's constructor and they will be automatically injected.
 
 #### Intercepting All Checks
 

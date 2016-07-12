@@ -25,7 +25,7 @@ The session `driver` defines where session data will be stored for each request.
 - `array` - sessions are stored in a simple PHP array and will not be persisted across requests.
 </div>
 
-> **Note:** The array driver is typically used for running [tests](/docs/{{version}}/testing) to prevent session data from persisting.
+> {note} The array driver is typically used for running [tests](/docs/{{version}}/testing) to prevent session data from persisting.
 
 ### Driver Prerequisites
 

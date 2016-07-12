@@ -178,7 +178,7 @@ Now that we have registered the composer, the `ProfileComposer@compose` method w
 
 Just before the view is rendered, the composer's `compose` method is called with the `Illuminate\View\View` instance. You may use the `with` method to bind data to the view.
 
-> **Note:** All view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor.
+> {note} All view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor.
 
 #### Attaching A Composer To Multiple Views
 

@@ -272,7 +272,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
 <a name="route-caching"></a>
 ## Route Caching
 
-> **Note:** Route caching does not work with Closure based routes. To use route caching, you must convert any Closure routes to use controller classes.
+> {note} Route caching does not work with Closure based routes. To use route caching, you must convert any Closure routes to use controller classes.
 
 If your application is exclusively using controller based routes, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. In some cases, your route registration may even be up to 100x faster! To generate a route cache, just execute the `route:cache` Artisan command:
 

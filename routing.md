@@ -68,7 +68,7 @@ You may define as many route parameters as required by your route:
 
 Route parameters are always encased within "curly" braces and will be passed into your route's `Closure` when the route is executed.
 
-> **Note:** Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
+> {note} Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
 
 <a name="parameters-optional-parameters"></a>
 ### Optional Parameters

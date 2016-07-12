@@ -90,7 +90,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 
     The current UNIX timestamp is {{ time() }}.
 
-> **Note:** Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks.
+> {note} Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks.
 
 #### Blade & JavaScript Frameworks
 
@@ -120,7 +120,7 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmle
 
     Hello, {!! $name !!}.
 
-> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the double curly brace syntax to escape any HTML entities in the content.
+> {note} Be very careful when echoing content that is supplied by users of your application. Always use the double curly brace syntax to escape any HTML entities in the content.
 
 <a name="control-structures"></a>
 ## Control Structures
@@ -217,7 +217,7 @@ Even though the included view will inherit all data available in the parent view
 
     @include('view.name', ['some' => 'data'])
 
-> **Note:** You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
+> {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
 
 #### Rendering Views For Collections
 

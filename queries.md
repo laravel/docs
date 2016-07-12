@@ -21,7 +21,7 @@
 
 The database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application, and works on all supported database systems.
 
-> **Note:** The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
+> {note} The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
 
 <a name="retrieving-results"></a>
 ## Retrieving Results
@@ -478,7 +478,7 @@ If the table has an auto-incrementing id, use the `insertGetId` method to insert
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
+> {note} When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
 
 <a name="updates"></a>
 ## Updates

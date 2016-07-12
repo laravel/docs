@@ -45,7 +45,7 @@ First, let's take a look at calling the `paginate` method on a query. In this ex
         }
     }
 
-> **Note:** Currently, pagination operations that use a `groupBy` statement cannot be executed efficiently by Laravel. If you need to use a `groupBy` with a paginated result set, it is recommended that you query the database and create a paginator manually.
+> {note} Currently, pagination operations that use a `groupBy` statement cannot be executed efficiently by Laravel. If you need to use a `groupBy` with a paginated result set, it is recommended that you query the database and create a paginator manually.
 
 #### "Simple Pagination"
 
