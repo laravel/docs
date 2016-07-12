@@ -11,7 +11,7 @@
 - Tutorials
     - [Basic Task List](/docs/{{version}}/quickstart)
     - [Intermediate Task List](/docs/{{version}}/quickstart-intermediate)
-- The Basics
+- The HTTP Layer
     - [Routing](/docs/{{version}}/routing)
     - [CSRF Protection](/docs/{{version}}/csrf)
     - [Middleware](/docs/{{version}}/middleware)
