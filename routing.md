@@ -66,9 +66,7 @@ You may define as many route parameters as required by your route:
         //
     });
 
-Route parameters are always encased within "curly" braces and will be passed into your route's `Closure` when the route is executed.
-
-> {note} Route parameters cannot contain the `-` character. Use an underscore (`_`) instead.
+Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Route parameters may not contain a `-` character. Use an underscore (`_`) instead.
 
 <a name="parameters-optional-parameters"></a>
 ### Optional Parameters
@@ -174,13 +172,13 @@ When injecting a model ID to a route or controller action, you will often query 
 
 ### Implicit Binding
 
-Laravel automatically resolves type-hinted Eloquent models defined in routes or controller actions whose variable names match a route segment name. For example:
+Laravel automatically resolves Eloquent models defined in routes or controller actions whose variable names match a route segment name. For example:
 
     Route::get('api/users/{user}', function (App\User $user) {
         return $user->email;
     });
 
-In this example, since the Eloquent type-hinted `$user` variable defined on the route matches the `{user}` segment in the route's URI, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
+In this example, since the Eloquent `$user` variable defined on the route matches the `{user}` segment in the route's URI, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
 
 #### Customizing The Key Name
 
