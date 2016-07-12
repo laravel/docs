@@ -14,12 +14,12 @@
 <a name="introduction"></a>
 ## Introduction
 
-Instead of defining all of your request handling logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related HTTP request handling logic into a class. Controllers are stored in the `app/Http/Controllers` directory.
+Instead of defining all of your request handling logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related request handling logic into a single class. Controllers are stored in the `app/Http/Controllers` directory.
 
 <a name="basic-controllers"></a>
 ## Basic Controllers
 
-Here is an example of a basic controller class. All Laravel controllers should extend the base controller class included with the default Laravel installation:
+Below is an example of a basic controller class. Note that the controller extends the base controller class included with Laravel. The base class provides a few convenience methods such as the `middleware` method, which may be used to attach middleware to controller actions:
 
     <?php
 
@@ -36,52 +36,39 @@ Here is an example of a basic controller class. All Laravel controllers should e
          * @param  int  $id
          * @return Response
          */
-        public function showProfile($id)
+        public function show($id)
         {
             return view('user.profile', ['user' => User::findOrFail($id)]);
         }
     }
 
-We can route to the controller action like so:
+You can define a route to this controller action like so:
 
-    Route::get('user/{id}', 'UserController@showProfile');
+    Route::get('user/{id}', 'UserController@show');
 
-Now, when a request matches the specified route URI, the `showProfile` method on the `UserController` class will be executed. Of course, the route parameters will also be passed to the method.
+Now, when a request matches the specified route URI, the `show` method on the `UserController` class will be executed. Of course, the route parameters will also be passed to the method.
 
 #### Controllers & Namespaces
 
-It is very important to note that we did not need to specify the full controller namespace when defining the controller route. We only defined the portion of the class name that comes after the `App\Http\Controllers` namespace "root". By default, the `RouteServiceProvider` will load the `routes.php` file within a route group containing the root controller namespace.
+It is very important to note that we did not need to specify the full controller namespace when defining the controller route. Since the `RouteServiceProvider` loads the `routes.php` file within a route group that contains the namespace, we only specified the portion of the class name that comes after the `App\Http\Controllers` portion of the namespace.
 
-If you choose to nest or organize your controllers using PHP namespaces deeper into the `App\Http\Controllers` directory, simply use the specific class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you would register a route like so:
+If you choose to nest your controllers deeper into the `App\Http\Controllers` directory, simply use the specific class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you should register routes to the controller like so:
 
     Route::get('foo', 'Photos\AdminController@method');
-
-#### Naming Controller Routes
-
-Like Closure routes, you may specify names on controller routes:
-
-    Route::get('foo', ['uses' => 'FooController@method', 'as' => 'name']);
-
-You may also use the `route` helper to generate a URL to a named controller route:
-
-    $url = route('name');
 
 <a name="controller-middleware"></a>
 ## Controller Middleware
 
-[Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes like so:
+[Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your `routes.php` file:
 
-    Route::get('profile', [
-        'middleware' => 'auth',
-        'uses' => 'UserController@showProfile'
-    ]);
+    Route::get('profile', 'UserController@show')->middleware('auth');
 
-However, it is more convenient to specify middleware within your controller's constructor. Using the `middleware` method from your controller's constructor, you may easily assign middleware to the controller. You may even restrict the middleware to only certain methods on the controller class:
+However, it is more convenient to specify middleware within your controller's constructor. Using the `middleware` method from your controller's constructor, you may easily assign middleware to the controller's action. You may even restrict the middleware to only certain methods on the controller class:
 
     class UserController extends Controller
     {
         /**
-         * Instantiate a new UserController instance.
+         * Instantiate a new new controller instance.
          *
          * @return void
          */
@@ -89,17 +76,13 @@ However, it is more convenient to specify middleware within your controller's co
         {
             $this->middleware('auth');
 
-            $this->middleware('log', ['only' => [
-                'fooAction',
-                'barAction',
-            ]]);
+            $this->middleware('log', ['only' => ['index']]);
 
-            $this->middleware('subscribed', ['except' => [
-                'fooAction',
-                'barAction',
-            ]]);
+            $this->middleware('subscribed', ['except' => ['store']]);
         }
     }
+
+> {tip} You may assign middleware to a subset of controller actions; however, it may indicate your controller is growing too large. Instead, consider breaking your controller into multiple, smaller controllers.
 
 <a name="restful-resource-controllers"></a>
 ## RESTful Resource Controllers
