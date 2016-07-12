@@ -6,7 +6,9 @@
 - [Retrieving Input](#retrieving-input)
     - [Old Input](#old-input)
     - [Cookies](#cookies)
-    - [Files](#files)
+- [Files](#files)
+    - [Retrieving Uploaded Files](#retrieving-uploaded-files)
+    - [Storing Uploaded Files](#storing-uploaded-files)
 
 <a name="accessing-the-request"></a>
 ## Accessing The Request
@@ -259,7 +261,8 @@ If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instan
 <a name="files"></a>
 ### Files
 
-#### Retrieving Uploaded Files
+<a name="retrieving-uploaded-files"></a>
+### Retrieving Uploaded Files
 
 You may access uploaded files from a `Illuminate\Http\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\Http\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:
 
@@ -289,20 +292,23 @@ The `UploadedFile` class also contains methods for accessing the file's fully-qu
 
     $extension = $request->photo->extension();
 
-#### Moving Uploaded Files
-
-To move the uploaded file to a new location, you should use the `move` method. This method will move the file from its temporary upload location (as determined by your PHP configuration) to a permanent destination of your choosing:
-
-    $request->file('photo')->move($destination);
-
-    $request->file('photo')->move($destination, $fileName);
-
-When storing files it is common to store the files using a name that is a hash of the file's contents, which provides a unique identifier for the file. The `UploadedFile` class contains the `hashName` method which may be used to generate these paths. The file's contents will be hashed using the MD5 algorithm:
-
-    $name = $request->photo->hashName();
-
-    $request->photo->move(storage_path('app/public'), $name);
-
 #### Other File Methods
 
 There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](http://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
+
+<a name="storing-uploaded-files"></a>
+### Storing Uploaded Files
+
+To store an uploaded file, you will typically use one of your configured [filesystems](/docs/{{version}}/filesystem). The `UploadedFile` class has a `store` method which may be used to move the uploaded file to one of your disks, which may be a location on your local filesystem or even a cloud storage location such as Amazon S3.
+
+The `store` method accepts the path at which the file should be stored relative to the filesystem's configured root directory. This path should not contain a file name, since the file name will automatically be generated as an MD5 hash of the file's contents. The `store` method also accepts an optional second argument for the name of the disk that should be used to store the file. The method will return the path of the file relative to the disk's root:
+
+    $path = $request->photo->store('images');
+
+    $path = $request->photo->store('images', 's3');
+
+If you do not want a file name to be automatically generated, you may use the `storeAs` method, which accepts the path, file name, and disk name as its arguments:
+
+    $path = $request->photo->storeAs('images', 'filename.jpg');
+
+    $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
