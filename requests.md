@@ -238,15 +238,15 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 
 #### Attaching Cookies To Responses
 
-You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `withCookie` method. You should pass the name, value, and number of minutes the cookie should be considered valid to this method:
+You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and number of minutes the cookie should be considered valid to this method:
 
-    return response('Hello World')->withCookie(
+    return response('Hello World')->cookie(
         'name', 'value', $minutes
     );
 
-The `withCookie` method also accepts a few more arguments which are used less frequently. Generally, these arguments have the same purpose and meaning as the arguments that would be given to PHP's native [setcookie](http://php.net/manual/en/function.setcookie.php) method:
+The `cookie` method also accepts a few more arguments which are used less frequently. Generally, these arguments have the same purpose and meaning as the arguments that would be given to PHP's native [setcookie](http://php.net/manual/en/function.setcookie.php) method:
 
-    return response('Hello World')->withCookie(
+    return response('Hello World')->cookie(
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
 
@@ -256,7 +256,7 @@ If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instan
 
     $cookie = cookie('name', 'value', $minutes);
 
-    return response('Hello World')->withCookie($cookie);
+    return response('Hello World')->cookie($cookie);
 
 <a name="files"></a>
 ### Files
