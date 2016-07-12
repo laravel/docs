@@ -28,6 +28,8 @@ In addition to returning strings from your routes and controllers, you may also 
         return [1, 2, 3];
     });
 
+> {tip} Did you know you can also return [Eloquent collections](/docs/{{version}}/eloquent-collections) from your routes or controllers? They will automatically be converted to JSON. Give it a shot!
+
 #### Response Objects
 
 Typically, you won't just be returning simple strings or arrays from your route actions. Instead, you will be returning full `Illuminate\Http\Response` instances or [views](/docs/{{version}}/views).
