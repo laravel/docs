@@ -301,7 +301,7 @@ elixir(function(mix) {
 <a name="javascript"></a>
 ### Scripts
 
-If you have multiple JavaScript files that you would like to combine into a single file, you may use the `scripts` method.
+If you have multiple JavaScript files that you would like to combine into a single file, you may use the `scripts` method. This will provide automatic source maps, concatenation, and minification.
 
 The `scripts` method assumes all paths are relative to the `resources/assets/js` directory, and will place the resulting JavaScript in `public/js/all.js` by default:
 
@@ -330,6 +330,9 @@ elixir(function(mix) {
     mix.scriptsIn('public/js/some/directory');
 });
 ```
+
+> {tip} If you intend to concatenate multiple pre-minified vendor libraries, such as jQuery, instead consider using `mix.combine()`. This will combine the files, while omitting the source map and minification steps. As a result, compile times will drastically improve.
+
 
 <a name="copying-files-and-directories"></a>
 ## Copying Files & Directories
