@@ -6,12 +6,14 @@
 - [Working With Stylesheets](#working-with-stylesheets)
     - [Less](#less)
     - [Sass](#sass)
+    - [Stylus](#stylus)
     - [Plain CSS](#plain-css)
     - [Source Maps](#css-source-maps)
 - [Working With Scripts](#working-with-scripts)
-    - [CoffeeScript](#coffeescript)
     - [Browserify](#browserify)
-    - [Babel](#babel)
+    - [Webpack](#webpack)
+    - [Rollup](#rollup)
+    - [CoffeeScript](#coffeescript)
     - [Scripts](#javascript)
 - [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
@@ -27,7 +29,7 @@ Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gul
 ```javascript
 elixir(function(mix) {
     mix.sass('app.scss')
-       .coffee('app.coffee');
+       .webpack('app.js');
 });
 ```
 
@@ -38,11 +40,12 @@ If you've ever been confused about how to get started with Gulp and asset compil
 
 ### Installing Node
 
-Before triggering Elixir, you must first ensure that Node.js is installed on your machine.
+Before triggering Elixir, you must first ensure that Node.js and NPM are installed on your machine.
 
     node -v
+    npm -v
 
-By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install Node by visiting [their download page](http://nodejs.org/en/download/).
+By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install the latest version of Node by visiting [their download page](http://nodejs.org/en/download/). 
 
 ### Gulp
 
@@ -76,6 +79,8 @@ Elixir is built on top of [Gulp](http://gulpjs.com), so to run your Elixir tasks
 
     // Run all tasks and minify all CSS and JavaScript...
     gulp --production
+
+Upon running this command, you'll see a nicely formatted table that displays a summary of the events that just took place.
 
 #### Watching Assets For Changes
 
@@ -145,6 +150,29 @@ elixir(function(mix) {
 });
 ```
 
+While it's recommended that you use Laravel's default asset directories, if you require a different base directory, you may begin any file path with `./`. This instructs Elixir to begin at the project root, rather than using the default base directory.
+
+```javascript
+elixir(function(mix) {
+    mix.sass('./app/assets/app.scss');
+});
+```
+
+With this adjustment, Elixir will now compile `./app/assets/sass/app.scss` to `public/css/app.css`.
+
+<a name="stylus"></a>
+### Stylus
+
+The `stylus` method is an installable extension that allows you to compile [Stylus](http://stylus-lang.com/) into CSS. Assuming that your Stylus files are stored in `resources/assets/stylus`, you may call the method like so:
+
+```javascript
+elixir(function(mix) {
+    mix.stylus('app.styl');
+});
+```
+
+This method's signature is identical to both `mix.less()` and `mix.sass()`.
+
 <a name="plain-css"></a>
 ### Plain CSS
 
@@ -159,23 +187,23 @@ elixir(function(mix) {
 });
 ```
 
-Of course, you may also output the resulting file to a custom location by passing a second argument to the `styles` method:
+Of course, you may also output the resulting file to a custom directory or file by passing a second argument to the `styles` method:
 
 ```javascript
 elixir(function(mix) {
     mix.styles([
         'normalize.css',
         'main.css'
-    ], 'public/assets/css');
+    ], 'public/assets/css/site.css');
 });
 ```
 
 <a name="css-source-maps"></a>
 ### Source Maps
 
-Source maps are enabled out of the box. So, for each file that is compiled you will find a companion `*.css.map` file in the same directory. This mapping allows you to trace your compiled stylesheet selectors back to your original Sass or Less while debugging in your browser.
+Source maps are enabled out of the box. For each relevant file that is compiled, you will find a companion `*.css.map` or `*.js.map` file in the same directory. This mapping allows you to trace your compiled CSS selectors or scripts back to your original source file while debugging in your browser.
 
-If you do not want source maps generated for your CSS, you may disable them using a simple configuration option:
+If you do not want source maps generated for your application, you may disable them using a simple configuration option:
 
 ```javascript
 elixir.config.sourcemaps = false;
@@ -188,25 +216,16 @@ elixir(function(mix) {
 <a name="working-with-scripts"></a>
 ## Working With Scripts
 
-Elixir also provides several functions to help you work with your JavaScript files, such as compiling ECMAScript 6, compiling CoffeeScript, Browserify, minification, and simply concatenating plain JavaScript files.
+Elixir provides several functions to help you work with your JavaScript files, such as compiling ECMAScript 2015, compiling CoffeeScript, bundling with Browserify/Webpack/Rollup, applying minification, and simply concatenating plain JavaScript files. 
 
-<a name="coffeescript"></a>
-### CoffeeScript
-
-The `coffee` method may be used to compile [CoffeeScript](http://coffeescript.org/) into plain JavaScript. The `coffee` function accepts a string or array of CoffeeScript files relative to the `resources/assets/coffee` directory and generates a single `app.js` file in the `public/js` directory:
-
-```javascript
-elixir(function(mix) {
-    mix.coffee(['app.coffee', 'controllers.coffee']);
-});
-```
+When writing ES2015 with modules, you have your choice between [Webpack](http://webpack.github.io), [Browserify](http://browserify.org/), and [Rollup](http://rollupjs.org/). If these tools are foreign to you, don't worry, Elixir will handle all of the work behind the scenes. If you're in doubt as to which method to use, perhaps consider Rollup. It's fast, and generates incredibly clean output. Nonetheless, all three will do a wonderful job.
 
 <a name="browserify"></a>
 ### Browserify
 
-Elixir also ships with a `browserify` method, which gives you all the benefits of requiring modules in the browser and using ECMAScript 6 and JSX.
+Elixir also ships with a `browserify` method, which gives you all the benefits of requiring modules in the browser and using ECMAScript 2015 and JSX.
 
-This task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/main.js`. You may pass a custom output location as an optional second argument:
+By default, this task assumes that your scripts are stored in `resources/assets/js` and will place the resulting file in `public/js/main.js`. You may pass a custom output location as an optional second argument:
 
 ```javascript
 elixir(function(mix) {
@@ -219,38 +238,65 @@ elixir(function(mix) {
 });
 ```
 
+At this point, feel free to leverage the ES2015 syntax and modules in your code. 
+
 While Browserify ships with the Partialify and Babelify transformers, you're free to install and add more if you wish:
 
     npm install aliasify --save-dev
 
 ```javascript
-elixir.config.js.browserify.transformers.push({
-    name: 'aliasify',
-    options: {}
-});
+
 
 elixir(function(mix) {
+    elixir.config.js.browserify.transformers.push({
+        name: 'aliasify',
+        options: {}
+    });
+
     mix.browserify('main.js');
 });
 ```
 
-<a name="babel"></a>
-### Babel
+> Browserify, Rollup, and CoffeeScript support are available as installable extensions. This means the first time you run Gulp, you'll receive a one-time installation command to run. This will pull in the necessary functionality. 
 
-The `babel` method may be used to compile [ECMAScript 6 and 7](https://babeljs.io/docs/learn-es2015/) and [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) into plain JavaScript. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single `all.js` file in the `public/js` directory:
+<a name="webpack"></a>
+### Webpack
+
+Similar to Browserify, the `webpack` method may be used to compile and bundle [ECMAScript 2015](https://babeljs.io/docs/learn-es2015/) into plain JavaScript. This function accepts a file, relative to the `resources/assets/js` directory, and generates a single bundled file in the `public/js` directory:
 
 ```javascript
 elixir(function(mix) {
-    mix.babel([
-        'order.js',
-        'product.js',
-        'react-component.jsx'
-    ]);
+    mix.webpack('app.js');
 });
 ```
 
-To choose a different output location, simply specify your desired path as the second argument. The signature and functionality of this method are identical to `mix.scripts()`, excluding the Babel compilation.
 
+To choose a different output location, simply specify your desired path as the second argument.
+
+If you'd like to leverage more of Webpack's functionality, this task will read any `webpack.config.js` file in your project root, and [factor its configuration](https://webpack.github.io/docs/configuration.html) into the build process. Alternatively, you may pass your Webpack-specific configuration as the fourth argument to `mix.webpack()`.
+
+
+<a name="rollup"></a>
+### Rollup
+
+Similar to Browserify and Webpack, Rollup is a next-generation bundler for ES2015. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single file in the `public/js` directory:
+
+```javascript
+elixir(function(mix) {
+    mix.rollup('app.js');
+});
+```
+
+<a name="coffeescript"></a>
+### CoffeeScript
+
+The `coffee` method may be used to compile [CoffeeScript](http://coffeescript.org/) into plain JavaScript. The `coffee` function accepts a string or array of CoffeeScript files relative to the `resources/assets/coffee` directory and generates a single `app.js` file in the `public/js` directory:
+
+```javascript
+elixir(function(mix) {
+    mix.coffee(['app.coffee', 'controllers.coffee']);
+});
+```
 
 <a name="javascript"></a>
 ### Scripts
@@ -262,13 +308,13 @@ The `scripts` method assumes all paths are relative to the `resources/assets/js`
 ```javascript
 elixir(function(mix) {
     mix.scripts([
-        'jquery.js',
-        'app.js'
+        'order.js',
+        'forum.js'
     ]);
 });
 ```
 
-If you need to combine multiple sets of scripts into different files, you may make multiple calls to the `scripts` method. The second argument given to the method determines the resulting file name for each concatenation:
+If you need to concatenate multiple sets of scripts into different files, you may make multiple calls to the `scripts` method. The second argument given to the method determines the resulting file name for each concatenation:
 
 ```javascript
 elixir(function(mix) {
@@ -395,13 +441,12 @@ If you need more flexibility than Elixir's `task` method can provide, you may cr
 
 var gulp = require('gulp');
 var shell = require('gulp-shell');
-var Elixir = require('laravel-elixir');
 
 var Task = Elixir.Task;
 
 Elixir.extend('speak', function(message) {
 
-    new Task('speak', function() {
+    new Elixir.Task('speak', function() {
         return gulp.src('').pipe(shell('say ' + message));
     });
 
@@ -429,7 +474,7 @@ elixir(function(mix) {
 If you would like your custom task to be re-triggered while running `gulp watch`, you may register a watcher:
 
 ```javascript
-new Task('speak', function() {
+new Elixir.Task('speak', function() {
     return gulp.src('').pipe(shell('say ' + message));
 })
 .watch('./app/**');
