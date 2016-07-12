@@ -5,7 +5,14 @@
     - [Defining A Layout](#defining-a-layout)
     - [Extending A Layout](#extending-a-layout)
 - [Displaying Data](#displaying-data)
+    - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
 - [Control Structures](#control-structures)
+    - [If Statements](#if-statements)
+    - [Loops](#loops)
+    - [The Loop Variable](#the-loop-variable)
+    - [Comments](#comments)
+- [Including Sub-Views](#including-sub-views)
+    - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Extending Blade](#extending-blade)
@@ -13,7 +20,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. All Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
+Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. In fact, all Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
 
 <a name="template-inheritance"></a>
 ## Template Inheritance
@@ -23,7 +30,7 @@ Blade is the simple, yet powerful templating engine provided with Laravel. Unlik
 
 Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a "master" page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
 
-    <!-- Stored in resources/views/layouts/master.blade.php -->
+    <!-- Stored in resources/views/layouts/app.blade.php -->
 
     <html>
         <head>
@@ -47,11 +54,11 @@ Now that we have defined a layout for our application, let's define a child page
 <a name="extending-a-layout"></a>
 ### Extending A Layout
 
-When defining a child page, you may use the Blade `@extends` directive to specify which layout the child page should "inherit". Views which `@extends` a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
+When defining a child view, use the Blade `@extends` directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
     <!-- Stored in resources/views/child.blade.php -->
 
-    @extends('layouts.master')
+    @extends('layouts.app')
 
     @section('title', 'Page Title')
 
@@ -67,7 +74,7 @@ When defining a child page, you may use the Blade `@extends` directive to specif
 
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
-Of course, just like plain PHP views, Blade views may be returned from routes using the global `view` helper function:
+Blade views may be returned from routes using the global `view` helper:
 
     Route::get('blade', function () {
         return view('child');
@@ -76,7 +83,7 @@ Of course, just like plain PHP views, Blade views may be returned from routes us
 <a name="displaying-data"></a>
 ## Displaying Data
 
-You may display data passed to your Blade views by wrapping the variable in "curly" braces. For example, given the following route:
+You may display data passed to your Blade views by wrapping the variable in curly braces. For example, given the following route:
 
     Route::get('greeting', function () {
         return view('welcome', ['name' => 'Samantha']);
@@ -92,23 +99,13 @@ Of course, you are not limited to displaying the contents of the variables passe
 
 > {note} Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks.
 
-#### Blade & JavaScript Frameworks
-
-Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
-
-    <h1>Laravel</h1>
-
-    Hello, @{{ name }}.
-
-In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
-
 #### Echoing Data If It Exists
 
 Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. We can express this in verbose PHP code like so:
 
     {{ isset($name) ? $name : 'Default' }}
 
-However, instead of writing a ternary statement, Blade provides you with the following convenient short-cut:
+However, instead of writing a ternary statement, Blade provides you with the following convenient short-cut, which will be compiled to the ternary statement above:
 
     {{ $name or 'Default' }}
 
@@ -120,14 +117,36 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmle
 
     Hello, {!! $name !!}.
 
-> {note} Be very careful when echoing content that is supplied by users of your application. Always use the double curly brace syntax to escape any HTML entities in the content.
+> {note} Be very careful when echoing content that is supplied by users of your application. Always use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
+
+<a name="blade-and-javascript-frameworks"></a>
+### Blade & JavaScript Frameworks
+
+Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
+
+    <h1>Laravel</h1>
+
+    Hello, @{{ name }}.
+
+In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
+
+#### The `@verbatim` Directive
+
+If you are displaying JavaScript variables in a large portion of your template, you may wrap the HTML in the `@verbatim` directive so that you do not have to prefix each Blade echo statement with an `@` symbol:
+
+    @verbatim
+        <div class="container">
+            Hello, {{ name }}.
+        </div>
+    @endverbatim
 
 <a name="control-structures"></a>
 ## Control Structures
 
 In addition to template inheritance and displaying data, Blade also provides convenient short-cuts for common PHP control structures, such as conditional statements and loops. These short-cuts provide a very clean, terse way of working with PHP control structures, while also remaining familiar to their PHP counterparts.
 
-#### If Statements
+<a name="if-statements"></a>
+### If Statements
 
 You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@endif` directives. These directives function identically to their PHP counterparts:
 
@@ -145,19 +164,10 @@ For convenience, Blade also provides an `@unless` directive:
         You are not signed in.
     @endunless
 
-You may also determine if a given layout section has any content using the `@hasSection` directive:
+<a name="loops"></a>
+### Loops
 
-    <title>
-        @hasSection ('title')
-            @yield('title') - App Name
-        @else
-            App Name
-        @endif
-    </title>
-
-#### Loops
-
-In addition to conditional statements, Blade provides simple directives for working with PHP's supported loop structures. Again, each of these directives functions identically to their PHP counterparts:
+In addition to conditional statements, Blade provides simple directives for working with PHP's loop structures. Again, each of these directives functions identically to their PHP counterparts:
 
     @for ($i = 0; $i < 10; $i++)
         The current value is {{ $i }}
@@ -177,7 +187,9 @@ In addition to conditional statements, Blade provides simple directives for work
         <p>I'm looping forever.</p>
     @endwhile
 
-When using loops you might need to end the loop or skip the current iteration:
+> {tip} When looping, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
+
+When using loops you may also end the loop or skip the current iteration:
 
     @foreach ($users as $user)
         @if ($user->type == 1)
@@ -201,9 +213,56 @@ You may also include the condition with the directive declaration in one line:
         @break($user->number == 5)
     @endforeach
 
-#### Including Sub-Views
+<a name="the-loop-variable"></a>
+### The Loop Variable
 
-Blade's `@include` directive, allows you to easily include a Blade view from within an existing view. All variables that are available to the parent view will be made available to the included view:
+When looping, a `$loop` variable will be available inside of your loop. This variable provides access to some useful bits of information such as the current loop index and whether this is the first or last iteration through the loop:
+
+    @foreach ($users as $user)
+        @if ($loop->first)
+            This is the first iteration.
+        @endif
+
+        @if ($loop->last)
+            This is the last iteration.
+        @endif
+
+        <p>This is user {{ $user->id }}</p>
+    @endforeach
+
+If you are in a nested loop, you may access the parent loop's `$loop` variable via the `parent` property:
+
+    @foreach ($users as $user)
+        @foreach ($user->posts as $post)
+            @if ($loop->parent->first)
+                This is first iteration of the parent loop.
+            @endif
+        @endforeach
+    @endforeach
+
+The `$loop` variable also contains a variety of other useful properties:
+
+Property  | Description
+------------- | -------------
+`$loop->index`  |  The index of the current loop iteration.
+`$loop->remaining`  |  The iteration remaining in the loop.
+`$loop->count`  |  The total number of items in the array being iterated.
+`$loop->first`  |  Whether this is the first iteration through the loop.
+`$loop->last`  |  Whether this is the last iteration through the loop.
+`$loop->depth`  |  The nesting level of the current loop.
+`$loop->parent`  |  When in a nested loop, the parent's loop variable.
+
+<a name="comments"></a>
+### Comments
+
+Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
+
+    {{-- This comment will not be present in the rendered HTML --}}
+
+<a name="including-sub-views"></a>
+## Including Sub-Views
+
+Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
 
     <div>
         @include('shared.errors')
@@ -217,9 +276,10 @@ Even though the included view will inherit all data available in the parent view
 
     @include('view.name', ['some' => 'data'])
 
-> {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
+> {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
-#### Rendering Views For Collections
+<a name="rendering-views-for-collections"></a>
+### Rendering Views For Collections
 
 You may combine loops and includes into one line with Blade's `@each` directive:
 
@@ -231,22 +291,16 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
 
     @each('view.name', $jobs, 'job', 'view.empty')
 
-#### Comments
-
-Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
-
-    {{-- This comment will not be present in the rendered HTML --}}
-
 <a name="stacks"></a>
 ## Stacks
 
-Blade also allows you to push to named stacks which can be rendered somewhere else in another view or layout:
+Blade allows you to push to named stacks which can be rendered somewhere else in another view or layout. This can be particularly useful for specifying any JavaScript libraries required by your child views:
 
     @push('scripts')
         <script src="/example.js"></script>
     @endpush
 
-You may push to the same stack as many times as needed. To render a stack, use the `@stack` syntax:
+You may push to a stack as many times as needed. To render the complete stack contents, pass the name of the stack to the `@stack` directive:
 
     <head>
         <!-- Head Contents -->
@@ -257,7 +311,7 @@ You may push to the same stack as many times as needed. To render a stack, use t
 <a name="service-injection"></a>
 ## Service Injection
 
-The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class / interface name of the service you wish to resolve:
+The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class or interface name of the service you wish to resolve:
 
     @inject('metrics', 'App\Services\MetricsService')
 
@@ -268,7 +322,7 @@ The `@inject` directive may be used to retrieve a service from the Laravel [serv
 <a name="extending-blade"></a>
 ## Extending Blade
 
-Blade even allows you to define your own custom directives. You can use the `directive` method to register a directive. When the Blade compiler encounters the directive, it calls the provided callback with its parameter.
+Blade allows you to define your own custom directives using the `directive` method. When the Blade compiler encounters the custom directive, it will call the provided callback with its parameter.
 
 The following example creates a `@datetime($var)` directive which formats a given `$var`:
 
@@ -276,7 +330,7 @@ The following example creates a `@datetime($var)` directive which formats a give
 
     namespace App\Providers;
 
-    use Blade;
+    use Illuminate\Support\Facades\Blade;
     use Illuminate\Support\ServiceProvider;
 
     class AppServiceProvider extends ServiceProvider
