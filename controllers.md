@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Basic Controllers](#basic-controllers)
 - [Controller Middleware](#controller-middleware)
-- [RESTful Resource Controllers](#restful-resource-controllers)
+- [Resource Controllers](#resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
     - [Naming Resource Routes](#restful-naming-resource-routes)
     - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
@@ -84,24 +84,24 @@ However, it is more convenient to specify middleware within your controller's co
 
 > {tip} You may assign middleware to a subset of controller actions; however, it may indicate your controller is growing too large. Instead, consider breaking your controller into multiple, smaller controllers.
 
-<a name="restful-resource-controllers"></a>
-## RESTful Resource Controllers
+<a name="resource-controllers"></a>
+## Resource Controllers
 
-Resource controllers make it painless to build RESTful controllers around resources. For example, you may wish to create a controller that handles HTTP requests regarding "photos" stored by your application. Using the `make:controller` Artisan command, we can quickly create such a controller:
+Laravel resource routing assigns the typical "CRUD" routes to a controller with a single line of code. For example, you may wish to create a controller that handles all HTTP requests for "photos" stored by your application. Using the `make:controller` Artisan command, we can quickly create such a controller:
 
     php artisan make:controller PhotoController --resource
 
-The Artisan command will generate a controller file at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations.
+This command will generate a controller at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations.
 
 Next, you may register a resourceful route to the controller:
 
     Route::resource('photos', 'PhotoController');
 
-This single route declaration creates multiple routes to handle a variety of RESTful actions on the photo resource. Likewise, the generated controller will already have methods stubbed for each of these actions, including notes informing you which URIs and verbs they handle.
+This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions, including notes informing you of the HTTP verbs and URIs they handle.
 
 #### Actions Handled By Resource Controller
 
-Verb      | Path                  | Action       | Route Name
+Verb      | URI                  | Action       | Route Name
 ----------|-----------------------|--------------|---------------------
 GET       | `/photos`              | index        | photos.index
 GET       | `/photos/create`       | create       | photos.create
@@ -111,14 +111,16 @@ GET       | `/photos/{photo}/edit` | edit         | photos.edit
 PUT/PATCH | `/photos/{photo}`      | update       | photos.update
 DELETE    | `/photos/{photo}`      | destroy      | photos.destroy
 
-Remember, since HTML forms can't make PUT, PATCH, or DELETE requests, you will need to add a hidden `_method` field to spoof these HTTP verbs:
+#### Spoofing Form Methods
 
-    <input type="hidden" name="_method" value="PUT">
+Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need to add a hidden `_method` field to spoof these HTTP verbs. The `method_field` helper can create this field for you:
+
+    {{ method_field('PUT') }}
 
 <a name="restful-partial-resource-routes"></a>
 #### Partial Resource Routes
 
-When declaring a resource route, you may specify a subset of actions to handle on the route:
+When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
 
     Route::resource('photo', 'PhotoController', ['only' => [
         'index', 'show'
@@ -150,20 +152,16 @@ By default, `Route::resource` will create the route parameters for your resource
 
     /user/{admin_user}
 
-When customizing resource parameters, it's important to keep the naming priority in mind:
-
-1. The parameters explicitly passed to `Route::resource`.
-2. The global parameter mappings set via `Route::resourceParameters`.
-3. The default behavior.
-
 <a name="restful-supplementing-resource-controllers"></a>
 #### Supplementing Resource Controllers
 
-If it becomes necessary to add additional routes to a resource controller beyond the default resource routes, you should define those routes before your call to `Route::resource`; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
+If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to `Route::resource`; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
 
     Route::get('photos/popular', 'PhotoController@method');
 
     Route::resource('photos', 'PhotoController');
+
+> {tip} Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
 
 <a name="dependency-injection-and-controllers"></a>
 ## Dependency Injection & Controllers
