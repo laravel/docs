@@ -168,7 +168,7 @@ If you need to add additional routes to a resource controller beyond the default
 
 #### Constructor Injection
 
-The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The dependencies will automatically be resolved and injected into the controller instance:
+The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
 
     <?php
 
@@ -195,11 +195,11 @@ The Laravel [service container](/docs/{{version}}/container) is used to resolve 
         }
     }
 
-Of course, you may also type-hint any [Laravel contract](/docs/{{version}}/contracts). If the container can resolve it, you can type-hint it.
+Of course, you may also type-hint any [Laravel contract](/docs/{{version}}/contracts). If the container can resolve it, you can type-hint it. Depending on your application, injecting your dependencies into your controller may provide better testability.
 
 #### Method Injection
 
-In addition to constructor injection, you may also type-hint dependencies on your controller's action methods. For example, let's type-hint the `Illuminate\Http\Request` instance on one of our methods:
+In addition to constructor injection, you may also type-hint dependencies on your controller's methods. A common use-case for method injection is injecting the `Illuminate\Http\Request` instance into your controller methods:
 
     <?php
 
@@ -217,7 +217,7 @@ In addition to constructor injection, you may also type-hint dependencies on you
          */
         public function store(Request $request)
         {
-            $name = $request->input('name');
+            $name = $request->name;
 
             //
         }
@@ -227,7 +227,7 @@ If your controller method is also expecting input from a route parameter, simply
 
     Route::put('user/{id}', 'UserController@update');
 
-You may still type-hint the `Illuminate\Http\Request` and access your route parameter `id` by defining your controller method like the following:
+You may still type-hint the `Illuminate\Http\Request` and access your `id` parameter by defining your controller method as follows:
 
     <?php
 
@@ -238,7 +238,7 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
     class UserController extends Controller
     {
         /**
-         * Update the specified user.
+         * Update the given user.
          *
          * @param  Request  $request
          * @param  string  $id
@@ -253,14 +253,14 @@ You may still type-hint the `Illuminate\Http\Request` and access your route para
 <a name="route-caching"></a>
 ## Route Caching
 
-> {note} Route caching does not work with Closure based routes. To use route caching, you must convert any Closure routes to use controller classes.
+> {note} Closure based routes cannot be cached. To use route caching, you must convert any Closure routes to controller classes.
 
-If your application is exclusively using controller based routes, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. In some cases, your route registration may even be up to 100x faster! To generate a route cache, just execute the `route:cache` Artisan command:
+If your application is exclusively using controller based routes, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. In some cases, your route registration may even be up to 100x faster. To generate a route cache, just execute the `route:cache` Artisan command:
 
     php artisan route:cache
 
-That's all there is to it! Your cached routes file will now be used instead of your `app/Http/routes.php` file. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you should only run the `route:cache` command during your project's deployment.
+After running this command, your cached routes file will be loaded instead of your `app/Http/routes.php` file. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you should only run the `route:cache` command during your project's deployment.
 
-To remove the cached routes file without generating a new cache, use the `route:clear` command:
+You may use the `route:clear` command to clear the route cache:
 
     php artisan route:clear
