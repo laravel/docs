@@ -3,7 +3,7 @@
     - [Upgrade Guide](/docs/{{version}}/upgrade)
     - [Contribution Guide](/docs/{{version}}/contributions)
     - [API Documentation](/api/{{version}})
-- Setup
+- Getting Started
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
