@@ -9,9 +9,6 @@
     - [Directory Structure](/docs/{{version}}/structure)
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
-- Tutorials
-    - [Basic Task List](/docs/{{version}}/quickstart)
-    - [Intermediate Task List](/docs/{{version}}/quickstart-intermediate)
 - The HTTP Layer
     - [Routing](/docs/{{version}}/routing)
     - [CSRF Protection](/docs/{{version}}/csrf)
