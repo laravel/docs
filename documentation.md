@@ -23,7 +23,7 @@
     - [Session](/docs/{{version}}/session)
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
-- Architecture Foundations
+- Core Concepts
     - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
     - [Contracts](/docs/{{version}}/contracts)
