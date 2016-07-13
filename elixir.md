@@ -154,7 +154,7 @@ While it's recommended that you use Laravel's default asset directories, if you 
 
 ```javascript
 elixir(function(mix) {
-    mix.sass('./app/assets/app.scss');
+    mix.sass('./app/assets/sass/app.scss');
 });
 ```
 
@@ -271,9 +271,17 @@ elixir(function(mix) {
 ```
 
 
-To choose a different output location, simply specify your desired path as the second argument.
+To choose a different output or base directory, simply specify your desired paths as the second and third arguments, respectively.
 
-If you'd like to leverage more of Webpack's functionality, this task will read any `webpack.config.js` file in your project root, and [factor its configuration](https://webpack.github.io/docs/configuration.html) into the build process. Alternatively, you may pass your Webpack-specific configuration as the fourth argument to `mix.webpack()`.
+```javascript
+elixir(function(mix) {
+    mix.webpack('app.js', 'public/dist', 'app/assets/js');
+});
+```
+
+This will compile `app/assets/js/app.js` to `public/dist/app.js`.
+
+If you'd like to leverage more of Webpack's functionality, Elixir will read any `webpack.config.js` file in your project root, and [factor its configuration](https://webpack.github.io/docs/configuration.html) into the build process. Alternatively, you may pass your Webpack-specific configuration as the fourth argument to `mix.webpack()`.
 
 
 <a name="rollup"></a>
