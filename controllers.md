@@ -76,9 +76,9 @@ However, it is more convenient to specify middleware within your controller's co
         {
             $this->middleware('auth');
 
-            $this->middleware('log', ['only' => ['index']]);
+            $this->middleware('log')->only('index');
 
-            $this->middleware('subscribed', ['except' => ['store']]);
+            $this->middleware('subscribed')->except('store');
         }
     }
 
