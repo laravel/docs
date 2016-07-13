@@ -19,6 +19,7 @@
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
     - [Redirects](/docs/{{version}}/redirects)
+    - [Session](/docs/{{version}}/session)
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
 - Architecture Foundations
@@ -48,7 +49,6 @@
     - [Pagination](/docs/{{version}}/pagination)
     - [Queues](/docs/{{version}}/queues)
     - [Redis](/docs/{{version}}/redis)
-    - [Session](/docs/{{version}}/session)
     - [SSH Tasks](/docs/{{version}}/envoy)
     - [Task Scheduling](/docs/{{version}}/scheduling)
     - [Testing](/docs/{{version}}/testing)
