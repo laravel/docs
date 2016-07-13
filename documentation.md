@@ -6,6 +6,7 @@
 - Setup
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
+    - [Directory Structure](/docs/{{version}}/structure)
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
 - Tutorials
@@ -23,8 +24,6 @@
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
 - Architecture Foundations
-    - [Request Lifecycle](/docs/{{version}}/lifecycle)
-    - [Application Structure](/docs/{{version}}/structure)
     - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
     - [Contracts](/docs/{{version}}/contracts)
