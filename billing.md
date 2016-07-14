@@ -322,7 +322,7 @@ You may determine if a user has cancelled their subscription but are still on th
         //
     }
 
-To cancel a subscription immediately, call the `cancelNow` method on the user's subscription:
+If you wish to cancel a subscription immediately, call the `cancelNow` method on the user's subscription:
 
     $user->subscription('main')->cancelNow();
     
