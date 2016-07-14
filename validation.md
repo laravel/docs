@@ -7,9 +7,15 @@
     - [Writing The Validation Logic](#quick-writing-the-validation-logic)
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
     - [Validating Arrays](#validating-arrays)
-- [Other Validation Approaches](#other-validation-approaches)
-    - [Manually Creating Validators](#manually-creating-validators)
-    - [Form Request Validation](#form-request-validation)
+- [Form Request Validation](#form-request-validation)
+    - [Creating Form Requests](#creating-form-requests)
+    - [Authorizing Form Requests](#authorizing-form-requests)
+    - [Customizing The Error Format](#customizing-the-error-format)
+    - [Customizing The Error Messages](#customizing-the-error-messages)
+- [Manually Creating Validators](#manually-creating-validators)
+    - [Automatic Redirection](#automatic-redirection)
+    - [Named Error Bags](#named-error-bags)
+    - [After Validation Hook](#after-validation-hook)
 - [Working With Error Messages](#working-with-error-messages)
     - [Custom Error Messages](#custom-error-messages)
 - [Available Validation Rules](#available-validation-rules)
@@ -198,11 +204,114 @@ Likewise, you may use the `*` character when specifying your validation messages
         ]
     ],
 
-<a name="other-validation-approaches"></a>
-## Other Validation Approaches
+<a name="form-request-validation"></a>
+## Form Request Validation
+
+<a name="creating-form-requests"></a>
+### Creating Form Requests
+
+For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that contain validation logic. To create a form request class, use the `make:request` Artisan CLI command:
+
+    php artisan make:request StoreBlogPost
+
+The generated class will be placed in the `app/Http/Requests` directory. Let's add a few validation rules to the `rules` method:
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'title' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ];
+    }
+
+So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
+
+    /**
+     * Store the incoming blog post.
+     *
+     * @param  StoreBlogPost  $request
+     * @return Response
+     */
+    public function store(StoreBlogPost $request)
+    {
+        // The incoming request is valid...
+    }
+
+If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
+
+<a name="authorizing-form-requests"></a>
+### Authorizing Form Requests
+
+The form request class also contains an `authorize` method. Within this method, you may check if the authenticated user actually has the authority to update a given resource. For example, if a user is attempting to update a blog post comment, do they actually own that comment? For example:
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        $comment = Comment::find($this->route('comment'));
+
+        return $comment && $this->user()->can('update', $comment);
+    }
+
+Since all form requests extend the base Laravel request class, we may use the `user` method to access the currently authenticated user. Also note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:
+
+    Route::post('comment/{comment}');
+
+If the `authorize` method returns `false`, a HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
+
+If you plan to have authorization logic in another part of your application, simply return `true` from the `authorize` method:
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+<a name="customizing-the-error-format"></a>
+### Customizing The Error Format
+
+If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Contracts\Validation\Validator` class at the top of the file:
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function formatErrors(Validator $validator)
+    {
+        return $validator->errors()->all();
+    }
+
+<a name="customizing-the-error-messages"></a>
+### Customizing The Error Messages
+
+You may customize the error messages used by the form request by overriding the `messages` method. This method should return an array of attribute / rule pairs and their corresponding error messages:
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => 'A title is required',
+            'body.required'  => 'A message is required',
+        ];
+    }
 
 <a name="manually-creating-validators"></a>
-### Manually Creating Validators
+## Manually Creating Validators
 
 If you do not want to use the `ValidatesRequests` trait's `validate` method, you may create a validator instance manually using the `Validator` [facade](/docs/{{version}}/facades). The `make` method on the facade generates a new validator instance:
 
@@ -243,7 +352,8 @@ The first argument passed to the `make` method is the data under validation. The
 
 After checking if the request failed to pass validation, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
 
-#### Automatic Redirection
+<a name="automatic-redirection"></a>
+### Automatic Redirection
 
 If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the `ValidatesRequest` trait, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an AJAX request, a JSON response will be returned:
 
@@ -252,7 +362,8 @@ If you would like to create a validator instance manually but still take advanta
         'body' => 'required',
     ])->validate();
 
-#### Named Error Bags
+<a name="named-error-bags"></a>
+### Named Error Bags
 
 If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors, allowing you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
 
@@ -263,7 +374,8 @@ You may then access the named `MessageBag` instance from the `$errors` variable:
 
     {{ $errors->login->first('email') }}
 
-#### After Validation Hook
+<a name="after-validation-hook"></a>
+### After Validation Hook
 
 The validator also allows you to attach callbacks to be run after validation is completed. This allows you to easily perform further validation and even add more error messages to the message collection. To get started, use the `after` method on a validator instance:
 
@@ -277,106 +389,6 @@ The validator also allows you to attach callbacks to be run after validation is 
 
     if ($validator->fails()) {
         //
-    }
-
-<a name="form-request-validation"></a>
-### Form Request Validation
-
-For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that contain validation logic. To create a form request class, use the `make:request` Artisan CLI command:
-
-    php artisan make:request StoreBlogPost
-
-The generated class will be placed in the `app/Http/Requests` directory. Let's add a few validation rules to the `rules` method:
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'title' => 'required|unique:posts|max:255',
-            'body' => 'required',
-        ];
-    }
-
-So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
-
-    /**
-     * Store the incoming blog post.
-     *
-     * @param  StoreBlogPost  $request
-     * @return Response
-     */
-    public function store(StoreBlogPost $request)
-    {
-        // The incoming request is valid...
-    }
-
-If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
-
-#### Authorizing Form Requests
-
-The form request class also contains an `authorize` method. Within this method, you may check if the authenticated user actually has the authority to update a given resource. For example, if a user is attempting to update a blog post comment, do they actually own that comment? For example:
-
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        $comment = Comment::find($this->route('comment'));
-
-        return $comment && $this->user()->can('update', $comment);
-    }
-
-Since all form requests extend the base Laravel request class, we may use the `user` method to access the currently authenticated user. Also note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:
-
-    Route::post('comment/{comment}');
-
-If the `authorize` method returns `false`, a HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
-
-If you plan to have authorization logic in another part of your application, simply return `true` from the `authorize` method:
-
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
-#### Customizing The Flashed Error Format
-
-If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Contracts\Validation\Validator` class at the top of the file:
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function formatErrors(Validator $validator)
-    {
-        return $validator->errors()->all();
-    }
-
-#### Customizing The Error Messages
-
-You may customize the error messages used by the form request by overriding the `messages` method. This method should return an array of attribute / rule pairs and their corresponding error messages:
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'title.required' => 'A title is required',
-            'body.required'  => 'A message is required',
-        ];
     }
 
 <a name="working-with-error-messages"></a>
