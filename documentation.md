@@ -10,8 +10,8 @@
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
 - Core Concepts
-    - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
+    - [Service Providers](/docs/{{version}}/providers)
     - [Facades](/docs/{{version}}/facades)
     - [Contracts](/docs/{{version}}/contracts)
 - The HTTP Layer
