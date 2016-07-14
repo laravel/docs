@@ -16,7 +16,6 @@
     - [Contracts](/docs/{{version}}/contracts)
 - The HTTP Layer
     - [Routing](/docs/{{version}}/routing)
-    - [CSRF Protection](/docs/{{version}}/csrf)
     - [Middleware](/docs/{{version}}/middleware)
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
@@ -27,6 +26,7 @@
 - Security
     - [Authentication](/docs/{{version}}/authentication)
     - [Authorization](/docs/{{version}}/authorization)
+    - [CSRF Protection](/docs/{{version}}/csrf)
     - [Encryption](/docs/{{version}}/encryption)
     - [Hashing](/docs/{{version}}/hashing)
 - General Topics
