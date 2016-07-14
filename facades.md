@@ -20,6 +20,8 @@ All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespa
         return Cache::get('key');
     });
 
+Throughout the Laravel documentation, many of the examples will use facades to demonstrate various features of the framework.
+
 <a name="when-to-use-facades"></a>
 ## When To Use Facades
 
