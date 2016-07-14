@@ -24,19 +24,20 @@
     - [Session](/docs/{{version}}/session)
     - [Views](/docs/{{version}}/views)
     - [Validation](/docs/{{version}}/validation)
-- General Topics
+- Security
     - [Authentication](/docs/{{version}}/authentication)
     - [Authorization](/docs/{{version}}/authorization)
+    - [Encryption](/docs/{{version}}/encryption)
+    - [Hashing](/docs/{{version}}/hashing)
+- General Topics
     - [Artisan Console](/docs/{{version}}/artisan)
     - [Billing](/docs/{{version}}/billing)
     - [Cache](/docs/{{version}}/cache)
     - [Collections](/docs/{{version}}/collections)
     - [Elixir](/docs/{{version}}/elixir)
-    - [Encryption](/docs/{{version}}/encryption)
     - [Errors & Logging](/docs/{{version}}/errors)
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
-    - [Hashing](/docs/{{version}}/hashing)
     - [Helpers](/docs/{{version}}/helpers)
     - [Localization](/docs/{{version}}/localization)
     - [Mail](/docs/{{version}}/mail)
