@@ -14,6 +14,108 @@
 <a name="upgrade-5.3.0"></a>
 ## Upgrading To 5.3.0 From 5.2
 
+### Updating Dependencies
+
+Update your `composer.json` file to point to `php: >=5.6.4` and `laravel/framework 5.3.*` respectively.
+
+Add `"phpunit/phpunit": "~5.0"`, `"symfony/dom-crawler": "~3.1"` and `"symfony/css-selector": "~3.1"` to the `require-dev` section of your `composer.json` file.
+
+### Configuration
+
+The `Illuminate\Notifications\NotificationServiceProvider` should be added to the service provider list in your `app.php` configuration file. 
+
+### Service Provider
+
+Do the following changes in your service providers:
+
+#### `App\Providers\AuthServiceProvider`
+
+* Change `use Illuminate\Contracts\Auth\Access\Gate as GateContract` to `use Illuminate\Support\Facades\Gate`.
+
+* Update `boot` method definition to:
+
+```
+    /**
+     * Register any application authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        //
+    }
+```
+
+#### `App\Providers\EventServiceProvider`
+
+* Change `use Illuminate\Contracts\Events\Dispatcher as DispatcherContract` to `use Illuminate\Support\Facades\Event`.
+
+* Update `boot` method definition to:
+
+```
+    /**
+     * Register any events for your application.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        //
+    }
+```
+
+#### `App\Providers\RouteServiceProvider`
+
+* Change `use Illuminate\Routing\Router` to `use Illuminate\Support\Facades\Route`.
+
+* Update `boot`, `map` and `mapWebRoutes` method definition to:
+
+```
+    /**
+     * Define your route model bindings, pattern filters, etc.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
+
+        parent::boot();
+    }
+
+    /**
+     * Define the routes for the application.
+     *
+     * @return void
+     */
+    public function map()
+    {
+        $this->mapWebRoutes();
+
+        //
+    }
+
+    /**
+     * Define the "web" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapWebRoutes()
+    {
+        Route::group([
+            'namespace' => $this->namespace, 'middleware' => 'web',
+        ], function ($router) {
+            require app_path('Http/routes.php');
+        });
+    }
+```
+
 ### Database
 
 #### Eloquent Scopes
