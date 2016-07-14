@@ -17,7 +17,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Instead of defining all of your request handling logic in a single `routes.php` file, you may wish to organize this behavior using Controller classes. Controllers can group related request handling logic into a single class. Controllers are stored in the `app/Http/Controllers` directory.
+Instead of defining all of your request handling logic as Closures in route files, you may wish to organize this behavior using Controller classes. Controllers can group related request handling logic into a single class. Controllers are stored in the `app/Http/Controllers` directory.
 
 <a name="basic-controllers"></a>
 ## Basic Controllers
@@ -59,7 +59,7 @@ Now, when a request matches the specified route URI, the `show` method on the `U
 <a name="controllers-and-namespaces"></a>
 #### Controllers & Namespaces
 
-It is very important to note that we did not need to specify the full controller namespace when defining the controller route. Since the `RouteServiceProvider` loads the `routes.php` file within a route group that contains the namespace, we only specified the portion of the class name that comes after the `App\Http\Controllers` portion of the namespace.
+It is very important to note that we did not need to specify the full controller namespace when defining the controller route. Since the `RouteServiceProvider` loads your route files within a route group that contains the namespace, we only specified the portion of the class name that comes after the `App\Http\Controllers` portion of the namespace.
 
 If you choose to nest your controllers deeper into the `App\Http\Controllers` directory, simply use the specific class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you should register routes to the controller like so:
 
@@ -98,7 +98,7 @@ When registering routes for single action controllers, you do not need to specif
 <a name="controller-middleware"></a>
 ## Controller Middleware
 
-[Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your `routes.php` file:
+[Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
 
     Route::get('profile', 'UserController@show')->middleware('auth');
 
@@ -298,7 +298,7 @@ If your application is exclusively using controller based routes, you should tak
 
     php artisan route:cache
 
-After running this command, your cached routes file will be loaded instead of your `app/Http/routes.php` file. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you should only run the `route:cache` command during your project's deployment.
+After running this command, your cached routes file will be loaded on every request. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you should only run the `route:cache` command during your project's deployment.
 
 You may use the `route:clear` command to clear the route cache:
 

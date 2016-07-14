@@ -30,7 +30,7 @@ To learn about Laravel's powerful validation features, let's look at a complete 
 <a name="quick-defining-the-routes"></a>
 ### Defining The Routes
 
-First, let's assume we have the following routes defined in our `app/Http/routes.php` file:
+First, let's assume we have the following routes defined in our `routes/web.php` file:
 
     // Display a form to create a blog post...
     Route::get('post/create', 'PostController@create');
