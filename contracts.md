@@ -1,9 +1,12 @@
 # Contracts
 
 - [Introduction](#introduction)
-- [Why Contracts?](#why-contracts)
-- [Contract Reference](#contract-reference)
+    - [Contracts Vs. Facades](#contracts-vs-facades)
+- [When To Use Contracts](#when-to-use-contracts)
+    - [Loose Coupling](#loose-coupling)
+    - [Simplicity](#simplicity)
 - [How To Use Contracts](#how-to-use-contracts)
+- [Contract Reference](#contract-reference)
 
 <a name="introduction"></a>
 ## Introduction
@@ -14,15 +17,23 @@ Each contract has a corresponding implementation provided by the framework. For 
 
 All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
 
+<a name="contracts-vs-facades"></a>
 ### Contracts Vs. Facades
 
-Laravel's [facades](/docs/{{version}}/facades) provide a simple way of utilizing Laravel's services without needing to type-hint and resolve contracts out of the service container. However, using contracts allows you to define explicit dependencies for your classes. For most applications, using a facade is just fine. However, if you really need the extra loose coupling that contracts can provide, keep reading!
+Laravel's [facades](/docs/{{version}}/facades) and helper functions provide a simple way of utilizing Laravel's services without needing to type-hint and resolve contracts out of the service container. In most cases, each facade has an equivalent contract.
 
-<a name="why-contracts"></a>
-## Why Contracts?
+Unlike facades, which do not require you to require them in your class' constructor, contracts allow you to define explicit dependencies for your classes. Some developers prefer to explicitly define their dependencies in this way and therefore prefer to use contracts, while other developers enjoy the convenience of facades.
 
-You may have several questions regarding contracts. Why use interfaces at all? Isn't using interfaces more complicated? Let's distil the reasons for using interfaces to the following headings: loose coupling and simplicity.
+> {tip} Most applications will be fine regardless of whether you prefer facades or contracts. However, if you are building a package, you should strongly consider using contracts since they will be easier to test in a package context.
 
+<a name="when-to-use-contracts"></a>
+## When To Use Contracts
+
+As discussed elsewhere, much of the decision to use contracts or facades will come down to personal taste and the tastes of your development team. Both contracts and facades can be used to create robust, well-tested Laravel applications. As long as you are keeping your class' responsibilities focused, you will notice very few practical differences between using contracts and facades.
+
+However, you may still have several questions regarding contracts. For example, why use interfaces at all? Isn't using interfaces more complicated? Let's distil the reasons for using interfaces to the following headings: loose coupling and simplicity.
+
+<a name="loose-coupling"></a>
 ### Loose Coupling
 
 First, let's review some code that is tightly coupled to a cache implementation. Consider the following:
@@ -96,16 +107,66 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
 
 Now the code is not coupled to any specific vendor, or even Laravel. Since the contracts package contains no implementation and no dependencies, you may easily write an alternative implementation of any given contract, allowing you to replace your cache implementation without modifying any of your cache consuming code.
 
+<a name="simplicity"></a>
 ### Simplicity
 
 When all of Laravel's services are neatly defined within simple interfaces, it is very easy to determine the functionality offered by a given service. **The contracts serve as succinct documentation to the framework's features.**
 
 In addition, when you depend on simple interfaces, your code is easier to understand and maintain. Rather than tracking down which methods are available to you within a large, complicated class, you can refer to a simple, clean interface.
 
+<a name="how-to-use-contracts"></a>
+## How To Use Contracts
+
+So, how do you get an implementation of a contract? It's actually quite simple.
+
+Many types of classes in Laravel are resolved through the [service container](/docs/{{version}}/container), including controllers, event listeners, middleware, queued jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved.
+
+For example, take a look at this event listener:
+
+    <?php
+
+    namespace App\Listeners;
+
+    use App\User;
+    use App\Events\OrderWasPlaced;
+    use Illuminate\Contracts\Redis\Database;
+
+    class CacheOrderInformation
+    {
+        /**
+         * The Redis database implementation.
+         */
+        protected $redis;
+
+        /**
+         * Create a new event handler instance.
+         *
+         * @param  Database  $redis
+         * @return void
+         */
+        public function __construct(Database $redis)
+        {
+            $this->redis = $redis;
+        }
+
+        /**
+         * Handle the event.
+         *
+         * @param  OrderWasPlaced  $event
+         * @return void
+         */
+        public function handle(OrderWasPlaced $event)
+        {
+            //
+        }
+    }
+
+When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
+
 <a name="contract-reference"></a>
 ## Contract Reference
 
-This is a reference to most Laravel Contracts, as well as their Laravel "facade" counterparts:
+This table provides a quick reference to all of the Laravel contracts and their equivalent facades:
 
 Contract  |  References Facade
 ------------- | -------------
@@ -142,52 +203,3 @@ Contract  |  References Facade
 [Illuminate\Contracts\Validation\Validator](https://github.com/illuminate/contracts/blob/master/Validation/Validator.php) | &nbsp;
 [Illuminate\Contracts\View\Factory](https://github.com/illuminate/contracts/blob/master/View/Factory.php) | View::make()
 [Illuminate\Contracts\View\View](https://github.com/illuminate/contracts/blob/master/View/View.php) | &nbsp;
-
-<a name="how-to-use-contracts"></a>
-## How To Use Contracts
-
-So, how do you get an implementation of a contract? It's actually quite simple.
-
-Many types of classes in Laravel are resolved through the [service container](/docs/{{version}}/container), including controllers, event listeners, middleware, queued jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved.
-
-For example, take a look at this event listener:
-
-    <?php
-
-    namespace App\Listeners;
-
-    use App\User;
-    use App\Events\NewUserRegistered;
-    use Illuminate\Contracts\Redis\Database;
-
-    class CacheUserInformation
-    {
-        /**
-         * The Redis database implementation.
-         */
-        protected $redis;
-
-        /**
-         * Create a new event handler instance.
-         *
-         * @param  Database  $redis
-         * @return void
-         */
-        public function __construct(Database $redis)
-        {
-            $this->redis = $redis;
-        }
-
-        /**
-         * Handle the event.
-         *
-         * @param  NewUserRegistered  $event
-         * @return void
-         */
-        public function handle(NewUserRegistered $event)
-        {
-            //
-        }
-    }
-
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
