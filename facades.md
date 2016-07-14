@@ -53,14 +53,12 @@ We can write the following test to verify that the `Cache::get` method was calle
      */
     public function testBasicExample()
     {
-        Cache::spy();
-
-        $this->visit('/')
-             ->see('Laravel 5');
-
-        Cache::shouldHaveReceived('get')
+        Cache::shouldReceive('get')
              ->with('key')
              ->andReturn('value');
+
+        $this->visit('/cache')
+             ->see('value');
     }
 
 <a name="facades-vs-helper-functions"></a>
@@ -89,14 +87,12 @@ Under the hood, the `cache` helper is going to call the `get` method on the clas
      */
     public function testBasicExample()
     {
-        Cache::spy();
-
-        $this->visit('/')
-             ->see('Laravel 5');
-
-        Cache::shouldHaveReceived('get')
+        Cache::shouldReceive('get')
              ->with('key')
              ->andReturn('value');
+
+        $this->visit('/cache')
+             ->see('value');
     }
 
 <a name="how-facades-work"></a>
