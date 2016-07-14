@@ -136,19 +136,24 @@ This statement tells the container that it should inject the `RedisEventPusher` 
 <a name="contextual-binding"></a>
 ### Contextual Binding
 
-Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, when our system receives a new Order, we may want to send an event via [PubNub](http://www.pubnub.com/) rather than Pusher. Laravel provides a simple, fluent interface for defining this behavior:
+Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, two may controllers may depend on different implementations of the `Illuminate\Contracts\Filesystem\Filesystem` [contract](/docs/{{version}}/contracts). Laravel provides a simple, fluent interface for defining this behavior:
 
-    $this->app->when('App\Handlers\Commands\CreateOrderHandler')
-              ->needs('App\Contracts\EventPusher')
-              ->give('App\Services\PubNubEventPusher');
+    use Illuminate\Support\Facades\Storage;
+    use App\Http\Controllers\VideoController;
+    use App\Http\Controllers\PhotoControllers;
+    use Illuminate\Contracts\Filesystem\Filesystem;
 
-You may even pass a Closure to the `give` method:
-
-    $this->app->when('App\Handlers\Commands\CreateOrderHandler')
-              ->needs('App\Contracts\EventPusher')
+    $this->app->when(PhotoController::class)
+              ->needs(Filesystem::class)
               ->give(function () {
-                      // Resolve dependency...
-                  });
+                  return Storage::disk('local');
+              });
+
+    $this->app->when(VideoController::class)
+              ->needs(Filesystem::class)
+              ->give(function () {
+                  return Storage::disk('s3');
+              });
 
 <a name="tagging"></a>
 ### Tagging
