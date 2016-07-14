@@ -62,7 +62,7 @@ We can write the following test to verify that the `Cache::get` method was calle
     }
 
 <a name="facades-vs-helper-functions"></a>
-#### Facades Vs. Helper Functions
+### Facades Vs. Helper Functions
 
 In addition to facades, Laravel includes a variety of "helper" functions which can perform common tasks like generating views, firing events, dispatching jobs, or sending HTTP responses. Many of these helper functions perform the same function as a corresponding facade. For example, this facade call and helper call are equivalent:
 
