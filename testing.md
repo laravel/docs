@@ -56,7 +56,7 @@ This command will place a new `UserTest` class within your `tests` directory. Yo
         }
     }
 
-> **Note:** If you define your own `setUp` method within a test class, be sure to call `parent::setUp`.
+> {note} If you define your own `setUp` method within a test class, be sure to call `parent::setUp`.
 
 <a name="application-testing"></a>
 ## Application Testing
@@ -454,7 +454,7 @@ Another option is to wrap every test case in a database transaction. Again, Lara
         }
     }
 
-> **Note:** This trait will only wrap the default database connection in a transaction.
+> {note} This trait will only wrap the default database connection in a transaction.
 
 <a name="model-factories"></a>
 ### Model Factories
@@ -651,7 +651,7 @@ Laravel provides a convenient `expectsJobs` method that will verify that the exp
         }
     }
 
-> **Note:** This method only detects jobs that are dispatched via the `DispatchesJobs` trait's dispatch methods or the `dispatch` helper function. It does not detect jobs that are sent directly to `Queue::push`.
+> {note} This method only detects jobs that are dispatched via the `DispatchesJobs` trait's dispatch methods or the `dispatch` helper function. It does not detect jobs that are sent directly to `Queue::push`.
 
 <a name="mocking-facades"></a>
 ### Mocking Facades
@@ -696,4 +696,4 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
         }
     }
 
-> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the HTTP helper methods such as `call` and `post` when running your test.
+> {note} You should not mock the `Request` facade. Instead, pass the input you desire into the HTTP helper methods such as `call` and `post` when running your test.

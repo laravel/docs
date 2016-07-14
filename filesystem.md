@@ -136,7 +136,7 @@ When using the `local` or `s3` drivers, you may use the `url` method to get the 
 
     $url = Storage::url('file1.jpg');
 
-> **Note:** When using the `local` driver, be sure to [create a symbolic link at `public/storage`](#the-public-disk) which points to the `storage/app/public` directory.
+> {note} When using the `local` driver, be sure to [create a symbolic link at `public/storage`](#the-public-disk) which points to the `storage/app/public` directory.
 
 #### File Meta Information
 

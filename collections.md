@@ -108,7 +108,7 @@ You may select any method from this table to see an example of its usage:
 [unique](#method-unique)
 [values](#method-values)
 [where](#method-where)
-[whereLoose](#method-whereloose)
+[whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
 [whereInLoose](#method-whereinloose)
 [zip](#method-zip)
@@ -236,7 +236,7 @@ Finally, you may also pass a callback to the `contains` method to perform your o
 
     $collection = collect([1, 2, 3, 4, 5]);
 
-    $collection->contains(function ($key, $value) {
+    $collection->contains(function ($value, $key) {
         return $value > 5;
     });
 
@@ -361,7 +361,7 @@ For the inverse of `filter`, see the [reject](#method-reject) method.
 
 The `first` method returns the first element in the collection that passes a given truth test:
 
-    collect([1, 2, 3, 4])->first(function ($key, $value) {
+    collect([1, 2, 3, 4])->first(function ($value, $key) {
         return $value > 2;
     });
 
@@ -455,7 +455,7 @@ The `forget` method removes an item from the collection by its key:
 
     // ['framework' => 'laravel']
 
-> **Note:** Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
+> {note} Unlike most other collection methods, `forget` does not return a new modified collection; it modifies the collection it is called on.
 
 <a name="method-forpage"></a>
 #### `forPage()` {#collection-method}
@@ -663,7 +663,7 @@ The `keys` method returns all of the collection's keys:
 
 The `last` method returns the last element in the collection that passes a given truth test:
 
-    collect([1, 2, 3, 4])->last(function ($key, $value) {
+    collect([1, 2, 3, 4])->last(function ($value, $key) {
         return $value < 3;
     });
 
@@ -690,7 +690,7 @@ The `map` method iterates through the collection and passes each value to the gi
 
     // [2, 4, 6, 8, 10]
 
-> **Note:** Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
+> {note} Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
 
 <a name="method-max"></a>
 #### `max()` {#collection-method}
@@ -1193,7 +1193,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
         ]
     */
 
-> **Note:** `toArray` also converts all of its nested objects to an array. If you want to get the underlying array as is, use the [`all`](#method-all) method instead.
+> {note} `toArray` also converts all of its nested objects to an array. If you want to get the underlying array as is, use the [`all`](#method-all) method instead.
 
 <a name="method-tojson"></a>
 #### `toJson()` {#collection-method}
@@ -1221,7 +1221,7 @@ The `transform` method iterates over the collection and calls the given callback
 
     // [2, 4, 6, 8, 10]
 
-> **Note:** Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
+> {note} Unlike most other collection methods, `transform` modifies the collection itself. If you wish to create a new collection instead, use the [`map`](#method-map) method.
 
 <a name="method-union"></a>
 #### `union()` {#collection-method}
@@ -1332,12 +1332,12 @@ The `where` method filters the collection by a given key / value pair:
     ]
     */
 
-The `where` method uses strict comparisons when checking item values. Use the [`whereLoose`](#method-whereloose) method to filter using "loose" comparisons.
+The `where` method uses loose comparisons when checking item values. Use the [`whereStrict`](#method-wherestrict) method to filter using "strict" comparisons.
 
-<a name="method-whereloose"></a>
-#### `whereLoose()` {#collection-method}
+<a name="method-wherestrict"></a>
+#### `whereStrict()` {#collection-method}
 
-This method has the same signature as the [`where`](#method-where) method; however, all values are compared using "loose" comparisons.
+This method has the same signature as the [`where`](#method-where) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-wherein"></a>
 #### `whereIn()` {#collection-method}

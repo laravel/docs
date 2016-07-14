@@ -244,7 +244,7 @@ So, what's left for us to do? Well, we still need to create the registration and
 
     php artisan make:auth
 
-> **Note:** If you would like to view complete examples for these views, remember that the entire application's source code is [available on GitHub](https://github.com/laravel/quickstart-intermediate).
+> {note} If you would like to view complete examples for these views, remember that the entire application's source code is [available on GitHub](https://github.com/laravel/quickstart-intermediate).
 
 Now, all we have to do is add the authentication routes to our routes file. We can do this using the `auth` method on the `Route` facade, which will register all of the routes we need for registration, login, and password reset:
 
@@ -456,7 +456,7 @@ Remember that we used the `@include('common.errors')` directive within our view 
     @endif
 
 
-> **Note:** The `$errors` variable is available in **every** Laravel view. It will simply be an empty instance of `ViewErrorBag` if no validation errors are present.
+> {note} The `$errors` variable is available in **every** Laravel view. It will simply be an empty instance of `ViewErrorBag` if no validation errors are present.
 
 <a name="creating-the-task"></a>
 ### Creating The Task
@@ -769,7 +769,7 @@ Let's examine this method call for a moment. The first argument passed to the `a
 
 If the action is authorized, our code will continue executing normally. However, if the action is not authorized (meaning the policy's `destroy` method returned `false`), a 403 exception will be thrown and an error page will be displayed to the user.
 
-> **Note:** There are several other ways to interact with the authorization services Laravel provides. Be sure to browse the complete [authorization documentation](/docs/{{version}}/authorization).
+> {note} There are several other ways to interact with the authorization services Laravel provides. Be sure to browse the complete [authorization documentation](/docs/{{version}}/authorization).
 
 <a name="deleting-the-task"></a>
 ### Deleting The Task

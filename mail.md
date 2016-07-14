@@ -99,7 +99,7 @@ Since we are passing an array containing the `user` key in the example above, we
 
     <?php echo $user->name; ?>
 
-> **Note:** A `$message` variable is always passed to e-mail views, and allows the [inline embedding of attachments](#attachments). So, you should avoid passing a `message` variable in your view payload.
+> {note} A `$message` variable is always passed to e-mail views, and allows the [inline embedding of attachments](#attachments). So, you should avoid passing a `message` variable in your view payload.
 
 #### Building The Message
 
@@ -129,7 +129,7 @@ Here is a list of the available methods on the `$message` message builder instan
     // Get the underlying SwiftMailer message instance...
     $message->getSwiftMessage();
 
-> **Note:** The message instance passed to a `Mail::send` Closure extends the SwiftMailer message class, allowing you to call any method on that class to build your e-mail messages.
+> {note} The message instance passed to a `Mail::send` Closure extends the SwiftMailer message class, allowing you to call any method on that class to build your e-mail messages.
 
 #### Mailing Plain Text
 

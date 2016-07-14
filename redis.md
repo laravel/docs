@@ -35,7 +35,7 @@ Additionally, you may define an `options` array value in your Redis connection d
 
 If your Redis server requires authentication, you may supply a password by adding a `password` configuration item to your Redis server configuration array.
 
-> **Note:** If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
+> {note} If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
 
 <a name="basic-usage"></a>
 ## Basic Usage

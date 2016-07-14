@@ -3,29 +3,28 @@
     - [Upgrade Guide](/docs/{{version}}/upgrade)
     - [Contribution Guide](/docs/{{version}}/contributions)
     - [API Documentation](/api/{{version}})
-- Setup
+- Getting Started
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
+    - [Directory Structure](/docs/{{version}}/structure)
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
-- Tutorials
-    - [Basic Task List](/docs/{{version}}/quickstart)
-    - [Intermediate Task List](/docs/{{version}}/quickstart-intermediate)
-- The Basics
+- The HTTP Layer
     - [Routing](/docs/{{version}}/routing)
+    - [CSRF Protection](/docs/{{version}}/csrf)
     - [Middleware](/docs/{{version}}/middleware)
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
+    - [Redirects](/docs/{{version}}/redirects)
+    - [Session](/docs/{{version}}/session)
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
-- Architecture Foundations
-    - [Request Lifecycle](/docs/{{version}}/lifecycle)
-    - [Application Structure](/docs/{{version}}/structure)
+- Core Concepts
     - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
-    - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
+    - [Contracts](/docs/{{version}}/contracts)
 - Services
     - [Authentication](/docs/{{version}}/authentication)
     - [Authorization](/docs/{{version}}/authorization)
@@ -46,7 +45,6 @@
     - [Pagination](/docs/{{version}}/pagination)
     - [Queues](/docs/{{version}}/queues)
     - [Redis](/docs/{{version}}/redis)
-    - [Session](/docs/{{version}}/session)
     - [SSH Tasks](/docs/{{version}}/envoy)
     - [Task Scheduling](/docs/{{version}}/scheduling)
     - [Testing](/docs/{{version}}/testing)

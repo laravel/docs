@@ -226,7 +226,7 @@ By pushing jobs to different queues, you may "categorize" your queued jobs, and 
         }
     }
 
-> **Note:** The `DispatchesJobs` trait pushes jobs to queues within the default queue connection.
+> {note} The `DispatchesJobs` trait pushes jobs to queues within the default queue connection.
 
 #### Specifying The Queue Connection For A Job
 
@@ -309,7 +309,7 @@ Sometimes you may wish to delay the execution of a queued job. For instance, you
 
 In this example, we're specifying that the job should be delayed in the queue for 5 minutes before being made available to workers.
 
-> **Note:** The Amazon SQS service has a maximum delay time of 15 minutes.
+> {note} The Amazon SQS service has a maximum delay time of 15 minutes.
 
 <a name="job-events"></a>
 ### Job Events
@@ -455,7 +455,7 @@ Since daemon queue workers are long-lived processes, they will not pick up chang
 
 This command will gracefully instruct all queue workers to "die" after they finish processing their current job so that no existing jobs are lost. Remember, the queue workers will die when the `queue:restart` command is executed, so you should be running a process manager such as Supervisor which automatically restarts the queue workers.
 
-> **Note:** This command relies on the cache system to schedule the restart. By default, APCu does not work for CLI jobs. If you are using APCu, add `apc.enable_cli=1` to your APCu configuration.
+> {note} This command relies on the cache system to schedule the restart. By default, APCu does not work for CLI jobs. If you are using APCu, add `apc.enable_cli=1` to your APCu configuration.
 
 <a name="dealing-with-failed-jobs"></a>
 ## Dealing With Failed Jobs

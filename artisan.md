@@ -27,13 +27,13 @@ Every command also includes a "help" screen which displays and describes the com
 
 In addition to the commands provided with Artisan, you may also build your own custom commands for working with your application. You may store your custom commands in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be autoloaded based on your `composer.json` settings.
 
-To create a new command, you may use the `make:console` Artisan command, which will generate a command stub to help you get started:
+To create a new command, you may use the `make:command` Artisan command, which will generate a command stub to help you get started:
 
-    php artisan make:console SendEmails
+    php artisan make:command SendEmails
 
 The command above would generate a class at `app/Console/Commands/SendEmails.php`. When creating the command, the `--command` option may be used to assign the terminal command name:
 
-    php artisan make:console SendEmails --command=emails:send
+    php artisan make:command SendEmails --command=emails:send
 
 <a name="command-structure"></a>
 ### Command Structure

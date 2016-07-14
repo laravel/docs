@@ -45,7 +45,7 @@ For example, we may use the `encrypt` method to encrypt a secret and store it on
         }
     }
 
-> **Note:** Encrypted values are passed through `serialize` during encryption, which allows for "encryption" of objects and arrays. Thus, non-PHP clients receiving encrypted values will need to `unserialize` the data.
+> {note} Encrypted values are passed through `serialize` during encryption, which allows for "encryption" of objects and arrays. Thus, non-PHP clients receiving encrypted values will need to `unserialize` the data.
 
 #### Decrypting A Value
 

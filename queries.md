@@ -21,7 +21,7 @@
 
 The database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application, and works on all supported database systems.
 
-> **Note:** The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
+> {note} The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean strings being passed as bindings.
 
 <a name="retrieving-results"></a>
 ## Retrieving Results
@@ -52,7 +52,7 @@ To begin a fluent query, use the `table` method on the `DB` facade. The `table` 
         }
     }
 
-Like [raw queries](/docs/{{version}}/database), the `get` method returns an `array` of results where each result is an instance of the PHP `StdClass` object. You may access each column's value by accessing the column as a property of the object:
+Like [raw queries](/docs/{{version}}/database), the `get` method returns an `Illuminate\Support\Collection` containing the results where each result is an instance of the PHP `StdClass` object. You may access each column's value by accessing the column as a property of the object:
 
     foreach ($users as $user) {
         echo $user->name;
@@ -323,6 +323,28 @@ The `whereColumn` method can also be passed an array of multiple conditions. The
                         ['updated_at', '>', 'created_at']
                     ]);
 
+**whereDate / whereMonth / whereDay / whereYear**
+
+The `whereDate` method may be used compare a column's value against a date:
+
+    $users = DB::table('users')
+                    ->whereDate('created_at', '2016-10-10');
+
+The `whereMonth` method may be used compare a column's value against a specific month of an year:
+
+    $users = DB::table('users')
+                    ->whereMonth('created_at', '10');
+
+The `whereDay` method may be used compare a column's value against a specific day of a month:
+
+    $users = DB::table('users')
+                    ->whereDay('created_at', '10');
+
+The `whereYear` method may be used compare a column's value against a specific year:
+
+    $users = DB::table('users')
+                    ->whereYear('created_at', '2016');
+
 <a name="advanced-where-clauses"></a>
 ## Advanced Where Clauses
 
@@ -456,7 +478,7 @@ If the table has an auto-incrementing id, use the `insertGetId` method to insert
         ['email' => 'john@example.com', 'votes' => 0]
     );
 
-> **Note:** When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
+> {note} When using PostgreSQL the insertGetId method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the sequence name as the second parameter to the `insertGetId` method.
 
 <a name="updates"></a>
 ## Updates
@@ -466,6 +488,14 @@ Of course, in addition to inserting records into the database, the query builder
     DB::table('users')
                 ->where('id', 1)
                 ->update(['votes' => 1]);
+
+#### Updating JSON Columns
+
+When updating a JSON column, you should use `->` syntax to access the appropriate key in the JSON object:
+
+    DB::table('users')
+                ->where('id', 1)
+                ->update(['options->enabled' => true]);
 
 #### Increment / Decrement
 

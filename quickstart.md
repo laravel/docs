@@ -320,7 +320,7 @@ Remember that we used the `@include('common.errors')` directive within our view 
     @endif
 
 
-> **Note:** The `$errors` variable is available in **every** Laravel view. It will simply be an empty instance of `ViewErrorBag` if no validation errors are present.
+> {note} The `$errors` variable is available in **every** Laravel view. It will simply be an empty instance of `ViewErrorBag` if no validation errors are present.
 
 <a name="creating-the-task"></a>
 ### Creating The Task

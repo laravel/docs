@@ -131,7 +131,7 @@ So, what if the incoming request parameters do not pass the given validation rul
 
 Again, notice that we did not have to explicitly bind the error messages to the view in our `GET` route. This is because Laravel will check for errors in the session data, and automatically bind them to the view if they are available. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
 
-> **Note:** The `$errors` variable is bound to the view by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. **When this middleware is applied an `$errors` variable will always be available in your views**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used.
+> {note} The `$errors` variable is bound to the view by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. **When this middleware is applied an `$errors` variable will always be available in your views**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used.
 
 So, in our example, the user will be redirected to our controller's `create` method when validation fails, allowing us to display the error messages in the view:
 
@@ -508,6 +508,7 @@ Below is a list of all available validation rules and their function:
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
 [Min](#rule-min)
+[Nullable](#rule-nullable)
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
 [Present](#rule-present)
@@ -738,6 +739,11 @@ A full listing of MIME types and their corresponding extensions may be found at 
 
 The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
+<a name="rule-nullable"></a>
+#### nullable
+
+The field under validation may be `null`. This is particularly useful when validating primitive such as strings and integers that can contain `null` values.
+
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
 
@@ -813,7 +819,7 @@ The field under validation must have a size matching the given _value_. For stri
 <a name="rule-string"></a>
 #### string
 
-The field under validation must be a string.
+The field under validation must be a string. If you would like to allow the field to also be `null`, you should assign the `nullable` rule to the field.
 
 <a name="rule-timezone"></a>
 #### timezone
@@ -890,7 +896,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
         return $input->games >= 100;
     });
 
-> **Note:** The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files.
+> {note} The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files.
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
@@ -977,4 +983,4 @@ For a rule to run even when an attribute is empty, the rule must imply that the 
         return $value == 'foo';
     });
 
-> **Note:** An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
+> {note} An "implicit" extension only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.

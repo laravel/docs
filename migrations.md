@@ -102,6 +102,10 @@ To rollback the latest migration "operation", you may use the `rollback` command
 
     php artisan migrate:rollback
 
+You may rollback a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will rollback the last 5 migrations:
+
+    php artisan migrate:rollback --step=5
+
 The `migrate:reset` command will roll back all of your application's migrations:
 
     php artisan migrate:reset
@@ -113,6 +117,10 @@ The `migrate:refresh` command will first roll back all of your database migratio
     php artisan migrate:refresh
 
     php artisan migrate:refresh --seed
+
+You may rollback & re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will rollback & re-migrate the last 5 migrations:
+
+    php artisan migrate:refresh --step=5
 
 <a name="writing-migrations"></a>
 ## Writing Migrations
@@ -266,7 +274,7 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> **Note:** Modifying any column in a table that also has a column of type `enum` is not currently supported.
+> {note} Modifying any column in a table that also has a column of type `enum` is not currently supported.
 
 <a name="renaming-columns"></a>
 #### Renaming Columns
@@ -277,7 +285,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
         $table->renameColumn('from', 'to');
     });
 
-> **Note:** Renaming any column in a table that also has a column of type `enum` is not currently supported.
+> {note} Renaming any column in a table that also has a column of type `enum` is not currently supported.
 
 <a name="dropping-columns"></a>
 ### Dropping Columns
@@ -294,9 +302,9 @@ You may drop multiple columns from a table by passing an array of column names t
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> **Note:** Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
+> {note} Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
 
-> **Note:** Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
+> {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
 
 <a name="creating-indexes"></a>
 ### Creating Indexes

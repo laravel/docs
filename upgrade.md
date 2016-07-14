@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [Upgrading To 5.3.0 From 5.2](#upgrade-5.3.0)
 - [Upgrading To 5.2.0 From 5.1](#upgrade-5.2.0)
 - [Upgrading To 5.1.11](#upgrade-5.1.11)
 - [Upgrading To 5.1.0](#upgrade-5.1.0)
@@ -10,12 +11,39 @@
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
 
+<a name="upgrade-5.3.0"></a>
+## Upgrading To 5.3.0 From 5.2
+
+### Database
+
+#### Eloquent Scopes
+
+Eloquent scopes now respect the leading boolean of scope constraints. For example, if you are starting your scope with an `orWhere` constraint it will no longer be converted to normal `where`. If you were relying on this feature (e.g. adding multiple `orWhere` constraints within a loop), you should verify that the first condition is a normal `where` to avoid any boolean logic issues.
+
+If your scopes begin with `where` constraints no action is required. Remember, you can verify your query SQL using the `toSql` method of a query:
+
+    User::where('foo', 'bar')->toSql();
+
+#### Join Clause
+
+The `JoinClause` class has been rewritten to unify its syntax with the query builder. The optional `$where` parameter of the `on` clause has been removed. To add a "where" conditions you should explicitly use one of the `where` methods offered by the [query builder](/docs/{{version}}/queries#where-clauses):
+
+    $query->join('table', function($join) {
+        $join->on('foo', 'bar')->where('bar', 'baz');
+    });
+
+The `$bindings` property was also removed. To manipulate join bindings directly you may use the `addBinding` method:
+
+    $query->join(DB::raw('('.$subquery->toSql().') table'), function($join) use ($subquery) {
+        $join->addBinding($subquery->getBindings(), 'join');
+    });
+
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
 
 #### Estimated Upgrade Time: Less Than 1 Hour
 
-> **Note:** We attempt to provide a very comprehensive listing of every possible breaking change made to the framework. However, many of these changes may not apply to your own application.
+> {note} We attempt to provide a very comprehensive listing of every possible breaking change made to the framework. However, many of these changes may not apply to your own application.
 
 ### Updating Dependencies
 
@@ -283,7 +311,7 @@ The following features are deprecated in 5.2 and will be removed in the 5.3 rele
 
 Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorization) and [policies](/docs/{{version}}/authorization#policies). Incorporating these new features into your existing Laravel 5.1 applications is simple.
 
-> **Note:** These upgrades are **optional**, and ignoring them will not affect your application.
+> {note} These upgrades are **optional**, and ignoring them will not affect your application.
 
 #### Create The Policies Directory
 
@@ -542,7 +570,7 @@ Additionally, copy any custom values you had in your old `.env.php` file and pla
 
 For more information on environment configuration, view the [full documentation](/docs/{{version}}/installation#environment-configuration).
 
-> **Note:** You will need to place the appropriate `.env` file and values on your production server before deploying your Laravel 5 application.
+> {note} You will need to place the appropriate `.env` file and values on your production server before deploying your Laravel 5 application.
 
 #### Configuration Files
 
@@ -740,7 +768,7 @@ Add a new `cipher` option in your `app/config/app.php` configuration file. The v
 
 This setting may be used to control the default cipher used by the Laravel encryption facilities.
 
-> **Note:** In Laravel 4.2, the default cipher is `MCRYPT_RIJNDAEL_128` (AES), which is considered to be the most secure cipher. Changing the cipher back to `MCRYPT_RIJNDAEL_256` is required to decrypt cookies/values that were encrypted in Laravel <= 4.1
+> {note} In Laravel 4.2, the default cipher is `MCRYPT_RIJNDAEL_128` (AES), which is considered to be the most secure cipher. Changing the cipher back to `MCRYPT_RIJNDAEL_256` is required to decrypt cookies/values that were encrypted in Laravel <= 4.1
 
 ### Soft Deleting Models Now Use Traits
 
@@ -764,7 +792,7 @@ You must also manually add the `deleted_at` column to your `dates` property:
 
 The API for all soft delete operations remains the same.
 
-> **Note:** The `SoftDeletingTrait` can not be applied on a base model. It must be used on an actual model class.
+> {note} The `SoftDeletingTrait` can not be applied on a base model. It must be used on an actual model class.
 
 ### View / Pagination Environment Renamed
 
@@ -817,7 +845,7 @@ Next, if you are using the Eloquent authentication driver, update your `User` cl
         return 'remember_token';
     }
 
-> **Note:** All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
+> {note} All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
 
 ### Package Maintainers
 

@@ -35,7 +35,7 @@ Laravel already makes it easy to handle authentication on the back-end; however,
 
 This command will generate plain, Bootstrap compatible views for user login, registration, and password reset. The command will also update your routes file with the appropriate routes.
 
-> **Note:** This feature is only meant to be used on new applications, not during application upgrades.
+> {note} This feature is only meant to be used on new applications, not during application upgrades.
 
 ### Implicit Model Binding
 
@@ -495,7 +495,7 @@ The popular `dd` helper function, which dumps variable debug information, has be
 
 The full change list for this release by running the `php artisan changes` command from a 4.2 installation, or by [viewing the change file on Github](https://github.com/laravel/framework/blob/4.2/src/Illuminate/Foundation/changes.json). These notes only cover the major enhancements and changes for the release.
 
-> **Note:** During the 4.2 release cycle, many small bug fixes and enhancements were incorporated into the various Laravel 4.1 point releases. So, be sure to check the change list for Laravel 4.1 as well!
+> {note} During the 4.2 release cycle, many small bug fixes and enhancements were incorporated into the various Laravel 4.1 point releases. So, be sure to check the change list for Laravel 4.1 as well!
 
 ### PHP 5.4 Requirement
 
