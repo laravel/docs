@@ -6,7 +6,6 @@
     - [Creating The Controller](#quick-creating-the-controller)
     - [Writing The Validation Logic](#quick-writing-the-validation-logic)
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
-    - [AJAX Requests & Validation](#quick-ajax-requests-and-validation)
     - [Validating Arrays](#validating-arrays)
 - [Other Validation Approaches](#other-validation-approaches)
     - [Manually Creating Validators](#manually-creating-validators)
@@ -32,10 +31,8 @@ To learn about Laravel's powerful validation features, let's look at a complete 
 
 First, let's assume we have the following routes defined in our `routes/web.php` file:
 
-    // Display a form to create a blog post...
     Route::get('post/create', 'PostController@create');
 
-    // Store a new blog post...
     Route::post('post', 'PostController@store');
 
 Of course, the `GET` route will display a form for the user to create a new blog post, while the `POST` route will store the new blog post in the database.
@@ -79,7 +76,7 @@ Next, let's take a look at a simple controller that handles these routes. We'll 
 <a name="quick-writing-the-validation-logic"></a>
 ### Writing The Validation Logic
 
-Now we are ready to fill in our `store` method with the logic to validate the new blog post. If you examine your application's base controller (`App\Http\Controllers\Controller`) class, you will see that the class uses a `ValidatesRequests` trait. This trait provides a convenient `validate` method in all of your controllers.
+Now we are ready to fill in our `store` method with the logic to validate the new blog post. If you examine your application's base controller (`App\Http\Controllers\Controller`) class, you will see that the class uses a `ValidatesRequests` trait. This trait provides a convenient `validate` method to all of your controllers.
 
 The `validate` method accepts an incoming HTTP request and a set of validation rules. If the validation rules pass, your code will keep executing normally; however, if validation fails, an exception will be thrown and the proper error response will automatically be sent back to the user. In the case of a traditional HTTP request, a redirect response will be generated, while a JSON response will be sent for AJAX requests.
 
@@ -131,7 +128,7 @@ So, what if the incoming request parameters do not pass the given validation rul
 
 Again, notice that we did not have to explicitly bind the error messages to the view in our `GET` route. This is because Laravel will check for errors in the session data, and automatically bind them to the view if they are available. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
 
-> {note} The `$errors` variable is bound to the view by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. **When this middleware is applied an `$errors` variable will always be available in your views**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used.
+> {tip} The `$errors` variable is bound to the view by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. **When this middleware is applied an `$errors` variable will always be available in your views**, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used.
 
 So, in our example, the user will be redirected to our controller's `create` method when validation fails, allowing us to display the error messages in the view:
 
@@ -179,7 +176,7 @@ If you wish to customize the format of the validation errors that are flashed to
     }
 
 <a name="quick-ajax-requests-and-validation"></a>
-### AJAX Requests & Validation
+#### AJAX Requests & Validation
 
 In this example, we used a traditional form to send data to the application. However, many applications use AJAX requests. When using the `validate` method during an AJAX request, Laravel will not generate a redirect response. Instead, Laravel generates a JSON response containing all of the validation errors. This JSON response will be sent with a 422 HTTP status code.
 
@@ -246,6 +243,15 @@ The first argument passed to the `make` method is the data under validation. The
 
 After checking if the request failed to pass validation, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
 
+#### Automatic Redirection
+
+If you would like to create a validator instance manually but still take advantage of the automatic redirection offered by the `ValidatesRequest` trait, you may call the `validate` method on an existing validator instance. If validation fails, the user will automatically be redirected or, in the case of an AJAX request, a JSON response will be returned:
+
+    Validator::make($request->all(), [
+        'title' => 'required|unique:posts|max:255',
+        'body' => 'required',
+    ])->validate();
+
 #### Named Error Bags
 
 If you have multiple forms on a single page, you may wish to name the `MessageBag` of errors, allowing you to retrieve the error messages for a specific form. Simply pass a name as the second argument to `withErrors`:
@@ -278,7 +284,7 @@ The validator also allows you to attach callbacks to be run after validation is 
 
 For more complex validation scenarios, you may wish to create a "form request". Form requests are custom request classes that contain validation logic. To create a form request class, use the `make:request` Artisan CLI command:
 
-    php artisan make:request StoreBlogPostRequest
+    php artisan make:request StoreBlogPost
 
 The generated class will be placed in the `app/Http/Requests` directory. Let's add a few validation rules to the `rules` method:
 
@@ -300,10 +306,10 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
     /**
      * Store the incoming blog post.
      *
-     * @param  StoreBlogPostRequest  $request
+     * @param  StoreBlogPost  $request
      * @return Response
      */
-    public function store(StoreBlogPostRequest $request)
+    public function store(StoreBlogPost $request)
     {
         // The incoming request is valid...
     }
@@ -321,13 +327,12 @@ The form request class also contains an `authorize` method. Within this method, 
      */
     public function authorize()
     {
-        $commentId = $this->route('comment');
+        $comment = Comment::find($this->route('comment'));
 
-        return Comment::where('id', $commentId)
-                      ->where('user_id', Auth::id())->exists();
+        return $comment && $this->user()->can('update', $comment);
     }
 
-Note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:
+Since all form requests extend the base Laravel request class, we may use the `user` method to access the currently authenticated user. Also note the call to the `route` method in the example above. This method grants you access to the URI parameters defined on the route being called, such as the `{comment}` parameter in the example below:
 
     Route::post('comment/{comment}');
 
