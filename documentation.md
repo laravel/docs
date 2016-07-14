@@ -23,8 +23,8 @@
 - Core Concepts
     - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
-    - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
+    - [Contracts](/docs/{{version}}/contracts)
 - Services
     - [Authentication](/docs/{{version}}/authentication)
     - [Authorization](/docs/{{version}}/authorization)
