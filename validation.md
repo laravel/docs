@@ -350,7 +350,7 @@ If you do not want to use the `ValidatesRequests` trait's `validate` method, you
 
 The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
 
-After checking if the request failed to pass validation, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
+After checking if the request passed validation, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
 
 <a name="automatic-redirection"></a>
 ### Automatic Redirection
@@ -394,21 +394,21 @@ The validator also allows you to attach callbacks to be run after validation is 
 <a name="working-with-error-messages"></a>
 ## Working With Error Messages
 
-After calling the `errors` method on a `Validator` instance, you will receive an `Illuminate\Support\MessageBag` instance, which has a variety of convenient methods for working with error messages.
+After calling the `errors` method on a `Validator` instance, you will receive an `Illuminate\Support\MessageBag` instance, which has a variety of convenient methods for working with error messages. The `$errors` variable that is automatically made available to all views is also an instance of the `MessageBag` class.
 
 #### Retrieving The First Error Message For A Field
 
 To retrieve the first error message for a given field, use the `first` method:
 
-    $messages = $validator->errors();
+    $errors = $validator->errors();
 
-    echo $messages->first('email');
+    echo $errors->first('email');
 
 #### Retrieving All Error Messages For A Field
 
-If you wish to simply retrieve an array of all of the messages for a given field, use the `get` method:
+If you need to retrieve an array of all the messages for a given field, use the `get` method:
 
-    foreach ($messages->get('email') as $message) {
+    foreach ($errors->get('email') as $message) {
         //
     }
 
@@ -416,23 +416,15 @@ If you wish to simply retrieve an array of all of the messages for a given field
 
 To retrieve an array of all messages for all fields, use the `all` method:
 
-    foreach ($messages->all() as $message) {
+    foreach ($errors->all() as $message) {
         //
     }
 
 #### Determining If Messages Exist For A Field
 
-    if ($messages->has('email')) {
-        //
-    }
+The `has` method may be used to determine if any error messages exist for a given field:
 
-#### Retrieving An Error Message With A Format
-
-    echo $messages->first('email', '<p>:message</p>');
-
-#### Retrieving All Error Messages With A Format
-
-    foreach ($messages->all('<li>:message</li>') as $message) {
+    if ($errors->has('email')) {
         //
     }
 
@@ -467,7 +459,7 @@ Sometimes you may wish to specify a custom error messages only for a specific fi
 <a name="localization"></a>
 #### Specifying Custom Messages In Language Files
 
-In many cases, you may wish to specify your attribute specific custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `resources/lang/xx/validation.php` language file.
+In most cases, you will probably specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `resources/lang/xx/validation.php` language file.
 
     'custom' => [
         'email' => [
@@ -788,10 +780,14 @@ The field under validation must match the given regular expression.
 
 The field under validation must be present in the input data and not empty. A field is considered "empty" if one of the following conditions are true:
 
+<div class="content-list" markdown="1">
+
 - The value is `null`.
 - The value is an empty string.
 - The value is an empty array or empty `Countable` object.
 - The value is an uploaded file with no path.
+
+</div>
 
 <a name="rule-required-if"></a>
 #### required_if:_anotherfield_,_value_,...
@@ -846,7 +842,7 @@ The field under validation must be a valid timezone identifier according to the 
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
-The field under validation must be unique on a given database table. If the `column` option is not specified, the field name will be used.
+The field under validation must be unique in a given database table. If the `column` option is not specified, the field name will be used.
 
 **Specifying A Custom Column Name:**
 
@@ -854,13 +850,13 @@ The field under validation must be unique on a given database table. If the `col
 
 **Custom Database Connection**
 
-Occasionally, you may need to set a custom connection for database queries made by the Validator. As seen above, setting `unique:users` as a validation rule will use the default database connection to query the database. To override this, specify the connection followed by the table name using "dot" syntax:
+Occasionally, you may need to set a custom connection for database queries made by the Validator. As seen above, setting `unique:users` as a validation rule will use the default database connection to query the database. To override this, specify the connection and the table name using "dot" syntax:
 
     'email' => 'unique:connection.users,email_address'
 
 **Forcing A Unique Rule To Ignore A Given ID:**
 
-Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address. You only want to throw a validation error if the user provides an e-mail address that is already used by a different user. To tell the unique rule to ignore the user's ID, you may pass the ID as the third parameter:
+Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address. To tell the unique rule to ignore the user's ID, you may pass the ID as the third parameter:
 
     'email' => 'unique:users,email_address,'.$user->id
 
@@ -884,6 +880,8 @@ The field under validation must be a valid URL.
 <a name="conditionally-adding-rules"></a>
 ## Conditionally Adding Rules
 
+#### Validating When Present
+
 In some situations, you may wish to run validation checks against a field **only** if that field is present in the input array. To quickly accomplish this, add the `sometimes` rule to your rule list:
 
     $v = Validator::make($data, [
@@ -901,7 +899,7 @@ Sometimes you may wish to add validation rules based on more complex conditional
         'games' => 'required|numeric',
     ]);
 
-Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game re-sell shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
+Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game resale shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
 
     $v->sometimes('reason', 'required|max:500', function($input) {
         return $input->games >= 100;
@@ -913,7 +911,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
         return $input->games >= 100;
     });
 
-> {note} The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files.
+> {tip} The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used to access your input and files.
 
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
@@ -924,8 +922,8 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 
     namespace App\Providers;
 
-    use Validator;
     use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\Facades\Validator;
 
     class AppServiceProvider extends ServiceProvider
     {

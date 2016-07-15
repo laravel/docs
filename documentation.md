@@ -22,7 +22,7 @@
     - [Responses](/docs/{{version}}/responses)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
-- The View Layer
+- Frontend
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
     - [Compiling Assets](/docs/{{version}}/elixir)
