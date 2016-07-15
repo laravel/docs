@@ -453,8 +453,6 @@ If you need more flexibility than Elixir's `task` method can provide, you may cr
 var gulp = require('gulp');
 var shell = require('gulp-shell');
 
-var Task = Elixir.Task;
-
 Elixir.extend('speak', function(message) {
 
     new Elixir.Task('speak', function() {
