@@ -1,4 +1,4 @@
-# Laravel Elixir
+# Compiling Assets (Laravel Elixir)
 
 - [Introduction](#introduction)
 - [Installation & Setup](#installation)

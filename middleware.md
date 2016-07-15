@@ -179,7 +179,7 @@ Middleware groups may be assigned to routes and controller actions using the sam
         //
     });
 
-> {tip} Out of the box, the `web` middleware group is automatically applied to your `routes.php` file by the `RouteServiceProvider`.
+> {tip} Out of the box, the `web` middleware group is automatically applied to your `routes/web.php` file by the `RouteServiceProvider`.
 
 <a name="middleware-parameters"></a>
 ## Middleware Parameters

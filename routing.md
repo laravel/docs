@@ -17,15 +17,17 @@
 <a name="basic-routing"></a>
 ## Basic Routing
 
-All Laravel routes are defined in the `app/Http/routes.php` file, which is automatically loaded by the framework. The most basic Laravel routes simply accept a URI and a `Closure`, providing a very simple and expressive method of defining routes:
+The most basic Laravel routes simply accept a URI and a `Closure`, providing a very simple and expressive method of defining routes:
 
     Route::get('foo', function () {
         return 'Hello World';
     });
 
-#### The Default Routes File
+#### The Default Route Files
 
-The default `routes.php` file is loaded by the `RouteServiceProvider` and is automatically included in the `web` middleware group, which provides access to session state and CSRF protection. Most of the routes for your application will be defined within this file.
+All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by the framework. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection. The routes in `routes/api.php` are stateless and are assigned the `api` middleware group.
+
+For most applications, you will begin by defining routes in your `routes/web.php` file.
 
 #### Available Router Methods
 
@@ -141,7 +143,7 @@ Another common use-case for route groups is assigning the same PHP namespace to 
         // Controllers Within The "App\Http\Controllers\Admin" Namespace
     });
 
-Remember, by default, the `RouteServiceProvider` includes your `routes.php` file within a namespace group, allowing you to register controller routes without specifying the full `App\Http\Controllers` namespace prefix. So, you only need to specify the portion of the namespace that comes after the base `App\Http\Controllers` namespace.
+Remember, by default, the `RouteServiceProvider` includes your route files within a namespace group, allowing you to register controller routes without specifying the full `App\Http\Controllers` namespace prefix. So, you only need to specify the portion of the namespace that comes after the base `App\Http\Controllers` namespace.
 
 <a name="route-group-sub-domain-routing"></a>
 ### Sub-Domain Routing
