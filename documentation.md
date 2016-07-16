@@ -29,6 +29,7 @@
     - [Localization](/docs/{{version}}/localization)
 - Security
     - [Authentication](/docs/{{version}}/authentication)
+    - [Resetting Passwords](/docs/{{version}}/passwords)
     - [Authorization](/docs/{{version}}/authorization)
     - [CSRF Protection](/docs/{{version}}/csrf)
     - [Encryption](/docs/{{version}}/encryption)
