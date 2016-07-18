@@ -11,6 +11,8 @@
     - [Sub-Domain Routing](#route-group-sub-domain-routing)
     - [Route Prefixes](#route-group-prefixes)
 - [Route Model Binding](#route-model-binding)
+    - [Implicit Binding](#implicit-binding)
+    - [Explicit Binding](#explicit-binding)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing The Current Route](#accessing-the-current-route)
 
@@ -172,6 +174,7 @@ The `prefix` group attribute may be used to prefix each route in the group with 
 
 When injecting a model ID to a route or controller action, you will often query to retrieve the model that corresponds to that ID. Laravel route model binding provides a convenient way to automatically inject the model instances directly into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID.
 
+<a name="implicit-binding"></a>
 ### Implicit Binding
 
 Laravel automatically resolves Eloquent models defined in routes or controller actions whose variable names match a route segment name. For example:
@@ -196,6 +199,7 @@ If you would like an implicit model binding to use a database column other than 
         return 'slug';
     }
 
+<a name="explicit-binding"></a>
 ### Explicit Binding
 
 To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings in the `boot` method of the `RouteServiceProvider` class:
