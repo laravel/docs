@@ -1,10 +1,9 @@
 # Authorization
 
 - [Introduction](#introduction)
-- [Using Gates](#using-gates)
+- [Gates](#gates)
     - [Writing Gates](#writing-gates)
     - [Authorizing Actions](#authorizing-actions-via-gates)
-    - [Gates Vs. Policies](#gates-vs-policies)
 - [Creating Policies](#creating-policies)
     - [Generating Policies](#generating-policies)
 	- [Registering Policies](#registering-policies)
@@ -21,71 +20,47 @@
 <a name="introduction"></a>
 ## Introduction
 
-In addition to providing [authentication](/docs/{{version}}/authentication) services out of the box, Laravel also provides a simple way to authorize user actions against a given resource. Like authentication, Laravel's approach to authorization is simple. There are two primary ways of authorizing actions in Laravel: gates and policies.
+In addition to providing [authentication](/docs/{{version}}/authentication) services out of the box, Laravel also provides a simple way to authorize user actions against a given resource. Like authentication, Laravel's approach to authorization is simple, and there are two primary ways of authorizing actions: gates and policies.
 
-Think of gates and policies like routes and controllers. Gates provide a simple, Closure based approach to authorization while policies, like controllers, group their logic around a particular model or resource. We'll explore gates first and then examine policies; however, do not see gates and policies as mutually exclusive as most applications typically make use of both when implementing authorization.
+Think of gates and policies like routes and controllers. Gates provide a simple, Closure based approach to authorization while policies, like controllers, group their logic around a particular model or resource. We'll explore gates first and then examine policies.
 
-<a name="using-gates"></a>
-## Using Gates
+It is important to not view gates and policies as mutually exclusive for your application. Most applications will most likely contain a mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions which are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource.
+
+<a name="gates"></a>
+## Gates
 
 ### Writing Gates
 
-In Laravel, the quickest way to get started with authorization is by using "gates". Gates are Closures that determine if a user is authorized to perform a given action and are typically defined in the `App\Providers\AuthServiceProvider` class using the `Gate` facade.
+Gates are Closures that determine if a user is authorized to perform a given action and are typically defined in the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument, and may optionally receive additional arguments such as a relevant Eloquent model:
 
-Gates always receive a user instance as their first argument, and may optionally receive additional arguments such as a relevant Eloquent model:
-
-    <?php
-
-    namespace App\Providers;
-
-    use Illuminate\Support\Facades\Gate;
-    use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-
-    class AuthServiceProvider extends ServiceProvider
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
     {
-        /**
-         * The policy mappings for the application.
-         *
-         * @var array
-         */
-        protected $policies = [
-            'App\Model' => 'App\Policies\ModelPolicy',
-        ];
+        $this->registerPolicies();
 
-        /**
-         * Register any authentication / authorization services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            $this->registerPolicies();
-
-            Gate::define('update-post', function ($user, $post) {
-                return $user->id = $post->user_id;
-            });
-        }
+        Gate::define('update-post', function ($user, $post) {
+            return $user->id = $post->user_id;
+        });
     }
 
 <a name="authorizing-actions-via-gates"></a>
 ### Authorizing Actions
 
-To authorize an action using a gate, you may use the `allows` method. Note that you are not required to pass the currently authenticated user to the method. Laravel will automatically take care of passing the user into the gate:
+To authorize an action using gates, you should use the `allows` method. Note that you are not required to pass the currently authenticated user to the `allows` method. Laravel will automatically take care of passing the user into the gate Closure:
 
     if (Gate::allows('update-post', $post) {
         // The current user can update the post...
     });
 
-If you would like to determine if a given user is authorized to perform an action, you may use the `forUser` method on the `Gate` facade:
+If you would like to determine if a particular user is authorized to perform an action, you may use the `forUser` method on the `Gate` facade:
 
     if (Gate::forUser($user)->allows('update-post', $post)) {
         // The user can update the post...
     }
-
-<a name="gates-vs-policies"></a>
-### Gates Vs. Policies
-
-It is important to not view gates and policies as mutually exclusive for your application. Most applications will most likely contain a mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions which are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource.
 
 <a name="creating-policies"></a>
 ## Creating Policies
@@ -93,7 +68,9 @@ It is important to not view gates and policies as mutually exclusive for your ap
 <a name="generating-policies"></a>
 ### Generating Policies
 
-Policies are classes that organize authorization logic around on the resource they authorize. For example, if your application is a blog, you will probably have a `Post` model and a corresponding `PostPolicy` to authorize user actions such as creating or updating posts. You may generate a policy using the `make:policy` [artisan command](/docs/{{version}}/artisan). The generated policy will be placed in the `app/Policies` directory:
+Policies are classes that organize authorization logic around a particular model or resource. For example, if your application is a blog, you may have a `Post` model and a corresponding `PostPolicy` to authorize user actions such as creating or updating posts.
+
+You may generate a policy using the `make:policy` [artisan command](/docs/{{version}}/artisan). The generated policy will be placed in the `app/Policies` directory:
 
 	php artisan make:policy PostPolicy
 
@@ -101,7 +78,7 @@ The `make:policy` command will generate an empty policy class. If you would like
 
     php artisan make:policy PostPolicy --model=Post
 
-> {tip} All policies are resolved via the Laravel [service container](/docs/{{version}}/container), meaning you may type-hint any needed dependencies in the policy's constructor and they will be automatically injected.
+> {tip} All policies are resolved via the Laravel [service container](/docs/{{version}}/container), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected.
 
 <a name="registering-policies"></a>
 ### Registering Policies
@@ -147,9 +124,9 @@ Once the policy exists, it needs to be registered. The `AuthServiceProvider` inc
 <a name="policy-methods"></a>
 ### Policy Methods
 
-Once the policy has been registered, you may add methods for each action it authorizes. For example, let's define an `update` method on our `PostPolicy` which determines if the given `User` can update a given `Post` instance.
+Once the policy has been registered, you may add methods for each action it authorizes. For example, let's define an `update` method on our `PostPolicy` which determines if a given `User` can update a given `Post` instance.
 
-The `update` method will receive the currently authenticated user and a `Post` instance as its arguments. This method should return `true` or `false` indicating whether the given user is authorized to update the given `Post`. So, for this example, let's verify that the user's `id` matches the `user_id` on the post:
+The `update` method will receive a `User` and a `Post` instance as its arguments, and should return `true` or `false` indicating whether the user is authorized to update the given `Post`. So, for this example, let's verify that the user's `id` matches the `user_id` on the post:
 
 	<?php
 
@@ -240,20 +217,22 @@ For certain users, you may wish to authorize all actions within a given policy. 
 <a name="via-the-user-model"></a>
 ### Via The User Model
 
-The `User` model that is included with your Laravel application includes two helpful methods for authorizing actions: `can` and `cant`. The `can` method receives the action you wish to authorize as well as the relevant model. For example, let's determine if a user is authorized to update a given `Post` model:
+The `User` model that is included with your Laravel application includes two helpful methods for authorizing actions: `can` and `cant`. The `can` method receives the action you wish to authorize and the relevant model. For example, let's determine if a user is authorized to update a given `Post` model:
 
 	if ($user->can('update', $post)) {
 		//
 	}
 
-If a [policy is registered](#registering-policies) for the given model, the `can` method will automatically call the appropriate policy and return the boolean result. If no policy is registered for the model, the `can` method will attempt to call the Closure based Gate matching the given name.
+If a [policy is registered](#registering-policies) for the given model, the `can` method will automatically call the appropriate policy and return the boolean result. If no policy is registered for the model, the `can` method will attempt to call the Closure based Gate matching the given action name.
 
-Remember, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the `can` method. The given class name will be used to determine which policy to use when authorizing the action:
+#### Actions That Don't Require Models
+
+Remember, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the `can` method. The class name will be used to determine which policy to use when authorizing the action:
 
     use App\Post;
 
     if ($user->can('create', Post::class)) {
-        //
+        // Executes the "createAny" method on the relevant policy...
     }
 
 <a name="via-middleware"></a>
@@ -269,11 +248,15 @@ Laravel includes a middleware that can authorize actions before the incoming req
 
 In this example, we're passing the `can` middleware two arguments. The first is the name of the action we wish to authorize and the second is the route parameter we wish to pass to the policy method. In this case, since we are using [implicit model binding](/docs/{{version}}/routing#implicit-binding), a `Post` model will be passed to the policy method. If the user is not authorized to perform the given action, a HTTP response with a `403` status code will be generated by the middleware.
 
-Remember, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the middleware. The given class name will be used to determine which policy to use when authorizing the action:
+#### Actions That Don't Require Models
+
+Again, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the middleware. The class name will be used to determine which policy to use when authorizing the action:
 
     Route::post('/post', function () {
         // The current user may create posts...
     })->middleware('can:create,App\Post');
+
+As previously noted, policy methods which do not examine a particular model instance are always suffixed with `Any`. So, in the example above, the `createAny` method on the `PostPolicy` will be used to authorize the action.
 
 <a name="via-controller-helpers"></a>
 ### Via Controller Helpers
@@ -305,7 +288,9 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
         }
     }
 
-As previously discussed, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the `authorize` method. The given class name will be used to determine which policy to use when authorizing the action:
+#### Actions That Don't Require Models
+
+As previously discussed, some actions like `create` may not require a model instance. In these situations, you may pass a class name to the `authorize` method. The class name will be used to determine which policy to use when authorizing the action:
 
     /**
      * Create a new blog post.
@@ -319,6 +304,8 @@ As previously discussed, some actions like `create` may not require a model inst
 
         // The current user can create blog posts...
     }
+
+As previously noted, policy methods which do not examine a particular model instance are always suffixed with `Any`. So, in the example above, the `createAny` method on the `PostPolicy` will be used to authorize the action.
 
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
@@ -335,8 +322,12 @@ The `@can` directive is primarily a convenient short-cut for writing `@if` state
         <!-- The Current User Can Update The Post -->
     @endif
 
+#### Actions That Don't Require Models
+
 Like most of the other authorization methods, you may pass a class name to the `@can` directive if the action does not require a model instance:
 
     @can('create', Post::class)
         <!-- The Current User Can Create Posts -->
     @endcan
+
+As previously noted, policy methods which do not examine a particular model instance are always suffixed with `Any`. So, in the example above, the `createAny` method on the `PostPolicy` will be used to authorize the action.
