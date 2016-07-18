@@ -10,7 +10,6 @@
     - [Input Arrays](#input-arrays)
     - [Input Descriptions](#input-descriptions)
 - [Command I/O](#command-io)
-    - [Defining Input Expectations](#defining-input-expectations)
     - [Retrieving Input](#retrieving-input)
     - [Prompting For Input](#prompting-for-input)
     - [Writing Output](#writing-output)
