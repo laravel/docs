@@ -11,6 +11,7 @@
     - [Subscription Taxes](#subscription-taxes)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
     - [Resuming Subscriptions](#resuming-subscriptions)
+    - [Updating Credit Cards](#updating-credit-cards)
 - [Subscription Trials](#subscription-trials)
     - [With Credit Card Up Front](#with-credit-card-up-front)
     - [Without Credit Card Up Front](#without-credit-card-up-front)
@@ -321,6 +322,10 @@ You may determine if a user has cancelled their subscription but are still on th
         //
     }
 
+If you wish to cancel a subscription immediately, call the `cancelNow` method on the user's subscription:
+
+    $user->subscription('main')->cancelNow();
+
 <a name="resuming-subscriptions"></a>
 ### Resuming Subscriptions
 
@@ -329,6 +334,13 @@ If a user has cancelled their subscription and you wish to resume it, use the `r
     $user->subscription('main')->resume();
 
 If the user cancels a subscription and then resumes that subscription before the subscription has fully expired, they will not be billed immediately. Instead, their subscription will simply be re-activated, and they will be billed on the original billing cycle.
+
+<a name="updating-credit-cards"></a>
+### Updating Credit Cards
+
+The `updateCard` method may be used to update a customer's credit card information. This method accepts a Stripe token. This method will also assign the new credit as the default billing source:
+
+    $user->updateCard($creditCardToken);
 
 <a name="subscription-trials"></a>
 ## Subscription Trials
@@ -532,6 +544,9 @@ The invoice will be charged immediately against the user's credit card. The `inv
 You may easily retrieve an array of a billable model's invoices using the `invoices` method:
 
     $invoices = $user->invoices();
+
+    // Include pending invoices in the results...
+    $invoices = $user->invoicesIncludingPending();
 
 When listing the invoices for the customer, you may use the invoice's helper methods to display the relevant invoice information. For example, you may wish to list every invoice in a table, allowing the user to easily download any of them:
 
