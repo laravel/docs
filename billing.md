@@ -11,7 +11,7 @@
     - [Subscription Taxes](#subscription-taxes)
     - [Cancelling Subscriptions](#cancelling-subscriptions)
     - [Resuming Subscriptions](#resuming-subscriptions)
-    - [Updating Credit Cards] (#updating-credit-cards)
+    - [Updating Credit Cards](#updating-credit-cards)
 - [Subscription Trials](#subscription-trials)
     - [With Credit Card Up Front](#with-credit-card-up-front)
     - [Without Credit Card Up Front](#without-credit-card-up-front)
@@ -325,7 +325,7 @@ You may determine if a user has cancelled their subscription but are still on th
 If you wish to cancel a subscription immediately, call the `cancelNow` method on the user's subscription:
 
     $user->subscription('main')->cancelNow();
-    
+
 <a name="resuming-subscriptions"></a>
 ### Resuming Subscriptions
 
@@ -338,7 +338,7 @@ If the user cancels a subscription and then resumes that subscription before the
 <a name="updating-credit-cards"></a>
 ### Updating Credit Cards
 
-If you would like to update a credit card's information, use the `updateCard` method.
+The `updateCard` method may be used to update a customer's credit card information. This method accepts a Stripe token. This method will also assign the new credit as the default billing source:
 
     $user->updateCard($creditCardToken);
 
@@ -545,7 +545,8 @@ You may easily retrieve an array of a billable model's invoices using the `invoi
 
     $invoices = $user->invoices();
 
-To list pending invoices as well, simply pass in `true` as the argument to the method `invoices`.
+    // Include pending invoices in the results...
+    $invoices = $user->invoicesIncludingPending();
 
 When listing the invoices for the customer, you may use the invoice's helper methods to display the relevant invoice information. For example, you may wish to list every invoice in a table, allowing the user to easily download any of them:
 
