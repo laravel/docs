@@ -7,6 +7,7 @@
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
+    - [Errors & Logging](/docs/{{version}}/errors)
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
 - Core Concepts
@@ -39,7 +40,6 @@
     - [Billing](/docs/{{version}}/billing)
     - [Cache](/docs/{{version}}/cache)
     - [Collections](/docs/{{version}}/collections)
-    - [Errors & Logging](/docs/{{version}}/errors)
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
     - [Helpers](/docs/{{version}}/helpers)
