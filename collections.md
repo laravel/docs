@@ -1,7 +1,7 @@
 # Collections
 
 - [Introduction](#introduction)
-- [Creating Collections](#creating-collections)
+    - [Creating Collections](#creating-collections)
 - [Available Methods](#available-methods)
 
 <a name="introduction"></a>
@@ -17,23 +17,21 @@ The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper 
     });
 
 
-As you can see, the `Collection` class allows you to chain its methods to perform fluent mapping and reducing of the underlying array. In general, every `Collection` method returns an entirely new `Collection` instance.
+As you can see, the `Collection` class allows you to chain its methods to perform fluent mapping and reducing of the underlying array. In general, collections are immutable, meaning every `Collection` method returns an entirely new `Collection` instance.
 
 <a name="creating-collections"></a>
-## Creating Collections
+### Creating Collections
 
 As mentioned above, the `collect` helper returns a new `Illuminate\Support\Collection` instance for the given array. So, creating a collection is as simple as:
 
     $collection = collect([1, 2, 3]);
 
-By default, collections of [Eloquent](/docs/{{version}}/eloquent) models are always returned as `Collection` instances; however, feel free to use the `Collection` class wherever it is convenient for your application.
+> {tip} The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
 
 <a name="available-methods"></a>
 ## Available Methods
 
-For the remainder of this documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained for fluently manipulating the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary.
-
-You may select any method from this table to see an example of its usage:
+For the remainder of this documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulating the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
 
 <style>
     #collection-method-list > p {
@@ -131,7 +129,7 @@ You may select any method from this table to see an example of its usage:
 <a name="method-all"></a>
 #### `all()` {#collection-method .first-collection-method}
 
-The `all` method simply returns the underlying array represented by the collection:
+The `all` method returns the underlying array represented by the collection:
 
     collect([1, 2, 3])->all();
 
@@ -183,7 +181,7 @@ This method is especially useful in [views](/docs/{{version}}/views) when workin
 <a name="method-collapse"></a>
 #### `collapse()` {#collection-method}
 
-The `collapse` method collapses a collection of arrays into a flat collection:
+The `collapse` method collapses a collection of arrays into a single, flat collection:
 
     $collection = collect([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
@@ -256,7 +254,7 @@ The `count` method returns the total number of items in the collection:
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
 
-The `diff` method compares the collection against another collection or a plain PHP `array` based on its values:
+The `diff` method compares the collection against another collection or a plain PHP `array` based on its values. This method will return the values in the original collection that are not present in the given collection:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -269,7 +267,7 @@ The `diff` method compares the collection against another collection or a plain 
 <a name="method-diffkeys"></a>
 #### `diffKeys()` {#collection-method}
 
-The `diffKeys` method compares the collection against another collection or a plain PHP `array` based on its keys:
+The `diffKeys` method compares the collection against another collection or a plain PHP `array` based on its keys. This method will return the key / value pairs in the original collection that are not present in the given collection:
 
     $collection = collect([
         'one' => 10,
@@ -293,13 +291,13 @@ The `diffKeys` method compares the collection against another collection or a pl
 <a name="method-each"></a>
 #### `each()` {#collection-method}
 
-The `each` method iterates over the items in the collection and passes each item to a given callback:
+The `each` method iterates over the items in the collection and passes each item to a callback:
 
     $collection = $collection->each(function ($item, $key) {
         //
     });
 
-Return `false` from your callback to break out of the loop:
+If you would like to stop iterating through the items, you may return `false` from your callback:
 
     $collection = $collection->each(function ($item, $key) {
         if (/* some condition */) {
@@ -318,7 +316,7 @@ The `every` method creates a new collection consisting of every n-th element:
 
     // ['a', 'e']
 
-You may optionally pass offset as the second argument:
+You may optionally pass an offset as the second argument:
 
     $collection->every(4, 1);
 
@@ -329,20 +327,20 @@ You may optionally pass offset as the second argument:
 
 The `except` method returns all items in the collection except for those with the specified keys:
 
-    $collection = collect(['product_id' => 1, 'name' => 'Desk', 'price' => 100, 'discount' => false]);
+    $collection = collect(['product_id' => 1, 'price' => 100, 'discount' => false]);
 
     $filtered = $collection->except(['price', 'discount']);
 
     $filtered->all();
 
-    // ['product_id' => 1, 'name' => 'Desk']
+    // ['product_id' => 1]
 
 For the inverse of `except`, see the [only](#method-only) method.
 
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
 
-The `filter` method filters the collection by a given callback, keeping only those items that pass a given truth test:
+The `filter` method filters the collection using the given callback, keeping only those items that pass a given truth test:
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -427,7 +425,7 @@ You may optionally pass the function a "depth" argument:
         ]
     */
 
-Here, calling `flatten` without providing the depth would have also flattened the nested arrays, resulting in `['iPhone 6S', 'Apple', 'Galaxy S7', 'Samsung']`. Providing a depth allows you to restrict the levels of nested arrays that will be flattened.
+In this example, calling `flatten` without providing the depth would have also flattened the nested arrays, resulting in `['iPhone 6S', 'Apple', 'Galaxy S7', 'Samsung']`. Providing a depth allows you to restrict the levels of nested arrays that will be flattened.
 
 <a name="method-flip"></a>
 #### `flip()` {#collection-method}
@@ -460,7 +458,7 @@ The `forget` method removes an item from the collection by its key:
 <a name="method-forpage"></a>
 #### `forPage()` {#collection-method}
 
-The `forPage` method returns a new collection containing the items that would be present on a given page number:
+The `forPage` method returns a new collection containing the items that would be present on a given page number. The method accepts the page number as its first argument and the number of items to show per page as its second argument:
 
     $collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
@@ -469,8 +467,6 @@ The `forPage` method returns a new collection containing the items that would be
     $chunk->all();
 
     // [4, 5, 6]
-
-The method requires the page number and the number of items to show per page, respectively.
 
 <a name="method-get"></a>
 #### `get()` {#collection-method}
@@ -560,9 +556,7 @@ The `has` method determines if a given key exists in the collection:
 <a name="method-implode"></a>
 #### `implode()` {#collection-method}
 
-The `implode` method joins the items in a collection. Its arguments depend on the type of items in the collection.
-
-If the collection contains arrays or objects, you should pass the key of the attributes you wish to join, and the "glue" string you wish to place between the values:
+The `implode` method joins the items in a collection. Its arguments depend on the type of items in the collection. If the collection contains arrays or objects, you should pass the key of the attributes you wish to join, and the "glue" string you wish to place between the values:
 
     $collection = collect([
         ['account_id' => 1, 'product' => 'Desk'],
@@ -582,7 +576,7 @@ If the collection contains simple strings or numeric values, simply pass the "gl
 <a name="method-intersect"></a>
 #### `intersect()` {#collection-method}
 
-The `intersect` method removes any values that are not present in the given `array` or collection:
+The `intersect` method removes any values from the original collection that are not present in the given `array` or collection. The resulting collection will preserve the original collection's keys:
 
     $collection = collect(['Desk', 'Sofa', 'Chair']);
 
@@ -591,8 +585,6 @@ The `intersect` method removes any values that are not present in the given `arr
     $intersect->all();
 
     // [0 => 'Desk', 2 => 'Chair']
-
-As you can see, the resulting collection will preserve the original collection's keys.
 
 <a name="method-isempty"></a>
 #### `isEmpty()` {#collection-method}
@@ -606,7 +598,7 @@ The `isEmpty` method returns `true` if the collection is empty; otherwise, `fals
 <a name="method-keyby"></a>
 #### `keyBy()` {#collection-method}
 
-Keys the collection by the given key:
+The `keyBy` method keys the collection by the given key. If multiple items have the same key, only the last one will appear in the new collection:
 
     $collection = collect([
         ['product_id' => 'prod-100', 'name' => 'desk'],
@@ -624,9 +616,7 @@ Keys the collection by the given key:
         ]
     */
 
-If multiple items have the same key, only the last one will appear in the new collection.
-
-You may also pass your own callback, which should return the value to key the collection by:
+You may also pass a callback to the method. The callback should return the value to key the collection by:
 
     $keyed = $collection->keyBy(function ($item) {
         return strtoupper($item['product_id']);
@@ -708,15 +698,15 @@ The `max` method return the maximum value of a given key:
 <a name="method-merge"></a>
 #### `merge()` {#collection-method}
 
-The `merge` method merges the given array into the collection. Any string key in the array matching a string key in the collection will overwrite the value in the collection:
+The `merge` method merges the given array into the original collection. If a string key in the given array matches a string key in the original collection, the given array's value will overwrite the value in the original collection:
 
-    $collection = collect(['product_id' => 1, 'name' => 'Desk']);
+    $collection = collect(['product_id' => 1, 'price' => 100]);
 
-    $merged = $collection->merge(['price' => 100, 'discount' => false]);
+    $merged = $collection->merge(['price' => 200, 'discount' => false]);
 
     $merged->all();
 
-    // ['product_id' => 1, 'name' => 'Desk', 'price' => 100, 'discount' => false]
+    // ['product_id' => 1, price' => 200, 'discount' => false]
 
 If the given array's keys are numeric, the values will be appended to the end of the collection:
 
@@ -759,7 +749,7 @@ For the inverse of `only`, see the [except](#method-except) method.
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
 
-The `pluck` method retrieves all of the collection values for a given key:
+The `pluck` method retrieves all of the values for a given key:
 
     $collection = collect([
         ['product_id' => 'prod-100', 'name' => 'Desk'],
@@ -808,7 +798,7 @@ The `prepend` method adds an item to the beginning of the collection:
 
     // [0, 1, 2, 3, 4, 5]
 
-You can optionally pass a second argument to set the key of the prepended item:
+You may also pass a second argument to set the key of the prepended item:
 
     $collection = collect(['one' => 1, 'two', => 2]);
 
@@ -870,7 +860,7 @@ The `random` method returns a random item from the collection:
 
     // 4 - (retrieved randomly)
 
-You may optionally pass an integer to `random`. If that integer is more than `1`, a collection of items is returned:
+You may optionally pass an integer to `random` to specify how many items you would like to randomly retrieve. If that integer is more than `1`, a collection of items is returned:
 
     $random = $collection->random(3);
 
@@ -902,7 +892,7 @@ The value for `$carry` on the first iteration is `null`; however, you may specif
 <a name="method-reject"></a>
 #### `reject()` {#collection-method}
 
-The `reject` method filters the collection using the given callback. The callback should return `true` for any items it wishes to remove from the resulting collection:
+The `reject` method filters the collection using the given callback. The callback should return `true` if the item should be removed from the resulting collection:
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -940,7 +930,7 @@ The `search` method searches the collection for the given value and returns its 
 
     // 1
 
-The search is done using a "loose" comparison. To use strict comparison, pass `true` as the second argument to the method:
+The search is done using a "loose" comparison, meaning a string with an integer value will be considered equal to an integer of the same value. To use strict comparison, pass `true` as the second argument to the method:
 
     $collection->search('4', true);
 
@@ -1008,7 +998,7 @@ The returned slice will have new, numerically indexed keys. If you wish to prese
 <a name="method-sort"></a>
 #### `sort()` {#collection-method}
 
-The `sort` method sorts the collection:
+The `sort` method sorts the collection. The sorted collection keeps the original array keys, so in this example we'll use the [`values`](#method-values) method to reset the keys to consecutively numbered indexes:
 
     $collection = collect([5, 3, 1, 2, 4]);
 
@@ -1018,16 +1008,14 @@ The `sort` method sorts the collection:
 
     // [1, 2, 3, 4, 5]
 
-The sorted collection keeps the original array keys. In this example we used the [`values`](#method-values) method to reset the keys to consecutively numbered indexes.
-
-For sorting a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.
-
 If your sorting needs are more advanced, you may pass a callback to `sort` with your own algorithm. Refer to the PHP documentation on [`usort`](http://php.net/manual/en/function.usort.php#refsect1-function.usort-parameters), which is what the collection's `sort` method calls under the hood.
+
+> {tip} If you need to sort a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.
 
 <a name="method-sortby"></a>
 #### `sortBy()` {#collection-method}
 
-The `sortBy` method sorts the collection by the given key:
+The `sortBy` method sorts the collection by the given key. The sorted collection keeps the original array keys, so in this example we'll use the [`values`](#method-values) method to reset the keys to consecutively numbered indexes:
 
     $collection = collect([
         ['name' => 'Desk', 'price' => 200],
@@ -1046,8 +1034,6 @@ The `sortBy` method sorts the collection by the given key:
             ['name' => 'Desk', 'price' => 200],
         ]
     */
-
-The sorted collection keeps the original array keys. In this example we used the [`values`](#method-values) method to reset the keys to consecutively numbered indexes.
 
 You can also pass your own callback to determine how to sort the collection values:
 
@@ -1193,7 +1179,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
         ]
     */
 
-> {note} `toArray` also converts all of its nested objects to an array. If you want to get the underlying array as is, use the [`all`](#method-all) method instead.
+> {note} `toArray` also converts all of the collection's nested objects to an array. If you want to get the raw underlying array, use the [`all`](#method-all) method instead.
 
 <a name="method-tojson"></a>
 #### `toJson()` {#collection-method}
@@ -1226,7 +1212,7 @@ The `transform` method iterates over the collection and calls the given callback
 <a name="method-union"></a>
 #### `union()` {#collection-method}
 
-The `union` method adds the given array to the collection. If the given array contains keys that are already in the collection, the collection's values will be preferred:
+The `union` method adds the given array to the collection. If the given array contains keys that are already in the original collection, the original collection's values will be preferred:
 
     $collection = collect([1 => ['a'], 2 => ['b']]);
 
@@ -1239,7 +1225,7 @@ The `union` method adds the given array to the collection. If the given array co
 <a name="method-unique"></a>
 #### `unique()` {#collection-method}
 
-The `unique` method returns all of the unique items in the collection:
+The `unique` method returns all of the unique items in the collection. The returned collection keeps the original array keys, so in this example we'll use the [`values`](#method-values) method to reset the keys to consecutively numbered indexes:
 
     $collection = collect([1, 1, 2, 2, 3, 4, 2]);
 
@@ -1248,8 +1234,6 @@ The `unique` method returns all of the unique items in the collection:
     $unique->values()->all();
 
     // [1, 2, 3, 4]
-
-The returned collection keeps the original array keys. In this example we used the [`values`](#method-values) method to reset the keys to consecutively numbered indexes.
 
 When dealing with nested arrays or objects, you may specify the key used to determine uniqueness:
 
@@ -1372,7 +1356,7 @@ This method has the same signature as the [`whereIn`](#method-wherein) method; h
 <a name="method-zip"></a>
 #### `zip()` {#collection-method}
 
-The `zip` method merges together the values of the given array with the values of the collection at the corresponding index:
+The `zip` method merges together the values of the given array with the values of the original collection at the corresponding index:
 
     $collection = collect(['Chair', 'Desk']);
 
