@@ -6,7 +6,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel includes a variety of "helper" PHP functions. Many of these functions are used by the framework itself; however, you are free to use them in your own applications if you find them convenient.
+Laravel includes a variety of global "helper" PHP functions. Many of these functions are used by the framework itself; however, you are free to use them in your own applications if you find them convenient.
 
 <a name="available-methods"></a>
 ## Available Methods
@@ -122,7 +122,6 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [session](#method-session)
 [value](#method-value)
 [view](#method-view)
-[with](#method-with)
 
 </div>
 
@@ -198,7 +197,7 @@ The `array_first` function returns the first element of an array passing a given
 
     $array = [100, 200, 300];
 
-    $value = array_first($array, function ($key, $value) {
+    $value = array_first($array, function ($value, $key) {
         return $value >= 150;
     });
 
@@ -385,7 +384,7 @@ The `array_where` function filters the array using the given Closure:
 
     $array = [100, '200', 300, '400', 500];
 
-    $array = array_where($array, function ($key, $value) {
+    $array = array_where($array, function ($value, $key) {
         return is_string($value);
     });
 
@@ -419,22 +418,18 @@ The `last` function returns the last element in the given array:
 <a name="method-app-path"></a>
 #### `app_path()` {#collection-method}
 
-The `app_path` function returns the fully qualified path to the `app` directory:
+The `app_path` function returns the fully qualified path to the `app` directory. You may also use the `app_path` function to generate a fully qualified path to a file relative to the application directory:
 
     $path = app_path();
-
-You may also use the `app_path` function to generate a fully qualified path to a given file relative to the application directory:
 
     $path = app_path('Http/Controllers/Controller.php');
 
 <a name="method-base-path"></a>
 #### `base_path()` {#collection-method}
 
-The `base_path` function returns the fully qualified path to the project root:
+The `base_path` function returns the fully qualified path to the project root. You may also use the `base_path` function to generate a fully qualified path to a given file relative to the application directory:
 
     $path = base_path();
-
-You may also use the `base_path` function to generate a fully qualified path to a given file relative to the application directory:
 
     $path = base_path('vendor/bin');
 
@@ -455,7 +450,7 @@ The `database_path` function returns the fully qualified path to the application
 <a name="method-elixir"></a>
 #### `elixir()` {#collection-method}
 
-The `elixir` function gets the path to the versioned [Elixir](/docs/{{version}}/elixir) file:
+The `elixir` function gets the path to a [versioned Elixir file](/docs/{{version}}/elixir):
 
     elixir($file);
 
@@ -469,25 +464,21 @@ The `public_path` function returns the fully qualified path to the `public` dire
 <a name="method-resource-path"></a>
 #### `resource_path()` {#collection-method}
 
-The `resource_path` function returns the fully qualified path to the `resources` directory:
+The `resource_path` function returns the fully qualified path to the `resources` directory. You may also use the `resource_path` function to generate a fully qualified path to a given file relative to the storage directory:
 
     $path = resource_path();
 
-You may also use the `resource_path` function to generate a fully qualified path to a given file relative to the storage directory:
-
     $path = resource_path('assets/sass/app.scss');
-    
+
 <a name="method-storage-path"></a>
 #### `storage_path()` {#collection-method}
 
-The `storage_path` function returns the fully qualified path to the `storage` directory:
+The `storage_path` function returns the fully qualified path to the `storage` directory. You may also use the `storage_path` function to generate a fully qualified path to a given file relative to the storage directory:
 
     $path = storage_path();
 
-You may also use the `storage_path` function to generate a fully qualified path to a given file relative to the storage directory:
-
     $path = storage_path('app/file.txt');
-    
+
 <a name="strings"></a>
 ## Strings
 
@@ -611,7 +602,7 @@ You may provide an integer as a second argument to the function to retrieve the 
 <a name="method-str-random"></a>
 #### `str_random()` {#collection-method}
 
-The `str_random` function generates a random string of the specified length:
+The `str_random` function generates a random string of the specified length. This function uses PHP's `random_bytes` function:
 
     $string = str_random(40);
 
@@ -737,7 +728,7 @@ The `bcrypt` function hashes the given value using Bcrypt. You may use it as an 
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
 
-The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the supplied items:
+The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the given array:
 
     $collection = collect(['taylor', 'abigail']);
 
@@ -831,9 +822,11 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an o
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
 
-The `redirect` function returns an instance of the redirector to do [redirects](/docs/{{version}}/responses#redirects):
+The `redirect` function returns a redirect HTTP response, or returns the redirector instance if called with no arguments:
 
     return redirect('/home');
+
+    return redirect()->route('route.name');
 
 <a name="method-request"></a>
 #### `request()` {#collection-method}
@@ -856,7 +849,7 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 <a name="method-session"></a>
 #### `session()` {#collection-method}
 
-The `session` function may be used to get / set a session value:
+The `session` function may be used to get or set session values:
 
     $value = session('key');
 
@@ -883,10 +876,3 @@ The `value` function's behavior will simply return the value it is given. Howeve
 The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 
     return view('auth.login');
-
-<a name="method-with"></a>
-#### `with()` {#collection-method}
-
-The `with` function returns the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
-
-    $value = with(new Foo)->work();
