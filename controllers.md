@@ -23,7 +23,7 @@ Instead of defining all of your request handling logic as Closures in route file
 ## Basic Controllers
 
 <a name="defining-controllers"></a>
-#### Defining Controllers
+### Defining Controllers
 
 Below is an example of a basic controller class. Note that the controller extends the base controller class included with Laravel. The base class provides a few convenience methods such as the `middleware` method, which may be used to attach middleware to controller actions:
 
@@ -57,7 +57,7 @@ Now, when a request matches the specified route URI, the `show` method on the `U
 > {tip} Controllers are not **required** to extend a base class. However, you will not have access to convenience features such as the `middleware`, `validate`, and `dispatch` methods.
 
 <a name="controllers-and-namespaces"></a>
-#### Controllers & Namespaces
+### Controllers & Namespaces
 
 It is very important to note that we did not need to specify the full controller namespace when defining the controller route. Since the `RouteServiceProvider` loads your route files within a route group that contains the namespace, we only specified the portion of the class name that comes after the `App\Http\Controllers` portion of the namespace.
 
@@ -66,7 +66,7 @@ If you choose to nest your controllers deeper into the `App\Http\Controllers` di
     Route::get('foo', 'Photos\AdminController@method');
 
 <a name="single-action-controllers"></a>
-#### Single Action Controllers
+### Single Action Controllers
 
 If you would like to define a controller that only handles a single action, you may place a single `__invoke` method on the controller:
 
@@ -157,7 +157,7 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
     {{ method_field('PUT') }}
 
 <a name="restful-partial-resource-routes"></a>
-#### Partial Resource Routes
+### Partial Resource Routes
 
 When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
 
@@ -170,7 +170,7 @@ When declaring a resource route, you may specify a subset of actions the control
     ]]);
 
 <a name="restful-naming-resource-routes"></a>
-#### Naming Resource Routes
+### Naming Resource Routes
 
 By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your options:
 
@@ -179,7 +179,7 @@ By default, all resource controller actions have a route name; however, you can 
     ]]);
 
 <a name="restful-naming-resource-route-parameters"></a>
-#### Naming Resource Route Parameters
+### Naming Resource Route Parameters
 
 By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. The `parameters` array should be an associative array of resource names and parameter names:
 
@@ -192,7 +192,7 @@ By default, `Route::resource` will create the route parameters for your resource
     /user/{admin_user}
 
 <a name="restful-supplementing-resource-controllers"></a>
-#### Supplementing Resource Controllers
+### Supplementing Resource Controllers
 
 If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to `Route::resource`; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
 

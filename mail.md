@@ -1,6 +1,7 @@
 # Mail
 
 - [Introduction](#introduction)
+    - [Driver Prerequisites](#driver-prerequisites)
 - [Sending Mail](#sending-mail)
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
@@ -13,11 +14,12 @@
 
 Laravel provides a clean, simple API over the popular [SwiftMailer](http://swiftmailer.org) library. Laravel provides drivers for SMTP, Mailgun, Mandrill, SparkPost, Amazon SES, PHP's `mail` function, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
 
+<a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
-The API based drivers such as Mailgun and Mandrill are often simpler and faster than SMTP servers. All of the API drivers require that the Guzzle HTTP library be installed for your application. You may install Guzzle to your project by adding the following line to your `composer.json` file:
+The API based drivers such as Mailgun and Mandrill are often simpler and faster than SMTP servers. If possible, you should use one of these drivers. All of the API drivers require that the Guzzle HTTP library be installed for your application. You may install Guzzle to your project by adding the following line to your `composer.json` file:
 
-    "guzzlehttp/guzzle": "~5.3|~6.0"
+    composer require guzzlehttp/guzzle
 
 #### Mailgun Driver
 
@@ -46,7 +48,7 @@ To use the SparkPost driver, first install Guzzle, then set the `driver` option 
 
 #### SES Driver
 
-To use the Amazon SES driver, install the Amazon AWS SDK for PHP. You may install this library by adding the following line to your `composer.json` file's `require` section:
+To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. You may install this library by adding the following line to your `composer.json` file's `require` section:
 
     "aws/aws-sdk-php": "~3.0"
 
@@ -61,7 +63,7 @@ Next, set the `driver` option in your `config/mail.php` configuration file to `s
 <a name="sending-mail"></a>
 ## Sending Mail
 
-Laravel allows you to store your e-mail messages in [views](/docs/{{version}}/views). For example, to organize your e-mails, you could create an `emails` directory within your `resources/views` directory:
+Laravel allows you to store your e-mail messages in [views](/docs/{{version}}/views). For example, to organize your e-mails, you could create an `emails` directory within your `resources/views` directory.
 
 To send a message, use the `send` method on the `Mail` [facade](/docs/{{version}}/facades). The `send` method accepts three arguments. First, the name of a [view](/docs/{{version}}/views) that contains the e-mail message. Secondly, an array of data you wish to pass to the view. Lastly, a `Closure` callback which receives a message instance, allowing you to customize the recipients, subject, and other aspects of the mail message:
 
@@ -69,9 +71,9 @@ To send a message, use the `send` method on the `Mail` [facade](/docs/{{version}
 
     namespace App\Http\Controllers;
 
-    use Mail;
     use App\User;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Mail;
     use App\Http\Controllers\Controller;
 
     class UserController extends Controller
