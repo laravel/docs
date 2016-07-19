@@ -10,6 +10,7 @@
     - [File URLs](#file-urls)
     - [File Metadata](#file-metadata)
 - [Storing Files](#storing-files)
+    - [File Uploads](#file-uploads)
     - [File Visibility](#file-visibility)
 - [Deleting Files](#deleting-files)
 - [Directories](#directories)
@@ -164,8 +165,8 @@ The `copy` method may be used to copy an existing file to a new location on the 
 
     Storage::move('old/file1.jpg', 'new/file1.jpg');
 
-<a name="storing-file-uploads"></a>
-### Storing File Uploads
+<a name="file-uploads"></a>
+### File Uploads
 
 In web applications, one of the most common use-cases for storing files is storing user uploaded files such as profile pictures, photos, and documents. Laravel makes it very easy to store uploaded files using the `store` method on an uploaded file instance. Simply call the `store` method with the path at which you wish to store the uploaded file:
 
