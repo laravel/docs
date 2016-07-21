@@ -43,7 +43,7 @@ The simplest way to determine if a user may perform a given action is to define 
 	        $this->registerPolicies($gate);
 
 	        $gate->define('update-post', function ($user, $post) {
-	        	return $user->id === $post->user_id;
+	        	return $user->id == $post->user_id;
 	        });
 	    }
 	}
