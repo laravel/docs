@@ -17,7 +17,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel provides a clean, simple API over the popular [SwiftMailer](http://swiftmailer.org) library. Laravel provides drivers for SMTP, Mailgun, SparkPost, Amazon SES, PHP's `mail` function, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
+Laravel provides a clean, simple API over the popular [SwiftMailer](http://swiftmailer.org) library with drivers for SMTP, Mailgun, SparkPost, Amazon SES, PHP's `mail` function, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud based service of your choice.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
@@ -74,7 +74,7 @@ All of a mailable class' configuration is done in the `build` method. Within thi
 
 #### Using The `from` Method
 
-First, let's explore configuring the sender of the email. Or, in other words, who is the email going to be "from". There are ways to configure the sender. First, you may use the `from` method within your mailable class' `build` method like so:
+First, let's explore configuring the sender of the email. Or, in other words, who the email is going to be "from". There are two ways to configure the sender. First, you may use the `from` method within your mailable class' `build` method:
 
     /**
      * Build the message.
@@ -89,16 +89,14 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
 
 #### Using A Global `from` Address
 
-However, if your application uses the same "from" address for all of the emails it sends, it can become cumbersome to call the `from` method in each mailable class you generate. So, instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
+However, if your application uses the same "from" address for all of its emails, it can become cumbersome to call the `from` method in each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
 
     'from' => ['address' => 'example@example.com', 'name' => 'App Name'],
 
 <a name="configuring-the-view"></a>
 ### Configuring The View
 
-Within a mailable class' `build` method, you may use the `view` method to specify which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML.
-
-You may wish to create a `resources/views/emails` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory:
+Within a mailable class' `build` method, you may use the `view` method to specify which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
 
     /**
      * Build the message.
@@ -110,9 +108,11 @@ You may wish to create a `resources/views/emails` directory to house all of your
         return $this->view('emails.orders.shipped');
     }
 
+> {tip} You may wish to create a `resources/views/emails` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory.
+
 #### Plain Text Emails
 
-If you would like to define a plain-text version of your email, you may use the `text` method. Of course, you are free to define both a HTML and plain-text version of your message:
+If you would like to define a plain-text version of your email, you may use the `text` method. Like the `view` method, the `text` method accepts a template name which will be used to render the contents of the email. You are free to define both a HTML and plain-text version of your message:
 
     /**
      * Build the message.
@@ -173,7 +173,7 @@ Typically, you will want to pass some data to your view that you can utilize whe
         }
     }
 
-Once the data has been set to a public property, it will automatically be available in your view, so you may access it like you would typically access any other data in your Blade templates:
+Once the data has been set to a public property, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:
 
     <div>
         Price: {{ $order->price }}
@@ -181,9 +181,7 @@ Once the data has been set to a public property, it will automatically be availa
 
 #### Via The `with` Method:
 
-If you would like to customize the format of your email's data before it is sent to the template, you may wish to manually pass your data via the `with` method. Typically, you will still pass data via the mailable class' constructor; however, you should set this data to `protected` or `private` properties since we do not want the data to be automatically made available to the template.
-
-Then, when calling the `with` method, pass an array of data that you wish to make available to the template:
+If you would like to customize the format of your email's data before it is sent to the template, you may manually pass your data to the view via the `with` method. Typically, you will still pass data via the mailable class' constructor; however, you should set this data to `protected` or `private` properties so the data is not automatically made available to the template. Then, when calling the `with` method, pass an array of data that you wish to make available to the template:
 
     <?php
 
@@ -230,7 +228,7 @@ Then, when calling the `with` method, pass an array of data that you wish to mak
         }
     }
 
-Once the data has been passed to the `with` method, it will automatically be available in your view, so you may access it like you would typically access any other data in your Blade templates:
+Once the data has been passed to the `with` method, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:
 
     <div>
         Price: {{ $orderPrice }}
@@ -288,7 +286,7 @@ The `attachData` method may be used to attach a raw string of bytes as an attach
 <a name="inline-attachments"></a>
 ### Inline Attachments
 
-Embedding inline images into your emails is typically cumbersome; however, Laravel provides a convenient way to attach images to your emails and retrieving the appropriate CID. To embed an inline image, use the `embed` method on the `$message` variable within your email template. Laravel automatically makes the `$message` variable available to all of your email views, so you don't need to worry about passing it in manually:
+Embedding inline images into your emails is typically cumbersome; however, Laravel provides a convenient way to attach images to your emails and retrieving the appropriate CID. To embed an inline image, use the `embed` method on the `$message` variable within your email template. Laravel automatically makes the `$message` variable available to all of your email templates, so you don't need to worry about passing it in manually:
 
     <body>
         Here is an image:
@@ -358,7 +356,7 @@ Since sending email messages can drastically lengthen the response time of your 
         ->bcc($evenMoreUsers)
         ->queue(new OrderShipped($order));
 
-This method will automatically take care of pushing a job onto the queue to send the mail message in the background. Of course, you will need to [configure your queues](/docs/{{version}}/queues) before using this feature.
+This method will automatically take care of pushing a job onto the queue so the message is sent in the background. Of course, you will need to [configure your queues](/docs/{{version}}/queues) before using this feature.
 
 #### Delayed Message Queueing
 
