@@ -8,6 +8,7 @@
     - [The `database` Directory](#the-database-directory)
     - [The `public` Directory](#the-public-directory)
     - [The `resources` Directory](#the-resources-directory)
+    - [The `routes` Directory](#the-routes-directory)
     - [The `storage` Directory](#the-storage-directory)
     - [The `tests` Directory](#the-tests-directory)
     - [The `vendor` Directory](#the-vendor-directory)
@@ -66,6 +67,13 @@ The `public` directory contains the `index.php` file, which is the entry point f
 #### The Resources Directory
 
 The `resources` directory contains your views as well as your raw, un-compiled assets such as LESS, SASS, or JavaScript. This directory also houses all of your language files.
+
+<a name="the-routes-directory"></a>
+#### The Routes Directory
+
+The `routes` directory contains all of the route definitions for your application. By default, two route files are included with Laravel: `web.php` and `api.php`. The `web.php` file contains routes that the `RouteServiceProvider` places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API, all of your routes will most likely be defined in the `web.php` file.
+
+The `api.php` file contains routes that the `RouteServiceProvider` places in the `api` middleware group, which provides rate limiting. These routes are intended to be stateless, so requests entering the application through these routes are intended to be authenticated via tokens and will not have access to session state.
 
 <a name="the-storage-directory"></a>
 #### The Storage Directory
