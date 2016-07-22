@@ -146,7 +146,7 @@ This directory does not exist by default, but will be created for you if you exe
 <a name="the-policies-directory"></a>
 #### The Policies Directory
 
-This directory does not exist by default, but will be created for you if you execute the `make:notification` Artisan command. The `Policies` directory contains the authorization policy classes for your application. Policies are used to determine if a user can perform a given action against a resource. For more information, check out the [authorization documentation](/docs/{{version}}/authorization).
+This directory does not exist by default, but will be created for you if you execute the `make:policy` Artisan command. The `Policies` directory contains the authorization policy classes for your application. Policies are used to determine if a user can perform a given action against a resource. For more information, check out the [authorization documentation](/docs/{{version}}/authorization).
 
 <a name="the-providers-directory"></a>
 #### The Providers Directory
