@@ -16,12 +16,11 @@
 The Redis configuration for your application is located in the `config/database.php` configuration file. Within this file, you will see a `redis` array containing the Redis servers used by your application:
 
     'redis' => [
-
         'cluster' => false,
-
         'default' => [
             'host'     => '127.0.0.1',
             'port'     => 6379,
+            'password' => null, //when redis isn't set password, don't set empty string, set it null
             'database' => 0,
         ],
 
