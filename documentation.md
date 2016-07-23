@@ -10,6 +10,7 @@
     - [Errors & Logging](/docs/{{version}}/errors)
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
+    - [Deployment](/docs/{{version}}/envoy)
 - Core Concepts
     - [Service Container](/docs/{{version}}/container)
     - [Service Providers](/docs/{{version}}/providers)
@@ -36,19 +37,11 @@
     - [Encryption](/docs/{{version}}/encryption)
     - [Hashing](/docs/{{version}}/hashing)
 - General Topics
-    - [Artisan Console](/docs/{{version}}/artisan)
-    - [Billing](/docs/{{version}}/billing)
     - [Cache](/docs/{{version}}/cache)
-    - [Collections](/docs/{{version}}/collections)
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
-    - [Helpers](/docs/{{version}}/helpers)
     - [Mail](/docs/{{version}}/mail)
-    - [Package Development](/docs/{{version}}/packages)
     - [Queues](/docs/{{version}}/queues)
-    - [SSH Tasks](/docs/{{version}}/envoy)
-    - [Task Scheduling](/docs/{{version}}/scheduling)
-    - [Testing](/docs/{{version}}/testing)
 - Database
     - [Getting Started](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)
@@ -62,3 +55,15 @@
     - [Collections](/docs/{{version}}/eloquent-collections)
     - [Mutators](/docs/{{version}}/eloquent-mutators)
     - [Serialization](/docs/{{version}}/eloquent-serialization)
+- Artisan Console
+    - [Commands](/docs/{{version}}/artisan)
+    - [Task Scheduling](/docs/{{version}}/scheduling)
+- Testing
+    - [Testing](/docs/{{version}}/testing)
+- Official Packages
+    - [Cashier](/docs/{{version}}/billing)
+    - [Socialite](https://github.com/laravel/socialite)
+- Appendix
+    - [Collections](/docs/{{version}}/collections)
+    - [Helpers](/docs/{{version}}/helpers)
+    - [Packages](/docs/{{version}}/packages)

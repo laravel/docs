@@ -1,4 +1,4 @@
-# Artisan Console
+# Console Commands
 
 - [Introduction](#introduction)
 - [Writing Commands](#writing-commands)
