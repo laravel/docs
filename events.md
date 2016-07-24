@@ -228,12 +228,12 @@ Event subscribers are classes that may subscribe to multiple events from within 
         public function subscribe($events)
         {
             $events->listen(
-                'App\Events\UserLoggedIn',
+                'Illuminate\Auth\Events\Login',
                 'App\Listeners\UserEventSubscriber@onUserLogin'
             );
 
             $events->listen(
-                'App\Events\UserLoggedOut',
+                'Illuminate\Auth\Events\Logout',
                 'App\Listeners\UserEventSubscriber@onUserLogout'
             );
         }
