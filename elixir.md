@@ -48,7 +48,7 @@ By default, Laravel Homestead includes everything you need; however, if you aren
 
 Next, you'll want to pull in [Gulp](http://gulpjs.com) as a global NPM package:
 
-    npm install --global gulp
+    npm install --global gulp-cli
 
 If you use a version control system, you may wish to run the `npm shrinkwrap` to lock your NPM requirements:
 
