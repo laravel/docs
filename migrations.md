@@ -266,7 +266,7 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> **Note:** Modifying any column in a table that also has a column of type `enum` is not currently supported.
+> **Note:** Modifying any column in a table that also has a column of type `enum`, `json` or `jsonb` is not currently supported.
 
 <a name="renaming-columns"></a>
 #### Renaming Columns
@@ -277,7 +277,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
         $table->renameColumn('from', 'to');
     });
 
-> **Note:** Renaming any column in a table that also has a column of type `enum` is not currently supported.
+> **Note:** Renaming any column in a table that also has a column of type `enum`, `json` or `jsonb` is not currently supported.
 
 <a name="dropping-columns"></a>
 ### Dropping Columns
