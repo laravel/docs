@@ -254,9 +254,9 @@ You may also use the `prefix` parameter to specify common parameters for your gr
 <a name="csrf-introduction"></a>
 ### Introduction
 
-Laravel makes it easy to protect your application from [cross-site request forgery](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) attacks. Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of an authenticated user.
+Laravel makes it easy to protect your application from [cross-site request forgery](http://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) attacks. Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of another user.
 
-Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.
+Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the intended user is the one actually making the requests to the application.
 
 Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that the CSRF protection middleware will be able to validate the request. To generate a hidden input field `_token` containing the CSRF token, you may use the `csrf_field` helper function:
 
