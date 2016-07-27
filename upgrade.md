@@ -23,6 +23,35 @@ Eloquent scopes now respect the leading boolean of scope constraints. For exampl
 If your scopes begin with `where` constraints no action is required. Remember, you can verify your query SQL using the `toSql` method of a query:
 
     User::where('foo', 'bar')->toSql();
+    
+#### Morph Class
+
+The `protected $morphClass` property on the Eloquent Model has been removed in favour of the [morph map](/docs/{{version}}/eloquent-relationships#polymorphic-relations) to support eager loading and resolve additional bugs caused by the morph class. If you were previously relying on the `$morphClass` for your polymorphic relations, you should now move this into the `morphMap`. This is done with the following syntax:
+
+```php
+Relation::morphMap([
+    'YourCustomMorphClass' => YourModel::class,
+]);
+```
+
+So if you previously had
+
+```php
+class User extends Model
+{
+    ...
+    protected $morphClass = 'user'
+    ...
+}
+```
+
+You would instead have this in a service provider:
+
+```php
+Relation::morphMap([
+    'user' => User::class,
+]);
+```
 
 #### Join Clause
 
