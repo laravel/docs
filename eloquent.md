@@ -681,7 +681,7 @@ For example, let's define an Eloquent event listener in a [service provider](/do
          *
          * @return void
          */
-        public function boot()
+        public static function boot()
         {
             User::creating(function ($user) {
                 if ( ! $user->isValid()) {
