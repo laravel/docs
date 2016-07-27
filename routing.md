@@ -68,7 +68,7 @@ Of course, sometimes you will need to capture segments of the URI within your ro
 
 You may define as many route parameters as required by your route:
 
-    Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
+    Route::get('posts/{post}/comments/{comment}', function ($post, $comment) {
         //
     });
 
