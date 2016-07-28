@@ -209,13 +209,13 @@ The first argument passed to the method is the number of records you wish to rec
 
 > **Note:** The database query is re-executed for each chunk.
 
-#### Traversing Results
+#### Using Cursors
 
-If you need to traverse records using a cursor, use the `cursor` command.  The `cursor` method will allow you to simply loop over the result like an array. The `cursor` command returns an Eloquent model. Using the `cursor` method will reduce overhead and reduce memory allocation when processing and manipulating result sets:
+The `cursor` method allows you to iterate through your database records using a cursor. When processing large amounts of data, the `cursor` method may be used to greatly reduce your memory usage:
 
-    foreach( Flight::where('foo', 'bar')->cursor() as $flight) {
+    foreach (Flight::where('foo', 'bar')->cursor() as $flight) {
         //
-    });
+    }
 
 <a name="retrieving-single-models"></a>
 ## Retrieving Single Models / Aggregates
