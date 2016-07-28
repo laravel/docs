@@ -229,7 +229,7 @@ Command  | Description
 `$table->timeTz('sunrise');`  |  TIME (with timezone) equivalent for the database.
 `$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
-`$table->timestampTz('added_on');`  |  TIMESTAMP equivalent for the database.
+`$table->timestampTz('added_on');`  |  TIMESTAMP (with timezone) equivalent for the database.
 `$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
 `$table->uuid('id');`  |  UUID equivalent for the database.
 
