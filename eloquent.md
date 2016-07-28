@@ -207,6 +207,16 @@ If you need to process thousands of Eloquent records, use the `chunk` command. T
 
 The first argument passed to the method is the number of records you wish to receive per "chunk". The Closure passed as the second argument will be called for each chunk that is retrieved from the database.
 
+> **Note:** The database query is re-executed for each chunk.
+
+#### Using Cursors
+
+The `cursor` method allows you to iterate through your database records using a cursor. When processing large amounts of data, the `cursor` method may be used to greatly reduce your memory usage:
+
+    foreach (Flight::where('foo', 'bar')->cursor() as $flight) {
+        //
+    }
+
 <a name="retrieving-single-models"></a>
 ## Retrieving Single Models / Aggregates
 
