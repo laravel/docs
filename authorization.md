@@ -52,7 +52,7 @@ Gates are Closures that determine if a user is authorized to perform a given act
 
 To authorize an action using gates, you should use the `allows` method. Note that you are not required to pass the currently authenticated user to the `allows` method. Laravel will automatically take care of passing the user into the gate Closure:
 
-    if (Gate::allows('update-post', $post) {
+    if (Gate::allows('update-post', $post)) {
         // The current user can update the post...
     });
 
