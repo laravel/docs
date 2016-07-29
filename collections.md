@@ -1003,7 +1003,7 @@ If you would like to limit the size of the returned slice, pass the desired size
 
     // [5, 6]
 
-The returned slice will have new, numerically indexed keys. If you wish to preserve the original keys, pass `true` as the third argument to the method.
+The returned slice will preserve keys by default. If you do not wish to preserve the original keys, you can use the `values` method to reindex them.
 
 <a name="method-sort"></a>
 #### `sort()` {#collection-method}
