@@ -502,6 +502,7 @@ Below is a list of all available validation rules and their function:
 [Nullable](#rule-nullable)
 [Not In](#rule-not-in)
 [Numeric](#rule-numeric)
+[Password](#rule-password)
 [Present](#rule-present)
 [Regular Expression](#rule-regex)
 [Required](#rule-required)
@@ -748,6 +749,11 @@ The field under validation must not be included in the given list of values.
 #### numeric
 
 The field under validation must be numeric.
+
+<a name="rule-password"></a>
+#### password
+
+The field under validation must match the current logged in user's password.
 
 <a name="rule-present"></a>
 #### present
