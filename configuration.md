@@ -15,9 +15,13 @@ All of the configuration files for the Laravel framework are stored in the `conf
 <a name="accessing-configuration-values"></a>
 ## Accessing Configuration Values
 
-You may easily access your configuration values using the global `config` helper function from anywhere in your application. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
+You may easily access your configuration values using the global `config` helper function from anywhere in your application. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access:
 
     $value = config('app.timezone');
+
+A default value may also be specified and will be returned if the configuration option does not exist:
+
+    $value = config('app.timezone', 'Europe/Paris');
 
 To set configuration values at runtime, pass an array to the `config` helper:
 
