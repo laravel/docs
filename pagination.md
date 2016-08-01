@@ -7,6 +7,7 @@
     - [Manually Creating A Paginator](#manually-creating-a-paginator)
 - [Displaying Pagination Results](#displaying-pagination-results)
 - [Converting Results To JSON](#converting-results-to-json)
+- [Customizing The Pagination View](#customizing-the-pagination-view)
 - [Paginator Instance Methods](#paginator-instance-methods)
 
 <a name="introduction"></a>
@@ -146,6 +147,19 @@ The JSON from the paginator will include meta information such as `total`, `curr
             }
        ]
     }
+
+<a name="customizing-the-pagination-view"></a>
+## Customizing The Pagination View
+
+By default, the views rendered to display the pagination links are compatible with the Bootstrap CSS framework. However, if you are not using Bootstrap, you are free to define your own views to render these links. When calling the `links` method on a paginator instance, pass the view name as the first argument to the method:
+
+    {{ $paginator->links('view.name') }}
+
+However, the easiest way to customize the pagination views is by exporting them to your `resources/views/vendor` directory using the `vendor:publish` command:
+
+    php artisan vendor:publish --tag=laravel-pagination
+
+This command will place the views in the `resources/views/vendor/pagination` directory. The `default.blade.php` file within this directory corresponds to the default pagination view. Simply edit this file to modify the pagination HTML.
 
 <a name="paginator-instance-methods"></a>
 ## Paginator Instance Methods
