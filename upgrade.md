@@ -23,10 +23,10 @@ Eloquent scopes now respect the leading boolean of scope constraints. For exampl
 If your scopes begin with `where` constraints no action is required. Remember, you can verify your query SQL using the `toSql` method of a query:
 
     User::where('foo', 'bar')->toSql();
-    
-#### Morph Class
 
-The `protected $morphClass` property on the Eloquent Model has been removed in favour of the [morph map](/docs/{{version}}/eloquent-relationships#polymorphic-relations) to support eager loading and resolve additional bugs caused by the morph class. If you were previously relying on the `$morphClass` for your polymorphic relations, you should now move this into the `morphMap`. This is done with the following syntax:
+#### Eloquent `$morphClass` Property
+
+The `$morphClass` property on Eloquent models has been removed in favor of defining a "[morph map](/docs/{{version}}/eloquent-relationships#polymorphic-relations)". Defining a morph map provides support for eager loading and resolves additional bugs with polymorphic relations. If you were previously relying on the `$morphClass` property, you should migrate to `morphMap` using the following syntax:
 
 ```php
 Relation::morphMap([
@@ -34,18 +34,16 @@ Relation::morphMap([
 ]);
 ```
 
-So if you previously had
+For example, if you previously defined the following `$morphClass`:
 
 ```php
 class User extends Model
 {
-    ...
     protected $morphClass = 'user'
-    ...
 }
 ```
 
-You would instead have this in a service provider:
+You should define the following `morphMap` in the `boot` method of your `AppServiceProvider`:
 
 ```php
 Relation::morphMap([
