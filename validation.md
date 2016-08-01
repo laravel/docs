@@ -615,6 +615,10 @@ The file under validation must be an image meeting the dimension constraints as 
 
 Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
 
+A _ratio_ constraint should be represented as width divided by height. This can be specified either by a statement like `3/2` or a float like `1.5`:
+
+    'avatar' => 'dimensions:ratio=3/2'
+
 <a name="rule-distinct"></a>
 #### distinct
 

@@ -24,6 +24,33 @@ If your scopes begin with `where` constraints no action is required. Remember, y
 
     User::where('foo', 'bar')->toSql();
 
+#### Eloquent `$morphClass` Property
+
+The `$morphClass` property on Eloquent models has been removed in favor of defining a "[morph map](/docs/{{version}}/eloquent-relationships#polymorphic-relations)". Defining a morph map provides support for eager loading and resolves additional bugs with polymorphic relations. If you were previously relying on the `$morphClass` property, you should migrate to `morphMap` using the following syntax:
+
+```php
+Relation::morphMap([
+    'YourCustomMorphClass' => YourModel::class,
+]);
+```
+
+For example, if you previously defined the following `$morphClass`:
+
+```php
+class User extends Model
+{
+    protected $morphClass = 'user'
+}
+```
+
+You should define the following `morphMap` in the `boot` method of your `AppServiceProvider`:
+
+```php
+Relation::morphMap([
+    'user' => User::class,
+]);
+```
+
 #### Join Clause
 
 The `JoinClause` class has been rewritten to unify its syntax with the query builder. The optional `$where` parameter of the `on` clause has been removed. To add a "where" conditions you should explicitly use one of the `where` methods offered by the [query builder](/docs/{{version}}/queries#where-clauses):

@@ -10,7 +10,6 @@
     - [Errors & Logging](/docs/{{version}}/errors)
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
-    - [Deployment](/docs/{{version}}/envoy)
 - Core Concepts
     - [Service Container](/docs/{{version}}/container)
     - [Service Providers](/docs/{{version}}/providers)
@@ -62,6 +61,7 @@
     - [Testing](/docs/{{version}}/testing)
 - Official Packages
     - [Cashier](/docs/{{version}}/billing)
+    - [Envoy](/docs/{{version}}/envoy)
     - [Socialite](https://github.com/laravel/socialite)
 - Appendix
     - [Collections](/docs/{{version}}/collections)

@@ -229,7 +229,7 @@ Command  | Description
 `$table->timeTz('sunrise');`  |  TIME (with timezone) equivalent for the database.
 `$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
-`$table->timestampTz('added_on');`  |  TIMESTAMP equivalent for the database.
+`$table->timestampTz('added_on');`  |  TIMESTAMP (with timezone) equivalent for the database.
 `$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
 `$table->uuid('id');`  |  UUID equivalent for the database.
 
@@ -274,7 +274,7 @@ We could also modify a column to be nullable:
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} Modifying any column in a table that also has a column of type `enum` is not currently supported.
+> {note} Modifying any column in a table that also has a column of type `enum`, `json` or `jsonb` is not currently supported.
 
 <a name="renaming-columns"></a>
 #### Renaming Columns
@@ -285,7 +285,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
         $table->renameColumn('from', 'to');
     });
 
-> {note} Renaming any column in a table that also has a column of type `enum` is not currently supported.
+> {note} Renaming any column in a table that also has a column of type `enum`, `json` or `jsonb` is not currently supported.
 
 <a name="dropping-columns"></a>
 ### Dropping Columns

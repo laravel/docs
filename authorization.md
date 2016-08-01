@@ -6,7 +6,7 @@
     - [Authorizing Actions](#authorizing-actions-via-gates)
 - [Creating Policies](#creating-policies)
     - [Generating Policies](#generating-policies)
-	- [Registering Policies](#registering-policies)
+    - [Registering Policies](#registering-policies)
 - [Writing Policies](#writing-policies)
     - [Policy Methods](#policy-methods)
     - [Methods Without Models](#methods-without-models)
@@ -72,7 +72,7 @@ Policies are classes that organize authorization logic around a particular model
 
 You may generate a policy using the `make:policy` [artisan command](/docs/{{version}}/artisan). The generated policy will be placed in the `app/Policies` directory. If this directory does not exist in your application, Laravel will create it for you:
 
-	php artisan make:policy PostPolicy
+    php artisan make:policy PostPolicy
 
 The `make:policy` command will generate an empty policy class. If you would like to generate a class with the basic "CRUD" policy methods already included in the class, you may specify a `--model` when executing the command:
 
@@ -85,38 +85,38 @@ The `make:policy` command will generate an empty policy class. If you would like
 
 Once the policy exists, it needs to be registered. The `AuthServiceProvider` included with fresh Laravel applications contains a `policies` property which maps your Eloquent models to their corresponding policies. Registering a policy will instruct Laravel which policy to utilize when authorizing actions against a given model:
 
-	<?php
+    <?php
 
-	namespace App\Providers;
+    namespace App\Providers;
 
-	use App\Post;
-	use App\Policies\PostPolicy;
+    use App\Post;
+    use App\Policies\PostPolicy;
     use Illuminate\Support\Facades\Gate;
-	use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+    use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
-	class AuthServiceProvider extends ServiceProvider
-	{
-	    /**
-	     * The policy mappings for the application.
-	     *
-	     * @var array
-	     */
-	    protected $policies = [
-	        Post::class => PostPolicy::class,
-	    ];
+    class AuthServiceProvider extends ServiceProvider
+    {
+        /**
+         * The policy mappings for the application.
+         *
+         * @var array
+         */
+        protected $policies = [
+            Post::class => PostPolicy::class,
+        ];
 
-	    /**
-	     * Register any application authentication / authorization services.
-	     *
-	     * @return void
-	     */
-	    public function boot()
-	    {
-	        $this->registerPolicies();
+        /**
+         * Register any application authentication / authorization services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            $this->registerPolicies();
 
             //
-	    }
-	}
+        }
+    }
 
 <a name="writing-policies"></a>
 ## Writing Policies
@@ -128,27 +128,27 @@ Once the policy has been registered, you may add methods for each action it auth
 
 The `update` method will receive a `User` and a `Post` instance as its arguments, and should return `true` or `false` indicating whether the user is authorized to update the given `Post`. So, for this example, let's verify that the user's `id` matches the `user_id` on the post:
 
-	<?php
+    <?php
 
-	namespace App\Policies;
+    namespace App\Policies;
 
-	use App\User;
-	use App\Post;
+    use App\User;
+    use App\Post;
 
-	class PostPolicy
-	{
-		/**
-		 * Determine if the given post can be updated by the user.
-		 *
-		 * @param  \App\User  $user
-		 * @param  \App\Post  $post
-		 * @return bool
-		 */
-	    public function update(User $user, Post $post)
-	    {
-	    	return $user->id === $post->user_id;
-	    }
-	}
+    class PostPolicy
+    {
+        /**
+         * Determine if the given post can be updated by the user.
+         *
+         * @param  \App\User  $user
+         * @param  \App\Post  $post
+         * @return bool
+         */
+        public function update(User $user, Post $post)
+        {
+            return $user->id === $post->user_id;
+        }
+    }
 
 You may continue to define additional methods on the policy as needed for the various actions it authorizes. For example, you might define `view` or `delete` methods to authorize various `Post` actions, but remember you are free to give your policy methods any name you like.
 
@@ -219,9 +219,9 @@ For certain users, you may wish to authorize all actions within a given policy. 
 
 The `User` model that is included with your Laravel application includes two helpful methods for authorizing actions: `can` and `cant`. The `can` method receives the action you wish to authorize and the relevant model. For example, let's determine if a user is authorized to update a given `Post` model:
 
-	if ($user->can('update', $post)) {
-		//
-	}
+    if ($user->can('update', $post)) {
+        //
+    }
 
 If a [policy is registered](#registering-policies) for the given model, the `can` method will automatically call the appropriate policy and return the boolean result. If no policy is registered for the model, the `can` method will attempt to call the Closure based Gate matching the given action name.
 
@@ -312,9 +312,9 @@ As previously noted, policy methods which do not examine a particular model inst
 
 When writing Blade templates, you may wish to display a portion of the page only if the user is authorized to perform a given action. For example, you may wish to show an update form for a given blog post only if the user can actually update the post. In this situation, the `@can` Blade directive may be used:
 
-	@can('update', $post)
-		<!-- The Current User Can Update The Post -->
-	@endcan
+    @can('update', $post)
+        <!-- The Current User Can Update The Post -->
+    @endcan
 
 The `@can` directive is primarily a convenient short-cut for writing `@if` statements. The `@can` statement above translates to the following `@if` statement:
 
