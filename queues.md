@@ -450,8 +450,8 @@ If you would like to register an event that will be called when a queued job fai
     namespace App\Providers;
 
     use Illuminate\Support\Facades\Queue;
-    use Illuminate\Support\ServiceProvider;
     use Illuminate\Queue\Events\JobFailed;
+    use Illuminate\Support\ServiceProvider;
 
     class AppServiceProvider extends ServiceProvider
     {
