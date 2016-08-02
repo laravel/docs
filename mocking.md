@@ -1,9 +1,9 @@
 # Mocking
 
 - [Introduction](#introduction)
-- [Mocking Events](#mocking-events)
-- [Mocking Jobs](#mocking-jobs)
-- [Mocking Facades](#mocking-facades)
+- [Events](#mocking-events)
+- [Jobs](#mocking-jobs)
+- [Facades](#mocking-facades)
 
 <a name="introduction"></a>
 ## Introduction
@@ -13,7 +13,7 @@ When testing Laravel applications, you may wish to "mock" certain aspects of you
 Laravel provides helpers for mocking events, jobs, and facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls. Of course, are free to use [Mockery](http://docs.mockery.io/en/latest/) or PHPUnit to create your own mocks or spies.
 
 <a name="mocking-events"></a>
-## Mocking Events
+## Events
 
 If you are making heavy use of Laravel's event system, you may wish to silence or mock certain events while testing. For example, if you are testing user registration, you probably do not want all of a `UserRegistered` event's handlers firing, since the listeners may send "welcome" e-mails, etc.
 
@@ -72,7 +72,7 @@ If you would like to prevent all event listeners from running, you may use the `
     }
 
 <a name="mocking-jobs"></a>
-## Mocking Jobs
+## Jobs
 
 Sometimes, you may wish to test that given jobs are dispatched when making requests to your application. This will allow you to test your routes and controllers in isolation without worrying about your job's logic. Of course, you should then test the job in a separate test case.
 
@@ -133,7 +133,7 @@ Alternatively, you may ignore all dispatched jobs using the `withoutJobs` method
     }
 
 <a name="mocking-facades"></a>
-## Mocking Facades
+## Facades
 
 Unlike traditional static method calls, [facades](/docs/{{version}}/facades) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability you would have if you were using dependency injection. When testing, you may often want to mock a call to a Laravel facade in one of your controllers. For example, consider the following controller action:
 
