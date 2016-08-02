@@ -219,7 +219,7 @@ For more information on testing, check out the [testing documentation](/docs/{{v
 
 ### Model Factories
 
-Laravel now ships with an easy way to create stub Eloquent models using [model factories](/docs/{{version}}/testing#model-factories). Model factories allow you to easily define a set of "default" attributes for your Eloquent model, and then generate test model instances for your tests or database seeds. Model factories also take advantage of the powerful [Faker](https://github.com/fzaninotto/Faker) PHP library for generating random attribute data:
+Laravel now ships with an easy way to create stub Eloquent models using [model factories](/docs/{{version}}/database-testing#writing-factories). Model factories allow you to easily define a set of "default" attributes for your Eloquent model, and then generate test model instances for your tests or database seeds. Model factories also take advantage of the powerful [Faker](https://github.com/fzaninotto/Faker) PHP library for generating random attribute data:
 
     $factory->define(App\User::class, function ($faker) {
         return [
@@ -230,7 +230,7 @@ Laravel now ships with an easy way to create stub Eloquent models using [model f
         ];
     });
 
-For more information on model factories, check out [the documentation](/docs/{{version}}/testing#model-factories).
+For more information on model factories, check out [the documentation](/docs/{{version}}/database-testing#writing-factories).
 
 ### Artisan Improvements
 

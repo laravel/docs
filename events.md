@@ -194,7 +194,7 @@ To fire an event, you may pass an instance of the event to the `event` helper. T
         }
     }
 
-> {tip} When testing, it can be helpful to assert that certain events were fired without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/testing#mocking-events) makes it a cinch.
+> {tip} When testing, it can be helpful to assert that certain events were fired without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#mocking-events) makes it a cinch.
 
 <a name="event-subscribers"></a>
 ## Event Subscribers
