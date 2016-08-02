@@ -21,7 +21,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Migrations are like version control for your database, allowing a team to easily modify and share the application's database schema. Migrations are typically paired with Laravel's schema builder to easily build your application's database schema. If you have ever had to tell a teammate to manually add a column to their local database schema, you've faced the problem that database migrations solve.
+Migrations are like version control for your database, allowing your team to easily modify and share the application's database schema. Migrations are typically paired with Laravel's schema builder to easily build your application's database schema. If you have ever had to tell a teammate to manually add a column to their local database schema, you've faced the problem that database migrations solve.
 
 The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnostic support for creating and manipulating tables across all of Laravel's supported database systems.
 
@@ -40,14 +40,14 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
     php artisan make:migration add_votes_to_users_table --table=users
 
-If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The provided path should be relative to your application's base path.
+If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
 
 <a name="migration-structure"></a>
 ## Migration Structure
 
 A migration class contains two methods: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should simply reverse the operations performed by the `up` method.
 
-Within both of these methods you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, here is an example migration that creates a `flights` table:
+Within both of these methods you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, this migration example creates a `flights` table:
 
     <?php
 
@@ -86,7 +86,7 @@ Within both of these methods you may use the Laravel schema builder to expressiv
 <a name="running-migrations"></a>
 ## Running Migrations
 
-To run all of the outstanding migrations for your application, run the `migrate` Artisan command:
+To run all of your outstanding migrations, execute the `migrate` Artisan command:
 
     php artisan migrate
 
@@ -94,18 +94,18 @@ To run all of the outstanding migrations for your application, run the `migrate`
 
 #### Forcing Migrations To Run In Production
 
-Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before these commands are executed. To force the commands to run without a prompt, use the `--force` flag:
+Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:
 
     php artisan migrate --force
 
 <a name="rolling-back-migrations"></a>
 ### Rolling Back Migrations
 
-To rollback the latest migration "operation", you may use the `rollback` command. Note that this rolls back the last "batch" of migrations that ran, which may include multiple migration files:
+To rollback the latest migration operation, you may use the `rollback` command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
 
     php artisan migrate:rollback
 
-You may rollback a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will rollback the last 5 migrations:
+You may rollback a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will rollback the last five migrations:
 
     php artisan migrate:rollback --step=5
 
@@ -115,14 +115,14 @@ The `migrate:reset` command will roll back all of your application's migrations:
 
 #### Rollback & Migrate In Single Command
 
-The `migrate:refresh` command will roll back all of your database migrations and then run the `migrate` command. This command effectively re-creates your entire database:
+The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
 
     php artisan migrate:refresh
 
     // Refresh the database and run all database seeds...
     php artisan migrate:refresh --seed
 
-You may rollback & re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will rollback & re-migrate the last 5 migrations:
+You may rollback & re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will rollback & re-migrate the last five migrations:
 
     php artisan migrate:refresh --step=5
 
@@ -132,7 +132,7 @@ You may rollback & re-migrate a limited number of migrations by providing the `s
 <a name="creating-tables"></a>
 ### Creating Tables
 
-To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments. The first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object used to define the new table:
+To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments. The first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object that may be used to define the new table:
 
     Schema::create('users', function (Blueprint $table) {
         $table->increments('id');
@@ -160,7 +160,7 @@ If you want to perform a schema operation on a database connection that is not y
         $table->increments('id');
     });
 
-To set the storage engine for a table, set the `engine` property on the schema builder:
+You may use the `engine` property on the schema builder to define the table's storage engine:
 
     Schema::create('users', function ($table) {
         $table->engine = 'InnoDB';
@@ -191,7 +191,7 @@ Before renaming a table, you should verify that any foreign key constraints on t
 <a name="creating-columns"></a>
 ### Creating Columns
 
-Use the `table` method on the `Schema` facade to update an existing table. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance we can use to add columns to the table:
+The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance you may use to add columns to the table:
 
     Schema::table('users', function ($table) {
         $table->string('email');
@@ -199,7 +199,7 @@ Use the `table` method on the `Schema` facade to update an existing table. Like 
 
 #### Available Column Types
 
-Of course, the schema builder contains a variety of column types that you may use when building your tables:
+Of course, the schema builder contains a variety of column types that you may specify when building your tables:
 
 Command  | Description
 ------------- | -------------
@@ -243,7 +243,7 @@ Command  | Description
 <a name="column-modifiers"></a>
 ### Column Modifiers
 
-In addition to the column types listed above, there are several column "modifiers" which you may use while adding the column. For example, to make the column "nullable", you may use the `nullable` method:
+In addition to the column types listed above, there are several column "modifiers" you may use while adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
 
     Schema::table('users', function ($table) {
         $table->string('email')->nullable();
@@ -357,7 +357,7 @@ Command  | Description
 `$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
 `$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
 
-If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type.
+If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type:
 
     Schema::table('geo', function ($table) {
         $table->dropIndex(['state']); // Drops index 'geo_state_index'

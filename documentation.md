@@ -58,7 +58,10 @@
     - [Commands](/docs/{{version}}/artisan)
     - [Task Scheduling](/docs/{{version}}/scheduling)
 - Testing
-    - [Testing](/docs/{{version}}/testing)
+    - [Getting Started](/docs/{{version}}/testing)
+    - [Application Testing](/docs/{{version}}/application-testing)
+    - [Database](/docs/{{version}}/database-testing)
+    - [Mocking](/docs/{{version}}/mocking)
 - Official Packages
     - [Cashier](/docs/{{version}}/billing)
     - [Envoy](/docs/{{version}}/envoy)
