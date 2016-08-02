@@ -5,12 +5,15 @@
 - [Migration Structure](#migration-structure)
 - [Running Migrations](#running-migrations)
     - [Rolling Back Migrations](#rolling-back-migrations)
-- [Writing Migrations](#writing-migrations)
+- [Tables](#tables)
     - [Creating Tables](#creating-tables)
     - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
+- [Columns](#columns)
     - [Creating Columns](#creating-columns)
+    - [Column Modifiers](#column-modifiers)
     - [Modifying Columns](#modifying-columns)
     - [Dropping Columns](#dropping-columns)
+- [Indexes](#indexes)
     - [Creating Indexes](#creating-indexes)
     - [Dropping Indexes](#dropping-indexes)
     - [Foreign Key Constraints](#foreign-key-constraints)
@@ -18,9 +21,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-Migrations are like version control for your database, allowing a team to easily modify and share the application's database schema. Migrations are typically paired with Laravel's schema builder to easily build your application's database schema.
+Migrations are like version control for your database, allowing a team to easily modify and share the application's database schema. Migrations are typically paired with Laravel's schema builder to easily build your application's database schema. If you have ever had to tell a teammate to manually add a column to their local database schema, you've faced the problem that database migrations solve.
 
-The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnostic support for creating and manipulating tables. It shares the same expressive, fluent API across all of Laravel's supported database systems.
+The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnostic support for creating and manipulating tables across all of Laravel's supported database systems.
 
 <a name="generating-migrations"></a>
 ## Generating Migrations
@@ -33,9 +36,9 @@ The new migration will be placed in your `database/migrations` directory. Each m
 
 The `--table` and `--create` options may also be used to indicate the name of the table and whether the migration will be creating a new table. These options simply pre-fill the generated migration stub file with the specified table:
 
-    php artisan make:migration add_votes_to_users_table --table=users
-
     php artisan make:migration create_users_table --create=users
+
+    php artisan make:migration add_votes_to_users_table --table=users
 
 If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The provided path should be relative to your application's base path.
 
@@ -44,7 +47,7 @@ If you would like to specify a custom output path for the generated migration, y
 
 A migration class contains two methods: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should simply reverse the operations performed by the `up` method.
 
-Within both of these methods you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, let's look at a sample migration that creates a `flights` table:
+Within both of these methods you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, here is an example migration that creates a `flights` table:
 
     <?php
 
@@ -83,15 +86,15 @@ Within both of these methods you may use the Laravel schema builder to expressiv
 <a name="running-migrations"></a>
 ## Running Migrations
 
-To run all outstanding migrations for your application, use the `migrate` Artisan command. If you are using the [Homestead virtual machine](/docs/{{version}}/homestead), you should run this command from within your VM:
+To run all of the outstanding migrations for your application, run the `migrate` Artisan command:
 
     php artisan migrate
 
-If you receive a "class not found" error when running migrations, try running the `composer dump-autoload` command and re-issuing the migrate command.
+> {note} If you are using the [Homestead virtual machine](/docs/{{version}}/homestead), you should run this command from within your virtual machine.
 
 #### Forcing Migrations To Run In Production
 
-Some migration operations are destructive, meaning they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before these commands are executed. To force the commands to run without a prompt, use the `--force` flag:
+Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before these commands are executed. To force the commands to run without a prompt, use the `--force` flag:
 
     php artisan migrate --force
 
@@ -110,20 +113,21 @@ The `migrate:reset` command will roll back all of your application's migrations:
 
     php artisan migrate:reset
 
-#### Rollback / Migrate In Single Command
+#### Rollback & Migrate In Single Command
 
-The `migrate:refresh` command will first roll back all of your database migrations, and then run the `migrate` command. This command effectively re-creates your entire database:
+The `migrate:refresh` command will roll back all of your database migrations and then run the `migrate` command. This command effectively re-creates your entire database:
 
     php artisan migrate:refresh
 
+    // Refresh the database and run all database seeds...
     php artisan migrate:refresh --seed
 
 You may rollback & re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will rollback & re-migrate the last 5 migrations:
 
     php artisan migrate:refresh --step=5
 
-<a name="writing-migrations"></a>
-## Writing Migrations
+<a name="tables"></a>
+## Tables
 
 <a name="creating-tables"></a>
 ### Creating Tables
@@ -181,10 +185,13 @@ To drop an existing table, you may use the `drop` or `dropIfExists` methods:
 
 Before renaming a table, you should verify that any foreign key constraints on the table have an explicit name in your migration files instead of letting Laravel assign a convention based name. Otherwise, the foreign key constraint name will refer to the old table name.
 
+<a name="columns"></a>
+## Columns
+
 <a name="creating-columns"></a>
 ### Creating Columns
 
-To update an existing table, we will use the `table` method on the `Schema` facade. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance we can use to add columns to the table:
+Use the `table` method on the `Schema` facade to update an existing table. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance we can use to add columns to the table:
 
     Schema::table('users', function ($table) {
         $table->string('email');
@@ -233,9 +240,10 @@ Command  | Description
 `$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
 `$table->uuid('id');`  |  UUID equivalent for the database.
 
-#### Column Modifiers
+<a name="column-modifiers"></a>
+### Column Modifiers
 
-In addition to the column types listed above, there are several other column "modifiers" which you may use while adding the column. For example, to make the column "nullable", you may use the `nullable` method:
+In addition to the column types listed above, there are several column "modifiers" which you may use while adding the column. For example, to make the column "nullable", you may use the `nullable` method:
 
     Schema::table('users', function ($table) {
         $table->string('email')->nullable();
@@ -258,11 +266,13 @@ Modifier  | Description
 
 #### Prerequisites
 
-Before modifying a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file. The Doctrine DBAL library is used to determine the current state of the column and create the SQL queries needed to make the specified adjustments to the column.
+Before modifying a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file. The Doctrine DBAL library is used to determine the current state of the column and create the SQL queries needed to make the specified adjustments to the column:
+
+    composer require doctrine/dbal
 
 #### Updating Column Attributes
 
-The `change` method allows you to modify an existing column to a new type, or modify the column's attributes. For example, you may wish to increase the size of a string column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
+The `change` method allows you to modify an existing column to a new type or modify the column's attributes. For example, you may wish to increase the size of a string column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
 
     Schema::table('users', function ($table) {
         $table->string('name', 50)->change();
@@ -290,7 +300,7 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
 <a name="dropping-columns"></a>
 ### Dropping Columns
 
-To drop a column, use the `dropColumn` method on the Schema builder:
+To drop a column, use the `dropColumn` method on the Schema builder. Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library:
 
     Schema::table('users', function ($table) {
         $table->dropColumn('votes');
@@ -302,9 +312,10 @@ You may drop multiple columns from a table by passing an array of column names t
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> {note} Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
-
 > {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
+
+<a name="indexes"></a>
+## Indexes
 
 <a name="creating-indexes"></a>
 ### Creating Indexes
@@ -373,7 +384,7 @@ To drop a foreign key, you may use the `dropForeign` method. Foreign key constra
 
     $table->dropForeign('posts_user_id_foreign');
 
-Or you may pass an array value which will automatically use the conventional constraint name when dropping:
+Or, you may pass an array value which will automatically use the conventional constraint name when dropping:
 
     $table->dropForeign(['user_id']);
 
