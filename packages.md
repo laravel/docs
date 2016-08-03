@@ -1,12 +1,14 @@
 # Package Development
 
 - [Introduction](#introduction)
+    - [A Note On Facades](#a-note-on-facades)
 - [Service Providers](#service-providers)
 - [Routing](#routing)
 - [Resources](#resources)
-    - [Views](#views)
-    - [Translations](#translations)
     - [Configuration](#configuration)
+    - [Migrations](#migrations)
+    - [Translations](#translations)
+    - [Views](#views)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 
@@ -18,6 +20,11 @@ Packages are the primary way of adding functionality to Laravel. Packages might 
 Of course, there are different types of packages. Some packages are stand-alone, meaning they work with any PHP framework. Carbon and Behat are examples of stand-alone packages. Any of these packages may be used with Laravel by simply requesting them in your `composer.json` file.
 
 On the other hand, other packages are specifically intended for use with Laravel. These packages may have routes, controllers, views, and configuration specifically intended to enhance a Laravel application. This guide primarily covers the development of those packages that are Laravel specific.
+
+<a name="a-note-on-facades"></a>
+### A Note On Facades
+
+When writing a Laravel application, it generally does not matter if you use contracts or facades since both provide essentially equal levels of testability. However, when writing packages, it is best to use [contracts](/docs/{{version}}/contracts) instead of [facades](/docs/{{version}}/facades). Since your package will not have access to all of Laravel's testing helpers, it will be easier to mock or stub a contract than to mock a facade.
 
 <a name="service-providers"></a>
 ## Service Providers
@@ -45,6 +52,99 @@ To define routes for your package, simply `require` the routes file from within 
 
 <a name="resources"></a>
 ## Resources
+
+<a name="configuration"></a>
+### Configuration
+
+Typically, you will need to publish your package's configuration file to the application's own `config` directory. This will allow users of your package to easily override your default configuration options. To allow your configuration files to be published, call the `publishes` method from the `boot` method of your service provider:
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
+        ]);
+    }
+
+Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified publish location. Of course, once your configuration has been published, its values may be accessed like any other configuration file:
+
+    $value = config('courier.option');
+
+#### Default Package Configuration
+
+You may also merge your own package configuration file with the application's published copy. This will allow your users to define only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
+
+    /**
+     * Register bindings in the container.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__.'/path/to/config/courier.php', 'courier'
+        );
+    }
+
+<a name="migrations"></a>
+### Migrations
+
+If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `loadMigrationsFrom` method to inform Laravel how to load them. The `loadMigrationsFrom` method accepts the path to your package's migrations as its only argument:
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadMigrationsFrom(__DIR__.'/path/to/migrations');
+    }
+
+Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's main `database/migrations` directory.
+
+<a name="translations"></a>
+### Translations
+
+If your package contains [translation files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named `courier`, you should add the following to your service provider's `boot` method:
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+    }
+
+Package translations are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
+
+    echo trans('courier::messages.welcome');
+
+#### Publishing Translations
+
+If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
+
+        $this->publishes([
+            __DIR__.'/path/to/translations' => resource_path('lang/vendor/courier'),
+        ]);
+    }
+
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified publish location.
 
 <a name="views"></a>
 ### Views
@@ -90,82 +190,6 @@ If you would like to make your views available for publishing to the application
     }
 
 Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified publish location.
-
-<a name="translations"></a>
-### Translations
-
-If your package contains [translation files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named `courier`, you should add the following to your service provider's `boot` method:
-
-    /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
-    }
-
-Package translations are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
-
-    echo trans('courier::messages.welcome');
-
-#### Publishing Translations
-
-If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:
-
-    /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
-
-        $this->publishes([
-            __DIR__.'/path/to/translations' => resource_path('lang/vendor/courier'),
-        ]);
-    }
-
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified publish location.
-
-<a name="configuration"></a>
-### Configuration
-
-Typically, you will need to publish your package's configuration file to the application's own `config` directory. This will allow users of your package to easily override your default configuration options. To allow your configuration files to be published, call the `publishes` method from the `boot` method of your service provider:
-
-    /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->publishes([
-            __DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
-        ]);
-    }
-
-Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified publish location. Of course, once your configuration has been published, its values may be accessed like any other configuration file:
-
-    $value = config('courier.option');
-
-#### Default Package Configuration
-
-You may also merge your own package configuration file with the application's published copy. This will allow your users to define only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
-
-    /**
-     * Register bindings in the container.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->mergeConfigFrom(
-            __DIR__.'/path/to/config/courier.php', 'courier'
-        );
-    }
 
 <a name="public-assets"></a>
 ## Public Assets
