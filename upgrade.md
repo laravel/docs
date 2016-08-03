@@ -14,23 +14,92 @@
 <a name="upgrade-5.3.0"></a>
 ## Upgrading To 5.3.0 From 5.2
 
+#### Estimated Upgrade Time: 2 Hours
+
+> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework so only a portion of these changes may actually affect your application.
+
+### PHP & HHVM
+
+Laravel 5.3 requires PHP 5.6.4 or higher. HHVM is no longer officially supported as it does not contain the same language features as PHP 5.6+.
+
+### Artisan
+
+##### The `make:console` Command
+
+The `make:console` command has been renamed to `make:command`.
+
+### Authentication
+
+#### Authentication Scaffolding
+
+The two default authentication controllers provided with the framework have been split into four smaller controllers. This change provides cleaner, more focused authentication controllers by default. The easiest way to upgrade your application to the new authentication controllers is to [grab a fresh copy of each controller from GitHub](https://github.com/laravel/laravel/tree/master/app/Http/Controllers/Auth) and place them into your application.
+
+You should also make sure that you are calling the `Route::auth()` method in your `routes.php` file. This method will register the proper routes for the new authentication controllers.
+
+Once these controllers have been placed into your application, you may need to re-implement any customizations you made to these controllers. For example, if you are customizing the authentication guard that is used for authentication, you may need to override the controller's `guard` method. You can examine each authentication controller's trait to determine which methods to override.
+
+If you were not customizing the authentication controllers, you should just be able to drop in fresh copies of the controllers from GitHub and verify that you are calling the `Route::auth` method in your `routes.php` file.
+
+#### Password Reset E-Mails
+
+Password reset e-mails now use the new Laravel notifications feature. If you would like to customize the notification sent when sending password reset links, you should override the `sendPasswordResetNotification` method of the `Illuminate\Auth\Passwords\CanResetPassword` trait.
+
+#### Post To Logout
+
+The `Route::auth` method now register a `POST` route for `/logout` instead of a `GET` route. To upgrade, you should either convert your logout requests to use the `POST` verb or register your own `GET` route for the `/logout` URI:
+
+    Route::get('logout', 'Auth\LoginController@logout');
+
+### Authorization
+
+#### Calling Policy Methods With Class Names
+
+Some policy methods will only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `view` or `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to view or create any posts at all.
+
+When defining policy methods that will not receive a model instance, such as a `create` method, you should suffix the methods with `Any`:
+
+    /**
+     * Determine if the given user can create posts.
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function createAny(User $user)
+    {
+        //
+    }
+
+In Laravel 5.3, the authorization services will automatically call the `Any` suffixed version of the method if a string class name is passed to the `can` method (or any other authorization method). So, the policy method would typically be executed like so:
+
+    if ($user->can('create', Post::class)) {
+        //
+    }
+
+If you are calling any authorization policies and passing a class name instead of a model instance, you should verify that you have an `Any` suffixed method for that ability. It is perfectly normal to have both an `Any` suffixed method and a non-suffixed version of the method on a single policy class. For example: a `view` method for authorizing if a user can view a particular post instance and a `viewAny` method for authorizing if a user can view posts in general.
+
+### Blade
+
+#### Custom Directives
+
+In prior verisons of Laravel, when registering custom Blade directives using the `directive` method, the `$expression` passed to your directive callback contained the outer-most parenthesis. In Laravel 5.3, these outer-most parenthesis are removed. Be sure to review the [Blade extension](/docs/5.3/blade#extending-blade) documentation and verify your custom Blade directives are still working properly.
+
 ### Database
 
-#### Eloquent Scopes
+#### Collections
 
-Eloquent scopes now respect the leading boolean of scope constraints. For example, if you are starting your scope with an `orWhere` constraint it will no longer be converted to normal `where`. If you were relying on this feature (e.g. adding multiple `orWhere` constraints within a loop), you should verify that the first condition is a normal `where` to avoid any boolean logic issues.
+The [fluent query builder](/docs/{{version}}/queries) now returns `Illuminate\Support\Collection` instances instead of plain arrays. This brings consistency to the result types returned by the fluent query builder and Eloquent.
 
-If your scopes begin with `where` constraints no action is required. Remember, you can verify your query SQL using the `toSql` method of a query:
+If you do not want to migrate your query builder results to `Collection` instances, you may chain the `all` method onto your calls to the query builder's `get` method. This will return a plain PHP array of the results, allowing you to maintain backwards compatibility:
 
-    User::where('foo', 'bar')->toSql();
+    $users = DB::table('users')->get()->all();
 
 #### Eloquent `$morphClass` Property
 
-The `$morphClass` property on Eloquent models has been removed in favor of defining a "[morph map](/docs/{{version}}/eloquent-relationships#polymorphic-relations)". Defining a morph map provides support for eager loading and resolves additional bugs with polymorphic relations. If you were previously relying on the `$morphClass` property, you should migrate to `morphMap` using the following syntax:
+The `$morphClass` property that could be defined on Eloquent models has been removed in favor of defining a "morph map". Defining a morph map provides support for eager loading and resolves additional bugs with polymorphic relations. If you were previously relying on the `$morphClass` property, you should migrate to `morphMap` using the following syntax:
 
 ```php
 Relation::morphMap([
-    'YourCustomMorphClass' => YourModel::class,
+    'YourCustomMorphName' => YourModel::class,
 ]);
 ```
 
@@ -46,10 +115,24 @@ class User extends Model
 You should define the following `morphMap` in the `boot` method of your `AppServiceProvider`:
 
 ```php
+use Illuminate\Database\Eloquent\Relation;
+
 Relation::morphMap([
     'user' => User::class,
 ]);
 ```
+
+#### Eloquent `save` Method
+
+The Eloquent `save` method now returns `false` if the model has not been changed since the last time it was retrieved or saved.
+
+#### Eloquent Scopes
+
+Eloquent scopes now respect the leading boolean of scope constraints. For example, if you are starting your scope with an `orWhere` constraint it will no longer be converted to normal `where`. If you were relying on this feature (e.g. adding multiple `orWhere` constraints within a loop), you should verify that the first condition is a normal `where` to avoid any boolean logic issues.
+
+If your scopes begin with `where` constraints no action is required. Remember, you can verify your query SQL using the `toSql` method of a query:
+
+    User::where('foo', 'bar')->toSql();
 
 #### Join Clause
 
@@ -64,6 +147,77 @@ The `$bindings` property was also removed. To manipulate join bindings directly 
     $query->join(DB::raw('('.$subquery->toSql().') table'), function($join) use ($subquery) {
         $join->addBinding($subquery->getBindings(), 'join');
     });
+
+### Exception Handler
+
+#### Constructor
+
+The base exception handler class now requires a `Illuminate\Container\Container` instance to be passed to its constructor. This change will only affect your application if you have defined a custom `__construct` method in your `app/Exception/Handler.php` file. If you have done this, you should pass a container instance into the `parent::__construct` method:
+
+    parent::__construct(app());
+
+### Middleware
+
+#### Binding Substitution Middleware
+
+Route model binding is now accomplished using middleware. All applications should add the `Illuminate\Routing\Middleware\SubstituteBindings` to your `web` middleware group in your `app/Http/Kernel.php` file:
+
+    \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
+You should also register a route middleware for binding substitution in the `$routeMiddleware` property of your HTTP kernel:
+
+    'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
+Once this route middleware has been registered, you should add it to the `api` middleware group:
+
+    'api' => [
+        'throttle:60,1',
+        'bindings',
+    ],
+
+### Queue
+
+#### Configuration
+
+In your queue configuration, all `expire` configuration items should be renamed to `retry_after`. Likewise, the Beanstalk configuration's `ttr` item should be renamed to `retry_after`. This name change provides more clarity on the purpose of this configuration option.
+
+#### Closures
+
+Queueing closures is no longer supported. If you are queueing a Closure in your application, you should convert the Closure to a class and queue an instance of the class instead.
+
+#### Daemon Workers
+
+It is no longer necessary to specify the `--daemon` option when calling the `queue:work` Artisan command. Running the `php artisan queue:work` command will automatically assume that you want to run the worker in daemon mode. If you would like to process a single job, you may use the `--once` option on the command:
+
+    // Start a daemon queue worker...
+    php artisan queue:work
+
+    // Process a single job...
+    php artisan queue:work --once
+
+#### Event Data Changes
+
+Various queue job events such as `JobProcessing` and `JobProcessed` no longer contain the `$data` property. You should update your application to call `$event->job->payload()` to get the equivalent data.
+
+#### Failed Jobs Table
+
+If your application has a `failed_jobs` table, you should add a `exception` column to the table. The `exception` column should be a `TEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
+
+#### Serializing Models On Legacy Style Queue Jobs
+
+Typically, jobs in Laravel are queued by passing a new job instance to the `Queue::push` method. However, some applications may be queuing jobs using the following legacy syntax:
+
+    Queue::push('ClassName@method');
+
+If you are queueing jobs using this syntax, Eloquent models will no longer be automatically serialized and re-retrieved by the queue. If you would like your Eloquent models to be automatically serialized by the queue, you should use the `Illuminate\Queue\SerializesModels` trait on your job class and queue the job using the new `push` syntax:
+
+    Queue::push(new ClassName);
+
+### Validation
+
+#### Form Request Exceptions
+
+If a form request's validation fails, Laravel will now throw an instance of `Illuminate\Validation\ValidationException` instead of an instance of `HttpException`. If you are manually catching the `HttpException` instance thrown by a form request, you should update your `catch` blocks to catch the `ValidationException` instead.
 
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
