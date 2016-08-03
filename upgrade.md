@@ -22,6 +22,18 @@
 
 Laravel 5.3 requires PHP 5.6.4 or higher. HHVM is no longer officially supported as it does not contain the same language features as PHP 5.6+.
 
+### Arrays
+
+#### Key / Value Order Change
+
+The `first`, `last`, and `contains` methods on the `Arr` class now pass the "value" as the first parameter to their given callback Closure. For example:
+
+    Arr::first(function ($value, $key) {
+        return ! is_null($value);
+    });
+
+In previous versions of Laravel, the `$key` was passed first. Since most scenarios are only interested in the `$value` it is now passed first. You should do a "global find" in your application for these methods to verify that you are expecting the `$value` to be passed as the first argument to your Closure.
+
 ### Artisan
 
 ##### The `make:console` Command
@@ -43,6 +55,22 @@ If you were not customizing the authentication controllers, you should just be a
 #### Password Reset E-Mails
 
 Password reset e-mails now use the new Laravel notifications feature. If you would like to customize the notification sent when sending password reset links, you should override the `sendPasswordResetNotification` method of the `Illuminate\Auth\Passwords\CanResetPassword` trait.
+
+Your `User` model **must** also use the new `Illuminate\Notifications\Notifiable` trait in order for password reset link emails to be delivered:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use Notifiable;
+    }
+
+> {note} Don't forget to register the `Illuminate\Notifications\NotificationServiceProvider` in the `providers` array of your `config/app.php` configuration file.
 
 #### Post To Logout
 
@@ -77,11 +105,47 @@ In Laravel 5.3, the authorization services will automatically call the `Any` suf
 
 If you are calling any authorization policies and passing a class name instead of a model instance, you should verify that you have an `Any` suffixed method for that ability. It is perfectly normal to have both an `Any` suffixed method and a non-suffixed version of the method on a single policy class. For example: a `view` method for authorizing if a user can view a particular post instance and a `viewAny` method for authorizing if a user can view posts in general.
 
+#### The `AuthorizesResources` Trait
+
+The `AuthorizesResources` trait has been merged with the `AuthorizesRequests` trait. You should remove the `AuthorizesResources` trait from your `app/Http/Controllers/Controller.php` file.
+
 ### Blade
 
 #### Custom Directives
 
 In prior verisons of Laravel, when registering custom Blade directives using the `directive` method, the `$expression` passed to your directive callback contained the outer-most parenthesis. In Laravel 5.3, these outer-most parenthesis are removed. Be sure to review the [Blade extension](/docs/5.3/blade#extending-blade) documentation and verify your custom Blade directives are still working properly.
+
+### Cache
+
+#### Extension Closure Binding & `$this`
+
+When calling the `Cache::extend` method with a Closure, `$this` will be bound to the `CacheManager` instance, allowing you to call its methods from within your extension Closure:
+
+    Cache::extend('memcached', function ($app, $config) {
+        try {
+            return $this->createMemcachedDriver($config);
+        } catch (Exception $e) {
+            return $this->createNullDriver($config);
+        }
+    });
+
+### Collections
+
+#### Key / Value Order Change
+
+The `first`, `last`, and `contains` collection methods all pass the "value" as the first parameter to their given callback Closure. For example:
+
+    $collection->first(function ($value, $key) {
+        return ! is_null($value);
+    });
+
+In previous versions of Laravel, the `$key` was passed first. Since most scenarios are only interested in the `$value` it is now passed first. You should do a "global find" in your application for these methods to verify that you are expecting the `$value` to be passed as the first argument to your Closure.
+
+#### `where` Comparison Now "Loose" By Default
+
+The `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
+
+The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicit call either `where` or `whereStrict` depending on your needs.
 
 ### Database
 
@@ -158,6 +222,16 @@ The base exception handler class now requires a `Illuminate\Container\Container`
 
 ### Middleware
 
+#### `can` Middleware Namespace Change
+
+The `can` middleware listed in the `$routeMiddleware` property of your HTTP kernel should be updated to the following class:
+
+    'can' => \Illuminate\Auth\Middleware\Authorize::class,
+
+#### `can` Middleware Authentication Exception
+
+The `can` middleware will now throw an instance of `Illuminate\Auth\AuthenticationException` if the user is not authenticated. If you were manually catching a different exception type, you should update your application to catch this exception. In most cases, this change will not affect your application.
+
 #### Binding Substitution Middleware
 
 Route model binding is now accomplished using middleware. All applications should add the `Illuminate\Routing\Middleware\SubstituteBindings` to your `web` middleware group in your `app/Http/Kernel.php` file:
@@ -175,6 +249,28 @@ Once this route middleware has been registered, you should add it to the `api` m
         'bindings',
     ],
 
+### Notifications
+
+#### Installation
+
+Laravel 5.3 includes a new, driver based notification system. You should register the `Illuminate\Notifications\NotificationServiceProvider` in the `providers` array of your `config/app.php` configuration file.
+
+You should also add the `Illuminate\Support\Facades\Notification` facade to the `aliases` array of your `config/app.php` configuration file.
+
+### Pagination
+
+#### Customization
+
+Customizing the paginator's generated HTML is much easier in Laravel 5.3 compared to previous Laravel 5.x releases. Instead of defining a "Presenter" class, you only need to define a simple Blade template.
+
+The easiest way to customize the pagination views is by exporting them to your `resources/views/vendor` directory using the `vendor:publish` command:
+
+    php artisan vendor:publish --tag=laravel-pagination
+
+This command will place the views in the `resources/views/vendor/pagination` directory. The `default.blade.php` file within this directory corresponds to the default pagination view. Simply edit this file to modify the pagination HTML.
+
+Be sure to review the full [pagination documentation](/docs/{{version}}/pagination) for more information.
+
 ### Queue
 
 #### Configuration
@@ -184,6 +280,10 @@ In your queue configuration, all `expire` configuration items should be renamed 
 #### Closures
 
 Queueing closures is no longer supported. If you are queueing a Closure in your application, you should convert the Closure to a class and queue an instance of the class instead.
+
+#### Collection Serialization
+
+The `Illuminate\Queue\SerializesModels` trait now properly serializes instances of `Illuminate\Database\Eloquent\Collection`. This will most likely not be a breaking change for the vast majority of applications; however, if your application is absolutely dependent on collections not being re-retrieved from the database by queued jobs, you should verify that this change does not negatively affect your application.
 
 #### Daemon Workers
 
@@ -213,11 +313,49 @@ If you are queueing jobs using this syntax, Eloquent models will no longer be au
 
     Queue::push(new ClassName);
 
+### Routing
+
+#### Resource Parameters Are Singular By Default
+
+In previous versions of Laravel, route parameters registered using `Route::resource` where not "singularized". This could lead to some unexpected behavior when registering route model bindings. For example, given the following `Route::resource` call:
+
+    Route::resource('photos', 'PhotoController');
+
+The URI for the `show` route would be defined as follows:
+
+    /photos/{photos}
+
+In Laravel 5.3, all resource route parameters are singularized by default. So, the same call to `Route::resource` would register the following URI:
+
+    /photos/{photo}
+
+If you would like to maintain the previous behavior instead of automatically singularizing resource route parameters, you may make the following call to the `singularResourceParameters` method in your `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Route;
+
+    Route::singularResourceParameters(false);
+
+#### Resource Route Names No Longer Affected By Prefixes
+
+URL prefixes no longer affect the route names assigned to routes when using `Route::resource`, since this behavior defeated the entire purpose of using route names in the first place.
+
+If your application is using `Route::resource` within a `Route::group` call that specified a `prefix` option, you should examine all of your calls to the `route` helper and verify that you are no longer appending the URI `prefix` to the route name.
+
+If this change causes you to have two routes with the same name, you may use the `names` option when calling `Route::resource` to specify a custom name for a given route. Refer to the [resource routing documentation](/docs/5.3/controllers#resource-controllers) for more information.
+
 ### Validation
 
 #### Form Request Exceptions
 
 If a form request's validation fails, Laravel will now throw an instance of `Illuminate\Validation\ValidationException` instead of an instance of `HttpException`. If you are manually catching the `HttpException` instance thrown by a form request, you should update your `catch` blocks to catch the `ValidationException` instead.
+
+#### Nullable Primitives
+
+When validating arrays, booleans, integers, numerics, and strings, `null` will no longer be considered a valid value unless the rule set contains the new `nullable` rule:
+
+    Validate::make($request->all(), [
+        'string' => 'nullable|max:5',
+    ]);
 
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
