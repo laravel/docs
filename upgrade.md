@@ -56,9 +56,9 @@ Once these controllers have been placed into your application, you may need to r
 
 If you were not customizing the authentication controllers, you should just be able to drop in fresh copies of the controllers from GitHub and verify that you are calling the `Route::auth` method in your `routes.php` file.
 
-#### Password Reset E-Mails
+#### Password Reset Emails
 
-Password reset e-mails now use the new Laravel notifications feature. If you would like to customize the notification sent when sending password reset links, you should override the `sendPasswordResetNotification` method of the `Illuminate\Auth\Passwords\CanResetPassword` trait.
+Password reset emails now use the new Laravel notifications feature. If you would like to customize the notification sent when sending password reset links, you should override the `sendPasswordResetNotification` method of the `Illuminate\Auth\Passwords\CanResetPassword` trait.
 
 Your `User` model **must** also use the new `Illuminate\Notifications\Notifiable` trait in order for password reset link emails to be delivered:
 
