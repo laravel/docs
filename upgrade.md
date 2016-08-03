@@ -22,6 +22,10 @@
 
 Laravel 5.3 requires PHP 5.6.4 or higher. HHVM is no longer officially supported as it does not contain the same language features as PHP 5.6+.
 
+### Deprecations
+
+All of the deprecations listed in the [Laravel 5.2 upgrade guide](#5.2-deprecations) have been removed from the framework. You should review this list to verify you are no longer using these deprecated features.
+
 ### Arrays
 
 #### Key / Value Order Change
@@ -631,6 +635,7 @@ The "Stringy" library is no longer included with the framework. You may install 
 
 The `ValidatesRequests` trait now throws an instance of `Illuminate\Foundation\Validation\ValidationException` instead of throwing an instance of `Illuminate\Http\Exception\HttpResponseException`. This is unlikely to affect your application unless you were manually catching this exception.
 
+<a name="5.2-deprecations"></a>
 ### Deprecations
 
 The following features are deprecated in 5.2 and will be removed in the 5.3 release in June 2016:
