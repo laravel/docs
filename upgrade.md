@@ -212,6 +212,26 @@ The `$bindings` property was also removed. To manipulate join bindings directly 
         $join->addBinding($subquery->getBindings(), 'join');
     });
 
+### Encryption
+
+#### Mcrypt Encrypter Has Been Removed
+
+The Mcrypt encrypter was deprecated during the Laravel 5.1.0 release in June 2015. This encrypter has been totally removed in the 5.3.0 release in favor of the newer encryption implementation based on OpenSSL, which has been the default encryption scheme for all releases since Laravel 5.1.0.
+
+If you are still using an Mcrypt based `cipher` in your `config/app.php` configuration file, you should update the cipher to `AES-256-CBC` and set your key to a random 32 byte string which may be securely generated using `php artisan key:generate`.
+
+If you are storing encrypted data in your database using the Mcrypt encrypter, you may install the `laravel/legacy-encrypter` [package](https://github.com/laravel/legacy-encrypter) which includes the legacy Mcrypt encrypter implementation. You should use this package to decrypt your encrypted data and re-encrypt it using the new OpenSSL encrypter. For example, you may do something like the following in a [custom Artisan command](/docs/{{version}}/artisan):
+
+    $legacy = new McryptEncrypter($encryptionKey);
+
+    foreach ($records as $record) {
+        $record->encrypted = encrypt(
+            $legacy->decrypt($record->encrypted)
+        );
+
+        $record->save();
+    }
+
 ### Exception Handler
 
 #### Constructor
