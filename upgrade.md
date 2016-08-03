@@ -14,7 +14,7 @@
 <a name="upgrade-5.3.0"></a>
 ## Upgrading To 5.3.0 From 5.2
 
-#### Estimated Upgrade Time: 2 Hours
+#### Estimated Upgrade Time: 2-3 Hours
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework so only a portion of these changes may actually affect your application.
 
