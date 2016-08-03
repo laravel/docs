@@ -16,7 +16,7 @@
 
 #### Estimated Upgrade Time: 2-3 Hours
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework so only a portion of these changes may actually affect your application.
+> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
 ### PHP & HHVM
 
