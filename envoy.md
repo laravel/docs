@@ -1,14 +1,15 @@
 # Envoy Task Runner
 
 - [Introduction](#introduction)
+    - [Installation](#installation)
 - [Writing Tasks](#writing-tasks)
-    - [Task Setup](#task-setup)
-    - [Task Variables](#task-variables)
-    - [Multiple Servers](#envoy-multiple-servers)
-    - [Task Stories](#envoy-task-stories)
-- [Running Tasks](#envoy-running-tasks)
+    - [Setup](#setup)
+    - [Variables](#variables)
+    - [Stories](#stories)
+    - [Multiple Servers](#multiple-servers)
+- [Running Tasks](#running-tasks)
     - [Confirming Task Execution](#confirming-task-execution)
-- [Notifications](#envoy-notifications)
+- [Notifications](#notifications)
     - [Slack](#slack)
 
 <a name="introduction"></a>
@@ -16,7 +17,7 @@
 
 [Laravel Envoy](https://github.com/laravel/envoy) provides a clean, minimal syntax for defining common tasks you run on your remote servers. Using Blade style syntax, you can easily setup tasks for deployment, Artisan commands, and more. Currently, Envoy only supports the Mac and Linux operating systems.
 
-<a name="envoy-installation"></a>
+<a name="installation"></a>
 ### Installation
 
 First, install Envoy using the Composer `global require` command:
@@ -50,8 +51,8 @@ You can force a script to run locally by specifying the server's IP address as `
 
     @servers(['localhost' => '127.0.0.1'])
 
-<a name="task-setup"></a>
-### Task Setup
+<a name="setup"></a>
+### Setup
 
 Sometimes, you may need to execute some PHP code before executing your Envoy tasks. You may use the ```@setup``` directive to declare variables and do other general PHP work before any of your other tasks are executed:
 
@@ -69,8 +70,8 @@ If you need to require other PHP files before your task is executed, you may use
         # ...
     @endtask
 
-<a name="task-variables"></a>
-### Task Variables
+<a name="variables"></a>
+### Variables
 
 If needed, you may pass option values into Envoy tasks using the command line:
 
@@ -90,7 +91,31 @@ You may use access the options in your tasks via Blade's "echo" syntax. Of cours
         php artisan migrate
     @endtask
 
-<a name="envoy-multiple-servers"></a>
+<a name="stories"></a>
+### Stories
+
+Stories group a set of tasks under a single, convenient name, allowing you to group small, focused tasks into large tasks. For instance, a `deploy` story may run the `git` and `composer` tasks by listing the task names within its definition:
+
+    @servers(['web' => '192.168.1.1'])
+
+    @story('deploy')
+        git
+        composer
+    @endstory
+
+    @task('git')
+        git pull origin master
+    @endtask
+
+    @task('composer')
+        composer install
+    @endtask
+
+Once the story has been written, you may run it just like a typical task:
+
+    envoy run deploy
+
+<a name="multiple-servers"></a>
 ### Multiple Servers
 
 Envoy allows you to easily run a task across multiple servers. First, add additional servers to your `@servers` declaration. Each server should be assigned a unique name. Once you have defined your additional servers, list each of the servers in the task's `on` array:
@@ -115,31 +140,7 @@ By default, tasks will be executed on each server serially. In other words, a ta
         php artisan migrate
     @endtask
 
-<a name="envoy-task-stories"></a>
-### Task Stories
-
-Stories group a set of tasks under a single, convenient name, allowing you to group small, focused tasks into large tasks. For instance, a `deploy` story may run the `git` and `composer` tasks by listing the task names within its definition:
-
-    @servers(['web' => '192.168.1.1'])
-
-    @story('deploy')
-        git
-        composer
-    @endstory
-
-    @task('git')
-        git pull origin master
-    @endtask
-
-    @task('composer')
-        composer install
-    @endtask
-
-Once the story has been written, you may run it just like a typical task:
-
-    envoy run deploy
-
-<a name="envoy-running-tasks"></a>
+<a name="running-tasks"></a>
 ## Running Tasks
 
 To run a task or story that is defined in your `Envoy.blade.php` file, execute Envoy's `run` command, passing the name of the task or story you would like to execute. Envoy will run the task and display the output from the servers as the task is running:
@@ -157,8 +158,8 @@ If you would like to be prompted for confirmation before running a given task on
         php artisan migrate
     @endtask
 
-<a name="envoy-notifications"></a>
-<a name="envoy-hipchat-notifications"></a>
+<a name="notifications"></a>
+<a name="hipchat-notifications"></a>
 ## Notifications
 
 <a name="slack"></a>
