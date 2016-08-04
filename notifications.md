@@ -4,6 +4,7 @@
     - [Driver Prerequisites](#driver-prerequisites)
 - [Writing Notifications](#writing-notifications)
     - [Message Structure](#message-structure)
+    - [Error Notifications](#error-notifications)
 - [Sending Notifications](#sending-notifications)
     - [Determining Delivery Channels](#determining-delivery-channels)
     - [Via Mail](#via-mail)
@@ -16,7 +17,7 @@
 
 ## Introduction
 
-In addition to support for [sending email](/docs/{{version}}/mail), Laravel also provides support for sending notifications across a variety of delivery channels, including mail, SMS, and Slack. Notifications may also be stored in a database so that they may be displayed in your web interface.
+In addition to support for [sending email](/docs/{{version}}/mail), Laravel also provides support for sending notifications across a variety of delivery channels, including mail, SMS (via [Nexmo](https://www.nexmo.com/)), [Slack](https://slack.com), and database tables. Notifications may also be stored in a database so that they may be displayed in your web interface.
 
 Typically, notifications should be short, informational messages that notify your users of something that occurred in your application. For example, if you are writing a billing application, you might send an "Invoice Paid" notification to your users via the email and SMS channels.
 
@@ -66,6 +67,23 @@ In the example above, we register a line of text, a call to action, and then ano
 <img src="https://laravel.com/assets/img/notification-example.png" width="551" height="596">
 
 Note that we are using `$this->invoice->id` within our `message` method. You may pass any data your notification needs to generate its message into the notification constructor. This will typically be done when you send the notification.
+
+<a name="error-notifications"></a>
+### Error Notifications
+
+Some notifications may be notifying the users of errors that have occurred within your application, such as an invoice payment failing. You may specify that a notification is an error by calling the `error` method when building your message. Some notification channels will use this information to customize the appearance of the notification. For example, when using the `mail` channel, the call to action button will be red instead of blue:
+
+    /**
+     * Get the notification message.
+     *
+     * @return void
+     */
+    public function message()
+    {
+        $this->error()
+             ->subject('Notification Subject')
+             ->line('...')
+    }
 
 <a name="sending-notifications"></a>
 ## Sending Notifications
@@ -129,6 +147,21 @@ When sending notifications via the `mail` channel, the notification system will 
         {
             return $this->email_address;
         }
+    }
+
+#### Customizing The Subject
+
+By default, the email's subject will be determined by "title casing" the class name of the notification. So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If you would like to specify an explicit subject for the message, you may call the `subject` method when building your message:
+
+    /**
+     * Get the notification message.
+     *
+     * @return void
+     */
+    public function message()
+    {
+        $this->subject('Notification Subject')
+             ->line('...')
     }
 
 <a name="via-sms"></a>
