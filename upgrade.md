@@ -30,13 +30,13 @@ All of the deprecations listed in the [Laravel 5.2 upgrade guide](#5.2-deprecati
 
 #### Key / Value Order Change
 
-The `first`, `last`, and `contains` methods on the `Arr` class now pass the "value" as the first parameter to their given callback Closure. For example:
+The `first`, `last`, and `contains` methods on the `Arr` class now pass the "value" as the first parameter to the given callback Closure. For example:
 
     Arr::first(function ($value, $key) {
         return ! is_null($value);
     });
 
-In previous versions of Laravel, the `$key` was passed first. Since most scenarios are only interested in the `$value` it is now passed first. You should do a "global find" in your application for these methods to verify that you are expecting the `$value` to be passed as the first argument to your Closure.
+In previous versions of Laravel, the `$key` was passed first. Since most use cases are only interested in the `$value` it is now passed first. You should do a "global find" in your application for these methods to verify that you are expecting the `$value` to be passed as the first argument to your Closure.
 
 ### Artisan
 
@@ -54,13 +54,13 @@ You should also make sure that you are calling the `Route::auth()` method in you
 
 Once these controllers have been placed into your application, you may need to re-implement any customizations you made to these controllers. For example, if you are customizing the authentication guard that is used for authentication, you may need to override the controller's `guard` method. You can examine each authentication controller's trait to determine which methods to override.
 
-If you were not customizing the authentication controllers, you should just be able to drop in fresh copies of the controllers from GitHub and verify that you are calling the `Route::auth` method in your `routes.php` file.
+> {tip} If you were not customizing the authentication controllers, you should just be able to drop in fresh copies of the controllers from GitHub and verify that you are calling the `Route::auth` method in your `routes.php` file.
 
 #### Password Reset Emails
 
 Password reset emails now use the new Laravel notifications feature. If you would like to customize the notification sent when sending password reset links, you should override the `sendPasswordResetNotification` method of the `Illuminate\Auth\Passwords\CanResetPassword` trait.
 
-Your `User` model **must** also use the new `Illuminate\Notifications\Notifiable` trait in order for password reset link emails to be delivered:
+Your `User` model **must** use the new `Illuminate\Notifications\Notifiable` trait in order for password reset link emails to be delivered:
 
     <?php
 
@@ -76,17 +76,17 @@ Your `User` model **must** also use the new `Illuminate\Notifications\Notifiable
 
 > {note} Don't forget to register the `Illuminate\Notifications\NotificationServiceProvider` in the `providers` array of your `config/app.php` configuration file.
 
-#### Post To Logout
+#### POST To Logout
 
-The `Route::auth` method now register a `POST` route for `/logout` instead of a `GET` route. To upgrade, you should either convert your logout requests to use the `POST` verb or register your own `GET` route for the `/logout` URI:
+The `Route::auth` method now registers a `POST` route for `/logout` instead of a `GET` route. This prevents other web applications from logging your users out of your application. To upgrade, you should either convert your logout requests to use the `POST` verb or register your own `GET` route for the `/logout` URI:
 
-    Route::get('logout', 'Auth\LoginController@logout');
+    Route::get('/logout', 'Auth\LoginController@logout');
 
 ### Authorization
 
 #### Calling Policy Methods With Class Names
 
-Some policy methods will only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `view` or `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to view or create any posts at all.
+Some policy methods only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `view` or `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to view or create any posts at all.
 
 When defining policy methods that will not receive a model instance, such as a `create` method, you should suffix the methods with `Any`:
 
@@ -107,7 +107,9 @@ In Laravel 5.3, the authorization services will automatically call the `Any` suf
         //
     }
 
-If you are calling any authorization policies and passing a class name instead of a model instance, you should verify that you have an `Any` suffixed method for that ability. It is perfectly normal to have both an `Any` suffixed method and a non-suffixed version of the method on a single policy class. For example: a `view` method for authorizing if a user can view a particular post instance and a `viewAny` method for authorizing if a user can view posts in general.
+If you are calling any authorization policies and passing a class name instead of a model instance, you should verify that you have an `Any` suffixed method for that ability.
+
+> {tip} It is perfectly normal to have both an `Any` suffixed method and a non-suffixed version of the method on a single policy class. For example: a `view` method for authorizing if a user can view a particular post instance and a `viewAny` method for authorizing if a user can view posts in general.
 
 #### The `AuthorizesResources` Trait
 
@@ -117,7 +119,7 @@ The `AuthorizesResources` trait has been merged with the `AuthorizesRequests` tr
 
 #### Custom Directives
 
-In prior verisons of Laravel, when registering custom Blade directives using the `directive` method, the `$expression` passed to your directive callback contained the outer-most parenthesis. In Laravel 5.3, these outer-most parenthesis are removed. Be sure to review the [Blade extension](/docs/5.3/blade#extending-blade) documentation and verify your custom Blade directives are still working properly.
+In prior verisons of Laravel, when registering custom Blade directives using the `directive` method, the `$expression` passed to your directive callback contained the outer-most parenthesis. In Laravel 5.3, these outer-most parenthesis are not included in the expression based to your directive callback. Be sure to review the [Blade extension](/docs/5.3/blade#extending-blade) documentation and verify your custom Blade directives are still working properly.
 
 ### Cache
 
@@ -143,13 +145,13 @@ The `first`, `last`, and `contains` collection methods all pass the "value" as t
         return ! is_null($value);
     });
 
-In previous versions of Laravel, the `$key` was passed first. Since most scenarios are only interested in the `$value` it is now passed first. You should do a "global find" in your application for these methods to verify that you are expecting the `$value` to be passed as the first argument to your Closure.
+In previous versions of Laravel, the `$key` was passed first. Since most use cases are only interested in the `$value` it is now passed first. You should do a "global find" in your application for these methods to verify that you are expecting the `$value` to be passed as the first argument to your Closure.
 
 #### `where` Comparison Now "Loose" By Default
 
 The `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
 
-The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicit call either `where` or `whereStrict` depending on your needs.
+The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicit call either `where` or `whereStrict` depending on your application's needs.
 
 ### Database
 
@@ -281,13 +283,13 @@ Laravel 5.3 includes a new, driver based notification system. You should registe
 
 You should also add the `Illuminate\Support\Facades\Notification` facade to the `aliases` array of your `config/app.php` configuration file.
 
+Finally, you may use the `Illuminate\Notifications\Notifiable` trait on your `User` model or any other model you wish to receive notifications.
+
 ### Pagination
 
 #### Customization
 
-Customizing the paginator's generated HTML is much easier in Laravel 5.3 compared to previous Laravel 5.x releases. Instead of defining a "Presenter" class, you only need to define a simple Blade template.
-
-The easiest way to customize the pagination views is by exporting them to your `resources/views/vendor` directory using the `vendor:publish` command:
+Customizing the paginator's generated HTML is much easier in Laravel 5.3 compared to previous Laravel 5.x releases. Instead of defining a "Presenter" class, you only need to define a simple Blade template. The easiest way to customize the pagination views is by exporting them to your `resources/views/vendor` directory using the `vendor:publish` command:
 
     php artisan vendor:publish --tag=laravel-pagination
 

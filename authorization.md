@@ -157,7 +157,7 @@ You may continue to define additional methods on the policy as needed for the va
 <a name="methods-without-models"></a>
 ### Methods Without Models
 
-Some policy methods will only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `view` or `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to view or create any posts at all.
+Some policy methods only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `view` or `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to view or create any posts at all.
 
 When defining policy methods that will not receive a model instance, such as a `create` method, you should suffix the methods with `Any`:
 
