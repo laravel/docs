@@ -161,7 +161,7 @@ If you would like to override some of the default values of your models, you may
 
     $user = factory(App\User::class)->make([
         'name' => 'Abigail',
-       ]);
+    ]);
 
 <a name="persisting-models"></a>
 ### Persisting Models
@@ -183,7 +183,7 @@ You may override attributes on the model by passing an array to the `create` met
 
     $user = factory(App\User::class)->create([
         'name' => 'Abigail',
-       ]);
+    ]);
 
 <a name="relationships"></a>
 ### Relationships
