@@ -40,6 +40,7 @@
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
     - [Mail](/docs/{{version}}/mail)
+    - [Notifications](/docs/{{version}}/notifications)
     - [Queues](/docs/{{version}}/queues)
 - Database
     - [Getting Started](/docs/{{version}}/database)
