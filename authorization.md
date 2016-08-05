@@ -157,9 +157,9 @@ You may continue to define additional methods on the policy as needed for the va
 <a name="methods-without-models"></a>
 ### Methods Without Models
 
-Some policy methods only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `view` or `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to view or create any posts at all.
+Some policy methods only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to create any posts at all.
 
-When defining policy methods that will not receive a model instance, such as a `create` method, you should suffix the methods with `Any`:
+When defining policy methods that will not receive a model instance, such as a `create` method, it will not receive a model instance. Instead, you should define the method as only expecting the authenticated user:
 
     /**
      * Determine if the given user can create posts.
@@ -167,37 +167,12 @@ When defining policy methods that will not receive a model instance, such as a `
      * @param  \App\User  $user
      * @return bool
      */
-    public function createAny(User $user)
+    public function create(User $user)
     {
         //
     }
 
-When authorizing if a user can `view` a given resource, it's common to have both `view` and `viewAny` methods on your policy. This allows you to authorize that the user can view the resource in general, as well as authorize that they can view particular instances of that resource. It's perfectly acceptable to authorize that a user can view posts but cannot view a *particular* post instance:
-
-    /**
-     * Determine whether the user can view posts.
-     *
-     * @param  App\User  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        // Return true if the user can view posts...
-    }
-
-    /**
-     * Determine whether the user can view the post.
-     *
-     * @param  App\User  $user
-     * @param  App\Post  $post
-     * @return mixed
-     */
-    public function view(User $user, Post $post)
-    {
-        // Return true if the user can view the given post...
-    }
-
-> {tip} If you used the `--model` option when generating your policy, the `viewAny`, `createAny`, and `updateAny` methods will already be defined on the policy.
+> {tip} If you used the `--model` option when generating your policy, all of the relevant "CRUD" policy methods will already be defined on the generated policy.
 
 <a name="policy-filters"></a>
 ### Policy Filters
@@ -232,7 +207,7 @@ Remember, some actions like `create` may not require a model instance. In these 
     use App\Post;
 
     if ($user->can('create', Post::class)) {
-        // Executes the "createAny" method on the relevant policy...
+        // Executes the "create" method on the relevant policy...
     }
 
 <a name="via-middleware"></a>
@@ -255,8 +230,6 @@ Again, some actions like `create` may not require a model instance. In these sit
     Route::post('/post', function () {
         // The current user may create posts...
     })->middleware('can:create,App\Post');
-
-As previously noted, policy methods which do not examine a particular model instance are always suffixed with `Any`. So, in the example above, the `createAny` method on the `PostPolicy` will be used to authorize the action.
 
 <a name="via-controller-helpers"></a>
 ### Via Controller Helpers
@@ -305,8 +278,6 @@ As previously discussed, some actions like `create` may not require a model inst
         // The current user can create blog posts...
     }
 
-As previously noted, policy methods which do not examine a particular model instance are always suffixed with `Any`. So, in the example above, the `createAny` method on the `PostPolicy` will be used to authorize the action.
-
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
 
@@ -329,5 +300,3 @@ Like most of the other authorization methods, you may pass a class name to the `
     @can('create', Post::class)
         <!-- The Current User Can Create Posts -->
     @endcan
-
-As previously noted, policy methods which do not examine a particular model instance are always suffixed with `Any`. So, in the example above, the `createAny` method on the `PostPolicy` will be used to authorize the action.
