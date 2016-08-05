@@ -86,9 +86,9 @@ The `Route::auth` method now registers a `POST` route for `/logout` instead of a
 
 #### Calling Policy Methods With Class Names
 
-Some policy methods only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `view` or `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to view or create any posts at all.
+Some policy methods only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to create any posts at all.
 
-When defining policy methods that will not receive a model instance, such as a `create` method, you should suffix the methods with `Any`:
+When defining policy methods that will not receive a model instance, such as a `create` method, the class name will no longer be passed as the second argument to the method. Your method should just expected the authenticated user instance:
 
     /**
      * Determine if the given user can create posts.
@@ -96,20 +96,10 @@ When defining policy methods that will not receive a model instance, such as a `
      * @param  \App\User  $user
      * @return bool
      */
-    public function createAny(User $user)
+    public function create(User $user)
     {
         //
     }
-
-In Laravel 5.3, the authorization services will automatically call the `Any` suffixed version of the method if a string class name is passed to the `can` method (or any other authorization method). So, the policy method would typically be executed like so:
-
-    if ($user->can('create', Post::class)) {
-        //
-    }
-
-If you are calling any authorization policies and passing a class name instead of a model instance, you should verify that you have an `Any` suffixed method for that ability.
-
-> {tip} It is perfectly normal to have both an `Any` suffixed method and a non-suffixed version of the method on a single policy class. For example: a `view` method for authorizing if a user can view a particular post instance and a `viewAny` method for authorizing if a user can view posts in general.
 
 #### The `AuthorizesResources` Trait
 
