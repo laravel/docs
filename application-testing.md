@@ -39,11 +39,9 @@ Laravel provides a very fluent API for making HTTP requests to your application,
 
 The `visit` method makes a `GET` request into the application. The `see` method asserts that we should see the given text in the response returned by the application. The `dontSee` method asserts that the given text is not returned in the application response. This is the most basic application test available in Laravel.
 
-You may also use the 'visitRoute' method in order to make a 'GET' request into the application via a named route:
+You may also use the 'visitRoute' method to make a 'GET' request via a named route:
 
     $this->visitRoute('profile');
-
-Of course, you can pass route parameters in the usual way:
 
     $this->visitRoute('profile', ['user' => 1]);
 
@@ -68,7 +66,7 @@ Now, let's write a test that clicks the link and asserts the user lands on the c
              ->seePageIs('/about-us');
     }
 
-You may also check that your application has arrived at the correct named route using the alternative:
+You may also check that the user has arrived at the correct named route using the `seeRouteIs` method:
 
     ->seeRouteIs('profile', ['user' => 1]);
 
