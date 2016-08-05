@@ -55,13 +55,14 @@ Each notification message may have two parts: "lines" of texts and a "call to ac
     /**
      * Get the notification message.
      *
-     * @return void
+     * @param  \Illuminate\Notifications\Message  $message
+     * @return \Illuminate\Notifications\Message
      */
-    public function message()
+    public function message(Message $message)
     {
-        $this->line('One of your invoices has been paid!')
-             ->action('View Invoice', 'https://example.com/invoice/'.$this->invoice->id)
-             ->line('Thank you for using our application!');
+        return $message->line('One of your invoices has been paid!')
+                    ->action('View Invoice', 'https://example.com/invoice/'.$this->invoice->id)
+                    ->line('Thank you for using our application!');
     }
 
 We register a line of text, a call to action, and then another line of text. Each notification channel will translate this structure into a format that makes sense for it. When using the `mail` channel, for example, the notification will be translated into a nice, responsive HTML email template. When using the `nexmo` channel, it will be formatted into a simple text message.
@@ -80,13 +81,14 @@ Some notifications tell users about errors, such as an invoice payment failing. 
     /**
      * Get the notification message.
      *
-     * @return void
+     * @param  \Illuminate\Notifications\Message  $message
+     * @return \Illuminate\Notifications\Message
      */
-    public function message()
+    public function message(Message $message)
     {
-        $this->error()
-             ->subject('Notification Subject')
-             ->line('...')
+        return $message->error()
+                    ->subject('Notification Subject')
+                    ->line('...')
     }
 
 <a name="sending-notifications"></a>
@@ -162,12 +164,13 @@ By default, the email's subject is the class name of the notification put in "ti
     /**
      * Get the notification message.
      *
-     * @return void
+     * @param  \Illuminate\Notifications\Message  $message
+     * @return \Illuminate\Notifications\Message
      */
-    public function message()
+    public function message(Message $message)
     {
-        $this->subject('Notification Subject')
-             ->line('...')
+        return $message->subject('Notification Subject')
+                    ->line('...')
     }
 
 <a name="via-sms"></a>
@@ -314,6 +317,7 @@ Sending notifications can take time, especially if the channel needs an external
     namespace App\Notifications;
 
     use Illuminate\Bus\Queueable;
+    use Illuminate\Notifications\Message;
     use Illuminate\Notifications\Notification;
     use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -376,7 +380,7 @@ Laravel ships with a handful of notification channels, but you may want to write
     use App\Channels;
 
     use Illuminate\Support\Collection;
-    use Illuminate\Notifications\Notification;
+    use Illuminate\Notifications\Message;
 
     class VoiceChannel
     {
@@ -384,10 +388,10 @@ Laravel ships with a handful of notification channels, but you may want to write
          * Send the given notification.
          *
          * @param  \Illuminate\Support\Collection  $notifiables
-         * @param  \Illuminate\Notifications\Notification  $notification
+         * @param  \Illuminate\Notifications\Message  $notification
          * @return void
          */
-        public function send(Collection $notifiables, Notification $notification)
+        public function send(Collection $notifiables, Message $message)
         {
             foreach ($notifiables as $notifiable) {
                 // Send notification to the $notifiable instance...
@@ -424,9 +428,10 @@ Once your notification channel class has been defined, you may simply return the
         /**
          * Get the notification message.
          *
-         * @return void
+         * @param  \Illuminate\Notifications\Message  $message
+         * @return \Illuminate\Notifications\Message
          */
-        public function message()
+        public function message(Message $message)
         {
             // ...
         }
