@@ -11,6 +11,7 @@
     - [Via SMS](#via-sms)
     - [Via Slack](#via-slack)
     - [Via Database](#via-database)
+    - [Via Broadcast](#via-broadcast)
     - [Queueing Notifications](#queueing-notifications)
 - [Notification Events](#notification-events)
 - [Custom Channels](#custom-channels)
@@ -113,7 +114,7 @@ Alternatively, you may send notifications via the `Notification` facade. This is
 <a name="determining-delivery-channels"></a>
 ### Determining Delivery Channels
 
-Every notification class has a `via` method that determines on which channels the notification will be delivered. Out of the box, notifications may be sent on the `mail`, `nexmo`, `slack`, and `database` channels.
+Every notification class has a `via` method that determines on which channels the notification will be delivered. Out of the box, notifications may be sent on the `mail`, `nexmo`, `slack`, `database`, and `broadcast` channels.
 
 The `via` method receives a `$notifiable` instance, which will be an instance of the class to which the notification is sent. You may use `$notifiable` to determine which channels the notification should be delivered on (though this is not always necessary):
 
@@ -256,6 +257,7 @@ The database notification channel stores the notification information in a datab
 
     Schema::create('notifications', function (Blueprint $table) {
         $table->increments('id');
+        $table->string('type');
         $table->string('notifiable_type');
         $table->integer('notifiable_id');
         $table->string('level', 25);
@@ -306,6 +308,20 @@ You may also use a mass-update query to mark all of the notifications as read:
 Of course, you may `delete` the notifications to remove them from the table:
 
     $user->notifications()->delete();
+
+<a name="via-broadcast"></a>
+### Via Broadcast
+
+> {note} The `broadcast` notification channel is an extension of the database channel, so be sure to read over the [documentation for that channel](#via-database) before proceeding. In addition, you should configure a broadcast driver and a [queue listener](/docs/{{version}}/queues).
+
+When using the broadcast channel, the notification will first be stored in your `notifications` [database table](#via-database). Since the broadcast channel extends the database channel, you should never return both the `broadcast` and `database` from a notification's `via` method. After storing the notification, the broadcast channel will broadcast the notification to your JavaScript application using Laravel's event broadcasting services.
+
+Notifications will broadcast on a private channel formatted using the `{notifiable}.{id}` convention. So, if you are sending a notification to a `App\User` instance with an ID of `1`, the notification will be broadcast on the `App.User.1` private channel. When using Laravel Echo, you may easily listen for notifications on a channel using the `notification` method:
+
+    Echo.private('App.User.' + userId)
+        .notification((e) => {
+            console.log(e.notification);
+        });
 
 <a name="queueing-notifications"></a>
 ### Queueing Notifications
