@@ -367,7 +367,7 @@ Within an event listener, you may access the `notifiable` and `notification` pro
     public function handle(NotificationSent $event)
     {
         // $event->notifiable
-        // $event->notification
+        // $event->message
     }
 
 <a name="custom-channels"></a>
@@ -407,6 +407,7 @@ Once your notification channel class has been defined, you may simply return the
 
     use Illuminate\Bus\Queueable;
     use App\Channels\VoiceChannel;
+    use Illuminate\Notifications\Message;
     use Illuminate\Notifications\Notification;
     use Illuminate\Contracts\Queue\ShouldQueue;
 
