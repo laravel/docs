@@ -281,22 +281,34 @@ As previously discussed, some actions like `create` may not require a model inst
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
 
-When writing Blade templates, you may wish to display a portion of the page only if the user is authorized to perform a given action. For example, you may wish to show an update form for a given blog post only if the user can actually update the post. In this situation, the `@can` Blade directive may be used:
+When writing Blade templates, you may wish to display a portion of the page only if the user is authorized to perform a given action. For example, you may wish to show an update form for a given blog post only if the user can actually update the post. In this situation, Laravel provides two Blade directives: `@can` and `@cannot`.
 
     @can('update', $post)
         <!-- The Current User Can Update The Post -->
     @endcan
 
-The `@can` directive is primarily a convenient short-cut for writing `@if` statements. The `@can` statement above translates to the following `@if` statement:
+    @cannot('update', $post)
+        <!-- The Current User Can't Update The Post -->
+    @endcannot
+
+These directives are primarily convenient short-cuts for writing `@if` and `@unless` statements. The `@can` and `@cannot` statements above respectively translate to the following statements:
 
     @if (Auth::user()->can('update', $post))
         <!-- The Current User Can Update The Post -->
     @endif
 
+    @unless (Auth::user()->can('update', $post))
+        <!-- The Current User Can't Update The Post -->
+    @endunless
+
 #### Actions That Don't Require Models
 
-Like most of the other authorization methods, you may pass a class name to the `@can` directive if the action does not require a model instance:
+Like most of the other authorization methods, you may pass a class name to the `@can` and `@cannot` directives if the action does not require a model instance:
 
     @can('create', Post::class)
         <!-- The Current User Can Create Posts -->
     @endcan
+
+    @cannot('create', Post::class)
+        <!-- The Current User Can't Create Posts -->
+    @endcannot
