@@ -281,7 +281,7 @@ As previously discussed, some actions like `create` may not require a model inst
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
 
-When writing Blade templates, you may wish to display a portion of the page only if the user is authorized to perform a given action. For example, you may wish to show an update form for a given blog post only if the user can actually update the post. In this situation, Laravel provides two Blade directives: `@can` and `@cannot`.
+When writing Blade templates, you may wish to display a portion of the page only if the user is authorized to perform a given action. For example, you may wish to show an update form for a blog post only if the user can actually update the post. In this situation, you may use the `@can` and `@cannot` directives.
 
     @can('update', $post)
         <!-- The Current User Can Update The Post -->
@@ -291,7 +291,7 @@ When writing Blade templates, you may wish to display a portion of the page only
         <!-- The Current User Can't Update The Post -->
     @endcannot
 
-These directives are primarily convenient short-cuts for writing `@if` and `@unless` statements. The `@can` and `@cannot` statements above respectively translate to the following statements:
+These directives are convenient short-cuts for writing `@if` and `@unless` statements. The `@can` and `@cannot` statements above respectively translate to the following statements:
 
     @if (Auth::user()->can('update', $post))
         <!-- The Current User Can Update The Post -->
