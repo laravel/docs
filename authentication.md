@@ -66,7 +66,7 @@ The `make:auth` command will also create a `resources/views/layouts` directory c
 <a name="included-authenticating"></a>
 ### Authenticating
 
-Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application! You may simply access your application in a browser since The authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
+Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application! You may simply access your application in a browser since the authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
 
 #### Path Customization
 
