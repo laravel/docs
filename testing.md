@@ -192,9 +192,9 @@ You may set the currently authenticated user using the `be` method:
 
 	$this->be($user);
 
-You may re-seed your database from a test using the `seed` method:
-
 #### Re-Seeding Database From Tests
+
+You may re-seed your database from a test using the `seed` method:
 
 	$this->seed();
 
