@@ -4,36 +4,67 @@
     - [Driver Prerequisites](#driver-prerequisites)
 - [Writing Notifications](#writing-notifications)
     - [Message Structure](#message-structure)
-    - [Error Notifications](#error-notifications)
+- [Mail Notifications](#mail-notifications)
+    - [Formatting Mail Messages](#formatting-mail-messages)
+    - [Customizing The Recipient](#customizing-the-recipient)
+    - [Customizing The Subject](#customizing-the-subject)
+    - [Error Messages](#error-messages)
+- [Database Notifications](#database-notifications)
+    - [Formatting Database Notifications](#formatting-database-notifications)
+    - [Accessing The Notifications](#accessing-the-notifications)
+    - [Marking Notifications As Read](#marking-notifications-as-read)
+- [Broadcast Notifications](#broadcast-notifications)
+    - [Formatting Broadcast Notifications](#formatting-broadcast-notifications)
+    - [Listening For Notifications](#listening-for-notifications)
+- [SMS Notifications](#sms-notifications)
+    - [Prerequisites](#sms-prerequisites)
+    - [Formatting SMS Notifications](#formatting-sms-notifications)
+    - [Customizing The "From" Number](#customizing-the-from-number)
+    - [Routing SMS Notifications](#routing-sms-notifications)
+- [Slack Notifications](#slack-notifications)
+    - [Prerequisites](#slack-prerequisites)
+    - [Formatting Slack Notifications](#formatting-slack-notifications)
+    - [Routing Slack Notifications](#routing-slack-notifications)
 - [Sending Notifications](#sending-notifications)
-    - [Determining Delivery Channels](#determining-delivery-channels)
-    - [Via Mail](#via-mail)
-    - [Via SMS](#via-sms)
-    - [Via Slack](#via-slack)
-    - [Via Database](#via-database)
-    - [Via Broadcast](#via-broadcast)
+    - [Specifying Delivery Channels](#specifying-delivery-channels)
     - [Queueing Notifications](#queueing-notifications)
 - [Notification Events](#notification-events)
 - [Custom Channels](#custom-channels)
 
 ## Introduction
 
-In addition to support for [sending email](/docs/{{version}}/mail), Laravel provides support for sending notifications across a variety of delivery channels, including mail, SMS (via [Nexmo](https://www.nexmo.com/)), [Slack](https://slack.com), and database tables. Notifications may also be stored in a database so they may be displayed in your web interface.
+In addition to support for [sending email](/docs/{{version}}/mail), Laravel provides support for sending notifications across a variety of delivery channels, including mail, SMS (via [Nexmo](https://www.nexmo.com/)), and [Slack](https://slack.com). Notifications may also be stored in a database so they may be displayed in your web interface.
 
 Typically, notifications should be short, informational messages that notify users of something that occurred in your application. For example, if you are writing a billing application, you might send an "Invoice Paid" notification to your users via the email and SMS channels.
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
+#### Database
+
+The `database` notification channel stores the notification information in a database table. You can query the table to display the notifications in your application's user interface. But, before you can do that, you will need to create a database table to hold your notifications. Use the schema definition below to create the table:
+
+    Schema::create('notifications', function (Blueprint $table) {
+        $table->increments('id');
+        $table->string('type');
+        $table->string('notifiable_type');
+        $table->integer('notifiable_id');
+        $table->text('data');
+        $table->boolean('read');
+        $table->timestamps();
+
+        $table->index(['notifiable_type', 'notifiable_id']);
+    });
+
 #### SMS
 
-The default SMS driver is powered by [Nexmo](https://www.nexmo.com/) and requires the Nexmo PHP client, which may be installed via the Composer package manager:
+The default `sms` notification channel is powered by [Nexmo](https://www.nexmo.com/) and requires the Nexmo PHP client, which may be installed via the Composer package manager:
 
     composer require nexmo/client
 
 #### Slack
 
-The Slack notification driver requires the Guzzle HTTP library to make API requests to Slack. You can install Guzzle via Composer:
+The `slack` notification channel requires the Guzzle HTTP library to make API requests to Slack. You can install Guzzle via Composer:
 
     composer require guzzlehttp/guzzle
 
@@ -44,97 +75,40 @@ In Laravel, each notification is represented by a single class (typically stored
 
     php artisan make:notification InvoicePaid
 
-This command will place a fresh notification class in your `app/Notifications` directory.
+This command will place a fresh notification class in your `app/Notifications` directory. Each notification class contains a `via` method and a variable number of message building methods (such as `toMail` or `toDatabase`) that convert the notification to a message optimized for that particular channel.
 
-Notification classes contain two important methods: `via` and `message`. The `via` method returns an array of channels that the notification should be delivered through. The `message` method builds the notification message.
+<a name="mail-notifications"></a>
+## Mail Notifications
 
-<a name="message-structure"></a>
-### Message Structure
+<a name="formatting-mail-messages"></a>
+### Formatting Mail Messages
 
-Each notification message may have two parts: "lines" of texts and a "call to action". To illustrate this, let's take a look at an example `message` method for an `InvoicePaid` notification. The `message` method will receive a `$notifiable` entity which it may use to customize the message that is being sent:
+If a notification supports being sent as an email, you should define a `toMail` method on the notification class. This method will receive a `$notifiable` entity and should return a `Illuminate\Notifications\Messages\MailMessage` instance. Mail messages may contains lines of text as well as a "call to action". Let's take a look at an example `toMail` method:
 
     /**
-     * Get the notification message.
+     * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Message
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function message($notifiable)
+    public function toMail($notifiable)
     {
-        $url = 'https://example.com/invoice/'.$this->invoice->id;
+        $url = url('/invoice/'.$this->invoice->id);
 
-        return $this->line('One of your invoices has been paid!')
+        return (new MailMessage)
+                    ->line('One of your invoices has been paid!')
                     ->action('View Invoice', $url)
                     ->line('Thank you for using our application!');
     }
 
-In this example, we registered a line of text, a call to action, and then another line of text. Each notification channel will translate this structure into a format that makes sense for it. When using the `mail` channel, for example, the notification will be translated into a nice, responsive HTML email template. When using the `nexmo` channel, it will be formatted into a simple text message.
+> {tip} Note we are using `$this->invoice->id` in our `message` method. You may pass any data your notification needs to generate its message into the notification's constructor.
 
-Here is an example of an email generated by the `mail` channel:
+In this example, we register a line of text, a call to action, and then another line of text. These methods provided by the `MailMessage` object make it simple and fast to format small transactional emails. The mail channel will then translate the message components into a nice, responsive HTML email template. Here is an example of an email generated by the `mail` channel:
 
 <img src="https://laravel.com/assets/img/notification-example.png" width="551" height="596">
 
-Note we are using `$this->invoice->id` in our `message` method. You may pass any data your notification needs to generate its message into its constructor.
-
-<a name="error-notifications"></a>
-### Error Notifications
-
-Some notifications tell users about errors, such as an invoice payment failing. You may say that a notification is about an error by calling the `error` method when building your message. Some notification channels will use this information to customize the appearance of the notification. For example, when using the `mail` channel, the call to action button will be red instead of blue:
-
-    /**
-     * Get the notification message.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Message
-     */
-    public function message($notifiable)
-    {
-        return $this->error()
-                    ->subject('Notification Subject')
-                    ->line('...')
-    }
-
-<a name="sending-notifications"></a>
-## Sending Notifications
-
-Notifications may be sent in two ways: with the `notify` method of the `Notifiable` trait or the `Notification` [facade](/docs/{{version}}/facades). First, let's examine the `Notifiable` trait. It is used by the `User` model by default and has one method that may be used to send notifications, `notify`. Pass it a notification instance:
-
-    $user = App\User::find(1);
-
-    $invoice = App\Invoice::find(1);
-
-    $user->notify(new App\Notifications\InvoicePaid($invoice));
-
-Alternatively, you may send notifications via the `Notification` facade. This is useful primarily when you need to send a notification to multiple "notifiable" entities such as a collection of users:
-
-    Notification::send($users, new InvoicePaid($invoice));
-
-> {tip} Remember, you may use the `Illuminate\Notifications\Notifiable` trait on any of your models. You are not limited to only including it on your `User` model.
-
-<a name="determining-delivery-channels"></a>
-### Determining Delivery Channels
-
-Every notification class has a `via` method that determines on which channels the notification will be delivered. Out of the box, notifications may be sent on the `mail`, `nexmo`, `slack`, `database`, and `broadcast` channels.
-
-The `via` method receives a `$notifiable` instance, which will be an instance of the class to which the notification is sent. You may use `$notifiable` to determine which channels the notification should be delivered on (though this is not always necessary):
-
-    /**
-     * Get the notification channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array|string
-     */
-    public function via($notifiable)
-    {
-        if ($notifiable->prefers_sms) {
-            return ['sms'];
-        } else {
-            return ['mail', 'database'];
-        }
-    }
-
-<a name="via-mail"></a>
-### Via Mail
+<a name="customizing-the-recipient"></a>
+### Customizing The Recipient
 
 When sending notifications via the `mail` channel, the notification system will automatically look for an `email` property on your notifiable entity. You may customize which email address is used to deliver the notification by defining a `routeNotificationForMail` method on the entity:
 
@@ -160,26 +134,156 @@ When sending notifications via the `mail` channel, the notification system will 
         }
     }
 
-#### Customizing The Subject
+<a name="customizing-the-subject"></a>
+### Customizing The Subject
 
-By default, the email's subject is the class name of the notification put in "title case". So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If, instead, you would like to specify a subject for the message, you may call the `subject` method when building your message:
+By default, the email's subject is the class name of the notification formatted to "title case". So, if your notification class is named `InvoicePaid`, the email's subject will be `Invoice Paid`. If, you would like to specify an explicit subject for the message, you may call the `subject` method when building your message:
 
     /**
-     * Get the notification message.
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->subject('Notification Subject')
+                    ->line('...')
+    }
+
+<a name="error-messages"></a>
+### Error Messages
+
+Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of blue:
+
+    /**
+     * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Message
      */
-    public function message($notifiable)
+    public function toMail($notifiable)
     {
-        return $this->subject('Notification Subject')
+        return (new MailMessage)
+                    ->error()
+                    ->subject('Notification Subject')
                     ->line('...')
     }
 
-<a name="via-sms"></a>
-### Via SMS
+<a name="database-notifications"></a>
+## Database Notifications
 
-#### Configuration
+<a name="formatting-database-notifications"></a>
+### Formatting Database Notifications
+
+> {note} Before using the database channel, you should [create a table](#driver-prerequisites) to hold all of your notifications. This table will contain information such as the notification type as well as custom JSON data that describes the notification.
+
+If a notification supports being stored in a database table, you should define a `toDatabase` or `toArray` method on the notification class. This method will receive a `$notifiable` entity and should return a plain PHP array. The returned array will be encoded as JSON and stored in the `data` column of your `notifications` table. Let's take a look at an example `toArray` method:
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toArray($notifiable)
+    {
+        return [
+            'invoice_id' => $this->invoice->id,
+            'amount' => $this->invoice->amount,
+        ];
+    }
+
+#### `toDatabase` Vs. `toArray`
+
+The `toArray` method is also used by the `broadcast` channel to determine which data to broadcast to your JavaScript client. If you would like to have two different array representations for the `database` and `broadcast` channels, you should define a `toDatabase` method instead of a `toArray` method.
+
+<a name="accessing-the-notifications"></a>
+### Accessing The Notifications
+
+Once notifications are stored in the database, you need a convenient way to access them from your notifiable entities. The `Illuminate\Notifications\Notifiable` trait, which is included on Laravel's default `App\User` model, includes a `notifications` Eloquent relationship that returns the notifications for the entity. To fetch notifications, you may access this method like any other Eloquent relationship. By default, notifications will be sorted by the `created_at` timestamp:
+
+    $user = App\User::find(1);
+
+    foreach ($user->notifications as $notification) {
+        echo $notification->type;
+    }
+
+If you want to retrieve only the "unread" notifications, you may use the `unreadNotifications` relationship. Again, these notifications will be sorted by the `created_at` timestamp:
+
+    $user = App\User::find(1);
+
+    foreach ($user->unreadNotifications as $notification) {
+        echo $notification->type;
+    }
+
+> {tip} To access your notifications from your JavaScript client, you should define a notification controller for your application which returns the notifications for a notifiable entity, such as the current user. You may then make an HTTP request to that controller's URI from your JavaScript client.
+
+<a name="marking-notifications-as-read"></a>
+### Marking Notifications As Read
+
+Typically, you will want to mark a notification as "read" when a user views it. The `Illuminate\Notifications\Notifiable` trait provides a `markAsRead` method, which updates the `read` column on the notification's database record:
+
+    $user = App\User::find(1);
+
+    foreach ($user->notifications as $notification) {
+        $notification->markAsRead();
+    }
+
+You may also use a mass-update query to mark all of the notifications as read:
+
+    $user = App\User::find(1);
+
+    $user->notifications()->update(['read' => true]);
+
+Of course, you may `delete` the notifications to remove them from the table:
+
+    $user->notifications()->delete();
+
+<a name="broadcast-notifications"></a>
+## Broadcast Notifications
+
+<a name="formatting-broadcast-notifications"></a>
+### Formatting Broadcast Notifications
+
+The `broadcast` channel broadcasts notifications using Laravel's [event broadcasting services](/docs/{{version}}/realtime), allowing your JavaScript client to catch notifications in realtime. If a notification supports broadcasting, you should define a `toBroadcast` or `toArray` method on the notification class. This method will receive a `$notifiable` entity and should return a plain PHP array. The returned array will be encoded as JSON and broadcast to your JavaScript client. Let's take a look at an example `toArray` method:
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toArray($notifiable)
+    {
+        return [
+            'invoice_id' => $this->invoice->id,
+            'amount' => $this->invoice->amount,
+        ];
+    }
+
+> {tip} In addition to the data you specify, broadcast notifications will also contain a `type` field containing the class name of the notification.
+
+#### `toBroadcast` Vs. `toArray`
+
+The `toArray` method is also used by the `database` channel to determine which data to store in your database table. If you would like to have two different array representations for the `database` and `broadcast` channels, you should define a `toBroadcast` method instead of a `toArray` method.
+
+<a name="listening-for-notifications"></a>
+### Listening For Notifications
+
+Notifications will broadcast on a private channel formatted using a `{notifiable}.{id}` convention. So, if you are sending a notification to a `App\User` instance with an ID of `1`, the notification will be broadcast on the `App.User.1` private channel. When using [Laravel Echo](/docs/{{version}}/realtime), you may easily listen for notifications on a channel using the `notification` helper method:
+
+    Echo.private('App.User.' + userId)
+        .notification((notification) => {
+            console.log(notification.type);
+        });
+
+<a name="sms-notifications"></a>
+## SMS Notifications
+
+<a name="sms-prerequisites"></a>
+### Prerequisites
 
 Sending SMS notifications in Laravel is powered by [Nexmo](https://www.nexmo.com/). Before you can send notifications via Nexmo, you need to install the `nexmo/client` Composer package and add a few configuration options to your `config/services.php` configuration file. You may copy the example configuration below to get started:
 
@@ -189,9 +293,45 @@ Sending SMS notifications in Laravel is powered by [Nexmo](https://www.nexmo.com
         'sms_from' => '15556666666',
     ],
 
-The `sms_from` option is the phone number that your SMS messages will be sent from. You may generate a phone number for your application in the Nexmo control panel.
+The `sms_from` option is the phone number that your SMS messages will be sent from. You should generate a phone number for your application in the Nexmo control panel.
 
-#### Routing Nexmo SMS Notifications
+<a name="formatting-sms-notifications"></a>
+### Formatting SMS Notifications
+
+If a notification supports being sent as a SMS, you should define a `toNexmo` method on the notification class. This method will receive a `$notifiable` entity and should return a `Illuminate\Notifications\Messages\NexmoMessage` instance:
+
+    /**
+     * Get the Nexmo / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return NexmoMessage
+     */
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage)
+                    ->content('Your SMS message content');
+    }
+
+<a name="customizing-the-from-number"></a>
+### Customizing The "From" Number
+
+If you would like to send some notifications from a phone number that is different from the phone number specified in your `config/services.php` file, you may use the `from` method on a `NexmoMessage` instance:
+
+    /**
+     * Get the Nexmo / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return NexmoMessage
+     */
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage)
+                    ->content('Your SMS message content')
+                    ->from('15554443333');
+    }
+
+<a name="routing-sms-notifications"></a>
+### Routing SMS Notifications
 
 When sending notifications via the `nexmo` channel, the notification system will automatically look for a `phone_number` attribute on the notifiable entity. If you would like to customize the phone number the notification is delivered to, define a `routeNotificationForNexmo` method on the entity:
 
@@ -217,14 +357,41 @@ When sending notifications via the `nexmo` channel, the notification system will
         }
     }
 
-<a name="via-slack"></a>
-### Via Slack
+<a name="slack-notifications"></a>
+## Slack Notifications
+
+<a name="slack-prerequisites"></a>
+### Prerequisites
 
 Before you can send notifications via Slack, you must install the Guzzle HTTP library via Composer:
 
     composer require guzzlehttp/guzzle
 
-Then define a `routeNotificationForSlack` method on your notifiable entity. This should return the webhook URL to which the notification should be delivered. Webhook URLs may be generated by adding an "Incoming Webhook" service to your Slack team:
+<a name="formatting-slack-notifications"></a>
+### Formatting Slack Notifications
+
+If a notification supports being sent as a Slack message, you should define a `toSlack` method on the notification class. This method will receive a `$notifiable` entity and should return a `Illuminate\Notifications\Messages\SlackMessage` instance. Slack messages may contains lines of text as well as a "call to action". Let's take a look at an example `toSlack` method:
+
+    /**
+     * Get the Slack representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return SlackMessage
+     */
+    public function toSlack($notifiable)
+    {
+        $url = url('/invoice/'.$this->invoice->id);
+
+        return (new SlackMessage)
+                    ->line('One of your invoices has been paid!')
+                    ->action('View Invoice', $url)
+                    ->line('Thank you for using our application!');
+    }
+
+<a name="routing-slack-notifications"></a>
+### Routing Slack Notifications
+
+To route Slack notifications to the proper location, define a `routeNotificationForSlack` method on your notifiable entity. This should return the webhook URL to which the notification should be delivered. Webhook URLs may be generated by adding an "Incoming Webhook" service to your Slack team:
 
     <?php
 
@@ -248,85 +415,47 @@ Then define a `routeNotificationForSlack` method on your notifiable entity. This
         }
     }
 
-<a name="via-database"></a>
-### Via Database
+<a name="sending-notifications"></a>
+## Sending Notifications
 
-#### Creating The Database Table
-
-The database notification channel stores the notification information in a database table. You can query the table to display the notifications in your application's user interface. But, before you can do that, you will need to create a database table to hold your notifications. Use the schema definition below to create a table:
-
-    Schema::create('notifications', function (Blueprint $table) {
-        $table->increments('id');
-        $table->string('type');
-        $table->string('notifiable_type');
-        $table->integer('notifiable_id');
-        $table->string('level', 25);
-        $table->text('intro');
-        $table->text('outro');
-        $table->string('action_text')->nullable();
-        $table->string('action_url')->nullable();
-        $table->boolean('read');
-        $table->timestamps();
-
-        $table->index(['notifiable_type', 'notifiable_id']);
-    });
-
-#### Accessing The Notifications
-
-The `Illuminate\Notifications\Notifiable` trait includes a `notifications` Eloquent relationship method that returns the notifications for the notifiable entity. To fetch notifications, you may access this method like any other Eloquent relationship. By default, notifications will be sorted by the `created_at` timestamp:
+Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` [facade](/docs/{{version}}/facades). First, let's examine the `Notifiable` trait. It is used by the default `App\User` model and contains one method that may be used to send notifications: `notify`. The `notify` expects to receive a notification instance:
 
     $user = App\User::find(1);
 
-    foreach ($user->notifications as $notification) {
-        echo $notification->action_text;
+    $invoice = App\Invoice::find(1);
+
+    $user->notify(new App\Notifications\InvoicePaid($invoice));
+
+> {tip} Remember, you may use the `Illuminate\Notifications\Notifiable` trait on any of your models. You are not limited to only including it on your `User` model.
+
+Alternatively, you may send notifications via the `Notification` facade. This is useful primarily when you need to send a notification to multiple notifiable entities such as a collection of users:
+
+    Notification::send($users, new InvoicePaid($invoice));
+
+<a name="specifying-delivery-channels"></a>
+### Specifying Delivery Channels
+
+Every notification class has a `via` method that determines on which channels the notification will be delivered. Out of the box, notifications may be sent on the `mail`, `nexmo`, `slack`, `database`, and `broadcast` channels.
+
+The `via` method receives a `$notifiable` instance, which will be an instance of the class to which the notification is being sent. You may use `$notifiable` to determine which channels the notification should be delivered on:
+
+    /**
+     * Get the notification channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array|string
+     */
+    public function via($notifiable)
+    {
+        if ($notifiable->prefers_sms) {
+            return ['sms'];
+        } else {
+            return ['mail', 'database'];
+        }
     }
-
-If you only want the "unread" notifications, you may use the `unreadNotifications` relationship. Again, these notifications will be sorted by the `created_at` timestamp:
-
-    $user = App\User::find(1);
-
-    foreach ($user->unreadNotifications as $notification) {
-        echo $notification->action_text;
-    }
-
-#### Marking Notifications As Read
-
-Typically, you will want to mark a notification as "read" when a user views it. The `Illuminate\Notifications\Notifiable` trait provides a `markAsRead` method, which updates the `read` column on the notification's database record:
-
-    $user = App\User::find(1);
-
-    foreach ($user->notifications as $notification) {
-        $notification->markAsRead();
-    }
-
-You may also use a mass-update query to mark all of the notifications as read:
-
-    $user = App\User::find(1);
-
-    $user->notifications()->update(['read' => true]);
-
-Of course, you may `delete` the notifications to remove them from the table:
-
-    $user->notifications()->delete();
-
-<a name="via-broadcast"></a>
-### Via Broadcast
-
-> {note} The `broadcast` notification channel is an extension of the database channel, so be sure to read over the [documentation for that channel](#via-database) before proceeding. In addition, you should configure a broadcast driver and a [queue listener](/docs/{{version}}/queues).
-
-When using the broadcast channel, the notification will first be stored in your `notifications` [database table](#via-database). Since the broadcast channel extends the database channel, you should never return both the `broadcast` and `database` from a notification's `via` method. After storing the notification, the broadcast channel will broadcast the notification to your JavaScript application using Laravel's event broadcasting services.
-
-Notifications will broadcast on a private channel formatted using the `{notifiable}.{id}` convention. So, if you are sending a notification to a `App\User` instance with an ID of `1`, the notification will be broadcast on the `App.User.1` private channel. When using Laravel Echo, you may easily listen for notifications on a channel using the `notification` method:
-
-    Echo.private('App.User.' + userId)
-        .notification((e) => {
-            console.log(e.notification);
-        });
 
 <a name="queueing-notifications"></a>
 ### Queueing Notifications
-
-> {note} Before queueing notifications, configure your queue and [start a queue worker](/docs/{{version}}/queues).
 
 Sending notifications can take time, especially if the channel needs an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using `make:notification`, so you may immediately add them to your notification class:
 
@@ -344,6 +473,8 @@ Sending notifications can take time, especially if the channel needs an external
 
         // ...
     }
+
+> {note} Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues).
 
 Once the `ShouldQueue` interface has been added to your notification, you may send the notification like normal. Laravel will detect the `ShouldQueue` interface on the class and automatically queue the delivery of the notification:
 
@@ -390,13 +521,12 @@ Within an event listener, you may access the `notifiable` and `notification` pro
 <a name="custom-channels"></a>
 ## Custom Channels
 
-Laravel ships with a handful of notification channels, but you may want to write your own drivers to deliver notifications via other channels. Laravel makes it simple. To get started, define a class that contains a `send` method. The method should receive two arguments: a collection of `$notifiables` and a `$notification` instance:
+Laravel ships with a handful of notification channels, but you may want to write your own drivers to deliver notifications via other channels. Laravel makes it simple. To get started, define a class that contains a `send` method. The method should receive two arguments: a `$notifiable` and a `$notification`:
 
     <?php
 
     use App\Channels;
 
-    use Illuminate\Support\Collection;
     use Illuminate\Notifications\Notification;
 
     class VoiceChannel
@@ -404,15 +534,15 @@ Laravel ships with a handful of notification channels, but you may want to write
         /**
          * Send the given notification.
          *
-         * @param  \Illuminate\Support\Collection  $notifiables
+         * @param  mixed  $notifiable
          * @param  \Illuminate\Notifications\Notification  $notification
          * @return void
          */
-        public function send(Collection $notifiables, Notification $notification)
+        public function send($notifiable, Notification $notification)
         {
-            foreach ($notifiables as $notifiable) {
-                // Send notification to the $notifiable instance...
-            }
+            $message = $notification->toVoice($notifiable);
+
+            // Send notification to the $notifiable instance...
         }
     }
 
@@ -424,6 +554,7 @@ Once your notification channel class has been defined, you may simply return the
 
     use Illuminate\Bus\Queueable;
     use App\Channels\VoiceChannel;
+    use App\Channels\Messages\VoiceMessage;
     use Illuminate\Notifications\Notification;
     use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -443,12 +574,12 @@ Once your notification channel class has been defined, you may simply return the
         }
 
         /**
-         * Get the notification message.
+         * Get the voice representation of the notification.
          *
          * @param  mixed  $notifiable
-         * @return \Illuminate\Notifications\Message
+         * @return VoiceMessage
          */
-        public function message($notifiable)
+        public function toVoice($notifiable)
         {
             // ...
         }
