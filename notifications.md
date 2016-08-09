@@ -224,7 +224,7 @@ The `database` notification channel stores the notification information in a dat
 You can query the table to display the notifications in your application's user interface. But, before you can do that, you will need to create a database table to hold your notifications. Use the schema definition below to create the table:
 
     Schema::create('notifications', function (Blueprint $table) {
-        $table->increments('id');
+        $table->string('id')->primary();
         $table->string('type');
         $table->string('notifiable_type');
         $table->integer('notifiable_id');
