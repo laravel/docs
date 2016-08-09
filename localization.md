@@ -95,7 +95,7 @@ Then, you may use the `trans_choice` function to retrieve the line for a given "
 
 Since the Laravel translator is powered by the Symfony Translation component, you may create even more complex pluralization rules:
 
-    'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
+    'apples' => '{0} There are none|{1,19} There are some|{20,Inf} There are many',
 
 <a name="overriding-vendor-language-files"></a>
 ## Overriding Vendor Language Files
