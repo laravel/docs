@@ -140,7 +140,7 @@ Sometimes you may have two classes that utilize the same interface, but you wish
 
     use Illuminate\Support\Facades\Storage;
     use App\Http\Controllers\VideoController;
-    use App\Http\Controllers\PhotoControllers;
+    use App\Http\Controllers\PhotoController;
     use Illuminate\Contracts\Filesystem\Filesystem;
 
     $this->app->when(PhotoController::class)
