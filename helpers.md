@@ -102,6 +102,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 
 <div class="collection-method-list" markdown="1">
 
+[abort](#method-abort)
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
@@ -703,6 +704,17 @@ If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
+
+<a name="method-abort"></a>
+#### `abort()` {#collection-method}
+
+The `abort` function raises an exception which will be rendered by the exception handler:
+
+    abort(401);
+
+Optionally, you may provide the response text:
+
+    abort(401, 'Unauthorized.');
 
 <a name="method-auth"></a>
 #### `auth()` {#collection-method}
