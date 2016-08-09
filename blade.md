@@ -244,7 +244,8 @@ The `$loop` variable also contains a variety of other useful properties:
 
 Property  | Description
 ------------- | -------------
-`$loop->index`  |  The index of the current loop iteration.
+`$loop->index`  |  The index of the current loop iteration (starts at 0).
+`$loop->iteration`  |  The current loop iteration (starts at 1).
 `$loop->remaining`  |  The iteration remaining in the loop.
 `$loop->count`  |  The total number of items in the array being iterated.
 `$loop->first`  |  Whether this is the first iteration through the loop.
