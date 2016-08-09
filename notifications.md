@@ -84,7 +84,7 @@ The `via` method receives a `$notifiable` instance, which will be an instance of
      */
     public function via($notifiable)
     {
-        return $notifiable->prefers_sms ? ['sms'] : ['mail', 'database'];
+        return $notifiable->prefers_sms ? ['nexmo'] : ['mail', 'database'];
     }
 
 <a name="queueing-notifications"></a>
