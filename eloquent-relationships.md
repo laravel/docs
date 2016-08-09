@@ -364,24 +364,25 @@ Typical Eloquent foreign key conventions will be used when performing the relati
 
 #### Table Structure
 
-Polymorphic relations allow a model to belong to more than one other model on a single association. For example, imagine users of your application can "like" both posts and comments. Using polymorphic relationships, you can use a single `likes` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
+Polymorphic relations allow a model to belong to more than one other model on a single association. For example, imagine users of your application can "comment" both posts and videos. Using polymorphic relationships, you can use a single `comments` table for both of these scenarios. First, let's examine the table structure required to build this relationship:
 
     posts
         id - integer
         title - string
         body - text
 
+    videos
+        id - integer
+        title - string
+        url - string
+
     comments
         id - integer
-        post_id - integer
         body - text
+        commentable_id - integer
+        commentable_type - string
 
-    likes
-        id - integer
-        likeable_id - integer
-        likeable_type - string
-
-Two important columns to note are the `likeable_id` and `likeable_type` columns on the `likes` table. The `likeable_id` column will contain the ID value of the post or comment, while the `likeable_type` column will contain the class name of the owning model. The `likeable_type` column is how the ORM determines which "type" of owning model to return when accessing the `likeable` relation.
+Two important columns to note are the `commentable_id` and `commentable_type` columns on the `comments` table. The `commentable_id` column will contain the ID value of the post or video, while the `commentable_type` column will contain the class name of the owning model. The `commentable_type` column is how the ORM determines which "type" of owning model to return when accessing the `commentable` relation.
 
 #### Model Structure
 
@@ -393,12 +394,12 @@ Next, let's examine the model definitions needed to build this relationship:
 
     use Illuminate\Database\Eloquent\Model;
 
-    class Like extends Model
+    class Comment extends Model
     {
         /**
-         * Get all of the owning likeable models.
+         * Get all of the owning commentable models.
          */
-        public function likeable()
+        public function commentable()
         {
             return $this->morphTo();
         }
@@ -407,52 +408,52 @@ Next, let's examine the model definitions needed to build this relationship:
     class Post extends Model
     {
         /**
-         * Get all of the post's likes.
+         * Get all of the post's comments.
          */
-        public function likes()
+        public function comments()
         {
-            return $this->morphMany('App\Like', 'likeable');
+            return $this->morphMany('App\Comment', 'commentable');
         }
     }
 
-    class Comment extends Model
+    class Video extends Model
     {
         /**
-         * Get all of the comment's likes.
+         * Get all of the video's comment.
          */
-        public function likes()
+        public function comments()
         {
-            return $this->morphMany('App\Like', 'likeable');
+            return $this->morphMany('App\Comment', 'commentable');
         }
     }
 
 #### Retrieving Polymorphic Relations
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the likes for a post, we can simply use the `likes` dynamic property:
+Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the comments for a post, we can simply use the `comments` dynamic property:
 
     $post = App\Post::find(1);
 
-    foreach ($post->likes as $like) {
+    foreach ($post->comments as $comment) {
         //
     }
 
-You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `likeable` method on the `Like` model. So, we will access that method as a dynamic property:
+You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In our case, that is the `commentable` method on the `Video` model. So, we will access that method as a dynamic property:
 
-    $like = App\Like::find(1);
+    $comment = App\Comment::find(1);
 
-    $likeable = $like->likeable;
+    $commentable = $comment->commentable;
 
-The `likeable` relation on the `Like` model will return either a `Post` or `Comment` instance, depending on which type of model owns the like.
+The `commentable` relation on the `Comment` model will return either a `Post` or `Comment` instance, depending on which type of model owns the comment.
 
 #### Custom Polymorphic Types
 
-By default, Laravel will use the fully qualified class name to store the type of the related model. For instance, given the example above where a `Like` may belong to a `Post` or a `Comment`, the default `likable_type` would be either `App\Post` or `App\Comment`, respectively. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a relationship "morph map" to instruct Eloquent to use a custom name for each model instead of the class name:
+By default, Laravel will use the fully qualified class name to store the type of the related model. For instance, given the example above where a `Comment` may belong to a `Post` or a `Video`, the default `commentable_type` would be either `App\Post` or `App\Video`, respectively. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a relationship "morph map" to instruct Eloquent to use a custom name for each model instead of the class name:
 
     use Illuminate\Database\Eloquent\Relations\Relation;
 
     Relation::morphMap([
         'posts' => App\Post::class,
-        'likes' => App\Like::class,
+        'videos' => App\Video::class,
     ]);
 
 You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
