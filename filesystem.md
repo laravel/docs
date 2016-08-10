@@ -117,7 +117,7 @@ When using multiple disks, you may access a particular disk using the `disk` met
 
     $disk = Storage::disk('s3');
 
-    $contents = Storage::disk('local')->get('file.jpg')
+    $contents = Storage::disk('local')->get('file.jpg');
 
 <a name="retrieving-files"></a>
 ### Retrieving Files
@@ -180,7 +180,7 @@ File visibility can be retrieved and set via the `getVisibility` and `setVisibil
 
     Storage::getVisibility('file.jpg');
 
-    Storage::setVisibility('file.jpg', 'public')
+    Storage::setVisibility('file.jpg', 'public');
 
 Additionally, you can set the visibility when setting the file via the `put` method. The valid visibility values are `public` and `private`:
 
