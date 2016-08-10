@@ -75,7 +75,7 @@ When using multiple disks, you may access a particular disk using the `disk` met
 
     $disk = Storage::disk('s3');
 
-    $contents = Storage::disk('local')->get('file.jpg')
+    $contents = Storage::disk('local')->get('file.jpg');
 
 <a name="retrieving-files"></a>
 ### Retrieving Files
