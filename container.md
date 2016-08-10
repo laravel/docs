@@ -139,8 +139,8 @@ This statement tells the container that it should inject the `RedisEventPusher` 
 Sometimes you may have two classes that utilize the same interface, but you wish to inject different implementations into each class. For example, two controllers may depend on different implementations of the `Illuminate\Contracts\Filesystem\Filesystem` [contract](/docs/{{version}}/contracts). Laravel provides a simple, fluent interface for defining this behavior:
 
     use Illuminate\Support\Facades\Storage;
+    use App\Http\Controllers\PhotoController;
     use App\Http\Controllers\VideoController;
-    use App\Http\Controllers\PhotoControllers;
     use Illuminate\Contracts\Filesystem\Filesystem;
 
     $this->app->when(PhotoController::class)
