@@ -708,11 +708,11 @@ If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned
 <a name="method-abort"></a>
 #### `abort()` {#collection-method}
 
-The `abort` function raises an exception which will be rendered by the exception handler:
+The `abort` function throws a HTTP exception which will be rendered by the exception handler:
 
     abort(401);
 
-Optionally, you may provide the response text:
+You may also provide the exception's response text:
 
     abort(401, 'Unauthorized.');
 
