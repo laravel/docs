@@ -717,28 +717,20 @@ The `abort` function throws a HTTP exception which will be rendered by the excep
 You may also provide the exception's response text:
 
     abort(401, 'Unauthorized.');
-    
+
 <a name="method-abort-if"></a>
 #### `abort_if()` {#collection-method}
 
-The `abort_if` function is a syntax sugar. `abort_if($condition, 401)` will become to
+The `abort_if` function throws an HTTP exception if a given boolean expression evaluates to `true`:
 
-    if($condition) {
-    	abort(401);
-    }
-
-`abort_if` takes first argument as condition for calling `abort`, and others arguments will be passed to `abort`    
+    abort_if(! Auth::user()->isAdmin(), 403);
 
 <a name="method-abort-unless"></a>
 #### `abort_unless()` {#collection-method}
 
-The `abort_unless` function is a syntax sugar. `abort_unless($condition, 401)` will become to
+The `abort_unless` function throws an HTTP exception if a given boolean expression evaluates to `false`:
 
-    if(!$condition) {
-    	abort(401);
-    }
-
-`abort_unless` takes first argument as oposite condition for calling `abort`, and others arguments will be passed to `abort`
+    abort_unless(Auth::user()->isAdmin(), 403);
 
 <a name="method-auth"></a>
 #### `auth()` {#collection-method}
