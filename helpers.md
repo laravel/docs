@@ -103,6 +103,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 <div class="collection-method-list" markdown="1">
 
 [abort](#method-abort)
+[abort_if](#method-abort-if)
+[abort_unless](#method-abort-unless)
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
@@ -715,6 +717,28 @@ The `abort` function throws a HTTP exception which will be rendered by the excep
 You may also provide the exception's response text:
 
     abort(401, 'Unauthorized.');
+    
+<a name="method-abort-if"></a>
+#### `abort_if()` {#collection-method}
+
+The `abort_if` function is a syntax sugar for next expression:
+
+    if($condition) {
+    	abort(401);
+    }
+
+`abort_if` takes first argument as condition for calling `abort`, and others arguments will be passed to `abort`    
+
+<a name="method-abort-unless"></a>
+#### `abort_unless()` {#collection-method}
+
+The `abort_unless` function is a syntax sugar for next expression:
+
+    if(!$condition) {
+    	abort(401);
+    }
+
+`abort_unless` takes first argument as oposite condition for calling `abort`, and others arguments will be passed to `abort`
 
 <a name="method-auth"></a>
 #### `auth()` {#collection-method}
