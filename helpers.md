@@ -721,7 +721,7 @@ You may also provide the exception's response text:
 <a name="method-abort-if"></a>
 #### `abort_if()` {#collection-method}
 
-The `abort_if` function is a syntax sugar for next expression:
+The `abort_if` function is a syntax sugar. `abort_if($condition, 401)` will become to
 
     if($condition) {
     	abort(401);
@@ -732,7 +732,7 @@ The `abort_if` function is a syntax sugar for next expression:
 <a name="method-abort-unless"></a>
 #### `abort_unless()` {#collection-method}
 
-The `abort_unless` function is a syntax sugar for next expression:
+The `abort_unless` function is a syntax sugar. `abort_unless($condition, 401)` will become to
 
     if(!$condition) {
     	abort(401);
