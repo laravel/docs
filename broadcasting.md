@@ -50,9 +50,24 @@ Before broadcasting any events, you will first need to register the `App\Provide
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
+#### Pusher
+
 If you are broadcasting your events over [Pusher](https://pusher.com), you should install the Pusher PHP SDK using the Composer package manager:
 
     composer require pusher/pusher-php-server
+
+Next, you should configure your Pusher credentials in the `config/broadcasting.php` configuration file. An example Pusher configuration is already included in this file, allowing you to quickly specify your Pusher key, secret, and application ID.
+
+When using Pusher and [Laravel Echo](#installing-laravel-echo), you should specify `pusher` as your desired connector when instantiating an Echo instance:
+
+    import Echo from "laravel-echo"
+
+    window.Echo = new Echo({
+        connector: 'pusher',
+        key: 'your-pusher-key'
+    });
+
+#### Redis / Socket.IO
 
 If you are using the Redis broadcaster, you should install the Predis library:
 
