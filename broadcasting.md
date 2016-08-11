@@ -358,7 +358,7 @@ Presence channels build on the security of private channels while exposing the a
 <a name="joining-a-presence-channel"></a>
 ### Authorizing Presence Channels
 
-All presence channels are also private channels; therefore, users must be [authorized to access them](#authorizing-channels). However, when defining authorization callbacks for presence channels, you will not return `true` or `false`. Instead, if the user is authorized to join the channel, you should return an array of data about the user.
+All presence channels are also private channels; therefore, users must be [authorized to access them](#authorizing-channels). However, when defining authorization callbacks for presence channels, you will not return `true` if the user is authorized to join the channel. Instead, you should return an array of data about the user.
 
 The data returned by the authorization callback will be made available to the presence channel event listeners in your JavaScript application. If the user is not authorized to join the presence channel, you should return `false` or `null`:
 
