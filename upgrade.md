@@ -109,7 +109,7 @@ The `AuthorizesResources` trait has been merged with the `AuthorizesRequests` tr
 
 #### Custom Directives
 
-In prior verisons of Laravel, when registering custom Blade directives using the `directive` method, the `$expression` passed to your directive callback contained the outer-most parenthesis. In Laravel 5.3, these outer-most parenthesis are not included in the expression passed to your directive callback. Be sure to review the [Blade extension](/docs/5.3/blade#extending-blade) documentation and verify your custom Blade directives are still working properly.
+In prior versions of Laravel, when registering custom Blade directives using the `directive` method, the `$expression` passed to your directive callback contained the outer-most parenthesis. In Laravel 5.3, these outer-most parenthesis are not included in the expression passed to your directive callback. Be sure to review the [Blade extension](/docs/5.3/blade#extending-blade) documentation and verify your custom Blade directives are still working properly.
 
 ### Cache
 
