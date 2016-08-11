@@ -58,12 +58,12 @@ If you are broadcasting your events over [Pusher](https://pusher.com), you shoul
 
 Next, you should configure your Pusher credentials in the `config/broadcasting.php` configuration file. An example Pusher configuration is already included in this file, allowing you to quickly specify your Pusher key, secret, and application ID.
 
-When using Pusher and [Laravel Echo](#installing-laravel-echo), you should specify `pusher` as your desired connector when instantiating an Echo instance:
+When using Pusher and [Laravel Echo](#installing-laravel-echo), you should specify `pusher` as your desired broadcaster when instantiating an Echo instance:
 
     import Echo from "laravel-echo"
 
     window.Echo = new Echo({
-        connector: 'pusher',
+        broadcaster: 'pusher',
         key: 'your-pusher-key'
     });
 
@@ -311,7 +311,7 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
     import Echo from "laravel-echo"
 
     window.Echo = new Echo({
-        connector: 'pusher',
+        broadcaster: 'pusher',
         key: 'your-pusher-key'
     });
 
@@ -338,7 +338,7 @@ If you would like to listen for events on a private channel, use the `private` m
 You may have noticed in the examples above that we did not specify the full namespace for the event classes. This is because Echo will automatically assume the events are located in the `App\Events` namespace. However, you may configure the root namespace when you instantiate Echo by passing a `namespace` configuration option:
 
     window.Echo = new Echo({
-        connector: 'pusher',
+        broadcaster: 'pusher',
         key: 'your-pusher-key',
         namespace: 'App.Other.Namespace'
     });
