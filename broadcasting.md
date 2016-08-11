@@ -2,7 +2,7 @@
 
 - [Introduction](#introduction)
     - [Configuration](#configuration)
-    - [Prerequisites](#prerequisites)
+    - [Driver Prerequisites](#driver-prerequisites)
 - [Concept Overview](#concept-overview)
     - [Using Example Application](#using-example-application)
 - [Defining Broadcast Events](#defining-broadcast-events)
@@ -21,6 +21,7 @@
     - [Authorizing Presence Channels](#authorizing-presence-channels)
     - [Joining Presence Channels](#joining-presence-channels)
     - [Broadcasting To Presence Channels](#broadcasting-to-presence-channels)
+- [Notifications](#notifications)
 
 <a name="introduction"></a>
 ## Introduction
@@ -40,8 +41,14 @@ All of your application's event broadcasting configuration is stored in the `con
 
 Before broadcasting any events, you will first need to register the `App\Providers\BroadcastServiceProvider`. In fresh Laravel applications, you only need to uncomment this provider in the `providers` array of your `config/app.php` configuration file. This provider will allow you to register the broadcast authorization routes and callbacks.
 
-<a name="prerequisites"></a>
-### Prerequisites
+#### CSRF Token
+
+[Laravel Echo](#installing-laravel-echo) will need access to the current session's CSRF token. If available, Echo will pull the token from the `Laravel.csrfToken` JavaScript object. This object is defined in the `resources/views/layouts/app.blade.php` layout that is created if you run the `make:auth` Artisan command. If you are not using this layout, you may define a `meta` tag in your application's `head` HTML element:
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+<a name="driver-prerequisites"></a>
+### Driver Prerequisites
 
 If you are broadcasting your events over [Pusher](https://pusher.com), you should install the Pusher PHP SDK using the Composer package manager:
 
@@ -397,3 +404,14 @@ You may listen for the presence event via Echo's `listen` method:
 
 <a name="notifications"></a>
 ## Notifications
+
+By pairing event broadcasting with [notifications](/docs/{{version}}/notifications), your JavaScript application may receive new notifications as they occur without needing to refresh the page. First, be sure to read over the documentation on using [the broadcast notification channel](/docs/{{version}}/notifications#broadcast-notifications).
+
+Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:
+
+    Echo.private('App.User.' + userId)
+        .notification((notification) => {
+            console.log(notification.type);
+        });
+
+In this example, all notifications sent to `App\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.User.*` channel is included in the default `BroadcastServiceProvider` that ships with the Laravel framework.
