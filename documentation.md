@@ -8,6 +8,7 @@
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
     - [Errors & Logging](/docs/{{version}}/errors)
+- Dev Environments
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
 - Core Concepts
