@@ -223,7 +223,7 @@ If you would like to customize the format of your email's data before it is sent
             return $this->view('emails.orders.shipped')
                         ->with([
                             'orderName' => $this->order->name,
-                            'orderPrice' > $this->order->price,
+                            'orderPrice' => $this->order->price,
                         ]);
         }
     }
@@ -419,4 +419,3 @@ Laravel fires an event just before sending mail messages. Remember, this event i
             'App\Listeners\LogSentMessage',
         ],
     ];
-
