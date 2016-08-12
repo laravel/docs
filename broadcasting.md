@@ -64,7 +64,7 @@ When using Pusher and [Laravel Echo](#installing-laravel-echo), you should speci
 
     window.Echo = new Echo({
         broadcaster: 'pusher',
-        key: 'your-pusher-key'
+        pusherKey: 'your-pusher-key'
     });
 
 #### Redis / Socket.IO
@@ -312,7 +312,7 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
 
     window.Echo = new Echo({
         broadcaster: 'pusher',
-        key: 'your-pusher-key'
+        pusherKey: 'your-pusher-key'
     });
 
 <a name="listening-for-events"></a>
