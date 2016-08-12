@@ -19,6 +19,7 @@
 - The HTTP Layer
     - [Routing](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
+    - [CSRF Protection](/docs/{{version}}/csrf)
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
@@ -34,7 +35,6 @@
     - [Authentication](/docs/{{version}}/authentication)
     - [Resetting Passwords](/docs/{{version}}/passwords)
     - [Authorization](/docs/{{version}}/authorization)
-    - [CSRF Protection](/docs/{{version}}/csrf)
     - [Encryption](/docs/{{version}}/encryption)
     - [Hashing](/docs/{{version}}/hashing)
 - General Topics
