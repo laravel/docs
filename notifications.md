@@ -573,9 +573,7 @@ Within an event listener, you may access the `notifiable` and `notification` pro
 
 Laravel ships with a handful of notification channels, but you may want to write your own drivers to deliver notifications via other channels. Laravel makes it simple. To get started, define a class that contains a `send` method. The method should receive two arguments: a `$notifiable` and a `$notification`:
 
-    <?php
-
-    use App\Channels;
+    <?php namespace App\Channels;
 
     use Illuminate\Notifications\Notification;
 
