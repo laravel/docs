@@ -223,19 +223,11 @@ Some notifications inform users of errors, such as a failed invoice payment. You
 
 The `database` notification channel stores the notification information in a database table. This table will contain information such as the notification type as well as custom JSON data that describes the notification.
 
-You can query the table to display the notifications in your application's user interface. But, before you can do that, you will need to create a database table to hold your notifications. Use the schema definition below to create the table:
+You can query the table to display the notifications in your application's user interface. But, before you can do that, you will need to create a database table to hold your notifications. You may use the `notifications:table` command to generate a migration with the proper table schema:
 
-    Schema::create('notifications', function (Blueprint $table) {
-        $table->string('id')->primary();
-        $table->string('type');
-        $table->string('notifiable_type');
-        $table->integer('notifiable_id');
-        $table->text('data');
-        $table->boolean('read');
-        $table->timestamps();
+    php artisan notifications:table
 
-        $table->index(['notifiable_type', 'notifiable_id']);
-    });
+    php artisan migrate
 
 <a name="formatting-database-notifications"></a>
 ### Formatting Database Notifications
