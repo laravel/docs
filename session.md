@@ -166,6 +166,10 @@ If you need to keep your flash data around for even more requests, you may use t
 
     $request->session()->keep(['username', 'email']);
 
+If you only need the data to exist during the current request, you may use the `now` method. The session keeps the data around only for the remainder of the current request. 
+
+    $request->session()->now('status','You are ready to go!')
+
 <a name="adding-custom-session-drivers"></a>
 ## Adding Custom Session Drivers
 
