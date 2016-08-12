@@ -45,6 +45,28 @@ To define routes for your package, simply `require` the routes file from within 
         }
     }
 
+If your routes are for web or api use and you want to use the middleware from the users web are api [middleware group](docs/{{version}}/middleware#middleware-groups) to get things like session, crsf token, or anything else the user has defined,  you must use the `Illuminate\Routing\Router` to register your routes file under the correct middleware group. From within your routes file, you may use the `Route` facade to [register routes](/docs/{{version}}/routing) just as you would within a typical Laravel application:
+
+    At the top of your class:
+    use Illuminate\Routing\Router;
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @param Router $router
+     * @return void
+     */
+    public function boot(Router $router)
+    {
+        if (! $this->app->routesAreCached()) {
+            $router->group([
+                'middleware' => 'web', // or 'api' for api routes
+            ], function () {
+                require __DIR__.'/../resources/routes.php';
+            });
+        }
+    }
+
 <a name="resources"></a>
 ## Resources
 
