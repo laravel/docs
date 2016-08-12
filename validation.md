@@ -196,7 +196,7 @@ For more complex validation scenarios, you may wish to create a "form request". 
 
     php artisan make:request StoreBlogPost
 
-The generated class will be placed in the `app/Http/Requests` directory. Let's add a few validation rules to the `rules` method:
+The generated class will be placed in the `app/Http/Requests` directory. If this directory does not exist, it will be created when you run the `make:request` command. Let's add a few validation rules to the `rules` method:
 
     /**
      * Get the validation rules that apply to the request.
