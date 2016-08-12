@@ -284,13 +284,17 @@ Typically, you will want to mark a notification as "read" when a user views it. 
         $notification->markAsRead();
     }
 
-You may also use a mass-update query to mark all of the notifications as read:
+However, instead of looping through each notification, you may use the `markAsRead` method directly on a collection of notifications:
+
+    $user->notifications->markAsRead();
+
+You may also use a mass-update query to mark all of the notifications as read without retrieving them from the database:
 
     $user = App\User::find(1);
 
     $user->notifications()->update(['read' => true]);
 
-Of course, you may `delete` the notifications to remove them from the table:
+Of course, you may `delete` the notifications to remove them from the table entirely:
 
     $user->notifications()->delete();
 
