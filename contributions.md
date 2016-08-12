@@ -51,7 +51,7 @@ If you are unsure if your feature qualifies as a major or minor, please ask Tayl
 <a name="security-vulnerabilities"></a>
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Laravel, please send an email to Taylor Otwell at <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. All security vulnerabilities will be promptly addressed.
 
 <a name="coding-style"></a>
 ## Coding Style
@@ -79,4 +79,4 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
 <a name="styleci"></a>
 ### StyleCI
 
-If your code style isn't perfect, don't worry! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after any pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
+Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
