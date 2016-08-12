@@ -67,11 +67,34 @@ When using Pusher and [Laravel Echo](#installing-laravel-echo), you should speci
         key: 'your-pusher-key'
     });
 
-#### Redis / Socket.IO
+#### Redis
 
 If you are using the Redis broadcaster, you should install the Predis library:
 
     composer require predis/predis
+
+The Redis broadcaster will broadcast messages using Redis' pub / sub feature; however, you will need to pair this with a WebSocket server that can receive the messages from Redis and broadcast them to your WebSocket channels.
+
+When the Redis broadcaster publishes an event, it will be published on the event's specified channel names and the payload will be a JSON encoded string containing the event name, a `data` payload, and the user that generated the event's socket ID (if applicable).
+
+#### Socket.IO
+
+> {note} Socket.IO server support is currently in beta and is community driven. Public and private channels are supported; however, presence channels are not fully implemented.
+
+If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application's `head` HTML element:
+
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+Next, you will need to instantiate Echo with the `socket.io` connector and a `host`. For example, if your application and socket server are running on the `app.dev` domain you should instantiate Echo like so:
+
+    import Echo from "laravel-echo"
+
+    window.Echo = new Echo({
+        broadcaster: 'socket.io',
+        host: 'http://app.dev:6001'
+    });
+
+Finally, you will need to run a compatible Socket.IO server. Laravel does not include a Socket.IO server implementation; however, a community driven Socket.IO server is currently maintained at the [tlaverdure/laravel-echo-server](https://github.com/tlaverdure/laravel-echo-server) GitHub repository.
 
 #### Queue Prerequisites
 
