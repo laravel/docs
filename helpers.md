@@ -36,6 +36,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [array_forget](#method-array-forget)
 [array_get](#method-array-get)
 [array_has](#method-array-has)
+[array_last](#method-array-last)
 [array_only](#method-array-only)
 [array_pluck](#method-array-pluck)
 [array_pull](#method-array-pull)
@@ -81,6 +82,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [str_singular](#method-str-singular)
 [str_slug](#method-str-slug)
 [studly_case](#method-studly-case)
+[title_case](#method-title-case)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
 
@@ -257,6 +259,19 @@ The `array_has` function checks that a given item exists in an array using "dot"
     $hasDesk = array_has($array, 'products.desk');
 
     // true
+
+<a name="method-array-last"></a>
+#### `array_last()` {#collection-method}
+
+The `array_last` function returns the last element of an array passing a given truth test:
+
+    $array = [100, 200, 300, 110];
+
+    $value = array_last($array, function ($value, $key) {
+        return $value >= 150;
+    });
+
+    // 300
 
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
@@ -635,6 +650,15 @@ The `studly_case` function converts the given string to `StudlyCase`:
     $value = studly_case('foo_bar');
 
     // FooBar
+
+<a name="method-title-case"></a>
+#### `title_case()` {#collection-method}
+
+The `title_case` function converts the given string to `Title Case`:
+
+    $title = title_case('a nice title uses the correct case');
+
+    // A Nice Title Uses The Correct Case
 
 <a name="method-trans"></a>
 #### `trans()` {#collection-method}
