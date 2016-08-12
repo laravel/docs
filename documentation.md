@@ -22,11 +22,12 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
+    - [Views](/docs/{{version}}/views)
+    - [Blade Templates](/docs/{{version}}/blade)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
 - Frontend
-    - [Views](/docs/{{version}}/views)
-    - [Blade Templates](/docs/{{version}}/blade)
+    - [Getting Started](/docs/{{version}}/frontend)
     - [Compiling Assets](/docs/{{version}}/elixir)
     - [Localization](/docs/{{version}}/localization)
 - Security
