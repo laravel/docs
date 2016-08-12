@@ -59,10 +59,6 @@ You may also pass arguments to the `environment` method to check if the environm
         // The environment is either local OR staging...
     }
 
-An application instance may also be accessed via the `app` helper method:
-
-    $environment = app()->environment();
-
 <a name="configuration-caching"></a>
 ## Configuration Caching
 
@@ -97,4 +93,4 @@ While your application is in maintenance mode, no [queued jobs](/docs/{{version}
 
 #### Alternatives To Maintenance Mode
 
-Since maintenance mode requires your application to have several seconds of downtime, you may consider alternatives like [Envoyer](https://envoyer.io) to accomplish zero-downtime deployment with Laravel.
+Since maintenance mode requires your application to have several seconds of downtime, consider alternatives like [Envoyer](https://envoyer.io) to accomplish zero-downtime deployment with Laravel.
