@@ -436,7 +436,6 @@ If you would like to test webhooks from the Stripe dashboard, you should configu
 
     CASHIER_ENV=testing
     
-    
 <a name="handling-braintree-webhooks"></a>
 ## Handling Braintree Webhooks
 
