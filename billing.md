@@ -432,6 +432,11 @@ If you have additional Stripe webhook events you would like to handle, simply ex
         }
     }
 
+If you would like to test webhooks from the Stripe dashboard, you should configure the testing environment in your `.env` file:
+
+    CASHIER_ENV=testing
+    
+    
 <a name="handling-braintree-webhooks"></a>
 ## Handling Braintree Webhooks
 
