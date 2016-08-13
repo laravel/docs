@@ -67,8 +67,10 @@ Laravel needs almost no other configuration out of the box. You are free to get 
 
 You may also want to configure a few additional components of Laravel, such as:
 
+<div class="content-list" markdown="1">
 - [Cache](/docs/{{version}}/cache#configuration)
 - [Database](/docs/{{version}}/database#configuration)
 - [Session](/docs/{{version}}/session#configuration)
+</div>
 
 Once Laravel is installed, you should also [configure your local environment](/docs/{{version}}/configuration#environment-configuration).
