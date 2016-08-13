@@ -339,7 +339,7 @@ If you are queueing jobs using this syntax, Eloquent models will no longer be au
 
 #### Resource Parameters Are Singular By Default
 
-In previous versions of Laravel, route parameters registered using `Route::resource` where not "singularized". This could lead to some unexpected behavior when registering route model bindings. For example, given the following `Route::resource` call:
+In previous versions of Laravel, route parameters registered using `Route::resource` were not "singularized". This could lead to some unexpected behavior when registering route model bindings. For example, given the following `Route::resource` call:
 
     Route::resource('photos', 'PhotoController');
 
