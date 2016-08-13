@@ -6,6 +6,7 @@
     - [Determining The Current Environment](#determining-the-current-environment)
 - [Configuration Caching](#configuration-caching)
 - [Maintenance Mode](#maintenance-mode)
+- [Note](#note)
 
 <a name="introduction"></a>
 ## Introduction
@@ -92,3 +93,21 @@ While your application is in maintenance mode, no [queued jobs](/docs/{{version}
 #### Alternatives To Maintenance Mode
 
 Since maintenance mode requires your application to have several seconds of downtime, you may consider alternatives like [Envoyer](https://envoyer.io) to accomplish zero-downtime deployment with Laravel.
+
+<a name="note"></a>
+## Note
+
+Use of one config variable inside another config variable may result intermittent behaviour. Sometime the value of
+variable come up sometime it may not. 
+
+Eg. we have `app/config/file.php` and `app/config/gift.php`
+
+sample content of `file.php` that uses `gift.php` configuration.
+
+    return [
+    ...
+    'allow_gift_cache' => config('gift.allow_cache');
+    ...
+    ]
+
+Here `config('gift.allow_cache')` may return null and thus `file.allow_gift_cache` is null.
