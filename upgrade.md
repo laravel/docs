@@ -88,7 +88,7 @@ The `Route::auth` method now registers a `POST` route for `/logout` instead of a
 
 Some policy methods only receive the currently authenticated user and not an instance of the model they authorize. This situation is most common when authorizing `create` actions. For example, if you are creating a blog, you may wish to check if a user is authorized to create any posts at all.
 
-When defining policy methods that will not receive a model instance, such as a `create` method, the class name will no longer be passed as the second argument to the method. Your method should just expected the authenticated user instance:
+When defining policy methods that will not receive a model instance, such as a `create` method, the class name will no longer be passed as the second argument to the method. Your method should just expect the authenticated user instance:
 
     /**
      * Determine if the given user can create posts.
