@@ -23,18 +23,17 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
-    - [Views](/docs/{{version}}/views)
-    - [Blade Templates](/docs/{{version}}/blade)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
 - Frontend
-    - [Getting Started](/docs/{{version}}/frontend)
+    - [Views](/docs/{{version}}/views)
+    - [Blade Templates](/docs/{{version}}/blade)
     - [Compiling Assets](/docs/{{version}}/elixir)
     - [Localization](/docs/{{version}}/localization)
 - Security
     - [Authentication](/docs/{{version}}/authentication)
-    - [Resetting Passwords](/docs/{{version}}/passwords)
     - [Authorization](/docs/{{version}}/authorization)
+    - [Password Reset](/docs/{{version}}/passwords)
     - [Encryption](/docs/{{version}}/encryption)
     - [Hashing](/docs/{{version}}/hashing)
 - General Topics
