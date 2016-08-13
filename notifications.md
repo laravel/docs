@@ -445,7 +445,7 @@ If a notification supports being sent as a Slack message, you should define a `t
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-                    ->content('One of your invoices has been paid!')
+                    ->content('One of your invoices has been paid!');
     }
 
 In this example we are just sending a single line of text to Slack, which will create a message that looks like the following:
