@@ -36,6 +36,9 @@
     - [Password Reset](/docs/{{version}}/passwords)
     - [Encryption](/docs/{{version}}/encryption)
     - [Hashing](/docs/{{version}}/hashing)
+- API Development
+    - [Getting Started](/docs/{{version}}/apis)
+    - [Authentication](/docs/{{version}}/api-authentication)
 - General Topics
     - [Broadcasting](/docs/{{version}}/broadcasting)
     - [Cache](/docs/{{version}}/cache)
