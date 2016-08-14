@@ -10,10 +10,13 @@
 - [Personal Access Tokens](#personal-access-tokens)
     - [Creating A Personal Access Client](#)
     - [Managing Personal Access Tokens](#)
-- [Protecting Routes](#)
-- [Scopes](#)
-    - [Defining Scopes](#)
-    - [Checking Scopes](#)
+- [Protecting Routes](#protecting-routes)
+    - [Via Middleware](#via-middleware)
+    - [Passing The Access Token](#passing-the-access-token)
+- [Token Scopes](#token-scopes)
+    - [Defining Scopes](#defining-scopes)
+    - [Assigning Scopes To Tokens](#assigning-scopes-to-tokens)
+    - [Checking Scopes](#checking-scopes)
 - [Calling Your Own API](#)
 
 <a name="introduction"></a>
@@ -286,11 +289,13 @@ Before your application can issue personal access tokens, you will need to creat
 <a name="managing-personal-access-tokens"></a>
 ### Managing Personal Access Tokens
 
-Once you have created a personal access client, you may issue tokens for a given user using the `createToken` method on the user instance:
+Once you have created a personal access client, you may issue tokens for a given user using the `createToken` method on the `User` model instance. The `createToken` method accepts the name of the token as its first argument and an optional array of [scopes](#token-scopes) as its second argument:
 
     $user = App\User::find(1);
 
     $token = $user->createToken('Token Name')->accessToken;
+
+    $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
 #### JSON API
 
@@ -336,3 +341,76 @@ This route is used to create new personal access tokens. It requires two pieces 
 This route may be used to delete personal access tokens:
 
     this.$http.delete('/oauth/personal-access-tokens/' + tokenId);
+
+<a name="protecting-routes"></a>
+## Protecting Routes
+
+<a name="via-middleware"></a>
+### Via Middleware
+
+Passport includes an [authentication guard](/docs/{{version}}/authentication#adding-custom-guards) that will validate access tokens on incoming requests. Once you have configured your `api` guard to use the `passport` driver in your `config/auth.php` configuration file, you only need to specify the `auth:api` middleware on any routes that should require an access token:
+
+    Route::get('/user', function () {
+        //
+    })->middleware('auth:api');
+
+> {tip} The `RouteServiceProvider` included with fresh Laravel applications already loads the `api` route file within a route group containing the `auth:api` middleware. So, there is no need to manually assign this middleware to all the routes in your `api` routes file.
+
+<a name="passing-the-access-token"></a>
+### Passing The Access Token
+
+When calling routes that are protected by Passport, your application's API consumers will need to specify their access token as a `Bearer` token in the `Authorization` header of their request. For example, when using the Guzzle HTTP library:
+
+    $response = $client->request('GET', '/api/user', [
+        'headers' => [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '.$accessToken,
+        ],
+    ]);
+
+<a name="token-scopes"></a>
+## Token Scopes
+
+
+<a name="defining-scopes"></a>
+### Defining Scopes
+
+Scopes allow your API clients to request a specific set of permissions when requesting authorization to access an account. For example, if you are building an e-commerce application, not all API consumers will need the ability to place orders. Instead, you may allow the consumers to only request authorization to access order shipment statuses. In other words, scopes allow your application's users to limit the actions a third-party application can perform on their behalf.
+
+You may define your API's scopes using the `Passport::tokensCan` method in the `boot` method of your `AuthServiceProvider`. The `tokensCan` method accepts an array of scope names and scope descriptions. The scope description may be anything you wish and is displayed to the user on the authorization approval screen when a consuming application requests a token with that scope:
+
+    use Laravel\Passport\Passport;
+
+    Passport::tokensCan([
+        'place-orders' => 'Place orders on your behalf',
+        'check-status' => 'Check the status of your orders',
+    ]);
+
+<a name="assigning-scopes-to-tokens"></a>
+### Assigning Scopes To Tokens
+
+#### When Requesting Authorization Codes
+
+When requesting an access token using the authorization code grant, you should specify your desired scopes as the `scope` query string parameter using a space-delimited string:
+
+    Route::get('/redirect', function () {
+        $query = http_build_query([
+            'client_id' => 'client-id',
+            'redirect_uri' => 'http://example.com/callback',
+            'response_type' => 'code',
+            'scope' => 'place-orders check-status',
+        ]);
+
+        return redirect('http://your-app.com/oauth/authorize?'.$query);
+    });
+
+#### When Issuing Personal Access Tokens
+
+If you are issuing personal access tokens using the `createToken` method on a `User` model instance, you may pass the array of desired scopes as the second argument to the method:
+
+    $token = $user->createToken('My Token', ['place-orders'])->accessToken;
+
+<a name="checking-scopes"></a>
+### Checking Scopes
+
+Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token containing a scope. To get started, add the following middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
