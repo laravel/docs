@@ -38,7 +38,7 @@ Additionally, you may define an `options` array value in your Redis connection d
 
 If your Redis server requires authentication, you may supply a password by adding a `password` configuration item to your Redis server configuration array.
 
-> {note} If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
+> {note} If you have the Redis PHP extension installed via PECL, you will need to use [this package](https://github.com/tillkruss/laravel-phpredis) to prevent false positive cache results and rename the alias for Redis in your `config/app.php` file.
 
 <a name="interacting-with-redis"></a>
 ## Interacting With Redis
