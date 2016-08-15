@@ -816,7 +816,7 @@ For convenience, `attach` and `detach` also accept arrays of IDs as input:
 
     $user->roles()->attach([1 => ['expires' => $expires], 2, 3]);
 
-#### Syncing For Convenience
+#### Syncing Associations
 
 You may also use the `sync` method to construct many-to-many associations. The `sync` method accepts an array of IDs to place on the intermediate table. Any IDs that are not in the given array will be removed from the intermediate table. So, after this operation is complete, only the IDs in the given array will exist in the intermediate table:
 
@@ -825,6 +825,10 @@ You may also use the `sync` method to construct many-to-many associations. The `
 You may also pass additional intermediate table values with the IDs:
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
+
+If you do not want to detach existing IDs, you may use the `syncWithoutDetaching` method:
+
+    $user->roles()->syncWithoutDetaching([1, 2, 3]);
 
 #### Saving Additional Data On A Pivot Table
 
