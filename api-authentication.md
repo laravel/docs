@@ -17,7 +17,7 @@
     - [Defining Scopes](#defining-scopes)
     - [Assigning Scopes To Tokens](#assigning-scopes-to-tokens)
     - [Checking Scopes](#checking-scopes)
-- [Calling Your Own API](#)
+- [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
 
 <a name="introduction"></a>
 ## Introduction
@@ -457,3 +457,32 @@ Once an access token authenticated request has entered your application, you may
             //
         }
     });
+
+<a name="consuming-your-api-with-javascript"></a>
+## Consuming Your API With JavaScript
+
+When building an API, it can be extremely useful to be able to consume your own API from your JavaScript application. This approach to API development allows your own application to consume the same API that you are sharing with the world. The same API may be consumed by your web application, mobile applications, third-party applications, and any SDKs that you may publish on various package managers.
+
+Typically, if you want to consume your API from your JavaScript application, you would need to manually send an access token to the application and pass it with each request to your application. However, Passport includes a middleware that can handle this for you. All you need to do is add the `CreateFreshApiToken` middleware to your `web` middleware group:
+
+    'web' => [
+        // Other middleware...
+        \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+    ],
+
+This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypt JWT that Passport will use to authenticate API requests from your JavaScript application. Now, you may make requests to your application's API without explicitly passing an access token:
+
+    this.$http.get('/user')
+        .then(response => {
+            console.log(response.data);
+        });
+
+When using this method of authentication, you will need to send the CSRF token with every request via the `X-CSRF-TOKEN` header. Laravel will automatically send this header if you are using the default [Vue](https://vuejs.org) configuration that is included with the framework:
+
+    Vue.http.interceptors.push((request, next) => {
+        request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
+
+        next();
+    });
+
+> {note} If you are using a different JavaScript framework, you should make sure it is configured to send this header with every outgoing request.
