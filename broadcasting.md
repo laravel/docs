@@ -394,9 +394,9 @@ The data returned by the authorization callback will be made available to the pr
 <a name="joining-presence-channels"></a>
 ### Joining Presence Channels
 
-To join a presence channel, you may use Echo's `presence` method. The `presence` method will return a `PresenceChannel` implementation which, along with exposing the `listen` method, allows you to subscribe to the `here`, `joining`, and `leaving` events.
+To join a presence channel, you may use Echo's `join` method. The `join` method will return a `PresenceChannel` implementation which, along with exposing the `listen` method, allows you to subscribe to the `here`, `joining`, and `leaving` events.
 
-    Echo.presence('chat.' + roomId)
+    Echo.join('chat.' + roomId)
         .here((users) => {
             //
         })
@@ -430,9 +430,9 @@ Like public or private events, presence channel events may be broadcast using th
 
     broadcast(new NewMessage($message))->toOthers();
 
-You may listen for the presence event via Echo's `listen` method:
+You may listen for the join event via Echo's `listen` method:
 
-    Echo.presence('chat.' + roomId)
+    Echo.join('chat.' + roomId)
         .here(...)
         .joining(...)
         .leaving(...)
