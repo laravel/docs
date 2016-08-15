@@ -414,3 +414,34 @@ If you are issuing personal access tokens using the `createToken` method on a `U
 ### Checking Scopes
 
 Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token containing a scope. To get started, add the following middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
+
+    'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
+    'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
+
+#### Check For All Scopes
+
+The `scopes` middleware may be assigned to a route to verify that the incoming request's access token has *all* of the listed scopes:
+
+    Route::get('/orders', function () {
+        // Access token has both "check-status" and "place-orders" scopes...
+    })->middleware('scopes:check-status,place-orders');
+
+#### Check For Any Scopes
+
+The `scope` middleware may be assigned to a route to verify that the incoming request's access token has *at least one* of the listed scopes:
+
+    Route::get('/orders', function () {
+        // Access token has either "check-status" or "place-orders" scope...
+    })->middleware('scope:check-status,place-orders');
+
+#### Checking Scopes On A Token Instance
+
+Once an access token authenticated request has entered your application, you may still check if the token has a given scope using the `tokenCan` method on the authenticated `User` model instance:
+
+    use Illuminate\Http\Request;
+
+    Route::get('/orders', function (Request $request) {
+        if ($request->user()->tokenCan('place-orders')) {
+            //
+        }
+    });
