@@ -575,7 +575,7 @@ Laravel ships with a handful of notification channels, but you may want to write
 
     <?php
 
-    use App\Channels;
+    namespace App\Channels;
 
     use Illuminate\Notifications\Notification;
 
