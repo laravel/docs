@@ -827,7 +827,7 @@ If you need to update an existing row in your pivot table, you may use `updateEx
 
 	$user->roles()->updateExistingPivot($roleId, $attributes);
 
-#### Syncing For Convenience
+#### Syncing Associations
 
 You may also use the `sync` method to construct many-to-many associations. The `sync` method accepts an array of IDs to place on the intermediate table. Any IDs that are not in the given array will be removed from the intermediate table. So, after this operation is complete, only the IDs in the array will exist in the intermediate table:
 
@@ -836,10 +836,10 @@ You may also use the `sync` method to construct many-to-many associations. The `
 You may also pass additional intermediate table values with the IDs:
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
-    
-If you don't want to detach existing IDs, you can set the second parameter to false:
 
-    $user->roles()->sync([1, 2, 3], false);
+If you do not want to detach existing IDs, you may use the `syncWithoutDetaching` method:
+
+    $user->roles()->syncWithoutDetaching([1, 2, 3]);
 
 <a name="touching-parent-timestamps"></a>
 ### Touching Parent Timestamps
