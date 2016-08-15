@@ -554,7 +554,7 @@ When a notification is sent, the `Illuminate\Notifications\Events\NotificationSe
 
 > {tip} After registering listeners in your `EventServiceProvider`, use the `event:generate` Artisan command to quickly generate listener classes.
 
-Within an event listener, you may access the `notifiable` and `notification` properties on the event to learn more about the notification recipient or the notification itself:
+Within an event listener, you may access the `notifiable`, `notification`, and `channel` properties on the event to learn more about the notification recipient or the notification itself:
 
     /**
      * Handle the event.
@@ -564,6 +564,7 @@ Within an event listener, you may access the `notifiable` and `notification` pro
      */
     public function handle(NotificationSent $event)
     {
+        // $event->channel
         // $event->notifiable
         // $event->notification
     }
