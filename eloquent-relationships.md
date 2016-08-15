@@ -836,6 +836,10 @@ You may also use the `sync` method to construct many-to-many associations. The `
 You may also pass additional intermediate table values with the IDs:
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
+    
+If you don't want to detach existing IDs, you can set the second parameter to false:
+
+    $user->roles()->sync([1, 2, 3], false);
 
 <a name="touching-parent-timestamps"></a>
 ### Touching Parent Timestamps
