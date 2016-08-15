@@ -14,6 +14,8 @@
 
 For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance.
 
+At the EOL (End of Life) of each LTS release, a new LTS release will be tagged.
+
 For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
 
 <a name="laravel-5.2"></a>
