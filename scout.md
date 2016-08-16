@@ -16,6 +16,7 @@
 - [Searching](#searching)
     - [Where Clauses](#where-clauses)
     - [Pagination](#pagination)
+- [Custom Engines](#custom-engines)
 
 <a name="introduction"></a>
 ## Introduction
@@ -261,3 +262,42 @@ Once you have retrieved the results, you may display the results and render the 
     </div>
 
     {{ $orders->links() }}
+
+<a name="custom-engines"></a>
+## Custom Engines
+
+#### Writing The Engine
+
+If one of the built-in Scout search engines doesn't fit your needs, you may write your own custom engine and register it with Scout. Your engine should extend the `Laravel\Scout\Engines\Engine` abstract class. This abstract class contains five methods your custom engine must implement:
+
+    use Laravel\Scout\Builder;
+
+    abstract public function update($models);
+    abstract public function delete($models);
+    abstract public function search(Builder $builder);
+    abstract public function paginate(Builder $builder, $perPage, $page);
+    abstract public function map($results, $model);
+
+You may find it helpful to review the implementations of these methods on the `Laravel\Scout\Engines\AlgoliaEngine` class. This class will provide you with a good starting point for learning how to implement each of these methods in your own engine.
+
+#### Registering The Engine
+
+Once you have written your custom engine, you may register it with Scout using the `extend` method of the Scout engine manager. You should call the `extend` method from the `boot` method of your `AppServiceProvider` or any other service provider used by your application. For example, if you have written a `MySqlSearchEngine`, you may register it like so:
+
+    use Laravel\Scout\EngineManager;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        app(EngineManager::class)->extend('mysql', function () {
+            return new MySqlSearchEngine;
+        });
+    }
+
+Once your engine has been registered, you may specify it as your default Scout `driver` in your `config/scout.php` configuration file:
+
+    'driver' => 'mysql',
