@@ -210,7 +210,7 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
          */
         public function broadcastOn()
         {
-            return new PrivateChannel('user.'.$this->user->id).
+            return new PrivateChannel('user.'.$this->user->id);
         }
     }
 
@@ -421,7 +421,7 @@ Presence channels may receive events just like public or private channels. Using
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('room.'.$this->message->room_id).
+        return new PresenceChannel('room.'.$this->message->room_id);
     }
 
 Like public or private events, presence channel events may be broadcast using the `broadcast` function. As with other events, you may use the `toOthers` method to exclude the current user from receiving the broadcast:
