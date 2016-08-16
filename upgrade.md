@@ -131,6 +131,10 @@ When calling the `Cache::extend` method with a Closure, `$this` will be bound to
         }
     });
 
+### Cashier
+
+If you are using Cashier, you should upgrade your `laravel/cashier` package to the `~7.0` release. This release of Cashier only upgrades a few internal methods to be compatible with Laravel 5.3 and is not a breaking change.
+
 ### Collections
 
 #### Key / Value Order Change
