@@ -25,11 +25,12 @@
     - [Responses](/docs/{{version}}/responses)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
-- Frontend
+- Views & Templates
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
     - [Localization](/docs/{{version}}/localization)
-    - [JavaScript](#)
+- JavaScript & CSS
+    - [Getting Started](/docs/{{version}}/frontend)
     - [Compiling Assets](/docs/{{version}}/elixir)
 - Security
     - [Authentication](/docs/{{version}}/authentication)
