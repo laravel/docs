@@ -79,8 +79,6 @@ When the Redis broadcaster publishes an event, it will be published on the event
 
 #### Socket.IO
 
-> {note} Socket.IO server support is currently in beta and is community driven. Public and private channels are supported; however, presence channels are not fully implemented.
-
 If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application's `head` HTML element:
 
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
