@@ -106,7 +106,7 @@ You may access the authenticated user via the `Auth` facade:
 
     $user = Auth::user();
 
-Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods:
+Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods, but you can not read authenticated user in constructor:
 
     <?php
 
