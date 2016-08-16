@@ -186,9 +186,9 @@ You may use the `make` method to resolve a class instance out of the container. 
 
     $api = $this->app->make('HelpSpot\API');
 
-If you are in a location of your code that does not have access to the `$app` variable, you may use the global `app` helper:
+If you are in a location of your code that does not have access to the `$app` variable, you may use the global `resolve` helper:
 
-    $api = app('HelpSpot\API');
+    $api = resolve('HelpSpot\API');
 
 <a name="automatic-injection"></a>
 #### Automatic Injection

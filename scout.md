@@ -293,7 +293,7 @@ Once you have written your custom engine, you may register it with Scout using t
      */
     public function boot()
     {
-        app(EngineManager::class)->extend('mysql', function () {
+        resolve(EngineManager::class)->extend('mysql', function () {
             return new MySqlSearchEngine;
         });
     }
