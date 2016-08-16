@@ -10,7 +10,7 @@
     - [Refreshing Tokens](#refreshing-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
     - [Creating A Personal Access Client](#)
-    - [Managing Personal Access Tokens](#)
+    - [Managing Personal Access Tokens](#managing-personal-access-tokens)
 - [Protecting Routes](#protecting-routes)
     - [Via Middleware](#via-middleware)
     - [Passing The Access Token](#passing-the-access-token)
@@ -188,7 +188,7 @@ Since your users will not be able to utilize the `client` command, Passport prov
 
 However, you will need to pair Passport's JSON API with your own frontend to provide a dashboard for your users to manage their clients. Below, we'll review all of the API endpoints for managing clients. For convenience, we'll use [Vue](https://vuejs.org) to demonstrate making HTTP requests to the endpoints.
 
-> {tip} The routes to send requests to the Passport controllers were registered when you called the `Passport::routes` method in your `AuthServiceProvider`.
+> {tip} If you don't want to implement the entire client management frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
 
 #### `GET /oauth/clients`
 
@@ -347,6 +347,8 @@ Once you have created a personal access client, you may issue tokens for a given
 #### JSON API
 
 Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Vue](https://vuejs.org) to demonstrate making HTTP requests to the endpoints.
+
+> {tip} If you don't want to implement the personal access token frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
 
 #### `GET /oauth/scopes`
 

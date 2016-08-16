@@ -28,8 +28,9 @@
 - Frontend
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
-    - [Compiling Assets](/docs/{{version}}/elixir)
     - [Localization](/docs/{{version}}/localization)
+    - [JavaScript](#)
+    - [Compiling Assets](/docs/{{version}}/elixir)
 - Security
     - [Authentication](/docs/{{version}}/authentication)
     - [Authorization](/docs/{{version}}/authorization)
