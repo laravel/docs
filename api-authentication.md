@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Configuration](#configuration)
+    - [Frontend Quickstart](#frontend-quickstart)
 - [OAuth2 Using Authorization Codes](#oauth2-using-authorization-codes)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
@@ -130,6 +131,40 @@ By default, Passport issues long-lived access tokens that never need to be refre
 
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
     }
+
+<a name="frontend-quickstart"></a>
+### Frontend Quickstart
+
+> {note} In order to use the Passport Vue components, you must be using the [Vue](https://vuejs.org) JavaScript framework. These components also use the Bootstrap CSS framework. However, even if you are not using these tools, the components serve as a valuable reference for your own frontend implementation.
+
+Passport ships with a JSON API that you may use to allow your users to create clients and personal access tokens. However, it can be time consuming to code a frontend to interact with these APIs. So, Passport also includes pre-built [Vue](https://vuejs.org) components you may use as an example implementation or starting point for your own implementation.
+
+To publish the Passport Vue components, use the `vendor:publish` Artisan command:
+
+    php artisan vendor:publish --tag=passport-components
+
+The published components will be placed in your `resources/assets/js/components` directory. Once the components have been published, you should register them in your `resources/assets/js/app.js` file:
+
+    Vue.component(
+        'passport-clients',
+        require('./components/passport/Clients.vue')
+    );
+
+    Vue.component(
+        'passport-authorized-clients',
+        require('./components/passport/AuthorizedClients.vue')
+    );
+
+    Vue.component(
+        'passport-personal-access-tokens',
+        require('./components/passport/PersonalAccessTokens.vue')
+    );
+
+Once the components have been registered, you may drop them into one of your application's templates to get started creating clients and personal access tokens:
+
+    <passport-clients></passport-clients>
+    <passport-authorized-clients></passport-authorized-clients>
+    <passport-personal-access-tokens></passport-personal-access-tokens>
 
 <a name="oauth2-using-authorization-codes"></a>
 ## OAuth2 Using Authorization Codes
