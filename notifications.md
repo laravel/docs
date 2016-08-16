@@ -276,7 +276,7 @@ If you want to retrieve only the "unread" notifications, you may use the `unread
 <a name="marking-notifications-as-read"></a>
 ### Marking Notifications As Read
 
-Typically, you will want to mark a notification as "read" when a user views it. The `Illuminate\Notifications\Notifiable` trait provides a `markAsRead` method, which updates the `read` column on the notification's database record:
+Typically, you will want to mark a notification as "read" when a user views it. The `Illuminate\Notifications\Notifiable` trait provides a `markAsRead` method, which updates the `read_at` column on the notification's database record:
 
     $user = App\User::find(1);
 
@@ -292,7 +292,7 @@ You may also use a mass-update query to mark all of the notifications as read wi
 
     $user = App\User::find(1);
 
-    $user->notifications()->update(['read' => true]);
+    $user->notifications()->update(['read_at' => Carbon::now()]);
 
 Of course, you may `delete` the notifications to remove them from the table entirely:
 
