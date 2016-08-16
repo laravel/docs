@@ -70,6 +70,7 @@
 - Official Packages
     - [Cashier](/docs/{{version}}/billing)
     - [Envoy](/docs/{{version}}/envoy)
+    - [Scout](/docs/{{version}}/scout)
     - [Socialite](https://github.com/laravel/socialite)
 - Appendix
     - [Collections](/docs/{{version}}/collections)
