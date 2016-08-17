@@ -9,7 +9,7 @@
     - [Requesting Tokens](#requesting-tokens)
     - [Refreshing Tokens](#refreshing-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
-    - [Creating A Personal Access Client](#)
+    - [Creating A Personal Access Client](#creating-a-personal-access-client)
     - [Managing Personal Access Tokens](#managing-personal-access-tokens)
 - [Protecting Routes](#protecting-routes)
     - [Via Middleware](#via-middleware)
