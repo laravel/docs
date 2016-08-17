@@ -24,7 +24,7 @@ Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver ba
 
 ### Notifications
 
-Laravel Notifications provide a simple, expressive API for sending notifications across a variety of delivery channels such as email, Slack, SMS, and more. For example, you may define a notification that is sent to your users when an invoice is paid and delivery that notification via email and SMS. Then, you may send the notification using a single, simple method:
+Laravel Notifications provide a simple, expressive API for sending notifications across a variety of delivery channels such as email, Slack, SMS, and more. For example, you may define a notification that is sent to your users when an invoice is paid and deliver that notification via email and SMS. Then, you may send the notification using a single, simple method:
 
     $user->notify(new InvoicePaid($invoice));
 
