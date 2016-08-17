@@ -51,7 +51,7 @@ Alternatively, you may also install Laravel by issuing the Composer `create-proj
 
 #### Public Directory
 
-After installing Laravel, you should configure your your web server's document / web root to be the `public` directory. The `index.php` in this directory serves as the front controller for all HTTP requests entering your application.
+After installing Laravel, you should configure your web server's document / web root to be the `public` directory. The `index.php` in this directory serves as the front controller for all HTTP requests entering your application.
 
 #### Configuration Files
 
