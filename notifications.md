@@ -193,7 +193,7 @@ By default, the email's subject is the class name of the notification formatted 
     {
         return (new MailMessage)
                     ->subject('Notification Subject')
-                    ->line('...')
+                    ->line('...');
     }
 
 <a name="error-messages"></a>
@@ -212,7 +212,7 @@ Some notifications inform users of errors, such as a failed invoice payment. You
         return (new MailMessage)
                     ->error()
                     ->subject('Notification Subject')
-                    ->line('...')
+                    ->line('...');
     }
 
 <a name="database-notifications"></a>
