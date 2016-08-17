@@ -20,19 +20,19 @@ For general releases, bug fixes are provided for 6 months and security fixes are
 <a name="laravel-5.3"></a>
 ## Laravel 5.3
 
-Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/{{version}}/notifications), more robust real-time support via [Laravel Echo](/docs/{{version}}/broadcasting), OAuth2 server support via [Laravel Passport](/docs/{{version}}/passport), Full-text model searching via [Laravel Scout](/docs/{{version}}/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` route files, Closure based console commands, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
+Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/5.3/notifications), robust real-time support via [Laravel Echo](/docs/5.3/broadcasting), painless OAuth2 servers via [Laravel Passport](/docs/5.3/passport), full-text model searching via [Laravel Scout](/docs/5.3/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` routes, Closure based console commands, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
 
 ### Notifications
 
-Laravel Notifications provide a simple, expressive API for sending notifications across a variety of delivery channels such as email, Slack, SMS, and more. For example, you may define a notification that is sent to your users when an invoice is paid and deliver that notification via email and SMS. Then, you may send the notification using a single, simple method:
+Laravel Notifications provide a simple, expressive API for sending notifications across a variety of delivery channels such as email, Slack, SMS, and more. For example, you may define a notification that an invoice has been paid and deliver that notification via email and SMS. Then, you may send the notification using a single, simple method:
 
     $user->notify(new InvoicePaid($invoice));
 
 There is already a wide variety of [community written drivers](http://laravel-notification-channels.com) for notifications, including support for iOS and Android notifications. To learn more about notifications, be sure to check out the [full notification documentation](/docs/5.3/notifications).
 
-### Laravel Echo / Event Broadcasting
+### WebSockets / Event Broadcasting
 
-While event broadcasting has existed in previous versions of Laravel, the Laravel 5.3 release greatly improves this feature of the framework by adding channel-level authentication for private and presence channels:
+While event broadcasting existed in previous versions of Laravel, the Laravel 5.3 release greatly improves this feature of the framework by adding channel-level authentication for private and presence WebSocket channels:
 
     /*
      * Authenticate the channel subscription...
@@ -41,14 +41,14 @@ While event broadcasting has existed in previous versions of Laravel, the Larave
         return $user->placedOrder($orderId);
     });
 
-Laravel Echo, a new JavaScript package installable via NPM, has also been released to provide a simple, beautiful API for subscribing to channels and listening for your server-side events in your client-side JavaScript application:
+Laravel Echo, a new JavaScript package installable via NPM, has also been released to provide a simple, beautiful API for subscribing to channels and listening for your server-side events in your client-side JavaScript application. Echo includes support for [Pusher](https://pusher.com) and [Socket.io](http://socket.io):
 
     Echo.channel('orders.' + orderId)
         .listen('ShippingStatusUpdated', (e) => {
             console.log(e.description);
         });
 
-In addition to subscribing to traditional channels, Laravel Echo also makes it a breeze to subscribe to presence channels which provide information about who else is listening on a given channel:
+In addition to subscribing to traditional channels, Laravel Echo also makes it a breeze to subscribe to presence channels which provide information about who is listening on a given channel:
 
     Echo.join('chat.' + roomId)
         .here((users) => {
@@ -61,13 +61,13 @@ In addition to subscribing to traditional channels, Laravel Echo also makes it a
             console.log(user.name);
         });
 
-To learn more about Echo and event broadcasting, check out the [full documentation](/docs/{{version}}/broadcasting).
+To learn more about Echo and event broadcasting, check out the [full documentation](/docs/5.3/broadcasting).
 
 ### Laravel Passport (OAuth2 Server)
 
 Laravel 5.3 makes API authentication a breeze using [Laravel Passport](/docs/{{version}}/passport), which provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Alex Bilbie.
 
-Passport makes it dead simple to issue access tokens via OAuth2 authorization codes. You may also allow your users to create "personal access tokens" via your web UI. To get you started quickly, Passport includes [Vue components](https://vuejs.org) that can serve as a starting point for your OAuth2 dashboard that allows users to create clients, revoke access tokens, and more:
+Passport makes it painless to issue access tokens via OAuth2 authorization codes. You may also allow your users to create "personal access tokens" via your web UI. To get you started quickly, Passport includes [Vue components](https://vuejs.org) that can serve as a starting point for your OAuth2 dashboard, allowing users to create clients, revoke access tokens, and more:
 
     <passport-clients></passport-clients>
     <passport-authorized-clients></passport-authorized-clients>
@@ -78,8 +78,8 @@ If you do not want to use the Vue components, you are welcome to provide your ow
 Of course, Passport also makes it simple to define access token scopes that may be requested by application's consuming your API:
 
     Passport::tokensCan([
-        'place-orders', 'Place new orders',
-        'check-status', 'Check order status',
+        'place-orders' => 'Place new orders',
+        'check-status' => 'Check order status',
     ]);
 
 In addition, Passport includes helpful middleware for verifying that an access token authenticated request contains the necessary token scopes:
@@ -88,13 +88,11 @@ In addition, Passport includes helpful middleware for verifying that an access t
         // Access token has "check-status" scope...
     })->middleware('scope:check-status');
 
-Lastly, Passport includes support for consuming your own API from your JavaScript application without worrying about passing access tokens. Passport achieves this through encrypted JWT cookies and synchronized CSRF tokens, allowing you to focus on what matters: your application. For more information on Passport, be sure to check out its [full documentation](/docs/{{version}}/passport).
+Lastly, Passport includes support for consuming your own API from your JavaScript application without worrying about passing access tokens. Passport achieves this through encrypted JWT cookies and synchronized CSRF tokens, allowing you to focus on what matters: your application. For more information on Passport, be sure to check out its [full documentation](/docs/5.3/passport).
 
 ### Search (Laravel Scout)
 
-Laravel Scout provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
-
-Currently, Scout ships with an [Algolia](https://www.algolia.com/) driver; however, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
+Laravel Scout provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/5.3/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records. Currently, Scout ships with an [Algolia](https://www.algolia.com/) driver; however, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
 Making models searchable is as simple as adding a `Searchable` trait to the model:
 
@@ -110,7 +108,7 @@ Making models searchable is as simple as adding a `Searchable` trait to the mode
         use Searchable;
     }
 
-Once the trait has been added to your model, its information will automatically be kept in sync with your search indexes by simply saving the model:
+Once the trait has been added to your model, its information will be kept in sync with your search indexes by simply saving the model:
 
     $order = new Order;
 
@@ -118,13 +116,13 @@ Once the trait has been added to your model, its information will automatically 
 
     $order->save();
 
-Once your models have been indexed, its a breeze to perform full-text searches across all of your models. You can even easily paginate your search results:
+Once your models have been indexed, its a breeze to perform full-text searches across all of your models. You may even paginate your search results:
 
     return Order::search('Star Trek')->get();
 
     return Order::search('Star Trek')->where('user_id', 1)->paginate();
 
-Of course, Scout has many more features which are covered in the [full documentation](/docs/{{version}}/scout).
+Of course, Scout has many more features which are covered in the [full documentation](/docs/5.3/scout).
 
 ### Mailable Objects
 
@@ -156,11 +154,11 @@ Of course, you may also mark mailable objects as "queueable" so that they will b
         //
     }
 
-For more information on mailable objects, be sure to check out the [mail documentation](/docs/{{version}}/mail).
+For more information on mailable objects, be sure to check out the [mail documentation](/docs/5.3/mail).
 
 ### Webpack & Laravel Elixir
 
-Along with Laravel 5.3, Laravel Elixir 6.0 has been released with baked-in support for the Webpack and Rollup JavaScript module bundlers. By default, the Laravel 5.3 `gulpfile.js` file now uses Webpack to compile your JavaScript. The [full Laravel Elixir documentation](/docs/{{version}}/elixir) contains more information on both of these bundlers:
+Along with Laravel 5.3, Laravel Elixir 6.0 has been released with baked-in support for the Webpack and Rollup JavaScript module bundlers. By default, the Laravel 5.3 `gulpfile.js` file now uses Webpack to compile your JavaScript. The [full Laravel Elixir documentation](/docs/5.3/elixir) contains more information on both of these bundlers:
 
     elixir(mix => {
         mix.sass('app.scss')
@@ -169,15 +167,15 @@ Along with Laravel 5.3, Laravel Elixir 6.0 has been released with baked-in suppo
 
 ### Frontend Structure
 
-Laravel 5.3 ships with a more modern frontend structure by default. This primarily affects the `make:auth` authentication scaffolding. Instead of loading frontend assets from a CDN, dependencies are specified in the default `package.json` file.
+Laravel 5.3 ships with a more modern frontend structure. This primarily affects the `make:auth` authentication scaffolding. Instead of loading frontend assets from a CDN, dependencies are specified in the default `package.json` file.
 
 In addition, support for single file [Vue components](https://vuejs.org) is now included out of the box. A sample `Example.vue` component is included in the `resources/assets/js/components` directory. In addition, the new `resources/assets/js/app.js` file bootstraps and configures your JavaScript libraries and, if applicable, Vue components.
 
-This structure provides more guidance on how to begin developing modern, robust JavaScript applications, without requiring your application use any given JavaScript or CSS framework. For more information on getting started with modern Laravel frontend development, check out the new [introductory frontend documentation](/docs/{{version}}/frontend).
+This structure provides more guidance on how to begin developing modern, robust JavaScript applications, without requiring your application use any given JavaScript or CSS framework. For more information on getting started with modern Laravel frontend development, check out the new [introductory frontend documentation](/docs/5.3/frontend).
 
 ### Routes Files
 
-By default, fresh Laravel 5.3 applications contain two HTTP route files in a new top-level `routes` directory. The `web` and `api` route files provide more explicit guidance in how to split the routes for your web interface and your API. The routes in the `api` route file are automatically assigned the `api` prefix and the `auth:api` middleware.
+By default, fresh Laravel 5.3 applications contain two HTTP route files in a new top-level `routes` directory. The `web` and `api` route files provide more explicit guidance in how to split the routes for your web interface and your API. The routes in the `api` route file are automatically assigned the `api` prefix and the `auth:api` middleware by the `RouteServiceProvider`.
 
 ### Closure Console Commands
 
@@ -187,7 +185,7 @@ In addition to being defined as command classes, Artisan commands may now be def
         $this->info('Building project...');
     });
 
-For more information on Closure commands, check out the [full Artisan documentation](/docs/{{version}}/artisan).
+For more information on Closure commands, check out the [full Artisan documentation](/docs/5.3/artisan#closure-commands).
 
 <a name="laravel-5.2"></a>
 ## Laravel 5.2
