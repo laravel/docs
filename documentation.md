@@ -36,7 +36,7 @@
     - [Authentication](/docs/{{version}}/authentication)
     - [Authorization](/docs/{{version}}/authorization)
     - [Password Reset](/docs/{{version}}/passwords)
-    - [API Authentication](/docs/{{version}}/api-authentication)
+    - [API Authentication](/docs/{{version}}/passport)
     - [Encryption](/docs/{{version}}/encryption)
     - [Hashing](/docs/{{version}}/hashing)
 - General Topics
@@ -71,7 +71,7 @@
 - Official Packages
     - [Cashier](/docs/{{version}}/billing)
     - [Envoy](/docs/{{version}}/envoy)
-    - [Passport](/docs/{{version}}/api-authentication)
+    - [Passport](/docs/{{version}}/passport)
     - [Scout](/docs/{{version}}/scout)
     - [Socialite](https://github.com/laravel/socialite)
 - Appendix

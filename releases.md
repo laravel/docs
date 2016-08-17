@@ -20,7 +20,7 @@ For general releases, bug fixes are provided for 6 months and security fixes are
 <a name="laravel-5.3"></a>
 ## Laravel 5.3
 
-Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/{{version}}/notifications), more robust real-time support via [Laravel Echo](/docs/{{version}}/broadcasting), OAuth2 server support via [Laravel Passport](/docs/{{version}}/api-authentication), Full-text model searching via [Laravel Scout](/docs/{{version}}/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` route files, Closure based console commands, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
+Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/{{version}}/notifications), more robust real-time support via [Laravel Echo](/docs/{{version}}/broadcasting), OAuth2 server support via [Laravel Passport](/docs/{{version}}/passport), Full-text model searching via [Laravel Scout](/docs/{{version}}/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` route files, Closure based console commands, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
 
 ### Notifications
 
@@ -65,7 +65,7 @@ To learn more about Echo and event broadcasting, check out the [full documentati
 
 ### Laravel Passport (OAuth2 Server)
 
-Laravel 5.3 makes API authentication a breeze using [Laravel Passport](/docs/{{version}}/api-authentication), which provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Alex Bilbie.
+Laravel 5.3 makes API authentication a breeze using [Laravel Passport](/docs/{{version}}/passport), which provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Alex Bilbie.
 
 Passport makes it dead simple to issue access tokens via OAuth2 authorization codes. You may also allow your users to create "personal access tokens" via your web UI. To get you started quickly, Passport includes [Vue components](https://vuejs.org) that can serve as a starting point for your OAuth2 dashboard that allows users to create clients, revoke access tokens, and more:
 
@@ -88,7 +88,7 @@ In addition, Passport includes helpful middleware for verifying that an access t
         // Access token has "check-status" scope...
     })->middleware('scope:check-status');
 
-Lastly, Passport includes support for consuming your own API from your JavaScript application without worrying about passing access tokens. Passport achieves this through encrypted JWT cookies and synchronized CSRF tokens, allowing you to focus on what matters: your application. For more information on Passport, be sure to check out its [full documentation](/docs/{{version}}/api-authentication).
+Lastly, Passport includes support for consuming your own API from your JavaScript application without worrying about passing access tokens. Passport achieves this through encrypted JWT cookies and synchronized CSRF tokens, allowing you to focus on what matters: your application. For more information on Passport, be sure to check out its [full documentation](/docs/{{version}}/passport).
 
 ### Search (Laravel Scout)
 
@@ -181,9 +181,9 @@ By default, fresh Laravel 5.3 applications contain two route files in a new top-
 
 ### Closure Console Commands
 
-In addition to being defined as command classes, Artisan commands may now be defined as simple Closures in the `commands` method of your `app/Console/Kernel.php` file:
+In addition to being defined as command classes, Artisan commands may now be defined as simple Closures in the `commands` method of your `app/Console/Kernel.php` file. In fresh Laravel 5.3 applications, the `commands` method loads a `routes/console.php` file which allows you to define your Console commands as route-like, Closure based entry points into your application:
 
-    $this->command('build {project}', function ($project) {
+    Artisan::command('build {project}', function ($project) {
         $this->info('Building project...');
     });
 

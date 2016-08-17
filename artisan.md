@@ -4,6 +4,7 @@
 - [Writing Commands](#writing-commands)
     - [Generating Commands](#generating-commands)
     - [Command Structure](#command-structure)
+    - [Closure Commands](#closure-commands)
 - [Defining Input Expectations](#defining-input-expectations)
     - [Arguments](#arguments)
     - [Options](#options)
@@ -36,7 +37,7 @@ In addition to the commands provided with Artisan, you may also build your own c
 <a name="generating-commands"></a>
 ### Generating Commands
 
-To create a new command, use the `make:command` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. The generated command will include the default set of properties and methods that are present on all commands:
+To create a new command, use the `make:command` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. Don't worry if you this directory does not exist in your application, since it will be created the first time you run the `make:command` Artisan command. The generated command will include the default set of properties and methods that are present on all commands:
 
     php artisan make:command SendEmails
 
@@ -103,6 +104,48 @@ Let's take a look at an example command. Note that we are able to inject any dep
             $this->drip->send(User::find($this->argument('user')));
         }
     }
+
+<a name="closure-commands"></a>
+### Closure Commands
+
+Closure based commands provide an alternative to defining console commands as classes. In the same way that route Closures are an alternative to controllers, think of command Closures as an alternative to command classes. Within the `commands` method of your `app/Console/Kernel.php` file, Laravel loads the `routes/console.php` file:
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        require base_path('routes/console.php');
+    }
+
+Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your Closure based routes using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a Closure which receives the commands arguments and options:
+
+    Artisan::command('build {project}', function ($project) {
+        $this->info("Building {$project}!");
+    });
+
+The Closure is bound to the underlying command instance, so you have full access to all of the helper methods you would typically be able to access on a full command class.
+
+#### Type-Hinting Dependencies
+
+In addition to receiving your command's arguments and options, command Closures may also type-hint additional dependencies that you would like resolved out of the [service container](/docs/{{version}}/container):
+
+    use App\User;
+    use App\DripEmailer;
+
+    Artisan::command('email:send {user}', function (DripEmailer $drip, $user) {
+        $drip->send(User::find($user));
+    });
+
+#### Closure Command Descriptions
+
+When defining a Closure based command, you may use the `describe` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
+
+    Artisan::command('build {project}', function ($project) {
+        $this->info("Building {$project}!");
+    })->describe('Build the project');
 
 <a name="defining-input-expectations"></a>
 ## Defining Input Expectations
