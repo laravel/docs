@@ -4,10 +4,13 @@
 - [Installation](#installation)
     - [Configuration](#configuration)
     - [Frontend Quickstart](#frontend-quickstart)
-- [OAuth2 Using Authorization Codes](#oauth2-using-authorization-codes)
+- [Issuing Access Tokens](#issuing-access-tokens)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
     - [Refreshing Tokens](#refreshing-tokens)
+- [Password Grant Tokens](#password-grant-tokens)
+    - [Creating A Password Grant Client](#creating-a-password-grant-client)
+    - [Requesting Tokens](#requesting-password-grant-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
     - [Creating A Personal Access Client](#creating-a-personal-access-client)
     - [Managing Personal Access Tokens](#managing-personal-access-tokens)
@@ -42,7 +45,7 @@ The Passport service provider registers its own database migration directory wit
 
     php artisan migrate
 
-Next, you should run the `passport:install` command. This command will create the encryption keys needed to generate secure access tokens. In addition, the command will create a "personal access" client which will be used to generate personal access tokens:
+Next, you should run the `passport:install` command. This command will create the encryption keys needed to generate secure access tokens. In addition, the command will create "personal access" and "password grant" clients which will be used to generate access tokens:
 
     php artisan passport:install
 
@@ -166,8 +169,8 @@ Once the components have been registered, you may drop them into one of your app
     <passport-authorized-clients></passport-authorized-clients>
     <passport-personal-access-tokens></passport-personal-access-tokens>
 
-<a name="oauth2-using-authorization-codes"></a>
-## OAuth2 Using Authorization Codes
+<a name="issuing-access-tokens"></a>
+## Issuing Access Tokens
 
 Using OAuth2 with authorization codes is how most developers are familiar with OAuth2. When using authorization codes, a client application will redirect a user to your server where they will either approve or deny the request to issue an access token to the client.
 
@@ -316,6 +319,39 @@ If your application issues short-lived access tokens, users will need to refresh
     return json_decode((string) $response->getBody(), true);
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
+
+<a name="password-grant-tokens"></a>
+## Password Grant Tokens
+
+The OAuth2 password grant allows your other first-party clients, such as a mobile application, to obtain an access token using an e-mail address / username and password. This allows you to issue access tokens securely to your first-party clients without requiring your users to go through the entire OAuth2 authorization code redirect flow.
+
+<a name="creating-a-password-grant-client"></a>
+### Creating A Password Grant Client
+
+Before your application can issue tokens via the password grant, you will need to create a password grant client. You may do this using the `passport:client` command with the `--password` option. If you have already run the `passport:install` command, you do not need to run this command:
+
+    php artisan passport:client --password
+
+<a name="requesting-password-grant-tokens"></a>
+### Requesting Tokens
+
+Once you have created a password grant client, you may request an access token by issuing a `POST` request to the `/oauth/token` route with the user's email address and password. Remember, this route is already registered by the `Passport::routes` method so there is no need to define it manually. If the request is successful, you will receive an `access_token` and `refresh_token` in the JSON response from the server:
+
+    $http = new GuzzleHttp\Client;
+
+    $response = $http->post('http://your-app.com/oauth/token', [
+        'form_params' => [
+            'grant_type' => 'password',
+            'client_id' => 'client-id',
+            'username' => 'taylor@laravel.com',
+            'password' => 'my-password123',
+            'scope' => '',
+        ],
+    ]);
+
+    return json_decode((string) $response->getBody(), true);
+
+> {tip} Remember, access tokens are long-lived by default. However, you are free to [configure your maximum access token lifetime](#configuration) if needed.
 
 <a name="personal-access-tokens"></a>
 ## Personal Access Tokens
