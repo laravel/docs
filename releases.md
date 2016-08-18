@@ -13,16 +13,16 @@
 <a name="support-policy"></a>
 ## Support Policy
 
-For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance.
-
-For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
 
 <a name="laravel-5.3"></a>
 ## Laravel 5.3
 
-Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/5.3/notifications), robust real-time support via [Laravel Echo](/docs/5.3/broadcasting), painless OAuth2 servers via [Laravel Passport](/docs/5.3/passport), full-text model searching via [Laravel Scout](/docs/5.3/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` routes, Closure based console commands, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
+Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/5.3/notifications), robust real-time support via [Laravel Echo](/docs/5.3/broadcasting), painless OAuth2 servers via [Laravel Passport](/docs/5.3/passport), full-text model searching via [Laravel Scout](/docs/5.3/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` routes, Closure based console commands, convenient helpers for storing uploaded files, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
 
 ### Notifications
+
+> {video} Want to see a demo of notifications in action? Check out the [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-3/episodes/9).
 
 Laravel Notifications provide a simple, expressive API for sending notifications across a variety of delivery channels such as email, Slack, SMS, and more. For example, you may define a notification that an invoice has been paid and deliver that notification via email and SMS. Then, you may send the notification using a single, simple method:
 
@@ -155,6 +155,26 @@ Of course, you may also mark mailable objects as "queueable" so that they will b
     }
 
 For more information on mailable objects, be sure to check out the [mail documentation](/docs/5.3/mail).
+
+### Storing Uploaded Files
+
+In web applications, one of the most common use-cases for storing files is storing user uploaded files such as profile pictures, photos, and documents. Laravel 5.3 makes it very easy to store uploaded files using the new `store` method on an uploaded file instance. Simply call the `store` method with the path at which you wish to store the uploaded file:
+
+    /**
+     * Update the avatar for the user.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function update(Request $request)
+    {
+        $path = $request->file('avatar')->store('avatars', 's3');
+
+        return $path;
+    }
+
+For more information on storing uploaded files, check out the [full documentation](/docs/{{version}}/filesystem#file-uploads).
+
 
 ### Webpack & Laravel Elixir
 
