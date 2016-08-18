@@ -65,6 +65,8 @@ To learn more about Echo and event broadcasting, check out the [full documentati
 
 ### Laravel Passport (OAuth2 Server)
 
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-3/episodes/9) for this feature available on Laracasts.
+
 Laravel 5.3 makes API authentication a breeze using [Laravel Passport](/docs/{{version}}/passport), which provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. Passport is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Alex Bilbie.
 
 Passport makes it painless to issue access tokens via OAuth2 authorization codes. You may also allow your users to create "personal access tokens" via your web UI. To get you started quickly, Passport includes [Vue components](https://vuejs.org) that can serve as a starting point for your OAuth2 dashboard, allowing users to create clients, revoke access tokens, and more:
@@ -126,6 +128,8 @@ Of course, Scout has many more features which are covered in the [full documenta
 
 ### Mailable Objects
 
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-3/episodes/6) for this feature available on Laracasts.
+
 Laravel 5.3 ships with support for mailable objects. These objects allow you to represent your email messages as a simple objects instead of customizing mail messages within Closures. For example, you may define a simple mailable object for a "welcome" email:
 
     class WelcomeMessage extends Mailable
@@ -158,6 +162,8 @@ For more information on mailable objects, be sure to check out the [mail documen
 
 ### Storing Uploaded Files
 
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-3/episodes/12) for this feature available on Laracasts.
+
 In web applications, one of the most common use-cases for storing files is storing user uploaded files such as profile pictures, photos, and documents. Laravel 5.3 makes it very easy to store uploaded files using the new `store` method on an uploaded file instance. Simply call the `store` method with the path at which you wish to store the uploaded file:
 
     /**
@@ -186,6 +192,8 @@ Along with Laravel 5.3, Laravel Elixir 6.0 has been released with baked-in suppo
     });
 
 ### Frontend Structure
+
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-3/episodes/4) for this feature available on Laracasts.
 
 Laravel 5.3 ships with a more modern frontend structure. This primarily affects the `make:auth` authentication scaffolding. Instead of loading frontend assets from a CDN, dependencies are specified in the default `package.json` file.
 
