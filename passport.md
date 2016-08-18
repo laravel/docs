@@ -344,7 +344,7 @@ Once you have created a password grant client, you may request an access token b
             'grant_type' => 'password',
             'client_id' => 'client-id',
             'username' => 'taylor@laravel.com',
-            'password' => 'my-password123',
+            'password' => 'my-password',
             'scope' => '',
         ],
     ]);
@@ -362,7 +362,7 @@ When using the password grant, you may wish to authorize the token for all of th
             'grant_type' => 'password',
             'client_id' => 'client-id',
             'username' => 'taylor@laravel.com',
-            'password' => 'my-password123',
+            'password' => 'my-password',
             'scope' => '*',
         ],
     ]);
