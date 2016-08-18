@@ -215,6 +215,26 @@ In addition to being defined as command classes, Artisan commands may now be def
 
 For more information on Closure commands, check out the [full Artisan documentation](/docs/5.3/artisan#closure-commands).
 
+### The `$loop` Variable
+
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-3/episodes/7) for this feature available on Laracasts.
+
+When looping within a Blade template, a `$loop` variable will be available inside of your loop. This variable provides access to some useful bits of information such as the current loop index and whether this is the first or last iteration through the loop:
+
+    @foreach ($users as $user)
+        @if ($loop->first)
+            This is the first iteration.
+        @endif
+
+        @if ($loop->last)
+            This is the last iteration.
+        @endif
+
+        <p>This is user {{ $user->id }}</p>
+    @endforeach
+
+For more information, consult the [full Blade documentation](/docs/5.3/blade#the-loop-variable).
+
 <a name="laravel-5.2"></a>
 ## Laravel 5.2
 
