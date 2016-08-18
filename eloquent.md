@@ -20,6 +20,7 @@
     - [Global Scopes](#global-scopes)
     - [Local Scopes](#local-scopes)
 - [Events](#events)
+    - [Observers](#observers)
 
 <a name="introduction"></a>
 ## Introduction
@@ -700,6 +701,59 @@ For example, let's define an Eloquent event listener in a [service provider](/do
             User::creating(function ($user) {
                 return $user->isValid();
             });
+        }
+
+        /**
+         * Register the service provider.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+    }
+
+<a name="observers"></a>
+### Observers
+
+As your application grows you may find yourself registering many event listeners for your models. This can lead to a large service provider with many dependencies unrelated to carrying out its function. To reduce the overhead you can use an Observer class.
+
+Observers are plain classes that have method names which reflect the Eloquent events you wish to hook into. Each of these methods takes the model as a parameter just like registering a listener directly on the model.
+
+    <?php
+
+    namespace App\Observers;
+
+    use App\User as Model;
+
+    class User {
+      public function creating(Model $model)
+      {
+          return $model->isValid();
+      }
+    }
+
+With the observer class created you only need to bind it to the model in your service provider. Binding is achieved by providing the classname to an eloquent model's `observe` method.
+
+    <?php
+
+    namespace App\Providers;
+
+    use App\User;
+    use App\Observers\User as UserObserver;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            User::observe(UserObserver::class);
         }
 
         /**
