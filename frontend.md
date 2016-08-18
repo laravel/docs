@@ -18,7 +18,7 @@ In this document, we will briefly discuss CSS compilation in general; however, y
 
 #### JavaScript
 
-Laravel does not require you to use a specific JavaScript framework to build your applications. In fact, you don't have to use JavaScript at all. However, Laravel does include some basic scaffolding to make it easier to get started writing modern JavaScript using the [Vue](https://vuejs.org) framework. Vue provides an expressive API for building robust JavaScript applications using components.
+Laravel does not require you to use a specific JavaScript framework or library to build your applications. In fact, you don't have to use JavaScript at all. However, Laravel does include some basic scaffolding to make it easier to get started writing modern JavaScript using the [Vue](https://vuejs.org) library. Vue provides an expressive API for building robust JavaScript applications using components.
 
 <a name="writing-css"></a>
 ## Writing CSS
