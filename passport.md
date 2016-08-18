@@ -353,6 +353,20 @@ Once you have created a password grant client, you may request an access token b
 
 > {tip} Remember, access tokens are long-lived by default. However, you are free to [configure your maximum access token lifetime](#configuration) if needed.
 
+#### Requesting All Scopes
+
+When using the password grant, you may wish to authorize the token for all of the scopes supported by your application. You can do this by requesting the `*` scope. If you request the `*` scope, the `can` method on the token instance will always return `true`. This scope may only be assigned to a token that is issued using the `password` grant:
+
+    $response = $http->post('http://your-app.com/oauth/token', [
+        'form_params' => [
+            'grant_type' => 'password',
+            'client_id' => 'client-id',
+            'username' => 'taylor@laravel.com',
+            'password' => 'my-password123',
+            'scope' => '*',
+        ],
+    ]);
+
 <a name="personal-access-tokens"></a>
 ## Personal Access Tokens
 
