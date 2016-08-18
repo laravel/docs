@@ -11,6 +11,7 @@
 - [Password Grant Tokens](#password-grant-tokens)
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
+    - [Requesting All Scopes](#requesting-all-scopes)
 - [Personal Access Tokens](#personal-access-tokens)
     - [Creating A Personal Access Client](#creating-a-personal-access-client)
     - [Managing Personal Access Tokens](#managing-personal-access-tokens)
@@ -353,7 +354,8 @@ Once you have created a password grant client, you may request an access token b
 
 > {tip} Remember, access tokens are long-lived by default. However, you are free to [configure your maximum access token lifetime](#configuration) if needed.
 
-#### Requesting All Scopes
+<a name="requesting-all-scopes"></a>
+### Requesting All Scopes
 
 When using the password grant, you may wish to authorize the token for all of the scopes supported by your application. You can do this by requesting the `*` scope. If you request the `*` scope, the `can` method on the token instance will always return `true`. This scope may only be assigned to a token that is issued using the `password` grant:
 
