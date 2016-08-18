@@ -269,13 +269,13 @@ If an exception is thrown while the job is being processed, the job will automat
 <a name="running-the-queue-worker"></a>
 ## Running The Queue Worker
 
-Laravel includes an queue worker that will process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:
+Laravel includes a queue worker that will process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:
 
     php artisan queue:work
 
 > {tip} To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
 
-Remember, queue workers are long lived processes and will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment).
+Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment).
 
 #### Specifying The Connection & Queue
 
@@ -305,11 +305,11 @@ To start a worker that verifies that all of the `high` queue jobs are processed 
 <a name="queue-workers-and-deployment"></a>
 ### Queue Workers & Deployment
 
-Since queue workers are long lived processes, they will not pick up changes to your code without being restarted. So, the simplest way to deploy an application using queue workers is to restart the workers during your deployment process. You may gracefully restart all of the workers by issuing the `queue:restart` command:
+Since queue workers are long-lived processes, they will not pick up changes to your code without being restarted. So, the simplest way to deploy an application using queue workers is to restart the workers during your deployment process. You may gracefully restart all of the workers by issuing the `queue:restart` command:
 
     php artisan queue:restart
 
-This command will gracefully instruct all queue workers to "die" after they finish processing their current job so that no existing jobs are lost. Since the queue workers will die when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) which automatically restarts the queue workers.
+This command will instruct all queue workers to gracefully "die" after they finish processing their current job so that no existing jobs are lost. Since the queue workers will die when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
 
 <a name="job-expirations-and-timeouts"></a>
 ### Job Expirations & Timeouts
