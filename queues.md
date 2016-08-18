@@ -324,7 +324,7 @@ In your `config/queue.php` configuration file, each queue connection defines a `
 
 The `queue:work` Artisan command exposes a `--timeout` option. The `--timeout` option specifies how long the Laravel queue master process will wait before killing off a child queue worker that is processing a job. Sometimes a child queue process can become "frozen" for various reasons, such as a external HTTP call that is not responding. The `--timeout` option removes frozen processes that have exceeded that specified time limit:
 
-    php artisan queue:listen --timeout=60
+    php artisan queue:work --timeout=60
 
 The `retry_after` configuration option and the `--timeout` CLI option are different, but work together to ensure that jobs are not lost and that jobs are only successfully processed once.
 
