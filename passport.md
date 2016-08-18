@@ -344,6 +344,7 @@ Once you have created a password grant client, you may request an access token b
         'form_params' => [
             'grant_type' => 'password',
             'client_id' => 'client-id',
+            'client_secret' => 'client-secret',
             'username' => 'taylor@laravel.com',
             'password' => 'my-password',
             'scope' => '',
