@@ -717,31 +717,47 @@ For example, let's define an Eloquent event listener in a [service provider](/do
 <a name="observers"></a>
 ### Observers
 
-As your application grows you may find yourself registering many event listeners for your models. This can lead to a large service provider with many dependencies unrelated to carrying out its function. To reduce the overhead you can use an Observer class.
-
-Observers are plain classes that have method names which reflect the Eloquent events you wish to hook into. Each of these methods takes the model as a parameter just like registering a listener directly on the model.
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. Laravel does not include a default directory for observers, so you may create any directory you like to house your observer classes:
 
     <?php
 
     namespace App\Observers;
 
-    use App\User as Model;
+    use App\User;
 
-    class User {
-      public function creating(Model $model)
-      {
-          return $model->isValid();
-      }
+    class UserObserver
+    {
+        /**
+         * Listen to the User created event.
+         *
+         * @param  User  $user
+         * @return void
+         */
+        public function created(User $user)
+        {
+            //
+        }
+
+        /**
+         * Listen to the User deleting event.
+         *
+         * @param  User  $user
+         * @return void
+         */
+        public function deleting(User $user)
+        {
+            //
+        }
     }
 
-With the observer class created you only need to bind it to the model in your service provider. Binding is achieved by providing the classname to an eloquent model's `observe` method.
+To register an observer, use the `observe` method on the model you wish to observe. You may register observers in the `boot` method of one of your service providers. In this example, we'll register the observer in the `AppServiceProvider`:
 
     <?php
 
     namespace App\Providers;
 
     use App\User;
-    use App\Observers\User as UserObserver;
+    use App\Observers\UserObserver;
     use Illuminate\Support\ServiceProvider;
 
     class AppServiceProvider extends ServiceProvider
