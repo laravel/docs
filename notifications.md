@@ -33,6 +33,7 @@
 - [Notification Events](#notification-events)
 - [Custom Channels](#custom-channels)
 
+<a name="introduction"></a>
 ## Introduction
 
 In addition to support for [sending email](/docs/{{version}}/mail), Laravel provides support for sending notifications across a variety of delivery channels, including mail, SMS (via [Nexmo](https://www.nexmo.com/)), and [Slack](https://slack.com). Notifications may also be stored in a database so they may be displayed in your web interface.
