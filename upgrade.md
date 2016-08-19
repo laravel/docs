@@ -185,7 +185,7 @@ class User extends Model
 You should define the following `morphMap` in the `boot` method of your `AppServiceProvider`:
 
 ```php
-use Illuminate\Database\Eloquent\Relation;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 Relation::morphMap([
     'user' => User::class,
