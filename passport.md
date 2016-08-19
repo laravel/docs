@@ -2,8 +2,10 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-    - [Configuration](#configuration)
     - [Frontend Quickstart](#frontend-quickstart)
+- [Configuration](#configuration)
+    - [Token Lifetimes](#token-lifetimes)
+    - [Pruning Revoked Tokens](#pruning-revoked-tokens)
 - [Issuing Access Tokens](#issuing-access-tokens)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
@@ -113,29 +115,6 @@ Finally, in your `config/auth.php` configuration file, you should set the `drive
         ],
     ],
 
-<a name="configuration"></a>
-### Configuration
-
-#### Token Lifetimes
-
-By default, Passport issues long-lived access tokens that never need to be refreshed. If you would like to configure a shorter token lifetime, you may use the `tokensExpireIn` and `refreshTokensExpireIn` methods. These methods should be called from the `boot` method of your `AuthServiceProvider`:
-
-    /**
-     * Register any authentication / authorization services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->registerPolicies();
-
-        Passport::routes();
-
-        Passport::tokensExpireIn(Carbon::now()->addDays(15));
-
-        Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
-    }
-
 <a name="frontend-quickstart"></a>
 ### Frontend Quickstart
 
@@ -169,6 +148,39 @@ Once the components have been registered, you may drop them into one of your app
     <passport-clients></passport-clients>
     <passport-authorized-clients></passport-authorized-clients>
     <passport-personal-access-tokens></passport-personal-access-tokens>
+
+<a name="configuration"></a>
+## Configuration
+
+<a name="token-lifetimes"></a>
+### Token Lifetimes
+
+By default, Passport issues long-lived access tokens that never need to be refreshed. If you would like to configure a shorter token lifetime, you may use the `tokensExpireIn` and `refreshTokensExpireIn` methods. These methods should be called from the `boot` method of your `AuthServiceProvider`:
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::tokensExpireIn(Carbon::now()->addDays(15));
+
+        Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
+    }
+
+<a name="pruning-revoked-tokens"></a>
+### Pruning Revoked Tokens
+
+By default, Passport does not delete your revoked access tokens from the database. Over time, a large number of these tokens can accumulate in your database. If you would like Passport to automatically delete your revoked tokens, you should call the `pruneRevokedTokens` method from the `boot` method of your `AuthServiceProvider`:
+
+    use Laravel\Passport\Passport;
+
+    Passport::pruneRevokedTokens();
 
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
