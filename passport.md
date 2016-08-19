@@ -182,6 +182,8 @@ By default, Passport does not delete your revoked access tokens from the databas
 
     Passport::pruneRevokedTokens();
 
+This method will not delete all revoked tokens immediately. Instead, revoked tokens will be deleted when a user requests a new access token or refreshes an existing token.
+
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
 
