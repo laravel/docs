@@ -131,7 +131,7 @@ Use an array to assign multiple middleware to the route:
 
     Route::get('/', function () {
         //
-    })->middleware('first', 'second');
+    })->middleware(['first', 'second']);
 
 When assigning middleware, you may also pass the fully qualified class name:
 
