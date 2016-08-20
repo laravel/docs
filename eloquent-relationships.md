@@ -453,7 +453,7 @@ Or, you may specify a custom string to associate with each model:
 
     Relation::morphMap([
         'posts' => App\Post::class,
-        'likes' => App\Like::class,
+        'comments' => App\Comment::class,
     ]);
 
 You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
