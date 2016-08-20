@@ -30,7 +30,7 @@ All of the deprecations listed in the [Laravel 5.2 upgrade guide](#5.2-deprecati
 
 #### Key / Value Order Change
 
-The `first`, `last`, and `contains` methods on the `Arr` class now pass the "value" as the first parameter to the given callback Closure. For example:
+The `first`, `last`, and `where` methods on the `Arr` class now pass the "value" as the first parameter to the given callback Closure. For example:
 
     Arr::first(function ($value, $key) {
         return ! is_null($value);
