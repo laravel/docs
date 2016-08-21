@@ -470,8 +470,6 @@ Passport includes an [authentication guard](/docs/{{version}}/authentication#add
         //
     })->middleware('auth:api');
 
-> {tip} The `RouteServiceProvider` included with fresh Laravel applications already loads the `api` route file within a route group containing the `auth:api` middleware. So, there is no need to manually assign this middleware routes in your `api` routes file.
-
 <a name="passing-the-access-token"></a>
 ### Passing The Access Token
 

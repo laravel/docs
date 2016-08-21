@@ -203,7 +203,7 @@ This structure provides more guidance on how to begin developing modern, robust 
 
 ### Routes Files
 
-By default, fresh Laravel 5.3 applications contain two HTTP route files in a new top-level `routes` directory. The `web` and `api` route files provide more explicit guidance in how to split the routes for your web interface and your API. The routes in the `api` route file are automatically assigned the `api` prefix and the `auth:api` middleware by the `RouteServiceProvider`.
+By default, fresh Laravel 5.3 applications contain two HTTP route files in a new top-level `routes` directory. The `web` and `api` route files provide more explicit guidance in how to split the routes for your web interface and your API. The routes in the `api` route file are automatically assigned the `api` prefix by the `RouteServiceProvider`.
 
 ### Closure Console Commands
 
