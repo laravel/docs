@@ -18,7 +18,7 @@ For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and se
 <a name="laravel-5.3"></a>
 ## Laravel 5.3
 
-Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/5.3/notifications), robust real-time support via [Laravel Echo](/docs/5.3/broadcasting), painless OAuth2 servers via [Laravel Passport](/docs/5.3/passport), full-text model searching via [Laravel Scout](/docs/5.3/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` routes, Closure based console commands, convenient helpers for storing uploaded files, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
+Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/5.3/notifications), robust realtime support via [Laravel Echo](/docs/5.3/broadcasting), painless OAuth2 servers via [Laravel Passport](/docs/5.3/passport), full-text model searching via [Laravel Scout](/docs/5.3/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` routes, Closure based console commands, convenient helpers for storing uploaded files, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
 
 ### Notifications
 
@@ -376,7 +376,7 @@ Every page of the Laravel documentation has been meticulously reviewed and drama
 
 ### Event Broadcasting
 
-In many modern web applications, web sockets are used to implement real-time, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a websocket connection to be handled by the client.
+In many modern web applications, web sockets are used to implement realtime, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a websocket connection to be handled by the client.
 
 To assist you in building these types of applications, Laravel makes it easy to "broadcast" your events over a websocket connection. Broadcasting your Laravel events allows you to share the same event names between your server-side code and your client-side JavaScript framework.
 
