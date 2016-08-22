@@ -100,6 +100,14 @@ When defining policy methods that will not receive a model instance, such as a `
     {
         //
     }
+When authorizing actions using policy methods that will not require a model instance, like `create` method, you may pass a class name to the method. The class name will be used to determine which policy to use when authorizing the action:
+    
+    use App\Post;
+
+    if ($user->can('create', Post::class)) {
+    
+        // Executes the "create" method on the relevant policy...
+    }
 
 #### The `AuthorizesResources` Trait
 
