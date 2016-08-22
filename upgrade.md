@@ -325,9 +325,13 @@ It is no longer necessary to specify the `--daemon` option when calling the `que
 
 Various queue job events such as `JobProcessing` and `JobProcessed` no longer contain the `$data` property. You should update your application to call `$event->job->payload()` to get the equivalent data.
 
+#### Jobs Table
+
+If you are using the `database` driver, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` column.
+
 #### Failed Jobs Table
 
-If your application has a `failed_jobs` table, you should add a `exception` column to the table. The `exception` column should be a `TEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
+If your application has a `failed_jobs` table, you should add an `exception` column to the table. The `exception` column should be a `TEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
 
 #### Serializing Models On Legacy Style Queue Jobs
 
