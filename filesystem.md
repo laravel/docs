@@ -4,7 +4,7 @@
 - [Configuration](#configuration)
     - [The Public Disk](#the-public-disk)
     - [The Local Driver](#the-local-driver)
-    - [Other Driver Prerequisites](#other-driver-prerequisites)
+    - [Driver Prerequisites](#driver-prerequisites)
 - [Obtaining Disk Instances](#obtaining-disk-instances)
 - [Retrieving Files](#retrieving-files)
     - [File URLs](#file-urls)
@@ -48,8 +48,8 @@ When using the `local` driver, all file operations are relative to the `root` di
 
     Storage::disk('local')->put('file.txt', 'Contents');
 
-<a name="other-driver-prerequisites"></a>
-### Other Driver Prerequisites
+<a name="driver-prerequisites"></a>
+### Driver Prerequisites
 
 #### Composer Packages
 
@@ -57,6 +57,10 @@ Before using the S3 or Rackspace drivers, you will need to install the appropria
 
 - Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 - Rackspace: `league/flysystem-rackspace ~1.0`
+
+#### S3 Driver Configuration
+
+The S3 driver configuration information is located in your `config/filesystems.php` configuration file. This file contains an example configuration array for an S3 driver. You are free to modify this array with your own S3 configuration and credentials.
 
 #### FTP Driver Configuration
 
@@ -141,13 +145,31 @@ The `lastModified` method returns the UNIX timestamp of the last time the file w
 <a name="storing-files"></a>
 ## Storing Files
 
-The `put` method may be used to store a file on disk. You may also pass a PHP `resource` to the `put` method, which will use Flysystem's underlying stream support. Using streams is greatly recommended when dealing with large files:
+The `put` method may be used to store raw file contents on a disk. You may also pass a PHP `resource` to the `put` method, which will use Flysystem's underlying stream support. Using streams is greatly recommended when dealing with large files:
 
     use Illuminate\Support\Facades\Storage;
 
     Storage::put('file.jpg', $contents);
 
     Storage::put('file.jpg', $resource);
+
+#### Automatic Streaming
+
+If you would like Laravel to automatically manage streaming a given file to your storage location, you may use the `putFile` or `putFileAs` method. This method accepts either a `Illuminate\Http\File` or `Illuminate\Http\UploadedFile` instance and will automatically stream the file to your desire location:
+
+    use Illuminate\Http\File;
+
+    // Automatically calculate MD5 hash for file name...
+    Storage::putFile('photos', new File('/path/to/photo'));
+
+    // Manually specify a file name...
+    Storage::putFile('photos', new File('/path/to/photo'), 'photo.jpg');
+
+There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will automatically generate a filename based on the contents of the file. This is accomplished by taking a MD5 hash of the file's contents. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
+
+The `putFile` and `putFileAs` methods also accept an argument to specify the "visibility" of the stored file. This is particularly useful if you are storing the file on a cloud disk such as S3 and would like the file to publicly accessible:
+
+    Storage::putFile('photos', new File('/path/to/photo'), 'public');
 
 #### Prepending & Appending To Files
 
@@ -195,6 +217,10 @@ In web applications, one of the most common use-cases for storing files is stori
 
 There are a few important things to note about this example. Note that we only specified a directory name, not a file name. By default, the `store` method will automatically generate a filename based on the contents of the file. This is accomplished by taking a MD5 hash of the file's contents. The path to the file will be returned by the `store` method so you can store the path, including the generated file name, in your database.
 
+You may also call the `putFile` method on the `Storage` facade to perform the same file manipulation as the example above:
+
+    $path = Storage::putFile('avatars', $request->file('avatar'));
+
 > {note} If you are receiving very large file uploads, you may wish to manually specify the file name as shown below. Calculating an MD5 hash for extremely large files can be memory intensive.
 
 #### Specifying A File Name
@@ -203,6 +229,12 @@ If you would not like a file name to be automatically assigned to your stored fi
 
     $path = $request->file('avatar')->storeAs(
         'avatars', $request->user()->id
+    );
+
+Of course, you may also use the `putFileAs` method on the `Storage` facade, which will perform the same file manipulation as the example above:
+
+    $path = Storage::putFileAs(
+        'avatars', $request->file('avatar'), $request->user()->id
     );
 
 #### Specifying A Disk
