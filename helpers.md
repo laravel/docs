@@ -814,11 +814,9 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 <a name="method-dd"></a>
 #### `dd()` {#collection-method}
 
-The `dd` function dumps the given variable and ends execution of the script:
+The `dd` function dumps the given variables and ends execution of the script:
 
     dd($value);
-    
-You can also dump an unlimited amount of variables simultaneously:
 
     dd($value1, $value2, $value3, ...);
 
