@@ -21,7 +21,7 @@ For example, we may use the `encrypt` method to encrypt a secret and store it on
 
     namespace App\Http\Controllers;
 
-    use Crypt;
+    use Illuminate\Support\Facades\Crypt;
     use App\User;
     use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
