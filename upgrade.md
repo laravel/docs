@@ -373,6 +373,38 @@ If your application is using `Route::resource` within a `Route::group` call that
 
 If this change causes you to have two routes with the same name, you may use the `names` option when calling `Route::resource` to specify a custom name for a given route. Refer to the [resource routing documentation](/docs/5.3/controllers#resource-controllers) for more information.
 
+### Service Providers
+
+#### Event Service Provider
+
+The `boot` method no longer takes an instance of `\Illuminate\Contracts\Events\Dispatcher` as a parameter. Your `boot` method should look like:
+
+    /**
+     * Register any events for your application.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+        //
+    }
+
+#### Route Service Provider
+
+The `boot` method no longer takes an instance of `\Illuminate\Routing\Router` as a parameter. Your `boot` method should look like:
+
+    /**
+     * Define your route model bindings, pattern filters, etc.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
+        parent::boot();
+    }
+
 ### Validation
 
 #### Form Request Exceptions
