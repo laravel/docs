@@ -26,6 +26,12 @@ Laravel 5.3 requires PHP 5.6.4 or higher. HHVM is no longer officially supported
 
 All of the deprecations listed in the [Laravel 5.2 upgrade guide](#5.2-deprecations) have been removed from the framework. You should review this list to verify you are no longer using these deprecated features.
 
+### Application Service Providers
+
+You may remove the arguments from the `boot` method on the `EventServiceProvider` and `RouteServiceProvider` classes. Any calls to the given arguments may be converted to use the equivalent [facade](/docs/5.3/facades) instead. So, for example, instead of calling methods on the `$dispatcher` argument, you may simply call the `Event` facade. Likewise, instead of making method calls to the `$router` argument, you may make calls to the `Route` facade.
+
+> {note} When converting method calls to facades, be sure to import the facade class into your service provider.
+
 ### Arrays
 
 #### Key / Value Order Change
