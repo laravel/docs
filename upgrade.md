@@ -246,6 +246,10 @@ The base exception handler class now requires a `Illuminate\Container\Container`
 
     parent::__construct(app());
 
+#### Logger
+
+The base exception handler `\Psr\Log\LoggerInterface` attribute has been removed. You should use `$this->container['log']`, `app('log')` or the facade `Log::` instead of `$this->log`.
+
 ### Middleware
 
 #### `can` Middleware Namespace Change
