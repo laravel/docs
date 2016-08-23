@@ -18,7 +18,7 @@ For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and se
 <a name="laravel-5.3"></a>
 ## Laravel 5.3
 
-Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/5.3/notifications), robust realtime support via [Laravel Echo](/docs/5.3/broadcasting), painless OAuth2 servers via [Laravel Passport](/docs/5.3/passport), full-text model searching via [Laravel Scout](/docs/5.3/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` routes, Closure based console commands, convenient helpers for storing uploaded files, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
+Laravel 5.3 continues the improvements made in Laravel 5.2 by adding a driver based [notification system](/docs/master/notifications), robust realtime support via [Laravel Echo](/docs/master/broadcasting), painless OAuth2 servers via [Laravel Passport](/docs/master/passport), full-text model searching via [Laravel Scout](/docs/master/scout), Webpack support in Laravel Elixir, "mailable" objects, explicit separation of `web` and `api` routes, Closure based console commands, convenient helpers for storing uploaded files, support for POPO and single-action controllers, improved default frontend scaffolding, and more.
 
 ### Notifications
 
@@ -28,7 +28,7 @@ Laravel Notifications provide a simple, expressive API for sending notifications
 
     $user->notify(new InvoicePaid($invoice));
 
-There is already a wide variety of [community written drivers](http://laravel-notification-channels.com) for notifications, including support for iOS and Android notifications. To learn more about notifications, be sure to check out the [full notification documentation](/docs/5.3/notifications).
+There is already a wide variety of [community written drivers](http://laravel-notification-channels.com) for notifications, including support for iOS and Android notifications. To learn more about notifications, be sure to check out the [full notification documentation](/docs/master/notifications).
 
 ### WebSockets / Event Broadcasting
 
@@ -61,7 +61,7 @@ In addition to subscribing to traditional channels, Laravel Echo also makes it a
             console.log(user.name);
         });
 
-To learn more about Echo and event broadcasting, check out the [full documentation](/docs/5.3/broadcasting).
+To learn more about Echo and event broadcasting, check out the [full documentation](/docs/master/broadcasting).
 
 ### Laravel Passport (OAuth2 Server)
 
@@ -90,11 +90,11 @@ In addition, Passport includes helpful middleware for verifying that an access t
         // Access token has "check-status" scope...
     })->middleware('scope:check-status');
 
-Lastly, Passport includes support for consuming your own API from your JavaScript application without worrying about passing access tokens. Passport achieves this through encrypted JWT cookies and synchronized CSRF tokens, allowing you to focus on what matters: your application. For more information on Passport, be sure to check out its [full documentation](/docs/5.3/passport).
+Lastly, Passport includes support for consuming your own API from your JavaScript application without worrying about passing access tokens. Passport achieves this through encrypted JWT cookies and synchronized CSRF tokens, allowing you to focus on what matters: your application. For more information on Passport, be sure to check out its [full documentation](/docs/master/passport).
 
 ### Search (Laravel Scout)
 
-Laravel Scout provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/5.3/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records. Currently, Scout ships with an [Algolia](https://www.algolia.com/) driver; however, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
+Laravel Scout provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/master/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records. Currently, Scout ships with an [Algolia](https://www.algolia.com/) driver; however, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
 Making models searchable is as simple as adding a `Searchable` trait to the model:
 
@@ -124,7 +124,7 @@ Once your models have been indexed, its a breeze to perform full-text searches a
 
     return Order::search('Star Trek')->where('user_id', 1)->paginate();
 
-Of course, Scout has many more features which are covered in the [full documentation](/docs/5.3/scout).
+Of course, Scout has many more features which are covered in the [full documentation](/docs/master/scout).
 
 ### Mailable Objects
 
@@ -158,7 +158,7 @@ Of course, you may also mark mailable objects as "queueable" so that they will b
         //
     }
 
-For more information on mailable objects, be sure to check out the [mail documentation](/docs/5.3/mail).
+For more information on mailable objects, be sure to check out the [mail documentation](/docs/master/mail).
 
 ### Storing Uploaded Files
 
@@ -184,7 +184,7 @@ For more information on storing uploaded files, check out the [full documentatio
 
 ### Webpack & Laravel Elixir
 
-Along with Laravel 5.3, Laravel Elixir 6.0 has been released with baked-in support for the Webpack and Rollup JavaScript module bundlers. By default, the Laravel 5.3 `gulpfile.js` file now uses Webpack to compile your JavaScript. The [full Laravel Elixir documentation](/docs/5.3/elixir) contains more information on both of these bundlers:
+Along with Laravel 5.3, Laravel Elixir 6.0 has been released with baked-in support for the Webpack and Rollup JavaScript module bundlers. By default, the Laravel 5.3 `gulpfile.js` file now uses Webpack to compile your JavaScript. The [full Laravel Elixir documentation](/docs/master/elixir) contains more information on both of these bundlers:
 
     elixir(mix => {
         mix.sass('app.scss')
@@ -199,7 +199,7 @@ Laravel 5.3 ships with a more modern frontend structure. This primarily affects 
 
 In addition, support for single file [Vue components](https://vuejs.org) is now included out of the box. A sample `Example.vue` component is included in the `resources/assets/js/components` directory. In addition, the new `resources/assets/js/app.js` file bootstraps and configures your JavaScript libraries and, if applicable, Vue components.
 
-This structure provides more guidance on how to begin developing modern, robust JavaScript applications, without requiring your application use any given JavaScript or CSS framework. For more information on getting started with modern Laravel frontend development, check out the new [introductory frontend documentation](/docs/5.3/frontend).
+This structure provides more guidance on how to begin developing modern, robust JavaScript applications, without requiring your application use any given JavaScript or CSS framework. For more information on getting started with modern Laravel frontend development, check out the new [introductory frontend documentation](/docs/master/frontend).
 
 ### Routes Files
 
@@ -213,7 +213,7 @@ In addition to being defined as command classes, Artisan commands may now be def
         $this->info('Building project...');
     });
 
-For more information on Closure commands, check out the [full Artisan documentation](/docs/5.3/artisan#closure-commands).
+For more information on Closure commands, check out the [full Artisan documentation](/docs/master/artisan#closure-commands).
 
 ### The `$loop` Variable
 
@@ -233,7 +233,7 @@ When looping within a Blade template, a `$loop` variable will be available insid
         <p>This is user {{ $user->id }}</p>
     @endforeach
 
-For more information, consult the [full Blade documentation](/docs/5.3/blade#the-loop-variable).
+For more information, consult the [full Blade documentation](/docs/master/blade#the-loop-variable).
 
 <a name="laravel-5.2"></a>
 ## Laravel 5.2
