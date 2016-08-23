@@ -80,16 +80,16 @@ For example, if you need to report different types of exceptions in different wa
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Exception $exception)
     {
         if ($e instanceof CustomException) {
             //
         }
 
-        return parent::report($e);
+        return parent::report($exception);
     }
 
 #### Ignoring Exceptions By Type
@@ -118,16 +118,16 @@ The `render` method is responsible for converting a given exception into an HTTP
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Exception $exception)
     {
-        if ($e instanceof CustomException) {
+        if ($exception instanceof CustomException) {
             return response()->view('errors.custom', [], 500);
         }
 
-        return parent::render($request, $e);
+        return parent::render($request, $exception);
     }
 
 <a name="http-exceptions"></a>
