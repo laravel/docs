@@ -208,13 +208,13 @@ If your scopes begin with `where` constraints no action is required. Remember, y
 
 The `JoinClause` class has been rewritten to unify its syntax with the query builder. The optional `$where` parameter of the `on` clause has been removed. To add a "where" conditions you should explicitly use one of the `where` methods offered by the [query builder](/docs/{{version}}/queries#where-clauses):
 
-    $query->join('table', function($join) {
+    $query->join('table', function ($join) {
         $join->on('foo', 'bar')->where('bar', 'baz');
     });
 
 The `$bindings` property was also removed. To manipulate join bindings directly you may use the `addBinding` method:
 
-    $query->join(DB::raw('('.$subquery->toSql().') table'), function($join) use ($subquery) {
+    $query->join(DB::raw('('.$subquery->toSql().') table'), function ($join) use ($subquery) {
         $join->addBinding($subquery->getBindings(), 'join');
     });
 
