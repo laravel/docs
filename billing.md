@@ -112,7 +112,7 @@ For many operations, the Stripe and Braintree implementations of Cashier functio
 
 First, add the Cashier package for Braintree to your `composer.json` file and run the `composer update` command:
 
-    "laravel/cashier-braintree": "~1.0"
+    "laravel/cashier-braintree": "~2.0"
 
 #### Service Provider
 
