@@ -46,6 +46,14 @@ Alternatively, you may also install Laravel by issuing the Composer `create-proj
 
     composer create-project --prefer-dist laravel/laravel blog
 
+#### Get up and running
+
+Go to the root directory of the project and run the following command in your terminal:
+
+    php artisan serve
+
+This will set up a development server listening on port 8000 on localhost, visit http://localhost:8000/ or http://127.0.0.1:8000 in your browser, you are good to go.
+
 <a name="configuration"></a>
 ### Configuration
 
