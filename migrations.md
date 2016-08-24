@@ -259,6 +259,8 @@ Modifier  | Description
 `->default($value)`  |  Specify a "default" value for the column
 `->unsigned()`  |  Set `integer` columns to `UNSIGNED`
 `->comment('my comment')`  |  Add a comment to a column
+`->virtualAs($expression)`  |  Create a virtual generated column (MySQL Only)
+`->storedAs($expression)`  |  Create a stored generated column (MySQL Only)
 
 <a name="changing-columns"></a>
 <a name="modifying-columns"></a>
