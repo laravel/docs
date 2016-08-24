@@ -85,7 +85,7 @@ For example, if you need to report different types of exceptions in different wa
      */
     public function report(Exception $exception)
     {
-        if ($e instanceof CustomException) {
+        if ($exception instanceof CustomException) {
             //
         }
 
