@@ -18,6 +18,10 @@
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
+### Upgrading Your Composer Dependency
+
+To upgrade your application to Laravel 5.3, change your `laravel/framework` version to `5.3.*` in your `composer.json` file.
+
 ### PHP & HHVM
 
 Laravel 5.3 requires PHP 5.6.4 or higher. HHVM is no longer officially supported as it does not contain the same language features as PHP 5.6+.
