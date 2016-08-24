@@ -121,7 +121,7 @@ If you wish to append a "hash fragment" to the paginator's URLs, you may use the
 <a name="converting-results-to-json"></a>
 ### Converting Results To JSON
 
-The Laravel paginator result classes implement the `Illuminate\Contracts\Support\JsonableInterface` contract and expose the `toJson` method, so it's very easy to convert your pagination results to JSON. You may also convert a paginator instance to JSON by simply returning it from a route or controller action:
+The Laravel paginator result classes implement the `Illuminate\Contracts\Support\Jsonable` Interface contract and expose the `toJson` method, so it's very easy to convert your pagination results to JSON. You may also convert a paginator instance to JSON by simply returning it from a route or controller action:
 
     Route::get('users', function () {
         return App\User::paginate();
