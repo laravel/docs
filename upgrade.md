@@ -248,7 +248,7 @@ If you are storing encrypted data in your database using the Mcrypt encrypter, y
 
 #### Constructor
 
-The base exception handler class now requires a `Illuminate\Container\Container` instance to be passed to its constructor. This change will only affect your application if you have defined a custom `__construct` method in your `app/Exception/Handler.php` file. If you have done this, you should pass a container instance into the `parent::__construct` method:
+The base exception handler class now requires a `Illuminate\Container\Container` instance to be passed to its constructor. This change will only affect your application if you have defined a custom `__construct` method in your `app/Exceptions/Handler.php` file. If you have done this, you should pass a container instance into the `parent::__construct` method:
 
     parent::__construct(app());
 
