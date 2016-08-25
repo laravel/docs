@@ -685,7 +685,7 @@ The `map` method iterates through the collection and passes each value to the gi
 <a name="method-max"></a>
 #### `max()` {#collection-method}
 
-The `max` method return the maximum value of a given key:
+The `max` method returns the maximum value of a given key:
 
     $max = collect([['foo' => 10], ['foo' => 20]])->max('foo');
 
@@ -721,7 +721,7 @@ If the given array's keys are numeric, the values will be appended to the end of
 <a name="method-min"></a>
 #### `min()` {#collection-method}
 
-The `min` method return the minimum value of a given key:
+The `min` method returns the minimum value of a given key:
 
     $min = collect([['foo' => 10], ['foo' => 20]])->min('foo');
 
