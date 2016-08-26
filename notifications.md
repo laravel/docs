@@ -11,6 +11,7 @@
     - [Formatting Mail Messages](#formatting-mail-messages)
     - [Customizing The Recipient](#customizing-the-recipient)
     - [Customizing The Subject](#customizing-the-subject)
+    - [Customizing The Template](#customizing-the-template)
     - [Error Messages](#error-messages)
 - [Database Notifications](#database-notifications)
     - [Prerequisites](#database-prerequisites)
@@ -196,6 +197,17 @@ By default, the email's subject is the class name of the notification formatted 
                     ->subject('Notification Subject')
                     ->line('...');
     }
+    
+<a name="customizing-the-template"></a>
+### Customizing the template
+
+You can change the default template used by the mail notification by publishing the notification resources from vendor.
+
+```
+php artisan vendor:publish --tag laravel-notifications
+```
+
+Now you can find this template in `resources/views/vendor/notifications` folder. You can translate boilerplate text/style to your prefered language.
 
 <a name="error-messages"></a>
 ### Error Messages
