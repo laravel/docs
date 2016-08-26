@@ -199,7 +199,7 @@ As an alternative, you should define a protected or private method on your contr
         }
     }
 
-Of course, you may also access the request session data or authentication user by type-hinting the `Illuminate\Http\Request` class on your controller action:
+Of course, you may also access the request session data or authenticated user by type-hinting the `Illuminate\Http\Request` class on your controller action:
 
     /**
      * Show all of the projects for the current user.
