@@ -166,7 +166,7 @@ The `where` method also no longer accepts a third parameter to indicate "strictn
 
 In previous versions of Laravel, you could access session variables or the authenticated user in your controller's constructor. This was never intended to be an explicit feature of the framework. In Laravel 5.3, you can't access the session or authenticated user in your controller's constructor because the middleware has not run yet.
 
-As an alternative, you should define a protected or private method on your controller that retrieves the data you want from the session or authenticated user. Then, in your controller actions, you can call this method to access the needed data:
+As an alternative, you may define a Closure based middleware directly in your controller's constructor. Before using this feature, make sure that your application is running Laravel `5.3.4` or above:
 
     <?php
 
@@ -179,23 +179,22 @@ As an alternative, you should define a protected or private method on your contr
     class ProjectController extends Controller
     {
         /**
-         * Show all of the projects for the current user.
-         *
-         * @return Response
+         * All of the current user's projects.
          */
-        public function index()
-        {
-            $projects = $this->userProjects();
-
-            //
-        }
+        protected $projects;
 
         /**
-         * Get the current user's projects.
+         * Create a new controller instance.
+         *
+         * @return void
          */
-        protected function userProjects()
+        public function __construct()
         {
-            return Auth::user()->projects;
+            $this->middleware(function ($request, $next) {
+                $this->projects = Auth::user()->projects;
+
+                return $next($request);
+            });
         }
     }
 
