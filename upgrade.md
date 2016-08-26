@@ -162,7 +162,7 @@ The `where` method also no longer accepts a third parameter to indicate "strictn
 ### Controllers
 
 <a name="5.3-session-in-constructors"></a>
-#### Using Session In The Constructor
+#### Session In The Constructor
 
 In previous versions of Laravel, you could access session variables or the authenticated user in your controller's constructor. This was never intended to be an explicit feature of the framework. In Laravel 5.3, you can't access the session or authenticated user in your controller's constructor because the middleware has not run yet.
 
