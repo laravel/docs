@@ -77,3 +77,19 @@ In your `auth.php` configuration file, you may configure multiple password "brok
     {
         return Password::broker('name');
     }
+
+#### Password Reset Email Customization
+
+To change the default notification sent by Laravel when the user ask to reset his password, you can create an override of the `sendPasswordResetNotification($token)` method on your User Model. This allow you to use your own notification.
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
+
