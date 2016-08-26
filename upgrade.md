@@ -159,6 +159,63 @@ The `where` method now performs a "loose" comparison by default instead of a str
 
 The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicit call either `where` or `whereStrict` depending on your application's needs.
 
+### Controllers
+
+<a name="5.3-session-in-constructors"></a>
+#### Using Session In The Constructor
+
+In previous versions of Laravel, you could access session variables or the authenticated user in your controller's constructor. This was never intended to be an explicit feature of the framework. In Laravel 5.3, you can't access the session or authenticated user in your controller's constructor because the middleware has not run yet.
+
+As an alternative, you should define a protected or private method on your controller that retrieves the data you want from the session or authenticated user. Then, in your controller actions, you can call this method to access the needed data:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\User;
+    use Illuminate\Support\Facades\Auth;
+    use App\Http\Controllers\Controller;
+
+    class ProjectController extends Controller
+    {
+        /**
+         * Show all of the projects for the current user.
+         *
+         * @return Response
+         */
+        public function index()
+        {
+            $projects = $this->userProjects();
+
+            //
+        }
+
+        /**
+         * Get the current user's projects.
+         */
+        protected function userProjects()
+        {
+            return Auth::user()->projects;
+        }
+    }
+
+Of course, you may also access the request session data or authentication user by type-hinting the `Illuminate\Http\Request` class on your controller action:
+
+    /**
+     * Show all of the projects for the current user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $projects = $request->user()->projects;
+
+        $value = $request->session()->get('key');
+
+        //
+    }
+
 ### Database
 
 #### Collections
