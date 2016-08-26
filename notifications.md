@@ -197,17 +197,13 @@ By default, the email's subject is the class name of the notification formatted 
                     ->subject('Notification Subject')
                     ->line('...');
     }
-    
+
 <a name="customizing-the-template"></a>
-### Customizing the template
+### Customizing The Template
 
-You can change the default template used by the mail notification by publishing the notification resources from vendor.
+You can modify the template used by mail notifications by publishing the notification package's resources. After running this command, the mail notification template will be located in the `resources/views/vendor/notifications` directory:
 
-```
-php artisan vendor:publish --tag laravel-notifications
-```
-
-Now you can find this template in `resources/views/vendor/notifications` folder. You can translate boilerplate text/style to your prefered language.
+    php artisan vendor:publish --tag laravel-notifications
 
 <a name="error-messages"></a>
 ### Error Messages
