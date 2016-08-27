@@ -46,13 +46,13 @@ Alternatively, you may also install Laravel by issuing the Composer `create-proj
 
     composer create-project --prefer-dist laravel/laravel blog
 
-#### Get up and running
+#### Local Development Server
 
-Go to the root directory of the project and run the following command in your terminal:
+If you have PHP installed locally and you would like to use PHP's built-in development to serve your application, you may use the `serve` Artisan command. This command will start a development server at `http://localhost:8000`:
 
     php artisan serve
 
-This will set up a development server listening on port 8000 on localhost, visit http://localhost:8000/ or http://127.0.0.1:8000 in your browser, you are good to go.
+Of course, more robust local development options are available via [Homestead](/docs/{{version}}/homestead) and [Valet](/docs/{{version}}/valet).
 
 <a name="configuration"></a>
 ### Configuration
