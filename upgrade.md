@@ -449,6 +449,14 @@ When validating arrays, booleans, integers, numerics, and strings, `null` will n
         'string' => 'nullable|max:5',
     ]);
 
+#### Required does not bail
+
+When combining the `required` rule with other validations, it will now continue executing further validation rules. In 5.2 a validation rule like `required|url` would **not** run the `url` validation but in 5.3 it will. An explicit `bail` is now required for this behavior:
+
+    Validate::make($request->all(), [
+        'link' => 'bail|required|url',
+    ]);
+
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
 
