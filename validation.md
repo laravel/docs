@@ -377,7 +377,7 @@ The validator also allows you to attach callbacks to be run after validation is 
 ## Working With Error Messages
 
 After calling the `errors` method on a `Validator` instance, you will receive an `Illuminate\Support\MessageBag` instance, which has a variety of convenient methods for working with error messages. The `$errors` variable that is automatically made available to all views is also an instance of the `MessageBag` class.
-
+I
 #### Retrieving The First Error Message For A Field
 
 To retrieve the first error message for a given field, use the `first` method:
@@ -393,6 +393,16 @@ If you need to retrieve an array of all the messages for a given field, use the 
     foreach ($errors->get('email') as $message) {
         //
     }
+    
+#### Retrieving All Error Messages For An Array Field
+
+If you need to retrieve an array of all the messages for a given field, use the `get` method:
+
+    foreach ($errors->get('attachments.*') as $message) {
+        //
+    }
+    
+Note that the value in this case is going to be an array of fields that match the given key, each array member will hold an array of messages.
 
 #### Retrieving All Error Messages For All Fields
 
