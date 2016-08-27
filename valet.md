@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Valet Or Homestead](#valet-or-homestead)
 - [Installation](#installation)
+- [Upgrading](#upgrading)
 - [Release Notes](#release-notes)
 - [Serving Sites](#serving-sites)
     - [The "Park" Command](#the-park-command)
@@ -75,24 +76,17 @@ For example, if you'd like to use `.app` instead of `.dev`, run `valet domain ap
 
 If you need a database, try MariaDB by running `brew install mariadb` on your command line. You can connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
 
+<a name="upgrading"></a>
+## Upgrading
+
+Update your Valet installation using `composer global update`
+
+Occasionally it may also be necessary to run `valet install` to apply small changes required for certain releases.
+
 <a name="release-notes"></a>
 ## Release Notes
 
-### Version 1.1.5
-
-The 1.1.5 release of Valet brings a variety of internal improvements.
-
-#### Upgrade Instructions
-
-After updating your Valet installation using `composer global update`, you should run the `valet install` command in your terminal.
-
-### Version 1.1.0
-
-The 1.1.0 release of Valet brings a variety of great improvements. The built-in PHP server has been replaced with [Caddy](https://caddyserver.com/) for serving incoming HTTP requests. Introducing Caddy allows for a variety of future improvements and allows Valet sites to make HTTP requests to other Valet sites without blocking the built-in PHP server.
-
-#### Upgrade Instructions
-
-After updating your Valet installation using `composer global update`, you should run the `valet install` command in your terminal to create the new Caddy daemon file on your system.
+See the [Laravel/Valet](https://github.com/laravel/valet/releases) repository on GitHub for release notes.
 
 <a name="serving-sites"></a>
 ## Serving Sites
