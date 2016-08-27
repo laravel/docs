@@ -3,8 +3,7 @@
 - [Introduction](#introduction)
     - [Valet Or Homestead](#valet-or-homestead)
 - [Installation](#installation)
-- [Upgrading](#upgrading)
-- [Release Notes](#release-notes)
+    - [Upgrading](#upgrading)
 - [Serving Sites](#serving-sites)
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
@@ -77,16 +76,9 @@ For example, if you'd like to use `.app` instead of `.dev`, run `valet domain ap
 If you need a database, try MariaDB by running `brew install mariadb` on your command line. You can connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
 
 <a name="upgrading"></a>
-## Upgrading
+### Upgrading
 
-Update your Valet installation using `composer global update`
-
-Occasionally it may also be necessary to run `valet install` to apply small changes required for certain releases.
-
-<a name="release-notes"></a>
-## Release Notes
-
-See the [Laravel/Valet](https://github.com/laravel/valet/releases) repository on GitHub for release notes.
+You may update your Valet installation using the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
 
 <a name="serving-sites"></a>
 ## Serving Sites
