@@ -377,7 +377,7 @@ The validator also allows you to attach callbacks to be run after validation is 
 ## Working With Error Messages
 
 After calling the `errors` method on a `Validator` instance, you will receive an `Illuminate\Support\MessageBag` instance, which has a variety of convenient methods for working with error messages. The `$errors` variable that is automatically made available to all views is also an instance of the `MessageBag` class.
-I
+
 #### Retrieving The First Error Message For A Field
 
 To retrieve the first error message for a given field, use the `first` method:
