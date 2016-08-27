@@ -393,16 +393,12 @@ If you need to retrieve an array of all the messages for a given field, use the 
     foreach ($errors->get('email') as $message) {
         //
     }
-    
-#### Retrieving All Error Messages For An Array Field
 
-If you need to retrieve an array of all the messages for a given field, use the `get` method:
+If you are validating an array form field, you may retrieve all of the messages for each of the array elements using the `*` character:
 
     foreach ($errors->get('attachments.*') as $message) {
         //
     }
-    
-Note that the value in this case is going to be an array of fields that match the given key, each array member will hold an array of messages.
 
 #### Retrieving All Error Messages For All Fields
 
