@@ -199,7 +199,7 @@ Laravel 5.3 ships with a more modern frontend structure. This primarily affects 
 
 In addition, support for single file [Vue components](https://vuejs.org) is now included out of the box. A sample `Example.vue` component is included in the `resources/assets/js/components` directory. In addition, the new `resources/assets/js/app.js` file bootstraps and configures your JavaScript libraries and, if applicable, Vue components.
 
-This structure provides more guidance on how to begin developing modern, robust JavaScript applications, without requiring your application use any given JavaScript or CSS framework. For more information on getting started with modern Laravel frontend development, check out the new [introductory frontend documentation](/docs/5.3/frontend).
+This structure provides more guidance on how to begin developing modern, robust JavaScript applications, without requiring your application to use any given JavaScript or CSS framework. For more information on getting started with modern Laravel frontend development, check out the new [introductory frontend documentation](/docs/5.3/frontend).
 
 ### Routes Files
 
