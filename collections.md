@@ -706,7 +706,7 @@ The `merge` method merges the given array into the original collection. If a str
 
     $merged->all();
 
-    // ['product_id' => 1, price' => 200, 'discount' => false]
+    // ['product_id' => 1, 'price' => 200, 'discount' => false]
 
 If the given array's keys are numeric, the values will be appended to the end of the collection:
 
@@ -1190,7 +1190,7 @@ The `toJson` method converts the collection into JSON:
 
     $collection->toJson();
 
-    // '{"name":"Desk","price":200}'
+    // '{"name":"Desk", "price":200}'
 
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}
