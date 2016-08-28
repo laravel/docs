@@ -29,6 +29,7 @@ It is important to not view gates and policies as mutually exclusive for your ap
 <a name="gates"></a>
 ## Gates
 
+<a name="writing-gates"></a>
 ### Writing Gates
 
 Gates are Closures that determine if a user is authorized to perform a given action and are typically defined in the `App\Providers\AuthServiceProvider` class using the `Gate` facade. Gates always receive a user instance as their first argument, and may optionally receive additional arguments such as a relevant Eloquent model:
