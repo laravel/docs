@@ -289,19 +289,19 @@ Typically, you will want to mark a notification as "read" when a user views it. 
 
     $user = App\User::find(1);
 
-    foreach ($user->notifications as $notification) {
+    foreach ($user->unreadNotifications as $notification) {
         $notification->markAsRead();
     }
 
 However, instead of looping through each notification, you may use the `markAsRead` method directly on a collection of notifications:
 
-    $user->notifications->markAsRead();
+    $user->unreadNotifications->markAsRead();
 
 You may also use a mass-update query to mark all of the notifications as read without retrieving them from the database:
 
     $user = App\User::find(1);
 
-    $user->notifications()->update(['read_at' => Carbon::now()]);
+    $user->unreadNotifications()->update(['read_at' => Carbon::now()]);
 
 Of course, you may `delete` the notifications to remove them from the table entirely:
 
