@@ -308,6 +308,8 @@ The base exception handler class now requires a `Illuminate\Container\Container`
 
     parent::__construct(app());
 
+Add the `unauthenticated` method [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Exceptions/Handler.php) to `app/Exceptions/Handler.php` as it is no longer provided by the framework.
+
 ### Middleware
 
 #### `can` Middleware Namespace Change
