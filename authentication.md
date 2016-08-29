@@ -487,6 +487,10 @@ Laravel raises a variety of [events](/docs/{{version}}/events) during the authen
         'Illuminate\Auth\Events\Attempting' => [
             'App\Listeners\LogAuthenticationAttempt',
         ],
+        
+        'Illuminate\Auth\Events\Authenticated' => [
+            'App\Listeners\LogAuthenticated',
+        ],
 
         'Illuminate\Auth\Events\Login' => [
             'App\Listeners\LogSuccessfulLogin',
