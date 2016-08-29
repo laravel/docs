@@ -21,7 +21,7 @@
 
 Laravel strives to make the entire PHP development experience delightful, including your local development environment. [Vagrant](http://vagrantup.com) provides a simple, elegant way to manage and provision Virtual Machines.
 
-Laravel Homestead is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, HHVM, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
+Laravel Homestead is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
 Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 7.0, MySQL, Postgres, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
 
@@ -33,7 +33,6 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Ubuntu 16.04
 - Git
 - PHP 7.0
-- HHVM
 - Nginx
 - MySQL
 - MariaDB
@@ -106,13 +105,6 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
     sites:
         - map: homestead.app
           to: /home/vagrant/Code/Laravel/public
-
-You can make any Homestead site use [HHVM](http://hhvm.com) by setting the `hhvm` option to `true`:
-
-    sites:
-        - map: homestead.app
-          to: /home/vagrant/Code/Laravel/public
-          hhvm: true
 
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
 
