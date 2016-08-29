@@ -310,7 +310,7 @@ The base exception handler class now requires a `Illuminate\Container\Container`
 
 #### Unauthenticated Method
 
-You should add the `unauthenticated` method to your `App\Exceptions\Handler`. This method will convert authentication exceptions into HTTP responses:
+You should add the `unauthenticated` method to your `App\Exceptions\Handler` class. This method will convert authentication exceptions into HTTP responses:
 
     /**
      * Convert an authentication exception into an unauthenticated response.
