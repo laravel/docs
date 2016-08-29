@@ -308,7 +308,25 @@ The base exception handler class now requires a `Illuminate\Container\Container`
 
     parent::__construct(app());
 
-Add the `unauthenticated` method [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Exceptions/Handler.php) to `app/Exceptions/Handler.php` as it is no longer provided by the framework.
+#### Unauthenticated Method
+
+You should add the `unauthenticated` method to your `App\Exceptions\Handler`. This method will convert authentication exceptions into HTTP responses:
+
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+
+        return redirect()->guest('login');
+    }
 
 ### Middleware
 
