@@ -38,7 +38,7 @@ You may remove the arguments from the `boot` method on the `EventServiceProvider
 
 The `first`, `last`, and `where` methods on the `Arr` class now pass the "value" as the first parameter to the given callback Closure. For example:
 
-    Arr::first(function ($value, $key) {
+    Arr::first($array, function ($value, $key) {
         return ! is_null($value);
     });
 
