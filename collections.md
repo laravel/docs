@@ -75,10 +75,12 @@ For the remainder of this documentation, we'll discuss each method available on 
 [keys](#method-keys)
 [last](#method-last)
 [map](#method-map)
+[mapWithKeys](#method-mapwithkeys)
 [max](#method-max)
 [merge](#method-merge)
 [min](#method-min)
 [only](#method-only)
+[pipe](#method-pipe)
 [pluck](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
@@ -682,6 +684,37 @@ The `map` method iterates through the collection and passes each value to the gi
 
 > {note} Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
 
+<a name="method-mapwithkeys"></a>
+#### `mapWithKeys()` {#collection-method}
+
+The `mapWithKeys` method iterates through the collection and passes each value to the given callback. The callback should return an associative array with a single key/value pair.
+
+    $collection = collect([
+        [
+            'name' => 'John',
+            'department' => 'Sales',
+            'email' => 'john@example.com'
+        ],
+        [
+            'name' => 'Jane',
+            'department' => 'Marketing',
+            'email' => 'jane@example.com'
+        ]
+    ]);
+    
+    $keyed = $collection->mapWithKeys(function ($item) {
+        return [$item['email'] => $item['name']];    
+    });
+    
+    $keyed->all();
+    
+    /*
+        [
+            'john@example.com' => 'John',
+            'jane@example.com' => 'Jane',
+        ]
+    */
+
 <a name="method-max"></a>
 #### `max()` {#collection-method}
 
@@ -745,6 +778,19 @@ The `only` method returns the items in the collection with the specified keys:
     // ['product_id' => 1, 'name' => 'Desk']
 
 For the inverse of `only`, see the [except](#method-except) method.
+
+<a name="method-pipe"></a>
+#### `pipe()` {#collection-method}
+
+The `pipe` method passes the collection to the given callback and returns the result.
+
+    $collection = collect([1, 2, 3]);
+    
+    $piped = $collection->pipe(function ($collection) {
+        return $collection->sum();
+    });
+    
+    // 6
 
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
