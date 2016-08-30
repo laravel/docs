@@ -115,7 +115,7 @@ The `Console` directory contains all of the custom Artisan commands for your app
 <a name="the-events-directory"></a>
 #### The Events Directory
 
-This directory does not exist by default, but will be created for you by the `event:generate` and `event:make` Artisan commands. The `Events` directory, as you might expect, houses [event classes](/docs/{{version}}/events). Events may be used to alert other parts of your application that a given action has occurred, providing a great deal of flexibility and decoupling.
+This directory does not exist by default, but will be created for you by the `event:generate` and `make:event` Artisan commands. The `Events` directory, as you might expect, houses [event classes](/docs/{{version}}/events). Events may be used to alert other parts of your application that a given action has occurred, providing a great deal of flexibility and decoupling.
 
 <a name="the-exceptions-directory"></a>
 #### The Exceptions Directory
