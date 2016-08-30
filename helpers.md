@@ -39,6 +39,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [array_last](#method-array-last)
 [array_only](#method-array-only)
 [array_pluck](#method-array-pluck)
+[array_prepend](#method-array-prepend)
 [array_pull](#method-array-pull)
 [array_set](#method-array-set)
 [array_sort](#method-array-sort)
