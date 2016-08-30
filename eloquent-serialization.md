@@ -145,3 +145,5 @@ After creating the accessor, add the attribute name to the `appends` property on
     }
 
 Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON representations. Attributes in the `appends` array will also respect the `visible` and `hidden` settings configured on the model.
+
+> {note} When using `php artisan tinker` to return a modal without `toArray()` or `toJson()` appends does not show in its output.
