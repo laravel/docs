@@ -421,6 +421,10 @@ If you are using the `database` driver, you should drop the `jobs_queue_reserved
 
 If your application has a `failed_jobs` table, you should add an `exception` column to the table. The `exception` column should be a `TEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
 
+    Schema::table('failed_jobs', function(Blueprint $table) {
+        $table->text('exception');
+    });
+
 #### Serializing Models On Legacy Style Queue Jobs
 
 Typically, jobs in Laravel are queued by passing a new job instance to the `Queue::push` method. However, some applications may be queuing jobs using the following legacy syntax:
