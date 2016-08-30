@@ -687,7 +687,7 @@ The `map` method iterates through the collection and passes each value to the gi
 <a name="method-mapwithkeys"></a>
 #### `mapWithKeys()` {#collection-method}
 
-The `mapWithKeys` method iterates through the collection and passes each value to the given callback. The callback should return an associative array with a single key/value pair.
+The `mapWithKeys` method iterates through the collection and passes each value to the given callback. The callback should return an associative array containing a single key / value pair:
 
     $collection = collect([
         [
@@ -701,13 +701,13 @@ The `mapWithKeys` method iterates through the collection and passes each value t
             'email' => 'jane@example.com'
         ]
     ]);
-    
+
     $keyed = $collection->mapWithKeys(function ($item) {
-        return [$item['email'] => $item['name']];    
+        return [$item['email'] => $item['name']];
     });
-    
+
     $keyed->all();
-    
+
     /*
         [
             'john@example.com' => 'John',
@@ -782,14 +782,14 @@ For the inverse of `only`, see the [except](#method-except) method.
 <a name="method-pipe"></a>
 #### `pipe()` {#collection-method}
 
-The `pipe` method passes the collection to the given callback and returns the result.
+The `pipe` method passes the collection to the given callback and returns the result:
 
     $collection = collect([1, 2, 3]);
-    
+
     $piped = $collection->pipe(function ($collection) {
         return $collection->sum();
     });
-    
+
     // 6
 
 <a name="method-pluck"></a>
