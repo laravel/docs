@@ -409,11 +409,21 @@ Various queue job events such as `JobProcessing` and `JobProcessed` no longer co
 
 #### Jobs Table
 
-If you are using the `database` driver, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` column.
+If you are using the `database` driver, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` columns.
+
+    Schema::table('jobs', function(Blueprint $table) {
+        $table->dropIndex('jobs_queue_reserved_reserved_at_index');
+        $table->dropColumn('reserved');
+        $table->index(['queue', 'reserved_at']);
+    });
 
 #### Failed Jobs Table
 
 If your application has a `failed_jobs` table, you should add an `exception` column to the table. The `exception` column should be a `TEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
+
+    Schema::table('failed_jobs', function(Blueprint $table) {
+        $table->text('exception');
+    });
 
 #### Serializing Models On Legacy Style Queue Jobs
 
