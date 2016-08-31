@@ -367,7 +367,9 @@ In your queue configuration, all `expire` configuration items should be renamed 
 
 #### Closures
 
-Queueing closures is no longer supported. If you are queueing a Closure in your application, you should convert the Closure to a class and queue an instance of the class instead.
+Queueing closures is no longer supported. If you are queueing a closure in your application, you should convert the dispatched closure to a class and queue an instance of it instead, like the following:
+
+    dispatch(new ProcessPodcast($podcast));
 
 #### Collection Serialization
 
