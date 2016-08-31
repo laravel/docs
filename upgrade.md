@@ -391,7 +391,9 @@ Various queue job events such as `JobProcessing` and `JobProcessed` no longer co
 
 #### Jobs Table
 
-If you are using the `database` driver, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` column.
+If you are using the `database` driver to store your queued jobs in `config/queue.php`, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` column, using a SQL query like:
+
+    `CREATE INDEX queue_reserved_at on jobs (queue, reserved_at);`
 
 #### Failed Jobs Table
 
