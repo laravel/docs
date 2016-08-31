@@ -153,11 +153,11 @@ The `first`, `last`, and `contains` collection methods all pass the "value" as t
 
 In previous versions of Laravel, the `$key` was passed first. Since most use cases are only interested in the `$value` it is now passed first. You should do a "global find" in your application for these methods to verify that you are expecting the `$value` to be passed as the first argument to your Closure.
 
-#### `where` Comparison Now "Loose" By Default
+#### Collection `where` Comparison Methods Are "Loose" By Default
 
-The `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
+A collection's `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
 
-The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicit call either `where` or `whereStrict` depending on your application's needs.
+The `where` method also no longer accepts a third parameter to indicate "strictness." You should explicitly call either `where` or `whereStrict` depending on your application's needs.
 
 ### Controllers
 
