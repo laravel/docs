@@ -450,7 +450,7 @@ If a form request's validation fails, Laravel will now throw an instance of `Ill
 When validating arrays, booleans, integers, numerics, and strings, `null` will no longer be considered a valid value unless the rule set contains the new `nullable` rule:
 
     Validate::make($request->all(), [
-        'string' => 'nullable|max:5',
+        'field' => 'nullable|max:5',
     ]);
 
 <a name="upgrade-5.2.0"></a>
