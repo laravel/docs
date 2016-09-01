@@ -387,7 +387,7 @@ In your queue configuration, all `expire` configuration items should be renamed 
 
 #### Closures
 
-Queueing closures is no longer supported. If you are queueing a closure in your application, you should convert the dispatched closure to a class and queue an instance of it instead, like the following:
+Queueing Closures is no longer supported. If you are queueing a Closure in your application, you should convert the Closure to a class and queue an instance of the class:
 
     dispatch(new ProcessPodcast($podcast));
 
@@ -411,9 +411,7 @@ Various queue job events such as `JobProcessing` and `JobProcessed` no longer co
 
 #### Jobs Table
 
-If you are using the `database` driver to store your queued jobs in `config/queue.php`, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` column, using a SQL query like:
-
-    `CREATE INDEX queue_reserved_at on jobs (queue, reserved_at);`
+If you are using the `database` driver to store your queued jobs in `config/queue.php`, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` columns.
 
 #### Failed Jobs Table
 
