@@ -153,11 +153,11 @@ The `first`, `last`, and `contains` collection methods all pass the "value" as t
 
 In previous versions of Laravel, the `$key` was passed first. Since most use cases are only interested in the `$value` it is now passed first. You should do a "global find" in your application for these methods to verify that you are expecting the `$value` to be passed as the first argument to your Closure.
 
-#### `where` Comparison Now "Loose" By Default
+#### Collection `where` Comparison Methods Are "Loose" By Default
 
-The `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
+A collection's `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
 
-The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicit call either `where` or `whereStrict` depending on your application's needs.
+The `where` method also no longer accepts a third parameter to indicate "strictness." You should explicitly call either `where` or `whereStrict` depending on your application's needs.
 
 ### Controllers
 
@@ -387,7 +387,9 @@ In your queue configuration, all `expire` configuration items should be renamed 
 
 #### Closures
 
-Queueing closures is no longer supported. If you are queueing a Closure in your application, you should convert the Closure to a class and queue an instance of the class instead.
+Queueing closures is no longer supported. If you are queueing a closure in your application, you should convert the dispatched closure to a class and queue an instance of it instead, like the following:
+
+    dispatch(new ProcessPodcast($podcast));
 
 #### Collection Serialization
 
@@ -409,7 +411,9 @@ Various queue job events such as `JobProcessing` and `JobProcessed` no longer co
 
 #### Jobs Table
 
-If you are using the `database` driver, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` column.
+If you are using the `database` driver to store your queued jobs in `config/queue.php`, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` column, using a SQL query like:
+
+    `CREATE INDEX queue_reserved_at on jobs (queue, reserved_at);`
 
 #### Failed Jobs Table
 
@@ -451,7 +455,7 @@ If you would like to maintain the previous behavior instead of automatically sin
 
 URL prefixes no longer affect the route names assigned to routes when using `Route::resource`, since this behavior defeated the entire purpose of using route names in the first place.
 
-If your application is using `Route::resource` within a `Route::group` call that specified a `prefix` option, you should examine all of your calls to the `route` helper and verify that you are no longer appending the URI `prefix` to the route name.
+If your application is using `Route::resource` within a `Route::group` call that specified a `prefix` option, you should examine all of your `route` helper and `UrlGenerator::route` calls to verify that you are no longer appending this URI prefix to the route name.
 
 If this change causes you to have two routes with the same name, you have two options. First, you may use the `names` option when calling `Route::resource` to specify a custom name for a given route. Refer to the [resource routing documentation](/docs/5.3/controllers#resource-controllers) for more information. Alternatively, you may change the `prefix` option on your route group to the `as` option:
 
@@ -470,7 +474,7 @@ If a form request's validation fails, Laravel will now throw an instance of `Ill
 When validating arrays, booleans, integers, numerics, and strings, `null` will no longer be considered a valid value unless the rule set contains the new `nullable` rule:
 
     Validate::make($request->all(), [
-        'string' => 'nullable|max:5',
+        'field' => 'nullable|max:5',
     ]);
 
 <a name="upgrade-5.2.0"></a>
