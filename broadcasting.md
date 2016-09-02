@@ -185,7 +185,7 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-    class ServerCreated extends Event implements ShouldBroadcast
+    class ServerCreated implements ShouldBroadcast
     {
         use SerializesModels;
 

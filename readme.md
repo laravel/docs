@@ -1,9 +1,5 @@
-# Magyar Laravel Dokumentáció
+# Laravel Documentation
 
-## Fordítás beküldése
+## Contribution Guidelines
 
-A fordításokat pull request formájában küldjétek, mindig az aktuális (jelenleg 5.3) verziónak megfelelő branchre.
-
-## Fordítási irányelvek
-
-Lásd a [wikit](https://github.com/laravelhungary/docs/wiki/Kifejez%C3%A9sek).
+If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 5.1 would be submitted to the `5.1` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
