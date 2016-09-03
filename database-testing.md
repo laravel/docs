@@ -87,7 +87,7 @@ Another approach to resetting the database state is to wrap each test case in a 
     }
 
 > {note} This trait will only wrap the default database connection in a transaction. If your application is using multiple database connections, you will need to manually handle the transaction logic for those connections.
-
+> {note} Please take note that your table storage engine has to be `InnoDB`. Storage engine `MyISAM` will **not** work.
 <a name="model-factories"></a>
 ## Writing Factories
 
