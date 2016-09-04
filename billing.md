@@ -481,7 +481,7 @@ That's it! Failed payments will be captured and handled by the controller. The c
 Both Stripe and Braintree can notify your application of a variety of events via webhooks. To handle Braintree webhooks, define a route that points to Cashier's webhook controller. This controller will handle all incoming webhook requests and dispatch them to the proper controller method:
 
     Route::post(
-        'stripe/webhook',
+        'braintree/webhook',
         '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'
     );
 
@@ -494,7 +494,7 @@ By default, this controller will automatically handle cancelling subscriptions t
 Since Braintree webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/routing#csrf-protection), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
 
     protected $except = [
-        'stripe/*',
+        'braintree/*',
     ];
 
 <a name="defining-braintree-webhook-event-handlers"></a>
