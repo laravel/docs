@@ -117,8 +117,22 @@ Method  | Description
 `->thursdays();`  |  Limit the task to Thursday
 `->fridays();`  |  Limit the task to Friday
 `->saturdays();`  |  Limit the task to Saturday
-`->when(Closure);`  |  Limit the task based on a truth test
 `->between($start, $end);`  |  Limit the task to run between start and end times
+`->when(Closure);`  |  Limit the task based on a truth test
+
+#### Between Time Constraints
+
+The `between` method may be used to limit the execution of a task based on the time of day:
+
+    $schedule->command('reminders:send')
+                        ->hourly()
+                        ->between('7:00', '22:00');
+
+Similarly, the `unlessBetween` method can be used to exclude the execution of a task for a period of time:
+
+    $schedule->command('reminders:send')
+                        ->hourly()
+                        ->unlessBetween('23:00', '4:00');
 
 #### Truth Test Constraints
 
@@ -137,17 +151,6 @@ The `skip` method may be seen as the inverse of `when`. If the `skip` method ret
 When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
 
 <a name="preventing-task-overlaps"></a>
-
-#### Between Time Constraints
-
-The `between` method may be used to limit the execution of a task based on the time of day.
-
-    $schedule->command('reminders:send')->hourly()->between('7:00', '22:00');
-
-Similarly, the `unlessBetween` method can be used to exclude the execution of a task for a period of time.
-
-    $schedule->command('reminders:send')->hourly()->unlessBetween('23:00', '4:00');
-
 ### Preventing Task Overlaps
 
 By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use the `withoutOverlapping` method:
