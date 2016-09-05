@@ -55,7 +55,7 @@ To authorize an action using gates, you should use the `allows` method. Note tha
 
     if (Gate::allows('update-post', $post)) {
         // The current user can update the post...
-    };
+    }
 
 If you would like to determine if a particular user is authorized to perform an action, you may use the `forUser` method on the `Gate` facade:
 
