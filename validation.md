@@ -864,6 +864,12 @@ You may also specify more conditions that will be added as "where" clauses to th
 
 In the rule above, only rows with an `account_id` of `1` would be included in the unique check.
 
+**Using Soft Deletes:**
+
+If you are using soft deletes, you can validate only the undeleted entries:
+
+    'email' => 'unique:users,email,NULL,id,deleted_at,NULL'
+
 <a name="rule-url"></a>
 #### url
 
