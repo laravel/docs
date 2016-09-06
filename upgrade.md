@@ -28,7 +28,7 @@ All of the deprecations listed in the [Laravel 5.2 upgrade guide](#5.2-deprecati
 
 ### Application Service Providers
 
-You may remove the arguments from the `boot` method on the `EventServiceProvider` and `RouteServiceProvider` classes. Any calls to the given arguments may be converted to use the equivalent [facade](/docs/5.3/facades) instead. So, for example, instead of calling methods on the `$dispatcher` argument, you may simply call the `Event` facade. Likewise, instead of making method calls to the `$router` argument, you may make calls to the `Route` facade.
+You may remove the arguments from the `boot` method on the `EventServiceProvider`, `RouteServiceProvider`, and `AuthServiceProvider` classes. Any calls to the given arguments may be converted to use the equivalent [facade](/docs/5.3/facades) instead. So, for example, instead of calling methods on the `$dispatcher` argument, you may simply call the `Event` facade. Likewise, instead of making method calls to the `$router` argument, you may make calls to the `Route` facade, and instead of making method calls to the `$gate` argument, you may make calls to the `Gate` facade.
 
 > {note} When converting method calls to facades, be sure to import the facade class into your service provider.
 
