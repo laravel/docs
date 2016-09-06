@@ -461,6 +461,10 @@ If this change causes you to have two routes with the same name, you have two op
         //
     });
 
+### Upgrading Your Composer Dependency
+
+To upgrade your application to Laravel 5.3, change your `laravel/framework` version to `5.3.*` and `php` version to `>=5.6.4` in your `composer.json` file and run `composer update` from command line.
+
 ### Validation
 
 #### Form Request Exceptions
