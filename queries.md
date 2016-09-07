@@ -444,19 +444,18 @@ The `havingRaw` method may be used to set a raw string as the value of the `havi
                     ->havingRaw('SUM(price) > 2500')
                     ->get();
 
-#### limit 
-
-The `limit` method may be used to return a specified number of results. For example, we can find the first 10 rows in our users table:
-
-    $users = DB::table('users')
-                    ->limit(10)
-                    ->get();
-                    
 #### skip / take
 
 To limit the number of results returned from the query, or to skip a given number of results in the query, you may use the `skip` and `take` methods:
 
     $users = DB::table('users')->skip(10)->take(5)->get();
+
+Alternatively, you may use the `limit` and `offset` methods:
+
+    $users = DB::table('users')
+                    ->offset(10)
+                    ->limit(5)
+                    ->get();
 
 <a name="conditional-clauses"></a>
 ## Conditional Clauses
