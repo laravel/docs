@@ -67,7 +67,7 @@ Notifications may be sent in two ways: using the `notify` method of the `Notifia
 <a name="using-the-notification-facade"></a>
 ### Using The Notification Facade
 
-Alternatively, you may send notifications via the `Notification` [facade](/docs/{{version}}facades). This is useful primarily when you need to send a notification to multiple notifiable entities such as a collection of users. To send notifications using the facade, pass all of the notifiable entities and the notification instance to the `send` method:
+Alternatively, you may send notifications via the `Notification` [facade](/docs/{{version}}/facades). This is useful primarily when you need to send a notification to multiple notifiable entities such as a collection of users. To send notifications using the facade, pass all of the notifiable entities and the notification instance to the `send` method:
 
     Notification::send($users, new InvoicePaid($invoice));
 
