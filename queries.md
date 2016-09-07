@@ -446,7 +446,7 @@ The `havingRaw` method may be used to set a raw string as the value of the `havi
 
 #### limit 
 
-The `limit` method may be used to return a specified number of results. For example, we can find the first 10 rows in our users table:
+The `limit` method may be used to return a specified number of results. For example, we can return the first 10 rows found in our users table:
 
     $users = DB::table('users')
                     ->limit(10)
