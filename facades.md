@@ -168,6 +168,7 @@ Hash  |  [Illuminate\Contracts\Hashing\Hasher](http://laravel.com/api/{{version}
 Lang  |  [Illuminate\Translation\Translator](http://laravel.com/api/{{version}}/Illuminate/Translation/Translator.html)  |  `translator`
 Log  |  [Illuminate\Log\Writer](http://laravel.com/api/{{version}}/Illuminate/Log/Writer.html)  |  `log`
 Mail  |  [Illuminate\Mail\Mailer](http://laravel.com/api/{{version}}/Illuminate/Mail/Mailer.html)  |  `mailer`
+Notification  |  [Illuminate\Notifications\ChannelManager](http://laravel.com/api/{{version}}/Illuminate/Notifications/ChannelManager.html)  |  
 Password  |  [Illuminate\Auth\Passwords\PasswordBroker](http://laravel.com/api/{{version}}/Illuminate/Auth/Passwords/PasswordBroker.html)  |  `auth.password`
 Queue  |  [Illuminate\Queue\QueueManager](http://laravel.com/api/{{version}}/Illuminate/Queue/QueueManager.html)  |  `queue`
 Queue (Instance)  |  [Illuminate\Contracts\Queue\Queue](http://laravel.com/api/{{version}}/Illuminate/Contracts/Queue/Queue.html)  |  `queue`
