@@ -67,6 +67,7 @@ To see how read / write connections should be configured, let's look at this exa
         'username'  => 'root',
         'password'  => '',
         'charset'   => 'utf8',
+        'strict'    => 'false', // if 'true' make sure to also set your 'timestamps()' to '->nullable()'
         'collation' => 'utf8_unicode_ci',
         'prefix'    => '',
     ],
