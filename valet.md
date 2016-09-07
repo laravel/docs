@@ -73,7 +73,7 @@ For example, if you'd like to use `.app` instead of `.dev`, run `valet domain ap
 
 #### Database
 
-If you need a database, try MariaDB by running `brew install mariadb` on your command line. To start the database server run `brew services start mariadb`. You can connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
+If you need a database, try MariaDB by running `brew install mariadb` on your command line. Once MariaDB has been installed, you may start it using the `brew services start mariadb` command. You can then connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
 
 <a name="upgrading"></a>
 ### Upgrading
