@@ -402,6 +402,8 @@ Of course, you may also run a delete query on a set of models. In this example, 
 
     $deletedRows = App\Flight::where('active', 0)->delete();
 
+> {note} When issuing a mass delete via Eloquent, the `deleting` and `deleted` model events will not be fired for the deleted models. This is because the models are never actually retrieved when issuing a mass delete.
+
 <a name="soft-deleting"></a>
 ### Soft Deleting
 
