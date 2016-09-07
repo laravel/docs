@@ -273,7 +273,7 @@ To log a user into the application by their ID, you may use the `loginUsingId` m
 
 #### Authenticate A User Once
 
-You may use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized, which means this method may be helpful when building a stateless API. The `once` method has the same signature as the `attempt` method:
+You may use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized, which means this method may be helpful when building a stateless API:
 
     if (Auth::once($credentials)) {
         //
