@@ -203,7 +203,7 @@ By default, the email's subject is the class name of the notification formatted 
 
 You can modify the HTML and plain-text template used by mail notifications by publishing the notification package's resources. After running this command, the mail notification templates will be located in the `resources/views/vendor/notifications` directory:
 
-    php artisan vendor:publish --tag laravel-notifications
+    php artisan vendor:publish --tag=laravel-notifications
 
 <a name="error-messages"></a>
 ### Error Messages
