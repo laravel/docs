@@ -314,10 +314,10 @@ To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/
     namespace App\Http\Controllers;
 
     use App\Order;
+    use App\Mail\OrderShipped;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Mail;
     use App\Http\Controllers\Controller;
-    use App\Mail\OrderShipped;
 
     class OrderController extends Controller
     {
