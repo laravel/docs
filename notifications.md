@@ -198,7 +198,7 @@ By default, the email's subject is the class name of the notification formatted 
                     ->line('...');
     }
 
-<a name="customizing-the-template"></a>
+<a name="customizing-the-templates"></a>
 ### Customizing The Templates
 
 You can modify the HTML and plain-text template used by mail notifications by publishing the notification package's resources. After running this command, the mail notification templates will be located in the `resources/views/vendor/notifications` directory:
