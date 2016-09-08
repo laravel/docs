@@ -314,7 +314,7 @@ This command will instruct all queue workers to gracefully "die" after they fini
 
 In your `config/queue.php` configuration file, each queue connection defines a `retry_after` option. This option specifies how many seconds the queue connection should wait before retrying a job that is being processed. For example, if the value of `retry_after` is set to `90`, the job will be released back onto the queue if it has been processing for 90 seconds without being deleted. Typically, you should set the `retry_after` value to the maximum number of seconds your jobs should reasonably take to complete processing.
 
-> {note} The only queue connection which does not contain a `retry_after` value is Amazon SQS. By default, SQS retries the job after the [Default Visibility Timeout](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) value. To handle failed jobs, you can configure a [Dead Letter Queue](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/SQSDeadLetterQueue.html) from the Amazon web console.
+> {note} The only queue connection which does not contain a `retry_after` value is Amazon SQS. SQS will retry the job after the [Default Visibility Timeout](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) value managed within the Amazon web console.
 
 #### Worker Timeouts
 
