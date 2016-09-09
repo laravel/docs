@@ -461,7 +461,7 @@ If your application is using `Route::resource` within a `Route::group` call that
 
 If this change causes you to have two routes with the same name, you have two options. First, you may use the `names` option when calling `Route::resource` to specify a custom name for a given route. Refer to the [resource routing documentation](/docs/5.3/controllers#resource-controllers) for more information. Alternatively, you may change the `prefix` option on your route group to the `as` option:
 
-    Route::group(['as' => 'admin'], function () {
+    Route::group(['as' => 'admin.'], function () {
         //
     });
 
