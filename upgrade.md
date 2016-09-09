@@ -459,9 +459,9 @@ URL prefixes no longer affect the route names assigned to routes when using `Rou
 
 If your application is using `Route::resource` within a `Route::group` call that specified a `prefix` option, you should examine all of your `route` helper and `UrlGenerator::route` calls to verify that you are no longer appending this URI prefix to the route name.
 
-If this change causes you to have two routes with the same name, you have two options. First, you may use the `names` option when calling `Route::resource` to specify a custom name for a given route. Refer to the [resource routing documentation](/docs/5.3/controllers#resource-controllers) for more information. Alternatively, you may change the `prefix` option on your route group to the `as` option:
+If this change causes you to have two routes with the same name, you have two options. First, you may use the `names` option when calling `Route::resource` to specify a custom name for a given route. Refer to the [resource routing documentation](/docs/5.3/controllers#resource-controllers) for more information. Alternatively, you may add the `as` option on your route group:
 
-    Route::group(['as' => 'admin.'], function () {
+    Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         //
     });
 
