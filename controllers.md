@@ -102,7 +102,7 @@ When registering routes for single action controllers, you do not need to specif
 
     Route::get('profile', 'UserController@show')->middleware('auth');
 
-However, it is more convenient to specify middleware within your controller's constructor. Using the `middleware` method from your controller's constructor, you may easily assign middleware to the controller's action. You may even restrict the middleware to only certain methods on the controller class:
+However, it is more convenient to specify middleware within your controller's constructor. Using the `middleware` method from your controller's constructor, you may easily assign middleware to the controller's action by specifing its route or group key, class name or a closure. You may even restrict the middleware to only certain methods on the controller class:
 
     class UserController extends Controller
     {
@@ -114,6 +114,12 @@ However, it is more convenient to specify middleware within your controller's co
         public function __construct()
         {
             $this->middleware('auth');
+            
+            $this->middleware(Authenticate::class);
+            
+            $this->middleware(function ($request, $next) {
+                return $next($request);
+            });
 
             $this->middleware('log')->only('index');
 
