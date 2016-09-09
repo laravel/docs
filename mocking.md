@@ -2,7 +2,13 @@
 
 - [Introduction](#introduction)
 - [Events](#mocking-events)
+    - [Using Mocks](#using-event-mocks)
+    - [Using Fakes](#using-event-fakes)
 - [Jobs](#mocking-jobs)
+    - [Using Mocks](#using-job-mocks)
+    - [Using Fakes](#using-job-fakes)
+- [Mail Fakes](#mail-fakes)
+- [Notification Fakes](#notification-fakes)
 - [Facades](#mocking-facades)
 
 <a name="introduction"></a>
@@ -14,6 +20,9 @@ Laravel provides helpers for mocking events, jobs, and facades out of the box. T
 
 <a name="mocking-events"></a>
 ## Events
+
+<a name="using-event-mocks"></a>
+### Using Mocks
 
 If you are making heavy use of Laravel's event system, you may wish to silence or mock certain events while testing. For example, if you are testing user registration, you probably do not want all of a `UserRegistered` event's handlers firing, since the listeners may send "welcome" e-mails, etc.
 
@@ -71,8 +80,41 @@ If you would like to prevent all event listeners from running, you may use the `
         }
     }
 
+<a name="using-event-fakes"></a>
+### Using Fakes
+
+As an alternative to mocking, you may use the `Event` facade's `fake` method to prevent all event listeners from executing. You may then assert that events were fired and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+
+    <?php
+
+    use App\Events\OrderShipped;
+    use App\Events\OrderFailedToShip;
+    use Illuminate\Support\Facades\Event;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * Test order shipping.
+         */
+        public function testOrderShipping()
+        {
+            Event::fake();
+
+            // Perform order shipping...
+
+            Event::assertFired(OrderShipped::class, function ($e) use ($order) {
+                return $e->order->id === $order->id;
+            });
+
+            Event::assertNotFired(OrderFailedToShip::class);
+        }
+    }
+
 <a name="mocking-jobs"></a>
 ## Jobs
+
+<a name="using-job-mocks"></a>
+### Using Mocks
 
 Sometimes, you may wish to test that given jobs are dispatched when making requests to your application. This will allow you to test your routes and controllers in isolation without worrying about your job's logic. Of course, you should then test the job in a separate test case.
 
@@ -80,7 +122,7 @@ Laravel provides the convenient `expectsJobs` method which will verify that the 
 
     <?php
 
-    class App\Jobs\ShipOrder;
+    use App\Jobs\ShipOrder;
 
     class ExampleTest extends TestCase
     {
@@ -98,7 +140,7 @@ Like the event mocking helpers, you may also test that a job is not dispatched u
 
     <?php
 
-    class App\Jobs\ShipOrder;
+    use App\Jobs\ShipOrder;
 
     class ExampleTest extends TestCase
     {
@@ -117,7 +159,7 @@ Alternatively, you may ignore all dispatched jobs using the `withoutJobs` method
 
     <?php
 
-    class App\Jobs\ShipOrder;
+    use App\Jobs\ShipOrder;
 
     class ExampleTest extends TestCase
     {
@@ -129,6 +171,104 @@ Alternatively, you may ignore all dispatched jobs using the `withoutJobs` method
             $this->withoutJobs();
 
             // Test order cancellation...
+        }
+    }
+
+<a name="using-job-fakes"></a>
+### Using Fakes
+
+As an alternative to mocking, you may use the `Queue` facade's `fake` method to prevent jobs from being queued. You may then assert that jobs were pushed to the queue and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+
+    <?php
+
+    use App\Jobs\ShipOrder;
+    use Illuminate\Support\Facades\Queue;
+
+    class ExampleTest extends TestCase
+    {
+        public function testOrderShipping()
+        {
+            Queue::fake();
+
+            // Perform order shipping...
+
+            Queue::assertPushed(ShipOrder::class, function ($job) use ($order) {
+                return $job->order->id === $order->id;
+            });
+
+            // Assert a job was pushed to a given queue...
+            Queue::assertPushedOn('queue-name', ShipOrder::class);
+
+            // Assert a job was not pushed...
+            Queue::assertNotPushed(AnotherJob::class);
+        }
+    }
+
+<a name="mail-fakes"></a>
+## Mail Fakes
+
+You may use the `Mail` facade's `fake` method to prevent mail from being sent. You may then assert that [mailables](/docs/{{version}}/mail) were sent to users and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+
+    <?php
+
+    use App\Mail\OrderShipped;
+    use Illuminate\Support\Facades\Mail;
+
+    class ExampleTest extends TestCase
+    {
+        public function testOrderShipping()
+        {
+            Mail::fake();
+
+            // Perform order shipping...
+
+            Mail::assertSent(OrderShipped::class, function ($mail) use ($order) {
+                return $mail->order->id === $order->id;
+            });
+
+            // Assert a message was sent to the given users...
+            Mail::assertSentTo([$user], OrderShipped::class);
+
+            // Assert a mailable was not sent...
+            Mail::assertNotSent(AnotherMailable::class);
+        }
+    }
+
+<a name="notification-fakes"></a>
+## Notification Fakes
+
+You may use the `Notification` facade's `fake` method to prevent notifications from being sent. You may then assert that [notifications](/docs/{{version}}/notifications) were sent to users and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+
+    <?php
+
+    use App\Notifications\OrderShipped;
+    use Illuminate\Support\Facades\Notification;
+
+    class ExampleTest extends TestCase
+    {
+        public function testOrderShipping()
+        {
+            Notification::fake();
+
+            // Perform order shipping...
+
+            Notification::assertSentTo(
+                $user,
+                OrderShipped::class,
+                function ($notification, $channels) use ($order) {
+                    return $notification->order->id === $order->id;
+                }
+            );
+
+            // Assert a notification was sent to the given users...
+            Notification::assertSentTo(
+                [$user], OrderShipped::class
+            );
+
+            // Assert a notification was not sent...
+            Notification::assertNotSentTo(
+                [$user], AnotherNotification::class
+            );
         }
     }
 
