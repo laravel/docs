@@ -391,7 +391,7 @@ You may determine if the user is within their trial period using either the `onT
 <a name="without-credit-card-up-front"></a>
 ### Without Credit Card Up Front
 
-If you would like to offer trial periods without collecting the user's payment method information up front, you may simply set the `trial_ends_at` column on the user record to your desired trial ending date. This is typically done during user registration:
+If you would like to offer trial periods without collecting the user's payment method information up front, you may simply set the `trial_ends_at` column on the user record to your desired trial ending date. Be sure to add a [date mutator](/docs/{{version}}/eloquent-mutators#date-mutators) for `trial_ends_at` to your model definition. This is typically done during user registration:
 
     $user = User::create([
         // Populate other user properties...
