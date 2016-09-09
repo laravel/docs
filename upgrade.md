@@ -274,6 +274,10 @@ The `JoinClause` class has been rewritten to unify its syntax with the query bui
         $join->on('foo', 'bar')->where('bar', 'baz');
     });
 
+The operator of the ``on`` clause is now checked as well and can no longer contain invalid values. If you were relying on that feature (e.g. `$join->on('foo', 'in', DB::raw('("bar")'))`) you should rewrite the condition using the appropriate where clause:
+
+    $join->whereIn('foo', ['bar']);
+
 The `$bindings` property was also removed. To manipulate join bindings directly you may use the `addBinding` method:
 
     $query->join(DB::raw('('.$subquery->toSql().') table'), function ($join) use ($subquery) {
