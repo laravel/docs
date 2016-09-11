@@ -336,6 +336,15 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
         key: 'your-pusher-key'
     });
 
+Additional Pusher parameters, such as the cluster to be used, should be passed as Echo parameters:
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: 'your-pusher-key',
+    	cluster: 'eu',
+    	encrypted: true
+    });
+
 <a name="listening-for-events"></a>
 ### Listening For Events
 
