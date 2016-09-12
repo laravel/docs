@@ -336,13 +336,13 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
         key: 'your-pusher-key'
     });
 
-Additional Pusher parameters, such as the cluster to be used, should be passed as Echo parameters:
+When creating an Echo instance that uses the `pusher` connector, you may also specify a `cluster` as well as whether the connection should be encrypted:
 
     window.Echo = new Echo({
         broadcaster: 'pusher',
         key: 'your-pusher-key',
-    	cluster: 'eu',
-    	encrypted: true
+        cluster: 'eu',
+        encrypted: true
     });
 
 <a name="listening-for-events"></a>
