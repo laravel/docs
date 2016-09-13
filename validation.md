@@ -457,13 +457,11 @@ In most cases, you will probably specify your custom messages in a language file
 
 #### Specifying Custom Attributes In Language Files
 
-In some cases you don't want the user to see your column name in the error message. For example the `user_id` field. You can customize the attributes in the `attributes` array in the `resource/lang/xx/validation.php` language file.
+If you would like the `:attribute` portion of your validation message to be replaced with a custom attribute name, you may specify the custom name in the `attributes` array of your `resources/lang/xx/validation.php` language file:
 
     'attributes' => [
-        'user_id' => 'User',
+        'email' => 'email address',
     ],
-
-This will convert the validation message from "The user_id field is required" in "The User field is required".
 
 <a name="available-validation-rules"></a>
 ## Available Validation Rules
