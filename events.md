@@ -46,28 +46,27 @@ Of course, manually creating the files for each event and listener is cumbersome
 <a name="manually-registering-events"></a>
 ### Manually Registering Events
 
-Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register events manually with the event dispatcher using either the `Event` facade or the `Illuminate\Contracts\Events\Dispatcher` contract implementation:
+Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register Closure based events manually in the `boot` method of your `EventServiceProvider`:
 
     /**
      * Register any other events for your application.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function boot(DispatcherContract $events)
+    public function boot()
     {
-        parent::boot($events);
+        parent::boot();
 
-        $events->listen('event.name', function ($foo, $bar) {
+        Event::listen('event.name', function ($foo, $bar) {
             //
         });
     }
 
 #### Wildcard Event Listeners
 
-You may even register listeners using the `*` as a wildcard, allowing you to catch multiple events on the same listener. Wildcard listeners receive the entire event data array as a single argument:
+You may even register listeners using the `*` as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the entire event data array as a single argument:
 
-    $events->listen('event.*', function (array $data) {
+    Event::listen('event.*', function (array $data) {
         //
     });
 
