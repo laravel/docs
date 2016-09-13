@@ -108,6 +108,8 @@ The `link` command may also be used to serve your Laravel sites. This command is
 
 To see a listing of all of your linked directories, run the `valet links` command. You may use `valet unlink app-name` to destroy the symbolic link.
 
+> {tip} You can use `valet link` to serve the same project from multiple (sub)domains. To add a subdomain or another domain to your project run `valet link subdomain.app-name` from the project folder.
+
 <a name="securing-sites"></a>
 **Securing Sites With TLS**
 
