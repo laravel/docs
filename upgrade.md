@@ -419,7 +419,7 @@ If you are using the `database` driver to store your queued jobs in `config/queu
 
 #### Failed Jobs Table
 
-If your application has a `failed_jobs` table, you should add an `exception` column to the table. The `exception` column should be a `TEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
+If your application has a `failed_jobs` table, you should add an `exception` column to the table. The `exception` column should be a `LONGTEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
 
 #### Serializing Models On Legacy Style Queue Jobs
 
