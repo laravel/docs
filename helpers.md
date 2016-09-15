@@ -567,9 +567,13 @@ The `starts_with` function determines if the given string begins with the given 
 <a name="method-str-contains"></a>
 #### `str_contains()` {#collection-method}
 
-The `str_contains` function determines if the given string contains the given value:
+The `str_contains` function determines if the given string contains the given value (string or array):
 
     $value = str_contains('This is my name', 'my');
+
+    // true
+    $array = array(['This','my']);
+    $value = str_contains('This is my name', $array);
 
     // true
 
