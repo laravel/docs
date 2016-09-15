@@ -573,6 +573,12 @@ The `str_contains` function determines if the given string contains the given va
 
     // true
 
+You may also pass an array of values to determine if the given string contains any of the values:
+
+    $value = str_contains('This is my name', ['my', 'foo']);
+
+    // true
+
 <a name="method-str-finish"></a>
 #### `str_finish()` {#collection-method}
 
