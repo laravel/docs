@@ -217,7 +217,7 @@ To register an explicit binding, use the router's `model` method to specify the 
     {
         parent::boot();
 
-        Route::model('user', 'App\User');
+        Route::model('user', App\User::class);
     }
 
 Next, define a route that contains a `{user}` parameter:
