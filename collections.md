@@ -1157,7 +1157,7 @@ In addition, you can pass a third argument containing the new items to replace t
 <a name="method-split"></a>
 #### `split()` {#collection-method}
 
-The `split` method breaks a collection into a certain number of groups.
+The `split` method breaks a collection into the given number of groups:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -1165,7 +1165,7 @@ The `split` method breaks a collection into a certain number of groups.
 
     $groups->toArray();
 
-    // [[1, 2], [3, 4], 5]
+    // [[1, 2], [3, 4], [5]]
 
 <a name="method-sum"></a>
 #### `sum()` {#collection-method}
