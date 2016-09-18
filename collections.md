@@ -99,6 +99,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [sortBy](#method-sortby)
 [sortByDesc](#method-sortbydesc)
 [splice](#method-splice)
+[split](#method-split)
 [sum](#method-sum)
 [take](#method-take)
 [toArray](#method-toarray)
@@ -1152,6 +1153,19 @@ In addition, you can pass a third argument containing the new items to replace t
     $collection->all();
 
     // [1, 2, 10, 11, 4, 5]
+
+<a name="method-split"></a>
+#### `split()` {#collection-method}
+
+The `split` method breaks a collection into a certain number of groups.
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $groups = $collection->split(3);
+
+    $groups->toArray();
+
+    // [[1, 2], [3, 4], 5]
 
 <a name="method-sum"></a>
 #### `sum()` {#collection-method}
