@@ -228,7 +228,7 @@ To choose a different output or base directory, simply specify your desired path
 ```javascript
 elixir(function(mix) {
     mix.webpack(
-        './resources/assets/js/app.js',
+        './app/assets/js/app.js',
         './public/dist'
     );
 });
