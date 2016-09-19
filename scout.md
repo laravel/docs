@@ -38,7 +38,7 @@ Next, you should add the `ScoutServiceProvider` to the `providers` array of your
 
 After registering the Scout service provider, you should publish the Scout configuration using the `vendor:publish` Artisan command. This command will publish the `scout.php` configuration file to your `config` directory:
 
-    php artisan vendor:publish
+    php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 
 Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to make searchable. This trait will register a model observer to keep the model in sync with your search driver:
 
