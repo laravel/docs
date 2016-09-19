@@ -255,13 +255,13 @@ The `array_get` function also accepts a default value, which will be returned if
 
 The `array_has` function checks that a given item or items exists in an array using "dot" notation:
 
-    $array = ['products' => ['name' => 'desk', 'price' => 100]];
+    $array = ['product' => ['name' => 'desk', 'price' => 100]];
 
-    $hasItem = array_has($array, 'products.name');
+    $hasItem = array_has($array, 'product.name');
 
     // true
     
-    $hasItems = array_has($array, ['products.price', 'products.discount']);
+    $hasItems = array_has($array, ['product.price', 'product.discount']);
 
     // false
 
