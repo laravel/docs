@@ -521,27 +521,9 @@ The example above will create a Slack message that looks like the following:
 
 <img src="https://laravel.com/assets/img/slack-fields-attachment.png">
 
-#### Customizing the recipient
+#### Customizing The Sender & Recipient
 
-Slack is fairly flexible, which allows us to override the custom webhook's channel by using the `to` method. This method accepts both `#channel` and `@username` notation. The latter will send the notification to a specific user.
-
-    /**
-     * Get the Slack representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-        return (new SlackMessage)
-                    ->to('#laravel-other');
-                    ->content('This will be posted in #laravel-other')
-    }
-
-
-#### Customizing the bot's username and icon
-
-By default, the incoming webhook will use the default identity that you have configured in Slack, but with the `from` method it's trivial to set a custom username and icon:
+You may use the `from` and `to` methods to customize the sender and recipient. The `from` method accepts a username and emoji identifier, while the `to` method accepts a channel or username:
 
     /**
      * Get the Slack representation of the notification.
@@ -552,8 +534,9 @@ By default, the incoming webhook will use the default identity that you have con
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-                    ->from('Ghostbot', ':ghost:');
-                    ->content('Hello from Ghostbot!')
+                    ->from('Ghost', ':ghost:')
+                    ->to('#other');
+                    ->content('This will be sent to #other')
     }
 
 <a name="routing-slack-notifications"></a>
