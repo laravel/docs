@@ -413,13 +413,33 @@ It is no longer necessary to specify the `--daemon` option when calling the `que
 
 Various queue job events such as `JobProcessing` and `JobProcessed` no longer contain the `$data` property. You should update your application to call `$event->job->payload()` to get the equivalent data.
 
-#### Jobs Table
+#### Database Driver Changes
 
-If you are using the `database` driver to store your queued jobs in `config/queue.php`, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` columns.
+If you are using the `database` driver to store your queued jobs in `config/queue.php`, you should create a migration that does the following:
 
-#### Failed Jobs Table
+    public function up()
+    {
+        Schema::table('jobs', function (Blueprint $table) {
+            $table->dropIndex('jobs_queue_reserved_reserved_at_index');
+            $table->dropColumn('reserved');
+            $table->index(['queue', 'reserved_at']);
+        });
+        Schema::table('failed_jobs', function (Blueprint $table) {
+            $table->longText('exception')->after('payload');
+        });
+    }
 
-If your application has a `failed_jobs` table, you should add an `exception` column to the table. The `exception` column should be a `LONGTEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
+    public function down()
+    {
+        Schema::table('jobs', function (Blueprint $table) {
+            $table->tinyInteger('reserved')->unsigned();
+            $table->index(['queue', 'reserved', 'reserved_at']);
+            $table->dropIndex('jobs_queue_reserved_at_index');
+        });
+        Schema::table('failed_jobs', function (Blueprint $table) {
+            $table->dropColumn('exception');
+        });
+    }
 
 #### Serializing Models On Legacy Style Queue Jobs
 
