@@ -415,7 +415,9 @@ Various queue job events such as `JobProcessing` and `JobProcessed` no longer co
 
 #### Database Driver Changes
 
-If you are using the `database` driver to store your queued jobs in `config/queue.php`, you should create a migration that does the following:
+If you are using the `database` driver to store your queued jobs, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` columns.
+
+Below is an example migration you may use to perform the necessary changes:
 
     public function up()
     {
@@ -424,6 +426,7 @@ If you are using the `database` driver to store your queued jobs in `config/queu
             $table->dropColumn('reserved');
             $table->index(['queue', 'reserved_at']);
         });
+
         Schema::table('failed_jobs', function (Blueprint $table) {
             $table->longText('exception')->after('payload');
         });
@@ -436,6 +439,7 @@ If you are using the `database` driver to store your queued jobs in `config/queu
             $table->index(['queue', 'reserved', 'reserved_at']);
             $table->dropIndex('jobs_queue_reserved_at_index');
         });
+
         Schema::table('failed_jobs', function (Blueprint $table) {
             $table->dropColumn('exception');
         });
