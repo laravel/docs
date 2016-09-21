@@ -13,6 +13,8 @@
 
     composer require predis/predis
 
+Or alternativly, install the [Redis PHP extension](https://github.com/phpredis/phpredis) installed via PECL.
+
 <a name="configuration"></a>
 ### Configuration
 
@@ -20,11 +22,14 @@ The Redis configuration for your application is located in the `config/database.
 
     'redis' => [
 
+        'client' => 'predis',
+        
         'cluster' => false,
 
         'default' => [
-            'host' => '127.0.0.1',
-            'port' => 6379,
+            'host' => env('REDIS_HOST', 'localhost'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
             'database' => 0,
         ],
 
@@ -34,9 +39,7 @@ The default server configuration should suffice for development. However, you ar
 
 The `cluster` option will instruct the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
 
-Additionally, you may define an `options` array value in your Redis connection definition, allowing you to specify a set of Predis [client options](https://github.com/nrk/predis/wiki/Client-Options).
-
-If your Redis server requires authentication, you may supply a password by adding a `password` configuration item to your Redis server configuration array.
+Additionally, if you're using the Predis library, you may define an `options` array value in your Redis connection definition, allowing you to specify a set of Predis [client options](https://github.com/nrk/predis/wiki/Client-Options).
 
 > {note} If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
 
