@@ -261,7 +261,7 @@ The `array_has` function checks that a given item or items exists in an array us
     $hasItem = array_has($array, 'product.name');
 
     // true
-    
+
     $hasItems = array_has($array, ['product.price', 'product.discount']);
 
     // false
@@ -792,21 +792,17 @@ The `bcrypt` function hashes the given value using Bcrypt. You may use it as an 
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
 
-The `cache` function may be used to get values from the cache:
+The `cache` function may be used to get values from the cache. If the given key does not exist in the cache, an optional default value will be returned:
 
-    $value = cache('message');
+    $value = cache('key');
 
-You may pass a second argument to specifying the default value you wish to be returned if the item doesn't exist:
+    $value = cache('key', 'default');
 
-    cache('message', 'default');
+You may add items to the cache by passing an array of key / value pairs to the function. You should also pass the number of minutes or duration the cached value should be considered valid:
 
-You may set values by passing to the function an array of key / value pair and the number of minutes for which the value should be cached:
+    cache(['key' => 'value'], 5);
 
-    cache(['message' => 'This is a message'], 1);
-
-You may obtain a `Illuminate\Cache\CacheManager` instance with:
-
-    cache();
+    cache(['key' => 'value'], Carbon::now()->addSeconds(10));
 
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
