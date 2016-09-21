@@ -97,6 +97,21 @@ However, you may also use the `Cache` facade, which is what we will use througho
         }
     }
 
+#### The Global Cache Helper
+
+You may also use the global `cache` function to retrieve and store data from the cache. When the `cache` helper is called with a single, string argument, it will return the value of that cache key. When the helper is called with two arguments: an array of key / value pair and the number of minutes as an integer, the item will be stored to the cache with this expiration time:
+
+    Route::get('home', function () {
+        // Retrieve a item from the cache...
+        $value = cache('key');
+
+        // Specifying a default value if the item doesn't exist...
+        $value = cache('key', 'default');
+
+        // Store a item in the cache...
+        cache(['key' => 'value'], $minutes);
+    });
+
 #### Accessing Multiple Cache Stores
 
 Using the `Cache` facade, you may access various cache stores via the `store` method. The key passed to the `store` method should correspond to one of the stores listed in the `stores` configuration array in your `cache` configuration file:

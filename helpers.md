@@ -111,6 +111,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
+[cache](#method-cache)
 [collect](#method-collect)
 [config](#method-config)
 [csrf_field](#method-csrf-field)
@@ -787,6 +788,25 @@ The `back()` function generates a redirect response to the user's previous locat
 The `bcrypt` function hashes the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
 
     $password = bcrypt('my-secret-password');
+
+<a name="method-cache"></a>
+#### `cache()` {#collection-method}
+
+The `cache` function may be used to get values from the cache:
+
+    $value = cache('message');
+
+You may pass a second argument to specifying the default value you wish to be returned if the item doesn't exist:
+
+    cache('message', 'default');
+
+You may set values by passing to the function an array of key / value pair and the number of minutes for which the value should be cached:
+
+    cache(['message' => 'This is a message'], 1);
+
+You may obtain a `Illuminate\Cache\CacheManager` instance with:
+
+    cache();
 
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
