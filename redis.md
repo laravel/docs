@@ -2,6 +2,8 @@
 
 - [Introduction](#introduction)
     - [Configuration](#configuration)
+    - [Predis Configuration](#predis-configuration)
+    - [PhpRedis Configuration](#phpredis-configuration)
 - [Interacting With Redis](#interacting-with-redis)
     - [Pipelining Commands](#pipelining-commands)
 - [Pub / Sub](#pubsub)
@@ -13,7 +15,7 @@
 
     composer require predis/predis
 
-Or alternativly, install the [Redis PHP extension](https://github.com/phpredis/phpredis) installed via PECL.
+Or alternativly, install the [PhpRedis](https://github.com/phpredis/phpredis), the Redis PHP extension, via PECL.
 
 <a name="configuration"></a>
 ### Configuration
@@ -39,9 +41,21 @@ The default server configuration should suffice for development. However, you ar
 
 The `cluster` option will instruct the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
 
-Additionally, if you're using the Predis library, you may define an `options` array value in your Redis connection definition, allowing you to specify a set of Predis [client options](https://github.com/nrk/predis/wiki/Client-Options). The PECL extension does not support client options.
+<a name="predis-configuration"></a>
+### Predis Configuration
+
+Aside from `host`, `port`, `database` and `password` Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be added to each Redis server.
+
+Additionally to servers, you may define an `options` array value in your Redis connection definition, allowing you to specify a set of Predis [client options](https://github.com/nrk/predis/wiki/Client-Options).
+
+<a name="predis-configuration"></a>
+### PhpRedis Configuration
 
 > {note} If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
+
+Aside from `host`, `port`, `database` and `password` PhpRedis supports the following connection parameters, that may be added to each Redis server: `persistent`, `prefix`, `read_timeout` and `timeout`.
+
+With Redis clusters, additionally to servers, you may define an `options` array value in your Redis connection definition, which supports the following options: `persistent`, `read_timeout` and `timeout`.
 
 <a name="interacting-with-redis"></a>
 ## Interacting With Redis
