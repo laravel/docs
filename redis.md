@@ -2,8 +2,8 @@
 
 - [Introduction](#introduction)
     - [Configuration](#configuration)
-    - [Predis Configuration](#predis-configuration)
-    - [PhpRedis Configuration](#phpredis-configuration)
+    - [Predis](#predis)
+    - [PhpRedis](#phpredis)
 - [Interacting With Redis](#interacting-with-redis)
     - [Pipelining Commands](#pipelining-commands)
 - [Pub / Sub](#pubsub)
@@ -41,15 +41,15 @@ The default server configuration should suffice for development. However, you ar
 
 The `cluster` option will instruct the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
 
-<a name="predis-configuration"></a>
-### Predis Configuration
+<a name="predis"></a>
+### Predis
 
 Aside from `host`, `port`, `database` and `password` Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be added to each Redis server.
 
 Additionally to servers, you may define an `options` array value in your Redis connection definition, allowing you to specify a set of Predis [client options](https://github.com/nrk/predis/wiki/Client-Options).
 
-<a name="predis-configuration"></a>
-### PhpRedis Configuration
+<a name="phpredis"></a>
+### PhpRedis
 
 > {note} If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
 
