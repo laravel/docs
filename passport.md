@@ -582,7 +582,7 @@ This Passport middleware will attach a `laravel_token` cookie to your outgoing r
 When using this method of authentication, you will need to send the CSRF token with every request via the `X-CSRF-TOKEN` header. Laravel will automatically send this header if you are using the default [Vue](https://vuejs.org) configuration that is included with the framework:
 
     Vue.http.interceptors.push((request, next) => {
-        request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
+        request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
 
         next();
     });
