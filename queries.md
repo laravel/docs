@@ -473,6 +473,19 @@ Sometimes you may want clauses to apply to a query only when something else is t
 
 The `when` method only executes the given Closure when the first parameter is `true`. If the first parameter is `false`, the Closure will not be executed.
 
+Additionally, you may pass another Closure to the third parameter that will execute if the first parameter evaluates as `false`. A great use case for this is to add a default for sorting results.
+
+    $sortBy = null;
+
+    $users = DB::table('users')
+                    ->when($sortBy, function ($query) use ($orderBy) {
+                        return $query->orderBy($orderBy);
+                    }, function ($query) {
+                        return $query->orderBy('name');
+                    })
+                    ->get();
+
+
 <a name="inserts"></a>
 ## Inserts
 
