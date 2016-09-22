@@ -478,8 +478,8 @@ Additionally, you may pass another Closure to the third parameter that will exec
     $sortBy = null;
 
     $users = DB::table('users')
-                    ->when($sortBy, function ($query) use ($orderBy) {
-                        return $query->orderBy($orderBy);
+                    ->when($sortBy, function ($query) use ($sortBy) {
+                        return $query->orderBy($sortBy);
                     }, function ($query) {
                         return $query->orderBy('name');
                     })
