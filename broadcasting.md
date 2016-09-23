@@ -366,7 +366,7 @@ If you would like to listen for events on a private channel, use the `private` m
 <a name="leaving-a-channel"></a>
 ### Leaving A Channel
 
-There may be cases where you need to explicitly leave a channel. To do that, you can use the `leave` method and pass the channel name you want to disconnect from.
+To leave a channel, you may call the `leave` method on your Echo instance:
 
     Echo.leave('orders');
 
