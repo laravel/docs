@@ -389,8 +389,6 @@ Be sure to review the full [pagination documentation](/docs/{{version}}/paginati
 
 In your queue configuration, all `expire` configuration items should be renamed to `retry_after`. Likewise, the Beanstalk configuration's `ttr` item should be renamed to `retry_after`. This name change provides more clarity on the purpose of this configuration option.
 
-If your application makes use of the `--timeout` option for queue workers, you'll need to have the [pcntl extension](http://php.net/manual/en/pcntl.installation.php).
-
 #### Closures
 
 Queueing Closures is no longer supported. If you are queueing a Closure in your application, you should convert the Closure to a class and queue an instance of the class:
@@ -446,6 +444,10 @@ Below is an example migration you may use to perform the necessary changes:
             $table->dropColumn('exception');
         });
     }
+
+#### Process Control Extension
+
+If your application makes use of the `--timeout` option for queue workers, you'll need to verify that the [pcntl extension](http://php.net/manual/en/pcntl.installation.php) is installed.
 
 #### Serializing Models On Legacy Style Queue Jobs
 
