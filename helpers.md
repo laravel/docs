@@ -38,6 +38,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_has](#method-array-has)
 [array_only](#method-array-only)
 [array_pluck](#method-array-pluck)
+[array_prepend](#method-array-prepend)
 [array_pull](#method-array-pull)
 [array_set](#method-array-set)
 [array_sort](#method-array-sort)
