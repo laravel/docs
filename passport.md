@@ -419,7 +419,7 @@ Passport also includes a JSON API for managing personal access tokens. You may p
 
 #### `GET /oauth/scopes`
 
-This route returns all of the [scopes](#scopes) defined for your application. You may use this route to list the scopes a user may assign to a personal access token:
+This route returns all of the [scopes](#token-scopes) defined for your application. You may use this route to list the scopes a user may assign to a personal access token:
 
     this.$http.get('/oauth/scopes')
         .then(response => {
