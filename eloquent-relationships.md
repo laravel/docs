@@ -620,6 +620,8 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
         $query->where('content', 'like', 'foo%');
     })->get();
 
+> {tip} There are also handy aliases for finding models that don't have a relationship `doesntHave` and `whereDoesntHave`.
+
 <a name="counting-related-models"></a>
 ### Counting Related Models
 
