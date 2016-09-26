@@ -12,6 +12,7 @@
 - [Querying Relations](#querying-relations)
     - [Relationship Methods Vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
     - [Querying Relationship Existence](#querying-relationship-existence)
+    - [Querying Relationship Absence](#querying-relationship-absence)
     - [Counting Related Models](#counting-related-models)
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
@@ -625,17 +626,10 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
 
 When accessing the records for a model, you may wish to limit your results based on the absence of a relationship. For example, imagine you want to retrieve all blog posts that **don't** have any comments. To do so, you may pass the name of the relationship to the `doesntHave` method:
 
-    // Retrieve all posts that don't have any comments...
     $posts = App\Post::doesntHave('comments')->get();
-
-This is the same as specifying the `has` method returns models with less than one relationship:
-
-    // Retrieve all posts that don't have any comments...
-    $posts = Post::has('comments', '<', 1)->get();
 
 If you need even more power, you may use the `whereDoesntHave` method to put "where" conditions on your `doesntHave` queries. This method allows you to add customized constraints to a relationship constraint, such as checking the content of a comment:
 
-    // Retrieve all posts without comments containing words like foo%
     $posts = Post::whereDoesntHave('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
