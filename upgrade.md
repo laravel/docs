@@ -157,7 +157,7 @@ In previous versions of Laravel, the `$key` was passed first. Since most use cas
 
 A collection's `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
 
-The `where` method also no longer accepts a third parameter to indicate "strictness." You should explicitly call either `where` or `whereStrict` depending on your application's needs.
+The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicitly call either `where` or `whereStrict` depending on your application's needs.
 
 ### Controllers
 
