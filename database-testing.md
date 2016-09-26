@@ -88,7 +88,7 @@ Another approach to resetting the database state is to wrap each test case in a 
 
 > {note} This trait will only wrap the default database connection in a transaction. If your application is using multiple database connections, you will need to manually handle the transaction logic for those connections.
 
-<a name="model-factories"></a>
+<a name="writing-factories"></a>
 ## Writing Factories
 
 When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories. To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
