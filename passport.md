@@ -267,7 +267,7 @@ This route is used to delete clients:
 
 #### Redirecting For Authorization
 
-Once a client has been created, developer's may use their client ID and secret to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
+Once a client has been created, developers may use their client ID and secret to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
 
     Route::get('/redirect', function () {
         $query = http_build_query([
