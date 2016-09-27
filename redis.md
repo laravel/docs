@@ -59,7 +59,16 @@ In addition to the default `host`, `port`, `database`, and `password` server con
 <a name="phpredis"></a>
 ### PhpRedis
 
-> {note} If you have the Redis PHP extension installed via PECL, you will need to rename the `Redis` alias in your `config/app.php` configuration file.
+> {note} If you have the PhpRedis PHP extension installed via PECL, you will need to rename the `Redis` alias in your `config/app.php` configuration file.
+
+To utilize the PhpRedix extension, you should change the `client` option of your Redis configuration to `phpredis`. This option is found in your `config/database.php` configuration file:
+
+    'redis' => [
+
+        'client' => 'phpredis',
+
+        // Rest of Redis configuration...
+    ],
 
 In addition to the default `host`, `port`, `database`, and `password` server configuration options, PhpRedis supports the following additional connection parameters: `persistent`, `prefix`, `read_timeout` and `timeout`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
 
