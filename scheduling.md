@@ -64,7 +64,7 @@ In addition to scheduling `Closure` calls, you may also schedule [Artisan comman
 
     $schedule->command('emails:send --force')->daily();
 
-    $schedule->command(EmailsCommand::class)->daily();
+    $schedule->command(EmailsCommand::class, ['--force'])->daily();
 
 The `exec` command may be used to issue a command to the operating system:
 
