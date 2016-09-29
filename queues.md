@@ -185,7 +185,7 @@ If you would like to delay the execution of a queued job, you may use the `delay
         {
             // Create podcast...
 
-            $job = (new ProcessPodcast($pocast))
+            $job = (new ProcessPodcast($podcast))
                         ->delay(Carbon::now()->addMinutes(10));
 
             dispatch($job);
