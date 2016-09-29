@@ -39,7 +39,7 @@ You may also use Composer to keep your Envoy installation up to date. Issuing th
 
 All of your Envoy tasks should be defined in an `Envoy.blade.php` file in the root of your project. Here's an example to get you started:
 
-    @servers(['web' => ['user@192.168.1.1']])
+    @servers(['web' => 'user@192.168.1.1'])
 
     @task('foo', ['on' => 'web'])
         ls -la
