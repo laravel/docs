@@ -385,7 +385,7 @@ Since all mailable classes generated using the `make:mail` command make use of t
 
 #### Queueing By Default
 
-If you've got mail that you always want to put on a queue and don't want to have to call `queue()` wherever you send it you can just have your mailable class implement the `Illuminate\Contracts\Queue\ShouldQueue` contract. Even if you call `send()` on a mailable class that implements this contract it will still be placed on the queue.
+If you have mailable classes that you want to always be queued, you may implement the `ShouldQueue` contract on the class. Now, even if you call the `send` method when mailing, the mailable will still be queued since it implements the contract:
 
     use Illuminate\Contracts\Queue\ShouldQueue;
 
