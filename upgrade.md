@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [Upgrading To 5.4.0 From 5.3](#upgrade-5.4.0)
 - [Upgrading To 5.3.0 From 5.2](#upgrade-5.3.0)
 - [Upgrading To 5.2.0 From 5.1](#upgrade-5.2.0)
 - [Upgrading To 5.1.11](#upgrade-5.1.11)
@@ -10,6 +11,35 @@
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-5.4.0"></a>
+## Upgrading To 5.4.0 From 5.3
+
+### Gates and policies
+
+Policies may now be bound to an **interface** or a **parent class** and any class implementing or extending it will be checked through the first policy available for it. If you've always used policies on classes without inheritance, then no change is required.
+
+If you check policies for classes that are part of an inheritance tree, make sure that:
+
+* Each class has its own policy (as policies bound to exactly the given class will be found before looking for subtypes), or
+* Refactor your policy to be reused throughout the inheritance tree, and **bind it to the root class**
+
+There is also a compatibility break on the `Gate::getPolicyFor($class)` method: 
+
+* Previously, an `InvalidArgumentException` was thrown when no policy was found.
+* Now the method will return a `Policy` or `null` if it didn't find any.
+
+If you call this method directly, make sure you switch your `try / catch` to a null check:
+
+```php
+$policy = Gate::getPolicyFor($foo);
+
+if ($policy !== null) {
+    // code that was previously on the try block
+} else {
+    // catch block
+}
+```
 
 <a name="upgrade-5.3.0"></a>
 ## Upgrading To 5.3.0 From 5.2
