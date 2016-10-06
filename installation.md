@@ -21,6 +21,7 @@ Laravel 框架有一些系統上的需求。當然，[Laravel Homestead](/docs/{
 - PDO PHP Extension
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
+- XML PHP Extension
 </div>
 
 <a name="installing-laravel"></a>
@@ -34,7 +35,7 @@ Laravel 使用 [Composer](http://getcomposer.org) 來管理相依性。所以，
 
     composer global require "laravel/installer"
 
-請確定把 `~/.composer/vendor/bin` 路徑放置於環境變數 $PATH 裡，這樣你的系統才能找到 `laravel` 執行檔。
+請確定把 `$HOME/.composer/vendor/bin`路徑(實際路徑依據作業系統可能不同)放置於環境變數 $PATH 裡，這樣你的系統才能找到 `laravel` 執行檔。
 
 一旦安裝完成後，就可以使用 `laravel new` 指令在指定的目錄建立一份全新安裝的 Laravel。例如：`laravel new blog` 將會建立一個名稱為 `blog` 的目錄，裡面存放著全新安裝的 Laravel 和相依程式碼：
 
@@ -45,6 +46,14 @@ Laravel 使用 [Composer](http://getcomposer.org) 來管理相依性。所以，
 你也可以透過 Composer 在命令列執行 `create-project` 指令來安裝 Laravel：
 
     composer create-project --prefer-dist laravel/laravel blog
+
+#### Local Development Server
+
+If you have PHP installed locally and you would like to use PHP's built-in development server to serve your application, you may use the `serve` Artisan command. This command will start a development server at `http://localhost:8000`:
+
+    php artisan serve
+
+Of course, more robust local development options are available via [Homestead](/docs/{{version}}/homestead) and [Valet](/docs/{{version}}/valet).
 
 <a name="configuration"></a>
 ### 設定

@@ -235,4 +235,4 @@ You may want to publish groups of package assets and resources separately. For i
 
 Now your users may publish these groups separately by referencing their tag when executing the `vendor:publish` command:
 
-    php artisan vendor:publish --tag="config"
+    php artisan vendor:publish --tag=config

@@ -394,6 +394,12 @@ If you need to retrieve an array of all the messages for a given field, use the 
         //
     }
 
+If you are validating an array form field, you may retrieve all of the messages for each of the array elements using the `*` character:
+
+    foreach ($errors->get('attachments.*') as $message) {
+        //
+    }
+
 #### Retrieving All Error Messages For All Fields
 
 To retrieve an array of all messages for all fields, use the `all` method:
@@ -447,6 +453,14 @@ In most cases, you will probably specify your custom messages in a language file
         'email' => [
             'required' => 'We need to know your e-mail address!',
         ],
+    ],
+
+#### Specifying Custom Attributes In Language Files
+
+If you would like the `:attribute` portion of your validation message to be replaced with a custom attribute name, you may specify the custom name in the `attributes` array of your `resources/lang/xx/validation.php` language file:
+
+    'attributes' => [
+        'email' => 'email address',
     ],
 
 <a name="available-validation-rules"></a>
@@ -857,6 +871,10 @@ You may also specify more conditions that will be added as "where" clauses to th
     'email' => 'unique:users,email_address,NULL,id,account_id,1'
 
 In the rule above, only rows with an `account_id` of `1` would be included in the unique check.
+
+This feature can be especially useful when using "soft deleting" Eloquent models. For example, you may verify that the `deleted_at` column is `NULL`:
+
+    'email' => 'unique:users,email,NULL,id,deleted_at,NULL'
 
 <a name="rule-url"></a>
 #### url

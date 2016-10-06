@@ -450,6 +450,13 @@ To limit the number of results returned from the query, or to skip a given numbe
 
     $users = DB::table('users')->skip(10)->take(5)->get();
 
+Alternatively, you may use the `limit` and `offset` methods:
+
+    $users = DB::table('users')
+                    ->offset(10)
+                    ->limit(5)
+                    ->get();
+
 <a name="conditional-clauses"></a>
 ## Conditional Clauses
 
@@ -465,6 +472,19 @@ Sometimes you may want clauses to apply to a query only when something else is t
 
 
 The `when` method only executes the given Closure when the first parameter is `true`. If the first parameter is `false`, the Closure will not be executed.
+
+You may pass another Closure as the third parameter to the `when` method. This Closure will execute if the first parameter evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default sorting of a query:
+
+    $sortBy = null;
+
+    $users = DB::table('users')
+                    ->when($sortBy, function ($query) use ($sortBy) {
+                        return $query->orderBy($sortBy);
+                    }, function ($query) {
+                        return $query->orderBy('name');
+                    })
+                    ->get();
+
 
 <a name="inserts"></a>
 ## Inserts

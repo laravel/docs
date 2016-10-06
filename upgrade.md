@@ -28,7 +28,7 @@ All of the deprecations listed in the [Laravel 5.2 upgrade guide](#5.2-deprecati
 
 ### Application Service Providers
 
-You may remove the arguments from the `boot` method on the `EventServiceProvider` and `RouteServiceProvider` classes. Any calls to the given arguments may be converted to use the equivalent [facade](/docs/5.3/facades) instead. So, for example, instead of calling methods on the `$dispatcher` argument, you may simply call the `Event` facade. Likewise, instead of making method calls to the `$router` argument, you may make calls to the `Route` facade.
+You may remove the arguments from the `boot` method on the `EventServiceProvider`, `RouteServiceProvider`, and `AuthServiceProvider` classes. Any calls to the given arguments may be converted to use the equivalent [facade](/docs/5.3/facades) instead. So, for example, instead of calling methods on the `$dispatcher` argument, you may simply call the `Event` facade. Likewise, instead of making method calls to the `$router` argument, you may make calls to the `Route` facade, and instead of making method calls to the `$gate` argument, you may make calls to the `Gate` facade.
 
 > {note} When converting method calls to facades, be sure to import the facade class into your service provider.
 
@@ -38,7 +38,7 @@ You may remove the arguments from the `boot` method on the `EventServiceProvider
 
 The `first`, `last`, and `where` methods on the `Arr` class now pass the "value" as the first parameter to the given callback Closure. For example:
 
-    Arr::first(function ($value, $key) {
+    Arr::first($array, function ($value, $key) {
         return ! is_null($value);
     });
 
@@ -153,11 +153,67 @@ The `first`, `last`, and `contains` collection methods all pass the "value" as t
 
 In previous versions of Laravel, the `$key` was passed first. Since most use cases are only interested in the `$value` it is now passed first. You should do a "global find" in your application for these methods to verify that you are expecting the `$value` to be passed as the first argument to your Closure.
 
-#### `where` Comparison Now "Loose" By Default
+#### Collection `where` Comparison Methods Are "Loose" By Default
 
-The `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
+A collection's `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
 
-The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicit call either `where` or `whereStrict` depending on your application's needs.
+The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicitly call either `where` or `whereStrict` depending on your application's needs.
+
+### Controllers
+
+<a name="5.3-session-in-constructors"></a>
+#### Session In The Constructor
+
+In previous versions of Laravel, you could access session variables or the authenticated user in your controller's constructor. This was never intended to be an explicit feature of the framework. In Laravel 5.3, you can't access the session or authenticated user in your controller's constructor because the middleware has not run yet.
+
+As an alternative, you may define a Closure based middleware directly in your controller's constructor. Before using this feature, make sure that your application is running Laravel `5.3.4` or above:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\User;
+    use Illuminate\Support\Facades\Auth;
+    use App\Http\Controllers\Controller;
+
+    class ProjectController extends Controller
+    {
+        /**
+         * All of the current user's projects.
+         */
+        protected $projects;
+
+        /**
+         * Create a new controller instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            $this->middleware(function ($request, $next) {
+                $this->projects = Auth::user()->projects;
+
+                return $next($request);
+            });
+        }
+    }
+
+Of course, you may also access the request session data or authenticated user by type-hinting the `Illuminate\Http\Request` class on your controller action:
+
+    /**
+     * Show all of the projects for the current user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $projects = $request->user()->projects;
+
+        $value = $request->session()->get('key');
+
+        //
+    }
 
 ### Database
 
@@ -218,6 +274,10 @@ The `JoinClause` class has been rewritten to unify its syntax with the query bui
         $join->on('foo', 'bar')->where('bar', 'baz');
     });
 
+The operator of the `on` clause is now validated and can no longer contain invalid values. If you were relying on this feature (e.g. `$join->on('foo', 'in', DB::raw('("bar")'))`) you should rewrite the condition using the appropriate where clause:
+
+    $join->whereIn('foo', ['bar']);
+
 The `$bindings` property was also removed. To manipulate join bindings directly you may use the `addBinding` method:
 
     $query->join(DB::raw('('.$subquery->toSql().') table'), function ($join) use ($subquery) {
@@ -251,6 +311,26 @@ If you are storing encrypted data in your database using the Mcrypt encrypter, y
 The base exception handler class now requires a `Illuminate\Container\Container` instance to be passed to its constructor. This change will only affect your application if you have defined a custom `__construct` method in your `app/Exceptions/Handler.php` file. If you have done this, you should pass a container instance into the `parent::__construct` method:
 
     parent::__construct(app());
+
+#### Unauthenticated Method
+
+You should add the `unauthenticated` method to your `App\Exceptions\Handler` class. This method will convert authentication exceptions into HTTP responses:
+
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+
+        return redirect()->guest('login');
+    }
 
 ### Middleware
 
@@ -311,7 +391,9 @@ In your queue configuration, all `expire` configuration items should be renamed 
 
 #### Closures
 
-Queueing closures is no longer supported. If you are queueing a Closure in your application, you should convert the Closure to a class and queue an instance of the class instead.
+Queueing Closures is no longer supported. If you are queueing a Closure in your application, you should convert the Closure to a class and queue an instance of the class:
+
+    dispatch(new ProcessPodcast($podcast));
 
 #### Collection Serialization
 
@@ -331,13 +413,41 @@ It is no longer necessary to specify the `--daemon` option when calling the `que
 
 Various queue job events such as `JobProcessing` and `JobProcessed` no longer contain the `$data` property. You should update your application to call `$event->job->payload()` to get the equivalent data.
 
-#### Jobs Table
+#### Database Driver Changes
 
-If you are using the `database` driver, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` column.
+If you are using the `database` driver to store your queued jobs, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` columns.
 
-#### Failed Jobs Table
+Below is an example migration you may use to perform the necessary changes:
 
-If your application has a `failed_jobs` table, you should add an `exception` column to the table. The `exception` column should be a `TEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
+    public function up()
+    {
+        Schema::table('jobs', function (Blueprint $table) {
+            $table->dropIndex('jobs_queue_reserved_reserved_at_index');
+            $table->dropColumn('reserved');
+            $table->index(['queue', 'reserved_at']);
+        });
+
+        Schema::table('failed_jobs', function (Blueprint $table) {
+            $table->longText('exception')->after('payload');
+        });
+    }
+
+    public function down()
+    {
+        Schema::table('jobs', function (Blueprint $table) {
+            $table->tinyInteger('reserved')->unsigned();
+            $table->index(['queue', 'reserved', 'reserved_at']);
+            $table->dropIndex('jobs_queue_reserved_at_index');
+        });
+
+        Schema::table('failed_jobs', function (Blueprint $table) {
+            $table->dropColumn('exception');
+        });
+    }
+
+#### Process Control Extension
+
+If your application makes use of the `--timeout` option for queue workers, you'll need to verify that the [pcntl extension](http://php.net/manual/en/pcntl.installation.php) is installed.
 
 #### Serializing Models On Legacy Style Queue Jobs
 
@@ -375,9 +485,13 @@ If you would like to maintain the previous behavior instead of automatically sin
 
 URL prefixes no longer affect the route names assigned to routes when using `Route::resource`, since this behavior defeated the entire purpose of using route names in the first place.
 
-If your application is using `Route::resource` within a `Route::group` call that specified a `prefix` option, you should examine all of your calls to the `route` helper and verify that you are no longer appending the URI `prefix` to the route name.
+If your application is using `Route::resource` within a `Route::group` call that specified a `prefix` option, you should examine all of your `route` helper and `UrlGenerator::route` calls to verify that you are no longer appending this URI prefix to the route name.
 
-If this change causes you to have two routes with the same name, you may use the `names` option when calling `Route::resource` to specify a custom name for a given route. Refer to the [resource routing documentation](/docs/5.3/controllers#resource-controllers) for more information.
+If this change causes you to have two routes with the same name, you have two options. First, you may use the `names` option when calling `Route::resource` to specify a custom name for a given route. Refer to the [resource routing documentation](/docs/5.3/controllers#resource-controllers) for more information. Alternatively, you may add the `as` option on your route group:
+
+    Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+        //
+    });
 
 ### Validation
 
@@ -390,7 +504,7 @@ If a form request's validation fails, Laravel will now throw an instance of `Ill
 When validating arrays, booleans, integers, numerics, and strings, `null` will no longer be considered a valid value unless the rule set contains the new `nullable` rule:
 
     Validate::make($request->all(), [
-        'string' => 'nullable|max:5',
+        'field' => 'nullable|max:5',
     ]);
 
 <a name="upgrade-5.2.0"></a>
@@ -410,7 +524,7 @@ Add `"symfony/dom-crawler": "~3.0"` and `"symfony/css-selector": "~3.0"` to the 
 
 #### Configuration File
 
-You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/master/config/auth.php](https://github.com/laravel/laravel/blob/master/config/auth.php)
+You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/5.2/config/auth.php](https://github.com/laravel/laravel/blob/5.2/config/auth.php)
 
 Once you have updated the file with a fresh copy, set your authentication configuration options to their desired value based on your old configuration file. If you were using the typical, Eloquent based authentication services available in Laravel 5.1, most values should remain the same.
 

@@ -175,10 +175,10 @@ Next, You should configure the following options in your `services.php` file:
 
 Then you should add the following Braintree SDK calls to your `AppServiceProvider` service provider's `boot` method:
 
-    \Braintree_Configuration::environment(env('BRAINTREE_ENV'));
-    \Braintree_Configuration::merchantId(env('BRAINTREE_MERCHANT_ID'));
-    \Braintree_Configuration::publicKey(env('BRAINTREE_PUBLIC_KEY'));
-    \Braintree_Configuration::privateKey(env('BRAINTREE_PRIVATE_KEY'));
+    \Braintree_Configuration::environment(config('services.braintree.environment'));
+    \Braintree_Configuration::merchantId(config('services.braintree.merchant_id'));
+    \Braintree_Configuration::publicKey(config('services.braintree.public_key'));
+    \Braintree_Configuration::privateKey(config('services.braintree.private_key'));
 
 <a name="currency-configuration"></a>
 ### Currency Configuration
@@ -398,6 +398,8 @@ If you would like to offer trial periods without collecting the user's payment m
         'trial_ends_at' => Carbon::now()->addDays(10),
     ]);
 
+> {note}  Be sure to add a [date mutator](/docs/{{version}}/eloquent-mutators#date-mutators) for `trial_ends_at` to your model definition.
+
 Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the `User` instance will return `true` if the current date is not past the value of `trial_ends_at`:
 
     if ($user->onTrial()) {
@@ -481,7 +483,7 @@ That's it! Failed payments will be captured and handled by the controller. The c
 Both Stripe and Braintree can notify your application of a variety of events via webhooks. To handle Braintree webhooks, define a route that points to Cashier's webhook controller. This controller will handle all incoming webhook requests and dispatch them to the proper controller method:
 
     Route::post(
-        'stripe/webhook',
+        'braintree/webhook',
         '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'
     );
 
@@ -494,7 +496,7 @@ By default, this controller will automatically handle cancelling subscriptions t
 Since Braintree webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/routing#csrf-protection), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
 
     protected $except = [
-        'stripe/*',
+        'braintree/*',
     ];
 
 <a name="defining-braintree-webhook-event-handlers"></a>

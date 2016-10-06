@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
     - [Valet Or Homestead](#valet-or-homestead)
 - [Installation](#installation)
-- [Release Notes](#release-notes)
+    - [Upgrading](#upgrading)
 - [Serving Sites](#serving-sites)
     - [The "Park" Command](#the-park-command)
     - [The "Link" Command](#the-link-command)
@@ -73,26 +73,12 @@ For example, if you'd like to use `.app` instead of `.dev`, run `valet domain ap
 
 #### Database
 
-If you need a database, try MariaDB by running `brew install mariadb` on your command line. You can connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
+If you need a database, try MariaDB by running `brew install mariadb` on your command line. Once MariaDB has been installed, you may start it using the `brew services start mariadb` command. You can then connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
 
-<a name="release-notes"></a>
-## Release Notes
+<a name="upgrading"></a>
+### Upgrading
 
-### Version 1.1.5
-
-The 1.1.5 release of Valet brings a variety of internal improvements.
-
-#### Upgrade Instructions
-
-After updating your Valet installation using `composer global update`, you should run the `valet install` command in your terminal.
-
-### Version 1.1.0
-
-The 1.1.0 release of Valet brings a variety of great improvements. The built-in PHP server has been replaced with [Caddy](https://caddyserver.com/) for serving incoming HTTP requests. Introducing Caddy allows for a variety of future improvements and allows Valet sites to make HTTP requests to other Valet sites without blocking the built-in PHP server.
-
-#### Upgrade Instructions
-
-After updating your Valet installation using `composer global update`, you should run the `valet install` command in your terminal to create the new Caddy daemon file on your system.
+You may update your Valet installation using the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
 
 <a name="serving-sites"></a>
 ## Serving Sites
@@ -121,6 +107,8 @@ The `link` command may also be used to serve your Laravel sites. This command is
 </div>
 
 To see a listing of all of your linked directories, run the `valet links` command. You may use `valet unlink app-name` to destroy the symbolic link.
+
+> {tip} You can use `valet link` to serve the same project from multiple (sub)domains. To add a subdomain or another domain to your project run `valet link subdomain.app-name` from the project folder.
 
 <a name="securing-sites"></a>
 **Securing Sites With TLS**

@@ -16,6 +16,7 @@
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Installing Laravel Echo](#installing-laravel-echo)
     - [Listening For Events](#listening-for-events)
+    - [Leaving A Channel](#leaving-a-channel)
     - [Namespaces](#namespaces)
 - [Presence Channels](#presence-channels)
     - [Authorizing Presence Channels](#authorizing-presence-channels)
@@ -185,7 +186,7 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-    class ServerCreated extends Event implements ShouldBroadcast
+    class ServerCreated implements ShouldBroadcast
     {
         use SerializesModels;
 
@@ -336,6 +337,15 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
         key: 'your-pusher-key'
     });
 
+When creating an Echo instance that uses the `pusher` connector, you may also specify a `cluster` as well as whether the connection should be encrypted:
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: 'your-pusher-key',
+        cluster: 'eu',
+        encrypted: true
+    });
+
 <a name="listening-for-events"></a>
 ### Listening For Events
 
@@ -352,6 +362,13 @@ If you would like to listen for events on a private channel, use the `private` m
         .listen(...)
         .listen(...)
         .listen(...);
+
+<a name="leaving-a-channel"></a>
+### Leaving A Channel
+
+To leave a channel, you may call the `leave` method on your Echo instance:
+
+    Echo.leave('orders');
 
 <a name="namespaces"></a>
 ### Namespaces

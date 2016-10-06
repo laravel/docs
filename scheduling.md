@@ -60,9 +60,11 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
         }
     }
 
-In addition to scheduling `Closure` calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command:
+In addition to scheduling `Closure` calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
 
     $schedule->command('emails:send --force')->daily();
+
+    $schedule->command(EmailsCommand::class, ['--force'])->daily();
 
 The `exec` command may be used to issue a command to the operating system:
 
@@ -103,9 +105,7 @@ These methods may be combined with additional constraints to create even more fi
               ->weekdays()
               ->hourly()
               ->timezone('America/Chicago')
-              ->when(function () {
-                    return date('H') >= 8 && date('H') <= 17;
-              });
+              ->between('8:00', '17:00');
 
 Below is a list of the additional schedule constraints:
 
@@ -119,7 +119,22 @@ Method  | Description
 `->thursdays();`  |  Limit the task to Thursday
 `->fridays();`  |  Limit the task to Friday
 `->saturdays();`  |  Limit the task to Saturday
+`->between($start, $end);`  |  Limit the task to run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
+
+#### Between Time Constraints
+
+The `between` method may be used to limit the execution of a task based on the time of day:
+
+    $schedule->command('reminders:send')
+                        ->hourly()
+                        ->between('7:00', '22:00');
+
+Similarly, the `unlessBetween` method can be used to exclude the execution of a task for a period of time:
+
+    $schedule->command('reminders:send')
+                        ->hourly()
+                        ->unlessBetween('23:00', '4:00');
 
 #### Truth Test Constraints
 

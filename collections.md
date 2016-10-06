@@ -75,10 +75,12 @@ For the remainder of this documentation, we'll discuss each method available on 
 [keys](#method-keys)
 [last](#method-last)
 [map](#method-map)
+[mapWithKeys](#method-mapwithkeys)
 [max](#method-max)
 [merge](#method-merge)
 [min](#method-min)
 [only](#method-only)
+[pipe](#method-pipe)
 [pluck](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
@@ -97,6 +99,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [sortBy](#method-sortby)
 [sortByDesc](#method-sortbydesc)
 [splice](#method-splice)
+[split](#method-split)
 [sum](#method-sum)
 [take](#method-take)
 [toArray](#method-toarray)
@@ -682,10 +685,41 @@ The `map` method iterates through the collection and passes each value to the gi
 
 > {note} Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
 
+<a name="method-mapwithkeys"></a>
+#### `mapWithKeys()` {#collection-method}
+
+The `mapWithKeys` method iterates through the collection and passes each value to the given callback. The callback should return an associative array containing a single key / value pair:
+
+    $collection = collect([
+        [
+            'name' => 'John',
+            'department' => 'Sales',
+            'email' => 'john@example.com'
+        ],
+        [
+            'name' => 'Jane',
+            'department' => 'Marketing',
+            'email' => 'jane@example.com'
+        ]
+    ]);
+
+    $keyed = $collection->mapWithKeys(function ($item) {
+        return [$item['email'] => $item['name']];
+    });
+
+    $keyed->all();
+
+    /*
+        [
+            'john@example.com' => 'John',
+            'jane@example.com' => 'Jane',
+        ]
+    */
+
 <a name="method-max"></a>
 #### `max()` {#collection-method}
 
-The `max` method return the maximum value of a given key:
+The `max` method returns the maximum value of a given key:
 
     $max = collect([['foo' => 10], ['foo' => 20]])->max('foo');
 
@@ -706,7 +740,7 @@ The `merge` method merges the given array into the original collection. If a str
 
     $merged->all();
 
-    // ['product_id' => 1, price' => 200, 'discount' => false]
+    // ['product_id' => 1, 'price' => 200, 'discount' => false]
 
 If the given array's keys are numeric, the values will be appended to the end of the collection:
 
@@ -721,7 +755,7 @@ If the given array's keys are numeric, the values will be appended to the end of
 <a name="method-min"></a>
 #### `min()` {#collection-method}
 
-The `min` method return the minimum value of a given key:
+The `min` method returns the minimum value of a given key:
 
     $min = collect([['foo' => 10], ['foo' => 20]])->min('foo');
 
@@ -745,6 +779,19 @@ The `only` method returns the items in the collection with the specified keys:
     // ['product_id' => 1, 'name' => 'Desk']
 
 For the inverse of `only`, see the [except](#method-except) method.
+
+<a name="method-pipe"></a>
+#### `pipe()` {#collection-method}
+
+The `pipe` method passes the collection to the given callback and returns the result:
+
+    $collection = collect([1, 2, 3]);
+
+    $piped = $collection->pipe(function ($collection) {
+        return $collection->sum();
+    });
+
+    // 6
 
 <a name="method-pluck"></a>
 #### `pluck()` {#collection-method}
@@ -1107,6 +1154,19 @@ In addition, you can pass a third argument containing the new items to replace t
 
     // [1, 2, 10, 11, 4, 5]
 
+<a name="method-split"></a>
+#### `split()` {#collection-method}
+
+The `split` method breaks a collection into the given number of groups:
+
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    $groups = $collection->split(3);
+
+    $groups->toArray();
+
+    // [[1, 2], [3, 4], [5]]
+
 <a name="method-sum"></a>
 #### `sum()` {#collection-method}
 
@@ -1190,7 +1250,7 @@ The `toJson` method converts the collection into JSON:
 
     $collection->toJson();
 
-    // '{"name":"Desk","price":200}'
+    // '{"name":"Desk", "price":200}'
 
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}

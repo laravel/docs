@@ -126,6 +126,8 @@ In this example, note that we were able to pass an [Eloquent model](/docs/{{vers
 
 The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
 
+> {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
+
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
 
@@ -183,7 +185,7 @@ If you would like to delay the execution of a queued job, you may use the `delay
         {
             // Create podcast...
 
-            $job = (new ProcessPodcast($pocast))
+            $job = (new ProcessPodcast($podcast))
                         ->delay(Carbon::now()->addMinutes(10));
 
             dispatch($job);
@@ -314,11 +316,11 @@ This command will instruct all queue workers to gracefully "die" after they fini
 
 In your `config/queue.php` configuration file, each queue connection defines a `retry_after` option. This option specifies how many seconds the queue connection should wait before retrying a job that is being processed. For example, if the value of `retry_after` is set to `90`, the job will be released back onto the queue if it has been processing for 90 seconds without being deleted. Typically, you should set the `retry_after` value to the maximum number of seconds your jobs should reasonably take to complete processing.
 
-> {note} The only queue connection which does not contain a `retry_after` value is Amazon SQS. When using SQS, you must configure the retry threshold from the Amazon web console.
+> {note} The only queue connection which does not contain a `retry_after` value is Amazon SQS. SQS will retry the job based on the [Default Visibility Timeout](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) which is managed within the AWS console.
 
 #### Worker Timeouts
 
-The `queue:work` Artisan command exposes a `--timeout` option. The `--timeout` option specifies how long the Laravel queue master process will wait before killing off a child queue worker that is processing a job. Sometimes a child queue process can become "frozen" for various reasons, such as a external HTTP call that is not responding. The `--timeout` option removes frozen processes that have exceeded that specified time limit:
+The `queue:work` Artisan command exposes a `--timeout` option. The `--timeout` option specifies how long the Laravel queue master process will wait before killing off a child queue worker that is processing a job. Sometimes a child queue process can become "frozen" for various reasons, such as an external HTTP call that is not responding. The `--timeout` option removes frozen processes that have exceeded that specified time limit:
 
     php artisan queue:work --timeout=60
 
@@ -390,6 +392,7 @@ You may define a `failed` method directly on your job class, allowing you to per
     use Exception;
     use App\Podcast;
     use App\AudioProcessor;
+    use Illuminate\Bus\Queueable;
     use Illuminate\Queue\SerializesModels;
     use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
@@ -428,7 +431,7 @@ You may define a `failed` method directly on your job class, allowing you to per
          * @param  Exception  $exception
          * @return void
          */
-        public function failed(Exception $e)
+        public function failed(Exception $exception)
         {
             // Send user notification of failure, etc...
         }

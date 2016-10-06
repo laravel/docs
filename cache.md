@@ -7,6 +7,7 @@
     - [Retrieving Items From The Cache](#retrieving-items-from-the-cache)
     - [Storing Items In The Cache](#storing-items-in-the-cache)
     - [Removing Items From The Cache](#removing-items-from-the-cache)
+    - [The Cache Helper](#the-cache-helper)
 - [Cache Tags](#cache-tags)
     - [Storing Tagged Cache Items](#storing-tagged-cache-items)
     - [Accessing Tagged Cache Items](#accessing-tagged-cache-items)
@@ -193,6 +194,21 @@ You may clear the entire cache using the `flush` method:
     Cache::flush();
 
 > {note} Flushing the cache does not respect the cache prefix and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
+
+<a name="the-cache-helper"></a>
+### The Cache Helper
+
+In addition to using the `Cache` facade or [cache contract](/docs/{{version}}/contracts), you may also use the global `cache` function to retrieve and store data via the cache. When the `cache` function is called with a single, string argument, it will return the value of the given key:
+
+    $value = cache('key');
+
+If you provide an array of key / value pairs and an expiration time to the function, it will store values in the cache for the specified duration:
+
+    cache(['key' => 'value'], $minutes);
+
+    cache(['key' => 'value'], Carbon::now()->addSeconds(10));
+
+> {tip} When testing call to the global `cache` function, you may use the `Cache::shouldReceive` method just as if you were [testing a facade](/docs/{{version}}/mocking#mocking-facades).
 
 <a name="cache-tags"></a>
 ## Cache Tags
