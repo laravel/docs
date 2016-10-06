@@ -111,6 +111,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
+[cache](#method-cache)
 [collect](#method-collect)
 [config](#method-config)
 [csrf_field](#method-csrf-field)
@@ -253,13 +254,17 @@ The `array_get` function also accepts a default value, which will be returned if
 <a name="method-array-has"></a>
 #### `array_has()` {#collection-method}
 
-The `array_has` function checks that a given item exists in an array using "dot" notation:
+The `array_has` function checks that a given item or items exists in an array using "dot" notation:
 
-    $array = ['products' => ['desk' => ['price' => 100]]];
+    $array = ['product' => ['name' => 'desk', 'price' => 100]];
 
-    $hasDesk = array_has($array, 'products.desk');
+    $hasItem = array_has($array, 'product.name');
 
     // true
+
+    $hasItems = array_has($array, ['product.price', 'product.discount']);
+
+    // false
 
 <a name="method-array-last"></a>
 #### `array_last()` {#collection-method}
@@ -783,6 +788,21 @@ The `back()` function generates a redirect response to the user's previous locat
 The `bcrypt` function hashes the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
 
     $password = bcrypt('my-secret-password');
+
+<a name="method-cache"></a>
+#### `cache()` {#collection-method}
+
+The `cache` function may be used to get values from the cache. If the given key does not exist in the cache, an optional default value will be returned:
+
+    $value = cache('key');
+
+    $value = cache('key', 'default');
+
+You may add items to the cache by passing an array of key / value pairs to the function. You should also pass the number of minutes or duration the cached value should be considered valid:
+
+    cache(['key' => 'value'], 5);
+
+    cache(['key' => 'value'], Carbon::now()->addSeconds(10));
 
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}

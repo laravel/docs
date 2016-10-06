@@ -188,7 +188,7 @@ In previous versions of Laravel, the `$key` was passed first. Since most use cas
 
 A collection's `where` method now performs a "loose" comparison by default instead of a strict comparison. If you would like to perform a strict comparison, you may use the `whereStrict` method.
 
-The `where` method also no longer accepts a third parameter to indicate "strictness." You should explicitly call either `where` or `whereStrict` depending on your application's needs.
+The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicitly call either `where` or `whereStrict` depending on your application's needs.
 
 ### Controllers
 
@@ -444,13 +444,41 @@ It is no longer necessary to specify the `--daemon` option when calling the `que
 
 Various queue job events such as `JobProcessing` and `JobProcessed` no longer contain the `$data` property. You should update your application to call `$event->job->payload()` to get the equivalent data.
 
-#### Jobs Table
+#### Database Driver Changes
 
-If you are using the `database` driver to store your queued jobs in `config/queue.php`, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` columns.
+If you are using the `database` driver to store your queued jobs, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` columns.
 
-#### Failed Jobs Table
+Below is an example migration you may use to perform the necessary changes:
 
-If your application has a `failed_jobs` table, you should add an `exception` column to the table. The `exception` column should be a `LONGTEXT` type column and will be used to store a string representation of the exception that caused the job to fail.
+    public function up()
+    {
+        Schema::table('jobs', function (Blueprint $table) {
+            $table->dropIndex('jobs_queue_reserved_reserved_at_index');
+            $table->dropColumn('reserved');
+            $table->index(['queue', 'reserved_at']);
+        });
+
+        Schema::table('failed_jobs', function (Blueprint $table) {
+            $table->longText('exception')->after('payload');
+        });
+    }
+
+    public function down()
+    {
+        Schema::table('jobs', function (Blueprint $table) {
+            $table->tinyInteger('reserved')->unsigned();
+            $table->index(['queue', 'reserved', 'reserved_at']);
+            $table->dropIndex('jobs_queue_reserved_at_index');
+        });
+
+        Schema::table('failed_jobs', function (Blueprint $table) {
+            $table->dropColumn('exception');
+        });
+    }
+
+#### Process Control Extension
+
+If your application makes use of the `--timeout` option for queue workers, you'll need to verify that the [pcntl extension](http://php.net/manual/en/pcntl.installation.php) is installed.
 
 #### Serializing Models On Legacy Style Queue Jobs
 
@@ -527,7 +555,7 @@ Add `"symfony/dom-crawler": "~3.0"` and `"symfony/css-selector": "~3.0"` to the 
 
 #### Configuration File
 
-You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/master/config/auth.php](https://github.com/laravel/laravel/blob/master/config/auth.php)
+You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/5.2/config/auth.php](https://github.com/laravel/laravel/blob/5.2/config/auth.php)
 
 Once you have updated the file with a fresh copy, set your authentication configuration options to their desired value based on your old configuration file. If you were using the typical, Eloquent based authentication services available in Laravel 5.1, most values should remain the same.
 

@@ -126,6 +126,8 @@ In this example, note that we were able to pass an [Eloquent model](/docs/{{vers
 
 The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
 
+> {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
+
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
 
@@ -183,7 +185,7 @@ If you would like to delay the execution of a queued job, you may use the `delay
         {
             // Create podcast...
 
-            $job = (new ProcessPodcast($pocast))
+            $job = (new ProcessPodcast($podcast))
                         ->delay(Carbon::now()->addMinutes(10));
 
             dispatch($job);
@@ -390,6 +392,7 @@ You may define a `failed` method directly on your job class, allowing you to per
     use Exception;
     use App\Podcast;
     use App\AudioProcessor;
+    use Illuminate\Bus\Queueable;
     use Illuminate\Queue\SerializesModels;
     use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
@@ -428,7 +431,7 @@ You may define a `failed` method directly on your job class, allowing you to per
          * @param  Exception  $exception
          * @return void
          */
-        public function failed(Exception $e)
+        public function failed(Exception $exception)
         {
             // Send user notification of failure, etc...
         }

@@ -10,7 +10,7 @@
 
 Views contain the HTML served by your application and separate your controller / application logic from your presentation logic. Views are stored in the `resources/views` directory. A simple view might look something like this:
 
-    <!-- View stored in resources/views/greeting.php -->
+    <!-- View stored in resources/views/greeting.blade.php -->
 
     <html>
         <body>
@@ -18,7 +18,7 @@ Views contain the HTML served by your application and separate your controller /
         </body>
     </html>
 
-Since this view is stored at `resources/views/greeting.php`, we may return it using the global `view` helper like so:
+Since this view is stored at `resources/views/greeting.blade.php`, we may return it using the global `view` helper like so:
 
     Route::get('/', function () {
         return view('greeting', ['name' => 'James']);
@@ -26,7 +26,7 @@ Since this view is stored at `resources/views/greeting.php`, we may return it us
 
 As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view using [Blade syntax](/docs/{{version}}/blade).
 
-Of course, views may also be nested within sub-directories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.php`, you may reference it like so:
+Of course, views may also be nested within sub-directories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.blade.php`, you may reference it like so:
 
     return view('admin.profile', $data);
 

@@ -267,7 +267,7 @@ This route is used to delete clients:
 
 #### Redirecting For Authorization
 
-Once a client has been created, developer's may use their client ID and secret to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
+Once a client has been created, developers may use their client ID and secret to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
 
     Route::get('/redirect', function () {
         $query = http_build_query([
@@ -419,7 +419,7 @@ Passport also includes a JSON API for managing personal access tokens. You may p
 
 #### `GET /oauth/scopes`
 
-This route returns all of the [scopes](#scopes) defined for your application. You may use this route to list the scopes a user may assign to a personal access token:
+This route returns all of the [scopes](#token-scopes) defined for your application. You may use this route to list the scopes a user may assign to a personal access token:
 
     this.$http.get('/oauth/scopes')
         .then(response => {
@@ -582,7 +582,7 @@ This Passport middleware will attach a `laravel_token` cookie to your outgoing r
 When using this method of authentication, you will need to send the CSRF token with every request via the `X-CSRF-TOKEN` header. Laravel will automatically send this header if you are using the default [Vue](https://vuejs.org) configuration that is included with the framework:
 
     Vue.http.interceptors.push((request, next) => {
-        request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
+        request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
 
         next();
     });

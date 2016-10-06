@@ -521,6 +521,24 @@ The example above will create a Slack message that looks like the following:
 
 <img src="https://laravel.com/assets/img/slack-fields-attachment.png">
 
+#### Customizing The Sender & Recipient
+
+You may use the `from` and `to` methods to customize the sender and recipient. The `from` method accepts a username and emoji identifier, while the `to` method accepts a channel or username:
+
+    /**
+     * Get the Slack representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return SlackMessage
+     */
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
+                    ->from('Ghost', ':ghost:')
+                    ->to('#other');
+                    ->content('This will be sent to #other')
+    }
+
 <a name="routing-slack-notifications"></a>
 ### Routing Slack Notifications
 

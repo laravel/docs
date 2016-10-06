@@ -60,9 +60,11 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
         }
     }
 
-In addition to scheduling `Closure` calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command:
+In addition to scheduling `Closure` calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
 
     $schedule->command('emails:send --force')->daily();
+
+    $schedule->command(EmailsCommand::class, ['--force'])->daily();
 
 The `exec` command may be used to issue a command to the operating system:
 

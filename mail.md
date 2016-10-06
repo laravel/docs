@@ -383,6 +383,17 @@ Since all mailable classes generated using the `make:mail` command make use of t
         ->bcc($evenMoreUsers)
         ->queue($message);
 
+#### Queueing By Default
+
+If you have mailable classes that you want to always be queued, you may implement the `ShouldQueue` contract on the class. Now, even if you call the `send` method when mailing, the mailable will still be queued since it implements the contract:
+
+    use Illuminate\Contracts\Queue\ShouldQueue;
+
+    class OrderShipped extends Mailable implements ShouldQueue
+    {
+        //
+    }
+
 <a name="mail-and-local-development"></a>
 ## Mail & Local Development
 
