@@ -15,29 +15,30 @@
 <a name="upgrade-5.4.0"></a>
 ## Upgrading To 5.4.0 From 5.3
 
-### Gates and policies
+#### Estimated Upgrade Time: 10 Minutes
 
-Policies may now be bound to an **interface** or a **parent class** and any class implementing or extending it will be checked through the first policy available for it. If you've always used policies on classes without inheritance, then no change is required.
+### Authorization
 
-If you check policies for classes that are part of an inheritance tree, make sure that:
+#### Policy Class Determination
 
-* Each class has its own policy (as policies bound to exactly the given class will be found before looking for subtypes), or
-* Refactor your policy to be reused throughout the inheritance tree, and **bind it to the root class**
+Policies may now be bound to an interface or parent class. When determining which policy to use for a given object, a policy bound to the object's exact
 
-There is also a compatibility break on the `Gate::getPolicyFor($class)` method: 
+<div class="content-list" markdown="1">
+- Each class has its own policy, as policies bound to exactly the given class will be found before looking for subtypes
+- Or, bind your policy to the root of the inheritance tree
+</div>
 
-* Previously, an `InvalidArgumentException` was thrown when no policy was found.
-* Now the method will return a `Policy` or `null` if it didn't find any.
+#### The `getPolicyFor` Method
 
-If you call this method directly, make sure you switch your `try / catch` to a null check:
+Previous, when calling the `Gate::getPolicyFor($class)` method, an exception was thrown if no policy could be found. Now, the method will return `null` if no policy is found for the given class. If you call this method directly, make sure you refactor your `try / catch` to a check for `null`:
 
 ```php
-$policy = Gate::getPolicyFor($foo);
+$policy = Gate::getPolicyFor($class);
 
-if ($policy !== null) {
-    // code that was previously on the try block
+if ($policy) {
+    // code that was previously in the try block
 } else {
-    // catch block
+    // code that was previously in the catch block
 }
 ```
 
