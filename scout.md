@@ -125,10 +125,10 @@ By default, the entire `toArray` form of a given model will be persisted to its 
          */
         public function toSearchableArray()
         {
-            $array = $this->toArray();
-
             // Customize array...
-
+            $this->custom_searchable_property = "Lorem Ipsum";
+            
+            $array = $this->toArray();
             return $array;
         }
     }
