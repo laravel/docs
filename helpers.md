@@ -887,22 +887,22 @@ The `factory` function creates a model factory builder for a given class, name, 
 <a name="method-info"></a>
 #### `info()` {#collection-method}
 
-The `info` function will write intormation to the log:
+The `info` function will write information to the log:
 
-    info('Log was written!');
+    info('Some helpful information!');
 
-An array of contextual data may also be passed to the info function:
+An array of contextual data may also be passed to the function:
 
-    info('User failed to login.', ['id' => $user->id]);
+    info('User login attempt failed.', ['id' => $user->id]);
 
 <a name="method-logger"></a>
 #### `logger()` {#collection-method}
 
-The `logger` function can be used to write a debug message to the log:
+The `logger` function can be used to write a `debug` level message to the log:
 
     logger('Debug message');
 
-An array of contextual data may also be passed to the logger function:
+An array of contextual data may also be passed to the function:
 
     logger('User has logged in.', ['id' => $user->id]);
 
