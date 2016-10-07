@@ -129,6 +129,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [session](#method-session)
 [value](#method-value)
 [view](#method-view)
+[info](#method-info)
+[logger](#method-logger)
 
 </div>
 
@@ -957,3 +959,29 @@ The `value` function's behavior will simply return the value it is given. Howeve
 The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 
     return view('auth.login');
+
+<a name="method-info"></a>
+#### `info()` {#collection-method}
+
+The `info` function will write intormation to the log:
+
+    info('Log was written!');
+
+An array of contextual data may also be passed to the info function
+
+    info('User failed to login.', ['id' => $user->id]);
+
+<a name="method-logger"></a>
+#### `logger()` {#collection-method}
+
+The `logger` function can be used to write a debug message to the log:
+
+    logger('Debug message');
+
+An array of contextual data may also be passed to the logger function:
+
+    logger('User has logged in.', ['id' => $user->id]);
+
+A [logger](/docs/{{version}}/errors#logging) instance will be returned if no value is passed to the function:
+
+    logger()->error('You are not allowed here.');
