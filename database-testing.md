@@ -6,6 +6,7 @@
     - [Using Transactions](#using-transactions)
 - [Writing Factories](#writing-factories)
     - [Factory Types](#factory-types)
+    - [Factory States](#factory-states)
 - [Using Factories](#using-factories)
     - [Creating Models](#creating-models)
     - [Persisting Models](#persisting-models)
@@ -129,6 +130,29 @@ Instead of duplicating all of the attributes from your base user factory, you ma
         return array_merge($user, ['admin' => true]);
     });
 
+<a name="factory-states"></a>
+### Factory States
+
+Sometimes your model will require a large number of types, which can become cumbersome. States allow you to define more discrete modifications that can be applied in any combination. You may define these using the `states` method:
+    
+    $factory->state(App\User::class, 'premium', function (\Faker\Generator $faker) {
+        return [
+            'level' => 'premium',
+        ];
+    });
+    
+    $factory->state(App\User::class, 'confirmed', function (\Faker\Generator $faker) {
+        return [
+            'email_confirmed' => 1,
+        ];
+    });
+    
+    $factory->state(App\User::class, 'delinquent', function (\Faker\Generator $faker) {
+        return [
+            'account_status' => 'delinquent',
+        ];
+    });
+
 <a name="using-factories"></a>
 ## Using Factories
 
@@ -154,6 +178,23 @@ You may also create a Collection of many models or create models of a given type
 
     // Create three "admin" App\User instances...
     $users = factory(App\User::class, 'admin', 3)->make();
+
+You can apply states to either your base factory or factory types:
+
+    // Create three "premium" App\User instances...
+    $users = factory(App\User::class, 3)->states('premium')->make();
+    
+    // Create three "confirmed" App\User instances...
+    $users = factory(App\User::class, 3)->states('confirmed')->make();
+    
+    // Create two "confirmed and deliquent" App\User instances...
+    $users = factory(App\User::class, 2)->states(['confirmed', 'deliquent'])->make();
+    
+    // Create four "premium and confirmed" App\User instances...
+    $users = factory(App\User::class, 4)->states(['premium', 'confirmed'])->make();
+    
+    // Create one "confirmed and premium and deliquent" App\User instances...
+    $users = factory(App\User::class)->states(['confirmed', 'premium', 'deliquent'])->make();
 
 #### Overriding Attributes
 
