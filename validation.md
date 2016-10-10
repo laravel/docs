@@ -658,23 +658,22 @@ The field under validation must exist on a given database table.
 
     'state' => 'exists:states,abbreviation'
 
-You may also specify more conditions that will be added as "where" clauses to the query:
-
-    'email' => 'exists:staff,email,account_id,1'
-
-These conditions may be negated using the `!` sign:
-
-    'email' => 'exists:staff,email,role,!admin'
-
-You may also pass `NULL` or `NOT_NULL` to the "where" clause:
-
-    'email' => 'exists:staff,email,deleted_at,NULL'
-
-    'email' => 'exists:staff,email,deleted_at,NOT_NULL'
-
 Occasionally, you may need to specify a specific database connection to be used for the `exists` query. You can accomplish this by prepending the connection name to the table name using "dot" syntax:
 
     'email' => 'exists:connection.staff,email'
+
+If you would like to customize the query executed by the validation rule, you may use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit them:
+
+    use Illuminate\Validation\Rule;
+
+    Validator::make($data, [
+        'email' => [
+            'required',
+            Rule::exists('staff')->where(function ($query) {
+                $query->where('account_id', 1);
+            }),
+        ],
+    ]);
 
 <a name="rule-file"></a>
 #### file
@@ -856,25 +855,30 @@ Occasionally, you may need to set a custom connection for database queries made 
 
 **Forcing A Unique Rule To Ignore A Given ID:**
 
-Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address. To tell the unique rule to ignore the user's ID, you may pass the ID as the third parameter:
+Sometimes, you may wish to ignore a given ID during the unique check. For example, consider an "update profile" screen that includes the user's name, e-mail address, and location. Of course, you will want to verify that the e-mail address is unique. However, if the user only changes the name field and not the e-mail field, you do not want a validation error to be thrown because the user is already the owner of the e-mail address.
 
-    'email' => 'unique:users,email_address,'.$user->id
+To instruct the validator to ignore the user's ID, we'll use the `Rule` class to fluently define the rule. In this example, we'll also specify the validation rules as an array instead of using the `|` character to delimit the rules:
 
-If your table uses a primary key column name other than `id`, you may specify it as the fourth parameter:
+    use Illuminate\Validation\Rule;
 
-    'email' => 'unique:users,email_address,'.$user->id.',user_id'
+    Validator::make($data, [
+        'email' => [
+            'required',
+            Rule::unique('users')->ignore($user->id)
+        ],
+    ]);
+
+If your table uses a primary key column name other than `id`, you may specify the name of the column when calling the `ignore` method:
+
+    'email' => Rule::unique('users')->ignore($user->id, 'user_id')
 
 **Adding Additional Where Clauses:**
 
-You may also specify more conditions that will be added as "where" clauses to the query:
+You may also specify additional query constraints by customizing the query using the `where` method. For example, let's add a constraint that verifies the `account_id` is `1`:
 
-    'email' => 'unique:users,email_address,NULL,id,account_id,1'
-
-In the rule above, only rows with an `account_id` of `1` would be included in the unique check.
-
-This feature can be especially useful when using "soft deleting" Eloquent models. For example, you may verify that the `deleted_at` column is `NULL`:
-
-    'email' => 'unique:users,email,NULL,id,deleted_at,NULL'
+    'email' => Rule::unique('users')->where(function ($query) {
+        $query->where('account_id', 1);
+    })
 
 <a name="rule-url"></a>
 #### url
