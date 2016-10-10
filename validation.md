@@ -864,7 +864,7 @@ To instruct the validator to ignore the user's ID, we'll use the `Rule` class to
     Validator::make($data, [
         'email' => [
             'required',
-            Rule::unique('users')->ignore($user->id)
+            Rule::unique('users')->ignore($user->id),
         ],
     ]);
 
