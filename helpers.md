@@ -121,6 +121,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
+[info](#method-info)
+[logger](#method-logger)
 [method_field](#method-method-field)
 [old](#method-old)
 [redirect](#method-redirect)
@@ -881,6 +883,32 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/database-testing#writing-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
 
     $user = factory(App\User::class)->make();
+
+<a name="method-info"></a>
+#### `info()` {#collection-method}
+
+The `info` function will write information to the log:
+
+    info('Some helpful information!');
+
+An array of contextual data may also be passed to the function:
+
+    info('User login attempt failed.', ['id' => $user->id]);
+
+<a name="method-logger"></a>
+#### `logger()` {#collection-method}
+
+The `logger` function can be used to write a `debug` level message to the log:
+
+    logger('Debug message');
+
+An array of contextual data may also be passed to the function:
+
+    logger('User has logged in.', ['id' => $user->id]);
+
+A [logger](/docs/{{version}}/errors#logging) instance will be returned if no value is passed to the function:
+
+    logger()->error('You are not allowed here.');
 
 <a name="method-method-field"></a>
 #### `method_field()` {#collection-method}
