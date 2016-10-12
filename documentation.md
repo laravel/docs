@@ -1,80 +1,80 @@
-- Prologue
-    - [Release Notes](/docs/{{version}}/releases)
-    - [Upgrade Guide](/docs/{{version}}/upgrade)
-    - [Contribution Guide](/docs/{{version}}/contributions)
-    - [API Documentation](/api/{{version}})
-- Getting Started
-    - [Installation](/docs/{{version}}/installation)
-    - [Configuration](/docs/{{version}}/configuration)
-    - [Directory Structure](/docs/{{version}}/structure)
-    - [Errors & Logging](/docs/{{version}}/errors)
-- Dev Environments
+- 前言
+    - [發行說明](/docs/{{version}}/releases)
+    - [升級導引](/docs/{{version}}/upgrade)
+    - [貢獻導引](/docs/{{version}}/contributions)
+    - [API 文件](/api/{{version}})
+- 入門
+    - [安裝](/docs/{{version}}/installation)
+    - [設定](/docs/{{version}}/configuration)
+    - [目錄結構](/docs/{{version}}/structure)
+    - [錯誤與日誌](/docs/{{version}}/errors)
+- 開發環境
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
-- Core Concepts
-    - [Service Container](/docs/{{version}}/container)
-    - [Service Providers](/docs/{{version}}/providers)
+- 核心概念
+    - [服務容器](/docs/{{version}}/container)
+    - [服務提供者](/docs/{{version}}/providers)
     - [Facades](/docs/{{version}}/facades)
     - [Contracts](/docs/{{version}}/contracts)
-- The HTTP Layer
-    - [Routing](/docs/{{version}}/routing)
-    - [Middleware](/docs/{{version}}/middleware)
-    - [CSRF Protection](/docs/{{version}}/csrf)
-    - [Controllers](/docs/{{version}}/controllers)
-    - [Requests](/docs/{{version}}/requests)
-    - [Responses](/docs/{{version}}/responses)
+- HTTP 層
+    - [路由](/docs/{{version}}/routing)
+    - [中介層](/docs/{{version}}/middleware)
+    - [CSRF 保護](/docs/{{version}}/csrf)
+    - [控制器](/docs/{{version}}/controllers)
+    - [請求](/docs/{{version}}/requests)
+    - [回應](/docs/{{version}}/responses)
     - [Session](/docs/{{version}}/session)
-    - [Validation](/docs/{{version}}/validation)
-- Views & Templates
-    - [Views](/docs/{{version}}/views)
-    - [Blade Templates](/docs/{{version}}/blade)
-    - [Localization](/docs/{{version}}/localization)
-- JavaScript & CSS
-    - [Getting Started](/docs/{{version}}/frontend)
-    - [Compiling Assets](/docs/{{version}}/elixir)
-- Security
-    - [Authentication](/docs/{{version}}/authentication)
-    - [Authorization](/docs/{{version}}/authorization)
-    - [Password Reset](/docs/{{version}}/passwords)
-    - [API Authentication](/docs/{{version}}/passport)
-    - [Encryption](/docs/{{version}}/encryption)
-    - [Hashing](/docs/{{version}}/hashing)
-- General Topics
-    - [Broadcasting](/docs/{{version}}/broadcasting)
-    - [Cache](/docs/{{version}}/cache)
-    - [Events](/docs/{{version}}/events)
-    - [File Storage](/docs/{{version}}/filesystem)
-    - [Mail](/docs/{{version}}/mail)
-    - [Notifications](/docs/{{version}}/notifications)
-    - [Queues](/docs/{{version}}/queues)
-- Database
-    - [Getting Started](/docs/{{version}}/database)
-    - [Query Builder](/docs/{{version}}/queries)
-    - [Pagination](/docs/{{version}}/pagination)
-    - [Migrations](/docs/{{version}}/migrations)
-    - [Seeding](/docs/{{version}}/seeding)
+    - [驗證](/docs/{{version}}/validation)
+- 視圖與模板
+    - [視圖](/docs/{{version}}/views)
+    - [Blade 模板](/docs/{{version}}/blade)
+    - [本土化](/docs/{{version}}/localization)
+- JavaScript 與 CSS
+    - [入門](/docs/{{version}}/frontend)
+    - [編譯資源檔](/docs/{{version}}/elixir)
+- 安全
+    - [認證](/docs/{{version}}/authentication)
+    - [授權](/docs/{{version}}/authorization)
+    - [重置密碼](/docs/{{version}}/passwords)
+    - [API 認證](/docs/{{version}}/passport)
+    - [加密](/docs/{{version}}/encryption)
+    - [雜湊](/docs/{{version}}/hashing)
+- 常用功能
+    - [廣播](/docs/{{version}}/broadcasting)
+    - [快取](/docs/{{version}}/cache)
+    - [事件](/docs/{{version}}/events)
+    - [檔案儲存](/docs/{{version}}/filesystem)
+    - [郵件](/docs/{{version}}/mail)
+    - [通知](/docs/{{version}}/notifications)
+    - [隊列](/docs/{{version}}/queues)
+- 資料庫
+    - [入門](/docs/{{version}}/database)
+    - [查詢建構器](/docs/{{version}}/queries)
+    - [分頁](/docs/{{version}}/pagination)
+    - [遷移](/docs/{{version}}/migrations)
+    - [資料填充](/docs/{{version}}/seeding)
     - [Redis](/docs/{{version}}/redis)
 - Eloquent ORM
-    - [Getting Started](/docs/{{version}}/eloquent)
-    - [Relationships](/docs/{{version}}/eloquent-relationships)
-    - [Collections](/docs/{{version}}/eloquent-collections)
-    - [Mutators](/docs/{{version}}/eloquent-mutators)
-    - [Serialization](/docs/{{version}}/eloquent-serialization)
-- Artisan Console
-    - [Commands](/docs/{{version}}/artisan)
-    - [Task Scheduling](/docs/{{version}}/scheduling)
-- Testing
-    - [Getting Started](/docs/{{version}}/testing)
-    - [Application Testing](/docs/{{version}}/application-testing)
-    - [Database](/docs/{{version}}/database-testing)
-    - [Mocking](/docs/{{version}}/mocking)
-- Official Packages
+    - [入門](/docs/{{version}}/eloquent)
+    - [關聯](/docs/{{version}}/eloquent-relationships)
+    - [集合](/docs/{{version}}/eloquent-collections)
+    - [存取器](/docs/{{version}}/eloquent-mutators)
+    - [序列化](/docs/{{version}}/eloquent-serialization)
+- Artisan 指令列
+    - [指令](/docs/{{version}}/artisan)
+    - [任務排程](/docs/{{version}}/scheduling)
+- 測試
+    - [入門](/docs/{{version}}/testing)
+    - [測試應用程式](/docs/{{version}}/application-testing)
+    - [資料庫](/docs/{{version}}/database-testing)
+    - [模擬](/docs/{{version}}/mocking)
+- 官方套件
     - [Cashier](/docs/{{version}}/billing)
     - [Envoy](/docs/{{version}}/envoy)
     - [Passport](/docs/{{version}}/passport)
     - [Scout](/docs/{{version}}/scout)
     - [Socialite](https://github.com/laravel/socialite)
-- Appendix
-    - [Collections](/docs/{{version}}/collections)
-    - [Helpers](/docs/{{version}}/helpers)
-    - [Packages](/docs/{{version}}/packages)
+- 附錄
+    - [集合](/docs/{{version}}/collections)
+    - [輔助方法](/docs/{{version}}/helpers)
+    - [套件](/docs/{{version}}/packages)
