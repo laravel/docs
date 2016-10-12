@@ -221,9 +221,10 @@ Of course, you may also access the request session data or authenticated user by
 
 The [fluent query builder](/docs/{{version}}/queries) now returns `Illuminate\Support\Collection` instances instead of plain arrays. This brings consistency to the result types returned by the fluent query builder and Eloquent.
 
-If you do not want to migrate your query builder results to `Collection` instances, you may chain the `all` method onto your calls to the query builder's `get` or `pluck` method. This will return a plain PHP array of the results, allowing you to maintain backwards compatibility:
+If you do not want to migrate your query builder results to `Collection` instances, you may chain the `all` method onto your calls to the query builder's `get` or `pluck` methods. This will return a plain PHP array of the results, allowing you to maintain backwards compatibility:
 
     $users = DB::table('users')->get()->all();
+
     $usersIds = DB::table('users')->pluck('id')->all();
 
 #### Eloquent `$morphClass` Property
