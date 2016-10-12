@@ -535,8 +535,8 @@ You may use the `from` and `to` methods to customize the sender and recipient. T
     {
         return (new SlackMessage)
                     ->from('Ghost', ':ghost:')
-                    ->to('#other');
-                    ->content('This will be sent to #other')
+                    ->to('#other')
+                    ->content('This will be sent to #other');
     }
 
 <a name="routing-slack-notifications"></a>
