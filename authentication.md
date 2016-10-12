@@ -342,7 +342,7 @@ You may define your own authentication guards using the `extend` method on the `
 
     use App\Services\Auth\JwtGuard;
     use Illuminate\Support\Facades\Auth;
-    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
     class AuthServiceProvider extends ServiceProvider
     {
