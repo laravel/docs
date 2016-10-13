@@ -6,9 +6,9 @@
 - [Concept Overview](#concept-overview)
     - [Using Example Application](#using-example-application)
 - [Defining Broadcast Events](#defining-broadcast-events)
+    - [Broadcast Name](#broadcast-name)
     - [Broadcast Data](#broadcast-data)
     - [Broadcast Queue](#broadcast-queue)
-    - [Broadcast Name](#broadcast-name)
 - [Authorizing Channels](#authorizing-channels)
     - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
@@ -216,6 +216,21 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
 
 Then, you only need to [fire the event](/docs/{{version}}/events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
 
+<a name="broadcast-name"></a>
+### Broadcast Name
+
+By default, Laravel will broadcast the event using the event's class name. However, you may customize the broadcast name by defining a `broadcastAs` method on the event:
+
+    /**
+     * The event's broadcast name.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'server.created';
+    }
+
 <a name="broadcast-data"></a>
 ### Broadcast Data
 
@@ -252,21 +267,6 @@ By default, each broadcast event is placed on the default queue for the default 
      * @var string
      */
     public $broadcastQueue = 'your-queue-name';
-
-<a name="broadcast-name"></a>
-### Broadcast Name
-
-By default, Laravel will broadcast the event using the event's class name. However, you may customize the broadcast name by defining a `broadcastAs` method on the event:
-
-    /**
-     * The event's broadcast name.
-     *
-     * @return string
-     */
-    public function broadcastAs()
-    {
-        return 'server.created';
-    }
 
 <a name="authorizing-channels"></a>
 ## Authorizing Channels
