@@ -107,7 +107,7 @@ However, it is more convenient to specify middleware within your controller's co
     class UserController extends Controller
     {
         /**
-         * Instantiate a new new controller instance.
+         * Instantiate a new controller instance.
          *
          * @return void
          */
