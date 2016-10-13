@@ -8,6 +8,7 @@
 - [Defining Broadcast Events](#defining-broadcast-events)
     - [Broadcast Data](#broadcast-data)
     - [Broadcast Queue](#broadcast-queue)
+    - [Broadcast Name](#broadcast-name)
 - [Authorizing Channels](#authorizing-channels)
     - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
@@ -251,6 +252,20 @@ By default, each broadcast event is placed on the default queue for the default 
      * @var string
      */
     public $broadcastQueue = 'your-queue-name';
+
+<a name="broadcast-name"></a>
+### Broadcast Name
+By default the class name is used as the broadcast name, if you want more control or simply name it however you would like you can return it in a method called `broadcastAs`.
+
+    /**
+     * Return the event name.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'server.created';
+    }
 
 <a name="authorizing-channels"></a>
 ## Authorizing Channels
