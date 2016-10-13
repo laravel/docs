@@ -255,10 +255,11 @@ By default, each broadcast event is placed on the default queue for the default 
 
 <a name="broadcast-name"></a>
 ### Broadcast Name
-By default the class name is used as the broadcast name, if you want more control or simply name it however you would like you can return it in a method called `broadcastAs`.
+
+By default, Laravel will broadcast the event using the event's class name. However, you may customize the broadcast name by defining a `broadcastAs` method on the event:
 
     /**
-     * Return the event name.
+     * The event's broadcast name.
      *
      * @return string
      */
