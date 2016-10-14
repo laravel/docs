@@ -377,6 +377,18 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
     // Retrieve the flight by the attributes, or instantiate a new instance...
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
 
+> Note: When using multiple connections, using the on() method on a static will make the updateOrCreate() fail.
+> This is because this updateOrCreate function will call the firstOrCreate function using the default connection settings. 
+> So the check for existance of the given attributes will be done on an other connection.  
+> An example: 
+
+    \App\Brand::on('mysql2')->updateOrCreate(['name'=>"AllReadyExistingValue"]); // this will not check on mysql2
+    
+    // This will work
+    $model = new App\Brand;
+    $model->on('mysql2')->updateOrCreate(['name'=>"AllReadyExistingValue"]);
+    
+    
 <a name="deleting-models"></a>
 ## Deleting Models
 
