@@ -5,7 +5,7 @@
     - [Using Migrations](#using-migrations)
     - [Using Transactions](#using-transactions)
 - [Writing Factories](#writing-factories)
-    - [Factory Types](#factory-types)
+    - [Factory States](#factory-states)
 - [Using Factories](#using-factories)
     - [Creating Models](#creating-models)
     - [Persisting Models](#persisting-models)
@@ -88,7 +88,7 @@ Another approach to resetting the database state is to wrap each test case in a 
 
 > {note} This trait will only wrap the default database connection in a transaction. If your application is using multiple database connections, you will need to manually handle the transaction logic for those connections.
 
-<a name="model-factories"></a>
+<a name="writing-factories"></a>
 ## Writing Factories
 
 When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories. To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
@@ -106,27 +106,15 @@ Within the Closure, which serves as the factory definition, you may return the d
 
 Of course, you are free to add your own additional factories to the `ModelFactory.php` file. You may also create additional factory files for each model for better organization. For example, you could create `UserFactory.php` and `CommentFactory.php` files within your `database/factories` directory. All of the files within the `factories` directory will automatically be loaded by Laravel.
 
-<a name="factory-types"></a>
-### Factory Types
+<a name="factory-states"></a>
+### Factory States
 
-Sometimes you may wish to have multiple factories for the same Eloquent model class. For example, perhaps you would like to have a factory for "Administrator" users in addition to normal users. You may define these factories using the `defineAs` method:
+States allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `delinquent` state that modifies one of its default attribute values. You may define your state transformations using the `state` method:
 
-    $factory->defineAs(App\User::class, 'admin', function ($faker) {
+    $factory->state(App\User::class, 'delinquent', function ($faker) {
         return [
-            'name' => $faker->name,
-            'email' => $faker->email,
-            'password' => str_random(10),
-            'remember_token' => str_random(10),
-            'admin' => true,
+            'account_status' => 'delinquent',
         ];
-    });
-
-Instead of duplicating all of the attributes from your base user factory, you may use the `raw` method to retrieve the base attributes. Once you have the attributes, simply supplement them with any additional values you require:
-
-    $factory->defineAs(App\User::class, 'admin', function ($faker) use ($factory) {
-        $user = $factory->raw(App\User::class);
-
-        return array_merge($user, ['admin' => true]);
     });
 
 <a name="using-factories"></a>
@@ -154,6 +142,14 @@ You may also create a Collection of many models or create models of a given type
 
     // Create three "admin" App\User instances...
     $users = factory(App\User::class, 'admin', 3)->make();
+
+#### Applying States
+
+You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you should specify the name of each state you would like to apply:
+
+    $users = factory(App\User::class, 5)->states('deliquent')->make();
+
+    $users = factory(App\User::class, 5)->states('premium', 'deliquent')->make();
 
 #### Overriding Attributes
 

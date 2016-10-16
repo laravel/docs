@@ -304,7 +304,7 @@ Updates can also be performed against any number of models that match a given qu
 
 The `update` method expects an array of column and value pairs representing the columns that should be updated.
 
-> {note} When issuing a mass update via Eloquent, the `saved` and `updated` model events will be not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
+> {note} When issuing a mass update via Eloquent, the `saved` and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
 
 <a name="mass-assignment"></a>
 ### Mass Assignment
@@ -398,9 +398,11 @@ In the example above, we are retrieving the model from the database before calli
 
 #### Deleting Models By Query
 
-Of course, you may also run a delete query on a set of models. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not fire any model events for the models that are deleted:
+Of course, you may also run a delete statement on a set of models. In this example, we will delete all flights that are marked as inactive. Like mass updates, mass deletes will not fire any model events for the models that are deleted:
 
     $deletedRows = App\Flight::where('active', 0)->delete();
+
+> {note} When executing a mass delete statement via Eloquent, the `deleting` and `deleted` model events will not be fired for the deleted models. This is because the models are never actually retrieved when executing the delete statement.
 
 <a name="soft-deleting"></a>
 ### Soft Deleting
@@ -520,7 +522,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
          */
         public function apply(Builder $builder, Model $model)
         {
-            return $builder->where('age', '>', 200);
+            $builder->where('age', '>', 200);
         }
     }
 

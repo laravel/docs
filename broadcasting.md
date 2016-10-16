@@ -6,6 +6,7 @@
 - [Concept Overview](#concept-overview)
     - [Using Example Application](#using-example-application)
 - [Defining Broadcast Events](#defining-broadcast-events)
+    - [Broadcast Name](#broadcast-name)
     - [Broadcast Data](#broadcast-data)
     - [Broadcast Queue](#broadcast-queue)
 - [Authorizing Channels](#authorizing-channels)
@@ -16,6 +17,7 @@
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Installing Laravel Echo](#installing-laravel-echo)
     - [Listening For Events](#listening-for-events)
+    - [Leaving A Channel](#leaving-a-channel)
     - [Namespaces](#namespaces)
 - [Presence Channels](#presence-channels)
     - [Authorizing Presence Channels](#authorizing-presence-channels)
@@ -185,7 +187,7 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
     use Illuminate\Broadcasting\InteractsWithSockets;
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-    class ServerCreated extends Event implements ShouldBroadcast
+    class ServerCreated implements ShouldBroadcast
     {
         use SerializesModels;
 
@@ -213,6 +215,21 @@ The `ShouldBroadcast` interface requires you to implement a single method: `broa
     }
 
 Then, you only need to [fire the event](/docs/{{version}}/events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event over your specified broadcast driver.
+
+<a name="broadcast-name"></a>
+### Broadcast Name
+
+By default, Laravel will broadcast the event using the event's class name. However, you may customize the broadcast name by defining a `broadcastAs` method on the event:
+
+    /**
+     * The event's broadcast name.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'server.created';
+    }
 
 <a name="broadcast-data"></a>
 ### Broadcast Data
@@ -336,6 +353,15 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
         key: 'your-pusher-key'
     });
 
+When creating an Echo instance that uses the `pusher` connector, you may also specify a `cluster` as well as whether the connection should be encrypted:
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: 'your-pusher-key',
+        cluster: 'eu',
+        encrypted: true
+    });
+
 <a name="listening-for-events"></a>
 ### Listening For Events
 
@@ -352,6 +378,13 @@ If you would like to listen for events on a private channel, use the `private` m
         .listen(...)
         .listen(...)
         .listen(...);
+
+<a name="leaving-a-channel"></a>
+### Leaving A Channel
+
+To leave a channel, you may call the `leave` method on your Echo instance:
+
+    Echo.leave('orders');
 
 <a name="namespaces"></a>
 ### Namespaces

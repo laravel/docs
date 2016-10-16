@@ -7,7 +7,6 @@
 - [Running Raw SQL Queries](#running-queries)
     - [Listening For Query Events](#listening-for-query-events)
 - [Database Transactions](#database-transactions)
-- [Using Multiple Database Connections](#accessing-connections)
 
 <a name="introduction"></a>
 ## Introduction

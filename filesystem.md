@@ -163,7 +163,7 @@ If you would like Laravel to automatically manage streaming a given file to your
     Storage::putFile('photos', new File('/path/to/photo'));
 
     // Manually specify a file name...
-    Storage::putFile('photos', new File('/path/to/photo'), 'photo.jpg');
+    Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
 
 There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will automatically generate a filename based on the contents of the file. This is accomplished by taking a MD5 hash of the file's contents. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
 

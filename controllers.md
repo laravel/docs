@@ -107,7 +107,7 @@ However, it is more convenient to specify middleware within your controller's co
     class UserController extends Controller
     {
         /**
-         * Instantiate a new new controller instance.
+         * Instantiate a new controller instance.
          *
          * @return void
          */
@@ -120,6 +120,14 @@ However, it is more convenient to specify middleware within your controller's co
             $this->middleware('subscribed')->except('store');
         }
     }
+
+Controller's also allow you to register middleware using a Closure. This provides a convenient way to define a middleware for a single controller without defining an entire middleware class:
+
+    $this->middleware(function ($request, $next) {
+        // ...
+
+        return $next($request);
+    });
 
 > {tip} You may assign middleware to a subset of controller actions; however, it may indicate your controller is growing too large. Instead, consider breaking your controller into multiple, smaller controllers.
 

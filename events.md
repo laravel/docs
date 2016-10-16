@@ -43,6 +43,33 @@ Of course, manually creating the files for each event and listener is cumbersome
 
     php artisan event:generate
 
+<a name="manually-registering-events"></a>
+### Manually Registering Events
+
+Typically, events should be registered via the `EventServiceProvider` `$listen` array; however, you may also register Closure based events manually in the `boot` method of your `EventServiceProvider`:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        Event::listen('event.name', function ($foo, $bar) {
+            //
+        });
+    }
+
+#### Wildcard Event Listeners
+
+You may even register listeners using the `*` as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the entire event data array as a single argument:
+
+    Event::listen('event.*', function (array $data) {
+        //
+    });
+
 <a name="defining-events"></a>
 ## Defining Events
 
