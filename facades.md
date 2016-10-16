@@ -1,18 +1,18 @@
 # Facades
 
-- [Introduction](#introduction)
-- [When To Use Facades](#when-to-use-facades)
-    - [Facades Vs. Dependency Injection](#facades-vs-dependency-injection)
-    - [Facades Vs. Helper Functions](#facades-vs-helper-functions)
-- [How Facades Work](#how-facades-work)
-- [Facade Class Reference](#facade-class-reference)
+- [簡介](#introduction)
+- [何時使用 Facades](#when-to-use-facades)
+    - [Facades Vs. 依賴注入](#facades-vs-dependency-injection)
+    - [Facades Vs. 輔助方法](#facades-vs-helper-functions)
+- [Facades 如何運作](#how-facades-work)
+- [Facade 類別參考](#facade-class-reference)
 
 <a name="introduction"></a>
-## Introduction
+## 簡介
 
-Facades provide a "static" interface to classes that are available in the application's [service container](/docs/{{version}}/container). Laravel ships with many facades which provide access to almost all of Laravel's features. Laravel facades serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+Facades 為應用程式的[服務容器](/docs/{{version}}/container)中可用的類別提供一個「靜態」介面。Laravel 附帶許多 facades，甚至你可能在不知情的狀況下已經使用他們！Laravel 「facades」作為在服務容器內基底類別的「靜態代理」，提供了一個簡潔、易表達的語法優點，同時維持比傳統的靜態方法更高的可測試性和彈性。
 
-All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespace. So, we can easily access a facade like so:
+Laravel 的所有 facade 定義在 `Illuminate\Support\Facades` 命名空間裡，所以我們可以簡單地取出 facade：
 
     use Illuminate\Support\Facades\Cache;
 
@@ -20,36 +20,35 @@ All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespa
         return Cache::get('key');
     });
 
-Throughout the Laravel documentation, many of the examples will use facades to demonstrate various features of the framework.
+在 Laravel 的文件中，許多範例處處地都使用了 facade 來展示這個框架的特性。
 
 <a name="when-to-use-facades"></a>
-## When To Use Facades
+## 何時使用 Facades
 
-Facades have many benefits. They provide a terse, memorable syntax that allows you to use Laravel's features without remembering long class names that must be injected or configured manually. Furthermore, because of their unique usage of PHP's dynamic methods, they are easy to test.
+Facade 有許多優點，它提供了簡潔、易表達的語法。當你注入或設定類別時，無需記住冗長的類別名稱，即可使用 Laravel 提供的功能特性，此外，由於他們對 PHP 動態方法的獨特用法，使得它們很容易測試。
 
-However, some care must be taken when using facades. The primary danger of facades is class scope creep. Since facades are so easy to use and do not require injection, it can be easy to let your classes continue to grow and use many facades in a single class. Using dependency injection, this potential is mitigated by the visual feedback a large constructor gives you that your class is growing too large. So, when using facades, pay special attention to the size of your class so that its scope of responsibility stays narrow.
+然而，有些細節在使用 facade 時需注意。最主要的威脅就是類別的職責範疇蔓延擴大，由於 facade 容易使用且不需注入，在單個類別中使用愈多愈容易地讓你的類別逐漸增大。改用依賴注入會讓這情況減輕，因為看到巨大的建構子，會讓你注意到類別變大了。因此，使用 facade 的時候，要特別注意到類別的大小，以及限縮類別的職責範疇。
 
-> {tip} When building a third-party package that interacts with Laravel, it's better to inject [Laravel contracts](/docs/{{version}}/contracts) instead of using facades. Since packages are built outside of Laravel itself, you will not have access to Laravel's facade testing helpers.
+> {tip} 建立 Laravel 的第三方套件時，最好是注入 [Laravel contracts](/docs/{{version}}/contracts) 而不是使用 facade，因為套件是建構在 Laravel 外面，無法使用 Laravel 的 facade 測試輔助方法。
 
 <a name="facades-vs-dependency-injection"></a>
-### Facades Vs. Dependency Injection
+### Facades Vs. 依賴注入
 
-One of the primary benefits of dependency injection is the ability to swap implementations of the injected class. This is useful during testing since you can inject a mock or stub and assert that various methods were called on the stub.
+依賴注入的一個最大優點是可以替換注入類別的實作，這在測試時很有用，因為你可以注入一個 mock 或 stub，並且斷言（assert）被此 stub 呼叫的不同方法。
 
-Typically, it would not be possible to mock or stub a truly static class method. However, since facades use dynamic methods to proxy method calls to objects resolved from the service container, we actually can test facades just as we would test an injected class instance. For example, given the following route:
-
+但是對於靜態類別方法上進行 mock 或 stub 卻行不通。不過，由於 facade 使用了動態方法對服務容器中解析出來的物件方法進行了代理，我們也可以像測試注入類別實例那樣測試 facade。例如，給定以下路由：
     use Illuminate\Support\Facades\Cache;
 
     Route::get('/cache', function () {
         return Cache::get('key');
     });
 
-We can write the following test to verify that the `Cache::get` method was called with the argument we expected:
+我們可以這樣編寫測試來驗證，呼叫 `Cache::get` 方法且傳入我們期望的參數：
 
     use Illuminate\Support\Facades\Cache;
 
     /**
-     * A basic functional test example.
+     * 基本的函式測試範例
      *
      * @return void
      */
@@ -64,26 +63,26 @@ We can write the following test to verify that the `Cache::get` method was calle
     }
 
 <a name="facades-vs-helper-functions"></a>
-### Facades Vs. Helper Functions
+### Facades Vs. 輔助方法
 
-In addition to facades, Laravel includes a variety of "helper" functions which can perform common tasks like generating views, firing events, dispatching jobs, or sending HTTP responses. Many of these helper functions perform the same function as a corresponding facade. For example, this facade call and helper call are equivalent:
+除了 facades 之外，Laravel 還包含了許多執行通用任務的輔助方法函式，比如生成視圖、觸發事件、分配任務，以及發送 HTTP 回應等。很多輔助方法提供了和 facade 一樣的功能，例如，呼叫下面這個 facade 和輔助方法是等價的：
 
     return View::make('profile');
 
     return view('profile');
 
-There is absolutely no practical difference between facades and helper functions. When using helper functions, you may still test them exactly as you would the corresponding facade. For example, given the following route:
+facade 和輔助方法並沒有實質的差別，使用輔助方法的時候，可以像測試 facade 那樣測試它們。例如，給定以下路由：
 
     Route::get('/cache', function () {
         return cache('key');
     });
 
-Under the hood, the `cache` helper is going to call the `get` method on the class underlying the `Cache` facade. So, even though we are using the helper function, we can write the following test to verify that the method was called with the argument we expected:
+在底層，`cache` 輔助方法會去呼叫 `Cache` facade 上的 `get` 方法，因此，儘管我們使用這個輔助方法，我們還是可以編寫如下測試，驗證這個方法以我們期望的參數被呼叫：
 
     use Illuminate\Support\Facades\Cache;
 
     /**
-     * A basic functional test example.
+     * 基本的函式測試範例
      *
      * @return void
      */
@@ -98,11 +97,11 @@ Under the hood, the `cache` helper is going to call the `get` method on the clas
     }
 
 <a name="how-facades-work"></a>
-## How Facades Work
+## Facades 如何運作
 
-In a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Illuminate\Support\Facades\Facade` class.
+在 Laravel 應用程式中，facade 是個提供從容器存取物件的類別，`Facade` 類別是讓這個機制可以運作的原因。Laravel 的 facades，以及任何你建立的客製化 facades，會繼承基底 `Illuminate\Support\Facades\Facade` 類別。
 
-The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to an object resolved from the container. In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class:
+`Facade` 基底類別利用 `__callStatic()` 魔術方法從你的 facade 延遲呼叫來解析物件。在下面的範例，呼叫了 Laravel 的快取系統。看了一下這個程式碼，或許有人認為靜態方法 `get` 是在 `Cache` 類別中被呼叫的：
 
     <?php
 
@@ -114,7 +113,7 @@ The `Facade` base class makes use of the `__callStatic()` magic-method to defer 
     class UserController extends Controller
     {
         /**
-         * Show the profile for the given user.
+         * 顯示給定使用者的個人資料
          *
          * @param  int  $id
          * @return Response
@@ -127,28 +126,28 @@ The `Facade` base class makes use of the `__callStatic()` magic-method to defer 
         }
     }
 
-Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy to accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service.
+注意在檔案的上方，我們「導入」`Cache` facade。這個 facade 做為存取底層實作 `Illuminate\Contracts\Cache\Factory` 介面的代理。我們使用 facade 的任何呼叫將會傳送給 Laravel 快取服務的底層實例。
 
-If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
+如果我們查看 `Illuminate\Support\Facades\Cache` 類別，你會發現沒有靜態方法 `get`：
 
     class Cache extends Facade
     {
         /**
-         * Get the registered name of the component.
+         * 取得元件的註冊名稱
          *
          * @return string
          */
         protected static function getFacadeAccessor() { return 'cache'; }
     }
 
-Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. This method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
+相反的，`Cache` facade 繼承了基底 `Facade` 類別以及定義了 `getFacadeAccessor()` 方法。這個方法的工作是回傳服務容器綁定的名稱。當使用者在 `Cache` facade 上參考任何的靜態方法，Laravel 會從[服務容器](/docs/{{version}}/container)解析被綁定的 `cache` 以及回傳執行請求的方法（在這個範例中是 `get`）。
 
 <a name="facade-class-reference"></a>
-## Facade Class Reference
+## Facade 類別參考
 
-Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [service container binding](/docs/{{version}}/container) key is also included where applicable.
+在下方你可以找到每個 facade 及其底層的類別。這個工具對於透過給定 facade 的來源快速尋找 API 文件相當有用。可應用的[服務容器綁定](/docs/{{version}}/container)關鍵字也包含在裡面。
 
-Facade  |  Class  |  Service Container Binding
+Facade  |  類別  |  服務容器綁定
 ------------- | ------------- | -------------
 App  |  [Illuminate\Foundation\Application](http://laravel.com/api/{{version}}/Illuminate/Foundation/Application.html)  | `app`
 Artisan  |  [Illuminate\Contracts\Console\Kernel](http://laravel.com/api/{{version}}/Illuminate/Contracts/Console/Kernel.html)  |  `artisan`
