@@ -9,6 +9,7 @@
     - [Migrations](#migrations)
     - [Translations](#translations)
     - [Views](#views)
+    - [Commands](#commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 
@@ -166,6 +167,23 @@ Package views are referenced using the `package::view` syntax convention. So, on
     Route::get('admin', function () {
         return view('courier::admin');
     });
+    
+<a name="commands"></a>
+### Commands
+
+To register your package's commands with Laravel do this using the service provider's `commands` method:
+
+    public function register()
+    {
+        $this->commands(\YourNameSpace\YourLibrary\YourCommand::class);
+    }
+    
+    public function provides()
+    {
+        return [
+            \YourNameSpace\YourLibrary\YourCommand::class,
+        ];
+    }
 
 #### Overriding Package Views
 
