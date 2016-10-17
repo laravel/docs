@@ -167,22 +167,25 @@ Package views are referenced using the `package::view` syntax convention. So, on
     Route::get('admin', function () {
         return view('courier::admin');
     });
-    
+
 <a name="commands"></a>
 ### Commands
 
-To register your package's commands with Laravel do this using the service provider's `commands` method:
+To register your package's Artisan commands with Laravel, you may use the `commands` method. This method expects an array of command class names. Once the commands have been registered, you may execute them using the [Artisan CLI](/docs/{{version}}/artisan):
 
-    public function register()
+    /**
+     * Bootstrap the application services.
+     *
+     * @return void
+     */
+    public function boot()
     {
-        $this->commands(\YourNameSpace\YourLibrary\YourCommand::class);
-    }
-    
-    public function provides()
-    {
-        return [
-            \YourNameSpace\YourLibrary\YourCommand::class,
-        ];
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                FooCommand::class,
+                BarCommand::class,
+            ]);
+        }
     }
 
 #### Overriding Package Views
