@@ -157,7 +157,7 @@ Once the components have been registered, you may drop them into one of your app
 
 By default, Passport issues long-lived access tokens that never need to be refreshed. If you would like to configure a shorter token lifetime, you may use the `tokensExpireIn` and `refreshTokensExpireIn` methods. These methods should be called from the `boot` method of your `AuthServiceProvider`:
 
-	use Carbon\Carbon;
+    use Carbon\Carbon;
 
     /**
      * Register any authentication / authorization services.
