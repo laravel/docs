@@ -9,6 +9,7 @@
     - [Migrations](#migrations)
     - [Translations](#translations)
     - [Views](#views)
+- [Commands](#commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 
@@ -190,6 +191,26 @@ If you would like to make your views available for publishing to the application
     }
 
 Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified publish location.
+
+<a name="commands"></a>
+## Commands
+
+To register your package's Artisan commands with Laravel, you may use the `commands` method. This method expects an array of command class names. Once the commands have been registered, you may execute them using the [Artisan CLI](/docs/{{version}}/artisan):
+
+    /**
+     * Bootstrap the application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                FooCommand::class,
+                BarCommand::class,
+            ]);
+        }
+    }
 
 <a name="public-assets"></a>
 ## Public Assets
