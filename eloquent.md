@@ -624,6 +624,7 @@ Scopes should always return a query builder instance:
         /**
          * Scope a query to only include popular users.
          *
+         * @param \Illuminate\Database\Eloquent\Builder $query
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopePopular($query)
@@ -634,6 +635,7 @@ Scopes should always return a query builder instance:
         /**
          * Scope a query to only include active users.
          *
+         * @param \Illuminate\Database\Eloquent\Builder $query
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeActive($query)
@@ -663,6 +665,8 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
         /**
          * Scope a query to only include users of a given type.
          *
+         * @param \Illuminate\Database\Eloquent\Builder $query
+         * @param mixed $type
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeOfType($query, $type)

@@ -31,7 +31,7 @@ Unlike facades, which do not require you to require them in your class' construc
 
 As discussed elsewhere, much of the decision to use contracts or facades will come down to personal taste and the tastes of your development team. Both contracts and facades can be used to create robust, well-tested Laravel applications. As long as you are keeping your class' responsibilities focused, you will notice very few practical differences between using contracts and facades.
 
-However, you may still have several questions regarding contracts. For example, why use interfaces at all? Isn't using interfaces more complicated? Let's distil the reasons for using interfaces to the following headings: loose coupling and simplicity.
+However, you may still have several questions regarding contracts. For example, why use interfaces at all? Isn't using interfaces more complicated? Let's distill the reasons for using interfaces to the following headings: loose coupling and simplicity.
 
 <a name="loose-coupling"></a>
 ### Loose Coupling
