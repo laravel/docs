@@ -20,10 +20,9 @@
 
 ### Updating Dependencies
 
-Update your `composer.json` file to point to `laravel/framework 5.3.*`.
-The minimum PHP version is bumped from `>=5.5.9` to `>=5.6.4`.
-The requirements `symfony/css-selector` and `symfony/dom-crawler` in `require-dev` are now both bumped to version `3.1.*`.
-`phpunit/phpunit` went from `~4.0` to `~5.0`.
+Update your `laravel/framework` dependency to `5.3.*` in your `composer.json` file.
+
+You should also upgrade your `symfony/css-selector` and `symfony/dom-crawler` dependencies to `3.1.*` in the `require-dev` section of your `composer.json` file.
 
 ### PHP & HHVM
 
