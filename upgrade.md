@@ -18,6 +18,13 @@
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
+### Updating Dependencies
+
+Update your `composer.json` file to point to `laravel/framework 5.3.*`.
+The minimum PHP version is bumped from `>=5.5.9` to `>=5.6.4`.
+The requirements `symfony/css-selector` and `symfony/dom-crawler` in `require-dev` are now both bumped to version `3.1.*`.
+`phpunit/phpunit` went from `~4.0` to `~5.0`.
+
 ### PHP & HHVM
 
 Laravel 5.3 requires PHP 5.6.4 or higher. HHVM is no longer officially supported as it does not contain the same language features as PHP 5.6+.
