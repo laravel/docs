@@ -14,6 +14,8 @@ In the past, you may have generated a Cron entry for each task you needed to sch
 
 Laravel's command scheduler allows you to fluently and expressively define your command schedule within Laravel itself. When using the scheduler, only a single Cron entry is needed on your server. Your task schedule is defined in the `app/Console/Kernel.php` file's `schedule` method. To help you get started, a simple example is defined within the method.
 
+If your application is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode) the scheduler will not run.
+
 ### Starting The Scheduler
 
 When using the scheduler, you only need to add the following Cron entry to your server. If you do not know how to add Cron entries to your server, consider using a service such as [Laravel Forge](https://forge.laravel.com) which can manage the Cron entries for you:
