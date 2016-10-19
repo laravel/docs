@@ -98,17 +98,17 @@ To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add 
           to: /home/vagrant/Code
           type: "nfs"
 
-You can pass any options supported by vagrant [Synced Folders](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) by placing them under the the options key:
+You may also pass any options supported by Vagrant's [Synced Folders](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) by listing them under the `options` key:
 
     folders:
         - map: ~/Code
           to: /home/vagrant/Code
           type: "rsync"
-	  options:
-	      rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
-	      rsync__exclude: ["node_modules"]
-	  
-	  
+          options:
+              rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
+              rsync__exclude: ["node_modules"]
+
+
 #### Configuring Nginx Sites
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on:
