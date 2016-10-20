@@ -89,6 +89,7 @@ Job classes are very simple, normally containing only a `handle` method which is
 
     use App\Podcast;
     use App\AudioProcessor;
+    use Illuminate\Bus\Queueable;
     use Illuminate\Queue\SerializesModels;
     use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
