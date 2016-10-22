@@ -515,6 +515,11 @@ When validating arrays, booleans, integers, numerics, and strings, `null` will n
         'field' => 'nullable|max:5',
     ]);
 
+#### MessageBag
+
+When checking if a `Illuminate\Support\MessageBag` does contain any messages, use `any` method instead of `has` without any paramters.
+The `has` method do not longer provide a default parameter.
+
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
 
