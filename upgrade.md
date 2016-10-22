@@ -507,6 +507,10 @@ If this change causes you to have two routes with the same name, you have two op
 
 If a form request's validation fails, Laravel will now throw an instance of `Illuminate\Validation\ValidationException` instead of an instance of `HttpException`. If you are manually catching the `HttpException` instance thrown by a form request, you should update your `catch` blocks to catch the `ValidationException` instead.
 
+#### The Message Bag
+
+If you were previously using the `has` method to determine if an `Illuminate\Support\MessageBag` instance contained any messages, you should use the `count` method instead. The `has` method now requires a parameter and only determines if a specific key exists in the message bag.
+
 #### Nullable Primitives
 
 When validating arrays, booleans, integers, numerics, and strings, `null` will no longer be considered a valid value unless the rule set contains the new `nullable` rule:
@@ -514,11 +518,6 @@ When validating arrays, booleans, integers, numerics, and strings, `null` will n
     Validate::make($request->all(), [
         'field' => 'nullable|max:5',
     ]);
-
-#### MessageBag
-
-When checking if a `Illuminate\Support\MessageBag` does contain any messages, use `any` method instead of `has` without any paramters.
-The `has` method do not longer provide a default parameter.
 
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
