@@ -71,9 +71,16 @@ Now that you have routes and views setup for the included authentication control
 
 #### Path Customization
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect location by defining a `redirectTo` property on the `LoginController`, `RegisterController`, and `ResetPasswordController`:
+When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect location by modifying the returned redirect in the `handle` method on the `RedirectIfAuthenticated` middleware:
 
-    protected $redirectTo = '/';
+    public function handle($request, Closure $next, $guard = null)
+    {
+        if (Auth::guard($guard)->check()) {
+            return redirect('/dashboard');
+        }
+
+        return $next($request);
+    }
 
 When a user is not successfully authenticated, they will be automatically redirected back to the login form.
 
