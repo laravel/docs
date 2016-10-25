@@ -58,8 +58,7 @@ If you are broadcasting your events over [Pusher](https://pusher.com), you shoul
 
     composer require pusher/pusher-php-server
 
-Next, you should configure your Pusher credentials in the `config/broadcasting.php` configuration file. An example Pusher configuration is already included in this file, allowing you to quickly specify your Pusher key, secret, and application ID.
-Remeber if you have specified a cluster and encryption in Pusher.com you need to set them in the option like this:
+Next, you should configure your Pusher credentials in the `config/broadcasting.php` configuration file. An example Pusher configuration is already included in this file, allowing you to quickly specify your Pusher key, secret, and application ID. The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Pusher, such as the cluster:
 
     'options' => [
         'cluster' => 'eu',
