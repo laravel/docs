@@ -377,6 +377,15 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
     // Retrieve the flight by the attributes, or instantiate a new instance...
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
 
+You may also come across situations where you want to update a model or create a new model if none exists. Laravel provides an `updateOrCreate` method to do this in one step. Like the `newOrCreate` method, `updateOrCreate` persists the model, so there's no need to call `save()`.
+
+    // If there's already a flight from Oakland to San Diego, set the price to $99.
+    // If not, create one.
+    $flight = App\Flight::updateOrCreate(
+        ['departure' => 'Oakland', 'destination'=>'San Diego'], 
+        ['price' => 99]
+    );
+
 <a name="deleting-models"></a>
 ## Deleting Models
 
