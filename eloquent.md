@@ -367,6 +367,8 @@ If you would like to make all attributes mass assignable, you may define the `$g
 <a name="other-creation-methods"></a>
 ### Other Creation Methods
 
+#### `firstOrCreate`/ `firstOrNew`
+
 There are two other methods you may use to create models by mass assigning attributes: `firstOrCreate` and `firstOrNew`. The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the given attributes.
 
 The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to call `save` manually to persist it:
@@ -377,12 +379,14 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
     // Retrieve the flight by the attributes, or instantiate a new instance...
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
 
-You may also come across situations where you want to update a model or create a new model if none exists. Laravel provides an `updateOrCreate` method to do this in one step. Like the `newOrCreate` method, `updateOrCreate` persists the model, so there's no need to call `save()`.
+#### `updateOrCreate`
 
-    // If there's already a flight from Oakland to San Diego, set the price to $99.
-    // If not, create one.
+You may also come across situations where you want to update an existing model or create a new model if none exists. Laravel provides an `updateOrCreate` method to do this in one step. Like the `newOrCreate` method, `updateOrCreate` persists the model, so there's no need to call `save()`:
+
+    // If there's a flight from Oakland to San Diego, set the price to $99.
+    // If no matching model exists, create one.
     $flight = App\Flight::updateOrCreate(
-        ['departure' => 'Oakland', 'destination'=>'San Diego'], 
+        ['departure' => 'Oakland', 'destination' => 'San Diego'],
         ['price' => 99]
     );
 
