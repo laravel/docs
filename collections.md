@@ -355,6 +355,16 @@ The `filter` method filters the collection using the given callback, keeping onl
 
     // [3, 4]
 
+If no callback is supplied, all entries of the collection equal to FALSE will be removed:
+
+    $collection = collect([1, 2, 3, null, false, '', 0, []]);
+
+    $filtered = $collection->filter();
+
+    $filtered->all();
+
+    // [1, 2, 3]
+
 For the inverse of `filter`, see the [reject](#method-reject) method.
 
 <a name="method-first"></a>
