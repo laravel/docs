@@ -77,6 +77,14 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
 When a user is not successfully authenticated, they will be automatically redirected back to the login form.
 
+#### User Field Customization
+
+By default, Laravel uses the `email` field for authorization. If you would like to override this, you may add a `username()` method to your `LoginController` or `RegisterController`. Below is an example for using `username` for authorization:
+
+    public function username() {
+        return 'username';
+    }
+
 #### Guard Customization
 
 You may also customize the "guard" that is used to authenticate and register users. To get started, define a `guard` method on your `LoginController`, `RegisterController`, and `ResetPasswordController`. The method should return a guard instance:
