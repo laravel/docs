@@ -79,7 +79,7 @@ When a user is not successfully authenticated, they will be automatically redire
 
 #### User Field Customization
 
-By default, Laravel uses the `email` field for authorization. If you would like to override this, you may add a `username()` method to your `LoginController` or `RegisterController`. Below is an example for using `username` for authorization:
+By default, Laravel uses the `email` field for authorization. If you would like to override this, you may add a `username()` method to your `LoginController`. Below is an example for using `username` for authorization:
 
     public function username() {
         return 'username';
