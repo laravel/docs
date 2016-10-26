@@ -542,7 +542,7 @@ The field under validation must be _yes_, _on_, _1_, or _true_. This is useful f
 <a name="rule-active-url"></a>
 #### active_url
 
-The field under validation must be a valid URL according to the `checkdnsrr` PHP function.
+The field under validation must have a valid A or AAAA record according to the `dns_get_record` PHP function.
 
 <a name="rule-after"></a>
 #### after:_date_
