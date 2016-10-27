@@ -97,8 +97,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [asset](#method-asset)
 [secure_asset](#method-secure-asset)
 [route](#method-route)
-[url](#method-url)
 [secure_url](#method-secure-url)
+[url](#method-url)
 
 </div>
 
@@ -728,6 +728,15 @@ If the route accepts parameters, you may pass them as the second argument to the
 
     $url = route('routeName', ['id' => 1]);
 
+<a name="method-secure-url"></a>
+#### `secure_url()` {#collection-method}
+
+The `secure_url` function generates a fully qualified HTTPS URL to the given path:
+
+    echo secure_url('user/profile');
+
+    echo secure_url('user/profile', [1]);
+
 <a name="method-url"></a>
 #### `url()` {#collection-method}
 
@@ -742,13 +751,6 @@ If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned
     echo url()->current();
     echo url()->full();
     echo url()->previous();
-
-<a name="method-secure-url"></a>
-#### `secure_url()` {#collection-method}
-
-Generate a fully qualified URL to a given path using HTTPS.
-
-    echo secure_url('foo/bar', $parameters = array());
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
