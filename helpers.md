@@ -742,6 +742,13 @@ If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned
     echo url()->full();
     echo url()->previous();
 
+<a name="method-secure-url"></a>
+#### `secure_url()` {#collection-method}
+
+Generate a fully qualified URL to a given path using HTTPS.
+
+    echo secure_url('foo/bar', $parameters = array());
+
 <a name="miscellaneous"></a>
 ## Miscellaneous
 
