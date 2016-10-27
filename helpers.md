@@ -98,6 +98,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [secure_asset](#method-secure-asset)
 [route](#method-route)
 [url](#method-url)
+[secure_url](#method-secure-url)
 
 </div>
 
