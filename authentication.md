@@ -182,7 +182,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
 
     use Illuminate\Support\Facades\Auth;
 
-    class AuthController extends Controller
+    class LoginController extends Controller
     {
         /**
          * Handle an authentication attempt.

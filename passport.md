@@ -380,6 +380,7 @@ When using the password grant, you may wish to authorize the token for all of th
         'form_params' => [
             'grant_type' => 'password',
             'client_id' => 'client-id',
+            'client_secret' => 'client-secret',
             'username' => 'taylor@laravel.com',
             'password' => 'my-password',
             'scope' => '*',

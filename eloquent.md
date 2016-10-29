@@ -367,6 +367,8 @@ If you would like to make all attributes mass assignable, you may define the `$g
 <a name="other-creation-methods"></a>
 ### Other Creation Methods
 
+#### `firstOrCreate`/ `firstOrNew`
+
 There are two other methods you may use to create models by mass assigning attributes: `firstOrCreate` and `firstOrNew`. The `firstOrCreate` method will attempt to locate a database record using the given column / value pairs. If the model can not be found in the database, a record will be inserted with the given attributes.
 
 The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to call `save` manually to persist it:
@@ -376,6 +378,17 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
 
     // Retrieve the flight by the attributes, or instantiate a new instance...
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
+
+#### `updateOrCreate`
+
+You may also come across situations where you want to update an existing model or create a new model if none exists. Laravel provides an `updateOrCreate` method to do this in one step. Like the `newOrCreate` method, `updateOrCreate` persists the model, so there's no need to call `save()`:
+
+    // If there's a flight from Oakland to San Diego, set the price to $99.
+    // If no matching model exists, create one.
+    $flight = App\Flight::updateOrCreate(
+        ['departure' => 'Oakland', 'destination' => 'San Diego'],
+        ['price' => 99]
+    );
 
 <a name="deleting-models"></a>
 ## Deleting Models
@@ -624,6 +637,7 @@ Scopes should always return a query builder instance:
         /**
          * Scope a query to only include popular users.
          *
+         * @param \Illuminate\Database\Eloquent\Builder $query
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopePopular($query)
@@ -634,6 +648,7 @@ Scopes should always return a query builder instance:
         /**
          * Scope a query to only include active users.
          *
+         * @param \Illuminate\Database\Eloquent\Builder $query
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeActive($query)
@@ -663,6 +678,8 @@ Sometimes you may wish to define a scope that accepts parameters. To get started
         /**
          * Scope a query to only include users of a given type.
          *
+         * @param \Illuminate\Database\Eloquent\Builder $query
+         * @param mixed $type
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeOfType($query, $type)

@@ -55,7 +55,7 @@ By default, the Laravel `gulpfile.js` file compiles your SASS and the `resources
 <a name="writing-vue-components"></a>
 ### Writing Vue Components
 
-By default, fresh Laravel applications contain an `Example.vue` Vue component located in the `resources/assets/js/components` directory. The `Example.vue` file is an example of a [single file Vue component](http://vuejs.org/guide/single-file-components.html) which defines its JavaScript and HTML template in the same file. Single file components provide a very convenient approach to building JavaScript driven applications. The example component is registered in your `app.js` file:
+By default, fresh Laravel applications contain an `Example.vue` Vue component located in the `resources/assets/js/components` directory. The `Example.vue` file is an example of a [single file Vue component](http://vuejs.org/guide/single-file-components) which defines its JavaScript and HTML template in the same file. Single file components provide a very convenient approach to building JavaScript driven applications. The example component is registered in your `app.js` file:
 
     Vue.component('example', require('./components/Example.vue'));
 

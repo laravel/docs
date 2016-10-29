@@ -98,6 +98,17 @@ Homestead 可以在任何 Windows、Mac 或 Linux 系統上面執行，裡面包
           to: /home/vagrant/Code
           type: "nfs"
 
+You may also pass any options supported by Vagrant's [Synced Folders](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) by listing them under the `options` key:
+
+    folders:
+        - map: ~/Code
+          to: /home/vagrant/Code
+          type: "rsync"
+          options:
+              rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
+              rsync__exclude: ["node_modules"]
+
+
 #### 設定 Nginx 網站
 
 對 Nginx 不熟悉嗎？沒關係。`sites` 屬性幫助你可以輕易的指定「網域」對應至 homestead 環境中的目錄。在 `Homestead.yaml` 檔案中已包含一個網站設定範例。同樣的，你可以增加數個網站到 Homestead 環境中。Homestead 可以為每個你正在開發中的 Laravel 專案提供方便的虛擬化環境：
