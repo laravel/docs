@@ -318,7 +318,7 @@ The `whereDate` method may be used compare a column's value against a date:
                     ->whereDate('created_at', '2016-12-31')
                     ->get();
 
-The `whereMonth` method may be used compare a column's value against a specific month of an year:
+The `whereMonth` method may be used compare a column's value against a specific month of a year:
 
     $users = DB::table('users')
                     ->whereMonth('created_at', '12')
