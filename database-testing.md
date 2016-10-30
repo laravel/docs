@@ -86,7 +86,7 @@ Another approach to resetting the database state is to wrap each test case in a 
         }
     }
 
-> {note} This trait will only wrap the default database connection in a transaction. If your application is using multiple database connections, you will need to manually handle the transaction logic for those connections.
+> {note} This trait will only wrap the default database connection in a transaction by default. If your application is using multiple database connections, you will need to define `$connectionsToTransact` property as an array of database connections to perform transactions on.
 
 <a name="writing-factories"></a>
 ## Writing Factories
