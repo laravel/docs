@@ -40,6 +40,12 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
     php artisan make:migration add_votes_to_users_table --table=users
 
+The `--seeder` option may also be used to generate a [database seeder](/docs/{{version}}/seeding) for your table:
+
+    php artisan make:migration create_users_table --create=users --seeder
+
+    php artisan make:migration add_votes_to_users_table --table=users --seeder
+
 If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
 
 <a name="migration-structure"></a>
