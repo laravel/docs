@@ -111,7 +111,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [where](#method-where)
 [whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
-[whereInLoose](#method-whereinloose)
+[whereInStrict](#method-whereinstrict)
 [zip](#method-zip)
 
 </div>
@@ -1414,12 +1414,12 @@ The `whereIn` method filters the collection by a given key / value contained wit
     ]
     */
 
-The `whereIn` method uses strict comparisons when checking item values. Use the [`whereInLoose`](#method-whereinloose) method to filter using "loose" comparisons.
+The `whereIn` method uses "loose" comparisons when checking item values. Use the [`whereInStrict`](#method-whereinstrict) method to filter using strict comparisons.
 
-<a name="method-whereinloose"></a>
-#### `whereInLoose()` {#collection-method}
+<a name="method-whereinstrict"></a>
+#### `whereInStrict()` {#collection-method}
 
-This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using "loose" comparisons.
+This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using strict comparisons.
 
 <a name="method-zip"></a>
 #### `zip()` {#collection-method}
