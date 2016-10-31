@@ -127,6 +127,10 @@ You may rollback & re-migrate a limited number of migrations by providing the `s
 
     php artisan migrate:refresh --step=5
 
+When you've made new models and you get an error on non excisting classes, run the command:
+
+    composer dump-autoload
+
 <a name="tables"></a>
 ## Tables
 
