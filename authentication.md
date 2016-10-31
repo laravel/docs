@@ -77,11 +77,12 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
 When a user is not successfully authenticated, they will be automatically redirected back to the login form.
 
-#### User Field Customization
+#### Username Customization
 
-By default, Laravel uses the `email` field for authorization. If you would like to override this, you may add a `username()` method to your `LoginController`. Below is an example for using `username` for authorization:
+By default, Laravel uses the `email` field for authentication. If you would like to customize this, you may define a `username` method on your `LoginController`:
 
-    public function username() {
+    public function username()
+    {
         return 'username';
     }
 
