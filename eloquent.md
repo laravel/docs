@@ -125,6 +125,27 @@ If you need to customize the format of your timestamps, set the `$dateFormat` pr
         protected $dateFormat = 'U';
     }
 
+If you need to use a different name for the `created_at` and `updated_at` fields in your table, set the `CREATED_AT` and `UPDATED_AT` constants in your model:
+
+    <?php
+
+    class Flight extends Model
+    {
+        /**
+         * The name of the "created at" column.
+         *
+         * @var string
+         */
+        const CREATED_AT = 'creation_date';
+
+        /**
+         * The name of the "updated at" column.
+         *
+         * @var string
+         */
+        const UPDATED_AT = 'last_update';
+    }
+
 #### Database Connection
 
 By default, all Eloquent models will use the default database connection configured for your application. If you would like to specify a different connection for the model, use the `$connection` property:
