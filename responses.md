@@ -73,7 +73,7 @@ The `cookie` method on response instances allows you to easily attach cookies to
                     ->header('Content-Type', $type)
                     ->cookie('name', 'value', $minutes);
 
-The `cookie` method also accepts a few more arguments which are used less frequently. Generally, these arguments have the same purpose and meaning as the arguments that would be given to PHP's native [setcookie](http://php.net/manual/en/function.setcookie.php) method:
+The `cookie` method also accepts a few more arguments which are used less frequently. Generally, these arguments have the same purpose and meaning as the arguments that would be given to PHP's native [setcookie](https://secure.php.net/manual/en/function.setcookie.php) method:
 
     ->cookie($name, $value, $minutes, $path, $domain, $secure, $httpOnly)
 
