@@ -468,7 +468,7 @@ Cashier automatically handles subscription cancellation on failed charges, but i
 <a name="handling-failed-subscriptions"></a>
 ### Failed Subscriptions
 
-What if a customer's credit card expires? No worries - the Cashier webhook controller that can easily cancel the customer's subscription for you. As noted above, all you need to do is point a route to the controller:
+What if a customer's credit card expires? No worries - Cashier includes a Webhook controller that can easily cancel the customer's subscription for you. As noted above, all you need to do is point a route to the controller:
 
     Route::post(
         'stripe/webhook',
