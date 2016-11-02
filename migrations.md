@@ -294,8 +294,8 @@ We could also modify a column to be nullable:
     Schema::table('users', function ($table) {
         $table->string('name', 50)->nullable()->change();
     });
-    
-> {note} These column types can _NOT_ be changed in this way: `char, double, enum, mediumInteger, timestamp, tinyInteger, ipAddress, json, jsonb, macAddress, mediumIncrements, morphs, nullableTimestamps, softDeletes, timeTz, timestampTz, timestamps, timestampsTz, unsignedMediumInteger, unsignedTinyInteger, uuid`.
+
+> {note} The following column types can not be "changed": char, double, enum, mediumInteger, timestamp, tinyInteger, ipAddress, json, jsonb, macAddress, mediumIncrements, morphs, nullableTimestamps, softDeletes, timeTz, timestampTz, timestamps, timestampsTz, unsignedMediumInteger, unsignedTinyInteger, uuid.
 
 > {note} Modifying any column in a table that also has a column of type `enum` is not currently supported.
 
