@@ -112,7 +112,11 @@ You may access the authenticated user via the `Auth` facade:
 
     use Illuminate\Support\Facades\Auth;
 
+    // Get the currently authenticated user...
     $user = Auth::user();
+
+    // Get the currently authenticated user's ID...
+    $id = Auth::id();
 
 Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods:
 
