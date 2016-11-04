@@ -71,6 +71,12 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 When using the Algolia driver, you should configure your Algolia `id` and `secret` credentials in your `config/scout.php` configuration file. Once your credentials have been configured, you will also need to install the Algolia PHP SDK via the Composer package manager:
 
     composer require algolia/algoliasearch-client-php
+    
+#### Elasticsearch
+
+When using the Elasticsearch driver, you should configure your the name of your `index` and add your `hosts` to your `config/scout.php` configuration file. You should also set a `SCOUT_DRIVER` key with the value `elasticsearch` in your `.env` file.  Once your database has been configured, you will also need to install the Elasticsearch SDK via the Composer package manager:
+
+    composer require elasticsearch/elasticsearch
 
 <a name="configuration"></a>
 ## Configuration
