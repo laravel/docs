@@ -786,6 +786,10 @@ The `abort_unless` function throws an HTTP exception if a given boolean expressi
 The `auth` function returns an authenticator instance. You may use it instead of the `Auth` facade for convenience:
 
     $user = auth()->user();
+    
+If you just need the ID of the current user, you can also use this shortcut:
+
+    $user_id = auth()->id();   // equilivant to auth()->user()->id;
 
 <a name="method-back"></a>
 #### `back()` {#collection-method}
