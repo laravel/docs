@@ -421,7 +421,7 @@ The `orderBy` method allows you to sort the result of the query by a given colum
 
 #### latest / oldest
 
-The `latest` and `oldest` helper methods allow you to easily order results by date. When no argument is given, result will be ordered by the `created_at` column. Grab the newest user:
+The `latest` and `oldest` methods allow you to easily order results by date. By default, result will be ordered by the `created_at` column. Or, you may pass the column name that you wish to sort by:
 
     $user = DB::table('users')
                     ->latest()
