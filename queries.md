@@ -419,6 +419,14 @@ The `orderBy` method allows you to sort the result of the query by a given colum
                     ->orderBy('name', 'desc')
                     ->get();
 
+#### latest / oldest
+
+The `latest` and `oldest` helper methods allow you to easily order results by date. When no argument is given, result will be ordered by the `created_at` column. Grab the newest user:
+
+    $user = DB::table('users')
+                    ->latest()
+                    ->first();
+
 #### inRandomOrder
 
 The `inRandomOrder` method may be used to sort the query results randomly. For example, you may use this method to fetch a random user:
