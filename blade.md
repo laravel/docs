@@ -11,6 +11,7 @@
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
     - [Comments](#comments)
+    - [PHP](#php)
 - [Including Sub-Views](#including-sub-views)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -98,16 +99,6 @@ Of course, you are not limited to displaying the contents of the variables passe
     The current UNIX timestamp is {{ time() }}.
 
 > {note} Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks.
-
-### Embedding PHP Code Blocks
-In some situations, it's useful to embed PHP code into your views. In addition to allowing you to do that within a Blade echo statement, you can also use the Blade `@php` directive:
-
-    @php
-        $now = new \DateTime();
-        echo $now->format('d/m/Y');
-    @endphp
-
-> {note} Whilst Blade allows you to do this, using it frequently in your templates can suggest that there might be an opportunity to add a new view that can be included conditionally.
 
 #### Echoing Data If It Exists
 
@@ -269,6 +260,17 @@ Property  | Description
 Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
 
     {{-- This comment will not be present in the rendered HTML --}}
+
+<a name="php"></a>
+### PHP
+
+In some situations, it's useful to embed PHP code into your views. You can use the Blade `@php` directive to execute a block of plain PHP within your template:
+
+    @php
+        //
+    @endphp
+
+> {tip} While Blade provides this feature, using it frequently may be a signal that you have too much logic embedded within your template.
 
 <a name="including-sub-views"></a>
 ## Including Sub-Views
