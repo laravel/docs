@@ -100,7 +100,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 > {note} Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks.
 
 ### Embedding PHP Code Blocks
-In some situations, it's useful to embed PHP code into your views. In addition to allowing you to do that within a Blade echo statement, you can also do that using the Blade `@@php` directive:
+In some situations, it's useful to embed PHP code into your views. In addition to allowing you to do that within a Blade echo statement, you can also use the Blade `@@php` directive:
 
     @php
         $now = new \DateTime();
