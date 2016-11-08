@@ -74,7 +74,7 @@ When defining a child view, use the Blade `@extends` directive to specify which 
 
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
-In addition to using the `@@endsection` directive to end a section, you can also use `@@stop` which has the same effect.
+Instead of using the `@@endsection` directive to end a section, you can also use `@@stop` which has the same effect.
 
 Blade views may be returned from routes using the global `view` helper:
 
