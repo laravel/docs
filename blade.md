@@ -289,6 +289,8 @@ Even though the included view will inherit all data available in the parent view
 
     @include('view.name', ['some' => 'data'])
 
+Including a view that doesn't exist will throw an error, but in situations where you need to include a view that may not be present you can use the `@includeIf` directive.
+
 > {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
 <a name="rendering-views-for-collections"></a>
