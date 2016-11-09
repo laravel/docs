@@ -289,7 +289,9 @@ Even though the included view will inherit all data available in the parent view
 
     @include('view.name', ['some' => 'data'])
 
-Including a view that doesn't exist will throw an error, but in situations where you need to include a view that may not be present you can use the `@includeIf` directive.
+Of course, if you attempt to `@include` a view which does not exist, Laravel will throw an error. If you would like to include a view that may or may not be present, you should use the `@includeIf` directive:
+
+    @includeIf('view.name', ['some' => 'data'])
 
 > {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
