@@ -14,6 +14,7 @@
 - [Including Sub-Views](#including-sub-views)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
+- [Wrappers](#wrappers)
 - [Service Injection](#service-injection)
 - [Extending Blade](#extending-blade)
 
@@ -308,6 +309,28 @@ You may push to a stack as many times as needed. To render the complete stack co
 
         @stack('scripts')
     </head>
+
+<a name="wrappers"></a>
+## Wrappers
+
+Blade allows you to wrap templates around other templates. This is useful when building standard components.
+
+    @wrapper('view.name')
+        Contents of the wrapper.
+    @endwrapper
+
+In the wrapper view you can pass what will surround the contents of the view. The `@child` will be replaced with the contents.
+
+    <div class="panel">
+        @child
+    </div>
+
+You will get this result:
+
+    <div class="panel">
+        Contents of the wrapper.
+    </div>
+
 
 <a name="service-injection"></a>
 ## Service Injection
