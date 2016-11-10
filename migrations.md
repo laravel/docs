@@ -283,7 +283,7 @@ Before modifying a column, be sure to add the `doctrine/dbal` dependency to your
 
 #### Updating Column Attributes
 
-The `change` method allows you to modify an existing column to a new type or modify the column's attributes. For example, you may wish to increase the size of a string column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
+The `change` method allows you to modify some existing column types to a new type or modify the column's attributes. For example, you may wish to increase the size of a string column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
 
     Schema::table('users', function ($table) {
         $table->string('name', 50)->change();
@@ -294,6 +294,8 @@ We could also modify a column to be nullable:
     Schema::table('users', function ($table) {
         $table->string('name', 50)->nullable()->change();
     });
+
+> {note} The following column types can not be "changed": char, double, enum, mediumInteger, timestamp, tinyInteger, ipAddress, json, jsonb, macAddress, mediumIncrements, morphs, nullableTimestamps, softDeletes, timeTz, timestampTz, timestamps, timestampsTz, unsignedMediumInteger, unsignedTinyInteger, uuid.
 
 > {note} Modifying any column in a table that also has a column of type `enum` is not currently supported.
 

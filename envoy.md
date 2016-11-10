@@ -167,9 +167,9 @@ If you would like to be prompted for confirmation before running a given task on
 
 Envoy also supports sending notifications to [Slack](https://slack.com) after each task is executed. The `@slack` directive accepts a Slack hook URL and a channel name. You may retrieve your webhook URL by creating an "Incoming WebHooks" integration in your Slack control panel. You should pass the entire webhook URL into the `@slack` directive:
 
-    @after
+    @finished
         @slack('webhook-url', '#bots')
-    @endafter
+    @endfinished
 
 You may provide one of the following as the channel argument:
 
