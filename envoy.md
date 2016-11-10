@@ -30,7 +30,7 @@ Since global Composer libraries can sometimes cause package version conflicts, y
 
 #### Updating Envoy
 
-You may also use Composer to keep your Envoy installation up to date. Issuing the the `composer global update` command will update all of your globally installed Composer packages:
+You may also use Composer to keep your Envoy installation up to date. Issuing the `composer global update` command will update all of your globally installed Composer packages:
 
     composer global update
 
@@ -77,7 +77,7 @@ If needed, you may pass option values into Envoy tasks using the command line:
 
     envoy run deploy --branch=master
 
-You may use access the options in your tasks via Blade's "echo" syntax. Of course, you may also use `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
+You may access the options in your tasks via Blade's "echo" syntax. Of course, you may also use `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
 
     @servers(['web' => '192.168.1.1'])
 
@@ -167,9 +167,9 @@ If you would like to be prompted for confirmation before running a given task on
 
 Envoy also supports sending notifications to [Slack](https://slack.com) after each task is executed. The `@slack` directive accepts a Slack hook URL and a channel name. You may retrieve your webhook URL by creating an "Incoming WebHooks" integration in your Slack control panel. You should pass the entire webhook URL into the `@slack` directive:
 
-    @after
+    @finished
         @slack('webhook-url', '#bots')
-    @endafter
+    @endfinished
 
 You may provide one of the following as the channel argument:
 
