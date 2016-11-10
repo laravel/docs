@@ -49,6 +49,12 @@ if ($policy) {
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
+### Updating Dependencies
+
+Update your `laravel/framework` dependency to `5.3.*` in your `composer.json` file.
+
+You should also upgrade your `symfony/css-selector` and `symfony/dom-crawler` dependencies to `3.1.*` in the `require-dev` section of your `composer.json` file.
+
 ### PHP & HHVM
 
 Laravel 5.3 requires PHP 5.6.4 or higher. HHVM is no longer officially supported as it does not contain the same language features as PHP 5.6+.
@@ -480,7 +486,7 @@ Below is an example migration you may use to perform the necessary changes:
 
 #### Process Control Extension
 
-If your application makes use of the `--timeout` option for queue workers, you'll need to verify that the [pcntl extension](http://php.net/manual/en/pcntl.installation.php) is installed.
+If your application makes use of the `--timeout` option for queue workers, you'll need to verify that the [pcntl extension](https://secure.php.net/manual/en/pcntl.installation.php) is installed.
 
 #### Serializing Models On Legacy Style Queue Jobs
 
@@ -531,6 +537,10 @@ If this change causes you to have two routes with the same name, you have two op
 #### Form Request Exceptions
 
 If a form request's validation fails, Laravel will now throw an instance of `Illuminate\Validation\ValidationException` instead of an instance of `HttpException`. If you are manually catching the `HttpException` instance thrown by a form request, you should update your `catch` blocks to catch the `ValidationException` instead.
+
+#### The Message Bag
+
+If you were previously using the `has` method to determine if an `Illuminate\Support\MessageBag` instance contained any messages, you should use the `count` method instead. The `has` method now requires a parameter and only determines if a specific key exists in the message bag.
 
 #### Nullable Primitives
 
@@ -754,7 +764,7 @@ If you were type-hinting a model instance in your route or controller and were e
 
 The IronMQ queue driver has been moved into its own package and is no longer shipped with the core framework.
 
-[http://github.com/LaravelCollective/iron-queue](http://github.com/laravelcollective/iron-queue)
+[https://github.com/LaravelCollective/iron-queue](https://github.com/laravelcollective/iron-queue)
 
 ### Jobs / Queue
 

@@ -315,19 +315,19 @@ The `whereNotNull` method verifies that the column's value is not `NULL`:
 The `whereDate` method may be used compare a column's value against a date:
 
     $users = DB::table('users')
-                    ->whereDate('created_at', '2016-10-10')
+                    ->whereDate('created_at', '2016-12-31')
                     ->get();
 
-The `whereMonth` method may be used compare a column's value against a specific month of an year:
+The `whereMonth` method may be used compare a column's value against a specific month of a year:
 
     $users = DB::table('users')
-                    ->whereMonth('created_at', '10')
+                    ->whereMonth('created_at', '12')
                     ->get();
 
 The `whereDay` method may be used compare a column's value against a specific day of a month:
 
     $users = DB::table('users')
-                    ->whereDay('created_at', '10')
+                    ->whereDay('created_at', '31')
                     ->get();
 
 The `whereYear` method may be used compare a column's value against a specific year:
@@ -418,6 +418,14 @@ The `orderBy` method allows you to sort the result of the query by a given colum
     $users = DB::table('users')
                     ->orderBy('name', 'desc')
                     ->get();
+
+#### latest / oldest
+
+The `latest` and `oldest` methods allow you to easily order results by date. By default, result will be ordered by the `created_at` column. Or, you may pass the column name that you wish to sort by:
+
+    $user = DB::table('users')
+                    ->latest()
+                    ->first();
 
 #### inRandomOrder
 

@@ -8,7 +8,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-While Laravel does not dictate which JavaScript or CSS pre-processors you use, it does provide a basic starting point using [Bootstrap](http://getbootstrap.com) and [Vue](https://vuejs.org) that will be helpful for many applications. By default, Laravel uses [NPM](https://npmjs.org) to install both of these frontend packages.
+While Laravel does not dictate which JavaScript or CSS pre-processors you use, it does provide a basic starting point using [Bootstrap](https://getbootstrap.com/) and [Vue](https://vuejs.org) that will be helpful for many applications. By default, Laravel uses [NPM](https://www.npmjs.org) to install both of these frontend packages.
 
 #### CSS
 
@@ -38,7 +38,7 @@ The default `gulpfile.js` included with Laravel will compile the `resources/asse
 <a name="writing-javascript"></a>
 ## Writing JavaScript
 
-All of the JavaScript dependencies required by your application can be found in the `package.json` file in the project's root directory. This file is similar to a `composer.json` file except it specifies JavaScript dependencies instead of PHP dependencies. You can install these dependencies using the [Node package manager (NPM)](https://npmjs.org):
+All of the JavaScript dependencies required by your application can be found in the `package.json` file in the project's root directory. This file is similar to a `composer.json` file except it specifies JavaScript dependencies instead of PHP dependencies. You can install these dependencies using the [Node package manager (NPM)](https://www.npmjs.org):
 
     npm install
 
@@ -55,7 +55,7 @@ By default, the Laravel `gulpfile.js` file compiles your SASS and the `resources
 <a name="writing-vue-components"></a>
 ### Writing Vue Components
 
-By default, fresh Laravel applications contain an `Example.vue` Vue component located in the `resources/assets/js/components` directory. The `Example.vue` file is an example of a [single file Vue component](http://vuejs.org/guide/single-file-components.html) which defines its JavaScript and HTML template in the same file. Single file components provide a very convenient approach to building JavaScript driven applications. The example component is registered in your `app.js` file:
+By default, fresh Laravel applications contain an `Example.vue` Vue component located in the `resources/assets/js/components` directory. The `Example.vue` file is an example of a [single file Vue component](https://vuejs.org/guide/single-file-components) which defines its JavaScript and HTML template in the same file. Single file components provide a very convenient approach to building JavaScript driven applications. The example component is registered in your `app.js` file:
 
     Vue.component('example', require('./components/Example.vue'));
 
@@ -69,4 +69,4 @@ To use the component in your application, you may simply drop it into one of you
 
 > {tip} Remember, you should run the `gulp` command each time you change a Vue component. Or, you may run the `gulp watch` command to monitor and automatically recompile your components each time they are modified.
 
-Of course, if you are interested in learning more about writing Vue components, you should read the [Vue documentation](http://vuejs.org/guide/), which provides a thorough, easy-to-read overview of the entire Vue framework.
+Of course, if you are interested in learning more about writing Vue components, you should read the [Vue documentation](https://vuejs.org/guide/), which provides a thorough, easy-to-read overview of the entire Vue framework.

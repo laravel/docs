@@ -27,7 +27,7 @@ However, if you are not using Homestead, you will need to make sure your server 
 <a name="installing-laravel"></a>
 ### Installing Laravel
 
-Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. So, before using Laravel, make sure you have Composer installed on your machine.
+Laravel utilizes [Composer](https://getcomposer.org) to manage its dependencies. So, before using Laravel, make sure you have Composer installed on your machine.
 
 #### Via Laravel Installer
 

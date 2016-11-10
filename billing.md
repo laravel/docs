@@ -30,7 +30,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) and [Braintree's](https://braintreepayments.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
+Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://stripe.com) and [Braintree's](https://www.braintreepayments.com) subscription billing services. It handles almost all of the boilerplate subscription billing code you are dreading writing. In addition to basic subscription management, Cashier can handle coupons, swapping subscription, subscription "quantities", cancellation grace periods, and even generate invoice PDFs.
 
 > {note} If you're only performing "one-off" charges and do not offer subscriptions. You should not use Cashier. You should use the Stripe and Braintree SDKs directly.
 
@@ -434,7 +434,7 @@ By default, this controller will automatically handle cancelling subscriptions t
 
 #### Webhooks & CSRF Protection
 
-Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/routing#csrf-protection), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
+Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
 
     protected $except = [
         'stripe/*',
@@ -468,7 +468,7 @@ Cashier automatically handles subscription cancellation on failed charges, but i
 <a name="handling-failed-subscriptions"></a>
 ### Failed Subscriptions
 
-What if a customer's credit card expires? No worries - the Cashier webhook controller that can easily cancel the customer's subscription for you. As noted above, all you need to do is point a route to the controller:
+What if a customer's credit card expires? No worries - Cashier includes a Webhook controller that can easily cancel the customer's subscription for you. As noted above, all you need to do is point a route to the controller:
 
     Route::post(
         'stripe/webhook',
@@ -493,7 +493,7 @@ By default, this controller will automatically handle cancelling subscriptions t
 
 #### Webhooks & CSRF Protection
 
-Since Braintree webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/routing#csrf-protection), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
+Since Braintree webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), be sure to list the URI as an exception in your `VerifyCsrfToken` middleware or list the route outside of the `web` middleware group:
 
     protected $except = [
         'braintree/*',

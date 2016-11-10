@@ -542,7 +542,7 @@ The field under validation must be _yes_, _on_, _1_, or _true_. This is useful f
 <a name="rule-active-url"></a>
 #### active_url
 
-The field under validation must be a valid URL according to the `checkdnsrr` PHP function.
+The field under validation must have a valid A or AAAA record according to the `dns_get_record` PHP function.
 
 <a name="rule-after"></a>
 #### after:_date_
@@ -740,7 +740,7 @@ The file under validation must have a MIME type corresponding to one of the list
 
 Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
 
-A full listing of MIME types and their corresponding extensions may be found at the following location: [http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+A full listing of MIME types and their corresponding extensions may be found at the following location: [https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
 <a name="rule-min"></a>
 #### min:_value_
