@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [Upgrading To 5.4.0 From 5.3](#upgrade-5.4.0)
 - [Upgrading To 5.3.0 From 5.2](#upgrade-5.3.0)
 - [Upgrading To 5.2.0 From 5.1](#upgrade-5.2.0)
 - [Upgrading To 5.1.11](#upgrade-5.1.11)
@@ -10,6 +11,36 @@
 - [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
 - [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
 - [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+
+<a name="upgrade-5.4.0"></a>
+## Upgrading To 5.4.0 From 5.3
+
+#### Estimated Upgrade Time: 10 Minutes
+
+### Authorization
+
+#### Policy Class Determination
+
+Policies may now be bound to an interface or parent class. When determining which policy to use for a given object, a policy bound to the object's exact
+
+<div class="content-list" markdown="1">
+- Each class has its own policy, as policies bound to exactly the given class will be found before looking for subtypes
+- Or, bind your policy to the root of the inheritance tree
+</div>
+
+#### The `getPolicyFor` Method
+
+Previous, when calling the `Gate::getPolicyFor($class)` method, an exception was thrown if no policy could be found. Now, the method will return `null` if no policy is found for the given class. If you call this method directly, make sure you refactor your `try / catch` to a check for `null`:
+
+```php
+$policy = Gate::getPolicyFor($class);
+
+if ($policy) {
+    // code that was previously in the try block
+} else {
+    // code that was previously in the catch block
+}
+```
 
 <a name="upgrade-5.3.0"></a>
 ## Upgrading To 5.3.0 From 5.2
