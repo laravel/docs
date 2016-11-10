@@ -4,6 +4,7 @@
 - [Route Parameters](#route-parameters)
     - [Required Parameters](#required-parameters)
     - [Optional Parameters](#parameters-optional-parameters)
+    - [Regular Expression Constraints](#parameters-regular-expression-constraints)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
     - [Middleware](#route-group-middleware)
@@ -92,6 +93,50 @@ Occasionally you may need to specify a route parameter, but make the presence of
 
     Route::get('user/{name?}', function ($name = 'John') {
         return $name;
+    });
+    
+<a name="parameters-regular-expression-constraints"></a>
+### Regular Expression Constraints
+
+You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
+
+    Route::get('user/{name}', function ($name) {
+        //
+    })
+    ->where('name', '[A-Za-z]+');
+
+    Route::get('user/{id}', function ($id) {
+        //
+    })
+    ->where('id', '[0-9]+');
+
+    Route::get('user/{id}/{name}', function ($id, $name) {
+        //
+    })
+    ->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+
+<a name="parameters-global-constraints"></a>
+#### Global Constraints
+
+If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
+
+    /**
+     * Define your route model bindings, pattern filters, etc.
+     *
+     * @param  \Illuminate\Routing\Router  $router
+     * @return void
+     */
+    public function boot(Router $router)
+    {
+        $router->pattern('id', '[0-9]+');
+
+        parent::boot($router);
+    }
+
+Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
+
+    Route::get('user/{id}', function ($id) {
+        // Only called if {id} is numeric.
     });
 
 <a name="named-routes"></a>
