@@ -171,6 +171,12 @@ Envoy also supports sending notifications to [Slack](https://slack.com) after ea
         @slack('webhook-url', '#bots')
     @endafter
 
+If you would like to send notifications just once when all tasks have been finished, you may use `@finished` directive.
+
+    @finished
+        @slack('webhook-url', '#bots')
+    @endfinished
+
 You may provide one of the following as the channel argument:
 
 <div class="content-list" markdown="1">
