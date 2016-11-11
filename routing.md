@@ -94,7 +94,7 @@ Occasionally you may need to specify a route parameter, but make the presence of
     Route::get('user/{name?}', function ($name = 'John') {
         return $name;
     });
-    
+
 <a name="parameters-regular-expression-constraints"></a>
 ### Regular Expression Constraints
 
@@ -102,18 +102,15 @@ You may constrain the format of your route parameters using the `where` method o
 
     Route::get('user/{name}', function ($name) {
         //
-    })
-    ->where('name', '[A-Za-z]+');
+    })->where('name', '[A-Za-z]+');
 
     Route::get('user/{id}', function ($id) {
         //
-    })
-    ->where('id', '[0-9]+');
+    })->where('id', '[0-9]+');
 
     Route::get('user/{id}/{name}', function ($id, $name) {
         //
-    })
-    ->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+    })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 
 <a name="parameters-global-constraints"></a>
 #### Global Constraints
@@ -123,20 +120,19 @@ If you would like a route parameter to always be constrained by a given regular 
     /**
      * Define your route model bindings, pattern filters, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
-        $router->pattern('id', '[0-9]+');
+        Route::pattern('id', '[0-9]+');
 
-        parent::boot($router);
+        parent::boot();
     }
 
 Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
 
     Route::get('user/{id}', function ($id) {
-        // Only called if {id} is numeric.
+        // Only executed if {id} is numeric...
     });
 
 <a name="named-routes"></a>
