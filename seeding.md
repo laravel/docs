@@ -58,7 +58,7 @@ For example, let's create 50 users and attach a relationship to each user:
      */
     public function run()
     {
-        factory(App\User::class, 50)->create()->each(function($u) {
+        factory(App\User::class, 50)->create()->each(function ($u) {
             $u->posts()->save(factory(App\Post::class)->make());
         });
     }

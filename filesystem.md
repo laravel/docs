@@ -333,7 +333,7 @@ In order to set up the custom filesystem you will need to create a [service prov
          */
         public function boot()
         {
-            Storage::extend('dropbox', function($app, $config) {
+            Storage::extend('dropbox', function ($app, $config) {
                 $client = new DropboxClient(
                     $config['accessToken'], $config['clientIdentifier']
                 );

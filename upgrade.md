@@ -950,7 +950,7 @@ The `sortBy` method now returns a fresh collection instance instead of modifying
 
 The `groupBy` method now returns `Collection` instances for each item in the parent `Collection`. If you would like to convert all of the items back to plain arrays, you may `map` over them:
 
-    $collection->groupBy('type')->map(function($item)
+    $collection->groupBy('type')->map(function ($item)
     {
         return $item->all();
     });

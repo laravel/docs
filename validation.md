@@ -363,7 +363,7 @@ The validator also allows you to attach callbacks to be run after validation is 
 
     $validator = Validator::make(...);
 
-    $validator->after(function($validator) {
+    $validator->after(function ($validator) {
         if ($this->somethingElseIsInvalid()) {
             $validator->errors()->add('field', 'Something is wrong with this field!');
         }
@@ -909,13 +909,13 @@ Sometimes you may wish to add validation rules based on more complex conditional
 
 Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game resale shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
 
-    $v->sometimes('reason', 'required|max:500', function($input) {
+    $v->sometimes('reason', 'required|max:500', function ($input) {
         return $input->games >= 100;
     });
 
 The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
 
-    $v->sometimes(['reason', 'cost'], 'required', function($input) {
+    $v->sometimes(['reason', 'cost'], 'required', function ($input) {
         return $input->games >= 100;
     });
 
@@ -960,7 +960,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
          */
         public function boot()
         {
-            Validator::extend('foo', function($attribute, $value, $parameters, $validator) {
+            Validator::extend('foo', function ($attribute, $value, $parameters, $validator) {
                 return $value == 'foo';
             });
         }
@@ -1003,7 +1003,7 @@ When creating a custom validation rule, you may sometimes need to define custom 
     {
         Validator::extend(...);
 
-        Validator::replacer('foo', function($message, $attribute, $rule, $parameters) {
+        Validator::replacer('foo', function ($message, $attribute, $rule, $parameters) {
             return str_replace(...);
         });
     }
@@ -1020,7 +1020,7 @@ By default, when an attribute being validated is not present or contains an empt
 
 For a rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create such an "implicit" extension, use the `Validator::extendImplicit()` method:
 
-    Validator::extendImplicit('foo', function($attribute, $value, $parameters, $validator) {
+    Validator::extendImplicit('foo', function ($attribute, $value, $parameters, $validator) {
         return $value == 'foo';
     });
 

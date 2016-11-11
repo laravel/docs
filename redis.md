@@ -176,7 +176,7 @@ First, let's setup a channel listener using the `subscribe` method. We'll place 
          */
         public function handle()
         {
-            Redis::subscribe(['test-channel'], function($message) {
+            Redis::subscribe(['test-channel'], function ($message) {
                 echo $message;
             });
         }
@@ -194,10 +194,10 @@ Now we may publish messages to the channel using the `publish` method:
 
 Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The `$channel` name will be passed as the second argument to the provided callback `Closure`:
 
-    Redis::psubscribe(['*'], function($message, $channel) {
+    Redis::psubscribe(['*'], function ($message, $channel) {
         echo $message;
     });
 
-    Redis::psubscribe(['users.*'], function($message, $channel) {
+    Redis::psubscribe(['users.*'], function ($message, $channel) {
         echo $message;
     });
