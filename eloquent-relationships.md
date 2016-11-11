@@ -856,7 +856,7 @@ If you need to update an existing row in your pivot table, you may use `updateEx
 
     $user = App\User::find(1);
 
-	$user->roles()->updateExistingPivot($roleId, $attributes);
+    $user->roles()->updateExistingPivot($roleId, $attributes);
 
 <a name="touching-parent-timestamps"></a>
 ## Touching Parent Timestamps

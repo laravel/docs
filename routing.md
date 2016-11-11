@@ -150,7 +150,7 @@ To assign middleware to all routes within a group, you may use the `middleware` 
 
 Another common use-case for route groups is assigning the same PHP namespace to a group of controllers using the `namespace` parameter in the group array:
 
-    Route::group(['namespace' => 'Admin'], function() {
+    Route::group(['namespace' => 'Admin'], function () {
         // Controllers Within The "App\Http\Controllers\Admin" Namespace
     });
 
@@ -222,7 +222,7 @@ To register an explicit binding, use the router's `model` method to specify the 
 
 Next, define a route that contains a `{user}` parameter:
 
-    $router->get('profile/{user}', function(App\User $user) {
+    $router->get('profile/{user}', function (App\User $user) {
         //
     });
 

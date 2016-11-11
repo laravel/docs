@@ -300,7 +300,7 @@ The `copy` method may be used to copy files and directories to new locations. Al
 
 ```javascript
 elixir(function(mix) {
-	mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
+    mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
 });
 ```
 
