@@ -51,16 +51,24 @@ Gates are Closures that determine if a user is authorized to perform a given act
 <a name="authorizing-actions-via-gates"></a>
 ### Authorizing Actions
 
-To authorize an action using gates, you should use the `allows` method. Note that you are not required to pass the currently authenticated user to the `allows` method. Laravel will automatically take care of passing the user into the gate Closure:
+To authorize an action using gates, you should use the `allows` or `denies` methods. Note that you are not required to pass the currently authenticated user to the `allows` or `denies` methods. Laravel will automatically take care of passing the user into the gate Closure:
 
     if (Gate::allows('update-post', $post)) {
         // The current user can update the post...
+    }
+
+    if (Gate::denies('update-post', $post)) {
+        // The current user can't update the post...
     }
 
 If you would like to determine if a particular user is authorized to perform an action, you may use the `forUser` method on the `Gate` facade:
 
     if (Gate::forUser($user)->allows('update-post', $post)) {
         // The user can update the post...
+    }
+
+    if (Gate::forUser($user)->denies('update-post', $post)) {
+        // The user can't update the post...
     }
 
 <a name="creating-policies"></a>
