@@ -179,7 +179,7 @@ By default, Passport issues long-lived access tokens that never need to be refre
 <a name="revoking-access-tokens"></a>
 ### Revoking Access Tokens
 
-By default, Passport does not revoke exisiting access tokens in the database when a new token is issued. If you would like Passport to automatically revoke all existing tokens when a new token is issued, you should call the `revokeOtherTokens` method from the `boot` method of your `AuthServiceProvider`:
+By default, Passport does not revoke existing access tokens when a new token is issued. If you would like Passport to automatically revoke all existing tokens when a new token is issued, you should call the `revokeOtherTokens` method from the `boot` method of your `AuthServiceProvider`:
 
     use Laravel\Passport\Passport;
 
