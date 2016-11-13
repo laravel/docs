@@ -5,6 +5,7 @@
     - [Frontend Quickstart](#frontend-quickstart)
 - [Configuration](#configuration)
     - [Token Lifetimes](#token-lifetimes)
+    - [Revoking Access Tokens](#revoking-access-tokens)
     - [Pruning Revoked Tokens](#pruning-revoked-tokens)
 - [Issuing Access Tokens](#issuing-access-tokens)
     - [Managing Clients](#managing-clients)
@@ -174,6 +175,17 @@ By default, Passport issues long-lived access tokens that never need to be refre
 
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
     }
+
+<a name="revoking-access-tokens"></a>
+### Revoking Access Tokens
+
+By default, Passport does not revoke exisiting access tokens in the database when a new token is issued. If you would like Passport to automatically revoke all existing tokens when a new token is issued, you should call the `revokeOtherTokens` method from the `boot` method of your `AuthServiceProvider`:
+
+    use Laravel\Passport\Passport;
+
+    Passport::revokeOtherTokens();
+
+This method will not revoke tokens immediately. Instead, tokens will be revoked when a user requests a new access token.
 
 <a name="pruning-revoked-tokens"></a>
 ### Pruning Revoked Tokens
