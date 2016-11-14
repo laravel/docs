@@ -585,7 +585,7 @@ When using this method of authentication, you will need to send the CSRF token w
 <a name="events"></a>
 ## Events
 
-Passport raises a number events during the authentication process. You may attach listeners to these events in your EventServiceProvider:
+Passport raises events when issuing access tokens and refresh tokens. You may use these events to prune or revoke other access tokens in your database. You may attach listeners to these events in your application's `EventServiceProvider`:
 
 ```php
 /**
