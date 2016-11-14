@@ -125,6 +125,16 @@ If you need to customize the format of your timestamps, set the `$dateFormat` pr
         protected $dateFormat = 'U';
     }
 
+If you need to customize the names of the columns used to store the timestamps, you may set the `CREATED_AT` and `UPDATED_AT` constants in your model:
+
+    <?php
+
+    class Flight extends Model
+    {
+        const CREATED_AT = 'creation_date';
+        const UPDATED_AT = 'last_update';
+    }
+
 #### Database Connection
 
 By default, all Eloquent models will use the default database connection configured for your application. If you would like to specify a different connection for the model, use the `$connection` property:
@@ -593,7 +603,7 @@ Eloquent also allows you to define global scopes using Closures, which is partic
         {
             parent::boot();
 
-            static::addGlobalScope('age', function(Builder $builder) {
+            static::addGlobalScope('age', function (Builder $builder) {
                 $builder->where('age', '>', 200);
             });
         }

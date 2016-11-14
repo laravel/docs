@@ -41,7 +41,7 @@ Before triggering Elixir, you must first ensure that Node.js and NPM are install
     node -v
     npm -v
 
-By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install the latest version of Node and NPM using simple graphical installers from [their download page](http://nodejs.org/en/download/).
+By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install the latest version of Node and NPM using simple graphical installers from [their download page](https://nodejs.org/en/download/).
 
 #### Gulp
 
@@ -210,7 +210,7 @@ elixir(function(mix) {
 
 Elixir provides several features to help you work with your JavaScript files, such as compiling ECMAScript 2015, module bundling, minification, and simply concatenating plain JavaScript files.
 
-When writing ES2015 with modules, you have your choice between [Webpack](http://webpack.github.io) and [Rollup](http://rollupjs.org/). If these tools are foreign to you, don't worry, Elixir will handle all of the hard work behind the scenes. By default, the Laravel `gulpfile` uses `webpack` to compile Javascript, but you are free to use any module bundler you like.
+When writing ES2015 with modules, you have your choice between [Webpack](https://webpack.github.io) and [Rollup](http://rollupjs.org/). If these tools are foreign to you, don't worry, Elixir will handle all of the hard work behind the scenes. By default, the Laravel `gulpfile` uses `webpack` to compile Javascript, but you are free to use any module bundler you like.
 
 <a name="webpack"></a>
 ### Webpack
@@ -300,7 +300,7 @@ The `copy` method may be used to copy files and directories to new locations. Al
 
 ```javascript
 elixir(function(mix) {
-	mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
+    mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
 });
 ```
 

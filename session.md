@@ -16,7 +16,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Since HTTP driven applications are stateless, sessions provide a way to store information about the user across multiple requests. Laravel ships with a variety of session backends that are accessed through an expressive, unified API. Support for popular backends such as [Memcached](http://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
+Since HTTP driven applications are stateless, sessions provide a way to store information about the user across multiple requests. Laravel ships with a variety of session backends that are accessed through an expressive, unified API. Support for popular backends such as [Memcached](https://memcached.org), [Redis](http://redis.io), and databases is included out of the box.
 
 <a name="configuration"></a>
 ### Configuration
@@ -97,7 +97,7 @@ When you retrieve a value from the session, you may also pass a default value as
 
     $value = $request->session()->get('key', 'default');
 
-    $value = $request->session()->get('key', function() {
+    $value = $request->session()->get('key', function () {
         return 'default';
     });
 
@@ -249,7 +249,7 @@ Once your driver has been implemented, you are ready to register it with the fra
          */
         public function boot()
         {
-            Session::extend('mongo', function($app) {
+            Session::extend('mongo', function ($app) {
                 // Return implementation of SessionHandlerInterface...
                 return new MongoSessionStore;
             });

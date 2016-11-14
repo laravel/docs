@@ -41,6 +41,8 @@ To create a new command, use the `make:command` Artisan command. This command wi
 
     php artisan make:command SendEmails
 
+Next, you will need to [register the command](#registering-commands) before it can be executed via the Artisan CLI.
+
 <a name="command-structure"></a>
 ### Command Structure
 
@@ -368,7 +370,7 @@ For long running tasks, it could be helpful to show a progress indicator. Using 
 
     $bar->finish();
 
-For more advanced options, check out the [Symfony Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
+For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>
 ## Registering Commands

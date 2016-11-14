@@ -455,7 +455,7 @@ Below is an example migration you may use to perform the necessary changes:
 
 #### Process Control Extension
 
-If your application makes use of the `--timeout` option for queue workers, you'll need to verify that the [pcntl extension](http://php.net/manual/en/pcntl.installation.php) is installed.
+If your application makes use of the `--timeout` option for queue workers, you'll need to verify that the [pcntl extension](https://secure.php.net/manual/en/pcntl.installation.php) is installed.
 
 #### Serializing Models On Legacy Style Queue Jobs
 
@@ -733,7 +733,7 @@ If you were type-hinting a model instance in your route or controller and were e
 
 The IronMQ queue driver has been moved into its own package and is no longer shipped with the core framework.
 
-[http://github.com/LaravelCollective/iron-queue](http://github.com/laravelcollective/iron-queue)
+[https://github.com/LaravelCollective/iron-queue](https://github.com/laravelcollective/iron-queue)
 
 ### Jobs / Queue
 
@@ -950,7 +950,7 @@ The `sortBy` method now returns a fresh collection instance instead of modifying
 
 The `groupBy` method now returns `Collection` instances for each item in the parent `Collection`. If you would like to convert all of the items back to plain arrays, you may `map` over them:
 
-    $collection->groupBy('type')->map(function($item)
+    $collection->groupBy('type')->map(function ($item)
     {
         return $item->all();
     });

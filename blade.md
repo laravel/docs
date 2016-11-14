@@ -11,6 +11,7 @@
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
     - [Comments](#comments)
+    - [PHP](#php)
 - [Including Sub-Views](#including-sub-views)
     - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -260,6 +261,17 @@ Blade also allows you to define comments in your views. However, unlike HTML com
 
     {{-- This comment will not be present in the rendered HTML --}}
 
+<a name="php"></a>
+### PHP
+
+In some situations, it's useful to embed PHP code into your views. You can use the Blade `@php` directive to execute a block of plain PHP within your template:
+
+    @php
+        //
+    @endphp
+
+> {tip} While Blade provides this feature, using it frequently may be a signal that you have too much logic embedded within your template.
+
 <a name="including-sub-views"></a>
 ## Including Sub-Views
 
@@ -276,6 +288,10 @@ Blade's `@include` directive allows you to include a Blade view from within anot
 Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
 
     @include('view.name', ['some' => 'data'])
+
+Of course, if you attempt to `@include` a view which does not exist, Laravel will throw an error. If you would like to include a view that may or may not be present, you should use the `@includeIf` directive:
+
+    @includeIf('view.name', ['some' => 'data'])
 
 > {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
@@ -343,7 +359,7 @@ The following example creates a `@datetime($var)` directive which formats a give
          */
         public function boot()
         {
-            Blade::directive('datetime', function($expression) {
+            Blade::directive('datetime', function ($expression) {
                 return "<?php echo $expression->format('m/d/Y H:i'); ?>";
             });
         }
