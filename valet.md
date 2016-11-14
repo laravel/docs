@@ -144,7 +144,7 @@ All three methods receive the `$sitePath`, `$siteName`, and `$uri` values as the
 
 Once you have completed your custom Valet driver, place it in the `~/.valet/Drivers` directory using the `FrameworkValetDriver.php` naming convention. For example, if you are writing a custom valet driver for WordPress, your file name should be `WordPressValetDriver.php`.
 
-Let's take at a sample implementation of each method your custom Valet driver should implement.
+Let's take a look at a sample implementation of each method your custom Valet driver should implement.
 
 #### The `serves` Method
 
