@@ -216,6 +216,10 @@ The `download` method may be used to generate a response that forces the user's 
 
 > {note} Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
 
+To delete the file from the server after the user has downloaded the file you may use the `deleteFileAfterSend` method:
+
+    return response()->download($pathToFile)->deleteFileAfterSend(true);
+
 <a name="file-responses"></a>
 ### File Responses
 
