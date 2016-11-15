@@ -357,6 +357,7 @@ Command  | Description
 `$table->primary(['first', 'last']);`  |  Add composite keys.
 `$table->unique('email');`  |  Add a unique index.
 `$table->unique('state', 'my_index_name');`  |  Add a custom index name.
+`$table->unique(['first', 'last']);`  |  Add a composite unique index.
 `$table->index('state');`  |  Add a basic index.
 
 <a name="dropping-indexes"></a>
