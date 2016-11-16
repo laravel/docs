@@ -560,9 +560,9 @@ The `has` method determines if a given key exists in the collection:
 
     $collection = collect(['account_id' => 1, 'product' => 'Desk']);
 
-    $collection->has('email');
+    $collection->has('product');
 
-    // false
+    // true
 
 <a name="method-implode"></a>
 #### `implode()` {#collection-method}
