@@ -41,6 +41,8 @@ To create a new command, use the `make:command` Artisan command. This command wi
 
     php artisan make:command SendEmails
 
+Next, you will need to [register the command](#registering-commands) before it can be executed via the Artisan CLI.
+
 <a name="command-structure"></a>
 ### Command Structure
 

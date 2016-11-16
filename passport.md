@@ -5,7 +5,6 @@
     - [Frontend Quickstart](#frontend-quickstart)
 - [Configuration](#configuration)
     - [Token Lifetimes](#token-lifetimes)
-    - [Pruning Revoked Tokens](#pruning-revoked-tokens)
 - [Issuing Access Tokens](#issuing-access-tokens)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
@@ -25,6 +24,7 @@
     - [Assigning Scopes To Tokens](#assigning-scopes-to-tokens)
     - [Checking Scopes](#checking-scopes)
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -174,17 +174,6 @@ By default, Passport issues long-lived access tokens that never need to be refre
 
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
     }
-
-<a name="pruning-revoked-tokens"></a>
-### Pruning Revoked Tokens
-
-By default, Passport does not delete your revoked access tokens from the database. Over time, a large number of these tokens can accumulate in your database. If you would like Passport to automatically delete your revoked tokens, you should call the `pruneRevokedTokens` method from the `boot` method of your `AuthServiceProvider`:
-
-    use Laravel\Passport\Passport;
-
-    Passport::pruneRevokedTokens();
-
-This method will not delete all revoked tokens immediately. Instead, revoked tokens will be deleted when a user requests a new access token or refreshes an existing token.
 
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
@@ -591,3 +580,26 @@ When using this method of authentication, you will need to send the CSRF token w
     });
 
 > {note} If you are using a different JavaScript framework, you should make sure it is configured to send this header with every outgoing request.
+
+
+<a name="events"></a>
+## Events
+
+Passport raises events when issuing access tokens and refresh tokens. You may use these events to prune or revoke other access tokens in your database. You may attach listeners to these events in your application's `EventServiceProvider`:
+
+```php
+/**
+ * The event listener mappings for the application.
+ *
+ * @var array
+ */
+protected $listen = [
+    'Laravel\Passport\Events\AccessTokenCreated' => [
+        'App\Listeners\RevokeOldTokens',
+    ],
+
+    'Laravel\Passport\Events\RefreshTokenCreated' => [
+        'App\Listeners\PruneOldTokens',
+    ],
+];
+```

@@ -59,7 +59,7 @@ Once this option has been configured, Laravel will log all levels greater than o
 
 If you would like to have complete control over how Monolog is configured for your application, you may use the application's `configureMonologUsing` method. You should place a call to this method in your `bootstrap/app.php` file right before the `$app` variable is returned by the file:
 
-    $app->configureMonologUsing(function($monolog) {
+    $app->configureMonologUsing(function ($monolog) {
         $monolog->pushHandler(...);
     });
 
