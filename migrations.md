@@ -297,8 +297,6 @@ We could also modify a column to be nullable:
 
 > {note} The following column types can not be "changed": char, double, enum, mediumInteger, timestamp, tinyInteger, ipAddress, json, jsonb, macAddress, mediumIncrements, morphs, nullableTimestamps, softDeletes, timeTz, timestampTz, timestamps, timestampsTz, unsignedMediumInteger, unsignedTinyInteger, uuid.
 
-> {note} Modifying any column in a table that also has a column of type `enum` is not currently supported.
-
 <a name="renaming-columns"></a>
 #### Renaming Columns
 
