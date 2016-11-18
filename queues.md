@@ -76,7 +76,7 @@ By default, all of the queueable jobs for your application are stored in the `ap
 
     php artisan make:job SendReminderEmail
 
-The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue instead of run synchronously.
+The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
 
 <a name="class-structure"></a>
 ### Class Structure
