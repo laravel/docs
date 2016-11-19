@@ -5,8 +5,6 @@
     - [Frontend Quickstart](#frontend-quickstart)
 - [Configuration](#configuration)
     - [Token Lifetimes](#token-lifetimes)
-    - [Revoking Access Tokens](#revoking-access-tokens)
-    - [Pruning Revoked Tokens](#pruning-revoked-tokens)
 - [Issuing Access Tokens](#issuing-access-tokens)
     - [Managing Clients](#managing-clients)
     - [Requesting Tokens](#requesting-tokens)
@@ -15,6 +13,7 @@
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
+- [Implicit Grant Tokens](#implicit-grant-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
     - [Creating A Personal Access Client](#creating-a-personal-access-client)
     - [Managing Personal Access Tokens](#managing-personal-access-tokens)
@@ -26,6 +25,7 @@
     - [Assigning Scopes To Tokens](#assigning-scopes-to-tokens)
     - [Checking Scopes](#checking-scopes)
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -175,28 +175,6 @@ By default, Passport issues long-lived access tokens that never need to be refre
 
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
     }
-
-<a name="revoking-access-tokens"></a>
-### Revoking Access Tokens
-
-By default, Passport does not revoke existing access tokens when a new token is issued. If you would like Passport to automatically revoke all existing tokens when a new token is issued, you should call the `revokeOtherTokens` method from the `boot` method of your `AuthServiceProvider`:
-
-    use Laravel\Passport\Passport;
-
-    Passport::revokeOtherTokens();
-
-This method will not revoke tokens immediately. Instead, tokens will be revoked when a user requests a new access token.
-
-<a name="pruning-revoked-tokens"></a>
-### Pruning Revoked Tokens
-
-By default, Passport does not delete your revoked access tokens from the database. Over time, a large number of these tokens can accumulate in your database. If you would like Passport to automatically delete your revoked tokens, you should call the `pruneRevokedTokens` method from the `boot` method of your `AuthServiceProvider`:
-
-    use Laravel\Passport\Passport;
-
-    Passport::pruneRevokedTokens();
-
-This method will not delete all revoked tokens immediately. Instead, revoked tokens will be deleted when a user requests a new access token or refreshes an existing token.
 
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
@@ -398,6 +376,40 @@ When using the password grant, you may wish to authorize the token for all of th
             'scope' => '*',
         ],
     ]);
+
+<a name="implicit-grant-tokens"></a>
+## Implicit Grant Tokens
+
+The implicit grant is similar to the authorization code grant; however, the token is returned to the client without exchanging an authorization code. This grant is most commonly used for JavaScript or mobile applications where the client credentials can't be securely stored. To enable the grant, call the `enableImplicitGrant` method in your `AuthServiceProvider`:
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Passport::routes();
+
+        Passport::enableImplicitGrant();
+    }
+
+Once a grant has been enabled, developers may use their client ID to request an access token from your application. The consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
+
+    Route::get('/redirect', function () {
+        $query = http_build_query([
+            'client_id' => 'client-id',
+            'redirect_uri' => 'http://example.com/callback',
+            'response_type' => 'token',
+            'scope' => '',
+        ]);
+
+        return redirect('http://your-app.com/oauth/authorize?'.$query);
+    });
+
+> {tip} Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
 
 <a name="personal-access-tokens"></a>
 ## Personal Access Tokens
@@ -603,3 +615,26 @@ When using this method of authentication, you will need to send the CSRF token w
     });
 
 > {note} If you are using a different JavaScript framework, you should make sure it is configured to send this header with every outgoing request.
+
+
+<a name="events"></a>
+## Events
+
+Passport raises events when issuing access tokens and refresh tokens. You may use these events to prune or revoke other access tokens in your database. You may attach listeners to these events in your application's `EventServiceProvider`:
+
+```php
+/**
+ * The event listener mappings for the application.
+ *
+ * @var array
+ */
+protected $listen = [
+    'Laravel\Passport\Events\AccessTokenCreated' => [
+        'App\Listeners\RevokeOldTokens',
+    ],
+
+    'Laravel\Passport\Events\RefreshTokenCreated' => [
+        'App\Listeners\PruneOldTokens',
+    ],
+];
+```

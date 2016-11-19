@@ -297,8 +297,6 @@ We could also modify a column to be nullable:
 
 > {note} The following column types can not be "changed": char, double, enum, mediumInteger, timestamp, tinyInteger, ipAddress, json, jsonb, macAddress, mediumIncrements, morphs, nullableTimestamps, softDeletes, timeTz, timestampTz, timestamps, timestampsTz, unsignedMediumInteger, unsignedTinyInteger, uuid.
 
-> {note} Modifying any column in a table that also has a column of type `enum` is not currently supported.
-
 <a name="renaming-columns"></a>
 #### Renaming Columns
 
@@ -357,6 +355,7 @@ Command  | Description
 `$table->primary(['first', 'last']);`  |  Add composite keys.
 `$table->unique('email');`  |  Add a unique index.
 `$table->unique('state', 'my_index_name');`  |  Add a custom index name.
+`$table->unique(['first', 'last']);`  |  Add a composite unique index.
 `$table->index('state');`  |  Add a basic index.
 
 <a name="dropping-indexes"></a>
