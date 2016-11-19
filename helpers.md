@@ -454,7 +454,7 @@ The `app_path` function returns the fully qualified path to the `app` directory.
 <a name="method-base-path"></a>
 #### `base_path()` {#collection-method}
 
-The `base_path` function returns the fully qualified path to the project root. You may also use the `base_path` function to generate a fully qualified path to a given file relative to the application directory:
+The `base_path` function returns the fully qualified path to the project root. You may also use the `base_path` function to generate a fully qualified path to a given file relative to the project root directory:
 
     $path = base_path();
 
