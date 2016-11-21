@@ -149,7 +149,9 @@ Once a user is authenticated, there are several ways to obtain an instance of th
 
 First, you may access the user from the `Auth` facade:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+	
+	namespace App\Http\Controllers;
 	
 	use Auth;
 	use Illuminate\Routing\Controller;
@@ -173,7 +175,9 @@ First, you may access the user from the `Auth` facade:
 
 Second, you may access the authenticated user via an `Illuminate\Http\Request` instance:
 
-	<?php namespace App\Http\Controllers;
+	<?php
+	
+	namespace App\Http\Controllers;
 
 	use Illuminate\Http\Request;
 	use Illuminate\Routing\Controller;
@@ -197,7 +201,9 @@ Second, you may access the authenticated user via an `Illuminate\Http\Request` i
 
 Thirdly, you may type-hint the `Illuminate\Contracts\Auth\Authenticatable` contract. This type-hint may be added to a controller constructor, controller method, or any other constructor of a class resolved by the [service container](/docs/{{version}}/container):
 
-	<?php namespace App\Http\Controllers;
+	<?php
+	
+	namespace App\Http\Controllers;
 
 	use Illuminate\Routing\Controller;
 	use Illuminate\Contracts\Auth\Authenticatable;
