@@ -266,6 +266,10 @@ Relation::morphMap([
 
 The Eloquent `save` method now returns `false` if the model has not been changed since the last time it was retrieved or saved.
 
+#### Eloquent `getRelation` Method
+
+The Eloquent `getRelation` method no longer throws a `BadMethodCallException` if the relation could not be loaded. Instead, it will throw an `Illuminate\Database\Eloquent\RelationNotFoundException`. This should only affect you if you were manually catching the `BadMethodCallException`.
+
 #### Eloquent Scopes
 
 Eloquent scopes now respect the leading boolean of scope constraints. For example, if you are starting your scope with an `orWhere` constraint it will no longer be converted to normal `where`. If you were relying on this feature (e.g. adding multiple `orWhere` constraints within a loop), you should verify that the first condition is a normal `where` to avoid any boolean logic issues.
