@@ -41,7 +41,7 @@ Note that each connection configuration example in the `queue` configuration fil
     // This job is sent to the "emails" queue...
     dispatch((new Job)->onQueue('emails'));
 
-Some applications may not need to ever push jobs onto multiples queues, instead preferring to have one simple queue. However, pushing jobs to multiple queues can be especially useful for applications that wish to prioritize or segment how jobs are processed, since the Laravel queue worker allows you to specify which queues it should process by priority. For example, if you push jobs to a `high` queue, you may run a worker that gives them higher processing priority:
+Some applications may not need to ever push jobs onto multiple queues, instead preferring to have one simple queue. However, pushing jobs to multiple queues can be especially useful for applications that wish to prioritize or segment how jobs are processed, since the Laravel queue worker allows you to specify which queues it should process by priority. For example, if you push jobs to a `high` queue, you may run a worker that gives them higher processing priority:
 
     php artisan queue:work --queue=high,default
 
@@ -76,7 +76,7 @@ By default, all of the queueable jobs for your application are stored in the `ap
 
     php artisan make:job SendReminderEmail
 
-The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue instead of run synchronously.
+The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
 
 <a name="class-structure"></a>
 ### Class Structure
