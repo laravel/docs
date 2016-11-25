@@ -1,6 +1,7 @@
 # Configuration
 
 - [Introduction](#introduction)
+- [Naming Your Application](#naming-your-application)
 - [Accessing Configuration Values](#accessing-configuration-values)
 - [Environment Configuration](#environment-configuration)
     - [Determining The Current Environment](#determining-the-current-environment)
@@ -11,6 +12,19 @@
 ## Introduction
 
 All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+
+<a name="naming-your-application"></a>
+## Naming Your Application
+
+After installing Laravel, you may wish to "name" your application. By default, the app directory is namespaced under App, and autoloaded by Composer using the <a href="http://www.php-fig.org/psr/psr-4/">PSR-4 autoloading standard</a>. However, you may change the namespace to match the name of your application, which you can easily do via the app:name Artisan command.
+
+For example, if your application is named "Horsefly", you could run the following command from the root of your installation:
+
+    php artisan app:name Horsefly
+
+Renaming your application is entirely optional, and you are free to keep the App namespace if you wish.
+
+Also the name should not contain special character such as `-`,`/`,`[`,`]`,`(`,`)`,`:`. This might cause the application to be rendered completely useless
 
 <a name="accessing-configuration-values"></a>
 ## Accessing Configuration Values
