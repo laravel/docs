@@ -159,13 +159,13 @@ If you would like Laravel to automatically manage streaming a given file to your
 
     use Illuminate\Http\File;
 
-    // Automatically calculate MD5 hash for file name...
+    // Automatically generate an UUID for file name...
     Storage::putFile('photos', new File('/path/to/photo'));
 
     // Manually specify a file name...
     Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
 
-There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will automatically generate a filename based on the contents of the file. This is accomplished by taking a MD5 hash of the file's contents. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
+There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will generate an UUID and use it for the file name. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
 
 The `putFile` and `putFileAs` methods also accept an argument to specify the "visibility" of the stored file. This is particularly useful if you are storing the file on a cloud disk such as S3 and would like the file to be publicly accessible:
 
@@ -215,13 +215,11 @@ In web applications, one of the most common use-cases for storing files is stori
         }
     }
 
-There are a few important things to note about this example. Note that we only specified a directory name, not a file name. By default, the `store` method will automatically generate a filename based on the contents of the file. This is accomplished by taking a MD5 hash of the file's contents. The path to the file will be returned by the `store` method so you can store the path, including the generated file name, in your database.
+There are a few important things to note about this example. Note that we only specified a directory name, not a file name. By default, the `store` method will generate an UUID and use it for the file name. The path to the file will be returned by the `store` method so you can store the path, including the generated file name, in your database.
 
 You may also call the `putFile` method on the `Storage` facade to perform the same file manipulation as the example above:
 
     $path = Storage::putFile('avatars', $request->file('avatar'));
-
-> {note} If you are receiving very large file uploads, you may wish to manually specify the file name as shown below. Calculating an MD5 hash for extremely large files can be memory intensive.
 
 #### Specifying A File Name
 
