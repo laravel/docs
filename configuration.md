@@ -79,7 +79,7 @@ To enable maintenance mode, simply execute the `down` Artisan command:
 
 You may also provide `message` and `retry` options to the `down` command. The `message` value may be used to display or log a custom message, while the `retry` value will be set as the `Retry-After` HTTP header's value:
 
-    php artisan down --message='Upgrading Database' --retry=60
+    php artisan down --message="Upgrading Database" --retry=60
 
 To disable maintenance mode, use the `up` command:
 
