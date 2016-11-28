@@ -263,7 +263,7 @@ To register an explicit binding, use the router's `model` method to specify the 
 
 Next, define a route that contains a `{user}` parameter:
 
-    $router->get('profile/{user}', function (App\User $user) {
+    Route::get('profile/{user}', function (App\User $user) {
         //
     });
 
@@ -275,7 +275,7 @@ If a matching model instance is not found in the database, a 404 HTTP response w
 
 If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
 
-    $router->bind('user', function ($value) {
+    Route::bind('user', function ($value) {
         return App\User::where('name', $value)->first();
     });
 
