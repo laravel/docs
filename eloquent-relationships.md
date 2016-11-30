@@ -830,14 +830,6 @@ For convenience, `attach` and `detach` also accept arrays of IDs as input:
 
     $user->roles()->attach([1 => ['expires' => $expires], 2, 3]);
 
-#### Toggling
-
-The many-to-many relationship also provides a handy `toggle` method that detaches each existing model and attaches non-existing ones:
-
-    $user->roles()->toggle([1, 2, 3]);
-    
-A second parameter can be passed to the method as a boolean whether or not you want to update the parent model's timestamp. Defaults to `true`.
-
 #### Syncing Associations
 
 You may also use the `sync` method to construct many-to-many associations. The `sync` method accepts an array of IDs to place on the intermediate table. Any IDs that are not in the given array will be removed from the intermediate table. So, after this operation is complete, only the IDs in the given array will exist in the intermediate table:
@@ -851,6 +843,12 @@ You may also pass additional intermediate table values with the IDs:
 If you do not want to detach existing IDs, you may use the `syncWithoutDetaching` method:
 
     $user->roles()->syncWithoutDetaching([1, 2, 3]);
+
+#### Toggling Associations
+
+The many-to-many relationship also provides a `toggle` method which "toggles" the attachment status of the given IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:
+
+    $user->roles()->toggle([1, 2, 3]);
 
 #### Saving Additional Data On A Pivot Table
 
