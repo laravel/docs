@@ -322,19 +322,9 @@ Like most of the other authorization methods, you may pass a class name to the `
         <!-- The Current User Can't Create Posts -->
     @endcannot
 
-#### Custom Error Messages For Unauthorized Access
+#### Overriding The Default Unauthorized Access Error Message
 
-You may pass an array instead of the model to the `@can` and `@cannot` directives with an added string for customizing the default unauthorized access error message:
-
-    <?php
-    use App\Post;
-    $customError = "Please ask your administration to grant you access to perform this operation.";
-
-    if ($user->can('create', [Post::class, $customError])) {
-        // Executes the "create" method on the relevant policy...
-    }
-
-You can also do the same with `@authorize` directive as well:
+You can pass an extra **String/Collection**, as argument to the `@authorize` function, after the `ability` argument, as parameter to override the default unauthorized access error message:
 
     <?php
 
@@ -356,7 +346,7 @@ You can also do the same with `@authorize` directive as well:
         public function update(Request $request, Post $post)
         {
             $customError = "Please upgrade your account to perform this operation.";
-            $this->authorize('update', [$post, $customError]);
+            $this->authorize('update', $customError);
 
             // The current user can update the blog post...
         }
