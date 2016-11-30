@@ -609,9 +609,9 @@ Eloquent also allows you to define global scopes using Closures, which is partic
         }
     }
 
-The first argument of the `addGlobalScope()` serves as an identifier to remove the scope:
+The first argument of the `addGlobalScope()` serves as an identifier to apply the scope:
 
-    User::withoutGlobalScope('age')->get();
+    User::addGlobalScope('age')->get();
 
 #### Removing Global Scopes
 
