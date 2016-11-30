@@ -829,6 +829,14 @@ For convenience, `attach` and `detach` also accept arrays of IDs as input:
     $user->roles()->detach([1, 2, 3]);
 
     $user->roles()->attach([1 => ['expires' => $expires], 2, 3]);
+    
+#### Toggling
+
+The many-to-many relationship also provides a handy `toggle` method that detaches each existing model and attaches non-existing ones:
+
+    $user->roles()->toggle([1, 2, 3]);
+    
+A second parameter can be passed to the method as a boolean whether or not you want to update the parent model's timestamp. Defaults to `true`.
 
 #### Syncing Associations
 
