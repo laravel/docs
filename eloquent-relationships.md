@@ -453,8 +453,8 @@ By default, Laravel will use the fully qualified class name to store the type of
     use Illuminate\Database\Eloquent\Relations\Relation;
 
     Relation::morphMap([
-        'posts' => App\Post::class,
-        'videos' => App\Video::class,
+        'posts' => \App\Post::class,
+        'videos' => \App\Video::class,
     ]);
 
 You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
