@@ -237,7 +237,7 @@ Finally, you may also pass a callback to the `contains` method to perform your o
 
     $collection = collect([1, 2, 3, 4, 5]);
 
-    $collection->contains(function ($value, $key) {
+    $collection->contains(function ($key, $value) {
         return $value > 5;
     });
 
