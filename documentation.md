@@ -8,6 +8,7 @@
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
     - [Errors & Logging](/docs/{{version}}/errors)
+    - [Request Lifecycle](/docs/{{version}}/lifecycle)
 - Dev Environments
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
