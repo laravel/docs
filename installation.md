@@ -47,13 +47,13 @@ Laravel 使用 [Composer](http://getcomposer.org) 來管理相依性。所以，
 
     composer create-project --prefer-dist laravel/laravel blog
 
-#### Local Development Server
+#### 本地開發環境伺服器
 
-If you have PHP installed locally and you would like to use PHP's built-in development server to serve your application, you may use the `serve` Artisan command. This command will start a development server at `http://localhost:8000`:
+如果有在本地端安裝 PHP 且打算使用 PHP 內建的開發環境伺服器來啟用你的應用程式，可以使用 Artisan 指令 `serve`。這個指令會將開發伺服器啟動在 `http://localhost:8000` :
 
     php artisan serve
 
-Of course, more robust local development options are available via [Homestead](/docs/{{version}}/homestead) and [Valet](/docs/{{version}}/valet).
+當然，更健全地開發環境選項還是透過 [Homestead](/docs/{{version}}/homestead) 和 [Valet](/docs/{{version}}/valet).
 
 <a name="configuration"></a>
 ### 設定
