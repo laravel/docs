@@ -307,6 +307,14 @@ If you would like to stop iterating through the items, you may return `false` fr
             return false;
         }
     });
+    
+If you would like to skip the remainder of the current iteration, you may return `true` from your callback:
+
+    $collection = $collection->each(function ($item, $key) {
+        if (/* some condition */) {
+            return true;
+        }
+    });
 
 <a name="method-every"></a>
 #### `every()` {#collection-method}
