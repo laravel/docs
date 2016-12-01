@@ -391,7 +391,7 @@ The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in
 
 #### `updateOrCreate`
 
-You may also come across situations where you want to update an existing model or create a new model if none exists. Laravel provides an `updateOrCreate` method to do this in one step. Like the `newOrCreate` method, `updateOrCreate` persists the model, so there's no need to call `save()`:
+You may also come across situations where you want to update an existing model or create a new model if none exists. Laravel provides an `updateOrCreate` method to do this in one step. Like the `firstOrCreate` method, `updateOrCreate` persists the model, so there's no need to call `save()`:
 
     // If there's a flight from Oakland to San Diego, set the price to $99.
     // If no matching model exists, create one.
@@ -608,10 +608,6 @@ Eloquent also allows you to define global scopes using Closures, which is partic
             });
         }
     }
-
-The first argument of the `addGlobalScope()` serves as an identifier to remove the scope:
-
-    User::withoutGlobalScope('age')->get();
 
 #### Removing Global Scopes
 

@@ -645,7 +645,7 @@ If you want to count the number of results from a relationship without actually 
         echo $post->comments_count;
     }
 
-You may add retrieve the "counts" for multiple relations as well as add constraints to the queries:
+You may add the "counts" for multiple relations as well as add constraints to the queries:
 
     $posts = Post::withCount(['votes', 'comments' => function ($query) {
         $query->where('content', 'like', 'foo%');
@@ -843,6 +843,12 @@ You may also pass additional intermediate table values with the IDs:
 If you do not want to detach existing IDs, you may use the `syncWithoutDetaching` method:
 
     $user->roles()->syncWithoutDetaching([1, 2, 3]);
+
+#### Toggling Associations
+
+The many-to-many relationship also provides a `toggle` method which "toggles" the attachment status of the given IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:
+
+    $user->roles()->toggle([1, 2, 3]);
 
 #### Saving Additional Data On A Pivot Table
 

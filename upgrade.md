@@ -233,6 +233,10 @@ If you do not want to migrate your query builder results to `Collection` instanc
 
     $usersIds = DB::table('users')->pluck('id')->all();
 
+#### Eloquent `getRelation` Method
+
+The Eloquent `getRelation` method no longer throws a `BadMethodCallException` if the relation can't be loaded. Instead, it will throw an `Illuminate\Database\Eloquent\RelationNotFoundException`. This change will only affect your application if you were manually catching the `BadMethodCallException`.
+
 #### Eloquent `$morphClass` Property
 
 The `$morphClass` property that could be defined on Eloquent models has been removed in favor of defining a "morph map". Defining a morph map provides support for eager loading and resolves additional bugs with polymorphic relations. If you were previously relying on the `$morphClass` property, you should migrate to `morphMap` using the following syntax:

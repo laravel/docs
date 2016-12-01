@@ -79,7 +79,7 @@ Laravel 框架的所有設定都存放於 `config` 目錄中。每個選項都�
 
 可以提供 `message` 和 `retry` 選項給 `down` 指令。 `message` 選項的值用來顯示或紀錄客製化訊息，`retry` 選項的值用來當作 HTTP 標頭 `Retry-After` 的值：
 
-    php artisan down --message='Upgrading Database' --retry=60
+    php artisan down --message="Upgrading Database" --retry=60
 
 若要關閉維護模式，請使用 `up` 指令：
 
