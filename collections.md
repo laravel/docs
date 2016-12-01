@@ -111,7 +111,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [where](#method-where)
 [whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
-[whereInLoose](#method-whereinloose)
+[whereInStrict](#method-whereinstrict)
 [zip](#method-zip)
 
 </div>
@@ -171,7 +171,7 @@ The `chunk` method breaks the collection into multiple, smaller collections of a
 
     // [[1, 2, 3, 4], [5, 6, 7]]
 
-This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](http://getbootstrap.com/css/#grid). Imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
+This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](https://getbootstrap.com/css/#grid). Imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
 
     @foreach ($products->chunk(3) as $chunk)
         <div class="row">
@@ -354,6 +354,14 @@ The `filter` method filters the collection using the given callback, keeping onl
     $filtered->all();
 
     // [3, 4]
+
+If no callback is supplied, all entries of the collection that are equivalent to `false` will be removed:
+
+    $collection = collect([1, 2, 3, null, false, '', 0, []]);
+
+    $collection->filter()->all();
+
+    // [1, 2, 3]
 
 For the inverse of `filter`, see the [reject](#method-reject) method.
 
@@ -552,9 +560,9 @@ The `has` method determines if a given key exists in the collection:
 
     $collection = collect(['account_id' => 1, 'product' => 'Desk']);
 
-    $collection->has('email');
+    $collection->has('product');
 
-    // false
+    // true
 
 <a name="method-implode"></a>
 #### `implode()` {#collection-method}
@@ -1055,7 +1063,7 @@ The `sort` method sorts the collection. The sorted collection keeps the original
 
     // [1, 2, 3, 4, 5]
 
-If your sorting needs are more advanced, you may pass a callback to `sort` with your own algorithm. Refer to the PHP documentation on [`usort`](http://php.net/manual/en/function.usort.php#refsect1-function.usort-parameters), which is what the collection's `sort` method calls under the hood.
+If your sorting needs are more advanced, you may pass a callback to `sort` with your own algorithm. Refer to the PHP documentation on [`usort`](https://secure.php.net/manual/en/function.usort.php#refsect1-function.usort-parameters), which is what the collection's `sort` method calls under the hood.
 
 > {tip} If you need to sort a collection of nested arrays or objects, see the [`sortBy`](#method-sortby) and [`sortByDesc`](#method-sortbydesc) methods.
 
@@ -1406,12 +1414,12 @@ The `whereIn` method filters the collection by a given key / value contained wit
     ]
     */
 
-The `whereIn` method uses strict comparisons when checking item values. Use the [`whereInLoose`](#method-whereinloose) method to filter using "loose" comparisons.
+The `whereIn` method uses "loose" comparisons when checking item values. Use the [`whereInStrict`](#method-whereinstrict) method to filter using strict comparisons.
 
-<a name="method-whereinloose"></a>
-#### `whereInLoose()` {#collection-method}
+<a name="method-whereinstrict"></a>
+#### `whereInStrict()` {#collection-method}
 
-This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using "loose" comparisons.
+This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using strict comparisons.
 
 <a name="method-zip"></a>
 #### `zip()` {#collection-method}

@@ -28,10 +28,10 @@ Out of the box, Valet support includes, but is not limited to:
 - [Laravel](https://laravel.com)
 - [Lumen](https://lumen.laravel.com)
 - [Symfony](https://symfony.com)
-- [Zend](http://framework.zend.com)
-- [CakePHP 3](http://cakephp.org)
+- [Zend](https://framework.zend.com)
+- [CakePHP 3](https://cakephp.org)
 - [WordPress](https://wordpress.org)
-- [Bedrock](https://roots.io/bedrock)
+- [Bedrock](https://roots.io/bedrock/)
 - [Craft](https://craftcms.com)
 - [Statamic](https://statamic.com)
 - [Jigsaw](http://jigsaw.tighten.co)
@@ -144,7 +144,7 @@ All three methods receive the `$sitePath`, `$siteName`, and `$uri` values as the
 
 Once you have completed your custom Valet driver, place it in the `~/.valet/Drivers` directory using the `FrameworkValetDriver.php` naming convention. For example, if you are writing a custom valet driver for WordPress, your file name should be `WordPressValetDriver.php`.
 
-Let's take at a sample implementation of each method your custom Valet driver should implement.
+Let's take a look at a sample implementation of each method your custom Valet driver should implement.
 
 #### The `serves` Method
 

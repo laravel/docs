@@ -77,6 +77,15 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
 When a user is not successfully authenticated, they will be automatically redirected back to the login form.
 
+#### Username Customization
+
+By default, Laravel uses the `email` field for authentication. If you would like to customize this, you may define a `username` method on your `LoginController`:
+
+    public function username()
+    {
+        return 'username';
+    }
+
 #### Guard Customization
 
 You may also customize the "guard" that is used to authenticate and register users. To get started, define a `guard` method on your `LoginController`, `RegisterController`, and `ResetPasswordController`. The method should return a guard instance:
@@ -103,7 +112,11 @@ You may access the authenticated user via the `Auth` facade:
 
     use Illuminate\Support\Facades\Auth;
 
+    // Get the currently authenticated user...
     $user = Auth::user();
+
+    // Get the currently authenticated user's ID...
+    $id = Auth::id();
 
 Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods:
 
@@ -182,7 +195,7 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
 
     use Illuminate\Support\Facades\Auth;
 
-    class AuthController extends Controller
+    class LoginController extends Controller
     {
         /**
          * Handle an authentication attempt.
@@ -283,7 +296,7 @@ You may use the `once` method to log a user into the application for a single re
 <a name="http-basic-authentication"></a>
 ## HTTP Basic Authentication
 
-[HTTP Basic Authentication](http://en.wikipedia.org/wiki/Basic_access_authentication) provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` [middleware](/docs/{{version}}/middleware) to your route. The `auth.basic` middleware is included with the Laravel framework, so you do not need to define it:
+[HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` [middleware](/docs/{{version}}/middleware) to your route. The `auth.basic` middleware is included with the Laravel framework, so you do not need to define it:
 
     Route::get('profile', function () {
         // Only authenticated users may enter...

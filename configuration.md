@@ -30,6 +30,8 @@ Laravel 框架的所有設定都存放於 `config` 目錄中。每個選項都�
 
 為了做到這件事，Laravel 透過 Vance Lucas 的 [DotEnv](https://github.com/vlucas/phpdotenv) PHP 函式庫來達到這項需求。在全新安裝好的 Laravel 裡，應用程式的根目錄下會包含一個 `.env.example` 檔案，你應該手動更改它的檔名為 `.env`。如果透過 Composer 安裝 Laravel，則這個檔案將自動被更名為 `.env`。
 
+> {tip} 你也可以建立一個設定檔 `.env.testing`。當執行 PHPUnit 測試的時候，或是當執行 Artisan 指令的時候加上參數 `--env=testing`，這個檔案就會被用來取代 `.env` 設定檔。
+
 #### 取得當前環境
 
 當你的應用程式收到請求時，這個程式中所有的變數都會被載入到 PHP 超級全域變數 `$_ENV` 裡。然而，你可以使用 `env` 輔助方法來從設定檔中取得這些變數的值。事實上，如果你檢閱過 Laravel 的設定檔案，你會注意到有幾個選項已經在使用這個輔助方法：
@@ -77,7 +79,7 @@ Laravel 框架的所有設定都存放於 `config` 目錄中。每個選項都�
 
 可以提供 `message` 和 `retry` 選項給 `down` 指令。 `message` 選項的值用來顯示或紀錄客製化訊息，`retry` 選項的值用來當作 HTTP 標頭 `Retry-After` 的值：
 
-    php artisan down --message='Upgrading Database' --retry=60
+    php artisan down --message="Upgrading Database" --retry=60
 
 若要關閉維護模式，請使用 `up` 指令：
 

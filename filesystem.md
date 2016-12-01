@@ -127,7 +127,7 @@ When using the `local` or `s3` drivers, you may use the `url` method to get the 
 
     $url = Storage::url('file1.jpg');
 
-> {note} Remember, if you are using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) to the `storage/app/public` directory.
+> {note} Remember, if you are using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory.
 
 <a name="file-metadata"></a>
 ### File Metadata
@@ -167,7 +167,7 @@ If you would like Laravel to automatically manage streaming a given file to your
 
 There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will automatically generate a filename based on the contents of the file. This is accomplished by taking a MD5 hash of the file's contents. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
 
-The `putFile` and `putFileAs` methods also accept an argument to specify the "visibility" of the stored file. This is particularly useful if you are storing the file on a cloud disk such as S3 and would like the file to publicly accessible:
+The `putFile` and `putFileAs` methods also accept an argument to specify the "visibility" of the stored file. This is particularly useful if you are storing the file on a cloud disk such as S3 and would like the file to be publicly accessible:
 
     Storage::putFile('photos', new File('/path/to/photo'), 'public');
 
@@ -333,7 +333,7 @@ In order to set up the custom filesystem you will need to create a [service prov
          */
         public function boot()
         {
-            Storage::extend('dropbox', function($app, $config) {
+            Storage::extend('dropbox', function ($app, $config) {
                 $client = new DropboxClient(
                     $config['accessToken'], $config['clientIdentifier']
                 );
@@ -355,4 +355,4 @@ In order to set up the custom filesystem you will need to create a [service prov
 
 The first argument of the `extend` method is the name of the driver and the second is a Closure that receives the `$app` and `$config` variables. The resolver Closure must return an instance of `League\Flysystem\Filesystem`. The `$config` variable contains the values defined in `config/filesystems.php` for the specified disk.
 
-Once you have created the service provider to register the extension, you may use the `dropbox` driver in your `config/filesystem.php` configuration file.
+Once you have created the service provider to register the extension, you may use the `dropbox` driver in your `config/filesystems.php` configuration file.

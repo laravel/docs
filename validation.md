@@ -332,7 +332,7 @@ If you do not want to use the `ValidatesRequests` trait's `validate` method, you
 
 The first argument passed to the `make` method is the data under validation. The second argument is the validation rules that should be applied to the data.
 
-After checking if the request passed validation, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
+After checking if the request validation failed, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
 
 <a name="automatic-redirection"></a>
 ### Automatic Redirection
@@ -363,7 +363,7 @@ The validator also allows you to attach callbacks to be run after validation is 
 
     $validator = Validator::make(...);
 
-    $validator->after(function($validator) {
+    $validator->after(function ($validator) {
         if ($this->somethingElseIsInvalid()) {
             $validator->errors()->add('field', 'Something is wrong with this field!');
         }
@@ -542,7 +542,7 @@ The field under validation must be _yes_, _on_, _1_, or _true_. This is useful f
 <a name="rule-active-url"></a>
 #### active_url
 
-The field under validation must be a valid URL according to the `checkdnsrr` PHP function.
+The field under validation must have a valid A or AAAA record according to the `dns_get_record` PHP function.
 
 <a name="rule-after"></a>
 #### after:_date_
@@ -740,7 +740,7 @@ The file under validation must have a MIME type corresponding to one of the list
 
 Even though you only need to specify the extensions, this rule actually validates against the MIME type of the file by reading the file's contents and guessing its MIME type.
 
-A full listing of MIME types and their corresponding extensions may be found at the following location: [http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+A full listing of MIME types and their corresponding extensions may be found at the following location: [https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
 <a name="rule-min"></a>
 #### min:_value_
@@ -909,13 +909,13 @@ Sometimes you may wish to add validation rules based on more complex conditional
 
 Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game resale shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
 
-    $v->sometimes('reason', 'required|max:500', function($input) {
+    $v->sometimes('reason', 'required|max:500', function ($input) {
         return $input->games >= 100;
     });
 
 The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
 
-    $v->sometimes(['reason', 'cost'], 'required', function($input) {
+    $v->sometimes(['reason', 'cost'], 'required', function ($input) {
         return $input->games >= 100;
     });
 
@@ -960,7 +960,7 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
          */
         public function boot()
         {
-            Validator::extend('foo', function($attribute, $value, $parameters, $validator) {
+            Validator::extend('foo', function ($attribute, $value, $parameters, $validator) {
                 return $value == 'foo';
             });
         }
@@ -1003,7 +1003,7 @@ When creating a custom validation rule, you may sometimes need to define custom 
     {
         Validator::extend(...);
 
-        Validator::replacer('foo', function($message, $attribute, $rule, $parameters) {
+        Validator::replacer('foo', function ($message, $attribute, $rule, $parameters) {
             return str_replace(...);
         });
     }
@@ -1020,7 +1020,7 @@ By default, when an attribute being validated is not present or contains an empt
 
 For a rule to run even when an attribute is empty, the rule must imply that the attribute is required. To create such an "implicit" extension, use the `Validator::extendImplicit()` method:
 
-    Validator::extendImplicit('foo', function($attribute, $value, $parameters, $validator) {
+    Validator::extendImplicit('foo', function ($attribute, $value, $parameters, $validator) {
         return $value == 'foo';
     });
 

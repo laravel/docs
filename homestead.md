@@ -19,7 +19,7 @@
 <a name="introduction"></a>
 ## 簡介
 
-Laravel 致力於讓 PHP 開發體驗更愉快，也包含你的本地開發環境。[Vagrant](http://vagrantup.com) 提供了一個簡單、優雅的方式來管理與供應虛擬機器。
+Laravel 致力於讓 PHP 開發體驗更愉快，也包含你的本地開發環境。[Vagrant](https://www.vagrantup.com) 提供了一個簡單、優雅的方式來管理與供應虛擬機器。
 
 Laravel Homestead 是一個官方預載的 Vagrant box，提供你一個美好的開發環境，你不需要在你的本機電腦安裝 PHP、HHVM、網頁伺服器或任何伺服器軟體。不用擔心搞亂你的系統！Vagrant box 可以搞定一切。如果有什麼地方爛掉了，你可以在幾分鐘內快速的砍掉並重建虛擬機器！
 
@@ -50,9 +50,9 @@ Homestead 可以在任何 Windows、Mac 或 Linux 系統上面執行，裡面包
 <a name="first-steps"></a>
 ### 前置動作
 
-在啟動你的 Homestead 環境之前，你必須先安裝 [VirtualBox 5.x](https://www.virtualbox.org/wiki/Downloads) 或 [VMWare](http://www.vmware.com) 以及 [Vagrant](http://www.vagrantup.com/downloads.html)。這些軟體在各個常用的平台都有提供易用的視覺化安裝程式。
+在啟動你的 Homestead 環境之前，你必須先安裝 [VirtualBox 5.x](https://www.virtualbox.org/wiki/Downloads) 或 [VMWare](https://www.vmware.com) 以及 [Vagrant](https://www.vagrantup.com/downloads.html)。這些軟體在各個常用的平台都有提供易用的視覺化安裝程式。
 
-若要使用 VMware provider，你需要同時購買 VMware Fusion / Workstation 及 [VMware Vagrant plug-in](http://www.vagrantup.com/vmware)。雖然他不是免費的，但 VMware 可以在共享資料夾上獲得較快的性能。
+若要使用 VMware provider，你需要同時購買 VMware Fusion / Workstation 及 [VMware Vagrant plug-in](https://www.vagrantup.com/vmware)。雖然他不是免費的，但 VMware 可以在共享資料夾上獲得較快的性能。
 
 #### 安裝 Homestead Vagrant Box
 
@@ -91,12 +91,23 @@ Homestead 可以在任何 Windows、Mac 或 Linux 系統上面執行，裡面包
         - map: ~/Code
           to: /home/vagrant/Code
 
-若要啟用 [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html)，你只需要在共享目錄的設定值中加入一個簡單的參數：
+若要啟用 [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html)，你只需要在共享目錄的設定值中加入一個簡單的參數：
 
     folders:
         - map: ~/Code
           to: /home/vagrant/Code
           type: "nfs"
+
+You may also pass any options supported by Vagrant's [Synced Folders](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) by listing them under the `options` key:
+
+    folders:
+        - map: ~/Code
+          to: /home/vagrant/Code
+          type: "rsync"
+          options:
+              rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
+              rsync__exclude: ["node_modules"]
+
 
 #### 設定 Nginx 網站
 
@@ -142,7 +153,7 @@ Mac / Linux:
 
 Windows:
 
-	vendor\\bin\\homestead make
+    vendor\\bin\\homestead make
 
 接著，在終端機中執行 `vagrant up` 指令，並透過網頁瀏覽器造訪 `http://homestead.app` 。再次提醒，你仍然需要在 `/etc/hosts` 裡設定 `homestead.app` 或其他想要使用的網域。
 
@@ -199,7 +210,6 @@ Windows:
 Laravel 提供了便利的方式來[排程 Cron 任務](/docs/{{version}}/scheduling)，透過 `schedule:run` Artisan 指令，排程便會在每分鐘被執行。`schedule:run` 指令會檢查定義在你 `App\Console\Kernel` 類別中排程的任務，判斷哪個任務該被執行。
 
 如果你想為 Homestead 網站使用 `schedule:run`  指令，你可以在定義網站時設置 `schedule` 選項為 `true`：
-
 
     sites:
         - map: homestead.app

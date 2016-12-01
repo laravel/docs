@@ -97,6 +97,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [asset](#method-asset)
 [secure_asset](#method-secure-asset)
 [route](#method-route)
+[secure_url](#method-secure-url)
 [url](#method-url)
 
 </div>
@@ -453,7 +454,7 @@ The `app_path` function returns the fully qualified path to the `app` directory.
 <a name="method-base-path"></a>
 #### `base_path()` {#collection-method}
 
-The `base_path` function returns the fully qualified path to the project root. You may also use the `base_path` function to generate a fully qualified path to a given file relative to the application directory:
+The `base_path` function returns the fully qualified path to the project root. You may also use the `base_path` function to generate a fully qualified path to a given file relative to the project root directory:
 
     $path = base_path();
 
@@ -707,14 +708,14 @@ If the method accepts route parameters, you may pass them as the second argument
 
 Generate a URL for an asset using the current scheme of the request (HTTP or HTTPS):
 
-	$url = asset('img/photo.jpg');
+    $url = asset('img/photo.jpg');
 
 <a name="method-secure-asset"></a>
 #### `secure_asset()` {#collection-method}
 
 Generate a URL for an asset using HTTPS:
 
-	echo secure_asset('foo/bar.zip', $title, $attributes = []);
+    echo secure_asset('foo/bar.zip', $title, $attributes = []);
 
 <a name="method-route"></a>
 #### `route()` {#collection-method}
@@ -726,6 +727,15 @@ The `route` function generates a URL for the given named route:
 If the route accepts parameters, you may pass them as the second argument to the method:
 
     $url = route('routeName', ['id' => 1]);
+
+<a name="method-secure-url"></a>
+#### `secure_url()` {#collection-method}
+
+The `secure_url` function generates a fully qualified HTTPS URL to the given path:
+
+    echo secure_url('user/profile');
+
+    echo secure_url('user/profile', [1]);
 
 <a name="method-url"></a>
 #### `url()` {#collection-method}
@@ -977,7 +987,9 @@ The session store will be returned if no value is passed to the function:
 
 The `value` function's behavior will simply return the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed then its result will be returned:
 
-    $value = value(function() { return 'bar'; });
+    $value = value(function () {
+        return 'bar';
+    });
 
 <a name="method-view"></a>
 #### `view()` {#collection-method}

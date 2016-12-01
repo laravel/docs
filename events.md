@@ -80,10 +80,9 @@ An event class is simply a data container which holds the information related to
     namespace App\Events;
 
     use App\Order;
-    use App\Events\Event;
     use Illuminate\Queue\SerializesModels;
 
-    class OrderShipped extends Event
+    class OrderShipped
     {
         use SerializesModels;
 

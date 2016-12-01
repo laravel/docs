@@ -9,6 +9,7 @@
     - [Migrations](#migrations)
     - [Translations](#translations)
     - [Views](#views)
+- [Commands](#commands)
 - [Public Assets](#public-assets)
 - [Publishing File Groups](#publishing-file-groups)
 
@@ -36,7 +37,7 @@ A service provider extends the `Illuminate\Support\ServiceProvider` class and co
 <a name="routing"></a>
 ## Routing
 
-To define routes for your package, simply `require` the routes file from within your package service provider's `boot` method. From within your routes file, you may use the `Illuminate\Support\Facades\Route` facade to [register routes](/docs/{{version}}/routing) just as you would within a typical Laravel application:
+To define routes for your package, pass the routes file path to the `loadRoutesFrom` method from within your package service provider's `boot` method. From within your routes file, you may use the `Illuminate\Support\Facades\Route` facade to [register routes](/docs/{{version}}/routing) just as you would within a typical Laravel application:
 
     /**
      * Perform post-registration booting of services.
@@ -45,9 +46,7 @@ To define routes for your package, simply `require` the routes file from within 
      */
     public function boot()
     {
-        if (! $this->app->routesAreCached()) {
-            require __DIR__.'/../../routes.php';
-        }
+        $this->loadRoutesFrom(__DIR__.'/../../routes.php');
     }
 
 <a name="resources"></a>
@@ -190,6 +189,26 @@ If you would like to make your views available for publishing to the application
     }
 
 Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified publish location.
+
+<a name="commands"></a>
+## Commands
+
+To register your package's Artisan commands with Laravel, you may use the `commands` method. This method expects an array of command class names. Once the commands have been registered, you may execute them using the [Artisan CLI](/docs/{{version}}/artisan):
+
+    /**
+     * Bootstrap the application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                FooCommand::class,
+                BarCommand::class,
+            ]);
+        }
+    }
 
 <a name="public-assets"></a>
 ## Public Assets

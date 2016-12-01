@@ -4,6 +4,7 @@
 - [Defining Schedules](#defining-schedules)
     - [Schedule Frequency Options](#schedule-frequency-options)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
+    - [Maintenance Mode](#maintenance-mode)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
 
@@ -160,6 +161,13 @@ By default, scheduled tasks will be run even if the previous instance of the tas
     $schedule->command('emails:send')->withoutOverlapping();
 
 In this example, the `emails:send` [Artisan command](/docs/{{version}}/artisan) will be run every minute if it is not already running. The `withoutOverlapping` method is especially useful if you have tasks that vary drastically in their execution time, preventing you from predicting exactly how long a given task will take.
+
+<a name="maintenance-mode"></a>
+### Maintenance Mode
+
+Laravel's scheduled tasks will not run when Laravel is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), since we don't want your tasks to interfere with any unfinished maintenance you may be performing on your server. However, if you would like to force a task to run even in maintenance mode, you may use the `evenInMaintenanceMode` method:
+
+    $schedule->command('emails:send')->evenInMaintenanceMode();
 
 <a name="task-output"></a>
 ## Task Output

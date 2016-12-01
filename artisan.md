@@ -37,9 +37,11 @@ In addition to the commands provided with Artisan, you may also build your own c
 <a name="generating-commands"></a>
 ### Generating Commands
 
-To create a new command, use the `make:command` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. Don't worry if you this directory does not exist in your application, since it will be created the first time you run the `make:command` Artisan command. The generated command will include the default set of properties and methods that are present on all commands:
+To create a new command, use the `make:command` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. Don't worry if this directory does not exist in your application, since it will be created the first time you run the `make:command` Artisan command. The generated command will include the default set of properties and methods that are present on all commands:
 
     php artisan make:command SendEmails
+
+Next, you will need to [register the command](#registering-commands) before it can be executed via the Artisan CLI.
 
 <a name="command-structure"></a>
 ### Command Structure
@@ -301,9 +303,9 @@ The `secret` method is similar to `ask`, but the user's input will not be visibl
 
 #### Asking For Confirmation
 
-If you need to ask the user for a simple confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` in response to the prompt, the method will return `true`.
+If you need to ask the user for a simple confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` or `yes` in response to the prompt, the method will return `true`.
 
-    if ($this->confirm('Do you wish to continue? [y|N]')) {
+    if ($this->confirm('Do you wish to continue?')) {
         //
     }
 
@@ -368,7 +370,7 @@ For long running tasks, it could be helpful to show a progress indicator. Using 
 
     $bar->finish();
 
-For more advanced options, check out the [Symfony Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
+For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>
 ## Registering Commands

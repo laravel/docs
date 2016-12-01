@@ -24,7 +24,7 @@ In addition to providing [authentication](/docs/{{version}}/authentication) serv
 
 Think of gates and policies like routes and controllers. Gates provide a simple, Closure based approach to authorization while policies, like controllers, group their logic around a particular model or resource. We'll explore gates first and then examine policies.
 
-It is important to not view gates and policies as mutually exclusive for your application. Most applications will most likely contain a mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions which are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource.
+You do not need to choose between exclusively using gates or exclusively using policies when building an application. Most applications will most likely contain a mixture of gates and policies, and that is perfectly fine! Gates are most applicable to actions which are not related to any model or resource, such as viewing an administrator dashboard. In contrast, policies should be used when you wish to authorize an action for a particular model or resource.
 
 <a name="gates"></a>
 ## Gates
@@ -51,16 +51,24 @@ Gates are Closures that determine if a user is authorized to perform a given act
 <a name="authorizing-actions-via-gates"></a>
 ### Authorizing Actions
 
-To authorize an action using gates, you should use the `allows` method. Note that you are not required to pass the currently authenticated user to the `allows` method. Laravel will automatically take care of passing the user into the gate Closure:
+To authorize an action using gates, you should use the `allows` or `denies` methods. Note that you are not required to pass the currently authenticated user to these methods. Laravel will automatically take care of passing the user into the gate Closure:
 
     if (Gate::allows('update-post', $post)) {
         // The current user can update the post...
+    }
+
+    if (Gate::denies('update-post', $post)) {
+        // The current user can't update the post...
     }
 
 If you would like to determine if a particular user is authorized to perform an action, you may use the `forUser` method on the `Gate` facade:
 
     if (Gate::forUser($user)->allows('update-post', $post)) {
         // The user can update the post...
+    }
+
+    if (Gate::forUser($user)->denies('update-post', $post)) {
+        // The user can't update the post...
     }
 
 <a name="creating-policies"></a>

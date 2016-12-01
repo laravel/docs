@@ -86,18 +86,20 @@ Another approach to resetting the database state is to wrap each test case in a 
         }
     }
 
-> {note} This trait will only wrap the default database connection in a transaction. If your application is using multiple database connections, you will need to manually handle the transaction logic for those connections.
+> {note} By default, this trait will only wrap the default database connection in a transaction. If your application is using multiple database connections, you should define a `$connectionsToTransact` property on your test class. This property should be an array of connection names to execute the transactions on.
 
 <a name="writing-factories"></a>
 ## Writing Factories
 
-When testing, it is common to need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories. To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
+When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories. To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
 
     $factory->define(App\User::class, function (Faker\Generator $faker) {
+        static $password;
+
         return [
             'name' => $faker->name,
-            'email' => $faker->email,
-            'password' => bcrypt(str_random(10)),
+            'email' => $faker->unique()->safeEmail,
+            'password' => $password ?: $password = bcrypt('secret'),
             'remember_token' => str_random(10),
         ];
     });

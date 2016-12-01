@@ -117,7 +117,7 @@ Once the `ShouldQueue` interface has been added to your notification, you may se
 
     $user->notify(new InvoicePaid($invoice));
 
-If you would like to delay the deliver of the notification, you may chain the `delay` method onto your notification instantiation:
+If you would like to delay the delivery of the notification, you may chain the `delay` method onto your notification instantiation:
 
     $when = Carbon::now()->addMinutes(10);
 

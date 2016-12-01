@@ -20,7 +20,7 @@
 <a name="configuration"></a>
 ## Configuration
 
-Laravel provides an expressive, unified API for various caching backends. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](http://memcached.org) and [Redis](http://redis.io) out of the box.
+Laravel provides an expressive, unified API for various caching backends. The cache configuration is located at `config/cache.php`. In this file you may specify which cache driver you would like used by default throughout your application. Laravel supports popular caching backends like [Memcached](https://memcached.org) and [Redis](http://redis.io) out of the box.
 
 The cache configuration file also contains various other options, which are documented within the file, so make sure to read over these options. By default, Laravel is configured to use the `file` cache driver, which stores the serialized, cached objects in the filesystem. For larger applications, it is recommended that you use a more robust driver such as Memcached or Redis. You may even configure multiple cache configurations for the same driver.
 
@@ -31,7 +31,7 @@ The cache configuration file also contains various other options, which are docu
 
 When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
 
-    Schema::create('cache', function($table) {
+    Schema::create('cache', function ($table) {
         $table->string('key')->unique();
         $table->text('value');
         $table->integer('expiration');
@@ -41,7 +41,7 @@ When using the `database` cache driver, you will need to setup a table to contai
 
 #### Memcached
 
-Using the Memcached driver requires the [Memcached PECL package](http://pecl.php.net/package/memcached) to be installed. You may list all of your Memcached servers in the `config/cache.php` configuration file:
+Using the Memcached driver requires the [Memcached PECL package](https://pecl.php.net/package/memcached) to be installed. You may list all of your Memcached servers in the `config/cache.php` configuration file:
 
     'memcached' => [
         [
@@ -118,7 +118,7 @@ The `get` method on the `Cache` facade is used to retrieve items from the cache.
 
 You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
 
-    $value = Cache::get('key', function() {
+    $value = Cache::get('key', function () {
         return DB::table(...)->get();
     });
 
@@ -143,7 +143,7 @@ The `increment` and `decrement` methods may be used to adjust the value of integ
 
 Sometimes you may wish to retrieve an item from the cache, but also store a default value if the requested item doesn't exist. For example, you may wish to retrieve all users from the cache or, if they don't exist, retrieve them from the database and add them to the cache. You may do this using the `Cache::remember` method:
 
-    $value = Cache::remember('users', $minutes, function() {
+    $value = Cache::remember('users', $minutes, function () {
         return DB::table('users')->get();
     });
 
@@ -220,16 +220,16 @@ If you provide an array of key / value pairs and an expiration time to the funct
 
 Cache tags allow you to tag related items in the cache and then flush all cached values that have been assigned a given tag. You may access a tagged cache by passing in an ordered array of tag names. For example, let's access a tagged cache and `put` value in the cache:
 
-	Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
+    Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
 
-	Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
+    Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
 
 <a name="accessing-tagged-cache-items"></a>
 ### Accessing Tagged Cache Items
 
 To retrieve a tagged cache item, pass the same ordered list of tags to the `tags` method and then call the `get` method with the key you wish to retrieve:
 
-	$john = Cache::tags(['people', 'artists'])->get('John');
+    $john = Cache::tags(['people', 'artists'])->get('John');
 
     $anne = Cache::tags(['people', 'authors'])->get('Anne');
 
@@ -238,11 +238,11 @@ To retrieve a tagged cache item, pass the same ordered list of tags to the `tags
 
 You may flush all items that are assigned a tag or list of tags. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both `Anne` and `John` would be removed from the cache:
 
-	Cache::tags(['people', 'authors'])->flush();
+    Cache::tags(['people', 'authors'])->flush();
 
 In contrast, this statement would remove only caches tagged with `authors`, so `Anne` would be removed, but not `John`:
 
-	Cache::tags('authors')->flush();
+    Cache::tags('authors')->flush();
 
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
@@ -274,7 +274,7 @@ To create our custom cache driver, we first need to implement the `Illuminate\Co
 
 We just need to implement each of these methods using a MongoDB connection. For an example of how to implement each of these methods, take a look at the `Illuminate\Cache\MemcachedStore` in the framework source code. Once our implementation is complete, we can finish our custom driver registration.
 
-    Cache::extend('mongo', function($app) {
+    Cache::extend('mongo', function ($app) {
         return Cache::repository(new MongoStore);
     });
 
@@ -302,7 +302,7 @@ To register the custom cache driver with Laravel, we will use the `extend` metho
          */
         public function boot()
         {
-            Cache::extend('mongo', function($app) {
+            Cache::extend('mongo', function ($app) {
                 return Cache::repository(new MongoStore);
             });
         }
