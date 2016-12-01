@@ -49,6 +49,17 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [last](#method-last)
 </div>
 
+### Data / Objects
+
+<div class="collection-method-list" markdown="1">
+
+[data_fill](#method-data-fill)
+[data_get](#method-data-get)
+[data_set](#method-data-set)
+[object_get](#method-object-get)
+
+</div>
+
 ### Paths
 
 <div class="collection-method-list" markdown="1">
@@ -438,6 +449,71 @@ The `last` function returns the last element in the given array:
     $last = last($array);
 
     // 300
+
+<a name="data_objects"></a>
+## Data / Objects
+
+<a name="method-data-fill"></a>
+#### `data_fill()` {#collection-method}
+
+The `data_fill()` function fills in data where its mising:
+
+    $data = ['foo' => 'bar'];
+
+    data_fill($data, 'baz', 'boom');
+    
+    // ['foo' => 'bar', 'baz' => 'boom']
+    
+    $data = ['foo' => 'bar', 'baz' => 'boom']
+    
+    data_fill($data, 'baz', 'noop');
+    
+    // ['foo' => 'bar', 'baz' => 'boom']
+
+<a name="method-data-get"></a>
+### `data_get()` {#collection-method}
+
+The `data_get()` function gets an item from an array or object using "dot" notation:
+
+    $taylor = new Stdclass();
+    $taylor->first = 'taylor';
+    $taylor->last = 'otwell';
+    $array = [
+      'users' => [
+        $taylor,
+        ['first' => 'abigail', 'last' => 'otwell'],
+        ['first' => 'dayle', 'last' => 'rees'],
+      ],
+      'posts' => null,
+    ];
+    
+    data_get($array, 'users.*.first');
+    
+    // ["taylor", "abigail", "dayle"]
+
+<a name="method-data-set"></a>
+### `data_set()` {#collection-method}
+
+The `data_set()` function sets an item on an array or object using "dot" notation:
+
+    $data = ['foo' => [], 'baz' => 'kaboom'];
+
+    data_set($data, 'foo.bar', 'boom');
+    
+    // ['foo' => ['bar' => 'boom'], 'baz' => 'kaboom']
+    
+<a name="method-object-get"></a>
+### `object_get()` {#collection-method}
+
+The `object_get()` function gets an item from an object using "dot" notation:
+
+    $class = new StdClass;
+    $class->name = new StdClass;
+    $class->name->first = 'Taylor';
+
+    object_get($class, 'name.first')
+    
+    // Taylor
 
 <a name="paths"></a>
 ## Paths
