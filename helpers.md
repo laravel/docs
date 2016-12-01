@@ -401,6 +401,30 @@ Generate a URL for a given named route.
 Generate a URL for an asset.
 
 	$url = asset('img/photo.jpg');
+	
+### link_to
+
+Generate a HTML link to the given URL.
+
+	echo link_to('foo/bar', $title, $attributes = array(), $secure = null);
+
+### link_to_asset
+
+Generate a HTML link to the given asset.
+
+	echo link_to_asset('foo/bar.zip', $title, $attributes = array(), $secure = null);
+
+### link_to_route
+
+Generate a HTML link to the given route.
+
+	echo link_to_route('route.name', $title, $parameters = array(), $attributes = array());
+
+### link_to_action
+
+Generate a HTML link to the given controller action.
+
+	echo link_to_action('HomeController@getIndex', $title, $parameters = array(), $attributes = array());
 
 ### secure_asset
 
