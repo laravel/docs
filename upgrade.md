@@ -473,6 +473,16 @@ If you are queueing jobs using this syntax, Eloquent models will no longer be au
 
 ### Routing
 
+#### The `routes` folder
+
+Laravel 5.3 introduces a `routes` folder at the root of the project. While optional, adopting this new structure makes `app/` fully PSR-4 compliant and improves the organization of your routes.
+
+To upgrade your application so it follows the new Laravel 5.3 routing convention, update your `RouteServiceProvider` by [grabbing a fresh copy from GitHub](https://github.com/laravel/laravel/tree/master/app/Providers/RouteServiceProvider.php)
+
+Then create a new folder called `routes` at the root of your project and split `app/Http/routes.php` file into two files, `routes/web.php` and `routes/api.php`. 
+
+Routes in `routes/web.php` are wrapped in the `web` middleware group, which provides features like session state and CSRF protection. The routes in `routes/api.php` are stateless and are assigned the `api` middleware group. 
+
 #### Resource Parameters Are Singular By Default
 
 In previous versions of Laravel, route parameters registered using `Route::resource` were not "singularized". This could lead to some unexpected behavior when registering route model bindings. For example, given the following `Route::resource` call:
