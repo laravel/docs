@@ -9,6 +9,7 @@
 - [Stacks](#stacks)
 - [Service Injection](#service-injection)
 - [Extending Blade](#extending-blade)
+- [Custom PHP](#custom-php)
 
 <a name="introduction"></a>
 ## Introduction
@@ -309,3 +310,14 @@ As you can see, Laravel's `with` helper function was used in this directive. The
     <?php echo with($var)->format('m/d/Y H:i'); ?>
 
 After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
+
+<a name="custom-php"></a>
+## Custom PHP
+
+Blade offers a fallback method to still write your own PHP code.
+
+    @php($i = 0)
+
+    @php
+        $i = 0
+    @endphp
