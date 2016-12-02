@@ -15,7 +15,7 @@
     - [Prompting For Input](#prompting-for-input)
     - [Writing Output](#writing-output)
 - [Registering Commands](#registering-commands)
-- [Programatically Executing Commands](#programatically-executing-commands)
+- [Programmatically Executing Commands](#programmatically-executing-commands)
     - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
 
 <a name="introduction"></a>
@@ -381,8 +381,8 @@ Once your command is finished, you need to register it with Artisan. All command
         Commands\SendEmails::class
     ];
 
-<a name="programatically-executing-commands"></a>
-## Programatically Executing Commands
+<a name="programmatically-executing-commands"></a>
+## Programmatically Executing Commands
 
 Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to fire an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts the name of the command as the first argument, and an array of command parameters as the second argument. The exit code will be returned:
 
