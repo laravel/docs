@@ -204,6 +204,16 @@ You may use the `transaction` method on the `DB` facade to run a set of operatio
 
         DB::table('posts')->delete();
     });
+    
+#### Handling Deadlocks
+The `transaction` method optionally takes a second argument of the number of times a transaction should be reattempted in case of a deadlock in the database. Once these attempts have been made an exception will be thrown as normal if the transaction still cannot be commited.
+
+    DB::transaction(function () {
+        DB::table('users')->update(['votes' => 1]);
+
+        DB::table('posts')->delete();
+    }, 5); //Attempt this transaction 5 times if it fails due to deadlock.
+    
 
 #### Manually Using Transactions
 
