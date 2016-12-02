@@ -285,7 +285,7 @@ If you would like to make a custom HTTP request into your application and get th
     {
         $response = $this->call('GET', '/');
 
-        $this->assertEquals(200, $response->status());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
 If you are making `POST`, `PUT`, or `PATCH` requests you may pass an array of input data with the request. Of course, this data will be available in your routes and controller via the [Request instance](/docs/{{version}}/requests):
