@@ -229,7 +229,7 @@ If validation fails, a redirect response will be generated to send the user back
 <a name="authorizing-form-requests"></a>
 ### Authorizing Form Requests
 
-The form request class also contains an `authorize` method. Within this method, you may check if the authenticated user actually has the authority to update a given resource. For example, if a user is attempting to update a blog post comment, do they actually own that comment? For example:
+The form request class also contains an `authorize` method. Within this method, you may check if the authenticated user actually has the authority to update a given resource. If a user is attempting to update a blog post comment, do they actually own that comment? For example:
 
     /**
      * Determine if the user is authorized to make this request.
