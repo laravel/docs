@@ -106,7 +106,7 @@ Sometimes you may wish to echo a variable, but you aren't sure if the variable h
 
     {{ isset($name) ? $name : 'Default' }}
 
-However, instead of writing a ternary statement, Blade provides you with the following convenient short-cut, which will be compiled to the ternary statement above:
+However, instead of writing a ternary statement, Blade provides you with the following convenient shortcut, which will be compiled to the ternary statement above:
 
     {{ $name or 'Default' }}
 
@@ -144,7 +144,7 @@ If you are displaying JavaScript variables in a large portion of your template, 
 <a name="control-structures"></a>
 ## Control Structures
 
-In addition to template inheritance and displaying data, Blade also provides convenient short-cuts for common PHP control structures, such as conditional statements and loops. These short-cuts provide a very clean, terse way of working with PHP control structures, while also remaining familiar to their PHP counterparts.
+In addition to template inheritance and displaying data, Blade also provides convenient shortcuts for common PHP control structures, such as conditional statements and loops. These shortcuts provide a very clean, terse way of working with PHP control structures, while also remaining familiar to their PHP counterparts.
 
 <a name="if-statements"></a>
 ### If Statements
