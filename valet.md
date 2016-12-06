@@ -158,7 +158,7 @@ For example, let's pretend we are writing a `WordPressValetDriver`. Our serve me
      * @param  string  $sitePath
      * @param  string  $siteName
      * @param  string  $uri
-     * @return void
+     * @return bool
      */
     public function serves($sitePath, $siteName, $uri)
     {
