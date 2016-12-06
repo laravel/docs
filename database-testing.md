@@ -149,9 +149,9 @@ You may also create a Collection of many models or create models of a given type
 
 You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you should specify the name of each state you would like to apply:
 
-    $users = factory(App\User::class, 5)->states('deliquent')->make();
+    $users = factory(App\User::class, 5)->states('delinquent')->make();
 
-    $users = factory(App\User::class, 5)->states('premium', 'deliquent')->make();
+    $users = factory(App\User::class, 5)->states('premium', 'delinquent')->make();
 
 #### Overriding Attributes
 

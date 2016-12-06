@@ -609,10 +609,6 @@ Eloquent also allows you to define global scopes using Closures, which is partic
         }
     }
 
-The first argument of the `addGlobalScope()` serves as an identifier to remove the scope:
-
-    User::withoutGlobalScope('age')->get();
-
 #### Removing Global Scopes
 
 If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method. The method accepts the class name of the global scope as its only argument:
