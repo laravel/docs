@@ -194,6 +194,8 @@ For certain users, you may wish to authorize all actions within a given policy. 
             return true;
         }
     }
+    
+> {tip} Note that, returning `false` is different from returning `null`. By returning `false` authorization fails, by returning `null` policy method is executed.
 
 <a name="authorizing-actions-using-policies"></a>
 ## Authorizing Actions Using Policies
