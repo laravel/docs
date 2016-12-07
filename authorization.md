@@ -195,6 +195,8 @@ For certain users, you may wish to authorize all actions within a given policy. 
         }
     }
 
+If you would like to deny all authorizations for a user you should return `false` from the `before` method. If `null` is returned, the authorization will fall through to the policy method.
+
 <a name="authorizing-actions-using-policies"></a>
 ## Authorizing Actions Using Policies
 
@@ -300,7 +302,7 @@ When writing Blade templates, you may wish to display a portion of the page only
         <!-- The Current User Can't Update The Post -->
     @endcannot
 
-These directives are convenient short-cuts for writing `@if` and `@unless` statements. The `@can` and `@cannot` statements above respectively translate to the following statements:
+These directives are convenient shortcuts for writing `@if` and `@unless` statements. The `@can` and `@cannot` statements above respectively translate to the following statements:
 
     @if (Auth::user()->can('update', $post))
         <!-- The Current User Can Update The Post -->

@@ -23,7 +23,7 @@ Laravel strives to make the entire PHP development experience delightful, includ
 
 Laravel Homestead is an official, pre-packaged Vagrant box that provides you a wonderful development environment without requiring you to install PHP, a web server, and any other server software on your local machine. No more worrying about messing up your operating system! Vagrant boxes are completely disposable. If something goes wrong, you can destroy and re-create the box in minutes!
 
-Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 7.0, MySQL, Postgres, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
+Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web server, PHP 7.1, MySQL, Postgres, Redis, Memcached, Node, and all of the other goodies you need to develop amazing Laravel applications.
 
 > {note} If you are using Windows, you may need to enable hardware virtualization (VT-x). It can usually be enabled via your BIOS. If you are using Hyper-V on a UEFI system you may additionally need to disable Hyper-V in order to access VT-x.
 
@@ -32,14 +32,14 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 
 - Ubuntu 16.04
 - Git
-- PHP 7.0
+- PHP 7.1
 - Nginx
 - MySQL
 - MariaDB
 - Sqlite3
 - Postgres
 - Composer
-- Node (With PM2, Bower, Grunt, and Gulp)
+- Node (With Yarn, PM2, Bower, Grunt, and Gulp)
 - Redis
 - Memcached
 - Beanstalkd
@@ -50,7 +50,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 <a name="first-steps"></a>
 ### First Steps
 
-Before launching your Homestead environment, you must install [VirtualBox 5.x](https://www.virtualbox.org/wiki/Downloads) or [VMWare](https://www.vmware.com) as well as [Vagrant](https://www.vagrantup.com/downloads.html). All of these software packages provide easy-to-use visual installers for all popular operating systems.
+Before launching your Homestead environment, you must install [VirtualBox 5.1](https://www.virtualbox.org/wiki/Downloads) or [VMWare](https://www.vmware.com) as well as [Vagrant](https://www.vagrantup.com/downloads.html). All of these software packages provide easy-to-use visual installers for all popular operating systems.
 
 To use the VMware provider, you will need to purchase both VMware Fusion / Workstation and the [VMware Vagrant plug-in](https://www.vagrantup.com/vmware). Though it is not free, VMware can provide faster shared folder performance out of the box.
 
@@ -72,7 +72,11 @@ You may install Homestead by simply cloning the repository. Consider cloning the
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the `~/.homestead` hidden directory:
 
+    // Mac / Linux...
     bash init.sh
+
+    // Windows...
+    init.bat
 
 <a name="configuring-homestead"></a>
 ### Configuring Homestead

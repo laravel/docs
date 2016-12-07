@@ -284,7 +284,7 @@ If you would like to customize the authorization approval screen, you may publis
 
 #### Converting Authorization Codes To Access Tokens
 
-If the user approves the authorization request, they will be redirected back to the consuming application. The consumer should then issue a `POST` request to your application to request an access token. The request should include the authorization code that was issued by when the user approved the authorization request. In this example, we'll use the Guzzle HTTP library to make the `POST` request:
+If the user approves the authorization request, they will be redirected back to the consuming application. The consumer should then issue a `POST` request to your application to request an access token. The request should include the authorization code that was issued by your application when the user approved the authorization request. In this example, we'll use the Guzzle HTTP library to make the `POST` request:
 
     Route::get('/callback', function (Request $request) {
         $http = new GuzzleHttp\Client;
