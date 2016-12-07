@@ -27,6 +27,9 @@ The Laravel source code is managed on Github, and there are repositories for eac
 - [Laravel Envoy](https://github.com/laravel/envoy)
 - [Laravel Homestead](https://github.com/laravel/homestead)
 - [Laravel Homestead Build Scripts](https://github.com/laravel/settler)
+- [Laravel Passport](https://github.com/laravel/passport)
+- [Laravel Scout](https://github.com/laravel/scout)
+- [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Website](https://github.com/laravel/laravel.com)
 - [Laravel Art](https://github.com/laravel/art)
 
