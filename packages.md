@@ -46,7 +46,7 @@ To define routes for your package, pass the routes file path to the `loadRoutesF
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/../../routes.php');
+        $this->loadRoutesFrom(__DIR__.'/path/to/routes.php');
     }
 
 <a name="resources"></a>
