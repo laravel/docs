@@ -74,6 +74,8 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
 
     bash init.sh
 
+> {note} Users on Windows need to run `init.bat` instead. The `Homestead.yaml` file will be placed in the `%HOMEDRIVE%%HOMEPATH%\.homestead` hidden directory
+
 <a name="configuring-homestead"></a>
 ### Configuring Homestead
 
