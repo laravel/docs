@@ -80,6 +80,20 @@ If you need a database, try MariaDB by running `brew install mariadb` on your co
 
 You may update your Valet installation using the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
 
+#### Upgrading To Valet 2.0
+
+Valet 2.0 transitions Valet's underlying web server from Caddy to Nginx. Before upgrading to this version you should run the following commands to stop and uninstall the existing Caddy daemon:
+
+    valet stop
+    valet uninstall
+
+Next, you should upgrade to the latest version of Valet. Depending on how you installed Valet, this is typically done through Git or Composer. Once the fresh Valet source code has been downloaded, you should run the `install` command:
+
+    valet install
+    valet restart
+
+After upgrading, it may be necessary to re-park or re-link your sites.
+
 <a name="serving-sites"></a>
 ## Serving Sites
 
