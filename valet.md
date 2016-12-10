@@ -86,7 +86,7 @@ Valet 2.0 transitions Valet's underlying web server from Caddy to Nginx. Before 
     valet stop
     valet uninstall
 
-Next, you should upgrade to the latest version of Valet. Depending on how you installed Valet, this is typically done through Git or Composer. Once the fresh Valet source code has been downloaded, you should run the `install` command:
+Next, you should upgrade to the latest version of Valet. Depending on how you installed Valet, this is typically done through Git or Composer. Since it's Semantic Version, use `composer global require laravel/valet` instead of `composer global update`. Once the fresh Valet source code has been downloaded, you should run the `install` command:
 
     valet install
     valet restart
