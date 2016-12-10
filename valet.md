@@ -9,7 +9,6 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
-- [Viewing Logs](#viewing-logs)
 - [Custom Valet Drivers](#custom-valet-drivers)
 - [Other Valet Commands](#other-valet-commands)
 
@@ -87,7 +86,11 @@ Valet 2.0 transitions Valet's underlying web server from Caddy to Nginx. Before 
     valet stop
     valet uninstall
 
-Next, you should upgrade to the latest version of Valet. Depending on how you installed Valet, this is typically done through Git or Composer. Once the fresh Valet source code has been downloaded, you should run the `install` command:
+Next, you should upgrade to the latest version of Valet. Depending on how you installed Valet, this is typically done through Git or Composer. If you installed Valet via Composer, you should use the following command to update to the latest major version:
+
+    composer global require laravel/valet
+
+Once the fresh Valet source code has been downloaded, you should run the `install` command:
 
     valet install
     valet restart
@@ -143,11 +146,6 @@ Valet even includes a command to share your local sites with the world. No addit
 To share a site, navigate to the site's directory in your terminal and run the `valet share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser. That's it.
 
 To stop sharing your site, hit `Control + C` to cancel the process.
-
-<a name="viewing-logs"></a>
-## Viewing Logs
-
-If you would like to stream all of the logs for all of your sites to your terminal, run the `valet logs` command. New log entries will display in your terminal as they occur. This is a great way to stay on top of all of your log files without ever having to leave your terminal.
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
