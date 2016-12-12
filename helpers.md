@@ -411,7 +411,7 @@ The `array_where` function filters the array using the given Closure:
 
     $array = [100, '200', 300, '400', 500];
 
-    $array = array_where($array, function ($value, $key) {
+    $array = array_where($array, function ($key, $value) {
         return is_string($value);
     });
 
