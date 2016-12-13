@@ -49,7 +49,7 @@ You may select any method from this table to see an example of its usage:
 <div id="collection-method-list" markdown="1">
 
 [all](#method-all)
-[avg](#method-avg)
+[avg (average)](#method-avg)
 [chunk](#method-chunk)
 [collapse](#method-collapse)
 [combine](#method-combine)
@@ -81,7 +81,7 @@ You may select any method from this table to see an example of its usage:
 [merge](#method-merge)
 [min](#method-min)
 [only](#method-only)
-[pluck](#method-pluck)
+[pluck (lists)](#method-pluck)
 [pop](#method-pop)
 [prepend](#method-prepend)
 [pull](#method-pull)
@@ -138,7 +138,7 @@ The `all` method simply returns the underlying array represented by the collecti
     // [1, 2, 3]
 
 <a name="method-avg"></a>
-#### `avg()` {#collection-method}
+#### `avg() / average()` {#collection-method}
 
 The `avg` method returns the average of all items in the collection:
 
@@ -757,7 +757,7 @@ The `only` method returns the items in the collection with the specified keys:
 For the inverse of `only`, see the [except](#method-except) method.
 
 <a name="method-pluck"></a>
-#### `pluck()` {#collection-method}
+#### `pluck() / lists()` {#collection-method}
 
 The `pluck` method retrieves all of the collection values for a given key:
 
