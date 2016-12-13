@@ -41,6 +41,8 @@ The only remaining step is to install Elixir! With a new install of Laravel, you
 
 Now that you've installed Elixir, you'll be compiling and concatenating in no time! The `gulpfile.js` file in your project's root directory contains all of your Elixir tasks.
 
+To tell Elixir what tasks to run, edit `gulpfile.js`. When [Gulp](#gulp) is triggered, your Elixir tasks will be run. 
+
 #### Compile Less
 
 ```javascript
