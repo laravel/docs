@@ -11,6 +11,7 @@
 - [Sharing Sites](#sharing-sites)
 - [Custom Valet Drivers](#custom-valet-drivers)
 - [Other Valet Commands](#other-valet-commands)
+- [Valet and Ubuntu](#ubuntu)
 
 <a name="introduction"></a>
 ## Introduction
@@ -228,3 +229,8 @@ Command  | Description
 `valet start` | Start the Valet daemon.
 `valet stop` | Stop the Valet daemon.
 `valet uninstall` | Uninstall the Valet daemon entirely.
+
+<a name="ubuntu"></a>
+## Valet and Ubuntu
+
+While Valet officially only supports Mac, there is an actively maintained [Valet for Ubuntu](https://github.com/cpriego/valet-ubuntu) that is in sync with the official Valet. Please follow the installation and usage instructions in the projects [readme](https://github.com/cpriego/valet-ubuntu/blob/master/readme.md).
