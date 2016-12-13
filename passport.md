@@ -508,6 +508,13 @@ When calling routes that are protected by Passport, your application's API consu
             'Authorization' => 'Bearer '.$accessToken,
         ],
     ]);
+    
+> {note} If you are using Apache and upgraded to Laravel 5.3 at some point, make sure the folowing is present in your `public/.htaccess` file:
+```
+# Handle Authorization Header
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+```
 
 <a name="token-scopes"></a>
 ## Token Scopes
