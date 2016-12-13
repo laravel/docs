@@ -272,8 +272,12 @@ To enable [DHCP](https://www.vagrantup.com/docs/networking/public_network.html),
 <a name="updating-homestead"></a>
 ## Updating Homestead
 
-Updating Homestead is a two step process. First you want to update the Vagrant box by running `vagrant box update`. 
+You can update Homestead in two simple steps. First, you should update the Vagrant box using the `vagrant box update` command:
 
-The second step is to update the Homestead source code. If you cloned the repository you can simply `git pull origin master`. 
+    vagrant box update
 
-If you are using the per project you will want to ensure your `composer.json` contains `"laravel/homestead": "^4"` and run `composer update`.
+Next, you need to update the Homestead source code. If you cloned the repository you can simply `git pull origin master` at the location you originally cloned the repository.
+
+If you have installed Homestead via your project's `composer.json` file, you should ensure your `composer.json` file contains `"laravel/homestead": "^4"` and update your dependencies:
+
+    composer update
