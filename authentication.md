@@ -77,6 +77,18 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
 When a user is not successfully authenticated, they will be automatically redirected back to the login form.
 
+Also you need to modify the method `handle` of class `RedirectIfAuthenticated`
+by changing the return statement in case check passes
+
+    public function handle($request, Closure $next, $guard = null)
+    {
+        if (Auth::guard($guard)->check()) {
+            return redirect('/');
+        }
+
+        return $next($request);
+    }
+
 #### Username Customization
 
 By default, Laravel uses the `email` field for authentication. If you would like to customize this, you may define a `username` method on your `LoginController`:
