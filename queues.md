@@ -56,6 +56,10 @@ In order to use the `database` queue driver, you will need a database table to h
 
     php artisan migrate
 
+#### Redis
+
+To use the `redis` queue driver, you need a Redis database `connection` to be correctly set in `config/database.php`. If your Redis queue connection uses a Redis cluster as its database `connection`, your queue names must contain a "{...}" pattern, i.e. a [key hash tag](https://redis.io/topics/cluster-spec#keys-hash-tags). This is needed in order to make sure all the Redis keys related to the same queue fall into the same hash slot.
+
 #### Other Driver Prerequisites
 
 The following dependencies are needed for the listed queue drivers:
