@@ -82,6 +82,20 @@ Blade views may be returned from routes using the global `view` helper:
     });
 
 <a name="displaying-data"></a>
+### Including Partials That Extend a Common Parent
+
+When you include multiple partials that extend a common parent, you will find that the first section overrides the following sections, leading to potentially unwarranted behavior.
+In order to overwrite the preceding sections for each successive partial section, you must use the `@@overwrite` directive to terminate the `@@section()` expression.
+
+    {{--  master Blade template  --}}
+    @include('tree', [...])
+    @include('fern', [...])
+    ...
+    {{--  resources/views/fern.blade.php  --}}
+    @extends('plant')
+    @section('content')
+        ...
+    @overwrite {{-- rather than @endsection --}}
 ## Displaying Data
 
 You may display data passed to your Blade views by wrapping the variable in curly braces. For example, given the following route:
