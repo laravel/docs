@@ -548,7 +548,7 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
         }
     }
 
-Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may also specify callbacks to be executed before the daemon worker tries to fetch a job from the given queue. This is a good place to clean-up resources. For example, you can register a closure to refresh the DB connections or rollback the transactions that are left open by a previously failed job:
+Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks that execute before the worker attempts to fetch a job from a queue. For example, you might register a Closure to rollback any transactions that were left open by a previously failed job:
 
     Queue::looping(function () {
         while (DB::transactionLevel() > 0) {
