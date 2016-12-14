@@ -77,8 +77,7 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
 When a user is not successfully authenticated, they will be automatically redirected back to the login form.
 
-Also you need to modify the method `handle` of class `RedirectIfAuthenticated`
-by changing the return statement in case authentication check passes:
+Also you need to modify the method `handle` of class `RedirectIfAuthenticated` by changing the return statement in the case when authentication check passes:
 
     public function handle($request, Closure $next, $guard = null)
     {
