@@ -65,7 +65,7 @@ Next, you should configure your Pusher credentials in the `config/broadcasting.p
         'encrypted' => true
     ],
 
-When using Pusher and [Laravel Echo](#installing-laravel-echo), you should specify `pusher` as your desired broadcaster when instantiating an Echo instance:
+When using Pusher and [Laravel Echo](#installing-laravel-echo), you should modify your `resources/assets/js/bootstrap.js` file and specify `pusher` as your desired broadcaster when instantiating an Echo instance:
 
     import Echo from "laravel-echo"
 
