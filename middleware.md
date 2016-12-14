@@ -36,7 +36,7 @@ This command will place a new `CheckAge` class within your `app/Http/Middleware`
     class CheckAge
     {
         /**
-         * Run the request filter.
+         * Handle an incoming request.
          *
          * @param  \Illuminate\Http\Request  $request
          * @param  \Closure  $next
