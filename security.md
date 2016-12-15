@@ -236,7 +236,8 @@ Now we're ready to generate the password reminder controller. To automatically g
 
 	php artisan auth:reminders-controller
 
-The generated controller will already have a `getRemind` method that handles showing your password reminder form. All you need to do is create a `password.remind` [view](/docs/4.2/responses#views). This view should have a basic form with an `email` field. The form should POST to the `RemindersController@postRemind` action.
+The generated controller will already have a `getRemind` method that handles showing your password reminder form. All you need to do is create a `password.remind` [Template](/docs/4.2/templates) by creating a file `remind.blade.php` in the `app/views/password/` directory.
+This view should have a basic form with an `email` field. The form should POST to the `RemindersController@postRemind` action.
 
 A simple form on the `password.remind` view might look like this:
 
@@ -254,7 +255,7 @@ Within the `postRemind` controller method you may modify the message instance be
 		$message->subject('Password Reminder');
 	});
 
-Your user will receive an e-mail with a link that points to the `getReset` method of the controller. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method. The action is already configured to return a `password.reset` view which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
+Your user will receive an e-mail with a link that points to the `getReset` method of the controller. The password reminder token, which is used to identify a given password reminder attempt, will also be passed to the controller method. The action is already configured to return a `password.reset` template which you should build. The `token` will be passed to the view, and you should place this token in a hidden form field named `token`. In addition to the `token`, your password reset form should contain `email`, `password`, and `password_confirmation` fields. The form should POST to the `RemindersController@postReset` method.
 
 A simple form on the `password.reset` view might look like this:
 
