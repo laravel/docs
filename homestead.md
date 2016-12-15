@@ -126,6 +126,8 @@ Make sure the IP address listed is the one set in your `~/.homestead/Homestead.y
 
     http://homestead.app
 
+Alternatively, you may install the `Vagrant::HostsUpdater` plugin on your machine to have the `hosts` file automatically updated.
+
 <a name="launching-the-vagrant-box"></a>
 ### Launching The Vagrant Box
 
