@@ -135,6 +135,9 @@ If you wish to specify a specific queue or "tube" on which to push the message, 
 		$message->to('foo@example.com', 'John Smith')->subject('Welcome!');
 	});
 
+> Note: When queuing e-mails, the closure used to send the e-mail is serialized which can have an unexpected effect on the delivery of your e-mail. E-mails may send successfully using Mail::send, but can throw a `Trying to get property of non-object` exception when attempting to send via Mail::queue. In this event, you will need to convert any objects passed to the closure into an array, and update this change in the code used within the e-mail template.
+
+
 <a name="mail-and-local-development"></a>
 ## Mail & Local Development
 
