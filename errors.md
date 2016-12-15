@@ -165,6 +165,34 @@ The logger provides the eight logging levels defined in [RFC 5424](http://tools.
     Log::info($error);
     Log::debug($error);
 
+Sample function with try-catch statement and the logger is the following:
+
+    /**
+     * Get an array of all student profiles
+     *
+     * @param  string   $sql
+     * @return Success  an array of all student profiles
+     *         Fail     an empty array
+     */
+    public function getAllProfiles($sql)
+    {
+        try
+        {
+            $results = DB::select($sql);
+            Log::info("It successed to execute the select statement.");
+
+            return $results;
+        }
+        catch(\Exception $e)
+        {
+            Log::error("It failed to execute the select statement.\n" .
+                        "The SQL is " . $sql . "\n" .
+                        "The occured exception is " . $e);
+
+            return array();
+        }
+    }
+
 #### Contextual Information
 
 An array of contextual data may also be passed to the log methods. This contextual data will be formatted and displayed with the log message:
