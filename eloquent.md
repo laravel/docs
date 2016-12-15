@@ -1057,11 +1057,15 @@ For example, we may determine if a result set contains a given primary key using
 		//
 	}
 
-Collections may also be converted to an array or JSON:
+Collections can be converted to an array or JSON:
 
 	$roles = User::find(1)->roles->toArray();
 
 	$roles = User::find(1)->roles->toJson();
+
+You can also fetch an array of Eloquent objects that use the primary key as the dictionary key:
+
+	$users = User::all()->getDictionary();
 
 If a collection is cast to a string, it will be returned as JSON:
 
