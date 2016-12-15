@@ -81,6 +81,8 @@ Blade views may be returned from routes using the global `view` helper:
         return view('child');
     });
 
+If a compiled template contains multiple section definitions of the same name that each expect different content, as is the case when using partials that use inheritance, you may terminate your `@@section` injection directives with `@@overwrite`.
+
 <a name="displaying-data"></a>
 ## Displaying Data
 
