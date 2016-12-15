@@ -294,6 +294,10 @@ You may customize your queue worker even further by only processing particular q
 
     php artisan queue:work redis --queue=emails
 
+#### Resource Considerations
+
+Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should free any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
+
 <a name="queue-priorities"></a>
 ### Queue Priorities
 
