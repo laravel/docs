@@ -292,7 +292,7 @@ You may customize your queue worker even further by only processing particular q
 
 #### Resource Considerations
 
-Queue workers are daemons and do not restart the framework before processing each job. Therefore, you should be careful to free any heavy resources before your job finishes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
+Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should free any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
 
 <a name="queue-priorities"></a>
 ### Queue Priorities
