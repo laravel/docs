@@ -292,11 +292,11 @@ As previously discussed, some actions like `create` may not require a model inst
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
 
-When writing Blade templates, you may wish to display a portion of the page only if the user is authorized to perform a given action. For example, you may wish to show an update form for a blog post only if the user can actually update the post. In this situation, you may use the `@can` and `@cannot` directives as well as `@elsecan` and `@elsecannot`.
+When writing Blade templates, you may wish to display a portion of the page only if the user is authorized to perform a given action. For example, you may wish to show an update form for a blog post only if the user can actually update the post. In this situation, you may use the `@can` and `@cannot` family of directives:
 
     @can('update', $post)
         <!-- The Current User Can Update The Post -->
-    @elsecan('create', $post)
+    @elsecan('create', $post)
         <!-- The Current User Can Create New Post -->
     @endcan
 
