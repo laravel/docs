@@ -1,9 +1,9 @@
 # Configuration
 
 - [Introduction](#introduction)
-- [Accessing Configuration Values](#accessing-configuration-values)
 - [Environment Configuration](#environment-configuration)
     - [Determining The Current Environment](#determining-the-current-environment)
+- [Accessing Configuration Values](#accessing-configuration-values)
 - [Configuration Caching](#configuration-caching)
 - [Maintenance Mode](#maintenance-mode)
 
@@ -11,17 +11,6 @@
 ## Introduction
 
 All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
-
-<a name="accessing-configuration-values"></a>
-## Accessing Configuration Values
-
-You may easily access your configuration values using the global `config` helper function from anywhere in your application. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
-
-    $value = config('app.timezone');
-
-To set configuration values at runtime, pass an array to the `config` helper:
-
-    config(['app.timezone' => 'America/Chicago']);
 
 <a name="environment-configuration"></a>
 ## Environment Configuration
@@ -60,6 +49,17 @@ You may also pass arguments to the `environment` method to check if the environm
     if (App::environment('local', 'staging')) {
         // The environment is either local OR staging...
     }
+
+<a name="accessing-configuration-values"></a>
+## Accessing Configuration Values
+
+You may easily access your configuration values using the global `config` helper function from anywhere in your application. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
+
+    $value = config('app.timezone');
+
+To set configuration values at runtime, pass an array to the `config` helper:
+
+    config(['app.timezone' => 'America/Chicago']);
 
 <a name="configuration-caching"></a>
 ## Configuration Caching

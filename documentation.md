@@ -7,7 +7,6 @@
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
-    - [Errors & Logging](/docs/{{version}}/errors)
     - [Request Lifecycle](/docs/{{version}}/lifecycle)
 - Dev Environments
     - [Homestead](/docs/{{version}}/homestead)
@@ -43,6 +42,7 @@
 - General Topics
     - [Broadcasting](/docs/{{version}}/broadcasting)
     - [Cache](/docs/{{version}}/cache)
+    - [Errors & Logging](/docs/{{version}}/errors)
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
     - [Mail](/docs/{{version}}/mail)
