@@ -56,6 +56,19 @@ In order to use the `database` queue driver, you will need a database table to h
 
     php artisan migrate
 
+#### Redis
+
+In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file.
+
+If your Redis queue connection uses a Redis Cluster, your queue names must contain a [key hash tag](https://redis.io/topics/cluster-spec#keys-hash-tags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:
+
+    'redis' => [
+        'driver' => 'redis',
+        'connection' => 'default',
+        'queue' => '{default}',
+        'retry_after' => 90,
+    ],
+
 #### Other Driver Prerequisites
 
 The following dependencies are needed for the listed queue drivers:
@@ -289,6 +302,10 @@ You may also specify which queue connection the worker should utilize. The conne
 You may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes only that queue:
 
     php artisan queue:work redis --queue=emails
+
+#### Resource Considerations
+
+Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should free any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
 
 <a name="queue-priorities"></a>
 ### Queue Priorities
@@ -547,3 +564,11 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
             //
         }
     }
+
+Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks that execute before the worker attempts to fetch a job from a queue. For example, you might register a Closure to rollback any transactions that were left open by a previously failed job:
+
+    Queue::looping(function () {
+        while (DB::transactionLevel() > 0) {
+            DB::rollBack();
+        }
+    });

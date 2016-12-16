@@ -9,16 +9,15 @@
     - [The "Link" Command](#the-link-command)
     - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
-- [Viewing Logs](#viewing-logs)
 - [Custom Valet Drivers](#custom-valet-drivers)
 - [Other Valet Commands](#other-valet-commands)
 
 <a name="introduction"></a>
 ## Introduction
 
-Valet is a Laravel development environment for Mac minimalists. No Vagrant, No Apache, No Nginx, No `/etc/hosts` file. You can even share your sites publicly using local tunnels. _Yeah, we like it too._
+Valet is a Laravel development environment for Mac minimalists. No Vagrant, no `/etc/hosts` file. You can even share your sites publicly using local tunnels. _Yeah, we like it too._
 
-Laravel Valet configures your Mac to always run [Caddy](https://caddyserver.com) in the background when your machine starts. Then, using [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq), Valet proxies all requests on the `*.dev` domain to point to sites installed on your local machine.
+Laravel Valet configures your Mac to always run [Nginx](https://www.nginx.com/) in the background when your machine starts. Then, using [DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq), Valet proxies all requests on the `*.dev` domain to point to sites installed on your local machine.
 
 In other words, a blazing fast Laravel development environment that uses roughly 7 MB of RAM. Valet isn't a complete replacement for Vagrant or Homestead, but provides a great alternative if you want flexible basics, prefer extreme speed, or are working on a machine with a limited amount of RAM.
 
@@ -56,7 +55,7 @@ Both Valet and Homestead are great choices for configuring your Laravel developm
 
 <div class="content-list" markdown="1">
 - Install or update [Homebrew](http://brew.sh/) to the latest version using `brew update`.
-- Install PHP 7.0 using Homebrew via `brew install homebrew/php/php70`.
+- Install PHP 7.1 using Homebrew via `brew install homebrew/php/php71`.
 - Install Valet with Composer via `composer global require laravel/valet`. Make sure the `~/.composer/vendor/bin` directory is in your system's "PATH".
 - Run the `valet install` command. This will configure and install Valet and DnsMasq, and register Valet's daemon to launch when your system starts.
 </div>
@@ -79,6 +78,24 @@ If you need a database, try MariaDB by running `brew install mariadb` on your co
 ### Upgrading
 
 You may update your Valet installation using the `composer global update` command in your terminal. After upgrading, it is good practice to run the `valet install` command so Valet can make additional upgrades to your configuration files if necessary.
+
+#### Upgrading To Valet 2.0
+
+Valet 2.0 transitions Valet's underlying web server from Caddy to Nginx. Before upgrading to this version you should run the following commands to stop and uninstall the existing Caddy daemon:
+
+    valet stop
+    valet uninstall
+
+Next, you should upgrade to the latest version of Valet. Depending on how you installed Valet, this is typically done through Git or Composer. If you installed Valet via Composer, you should use the following command to update to the latest major version:
+
+    composer global require laravel/valet
+
+Once the fresh Valet source code has been downloaded, you should run the `install` command:
+
+    valet install
+    valet restart
+
+After upgrading, it may be necessary to re-park or re-link your sites.
 
 <a name="serving-sites"></a>
 ## Serving Sites
@@ -130,11 +147,6 @@ To share a site, navigate to the site's directory in your terminal and run the `
 
 To stop sharing your site, hit `Control + C` to cancel the process.
 
-<a name="viewing-logs"></a>
-## Viewing Logs
-
-If you would like to stream all of the logs for all of your sites to your terminal, run the `valet logs` command. New log entries will display in your terminal as they occur. This is a great way to stay on top of all of your log files without ever having to leave your terminal.
-
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
 
@@ -158,7 +170,7 @@ For example, let's pretend we are writing a `WordPressValetDriver`. Our serve me
      * @param  string  $sitePath
      * @param  string  $siteName
      * @param  string  $uri
-     * @return void
+     * @return bool
      */
     public function serves($sitePath, $siteName, $uri)
     {
