@@ -249,6 +249,8 @@ Since all form requests extend the base Laravel request class, we may use the `u
 
 If the `authorize` method returns `false`, a HTTP response with a 403 status code will automatically be returned and your controller method will not execute.
 
+> {note} Method `authorize` returns response object (`\Symfony\Component\HttpFoundation\Response`) and does not throw `\Symfony\Component\HttpKernel\Exception\HttpException`, therefore [custom HTTP error page](/docs/{{version}}/errors#custom-http-error-pages) will not be displayed.
+
 If you plan to have authorization logic in another part of your application, simply return `true` from the `authorize` method:
 
     /**
