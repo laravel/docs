@@ -147,6 +147,8 @@ To share a site, navigate to the site's directory in your terminal and run the `
 
 To stop sharing your site, hit `Control + C` to cancel the process.
 
+> {note} `valet share` does not currently support sharing sites that have been secured using the `valet secure` command.
+
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers
 
