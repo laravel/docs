@@ -289,6 +289,20 @@ As previously discussed, some actions like `create` may not require a model inst
         // The current user can create blog posts...
     }
 
+#### Authorizing a full resource controller
+
+For convenience you may authorize a full resource controller in your controller's constructor, this has the potential to considerably clean up your controllers. You can now skip all calls to `authorize` in the individual methods. Laravel will now automatically check the right abilities for any given action:
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class);
+    }
+
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
 
