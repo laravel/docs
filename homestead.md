@@ -286,12 +286,10 @@ If you have installed Homestead via your project's `composer.json` file, you sho
 <a name="old-versions"></a>
 ## Old Versions
 
-Older versions of Homestead are not supported, however you may have a project that is not quite ready to move to the current version of PHP.
-
 You can easily override the version of the box that Homestead uses by adding the following line to your `Homestead.yaml` file:
 
     version: 0.6.0
-    
+
 An example:
 
     box: laravel/homestead
@@ -301,9 +299,7 @@ An example:
     cpus: 4
     provider: virtualbox
 
-When you use an older version of the Homestead box you need to also match that with a compatible version of the Homestead source code.
-
-Here is a chart showing supported box versions, what version of Homestead source doe to use, and the version of PHP provided:
+When you use an older version of the Homestead box you need to match that with a compatible version of the Homestead source code. Below is a chart which shows the supported box versions, which version of Homestead source code to use, and the version of PHP provided:
 
 |   | Homestead Version | Box Version |
 |---|---|---|
