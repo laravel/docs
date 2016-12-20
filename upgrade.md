@@ -268,7 +268,7 @@ Relation::morphMap([
 
 #### Eloquent `save` Method
 
-The Eloquent `save` method now returns `false` if the model has not been changed since the last time it was retrieved or saved.
+The Eloquent `save` method now returns `true` if the model has not been changed since the last time it was retrieved or saved.
 
 #### Eloquent Scopes
 
