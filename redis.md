@@ -61,7 +61,7 @@ In addition to the default `host`, `port`, `database`, and `password` server con
 
 > {note} If you have the PhpRedis PHP extension installed via PECL, you will need to rename the `Redis` alias in your `config/app.php` configuration file.
 
-To utilize the PhpRedix extension, you should change the `client` option of your Redis configuration to `phpredis`. This option is found in your `config/database.php` configuration file:
+To utilize the PhpRedis extension, you should change the `client` option of your Redis configuration to `phpredis`. This option is found in your `config/database.php` configuration file:
 
     'redis' => [
 
