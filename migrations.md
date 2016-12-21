@@ -227,8 +227,8 @@ Command  | Description
 `$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent for the database.
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent for the database.
 `$table->morphs('taggable');`  |  Adds unsigned INTEGER `taggable_id` and STRING `taggable_type`.
-`$table->nullableMorphs('taggable');`  |  Adds unsigned INTEGER `taggable_id` NULL and STRING `taggable_type` NULL.
-`$table->nullableTimestamps();`  |  Same as `timestamps()`.
+`$table->nullableMorphs('taggable');`  |  Nullable versions of the `morphs()` columns.
+`$table->nullableTimestamps();`  |  Nullable versions of the `timestamps()` columns.
 `$table->rememberToken();`  |  Adds `remember_token` as VARCHAR(100) NULL.
 `$table->smallIncrements('id');`  |  Incrementing ID (primary key) using a "UNSIGNED SMALL INTEGER" equivalent.
 `$table->smallInteger('votes');`  |  SMALLINT equivalent for the database.
