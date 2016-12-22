@@ -75,7 +75,14 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
     protected $redirectTo = '/';
 
-When a user is not successfully authenticated, they will be automatically redirected back to the login form.
+If the redirect path needs custom generation logic you may define a `redirectTo` method instead of a `redirectTo` property:
+
+    protected function redirectTo()
+    {
+        //
+    }
+
+> {tip} `redirectTo` method has higher priority than `redirectTo` attribute.
 
 #### Username Customization
 
