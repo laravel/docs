@@ -139,12 +139,6 @@ You may also create a Collection of many models or create models of a given type
     // Create three App\User instances...
     $users = factory(App\User::class, 3)->make();
 
-    // Create an "admin" App\User instance...
-    $user = factory(App\User::class, 'admin')->make();
-
-    // Create three "admin" App\User instances...
-    $users = factory(App\User::class, 'admin', 3)->make();
-
 #### Applying States
 
 You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you should specify the name of each state you would like to apply:
