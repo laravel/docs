@@ -137,6 +137,10 @@ Make sure the IP address listed is the one set in your `~/.homestead/Homestead.y
 
     http://homestead.app
 
+Mac and Linux users may consider installing Dnsmasq, which is a great help in avoiding "domains" piling up in your hosts file. It also makes developing applications with wildcard subdomains a lot easier. After installing just add the following line to `/etc/dnsmasq.conf`:
+
+    address=/*.app/192.168.10.10
+
 <a name="launching-the-vagrant-box"></a>
 ### Launching The Vagrant Box
 
