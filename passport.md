@@ -144,7 +144,7 @@ The published components will be placed in your `resources/assets/js/components`
         require('./components/passport/PersonalAccessTokens.vue')
     );
 
-Once the components have been registered, and you have run `gulp` to recompile your assets, you may drop them into one of your application's templates to get started creating clients and personal access tokens:
+After registering the components, make sure to run `gulp` to recompile your assets. Once you have recompiled your assets, you may drop the components into one of your application's templates to get started creating clients and personal access tokens:
 
     <passport-clients></passport-clients>
     <passport-authorized-clients></passport-authorized-clients>
