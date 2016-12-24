@@ -265,6 +265,8 @@ To rename a column, you may use the `renameColumn` method on the Schema builder.
         $table->renameColumn('from', 'to');
     });
 
+> **Note:** Before renaming columns from a PostgreSQL database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
+
 > **Note:** Renaming columns in a table with a `enum` column is not currently supported.
 
 <a name="dropping-columns"></a>
