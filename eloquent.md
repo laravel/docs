@@ -344,6 +344,10 @@ So, to get started, you should define which model attributes you want to make ma
 Once we have made the attributes mass assignable, we can use the `create` method to insert a new record in the database. The `create` method returns the saved model instance:
 
     $flight = App\Flight::create(['name' => 'Flight 10']);
+    
+You may also use the `fill` method to update an existing model:
+
+    $flight->fill(['name' => 'Flight 22']);
 
 #### Guarding Attributes
 
