@@ -89,7 +89,7 @@ You may also merge your own package configuration file with the application's pu
         );
     }
 
-> {note} This will only merge the first level of the config array. If users partially define one of your multi-dimensional config arrays, the missing options will not be merged in.
+> {note} This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
 
 <a name="migrations"></a>
 ### Migrations
