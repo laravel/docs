@@ -169,7 +169,7 @@ All authorization callbacks receive the currently authenticated user as their fi
 
 Next, all that remains is to listen for the event in our JavaScript application. We can do this using Laravel Echo. First, we'll use the `private` method to subscribe to the private channel. Then, we may use the `listen` method to listen for the `ShippingStatusUpdated` event. By default, all of the event's public properties will be included on the broadcast event:
 
-    Echo.private('order.' + orderId)
+    Echo.private(`order.${orderId}`)
         .listen('ShippingStatusUpdated', (e) => {
             console.log(e.update);
         });
@@ -432,7 +432,7 @@ The data returned by the authorization callback will be made available to the pr
 
 To join a presence channel, you may use Echo's `join` method. The `join` method will return a `PresenceChannel` implementation which, along with exposing the `listen` method, allows you to subscribe to the `here`, `joining`, and `leaving` events.
 
-    Echo.join('chat.' + roomId)
+    Echo.join(`chat.${roomId}`)
         .here((users) => {
             //
         })
@@ -468,7 +468,7 @@ Like public or private events, presence channel events may be broadcast using th
 
 You may listen for the join event via Echo's `listen` method:
 
-    Echo.join('chat.' + roomId)
+    Echo.join(`chat.${roomId}`)
         .here(...)
         .joining(...)
         .leaving(...)
@@ -483,7 +483,8 @@ By pairing event broadcasting with [notifications](/docs/{{version}}/notificatio
 
 Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:
 
-    Echo.private('App.User.' + userId)
+    Echo.private(`App.User.${userId}`
+    )
         .notification((notification) => {
             console.log(notification.type);
         });
