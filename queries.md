@@ -77,7 +77,7 @@ If you don't even need an entire row, you may extract a single value from a reco
 
 #### Retrieving A List Of Column Values
 
-If you would like to retrieve an array containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve an array of role titles:
+If you would like to retrieve a Collection containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a Collection of role titles:
 
     $titles = DB::table('roles')->pluck('title');
 
@@ -85,7 +85,7 @@ If you would like to retrieve an array containing the values of a single column,
         echo $title;
     }
 
- You may also specify a custom key column for the returned array:
+ You may also specify a custom key column for the returned Collection:
 
     $roles = DB::table('roles')->pluck('title', 'name');
 
