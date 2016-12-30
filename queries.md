@@ -312,25 +312,25 @@ The `whereNotNull` method verifies that the column's value is not `NULL`:
 
 **whereDate / whereMonth / whereDay / whereYear**
 
-The `whereDate` method may be used compare a column's value against a date:
+The `whereDate` method may be used to compare a column's value against a date:
 
     $users = DB::table('users')
                     ->whereDate('created_at', '2016-12-31')
                     ->get();
 
-The `whereMonth` method may be used compare a column's value against a specific month of a year:
+The `whereMonth` method may be used to compare a column's value against a specific month of a year:
 
     $users = DB::table('users')
                     ->whereMonth('created_at', '12')
                     ->get();
 
-The `whereDay` method may be used compare a column's value against a specific day of a month:
+The `whereDay` method may be used to compare a column's value against a specific day of a month:
 
     $users = DB::table('users')
                     ->whereDay('created_at', '31')
                     ->get();
 
-The `whereYear` method may be used compare a column's value against a specific year:
+The `whereYear` method may be used to compare a column's value against a specific year:
 
     $users = DB::table('users')
                     ->whereYear('created_at', '2016')
