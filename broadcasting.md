@@ -483,8 +483,7 @@ By pairing event broadcasting with [notifications](/docs/{{version}}/notificatio
 
 Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:
 
-    Echo.private(`App.User.${userId}`
-    )
+    Echo.private(`App.User.${userId}`)
         .notification((notification) => {
             console.log(notification.type);
         });
