@@ -271,6 +271,21 @@ Since we have bound all `{user}` parameters to the `App\User` model, a `User` in
 
 If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
 
+### Accessing Route Model Bindings in Middleware
+
+You cannot access the `$user` variable inside a middleware with `$request->user` statement. You need to access it using the `route` method in `$request` object:
+
+```php
+public function handle($request, Closure $next)
+{
+    $user = $request->route('user');
+    
+    //Do your stuff
+    
+    return $next($request);
+}
+```
+
 #### Customizing The Resolution Logic
 
 If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
@@ -285,6 +300,7 @@ If you wish to use your own resolution logic, you may use the `Route::bind` meth
     }
 
 <a name="form-method-spoofing"></a>
+
 ## Form Method Spoofing
 
 HTML forms do not support `PUT`, `PATCH` or `DELETE` actions. So, when defining `PUT`, `PATCH` or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form. The value sent with the `_method` field will be used as the HTTP request method:
