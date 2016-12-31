@@ -38,11 +38,15 @@ The easiest way to create a model instance is using the `make:model` [Artisan co
 
     php artisan make:model User
 
-If you would like to generate a [database migration](/docs/{{version}}/migrations) when you generate the model, you may use the `--migration` or `-m` option:
+If you would like to generate a [database migration](/docs/{{version}}/migrations) when you generate the model, you may use the `--migration` or `-m` option. The `--seeder` or `-s` option can be used to generate a [database seeder](/docs/{{version}}/seeding) along with the model. These two options may be used separately or combined:
 
     php artisan make:model User --migration
+    php artisan make:model User --seeder
+    php artisan make:model User --migration --seeder
 
     php artisan make:model User -m
+    php artisan make:model User -s
+    php artisan make:model User -m -s
 
 <a name="eloquent-model-conventions"></a>
 ### Eloquent Model Conventions
