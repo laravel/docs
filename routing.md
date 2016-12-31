@@ -298,6 +298,12 @@ You may use the `method_field` helper to generate the `_method` input:
 
     {{ method_field('PUT') }}
 
+#### Form Model Binding With Generic Controller Methods
+
+If you have multiple models that use the same method of the same controller, it may be necessary to specify a URL that you have already enumerated in your `web.php` file. This can be done the following way in blade:
+
+    {!! Form::model($model, ['method'=>'PATCH','url'=>["/foo/$bar", $model->id]]) !!}
+    
 <a name="accessing-the-current-route"></a>
 ## Accessing The Current Route
 
