@@ -289,6 +289,33 @@ As previously discussed, some actions like `create` may not require a model inst
         // The current user can create blog posts...
     }
 
+#### Resourceful Controllers
+
+Another neat gem in the authorization system is the `authorizeResource` method. This has the potential to considerably clean up your controllers. In short, it replaces all your calls to `authorize` in the various controller methods with a single call in the constructor:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Post;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
+
+    class PostController extends Controller
+    {
+        /**
+         * Create a new controller instance.
+         *
+         * @return void
+         */
+        public function __construct()
+        {
+            $this->authorizeResource(Post::class);
+        }
+    }
+    
+You can now skip all calls to `authorize` in the individual methods. Laravel will now automagically check the right abilities for any given action.
+
 <a name="via-blade-templates"></a>
 ### Via Blade Templates
 
