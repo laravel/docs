@@ -550,6 +550,25 @@ When validating arrays, booleans, integers, numerics, and strings, `null` will n
         'field' => 'nullable|max:5',
     ]);
 
+### Configuration
+
+#### Application name
+
+In the config/app.php file add the following lines at the top of the returned array.
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Name
+    |--------------------------------------------------------------------------
+    |
+    | This value is the name of your application. This value is used when the
+    | framework needs to place the application's name in a notification or
+    | any other location as required by the application or its packages.
+    */
+    'name' => 'Laravel',
+
+Change "Laravel" with the name of your application.
+
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
 
