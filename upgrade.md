@@ -196,6 +196,14 @@ A collection's `where` method now performs a "loose" comparison by default inste
 
 The `where` method also no longer accepts a third parameter to indicate "strictness". You should explicitly call either `where` or `whereStrict` depending on your application's needs.
 
+### Configuration
+
+#### Application Name
+
+In the `config/app.php` configuration file, add the following configuration option:
+
+    'name' => 'Your Application Name',
+
 ### Controllers
 
 <a name="5.3-session-in-constructors"></a>
@@ -549,25 +557,6 @@ When validating arrays, booleans, integers, numerics, and strings, `null` will n
     Validate::make($request->all(), [
         'field' => 'nullable|max:5',
     ]);
-
-### Configuration
-
-#### Application name
-
-In the config/app.php file add the following lines at the top of the returned array.
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Name
-    |--------------------------------------------------------------------------
-    |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
-    */
-    'name' => 'Laravel',
-
-Change "Laravel" with the name of your application.
 
 <a name="upgrade-5.2.0"></a>
 ## Upgrading To 5.2.0 From 5.1
