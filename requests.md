@@ -204,6 +204,8 @@ Laravel also provides a global `old` helper function. If you are displaying old 
 All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, you may use the `cookie` method on the `Illuminate\Http\Request` instance:
 
     $value = $request->cookie('name');
+    
+> **Note:** Any '.' in the cookie name will be converted to underscores (`_`).
 
 #### Attaching A New Cookie To A Response
 
