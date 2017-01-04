@@ -14,6 +14,7 @@ Facades provide a "static" interface to classes that are available in the applic
 
 All of Laravel's facades are defined in the `Illuminate\Support\Facades` namespace. So, we can easily access a facade like so:
 
+    use Illuminate\Support\Facades\Route;
     use Illuminate\Support\Facades\Cache;
 
     Route::get('/cache', function () {
