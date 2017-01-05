@@ -20,6 +20,7 @@
     - [Increment & Decrement](#increment-and-decrement)
 - [Deletes](#deletes)
 - [Pessimistic Locking](#pessimistic-locking)
+- [Raw SQL](#raw-sql)
 
 <a name="introduction"></a>
 ## Introduction
@@ -580,3 +581,12 @@ The query builder also includes a few functions to help you do "pessimistic lock
 Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the rows from being modified or from being selected with another shared lock:
 
     DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
+
+<a name="raw-sql"></a>
+## Raw SQL
+
+Sometimes you may need to directly execute a SQL query. Raw SQL queries are executed as is, so be careful not to create any SQL injection points! To execute a raw SQL, you may use the `DB::select` and `DB::raw` methods:
+
+    $sql = "SELECT * FROM users WHERE id = :userId";
+    
+    $data = DB::select( DB::raw($sql), ['userId' => $userId]);
