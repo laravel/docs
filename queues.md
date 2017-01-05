@@ -346,13 +346,11 @@ The `retry_after` configuration option and the `--timeout` CLI option are differ
 
 > {note} The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a given job is always killed before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice.
 
-#### Specifying Queue Sleep Duration
+#### Worker Sleep Duration
 
-You may specify the number of seconds to wait before polling for new jobs:
+When jobs are available on the queue, the worker will keep processing jobs with no delay in between them. However, the `sleep` option determines how long the worker will "sleep" if there are no new jobs available:
 
-php artisan queue:work --sleep=3
-
-> {note} The queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
+    php artisan queue:work --sleep=3
 
 <a name="supervisor-configuration"></a>
 ## Supervisor Configuration
