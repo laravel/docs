@@ -63,7 +63,7 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
 
 #### Redis
 
-Before using a Redis cache with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+Before using a Redis cache with Laravel, you will need to either install the `predis/predis` package (~1.0) via Composer, or install the PhpRedis PHP extension via PECL.
 
 For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
 
@@ -167,6 +167,8 @@ Instead of passing the number of minutes as an integer, you may also pass a `Dat
     $expiresAt = Carbon::now()->addMinutes(10);
 
     Cache::put('key', 'value', $expiresAt);
+
+> {note} Storing `false` or `null` values will lead to false negatives, because Laravel treats both as a null value.
 
 #### Store If Not Present
 
