@@ -180,6 +180,8 @@ The `forever` method may be used to store an item in the cache permanently. Sinc
 
     Cache::forever('key', 'value');
 
+> {note} You should not store `null` values into cache, because `null` values will be regarded as cache miss when retrieved, e.g. via `Cache::has()` method.
+
 > {tip} If you are using the Memcached driver, items that are stored "forever" may be removed when the cache reaches its size limit.
 
 <a name="removing-items-from-the-cache"></a>
