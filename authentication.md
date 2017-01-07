@@ -77,10 +77,17 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
 If the redirect path needs custom generation logic you may define a `redirectTo` method instead of a `redirectTo` property:
 
-    protected function redirectTo()
-    {
-        //
-    }
+        /**
+         * Generate post-authentication redirect location
+         * 
+         * @since 5.3.29 Introduced redirectTo function support in 5.3.29 
+         * @return string
+         */
+        protected function redirectTo()
+        {
+            // 
+            return '/';
+        }
 
 > {tip} `redirectTo` method has higher priority than `redirectTo` attribute.
 
