@@ -53,6 +53,8 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
         //
     });
 
+For CRUD style APIs have a look at [Resource Controllers](/docs/{{version}}/controllers#resource-controllers).
+
 #### CSRF Protection
 
 Any HTML forms pointing to `POST`, `PUT`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](/docs/{{version}}/csrf):
