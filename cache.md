@@ -63,7 +63,7 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
 
 #### Redis
 
-Before using a Redis cache with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+Before using a Redis cache with Laravel, you will need to either install the `predis/predis` package (~1.0) via Composer or install the PhpRedis PHP extension via PECL.
 
 For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
 
@@ -114,7 +114,6 @@ The `get` method on the `Cache` facade is used to retrieve items from the cache.
     $value = Cache::get('key');
 
     $value = Cache::get('key', 'default');
-
 
 You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
 
