@@ -9,6 +9,7 @@
 - [Form Request Validation](#form-request-validation)
     - [Creating Form Requests](#creating-form-requests)
     - [Authorizing Form Requests](#authorizing-form-requests)
+    - [Executing Code Before Validation](#executing-code-before-validation)
     - [Customizing The Error Format](#customizing-the-error-format)
     - [Customizing The Error Messages](#customizing-the-error-messages)
 - [Manually Creating Validators](#manually-creating-validators)
@@ -259,6 +260,22 @@ If you plan to have authorization logic in another part of your application, sim
     public function authorize()
     {
         return true;
+    }
+
+<a name="modifying-data-before-validation"></a>
+### Executing Code Before Validation
+If you want to sanitize data (or run any other code) before validating the request, override the `prepareForValidation` method. Note that using functions which update input like `replace` or `merge` will change the data for all future uses, not just for validation. 
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    public function prepareForValidation()
+    {
+        $this->replace([
+            'email' => strtolower($this->email),
+        ]);
     }
 
 <a name="customizing-the-error-format"></a>
