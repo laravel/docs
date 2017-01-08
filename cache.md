@@ -115,7 +115,6 @@ The `get` method on the `Cache` facade is used to retrieve items from the cache.
 
     $value = Cache::get('key', 'default');
 
-
 You may even pass a `Closure` as the default value. The result of the `Closure` will be returned if the specified item does not exist in the cache. Passing a Closure allows you to defer the retrieval of default values from a database or other external service:
 
     $value = Cache::get('key', function () {
@@ -167,8 +166,6 @@ Instead of passing the number of minutes as an integer, you may also pass a `Dat
     $expiresAt = Carbon::now()->addMinutes(10);
 
     Cache::put('key', 'value', $expiresAt);
-
-> {note} Storing `false` or `null` values will lead to false negatives, because Laravel treats both as a null value.
 
 #### Store If Not Present
 
