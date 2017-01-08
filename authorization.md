@@ -327,3 +327,33 @@ Like most of the other authorization methods, you may pass a class name to the `
     @cannot('create', Post::class)
         <!-- The Current User Can't Create Posts -->
     @endcannot
+
+#### Overriding The Default Unauthorized Access Error Message
+
+You can pass an extra **String/Collection**, as argument to the `@authorize` function, after the `ability` argument, as parameter to override the default unauthorized access error message:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Post;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
+
+    class PostController extends Controller
+    {
+        /**
+         * Update the given blog post.
+         *
+         * @param  Request  $request
+         * @param  Post  $post
+         * @return Response
+         */
+        public function update(Request $request, Post $post)
+        {
+            $customError = "Please upgrade your account to perform this operation.";
+            $this->authorize('update', $customError);
+
+            // The current user can update the blog post...
+        }
+    }
