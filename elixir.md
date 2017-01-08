@@ -321,6 +321,8 @@ After generating the versioned file, you may use Laravel's global `elixir` helpe
 
     <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
 
+Versioned files are also automatically adjusted to the versioned link in stylesheets when running `gulp` with the `--production` flag.
+
 #### Versioning Multiple Files
 
 You may pass an array to the `version` method to version multiple files:
