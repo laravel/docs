@@ -124,7 +124,7 @@ You may even pass a `Closure` as the default value. The result of the `Closure` 
 
 #### Checking For Item Existence
 
-The `has` method may be used to determine if an item exists in the cache:
+The `has` method may be used to determine if an item exists in the cache. This method will return `false` if the value is `null`:
 
     if (Cache::has('key')) {
         //
@@ -179,8 +179,6 @@ The `add` method will only add the item to the cache if it does not already exis
 The `forever` method may be used to store an item in the cache permanently. Since these items will not expire, they must be manually removed from the cache using the `forget` method:
 
     Cache::forever('key', 'value');
-
-> {note} You should not store `null` values into cache, because `null` values will be regarded as cache miss when retrieved, e.g. via `Cache::has()` method.
 
 > {tip} If you are using the Memcached driver, items that are stored "forever" may be removed when the cache reaches its size limit.
 
