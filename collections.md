@@ -679,7 +679,7 @@ You may also call the `last` method with no arguments to get the last element in
 <a name="method-map"></a>
 #### `map()` {#collection-method}
 
-The `map` method iterates through the collection and passes each value to the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items:
+The `map` method iterates through the collection and passes each value to the given callback (which must accept two parameters). The callback is free to modify the item and return it, thus forming a new collection of modified items:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
