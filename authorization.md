@@ -181,8 +181,6 @@ When defining policy methods that will not receive a model instance, such as a `
         //
     }
 
-> {tip} If you used the `--model` option when generating your policy, all of the relevant "CRUD" policy methods will already be defined on the generated policy.
-
 <a name="policy-filters"></a>
 ### Policy Filters
 
