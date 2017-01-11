@@ -460,6 +460,18 @@ It is no longer necessary to specify the `--daemon` option when calling the `que
 
 Various queue job events such as `JobProcessing` and `JobProcessed` no longer contain the `$data` property. You should update your application to call `$event->job->payload()` to get the equivalent data.
 
+#### Failed Job Events
+
+If you have registered the `Queue::failing` method in the `AppServiceProvider`, make sure to update the method signature in the `boot` section to:
+
+    Queue::failing(function (JobFailed $event) {
+        // $event->connectionName
+        // $event->job
+        // $event->exception
+    });
+    
+Also include the following `use` statement at the top: `use Illuminate\Queue\Events\JobFailed;`
+
 #### Database Driver Changes
 
 If you are using the `database` driver to store your queued jobs, you should drop the `jobs_queue_reserved_reserved_at_index` index then drop the `reserved` column from your `jobs` table. This column is no longer required when using the `database` driver. Once you have completed these changes, you should add a new compound index on the `queue` and `reserved_at` columns.
