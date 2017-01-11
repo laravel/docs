@@ -70,6 +70,16 @@ By default, Valet serves your projects using the `.dev` TLD. If you'd like to us
 
 For example, if you'd like to use `.app` instead of `.dev`, run `valet domain app` and Valet will start serving your projects at `*.app` automatically.
 
+Alternatively, you may need to use a production domain temporarily with your local application.
+
+Given an existing project `my-project` in parked directory `~/projects/` and the domain `my-project.com`:
+
+    # Point the my-project.com domain to your local webserver
+    $ sudo echo '127.0.0.1 my-project.com' >> /etc/hosts
+    # Help Valet know which directory to serve when handing a request for the my-project.com domain
+    $ cd ~/projects/
+    $ ln -s my-project my-project.com
+
 #### Database
 
 If you need a database, try MariaDB by running `brew install mariadb` on your command line. Once MariaDB has been installed, you may start it using the `brew services start mariadb` command. You can then connect to the database at `127.0.0.1` using the `root` username and an empty string for the password.
