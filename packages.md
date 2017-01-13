@@ -73,6 +73,8 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
 
     $value = config('courier.option');
 
+> {note} You should not define Closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
+
 #### Default Package Configuration
 
 You may also merge your own package configuration file with the application's published copy. This will allow your users to define only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
