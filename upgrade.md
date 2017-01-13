@@ -19,6 +19,16 @@
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
+### Updating Dependencies
+
+Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file.
+
+In order to continue using the `tinker` Artisan command, you should also install the `laravel/tinker` package:
+
+    composer require laravel/tinker
+
+Once the package has been installed, you should add the `Laravel\Tinker\TinkerServiceProvider` to your `config/app.php` configuration file.
+
 ### Authorization
 
 #### The `getPolicyFor` Method
