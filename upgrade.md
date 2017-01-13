@@ -190,11 +190,11 @@ All calls to the `$request->setSession()` method should be changed to `setLarave
 
 #### BrowserKit Compatibility
 
-Laravel 5.4's testing layer has been re-written to be simpler and lighter out of the box. If you would like to continue using the testing layer present in Laravel 5.3, you may install the `laravel/browser-kit-testing` package into your application. This package provides full compatibility with the Laravel 5.3 testing layer.
+Laravel 5.4's testing layer has been re-written to be simpler and lighter out of the box. If you would like to continue using the testing layer present in Laravel 5.3, you may install the `laravel/browser-kit-testing` [package](https://github.com/laravel/browser-kit-testing) into your application. This package provides full compatibility with the Laravel 5.3 testing layer.
 
 #### Environment
 
-The Laravel 5.4 test class no longer manually forces `putenv('APP_ENV=testing')` for each test. Instead, the `APP_ENV` from the loaded `.env` file is utilized.
+The Laravel 5.4 test class no longer manually forces `putenv('APP_ENV=testing')` for each test. Instead, the framework utilizes the `APP_ENV` variable from the loaded `.env` file.
 
 #### Event Fake
 
