@@ -17,7 +17,7 @@
 
 #### Estimated Upgrade Time: 1-2 Hours
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. You may consult the [release notes](https://github.com/laravel/framework/blob/5.4/CHANGELOG-5.4.md) for a complete list of changes.
 
 ### Updating Dependencies
 
