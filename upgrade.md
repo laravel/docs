@@ -180,9 +180,11 @@ Laravel 5.4 introduces improved Redis cluster support. If you are using Redis cl
 
 Laravel's session handlers no longer implements Symfony's `SessionInterface`. Implementing this interface required us to implement extraneous features that were not needed by the framework. Instead, a new `Illuminate\Contracts\Session\Session` interface has been defined and may be used instead. The following code changes should also be applied:
 
-- All calls to the `->set()` method should be changed to `->put()`. Typically, Laravel applications would never call the `set` method since it has never been documented within the Laravel documentation. However, it is included here out of caution.
-- All calls to the `->getToken()` method should be changed to `->token()`.
-- If you are ever manually calling the `$request->setSession()` method you should update your code to call the `setLaravelSession()` method instead.
+All calls to the `->set()` method should be changed to `->put()`. Typically, Laravel applications would never call the `set` method since it has never been documented within the Laravel documentation. However, it is included here out of caution.
+
+All calls to the `->getToken()` method should be changed to `->token()`.
+
+All calls to the `$request->setSession()` method should be changed to `setLaravelSession()`.
 
 ### Testing
 
