@@ -17,6 +17,8 @@
 
 #### Estimated Upgrade Time: 1-2 Hours
 
+> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+
 ### Authorization
 
 #### The `getPolicyFor` Method
