@@ -73,7 +73,7 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
 
     $value = config('courier.option');
 
-> {note} Be sure not to use any closures in your configuration files, as they will not be serialized correctly if your users use the `php artisan config:cache` command.
+> {note} You should not define Closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
 
 #### Default Package Configuration
 
