@@ -99,6 +99,10 @@ Laravel no longer includes the ability to customize the PDO "fetch mode" from yo
 
 ### Eloquent
 
+#### Date Casts
+
+The `date` cast now converts the column to a `Carbon` object and calls the `startOfDay` method on the object. If you would like to preserve the time portion of the date, you should use the `datetime` cast.
+
 #### Has One / Many `createMany`
 
 The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
