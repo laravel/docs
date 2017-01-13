@@ -124,7 +124,7 @@ If you are manually implementing the `Illuminate\Contracts\Events\Dispatcher` in
 
 #### Event Priority
 
-Support for event handler "priorities" has been removed. This undocumented feature typically indicates a mis-use of events. Instead, consider using a series of synchronous method calls. Alternatively, you may dispatch a new event from within the handler of another event in order to ensure that a given event's handler fires after an unrelated handler.
+Support for event handler "priorities" has been removed. This undocumented feature typically indicates an abuse of the event feature. Instead, consider using a series of synchronous method calls. Alternatively, you may dispatch a new event from within the handler of another event in order to ensure that a given event's handler fires after an unrelated handler.
 
 #### Wildcard Event Handler Signatures
 
