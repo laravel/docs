@@ -1,6 +1,5 @@
 # Upgrade Guide
 
-- [Upgrading To 5.4.0 From 5.3](#upgrade-5.4.0)
 - [Upgrading To 5.3.0 From 5.2](#upgrade-5.3.0)
 - [Upgrading To 5.2.0 From 5.1](#upgrade-5.2.0)
 - [Upgrading To 5.1.11](#upgrade-5.1.11)
