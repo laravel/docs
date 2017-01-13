@@ -73,6 +73,8 @@ Now, when users of your package execute Laravel's `vendor:publish` command, your
 
     $value = config('courier.option');
 
+> {note} Be sure not to use any closures in your configuration files, as they will not be serialized correctly if your users use the `php artisan config:cache` command.
+
 #### Default Package Configuration
 
 You may also merge your own package configuration file with the application's published copy. This will allow your users to define only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
