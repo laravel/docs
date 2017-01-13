@@ -19,15 +19,6 @@
 
 ### Authorization
 
-#### Policy Class Determination
-
-Policies may now be bound to an interface or parent class. When determining which policy to use for a given object, a policy bound to the object's exact
-
-<div class="content-list" markdown="1">
-- Each class has its own policy, as policies bound to exactly the given class will be found before looking for subtypes
-- Or, bind your policy to the root of the inheritance tree
-</div>
-
 #### The `getPolicyFor` Method
 
 Previous, when calling the `Gate::getPolicyFor($class)` method, an exception was thrown if no policy could be found. Now, the method will return `null` if no policy is found for the given class. If you call this method directly, make sure you refactor your `try / catch` to a check for `null`:
@@ -54,7 +45,7 @@ When defining channel name placeholders in Laravel 5.3, then `*` character is us
 
 ### Collections
 
-#### `random`
+#### The `random` Method
 
 The `random` method now returns a new Collection instance regardless of the argument passed into the method. Previously, this method would return a single object instance if `1` was passed to the method.
 
@@ -74,7 +65,7 @@ Binding classes into the container with leading slashes is no longer supported. 
 
 #### `make` Method Parameters
 
-The container's `make` method no longer accepts a second array of parameters. This feature typically indicates a code smell and you can almost always construct the object in another way that is more intuitive.
+The container's `make` method no longer accepts a second array of parameters. This feature typically indicates a code smell. Typically, you can always construct the object in another way that is more intuitive.
 
 #### Resolving Callbacks
 
