@@ -123,7 +123,7 @@ You may even pass a `Closure` as the default value. The result of the `Closure` 
 
 #### Checking For Item Existence
 
-The `has` method may be used to determine if an item exists in the cache. This method will return `false` if the value is `null`:
+The `has` method may be used to determine if an item exists in the cache. This method will return `false` if the value is `null` or `false`:
 
     if (Cache::has('key')) {
         //
