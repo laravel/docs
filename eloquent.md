@@ -564,38 +564,88 @@ Eloquent models fire several events, allowing you to hook into various points in
 
 Whenever a new model is saved for the first time, the `creating` and `created` events will fire. If a model already existed in the database and the `save` method is called, the `updating` / `updated` events will fire. However, in both cases, the `saving` / `saved` events will fire.
 
-For example, let's define an Eloquent event listener in a [service provider](/docs/{{version}}/providers). Within our event listener, we will call the `isValid` method on the given model, and return `false` if the model is not valid. Returning `false` from an Eloquent event listener will cancel the `save` / `update` operation:
+For example, lets look at a couple of ways to register a [listener](/docs/{{version}}/events#defining-listeners) for these model events in a [service provider](/docs/{{version}}/providers). In the event service provider we can either register the listener in the listeners array, or we can specify it directly on the model in the boot method:
 
     <?php
-
+    
     namespace App\Providers;
-
-    use App\User;
-    use Illuminate\Support\ServiceProvider;
-
-    class AppServiceProvider extends ServiceProvider
+    
+    use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
+    use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+    
+    class EventServiceProvider extends ServiceProvider
     {
         /**
-         * Bootstrap any application services.
+         * The event listener mappings for the application.
          *
+         * @var array
+         */
+        protected $listen = [
+            'eloquent.created: App\User' => [
+                'App\Listeners\UserWasCreated',
+            ],
+        ];
+        
+        /**
+         * Register any other events for your application.
+         *
+         * @param  \Illuminate\Contracts\Events\Dispatcher  $events
          * @return void
          */
-        public function boot()
+        public function boot(DispatcherContract $events)
         {
-            User::creating(function ($user) {
+            parent::boot($events);
+            
+            \App\User::created(\App\Listeners\UserWasCreated::class);
+        }
+    }
+
+
+Or let's define an Eloquent event listener right in the model. Within our event listener, we will call the `isValid` method on the given model, and return `false` if the model is not valid. Returning `false` from an Eloquent event listener will cancel the `save` / `update` operation:
+
+    <?php
+    
+    namespace App;
+    
+    use Illuminate\Auth\Authenticatable;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Auth\Passwords\CanResetPassword;
+    use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+    use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+    
+    class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+    {
+        use Authenticatable, CanResetPassword;
+        
+        /**
+         * The database table used by the model.
+         *
+         * @var string
+         */
+        protected $table = 'users';
+        
+        /**
+         * The attributes that are mass assignable.
+         *
+         * @var array
+         */
+        protected $fillable = ['name', 'email', 'password'];
+        
+        /**
+         * The attributes excluded from the model's JSON form.
+         *
+         * @var array
+         */
+        protected $hidden = ['password', 'remember_token'];
+        
+        public static function boot()
+        {
+            parent::boot();
+            
+            static::creating(function ($user) {
                 if ( ! $user->isValid()) {
                     return false;
                 }
             });
-        }
-
-        /**
-         * Register the service provider.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
