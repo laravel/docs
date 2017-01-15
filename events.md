@@ -111,8 +111,8 @@ Next, let's take a look at the listener for our example event. Event listeners r
     namespace App\Listeners;
 
     use App\Events\PodcastWasPurchased;
-    use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Queue\InteractsWithQueue;
 
     class EmailPurchaseConfirmation
     {
@@ -161,8 +161,8 @@ Need to [queue](/docs/{{version}}/queues) an event listener? It couldn't be any 
     namespace App\Listeners;
 
     use App\Events\PodcastWasPurchased;
-    use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Queue\InteractsWithQueue;
 
     class EmailPurchaseConfirmation implements ShouldQueue
     {
@@ -180,8 +180,8 @@ If you need to access the underlying queue job's `delete` and `release` methods 
     namespace App\Listeners;
 
     use App\Events\PodcastWasPurchased;
-    use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Queue\InteractsWithQueue;
 
     class EmailPurchaseConfirmation implements ShouldQueue
     {
@@ -266,8 +266,8 @@ To inform Laravel that a given event should be broadcast, implement the `Illumin
 
     use App\User;
     use App\Events\Event;
-    use Illuminate\Queue\SerializesModels;
     use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+    use Illuminate\Queue\SerializesModels;
 
     class ServerCreated extends Event implements ShouldBroadcast
     {
