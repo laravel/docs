@@ -23,11 +23,17 @@
 
 Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file.
 
+#### Laravel Tinker
+
 In order to continue using the `tinker` Artisan command, you should also install the `laravel/tinker` package:
 
     composer require laravel/tinker
 
 Once the package has been installed, you should add the `Laravel\Tinker\TinkerServiceProvider` to your `config/app.php` configuration file.
+
+#### Guzzle
+
+Laravel 5.4 requires Guzzle 6.0 or greater.
 
 ### Authorization
 
