@@ -6,7 +6,13 @@
 <a name="where-to-start"></a>
 ## Where To Start
 
-Learning a new framework can be daunting, but it's also exciting. To smooth your transition, we've attempted to create very clear, concise documentation for Laravel. Here are some recommendations for what to read first:
+Learning a new framework can be daunting, but it's also exciting. To smooth your transition, we've attempted to create very clear, concise documentation for Laravel.
+
+While Laravel is designed for ease of use with the developer in mind, you still need to understand the fundamentals of the PHP language, especially its object and class-oriented aspects as well as how closures work.
+
+[PHP: The Right Way](http://www.phptherightway.com/) is an easy-to-read, quick reference for PHP popular coding standards with links to authoritative tutorials around the web, and is a good resource if you want to make sure you're up to speed on the modern PHP foundations Laravel is built on.
+
+Here are some recommendations for which parts of the documentation to read first:
 
 - [Installation](/docs/4.1/installation) and [Configuration](/docs/4.1/configuration)
 - [Routing](/docs/4.1/routing)
