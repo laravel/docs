@@ -484,11 +484,13 @@ Below is a list of all available validation rules and their function:
 [Accepted](#rule-accepted)
 [Active URL](#rule-active-url)
 [After (Date)](#rule-after)
+[After Or Equal (Date)](#rule-after-or-equal)
 [Alpha](#rule-alpha)
 [Alpha Dash](#rule-alpha-dash)
 [Alpha Numeric](#rule-alpha-num)
 [Array](#rule-array)
 [Before (Date)](#rule-before)
+[Before Or Equal (Date)](#rule-before-or-equal)
 [Between](#rule-between)
 [Boolean](#rule-boolean)
 [Confirmed](#rule-confirmed)
@@ -555,6 +557,11 @@ Instead of passing a date string to be evaluated by `strtotime`, you may specify
 
     'finish_date' => 'required|date|after:start_date'
 
+<a name="rule-after-or-equal"></a>
+#### after\_or\_equal:_date_
+
+The field under validation must be a value after or equal to the given date. For more information, see the [after](#rule-after) rule.
+
 <a name="rule-alpha"></a>
 #### alpha
 
@@ -579,6 +586,11 @@ The field under validation must be a PHP `array`.
 #### before:_date_
 
 The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
+
+<a name="rule-before-or-equal"></a>
+#### before\_or\_equal:_date_
+
+The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function.
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
