@@ -633,6 +633,17 @@ A _ratio_ constraint should be represented as width divided by height. This can 
 
     'avatar' => 'dimensions:ratio=3/2'
 
+Since this rule requires several arguments, you may use the `Rule::dimensions` method to fluently construct the rule:
+
+    use Illuminate\Validation\Rule;
+
+    Validator::make($data, [
+        'avatar' => [
+            'required',
+            Rule::dimensions()->maxWidth(1000)->maxHeight(500)->ratio(3 / 2),
+        ],
+    ]);
+
 <a name="rule-distinct"></a>
 #### distinct
 
@@ -693,7 +704,16 @@ The file under validation must be an image (jpeg, png, bmp, gif, or svg)
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
 
-The field under validation must be included in the given list of values.
+The field under validation must be included in the given list of values. Since this rule often requires you to `implode` an array, the `Rule::in` method may be used to fluently construct the rule:
+
+    use Illuminate\Validation\Rule;
+
+    Validator::make($data, [
+        'zones' => [
+            'required',
+            Rule::in(['first-zone', 'second-zone']),
+        ],
+    ]);
 
 <a name="rule-in-array"></a>
 #### in_array:_anotherfield_
