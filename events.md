@@ -64,9 +64,9 @@ Typically, events should be registered via the `EventServiceProvider` `$listen` 
 
 #### Wildcard Event Listeners
 
-You may even register listeners using the `*` as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the entire event data array as a single argument:
+You may even register listeners using the `*` as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the event name as their first argument, and the entire event data array as their second argument:
 
-    Event::listen('event.*', function (array $data) {
+    Event::listen('event.*', function ($eventName, array $data) {
         //
     });
 
@@ -189,7 +189,7 @@ If you need to manually access the listener's underlying queue job's `delete` an
         }
     }
 
-<a name="firing-events"></a>
+<a name="::-events"></a>
 ## Firing Events
 
 To fire an event, you may pass an instance of the event to the `event` helper. The helper will dispatch the event to all of its registered listeners. Since the `event` helper is globally available, you may call it from anywhere in your application:
