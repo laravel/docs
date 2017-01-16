@@ -262,7 +262,7 @@ Like all other mail notifications, notifications that use Markdown templates sho
 <a name="writing-the-message"></a>
 ### Writing The Message
 
-Markdown mail notifications use a combination of Blade components and Markdown syntax to allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
+Markdown mail notifications use a combination of Blade components and Markdown syntax which allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
 
     @component('mail::message')
     # Invoice Paid

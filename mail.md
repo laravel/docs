@@ -336,7 +336,7 @@ Then, when configuring the mailable within its `build` method, call the `markdow
 <a name="writing-markdown-messages"></a>
 ### Writing Markdown Messages
 
-Markdown mailables use a combination of Blade components and Markdown syntax to allow you to easily construct mail messages while leveraging Laravel's pre-crafted components:
+Markdown mailables use a combination of Blade components and Markdown syntax which allow you to easily construct mail messages while leveraging Laravel's pre-crafted components:
 
     @component('mail::message')
     # Order Shipped
