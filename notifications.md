@@ -12,7 +12,10 @@
     - [Customizing The Recipient](#customizing-the-recipient)
     - [Customizing The Subject](#customizing-the-subject)
     - [Customizing The Templates](#customizing-the-templates)
-    - [Error Messages](#error-messages)
+- [Markdown Mail Notifications](#markdown-mail-notifications)
+    - [Generating The Message](#generating-the-message)
+    - [Writing The Message](#writing-the-message)
+    - [Customizing The Components](#customizing-the-components)
 - [Database Notifications](#database-notifications)
     - [Prerequisites](#database-prerequisites)
     - [Formatting Database Notifications](#formatting-database-notifications)
@@ -156,6 +159,25 @@ In this example, we register a greeting, a line of text, a call to action, and t
 
 > {tip} When sending mail notifications, be sure to set the `name` value in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
 
+<a name="error-messages"></a>
+#### Error Messages
+
+Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of blue:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Message
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->error()
+                    ->subject('Notification Subject')
+                    ->line('...');
+    }
+
 <a name="customizing-the-recipient"></a>
 ### Customizing The Recipient
 
@@ -208,24 +230,94 @@ You can modify the HTML and plain-text template used by mail notifications by pu
 
     php artisan vendor:publish --tag=laravel-notifications
 
-<a name="error-messages"></a>
-### Error Messages
+<a name="markdown-mail-notifications"></a>
+## Markdown Mail Notifications
 
-Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of blue:
+Markdown mail notifications allow you to take advantage of the pre-built templates of mail notifications, while giving you more freedom to write longer, customized messages. Since the messages are written in Markdown, Laravel is able to render beautiful, responsive HTML templates for the messages while also automatically generating a plain-text counterpart.
+
+<a name="generating-the-message"></a>
+### Generating The Message
+
+Markdown mail notifications allow you to take advantage of the pre-built templates of mail notifications, while giving you more freedom to write longer, customized messages. To generate a notification and a Markdown template at the same time, you may use the `--markdown` option when generating the notification:
+
+    php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
+
+Like your other mail notifications, notifications that use Markdown messages should define a `toMail` method on the notification class. However, instead of using the `line` and `action` methods to construct the notification, use the `markdown` method to specify the name of the template that should be used:
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Message
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
+        $url = url('/invoice/'.$this->invoice->id);
+
         return (new MailMessage)
-                    ->error()
-                    ->subject('Notification Subject')
-                    ->line('...');
+                    ->subject('Invoice Paid')
+                    ->markdown('mail.invoice.paid', ['url' => $url]);
     }
+
+<a name="writing-the-message"></a>
+### Writing The Message
+
+Markdown mail notification use a combination of Blade components and Markdown syntax to allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
+
+    @component('mail::message')
+    # Invoice Paid
+
+    Your invoice has been paid!
+
+    @component('mail::button', ['url' => $url])
+    View Invoice
+    @endcomponent
+
+    Thanks,<br>
+    {{ config('app.name') }}
+    @endcomponent
+
+#### Button Component
+
+The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`.
+
+    @component('mail::button', ['url' => $url, 'color' => 'green'])
+    View Invoice
+    @endcomponent
+
+#### Panel Component
+
+The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the notification. This allows you to draw attention to a given block of text:
+
+    @component('mail::panel')
+    This is the panel content.
+    @endcomponent
+
+#### Table Component
+
+The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
+
+    @component('mail::table')
+    | Laravel       | Table         | Example  |
+    | ------------- |:-------------:| --------:|
+    | Col 2 is      | Centered      | $12      |
+    | Col 3 is      | Right-Aligned | $1600    |
+    @endcomponent
+
+<a name="customizing-the-components"></a>
+### Customizing The Components
+
+You may export all of the Markdown notification components to your own application for customization. To export the components, use the `vendor:publish` Artisan command to publish the `laravel-mail` asset tag:
+
+    php artisan vendor:publish --tag=laravel-mail
+
+This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain a `html` and a `markdown` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
+
+#### Customizing The CSS
+
+After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown notifications.
+
+> {tip} If you would like to build an entirely new theme for the Markdown components, simply write a new CSS file within the `html/themes` directory and change the `theme` option of your `mail` configuration file.
 
 <a name="database-notifications"></a>
 ## Database Notifications
