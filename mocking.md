@@ -1,10 +1,11 @@
 # Mocking
 
 - [Introduction](#introduction)
+- [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
-- [Job Fake](#job-fake)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
+- [Queue Fake](#queue-fake)
 - [Facades](#mocking-facades)
 
 <a name="introduction"></a>
@@ -13,6 +14,39 @@
 When testing Laravel applications, you may wish to "mock" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that dispatches an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners, since the event listeners can be tested in their own test case.
 
 Laravel provides helpers for mocking events, jobs, and facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls. Of course, you are free to use [Mockery](http://docs.mockery.io/en/latest/) or PHPUnit to create your own mocks or spies.
+
+<a name="bus-fake"></a>
+## Bus Fake
+
+As an alternative to mocking, you may use the `Bus` facade's `fake` method to prevent jobs from being dispatched. When using fakes, assertions are made after the code under test is executed:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use App\Jobs\ShipOrder;
+    use Illuminate\Support\Facades\Bus;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+    class ExampleTest extends TestCase
+    {
+        public function testOrderShipping()
+        {
+            Bus::fake();
+
+            // Perform order shipping...
+
+            Bus::assertDispatched(ShipOrder::class, function ($job) use ($order) {
+                return $job->order->id === $order->id;
+            });
+
+            // Assert a job was not dispatched...
+            Bus::assertNotDispatched(AnotherJob::class);
+        }
+    }
 
 <a name="event-fake"></a>
 ## Event Fake
@@ -47,42 +81,6 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
             });
 
             Event::assertNotDispatched(OrderFailedToShip::class);
-        }
-    }
-
-<a name="job-fake"></a>
-## Job Fake
-
-As an alternative to mocking, you may use the `Queue` facade's `fake` method to prevent jobs from being queued. You may then assert that jobs were pushed to the queue and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
-
-    <?php
-
-    namespace Tests\Feature;
-
-    use Tests\TestCase;
-    use App\Jobs\ShipOrder;
-    use Illuminate\Support\Facades\Queue;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-    class ExampleTest extends TestCase
-    {
-        public function testOrderShipping()
-        {
-            Queue::fake();
-
-            // Perform order shipping...
-
-            Queue::assertPushed(ShipOrder::class, function ($job) use ($order) {
-                return $job->order->id === $order->id;
-            });
-
-            // Assert a job was pushed to a given queue...
-            Queue::assertPushedOn('queue-name', ShipOrder::class);
-
-            // Assert a job was not pushed...
-            Queue::assertNotPushed(AnotherJob::class);
         }
     }
 
@@ -167,6 +165,42 @@ You may use the `Notification` facade's `fake` method to prevent notifications f
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
+        }
+    }
+
+<a name="queue-fake"></a>
+## Queue Fake
+
+As an alternative to mocking, you may use the `Queue` facade's `fake` method to prevent jobs from being queued. You may then assert that jobs were pushed to the queue and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use App\Jobs\ShipOrder;
+    use Illuminate\Support\Facades\Queue;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+    class ExampleTest extends TestCase
+    {
+        public function testOrderShipping()
+        {
+            Queue::fake();
+
+            // Perform order shipping...
+
+            Queue::assertPushed(ShipOrder::class, function ($job) use ($order) {
+                return $job->order->id === $order->id;
+            });
+
+            // Assert a job was pushed to a given queue...
+            Queue::assertPushedOn('queue-name', ShipOrder::class);
+
+            // Assert a job was not pushed...
+            Queue::assertNotPushed(AnotherJob::class);
         }
     }
 
