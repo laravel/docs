@@ -33,6 +33,7 @@
 - [Slack Notifications](#slack-notifications)
     - [Prerequisites](#slack-prerequisites)
     - [Formatting Slack Notifications](#formatting-slack-notifications)
+    - [Slack Attachments](#slack-attachments)
     - [Routing Slack Notifications](#routing-slack-notifications)
 - [Notification Events](#notification-events)
 - [Custom Channels](#custom-channels)
@@ -579,7 +580,26 @@ In this example we are just sending a single line of text to Slack, which will c
 
 <img src="https://laravel.com/assets/img/basic-slack-notification.png">
 
-#### Slack Attachments
+#### Customizing The Sender & Recipient
+
+You may use the `from` and `to` methods to customize the sender and recipient. The `from` method accepts a username and emoji identifier, while the `to` method accepts a channel or username:
+
+    /**
+     * Get the Slack representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return SlackMessage
+     */
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
+                    ->from('Ghost', ':ghost:')
+                    ->to('#other')
+                    ->content('This will be sent to #other');
+    }
+
+<a name="slack-attachments"></a>
+### Slack Attachments
 
 You may also add "attachments" to Slack messages. Attachments provide richer formatting options than simple text messages. In this example, we will send an error notification about an exception that occurred in an application, including a link to view more details about the exception:
 
@@ -636,9 +656,9 @@ The example above will create a Slack message that looks like the following:
 
 <img src="https://laravel.com/assets/img/slack-fields-attachment.png">
 
-#### Customizing The Sender & Recipient
+#### Markdown Attachment Content
 
-You may use the `from` and `to` methods to customize the sender and recipient. The `from` method accepts a username and emoji identifier, while the `to` method accepts a channel or username:
+If some of your attachment fields contain Markdown, you may use the `markdown` method to instruct Slack to parse and display the given attachment fields as Markdown formatted text:
 
     /**
      * Get the Slack representation of the notification.
@@ -648,10 +668,16 @@ You may use the `from` and `to` methods to customize the sender and recipient. T
      */
     public function toSlack($notifiable)
     {
+        $url = url('/exceptions/'.$this->exception->id);
+
         return (new SlackMessage)
-                    ->from('Ghost', ':ghost:')
-                    ->to('#other')
-                    ->content('This will be sent to #other');
+                    ->error()
+                    ->content('Whoops! Something went wrong.')
+                    ->attachment(function ($attachment) use ($url) {
+                        $attachment->title('Exception: File Not Found', $url)
+                                   ->content('File [background.jpg] was **not found**.')
+                                   ->markdown(['title', 'text']);
+                    });
     }
 
 <a name="routing-slack-notifications"></a>

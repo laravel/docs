@@ -82,6 +82,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [min](#method-min)
 [nth](#method-nth)
 [only](#method-only)
+[partition](#method-partition)
 [pipe](#method-pipe)
 [pluck](#method-pluck)
 [pop](#method-pop)
@@ -800,6 +801,17 @@ The `only` method returns the items in the collection with the specified keys:
     // ['product_id' => 1, 'name' => 'Desk']
 
 For the inverse of `only`, see the [except](#method-except) method.
+
+<a name="method-partition"></a>
+#### `partition()` {#collection-method}
+
+The `partition` method may be combined with the `list` PHP function to separate elements that pass a given truth test from those that do not:
+
+    $collection = collect([1, 2, 3, 4, 5, 6]);
+
+    list($underThree, $aboveThree) = $collection->partition(function ($i) {
+        return $i < 3;
+    });
 
 <a name="method-pipe"></a>
 #### `pipe()` {#collection-method}
