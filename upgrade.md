@@ -159,9 +159,9 @@ Wildcard event handlers now receive the event name as their first argument and t
 
 The `locale.changed` event is now an object based event using the `Illuminate\Foundation\Events\LocaleUpdated` class.
 
-#### The `message.logged` Event
+#### The `illuminate.log` Event
 
-The `message.logged` event is now an object based event using the `Illuminate\Log\Events\MessageLogged` class.
+The `illuminate.log` event is now an object based event using the `Illuminate\Log\Events\MessageLogged` class.
 
 ### Mail
 
