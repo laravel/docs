@@ -66,7 +66,8 @@
     - [Serialization](/docs/{{version}}/eloquent-serialization)
 - Testing
     - [Getting Started](/docs/{{version}}/testing)
-    - [Application Testing](/docs/{{version}}/application-testing)
+    - [HTTP Tests](/docs/{{version}}/http-tests)
+    - [Browser Tests](/docs/{{version}}/dusk)
     - [Database](/docs/{{version}}/database-testing)
     - [Mocking](/docs/{{version}}/mocking)
 - Official Packages
