@@ -452,6 +452,35 @@ Notifications will broadcast on a private channel formatted using a `{notifiable
             console.log(notification.type);
         });
 
+#### Customizing The Notification Channel
+
+If you would like to customize which channels a notifiable entity receives its broadcast notifications on, you may define a `receivesBroadcastNotificationsOn` method on the notifiable entity:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Broadcasting\PrivateChannel;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use Notifiable;
+
+        /**
+         * The channels the user receives notification broadcasts on.
+         *
+         * @return array
+         */
+        public function receivesBroadcastNotificationsOn()
+        {
+            return [
+                new PrivateChannel('users.'.$this->id),
+            ];
+        }
+    }
+
 <a name="sms-notifications"></a>
 ## SMS Notifications
 
