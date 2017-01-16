@@ -8,7 +8,7 @@
 - [Defining Listeners](#defining-listeners)
 - [Queued Event Listeners](#queued-event-listeners)
     - [Manually Accessing The Queue](#manually-accessing-the-queue)
-- [Firing Events](#firing-events)
+- [Dispatching Events](#dispatching-events)
 - [Event Subscribers](#event-subscribers)
     - [Writing Event Subscribers](#writing-event-subscribers)
     - [Registering Event Subscribers](#registering-event-subscribers)
@@ -189,10 +189,10 @@ If you need to manually access the listener's underlying queue job's `delete` an
         }
     }
 
-<a name="::-events"></a>
-## Firing Events
+<a name="dispatching-events"></a>
+## Dispatching Events
 
-To fire an event, you may pass an instance of the event to the `event` helper. The helper will dispatch the event to all of its registered listeners. Since the `event` helper is globally available, you may call it from anywhere in your application:
+To dispatch an event, you may pass an instance of the event to the `event` helper. The helper will dispatch the event to all of its registered listeners. Since the `event` helper is globally available, you may call it from anywhere in your application:
 
     <?php
 
@@ -220,7 +220,7 @@ To fire an event, you may pass an instance of the event to the `event` helper. T
         }
     }
 
-> {tip} When testing, it can be helpful to assert that certain events were fired without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#mocking-events) makes it a cinch.
+> {tip} When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](/docs/{{version}}/mocking#mocking-events) makes it a cinch.
 
 <a name="event-subscribers"></a>
 ## Event Subscribers

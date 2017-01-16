@@ -14,7 +14,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-When testing Laravel applications, you may wish to "mock" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that fires an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners, since the event listeners can be tested in their own test case.
+When testing Laravel applications, you may wish to "mock" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that dispatches an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners, since the event listeners can be tested in their own test case.
 
 Laravel provides helpers for mocking events, jobs, and facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls. Of course, you are free to use [Mockery](http://docs.mockery.io/en/latest/) or PHPUnit to create your own mocks or spies.
 
@@ -24,9 +24,9 @@ Laravel provides helpers for mocking events, jobs, and facades out of the box. T
 <a name="using-event-mocks"></a>
 ### Using Mocks
 
-If you are making heavy use of Laravel's event system, you may wish to silence or mock certain events while testing. For example, if you are testing user registration, you probably do not want all of a `UserRegistered` event's handlers firing, since the listeners may send "welcome" e-mails, etc.
+If you are making heavy use of Laravel's event system, you may wish to silence or mock certain events while testing. For example, if you are testing user registration, you probably do not want all of a `UserRegistered` event's handlers executing, since the listeners may send "welcome" e-mails, etc.
 
-Laravel provides a convenient `expectsEvents` method which verifies the expected events are fired, but prevents any listeners for those events from executing:
+Laravel provides a convenient `expectsEvents` method which verifies the expected events are dispatched, but prevents any listeners for those events from executing:
 
     <?php
 
@@ -45,7 +45,7 @@ Laravel provides a convenient `expectsEvents` method which verifies the expected
         }
     }
 
-You may use the `doesntExpectEvents` method to verify that the given events are not fired:
+You may use the `doesntExpectEvents` method to verify that the given events are not dispatched:
 
     <?php
 
@@ -83,7 +83,7 @@ If you would like to prevent all event listeners from running, you may use the `
 <a name="using-event-fakes"></a>
 ### Using Fakes
 
-As an alternative to mocking, you may use the `Event` facade's `fake` method to prevent all event listeners from executing. You may then assert that events were fired and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
+As an alternative to mocking, you may use the `Event` facade's `fake` method to prevent all event listeners from executing. You may then assert that events were dispatched and even inspect the data they received. When using fakes, assertions are made after the code under test is executed:
 
     <?php
 
@@ -102,11 +102,11 @@ As an alternative to mocking, you may use the `Event` facade's `fake` method to 
 
             // Perform order shipping...
 
-            Event::assertFired(OrderShipped::class, function ($e) use ($order) {
+            Event::assertDispatched(OrderShipped::class, function ($e) use ($order) {
                 return $e->order->id === $order->id;
             });
 
-            Event::assertNotFired(OrderFailedToShip::class);
+            Event::assertNotDispatched(OrderFailedToShip::class);
         }
     }
 
