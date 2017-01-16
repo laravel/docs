@@ -95,7 +95,7 @@ After defining a language line that has pluralization options, you may use the `
 
 Since the Laravel translator is powered by the Symfony Translation component, you may create even more complex pluralization rules which specify language lines for multiple number ranges:
 
-    'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
+    'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',
 
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
