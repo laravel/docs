@@ -80,6 +80,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [max](#method-max)
 [merge](#method-merge)
 [min](#method-min)
+[nth](#method-nth)
 [only](#method-only)
 [pipe](#method-pipe)
 [pluck](#method-pluck)
@@ -312,19 +313,13 @@ If you would like to stop iterating through the items, you may return `false` fr
 <a name="method-every"></a>
 #### `every()` {#collection-method}
 
-The `every` method creates a new collection consisting of every n-th element:
+The `every` method may be used to verify that all elements of a collection pass a given truth test:
 
-    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+    collect([1, 2, 3, 4])->first(function ($value, $key) {
+        return $value > 2;
+    });
 
-    $collection->every(4);
-
-    // ['a', 'e']
-
-You may optionally pass an offset as the second argument:
-
-    $collection->every(4, 1);
-
-    // ['b', 'f']
+    // false
 
 <a name="method-except"></a>
 #### `except()` {#collection-method}
@@ -773,6 +768,23 @@ The `min` method returns the minimum value of a given key:
     $min = collect([1, 2, 3, 4, 5])->min();
 
     // 1
+
+<a name="method-nth"></a>
+#### `nth()` {#collection-method}
+
+The `nth` method creates a new collection consisting of every n-th element:
+
+    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+
+    $collection->nth(4);
+
+    // ['a', 'e']
+
+You may optionally pass an offset as the second argument:
+
+    $collection->nth(4, 1);
+
+    // ['b', 'f']
 
 <a name="method-only"></a>
 #### `only()` {#collection-method}

@@ -63,6 +63,10 @@ When defining channel name placeholders in Laravel 5.3, then `*` character is us
 
 ### Collections
 
+#### The `every` Method
+
+The behavior of the `every` method has been moved to the `nth` method to match the method name defined by Lodash.
+
 #### The `random` Method
 
 The `random` method now returns a new Collection instance regardless of the argument passed into the method. Previously, this method would return a single object instance if `1` was passed to the method.
