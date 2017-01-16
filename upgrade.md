@@ -115,6 +115,14 @@ The `share` method has been removed from the container. This was a legacy method
 
 ### Database
 
+#### Custom Connections
+
+If you were previously binding a service container binding for a `db.connection.{driver-name}` key in order to resolve a custom database connection instance, you should now use the `DB::resolverFor` method in the `register` method of your `AppServiceProvider`:
+
+    DB::resolverFor('driver-name', function ($connection, $database, $prefix, $config) {
+        //
+    });
+
 #### Fetch Mode
 
 Laravel no longer includes the ability to customize the PDO "fetch mode" from your configuration files. Instead, `PDO::FETCH_OBJ` is always used. If you will still like to customize the fetch mode for your application you may listen for the new `Illuminate\Database\Events\StatementPrepared` event:
