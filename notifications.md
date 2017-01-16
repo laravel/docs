@@ -238,11 +238,11 @@ Markdown mail notifications allow you to take advantage of the pre-built templat
 <a name="generating-the-message"></a>
 ### Generating The Message
 
-Markdown mail notifications allow you to take advantage of the pre-built templates of mail notifications, while giving you more freedom to write longer, customized messages. To generate a notification and a Markdown template at the same time, you may use the `--markdown` option when generating the notification:
+To generate a notification with a corresponding Markdown template, you may use the `--markdown` option of the `make:notification` Artisan command:
 
     php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
 
-Like your other mail notifications, notifications that use Markdown messages should define a `toMail` method on the notification class. However, instead of using the `line` and `action` methods to construct the notification, use the `markdown` method to specify the name of the template that should be used:
+Like all other mail notifications, notifications that use Markdown templates should define a `toMail` method on their notification class. However, instead of using the `line` and `action` methods to construct the notification, use the `markdown` method to specify the name of the Markdown template that should be used:
 
     /**
      * Get the mail representation of the notification.
@@ -262,7 +262,7 @@ Like your other mail notifications, notifications that use Markdown messages sho
 <a name="writing-the-message"></a>
 ### Writing The Message
 
-Markdown mail notification use a combination of Blade components and Markdown syntax to allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
+Markdown mail notifications use a combination of Blade components and Markdown syntax to allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
 
     @component('mail::message')
     # Invoice Paid
@@ -279,7 +279,7 @@ Markdown mail notification use a combination of Blade components and Markdown sy
 
 #### Button Component
 
-The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`.
+The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`. You may add as many button components to a notification as you wish:
 
     @component('mail::button', ['url' => $url, 'color' => 'green'])
     View Invoice
@@ -300,8 +300,8 @@ The table component allows you to transform a Markdown table into an HTML table.
     @component('mail::table')
     | Laravel       | Table         | Example  |
     | ------------- |:-------------:| --------:|
-    | Col 2 is      | Centered      | $12      |
-    | Col 3 is      | Right-Aligned | $1600    |
+    | Col 2 is      | Centered      | $10      |
+    | Col 3 is      | Right-Aligned | $20      |
     @endcomponent
 
 <a name="customizing-the-components"></a>
