@@ -51,6 +51,10 @@ if ($policy) {
 }
 ```
 
+### Bootstrappers
+
+If you are manually overriding the `$bootstrappers` array on your HTTP or Console kernel, you should rename the `DetectEnvironment` entry to `LoadEnvironmentVariables`.
+
 ### Broadcasting
 
 #### Channel Model Binding
