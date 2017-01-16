@@ -705,42 +705,34 @@ Now, you may pass the parameters when calling the scope:
 <a name="events"></a>
 ## Events
 
-Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`. Events allow you to easily execute code each time a specific model class is saved or updated in the database.
+Eloquent models fire several events, allowing you to hook into the following points in a model's lifecycle: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`. Events allow you to easily execute code each time a specific model class is saved or updated in the database.
 
 Whenever a new model is saved for the first time, the `creating` and `created` events will fire. If a model already existed in the database and the `save` method is called, the `updating` / `updated` events will fire. However, in both cases, the `saving` / `saved` events will fire.
 
-For example, let's define an Eloquent event listener in a [service provider](/docs/{{version}}/providers). Within our event listener, we will call the `isValid` method on the given model, and return `false` if the model is not valid. Returning `false` from an Eloquent event listener will cancel the `save` / `update` operation:
+To get started, define an `$events` property on your Eloquent model that maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events):
 
     <?php
 
-    namespace App\Providers;
+    namespace App;
 
-    use App\User;
-    use Illuminate\Support\ServiceProvider;
+    use App\Events\UserSaved;
+    use App\Events\UserDeleted;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
 
-    class AppServiceProvider extends ServiceProvider
+    class User extends Authenticatable
     {
-        /**
-         * Bootstrap any application services.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            User::creating(function ($user) {
-                return $user->isValid();
-            });
-        }
+        use Notifiable;
 
         /**
-         * Register the service provider.
+         * The event map for the model.
          *
-         * @return void
+         * @var array
          */
-        public function register()
-        {
-            //
-        }
+        protected $events = [
+            'saved' => UserSaved::class,
+            'deleted' => UserDeleted::class,
+        ];
     }
 
 <a name="observers"></a>
