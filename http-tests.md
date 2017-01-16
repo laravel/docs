@@ -138,8 +138,8 @@ Method  | Description
 `$response->assertHeader($headerName, $value = null);`  |  Assert that the given header is present on the response.
 `$response->assertCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie.
 `$response->assertPlainCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie (unencrypted).
+`$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
+`$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
 `$response->assertJson(array $data);`  |  Assert that the response contains the given JSON data.
 `$response->assertExactJson(array $data);`  |  Assert that the response contains an exact match of the given JSON data.
 `$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data.
-`$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
-`$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
