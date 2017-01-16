@@ -7,6 +7,7 @@
 - [Resources](#resources)
     - [Configuration](#configuration)
     - [Migrations](#migrations)
+    - [Routes](#routes)
     - [Translations](#translations)
     - [Views](#views)
 - [Commands](#commands)
@@ -92,6 +93,21 @@ You may also merge your own package configuration file with the application's pu
     }
 
 > {note} This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
+
+<a name="routes"></a>
+### Routes
+
+If your package contains routes, you may load them using the `loadRoutesFrom` method. This method will automatically determine if the application's routes are cached and will not load your routes file if the routes have already been cached:
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadRoutesFrom(__DIR__.'/routes.php');
+    }
 
 <a name="migrations"></a>
 ### Migrations
