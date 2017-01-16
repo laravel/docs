@@ -116,7 +116,9 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
 
             // Assert a message was sent to the given users...
             Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
-                return $mail->hasTo($user->email);
+                return $mail->hasTo($user->email) &&
+                       $mail->hasCc('...') &&
+                       $mail->hasBcc('...');
             });
 
             // Assert a mailable was not sent...
