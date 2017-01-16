@@ -321,27 +321,33 @@ Before broadcasting notifications, you should configure and be familiar with Lar
 <a name="formatting-broadcast-notifications"></a>
 ### Formatting Broadcast Notifications
 
-The `broadcast` channel broadcasts notifications using Laravel's [event broadcasting](/docs/{{version}}/broadcasting) services, allowing your JavaScript client to catch notifications in realtime. If a notification supports broadcasting, you should define a `toBroadcast` or `toArray` method on the notification class. This method will receive a `$notifiable` entity and should return a plain PHP array. The returned array will be encoded as JSON and broadcast to your JavaScript client. Let's take a look at an example `toArray` method:
+The `broadcast` channel broadcasts notifications using Laravel's [event broadcasting](/docs/{{version}}/broadcasting) services, allowing your JavaScript client to catch notifications in realtime. If a notification supports broadcasting, you should define a `toBroadcast` method on the notification class. This method will receive a `$notifiable` entity and should return a `BroadcastMessage` instance. The data will be encoded as JSON and broadcast to your JavaScript client. Let's take a look at an example `toBroadcast` method:
+
+    use Illuminate\Notifications\Messages\BroadcastMessage;
 
     /**
-     * Get the array representation of the notification.
+     * Get the broadcastable representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return BroadcastMessage
      */
-    public function toArray($notifiable)
+    public function toBroadcast($notifiable)
     {
-        return [
+        return new BroadcastMessage([
             'invoice_id' => $this->invoice->id,
             'amount' => $this->invoice->amount,
-        ];
+        ]);
     }
 
+#### Broadcast Queue Configuration
+
+All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to the queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
+
+    return new BroadcastMessage($data)
+                    ->onConnection('sqs')
+                    ->onQueue('broadcasts');
+
 > {tip} In addition to the data you specify, broadcast notifications will also contain a `type` field containing the class name of the notification.
-
-#### `toBroadcast` Vs. `toArray`
-
-The `toArray` method is also used by the `database` channel to determine which data to store in your database table. If you would like to have two different array representations for the `database` and `broadcast` channels, you should define a `toBroadcast` method instead of a `toArray` method.
 
 <a name="listening-for-notifications"></a>
 ### Listening For Notifications
