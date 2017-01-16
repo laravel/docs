@@ -185,6 +185,18 @@ Sending mail using `Class@method` syntax is no longer supported. For example:
 
 If you are sending mail in this way you should convert these calls to [mailables](/docs/{{version}}/mail).
 
+#### New Configuration Options
+
+In order to provide support for Laravel 5.4's new Markdown mail components, you should add the following block of configuration to the bottom of your `mail` configuration file:
+
+    'markdown' => [
+        'theme' => 'default',
+
+        'paths' => [
+            resource_path('views/vendor/mail'),
+        ],
+    ],
+
 #### Queueing Mail With Closures
 
 In order to queue mail, you now must use a [mailable](/docs/{{version}}/mail). Queuing mail using the `Mail::queue` and `Mail::later` methods no longer supports using Closures to configure the mail message. This feature required the use of special libraries to serialize Closures since PHP does not natively support this feature.
