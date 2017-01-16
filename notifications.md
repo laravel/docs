@@ -484,6 +484,23 @@ If a notification supports being sent as a SMS, you should define a `toNexmo` me
                     ->content('Your SMS message content');
     }
 
+#### Unicode Content
+
+If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `NexmoMessage` instance:
+
+    /**
+     * Get the Nexmo / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return NexmoMessage
+     */
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage)
+                    ->content('Your unicode message')
+                    ->unicode();
+    }
+
 <a name="customizing-the-from-number"></a>
 ### Customizing The "From" Number
 
