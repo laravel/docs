@@ -164,6 +164,34 @@ To specify that a listener should be queued, add the `ShouldQueue` interface to 
 
 That's it! Now, when this listener is called for an event, it will be automatically queued by the event dispatcher using Laravel's [queue system](/docs/{{version}}/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has finished processing.
 
+#### Customizing The Queue Connection & Queue Name
+
+If you would like to customize the queue connection and queue name used by an event listener, you may define `$connection` and `$queue` properties on your listener class:
+
+    <?php
+
+    namespace App\Listeners;
+
+    use App\Events\OrderShipped;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+
+    class SendShipmentNotification implements ShouldQueue
+    {
+        /**
+         * The name of the connection the job should be sent to.
+         *
+         * @var string|null
+         */
+        public $connection = 'sqs';
+
+        /**
+         * The name of the queue the job should be sent to.
+         *
+         * @var string|null
+         */
+        public $queue = 'listeners';
+    }
+
 <a name="manually-accessing-the-queue"></a>
 ### Manually Accessing The Queue
 
