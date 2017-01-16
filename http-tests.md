@@ -129,7 +129,7 @@ If you would like to verify that the given array is an **exact** match for the J
 <a name="available-assertions"></a>
 ### Available Assertions
 
-Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) tests:
+Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) tests. These assertions may be accessed on the response that is returned from the `json`, `get`, `post`, `put`, and `delete` test methods:
 
 Method  | Description
 ------------- | -------------
