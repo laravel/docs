@@ -8,6 +8,7 @@
 - [Defining Listeners](#defining-listeners)
 - [Queued Event Listeners](#queued-event-listeners)
     - [Manually Accessing The Queue](#manually-accessing-the-queue)
+    - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
 - [Event Subscribers](#event-subscribers)
     - [Writing Event Subscribers](#writing-event-subscribers)
@@ -214,6 +215,34 @@ If you need to manually access the listener's underlying queue job's `delete` an
             if (true) {
                 $this->release(30);
             }
+        }
+    }
+
+<a name="handling-failed-jobs"></a>
+### Handling Failed Jobs
+
+Sometimes your queued event listeners may fail. If queued listener exceeds the maximum number of attempts as defined by your queue worker, the `failed` method will be called on your listener. The `failed` method receives the event instance and the exception that caused the failure:
+
+    <?php
+
+    namespace App\Listeners;
+
+    use App\Events\OrderShipped;
+    use Illuminate\Queue\InteractsWithQueue;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+
+    class SendShipmentNotification implements ShouldQueue
+    {
+        use InteractsWithQueue;
+
+        public function handle(OrderShipped $event)
+        {
+            //
+        }
+
+        public function failed(OrderShipped $event, $exception)
+        {
+            //
         }
     }
 
