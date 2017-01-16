@@ -1,4 +1,4 @@
-# JavaScript & CSS
+# JavaScript & CSS Scaffolding
 
 - [Introduction](#introduction)
 - [Writing CSS](#writing-css)

@@ -23,14 +23,13 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
+    - [Views](/docs/{{version}}/views)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
-- Views & Templates
-    - [Views](/docs/{{version}}/views)
+- Frontend
     - [Blade Templates](/docs/{{version}}/blade)
     - [Localization](/docs/{{version}}/localization)
-- JavaScript & CSS
-    - [Getting Started](/docs/{{version}}/frontend)
+    - [Frontend Scaffolding](/docs/{{version}}/frontend)
     - [Compiling Assets](/docs/{{version}}/elixir)
 - Security
     - [Authentication](/docs/{{version}}/authentication)
