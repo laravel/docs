@@ -155,6 +155,10 @@ Wildcard event handlers now receive the event name as their first argument and t
         //
     });
 
+#### The `kernel.handled` Event
+
+The `kernel.handled` event is now an object based event using the `Illuminate\Foundation\Http\Events\RequestHandled` class.
+
 #### The `locale.changed` Event
 
 The `locale.changed` event is now an object based event using the `Illuminate\Foundation\Events\LocaleUpdated` class.
