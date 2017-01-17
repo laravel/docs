@@ -25,10 +25,10 @@ You are free to define other testing environment configuration values as necessa
 
 To create a new test case, use the `make:test` Artisan command:
 
+    // Create a test in the Feature directory...
     php artisan make:test UserTest
-    
-By default, this command will create a new test in the Feature directory. If you wish to create a unit test, simply pass in the `--unit` flag:
 
+    // Create a test in the Unit directory...
     php artisan make:test UserTest --unit
 
 Once the test has been generated, you may define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal:
