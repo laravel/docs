@@ -226,6 +226,25 @@ So, how are the validation rules evaluated? All you need to do is type-hint the 
 
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an AJAX request, a HTTP response with a 422 status code will be returned to the user including a JSON representation of the validation errors.
 
+#### Adding After Hooks To Form Requests
+
+If you would like to add an "after" hook to a form request, you may use the `withValidator` method. This method receives the fully constructed validator, allowing you to call any of its methods before the validation rules are actually evaluated:
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->somethingElseIsInvalid()) {
+                $validator->errors()->add('field', 'Something is wrong with this field!');
+            }
+        });
+    }
+
 <a name="authorizing-form-requests"></a>
 ### Authorizing Form Requests
 
@@ -484,11 +503,13 @@ Below is a list of all available validation rules and their function:
 [Accepted](#rule-accepted)
 [Active URL](#rule-active-url)
 [After (Date)](#rule-after)
+[After Or Equal (Date)](#rule-after-or-equal)
 [Alpha](#rule-alpha)
 [Alpha Dash](#rule-alpha-dash)
 [Alpha Numeric](#rule-alpha-num)
 [Array](#rule-array)
 [Before (Date)](#rule-before)
+[Before Or Equal (Date)](#rule-before-or-equal)
 [Between](#rule-between)
 [Boolean](#rule-boolean)
 [Confirmed](#rule-confirmed)
@@ -555,6 +576,11 @@ Instead of passing a date string to be evaluated by `strtotime`, you may specify
 
     'finish_date' => 'required|date|after:start_date'
 
+<a name="rule-after-or-equal"></a>
+#### after\_or\_equal:_date_
+
+The field under validation must be a value after or equal to the given date. For more information, see the [after](#rule-after) rule.
+
 <a name="rule-alpha"></a>
 #### alpha
 
@@ -579,6 +605,11 @@ The field under validation must be a PHP `array`.
 #### before:_date_
 
 The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
+
+<a name="rule-before-or-equal"></a>
+#### before\_or\_equal:_date_
+
+The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function.
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -632,6 +663,17 @@ Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_heig
 A _ratio_ constraint should be represented as width divided by height. This can be specified either by a statement like `3/2` or a float like `1.5`:
 
     'avatar' => 'dimensions:ratio=3/2'
+
+Since this rule requires several arguments, you may use the `Rule::dimensions` method to fluently construct the rule:
+
+    use Illuminate\Validation\Rule;
+
+    Validator::make($data, [
+        'avatar' => [
+            'required',
+            Rule::dimensions()->maxWidth(1000)->maxHeight(500)->ratio(3 / 2),
+        ],
+    ]);
 
 <a name="rule-distinct"></a>
 #### distinct
@@ -693,7 +735,16 @@ The file under validation must be an image (jpeg, png, bmp, gif, or svg)
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
 
-The field under validation must be included in the given list of values.
+The field under validation must be included in the given list of values. Since this rule often requires you to `implode` an array, the `Rule::in` method may be used to fluently construct the rule:
+
+    use Illuminate\Validation\Rule;
+
+    Validator::make($data, [
+        'zones' => [
+            'required',
+            Rule::in(['first-zone', 'second-zone']),
+        ],
+    ]);
 
 <a name="rule-in-array"></a>
 #### in_array:_anotherfield_

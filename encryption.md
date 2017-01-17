@@ -48,7 +48,15 @@ You may encrypt a value using the `encrypt` helper. All encrypted values are enc
         }
     }
 
-> {note} Encrypted values are passed through `serialize` during encryption, which allows for encryption of objects and arrays. Thus, non-PHP clients receiving encrypted values will need to `unserialize` the data.
+#### Encrypting Without Serialization
+
+Encrypted values are passed through `serialize` during encryption, which allows for encryption of objects and arrays. Thus, non-PHP clients receiving encrypted values will need to `unserialize` the data. If you would like to encrypt and decrypt values without serialization, you may use the `encryptString` and `decryptString` methods of the `Crypt` facade:
+
+    use Illuminate\Support\Facades\Crypt;
+
+    $encrypted = Crypt::encryptString('Hello world.');
+
+    $decrypted = Crypt::decryptString($encrypted);
 
 #### Decrypting A Value
 

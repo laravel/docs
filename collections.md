@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Creating Collections](#creating-collections)
 - [Available Methods](#available-methods)
+- [Higher Order Messages](#higher-order-messages)
 
 <a name="introduction"></a>
 ## Introduction
@@ -79,7 +80,9 @@ For the remainder of this documentation, we'll discuss each method available on 
 [max](#method-max)
 [merge](#method-merge)
 [min](#method-min)
+[nth](#method-nth)
 [only](#method-only)
+[partition](#method-partition)
 [pipe](#method-pipe)
 [pluck](#method-pluck)
 [pop](#method-pop)
@@ -311,19 +314,13 @@ If you would like to stop iterating through the items, you may return `false` fr
 <a name="method-every"></a>
 #### `every()` {#collection-method}
 
-The `every` method creates a new collection consisting of every n-th element:
+The `every` method may be used to verify that all elements of a collection pass a given truth test:
 
-    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+    collect([1, 2, 3, 4])->first(function ($value, $key) {
+        return $value > 2;
+    });
 
-    $collection->every(4);
-
-    // ['a', 'e']
-
-You may optionally pass an offset as the second argument:
-
-    $collection->every(4, 1);
-
-    // ['b', 'f']
+    // false
 
 <a name="method-except"></a>
 #### `except()` {#collection-method}
@@ -740,7 +737,7 @@ The `max` method returns the maximum value of a given key:
 <a name="method-merge"></a>
 #### `merge()` {#collection-method}
 
-The `merge` method merges the given array into the original collection. If a string key in the given array matches a string key in the original collection, the given array's value will overwrite the value in the original collection:
+The `merge` method merges the given array with the original collection. If a string key in the given array matches a string key in the original collection, the given array's value will overwrite the value in the original collection:
 
     $collection = collect(['product_id' => 1, 'price' => 100]);
 
@@ -773,6 +770,23 @@ The `min` method returns the minimum value of a given key:
 
     // 1
 
+<a name="method-nth"></a>
+#### `nth()` {#collection-method}
+
+The `nth` method creates a new collection consisting of every n-th element:
+
+    $collection = collect(['a', 'b', 'c', 'd', 'e', 'f']);
+
+    $collection->nth(4);
+
+    // ['a', 'e']
+
+You may optionally pass an offset as the second argument:
+
+    $collection->nth(4, 1);
+
+    // ['b', 'f']
+
 <a name="method-only"></a>
 #### `only()` {#collection-method}
 
@@ -787,6 +801,17 @@ The `only` method returns the items in the collection with the specified keys:
     // ['product_id' => 1, 'name' => 'Desk']
 
 For the inverse of `only`, see the [except](#method-except) method.
+
+<a name="method-partition"></a>
+#### `partition()` {#collection-method}
+
+The `partition` method may be combined with the `list` PHP function to separate elements that pass a given truth test from those that do not:
+
+    $collection = collect([1, 2, 3, 4, 5, 6]);
+
+    list($underThree, $aboveThree) = $collection->partition(function ($i) {
+        return $i < 3;
+    });
 
 <a name="method-pipe"></a>
 #### `pipe()` {#collection-method}
@@ -915,7 +940,7 @@ The `random` method returns a random item from the collection:
 
     // 4 - (retrieved randomly)
 
-You may optionally pass an integer to `random` to specify how many items you would like to randomly retrieve. If that integer is more than `1`, a collection of items is returned:
+You may optionally pass an integer to `random` to specify how many items you would like to randomly retrieve. A collection of items is always returned when explicitly passing the number of items you wish to receive:
 
     $random = $collection->random(3);
 
@@ -1433,3 +1458,20 @@ The `zip` method merges together the values of the given array with the values o
     $zipped->all();
 
     // [['Chair', 100], ['Desk', 200]]
+
+<a name="higher-order-messages"></a>
+## Higher Order Messages
+
+Collections also provide support for "higher order messages", which are short-cuts for performing common actions on collections. The collection methods that provide higher order messages are: `contains`, `each`, `every`, `filter`, `first`, `map`, `partition`, `reject`, `sortBy`, `sortByDesc`, and `sum`.
+
+Each higher order message can be accessed as a dynamic property on a collection instance. For instance, let's use the `each` higher order message to call a method on each object within a collection:
+
+    $users = User::where('votes', '>', 500)->get();
+
+    $users->each->markAsVip();
+
+Likewise, we can use the `sum` higher order message to gather the total number of "votes" for a collection of users:
+
+    $users = User::where('group', 'Development')->get();
+
+    return $users->sum->votes;

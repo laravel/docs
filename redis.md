@@ -13,7 +13,7 @@
 
 [Redis](http://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](http://redis.io/topics/data-types#strings), [hashes](http://redis.io/topics/data-types#hashes), [lists](http://redis.io/topics/data-types#lists), [sets](http://redis.io/topics/data-types#sets), and [sorted sets](http://redis.io/topics/data-types#sorted-sets).
 
-Before using Redis with Laravel, you will either need to install the `predis/predis` package via Composer:
+Before using Redis with Laravel, you will need to install the `predis/predis` package via Composer:
 
     composer require predis/predis
 
@@ -28,8 +28,6 @@ The Redis configuration for your application is located in the `config/database.
 
         'client' => 'predis',
 
-        'cluster' => false,
-
         'default' => [
             'host' => env('REDIS_HOST', 'localhost'),
             'password' => env('REDIS_PASSWORD', null),
@@ -41,7 +39,42 @@ The Redis configuration for your application is located in the `config/database.
 
 The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Each Redis server defined in your configuration file is required to have a name, host, and port.
 
-The `cluster` option will instruct the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
+#### Configuring Clusters
+
+If your application is utilizing a cluster of Redis servers, you should define these clusters within a `cluster` key of your Redis configuration:
+
+    'redis' => [
+
+        'client' => 'predis',
+
+        'clusters' => [
+            'default' => [
+                [
+                    'host' => env('REDIS_HOST', 'localhost'),
+                    'password' => env('REDIS_PASSWORD', null),
+                    'port' => env('REDIS_PORT', 6379),
+                    'database' => 0,
+                ],
+            ],
+        ],
+
+    ],
+
+By default, clusters will perform client-side sharding across your nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store. If you would like to use native Redis clustering, you should specify this in the `options` key of your Redis configuration:
+
+    'redis' => [
+
+        'client' => 'predis',
+
+        'options' => [
+            'cluster' => 'redis',
+        ],
+
+        'clusters' => [
+            // ...
+        ],
+
+    ],
 
 <a name="predis"></a>
 ### Predis
@@ -124,9 +157,9 @@ You may get a Redis instance by calling the `Redis::connection` method:
 
     $redis = Redis::connection();
 
-This will give you an instance of the default Redis server. If you are not using server clustering, you may pass the server name to the `connection` method to get a specific server as defined in your Redis configuration:
+This will give you an instance of the default Redis server. You may also pass the connection or cluster name to the `connection` method to get a specific server or cluster as defined in your Redis configuration:
 
-    $redis = Redis::connection('other');
+    $redis = Redis::connection('my-connection');
 
 <a name="pipelining-commands"></a>
 ### Pipelining Commands

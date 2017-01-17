@@ -129,6 +129,17 @@ When using the `local` or `s3` drivers, you may use the `url` method to get the 
 
 > {note} Remember, if you are using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory.
 
+#### Local URL Host Customization
+
+If you would like to pre-define the host for files stored on a disk using the `local` driver, you may add a `url` option to the disk's configuration array:
+
+    'public' => [
+        'driver' => 'local',
+        'root' => storage_path('app/public'),
+        'url' => env('APP_URL').'/storage',
+        'visibility' => 'public',
+    ],
+
 <a name="file-metadata"></a>
 ### File Metadata
 
@@ -159,13 +170,13 @@ If you would like Laravel to automatically manage streaming a given file to your
 
     use Illuminate\Http\File;
 
-    // Automatically generate a UUID for file name...
+    // Automatically generate a unique ID for file name...
     Storage::putFile('photos', new File('/path/to/photo'));
 
     // Manually specify a file name...
     Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
 
-There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will generate a UUID to serve as the file name. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
+There are a few important things to note about the `putFile` method. Note that we only specified a directory name, not a file name. By default, the `putFile` method will generate a unique ID to serve as the file name. The path to the file will be returned by the `putFile` method so you can store the path, including the generated file name, in your database.
 
 The `putFile` and `putFileAs` methods also accept an argument to specify the "visibility" of the stored file. This is particularly useful if you are storing the file on a cloud disk such as S3 and would like the file to be publicly accessible:
 
@@ -215,7 +226,7 @@ In web applications, one of the most common use-cases for storing files is stori
         }
     }
 
-There are a few important things to note about this example. Note that we only specified a directory name, not a file name. By default, the `store` method will generate a UUID to serve as the file name. The path to the file will be returned by the `store` method so you can store the path, including the generated file name, in your database.
+There are a few important things to note about this example. Note that we only specified a directory name, not a file name. By default, the `store` method will generate a unique ID to serve as the file name. The path to the file will be returned by the `store` method so you can store the path, including the generated file name, in your database.
 
 You may also call the `putFile` method on the `Storage` facade to perform the same file manipulation as the example above:
 

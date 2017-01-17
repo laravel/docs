@@ -98,12 +98,12 @@ The `links` method will render the links to the rest of the pages in the result 
 
 #### Customizing The Paginator URI
 
-The `setPath` method allows you to customize the URI used by the paginator when generating links. For example, if you want the paginator to generate links like `http://example.com/custom/url?page=N`, you should pass `custom/url` to the `setPath` method:
+The `withPath` method allows you to customize the URI used by the paginator when generating links. For example, if you want the paginator to generate links like `http://example.com/custom/url?page=N`, you should pass `custom/url` to the `withPath` method:
 
     Route::get('users', function () {
         $users = App\User::paginate(15);
 
-        $users->setPath('custom/url');
+        $users->withPath('custom/url');
 
         //
     });
@@ -154,6 +154,9 @@ The JSON from the paginator will include meta information such as `total`, `curr
 By default, the views rendered to display the pagination links are compatible with the Bootstrap CSS framework. However, if you are not using Bootstrap, you are free to define your own views to render these links. When calling the `links` method on a paginator instance, pass the view name as the first argument to the method:
 
     {{ $paginator->links('view.name') }}
+
+    // Passing data to the view...
+    {{ $paginator->links('view.name', ['foo' => 'bar']) }}
 
 However, the easiest way to customize the pagination views is by exporting them to your `resources/views/vendor` directory using the `vendor:publish` command:
 

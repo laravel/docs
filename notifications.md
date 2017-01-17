@@ -12,7 +12,10 @@
     - [Customizing The Recipient](#customizing-the-recipient)
     - [Customizing The Subject](#customizing-the-subject)
     - [Customizing The Templates](#customizing-the-templates)
-    - [Error Messages](#error-messages)
+- [Markdown Mail Notifications](#markdown-mail-notifications)
+    - [Generating The Message](#generating-the-message)
+    - [Writing The Message](#writing-the-message)
+    - [Customizing The Components](#customizing-the-components)
 - [Database Notifications](#database-notifications)
     - [Prerequisites](#database-prerequisites)
     - [Formatting Database Notifications](#formatting-database-notifications)
@@ -30,6 +33,7 @@
 - [Slack Notifications](#slack-notifications)
     - [Prerequisites](#slack-prerequisites)
     - [Formatting Slack Notifications](#formatting-slack-notifications)
+    - [Slack Attachments](#slack-attachments)
     - [Routing Slack Notifications](#routing-slack-notifications)
 - [Notification Events](#notification-events)
 - [Custom Channels](#custom-channels)
@@ -156,6 +160,25 @@ In this example, we register a greeting, a line of text, a call to action, and t
 
 > {tip} When sending mail notifications, be sure to set the `name` value in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
 
+<a name="error-messages"></a>
+#### Error Messages
+
+Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of blue:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Message
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->error()
+                    ->subject('Notification Subject')
+                    ->line('...');
+    }
+
 <a name="customizing-the-recipient"></a>
 ### Customizing The Recipient
 
@@ -208,24 +231,94 @@ You can modify the HTML and plain-text template used by mail notifications by pu
 
     php artisan vendor:publish --tag=laravel-notifications
 
-<a name="error-messages"></a>
-### Error Messages
+<a name="markdown-mail-notifications"></a>
+## Markdown Mail Notifications
 
-Some notifications inform users of errors, such as a failed invoice payment. You may indicate that a mail message is regarding an error by calling the `error` method when building your message. When using the `error` method on a mail message, the call to action button will be red instead of blue:
+Markdown mail notifications allow you to take advantage of the pre-built templates of mail notifications, while giving you more freedom to write longer, customized messages. Since the messages are written in Markdown, Laravel is able to render beautiful, responsive HTML templates for the messages while also automatically generating a plain-text counterpart.
+
+<a name="generating-the-message"></a>
+### Generating The Message
+
+To generate a notification with a corresponding Markdown template, you may use the `--markdown` option of the `make:notification` Artisan command:
+
+    php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
+
+Like all other mail notifications, notifications that use Markdown templates should define a `toMail` method on their notification class. However, instead of using the `line` and `action` methods to construct the notification, use the `markdown` method to specify the name of the Markdown template that should be used:
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Message
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
+        $url = url('/invoice/'.$this->invoice->id);
+
         return (new MailMessage)
-                    ->error()
-                    ->subject('Notification Subject')
-                    ->line('...');
+                    ->subject('Invoice Paid')
+                    ->markdown('mail.invoice.paid', ['url' => $url]);
     }
+
+<a name="writing-the-message"></a>
+### Writing The Message
+
+Markdown mail notifications use a combination of Blade components and Markdown syntax which allow you to easily construct notifications while leveraging Laravel's pre-crafted notification components:
+
+    @component('mail::message')
+    # Invoice Paid
+
+    Your invoice has been paid!
+
+    @component('mail::button', ['url' => $url])
+    View Invoice
+    @endcomponent
+
+    Thanks,<br>
+    {{ config('app.name') }}
+    @endcomponent
+
+#### Button Component
+
+The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`. You may add as many button components to a notification as you wish:
+
+    @component('mail::button', ['url' => $url, 'color' => 'green'])
+    View Invoice
+    @endcomponent
+
+#### Panel Component
+
+The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the notification. This allows you to draw attention to a given block of text:
+
+    @component('mail::panel')
+    This is the panel content.
+    @endcomponent
+
+#### Table Component
+
+The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
+
+    @component('mail::table')
+    | Laravel       | Table         | Example  |
+    | ------------- |:-------------:| --------:|
+    | Col 2 is      | Centered      | $10      |
+    | Col 3 is      | Right-Aligned | $20      |
+    @endcomponent
+
+<a name="customizing-the-components"></a>
+### Customizing The Components
+
+You may export all of the Markdown notification components to your own application for customization. To export the components, use the `vendor:publish` Artisan command to publish the `laravel-mail` asset tag:
+
+    php artisan vendor:publish --tag=laravel-mail
+
+This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain a `html` and a `markdown` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
+
+#### Customizing The CSS
+
+After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown notifications.
+
+> {tip} If you would like to build an entirely new theme for the Markdown components, simply write a new CSS file within the `html/themes` directory and change the `theme` option of your `mail` configuration file.
 
 <a name="database-notifications"></a>
 ## Database Notifications
@@ -321,27 +414,33 @@ Before broadcasting notifications, you should configure and be familiar with Lar
 <a name="formatting-broadcast-notifications"></a>
 ### Formatting Broadcast Notifications
 
-The `broadcast` channel broadcasts notifications using Laravel's [event broadcasting](/docs/{{version}}/broadcasting) services, allowing your JavaScript client to catch notifications in realtime. If a notification supports broadcasting, you should define a `toBroadcast` or `toArray` method on the notification class. This method will receive a `$notifiable` entity and should return a plain PHP array. The returned array will be encoded as JSON and broadcast to your JavaScript client. Let's take a look at an example `toArray` method:
+The `broadcast` channel broadcasts notifications using Laravel's [event broadcasting](/docs/{{version}}/broadcasting) services, allowing your JavaScript client to catch notifications in realtime. If a notification supports broadcasting, you should define a `toBroadcast` method on the notification class. This method will receive a `$notifiable` entity and should return a `BroadcastMessage` instance. The returned data will be encoded as JSON and broadcast to your JavaScript client. Let's take a look at an example `toBroadcast` method:
+
+    use Illuminate\Notifications\Messages\BroadcastMessage;
 
     /**
-     * Get the array representation of the notification.
+     * Get the broadcastable representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return BroadcastMessage
      */
-    public function toArray($notifiable)
+    public function toBroadcast($notifiable)
     {
-        return [
+        return new BroadcastMessage([
             'invoice_id' => $this->invoice->id,
             'amount' => $this->invoice->amount,
-        ];
+        ]);
     }
 
+#### Broadcast Queue Configuration
+
+All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to the queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
+
+    return new BroadcastMessage($data)
+                    ->onConnection('sqs')
+                    ->onQueue('broadcasts');
+
 > {tip} In addition to the data you specify, broadcast notifications will also contain a `type` field containing the class name of the notification.
-
-#### `toBroadcast` Vs. `toArray`
-
-The `toArray` method is also used by the `database` channel to determine which data to store in your database table. If you would like to have two different array representations for the `database` and `broadcast` channels, you should define a `toBroadcast` method instead of a `toArray` method.
 
 <a name="listening-for-notifications"></a>
 ### Listening For Notifications
@@ -352,6 +451,35 @@ Notifications will broadcast on a private channel formatted using a `{notifiable
         .notification((notification) => {
             console.log(notification.type);
         });
+
+#### Customizing The Notification Channel
+
+If you would like to customize which channels a notifiable entity receives its broadcast notifications on, you may define a `receivesBroadcastNotificationsOn` method on the notifiable entity:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Broadcasting\PrivateChannel;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use Notifiable;
+
+        /**
+         * The channels the user receives notification broadcasts on.
+         *
+         * @return array
+         */
+        public function receivesBroadcastNotificationsOn()
+        {
+            return [
+                new PrivateChannel('users.'.$this->id),
+            ];
+        }
+    }
 
 <a name="sms-notifications"></a>
 ## SMS Notifications
@@ -384,6 +512,23 @@ If a notification supports being sent as a SMS, you should define a `toNexmo` me
     {
         return (new NexmoMessage)
                     ->content('Your SMS message content');
+    }
+
+#### Unicode Content
+
+If your SMS message will contain unicode characters, you should call the `unicode` method when constructing the `NexmoMessage` instance:
+
+    /**
+     * Get the Nexmo / SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return NexmoMessage
+     */
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage)
+                    ->content('Your unicode message')
+                    ->unicode();
     }
 
 <a name="customizing-the-from-number"></a>
@@ -464,7 +609,26 @@ In this example we are just sending a single line of text to Slack, which will c
 
 <img src="https://laravel.com/assets/img/basic-slack-notification.png">
 
-#### Slack Attachments
+#### Customizing The Sender & Recipient
+
+You may use the `from` and `to` methods to customize the sender and recipient. The `from` method accepts a username and emoji identifier, while the `to` method accepts a channel or username:
+
+    /**
+     * Get the Slack representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return SlackMessage
+     */
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
+                    ->from('Ghost', ':ghost:')
+                    ->to('#other')
+                    ->content('This will be sent to #other');
+    }
+
+<a name="slack-attachments"></a>
+### Slack Attachments
 
 You may also add "attachments" to Slack messages. Attachments provide richer formatting options than simple text messages. In this example, we will send an error notification about an exception that occurred in an application, including a link to view more details about the exception:
 
@@ -521,9 +685,9 @@ The example above will create a Slack message that looks like the following:
 
 <img src="https://laravel.com/assets/img/slack-fields-attachment.png">
 
-#### Customizing The Sender & Recipient
+#### Markdown Attachment Content
 
-You may use the `from` and `to` methods to customize the sender and recipient. The `from` method accepts a username and emoji identifier, while the `to` method accepts a channel or username:
+If some of your attachment fields contain Markdown, you may use the `markdown` method to instruct Slack to parse and display the given attachment fields as Markdown formatted text:
 
     /**
      * Get the Slack representation of the notification.
@@ -533,10 +697,16 @@ You may use the `from` and `to` methods to customize the sender and recipient. T
      */
     public function toSlack($notifiable)
     {
+        $url = url('/exceptions/'.$this->exception->id);
+
         return (new SlackMessage)
-                    ->from('Ghost', ':ghost:')
-                    ->to('#other')
-                    ->content('This will be sent to #other');
+                    ->error()
+                    ->content('Whoops! Something went wrong.')
+                    ->attachment(function ($attachment) use ($url) {
+                        $attachment->title('Exception: File Not Found', $url)
+                                   ->content('File [background.jpg] was **not found**.')
+                                   ->markdown(['title', 'text']);
+                    });
     }
 
 <a name="routing-slack-notifications"></a>

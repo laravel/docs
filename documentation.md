@@ -23,31 +23,34 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
+    - [Views](/docs/{{version}}/views)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
-- Views & Templates
-    - [Views](/docs/{{version}}/views)
+- Frontend
     - [Blade Templates](/docs/{{version}}/blade)
     - [Localization](/docs/{{version}}/localization)
-- JavaScript & CSS
-    - [Getting Started](/docs/{{version}}/frontend)
+    - [Frontend Scaffolding](/docs/{{version}}/frontend)
     - [Compiling Assets](/docs/{{version}}/elixir)
-- Security
-    - [Authentication](/docs/{{version}}/authentication)
-    - [Authorization](/docs/{{version}}/authorization)
-    - [Password Reset](/docs/{{version}}/passwords)
-    - [API Authentication](/docs/{{version}}/passport)
-    - [Encryption](/docs/{{version}}/encryption)
-    - [Hashing](/docs/{{version}}/hashing)
 - General Topics
+    - [Authentication](/docs/{{version}}/authentication)
+    - [API Authentication](/docs/{{version}}/passport)
+    - [Authorization](/docs/{{version}}/authorization)
     - [Broadcasting](/docs/{{version}}/broadcasting)
     - [Cache](/docs/{{version}}/cache)
+    - [Collections](/docs/{{version}}/collections)
+    - [Console Commands](/docs/{{version}}/artisan)
+    - [Encryption](/docs/{{version}}/encryption)
     - [Errors & Logging](/docs/{{version}}/errors)
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
+    - [Hashing](/docs/{{version}}/hashing)
+    - [Helpers](/docs/{{version}}/helpers)
     - [Mail](/docs/{{version}}/mail)
     - [Notifications](/docs/{{version}}/notifications)
+    - [Packages](/docs/{{version}}/packages)
+    - [Password Reset](/docs/{{version}}/passwords)
     - [Queues](/docs/{{version}}/queues)
+    - [Scheduled Tasks](/docs/{{version}}/scheduling)
 - Database
     - [Getting Started](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)
@@ -61,12 +64,10 @@
     - [Collections](/docs/{{version}}/eloquent-collections)
     - [Mutators](/docs/{{version}}/eloquent-mutators)
     - [Serialization](/docs/{{version}}/eloquent-serialization)
-- Artisan Console
-    - [Commands](/docs/{{version}}/artisan)
-    - [Task Scheduling](/docs/{{version}}/scheduling)
 - Testing
     - [Getting Started](/docs/{{version}}/testing)
-    - [Application Testing](/docs/{{version}}/application-testing)
+    - [HTTP Tests](/docs/{{version}}/http-tests)
+    - [Browser Tests](/docs/{{version}}/dusk)
     - [Database](/docs/{{version}}/database-testing)
     - [Mocking](/docs/{{version}}/mocking)
 - Official Packages
@@ -75,7 +76,3 @@
     - [Passport](/docs/{{version}}/passport)
     - [Scout](/docs/{{version}}/scout)
     - [Socialite](https://github.com/laravel/socialite)
-- Appendix
-    - [Collections](/docs/{{version}}/collections)
-    - [Helpers](/docs/{{version}}/helpers)
-    - [Packages](/docs/{{version}}/packages)

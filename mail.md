@@ -9,6 +9,10 @@
     - [View Data](#view-data)
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
+- [Markdown Mailables](#markdown-mailables)
+    - [Generating Markdown Mailables](#generating-markdown-mailables)
+    - [Writing Markdown Messages](#writing-markdown-messages)
+    - [Customizing The Components](#customizing-the-components)
 - [Sending Mail](#sending-mail)
     - [Queueing Mail](#queueing-mail)
 - [Mail & Local Development](#mail-and-local-development)
@@ -303,6 +307,91 @@ If you already have a raw data string you wish to embed into an email template, 
 
         <img src="{{ $message->embedData($data, $name) }}">
     </body>
+
+<a name="markdown-mailables"></a>
+## Markdown Mailables
+
+Markdown mailable messages allow you to take advantage of the pre-built templates and components of mail notifications in your mailables. Since the messages are written in Markdown, Laravel is able to render beautiful, responsive HTML templates for the messages while also automatically generating a plain-text counterpart.
+
+<a name="generating-markdown-mailables"></a>
+### Generating Markdown Mailables
+
+To generate a mailable with a corresponding Markdown template, you may use the `--markdown` option of the `make:mail` Artisan command:
+
+    php artisan make:mail OrderShipped --markdown=emails.orders.shipped
+
+Then, when configuring the mailable within its `build` method, call the `markdown` method instead of the `view` method. The `markdown` methods accepts the name of the Markdown template and an optional array of data to make available to the template:
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->from('example@example.com')
+                    ->markdown('emails.orders.shipped');
+    }
+
+<a name="writing-markdown-messages"></a>
+### Writing Markdown Messages
+
+Markdown mailables use a combination of Blade components and Markdown syntax which allow you to easily construct mail messages while leveraging Laravel's pre-crafted components:
+
+    @component('mail::message')
+    # Order Shipped
+
+    Your order has been shipped!
+
+    @component('mail::button', ['url' => $url])
+    View Order
+    @endcomponent
+
+    Thanks,<br>
+    {{ config('app.name') }}
+    @endcomponent
+
+#### Button Component
+
+The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`. You may add as many button components to a message as you wish:
+
+    @component('mail::button', ['url' => $url, 'color' => 'green'])
+    View Order
+    @endcomponent
+
+#### Panel Component
+
+The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the message. This allows you to draw attention to a given block of text:
+
+    @component('mail::panel')
+    This is the panel content.
+    @endcomponent
+
+#### Table Component
+
+The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
+
+    @component('mail::table')
+    | Laravel       | Table         | Example  |
+    | ------------- |:-------------:| --------:|
+    | Col 2 is      | Centered      | $10      |
+    | Col 3 is      | Right-Aligned | $20      |
+    @endcomponent
+
+<a name="customizing-the-components"></a>
+### Customizing The Components
+
+You may export all of the Markdown mail components to your own application for customization. To export the components, use the `vendor:publish` Artisan command to publish the `laravel-mail` asset tag:
+
+    php artisan vendor:publish --tag=laravel-mail
+
+This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain a `html` and a `markdown` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
+
+#### Customizing The CSS
+
+After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown mail messages.
+
+> {tip} If you would like to build an entirely new theme for the Markdown components, simply write a new CSS file within the `html/themes` directory and change the `theme` option of your `mail` configuration file.
 
 <a name="sending-mail"></a>
 ## Sending Mail

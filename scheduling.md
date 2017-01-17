@@ -185,7 +185,7 @@ If you would like to append the output to a given file, you may use the `appendO
              ->daily()
              ->appendOutputTo($filePath);
 
-Using the `emailOutputTo` method, you may e-mail the output to an e-mail address of your choice. Note that the output must first be sent to a file using the `sendOutputTo` method. Before e-mailing the output of a task, you should configure Laravel's [e-mail services](/docs/{{version}}/mail):
+Using the `emailOutputTo` method, you may e-mail the output to an e-mail address of your choice. Before e-mailing the output of a task, you should configure Laravel's [e-mail services](/docs/{{version}}/mail):
 
     $schedule->command('foo')
              ->daily()
