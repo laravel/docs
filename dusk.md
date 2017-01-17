@@ -322,6 +322,12 @@ Sometimes you may wish to perform several operations while scoping all of the op
 
 When testing applications that use JavaScript extensively, it often becomes necessary to "wait" for certain elements or data to be available before proceeding with a test. Dusk makes this a cinch. Using a variety of methods, you may wait for elements to be visible on the page or even wait until a given JavaScript expression evaluates to `true`.
 
+#### Waiting
+
+If you need to pause the test for a given number of milliseconds, use the `pause` method:
+
+    $browser->pause(1000);
+
 #### Waiting For Selectors
 
 The `waitFor` method may be used to pause the execution of the test until the element matching the given CSS selector is displayed on the page. By default, this will pause the test for a maximum of five seconds before throwing an exception. If necessary, you may pass a custom timeout threshold as the second argument to the method:
