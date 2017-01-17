@@ -155,8 +155,7 @@ By default, the views rendered to display the pagination links are compatible wi
 
     {{ $paginator->links('view.name') }}
 
-You may also pass any data that you need in your pagination view with the second argument:
-
+    // Passing data to the view...
     {{ $paginator->links('view.name', ['foo' => 'bar']) }}
 
 However, the easiest way to customize the pagination views is by exporting them to your `resources/views/vendor` directory using the `vendor:publish` command:
