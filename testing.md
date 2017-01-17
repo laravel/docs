@@ -23,11 +23,13 @@ You are free to define other testing environment configuration values as necessa
 <a name="creating-and-running-tests"></a>
 ## Creating & Running Tests
 
-To create a new test case, use the `make:test` Artisan command. You may pass the `--unit` or `--feature` flags to instruct Artisan where to place the generated test:
+To create a new test case, use the `make:test` Artisan command:
+
+    php artisan make:test UserTest
+    
+By default, this command will create a new test in the Feature directory. If you wish to create a unit test, simply pass in the `--unit` flag:
 
     php artisan make:test UserTest --unit
-
-    php artisan make:test UserTest --feature
 
 Once the test has been generated, you may define test methods as you normally would using PHPUnit. To run your tests, simply execute the `phpunit` command from your terminal:
 
