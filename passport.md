@@ -14,6 +14,7 @@
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
 - [Implicit Grant Tokens](#implicit-grant-tokens)
+- [Client Credentials Tokens](#client-credentials-grant-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
     - [Creating A Personal Access Client](#creating-a-personal-access-client)
     - [Managing Personal Access Tokens](#managing-personal-access-tokens)
@@ -410,6 +411,25 @@ Once a grant has been enabled, developers may use their client ID to request an 
     });
 
 > {tip} Remember, the `/oauth/authorize` route is already defined by the `Passport::routes` method. You do not need to manually define this route.
+
+<a name="client-credentials-grant-tokens"></a>
+## Client Credentials Tokens
+
+The client credentials grant is useful for allowing access for resources that aren't owned by a specific user, for example searching tweets. To issue a new token the device needs to make a request to the `oauth/token` endpoint:
+
+    $http = new GuzzleHttp\Client;
+
+    $response = $http->post('http://your-app.com/oauth/token', [
+        'form_params' => [
+            'grant_type' => 'client_credentials',
+            'client_id' => 'client-id',
+            'client_secret' => 'client-secret',
+            'scope' => 'search-tweets',
+        ],
+    ]);
+
+    return json_decode((string) $response->getBody(), true);
+
 
 <a name="personal-access-tokens"></a>
 ## Personal Access Tokens
