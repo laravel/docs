@@ -30,7 +30,7 @@
     - [Blade Templates](/docs/{{version}}/blade)
     - [Localization](/docs/{{version}}/localization)
     - [Frontend Scaffolding](/docs/{{version}}/frontend)
-    - [Compiling Assets](/docs/{{version}}/elixir)
+    - [Compiling Assets](/docs/{{version}}/mix)
 - General Topics
     - [Authentication](/docs/{{version}}/authentication)
     - [API Authentication](/docs/{{version}}/passport)
