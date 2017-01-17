@@ -1,57 +1,47 @@
-# Compiling Assets (Laravel Elixir)
+# Compiling Assets (Laravel Mix)
 
 - [Introduction](#introduction)
 - [Installation & Setup](#installation)
-- [Running Elixir](#running-elixir)
+- [Running Mix](#running-mix)
 - [Working With Stylesheets](#working-with-stylesheets)
     - [Less](#less)
     - [Sass](#sass)
-    - [Stylus](#stylus)
     - [Plain CSS](#plain-css)
     - [Source Maps](#css-source-maps)
-- [Working With Scripts](#working-with-scripts)
-    - [Webpack](#webpack)
-    - [Rollup](#rollup)
-    - [Scripts](#javascript)
+- [Working With JavaScript](#working-with-scripts)
+    - [Code Splitting](#code-splitting)
+    - [Custom Webpack Config](#custom-webpack-config)
 - [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
-- [BrowserSync](#browser-sync)
+- [Notifications](#notifications)
 
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Elixir provides a clean, fluent API for defining basic [Gulp](http://gulpjs.com) tasks for your Laravel application. Elixir supports common CSS and JavaScript pre-processors like [Sass](http://sass-lang.com) and [Webpack](https://webpack.github.io/). Using method chaining, Elixir allows you to fluently define your asset pipeline. For example:
+Laravel Mix provides a clean, fluent API for defining basic Webpack build steps for your Laravel application. Mix supports several common CSS and JavaScript pre-processors. Through simple method chaining, you can fluently define your asset pipeline. For example:
 
 ```javascript
-elixir(function(mix) {
-    mix.sass('app.scss')
-       .webpack('app.js');
-});
+mix.js('resources/assets/js/app.js', 'public/js')
+   .sass('resources/assets/sass/app.scss', 'public/css');
 ```
 
-If you've ever been confused and overwhelmed about getting started with Gulp and asset compilation, you will love Laravel Elixir. However, you are not required to use it while developing your application. You are free to use any asset pipeline tool you wish, or even none at all.
+If you've ever been confused and overwhelmed about getting started with Webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application. Of course, you are free to use any asset pipeline tool you wish, or even none at all.
 
 <a name="installation"></a>
 ## Installation & Setup
 
 #### Installing Node
 
-Before triggering Elixir, you must first ensure that Node.js and NPM are installed on your machine.
+Before triggering Mix, you must first ensure that Node.js and NPM are installed on your machine.
 
     node -v
     npm -v
 
 By default, Laravel Homestead includes everything you need; however, if you aren't using Vagrant, then you can easily install the latest version of Node and NPM using simple graphical installers from [their download page](https://nodejs.org/en/download/).
 
-#### Gulp
+#### Laravel Mix
 
-Next, you'll need to pull in [Gulp](http://gulpjs.com) as a global NPM package:
-
-    npm install --global gulp-cli
-
-#### Laravel Elixir
-
-The only remaining step is to install Laravel Elixir. Within a fresh installation of Laravel, you'll find a `package.json` file in the root of your directory structure. The default `package.json` file includes Elixir and the Webpack JavaScript module bundler. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
+The only remaining step is to install Laravel Mix. Within a fresh installation of Laravel, you'll find a `package.json` file in the root of your directory structure. The default `package.json` file includes everything you need to get started. Think of this like your `composer.json` file, except it defines Node dependencies instead of PHP. You may install the dependencies it references by running:
 
     npm install
 
@@ -59,293 +49,206 @@ If you are developing on a Windows system or you are running your VM on a Window
 
     npm install --no-bin-links
 
-<a name="running-elixir"></a>
-## Running Elixir
+<a name="running-mix"></a>
+## Running Mix
 
-Elixir is built on top of [Gulp](http://gulpjs.com), so to run your Elixir tasks you only need to run the `gulp` command in your terminal. Adding the `--production` flag to the command will instruct Elixir to minify your CSS and JavaScript files:
+Mix is a configuration layer on top of [Webpack](https://webpack.js.org), so to run your Mix tasks you only need to trigger the `webpack` command in your terminal. Adding the `NODE_ENV=production` flag to this command will additionally instruct Mix to minify your CSS and JavaScript files:
 
     // Run all tasks...
-    gulp
+    node_modules/.bin/webpack
 
     // Run all tasks and minify all CSS and JavaScript...
-    gulp --production
+    NODE_ENV=production node_modules/.bin/webpack
 
-Upon running this command, you'll see a nicely formatted table that displays a summary of the events that just took place.
+However, because it's a bit tedious to type these commands in the terminal over and over, Laravel provides a handful of NPM scripts to assist. You may review these within your `package.json` file. As such, you may freely use:
+
+    // Run all tasks...
+    npm run webpack
+
+    // Run all tasks, and watch files for changes...
+    npm run dev
+
+    // Run all tasks and minify all CSS and JavaScript...
+    npm run production
 
 #### Watching Assets For Changes
 
-The `gulp watch` command will continue running in your terminal and watch your assets for any changes. Gulp will automatically recompile your assets if you modify them while the `watch` command is running:
+The `npm run dev` command will continue running in your terminal and watch all relevant files for changes. Webpack will then automatically recompile your assets, if it detects a change.
 
-    gulp watch
+    npm run dev
 
 <a name="working-with-stylesheets"></a>
 ## Working With Stylesheets
 
-The `gulpfile.js` file in your project's root directory contains all of your Elixir tasks. Elixir tasks can be chained together to define exactly how your assets should be compiled.
+The `webpack.mix.js` file is your entry point for all asset compilation. Think of it as a light configuration wrapper around Webpack. Mix tasks can be chained together to define exactly how your assets should be compiled.
 
 <a name="less"></a>
 ### Less
 
-The `less` method may be used to compile [Less](http://lesscss.org/) into CSS. The `less` method assumes that your Less files are stored in `resources/assets/less`. By default, the task will place the compiled CSS for this example in `public/css/app.css`:
+The `less` method may be used to compile [Less](http://lesscss.org/) into CSS. Let's compile our primary `app.less` file to `public/css/app.less`.
 
 ```javascript
-elixir(function(mix) {
-    mix.less('app.less');
-});
+mix.less('resources/assets/less/app.less', 'public/css');
 ```
 
-You may also combine multiple Less files into a single CSS file. Again, the resulting CSS will be placed in `public/css/app.css`:
+You may also compile multiple Less files into their own respective CSS files, like so:
 
 ```javascript
-elixir(function(mix) {
-    mix.less([
-        'app.less',
-        'controllers.less'
-    ]);
-});
+mix.less('resources/assets/less/app.less', 'public/css')
+   .less('resources/assets/less/admin.less', 'public/css');
 ```
 
-If you wish to customize the output location of the compiled CSS, you may pass a second argument to the `less` method:
+If you wish to customize the output file name of the compiled CSS, you may of course pass a full file path, as the second argument.
 
 ```javascript
-elixir(function(mix) {
-    mix.less('app.less', 'public/stylesheets');
-});
-
-// Specifying a specific output filename...
-elixir(function(mix) {
-    mix.less('app.less', 'public/stylesheets/style.css');
-});
+mix.less('resouces/assets/less/app.less', 'public/stylesheets/styles.css');
 ```
 
 <a name="sass"></a>
 ### Sass
 
-The `sass` method allows you to compile [Sass](http://sass-lang.com/) into CSS. Assuming your Sass files are stored at `resources/assets/sass`, you may use the method like so:
+The `sass` method allows you to compile [Sass](http://sass-lang.com/) into CSS. You may use the method like so:
 
 ```javascript
-elixir(function(mix) {
-    mix.sass('app.scss');
-});
+mix.sass('resources/assets/sass/app.scss', 'public/css');
 ```
 
-Again, like the `less` method, you may compile multiple Sass files into a single CSS file, and even customize the output directory of the resulting CSS:
+Again, like the `sass` method, you may compile multiple Sass files into their own respective CSS files, and even customize the output directory of the resulting CSS:
 
 ```javascript
-elixir(function(mix) {
-    mix.sass([
-        'app.scss',
-        'controllers.scss'
-    ], 'public/assets/css');
-});
+mix.sass('resources/assets/sass/app.sass', 'public/css');
+   .sass('resources/assets/sass/admin.sass', 'public/css/admin');
 ```
-
-#### Custom Paths
-
-While it's recommended that you use Laravel's default asset directories, if you require a different base directory, you may begin any file path with `./`. This instructs Elixir to begin at the project root, rather than using the default base directory.
-
-For example, to compile a file located at `app/assets/sass/app.scss` and output the results to `public/css/app.css`, you would make the following call to the `sass` method:
-
-```javascript
-elixir(function(mix) {
-    mix.sass('./app/assets/sass/app.scss');
-});
-```
-
-<a name="stylus"></a>
-### Stylus
-
-The `stylus` method may be used to compile [Stylus](http://stylus-lang.com/) into CSS. Assuming that your Stylus files are stored in `resources/assets/stylus`, you may call the method like so:
-
-```javascript
-elixir(function(mix) {
-    mix.stylus('app.styl');
-});
-```
-
-> {tip} This method's signature is identical to both `mix.less()` and `mix.sass()`.
 
 <a name="plain-css"></a>
 ### Plain CSS
 
-If you would just like to combine some plain CSS stylesheets into a single file, you may use the `styles` method. Paths passed to this method are relative to the `resources/assets/css` directory and the resulting CSS will be placed in `public/css/all.css`:
+If you would just like to combine some plain CSS stylesheets into a single file, you may use the `combine` method. This will additionally work with any JavaScript files that require concatenation.
 
 ```javascript
-elixir(function(mix) {
-    mix.styles([
-        'normalize.css',
-        'main.css'
-    ]);
-});
-```
-
-You may also instruct Elixir to write the resulting file to a custom directory or file by passing a second argument to the `styles` method:
-
-```javascript
-elixir(function(mix) {
-    mix.styles([
-        'normalize.css',
-        'main.css'
-    ], 'public/assets/css/site.css');
-});
+mix.combine([
+    'public/css/vendor/normalize.css',
+    'public/css/vendor/videojs.css'
+}, 'public/css/all.css');
 ```
 
 <a name="css-source-maps"></a>
 ### Source Maps
 
-In Elixir, source maps are enabled by default and provide better debugging information to your browser's developer tools when using compiled assets. For each relevant file that is compiled, you will find a companion `*.css.map` or `*.js.map` file in the same directory.
-
-If you do not want source maps generated for your application, you may disable them using the `sourcemaps` configuration option:
+Though disabled by default, source maps may be activated by calling the `mix.sourceMaps()` method in your `webpack.mix.js` file. Though it comes with a compile/performance cost, this will provide extra debugging information to your browser's developer tools when using compiled assets. 
 
 ```javascript
-elixir.config.sourcemaps = false;
-
-elixir(function(mix) {
-    mix.sass('app.scss');
-});
+mix.js('resources/assets/js/app.js', 'public/js')
+   .sourceMaps();
 ```
 
 <a name="working-with-scripts"></a>
-## Working With Scripts
+## Working With JavaScript
 
-Elixir provides several features to help you work with your JavaScript files, such as compiling ECMAScript 2015, module bundling, minification, and simply concatenating plain JavaScript files.
-
-When writing ES2015 with modules, you have your choice between [Webpack](https://webpack.github.io) and [Rollup](http://rollupjs.org/). If these tools are foreign to you, don't worry, Elixir will handle all of the hard work behind the scenes. By default, the Laravel `gulpfile` uses `webpack` to compile Javascript, but you are free to use any module bundler you like.
-
-<a name="webpack"></a>
-### Webpack
-
-The `webpack` method may be used to compile and bundle [ECMAScript 2015](https://babeljs.io/docs/learn-es2015/) into plain JavaScript. This function accepts a file path relative to the `resources/assets/js` directory and generates a single bundled file in the `public/js` directory:
+Mix provides several features to help you work with your JavaScript files, such as compiling ECMAScript 2015, module bundling, minification, and simply concatenating plain JavaScript files. Even better, this all works seamlessly, without requiring an ounce of configuration on your part.
 
 ```javascript
-elixir(function(mix) {
-    mix.webpack('app.js');
+mix.js('resources/assets/js/app.js', 'public/js');
+```
+
+With this single line of code, you may now take advantage of:
+
+1. ES2015 syntax
+2. Automatic Babel transformation
+3. JavaScript modules
+4. Compiling `.vue` files 
+5. Instant minification for production environments
+
+<a name="code-splitting"></a>
+### Code Splitting
+
+One potential downside to bundling all application-specific JavaScript with your vendor libraries is that it makes long-term caching a bit more difficult. For example, a single update to your application code will force the browser to redownload your vendor libraries all over again - even if they haven't changed. 
+
+If you intend to make frequent updates to your application's JavaScript, you might consider extracting all vendor libraries into their file. This way, a change to your application code will not affect the caching of your large `vendor.js` file. Mix makes this all a cinch, via the `extract` method.
+
+```javascript
+mix.js('resources/assets/js/app.js', 'public/js')
+   .extract(['vue'])
+```
+
+Simply pass an array of all libraries or modules that you wish to extract into their own `vendor.js` file. Using the above snippet as an example, Mix will generate the following files:
+
+- `public/js/manifest.js`: *The Webpack manifest runtime*
+- `public/js/vendor.js`: *Your vendor libraries*
+- `public/js/app.js`: *Your app code*
+
+Within your HTML, be sure to reference them in the proper order, to avoid any nasty JavaScript errors:
+
+```html
+<script src="/js/manifest.js"></script>
+<script src="/js/vendor.js"></script>
+<script src="/js/app.js"></script>
+```
+
+While, yes, you will pay a small HTTP request penalty, now that we're importing three scripts instead of one, the long-term caching benefits should far out-weigh this cost.
+
+<a name="custom-webpack-config"></a>
+### Custom Webpack Config
+
+Behind the scenes, Laravel Mix references a pre-configured `webpack.config.js` file to get you up and running as quickly as possible. In fact, you can ignore it entirely, if you wish! That being said, from time to time, you may find that you need to manually modify this file. Perhaps you have a special loader or plugin that needs to be referenced, or maybe you prefer to use Stylus instead of Sass. In such instances, you have two choices:
+
+#### Merging
+
+Mix provides a useful `webpackConfig` method that allows you to merge any short Webpack configuration overrides. This is a particularly appealing choice, as it doesn't require you to copy and maintain your own copy of the `webpack.config.js` file. The `webpackConfig` method accepts an object, which should contain any [Webpack-specific configuration](https://webpack.js.org/configuration/) that you wish to apply.
+
+```javascript
+mix.webpackConfig({
+    resolve: {
+        modules: [
+            path.resolve(__dirname, 'vendor/laravel/spark/resources/assets/js')
+        ]
+    }
 });
 ```
 
-To choose a different output or base directory, simply specify your desired paths with a leading `.`. Then you may specify the paths relative to the root of your application. For example, to compile `app/assets/js/app.js` to `public/dist/app.js`:
+#### Reference Your Own
 
-```javascript
-elixir(function(mix) {
-    mix.webpack(
-        './app/assets/js/app.js',
-        './public/dist'
-    );
-});
+A second option is to copy Mix's `webpack.config.js` into your project root. 
+
+```bash
+cp node_modules/laravel-mix/setup/webpack.config.js ./
 ```
 
-If you'd like to leverage more of Webpack's functionality, Elixir will read any `webpack.config.js` file that is in your project root and [factor its configuration](https://webpack.github.io/docs/configuration.html) into the build process.
-
-
-<a name="rollup"></a>
-### Rollup
-
-Similar to Webpack, Rollup is a next-generation bundler for ES2015. This function accepts an array of files relative to the `resources/assets/js` directory, and generates a single file in the `public/js` directory:
-
-```javascript
-elixir(function(mix) {
-    mix.rollup('app.js');
-});
-```
-
-Like the `webpack` method, you may customize the location of the input and output files given to the `rollup` method:
-
-    elixir(function(mix) {
-        mix.rollup(
-            './resources/assets/js/app.js',
-            './public/dist'
-        );
-    });
-
-<a name="javascript"></a>
-### Scripts
-
-If you have multiple JavaScript files that you would like to combine into a single file, you may use the `scripts` method, which provides automatic source maps, concatenation, and minification.
-
-The `scripts` method assumes all paths are relative to the `resources/assets/js` directory, and will place the resulting JavaScript in `public/js/all.js` by default:
-
-```javascript
-elixir(function(mix) {
-    mix.scripts([
-        'order.js',
-        'forum.js'
-    ]);
-});
-```
-
-If you need to concatenate multiple sets of scripts into different files, you may make multiple calls to the `scripts` method. The second argument given to the method determines the resulting file name for each concatenation:
-
-```javascript
-elixir(function(mix) {
-    mix.scripts(['app.js', 'controllers.js'], 'public/js/app.js')
-       .scripts(['forum.js', 'threads.js'], 'public/js/forum.js');
-});
-```
-
-If you need to combine all of the scripts in a given directory, you may use the `scriptsIn` method. The resulting JavaScript will be placed in `public/js/all.js`:
-
-```javascript
-elixir(function(mix) {
-    mix.scriptsIn('public/js/some/directory');
-});
-```
-
-> {tip} If you intend to concatenate multiple pre-minified vendor libraries, such as jQuery, instead consider using `mix.combine()`. This will combine the files, while omitting the source map and minification steps. As a result, compile times will drastically improve.
+Next, you'll want to update the NPM scripts in your `package.json` to ensure that they no longer reference Mix's configuration file directly. Simply remove the `--config="node_modules/laravel-mix/setup/webpack.config.js"`, and you should be all set! You many now freely modify your configuration file, as needed.
 
 
 <a name="copying-files-and-directories"></a>
 ## Copying Files & Directories
 
-The `copy` method may be used to copy files and directories to new locations. All operations are relative to the project's root directory:
+The `copy` method may be used to copy files and directories to new locations. This can be useful when a particular asset within, say, your `node_modules` directory needs to be relocated to your `public` folder.
 
 ```javascript
-elixir(function(mix) {
-    mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
-});
+mix.copy('node_modules/foo/bar.css', 'public/css/bar.css');
 ```
 
 <a name="versioning-and-cache-busting"></a>
 ## Versioning / Cache Busting
 
-Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Elixir can handle this for you using the `version` method.
+Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Mix can handle this for you using the `version` method.
 
-The `version` method accepts a file name relative to the `public` directory, and will append a unique hash to the filename, allowing for cache-busting. For example, the generated file name will look something like: `all-16d570a7.css`:
+When executed in a production environment (`npm run production`), the `version` method will automatically append a unique hash to the filenames of all compiled files, allowing for cache-busting. For example, the generated file name will look something like: `app.16d570a7asdfa24usdf.css`:
 
 ```javascript
-elixir(function(mix) {
-    mix.version('css/all.css');
-});
+mix.js('resources/assets/js/app.js', 'public/js')
+   .version();
 ```
 
-After generating the versioned file, you may use Laravel's global `elixir` helper within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `elixir` function will automatically determine the current name of the hashed file:
+After generating the versioned file, because you won't know the exact file name, you may use Laravel's global `mix` helper within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `mix` function will automatically determine the current name of the hashed file:
 
-    <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
-
-#### Versioning Multiple Files
-
-You may pass an array to the `version` method to version multiple files:
-
-```javascript
-elixir(function(mix) {
-    mix.version(['css/all.css', 'js/app.js']);
-});
+```html
+<link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 ```
 
-Once the files have been versioned, you may use the `elixir` helper function to generate links to the proper hashed files. Remember, you only need to pass the name of the un-hashed file to the `elixir` helper function. The helper will use the un-hashed name to determine the current hashed version of the file:
+<a name="notifications"></a>
+## Notifications
 
-    <link rel="stylesheet" href="{{ elixir('css/all.css') }}">
-
-    <script src="{{ elixir('js/app.js') }}"></script>
-
-<a name="browser-sync"></a>
-## BrowserSync
-
-BrowserSync automatically refreshes your web browser after you make changes to your assets. The `browserSync` method accepts a JavaScript object with a `proxy` attribute containing the local URL for your application. Then, once you run `gulp watch` you may access your web application using port 3000 (`http://project.dev:3000`) to enjoy browser syncing:
+When available, Mix will automatically display OS notifications for each bundle. This will give you instant feedback, as to whether the compilation was successful or not. However, there may be instances when you'd prefer to disable these notifications. One such example might be triggering Mix on your production server. Notifications may be deactivated, via the `disableNotifications` method.
 
 ```javascript
-elixir(function(mix) {
-    mix.browserSync({
-        proxy: 'project.dev'
-    });
-});
+mix.disableNotifications();
 ```
