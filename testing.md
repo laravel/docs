@@ -1,4 +1,4 @@
-# Testing
+# Testing: Getting Started
 
 - [Introduction](#introduction)
 - [Environment](#environment)
