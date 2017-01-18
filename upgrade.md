@@ -133,7 +133,7 @@ The `createMany` method of a `hasOne` or `hasMany` relationship now returns a co
 
 #### The `hydrate` Method
 
-If you are currently passing a custom connection name into this method, you should now use the `on` method:
+If you are currently passing a custom connection name to this method, you should now use the `on` method:
 
     User::on('connection')->hydrate($records);
 
