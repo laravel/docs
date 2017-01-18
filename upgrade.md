@@ -248,7 +248,9 @@ If you have tests written using Laravel 5.3 and would like to run them side-by-s
 
     composer require laravel/browser-kit-testing
 
-Next, create a copy of the [Laravel 5.4 test base class](https://github.com/laravel/laravel/blob/master/tests/TestCase.php) and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. The completed class should look like the following:
+Next, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTest.php`.
+
+Tests written on Laravel 5.3 will extend the `BrowserKitTest` class while any new tests that use the Laravel 5.4 testing layer will extend the `TestCase` class. Your `BrowserKitTest` class should look like the following:
 
     <?php
 
@@ -278,7 +280,7 @@ Next, create a copy of the [Laravel 5.4 test base class](https://github.com/lara
         }
     }
 
-Once you have created this class, make sure to update all of your tests extend your new `BrowserKitTest` class. This will allow of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](/docs/5.4/http-tests) or to [Laravel Dusk](/docs/5.4/dusk).
+Once you have created this class, make sure to update all of your tests extend your new `BrowserKitTest` class. This will allow of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](/docs/5.4/http-tests) or [Laravel Dusk](/docs/5.4/dusk).
 
 > {note} If you are writing new tests and want them to use the Laravel 5.4 testing layer, make sure to extend the `TestCase` class.
 
