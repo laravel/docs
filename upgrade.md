@@ -131,9 +131,17 @@ The `date` cast now converts the column to a `Carbon` object and calls the `star
 
 The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
 
+#### The `hydrate` Method
+
+If you are currently passing a custom connection name into this method, you should now use the `on` method:
+
+    User::on('connection')->hydrate($records);
+
 #### `hydrateRaw` Method
 
-The `Model::hydrateRaw` method has been renamed to `hydrateUsing`.
+The `Model::hydrateRaw` method has been renamed to `fromQuery`. If you are passing a custom connection name to this method, you should now use the `on` method:
+
+    User::on('connection')->fromQuery('...');
 
 ### Events
 
