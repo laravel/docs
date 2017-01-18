@@ -242,9 +242,45 @@ All calls to the `$request->setSession()` method should be changed to `setLarave
 
 ### Testing
 
-#### BrowserKit Compatibility
+Laravel 5.4's testing layer has been re-written to be simpler and lighter out of the box. If you would like to continue using the testing layer present in Laravel 5.3, you may install the `laravel/browser-kit-testing` [package](https://github.com/laravel/browser-kit-testing) into your application. This package provides full compatibility with the Laravel 5.3 testing layer. In fact, you can run the Laravel 5.4 testing layer side-by-side with the Laravel 5.3 testing layer.
 
-Laravel 5.4's testing layer has been re-written to be simpler and lighter out of the box. If you would like to continue using the testing layer present in Laravel 5.3, you may install the `laravel/browser-kit-testing` [package](https://github.com/laravel/browser-kit-testing) into your application. This package provides full compatibility with the Laravel 5.3 testing layer.
+If you have tests written using Laravel 5.3 and would like to run them side-by-side with Laravel's new testing layer, install the `laravel/browser-kit-testing` package:
+
+    composer require laravel/browser-kit-testing
+
+Next, create a copy of the [Laravel 5.4 test base class](https://github.com/laravel/laravel/blob/master/tests/TestCase.php) and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. The completed class should look like the following:
+
+    <?php
+
+    use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
+
+    abstract class BrowserKitTestCase extends BaseTestCase
+    {
+        /**
+         * The base URL of the application.
+         *
+         * @var string
+         */
+        public $baseUrl = 'http://localhost';
+
+        /**
+         * Creates the application.
+         *
+         * @return \Illuminate\Foundation\Application
+         */
+        public function createApplication()
+        {
+            $app = require __DIR__.'/../bootstrap/app.php';
+
+            $app->make(Kernel::class)->bootstrap();
+
+            return $app;
+        }
+    }
+
+Once you have created this class, make sure to update all of your tests extend your new `BrowserKitTest` class. This will allow of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](/docs/5.4/http-tests) or to [Laravel Dusk](/docs/5.4/dusk).
+
+> {note} If you are writing new tests and want them to use the Laravel 5.4 testing layer, make sure to extend the `TestCase` class.
 
 #### Environment
 
