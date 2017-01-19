@@ -138,13 +138,25 @@ Once the pattern has been defined, it is automatically applied to all routes usi
 <a name="named-routes"></a>
 ## Named Routes
 
-Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route by chaining the `name` method onto the route definition:
+Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route using the `as` array key when defining the route:
+
+    Route::get('user/profile', ['as' => 'profile', function () {
+        //
+    }]);
+
+You may also specify route names for controller actions:
+
+    Route::get('user/profile', [
+        'as' => 'profile', 'uses' => 'UserController@showProfile'
+    ]);
+
+Alternatively, instead of specifying the route name in the route array definition, you may chain the `name` method onto the end of the route definition:
 
     Route::get('user/profile', function () {
         //
     })->name('profile');
 
-You may also specify route names for controller actions:
+Of course you may also specify route names for controller actions:
 
     Route::get('user/profile', 'UserController@showProfile')->name('profile');
 
