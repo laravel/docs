@@ -55,7 +55,7 @@ If you are developing on a Windows system or you are running your VM on a Window
 Mix is a configuration layer on top of [Webpack](https://webpack.js.org), so to run your Mix tasks you only need to execute one of the NPM scripts that is included with the default Laravel `package.json` file:
 
     // Run all Mix tasks...
-    npm run mix
+    npm run dev
 
     // Run all Mix tasks and minify output...
     npm run production

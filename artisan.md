@@ -1,4 +1,4 @@
-# Console Commands
+# Artisan Console
 
 - [Introduction](#introduction)
 - [Writing Commands](#writing-commands)
@@ -28,6 +28,12 @@ Artisan is the command-line interface included with Laravel. It provides a numbe
 Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, simply precede the name of the command with `help`:
 
     php artisan help migrate
+
+#### Laravel REPL
+
+All new Laravel applications include Tinker, a REPL powered by the [PsySH](https://github.com/bobthecow/psysh) package. Tinker allows you to interact with your entire Laravel application on the command line, including the Eloquent ORM, jobs, events, and more. To enter the Tinker environment, run the `tinker` Artisan command:
+
+    php artisan tinker
 
 <a name="writing-commands"></a>
 ## Writing Commands
