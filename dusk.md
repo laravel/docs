@@ -102,9 +102,9 @@ Next, you may simply modify the `driver` method to connect to the URL and port o
 <a name="generating-tests"></a>
 ### Generating Tests
 
-To generate a Dusk test, use the `dusk:test` Artisan command. The generated test will be placed in the `tests/Browser` directory:
+To generate a Dusk test, use the `dusk:make` Artisan command. The generated test will be placed in the `tests/Browser` directory:
 
-    php artisan dusk:test LoginTest
+    php artisan dusk:make LoginTest
 
 <a name="running-tests"></a>
 ### Running Tests
