@@ -60,7 +60,7 @@ Next, run the `dusk:install` Artisan command:
 
 A `Browser` directory will be created within your `tests` directory and will contain an example test. Next, set the `APP_URL` environment variable in your `.env` file. This value should match the URL you use to access your application in a browser.
 
-To run your tests, use the `dusk` Artisan command. The `dusk` command accepts any argument that is also accepted by the `phpunit` command:
+To run your tests, make sure that ChromeDriver or an equivalent is already started and use the `dusk` Artisan command. The `dusk` command accepts any argument that is also accepted by the `phpunit` command:
 
     php artisan dusk
 
