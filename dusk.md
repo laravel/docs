@@ -117,6 +117,35 @@ The `dusk` command accepts any argument that is normally accepted by the PHPUnit
 
     php artisan dusk --group foo
 
+#### Manually Starting ChromeDriver
+
+By default, Dusk will automatically attempt to start ChromeDriver. If this does not work for your particular system, you may manually start ChromeDriver before running the `dusk` command. If you choose to start ChromeDriver manually, you should comment out the following line of your `tests/DuskTestCase.php` file:
+
+    /**
+     * Prepare for Dusk test execution.
+     *
+     * @beforeClass
+     * @return void
+     */
+    public static function prepare()
+    {
+        // static::startChromeDriver();
+    }
+
+In addition, if you start ChromeDriver on a port other than 9515, you should modify the `driver` method of the same class:
+
+    /**
+     * Create the RemoteWebDriver instance.
+     *
+     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+     */
+    protected function driver()
+    {
+        return RemoteWebDriver::create(
+            'http://localhost:9515', DesiredCapabilities::chrome()
+        );
+    }
+
 <a name="environment-handling"></a>
 ### Environment Handling
 
