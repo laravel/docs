@@ -183,13 +183,32 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
 <a name="accessing-homestead-globally"></a>
 ### Accessing Homestead Globally
 
-Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this by adding a simple Bash function to your Bash profile. This function will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
+Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this by adding a simple Bash function to your Bash profile in Linux or adding a simple Batch file to the PATH environment variable in Windows. This scripts will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
+
+#### Linux
 
     function homestead() {
         ( cd ~/Homestead && vagrant $* )
     }
 
 Make sure to tweak the `~/Homestead` path in the function to the location of your actual Homestead installation. Once the function is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
+
+#### Windows
+
+Create a `homestead.bat` batch file anywhere in your filesystem (e.g. `%HOMEDRIVE%%HOMEPATH%\.homestead\bin`) and add this file to your PATH environment variable.
+
+  @echo off
+
+  set cwd=%cd%
+  set homesteadVagrant=C:\Homestead
+
+  cd /d %homesteadVagrant% && vagrant %*
+  cd /d %cwd%
+
+  set cwd=
+  set homesteadVagrant=
+
+Make sure to tweak the `C:\Homestead` path in the script to the location of your actual Homestead installation. Once the batch file is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
 
 <a name="connecting-via-ssh"></a>
 ### Connecting Via SSH
