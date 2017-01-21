@@ -29,7 +29,7 @@ Laravel 5.4 requires Guzzle 6.0 or greater.
 
 #### The `getPolicyFor` Method
 
-Previous, when calling the `Gate::getPolicyFor($class)` method, an exception was thrown if no policy could be found. Now, the method will return `null` if no policy is found for the given class. If you call this method directly, make sure you refactor your code to a check for `null`:
+Previous, when calling the `Gate::getPolicyFor($class)` method, an exception was thrown if no policy could be found. Now, the method will return `null` if no policy is found for the given class. If you call this method directly, make sure you refactor your code to check for `null`:
 
 ```php
 $policy = Gate::getPolicyFor($class);
