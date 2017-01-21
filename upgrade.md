@@ -49,7 +49,7 @@ If you are manually overriding the `$bootstrappers` array on your HTTP or Consol
 
 #### Channel Model Binding
 
-When defining channel name placeholders in Laravel 5.3, then `*` character is used. In Laravel 5.4, you should define these placeholders using `{foo}` style placeholders, like routes:
+When defining channel name placeholders in Laravel 5.3, the `*` character is used. In Laravel 5.4, you should define these placeholders using `{foo}` style placeholders, like routes:
 
     Broadcast::channel('App.User.{userId}', function ($user, $userId) {
         return (int) $user->id === (int) $userId;
