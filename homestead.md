@@ -183,9 +183,9 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
 <a name="accessing-homestead-globally"></a>
 ### Accessing Homestead Globally
 
-Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this by adding a simple Bash function to your Bash profile in Linux or adding a simple Batch file to the PATH environment variable in Windows. This scripts will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
+Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this on Mac / Linux systems by adding a Bash function to your Bash profile. On Windows, you may accomplish this by adding a "batch" file to your `PATH`. This scripts will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
 
-#### Linux
+#### Linux Example
 
     function homestead() {
         ( cd ~/Homestead && vagrant $* )
@@ -193,9 +193,9 @@ Sometimes you may want to `vagrant up` your Homestead machine from anywhere on y
 
 Make sure to tweak the `~/Homestead` path in the function to the location of your actual Homestead installation. Once the function is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
 
-#### Windows
+#### Windows Example
 
-Create a `homestead.bat` batch file anywhere in your filesystem (e.g. `%HOMEDRIVE%%HOMEPATH%\.homestead\bin`) and add this file to your PATH environment variable.
+Create a `homestead.bat` batch file anywhere on your machine with the following contents:
 
     @echo off
 
@@ -208,7 +208,7 @@ Create a `homestead.bat` batch file anywhere in your filesystem (e.g. `%HOMEDRIV
     set cwd=
     set homesteadVagrant=
 
-Make sure to tweak the `C:\Homestead` path in the script to the location of your actual Homestead installation. Once the batch file is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
+Make sure to tweak the example `C:\Homestead` path in the script to the actual location of your Homestead installation. After creating the file, add the file location to your `PATH`. You may then run commands like `homestead up` or `homestead ssh` from anywhere on your system.
 
 <a name="connecting-via-ssh"></a>
 ### Connecting Via SSH
