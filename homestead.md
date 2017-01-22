@@ -183,13 +183,32 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
 <a name="accessing-homestead-globally"></a>
 ### Accessing Homestead Globally
 
-Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this by adding a simple Bash function to your Bash profile. This function will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
+Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this on Mac / Linux systems by adding a Bash function to your Bash profile. On Windows, you may accomplish this by adding a "batch" file to your `PATH`. This scripts will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
+
+#### Linux
 
     function homestead() {
         ( cd ~/Homestead && vagrant $* )
     }
 
 Make sure to tweak the `~/Homestead` path in the function to the location of your actual Homestead installation. Once the function is installed, you may run commands like `homestead up` or `homestead ssh` from anywhere on your system.
+
+#### Windows
+
+Create a `homestead.bat` batch file anywhere on your machine with the following contents:
+
+    @echo off
+
+    set cwd=%cd%
+    set homesteadVagrant=C:\Homestead
+
+    cd /d %homesteadVagrant% && vagrant %*
+    cd /d %cwd%
+
+    set cwd=
+    set homesteadVagrant=
+
+Make sure to tweak the example `C:\Homestead` path in the script to the actual location of your Homestead installation. After creating the file, add the file location to your `PATH`. You may then run commands like `homestead up` or `homestead ssh` from anywhere on your system.
 
 <a name="connecting-via-ssh"></a>
 ### Connecting Via SSH
@@ -210,7 +229,20 @@ To connect to your MySQL or Postgres database from your host machine's database 
 <a name="adding-additional-sites"></a>
 ### Adding Additional Sites
 
-Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `~/.homestead/Homestead.yaml` file and then run the `vagrant reload --provision` terminal command from your Homestead directory.
+Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `~/.homestead/Homestead.yaml` file:
+
+    sites:
+        - map: homestead.app
+          to: /home/vagrant/Code/Laravel/public
+        - map: another.app
+          to: /home/vagrant/Code/another/public
+
+If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well:
+
+    192.168.10.10  homestead.app
+    192.168.10.10  another.app
+
+Once the site has been added, run the `vagrant reload --provision` command from your Homestead directory.
 
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules
