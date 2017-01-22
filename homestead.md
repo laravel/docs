@@ -229,20 +229,20 @@ To connect to your MySQL or Postgres database from your host machine's database 
 <a name="adding-additional-sites"></a>
 ### Adding Additional Sites
 
-Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `~/.homestead/Homestead.yaml` file: 
+Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `~/.homestead/Homestead.yaml` file:
 
     sites:
         - map: homestead.app
           to: /home/vagrant/Code/Laravel/public
-        - map: proj1.homestead.app
-          to: /home/vagrant/Code/proj1/public
-          
-You also need to add this to your `/etc/hosts` file:
+        - map: another.app
+          to: /home/vagrant/Code/another/public
+
+If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well:
 
     192.168.10.10  homestead.app
-    192.168.10.10  proj1.homestead.app
-    
-and then run the `vagrant reload --provision` terminal command from your Homestead directory.
+    192.168.10.10  another.app
+
+Once the site has been added, run the `vagrant reload --provision` command from your Homestead directory.
 
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules
