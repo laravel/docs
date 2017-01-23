@@ -20,10 +20,8 @@
 
 Laravel Mix provides a fluent API for defining Webpack build steps for your Laravel application using several common CSS and JavaScript pre-processors. Through simple method chaining, you can fluently define your asset pipeline. For example:
 
-```javascript
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
-```
+    mix.js('resources/assets/js/app.js', 'public/js')
+       .sass('resources/assets/sass/app.scss', 'public/css');
 
 If you've ever been confused and overwhelmed about getting started with Webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application. Of course, you are free to use any asset pipeline tool you wish, or even none at all.
 
@@ -76,69 +74,53 @@ The `webpack.mix.js` file is your entry point for all asset compilation. Think o
 
 The `less` method may be used to compile [Less](http://lesscss.org/) into CSS. Let's compile our primary `app.less` file to `public/css/app.less`.
 
-```javascript
-mix.less('resources/assets/less/app.less', 'public/css');
-```
+    mix.less('resources/assets/less/app.less', 'public/css');
 
 Multiple calls to the `less` method may be used to compile multiple files:
 
-```javascript
-mix.less('resources/assets/less/app.less', 'public/css')
-   .less('resources/assets/less/admin.less', 'public/css');
-```
+    mix.less('resources/assets/less/app.less', 'public/css')
+       .less('resources/assets/less/admin.less', 'public/css');
 
 If you wish to customize the file name of the compiled CSS, you may pass a full file path as the second argument to the `less` method:
 
-```javascript
-mix.less('resouces/assets/less/app.less', 'public/stylesheets/styles.css');
-```
+    mix.less('resouces/assets/less/app.less', 'public/stylesheets/styles.css');
 
 <a name="sass"></a>
 ### Sass
 
 The `sass` method allows you to compile [Sass](http://sass-lang.com/) into CSS. You may use the method like so:
 
-```javascript
-mix.sass('resources/assets/sass/app.scss', 'public/css');
-```
+    mix.sass('resources/assets/sass/app.scss', 'public/css');
 
 Again, like the `less` method, you may compile multiple Sass files into their own respective CSS files and even customize the output directory of the resulting CSS:
 
-```javascript
-mix.sass('resources/assets/sass/app.sass', 'public/css');
-   .sass('resources/assets/sass/admin.sass', 'public/css/admin');
-```
+    mix.sass('resources/assets/sass/app.sass', 'public/css');
+       .sass('resources/assets/sass/admin.sass', 'public/css/admin');
 
 <a name="plain-css"></a>
 ### Plain CSS
 
 If you would just like to combine some plain CSS stylesheets into a single file, you may use the `combine` method. This method also supports concatenating JavaScript files:
 
-```javascript
-mix.combine([
-    'public/css/vendor/normalize.css',
-    'public/css/vendor/videojs.css'
-}, 'public/css/all.css');
-```
+    mix.combine([
+        'public/css/vendor/normalize.css',
+        'public/css/vendor/videojs.css'
+    ], 'public/css/all.css');
 
 <a name="css-source-maps"></a>
 ### Source Maps
 
 Though disabled by default, source maps may be activated by calling the `mix.sourceMaps()` method in your `webpack.mix.js` file. Though it comes with a compile/performance cost, this will provide extra debugging information to your browser's developer tools when using compiled assets.
 
-```javascript
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sourceMaps();
-```
+    mix.js('resources/assets/js/app.js', 'public/js')
+       .sourceMaps();
 
 <a name="working-with-scripts"></a>
 ## Working With JavaScript
 
 Mix provides several features to help you work with your JavaScript files, such as compiling ECMAScript 2015, module bundling, minification, and simply concatenating plain JavaScript files. Even better, this all works seamlessly, without requiring an ounce of custom configuration:
 
-```javascript
-mix.js('resources/assets/js/app.js', 'public/js');
-```
+    mix.js('resources/assets/js/app.js', 'public/js');
 
 With this single line of code, you may now take advantage of:
 
@@ -155,10 +137,8 @@ One potential downside to bundling all application-specific JavaScript with your
 
 If you intend to make frequent updates to your application's JavaScript, you should consider extracting all of your vendor libraries into their file. This way, a change to your application code will not affect the caching of your large `vendor.js` file. Mix's `extract` method makes this a breeze:
 
-```javascript
-mix.js('resources/assets/js/app.js', 'public/js')
-   .extract(['vue'])
-```
+    mix.js('resources/assets/js/app.js', 'public/js')
+       .extract(['vue'])
 
 The `extract` method accepts an array of all libraries or modules that you wish to extract into a `vendor.js` file. Using the above snippet as an example, Mix will generate the following files:
 
@@ -183,23 +163,19 @@ Behind the scenes, Laravel Mix references a pre-configured `webpack.config.js` f
 
 Mix provides a useful `webpackConfig` method that allows you to merge any short Webpack configuration overrides. This is a particularly appealing choice, as it doesn't require you to copy and maintain your own copy of the `webpack.config.js` file. The `webpackConfig` method accepts an object, which should contain any [Webpack-specific configuration](https://webpack.js.org/configuration/) that you wish to apply.
 
-```javascript
-mix.webpackConfig({
-    resolve: {
-        modules: [
-            path.resolve(__dirname, 'vendor/laravel/spark/resources/assets/js')
-        ]
-    }
-});
-```
+    mix.webpackConfig({
+        resolve: {
+            modules: [
+                path.resolve(__dirname, 'vendor/laravel/spark/resources/assets/js')
+            ]
+        }
+    });
 
 #### Reference Your Own Configuration
 
 A second option is to copy Mix's `webpack.config.js` into your project root.
 
-```bash
-cp node_modules/laravel-mix/setup/webpack.config.js ./
-```
+    cp node_modules/laravel-mix/setup/webpack.config.js ./
 
 Next, you'll need to update the NPM scripts in your `package.json` to ensure that they no longer reference Mix's configuration file directly. Simply remove the `--config="node_modules/laravel-mix/setup/webpack.config.js"` entry from the commands. Once this has been done, you may freely modify your configuration file as needed.
 
@@ -230,6 +206,4 @@ After generating the versioned file, you won't know the exact file name. So, you
 
 When available, Mix will automatically display OS notifications for each bundle. This will give you instant feedback, as to whether the compilation was successful or not. However, there may be instances when you'd prefer to disable these notifications. One such example might be triggering Mix on your production server. Notifications may be deactivated, via the `disableNotifications` method.
 
-```javascript
-mix.disableNotifications();
-```
+    mix.disableNotifications();

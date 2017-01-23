@@ -563,8 +563,8 @@ In addition to the default methods defined on pages, you may define additional m
         /**
          * Create a new playlist.
          *
-         * @param  string  $name
          * @param  \Laravel\Dusk\Browser  $browser
+         * @param  string  $name
          * @return void
          */
         public function createPlaylist(Browser $browser, $name)
