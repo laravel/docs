@@ -105,7 +105,7 @@ If you would just like to combine some plain CSS stylesheets into a single file,
     mix.combine([
         'public/css/vendor/normalize.css',
         'public/css/vendor/videojs.css'
-    }, 'public/css/all.css');
+    ], 'public/css/all.css');
 
 <a name="css-source-maps"></a>
 ### Source Maps
