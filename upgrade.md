@@ -143,6 +143,10 @@ The `Model::hydrateRaw` method has been renamed to `fromQuery`. If you are passi
 
     User::on('connection')->fromQuery('...');
 
+#### The `factory` helper
+
+Calling `factory(User::class, 1)->make()` or `factory(User::class, 1)->create()` will now return a collection with one item. Previously, this would return a single model directly. This method will now only return a single model if the amount is not supplied.
+
 ### Events
 
 #### Contract Changes
