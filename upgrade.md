@@ -1,4 +1,4 @@
-`# Upgrade Guide
+# Upgrade Guide
 
 - [Upgrading To 5.4.0 From 5.3](#upgrade-5.4.0)
 
