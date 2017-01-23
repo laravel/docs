@@ -185,20 +185,20 @@ If you would like to use a "where" style clause on your joins, you may use the `
 
 #### Parameter Grouping
 
-Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well:
+Sometimes you may need to create more advanced where clauses such as "where exists" or nested parameter groupings. The Laravel query builder can handle these as well through the `whereNested` method:
 
 	DB::table('users')
 	            ->where('name', '=', 'John')
-	            ->orWhere(function($query)
+	            ->whereNested(function($query)
 	            {
 	            	$query->where('votes', '>', 100)
-	            	      ->where('title', '<>', 'Admin');
+	            	      ->orWhere('title', '=', 'Admin');
 	            })
 	            ->get();
 
 The query above will produce the following SQL:
 
-	select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
+	select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 
 #### Exists Statements
 
