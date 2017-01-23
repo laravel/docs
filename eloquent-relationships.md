@@ -326,6 +326,8 @@ If you would like to define a custom model to represent the intermediate table o
         }
     }
 
+> {note} The custom model used to represent the intermediate table of your relationship must extend `Illuminate\Database\Eloquent\Relations\Pivot`.
+
 <a name="has-many-through"></a>
 ### Has Many Through
 
