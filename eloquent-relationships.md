@@ -641,6 +641,8 @@ If you need even more power, you may use the `whereHas` and `orWhereHas` methods
     $posts = Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
+    
+Of course you may also use nested statements using dot notation, as you would with `has`.
 
 <a name="querying-relationship-absence"></a>
 ### Querying Relationship Absence
