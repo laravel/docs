@@ -63,7 +63,7 @@ The behavior of the `every` method has been moved to the `nth` method to match t
 
 #### The `random` Method
 
-The `random` method now returns a new Collection instance regardless of the argument passed into the method. Previously, this method would return a single object instance if `1` was passed to the method.
+Calling `$collection->random(1)` will now return a new Collection instance with one item. Previously, this would return a single object directly. This method will now only return a single object if no arguments are supplied.
 
 ### Container
 
