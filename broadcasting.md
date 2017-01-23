@@ -86,7 +86,7 @@ When the Redis broadcaster publishes an event, it will be published on the event
 
 #### Socket.IO
 
-If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application's `head` HTML element. The Socket.IO serves this client for your convenience. Assuming you are running the server on the same domain on port 6001:
+If you are going to pair the Redis broadcaster with a Socket.IO server, you will need to include the Socket.IO JavaScript client library in your application's `head` HTML element. When the Socket.IO server is started, it will automatically expose the client JavaScript library at a standard URL. For example, if you are running the Socket.IO server on the same domain as your web application, you may access the client library like so:
 
     <script src="//{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
 
@@ -98,8 +98,6 @@ Next, you will need to instantiate Echo with the `socket.io` connector and a `ho
         broadcaster: 'socket.io',
         host: window.location.hostname + ':6001'
     });
-
-You can run the server on de different domain, but be aware that Laravel session cookies will only be shared with the same domain, so you will need to user an alternative authentication method.
 
 Finally, you will need to run a compatible Socket.IO server. Laravel does not include a Socket.IO server implementation; however, a community driven Socket.IO server is currently maintained at the [tlaverdure/laravel-echo-server](https://github.com/tlaverdure/laravel-echo-server) GitHub repository.
 
