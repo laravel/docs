@@ -1,4 +1,4 @@
-# Upgrade Guide
+`# Upgrade Guide
 
 - [Upgrading To 5.4.0 From 5.3](#upgrade-5.4.0)
 
@@ -63,7 +63,7 @@ The behavior of the `every` method has been moved to the `nth` method to match t
 
 #### The `random` Method
 
-Calling `$collection->random(1)` will now return a new Collection instance with one item. Previously, this would return a single object directly. This method will now only return a single object if no arguments are supplied.
+Calling `$collection->random(1)` will now return a new collection instance with one item. Previously, this would return a single object. This method will only return a single object if no arguments are supplied.
 
 ### Container
 
@@ -143,9 +143,9 @@ The `Model::hydrateRaw` method has been renamed to `fromQuery`. If you are passi
 
     User::on('connection')->fromQuery('...');
 
-#### The `factory` helper
+#### The `factory` Helper
 
-Calling `factory(User::class, 1)->make()` or `factory(User::class, 1)->create()` will now return a collection with one item. Previously, this would return a single model directly. This method will now only return a single model if the amount is not supplied.
+Calling `factory(User::class, 1)->make()` or `factory(User::class, 1)->create()` will now return a collection with one item. Previously, this would return a single model. This method will only return a single model if the amount is not supplied.
 
 ### Events
 
