@@ -247,3 +247,14 @@ The service container fires an event each time it resolves an object. You may li
     });
 
 As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.
+
+<a name="terminating-callbacks"></a>
+## Terminating callbacks
+
+This callbacks are performed at the end of both Http and Console application kernels. You may attach them by using `terminating` method:
+
+    $this->app->terminating(function (EntityManagerInterface $entityManager) {
+        $entityManager->flush();
+    });
+
+This functions also resolve dependencies out of the container.
