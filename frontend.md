@@ -42,7 +42,7 @@ All of the JavaScript dependencies required by your application can be found in 
 
     npm install
 
-By default, the Laravel `package.json` file includes a few packages such as `vue` and `vue-resource` to help you get started building your JavaScript application. Feel free to add or remove from the `package.json` file as needed for your own application.
+By default, the Laravel `package.json` file includes a few packages such as `vue` to help you get started building your JavaScript application. Feel free to add or remove from the `package.json` file as needed for your own application.
 
 Once the packages are installed, you can use the `gulp` command to [compile your assets](/docs/{{version}}/elixir). Gulp is a command-line build system for JavaScript. When you run the `gulp` command, Gulp will execute the instructions in your `gulpfile.js` file:
 
