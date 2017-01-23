@@ -877,6 +877,8 @@ Of course, eager loading Closures aren't limited to "constraints". You may also 
 
 	}))->get();
 
+> **Note:** When specifying columns using the eager loading callback, it's important that the constraining column is included or it won't be linked to the original model.
+
 ### Lazy Eager Loading
 
 It is also possible to eagerly load related models directly from an already existing model collection. This may be useful when dynamically deciding whether to load related models or not, or in combination with caching.
