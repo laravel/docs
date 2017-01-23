@@ -307,7 +307,7 @@ You can also filter the results returned by `belongsToMany` using the `wherePivo
 
 #### Defining Custom Intermediate Table Models
 
-If you would like to define a custom model to represent the intermediate table of your relationship, you may call the `using` method when defining the relationship:
+If you would like to define a custom model to represent the intermediate table of your relationship, you may call the `using` method when defining the relationship. All custom models used to represent intermediate tables of relationships must extend the `Illuminate\Database\Eloquent\Relations\Pivot` class:
 
     <?php
 
@@ -325,8 +325,6 @@ If you would like to define a custom model to represent the intermediate table o
             return $this->belongsToMany('App\User')->using('App\UserRole');
         }
     }
-
-> {note} The custom model used to represent the intermediate table of your relationship must extend `Illuminate\Database\Eloquent\Relations\Pivot`.
 
 <a name="has-many-through"></a>
 ### Has Many Through
