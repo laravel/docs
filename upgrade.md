@@ -298,8 +298,8 @@ Tests written on Laravel 5.3 will extend the `BrowserKitTest` class while any ne
 
     <?php
 
-    use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
     use Illuminate\Contracts\Console\Kernel;
+    use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 
     abstract class BrowserKitTestCase extends BaseTestCase
     {
