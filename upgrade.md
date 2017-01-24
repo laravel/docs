@@ -127,6 +127,24 @@ Laravel no longer includes the ability to customize the PDO "fetch mode" from yo
 
 The `date` cast now converts the column to a `Carbon` object and calls the `startOfDay` method on the object. If you would like to preserve the time portion of the date, you should use the `datetime` cast.
 
+#### Foreign Key Conventions
+
+If the foreign key is not explicitly specified when defining a relationship, Eloquent will now use the table name and primary key name for the related model to build the foreign key. For the vast majority of applications, this is not a change of behavior. For example:
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+Just like previous Laravel releases, this relationship will typically use `user_id` as the foreign key. However, the behavior could be different from previous releases if you are overriding the `getKeyName` method of the `User` model. For example:
+
+    public function getKeyName()
+    {
+        return 'key';
+    }
+
+When this is the case, Laravel will now respect your customization and determine the foreign key column name is `user_key` instead of `user_id`.
+
 #### Has One / Many `createMany`
 
 The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
