@@ -165,6 +165,14 @@ When this is the case, Laravel will now respect your customization and determine
 
 The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
 
+#### Related Model Connections
+
+Related models will now use the same connection as the parent model. For example, if you execute a query like:
+
+    User::on('example')->with('posts');
+
+Eloquent will query the posts table on the `example` connection instead of the default database connection. If you want to read the `posts` relationship from the default connection, you should to explicitly set the model's connection to your application's default connection.
+
 #### The `hydrate` Method
 
 If you are currently passing a custom connection name to this method, you should now use the `on` method:
@@ -184,14 +192,6 @@ The `whereKey($id)` method will now add a "where" clause for the given primary k
 #### The `factory` Helper
 
 Calling `factory(User::class, 1)->make()` or `factory(User::class, 1)->create()` will now return a collection with one item. Previously, this would return a single model. This method will only return a single model if the amount is not supplied.
-
-#### Related models connections
-
-Related models will now use the same connection as the parent model, so for example if you have a query like this:
-
-	User::on('some_connection')->with('posts');
-
-Eloquent will query the posts table on the `some_connection` not the default connection, if you want to read posts from the default connection you need to explicitly set the model connection to the default connection you use.
 
 ### Events
 
@@ -333,8 +333,6 @@ Tests written on Laravel 5.3 will extend the `BrowserKitTest` class while any ne
     }
 
 Once you have created this class, make sure to update all of your tests to extend your new `BrowserKitTest` class. This will allow all of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](/docs/5.4/http-tests) or [Laravel Dusk](/docs/5.4/dusk).
-
-You also need to update all test traits used, like `WithoutEvents` for example, and make sure you're using the traits in `Laravel\BrowserKitTesting` not `Illuminate\Foundation\Testing`.
 
 > {note} If you are writing new tests and want them to use the Laravel 5.4 testing layer, make sure to extend the `TestCase` class.
 
