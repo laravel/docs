@@ -35,7 +35,7 @@ In order to continue using the `tinker` Artisan command, you should also install
 
     composer require laravel/tinker
 
-Once the package has been installed, you should add the `Laravel\Tinker\TinkerServiceProvider` to your `config/app.php` configuration file.
+Once the package has been installed, you should add the `Laravel\Tinker\TinkerServiceProvider::class` to your `config/app.php` configuration file.
 
 #### Guzzle
 
