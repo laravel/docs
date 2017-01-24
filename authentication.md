@@ -75,14 +75,16 @@ When a user is successfully authenticated, they will be redirected to the `/home
 
     protected $redirectTo = '/';
 
-If the redirect path needs custom generation logic you may define a `redirectTo` method instead of a `redirectTo` property:
+If the redirect path needs custom generation logic you may define a `authenticated` method instead of a `redirectTo` property:
 
-    protected function redirectTo()
+    protected function authenticated()
     {
         //
     }
 
-> {tip} `redirectTo` method has higher priority than `redirectTo` attribute.
+Note that `authenticated` method should return an instance of `Illuminate\Http\RedirectResponse`, not just a string. This is takes care of, when used with `redirect()` helper method.
+
+> {tip} `authenticated` method has higher priority than `redirectTo` attribute.
 
 #### Username Customization
 
