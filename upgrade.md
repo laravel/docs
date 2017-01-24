@@ -13,6 +13,22 @@
 
 Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file.
 
+#### Laravel Cashier
+
+Laravel Cashier is already compatible with Laravel 5.4.
+
+#### Laravel Passport
+
+Laravel Passport `2.0.0` has been released to provide compatibility with Laravel 5.4 and the [Axios](https://github.com/mzabriskie/axios) JavaScript library. If you are upgrading from Laravel 5.3 and using the pre-built Passport Vue components, you should make sure the Axios library is globally available to your application as `axios`.
+
+#### Laravel Scout
+
+Laravel Scout `3.0.0` has been released to provide compatibility with Laravel 5.4.
+
+#### Laravel Socialite
+
+Laravel Socialite `3.0.0` has been released to provide compatibility with Laravel 5.4.
+
 #### Laravel Tinker
 
 In order to continue using the `tinker` Artisan command, you should also install the `laravel/tinker` package:
