@@ -323,6 +323,7 @@ In Laravel 5.3, all "pivot" table models for `belongsToMany` relationships used 
 
 Previously, it was not possible to define Redis connections to single hosts and to clusters in the same application. In Laravel 5.4, you may now define Redis connections to multiple single hosts and multiple clusters within the same application. For more information on Redis in Laravel, please consult the full [Redis documentation](/docs/5.4/redis).
 
+<a name="utf8mb4"></a>
 ### Migration Default String Length
 
 Laravel 5.4 uses the `utf8mb4` character set by default, which includes support for storing "emojis" in the database. If you are upgrading your application from Laravel 5.3, you are not required to switch to this character set.
