@@ -374,3 +374,7 @@ If you are using the `{Inf}` placeholder for pluralizing your translation string
 #### Date Format Validation
 
 Date format validation is now more strict and supports the placeholders present within the documentation for the PHP [date function](http://php.net/manual/en/function.date.php). In previous releases of Laravel, the timezone placeholder `P` would accept all timezone formats; however, in Laravel 5.4 each timezone format has a unique placeholder as per the PHP documentation.
+
+### Miscellaneous
+
+We also encourage you to view the changes in the `laravel\laravel` repository. While many of these changes are not required, you may wish to keep these files more in sync with the current version. Some of these changes will be covered in this upgrade guide, but others, such as changes to config files or comments, will not be. You can easily view the changes with the [Github comparison tool](https://github.com/laravel/laravel/compare/5.3...master), and choose which updates are important to you.
