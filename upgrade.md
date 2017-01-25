@@ -41,6 +41,8 @@ Once the package has been installed, you should add `Laravel\Tinker\TinkerServic
 
 Laravel 5.4 requires Guzzle 6.0 or greater.
 
+> {note} After upgrading all packages, you should run `php artisan view:clear` to avoid various errors related to the removal of `Illuminate\View\Factory::getFirstLoop()`.
+
 ### Authorization
 
 #### The `getPolicyFor` Method
