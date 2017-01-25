@@ -13,6 +13,8 @@
 
 Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file.
 
+> {note} After upgrading all packages, you should run `php artisan view:clear` to avoid Blade errors related to the removal of `Illuminate\View\Factory::getFirstLoop()`.
+
 #### Laravel Cashier
 
 Laravel Cashier is already compatible with Laravel 5.4.
@@ -40,8 +42,6 @@ Once the package has been installed, you should add `Laravel\Tinker\TinkerServic
 #### Guzzle
 
 Laravel 5.4 requires Guzzle 6.0 or greater.
-
-> {note} After upgrading all packages, you should run `php artisan view:clear` to avoid various errors related to the removal of `Illuminate\View\Factory::getFirstLoop()`.
 
 ### Authorization
 
