@@ -83,7 +83,7 @@ Multiple calls to the `less` method may be used to compile multiple files:
 
 If you wish to customize the file name of the compiled CSS, you may pass a full file path as the second argument to the `less` method:
 
-    mix.less('resouces/assets/less/app.less', 'public/stylesheets/styles.css');
+    mix.less('resources/assets/less/app.less', 'public/stylesheets/styles.css');
 
 <a name="sass"></a>
 ### Sass
