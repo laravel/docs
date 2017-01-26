@@ -89,7 +89,7 @@ Calling `$collection->random(1)` will now return a new collection instance with 
 
 #### Binding Classes With Leading Slashes
 
-Binding classes into the container with leading slashes is no longer supported. This feature required a significant amount of string formatting calls to the be made within the container. Instead, simply register your bindings without a leading slash:
+Binding classes into the container with leading slashes is no longer supported. This feature required a significant amount of string formatting calls to be made within the container. Instead, simply register your bindings without a leading slash:
 
     $container->bind('Class\Name', function () {
         //
