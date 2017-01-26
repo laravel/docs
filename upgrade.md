@@ -127,9 +127,11 @@ The `share` method has been removed from the container. This was a legacy method
 
 #### Custom Connections
 
-If you were previously binding a service container binding for a `db.connection.{driver-name}` key in order to resolve a custom database connection instance, you should now use the `DB::resolverFor` method in the `register` method of your `AppServiceProvider`:
+If you were previously binding a service container binding for a `db.connection.{driver-name}` key in order to resolve a custom database connection instance, you should now use the `Illuminate\Database\Connection::resolverFor` method in the `register` method of your `AppServiceProvider`:
 
-    DB::resolverFor('driver-name', function ($connection, $database, $prefix, $config) {
+    use Illuminate\Database\Connection;
+
+    Connection::resolverFor('driver-name', function ($connection, $database, $prefix, $config) {
         //
     });
 
