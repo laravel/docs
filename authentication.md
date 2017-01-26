@@ -82,7 +82,7 @@ If the redirect path needs custom generation logic you may define a `redirectTo`
         //
     }
 
-> {tip} `redirectTo` method has higher priority than `redirectTo` attribute.
+> {tip} The `redirectTo` method will take precedence over the `redirectTo` attribute.
 
 #### Username Customization
 
