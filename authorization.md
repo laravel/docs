@@ -269,6 +269,35 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
             // The current user can update the blog post...
         }
     }
+    
+If your controller has resource methods (create/update/etc.) you can authorize all of those through the `authorizeResource` helper, by simply passing the fully qualified name of the related model:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Post;
+    use App\Http\Controllers\Controller;
+
+    class PostController extends Controller
+    {
+        public function __construct()
+        {
+            $this->authorizeResource(Post::class);
+        }
+    }
+    
+This is the equivalent of manually applying authorization to each resource method. In this case per example, it would apply the following middlewares:
+
+| Controller method      | Middleware          |
+|:-----------------------|:--------------------|
+| PostController@index   |                     |
+| PostController@create  | can:create,App\Post |
+| PostController@store   | can:create,App\Post |
+| PostController@show    | can:view,post       |
+| PostController@edit    | can:update,post     |
+| PostController@update  | can:update,post     |
+| PostController@destroy | can:delete,post     |
 
 #### Actions That Don't Require Models
 
