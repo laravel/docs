@@ -391,4 +391,4 @@ Date format validation is now more strict and supports the placeholders present 
 
 ### Miscellaneous
 
-We also encourage you to view the changes in the `laravel\laravel` repository. While many of these changes are not required, you may wish to keep these files more in sync with the current version. Some of these changes will be covered in this upgrade guide, but others, such as changes to config files or comments, will not be. You can easily view the changes with the [Github comparison tool](https://github.com/laravel/laravel/compare/5.3...master), and choose which updates are important to you.
+We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [Github comparison tool](https://github.com/laravel/laravel/compare/5.3...master) and choose which updates are important to you.
