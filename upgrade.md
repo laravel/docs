@@ -60,7 +60,7 @@ The `make:console` command has been renamed to `make:command`.
 
 #### Authentication Scaffolding
 
-The two default authentication controllers provided with the framework have been split into four smaller controllers. This change provides cleaner, more focused authentication controllers by default. The easiest way to upgrade your application to the new authentication controllers is to [grab a fresh copy of each controller from GitHub](https://github.com/laravel/laravel/tree/master/app/Http/Controllers/Auth) and place them into your application.
+The two default authentication controllers provided with the framework have been split into four smaller controllers. This change provides cleaner, more focused authentication controllers by default. The easiest way to upgrade your application to the new authentication controllers is to [grab a fresh copy of each controller from GitHub](https://github.com/laravel/laravel/tree/5.3/app/Http/Controllers/Auth) and place them into your application.
 
 You should also make sure that you are calling the `Auth::routes()` method in your `routes/web.php` file. This method will register the proper routes for the new authentication controllers.
 
@@ -127,7 +127,7 @@ In prior versions of Laravel, when registering custom Blade directives using the
 
 #### Service Provider
 
-Laravel 5.3 includes significant improvements to [event broadcasting](/docs/{{version}}/broadcasting). You should add the new `BroadcastServiceProvider` to your `app/Providers` directory by [grabbing a fresh copy of the source from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/BroadcastServiceProvider.php). Once you have defined the new service provider, you should add it to the `providers` array of your `config/app.php` configuration file.
+Laravel 5.3 includes significant improvements to [event broadcasting](/docs/{{version}}/broadcasting). You should add the new `BroadcastServiceProvider` to your `app/Providers` directory by [grabbing a fresh copy of the source from GitHub](https://raw.githubusercontent.com/laravel/laravel/5.3/app/Providers/BroadcastServiceProvider.php). Once you have defined the new service provider, you should add it to the `providers` array of your `config/app.php` configuration file.
 
 ### Cache
 
