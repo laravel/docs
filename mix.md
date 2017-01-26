@@ -94,7 +94,7 @@ The `sass` method allows you to compile [Sass](http://sass-lang.com/) into CSS. 
 
 Again, like the `less` method, you may compile multiple Sass files into their own respective CSS files and even customize the output directory of the resulting CSS:
 
-    mix.sass('resources/assets/sass/app.sass', 'public/css');
+    mix.sass('resources/assets/sass/app.sass', 'public/css')
        .sass('resources/assets/sass/admin.sass', 'public/css/admin');
 
 <a name="plain-css"></a>
