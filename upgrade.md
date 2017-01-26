@@ -288,10 +288,6 @@ Laravel 5.4 introduces improved Redis cluster support. If you are using Redis cl
 
 The `middleware` method of the `Illuminate\Routing\Router` class has been renamed to `aliasMiddleware()`. It is likely that most applications never call this method manually, as it is typically only called by the HTTP kernel to register route-level middleware defined in the `$routeMiddleware` array.
 
-#### The `forceSchema` Method
-
-The `forceSchema` method of the `Illuminate\Routing\UrlGenerator` class has been renamed to `forceScheme`.
-
 ### Sessions
 
 #### Symfony Compatibility
@@ -372,6 +368,12 @@ The `Mail` fake has been greatly simplified for the Laravel 5.4 release. Instead
 If you are using the `{Inf}` placeholder for pluralizing your translation strings, you should update your translation strings to use the `*` character instead:
 
     {0} First Message|{1,*} Second Message
+
+### URL Generation
+
+#### The `forceSchema` Method
+
+The `forceSchema` method of the `Illuminate\Routing\UrlGenerator` class has been renamed to `forceScheme`.
 
 ### Validation
 
