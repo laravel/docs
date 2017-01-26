@@ -298,7 +298,7 @@ The `middleware` method of the `Illuminate\Routing\Router` class has been rename
 
 #### The `getParameter` Method
 
-The `getParameter` method of the `Illuminate\Routing\Route` class has been removed, you may use `parameter()` instead. 
+The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead. 
 
 ### Sessions
 
