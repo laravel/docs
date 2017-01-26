@@ -296,6 +296,10 @@ The class `Illuminate\Foundation\Http\Middleware\VerifyPostSize` has been rename
 
 The `middleware` method of the `Illuminate\Routing\Router` class has been renamed to `aliasMiddleware()`. It is likely that most applications never call this method manually, as it is typically only called by the HTTP kernel to register route-level middleware defined in the `$routeMiddleware` array.
 
+#### The `getParameter` Method
+
+The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead. 
+
 ### Sessions
 
 #### Symfony Compatibility
