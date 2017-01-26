@@ -286,11 +286,13 @@ Laravel 5.4 introduces improved Redis cluster support. If you are using Redis cl
 
 ### Routing
 
+#### Post Size Middleware
+
+The class `Illuminate\Foundation\Http\Middleware\VerifyPostSize` has been renamed to `Illuminate\Foundation\Http\Middleware\ValidatePostSize`.
+
 #### The `middleware` Method
 
 The `middleware` method of the `Illuminate\Routing\Router` class has been renamed to `aliasMiddleware()`. It is likely that most applications never call this method manually, as it is typically only called by the HTTP kernel to register route-level middleware defined in the `$routeMiddleware` array.
-
-The class `Illuminate\Foundation\Http\Middleware\VerifyPostSize` has been renamed to `Illuminate\Foundation\Http\Middleware\ValidatePostSize`.
 
 ### Sessions
 
