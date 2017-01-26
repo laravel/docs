@@ -13,7 +13,9 @@
 
 Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file.
 
-> {note} After upgrading all packages, you should run `php artisan view:clear` to avoid Blade errors related to the removal of `Illuminate\View\Factory::getFirstLoop()`. Also, run `php artisan route:cache` to avoid errors related to application routes.
+#### Flushing The Cache
+
+After upgrading all packages, you should run `php artisan view:clear` to avoid Blade errors related to the removal of `Illuminate\View\Factory::getFirstLoop()`. In addition, you may need to run `php artisan route:clear` to flush the route cache.
 
 #### Laravel Cashier
 
