@@ -69,7 +69,7 @@ In this example, the `sidebar` section is utilizing the `@@parent` directive to 
 Of course, just like plain PHP views, Blade views may be returned from routes using the global `view` helper function:
 
     Route::get('blade', function () {
-        return view('child');
+        return view('layouts/child');
     });
 
 <a name="displaying-data"></a>
