@@ -75,6 +75,12 @@ When defining channel name placeholders in Laravel 5.3, the `*` character is use
         return (int) $user->id === (int) $userId;
     });
 
+### Commands
+
+#### Command Namespace Detector Trait Rename
+
+If any of your commands use the `AppNamespaceDetectorTrait` Trait, it has been renamed to `DetectsApplicationNamespace`.
+
 ### Collections
 
 #### The `every` Method
@@ -298,7 +304,7 @@ The `middleware` method of the `Illuminate\Routing\Router` class has been rename
 
 #### The `getParameter` Method
 
-The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead. 
+The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead.
 
 ### Sessions
 
