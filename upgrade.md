@@ -123,6 +123,12 @@ The `share` method has been removed from the container. This was a legacy method
         return 'foo';
     });
 
+### Console
+
+#### `Illuminate\Console\AppNamespaceDetectorTrait` Renamed
+
+If you are directly referencing the `Illuminate\Console\AppNamespaceDetectorTrait` trait, update your code to reference `Illuminate\Console\DetectsApplicationNamespace` instead.
+
 ### Database
 
 #### Custom Connections
