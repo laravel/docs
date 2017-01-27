@@ -125,7 +125,7 @@ The `share` method has been removed from the container. This was a legacy method
 
 ### Console
 
-#### `Illuminate\Console\AppNamespaceDetectorTrait` Renamed
+#### The `Illuminate\Console\AppNamespaceDetectorTrait` Trait
 
 If you are directly referencing the `Illuminate\Console\AppNamespaceDetectorTrait` trait, update your code to reference `Illuminate\Console\DetectsApplicationNamespace` instead.
 
@@ -304,7 +304,7 @@ The `middleware` method of the `Illuminate\Routing\Router` class has been rename
 
 #### The `getParameter` Method
 
-The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead. 
+The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead.
 
 ### Sessions
 
