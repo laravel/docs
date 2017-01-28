@@ -338,7 +338,7 @@ However, the `broadcast` function also exposes the `toOthers` method which allow
 
 To better understand when you may want to use the `toOthers` method, let's imagine a task list application where a user may create a new task by entering a task name. To create a task, your application might make a request to a `/task` end-point which broadcasts the task's creation and returns a JSON representation of the new task. When your JavaScript application receives the response from the end-point, it might directly insert the new task into its task list like so:
 
-    this.$http.post('/task', task)
+    axios.post('/task', task)
         .then((response) => {
             this.tasks.push(response.data);
         });
@@ -349,9 +349,9 @@ You may solve this by using the `toOthers` method to instruct the broadcaster to
 
 #### Configuration
 
-When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using [Vue](https://vuejs.org) and Vue Resource, the socket ID will automatically be attached to every outgoing request as a `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID.
+When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using [Vue](https://vuejs.org) and [Axios](https://github.com/mzabriskie/axios), the socket ID will automatically be attached to every outgoing request as a `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID.
 
-If you are not using Vue and Vue Resource, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header. You may retrieve the socket ID using the `Echo.socketId` method:
+If you are not using Vue and Axios, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header. You may retrieve the socket ID using the `Echo.socketId` method:
 
     var socketId = Echo.socketId();
 
