@@ -761,6 +761,14 @@ The field under validation must be an integer.
 
 The field under validation must be an IP address.
 
+#### ipv4
+
+The field under validation must be an IPv4 address.
+
+#### ipv6
+
+The field under validation must be an IPv6 address.
+
 <a name="rule-json"></a>
 #### json
 
