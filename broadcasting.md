@@ -4,7 +4,7 @@
     - [Configuration](#configuration)
     - [Driver Prerequisites](#driver-prerequisites)
 - [Concept Overview](#concept-overview)
-    - [Using Example Application](#using-example-application)
+    - [Using An Example Application](#using-example-application)
 - [Defining Broadcast Events](#defining-broadcast-events)
     - [Broadcast Name](#broadcast-name)
     - [Broadcast Data](#broadcast-data)
@@ -114,7 +114,7 @@ Laravel's event broadcasting allows you to broadcast your server-side Laravel ev
 Events are broadcast over "channels", which may be specified as public or private. Any visitor to your application may subscribe to a public channel without any authentication or authorization; however, in order to subscribe to a private channel, a user must be authenticated and authorized to listen on that channel.
 
 <a name="using-example-application"></a>
-### Using Example Application
+### Using An Example Application
 
 Before diving into each component of event broadcasting, let's take a high level overview using an e-commerce store as an example. We won't discuss the details of configuring [Pusher](https://pusher.com) or [Laravel Echo](#installing-laravel-echo) since that will be discussed in detail in other sections of this documentation.
 
