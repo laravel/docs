@@ -199,7 +199,7 @@ The simplest way to create a client is using the `passport:client` Artisan comma
 
 Since your users will not be able to utilize the `client` command, Passport provides a JSON API that you may use to create clients. This saves you the trouble of having to manually code controllers for creating, updating, and deleting clients.
 
-However, you will need to pair Passport's JSON API with your own frontend to provide a dashboard for your users to manage their clients. Below, we'll review all of the API endpoints for managing clients. For convenience, we'll use [Vue](https://vuejs.org) to demonstrate making HTTP requests to the endpoints.
+However, you will need to pair Passport's JSON API with your own frontend to provide a dashboard for your users to manage their clients. Below, we'll review all of the API endpoints for managing clients. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
 
 > {tip} If you don't want to implement the entire client management frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
 
@@ -207,7 +207,7 @@ However, you will need to pair Passport's JSON API with your own frontend to pro
 
 This route returns all of the clients for the authenticated user. This is primarily useful for listing all of the user's clients so that they may edit or delete them:
 
-    this.$http.get('/oauth/clients')
+    axios.get('/oauth/clients')
         .then(response => {
             console.log(response.data);
         });
@@ -223,7 +223,7 @@ When a client is created, it will be issued a client ID and client secret. These
         redirect: 'http://example.com/callback'
     };
 
-    this.$http.post('/oauth/clients', data)
+    axios.post('/oauth/clients', data)
         .then(response => {
             console.log(response.data);
         })
@@ -240,7 +240,7 @@ This route is used to update clients. It requires two pieces of data: the client
         redirect: 'http://example.com/callback'
     };
 
-    this.$http.put('/oauth/clients/' + clientId, data)
+    axios.put('/oauth/clients/' + clientId, data)
         .then(response => {
             console.log(response.data);
         })
@@ -252,7 +252,7 @@ This route is used to update clients. It requires two pieces of data: the client
 
 This route is used to delete clients:
 
-    this.$http.delete('/oauth/clients/' + clientId)
+    axios.delete('/oauth/clients/' + clientId)
         .then(response => {
             //
         });
@@ -461,7 +461,7 @@ Once you have created a personal access client, you may issue tokens for a given
 
 #### JSON API
 
-Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Vue](https://vuejs.org) to demonstrate making HTTP requests to the endpoints.
+Passport also includes a JSON API for managing personal access tokens. You may pair this with your own frontend to offer your users a dashboard for managing personal access tokens. Below, we'll review all of the API endpoints for managing personal access tokens. For convenience, we'll use [Axios](https://github.com/mzabriskie/axios) to demonstrate making HTTP requests to the endpoints.
 
 > {tip} If you don't want to implement the personal access token frontend yourself, you can use the [frontend quickstart](#frontend-quickstart) to have a fully functional frontend in a matter of minutes.
 
@@ -469,7 +469,7 @@ Passport also includes a JSON API for managing personal access tokens. You may p
 
 This route returns all of the [scopes](#token-scopes) defined for your application. You may use this route to list the scopes a user may assign to a personal access token:
 
-    this.$http.get('/oauth/scopes')
+    axios.get('/oauth/scopes')
         .then(response => {
             console.log(response.data);
         });
@@ -478,7 +478,7 @@ This route returns all of the [scopes](#token-scopes) defined for your applicati
 
 This route returns all of the personal access tokens that the authenticated user has created. This is primarily useful for listing all of the user's token so that they may edit or delete them:
 
-    this.$http.get('/oauth/personal-access-tokens')
+    axios.get('/oauth/personal-access-tokens')
         .then(response => {
             console.log(response.data);
         });
@@ -492,7 +492,7 @@ This route creates new personal access tokens. It requires two pieces of data: t
         scopes: []
     };
 
-    this.$http.post('/oauth/personal-access-tokens', data)
+    axios.post('/oauth/personal-access-tokens', data)
         .then(response => {
             console.log(response.data.accessToken);
         })
@@ -504,7 +504,7 @@ This route creates new personal access tokens. It requires two pieces of data: t
 
 This route may be used to delete personal access tokens:
 
-    this.$http.delete('/oauth/personal-access-tokens/' + tokenId);
+    axios.delete('/oauth/personal-access-tokens/' + tokenId);
 
 <a name="protecting-routes"></a>
 ## Protecting Routes
@@ -627,13 +627,13 @@ This Passport middleware will attach a `laravel_token` cookie to your outgoing r
             console.log(response.data);
         });
 
-When using this method of authentication, you will need to send the CSRF token with every request via the `X-CSRF-TOKEN` header. To set the header using axios, add `'X-CSRF-TOKEN': window.Laravel.csrfToken,` to the default header configuration in bootstrap.js:
+When using this method of authentication, Axios will automatically send the `X-CSRF-TOKEN` header. In addition, the default Laravel JavaScript scaffolding instructs Axios to send the `X-Requested-With` header:
 
     window.axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
     };
 
-> {note} If you are using a different JavaScript framework, you should make sure it is configured to send this header with every outgoing request.
+> {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
 
 
 <a name="events"></a>
