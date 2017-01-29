@@ -109,7 +109,7 @@ Sometimes it is helpful to define multiple slots for a component. Let's modify o
         {{ $slot }}
     </div>
 
-Now, we can inject content into the named slot using the `@slot` directive. Any content is not within a `@slot` directive will be passed to the component in the `$slot` variable:
+Now, we can inject content into the named slot using the `@slot` directive. Any content not within a `@slot` directive will be passed to the component in the `$slot` variable:
 
     @component('alert')
         @slot('title')
@@ -118,6 +118,14 @@ Now, we can inject content into the named slot using the `@slot` directive. Any 
 
         You are not allowed to access this resource!
     @endcomponent
+
+Sometimes you may wish to pass PHP elements to your component, such as arrays or objects. Simply pass the element as the second parameter to the slot.
+
+    @component('alert')
+        @slot('options', ['option1' => 'blue', 'option2' => 'red'])
+    @endcomponent
+
+Notice that you may omit the `@endslot` directive.
 
 <a name="displaying-data"></a>
 ## Displaying Data
