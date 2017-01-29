@@ -326,10 +326,8 @@ If you have tests written using Laravel 5.3 and would like to run them side-by-s
 
     composer require laravel/browser-kit-testing
 
-Next, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTest.php`.
+Next, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTest.php`. In order for your `BrowserKitTest` class to be properly loaded, you may need to add it to your `composer.json` file:
 
-You will also need to add the new base class to your composer.json file.
-    
     "autoload-dev": {
         "classmap": [
             "tests/TestCase.php",
