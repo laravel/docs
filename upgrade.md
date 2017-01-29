@@ -239,6 +239,10 @@ The `illuminate.log` event is now an object based event using the `Illuminate\Lo
 
 The `Illuminate\Http\Exception\HttpResponseException` has been renamed to `Illuminate\Http\Exceptions\HttpResponseException`. Note that `Exceptions` is now plural. Likewise, the `Illuminate\Http\Exception\PostTooLargeException` has been renamed to `Illuminate\Http\Exceptions\PostTooLargeException`.
 
+### Laravel Mix
+
+Laravel 5.4 introduces [Laravel Mix](/docs/{{version}}/mix) for compiling frontend assets. If you are switching to Laravel Mix from Laravel Elixir, you will need to remove any dependencies prefixed with 'laravel-elixir' from your 'package.json' file in order for Webpack to compile properly.
+
 ### Mail
 
 #### `Class@method` Syntax
