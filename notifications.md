@@ -60,7 +60,7 @@ This command will place a fresh notification class in your `app/Notifications` d
 <a name="using-the-notifiable-trait"></a>
 ### Using The Notifiable Trait
 
-Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` [facade](/docs/{{version}}/facades). First, let's examine the `Notifiable` trait. This trait is used by the default `App\User` model and contains one method that may be used to send notifications: `notify`.
+Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` [facade](/docs/{{version}}/facades). First, let's examine the `Notifiable` trait.
 
     <?php
 
@@ -74,7 +74,7 @@ Notifications may be sent in two ways: using the `notify` method of the `Notifia
         use Notifiable;
     }
 
-The `notify` method expects to receive a notification instance:
+This trait is used by the default `App\User` model and contains one method that may be used to send notifications: `notify`. The `notify` method expects to receive a notification instance:
 
     use App\Notifications\InvoicePaid;
 
