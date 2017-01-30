@@ -239,10 +239,6 @@ The `illuminate.log` event is now an object based event using the `Illuminate\Lo
 
 The `Illuminate\Http\Exception\HttpResponseException` has been renamed to `Illuminate\Http\Exceptions\HttpResponseException`. Note that `Exceptions` is now plural. Likewise, the `Illuminate\Http\Exception\PostTooLargeException` has been renamed to `Illuminate\Http\Exceptions\PostTooLargeException`.
 
-### Laravel Mix
-
-Laravel 5.4 introduces [Laravel Mix](/docs/{{version}}/mix) for compiling frontend assets. If you are switching to Laravel Mix from Laravel Elixir, you will need to remove any dependencies prefixed with 'laravel-elixir' from your 'package.json' file in order for Webpack to compile properly.
-
 ### Mail
 
 #### `Class@method` Syntax
@@ -268,6 +264,10 @@ In order to provide support for Laravel 5.4's new Markdown mail components, you 
 #### Queueing Mail With Closures
 
 In order to queue mail, you now must use a [mailable](/docs/{{version}}/mail). Queuing mail using the `Mail::queue` and `Mail::later` methods no longer supports using Closures to configure the mail message. This feature required the use of special libraries to serialize Closures since PHP does not natively support this feature.
+
+### Mix
+
+New Laravel application use [Laravel Mix](/docs/{{version}}/mix) to compile frontend assets. Upgrading to Mix is not required; however, if you are upgrading to Laravel Mix from Laravel Elixir, you should remove any dependencies prefixed with 'laravel-elixir' from your 'package.json'.
 
 ### Redis
 
