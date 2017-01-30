@@ -41,7 +41,7 @@ The default server configuration should suffice for development. However, you ar
 
 #### Configuring Clusters
 
-If your application is utilizing a cluster of Redis servers, you should define these clusters within a `cluster` key of your Redis configuration:
+If your application is utilizing a cluster of Redis servers, you should define these clusters within a `clusters` key of your Redis configuration:
 
     'redis' => [
 
