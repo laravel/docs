@@ -370,7 +370,7 @@ Once you have created this class, make sure to update all of your tests to exten
 
 > {note} If you are writing new tests and want them to use the Laravel 5.4 testing layer, make sure to extend the `TestCase` class.
 
-> {note} If using the DatabaseMigrations or DatabaseTransactions traits then you will need to update their namespace to `Laravel\BrowserKitTesting\DatabaseMigrations` and `Laravel\BrowserKitTesting\DatabaseTransactions`.
+> {note} If using the DatabaseMigrations or DatabaseTransactions traits in your BrowserKitTests then you will need to update their namespace to `Laravel\BrowserKitTesting\DatabaseMigrations` and `Laravel\BrowserKitTesting\DatabaseTransactions`.
 
 #### Environment
 
