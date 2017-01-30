@@ -61,6 +61,20 @@ if ($policy) {
 }
 ```
 
+### Blade
+
+#### `@section` Escaping
+
+In Laravel 5.4, inline content passed to a section is automatically escaped:
+
+    @section('title', $content)
+
+If you would like to render unescaped content in a section, you must declare the section using the traditional "long form" style:
+
+   @section('title')
+       {!! $content !!}
+   @stop
+
 ### Bootstrappers
 
 If you are manually overriding the `$bootstrappers` array on your HTTP or Console kernel, you should rename the `DetectEnvironment` entry to `LoadEnvironmentVariables`.
@@ -405,21 +419,6 @@ The `forceSchema` method of the `Illuminate\Routing\UrlGenerator` class has been
 #### Date Format Validation
 
 Date format validation is now more strict and supports the placeholders present within the documentation for the PHP [date function](http://php.net/manual/en/function.date.php). In previous releases of Laravel, the timezone placeholder `P` would accept all timezone formats; however, in Laravel 5.4 each timezone format has a unique placeholder as per the PHP documentation.
-
-
-### Blade Views
-
-#### `@section` short form
-
-Content being passed directly to the `@section` directive are currently being escaped:
-
-    @section('title', $content)
-
-If you want to pass un-escaped content you can use the long form instead:
-
-   @section('title')
-       {!! $content !!}
-   @stop
 
 ### Miscellaneous
 
