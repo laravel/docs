@@ -265,10 +265,6 @@ In order to provide support for Laravel 5.4's new Markdown mail components, you 
 
 In order to queue mail, you now must use a [mailable](/docs/{{version}}/mail). Queuing mail using the `Mail::queue` and `Mail::later` methods no longer supports using Closures to configure the mail message. This feature required the use of special libraries to serialize Closures since PHP does not natively support this feature.
 
-### Mix
-
-New Laravel application use [Laravel Mix](/docs/{{version}}/mix) to compile frontend assets. Upgrading to Mix is not required; however, if you are upgrading to Laravel Mix from Laravel Elixir, you should remove any dependencies prefixed with 'laravel-elixir' from your 'package.json'.
-
 ### Redis
 
 #### Improved Clustering Support
