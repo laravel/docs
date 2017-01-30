@@ -406,6 +406,21 @@ The `forceSchema` method of the `Illuminate\Routing\UrlGenerator` class has been
 
 Date format validation is now more strict and supports the placeholders present within the documentation for the PHP [date function](http://php.net/manual/en/function.date.php). In previous releases of Laravel, the timezone placeholder `P` would accept all timezone formats; however, in Laravel 5.4 each timezone format has a unique placeholder as per the PHP documentation.
 
+
+### Blade Views
+
+#### `@section` short form
+
+Content being passed directly to the `@section` directive are currently being escaped:
+
+    @section('title', $content)
+
+If you want to pass un-escaped content you can use the long form instead:
+
+   @section('title')
+       {!! $content !!}
+   @stop
+
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [Github comparison tool](https://github.com/laravel/laravel/compare/5.3...master) and choose which updates are important to you.
