@@ -198,7 +198,7 @@ By default, all resource controller actions have a route name; however, you can 
 By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. The `parameters` array should be an associative array of resource names and parameter names:
 
     Route::resource('user', 'AdminUserController', ['parameters' => [
-        'user' => 'admin_user'
+        'show' => 'admin_user'
     ]]);
 
  The example above generates the following URIs for the resource's `show` route:
