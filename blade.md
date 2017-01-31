@@ -119,13 +119,13 @@ Now, we can inject content into the named slot using the `@slot` directive. Any 
         You are not allowed to access this resource!
     @endcomponent
 
-Sometimes you may wish to pass PHP elements to your component, such as arrays or objects. Simply pass the element as the second parameter to the slot.
+#### Passing Additional Data To Components
 
-    @component('alert')
-        @slot('options', ['option1' => 'blue', 'option2' => 'red'])
+Sometimes you may need to pass additional data to a component. For this reason, you can pass an array of data as the second argument to the `@component` directive. All of the data will be made available to the component template as variables:
+
+    @component('alert', ['foo' => 'bar'])
+        ...
     @endcomponent
-
-Notice that you may omit the `@endslot` directive.
 
 <a name="displaying-data"></a>
 ## Displaying Data
