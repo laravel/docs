@@ -140,6 +140,7 @@ Valet even includes a command to share your local sites with the world. No addit
 
 To share a site, navigate to the site's directory in your terminal and run the `valet share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser. That's it.
 
+You can even use a `valet share custom-domain-name` for free.
 To stop sharing your site, hit `Control + C` to cancel the process.
 
 <a name="viewing-logs"></a>
