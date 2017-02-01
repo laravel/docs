@@ -259,7 +259,7 @@ If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instan
     return response('Hello World')->cookie($cookie);
 
 <a name="files"></a>
-### Files
+## Files
 
 <a name="retrieving-uploaded-files"></a>
 ### Retrieving Uploaded Files

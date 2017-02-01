@@ -11,7 +11,7 @@
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file.
+Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~5.0`.
 
 #### Flushing The Cache
 
@@ -60,6 +60,20 @@ if ($policy) {
     // code that was previously in the catch block
 }
 ```
+
+### Blade
+
+#### `@section` Escaping
+
+In Laravel 5.4, inline content passed to a section is automatically escaped:
+
+    @section('title', $content)
+
+If you would like to render unescaped content in a section, you must declare the section using the traditional "long form" style:
+
+    @section('title')
+        {!! $content !!}
+    @stop
 
 ### Bootstrappers
 
@@ -326,7 +340,14 @@ If you have tests written using Laravel 5.3 and would like to run them side-by-s
 
     composer require laravel/browser-kit-testing
 
-Next, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTest.php`.
+Next, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTest.php`. In order for your `BrowserKitTest` class to be properly loaded, you may need to add it to your `composer.json` file:
+
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php",
+            "tests/BrowserKitTest.php"
+        ]
+    },
 
 Tests written on Laravel 5.3 will extend the `BrowserKitTest` class while any new tests that use the Laravel 5.4 testing layer will extend the `TestCase` class. Your `BrowserKitTest` class should look like the following:
 
@@ -398,6 +419,10 @@ The `forceSchema` method of the `Illuminate\Routing\UrlGenerator` class has been
 #### Date Format Validation
 
 Date format validation is now more strict and supports the placeholders present within the documentation for the PHP [date function](http://php.net/manual/en/function.date.php). In previous releases of Laravel, the timezone placeholder `P` would accept all timezone formats; however, in Laravel 5.4 each timezone format has a unique placeholder as per the PHP documentation.
+
+#### Method Names
+
+The `addError` method has been renamed to `addFailure`. In addition, the `doReplacements` method has been renamed to `makeReplacements`. Typically, these changes will only be relevant if you are extending the `Validator` class.
 
 ### Miscellaneous
 
