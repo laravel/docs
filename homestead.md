@@ -14,6 +14,7 @@
     - [Adding Additional Sites](#adding-additional-sites)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Ports](#ports)
+    - [Stopping] (#stopping)
 - [Network Interfaces](#network-interfaces)
 - [Updating Homestead](#updating-homestead)
 - [Old Versions](#old-versions)
@@ -247,6 +248,29 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
         - send: 7777
           to: 777
           protocol: udp
+
+<a name="stopping"></a>
+### Stopping
+
+When you want to stop your machine, it's good to know the difference between suspend and halt:
+
+#### Suspend
+
+Command: vagrant suspend [name|id]
+
+This suspends the guest machine Vagrant is managing, rather than fully shutting it down or destroying it.
+
+A suspend effectively saves the exact point-in-time state of the machine, so that when you resume it later, it begins running immediately from that point, rather than doing a full boot.
+
+This generally requires extra disk space to store all the contents of the RAM within your guest machine, but the machine no longer consumes the RAM of your host machine or CPU cycles while it is suspended.
+
+#### Halt
+
+Command: vagrant halt [name|id]
+
+This command shuts down the running machine Vagrant is managing.
+
+Vagrant will first attempt to gracefully shut down the machine by running the guest OS shutdown mechanism. If this fails, or if the --force flag is specified, Vagrant will effectively just shut off power to the machine.
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
