@@ -106,6 +106,10 @@ Once the middleware has been defined in the HTTP kernel, you may use the `middle
 		//
 	}]);
 
+### Assigning Middleware From Controller
+
+In cases when you can't assign middleware from routes (for example when using `Route::controller`), you can also add it from controller definition. Check [this page](/docs/5.0/controllers#controller-middleware) for more information.
+
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
 
