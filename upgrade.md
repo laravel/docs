@@ -416,12 +416,13 @@ The `forceSchema` method of the `Illuminate\Routing\UrlGenerator` class has been
 
 ### Validation
 
-#### Validator Class
-The method `addError` has been renamed to `addFailure` and the method `doReplacements` to `makeReplacements`.
-
 #### Date Format Validation
 
 Date format validation is now more strict and supports the placeholders present within the documentation for the PHP [date function](http://php.net/manual/en/function.date.php). In previous releases of Laravel, the timezone placeholder `P` would accept all timezone formats; however, in Laravel 5.4 each timezone format has a unique placeholder as per the PHP documentation.
+
+#### Method Names
+
+The `addError` method has been renamed to `addFailure`. In addition, the `doReplacements` method has been renamed to `makeReplacements`. Typically, these changes will only be relevant if you are extending the `Validator` class.
 
 ### Miscellaneous
 
