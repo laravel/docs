@@ -20,7 +20,7 @@ First, download the Laravel installer using Composer.
 
 Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
 
-Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer:
+Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. **IMPORTANT**: There is currently [an issue installing to an existing directory](https://github.com/laravel/framework/issues/5868), so please ensure the directory does not exist before running this command. This method of installation is much faster than installing via Composer:
 
 	laravel new blog
 
