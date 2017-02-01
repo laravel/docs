@@ -17,7 +17,7 @@ The queue configuration file is stored in `app/config/queue.php`. In this file y
 
 The following dependencies are needed for the listed queue drivers:
 
-- Beanstalkd: `pda/pheanstalk ~2.0`
+- Beanstalkd: `pda/pheanstalk ~3.0`
 - Amazon SQS: `aws/aws-sdk-php`
 - IronMQ: `iron-io/iron_mq`
 

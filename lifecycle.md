@@ -44,7 +44,7 @@ Your application's start files are stored at `app/start`. By default, three are 
 
 The `global.php` start file contains a few basic items by default, such as the registration of the [Logger](/docs/4.2/errors) and the inclusion of your `app/filters.php` file. However, you are free to add anything to this file that you wish. It will be automatically included on _every_ request to your application, regardless of environment. The `local.php` file, on the other hand, is only called when the application is executing in the `local` environment. For more information on environments, check out the [configuration](/docs/4.2/configuration) documentation.
 
-Of course, if you have other environments in addition to `local`, you may create start files for those environments as well. They will be automatically included when your application is running in that environment. So, for example, if you have a `development` environment configured in your `bootstrap/start.php` file, you may create a `app/start/development.php` file, which will be included when any requests enter the application in that environment.
+Of course, if you have other environments in addition to `local`, you may create start files for those environments as well. They will be automatically included when your application is running in that environment. So, for example, if you have a `development` environment configured in your `bootstrap/environment.php` file, you may create a `app/start/development.php` file, which will be included when any requests enter the application in that environment.
 
 ### What To Place In Start Files
 
