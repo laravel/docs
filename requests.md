@@ -40,7 +40,7 @@ When working on forms with "array" inputs, you may use dot notation to access th
 
 	$input = Input::get('products.0.name');
 
-> **Note:** Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
+> **Note:** Some JavaScript libraries such as AngularJS may send input to the application as JSON. You may access this data via `Input::json`.
 
 <a name="cookies"></a>
 ## Cookies
