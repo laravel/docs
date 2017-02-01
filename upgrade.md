@@ -71,9 +71,9 @@ In Laravel 5.4, inline content passed to a section is automatically escaped:
 
 If you would like to render unescaped content in a section, you must declare the section using the traditional "long form" style:
 
-   @section('title')
-       {!! $content !!}
-   @stop
+    @section('title')
+        {!! $content !!}
+    @stop
 
 ### Bootstrappers
 
