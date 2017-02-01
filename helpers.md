@@ -80,6 +80,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [str_is](#method-str-is)
 [str_plural](#method-str-plural)
 [str_random](#method-str-random)
+[str_replace_first](#method-str-replace-first)
 [str_singular](#method-str-singular)
 [str_slug](#method-str-slug)
 [studly_case](#method-studly-case)
@@ -638,6 +639,15 @@ You may provide an integer as a second argument to the function to retrieve the 
 The `str_random` function generates a random string of the specified length. This function uses PHP's `random_bytes` function:
 
     $string = str_random(40);
+
+<a name="method-str-replace-first"></a>
+#### `str_replace_first()` {#collection-method}
+
+The `str_replace_first` function replace the first occurrence of a given value in the string:
+
+    $string = str_replace_first('Laravel', 'Laracast', 'Laravel is best PHP and Laravel screencasts on the web');
+
+    // Laracast is best PHP and Laravel screencasts on the web
 
 <a name="method-str-singular"></a>
 #### `str_singular()` {#collection-method}
