@@ -367,7 +367,7 @@ For the inverse of `filter`, see the [reject](#method-reject) method.
 
 The `first` method returns the first element in the collection that passes a given truth test:
 
-    collect([1, 2, 3, 4])->first(function ($value, $key) {
+    collect([1, 2, 3, 4])->first(function ($key, $value) {
         return $value > 2;
     });
 
