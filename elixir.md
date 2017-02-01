@@ -293,11 +293,11 @@ elixir(function(mix) {
 
 Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Elixir can handle this for you using the `version` method.
 
-The `version` method accepts a file name relative to the `public` directory, and will append a unique hash to the filename, allowing for cache-busting. For example, the generated file name will look something like: `all-16d570a7.css`:
+The `version` method accepts a file name, and will append a unique hash to the filename, allowing for cache-busting. For example, the generated file name will look something like: `all-16d570a7.css`:
 
 ```javascript
 elixir(function(mix) {
-    mix.version('css/all.css');
+    mix.version('public/css/all.css');
 });
 ```
 
@@ -311,7 +311,7 @@ You may pass an array to the `version` method to version multiple files:
 
 ```javascript
 elixir(function(mix) {
-    mix.version(['css/all.css', 'js/app.js']);
+    mix.version(['public/css/all.css', 'public/js/app.js']);
 });
 ```
 
