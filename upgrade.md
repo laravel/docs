@@ -11,24 +11,8 @@
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file. Also, ensure you have your `phpunit/phpunit` dependency set to `"~5.0"`.
+Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~5.0`.
 
-### Updating Autoload
-In composer.json:
-
-Add `"Tests\\": "tests/"` in `PSR-4`:
-
-```json
-"autoload": {
-        "classmap": [
-            "database"
-        ],
-        "psr-4": {
-            "App\\": "app/",
-            "Tests\\": "tests/"
-        }
-    },
-```
 #### Flushing The Cache
 
 After upgrading all packages, you should run `php artisan view:clear` to avoid Blade errors related to the removal of `Illuminate\View\Factory::getFirstLoop()`. In addition, you may need to run `php artisan route:clear` to flush the route cache.
