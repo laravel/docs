@@ -40,7 +40,7 @@ Laravel already makes it easy to perform authentication via traditional login fo
 
 To get started, install Passport via the Composer package manager:
 
-    composer require laravel/passport
+    composer require laravel/passport=~1.0
 
 Next, register the Passport service provider in the `providers` array of your `config/app.php` configuration file:
 
