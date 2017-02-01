@@ -44,6 +44,8 @@ Note that two keys have been added to the configuration array: `read` and `write
 
 Once you have configured your database connection, you may run queries using the `DB` facade.
 
+	use DB;
+
 #### Running A Select Query
 
 	$results = DB::select('select * from users where id = ?', [1]);
