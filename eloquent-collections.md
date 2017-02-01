@@ -7,7 +7,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-All multi-result sets returned by Eloquent are an instance of the `Illuminate\Database\Eloquent\Collection` object, including results retrieved via the `get` method or accessed via a relationship. The Eloquent collection object extends the Laravel [base collection](/docs/{{version}}/collections), so it naturally inherits dozens of methods used to fluently work with the underlying array of Eloquent models.
+All multi-result sets returned by Eloquent are instances of the `Illuminate\Database\Eloquent\Collection` object, including results retrieved via the `get` method or accessed via a relationship. The Eloquent collection object extends the Laravel [base collection](/docs/{{version}}/collections), so it naturally inherits dozens of methods used to fluently work with the underlying array of Eloquent models.
 
 Of course, all collections also serve as iterators, allowing you to loop over them as if they were simple PHP arrays:
 
@@ -17,7 +17,7 @@ Of course, all collections also serve as iterators, allowing you to loop over th
         echo $user->name;
     }
 
-However, collections are much more powerful than arrays and expose a variety of map / reduce operations using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:
+However, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, let's remove all inactive models and gather the first name for each remaining user:
 
     $users = App\User::where('active', 1)->get();
 
@@ -27,6 +27,8 @@ However, collections are much more powerful than arrays and expose a variety of 
     ->map(function ($user) {
         return $user->name;
     });
+
+> {note} While most Eloquent collection methods return a new instance of an Eloquent collection, the `pluck`, `keys`, `zip`, `collapse`, `flatten` and `flip` methods return a [base collection](/docs/{{version}}/collections) instance. Likewise, if a `map` operation returns a collection that does not contain any Eloquent models, it will be automatically cast to a base collection.
 
 <a name="available-methods"></a>
 ## Available Methods
@@ -47,16 +49,22 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 </style>
 
 <div id="collection-method-list" markdown="1">
+
 [all](/docs/{{version}}/collections#method-all)
+[avg](/docs/{{version}}/collections#method-avg)
 [chunk](/docs/{{version}}/collections#method-chunk)
 [collapse](/docs/{{version}}/collections#method-collapse)
+[combine](/docs/{{version}}/collections#method-combine)
 [contains](/docs/{{version}}/collections#method-contains)
 [count](/docs/{{version}}/collections#method-count)
 [diff](/docs/{{version}}/collections#method-diff)
+[diffKeys](/docs/{{version}}/collections#method-diffkeys)
 [each](/docs/{{version}}/collections#method-each)
 [every](/docs/{{version}}/collections#method-every)
+[except](/docs/{{version}}/collections#method-except)
 [filter](/docs/{{version}}/collections#method-filter)
 [first](/docs/{{version}}/collections#method-first)
+[flatMap](/docs/{{version}}/collections#method-flatmap)
 [flatten](/docs/{{version}}/collections#method-flatten)
 [flip](/docs/{{version}}/collections#method-flip)
 [forget](/docs/{{version}}/collections#method-forget)
@@ -71,7 +79,10 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [keys](/docs/{{version}}/collections#method-keys)
 [last](/docs/{{version}}/collections#method-last)
 [map](/docs/{{version}}/collections#method-map)
+[max](/docs/{{version}}/collections#method-max)
 [merge](/docs/{{version}}/collections#method-merge)
+[min](/docs/{{version}}/collections#method-min)
+[only](/docs/{{version}}/collections#method-only)
 [pluck](/docs/{{version}}/collections#method-pluck)
 [pop](/docs/{{version}}/collections#method-pop)
 [prepend](/docs/{{version}}/collections#method-prepend)
@@ -95,11 +106,15 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [toArray](/docs/{{version}}/collections#method-toarray)
 [toJson](/docs/{{version}}/collections#method-tojson)
 [transform](/docs/{{version}}/collections#method-transform)
+[union](/docs/{{version}}/collections#method-union)
 [unique](/docs/{{version}}/collections#method-unique)
 [values](/docs/{{version}}/collections#method-values)
 [where](/docs/{{version}}/collections#method-where)
-[whereLoose](/docs/{{version}}/collections#method-whereloose)
+[whereStrict](/docs/{{version}}/collections#method-wherestrict)
+[whereIn](/docs/{{version}}/collections#method-wherein)
+[whereInLoose](/docs/{{version}}/collections#method-whereinloose)
 [zip](/docs/{{version}}/collections#method-zip)
+
 </div>
 
 <a name="custom-collections"></a>
@@ -128,4 +143,4 @@ If you need to use a custom `Collection` object with your own extension methods,
         }
     }
 
-Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent returns a `Collection` instance of that model. If you would like to use a custom collection for every model in your application, you should override the `newCollection` method on a model base class that is extended by all of your models.
+Once you have defined a `newCollection` method, you will receive an instance of your custom collection anytime Eloquent returns a `Collection` instance of that model. If you would like to use a custom collection for every model in your application, you should override the `newCollection` method on a base model class that is extended by all of your models.

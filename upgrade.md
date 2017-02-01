@@ -1,614 +1,429 @@
 # Upgrade Guide
 
-- [Upgrading To 5.1.11](#upgrade-5.1.11)
-- [Upgrading To 5.1.0](#upgrade-5.1.0)
-- [Upgrading To 5.0.16](#upgrade-5.0.16)
-- [Upgrading To 5.0 From 4.2](#upgrade-5.0)
-- [Upgrading To 4.2 From 4.1](#upgrade-4.2)
-- [Upgrading To 4.1.29 From <= 4.1.x](#upgrade-4.1.29)
-- [Upgrading To 4.1.26 From <= 4.1.25](#upgrade-4.1.26)
-- [Upgrading To 4.1 From 4.0](#upgrade-4.1)
+- [Upgrading To 5.4.0 From 5.3](#upgrade-5.4.0)
 
-<a name="upgrade-5.1.11"></a>
-## Upgrading To 5.1.11
+<a name="upgrade-5.4.0"></a>
+## Upgrading To 5.4.0 From 5.3
 
-Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorization) and [policies](/docs/{{version}}/authorization#policies). Incorporating these new features into your existing Laravel 5.1 applications is simple.
+#### Estimated Upgrade Time: 1-2 Hours
 
-> **Note:** These upgrades are **optional**, and ignoring them will not affect your application.
+> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
-#### Create The Policies Directory
+### Updating Dependencies
 
-First, create an empty `app/Policies` directory within your application.
+Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~5.0`.
 
-#### Create / Register The AuthServiceProvider & Gate Facade
+#### Flushing The Cache
 
-Create a `AuthServiceProvider` within your `app/Providers` directory. You may copy the contents of the default provider [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php). Remember to change the provider's namespace if your application is using a custom namespace. After creating the provider, be sure to register it in your `app.php` configuration file's `providers` array.
+After upgrading all packages, you should run `php artisan view:clear` to avoid Blade errors related to the removal of `Illuminate\View\Factory::getFirstLoop()`. In addition, you may need to run `php artisan route:clear` to flush the route cache.
 
-Also, you should register the `Gate` facade in your `app.php` configuration file's `aliases` array:
+#### Laravel Cashier
 
-    'Gate' => Illuminate\Support\Facades\Gate::class,
+Laravel Cashier is already compatible with Laravel 5.4.
 
-#### Update The User Model
+#### Laravel Passport
 
-Secondly, use the `Illuminate\Foundation\Auth\Access\Authorizable` trait and `Illuminate\Contracts\Auth\Access\Authorizable` contract on your `App\User` model:
+Laravel Passport `2.0.0` has been released to provide compatibility with Laravel 5.4 and the [Axios](https://github.com/mzabriskie/axios) JavaScript library. If you are upgrading from Laravel 5.3 and using the pre-built Passport Vue components, you should make sure the Axios library is globally available to your application as `axios`.
 
-    <?php
+#### Laravel Scout
 
-    namespace App;
+Laravel Scout `3.0.0` has been released to provide compatibility with Laravel 5.4.
 
-    use Illuminate\Auth\Authenticatable;
-    use Illuminate\Database\Eloquent\Model;
-    use Illuminate\Auth\Passwords\CanResetPassword;
-    use Illuminate\Foundation\Auth\Access\Authorizable;
-    use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-    use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-    use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+#### Laravel Socialite
 
-    class User extends Model implements AuthenticatableContract,
-                                        AuthorizableContract,
-                                        CanResetPasswordContract
-    {
-        use Authenticatable, Authorizable, CanResetPassword;
-    }
+Laravel Socialite `3.0.0` has been released to provide compatibility with Laravel 5.4.
 
-#### Update The Base Controller
+#### Laravel Tinker
 
-Next, update your base `App\Http\Controllers\Controller` controller to use the `Illuminate\Foundation\Auth\Access\AuthorizesRequests` trait:
+In order to continue using the `tinker` Artisan command, you should also install the `laravel/tinker` package:
 
-    <?php
+    composer require laravel/tinker
 
-    namespace App\Http\Controllers;
+Once the package has been installed, you should add `Laravel\Tinker\TinkerServiceProvider::class` to the `providers` array in your `config/app.php` configuration file.
 
-    use Illuminate\Foundation\Bus\DispatchesJobs;
-    use Illuminate\Routing\Controller as BaseController;
-    use Illuminate\Foundation\Validation\ValidatesRequests;
-    use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+#### Guzzle
 
-    abstract class Controller extends BaseController
-    {
-        use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    }
+Laravel 5.4 requires Guzzle 6.0 or greater.
 
-<a name="upgrade-5.1.0"></a>
-## Upgrading To 5.1.0
+### Authorization
 
-#### Estimated Upgrade Time: Less Than 1 Hour
+#### The `getPolicyFor` Method
 
-### Update `bootstrap/autoload.php`
+Previous, when calling the `Gate::getPolicyFor($class)` method, an exception was thrown if no policy could be found. Now, the method will return `null` if no policy is found for the given class. If you call this method directly, make sure you refactor your code to check for `null`:
 
-Update the `$compiledPath` variable in `bootstrap/autoload.php` to the following:
+```php
+$policy = Gate::getPolicyFor($class);
 
-    $compiledPath = __DIR__.'/cache/compiled.php';
-
-### Create `bootstrap/cache` Directory
-
-Within your `bootstrap` directory, create a `cache` directory (`bootstrap/cache`). Place a `.gitignore` file in this directory with the following contents:
-
-    *
-    !.gitignore
-
-This directory should be writable, and will be used by the framework to store temporary optimization files like `compiled.php`, `routes.php`, `config.php`, and `services.json`.
-
-### Add `BroadcastServiceProvider` Provider
-
-Within your `config/app.php` configuration file, add `Illuminate\Broadcasting\BroadcastServiceProvider` to the `providers` array.
-
-### Authentication
-
-If you are using the provided `AuthController` which uses the `AuthenticatesAndRegistersUsers` trait, you will need to make a few changes to how new users are validated and created.
-
-First, you no longer need to pass the `Guard` and `Registrar` instances to the base constructor. You can remove these dependencies entirely from your controller's constructor.
-
-Secondly, the `App\Services\Registrar` class used in Laravel 5.0 is no longer needed. You can simply copy and paste your `validator` and `create` method from this class directly into your `AuthController`. No other changes should need to be made to these methods; however, you should be sure to import the `Validator` facade and your `User` model at the top of your `AuthController`.
-
-#### Password Controller
-
-The included `PasswordController` no longer requires any dependencies in its constructor. You may remove both of the dependencies that were required under 5.0.
-
-### Validation
-
-If you are overriding the `formatValidationErrors` method on your base controller class, you should now type-hint the `Illuminate\Contracts\Validation\Validator` contract instead of the concrete `Illuminate\Validation\Validator` instance.
-
-Likewise, if you are overriding the `formatErrors` method on the base form request class, you should now type-hint `Illuminate\Contracts\Validation\Validator` contract instead of the concrete `Illuminate\Validation\Validator` instance.
-
-### Eloquent
-
-#### The `create` Method
-
-Eloquent's `create` method can now be called without any parameters. If you are overriding the `create` method in your own models, set the default value of the `$attributes` parameter to an array:
-
-    public static function create(array $attributes = [])
-    {
-        // Your custom implementation
-    }
-
-#### The `find` Method
-
-If you are overriding the `find` method in your own models and calling `parent::find()` within your custom method, you should now change it to call the `find` method on the Eloquent query builder:
-
-    public static function find($id, $columns = ['*'])
-    {
-        $model = static::query()->find($id, $columns);
-
-        // ...
-
-        return $model;
-    }
-
-#### The `lists` Method
-
-The `lists` method now returns a `Collection` instance instead of a plain array for Eloquent queries. If you would like to convert the `Collection` into a plain array, use the `all` method:
-
-    User::lists('id')->all();
-
-Be aware that the Query Builder `lists` method still returns an array.
-
-#### Date Formatting
-
-Previously, the storage format for Eloquent date fields could be modified by overriding the `getDateFormat` method on your model. This is still possible; however, for convenience you may simply specify a `$dateFormat` property on the model instead of overriding the method.
-
-The date format is also now applied when serializing a model to an `array` or JSON. This may change the format of your JSON serialized date fields when migrating from Laravel 5.0 to 5.1. To set a specific date format for serialized models, you may override the `serializeDate(DateTime $date)` method on your model. This method allows you to have granular control over the formatting of serialized Eloquent date fields without changing their storage format.
-
-### The Collection Class
-
-#### The `sort` Method
-
-The `sort` method now returns a fresh collection instance instead of modifying the existing collection:
-
-    $collection = $collection->sort($callback);
-
-#### The `sortBy` Method
-
-The `sortBy` method now returns a fresh collection instance instead of modifying the existing collection:
-
-    $collection = $collection->sortBy('name');
-
-#### The `groupBy` Method
-
-The `groupBy` method now returns `Collection` instances for each item in the parent `Collection`. If you would like to convert all of the items back to plain arrays, you may `map` over them:
-
-    $collection->groupBy('type')->map(function($item)
-    {
-        return $item->all();
-    });
-
-#### The `lists` Method
-
-The `lists` method now returns a `Collection` instance instead of a plain array. If you would like to convert the `Collection` into a plain array, use the `all` method:
-
-    $collection->lists('id')->all();
-
-### Commands & Handlers
-
-The `app/Commands` directory has been renamed to `app/Jobs`. However, you are not required to move all of your commands to the new location, and you may continue using the `make:command` and `handler:command` Artisan commands to generate your classes.
-
-Likewise, the `app/Handlers` directory has been renamed to `app/Listeners` and now only contains event listeners. However, you are not required to move or rename your existing command and event handlers, and you may continue to use the `handler:event` command to generate event handlers.
-
-By providing backwards compatibility for the Laravel 5.0 folder structure, you may upgrade your applications to Laravel 5.1 and slowly upgrade your events and commands to their new locations when it is convenient for you or your team.
+if ($policy) {
+    // code that was previously in the try block
+} else {
+    // code that was previously in the catch block
+}
+```
 
 ### Blade
 
-The `createMatcher`, `createOpenMatcher`, and `createPlainMatcher` methods have been removed from the Blade compiler. Use the new `directive` method to create custom directives for Blade in Laravel 5.1. Consult the [extending blade](/docs/{{version}}/blade#extending-blade) documentation for more information.
+#### `@section` Escaping
 
-### Tests
+In Laravel 5.4, inline content passed to a section is automatically escaped:
 
-Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
+    @section('title', $content)
 
-    protected $baseUrl = 'http://localhost';
+If you would like to render unescaped content in a section, you must declare the section using the traditional "long form" style:
 
-### Translation Files
+    @section('title')
+        {!! $content !!}
+    @stop
 
-The default directory for published language files for vendor packages has been moved. Move any vendor package language files from `resources/lang/packages/{locale}/{namespace}` to `resources/lang/vendor/{namespace}/{locale}` directory. For example, `Acme/Anvil` package's `acme/anvil::foo` namespaced English language file would be moved from `resources/lang/packages/en/acme/anvil/foo.php` to `resources/lang/vendor/acme/anvil/en/foo.php`.
+### Bootstrappers
 
-### Amazon Web Services SDK
+If you are manually overriding the `$bootstrappers` array on your HTTP or Console kernel, you should rename the `DetectEnvironment` entry to `LoadEnvironmentVariables`.
 
-If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
+### Broadcasting
 
-If you are using the Amazon S3 filesystem driver, you will need to update the corresponding Flysystem package via Composer:
+#### Channel Model Binding
 
-- Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
+When defining channel name placeholders in Laravel 5.3, the `*` character is used. In Laravel 5.4, you should define these placeholders using `{foo}` style placeholders, like routes:
 
-### Deprecations
+    Broadcast::channel('App.User.{userId}', function ($user, $userId) {
+        return (int) $user->id === (int) $userId;
+    });
 
-The following Laravel features have been deprecated and will be removed entirely with the release of Laravel 5.2 in December 2015:
+### Collections
 
-<div class="content-list" markdown="1">
-- Route filters have been deprecated in preference of [middleware](/docs/{{version}}/middleware).
-- The `Illuminate\Contracts\Routing\Middleware` contract has been deprecated. No contract is required on your middleware. In addition, the `TerminableMiddleware` contract has also been deprecated. Instead of implementing the interface, simply define a `terminate` method on your middleware.
-- The `Illuminate\Contracts\Queue\ShouldBeQueued` contract has been deprecated in favor of `Illuminate\Contracts\Queue\ShouldQueue`.
-- Iron.io "push queues" have been deprecated in favor of typical Iron.io queues and [queue listeners](/docs/{{version}}/queues#running-the-queue-listener).
-- The `Illuminate\Foundation\Bus\DispatchesCommands` trait has been deprecated and renamed to `Illuminate\Foundation\Bus\DispatchesJobs`.
-- `Illuminate\Container\BindingResolutionException` has been moved to `Illuminate\Contracts\Container\BindingResolutionException`.
-- The service container's `bindShared` method has been deprecated in favor of the `singleton` method.
-- The Eloquent and query builder `pluck` method has been deprecated and renamed to `value`.
-- The collection `fetch` method has been deprecated in favor of the `pluck` method.
-- The `array_fetch` helper has been deprecated in favor of the `array_pluck` method.
-</div>
+#### The `every` Method
 
-<a name="upgrade-5.0.16"></a>
-## Upgrading To 5.0.16
+The behavior of the `every` method has been moved to the `nth` method to match the method name defined by Lodash.
 
-In your `bootstrap/autoload.php` file, update the `$compiledPath` variable to:
+#### The `random` Method
 
-    $compiledPath = __DIR__.'/../vendor/compiled.php';
+Calling `$collection->random(1)` will now return a new collection instance with one item. Previously, this would return a single object. This method will only return a single object if no arguments are supplied.
 
-<a name="upgrade-5.0"></a>
-## Upgrading To 5.0 From 4.2
+### Container
 
-### Fresh Install, Then Migrate
+#### Binding Classes With Leading Slashes
 
-The recommended method of upgrading is to create a new Laravel `5.0` install and then to copy your `4.2` site's unique application files into the new application. This would include controllers, routes, Eloquent models, Artisan commands, assets, and other code specific files to your application.
+Binding classes into the container with leading slashes is no longer supported. This feature required a significant amount of string formatting calls to be made within the container. Instead, simply register your bindings without a leading slash:
 
-To start, [install a new Laravel 5.0 application](/docs/5.0/installation) into a fresh directory in your local environment.  Do not install any versions newer than 5.0 yet, since we need to complete the migration steps for 5.0 first. We'll discuss each piece of the migration process in further detail below.
+    $container->bind('Class\Name', function () {
+        //
+    });
 
-### Composer Dependencies & Packages
+    $container->bind(ClassName::class, function () {
+        //
+    });
 
-Don't forget to copy any additional Composer dependencies into your 5.0 application. This includes third-party code such as SDKs.
+#### `make` Method Parameters
 
-Some Laravel-specific packages may not be compatible with Laravel 5 on initial release. Check with your package's maintainer to determine the proper version of the package for Laravel 5. Once you have added any additional Composer dependencies your application needs, run `composer update`.
+The container's `make` method no longer accepts a second array of parameters. This feature typically indicates a code smell. Typically, you can always construct the object in another way that is more intuitive.
 
-### Namespacing
+#### Resolving Callbacks
 
-By default, Laravel 4 applications did not utilize namespacing within your application code. So, for example, all Eloquent models and controllers simply lived in the "global" namespace. For a quicker migration, you can simply leave these classes in the global namespace in Laravel 5 as well.
+The container's `resolving` and `afterResolving` method now must be provided a class name or binding key as the first argument to the method:
 
-### Configuration
+    $container->resolving('Class\Name', function ($instance) {
+        //
+    });
 
-#### Migrating Environment Variables
+    $container->afterResolving('Class\Name', function ($instance) {
+        //
+    });
 
-Copy the new `.env.example` file to `.env`, which is the `5.0` equivalent of the old `.env.php` file. Set any appropriate values there, like your `APP_ENV` and `APP_KEY` (your encryption key), your database credentials, and your cache and session drivers.
+#### `share` Method Removed
 
-Additionally, copy any custom values you had in your old `.env.php` file and place them in both `.env` (the real value for your local environment) and `.env.example` (a sample instructional value for other team members).
+The `share` method has been removed from the container. This was a legacy method that has not been documented in several years. If you are using this method, you should begin using the `singleton` method instead:
 
-For more information on environment configuration, view the [full documentation](/docs/{{version}}/installation#environment-configuration).
+    $container->singleton('foo', function () {
+        return 'foo';
+    });
 
-> **Note:** You will need to place the appropriate `.env` file and values on your production server before deploying your Laravel 5 application.
+### Console
 
-#### Configuration Files
+#### The `Illuminate\Console\AppNamespaceDetectorTrait` Trait
 
-Laravel 5.0 no longer uses `app/config/{environmentName}/` directories to provide specific configuration files for a given environment. Instead, move any configuration values that vary by environment into `.env`, and then access them in your configuration files using `env('key', 'default value')`. You will see examples of this in the `config/database.php` configuration file.
+If you are directly referencing the `Illuminate\Console\AppNamespaceDetectorTrait` trait, update your code to reference `Illuminate\Console\DetectsApplicationNamespace` instead.
 
-Set the config files in the `config/` directory to represent either the values that are consistent across all of your environments, or set them to use `env()` to load values that vary by environment.
+### Database
 
-Remember, if you add more keys to `.env` file, add sample values to the `.env.example` file as well. This will help your other team members create their own `.env` files.
+#### Custom Connections
 
-### Routes
+If you were previously binding a service container binding for a `db.connection.{driver-name}` key in order to resolve a custom database connection instance, you should now use the `Illuminate\Database\Connection::resolverFor` method in the `register` method of your `AppServiceProvider`:
 
-Copy and paste your old `routes.php` file into your new `app/Http/routes.php`.
+    use Illuminate\Database\Connection;
 
-### Controllers
+    Connection::resolverFor('driver-name', function ($connection, $database, $prefix, $config) {
+        //
+    });
 
-Next, move all of your controllers into the `app/Http/Controllers` directory. Since we are not going to migrate to full namespacing in this guide, add the `app/Http/Controllers` directory to the `classmap` directive of your `composer.json` file. Next, you can remove the namespace from the abstract `app/Http/Controllers/Controller.php` base class. Verify that your migrated controllers are extending this base class.
+#### Fetch Mode
 
-In your `app/Providers/RouteServiceProvider.php` file, set the `namespace` property to `null`.
+Laravel no longer includes the ability to customize the PDO "fetch mode" from your configuration files. Instead, `PDO::FETCH_OBJ` is always used. If you will still like to customize the fetch mode for your application you may listen for the new `Illuminate\Database\Events\StatementPrepared` event:
 
-### Route Filters
+    Event::listen(StatementPrepared::class, function ($event) {
+        $event->statement->setFetchMode(...);
+    });
 
-Copy your filter bindings from `app/filters.php` and place them into the `boot()` method of `app/Providers/RouteServiceProvider.php`. Add `use Illuminate\Support\Facades\Route;` in the `app/Providers/RouteServiceProvider.php` in order to continue using the `Route` Facade.
+### Eloquent
 
-You do not need to move over any of the default Laravel 4.0 filters such as `auth` and `csrf`; they're all here, but as middleware. Edit any routes or controllers that reference the old default filters (e.g. `['before' => 'auth']`) and change them to reference the new middleware (e.g. `['middleware' => 'auth'].`)
+#### Date Casts
 
-Filters are not removed in Laravel 5. You can still bind and use your own custom filters using `before` and `after`.
+The `date` cast now converts the column to a `Carbon` object and calls the `startOfDay` method on the object. If you would like to preserve the time portion of the date, you should use the `datetime` cast.
 
-### Global CSRF
+#### Foreign Key Conventions
 
-By default, [CSRF protection](/docs/{{version}}/routing#csrf-protection) is enabled on all routes. If you'd like to disable this, or only manually enable it on certain routes, remove this line from `App\Http\Kernel`'s `middleware` array:
+If the foreign key is not explicitly specified when defining a relationship, Eloquent will now use the table name and primary key name for the related model to build the foreign key. For the vast majority of applications, this is not a change of behavior. For example:
 
-    'App\Http\Middleware\VerifyCsrfToken',
-
-If you want to use it elsewhere, add this line to `$routeMiddleware`:
-
-    'csrf' => 'App\Http\Middleware\VerifyCsrfToken',
-
-Now you can add the middleware to individual routes / controllers using `['middleware' => 'csrf']` on the route. For more information on middleware, consult the [full documentation](/docs/{{version}}/middleware).
-
-### Eloquent Models
-
-Feel free to create a new `app/Models` directory to house your Eloquent models. Again, add this directory to the `classmap` directive of your `composer.json` file.
-
-Update any models using `SoftDeletingTrait` to use `Illuminate\Database\Eloquent\SoftDeletes`.
-
-#### Eloquent Caching
-
-Eloquent no longer provides the `remember` method for caching queries. You now are responsible for caching your queries manually using the `Cache::remember` function. For more information on caching, consult the [full documentation](/docs/{{version}}/cache).
-
-### User Authentication Model
-
-To upgrade your `User` model for Laravel 5's authentication system, follow these instructions:
-
-**Delete the following from your `use` block:**
-
-```php
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableInterface;
-```
-
-**Add the following to your `use` block:**
-
-```php
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-```
-
-**Remove the UserInterface and RemindableInterface interfaces.**
-
-**Mark the class as implementing the following interfaces:**
-
-```php
-implements AuthenticatableContract, CanResetPasswordContract
-```
-
-**Include the following traits within the class declaration:**
-
-```php
-use Authenticatable, CanResetPassword;
-```
-
-**If you used them, remove `Illuminate\Auth\Reminders\RemindableTrait`  and `Illuminate\Auth\UserTrait` from your use block and your class declaration.**
-
-### Cashier User Changes
-
-The name of the trait and interface used by [Laravel Cashier](/docs/{{version}}/billing) has changed. Instead of using `BillableTrait`, use the `Laravel\Cashier\Billable` trait. And, instead of `Laravel\Cashier\BillableInterface` implement the `Laravel\Cashier\Contracts\Billable` interface instead. No other method changes are required.
-
-### Artisan Commands
-
-Move all of your command classes from your old `app/commands` directory to the new `app/Console/Commands` directory. Next, add the `app/Console/Commands` directory to the `classmap` directive of your `composer.json` file.
-
-Then, copy your list of Artisan commands from `start/artisan.php` into the `command` array of the `app/Console/Kernel.php` file.
-
-### Database Migrations & Seeds
-
-Delete the two migrations included with Laravel 5.0, since you should already have the users table in your database.
-
-Move all of your migration classes from the old `app/database/migrations` directory to the new `database/migrations`. All of your seeds should be moved from `app/database/seeds` to `database/seeds`.
-
-### Global IoC Bindings
-
-If you have any [service container](/docs/{{version}}/container) bindings in `start/global.php`, move them all to the `register` method of the `app/Providers/AppServiceProvider.php` file. You may need to import the `App` facade.
-
-Optionally, you may break these bindings up into separate service providers by category.
-
-### Views
-
-Move your views from `app/views` to the new `resources/views` directory.
-
-### Blade Tag Changes
-
-For better security by default, Laravel 5.0 escapes all output from both the `{{ }}` and `{{{ }}}` Blade directives. A new `{!! !!}` directive has been introduced to display raw, unescaped output. The most secure option when upgrading your application is to only use the new `{!! !!}` directive when you are **certain** that it is safe to display raw output.
-
-However, if you **must** use the old Blade syntax, add the following lines at the bottom of `AppServiceProvider@register`:
-
-```php
-\Blade::setRawTags('{{', '}}');
-\Blade::setContentTags('{{{', '}}}');
-\Blade::setEscapedContentTags('{{{', '}}}');
-```
-
-This should not be done lightly, and may make your application more vulnerable to XSS exploits. Also, comments with `{{--` will no longer work.
-
-### Translation Files
-
-Move your language files from `app/lang` to the new `resources/lang` directory.
-
-### Public Directory
-
-Copy your application's public assets from your `4.2` application's `public` directory to your new application's `public` directory. Be sure to keep the `5.0` version of `index.php`.
-
-### Tests
-
-Move your tests from `app/tests` to the new `tests` directory.
-
-### Misc. Files
-
-Copy in any other files in your project. For example, `.scrutinizer.yml`, `bower.json` and other similar tooling configuration files.
-
-You may move your Sass, Less, or CoffeeScript to any location you wish. The `resources/assets` directory could be a good default location.
-
-### Form & HTML Helpers
-
-If you're using Form or HTML helpers, you will see an error stating `class 'Form' not found` or `class 'Html' not found`. The Form and HTML helpers have been deprecated in Laravel 5.0; however, there are community-driven replacements such as those maintained by the [Laravel Collective](http://laravelcollective.com/docs/{{version}}/html).
-
-For example, you may add `"laravelcollective/html": "~5.0"` to your `composer.json` file's `require` section.
-
-You'll also need to add the Form and HTML facades and service provider. Edit `config/app.php` and add this line to the 'providers' array:
-
-    'Collective\Html\HtmlServiceProvider',
-
-Next, add these lines to the 'aliases' array:
-
-    'Form' => 'Collective\Html\FormFacade',
-    'Html' => 'Collective\Html\HtmlFacade',
-
-### CacheManager
-
-If your application code was injecting `Illuminate\Cache\CacheManager` to get a non-Facade version of Laravel's cache, inject `Illuminate\Contracts\Cache\Repository` instead.
-
-### Pagination
-
-Replace any calls to `$paginator->links()` with `$paginator->render()`.
-
-Replace any calls to `$paginator->getFrom()` and `$paginator->getTo()` with `$paginator->firstItem()` and `$paginator->lastItem()` respectively.
-
-Remove the "get" prefix from calls to `$paginator->getPerPage()`, `$paginator->getCurrentPage()`, `$paginator->getLastPage()` and `$paginator->getTotal()` (e.g. `$paginator->perPage()`).
-
-### Beanstalk Queuing
-
-Laravel 5.0 now requires `"pda/pheanstalk": "~3.0"` instead of `"pda/pheanstalk": "~2.1"`.
-
-### Remote
-
-The Remote component has been deprecated.
-
-### Workbench
-
-The Workbench component has been deprecated.
-
-<a name="upgrade-4.2"></a>
-## Upgrading To 4.2 From 4.1
-
-### PHP 5.4+
-
-Laravel 4.2 requires PHP 5.4.0 or greater.
-
-### Encryption Defaults
-
-Add a new `cipher` option in your `app/config/app.php` configuration file. The value of this option should be `MCRYPT_RIJNDAEL_256`.
-
-    'cipher' => MCRYPT_RIJNDAEL_256
-
-This setting may be used to control the default cipher used by the Laravel encryption facilities.
-
-> **Note:** In Laravel 4.2, the default cipher is `MCRYPT_RIJNDAEL_128` (AES), which is considered to be the most secure cipher. Changing the cipher back to `MCRYPT_RIJNDAEL_256` is required to decrypt cookies/values that were encrypted in Laravel <= 4.1
-
-### Soft Deleting Models Now Use Traits
-
-If you are using soft deleting models, the `softDeletes` property has been removed. You must now use the `SoftDeletingTrait` like so:
-
-    use Illuminate\Database\Eloquent\SoftDeletingTrait;
-
-    class User extends Eloquent
+    public function user()
     {
-        use SoftDeletingTrait;
+        return $this->belongsTo(User::class);
     }
 
-You must also manually add the `deleted_at` column to your `dates` property:
+Just like previous Laravel releases, this relationship will typically use `user_id` as the foreign key. However, the behavior could be different from previous releases if you are overriding the `getKeyName` method of the `User` model. For example:
 
-    class User extends Eloquent
+    public function getKeyName()
     {
-        use SoftDeletingTrait;
-
-        protected $dates = ['deleted_at'];
+        return 'key';
     }
 
-The API for all soft delete operations remains the same.
+When this is the case, Laravel will now respect your customization and determine the foreign key column name is `user_key` instead of `user_id`.
 
-> **Note:** The `SoftDeletingTrait` can not be applied on a base model. It must be used on an actual model class.
+#### Has One / Many `createMany`
 
-### View / Pagination Environment Renamed
+The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
 
-If you are directly referencing the `Illuminate\View\Environment` class or `Illuminate\Pagination\Environment` class, update your code to reference `Illuminate\View\Factory` and `Illuminate\Pagination\Factory` instead. These two classes have been renamed to better reflect their function.
+#### Related Model Connections
 
-### Additional Parameter On Pagination Presenter
+Related models will now use the same connection as the parent model. For example, if you execute a query like:
 
-If you are extending the `Illuminate\Pagination\Presenter` class, the abstract method `getPageLinkWrapper` signature has changed to add the `rel` argument:
+    User::on('example')->with('posts');
 
-    abstract public function getPageLinkWrapper($url, $page, $rel = null);
+Eloquent will query the posts table on the `example` connection instead of the default database connection. If you want to read the `posts` relationship from the default connection, you should to explicitly set the model's connection to your application's default connection.
 
-### Iron.Io Queue Encryption
+#### The `hydrate` Method
 
-If you are using the Iron.io queue driver, you will need to add a new `encrypt` option to your queue configuration file:
+If you are currently passing a custom connection name to this method, you should now use the `on` method:
 
-    'encrypt' => true
+    User::on('connection')->hydrate($records);
 
-<a name="upgrade-4.1.29"></a>
-## Upgrading To 4.1.29 From <= 4.1.x
+#### `hydrateRaw` Method
 
-Laravel 4.1.29 improves the column quoting for all database drivers. This protects your application from some mass assignment vulnerabilities when **not** using the `fillable` property on models. If you are using the `fillable` property on your models to protect against mass assignment, your application is not vulnerable. However, if you are using `guarded` and are passing a user controlled array into an "update" or "save" type function, you should upgrade to `4.1.29` immediately as your application may be at risk of mass assignment.
+The `Model::hydrateRaw` method has been renamed to `fromQuery`. If you are passing a custom connection name to this method, you should now use the `on` method:
 
-To upgrade to Laravel 4.1.29, simply `composer update`. No breaking changes are introduced in this release.
+    User::on('connection')->fromQuery('...');
 
-<a name="upgrade-4.1.26"></a>
-## Upgrading To 4.1.26 From <= 4.1.25
+#### The `whereKey` method
 
-Laravel 4.1.26 introduces security improvements for "remember me" cookies. Before this update, if a remember cookie was hijacked by another malicious user, the cookie would remain valid for a long period of time, even after the true owner of the account reset their password, logged out, etc.
+The `whereKey($id)` method will now add a "where" clause for the given primary key value. Previously, this would fall into the dynamic "where" clause builder and add a "where" clause for the "key" column. If you used the `whereKey` method to dynamically add a condition for the `key` column you should now use `where('key', ...)` instead.
 
-This change requires the addition of a new `remember_token` column to your `users` (or equivalent) database table. After this change, a fresh token will be assigned to the user each time they login to your application. The token will also be refreshed when the user logs out of the application. The implications of this change are: if a "remember me" cookie is hijacked, simply logging out of the application will invalidate the cookie.
+#### The `factory` Helper
 
-### Upgrade Path
+Calling `factory(User::class, 1)->make()` or `factory(User::class, 1)->create()` will now return a collection with one item. Previously, this would return a single model. This method will only return a single model if the amount is not supplied.
 
-First, add a new, nullable `remember_token` of VARCHAR(100), TEXT, or equivalent to your `users` table.
+### Events
 
-Next, if you are using the Eloquent authentication driver, update your `User` class with the following three methods:
+#### Contract Changes
 
-    public function getRememberToken()
-    {
-        return $this->remember_token;
-    }
+If you are manually implementing the `Illuminate\Contracts\Events\Dispatcher` interface in your application or package, you should rename the `fire` method to `dispatch`.
 
-    public function setRememberToken($value)
-    {
-        $this->remember_token = $value;
-    }
+#### Event Priority
 
-    public function getRememberTokenName()
-    {
-        return 'remember_token';
-    }
+Support for event handler "priorities" has been removed. This undocumented feature typically indicates an abuse of the event feature. Instead, consider using a series of synchronous method calls. Alternatively, you may dispatch a new event from within the handler of another event in order to ensure that a given event's handler fires after an unrelated handler.
 
-> **Note:** All existing "remember me" sessions will be invalidated by this change, so all users will be forced to re-authenticate with your application.
+#### Wildcard Event Handler Signatures
 
-### Package Maintainers
+Wildcard event handlers now receive the event name as their first argument and the array of event data as their second argument. The `Event::firing` method has been removed:
 
-Two new methods were added to the `Illuminate\Auth\UserProviderInterface` interface. Sample implementations may be found in the default drivers:
+    Event::listen('*', function ($eventName, array $data) {
+        //
+    });
 
-    public function retrieveByToken($identifier, $token);
+#### The `kernel.handled` Event
 
-    public function updateRememberToken(UserInterface $user, $token);
+The `kernel.handled` event is now an object based event using the `Illuminate\Foundation\Http\Events\RequestHandled` class.
 
-The `Illuminate\Auth\UserInterface` also received the three new methods described in the "Upgrade Path".
+#### The `locale.changed` Event
 
-<a name="upgrade-4.1"></a>
-## Upgrading To 4.1 From 4.0
+The `locale.changed` event is now an object based event using the `Illuminate\Foundation\Events\LocaleUpdated` class.
 
-### Upgrading Your Composer Dependency
+#### The `illuminate.log` Event
 
-To upgrade your application to Laravel 4.1, change your `laravel/framework` version to `4.1.*` in your `composer.json` file.
+The `illuminate.log` event is now an object based event using the `Illuminate\Log\Events\MessageLogged` class.
 
-### Replacing Files
+### Exceptions
 
-Replace your `public/index.php` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/v4.1.0/public/index.php).
+The `Illuminate\Http\Exception\HttpResponseException` has been renamed to `Illuminate\Http\Exceptions\HttpResponseException`. Note that `Exceptions` is now plural. Likewise, the `Illuminate\Http\Exception\PostTooLargeException` has been renamed to `Illuminate\Http\Exceptions\PostTooLargeException`.
 
-Replace your `artisan` file with [this fresh copy from the repository](https://github.com/laravel/laravel/blob/v4.1.0/artisan).
+### Mail
 
-### Adding Configuration Files & Options
+#### `Class@method` Syntax
 
-Update your `aliases` and `providers` arrays in your `app/config/app.php` configuration file. The updated values for these arrays can be found [in this file](https://github.com/laravel/laravel/blob/v4.1.0/app/config/app.php). Be sure to add your custom and package service providers / aliases back to the arrays.
+Sending mail using `Class@method` syntax is no longer supported. For example:
 
-Add the new `app/config/remote.php` file [from the repository](https://github.com/laravel/laravel/blob/v4.1.0/app/config/remote.php).
+    Mail::send('view.name', $data, 'Class@send');
 
-Add the new `expire_on_close` configuration option to your `app/config/session.php` file. The default value should be `false`.
+If you are sending mail in this way you should convert these calls to [mailables](/docs/{{version}}/mail).
 
-Add the new `failed` configuration section to your `app/config/queue.php` file. Here are the default values for the section:
+#### New Configuration Options
 
-    'failed' => [
-        'database' => 'mysql', 'table' => 'failed_jobs',
+In order to provide support for Laravel 5.4's new Markdown mail components, you should add the following block of configuration to the bottom of your `mail` configuration file:
+
+    'markdown' => [
+        'theme' => 'default',
+
+        'paths' => [
+            resource_path('views/vendor/mail'),
+        ],
     ],
 
-**(Optional)** Update the `pagination` configuration option in your `app/config/view.php` file to `pagination::slider-3`.
+#### Queueing Mail With Closures
 
-### Controller Updates
+In order to queue mail, you now must use a [mailable](/docs/{{version}}/mail). Queuing mail using the `Mail::queue` and `Mail::later` methods no longer supports using Closures to configure the mail message. This feature required the use of special libraries to serialize Closures since PHP does not natively support this feature.
 
-If `app/controllers/BaseController.php` has a `use` statement at the top, change `use Illuminate\Routing\Controllers\Controller;` to `use Illuminate\Routing\Controller;`.
+### Redis
 
-### Password Reminders Updates
+#### Improved Clustering Support
 
-Password reminders have been overhauled for greater flexibility. You may examine the new stub controller by running the `php artisan auth:reminders-controller` Artisan command. You may also browse the [updated documentation](/docs/security#password-reminders-and-reset) and update your application accordingly.
+Laravel 5.4 introduces improved Redis cluster support. If you are using Redis clusters, you should place your cluster connections inside of a `clusters` configuration option in the Redis portion of your `config/database.php` configuration file:
 
-Update your `app/lang/en/reminders.php` language file to match [this updated file](https://github.com/laravel/laravel/blob/v4.1.0/app/lang/en/reminders.php).
+    'redis' => [
 
-### Environment Detection Updates
+        'client' => 'predis',
 
-For security reasons, URL domains may no longer be used to detect your application environment. These values are easily spoofable and allow attackers to modify the environment for a request. You should convert your environment detection to use machine host names (`hostname` command on Mac, Linux, and Windows).
+        'options' => [
+            'cluster' => 'redis',
+        ],
 
-### Simpler Log Files
+        'clusters' => [
+            'default' => [
+                [
+                    'host' => env('REDIS_HOST', '127.0.0.1'),
+                    'password' => env('REDIS_PASSWORD', null),
+                    'port' => env('REDIS_PORT', 6379),
+                    'database' => 0,
+                ],
+            ],
+        ],
 
-Laravel now generates a single log file: `app/storage/logs/laravel.log`. However, you may still configure this behavior in your `app/start/global.php` file.
+    ],
 
-### Removing Redirect Trailing Slash
+### Routing
 
-In your `bootstrap/start.php` file, remove the call to `$app->redirectIfTrailingSlash()`. This method is no longer needed as this functionality is now handled by the `.htaccess` file included with the framework.
+#### Post Size Middleware
 
-Next, replace your Apache `.htaccess` file with [this new one](https://github.com/laravel/laravel/blob/v4.1.0/public/.htaccess) that handles trailing slashes.
+The class `Illuminate\Foundation\Http\Middleware\VerifyPostSize` has been renamed to `Illuminate\Foundation\Http\Middleware\ValidatePostSize`.
 
-### Current Route Access
+#### The `middleware` Method
 
-The current route is now accessed via `Route::current()` instead of `Route::getCurrentRoute()`.
+The `middleware` method of the `Illuminate\Routing\Router` class has been renamed to `aliasMiddleware()`. It is likely that most applications never call this method manually, as it is typically only called by the HTTP kernel to register route-level middleware defined in the `$routeMiddleware` array.
 
-### Composer Update
+#### The `getParameter` Method
 
-Once you have completed the changes above, you can run the `composer update` function to update your core application files! If you receive class load errors, try running the `update` command with the `--no-scripts` option enabled like so: `composer update --no-scripts`.
+The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead.
 
-### Wildcard Event Listeners
+### Sessions
 
-The wildcard event listeners no longer append the event to your handler functions parameters. If you require finding the event that was fired you should use `Event::firing()`.
+#### Symfony Compatibility
+
+Laravel's session handlers no longer implements Symfony's `SessionInterface`. Implementing this interface required us to implement extraneous features that were not needed by the framework. Instead, a new `Illuminate\Contracts\Session\Session` interface has been defined and may be used instead. The following code changes should also be applied:
+
+All calls to the `->set()` method should be changed to `->put()`. Typically, Laravel applications would never call the `set` method since it has never been documented within the Laravel documentation. However, it is included here out of caution.
+
+All calls to the `->getToken()` method should be changed to `->token()`.
+
+All calls to the `$request->setSession()` method should be changed to `setLaravelSession()`.
+
+### Testing
+
+Laravel 5.4's testing layer has been re-written to be simpler and lighter out of the box. If you would like to continue using the testing layer present in Laravel 5.3, you may install the `laravel/browser-kit-testing` [package](https://github.com/laravel/browser-kit-testing) into your application. This package provides full compatibility with the Laravel 5.3 testing layer. In fact, you can run the Laravel 5.4 testing layer side-by-side with the Laravel 5.3 testing layer.
+
+If you have tests written using Laravel 5.3 and would like to run them side-by-side with Laravel's new testing layer, install the `laravel/browser-kit-testing` package:
+
+    composer require laravel/browser-kit-testing
+
+Next, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTest.php`. In order for your `BrowserKitTest` class to be properly loaded, you may need to add it to your `composer.json` file:
+
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php",
+            "tests/BrowserKitTest.php"
+        ]
+    },
+
+Tests written on Laravel 5.3 will extend the `BrowserKitTest` class while any new tests that use the Laravel 5.4 testing layer will extend the `TestCase` class. Your `BrowserKitTest` class should look like the following:
+
+    <?php
+
+    use Illuminate\Contracts\Console\Kernel;
+    use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
+
+    abstract class BrowserKitTest extends BaseTestCase
+    {
+        /**
+         * The base URL of the application.
+         *
+         * @var string
+         */
+        public $baseUrl = 'http://localhost';
+
+        /**
+         * Creates the application.
+         *
+         * @return \Illuminate\Foundation\Application
+         */
+        public function createApplication()
+        {
+            $app = require __DIR__.'/../bootstrap/app.php';
+
+            $app->make(Kernel::class)->bootstrap();
+
+            return $app;
+        }
+    }
+
+Once you have created this class, make sure to update all of your tests to extend your new `BrowserKitTest` class. This will allow all of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](/docs/5.4/http-tests) or [Laravel Dusk](/docs/5.4/dusk).
+
+> {note} If you are writing new tests and want them to use the Laravel 5.4 testing layer, make sure to extend the `TestCase` class.
+
+#### Environment
+
+The Laravel 5.4 test class no longer manually forces `putenv('APP_ENV=testing')` for each test. Instead, the framework utilizes the `APP_ENV` variable from the loaded `.env` file.
+
+#### Event Fake
+
+The `Event` fake's `assertFired` method should be updated to `assertDispatched`. The method signature has not been changed.
+
+#### Mail Fake
+
+The `Mail` fake has been greatly simplified for the Laravel 5.4 release. Instead of using the `assertSentTo` method, you should now simply use the `assertSent` method and utilize the `hasTo`, `hasCc`, etc. helper methods within your callback:
+
+    Mail::assertSent(MailableName::class, function ($mailable) {
+        return $mailable->hasTo('email@example.com');
+    });
+
+### Translation
+
+#### `{Inf}` Placeholder
+
+If you are using the `{Inf}` placeholder for pluralizing your translation strings, you should update your translation strings to use the `*` character instead:
+
+    {0} First Message|{1,*} Second Message
+
+### URL Generation
+
+#### The `forceSchema` Method
+
+The `forceSchema` method of the `Illuminate\Routing\UrlGenerator` class has been renamed to `forceScheme`.
+
+### Validation
+
+#### Date Format Validation
+
+Date format validation is now more strict and supports the placeholders present within the documentation for the PHP [date function](http://php.net/manual/en/function.date.php). In previous releases of Laravel, the timezone placeholder `P` would accept all timezone formats; however, in Laravel 5.4 each timezone format has a unique placeholder as per the PHP documentation.
+
+#### Method Names
+
+The `addError` method has been renamed to `addFailure`. In addition, the `doReplacements` method has been renamed to `makeReplacements`. Typically, these changes will only be relevant if you are extending the `Validator` class.
+
+### Miscellaneous
+
+We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [Github comparison tool](https://github.com/laravel/laravel/compare/5.3...master) and choose which updates are important to you.

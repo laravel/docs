@@ -6,7 +6,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel includes a variety of "helper" PHP functions. Many of these functions are used by the framework itself; however, you are free to use them in your own applications if you find them convenient.
+Laravel includes a variety of global "helper" PHP functions. Many of these functions are used by the framework itself; however, you are free to use them in your own applications if you find them convenient.
 
 <a name="available-methods"></a>
 ## Available Methods
@@ -25,6 +25,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 ### Arrays
 
 <div class="collection-method-list" markdown="1">
+
 [array_add](#method-array-add)
 [array_collapse](#method-array-collapse)
 [array_divide](#method-array-divide)
@@ -35,8 +36,10 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_forget](#method-array-forget)
 [array_get](#method-array-get)
 [array_has](#method-array-has)
+[array_last](#method-array-last)
 [array_only](#method-array-only)
 [array_pluck](#method-array-pluck)
+[array_prepend](#method-array-prepend)
 [array_pull](#method-array-pull)
 [array_set](#method-array-set)
 [array_sort](#method-array-sort)
@@ -49,18 +52,22 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 ### Paths
 
 <div class="collection-method-list" markdown="1">
+
 [app_path](#method-app-path)
 [base_path](#method-base-path)
 [config_path](#method-config-path)
 [database_path](#method-database-path)
 [elixir](#method-elixir)
 [public_path](#method-public-path)
+[resource_path](#method-resource-path)
 [storage_path](#method-storage-path)
+
 </div>
 
 ### Strings
 
 <div class="collection-method-list" markdown="1">
+
 [camel_case](#method-camel-case)
 [class_basename](#method-class-basename)
 [e](#method-e)
@@ -76,43 +83,57 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [str_singular](#method-str-singular)
 [str_slug](#method-str-slug)
 [studly_case](#method-studly-case)
+[title_case](#method-title-case)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
+
 </div>
 
 ### URLs
 
 <div class="collection-method-list" markdown="1">
+
 [action](#method-action)
 [asset](#method-asset)
 [secure_asset](#method-secure-asset)
 [route](#method-route)
+[secure_url](#method-secure-url)
 [url](#method-url)
+
 </div>
 
 ### Miscellaneous
 
 <div class="collection-method-list" markdown="1">
+
+[abort](#method-abort)
+[abort_if](#method-abort-if)
+[abort_unless](#method-abort-unless)
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
+[cache](#method-cache)
 [collect](#method-collect)
 [config](#method-config)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
+[dispatch](#method-dispatch)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
+[info](#method-info)
+[logger](#method-logger)
 [method_field](#method-method-field)
 [old](#method-old)
 [redirect](#method-redirect)
 [request](#method-request)
 [response](#method-response)
+[retry](#method-retry)
 [session](#method-session)
 [value](#method-value)
 [view](#method-view)
-[with](#method-with)
+
 </div>
 
 <a name="method-listing"></a>
@@ -143,7 +164,7 @@ The `array_add` function adds a given key / value pair to the array if the given
 <a name="method-array-collapse"></a>
 #### `array_collapse()` {#collection-method}
 
-The `array_collapse` function collapse an array of arrays into a single array:
+The `array_collapse` function collapses an array of arrays into a single array:
 
     $array = array_collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
@@ -187,7 +208,7 @@ The `array_first` function returns the first element of an array passing a given
 
     $array = [100, 200, 300];
 
-    $value = array_first($array, function ($key, $value) {
+    $value = array_first($array, function ($value, $key) {
         return $value >= 150;
     });
 
@@ -237,13 +258,30 @@ The `array_get` function also accepts a default value, which will be returned if
 <a name="method-array-has"></a>
 #### `array_has()` {#collection-method}
 
-The `array_has` function checks that a given item exists in an array using "dot" notation:
+The `array_has` function checks that a given item or items exists in an array using "dot" notation:
 
-    $array = ['products' => ['desk' => ['price' => 100]]];
+    $array = ['product' => ['name' => 'desk', 'price' => 100]];
 
-    $hasDesk = array_has($array, ['products.desk']);
+    $hasItem = array_has($array, 'product.name');
 
     // true
+
+    $hasItems = array_has($array, ['product.price', 'product.discount']);
+
+    // false
+
+<a name="method-array-last"></a>
+#### `array_last()` {#collection-method}
+
+The `array_last` function returns the last element of an array passing a given truth test:
+
+    $array = [100, 200, 300, 110];
+
+    $value = array_last($array, function ($value, $key) {
+        return $value >= 150;
+    });
+
+    // 300
 
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
@@ -269,12 +307,23 @@ The `array_pluck` function will pluck a list of the given key / value pairs from
     $array = array_pluck($array, 'developer.name');
 
     // ['Taylor', 'Abigail'];
-    
+
 You may also specify how you wish the resulting list to be keyed:
 
     $array = array_pluck($array, 'developer.name', 'developer.id');
 
     // [1 => 'Taylor', 2 => 'Abigail'];
+
+<a name="method-array-prepend"></a>
+#### `array_prepend()` {#collection-method}
+
+The `array_prepend` function will push an item onto the beginning of an array:
+
+    $array = ['one', 'two', 'three', 'four'];
+
+    $array = array_prepend($array, 'zero');
+
+    // $array: ['zero', 'one', 'two', 'three', 'four']
 
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
@@ -363,7 +412,7 @@ The `array_where` function filters the array using the given Closure:
 
     $array = [100, '200', 300, '400', 500];
 
-    $array = array_where($array, function ($key, $value) {
+    $array = array_where($array, function ($value, $key) {
         return is_string($value);
     });
 
@@ -397,22 +446,18 @@ The `last` function returns the last element in the given array:
 <a name="method-app-path"></a>
 #### `app_path()` {#collection-method}
 
-The `app_path` function returns the fully qualified path to the `app` directory:
+The `app_path` function returns the fully qualified path to the `app` directory. You may also use the `app_path` function to generate a fully qualified path to a file relative to the application directory:
 
     $path = app_path();
-
-You may also use the `app_path` function to generate a fully qualified path to a given file relative to the application directory:
 
     $path = app_path('Http/Controllers/Controller.php');
 
 <a name="method-base-path"></a>
 #### `base_path()` {#collection-method}
 
-The `base_path` function returns the fully qualified path to the project root:
+The `base_path` function returns the fully qualified path to the project root. You may also use the `base_path` function to generate a fully qualified path to a given file relative to the project root directory:
 
     $path = base_path();
-
-You may also use the `base_path` function to generate a fully qualified path to a given file relative to the application directory:
 
     $path = base_path('vendor/bin');
 
@@ -433,7 +478,7 @@ The `database_path` function returns the fully qualified path to the application
 <a name="method-elixir"></a>
 #### `elixir()` {#collection-method}
 
-The `elixir` function gets the path to the versioned [Elixir](/docs/{{version}}/elixir) file:
+The `elixir` function gets the path to a [versioned Elixir file](/docs/{{version}}/elixir):
 
     elixir($file);
 
@@ -444,14 +489,21 @@ The `public_path` function returns the fully qualified path to the `public` dire
 
     $path = public_path();
 
+<a name="method-resource-path"></a>
+#### `resource_path()` {#collection-method}
+
+The `resource_path` function returns the fully qualified path to the `resources` directory. You may also use the `resource_path` function to generate a fully qualified path to a given file relative to the storage directory:
+
+    $path = resource_path();
+
+    $path = resource_path('assets/sass/app.scss');
+
 <a name="method-storage-path"></a>
 #### `storage_path()` {#collection-method}
 
-The `storage_path` function returns the fully qualified path to the `storage` directory:
+The `storage_path` function returns the fully qualified path to the `storage` directory. You may also use the `storage_path` function to generate a fully qualified path to a given file relative to the storage directory:
 
     $path = storage_path();
-
-You may also use the `storage_path` function to generate a fully qualified path to a given file relative to the storage directory:
 
     $path = storage_path('app/file.txt');
 
@@ -479,7 +531,7 @@ The `class_basename` returns the class name of the given class with the class' n
 <a name="method-e"></a>
 #### `e()` {#collection-method}
 
-The `e` function runs `htmlentities` over the given string:
+The `e` function runs `htmlspecialchars` over the given string:
 
     echo e('<html>foo</html>');
 
@@ -527,6 +579,12 @@ The `starts_with` function determines if the given string begins with the given 
 The `str_contains` function determines if the given string contains the given value:
 
     $value = str_contains('This is my name', 'my');
+
+    // true
+
+You may also pass an array of values to determine if the given string contains any of the values:
+
+    $value = str_contains('This is my name', ['my', 'foo']);
 
     // true
 
@@ -578,7 +636,7 @@ You may provide an integer as a second argument to the function to retrieve the 
 <a name="method-str-random"></a>
 #### `str_random()` {#collection-method}
 
-The `str_random` function generates a random string of the specified length:
+The `str_random` function generates a random string of the specified length. This function uses PHP's `random_bytes` function:
 
     $string = str_random(40);
 
@@ -596,7 +654,7 @@ The `str_singular` function converts a string to its singular form. This functio
 
 The `str_slug` function generates a URL friendly "slug" from the given string:
 
-    $title = str_slug("Laravel 5 Framework", "-");
+    $title = str_slug('Laravel 5 Framework', '-');
 
     // laravel-5-framework
 
@@ -608,6 +666,15 @@ The `studly_case` function converts the given string to `StudlyCase`:
     $value = studly_case('foo_bar');
 
     // FooBar
+
+<a name="method-title-case"></a>
+#### `title_case()` {#collection-method}
+
+The `title_case` function converts the given string to `Title Case`:
+
+    $title = title_case('a nice title uses the correct case');
+
+    // A Nice Title Uses The Correct Case
 
 <a name="method-trans"></a>
 #### `trans()` {#collection-method}
@@ -642,14 +709,14 @@ If the method accepts route parameters, you may pass them as the second argument
 
 Generate a URL for an asset using the current scheme of the request (HTTP or HTTPS):
 
-	$url = asset('img/photo.jpg');
+    $url = asset('img/photo.jpg');
 
 <a name="method-secure-asset"></a>
 #### `secure_asset()` {#collection-method}
 
 Generate a URL for an asset using HTTPS:
 
-	echo secure_asset('foo/bar.zip', $title, $attributes = []);
+    echo secure_asset('foo/bar.zip', $title, $attributes = []);
 
 <a name="method-route"></a>
 #### `route()` {#collection-method}
@@ -662,6 +729,15 @@ If the route accepts parameters, you may pass them as the second argument to the
 
     $url = route('routeName', ['id' => 1]);
 
+<a name="method-secure-url"></a>
+#### `secure_url()` {#collection-method}
+
+The `secure_url` function generates a fully qualified HTTPS URL to the given path:
+
+    echo secure_url('user/profile');
+
+    echo secure_url('user/profile', [1]);
+
 <a name="method-url"></a>
 #### `url()` {#collection-method}
 
@@ -671,8 +747,39 @@ The `url` function generates a fully qualified URL to the given path:
 
     echo url('user/profile', [1]);
 
+If no path is provided, a `Illuminate\Routing\UrlGenerator` instance is returned:
+
+    echo url()->current();
+    echo url()->full();
+    echo url()->previous();
+
 <a name="miscellaneous"></a>
 ## Miscellaneous
+
+<a name="method-abort"></a>
+#### `abort()` {#collection-method}
+
+The `abort` function throws a HTTP exception which will be rendered by the exception handler:
+
+    abort(401);
+
+You may also provide the exception's response text:
+
+    abort(401, 'Unauthorized.');
+
+<a name="method-abort-if"></a>
+#### `abort_if()` {#collection-method}
+
+The `abort_if` function throws an HTTP exception if a given boolean expression evaluates to `true`:
+
+    abort_if(! Auth::user()->isAdmin(), 403);
+
+<a name="method-abort-unless"></a>
+#### `abort_unless()` {#collection-method}
+
+The `abort_unless` function throws an HTTP exception if a given boolean expression evaluates to `false`:
+
+    abort_unless(Auth::user()->isAdmin(), 403);
 
 <a name="method-auth"></a>
 #### `auth()` {#collection-method}
@@ -695,10 +802,25 @@ The `bcrypt` function hashes the given value using Bcrypt. You may use it as an 
 
     $password = bcrypt('my-secret-password');
 
+<a name="method-cache"></a>
+#### `cache()` {#collection-method}
+
+The `cache` function may be used to get values from the cache. If the given key does not exist in the cache, an optional default value will be returned:
+
+    $value = cache('key');
+
+    $value = cache('key', 'default');
+
+You may add items to the cache by passing an array of key / value pairs to the function. You should also pass the number of minutes or duration the cached value should be considered valid:
+
+    cache(['key' => 'value'], 5);
+
+    cache(['key' => 'value'], Carbon::now()->addSeconds(10));
+
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
 
-The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the supplied items:
+The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the given array:
 
     $collection = collect(['taylor', 'abigail']);
 
@@ -720,7 +842,7 @@ The `config` helper may also be used to set configuration variables at runtime b
 
 The `csrf_field` function generates an HTML `hidden` input field containing the value of the CSRF token. For example, using [Blade syntax](/docs/{{version}}/blade):
 
-    {!! csrf_field() !!}
+    {{ csrf_field() }}
 
 <a name="method-csrf-token"></a>
 #### `csrf_token()` {#collection-method}
@@ -732,9 +854,22 @@ The `csrf_token` function retrieves the value of the current CSRF token:
 <a name="method-dd"></a>
 #### `dd()` {#collection-method}
 
-The `dd` function dumps the given variable and ends execution of the script:
+The `dd` function dumps the given variables and ends execution of the script:
 
     dd($value);
+
+    dd($value1, $value2, $value3, ...);
+
+If you do not want to halt the execution of your script, use the `dump` function instead:
+
+    dump($value);
+
+<a name="method-dispatch"></a>
+#### `dispatch()` {#collection-method}
+
+The `dispatch` function pushes a new job onto the Laravel [job queue](/docs/{{version}}/queues):
+
+    dispatch(new App\Jobs\SendEmails);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}
@@ -756,9 +891,35 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 <a name="method-factory"></a>
 #### `factory()` {#collection-method}
 
-The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/testing#model-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
+The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/database-testing#writing-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
 
     $user = factory(App\User::class)->make();
+
+<a name="method-info"></a>
+#### `info()` {#collection-method}
+
+The `info` function will write information to the log:
+
+    info('Some helpful information!');
+
+An array of contextual data may also be passed to the function:
+
+    info('User login attempt failed.', ['id' => $user->id]);
+
+<a name="method-logger"></a>
+#### `logger()` {#collection-method}
+
+The `logger` function can be used to write a `debug` level message to the log:
+
+    logger('Debug message');
+
+An array of contextual data may also be passed to the function:
+
+    logger('User has logged in.', ['id' => $user->id]);
+
+A [logger](/docs/{{version}}/errors#logging) instance will be returned if no value is passed to the function:
+
+    logger()->error('You are not allowed here.');
 
 <a name="method-method-field"></a>
 #### `method_field()` {#collection-method}
@@ -766,7 +927,7 @@ The `factory` function creates a model factory builder for a given class, name, 
 The `method_field` function generates an HTML `hidden` input field containing the spoofed value of the form's HTTP verb. For example, using [Blade syntax](/docs/{{version}}/blade):
 
     <form method="POST">
-        {!! method_field('delete') !!}
+        {{ method_field('DELETE') }}
     </form>
 
 <a name="method-old"></a>
@@ -776,12 +937,16 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an o
 
     $value = old('value');
 
+    $value = old('value', 'default');
+
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
 
-The `redirect` function returns an instance of the redirector to do [redirects](/docs/{{version}}/responses#redirects):
+The `redirect` function returns a redirect HTTP response, or returns the redirector instance if called with no arguments:
 
     return redirect('/home');
+
+    return redirect()->route('route.name');
 
 <a name="method-request"></a>
 #### `request()` {#collection-method}
@@ -801,10 +966,19 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 
     return response()->json(['foo' => 'bar'], 200, $headers);
 
+<a name="method-retry"></a>
+#### `retry()` {#collection-method}
+
+The `retry` function attempts to execute the given callback until the given maximum attempt threshold is met. If the callback does not throw an exception, it's return value will be returned. If the callback throws an exception, it will automatically be retried. If the maximum attempt count is exceeded, the exception will be thrown:
+
+    return retry(5, function () {
+        // Attempt 5 times while resting 100ms in between attempts...
+    }, 100);
+
 <a name="method-session"></a>
 #### `session()` {#collection-method}
 
-The `session` function may be used to get / set a session value:
+The `session` function may be used to get or set session values:
 
     $value = session('key');
 
@@ -823,7 +997,9 @@ The session store will be returned if no value is passed to the function:
 
 The `value` function's behavior will simply return the value it is given. However, if you pass a `Closure` to the function, the `Closure` will be executed then its result will be returned:
 
-    $value = value(function() { return 'bar'; });
+    $value = value(function () {
+        return 'bar';
+    });
 
 <a name="method-view"></a>
 #### `view()` {#collection-method}
@@ -831,10 +1007,3 @@ The `value` function's behavior will simply return the value it is given. Howeve
 The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 
     return view('auth.login');
-
-<a name="method-with"></a>
-#### `with()` {#collection-method}
-
-The `with` function returns the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
-
-    $value = with(new Foo)->work();
