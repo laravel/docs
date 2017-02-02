@@ -384,6 +384,39 @@ Once you have created this class, make sure to update all of your tests to exten
 
 > {note} If you are writing new tests and want them to use the Laravel 5.4 testing layer, make sure to extend the `TestCase` class.
 
+#### Installing Dusk In An Upgraded Application
+
+If you would like to install Laravel Dusk into an application that has been upgraded from Laravel 5.3, first install it via Composer:
+
+    composer require laravel/dusk
+
+Next, you will need to create a `CreatesApplication` trait in your `tests` directory. This trait is responsible for creating fresh application instances for test cases. The trait should look like the following:
+
+    <?php
+
+    use Illuminate\Contracts\Console\Kernel;
+
+    trait CreatesApplication
+    {
+        /**
+         * Creates the application.
+         *
+         * @return \Illuminate\Foundation\Application
+         */
+        public function createApplication()
+        {
+            $app = require __DIR__.'/../bootstrap/app.php';
+
+            $app->make(Kernel::class)->bootstrap();
+
+            return $app;
+        }
+    }
+
+> {note} If you have namespaced your tests and are using the PSR-4 autoloading standard to load your `tests` directory, you should place the `CreatesApplication` trait under the appropriate namespace.
+
+Once you have completed these preparatory steps, you can follow the normal [Dusk installation instructions](/docs/{{version}}/dusk#installation).
+
 #### Environment
 
 The Laravel 5.4 test class no longer manually forces `putenv('APP_ENV=testing')` for each test. Instead, the framework utilizes the `APP_ENV` variable from the loaded `.env` file.
