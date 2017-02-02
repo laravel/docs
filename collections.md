@@ -1313,7 +1313,7 @@ The `union` method adds the given array to the collection. If the given array co
 
     $union->all();
 
-    // [1 => ['a'], 2 => ['b'], [3 => ['c']]
+    // [1 => ['a'], 2 => ['b'], 3 => ['c']]
 
 <a name="method-unique"></a>
 #### `unique()` {#collection-method}
