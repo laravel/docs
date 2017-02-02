@@ -115,7 +115,7 @@ To run your browser tests, use the `dusk` Artisan command:
 
 The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, allowing you to only run the tests for a given [group](https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group), etc:
 
-    php artisan dusk --group foo
+    php artisan dusk --group=foo
 
 #### Manually Starting ChromeDriver
 
