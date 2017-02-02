@@ -72,7 +72,7 @@ The `webpack.mix.js` file is your entry point for all asset compilation. Think o
 <a name="less"></a>
 ### Less
 
-The `less` method may be used to compile [Less](http://lesscss.org/) into CSS. Let's compile our primary `app.less` file to `public/css/app.less`.
+The `less` method may be used to compile [Less](http://lesscss.org/) into CSS. Let's compile our primary `app.less` file to `public/css/app.css`.
 
     mix.less('resources/assets/less/app.less', 'public/css');
 
