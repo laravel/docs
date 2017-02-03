@@ -472,6 +472,10 @@ If you are using soft deleting models, the `softDeletes` property has been remov
         use SoftDeletingTrait;
     }
 
+You may also wish to add the following line to the `aliases` array within `app/config/app.php`:
+
+	'SoftDeletingTrait' => 'Illuminate\Database\Eloquent\SoftDeletingTrait',
+
 You must also manually add the `deleted_at` column to your `dates` property:
 
     class User extends Eloquent
