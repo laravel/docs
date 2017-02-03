@@ -372,7 +372,7 @@ If you would like to offer trial periods to your customers while still collectin
 
     $user->newSubscription('main', 'monthly')
                 ->trialDays(10)
-                ->create(f);
+                ->create($stripeToken);
 
 This method will set the trial period ending date on the subscription record within the database, as well as instruct Stripe / Braintree to not begin billing the customer until after this date.
 
