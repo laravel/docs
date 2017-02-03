@@ -69,6 +69,8 @@ Service providers are simply bootstrap classes for packages. By default, they co
 
 The `register` method is called immediately when the service provider is registered, while the `boot` command is only called right before a request is routed. So, if actions in your service provider rely on another service provider already being registered, or you are overriding services bound by another provider, you should use the `boot` method.
 
+Service providers come with a `$defer` property which can be set to true (false is the default). If `$defer` is true, the service provider will not be loaded until one of the keys returned by the provider's `provide` method are accessed. For example, a deferred service provider with a `provide()` that returns `array('foo')` will never be loaded until `'foo'` is accessed in the IoC container (via `App::make` or dependency injection, for example).
+
 When creating a package using the `workbench`, the `boot` command will already contain one action:
 
 	$this->package('vendor/package');
