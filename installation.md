@@ -22,11 +22,11 @@ First, download the [Laravel installer PHAR archive](http://laravel.com/laravel.
 
 You may also install Laravel by issuing the Composer `create-project` command in your terminal:
 
-	composer create-project laravel/laravel --prefer-dist
+	composer create-project laravel/laravel "4.1" --prefer-dist
 
 ### Via Download
 
-Once Composer is installed, download the [latest version](https://github.com/laravel/laravel/archive/master.zip) of the Laravel framework and extract its contents into a directory on your server. Next, in the root of your Laravel application, run the `php composer.phar install` (or `composer install`) command to install all of the framework's dependencies. This process requires Git to be installed on the server to successfully complete the installation.
+Once Composer is installed, download the [4.1 version](https://github.com/laravel/laravel/archive/v4.1.27.zip) of the Laravel framework and extract its contents into a directory on your server. Next, in the root of your Laravel application, run the `php composer.phar install` (or `composer install`) command to install all of the framework's dependencies. This process requires Git to be installed on the server to successfully complete the installation.
 
 If you want to update the Laravel framework, you may issue the `php composer.phar update` command.
 
