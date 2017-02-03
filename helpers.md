@@ -57,7 +57,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [base_path](#method-base-path)
 [config_path](#method-config-path)
 [database_path](#method-database-path)
-[elixir](#method-elixir)
+[mix](#method-mix)
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
 [storage_path](#method-storage-path)
@@ -475,12 +475,12 @@ The `database_path` function returns the fully qualified path to the application
 
     $path = database_path();
 
-<a name="method-elixir"></a>
-#### `elixir()` {#collection-method}
+<a name="method-mix"></a>
+#### `mix()` {#collection-method}
 
-The `elixir` function gets the path to a [versioned Elixir file](/docs/{{version}}/elixir):
+The `mix` function gets the path to a [versioned Mix file](/docs/{{version}}/mix):
 
-    elixir($file);
+    mix($file);
 
 <a name="method-public-path"></a>
 #### `public_path()` {#collection-method}
