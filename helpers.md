@@ -95,6 +95,8 @@ The `array_get` method will retrieve a given value from a deeply nested array us
 
 	$value = array_get($array, 'names.joe');
 
+There is also `object_get`, which shares the same signature, but works on objects instead of arrays.
+
 ### array_only
 
 The `array_only` method will return only the specified key / value pairs from the array.
