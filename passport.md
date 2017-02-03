@@ -69,7 +69,7 @@ After running this command, add the `Laravel\Passport\HasApiTokens` trait to you
         use HasApiTokens, Notifiable;
     }
 
-Next, you should call the `Passport::routes` method within the `boot` method of your `AuthServiceProvider`. This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
+Next, you should call the `Passport::routes` method within the `boot` method of your `AuthServiceProvider` (don't forget to use namespace `Laravel\Passport\Passport`). This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
 
     <?php
 
