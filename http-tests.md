@@ -142,4 +142,5 @@ Method  | Description
 `$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
 `$response->assertJson(array $data);`  |  Assert that the response contains the given JSON data.
 `$response->assertExactJson(array $data);`  |  Assert that the response contains an exact match of the given JSON data.
+`$response->assertJsonStructure(array $structure = null, $responseData = null);`  |  Assert that the response has a given JSON structure.
 `$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data.
