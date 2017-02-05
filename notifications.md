@@ -174,7 +174,9 @@ In this example, we register a greeting, a line of text, a call to action, and t
 
 > {tip} When sending mail notifications, be sure to set the `name` value in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
 
-If you need to use a custom template view you can use the `view()` method:
+#### Other Notification Formatting Options
+
+Instead of defining the "lines" of text in the notification class, you may use the `view` method to specify a custom template that should be used to render the notification email:
 
     /**
      * Get the mail representation of the notification.
@@ -184,11 +186,25 @@ If you need to use a custom template view you can use the `view()` method:
      */
     public function toMail($notifiable)
     {
-        $url = url('/invoice/'.$this->invoice->id);
+        return (new MailMessage)->view(
+            'emails.name', ['invoice' => $this->invoice]
+        );
+    }
 
-        return (new MailMessage)
-                    ->view('emails.your_template', ['invoice' => $this->invoice]);
-        }
+In addition, you may return a [mailable object](/docs/{{version}}/mail) from the `toMail` method:
+
+    use App\Mail\InvoicePaid as Mailable;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return Mailable
+     */
+    public function toMail($notifiable)
+    {
+        return new Mailable($this->invoice)->to($this->user->email);
+    }
 
 <a name="error-messages"></a>
 #### Error Messages
