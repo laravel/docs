@@ -27,6 +27,7 @@
     - [Checking Scopes](#checking-scopes)
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
 - [Events](#events)
+- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -657,3 +658,24 @@ protected $listen = [
     ],
 ];
 ```
+
+<a name="testing"></a>
+## Testing
+
+Passport is shipped with a helper method that'll make testing passport-protected routes very easy:
+
+```php
+public function testManagingServer()
+{
+    Passport::actingAs(
+        factory(User::class)->create(),
+        ['manage-servers', 'create-sites']
+    );
+
+    $response = $this->get('/api/manage-servers');
+
+    $response->assertStatus(200);
+}
+```
+
+The `Passport::actingAs()` method accepts two arguments, first is the user and the second argument is an array of scopes needed to access the given endpoint.
