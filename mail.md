@@ -230,6 +230,10 @@ Another solution provided by Laravel is to set a universal recipient of all e-ma
         'name' => 'Dev Example'
     ],
 
+#### Pretend
+
+Laravel also provides the option of setting the `pretending` flag on the mailer to true. The standard way to do this is to edit the `pretend` option to `true` in your `config/mail.php` configuration file. The `Mailer` class also has a `pretend()` function which can be called to set the pretend flag. When the `pretend` flag is set, messages are sent to the log instead of to the defined mail driver.
+
 #### Mailtrap
 
 Finally, you may use a service like [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your e-mail messages to a "dummy" mailbox where you may view them in a true e-mail client. This approach has the benefit of allowing you to actually inspect the final e-mails in Mailtrap's message viewer.
