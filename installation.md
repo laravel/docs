@@ -21,6 +21,7 @@ The Laravel framework has a few system requirements. Of course, all of these req
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
+- Mcrypt PHP Extension
 - Tokenizer PHP Extension
 </div>
 
