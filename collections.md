@@ -55,6 +55,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [count](#method-count)
 [diff](#method-diff)
 [diffKeys](#method-diffkeys)
+[drop](#method-drop)
 [each](#method-each)
 [every](#method-every)
 [except](#method-except)
@@ -290,6 +291,29 @@ The `diffKeys` method compares the collection against another collection or a pl
     $diff->all();
 
     // ['one' => 10, 'three' => 30, 'five' => 50]
+
+<a name="method-drop"></a>
+#### `drop()` {#collection-method}
+
+The `drop` method returns a new collection without the specified number of items:
+
+    $collection = collect([0, 1, 2, 3, 4, 5]);
+
+    $chunk = $collection->drop(2);
+
+    $chunk->all();
+
+    // [2, 3, 4, 5]
+
+You may also pass a negative integer to drop the specified amount of items from the end of the collection:
+
+    $collection = collect([0, 1, 2, 3, 4, 5]);
+
+    $chunk = $collection->drop(-2);
+
+    $chunk->all();
+
+    // [0, 1, 2, 3]
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}
