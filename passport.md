@@ -662,20 +662,16 @@ protected $listen = [
 <a name="testing"></a>
 ## Testing
 
-Passport is shipped with a helper method that'll make testing passport-protected routes very easy:
+Passport's `actingAs` method may be used to specify the currently authenticated user as well as its scopes. The first argument given to the `actingAs` method is the user instance and the second is an array of scopes that should be granted to the user's token:
 
-```php
-public function testManagingServer()
-{
-    Passport::actingAs(
-        factory(User::class)->create(),
-        ['manage-servers', 'create-sites']
-    );
+    public function testServerCreation()
+    {
+        Passport::actingAs(
+            factory(User::class)->create(),
+            ['create-servers']
+        );
 
-    $response = $this->get('/api/manage-servers');
+        $response = $this->post('/api/create-server');
 
-    $response->assertStatus(200);
-}
-```
-
-The `Passport::actingAs()` method accepts two arguments, first is the user and the second argument is an array of scopes needed to access the given endpoint.
+        $response->assertStatus(200);
+    }
