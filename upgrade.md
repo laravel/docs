@@ -101,6 +101,18 @@ Calling `$collection->random(1)` will now return a new collection instance with 
 
 ### Container
 
+#### Aliasing Via `bind` / `instance`
+
+In previous Laravel releases, you could pass an array as the first parameter to the `bind` or `instance` methods to register an alias:
+
+    $container->bind(['foo' => FooContract::class], function () {
+        return 'foo';
+    });
+
+However, this behavior has been removed in Laravel 5.4. To register an alias, you should now use the `alias` method:
+
+    $container->alias(FooContract::class, 'foo');
+
 #### Binding Classes With Leading Slashes
 
 Binding classes into the container with leading slashes is no longer supported. This feature required a significant amount of string formatting calls to be made within the container. Instead, simply register your bindings without a leading slash:
@@ -136,18 +148,6 @@ The `share` method has been removed from the container. This was a legacy method
     $container->singleton('foo', function () {
         return 'foo';
     });
-
-#### `bind` and `instance` Methods no longer do aliasing
-
-In the past you could pass an array as the first parameter to the `bind` or the `instance` methods to register an alias:
-
-    $container->bind(['foo' => FooContract::class], function () {
-        return 'foo';
-    });
-
-This behaviour was removed in laravel 5.4, to register an alias you need to use `alias()`:
-
-    $container->alias(FooContract::class, 'foo');
 
 ### Console
 
