@@ -137,6 +137,18 @@ The `share` method has been removed from the container. This was a legacy method
         return 'foo';
     });
 
+#### `bind` and `instance` Methods no longer do aliasing
+
+In the past you could pass an array as the first parameter to the `bind` or the `instance` methods to register an alias:
+
+    $container->bind(['foo' => FooContract::class], function () {
+        return 'foo';
+    });
+
+This behaviour was removed in laravel 5.4, to register an alias you need to use `alias()`:
+
+    $container->alias(FooContract::class, 'foo');
+
 ### Console
 
 #### The `Illuminate\Console\AppNamespaceDetectorTrait` Trait
