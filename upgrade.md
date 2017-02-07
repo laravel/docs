@@ -361,11 +361,19 @@ All calls to the `$request->setSession()` method should be changed to `setLarave
 
 Laravel 5.4's testing layer has been re-written to be simpler and lighter out of the box. If you would like to continue using the testing layer present in Laravel 5.3, you may install the `laravel/browser-kit-testing` [package](https://github.com/laravel/browser-kit-testing) into your application. This package provides full compatibility with the Laravel 5.3 testing layer. In fact, you can run the Laravel 5.4 testing layer side-by-side with the Laravel 5.3 testing layer.
 
-If you have tests written using Laravel 5.3 and would like to run them side-by-side with Laravel's new testing layer, install the `laravel/browser-kit-testing` package:
+#### Running Laravel 5.3 & 5.4 Tests In A Single Application
+
+Before getting started, you should add the `Tests` namespace to your `composer.json` file's `autoload-dev` block. This will allow Laravel to autoload any new tests you generate using the Laravel 5.4 test generators:
+
+    "psr-4": {
+        "Tests\\": "tests/"
+    }
+
+Next, install the `laravel/browser-kit-testing` package:
 
     composer require laravel/browser-kit-testing
 
-Next, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTest.php`. In order for your `BrowserKitTest` class to be properly loaded, you may need to add it to your `composer.json` file:
+Once the package has been installed, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTest.php`. In order for your `BrowserKitTest` class to be properly loaded, you may need to add it to your `composer.json` file:
 
     "autoload-dev": {
         "classmap": [
