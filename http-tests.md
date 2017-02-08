@@ -98,7 +98,7 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
         }
     }
 
-> {tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given fragment exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
+> {tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given ar exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
 <a name="verifying-exact-match"></a>
 ### Verifying Exact Match
@@ -141,6 +141,7 @@ Method  | Description
 `$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
 `$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
 `$response->assertJson(array $data);`  |  Assert that the response contains the given JSON data.
+`$response->assertJsonFragment(array $data);`  |  Assert that the response contains the given JSON fragment.
 `$response->assertExactJson(array $data);`  |  Assert that the response contains an exact match of the given JSON data.
 `$response->assertJsonStructure(array $structure);`  |  Assert that the response has a given JSON structure.
 `$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data.
