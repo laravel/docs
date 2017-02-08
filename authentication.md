@@ -97,7 +97,7 @@ To modify the form fields that are required when a new user registers with your 
 
 The `validator` method of the `AuthController` contains the validation rules for new users of the application. You are free to modify this method as you wish.
 
-The `create` method of the `AuthController` is responsible for creating new `App\User` records in your database using the [Eloquent ORM](/docs/{{version}}/eloquent). You are free to modify this method according to the needs of your database.
+The `create` method of the `AuthController` is responsible for creating new `App\User` records in your database using the [Eloquent ORM](/docs/{{version}}/eloquent). You are free to modify this method, according to the needs of your database.
 
 <a name="retrieving-the-authenticated-user"></a>
 ### Retrieving The Authenticated User
