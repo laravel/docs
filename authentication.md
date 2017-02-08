@@ -79,7 +79,7 @@ If the redirect path needs custom generation logic you may define a `redirectTo`
 
     protected function redirectTo()
     {
-        //
+        return '/path';
     }
 
 > {tip} The `redirectTo` method will take precedence over the `redirectTo` attribute.
