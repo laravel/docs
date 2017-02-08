@@ -193,3 +193,12 @@ When using multiple connections, you may access each connection via the `connect
 You may also access the raw, underlying PDO instance using the `getPdo` method on a connection instance:
 
     $pdo = DB::connection()->getPdo();
+    
+You may use a non-default database connection in an Eloquent model via overwriting the default connection data in your derived class model:
+
+    class Post extends Illuminate\Database\Eloquent\Model
+    {
+        protected $connection = 'foo';
+        
+        // other code
+    }
