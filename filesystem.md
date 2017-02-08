@@ -47,6 +47,16 @@ Of course, once a file has been stored and the symbolic link has been created, y
 When using the `local` driver, all file operations are relative to the `root` directory defined in your configuration file. By default, this value is set to the `storage/app` directory. Therefore, the following method would store a file in `storage/app/file.txt`:
 
     Storage::disk('local')->put('file.txt', 'Contents');
+    
+If you're using symlinks you may encounter an error when using the local driver. You can skip symlinks by setting the `links` config to `skip`:
+
+    'local' => [
+        'driver' => 'local',
+        'root'   => storage_path().'/app',
+
+        // Optional Driver Settings...
+        // 'links' => 'skip',
+    ],
 
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
