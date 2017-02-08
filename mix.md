@@ -192,7 +192,7 @@ The `copy` method may be used to copy files and directories to new locations. Th
 
 Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Mix can handle this for you using the `version` method.
 
-When executed in a production environment (`npm run production`), the `version` method will automatically append a unique hash to the filenames of all compiled files, allowing for more convenient cache busting:
+The `version` method will automatically append a unique hash to the filenames of all compiled files, allowing for more convenient cache busting:
 
     mix.js('resources/assets/js/app.js', 'public/js')
        .version();
@@ -200,6 +200,14 @@ When executed in a production environment (`npm run production`), the `version` 
 After generating the versioned file, you won't know the exact file name. So, you should use Laravel's global `mix` function within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `mix` function will automatically determine the current name of the hashed file:
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+
+Because versioning files typically is unneccesary in development, you may wish to have `version` run only in production (such when you run `npm run production`):
+
+    mix.js('resources/assets/js/app.js', 'public/js');
+    
+    if (mix.config.inProduction) {
+        mix.version();
+    }
 
 <a name="notifications"></a>
 ## Notifications
