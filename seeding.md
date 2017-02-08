@@ -89,6 +89,27 @@ Once you have written your seeder classes, you may use the `db:seed` Artisan com
 
     php artisan db:seed --class=UsersTableSeeder
 
-You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations. This command is useful for completely re-building your database:
+You may also seed your database using the `migrate` or `migrate:refresh` command. The last one will also rollback and re-run all of your migrations. This command is useful for completely re-building your database:
 
     php artisan migrate:refresh --seed
+
+If you want to seed your database every time you run your migrations without having conflicts with previous created seeds, you may use the following way in all your seeder classes:
+
+    use App\UserType;
+    
+    class UserTypeSeeder extends Seeder
+    {
+        /**
+         * Run the database seeds.
+         *
+         * @return void
+         */
+        public function run()
+        {
+            UserType::firstOrCreate(['type' => 'employee']);
+            UserType::firstOrCreate(['type' => 'client']);
+        }
+    }
+
+This way, you can safely re run `artisan:migrate --seed` every time you create new migrations and seeds.
+
