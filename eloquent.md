@@ -588,13 +588,13 @@ The first argument of the `addGlobalScope()` serves as an identifier to remove t
 
 If you would like to remove a global scope for a given query, you may use the `withoutGlobalScope` method:
 
-    User::withoutGlobalScope(AgeScope::class)->get();
+    User::withoutGlobalScope(new AgeScope)->get();
 
 If you would like to remove several or even all of the global scopes, you may use the `withoutGlobalScopes` method:
 
     User::withoutGlobalScopes()->get();
 
-    User::withoutGlobalScopes([FirstScope::class, SecondScope::class])->get();
+    User::withoutGlobalScopes([new FirstScope, new SecondScope])->get();
 
 <a name="local-scopes"></a>
 ### Local Scopes
