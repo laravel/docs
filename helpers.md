@@ -132,6 +132,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [session](#method-session)
 [value](#method-value)
 [view](#method-view)
+[with](#method-with)
 
 </div>
 
@@ -997,3 +998,10 @@ The `value` function's behavior will simply return the value it is given. Howeve
 The `view` function retrieves a [view](/docs/{{version}}/views) instance:
 
     return view('auth.login');
+    
+<a name="method-with"></a>
+#### `with()` {#collection-method}
+
+The `with` function returns the value it is given. This function is primarily useful for method chaining where it would otherwise be impossible:
+
+    $value = with(new Foo)->work();
