@@ -456,7 +456,7 @@ The Laravel 5.4 test class no longer manually forces `putenv('APP_ENV=testing')`
 
 #### Event Fake
 
-The `Event` fake's `assertFired` method should be updated to `assertDispatched`. The method signature has not been changed.
+The `Event` fake's `assertFired` method should be updated to `assertDispatched`, and the `assertNotFired` method should be updated to `assertNotDispatched`. The method's signatures have not been changed.
 
 #### Mail Fake
 
