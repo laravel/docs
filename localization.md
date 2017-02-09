@@ -134,6 +134,10 @@ You may even create more complex pluralization rules which specify translation s
 
     'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',
 
+You may even override some ranges of plural rules by putting it after all the line:
+
+    'apples' => 'There are one|There are many|{0} There are none',
+
 After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the translation string is returned:
 
     echo trans_choice('messages.apples', 10);
