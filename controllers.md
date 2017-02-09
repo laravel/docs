@@ -209,17 +209,27 @@ By default, `Route::resource` will create the route parameters for your resource
 <a name="restful-localizing-resource-uris"></a>
 ### Localizing Resource URIs
 
-By default, `Route::resource` will create the resource URIs for your resource routes using english verbs. If you need to localize the `create` and `edit` action verbs (or even change them to something else) you can easily override this globally using `Route::resourceVerbs()` to set the verbs used in the resource URIs generation:
+By default, `Route::resource` will create resource URIs using English verbs. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done in the `boot` method of your `AppServiceProvider`:
 
-    Route::resourceVerbs([
-        'create' => 'crear',
-        'edit' => 'editar',
-    ]);
-    Route::resource('fotos', 'PhotoController');
+    use Illuminate\Support\Facades\Route;
 
-The example above generates the following URIs for the resource's `create` and `edit` routes:
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Route::resourceVerbs([
+            'create' => 'crear',
+            'edit' => 'editar',
+        ]);
+    }
+
+Once the verbs have been customized, a resource route registration such as `Route::resource('fotos', 'PhotoController')` will produce the following URIs:
 
     /fotos/crear
+
     /fotos/{foto}/editar
 
 <a name="restful-supplementing-resource-controllers"></a>
