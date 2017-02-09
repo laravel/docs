@@ -593,7 +593,7 @@ Instead of passing a date string to be evaluated by `strtotime`, you may specify
 <a name="rule-after-or-equal"></a>
 #### after\_or\_equal:_date_
 
-The field under validation must be a value after or equal to the given date. For more information, see the [after](#rule-after) rule.
+The field under validation must be a value after or equal to the given date. Dates are evaluated as in the [`after`](#rule-after) rule.
 
 <a name="rule-alpha"></a>
 #### alpha
@@ -618,12 +618,12 @@ The field under validation must be a PHP `array`.
 <a name="rule-before"></a>
 #### before:_date_
 
-The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
+The field under validation must be a value preceding the given date. Dates are evaluated as in the [`after`](#rule-after) rule.
 
 <a name="rule-before-or-equal"></a>
 #### before\_or\_equal:_date_
 
-The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function.
+The field under validation must be a value preceding or equal to the given date. Dates are evaluated as in the [`after`](#rule-after) rule.
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
