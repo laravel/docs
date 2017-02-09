@@ -10,6 +10,7 @@
     - [Partial Resource Routes](#restful-partial-resource-routes)
     - [Naming Resource Routes](#restful-naming-resource-routes)
     - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
+    - [Localizing Resource URIs](#restful-localizing-resource-uris)
     - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
 - [Route Caching](#route-caching)
@@ -204,6 +205,22 @@ By default, `Route::resource` will create the route parameters for your resource
  The example above generates the following URIs for the resource's `show` route:
 
     /user/{admin_user}
+
+<a name="restful-localizing-resource-uris"></a>
+### Localizing Resource URIs
+
+By default, `Route::resource` will create the resource URIs for your resource routes using english verbs. If you need to localize the `create` and `edit` action verbs (or even change them to something else) you can easily override this globally using `Route::resourceVerbs()` to set the verbs used in the resource URIs generation:
+
+    Route::resourceVerbs([
+        'create' => 'crear',
+        'edit' => 'editar',
+    ]);
+    Route::resource('fotos', 'PhotoController');
+
+The example above generates the following URIs for the resource's `create` and `edit` routes:
+
+    /fotos/crear
+    /fotos/{foto}/editar
 
 <a name="restful-supplementing-resource-controllers"></a>
 ### Supplementing Resource Controllers
