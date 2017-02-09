@@ -373,23 +373,23 @@ Next, install the `laravel/browser-kit-testing` package:
 
     composer require laravel/browser-kit-testing
 
-Once the package has been installed, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTest.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTest.php`. In order for your `BrowserKitTest` class to be properly loaded, you may need to add it to your `composer.json` file:
+Once the package has been installed, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTestCase.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTestCase.php`. In order for your `BrowserKitTestCase` class to be properly loaded, you may need to add it to your `composer.json` file:
 
     "autoload-dev": {
         "classmap": [
             "tests/TestCase.php",
-            "tests/BrowserKitTest.php"
+            "tests/BrowserKitTestCase.php"
         ]
     },
 
-Tests written on Laravel 5.3 will extend the `BrowserKitTest` class while any new tests that use the Laravel 5.4 testing layer will extend the `TestCase` class. Your `BrowserKitTest` class should look like the following:
+Tests written on Laravel 5.3 will extend the `BrowserKitTestCase` class while any new tests that use the Laravel 5.4 testing layer will extend the `TestCase` class. Your `BrowserKitTestCase` class should look like the following:
 
     <?php
 
     use Illuminate\Contracts\Console\Kernel;
     use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 
-    abstract class BrowserKitTest extends BaseTestCase
+    abstract class BrowserKitTestCase extends BaseTestCase
     {
         /**
          * The base URL of the application.
@@ -413,7 +413,7 @@ Tests written on Laravel 5.3 will extend the `BrowserKitTest` class while any ne
         }
     }
 
-Once you have created this class, make sure to update all of your tests to extend your new `BrowserKitTest` class. This will allow all of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](/docs/5.4/http-tests) or [Laravel Dusk](/docs/5.4/dusk).
+Once you have created this class, make sure to update all of your tests to extend your new `BrowserKitTestCase` class. This will allow all of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](/docs/5.4/http-tests) or [Laravel Dusk](/docs/5.4/dusk).
 
 > {note} If you are writing new tests and want them to use the Laravel 5.4 testing layer, make sure to extend the `TestCase` class.
 
