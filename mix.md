@@ -201,10 +201,10 @@ After generating the versioned file, you won't know the exact file name. So, you
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 
-Because versioning files typically is unnecessary in development, you may wish to have `version` run only in production (such when you run `npm run production`):
+Because versioned files are usually unnecessary in development, you may wish to instruct the versioning process to only run during `npm run production`:
 
     mix.js('resources/assets/js/app.js', 'public/js');
-    
+
     if (mix.config.inProduction) {
         mix.version();
     }
