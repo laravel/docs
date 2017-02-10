@@ -15,7 +15,7 @@ Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` fi
 
 #### Removing Compiled Services File
 
-The compiled services file generation has been removed, you should delete the file `bootstrap/cache/compiled.php`
+If it exists, you may delete the `bootstrap/cache/compiled.php` file. It is no longer used by the framework.
 
 #### Flushing The Cache
 
