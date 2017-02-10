@@ -13,6 +13,10 @@
 
 Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~5.0`.
 
+#### Removing Compiled Services File
+
+If it exists, you may delete the `bootstrap/cache/compiled.php` file. It is no longer used by the framework.
+
 #### Flushing The Cache
 
 After upgrading all packages, you should run `php artisan view:clear` to avoid Blade errors related to the removal of `Illuminate\View\Factory::getFirstLoop()`. In addition, you may need to run `php artisan route:clear` to flush the route cache.
