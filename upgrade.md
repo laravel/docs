@@ -11,7 +11,14 @@
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~5.0`.
+Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~5.0`.  
+
+If you are using Laravel Dusk for your tests you may also need to register the Tests namespace by adding this map to your `autoload-dev` block: 
+```
+"psr-4": {
+    "Tests\\": "tests/"
+}
+```
 
 #### Removing Compiled Services File
 
