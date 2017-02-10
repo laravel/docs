@@ -880,13 +880,13 @@ The `prepend` method adds an item to the beginning of the collection:
 
 You may also pass a second argument to set the key of the prepended item:
 
-    $collection = collect(['one' => 1, 'two', => 2]);
+    $collection = collect(['one' => 1, 'two' => 2]);
 
     $collection->prepend(0, 'zero');
 
     $collection->all();
 
-    // ['zero' => 0, 'one' => 1, 'two', => 2]
+    // ['zero' => 0, 'one' => 1, 'two' => 2]
 
 <a name="method-pull"></a>
 #### `pull()` {#collection-method}
