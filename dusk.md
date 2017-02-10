@@ -460,7 +460,7 @@ To generate a page object, use the `dusk:page` Artisan command. All page objects
 <a name="configuring-pages"></a>
 ### Configuring Pages
 
-By default, pages have three methods: `url`, `assert`, and `selectors`. We will discuss the `url` and `assert` methods now. The `selectors` method will be [discussed in more detail below](#shorthand-selectors).
+By default, pages have three methods: `url`, `assert`, and `selectors`. We will discuss the `url` and `assert` methods now. The `elements` method will be [discussed in more detail below](#shorthand-selectors).
 
 #### The `url` Method
 
@@ -511,7 +511,7 @@ Sometimes you may already be on a given page and need to "load" the page's selec
 <a name="shorthand-selectors"></a>
 ### Shorthand Selectors
 
-The `selectors` method of pages allows you to define quick, easy-to-remember shortcuts for any CSS selector on your page. For example, let's define a shortcut for the "email" input field of the application's login page:
+The `elements` method of pages allows you to define quick, easy-to-remember shortcuts for any CSS selector on your page. For example, let's define a shortcut for the "email" input field of the application's login page:
 
     /**
      * Get the element shortcuts for the page.
