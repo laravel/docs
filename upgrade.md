@@ -27,7 +27,7 @@ Add `"symfony/dom-crawler": "~3.0"` and `"symfony/css-selector": "~3.0"` to the 
 
 #### Configuration File
 
-You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/master/config/auth.php](https://github.com/laravel/laravel/blob/master/config/auth.php)
+You should update your `config/auth.php` configuration file with the following: [https://github.com/laravel/laravel/blob/638b261a68913bae9a64f6d540612b862fa3c4dd/config/auth.php](https://github.com/laravel/laravel/blob/638b261a68913bae9a64f6d540612b862fa3c4dd/config/auth.php)
 
 Once you have updated the file with a fresh copy, set your authentication configuration options to their desired value based on your old configuration file. If you were using the typical, Eloquent based authentication services available in Laravel 5.1, most values should remain the same.
 
