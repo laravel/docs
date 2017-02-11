@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Environment](#environment)
 - [Creating & Running Tests](#creating-and-running-tests)
+- [Generating Test Reports in HTML Format](#generating-test-reports)
 
 <a name="introduction"></a>
 ## Introduction
@@ -55,3 +56,12 @@ Once the test has been generated, you may define test methods as you normally wo
     }
 
 > {note} If you define your own `setUp` method within a test class, be sure to call `parent::setUp`.
+
+
+<a name="generating-test-reports"></a>
+## Generating Test Reports in HTML Format
+
+To generate the test reports in `HTML` format, use the `phpunit --coverage-html` command:
+
+    // Generates a test reports in HTML format in the Reports directory...
+    phpunit --coverage-html reports
