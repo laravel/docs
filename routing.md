@@ -106,11 +106,11 @@ You may constrain the format of your route parameters using the `where` method o
 
     Route::get('user/{id}', function ($id) {
         //
-    })->where('id', '[0-9]+');
+    })->where('id', '[1-9][0-9]*');
 
     Route::get('user/{id}/{name}', function ($id, $name) {
         //
-    })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+    })->where(['id' => '[1-9][0-9]*', 'name' => '[a-z]+']);
 
 <a name="parameters-global-constraints"></a>
 #### Global Constraints
@@ -124,7 +124,7 @@ If you would like a route parameter to always be constrained by a given regular 
      */
     public function boot()
     {
-        Route::pattern('id', '[0-9]+');
+        Route::pattern('id', '[1-9][0-9]*');
 
         parent::boot();
     }
