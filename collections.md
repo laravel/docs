@@ -111,6 +111,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [union](#method-union)
 [unique](#method-unique)
 [values](#method-values)
+[when](#method-when)
 [where](#method-where)
 [whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
@@ -1386,6 +1387,21 @@ The `values` method returns a new collection with the keys reset to consecutive 
             1 => ['product' => 'Desk', 'price' => 200],
         ]
     */
+<a name="method-when"></a>
+#### `when()` {#collection-method}
+
+The `when` method allows you to apply a callback to the collection, when the test condition returns `true`:
+
+    $collection = collect([1, 2, 3]);
+
+    $collection->when(true, function ($collection) {
+        return $collection->push(4);
+    });
+
+    $collection->all();
+
+    // [1, 2, 3, 4]
+
 <a name="method-where"></a>
 #### `where()` {#collection-method}
 
