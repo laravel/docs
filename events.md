@@ -13,6 +13,10 @@
 - [Event Subscribers](#event-subscribers)
     - [Writing Event Subscribers](#writing-event-subscribers)
     - [Registering Event Subscribers](#registering-event-subscribers)
+- [Framework Events](#framework-events)
+    - [Model Events](#model-events)
+        - [Model Observers](#model-observers)
+    - [Other Events](#other-events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -354,3 +358,138 @@ After writing the subscriber, you are ready to register it with the event dispat
             'App\Listeners\UserEventSubscriber',
         ];
     }
+
+  }
+
+<a name="framework-events"></a>
+## Framework Events
+
+<a name="model-events"></a>
+### Model Events
+
+Eloquent models fire several events, allowing you to hook into the following points in a model's lifecycle: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`. Events allow you to easily execute code each time a specific model class is saved or updated in the database.
+
+Whenever a new model is saved for the first time, the `creating` and `created` events will fire. If a model already existed in the database and the `save` method is called, the `updating` / `updated` events will fire. However, in both cases, the `saving` / `saved` events will fire.
+
+To get started, define an `$events` property on your Eloquent model that maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events):
+
+    <?php
+
+    namespace App;
+
+    use App\Events\UserSaved;
+    use App\Events\UserDeleted;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use Notifiable;
+
+        /**
+         * The event map for the model.
+         *
+         * @var array
+         */
+        protected $events = [
+            'saved' => UserSaved::class,
+            'deleted' => UserDeleted::class,
+        ];
+    }
+
+<a name="model-observers"></a>
+#### Model Observers
+
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. Laravel does not include a default directory for observers, so you may create any directory you like to house your observer classes:
+
+    <?php
+
+    namespace App\Observers;
+
+    use App\User;
+
+    class UserObserver
+    {
+        /**
+         * Listen to the User created event.
+         *
+         * @param  User  $user
+         * @return void
+         */
+        public function created(User $user)
+        {
+            //
+        }
+
+        /**
+         * Listen to the User deleting event.
+         *
+         * @param  User  $user
+         * @return void
+         */
+        public function deleting(User $user)
+        {
+            //
+        }
+    }
+
+To register an observer, use the `observe` method on the model you wish to observe. You may register observers in the `boot` method of one of your service providers. In this example, we'll register the observer in the `AppServiceProvider`:
+
+    <?php
+
+    namespace App\Providers;
+
+    use App\User;
+    use App\Observers\UserObserver;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            User::observe(UserObserver::class);
+        }
+
+        /**
+         * Register the service provider.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+    }
+
+
+<a name="other-events"></a>
+### Other Events
+
+Laravel provides a variety of "core" events for actions performed by the framework. You can subscribe to them in the same way that you subscribe to your own custom events:
+
+Event  |  Parameter(s)
+------------- | -----------
+artisan.start | $application
+auth.attempt | $credentials, $remember, $login
+auth.login | $user, $remember
+auth.logout | $user
+cache.missed | $key
+cache.hit | $key, $value
+cache.write | $key, $value, $minutes
+cache.delete | $key
+connection.{name}.beganTransaction | $connection
+connection.{name}.committed | $connection
+connection.{name}.rollingBack | $connection
+illuminate.query | $query, $bindings, $time, $connectionName
+illuminate.queue.after | $connection, $job, $data
+illuminate.queue.failed | $connection, $job, $data
+illuminate.queue.stopping | null
+mailer.sending | $message
+router.matched | $route, $request
+composing:{view name} | $view
+creating:{view name} | $view
