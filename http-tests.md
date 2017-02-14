@@ -60,7 +60,7 @@ Of course, one common use of the session is for maintaining state for the authen
     {
         public function testApplication()
         {
-            $user = factory(App\User::class)->create();
+            $user = factory(\App\User::class)->create();
 
             $response = $this->actingAs($user)
                              ->withSession(['foo' => 'bar'])
