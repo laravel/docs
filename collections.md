@@ -1390,7 +1390,7 @@ The `values` method returns a new collection with the keys reset to consecutive 
 <a name="method-when"></a>
 #### `when()` {#collection-method}
 
-The `when` method allows you to apply a callback to the collection, when the test condition returns `true`:
+The `when` method will execute the given callback when the first argument given to the method evaluates to `true`:
 
     $collection = collect([1, 2, 3]);
 
