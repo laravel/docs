@@ -48,7 +48,8 @@ This is all it takes to create a pagination system! Note that we did not have to
 You may also access additional pagination information via the following methods:
 
 - `currentPage`
-- `lastPage`
+- `firstItem`
+- `lastItem`
 - `perPage`
 - `hasMorePages`
 - `url`
