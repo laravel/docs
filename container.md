@@ -9,6 +9,7 @@
 - [Resolving](#resolving)
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
+    - [Alias](#alias)
 - [Container Events](#container-events)
 
 <a name="introduction"></a>
@@ -232,6 +233,13 @@ For example, you may type-hint a repository defined by your application in a con
             //
         }
     }
+
+<a name="alias"></a>
+#### The `alias` Method
+
+You may use the `alias` method to determine what class should be used by a contract:
+
+    $this->app->alias('mailer', \Illuminate\Contracts\Mail\Mailer::class)
 
 <a name="container-events"></a>
 ## Container Events
