@@ -100,7 +100,7 @@ By default, Eloquent expects `created_at` and `updated_at` columns to exist on y
          *
          * @var bool
          */
-        public $timestamps = false;
+        protected $timestamps = false;
     }
 
 If you need to customize the format of your timestamps, set the `$dateFormat` property on your model. This property determines how date attributes are stored in the database, as well as their format when the model is serialized to an array or JSON:
