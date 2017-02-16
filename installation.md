@@ -72,3 +72,7 @@ You may also want to configure a few additional components of Laravel, such as:
 - [Session](/docs/{{version}}/session#configuration)
 
 Once Laravel is installed, you should also [configure your local environment](/docs/{{version}}/configuration#environment-configuration).
+
+#### Set Document Root
+
+The `public` directory is the entry point of the application and contains the front controller and your assets. You may wish to set `DocumentRoot` to `path/to/root/public/`. For local environment, your virtual host root can be set to point to the public directory. For production, you might need a VPS/dedicated server as most of the shared hosting providers does not allow `DocumentRoot` setting.
