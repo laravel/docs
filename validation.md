@@ -6,6 +6,7 @@
     - [Creating The Controller](#quick-creating-the-controller)
     - [Writing The Validation Logic](#quick-writing-the-validation-logic)
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
+    - [A Note On Optional Fields](#a-note-on-optional-fields)
 - [Form Request Validation](#form-request-validation)
     - [Creating Form Requests](#creating-form-requests)
     - [Authorizing Form Requests](#authorizing-form-requests)
@@ -153,6 +154,19 @@ So, in our example, the user will be redirected to our controller's `create` met
     @endif
 
     <!-- Create Post Form -->
+
+<a name="a-note-on-optional-fields"></a>
+### A Note On Optional Fields
+
+By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the stack by the `App\Http\Kernel` class. Because of this, you will often need to mark your "optional" request fields as `nullable` if you do not want the validator to consider `null` values as invalid. For example:
+
+    $this->validate($request, [
+        'title' => 'required|unique:posts|max:255',
+        'body' => 'required',
+        'publish_at' => 'nullable|date',
+    ]);
+
+In this example, we are specifying that the `publish_at` field may be either `null` or a valid date representation. If the `nullable` modifier is not added to the rule definition, the validator would consider `null` an invalid date.
 
 <a name="quick-customizing-the-flashed-error-format"></a>
 #### Customizing The Flashed Error Format
@@ -760,6 +774,14 @@ The field under validation must be an integer.
 #### ip
 
 The field under validation must be an IP address.
+
+#### ipv4
+
+The field under validation must be an IPv4 address.
+
+#### ipv6
+
+The field under validation must be an IPv6 address.
 
 <a name="rule-json"></a>
 #### json

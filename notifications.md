@@ -60,7 +60,21 @@ This command will place a fresh notification class in your `app/Notifications` d
 <a name="using-the-notifiable-trait"></a>
 ### Using The Notifiable Trait
 
-Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` [facade](/docs/{{version}}/facades). First, let's examine the `Notifiable` trait. This trait is used by the default `App\User` model and contains one method that may be used to send notifications: `notify`. The `notify` method expects to receive a notification instance:
+Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` [facade](/docs/{{version}}/facades). First, let's explore using the trait:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use Notifiable;
+    }
+
+This trait is utilized by the default `App\User` model and contains one method that may be used to send notifications: `notify`. The `notify` method expects to receive a notification instance:
 
     use App\Notifications\InvoicePaid;
 
@@ -159,6 +173,38 @@ In this example, we register a greeting, a line of text, a call to action, and t
 <img src="https://laravel.com/assets/img/notification-example.png" width="551" height="596">
 
 > {tip} When sending mail notifications, be sure to set the `name` value in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
+
+#### Other Notification Formatting Options
+
+Instead of defining the "lines" of text in the notification class, you may use the `view` method to specify a custom template that should be used to render the notification email:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)->view(
+            'emails.name', ['invoice' => $this->invoice]
+        );
+    }
+
+In addition, you may return a [mailable object](/docs/{{version}}/mail) from the `toMail` method:
+
+    use App\Mail\InvoicePaid as Mailable;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return Mailable
+     */
+    public function toMail($notifiable)
+    {
+        return new Mailable($this->invoice)->to($this->user->email);
+    }
 
 <a name="error-messages"></a>
 #### Error Messages

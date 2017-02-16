@@ -72,7 +72,7 @@ The `webpack.mix.js` file is your entry point for all asset compilation. Think o
 <a name="less"></a>
 ### Less
 
-The `less` method may be used to compile [Less](http://lesscss.org/) into CSS. Let's compile our primary `app.less` file to `public/css/app.less`.
+The `less` method may be used to compile [Less](http://lesscss.org/) into CSS. Let's compile our primary `app.less` file to `public/css/app.css`.
 
     mix.less('resources/assets/less/app.less', 'public/css');
 
@@ -94,7 +94,7 @@ The `sass` method allows you to compile [Sass](http://sass-lang.com/) into CSS. 
 
 Again, like the `less` method, you may compile multiple Sass files into their own respective CSS files and even customize the output directory of the resulting CSS:
 
-    mix.sass('resources/assets/sass/app.sass', 'public/css');
+    mix.sass('resources/assets/sass/app.sass', 'public/css')
        .sass('resources/assets/sass/admin.sass', 'public/css/admin');
 
 <a name="plain-css"></a>
@@ -192,7 +192,7 @@ The `copy` method may be used to copy files and directories to new locations. Th
 
 Many developers suffix their compiled assets with a timestamp or unique token to force browsers to load the fresh assets instead of serving stale copies of the code. Mix can handle this for you using the `version` method.
 
-When executed in a production environment (`npm run production`), the `version` method will automatically append a unique hash to the filenames of all compiled files, allowing for more convenient cache busting:
+The `version` method will automatically append a unique hash to the filenames of all compiled files, allowing for more convenient cache busting:
 
     mix.js('resources/assets/js/app.js', 'public/js')
        .version();
@@ -200,6 +200,14 @@ When executed in a production environment (`npm run production`), the `version` 
 After generating the versioned file, you won't know the exact file name. So, you should use Laravel's global `mix` function within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `mix` function will automatically determine the current name of the hashed file:
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+
+Because versioned files are usually unnecessary in development, you may wish to instruct the versioning process to only run during `npm run production`:
+
+    mix.js('resources/assets/js/app.js', 'public/js');
+
+    if (mix.config.inProduction) {
+        mix.version();
+    }
 
 <a name="notifications"></a>
 ## Notifications
