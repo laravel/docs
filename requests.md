@@ -139,6 +139,8 @@ When working on forms with array inputs, you may use "dot" notation to access th
 
     $names = $request->input('products.*.name');
 
+> **Note:** When using Laravel's validation, do not use `$request->get('name')` in place of `$request->input('name')` as the former may potentially return a different unvalidated value.
+
 #### Retrieving JSON Input Values
 
 When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to dig deeper into JSON arrays:
