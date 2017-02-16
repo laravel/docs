@@ -526,7 +526,7 @@ Once your database table and models are defined, you may access the relationship
         //
     }
 
-You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphedByMany`. In our case, that is the `posts` or `videos` methods on the `Tag` model. So, you will access those methods as dynamic properties:
+You may also retrieve the owner of a polymorphic relation from the polymorphic model by accessing the name of the method that performs the call to `morphedByMany`. In our case, that's either the `posts` or the `videos` method on the `Tag` model. So, you will access those methods as dynamic properties:
 
     $tag = App\Tag::find(1);
 
@@ -590,9 +590,8 @@ You may also specify an operator and count to further customize the query:
     // Retrieve all posts that have three or more comments...
     $posts = Post::has('comments', '>=', 3)->get();
 
-Nested `has` statements may also be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment and vote:
+Nested `has` statements may also be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment with votes:
 
-    // Retrieve all posts that have at least one comment with votes...
     $posts = Post::has('comments.votes')->get();
 
 If you need even more power, you may use the `whereHas` and `orWhereHas` methods to put "where" conditions on your `has` queries. These methods allow you to add customized constraints to a relationship constraint, such as checking the content of a comment:
