@@ -185,7 +185,7 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
 
 Sometimes you may want to `vagrant up` your Homestead machine from anywhere on your filesystem. You can do this on Mac / Linux systems by adding a Bash function to your Bash profile. On Windows, you may accomplish this by adding a "batch" file to your `PATH`. This scripts will allow you to run any Vagrant command from anywhere on your system and will automatically point that command to your Homestead installation:
 
-#### Linux
+#### Mac / Linux
 
     function homestead() {
         ( cd ~/Homestead && vagrant $* )
