@@ -460,7 +460,7 @@ To generate a page object, use the `dusk:page` Artisan command. All page objects
 <a name="configuring-pages"></a>
 ### Configuring Pages
 
-By default, pages have three methods: `url`, `assert`, and `selectors`. We will discuss the `url` and `assert` methods now. The `elements` method will be [discussed in more detail below](#shorthand-selectors).
+By default, pages have three methods: `url`, `assert`, and `elements`. We will discuss the `url` and `assert` methods now. The `elements` method will be [discussed in more detail below](#shorthand-selectors).
 
 #### The `url` Method
 
