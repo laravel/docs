@@ -62,6 +62,8 @@ Both Valet and Homestead are great choices for configuring your Laravel developm
 
 Once Valet is installed, try pinging any `*.dev` domain on your terminal using a command such as `ping foobar.dev`. If Valet is installed correctly you should see this domain responding on `127.0.0.1`.
 
+> {tip} If your system is not resolving `*.dev` domains to `127.0.0.1` you may need to reinstall Valet with sudo.  `sudo valet install`  This seems to be a common problem for users installing on a clean installation of macOS Sierra.
+
 Valet will automatically start its daemon each time your machine boots. There is no need to run `valet start` or `valet install` ever again once the initial Valet installation is complete.
 
 #### Using Another Domain
