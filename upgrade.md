@@ -487,7 +487,17 @@ If you are queueing jobs using this syntax, Eloquent models will no longer be au
 
     Queue::push(new ClassName);
 
+### Application Service Provider changes
+
+The definition for the `boot()` function has changed in all default application service providers. Easiest way to upgrade is to [review each provider from GitHub](https://github.com/laravel/laravel/tree/master/app/Providers) and make changes accordingly.
+
+`RouteServiceProvider` has changed significantly and now expects `routes` directory to exist with `routes/web.php` and `routes/api.php` to be present. [Get a fresh copy of RouteServiceProvider from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/RouteServiceProvider.php). You will need to copy and rename your `Http/routes.php` file to `routes/web.php`, more about that in the Routing section of the upgrade guide.
+
 ### Routing
+
+#### Routes have a new home
+
+`Http/routes.php` has been moved and renamed to `routes/web.php`. You'll need to create the `routes` directory and rename your `routes.php` to `web.php`. Likewise, there is a new `routes/api.php` that is expected. You can [grab a default copy from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/routes/api.php)
 
 #### Resource Parameters Are Singular By Default
 
