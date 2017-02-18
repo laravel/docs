@@ -74,7 +74,7 @@ You may install Homestead by simply cloning the repository. Consider cloning the
 
     git clone https://github.com/laravel/homestead.git Homestead
 
-Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the `~/.homestead` hidden directory:
+Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
     // Mac / Linux...
     bash init.sh
@@ -87,7 +87,7 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
 
 #### Setting Your Provider
 
-The `provider` key in your `~/.homestead/Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion`, `vmware_workstation`, or `parallels`. You may set this to the provider you prefer:
+The `provider` key in your `Homestead.yaml` file indicates which Vagrant provider should be used: `virtualbox`, `vmware_fusion`, `vmware_workstation`, or `parallels`. You may set this to the provider you prefer:
 
     provider: virtualbox
 
@@ -133,7 +133,7 @@ You must add the "domains" for your Nginx sites to the `hosts` file on your mach
 
     192.168.10.10  homestead.app
 
-Make sure the IP address listed is the one set in your `~/.homestead/Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
+Make sure the IP address listed is the one set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
 
     http://homestead.app
 
@@ -229,7 +229,7 @@ To connect to your MySQL or Postgres database from your host machine's database 
 <a name="adding-additional-sites"></a>
 ### Adding Additional Sites
 
-Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `~/.homestead/Homestead.yaml` file:
+Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `Homestead.yaml` file:
 
     sites:
         - map: homestead.app
