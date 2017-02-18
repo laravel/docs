@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Stripe Configuration](#stripe-configuration)
 - [Braintree Configuration](#braintree-configuration)
+- [Currency Configuration](#currency-configuration)
 - [Subscriptions](#subscriptions)
     - [Creating Subscriptions](#creating-subscriptions)
     - [Checking Subscription Status](#checking-subscription-status)
@@ -169,6 +170,17 @@ Then you should add the following Braintree SDK calls to your `AppServiceProvide
     \Braintree_Configuration::merchantId(env('BRAINTREE_MERCHANT_ID'));
     \Braintree_Configuration::publicKey(env('BRAINTREE_PUBLIC_KEY'));
     \Braintree_Configuration::privateKey(env('BRAINTREE_PRIVATE_KEY'));
+
+<a name="currency-configuration"></a>
+## Currency Configuration
+
+By default Cashier uses USD as currency. You can change it by telling Cashier which currency use with the `useCurrency` method. You should place this call within a service provider's `boot` method. You are free to add them to the `AppServiceProvider` or generate a separate service provider to house them:
+
+    use Laravel\Cashier\Cashier;
+    ...
+    Cashier::useCurrency('eur', '€');
+
+The `useCurrency` method accepts two string parameters, the currency and the symbol. Cashier sets the symbol for the USD, AUD, CAD, EUR and GBP currencies automatically.
 
 <a name="subscriptions"></a>
 ## Subscriptions
