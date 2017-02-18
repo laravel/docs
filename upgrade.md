@@ -709,6 +709,8 @@ If your application code was injecting `Illuminate\Cache\CacheManager` to get a 
 
 Replace any calls to `$paginator->links()` with `$paginator->render()`.
 
+> **Note:** This is not required if you upgrade straight to 5.2 as the `links()` method is now available as an alias to `render()`
+
 Replace any calls to `$paginator->getFrom()` and `$paginator->getTo()` with `$paginator->firstItem()` and `$paginator->lastItem()` respectively.
 
 Remove the "get" prefix from calls to `$paginator->getPerPage()`, `$paginator->getCurrentPage()`, `$paginator->getLastPage()` and `$paginator->getTotal()` (e.g. `$paginator->perPage()`).
