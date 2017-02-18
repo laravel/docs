@@ -324,6 +324,12 @@ You may drop multiple columns from a table by passing an array of column names t
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
+To drop timestamps from your table Schema builder provides `dropTimestamps()` method 
+
+    Schema::table('users', function (Blueprint $table) {
+        $table->dropTimestamps();
+    });
+
 > {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
 
 <a name="indexes"></a>
