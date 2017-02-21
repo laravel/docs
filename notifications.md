@@ -673,7 +673,7 @@ You may use the `from` and `to` methods to customize the sender and recipient. T
                     ->content('This will be sent to #other');
     }
 
-You can also use an image instead of an emoji:
+You may also use an image as your logo instead of an emoji:
 
     /**
      * Get the Slack representation of the notification.
