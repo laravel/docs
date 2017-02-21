@@ -283,7 +283,7 @@ To select a value in a dropdown selection box, you may use the `select` method. 
 
     $browser->select('size', 'Large');
 
-You may also select a random option in the dropdown selection box by omitting the second parameter.
+You may select a random option by omitting the second parameter:
 
     $browser->select('size');
 
