@@ -92,6 +92,7 @@ Finally, you should configure your Stripe key in your `services.php` configurati
 
     'stripe' => [
         'model'  => App\User::class,
+        'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
 
