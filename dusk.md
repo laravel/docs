@@ -283,6 +283,10 @@ To select a value in a dropdown selection box, you may use the `select` method. 
 
     $browser->select('size', 'Large');
 
+You may also select a random option in the dropdown selection box by omitting the second parameter.
+
+    $browser->select('size');
+
 #### Checkboxes
 
 To "check" a checkbox field, you may use the `check` method. Like many other input related methods, a full CSS selector is not required. If an exact selector match can't be found, Dusk will search for a checkbox with a matching `name` attribute:
