@@ -227,13 +227,13 @@ When injecting a model ID to a route or controller action, you will often query 
 <a name="implicit-binding"></a>
 ### Implicit Binding
 
-Laravel automatically resolves Eloquent models defined in routes or controller actions whose variable names match a route segment name. For example:
+Laravel automatically resolves Eloquent models defined in routes or controller actions whose variable names match a route segment name, provided that the variable is type hinted. For example:
 
     Route::get('api/users/{user}', function (App\User $user) {
         return $user->email;
     });
 
-In this example, since the Eloquent `$user` variable defined on the route matches the `{user}` segment in the route's URI, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
+In this example, since the Eloquent `$user` variable defined on the route is type hinted with `App\User`, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
 
 #### Customizing The Key Name
 
