@@ -673,6 +673,22 @@ You may use the `from` and `to` methods to customize the sender and recipient. T
                     ->content('This will be sent to #other');
     }
 
+You can also use an image instead of an emoji:
+
+    /**
+     * Get the Slack representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return SlackMessage
+     */
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
+                    ->from('Laravel')
+                    ->image('https://laravel.com/favicon.png')
+                    ->content('This will display the Laravel logo next to the message');
+    }
+
 <a name="slack-attachments"></a>
 ### Slack Attachments
 
