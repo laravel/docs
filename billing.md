@@ -228,7 +228,7 @@ If you would like to apply a coupon when creating the subscription, you may use 
 
 Sometimes you need to charge a one-time fee as part of a new subscription. To do so you will need to create an Invoice Item using the `tab` method just before creating the subscription. Stripe will add the newly created Invoice Item to the invoice total of the Subscription.
 
-The user needs to exist in Stripe to be able to create an invoice item, create them manually first required.
+The user needs to exist in Stripe to be able to create an invoice item, create them manually first if required.
 
 Just like the subscription `create` method, optionally pass an array of additional customer details as the second parameter:
     
