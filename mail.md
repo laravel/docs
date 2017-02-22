@@ -351,7 +351,7 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
     {{ config('app.name') }}
     @endcomponent
 
-> {note} When creating a markdown file, keep an eye on your indentation level as markdown may automatically escape HTML.
+> {tip} Do not use excess indentation when writing Markdown emails. Markdown parsers will render indented content as code blocks.
 
 #### Button Component
 
