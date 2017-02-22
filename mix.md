@@ -6,11 +6,17 @@
 - [Working With Stylesheets](#working-with-stylesheets)
     - [Less](#less)
     - [Sass](#sass)
+    - [Stylus](#stylus)
+    - [PostCSS](#postcss)
     - [Plain CSS](#plain-css)
+    - [Url Processing](#url-processing)
     - [Source Maps](#css-source-maps)
 - [Working With JavaScript](#working-with-scripts)
-    - [Code Splitting](#code-splitting)
+    - [Vendor Extraction](#vendor-extraction)
+    - [React Support](#react-support)
+    - [Vanilla JS](#vanilla-js)
     - [Custom Webpack Configuration](#custom-webpack-configuration)
+- [Browsersync Reloading](#browsersync-reloading)    
 - [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [Notifications](#notifications)
@@ -63,6 +69,10 @@ Mix is a configuration layer on top of [Webpack](https://webpack.js.org), so to 
 The `npm run watch` command will continue running in your terminal and watch all relevant files for changes. Webpack will then automatically recompile your assets when it detects a change:
 
     npm run watch
+    
+You may find that, in certain environments, Webpack isn't able to pick up on file changes properly. If this seems to be the case on your system, consider using the `watch-poll` command instead. With this adjustment, we'll instead use polling to monitor for file changes.
+
+    npm run watch-poll
 
 <a name="working-with-stylesheets"></a>
 ## Working With Stylesheets
@@ -85,6 +95,12 @@ If you wish to customize the file name of the compiled CSS, you may pass a full 
 
     mix.less('resources/assets/less/app.less', 'public/stylesheets/styles.css');
 
+Should you additionally need to override the [underlying Less plugin options](https://github.com/webpack-contrib/less-loader#options), you may pass an object as the third argument to `mix.less()`.
+
+    mix.less('resources/assets/less/app.less', 'public/css', {
+        strictMath: true
+    });
+
 <a name="sass"></a>
 ### Sass
 
@@ -96,13 +112,91 @@ Again, like the `less` method, you may compile multiple Sass files into their ow
 
     mix.sass('resources/assets/sass/app.sass', 'public/css')
        .sass('resources/assets/sass/admin.sass', 'public/css/admin');
+       
+Any optional [Node-Sass plugin options](https://github.com/sass/node-sass#options) may be provided as the third argument.
+
+    mix.sass('resources/assets/less/app.less', 'public/css', {
+        precision: 5
+    });       
+
+<a name="stylus"></a>
+### Stylus
+
+Similar to Less and Sass, the `stylus` method allows you to compile [Stylus](http://stylus-lang.com/) into CSS.
+
+    mix.stylus('resources/assets/sass/app.scss', 'public/css');
+
+You may wish to install additional Stylus plugins, such as [Rupture](https://github.com/jescalan/rupture). No problem. Simply install the plugin in question through NPM (`npm install rupture`), and then require it in your `mix.stylus()` call, like so:
+
+```js
+mix.stylus('resources/assets/stylus/app.styl', 'public/css', {
+    use: [
+        require('rupture')()
+    ]
+});
+```
+
+<a name="postcss"></a>
+### PostCSS
+
+[PostCSS](http://postcss.org/), a powerful tool for transforming your CSS, is included with Laravel Mix out of the box. By default, we leverage the popular [Autoprefixer](https://github.com/postcss/autoprefixer) plugin to automatically apply all necessary CSS3 vendor prefixes. However, you're free to add any additional plugins that are appropriate for your application. Simply install the desired plugin through NPM, and then reference it in your `webpack.mix.js` file, like so:
+
+```js
+mix.sass('resources/assets/sass/app.scss', 'public/css')
+   .options({
+        postCss: [
+            require('postcss-css-variables')()
+        ]
+   });
+```
+
+Done! You may now use and compile custom CSS properties.
+
+
+<a name="url-processing"></a>
+### URL Processing
+
+Because Laravel Mix is a layer on top of Webpack, it's important to understand a few key concepts. For CSS compilation, Webpack will, by default, rewrite and optimize any `url()`s within your stylesheets. While this might initially sound strange, it's an incredibly powerful piece of functionality. Imagine that we want to compile a bit of Sass that includes a relative url to an image.
+
+```scss
+.example {
+    background: url('../images/example.png');
+}
+```
+
+> {note} Absolute paths for `url()`s will of course be excluded from url-rewriting. As such, `url('/images/thing.png')` or `url('http://example.com/images/thing.png')` won't be touched.
+
+By default, Laravel Mix and Webpack will find `example.png`, copy it to your `public/images` folder, and then rewrite the `url()` within your generated stylesheet. As such, your compiled CSS will be:
+
+```css
+.example {
+  background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
+}
+```
+
+As useful as this feature may be, it's possible that your existing folder structure is already precisely as you desire. If this is the case, you may disable `url()` rewriting, like so:
+
+```js
+mix.sass('resources/assets/app/app.scss', 'public/css')
+   .options({
+      processCssUrls: false
+   });
+```
+
+With this addition to your `webpack.mix.js` file, Mix will no longer match `url()`s or copy assets to your public directory. As such, the compiled CSS will remain exactly as you typed it:
+
+```css
+.example {
+    background: url("../images/thing.png");
+}
+```
 
 <a name="plain-css"></a>
 ### Plain CSS
 
-If you would just like to combine some plain CSS stylesheets into a single file, you may use the `combine` method. This method also supports concatenating JavaScript files:
+If you would just like to concatenate some plain CSS stylesheets into a single file, you may use the `styles` method.
 
-    mix.combine([
+    mix.styles([
         'public/css/vendor/normalize.css',
         'public/css/vendor/videojs.css'
     ], 'public/css/all.css');
@@ -126,12 +220,13 @@ With this single line of code, you may now take advantage of:
 
 <div class="content-list" markdown="1">
 - ES2015 syntax.
+- Modules
 - Compilation of `.vue` files.
 - Minification for production environments.
 </div>
 
-<a name="code-splitting"></a>
-### Code Splitting
+<a name="vendor-extraction"></a>
+### Vendor Extraction
 
 One potential downside to bundling all application-specific JavaScript with your vendor libraries is that it makes long-term caching more difficult. For example, a single update to your application code will force the browser to re-download all of your vendor libraries even if they haven't changed.
 
@@ -153,6 +248,29 @@ To avoid JavaScript errors, be sure to load these files in the proper order:
     <script src="/js/manifest.js"></script>
     <script src="/js/vendor.js"></script>
     <script src="/js/app.js"></script>
+    
+<a name="react-support"></a>
+### React Support
+
+Mix can automatically install the necessary Babel plugins to allow for React support. Simply replace your `mix.js()` call with `mix.react()`, and then adopt the exact same signature.
+
+    mix.react('resources/assets/js/app.jsx', 'public/js');
+    
+Behind the scenes, React will download and include the appropriate `babel-preset-react` Babel plugin.
+
+<a name="vanilla-js"></a>
+### Vanilla JS
+
+Similar to combining stylesheets with `mix.styles()`, you may also combine and minify any number of JavaScript files with the `scripts()` method.
+
+    mix.scripts([
+        'public/js/admin.js',
+        'public/js/dashboard.js'
+    ], 'public/js/all.js');
+
+This option is particularly useful for legacy projects, where you don't necessarily require Webpack compilation for your JavaScript. If, instead, you simply need to concatenate a handful of files into one minified version, you may skip `mix.js()` entirely.
+
+> {note} A slight variation of `mix.scripts()` is `mix.babel()`. Its method signature is identical, however, the concatenated file will additionally receive Babel compilation, which translates any ES2015 code to vanilla JavaScript that all browsers will understand.
 
 <a name="custom-webpack-configuration"></a>
 ### Custom Webpack Configuration
@@ -170,14 +288,22 @@ Mix provides a useful `webpackConfig` method that allows you to merge any short 
             ]
         }
     });
+    
+<a name="browsersync-reloading"></a>
+## Browsersync Reloading
 
-#### Reference Your Own Configuration
+[BrowserSync](https://browsersync.io/) can automatically monitor your files for changes, and inject your changes into the browser - all without requiring a manual refresh. You may enable support by calling the `mix.browserSync()` method, like so:
 
-A second option is to copy Mix's `webpack.config.js` into your project root.
+    mix.browserSync('my-domain.dev');
 
-    cp node_modules/laravel-mix/setup/webpack.config.js ./
+    // Or:
 
-Next, you'll need to update the NPM scripts in your `package.json` to ensure that they no longer reference Mix's configuration file directly. Simply remove the `--config="node_modules/laravel-mix/setup/webpack.config.js"` entry from the commands. Once this has been done, you may freely modify your configuration file as needed.
+    // https://browsersync.io/docs/options/
+    mix.browserSync({
+        proxy: 'my-domain.dev'
+    });
+
+You may pass either a string (proxy) or object (BrowserSync settings) to this method. You're all set now! Boot up Webpack's dev server (`npm run watch`), modify a script or PHP file, and watch as the browser instantly refreshes to reflect your changes.
 
 
 <a name="copying-files-and-directories"></a>
