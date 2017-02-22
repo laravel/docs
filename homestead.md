@@ -41,7 +41,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - Sqlite3
 - Postgres
 - Composer
-- Node (With Yarn, PM2, Bower, Grunt, and Gulp)
+- Node (With Yarn, Bower, Grunt, and Gulp)
 - Redis
 - Memcached
 - Beanstalkd
