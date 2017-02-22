@@ -224,6 +224,31 @@ If you would like to apply a coupon when creating the subscription, you may use 
          ->withCoupon('code')
          ->create($stripeToken);
 
+#### One-time Subscription Charges
+
+Sometimes you need to charge a one-time fee as part of a new subscription. To do so you will need to create an Invoice Item using the `tab` method just before creating the subscription. Stripe will add the newly created Invoice Item to the invoice total of the Subscription.
+
+The user needs to exist in Stripe to be able to create an invoice item, create them manually first required.
+
+Just like the subscription `create` method, optionally pass an array of additional customer details as the second parameter:
+    
+    if(! $user->stripe_id) {
+
+        $user->createAsStripeCustomer($stripeToken, $options);    
+    }
+    
+Create the Invoice Item using the `tab` method, Stripe will hold onto it and add it to the Subscription invoice in the next step.
+
+Optionally pass an array of additional invoice item details as the third parameter:
+
+    $user->tab('One Time setup fee', 25000, $options);
+
+Finally subscribe the user as per the Creating Subscriptions instructions above
+
+    $user->newSubscription('main', 'maskot_standard')->create($stripeToken);
+
+To learn more, check out Stripe's [documentation on Invoice Items](https://stripe.com/docs/subscriptions/invoices#adding-invoice-items)
+
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
 
