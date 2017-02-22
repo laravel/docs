@@ -111,6 +111,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [union](#method-union)
 [unique](#method-unique)
 [values](#method-values)
+[when](#method-when)
 [where](#method-where)
 [whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
@@ -880,13 +881,13 @@ The `prepend` method adds an item to the beginning of the collection:
 
 You may also pass a second argument to set the key of the prepended item:
 
-    $collection = collect(['one' => 1, 'two', => 2]);
+    $collection = collect(['one' => 1, 'two' => 2]);
 
     $collection->prepend(0, 'zero');
 
     $collection->all();
 
-    // ['zero' => 0, 'one' => 1, 'two', => 2]
+    // ['zero' => 0, 'one' => 1, 'two' => 2]
 
 <a name="method-pull"></a>
 #### `pull()` {#collection-method}
@@ -1386,6 +1387,21 @@ The `values` method returns a new collection with the keys reset to consecutive 
             1 => ['product' => 'Desk', 'price' => 200],
         ]
     */
+<a name="method-when"></a>
+#### `when()` {#collection-method}
+
+The `when` method will execute the given callback when the first argument given to the method evaluates to `true`:
+
+    $collection = collect([1, 2, 3]);
+
+    $collection->when(true, function ($collection) {
+        return $collection->push(4);
+    });
+
+    $collection->all();
+
+    // [1, 2, 3, 4]
+
 <a name="method-where"></a>
 #### `where()` {#collection-method}
 
