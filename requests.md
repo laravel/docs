@@ -190,6 +190,10 @@ If you need to retrieve a subset of the input data, you may use the `only` and `
 
     $input = $request->except('credit_card');
 
+The `only` method returns all of the key / value pairs that you request, even if the key is not present on the incoming request. When the key is not present on the request, the value will be `null`. If you would like to retrieve a portion of input data that is actually present on the request, you may use the `intersect` method:
+
+    $input = $request->intersect(['username', 'password']);
+
 #### Determining If An Input Value Is Present
 
 You should use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present and is not an empty string:

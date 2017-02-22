@@ -56,11 +56,13 @@ Of course, one common use of the session is for maintaining state for the authen
 
     <?php
 
+    use App\User;
+
     class ExampleTest extends TestCase
     {
         public function testApplication()
         {
-            $user = factory(App\User::class)->create();
+            $user = factory(User::class)->create();
 
             $response = $this->actingAs($user)
                              ->withSession(['foo' => 'bar'])
@@ -98,7 +100,7 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
         }
     }
 
-> {tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given fragment exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
+> {tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
 <a name="verifying-exact-match"></a>
 ### Verifying Exact Match
@@ -139,8 +141,10 @@ Method  | Description
 `$response->assertCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie.
 `$response->assertPlainCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie (unencrypted).
 `$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
+`$response->assertSessionHasErrors(array $keys);`  |  Assert that the session contains an error for the given field.
 `$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
 `$response->assertJson(array $data);`  |  Assert that the response contains the given JSON data.
+`$response->assertJsonFragment(array $data);`  |  Assert that the response contains the given JSON fragment.
 `$response->assertExactJson(array $data);`  |  Assert that the response contains an exact match of the given JSON data.
 `$response->assertJsonStructure(array $structure);`  |  Assert that the response has a given JSON structure.
 `$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data.
