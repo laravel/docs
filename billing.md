@@ -241,11 +241,11 @@ Create the Invoice Item using the `tab` method, Stripe will hold onto it and add
 
 Optionally pass an array of additional invoice item details as the third parameter:
 
-    $user->tab('One Time setup fee', 25000, $options);
+    $user->tab('One Time Setup Fee', 25000, $options);
 
 Finally subscribe the user as per the Creating Subscriptions instructions above
 
-    $user->newSubscription('main', 'maskot_standard')->create($stripeToken);
+    $user->newSubscription('main', 'monthly')->create($stripeToken);
 
 To learn more, check out Stripe's [documentation on Invoice Items](https://stripe.com/docs/subscriptions/invoices#adding-invoice-items)
 
