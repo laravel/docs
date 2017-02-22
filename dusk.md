@@ -443,6 +443,8 @@ Assertion  | Description
 `$browser->assertInputValueIsNot($field, $value)`  |  Assert the given input field does not have the given value.
 `$browser->assertChecked($field)`  |  Assert the given checkbox is checked.
 `$browser->assertNotChecked($field)`  |  Assert the given checkbox is not checked.
+`$browser->assertRadioSelected($field, $value)`  |  Assert the given radio field is selected.
+`$browser->assertRadioNotSelected($field, $value)` |  Assert the given radio field is not selected.
 `$browser->assertSelected($field, $value)`  |  Assert the given dropdown has the given value selected.
 `$browser->assertNotSelected($field, $value)`  |  Assert the given dropdown does not have the given value selected.
 `$browser->assertValue($selector, $value)`  |  Assert the element matching the given selector has the given value.
