@@ -351,6 +351,8 @@ Markdown mailables use a combination of Blade components and Markdown syntax whi
     {{ config('app.name') }}
     @endcomponent
 
+> {note} When creating a markdown file, keep an eye on your indentation level as markdown may automatically escape HTML.
+
 #### Button Component
 
 The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `blue`, `green`, and `red`. You may add as many button components to a message as you wish:
@@ -520,4 +522,3 @@ Laravel fires an event just before sending mail messages. Remember, this event i
             'App\Listeners\LogSentMessage',
         ],
     ];
-
