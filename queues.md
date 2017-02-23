@@ -353,7 +353,7 @@ You may customize your queue worker even further by only processing particular q
 
 #### Resource Considerations
 
-Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should free any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
+Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should free any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.  It may also help to run [gc_collect_cycles](http://php.net/manual/en/function.gc-collect-cycles.php) after your job finishes to explicitly free up memory.
 
 <a name="queue-priorities"></a>
 ### Queue Priorities
