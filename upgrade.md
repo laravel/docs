@@ -353,6 +353,8 @@ The `getMethods` method of the `Illuminate\Routing\Route` class has been removed
 
 The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead.
 
+The `getPath` method of the `Illuminate\Routing\Route` class has been removed. You should use the `uri` method instead.
+
 ### Sessions
 
 #### Symfony Compatibility
