@@ -48,6 +48,8 @@ You may also use the 'visitRoute' method to make a 'GET' request via a named rou
 <a name="interacting-with-your-application"></a>
 ## Interacting With Your Application
 
+> {tip} You can also use the community driven [Laravel TestTools](https://chrome.google.com/webstore/detail/laravel-testtools/ddieaepnbjhgcbddafciempnibnfnakl?lang=en) Chrome extension to help you write application tests.
+
 Of course, you can do much more than simply assert that text appears in a given response. Let's take a look at some examples of clicking links and filling out forms:
 
 <a name="interacting-with-links"></a>
