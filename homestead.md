@@ -19,7 +19,7 @@
 - [Updating Homestead](#updating-homestead)
 - [Old Versions](#old-versions)
 - [Provider Specific Settings](#provider-specific-settings)
-    - [Virtualbox](#provider-specific-virtualbox)
+    - [VirtualBox](#provider-specific-virtualbox)
 
 <a name="introduction"></a>
 ## Introduction
@@ -79,11 +79,12 @@ You may install Homestead by simply cloning the repository. Consider cloning the
 
     git clone https://github.com/laravel/homestead.git Homestead
 
-You should check out a tagged version of Homestead. Using the master branch is not advised and may not always be in a stable state. You can find the latest stable version on the [Github Release Page](https://github.com/laravel/homestead/releases). You should only use `master` if you are a vagrant expert.
+You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [Github Release Page](https://github.com/laravel/homestead/releases):
 
     cd Homestead
 
-    git checkout v4.0.5 // Always use the latest release version number
+    // Clone the desired release...
+    git checkout v4.0.5
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -92,8 +93,6 @@ Once you have cloned the Homestead repository, run the `bash init.sh` command fr
 
     // Windows...
     init.bat
-
-If you prefer to use a JSON configuration file instead of Yaml, add an argument to the end of the init script: `bash init.sh json`. You cannot have JSON and Yaml configuration files at the same time. Homestead will always load `Homestead.yaml` if it exists and ignore `Homestead.json`
 
 <a name="configuring-homestead"></a>
 ### Configuring Homestead
@@ -257,19 +256,17 @@ If Vagrant is not automatically managing your "hosts" file, you may need to add 
 
 Once the site has been added, run the `vagrant reload --provision` command from your Homestead directory.
 
-<a name="additional-site-types"></a>
-### Additional Site Types
+<a name="site-types"></a>
+#### Site Types
 
-Homestead supports additional sites types for you to easily run projects that may not be formatted similarly to Laravel.
-
-In the example below, we can easily add a Symfony 2 application to Homestead:
+Homestead supports several types of sites which allow you to easily run projects that are not based on Laravel. For example, we may easily add a Symfony application to Homestead using the `symfony2` site type:
 
     sites:
         - map: symfony2.app
           to: /home/vagrant/Code/Symfony/public
           type: symfony2
 
-Available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, and `symfony2`
+The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, and `symfony2`.
 
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules
@@ -293,9 +290,9 @@ By default, the following ports are forwarded to your Homestead environment:
 - **SSH:** 2222 &rarr; Forwards To 22
 - **HTTP:** 8000 &rarr; Forwards To 80
 - **HTTPS:** 44300 &rarr; Forwards To 443
-- **Mailhog:** 8025 &rarr; Forwards To 8025
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **Postgres:** 54320 &rarr; Forwards To 5432
+- **Mailhog:** 8025 &rarr; Forwards To 8025
 
 #### Forwarding Additional Ports
 
@@ -311,11 +308,13 @@ If you wish, you may forward additional ports to the Vagrant box, as well as spe
 <a name="sharing-your-environment"></a>
 ### Sharing Your Environment
 
-Sometimes you may wish to share what you're currently working on with coworkers or a remote client. Vagrant has a built in way to support this via `vagrant share`, however this does not work if you have multiple sites configured in your `Homestead.yaml`
+Sometimes you may wish to share what you're currently working on with coworkers or a  client. Vagrant has a built-in way to support this via `vagrant share`; however, this will not work if you have multiple sites configured in your `Homestead.yaml` file.
 
-To share your environment SSH into the virtual machine via `vagrant ssh` and then run `share homestead.app` to share the `homestead.app` site from your `Homestead.yaml` configuration file.
+To solve this problem, Homestead includes its own `share` command. To get started, SSH into your Homestead machine via `vagrant ssh` and run `share homestead.app`. This will share the `homestead.app` site from your `Homestead.yaml` configuration file. Of course, you may substitute any of your other configured sites for `homestead.app`.
 
-You will see the ngrok screen appear showing you the activity log and public accessible URLs for your environment. Remember that Vagrant is inherently insecure and you are exposing your virtual machine to the Internet!
+After running the command, you will see an Ngrok screen appear which contains the activity log and the publicly accessible URLs for the shared site.
+
+> {note} Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the Internet when running the `share` command.
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
@@ -375,14 +374,13 @@ When you use an older version of the Homestead box you need to match that with a
 | PHP 7.0 | 3.1.0 | 0.6.0 |
 | PHP 7.1 | 4.0.0 | 1.0.0 |
 
+<a name="provider-specific-settings"></a>
 ## Provider Specific Settings
 
-### Virtualbox
+<a name="provider-specific-virtualbox"></a>
+### VirtualBox
 
-By default Homestead sets `natdnshostresolver` to `on`. This is so that Homestead will use your host OS DNS settings by default.
-
-If you would like to override this behavior, add the following line to your `Homestead.yaml`:
-
+By default, Homestead configures the `natdnshostresolver` setting to `on`. This allows Homestead to use your host operating system's DNS settings. If you would like to override this behavior, add the following lines to your `Homestead.yaml` file:
 
     provider: virtualbox
     natdnshostresolver: off
