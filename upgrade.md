@@ -93,6 +93,22 @@ When defining channel name placeholders in Laravel 5.3, the `*` character is use
         return (int) $user->id === (int) $userId;
     });
 
+#### Channels file
+
+Add `channels.php` file into the routes directory. require the file in the `BroadcastServiceProvider` :
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Broadcast::routes();
+
+        require base_path('routes/channels.php');r
+    }
+
 ### Collections
 
 #### The `every` Method
