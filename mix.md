@@ -281,6 +281,10 @@ The `copy` method may be used to copy files and directories to new locations. Th
 
     mix.copy('node_modules/foo/bar.css', 'public/css/bar.css');
 
+If you are copying a directory, by default Laravel Mix will flatten everything. You can avoid this by passing the optional third parameter:
+
+    mix.copy('node_modules/directory', 'public/directory', false); 
+
 <a name="versioning-and-cache-busting"></a>
 ## Versioning / Cache Busting
 
