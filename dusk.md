@@ -38,7 +38,7 @@ To get started, you should add the `laravel/dusk` Composer dependency to your pr
 
     composer require laravel/dusk
 
-Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. You should register the provider within the `register` method of your `AppServiceProvider` in order to limit the environments in which Dusk is available, since it exposes the ability to login as other users:
+Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. You should register the provider within the `register` method of your `AppServiceProvider` in order to limit the environments in which Dusk is available, since it exposes the ability to log in as other users:
 
     use Laravel\Dusk\DuskServiceProvider;
 
