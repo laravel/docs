@@ -106,7 +106,7 @@ Add `channels.php` file into the routes directory. require the file in the `Broa
     {
         Broadcast::routes();
 
-        require base_path('routes/channels.php');r
+        require base_path('routes/channels.php');
     }
 
 ### Collections
