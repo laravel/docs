@@ -81,7 +81,7 @@ If you would like to render unescaped content in a section, you must declare the
 
 ### Bootstrappers
 
-If you are manually overriding the `$bootstrappers` array on your HTTP or Console kernel, you should rename the `DetectEnvironment` entry to `LoadEnvironmentVariables`.
+If you are manually overriding the `$bootstrappers` array on your HTTP or Console kernel, you should rename the `DetectEnvironment` entry to `LoadEnvironmentVariables` and remove `ConfigureLogging`.
 
 ### Broadcasting
 
