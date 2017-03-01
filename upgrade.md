@@ -62,11 +62,11 @@ The `make:console` command has been renamed to `make:command`.
 
 The two default authentication controllers provided with the framework have been split into four smaller controllers. This change provides cleaner, more focused authentication controllers by default. The easiest way to upgrade your application to the new authentication controllers is to [grab a fresh copy of each controller from GitHub](https://github.com/laravel/laravel/tree/5.3/app/Http/Controllers/Auth) and place them into your application.
 
-You should also make sure that you are calling the `Auth::routes()` method in your `routes/web.php` file. This method will register the proper routes for the new authentication controllers.
+You should also make sure that you are calling the `Route::auth()` method in your `routes/web.php` file. This method will register the proper routes for the new authentication controllers.
 
 Once these controllers have been placed into your application, you may need to re-implement any customizations you made to these controllers. For example, if you are customizing the authentication guard that is used for authentication, you may need to override the controller's `guard` method. You can examine each authentication controller's trait to determine which methods to override.
 
-> {tip} If you were not customizing the authentication controllers, you should just be able to drop in fresh copies of the controllers from GitHub and verify that you are calling the `Auth::routes` method in your `routes/web.php` file.
+> {tip} If you were not customizing the authentication controllers, you should just be able to drop in fresh copies of the controllers from GitHub and verify that you are calling the `Route::auth()` method in your `routes/web.php` file.
 
 #### Password Reset Emails
 
