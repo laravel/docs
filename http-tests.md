@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Session / Authentication](#session-and-authentication)
 - [Testing JSON APIs](#testing-json-apis)
+- [Testing File Uploads](#testing-file-uploads)
 - [Available Assertions](#available-assertions)
 
 <a name="introduction"></a>
@@ -37,7 +38,7 @@ Laravel provides a very fluent API for making HTTP requests to your application 
 The `get` method makes a `GET` request into the application, while the `assertStatus` method asserts that the returned response should have the given HTTP status code. In addition to this simple assertion, Laravel also contains a variety of assertions for inspecting the response headers, content, JSON structure, and more.
 
 <a name="session-and-authentication"></a>
-### Session / Authentication
+## Session / Authentication
 
 Laravel provides several helpers for working with the session during HTTP testing. First, you may set the session data to a given array using the `withSession` method. This is useful for loading the session with data before issuing a request to your application:
 
@@ -75,7 +76,7 @@ You may also specify which guard should be used to authenticate the given user b
     $this->actingAs($user, 'api')
 
 <a name="testing-json-apis"></a>
-### Testing JSON APIs
+## Testing JSON APIs
 
 Laravel also provides several helpers for testing JSON APIs and their responses. For example, the `json`, `get`, `post`, `put`, `patch`, and `delete` methods may be used to issue requests with various HTTP verbs. You may also easily pass data and headers to these methods. To get started, let's write a test to make a `POST` request to `/user` and assert that the expected data was returned:
 
@@ -128,8 +129,52 @@ If you would like to verify that the given array is an **exact** match for the J
         }
     }
 
+<a name="testing-file-uploads"></a>
+## Testing File Uploads
+
+The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be used to generate dummy files or images for testing. This, combined with the `Storage` facade's `fake` method greatly simplifies the testing of file uploads. For example, you may combine these two features to easily test an avatar upload form:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Tests\TestCase;
+    use Illuminate\Http\UploadedFile;
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+    class ExampleTest extends TestCase
+    {
+        public function testAvatarUpload()
+        {
+            Storage::fake('avatars');
+
+            $response = $this->json('POST', '/avatar', [
+                'avatar' => UploadedFile::fake()->image('avatar.jpg')
+            ]);
+
+            // Assert the file was stored...
+            Storage::disk('avatars')->assertExists('avatar.jpg');
+
+            // Assert a file does not exist...
+            Storage::disk('avatars')->assertMissing('missing.jpg');
+        }
+    }
+
+#### Fake File Customization
+
+When creating files using the `fake` method, you may specify the width, height, and size of the image in order to better test your validation rules:
+
+    UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);
+
+In addition to creating images, you may create files of any other type using the `create` method:
+
+    UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
+
 <a name="available-assertions"></a>
-### Available Assertions
+## Available Assertions
 
 Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) tests. These assertions may be accessed on the response that is returned from the `json`, `get`, `post`, `put`, and `delete` test methods:
 
