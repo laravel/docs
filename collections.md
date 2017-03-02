@@ -1437,7 +1437,7 @@ This method has the same signature as the [`where`](#method-where) method; howev
 <a name="method-wherein"></a>
 #### `whereIn()` {#collection-method}
 
-The `whereIn` method filters the collection by a given key / value contained within the given array.
+The `whereIn` method filters the collection by a given key / value contained within the given array:
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
