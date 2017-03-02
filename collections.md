@@ -1467,7 +1467,7 @@ This method has the same signature as the [`whereIn`](#method-wherein) method; h
 <a name="method-wherenotin"></a>
 #### `whereNotIn()` {#collection-method}
 
-The `whereNotIn` method filters the collection by a given key / value not contained within the given array.
+The `whereNotIn` method filters the collection by a given key / value not contained within the given array:
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
