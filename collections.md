@@ -116,6 +116,8 @@ For the remainder of this documentation, we'll discuss each method available on 
 [whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
 [whereInStrict](#method-whereinstrict)
+[whereNotIn](#method-wherenotin)
+[whereNotInStrict](#method-wherenotinstrict)
 [zip](#method-zip)
 
 </div>
@@ -1461,6 +1463,36 @@ The `whereIn` method uses "loose" comparisons when checking item values. Use the
 #### `whereInStrict()` {#collection-method}
 
 This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using strict comparisons.
+
+<a name="method-wherenotin"></a>
+#### `whereNotIn()` {#collection-method}
+
+The `whereNotIn` method filters the collection by a given key / value not contained within the given array:
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 100],
+        ['product' => 'Bookcase', 'price' => 150],
+        ['product' => 'Door', 'price' => 100],
+    ]);
+
+    $filtered = $collection->whereNotIn('price', [150, 200]);
+
+    $filtered->all();
+
+    /*
+    [
+        ['product' => 'Chair', 'price' => 100],
+        ['product' => 'Door', 'price' => 100],
+    ]
+    */
+
+The `whereNotIn` method uses "loose" comparisons when checking item values. Use the [`whereNotInStrict`](#method-wherenotinstrict) method to filter using strict comparisons.
+
+<a name="method-wherenotinstrict"></a>
+#### `whereNotInStrict()` {#collection-method}
+
+This method has the same signature as the [`whereNotIn`](#method-wherenotin) method; however, all values are compared using strict comparisons.
 
 <a name="method-zip"></a>
 #### `zip()` {#collection-method}
