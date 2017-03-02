@@ -241,7 +241,7 @@ Mix can automatically install the Babel plug-ins necessary for React support. To
 
     mix.react('resources/assets/js/app.jsx', 'public/js');
 
-Behind the scenes, React will download and include the appropriate `babel-preset-react` Babel plug-in.
+Behind the scenes, Mix will download and include the appropriate `babel-preset-react` Babel plug-in.
 
 <a name="vanilla-js"></a>
 ### Vanilla JS
