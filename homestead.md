@@ -312,7 +312,7 @@ Sometimes you may wish to share what you're currently working on with coworkers 
 
 To solve this problem, Homestead includes its own `share` command. To get started, SSH into your Homestead machine via `vagrant ssh` and run `share homestead.app`. This will share the `homestead.app` site from your `Homestead.yaml` configuration file. Of course, you may substitute any of your other configured sites for `homestead.app`.
 
-If you want to change the region or add another Ngrok parameter you can do so by adding these after the first parameter like so `share homestead.app -region=eu -subdomain=laravel`.
+If you want to change the region, subdomain, or add any other Ngrok parameter you can do so by adding these after the first parameter like so `share homestead.app -region=eu -subdomain=laravel`. Which will change the Ngrok region to Europe and change the subdomain to `laravel`.
 
 After running the command, you will see an Ngrok screen appear which contains the activity log and the publicly accessible URLs for the shared site.
 
