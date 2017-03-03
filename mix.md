@@ -280,6 +280,10 @@ Mix provides a useful `webpackConfig` method that allows you to merge any short 
 The `copy` method may be used to copy files and directories to new locations. This can be useful when a particular asset within your `node_modules` directory needs to be relocated to your `public` folder.
 
     mix.copy('node_modules/foo/bar.css', 'public/css/bar.css');
+    
+By default, copying a directory will flatten the copied files - including all files but placing them in the root of the target directory without keeping the folder structure. If you wish to keep the exact folder stucture, you have to set the third parameter to `true`.
+
+    mix.copy('node_modules/foo/bar/', 'public/css/', true);
 
 <a name="versioning-and-cache-busting"></a>
 ## Versioning / Cache Busting
