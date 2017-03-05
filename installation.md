@@ -70,7 +70,7 @@ All of the configuration files for the Laravel framework are stored in the `conf
 
 #### Directory Permissions
 
-After installing Laravel, you may need to configure some permissions. Directories within the `storage` and the `bootstrap/cache` directories should be writable by your web server or Laravel will not run. If you are using the [Homestead](/docs/{{version}}/homestead) virtual machine, these permissions should already be set.
+After installing Laravel, you may need to configure some permissions. Directories within the `storage` and the `bootstrap/cache` directories should be writable by your web server or Laravel will not run. On *nix based systems web server user group should own the directory, use `chgrp -R www-data storage bootstrap/cache` command to change ownership where `www-data` is the user under which your web server runs. Then give write permissions to web server user group using `chmod -R ug+rwx storage bootstrap/cache` command, both of these commands should be run under root/superuser account. If you are using the [Homestead](/docs/{{version}}/homestead) virtual machine, these permissions should already be set.
 
 #### Application Key
 
