@@ -71,7 +71,7 @@ When using Pusher and [Laravel Echo](#installing-laravel-echo), you should speci
 
     window.Echo = new Echo({
         broadcaster: 'pusher',
-        key: 'your-pusher-key'
+        pusherKey: 'your-pusher-key'
     });
 
 #### Redis
@@ -355,7 +355,7 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
 
     window.Echo = new Echo({
         broadcaster: 'pusher',
-        key: 'your-pusher-key'
+        pusherKey: 'your-pusher-key'
     });
 
 When creating an Echo instance that uses the `pusher` connector, you may also specify a `cluster` as well as whether the connection should be encrypted:

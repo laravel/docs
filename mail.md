@@ -431,4 +431,3 @@ Laravel fires an event just before sending mail messages. Remember, this event i
             'App\Listeners\LogSentMessage',
         ],
     ];
-
