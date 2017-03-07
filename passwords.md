@@ -95,3 +95,13 @@ You may easily modify the notification class used to send the password reset lin
         $this->notify(new ResetPasswordNotification($token));
     }
 
+#### Specifying Additional Conditions
+
+If you wish, you also may add extra conditions to the send reset link query in addition to the user's e-mail. Simply override the  `sendResetLinkEmail` method on the `ForgotPasswordController`. For example, we may verify that user is marked as "active":
+
+    $response = $this->broker()->sendResetLink(
+        ['email' => $email, 'active' => 1])) {
+        // The user is active, not suspended, and exists.
+    }
+
+> {note} In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
