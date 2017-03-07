@@ -342,6 +342,24 @@ The `drag` method may be used to drag an element matching the given selector to 
 
     $browser->drag('.from-selector', '.to-selector');
 
+Alternatively, you can drag an element a given number of pixels in any direction using the `dragOffset` method. The second and third parameters specify the number of pixels to move along the horizontal and vertical axis. 
+
+    // Move the element 10 pixels to the right and 25 pixels up
+    $browser->dragOffset('.selector', 10, 25);
+    
+    // Move the element 5 pixels to the left and 10 pixels down
+    $browser->dragOffset('.selector', -5, -10);
+
+Often you may only want to drag an element in a single direction:
+
+    $browser->dragLeft('.selector', 10);
+    
+    $browser->dragRight('.selector', 10);
+    
+    $browser->dragUp('.selector', 10);
+    
+    $browser->dragDown('.selector', 10);
+
 <a name="scoping-selectors"></a>
 ### Scoping Selectors
 
