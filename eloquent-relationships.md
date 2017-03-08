@@ -748,6 +748,12 @@ In this example, Eloquent will only eager load posts where the post's `title` co
         $query->orderBy('created_at', 'desc');
     }])->get();
 
+If specific columns are required from the related models, it's possible to do it with a smarter syntax instead of adding a select to the query function:
+
+    $users = App\User::with('posts:id,user_id,body')->get();
+
+Note that the `id` of the relation and the foreign key `user_id` is required for this to work.
+
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
