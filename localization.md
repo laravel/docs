@@ -7,6 +7,7 @@
 - [Retrieving Translation Strings](#retrieving-translation-strings)
     - [Replacing Parameters In Translation Strings](#replacing-parameters-in-translation-strings)
     - [Pluralization](#pluralization)
+- [Multiple Language Directories](#multiple-language-directories)
 - [Overriding Package Language Files](#overriding-package-language-files)
 
 <a name="introduction"></a>
