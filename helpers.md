@@ -531,7 +531,7 @@ The `class_basename` returns the class name of the given class with the class' n
 <a name="method-e"></a>
 #### `e()` {#collection-method}
 
-The `e` function runs `htmlspecialchars` over the given string:
+The `e` function runs `htmlspecialchars` with the `double_encode` option set to false over the given string:
 
     echo e('<html>foo</html>');
 
