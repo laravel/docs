@@ -138,6 +138,13 @@ After defining a translation string that has pluralization options, you may use 
 
     echo trans_choice('messages.apples', 10);
 
+<a name="multiple-language-directories"></a>
+## Multiple Language Directories
+
+You may have multiple directories for storing languages files, these can be added in a Service Provider:
+
+    $this->loadTranslationsFrom($path, $namespace)
+
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
 
