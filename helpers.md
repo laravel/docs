@@ -45,6 +45,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [array_sort](#method-array-sort)
 [array_sort_recursive](#method-array-sort-recursive)
 [array_where](#method-array-where)
+[array_wrap](#method-array-wrap)
 [head](#method-head)
 [last](#method-last)
 </div>
@@ -418,6 +419,17 @@ The `array_where` function filters the array using the given Closure:
     });
 
     // [1 => 200, 3 => 400]
+
+<a name="method-array-wrap"></a>
+#### `array_wrap()` {#collection-method}
+
+If the given value is not an array, `array_wrap` wraps its in one:
+
+    $string = 'Laravel';
+
+    $array = array_wrap($string);
+
+    // [0 => 'Laravel']
 
 <a name="method-head"></a>
 #### `head()` {#collection-method}
