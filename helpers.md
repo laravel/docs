@@ -72,6 +72,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [class_basename](#method-class-basename)
 [e](#method-e)
 [ends_with](#method-ends-with)
+[kebab_case](#method-kebab-case)
 [snake_case](#method-snake-case)
 [str_limit](#method-str-limit)
 [starts_with](#method-starts-with)
@@ -545,6 +546,16 @@ The `ends_with` function determines if the given string ends with the given valu
     $value = ends_with('This is my name', 'name');
 
     // true
+
+<a name="method-kebab-case"></a>
+#### `kebab_case()` {#collection-method}
+
+The `kebab_case` function converts the given string to `kebab-case`:
+
+    $value = kebab_case('fooBar');
+
+    // foo-bar
+
 
 <a name="method-snake-case"></a>
 #### `snake_case()` {#collection-method}
