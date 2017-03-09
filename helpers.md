@@ -423,7 +423,7 @@ The `array_where` function filters the array using the given Closure:
 <a name="method-array-wrap"></a>
 #### `array_wrap()` {#collection-method}
 
-If the given value is not an array, `array_wrap` wraps its in one:
+The `array_wrap` function will wrap the given value in an array. If the given value is already an array it will not be changed:
 
     $string = 'Laravel';
 
@@ -434,7 +434,7 @@ If the given value is not an array, `array_wrap` wraps its in one:
 <a name="method-head"></a>
 #### `head()` {#collection-method}
 
-The `head` function simply returns the first element in the given array:
+The `head` function returns the first element in the given array:
 
     $array = [100, 200, 300];
 
