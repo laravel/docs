@@ -623,6 +623,8 @@ Typically, if you want to consume your API from your JavaScript application, you
 
 This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. Now, you may make requests to your application's API without explicitly passing an access token:
 
+### Using Axios
+
     axios.get('/user')
         .then(response => {
             console.log(response.data);
@@ -634,7 +636,28 @@ When using this method of authentication, Axios will automatically send the `X-C
         'X-Requested-With': 'XMLHttpRequest',
     };
 
-> {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
+### Other Javascript Frameworks
+
+If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` header with every outgoing request, The value must be the correct CSRF Token. You can include this token in your views by `{{ csrf_token() }}`:
+
+```
+<script>
+    var laraveltoken = "{{ csrf_token() }}"
+</script>
+```
+Make sure to include this script in all pages where you will be sending requests with javascript.
+
+When making requests (example: JQuery AJAX) you must include the header:
+```
+ $.ajax({
+    headers: {
+        "X-CSRF-TOKEN" : laraveltoken
+    },
+    type: "GET"
+    url: "/user"
+ });
+ 
+```
 
 
 <a name="events"></a>
