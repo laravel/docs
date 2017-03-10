@@ -67,7 +67,7 @@ Of course, one common use of the session is for maintaining state for the authen
 
             $response = $this->actingAs($user)
                              ->withSession(['foo' => 'bar'])
-                             ->get('/')
+                             ->get('/');
         }
     }
 
