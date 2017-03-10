@@ -173,7 +173,7 @@ If you were previously binding a service container binding for a `db.connection.
 
 #### Fetch Mode
 
-Laravel no longer includes the ability to customize the PDO "fetch mode" from your configuration files. Instead, `PDO::FETCH_OBJ` is always used. If you will still like to customize the fetch mode for your application you may listen for the new `Illuminate\Database\Events\StatementPrepared` event:
+Laravel no longer includes the ability to customize the PDO "fetch mode" from your configuration files. Instead, `PDO::FETCH_OBJ` is always used. If you would still like to customize the fetch mode for your application you may listen for the new `Illuminate\Database\Events\StatementPrepared` event:
 
     Event::listen(StatementPrepared::class, function ($event) {
         $event->statement->setFetchMode(...);
