@@ -38,6 +38,8 @@ Laravel already makes it easy to perform authentication via traditional login fo
 <a name="installation"></a>
 ## Installation
 
+Before installing Passport you need to make sure that OpenSSL is installed on your system.
+
 To get started, install Passport via the Composer package manager:
 
     composer require laravel/passport=~1.0
