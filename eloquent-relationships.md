@@ -675,7 +675,7 @@ You may add the "counts" for multiple relations as well as add constraints to th
     echo $posts[0]->votes_count;
     echo $posts[0]->comments_count;
 
-If needed, you may also alias a count to something else, allowing multiple counts on the same relationship name:
+You may also alias the relationship count result, allowing multiple counts on the same relationship:
 
     $posts = Post::withCount([
         'comments',
@@ -685,6 +685,7 @@ If needed, you may also alias a count to something else, allowing multiple count
     ])->get();
 
     echo $posts[0]->comments_count;
+
     echo $posts[0]->pending_comments_count;
 
 <a name="eager-loading"></a>
