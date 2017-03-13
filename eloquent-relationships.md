@@ -675,6 +675,18 @@ You may add the "counts" for multiple relations as well as add constraints to th
     echo $posts[0]->votes_count;
     echo $posts[0]->comments_count;
 
+If needed, you may also alias a count to something else, allowing multiple counts on the same relationship name:
+
+    $posts = Post::withCount([
+        'comments',
+        'comments AS pending_comments' => function ($query) {
+            $query->where('approved', false);
+        }
+    ])->get();
+
+    echo $posts[0]->comments_count;
+    echo $posts[0]->pending_comments_count;
+
 <a name="eager-loading"></a>
 ## Eager Loading
 
