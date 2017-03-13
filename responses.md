@@ -136,15 +136,13 @@ Of course, if you do not need to pass a custom HTTP status code or custom header
 <a name="json-responses"></a>
 #### JSON Responses
 
-The `json` method will automatically set the `Content-Type` header to `application/json`, as well as convert the given array into JSON using the `json_encode` PHP function:
+The `json` methond has been deprecated in `5.2` and now resides in its own class `JsonResponse`. `JsonResponse` will automatically set the `Content-Type` header to `application/json`, as well as convert the given array into JSON using the `json_encode` PHP function:
 
-    return response()->json(['name' => 'Abigail', 'state' => 'CA']);
+    return new JsonResponse(['name' => 'Abigail', 'state' => 'CA']);
 
-If you would like to create a JSONP response, you may use the `json` method in addition to `setCallback`:
+`JsonResponse` has the following constructor by default, these options can be overidden by passign them into the constructor call:
 
-    return response()
-                ->json(['name' => 'Abigail', 'state' => 'CA'])
-                ->setCallback($request->input('callback'));
+    JsonResponse($data = null, $status = 200, $headers = [], $options = 0)
 
 <a name="file-downloads"></a>
 #### File Downloads
