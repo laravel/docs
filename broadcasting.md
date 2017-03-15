@@ -375,6 +375,8 @@ Once Echo is installed, you are ready to create a fresh Echo instance in your ap
         broadcaster: 'pusher',
         key: 'your-pusher-key'
     });
+    
+> {tip} Echo version 1.3.0+ also requires you to register the library you wish to us. eg. `window.Pusher = require('pusher-js');`.    
 
 When creating an Echo instance that uses the `pusher` connector, you may also specify a `cluster` as well as whether the connection should be encrypted:
 
