@@ -186,6 +186,8 @@ To drop a foreign key, you may use the `dropForeign` method. A similar naming co
 
 > **Note:** When creating a foreign key that references an incrementing integer, remember to always make the foreign key column `unsigned`.
 
+> **Note:** Make sure you are using the *InnoDB* engine for your tables that needs a foreign key. Otherwise, you'll get the MySQL error number 1005 when you will run your migrations. 
+
 <a name="dropping-indexes"></a>
 ## Dropping Indexes
 
