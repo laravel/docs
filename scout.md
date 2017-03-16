@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
+    - [Server Requirements](#server-requirements)
     - [Queueing](#queueing)
     - [Driver Prerequisites](#driver-prerequisites)
 - [Configuration](#configuration)
@@ -53,6 +54,11 @@ Finally, add the `Laravel\Scout\Searchable` trait to the model you would like to
     {
         use Searchable;
     }
+
+<a name="server-requirements"></a>
+### Server Requirements
+
+The Scout library requires PHP >= 7.0, the latest version of [Homestead](/docs/{{version}}/homestead) satisfies this requirement.
 
 <a name="queueing"></a>
 ### Queueing
