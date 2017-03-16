@@ -688,7 +688,7 @@ You may also alias the relationship count result, allowing multiple counts on th
 
     echo $posts[0]->pending_comments_count;
     
-> {tip} If your relationship names are camel cased, you will need to use the snake case version when referencing the column name. For example, if you had a relationship on your model named `authorNotes`, your column name will be `author_notes_count`.
+> {tip} If your relationship names are camel cased, you will need to use the snake case version when referencing the column name. For example, if you have a relationship on your model named `authorNotes`, your column name will be `author_notes_count`.
 
 <a name="eager-loading"></a>
 ## Eager Loading
