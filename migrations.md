@@ -330,12 +330,12 @@ If you pass an array of columns into a method that drops indexes, the convention
 <a name="foreign-key-constraints"></a>
 ### Foreign Key Constraints
 
-Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
+Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table. Note that the column must be created before adding the constraing:
 
     Schema::table('posts', function ($table) {
-        $table->integer('user_id')->unsigned();
+        $table->integer('user_id')->unsigned(); //Create column
 
-        $table->foreign('user_id')->references('id')->on('users');
+        $table->foreign('user_id')->references('id')->on('users'); //Bind column
     });
 
 You may also specify the desired action for the "on delete" and "on update" properties of the constraint:
