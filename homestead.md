@@ -137,6 +137,10 @@ Make sure the IP address listed is the one set in your `~/.homestead/Homestead.y
 
     http://homestead.app
 
+You may choose to automate the process above by using the [vagrant-hostsupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin. This plugin will automatically add the relevant entries to the `hosts` file based on the `~/.homestead/Homestead.yaml` file. To install the plugin:
+
+    vagrant plugin install vagrant-hostsupdater
+
 <a name="launching-the-vagrant-box"></a>
 ### Launching The Vagrant Box
 
