@@ -69,7 +69,15 @@ If you are developing on a Windows system or you are running your VM on a Window
 <a name="running-elixir"></a>
 ## Running Elixir
 
-Elixir is built on top of [Gulp](http://gulpjs.com), so to run your Elixir tasks you only need to run the `gulp` command in your terminal. Adding the `--production` flag to the command will instruct Elixir to minify your CSS and JavaScript files:
+#### Requiring Elixer in Gulp
+
+Elixir is built on top of [Gulp](http://gulpjs.com). Before you can start working on your Elixir tasks, you need to tell Gulp to use Elixer. Add the following to the top of your `gulpfile.js` in the root directory of your project:
+
+```javascript
+var elixir = require('laravel-elixir');
+```
+
+To run your Elixir tasks you only need to run the `gulp` command in your terminal. Adding the `--production` flag to the command will instruct Elixir to minify your CSS and JavaScript files:
 
     // Run all tasks...
     gulp
