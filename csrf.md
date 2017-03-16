@@ -23,7 +23,7 @@ The `VerifyCsrfToken` [middleware](/docs/{{version}}/middleware), which is inclu
 
 #### CSRF Tokens & Vue
 
-If you are using the [Vue](https://vuejs.org) JavaScript framework, but not using the authentication scaffolding provided by the `make:auth` Artisan command, you will need to manually define a `Laravel` JavaScript object in your primary application layout. This object specifies the CSRF token Vue should use when making requests:
+If you are using the [Vue](https://vuejs.org) JavaScript framework without the authentication scaffolding provided by the `make:auth` Artisan command, you will need to manually define a `Laravel` JavaScript object in your primary application layout. This object specifies the CSRF token Vue should use when making requests:
 
     <script>
         window.Laravel = {!! json_encode([
