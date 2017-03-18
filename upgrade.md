@@ -244,6 +244,10 @@ The `Model::hydrateRaw` method has been renamed to `fromQuery`. If you are passi
 
 The `whereKey($id)` method will now add a "where" clause for the given primary key value. Previously, this would fall into the dynamic "where" clause builder and add a "where" clause for the "key" column. If you used the `whereKey` method to dynamically add a condition for the `key` column you should now use `where('key', ...)` instead.
 
+#### The `getForeignKey` Method
+
+The `getForeignKey` method has been removed. Use `getForeignKeyName` instead.
+
 #### The `factory` Helper
 
 Calling `factory(User::class, 1)->make()` or `factory(User::class, 1)->create()` will now return a collection with one item. Previously, this would return a single model. This method will only return a single model if the amount is not supplied.
