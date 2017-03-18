@@ -203,7 +203,7 @@ In addition, you may return a [mailable object](/docs/{{version}}/mail) from the
      */
     public function toMail($notifiable)
     {
-        return new Mailable($this->invoice)->to($this->user->email);
+        return (new Mailable($this->invoice))->to($this->user->email);
     }
 
 <a name="error-messages"></a>
