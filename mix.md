@@ -274,6 +274,10 @@ Mix provides a useful `webpackConfig` method that allows you to merge any short 
         }
     });
 
+#### Use a custom config file
+
+If you require a lot of changes to the default config, it might make more sense to maintain your own copy. Simply copy `node_modules/laravel-mix/setup/webpack.config.js` to your project root and update all of the `--config` flags in the `package.json` `scripts` array to point to this new file. Keep in mind that when you upgrade your packages, any upstream changes to this file will have to be manually updated in your local copy.
+
 <a name="copying-files-and-directories"></a>
 ## Copying Files & Directories
 
