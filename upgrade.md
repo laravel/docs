@@ -93,6 +93,12 @@ When defining channel name placeholders in Laravel 5.3, the `*` character is use
         return (int) $user->id === (int) $userId;
     });
 
+### Commands
+
+#### Command Namespace Detector Trait Rename
+
+If any of your commands use the `AppNamespaceDetectorTrait` Trait, it has been renamed to `DetectsApplicationNamespace`.
+
 ### Collections
 
 #### The `every` Method
