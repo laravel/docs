@@ -228,10 +228,6 @@ The `Model::create` & `Model:: forceCreate` methods have been moved to the `Illu
         return $model;
     }
 
-#### The `getForeignKey` Method
-
-The `getForeignKey` method has been removed. Use the `getForeignKeyName` method instead.
-
 #### The `hydrate` Method
 
 If you are currently passing a custom connection name to this method, you should now use the `on` method:
