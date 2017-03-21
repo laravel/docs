@@ -13,7 +13,7 @@
     - [Source Maps](#css-source-maps)
 - [Working With JavaScript](#working-with-scripts)
     - [Vendor Extraction](#vendor-extraction)
-    - [React](#react-support)
+    - [React](#react)
     - [Vanilla JS](#vanilla-js)
     - [Custom Webpack Configuration](#custom-webpack-configuration)
 - [Copying Files & Directories](#copying-files-and-directories)
