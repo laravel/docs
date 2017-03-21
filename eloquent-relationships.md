@@ -313,9 +313,9 @@ If you would like to define a custom model to represent the intermediate table o
 
     namespace App;
 
-    use Illuminate\Database\Relations\Pivot;
+    use Illuminate\Database\Eloquent\Model;
 
-    class Role extends Pivot
+    class Role extends Model
     {
         /**
          * The users that belong to the role.
