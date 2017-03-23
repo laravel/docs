@@ -178,18 +178,18 @@ In addition to creating images, you may create files of any other type using the
 
 Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) tests. These assertions may be accessed on the response that is returned from the `json`, `get`, `post`, `put`, and `delete` test methods:
 
-Method  | Description
-------------- | -------------
-`$response->assertStatus($code);`  |  Assert that the response has a given code.
-`$response->assertRedirect($uri);`  |  Assert that the response is a redirect to a given URI.
-`$response->assertHeader($headerName, $value = null);`  |  Assert that the given header is present on the response.
-`$response->assertCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie.
-`$response->assertPlainCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie (unencrypted).
-`$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
-`$response->assertSessionHasErrors(array $keys);`  |  Assert that the session contains an error for the given field.
-`$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
-`$response->assertJson(array $data);`  |  Assert that the response contains the given JSON data.
-`$response->assertJsonFragment(array $data);`  |  Assert that the response contains the given JSON fragment.
-`$response->assertExactJson(array $data);`  |  Assert that the response contains an exact match of the given JSON data.
-`$response->assertJsonStructure(array $structure);`  |  Assert that the response has a given JSON structure.
-`$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data.
+Method  | Description | Since
+------------- | ------------- | -------------
+`$response->assertStatus($code);`  |  Assert that the response has a given code. | 5.4.0
+`$response->assertRedirect($uri);`  |  Assert that the response is a redirect to a given URI. | 5.4.0
+`$response->assertHeader($headerName, $value = null);`  |  Assert that the given header is present on the response. | 5.4.0
+`$response->assertCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie. | 5.4.0
+`$response->assertPlainCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie (unencrypted). | 5.4.0
+`$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data. | 5.4.0
+`$response->assertSessionHasErrors(array $keys);`  |  Assert that the session contains an error for the given field. | 5.4.12
+`$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key. | 5.4.0
+`$response->assertJson(array $data);`  |  Assert that the response contains the given JSON data. | 5.4.0
+`$response->assertJsonFragment(array $data);`  |  Assert that the response contains the given JSON fragment. | 5.4.10
+`$response->assertExactJson(array $data);`  |  Assert that the response contains an exact match of the given JSON data. | 5.4.0
+`$response->assertJsonStructure(array $structure);`  |  Assert that the response has a given JSON structure. | 5.4.8
+`$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data. | 5.4.0
