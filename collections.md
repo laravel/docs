@@ -72,6 +72,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [implode](#method-implode)
 [intersect](#method-intersect)
 [isEmpty](#method-isempty)
+[isNotEmpty](#method-isnotempty)
 [keyBy](#method-keyby)
 [keys](#method-keys)
 [last](#method-last)
@@ -605,6 +606,15 @@ The `isEmpty` method returns `true` if the collection is empty; otherwise, `fals
     collect([])->isEmpty();
 
     // true
+
+<a name="method-isnotempty"></a>
+#### `isNotEmpty()` {#collection-method}
+
+The `isNotEmpty` method returns `true` if the collection is not empty; otherwise, `false` is returned:
+
+    collect([])->isNotEmpty();
+
+    // false
 
 <a name="method-keyby"></a>
 #### `keyBy()` {#collection-method}
