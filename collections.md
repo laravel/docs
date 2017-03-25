@@ -105,6 +105,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [split](#method-split)
 [sum](#method-sum)
 [take](#method-take)
+[tap](#method-tap)
 [toArray](#method-toarray)
 [toJson](#method-tojson)
 [transform](#method-transform)
@@ -1259,6 +1260,20 @@ You may also pass a negative integer to take the specified amount of items from 
     $chunk->all();
 
     // [4, 5]
+
+<a name="method-tap"></a>
+#### `tap()` {#collection-method}
+
+The `tap` method passes the collection to the given callback, allowing you to "tap" into the collection at a specific point and do something with the items while not affecting the collection itself:
+
+    collect([2, 4, 3, 1, 5])
+        ->sort()
+        ->tap(function ($collection) {
+            Log::debug('Values after sorting', $collection->values()->toArray());
+        })
+        ->shift();
+
+    // 1
 
 <a name="method-toarray"></a>
 #### `toArray()` {#collection-method}
