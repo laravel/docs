@@ -53,6 +53,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [collapse](#method-collapse)
 [combine](#method-combine)
 [contains](#method-contains)
+[containsStrict](#method-containsstrict)
 [count](#method-count)
 [diff](#method-diff)
 [diffKeys](#method-diffkeys)
@@ -248,6 +249,12 @@ Finally, you may also pass a callback to the `contains` method to perform your o
     });
 
     // false
+
+The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the `containsStrict` method to filter using "strict" comparisons.
+
+#### `containsStrict()` {#collection-method}
+
+This method has the same signature as the `contains` method; however, all values are compared using "strict" comparisons.
 
 <a name="method-count"></a>
 #### `count()` {#collection-method}
