@@ -111,6 +111,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [transform](#method-transform)
 [union](#method-union)
 [unique](#method-unique)
+[uniqueStrict](#method-uniquestrict)
 [values](#method-values)
 [when](#method-when)
 [where](#method-where)
@@ -1383,6 +1384,13 @@ You may also pass your own callback to determine item uniqueness:
             ['name' => 'Galaxy Gear', 'brand' => 'Samsung', 'type' => 'watch'],
         ]
     */
+
+The `unique` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the `uniqueStrict` method to filter using "strict" comparisons.
+
+<a name="method-uniquestrict"></a>
+#### `uniqueStrict()` {#collection-method}
+
+This method has the same signature as the `unique` method; however, all values are compared using "strict" comparisons.
 
 <a name="method-values"></a>
 #### `values()` {#collection-method}
