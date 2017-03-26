@@ -74,6 +74,10 @@ Next, update your base `App\Http\Controllers\Controller` controller to use the `
 
 #### Estimated Upgrade Time: Less Than 1 Hour
 
+### Upgrading Your Composer Dependency
+
+To upgrade your application to Laravel 5.1, change your `laravel/framework` version to `5.1.*` in your `composer.json` file.
+
 ### Update `bootstrap/autoload.php`
 
 Update the `$compiledPath` variable in `bootstrap/autoload.php` to the following:
