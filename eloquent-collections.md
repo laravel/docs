@@ -51,6 +51,7 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 <div id="collection-method-list" markdown="1">
 
 [all](/docs/{{version}}/collections#method-all)
+[average](/docs/{{version}}/collections#method-average)
 [avg](/docs/{{version}}/collections#method-avg)
 [chunk](/docs/{{version}}/collections#method-chunk)
 [collapse](/docs/{{version}}/collections#method-collapse)

@@ -48,6 +48,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 <div id="collection-method-list" markdown="1">
 
 [all](#method-all)
+[average](#method-average)
 [avg](#method-avg)
 [chunk](#method-chunk)
 [collapse](#method-collapse)
@@ -150,6 +151,11 @@ The `all` method returns the underlying array represented by the collection:
 
     // [1, 2, 3]
 
+<a name="method-average"></a>
+#### `average()` {#collection-method}
+
+Alias for the [`avg`](#method-avg) method.
+
 <a name="method-avg"></a>
 #### `avg()` {#collection-method}
 
@@ -248,11 +254,12 @@ Finally, you may also pass a callback to the `contains` method to perform your o
 
     // false
 
-The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the `containsStrict` method to filter using "strict" comparisons.
+The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`containsStrict`](#method-containsstrict) method to filter using "strict" comparisons.
 
+<a name="method-containsstrict"></a>
 #### `containsStrict()` {#collection-method}
 
-This method has the same signature as the `contains` method; however, all values are compared using "strict" comparisons.
+This method has the same signature as the [`contains`](#method-contains) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-count"></a>
 #### `count()` {#collection-method}
@@ -656,7 +663,6 @@ You may also pass a callback to the method. The callback should return the value
         ]
     */
 
-
 <a name="method-keys"></a>
 #### `keys()` {#collection-method}
 
@@ -767,7 +773,7 @@ The `median` method returns the [median value](https://en.wikipedia.org/wiki/Med
 <a name="method-merge"></a>
 #### `merge()` {#collection-method}
 
-The `merge` method merges the given array with the original collection. If a string key in the given array matches a string key in the original collection, the given array's value will overwrite the value in the original collection:
+The `merge` method merges the given array or collection with the original collection. If a string key in the given items matches a string key in the original collection, the given items's value will overwrite the value in the original collection:
 
     $collection = collect(['product_id' => 1, 'price' => 100]);
 
@@ -777,7 +783,7 @@ The `merge` method merges the given array with the original collection. If a str
 
     // ['product_id' => 1, 'price' => 200, 'discount' => false]
 
-If the given array's keys are numeric, the values will be appended to the end of the collection:
+If the given items's keys are numeric, the values will be appended to the end of the collection:
 
     $collection = collect(['Desk', 'Chair']);
 
@@ -1053,7 +1059,7 @@ The `search` method searches the collection for the given value and returns its 
 
     // 1
 
-The search is done using a "loose" comparison, meaning a string with an integer value will be considered equal to an integer of the same value. To use strict comparison, pass `true` as the second argument to the method:
+The search is done using a "loose" comparison, meaning a string with an integer value will be considered equal to an integer of the same value. To use "strict" comparison, pass `true` as the second argument to the method:
 
     $collection->search('4', true);
 
@@ -1093,7 +1099,7 @@ The `shuffle` method randomly shuffles the items in the collection:
 
     $shuffled->all();
 
-    // [3, 2, 5, 1, 4] // (generated randomly)
+    // [3, 2, 5, 1, 4] - (generated randomly)
 
 <a name="method-slice"></a>
 #### `slice()` {#collection-method}
@@ -1116,7 +1122,7 @@ If you would like to limit the size of the returned slice, pass the desired size
 
     // [5, 6]
 
-The returned slice will preserve keys by default. If you do not wish to preserve the original keys, you can use the `values` method to reindex them.
+The returned slice will preserve keys by default. If you do not wish to preserve the original keys, you can use the [`values`](#method-values) method to reindex them.
 
 <a name="method-sort"></a>
 #### `sort()` {#collection-method}
@@ -1334,7 +1340,7 @@ The `toArray` method converts the collection into a plain PHP `array`. If the co
 <a name="method-tojson"></a>
 #### `toJson()` {#collection-method}
 
-The `toJson` method converts the collection into JSON:
+The `toJson` method converts the collection into a JSON serialized string:
 
     $collection = collect(['name' => 'Desk', 'price' => 200]);
 
@@ -1423,12 +1429,12 @@ You may also pass your own callback to determine item uniqueness:
         ]
     */
 
-The `unique` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the `uniqueStrict` method to filter using "strict" comparisons.
+The `unique` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`uniqueStrict`](#method-uniquestrict) method to filter using "strict" comparisons.
 
 <a name="method-uniquestrict"></a>
 #### `uniqueStrict()` {#collection-method}
 
-This method has the same signature as the `unique` method; however, all values are compared using "strict" comparisons.
+This method has the same signature as the [`unique`](#method-unique) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-values"></a>
 #### `values()` {#collection-method}
@@ -1450,6 +1456,7 @@ The `values` method returns a new collection with the keys reset to consecutive 
             1 => ['product' => 'Desk', 'price' => 200],
         ]
     */
+
 <a name="method-when"></a>
 #### `when()` {#collection-method}
 
@@ -1482,13 +1489,13 @@ The `where` method filters the collection by a given key / value pair:
     $filtered->all();
 
     /*
-    [
-        ['product' => 'Chair', 'price' => 100],
-        ['product' => 'Door', 'price' => 100],
-    ]
+        [
+            ['product' => 'Chair', 'price' => 100],
+            ['product' => 'Door', 'price' => 100],
+        ]
     */
 
-The `where` method uses loose comparisons when checking item values. Use the [`whereStrict`](#method-wherestrict) method to filter using "strict" comparisons.
+The `where` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`whereStrict`](#method-wherestrict) method to filter using "strict" comparisons.
 
 <a name="method-wherestrict"></a>
 #### `whereStrict()` {#collection-method}
@@ -1512,18 +1519,18 @@ The `whereIn` method filters the collection by a given key / value contained wit
     $filtered->all();
 
     /*
-    [
-        ['product' => 'Bookcase', 'price' => 150],
-        ['product' => 'Desk', 'price' => 200],
-    ]
+        [
+            ['product' => 'Bookcase', 'price' => 150],
+            ['product' => 'Desk', 'price' => 200],
+        ]
     */
 
-The `whereIn` method uses "loose" comparisons when checking item values. Use the [`whereInStrict`](#method-whereinstrict) method to filter using strict comparisons.
+The `whereIn` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`whereInStrict`](#method-whereinstrict) method to filter using "strict" comparisons.
 
 <a name="method-whereinstrict"></a>
 #### `whereInStrict()` {#collection-method}
 
-This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using strict comparisons.
+This method has the same signature as the [`whereIn`](#method-wherein) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-wherenotin"></a>
 #### `whereNotIn()` {#collection-method}
@@ -1542,18 +1549,18 @@ The `whereNotIn` method filters the collection by a given key / value not contai
     $filtered->all();
 
     /*
-    [
-        ['product' => 'Chair', 'price' => 100],
-        ['product' => 'Door', 'price' => 100],
-    ]
+        [
+            ['product' => 'Chair', 'price' => 100],
+            ['product' => 'Door', 'price' => 100],
+        ]
     */
 
-The `whereNotIn` method uses "loose" comparisons when checking item values. Use the [`whereNotInStrict`](#method-wherenotinstrict) method to filter using strict comparisons.
+The `whereNotIn` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`whereNotInStrict`](#method-wherenotinstrict) method to filter using "strict" comparisons.
 
 <a name="method-wherenotinstrict"></a>
 #### `whereNotInStrict()` {#collection-method}
 
-This method has the same signature as the [`whereNotIn`](#method-wherenotin) method; however, all values are compared using strict comparisons.
+This method has the same signature as the [`whereNotIn`](#method-wherenotin) method; however, all values are compared using "strict" comparisons.
 
 <a name="method-zip"></a>
 #### `zip()` {#collection-method}
