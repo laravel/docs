@@ -766,7 +766,7 @@ If some of your attachment fields contain Markdown, you may use the `markdown` m
                     ->content('Whoops! Something went wrong.')
                     ->attachment(function ($attachment) use ($url) {
                         $attachment->title('Exception: File Not Found', $url)
-                                   ->content('File [background.jpg] was **not found**.')
+                                   ->content('File [background.jpg] was *not found*.')
                                    ->markdown(['title', 'text']);
                     });
     }
