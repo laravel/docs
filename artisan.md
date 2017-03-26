@@ -318,6 +318,12 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
         //
     });
 
+Another example:
+
+        $exitCode = Artisan::call('migrate:refresh', ['--seed' => true]);
+        //
+    });
+
 Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/{{version}}/queues):
 
     Route::get('/foo', function () {
