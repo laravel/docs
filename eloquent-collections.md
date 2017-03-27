@@ -122,7 +122,7 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [where](/docs/{{version}}/collections#method-where)
 [whereStrict](/docs/{{version}}/collections#method-wherestrict)
 [whereIn](/docs/{{version}}/collections#method-wherein)
-[whereInLoose](/docs/{{version}}/collections#method-whereinloose)
+[whereInStrict](/docs/{{version}}/collections#method-whereinstrict)
 [zip](/docs/{{version}}/collections#method-zip)
 
 </div>
