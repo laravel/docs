@@ -403,7 +403,7 @@ If you are not using a traditional relational database to store your users, you 
 
     use Illuminate\Support\Facades\Auth;
     use App\Extensions\RiakUserProvider;
-    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
     class AuthServiceProvider extends ServiceProvider
     {

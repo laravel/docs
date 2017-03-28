@@ -3,7 +3,7 @@
 - [Accessing The Request](#accessing-the-request)
     - [Request Path & Method](#request-path-and-method)
     - [PSR-7 Requests](#psr7-requests)
-- [Input Trimming & Normalization](#input-trimming-and-normaliation)
+- [Input Trimming & Normalization](#input-trimming-and-normalization)
 - [Retrieving Input](#retrieving-input)
     - [Old Input](#old-input)
     - [Cookies](#cookies)
@@ -132,7 +132,7 @@ Once you have installed these libraries, you may obtain a PSR-7 request by type-
 
 > {tip} If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
 
-<a name="input-trimming-and-normaliation"></a>
+<a name="input-trimming-and-normalization"></a>
 ## Input Trimming & Normalization
 
 By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.

@@ -38,7 +38,7 @@ To get started, you should add the `laravel/dusk` Composer dependency to your pr
 
     composer require laravel/dusk
 
-Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. You should register the provider within the `register` method of your `AppServiceProvider` in order to limit the environments in which Dusk is available, since it exposes the ability to login as other users:
+Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. You should register the provider within the `register` method of your `AppServiceProvider` in order to limit the environments in which Dusk is available, since it exposes the ability to log in as other users:
 
     use Laravel\Dusk\DuskServiceProvider;
 
@@ -342,6 +342,13 @@ The `drag` method may be used to drag an element matching the given selector to 
 
     $browser->drag('.from-selector', '.to-selector');
 
+Or, you may drag an element in a single direction:
+
+    $browser->dragLeft('.selector', 10);
+    $browser->dragRight('.selector', 10);
+    $browser->dragUp('.selector', 10);
+    $browser->dragDown('.selector', 10);
+
 <a name="scoping-selectors"></a>
 ### Scoping Selectors
 
@@ -430,6 +437,8 @@ Assertion  | Description
 `$browser->assertTitle($title)`  |  Assert the page title matches the given text.
 `$browser->assertTitleContains($title)`  |  Assert the page title contains the given text.
 `$browser->assertPathIs('/home')`  |  Assert the current path matches the given path.
+`$browser->assertQueryStringHas($name, $value)`  |  Assert the given query string parameter is present and has a given value.
+`$browser->assertQueryStringMissing($name)`  |  Assert the given query string parameter is missing.
 `$browser->assertHasCookie($name)`  |  Assert the given cookie is present.
 `$browser->assertCookieValue($name, $value)`  |  Assert a cookie has a given value.
 `$browser->assertPlainCookieValue($name, $value)`  |  Assert an unencrypted cookie has a given value.

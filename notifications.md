@@ -203,7 +203,7 @@ In addition, you may return a [mailable object](/docs/{{version}}/mail) from the
      */
     public function toMail($notifiable)
     {
-        return new Mailable($this->invoice)->to($this->user->email);
+        return (new Mailable($this->invoice))->to($this->user->email);
     }
 
 <a name="error-messages"></a>
@@ -766,7 +766,7 @@ If some of your attachment fields contain Markdown, you may use the `markdown` m
                     ->content('Whoops! Something went wrong.')
                     ->attachment(function ($attachment) use ($url) {
                         $attachment->title('Exception: File Not Found', $url)
-                                   ->content('File [background.jpg] was **not found**.')
+                                   ->content('File [background.jpg] was *not found*.')
                                    ->markdown(['title', 'text']);
                     });
     }

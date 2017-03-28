@@ -81,7 +81,7 @@ If you would like to render unescaped content in a section, you must declare the
 
 ### Bootstrappers
 
-If you are manually overriding the `$bootstrappers` array on your HTTP or Console kernel, you should rename the `DetectEnvironment` entry to `LoadEnvironmentVariables`.
+If you are manually overriding the `$bootstrappers` array on your HTTP or Console kernel, you should rename the `DetectEnvironment` entry to `LoadEnvironmentVariables` and remove `ConfigureLogging`.
 
 ### Broadcasting
 
@@ -173,7 +173,7 @@ If you were previously binding a service container binding for a `db.connection.
 
 #### Fetch Mode
 
-Laravel no longer includes the ability to customize the PDO "fetch mode" from your configuration files. Instead, `PDO::FETCH_OBJ` is always used. If you will still like to customize the fetch mode for your application you may listen for the new `Illuminate\Database\Events\StatementPrepared` event:
+Laravel no longer includes the ability to customize the PDO "fetch mode" from your configuration files. Instead, `PDO::FETCH_OBJ` is always used. If you would still like to customize the fetch mode for your application you may listen for the new `Illuminate\Database\Events\StatementPrepared` event:
 
     Event::listen(StatementPrepared::class, function ($event) {
         $event->statement->setFetchMode(...);
@@ -352,6 +352,8 @@ The `getUri` method of the `Illuminate\Routing\Route` class has been removed. Yo
 The `getMethods` method of the `Illuminate\Routing\Route` class has been removed. You should use the `methods` method instead.
 
 The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead.
+
+The `getPath` method of the `Illuminate\Routing\Route` class has been removed. You should use the `uri` method instead.
 
 ### Sessions
 

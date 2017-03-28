@@ -21,6 +21,16 @@ Anytime you define a HTML form in your application, you should include a hidden 
 
 The `VerifyCsrfToken` [middleware](/docs/{{version}}/middleware), which is included in the `web` middleware group, will automatically verify that the token in the request input matches the token stored in the session.
 
+#### CSRF Tokens & Vue
+
+If you are using the [Vue](https://vuejs.org) JavaScript framework without the authentication scaffolding provided by the `make:auth` Artisan command, you will need to manually define a `Laravel` JavaScript object in your primary application layout. This object specifies the CSRF token Vue should use when making requests:
+
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+    </script>
+
 <a name="csrf-excluding-uris"></a>
 ## Excluding URIs From CSRF Protection
 

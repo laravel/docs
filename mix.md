@@ -13,7 +13,7 @@
     - [Source Maps](#css-source-maps)
 - [Working With JavaScript](#working-with-scripts)
     - [Vendor Extraction](#vendor-extraction)
-    - [React](#react-support)
+    - [React](#react)
     - [Vanilla JS](#vanilla-js)
     - [Custom Webpack Configuration](#custom-webpack-configuration)
 - [Copying Files & Directories](#copying-files-and-directories)
@@ -115,7 +115,7 @@ Again, like the `less` method, you may compile multiple Sass files into their ow
 
 Additional [Node-Sass plug-in options](https://github.com/sass/node-sass#options) may be provided as the third argument:
 
-    mix.sass('resources/assets/less/app.less', 'public/css', {
+    mix.sass('resources/assets/sass/app.sass', 'public/css', {
         precision: 5
     });
 
@@ -124,7 +124,7 @@ Additional [Node-Sass plug-in options](https://github.com/sass/node-sass#options
 
 Similar to Less and Sass, the `stylus` method allows you to compile [Stylus](http://stylus-lang.com/) into CSS:
 
-    mix.stylus('resources/assets/sass/app.scss', 'public/css');
+    mix.stylus('resources/assets/stylus/app.styl', 'public/css');
 
 You may also install additional Stylus plug-ins, such as [Rupture](https://github.com/jescalan/rupture). First, install the plug-in in question through NPM (`npm install rupture`) and then require it in your call to `mix.stylus()`:
 
@@ -215,7 +215,7 @@ With this single line of code, you may now take advantage of:
 
 One potential downside to bundling all application-specific JavaScript with your vendor libraries is that it makes long-term caching more difficult. For example, a single update to your application code will force the browser to re-download all of your vendor libraries even if they haven't changed.
 
-If you intend to make frequent updates to your application's JavaScript, you should consider extracting all of your vendor libraries into their file. This way, a change to your application code will not affect the caching of your large `vendor.js` file. Mix's `extract` method makes this a breeze:
+If you intend to make frequent updates to your application's JavaScript, you should consider extracting all of your vendor libraries into their own file. This way, a change to your application code will not affect the caching of your large `vendor.js` file. Mix's `extract` method makes this a breeze:
 
     mix.js('resources/assets/js/app.js', 'public/js')
        .extract(['vue'])
@@ -241,7 +241,7 @@ Mix can automatically install the Babel plug-ins necessary for React support. To
 
     mix.react('resources/assets/js/app.jsx', 'public/js');
 
-Behind the scenes, React will download and include the appropriate `babel-preset-react` Babel plug-in.
+Behind the scenes, Mix will download and include the appropriate `babel-preset-react` Babel plug-in.
 
 <a name="vanilla-js"></a>
 ### Vanilla JS
@@ -262,7 +262,7 @@ This option is particularly useful for legacy projects where you don't require W
 
 Behind the scenes, Laravel Mix references a pre-configured `webpack.config.js` file to get you up and running as quickly as possible. Occasionally, you may need to manually modify this file. You might have a special loader or plug-in that needs to be referenced, or maybe you prefer to use Stylus instead of Sass. In such instances, you have two choices:
 
-#### Merging
+#### Merging Custom Configuration
 
 Mix provides a useful `webpackConfig` method that allows you to merge any short Webpack configuration overrides. This is a particularly appealing choice, as it doesn't require you to copy and maintain your own copy of the `webpack.config.js` file. The `webpackConfig` method accepts an object, which should contain any [Webpack-specific configuration](https://webpack.js.org/configuration/) that you wish to apply.
 
@@ -273,6 +273,10 @@ Mix provides a useful `webpackConfig` method that allows you to merge any short 
             ]
         }
     });
+
+#### Custom Configuration Files
+
+If you would like completely customize your Webpack configuration, copy the `node_modules/laravel-mix/setup/webpack.config.js` file to your project's root directory. Next, point all of the `--config` references in your `package.json` file to the newly copied configuration file. If you choose to take this approach to customization, any future upstream updates to Mix's `webpack.config.js` must be manually merged into your customized file.
 
 <a name="copying-files-and-directories"></a>
 ## Copying Files & Directories
