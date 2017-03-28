@@ -709,7 +709,7 @@ Eloquent models fire several events, allowing you to hook into the following poi
 
 Whenever a new model is saved for the first time, the `creating` and `created` events will fire. If a model already existed in the database and the `save` method is called, the `updating` / `updated` events will fire. However, in both cases, the `saving` / `saved` events will fire.
 
-To get started, define an `$events` property on your Eloquent model that maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events):
+To get started, define a `$dispatchesEvents` property on your Eloquent model that maps various points of the Eloquent model's lifecycle to your own [event classes](/docs/{{version}}/events):
 
     <?php
 
@@ -729,7 +729,7 @@ To get started, define an `$events` property on your Eloquent model that maps va
          *
          * @var array
          */
-        protected $events = [
+        protected $dispatchesEvents = [
             'saved' => UserSaved::class,
             'deleted' => UserDeleted::class,
         ];
