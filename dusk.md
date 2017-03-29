@@ -609,33 +609,29 @@ Once the method has been defined, you may use it within any test that utilizes t
 
 In order to run your Dusk tests on Travis CI, make sure that you use the sudo-enabled Ubuntu Trusty environment, we'll also need to use Xvfb which is an in-memory display tool that will allow us to run an actual browser on the display-less environment Travis provides:
 
-```yaml
-sudo: required
-dist: trusty
-
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - ./vendor/laravel/dusk/bin/chromedriver-linux &
-  - cp .env.testing .env
-  - php artisan serve &
-
-script:
-  - php artisan dusk
-```
+    sudo: required
+    dist: trusty
+    
+    before_script:
+        - export DISPLAY=:99.0
+        - sh -e /etc/init.d/xvfb start
+        - ./vendor/laravel/dusk/bin/chromedriver-linux &
+        - cp .env.testing .env
+        - php artisan serve &
+    
+    script:
+        - php artisan dusk
 
 <a name="running-tests-on-circle-ci"></a>
 ## Running tests on CircleCI
 
-```yaml
-test:
-  pre:
-    - "./vendor/laravel/dusk/bin/chromedriver-linux":
-        background: true
-    - cp .env.testing .env
-    - "php artisan serve":
-        background: true
-
-  override:
-    - php artisan dusk
-```
+    test:
+        pre:
+            - "./vendor/laravel/dusk/bin/chromedriver-linux":
+                background: true
+            - cp .env.testing .env
+            - "php artisan serve":
+                background: true
+    
+    override:
+        - php artisan dusk
