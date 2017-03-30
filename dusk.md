@@ -25,9 +25,9 @@
     - [Navigating To Pages](#navigating-to-pages)
     - [Shorthand Selectors](#shorthand-selectors)
     - [Page Methods](#page-methods)
-- [Continous Integration](#continous-integration)
-    - [Running tests on Travis CI](#running-tests-on-travis-ci)
-    - [Running tests on Circle CI](#running-tests-on-circle-ci)
+- [Continuous Integration](#continuous-integration)
+    - [Travis CI](#running-tests-on-travis-ci)
+    - [CircleCI](#running-tests-on-circle-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -601,29 +601,31 @@ Once the method has been defined, you may use it within any test that utilizes t
             ->createPlaylist('My Playlist')
             ->assertSee('My Playlist');
 
-<a name="continous-integration"></a>
-## Continous Integration
+<a name="continuous-integration"></a>
+## Continuous Integration
 
 <a name="running-tests-on-travis-ci"></a>
-## Running tests on Travis CI
+### Travis CI
 
-In order to run your Dusk tests on Travis CI, make sure that you use the sudo-enabled Ubuntu Trusty environment, we'll also need to use Xvfb which is an in-memory display tool that will allow us to run an actual browser on the display-less environment Travis provides:
+To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
 
     sudo: required
     dist: trusty
-    
+
     before_script:
         - export DISPLAY=:99.0
         - sh -e /etc/init.d/xvfb start
         - ./vendor/laravel/dusk/bin/chromedriver-linux &
         - cp .env.testing .env
         - php artisan serve &
-    
+
     script:
         - php artisan dusk
 
 <a name="running-tests-on-circle-ci"></a>
-## Running tests on CircleCI
+### CircleCI
+
+If you are using CircleCI to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
     test:
         pre:
@@ -632,6 +634,6 @@ In order to run your Dusk tests on Travis CI, make sure that you use the sudo-en
             - cp .env.testing .env
             - "php artisan serve":
                 background: true
-    
+
     override:
         - php artisan dusk
