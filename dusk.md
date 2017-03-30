@@ -635,5 +635,5 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
             - "php artisan serve":
                 background: true
 
-    override:
-        - php artisan dusk
+        override:
+            - php artisan dusk
