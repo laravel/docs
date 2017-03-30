@@ -25,6 +25,9 @@
     - [Navigating To Pages](#navigating-to-pages)
     - [Shorthand Selectors](#shorthand-selectors)
     - [Page Methods](#page-methods)
+- [Continous Integration](#continous-integration)
+    - [Running tests on Travis CI](#running-tests-on-travis-ci)
+    - [Running tests on Circle CI](#running-tests-on-circle-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -597,3 +600,38 @@ Once the method has been defined, you may use it within any test that utilizes t
     $browser->visit(new Dashboard)
             ->createPlaylist('My Playlist')
             ->assertSee('My Playlist');
+
+<a name="continous-integration"></a>
+## Continous Integration
+
+<a name="running-tests-on-travis-ci"></a>
+## Running tests on Travis CI
+
+In order to run your Dusk tests on Travis CI, make sure that you use the sudo-enabled Ubuntu Trusty environment, we'll also need to use Xvfb which is an in-memory display tool that will allow us to run an actual browser on the display-less environment Travis provides:
+
+    sudo: required
+    dist: trusty
+    
+    before_script:
+        - export DISPLAY=:99.0
+        - sh -e /etc/init.d/xvfb start
+        - ./vendor/laravel/dusk/bin/chromedriver-linux &
+        - cp .env.testing .env
+        - php artisan serve &
+    
+    script:
+        - php artisan dusk
+
+<a name="running-tests-on-circle-ci"></a>
+## Running tests on CircleCI
+
+    test:
+        pre:
+            - "./vendor/laravel/dusk/bin/chromedriver-linux":
+                background: true
+            - cp .env.testing .env
+            - "php artisan serve":
+                background: true
+    
+    override:
+        - php artisan dusk
