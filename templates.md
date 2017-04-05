@@ -114,6 +114,12 @@ If you don't want the data to be escaped, you may use the following syntax:
 		<p>I'm looping forever.</p>
 	@endwhile
 
+#### @each
+    @each('records.item', $records, 'record', 'records.no-items')
+    
+records.item is the blade view to show when there are items in the collection while records.no-items is the blade
+view to show if there are no items
+
 #### Including Sub-Views
 
 	@include('view.name')
