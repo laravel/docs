@@ -200,3 +200,42 @@ The `composer` method accepts the `*` character as a wildcard, allowing you to a
 View **creators** are very similar to view composers; however, they are fired immediately when the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
 
     view()->creator('profile', 'App\Http\ViewCreators\ProfileCreator');
+
+### Adding New View File Extensions
+
+Laravel supports both `.blade.php` and `.php` view file extensions by default. Additional extensions can be added using the `view()->addExtension('extension', 'engine')` method. This can be used for including view files via Laravel's standard means, while retaining a file extension that is more useful to your editor/IDE. You must supply the desired extension and the view engine to handle it. Out of the box, Laravel supports the `blade` and `php` rendering engines.
+
+#### Examples
+
+Allow loading `.css` view files and render as PHP:
+
+```
+// Add .css extension support
+view()->addExtension('css', 'php'); 
+
+
+// Render foo.css
+view('foo', [...]);
+```
+
+
+
+Render `.blade` (not `.blade.php`) files as Blade:
+
+```
+// Add .blade extension support
+view()->addExtension('blade', 'blade'); 
+
+// Render bar.blade
+view('bar', [...]);
+```
+
+Add a compound extension:
+
+```
+// Add .js.php extension support
+view()->addExtension('js.php', 'php'); 
+
+// Render baz.js.php
+view('bar', [...]);
+```
