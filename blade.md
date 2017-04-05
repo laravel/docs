@@ -146,18 +146,6 @@ Of course, you are not limited to displaying the contents of the variables passe
 
 > {note} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
-#### Echoing Data If It Exists
-
-Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. We can express this in verbose PHP code like so:
-
-    {{ isset($name) ? $name : 'Default' }}
-
-However, instead of writing a ternary statement, Blade provides you with the following convenient shortcut, which will be compiled to the ternary statement above:
-
-    {{ $name or 'Default' }}
-
-In this example, if the `$name` variable exists, its value will be displayed. However, if it does not exist, the word `Default` will be displayed.
-
 #### Displaying Unescaped Data
 
 By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
