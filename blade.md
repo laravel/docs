@@ -158,6 +158,8 @@ However, instead of writing a ternary statement, Blade provides you with the fol
 
 In this example, if the `$name` variable exists, its value will be displayed. However, if it does not exist, the word `Default` will be displayed.
 
+> {note} The `or` syntax only works when working with variables. Using function calls like `{{ old('name') or 'Default' }}` will not work.
+
 #### Displaying Unescaped Data
 
 By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
