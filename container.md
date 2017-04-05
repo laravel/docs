@@ -155,6 +155,8 @@ Sometimes you may have two classes that utilize the same interface, but you wish
                   return Storage::disk('s3');
               });
 
+> {tip} Contextual binding is only available to constructors.
+
 <a name="tagging"></a>
 ### Tagging
 
