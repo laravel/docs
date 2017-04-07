@@ -180,13 +180,15 @@ Of course, the `can` method is simply the inverse of the `cannot` method:
 <a name="within-blade-templates"></a>
 ### Within Blade Templates
 
-For convenience, Laravel provides the `@can` Blade directive to quickly check if the currently authenticated user has a given ability. For example:
-
-	<a href="/post/{{ $post->id }}">View Post</a>
+For convenience, Laravel provides two Blade directives to quickly check if the currently authenticated user has a given ability: `@can` and `@cannot`. For example:
 
 	@can('update-post', $post)
-		<a href="/post/{{ $post->id }}/edit">Edit Post</a>
+		<!-- The Current User Can Update The Post -->
 	@endcan
+
+	@cannot('update-post', $post)
+		<!-- The Current User Can't Update The Post -->
+	@endcannot
 
 You may also combine the `@can` directive with `@else` directive:
 
