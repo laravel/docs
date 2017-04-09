@@ -199,6 +199,13 @@ For convenience, Blade also provides an `@unless` directive:
         You are not signed in.
     @endunless
 
+There are also a lot of "shortcut" directives for some `if` statements:
+
+Blade  | Plain PHP
+------------- | -------------
+`@isset($records): /* Your Source Code */ @endisset`  |  `if(isset($records)): /* Your Source Code */ endif;`
+`@empty($records): /* Your Source Code */ @endempty`  |  `if(empty($records)): /* Your Source Code */ endif;`
+
 <a name="loops"></a>
 ### Loops
 
