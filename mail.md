@@ -9,7 +9,7 @@
     - [View Data](#view-data)
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
-    - [Callbacks](#callbacks)
+    - [Customizing The SwiftMailer Message](#customizing-the-swiftmailer-message)
 - [Markdown Mailables](#markdown-mailables)
     - [Generating Markdown Mailables](#generating-markdown-mailables)
     - [Writing Markdown Messages](#writing-markdown-messages)
@@ -308,11 +308,11 @@ If you already have a raw data string you wish to embed into an email template, 
 
         <img src="{{ $message->embedData($data, $name) }}">
     </body>
-    
-<a name="callbacks"></a>
-### Callbacks
 
-If you require greater control over the final email that is sent, you can add callbacks to your mailable object. Callbacks are just anonymous functions with a reference to the `$message` variable, and are called when sending your email.
+<a name="customizing-the-swiftmailer-message"></a>
+### Customizing The SwiftMailer Message
+
+The `withSwiftMessage` method of the `Mailable` base class allows you to register a callback which will be invoked with the raw SwiftMailer message instance before sending the message. This gives you an opportunity to customize the message before it is delivered:
 
         /**
          * Build the message.
@@ -321,11 +321,12 @@ If you require greater control over the final email that is sent, you can add ca
          */
         public function build()
         {
-            $this->callbacks[] = function($message) {
-                $message->getHeaders()->addTextHeader('Custom-Header', 'HeaderValue');
-            };
-            
-            return $this->view('emails.orders.shipped');
+            $this->view('emails.orders.shipped');
+
+            $this->withSwiftMessage(function ($message) {
+                $message->getHeaders()
+                        ->addTextHeader('Custom-Header', 'HeaderValue');
+            });
         }
 
 <a name="markdown-mailables"></a>
