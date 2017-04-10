@@ -9,6 +9,7 @@
     - [View Data](#view-data)
     - [Attachments](#attachments)
     - [Inline Attachments](#inline-attachments)
+    - [Callbacks](#callbacks)
 - [Markdown Mailables](#markdown-mailables)
     - [Generating Markdown Mailables](#generating-markdown-mailables)
     - [Writing Markdown Messages](#writing-markdown-messages)
@@ -307,6 +308,25 @@ If you already have a raw data string you wish to embed into an email template, 
 
         <img src="{{ $message->embedData($data, $name) }}">
     </body>
+    
+<a name="callbacks"></a>
+### Callbacks
+
+If you require greater control over the final email that is sent, you can add callbacks to your mailable object. Callbacks are just anonymous functions with a reference to the `$message` variable, and are called when sending your email.
+
+        /**
+         * Build the message.
+         *
+         * @return $this
+         */
+        public function build()
+        {
+            $this->callbacks[] = function($message) {
+                $message->getHeaders()->addTextHeader('Custom-Header', 'HeaderValue');
+            };
+            
+            return $this->view('emails.orders.shipped');
+        }
 
 <a name="markdown-mailables"></a>
 ## Markdown Mailables
