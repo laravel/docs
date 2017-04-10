@@ -61,6 +61,10 @@ Then, once you have created the `meta` tag, you can instruct a library like jQue
         }
     });
 
+or if you prefer Vue.js, then you can use
+
+    Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
 <a name="csrf-x-xsrf-token"></a>
 ## X-XSRF-TOKEN
 
