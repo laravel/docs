@@ -206,7 +206,7 @@ In addition to the conditional directives already discussed, the `@isset` and `@
     @endisset
 
     @empty($records)
-        // $records is not "empty"...
+        // $records is "empty"...
     @endempty
 
 <a name="loops"></a>
