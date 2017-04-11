@@ -98,6 +98,80 @@ The `render` method will render the links to the rest of the pages in the result
 
 > **Note:** When calling the `render` method from a Blade template, be sure to use the `{!! !!}` syntax so the HTML links are not escaped.
 
+#### Customizing The Pagination Labels
+
+To set the labels on on the next and previous links to say for example Next Previous:
+
+	<?php
+
+	namespace App\Http\Controllers;
+
+	use DB;
+	use App\Http\Controllers\Controller;
+	use App\CustomPagination;
+	
+	class UserController extends Controller
+	{
+		/**
+		 * Show all of the users for the application.
+		 *
+		 * @return Response
+		 */
+		public function index()
+		{
+			$users = DB::table('users')->paginate(15);
+			$customPagination = new CustomPagination($blogs);
+			
+			return view('user.index', ['users' => $users, 'customPagination' => $customPagination]);
+		}
+	}
+	
+Make your CustomPagination class:
+
+	<?php
+
+	namespace App;
+
+	use Illuminate\Contracts\Pagination\Paginator;
+	use Illuminate\Pagination\SimpleBootstrapThreePresenter ;
+	
+	class CustomPagination extends SimpleBootstrapThreePresenter
+	{
+	    public function __construct(Paginator $paginator)
+	    {
+	        $this->paginator = $paginator;
+	    }
+	
+	    public function hasPages()
+	    {
+	        return $this->paginator->hasPages() && count($this->paginator->items()) > 0;
+	    }
+	
+	    public function render()
+	    {
+	        if ($this->hasPages())
+	        {
+	            return sprintf(
+	                '<ul class="pager">%s %s</ul>',
+	                $this->getPreviousButton("Prev"),
+	                $this->getNextButton("Next")
+	            );
+	        }
+	
+	        return '';
+	    }
+	}
+
+And then in the view:
+
+	<div class="container">
+		@foreach ($users as $user)
+			{{ $user->name }}
+		@endforeach
+	</div>
+
+	{!! $users->appends(Request::except('page'))->render($customPagination) !!}
+
 #### Customizing The Paginator URI
 
 The `setPath` method allows you to customize the URI used by the paginator when generating links. For example, if you want the paginator to generate links like `http://example.com/custom/url?page=N`, you should pass `custom/url` to the `setPath` method:
