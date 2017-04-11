@@ -113,6 +113,8 @@ Once Valet is installed, you're ready to start serving sites. Valet provides two
 
 **That's all there is to it.** Now, any Laravel project you create within your "parked" directory will automatically be served using the `http://folder-name.dev` convention.
 
+> {note} If you can't run the laravel command you should check the [laravel installation instructions](/docs/{{version}}/installation#installing-laravel).
+
 <a name="the-link-command"></a>
 **The `link` Command**
 
