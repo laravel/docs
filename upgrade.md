@@ -89,6 +89,8 @@ Feel free to create a new `app/Models` directory to house your Eloquent models. 
 
 Update any models using `SoftDeletingTrait` to use `Illuminate\Database\Eloquent\SoftDeletes`.
 
+If your models extends the Eloquent or Illuminate\Database\Eloquent class, update this to extend the class Illuminate\Database\Eloquent\Model.
+
 #### Eloquent Caching
 
 Eloquent no longer provides the `remember` method for caching queries. You now are responsible for caching your queries manually using the `Cache::remember` function. For more information on caching, consult the [full documentation](/docs/{{version}}/cache).
