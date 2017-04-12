@@ -26,6 +26,8 @@
     - [Assigning Scopes To Tokens](#assigning-scopes-to-tokens)
     - [Checking Scopes](#checking-scopes)
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
+    - [Using Axios](#using-axios)
+    - [Using Other Javascript Frameworks](#using-other-javascript-frameworks)
 - [Events](#events)
 - [Testing](#testing)
 
@@ -623,6 +625,9 @@ Typically, if you want to consume your API from your JavaScript application, you
 
 This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. Now, you may make requests to your application's API without explicitly passing an access token:
 
+<a name="using-axios"></a>
+### Using Axios
+
     axios.get('/user')
         .then(response => {
             console.log(response.data);
@@ -633,8 +638,30 @@ When using this method of authentication, Axios will automatically send the `X-C
     window.axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
     };
+    
+<a name="using-other-javascript-frameworks"></a>
+### Using Other Javascript Frameworks
 
-> {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
+If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` header with every outgoing request, The value must be the correct CSRF Token. You can include this token in your views by `{{ csrf_token() }}`:
+
+```
+<script>
+    var laraveltoken = "{{ csrf_token() }}";
+</script>
+```
+Make sure to include this script in all pages where you will be sending requests with javascript.
+
+When making requests (example: JQuery AJAX) you must include the header:
+```
+ $.ajax({
+    headers: {
+        "X-CSRF-TOKEN" : laraveltoken
+    },
+    type: "GET"
+    url: "/user"
+ });
+ 
+```
 
 
 <a name="events"></a>
