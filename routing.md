@@ -32,6 +32,14 @@ All Laravel routes are defined in your route files, which are located in the `ro
 
 For most applications, you will begin by defining routes in your `routes/web.php` file.
 
+#### Accessing Routes
+
+The routes defined in `routes/web.php` can be accessed by simply entering the defined route in the browser. For the routes defined in `routes/api.php` you need to add the `/api` between your domain and the defined route:
+
+    Route::get('/user', UsersController@index);
+
+If the above route is defined in `routes/web.php` it can be accessed by entering `example.app/user` in the browser but if it is defined in the `routes/api.php` file, you need to access it by entering `example.app/api/user`.
+
 #### Available Router Methods
 
 The router allows you to register routes that respond to any HTTP verb:
