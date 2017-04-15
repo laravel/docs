@@ -285,9 +285,9 @@ The `copy` method may be used to copy files and directories to new locations. Th
 
     mix.copy('node_modules/foo/bar.css', 'public/css/bar.css');
 
-By default, copying a folder will flatten its structure, i.e. all files in its subfolder(s) will be pasted directly into the destination folder. In order to keep the structure recursively, set the third parameter to `false`:
+If you are copying a directory, the `copy` method will flatten the directory's structure. To maintain the directory's original structure, you should use the `copyDirectory` method instead:
 
-    mix.copy('assets/img', 'public/img', false);
+    mix.copyDirectory('assets/img', 'public/img');
 
 <a name="versioning-and-cache-busting"></a>
 ## Versioning / Cache Busting
