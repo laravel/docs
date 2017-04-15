@@ -30,15 +30,11 @@ The most basic Laravel routes simply accept a URI and a `Closure`, providing a v
 
 All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by the framework. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` middleware group, which provides features like session state and CSRF protection. The routes in `routes/api.php` are stateless and are assigned the `api` middleware group.
 
-For most applications, you will begin by defining routes in your `routes/web.php` file.
-
-#### Accessing Routes
-
-The routes defined in `routes/web.php` can be accessed by simply entering the defined route in the browser. For the routes defined in `routes/api.php` you need to add the `/api` between your domain and the defined route:
+For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://your-app.dev/user` in your browser:
 
     Route::get('/user', UsersController@index);
 
-If the above route is defined in `routes/web.php` it can be accessed by entering `example.app/user` in the browser but if it is defined in the `routes/api.php` file, you need to access it by entering `example.app/api/user`.
+Routes defined in the `routes/api.php` file are nested within a route group by the `RouteServiceProvider`. Within this group, the `/api` URI prefix is automatically applied so you do not need to manually apply it to every route in the file. You may modify the prefix and other route group options by modifying your `RouteServiceProvider` class.
 
 #### Available Router Methods
 
