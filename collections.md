@@ -111,6 +111,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [sum](#method-sum)
 [take](#method-take)
 [tap](#method-tap)
+[times](#method-times)
 [toArray](#method-toarray)
 [toJson](#method-tojson)
 [transform](#method-transform)
@@ -1320,6 +1321,35 @@ The `tap` method passes the collection to the given callback, allowing you to "t
 
     // 1
 
+<a name="method-times"></a>
+#### `times()` {#collection-method}
+
+The static `times` method creates a new collection by invoking the callback a given amount of times:
+
+    $collection = Collection::times(10, function ($number) {
+        return $number * 9;
+    });
+
+    $collection->all();
+
+    // [9, 18, 27, 36, 45, 54, 63, 72, 81, 90]
+
+This method can be useful when combined with factories to create [Eloquent](/docs/{{version}}/eloquent) models:
+
+    $categories = Collection::times(3, function ($number) {
+        return factory(Category::class)->create(['name' => 'Category #'.$number]);
+    });
+
+    $categories->all();
+
+    /*
+        [
+            ['id' => 1, 'name' => 'Category #1'],
+            ['id' => 2, 'name' => 'Category #2'],
+            ['id' => 3, 'name' => 'Category #3'],
+        ]
+    */
+
 <a name="method-toarray"></a>
 #### `toArray()` {#collection-method}
 
@@ -1578,7 +1608,7 @@ The `zip` method merges together the values of the given array with the values o
 <a name="higher-order-messages"></a>
 ## Higher Order Messages
 
-Collections also provide support for "higher order messages", which are short-cuts for performing common actions on collections. The collection methods that provide higher order messages are: `contains`, `each`, `every`, `filter`, `first`, `map`, `partition`, `reject`, `sortBy`, `sortByDesc`, and `sum`.
+Collections also provide support for "higher order messages", which are short-cuts for performing common actions on collections. The collection methods that provide higher order messages are: `contains`, `each`, `every`, `filter`, `first`, `flatMap`, `map`, `partition`, `reject`, `sortBy`, `sortByDesc`, and `sum`.
 
 Each higher order message can be accessed as a dynamic property on a collection instance. For instance, let's use the `each` higher order message to call a method on each object within a collection:
 
