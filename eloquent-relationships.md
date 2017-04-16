@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Defining Relationships](#defining-relationships)
     - [One To One](#one-to-one)
+    - [One to One Through](#one-to-one-through)
     - [One To Many](#one-to-many)
     - [One To Many (Inverse)](#one-to-many-inverse)
     - [Many To Many](#many-to-many)
@@ -30,6 +31,7 @@
 Database tables are often related to one another. For example, a blog post may have many comments, or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy, and supports several different types of relationships:
 
 - [One To One](#one-to-one)
+- [One To One Through](#one-to-one-through)
 - [One To Many](#one-to-many)
 - [Many To Many](#many-to-many)
 - [Has Many Through](#has-many-through)
@@ -118,6 +120,95 @@ If your parent model does not use `id` as its primary key, or you wish to join t
     public function user()
     {
         return $this->belongsTo('App\User', 'foreign_key', 'other_key');
+    }
+
+<a name="one-to-one-through"></a>
+### One To One Through
+
+A "one-to-one-through" relationship provides a convenient shortcut for accessing distant "one-to-one" relations via an intermediate relation. For example, a `Supplier` model might have an `AccountHistory` model through an intermediate `Account` model. In this example, you could easily access the account history of a given supplier. Let's look at the tables required to define this relationship:
+
+    suppliers
+        id - integer
+        name - string
+    
+    accounts
+        id - integer
+        supplier_id - integer
+        email - string
+    
+    account_histories
+        id - integer
+        account_id - integer
+        title - string
+
+Though `account_histories` does not contain a `supplier_id` column, the `hasOneThrough` relation provides access to a supplier's account history via `$account->account_history`. To perform this query, Eloquent inspects the `supplier_id` on the intermediate `accounts` table. After finding the matching account IDs, they are used to query the `account_histories` table.
+
+Now that we have examined the table structure for the relationship, let's define it on the `Supplier` model:
+
+    <?php
+    
+    namespace App;
+    
+    use Illuminate\Database\Eloquent\Model;
+    
+    class Supplier extends Model
+    {
+        /**
+         * Get the account history of the supplier.
+         */
+        public function accountHistory()
+        {
+            return $this->hasOneThrough('App\AccountHistory', 'App\Account');
+        }
+    }
+
+The first argument passed to `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+
+Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the final model, the forth argument is the name of the foreign key on the intermediate model:
+
+    class Supplier extends Model
+    {
+        public function accountHistory()
+        {
+            return $this->hasOneThrough(
+                'App\AccountHistory', 'App\Account',
+                'account_id', 'supplier_id'
+            );
+        }
+    }
+
+#### Defining The Inverse Of The Relationship
+
+Now we can access the `AccountHistory` model from our `Supplier` let's define a relationship on the `AccountHistory` model that will let us access the `Supplier`. We can define the inverse of a `hasOneThrough` relationship using the `belongsToThrough` method:
+
+    <?php
+    
+    namespace App;
+    
+    use Illuminate\Database\Eloquent\Model;
+    
+    class AccountHistory extends Model
+    {
+        /**
+         * Get the supplier that owns the account history.
+         */
+        public function supplier()
+        {
+            return $this->belongsToThrough('App\Supplier', 'App\Account');
+        }
+    }
+
+In the example above, Eloquent will try to match the `account_id` from the `AccountHistory` model to the `id` on the intermediate `Account` model. Then will further match the `supplier_id` from the `Account` model to the final `Supplier` model. Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and forth arguments. The third argument is the name of the foreign key on the local model, the forth argument is the name of the foreign key on the intermediate model:
+
+    class AccountHistory extends Model
+    {
+        public function supplier()
+        {
+            return $this->belongsToThrough(
+                'App\Supplier', 'App\Account',
+                'account_id', 'supplier_id'
+            );
+        }
     }
 
 <a name="one-to-many"></a>
