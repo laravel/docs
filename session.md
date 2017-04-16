@@ -115,9 +115,15 @@ You may also use the global `session` PHP function to retrieve and store data in
 
 #### Determining If An Item Exists In The Session
 
-The `has` method may be used to check if an item exists in the session. This method will return `true` if the item exists:
+To determine if a value is present in the session, you may use the `has` method. The `has` method returns `true` if the value is present **and** not `null`:
 
     if ($request->session()->has('users')) {
+        //
+    }
+
+To determine if a value is present in the session, irrespective of its value, you may use the `exists` method. The `exists` method returns `true` if the value is present:
+
+    if ($request->session()->exists('users')) {
         //
     }
 
