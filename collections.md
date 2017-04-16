@@ -744,6 +744,8 @@ The `mapWithKeys` method iterates through the collection and passes each value t
         ]
     */
 
+> {note} Numeric keys will be renumbered with incrementing keys starting from zero.
+
 <a name="method-max"></a>
 #### `max()` {#collection-method}
 
