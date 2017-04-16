@@ -14,7 +14,9 @@
 <a name="introduction"></a>
 ## Introduction
 
-The Laravel service container is a powerful tool for managing class dependencies and performing dependency injection. Dependency injection is a fancy phrase that essentially means this: class dependencies are "injected" into the class via the constructor or, in some cases, "setter" methods.
+The Laravel service container is a powerful tool for managing class dependencies and performing dependency injection. Dependency injection is a fancy phrase that essentially means this class dependencies are "injected" into it via its constructor or, in some cases, its "setter" methods. In more simple terms dependency injection just means while you create an object of a class you pass or in this case **inject** the other objects it needs (its dependencies) to instantiate itself, instead of having the class construct those dependencies itself.
+
+While developing your app you may come across many situations where you need to initialise or create an object of a class that is dependent on some object of some another class. So you initialise the another class and inject that instance to initialise the first class. To overcome this repetative hassle Laravel automatically resolves all the needed dependencies from the Service Container itself. You just need to typehint the class, Laravel will then itself create the object of that class for you while resolving its dependencies as well along the way. The Laravel service container houses all the bindings so you don't need to manually instantiate all the things.
 
 Let's look at a simple example:
 
@@ -60,7 +62,7 @@ Let's look at a simple example:
         }
     }
 
-In this example, the `UserController` needs to retrieve users from a data source. So, we will **inject** a service that is able to retrieve users. In this context, our `UserRepository` most likely uses [Eloquent](/docs/{{version}}/eloquent) to retrieve user information from the database. However, since the repository is injected, we are able to easily swap it out with another implementation. We are also able to easily "mock", or create a dummy implementation of the `UserRepository` when testing our application.
+In this example, the `UserController` needs to retrieve users from a data source. So, we will **inject** a service that is able to retrieve users. For this example lets consider the `UserRepository` will do this job for us. As we can see we just typehinted the `UserRepository` class in the constructor and Laravel resolved its object for us automatically from the service container. We are also able to easily "mock", or create a dummy implementation of the `UserRepository` when testing our application.
 
 A deep understanding of the Laravel service container is essential to building a powerful, large application, as well as for contributing to the Laravel core itself.
 
