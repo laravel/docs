@@ -28,6 +28,7 @@
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
 - [Events](#events)
 - [Testing](#testing)
+- [Deploying](#deploy)
 
 <a name="introduction"></a>
 ## Introduction
@@ -675,3 +676,11 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
 
         $response->assertStatus(200);
     }
+
+
+<a name="deploy"></a>
+### Deploying
+
+To deploy Passport for the first time to a server you need to run this command:
+
+    php artisan passport:keys
