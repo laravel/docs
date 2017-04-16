@@ -525,6 +525,10 @@ If this change causes you to have two routes with the same name, you have two op
 
 ### Validation
 
+#### Update Your Form Requests
+
+If your form requests extends from `Request` now you should change them to extend from `FormRequest`. Also you should change `use App\Http\Requests\Request;` to `use Illuminate\Foundation\Http\FormRequest;` at the top.
+
 #### Form Request Exceptions
 
 If a form request's validation fails, Laravel will now throw an instance of `Illuminate\Validation\ValidationException` instead of an instance of `HttpException`. If you are manually catching the `HttpException` instance thrown by a form request, you should update your `catch` blocks to catch the `ValidationException` instead.
