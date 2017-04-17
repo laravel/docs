@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Frontend Quickstart](#frontend-quickstart)
+    - [Deploying Passport](#deploying-passport)
 - [Configuration](#configuration)
     - [Token Lifetimes](#token-lifetimes)
 - [Issuing Access Tokens](#issuing-access-tokens)
@@ -28,7 +29,6 @@
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
 - [Events](#events)
 - [Testing](#testing)
-- [Deploying](#deploy)
 
 <a name="introduction"></a>
 ## Introduction
@@ -154,6 +154,13 @@ After registering the components, make sure to run `npm run dev` to recompile yo
     <passport-clients></passport-clients>
     <passport-authorized-clients></passport-authorized-clients>
     <passport-personal-access-tokens></passport-personal-access-tokens>
+
+<a name="deploying-passport"></a>
+### Deploying Passport
+
+When deploying Passport to your production servers for the first time, you will likely need to run the `passport:keys` command. This command generates the encryption keys Passport needs in order to generate access token. The generated keys are not typically kept in source control:
+
+    php artisan passport:keys
 
 <a name="configuration"></a>
 ## Configuration
@@ -676,11 +683,3 @@ Passport's `actingAs` method may be used to specify the currently authenticated 
 
         $response->assertStatus(200);
     }
-
-
-<a name="deploy"></a>
-### Deploying
-
-To deploy Passport for the first time to a server you need to run this command:
-
-    php artisan passport:keys
