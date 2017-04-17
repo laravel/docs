@@ -45,6 +45,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [array_sort](#method-array-sort)
 [array_sort_recursive](#method-array-sort-recursive)
 [array_where](#method-array-where)
+[array_wrap](#method-array-wrap)
 [head](#method-head)
 [last](#method-last)
 </div>
@@ -57,7 +58,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [base_path](#method-base-path)
 [config_path](#method-config-path)
 [database_path](#method-database-path)
-[elixir](#method-elixir)
+[mix](#method-mix)
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
 [storage_path](#method-storage-path)
@@ -72,6 +73,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [class_basename](#method-class-basename)
 [e](#method-e)
 [ends_with](#method-ends-with)
+[kebab_case](#method-kebab-case)
 [snake_case](#method-snake-case)
 [str_limit](#method-str-limit)
 [starts_with](#method-starts-with)
@@ -418,10 +420,21 @@ The `array_where` function filters the array using the given Closure:
 
     // [1 => 200, 3 => 400]
 
+<a name="method-array-wrap"></a>
+#### `array_wrap()` {#collection-method}
+
+The `array_wrap` function will wrap the given value in an array. If the given value is already an array it will not be changed:
+
+    $string = 'Laravel';
+
+    $array = array_wrap($string);
+
+    // [0 => 'Laravel']
+
 <a name="method-head"></a>
 #### `head()` {#collection-method}
 
-The `head` function simply returns the first element in the given array:
+The `head` function returns the first element in the given array:
 
     $array = [100, 200, 300];
 
@@ -475,12 +488,12 @@ The `database_path` function returns the fully qualified path to the application
 
     $path = database_path();
 
-<a name="method-elixir"></a>
-#### `elixir()` {#collection-method}
+<a name="method-mix"></a>
+#### `mix()` {#collection-method}
 
-The `elixir` function gets the path to a [versioned Elixir file](/docs/{{version}}/elixir):
+The `mix` function gets the path to a [versioned Mix file](/docs/{{version}}/mix):
 
-    elixir($file);
+    mix($file);
 
 <a name="method-public-path"></a>
 #### `public_path()` {#collection-method}
@@ -492,7 +505,7 @@ The `public_path` function returns the fully qualified path to the `public` dire
 <a name="method-resource-path"></a>
 #### `resource_path()` {#collection-method}
 
-The `resource_path` function returns the fully qualified path to the `resources` directory. You may also use the `resource_path` function to generate a fully qualified path to a given file relative to the storage directory:
+The `resource_path` function returns the fully qualified path to the `resources` directory. You may also use the `resource_path` function to generate a fully qualified path to a given file relative to the resources directory:
 
     $path = resource_path();
 
@@ -531,7 +544,7 @@ The `class_basename` returns the class name of the given class with the class' n
 <a name="method-e"></a>
 #### `e()` {#collection-method}
 
-The `e` function runs `htmlspecialchars` over the given string:
+The `e` function runs PHP's `htmlspecialchars` function with the `double_encode` option set to `false`:
 
     echo e('<html>foo</html>');
 
@@ -545,6 +558,16 @@ The `ends_with` function determines if the given string ends with the given valu
     $value = ends_with('This is my name', 'name');
 
     // true
+
+<a name="method-kebab-case"></a>
+#### `kebab_case()` {#collection-method}
+
+The `kebab_case` function converts the given string to `kebab-case`:
+
+    $value = kebab_case('fooBar');
+
+    // foo-bar
+
 
 <a name="method-snake-case"></a>
 #### `snake_case()` {#collection-method}

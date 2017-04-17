@@ -108,8 +108,8 @@ The `Facade` base class makes use of the `__callStatic()` magic-method to defer 
 
     namespace App\Http\Controllers;
 
-    use Cache;
     use App\Http\Controllers\Controller;
+    use Illuminate\Support\Facades\Cache;
 
     class UserController extends Controller
     {

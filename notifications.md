@@ -174,6 +174,38 @@ In this example, we register a greeting, a line of text, a call to action, and t
 
 > {tip} When sending mail notifications, be sure to set the `name` value in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.
 
+#### Other Notification Formatting Options
+
+Instead of defining the "lines" of text in the notification class, you may use the `view` method to specify a custom template that should be used to render the notification email:
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)->view(
+            'emails.name', ['invoice' => $this->invoice]
+        );
+    }
+
+In addition, you may return a [mailable object](/docs/{{version}}/mail) from the `toMail` method:
+
+    use App\Mail\InvoicePaid as Mailable;
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return Mailable
+     */
+    public function toMail($notifiable)
+    {
+        return (new Mailable($this->invoice))->to($this->user->email);
+    }
+
 <a name="error-messages"></a>
 #### Error Messages
 
@@ -641,6 +673,22 @@ You may use the `from` and `to` methods to customize the sender and recipient. T
                     ->content('This will be sent to #other');
     }
 
+You may also use an image as your logo instead of an emoji:
+
+    /**
+     * Get the Slack representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return SlackMessage
+     */
+    public function toSlack($notifiable)
+    {
+        return (new SlackMessage)
+                    ->from('Laravel')
+                    ->image('https://laravel.com/favicon.png')
+                    ->content('This will display the Laravel logo next to the message');
+    }
+
 <a name="slack-attachments"></a>
 ### Slack Attachments
 
@@ -718,7 +766,7 @@ If some of your attachment fields contain Markdown, you may use the `markdown` m
                     ->content('Whoops! Something went wrong.')
                     ->attachment(function ($attachment) use ($url) {
                         $attachment->title('Exception: File Not Found', $url)
-                                   ->content('File [background.jpg] was **not found**.')
+                                   ->content('File [background.jpg] was *not found*.')
                                    ->markdown(['title', 'text']);
                     });
     }

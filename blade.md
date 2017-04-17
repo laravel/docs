@@ -144,23 +144,11 @@ Of course, you are not limited to displaying the contents of the variables passe
 
     The current UNIX timestamp is {{ time() }}.
 
-> {note} Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks.
-
-#### Echoing Data If It Exists
-
-Sometimes you may wish to echo a variable, but you aren't sure if the variable has been set. We can express this in verbose PHP code like so:
-
-    {{ isset($name) ? $name : 'Default' }}
-
-However, instead of writing a ternary statement, Blade provides you with the following convenient shortcut, which will be compiled to the ternary statement above:
-
-    {{ $name or 'Default' }}
-
-In this example, if the `$name` variable exists, its value will be displayed. However, if it does not exist, the word `Default` will be displayed.
+> {note} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
 #### Displaying Unescaped Data
 
-By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlentities` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
+By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
 
     Hello, {!! $name !!}.
 
@@ -210,6 +198,16 @@ For convenience, Blade also provides an `@unless` directive:
     @unless (Auth::check())
         You are not signed in.
     @endunless
+
+In addition to the conditional directives already discussed, the `@isset` and `@empty` directives may be used as convenient shortcuts for their respective PHP functions:
+
+    @isset($records)
+        // $records is defined and is not null...
+    @endisset
+
+    @empty($records)
+        // $records is "empty"...
+    @endempty
 
 <a name="loops"></a>
 ### Loops

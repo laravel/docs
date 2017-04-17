@@ -318,10 +318,10 @@ These directives are convenient shortcuts for writing `@if` and `@unless` statem
 
 Like most of the other authorization methods, you may pass a class name to the `@can` and `@cannot` directives if the action does not require a model instance:
 
-    @can('create', Post::class)
+    @can('create', App\Post::class)
         <!-- The Current User Can Create Posts -->
     @endcan
 
-    @cannot('create', Post::class)
+    @cannot('create', App\Post::class)
         <!-- The Current User Can't Create Posts -->
     @endcannot

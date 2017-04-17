@@ -25,6 +25,9 @@
     - [Navigating To Pages](#navigating-to-pages)
     - [Shorthand Selectors](#shorthand-selectors)
     - [Page Methods](#page-methods)
+- [Continuous Integration](#continuous-integration)
+    - [Travis CI](#running-tests-on-travis-ci)
+    - [CircleCI](#running-tests-on-circle-ci)
 
 <a name="introduction"></a>
 ## Introduction
@@ -38,7 +41,7 @@ To get started, you should add the `laravel/dusk` Composer dependency to your pr
 
     composer require laravel/dusk
 
-Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. You should register the provider within the `register` method of your `AppServiceProvider` in order to limit the environments in which Dusk is available, since it exposes the ability to login as other users:
+Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. You should register the provider within the `register` method of your `AppServiceProvider` in order to limit the environments in which Dusk is available, since it exposes the ability to log in as other users:
 
     use Laravel\Dusk\DuskServiceProvider;
 
@@ -115,7 +118,7 @@ To run your browser tests, use the `dusk` Artisan command:
 
 The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, allowing you to only run the tests for a given [group](https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group), etc:
 
-    php artisan dusk --group foo
+    php artisan dusk --group=foo
 
 #### Manually Starting ChromeDriver
 
@@ -283,6 +286,10 @@ To select a value in a dropdown selection box, you may use the `select` method. 
 
     $browser->select('size', 'Large');
 
+You may select a random option by omitting the second parameter:
+
+    $browser->select('size');
+
 #### Checkboxes
 
 To "check" a checkbox field, you may use the `check` method. Like many other input related methods, a full CSS selector is not required. If an exact selector match can't be found, Dusk will search for a checkbox with a matching `name` attribute:
@@ -337,6 +344,13 @@ The `mouseover` method may be used when you need to move the mouse over an eleme
 The `drag` method may be used to drag an element matching the given selector to another element:
 
     $browser->drag('.from-selector', '.to-selector');
+
+Or, you may drag an element in a single direction:
+
+    $browser->dragLeft('.selector', 10);
+    $browser->dragRight('.selector', 10);
+    $browser->dragUp('.selector', 10);
+    $browser->dragDown('.selector', 10);
 
 <a name="scoping-selectors"></a>
 ### Scoping Selectors
@@ -426,6 +440,8 @@ Assertion  | Description
 `$browser->assertTitle($title)`  |  Assert the page title matches the given text.
 `$browser->assertTitleContains($title)`  |  Assert the page title contains the given text.
 `$browser->assertPathIs('/home')`  |  Assert the current path matches the given path.
+`$browser->assertQueryStringHas($name, $value)`  |  Assert the given query string parameter is present and has a given value.
+`$browser->assertQueryStringMissing($name)`  |  Assert the given query string parameter is missing.
 `$browser->assertHasCookie($name)`  |  Assert the given cookie is present.
 `$browser->assertCookieValue($name, $value)`  |  Assert a cookie has a given value.
 `$browser->assertPlainCookieValue($name, $value)`  |  Assert an unencrypted cookie has a given value.
@@ -439,6 +455,8 @@ Assertion  | Description
 `$browser->assertInputValueIsNot($field, $value)`  |  Assert the given input field does not have the given value.
 `$browser->assertChecked($field)`  |  Assert the given checkbox is checked.
 `$browser->assertNotChecked($field)`  |  Assert the given checkbox is not checked.
+`$browser->assertRadioSelected($field, $value)`  |  Assert the given radio field is selected.
+`$browser->assertRadioNotSelected($field, $value)` |  Assert the given radio field is not selected.
 `$browser->assertSelected($field, $value)`  |  Assert the given dropdown has the given value selected.
 `$browser->assertNotSelected($field, $value)`  |  Assert the given dropdown does not have the given value selected.
 `$browser->assertValue($selector, $value)`  |  Assert the element matching the given selector has the given value.
@@ -460,7 +478,7 @@ To generate a page object, use the `dusk:page` Artisan command. All page objects
 <a name="configuring-pages"></a>
 ### Configuring Pages
 
-By default, pages have three methods: `url`, `assert`, and `selectors`. We will discuss the `url` and `assert` methods now. The `selectors` method will be [discussed in more detail below](#shorthand-selectors).
+By default, pages have three methods: `url`, `assert`, and `elements`. We will discuss the `url` and `assert` methods now. The `elements` method will be [discussed in more detail below](#shorthand-selectors).
 
 #### The `url` Method
 
@@ -511,7 +529,7 @@ Sometimes you may already be on a given page and need to "load" the page's selec
 <a name="shorthand-selectors"></a>
 ### Shorthand Selectors
 
-The `selectors` method of pages allows you to define quick, easy-to-remember shortcuts for any CSS selector on your page. For example, let's define a shortcut for the "email" input field of the application's login page:
+The `elements` method of pages allows you to define quick, easy-to-remember shortcuts for any CSS selector on your page. For example, let's define a shortcut for the "email" input field of the application's login page:
 
     /**
      * Get the element shortcuts for the page.
@@ -582,3 +600,40 @@ Once the method has been defined, you may use it within any test that utilizes t
     $browser->visit(new Dashboard)
             ->createPlaylist('My Playlist')
             ->assertSee('My Playlist');
+
+<a name="continuous-integration"></a>
+## Continuous Integration
+
+<a name="running-tests-on-travis-ci"></a>
+### Travis CI
+
+To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
+
+    sudo: required
+    dist: trusty
+
+    before_script:
+        - export DISPLAY=:99.0
+        - sh -e /etc/init.d/xvfb start
+        - ./vendor/laravel/dusk/bin/chromedriver-linux &
+        - cp .env.testing .env
+        - php artisan serve &
+
+    script:
+        - php artisan dusk
+
+<a name="running-tests-on-circle-ci"></a>
+### CircleCI
+
+If you are using CircleCI to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
+
+    test:
+        pre:
+            - "./vendor/laravel/dusk/bin/chromedriver-linux":
+                background: true
+            - cp .env.testing .env
+            - "php artisan serve":
+                background: true
+
+        override:
+            - php artisan dusk

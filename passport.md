@@ -27,6 +27,7 @@
     - [Checking Scopes](#checking-scopes)
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
 - [Events](#events)
+- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -657,3 +658,20 @@ protected $listen = [
     ],
 ];
 ```
+
+<a name="testing"></a>
+## Testing
+
+Passport's `actingAs` method may be used to specify the currently authenticated user as well as its scopes. The first argument given to the `actingAs` method is the user instance and the second is an array of scopes that should be granted to the user's token:
+
+    public function testServerCreation()
+    {
+        Passport::actingAs(
+            factory(User::class)->create(),
+            ['create-servers']
+        );
+
+        $response = $this->post('/api/create-server');
+
+        $response->assertStatus(200);
+    }

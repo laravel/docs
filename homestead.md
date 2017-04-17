@@ -145,9 +145,6 @@ Homestead 可以在任何 Windows、Mac 或 Linux 系統上面執行，裡面包
 
     192.168.10.10  homestead.app
 
-<<<<<<< HEAD
-Make sure the IP address listed is the one set in your `Homestead.yaml` file. Once you have added the domain to your `hosts` file and launched the Vagrant box you will be able to access the site via your web browser:
-=======
 務必確認 IP 位置與你的 `Homestead.yaml` 檔案中設定相同。一旦將網域設定在 `hosts` 檔案之後，你就可以透過網頁瀏覽器造訪網站！
 
     http://homestead.app
@@ -244,7 +241,6 @@ Windows:
 <a name="adding-additional-sites"></a>
 ### 增加更多網站
 
-<<<<<<< HEAD
 Once your Homestead environment is provisioned and running, you may want to add additional Nginx sites for your Laravel applications. You can run as many Laravel installations as you wish on a single Homestead environment. To add an additional site, simply add the site to your `Homestead.yaml` file:
 
     sites:
@@ -271,9 +267,6 @@ Homestead supports several types of sites which allow you to easily run projects
           type: symfony2
 
 The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, and `symfony2`.
-=======
-一旦 Homestead 環境配置完畢且執行後，你可能會想要為 Laravel 應用程式增加更多的 Nginx 網站。你可以在單一個 Homestead 環境中執行多個 Laravel 安裝程式。若要增加額外的網站，只要增加網站至你的 `~/.homestead/Homestead.yaml` 檔案中，接著在你的 Homestead 目錄執行 `vagrant reload --provision` 終端機指令。
->>>>>>> 5.3
 
 <a name="configuring-cron-schedules"></a>
 ### 設定 Cron 排程器

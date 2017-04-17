@@ -19,7 +19,7 @@ Laravel's command scheduler allows you to fluently and expressively define your 
 
 When using the scheduler, you only need to add the following Cron entry to your server. If you do not know how to add Cron entries to your server, consider using a service such as [Laravel Forge](https://forge.laravel.com) which can manage the Cron entries for you:
 
-    * * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1
+    * * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
 
 This Cron will call the Laravel command scheduler every minute. When the `schedule:run` command is executed, Laravel will evaluate your scheduled tasks and runs the tasks that are due.
 

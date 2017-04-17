@@ -387,11 +387,21 @@ There are two other methods you may use to create models by mass assigning attri
 
 The `firstOrNew` method, like `firstOrCreate` will attempt to locate a record in the database matching the given attributes. However, if a model is not found, a new model instance will be returned. Note that the model returned by `firstOrNew` has not yet been persisted to the database. You will need to call `save` manually to persist it:
 
-    // Retrieve the flight by the attributes, or create it if it doesn't exist...
+    // Retrieve flight by name, or create it if it doesn't exist...
     $flight = App\Flight::firstOrCreate(['name' => 'Flight 10']);
 
-    // Retrieve the flight by the attributes, or instantiate a new instance...
+    // Retrieve flight by name, or create it with the name and delayed attributes...
+    $flight = App\Flight::firstOrCreate(
+        ['name' => 'Flight 10'], ['delayed' => 1]
+    );
+
+    // Retrieve by name, or instantiate...
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
+
+    // Retrieve by name, or instantiate with the name and delayed attributes...
+    $flight = App\Flight::firstOrNew(
+        ['name' => 'Flight 10'], ['delayed' => 1]
+    );
 
 #### `updateOrCreate`
 

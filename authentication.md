@@ -79,7 +79,7 @@ If the redirect path needs custom generation logic you may define a `redirectTo`
 
     protected function redirectTo()
     {
-        //
+        return '/path';
     }
 
 > {tip} The `redirectTo` method will take precedence over the `redirectTo` attribute.
@@ -403,7 +403,7 @@ If you are not using a traditional relational database to store your users, you 
 
     use Illuminate\Support\Facades\Auth;
     use App\Extensions\RiakUserProvider;
-    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
     class AuthServiceProvider extends ServiceProvider
     {
