@@ -15,7 +15,7 @@
     - [Service Providers](/docs/{{version}}/providers)
     - [Facades](/docs/{{version}}/facades)
     - [Contracts](/docs/{{version}}/contracts)
-- ## The HTTP Layer
+- ## The Basics
     - [Routing](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
     - [CSRF Protection](/docs/{{version}}/csrf)
@@ -25,6 +25,7 @@
     - [Views](/docs/{{version}}/views)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
+    - [Errors & Logging](/docs/{{version}}/errors)
 - ## Frontend
     - [Blade Templates](/docs/{{version}}/blade)
     - [Localization](/docs/{{version}}/localization)
@@ -37,20 +38,19 @@
     - [Encryption](/docs/{{version}}/encryption)
     - [Hashing](/docs/{{version}}/hashing)
     - [Password Reset](/docs/{{version}}/passwords)
-- ## General Topics
+- ## Digging Deeper
     - [Artisan Console](/docs/{{version}}/artisan)
     - [Broadcasting](/docs/{{version}}/broadcasting)
     - [Cache](/docs/{{version}}/cache)
     - [Collections](/docs/{{version}}/collections)
-    - [Errors & Logging](/docs/{{version}}/errors)
     - [Events](/docs/{{version}}/events)
     - [File Storage](/docs/{{version}}/filesystem)
     - [Helpers](/docs/{{version}}/helpers)
     - [Mail](/docs/{{version}}/mail)
     - [Notifications](/docs/{{version}}/notifications)
-    - [Packages](/docs/{{version}}/packages)
+    - [Package Development](/docs/{{version}}/packages)
     - [Queues](/docs/{{version}}/queues)
-    - [Scheduled Tasks](/docs/{{version}}/scheduling)
+    - [Task Scheduling](/docs/{{version}}/scheduling)
 - ## Database
     - [Getting Started](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)

@@ -1,4 +1,4 @@
-# Filesystem / Cloud Storage
+# File Storage
 
 - [Introduction](#introduction)
 - [Configuration](#configuration)

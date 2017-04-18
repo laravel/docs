@@ -1,4 +1,4 @@
-# Event Broadcasting
+# Broadcasting
 
 - [Introduction](#introduction)
     - [Configuration](#configuration)
