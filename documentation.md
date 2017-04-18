@@ -1,26 +1,26 @@
-- Prologue
+- ## Prologue
     - [Release Notes](/docs/{{version}}/releases)
     - [Upgrade Guide](/docs/{{version}}/upgrade)
     - [Contribution Guide](/docs/{{version}}/contributions)
-- Setup
+- ## Setup
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
     - [Homestead](/docs/{{version}}/homestead)
-- The Basics
+- ## The Basics
     - [Routing](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
     - [Views](/docs/{{version}}/views)
-- Architecture Foundations
+- ## Architecture Foundations
     - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
     - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
     - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Application Structure](/docs/{{version}}/structure)
-- Services
+- ## Services
     - [Authentication](/docs/{{version}}/authentication)
     - [Billing](/docs/{{version}}/billing)
     - [Cache](/docs/{{version}}/cache)
@@ -44,13 +44,13 @@
     - [Templates](/docs/{{version}}/templates)
     - [Unit Testing](/docs/{{version}}/testing)
     - [Validation](/docs/{{version}}/validation)
-- Database
+- ## Database
     - [Basic Usage](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)
     - [Eloquent ORM](/docs/{{version}}/eloquent)
     - [Schema Builder](/docs/{{version}}/schema)
     - [Migrations & Seeding](/docs/{{version}}/migrations)
     - [Redis](/docs/{{version}}/redis)
-- Artisan CLI
+- ## Artisan CLI
     - [Overview](/docs/{{version}}/artisan)
     - [Development](/docs/{{version}}/commands)
