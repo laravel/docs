@@ -1,4 +1,4 @@
-# Helper Functions
+# Helpers
 
 - [Introduction](#introduction)
 - [Available Methods](#available-methods)
