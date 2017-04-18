@@ -1,17 +1,17 @@
-- Prologue
+- ## Prologue
     - [Release Notes](/docs/{{version}}/releases)
     - [Upgrade Guide](/docs/{{version}}/upgrade)
     - [Contribution Guide](/docs/{{version}}/contributions)
     - [API Documentation](/api/{{version}})
-- Setup
+- ## Setup
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
-- Tutorials
+- ## Tutorials
     - [Basic Task List](/docs/{{version}}/quickstart)
     - [Intermediate Task List](/docs/{{version}}/quickstart-intermediate)
-- The Basics
+- ## The Basics
     - [Routing](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
     - [Controllers](/docs/{{version}}/controllers)
@@ -19,14 +19,14 @@
     - [Responses](/docs/{{version}}/responses)
     - [Views](/docs/{{version}}/views)
     - [Blade Templates](/docs/{{version}}/blade)
-- Architecture Foundations
+- ## Architecture Foundations
     - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Application Structure](/docs/{{version}}/structure)
     - [Service Providers](/docs/{{version}}/providers)
     - [Service Container](/docs/{{version}}/container)
     - [Contracts](/docs/{{version}}/contracts)
     - [Facades](/docs/{{version}}/facades)
-- Services
+- ## Services
     - [Authentication](/docs/{{version}}/authentication)
     - [Authorization](/docs/{{version}}/authorization)
     - [Artisan Console](/docs/{{version}}/artisan)
@@ -51,12 +51,12 @@
     - [Task Scheduling](/docs/{{version}}/scheduling)
     - [Testing](/docs/{{version}}/testing)
     - [Validation](/docs/{{version}}/validation)
-- Database
+- ## Database
     - [Getting Started](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)
     - [Migrations](/docs/{{version}}/migrations)
     - [Seeding](/docs/{{version}}/seeding)
-- Eloquent ORM
+- ## Eloquent ORM
     - [Getting Started](/docs/{{version}}/eloquent)
     - [Relationships](/docs/{{version}}/eloquent-relationships)
     - [Collections](/docs/{{version}}/eloquent-collections)
