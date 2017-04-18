@@ -1,11 +1,11 @@
-- Preface
+- ## Preface
     - [Introduction](/docs/4.2/introduction)
     - [Quickstart](/docs/4.2/quick)
     - [Release Notes](/docs/4.2/releases)
     - [Upgrade Guide](/docs/4.2/upgrade)
     - [Contribution Guide](/docs/4.2/contributions)
     - [API Documentation](/api/4.2/)
-- Getting Started
+- ## Getting Started
     - [Installation](/docs/4.2/installation)
     - [Configuration](/docs/4.2/configuration)
     - [Homestead](/docs/4.2/homestead)
@@ -15,7 +15,7 @@
     - [Views & Responses](/docs/4.2/responses)
     - [Controllers](/docs/4.2/controllers)
     - [Errors & Logging](/docs/4.2/errors)
-- Learning More
+- ## Learning More
     - [Authentication](/docs/4.2/security)
     - [Billing](/docs/4.2/billing)
     - [Cache](/docs/4.2/cache)
@@ -36,13 +36,13 @@
     - [Templates](/docs/4.2/templates)
     - [Unit Testing](/docs/4.2/testing)
     - [Validation](/docs/4.2/validation)
-- Database
+- ## Database
     - [Basic Usage](/docs/4.2/database)
     - [Query Builder](/docs/4.2/queries)
     - [Eloquent ORM](/docs/4.2/eloquent)
     - [Schema Builder](/docs/4.2/schema)
     - [Migrations & Seeding](/docs/4.2/migrations)
     - [Redis](/docs/4.2/redis)
-- Artisan CLI
+- ## Artisan CLI
     - [Overview](/docs/4.2/artisan)
     - [Development](/docs/4.2/commands)
