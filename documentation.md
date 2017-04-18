@@ -1,22 +1,21 @@
-- Prologue
+- ## Prologue
     - [Release Notes](/docs/{{version}}/releases)
     - [Upgrade Guide](/docs/{{version}}/upgrade)
     - [Contribution Guide](/docs/{{version}}/contributions)
     - [API Documentation](/api/{{version}})
-- Getting Started
+- ## Getting Started
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
     - [Directory Structure](/docs/{{version}}/structure)
-    - [Request Lifecycle](/docs/{{version}}/lifecycle)
-- Dev Environments
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
-- Core Concepts
+- ## Architecture Concepts
+    - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Service Container](/docs/{{version}}/container)
     - [Service Providers](/docs/{{version}}/providers)
     - [Facades](/docs/{{version}}/facades)
     - [Contracts](/docs/{{version}}/contracts)
-- The HTTP Layer
+- ## The HTTP Layer
     - [Routing](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)
     - [CSRF Protection](/docs/{{version}}/csrf)
@@ -26,19 +25,19 @@
     - [Views](/docs/{{version}}/views)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
-- Frontend
+- ## Frontend
     - [Blade Templates](/docs/{{version}}/blade)
     - [Localization](/docs/{{version}}/localization)
     - [Frontend Scaffolding](/docs/{{version}}/frontend)
     - [Compiling Assets](/docs/{{version}}/mix)
-- Security
+- ## Security
     - [Authentication](/docs/{{version}}/authentication)
     - [API Authentication](/docs/{{version}}/passport)
     - [Authorization](/docs/{{version}}/authorization)
     - [Encryption](/docs/{{version}}/encryption)
     - [Hashing](/docs/{{version}}/hashing)
     - [Password Reset](/docs/{{version}}/passwords)
-- General Topics
+- ## General Topics
     - [Artisan Console](/docs/{{version}}/artisan)
     - [Broadcasting](/docs/{{version}}/broadcasting)
     - [Cache](/docs/{{version}}/cache)
@@ -52,26 +51,26 @@
     - [Packages](/docs/{{version}}/packages)
     - [Queues](/docs/{{version}}/queues)
     - [Scheduled Tasks](/docs/{{version}}/scheduling)
-- Database
+- ## Database
     - [Getting Started](/docs/{{version}}/database)
     - [Query Builder](/docs/{{version}}/queries)
     - [Pagination](/docs/{{version}}/pagination)
     - [Migrations](/docs/{{version}}/migrations)
     - [Seeding](/docs/{{version}}/seeding)
     - [Redis](/docs/{{version}}/redis)
-- Eloquent ORM
+- ## Eloquent ORM
     - [Getting Started](/docs/{{version}}/eloquent)
     - [Relationships](/docs/{{version}}/eloquent-relationships)
     - [Collections](/docs/{{version}}/eloquent-collections)
     - [Mutators](/docs/{{version}}/eloquent-mutators)
     - [Serialization](/docs/{{version}}/eloquent-serialization)
-- Testing
+- ## Testing
     - [Getting Started](/docs/{{version}}/testing)
     - [HTTP Tests](/docs/{{version}}/http-tests)
     - [Browser Tests](/docs/{{version}}/dusk)
     - [Database](/docs/{{version}}/database-testing)
     - [Mocking](/docs/{{version}}/mocking)
-- Official Packages
+- ## Official Packages
     - [Cashier](/docs/{{version}}/billing)
     - [Envoy](/docs/{{version}}/envoy)
     - [Passport](/docs/{{version}}/passport)

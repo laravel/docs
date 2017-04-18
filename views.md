@@ -8,6 +8,8 @@
 <a name="creating-views"></a>
 ## Creating Views
 
+> {tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
+
 Views contain the HTML served by your application and separate your controller / application logic from your presentation logic. Views are stored in the `resources/views` directory. A simple view might look something like this:
 
     <!-- View stored in resources/views/greeting.blade.php -->
