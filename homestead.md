@@ -224,6 +224,16 @@ By default, the following ports are forwarded to your Homestead environment:
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **Postgres:** 54320 &rarr; Forwards To 5432
 
+#### Connecting to Redis
+
+By default, Redis is listening in its normal port (6379), so you can just connect to Homestead's IP address:
+
+    redis-cli -h 192.168.10.10
+
+If you have domain name set up in your local /etc/hosts, you can use it instead:
+
+    redis-cli -h myapp.dev
+
 #### Forwarding Additional Ports
 
 If you wish, you may forward additional ports to the Vagrant box, as well as specify their protocol:
