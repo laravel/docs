@@ -20,7 +20,8 @@ However, if you are not using Homestead, you will need to make sure your server 
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
-- Tokenizer PHP Extension
+- Zip PHP Extension
+- Dom PHP Extension
 </div>
 
 <a name="installing-laravel"></a>
