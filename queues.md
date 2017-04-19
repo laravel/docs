@@ -364,7 +364,7 @@ Laravel includes an Artisan command that will run new jobs as they are pushed on
 
 You may also specify which queue connection the listener should utilize:
 
-    php artisan queue:listen connection-name
+    php artisan queue:listen --queue=connection-name
 
 Note that once this task has started, it will continue to run until it is manually stopped. You may use a process monitor such as [Supervisor](http://supervisord.org/) to ensure that the queue listener does not stop running.
 
