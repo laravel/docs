@@ -321,7 +321,13 @@ Finally, the `deleteDirectory` may be used to remove a directory and all of its 
 
 Laravel's Flysystem integration provides drivers for several "drivers" out of the box; however, Flysystem is not limited to these and has adapters for many other storage systems. You can create a custom driver if you want to use one of these additional adapters in your Laravel application.
 
-In order to set up the custom filesystem you will need to create a [service provider](/docs/{{version}}/providers) such as `DropboxServiceProvider`. In the provider's `boot` method, you may use the `Storage` facade's `extend` method to define the custom driver:
+In order to set up the custom filesystem you will need to require a Flysystem adapter. Let's pull in this Dropbox adapter.
+
+```bash
+composer require spatie/flysystem-dropbox
+```
+
+Next you should create a [service provider](/docs/{{version}}/providers) such as `DropboxServiceProvider`. In the provider's `boot` method, you may use the `Storage` facade's `extend` method to define the custom driver:
 
     <?php
 
@@ -329,9 +335,9 @@ In order to set up the custom filesystem you will need to create a [service prov
 
     use Storage;
     use League\Flysystem\Filesystem;
-    use Dropbox\Client as DropboxClient;
+    use Spatie\Dropbox\Client as DropboxClient;
     use Illuminate\Support\ServiceProvider;
-    use League\Flysystem\Dropbox\DropboxAdapter;
+    use Spatie\FlysystemDropbox\DropboxAdapter;
 
     class DropboxServiceProvider extends ServiceProvider
     {
@@ -344,7 +350,7 @@ In order to set up the custom filesystem you will need to create a [service prov
         {
             Storage::extend('dropbox', function ($app, $config) {
                 $client = new DropboxClient(
-                    $config['accessToken'], $config['clientIdentifier']
+                    $config['authorizationToken']
                 );
 
                 return new Filesystem(new DropboxAdapter($client));
