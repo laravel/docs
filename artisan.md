@@ -22,6 +22,11 @@ Every command also includes a "help" screen which displays and describes the com
 
     php artisan help migrate
 
+Additionally, because Artisan is built on the Symfony Console component, it offers an automatic shortcut syntax. You can just type the shortest unambiguous name to run a command:
+
+    // Equivalent to 'route:list'
+    php artisan r:l
+
 <a name="writing-commands"></a>
 ## Writing Commands
 
