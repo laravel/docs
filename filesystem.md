@@ -323,9 +323,7 @@ Laravel's Flysystem integration provides drivers for several "drivers" out of th
 
 In order to set up the custom filesystem you will need to require a Flysystem adapter. Let's pull in this Dropbox adapter.
 
-```bash
-composer require spatie/flysystem-dropbox
-```
+    composer require spatie/flysystem-dropbox
 
 Next you should create a [service provider](/docs/{{version}}/providers) such as `DropboxServiceProvider`. In the provider's `boot` method, you may use the `Storage` facade's `extend` method to define the custom driver:
 
