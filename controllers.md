@@ -237,6 +237,23 @@ Laravel allows you to easily define a single route to handle every action in a c
         {
             //
         }
+        
+        /**
+         * Responds to requests to PUT /users/profile
+         */
+        public function putProfile()
+        {
+            //
+        }
+        
+        /**
+         * Responds to requests to DELETE /users/profile
+         */
+        public function deleteProfile()
+        {
+            //
+        }
+        
     }
 
 As you can see in the example above, `index` methods will respond to the root URI handled by the controller, which, in this case, is `users`.
