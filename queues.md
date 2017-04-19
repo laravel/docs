@@ -86,7 +86,7 @@ Job classes are very simple, normally containing only a `handle` method which is
          * Create a new job instance.
          *
          * @param  User  $user
-         * @return void
+         * @return self
          */
         public function __construct(User $user)
         {
