@@ -42,10 +42,10 @@ Let's look at a simple example:
 		/**
 		 * Purchase a podcast.
 		 *
-		 * @param  PurchasePodcastCommand  $command
+		 * @param  PurchasePodcast  $command
 		 * @return void
 		 */
-		public function handle(PurchasePodcastCommand $command)
+		public function handle(PurchasePodcast $command)
 		{
 			//
 		}
