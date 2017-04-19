@@ -27,7 +27,7 @@ The Redis configuration for your application is stored in the **app/config/datab
 
 The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Simply give each Redis server a name, and specify the host and port used by the server.
 
-The `cluster` option will tell the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
+The `cluster` option will tell the Laravel Redis client to perform client-side sharing across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
 
 If your Redis server requires authentication, you may supply a password by adding a `password` key / value pair to your Redis server configuration array.
 
