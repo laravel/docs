@@ -17,7 +17,7 @@
 - [Receiving Broadcasts](#receiving-broadcasts)
     - [Installing Laravel Echo](#installing-laravel-echo)
     - [Listening For Events](#listening-for-events)
-    - [Leaving A Channel](#leaving-a-channel)
+    - [Leaving a Channel](#leaving-a-channel)
     - [Namespaces](#namespaces)
 - [Presence Channels](#presence-channels)
     - [Authorizing Presence Channels](#authorizing-presence-channels)
@@ -403,7 +403,7 @@ If you would like to listen for events on a private channel, use the `private` m
         .listen(...);
 
 <a name="leaving-a-channel"></a>
-### Leaving A Channel
+### Leaving a Channel
 
 To leave a channel, you may call the `leave` method on your Echo instance:
 
