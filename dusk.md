@@ -440,6 +440,7 @@ Assertion  | Description
 `$browser->assertTitle($title)`  |  Assert the page title matches the given text.
 `$browser->assertTitleContains($title)`  |  Assert the page title contains the given text.
 `$browser->assertPathIs('/home')`  |  Assert the current path matches the given path.
+`$browser->assertPathIsNot('/home')`  |  Assert the current path does not match the given path.
 `$browser->assertQueryStringHas($name, $value)`  |  Assert the given query string parameter is present and has a given value.
 `$browser->assertQueryStringMissing($name)`  |  Assert the given query string parameter is missing.
 `$browser->assertHasCookie($name)`  |  Assert the given cookie is present.
