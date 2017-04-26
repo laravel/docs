@@ -20,6 +20,7 @@
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [Browsersync Reloading](#browsersync-reloading)
 - [Notifications](#notifications)
+- [Environment variables](#environment-variables)
 
 <a name="introduction"></a>
 ## Introduction
@@ -333,3 +334,8 @@ You may pass either a string (proxy) or object (BrowserSync settings) to this me
 When available, Mix will automatically display OS notifications for each bundle. This will give you instant feedback, as to whether the compilation was successful or not. However, there may be instances when you'd prefer to disable these notifications. One such example might be triggering Mix on your production server. Notifications may be deactivated, via the `disableNotifications` method.
 
     mix.disableNotifications();
+
+<a name="environment-variables"></a>
+## Environment variables
+
+Mix can inject environment variables (including the ones declared in your `.env` file) at build time. You may only access `NODE_ENV` and variables prefixed with `MIX_`. For example, assuming you declared the variable `MIX_SENTRY_DSN_PUBLIC`, its value can be accessed in JavaScript via `process.env.MIX_SENTRY_DSN_PUBLIC`. If the value changes, watch tasks need to be restarted.
