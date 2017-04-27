@@ -482,7 +482,7 @@ The `broadcast` channel broadcasts notifications using Laravel's [event broadcas
 
 All broadcast notifications are queued for broadcasting. If you would like to configure the queue connection or queue name that is used to the queue the broadcast operation, you may use the `onConnection` and `onQueue` methods of the `BroadcastMessage`:
 
-    return new BroadcastMessage($data)
+    return (new BroadcastMessage($data))
                     ->onConnection('sqs')
                     ->onQueue('broadcasts');
 
