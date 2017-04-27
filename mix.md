@@ -19,8 +19,8 @@
 - [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [Browsersync Reloading](#browsersync-reloading)
+- [Environment Variables](#environment-variables)
 - [Notifications](#notifications)
-- [Environment variables](#environment-variables)
 
 <a name="introduction"></a>
 ## Introduction
@@ -328,14 +328,20 @@ Because versioned files are usually unnecessary in development, you may wish to 
 
 You may pass either a string (proxy) or object (BrowserSync settings) to this method. Next, start Webpack's dev server using the `npm run watch` command. Now, when you modify a script or PHP file, watch as the browser instantly refreshes the page to reflect your changes.
 
+<a name="environment-variables"></a>
+## Environment Variables
+
+You may inject environment variables into Mix by prefixing a key in your `.env` file with `MIX_`:
+
+    MIX_SENTRY_DSN_PUBLIC=http://example.com
+
+After the variable has been defined in your `.env` file, you may access via the `process.env` object. If the value changes while you are running a `watch` task, you will need to restart the task:
+
+    process.env.MIX_SENTRY_DSN_PUBLIC
+
 <a name="notifications"></a>
 ## Notifications
 
 When available, Mix will automatically display OS notifications for each bundle. This will give you instant feedback, as to whether the compilation was successful or not. However, there may be instances when you'd prefer to disable these notifications. One such example might be triggering Mix on your production server. Notifications may be deactivated, via the `disableNotifications` method.
 
     mix.disableNotifications();
-
-<a name="environment-variables"></a>
-## Environment variables
-
-Mix can inject environment variables (including the ones declared in your `.env` file) at build time. You may only access `NODE_ENV` and variables prefixed with `MIX_`. For example, assuming you declared the variable `MIX_SENTRY_DSN_PUBLIC`, its value can be accessed in JavaScript via `process.env.MIX_SENTRY_DSN_PUBLIC`. If the value changes, watch tasks need to be restarted.
