@@ -19,6 +19,7 @@
 - [Copying Files & Directories](#copying-files-and-directories)
 - [Versioning / Cache Busting](#versioning-and-cache-busting)
 - [Browsersync Reloading](#browsersync-reloading)
+- [Environment Variables](#environment-variables)
 - [Notifications](#notifications)
 
 <a name="introduction"></a>
@@ -326,6 +327,17 @@ Because versioned files are usually unnecessary in development, you may wish to 
     });
 
 You may pass either a string (proxy) or object (BrowserSync settings) to this method. Next, start Webpack's dev server using the `npm run watch` command. Now, when you modify a script or PHP file, watch as the browser instantly refreshes the page to reflect your changes.
+
+<a name="environment-variables"></a>
+## Environment Variables
+
+You may inject environment variables into Mix by prefixing a key in your `.env` file with `MIX_`:
+
+    MIX_SENTRY_DSN_PUBLIC=http://example.com
+
+After the variable has been defined in your `.env` file, you may access via the `process.env` object. If the value changes while you are running a `watch` task, you will need to restart the task:
+
+    process.env.MIX_SENTRY_DSN_PUBLIC
 
 <a name="notifications"></a>
 ## Notifications
