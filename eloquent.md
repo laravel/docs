@@ -164,7 +164,7 @@ Once you have created a model and [its associated database table](/docs/{{versio
 
     use App\Flight;
 
-    $flights = App\Flight::all();
+    $flights = Flight::all();
 
     foreach ($flights as $flight) {
         echo $flight->name;
@@ -174,7 +174,7 @@ Once you have created a model and [its associated database table](/docs/{{versio
 
 The Eloquent `all` method will return all of the results in the model's table. Since each Eloquent model serves as a [query builder](/docs/{{version}}/queries), you may also add constraints to queries, and then use the `get` method to retrieve the results:
 
-    $flights = App\Flight::where('active', 1)
+    $flights = Flight::where('active', 1)
                    ->orderBy('name', 'desc')
                    ->take(10)
                    ->get();
