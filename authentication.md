@@ -302,7 +302,7 @@ To get started with Socialite, include the package in your `composer.json` file:
 
 Next, register the `Laravel\Socialite\SocialiteServiceProvider` in your `config/app.php` configuration file. You may also register a [facade](/docs/{{version}}/facades):
 
-	'Socialize' => 'Laravel\Socialite\Facades\Socialite',
+	'Socialite' => 'Laravel\Socialite\Facades\Socialite',
 
 You will need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `google`, or `github`, depending on the providers your application requires. For example:
 
@@ -316,25 +316,25 @@ Next, you are ready to authenticate users! You will need two routes: one for red
 
 	public function redirectToProvider()
 	{
-		return Socialize::with('github')->redirect();
+		return \Socialite::with('github')->redirect();
 	}
 
 	public function handleProviderCallback()
 	{
-		$user = Socialize::with('github')->user();
+		$user = \Socialite::with('github')->user();
 
 		// $user->token;
 	}
 
 The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider. Before redirecting the user, you may also set "scopes" on the request:
 
-	return Socialize::with('github')->scopes(['scope1', 'scope2'])->redirect();
+	return \Socialite::with('github')->scopes(['scope1', 'scope2'])->redirect();
 
 Once you have a user instance, you can grab a few more details about the user:
 
 #### Retrieving User Details
 
-	$user = Socialize::with('github')->user();
+	$user = \Socialite::with('github')->user();
 
 	// OAuth Two Providers
 	$token = $user->token;
