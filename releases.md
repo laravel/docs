@@ -165,12 +165,12 @@ Laravel Socialite is an optional, Laravel 5.0+ compatible package that provides 
 
 	public function redirectForAuth()
 	{
-		return Socialize::with('twitter')->redirect();
+		return Socialite::with('twitter')->redirect();
 	}
 
 	public function getUserFromProvider()
 	{
-		$user = Socialize::with('twitter')->user();
+		$user = Socialite::with('twitter')->user();
 	}
 
 No more spending hours writing OAuth authentication flows. Get started in minutes! The [full documentation](/docs/{{version}}/authentication#social-authentication) has all the details.
