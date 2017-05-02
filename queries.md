@@ -143,9 +143,10 @@ If you would like to use a "where" style clause on your joins, you may use the `
 	DB::table('users')
 	        ->join('contacts', function($join)
 	        {
-	        	$join->on('users.id', '=', 'contacts.user_id')
-	        	     ->where('contacts.user_id', '>', 5);
+	        	$join->on('users.id', '=', 'contacts.user_id');
+	        	     
 	        })
+	        ->where('contacts.user_id', '>', 5)
 	        ->get();
 
 <a name="advanced-wheres"></a>
