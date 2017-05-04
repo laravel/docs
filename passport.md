@@ -631,7 +631,7 @@ Typically, if you want to consume your API from your JavaScript application, you
 
 This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. Now, you may make requests to your application's API without explicitly passing an access token:
 
-    axios.get('/user')
+    axios.get('/api/user')
         .then(response => {
             console.log(response.data);
         });
