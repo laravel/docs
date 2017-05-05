@@ -47,7 +47,7 @@ If you need to determine if a view exists, you may use the `View` facade. The `e
 
 As you saw in the previous examples, you may pass an array of data to views:
 
-    return view('greetings', ['name' => 'Victoria']);
+    return view('greetings', $data);
 
 When passing information in this manner, `$data` should be an array with key/value pairs. Inside your view, you can then access each value using its corresponding key, such as `<?php echo $key; ?>`. As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view:
 
