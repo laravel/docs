@@ -10,6 +10,7 @@
     - [Securing Sites With TLS](#securing-sites)
 - [Sharing Sites](#sharing-sites)
 - [Custom Valet Drivers](#custom-valet-drivers)
+    - [Local Drivers](#local-drivers)
 - [Other Valet Commands](#other-valet-commands)
 
 <a name="introduction"></a>
@@ -218,6 +219,30 @@ The `frontControllerPath` method should return the fully qualified path to your 
     {
         return $sitePath.'/public/index.php';
     }
+
+<a name="local-drivers"></a>
+### Local Drivers
+
+Valet drivers will make some assumptions about how your project is set up in order to determine the type of application and how to properly serve requests.
+
+For example, the Laravel driver assumes your web root is located in a `public` directory. If you've renamed it to `public_html`, Valet simply won't recognize that it's Laravel.
+
+To remedy this, you may create a driver specific to your application. Follow the instructions for creating a custom driver, but save it as `LocalValetDriver.php` in your application root.
+
+    class LocalValetDriver extends LaravelValetDriver
+    {
+        public function serves($sitePath, $siteName, $uri)
+        {
+            return true;
+        }
+
+        public function frontControllerPath($sitePath, $siteName, $uri)
+        {
+            return $sitePath.'/public_html/index.php';
+        }
+    }
+
+You may extend the base `ValetDriver` class to write the whole driver from scratch, or extend an existing driver and only override what you need.
 
 <a name="other-valet-commands"></a>
 ## Other Valet Commands
