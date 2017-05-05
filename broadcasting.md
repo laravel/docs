@@ -244,7 +244,7 @@ By default, Laravel will broadcast the event using the event's class name. Howev
         return 'server.created';
     }
 
-If you do change the broadcast name using the `broadcastAs` method you need to change the update your `listen` method in your javascript and prepend the event name with a '.'
+If you customize the broadcast name using the `broadcastAs` method, you should make sure to register your listener with a leading `.` character. This will instruct Echo to not prepend the application's namespace to the event:
 
     .listen('.server.created', function (e) {
         ....
