@@ -2,6 +2,7 @@
 
 - [Versioning Scheme](#versioning-scheme)
 - [Support Policy](#support-policy)
+- [Laravel 5.4.22](#laravel-5.4.22)
 - [Laravel 5.4](#laravel-5.4)
 - [Laravel 5.3](#laravel-5.3)
 - [Laravel 5.2](#laravel-5.2)
@@ -30,6 +31,15 @@ So, instead, the Laravel framework uses a versioning scheme that is more communi
 ## Support Policy
 
 For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+
+<a name="laravel-5.4.22"></a>
+## Laravel 5.4.22
+
+Laravel 5.4.22 patches a security vulnerability in the Laravel 5.4 release series that allows phishing attempts on users of the application. Using the password reset system, malicious users can attempt to trick your users into entering their login credentials into a separate application that they control. Since the password reset notification uses the host of the incoming request to build the password reset URL, the host of the password reset URL may be spoofed. If users do not notice that they are not on their intended application's domain, they may accidentally enter their login credentials into a malicious application.
+
+In Laravel 5.1 applications, the password reset notification is maintained by the developer, so this vulnerability may or may not be present. You should verify that your application generates an absolute URL for password reset links:
+
+    {{ url('http://example.com/password/reset/'.$token) }}
 
 <a name="laravel-5.4"></a>
 ## Laravel 5.4
