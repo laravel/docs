@@ -368,20 +368,22 @@ Now that we have examined the table structure for the relationship, let's define
 
 The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
 
-Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model, the fourth argument is the name of the foreign key on the final model, and the fifth argument is the local key. Lastly, the sixth argument is the second local key; the local key on the intermediate model:
+Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the six argument is the local key of the intermediate model:
 
     class Country extends Model
     {
         public function posts()
         {
             return $this->hasManyThrough(
-                'App\Post', 'App\User', 'country_id',
-                'user_id', 'id', 'id'
+                'App\Post',
+                'App\User',
+                'country_id', // Foreign key on users table...
+                'user_id', // Foreign key on posts table...
+                'id', // Local key on countries table...
+                'id' // Local key on users table...
             );
         }
     }
-    
-The local key (fifth argument), is matched up with the foreign key on the intermediate model (third argument). In the above example, the local key refers to the key on the `Country` model (calling class). The third argument, `country_id`, is an attribute on our intermediate model, `App\User`, so the condition is `countries.id = users.country_id`. The fourth and sixth arguments are then matched up to make the connection between the intermediate and final model. The fourth argument specifies the foreign key on the final model (`posts.user_id`), and the sixth argument specifies the local key on the intermediate model (`users.id`).
 
 <a name="polymorphic-relations"></a>
 ### Polymorphic Relations
