@@ -268,6 +268,18 @@ Homestead supports several types of sites which allow you to easily run projects
 
 The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, and `symfony2`.
 
+<a name="site-params"></a>
+#### Site Parameters
+
+Site parameters are how you can easily add `fastcgi_param` values to your site host configuration within Homestead. For example, we may add a `FOO` parameter with the value `BAR`:
+
+    sites:
+        - map: homestead.app
+          to: /home/vagrant/Code/Laravel/public
+          params:
+              - key: FOO
+                value: BAR
+
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules
 
