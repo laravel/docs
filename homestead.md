@@ -218,6 +218,16 @@ The Cron job for the site will be defined in the `/etc/cron.d` folder of the vir
 <a name="ports"></a>
 ### Ports
 
+By default Homestead will use port 80 for http and 443 for https. If you wish, you may provide alternate ports.
+
+    sites:
+        - map: homestead.app
+          to: /home/vagrant/Code/Laravel/public
+          port: 9300
+          ssl: 777
+
+#### Port Forwarding
+
 By default, the following ports are forwarded to your Homestead environment:
 
 - **SSH:** 2222 &rarr; Forwards To 22
