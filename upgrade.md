@@ -133,6 +133,17 @@ Binding classes into the container with leading slashes is no longer supported. 
 
 The container's `make` method no longer accepts a second array of parameters. This feature typically indicates a code smell. Typically, you can always construct the object in another way that is more intuitive.
 
+For example, if you were previously injecting some use-specific dependencies to your class:
+
+    $module = $container->make('Class\Name', [
+        'user' => $user,
+    ]);
+
+In Laravel 5.4 your class should only accept those dependencies through a constructor, which can be resolved automatically by type-hinting. To pass your dependee instance, you can use a setter:
+
+    $module = $container->make('Class\Name');
+    $module->setUser($user);
+
 #### Resolving Callbacks
 
 The container's `resolving` and `afterResolving` method now must be provided a class name or binding key as the first argument to the method:
