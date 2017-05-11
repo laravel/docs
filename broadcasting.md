@@ -287,7 +287,18 @@ By default, each broadcast event is placed on the default queue for the default 
      * @var string
      */
     public $broadcastQueue = 'your-queue-name';
+    
+If you want to broadcast your event using the `sync` queue instead of the default queue driver, you can implement the `ShouldBroadcastNow` interface instead of `ShouldBroadcast`:
 
+    <?php
+    
+    use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+
+    class ShippingStatusUpdated implements ShouldBroadcastNow
+    {   
+        //
+    }
+    
 <a name="authorizing-channels"></a>
 ## Authorizing Channels
 
