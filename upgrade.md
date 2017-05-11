@@ -503,3 +503,8 @@ The `addError` method has been renamed to `addFailure`. In addition, the `doRepl
 ### Miscellaneous
 
 We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [Github comparison tool](https://github.com/laravel/laravel/compare/5.3...master) and choose which updates are important to you.
+
+#### Miscellaneous Methods
+
+- `Illuminate\Routing\Route`: `getUri()` was dropped in favor of `uri()`, `getMethods()` was dropped for `methods()`
+- `Illuminate\Foundation\Testing\TestCase`: `assertResponseStatus()` was dropped. Use `assertStatus()` on the response instead.
