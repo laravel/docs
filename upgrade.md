@@ -217,7 +217,7 @@ Eloquent will query the posts table on the `example` connection instead of the d
 
 #### The `chunk` Method
 
-The query builder `chunk` method will now require an `orderBy` clause to be more consistent with the `each` method; an exception will be thrown if one is not supplied. For example:
+The query builder `chunk` method now requires an `orderBy` clause, which provides consistency with the `each` method. An exception will be thrown if an `orderBy` clause is not supplied. For example:
 
     DB::table('users')->orderBy('id')->chunk(100, function ($users) {
         foreach ($users as $user) {
@@ -225,7 +225,7 @@ The query builder `chunk` method will now require an `orderBy` clause to be more
         }
     });
 
- The Eloquent query builder `chunk` method will automatically apply an `orderBy` clause on the model's primary key if one is not supplied.
+The Eloquent query builder `chunk` method will automatically apply an `orderBy` clause on the model's primary key if one is not supplied.
 
 #### The `create` & `forceCreate` Methods
 
