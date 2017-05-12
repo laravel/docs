@@ -48,6 +48,31 @@ Gates are Closures that determine if a user is authorized to perform a given act
         });
     }
 
+You may also define multiple Gate abilities at once using the `resource` method:
+
+    Gate::resource('posts', 'PostPolicy');
+    
+This is identical to the following definitions:
+
+    Gate::define('posts.view', 'PostPolicy@view');
+    Gate::define('posts.create', 'PostPolicy@create');
+    Gate::define('posts.update', 'PostPolicy@update');
+    Gate::define('posts.delete', 'PostPolicy@delete');
+
+By default the `view`, `create`, `update`, and `delete` abilities will be defined. You can customize your own abilities by passing an array as the 3rd parameter. The key of the array defines the name of the ability, and the value defines the method name.
+
+    $abilities = [
+        'foo' => 'bar',
+        'baz' => 'qux',
+    ];
+    
+    Gate::resource('posts', 'PostPolicy', $abilities);
+
+This is identical to:
+
+    Gate::define('posts.foo', 'PostPolicy@bar');
+    Gate::define('posts.baz', 'PostPolicy@qux');
+
 <a name="authorizing-actions-via-gates"></a>
 ### Authorizing Actions
 
