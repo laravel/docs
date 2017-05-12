@@ -781,6 +781,8 @@ If you are listening for many events on a given model, you may use observers to 
         }
     }
 
+As you can see in the above example, the observer has no return value. The events dispatcher will halt when your observer returns anything other than `null`.  
+
 To register an observer, use the `observe` method on the model you wish to observe. You may register observers in the `boot` method of one of your service providers. In this example, we'll register the observer in the `AppServiceProvider`:
 
     <?php
