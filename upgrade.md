@@ -203,6 +203,8 @@ Just like previous Laravel releases, this relationship will typically use `user_
 
 When this is the case, Laravel will now respect your customization and determine the foreign key column name is `user_key` instead of `user_id`.
 
+> {note} Method `getForeignKey` has been renamed to `getQualifiedForeignKeyName`.
+
 #### Has One / Many `createMany`
 
 The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
