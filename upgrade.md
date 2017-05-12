@@ -437,6 +437,10 @@ Tests written on Laravel 5.3 will extend the `BrowserKitTestCase` class while an
 
 Once you have created this class, make sure to update all of your tests to extend your new `BrowserKitTestCase` class. This will allow all of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](/docs/5.4/http-tests) or [Laravel Dusk](/docs/5.4/dusk).
 
+If you are using `DatabaseMigrations`, `DatabaseTransactions`, `WithoutMiddleware`, or `WithoutEvents`, you'll need to reference the same classes within the `Laravel\BrowserKitTesting` namespace. For example, if you are including `use Illuminate\Foundation\Testing\DatabaseTransactions;` in your test, you should change this to:
+
+    use Laravel\BrowserKitTesting\DatabaseTransactions;
+
 > {note} If you are writing new tests and want them to use the Laravel 5.4 testing layer, make sure to extend the `TestCase` class.
 
 #### Installing Dusk In An Upgraded Application
