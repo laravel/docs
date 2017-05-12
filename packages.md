@@ -97,7 +97,7 @@ You may also merge your own package configuration file with the application's pu
 <a name="routes"></a>
 ### Routes
 
-If your package contains routes, you may load them using the `loadRoutesFrom` method. This method will automatically determine if the application's routes are cached and will not load your routes file if the routes have already been cached:
+If your package contains routes, you may load them using the `loadRoutesFrom` method. This method will automatically determine if the application's routes are cached and will not load your routes file if the routes have already been cached. If your package is named `courier` and you want to allow the routes to be published, you should also include the package name in the second argument:
 
     /**
      * Perform post-registration booting of services.
@@ -106,8 +106,28 @@ If your package contains routes, you may load them using the `loadRoutesFrom` me
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadRoutesFrom(__DIR__.'/routes.php', 'courier');
     }
+
+#### Publishing routes
+
+If you would like to publish your package's routes to the application's `routes/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the routes file for the `courier` package, you may do the following:
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadRoutesFrom(__DIR__.'/routes.php', 'courier');
+
+        $this->publishes([
+            __DIR__.'/routes.php' => base_path('routes/vendor/courier.php'),
+        ]);
+    }
+
+Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's routes will be published to the specified publish location.
 
 <a name="migrations"></a>
 ### Migrations
