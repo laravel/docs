@@ -339,6 +339,26 @@ Of course, if you attempt to `@include` a view which does not exist, Laravel wil
 
 > {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
+It is also possible to include a view, based on a condition. To see this feature in use pretend you have this common setup:
+
+    @if(Auth::user())
+        @include('nav.user')
+    @endif
+
+Now, this can be simplified using `@includeWhen`:
+
+    @includeWhen(Auth::user(), 'nav.user')
+
+Or for those using the built-in Authorization system:
+
+    @if ($user->ownsPost($post)
+        @include('posts.edit-controls', ['post' => $post])
+    @endif
+
+Can be changed to the following:
+
+    @includeWhen($user->ownsPost($post), 'posts.edit-controls', ['post' => $post])
+
 <a name="rendering-views-for-collections"></a>
 ### Rendering Views For Collections
 
