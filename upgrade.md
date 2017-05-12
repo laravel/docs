@@ -7,7 +7,7 @@
 
 #### Estimated Upgrade Time: 1-2 Hours
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {note} Although Laravel is currently not [SemVer](http://semver.org/) compliant, we attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
 ### Updating Dependencies
 
