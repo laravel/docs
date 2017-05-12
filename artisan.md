@@ -43,9 +43,9 @@ In addition to the commands provided with Artisan, you may also build your own c
 <a name="generating-commands"></a>
 ### Generating Commands
 
-To create a new command, use the `make:command` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. Don't worry if this directory does not exist in your application, since it will be created the first time you run the `make:command` Artisan command. The generated command will include the default set of properties and methods that are present on all commands:
+To create a new command, use the `make:console` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. Don't worry if this directory does not exist in your application, since it will be created the first time you run the `make:console` Artisan command. The generated command will include the default set of properties and methods that are present on all commands:
 
-    php artisan make:command SendEmails
+    php artisan make:console SendEmails
 
 Next, you will need to [register the command](#registering-commands) before it can be executed via the Artisan CLI.
 
