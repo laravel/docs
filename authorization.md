@@ -48,7 +48,7 @@ Gates are Closures that determine if a user is authorized to perform a given act
         });
     }
 
-Gates can also be defined using a callback string. Instead of passing a Closure, use the `class@method` format.
+Gates may also be defined using a `Class@method` style callback string, like controllers:
 
     /**
      * Register any authentication / authorization services.
