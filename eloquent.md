@@ -746,9 +746,11 @@ To get started, define an `$events` property on your Eloquent model that maps va
     }
 
 <a name="observers"></a>
-### Observers
+## Observers
 
-If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers classes have method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. Laravel does not include a default directory for observers, so you may create any directory you like to house your observer classes:
+If you are listening for many events on a given model, you may use observers to group all of your listeners into a single class. Observers will not fire for any of the events defined in the [`$events`](#events) property and do not require an [event class](/docs/{{version}}/events) to be created.
+
+An Observer class has method names which reflect the Eloquent events you wish to listen for. Each of these methods receives the model as their only argument. Laravel does not include a default directory for observers, so you may create any directory you like to house your observer classes:
 
     <?php
 
