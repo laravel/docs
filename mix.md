@@ -285,6 +285,10 @@ If you would like completely customize your Webpack configuration, copy the `nod
 The `copy` method may be used to copy files and directories to new locations. This can be useful when a particular asset within your `node_modules` directory needs to be relocated to your `public` folder.
 
     mix.copy('node_modules/foo/bar.css', 'public/css/bar.css');
+    
+By default, copying a directory will flatten the copied files - including all files but placing them in the root of the target directory without keeping the folder structure. If you wish to keep the exact folder stucture, you have to set the third parameter to `false`.
+
+    mix.copy('node_modules/foo/bar/', 'public/css/', false);
 
 When copying a directory, the `copy` method will flatten the directory's structure. To maintain the directory's original structure, you should use the `copyDirectory` method instead:
 
