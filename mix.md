@@ -181,7 +181,7 @@ As useful as this feature may be, it's possible that your existing folder struct
           processCssUrls: false
        });
 
-With this addition to your `webpack.mix.js` file, Mix will no longer match `url()`s or copy assets to your public directory. In other words, the compiled CSS will look just like how you originally typed it:
+With this addition to your `webpack.mix.js` file, Mix will no longer match any `url()` or copy assets to your public directory. In other words, the compiled CSS will look just like how you originally typed it:
 
     .example {
         background: url("../images/thing.png");
