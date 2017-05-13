@@ -297,6 +297,20 @@ Now that you've told Elixir which tasks to execute, you only need to trigger Gul
 
 > **Note:** All tasks will assume a development environment, and will exclude minification. For production, use `gulp --production`.
 
+<a name="defaults"></a>
+## Directory Defaults
+
+Elixir assumes a default directory for each component, listed below. While you are free to override the directory, these provide some sensible defaults.
+
+Component    | Directory
+:------------|:--------------------------
+Less         | `resources/assets/less`
+Sass         | `resources/assets/sass`
+CoffeeScript | `resources/assets/coffee`
+CSS          | `resources/css`
+Javascript   | `resources/js`
+
+
 <a name="extensions"></a>
 ## Custom Tasks and Extensions
 
