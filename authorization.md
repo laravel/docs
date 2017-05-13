@@ -48,6 +48,20 @@ Gates are Closures that determine if a user is authorized to perform a given act
         });
     }
 
+Gates may also be defined using a `Class@method` style callback string, like controllers:
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Gate::define('update-post', 'PostPolicy@update');
+    }
+
 You may also define multiple Gate abilities at once using the `resource` method:
 
     Gate::resource('posts', 'PostPolicy');
