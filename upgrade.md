@@ -207,6 +207,10 @@ When this is the case, Laravel will now respect your customization and determine
 
 The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
 
+#### BelongsToMany `setJoin`
+
+The `setJoin` method has been renamed to `performJoin`.
+
 #### Related Model Connections
 
 Related models will now use the same connection as the parent model. For example, if you execute a query like:
