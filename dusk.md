@@ -28,6 +28,7 @@
 - [Continuous Integration](#continuous-integration)
     - [Travis CI](#running-tests-on-travis-ci)
     - [CircleCI](#running-tests-on-circle-ci)
+    - [Codeship](#running-tests-on-codeship)
 
 <a name="introduction"></a>
 ## Introduction
@@ -638,3 +639,52 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
 
         override:
             - php artisan dusk
+
+<a name="running-tests-on-codeship"></a>
+### Codeship
+
+If you are using Codeship to run your Dusk tests, you may use the following steps as a starting point. The steps involved are slightly more complex then the ones above. Like TravisCI and CircleCI, we will use the `php artisan serve` command to launch PHP's built-in web server.
+
+Firstly, its recommended you create a separate `.env.dusk.testing` file for dusk specific environment configuration. In order to get Dusk running correctly on Codeship, you will need to specify the `APP_URL` as [`http://lvh.me`](https://documentation.codeship.com/basic/continuous-integration/using-subdomains/] so that the Dusk has a URL to hit. 
+
+The next step is to modify the `driver()` method in the `tests/DuskTestCase.php` file, like so:
+
+    /**
+     * Create the RemoteWebDriver instance.
+     *
+     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+     */
+    protected function driver()
+    {
+        $chromeOptions = new ChromeOptions();
+        if ($binary = env('DUSK_CHROME_BINARY')) {
+            $chromeOptions->setBinary($binary);
+        }
+        $chromeOptions->addArguments(['no-first-run']);
+        $capabilities = DesiredCapabilities::chrome();
+        $capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+
+        return RemoteWebDriver::create(
+            'http://localhost:9515',
+            $capabilities
+        );
+    }
+    
+In your Codeship setup commands, add the following as a minimum:
+
+	# set php version (adjust for your preferred version)
+	phpenv local 7.1
+	phpenv global 7.1
+	# Install dependencies through Composer
+	composer install --prefer-dist  --no-interaction
+	# downgrade phpunit global install
+	composer global require "phpunit/phpunit=5.*"
+
+Finally, to run browser tests, add the following into your test pipeline:
+
+    export DUSK_START_CHROMEDRIVER=false
+    export DUSK_APP_PORT=8000
+    export DUSK_CHROME_BINARY=/usr/bin/chromium-browser
+    nohup bash -c "./vendor/laravel/dusk/bin/chromedriver-linux 2>&1 &"
+    nohup bash -c "php artisan serve --env=dusk.testing 2>&1 &" && sleep 4
+    php artisan dusk
