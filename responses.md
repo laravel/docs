@@ -165,6 +165,8 @@ The `file` method can be used to display a file, such as an image or PDF, direct
     return response()->file($pathToFile);
 
     return response()->file($pathToFile, $headers);
+    
+    return response()->download($pathToFile)->deleteFileAfterSend(true);
 
 <a name="redirects"></a>
 ## Redirects
