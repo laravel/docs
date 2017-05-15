@@ -642,6 +642,16 @@ When using this method of authentication, Axios will automatically send the `X-C
         'X-Requested-With': 'XMLHttpRequest',
     };
 
+If you need to send a request to another domain or subdomain, in addition to enabling CORS, you will need to tell axios to send your credentials with the request.
+
+    axios.get('/user, {
+        withCredentials: true
+    });
+    
+Alternatively, you can enable this for all requests by enabling it by default.
+
+    window.axios.defaults.withCredentials = true;
+
 > {note} If you are using a different JavaScript framework, you should make sure it is configured to send the `X-CSRF-TOKEN` and `X-Requested-With` headers with every outgoing request.
 
 
