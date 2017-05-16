@@ -7,6 +7,7 @@
 - [Retrieving Translation Strings](#retrieving-translation-strings)
     - [Replacing Parameters In Translation Strings](#replacing-parameters-in-translation-strings)
     - [Pluralization](#pluralization)
+- [Multiple Language Directories](#multiple-language-directories)
 - [Overriding Package Language Files](#overriding-package-language-files)
 
 <a name="introduction"></a>
@@ -137,6 +138,13 @@ You may even create more complex pluralization rules which specify translation s
 After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the translation string is returned:
 
     echo trans_choice('messages.apples', 10);
+
+<a name="multiple-language-directories"></a>
+## Multiple Language Directories
+
+You may have multiple directories for storing languages files, these can be added in a Service Provider:
+
+    $this->loadTranslationsFrom($path, $namespace)
 
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
