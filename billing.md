@@ -42,9 +42,9 @@ Laravel Cashier provides an expressive, fluent interface to [Stripe's](https://s
 
 #### Composer
 
-First, add the Cashier package for Stripe to your `composer.json` file and run the `composer update` command:
+First, add the Cashier package for Stripe to your dependencies:
 
-    "laravel/cashier": "~7.0"
+    composer require "laravel/cashier":"~7.0"
 
 #### Service Provider
 
@@ -111,9 +111,9 @@ For many operations, the Stripe and Braintree implementations of Cashier functio
 
 #### Composer
 
-First, add the Cashier package for Braintree to your `composer.json` file and run the `composer update` command:
+First, add the Cashier package for Braintree to your dependencies:
 
-    "laravel/cashier-braintree": "~2.0"
+    composer require "laravel/cashier-braintree":"~2.0"
 
 #### Service Provider
 
