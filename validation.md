@@ -634,7 +634,7 @@ The field under validation must be less than or equal to a maximum _value_. Stri
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
 
-The file under validation must have a MIME type corresponding to one of the listed extensions.
+The file under validation must have a MIME type corresponding to one of the listed extensions. _Note that extensions are mapped to full mimetypes (e.g. to test against the `application/pdf` mimetype, you provide the `pdf` extension to this validation rule). You can view the full mapping in `vendor/league/flysystem/src/Util/MimeType.php::getExtensionToMimeTypeMap()`._
 
 #### Basic Usage Of MIME Rule
 
