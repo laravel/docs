@@ -61,6 +61,8 @@ You may also set the `host` option to a UNIX socket path. If you do this, the `p
         ],
     ],
 
+> {note} Memcached PECL package is not available for Windows.
+
 #### Redis
 
 Before using a Redis cache with Laravel, you will need to either install the `predis/predis` package (~1.0) via Composer or install the PhpRedis PHP extension via PECL.
