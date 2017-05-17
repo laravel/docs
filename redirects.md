@@ -76,7 +76,7 @@ Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/se
     Route::post('user/profile', function () {
         // Update the user's profile...
 
-        return redirect('dashboard')->with('status', 'Profile updated!');
+        return redirect()->route('dashboard')->with('status', 'Profile updated!');
     });
 
 After the user is redirected, you may display the flashed message from the [session](/docs/{{version}}/session). For example, using [Blade syntax](/docs/{{version}}/blade):
