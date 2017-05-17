@@ -352,6 +352,8 @@ You may also pass a fourth argument to the `@each` directive. This argument dete
 
     @each('view.name', $jobs, 'job', 'view.empty')
 
+> {note} Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use `@foreach` and `@include` instead.
+
 <a name="stacks"></a>
 ## Stacks
 
