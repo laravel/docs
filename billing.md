@@ -311,7 +311,7 @@ Alternatively, you may set a specific quantity using the `updateQuantity` method
 
     $user->subscription('main')->updateQuantity(10);
 
-For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/guides/subscriptions#setting-quantities).
+For more information on subscription quantities, consult the [Stripe documentation](https://stripe.com/docs/subscriptions/quantities).
 
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
