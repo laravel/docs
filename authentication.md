@@ -84,6 +84,17 @@ If the redirect path needs custom generation logic you may define a `redirectTo`
 
 > {tip} `redirectTo` method has higher priority than `redirectTo` attribute.
 
+Also you need to modify the method `handle` of class `RedirectIfAuthenticated` by changing the return statement in the case when authentication check passes:
+
+    public function handle($request, Closure $next, $guard = null)
+    {
+        if (Auth::guard($guard)->check()) {
+            return redirect('/');
+        }
+
+        return $next($request);
+    }
+
 #### Username Customization
 
 By default, Laravel uses the `email` field for authentication. If you would like to customize this, you may define a `username` method on your `LoginController`:
