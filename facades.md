@@ -1,6 +1,7 @@
 # Facades
 
 - [Introduction](#introduction)
+- [Nomenclature](#nomenclature)
 - [Explanation](#explanation)
 - [Practical Usage](#practical-usage)
 - [Creating Facades](#creating-facades)
@@ -16,6 +17,13 @@ Occasionally, You may wish to create your own facades for your applications and 
 
 > **Note:** Before digging into facades, it is strongly recommended that you become very familiar with the Laravel [IoC container](/docs/4.1/ioc).
 
+<a name="nomenclature"></a>
+## Nomenclature
+
+The Facade nomenclature used within Laravel derives meaning from the common english language definition. It is a simple way to resolve library classes out of the [IoC container](/docs/ioc).
+
+Developers well versed in OOP and Design Patterns will recognize the implementation as the use of the [Proxy Pattern](http://en.wikipedia.org/wiki/Proxy_pattern), rather than the implementation of the [Facade Pattern](http://en.wikipedia.org/wiki/Facade_pattern). It should be understood the name was not derived from, nor was it intended to be derived from the underlying design pattern implementation.
+ 
 <a name="explanation"></a>
 ## Explanation
 
