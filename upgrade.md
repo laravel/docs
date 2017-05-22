@@ -203,6 +203,10 @@ Just like previous Laravel releases, this relationship will typically use `user_
 
 When this is the case, Laravel will now respect your customization and determine the foreign key column name is `user_key` instead of `user_id`.
 
+#### BelongsToMany `setJoin`
+
+The `setJoin` method has been renamed to `performJoin`.
+
 #### Has One / Many `createMany`
 
 The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
@@ -215,9 +219,21 @@ Related models will now use the same connection as the parent model. For example
 
 Eloquent will query the posts table on the `example` connection instead of the default database connection. If you want to read the `posts` relationship from the default connection, you should to explicitly set the model's connection to your application's default connection.
 
+#### The `chunk` Method
+
+The query builder `chunk` method now requires an `orderBy` clause, which provides consistency with the `each` method. An exception will be thrown if an `orderBy` clause is not supplied. For example:
+
+    DB::table('users')->orderBy('id')->chunk(100, function ($users) {
+        foreach ($users as $user) {
+            //
+        }
+    });
+
+The Eloquent query builder `chunk` method will automatically apply an `orderBy` clause on the model's primary key if one is not supplied.
+
 #### The `create` & `forceCreate` Methods
 
-The `Model::create` & `Model:: forceCreate` methods have been moved to the `Illuminate\Database\Eloquent\Builder` class in order to provide better support for creating models on multiple connections. However, if you are extending these methods in your own models, you will need to modify your implementation to call the `create` method on the builder. For example:
+The `Model::create` & `Model::forceCreate` methods have been moved to the `Illuminate\Database\Eloquent\Builder` class in order to provide better support for creating models on multiple connections. However, if you are extending these methods in your own models, you will need to modify your implementation to call the `create` method on the builder. For example:
 
     public static function create(array $attributes = [])
     {

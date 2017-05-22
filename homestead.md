@@ -268,6 +268,18 @@ Homestead supports several types of sites which allow you to easily run projects
 
 The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, and `symfony2`.
 
+<a name="site-parameters"></a>
+#### Site Parameters
+
+You may add additional Nginx `fastcgi_param` values to your site via the `params` site directive. For example, we'll add a `FOO` parameter with a value of `BAR`:
+
+    sites:
+        - map: homestead.app
+          to: /home/vagrant/Code/Laravel/public
+          params:
+              - key: FOO
+                value: BAR
+
 <a name="configuring-cron-schedules"></a>
 ### Configuring Cron Schedules
 
@@ -299,8 +311,8 @@ By default, the following ports are forwarded to your Homestead environment:
 If you wish, you may forward additional ports to the Vagrant box, as well as specify their protocol:
 
     ports:
-        - send: 93000
-          to: 9300
+        - send: 50000
+          to: 5000
         - send: 7777
           to: 777
           protocol: udp
