@@ -166,7 +166,7 @@ Because Laravel Mix is built on top of Webpack, it's important to understand a f
         background: url('../images/example.png');
     }
 
-> {note} Absolute paths for `url()`s will be excluded from URL-rewriting. For example, `url('/images/thing.png')` or `url('http://example.com/images/thing.png')` won't be modified.
+> {note} Absolute paths for any given `url()` will be excluded from URL-rewriting. For example, `url('/images/thing.png')` or `url('http://example.com/images/thing.png')` won't be modified.
 
 By default, Laravel Mix and Webpack will find `example.png`, copy it to your `public/images` folder, and then rewrite the `url()` within your generated stylesheet. As such, your compiled CSS will be:
 
