@@ -62,30 +62,25 @@ Gates may also be defined using a `Class@method` style callback string, like con
         Gate::define('update-post', 'PostPolicy@update');
     }
 
+#### Resource Gates
+
 You may also define multiple Gate abilities at once using the `resource` method:
 
     Gate::resource('posts', 'PostPolicy');
-    
-This is identical to the following definitions:
+
+This is identical to manually defining the following Gate definitions:
 
     Gate::define('posts.view', 'PostPolicy@view');
     Gate::define('posts.create', 'PostPolicy@create');
     Gate::define('posts.update', 'PostPolicy@update');
     Gate::define('posts.delete', 'PostPolicy@delete');
 
-By default the `view`, `create`, `update`, and `delete` abilities will be defined. You can customize your own abilities by passing an array as the 3rd parameter. The key of the array defines the name of the ability, and the value defines the method name.
+By default, the `view`, `create`, `update`, and `delete` abilities will be defined. You may define additional abilities by passing an array as third argument to the `resource` method. The key of the array defines the name of the ability while the value defines the method name:
 
-    $abilities = [
-        'foo' => 'bar',
-        'baz' => 'qux',
-    ];
-    
-    Gate::resource('posts', 'PostPolicy', $abilities);
-
-This is identical to:
-
-    Gate::define('posts.foo', 'PostPolicy@bar');
-    Gate::define('posts.baz', 'PostPolicy@qux');
+    Gate::resource('posts', 'PostPolicy', [
+        'posts.photo' => 'updatePhoto',
+        'posts.image' => 'updateImage',
+    ]);
 
 <a name="authorizing-actions-via-gates"></a>
 ### Authorizing Actions
