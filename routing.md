@@ -148,6 +148,18 @@ You may also specify route names for controller actions:
 
     Route::get('user/profile', 'UserController@showProfile')->name('profile');
 
+And for resources:
+
+    Route::resource('user', 'UserController', ['names' => [
+        'index' => 'user.index',
+        'create' => 'user.create',
+        'show' => 'user.show',
+        'edit' => 'user.edit',
+        'store' => 'user.store',
+        'update' => 'user.update',
+        'destroy' => 'user.destroy'
+    ]]);
+
 #### Generating URLs To Named Routes
 
 Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the global `route` function:
