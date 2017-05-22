@@ -221,14 +221,14 @@ By default, `Route::resource` will create resource URIs using English verbs. If 
     public function boot()
     {
         Route::resourceVerbs([
-            'create' => 'crear',
+            'create' => 'criar',
             'edit' => 'editar',
         ]);
     }
 
 Once the verbs have been customized, a resource route registration such as `Route::resource('fotos', 'PhotoController')` will produce the following URIs:
 
-    /fotos/crear
+    /fotos/criar
 
     /fotos/{foto}/editar
 
