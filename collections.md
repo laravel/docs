@@ -620,7 +620,7 @@ The `intersectByKeys` method removes any keys from the original collection that 
     $collection = collect([
         'job' => 'Programmer',
         'age' => 18,
-        'car' =>  'Honda Civic'
+        'car' => 'Honda Civic'
     ]);
 
     $intersect = $collection->intersectByKeys([
