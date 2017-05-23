@@ -617,13 +617,20 @@ The `intersect` method removes any values from the original collection that are 
 
 The `intersectByKeys` method removes any keys from the original collection that are not present in the given `array` or collection:
 
-    $collection = collect(['job' => 'Programmer', 'age' => 18, 'car' =>  'Tesla Model S']);
+    $collection = collect([
+        'job' => 'Programmer',
+        'age' => 18,
+        'car' =>  'Honda Civic'
+    ]);
 
-    $intersect = $collection->intersectByKeys(['job' => 'Waiter', 'car' => 'Honda Fit']);
+    $intersect = $collection->intersectByKeys([
+        'job' => 'Waiter',
+        'car' => 'Honda Accord'
+    ]);
 
     $intersect->all();
 
-    // ['job' => 'Programmer', 'car' => 'Tesla Model S']
+    // ['job' => 'Programmer', 'car' => 'Honda Civic']
 
 
 <a name="method-isempty"></a>
