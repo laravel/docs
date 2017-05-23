@@ -261,9 +261,9 @@ The `text` method may be used to retrieve the display text of an element that ma
 
 #### Retrieving Attributes
 
-Finally, the `attribute` method may be used to retrieve an attribute of an element matching the given selector:
+Finally, the `attribute` method may be used to retrieve an attribute value of an element matching the given selector:
 
-    $attribute = $browser->attribute('selector', 'value');
+    $attribute_value = $browser->attribute('selector', 'attribute_name');
 
 <a name="using-forms"></a>
 ### Using Forms
