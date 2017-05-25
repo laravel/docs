@@ -754,14 +754,8 @@ If the route accepts parameters, you may pass them as the second argument to the
 
 By default `route` function generates an absolute URL. But if you wishes to generate an relative URL, you may pass `false` as the third parameter:
 
-    $url = route('user/profile', ['id' => 1]);
-
-    // http://localhost/user/profile?id=1
-    
     $url = route('user/profile', ['id' => 1], false);
 
-    // /user/profile?id=1
-    
 <a name="method-secure-url"></a>
 #### `secure_url()` {#collection-method}
 
