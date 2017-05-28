@@ -117,7 +117,7 @@ First, add the Cashier package for Braintree to your dependencies:
 
 #### Service Provider
 
-Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/docs/{{version}}/providers) in your `config/app.php` configuration file.
+Next, register the `Laravel\Cashier\CashierServiceProvider::class` [service provider](/docs/{{version}}/providers) in your `config/app.php` configuration file.
 
 #### Plan Credit Coupon
 
