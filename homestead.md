@@ -7,6 +7,7 @@
     - [Launching The Vagrant Box](#launching-the-vagrant-box)
     - [Per Project Installation](#per-project-installation)
     - [Installing MariaDB](#installing-mariadb)
+    - [Installing MongoDB](#installing-mongodb)
 - [Daily Usage](#daily-usage)
     - [Accessing Homestead Globally](#accessing-homestead-globally)
     - [Connecting Via SSH](#connecting-via-ssh)
@@ -43,6 +44,7 @@ Homestead runs on any Windows, Mac, or Linux system, and includes the Nginx web 
 - MariaDB
 - Sqlite3
 - Postgres
+- MongoDB
 - Composer
 - Node (With Yarn, Bower, Grunt, and Gulp)
 - Redis
@@ -189,6 +191,17 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
     provider: virtualbox
     mariadb: true
 
+<a name="installing-mongodb"></a>
+### Installing MongoDB
+
+If you wish to use MongoDB, instead of a SQL database (MariaDB or MySQL) you can add the `mongodb` option to your `Homestead.yaml` file. This option will remove MySQL and install MongoDB. 
+
+    box: laravel/homestead
+    ip: "192.168.20.20"
+    memory: 2048
+    cpus: 4
+    provider: virtualbox
+    mongodb: true
 <a name="daily-usage"></a>
 ## Daily Usage
 
