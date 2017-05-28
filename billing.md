@@ -204,7 +204,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
 The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `main` or `primary`. The second argument is the specific Stripe / Braintree plan the user is subscribing to. This value should correspond to the plan's identifier in Stripe or Braintree.
 
-The `create` method will begin the subscription as well as update your database with the customer ID and other relevant billing information.
+The `create` method will begin the subscription as well as update your database with the customer ID and other relevant billing information. Additionally, the create method takes a Stripe token as argument. This token is generated for you by Stripe using the input field details. The [Stripe documenataion page](https://stripe.com/docs/elements#create-token) explains further with code sample.
 
 #### Additional User Details
 
