@@ -7,6 +7,7 @@
     - [Sessions / Authentication](#sessions-and-authentication)
     - [Disabling Middleware](#disabling-middleware)
     - [Custom HTTP Requests](#custom-http-requests)
+    - [Reloading Relationships](#reloading-relationships)
     - [PHPUnit Assertions](#phpunit-assertions)
 - [Working With Databases](#working-with-databases)
     - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
@@ -345,6 +346,12 @@ If you would like to only disable middleware for a few test methods, you may cal
                  ->see('Laravel 5');
         }
     }
+
+<a name="reloading-relationships"></a>
+### Reloading Relationships
+When testing many to many polymorphic relationships, relationship attributes must be reloaded when updated.
+
+        $model->load('relationship');
 
 <a name="custom-http-requests"></a>
 ### Custom HTTP Requests
