@@ -71,6 +71,7 @@ elixir(function(mix) {
 ```
 
 This assumes that your Sass files are stored in `resources/assets/sass`.
+> **Note:** mix.sass() can only be called once. If compiling multiple files pass them as an array.
 
 By default, Elixir, underneath the hood, uses the LibSass library for compilation. In some instances, it might prove advantageous to instead leverage the Ruby version, which, though slower, is more feature rich. Assuming that you have both Ruby and the Sass gem installed (`gem install sass`), you may enable Ruby-mode, like so:
 
