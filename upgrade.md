@@ -110,7 +110,7 @@ The current route is now accessed via `Route::current()` instead of `Route::getC
 
 ### Composer Update
 
-Once you have completed the changes above, you can run the `composer update` function to update your core application files! If you receive class load errors, try running the `update` command with the `--no-scripts` option enabled like so: `composer update --no-scripts` (On Linux, you may have to run `sudo composer update` if you are getting Permission Denied errors).
+Once you have completed the changes above, you can run the `composer update` function to update your core application files! If you receive class load errors, try running the `update` command with the `--no-scripts` option enabled like so: `composer update --no-scripts` (On Linux, you may have to run `sudo composer update` if you are getting Permission Denied errors). If you are having issues loading Controllers after running `composer update --no-scripts` then do the following: 1) Edit app/config/app.conf (change the path according to your environment) and change 'Controller' => 'Illuminate\Routing\Controllers\Controller' to 'Controller' => 'Illuminate\Routing\Controller'.
 
 ### Wildcard Event Listeners
 
