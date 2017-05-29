@@ -208,6 +208,8 @@ If you would like to delay the execution of a queued job, you may use the `delay
 
 > {note} The Amazon SQS queue service has a maximum delay time of 15 minutes.
 
+> {note} Delayed jobs will execute immediately if QUEUE_DRIVER=sync 
+
 <a name="customizing-the-queue-and-connection"></a>
 ### Customizing The Queue & Connection
 
