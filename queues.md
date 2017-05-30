@@ -341,7 +341,9 @@ Laravel includes a queue worker that will process new jobs as they are pushed on
 
 Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment).
 
-Sometimes you may wish to run the queue worker once. The `--once` option only process the next job on the queue:
+#### Processing A Single Job
+
+The `--once` option may be used to instruct the worker to only process a single job from the queue:
 
     php artisan queue:work --once
 
