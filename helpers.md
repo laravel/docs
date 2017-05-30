@@ -752,6 +752,10 @@ If the route accepts parameters, you may pass them as the second argument to the
 
     $url = route('routeName', ['id' => 1]);
 
+By default, the `route` function generates an absolute URL. If you wish to generate a relative URL, you may pass `false` as the third parameter:
+
+    $url = route('routeName', ['id' => 1], false);
+
 <a name="method-secure-url"></a>
 #### `secure_url()` {#collection-method}
 
