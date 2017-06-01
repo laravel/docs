@@ -162,6 +162,11 @@ When deploying Passport to your production servers for the first time, you will 
 
     php artisan passport:keys
 
+And make sure to exclude the files from your VCS for example Git by setting `.gitignore`:
+
+    storage/oauth-private.key
+    storage/oauth-public.key
+
 <a name="configuration"></a>
 ## Configuration
 
