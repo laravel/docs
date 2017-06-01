@@ -118,6 +118,8 @@ To enable [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html), just ad
           to: /home/vagrant/Code
           type: "nfs"
 
+> {note} If NFS is enabled, you should install the [vagrant-bindfs](https://github.com/gael-ian/vagrant-bindfs) Vagrant plugin, so synced folders and files get the correct user/group assigned to them within the Homestead box.
+
 You may also pass any options supported by Vagrant's [Synced Folders](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) by listing them under the `options` key:
 
     folders:
