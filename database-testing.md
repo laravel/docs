@@ -113,7 +113,7 @@ Of course, you are free to add your own additional factories to the `ModelFactor
 
 States allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `delinquent` state that modifies one of its default attribute values. You may define your state transformations using the `state` method:
 
-    $factory->state(App\User::class, 'delinquent', function ($faker) {
+    $factory->defineAs(App\User::class, 'delinquent', function ($faker) {
         return [
             'account_status' => 'delinquent',
         ];
