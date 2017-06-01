@@ -495,6 +495,30 @@ Instead of duplicating all of the attributes from your base user factory, you ma
 
         return array_merge($user, ['admin' => true]);
     });
+    
+#### Related Factories
+
+In many cases, you will find that models are related to one another. For example, if you're building a blog, a User can have many Posts. You may define this relationship in your factory like so :
+
+    $factory->define(App\User::class, function ($faker) {
+        return [
+            'name' => $faker->name,
+            'email' => $faker->email,
+            'password' => str_random(10),
+            'remember_token' => str_random(10),
+            'admin' => true,
+        ];
+    });
+    
+    $factory->define(App\Post::class, function ($faker) {
+        return [
+            'title' => 'My first blog post',
+            'body'  => 'This is a post about something new I just learned...',
+            'user_id' => factory(App\User::class)->create()->id
+        ];
+    });
+    
+Now when the factory is run, it will auto-generate the User based on it's definition and assign the id to the posts table.
 
 #### Using Factories In Tests
 
