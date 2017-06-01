@@ -999,7 +999,13 @@ The first argument passed to the `sometimes` method is the name of the field we 
 <a name="validating-arrays"></a>
 ## Validating Arrays
 
-Validating array based form input fields doesn't have to be a pain. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
+Validating array based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
+
+    $validator = Validator::make($request->all(), [
+        'photos.profile' => 'required|image',
+    ]);
+
+You may also validate each element of an array. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
 
     $validator = Validator::make($request->all(), [
         'person.*.email' => 'email|unique:users',
