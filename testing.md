@@ -480,6 +480,25 @@ You may even persist multiple models to the database. In this example, we'll eve
                     $u->posts()->save(factory(App\Post::class)->make());
                 });
 
+#### Adding Relations To Factory Definitions
+
+You may also define your model relations within a factories definition. In this example we will first check to see if the override array used to create the factory contains the post_id attribute. If it does then we'll use that as the foreign key otherwise well create a new Post model and assign its primary key. A benefit to this method is that by using the override array, your factory definitions have more knowledge of what is intended to be created. 
+
+    $factory->define(App\Comment::class, function ($faker, $overrides = []) {
+    
+        $postId = isset($overrides['post_id']) ? $overrides['post_id'] : factory(App\Post::class)->create()->id;
+
+        return [
+            'post_id' => factory(App\Post::class)->create()->id,
+            'body' => $faker->sentence
+        ];
+    });
+    
+    
+    factory(App\Comment::class)->create([
+        'post_id' => 1
+    ]);
+
 <a name="mocking"></a>
 ## Mocking
 
