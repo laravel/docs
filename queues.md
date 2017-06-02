@@ -107,10 +107,11 @@ Job classes are very simple, normally containing only a `handle` method which is
     use Illuminate\Queue\SerializesModels;
     use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Foundation\Bus\Dispatchable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use InteractsWithQueue, Queueable, SerializesModels;
+        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
         protected $podcast;
 
