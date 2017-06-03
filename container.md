@@ -189,6 +189,10 @@ You may use the `make` method to resolve a class instance out of the container. 
 If you are in a location of your code that does not have access to the `$app` variable, you may use the global `resolve` helper:
 
     $api = resolve('HelpSpot\API');
+    
+If you want to inject parameters into the resolving class, then you may use `makeWith` method that accepts the name of the class as the first argument and parameters in the form of an associative array as a second argument:
+    
+    $api = $this->app->makeWith('HelpSpot\API', ['id' => 1]);
 
 <a name="automatic-injection"></a>
 #### Automatic Injection
