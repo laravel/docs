@@ -200,6 +200,19 @@ Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 
 The default directory for published language files for vendor packages has been moved. Move any vendor package language files from `resources/lang/packages/{locale}/{namespace}` to `resources/lang/vendor/{namespace}/{locale}` directory. For example, `Acme/Anvil` package's `acme/anvil::foo` namespaced English language file would be moved from `resources/lang/packages/en/acme/anvil/foo.php` to `resources/lang/vendor/acme/anvil/en/foo.php`.
 
+### Elixir
+
+Run `npm update` to also update Elixir.  If you pass multiple source files in an array to CSS functions such as `sass` and `less`, previously Elixir would generate a separate output file for each source file.  The new version instead combines the source files into a single output file, which is named `app.css` by default.  So for example, in the new version this will now combine `file1.sass` and `file2.sass` and put the final output in `public/css/app.css`:
+
+	mix.sass([ "file1.sass", "file2.sass" ], "public/assets/css");
+
+If you want the output to be in separate files as the old version would have done, you need to call the function separately for each input file, and also specify the filename for the output like this:
+
+	mix.sass("file1.sass", "public/assets/css/file1.css")
+	   .sass("file2.sass", "public/assets/css/file2.css");
+
+The same applies to JavaScript functions such as `coffee` and `scripts`, which output to `app.js` by default.  These functions too will now combine multiple files into one file unless you make separate function calls for each file as explained above.
+
 ### Amazon Web Services SDK
 
 If you are using the AWS SQS queue driver or the AWS SES e-mail driver, you should update your installed AWS PHP SDK to version 3.0.
