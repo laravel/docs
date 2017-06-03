@@ -29,8 +29,6 @@ Laravel queues provide a unified API across a variety of different queue backend
 
 The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](https://kr.github.io/beanstalkd/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](http://redis.io),  and a synchronous driver that will execute jobs immediately (for local use). A `null` queue driver is also included which simply discards queued jobs.
 
-The Queue system uses the `Cache` store to keep some values, so you need to make sure the `Cache` connection is correct as well and the correct driver is used.
-
 <a name="connections-vs-queues"></a>
 ### Connections Vs. Queues
 
@@ -383,6 +381,8 @@ Since queue workers are long-lived processes, they will not pick up changes to y
     php artisan queue:restart
 
 This command will instruct all queue workers to gracefully "die" after they finish processing their current job so that no existing jobs are lost. Since the queue workers will die when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
+
+> {tip} The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify a cache driver is properly configured for your application before using this feature.
 
 <a name="job-expirations-and-timeouts"></a>
 ### Job Expirations & Timeouts
