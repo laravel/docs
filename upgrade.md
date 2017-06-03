@@ -42,7 +42,7 @@ You may remove the arguments from the `boot` method on the `EventServiceProvider
 
 #### Key / Value Order Change
 
-The `first`, `last`, `where` methods on the `Arr` class and helper function like `array_where` now pass the "value" as the first parameter to the given callback Closure. For example:
+The `first`, `last`, and `where` methods on the `Arr` class, in addition to their associated global helper functions, now pass the "value" as the first parameter to the given callback Closure. For example:
 
     Arr::first($array, function ($value, $key) {
         return ! is_null($value);
