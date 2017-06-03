@@ -190,6 +190,10 @@ If you are in a location of your code that does not have access to the `$app` va
 
     $api = resolve('HelpSpot\API');
 
+If some of your class' dependencies are not resolvable via the container, you may inject them by passing them as an associative array into the `makeWith` method:
+
+    $api = $this->app->makeWith('HelpSpot\API', ['id' => 1]);
+
 <a name="automatic-injection"></a>
 #### Automatic Injection
 

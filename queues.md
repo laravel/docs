@@ -107,10 +107,11 @@ Job classes are very simple, normally containing only a `handle` method which is
     use Illuminate\Queue\SerializesModels;
     use Illuminate\Queue\InteractsWithQueue;
     use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Foundation\Bus\Dispatchable;
 
     class ProcessPodcast implements ShouldQueue
     {
-        use InteractsWithQueue, Queueable, SerializesModels;
+        use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
         protected $podcast;
 
@@ -380,6 +381,8 @@ Since queue workers are long-lived processes, they will not pick up changes to y
     php artisan queue:restart
 
 This command will instruct all queue workers to gracefully "die" after they finish processing their current job so that no existing jobs are lost. Since the queue workers will die when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
+
+> {tip} The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify a cache driver is properly configured for your application before using this feature.
 
 <a name="job-expirations-and-timeouts"></a>
 ### Job Expirations & Timeouts
