@@ -29,6 +29,8 @@ Laravel queues provide a unified API across a variety of different queue backend
 
 The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](https://kr.github.io/beanstalkd/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](http://redis.io),  and a synchronous driver that will execute jobs immediately (for local use). A `null` queue driver is also included which simply discards queued jobs.
 
+The Queue system uses the `Cache` store to keep some values, so you need to make sure the `Cache` connection is correct as well and the correct driver is used.
+
 <a name="connections-vs-queues"></a>
 ### Connections Vs. Queues
 
