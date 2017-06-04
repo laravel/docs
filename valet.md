@@ -30,6 +30,7 @@ Out of the box, Valet support includes, but is not limited to:
 - [Symfony](https://symfony.com)
 - [Zend](https://framework.zend.com)
 - [CakePHP 3](https://cakephp.org)
+- [Slim] (https://www.slimframework.com)
 - [WordPress](https://wordpress.org)
 - [Bedrock](https://roots.io/bedrock/)
 - [Craft](https://craftcms.com)
