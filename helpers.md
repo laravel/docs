@@ -600,9 +600,9 @@ The `starts_with` function determines if the given string begins with the given 
 <a name="method-str-after"></a>
 #### `str_after()` {#collection-method}
 
-The `str_after` function returns everything after the given value in a given string:
+The `str_after` function returns everything after the given value in a string:
 
-    $value = str_after('This is: a test', ':');
+    $value = str_after('This is: a test', 'This is:');
 
     // ' a test'
 
