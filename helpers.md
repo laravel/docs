@@ -77,6 +77,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [snake_case](#method-snake-case)
 [str_limit](#method-str-limit)
 [starts_with](#method-starts-with)
+[str_after](#method-str-after)
 [str_contains](#method-str-contains)
 [str_finish](#method-str-finish)
 [str_is](#method-str-is)
@@ -595,6 +596,16 @@ The `starts_with` function determines if the given string begins with the given 
     $value = starts_with('This is my name', 'This');
 
     // true
+
+<a name="method-str-after"></a>
+#### `str_after()` {#collection-method}
+
+The `str_after` function returns everything after the given value in a given string:
+
+    $value = str_after('This is: a test', ':');
+
+    // ' a test'
+
 
 <a name="method-str-contains"></a>
 #### `str_contains()` {#collection-method}
