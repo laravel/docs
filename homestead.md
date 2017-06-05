@@ -99,6 +99,8 @@ To enable [NFS](http://docs.vagrantup.com/v2/synced-folders/nfs.html), just add 
           to: /home/vagrant/Code
           type: "nfs"
 
+> **Note:** At the current time NFS folders do not work on Windows hosts or encrypted disks.
+
 #### Configuring Nginx Sites
 
 Not familiar with Nginx? No problem. The `sites` property allows you to easily map a "domain" to a folder on your Homestead environment. A sample site configuration is included in the `Homestead.yaml` file. Again, you may add as many sites to your Homestead environment as necessary. Homestead can serve as a convenient, virtualized environment for every Laravel project you are working on:
