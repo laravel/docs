@@ -146,7 +146,7 @@ Once Homestead has been installed, use the `make` command to generate the `Vagra
 
 Mac / Linux:
 
-    php vendor/bin/homestead make
+    sh vendor/bin/homestead make
 
 Windows:
 
