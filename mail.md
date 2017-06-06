@@ -410,6 +410,8 @@ You may export all of the Markdown mail components to your own application for c
 
 This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain a `html` and a `markdown` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
 
+> {tip} To use your customized templates you'll need to update the `@component` reference in your email view from `mail::message` to `vendor.mail.html.message` for the html templates respective to `vendor.mail.markdown.message` for the markdown templates.
+
 #### Customizing The CSS
 
 After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be in-lined within the HTML representations of your Markdown mail messages.
