@@ -126,6 +126,8 @@ If your package contains [database migrations](/docs/{{version}}/migrations), yo
 
 Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's main `database/migrations` directory.
 
+> {note} While not required, consider naming your tables with a prefix specific to your package to help prevent collisions in the user's database.
+
 <a name="translations"></a>
 ### Translations
 
