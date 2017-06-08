@@ -100,12 +100,15 @@ To get a better understanding of the `validate` method, let's jump back into the
         $this->validate($request, [
             'title' => 'required|unique:posts|max:255',
             'body' => 'required',
+            'images.main' => 'required'
         ]);
 
         // The blog post is valid, store in database...
     }
 
 As you can see, we simply pass the incoming HTTP request and desired validation rules into the `validate` method. Again, if the validation fails, the proper response will automatically be generated. If the validation passes, our controller will continue executing normally.
+
+In the example above, the `images.main` rule implies that the field with name `images[main]` is required in this request.
 
 #### Stopping On First Validation Failure
 
