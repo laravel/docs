@@ -14,6 +14,7 @@
     - [Other Authentication Methods](#other-authentication-methods)
 - [HTTP Basic Authentication](#http-basic-authentication)
     - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
+- [Token Based Authentication](#token-based-authentication)
 - [Resetting Passwords](#resetting-passwords)
     - [Database Considerations](#resetting-database)
     - [Routing](#resetting-routing)
@@ -358,6 +359,32 @@ Next, [register the route middleware](/docs/{{version}}/middleware#registering-m
     Route::get('api/user', ['middleware' => 'auth.basic.once', function() {
         // Only authenticated users may enter...
     }]);
+
+<a name="token-based-authentication"></a>
+## Token Based Authentication
+
+Used for API authentication. Before you can use this authentication method, you need to add a unique column named `api_token` to the `users` table; make sure the column is at least 60 characters in length.
+
+Each user is assigned a generated unique token, which he then sends in the request to the API. To generate a unique token you can use `bin2hex(openssl_random_pseudo_bytes(16))` or `str_random(60)` or any other way of token generation you want.
+
+To protect routes, you need to attach `auth:api` middleware to them.
+
+There are three ways of sending the token to authenticate:
+
+<a name="query-parameter"></a>
+### Query parameter
+
+Append `?api_token=<user_token_here>` to the end of the URL.
+
+<a name="request-body"></a>
+### Request body
+
+When using POST to send data to the request, include `api_token` key with value of the users token.
+
+<a name="header-authorization-bearer">
+### Header Authorization Bearer
+
+Add a header to the request for `Authorization:Bearer <user_token_here>`.
 
 <a name="resetting-passwords"></a>
 ## Resetting Passwords
