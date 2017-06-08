@@ -158,7 +158,7 @@ The `ShouldBroadcast` interface requires our event to define a `broadcastOn` met
 Remember, users must be authorized to listen on private channels. We may define our channel authorization rules in the `boot` method of the `BroadcastServiceProvider`. In this example, we need to verify that any user attempting to listen on the private `order.1` channel is actually the creator of the order:
 
     Broadcast::channel('order.*', function ($user, $orderId) {
-        return $user->id === Order::findOrNew($orderId)->user_id;
+        return $user->id === Order::find($orderId)->user_id;
     });
 
 The `channel` method accepts two arguments: the name of the channel and a callback which returns `true` or `false` indicating whether the user is authorized to listen on the channel.
