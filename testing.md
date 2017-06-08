@@ -55,3 +55,11 @@ Once the test has been generated, you may define test methods as you normally wo
     }
 
 > {note} If you define your own `setUp` method within a test class, be sure to call `parent::setUp()`.
+
+Since `phpunit.xml` is placed at the root of the project. We should execute test from project root directory:
+
+    // From project root directory
+    $ vendor/bin/phpunit
+        OR
+    $ phpunit
+
