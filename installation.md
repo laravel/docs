@@ -99,6 +99,62 @@ On Nginx, the following directive in your site configuration will allow "pretty"
         try_files $uri $uri/ /index.php?$query_string;
     }
 
+**Microsoft IIS Server (7.0 and above)**
+Microsoft offers the URL Rewrite plugin for IIS 7 and above, which will enable "pretty" URLs.  It can be downloaded from (http://www.iis.net/downloads/microsoft/url-rewrite).
+
+Once downloaded, create `public/Web.config`, and place the following code in it:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <configuration>
+        <system.webServer>
+            <rewrite>
+              <rules>
+                <rule name="Rule 1" stopProcessing="true">
+                  <match url="^(.*)/$" ignoreCase="false" />
+                  <action type="Redirect" redirectType="Permanent" url="/{R:1}" />
+                </rule>
+                <rule name="Rule 2" stopProcessing="true">
+                  <match url="^" ignoreCase="false" />
+                  <conditions>
+                    <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+                    <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
+                  </conditions>
+                  <action type="Rewrite" url="index.php" />
+                </rule>
+              </rules>
+            </rewrite>
+        </system.webServer>
+    </configuration> 
+    
+As an alternative, if you would like to have your base website redirect to the laravel public directory automatically, i.e. use http://laravel.com instead of http://laravel.com/laravel/public, modify the Web.config file in your IIS Site Home Directory, placing the following code in within the system.webServer node:
+
+    <rewrite>
+        <rules>
+            <rule name="Rewrite rule1 for laravel_rewrite">
+                <match url=".*" />
+                <conditions>
+                    <add input="{laravel_rewrite:{HTTP_HOST}}" pattern="(.+)" />
+                </conditions>
+                <action type="Rewrite" url="{C:1}{REQUEST_URI}" appendQueryString="false" />
+            </rule>
+            <rule name="Rule 2" stopProcessing="true">
+                <match url="^" ignoreCase="false" />
+                <conditions>
+                    <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+                    <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
+                </conditions>
+                <action type="Rewrite" url="/laravel/public/index.php" />
+            </rule>
+        </rules>
+        <rewriteMaps>
+            <rewriteMap name="laravel_rewrite">
+                <add key="mysite.com" value="/laravel/public" />
+            </rewriteMap>
+        </rewriteMaps>
+    </rewrite>
+    
+Replace `mysite.com` with your URL, and `/laravel/public` with the relative path to the laravel public directory from your site's Home Directory.
+
 Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
 
 <a name="environment-configuration"></a>
