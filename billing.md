@@ -142,7 +142,7 @@ When a subscription is cancelled, Cashier will automatically set the `subscripti
 
 If a user has cancelled their subscription and you wish to resume it, use the `resume` method:
 
-	$user->subscription('monthly')->resume($creditCardToken);
+	$user->subscription('monthly')->resume();
 
 If the user cancels a subscription and then resumes that subscription before the subscription has fully expired, they will not be billed immediately. Their subscription will simply be re-activated, and they will be billed on the original billing cycle.
 
