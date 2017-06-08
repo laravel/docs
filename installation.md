@@ -56,6 +56,10 @@ Alternatively, you may also install Laravel by issuing the Composer `create-proj
 If you have PHP installed locally and you would like to use PHP's built-in development server to serve your application, you may use the `serve` Artisan command. This command will start a development server at `http://localhost:8000`:
 
     php artisan serve
+    
+Alternatively, you can start the built-in server directly using this command:
+
+    php -S localhost:8000 -t public
 
 Of course, more robust local development options are available via [Homestead](/docs/{{version}}/homestead) and [Valet](/docs/{{version}}/valet).
 
