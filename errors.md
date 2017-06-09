@@ -6,6 +6,7 @@
     - [Log Storage](#log-storage)
     - [Log Severity Levels](#log-severity-levels)
     - [Custom Monolog Configuration](#custom-monolog-configuration)
+    - [Custom Log File Name](#custom-logfile-name)
 - [The Exception Handler](#the-exception-handler)
     - [Report Method](#report-method)
     - [Render Method](#render-method)
@@ -64,7 +65,25 @@ If you would like to have complete control over how Monolog is configured for yo
     });
 
     return $app;
+    
+<a name="custom-logfile-name"></a>
+### Custom Log File Name
 
+If you want to change the log file name from the default laravel.log to a customLogName, you may add the following in your `bootstrap/app.php` file right before the `$app` variable is returned by the file:
+```
+$app->configureMonologUsing(function($monolog) use ($app) {
+    $monolog->pushHandler(
+        (new Monolog\Handler\RotatingFileHandler(
+            // Set the log path
+            $app->storagePath().'/logs/customLogName.log',
+            // Set the number of daily files you want to keep
+            $app->make('config')->get('app.log_max_files', 5)
+        ))->setFormatter(new Monolog\Formatter\LineFormatter(null, null, true, true))
+    );
+});
+
+return $app;
+```
 <a name="the-exception-handler"></a>
 ## The Exception Handler
 
