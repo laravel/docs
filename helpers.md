@@ -898,6 +898,8 @@ The `dd` function dumps the given variables and ends execution of the script:
 
     dd($value1, $value2, $value3, ...);
 
+> {note} Be aware that `dd` calls `die` which prevents running of [Terminable Middleware](https://laravel.com/docs/5.4/middleware#terminable-middleware). It can cause that queued cookies will not be appended to the response.
+
 If you do not want to halt the execution of your script, use the `dump` function instead:
 
     dump($value);
