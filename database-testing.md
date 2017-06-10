@@ -10,6 +10,7 @@
     - [Creating Models](#creating-models)
     - [Persisting Models](#persisting-models)
     - [Relationships](#relationships)
+- [Available Assertions](#available-assertions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -25,9 +26,9 @@ Laravel provides a variety of helpful tools to make it easier to test your datab
         ]);
     }
     
-You can also verify that data does not exist in the database by using the `assertDatabaseMissing` helper.
+You can also used the `assertDatabaseMissing` helper to assert that data does not exist in the database.
 
-Of course, `assertDatabaseHas`, `assertDatabaseMissing` and other helpers like them are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
+Of course, the `assertDatabaseHas` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
 
 <a name="resetting-the-database-after-each-test"></a>
 ## Resetting The Database After Each Test
@@ -226,3 +227,14 @@ These Closures also receive the evaluated attribute array of the factory that de
             }
         ];
     });
+    
+<a name="available-assertions"></a>
+## Available Assertions
+
+Laravel provides a variety of custom assertion methods for your [PHPUnit](https://phpunit.de/) tests.
+
+Method  | Description
+------------- | -------------
+`$this->assertDatabaseHas(string $table, array $data);`  |  Assert that a table in the database contains the given data
+`$this->assertDatabaseMissing(string $table, array $data);`  |  Assert that a table in the database does not contain the given data
+`$this->assertSoftDeleted(string $table, array $data);`  |  Assert the given record has been soft deleted.
