@@ -235,6 +235,6 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 
 Method  | Description
 ------------- | -------------
-`$this->assertDatabaseHas(string $table, array $data);`  |  Assert that a table in the database contains the given data
-`$this->assertDatabaseMissing(string $table, array $data);`  |  Assert that a table in the database does not contain the given data
-`$this->assertSoftDeleted(string $table, array $data);`  |  Assert the given record has been soft deleted.
+`$this->assertDatabaseHas($table, array $data);`  |  Assert that a table in the database contains the given data
+`$this->assertDatabaseMissing($table, array $data);`  |  Assert that a table in the database does not contain the given data
+`$this->assertSoftDeleted($table, array $data);`  |  Assert the given record has been soft deleted.
