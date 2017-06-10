@@ -48,7 +48,7 @@ You may also pass arguments to the `environment` method to check if the environm
         // The environment is local
     }
 
-    if (App::environment('local', 'staging')) {
+    if (App::environment(['local', 'staging'])) {
         // The environment is either local OR staging...
     }
 
