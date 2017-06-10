@@ -24,8 +24,10 @@ Laravel provides a variety of helpful tools to make it easier to test your datab
             'email' => 'sally@example.com'
         ]);
     }
+    
+You can also verify that data does not exist in the database by using the `assertDatabaseMissing` helper.
 
-Of course, the `assertDatabaseHas` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
+Of course, `assertDatabaseHas`, `assertDatabaseMissing` and other helpers like them are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
 
 <a name="resetting-the-database-after-each-test"></a>
 ## Resetting The Database After Each Test
