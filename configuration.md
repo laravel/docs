@@ -52,6 +52,12 @@ You may also pass arguments to the `environment` method to check if the environm
         // The environment is either local OR staging...
     }
 
+    // You can also check against an array
+    $envs = ['local', 'qa'];
+    if (App::environment($envs)) {
+        // The environment is either local OR qa...
+    }
+
 > {tip} The current application environment detection can be overriden by a server-level `APP_ENV` environment variable. This can be useful when you need to share the same application for different environment configurations, so you can set up a given host to match a given environment in your server's configurations.
 
 <a name="accessing-configuration-values"></a>
