@@ -11,6 +11,7 @@
     - [Namespaces](#route-group-namespaces)
     - [Sub-Domain Routing](#route-group-sub-domain-routing)
     - [Route Prefixes](#route-group-prefixes)
+- [Fluent Routing](#fluent-routing)
 - [Route Model Binding](#route-model-binding)
     - [Implicit Binding](#implicit-binding)
     - [Explicit Binding](#explicit-binding)
@@ -218,6 +219,18 @@ The `prefix` group attribute may be used to prefix each route in the group with 
             // Matches The "/admin/users" URL
         });
     });
+
+<a name="fluent-routing"></a>
+### Fluent Routing
+ 
+Laravel also supports a fluent writing style for these attributes  `as`, `domain`, `middleware`, `name`, `namespace`, `prefix` in routes:
+    
+    Route::prefix('api')->namespace('Api')->group( function () {
+        Route::name('profile')->middleware('auth')->get('user/{id}', 'UserController@show')
+    });
+
+
+
 
 <a name="route-model-binding"></a>
 ## Route Model Binding
