@@ -225,8 +225,12 @@ The `prefix` group attribute may be used to prefix each route in the group with 
  
 Laravel also supports a fluent writing style for these attributes  `as`, `domain`, `middleware`, `name`, `namespace`, `prefix` in routes:
     
-    Route::prefix('api')->namespace('Api')->group( function () {
-        Route::name('profile')->middleware('auth')->get('user/{id}', 'UserController@show');
+    Route::prefix('api')
+          ->namespace('Api')
+          ->group( function () {
+                Route::name('profile')
+                ->middleware('auth')
+                ->get('user/{id}', 'UserController@show');
     });
 
 
