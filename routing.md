@@ -148,6 +148,12 @@ You may also specify route names for controller actions:
 
     Route::get('user/profile', 'UserController@showProfile')->name('profile');
 
+> {tip} The route names can also be specified as `Route::name('profile')->get('user/profile', 'UserController@showProfile');`.
+
+Laravel supports this fluent routing style for `as`, `domain`, `middleware`, `name`, `namespace`, `prefix` attributes.
+
+
+
 #### Generating URLs To Named Routes
 
 Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via the global `route` function:
@@ -176,7 +182,7 @@ Route groups allow you to share route attributes, such as middleware or namespac
 
 To assign middleware to all routes within a group, you may use the `middleware` key in the group attribute array. Middleware are executed in the order they are listed in the array:
 
-    Route::group(['middleware' => 'auth'], function () {
+    Route::middleware('auth')->group( function () {
         Route::get('/', function ()    {
             // Uses Auth Middleware
         });
@@ -191,7 +197,7 @@ To assign middleware to all routes within a group, you may use the `middleware` 
 
 Another common use-case for route groups is assigning the same PHP namespace to a group of controllers using the `namespace` parameter in the group array:
 
-    Route::group(['namespace' => 'Admin'], function () {
+    Route::namespace('Admin')->group( function () {
         // Controllers Within The "App\Http\Controllers\Admin" Namespace
     });
 
@@ -202,7 +208,7 @@ Remember, by default, the `RouteServiceProvider` includes your route files withi
 
 Route groups may also be used to handle sub-domain routing. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified using the `domain` key on the group attribute array:
 
-    Route::group(['domain' => '{account}.myapp.com'], function () {
+    Route::domain('{account}.myapp.com')->group( function () {
         Route::get('user/{id}', function ($account, $id) {
             //
         });
@@ -213,7 +219,7 @@ Route groups may also be used to handle sub-domain routing. Sub-domains may be a
 
 The `prefix` group attribute may be used to prefix each route in the group with a given URI. For example, you may want to prefix all route URIs within the group with `admin`:
 
-    Route::group(['prefix' => 'admin'], function () {
+    Route::prefix('admin')->group( function () {
         Route::get('users', function ()    {
             // Matches The "/admin/users" URL
         });
