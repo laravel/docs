@@ -222,6 +222,7 @@ You may assign default values to options by specifying the default value after t
 To assign a shortcut when defining an option, you may specify it before the option name and use a | delimiter to separate the shortcut from the full option name:
 
     email:send {user} {--Q|queue}
+Note that short name should be used with one `-` when Artisan command is called.
 
 <a name="input-arrays"></a>
 ### Input Arrays
