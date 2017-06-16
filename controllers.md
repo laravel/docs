@@ -41,8 +41,7 @@ If you choose to nest or organize your controller using PHP namespaces, simply u
 
 You may also specify names on controller routes:
 
-	Route::get('foo', array('uses' => 'FooController@method',
-											'as' => 'name'));
+	Route::get('foo', array('uses' => 'FooController@method', 'as' => 'name'));
 
 To generate a URL to a controller action, you may use the `URL::action` method or the `action` helper method:
 
