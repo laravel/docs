@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Using Other Browsers](#using-other-browsers)
+    - [Adding ChromeDriver Options](#adding-chromedriver-options)
 - [Getting Started](#getting-started)
     - [Generating Tests](#generating-tests)
     - [Running Tests](#running-tests)
@@ -98,6 +99,34 @@ Next, you may simply modify the `driver` method to connect to the URL and port o
             'http://localhost:4444', DesiredCapabilities::phantomjs()
         );
     }
+
+<a name="adding-chromedriver-options"></a>
+### Adding ChromeDriver Options
+
+To add any options to customize and configure a ChromeDriver session you need to pass DesiredCapabilities object as a second argument on a remote driver create method:
+```php
+protected function driver()
+{
+    $options = new ChromeOptions();
+    
+    // add your options here
+
+    // or any browser what you use, like DesiredCapabilities::firefox()
+    $capabilities = DesiredCapabilities::chrome();
+    $capabilities->setCapability(ChromeOptions::CAPABILITY, $options);
+
+    return RemoteWebDriver::create(
+        'http://localhost:9515',
+        $capabilities
+    );
+}
+```
+
+For example, if you need to start browser in fullscreen, use following option:
+```php 
+// for windows you should use --start-maximized key
+$options->addArguments(['--kiosk']);
+```
 
 <a name="getting-started"></a>
 ## Getting Started
