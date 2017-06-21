@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Using Other Browsers](#using-other-browsers)
-    - [Adding ChromeDriver Options](#adding-chromedriver-options)
+    - [ChromeDriver Options](#chromedriver-options)
 - [Getting Started](#getting-started)
     - [Generating Tests](#generating-tests)
     - [Running Tests](#running-tests)
@@ -100,33 +100,26 @@ Next, you may simply modify the `driver` method to connect to the URL and port o
         );
     }
 
-<a name="adding-chromedriver-options"></a>
-### Adding ChromeDriver Options
+<a name="chromedriver-options"></a>
+### ChromeDriver Options
 
-To add any options to customize and configure a ChromeDriver session you need to pass DesiredCapabilities object as a second argument on a remote driver create method:
-```php
-protected function driver()
-{
-    $options = new ChromeOptions();
-    
-    // add your options here
+To customize the ChromeDriver session, you may modify the `driver` method of the `DuskTestCase` class:
 
-    // or any browser what you use, like DesiredCapabilities::firefox()
-    $capabilities = DesiredCapabilities::chrome();
-    $capabilities->setCapability(ChromeOptions::CAPABILITY, $options);
+    /**
+     * Create the RemoteWebDriver instance.
+     *
+     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+     */
+    protected function driver()
+    {
+        $options = (new ChromeOptions)->addArguments(['--headless']);
 
-    return RemoteWebDriver::create(
-        'http://localhost:9515',
-        $capabilities
-    );
-}
-```
-
-For example, if you need to start browser in fullscreen, use following option:
-```php 
-// for windows you should use --start-maximized key
-$options->addArguments(['--kiosk']);
-```
+        return RemoteWebDriver::create(
+            'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
+                ChromeOptions::CAPABILITY, $options
+            )
+        );
+    }
 
 <a name="getting-started"></a>
 ## Getting Started
