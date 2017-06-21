@@ -82,6 +82,8 @@ You may define as many route parameters as required by your route:
 
 Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Route parameters may not contain a `-` character. Use an underscore (`_`) instead.
 
+The route parameters are linked to the function parameters by the order in which they appear. E.g. `$postId` will contain the value of `{posts}` because they are both the first parameter, and not because of the name similarities.
+
 <a name="parameters-optional-parameters"></a>
 ### Optional Parameters
 
