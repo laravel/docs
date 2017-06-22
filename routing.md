@@ -84,7 +84,7 @@ You may define as many route parameters as required by your route:
         //
     });
 
-Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Route parameters may not contain a `-` character. Use an underscore (`_`) instead.
+Route parameters are always encased within `{}` braces and should consist of alphabetic characters, and may not contain a `-` character. Instead of using the `-` character, use an underscore (`_`) instead. Route parameters are injected into route callbacks / controllers based on their order - the names of the callback / controller arguments do not matter.
 
 <a name="parameters-optional-parameters"></a>
 ### Optional Parameters
@@ -178,24 +178,24 @@ Route groups allow you to share route attributes, such as middleware or namespac
 <a name="route-group-middleware"></a>
 ### Middleware
 
-To assign middleware to all routes within a group, you may use the `middleware` key in the group attribute array. Middleware are executed in the order they are listed in the array:
+To assign middleware to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
 
-    Route::group(['middleware' => 'auth'], function () {
-        Route::get('/', function ()    {
-            // Uses Auth Middleware
+    Route::middleware(['first', 'second'])->group(function () {
+        Route::get('/', function () {
+            // Uses first & second Middleware
         });
 
         Route::get('user/profile', function () {
-            // Uses Auth Middleware
+            // Uses first & second Middleware
         });
     });
 
 <a name="route-group-namespaces"></a>
 ### Namespaces
 
-Another common use-case for route groups is assigning the same PHP namespace to a group of controllers using the `namespace` parameter in the group array:
+Another common use-case for route groups is assigning the same PHP namespace to a group of controllers using the `namespace` method:
 
-    Route::group(['namespace' => 'Admin'], function () {
+    Route::namespace('Admin')->group(function () {
         // Controllers Within The "App\Http\Controllers\Admin" Namespace
     });
 
@@ -204,9 +204,9 @@ Remember, by default, the `RouteServiceProvider` includes your route files withi
 <a name="route-group-sub-domain-routing"></a>
 ### Sub-Domain Routing
 
-Route groups may also be used to handle sub-domain routing. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified using the `domain` key on the group attribute array:
+Route groups may also be used to handle sub-domain routing. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified by calling the the `domain` method before defining the group:
 
-    Route::group(['domain' => '{account}.myapp.com'], function () {
+    Route::domain('{account}.myapp.com')->group(function () {
         Route::get('user/{id}', function ($account, $id) {
             //
         });
@@ -215,10 +215,10 @@ Route groups may also be used to handle sub-domain routing. Sub-domains may be a
 <a name="route-group-prefixes"></a>
 ### Route Prefixes
 
-The `prefix` group attribute may be used to prefix each route in the group with a given URI. For example, you may want to prefix all route URIs within the group with `admin`:
+The `prefix` method may be used to prefix each route in the group with a given URI. For example, you may want to prefix all route URIs within the group with `admin`:
 
-    Route::group(['prefix' => 'admin'], function () {
-        Route::get('users', function ()    {
+    Route::prefix('admin')->group(function () {
+        Route::get('users', function () {
             // Matches The "/admin/users" URL
         });
     });

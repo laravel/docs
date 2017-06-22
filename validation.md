@@ -143,7 +143,7 @@ So, in our example, the user will be redirected to our controller's `create` met
 
     <h1>Create Post</h1>
 
-    @if (count($errors) > 0)
+    @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)

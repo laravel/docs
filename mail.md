@@ -299,6 +299,8 @@ Embedding inline images into your emails is typically cumbersome; however, Larav
         <img src="{{ $message->embed($pathToFile) }}">
     </body>
 
+> {note} `$message` variable is not available in markdown messages.
+
 #### Embedding Raw Data Attachments
 
 If you already have a raw data string you wish to embed into an email template, you may use the `embedData` method on the `$message` variable:

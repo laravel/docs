@@ -86,7 +86,7 @@ For applications with heavy translation requirements, defining every string with
 Translation files that use translation strings as keys are stored as JSON files in the `resources/lang` directory. For example, if your application has a Spanish translation, you should create a `resources/lang/es.json` file:
 
     {
-        "I love programming.": "Me encanta la programación."
+        "I love programming.": "Me encanta programar."
     }
 
 <a name="retrieving-translation-strings"></a>

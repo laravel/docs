@@ -27,15 +27,16 @@ Out of the box, Valet support includes, but is not limited to:
 <div class="content-list" markdown="1">
 - [Laravel](https://laravel.com)
 - [Lumen](https://lumen.laravel.com)
-- [Symfony](https://symfony.com)
-- [Zend](https://framework.zend.com)
-- [CakePHP 3](https://cakephp.org)
-- [WordPress](https://wordpress.org)
 - [Bedrock](https://roots.io/bedrock/)
+- [CakePHP 3](https://cakephp.org)
 - [Craft](https://craftcms.com)
-- [Statamic](https://statamic.com)
 - [Jigsaw](http://jigsaw.tighten.co)
+- [Slim](https://www.slimframework.com)
+- [Statamic](https://statamic.com)
 - Static HTML
+- [Symfony](https://symfony.com)
+- [WordPress](https://wordpress.org)
+- [Zend](https://framework.zend.com)
 </div>
 
 However, you may extend Valet with your own [custom drivers](#custom-valet-drivers).

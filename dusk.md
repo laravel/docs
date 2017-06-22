@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Using Other Browsers](#using-other-browsers)
+    - [ChromeDriver Options](#chromedriver-options)
 - [Getting Started](#getting-started)
     - [Generating Tests](#generating-tests)
     - [Running Tests](#running-tests)
@@ -96,6 +97,27 @@ Next, you may simply modify the `driver` method to connect to the URL and port o
     {
         return RemoteWebDriver::create(
             'http://localhost:4444', DesiredCapabilities::phantomjs()
+        );
+    }
+
+<a name="chromedriver-options"></a>
+### ChromeDriver Options
+
+To customize the ChromeDriver session, you may modify the `driver` method of the `DuskTestCase` class:
+
+    /**
+     * Create the RemoteWebDriver instance.
+     *
+     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+     */
+    protected function driver()
+    {
+        $options = (new ChromeOptions)->addArguments(['--headless']);
+
+        return RemoteWebDriver::create(
+            'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
+                ChromeOptions::CAPABILITY, $options
+            )
         );
     }
 
@@ -441,6 +463,7 @@ Assertion  | Description
 `$browser->assertTitleContains($title)`  |  Assert the page title contains the given text.
 `$browser->assertPathIs('/home')`  |  Assert the current path matches the given path.
 `$browser->assertPathIsNot('/home')`  |  Assert the current path does not match the given path.
+`$browser->assertRouteIs($name, $parameters)`  |  Assert the current URL matches the given named route's URL.
 `$browser->assertQueryStringHas($name, $value)`  |  Assert the given query string parameter is present and has a given value.
 `$browser->assertQueryStringMissing($name)`  |  Assert the given query string parameter is missing.
 `$browser->assertHasCookie($name)`  |  Assert the given cookie is present.
