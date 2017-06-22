@@ -9,6 +9,7 @@
     - [Broadcast Name](#broadcast-name)
     - [Broadcast Data](#broadcast-data)
     - [Broadcast Queue](#broadcast-queue)
+    - [Broadcast Condition](#broadcast-condition)
 - [Authorizing Channels](#authorizing-channels)
     - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
@@ -297,6 +298,20 @@ If you want to broadcast your event using the `sync` queue instead of the defaul
     class ShippingStatusUpdated implements ShouldBroadcastNow
     {   
         //
+    }
+<a name="broadcast-condition"></a>
+### Broadcast Condition
+
+Sometimes you need to broadcast your event only if some requirements are met. You may set these checks by defining a `broadcastWhen` method on your event class:
+
+    /**
+     * Check if this event should be broadcasted.
+     *
+     * @return bool
+     */
+    public function broadcastWhen()
+    {
+        return $this->value > 100;
     }
     
 <a name="authorizing-channels"></a>
