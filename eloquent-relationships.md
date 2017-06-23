@@ -816,6 +816,19 @@ In addition to the `save` and `saveMany` methods, you may also use the `create` 
 
 Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent#mass-assignment).
 
+When you need to create multiple entries, you can use `createMany` method which will take an array of arrays:
+
+    $post = App\Post::find(1);
+
+    $post->comments()->createMany([
+        [
+            'message' => 'A new comment.',
+        ],
+        [
+            'message' => 'Another new comment.',
+        ],
+    ]);
+
 <a name="updating-belongs-to-relationships"></a>
 ### Belongs To Relationships
 
