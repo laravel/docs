@@ -268,7 +268,7 @@ Homestead supports several types of sites which allow you to easily run projects
           to: /home/vagrant/Code/Symfony/public
           type: symfony2
 
-The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, and `symfony2`.
+The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, and `symfony4`.
 
 <a name="site-parameters"></a>
 #### Site Parameters
