@@ -814,9 +814,9 @@ In addition to the `save` and `saveMany` methods, you may also use the `create` 
         'message' => 'A new comment.',
     ]);
 
-Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent#mass-assignment).
+> {tip} Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent#mass-assignment).
 
-When you need to create multiple related models, you can use `createMany` method which will take an array of arrays:
+You may use the `createMany` method to create multiple related models:
 
     $post = App\Post::find(1);
 
