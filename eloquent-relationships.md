@@ -818,7 +818,20 @@ In addition to the `save` and `saveMany` methods, you may also use the `create` 
         'message' => 'A new comment.',
     ]);
 
-Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent#mass-assignment).
+> {tip} Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent#mass-assignment).
+
+You may use the `createMany` method to create multiple related models:
+
+    $post = App\Post::find(1);
+
+    $post->comments()->createMany([
+        [
+            'message' => 'A new comment.',
+        ],
+        [
+            'message' => 'Another new comment.',
+        ],
+    ]);
 
 <a name="updating-belongs-to-relationships"></a>
 ### Belongs To Relationships

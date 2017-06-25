@@ -105,6 +105,8 @@ Next, you may simply modify the `driver` method to connect to the URL and port o
 
 To customize the ChromeDriver session, you may modify the `driver` method of the `DuskTestCase` class:
 
+    use Facebook\WebDriver\Chrome\ChromeOptions;
+
     /**
      * Create the RemoteWebDriver instance.
      *

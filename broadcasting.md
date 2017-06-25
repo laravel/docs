@@ -9,6 +9,7 @@
     - [Broadcast Name](#broadcast-name)
     - [Broadcast Data](#broadcast-data)
     - [Broadcast Queue](#broadcast-queue)
+    - [Broadcast Conditions](#broadcast-conditions)
 - [Authorizing Channels](#authorizing-channels)
     - [Defining Authorization Routes](#defining-authorization-routes)
     - [Defining Authorization Callbacks](#defining-authorization-callbacks)
@@ -287,18 +288,32 @@ By default, each broadcast event is placed on the default queue for the default 
      * @var string
      */
     public $broadcastQueue = 'your-queue-name';
-    
+
 If you want to broadcast your event using the `sync` queue instead of the default queue driver, you can implement the `ShouldBroadcastNow` interface instead of `ShouldBroadcast`:
 
     <?php
-    
+
     use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
     class ShippingStatusUpdated implements ShouldBroadcastNow
-    {   
+    {
         //
     }
-    
+<a name="broadcast-conditions"></a>
+### Broadcast Conditions
+
+Sometimes you want to broadcast your event only if a given condition is true. You may define these conditions by adding a `broadcastWhen` method to your event class:
+
+    /**
+     * Determine if this event should broadcast.
+     *
+     * @return bool
+     */
+    public function broadcastWhen()
+    {
+        return $this->value > 100;
+    }
+
 <a name="authorizing-channels"></a>
 ## Authorizing Channels
 
