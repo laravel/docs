@@ -120,6 +120,43 @@ If your parent model does not use `id` as its primary key, or you wish to join t
         return $this->belongsTo('App\User', 'foreign_key', 'other_key');
     }
 
+#### Default Models
+
+If a relationship can be nullable, it is often helpful to return a default model, rather than `null`. This is often referred to as the Null Object Pattern, which can help remove a lot of conditional checks in your views.
+
+    /**
+     * Get the author of the blog
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User')->withDefault();
+    }
+
+If the `user_id` is `null` on the `blogs` table, you will receive back an `App\User` model.
+
+You may also pass an array or a closure to the method to customize the properties of the default model.
+
+    /**
+     * Get the author of the blog
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User')->withDefault([
+            'name' => 'Guest Author',
+        ]);
+    }
+    
+    /**
+     * Get the author of the blog
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User')->withDefault(function ($user) {
+            $user->name => 'Guest Author';
+        });
+    }
+        
+
 <a name="one-to-many"></a>
 ### One To Many
 
