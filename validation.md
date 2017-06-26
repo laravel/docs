@@ -791,7 +791,7 @@ The field under validation must be a valid JSON string.
 <a name="rule-max"></a>
 #### max:_value_
 
-The field under validation must be less than or equal to a maximum _value_. Strings, numerics, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+The field under validation must be less than or equal to a maximum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
 <a name="rule-mimetypes"></a>
 #### mimetypes:_text/plain_,...
