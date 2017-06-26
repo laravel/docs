@@ -818,7 +818,7 @@ A full listing of MIME types and their corresponding extensions may be found at 
 <a name="rule-min"></a>
 #### min:_value_
 
-The field under validation must have a minimum _value_. Strings, numerics, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
 
 <a name="rule-nullable"></a>
 #### nullable
