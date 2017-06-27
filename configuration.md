@@ -93,7 +93,7 @@ To disable maintenance mode, use the `up` command:
 
 #### Maintenance Mode Response Template
 
-The default template for maintenance mode responses is located in `resources/views/errors/503.blade.php`. You are free to modify this view as needed for your application.
+The default template for maintenance mode responses is located in `./vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/views/503.blade.php`. To make changes, create the errors directory inside of `resources/views` then copy that 503.blade.php file to `resources/views/errors/503.blade.php`. You are free to modify this view as needed for your application.
 
 #### Maintenance Mode & Queues
 
