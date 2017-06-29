@@ -454,7 +454,7 @@ Sometimes you may wish to pause the execution of a test until a given JavaScript
     // Wait a maximum of one second for the expression to be true...
     $browser->waitUntil('App.data.servers.length > 0', 1);
 
-When making the assertion like `$browser->assertPathIs('/home')`, sometimes the assertion will fail if the `window.location.pathname` is being updated asynchronously. You can use the method `waitForLocation` method before making assertions:
+When making the assertion like `$browser->assertPathIs('/home')`, sometimes the assertion will fail if the `window.location.pathname` is being updated asynchronously. You can use the `waitForLocation` method before making assertions:
 
     $browser->waitForLocation('/secret');
 
