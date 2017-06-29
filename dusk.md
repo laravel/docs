@@ -454,6 +454,32 @@ Sometimes you may wish to pause the execution of a test until a given JavaScript
     // Wait a maximum of one second for the expression to be true...
     $browser->waitUntil('App.data.servers.length > 0', 1);
 
+When making the assertion like `$browser->assertPathIs('/home')`, sometimes the assertion will fail if the `window.location.pathname` is being updated asynchronously. You can use the method `waitForLocation` method before making assertions:
+
+    $browser->waitForLocation('/secret');
+
+### Waiting for Page Reload
+
+If you need to assert something after page reload you can call `waitForReload`:
+
+    $browser->waitForReload(function ($browser) {
+        $browser->click('.some-action');
+    })->assertSee('something');
+
+    // or inline works too
+
+    $browser->click('.some-action')
+        ->waitForReload()
+        ->assertSee('something');
+
+### Waiting for a Callback
+
+Many of the other "waiting" methods in Dusk rely on `waitUsing`. If you need to wait for custom logic before proceeding, use `waitUsing`. The `waitUsing` method accepts a timeout, an interval, a closure, and an optional message:
+
+    $browser->waitUsing(10, 1, function () use ($something) {
+      return $something->isReady();
+    }, "Something wasn't ready in time.");
+
 <a name="available-assertions"></a>
 ## Available Assertions
 
