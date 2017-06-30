@@ -256,17 +256,14 @@ As you can see, the object being resolved will be passed to the callback, allowi
 <a name="psr-11"></a>
 ## PSR-11
 
-Laravel's service container is compliant with PSR-11. The method `has` is an alias for `bound` and will answer whether an identifier is known to the container or not. As for the implementation of `get`, it will be slightly different than `resolve` because it will not offer auto-wiring. Calling `get` with an unknown identifier will still throw an exception even if the identifier is a concrete class.
+Laravel's service container implements the [PSR-11](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md) interface. Therefore, you may type-hint the PSR-11 container interface to obtain an instance of the Laravel container:
 
-    namespace Some\Package;
+    use Psr\Container\ContainerInterface;
 
-    class Foo
-    {
-        // 
-    }
+    Route::get('/', function (ContainerInterface $container) {
+        $service = $container->get('Service');
 
-    // Throws Psr\Container\Exception\NotFoundExceptionInterface
-    $foo = $this->app->get(Foo::class);
-    
-    // $foo is auto-wired into an instance of Foo
-    $foo = $this->app->resolve(Foo::class);
+        //
+    });
+
+> {note} Calling the `get` method will throw an exception if the identifier has not been explicitly bound into the container.
