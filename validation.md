@@ -598,17 +598,17 @@ The field under validation must be a value after or equal to the given date. For
 <a name="rule-alpha"></a>
 #### alpha
 
-The field under validation must be entirely alphabetic characters.
+The field under validation must be entirely alphabetic characters (Unicode categories `Letter` and `Mark`).
 
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
-The field under validation may have alpha-numeric characters, as well as dashes and underscores.
+The field under validation must be composed of alpha-numeric characters (Unicode categories `Letter`, `Mark` and `Number`), as well as dashes and underscores.
 
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
-The field under validation must be entirely alpha-numeric characters.
+The field under validation must be entirely alpha-numeric characters (Unicode categories `Letter`, `Mark` and `Number`).
 
 <a name="rule-array"></a>
 #### array
