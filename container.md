@@ -10,6 +10,7 @@
     - [The Make Method](#the-make-method)
     - [Automatic Injection](#automatic-injection)
 - [Container Events](#container-events)
+- [PSR-11](#psr-11)
 
 <a name="introduction"></a>
 ## Introduction
@@ -251,3 +252,21 @@ The service container fires an event each time it resolves an object. You may li
     });
 
 As you can see, the object being resolved will be passed to the callback, allowing you to set any additional properties on the object before it is given to its consumer.
+
+<a name="psr-11"></a>
+## PSR-11
+
+Laravel's service container is compliant with PSR-11. The method `has` is an alias for `bound` and will answer whether an identifier is known to the container or not. As for the implementation of `get`, it will be slightly different than `resolve` because it will not offer auto-wiring. Calling `get` with an unknown identifier will still throw an exception even if the identifier is a concrete class.
+
+    namespace Some\Package;
+
+    class Foo
+    {
+        // 
+    }
+
+    // Throws Psr\Container\Exception\NotFoundExceptionInterface
+    $foo = $this->app->get(Foo::class);
+    
+    // $foo is auto-wired into an instance of Foo
+    $foo = $this->app->resolve(Foo::class);
