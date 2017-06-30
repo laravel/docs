@@ -442,6 +442,20 @@ The `waitForLink` method may be used to wait until the given link text is displa
     // Wait a maximum of one second for the link...
     $browser->waitForLink('Create', 1);
 
+#### Waiting On The Page Location
+
+When making a path assertion such as `$browser->assertPathIs('/home')`, the assertion can fail if `window.location.pathname` is being updated asynchronously. You may use the `waitForLocation` method to wait for the location to be a given value:
+
+    $browser->waitForLocation('/secret');
+
+#### Waiting for Page Reloads
+
+If you need to make assertions after a page has been reloaded, use the `waitForReload` method:
+
+    $browser->click('.some-action')
+            ->waitForReload()
+            ->assertSee('something');
+
 #### Waiting On JavaScript Expressions
 
 Sometimes you may wish to pause the execution of a test until a given JavaScript expression evaluates to `true`. You may easily accomplish this using the `waitUntil` method. When passing an expression to this method, you do not need to include the `return` keyword or an ending semi-colon:
@@ -454,30 +468,12 @@ Sometimes you may wish to pause the execution of a test until a given JavaScript
     // Wait a maximum of one second for the expression to be true...
     $browser->waitUntil('App.data.servers.length > 0', 1);
 
-When making the assertion like `$browser->assertPathIs('/home')`, sometimes the assertion will fail if the `window.location.pathname` is being updated asynchronously. You can use the `waitForLocation` method before making assertions:
+#### Waiting With A Callback
 
-    $browser->waitForLocation('/secret');
-
-### Waiting for Page Reload
-
-If you need to assert something after page reload you can call `waitForReload`:
-
-    $browser->waitForReload(function ($browser) {
-        $browser->click('.some-action');
-    })->assertSee('something');
-
-    // or inline works too
-
-    $browser->click('.some-action')
-        ->waitForReload()
-        ->assertSee('something');
-
-### Waiting for a Callback
-
-Many of the other "waiting" methods in Dusk rely on `waitUsing`. If you need to wait for custom logic before proceeding, use `waitUsing`. The `waitUsing` method accepts a timeout, an interval, a closure, and an optional message:
+Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. You may use this method directly to wait for a given callback to return `true`. The `waitUsing` method accepts the maximum number of seconds to wait, the interval at which the Closure should be evaluated, the Closure, and an optional failure message:
 
     $browser->waitUsing(10, 1, function () use ($something) {
-      return $something->isReady();
+        return $something->isReady();
     }, "Something wasn't ready in time.");
 
 <a name="available-assertions"></a>
