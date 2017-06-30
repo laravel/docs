@@ -742,7 +742,7 @@ For this operation, only two queries will be executed:
 
 Sometimes you may need to eager load several different relationships in a single operation. To do so, just pass additional arguments to the `with` method:
 
-    $books = App\Book::with('author', 'publisher')->get();
+    $books = App\Book::with(['author', 'publisher'])->get();
 
 #### Nested Eager Loading
 

@@ -91,9 +91,7 @@ To disable maintenance mode, use the `up` command:
 
     php artisan up
 
-#### Maintenance Mode Response Template
-
-The default template for maintenance mode responses is located in `resources/views/errors/503.blade.php`. You are free to modify this view as needed for your application.
+> {tip} You may customize the default maintenance mode template by defining your own template at `resources/views/errors/503.blade.php`.
 
 #### Maintenance Mode & Queues
 
