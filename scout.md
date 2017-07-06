@@ -235,6 +235,10 @@ Since Scout searches return a collection of Eloquent models, you may even return
         return App\Order::search($request->search)->get();
     });
 
+If you prefer to get the result returned from the engine, before it's converted to an Eloquent model collection, you can chain the `raw` method instead of `get`.
+
+    $orders = App\Order::search('Star Trek')->raw();
+
 <a name="where-clauses"></a>
 ### Where Clauses
 
