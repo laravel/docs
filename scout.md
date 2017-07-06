@@ -30,7 +30,7 @@ Currently, Scout ships with an [Algolia](https://www.algolia.com/) driver; howev
 
 First, install the Scout via the Composer package manager:
 
-    composer require laravel/scout
+    composer require laravel/scout:2.0.*
 
 Next, you should add the `ScoutServiceProvider` to the `providers` array of your `config/app.php` configuration file:
 
