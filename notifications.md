@@ -630,7 +630,7 @@ Before you can send notifications via Slack, you must install the Guzzle HTTP li
 
     composer require guzzlehttp/guzzle
 
-You will also need to configure an "Incoming Webhook" integration for your Slack team. This integration will provide you with a URL you may use when [routing Slack notifications](#routing-slack-notifications).
+You will also need to configure an ["Incoming Webhook"](https://api.slack.com/incoming-webhooks) integration for your Slack team. This integration will provide you with a URL you may use when [routing Slack notifications](#routing-slack-notifications).
 
 <a name="formatting-slack-notifications"></a>
 ### Formatting Slack Notifications
