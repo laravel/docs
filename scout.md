@@ -267,6 +267,17 @@ Once you have retrieved the results, you may display the results and render the 
 
     {{ $orders->links() }}
 
+<a name="changing-index"></a>
+### Changing index
+
+By default, search queries will be performed on the index defined by [`searchableAs`](#configuring-model-indexes).
+You can chain the `within` method to specify a custom index.
+
+    $orders = App\Order::search('Star Trek')
+        ->within('tv_shows_popularity_desc')
+        ->get();
+
+
 <a name="custom-engines"></a>
 ## Custom Engines
 
