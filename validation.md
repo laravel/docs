@@ -828,7 +828,16 @@ The field under validation may be `null`. This is particularly useful when valid
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
 
-The field under validation must not be included in the given list of values.
+The field under validation must not be included in the given list of values. The `Rule::notIn` method may be used to fluently construct the rule:
+
+    use Illuminate\Validation\Rule;
+
+    Validator::make($data, [
+        'toppings' => [
+            'required',
+            Rule::notIn(['sprinkles', 'cherries']),
+        ],
+    ]);
 
 <a name="rule-numeric"></a>
 #### numeric

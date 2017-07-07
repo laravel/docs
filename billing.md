@@ -117,7 +117,9 @@ First, add the Cashier package for Braintree to your dependencies:
 
 #### Service Provider
 
-Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/docs/{{version}}/providers) in your `config/app.php` configuration file.
+Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/docs/{{version}}/providers) in your `config/app.php` configuration file:
+
+    Laravel\Cashier\CashierServiceProvider::class
 
 #### Plan Credit Coupon
 
@@ -200,7 +202,7 @@ To create a subscription, first retrieve an instance of your billable model, whi
 
     $user = User::find(1);
 
-    $user->newSubscription('main', 'monthly')->create($stripeToken);
+    $user->newSubscription('main', 'premium')->create($stripeToken);
 
 The first argument passed to the `newSubscription` method should be the name of the subscription. If your application only offers a single subscription, you might call this `main` or `primary`. The second argument is the specific Stripe / Braintree plan the user is subscribing to. This value should correspond to the plan's identifier in Stripe or Braintree.
 
