@@ -75,11 +75,11 @@ This is identical to manually defining the following Gate definitions:
     Gate::define('posts.update', 'PostPolicy@update');
     Gate::define('posts.delete', 'PostPolicy@delete');
 
-By default, the `view`, `create`, `update`, and `delete` abilities will be defined. You may define additional abilities by passing an array as third argument to the `resource` method. The key of the array defines the name of the ability while the value defines the method name:
+By default, the `view`, `create`, `update`, and `delete` abilities will be defined. You may define additional abilities by passing an array as third argument to the `resource` method. The key of the array defines the name of the ability (prefixed by the resource name and a period) while the value defines the method name:
 
     Gate::resource('posts', 'PostPolicy', [
-        'posts.photo' => 'updatePhoto',
-        'posts.image' => 'updateImage',
+        'photo' => 'updatePhoto',
+        'image' => 'updateImage',
     ]);
 
 <a name="authorizing-actions-via-gates"></a>
