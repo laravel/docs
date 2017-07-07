@@ -397,7 +397,7 @@ In order to allow Laravel to autoload any new tests you generate using the Larav
 
 First install the `laravel/browser-kit-testing` package:
 
-    composer require laravel/browser-kit-testing --dev
+    composer require laravel/browser-kit-testing="1.*" --dev
 
 Once the package has been installed, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTestCase.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTestCase.php`. In order for your `BrowserKitTestCase` class to be properly loaded, you may need to add it to your `composer.json` file:
 
