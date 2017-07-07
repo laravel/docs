@@ -239,6 +239,12 @@ If you would like to get the raw results before they are converted to Eloquent m
 
     $orders = App\Order::search('Star Trek')->raw();
 
+Search queries will typically be performed on the index specified by the model's [`searchableAs`](#configuring-model-indexes) method. However, you may use the `within` method to specify a custom index that should be searched instead:
+
+    $orders = App\Order::search('Star Trek')
+        ->within('tv_shows_popularity_desc')
+        ->get();
+
 <a name="where-clauses"></a>
 ### Where Clauses
 
@@ -266,17 +272,6 @@ Once you have retrieved the results, you may display the results and render the 
     </div>
 
     {{ $orders->links() }}
-
-<a name="changing-index"></a>
-### Changing index
-
-By default, search queries will be performed on the index defined by [`searchableAs`](#configuring-model-indexes).
-You can chain the `within` method to specify a custom index.
-
-    $orders = App\Order::search('Star Trek')
-        ->within('tv_shows_popularity_desc')
-        ->get();
-
 
 <a name="custom-engines"></a>
 ## Custom Engines
