@@ -239,7 +239,7 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
         }
     }
 
-> {tip} You might want to use the "persistentFake" method when you want to keep files during a certain test. This is useful when you want to compare whether you delete some files and want to prove their deletions.
+> {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
 
 <a name="mocking-facades"></a>
 ## Facades
