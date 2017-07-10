@@ -673,7 +673,9 @@ To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubun
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
 
-If you are using CircleCI to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
+#### CircleCI 1.0
+
+If you are using CircleCI 1.0 to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
     test:
         pre:
@@ -685,3 +687,23 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
 
         override:
             - php artisan dusk
+
+ #### CircleCI 2.0
+
+ If you are using CircleCI 2.0 to run your Dusk tests, you may add these steps to your build:
+
+     version: 2
+     jobs:
+         build:
+             steps:
+                  - run:
+                      name: Start Chrome Driver
+                      command: ./vendor/laravel/dusk/bin/chromedriver-linux
+                      background: true
+                 - run:
+                     name: Run Laravel Server
+                     command: php artisan serve
+                     background: true
+                 - run:
+                     name: Run Laravel Dusk Tests
+                     command: php artisan dusk

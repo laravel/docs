@@ -239,6 +239,8 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
         }
     }
 
+> {tip} By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead.
+
 <a name="mocking-facades"></a>
 ## Facades
 

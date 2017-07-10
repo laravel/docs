@@ -472,7 +472,7 @@ All presence channels are also private channels; therefore, users must be [autho
 
 The data returned by the authorization callback will be made available to the presence channel event listeners in your JavaScript application. If the user is not authorized to join the presence channel, you should return `false` or `null`:
 
-    Broadcast::channel('chat.*', function ($user, $roomId) {
+    Broadcast::channel('chat.{roomId}', function ($user, $roomId) {
         if ($user->canJoinRoom($roomId)) {
             return ['id' => $user->id, 'name' => $user->name];
         }
