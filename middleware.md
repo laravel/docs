@@ -127,11 +127,11 @@ Once the middleware has been defined in the HTTP kernel, you may use the `middle
         //
     })->middleware('auth');
 
-You may also assign multiple middleware to the route:
+You may also assign multiple middleware to the route by passing in an array:
 
     Route::get('/', function () {
         //
-    })->middleware('first', 'second');
+    })->middleware(['first', 'second']);
 
 When assigning middleware, you may also pass the fully qualified class name:
 
