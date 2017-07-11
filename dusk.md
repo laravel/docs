@@ -251,8 +251,8 @@ Often, you will be testing pages that require authentication. You can use Dusk's
         $first->loginAs(User::find(1))
               ->visit('/home');
     });
-    
-It's worth noting that the session will be maintained within each individual test file, so you may need to split tests that rely on different authentication states into different files or manually logout before/after each test.
+
+> {note} After using the `loginAs` method, the user session will be maintained for all tests within the file.
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
