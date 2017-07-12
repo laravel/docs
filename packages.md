@@ -3,7 +3,6 @@
 - [Introduction](#introduction)
     - [A Note On Facades](#a-note-on-facades)
 - [Service Providers](#service-providers)
-- [Routing](#routing)
 - [Resources](#resources)
     - [Configuration](#configuration)
     - [Migrations](#migrations)
@@ -34,21 +33,6 @@ When writing a Laravel application, it generally does not matter if you use cont
 [Service providers](/docs/{{version}}/providers) are the connection points between your package and Laravel. A service provider is responsible for binding things into Laravel's [service container](/docs/{{version}}/container) and informing Laravel where to load package resources such as views, configuration, and localization files.
 
 A service provider extends the `Illuminate\Support\ServiceProvider` class and contains two methods: `register` and `boot`. The base `ServiceProvider` class is located in the `illuminate/support` Composer package, which you should add to your own package's dependencies. To learn more about the structure and purpose of service providers, check out [their documentation](/docs/{{version}}/providers).
-
-<a name="routing"></a>
-## Routing
-
-To define routes for your package, pass the routes file path to the `loadRoutesFrom` method from within your package service provider's `boot` method. From within your routes file, you may use the `Illuminate\Support\Facades\Route` facade to [register routes](/docs/{{version}}/routing) just as you would within a typical Laravel application:
-
-    /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->loadRoutesFrom(__DIR__.'/path/to/routes.php');
-    }
 
 <a name="resources"></a>
 ## Resources
