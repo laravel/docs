@@ -565,6 +565,8 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
 
 > {tip} There is not a predefined folder for scopes in a default Laravel application, so feel free to make your own `Scopes` folder within your Laravel application's `app` directory.
 
+> {tip} When selecting columns on global scope, use `addSelect` instead of `select` to prevent selected columns being replaced (unless intended) because global scopes are applied last.
+
 #### Applying Global Scopes
 
 To assign a global scope to a model, you should override a given model's `boot` method and use the `addGlobalScope` method:
