@@ -202,6 +202,12 @@ You should use the `has` method to determine if a value is present on the reques
         //
     }
 
+The `has` method also accepts an `array` to check for multiple inputs:
+
+    if($request->has(['name','email'])) {
+        //
+    }
+
 <a name="old-input"></a>
 ### Old Input
 
