@@ -628,6 +628,8 @@ Typically, if you want to consume your API from your JavaScript application, you
         // Other middleware...
         \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
     ],
+    
+> {note} If you are using a multiple auth guards then, you should make sure that middleware is only applied for the routes that uses the same provider as passport uses. Otherwise it will attach the cookie to all the requestes regardless of guards for any authenticated user, which causes the other autheticated guard user can issue requests to the passport authenticated routes.
 
 This Passport middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that Passport will use to authenticate API requests from your JavaScript application. Now, you may make requests to your application's API without explicitly passing an access token:
 
