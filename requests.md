@@ -202,7 +202,7 @@ You should use the `has` method to determine if a value is present on the reques
         //
     }
 
-The `has` method also accepts an `array` to check for multiple inputs:
+When given an array, the `has` method will determine if all of the specified values are present:
 
     if($request->has(['name','email'])) {
         //
