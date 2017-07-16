@@ -93,6 +93,8 @@ The `is` method allows you to verify that the incoming request path matches a gi
     if ($request->is('admin/*')) {
         //
     }
+    
+If you need to check that the request matches a named route, use the Route facade's [currentRouteNamed](https://laravel.com/api/5.4/Illuminate/Routing/Router.html#method_currentRouteNamed) method instead.
 
 #### Retrieving The Request URL
 
