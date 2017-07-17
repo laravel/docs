@@ -563,7 +563,7 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
         }
     }
 
-> {tip} There is not a predefined folder for scopes in a default Laravel application, so feel free to make your own `Scopes` folder within your Laravel application's `app` directory.
+> {tip} If your global scope is adding columns to the select clause of the query, you should use the `addSelect` method instead of `select`. This will prevent the unintentional replacement of the query's existing select clause.
 
 #### Applying Global Scopes
 

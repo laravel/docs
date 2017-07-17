@@ -193,4 +193,5 @@ Method  | Description
 `$response->assertJsonMissing(array $data);`  |  Assert that the response does not contain the given JSON fragment.
 `$response->assertExactJson(array $data);`  |  Assert that the response contains an exact match of the given JSON data.
 `$response->assertJsonStructure(array $structure);`  |  Assert that the response has a given JSON structure.
+`$response->assertViewIs($value);`  |  Assert that the given view was returned by the route.
 `$response->assertViewHas($key, $value = null);`  |  Assert that the response view was given a piece of data.

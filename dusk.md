@@ -40,7 +40,7 @@ Laravel Dusk provides an expressive, easy-to-use browser automation and testing 
 
 To get started, you should add the `laravel/dusk` Composer dependency to your project:
 
-    composer require laravel/dusk
+    composer require --dev laravel/dusk
 
 Once Dusk is installed, you should register the `Laravel\Dusk\DuskServiceProvider` service provider. You should register the provider within the `register` method of your `AppServiceProvider` in order to limit the environments in which Dusk is available, since it exposes the ability to log in as other users:
 
@@ -251,6 +251,8 @@ Often, you will be testing pages that require authentication. You can use Dusk's
         $first->loginAs(User::find(1))
               ->visit('/home');
     });
+
+> {note} After using the `loginAs` method, the user session will be maintained for all tests within the file.
 
 <a name="interacting-with-elements"></a>
 ## Interacting With Elements
