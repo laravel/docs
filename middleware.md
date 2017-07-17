@@ -50,7 +50,6 @@ This command will place a new `CheckAge` class within your `app/Http/Middleware`
 
             return $next($request);
         }
-
     }
 
 As you can see, if the given `age` is less than or equal to `200`, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to "pass"), simply call the `$next` callback with the `$request`.
