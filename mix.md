@@ -306,9 +306,11 @@ After generating the versioned file, you won't know the exact file name. So, you
 
 Because versioned files are usually unnecessary in development, you may instruct the versioning process to only run during `npm run production`:
 
+    const { mix, config } = require('laravel-mix');
+
     mix.js('resources/assets/js/app.js', 'public/js');
 
-    if (mix.inProduction()) {
+    if (config.inProduction) {
         mix.version();
     }
 
