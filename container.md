@@ -105,7 +105,7 @@ You may also bind an existing object instance into the container using the `inst
 
 Sometimes you may have a class that receives some injected classes, but also needs an injected primitive value such as an integer. You may easily use contextual binding to inject any value your class may need:
 
-    $this->app->when('App\Http\Controllers\UserController')
+    $this->app->when(\App\Http\Controllers\UserController::class)
               ->needs('$variableName')
               ->give($value);
 
@@ -115,8 +115,8 @@ Sometimes you may have a class that receives some injected classes, but also nee
 A very powerful feature of the service container is its ability to bind an interface to a given implementation. For example, let's assume we have an `EventPusher` interface and a `RedisEventPusher` implementation. Once we have coded our `RedisEventPusher` implementation of this interface, we can register it with the service container like so:
 
     $this->app->bind(
-        'App\Contracts\EventPusher',
-        'App\Services\RedisEventPusher'
+        \App\Contracts\EventPusher::class,
+        \App\Services\RedisEventPusher::class
     );
 
 This statement tells the container that it should inject the `RedisEventPusher` when a class needs an implementation of `EventPusher`. Now we can type-hint the `EventPusher` interface in a constructor, or any other location where dependencies are injected by the service container:
