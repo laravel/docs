@@ -43,7 +43,7 @@ You may add as many variables in the `.env` file at the root of the project. You
     FIRSTNAME=John
     LASTNAME=Doe
     FULLNAME=${FIRSTNAME}-${LASTNAME}
-    # The value of QUX will be "John-Doe"
+    # The value of FULLNAME will be "John-Doe"
 
 <a name="determining-the-current-environment"></a>
 ### Determining The Current Environment
