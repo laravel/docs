@@ -63,7 +63,7 @@ A one-to-one relationship is a very basic relation. For example, a `User` model 
          */
         public function phone()
         {
-            return $this->hasOne('App\Phone');
+            return $this->hasOne(\App\Phone::class);
         }
     }
 
@@ -73,11 +73,11 @@ The first argument passed to the `hasOne` method is the name of the related mode
 
 Eloquent determines the foreign key of the relationship based on the model name. In this case, the `Phone` model is automatically assumed to have a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
 
-    return $this->hasOne('App\Phone', 'foreign_key');
+    return $this->hasOne(\App\Phone::class, 'foreign_key');
 
 Additionally, Eloquent assumes that the foreign key should have a value matching the `id` (or the custom `$primaryKey`) column of the parent. In other words, Eloquent will look for the value of the user's `id` column in the `user_id` column of the `Phone` record. If you would like the relationship to use a value other than `id`, you may pass a third argument to the `hasOne` method specifying your custom key:
 
-    return $this->hasOne('App\Phone', 'foreign_key', 'local_key');
+    return $this->hasOne(\App\Phone::class, 'foreign_key', 'local_key');
 
 #### Defining The Inverse Of The Relationship
 
@@ -96,7 +96,7 @@ So, we can access the `Phone` model from our `User`. Now, let's define a relatio
          */
         public function user()
         {
-            return $this->belongsTo('App\User');
+            return $this->belongsTo(\App\User::class);
         }
     }
 
@@ -107,7 +107,7 @@ In the example above, Eloquent will try to match the `user_id` from the `Phone` 
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'foreign_key');
+        return $this->belongsTo(\App\User::class, 'foreign_key');
     }
 
 If your parent model does not use `id` as its primary key, or you wish to join the child model to a different column, you may pass a third argument to the `belongsTo` method specifying your parent table's custom key:
@@ -117,7 +117,7 @@ If your parent model does not use `id` as its primary key, or you wish to join t
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'foreign_key', 'other_key');
+        return $this->belongsTo(\App\User::class, 'foreign_key', 'other_key');
     }
 
 <a name="default-models"></a>
@@ -130,7 +130,7 @@ The `belongsTo` relationship allows you to define a default model that will be r
      */
     public function user()
     {
-        return $this->belongsTo('App\User')->withDefault();
+        return $this->belongsTo(\App\User::class)->withDefault();
     }
 
 To populate the default model with attributes, you may pass an array or Closure to the `withDefault` method:
@@ -140,7 +140,7 @@ To populate the default model with attributes, you may pass an array or Closure 
      */
     public function user()
     {
-        return $this->belongsTo('App\User')->withDefault([
+        return $this->belongsTo(\App\User::class)->withDefault([
             'name' => 'Guest Author',
         ]);
     }
@@ -150,7 +150,7 @@ To populate the default model with attributes, you may pass an array or Closure 
      */
     public function user()
     {
-        return $this->belongsTo('App\User')->withDefault(function ($user) {
+        return $this->belongsTo(\App\User::class)->withDefault(function ($user) {
             $user->name = 'Guest Author';
         });
     }
@@ -173,7 +173,7 @@ A "one-to-many" relationship is used to define relationships where a single mode
          */
         public function comments()
         {
-            return $this->hasMany('App\Comment');
+            return $this->hasMany(\App\Comment::class);
         }
     }
 
@@ -193,9 +193,9 @@ Of course, since all relationships also serve as query builders, you can add fur
 
 Like the `hasOne` method, you may also override the foreign and local keys by passing additional arguments to the `hasMany` method:
 
-    return $this->hasMany('App\Comment', 'foreign_key');
+    return $this->hasMany(\App\Comment::class, 'foreign_key');
 
-    return $this->hasMany('App\Comment', 'foreign_key', 'local_key');
+    return $this->hasMany(\App\Comment::class, 'foreign_key', 'local_key');
 
 <a name="one-to-many-inverse"></a>
 ### One To Many (Inverse)
@@ -215,7 +215,7 @@ Now that we can access all of a post's comments, let's define a relationship to 
          */
         public function post()
         {
-            return $this->belongsTo('App\Post');
+            return $this->belongsTo(\App\Post::class);
         }
     }
 
@@ -232,7 +232,7 @@ In the example above, Eloquent will try to match the `post_id` from the `Comment
      */
     public function post()
     {
-        return $this->belongsTo('App\Post', 'foreign_key');
+        return $this->belongsTo(\App\Post::class, 'foreign_key');
     }
 
 If your parent model does not use `id` as its primary key, or you wish to join the child model to a different column, you may pass a third argument to the `belongsTo` method specifying your parent table's custom key:
@@ -242,7 +242,7 @@ If your parent model does not use `id` as its primary key, or you wish to join t
      */
     public function post()
     {
-        return $this->belongsTo('App\Post', 'foreign_key', 'other_key');
+        return $this->belongsTo(\App\Post::class, 'foreign_key', 'other_key');
     }
 
 <a name="many-to-many"></a>
@@ -265,7 +265,7 @@ Many-to-many relationships are defined by writing a method that returns the resu
          */
         public function roles()
         {
-            return $this->belongsToMany('App\Role');
+            return $this->belongsToMany(\App\Role::class);
         }
     }
 
@@ -283,11 +283,11 @@ Of course, like all other relationship types, you may call the `roles` method to
 
 As mentioned previously, to determine the table name of the relationship's joining table, Eloquent will join the two related model names in alphabetical order. However, you are free to override this convention. You may do so by passing a second argument to the `belongsToMany` method:
 
-    return $this->belongsToMany('App\Role', 'role_user');
+    return $this->belongsToMany(\App\Role::class, 'role_user');
 
 In addition to customizing the name of the joining table, you may also customize the column names of the keys on the table by passing additional arguments to the `belongsToMany` method. The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:
 
-    return $this->belongsToMany('App\Role', 'role_user', 'user_id', 'role_id');
+    return $this->belongsToMany(\App\Role::class, 'role_user', 'user_id', 'role_id');
 
 #### Defining The Inverse Of The Relationship
 
@@ -306,7 +306,7 @@ To define the inverse of a many-to-many relationship, you simply place another c
          */
         public function users()
         {
-            return $this->belongsToMany('App\User');
+            return $this->belongsToMany(\App\User::class);
         }
     }
 
@@ -326,19 +326,19 @@ Notice that each `Role` model we retrieve is automatically assigned a `pivot` at
 
 By default, only the model keys will be present on the `pivot` object. If your pivot table contains extra attributes, you must specify them when defining the relationship:
 
-    return $this->belongsToMany('App\Role')->withPivot('column1', 'column2');
+    return $this->belongsToMany(\App\Role::class)->withPivot('column1', 'column2');
 
 If you want your pivot table to have automatically maintained `created_at` and `updated_at` timestamps, use the `withTimestamps` method on the relationship definition:
 
-    return $this->belongsToMany('App\Role')->withTimestamps();
+    return $this->belongsToMany(\App\Role::class)->withTimestamps();
 
 #### Filtering Relationships Via Intermediate Table Columns
 
 You can also filter the results returned by `belongsToMany` using the `wherePivot` and `wherePivotIn` methods when defining the relationship:
 
-    return $this->belongsToMany('App\Role')->wherePivot('approved', 1);
+    return $this->belongsToMany(\App\Role::class)->wherePivot('approved', 1);
 
-    return $this->belongsToMany('App\Role')->wherePivotIn('priority', [1, 2]);
+    return $this->belongsToMany(\App\Role::class)->wherePivotIn('priority', [1, 2]);
 
 #### Defining Custom Intermediate Table Models
 
@@ -357,7 +357,7 @@ If you would like to define a custom model to represent the intermediate table o
          */
         public function users()
         {
-            return $this->belongsToMany('App\User')->using('App\UserRole');
+            return $this->belongsToMany(\App\User::class)->using(\App\UserRole::class);
         }
     }
 
@@ -397,7 +397,7 @@ Now that we have examined the table structure for the relationship, let's define
          */
         public function posts()
         {
-            return $this->hasManyThrough('App\Post', 'App\User');
+            return $this->hasManyThrough(\App\Post::class, \App\User::class);
         }
     }
 
@@ -410,8 +410,8 @@ Typical Eloquent foreign key conventions will be used when performing the relati
         public function posts()
         {
             return $this->hasManyThrough(
-                'App\Post',
-                'App\User',
+                \App\Post::class,
+                \App\User::class,
                 'country_id', // Foreign key on users table...
                 'user_id', // Foreign key on posts table...
                 'id', // Local key on countries table...
@@ -473,7 +473,7 @@ Next, let's examine the model definitions needed to build this relationship:
          */
         public function comments()
         {
-            return $this->morphMany('App\Comment', 'commentable');
+            return $this->morphMany(\App\Comment::class, 'commentable');
         }
     }
 
@@ -484,7 +484,7 @@ Next, let's examine the model definitions needed to build this relationship:
          */
         public function comments()
         {
-            return $this->morphMany('App\Comment', 'commentable');
+            return $this->morphMany(\App\Comment::class, 'commentable');
         }
     }
 
@@ -513,8 +513,8 @@ By default, Laravel will use the fully qualified class name to store the type of
     use Illuminate\Database\Eloquent\Relations\Relation;
 
     Relation::morphMap([
-        'posts' => 'App\Post',
-        'videos' => 'App\Video',
+        'posts' => \App\Post::class,
+        'videos' => \App\Video::class,
     ]);
 
 You may register the `morphMap` in the `boot` function of your `AppServiceProvider` or create a separate service provider if you wish.
@@ -560,7 +560,7 @@ Next, we're ready to define the relationships on the model. The `Post` and `Vide
          */
         public function tags()
         {
-            return $this->morphToMany('App\Tag', 'taggable');
+            return $this->morphToMany(\App\Tag::class, 'taggable');
         }
     }
 
@@ -581,7 +581,7 @@ Next, on the `Tag` model, you should define a method for each of its related mod
          */
         public function posts()
         {
-            return $this->morphedByMany('App\Post', 'taggable');
+            return $this->morphedByMany(\App\Post::class, 'taggable');
         }
 
         /**
@@ -589,7 +589,7 @@ Next, on the `Tag` model, you should define a method for each of its related mod
          */
         public function videos()
         {
-            return $this->morphedByMany('App\Video', 'taggable');
+            return $this->morphedByMany(\App\Video::class, 'taggable');
         }
     }
 
@@ -631,7 +631,7 @@ For example, imagine a blog system in which a `User` model has many associated `
          */
         public function posts()
         {
-            return $this->hasMany('App\Post');
+            return $this->hasMany(\App\Post::class);
         }
     }
 
@@ -745,7 +745,7 @@ When accessing Eloquent relationships as properties, the relationship data is "l
          */
         public function author()
         {
-            return $this->belongsTo('App\Author');
+            return $this->belongsTo(\App\Author::class);
         }
     }
 
@@ -975,7 +975,7 @@ When a model `belongsTo` or `belongsToMany` another model, such as a `Comment` w
          */
         public function post()
         {
-            return $this->belongsTo('App\Post');
+            return $this->belongsTo(\App\Post::class);
         }
     }
 

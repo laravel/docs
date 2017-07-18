@@ -505,31 +505,31 @@ Laravel raises a variety of [events](/docs/{{version}}/events) during the authen
      * @var array
      */
     protected $listen = [
-        'Illuminate\Auth\Events\Registered' => [
-            'App\Listeners\LogRegisteredUser',
+        \Illuminate\Auth\Events\Registered::class => [
+            \App\Listeners\LogRegisteredUser::class,
         ],
 
-        'Illuminate\Auth\Events\Attempting' => [
-            'App\Listeners\LogAuthenticationAttempt',
+        \Illuminate\Auth\Events\Attempting::class => [
+            \App\Listeners\LogAuthenticationAttempt::class,
         ],
 
-        'Illuminate\Auth\Events\Authenticated' => [
-            'App\Listeners\LogAuthenticated',
+        \Illuminate\Auth\Events\Authenticated::class => [
+            \App\Listeners\LogAuthenticated::class,
         ],
 
-        'Illuminate\Auth\Events\Login' => [
-            'App\Listeners\LogSuccessfulLogin',
+        \Illuminate\Auth\Events\Login::class => [
+            \App\Listeners\LogSuccessfulLogin::class,
         ],
 
-        'Illuminate\Auth\Events\Failed' => [
-            'App\Listeners\LogFailedLogin',
+        \Illuminate\Auth\Events\Failed::class => [
+            \App\Listeners\LogFailedLogin::class,
         ],
 
-        'Illuminate\Auth\Events\Logout' => [
-            'App\Listeners\LogSuccessfulLogout',
+        \Illuminate\Auth\Events\Logout::class => [
+            \App\Listeners\LogSuccessfulLogout::class,
         ],
 
-        'Illuminate\Auth\Events\Lockout' => [
-            'App\Listeners\LogLockout',
+        \Illuminate\Auth\Events\Lockout::class => [
+            \App\Listeners\LogLockout::class,
         ],
     ];

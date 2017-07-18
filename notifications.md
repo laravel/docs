@@ -807,8 +807,8 @@ When a notification is sent, the `Illuminate\Notifications\Events\NotificationSe
      * @var array
      */
     protected $listen = [
-        'Illuminate\Notifications\Events\NotificationSent' => [
-            'App\Listeners\LogNotification',
+        \Illuminate\Notifications\Events\NotificationSent::class => [
+            \App\Listeners\LogNotification::class,
         ],
     ];
 

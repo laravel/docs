@@ -333,7 +333,7 @@ In Laravel 5.3, all "pivot" table models for `belongsToMany` relationships used 
          */
         public function users()
         {
-            return $this->belongsToMany('App\User')->using('App\UserRole');
+            return $this->belongsToMany(\App\User::class)->using(\App\UserRole::class);
         }
     }
 

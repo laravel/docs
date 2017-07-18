@@ -332,19 +332,19 @@ To execute code on every cache operation, you may listen for the [events](/docs/
      * @var array
      */
     protected $listen = [
-        'Illuminate\Cache\Events\CacheHit' => [
-            'App\Listeners\LogCacheHit',
+        \Illuminate\Cache\Events\CacheHit::class => [
+            \App\Listeners\LogCacheHit::class,
         ],
 
-        'Illuminate\Cache\Events\CacheMissed' => [
-            'App\Listeners\LogCacheMissed',
+        \Illuminate\Cache\Events\CacheMissed::class => [
+            \App\Listeners\LogCacheMissed::class,
         ],
 
-        'Illuminate\Cache\Events\KeyForgotten' => [
-            'App\Listeners\LogKeyForgotten',
+        \Illuminate\Cache\Events\KeyForgotten::class => [
+            \App\Listeners\LogKeyForgotten::class,
         ],
 
-        'Illuminate\Cache\Events\KeyWritten' => [
-            'App\Listeners\LogKeyWritten',
+        \Illuminate\Cache\Events\KeyWritten::class => [
+            \App\Listeners\LogKeyWritten::class,
         ],
     ];

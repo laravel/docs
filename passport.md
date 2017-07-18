@@ -91,7 +91,7 @@ Next, you should call the `Passport::routes` method within the `boot` method of 
          * @var array
          */
         protected $policies = [
-            'App\Model' => 'App\Policies\ModelPolicy',
+            \App\Model::class => \App\Policies\ModelPolicy::class,
         ];
 
         /**
@@ -658,11 +658,11 @@ Passport raises events when issuing access tokens and refresh tokens. You may us
  */
 protected $listen = [
     'Laravel\Passport\Events\AccessTokenCreated' => [
-        'App\Listeners\RevokeOldTokens',
+        \App\Listeners\RevokeOldTokens::class,
     ],
 
     'Laravel\Passport\Events\RefreshTokenCreated' => [
-        'App\Listeners\PruneOldTokens',
+        \App\Listeners\PruneOldTokens::class,
     ],
 ];
 ```
