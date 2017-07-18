@@ -78,7 +78,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [str_limit](#method-str-limit)
 [starts_with](#method-starts-with)
 [str_after](#method-str-after)
-[str_before](#method-str-before)
 [str_contains](#method-str-contains)
 [str_finish](#method-str-finish)
 [str_is](#method-str-is)
