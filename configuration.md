@@ -35,6 +35,16 @@ All of the variables listed in this file will be loaded into the `$_ENV` PHP sup
 
 The second value passed to the `env` function is the "default value". This value will be used if no environment variable exists for the given key.
 
+You may add as many variables in the `.env` file at the root of the project. You can also desactivate some variables or even create compound variables:
+
+    # The FOO variable is commented here
+    # FOO=BAR
+    
+    FIRSTNAME=John
+    LASTNAME=Doe
+    FULLNAME=${FIRSTNAME}-${LASTNAME}
+    # The value of FULLNAME will be "John-Doe"
+
 <a name="determining-the-current-environment"></a>
 ### Determining The Current Environment
 
