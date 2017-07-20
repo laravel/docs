@@ -428,16 +428,17 @@ Once a grant has been enabled, developers may use their client ID to request an 
 
 The client credentials grant is suitable for machine-to-machine authentication. For example, you might use this grant in a scheduled job which is performing maintenance tasks over an API. To use this method you first need to add new middleware to your `$routeMiddleware` in `app/Http/Kernel.php`:
 
+    use Laravel\Passport\Http\Middleware\CheckClientCredentials::class;
+
     protected $routeMiddleware = [
-        ...
-        'client_credentials' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class,
+        'client' => CheckClientCredentials::class,
     ];
 
-Then use this middleware in your route:
+Then attach this middleware to a route:
 
     Route::get('/user', function(Request $request) {
         ...
-    })->middleware('client_credentials');
+    })->middleware('client');
 
 To retrieve a token, make a request to the `oauth/token` endpoint:
 
