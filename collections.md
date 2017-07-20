@@ -58,6 +58,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [count](#method-count)
 [diff](#method-diff)
 [diffKeys](#method-diffkeys)
+[diffAssoc](#method-diffassoc)
 [each](#method-each)
 [every](#method-every)
 [except](#method-except)
@@ -309,6 +310,29 @@ The `diffKeys` method compares the collection against another collection or a pl
     $diff->all();
 
     // ['one' => 10, 'three' => 30, 'five' => 50]
+    
+ <a name="method-diffassoc"></a>
+#### `diffAssoc()` {#collection-method}
+
+The `diffAssoc` method compares the collection against another collection or a plain PHP `array` based on its keys and values. This method will return the key / value pairs in the original collection that are not present in the given collection:
+
+    $collection = collect([
+        'color' => 'orange',
+        'type' => 'fruit',
+        'remain' => 6
+   ]);
+
+    $diff = $collection->diffAssoc([
+        'color' => 'yellow',
+        'type' => 'fruit',
+        'remain' => 3,
+        'used' => 6
+  olor  ]);
+
+    $diff->all();
+
+    // ['color' => 'orange', 'remain' => 6]
+
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}
