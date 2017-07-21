@@ -57,8 +57,8 @@ For the remainder of this documentation, we'll discuss each method available on 
 [containsStrict](#method-containsstrict)
 [count](#method-count)
 [diff](#method-diff)
-[diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
+[diffAssoc](#method-diffassoc)
 [each](#method-each)
 [every](#method-every)
 [except](#method-except)
@@ -296,18 +296,18 @@ The `diffAssoc` method compares the collection against another collection or a p
         'color' => 'orange',
         'type' => 'fruit',
         'remain' => 6
-   ]);
+    ]);
 
-    $diff = $collection->diffAssoc([
+    $diff = $collection->diffAssoc([
         'color' => 'yellow',
         'type' => 'fruit',
         'remain' => 3,
         'used' => 6
-  olor  ]);
+        ]);
 
     $diff->all();
 
-    // ['color' => 'orange', 'remain' => 6]
+    // ['color' => 'orange', 'remain' => 6]
 
 <a name="method-diffkeys"></a>
 #### `diffKeys()` {#collection-method}
