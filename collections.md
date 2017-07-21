@@ -293,21 +293,21 @@ The `diff` method compares the collection against another collection or a plain 
 The `diffAssoc` method compares the collection against another collection or a plain PHP `array` based on its keys and values. This method will return the key / value pairs in the original collection that are not present in the given collection:
 
     $collection = collect([
-        'color' => 'orange',
-        'type' => 'fruit',
-        'remain' => 6
-   ]);
-
-    $diff = $collection->diffAssoc([
-        'color' => 'yellow',
-        'type' => 'fruit',
-        'remain' => 3,
-        'used' => 6
-  olor  ]);
-
+        'color' => 'orange',
+        'type' => 'fruit',
+        'remain' => 6
+    ]);
+    
+    $diff = $collection->diffAssoc([
+        'color' => 'yellow',
+        'type' => 'fruit',
+        'remain' => 3,
+        'used' => 6
+    ]);
+    
     $diff->all();
-
-    // ['color' => 'orange', 'remain' => 6]
+    
+    // ['color' => 'orange', 'remain' => 6]
 
 <a name="method-diffkeys"></a>
 #### `diffKeys()` {#collection-method}
