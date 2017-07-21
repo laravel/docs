@@ -171,6 +171,31 @@ If you would like to override some of the default values of your models, you may
     $user = factory(App\User::class)->make([
         'name' => 'Abigail',
     ]);
+    
+
+#### Passing Variables
+
+By default, factories in relationships receive their parents ID. In case you need to pass a another variable to a Factory that cannot be covered by a Factory State, you can use a second argument and capture it inside the Factory, and adding the proper logic if the variable is optional or if it as a default value.
+
+    $user = factory(App\User::class)->make([
+        // ... Overriden properties
+        'name' => 'Abigail',
+    ], [
+        'from' => '-50 years',
+        'to' => '-18 years'
+    ]);
+    
+    $factory->define(App\User::class, function (Faker\Generator $faker, $options = []) {
+       
+        $ageFrom = $options['from']; // '-50 years'
+        $ageTo = $options['to']; // '-18 years'
+       
+        return [
+            // ... Some properties for the User
+            'birthday' = $faker->dateTimeBetween($ageFrom, $ageTo)
+        ];
+        
+    });
 
 <a name="persisting-models"></a>
 ### Persisting Models
