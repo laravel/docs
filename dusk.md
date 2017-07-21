@@ -96,7 +96,7 @@ Next, you may simply modify the `driver` method to connect to the URL and port o
     protected function driver()
     {
         return RemoteWebDriver::create(
-            'http://localhost:4444', DesiredCapabilities::phantomjs()
+            'http://localhost:4444/wd/hub', DesiredCapabilities::phantomjs()
         );
     }
 
