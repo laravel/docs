@@ -923,7 +923,7 @@ For convenience, `attach` and `detach` also accept arrays of IDs as input:
 
     $user->roles()->detach([1, 2, 3]);
 
-    $user->roles()->attach([1 => ['expires' => $expires], 2, 3]);
+    $user->roles()->attach([1 => ['expires' => $expires], 2 => ['expires' => $expires]]);
 
 #### Syncing Associations
 
