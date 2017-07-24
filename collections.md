@@ -74,6 +74,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [has](#method-has)
 [implode](#method-implode)
 [intersect](#method-intersect)
+[intersectKey](#method-intersectkey)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
 [keyBy](#method-keyby)
@@ -632,6 +633,19 @@ The `intersect` method removes any values from the original collection that are 
     $intersect->all();
 
     // [0 => 'Desk', 2 => 'Chair']
+
+<a name="method-intersectkey"></a>
+#### `intersectKey()` {#collection-method}
+
+The `intersectKey` method compares the collection against another collection. This method will return the key / value pairs in the original collection that are present in the given collection:
+
+    $collection = collect(['product_id' => 'prod-100', 'name' => 'Desk']);
+
+    $intersectByKey = $collection->intersectKey(['product_id' => 0]);
+
+    $intersectByKey->all();
+
+    // ["product_id" => "prod-100"]
 
 <a name="method-isempty"></a>
 #### `isEmpty()` {#collection-method}
