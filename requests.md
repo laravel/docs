@@ -164,6 +164,20 @@ When working with forms that contain array inputs, use "dot" notation to access 
 
     $names = $request->input('products.*.name');
 
+#### Retrieving Input From The Query String
+
+You may use the `query` method to access data from the query string:
+
+    $name = $request->query('name');
+
+If the requested query string parameter data is not present, the second argument to this method will be returned:
+
+    $name = $request->query('name', 'Helen');
+
+You can use the `query` method without any parameters to get all the keys & values from the query string:
+
+    $payload = $request->query();
+
 #### Retrieving Input Via Dynamic Properties
 
 You may also access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
