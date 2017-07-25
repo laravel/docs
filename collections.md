@@ -637,11 +637,15 @@ The `intersect` method removes any values from the original collection that are 
 <a name="method-intersectkey"></a>
 #### `intersectKey()` {#collection-method}
 
-The `intersectKey` method removes any keys from the original collection that are not present in the given `array` or collection :
+The `intersectKey` method removes any keys from the original collection that are not present in the given `array` or collection:
 
-    $collection = collect(['serial' => 'UX301', 'type' => 'screen', 'year' => 2009]);
+    $collection = collect([
+        'serial' => 'UX301', 'type' => 'screen', 'year' => 2009
+    ]);
 
-    $intersect = $collection->intersectKey(['reference' => 'UX404', 'type' => 'tab', 'year' => 2011]);
+    $intersect = $collection->intersectKey([
+        'reference' => 'UX404', 'type' => 'tab', 'year' => 2011
+    ]);
 
     $intersect->all();
 
