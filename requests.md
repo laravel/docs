@@ -164,6 +164,20 @@ When working with forms that contain array inputs, use "dot" notation to access 
 
     $names = $request->input('products.*.name');
 
+#### Retrieving Input From The Request Payload
+
+Using the `post` method, you may access data from the request payload:
+
+    $name = $request->post('name');
+
+You can also pass a default as a second parameter. If the requested payload data is not present, this value will be returned instead:
+
+    $name = $request->post('name', 'Harry');
+
+If you want to retrieve all of the data from the request body, you can call the `post` method without any arguments:
+
+    $payload = $request->post();
+
 #### Retrieving Input Via Dynamic Properties
 
 You may also access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
