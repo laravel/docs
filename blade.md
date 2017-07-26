@@ -211,7 +211,7 @@ In addition to the conditional directives already discussed, the `@isset` and `@
 
 #### Authentication
 
-You can check whether the visitor has auth or not by using `@auth` and `@guest`. `@auth` return `true` if that visitor has login and return `@guest` `true` if that visitor hasn't login. Else, return `false`.
+You can check whether the visitor has auth or not by using `@auth` and `@guest`.And show the right thing on a case by case basis:
 
     @if (@auth)
         I have signed in!
