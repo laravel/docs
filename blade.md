@@ -337,12 +337,9 @@ Of course, if you attempt to `@include` a view which does not exist, Laravel wil
 
     @includeIf('view.name', ['some' => 'data'])
 
-If you want to `@include` a view that depends on a condition you can use `@includeWhen`:
+If you would like to `@include` a view depending on a given boolean condition, you may use the `@includeWhen` directive:
 
-    @php
-        $display = true;
-    @endphp
-    @includeWhen($display, 'view.name', ['some' => 'data'])
+    @includeWhen($boolean, 'view.name', ['some' => 'data'])
 
 > {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
