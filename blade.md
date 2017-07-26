@@ -195,7 +195,7 @@ You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@end
 
 For convenience, Blade also provides an `@unless` directive:
 
-    @unless (Auth::check())
+    @unless (@auth)
         You are not signed in.
     @endunless
 
@@ -208,6 +208,18 @@ In addition to the conditional directives already discussed, the `@isset` and `@
     @empty($records)
         // $records is "empty"...
     @endempty
+
+#### Authentication
+
+You can check whether the visitor has auth or not by using `@auth` and `@guest`. `@auth` return `true` if that visitor has login and return `@guest` `true` if that visitor hasn't login. Else, return `false`.
+
+    @if (@auth)
+        I have signed in!
+    @endif
+    
+    @if (@guest)
+        i'm just a guest here!
+    @endif
 
 <a name="loops"></a>
 ### Loops
