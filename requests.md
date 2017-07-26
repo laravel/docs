@@ -164,6 +164,20 @@ When working with forms that contain array inputs, use "dot" notation to access 
 
     $names = $request->input('products.*.name');
 
+#### Retrieving Input From The Request Payload
+
+Using the `post` method, you may access data from the request payload:
+
+    $name = $request->post('name');
+
+You can also pass a default as a second parameter. If the requested payload data is not present, this value will be returned instead:
+
+    $name = $request->post('name', 'Harry');
+
+If you want to retrieve all of the data from the request body, you can call the `post` method without any arguments:
+
+    $payload = $request->post();
+
 #### Retrieving Input From The Query String
 
 While the `input` method retrieves values from entire request payload (including the query string), the `query` method will only retrieve values from the query string:
