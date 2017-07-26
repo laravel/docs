@@ -177,7 +177,18 @@ If the requested query string value data is not present, the second argument to 
 You may call the `query` method without any arguments in order to retrieve all of the query string values as an associative array:
 
     $query = $request->query();
+    
+#### Retrieving A Post Value
 
+While the `input` method retrieves values from entire request payload (including post values), the `post` method will
+only retrieve values from post inputs:
+
+    $post = $request->post('age');
+
+You may pass a default value as the second argument to the `post` method. This value will be returned if the request does not contains the specified post input.
+
+    $post = $request->post('lang', 'en');
+    
 #### Retrieving Input Via Dynamic Properties
 
 You may also access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
