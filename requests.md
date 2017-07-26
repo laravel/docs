@@ -166,17 +166,17 @@ When working with forms that contain array inputs, use "dot" notation to access 
 
 #### Retrieving Input From The Query String
 
-You may use the `query` method to access data from the query string:
+While the `input` method retrieves values from entire request payload (including the query string), the `query` method will only retrieve values from the query string:
 
     $name = $request->query('name');
 
-If the requested query string parameter data is not present, the second argument to this method will be returned:
+If the requested query string value data is not present, the second argument to this method will be returned:
 
     $name = $request->query('name', 'Helen');
 
-You can use the `query` method without any parameters to get all the keys & values from the query string:
+You may call the `query` method without any arguments in order to retrieve all of the query string values as an associative array:
 
-    $payload = $request->query();
+    $query = $request->query();
 
 #### Retrieving Input Via Dynamic Properties
 
