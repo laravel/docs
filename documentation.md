@@ -76,3 +76,4 @@
     - [Passport](/docs/{{version}}/passport)
     - [Scout](/docs/{{version}}/scout)
     - [Socialite](https://github.com/laravel/socialite)
+    - [Horizon](https://github.com/laravel/horizon)
