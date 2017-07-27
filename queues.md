@@ -306,6 +306,8 @@ However, you may take a more granular approach by defining the maximum number of
 
 #### Timeout
 
+> {note} PHP 7.1 and the pcntl module is required (this extension is not available on Windows platforms). 
+
 Likewise, the maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
 
     php artisan queue:work --timeout=30
