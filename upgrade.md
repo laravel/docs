@@ -492,7 +492,7 @@ If you are queueing jobs using this syntax, Eloquent models will no longer be au
 ### Routing
 
 #### New routes Folder
-Routes have been moved into their own directory, named 'routes'.  The routes themselves have been divided into two files.  Move existing routes related to the web interface of an application into 'web.php', while stateless routes should be placed in 'api.php'
+Routes have been moved into their own directory, named `routes`.  The routes themselves have been divided into two files.  Move existing routes related to the web interface of an application into `routes\web.php`, while stateless routes should be placed in `routes\api.php`.  As part of this split, `app\Http\Kernel.php` has been revised to add MiddlewareGroups corresponding to `web` and `api`.  Pull a new copy (https://github.com/laravel/laravel/blob/5.3/app/Http/Kernel.php) and add any custom middleware to the appropriate group.
 
 #### Resource Parameters Are Singular By Default
 
