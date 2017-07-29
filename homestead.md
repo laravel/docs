@@ -15,6 +15,7 @@
     - [Configuring Cron Schedules](#configuring-cron-schedules)
     - [Ports](#ports)
     - [Sharing Your Environment](#sharing-your-environment)
+    - [Multiple PHP Versions](#multiple-php-versions)
 - [Network Interfaces](#network-interfaces)
 - [Updating Homestead](#updating-homestead)
 - [Old Versions](#old-versions)
@@ -333,6 +334,16 @@ After running the command, you will see an Ngrok screen appear which contains th
     share homestead.app -region=eu -subdomain=laravel
 
 > {note} Remember, Vagrant is inherently insecure and you are exposing your virtual machine to the Internet when running the `share` command.
+
+<a name="multiple-php-versions"></a>
+### Multiple PHP Versions
+
+Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", and "7.1":
+
+    sites:
+        - map: homestead.app
+          to: /home/vagrant/Code/Laravel/public
+          php: "5.6"
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
