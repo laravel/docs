@@ -17,7 +17,7 @@ However, if you file a bug report, your issue should contain a title and a clear
 
 Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem.
 
-The Laravel source code is managed on Github, and there are repositories for each of the Laravel projects:
+The Laravel source code is managed on GitHub, and there are repositories for each of the Laravel projects:
 
 <div class="content-list" markdown="1">
 - [Laravel Application](https://github.com/laravel/laravel)

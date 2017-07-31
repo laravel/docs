@@ -1065,7 +1065,7 @@ The popular `dd` helper function, which dumps variable debug information, has be
 <a name="laravel-4.2"></a>
 ## Laravel 4.2
 
-The full change list for this release by running the `php artisan changes` command from a 4.2 installation, or by [viewing the change file on Github](https://github.com/laravel/framework/blob/4.2/src/Illuminate/Foundation/changes.json). These notes only cover the major enhancements and changes for the release.
+The full change list for this release by running the `php artisan changes` command from a 4.2 installation, or by [viewing the change file on GitHub](https://github.com/laravel/framework/blob/4.2/src/Illuminate/Foundation/changes.json). These notes only cover the major enhancements and changes for the release.
 
 > {note} During the 4.2 release cycle, many small bug fixes and enhancements were incorporated into the various Laravel 4.1 point releases. So, be sure to check the change list for Laravel 4.1 as well!
 
@@ -1126,7 +1126,7 @@ In production, destructive migration operations will now ask for confirmation. C
 
 ### Full Change List
 
-The full change list for this release by running the `php artisan changes` command from a 4.1 installation, or by [viewing the change file on Github](https://github.com/laravel/framework/blob/4.1/src/Illuminate/Foundation/changes.json). These notes only cover the major enhancements and changes for the release.
+The full change list for this release by running the `php artisan changes` command from a 4.1 installation, or by [viewing the change file on GitHub](https://github.com/laravel/framework/blob/4.1/src/Illuminate/Foundation/changes.json). These notes only cover the major enhancements and changes for the release.
 
 ### New SSH Component
 
