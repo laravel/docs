@@ -80,7 +80,7 @@ You may install Homestead by simply cloning the repository. Consider cloning the
 
     git clone https://github.com/laravel/homestead.git Homestead
 
-You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [Github Release Page](https://github.com/laravel/homestead/releases):
+You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [GitHub Release Page](https://github.com/laravel/homestead/releases):
 
     cd Homestead
 
