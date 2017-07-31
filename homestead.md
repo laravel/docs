@@ -345,6 +345,11 @@ Homestead 6 introduced support for multiple versions of PHP on the same virtual 
           to: /home/vagrant/Code/Laravel/public
           php: "5.6"
 
+You can also choose to specify versions to run on the CLI:
+
+    php5.6 artisan ...
+    php7.0 artisan ...
+
 <a name="network-interfaces"></a>
 ## Network Interfaces
 
