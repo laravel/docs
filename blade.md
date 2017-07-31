@@ -9,6 +9,7 @@
     - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
 - [Control Structures](#control-structures)
     - [If Statements](#if-statements)
+    - [Switch Statement](#switch-statement)
     - [Loops](#loops)
     - [The Loop Variable](#the-loop-variable)
     - [Comments](#comments)
@@ -208,6 +209,26 @@ In addition to the conditional directives already discussed, the `@isset` and `@
     @empty($records)
         // $records is "empty"...
     @endempty
+
+<a name="switch-statement"></a>
+### Switch Statement
+
+The Switch statement can be constructed using the `@switch`, `@case`, `@break`, `@default` and `@endswitch` directives.
+
+    @switch($i)
+
+        @case(1)
+            This is the first case
+        @break
+
+        @case(2)
+            This is the second case
+        @break
+
+        @default
+            Default to the rescue
+
+    @endswitch
 
 <a name="loops"></a>
 ### Loops
