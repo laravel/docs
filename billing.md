@@ -54,14 +54,14 @@ Next, register the `Laravel\Cashier\CashierServiceProvider` [service provider](/
 
 Before using Cashier, we'll also need to [prepare the database](/docs/{{version}}/migrations). We need to add several columns to your `users` table and create a new `subscriptions` table to hold all of our customer's subscriptions:
 
-    Schema::table('users', function ($table) {
+    Schema::table('users', function (Blueprint $table) {
         $table->string('stripe_id')->nullable();
         $table->string('card_brand')->nullable();
         $table->string('card_last_four')->nullable();
         $table->timestamp('trial_ends_at')->nullable();
     });
 
-    Schema::create('subscriptions', function ($table) {
+    Schema::create('subscriptions', function (Blueprint $table) {
         $table->increments('id');
         $table->integer('user_id');
         $table->string('name');
