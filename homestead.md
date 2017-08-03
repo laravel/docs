@@ -338,6 +338,8 @@ After running the command, you will see an Ngrok screen appear which contains th
 <a name="multiple-php-versions"></a>
 ### Multiple PHP Versions
 
+> {note} This feature is only compatible with Nginx, it will not be compatible with Apache.
+
 Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", and "7.1":
 
     sites:
@@ -388,6 +390,8 @@ If you have installed Homestead via your project's `composer.json` file, you sho
 
 <a name="old-versions"></a>
 ## Old Versions
+
+> {note} If you need an older version of PHP please see <a href="#multiple-php-versions">Multiple PHP Versions</a> before trying to use an old version of Homestead. 
 
 You can easily override the version of the box that Homestead uses by adding the following line to your `Homestead.yaml` file:
 
