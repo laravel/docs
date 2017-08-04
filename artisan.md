@@ -17,6 +17,7 @@
 - [Registering Commands](#registering-commands)
 - [Programmatically Executing Commands](#programmatically-executing-commands)
     - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
+    - [Debugging Commands](#debugging-commands)
 
 <a name="introduction"></a>
 ## Introduction
@@ -440,3 +441,12 @@ If you would like to call another console command and suppress all of its output
     $this->callSilent('email:send', [
         'user' => 1, '--queue' => 'default'
     ]);
+
+<a href="debugging-commands"></a>
+### Debugging Commands
+
+Artisan commands will print stack traces when providing the `-vvv` option. This can be handled in your custom command via the `verbose` option. For example:
+
+    if ($this->option('verbose')) {
+        $this->info('User is: '. $this->argument('user'));
+    }
