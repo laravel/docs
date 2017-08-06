@@ -186,7 +186,7 @@ Method  | Description
 `$response->assertCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie.
 `$response->assertPlainCookie($cookieName, $value = null);`  |  Assert that the response contains the given cookie (unencrypted).
 `$response->assertSessionHas($key, $value = null);`  |  Assert that the session contains the given piece of data.
-`$response->assertSessionHasErrors(array $keys);`  |  Assert that the session contains an error for the given field.
+`$response->assertSessionHasErrors(array $keys, $errorBag = 'default');`  |  Assert that the session contains an error for the given field.
 `$response->assertSessionMissing($key);`  |  Assert that the session does not contain the given key.
 `$response->assertJson(array $data);`  |  Assert that the response contains the given JSON data.
 `$response->assertJsonFragment(array $data);`  |  Assert that the response contains the given JSON fragment.
