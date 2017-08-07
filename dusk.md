@@ -487,11 +487,13 @@ Assertion  | Description
 ------------- | -------------
 `$browser->assertTitle($title)`  |  Assert the page title matches the given text.
 `$browser->assertTitleContains($title)`  |  Assert the page title contains the given text.
+`$browser->assertPathBeginsWith($path)`  |  Assert that the current URL path begins with given path.
 `$browser->assertPathIs('/home')`  |  Assert the current path matches the given path.
 `$browser->assertPathIsNot('/home')`  |  Assert the current path does not match the given path.
 `$browser->assertRouteIs($name, $parameters)`  |  Assert the current URL matches the given named route's URL.
 `$browser->assertQueryStringHas($name, $value)`  |  Assert the given query string parameter is present and has a given value.
 `$browser->assertQueryStringMissing($name)`  |  Assert the given query string parameter is missing.
+`$browser->assertHasQueryStringParameter($name)`  |  Assert that the given query string parameter is present.
 `$browser->assertHasCookie($name)`  |  Assert the given cookie is present.
 `$browser->assertCookieValue($name, $value)`  |  Assert a cookie has a given value.
 `$browser->assertPlainCookieValue($name, $value)`  |  Assert an unencrypted cookie has a given value.
@@ -499,8 +501,11 @@ Assertion  | Description
 `$browser->assertDontSee($text)`  |  Assert the given text is not present on the page.
 `$browser->assertSeeIn($selector, $text)`  |  Assert the given text is present within the selector.
 `$browser->assertDontSeeIn($selector, $text)`  |  Assert the given text is not present within the selector.
+`$browser->assertSourceHas($code)`  |  Assert that the given source code is present on the page.
+`$browser->assertSourceMissing($code)`  |  Assert that the given source code is not present on the page.
 `$browser->assertSeeLink($linkText)`  |  Assert the given link is present on the page.
 `$browser->assertDontSeeLink($linkText)`  |  Assert the given link is not present on the page.
+`$browser->assertSeeLink($link)`  |  Determine if the given link is visible.
 `$browser->assertInputValue($field, $value)`  |  Assert the given input field has the given value.
 `$browser->assertInputValueIsNot($field, $value)`  |  Assert the given input field does not have the given value.
 `$browser->assertChecked($field)`  |  Assert the given checkbox is checked.
@@ -509,9 +514,13 @@ Assertion  | Description
 `$browser->assertRadioNotSelected($field, $value)` |  Assert the given radio field is not selected.
 `$browser->assertSelected($field, $value)`  |  Assert the given dropdown has the given value selected.
 `$browser->assertNotSelected($field, $value)`  |  Assert the given dropdown does not have the given value selected.
+`$browser->assertSelectHasOptions($field, $values)`  |  Assert that the given array of values are available to be selected.
+`$browser->assertSelectMissingOptions($field, $values)`  |  Assert that the given array of values are not available to be selected.
+`$browser->assertSelectHasOption($field, $value)`  |  Assert that the given value is available to be selected on the given field.
 `$browser->assertValue($selector, $value)`  |  Assert the element matching the given selector has the given value.
 `$browser->assertVisible($selector)`  |  Assert the element matching the given selector is visible.
 `$browser->assertMissing($selector)`  |  Assert the element matching the given selector is not visible.
+`$browser->assertDialogOpened($message)`  |  Assert that a JavaScript dialog with given message has been opened.
 
 <a name="pages"></a>
 ## Pages
