@@ -494,6 +494,11 @@ The `Mail` fake has been greatly simplified for the Laravel 5.4 release. Instead
 
 ### Translation
 
+#### `trans` and `trans_choice` methods signatures
+
+Both `trans` and `trans_choice` translator method signature was changed to remove `domain` parameter, the optional parameter
+`locale` is now the 3rd and 4th parameters respectively.
+
 #### `{Inf}` Placeholder
 
 If you are using the `{Inf}` placeholder for pluralizing your translation strings, you should update your translation strings to use the `*` character instead:
