@@ -1,521 +1,249 @@
 # Upgrade Guide
 
-- [Upgrading To 5.4.0 From 5.3](#upgrade-5.4.0)
+- [Upgrading To 5.5.0 From 5.4](#upgrade-5.5.0)
 
-<a name="upgrade-5.4.0"></a>
-## Upgrading To 5.4.0 From 5.3
+<a name="upgrade-5.5.0"></a>
+## Upgrading To 5.5.0 From 5.4
 
-#### Estimated Upgrade Time: 1-2 Hours
+#### Estimated Upgrade Time: 1 Hour
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.4.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~5.7`.
+Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~6.0`.
 
-#### Removing Compiled Services File
+#### Laravel Dusk
 
-If it exists, you may delete the `bootstrap/cache/compiled.php` file. It is no longer used by the framework.
+Laravel Dusk `2.0.0` has been released to provide compatibility with Laravel 5.5 and headless Chrome testing.
 
-#### Flushing The Cache
+#### Pusher
 
-After upgrading all packages, you should run `php artisan view:clear` to avoid Blade errors related to the removal of `Illuminate\View\Factory::getFirstLoop()`. In addition, you may need to run `php artisan route:clear` to flush the route cache.
+The Pusher event broadcasting driver now requires version `~3.0` of the Pusher SDK.
 
-#### Laravel Cashier
+### Artisan
 
-Laravel Cashier is already compatible with Laravel 5.4.
+#### The `fire` Method
 
-#### Laravel Passport
-
-Laravel Passport `2.0.0` has been released to provide compatibility with Laravel 5.4 and the [Axios](https://github.com/mzabriskie/axios) JavaScript library. If you are upgrading from Laravel 5.3 and using the pre-built Passport Vue components, you should make sure the Axios library is globally available to your application as `axios`.
-
-#### Laravel Scout
-
-Laravel Scout `3.0.0` has been released to provide compatibility with Laravel 5.4.
-
-#### Laravel Socialite
-
-Laravel Socialite `3.0.0` has been released to provide compatibility with Laravel 5.4.
-
-#### Laravel Tinker
-
-In order to continue using the `tinker` Artisan command, you should also install the `laravel/tinker` package:
-
-    composer require laravel/tinker
-
-Once the package has been installed, you should add `Laravel\Tinker\TinkerServiceProvider::class` to the `providers` array in your `config/app.php` configuration file.
-
-#### Guzzle
-
-Laravel 5.4 requires Guzzle 6.0 or greater.
+Any `fire` methods present on your Artisan commands should be renamed to `handle`.
 
 ### Authorization
 
-#### The `getPolicyFor` Method
+#### The `authorizeResource` Controller Method
 
-Previous, when calling the `Gate::getPolicyFor($class)` method, an exception was thrown if no policy could be found. Now, the method will return `null` if no policy is found for the given class. If you call this method directly, make sure you refactor your code to check for `null`:
+When passing a multi-word model name to the `authorizeResource` method, the resulting route segment will now be "snake" case, matching the behavior of resource controllers.
 
-```php
-$policy = Gate::getPolicyFor($class);
+### Cache
 
-if ($policy) {
-    // code that was previously in the try block
-} else {
-    // code that was previously in the catch block
-}
-```
+#### Database Driver
 
-### Blade
-
-#### `@section` Escaping
-
-In Laravel 5.4, inline content passed to a section is automatically escaped:
-
-    @section('title', $content)
-
-If you would like to render unescaped content in a section, you must declare the section using the traditional "long form" style:
-
-    @section('title')
-        {!! $content !!}
-    @stop
-
-### Bootstrappers
-
-If you are manually overriding the `$bootstrappers` array on your HTTP or Console kernel, you should rename the `DetectEnvironment` entry to `LoadEnvironmentVariables` and remove `ConfigureLogging`.
-
-### Broadcasting
-
-#### Channel Model Binding
-
-When defining channel name placeholders in Laravel 5.3, the `*` character is used. In Laravel 5.4, you should define these placeholders using `{foo}` style placeholders, like routes:
-
-    Broadcast::channel('App.User.{userId}', function ($user, $userId) {
-        return (int) $user->id === (int) $userId;
-    });
-
-### Collections
-
-#### The `every` Method
-
-The behavior of the `every` method has been moved to the `nth` method to match the method name defined by Lodash.
-
-#### The `random` Method
-
-Calling `$collection->random(1)` will now return a new collection instance with one item. Previously, this would return a single object. This method will only return a single object if no arguments are supplied.
-
-### Container
-
-#### Aliasing Via `bind` / `instance`
-
-In previous Laravel releases, you could pass an array as the first parameter to the `bind` or `instance` methods to register an alias:
-
-    $container->bind(['foo' => FooContract::class], function () {
-        return 'foo';
-    });
-
-However, this behavior has been removed in Laravel 5.4. To register an alias, you should now use the `alias` method:
-
-    $container->alias(FooContract::class, 'foo');
-
-#### Binding Classes With Leading Slashes
-
-Binding classes into the container with leading slashes is no longer supported. This feature required a significant amount of string formatting calls to be made within the container. Instead, simply register your bindings without a leading slash:
-
-    $container->bind('Class\Name', function () {
-        //
-    });
-
-    $container->bind(ClassName::class, function () {
-        //
-    });
-
-#### `make` Method Parameters
-
-The container's `make` method no longer accepts a second array of parameters. This feature typically indicates a code smell. Typically, you can always construct the object in another way that is more intuitive.
-
-#### Resolving Callbacks
-
-The container's `resolving` and `afterResolving` method now must be provided a class name or binding key as the first argument to the method:
-
-    $container->resolving('Class\Name', function ($instance) {
-        //
-    });
-
-    $container->afterResolving('Class\Name', function ($instance) {
-        //
-    });
-
-#### `share` Method Removed
-
-The `share` method has been removed from the container. This was a legacy method that has not been documented in several years. If you are using this method, you should begin using the `singleton` method instead:
-
-    $container->singleton('foo', function () {
-        return 'foo';
-    });
-
-### Console
-
-#### The `Illuminate\Console\AppNamespaceDetectorTrait` Trait
-
-If you are directly referencing the `Illuminate\Console\AppNamespaceDetectorTrait` trait, update your code to reference `Illuminate\Console\DetectsApplicationNamespace` instead.
-
-### Database
-
-#### Custom Connections
-
-If you were previously binding a service container binding for a `db.connection.{driver-name}` key in order to resolve a custom database connection instance, you should now use the `Illuminate\Database\Connection::resolverFor` method in the `register` method of your `AppServiceProvider`:
-
-    use Illuminate\Database\Connection;
-
-    Connection::resolverFor('driver-name', function ($connection, $database, $prefix, $config) {
-        //
-    });
-
-#### Fetch Mode
-
-Laravel no longer includes the ability to customize the PDO "fetch mode" from your configuration files. Instead, `PDO::FETCH_OBJ` is always used. If you would still like to customize the fetch mode for your application you may listen for the new `Illuminate\Database\Events\StatementPrepared` event:
-
-    Event::listen(StatementPrepared::class, function ($event) {
-        $event->statement->setFetchMode(...);
-    });
+If you are using the database cache driver, you should run `php artisan cache:clear` when deploying your upgraded Laravel 5.5 application for the first time.
 
 ### Eloquent
 
-#### Date Casts
+#### The `belongsTo` Method
 
-The `date` cast now converts the column to a `Carbon` object and calls the `startOfDay` method on the object. If you would like to preserve the time portion of the date, you should use the `datetime` cast.
+If you are overriding the `belongsTo` method on your Eloquent model, you should update your method signature to reflect the addition of new arguments:
 
-#### Foreign Key Conventions
-
-If the foreign key is not explicitly specified when defining a relationship, Eloquent will now use the table name and primary key name for the related model to build the foreign key. For the vast majority of applications, this is not a change of behavior. For example:
-
-    public function user()
+    /**
+     * Define a many-to-many relationship.
+     *
+     * @param  string  $related
+     * @param  string  $table
+     * @param  string  $foreignPivotKey
+     * @param  string  $relatedPivotKey
+     * @param  string  $parentKey
+     * @param  string  $relatedKey
+     * @param  string  $relation
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function belongsToMany($related, $table = null, $foreignPivotKey = null,
+                                  $relatedPivotKey = null,$parentKey = null,
+                                  $relatedKey = null, $relation = null)
     {
-        return $this->belongsTo(User::class);
-    }
-
-Just like previous Laravel releases, this relationship will typically use `user_id` as the foreign key. However, the behavior could be different from previous releases if you are overriding the `getKeyName` method of the `User` model. For example:
-
-    public function getKeyName()
-    {
-        return 'key';
-    }
-
-When this is the case, Laravel will now respect your customization and determine the foreign key column name is `user_key` instead of `user_id`.
-
-#### BelongsToMany `setJoin`
-
-The `setJoin` method has been renamed to `performJoin`.
-
-#### Has One / Many `createMany`
-
-The `createMany` method of a `hasOne` or `hasMany` relationship now returns a collection object instead of an array.
-
-#### Related Model Connections
-
-Related models will now use the same connection as the parent model. For example, if you execute a query like:
-
-    User::on('example')->with('posts');
-
-Eloquent will query the posts table on the `example` connection instead of the default database connection. If you want to read the `posts` relationship from the default connection, you should to explicitly set the model's connection to your application's default connection.
-
-#### The `chunk` Method
-
-The query builder `chunk` method now requires an `orderBy` clause, which provides consistency with the `each` method. An exception will be thrown if an `orderBy` clause is not supplied. For example:
-
-    DB::table('users')->orderBy('id')->chunk(100, function ($users) {
-        foreach ($users as $user) {
-            //
-        }
-    });
-
-The Eloquent query builder `chunk` method will automatically apply an `orderBy` clause on the model's primary key if one is not supplied.
-
-#### The `create` & `forceCreate` Methods
-
-The `Model::create` & `Model::forceCreate` methods have been moved to the `Illuminate\Database\Eloquent\Builder` class in order to provide better support for creating models on multiple connections. However, if you are extending these methods in your own models, you will need to modify your implementation to call the `create` method on the builder. For example:
-
-    public static function create(array $attributes = [])
-    {
-        $model = static::query()->create($attributes);
-
-        // ...
-
-        return $model;
-    }
-
-#### The `hydrate` Method
-
-If you are currently passing a custom connection name to this method, you should now use the `on` method:
-
-    User::on('connection')->hydrate($records);
-
-#### `hydrateRaw` Method
-
-The `Model::hydrateRaw` method has been renamed to `fromQuery`. If you are passing a custom connection name to this method, you should now use the `on` method:
-
-    User::on('connection')->fromQuery('...');
-
-#### The `whereKey` Method
-
-The `whereKey($id)` method will now add a "where" clause for the given primary key value. Previously, this would fall into the dynamic "where" clause builder and add a "where" clause for the "key" column. If you used the `whereKey` method to dynamically add a condition for the `key` column you should now use `where('key', ...)` instead.
-
-#### The `factory` Helper
-
-Calling `factory(User::class, 1)->make()` or `factory(User::class, 1)->create()` will now return a collection with one item. Previously, this would return a single model. This method will only return a single model if the amount is not supplied.
-
-### Events
-
-#### Contract Changes
-
-If you are manually implementing the `Illuminate\Contracts\Events\Dispatcher` interface in your application or package, you should rename the `fire` method to `dispatch`.
-
-#### Event Priority
-
-Support for event handler "priorities" has been removed. This undocumented feature typically indicates an abuse of the event feature. Instead, consider using a series of synchronous method calls. Alternatively, you may dispatch a new event from within the handler of another event in order to ensure that a given event's handler fires after an unrelated handler.
-
-#### Wildcard Event Handler Signatures
-
-Wildcard event handlers now receive the event name as their first argument and the array of event data as their second argument. The `Event::firing` method has been removed:
-
-    Event::listen('*', function ($eventName, array $data) {
         //
-    });
+    }
 
-#### The `kernel.handled` Event
+#### Model `is` Method
 
-The `kernel.handled` event is now an object based event using the `Illuminate\Foundation\Http\Events\RequestHandled` class.
+If you are overriding the `is` method of your Eloquent model, you should remove the `Model` type-hint from the method. This allows the `is` method to receive `null` as an argument:
 
-#### The `locale.changed` Event
+    /**
+     * Determine if two models have the same ID and belong to the same table.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model|null  $model
+     * @return bool
+     */
+    public function is($model)
+    {
+        //
+    }
 
-The `locale.changed` event is now an object based event using the `Illuminate\Foundation\Events\LocaleUpdated` class.
+#### Model `$events` Property
 
-#### The `illuminate.log` Event
+The `$events` property on your models should be renamed to `$dispatchesEvents`. This change was made because of a high number of users needing to define an `events` relationship, which caused a conflict with the old property name.
 
-The `illuminate.log` event is now an object based event using the `Illuminate\Log\Events\MessageLogged` class.
+#### Pivot `$parent` Property
 
-### Exceptions
+The protected `$parent` property on the `Illuminate\Database\Eloquent\Relations\Pivot` class has been renamed to `$pivotParent`.
 
-The `Illuminate\Http\Exception\HttpResponseException` has been renamed to `Illuminate\Http\Exceptions\HttpResponseException`. Note that `Exceptions` is now plural. Likewise, the `Illuminate\Http\Exception\PostTooLargeException` has been renamed to `Illuminate\Http\Exceptions\PostTooLargeException`.
+#### Relationship `create` Methods
+
+The `BelongsToMany`, `HasOneOrMany`, and `MorphOneOrMany` class' `create` methods have been modified to provide a default value for the `$attributes` argument. If you are overriding these methods, you should update your signatures to match the new definition:
+
+    public function create(array $attributes = [])
+    {
+        //
+    }
+
+#### Soft Deleted Models
+
+When deleting a "soft deleted" model, the `exists` property on the model will remain `true`.
+
+#### `withCount` Column Formatting
+
+When using an alias, the `withCount` method will no longer automatically append `_count` onto the resulting column name. For example, in Laravel 5.4, the following query woudl result in a `bar_count` column being added to the query:
+
+    $users = User::withCount('foo as bar')->get();
+
+However, in Laravel 5.5, the alias will be used exactly as it is given. If you would like to append `_count` to the resulting column, you must specify that suffix when defining the alias:
+
+    $users = User::withCount('foo as bar_count')->get();
+
+### Exception Format
+
+In Laravel 5.5, all exceptions, including validation exceptions, are converted into HTTP responses by the exception handler. In addition, the default format for JSON validation errors has changed. The new format conforms to the following convention:
+
+    {
+        "message": "...",
+        "errors": {
+            "field-1": [
+                "Error 1",
+                "Error 2"
+            ],
+            "field-2": [
+                "Error 1",
+                "Error 2"
+            ],
+        }
+    }
+
+However, if you would like to maintain the Laravel 5.4 JSON error format, you may add the following method to your `App\Exceptions\Handler` class:
+
+    use Illuminate\Validation\ValidationException;
+
+    /**
+     * Convert a validation exception into a JSON response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Validation\ValidationException  $exception
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        return response()->json($exception->errors(), $exception->status);
+    }
+
+#### JSON Authentication Attempts
+
+This change also affects the validation error formatting for authentication attempts made over JSON. In Laravel 5.5, JSON authentication failures will return the error messages following the new formatting convention described above.
+
+#### A Note On Form Requests
+
+If you were customizing the response format of an individual form request, you should now override the `failedValidation` method of that form request, and throw an `HttpResponseException` instance containing your custom response:
+
+    use Illuminate\Http\Exceptions\HttpResponseException;
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json(..., 422));
+    }
 
 ### Mail
 
-#### `Class@method` Syntax
+#### Unused Parameters
 
-Sending mail using `Class@method` syntax is no longer supported. For example:
+The unused `$data` and `$callback` arguments were removed from the `Illuminate\Contracts\Mail\MailQueue` contract's `queue` and `later` methods:
 
-    Mail::send('view.name', $data, 'Class@send');
+    /**
+     * Queue a new e-mail message for sending.
+     *
+     * @param  string|array|MailableContract  $view
+     * @param  string  $queue
+     * @return mixed
+     */
+    public function queue($view, $queue = null);
 
-If you are sending mail in this way you should convert these calls to [mailables](/docs/{{version}}/mail).
+    /**
+     * Queue a new e-mail message for sending after (n) seconds.
+     *
+     * @param  \DateTimeInterface|\DateInterval|int  $delay
+     * @param  string|array|MailableContract  $view
+     * @param  string  $queue
+     * @return mixed
+     */
+    public function later($delay, $view, $queue = null);
 
-#### New Configuration Options
+### Requests
 
-In order to provide support for Laravel 5.4's new Markdown mail components, you should add the following block of configuration to the bottom of your `mail` configuration file:
+#### The `has` Method
 
-    'markdown' => [
-        'theme' => 'default',
+The `$request->has` method will now return `true` for empty strings and `null`. A new `$request->filled` method has been added that provides the previous behavior of the `has` method.
 
-        'paths' => [
-            resource_path('views/vendor/mail'),
-        ],
-    ],
+#### The `intersect` Method
 
-#### Queueing Mail With Closures
+The `intersect` method has been removed. You may replicate this behavior using `array_filter` on a call to `$request->only`:
 
-In order to queue mail, you now must use a [mailable](/docs/{{version}}/mail). Queuing mail using the `Mail::queue` and `Mail::later` methods no longer supports using Closures to configure the mail message. This feature required the use of special libraries to serialize Closures since PHP does not natively support this feature.
+    return array_filter($request->only('foo'));
 
-### Redis
+#### The `only` Method
 
-#### Improved Clustering Support
+The `only` method will now only return attributes that are actually present in the request payload. If you would like to preserve the old behavior of the `only` method, you may use the new `pick` method instead.
 
-Laravel 5.4 introduces improved Redis cluster support. If you are using Redis clusters, you should place your cluster connections inside of a `clusters` configuration option in the Redis portion of your `config/database.php` configuration file:
-
-    'redis' => [
-
-        'client' => 'predis',
-
-        'options' => [
-            'cluster' => 'redis',
-        ],
-
-        'clusters' => [
-            'default' => [
-                [
-                    'host' => env('REDIS_HOST', '127.0.0.1'),
-                    'password' => env('REDIS_PASSWORD', null),
-                    'port' => env('REDIS_PORT', 6379),
-                    'database' => 0,
-                ],
-            ],
-        ],
-
-    ],
-
-### Routing
-
-#### Post Size Middleware
-
-The class `Illuminate\Foundation\Http\Middleware\VerifyPostSize` has been renamed to `Illuminate\Foundation\Http\Middleware\ValidatePostSize`.
-
-#### The `middleware` Method
-
-The `middleware` method of the `Illuminate\Routing\Router` class has been renamed to `aliasMiddleware()`. It is likely that most applications never call this method manually, as it is typically only called by the HTTP kernel to register route-level middleware defined in the `$routeMiddleware` array.
-
-#### `Route` Methods
-
-The `getUri` method of the `Illuminate\Routing\Route` class has been removed. You should use the `uri` method instead.
-
-The `getMethods` method of the `Illuminate\Routing\Route` class has been removed. You should use the `methods` method instead.
-
-The `getParameter` method of the `Illuminate\Routing\Route` class has been removed. You should use the `parameter` method instead.
-
-The `getPath` method of the `Illuminate\Routing\Route` class has been removed. You should use the `uri` method instead.
-
-### Sessions
-
-#### Symfony Compatibility
-
-Laravel's session handlers no longer implements Symfony's `SessionInterface`. Implementing this interface required us to implement extraneous features that were not needed by the framework. Instead, a new `Illuminate\Contracts\Session\Session` interface has been defined and may be used instead. The following code changes should also be applied:
-
-All calls to the `->set()` method should be changed to `->put()`. Typically, Laravel applications would never call the `set` method since it has never been documented within the Laravel documentation. However, it is included here out of caution.
-
-All calls to the `->getToken()` method should be changed to `->token()`.
-
-All calls to the `$request->setSession()` method should be changed to `setLaravelSession()`.
+    return $request->pick('foo');
 
 ### Testing
 
-Laravel 5.4's testing layer has been re-written to be simpler and lighter out of the box. If you would like to continue using the testing layer present in Laravel 5.3, you may install the `laravel/browser-kit-testing` [package](https://github.com/laravel/browser-kit-testing) into your application. This package provides full compatibility with the Laravel 5.3 testing layer. In fact, you can run the Laravel 5.4 testing layer side-by-side with the Laravel 5.3 testing layer.
+#### Authentication Assertions
 
-In order to allow Laravel to autoload any new tests you generate using the Laravel 5.4 test generators, you should add the `Tests` namespace to your `composer.json` file's `autoload-dev` block:
+Some authentication assertions were renamed for better consistency with the rest of the framework's assertions:
 
-    "psr-4": {
-        "Tests\\": "tests/"
-    }
-
-#### Running Laravel 5.3 & 5.4 Tests In A Single Application
-
-First install the `laravel/browser-kit-testing` package:
-
-    composer require laravel/browser-kit-testing="1.*" --dev
-
-Once the package has been installed, create a copy of your `tests/TestCase.php` file and save it to your `tests` directory as `BrowserKitTestCase.php`. Then, modify the file to extend the `Laravel\BrowserKitTesting\TestCase` class. Once you have done this, you should have two base test classes in your `tests` directory: `TestCase.php` and `BrowserKitTestCase.php`. In order for your `BrowserKitTestCase` class to be properly loaded, you may need to add it to your `composer.json` file:
-
-    "autoload-dev": {
-        "classmap": [
-            "tests/TestCase.php",
-            "tests/BrowserKitTestCase.php"
-        ]
-    },
-
-Tests written on Laravel 5.3 will extend the `BrowserKitTestCase` class while any new tests that use the Laravel 5.4 testing layer will extend the `TestCase` class. Your `BrowserKitTestCase` class should look like the following:
-
-    <?php
-
-    use Illuminate\Contracts\Console\Kernel;
-    use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
-
-    abstract class BrowserKitTestCase extends BaseTestCase
-    {
-        /**
-         * The base URL of the application.
-         *
-         * @var string
-         */
-        public $baseUrl = 'http://localhost';
-
-        /**
-         * Creates the application.
-         *
-         * @return \Illuminate\Foundation\Application
-         */
-        public function createApplication()
-        {
-            $app = require __DIR__.'/../bootstrap/app.php';
-
-            $app->make(Kernel::class)->bootstrap();
-
-            return $app;
-        }
-    }
-
-Once you have created this class, make sure to update all of your tests to extend your new `BrowserKitTestCase` class. This will allow all of your tests written on Laravel 5.3 to continue running on Laravel 5.4. If you choose, you can slowly begin to port them over to the new [Laravel 5.4 test syntax](/docs/5.4/http-tests) or [Laravel Dusk](/docs/5.4/dusk).
-
-> {note} If you are writing new tests and want them to use the Laravel 5.4 testing layer, make sure to extend the `TestCase` class.
-
-#### Installing Dusk In An Upgraded Application
-
-If you would like to install Laravel Dusk into an application that has been upgraded from Laravel 5.3, first install it via Composer:
-
-    composer require laravel/dusk
-
-Next, you will need to create a `CreatesApplication` trait in your `tests` directory. This trait is responsible for creating fresh application instances for test cases. The trait should look like the following:
-
-    <?php
-
-    use Illuminate\Contracts\Console\Kernel;
-
-    trait CreatesApplication
-    {
-        /**
-         * Creates the application.
-         *
-         * @return \Illuminate\Foundation\Application
-         */
-        public function createApplication()
-        {
-            $app = require __DIR__.'/../bootstrap/app.php';
-
-            $app->make(Kernel::class)->bootstrap();
-
-            return $app;
-        }
-    }
-
-> {note} If you have namespaced your tests and are using the PSR-4 autoloading standard to load your `tests` directory, you should place the `CreatesApplication` trait under the appropriate namespace.
-
-Once you have completed these preparatory steps, you can follow the normal [Dusk installation instructions](/docs/{{version}}/dusk#installation).
-
-#### Environment
-
-The Laravel 5.4 test class no longer manually forces `putenv('APP_ENV=testing')` for each test. Instead, the framework utilizes the `APP_ENV` variable from the loaded `.env` file.
-
-#### Event Fake
-
-The `Event` fake's `assertFired` method should be updated to `assertDispatched`, and the `assertNotFired` method should be updated to `assertNotDispatched`. The method's signatures have not been changed.
-
-#### Mail Fake
-
-The `Mail` fake has been greatly simplified for the Laravel 5.4 release. Instead of using the `assertSentTo` method, you should now simply use the `assertSent` method and utilize the `hasTo`, `hasCc`, etc. helper methods within your callback:
-
-    Mail::assertSent(MailableName::class, function ($mailable) {
-        return $mailable->hasTo('email@example.com');
-    });
+<div class="content-list" markdown="1">
+- `seeIsAuthenticated` was renamed to `assertAuthenticated`.
+- `dontSeeIsAuthenticated` was renamed to `assertGuest`.
+- `seeIsAuthenticatedAs` was renamed to `assertAuthenticatedAs`.
+- `seeCredentials` was renamed to `assertCredentials`.
+- `dontSeeCredentials` was renamed to `assertInvalidCredentials`.
+</div>
 
 ### Translation
 
-#### `{Inf}` Placeholder
+#### The `LoaderInterface`
 
-If you are using the `{Inf}` placeholder for pluralizing your translation strings, you should update your translation strings to use the `*` character instead:
-
-    {0} First Message|{1,*} Second Message
-
-### URL Generation
-
-#### The `forceSchema` Method
-
-The `forceSchema` method of the `Illuminate\Routing\UrlGenerator` class has been renamed to `forceScheme`.
+The `Illuminate\Translation\LoaderInterface` interface has been moved to `Illuminate\Contracts\Translation\Loader`.
 
 ### Validation
 
-#### Date Format Validation
+#### Validator Methods
 
-Date format validation is now more strict and supports the placeholders present within the documentation for the PHP [date function](http://php.net/manual/en/function.date.php). In previous releases of Laravel, the timezone placeholder `P` would accept all timezone formats; however, in Laravel 5.4 each timezone format has a unique placeholder as per the PHP documentation.
+All of the validator's validation methods are now `public` instead of `protected`.
 
-#### Method Names
+### Views
 
-The `addError` method has been renamed to `addFailure`. In addition, the `doReplacements` method has been renamed to `makeReplacements`. Typically, these changes will only be relevant if you are extending the `Validator` class.
+#### Dynamic "With" Variable Names
 
-### Miscellaneous
+When allowing the dynamic `__call` method to share variables with a view, these variables will automatically use "camel" case. For example, given the following:
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.3...master) and choose which updates are important to you.
+    return view('pool')->maximumVotes(100);
+
+The `maximumVotes` variable may be accessed in the template like so:
+
+    {{ $maximumVotes }}
