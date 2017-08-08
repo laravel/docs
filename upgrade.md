@@ -167,6 +167,12 @@ If you were customizing the response format of an individual form request, you s
         throw new HttpResponseException(response()->json(..., 422));
     }
 
+### Filesystem
+
+#### The `files` Method
+
+The `files` method now returns an array of `SplFileInfo` objects, similar to the `allFiles` method. Previously, the `files` method returned an array of string path names.
+
 ### Mail
 
 #### Unused Parameters
