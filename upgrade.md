@@ -248,7 +248,7 @@ All of the validator's validation methods are now `public` instead of `protected
 
 When allowing the dynamic `__call` method to share variables with a view, these variables will automatically use "camel" case. For example, given the following:
 
-    return view('pool')->maximumVotes(100);
+    return view('pool')->withMaximumVotes(100);
 
 The `maximumVotes` variable may be accessed in the template like so:
 
