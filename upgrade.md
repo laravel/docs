@@ -102,7 +102,7 @@ When deleting a "soft deleted" model, the `exists` property on the model will re
 
 #### `withCount` Column Formatting
 
-When using an alias, the `withCount` method will no longer automatically append `_count` onto the resulting column name. For example, in Laravel 5.4, the following query woudl result in a `bar_count` column being added to the query:
+When using an alias, the `withCount` method will no longer automatically append `_count` onto the resulting column name. For example, in Laravel 5.4, the following query would result in a `bar_count` column being added to the query:
 
     $users = User::withCount('foo as bar')->get();
 
