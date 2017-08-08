@@ -80,7 +80,7 @@ You may install Homestead by simply cloning the repository. Consider cloning the
 
     git clone https://github.com/laravel/homestead.git Homestead
 
-You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [Github Release Page](https://github.com/laravel/homestead/releases):
+You should check out a tagged version of Homestead since the `master` branch may not always be stable. You can find the latest stable version on the [GitHub Release Page](https://github.com/laravel/homestead/releases):
 
     cd Homestead
 
@@ -338,12 +338,20 @@ After running the command, you will see an Ngrok screen appear which contains th
 <a name="multiple-php-versions"></a>
 ### Multiple PHP Versions
 
+> {note} This feature is only compatible with Nginx.
+
 Homestead 6 introduced support for multiple versions of PHP on the same virtual machine. You may specify which version of PHP to use for a given site within your `Homestead.yaml` file. The available PHP versions are: "5.6", "7.0", and "7.1":
 
     sites:
         - map: homestead.app
           to: /home/vagrant/Code/Laravel/public
           php: "5.6"
+
+In addition, you may use any of the supported PHP versions via the CLI:
+
+    php5.6 artisan list
+    php7.0 artisan list
+    php7.1 artisan list
 
 <a name="network-interfaces"></a>
 ## Network Interfaces
@@ -382,6 +390,8 @@ If you have installed Homestead via your project's `composer.json` file, you sho
 
 <a name="old-versions"></a>
 ## Old Versions
+
+> {tip} If you need an older version of PHP check the documentation on <a href="#multiple-php-versions">multiple PHP versions</a> before attempting to use an old version of Homestead. 
 
 You can easily override the version of the box that Homestead uses by adding the following line to your `Homestead.yaml` file:
 
