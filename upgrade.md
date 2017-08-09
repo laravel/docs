@@ -238,7 +238,7 @@ The `Illuminate\Translation\LoaderInterface` interface has been moved to `Illumi
 
 #### The `trans` Helpers
 
-The `trans` helper signature has been updated to remove the unnecessary `$doamin` argument. The new signature is as follows:
+The `trans` helper signature has been updated to remove the unnecessary `$domain` argument. The new signature is as follows:
 
     /**
      * Translate the given message.
