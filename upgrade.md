@@ -212,9 +212,9 @@ The `intersect` method has been removed. You may replicate this behavior using `
 
 #### The `only` Method
 
-The `only` method will now only return attributes that are actually present in the request payload. If you would like to preserve the old behavior of the `only` method, you may use the new `pick` method instead.
+The `only` method will now only return attributes that are actually present in the request payload. If you would like to preserve the old behavior of the `only` method, you may use the `all` method instead.
 
-    return $request->pick('foo');
+    return $request->all('foo');
 
 ### Testing
 
