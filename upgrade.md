@@ -41,9 +41,9 @@ If you are using the database cache driver, you should run `php artisan cache:cl
 
 ### Eloquent
 
-#### The `belongsTo` Method
+#### The `belongsToMany` Method
 
-If you are overriding the `belongsTo` method on your Eloquent model, you should update your method signature to reflect the addition of new arguments:
+If you are overriding the `belongsToMany` method on your Eloquent model, you should update your method signature to reflect the addition of new arguments:
 
     /**
      * Define a many-to-many relationship.
