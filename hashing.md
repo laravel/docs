@@ -8,7 +8,7 @@
 
 The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt hashing for storing user passwords. If you are using the built-in `LoginController` and `RegisterController` classes that are included with your Laravel application, they will automatically use Bcrypt for registration and authentication.
 
-> {tip} Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases.
+> {tip} Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the complexity of a hash can be increased as hardware power increases.
 
 <a name="basic-usage"></a>
 ## Basic Usage
