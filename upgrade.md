@@ -236,6 +236,33 @@ Some authentication assertions were renamed for better consistency with the rest
 
 The `Illuminate\Translation\LoaderInterface` interface has been moved to `Illuminate\Contracts\Translation\Loader`.
 
+#### The `trans` Helpers
+
+The `trans` helper signature has been updated to remove the unnecessary `$doamin` argument. The new signature is as follows:
+
+    /**
+     * Translate the given message.
+     *
+     * @param  string  $id
+     * @param  array   $replace
+     * @param  string  $locale
+     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
+     */
+    function trans($id = null, $replace = [], $locale = null);
+
+In addition, the `trans_choice` helper has been updated:
+
+    /**
+     * Translates the given message based on a count.
+     *
+     * @param  string  $id
+     * @param  int|array|\Countable  $number
+     * @param  array   $replace
+     * @param  string  $locale
+     * @return string
+     */
+    function trans_choice($id, $number, array $replace = [], $locale = null);
+
 ### Validation
 
 #### Validator Methods
