@@ -731,7 +731,7 @@ You may also alias the relationship count result, allowing multiple counts on th
 
     $posts = Post::withCount([
         'comments',
-        'comments AS pending_comments' => function ($query) {
+        'comments as pending_comments_count' => function ($query) {
             $query->where('approved', false);
         }
     ])->get();
