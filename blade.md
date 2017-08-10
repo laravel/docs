@@ -210,6 +210,18 @@ In addition to the conditional directives already discussed, the `@isset` and `@
         // $records is "empty"...
     @endempty
 
+#### Authentication Shortcuts
+
+The `@auth` and `@guest` directives may be used to quickly determine if the current user is authenticated or is a guest:
+
+    @auth
+        // The user is authenticated...
+    @endauth
+
+    @guest
+        // The user is not authenticated...
+    @endguest
+
 <a name="switch-statements"></a>
 ### Switch Statements
 

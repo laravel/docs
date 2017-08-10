@@ -71,14 +71,14 @@ Any HTML forms pointing to `POST`, `PUT`, or `DELETE` routes that are defined in
 <a name="redirect-routes"></a>
 ### Redirect Routes
 
-If you are defining a route that redirects to another URI, you may use the `Route::redirect` method. This method provides a convenient short-cut so that you do not have to define a full route or controller for performing a simple redirect:
+If you are defining a route that redirects to another URI, you may use the `Route::redirect` method. This method provides a convenient shortcut so that you do not have to define a full route or controller for performing a simple redirect:
 
     Route::redirect('/here', '/there', 301);
 
 <a name="view-routes"></a>
 ### View Routes
 
-If your route only needs to return a view, you may use the `Route::view` method. Like the `redirect` method, this method provides a simple short-cut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
+If your route only needs to return a view, you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
 
     Route::view('/welcome', 'welcome');
 
