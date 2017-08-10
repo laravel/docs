@@ -23,6 +23,7 @@
     - [The `Notifications` Directory](#the-notifications-directory)
     - [The `Policies` Directory](#the-policies-directory)
     - [The `Providers` Directory](#the-providers-directory)
+    - [The `Rules` Directory](#the-rules-directory)
 
 <a name="introduction"></a>
 ## Introduction
@@ -160,3 +161,8 @@ This directory does not exist by default, but will be created for you if you exe
 The `Providers` directory contains all of the [service providers](/docs/{{version}}/providers) for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.
 
 In a fresh Laravel application, this directory will already contain several providers. You are free to add your own providers to this directory as needed.
+
+<a name="the-rules-directory"></a>
+#### The Rules Directory
+
+This directory does not exist by default, but will be created for you if you execute the `make:rule` Artisan command. The `Rules` directory contains the custom validation rule objects for your application. Rules are used to encapsulate complicated validation logic in a simple object. For more information, check out the [validation documentation](/docs/{{version}}/validation).
