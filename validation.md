@@ -10,7 +10,6 @@
 - [Form Request Validation](#form-request-validation)
     - [Creating Form Requests](#creating-form-requests)
     - [Authorizing Form Requests](#authorizing-form-requests)
-    - [Customizing The Error Format](#customizing-the-error-format)
     - [Customizing The Error Messages](#customizing-the-error-messages)
 - [Manually Creating Validators](#manually-creating-validators)
     - [Automatic Redirection](#automatic-redirection)
@@ -168,33 +167,6 @@ By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` m
 
 In this example, we are specifying that the `publish_at` field may be either `null` or a valid date representation. If the `nullable` modifier is not added to the rule definition, the validator would consider `null` an invalid date.
 
-<a name="quick-customizing-the-flashed-error-format"></a>
-#### Customizing The Flashed Error Format
-
-If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatValidationErrors` on your base controller. Don't forget to import the `Illuminate\Contracts\Validation\Validator` class at the top of the file:
-
-    <?php
-
-    namespace App\Http\Controllers;
-
-    use Illuminate\Foundation\Bus\DispatchesJobs;
-    use Illuminate\Contracts\Validation\Validator;
-    use Illuminate\Routing\Controller as BaseController;
-    use Illuminate\Foundation\Validation\ValidatesRequests;
-
-    abstract class Controller extends BaseController
-    {
-        use DispatchesJobs, ValidatesRequests;
-
-        /**
-         * {@inheritdoc}
-         */
-        protected function formatValidationErrors(Validator $validator)
-        {
-            return $validator->errors()->all();
-        }
-    }
-
 <a name="quick-ajax-requests-and-validation"></a>
 #### AJAX Requests & Validation
 
@@ -292,19 +264,6 @@ If you plan to have authorization logic in another part of your application, sim
     public function authorize()
     {
         return true;
-    }
-
-<a name="customizing-the-error-format"></a>
-### Customizing The Error Format
-
-If you wish to customize the format of the validation errors that are flashed to the session when validation fails, override the `formatErrors` on your base request (`App\Http\Requests\Request`). Don't forget to import the `Illuminate\Contracts\Validation\Validator` class at the top of the file:
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function formatErrors(Validator $validator)
-    {
-        return $validator->errors()->all();
     }
 
 <a name="customizing-the-error-messages"></a>
