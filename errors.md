@@ -9,6 +9,7 @@
 - [The Exception Handler](#the-exception-handler)
     - [Report Method](#report-method)
     - [Render Method](#render-method)
+    - [Reportable & Renderable Exceptions](#renderable-exceptions)
 - [HTTP Exceptions](#http-exceptions)
     - [Custom HTTP Error Pages](#custom-http-error-pages)
 - [Logging](#logging)
@@ -129,6 +130,42 @@ The `render` method is responsible for converting a given exception into an HTTP
 
         return parent::render($request, $exception);
     }
+
+<a name="renderable-exceptions"></a>
+### Reportable & Renderable Exceptions
+
+Instead of type-checking exceptions in the exception handler's `report` and `render` methods, you may define `report` and `render` methods directly on your custom exception. When these methods exist, they will be called automatically by the framework:
+
+    <?php
+
+    namespace App\Exceptions;
+
+    use Exception;
+
+    class RenderException extends Exception
+    {
+        /**
+         * Report the exception.
+         *
+         * @return void
+         */
+        public function report()
+        {
+            //
+        }
+
+        /**
+         * Report the exception.
+         *
+         * @param  \Illuminate\Http\Request
+         * @return void
+         */
+        public function render($request)
+        {
+            return response(...);
+        }
+    }
+
 
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
