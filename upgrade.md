@@ -324,6 +324,17 @@ In order to provide support for Laravel 5.4's new Markdown mail components, you 
 
 In order to queue mail, you now must use a [mailable](/docs/{{version}}/mail). Queuing mail using the `Mail::queue` and `Mail::later` methods no longer supports using Closures to configure the mail message. This feature required the use of special libraries to serialize Closures since PHP does not natively support this feature.
 
+### Queue
+
+#### Failed Jobs Log Schema Change
+
+Laravel 5.4 adjusts the `failed_jobs` schema. When an uncaught exception is thrown within a job the queue worker will cast the exception as a `string` and insert it alongside the other job information.
+
+If you're using the failed jobs functionality, you'll need to add the `exception` column to the `failed_jobs` table (or whatever else you've called it – the table name is set in `config/queue.php:failed.table`):
+
+    $table->longText('exception')->after('payload');
+
+
 ### Redis
 
 #### Improved Clustering Support
