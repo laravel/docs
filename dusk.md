@@ -634,16 +634,20 @@ To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubun
 
     sudo: required
     dist: trusty
+    
+    addons:
+		chrome: stable
+	
+	install:
+		- cp .env.testing .env
+		- travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
     before_script:
-        - export DISPLAY=:99.0
-        - sh -e /etc/init.d/xvfb start
-        - ./vendor/laravel/dusk/bin/chromedriver-linux &
-        - cp .env.testing .env
-        - php artisan serve > /dev/null 2>&1 &
+		- google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+		- php artisan serve &
 
     script:
-        - php artisan dusk
+		- php artisan dusk
 
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
