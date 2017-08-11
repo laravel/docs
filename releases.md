@@ -87,6 +87,13 @@ Or, you can remove the JavaScript and CSS framework scaffolding entirely using t
 
 ### Queued Job Chaining
 
+Job chaining allows you to specify a list of queued jobs that should be run in sequence. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `withChain` method on any of your dispatchable jobs:
+
+    ProvisionServer::withChain([
+        new InstallNginx,
+        new InstallPhp
+    ])->dispatch();
+
 ### Validation Rule Objects
 
 ### TrustedProxy Integration
