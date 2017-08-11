@@ -166,7 +166,6 @@ Instead of type-checking exceptions in the exception handler's `report` and `ren
         }
     }
 
-
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
 

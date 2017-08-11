@@ -188,7 +188,65 @@ A new `App\Http\Middleware\TrustProxies` middleware is included in the default L
 
 ### Renderable Mailables
 
+Mailables can now be returned directly from routes, allowing you to quickly preview your mailable's designs in the browser:
+
+    Route::get('/mailable', function () {
+        $invoice = App\Invoice::find(1);
+
+        return new App\Mail\InvoicePaid($invoice);
+    });
+
 ### Renderable & Reportable Exceptions
+
+In previous versions of Laravel, you may have had to resort to "type checking" in your exception handler in order to render a custom response for a given exception. For instance, you may have written code like this in your exception handler's `render` method:
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Exception $exception)
+    {
+        if ($exception instanceof SpecialException) {
+            return response(...);
+        }
+
+        return parent::render($request, $exception);
+    }
+
+In Laravel 5.5, you may now define a `render` method directly on your exceptions. This allows you to place the custom response rendering logic directly on the exception, which helps avoid conditional logic accumulation in your exception handler. If you would like to also customize the reporting logic for the exception, you may define a `report` method on the class:
+
+    <?php
+
+    namespace App\Exceptions;
+
+    use Exception;
+
+    class SpecialException extends Exception
+    {
+        /**
+         * Report the exception.
+         *
+         * @return void
+         */
+        public function report()
+        {
+            //
+        }
+
+        /**
+         * Report the exception.
+         *
+         * @param  \Illuminate\Http\Request
+         * @return void
+         */
+        public function render($request)
+        {
+            return response(...);
+        }
+    }
 
 ### Consistent Exception Handling
 
