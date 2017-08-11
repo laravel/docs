@@ -634,9 +634,10 @@ You may also pass an array of values to determine if the given string contains a
 <a name="method-str-finish"></a>
 #### `str_finish()` {#collection-method}
 
-The `str_finish` function adds a single instance of the given value to a string:
+The `str_finish` function adds a single instance of the given value to a string if it does not already end with it:
 
     $string = str_finish('this/string', '/');
+    $string2 = str_finish('this/string/', '/');
 
     // this/string/
 
