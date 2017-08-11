@@ -153,7 +153,7 @@ When running applications behind a load balancer that terminates TLS / SSL certi
 
 To solve this, many Laravel users install the [Trusted Proxies](https://github.com/fideloper/TrustedProxy) package by Chris Fidao. Since this is such a common use case, Chris' package now ships with Laravel 5.5 by default.
 
-A new `App\Http\Middleware\TrustProxies` middleware is included in the default Laravel 5.5 application and allows you to quickly customize the proxies that should be trusted by your application:
+A new `App\Http\Middleware\TrustProxies` middleware is included in the default Laravel 5.5 application. This middleware allows you to quickly customize the proxies that should be trusted by your application:
 
     <?php
 
