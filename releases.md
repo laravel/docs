@@ -102,6 +102,51 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
 
 ### Validation Rule Objects
 
+Validation rule objects provide a new, compact way of adding custom validation rules to your application. In previous versions of Laravel, the `Validator::extend` method was used to add custom validation rules via Closures. However, this can grow cumbersome. In Laravel 5.5, a new `make:rule` Artisan command will generate a new validation rule in the `app/Rules` directory:
+
+    php artisan make:rule ValidName
+
+A rule object only has two methods: `passes` and `message`. The `passes` method receives the attribute value and name, and should return `true` or `false` depending on whether the attribute value is valid or not. The `message` method should return the validation error message that should be used when validation fails:
+
+    <?php
+
+    namespace App\Rules;
+
+    use Illuminate\Contracts\Validation\Rule;
+
+    class ValidName implements Rule
+    {
+        /**
+         * Determine if the validation rule passes.
+         *
+         * @param  string  $attribute
+         * @param  mixed  $value
+         * @return bool
+         */
+        public function passes($attribute, $value)
+        {
+            return strlen($value) === 6;
+        }
+
+        /**
+         * Get the validation error message.
+         *
+         * @return string
+         */
+        public function message()
+        {
+            return 'The name must be six characters long.';
+        }
+    }
+
+Once the rule has been defined, you may use it by simply passing an instance of the rule object with your other validation rules:
+
+    use App\Rules\ValidName;
+
+    $this->validate($request, [
+        'name' => ['required', new ValidName],
+    ]);
+
 ### TrustedProxy Integration
 
 ### Renderable Mailables
