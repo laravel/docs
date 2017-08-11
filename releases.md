@@ -250,6 +250,38 @@ In Laravel 5.5, you may now define a `render` method directly on your exceptions
 
 ### Consistent Exception Handling
 
+Validation exception handling is now consistent throughout the framework. Previously, there were multiple locations in the framework that required customization to change the default format for JSON validation error responses. In addition, the default format for JSON validation responses in Laravel 5.5 now adheres the following convention:
+
+    {
+        "message": "The given data was invalid.",
+        "errors": {
+            "field-1": [
+                "Error 1",
+                "Error 2"
+            ],
+            "field-2": [
+                "Error 1",
+                "Error 2"
+            ],
+        }
+    }
+
+All JSON validation error formatting can be controlled by defining a single method on your `App\Exceptions\Handler` class. For example, the following customization will format JSON validation responses using the Laravel 5.4 convention.
+
+    use Illuminate\Validation\ValidationException;
+
+    /**
+     * Convert a validation exception into a JSON response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Validation\ValidationException  $exception
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        return response()->json($exception->errors(), $exception->status);
+    }
+
 ### Cache Locks
 
 ### Blade Improvements
