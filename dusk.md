@@ -681,14 +681,23 @@ If you are using CircleCI 1.0 to run your Dusk tests, you may use this configura
      jobs:
          build:
              steps:
-                  - run:
-                      name: Start Chrome Driver
-                      command: ./vendor/laravel/dusk/bin/chromedriver-linux
-                      background: true
-                 - run:
-                     name: Run Laravel Server
-                     command: php artisan serve
-                     background: true
-                 - run:
-                     name: Run Laravel Dusk Tests
-                     command: php artisan dusk
+			      - run: sudo apt-get install -y libsqlite3-dev
+			      - run: cp .env.testing .env
+			      - run: composer install -n --ignore-platform-reqs
+			      - run: npm install
+			      - run: npm run production
+			      - run: vendor/bin/phpunit
+			
+			      - run:
+			          name: Start Chrome Driver
+			          command: ./vendor/laravel/dusk/bin/chromedriver-linux
+			          background: true
+			
+			      - run:
+			          name: Run Laravel Server
+			          command: php artisan serve
+			          background: true
+			
+			      - run:
+			          name: Run Laravel Dusk Tests
+			          command: php artisan dusk
