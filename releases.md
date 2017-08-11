@@ -344,6 +344,16 @@ In addition to the ability to easily define custom Blade conditional directives,
 
 ### New Routing Methods
 
+If you are defining a route that redirects to another URI, you may now use the `Route::redirect` method. This method provides a convenient shortcut so that you do not have to define a full route or controller for performing a simple redirect:
+
+    Route::redirect('/here', '/there', 301);
+
+If your route only needs to return a view, you may now use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
+
+    Route::view('/welcome', 'welcome');
+
+    Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
+
 <a name="laravel-5.4.22"></a>
 ## Laravel 5.4.22
 
