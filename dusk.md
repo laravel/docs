@@ -655,6 +655,7 @@ To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubun
 #### CircleCI 1.0
 
 If you are using CircleCI 1.0 to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
+
 	dependencies:
 	  pre:
 	      - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -692,7 +693,7 @@ If you are using CircleCI 1.0 to run your Dusk tests, you may use this configura
                    name: Start Chrome Driver
                    command: ./vendor/laravel/dusk/bin/chromedriver-linux
                    background: true
-			
+
                 - run:
                    name: Run Laravel Server
                    command: php artisan serve
