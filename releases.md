@@ -308,6 +308,40 @@ In addition, you may "block" until the lock becomes available:
 
 ### Blade Improvements
 
+Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade now provides a `Blade::if` method which allows you to quickly define custom conditional directives using Closures. For example, let's define a custom conditional that checks the current application environment. We may do this in the `boot` method of our `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Blade;
+
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Blade::if('env', function ($environment) {
+            return app()->environment($environment);
+        });
+    }
+
+Once the custom conditional has been defined, we can easily use it on our templates:
+
+    @env('local')
+        // The application is in the local environment...
+    @else
+        // The application is not in the local environment...
+    @endenv
+
+In addition to the ability to easily define custom Blade conditional directives, new shortcuts have been added to quickly check the authentication status of the current user:
+
+    @auth
+        // The user is authenticated...
+    @endauth
+
+    @guest
+        // The user is not authenticated...
+    @endguest
+
 ### New Routing Methods
 
 <a name="laravel-5.4.22"></a>
