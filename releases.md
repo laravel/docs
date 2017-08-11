@@ -284,6 +284,28 @@ All JSON validation error formatting can be controlled by defining a single meth
 
 ### Cache Locks
 
+The Redis and Memcached cache drivers now have support for obtaining and releasing atomic "locks". This provides a simple method of obtaining arbitrary locks without worrying about race conditions. For example, before performing a task, you may wish to obtain a lock so no other processes attempt the same task that is already in progress:
+
+    if (Cache::lock('lock-name', 60)->get()) {
+        // Lock obtained for 60 seconds, continue processing...
+
+        Cache::locK('lock-name')->release();
+    } else {
+        // Lock was not able to be obtained...
+    }
+
+Or, you may pass a Closure to the `get` method. The Closure will only be executed if the lock can be obtained and the lock will automatically be released after the Closure is executed:
+
+    Cache::lock('lock-name', 60)->get(function () {
+        // Lock obtained for 60 seconds...
+    });
+
+In addition, you may "block" until the lock becomes available:
+
+    if (Cache::lock('lock-name', 60)->block(10)) {
+        // Wait for a maximum of 10 seconds for the lock to become available...
+    }
+
 ### Blade Improvements
 
 ### New Routing Methods
