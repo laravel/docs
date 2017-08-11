@@ -2,6 +2,7 @@
 
 - [Versioning Scheme](#versioning-scheme)
 - [Support Policy](#support-policy)
+- [Laravel 5.5](#laravel-5.5)
 - [Laravel 5.4.22](#laravel-5.4.22)
 - [Laravel 5.4](#laravel-5.4)
 
@@ -24,6 +25,41 @@ So, instead, the Laravel framework uses a versioning scheme that is more communi
 ## Support Policy
 
 For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+
+<a name="laravel-5.5"></a>
+## Laravel 5.5
+
+Laravel 5.5 continues the improvements made in Laravel 5.4 by adding package auto-detection, auto-registration of console commands, queued job chaining, renderable mailables, renderable and reportable exceptions, more consistent exception handling, database testing improvements, simpler custom validation rules, React front-end presets, `Route::view` and `Route::redirect` methods, "locks" for the Memcached and Redis cache drivers, on-demand notifications, headless Chrome support in Dusk, convenient Blade shortcuts, improved trusted proxy support, and more.
+
+In addition, Laravel 5.5 coincides with the release of [Laravel Horizon](http://horizon.laravel.com), a beautiful new queue dashboard and configuration system for your Redis based Laravel queues.
+
+> {tip} This documentation summarizes the most notable improvements to the framework; however, more thorough change logs are always available [on GitHub](https://github.com/laravel/framework/blob/5.5/CHANGELOG-5.5.md).
+
+### Laravel Horizon
+
+### Package Discovery
+
+### Console Command Auto-Registration
+
+### New Frontend Presets
+
+### Queued Job Chaining
+
+### Validation Rule Objects
+
+### TrustedProxy Integration
+
+### Renderable Mailables
+
+### Renderable & Reportable Exceptions
+
+### Consistent Exception Handling
+
+### Cache Locks
+
+### Blade Improvements
+
+### New Routing Methods
 
 <a name="laravel-5.4.22"></a>
 ## Laravel 5.4.22
