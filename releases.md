@@ -147,7 +147,7 @@ Once the rule has been defined, you may use it by simply passing an instance of 
         'name' => ['required', new ValidName],
     ]);
 
-### TrustedProxy Integration
+### Trusted Proxy Integration
 
 When running applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
 
