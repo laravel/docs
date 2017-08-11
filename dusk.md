@@ -634,20 +634,20 @@ To run your Dusk tests on Travis CI, we will need to use the "sudo-enabled" Ubun
 
     sudo: required
     dist: trusty
-    
+
     addons:
-		chrome: stable
-	
-	install:
-		- cp .env.testing .env
-		- travis_retry composer install --no-interaction --prefer-dist --no-suggest
+       chrome: stable
+
+    install:
+       - cp .env.testing .env
+       - travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
     before_script:
-		- google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-		- php artisan serve &
+       - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+       - php artisan serve &
 
     script:
-		- php artisan dusk
+       - php artisan dusk
 
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
@@ -681,23 +681,23 @@ If you are using CircleCI 1.0 to run your Dusk tests, you may use this configura
      jobs:
          build:
              steps:
-			      - run: sudo apt-get install -y libsqlite3-dev
-			      - run: cp .env.testing .env
-			      - run: composer install -n --ignore-platform-reqs
-			      - run: npm install
-			      - run: npm run production
-			      - run: vendor/bin/phpunit
+                - run: sudo apt-get install -y libsqlite3-dev
+                - run: cp .env.testing .env
+                - run: composer install -n --ignore-platform-reqs
+                - run: npm install
+                - run: npm run production
+                - run: vendor/bin/phpunit
+
+                - run:
+                   name: Start Chrome Driver
+                   command: ./vendor/laravel/dusk/bin/chromedriver-linux
+                   background: true
 			
-			      - run:
-			          name: Start Chrome Driver
-			          command: ./vendor/laravel/dusk/bin/chromedriver-linux
-			          background: true
-			
-			      - run:
-			          name: Run Laravel Server
-			          command: php artisan serve
-			          background: true
-			
-			      - run:
-			          name: Run Laravel Dusk Tests
-			          command: php artisan dusk
+                - run:
+                   name: Run Laravel Server
+                   command: php artisan serve
+                   background: true
+
+                - run:
+                   name: Run Laravel Dusk Tests
+                   command: php artisan dusk
