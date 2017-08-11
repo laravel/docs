@@ -60,17 +60,18 @@ If your application is utilizing a cluster of Redis servers, you should define t
 
     ],
 
-By default, clusters will perform client-side sharding across your nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store. If you would like to use native Redis clustering, you should specify this in the `options` key of your Redis configuration:
+By default, clusters will perform client-side sharding across your nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store. If you would like to use native Redis clustering, you should specify this in the `options` key inside `clusters` of your Redis configuration:
 
     'redis' => [
 
         'client' => 'predis',
 
-        'options' => [
-            'cluster' => 'redis',
-        ],
-
         'clusters' => [
+
+            'options' => [
+                'cluster' => 'redis',
+            ],
+
             // ...
         ],
 
