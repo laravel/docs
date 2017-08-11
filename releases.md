@@ -39,9 +39,51 @@ In addition, Laravel 5.5 coincides with the release of [Laravel Horizon](http://
 
 ### Package Discovery
 
+In previous versions of Laravel, installing a package typically required several additional steps such as adding the service provider to your `app` configuration file and registering any relevant facades. However, beginning with Laravel 5.5, Laravel can automatically detect and register service providers and facades for you.
+
+For example, you can experience this by installing the popular `barryvdh/laravel-debugbar` package into your Laravel application. Once the package is installed via Composer, the debug bar will be available to your application with no additional configuration:
+
+    composer require barryvdh/laravel-debugbar
+
+Package developers only need to add their service providers and facades to their package's `composer.json` file:
+
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Laravel\\Tinker\\TinkerServiceProvider"
+            ]
+        }
+    },
+
+For more information on updating your packages to use service provider and facade discovery, check out the full documentation on [package development](/docs/{{version}}/packages).
+
 ### Console Command Auto-Registration
 
+When creating new console commands, you no longer are required to manually list them in the `$commands` property of your Console kernel. Instead, a new `load` method is called from the `commands` method of your kernel, which will scan the given directory for any console commands and register them automatically:
+
+    /**
+     * Register the commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        $this->load(__DIR__.'/Commands');
+
+        // ...
+    }
+
 ### New Frontend Presets
+
+While the basic Vue scaffolding is still included in Laravel 5.5, several new frontend preset options are now available. In a fresh Laravel application, you can swap the Vue scaffolding for React scaffolding using the `preset` command:
+
+    php artisan preset react
+
+Or, you can remove the JavaScript and CSS framework scaffolding entirely using the `none` preset. This preset will leave your application with a plain Sass file and a few simple JavaScript utilities:
+
+    php artisan preset none
+
+> {note} These commands are only intended to be run on fresh Laravel installations. They should not be used on existing applications.
 
 ### Queued Job Chaining
 
