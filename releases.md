@@ -37,6 +37,12 @@ In addition, Laravel 5.5 coincides with the release of [Laravel Horizon](http://
 
 ### Laravel Horizon
 
+Horizon provides a beautiful dashboard and code-driven configuration for your Laravel powered Redis queues. Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
+
+All of your worker configuration is stored in a single, simple configuration file, allowing your configuration to stay in source control where your entire team can collaborate.
+
+For more information on Horizon, check out the [full Horizon documentation](/docs/{{version}}/horizon)
+
 ### Package Discovery
 
 In previous versions of Laravel, installing a package typically required several additional steps such as adding the service provider to your `app` configuration file and registering any relevant facades. However, beginning with Laravel 5.5, Laravel can automatically detect and register service providers and facades for you.
