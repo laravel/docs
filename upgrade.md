@@ -326,14 +326,11 @@ In order to queue mail, you now must use a [mailable](/docs/{{version}}/mail). Q
 
 ### Queue
 
-#### Failed Jobs Log Schema Change
+#### Failed Jobs Table
 
-Laravel 5.4 adjusts the `failed_jobs` schema. When an uncaught exception is thrown within a job the queue worker will cast the exception as a `string` and insert it alongside the other job information.
-
-If you're using the failed jobs functionality, you'll need to add the `exception` column to the `failed_jobs` table (or whatever else you've called it – the table name is set in `config/queue.php:failed.table`):
+If your application contains a `failed_jobs` table, you should add an `exception` column to the table:
 
     $table->longText('exception')->after('payload');
-
 
 ### Redis
 
