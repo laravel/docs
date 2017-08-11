@@ -149,6 +149,43 @@ Once the rule has been defined, you may use it by simply passing an instance of 
 
 ### TrustedProxy Integration
 
+When running applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
+
+To solve this, many Laravel users install the [Trusted Proxies](https://github.com/fideloper/TrustedProxy) package by Chris Fidao. Since this is such a common use case, Chris' package now ships with Laravel 5.5 by default.
+
+A new `App\Http\Middleware\TrustProxies` middleware is included in the default Laravel 5.5 application and allows you to quickly customize the proxies that should be trusted by your application:
+
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use Illuminate\Http\Request;
+    use Fideloper\Proxy\TrustProxies as Middleware;
+
+    class TrustProxies extends Middleware
+    {
+        /**
+         * The trusted proxies for this application.
+         *
+         * @var array
+         */
+        protected $proxies;
+
+        /**
+         * The current proxy header mappings.
+         *
+         * @var array
+         */
+        protected $headers = [
+            Request::HEADER_FORWARDED => 'FORWARDED',
+            Request::HEADER_X_FORWARDED_FOR => 'X_FORWARDED_FOR',
+            Request::HEADER_X_FORWARDED_HOST => 'X_FORWARDED_HOST',
+            Request::HEADER_X_FORWARDED_PORT => 'X_FORWARDED_PORT',
+            Request::HEADER_X_FORWARDED_PROTO => 'X_FORWARDED_PROTO',
+        ];
+    }
+
+
 ### Renderable Mailables
 
 ### Renderable & Reportable Exceptions
