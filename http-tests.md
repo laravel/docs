@@ -180,6 +180,7 @@ Laravel provides a variety of custom assertion methods for your [PHPUnit](https:
 
 Method  | Description
 ------------- | -------------
+`$response->assertSuccessful();`  |  Assert that the response has a successful status code.
 `$response->assertStatus($code);`  |  Assert that the response has a given code.
 `$response->assertRedirect($uri);`  |  Assert that the response is a redirect to a given URI.
 `$response->assertHeader($headerName, $value = null);`  |  Assert that the given header is present on the response.
