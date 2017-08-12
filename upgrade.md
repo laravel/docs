@@ -507,6 +507,33 @@ The `Mail` fake has been greatly simplified for the Laravel 5.4 release. Instead
 If you are using the `{Inf}` placeholder for pluralizing your translation strings, you should update your translation strings to use the `*` character instead:
 
     {0} First Message|{1,*} Second Message
+    
+#### The `trans` Helpers
+
+The `trans` helper signature has been updated to remove the unnecessary `$domain` argument. The new signature is as follows:
+
+    /**
+     * Translate the given message.
+     *
+     * @param  string  $id
+     * @param  array   $replace
+     * @param  string  $locale
+     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
+     */
+    function trans($id = null, $replace = [], $locale = null);
+
+In addition, the `trans_choice` helper has been updated:
+
+    /**
+     * Translates the given message based on a count.
+     *
+     * @param  string  $id
+     * @param  int|array|\Countable  $number
+     * @param  array   $replace
+     * @param  string  $locale
+     * @return string
+     */
+    function trans_choice($id, $number, array $replace = [], $locale = null);
 
 ### URL Generation
 
