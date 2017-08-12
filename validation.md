@@ -112,11 +112,11 @@ As you can see, we simply pass the incoming HTTP request and desired validation 
 Sometimes you may wish to stop running validation rules on an attribute after the first validation failure. To do so, assign the `bail` rule to the attribute:
 
     $this->validate($request, [
-        'title' => 'bail|required|unique:posts|max:255',
+        'title' => 'bail|unique:posts|max:255',
         'body' => 'required',
     ]);
 
-In this example, if the `required` rule on the `title` attribute fails, the `unique` rule will not be checked. Rules will be validated in the order they are assigned.
+In this example, if the `unique` rule on the `title` attribute fails, the `max` rule will not be checked. Rules will be validated in the order they are assigned.
 
 #### A Note On Nested Attributes
 
