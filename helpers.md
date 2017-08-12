@@ -135,6 +135,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [response](#method-response)
 [retry](#method-retry)
 [session](#method-session)
+[tap](#method-tap)
 [value](#method-value)
 [view](#method-view)
 
@@ -1039,6 +1040,23 @@ The session store will be returned if no value is passed to the function:
     $value = session()->get('key');
 
     session()->put('key', $value);
+
+<a name="method-tap"></a>
+#### `tap()` {#collection-method}
+
+The `tap` function allows you to do something with the `value` inside of the `Closure` and then return the `value` :
+
+    $user = tap(\App\User::first(), function ($user) {
+        $user->name = 'taylor';
+        $user->save();
+    });
+
+if no `Closure` provided, a `Illuminate\Support\HigherOrderTapProxy` instance is returned:
+
+    $user = tap($user)->update([
+        'name' => $name,
+        'email' => $email
+    ]);
 
 <a name="method-value"></a>
 #### `value()` {#collection-method}
