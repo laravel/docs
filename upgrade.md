@@ -33,6 +33,10 @@ Any `fire` methods present on your Artisan commands should be renamed to `handle
 
 When passing a multi-word model name to the `authorizeResource` method, the resulting route segment will now be "snake" case, matching the behavior of resource controllers.
 
+#### The `before` Policy Method
+
+The `before` Method of a policy class will not be called if the class doesn't contain a method with name matching the name of the ability, the check will fallback to gates defined in your `AuthServiceProvider` instead.
+
 ### Cache
 
 #### Database Driver
@@ -215,6 +219,12 @@ The `intersect` method has been removed. You may replicate this behavior using `
 The `only` method will now only return attributes that are actually present in the request payload. If you would like to preserve the old behavior of the `only` method, you may use the `all` method instead.
 
     return $request->all('foo');
+
+#### The `request()` helper function
+
+The `request` will no longer work with nested keys. You can use `input` to replicate the old behaviour
+
+    return request()->input('filters.date');
 
 ### Testing
 
