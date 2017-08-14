@@ -371,9 +371,17 @@ Sometimes you may need to create more advanced where clauses such as "where exis
                 })
                 ->get();
 
-As you can see, passing a `Closure` into the `orWhere` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
+    DB::table('users')
+                ->where('name', '=', 'John')
+                ->orWhere('id', '=', function ($query) {
+                    $query->select('id')->from('users')->where('name', '=', 'Peter');
+                })
+                ->get();
+
+As you can see, passing a `Closure` into the `orWhere` method instructs the query builder to begin a constraint group. The `Closure` will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. Those examples above will produce the following SQL:
 
     select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
+    select * from users where name = 'John' or id = (select id from users where name = 'Peter')
 
 <a name="where-exists-clauses"></a>
 ### Where Exists Clauses
