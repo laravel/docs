@@ -7,6 +7,7 @@
     - [Using The Notification Facade](#using-the-notification-facade)
     - [Specifying Delivery Channels](#specifying-delivery-channels)
     - [Queueing Notifications](#queueing-notifications)
+    - [On-Demand Notifications](#on-demand-notifications)
 - [Mail Notifications](#mail-notifications)
     - [Formatting Mail Messages](#formatting-mail-messages)
     - [Customizing The Recipient](#customizing-the-recipient)
@@ -140,6 +141,15 @@ If you would like to delay the delivery of the notification, you may chain the `
     $when = Carbon::now()->addMinutes(10);
 
     $user->notify((new InvoicePaid($invoice))->delay($when));
+
+<a name="on-demand-notifications"></a>
+### On-Demand Notifications
+
+Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the `Notification::route` method, you may specify ad-hoc notification routing information before sending the notification:
+
+    Notification::route('mail', 'taylor@laravel.com')
+                ->route('nexmo', '5555555555')
+                ->send(new InvoicePaid($invoice));
 
 <a name="mail-notifications"></a>
 ## Mail Notifications
