@@ -4,6 +4,7 @@
     - [Creating Collections](#creating-collections)
 - [Available Methods](#available-methods)
 - [Higher Order Messages](#higher-order-messages)
+- [Macros](#macros)
 
 <a name="introduction"></a>
 ## Introduction
@@ -1662,3 +1663,36 @@ Likewise, we can use the `sum` higher order message to gather the total number o
     $users = User::where('group', 'Development')->get();
 
     return $users->sum->votes;
+
+<a name="macros"></a>
+## Macros
+
+Collections are `Macroable` (as of [Laravel 5.1](https://github.com/laravel/framework/pull/11019)) which means they can easily be extended to add new functionality. Macros are useful for extending collections (and other `Macroable` classes) without having to create a whole new subclass.
+
+For example, let's say you wanted to extend all `Collection` instances with a `paginate` method that would allow you to render a nice HTML paginator, similar to [Eloquent's `paginate()` method](/docs/{{version}}/eloquent).
+
+You could create a new subclass, e.g. `class MyCollection extends Illuminate\Support\Collection` and write your `paginate` method there. But then, whenever you would normally write `new Collection`, you'd have to write `new MyCollection` and using the `collect` helper function would not instantiate your subclass.
+
+With a macro though, you can extend the built-in `Collection` class easily and without having to edit any core files:
+
+    Collection::macro('paginate', function( $perPage, $total = null, $page = null, $pageName = 'page' ) {
+      $page = $page ?: LengthAwarePaginator::resolveCurrentPage( $pageName );
+      
+      return new LengthAwarePaginator( $this->forPage( $page, $perPage ), $total ?: $this->count(), $perPage, $page, [
+        'path' => LengthAwarePaginator::resolveCurrentPath(),
+        'pageName' => $pageName,
+      ]);
+    });
+    
+Adding the above macro to a service providers `boot` method will then allow you to use the built-in `Collection` class as you normally would, except now with added goodies:
+
+    $items = ['Taylor', 'Abigail', 'Jeffrey', 'Adam', 'Matt'];
+    
+    $collection = new Collection($items);
+    
+    // or
+    
+    $collection = collect($items)
+    
+    // then
+    $collection->paginate(2);
