@@ -95,7 +95,7 @@ For example, if you need to report different types of exceptions in different wa
 
 #### The `report` Helper
 
-Sometimes you may need to report an exception but continue handling the current request. The `report` function allows you to quickly report an exception using your exception handler's `report` method without rendering an error page:
+Sometimes you may need to report an exception but continue handling the current request. The `report` helper function allows you to quickly report an exception using your exception handler's `report` method without rendering an error page:
 
     public function isValid($value)
     {
