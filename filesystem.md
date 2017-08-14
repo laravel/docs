@@ -129,6 +129,14 @@ When using the `local` or `s3` drivers, you may use the `url` method to get the 
 
 > {note} Remember, if you are using the `local` driver, all files that should be publicly accessible should be placed in the `storage/app/public` directory. Furthermore, you should [create a symbolic link](#the-public-disk) at `public/storage` which points to the `storage/app/public` directory.
 
+#### Temporary URLs
+
+For files stored using the `s3` driver, you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
+
+    $url = Storage::temporaryUrl(
+        'file1.jpg', Carbon::now()->addMinutes(5)
+    );
+
 #### Local URL Host Customization
 
 If you would like to pre-define the host for files stored on a disk using the `local` driver, you may add a `url` option to the disk's configuration array:
