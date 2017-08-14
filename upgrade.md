@@ -222,7 +222,7 @@ The `only` method will now only return attributes that are actually present in t
 
 #### The `request()` helper function
 
-The `request` will no longer work with nested keys. You can use `input` to replicate the old behaviour
+The `request` method will no longer work with nested keys. You can use `input` to replicate the old behaviour
 
     return request()->input('filters.date');
 
