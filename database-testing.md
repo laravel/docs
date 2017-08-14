@@ -104,7 +104,7 @@ Another approach to resetting the database state is to wrap each test case in a 
 
 When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a default set of attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories. To get started, take a look at the `database/factories/ModelFactory.php` file in your application. Out of the box, this file contains one factory definition:
 
-    $factory->define(App\User::class, function (Faker\Generator $faker) {
+    $factory->define(\App\User::class, function (Faker\Generator $faker) {
         static $password;
 
         return [
@@ -124,7 +124,7 @@ Of course, you are free to add your own additional factories to the `ModelFactor
 
 States allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `User` model might have a `delinquent` state that modifies one of its default attribute values. You may define your state transformations using the `state` method:
 
-    $factory->state(App\User::class, 'delinquent', function ($faker) {
+    $factory->state(\App\User::class, 'delinquent', function ($faker) {
         return [
             'account_status' => 'delinquent',
         ];
@@ -140,7 +140,7 @@ Once you have defined your factories, you may use the global `factory` function 
 
     public function testDatabase()
     {
-        $user = factory(App\User::class)->make();
+        $user = factory(\App\User::class)->make();
 
         // Use model in tests...
     }
@@ -148,21 +148,21 @@ Once you have defined your factories, you may use the global `factory` function 
 You may also create a Collection of many models or create models of a given type:
 
     // Create three App\User instances...
-    $users = factory(App\User::class, 3)->make();
+    $users = factory(\App\User::class, 3)->make();
 
 #### Applying States
 
 You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you should specify the name of each state you would like to apply:
 
-    $users = factory(App\User::class, 5)->states('delinquent')->make();
+    $users = factory(\App\User::class, 5)->states('delinquent')->make();
 
-    $users = factory(App\User::class, 5)->states('premium', 'delinquent')->make();
+    $users = factory(\App\User::class, 5)->states('premium', 'delinquent')->make();
 
 #### Overriding Attributes
 
 If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified values will be replaced while the rest of the values remain set to their default values as specified by the factory:
 
-    $user = factory(App\User::class)->make([
+    $user = factory(\App\User::class)->make([
         'name' => 'Abigail',
     ]);
 
@@ -174,17 +174,17 @@ The `create` method not only creates the model instances but also saves them to 
     public function testDatabase()
     {
         // Create a single App\User instance...
-        $user = factory(App\User::class)->create();
+        $user = factory(\App\User::class)->create();
 
         // Create three App\User instances...
-        $users = factory(App\User::class, 3)->create();
+        $users = factory(\App\User::class, 3)->create();
 
         // Use model in tests...
     }
 
 You may override attributes on the model by passing an array to the `create` method:
 
-    $user = factory(App\User::class)->create([
+    $user = factory(\App\User::class)->create([
         'name' => 'Abigail',
     ]);
 
@@ -193,7 +193,7 @@ You may override attributes on the model by passing an array to the `create` met
 
 In this example, we'll attach a relation to some created models. When using the `create` method to create multiple models, an Eloquent [collection instance](/docs/{{version}}/eloquent-collections) is returned, allowing you to use any of the convenient functions provided by the collection, such as `each`:
 
-    $users = factory(App\User::class, 3)
+    $users = factory(\App\User::class, 3)
                ->create()
                ->each(function ($u) {
                     $u->posts()->save(factory(App\Post::class)->make());
@@ -208,7 +208,7 @@ You may also attach relationships to models using Closure attributes in your fac
             'title' => $faker->title,
             'content' => $faker->paragraph,
             'user_id' => function () {
-                return factory(App\User::class)->create()->id;
+                return factory(\App\User::class)->create()->id;
             }
         ];
     });
@@ -220,10 +220,10 @@ These Closures also receive the evaluated attribute array of the factory that de
             'title' => $faker->title,
             'content' => $faker->paragraph,
             'user_id' => function () {
-                return factory(App\User::class)->create()->id;
+                return factory(\App\User::class)->create()->id;
             },
             'user_type' => function (array $post) {
-                return App\User::find($post['user_id'])->type;
+                return \App\User::find($post['user_id'])->type;
             }
         ];
     });
