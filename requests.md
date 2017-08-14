@@ -204,7 +204,7 @@ If you need to retrieve a subset of the input data, you may use the `only` and `
 
     $input = $request->except('credit_card');
 
-The `only` method returns all of the key / value pairs that you request; however, it will not return key / values pairs that are not present on the request.
+> {tip} The `only` method returns all of the key / value pairs that you request; however, it will not return key / values pairs that are not present on the request.
 
 #### Determining If An Input Value Is Present
 
@@ -217,6 +217,12 @@ You should use the `has` method to determine if a value is present on the reques
 When given an array, the `has` method will determine if all of the specified values are present:
 
     if ($request->has(['name', 'email'])) {
+        //
+    }
+
+If you would like to determine if a value is present on the request and is not empty, you may use the `filled` method:
+
+    if ($request->filled('name')) {
         //
     }
 
