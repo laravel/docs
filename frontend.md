@@ -4,6 +4,7 @@
 - [Writing CSS](#writing-css)
 - [Writing JavaScript](#writing-javascript)
     - [Writing Vue Components](#writing-vue-components)
+    - [Using React](#using-react)
 
 <a name="introduction"></a>
 ## Introduction
@@ -74,3 +75,11 @@ To use the component in your application, you may simply drop it into one of you
 > {tip} Remember, you should run the `npm run dev` command each time you change a Vue component. Or, you may run the `npm run watch` command to monitor and automatically recompile your components each time they are modified.
 
 Of course, if you are interested in learning more about writing Vue components, you should read the [Vue documentation](https://vuejs.org/guide/), which provides a thorough, easy-to-read overview of the entire Vue framework.
+
+### Using React
+
+If you prefer to use React to build your JavaScript application, Laravel makes it a cinch to swap the Vue scaffolding with React scaffolding. On any fresh Laravel application, you may use the `preset` command with the `react` option:
+
+    php artisan preset react
+
+This single command will remove the Vue scaffolding and replace it with React scaffolding, including an example component.
