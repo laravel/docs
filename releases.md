@@ -183,6 +183,13 @@ A new `App\Http\Middleware\TrustProxies` middleware is included in the default L
         ];
     }
 
+### On-Demand Notifications
+
+Sometimes you may need to send a notification to someone who is not stored as a "user" of your application. Using the new `Notification::route` method, you may specify ad-hoc notification routing information before sending the notification:
+
+    Notification::route('mail', 'taylor@laravel.com')
+                ->route('nexmo', '5555555555')
+                ->send(new InvoicePaid($invoice));
 
 ### Renderable Mailables
 
