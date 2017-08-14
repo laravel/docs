@@ -246,6 +246,21 @@ In Laravel 5.5, you may now define a `render` method directly on your exceptions
         }
     }
 
+### Request Validation
+
+The `Illuminate\Http\Request` object now provides a `validate` method, allowing you to quickly validate an incoming request from a route Closure or controller:
+
+    use Illuminate\Http\Request;
+
+    Route::get('/comment', function (Request $request) {
+        $request->validate([
+            'title' => 'required|string',
+            'body' => 'required|string',
+        ]);
+
+        // ...
+    });
+
 ### Consistent Exception Handling
 
 Validation exception handling is now consistent throughout the framework. Previously, there were multiple locations in the framework that required customization to change the default format for JSON validation error responses. In addition, the default format for JSON validation responses in Laravel 5.5 now adheres the following convention:
