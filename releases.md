@@ -302,7 +302,7 @@ The Redis and Memcached cache drivers now have support for obtaining and releasi
     if (Cache::lock('lock-name', 60)->get()) {
         // Lock obtained for 60 seconds, continue processing...
 
-        Cache::locK('lock-name')->release();
+        Cache::lock('lock-name')->release();
     } else {
         // Lock was not able to be obtained...
     }
