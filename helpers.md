@@ -131,6 +131,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [method_field](#method-method-field)
 [old](#method-old)
 [redirect](#method-redirect)
+[report](#method-report)
 [request](#method-request)
 [response](#method-response)
 [retry](#method-retry)
@@ -996,6 +997,13 @@ The `redirect` function returns a redirect HTTP response, or returns the redirec
     return redirect('/home');
 
     return redirect()->route('route.name');
+
+<a name="method-report"></a>
+#### `report()` {#collection-method}
+
+The `report` function will report an exception using your exception handler's `report` method:
+
+    report($e);
 
 <a name="method-request"></a>
 #### `request()` {#collection-method}
