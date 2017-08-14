@@ -93,6 +93,21 @@ For example, if you need to report different types of exceptions in different wa
         return parent::report($exception);
     }
 
+#### The `report` Helper
+
+Sometimes you may need to report an exception but continue handling the current request. The `report` function allows you to quickly report an exception using your exception handler's `report` method without rendering an error page:
+
+    public function isValid($value)
+    {
+        try {
+            // Validate the value...
+        } catch (Exception $e) {
+            report($e);
+
+            return false;
+        }
+    }
+
 #### Ignoring Exceptions By Type
 
 The `$dontReport` property of the exception handler contains an array of exception types that will not be logged. For example, exceptions resulting from 404 errors, as well as several other types of errors, are not written to your log files. You may add other exception types to this array as needed:
