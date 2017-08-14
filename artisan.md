@@ -47,8 +47,6 @@ To create a new command, use the `make:command` Artisan command. This command wi
 
     php artisan make:command SendEmails
 
-Next, you will need to [register the command](#registering-commands) before it can be executed via the Artisan CLI.
-
 <a name="command-structure"></a>
 ### Command Structure
 
@@ -381,7 +379,22 @@ For more advanced options, check out the [Symfony Progress Bar component documen
 <a name="registering-commands"></a>
 ## Registering Commands
 
-Once your command is finished, you need to register it with Artisan. All commands are registered in the `app/Console/Kernel.php` file. Within this file, you will find a list of commands in the `commands` property. To register your command, simply add the command's class name to the list. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:
+Because of the `load` method call in your console kernel's `commands` method, all commands within the `app/Console/Commands` directory will automatically be registered with Artisan. In fact, you are free to make additional calls to the `load` method to scan other directories for Artisan commands:
+
+    /**
+     * Register the commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__.'/MoreCommands');
+
+        // ...
+    }
+
+You may also manually register commands by adding its class name to the `$command` property of your `app/Console/Kernel.php` file. When Artisan boots, all the commands listed in this property will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan:
 
     protected $commands = [
         Commands\SendEmails::class
