@@ -35,7 +35,7 @@ When passing a multi-word model name to the `authorizeResource` method, the resu
 
 #### The `before` Policy Method
 
-The `before` Method of a policy class will not be called if the class doesn't contain a method with name matching the name of the ability, the check will fallback to gates defined in your `AuthServiceProvider` instead.
+The `before` method of a policy class will not be called if the class doesn't contain a method with name matching the name of the ability being checked.
 
 ### Cache
 
@@ -220,9 +220,9 @@ The `only` method will now only return attributes that are actually present in t
 
     return $request->all('foo');
 
-#### The `request()` helper function
+#### The `request()` Helper
 
-The `request` method will no longer work with nested keys. You can use `input` to replicate the old behavior
+The `request` helper will no longer retrieve nested keys. If needed, you may use the `input` method of the request to achieve this behavior:
 
     return request()->input('filters.date');
 
