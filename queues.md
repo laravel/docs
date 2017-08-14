@@ -8,6 +8,7 @@
     - [Class Structure](#class-structure)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
+    - [Job Chaining](#job-chaining)
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
     - [Error Handling](#error-handling)
@@ -37,10 +38,10 @@ Before getting started with Laravel queues, it is important to understand the di
 Note that each connection configuration example in the `queue` configuration file contains a `queue` attribute. This is the default queue that jobs will be dispatched to when they are sent to a given connection. In other words, if you dispatch a job without explicitly defining which queue it should be dispatched to, the job will be placed on the queue that is defined in the `queue` attribute of the connection configuration:
 
     // This job is sent to the default queue...
-    dispatch(new Job);
+    Job::dispatch();
 
     // This job is sent to the "emails" queue...
-    dispatch((new Job)->onQueue('emails'));
+    Job::dispatch()->onQueue('emails');
 
 Some applications may not need to ever push jobs onto multiple queues, instead preferring to have one simple queue. However, pushing jobs to multiple queues can be especially useful for applications that wish to prioritize or segment how jobs are processed, since the Laravel queue worker allows you to specify which queues it should process by priority. For example, if you push jobs to a `high` queue, you may run a worker that gives them higher processing priority:
 
@@ -147,7 +148,7 @@ The `handle` method is called when the job is processed by the queue. Note that 
 <a name="dispatching-jobs"></a>
 ## Dispatching Jobs
 
-Once you have written your job class, you may dispatch it using the `dispatch` helper. The only argument you need to pass to the `dispatch` helper is an instance of the job:
+Once you have written your job class, you may dispatch it using the `dispatch` method on the job itself. The arguments passed to the `dispatch` method will be given to the job's constructor:
 
     <?php
 
@@ -169,16 +170,14 @@ Once you have written your job class, you may dispatch it using the `dispatch` h
         {
             // Create podcast...
 
-            dispatch(new ProcessPodcast($podcast));
+            ProcessPodcast::dispatch($podcast);
         }
     }
-
-> {tip} The `dispatch` helper provides the convenience of a short, globally available function, while also being extremely easy to test. Check out the Laravel [testing documentation](/docs/{{version}}/testing) to learn more.
 
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
 
-If you would like to delay the execution of a queued job, you may use the `delay` method on your job instance. The `delay` method is provided by the `Illuminate\Bus\Queueable` trait, which is included by default on all generated job classes. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:
+If you would like to delay the execution of a queued job, you may use the `delay` method when dispatching a job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:
 
     <?php
 
@@ -201,21 +200,29 @@ If you would like to delay the execution of a queued job, you may use the `delay
         {
             // Create podcast...
 
-            $job = (new ProcessPodcast($podcast))
-                        ->delay(Carbon::now()->addMinutes(10));
-
-            dispatch($job);
+            ProcessPodcast::dispatch($podcast)
+                    ->delay(Carbon::now()->addMinutes(10));
         }
     }
 
 > {note} The Amazon SQS queue service has a maximum delay time of 15 minutes.
+
+<a name="job-chaining"></a>
+### Job Chaining
+
+Job chaining allows you to specify a list of queued jobs that should be run in sequence. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `withChain` method on any of your dispatchable jobs:
+
+    ProcessPodcast::withChain([
+        new OptimizePodcast,
+        new ReleasePodcast
+    ])->dispatch();
 
 <a name="customizing-the-queue-and-connection"></a>
 ### Customizing The Queue & Connection
 
 #### Dispatching To A Particular Queue
 
-By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues. Keep in mind, this does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method on the job instance:
+By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues. Keep in mind, this does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method when dispatching the job:
 
     <?php
 
@@ -237,15 +244,13 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
         {
             // Create podcast...
 
-            $job = (new ProcessPodcast($podcast))->onQueue('processing');
-
-            dispatch($job);
+            ProcessPodcast::dispatch($podcast)->onQueue('processing');
         }
     }
 
 #### Dispatching To A Particular Connection
 
-If you are working with multiple queue connections, you may specify which connection to push a job to. To specify the connection, use the `onConnection` method on the job instance:
+If you are working with multiple queue connections, you may specify which connection to push a job to. To specify the connection, use the `onConnection` method when dispatching the job:
 
     <?php
 
@@ -267,17 +272,15 @@ If you are working with multiple queue connections, you may specify which connec
         {
             // Create podcast...
 
-            $job = (new ProcessPodcast($podcast))->onConnection('sqs');
-
-            dispatch($job);
+            ProcessPodcast::dispatch($podcast)->onConnection('sqs');
         }
     }
 
 Of course, you may chain the `onConnection` and `onQueue` methods to specify the connection and the queue for a job:
 
-    $job = (new ProcessPodcast($podcast))
-                    ->onConnection('sqs')
-                    ->onQueue('processing');
+    ProcessPodcast::dispatch($podcast)
+                  ->onConnection('sqs')
+                  ->onQueue('processing');
 
 <a name="max-job-attempts-and-timeout"></a>
 ### Specifying Max Job Attempts / Timeout Values
