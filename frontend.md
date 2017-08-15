@@ -23,7 +23,7 @@ Laravel does not require you to use a specific JavaScript framework or library t
 
 If you would like to remove the frontend scaffolding from your application, you may use the `preset` Artisan command. This command, when combined with the `none` option, will remove the Bootstrap and Vue scaffolding from your application, leaving only a blank SASS file and a few common JavaScript utility libraries:
 
-    php artisan none
+    php artisan preset none
 
 <a name="writing-css"></a>
 ## Writing CSS
