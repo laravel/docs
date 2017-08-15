@@ -10,6 +10,7 @@
 - [Files](#files)
     - [Retrieving Uploaded Files](#retrieving-uploaded-files)
     - [Storing Uploaded Files](#storing-uploaded-files)
+- [Configuring Trusted Proxies](#configuring-trusted-proxies)
 
 <a name="accessing-the-request"></a>
 ## Accessing The Request
@@ -350,3 +351,54 @@ If you do not want a file name to be automatically generated, you may use the `s
     $path = $request->photo->storeAs('images', 'filename.jpg');
 
     $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
+
+<a name="configuring-trusted-proxies"></a>
+## Configuring Trusted Proxies
+
+When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
+
+To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the headers that are being sent by your proxy with information about the original request:
+
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use Illuminate\Http\Request;
+    use Fideloper\Proxy\TrustProxies as Middleware;
+
+    class TrustProxies extends Middleware
+    {
+        /**
+         * The trusted proxies for this application.
+         *
+         * @var array
+         */
+        protected $proxies = [
+            '192.168.1.1',
+            '192.168.1.2',
+        ];
+
+        /**
+         * The current proxy header mappings.
+         *
+         * @var array
+         */
+        protected $headers = [
+            Request::HEADER_FORWARDED => 'FORWARDED',
+            Request::HEADER_X_FORWARDED_FOR => 'X_FORWARDED_FOR',
+            Request::HEADER_X_FORWARDED_HOST => 'X_FORWARDED_HOST',
+            Request::HEADER_X_FORWARDED_PORT => 'X_FORWARDED_PORT',
+            Request::HEADER_X_FORWARDED_PROTO => 'X_FORWARDED_PROTO',
+        ];
+    }
+
+#### Trusting All Proxies
+
+If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use the `*` character to trust all proxies:
+
+    /**
+     * The trusted proxies for this application.
+     *
+     * @var array
+     */
+    protected $proxies = '*';
