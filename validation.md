@@ -21,6 +21,8 @@
 - [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Validating Arrays](#validating-arrays)
 - [Custom Validation Rules](#custom-validation-rules)
+    - [Using Rule Objects](#using-rule-objects)
+    - [Using Extensions](#using-extensions)
 
 <a name="introduction"></a>
 ## Introduction
@@ -989,7 +991,70 @@ Likewise, you may use the `*` character when specifying your validation messages
 <a name="custom-validation-rules"></a>
 ## Custom Validation Rules
 
-Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using the `extend` method on the `Validator` [facade](/docs/{{version}}/facades). Let's use this method within a [service provider](/docs/{{version}}/providers) to register a custom validation rule:
+<a name="using-rule-objects"></a>
+### Using Rule Objects
+
+Laravel provides a variety of helpful validation rules; however, you may wish to specify some of your own. One method of registering custom validation rules is using rule objects. To generate a new rule object, you may use the `make:rule` Artisan command. Let's use this command to generate a rule that verifies a string is uppercase. Laravel will place the new rule in the `app/Rules` directory:
+
+    php artisan make:rule Uppercase
+
+Once the rule has been created, we are ready to define its behavior. A rule object contains two methods: `passes` and `message`. The `passes` method receives the attribute value and name, and should return `true` or `false` depending on whether the attribute value is valid or not. The `message` method should return the validation error message that should be used when validation fails:
+
+    <?php
+
+    namespace App\Rules;
+
+    use Illuminate\Contracts\Validation\Rule;
+
+    class Uppercase implements Rule
+    {
+        /**
+         * Determine if the validation rule passes.
+         *
+         * @param  string  $attribute
+         * @param  mixed  $value
+         * @return bool
+         */
+        public function passes($attribute, $value)
+        {
+            return strtoupper($value) === $value;
+        }
+
+        /**
+         * Get the validation error message.
+         *
+         * @return string
+         */
+        public function message()
+        {
+            return 'The :attribute must be uppercase.';
+        }
+    }
+
+Of course, you may call the `trans` helper from your `message` method if you would like to return an error message from your translation files:
+
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function message()
+    {
+        return trans('validation.uppercase');
+    }
+
+Once the rule has been defined, you may attach it to a validator by passing an instance of the rule object with your other validation rules:
+
+    use App\Rules\Uppercase;
+
+    $request->validate([
+        'name' => ['required', new Uppercase],
+    ]);
+
+<a name="using-extensions"></a>
+### Using Extensions
+
+Another method of registering custom validation rules is using the `extend` method on the `Validator` [facade](/docs/{{version}}/facades). Let's use this method within a [service provider](/docs/{{version}}/providers) to register a custom validation rule:
 
     <?php
 
