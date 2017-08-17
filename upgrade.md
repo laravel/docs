@@ -240,6 +240,10 @@ Some authentication assertions were renamed for better consistency with the rest
 - `dontSeeCredentials` was renamed to `assertInvalidCredentials`.
 </div>
 
+#### Mail Fake
+
+If you are using the `Mail` fake to determine if a mailable was **queued** during a request, you should now use `Mail::assertQueued` instead of `Mail::assertSent`. This distinction allows you to specifically assert that the mail was queued for background sending and not sent during the request itself.
+
 ### Translation
 
 #### The `LoaderInterface`
