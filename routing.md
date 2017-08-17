@@ -48,6 +48,7 @@ The router allows you to register routes that respond to any HTTP verb:
     Route::patch($uri, $callback);
     Route::delete($uri, $callback);
     Route::options($uri, $callback);
+    Route::view($uri, $path);
 
 Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method. Or, you may even register a route that responds to all HTTP verbs using the `any` method:
 
