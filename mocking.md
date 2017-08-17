@@ -119,7 +119,7 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
                        $mail->hasCc('...') &&
                        $mail->hasBcc('...');
             });
-            
+
             // Assert a mailable was sent twice...
             Mail::assertSent(OrderShipped::class, 2);
 
@@ -127,6 +127,11 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. Y
             Mail::assertNotSent(AnotherMailable::class);
         }
     }
+
+If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:
+
+    Mail::assertQueued(...);
+    Mail::assertNotQueued(...);
 
 <a name="notification-fake"></a>
 ## Notification Fake
@@ -202,7 +207,7 @@ As an alternative to mocking, you may use the `Queue` facade's `fake` method to 
 
             // Assert a job was pushed to a given queue...
             Queue::assertPushedOn('queue-name', ShipOrder::class);
-            
+
             // Assert a job was pushed twice...
             Queue::assertPushed(ShipOrder::class, 2);
 
