@@ -73,6 +73,7 @@
 - ## Official Packages
     - [Cashier](/docs/{{version}}/billing)
     - [Envoy](/docs/{{version}}/envoy)
+    - [Horizon](/docs/{{version}}/horizon)
     - [Passport](/docs/{{version}}/passport)
     - [Scout](/docs/{{version}}/scout)
     - [Socialite](https://github.com/laravel/socialite)
