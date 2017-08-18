@@ -825,6 +825,20 @@ If you need to set additional query constraints on the eager loading query, you 
     $books->load(['author' => function ($query) {
         $query->orderBy('published_date', 'asc');
     }]);
+    
+### Eager Loading Only Once
+
+Sometimes you may be passing an object around through your application and you're just not sure whether it will always come with a specific relationship loaded. `loadMissing` will make sure to only load a relationship if it hasn't been loaded before.
+
+    public function transform(Book $book)
+    {
+        $book->loadMissing('author');
+        
+        return [
+            'name' => $book->name,
+            'author' => $book->author->name
+        ];
+    }
 
 <a name="inserting-and-updating-related-models"></a>
 ## Inserting & Updating Related Models
