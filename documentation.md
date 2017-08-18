@@ -23,6 +23,7 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
+    - [Redirects](/docs/{{version}}/redirects)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
 - ## Views & Templates
