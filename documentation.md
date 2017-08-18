@@ -22,6 +22,7 @@
     - [Controllers](/docs/{{version}}/controllers)
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
+    - [Redirects](/docs/{{version}}/redircts)
     - [Views](/docs/{{version}}/views)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
