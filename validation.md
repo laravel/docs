@@ -324,6 +324,20 @@ You may customize the error messages used by the form request by overriding the 
             'body.required'  => 'A message is required',
         ];
     }
+    
+To provide more human-friendly attribute names, you may specify custom names by overriding the `attributes` method:
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'post_title' => 'title of the post',
+        ];
+    }
 
 <a name="manually-creating-validators"></a>
 ## Manually Creating Validators
