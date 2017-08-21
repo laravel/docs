@@ -43,6 +43,8 @@ For more information on Horizon, check out the [full Horizon documentation](/doc
 
 ### Package Discovery
 
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-5/episodes/5) for this feature available on Laracasts.
+
 In previous versions of Laravel, installing a package typically required several additional steps such as adding the service provider to your `app` configuration file and registering any relevant facades. However, beginning with Laravel 5.5, Laravel can automatically detect and register service providers and facades for you.
 
 For example, you can experience this by installing the popular `barryvdh/laravel-debugbar` package into your Laravel application. Once the package is installed via Composer, the debug bar will be available to your application with no additional configuration:
@@ -63,6 +65,8 @@ For more information on updating your packages to use service provider and facad
 
 ### Console Command Auto-Registration
 
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-5/episodes/12) for this feature available on Laracasts.
+
 When creating new console commands, you no longer are required to manually list them in the `$commands` property of your Console kernel. Instead, a new `load` method is called from the `commands` method of your kernel, which will scan the given directory for any console commands and register them automatically:
 
     /**
@@ -78,6 +82,8 @@ When creating new console commands, you no longer are required to manually list 
     }
 
 ### New Frontend Presets
+
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-5/episodes/4) for this feature available on Laracasts.
 
 While the basic Vue scaffolding is still included in Laravel 5.5, several new frontend preset options are now available. In a fresh Laravel application, you can swap the Vue scaffolding for React scaffolding using the `preset` command:
 
@@ -99,6 +105,8 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
     ])->dispatch();
 
 ### Validation Rule Objects
+
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-5/episodes/7) for this feature available on Laracasts.
 
 Validation rule objects provide a new, compact way of adding custom validation rules to your application. In previous versions of Laravel, the `Validator::extend` method was used to add custom validation rules via Closures. However, this can grow cumbersome. In Laravel 5.5, a new `make:rule` Artisan command will generate a new validation rule in the `app/Rules` directory:
 
@@ -193,6 +201,8 @@ Sometimes you may need to send a notification to someone who is not stored as a 
 
 ### Renderable Mailables
 
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-5/episodes/6) for this feature available on Laracasts.
+
 Mailables can now be returned directly from routes, allowing you to quickly preview your mailable's designs in the browser:
 
     Route::get('/mailable', function () {
@@ -202,6 +212,8 @@ Mailables can now be returned directly from routes, allowing you to quickly prev
     });
 
 ### Renderable & Reportable Exceptions
+
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-5/episodes/18) for this feature available on Laracasts.
 
 In previous versions of Laravel, you may have had to resort to "type checking" in your exception handler in order to render a custom response for a given exception. For instance, you may have written code like this in your exception handler's `render` method:
 
@@ -254,6 +266,8 @@ In Laravel 5.5, you may now define a `render` method directly on your exceptions
     }
 
 ### Request Validation
+
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-5/episodes/2) for this feature available on Laracasts.
 
 The `Illuminate\Http\Request` object now provides a `validate` method, allowing you to quickly validate an incoming request from a route Closure or controller:
 
@@ -328,6 +342,8 @@ In addition, you may "block" until the lock becomes available:
 
 ### Blade Improvements
 
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-5/episodes/10) for this feature available on Laracasts.
+
 Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade now provides a `Blade::if` method which allows you to quickly define custom conditional directives using Closures. For example, let's define a custom conditional that checks the current application environment. We may do this in the `boot` method of our `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Blade;
@@ -363,6 +379,8 @@ In addition to the ability to easily define custom Blade conditional directives,
     @endguest
 
 ### New Routing Methods
+
+> {video} There is a free [video tutorial](https://laracasts.com/series/whats-new-in-laravel-5-5/episodes/16) for this feature available on Laracasts.
 
 If you are defining a route that redirects to another URI, you may now use the `Route::redirect` method. This method provides a convenient shortcut so that you do not have to define a full route or controller for performing a simple redirect:
 
