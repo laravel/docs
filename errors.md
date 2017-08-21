@@ -65,6 +65,13 @@ If you would like to have complete control over how Monolog is configured for yo
     });
 
     return $app;
+    
+
+#### Alternate Monolog Name
+
+By default, Monolog is instantiated with name that matches the current environment (such as `production` or `local`). To change this value, add the `log_channel` option to your `app.php` configuration file:
+
+    'log_channel' => env('APP_LOG_CHANNEL', 'my-app-name'),
 
 <a name="the-exception-handler"></a>
 ## The Exception Handler
