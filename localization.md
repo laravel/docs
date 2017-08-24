@@ -137,6 +137,10 @@ You may even create more complex pluralization rules which specify translation s
 After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the translation string is returned:
 
     echo trans_choice('messages.apples', 10);
+    
+You can also add the parameter itself (e.g. number) into the translation string by adding a placeholder:
+
+    'teachers' => '{0} No teachers|{1} Single teacher|[2,4] :count teachers',
 
 <a name="overriding-package-language-files"></a>
 ## Overriding Package Language Files
