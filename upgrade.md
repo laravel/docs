@@ -455,7 +455,7 @@ Once you have created this class, make sure to update all of your tests to exten
 
 If you would like to install Laravel Dusk into an application that has been upgraded from Laravel 5.3, first install it via Composer:
 
-    composer require laravel/dusk
+    composer require --dev laravel/dusk
 
 Next, you will need to create a `CreatesApplication` trait in your `tests` directory. This trait is responsible for creating fresh application instances for test cases. The trait should look like the following:
 
