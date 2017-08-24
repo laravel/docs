@@ -115,7 +115,7 @@ Sometimes you may wish to stop running validation rules on an attribute after th
         'body' => 'required',
     ]);
 
-In this example, if the `required` rule on the `title` attribute fails, the `unique` rule will not be checked. Rules will be validated in the order they are assigned.
+In this example, if the `unique` rule on the `title` attribute fails, the `max` rule will not be checked. Rules will be validated in the order they are assigned.
 
 #### A Note On Nested Attributes
 

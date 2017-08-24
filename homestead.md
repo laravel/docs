@@ -85,7 +85,7 @@ You should check out a tagged version of Homestead since the `master` branch may
     cd Homestead
 
     // Clone the desired release...
-    git checkout v5.4.0
+    git checkout v6.1.0
 
 Once you have cloned the Homestead repository, run the `bash init.sh` command from the Homestead directory to create the `Homestead.yaml` configuration file. The `Homestead.yaml` file will be placed in the Homestead directory:
 
@@ -412,6 +412,8 @@ When you use an older version of the Homestead box you need to match that with a
 |---|---|---|
 | PHP 7.0 | 3.1.0 | 0.6.0 |
 | PHP 7.1 | 4.0.0 | 1.0.0 |
+| PHP 7.1 | 5.0.0 | 2.0.0 |
+| PHP 7.1 | 6.0.0 | 3.0.0 |
 
 <a name="provider-specific-settings"></a>
 ## Provider Specific Settings
