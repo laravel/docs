@@ -76,6 +76,8 @@ When defining a child view, use the Blade `@extends` directive to specify which 
 
 In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
+Contrary to the previous example, the section **sidebar** ends with `@endsection`. The `@endsection` directive will just define the section while `@show` will define and display it as if you would have yield it after (in this example `@show` at the end of the **sidebar** section would have been equivalent to `@endsection` followed by `@yield('sidebar')`).
+
 Blade views may be returned from routes using the global `view` helper:
 
     Route::get('blade', function () {
