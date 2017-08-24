@@ -129,6 +129,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [info](#method-info)
 [logger](#method-logger)
 [method_field](#method-method-field)
+[now](#method-now)
 [old](#method-old)
 [redirect](#method-redirect)
 [report](#method-report)
@@ -137,6 +138,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [retry](#method-retry)
 [session](#method-session)
 [tap](#method-tap)
+[today](#method-today)
 [value](#method-value)
 [view](#method-view)
 
@@ -980,6 +982,13 @@ The `method_field` function generates an HTML `hidden` input field containing th
         {{ method_field('DELETE') }}
     </form>
 
+<a name="method-now"></a>
+#### `now()` {#collection-method}
+
+The `now` function create a new Carbon instance for the current time:
+
+    $now = now(); // return \Illuminate\Support\Carbon
+
 <a name="method-old"></a>
 #### `old()` {#collection-method}
 
@@ -1066,6 +1075,13 @@ If no Closure is passed to the `tap` function, you may call any method on the gi
         'name' => $name,
         'email' => $email
     ]);
+
+<a name="method-today"></a>
+#### `today()` {#collection-method}
+
+The `today` function create a new Carbon instance for the current date:
+
+    $today = today();  // return \Illuminate\Support\Carbon
 
 <a name="method-value"></a>
 #### `value()` {#collection-method}
