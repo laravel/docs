@@ -469,7 +469,7 @@ Assertion  | Description
 `$browser->assertSourceMissing($code)`  |  Assert that the given source code is not present on the page.
 `$browser->assertSeeLink($linkText)`  |  Assert the given link is present on the page.
 `$browser->assertDontSeeLink($linkText)`  |  Assert the given link is not present on the page.
-`$browser->assertSeeLink($link)`  |  Determine if the given link is visible.
+`$browser->seeLink($link)`  |  Determine if the given link is visible.
 `$browser->assertInputValue($field, $value)`  |  Assert the given input field has the given value.
 `$browser->assertInputValueIsNot($field, $value)`  |  Assert the given input field does not have the given value.
 `$browser->assertChecked($field)`  |  Assert the given checkbox is checked.
