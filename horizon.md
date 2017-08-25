@@ -83,7 +83,7 @@ You may gracefully terminate the master Horizon process on your machine using th
 If you are using the Supervisor process monitor to manage your `horizon` process, the following configuration file should suffice:
 
     [program:horizon]
-    process_name=%(program_name)
+    process_name=%(program_name)s_%(process_num)02d
     command=php /home/forge/app.com/artisan horizon
     autostart=true
     autorestart=true
