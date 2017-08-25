@@ -985,9 +985,9 @@ The `method_field` function generates an HTML `hidden` input field containing th
 <a name="method-now"></a>
 #### `now()` {#collection-method}
 
-The `now` function creates a new carbon instance for the current time:
+The `now` function creates a new `Illuminate\Support\Carbon` instance for the current time:
 
-    $now = now(); // return \Illuminate\Support\Carbon
+    return now();
 
 <a name="method-old"></a>
 #### `old()` {#collection-method}
@@ -1079,9 +1079,9 @@ If no Closure is passed to the `tap` function, you may call any method on the gi
 <a name="method-today"></a>
 #### `today()` {#collection-method}
 
-The `today` function creates a new carbon instance for the current date:
+The `today` function creates a new `Illuminate\Support\Carbon` instance for the current date:
 
-    $today = today();  // return \Illuminate\Support\Carbon
+    return today();
 
 <a name="method-value"></a>
 #### `value()` {#collection-method}
