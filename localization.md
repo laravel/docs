@@ -132,7 +132,7 @@ Pluralization is a complex problem, as different languages have a variety of com
 
 You may even create more complex pluralization rules which specify translation strings for multiple number ranges:
 
-    'apples' => '{0} There are none|[1,19] There are some|[20,*] There are many',
+    'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
 
 After defining a translation string that has pluralization options, you may use the `trans_choice` function to retrieve the line for a given "count". In this example, since the count is greater than one, the plural form of the translation string is returned:
 
