@@ -396,7 +396,7 @@ If your route only needs to return a view, you may now use the `Route::view` met
 
 #### The `sticky` Option
 
-When configuration read / write database connections, a new `sticky` configuration option is available:
+When configuring read / write database connections, a new `sticky` configuration option is available:
 
     'mysql' => [
         'read' => [
