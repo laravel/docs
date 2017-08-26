@@ -43,6 +43,12 @@ The `before` method of a policy class will not be called if the class doesn't co
 
 If you are using the database cache driver, you should run `php artisan cache:clear` when deploying your upgraded Laravel 5.5 application for the first time.
 
+### Database
+
+## Read & Write Connections
+
+If you are using a read/write database connection, you may wish to take advantage of the new `sticky` option. Add `'sticky' => true` to your database configuration to have it enabled. You can read more about the `sticky` option and decide if it is suitable for your situation here: https://laravel.com/docs/5.5/database#read-and-write-connections
+
 ### Eloquent
 
 #### The `belongsToMany` Method
