@@ -76,9 +76,9 @@ Note that three keys have been added to the configuration array: `read`, `write`
 
 You only need to place items in the `read` and `write` arrays if you wish to override the values from the main array. So, in this case, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.2` will be used for the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
 
-`sticky` is an *optional* config option used to prevent write/read race conditions. In replicated databases you sometimes will have a situation where you write a record to your database, but are not able to read the record immediately due to replication lag. With `sticky` enabled, once a write action is performed the connection will continue use the write connection for the remainder of *that request cycle* for *any* further reads. This ensures data integrity while waiting for the writes to be replicated to your other database(s).
+#### The `sticky` Option
 
-> {note} If you have enabled `sticky` - you should be aware that if you commonly perform a small write followed by a large read *in the same request cycle* - that large read will occur on your write database connection. This is acceptable for most applications - but you should consider the pros and cons for your situation.
+The `sticky` option is an *optional* value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the `sticky` option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.
 
 <a name="using-multiple-database-connections"></a>
 ### Using Multiple Database Connections
