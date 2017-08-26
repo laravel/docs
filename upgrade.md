@@ -27,6 +27,10 @@ The Pusher event broadcasting driver now requires version `~3.0` of the Pusher S
 
 Any `fire` methods present on your Artisan commands should be renamed to `handle`.
 
+#### The `optimize` Command
+
+With recent improvements to PHP op-code caching, the `optimize` Artisan command is no longer needed. You should remove any references to this command from your deployment scripts as it will be removed in a future release of Laravel.
+
 ### Authorization
 
 #### The `authorizeResource` Controller Method
