@@ -62,6 +62,7 @@ To see how read / write connections should be configured, let's look at this exa
         'write' => [
             'host' => '196.168.1.2'
         ],
+        'sticky'    => true,
         'driver'    => 'mysql',
         'database'  => 'database',
         'username'  => 'root',
@@ -71,9 +72,13 @@ To see how read / write connections should be configured, let's look at this exa
         'prefix'    => '',
     ],
 
-Note that two keys have been added to the configuration array: `read` and `write`. Both of these keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
+Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
 
 You only need to place items in the `read` and `write` arrays if you wish to override the values from the main array. So, in this case, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.2` will be used for the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
+
+`sticky` is an *optional* config option used to prevent write/read race conditions. In replicated databases you sometimes will have a situation where you write a record to your database, but are not able to read the record immediately due to replication lag. With `sticky` enabled, once a write action is performed the connection will continue use the write connection for the remainder of *that request cycle* for *any* further reads. This ensures data integrity while waiting for the writes to be replicated to your other database(s).
+
+> {note} If you have enabled `sticky` - you should be aware that if you commonly perform a small write followed by a large read *in the same request cycle* - that large read will occur on your write database connection. This is acceptable for most applications - but you should consider the pros and cons for your situation.
 
 <a name="using-multiple-database-connections"></a>
 ### Using Multiple Database Connections
