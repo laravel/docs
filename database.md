@@ -78,7 +78,7 @@ You only need to place items in the `read` and `write` arrays if you wish to ove
 
 When `sticky` is enabled, it is used to prevent write/read race conditions. In replicated databases sometimes you can write a record, but not be able to read it immediately (due to replication lag). With `sticky` enabled, once a write action is performed, the connection will continue use the write connection for the remainder of *that request cycle* for *any* reads. This ensures data integrity while waiting for the writes to be replicated to your other databases.
 
-> {note} If you have enabled `sticky` - you need to balance the fact that in some situations if you perform a small write followed by a large read *in the same request cycle* - that large read will occur on your write database connection. This is fine for most applications - but you should weight the pros and cons for your situation.
+> {note} If you have enabled `sticky` - you need to be aware that if you commonly perform a small write followed by a large read *in the same request cycle* - that large read will occur on your write database connection. This is acceptable for most applications - but you should consider the pros and cons for your situation.
 
 <a name="using-multiple-database-connections"></a>
 ### Using Multiple Database Connections
