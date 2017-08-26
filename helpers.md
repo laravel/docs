@@ -332,7 +332,7 @@ The `array_prepend` function will push an item onto the beginning of an array:
 
     // $array: ['zero', 'one', 'two', 'three', 'four']
     
-You may also specify what key you want the value to be pushed on:
+In addition to the value, you may also specify the key to use:
 
     $array = ['price' => 100];
     
