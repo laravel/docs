@@ -309,6 +309,22 @@ However, you may take a more granular approach by defining the maximum number of
         public $tries = 5;
     }
 
+#### Time Based Attempts
+
+As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should timeout. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should timeout, add a `retryUntil` method to your job class:
+
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return now()->addSeconds(5);
+    }
+
+> {tip} You may also define a `retryUntil` method on your queued event listeners.
+
 #### Timeout
 
 > {note} The `timeout` feature is optimized for PHP 7.1+ and the `pcntl` PHP extension.
@@ -332,22 +348,6 @@ However, you may also define the maximum number of seconds a job should be allow
          */
         public $timeout = 120;
     }
-
-#### Time Based Timeouts
-
-As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should timeout. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should timeout, add a `retryUntil` method to your job class:
-
-    /**
-     * Determine the time at which the job should timeout.
-     *
-     * @return \DateTime
-     */
-    public function retryUntil()
-    {
-        return now()->addSeconds(5);
-    }
-
-> {tip} You may also define a `retryUntil` method on your queued event listeners.
 
 <a name="error-handling"></a>
 ### Error Handling
