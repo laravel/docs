@@ -27,7 +27,7 @@ For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and se
 <a name="laravel-5.5"></a>
 ## Laravel 5.5
 
-Laravel 5.5 continues the improvements made in Laravel 5.4 by adding package auto-detection, API resources / transformations, auto-registration of console commands, queued job chaining, renderable mailables, renderable and reportable exceptions, more consistent exception handling, database testing improvements, simpler custom validation rules, React front-end presets, `Route::view` and `Route::redirect` methods, "locks" for the Memcached and Redis cache drivers, on-demand notifications, headless Chrome support in Dusk, convenient Blade shortcuts, improved trusted proxy support, and more.
+Laravel 5.5 continues the improvements made in Laravel 5.4 by adding package auto-detection, API resources / transformations, auto-registration of console commands, queued job chaining, time based job timeouts, renderable mailables, renderable and reportable exceptions, more consistent exception handling, database testing improvements, simpler custom validation rules, React front-end presets, `Route::view` and `Route::redirect` methods, "locks" for the Memcached and Redis cache drivers, on-demand notifications, headless Chrome support in Dusk, convenient Blade shortcuts, improved trusted proxy support, and more.
 
 In addition, Laravel 5.5 coincides with the release of [Laravel Horizon](http://horizon.laravel.com), a beautiful new queue dashboard and configuration system for your Redis based Laravel queues.
 
@@ -137,6 +137,22 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
         new InstallNginx,
         new InstallPhp
     ])->dispatch();
+
+### Time Based Job Timeouts
+
+As an alternative to defining how many times a job may be attempted before it fails, you may now define a time at which the job should timeout. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should timeout, add a `retryUntil` method to your job class:
+
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return now()->addSeconds(5);
+    }
+
+> {tip} You may also define a `retryUntil` method on your queued event listeners.
 
 ### Validation Rule Objects
 
