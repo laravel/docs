@@ -14,7 +14,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-When building an API, you may need a transformation layer that sits between your Eloquent models and the JSON responses that are actually returned to your application's users. Laravel Resource classes allow you to expressively and easily transform your models and model collections into JSON.
+When building an API, you may need a transformation layer that sits between your Eloquent models and the JSON responses that are actually returned to your application's users. Laravel's resource classes allow you to expressively and easily transform your models and model collections into JSON.
 
 <a name="generating-resources"></a>
 ## Generating Resources
