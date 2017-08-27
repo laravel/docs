@@ -627,4 +627,3 @@ Alternatively, you may define a `withResponse` method within the resource itself
             $response->header('X-Value', 'True');
         }
     }
-
