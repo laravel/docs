@@ -41,6 +41,12 @@ You may hash a password by calling the `make` method on the `Hash` facade:
         }
     }
 
+The `make` method also allows you to manage the work factor of the bcrypt hashing algorithm using the `rounds` option; however, the default is acceptable for most applications:
+
+    $hashed = Hash::make('password', [
+        'rounds' => 12
+    ]);
+
 #### Verifying A Password Against A Hash
 
 The `check` method allows you to verify that a given plain-text string corresponds to a given hash. However, if you are using the `LoginController` [included with Laravel](/docs/{{version}}/authentication), you will probably not need to use this directly, as this controller automatically calls this method:
