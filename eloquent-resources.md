@@ -569,6 +569,15 @@ Sometimes you may wish to only include certain meta data with a resource respons
         }
     }
 
+#### Adding Meta Data When Constructing Resources
+
+You may also add top-level data when constructing resource instances in your route or controller. The `additional` method, which is available on all resources, accepts an array of data that should be added to the resource response:
+
+    return (new UserCollection(User::all()->load('roles')))
+                    ->additional(['meta' => [
+                        'key' => 'value',
+                    ]]);
+
 <a name="resource-responses"></a>
 ## Resource Responses
 
