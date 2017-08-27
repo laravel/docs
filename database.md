@@ -15,7 +15,7 @@ Laravel makes interacting with databases extremely simple across a variety of da
 
 <div class="content-list" markdown="1">
 - MySQL
-- Postgres
+- PostgreSQL
 - SQLite
 - SQL Server
 </div>
