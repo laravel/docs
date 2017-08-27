@@ -56,3 +56,12 @@ The `needsRehash` function allows you to determine if the work factor used by th
     if (Hash::needsRehash($hashed)) {
         $hashed = Hash::make('plain-text');
     }
+
+#### Adjusting the Work Factor
+
+The `make` function allows you to specify the work factor used to generate the hash:
+
+	//Note: the default work factor is 10
+    $hashed = Hash::make('plain-text', [
+    	'rounds' => 12
+    ]);
