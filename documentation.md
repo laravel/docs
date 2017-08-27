@@ -63,6 +63,7 @@
     - [Relationships](/docs/{{version}}/eloquent-relationships)
     - [Collections](/docs/{{version}}/eloquent-collections)
     - [Mutators](/docs/{{version}}/eloquent-mutators)
+    - [API Resources](/docs/{{version}}/eloquent-resources)
     - [Serialization](/docs/{{version}}/eloquent-serialization)
 - ## Testing
     - [Getting Started](/docs/{{version}}/testing)
