@@ -391,3 +391,28 @@ If your route only needs to return a view, you may now use the `Route::view` met
     Route::view('/welcome', 'welcome');
 
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
+
+### "Sticky" Database Connections
+
+#### The `sticky` Option
+
+When configuring read / write database connections, a new `sticky` configuration option is available:
+
+    'mysql' => [
+        'read' => [
+            'host' => '192.168.1.1',
+        ],
+        'write' => [
+            'host' => '196.168.1.2'
+        ],
+        'sticky'    => true,
+        'driver'    => 'mysql',
+        'database'  => 'database',
+        'username'  => 'root',
+        'password'  => '',
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
+        'prefix'    => '',
+    ],
+
+The `sticky` option is an *optional* value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the `sticky` option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.
