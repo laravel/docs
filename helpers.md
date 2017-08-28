@@ -290,8 +290,8 @@ The `array_last` function returns the last element of an array passing a given t
     });
 
     // 300
-    
-A default value may also be passed as the third parameter to the method. This value will be returned if no value passes the truth test:
+
+A default value may be passed as the third argument to the method. This value will be returned if no value passes the truth test:
 
     $value = array_last($array, $callback, $default);
 
@@ -336,13 +336,13 @@ The `array_prepend` function will push an item onto the beginning of an array:
     $array = array_prepend($array, 'zero');
 
     // $array: ['zero', 'one', 'two', 'three', 'four']
-    
-In addition to the value, you may also specify the key to use:
+
+If needed, you may specify the key that should be used for the value:
 
     $array = ['price' => 100];
-    
+
     $array = array_prepend($array, 'Desk', 'name');
-    
+
     // $array: ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-pull"></a>
@@ -357,8 +357,8 @@ The `array_pull` function returns and removes a key / value pair from the array:
     // $name: Desk
 
     // $array: ['price' => 100]
-    
-A default value may also be passed as the third parameter to the method. This value will be returned if the key doesn't exist:
+
+A default value may be passed as the third argument to the method. This value will be returned if the key doesn't exist:
 
     $value = array_pull($array, $key, $default);
 
