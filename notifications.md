@@ -757,7 +757,7 @@ The example above will create a Slack message that looks like the following:
 
 #### Markdown Attachment Content
 
-If some of your attachment fields contain Markdown, you may use the `markdown` method to instruct Slack to parse and display the given attachment fields as Markdown formatted text:
+If some of your attachment fields contain Markdown, you may use the `markdown` method to instruct Slack to parse and display the given attachment fields as Markdown formatted text. Simply pass an array with one or more of: `pretext`, `text`, and/or `fields`. For more information about Slack attachment formatting, check out the [Slack API documentation](https://api.slack.com/docs/message-formatting#message_formatting).
 
     /**
      * Get the Slack representation of the notification.
@@ -775,7 +775,7 @@ If some of your attachment fields contain Markdown, you may use the `markdown` m
                     ->attachment(function ($attachment) use ($url) {
                         $attachment->title('Exception: File Not Found', $url)
                                    ->content('File [background.jpg] was *not found*.')
-                                   ->markdown(['title', 'text']);
+                                   ->markdown(['text']);
                     });
     }
 
