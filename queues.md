@@ -22,6 +22,7 @@
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
     - [Failed Job Events](#failed-job-events)
     - [Retrying Failed Jobs](#retrying-failed-jobs)
+    - [Adding Custom Failed Jobs Providers](#adding-custom-failed-jobs-providers)
 - [Job Events](#job-events)
 
 <a name="introduction"></a>
@@ -634,6 +635,37 @@ If you would like to delete a failed job, you may use the `queue:forget` command
 To delete all of your failed jobs, you may use the `queue:flush` command:
 
     php artisan queue:flush
+
+<a name="adding-custom-failed-jobs-providers"></a>
+### Adding Custom Failed Jobs Providers
+
+If you are not using a traditional relational database to store your failed jobs you may include a custom provider for failed jobs. First create persistence class that implements `Illuminate\Queue\Failed\FailedJobProviderInterface` interface and add this provider via `addProvider` method from `queue.failer.manager` in your Service Provider:
+
+    <?php
+
+    namespace App\Providers;
+
+    use App\Services\CustomFailedJobProvider;
+
+    class FailedJobsServiceProvider extends ServiceProvider
+    {
+        public function boot()
+        {
+            $this->app['queue.failer.manager']->addProvider('custom', function ($app, $config) {
+                return new CustomFailedJobProvider($app, $config);
+            });
+        }
+    }
+
+After that, update `provider` key inside `failed` section in `config/queue.php` to match your custom provider. You may include extra configuration to be passed to your provider:
+
+    'failed' => [
+        'provider' => 'custom',
+
+        'custom' => [
+            'file' => 'some-path',
+        ],
+    ],
 
 <a name="job-events"></a>
 ## Job Events

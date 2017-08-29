@@ -206,6 +206,34 @@ The unused `$data` and `$callback` arguments were removed from the `Illuminate\C
      */
     public function later($delay, $view, $queue = null);
 
+### Queues
+
+#### Failed Queue Jobs configuration
+
+The `failed` configuration has changed to support custom providers. In `config/queue.php` file update the `failed` key as bellow to use database failed queue jobs provider:
+
+    /*
+    |--------------------------------------------------------------------------
+    | Failed Queue Jobs
+    |--------------------------------------------------------------------------
+    |
+    | These options configure the behavior of failed queue job logging
+    | so you can control which database and table are used to
+    | store the jobs that have failed.
+    |
+    | Supported: "database", "null"
+    |
+    */
+
+    'failed' => [
+        'provider' => 'database',
+
+        'database' => [
+            'connection' => env('DB_CONNECTION', 'mysql'),
+            'table' => 'failed_jobs',
+        ],
+    ],
+
 ### Requests
 
 #### The `has` Method
