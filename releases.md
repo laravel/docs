@@ -7,7 +7,7 @@
 <a name="versioning-scheme"></a>
 ## Versioning Scheme
 
-Laravel's versioning scheme maintains the following convention: `paradigm.minor.patch`. Minor framework releases are released every six months (January and July), while patch releases may be released as often as every week. Patch releases should **never** contain breaking changes.
+Laravel's versioning scheme maintains the following convention: `paradigm.minor.patch`. Minor framework releases are released every six months (February and August), while patch releases may be released as often as every week. Patch releases should **never** contain breaking changes.
 
 When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `5.5.*`, since minor releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new minor release in one day or less.
 
@@ -27,7 +27,7 @@ For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and se
 <a name="laravel-5.5"></a>
 ## Laravel 5.5
 
-Laravel 5.5 continues the improvements made in Laravel 5.4 by adding package auto-detection, auto-registration of console commands, queued job chaining, renderable mailables, renderable and reportable exceptions, more consistent exception handling, database testing improvements, simpler custom validation rules, React front-end presets, `Route::view` and `Route::redirect` methods, "locks" for the Memcached and Redis cache drivers, on-demand notifications, headless Chrome support in Dusk, convenient Blade shortcuts, improved trusted proxy support, and more.
+Laravel 5.5 continues the improvements made in Laravel 5.4 by adding package auto-detection, API resources / transformations, auto-registration of console commands, queued job chaining, queued job rate limiting, time based job attempts, renderable mailables, renderable and reportable exceptions, more consistent exception handling, database testing improvements, simpler custom validation rules, React front-end presets, `Route::view` and `Route::redirect` methods, "locks" for the Memcached and Redis cache drivers, on-demand notifications, headless Chrome support in Dusk, convenient Blade shortcuts, improved trusted proxy support, and more.
 
 In addition, Laravel 5.5 coincides with the release of [Laravel Horizon](http://horizon.laravel.com), a beautiful new queue dashboard and configuration system for your Redis based Laravel queues.
 
@@ -62,6 +62,40 @@ Package developers only need to add their service providers and facades to their
     },
 
 For more information on updating your packages to use service provider and facade discovery, check out the full documentation on [package development](/docs/{{version}}/packages).
+
+### API Resources
+
+When building an API, you may need a transformation layer that sits between your Eloquent models and the JSON responses that are actually returned to your application's users. Laravel's resource classes allow you to expressively and easily transform your models and model collections into JSON.
+
+A resource class represents a single model that needs to be transformed into a JSON structure. For example, here is a simple `User` resource class:
+
+    <?php
+
+    namespace App\Http\Resources;
+
+    use Illuminate\Http\Resources\Json\Resource;
+
+    class User extends Resource
+    {
+        /**
+         * Transform the resource into an array.
+         *
+         * @param  \Illuminate\Http\Request
+         * @return array
+         */
+        public function toArray($request)
+        {
+            return [
+                'id' => $this->id,
+                'name' => $this->name,
+                'email' => $this->email,
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
+            ];
+        }
+    }
+
+Of course, this is only the most basic example of an API resource. Laravel also provides a variety of methods to help you when building your resources and resource collections. For more information, check out the [full documentation](/docs/{{version}}/eloquent-resources) on API resources.
 
 ### Console Command Auto-Registration
 
@@ -103,6 +137,46 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
         new InstallNginx,
         new InstallPhp
     ])->dispatch();
+
+### Queued Job Rate Limiting
+
+If your application interacts with Redis, you may now throttle your queued jobs by time or concurrency. This feature can be of assistance when your queued jobs are interacting with APIs that are also rate limited. For example, you may throttle a given type of job to only run 10 times every 60 seconds:
+
+    Redis::throttle('key')->allow(10)->every(60)->then(function () {
+        // Job logic...
+    }, function () {
+        // Could not obtain lock...
+
+        return $this->release(10);
+    });
+
+> {tip} In the example above, the `key` may be any string that uniquely identifies the type of job you would like to rate limit. For example, you may wish to construct the key based on the class name of the job and the IDs of the Eloquent models it operates on.
+
+Alternatively, you may specify the maximum number of workers that may simultaneously process a given job. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time. For example, we may limit jobs of a given type to only be processed by one worker at a time:
+
+    Redis::funnel('key')->limit(1)->then(function () {
+        // Job logic...
+    }, function () {
+        // Could not obtain lock...
+
+        return $this->release(10);
+    });
+
+### Time Based Job Attempts
+
+As an alternative to defining how many times a job may be attempted before it fails, you may now define a time at which the job should timeout. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should timeout, add a `retryUntil` method to your job class:
+
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return now()->addSeconds(5);
+    }
+
+> {tip} You may also define a `retryUntil` method on your queued event listeners.
 
 ### Validation Rule Objects
 
@@ -149,7 +223,7 @@ Once the rule has been defined, you may use it by simply passing an instance of 
 
     use App\Rules\ValidName;
 
-    $this->validate($request, [
+    $request->validate([
         'name' => ['required', new ValidName],
     ]);
 

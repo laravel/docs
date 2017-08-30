@@ -11,6 +11,7 @@
     - [Job Chaining](#job-chaining)
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
+    - [Rate Limiting](#rate-limiting)
     - [Error Handling](#error-handling)
 - [Running The Queue Worker](#running-the-queue-worker)
     - [Queue Priorities](#queue-priorities)
@@ -309,6 +310,23 @@ However, you may take a more granular approach by defining the maximum number of
         public $tries = 5;
     }
 
+<a name="time-based-attempts"></a>
+#### Time Based Attempts
+
+As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should timeout. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should timeout, add a `retryUntil` method to your job class:
+
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return now()->addSeconds(5);
+    }
+
+> {tip} You may also define a `retryUntil` method on your queued event listeners.
+
 #### Timeout
 
 > {note} The `timeout` feature is optimized for PHP 7.1+ and the `pcntl` PHP extension.
@@ -332,6 +350,35 @@ However, you may also define the maximum number of seconds a job should be allow
          */
         public $timeout = 120;
     }
+
+<a name="rate-limiting"></a>
+### Rate Limiting
+
+> {note} This feature requires that your application can interact with a [Redis server](/docs/{{version}}/redis).
+
+If your application interacts with Redis, you may throttle your queued jobs by time or concurrency. This feature can be of assistance when your queued jobs are interacting with APIs that are also rate limited. For example, using the `throttle` method, you may throttle a given type of job to only run 10 times every 60 seconds. If a lock can not be obtained, you should typically release the job back onto the queue so it can be retried later:
+
+    Redis::throttle('key')->allow(10)->every(60)->then(function () {
+        // Job logic...
+    }, function () {
+        // Could not obtain lock...
+
+        return $this->release(10);
+    });
+
+> {tip} In the example above, the `key` may be any string that uniquely identifies the type of job you would like to rate limit. For example, you may wish to construct the key based on the class name of the job and the IDs of the Eloquent models it operates on.
+
+Alternatively, you may specify the maximum number of workers that may simultaneously process a given job. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time. For example, using the `funnel` method, you may limit jobs of a given type to only be processed by one worker at a time:
+
+    Redis::funnel('key')->limit(1)->then(function () {
+        // Job logic...
+    }, function () {
+        // Could not obtain lock...
+
+        return $this->release(10);
+    });
+
+> {tip} When using rate limiting, the number of attempts your job will need to run successfully can be hard to determine. Therefore, it is useful to combine rate limiting with [time based attempts](#time-based-attempts).
 
 <a name="error-handling"></a>
 ### Error Handling
