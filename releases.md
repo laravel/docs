@@ -223,7 +223,7 @@ Once the rule has been defined, you may use it by simply passing an instance of 
 
     use App\Rules\ValidName;
 
-    $this->validate($request, [
+    $request->validate([
         'name' => ['required', new ValidName],
     ]);
 
