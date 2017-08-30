@@ -66,7 +66,7 @@ Before diving into all of the options available to you when writing resources, l
         }
     }
 
-Every resource class defines a `toArray` method which returns the array of attributes that should be converted to JSON when sending the response. Notice that we can access model properties directly from the `$this` variable. This is because a resource clas will automatically proxy property and method access down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller:
+Every resource class defines a `toArray` method which returns the array of attributes that should be converted to JSON when sending the response. Notice that we can access model properties directly from the `$this` variable. This is because a resource class will automatically proxy property and method access down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller:
 
     use App\User;
     use App\Http\Resources\User as UserResource;
@@ -86,7 +86,7 @@ If you are returning a collection of resources or a paginated response, you may 
         return UserResource::collection(User::all());
     });
 
-Of course, this does not allow any addition of meta data that may need to be returned with the collection. If you would like to customize the resource collection response, you may create a dedicate resource to represent the collection:
+Of course, this does not allow any addition of meta data that may need to be returned with the collection. If you would like to customize the resource collection response, you may create a dedicated resource to represent the collection:
 
     php artisan make:resource UserCollection
 
