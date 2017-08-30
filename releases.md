@@ -358,7 +358,7 @@ The `Illuminate\Http\Request` object now provides a `validate` method, allowing 
 
 ### Consistent Exception Handling
 
-Validation exception handling is now consistent throughout the framework. Previously, there were multiple locations in the framework that required customization to change the default format for JSON validation error responses. In addition, the default format for JSON validation responses in Laravel 5.5 now adheres the following convention:
+Validation exception handling is now consistent throughout the framework. Previously, there were multiple locations in the framework that required customization to change the default format for JSON validation error responses. In addition, the default format for JSON validation responses in Laravel 5.5 now adheres to the following convention:
 
     {
         "message": "The given data was invalid.",
@@ -470,7 +470,7 @@ If your route only needs to return a view, you may now use the `Route::view` met
 
 #### The `sticky` Option
 
-When configuration read / write database connections, a new `sticky` configuration option is available:
+When configuring read / write database connections, a new `sticky` configuration option is available:
 
     'mysql' => [
         'read' => [
