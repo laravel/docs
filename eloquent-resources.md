@@ -9,7 +9,7 @@
     - [Conditional Attributes](#conditional-attributes)
     - [Conditional Relationships](#conditional-relationships)
     - [Adding Meta Data](#adding-meta-data)
-- [Resource Responses](#responding-with-resources)
+- [Resource Responses](#resource-responses)
 
 <a name="introduction"></a>
 ## Introduction
