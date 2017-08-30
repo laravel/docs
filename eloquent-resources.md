@@ -362,7 +362,7 @@ You may always pass a paginator instance to the `collection` method of a resourc
     use App\Http\Resources\UserCollection;
 
     Route::get('/users', function () {
-        return new UserCollection(User::all());
+        return new UserCollection(User::paginate());
     });
 
 Paginated responses always contain `meta` and `links` keys with information about the paginator's state:
