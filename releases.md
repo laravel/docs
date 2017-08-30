@@ -7,9 +7,9 @@
 <a name="versioning-scheme"></a>
 ## Versioning Scheme
 
-Laravel's versioning scheme maintains the following convention: `paradigm.minor.patch`. Minor framework releases are released every six months (February and August), while patch releases may be released as often as every week. Patch releases should **never** contain breaking changes.
+Laravel's versioning scheme maintains the following convention: `paradigm.major.minor`. Major framework releases are released every six months (February and August), while minor releases may be released as often as every week. Minor releases should **never** contain breaking changes.
 
-When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `5.5.*`, since minor releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new minor release in one day or less.
+When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `5.5.*`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
 
 Paradigm shifting releases are separated by many years and represent fundamental shifts in the framework's architecture and conventions. Currently, there is no paradigm shifting release under development.
 
@@ -17,7 +17,7 @@ Paradigm shifting releases are separated by many years and represent fundamental
 
 On one hand, all optional components of Laravel (Cashier, Dusk, Valet, Socialite, etc.) **do** use semantic versioning. However, the Laravel framework itself does not. The reason for this is because semantic versioning is a "reductionist" way of determining if two pieces of code are compatible. Even when using semantic versioning, you still must install the upgraded package and run your automated test suite to know if anything is *actually* incompatible with your code base.
 
-So, instead, the Laravel framework uses a versioning scheme that is more communicative of the actual scope of the release. Furthermore, since patch releases **never** contain intentional breaking changes, you should never receive a breaking change as long as your version constraints follow the `paradigm.minor.*` convention.
+So, instead, the Laravel framework uses a versioning scheme that is more communicative of the actual scope of the release. Furthermore, since minor releases **never** contain intentional breaking changes, you should never receive a breaking change as long as your version constraints follow the `paradigm.major.*` convention.
 
 <a name="support-policy"></a>
 ## Support Policy
