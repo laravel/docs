@@ -565,6 +565,12 @@ Writing a global scope is simple. Define a class that implements the `Illuminate
 
 > {tip} If your global scope is adding columns to the select clause of the query, you should use the `addSelect` method instead of `select`. This will prevent the unintentional replacement of the query's existing select clause.
 
+#### Generate Global Scopes
+
+You may generate a scope using the `make:scope` [artisan command](/docs/{{version}}/artisan). The generated scope will be placed in the `app/Scopes` directory. If this directory does not exist in your application, Laravel will create it for you:
+
+    php artisan make:scope AgeScope
+
 #### Applying Global Scopes
 
 To assign a global scope to a model, you should override a given model's `boot` method and use the `addGlobalScope` method:
