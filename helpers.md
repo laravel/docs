@@ -603,11 +603,15 @@ The `snake_case` function converts the given string to `snake_case`:
 <a name="method-str-limit"></a>
 #### `str_limit()` {#collection-method}
 
-The `str_limit` function limits the number of characters in a string. The function accepts a string as its first argument and the maximum number of resulting characters as its second argument:
+The `str_limit` function limits the number of characters in a string. The function accepts a string as its first argument and the maximum number of resulting characters as its second argument. An optional third argument determines the string used to show that something has been left out:
 
     $value = str_limit('The PHP framework for web artisans.', 7);
 
     // The PHP...
+    
+    $value = str_limit('The PHP framework for web artisans.', 7, '***');
+    
+    // The PHP***
 
 <a name="method-starts-with"></a>
 #### `starts_with()` {#collection-method}
