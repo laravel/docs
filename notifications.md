@@ -149,7 +149,7 @@ Sometimes you may need to send a notification to someone who is not stored as a 
 
     Notification::route('mail', 'taylor@laravel.com')
                 ->route('nexmo', '5555555555')
-                ->send(new InvoicePaid($invoice));
+                ->notify(new InvoicePaid($invoice));
 
 <a name="mail-notifications"></a>
 ## Mail Notifications
