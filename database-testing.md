@@ -26,7 +26,7 @@ Laravel provides a variety of helpful tools to make it easier to test your datab
         ]);
     }
 
-You can also used the `assertDatabaseMissing` helper to assert that data does not exist in the database.
+You can also use the `assertDatabaseMissing` helper to assert that data does not exist in the database.
 
 Of course, the `assertDatabaseHas` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
 
