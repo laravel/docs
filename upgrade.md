@@ -9,6 +9,10 @@
 
 > {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
+### PHP
+
+Laravel 5.5 requires PHP 7.0.0 or higher.
+
 ### Updating Dependencies
 
 Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~6.0`.
