@@ -176,10 +176,10 @@ Instead of type-checking exceptions in the exception handler's `report` and `ren
         }
 
         /**
-         * Report the exception.
+         * Render the exception into an HTTP response.
          *
          * @param  \Illuminate\Http\Request
-         * @return void
+         * @return \Illuminate\Http\Response
          */
         public function render($request)
         {
