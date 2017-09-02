@@ -220,6 +220,21 @@ The `intersect` method has been removed. You may replicate this behavior using `
 
     return array_filter($request->only('foo'));
 
+#### The `all` Method
+
+If you are overriding the `all` method on your Request model, you should update your method signature to reflect the newly added argument:
+
+    /**
+     * Get all of the input and files for the request.
+     *
+     * @param  array|mixed  $keys
+     * @return array
+     */
+    public function all($keys = null)
+    {
+        //
+    }
+
 #### The `only` Method
 
 The `only` method will now only return attributes that are actually present in the request payload. If you would like to preserve the old behavior of the `only` method, you may use the `all` method instead.
