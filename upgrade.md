@@ -229,7 +229,7 @@ If you are overriding the `all` method of the `Illuminate\Http\Request` class, y
 
 #### The `has` Method
 
-The `$request->has` method will now return `true` for empty strings and `null`. A new `$request->filled` method has been added that provides the previous behavior of the `has` method.
+The `$request->has` method will now return `true` even if the input value is an empty string or `null`. A new `$request->filled` method has been added that provides the previous behavior of the `has` method.
 
 #### The `intersect` Method
 
