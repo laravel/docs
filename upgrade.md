@@ -212,19 +212,9 @@ The unused `$data` and `$callback` arguments were removed from the `Illuminate\C
 
 ### Requests
 
-#### The `has` Method
-
-The `$request->has` method will now return `true` for empty strings and `null`. A new `$request->filled` method has been added that provides the previous behavior of the `has` method.
-
-#### The `intersect` Method
-
-The `intersect` method has been removed. You may replicate this behavior using `array_filter` on a call to `$request->only`:
-
-    return array_filter($request->only('foo'));
-
 #### The `all` Method
 
-If you are overriding the `all` method on your Request model, you should update your method signature to reflect the newly added argument:
+If you are overriding the `all` method of the `Illuminate\Http\Request` class, you should update your method signature to reflect the new `$keys` argument:
 
     /**
      * Get all of the input and files for the request.
@@ -236,6 +226,16 @@ If you are overriding the `all` method on your Request model, you should update 
     {
         //
     }
+
+#### The `has` Method
+
+The `$request->has` method will now return `true` for empty strings and `null`. A new `$request->filled` method has been added that provides the previous behavior of the `has` method.
+
+#### The `intersect` Method
+
+The `intersect` method has been removed. You may replicate this behavior using `array_filter` on a call to `$request->only`:
+
+    return array_filter($request->only('foo'));
 
 #### The `only` Method
 
