@@ -97,6 +97,10 @@ If you are overriding the `is` method of your Eloquent model, you should remove 
 
 The `$events` property on your models should be renamed to `$dispatchesEvents`. This change was made because of a high number of users needing to define an `events` relationship, which caused a conflict with the old property name.
 
+#### New `retrieved` Method
+
+A `retrieved` method has been added to allow the registration of an event listener for when an already existing model is retrieved from the database. If you have any custom method named `retrieved` on your model, you should rename it to avoid a naming conflict.
+
 #### Pivot `$parent` Property
 
 The protected `$parent` property on the `Illuminate\Database\Eloquent\Relations\Pivot` class has been renamed to `$pivotParent`.
