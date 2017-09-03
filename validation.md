@@ -487,6 +487,7 @@ Below is a list of all available validation rules and their function:
 [Boolean](#rule-boolean)
 [Confirmed](#rule-confirmed)
 [Date](#rule-date)
+[Date Equals](#rule-date-equals)
 [Date Format](#rule-date-format)
 [Different](#rule-different)
 [Digits](#rule-digits)
@@ -603,6 +604,11 @@ The field under validation must have a matching field of `foo_confirmation`. For
 #### date
 
 The field under validation must be a valid date according to the `strtotime` PHP function.
+
+<a name="rule-date-equals"></a>
+#### date_equals:_date_ 
+
+The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function.
 
 <a name="rule-date-format"></a>
 #### date_format:_format_
