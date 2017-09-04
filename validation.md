@@ -982,7 +982,7 @@ Validating array based form input fields doesn't have to be a pain. You may use 
 You may also validate each element of an array. For example, to validate that each e-mail in a given array input field is unique, you may do the following:
 
     $validator = Validator::make($request->all(), [
-        'person.*.email' => 'email|unique:users',
+        'person.*.email' => 'email|distinct',
         'person.*.first_name' => 'required_with:person.*.last_name',
     ]);
 
