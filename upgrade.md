@@ -27,6 +27,10 @@ Laravel Dusk `2.0.0` has been released to provide compatibility with Laravel 5.5
 
 The Pusher event broadcasting driver now requires version `~3.0` of the Pusher SDK.
 
+#### Swift Mailer
+
+Laravel 5.5 requires version `~6.0` of Swift Mailer.
+
 ### Artisan
 
 #### The `fire` Method
