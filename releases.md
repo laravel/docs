@@ -22,7 +22,7 @@ So, instead, the Laravel framework uses a versioning scheme that is more communi
 <a name="support-policy"></a>
 ## Support Policy
 
-For LTS releases, such as Laravel 5.1, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
+For LTS releases, such as Laravel 5.5, bug fixes are provided for 2 years and security fixes are provided for 3 years. These releases provide the longest window of support and maintenance. For general releases, bug fixes are provided for 6 months and security fixes are provided for 1 year.
 
 <a name="laravel-5.5"></a>
 ## Laravel 5.5 (LTS)
