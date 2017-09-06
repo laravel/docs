@@ -459,6 +459,7 @@ Assertion  | Description
 `$browser->assertQueryStringMissing($name)`  |  Assert the given query string parameter is missing.
 `$browser->assertHasQueryStringParameter($name)`  |  Assert that the given query string parameter is present.
 `$browser->assertHasCookie($name)`  |  Assert the given cookie is present.
+`$browser->assertCookieMissing($name)`  |  Assert that the given cookie is not present.
 `$browser->assertCookieValue($name, $value)`  |  Assert a cookie has a given value.
 `$browser->assertPlainCookieValue($name, $value)`  |  Assert an unencrypted cookie has a given value.
 `$browser->assertSee($text)`  |  Assert the given text is present on the page.
