@@ -148,7 +148,7 @@ Sometimes you may wish to retrieve an item from the cache, but also store a defa
 
 If the item does not exist in the cache, the `Closure` passed to the `remember` method will be executed and its result will be placed in the cache.
 
-You may also combine the `remember` and `forever` methods:
+You may use the `rememberForever` method to retrieve an item from the cache or store it forever:
 
     $value = Cache::rememberForever('users', function() {
         return DB::table('users')->get();
