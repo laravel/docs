@@ -264,7 +264,7 @@ Below is a list of all the available column modifiers. This list does not includ
 Modifier  | Description
 ------------- | -------------
 `->after('column')`  |  Place the column "after" another column (MySQL Only)
-`->comment('my comment')`  |  Add a comment to a column
+`->comment('my comment')`  |  Add a comment to a column (MySQL Only)
 `->default($value)`  |  Specify a "default" value for the column
 `->first()`  |  Place the column "first" in the table (MySQL Only)
 `->nullable()`  |  Allow NULL values to be inserted into the column
