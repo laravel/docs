@@ -218,6 +218,18 @@ The unused `$data` and `$callback` arguments were removed from the `Illuminate\C
      */
     public function later($delay, $view, $queue = null);
 
+### Queues
+
+#### The `dispatch` Helper
+
+If you would like to dispatch a job that runs immediately and returns a value from the `handle` method, you should use the `dispatch_now` or `Bus::dispatch` method to dispatch the job:
+
+    use Illuminate\Support\Facades\Bus;
+
+    $value = dispatch_now(new Job);
+
+    $value = Bus::dispatch(new Job);
+
 ### Requests
 
 #### The `all` Method
