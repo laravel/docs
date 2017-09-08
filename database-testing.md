@@ -2,9 +2,6 @@
 
 - [Introduction](#introduction)
 - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
-    - [Using Migrations](#using-migrations)
-    - [Using Transactions](#using-transactions)
-    - [Using RefreshDatabase](#using-refresh-database)
 - [Writing Factories](#writing-factories)
     - [Factory States](#factory-states)
 - [Using Factories](#using-factories)
@@ -34,84 +31,15 @@ Of course, the `assertDatabaseHas` method and other helpers like it are for conv
 <a name="resetting-the-database-after-each-test"></a>
 ## Resetting The Database After Each Test
 
-It is often useful to reset your database after each test so that data from a previous test does not interfere with subsequent tests.
-
-<a name="using-migrations"></a>
-### Using Migrations
-
-One approach to resetting the database state is to rollback the database after each test and migrate it before the next test. Laravel provides a simple `DatabaseMigrations` trait that will automatically handle this for you. Simply use the trait on your test class and everything will be handled for you:
+It is often useful to reset your database after each test so that data from a previous test does not interfere with subsequent tests. The `RefreshDatabase` trait takes the most optimal approach to migrating your test database depending on if you are using an in-memory database or a traditional database. Simply use the trait on your test class and everything will be handled for you:
 
     <?php
 
     namespace Tests\Feature;
 
     use Tests\TestCase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-    class ExampleTest extends TestCase
-    {
-        use DatabaseMigrations;
-
-        /**
-         * A basic functional test example.
-         *
-         * @return void
-         */
-        public function testBasicExample()
-        {
-            $response = $this->get('/');
-
-            // ...
-        }
-    }
-
-<a name="using-transactions"></a>
-### Using Transactions
-
-Another approach to resetting the database state is to wrap each test case in a database transaction. Again, Laravel provides a convenient `DatabaseTransactions` trait that will automatically handle this for you:
-
-    <?php
-
-    namespace Tests\Feature;
-
-    use Tests\TestCase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-    class ExampleTest extends TestCase
-    {
-        use DatabaseTransactions;
-
-        /**
-         * A basic functional test example.
-         *
-         * @return void
-         */
-        public function testBasicExample()
-        {
-            $response = $this->get('/');
-
-            // ...
-        }
-    }
-
-> {note} By default, this trait will only wrap the default database connection in a transaction. If your application is using multiple database connections, you should define a `$connectionsToTransact` property on your test class. This property should be an array of connection names to execute the transactions on.
-
-<a name="using-refresh-database"></a>
-### Using RefreshDatabase
-
-The `RefreshDatabase` trait takes the most optimal approach to migrating your test database depending on if you are using an in-memory database or a traditional database. Simply use the trait on your test class and everything will be handled for you:
-
-    <?php
-
-    namespace Tests\Feature;
-
-    use Tests\TestCase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
 
     class ExampleTest extends TestCase
     {

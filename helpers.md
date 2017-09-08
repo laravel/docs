@@ -1018,13 +1018,11 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an o
 <a name="method-optional"></a>
 #### `optional()` {#collection-method}
 
-The `optional` function performs calls on an object and returns the result if the property exists, or returns null if it doesn't.
+The `optional` function accepts any argument and allows you to access properties or call methods on that object. If the given object is `null`, properties and methods will simply return `null` instead of causing an error:
 
-    // returns null if the user doesn't have a middle name. 
-    optional(User::find(1))->middle_name;
+    return optional($user->address)->street;
 
-    // also works in blade
-    {!! optional(User::find(1))->middle_name !!}
+    {!! old('name', optional($user)->name) !!}
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
