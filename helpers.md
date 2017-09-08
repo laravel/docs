@@ -131,6 +131,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [method_field](#method-method-field)
 [now](#method-now)
 [old](#method-old)
+[optional](#method-optional)
 [redirect](#method-redirect)
 [report](#method-report)
 [request](#method-request)
@@ -1013,6 +1014,13 @@ The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an o
     $value = old('value');
 
     $value = old('value', 'default');
+
+<a name="method-optional"></a>
+#### `optional()` {#collection-method}
+
+The `optional` function checks if a value is an object before attempting to retrieve a property:
+
+    $name = optional(User::find(1))->name;
 
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
