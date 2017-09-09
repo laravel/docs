@@ -79,7 +79,7 @@ Valet will automatically start its daemon each time your machine boots. There is
 
 By default, Valet serves your projects using the `.dev` TLD. If you'd like to use another domain, you can do so using the `valet domain tld-name` command.
 
-For example, if you'd like to use `.app` instead of `.dev`, run `valet domain app` and Valet will start serving your projects at `*.app` automatically.
+For example, if you'd like to use `.localhost` instead of `.dev`, run `valet domain app` and Valet will start serving your projects at `*.localhost` automatically.
 
 #### Database
 
