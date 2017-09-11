@@ -172,7 +172,7 @@ If you would like to manually define the tags for one of your queueable objects,
 
 If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeSlackNotificationsTo` and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from your application's `AppServiceProvider`:
 
-    Horizon::routeSlackNotificationsTo('slack-webhook-url');
+    Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');
 
     Horizon::routeSmsNotificationsTo('15556667777');
 
