@@ -9,6 +9,7 @@
     - [Directory Structure](/docs/{{version}}/structure)
     - [Homestead](/docs/{{version}}/homestead)
     - [Valet](/docs/{{version}}/valet)
+    - [Deployment](/docs/{{version}}/deployment)
 - ## Architecture Concepts
     - [Request Lifecycle](/docs/{{version}}/lifecycle)
     - [Service Container](/docs/{{version}}/container)
