@@ -7,6 +7,7 @@
     - [Launching The Vagrant Box](#launching-the-vagrant-box)
     - [Per Project Installation](#per-project-installation)
     - [Installing MariaDB](#installing-mariadb)
+    - [Aliases](#aliases)
 - [Daily Usage](#daily-usage)
     - [Accessing Homestead Globally](#accessing-homestead-globally)
     - [Connecting Via SSH](#connecting-via-ssh)
@@ -191,6 +192,13 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
     cpus: 4
     provider: virtualbox
     mariadb: true
+
+<a name="aliases"></a>
+### Aliases
+
+One you [ssh into your Homestead machine](#connecting-via-ssh) you have access to many Bash aliases that have been pre-configured. The available aliases can be found in the `aliases` file. You can edit this file to add your own aliases. Note that if you change this file you will need to reprovision the virtual machine in order for the changes to be applied. To do this, run the `vagrant reload --provision` command from your Homestead directory.
+
+> {note} Changing existing aliases may break some functionality so be careful when editing this file.
 
 <a name="daily-usage"></a>
 ## Daily Usage
