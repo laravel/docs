@@ -7,6 +7,7 @@
     - [Launching The Vagrant Box](#launching-the-vagrant-box)
     - [Per Project Installation](#per-project-installation)
     - [Installing MariaDB](#installing-mariadb)
+    - [Aliases](#aliases)
 - [Daily Usage](#daily-usage)
     - [Accessing Homestead Globally](#accessing-homestead-globally)
     - [Connecting Via SSH](#connecting-via-ssh)
@@ -191,6 +192,16 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
     cpus: 4
     provider: virtualbox
     mariadb: true
+
+<a name="aliases"></a>
+### Aliases
+
+You may add Bash aliases to your Homestead machine by modifying the `aliases` file within your Homestead directory:
+
+    alias c='clear'
+    alias ..='cd ..'
+
+After you have updated the `aliases` file, you should re-provision the Homestead machine using the `vagrant reload --provision` command. This will ensure that your new aliases are available on the machine.
 
 <a name="daily-usage"></a>
 ## Daily Usage
@@ -391,7 +402,7 @@ If you have installed Homestead via your project's `composer.json` file, you sho
 <a name="old-versions"></a>
 ## Old Versions
 
-> {tip} If you need an older version of PHP check the documentation on <a href="#multiple-php-versions">multiple PHP versions</a> before attempting to use an old version of Homestead. 
+> {tip} If you need an older version of PHP check the documentation on <a href="#multiple-php-versions">multiple PHP versions</a> before attempting to use an old version of Homestead.
 
 You can easily override the version of the box that Homestead uses by adding the following line to your `Homestead.yaml` file:
 
