@@ -121,7 +121,7 @@ The `exists` method may be used to determine if a file exists on the disk:
 <a name="file-urls"></a>
 ### File URLs
 
-When using the `local` or `s3` drivers, you may use the `url` method to get the URL for the given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` driver, the fully qualified remote URL will be returned:
+You may use the `url` method to get the URL for the given file. If you are using the `local` driver, this will typically just prepend `/storage` to the given path and return a relative URL to the file. If you are using the `s3` or `rackspace` driver, the fully qualified remote URL will be returned:
 
     use Illuminate\Support\Facades\Storage;
 
@@ -131,7 +131,7 @@ When using the `local` or `s3` drivers, you may use the `url` method to get the 
 
 #### Temporary URLs
 
-For files stored using the `s3` driver, you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
+For files stored using the `s3` or `rackspace` driver, you may create a temporary URL to a given file using the `temporaryUrl` method. This methods accepts a path and a `DateTime` instance specifying when the URL should expire:
 
     $url = Storage::temporaryUrl(
         'file1.jpg', Carbon::now()->addMinutes(5)
