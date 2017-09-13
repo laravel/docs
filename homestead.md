@@ -196,15 +196,12 @@ If you prefer to use MariaDB instead of MySQL, you may add the `mariadb` option 
 <a name="aliases"></a>
 ### Aliases
 
-One you [ssh into your Homestead machine](#connecting-via-ssh) you have access to many Bash aliases that have been pre-configured. Aliases are like shortcuts that you can configure in order to avoid typing long commands. For example, if you usually type the `clear` command you could configure a `c` alias like this:
+You may add Bash aliases to your Homestead machine by modifying the `aliases` file within your Homestead directory:
 
     alias c='clear'
+    alias ..='cd ..'
 
-This would mean that every time you type `c` the shell will evaluate this command as `clear`. In fact, this is one of the aliases that Homestead comes pre-configured with.
- 
-The available aliases can be found at the root of the Homestead directory in a file called `aliases`. You can edit this file to add your own aliases. Note that if you change this file you will need to reprovision the virtual machine in order for the changes to be applied. To do this, run the `vagrant reload --provision` command from your Homestead directory.
-
-> {note} Changing existing aliases may break some functionality so be careful when editing this file.
+After you have updated the `aliases` file, you should re-provision the Homestead machine using the `vagrant reload --provision` command. This will ensure that your new aliases are available on the machine.
 
 <a name="daily-usage"></a>
 ## Daily Usage
@@ -405,7 +402,7 @@ If you have installed Homestead via your project's `composer.json` file, you sho
 <a name="old-versions"></a>
 ## Old Versions
 
-> {tip} If you need an older version of PHP check the documentation on <a href="#multiple-php-versions">multiple PHP versions</a> before attempting to use an old version of Homestead. 
+> {tip} If you need an older version of PHP check the documentation on <a href="#multiple-php-versions">multiple PHP versions</a> before attempting to use an old version of Homestead.
 
 You can easily override the version of the box that Homestead uses by adding the following line to your `Homestead.yaml` file:
 
