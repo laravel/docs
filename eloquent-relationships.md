@@ -813,6 +813,16 @@ In this example, Eloquent will only eager load posts where the post's `title` co
         $query->orderBy('created_at', 'desc');
     }])->get();
 
+You may use [select](/docs/{{version}}/queries#selects) method to specify a custom select clause for the query:
+
+    $users = App\User::with(['posts' => function ($query) {
+        $query->select(['id', 'title']);
+    }])->get();
+
+Or you may specify the columns to eager load directly in the `with` method:
+
+    $users = App\User::with('posts:id,title')->get();
+
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
 
