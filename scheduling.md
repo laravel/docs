@@ -2,6 +2,9 @@
 
 - [Introduction](#introduction)
 - [Defining Schedules](#defining-schedules)
+    - [Scheduling Artisan Commands](#scheduling-artisan-commands)
+    - [Scheduling Queued Jobs](#scheduling-queued-jobs)
+    - [Scheduling Shell Commands](#scheduling-shell-commands)
     - [Schedule Frequency Options](#schedule-frequency-options)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
     - [Maintenance Mode](#maintenance-mode)
@@ -61,13 +64,26 @@ You may define all of your scheduled tasks in the `schedule` method of the `App\
         }
     }
 
-In addition to scheduling `Closure` calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
+<a name="scheduling-artisan-commands"></a>
+### Scheduling Artisan Commands
+
+In addition to scheduling Closure calls, you may also schedule [Artisan commands](/docs/{{version}}/artisan) and operating system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class:
 
     $schedule->command('emails:send --force')->daily();
 
     $schedule->command(EmailsCommand::class, ['--force'])->daily();
 
-The `exec` command may be used to issue a command to the operating system:
+<a name="scheduling-queued-jobs"></a>
+### Scheduling Queued Jobs
+
+The `job` method may be used to schedule a [queued job](/docs/{{version}}/queues). This method provides a convenient way to schedule jobs without using the `call` method to manually create Closures to queue the job:
+
+    $schedule->job(new Heartbeat)->everyFiveMinutes();
+
+<a name="scheduling-shell-commands"></a>
+### Scheduling Shell Commands
+
+The `exec` method may be used to issue a command to the operating system:
 
     $schedule->exec('node /home/forge/script.js')->daily();
 
