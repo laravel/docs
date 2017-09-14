@@ -42,6 +42,18 @@ If you need to determine if a view exists, you may use the `View` facade. The `e
         //
     }
 
+#### Creating The First Available View
+
+Using the `first` method, you may create the first view that exists in a given array of views. This is useful if your application or package allows views to be customized or overwritten:
+
+    return view()->first(['custom.admin', 'admin'], $data);
+
+Of course, you may also call this method via the `View` [facade](/docs/{{version}}/facades):
+
+    use Illuminate\Support\Facades\View;
+
+    return View::first(['custom.admin', 'admin'], $data);
+
 <a name="passing-data-to-views"></a>
 ## Passing Data To Views
 
