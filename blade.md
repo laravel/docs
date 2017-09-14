@@ -148,7 +148,7 @@ Of course, you are not limited to displaying the contents of the variables passe
 
     The current UNIX timestamp is {{ time() }}.
 
-> {note} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
+> {tip} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
 #### Displaying Unescaped Data
 
@@ -157,6 +157,20 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmls
     Hello, {!! $name !!}.
 
 > {note} Be very careful when echoing content that is supplied by users of your application. Always use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
+
+#### Rendering JSON
+
+Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
+
+    <script>
+        var app = <?php json_encode($array); ?>;
+    </script>
+
+However, instead of manually calling `json_encode`, you may use the `@json` Blade directive:
+
+    <script>
+        var app = @json($array)
+    </script>
 
 <a name="blade-and-javascript-frameworks"></a>
 ### Blade & JavaScript Frameworks
