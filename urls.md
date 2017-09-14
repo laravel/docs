@@ -62,7 +62,7 @@ To generate a URL to this route, you may use the `route` helper like so:
 
     // http://example.com/post/1
 
-You will often be generating URLs using the IDs of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract their ID:
+You will often be generating URLs using the `primaryKey` of [Eloquent models](/docs/{{version}}/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the `primaryKey` which is ID by default, unless you override it:
 
     echo route('post.show', ['post' => $post]);
 
