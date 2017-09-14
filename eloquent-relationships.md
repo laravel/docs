@@ -332,6 +332,24 @@ If you want your pivot table to have automatically maintained `created_at` and `
 
     return $this->belongsToMany('App\Role')->withTimestamps();
 
+#### Customizing The `pivot` Attribute Name
+
+As noted earlier, attributes from the intermediate table may be access on models using the `pivot` attribute. However, you are free to customize the name of this attribute to better reflect its purpose within your application.
+
+For example, if your application contains users that may subscribe to podcasts, you probably have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table accessor to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship:
+
+    return $this->belongsToMany('App\Podcast')
+                    ->as('subscription')
+                    ->withTimestamps();
+
+Once this is done, you may access the intermediate table data using the customized name:
+
+    $users = User::with('podcasts')->get();
+
+    foreach ($users->flatMap->podcasts as $podcast) {
+        echo $podcast->subscription->created_at;
+    }
+
 #### Filtering Relationships Via Intermediate Table Columns
 
 You can also filter the results returned by `belongsToMany` using the `wherePivot` and `wherePivotIn` methods when defining the relationship:
