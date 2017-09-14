@@ -6,6 +6,7 @@
     - [Serializing To JSON](#serializing-to-json)
 - [Hiding Attributes From JSON](#hiding-attributes-from-json)
 - [Appending Values To JSON](#appending-values-to-json)
+- [Date Serialization](#date-serialization)
 
 <a name="introduction"></a>
 ## Introduction
@@ -145,3 +146,14 @@ After creating the accessor, add the attribute name to the `appends` property on
     }
 
 Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON representations. Attributes in the `appends` array will also respect the `visible` and `hidden` settings configured on the model.
+
+<a name="date-serialization"></a>
+## Date Serialization
+
+Laravel extends the [Carbon](https://github.com/briannesbitt/Carbon) date library in order to provide convenient customization of Carbon's JSON serialization format. To customize how all Carbon dates throughout your application are serialized, use the `Carbon::serializeUsing` method. The `serializeUsing` method accepts a Closure which returns a string representation of the date for JSON serialization:
+
+    use Illuminate\Support\Carbon;
+
+    Carbon::serializeUsing(function ($carbon) {
+        return $carbon->format('U');
+    });
