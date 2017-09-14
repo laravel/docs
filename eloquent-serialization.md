@@ -152,8 +152,34 @@ Once the attribute has been added to the `appends` list, it will be included in 
 
 Laravel extends the [Carbon](https://github.com/briannesbitt/Carbon) date library in order to provide convenient customization of Carbon's JSON serialization format. To customize how all Carbon dates throughout your application are serialized, use the `Carbon::serializeUsing` method. The `serializeUsing` method accepts a Closure which returns a string representation of the date for JSON serialization:
 
-    use Illuminate\Support\Carbon;
+    <?php
 
-    Carbon::serializeUsing(function ($carbon) {
-        return $carbon->format('U');
-    });
+    namespace App\Providers;
+
+    use Illuminate\Support\Carbon;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Perform post-registration booting of services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Carbon::serializeUsing(function ($carbon) {
+                return $carbon->format('U');
+            });
+        }
+
+        /**
+         * Register bindings in the container.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+    }
