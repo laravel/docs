@@ -423,7 +423,7 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
         //
     });
 
-In addition, you may specify the connection or queue the Artisan command should be dispatched to:
+You may also specify the connection or queue the Artisan command should be dispatched to:
 
     Artisan::queue('email:send', [
         'user' => 1, '--queue' => 'default'
