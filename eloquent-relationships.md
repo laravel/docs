@@ -798,6 +798,14 @@ To eager load nested relationships, you may use "dot" syntax. For example, let's
 
     $books = App\Book::with('author.contacts')->get();
 
+#### Eager Loading Specific Columns
+
+You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve:
+
+    $users = App\Book::with('author:id,name')->get();
+
+> {note} When using this feature, you should always include the `id` column in the list of columns you wish to retrieve.
+
 <a name="constraining-eager-loads"></a>
 ### Constraining Eager Loads
 
@@ -812,16 +820,6 @@ In this example, Eloquent will only eager load posts where the post's `title` co
     $users = App\User::with(['posts' => function ($query) {
         $query->orderBy('created_at', 'desc');
     }])->get();
-
-You may use [select](/docs/{{version}}/queries#selects) method to specify a custom select clause for the query:
-
-    $users = App\User::with(['posts' => function ($query) {
-        $query->select(['id', 'title']);
-    }])->get();
-
-Or you may specify the columns to eager load directly in the `with` method:
-
-    $users = App\User::with('posts:id,title')->get();
 
 <a name="lazy-eager-loading"></a>
 ### Lazy Eager Loading
