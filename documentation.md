@@ -24,6 +24,7 @@
     - [Requests](/docs/{{version}}/requests)
     - [Responses](/docs/{{version}}/responses)
     - [Views](/docs/{{version}}/views)
+    - [URL Generation](/docs/{{version}}/urls)
     - [Session](/docs/{{version}}/session)
     - [Validation](/docs/{{version}}/validation)
     - [Errors & Logging](/docs/{{version}}/errors)

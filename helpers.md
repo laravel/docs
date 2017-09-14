@@ -761,9 +761,9 @@ The `trans_choice` function translates the given language line with inflection:
 <a name="method-action"></a>
 #### `action()` {#collection-method}
 
-The `action` function generates a URL for the given controller action. You do not need to pass the full namespace to the controller. Instead, pass the controller class name relative to the `App\Http\Controllers` namespace:
+The `action` function generates a URL for the given controller action. You do not need to pass the full namespace of the controller. Instead, pass the controller class name relative to the `App\Http\Controllers` namespace:
 
-    $url = action('HomeController@getIndex');
+    $url = action('HomeController@index');
 
 If the method accepts route parameters, you may pass them as the second argument to the method:
 
