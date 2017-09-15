@@ -156,11 +156,11 @@ To get started, let's write a test that verifies we can log into our application
     use App\User;
     use Tests\DuskTestCase;
     use Laravel\Dusk\Chrome;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
 
     class ExampleTest extends DuskTestCase
     {
-        use DatabaseMigrations;
+        use RefreshDatabase;
 
         /**
          * A basic browser test example.
