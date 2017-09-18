@@ -163,7 +163,7 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmls
 Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
 
     <script>
-        var app = <?php json_encode($array); ?>;
+        var app = <?php echo json_encode($array); ?>;
     </script>
 
 However, instead of manually calling `json_encode`, you may use the `@json` Blade directive:
