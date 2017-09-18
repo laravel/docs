@@ -190,6 +190,7 @@ If you would like to include related resources in your response, you may simply 
         ];
     }
 
+> {tip} For hasOne relationships, use `make` method instead.
 > {tip} If you would like to include relationships only when they have already been loaded, check out the documentation on [conditional relationships](#conditional-relationships).
 
 #### Resource Collections
