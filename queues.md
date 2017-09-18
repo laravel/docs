@@ -96,6 +96,8 @@ By default, all of the queueable jobs for your application are stored in the `ap
 
 The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
 
+> {note} A dispatched job without the `Illuminate\Contracts\Queue\ShouldQueue` won't be send to the queue and executed immediatly, except through an explicit call to Queue::push
+
 <a name="class-structure"></a>
 ### Class Structure
 
