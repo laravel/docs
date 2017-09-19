@@ -449,11 +449,7 @@ To retrieve a token, make a request to the `oauth/token` endpoint:
         ],
     ]);
 
-    $token = json_decode((string) $response->getBody(), true);
-
-    $token = $token['access_token'];
-
-    return $token;
+    return json_decode((string) $response->getBody(), true)['access_token'];
 
 <a name="personal-access-tokens"></a>
 ## Personal Access Tokens
