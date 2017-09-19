@@ -107,7 +107,7 @@ The protected `$parent` property on the `Illuminate\Database\Eloquent\Relations\
 
 #### Relationship `create` Methods
 
-The `BelongsToMany`, `HasOneOrMany`, and `MorphOneOrMany` class' `create` methods have been modified to provide a default value for the `$attributes` argument. If you are overriding these methods, you should update your signatures to match the new definition:
+The `BelongsToMany`, `HasOneOrMany`, and `MorphOneOrMany` classes' `create` methods have been modified to provide a default value for the `$attributes` argument. If you are overriding these methods, you should update your signatures to match the new definition:
 
     public function create(array $attributes = [])
     {
