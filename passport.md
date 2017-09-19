@@ -310,8 +310,12 @@ If the user approves the authorization request, they will be redirected back to 
                 'code' => $request->code,
             ],
         ]);
+        
+        $token = json_decode((string) $response->getBody(), true);
 
-        return json_decode((string) $response->getBody(), true);
+        $token = $token['access_token'];
+
+        return $token;
     });
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
@@ -334,8 +338,12 @@ If your application issues short-lived access tokens, users will need to refresh
             'scope' => '',
         ],
     ]);
+    
+    $token = json_decode((string) $response->getBody(), true);
 
-    return json_decode((string) $response->getBody(), true);
+    $token = $token['access_token'];
+
+    return $token;
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
@@ -368,8 +376,12 @@ Once you have created a password grant client, you may request an access token b
             'scope' => '',
         ],
     ]);
+    
+    $token = json_decode((string) $response->getBody(), true);
 
-    return json_decode((string) $response->getBody(), true);
+    $token = $token['access_token'];
+
+    return $token;
 
 > {tip} Remember, access tokens are long-lived by default. However, you are free to [configure your maximum access token lifetime](#configuration) if needed.
 
@@ -452,8 +464,12 @@ To retrieve a token, make a request to the `oauth/token` endpoint:
             'scope' => 'your-scope',
         ],
     ]);
+    
+    $token = json_decode((string) $response->getBody(), true);
 
-    echo json_decode((string) $response->getBody(), true);
+    $token = $token['access_token'];
+
+    return $token;
 
 <a name="personal-access-tokens"></a>
 ## Personal Access Tokens
