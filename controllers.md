@@ -184,6 +184,8 @@ When declaring a resource route, you may specify a subset of actions the control
         'create', 'store', 'update', 'destroy'
     ]]);
 
+> {tip} You can use Route::apiResource('photo', 'PhotoController') to get only API methods.
+
 <a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes
 
