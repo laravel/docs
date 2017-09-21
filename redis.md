@@ -122,8 +122,8 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
 
     namespace App\Http\Controllers;
 
-    use Illuminate\Support\Facades\Redis;
     use App\Http\Controllers\Controller;
+    use Illuminate\Support\Facades\Redis;
 
     class UserController extends Controller
     {
