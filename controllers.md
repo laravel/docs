@@ -8,6 +8,7 @@
 - [Controller Middleware](#controller-middleware)
 - [Resource Controllers](#resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
+    - [API Resource Routes](#restful-api-resource-routes)
     - [Naming Resource Routes](#restful-naming-resource-routes)
     - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
     - [Localizing Resource URIs](#restful-localizing-resource-uris)
@@ -183,6 +184,15 @@ When declaring a resource route, you may specify a subset of actions the control
     Route::resource('photo', 'PhotoController', ['except' => [
         'create', 'store', 'update', 'destroy'
     ]]);
+
+<a name="restful-api-resource-routes"></a>
+### API Resource Routes
+
+When declaring an API resource route, you may want to exclude the `create` and `edit` actions from the set of actions the controller would handle.
+
+Instead of manually creating partial resource routes for all your API routes, you may wish to declare them using a convenient shortcut method:
+
+    Route::apiResource('photo', 'PhotoController');
 
 <a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes
