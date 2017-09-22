@@ -239,6 +239,8 @@ The `@auth` and `@guest` directives may be used to quickly determine if the curr
         // The user is not authenticated...
     @endguest
 
+> {tip} When working with multiple authentication guards, you may pass `$guard` argument to the `@auth($guard)` and `@guest($guard)` directives in order to check for a specific guard.
+
 <a name="switch-statements"></a>
 ### Switch Statements
 
