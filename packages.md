@@ -247,12 +247,10 @@ To register your package's Artisan commands with Laravel, you may use the `comma
      */
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                FooCommand::class,
-                BarCommand::class,
-            ]);
-        }
+        $this->commands([
+            FooCommand::class,
+            BarCommand::class,
+        ]);
     }
 
 <a name="public-assets"></a>
