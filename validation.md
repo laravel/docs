@@ -924,7 +924,7 @@ If your table uses a primary key column name other than `id`, you may specify th
 You may also specify additional query constraints by customizing the query using the `where` method. For example, let's add a constraint that verifies the `account_id` is `1`:
 
     'email' => Rule::unique('users')->where(function ($query) {
-        $query->where('account_id', 1);
+        return $query->where('account_id', 1);
     })
 
 <a name="rule-url"></a>
