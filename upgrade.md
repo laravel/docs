@@ -15,7 +15,7 @@ Laravel 5.5 requires PHP 7.0.0 or higher.
 
 ### Updating Dependencies
 
-Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~6.0` and add `filp/whoops` package with version `~2.0` to the `require-dev` section of your `composer.json` file. Finally, in `scripts` section under `post-autoload-dump` event add `@php artisan package:discover` command:
+Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~6.0`. Next, add the `filp/whoops` package with version `~2.0` to the `require-dev` section of your `composer.json` file. Finally, in the `scripts` section of your `composer.json` file, add the `package:discover` command to the `post-autoload-dump` event:
 
     "scripts": {
         ...
