@@ -239,7 +239,15 @@ The `@auth` and `@guest` directives may be used to quickly determine if the curr
         // The user is not authenticated...
     @endguest
 
-> {tip} When working with multiple authentication guards, you may pass `$guard` argument to the `@auth($guard)` and `@guest($guard)` directives in order to check for a specific guard.
+If needed, you may specify the [authentication guard](/docs/{{version}}/authentication) that should be checked when using the `@auth` and `@guest` directives:
+
+    @auth('admin')
+        // The user is authenticated...
+    @endauth
+
+    @guest('admin')
+        // The user is not authenticated...
+    @endguest
 
 <a name="switch-statements"></a>
 ### Switch Statements
