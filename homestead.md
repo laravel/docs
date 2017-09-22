@@ -282,6 +282,8 @@ Homestead supports several types of sites which allow you to easily run projects
 
 The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, and `symfony4`.
 
+> {tip} You can easily switch between `apache` and `nginx` servers with `flip` command within the Homestead virtual machine
+
 <a name="site-parameters"></a>
 #### Site Parameters
 
