@@ -378,7 +378,25 @@ The `array_set` function sets a value within a deeply nested array using "dot" n
 <a name="method-array-sort"></a>
 #### `array_sort()` {#collection-method}
 
-The `array_sort` function sorts the array by the results of the given Closure:
+The `array_sort` function sorts an array by its values:
+
+    $array = [
+        'Desk',
+        'Table',
+        'Chair',
+    ];
+
+    $array = array_sort($array);
+
+    /*
+        [
+            'Chair',
+            'Desk',
+            'Table',
+        ]
+    */
+
+You may also sort the array by the results of the given Closure:
 
     $array = [
         ['name' => 'Desk'],
@@ -1083,7 +1101,7 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 <a name="method-retry"></a>
 #### `retry()` {#collection-method}
 
-The `retry` function attempts to execute the given callback until the given maximum attempt threshold is met. If the callback does not throw an exception, it's return value will be returned. If the callback throws an exception, it will automatically be retried. If the maximum attempt count is exceeded, the exception will be thrown:
+The `retry` function attempts to execute the given callback until the given maximum attempt threshold is met. If the callback does not throw an exception, its return value will be returned. If the callback throws an exception, it will automatically be retried. If the maximum attempt count is exceeded, the exception will be thrown:
 
     return retry(5, function () {
         // Attempt 5 times while resting 100ms in between attempts...
