@@ -378,7 +378,25 @@ The `array_set` function sets a value within a deeply nested array using "dot" n
 <a name="method-array-sort"></a>
 #### `array_sort()` {#collection-method}
 
-The `array_sort` function sorts the array by the results of the given Closure:
+The `array_sort` function sorts an array by its values:
+
+    $array = [
+        'Desk',
+        'Table',
+        'Chair',
+    ];
+
+    $array = array_sort($array);
+
+    /*
+        [
+            'Chair',
+            'Desk',
+            'Table',
+        ]
+    */
+
+You may also sort the array by the results of the given Closure:
 
     $array = [
         ['name' => 'Desk'],
