@@ -229,7 +229,7 @@ For certain users, you may wish to authorize all actions within a given policy. 
 
 If you would like to deny all authorizations for a user you should return `false` from the `before` method. If `null` is returned, the authorization will fall through to the policy method.
 
-> {note} The `before` method of a policy class will not be called if the class doesn't contain a method with name matching the name of the ability being checked.
+> {note} The `before` method of a policy class will not be called if the class doesn't contain a method with a name matching the name of the ability being checked.
 
 <a name="authorizing-actions-using-policies"></a>
 ## Authorizing Actions Using Policies
