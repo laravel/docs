@@ -220,6 +220,8 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
         new ReleasePodcast
     ])->dispatch();
 
+The `dispatch()` method accepts arguments which will be passed to constructor of "main" dispatchable job.
+
 <a name="customizing-the-queue-and-connection"></a>
 ### Customizing The Queue & Connection
 
