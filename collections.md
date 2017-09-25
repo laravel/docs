@@ -89,6 +89,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [mode](#method-mode)
 [nth](#method-nth)
 [only](#method-only)
+[pad](#method-pad)
 [partition](#method-partition)
 [pipe](#method-pipe)
 [pluck](#method-pluck)
@@ -892,6 +893,26 @@ The `only` method returns the items in the collection with the specified keys:
     // ['product_id' => 1, 'name' => 'Desk']
 
 For the inverse of `only`, see the [except](#method-except) method.
+
+<a name="method-pad"></a>
+#### `pad()` {#collection-method}
+
+The `pad` method will pad a value to the left or the right of the collection items if it the length is less than the given length. It behaves the same way as the [array_pad](https://secure.php.net/manual/en/function.array-pad.php) function in PHP. 
+To pad to the left, you can specify a negative size. If the absolute value of size is less than or equal to the length of the array then no padding takes place.
+
+    $collection = collect(['A', 'B', 'C']);
+
+    $filtered = $collection->pad(5, 0);
+
+    $filtered->all();
+
+    // ['A', 'B', 'C', 0, 0]
+
+    $filtered = $collection->pad(-5, 'D');
+
+    $filtered->all();
+
+    // ['D', 'D', 'A', 'B', 'C']
 
 <a name="method-partition"></a>
 #### `partition()` {#collection-method}
