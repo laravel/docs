@@ -5,6 +5,7 @@
     - [Facades Vs. Dependency Injection](#facades-vs-dependency-injection)
     - [Facades Vs. Helper Functions](#facades-vs-helper-functions)
 - [How Facades Work](#how-facades-work)
+- [Real-Time Facades](#real-time-facades)
 - [Facade Class Reference](#facade-class-reference)
 
 <a name="introduction"></a>
@@ -142,6 +143,50 @@ If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that the
     }
 
 Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. This method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
+
+<a name="real-time-facades"></a>
+## Real-Time Facades
+
+You can easily use any class in your application as if it were a facade. A common pattern when using a non-static method is to instantiate a class, then call the method, like so:
+
+    use Illuminate\Http\Request;
+    use App\Services\Twitter;
+
+    class PublishPodcastEpisode {
+        /**
+         * Store a new podcast episode and tweet it out.
+         *
+         * @param  Request  $request
+         */
+        public function store(Request $request)
+        {
+            // Create podcast episode record...
+
+            // Tweet out the new episode
+            $twitter = new \App\Services\Twitter();
+            $twitter->publishTweet("We published a new podcast episode!");
+        }
+    }
+
+Instead, simply add the `Facades` namespace to the beginning of your `use` statement for the Twitter service, and you can use that class as if it were a facade.
+
+    use Illuminate\Http\Request;
+    use Facades\App\Services\Twitter;
+
+    class PublishPodcastEpisode {
+        /**
+         * Store a new podcast episode and tweet it out.
+         *
+         * @param  Request  $request
+         */
+        public function store(Request $request)
+        {
+            // Create podcast episode record...
+
+            // Tweet out the new episode
+            Twitter::publishTweet("We published a new podcast episode!");
+        }
+    }
 
 <a name="facade-class-reference"></a>
 ## Facade Class Reference
