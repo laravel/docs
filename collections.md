@@ -299,16 +299,16 @@ The `diffAssoc` method compares the collection against another collection or a p
         'type' => 'fruit',
         'remain' => 6
     ]);
-    
+
     $diff = $collection->diffAssoc([
         'color' => 'yellow',
         'type' => 'fruit',
         'remain' => 3,
         'used' => 6
     ]);
-    
+
     $diff->all();
-    
+
     // ['color' => 'orange', 'remain' => 6]
 
 <a name="method-diffkeys"></a>
@@ -897,8 +897,9 @@ For the inverse of `only`, see the [except](#method-except) method.
 <a name="method-pad"></a>
 #### `pad()` {#collection-method}
 
-The `pad` method will pad a value to the left or the right of the collection items if it the length is less than the given length. It behaves the same way as the [array_pad](https://secure.php.net/manual/en/function.array-pad.php) function in PHP. 
-To pad to the left, you can specify a negative size. If the absolute value of size is less than or equal to the length of the array then no padding takes place.
+The `pad` method will fill the array with the given value until the array reaches the specified size. This method behaves like the [array_pad](https://secure.php.net/manual/en/function.array-pad.php) PHP function.
+
+To pad to the left, you should specify a negative size. No padding will take place if the absolute value of the given size is less than or equal to the length of the array:
 
     $collection = collect(['A', 'B', 'C']);
 
@@ -908,11 +909,11 @@ To pad to the left, you can specify a negative size. If the absolute value of si
 
     // ['A', 'B', 'C', 0, 0]
 
-    $filtered = $collection->pad(-5, 'D');
+    $filtered = $collection->pad(-5, 0);
 
     $filtered->all();
 
-    // ['D', 'D', 'A', 'B', 'C']
+    // [0, 0, 'A', 'B', 'C']
 
 <a name="method-partition"></a>
 #### `partition()` {#collection-method}
