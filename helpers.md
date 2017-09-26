@@ -135,6 +135,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [redirect](#method-redirect)
 [report](#method-report)
 [request](#method-request)
+[rescue](#method-rescue)
 [response](#method-response)
 [retry](#method-retry)
 [session](#method-session)
@@ -377,7 +378,25 @@ The `array_set` function sets a value within a deeply nested array using "dot" n
 <a name="method-array-sort"></a>
 #### `array_sort()` {#collection-method}
 
-The `array_sort` function sorts the array by the results of the given Closure:
+The `array_sort` function sorts an array by its values:
+
+    $array = [
+        'Desk',
+        'Table',
+        'Chair',
+    ];
+
+    $array = array_sort($array);
+
+    /*
+        [
+            'Chair',
+            'Desk',
+            'Table',
+        ]
+    */
+
+You may also sort the array by the results of the given Closure:
 
     $array = [
         ['name' => 'Desk'],
@@ -761,9 +780,9 @@ The `trans_choice` function translates the given language line with inflection:
 <a name="method-action"></a>
 #### `action()` {#collection-method}
 
-The `action` function generates a URL for the given controller action. You do not need to pass the full namespace to the controller. Instead, pass the controller class name relative to the `App\Http\Controllers` namespace:
+The `action` function generates a URL for the given controller action. You do not need to pass the full namespace of the controller. Instead, pass the controller class name relative to the `App\Http\Controllers` namespace:
 
-    $url = action('HomeController@getIndex');
+    $url = action('HomeController@index');
 
 If the method accepts route parameters, you may pass them as the second argument to the method:
 
@@ -781,7 +800,7 @@ Generate a URL for an asset using the current scheme of the request (HTTP or HTT
 
 Generate a URL for an asset using HTTPS:
 
-    echo secure_asset('foo/bar.zip', $title, $attributes = []);
+    echo secure_asset('foo/bar.zip');
 
 <a name="method-route"></a>
 #### `route()` {#collection-method}
@@ -1049,6 +1068,27 @@ The `request` function returns the current [request](/docs/{{version}}/requests)
 
     $value = request('key', $default = null)
 
+<a name="method-rescue"></a>
+#### `rescue()` {#collection-method}
+
+The `rescue` function executes the given Closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your exception handler's `report` method; however, the request will continue processing:
+
+    return rescue(function () {
+        return $this->method();
+    });
+
+You may also pass a second argument to the `rescue` function. This argument will be the "default" value that should be returned if an exception occurs while executing the Closure:
+
+    return rescue(function () {
+        return $this->method();
+    }, false);
+
+    return rescue(function () {
+        return $this->method();
+    }, function () {
+        return $this->failure();
+    });
+
 <a name="method-response"></a>
 #### `response()` {#collection-method}
 
@@ -1061,7 +1101,7 @@ The `response` function creates a [response](/docs/{{version}}/responses) instan
 <a name="method-retry"></a>
 #### `retry()` {#collection-method}
 
-The `retry` function attempts to execute the given callback until the given maximum attempt threshold is met. If the callback does not throw an exception, it's return value will be returned. If the callback throws an exception, it will automatically be retried. If the maximum attempt count is exceeded, the exception will be thrown:
+The `retry` function attempts to execute the given callback until the given maximum attempt threshold is met. If the callback does not throw an exception, its return value will be returned. If the callback throws an exception, it will automatically be retried. If the maximum attempt count is exceeded, the exception will be thrown:
 
     return retry(5, function () {
         // Attempt 5 times while resting 100ms in between attempts...

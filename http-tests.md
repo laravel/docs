@@ -1,6 +1,7 @@
 # HTTP Tests
 
 - [Introduction](#introduction)
+    - [Customizing Request Headers](#customizing-request-headers)
 - [Session / Authentication](#session-and-authentication)
 - [Testing JSON APIs](#testing-json-apis)
 - [Testing File Uploads](#testing-file-uploads)
@@ -16,9 +17,8 @@ Laravel provides a very fluent API for making HTTP requests to your application 
     namespace Tests\Feature;
 
     use Tests\TestCase;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
 
     class ExampleTest extends TestCase
     {
@@ -36,6 +36,34 @@ Laravel provides a very fluent API for making HTTP requests to your application 
     }
 
 The `get` method makes a `GET` request into the application, while the `assertStatus` method asserts that the returned response should have the given HTTP status code. In addition to this simple assertion, Laravel also contains a variety of assertions for inspecting the response headers, content, JSON structure, and more.
+
+<a name="customizing-request-headers"></a>
+### Customizing Request Headers
+
+You may use the `withHeaders` method to customize the request's headers before it is sent to the application. This allows you to add any custom headers you would like to the request:
+
+    <?php
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * A basic functional test example.
+         *
+         * @return void
+         */
+        public function testBasicExample()
+        {
+            $response = $this->withHeaders([
+                'X-Header' => 'Value',
+            ])->json('POST', '/user', ['name' => 'Sally']);
+
+            $response
+                ->assertStatus(200)
+                ->assertJson([
+                    'created' => true,
+                ]);
+        }
+    }
 
 <a name="session-and-authentication"></a>
 ## Session / Authentication
@@ -104,7 +132,7 @@ Laravel also provides several helpers for testing JSON APIs and their responses.
 > {tip} The `assertJson` method converts the response to an array and utilizes `PHPUnit::assertArraySubset` to verify that the given array exists within the JSON response returned by the application. So, if there are other properties in the JSON response, this test will still pass as long as the given fragment is present.
 
 <a name="verifying-exact-match"></a>
-### Verifying Exact Match
+### Verifying An Exact JSON Match
 
 If you would like to verify that the given array is an **exact** match for the JSON returned by the application, you should use the `assertExactJson` method:
 
@@ -141,9 +169,8 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
     use Tests\TestCase;
     use Illuminate\Http\UploadedFile;
     use Illuminate\Support\Facades\Storage;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Illuminate\Foundation\Testing\DatabaseTransactions;
 
     class ExampleTest extends TestCase
     {

@@ -89,6 +89,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [mode](#method-mode)
 [nth](#method-nth)
 [only](#method-only)
+[pad](#method-pad)
 [partition](#method-partition)
 [pipe](#method-pipe)
 [pluck](#method-pluck)
@@ -298,16 +299,16 @@ The `diffAssoc` method compares the collection against another collection or a p
         'type' => 'fruit',
         'remain' => 6
     ]);
-    
+
     $diff = $collection->diffAssoc([
         'color' => 'yellow',
         'type' => 'fruit',
         'remain' => 3,
         'used' => 6
     ]);
-    
+
     $diff->all();
-    
+
     // ['color' => 'orange', 'remain' => 6]
 
 <a name="method-diffkeys"></a>
@@ -892,6 +893,27 @@ The `only` method returns the items in the collection with the specified keys:
     // ['product_id' => 1, 'name' => 'Desk']
 
 For the inverse of `only`, see the [except](#method-except) method.
+
+<a name="method-pad"></a>
+#### `pad()` {#collection-method}
+
+The `pad` method will fill the array with the given value until the array reaches the specified size. This method behaves like the [array_pad](https://secure.php.net/manual/en/function.array-pad.php) PHP function.
+
+To pad to the left, you should specify a negative size. No padding will take place if the absolute value of the given size is less than or equal to the length of the array:
+
+    $collection = collect(['A', 'B', 'C']);
+
+    $filtered = $collection->pad(5, 0);
+
+    $filtered->all();
+
+    // ['A', 'B', 'C', 0, 0]
+
+    $filtered = $collection->pad(-5, 0);
+
+    $filtered->all();
+
+    // [0, 0, 'A', 'B', 'C']
 
 <a name="method-partition"></a>
 #### `partition()` {#collection-method}

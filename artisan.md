@@ -423,6 +423,12 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
         //
     });
 
+You may also specify the connection or queue the Artisan command should be dispatched to:
+
+    Artisan::queue('email:send', [
+        'user' => 1, '--queue' => 'default'
+    ])->onConnection('redis')->onQueue('commands');
+
 #### Passing Array Values
 
 If your command defines an option that accepts an array, you may simply pass an array of values to that option:

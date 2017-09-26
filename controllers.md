@@ -184,6 +184,12 @@ When declaring a resource route, you may specify a subset of actions the control
         'create', 'store', 'update', 'destroy'
     ]]);
 
+#### API Resource Routes
+
+When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
+
+    Route::apiResource('photo', 'PhotoController');
+
 <a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes
 

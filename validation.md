@@ -424,7 +424,7 @@ In this example, the `:attribute` place-holder will be replaced by the actual na
     $messages = [
         'same'    => 'The :attribute and :other must match.',
         'size'    => 'The :attribute must be exactly :size.',
-        'between' => 'The :attribute must be between :min - :max.',
+        'between' => 'The :attribute value :input is not between :min - :max.',
         'in'      => 'The :attribute must be one of the following types: :values',
     ];
 
@@ -606,7 +606,7 @@ The field under validation must have a matching field of `foo_confirmation`. For
 The field under validation must be a valid date according to the `strtotime` PHP function.
 
 <a name="rule-date-equals"></a>
-#### date_equals:_date_ 
+#### date_equals:_date_
 
 The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function.
 
@@ -924,7 +924,7 @@ If your table uses a primary key column name other than `id`, you may specify th
 You may also specify additional query constraints by customizing the query using the `where` method. For example, let's add a constraint that verifies the `account_id` is `1`:
 
     'email' => Rule::unique('users')->where(function ($query) {
-        $query->where('account_id', 1);
+        return $query->where('account_id', 1);
     })
 
 <a name="rule-url"></a>
