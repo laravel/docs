@@ -14,6 +14,7 @@
     - [Connecting To Databases](#connecting-to-databases)
     - [Adding Additional Sites](#adding-additional-sites)
     - [Configuring Cron Schedules](#configuring-cron-schedules)
+    - [Configuring Mailhog](#configuring-mailhog)
     - [Ports](#ports)
     - [Sharing Your Environment](#sharing-your-environment)
     - [Multiple PHP Versions](#multiple-php-versions)
@@ -307,6 +308,18 @@ If you would like the `schedule:run` command to be run for a Homestead site, you
           schedule: true
 
 The Cron job for the site will be defined in the `/etc/cron.d` folder of the virtual machine.
+
+<a name="configuring-mailhog"></a>
+### Configuring Mailhog
+
+Capture your email locally with Mailhog by updating your `.env` file to use the following settings:
+
+    MAIL_DRIVER=smtp
+    MAIL_HOST=localhost
+    MAIL_PORT=1025
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
 
 <a name="ports"></a>
 ### Ports
