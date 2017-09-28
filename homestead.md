@@ -312,7 +312,7 @@ The Cron job for the site will be defined in the `/etc/cron.d` folder of the vir
 <a name="configuring-mailhog"></a>
 ### Configuring Mailhog
 
-Capture your email locally with Mailhog by updating your `.env` file to use the following settings:
+Mailhog allows you to easily catch your outgoing email and examine it without actually sending the mail to its recipients. To get started, update your `.env` file to use the following mail settings:
 
     MAIL_DRIVER=smtp
     MAIL_HOST=localhost
