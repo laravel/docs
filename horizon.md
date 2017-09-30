@@ -26,6 +26,10 @@ You may use Composer to install Horizon into your Laravel project:
 
     composer require laravel/horizon
 
+Horizon requires PHP extensions that are not supported on Windows, since the real usage of Horizon will be on a production environment and that its probably running Ubuntu, you can still install horizon by running the following command
+
+    composer require laravel/horizon --ignore-platform-reqs
+
 After installing Horizon, publish its assets using the `vendor:publish` Artisan command:
 
     php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider"
