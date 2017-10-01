@@ -59,6 +59,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [diff](#method-diff)
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
+[dump](#method-dump)
 [each](#method-each)
 [every](#method-every)
 [except](#method-except)
@@ -334,6 +335,26 @@ The `diffKeys` method compares the collection against another collection or a pl
     $diff->all();
 
     // ['one' => 10, 'three' => 30, 'five' => 50]
+
+<a name="method-dump"></a>
+#### `dump()` {#collection-method}
+
+The `dump` method dumps the given collection's items:
+
+    $collection = collect(['John Doe', 'Jane Doe']);
+
+    $collection->dump();
+
+    /*
+        Collection {
+            #items: array:2 [
+                0 => "John Doe"
+                1 => "Jane Doe"
+            ]
+        }
+    */
+
+If you also want to end the script execution after dumping, use the [`dd`](#method-dd) method instead.
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}
