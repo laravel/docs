@@ -59,6 +59,7 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [contains](/docs/{{version}}/collections#method-contains)
 [containsStrict](/docs/{{version}}/collections#method-containsstrict)
 [count](/docs/{{version}}/collections#method-count)
+[dd](/docs/{{version}}/collections#method-dd)
 [diff](/docs/{{version}}/collections#method-diff)
 [diffKeys](/docs/{{version}}/collections#method-diffkeys)
 [each](/docs/{{version}}/collections#method-each)
