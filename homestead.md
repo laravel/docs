@@ -371,6 +371,10 @@ Homestead 6 introduced support for multiple versions of PHP on the same virtual 
           to: /home/vagrant/Code/Laravel/public
           php: "5.6"
 
+Laravel 5.5 no longer supports PHP 5.6, so you must use Laravel 5.4 or later to run PHP 5.6. When creating a new Laravel project, instead of using the "laravel new" command, simply use "composer create-project" and specify the version of Laravel. For example, this will create a new project that can run PHP 5.6:
+
+    composer create-project laravel/laravel=5.4.* blog
+
 In addition, you may use any of the supported PHP versions via the CLI:
 
     php5.6 artisan list
