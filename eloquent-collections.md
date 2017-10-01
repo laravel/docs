@@ -56,6 +56,7 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [chunk](/docs/{{version}}/collections#method-chunk)
 [collapse](/docs/{{version}}/collections#method-collapse)
 [combine](/docs/{{version}}/collections#method-combine)
+[concat](/docs/{{version}}/collections#method-concat)
 [contains](/docs/{{version}}/collections#method-contains)
 [containsStrict](/docs/{{version}}/collections#method-containsstrict)
 [count](/docs/{{version}}/collections#method-count)
