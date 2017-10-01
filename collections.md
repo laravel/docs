@@ -81,6 +81,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [keys](#method-keys)
 [last](#method-last)
 [map](#method-map)
+[mapInto](#method-mapinto)
 [mapWithKeys](#method-mapwithkeys)
 [max](#method-max)
 [median](#method-median)
@@ -755,6 +756,27 @@ The `map` method iterates through the collection and passes each value to the gi
     // [2, 4, 6, 8, 10]
 
 > {note} Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
+
+<a name="method-mapinto"></a>
+#### `mapInto()` {#collection-method}
+
+The `mapInto()` method iterates over the collection passing each value to the given class:
+
+    class Currency
+    {
+        function __construct(string $code)
+        {
+            $this->code = $code;
+        }
+    }
+
+    $collection = collect(['USD', 'EUR', 'GBP']);
+
+    $currencies = $collection->mapInto(Currency::class);
+
+    $currencies->all();
+
+    // [Currency('USD'), Currency('EUR'), Currency('GBP')]
 
 <a name="method-mapwithkeys"></a>
 #### `mapWithKeys()` {#collection-method}
