@@ -121,6 +121,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [union](#method-union)
 [unique](#method-unique)
 [uniqueStrict](#method-uniquestrict)
+[unless](#method-unless)
 [values](#method-values)
 [when](#method-when)
 [where](#method-where)
@@ -1529,6 +1530,27 @@ The `unique` method uses "loose" comparisons when checking item values, meaning 
 
 This method has the same signature as the [`unique`](#method-unique) method; however, all values are compared using "strict" comparisons.
 
+<a name="method-unless"></a>
+#### `unless()` {#collection-method}
+
+The `unless` method will execute the given callback unless the first argument given to the method evaluates to `true`:
+
+    $collection = collect([1, 2, 3]);
+
+    $collection->unless(true, function ($collection) {
+        return $collection->push(4);
+    });
+
+    $collection->unless(false, function ($collection) {
+        return $collection->push(5);
+    });
+
+    $collection->all();
+
+    // [1, 2, 3, 5]
+
+For the inverse of `unless`, see the [`when`](#method-when) method.
+
 <a name="method-values"></a>
 #### `values()` {#collection-method}
 
@@ -1561,9 +1583,15 @@ The `when` method will execute the given callback when the first argument given 
         return $collection->push(4);
     });
 
+    $collection->when(false, function ($collection) {
+        return $collection->push(5);
+    });
+
     $collection->all();
 
     // [1, 2, 3, 4]
+
+For the inverse of `when`, see the [`unless`](#method-unless) method.
 
 <a name="method-where"></a>
 #### `where()` {#collection-method}

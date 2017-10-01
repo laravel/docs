@@ -121,6 +121,7 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [union](/docs/{{version}}/collections#method-union)
 [unique](/docs/{{version}}/collections#method-unique)
 [uniqueStrict](/docs/{{version}}/collections#method-uniquestrict)
+[unless](/docs/{{version}}/collections#method-unless)
 [values](/docs/{{version}}/collections#method-values)
 [when](/docs/{{version}}/collections#method-when)
 [where](/docs/{{version}}/collections#method-where)
