@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
     - [Creating Collections](#creating-collections)
+    - [Extending Collections](#extending-collections)
 - [Available Methods](#available-methods)
 - [Higher Order Messages](#higher-order-messages)
 
@@ -28,6 +29,25 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
     $collection = collect([1, 2, 3]);
 
 > {tip} The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
+
+<a name="extending-collections"></a>
+### Extending Collections
+
+Collections are macroable, meaning that you can add new methods to the `Collection` class at run time without being required to extend it through inheritance.
+
+For example, here's how we could define a new method on the `Collection` called `mean` that is only an alias to the `average` method:
+
+    Collection::macro('mean', function ($callback = null) {
+        return $this->average($callback);
+    });
+
+    $collection = collect([1, 2, 3]);
+
+    $mean = $collection->mean();
+
+    // 2
+
+Typically, you should declare your collection's macros in a [service provider](/docs/{{version}}/providers).
 
 <a name="available-methods"></a>
 ## Available Methods
@@ -80,6 +100,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [keyBy](#method-keyby)
 [keys](#method-keys)
 [last](#method-last)
+[macro](#method-macro)
 [map](#method-map)
 [mapWithKeys](#method-mapwithkeys)
 [max](#method-max)
@@ -740,6 +761,11 @@ You may also call the `last` method with no arguments to get the last element in
     collect([1, 2, 3, 4])->last();
 
     // 4
+
+<a name="method-macro"></a>
+#### `macro()` {#collection-method}
+
+The static `macro` method allows you to add methods to the `Collection` class at run time. Refer to the [Extending Collections](#extending-collections) section for more information.
 
 <a name="method-map"></a>
 #### `map()` {#collection-method}
