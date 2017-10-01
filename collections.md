@@ -27,6 +27,12 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 
     $collection = collect([1, 2, 3]);
 
+Of course, you may also use the `Collection` class constructor or even the static `make()` method:
+
+    $collection = new Collection([1, 2, 3]);
+
+    $collection = Collection::make([1, 2, 3]);
+
 > {tip} The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
 
 <a name="available-methods"></a>
@@ -80,6 +86,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [keyBy](#method-keyby)
 [keys](#method-keys)
 [last](#method-last)
+[make](#method-make)
 [map](#method-map)
 [mapWithKeys](#method-mapwithkeys)
 [max](#method-max)
@@ -740,6 +747,11 @@ You may also call the `last` method with no arguments to get the last element in
     collect([1, 2, 3, 4])->last();
 
     // 4
+
+<a name="method-make"></a>
+#### `make()` {#collection-method}
+
+The static `make` method creates a new collection instance. See the [Creating Collections](#creating-collections) section.
 
 <a name="method-map"></a>
 #### `map()` {#collection-method}
