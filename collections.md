@@ -53,6 +53,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [chunk](#method-chunk)
 [collapse](#method-collapse)
 [combine](#method-combine)
+[concat](#method-concat)
 [contains](#method-contains)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
@@ -223,6 +224,19 @@ The `combine` method combines the keys of the collection with the values of anot
     $combined->all();
 
     // ['name' => 'George', 'age' => 29]
+
+<a name="method-concat"></a>
+#### `concat()` {#collection-method}
+
+The `concat` method appends the given `array` or collection values into the end of the collection, ignoring any existing keys in the given items:
+
+    $collection = collect(['John Doe']);
+
+    $concatenated = $collection->concat(['Jane Doe'])->concat(['name' => 'Johnny Doe']);
+
+    $concatenated->all();
+
+    // ['John Doe', 'Jane Doe', 'Johnny Doe']
 
 <a name="method-contains"></a>
 #### `contains()` {#collection-method}
