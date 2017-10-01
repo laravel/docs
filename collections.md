@@ -81,6 +81,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [keys](#method-keys)
 [last](#method-last)
 [map](#method-map)
+[mapSpread](#method-mapspread)
 [mapWithKeys](#method-mapwithkeys)
 [max](#method-max)
 [median](#method-median)
@@ -755,6 +756,23 @@ The `map` method iterates through the collection and passes each value to the gi
     // [2, 4, 6, 8, 10]
 
 > {note} Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
+
+<a name="method-mapspread"></a>
+#### `mapSpread()` {#collection-method}
+
+The `mapSpread` method iterates over the collection's items passing each nested item value into the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items:
+
+    $collection = collect([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+    $chunks = $collection->chunk(2);
+
+    $sequence = $chunks->mapSpread(function ($odd, $even) {
+        return $odd + $even;
+    });
+
+    $sequence->all();
+
+    // [1, 5, 9, 13, 17]
 
 <a name="method-mapwithkeys"></a>
 #### `mapWithKeys()` {#collection-method}
