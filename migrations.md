@@ -216,19 +216,27 @@ Command  | Description
 `$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision, 15 digits in total and 8 after the decimal point.
 `$table->enum('choices', ['foo', 'bar']);` | ENUM equivalent for the database.
 `$table->float('amount', 8, 2);`  |  FLOAT equivalent for the database, 8 digits in total and 2 after the decimal point.
+`$table->geometry('column');`  | GEOMETRY equivalent for the database.
+`$table->geometryCollection('column');`  | GEOMETRYCOLLECTION equivalent for the database.
 `$table->increments('id');`  |  Incrementing ID (primary key) using a "UNSIGNED INTEGER" equivalent.
 `$table->integer('votes');`  |  INTEGER equivalent for the database.
 `$table->ipAddress('visitor');`  |  IP address equivalent for the database.
 `$table->json('options');`  |  JSON equivalent for the database.
 `$table->jsonb('options');`  |  JSONB equivalent for the database.
+`$table->lineString('column');`  |  LINESTRING equivalent for the database.
 `$table->longText('description');`  |  LONGTEXT equivalent for the database.
 `$table->macAddress('device');`  |  MAC address equivalent for the database.
 `$table->mediumIncrements('id');`  |  Incrementing ID (primary key) using a "UNSIGNED MEDIUM INTEGER" equivalent.
 `$table->mediumInteger('numbers');`  |  MEDIUMINT equivalent for the database.
 `$table->mediumText('description');`  |  MEDIUMTEXT equivalent for the database.
 `$table->morphs('taggable');`  |  Adds unsigned INTEGER `taggable_id` and STRING `taggable_type`.
+`$table->multiLineString('column');`  |  MULTILINESTRING equivalent for the database.
+`$table->multiPoint('column');`  |  MULTIPOINT equivalent for the database.
+`$table->multiPolygon('column');`  |  MULTIPOLYGON equivalent for the database.
 `$table->nullableMorphs('taggable');`  |  Nullable versions of the `morphs()` columns.
 `$table->nullableTimestamps();`  |  Nullable versions of the `timestamps()` columns.
+`$table->point('column');`  | POINT equivalent for the database.
+`$table->polygon('column');`  | POLYGON equivalent for the database.
 `$table->rememberToken();`  |  Adds `remember_token` as VARCHAR(100) NULL.
 `$table->smallIncrements('id');`  |  Incrementing ID (primary key) using a "UNSIGNED SMALL INTEGER" equivalent.
 `$table->smallInteger('votes');`  |  SMALLINT equivalent for the database.
