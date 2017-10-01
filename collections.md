@@ -81,6 +81,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [keys](#method-keys)
 [last](#method-last)
 [map](#method-map)
+[mapToGroups](#method-maptogroups)
 [mapWithKeys](#method-mapwithkeys)
 [max](#method-max)
 [median](#method-median)
@@ -757,6 +758,43 @@ The `map` method iterates through the collection and passes each value to the gi
     // [2, 4, 6, 8, 10]
 
 > {note} Like most other collection methods, `map` returns a new collection instance; it does not modify the collection it is called on. If you want to transform the original collection, use the [`transform`](#method-transform) method.
+
+<a name="method-maptogroups"></a>
+#### `mapToGroups()` {#collection-method}
+
+The `mapToGroups` method groups the collection's items by the given callback. The callback should return an associative array containing a single key / value pair, thus forming a new collection of grouped values:
+
+    $collection = collect([
+        [
+            'name' => 'John Doe',
+            'department' => 'Sales',
+        ],
+        [
+            'name' => 'Jane Doe',
+            'department' => 'Sales',
+        ],
+        [
+            'name' => 'Johnny Doe',
+            'department' => 'Marketing',
+        ]
+    ]);
+
+    $grouped = $collection->mapToGroups(function ($item, $key) {
+        return [$item['department'] => $item['name']];
+    });
+
+    $grouped->toArray();
+
+    /*
+        [
+            'Sales' => ['John Doe', 'Jane Doe'],
+            'Marketing' => ['Johhny Doe'],
+        ]
+    */
+
+    $grouped->get('Sales')->all();
+
+    // ['John Doe', 'Jane Doe']
 
 <a name="method-mapwithkeys"></a>
 #### `mapWithKeys()` {#collection-method}

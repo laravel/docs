@@ -82,6 +82,7 @@ All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/
 [keys](/docs/{{version}}/collections#method-keys)
 [last](/docs/{{version}}/collections#method-last)
 [map](/docs/{{version}}/collections#method-map)
+[mapToGroups](/docs/{{version}}/collections#method-maptogroups)
 [mapWithKeys](/docs/{{version}}/collections#method-mapwithkeys)
 [max](/docs/{{version}}/collections#method-max)
 [median](/docs/{{version}}/collections#method-median)
