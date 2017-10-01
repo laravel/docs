@@ -56,6 +56,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [contains](#method-contains)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
+[dd](#method-dd)
 [diff](#method-diff)
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
@@ -275,6 +276,24 @@ The `count` method returns the total number of items in the collection:
     $collection->count();
 
     // 4
+
+<a name="method-dd"></a>
+#### `dd()` {#collection-method}
+
+The `dd` method dumps the given collection's items and ends execution of the script:
+
+    $collection = collect(['John Doe', 'Jane Doe']);
+
+    $collection->dd();
+
+    /*
+        array:2 [
+            0 => "John Doe"
+            1 => "Jane Doe"
+        ]
+    */
+
+If you do not want to end the script execution, use the [`dump`](#method-dump) method instead.
 
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
