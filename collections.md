@@ -121,6 +121,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [union](#method-union)
 [unique](#method-unique)
 [uniqueStrict](#method-uniquestrict)
+[unwrap](#method-unwrap)
 [values](#method-values)
 [when](#method-when)
 [where](#method-where)
@@ -1529,6 +1530,23 @@ The `unique` method uses "loose" comparisons when checking item values, meaning 
 #### `uniqueStrict()` {#collection-method}
 
 This method has the same signature as the [`unique`](#method-unique) method; however, all values are compared using "strict" comparisons.
+
+<a name="method-unwrap"></a>
+#### `unwrap()` {#collection-method}
+
+The static `unwrap` method returns the collection's underlying items from the given value when applicable:
+
+    Collection::unwrap(collect('John Doe'));
+
+    // ['John Doe']
+
+    Collection::unwrap(['John Doe']);
+
+    // ['John Doe']
+
+    Collection::unwrap('John Doe');
+
+    // 'John Doe'
 
 <a name="method-values"></a>
 #### `values()` {#collection-method}
