@@ -60,6 +60,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
 [each](#method-each)
+[eachSpread](#method-eachspread)
 [every](#method-every)
 [except](#method-except)
 [filter](#method-filter)
@@ -347,6 +348,25 @@ The `each` method iterates over the items in the collection and passes each item
 If you would like to stop iterating through the items, you may return `false` from your callback:
 
     $collection = $collection->each(function ($item, $key) {
+        if (/* some condition */) {
+            return false;
+        }
+    });
+
+<a name="method-eachspread"></a>
+#### `eachSpread()` {#collection-method}
+
+The `eachSpread` method iterates over the collection's items passing each nested item value into the given callback:
+
+    $collection = collect([['John Doe', 35], ['Jane Doe', 33]]);
+
+    $collection->eachSpread(function ($name, $age) {
+        //
+    });
+
+You may stop iterating through the items by returning `false` from your callback:
+
+    $collection->eachSpread(function ($name, $age) {
         if (/* some condition */) {
             return false;
         }
