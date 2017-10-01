@@ -129,6 +129,7 @@ For the remainder of this documentation, we'll discuss each method available on 
 [whereInStrict](#method-whereinstrict)
 [whereNotIn](#method-wherenotin)
 [whereNotInStrict](#method-wherenotinstrict)
+[wrap](#method-wrap)
 [zip](#method-zip)
 
 </div>
@@ -1654,6 +1655,29 @@ The `whereNotIn` method uses "loose" comparisons when checking item values, mean
 #### `whereNotInStrict()` {#collection-method}
 
 This method has the same signature as the [`whereNotIn`](#method-wherenotin) method; however, all values are compared using "strict" comparisons.
+
+<a name="method-wrap"></a>
+#### `wrap()` {#collection-method}
+
+The static `wrap` method wraps the given value in a collection when applicable:
+
+    $collection = Collection::wrap('John Doe');
+
+    $collection->all();
+
+    // ['John Doe']
+
+    $collection = Collection::wrap(['John Doe']);
+
+    $collection->all();
+
+    // ['John Doe']
+
+    $collection = Collection::wrap(collect('John Doe'));
+
+    $collection->all();
+
+    // ['John Doe']
 
 <a name="method-zip"></a>
 #### `zip()` {#collection-method}
