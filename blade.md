@@ -399,6 +399,10 @@ If you would like to `@include` a view depending on a given boolean condition, y
 
     @includeWhen($boolean, 'view.name', ['some' => 'data'])
 
+To include the first existing view, you may use the `includeFirst` directive:
+
+    @includeFirst(['custom.admin', 'admin'], ['some' => 'data'])
+
 > {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
 <a name="rendering-views-for-collections"></a>
