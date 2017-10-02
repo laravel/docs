@@ -320,6 +320,14 @@ When allowing the dynamic `__call` method to share variables with a view, these 
 The `maximumVotes` variable may be accessed in the template like so:
 
     {{ $maximumVotes }}
+    
+#### `@php` Blade Directive
+
+The `@php` blade directive no longer accepts inline tags. Instead, use the full form of the directive:
+
+    @php
+        $teamMember = true;
+    @endphp
 
 ### Miscellaneous
 
