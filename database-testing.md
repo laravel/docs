@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
+- [Generating Factories](#generating-factories)
 - [Writing Factories](#writing-factories)
     - [Factory States](#factory-states)
 - [Using Factories](#using-factories)
@@ -57,6 +58,19 @@ It is often useful to reset your database after each test so that data from a pr
             // ...
         }
     }
+
+<a name="generating-factories"></a>
+## Generating Factories
+
+To create a factory, use the `make:factory` [Artisan command](/docs/{{version}}/artisan):
+
+    php artisan make:factory UserFactory
+
+The new factory will be placed in your `database/factories` directory.
+
+The `--model` option may also be used to indicate the name of the model used in the factory. This option simply pre-fill the generated factory stub file with the specified model:
+
+    php artisan make:factory UserFactory --model=User
 
 <a name="writing-factories"></a>
 ## Writing Factories
