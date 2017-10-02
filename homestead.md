@@ -111,23 +111,23 @@ The `provider` key in your `Homestead.yaml` file indicates which Vagrant provide
 The `folders` property of the `Homestead.yaml` file lists all of the folders you wish to share with your Homestead environment. As files within these folders are changed, they will be kept in sync between your local machine and the Homestead environment. You may configure as many shared folders as necessary:
 
     folders:
-        - map: ~/Code
-          to: /home/vagrant/Code
+        - map: ~/code
+          to: /home/vagrant/code
 
 If you are only creating a few sites, this generic mapping will work just fine. However, as the number of sites continue to grow, you may begin to experience performance problems. This problem can be painfully apparent on low-end machines or projects that contain a very large number of files. If you are experiencing this issue, try mapping every project to its own Vagrant folder:
 
     folders:
-        - map: ~/Code/project1
-          to: /home/vagrant/Code/project1
+        - map: ~/code/project1
+          to: /home/vagrant/code/project1
 
-        - map: ~/Code/project2
-          to: /home/vagrant/Code/project2
+        - map: ~/code/project2
+          to: /home/vagrant/code/project2
 
 To enable [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html), you only need to add a simple flag to your synced folder configuration:
 
     folders:
-        - map: ~/Code
-          to: /home/vagrant/Code
+        - map: ~/code
+          to: /home/vagrant/code
           type: "nfs"
 
 > {note} When using NFS, you should consider installing the [vagrant-bindfs](https://github.com/gael-ian/vagrant-bindfs) plug-in. This plug-in will maintain the correct user / group permissions for files and directories within the Homestead box.
@@ -135,8 +135,8 @@ To enable [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html), you onl
 You may also pass any options supported by Vagrant's [Synced Folders](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) by listing them under the `options` key:
 
     folders:
-        - map: ~/Code
-          to: /home/vagrant/Code
+        - map: ~/code
+          to: /home/vagrant/code
           type: "rsync"
           options:
               rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
@@ -149,7 +149,7 @@ Not familiar with Nginx? No problem. The `sites` property allows you to easily m
 
     sites:
         - map: homestead.app
-          to: /home/vagrant/Code/Laravel/public
+          to: /home/vagrant/code/Laravel/public
 
 If you change the `sites` property after provisioning the Homestead box, you should re-run `vagrant reload --provision`  to update the Nginx configuration on the virtual machine.
 
@@ -269,9 +269,9 @@ Once your Homestead environment is provisioned and running, you may want to add 
 
     sites:
         - map: homestead.app
-          to: /home/vagrant/Code/Laravel/public
+          to: /home/vagrant/code/Laravel/public
         - map: another.app
-          to: /home/vagrant/Code/another/public
+          to: /home/vagrant/code/another/public
 
 If Vagrant is not automatically managing your "hosts" file, you may need to add the new site to that file as well:
 
@@ -287,7 +287,7 @@ Homestead supports several types of sites which allow you to easily run projects
 
     sites:
         - map: symfony2.app
-          to: /home/vagrant/Code/Symfony/web
+          to: /home/vagrant/code/Symfony/web
           type: symfony2
 
 The available site types are: `apache`, `laravel` (the default), `proxy`, `silverstripe`, `statamic`, `symfony2`, and `symfony4`.
@@ -299,7 +299,7 @@ You may add additional Nginx `fastcgi_param` values to your site via the `params
 
     sites:
         - map: homestead.app
-          to: /home/vagrant/Code/Laravel/public
+          to: /home/vagrant/code/Laravel/public
           params:
               - key: FOO
                 value: BAR
@@ -313,7 +313,7 @@ If you would like the `schedule:run` command to be run for a Homestead site, you
 
     sites:
         - map: homestead.app
-          to: /home/vagrant/Code/Laravel/public
+          to: /home/vagrant/code/Laravel/public
           schedule: true
 
 The Cron job for the site will be defined in the `/etc/cron.d` folder of the virtual machine.
@@ -377,7 +377,7 @@ Homestead 6 introduced support for multiple versions of PHP on the same virtual 
 
     sites:
         - map: homestead.app
-          to: /home/vagrant/Code/Laravel/public
+          to: /home/vagrant/code/Laravel/public
           php: "5.6"
 
 In addition, you may use any of the supported PHP versions via the CLI:
