@@ -1,8 +1,8 @@
 # Database Testing
 
 - [Introduction](#introduction)
-- [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
 - [Generating Factories](#generating-factories)
+- [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
 - [Writing Factories](#writing-factories)
     - [Factory States](#factory-states)
 - [Using Factories](#using-factories)
@@ -28,6 +28,19 @@ Laravel provides a variety of helpful tools to make it easier to test your datab
 You can also use the `assertDatabaseMissing` helper to assert that data does not exist in the database.
 
 Of course, the `assertDatabaseHas` method and other helpers like it are for convenience. You are free to use any of PHPUnit's built-in assertion methods to supplement your tests.
+
+<a name="generating-factories"></a>
+## Generating Factories
+
+To create a factory, use the `make:factory` [Artisan command](/docs/{{version}}/artisan):
+
+    php artisan make:factory PostFactory
+
+The new factory will be placed in your `database/factories` directory.
+
+The `--model` option may be used to indicate the name of the model created by the factory. This option will pre-fill the generated factory file with the given model:
+
+    php artisan make:factory PostFactory --model=User
 
 <a name="resetting-the-database-after-each-test"></a>
 ## Resetting The Database After Each Test
@@ -58,19 +71,6 @@ It is often useful to reset your database after each test so that data from a pr
             // ...
         }
     }
-
-<a name="generating-factories"></a>
-## Generating Factories
-
-To create a factory, use the `make:factory` [Artisan command](/docs/{{version}}/artisan):
-
-    php artisan make:factory UserFactory
-
-The new factory will be placed in your `database/factories` directory.
-
-The `--model` option may also be used to indicate the name of the model used in the factory. This option simply pre-fill the generated factory stub file with the specified model:
-
-    php artisan make:factory UserFactory --model=User
 
 <a name="writing-factories"></a>
 ## Writing Factories
