@@ -220,7 +220,7 @@ For convenience, Blade also provides an `@unless` directive:
 In addition to the conditional directives already discussed, the `@isset` and `@empty` directives may be used as convenient shortcuts for their respective PHP functions:
 
     @isset($records)
-        // $records is defined and is not null...
+        // $records is defined...
     @endisset
 
     @empty($records)
