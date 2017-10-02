@@ -40,7 +40,7 @@ The new factory will be placed in your `database/factories` directory.
 
 The `--model` option may be used to indicate the name of the model created by the factory. This option will pre-fill the generated factory file with the given model:
 
-    php artisan make:factory PostFactory --model=User
+    php artisan make:factory PostFactory --model=Post
 
 <a name="resetting-the-database-after-each-test"></a>
 ## Resetting The Database After Each Test
