@@ -28,32 +28,28 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 
     $collection = collect([1, 2, 3]);
 
-Of course, you may also use the `Collection` class constructor or even the static `make()` method:
-
-    $collection = new Collection([1, 2, 3]);
-
-    $collection = Collection::make([1, 2, 3]);
-
 > {tip} The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
 
 <a name="extending-collections"></a>
 ### Extending Collections
 
-Collections are macroable, meaning that you can add new methods to the `Collection` class at run time without being required to extend it through inheritance.
+Collections are "macroable", which allows you to add additional methods to the `Collection` class at run time. For example, the following code adds a `toUpper` method to the `Collection` class:
 
-For example, here's how we could define a new method on the `Collection` called `mean` that is only an alias to the `average` method:
+    use Illuminate\Support\Str;
 
-    Collection::macro('mean', function ($callback = null) {
-        return $this->average($callback);
+    Collection::macro('toUpper', function () {
+        return $this->map(function ($value) {
+            return Str::upper($value);
+        });
     });
 
-    $collection = collect([1, 2, 3]);
+    $collection = collect(['first', 'second']);
 
-    $mean = $collection->mean();
+    $upper = $collection->toUpper();
 
-    // 2
+    // ['FIRST', 'SECOND']
 
-Typically, you should declare your collection's macros in a [service provider](/docs/{{version}}/providers).
+Typically, you should declare collection macros in a [service provider](/docs/{{version}}/providers).
 
 <a name="available-methods"></a>
 ## Available Methods
@@ -264,7 +260,7 @@ The `combine` method combines the keys of the collection with the values of anot
 <a name="method-concat"></a>
 #### `concat()` {#collection-method}
 
-The `concat` method appends the given `array` or collection values into the end of the collection, ignoring any existing keys in the given items:
+The `concat` method appends the given `array` or collection values onto the end of the collection:
 
     $collection = collect(['John Doe']);
 
@@ -370,7 +366,7 @@ The `crossJoin` method cross joins the collection's values among the given array
 <a name="method-dd"></a>
 #### `dd()` {#collection-method}
 
-The `dd` method dumps the given collection's items and ends execution of the script:
+The `dd` method dumps the collection's items and ends execution of the script:
 
     $collection = collect(['John Doe', 'Jane Doe']);
 
@@ -383,7 +379,7 @@ The `dd` method dumps the given collection's items and ends execution of the scr
         ]
     */
 
-If you do not want to end the script execution, use the [`dump`](#method-dump) method instead.
+If you do not want to stop executing the script, use the [`dump`](#method-dump) method instead.
 
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
@@ -447,7 +443,7 @@ The `diffKeys` method compares the collection against another collection or a pl
 <a name="method-dump"></a>
 #### `dump()` {#collection-method}
 
-The `dump` method dumps the given collection's items:
+The `dump` method dumps the collection's items:
 
     $collection = collect(['John Doe', 'Jane Doe']);
 
@@ -462,7 +458,7 @@ The `dump` method dumps the given collection's items:
         }
     */
 
-If you also want to end the script execution after dumping, use the [`dd`](#method-dd) method instead.
+If you want to stop executing the script after dumping the collection, use the [`dd`](#method-dd) method instead.
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}
@@ -484,7 +480,7 @@ If you would like to stop iterating through the items, you may return `false` fr
 <a name="method-eachspread"></a>
 #### `eachSpread()` {#collection-method}
 
-The `eachSpread` method iterates over the collection's items passing each nested item value into the given callback:
+The `eachSpread` method iterates over the collection's items, passing each nested item value into the given callback:
 
     $collection = collect([['John Doe', 35], ['Jane Doe', 33]]);
 
@@ -492,12 +488,10 @@ The `eachSpread` method iterates over the collection's items passing each nested
         //
     });
 
-You may stop iterating through the items by returning `false` from your callback:
+You may stop iterating through the items by returning `false` from the callback:
 
     $collection->eachSpread(function ($name, $age) {
-        if (/* some condition */) {
-            return false;
-        }
+        return false;
     });
 
 <a name="method-every"></a>
@@ -890,7 +884,7 @@ You may also call the `last` method with no arguments to get the last element in
 <a name="method-macro"></a>
 #### `macro()` {#collection-method}
 
-The static `macro` method allows you to add methods to the `Collection` class at run time. Refer to the [Extending Collections](#extending-collections) section for more information.
+The static `macro` method allows you to add methods to the `Collection` class at run time. Refer to the documentation on [extending collections](#extending-collections) for more information.
 
 <a name="method-make"></a>
 #### `make()` {#collection-method}
@@ -917,10 +911,16 @@ The `map` method iterates through the collection and passes each value to the gi
 <a name="method-mapinto"></a>
 #### `mapInto()` {#collection-method}
 
-The `mapInto()` method iterates over the collection passing each value to the given class:
+The `mapInto()` method iterates over the collection, creating a new instance of the given class by passing the value into the constructor:
 
     class Currency
     {
+        /**
+         * Create a new currency instance.
+         *
+         * @param  string  $code
+         * @return void
+         */
         function __construct(string $code)
         {
             $this->code = $code;
@@ -938,7 +938,7 @@ The `mapInto()` method iterates over the collection passing each value to the gi
 <a name="method-mapspread"></a>
 #### `mapSpread()` {#collection-method}
 
-The `mapSpread` method iterates over the collection's items passing each nested item value into the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items:
+The `mapSpread` method iterates over the collection's items, passing each nested item value into the given callback. The callback is free to modify the item and return it, thus forming a new collection of modified items:
 
     $collection = collect([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
