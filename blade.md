@@ -399,7 +399,7 @@ If you would like to `@include` a view depending on a given boolean condition, y
 
     @includeWhen($boolean, 'view.name', ['some' => 'data'])
 
-To include the first existing view, you may use the `includeFirst` directive:
+To include the first view that exists from a given array of views, you may use the `includeFirst` directive:
 
     @includeFirst(['custom.admin', 'admin'], ['some' => 'data'])
 
