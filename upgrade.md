@@ -323,17 +323,11 @@ The `maximumVotes` variable may be accessed in the template like so:
     
 #### `@php` Blade Directive
 
-The `@php` blade directive no longer accepts inline tags, use the full form or regular `<?php` code block. 
-For example, in Laravel 5.4 the following blade template would set the variable `$teamMember` to true:
-
-    @php($teamMember = true)
-    
-In Laravel 5.5 you must use the `@endphp` tag like so:
+The `@php` blade directive no longer accepts inline tags. Instead, use the full form of the directive:
 
     @php
         $teamMember = true;
     @endphp
-
 
 ### Miscellaneous
 
