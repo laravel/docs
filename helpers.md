@@ -22,7 +22,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
     }
 </style>
 
-### Arrays
+### Arrays & Objects
 
 <div class="collection-method-list" markdown="1">
 
@@ -47,6 +47,9 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [array_sort_recursive](#method-array-sort-recursive)
 [array_where](#method-array-where)
 [array_wrap](#method-array-wrap)
+[data_fill](#method-data-fill)
+[data_get](#method-data-get)
+[data_set](#method-data-set)
 [head](#method-head)
 [last](#method-last)
 </div>
@@ -123,6 +126,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
+[blank](#method-blank)
 [broadcast](#method-broadcast)
 [cache](#method-cache)
 [collect](#method-collect)
@@ -136,6 +140,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
+[filled](#method-filled)
 [info](#method-info)
 [logger](#method-logger)
 [method_field](#method-method-field)
@@ -155,6 +160,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [today](#method-today)
 [throw_if](#method-throw-if)
 [throw_unless](#method-throw-unless)
+[transform](#method-transform)
 [validator](#method-validator)
 [value](#method-value)
 [view](#method-view)
@@ -390,6 +396,12 @@ The `array_random()` function returns a random value from an array:
 
     // 4 - (retrieved randomly)
 
+You may also specify the number of items to return as an optional second parameter. Note that providing this parameter will return an array, even if only one item is desired:
+
+    $items = array_random($array, 2);
+
+    // $items: [2, 5]
+
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
@@ -498,6 +510,96 @@ The `array_wrap` function will wrap the given value in an array. If the given va
     $array = array_wrap($string);
 
     // [0 => 'Laravel']
+
+<a name="method-data-fill"></a>
+#### `data_fill()` {#collection-method}
+
+The `data_fill` function will fill data in the target array or object where needed, using "dot" notation:
+
+    $data = ['foo' => 'bar'];
+
+    data_fill($data, 'baz', 'boom')
+
+     // ['foo' => 'bar', 'baz' => 'boom']
+
+This function also accepts asterisks as wildcards, and will fill into the target accordingly:
+
+    $data = [
+        'posts' => [
+            'comments' => [
+                ['name' => 'Taylor'],
+                []
+            ],
+        ]
+    ];
+
+    data_fill($data,'posts.comments.*.name','No name');
+
+    /*
+        [
+            'posts' => [
+                'comments' => [
+                    ['name' => 'Taylor'],
+                    ['name' => 'No name']
+                ],
+            ]
+        ];
+    */
+
+<a name="method-data-get"></a>
+#### `data_get()` {#collection-method}
+
+The `data_get` function retrieves a value from a nested array or object using "dot" notation:
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    $value = data_get($data, 'products.desk');
+
+    // ['price' => 100]
+
+The `data_get` function also accepts a default value, which will be returned if the specific key is not found:
+
+    $value = data_get($data, 'names.john', 'default');
+
+<a name="method-data-set"></a>
+#### `data_set()` {#collection-method}
+
+The `data_set` function sets a value within a deeply nested array or object using "dot" notation:
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    data_set($data, 'products.desk.price', 200);
+
+    // ['products' => ['desk' => ['price' => 200]]]
+
+This function also accepts wildcards, and will set values in the target accordingly:
+
+    $data = [
+        'products' => [
+            ['name' => 'desk1', 'price' => 100],
+            ['name' => 'desk2', 'price' => 150],
+        ]
+    ];
+
+    data_set($data, 'products.*.price', 200);
+
+    /*
+        [
+            'products' => [
+                ['name'=> 'desk1' => 'price' => 200],
+                ['name'=> 'desk2' => 'price' => 200],
+            ]
+        ];
+    */
+
+By default, any existing values are overwritten. If you wish only set a value if it doesn't exist, you may pass `false` as the third parameter:
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    data_set($data, 'products.desk.price', 200, false);
+
+    // ['products' => ['desk' => ['price' => 100]]]
+
 
 <a name="method-head"></a>
 #### `head()` {#collection-method}
@@ -999,6 +1101,24 @@ The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given 
 
     broadcast(new UserRegistered($user));
 
+<a name="method-blank"></a>
+#### `blank()` {#collection-method}
+
+The `blank` function returns whether the given value is blank":
+
+    // true
+    blank('');
+    blank('   ');
+    blank(null);
+    blank(collect());
+
+    // false
+    blank(0);
+    blank(true);
+    blank(false);
+
+For the inverse of `blank`, see the [filled](#method-filled) method.
+
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
 
@@ -1105,6 +1225,24 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/database-testing#writing-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
 
     $user = factory(App\User::class)->make();
+
+<a name="method-filled"></a>
+#### `filled()` {#collection-method}
+
+The `filled` function returns whether the given value is not blank":
+
+    // true
+    filled(0);
+    filled(true);
+    filled(false);
+
+    // false
+    filled('');
+    filled('   ');
+    filled(null);
+    filled(collect());
+
+For the inverse of `filled`, see the [blank](#method-blank) method.
 
 <a name="method-info"></a>
 #### `info()` {#collection-method}
@@ -1299,6 +1437,23 @@ The `throw_if` function throws the given exception if a given boolean expression
 The `throw_unless` function throws the given exception if a given boolean expression evaluates to `false`:
 
     throw_unless(Auth::user()->isAdmin(), AuthorizationException::class, 'You are not allowed to access this page');
+
+<a name="method-transform"></a>
+#### `transform()` {#collection-method}
+
+The `transform` function executes a Closure on a given value, if the value is not blank, and returns the result of that Closure:
+
+    transform(5, function ($value) {
+        return $value * 2;
+    });
+
+    // 10
+
+A default value or Closure may also be passed as the third parameter to the method, which is used if the given value is blank:
+
+    transform(null, function ($value) {
+        return $value * 2;
+    }, "Value is blank");
 
 <a name="method-validator"></a>
 #### `validator()` {#collection-method}
