@@ -138,6 +138,11 @@ However, in Laravel 5.5, the alias will be used exactly as it is given. If you w
 
     $users = User::withCount('foo as bar_count')->get();
 
+
+#### Model methods & attribute names
+
+To prevent accessing model private properties while using array access it's now not possible for you to have a method inside the model class with the same name as a model attribute or property, having this will throw exceptions while accessing the model attributes via array access `$user['name']` or using `data_get($user, 'name')`.
+
 ### Exception Format
 
 In Laravel 5.5, all exceptions, including validation exceptions, are converted into HTTP responses by the exception handler. In addition, the default format for JSON validation errors has changed. The new format conforms to the following convention:
