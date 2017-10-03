@@ -701,7 +701,7 @@ You may also pass an array of values to determine if the given string contains a
 <a name="method-str-finish"></a>
 #### `str_finish()` {#collection-method}
 
-The `str_finish` function adds a single instance of the given value to a string if it does not already end with it:
+The `str_finish` function adds a single instance of the given value to a string if it does not already end with the value:
 
     $adjusted = str_finish('this/string', '/');
 
@@ -1291,21 +1291,21 @@ The `today` function creates a new `Illuminate\Support\Carbon` instance for the 
 
 The `throw_if` function throws the given exception if a given boolean expression evaluates to `true`:
 
-    throw_if(! Auth::user()->isAdmin(), AuthorizationException::class, 'You are not allowed to access this page');
+    throw_if(! Auth::user()->isAdmin(), AuthorizationException::class, 'You are not allowed to access this page');
 
 <a name="method-throw-unless"></a>
 #### `throw_unless()` {#collection-method}
 
 The `throw_unless` function throws the given exception if a given boolean expression evaluates to `false`:
 
-    throw_unless(Auth::user()->isAdmin(), AuthorizationException::class, 'You are not allowed to access this page');
+    throw_unless(Auth::user()->isAdmin(), AuthorizationException::class, 'You are not allowed to access this page');
 
 <a name="method-validator"></a>
 #### `validator()` {#collection-method}
 
 The `validator` function creates a new [validator](/docs/{{version}}/validation) instance with the given arguments. You may use it instead of the `Validator` facade for convenience:
 
-    $validator = validator($data, $rules, $messages);
+    $validator = validator($data, $rules, $messages);
 
 <a name="method-value"></a>
 #### `value()` {#collection-method}
