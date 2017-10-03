@@ -514,7 +514,7 @@ The `array_wrap` function will wrap the given value in an array. If the given va
 <a name="method-data-fill"></a>
 #### `data_fill()` {#collection-method}
 
-The `data_fill` function will fill data in the target array or object where needed, using "dot" notation:
+The `data_fill` function will fill data in the target array or object using "dot" notation:
 
     $data = ['foo' => 'bar'];
 
@@ -522,7 +522,7 @@ The `data_fill` function will fill data in the target array or object where need
 
      // ['foo' => 'bar', 'baz' => 'boom']
 
-This function also accepts asterisks as wildcards, and will fill into the target accordingly:
+This function also accepts asterisks as wildcards and will fill the target accordingly:
 
     $data = [
         'posts' => [
@@ -533,14 +533,14 @@ This function also accepts asterisks as wildcards, and will fill into the target
         ]
     ];
 
-    data_fill($data,'posts.comments.*.name','No name');
+    data_fill($data,'posts.comments.*.name', 'N/A');
 
     /*
         [
             'posts' => [
                 'comments' => [
                     ['name' => 'Taylor'],
-                    ['name' => 'No name']
+                    ['name' => 'N/A']
                 ],
             ]
         ];
@@ -557,14 +557,14 @@ The `data_get` function retrieves a value from a nested array or object using "d
 
     // ['price' => 100]
 
-The `data_get` function also accepts a default value, which will be returned if the specific key is not found:
+The `data_get` function also accepts a default value, which will be returned if the specified key is not found:
 
     $value = data_get($data, 'names.john', 'default');
 
 <a name="method-data-set"></a>
 #### `data_set()` {#collection-method}
 
-The `data_set` function sets a value within a deeply nested array or object using "dot" notation:
+The `data_set` function sets a value within a nested array or object using "dot" notation:
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
@@ -572,12 +572,12 @@ The `data_set` function sets a value within a deeply nested array or object usin
 
     // ['products' => ['desk' => ['price' => 200]]]
 
-This function also accepts wildcards, and will set values in the target accordingly:
+This function also accepts wildcards and will set values on the target accordingly:
 
     $data = [
         'products' => [
-            ['name' => 'desk1', 'price' => 100],
-            ['name' => 'desk2', 'price' => 150],
+            ['name' => 'Desk 1', 'price' => 100],
+            ['name' => 'Desk 2', 'price' => 150],
         ]
     ];
 
@@ -586,20 +586,19 @@ This function also accepts wildcards, and will set values in the target accordin
     /*
         [
             'products' => [
-                ['name'=> 'desk1' => 'price' => 200],
-                ['name'=> 'desk2' => 'price' => 200],
+                ['name'=> 'Desk 1' => 'price' => 200],
+                ['name'=> 'Desk 2' => 'price' => 200],
             ]
         ];
     */
 
-By default, any existing values are overwritten. If you wish only set a value if it doesn't exist, you may pass `false` as the third parameter:
+By default, any existing values are overwritten. If you wish to only set a value if it doesn't exist, you may pass `false` as the third parameter:
 
     $data = ['products' => ['desk' => ['price' => 100]]];
 
     data_set($data, 'products.desk.price', 200, false);
 
     // ['products' => ['desk' => ['price' => 100]]]
-
 
 <a name="method-head"></a>
 #### `head()` {#collection-method}
@@ -1104,7 +1103,7 @@ The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given 
 <a name="method-blank"></a>
 #### `blank()` {#collection-method}
 
-The `blank` function returns whether the given value is blank":
+The `blank` function returns whether the given value is "blank":
 
     // true
     blank('');
@@ -1229,7 +1228,7 @@ The `factory` function creates a model factory builder for a given class, name, 
 <a name="method-filled"></a>
 #### `filled()` {#collection-method}
 
-The `filled` function returns whether the given value is not blank":
+The `filled` function returns whether the given value is not "blank":
 
     // true
     filled(0);
@@ -1441,7 +1440,7 @@ The `throw_unless` function throws the given exception if a given boolean expres
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}
 
-The `transform` function executes a Closure on a given value, if the value is not blank, and returns the result of that Closure:
+The `transform` function executes a Closure on a given value if the value is not [blank](#method-blank) and returns the result of the Closure:
 
     transform(5, function ($value) {
         return $value * 2;
@@ -1449,11 +1448,11 @@ The `transform` function executes a Closure on a given value, if the value is no
 
     // 10
 
-A default value or Closure may also be passed as the third parameter to the method, which is used if the given value is blank:
+A default value or Closure may also be passed as the third parameter to the method. This value will be returned if the given value is blank:
 
     transform(null, function ($value) {
         return $value * 2;
-    }, "Value is blank");
+    }, "The value is blank.");
 
 <a name="method-validator"></a>
 #### `validator()` {#collection-method}
