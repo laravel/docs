@@ -147,44 +147,84 @@ Instead, the `Cache` facade extends the base `Facade` class and defines the meth
 <a name="real-time-facades"></a>
 ## Real-Time Facades
 
-You can easily use any class in your application as if it were a facade. A common pattern when using a non-static method is to instantiate a class, then call the method, like so:
+Using real-time facades, you may treat any class in your application as if it were a facade. To illustrate how this can be used, let's examine an alternative. For example, let's assume our `Podcast` model has a `publish` method. However, in order to publish the podcast, we need to inject a `Publisher` instance:
 
-    use Illuminate\Http\Request;
-    use App\Services\Twitter;
+    <?php
 
-    class PublishPodcastEpisode {
+    namespace App;
+
+    use App\Contracts\Publisher;
+    use Illuminate\Database\Eloquent\Model;
+
+    class Podcast extends Model
+    {
         /**
-         * Store a new podcast episode and tweet it out.
+         * Publish the podcast.
          *
-         * @param  Request  $request
+         * @param  Publisher  $publisher
+         * @return void
          */
-        public function store(Request $request)
+        public function publish(Publisher $publisher)
         {
-            // Create podcast episode record...
+            $this->update(['publishing' => now()]);
 
-            // Tweet out the new episode
-            $twitter = new \App\Services\Twitter();
-            $twitter->publishTweet("We published a new podcast episode!");
+            $publisher->publish($this);
         }
     }
 
+Injecting a publisher interface implementation into the method allows us to easily test the method in isolation since we can mock the injected publisher. However, it requires us to always pass a publisher instance each time we call `publish`. Using real-time facades, we can maintain the same testability while not being required to explicitly pass a `Publisher` instance. To generate a real-time facade, simply prefix the namespace of the imported class with `Facades`:
+
 Instead, simply add the `Facades` namespace to the beginning of your `use` statement for the Twitter service, and you can use that class as if it were a facade.
 
-    use Illuminate\Http\Request;
-    use Facades\App\Services\Twitter;
+    <?php
 
-    class PublishPodcastEpisode {
+    namespace App;
+
+    use Facades\App\Contracts\Publisher;
+    use Illuminate\Database\Eloquent\Model;
+
+    class Podcast extends Model
+    {
         /**
-         * Store a new podcast episode and tweet it out.
+         * Publish the podcast.
          *
-         * @param  Request  $request
+         * @return void
          */
-        public function store(Request $request)
+        public function publish()
         {
-            // Create podcast episode record...
+            $this->update(['publishing' => now()]);
 
-            // Tweet out the new episode
-            Twitter::publishTweet("We published a new podcast episode!");
+            Publisher::publish($this);
+        }
+    }
+
+When the real-time facade is used, the publisher implementation will be resolved out of the service container using the portion of the interface or class name that appears after the `Facades` prefix. When testing, we can use Laravel's built-in facade testing helpers to mock this method call:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Podcast;
+    use Tests\TestCase;
+    use Facades\App\Contracts\Publisher;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+
+    class PodcastTest extends TestCase
+    {
+        use RefreshDatabase;
+
+        /**
+         * A test example.
+         *
+         * @return void
+         */
+        public function test_podcast_can_be_published()
+        {
+            $podcast = factory(Podcast::class)->create();
+
+            Publisher::shouldReceive('publish')->once()->with($podcast);
+
+            $podcast->publish();
         }
     }
 
