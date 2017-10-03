@@ -22,7 +22,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
     }
 </style>
 
-### Arrays
+### Arrays & Objects
 
 <div class="collection-method-list" markdown="1">
 
@@ -41,11 +41,15 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [array_pluck](#method-array-pluck)
 [array_prepend](#method-array-prepend)
 [array_pull](#method-array-pull)
+[array_random](#method-array-random)
 [array_set](#method-array-set)
 [array_sort](#method-array-sort)
 [array_sort_recursive](#method-array-sort-recursive)
 [array_where](#method-array-where)
 [array_wrap](#method-array-wrap)
+[data_fill](#method-data-fill)
+[data_get](#method-data-get)
+[data_set](#method-data-set)
 [head](#method-head)
 [last](#method-last)
 </div>
@@ -74,18 +78,23 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [e](#method-e)
 [ends_with](#method-ends-with)
 [kebab_case](#method-kebab-case)
+[preg_replace_array](#method-preg-replace-array)
 [snake_case](#method-snake-case)
-[str_limit](#method-str-limit)
 [starts_with](#method-starts-with)
 [str_after](#method-str-after)
 [str_before](#method-str-before)
 [str_contains](#method-str-contains)
 [str_finish](#method-str-finish)
 [str_is](#method-str-is)
+[str_limit](#method-str-limit)
 [str_plural](#method-str-plural)
 [str_random](#method-str-random)
+[str_replace_array](#method-str-replace-array)
+[str_replace_first](#method-str-replace-first)
+[str_replace_last](#method-str-replace-last)
 [str_singular](#method-str-singular)
 [str_slug](#method-str-slug)
+[str_start](#method-str-start)
 [studly_case](#method-studly-case)
 [title_case](#method-title-case)
 [trans](#method-trans)
@@ -113,34 +122,46 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [abort](#method-abort)
 [abort_if](#method-abort-if)
 [abort_unless](#method-abort-unless)
+[app](#method-app)
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
+[blank](#method-blank)
+[broadcast](#method-broadcast)
 [cache](#method-cache)
 [collect](#method-collect)
 [config](#method-config)
+[cookie](#method-cookie)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
+[dispatch_now](#method-dispatch-now)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
+[filled](#method-filled)
 [info](#method-info)
 [logger](#method-logger)
 [method_field](#method-method-field)
 [now](#method-now)
 [old](#method-old)
 [optional](#method-optional)
+[policy](#method-policy)
 [redirect](#method-redirect)
 [report](#method-report)
 [request](#method-request)
 [rescue](#method-rescue)
+[resolve](#method-resolve)
 [response](#method-response)
 [retry](#method-retry)
 [session](#method-session)
 [tap](#method-tap)
 [today](#method-today)
+[throw_if](#method-throw-if)
+[throw_unless](#method-throw-unless)
+[transform](#method-transform)
+[validator](#method-validator)
 [value](#method-value)
 [view](#method-view)
 
@@ -364,6 +385,23 @@ A default value may be passed as the third argument to the method. This value wi
 
     $value = array_pull($array, $key, $default);
 
+<a name="method-array-random"></a>
+#### `array_random()` {#collection-method}
+
+The `array_random()` function returns a random value from an array:
+
+    $array = [1, 2, 3, 4, 5];
+
+    $random = array_random($array);
+
+    // 4 - (retrieved randomly)
+
+You may also specify the number of items to return as an optional second parameter. Note that providing this parameter will return an array, even if only one item is desired:
+
+    $items = array_random($array, 2);
+
+    // $items: [2, 5]
+
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
@@ -472,6 +510,95 @@ The `array_wrap` function will wrap the given value in an array. If the given va
     $array = array_wrap($string);
 
     // [0 => 'Laravel']
+
+<a name="method-data-fill"></a>
+#### `data_fill()` {#collection-method}
+
+The `data_fill` function will fill data in the target array or object using "dot" notation:
+
+    $data = ['foo' => 'bar'];
+
+    data_fill($data, 'baz', 'boom')
+
+     // ['foo' => 'bar', 'baz' => 'boom']
+
+This function also accepts asterisks as wildcards and will fill the target accordingly:
+
+    $data = [
+        'posts' => [
+            'comments' => [
+                ['name' => 'Taylor'],
+                []
+            ],
+        ]
+    ];
+
+    data_fill($data,'posts.comments.*.name', 'N/A');
+
+    /*
+        [
+            'posts' => [
+                'comments' => [
+                    ['name' => 'Taylor'],
+                    ['name' => 'N/A']
+                ],
+            ]
+        ];
+    */
+
+<a name="method-data-get"></a>
+#### `data_get()` {#collection-method}
+
+The `data_get` function retrieves a value from a nested array or object using "dot" notation:
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    $value = data_get($data, 'products.desk');
+
+    // ['price' => 100]
+
+The `data_get` function also accepts a default value, which will be returned if the specified key is not found:
+
+    $value = data_get($data, 'names.john', 'default');
+
+<a name="method-data-set"></a>
+#### `data_set()` {#collection-method}
+
+The `data_set` function sets a value within a nested array or object using "dot" notation:
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    data_set($data, 'products.desk.price', 200);
+
+    // ['products' => ['desk' => ['price' => 200]]]
+
+This function also accepts wildcards and will set values on the target accordingly:
+
+    $data = [
+        'products' => [
+            ['name' => 'Desk 1', 'price' => 100],
+            ['name' => 'Desk 2', 'price' => 150],
+        ]
+    ];
+
+    data_set($data, 'products.*.price', 200);
+
+    /*
+        [
+            'products' => [
+                ['name'=> 'Desk 1' => 'price' => 200],
+                ['name'=> 'Desk 2' => 'price' => 200],
+            ]
+        ];
+    */
+
+By default, any existing values are overwritten. If you wish to only set a value if it doesn't exist, you may pass `false` as the third parameter:
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    data_set($data, 'products.desk.price', 200, false);
+
+    // ['products' => ['desk' => ['price' => 100]]]
 
 <a name="method-head"></a>
 #### `head()` {#collection-method}
@@ -610,6 +737,16 @@ The `kebab_case` function converts the given string to `kebab-case`:
 
     // foo-bar
 
+<a name="method-preg-replace-array"></a>
+#### `preg_replace_array()` {#collection-method}
+
+The `preg_replace_array()` function replaces a given pattern in the string sequentially using an array:
+
+    $string = 'The event will take place between :start and :end';
+
+    $replaced = preg_replace_array('/:[a-z_]+/', ['8:30', '9:00'], $string);
+
+    // The event will take place between 8:30 and 9:00
 
 <a name="method-snake-case"></a>
 #### `snake_case()` {#collection-method}
@@ -619,15 +756,6 @@ The `snake_case` function converts the given string to `snake_case`:
     $snake = snake_case('fooBar');
 
     // foo_bar
-
-<a name="method-str-limit"></a>
-#### `str_limit()` {#collection-method}
-
-The `str_limit` function limits the number of characters in a string. The function accepts a string as its first argument and the maximum number of resulting characters as its second argument:
-
-    $value = str_limit('The PHP framework for web artisans.', 7);
-
-    // The PHP...
 
 <a name="method-starts-with"></a>
 #### `starts_with()` {#collection-method}
@@ -674,10 +802,13 @@ You may also pass an array of values to determine if the given string contains a
 <a name="method-str-finish"></a>
 #### `str_finish()` {#collection-method}
 
-The `str_finish` function adds a single instance of the given value to a string if it does not already end with it:
+The `str_finish` function adds a single instance of the given value to a string if it does not already end with the value:
 
-    $string = str_finish('this/string', '/');
-    $string2 = str_finish('this/string/', '/');
+    $adjusted = str_finish('this/string', '/');
+
+    // this/string/
+
+    $adjusted = str_finish('this/string/', '/');
 
     // this/string/
 
@@ -693,6 +824,21 @@ The `str_is` function determines if a given string matches a given pattern. Aste
     $value = str_is('baz*', 'foobar');
 
     // false
+
+<a name="method-str-limit"></a>
+#### `str_limit()` {#collection-method}
+
+The `str_limit` function limits the number of characters in a string. The function accepts a string as its first argument and the maximum number of resulting characters as its second argument:
+
+    $truncated = str_limit('The quick brown fox jumps over the lazy dog', 20);
+
+    // The quick brown fox...
+
+You may also pass a third argument to change the string that will be appended to the end:
+
+    $truncated = str_limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
+
+    // The quick brown fox (...)
 
 <a name="method-str-plural"></a>
 #### `str_plural()` {#collection-method}
@@ -724,6 +870,35 @@ The `str_random` function generates a random string of the specified length. Thi
 
     $string = str_random(40);
 
+<a name="method-str-replace-array"></a>
+#### `str_replace_array()` {#collection-method}
+
+The `str_replace_array()` function replaces a given value in the string sequentially using an array:
+
+    $string = 'The event will take place between ? and ?';
+
+    $replaced = str_replace_array('?', ['8:30', '9:00'], $string);
+
+    // The event will take place between 8:30 and 9:00
+
+<a name="method-str-replace-first"></a>
+#### `str_replace_first()` {#collection-method}
+
+The `str_replace_first()` function replaces the first occurrence of a given value in a string:
+
+    $replaced = str_replace_first('the', 'a', 'the quick brown fox jumps over the lazy dog');
+
+    // a quick brown fox jumps over the lazy dog
+
+<a name="method-str-replace-last"></a>
+#### `str_replace_last()` {#collection-method}
+
+The `str_replace_last()` function replaces the last occurrence of a given value in a string:
+
+    $replaced = str_replace_last('the', 'a', 'the quick brown fox jumps over the lazy dog');
+
+    // the quick brown fox jumps over a lazy dog
+
 <a name="method-str-singular"></a>
 #### `str_singular()` {#collection-method}
 
@@ -733,6 +908,10 @@ The `str_singular` function converts a string to its singular form. This functio
 
     // car
 
+    $singular = str_singular('children');
+
+    // child
+
 <a name="method-str-slug"></a>
 #### `str_slug()` {#collection-method}
 
@@ -741,6 +920,19 @@ The `str_slug` function generates a URL friendly "slug" from the given string:
     $title = str_slug('Laravel 5 Framework', '-');
 
     // laravel-5-framework
+
+<a name="method-str-start"></a>
+#### `str_start()` {#collection-method}
+
+The `str_start` function adds a single instance of the given value to a string if it does not already start with the value:
+
+    $adjusted = str_start('this/string', '/');
+
+    // /this/string
+
+    $adjusted = str_start('/this/string/', '/');
+
+    // /this/string
 
 <a name="method-studly-case"></a>
 #### `studly_case()` {#collection-method}
@@ -869,10 +1061,21 @@ The `abort_unless` function throws an HTTP exception if a given boolean expressi
 
     abort_unless(Auth::user()->isAdmin(), 403);
 
+<a name="method-app"></a>
+#### `app()` {#collection-method}
+
+The `app` function returns the [service container](/docs/{{version}}/container) instance:
+
+    $container = app();
+
+You may pass a class or interface name to resolve it from the container:
+
+    $api = app('HelpSpot\API');
+
 <a name="method-auth"></a>
 #### `auth()` {#collection-method}
 
-The `auth` function returns an authenticator instance. You may use it instead of the `Auth` facade for convenience:
+The `auth` function returns an [authenticator](/docs/{{version}}/authentication) instance. You may use it instead of the `Auth` facade for convenience:
 
     $user = auth()->user();
 
@@ -889,6 +1092,31 @@ The `back()` function generates a redirect response to the user's previous locat
 The `bcrypt` function hashes the given value using Bcrypt. You may use it as an alternative to the `Hash` facade:
 
     $password = bcrypt('my-secret-password');
+
+<a name="method-broadcast"></a>
+#### `broadcast()` {#collection-method}
+
+The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners:
+
+    broadcast(new UserRegistered($user));
+
+<a name="method-blank"></a>
+#### `blank()` {#collection-method}
+
+The `blank` function returns whether the given value is "blank":
+
+    // true
+    blank('');
+    blank('   ');
+    blank(null);
+    blank(collect());
+
+    // false
+    blank(0);
+    blank(true);
+    blank(false);
+
+For the inverse of `blank`, see the [filled](#method-filled) method.
 
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
@@ -925,6 +1153,13 @@ The `config` helper may also be used to set configuration variables at runtime b
 
     config(['app.debug' => true]);
 
+<a name="method-cookie"></a>
+#### `cookie()` {#collection-method}
+
+The `cookie` function creates a new [cookie](/docs/{{version}}/requests#cookies) instance:
+
+    $cookie = cookie('name', 'value', $minutes);
+
 <a name="method-csrf-field"></a>
 #### `csrf_field()` {#collection-method}
 
@@ -955,9 +1190,16 @@ If you do not want to halt the execution of your script, use the `dump` function
 <a name="method-dispatch"></a>
 #### `dispatch()` {#collection-method}
 
-The `dispatch` function pushes a new job onto the Laravel [job queue](/docs/{{version}}/queues):
+The `dispatch` function pushes the given [job](/docs/{{version}}/queues#creating-jobs) onto the Laravel [job queue](/docs/{{version}}/queues):
 
     dispatch(new App\Jobs\SendEmails);
+
+<a name="method-dispatch-now"></a>
+#### `dispatch_now()` {#collection-method}
+
+The `dispatch_now` function runs the given [job](/docs/{{version}}/queues#creating-jobs) immediately and returns the value from its `handle` method:
+
+    $result = dispatch_now(new App\Jobs\SendEmails);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}
@@ -982,6 +1224,24 @@ The `event` function dispatches the given [event](/docs/{{version}}/events) to i
 The `factory` function creates a model factory builder for a given class, name, and amount. It can be used while [testing](/docs/{{version}}/database-testing#writing-factories) or [seeding](/docs/{{version}}/seeding#using-model-factories):
 
     $user = factory(App\User::class)->make();
+
+<a name="method-filled"></a>
+#### `filled()` {#collection-method}
+
+The `filled` function returns whether the given value is not "blank":
+
+    // true
+    filled(0);
+    filled(true);
+    filled(false);
+
+    // false
+    filled('');
+    filled('   ');
+    filled(null);
+    filled(collect());
+
+For the inverse of `filled`, see the [blank](#method-blank) method.
 
 <a name="method-info"></a>
 #### `info()` {#collection-method}
@@ -1043,6 +1303,13 @@ The `optional` function accepts any argument and allows you to access properties
 
     {!! old('name', optional($user)->name) !!}
 
+<a name="method-policy"></a>
+#### `policy()` {#collection-method}
+
+The `policy` method gets a [policy](/docs/{{version}}/authorization#creating-policies) instance for a given class:
+
+    $policy = policy(App\User::class);
+
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
 
@@ -1088,6 +1355,13 @@ You may also pass a second argument to the `rescue` function. This argument will
     }, function () {
         return $this->failure();
     });
+
+<a name="method-resolve"></a>
+#### `resolve()` {#collection-method}
+
+The `resolve` function resolves a given class or interface name to its instance using the [service container](/docs/{{version}}/container):
+
+    $api = resolve('HelpSpot\API');
 
 <a name="method-response"></a>
 #### `response()` {#collection-method}
@@ -1148,6 +1422,44 @@ If no Closure is passed to the `tap` function, you may call any method on the gi
 The `today` function creates a new `Illuminate\Support\Carbon` instance for the current date:
 
     return today();
+
+<a name="method-throw-if"></a>
+#### `throw_if()` {#collection-method}
+
+The `throw_if` function throws the given exception if a given boolean expression evaluates to `true`:
+
+    throw_if(! Auth::user()->isAdmin(), AuthorizationException::class, 'You are not allowed to access this page');
+
+<a name="method-throw-unless"></a>
+#### `throw_unless()` {#collection-method}
+
+The `throw_unless` function throws the given exception if a given boolean expression evaluates to `false`:
+
+    throw_unless(Auth::user()->isAdmin(), AuthorizationException::class, 'You are not allowed to access this page');
+
+<a name="method-transform"></a>
+#### `transform()` {#collection-method}
+
+The `transform` function executes a Closure on a given value if the value is not [blank](#method-blank) and returns the result of the Closure:
+
+    transform(5, function ($value) {
+        return $value * 2;
+    });
+
+    // 10
+
+A default value or Closure may also be passed as the third parameter to the method. This value will be returned if the given value is blank:
+
+    transform(null, function ($value) {
+        return $value * 2;
+    }, "The value is blank.");
+
+<a name="method-validator"></a>
+#### `validator()` {#collection-method}
+
+The `validator` function creates a new [validator](/docs/{{version}}/validation) instance with the given arguments. You may use it instead of the `Validator` facade for convenience:
+
+    $validator = validator($data, $rules, $messages);
 
 <a name="method-value"></a>
 #### `value()` {#collection-method}

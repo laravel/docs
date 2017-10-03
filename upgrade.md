@@ -138,6 +138,11 @@ However, in Laravel 5.5, the alias will be used exactly as it is given. If you w
 
     $users = User::withCount('foo as bar_count')->get();
 
+
+#### Model Methods & Attribute Names
+
+To prevent accessing a model's private properties when using array access, it's no longer possible to have a model method with the same name as an attribute or property. Doing so will cause exceptions to be thrown when accessing the model's attributes via array access (`$user['name']`) or the `data_get` helper function.
+
 ### Exception Format
 
 In Laravel 5.5, all exceptions, including validation exceptions, are converted into HTTP responses by the exception handler. In addition, the default format for JSON validation errors has changed. The new format conforms to the following convention:
@@ -320,6 +325,14 @@ When allowing the dynamic `__call` method to share variables with a view, these 
 The `maximumVotes` variable may be accessed in the template like so:
 
     {{ $maximumVotes }}
+
+#### `@php` Blade Directive
+
+The `@php` blade directive no longer accepts inline tags. Instead, use the full form of the directive:
+
+    @php
+        $teamMember = true;
+    @endphp
 
 ### Miscellaneous
 
