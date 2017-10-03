@@ -396,6 +396,12 @@ The `array_random()` function returns a random value from an array:
 
     // 4 - (retrieved randomly)
 
+You may also specify the number of items to return as an optional second parameter. Note that providing this parameter will return an array, even if only one item is desired:
+
+    $items = array_random($array, 2);
+
+    // $items: [2, 5]
+
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
