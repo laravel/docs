@@ -639,7 +639,7 @@ The `kebab_case` function converts the given string to `kebab-case`:
 <a name="method-preg-replace-array"></a>
 #### `preg_replace_array()` {#collection-method}
 
-The `preg_replace_array()` function replaces a given pattern in the string sequentially with an array:
+The `preg_replace_array()` function replaces a given pattern in the string sequentially using an array:
 
     $string = 'The event will take place between :start and :end';
 
@@ -772,7 +772,7 @@ The `str_random` function generates a random string of the specified length. Thi
 <a name="method-str-replace-array"></a>
 #### `str_replace_array()` {#collection-method}
 
-The `str_replace_array()` function replaces a given value in the string sequentially with an array:
+The `str_replace_array()` function replaces a given value in the string sequentially using an array:
 
     $string = 'The event will take place between ? and ?';
 
@@ -823,7 +823,7 @@ The `str_slug` function generates a URL friendly "slug" from the given string:
 <a name="method-str-start"></a>
 #### `str_start()` {#collection-method}
 
-The `str_start` function adds a single instance of the given value to a string if it does not already start with it:
+The `str_start` function adds a single instance of the given value to a string if it does not already start with the value:
 
     $adjusted = str_start('this/string', '/');
 
@@ -963,13 +963,13 @@ The `abort_unless` function throws an HTTP exception if a given boolean expressi
 <a name="method-app"></a>
 #### `app()` {#collection-method}
 
-The `app` function returns a [service container](/docs/{{version}}/container) instance:
+The `app` function returns the [service container](/docs/{{version}}/container) instance:
 
     $container = app();
 
-You may optionally pass a class or interface name to resolve its instance from the container:
+You may pass a class or interface name to resolve it from the container:
 
-    $instance = app('HelpSpot\API');
+    $api = app('HelpSpot\API');
 
 <a name="method-auth"></a>
 #### `auth()` {#collection-method}
@@ -1222,9 +1222,9 @@ You may also pass a second argument to the `rescue` function. This argument will
 <a name="method-resolve"></a>
 #### `resolve()` {#collection-method}
 
-The `resolve` function resolves a given class or interface name to its instance from the [service container](/docs/{{version}}/container):
+The `resolve` function resolves a given class or interface name to its instance using the [service container](/docs/{{version}}/container):
 
-    $instance = resolve('HelpSpot\API');
+    $api = resolve('HelpSpot\API');
 
 <a name="method-response"></a>
 #### `response()` {#collection-method}
