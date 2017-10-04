@@ -282,6 +282,10 @@ After a user is subscribed to your application, they may occasionally want to ch
 
     $user->subscription('main')->swap('provider-plan-id');
 
+You can also pass a second parameter if you would like to update the subscription name at the same time:
+
+    $user->subscription('main')->swap('provider-plan-id', 'new-subscription-name');
+
 If the user is on trial, the trial period will be maintained. Also, if a "quantity" exists for the subscription, that quantity will also be maintained.
 
 If you would like to swap plans and cancel any trial period the user is currently on, you may use the `skipTrial` method:
